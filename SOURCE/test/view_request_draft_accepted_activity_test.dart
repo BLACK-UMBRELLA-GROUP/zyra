@@ -74,14 +74,15 @@ void main() {
   });
 
   test(
-    'outgoing capacity replacement records acceptance; incoming does not',
+    'outgoing acceptance precedes capacity replacement; incoming has no event',
     () {
       final now = DateTime.utc(2026, 10, 31, 9);
       final outgoing = ViewRequestDraftModel(capacity: 3, clock: () => now)
         ..fillCapacity();
       expect(outgoing.request(_noor), isTrue);
-      expect(outgoing.simulateRecipientAccept(_noor), isFalse);
-      expect(outgoing.outgoingRequestAcceptedAt(_noor), isNull);
+      expect(outgoing.simulateRecipientAccept(_noor), isTrue);
+      expect(outgoing.stateFor(_noor), DraftJourneyState.acceptedWaiting);
+      expect(outgoing.outgoingRequestAcceptedAt(_noor), now);
       expect(
         outgoing.replaceJourneyForRequest(_noor, _sara, incoming: false),
         isTrue,

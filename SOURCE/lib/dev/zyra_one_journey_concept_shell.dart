@@ -119,6 +119,7 @@ class ZyraOneJourneyConceptShell extends StatefulWidget {
     required this.canAct,
     required this.onExit,
     this.onDeveloperHome,
+    this.canActInOwnedDialog,
     this.onRoleChanged,
     this.onPresentationReady,
     this.initialGuardianRole = false,
@@ -132,6 +133,8 @@ class ZyraOneJourneyConceptShell extends StatefulWidget {
     this.previewClock,
   });
   final bool Function() canAct;
+  // Owner admission without route focus, used only by an exact shell-owned modal.
+  final bool Function()? canActInOwnedDialog;
   final VoidCallback onExit;
   final VoidCallback? onDeveloperHome;
   final ValueChanged<bool>? onRoleChanged;
@@ -1193,10 +1196,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             _tab != 2 ||
             _page != 'request_capacity' ||
             _model.isBlocked(request.id) ||
-            _model.stateFor(request.id) !=
-                (request.incoming
-                    ? DraftJourneyState.received
-                    : DraftJourneyState.sent)) {
+            !_capacityRequestAdmitted(request)) {
           _capacityRequest = null;
           _capacityEndingId = null;
         }
@@ -2151,6 +2151,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   String _invitationLabel(String id) => switch (_model.stateFor(id)) {
     null => 'Request a Journey',
     DraftJourneyState.sent => 'Request sent',
+    DraftJourneyState.acceptedWaiting => 'Accepted · waiting for confirmation',
     DraftJourneyState.ended => 'Journey archived',
     final state => _stateLabel(state),
   };
@@ -3002,6 +3003,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             DraftPastRequestOutcome.notTakenUp => 'Not taken up',
             DraftPastRequestOutcome.cancelled => 'Cancelled',
             DraftPastRequestOutcome.youDeclined => 'You declined',
+            DraftPastRequestOutcome.youLetItGo => 'You let it go',
           },
           cardId: 'past_request_${entry.id}',
         ),
@@ -3010,8 +3012,9 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   List<Widget> _requests(int tab) {
     final revision = _uiRevision;
+    final fresh = _accountFreshGuard();
     bool current() =>
-        _allowed &&
+        fresh() &&
         !_devControlsVisible &&
         revision == _uiRevision &&
         !_guardianRole &&
@@ -3019,17 +3022,35 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         _page == 'requests' &&
         _requestsTab == tab;
     VoidCallback visibleAction(VoidCallback action) => _bound(() {
-      if (!_guardianRole &&
-          _tab == 2 &&
-          _page == 'requests' &&
-          _requestsTab == tab) {
+      if (current()) {
         action();
       }
     });
+    VoidCallback requestAction(DraftProfile p, VoidCallback action) {
+      final state = _model.stateFor(p.id);
+      final intent = _model.acceptanceIntentRevision(p.id);
+      final arrival = _model.receivedRequestRevision(p.id);
+      return visibleAction(() {
+        if (_model.stateFor(p.id) == state &&
+            _model.acceptanceIntentRevision(p.id) == intent &&
+            _model.receivedRequestRevision(p.id) == arrival) {
+          action();
+        }
+      });
+    }
+
     final expected = tab == 0
         ? DraftJourneyState.received
         : DraftJourneyState.sent;
-    final people = _visibleRequests(expected);
+    final people = draftProfiles
+        .where(
+          (p) =>
+              !_model.isBlocked(p.id) &&
+              (_model.stateFor(p.id) == expected ||
+                  (_model.isAcceptedWaiting(p.id) &&
+                      _model.waitingIsIncoming(p.id) == (tab == 0))),
+        )
+        .toList();
     if (people.isEmpty) {
       return [
         ZyraRequestActivityEmpty(
@@ -3047,60 +3068,107 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       for (final p in people) ...[
         ZyraRequestActivityCard(
           profile: _displayProfile(p),
-          subtitle: tab == 0 ? 'Journey request' : 'Waiting for a response',
+          subtitle: _model.isAcceptedWaiting(p.id)
+              ? tab == 0
+                    ? 'You accepted · waiting for ${p.firstName}'
+                    : 'Accepted · choose a place'
+              : tab == 0
+              ? 'Journey request'
+              : 'Waiting for a response',
+          detail: _model.isAcceptedWaiting(p.id) && tab == 0
+              ? _waitingRequestDetail(p)
+              : null,
           cardId: 'request_${p.id}',
           controller: _expansion,
           headerKey: ValueKey('concept_request_${p.id}_header'),
           canInteract: current,
-          onToggle: visibleAction(() {
+          onToggle: requestAction(p, () {
             if (_expansion.value == 'request_${p.id}') {
               _expansion.close('request_${p.id}');
             } else {
               _expansion.open('request_${p.id}');
             }
           }),
-          onReport: visibleAction(() => _open('safety', person: p.id)),
+          onReport: requestAction(p, () => _open('safety', person: p.id)),
           primary: _connectionAction(
             'concept_request_profile_${p.id}',
             'View profile',
             Icons.visibility_outlined,
-            visibleAction(() => _open('profile', person: p.id)),
+            requestAction(p, () => _open('profile', person: p.id)),
           ),
-          actions: tab == 0
+          actions: _model.isAcceptedWaiting(p.id)
+              ? tab == 0
+                    ? [
+                        _connectionAction(
+                          'draft_waiting_confirm_${p.id}',
+                          'Demo: ${p.firstName} confirms',
+                          Icons.check,
+                          requestAction(p, () => _completeWaitingRequest(p)),
+                        ),
+                        _connectionAction(
+                          'draft_waiting_decline_${p.id}',
+                          "Demo: ${p.firstName} doesn't go ahead",
+                          Icons.close,
+                          requestAction(
+                            p,
+                            () => _act(() => _model.letAcceptedRequestGo(p.id)),
+                          ),
+                        ),
+                      ]
+                    : [
+                        _connectionAction(
+                          'draft_choose_place_${p.id}',
+                          'Choose a place',
+                          Icons.check,
+                          requestAction(p, () => _openAcceptedCapacity(p.id)),
+                        ),
+                        _connectionAction(
+                          'draft_let_go_${p.id}',
+                          'Let it go',
+                          Icons.close,
+                          requestAction(
+                            p,
+                            () => _act(() => _model.letAcceptedRequestGo(p.id)),
+                          ),
+                        ),
+                      ]
+              : tab == 0
               ? [
                   _connectionAction(
                     'draft_accept_${p.id}',
                     'Accept request',
                     Icons.check,
                     _model.canAttemptAccept(p.id)
-                        ? visibleAction(() => _accept(p, true))
+                        ? requestAction(p, () => _accept(p, true))
                         : null,
                   ),
                   _connectionAction(
                     'draft_decline_${p.id}',
                     'Decline',
                     Icons.close,
-                    visibleAction(
+                    requestAction(
+                      p,
                       () => _act(() => _result(_model.declineReceived(p.id))),
                     ),
                   ),
                 ]
               : [
                   _connectionAction(
+                    'draft_recipient_${p.id}',
+                    'Demo: ${p.firstName} accepts',
+                    Icons.check,
+                    _model.canAttemptAccept(p.id)
+                        ? requestAction(p, () => _accept(p, false))
+                        : null,
+                  ),
+                  _connectionAction(
                     'draft_cancel_${p.id}',
                     'Cancel request',
                     Icons.close,
-                    visibleAction(
+                    requestAction(
+                      p,
                       () => _act(() => _result(_model.cancel(p.id))),
                     ),
-                  ),
-                  _connectionAction(
-                    'draft_recipient_${p.id}',
-                    'Demo: recipient accepts',
-                    Icons.check,
-                    _model.canAttemptAccept(p.id)
-                        ? visibleAction(() => _accept(p, false))
-                        : null,
                   ),
                 ],
         ),
@@ -3122,7 +3190,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         !_model.canAttemptAccept(p.id)) {
       return;
     }
-    if (!_model.hasCapacity) {
+    if (incoming && !_model.hasCapacity) {
       _move(() {
         _personId = p.id;
         _capacityRequest = (id: p.id, incoming: incoming);
@@ -3136,12 +3204,65 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           ? _model.acceptReceived(p.id)
           : _model.simulateRecipientAccept(p.id);
       _result(ok);
-      if (ok) {
+      if (ok && _model.stateFor(p.id) == DraftJourneyState.preparing) {
         _personId = p.id;
         _pages.add('journey');
       }
     });
   }
+
+  String _waitingRequestDetail(DraftProfile p) {
+    final held = _model.heldEndingId(p.id);
+    final chosen = draftProfiles.where((p) => p.id == held).firstOrNull;
+    return chosen == null
+        ? 'Waiting for ${p.firstName} to confirm. Nothing changes for you until then.'
+        : 'Waiting for ${p.firstName} to confirm. Your Journey with ${chosen.firstName} ends only when she confirms.';
+  }
+
+  void _completeWaitingRequest(DraftProfile p) {
+    if (!_model.isAcceptedWaiting(p.id) || !_model.waitingIsIncoming(p.id)) {
+      return;
+    }
+    _act(() {
+      if (_model.confirmWaitingRequest(p.id)) {
+        _personId = p.id;
+        _pages.add('journey');
+      }
+    });
+  }
+
+  void _openAcceptedCapacity(String id) {
+    if (!_allowed ||
+        _guardianRole ||
+        _devControlsVisible ||
+        !_model.isAcceptedWaiting(id) ||
+        _model.waitingIsIncoming(id) ||
+        _model.isBlocked(id)) {
+      return;
+    }
+    _move(() {
+      _consumeFocusTarget('request_capacity', personId: id);
+      _tab = 2;
+      _requestsTab = 1;
+      _personId = id;
+      if (_model.hasCapacity && _model.confirmWaitingRequest(id)) {
+        _pages
+          ..clear()
+          ..addAll(['requests', 'journey']);
+      } else {
+        _pages
+          ..clear()
+          ..addAll(['requests', 'request_capacity']);
+        _capacityRequest = (id: id, incoming: false);
+      }
+    });
+  }
+
+  bool _capacityRequestAdmitted(({String id, bool incoming}) request) =>
+      request.incoming
+      ? _model.stateFor(request.id) == DraftJourneyState.received
+      : _model.isAcceptedWaiting(request.id) &&
+            !_model.waitingIsIncoming(request.id);
 
   bool _currentCapacityRequest(
     ({String id, bool incoming}) request,
@@ -3155,10 +3276,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       _capacityRequest == request &&
       _uiRevision == revision &&
       !_model.isBlocked(request.id) &&
-      _model.stateFor(request.id) ==
-          (request.incoming
-              ? DraftJourneyState.received
-              : DraftJourneyState.sent);
+      _capacityRequestAdmitted(request);
 
   Widget _requestCapacityView() {
     final request = _capacityRequest;
@@ -3167,7 +3285,13 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       return _unavailable();
     }
     final revision = _uiRevision;
-    bool current() => _currentCapacityRequest(request, revision);
+    final fresh = _accountFreshGuard();
+    final intent = _model.acceptanceIntentRevision(request.id);
+    bool current() =>
+        fresh() &&
+        !_devControlsVisible &&
+        _model.acceptanceIntentRevision(request.id) == intent &&
+        _currentCapacityRequest(request, revision);
     final choices = _currentJourneys;
     final ending = choices
         .where((candidate) => candidate.id == _capacityEndingId)
@@ -3176,6 +3300,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       key: ValueKey('request_capacity_${request.id}'),
       firstName: person.firstName,
       capacity: _model.capacity,
+      holdEnding: request.incoming && _model.peerOccupied(request.id),
+      acceptedSent: !request.incoming,
       selectedId: ending?.id,
       items: [
         for (final choice in choices)
@@ -3217,12 +3343,27 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
               )
           ? null
           : () {
-              if (current()) _confirmCapacityReplacement(request, ending);
+              if (!current()) return;
+              if (request.incoming && _model.peerOccupied(request.id)) {
+                _act(() {
+                  if (_model.replaceJourneyForRequest(
+                    request.id,
+                    ending.id,
+                    incoming: true,
+                  )) {
+                    _pages.removeLast();
+                    _expansion.open('request_${request.id}');
+                  }
+                });
+              } else {
+                _confirmCapacityReplacement(request, ending);
+              }
             },
       onCancel: () {
         if (!current() || _capacityConfirmOpen) return;
 
         _act(() {
+          if (!request.incoming) _model.letAcceptedRequestGo(request.id);
           _pages.removeLast();
           _capacityRequest = null;
           _capacityEndingId = null;
@@ -3240,10 +3381,22 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   ) async {
     final revision = _uiRevision;
     final endingState = _model.stateFor(ending.id);
+    var expectedStamp = _devRouteStamp;
+    final fresh = _accountFreshGuard(
+      expectedNavigatorStamp: () => expectedStamp,
+    );
+    final endingAttempt = _model.snapshot().attemptRevisions[ending.id];
+    int? dialogStamp;
+    var consumed = false;
+    final intent = _model.acceptanceIntentRevision(request.id);
     bool current() =>
+        fresh() &&
+        !_devControlsVisible &&
+        _model.acceptanceIntentRevision(request.id) == intent &&
         _currentCapacityRequest(request, revision) &&
         _capacityEndingId == ending.id &&
         _model.stateFor(ending.id) == endingState &&
+        _model.snapshot().attemptRevisions[ending.id] == endingAttempt &&
         _model.canReplaceJourneyForRequest(
           request.id,
           ending.id,
@@ -3260,51 +3413,79 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       final confirmed = await showZyraGlassDialog<bool>(
         context: _tapContext,
         builder: (dialogContext) {
+          dialogStamp ??= _devRouteStamp;
           void choose(bool value) {
-            if (dialogContext.mounted &&
+            if (!consumed &&
+                dialogContext.mounted &&
                 ModalRoute.of(dialogContext)?.isCurrent == true) {
-              Navigator.of(dialogContext).pop(value);
+              consumed = true;
+              final unchanged =
+                  dialogStamp == _devRouteStamp &&
+                  (widget.canActInOwnedDialog?.call() ?? _allowed);
+              Navigator.of(dialogContext).pop(value && unchanged);
+              // Admit only this exact dialog's own pop. Extra route changes
+              // while it was open refuse confirmation above and below.
+              expectedStamp = _devRouteStamp;
             }
           }
 
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'End Journey & accept request?',
-                style: ZyraText.heading(size: 20),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                'This permanently ends $endingName. Your history stays. '
-                'You and ${target.firstName} can then prepare to begin together.',
-                style: ZyraText.subtext(),
-              ),
-              const SizedBox(height: 20),
-              ZyraFloatingSurface(
-                radius: 999,
-                circle: false,
-                gold: false,
-                child: OutlinedButton(
-                  key: const ValueKey('request_capacity_confirm'),
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size(0, 48),
-                    side: BorderSide(color: ZyraColors.destructive),
+          return ZyraTapFeedback(
+            level: () => _accountSession.hapticLevel,
+            canAct: () =>
+                dialogContext.mounted &&
+                !consumed &&
+                ModalRoute.of(dialogContext)?.isCurrent == true,
+            child: Builder(
+              builder: (actionContext) => Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'End Journey & accept request?',
+                    style: ZyraText.heading(size: 20),
                   ),
-                  onPressed: _tap(() => choose(true)),
-                  child: Text(
-                    'End & accept request',
-                    style: ZyraText.button(color: ZyraColors.destructive),
+                  const SizedBox(height: 12),
+                  Text(
+                    'This permanently ends $endingName. Your history stays. '
+                    'You and ${target.firstName} can then prepare to begin together.',
+                    style: ZyraText.subtext(),
                   ),
-                ),
+                  const SizedBox(height: 20),
+                  ZyraFloatingSurface(
+                    radius: 999,
+                    circle: false,
+                    gold: false,
+                    child: OutlinedButton(
+                      key: const ValueKey('request_capacity_confirm'),
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size(0, 48),
+                        side: BorderSide(color: ZyraColors.destructive),
+                      ),
+                      onPressed: ZyraTapFeedback.onTap(
+                        actionContext,
+                        () => choose(true),
+                        level: () => _accountSession.hapticLevel,
+                      ),
+                      child: Text(
+                        request.incoming
+                            ? 'End & accept request'
+                            : 'End & begin with ${target.firstName}',
+                        style: ZyraText.button(color: ZyraColors.destructive),
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    key: const ValueKey('request_capacity_keep'),
+                    onPressed: ZyraTapFeedback.onTap(
+                      actionContext,
+                      () => choose(false),
+                      level: () => _accountSession.hapticLevel,
+                    ),
+                    child: Text('Keep my Journeys', style: ZyraText.button()),
+                  ),
+                ],
               ),
-              TextButton(
-                key: const ValueKey('request_capacity_keep'),
-                onPressed: _tap(() => choose(false)),
-                child: Text('Keep my Journeys', style: ZyraText.button()),
-              ),
-            ],
+            ),
           );
         },
       );
@@ -4088,9 +4269,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           _stageContent(p, stage),
         ],
         const SizedBox(height: 24),
-        if (state != DraftJourneyState.ended &&
-            state != DraftJourneyState.sent &&
-            state != DraftJourneyState.received) ...[
+        if (state == DraftJourneyState.preparing ||
+            state == DraftJourneyState.active) ...[
           const SizedBox(height: 10),
           _button(
             'draft_end_$id',
@@ -4785,7 +4965,12 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           ),
         );
       }
-      for (final p in _currentJourneys) {
+      for (final p in draftProfiles.where(
+        (p) =>
+            _currentJourneys.any((j) => j.id == p.id) ||
+            (_model.isAcceptedWaiting(p.id) && !_model.waitingIsIncoming(p.id)),
+      )) {
+        final waiting = _model.isAcceptedWaiting(p.id);
         final at = _model.outgoingRequestAcceptedAt(p.id);
         if (at != null && !_model.isBlocked(p.id)) {
           events.add(
@@ -4793,13 +4978,17 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
               tokens: [
                 'accepted:${p.id}:${_model.outgoingRequestAcceptedRevision(p.id)}:${at.microsecondsSinceEpoch}',
               ],
-              target: 'journey',
+              target: waiting ? 'request_capacity' : 'journey',
               personId: p.id,
               occurredAt: at,
               order: _model.outgoingRequestAcceptedRevision(p.id) ?? 0,
-              title: '${p.firstName} accepted your Journey request',
-              detail: 'Review the next step before beginning together.',
-              action: 'View Journey',
+              title: waiting
+                  ? '${p.firstName} accepted your request'
+                  : '${p.firstName} accepted your Journey request',
+              detail: waiting
+                  ? 'Your Journey places are full. Choose a Journey to end, or let the request go.'
+                  : 'Review the next step before beginning together.',
+              action: waiting ? 'Choose a place' : 'View Journey',
               icon: Icons.check,
             ),
           );
@@ -4958,6 +5147,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         _activity('introductions');
       case 'ended':
         _activity('ended');
+      case 'request_capacity':
+        if (id != null) _openAcceptedCapacity(id);
       case 'journey':
         if (id != null && _currentJourneys.any((p) => p.id == id)) _journey(id);
       case 'guardian':
@@ -6477,7 +6668,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     membershipPaymentHistory: _membershipPaymentHistory,
   );
 
-  bool Function() _accountFreshGuard() {
+  bool Function() _accountFreshGuard({int Function()? expectedNavigatorStamp}) {
     final account = (ZyraAccountState.userId, ZyraAccountState.generation);
     final revision = _uiRevision;
     final guardian = _guardianRole;
@@ -6489,7 +6680,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         _allowed &&
         account == (ZyraAccountState.userId, ZyraAccountState.generation) &&
         controlsEpoch == _devControlsEpoch &&
-        navigatorStamp == _devRouteStamp &&
+        (expectedNavigatorStamp?.call() ?? navigatorStamp) == _devRouteStamp &&
         ModalRoute.of(context)?.isCurrent == true &&
         revision == _uiRevision &&
         guardian == _guardianRole &&
@@ -8710,6 +8901,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   String _stateLabel(DraftJourneyState state) => switch (state) {
     DraftJourneyState.received => 'Received request',
     DraftJourneyState.sent => 'Request sent',
+    DraftJourneyState.acceptedWaiting => 'Accepted · waiting for confirmation',
     DraftJourneyState.preparing => 'Preparing together · place reserved',
     DraftJourneyState.active => 'Active Journey',
     DraftJourneyState.ended => 'Ended Journey · history retained',

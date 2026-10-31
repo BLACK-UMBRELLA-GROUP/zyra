@@ -450,8 +450,9 @@ void main() {
     expect(model.simulateRecipientAccept(second), isTrue);
     expect(model.preparingCount, 3);
     expect(model.occupiedCount, 3);
-    expect(model.simulateRecipientAccept(third), isFalse);
-    expect(model.stateFor(third), DraftJourneyState.sent);
+    expect(model.simulateRecipientAccept(third), isTrue);
+    expect(model.stateFor(third), DraftJourneyState.acceptedWaiting);
+    expect(model.occupiedCount, 3);
   });
 
   test(
@@ -498,11 +499,12 @@ void main() {
     expect(model.occupiedCount, 3);
     expect(model.hasCapacity, isFalse);
     expect(model.discoverable, isFalse);
-    // A full monthly preview may keep browsing/sending; only acceptance
-    // reserves a place and still requires the separately confirmed replacement.
+    // A full monthly preview may keep browsing/sending; an accepted waiting
+    // request still requires a separately confirmed place before preparing.
     expect(model.canBrowse, isTrue);
     expect(model.request(draftProfiles[4].id), isTrue);
-    expect(model.simulateRecipientAccept(third), isFalse);
+    expect(model.simulateRecipientAccept(third), isTrue);
+    expect(model.stateFor(third), DraftJourneyState.acceptedWaiting);
     expect(model.markReady(received), isTrue);
     expect(model.simulatePeerReady(received), isTrue);
     expect(
@@ -518,7 +520,9 @@ void main() {
     expect(model.end(first), isTrue);
     expect(model.occupiedCount, 2);
     expect(model.hasCapacity, isTrue);
-    expect(model.simulateRecipientAccept(third), isTrue);
+    expect(model.simulateRecipientAccept(third), isFalse);
+    expect(model.stateFor(third), DraftJourneyState.acceptedWaiting);
+    expect(model.simulateRecipientAccept(draftProfiles[4].id), isTrue);
     expect(model.occupiedCount, 3);
   });
 
@@ -588,9 +592,12 @@ void main() {
       expect(model.occupiedCount, 1);
       expect(model.setCapacity(1), isTrue);
       expect(model.states, states);
-      expect(model.simulateRecipientAccept(third), isFalse);
-      expect(model.end(first), isTrue);
       expect(model.simulateRecipientAccept(third), isTrue);
+      expect(model.stateFor(third), DraftJourneyState.acceptedWaiting);
+      expect(
+        model.replaceJourneyForRequest(third, first, incoming: false),
+        isTrue,
+      );
       expect(model.occupiedCount, 1);
     },
   );
@@ -707,25 +714,30 @@ void main() {
     expect(model.request(busy), isTrue);
   });
 
-  test('acceptance rechecks peer availability after a request was sent', () {
-    expect(model.request(first), isTrue);
-    expect(model.setPeerOccupied(first, true), isTrue);
-    expect(model.canAccept(first), isFalse);
-    expect(model.simulateRecipientAccept(first), isFalse);
-    expect(model.stateFor(first), DraftJourneyState.sent);
-    expect(model.discoverable, isTrue);
-    expect(model.setPeerOccupied(first, false), isTrue);
-    expect(model.simulateRecipientAccept(first), isTrue);
-    expect(model.discoverable, isFalse);
-  });
+  test(
+    'sent acceptance represents counterpart making its own place available',
+    () {
+      expect(model.request(first), isTrue);
+      expect(model.setPeerOccupied(first, true), isTrue);
+      expect(model.canAccept(first), isTrue);
+      expect(model.simulateRecipientAccept(first), isTrue);
+      expect(model.stateFor(first), DraftJourneyState.preparing);
+      expect(model.snapshot().busyPeers, isNot(contains(first)));
+      expect(model.discoverable, isFalse);
+    },
+  );
 
-  test('incoming acceptance also rechecks the other participant', () {
-    expect(model.setPeerOccupied(received, true), isTrue);
-    expect(model.acceptReceived(received), isFalse);
-    expect(model.stateFor(received), DraftJourneyState.received);
-    expect(model.setPeerOccupied(received, false), isTrue);
-    expect(model.acceptReceived(received), isTrue);
-  });
+  test(
+    'incoming acceptance waits for counterpart confirmation without reserving',
+    () {
+      expect(model.setPeerOccupied(received, true), isTrue);
+      expect(model.acceptReceived(received), isTrue);
+      expect(model.stateFor(received), DraftJourneyState.acceptedWaiting);
+      expect(model.occupiedCount, 0);
+      expect(model.confirmWaitingRequest(received), isTrue);
+      expect(model.stateFor(received), DraftJourneyState.preparing);
+    },
+  );
 
   test('both are hidden during preparation and Active', () {
     expect(model.acceptReceived(received), isTrue);
@@ -1250,9 +1262,9 @@ void main() {
       expect(model.request(second), isTrue);
       expect(model.acceptReceived(first), isFalse);
       expect(model.simulateRecipientAccept(first), isTrue);
-      expect(model.simulateRecipientAccept(second), isFalse);
+      expect(model.simulateRecipientAccept(second), isTrue);
       expect(model.acceptReceived(received), isFalse);
-      expect(model.stateFor(second), DraftJourneyState.sent);
+      expect(model.stateFor(second), DraftJourneyState.acceptedWaiting);
       expect(model.stateFor(received), DraftJourneyState.received);
       expect(
         model.completePreparation(
@@ -1271,7 +1283,7 @@ void main() {
     expect(model.request(second), isTrue);
     expect(model.request(third), isTrue);
     expect(model.simulateRecipientAccept(first), isTrue);
-    expect(model.simulateRecipientAccept(second), isFalse);
+    expect(model.simulateRecipientAccept(second), isTrue);
     expect(model.preparingCount, 1);
     expect(model.hasCapacity, isFalse);
     expect(
@@ -1283,7 +1295,7 @@ void main() {
     );
     expect(model.activeCount, 1);
     expect(model.preparingCount, 0);
-    expect(model.simulateRecipientAccept(third), isFalse);
+    expect(model.simulateRecipientAccept(third), isTrue);
     expect(model.hasCapacity, isFalse);
     expect(model.discoverable, isFalse);
     expect(model.acceptReceived(received), isFalse);

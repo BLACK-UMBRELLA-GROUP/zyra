@@ -6,10 +6,27 @@ import '../data/zyra_reference_data.dart' show zyraRelationshipLabel;
 
 /// Disposable request/transition UI, not a new canonical server lifecycle.
 /// This model has no account, storage, entitlement or backend dependency.
-enum DraftJourneyState { received, sent, preparing, active, ended }
+enum DraftJourneyState {
+  received,
+  sent,
+  acceptedWaiting,
+  preparing,
+  active,
+  ended,
+}
 
 /// Passive request history only; it never becomes an ended Journey attempt.
-enum DraftPastRequestOutcome { notTakenUp, cancelled, youDeclined }
+enum DraftPastRequestOutcome { notTakenUp, cancelled, youDeclined, youLetItGo }
+
+/// Value-only local intent. Neither acceptance nor a held ending reserves a
+/// place. Attempt generations prevent an old choice from ending a later pair.
+typedef DraftWaitingAcceptance = ({
+  bool incoming,
+  int revision,
+  int requestAttemptRevision,
+  String? heldEndingId,
+  int? heldEndingAttemptRevision,
+});
 
 final class DraftPastRequest {
   const DraftPastRequest._({
@@ -19,14 +36,14 @@ final class DraftPastRequest {
     required this.requestedAt,
     required this.movedAt,
     required this.sequence,
+    required this.incoming,
   });
 
   final String id, profileId;
   final DraftPastRequestOutcome outcome;
   final DateTime requestedAt, movedAt;
   final int sequence;
-
-  bool get incoming => outcome == DraftPastRequestOutcome.youDeclined;
+  final bool incoming;
 }
 
 /// Invented preview plans only; these never prove a real entitlement.
@@ -331,6 +348,10 @@ final class ViewRequestDraftSnapshot {
         model._receivedRequestRevisions,
       ),
       pendingRequestedAt = Map.unmodifiable(model._pendingRequestedAt),
+      attemptSequence = model._attemptSequence,
+      attemptRevisions = Map.unmodifiable(model._attemptRevisions),
+      acceptanceIntentSequence = model._acceptanceIntentSequence,
+      waitingAcceptances = Map.unmodifiable(model._waitingAcceptances),
       outgoingAcceptedActivityRevision =
           model._outgoingAcceptedActivityRevision,
       outgoingRequestAcceptedAt = Map.unmodifiable(
@@ -369,6 +390,10 @@ final class ViewRequestDraftSnapshot {
   final int receivedActivityRevision;
   final Map<String, int> receivedRequestRevisions;
   final Map<String, DateTime> pendingRequestedAt;
+  final int attemptSequence;
+  final Map<String, int> attemptRevisions;
+  final int acceptanceIntentSequence;
+  final Map<String, DraftWaitingAcceptance> waitingAcceptances;
   final int outgoingAcceptedActivityRevision;
   final Map<String, DateTime> outgoingRequestAcceptedAt;
   final Map<String, int> outgoingRequestAcceptedRevisions;
@@ -401,6 +426,43 @@ final class ViewRequestDraftSnapshot {
         capacity <= 3 &&
         occupied <= capacity &&
         states.keys.every(peers.contains) &&
+        attemptSequence >= 0 &&
+        attemptRevisions.keys.every(states.containsKey) &&
+        states.keys.every(attemptRevisions.containsKey) &&
+        attemptRevisions.values.every(
+          (revision) => revision > 0 && revision <= attemptSequence,
+        ) &&
+        attemptRevisions.values.toSet().length == attemptRevisions.length &&
+        acceptanceIntentSequence >= 0 &&
+        waitingAcceptances.values
+                .map((value) => value.revision)
+                .toSet()
+                .length ==
+            waitingAcceptances.length &&
+        waitingAcceptances.entries.every((entry) {
+          final value = entry.value;
+          final ending = value.heldEndingId;
+          return states[entry.key] == DraftJourneyState.acceptedWaiting &&
+              value.revision > 0 &&
+              value.revision <= acceptanceIntentSequence &&
+              value.requestAttemptRevision == attemptRevisions[entry.key] &&
+              (value.incoming
+                  ? !outgoingRequestAcceptedAt.containsKey(entry.key)
+                  : outgoingRequestAcceptedAt.containsKey(entry.key)) &&
+              (ending == null
+                  ? value.heldEndingAttemptRevision == null
+                  : value.incoming &&
+                        peers.contains(ending) &&
+                        ending != entry.key &&
+                        value.heldEndingAttemptRevision != null &&
+                        value.heldEndingAttemptRevision! > 0 &&
+                        value.heldEndingAttemptRevision! <= attemptSequence);
+        }) &&
+        states.entries.every(
+          (entry) =>
+              entry.value != DraftJourneyState.acceptedWaiting ||
+              waitingAcceptances.containsKey(entry.key),
+        ) &&
         busyPeers.every(peers.contains) &&
         hiddenPeers.every(peers.contains) &&
         blockedPeers.every(peers.contains) &&
@@ -421,13 +483,15 @@ final class ViewRequestDraftSnapshot {
           (entry) =>
               peers.contains(entry.key) &&
               (states[entry.key] == DraftJourneyState.received ||
-                  states[entry.key] == DraftJourneyState.sent) &&
+                  states[entry.key] == DraftJourneyState.sent ||
+                  states[entry.key] == DraftJourneyState.acceptedWaiting) &&
               entry.value.isUtc,
         ) &&
         states.entries.every(
           (entry) =>
               (entry.value != DraftJourneyState.received &&
-                  entry.value != DraftJourneyState.sent) ||
+                  entry.value != DraftJourneyState.sent &&
+                  entry.value != DraftJourneyState.acceptedWaiting) ||
               pendingRequestedAt.containsKey(entry.key),
         ) &&
         outgoingAcceptedActivityRevision >= 0 &&
@@ -435,8 +499,17 @@ final class ViewRequestDraftSnapshot {
           (entry) =>
               peers.contains(entry.key) &&
               (states[entry.key] == DraftJourneyState.preparing ||
+                  (states[entry.key] == DraftJourneyState.acceptedWaiting &&
+                      waitingAcceptances[entry.key]?.incoming == false) ||
                   states[entry.key] == DraftJourneyState.active ||
-                  states[entry.key] == DraftJourneyState.ended) &&
+                  states[entry.key] == DraftJourneyState.ended ||
+                  (!states.containsKey(entry.key) &&
+                      pastRequests.any(
+                        (request) =>
+                            request.profileId == entry.key &&
+                            request.outcome ==
+                                DraftPastRequestOutcome.youLetItGo,
+                      ))) &&
               entry.value.isUtc &&
               outgoingRequestAcceptedRevisions.containsKey(entry.key),
         ) &&
@@ -493,6 +566,7 @@ final class ViewRequestDraftSnapshot {
               states.containsKey(entry.key) &&
               states[entry.key] != DraftJourneyState.received &&
               states[entry.key] != DraftJourneyState.sent &&
+              states[entry.key] != DraftJourneyState.acceptedWaiting &&
               entry.value.stageIndex >= 0 &&
               entry.value.stageIndex < ZyraJourneyStages.all.length &&
               _validDisclosureProgress(entry.value),
@@ -501,6 +575,7 @@ final class ViewRequestDraftSnapshot {
           (entry) =>
               entry.value == DraftJourneyState.received ||
               entry.value == DraftJourneyState.sent ||
+              entry.value == DraftJourneyState.acceptedWaiting ||
               progress.containsKey(entry.key),
         ) &&
         guardianAccess.entries.every((entry) {
@@ -523,6 +598,7 @@ final class ViewRequestDraftSnapshot {
               state != null &&
               state != DraftJourneyState.received &&
               state != DraftJourneyState.sent &&
+              state != DraftJourneyState.acceptedWaiting &&
               state != DraftJourneyState.preparing &&
               state != DraftJourneyState.ended &&
               access?.view == true &&
@@ -613,6 +689,10 @@ class ViewRequestDraftModel {
     _receivedActivityRevision = snapshot.receivedActivityRevision;
     _receivedRequestRevisions.addAll(snapshot.receivedRequestRevisions);
     _pendingRequestedAt.addAll(snapshot.pendingRequestedAt);
+    _attemptSequence = snapshot.attemptSequence;
+    _attemptRevisions.addAll(snapshot.attemptRevisions);
+    _acceptanceIntentSequence = snapshot.acceptanceIntentSequence;
+    _waitingAcceptances.addAll(snapshot.waitingAcceptances);
     _outgoingAcceptedActivityRevision =
         snapshot.outgoingAcceptedActivityRevision;
     _outgoingRequestAcceptedAt.addAll(snapshot.outgoingRequestAcceptedAt);
@@ -679,6 +759,10 @@ class ViewRequestDraftModel {
   int _receivedActivityRevision = 0;
   final Map<String, int> _receivedRequestRevisions = {};
   final Map<String, DateTime> _pendingRequestedAt = {};
+  int _attemptSequence = 0;
+  final Map<String, int> _attemptRevisions = {};
+  int _acceptanceIntentSequence = 0;
+  final Map<String, DraftWaitingAcceptance> _waitingAcceptances = {};
   int _outgoingAcceptedActivityRevision = 0;
   final Map<String, DateTime> _outgoingRequestAcceptedAt = {};
   final Map<String, int> _outgoingRequestAcceptedRevisions = {};
@@ -753,6 +837,9 @@ class ViewRequestDraftModel {
   bool seedReceived(String id, {DateTime? requestedAt}) {
     if (!_fixtureIds.contains(id) || _states.containsKey(id)) return false;
     _states[id] = DraftJourneyState.received;
+    _attemptRevisions[id] = ++_attemptSequence;
+    _outgoingRequestAcceptedAt.remove(id);
+    _outgoingRequestAcceptedRevisions.remove(id);
     _pendingRequestedAt[id] = (requestedAt ?? _clock()).toUtc();
     _receivedRequestRevisions[id] = ++_receivedActivityRevision;
     // A later request from the same fixture is a new item, not the formerly
@@ -802,8 +889,9 @@ class ViewRequestDraftModel {
     String id,
     DraftPastRequestOutcome outcome,
     DateTime requestedAt,
-    DateTime movedAt,
-  ) {
+    DateTime movedAt, {
+    bool? incoming,
+  }) {
     final sequence = ++_pastRequestSequence;
     _pastRequests.add(
       DraftPastRequest._(
@@ -813,6 +901,7 @@ class ViewRequestDraftModel {
         requestedAt: requestedAt,
         movedAt: movedAt,
         sequence: sequence,
+        incoming: incoming ?? outcome == DraftPastRequestOutcome.youDeclined,
       ),
     );
   }
@@ -826,8 +915,18 @@ class ViewRequestDraftModel {
     final requestedAt = _pendingRequestedAt[id];
     final movedAt = _clock().toUtc();
     if (requestedAt == null || requestedAt.isAfter(movedAt)) return false;
-    _recordPastRequest(id, outcome, requestedAt, movedAt);
+    _recordPastRequest(
+      id,
+      outcome,
+      requestedAt,
+      movedAt,
+      incoming:
+          expected == DraftJourneyState.received ||
+          _waitingAcceptances[id]?.incoming == true,
+    );
     _states.remove(id);
+    _attemptRevisions.remove(id);
+    _waitingAcceptances.remove(id);
     _pendingRequestedAt.remove(id);
     return true;
   }
@@ -837,6 +936,7 @@ class ViewRequestDraftModel {
     return !_pastRequests.any(
       (entry) =>
           entry.profileId == id &&
+          !entry.incoming &&
           entry.outcome == DraftPastRequestOutcome.notTakenUp &&
           now.isBefore(entry.movedAt.add(const Duration(days: 30))),
     );
@@ -930,9 +1030,9 @@ class ViewRequestDraftModel {
   bool get hasCapacity => occupiedCount < capacity;
   bool get discoverable => hasCapacity;
 
-  /// Viewing/sending is independent of reserving a fourth place. The new
-  /// full-capacity policy is scoped to monthly three-place previews; Basic
-  /// keeps its current one-place presentation. Visibility to others is still
+  /// Viewing/sending while full stays scoped to monthly three-place previews;
+  /// Basic and two-place previews retain their Browse gate. Acceptance uses
+  /// its separate capacity choice. Visibility to others is still
   /// [discoverable], not permission to inspect public profiles.
   bool get canBrowse => hasCapacity || capacity == 3;
 
@@ -1106,34 +1206,69 @@ class ViewRequestDraftModel {
       (_states[id] == DraftJourneyState.received ||
           _states[id] == DraftJourneyState.sent) &&
       !isBlocked(id) &&
-      hasCapacity &&
-      !peerOccupied(id);
+      hasCapacity;
 
   /// A valid acceptance intent can reach the explicit capacity chooser while
   /// full. It does not itself accept, reserve a place or open conversation.
   bool canAttemptAccept(String id) =>
       canAccept(id) ||
-      (capacity == 3 &&
-          !hasCapacity &&
+      (!hasCapacity &&
           (_states[id] == DraftJourneyState.received ||
-              _states[id] == DraftJourneyState.sent) &&
-          !isBlocked(id) &&
-          !peerOccupied(id));
+              _states[id] == DraftJourneyState.sent ||
+              (isAcceptedWaiting(id) && !waitingIsIncoming(id))) &&
+          !isBlocked(id));
+
+  bool isAcceptedWaiting(String id) =>
+      _states[id] == DraftJourneyState.acceptedWaiting &&
+      _waitingAcceptances.containsKey(id);
+
+  bool waitingIsIncoming(String id) =>
+      isAcceptedWaiting(id) && _waitingAcceptances[id]!.incoming;
+
+  String? heldEndingId(String id) =>
+      isAcceptedWaiting(id) ? _waitingAcceptances[id]!.heldEndingId : null;
+
+  /// A UI may capture this with its owner/route epoch. Reset never reuses it.
+  int? acceptanceIntentRevision(String id) =>
+      isAcceptedWaiting(id) ? _waitingAcceptances[id]!.revision : null;
+
+  bool _validWaitingAttempt(String id) {
+    final waiting = _waitingAcceptances[id];
+    return isAcceptedWaiting(id) &&
+        !isBlocked(id) &&
+        waiting!.requestAttemptRevision == _attemptRevisions[id];
+  }
+
+  void _waitForAcceptance(
+    String id, {
+    required bool incoming,
+    String? endingId,
+  }) {
+    _states[id] = DraftJourneyState.acceptedWaiting;
+    _waitingAcceptances[id] = (
+      incoming: incoming,
+      revision: ++_acceptanceIntentSequence,
+      requestAttemptRevision: _attemptRevisions[id]!,
+      heldEndingId: endingId,
+      heldEndingAttemptRevision: endingId == null
+          ? null
+          : _attemptRevisions[endingId],
+    );
+  }
 
   bool canReplaceJourneyForRequest(
     String requestId,
     String endingId, {
     required bool incoming,
   }) =>
-      capacity == 3 &&
       occupiedCount == capacity &&
       _fixtureIds.contains(requestId) &&
       _fixtureIds.contains(endingId) &&
       requestId != endingId &&
-      _states[requestId] ==
-          (incoming ? DraftJourneyState.received : DraftJourneyState.sent) &&
+      (incoming
+          ? _states[requestId] == DraftJourneyState.received
+          : _validWaitingAttempt(requestId) && !waitingIsIncoming(requestId)) &&
       !isBlocked(requestId) &&
-      !peerOccupied(requestId) &&
       _usesActivePlace(_states[endingId]);
 
   /// One synchronous fictional transition after explicit End confirmation.
@@ -1148,17 +1283,53 @@ class ViewRequestDraftModel {
     if (!canReplaceJourneyForRequest(requestId, endingId, incoming: incoming)) {
       return false;
     }
-    _recordEndedAttempt(endingId, endedAt: _clock());
-    _states[endingId] = DraftJourneyState.ended;
-    _clearRequiredPaidGuardianAccess(endingId);
-    _states[requestId] = DraftJourneyState.preparing;
-    if (!incoming) _recordOutgoingRequestAcceptance(requestId);
-    _pendingRequestedAt.remove(requestId);
-    _progress[requestId] = _DraftJourneyProgress();
-    _initializePreparationGuardianAccess(requestId);
-    _recordJourneyActivity(endingId);
-    _recordJourneyActivity(requestId);
+    if (incoming && _busyPeers.contains(requestId)) {
+      _waitForAcceptance(requestId, incoming: true, endingId: endingId);
+      return true;
+    }
+    end(endingId);
+    // On the sent side this confirmation is the other person's held ending
+    // being committed too. No counterpart Journey details are modelled.
+    if (!incoming) _busyPeers.remove(requestId);
+    _prepareAcceptedRequest(requestId);
     return true;
+  }
+
+  /// Explicit peer confirmation commits one exact held ending, or reserves a
+  /// currently free place. Every check happens before either Journey changes.
+  bool confirmWaitingRequest(String id) {
+    if (!_validWaitingAttempt(id)) return false;
+    if (!waitingIsIncoming(id)) {
+      if (!hasCapacity) return false;
+      _busyPeers.remove(id);
+      _prepareAcceptedRequest(id);
+      return true;
+    }
+    final waiting = _waitingAcceptances[id]!;
+    final ending = waiting.heldEndingId;
+    if (ending == null) {
+      if (!hasCapacity) return false;
+    } else if (!_usesActivePlace(_states[ending]) ||
+        _attemptRevisions[ending] != waiting.heldEndingAttemptRevision ||
+        occupiedCount > capacity) {
+      return false;
+    }
+    if (ending != null) end(ending);
+    _busyPeers.remove(id);
+    _prepareAcceptedRequest(id);
+    return true;
+  }
+
+  /// Passive history only. A declined held acceptance never ends a Journey.
+  bool letAcceptedRequestGo(String id) {
+    if (!_validWaitingAttempt(id)) return false;
+    return _moveRequestToPast(
+      id,
+      DraftJourneyState.acceptedWaiting,
+      waitingIsIncoming(id)
+          ? DraftPastRequestOutcome.notTakenUp
+          : DraftPastRequestOutcome.youLetItGo,
+    );
   }
 
   /// DR-ZYRA-236: missing Main leadership holds ordinary Active participation,
@@ -1171,6 +1342,9 @@ class ViewRequestDraftModel {
   bool request(String id) {
     if (!canRequest(id)) return false;
     _states[id] = DraftJourneyState.sent;
+    _attemptRevisions[id] = ++_attemptSequence;
+    _outgoingRequestAcceptedAt.remove(id);
+    _outgoingRequestAcceptedRevisions.remove(id);
     _pendingRequestedAt[id] = _clock().toUtc();
     return true;
   }
@@ -1192,16 +1366,34 @@ class ViewRequestDraftModel {
       _accept(id, DraftJourneyState.sent);
 
   bool _accept(String id, DraftJourneyState expected) {
-    if (_states[id] != expected || !canAccept(id)) return false;
-    _states[id] = DraftJourneyState.preparing;
+    if (_states[id] != expected ||
+        !(expected == DraftJourneyState.sent
+            ? canAttemptAccept(id)
+            : canAccept(id))) {
+      return false;
+    }
     if (expected == DraftJourneyState.sent) {
       _recordOutgoingRequestAcceptance(id);
+      if (!hasCapacity) {
+        _waitForAcceptance(id, incoming: false);
+        return true;
+      }
+      _busyPeers.remove(id);
+    } else if (_busyPeers.contains(id)) {
+      _waitForAcceptance(id, incoming: true);
+      return true;
     }
+    _prepareAcceptedRequest(id);
+    return true;
+  }
+
+  void _prepareAcceptedRequest(String id) {
+    _states[id] = DraftJourneyState.preparing;
+    _waitingAcceptances.remove(id);
     _pendingRequestedAt.remove(id);
     _progress[id] = _DraftJourneyProgress();
     _initializePreparationGuardianAccess(id);
     _recordJourneyActivity(id);
-    return true;
   }
 
   bool isReady(String id) => _progress[id]?.ready ?? false;
@@ -1560,6 +1752,7 @@ class ViewRequestDraftModel {
     if (state == null ||
         state == DraftJourneyState.received ||
         state == DraftJourneyState.sent ||
+        state == DraftJourneyState.acceptedWaiting ||
         state == DraftJourneyState.ended) {
       return false;
     }
@@ -1593,6 +1786,7 @@ class ViewRequestDraftModel {
     final seededAt = _clock().toUtc();
     for (final profile in draftProfiles.skip(1).take(count)) {
       _states[profile.id] = DraftJourneyState.active;
+      _attemptRevisions[profile.id] = ++_attemptSequence;
       _progress[profile.id] = _DraftJourneyProgress()
         ..ready = true
         ..peerReady = true;
@@ -1610,6 +1804,7 @@ class ViewRequestDraftModel {
     final id = draftProfiles[5].id;
     if (_states.containsKey(id)) return;
     _states[id] = DraftJourneyState.ended;
+    _attemptRevisions[id] = ++_attemptSequence;
     _progress[id] = _DraftJourneyProgress()
       ..ready = true
       ..peerReady = true;
@@ -1618,6 +1813,8 @@ class ViewRequestDraftModel {
 
   void _seed() {
     _states.clear();
+    _attemptRevisions.clear();
+    _waitingAcceptances.clear();
     _receivedRequestRevisions.clear();
     _pendingRequestedAt.clear();
     _outgoingRequestAcceptedAt.clear();

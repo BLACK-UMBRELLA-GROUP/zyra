@@ -34,9 +34,12 @@ class ZyraRequestCapacityChoice extends StatelessWidget {
     required this.onCancel,
     this.selectedId,
     this.onContinue,
+    this.holdEnding = false,
+    this.acceptedSent = false,
   });
 
   final String firstName;
+  final bool holdEnding, acceptedSent;
   final int capacity;
   final List<ZyraRequestCapacityItem> items;
   final String? selectedId;
@@ -72,14 +75,20 @@ class ZyraRequestCapacityChoice extends StatelessWidget {
                     value:
                         '$capacity Journey ${capacity == 1 ? 'place' : 'places'} in use',
                     child: Text(
-                      'Your Journey places are full.',
+                      acceptedSent
+                          ? '$firstName accepted your request.'
+                          : 'Your Journey places are full.',
                       style: ZyraText.heading(size: 26).copyWith(height: 1.2),
                     ),
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Choose a Journey to end before beginning with $firstName, '
-                    'or keep your Journeys and leave the request for now.',
+                    acceptedSent
+                        ? 'Your Journey places are full. Choose a Journey to end to begin with $firstName, or keep your Journeys and let the request go.'
+                        : holdEnding
+                        ? 'Choose which Journey would end to begin with $firstName. Nothing ends until $firstName confirms too.'
+                        : 'Choose a Journey to end before beginning with $firstName, '
+                              'or keep your Journeys and leave the request for now.',
                     style: ZyraText.subtext(size: 14).copyWith(height: 1.4),
                   ),
                 ],
@@ -132,7 +141,11 @@ class ZyraRequestCapacityChoice extends StatelessWidget {
                         shape: const StadiumBorder(),
                       ),
                       child: Text(
-                        'End & accept request',
+                        acceptedSent
+                            ? 'End & begin with $firstName'
+                            : holdEnding
+                            ? 'Accept request'
+                            : 'End & accept request',
                         textAlign: TextAlign.center,
                         style: ZyraText.button(
                           size: 13,

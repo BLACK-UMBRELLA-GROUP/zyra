@@ -278,6 +278,7 @@ class _ViewRequestDraftScreenState extends State<ViewRequestDraftScreen> {
     return ZyraConceptPreviewBoundary(
       child: ZyraOneJourneyConceptShell(
         canAct: () => _canAct,
+        canActInOwnedDialog: () => mounted && _owner.current,
         localPhotoImport: widget.localPhotoImport,
         compatibilityAccess: widget.compatibilityAccess,
         onExit: _close,

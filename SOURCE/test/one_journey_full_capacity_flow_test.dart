@@ -8,8 +8,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
 import 'package:zyra/dev/zyra_draft_timeline_presentation.dart';
+import 'package:zyra/dev/zyra_dev_control_system.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
-import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
+import 'package:zyra/dev/zyra_one_journey_tab.dart';
 import 'package:zyra/dev/zyra_request_capacity_choice.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
@@ -52,6 +53,7 @@ Future<void> _mount(
   addTearDown(tester.view.resetDevicePixelRatio);
   await tester.pumpWidget(
     MaterialApp(
+      navigatorObservers: [ZyraDevControlsRouteObserver()],
       theme: ThemeData.dark(),
       builder: (context, child) => MediaQuery(
         data: MediaQuery.of(context).copyWith(
@@ -110,8 +112,29 @@ Future<void> _press(WidgetTester tester, String id) async {
     final peer = id.substring(id.indexOf('draft-', 6));
     await _press(tester, 'concept_request_${peer}_header');
   }
+  if (target.evaluate().isEmpty &&
+      id.startsWith('draft_journey_options_') &&
+      find.byType(ZyraOneJourneyTab).evaluate().isNotEmpty) {
+    final tab = tester.widget<ZyraOneJourneyTab>(
+      find.byType(ZyraOneJourneyTab),
+    );
+    final peer = id.substring('draft_journey_options_'.length);
+    final index = tab.journeys.indexWhere((p) => p.id == peer);
+    if (index >= 0) {
+      for (var n = 0; n < 3; n++) {
+        final current = tester
+            .widget<ZyraOneJourneyTab>(find.byType(ZyraOneJourneyTab))
+            .index;
+        if (current == index) break;
+        await _press(
+          tester,
+          current < index ? 'journey_tab_next' : 'journey_tab_previous',
+        );
+      }
+    }
+  }
   if (target.evaluate().isEmpty) {
-    final owner = _key('my-zyra-quiet-scroll-0');
+    final owner = find.byKey(const PageStorageKey('my-zyra-focus-scroll'));
     expect(owner, findsOneWidget, reason: 'Missing real action $id');
     await tester.scrollUntilVisible(
       target,
@@ -169,6 +192,10 @@ Future<void> _press(WidgetTester tester, String id) async {
 }
 
 Future<void> _nav(WidgetTester tester, int index) async {
+  if (_key('concept_browse_options_dismiss').evaluate().isNotEmpty) {
+    await tester.tapAt(const Offset(30, 100));
+    await tester.pumpAndSettle();
+  }
   for (
     var depth = 0;
     find.byType(ZyraShellNavigation).evaluate().isEmpty && depth < 8;
@@ -226,32 +253,19 @@ Future<void> _seed(WidgetTester tester) async {
 
 void _expectOccupied(WidgetTester tester, List<String> expected) {
   final cards = _overviewCards(tester);
-  expect(cards.map((card) => card.profile.id), expected);
+  expect(cards.map((card) => card.id), unorderedEquals(expected));
   expect(cards.length, lessThanOrEqualTo(3));
 }
 
-List<ZyraOneJourneyConnectionsActiveCard> _overviewCards(WidgetTester tester) {
-  final presentation = find.byType(ZyraOneJourneyConnectionsPresentation);
-  if (presentation.evaluate().isEmpty) {
-    expect(find.byType(ZyraOneJourneyConnectionsActiveCard), findsNothing);
-    return [];
-  }
-  // The reading fallback lazily mounts cards. Inspect the full supplied
-  // overview, not just currently mounted children, for the capacity invariant.
-  return tester
-      .widget<ZyraOneJourneyConnectionsPresentation>(presentation)
-      .pages
-      .single
-      .whereType<ZyraOneJourneyConnectionsActiveCard>()
-      .toList();
-}
+List<ZyraJourneyTabCard> _overviewCards(WidgetTester tester) =>
+    tester.widget<ZyraOneJourneyTab>(find.byType(ZyraOneJourneyTab)).journeys;
 
 ZyraRequestCapacityChoice _choice(WidgetTester tester) => tester
     .widget<ZyraRequestCapacityChoice>(find.byType(ZyraRequestCapacityChoice));
 
 Future<void> _requests(WidgetTester tester, {bool incoming = true}) async {
   await _nav(tester, 2);
-  await _press(tester, 'my-zyra-route-concept-my-requests');
+  await _press(tester, 'concept-my-requests');
   await _press(tester, 'draft_requests_${incoming ? 0 : 1}');
 }
 
@@ -275,6 +289,10 @@ Future<void> _openChoice(WidgetTester tester, {bool incoming = true}) async {
     tester,
     incoming ? 'draft_accept_$_incoming' : 'draft_recipient_$_outgoing',
   );
+  if (!incoming) {
+    expect(find.text('Accepted · choose a place'), findsOneWidget);
+    await _press(tester, 'draft_choose_place_$_outgoing');
+  }
   expect(_key('request_capacity_choice'), findsOneWidget);
   final choice = _choice(tester);
   expect(choice.capacity, 3);
@@ -450,7 +468,7 @@ void main() {
       );
       await _press(tester, 'concept_browse_menu');
       await _nav(tester, 1);
-      expect(_key('draft_scan_presentation'), findsOneWidget);
+      expect(find.byType(ZyraOneJourneyTab), findsOneWidget);
       await _nav(tester, 1);
       _expectOccupied(tester, _occupied);
       expect(app.name, 'Ordinary member preserved');
@@ -472,7 +490,7 @@ void main() {
     final direction = incoming ? 'received' : 'sent';
     final target = incoming ? _incoming : _outgoing;
     testWidgets(
-      '$direction full acceptance can keep its Journeys and request',
+      '$direction full acceptance can keep its Journeys with the locked request outcome',
       (tester) async {
         await _mount(tester);
         await _seed(tester);
@@ -482,11 +500,17 @@ void main() {
         await _press(tester, 'request_capacity_cancel');
         expect(_key('request_capacity_choice'), findsNothing);
         expect(_key('concept_activity_requests'), findsOneWidget);
-        expect(_key('concept_request_${target}_header'), findsOneWidget);
+        if (incoming) {
+          expect(_key('concept_request_${target}_header'), findsOneWidget);
+        } else {
+          expect(_key('concept_request_${target}_header'), findsNothing);
+          await _press(tester, 'draft_requests_2');
+          expect(find.text('You let it go'), findsOneWidget);
+        }
         await _nav(tester, 1);
         _expectOccupied(tester, _occupied);
         await _nav(tester, 2);
-        await _press(tester, 'my-zyra-route-concept-my-ended');
+        await _press(tester, 'concept-my-ended');
         expect(find.text('No ended Journeys.'), findsOneWidget);
       },
     );
@@ -522,15 +546,14 @@ void main() {
         );
         final cards = _overviewCards(tester);
         expect(
-          cards.firstWhere((card) => card.profile.id == target).stateLabel,
+          cards.firstWhere((card) => card.id == target).stageLabel,
           'Preparing together · place reserved',
         );
-        for (final card in cards.where((card) => card.profile.id != target)) {
-          expect(card.stateLabel, 'Active Journey');
+        for (final card in cards.where((card) => card.id != target)) {
           expect(card.stageLabel, 'Salam Exchange');
         }
         await _nav(tester, 2);
-        await _press(tester, 'my-zyra-route-concept-my-ended');
+        await _press(tester, 'concept-my-ended');
         expect(find.textContaining('Aisha'), findsWidgets);
         await _press(tester, 'draft_journey_options_draft-aisha');
         expect(_key('draft_options_archive_draft-aisha'), findsNothing);
@@ -668,6 +691,10 @@ void main() {
       await tester.pumpAndSettle();
       expect(_key('request_capacity_confirm'), findsNothing);
       expect(_key('draft_ready_$_incoming'), findsNothing);
+      // The current options page belongs to the now-ended attempt. Leave it
+      // using real Back before addressing the remaining Journey places.
+      await returnZyraPreviewPage(tester);
+      await tester.pumpAndSettle();
       await _nav(tester, 1);
       _expectOccupied(tester, ['draft-sara', 'draft-maryam']);
       await _requests(tester);
@@ -694,6 +721,35 @@ void main() {
       expect(_key('draft_ready_$_incoming'), findsNothing);
       expect(AppState.instance.activeJourneys, isEmpty);
       expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'owned confirmation refuses a different Navigator route round trip',
+    (tester) async {
+      await _mount(tester);
+      await _seed(tester);
+      await _openChoice(tester);
+      await _confirmChoice(tester, 'draft-aisha');
+      final retained = _action(tester, 'request_capacity_confirm')!;
+      final navigator = Navigator.of(
+        tester.element(_key('request_capacity_confirm')),
+      );
+      final future = navigator.push<void>(
+        MaterialPageRoute(
+          builder: (_) => const Scaffold(body: Text('Unrelated local route')),
+        ),
+      );
+      await tester.pumpAndSettle();
+      navigator.pop();
+      await tester.pumpAndSettle();
+      await future;
+      retained();
+      await tester.pumpAndSettle();
+      expect(_key('draft_ready_$_incoming'), findsNothing);
+      expect(_key('request_capacity_choice'), findsOneWidget);
+      await _nav(tester, 1);
+      _expectOccupied(tester, _occupied);
     },
   );
 

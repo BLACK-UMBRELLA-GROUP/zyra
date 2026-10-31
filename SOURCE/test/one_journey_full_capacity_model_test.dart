@@ -113,6 +113,7 @@ void main() {
   String pending(bool incoming) {
     if (incoming) return received;
     expect(model.request(outgoing), isTrue);
+    expect(model.simulateRecipientAccept(outgoing), isTrue);
     return outgoing;
   }
 
@@ -158,7 +159,6 @@ void main() {
       expect(model.preparingCount, 0);
       expect(model.canAccept(outgoing), isFalse);
       expect(model.canAttemptAccept(outgoing), isTrue);
-      expect(model.simulateRecipientAccept(outgoing), isFalse);
       expect(model.acceptReceived(received), isFalse);
       expect(model.occupiedCount, 3);
       expect(model.cancel(outgoing), isTrue);
@@ -168,7 +168,7 @@ void main() {
 
   for (final capacity in [1, 2]) {
     test(
-      'full capacity $capacity retains its previous Browse and acceptance hold',
+      'full capacity $capacity preserves Browse gate while explicit choice can accept',
       () {
         model = ViewRequestDraftModel(capacity: capacity);
         model.fillCapacity();
@@ -177,9 +177,18 @@ void main() {
         expect(model.canRequest(outgoing), isFalse);
         expect(model.request(outgoing), isFalse);
         expect(model.canAccept(received), isFalse);
-        expect(model.canAttemptAccept(received), isFalse);
+        expect(model.canAttemptAccept(received), isTrue);
         expect(model.acceptReceived(received), isFalse);
-        refuse(received, first, incoming: true);
+        expect(
+          model.canReplaceJourneyForRequest(received, first, incoming: true),
+          isTrue,
+        );
+        expect(
+          model.replaceJourneyForRequest(received, first, incoming: true),
+          isTrue,
+        );
+        expect(model.stateFor(first), DraftJourneyState.ended);
+        expect(model.stateFor(received), DraftJourneyState.preparing);
         expect(model.occupiedCount, capacity);
       },
     );
@@ -297,7 +306,6 @@ void main() {
       'same peer',
       'wrong direction',
       'blocked target',
-      'busy target',
       'unrequested target',
       'active target',
       'pending ending',
@@ -326,8 +334,6 @@ void main() {
               direction = !incoming;
             case 'blocked target':
               expect(model.block(target), isTrue);
-            case 'busy target':
-              expect(model.setPeerOccupied(target, true), isTrue);
             case 'unrequested target':
               target = spare;
             case 'active target':
@@ -461,13 +467,13 @@ void main() {
   );
 
   test(
-    'blocked busy nonpending and unknown attempts remain held at full monthly capacity',
+    'blocked nonpending and unknown attempts remain held at full monthly capacity',
     () {
       full();
       final target = pending(false);
       expect(model.canAttemptAccept(target), isTrue);
       expect(model.setPeerOccupied(target, true), isTrue);
-      expect(model.canAttemptAccept(target), isFalse);
+      expect(model.canAttemptAccept(target), isTrue);
       expect(model.setPeerOccupied(target, false), isTrue);
       expect(model.block(target), isTrue);
       expect(model.canAttemptAccept(target), isFalse);
@@ -484,6 +490,8 @@ void main() {
       full();
       expect(model.request(outgoing), isTrue);
       expect(model.request(spare), isTrue);
+      expect(model.simulateRecipientAccept(outgoing), isTrue);
+      expect(model.simulateRecipientAccept(spare), isTrue);
       expect(model.occupiedCount, 3);
       expect(
         model.replaceJourneyForRequest(outgoing, first, incoming: false),

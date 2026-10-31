@@ -367,10 +367,12 @@ class ZyraRequestActivityCard extends StatelessWidget {
     this.onReport,
     this.canInteract,
     this.actions = const [],
+    this.detail,
   });
 
   final SeekerProfile profile;
   final String subtitle;
+  final String? detail;
   final String cardId;
   final ZyraConnectionsExpansionController controller;
   final ZyraOneJourneyConnectionsAction primary;
@@ -568,6 +570,10 @@ class ZyraRequestActivityCard extends StatelessWidget {
         children: [
           const SizedBox(height: 8),
           _button(primary, primary: true),
+          if (detail != null) ...[
+            const SizedBox(height: 10),
+            Text(detail!, style: ZyraText.subtext(size: 12, color: _helperInk)),
+          ],
           for (final action in actions) ...[
             const SizedBox(height: 10),
             _button(action),
