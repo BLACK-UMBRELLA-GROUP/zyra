@@ -1,4 +1,3 @@
-// LOCK8 V4: local Guardian connection ownership, real route and feedback gates.
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -28,8 +27,6 @@ const _evidence =
 
 Finder _key(String id) => find.byKey(ValueKey(id));
 
-// Preserve the Seeker model as well as the Guardian connection: a Guardian
-// block must never enter the Seeker Journey-end dispatcher.
 Map<String, Object?> _modelFacts(ViewRequestDraftSnapshot value) => {
   'capacity': value.capacity,
   'states': value.states,
@@ -194,7 +191,7 @@ class _ChatHarness {
     expect(controller.text, isEmpty);
   }
 
-  Map<String, VoidCallback> retainChatControls() => {
+  Map<String, VoidCallback> retainChatControls({bool sent = false}) => {
     'shell send': chat.onSend,
     'shell report': chat.onReport,
     'shell options': chat.onOptions,
@@ -212,7 +209,18 @@ class _ChatHarness {
         .widget<IconButton>(_key('guardian_chat_options'))
         .onPressed!,
     'long press': tester
-        .widget<GestureDetector>(_key('guardian_chat_report'))
+        .widget<GestureDetector>(
+          sent
+              ? find
+                    .ancestor(
+                      of: find.text(_ownMessage),
+                      matching: find.byWidgetPredicate(
+                        (w) => w is GestureDetector && w.onLongPress != null,
+                      ),
+                    )
+                    .first
+              : _key('guardian_chat_report'),
+        )
         .onLongPress!,
   };
 
@@ -296,6 +304,26 @@ void main() {
       .map((call) => call.arguments)
       .toList();
   late ZyraHapticLevel oldHapticLevel;
+
+  Future<void> deniedOldActions(
+    _ChatHarness h,
+    Map<String, VoidCallback> retained,
+  ) async {
+    final before = _facts(h.latest);
+    calls.clear();
+    for (final action in retained.values) {
+      action();
+      action();
+    }
+    await h.flush();
+    expect(vibrations(), isEmpty);
+    expect(_facts(h.latest), before);
+    expect(h.controller.text, isEmpty);
+    expect(find.text(_ownMessage), findsNothing);
+    expect(find.text('A private chat'), findsOneWidget);
+    expect(find.byType(ZyraGuardianChatOptions), findsNothing);
+    expect(find.byType(ZyraDraftReportPresentation), findsNothing);
+  }
 
   setUpAll(() => baselineSetUp(evidenceRoot: _evidence));
   tearDownAll(baselineTearDown);
@@ -484,6 +512,68 @@ void main() {
     },
   );
 
+  testWidgets('V4 account ABA rebuild isolates actual transcript and draft', (
+    tester,
+  ) async {
+    final h = _ChatHarness(tester);
+    await h.mount();
+    await h.send();
+    await tester.enterText(find.byType(TextField), _draft);
+    final controller = h.controller;
+    final retained = h.retainChatControls(sent: true);
+    await tester.runAsync(() async {
+      await ZyraAccountState.synchronize('replacement-private-chat-owner');
+      await ZyraAccountState.synchronize(_owner);
+    });
+    ZyraDeveloperAccess.setAuthorizedForTesting(true);
+    tester.element(find.byType(ZyraOneJourneyConceptShell)).markNeedsBuild();
+    await h.flush();
+    expect(h.controller, isNot(same(controller)));
+    expect(h.controller.text, isEmpty);
+    expect(find.text(_ownMessage), findsNothing);
+    expect(find.text('ABOUT ADAM AND NOOR'), findsOneWidget);
+    await deniedOldActions(h, retained);
+  });
+
+  testWidgets(
+    'V4 replacement connection and same-host reset isolate chat state',
+    (tester) async {
+      final old = _ChatHarness(tester);
+      await old.mount();
+      await old.send();
+      await tester.enterText(find.byType(TextField), _draft);
+      final retained = old.retainChatControls(sent: true);
+      await old.openOptions();
+      await old.tap('guardian_chat_options_block');
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pump();
+      final h = _ChatHarness(tester);
+      await h.mount(seeker: 1, networkIndex: 0);
+      expect(h.latest.guardianTabs.seeker, 1);
+      expect(h.latest.guardianTabs.networkIndex, 0);
+      expect(find.text('ABOUT ADAM AND NOOR'), findsOneWidget);
+      expect(find.text('Noor’s Main Guardian'), findsOneWidget);
+      await deniedOldActions(h, retained);
+      await h.send();
+      await tester.enterText(find.byType(TextField), _draft);
+      final beforeReset = h.retainChatControls(sent: true);
+      final shell = tester.state(find.byType(ZyraOneJourneyConceptShell));
+      await openZyraDevControls(tester);
+      await h.tap('draft_reset');
+      await openZyraDevControls(tester);
+      await h.tap('draft_role_guardian');
+      await h.tap('guardian_connect');
+      await h.tap('guardian_connect_tab_1');
+      await h.tap('guardian_chat');
+      expect(
+        tester.state(find.byType(ZyraOneJourneyConceptShell)),
+        same(shell),
+      );
+      expect(find.text('ABOUT ADAM AND NOOR'), findsOneWidget);
+      await deniedOldActions(h, beforeReset);
+    },
+  );
+
   for (final reason in ['owner revoked', 'account ABA']) {
     for (final action in ['send', 'options', 'press hold']) {
       testWidgets('V4 physical $action checks $reason before feedback', (
@@ -493,8 +583,6 @@ void main() {
         await h.mount();
         await tester.enterText(find.byType(TextField), _draft);
         final before = _facts(h.latest);
-        // No intervening frame: the actual visible control still has its old
-        // enabled presentation when the ownership decision changes.
         if (reason == 'owner revoked') {
           h.ownerAdmitted = false;
         } else {
@@ -596,8 +684,6 @@ void main() {
       expect(_facts(h.latest), before);
       expect(controller.text, _draft);
 
-      // Restore admission without a frame or replacement callback. Each old
-      // callback has already observed a denial and must stay terminally expired.
       h.ownerAdmitted = true;
       for (final callback in retained.values) {
         callback();
@@ -639,8 +725,6 @@ void main() {
         expect(_facts(h.latest), before);
         expect(controller.text, _draft);
 
-        // Both the shell owner's admission and its separate owned-modal
-        // admission are restored before any frame can replace these controls.
         h.ownerAdmitted = true;
         h.sheetAdmitted = true;
         for (final callback in retained.values) {
@@ -667,8 +751,6 @@ void main() {
         await h.mount();
         await h.openOptions();
         final before = _facts(h.latest);
-        // The owned modal is visible, so bypassing route focus alone would
-        // incorrectly allow its old buttons to vibrate or pop the modal.
         if (reason == 'owner revoked') {
           h.ownerAdmitted = false;
         } else {

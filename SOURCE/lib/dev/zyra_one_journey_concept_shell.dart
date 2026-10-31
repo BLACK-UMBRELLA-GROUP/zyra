@@ -6659,6 +6659,14 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       return _unavailable();
     }
     return ZyraGuardianPrivateChat(
+      // Ephemeral transcript/draft belong to this account generation and exact
+      // accepted sample connection, never the globally selected Seeker/person.
+      key: ValueKey((
+        ZyraAccountState.userId,
+        ZyraAccountState.generation,
+        _guardianTabs,
+        'adam:noor',
+      )),
       canAct: current,
       onOptions: () {
         if (current()) unawaited(_guardianChatOptions());
