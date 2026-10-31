@@ -1,0 +1,197 @@
+{
+  "queue": 66,
+  "source_commit": "a04e683c5d26f2d909f6fc883b0751517e435d52",
+  "policy": "Explicit task-owned source and named input/render/metadata allowlists only. No config, credentials, ignored local app configuration, broad lib/test/repository hashing or source copies. Manifest excludes itself to avoid hash cycle.",
+  "source_commit_allowlist": [
+    "SOURCE/lib/dev/zyra_draft_safety_advice_presentation.dart",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+    "SOURCE/test/lock22_safety_advice_contract_test.dart",
+    "SOURCE/test/profile_tab_monogram_contract_test.dart",
+    "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+    "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart"
+  ],
+  "named_inputs": [
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BRIEFS/BUILD_BRIEF_2026-10-31_V6.md",
+      "bytes": 1363,
+      "sha256": "47700d3919ce99f1e70f6d6c89d254675a1883d34ae47587d7da98af8172482b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/RECORD/LOCK_RECORD.md",
+      "bytes": 2268,
+      "sha256": "4b6118170956a3f2e2132e1f58c10854abccdc85221907b939e16ae226624748"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/RECORD/UNITY_PASS_SPEC_CURRENT_VERSION_V6.md",
+      "bytes": 10885,
+      "sha256": "95a179f2dbd8f8b8f1c7939ad6aafe56ae53b118e5a3b71bcda76a8b324e980e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/x08_guardian_safety_advice.png",
+      "bytes": 752003,
+      "sha256": "0d8f816814ae91cfa7d03e3ff73df80b8e3cbf3e89a53f31c01a477be3318022"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/x09_guardian_basic_safety_advice.png",
+      "bytes": 752003,
+      "sha256": "d0683dc0f079a3e89b82dd87ee2ae38cde747b4eaea8a2bef31631b5db6840fa"
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/guardian/profile_membership_settings/safety__no_subject.png",
+      "bytes": 791133,
+      "sha256": "0fc9f15c7d50c9ec46e97a835a39d84085971db817ce7f76462f4bf52f237a4d"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_safety_advice_presentation.dart",
+      "bytes": 8474,
+      "sha256": "e01dbd05fbd092c5e9dee10a48be8f8454dc862670d0579544d7fba9965869d8"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 324468,
+      "sha256": "e4c8824602cb17bc6769d9127ed788e447eecc39b4a7af5c6d71aed43d87c192"
+    },
+    {
+      "path": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "bytes": 7339,
+      "sha256": "8e3b6fa857ca6422d6fc049f0e7d7316cf41d21ed402c707a25e301e7594d86d"
+    },
+    {
+      "path": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "bytes": 17865,
+      "sha256": "c7f8b91d9be1fc87eb9d1d83c41bbf03a6b5b45cfa883349e2d1fded5902c90c"
+    },
+    {
+      "path": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "bytes": 12371,
+      "sha256": "211e770fe5da04ec2ef399ad1c413b71a403c571d72fe7db6a488f9b8087b5eb"
+    },
+    {
+      "path": "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart",
+      "bytes": 6120,
+      "sha256": "88589efcadae6bdd9cb2ed9bc97c3aaac26d9bb4d38b8f630486690755131025"
+    }
+  ],
+  "renders": [
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x08_guardian_safety_advice.png",
+      "bytes": 605791,
+      "sha256": "a9e07f4490593e4caab19ac3b1fb1389f383029c885ce4655437fc837518d7d2"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x08_guardian_safety_advice__master_beside_build.png",
+      "bytes": 1180535,
+      "sha256": "1cffa30b0e6224f8e9a2addd01a26801573a76c87463f2652095d3289871b342"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x08_guardian_safety_advice__text200.png",
+      "bytes": 508817,
+      "sha256": "f286ba8475bab02145119514daf98815ed955f1f0b724af1ac638078a01757c4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x08_guardian_safety_advice__text200__end.png",
+      "bytes": 598472,
+      "sha256": "f40f2672fdfd99b5c14fa3f71d325bb1b1ed162655c7331c901e730479cd943a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x09_guardian_basic_safety_advice.png",
+      "bytes": 605791,
+      "sha256": "a9e07f4490593e4caab19ac3b1fb1389f383029c885ce4655437fc837518d7d2"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x09_guardian_basic_safety_advice__master_beside_build.png",
+      "bytes": 1180535,
+      "sha256": "1cffa30b0e6224f8e9a2addd01a26801573a76c87463f2652095d3289871b342"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x09_guardian_basic_safety_advice__text200.png",
+      "bytes": 508817,
+      "sha256": "f286ba8475bab02145119514daf98815ed955f1f0b724af1ac638078a01757c4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x09_guardian_basic_safety_advice__text200__end.png",
+      "bytes": 598472,
+      "sha256": "f40f2672fdfd99b5c14fa3f71d325bb1b1ed162655c7331c901e730479cd943a"
+    }
+  ],
+  "metadata": [
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/BUILD.json",
+      "bytes": 1159,
+      "sha256": "f967a0963efbbbc17bee19dabcbcd218dc44aa94b0886eda8a5a6c96ae469eaf"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/QA.json",
+      "bytes": 7345,
+      "sha256": "d8de0e6263aec60d97ff7dc4a053c44922f164446829134f0226837cac405367"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/CASE_LEDGER.json",
+      "bytes": 48290,
+      "sha256": "5272f379da5f7d6cab667893c565cf707fbc6e93999e3c4be6166466a4d4d0eb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x08.geometry.json",
+      "bytes": 310,
+      "sha256": "44c53e7744a9b58ee48a57d216431d0d9b1e26fb7168d187246c07d3e3fd1e4b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x08__320_text200.geometry.json",
+      "bytes": 315,
+      "sha256": "88a9c623c227ec87569e6bb1ade011f85c29c7ecd0ff3f7a577801606a528c78"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x08__text200.geometry.json",
+      "bytes": 315,
+      "sha256": "d0051b045746d458f5ab719e548a02142586a7987e94f2253bd19d562bb7fbc3"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x09.geometry.json",
+      "bytes": 312,
+      "sha256": "55617d313b625385f92d24af33636372973228180f0405ac7894c76f9cfe8953"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x09__320_text200.geometry.json",
+      "bytes": 317,
+      "sha256": "1e6de05e293994d06d553e16a8bfbb8d07292b167d3b1f8f6994de37eab808b7"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x09__text200.geometry.json",
+      "bytes": 317,
+      "sha256": "e0eb53b8f63cd5c6b0d6aca514c4db308f481fcafb2dd9a69edfbbaea40d87f4"
+    }
+  ],
+  "Seeker64_recapture_hashes": {
+    "x07_safety_advice.png": "b10364b3da66060dc28c8150062ece43bd0c50475c4a889bc7123c4c4c258c36",
+    "x07_safety_advice__text200.png": "32a4c360a0dec7c6fe5201670fa6c0aa6ce14330d522e899cb58a360553bc950",
+    "x07_safety_advice__text200__end.png": "2afc6cd072a173a5d63c41c992b3e625b4bf0066e2be9ad5aad90ca3d139aa57"
+  },
+  "handover_commit_allowlist": [
+    "PRODUCT/APPROVED/BUILD_QUEUE.md (only row66)",
+    "REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md (only queue66 appended section)",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/BUILD.json",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/CASE_LEDGER.json",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/QA.json",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/SOURCE_RENDER_MANIFEST.json",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x08.geometry.json",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x08__320_text200.geometry.json",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x08__text200.geometry.json",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x08_guardian_safety_advice.png",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x08_guardian_safety_advice__master_beside_build.png",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x08_guardian_safety_advice__text200.png",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x08_guardian_safety_advice__text200__end.png",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x09.geometry.json",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x09__320_text200.geometry.json",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x09__text200.geometry.json",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x09_guardian_basic_safety_advice.png",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x09_guardian_basic_safety_advice__master_beside_build.png",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x09_guardian_basic_safety_advice__text200.png",
+    "PRODUCT/APPROVED/UNITY_PASS/BUILT/V6/x09_guardian_basic_safety_advice__text200__end.png"
+  ],
+  "own_trace_excerpts": {
+    "queue66_sha256": "3cba9778705e178ba4671b765cb0787cebb8a2101420fa039880cf095d5bc859",
+    "tracker_queue66_sha256": "cb02b028f7f18bb16326135725f081b5d50d287cf877fa2e344459ecc85524a2"
+  }
+}

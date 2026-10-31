@@ -1,0 +1,19 @@
+{
+  "guardian_plan": "Basic",
+  "logical_size": [
+    430,
+    932
+  ],
+  "text_scale": 2.0,
+  "safe_bottom": 34.0,
+  "safe_content_bottom": 898.0,
+  "initial_scroll_offset": 0.0,
+  "max_scroll_extent": 1129.0,
+  "emergency_rect": [
+    20.0,
+    1917.0,
+    410.0,
+    2019.0
+  ],
+  "standard_unscrolled_fit": null
+}

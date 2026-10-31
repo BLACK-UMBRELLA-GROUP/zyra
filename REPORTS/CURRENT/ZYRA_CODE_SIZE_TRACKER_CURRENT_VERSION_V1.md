@@ -529,3 +529,19 @@ Added local accepted-waiting and exact-attempt held endings, the neutral receive
 | Old Pause / Restart files | 39 / 1 | 39 / 1 |
 
 Measured with SYSTEM/tools/blueprint/code_size.py. 320 distinct scoped cases across14 suites pass, with the final14 actual-shell cases recaptured after the final model change. Analyser, format and protected SDK checks clean.12 standard430×932 frames,7 at200% text,12 full-size master/build pairs and contacts are in REQUESTS_AND_GUARDIANS/BUILT/V2. CASE_LEDGER.json names every case and122 observed failures in3 wider older widget suites; their repair is refused under OA-ZYRA-328, with no pre-change attribution or whole-app pass claim. The relevant17-case capacity route suite is current and passes. QA.json states retained component/frame and Past fixture differences, actual large-text hit-test paths, source hashes, reading costs and limits. Only queue65 changes; parent questions/queue edits preserved. Ordinary member retirement remains OA-ZYRA-317 and parent visual/contract verification OA-ZYRA-328. No backend or native delivery.
+
+
+## Queue 66 — Guardian Safety & advice LOCK22 V6 — 31 October 2026
+
+Guardian One and Basic now open advice from Profile through the existing shared Seeker presenter, with the five locked Guardian tips, Monogram88, Report instructions, Help and emergency line. Fresh callbacks and Profile-only checkpoint admission apply to both roles; report remains draft-only. The original Seeker pixels are unchanged in all three recaptured frames. Existing dev/zyra_draft_* classification includes the changed presenter in both preview categories; no classifier change or new product source file.
+
+| Scope | Before | After |
+|---|---:|---:|
+| All app code | 169,736 lines / 336 files | 169,780 lines / 336 files |
+| Developer/preview | 49,946 / 94 | 49,990 / 94 |
+| Founder planned app | 30,764 / 44 | 30,808 / 44 |
+| Tests | 217,931 / 513 | 218,462 / 515 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py (before = queue65). 204 distinct scoped cases across12 complete suite files pass, including34 new Guardian contract cases and6 actual Guardian viewport cases. Analyser, format and protected SDK checks pass. At430×932 with59/34pt insets, all copy/actions/footer fit unscrolled: emergency rect ends890, safe boundary898. Only Guardian lower spacing contracts16pt on short viewports; text/icons/rows remain shared, bottom SafeArea retained. At200% and320-wide, all content is reachable without overflow. Both x08/x09 normal/200% head/end captures and full-size master/build pairs are in UNITY_PASS/BUILT/V6 with source/render/metadata manifests and CASE_LEDGER.json. Existing native font/shadow/frame and responsive-gap differences are recorded in QA.json; no pixel-parity or whole-app claim. Wider65 failures not rerun/repaired; written scope refusal under OA-ZYRA-328. Ordinary member retirement remains OA-ZYRA-317; parent visual/contract review OA-ZYRA-328. No backend or native delivery.

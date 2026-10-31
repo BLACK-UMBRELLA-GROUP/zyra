@@ -1,0 +1,19 @@
+{
+  "guardian_plan": "One",
+  "logical_size": [
+    320,
+    568
+  ],
+  "text_scale": 2.0,
+  "safe_bottom": 34.0,
+  "safe_content_bottom": 534.0,
+  "initial_scroll_offset": 0.0,
+  "max_scroll_extent": 2308.0,
+  "emergency_rect": [
+    20.0,
+    2698.0,
+    300.0,
+    2834.0
+  ],
+  "standard_unscrolled_fit": null
+}

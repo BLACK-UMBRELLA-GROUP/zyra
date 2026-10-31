@@ -1,0 +1,41 @@
+{
+  "queue": 66,
+  "lock": "LOCK22 V6",
+  "source_commit": "a04e683c5d26f2d909f6fc883b0751517e435d52",
+  "source_baseline": "df131cb7e76251bc8f027e9c8d528166fb5561ca",
+  "flutter_version": "3.44.2",
+  "build_mode": "Flutter widget-test actual protected Founder shell; offline local samples",
+  "target": "test/visual/lock22_safety_advice_v6_capture_test.dart",
+  "timestamp_utc": "2026-10-31T13:05:17.091214+00:00",
+  "logical_size": [
+    430,
+    932
+  ],
+  "render_pixels": [
+    1290,
+    2796
+  ],
+  "device_pixel_ratio": 3,
+  "text_scales": [
+    1,
+    2
+  ],
+  "narrow_access_check": {
+    "logical_size": [
+      320,
+      568
+    ],
+    "text_scale": 2,
+    "capture": false
+  },
+  "native_install": false,
+  "backend_changes": false,
+  "source_commit_allowlist": [
+    "SOURCE/lib/dev/zyra_draft_safety_advice_presentation.dart",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+    "SOURCE/test/lock22_safety_advice_contract_test.dart",
+    "SOURCE/test/profile_tab_monogram_contract_test.dart",
+    "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+    "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart"
+  ]
+}

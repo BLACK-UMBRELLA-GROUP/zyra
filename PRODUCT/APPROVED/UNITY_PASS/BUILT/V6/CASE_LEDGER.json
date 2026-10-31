@@ -1,0 +1,1305 @@
+{
+  "queue": 66,
+  "source_commit": "a04e683c5d26f2d909f6fc883b0751517e435d52",
+  "distinct_cases": 204,
+  "suites": 12,
+  "counting": "Latest testDone per suite+case; exclude hidden loading/setup/teardown and skipped cases. Whole listed suites executed; first failures are superseded, never added to passing total.",
+  "runs": [
+    {
+      "reporter": "v6_capture.jsonl",
+      "sha256": "3e2eec6ac5d36fe2dde6fffb7e8acd6e8e703f6d5a234ad28c252862077d0076",
+      "cases": 6,
+      "results": {
+        "error": 2,
+        "success": 4
+      },
+      "run_success": false
+    },
+    {
+      "reporter": "advice.jsonl",
+      "sha256": "31cfd7cb94bdbb875399f0925ae094e3f738005159fcf6b3f075ece7f9247158",
+      "cases": 39,
+      "results": {
+        "success": 39
+      },
+      "run_success": true
+    },
+    {
+      "reporter": "guards.jsonl",
+      "sha256": "e613dc6ff61697643f2356aa3400f48b78cc27d22b3ae0dd3aa0f262212377f1",
+      "cases": 148,
+      "results": {
+        "success": 136,
+        "error": 12
+      },
+      "run_success": false
+    },
+    {
+      "reporter": "final_guardian.jsonl",
+      "sha256": "915b39df14ddc50ba4ead90c0275528d13a03a728f08309ad4e2b7902a711d79",
+      "cases": 60,
+      "results": {
+        "success": 60
+      },
+      "run_success": true
+    },
+    {
+      "reporter": "safe_final.jsonl",
+      "sha256": "b4dcba054d9d706b61702e2556cfc9c864d9e5936cadbb01699be8b6bf64abc4",
+      "cases": 43,
+      "results": {
+        "success": 43
+      },
+      "run_success": true
+    },
+    {
+      "reporter": "final_capture.jsonl",
+      "sha256": "02bd3f20f6826c0e0ef6b1e72b7f769f57df365fa84cfd1f7d0098304db841bf",
+      "cases": 6,
+      "results": {
+        "success": 6
+      },
+      "run_success": true
+    }
+  ],
+  "suite_counts": {
+    "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart": 6,
+    "SOURCE/test/profile_tab_monogram_contract_test.dart": 17,
+    "SOURCE/test/lock22_safety_advice_contract_test.dart": 13,
+    "SOURCE/test/visual/lock22_safety_advice_v5_capture_test.dart": 3,
+    "SOURCE/test/report_account_lifetime_test.dart": 13,
+    "SOURCE/test/retained_account_routes_test.dart": 12,
+    "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart": 34,
+    "SOURCE/test/preview_navigation_checkpoint_test.dart": 21,
+    "SOURCE/test/one_journey_resume_checkpoint_test.dart": 56,
+    "SOURCE/test/help_support_preview_reuse_test.dart": 9,
+    "SOURCE/test/zyra_retained_route_reuse_test.dart": 5,
+    "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart": 15
+  },
+  "cases": [
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "name": "a preview cannot fall back to default live Help on widget reuse",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "name": "compact large-text layout retains readable scrollable FAQs",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "name": "embedded preview reuses original FAQ UI without account tools",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "name": "failed admission remains closed without live fallback",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "name": "initial query and supplied content are local frozen route data",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "name": "original Help constructor and live tools retain their contract",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "name": "revoked stale search and FAQ callbacks hide rather than act",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "name": "search matches supplied questions answers and category titles",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/help_support_preview_reuse_test.dart",
+      "name": "standalone preview stays local and uses the shared brand canvas",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic rejects advice restore outside Profile 0",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic rejects advice restore outside Profile 1",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic rejects advice restore outside Profile 2",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic rejects advice restore outside Profile 3",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic restores advice root and clears peer",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic restores help_support and clears peer",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic restores safety and clears peer",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject account",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject admission revocation",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject controls",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject controls return",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject disposal",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject role return",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject route",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject route return",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic saved advice callbacks reject tab return",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian Basic: entry, exact tips, targets and back stack",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One rejects advice restore outside Profile 0",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One rejects advice restore outside Profile 1",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One rejects advice restore outside Profile 2",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One rejects advice restore outside Profile 3",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One restores advice root and clears peer",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One restores help_support and clears peer",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One restores safety and clears peer",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject account",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject admission revocation",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject controls",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject controls return",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject disposal",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject role return",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject route",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject route return",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One saved advice callbacks reject tab return",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "name": "V6 Guardian One: entry, exact tips, targets and back stack",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 Seeker Basic: entry, report, Help and back stack",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 Seeker One: entry, report, Help and back stack",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 rejects advice checkpoint outside Profile: guardian=false",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 rejects advice checkpoint outside Profile: guardian=true",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 restores fresh advice help_support stack without peer target",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 restores fresh advice root stack without peer target",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 restores fresh advice safety stack without peer target",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 saved advice callbacks reject account change",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 saved advice callbacks reject admission change",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 saved advice callbacks reject controls change",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 saved advice callbacks reject disposal change",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 saved advice callbacks reject role change",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "name": "V5 saved advice callbacks reject route change",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Browse restores history and gallery on first prepared frame",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Details-first gallery resumes without shifting actual photo ordinals",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Guardian long return drops informational destinations and subjects",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Guardian recreates Help without retaining its old query or callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Guardian resumes an informational overview without inventing a detail",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Guardian resumes informational advanced/deleteAccount with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Guardian resumes informational advanced/resetProfile with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Guardian resumes informational appLock/appLock with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Guardian resumes informational feedback/feedback with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Guardian resumes informational guardianPrivacy/discovery with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Guardian resumes informational notificationSettings/notifications with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Guardian resumes informational privacyData/privacyPolicy with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Guardian resumes informational privacyData/terms with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Guardian resumes informational signInSecurity/recovery with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Guardian resumes informational visibility/discovery with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Past request checkpoint stays on Requests without remapping to Introductions",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Seeker long return drops informational destinations and subjects",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Seeker recreates Help without retaining its old query or callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Seeker resumes an informational overview without inventing a detail",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Seeker resumes informational advanced/deleteAccount with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Seeker resumes informational advanced/resetProfile with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Seeker resumes informational appLock/appLock with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Seeker resumes informational feedback/feedback with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Seeker resumes informational hiddenProfiles/hiddenProfiles with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Seeker resumes informational notificationSettings/notifications with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Seeker resumes informational privacyData/privacyPolicy with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Seeker resumes informational privacyData/terms with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Seeker resumes informational signInSecurity/recovery with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Seeker resumes informational visibility/discovery with fresh callbacks",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "Seeker resumes only a fresh EditProfile hub, not private editor state",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "a checkpoint for a different role is ignored, not borrowed",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "completed read-only Journey paths retain their exact subject",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "fresh Guardian owner restores Photos without borrowing its old editor",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "fresh Seeker owner restores Photos without borrowing its old editor",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "fresh denial rejects retained actions and publications",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "fresh generic page restores the exact scrolled position",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "fresh shell resumes seeker tab 0 from its captured value",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "fresh shell resumes seeker tab 1 from its captured value",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "fresh shell resumes seeker tab 2 from its captured value",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "fresh shell resumes seeker tab 3 from its captured value",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "fresh shell resumes seeker tab 4 from its captured value",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "hidden inspection resumes with read-only parent ownership",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "hidden-origin checkpoint refuses blocked profile inspection",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "hidden-origin checkpoint refuses no-longer-hidden profile inspection",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "legacy photo checkpoints open Browse details without remapping",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "long Guardian return resets navigation to My ZYRA",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "long absence resets location but retains all three Journeys",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "profile leaf resumes its photo on the first prepared frame",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "request section 0 survives a fresh shell",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "request section 1 survives a fresh shell",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "request section 2 survives a fresh shell",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "restored gallery pages require known IDs and bounded ordinals",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "restored peer Guardians never becomes own management",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "standalone Introductions survives a fresh shell independently",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "unsafe editors camera and confirmations collapse safely",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "name": "unsafe informational IDs parents roles and siblings collapse safely",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "Focus checkpoint defaults and bounds do not infer consumed activity",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "a backward clock resets rather than restoring a stale location",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "background duration 0:00:03.000000 restores=true",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "background duration 0:14:59.999000 restores=true",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "background duration 0:15:00.000000 restores=false",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "background duration 0:15:00.000001 restores=false",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "background duration 3:00:00.000000 restores=false",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "background without inactive starts a fresh departure",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "checkpoint snapshots all supplied collections defensively",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "duplicate background events do not restart the first departure",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "explicit identifiers reject object or invalid keys",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "fresh window and inactive-only interruptions restore",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "informational checkpoint subjects are detached identifiers only",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "initial scalar data is copied filtered and bounded to 64 entries",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "legacy checkpoints have no inferred gallery page",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "long inactive sheet followed by a short background still restores",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "new bucket copies scalars without reviving the old write guard",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "object PageStorage key cannot become retained state",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "page and Browse-history lists remain bounded",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "photo and gallery maps are separate bounded snapshots",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/preview_navigation_checkpoint_test.dart",
+      "name": "position bucket stores only finite bounded double offsets",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Guardian Basic Larger Text keeps pills and rows readable",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Guardian Basic keeps locked row order and caller actions",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Guardian Basic retains membership, wallet and settings destinations",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Guardian One Larger Text keeps pills and rows readable",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Guardian One keeps locked row order and caller actions",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Guardian One retains membership, wallet and settings destinations",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Profile controls obey Off and revoke disabled taps",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Profile controls obey Subtle and revoke disabled taps",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Seeker Basic Larger Text keeps pills and rows readable",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Seeker Basic keeps locked row order and caller actions",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Seeker Basic retains membership, wallet and settings destinations",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Seeker One Larger Text keeps pills and rows readable",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Seeker One keeps locked row order and caller actions",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "Seeker One retains membership, wallet and settings destinations",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "retained Profile actions reject changed account generation owner",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "retained Profile actions reject changed revoked admission owner",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "name": "retained Profile actions reject changed route owner",
+      "result": "success",
+      "reporter": "advice.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "an owned report acknowledgement survives a temporary covering page",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "block explicitly pins the initiating bearer",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "late block acknowledgement cannot become current-account success",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "late report cannot chain a block into a replacement account",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "late safety history is unavailable after account replacement",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "late unblock acknowledgement cannot become current-account success",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "loaded safety statuses withdraw when the account changes",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "pending safety statuses cannot publish after A to B to A",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "report sheet discards late acknowledgement and never hides as B",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "retained duplicate submit callback sends one report only",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "retained submit callback cannot dispatch after A to B to A",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "thrown safety-status lookup stays recoverable",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/report_account_lifetime_test.dart",
+      "name": "unblock explicitly pins the initiating bearer",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "compatibility repository detaches and canonicalises without a global merge",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "concept_edit_profile opens the retained editor and returns one parent",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "concept_manage_photos opens the retained editor and returns one parent",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "concept_manage_photos uses the canonical reduced-motion loader only while its actual photo preparation is pending",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "concept_preview_profile uses the canonical reduced-motion loader only while its actual photo preparation is pending",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "local Off governs actual Browse invitation haptics without changing member preferences",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "local Personalisation applies and survives reopening without global writes",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "local Strong governs actual Browse invitation haptics without changing member preferences",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "own profile preview survives harmless shell rebuilds and repeatedly returns one parent",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "retained Guardian Profile and Settings keep their own paid label and avatar semantics",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "retained Seeker Profile and Settings keep their own paid label and avatar semantics",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/retained_account_routes_test.dart",
+      "name": "session keeps owner roles separate, rejects remote photos and revokes",
+      "result": "success",
+      "reporter": "guards.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v5_capture_test.dart",
+      "name": "V5 actual advice: scale=1.0, narrow=false",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v5_capture_test.dart",
+      "name": "V5 actual advice: scale=2.0, narrow=false",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v5_capture_test.dart",
+      "name": "V5 actual advice: scale=2.0, narrow=true",
+      "result": "success",
+      "reporter": "safe_final.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart",
+      "name": "V6 Guardian Basic actual advice: scale=1.0, narrow=false",
+      "result": "success",
+      "reporter": "final_capture.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart",
+      "name": "V6 Guardian Basic actual advice: scale=2.0, narrow=false",
+      "result": "success",
+      "reporter": "final_capture.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart",
+      "name": "V6 Guardian Basic actual advice: scale=2.0, narrow=true",
+      "result": "success",
+      "reporter": "final_capture.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart",
+      "name": "V6 Guardian One actual advice: scale=1.0, narrow=false",
+      "result": "success",
+      "reporter": "final_capture.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart",
+      "name": "V6 Guardian One actual advice: scale=2.0, narrow=false",
+      "result": "success",
+      "reporter": "final_capture.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart",
+      "name": "V6 Guardian One actual advice: scale=2.0, narrow=true",
+      "result": "success",
+      "reporter": "final_capture.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Report fits Size(390.0, 844.0) with all reasons and no submission",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Report fits Size(393.0, 852.0) with all reasons and no submission",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Report fits Size(430.0, 932.0) with all reasons and no submission",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Scan fits Size(390.0, 844.0) with a truthful disabled camera action",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Scan fits Size(393.0, 852.0) with a truthful disabled camera action",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "Scan fits Size(430.0, 932.0) with a truthful disabled camera action",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "guard revocation rejects retained reason and secondary actions",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "large-text Report remains readable",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "large-text Scan remains readable",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "reasons only select locally and never enable submission",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "secondary actions remain explicit caller-owned actions",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "target replacement clears selection and revokes old delegates",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "target-free account Safety does not choose a previous person",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "utility display settles with reduced motion false",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_draft_browse_utility_presentation_test.dart",
+      "name": "utility display settles with reduced motion true",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_retained_route_reuse_test.dart",
+      "name": "Browse Scan uses retained entry and returns one parent",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_retained_route_reuse_test.dart",
+      "name": "Guardian Help uses original FAQ and returns to Settings",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_retained_route_reuse_test.dart",
+      "name": "Seeker Help uses original FAQ and returns to Settings",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_retained_route_reuse_test.dart",
+      "name": "code lookup finds exact person without sending a Journey",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    },
+    {
+      "suite": "SOURCE/test/zyra_retained_route_reuse_test.dart",
+      "name": "request Help never includes retired matching or restart instructions",
+      "result": "success",
+      "reporter": "final_guardian.jsonl"
+    }
+  ]
+}

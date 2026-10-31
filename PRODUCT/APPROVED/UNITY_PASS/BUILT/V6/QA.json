@@ -1,0 +1,114 @@
+{
+  "queue": 66,
+  "result": "PASS scoped self-report; parent visual/contract review remains OA-ZYRA-328",
+  "source_commit": "a04e683c5d26f2d909f6fc883b0751517e435d52",
+  "cases": 204,
+  "suites": 12,
+  "analyze": "Analyzing SOURCE...                                             \nNo issues found! (ran in 4.6s)",
+  "format": "Formatted 6 files (0 changed) in 0.16 seconds.",
+  "protected_sdk": {
+    "sdk": "3.44.2",
+    "pins": 5,
+    "execDenial": "PASS",
+    "nestedExecDenial": "PASS",
+    "policySha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d"
+  },
+  "checks": {
+    "roles": "Guardian One and Basic Profile → advice → existing x04 report instructions / Help → back advice → back Profile. Same five exact Guardian tips; shared presenter, Monogram88, no hearts or named Seekers.",
+    "guard_tests": "34 actual-shell Guardian cases: each plan entry/back; fresh root/report/Help restore clearing peer; reject tabs0–3; stale raw and InkWell actions after route, route return, tab return, account generation, controls, controls return, role return, disposal and admission revocation. Fresh actions remain usable after returning.",
+    "standard_fit": "430×932, actual59pt top and34pt bottom insets; zero scroll extent/offset; all tips, both actions and full emergency text visible. Emergency rect [20,856,410,890], safe bottom898:8pt clearance. See x08/x09 geometry JSON.",
+    "larger_text": "200% at430×932 and320×568, each Guardian plan: all five tips/actions/emergency individually reached and hit-tested without layout exceptions; scrolling retained.",
+    "Seeker64": "Both Seeker plans preserve entry, exact wording, actions/back/restore/guards. All three recaptured x07 PNG hashes equal prior V5 hashes.",
+    "network": "Harness blocks network; no backend transmission added. Existing report remains draft-only."
+  },
+  "comparison": {
+    "pairs": [
+      "x08_guardian_safety_advice__master_beside_build.png",
+      "x09_guardian_basic_safety_advice__master_beside_build.png"
+    ],
+    "matches": [
+      "Monogram88 health-and-safety shield; role heading and small caps",
+      "Five Guardian titles/copy and correct gold icons; floating tips/action cards",
+      "Two target actions, unchanged draft-only report renderer, emergency wording",
+      "One shared presenter; Seeker screenshot pixels retained"
+    ],
+    "native_differences": [
+      "Existing bundled Poppins/Material glyph metrics, inherited Ivory shadows, rectangular test boundary and system safe-area differ from rounded prototype raster. Straight apostrophe follows written spec; raster title uses typographic apostrophe.",
+      "Guardian longer copy initially exceeded safe area by16pt. Bottom SafeArea is retained. On available body height below860pt, only lower whitespace contracts: tips→Help card16→8pt and Help→footer14→6pt. All text/icon/row/Monogram sizes retained, Seeker spacers unchanged. Footer ends890 above898 safe boundary."
+    ],
+    "pixel_parity_claim": false,
+    "pairs_use_final_capture_pixels": true
+  },
+  "initial_findings_resolved": [
+    "First capture: two standard Guardian fit assertions found16pt overflow; corrected safe-area-preserving whitespace fit.",
+    "Twelve initial Guardian test failures used ASCII apostrophe for existing x04 person’s text; test expectation corrected without report-page changes.",
+    "Final analyzer initially flagged two new-test missing-brace infos; braces added; final analyzer clean."
+  ],
+  "code_size": "| What | Size |\n|---|---|\n| All app code | 169,780 lines in 336 files |\n| Developer and preview code inside it | 49,990 lines in 94 files |\n| The Founder preview (planned app) | 30,808 lines in 44 files |\n| Test code | 218,462 lines in 515 files |\n| Test screenshots (goldens) | 2,612 images, 307 MB |\n| Old-app files that still mention Pause | 39 |\n| Old-app files that still mention Restart | 1 |\n",
+  "classification": "Existing dev/zyra_draft_* wildcard includes changed shared advice file in developer/preview and Founder preview. No new product source file; classifier unchanged.",
+  "limits": [
+    "Local protected Founder sample preview only; ordinary member routes retained under OA-ZYRA-317.",
+    "No native build/install/upload/signing/backend/migration/delivery. Open question2 remains with parent.",
+    "Known65 broader122 failures across3 widget files were not rerun or repaired; no new attribution or whole-app pass claim. Their wider repair is refused in this row under OA-ZYRA-328.",
+    "Parent visual/contract review remains OA-ZYRA-328; no Founder product design or LOCK invented."
+  ],
+  "reading": {
+    "startup_parts_bytes": {
+      "mandatory_lessons": 28099,
+      "AGENTS": 11205,
+      "MAP_first87_streamed": 9008,
+      "queue_scan_actual_loaded": 28567,
+      "review_through_corrections": 11654,
+      "V6_brief": 1363,
+      "LOCK_record": 2268,
+      "current_V6_spec": 10885,
+      "review_addendum_lookup_streamed_full_file": 18655
+    },
+    "startup_bytes": 121704,
+    "startup_basis": "Actual named mandatory text loaded before source work; queue streaming scans and second full streaming review lookup counted, not just excerpts emitted. Initial status output truncated; no recovery reread. Excludes source/search scan internals and PNG bytes.",
+    "master_png_bytes": 1504006,
+    "helper": {
+      "name": "guardian_contract_tests",
+      "purpose": "Separate new contract test authoring; no SDK/git/production edits",
+      "startup_bytes": 55102,
+      "source_excerpt_bytes": 64762,
+      "tokens": "Unavailable natively; no usage logs read"
+    }
+  },
+  "founder_rule10": "No questions asked or required; QUESTIONS.md untouched; only66 completion row is edited. Existing48 QUESTION and49/50/54 FAILED preserved.",
+  "Seeker_preservation_hashes": {
+    "x07_safety_advice.png": "b10364b3da66060dc28c8150062ece43bd0c50475c4a889bc7123c4c4c258c36",
+    "x07_safety_advice__text200.png": "32a4c360a0dec7c6fe5201670fa6c0aa6ce14330d522e899cb58a360553bc950",
+    "x07_safety_advice__text200__end.png": "2afc6cd072a173a5d63c41c992b3e625b4bf0066e2be9ad5aad90ca3d139aa57"
+  },
+  "disk": {
+    "built_bytes_before_final_metadata": 5851726,
+    "moved": [
+      {
+        "from": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/test_cache",
+        "to": "/Users/shakeelahmad/_to_delete/ZYRA_QUEUE66_GUARDIAN_SAFETY_V6_2026-10-31/test_cache",
+        "bytes": 304507072
+      },
+      {
+        "from": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/unit_test_assets",
+        "to": "/Users/shakeelahmad/_to_delete/ZYRA_QUEUE66_GUARDIAN_SAFETY_V6_2026-10-31/unit_test_assets",
+        "bytes": 17007259
+      },
+      {
+        "from": "/Users/shakeelahmad/Documents/Codex/2026-10-31/zyra-queue66-guardian-safety-v6/work",
+        "to": "/Users/shakeelahmad/_to_delete/ZYRA_QUEUE66_GUARDIAN_SAFETY_V6_2026-10-31/work",
+        "bytes": 211842
+      }
+    ],
+    "bytes_moved": 321726173,
+    "bytes_freed": 0,
+    "free_GiB": 69.49,
+    "evidence_policy": "Only PNG/JSON metadata in BUILT; no compiled products/source copies. Regenerable test caches and task scratch moved outside repo; Founder empties trash."
+  },
+  "queue_stage": {
+    "row": 66,
+    "operation": "insert own previously untracked queue row",
+    "added_rows": 1,
+    "removed_rows": 0
+  }
+}
