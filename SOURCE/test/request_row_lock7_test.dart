@@ -11,6 +11,7 @@ import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_browse_designs.dart';
 import 'package:zyra/widgets/zyra_profiles_components.dart';
+import 'package:zyra/widgets/zyra_floating_surface.dart';
 
 const _labels = [
   'Request a Journey',
@@ -189,7 +190,7 @@ void main() {
         'Request sent. Tap to cancel request',
       );
       final text = tester.widget<Text>(find.text('Request sent'));
-      expect(text.style!.color, ZyraColors.goldText);
+      expect(text.style!.color, ZyraColors.espresso);
       final ink = tester.widget<Container>(
         find.descendant(of: _surface, matching: find.byType(Container)).first,
       );
@@ -205,6 +206,57 @@ void main() {
       disposeSemantics();
     },
   );
+
+  testWidgets('V7FIX ivory and readable ink in every page and action state', (
+    tester,
+  ) async {
+    for (final label in [
+      ..._labels,
+      'Continue Journey',
+      'Browse profiles',
+      'Show profiles',
+    ]) {
+      for (final enabled in [true, false]) {
+        await _mount(tester, label: label, enabled: enabled);
+        final fill = tester.widget<Material>(_surface).color!;
+        expect(fill, ZyraColors.surfaceFill, reason: '$label / $enabled');
+        final foreground = tester.widget<Text>(find.text(label)).style!.color!;
+        expect(foreground, ZyraColors.espresso);
+        for (final background in [
+          ZyraColors.ivoryTop,
+          ZyraColors.ivoryBottom,
+        ]) {
+          final actual = Color.alphaBlend(fill, background);
+          final a = foreground.computeLuminance();
+          final b = actual.computeLuminance();
+          expect((b + .05) / (a + .05), greaterThanOrEqualTo(4.5));
+        }
+        for (final arrow in [_previous, _next]) {
+          expect(
+            tester
+                .widget<Icon>(
+                  find.descendant(of: arrow, matching: find.byType(Icon)),
+                )
+                .color,
+            ZyraColors.journeyGold,
+          );
+        }
+        final decoration =
+            tester
+                    .widget<DecoratedBox>(
+                      find
+                          .ancestor(
+                            of: _surface,
+                            matching: find.byType(DecoratedBox),
+                          )
+                          .first,
+                    )
+                    .decoration
+                as BoxDecoration;
+        expect(decoration.boxShadow, ZyraFloatingSurface.standardShadows);
+      }
+    }
+  });
 
   for (final width in [430.0, 393.0, 320.0]) {
     testWidgets('200 percent text wraps with stable height at $width', (

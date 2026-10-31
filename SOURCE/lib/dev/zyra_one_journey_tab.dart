@@ -525,7 +525,6 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
                         : 'Continue Journey',
                     labels: const ['Continue Journey', 'Browse profiles'],
                     sent: false,
-                    actionColor: card == null ? ZyraColors.goldText : null,
                     previousKey: const ValueKey('journey_tab_previous'),
                     nextKey: const ValueKey('journey_tab_next'),
                     previousLabel: 'Previous Journey place',

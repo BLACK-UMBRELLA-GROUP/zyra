@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_browse_filter.dart';
 import 'package:zyra/dev/zyra_one_journey_filters_presentation.dart';
@@ -86,8 +88,50 @@ void _placement(WidgetTester tester, {bool fromTop = false}) {
 }
 
 void main() {
-  setUp(() => ZyraText.useTestFontStubs = true);
-  tearDown(() => ZyraText.useTestFontStubs = false);
+  setUpAll(() async {
+    final font = FontLoader('V7FixPoppins');
+    for (final weight in ['Regular', 'Light', 'SemiBold']) {
+      font.addFont(
+        Future.value(
+          ByteData.sublistView(
+            File('assets/fonts/Poppins-$weight.ttf').readAsBytesSync(),
+          ),
+        ),
+      );
+    }
+    await font.load();
+  });
+  setUp(() {
+    ZyraText.useTestFontStubs = true;
+    ZyraText.testReadingFontFamily = 'V7FixPoppins';
+  });
+  tearDown(() {
+    ZyraText.useTestFontStubs = false;
+    ZyraText.testReadingFontFamily = null;
+  });
+
+  for (final width in [430.0, 393.0, 320.0]) {
+    testWidgets('V7FIX 200% footer fits all four cards at width $width', (
+      tester,
+    ) async {
+      await _pump(tester, size: Size(width, 852), scale: 2);
+      for (var index = 0; index < 4; index++) {
+        final link = _key('filter_preferences');
+        final text = find.descendant(of: link, matching: find.byType(Text));
+        final paragraph = tester.renderObject<RenderParagraph>(text);
+        final naturalHeight = paragraph.getMaxIntrinsicHeight(
+          paragraph.size.width,
+        );
+        expect(paragraph.size.height, greaterThanOrEqualTo(naturalHeight));
+        expect(paragraph.didExceedMaxLines, isFalse);
+        final pillTop = tester.getRect(_key('concept_request_row_surface')).top;
+        expect(tester.getRect(text).bottom, lessThanOrEqualTo(pillTop));
+        expect(tester.getRect(link).bottom, lessThanOrEqualTo(pillTop));
+        expect(tester.takeException(), isNull);
+        if (index < 3) await _tap(tester, 'filter_next');
+      }
+    });
+  }
 
   testWidgets(
     'V7 monogram head uses locked ring, icon and text on every card',

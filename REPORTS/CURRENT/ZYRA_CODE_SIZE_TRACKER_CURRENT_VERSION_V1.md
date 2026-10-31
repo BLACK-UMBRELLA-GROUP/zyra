@@ -591,3 +591,21 @@ Built only the accepted Guardian connection chat: floating 44-point monogram hea
 | Old Pause / Restart files | 39 / 1 | 39 / 1 |
 
 Measured with SYSTEM/tools/blueprint/code_size.py. No new app file/classifier needed. Nineteen complete scoped suites: 353 passed, 2 wider Circle colour assertions failed, 0 skipped; 18 suites entirely passing. Final spacing/owner-key checks: all 70 cases in four complete chat/tab/send suites passed, with actual standard/200%/320-point captures. Analyser clean; eight-file format and protected SDK checks passed. QUEUE70-R1 refuses unrelated Circle colour/test changes and records exact first assertions without claiming historical origin. Ten actual frames, three full-size master/build pairs, CASE_LEDGER and explicit source/input/render/metadata manifests: PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V4. Queue54 refusal preserved. Parent visual/contract verification remains OA-ZYRA-328; no native delivery/backend work.
+
+
+## Queue 71 — Ivory bottom pill and Filters Larger Text — 31 October 2026
+
+The shared three-part Profiles/Journey/Filters pill now uses the LOCK14 ivory surface and soft warm shadow in every sent/unsent and enabled/disabled state, normal ink #2B2420 per the explicit V7FIX brief, and gold enabled arrows. Existing navigation, request/cancel callbacks, disabled semantics, border strengths and dividers remain. The sent-label helper accepts a local colour override while other callers retain LOCK14 V5 gold text. Filters retains its 50-point minimum at normal text and expands naturally to 68 points at 200%; the text bottom and pill top are both y=845 (zero clipping/overlap). Ordinary standalone gold CTA source is untouched.
+
+| Measure | Before | After |
+|---|---:|---:|
+| All app code | 170,574 / 337 | 170,567 / 337 |
+| Developer/preview | 50,784 / 95 | 50,782 / 95 |
+| Founder planned app | 31,606 / 45 | 31,604 / 45 |
+| Tests | 221,257 / 521 | 221,583 / 522 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py; queue70 baseline confirmed by the exact -7 app/-2 preview line delta before test edits. No new app file or classifier change. Ten complete scoped suites: 124 passed, zero failed/skipped. Analyser clean; ten-file format and pinned protected-driver check pass. Real Poppins at 430/393/320 points and 200% validates all four Filters footers. Actual route labels contrast at least 13.79:1. Test fixtures now use bundled Poppins; stale V4/V5 gold expectations corrected without changing CTA source. Five actual frames and five full-size master/build pairs, geometry, case ledger and explicit allowlisted manifests are in PRODUCT/APPROVED/FILTERS/BUILT/V7FIX.
+
+QUEUE71-R1 (written refusal, OA-ZYRA-328): full-screen prototype geometry/surface and sample-content differences visible in the pairs are outside these two authorised fixes and were preserved. In particular c06 predates the V7 Monogram head and uses Manchester; the real sample uses London. Gold labels in c01/Filters masters are intentionally superseded by the newer explicit normal-ink V7FIX brief. No full-screen pixel-equality claim, native install, backend change or keyboard/VoiceOver device verification. Historical V7 handover and FOOTER_DIAGNOSTIC remain unchanged. Parent visual/contract verification follows.

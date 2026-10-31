@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,8 +10,27 @@ import 'package:zyra/widgets/zyra_tap_feedback.dart';
 
 Finder k(String id) => find.byKey(ValueKey(id));
 void main() {
-  setUp(() => ZyraText.useTestFontStubs = true);
-  tearDown(() => ZyraText.useTestFontStubs = false);
+  setUpAll(() async {
+    final font = FontLoader('FiltersAccessiblePoppins');
+    for (final weight in ['Regular', 'Light', 'SemiBold']) {
+      font.addFont(
+        Future.value(
+          ByteData.sublistView(
+            File('assets/fonts/Poppins-$weight.ttf').readAsBytesSync(),
+          ),
+        ),
+      );
+    }
+    await font.load();
+  });
+  setUp(() {
+    ZyraText.useTestFontStubs = true;
+    ZyraText.testReadingFontFamily = 'FiltersAccessiblePoppins';
+  });
+  tearDown(() {
+    ZyraText.useTestFontStubs = false;
+    ZyraText.testReadingFontFamily = null;
+  });
   for (final scale in [1.0, 2.0]) {
     testWidgets(
       'LOCK10 accessible controls wrap at 320 and scale $scale; haptic ownership',

@@ -54,21 +54,21 @@ void main() {
     await tester.pump();
   }
 
-  testWidgets('uses the Founder-selected soft gold wash contract', (
+  testWidgets('preserves the LOCK14 V4 readable gold button contract', (
     tester,
   ) async {
     await pumpPill(tester, onPressed: () {});
 
     final ink = tester.widget<Ink>(find.byType(Ink));
     final decoration = ink.decoration! as BoxDecoration;
-    final gradient = decoration.gradient! as LinearGradient;
     final border = decoration.border! as Border;
 
-    expect(gradient.colors, [
-      ZyraColors.journeyGold.withValues(alpha: 0.25),
-      ZyraColors.journeyGold.withValues(alpha: 0.07),
-    ]);
-    expect(border.top.color, ZyraColors.journeyGold.withValues(alpha: 0.48));
+    expect(decoration.color, ZyraColors.goldTextFill);
+    expect(border.top.color, ZyraColors.espresso.withValues(alpha: 0.48));
+    expect(
+      tester.widget<Text>(find.text('Unlock Compatibility+')).style!.color,
+      ZyraColors.espresso,
+    );
     expect(find.byIcon(Icons.auto_awesome_rounded), findsOneWidget);
     expect(find.byIcon(Icons.chevron_right_rounded), findsOneWidget);
     expect(find.text('Unlock Compatibility+'), findsOneWidget);

@@ -468,7 +468,7 @@ void main() {
     expect(switcher.switchOutCurve, Curves.easeInCubic);
     await _tap(tester, _key('label-toggle'), settle: false);
     final sentText = find.text('Journey invitation sent');
-    expect(tester.widget<Text>(sentText).style!.color, ZyraColors.journeyGold);
+    expect(tester.widget<Text>(sentText).style!.color, ZyraColors.goldText);
     final fade = find
         .ancestor(of: sentText, matching: find.byType(FadeTransition))
         .first;
@@ -665,7 +665,7 @@ void main() {
       _expectDots(tester, selected: 2);
       expect(
         tester.widget<Text>(find.text('Journey invitation sent')).style!.color,
-        ZyraColors.journeyGold,
+        ZyraColors.goldText,
       );
       await _tap(tester, _request);
       expect(tester.widget<PageView>(pager).controller!.page, closeTo(2, .01));

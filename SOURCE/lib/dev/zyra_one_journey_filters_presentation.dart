@@ -861,8 +861,8 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
               ),
             ),
             if (!keyboard) ...[
-              SizedBox(
-                height: 50,
+              ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 50),
                 child: _button(
                   'filter_preferences',
                   'Your preferences also shape who you see ›',
@@ -875,7 +875,6 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
                 label: 'Show profiles',
                 labels: const ['Show profiles'],
                 sent: false,
-                actionColor: ZyraColors.goldText,
                 previousKey: const ValueKey('filter_previous'),
                 nextKey: const ValueKey('filter_next'),
                 previousLabel: 'Previous filter',

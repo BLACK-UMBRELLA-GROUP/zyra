@@ -190,7 +190,6 @@ class ZyraProfilesRequestRow extends StatelessWidget {
     this.nextLabel = 'Next profile · no decision',
     this.previousKey = const ValueKey('concept_previous_profile'),
     this.nextKey = const ValueKey('concept_next_profile'),
-    this.actionColor,
   });
 
   final Key actionKey;
@@ -199,7 +198,6 @@ class ZyraProfilesRequestRow extends StatelessWidget {
   final String? semanticLabel;
   final String previousLabel, nextLabel;
   final Key previousKey, nextKey;
-  final Color? actionColor;
   final bool sent;
   final VoidCallback? onPrevious, onRequest, onNext;
 
@@ -255,10 +253,10 @@ class ZyraProfilesRequestRow extends StatelessWidget {
       child: ZyraFloatingSurface(
         radius: 999,
         circle: false,
-        gold: !sent,
+        gold: false,
         child: Material(
           key: const ValueKey('concept_request_row_surface'),
-          color: sent ? ZyraColors.surfaceFill : ZyraColors.goldTextFill,
+          color: ZyraColors.surfaceFill,
           borderRadius: BorderRadius.circular(999),
           clipBehavior: Clip.antiAlias,
           child: Container(
@@ -284,9 +282,7 @@ class ZyraProfilesRequestRow extends StatelessWidget {
                           size: 24,
                           color: onPrevious == null
                               ? ZyraColors.ink(.28)
-                              : (sent
-                                    ? ZyraColors.journeyGold
-                                    : ZyraColors.espresso),
+                              : ZyraColors.journeyGold,
                         ),
                       ),
                     ),
@@ -299,10 +295,9 @@ class ZyraProfilesRequestRow extends StatelessWidget {
                         child: ZyraInvitationLabel(
                           label: label,
                           sent: sent,
+                          sentColor: ZyraColors.espresso,
                           style: zyraProfilesActionStyle(
-                            color:
-                                actionColor ??
-                                ZyraColors.ink(onRequest == null ? .34 : .90),
+                            color: ZyraColors.espresso,
                           ),
                         ),
                       ),
@@ -318,9 +313,7 @@ class ZyraProfilesRequestRow extends StatelessWidget {
                           size: 24,
                           color: onNext == null
                               ? ZyraColors.ink(.28)
-                              : (sent
-                                    ? ZyraColors.journeyGold
-                                    : ZyraColors.espresso),
+                              : ZyraColors.journeyGold,
                         ),
                       ),
                     ),

@@ -10,6 +10,7 @@ class ZyraInvitationLabel extends StatelessWidget {
     required this.label,
     required this.sent,
     required this.style,
+    this.sentColor = ZyraColors.goldText,
     this.maxLines,
     this.overflow,
   });
@@ -17,6 +18,7 @@ class ZyraInvitationLabel extends StatelessWidget {
   final String label;
   final bool sent;
   final TextStyle style;
+  final Color sentColor;
   final int? maxLines;
   final TextOverflow? overflow;
 
@@ -50,7 +52,7 @@ class ZyraInvitationLabel extends StatelessWidget {
           textAlign: TextAlign.center,
           maxLines: maxLines,
           overflow: overflow,
-          style: sent ? style.copyWith(color: ZyraColors.goldText) : style,
+          style: sent ? style.copyWith(color: sentColor) : style,
         ),
       ),
     );
