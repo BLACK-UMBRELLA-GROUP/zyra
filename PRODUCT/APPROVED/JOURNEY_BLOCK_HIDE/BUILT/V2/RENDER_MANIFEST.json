@@ -1,0 +1,61 @@
+{
+  "source_commit": "0d05e65d64655de5acfc691ba2701a5421c8ae63",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/MASTER_BUILD_CONTACT.png",
+      "bytes": 1048852,
+      "sha256": "be5f82646c9d09d157205dd11bf3afeecf8d236eaea592d00c528e68de807d4f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/b01_block_confirm.png",
+      "bytes": 396214,
+      "sha256": "92b8e6cc6bc3fb417e06eb780b44a27a06426e23043f5f036fbf018e7ba0f12d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/b01_block_confirm__master_beside_build.png",
+      "bytes": 966005,
+      "sha256": "2405e6cb44b3a826923bda54cc343abf5a2e56f9b1248ef54f71bacdcd2e516e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/b01_block_confirm__text200_actions.png",
+      "bytes": 336134,
+      "sha256": "9d3f73d9de2a904bae2a54ae1cddc4edb9db7de75219f6ec6de66f8cbbbe4c19"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/b01_block_confirm__text200_top.png",
+      "bytes": 332861,
+      "sha256": "efcc52602da3f3b705fa4a4a0ebe55fe8d6ac2152d3bfb4e103be6eeb7f933ce"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/b02_hide_confirm.png",
+      "bytes": 388382,
+      "sha256": "749f3180d0af61316546883244f2cf5105f347dad912a762fca14a2a2bb976f3"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/b02_hide_confirm__master_beside_build.png",
+      "bytes": 949975,
+      "sha256": "050bce6c46a2e771041a5909204b14ba938316888529c7770376c2524d9a858e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/b02_hide_confirm__text200_actions.png",
+      "bytes": 323453,
+      "sha256": "3c9ce12e8851d7e59d5f932e5f77c304f1780730eb21ae72778d67e74aaa006c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/b02_hide_confirm__text200_top.png",
+      "bytes": 320174,
+      "sha256": "c8b353f9c107ef0516751c51e2ecbf4349a801218cf25ec4ec92ec0db8ce4d8c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/b03_journey_tab_after.png",
+      "bytes": 1994889,
+      "sha256": "b7f0b1a52edb7e2ac78228312c47448b695332bc1aaffdbe4d30c8004c5e3431"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/b03_journey_tab_after__master_beside_build.png",
+      "bytes": 3552360,
+      "sha256": "ac820023c3644804e4e273a75a18a54bcc8d6d39267df006f453c8c677158d48"
+    }
+  ],
+  "scope": "Task-owned final screenshots and comparisons only."
+}

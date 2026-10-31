@@ -1,0 +1,32 @@
+[
+  {
+    "master": "b01_block_confirm.png",
+    "build": "b01_block_confirm.png",
+    "pixel_size": [
+      1290,
+      2796
+    ],
+    "mean_absolute_rgb_difference_0_to_255": 16.07,
+    "interpretation": "Diagnostic only; prototype device mask, native fonts/shared surfaces/shadows and transient toast differ; not pixel parity."
+  },
+  {
+    "master": "b02_hide_confirm.png",
+    "build": "b02_hide_confirm.png",
+    "pixel_size": [
+      1290,
+      2796
+    ],
+    "mean_absolute_rgb_difference_0_to_255": 15.912,
+    "interpretation": "Diagnostic only; prototype device mask, native fonts/shared surfaces/shadows and transient toast differ; not pixel parity."
+  },
+  {
+    "master": "b03_journey_tab_after.png",
+    "build": "b03_journey_tab_after.png",
+    "pixel_size": [
+      1290,
+      2796
+    ],
+    "mean_absolute_rgb_difference_0_to_255": 17.869,
+    "interpretation": "Diagnostic only; prototype device mask, native fonts/shared surfaces/shadows and transient toast differ; not pixel parity."
+  }
+]

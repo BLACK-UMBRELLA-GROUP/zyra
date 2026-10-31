@@ -1,0 +1,155 @@
+{
+  "status": "SCOPED_CHECKS_PASS; parent visual/contract verification pending OA-ZYRA-328",
+  "queue": 69,
+  "source_commit": "0d05e65d64655de5acfc691ba2701a5421c8ae63",
+  "built_from": "INPUT_MANIFEST.json",
+  "contract": {
+    "person_level_entrypoints": [
+      "Journey options → Report",
+      "View Profile → Report",
+      "Profiles options → Report",
+      "Browse Hide dispatcher",
+      "existing hidden-profile inspection Block dispatcher"
+    ],
+    "current_journey": "preparing or active for the exact person/attempt; acceptedWaiting never occupies a place",
+    "no_journey": "Existing immediate Report Hide/Block and existing Browse confirmation preserved; occupied people remain excluded from Browse by prior contract. No discovery widening.",
+    "transaction": "Validate account generation, role, controls epoch, UI revision, source person, navigator stamp, expected target attempt and safety revision; then synchronous existing end + hide/block. No await between mutations.",
+    "owned_modal": "Exact owned push/pop admitted. Unrelated navigation ABA, account ABA/revocation, controls/role/reset/replay cancel; feedback uses same owned authority and captured scope.",
+    "keep_dismiss": "No model mutation; report selection retained.",
+    "reporting": "Existing Submit disabled; no report callback or report service added; local captures/guard tests assert zero HTTP attempts. Existing ordinary-member service behavior covered by complete affected suites.",
+    "guardian_connection": "Excluded from dispatcher; original behavior retained and complete Guardian tabs/chat authority suites pass.",
+    "older_member_copy": "Only the two specified Hidden Profiles strings updated. No Founder Hidden Profiles page added.",
+    "retained_contracts": [
+      "profile/reveal disclosure",
+      "paid Additional Guardian access",
+      "mutual readiness",
+      "account ownership",
+      "Tier3 member and sign-in routes"
+    ]
+  },
+  "validation": "VALIDATION.json",
+  "render_evidence": {
+    "standard_frames": [
+      "b01_block_confirm.png",
+      "b02_hide_confirm.png",
+      "b03_journey_tab_after.png"
+    ],
+    "larger_text_frames": [
+      "b01_block_confirm__text200_top.png",
+      "b01_block_confirm__text200_actions.png",
+      "b02_hide_confirm__text200_top.png",
+      "b02_hide_confirm__text200_actions.png"
+    ],
+    "normal_dimensions": [
+      1290,
+      2796
+    ],
+    "logical_size": [
+      430,
+      932
+    ],
+    "insets_logical": [
+      59,
+      34
+    ],
+    "large_text": "Actual 200% text; both actions scroll/hit-test at430 wide and then320x712 logical pixels; no overflow. Four captures at430 wide.",
+    "master_comparison": "MASTER_COMPARISON.json; three full-size master-beside-build PNGs; MASTER_BUILD_CONTACT.png"
+  },
+  "observed_visual_differences": [
+    {
+      "scope": "b01/b02",
+      "detail": "Actual warning top at500pt; prototype at521pt. Same specified wording, card order and actions; native font metrics, text wrapping and bottom SafeArea retained."
+    },
+    {
+      "scope": "all frames",
+      "detail": "Current locked shared Ivory modal/card fills, floating shadows, native font/icon rasterization and rectangular capture differ from prototype device mask and rendering. No global styling changed."
+    },
+    {
+      "scope": "b03",
+      "detail": "Retained current Journey layout, portrait crop/overlay, shared Continue button and compact navigation differ from prototype. Exact required transient toast is visible in actual after-confirm frame; prototype b03 omits the toast."
+    }
+  ],
+  "limits": [
+    "Local Seeker One/Basic Founder sample only. No native build/install/upload/signing/backend/migration/publish.",
+    "Known broader queue65 failures (122 across3 older widget suites) were not rerun or repaired; no historical attribution or whole-suite pass claim. Scope refusal remains OA-ZYRA-328.",
+    "Current render differences require parent/designer verification under OA-ZYRA-328; builder pass is self-report, not approval."
+  ],
+  "code_size": {
+    "before": {
+      "app": [
+        169780,
+        336
+      ],
+      "developer_preview": [
+        49990,
+        94
+      ],
+      "founder_preview": [
+        30808,
+        44
+      ],
+      "tests": [
+        218462,
+        515
+      ]
+    },
+    "after": {
+      "app": [
+        170170,
+        337
+      ],
+      "developer_preview": [
+        50380,
+        95
+      ],
+      "founder_preview": [
+        31198,
+        45
+      ],
+      "tests": [
+        219553,
+        518
+      ]
+    },
+    "goldens": [
+      2612,
+      307
+    ],
+    "old_pause_restart": [
+      39,
+      1
+    ],
+    "classifier": "New dev/zyra_draft_* presenter included in existing developer and Founder classes; no classifier edit."
+  },
+  "startup_reading": {
+    "primary_text_bytes": 114080,
+    "primary_text_KiB": 111.41,
+    "masters_bytes": 3145500,
+    "note": "Includes required lessons and28,576B queue read; review prefix11,654B plus full18,655B streamed once for authorised addenda. No operating model or blueprint read; no source, register or report over30KB loaded whole at startup.",
+    "helpers": [
+      {
+        "name": "atomic_safety_model",
+        "purpose": "Separate atomic model API and33 model cases",
+        "startup_text_bytes": 55195
+      },
+      {
+        "name": "safety_guard_tests",
+        "purpose": "Separate real-route stale-action and feedback tests",
+        "startup_text_bytes": 95425,
+        "additional_review_measurement_bytes": 11654
+      }
+    ],
+    "tokens": "Not exposed by tools; no usage-log reads or invented counters."
+  },
+  "disk": {
+    "built_png_bytes": 10609299,
+    "free_bytes_at_check": 74367762432,
+    "compiled_output_in_evidence": false,
+    "cleanup": "Task scratch/logs under generated workspace work/ will move to /Users/shakeelahmad/_to_delete/ZYRA_QUEUE69_2026-10-31; final raw test JSONL retained in ignored REPORTS/EVIDENCE. Shared existing SOURCE/build cache remains in its allowed build location."
+  },
+  "founder_decisions": [
+    "GO31Oct2026; queue69 only; LOCK16 V2; Keep draft as today.",
+    "No questions asked or raised; no LOCK invented.",
+    "Global core-sync/schedule scope remains parent question4; no global/schedule edits."
+  ]
+}

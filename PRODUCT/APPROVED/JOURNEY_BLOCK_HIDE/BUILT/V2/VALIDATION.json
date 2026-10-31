@@ -1,0 +1,26 @@
+{
+  "analyzer": {
+    "exit_code": 0,
+    "output": "Analyzing SOURCE...                                             \nNo issues found! (ran in 4.5s)"
+  },
+  "format": {
+    "exit_code": 0,
+    "output": "Formatted 7 files (0 changed) in 0.15 seconds."
+  },
+  "protected_sdk": {
+    "sdk": "3.44.2",
+    "pins": 5,
+    "execDenial": "PASS",
+    "nestedExecDenial": "PASS",
+    "policySha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d"
+  },
+  "test": {
+    "exit_code": 0,
+    "cases": 375,
+    "complete_suite_files": 16,
+    "render_define": "ZYRA_LOCK16_RENDER=true",
+    "raw_log_sha256": "7567c797c5027c5a0d6ab8fa23f299bcc1f0032739175bd1914f0c9bd65cf4af",
+    "raw_log_path": "REPORTS/EVIDENCE/LOCK16_BLOCK_HIDE_V2_2026-10-31/FINAL_TEST_RUN.jsonl"
+  },
+  "source_commit": "0d05e65d64655de5acfc691ba2701a5421c8ae63"
+}

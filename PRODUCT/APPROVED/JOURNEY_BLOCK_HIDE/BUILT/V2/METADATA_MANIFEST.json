@@ -1,0 +1,50 @@
+{
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/BUILD.json",
+      "bytes": 548,
+      "sha256": "c97038e6f27a51b99150bbadcf33e773f392661e04efb7efc073ae70acc4433e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/CASE_LEDGER.json",
+      "bytes": 79787,
+      "sha256": "1729203b226e5fceaa658cecfd24ba57d0cd6251b70d3ad7682a1162108e79ea"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/INPUT_MANIFEST.json",
+      "bytes": 1357,
+      "sha256": "d226c0ef3cd64ef58ed348050148f73e099141831c8c48a34baab8f7c063aafc"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/SOURCE_MANIFEST.json",
+      "bytes": 1613,
+      "sha256": "0de01143e718b23ec03c68a3a82ce40ad12688cbda3b9350025260191553d7a3"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/QA.json",
+      "bytes": 6275,
+      "sha256": "5cc444c0cf649ea7d01e7d73693c38fb42f76ee7bbb684c6de9acc6f258e79e4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/VALIDATION.json",
+      "bytes": 846,
+      "sha256": "b38d27b82ef7d58838595db2f67e91600831c2b0c164b096c6fcceae0f56d961"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/TRACE_EXCERPTS.json",
+      "bytes": 2589,
+      "sha256": "3c47423c7fc71f782bf929f4549bf52d1d1305926561dd203c87e5b073771bfb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/MASTER_COMPARISON.json",
+      "bytes": 1016,
+      "sha256": "7f454e7512d1c633eba1cc3d79c692f1559b6a4ea4b919ea230d53ae9dee3ed4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BUILT/V2/RENDER_MANIFEST.json",
+      "bytes": 2514,
+      "sha256": "febf067cfcca6336948b7e0d48143e5a0356ac6b412737d929d4d549b0bf22f2"
+    }
+  ],
+  "scope": "Explicit task-owned metadata allowlist; this manifest excluded to avoid recursive hashing."
+}

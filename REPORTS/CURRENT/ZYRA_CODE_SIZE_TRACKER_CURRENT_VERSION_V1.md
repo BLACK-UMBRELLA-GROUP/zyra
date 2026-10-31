@@ -545,3 +545,19 @@ Guardian One and Basic now open advice from Profile through the existing shared 
 | Old Pause / Restart files | 39 / 1 | 39 / 1 |
 
 Measured with SYSTEM/tools/blueprint/code_size.py (before = queue65). 204 distinct scoped cases across12 complete suite files pass, including34 new Guardian contract cases and6 actual Guardian viewport cases. Analyser, format and protected SDK checks pass. At430×932 with59/34pt insets, all copy/actions/footer fit unscrolled: emergency rect ends890, safe boundary898. Only Guardian lower spacing contracts16pt on short viewports; text/icons/rows remain shared, bottom SafeArea retained. At200% and320-wide, all content is reachable without overflow. Both x08/x09 normal/200% head/end captures and full-size master/build pairs are in UNITY_PASS/BUILT/V6 with source/render/metadata manifests and CASE_LEDGER.json. Existing native font/shadow/frame and responsive-gap differences are recorded in QA.json; no pixel-parity or whole-app claim. Wider65 failures not rerun/repaired; written scope refusal under OA-ZYRA-328. Ordinary member retirement remains OA-ZYRA-317; parent visual/contract review OA-ZYRA-328. No backend or native delivery.
+
+
+## Queue 69 — Journey Block/Hide LOCK16 V2 — 31 October 2026
+
+Added the locked warning to every person-level Hide/Block dispatcher for current preparing/active attempts. Keep/dismiss preserves state; Confirm synchronously ends the exact occupied attempt then hides/blocks, returns to Journey and shows the exact toast. Accepted Waiting retains its held other Journey. Reporting stays draft-only; Guardian connection Block is unchanged. Only the two authorised older Hidden Profiles strings changed. The new dev/zyra_draft_* presenter is counted in both developer/preview and Founder preview; no classifier change.
+
+| Scope | Before | After |
+|---|---:|---:|
+| All app code | 169,780 lines / 336 files | 170,170 lines / 337 files |
+| Developer/preview | 49,990 / 94 | 50,380 / 95 |
+| Founder planned app | 30,808 / 44 | 31,198 / 45 |
+| Tests | 218,462 / 515 | 219,553 / 518 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py. All 375 distinct cases across16 complete suites pass, including33 atomic model cases,28 real-route/ownership/feedback cases and17 actual-shell flow/render cases. Analyser, format and pinned SDK checks pass. b01–b03,4 Larger Text frames,3 full-size master/build pairs, contact sheet, source/input/render/metadata manifests and exact CASE_LEDGER are in JOURNEY_BLOCK_HIDE/BUILT/V2. QA records the native shared-surface/font/shadow/device-frame differences,21pt higher sheet edge, existing Journey layout and required transient toast. Parent visual/contract verification remains OA-ZYRA-328; no pixel-parity or whole-app pass claim. Known broader65 failures were not rerun or repaired; ordinary member retirement remains OA-ZYRA-317. No native delivery or backend work.

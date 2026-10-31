@@ -1,0 +1,37 @@
+{
+  "queue": 69,
+  "lock": "LOCK16 V2",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/BRIEFS/BUILD_BRIEF_2026-10-31_V2.md",
+      "bytes": 1934,
+      "sha256": "e3967bfa28fde806b97bbd6c54e472a5d3484ba11afca80fbadd6a07ae402b74"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/RECORD/LOCK_RECORD.md",
+      "bytes": 1333,
+      "sha256": "fcba9d4b5475b302d630f8d323500611e15dfcc797aa4f037ab56d196a310bbc"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/RECORD/JOURNEY_BLOCK_HIDE_SPEC_CURRENT_VERSION_V2.md",
+      "bytes": 3616,
+      "sha256": "98bbc0b50814075d38fa74dab3c63419567c2bfdaf74b6dc783bf4ebd2ef11cb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/MASTERS/b01_block_confirm.png",
+      "bytes": 591313,
+      "sha256": "bdb73f30a9c4792cd5fcf6b243e9276ea36cf55d0edd182d84152b3ddbe840b4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/MASTERS/b02_hide_confirm.png",
+      "bytes": 581954,
+      "sha256": "32334bacb59343d43ef0fb491ef468d29ee1d7ca4ae5c6be4cb93fc23ef16d76"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/MASTERS/b03_journey_tab_after.png",
+      "bytes": 1972233,
+      "sha256": "0a8e7fbf41439e606c5f06090ba2feb0d1c26df41c2ddb8a85a6f37a647eefa0"
+    }
+  ],
+  "scope": "Named pack only; designer-owned inputs left unstaged."
+}

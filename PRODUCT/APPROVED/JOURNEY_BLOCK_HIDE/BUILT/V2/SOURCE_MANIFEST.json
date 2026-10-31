@@ -1,0 +1,42 @@
+{
+  "source_commit": "0d05e65d64655de5acfc691ba2701a5421c8ae63",
+  "base_commit": "88427f418b96a506597aebda6081f4bd6ae0dfe5",
+  "source_allowlist": [
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_journey_block_hide_sheet.dart",
+      "bytes": 5770,
+      "sha256": "f5e2c47068af0258391033a43910cb36045a55319307465a288683cf68e7acd4"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 330447,
+      "sha256": "f74232e7f61de691f61cccb2a9542faf264b5d3ba4c1c8839601dd116017d616"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "bytes": 67864,
+      "sha256": "88376ff3f4afffd9c03259e67edbdf3b8ad8d2cdabdc338ed83dbcd5dcc38016"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/hidden_profiles_screen.dart",
+      "bytes": 14931,
+      "sha256": "9c5528176041eac19853d974bb94a029f63972e188e6ff8327f8afd30517eae3"
+    },
+    {
+      "path": "SOURCE/test/journey_block_hide_v2_model_test.dart",
+      "bytes": 10880,
+      "sha256": "bffbd8ca3cb8c4c9690c1952524f8a4e55faa7be27cc8af8922b36b19dbed919"
+    },
+    {
+      "path": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "bytes": 14922,
+      "sha256": "f6a07c1673cee37b709a3353b92d408c7870fbd173bc07312dad315b389227d5"
+    },
+    {
+      "path": "SOURCE/test/visual/lock16_journey_block_hide_v2_test.dart",
+      "bytes": 14405,
+      "sha256": "3e867bc404d50845132c6006185c73501051f713395378ef2cf4d8e3cfaa7e73"
+    }
+  ],
+  "scope": "Exact seven task-owned committed source/test files only. No configuration, credential or ignored local file was read or hashed."
+}

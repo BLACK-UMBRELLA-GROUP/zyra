@@ -1,0 +1,14 @@
+{
+  "queue": 69,
+  "feature": "Journey Block/Hide warning",
+  "lock": "LOCK16 V2",
+  "commit_sha": "0d05e65d64655de5acfc691ba2701a5421c8ae63",
+  "flutter_version": "3.44.2",
+  "build_mode": "flutter test / actual admitted Founder sample shell",
+  "target": "Flutter widget-test engine; iOS presentation; 430x932 logical pixels, DPR3",
+  "timestamp_utc": "2026-10-31T13:21:05.375975+00:00",
+  "native_build_install_upload": false,
+  "backend_or_report_send": false,
+  "source_manifest": "SOURCE_MANIFEST.json",
+  "case_ledger": "CASE_LEDGER.json"
+}
