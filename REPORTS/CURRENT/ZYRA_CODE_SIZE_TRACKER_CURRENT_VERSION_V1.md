@@ -617,15 +617,15 @@ The Seeker Guardian tab now uses Monogram front/access cards, Main/date order, p
 
 | Measure | Before | After |
 |---|---:|---:|
-| All app code | 170,567 / 337 | 172,045 / 339 |
-| Developer/preview | 50,782 / 95 | 52,152 / 97 |
-| Founder planned app | 31,604 / 45 | 32,974 / 47 |
-| Tests | 221,583 / 522 | 223,561 / 526 |
+| All app code | 170,567 / 337 | 172,102 / 339 |
+| Developer/preview | 50,782 / 95 | 52,199 / 97 |
+| Founder planned app | 31,604 / 45 | 33,021 / 47 |
+| Tests | 221,583 / 522 | 223,589 / 526 |
 | Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
 | Old Pause / Restart files | 39 / 1 | 39 / 1 |
 
 Measured with SYSTEM/tools/blueprint/code_size.py. Both new app files match the existing zyra_one_journey_* classifier and are counted in developer/preview and Founder categories; no classifier change. The replaced shell layout/caches are removed; the shared old member presenter stays because member routes still use it. The card adapter reuses existing inline Cancel/Confirm actions with a guard before haptics; affected LOCK3 and paid-agreement shell tests use the replacement presenter.
 
-Thirteen complete scoped suites: 161 passed, 3 wider Circle/Journey cases failed, no skipped cases; 12 suites pass completely. All new card/Family/actual-shell, paid-agreement, code-route lifetime, unread and LOCK3 cases pass. Analyser clean; 12-file format and pinned protected-driver checks pass. Actual k01–k19 captures and nineteen master/build pairs, 200%/320-point frames, separate real-shell samples and allowlisted manifests are in PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2. Golden count is unchanged; these are handover screenshots.
+Thirteen complete scoped suites: 161 passed, 3 wider Circle/Journey cases failed, no skipped cases; 12 suites pass completely. All new card/Family/actual-shell, paid-agreement, code-route lifetime, unread and LOCK3 cases pass. Analyser clean; 12-file format and pinned protected-driver checks pass. Actual k01–k19 captures and nineteen master/build pairs, 200%/320-point frames, separate real-shell samples and allowlisted manifests are in PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V2. Golden count is unchanged; these are handover screenshots. At320points/200%, the header and View/Chat/management controls stack and cards grow; rendered-line assertions keep Guardian, Ibrahim, View and Remove as whole words.
 
 QUEUE48-R1 (written refusal, OA-ZYRA-328): the Circle regression's Seeker and Guardian cases reach the unchanged Circle, send a message and retain the same Circle state, then cannot find its composer after existing page-option/held-pull steps (first source assertion test/guardian_circle_close_integration_test.dart:552, StateError No element). Guardian-role routing bypasses the replaced Seeker cards. A third case returns from Circle, navigates Journey tab 1 and expects three legacy “Awaiting a Journey” slots (:723); it finds zero. This task replaces Seeker Guardian tab 3, and does not change the Circle presentation/options or Journey-tab empty presentation. Cause is not claimed historical. Those wider repairs are refused in this row; exact diagnostics and changed-site analysis are in CASE_LEDGER/QA. The directly affected old access-heading assertion was migrated and passes. No whole-suite or full-screen pixel-equality claim; parent visual/contract review follows.

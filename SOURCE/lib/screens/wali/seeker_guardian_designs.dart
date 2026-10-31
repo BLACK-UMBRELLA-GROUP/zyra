@@ -1192,16 +1192,26 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
         onConfirm: _remove,
       ),
     ];
-    return widget.cardLayout
-        ? Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(child: actions.first),
-              const SizedBox(width: 8),
-              Expanded(child: actions.last),
-            ],
-          )
-        : Column(children: actions);
+    if (!widget.cardLayout) return Column(children: actions);
+    return LayoutBuilder(
+      builder: (context, box) {
+        if (box.maxWidth < 320 &&
+            MediaQuery.textScalerOf(context).scale(1) > 1.3) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [actions.first, const SizedBox(height: 8), actions.last],
+          );
+        }
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(child: actions.first),
+            const SizedBox(width: 8),
+            Expanded(child: actions.last),
+          ],
+        );
+      },
+    );
   }
 
   Widget _actionOrConfirmation({
@@ -1299,7 +1309,7 @@ class _ManageActionButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(24),
             child: Container(
               constraints: const BoxConstraints(minHeight: 42),
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
               alignment: Alignment.center,
               child: Text(
                 label,

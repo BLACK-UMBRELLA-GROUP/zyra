@@ -220,6 +220,18 @@ Future<void> _fixture(
   );
 }
 
+void _oneLine(WidgetTester tester, Finder finder) {
+  final text = tester.widget<Text>(finder);
+  final paragraph = tester.renderObject<RenderParagraph>(finder);
+  expect(
+    paragraph.getBoxesForSelection(
+      TextSelection(baseOffset: 0, extentOffset: text.data!.length),
+    ),
+    hasLength(1),
+    reason: 'Whole control word stays on one rendered line at200%',
+  );
+}
+
 void _noop(int _) {}
 
 void main() {
@@ -346,10 +358,26 @@ void main() {
       await _fixture(h, additional: true, guardianBasic: true, count: 3);
       t.view.physicalSize = const Size(960, 1920);
       await h.flush();
+      _oneLine(t, _key('guardian-manager-title'));
+      _oneLine(t, find.text('Ibrahim'));
       await h.tap('guardian-card-center');
+      _oneLine(
+        t,
+        find.descendant(
+          of: _key('guardian-card-view-$_ibrahim-draft-sara'),
+          matching: find.text('View'),
+        ),
+      );
       await _narrowCap(h, 'narrow_320_200_access_top');
       await t.ensureVisible(_key('guardian-remove'));
       await h.flush();
+      _oneLine(
+        t,
+        find.descendant(
+          of: _key('guardian-remove'),
+          matching: find.text('Remove'),
+        ),
+      );
       await _narrowCap(h, 'narrow_320_200_access_actions');
       await t.ensureVisible(_key('guardian-card-chat-$_ibrahim-draft-sara'));
       await h.flush();

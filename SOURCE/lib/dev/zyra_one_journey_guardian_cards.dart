@@ -309,27 +309,46 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Guardian',
-                    key: const ValueKey('guardian-manager-title'),
-                    style: ZyraText.pageTitle(),
-                  ),
-                ),
-                ZyraConversationUnreadBadge(
-                  unreadCount: widget.unread,
-                  backgroundColor: ZyraColors.brandGradient.colors.first,
-                  child: _round(
-                    'guardian-family-messages-top',
-                    Icons.forum_outlined,
-                    widget.onCircle,
-                  ),
-                ),
-                const SizedBox(width: 10),
-                _round('guardian-add-top', Icons.add, widget.onAdd),
-              ],
+            LayoutBuilder(
+              builder: (context, box) {
+                final title = Text(
+                  'Guardian',
+                  key: const ValueKey('guardian-manager-title'),
+                  style: ZyraText.pageTitle(),
+                );
+                final actions = Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ZyraConversationUnreadBadge(
+                      unreadCount: widget.unread,
+                      backgroundColor: ZyraColors.brandGradient.colors.first,
+                      child: _round(
+                        'guardian-family-messages-top',
+                        Icons.forum_outlined,
+                        widget.onCircle,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    _round('guardian-add-top', Icons.add, widget.onAdd),
+                  ],
+                );
+                if (box.maxWidth < 340 && scale > 1.3) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      title,
+                      const SizedBox(height: 8),
+                      Align(alignment: Alignment.centerRight, child: actions),
+                    ],
+                  );
+                }
+                return Row(
+                  children: [
+                    Expanded(child: title),
+                    actions,
+                  ],
+                );
+              },
             ),
             SizedBox(
               height: 24,
@@ -466,8 +485,8 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
   Widget _monogram(String name, {bool faded = false}) => Opacity(
     opacity: faded ? .55 : 1,
     child: Container(
-      width: 110,
-      height: 110,
+      width: 110 * math.min(1.5, MediaQuery.textScalerOf(context).scale(1)),
+      height: 110 * math.min(1.5, MediaQuery.textScalerOf(context).scale(1)),
       alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
@@ -518,7 +537,13 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
   }
 
   Widget _front(ZyraGuardianCardPerson person) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 34),
+    padding: EdgeInsets.symmetric(
+      horizontal:
+          MediaQuery.sizeOf(context).width < 360 &&
+              MediaQuery.textScalerOf(context).scale(1) > 1.3
+          ? 4
+          : 34,
+    ),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -713,17 +738,28 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _permission(person, journey, chat: false),
-                        ),
-                        const SizedBox(width: 6),
-                        Expanded(
-                          child: _permission(person, journey, chat: true),
-                        ),
-                      ],
-                    ),
+                    if (box.maxWidth < 300 &&
+                        MediaQuery.textScalerOf(context).scale(1) > 1.3)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          _permission(person, journey, chat: false),
+                          const SizedBox(height: 6),
+                          _permission(person, journey, chat: true),
+                        ],
+                      )
+                    else
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _permission(person, journey, chat: false),
+                          ),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: _permission(person, journey, chat: true),
+                          ),
+                        ],
+                      ),
                   ],
                 ),
               ),
@@ -821,7 +857,13 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
   }
 
   Widget _invited() => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 34),
+    padding: EdgeInsets.symmetric(
+      horizontal:
+          MediaQuery.sizeOf(context).width < 360 &&
+              MediaQuery.textScalerOf(context).scale(1) > 1.3
+          ? 18
+          : 34,
+    ),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -849,7 +891,12 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     ),
   );
   Widget _add() => Padding(
-    padding: const EdgeInsets.all(34),
+    padding: EdgeInsets.all(
+      MediaQuery.sizeOf(context).width < 360 &&
+              MediaQuery.textScalerOf(context).scale(1) > 1.3
+          ? 18
+          : 34,
+    ),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
