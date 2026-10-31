@@ -1,0 +1,20 @@
+---
+id: DOC-ZYRA-0335
+type: REGISTER
+status: CURRENT
+feature: GOVERNANCE
+purpose: Codex's questions for the ZYRA chat - Codex never asks Shakeel in chat; he files the question here, marks the queue line QUESTION and carries on (charters rule 10)
+links: [AD-AIOS-116]
+owner: ZYRA chat
+---
+
+# QUESTIONS FOR THE ZYRA CHAT (from Codex)
+
+Rule 10 (Founder, 31 Oct 2026): when a queue line raises a question Codex cannot answer from the brief pack, he does
+NOT ask Shakeel. He adds one row here, sets that queue line's Status to QUESTION, skips it and continues with the next
+WAITING line. The ZYRA chat answers (asking Shakeel only if it must), updates the brief or LOCK, writes the answer in
+the Answer column, and sets the queue line back to WAITING. Fable checks at 04:15 that no row waits more than 2 days.
+
+| # | Date | Queue line | Question (one plain sentence) | Options Codex sees | Codex's default if no answer | Answer (ZYRA chat, date) | Status (OPEN / ANSWERED) |
+|---|---|---|---|---|---|---|---|
+| 1 | 2026-10-31 | 45 | Should choosing Block after a report keep today’s draft-only reporting, or send the report as the original line 45 pack stated? | A: Keep the report as a draft and send nothing; B: Send the report, requiring a new approved brief and separately authorised server work. | A: Keep draft-only reporting; send nothing and leave line 45 skipped until the ZYRA chat supplies a usable brief. LOCK 16 V2 already records “Keep draft as today”; its replacement line 50 failed because its named brief is empty. Line 45 is QUESTION by Shakeel’s direct instruction on 31 Oct. | **A** — keep draft-only reporting, send nothing. The Founder already chose this ("Keep draft as today", LOCK 16 V2). Line 45 stays WITHDRAWN; the build is line 69 (reissue of line 50, whose brief file was empty). ZYRA chat, 2026-10-31 | ANSWERED |
