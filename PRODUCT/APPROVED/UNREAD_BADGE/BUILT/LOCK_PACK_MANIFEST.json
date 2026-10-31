@@ -1,0 +1,26 @@
+{
+  "queue": 46,
+  "lock": 17,
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/UNREAD_BADGE/BRIEFS/BUILD_BRIEF_2026-10-31.md",
+      "bytes": 1087,
+      "sha256": "de9ef3690d570ad968acbe246bf948fe38d201810c3bb97c4ef3c50fc2804926"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNREAD_BADGE/RECORD/LOCK_RECORD.md",
+      "bytes": 646,
+      "sha256": "ad0c9645a74c8ea85fd6a28b156c32e3fe9657633c89a5bb4686e93e9ca66939"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNREAD_BADGE/RECORD/UNREAD_BADGE_SPEC_CURRENT_VERSION_V1.md",
+      "bytes": 1270,
+      "sha256": "9b0f77eb12b5dca84cb814c0fec3287fcbb3fa23a4727e3df3c2a26d99a839d1"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNREAD_BADGE/MASTERS/u01_guardian_tab_circle_unread.png",
+      "bytes": 750006,
+      "sha256": "6042c408eae203a2f22997a02f87ff32dd3b9968814c68081b4c6e3993892a6e"
+    }
+  ]
+}

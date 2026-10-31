@@ -1,0 +1,91 @@
+{
+  "queue": 46,
+  "source_commit": "2ba7c0f7d4546774c41f70ab900118f40a511458",
+  "base_commit": "856fbc98137948095eeaa10e03d64e90956cc5f3",
+  "source_allowlist_only": [
+    {
+      "path": "SOURCE/lib/dev/zyra_conversation_unread_badge.dart",
+      "bytes": 2521,
+      "sha256": "bc6e10f0a9322a617793fc7870989063f06b6eac105af3766af6806785e0e84a"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 314779,
+      "sha256": "2a94db7e4690182d8c869eb32a26bad6b10a946aa61d744db0100d4a328296b3"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_preview_navigation_checkpoint.dart",
+      "bytes": 8003,
+      "sha256": "277c4333a7768d42134860e6c931dd742668db88d78eb2c8fca83dae27897d08"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/seeker_guardian_designs.dart",
+      "bytes": 94485,
+      "sha256": "153c66da206894b5ce139d4f1c29e4b325f9da880ff23de35326666f3fe4b287"
+    },
+    {
+      "path": "SOURCE/test/zyra_conversation_unread_badge_test.dart",
+      "bytes": 4851,
+      "sha256": "fc0443d6b750e4d0cf9751b4e240708d45fb495966871d370e2a6b7e127f6a80"
+    },
+    {
+      "path": "SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "bytes": 10494,
+      "sha256": "d5155111645bb3bd51fd71bdc77a70cf2e9210ae54e494450571a13b5578a3aa"
+    },
+    {
+      "path": "SOURCE/test/visual/lock17_unread_badge_capture_test.dart",
+      "bytes": 7069,
+      "sha256": "39d492efa80fa5c703e1c58243e3d015f11d30c3196f32f894fa7929a914aee1"
+    },
+    {
+      "path": "SYSTEM/tools/blueprint/code_size.py",
+      "bytes": 2469,
+      "sha256": "8e4a49b4bda2c17285b5c94a20972c28e3843700d2b16bcb090636390891ed90"
+    },
+    {
+      "path": "REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md",
+      "bytes": 41446,
+      "sha256": "3b858216aefe4168ee9ac98d83cf29544f6af241d4b851815da890d121cbd9f9"
+    }
+  ],
+  "renders": [
+    {
+      "path": "PRODUCT/APPROVED/UNREAD_BADGE/BUILT/u01_guardian_tab_circle_unread.png",
+      "bytes": 594235,
+      "sha256": "390da9c3f496df5be2078143593b1459d089b4b92e2b2d626bd259c5e87d7acc"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNREAD_BADGE/BUILT/u01_master_beside_build.png",
+      "bytes": 1148035,
+      "sha256": "d9ebbca432609509477de3bd3fbb494155e2b234218f37c78d069edf30bbf8cf"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNREAD_BADGE/BUILT/u02_guardian_tab_circle_read.png",
+      "bytes": 594194,
+      "sha256": "9d331359ee86065478f7b8642523e8ca3ce2e6f2d7a5e18c1ec877c2fbd9f398"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNREAD_BADGE/BUILT/u03_no_guardian.png",
+      "bytes": 323644,
+      "sha256": "e1fe22a60ee0f6c636b0a53b0eee9306f3037c21c4a38bfeefeaf14845c45be3"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNREAD_BADGE/BUILT/u04_guardian.png",
+      "bytes": 395287,
+      "sha256": "40dfcd6f2819db8e1466ee6ee863068273ea23c7afae2256034e644eddb0aeff"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNREAD_BADGE/BUILT/u05_guardian_tab_text_scale_1_3.png",
+      "bytes": 622710,
+      "sha256": "f1ef5f077183649129250a8013f46ccf33ff65ccd989d5945855289bbe57cc50"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNREAD_BADGE/BUILT/u06_component_count_boundaries.png",
+      "bytes": 34427,
+      "sha256": "4db48436a6328baf33396700d9ba4d6034f57c9156d867e8b0a0e0cd52e0bc00"
+    }
+  ],
+  "pack_manifest": "LOCK_PACK_MANIFEST.json",
+  "excludes": "No config, credential, ignored local settings, build output or unrelated source scanned/hashed."
+}

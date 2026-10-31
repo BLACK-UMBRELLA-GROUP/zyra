@@ -1,0 +1,833 @@
+{
+  "queue": 46,
+  "source_commit": "2ba7c0f7d4546774c41f70ab900118f40a511458",
+  "final_targeted": {
+    "passed": 139,
+    "failed": 0,
+    "cases": [
+      {
+        "file": "test/zyra_conversation_unread_badge_test.dart",
+        "case": "zero and negative counts have no bubble",
+        "result": "success"
+      },
+      {
+        "file": "test/zyra_conversation_unread_badge_test.dart",
+        "case": "counts one through nine show their actual number",
+        "result": "success"
+      },
+      {
+        "file": "test/zyra_conversation_unread_badge_test.dart",
+        "case": "ten and larger counts show 9+ with the actual semantic count",
+        "result": "success"
+      },
+      {
+        "file": "test/zyra_conversation_unread_badge_test.dart",
+        "case": "bubble uses locked size, type, colours, radius and page ring",
+        "result": "success"
+      },
+      {
+        "file": "test/zyra_conversation_unread_badge_test.dart",
+        "case": "wide count keeps 16 height and minimum 16 width",
+        "result": "success"
+      },
+      {
+        "file": "test/zyra_conversation_unread_badge_test.dart",
+        "case": "bubble is offset minus three from the button top and right",
+        "result": "success"
+      },
+      {
+        "file": "test/zyra_conversation_unread_badge_test.dart",
+        "case": "badge preserves the conversation tap and clears with its count",
+        "result": "success"
+      },
+      {
+        "file": "test/lock17_circle_unread_integration_test.dart",
+        "case": "badge entry preserves the actual Circle composer and local send (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "main empty marks and linked-summary copy actual frames",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "Past summaries copy uses uncle record, never Amina inference",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "Past summaries copy uses mother record, never Ibrahim inference",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "Past summaries copy uses null record, never Yusuf inference",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "Past summaries copy uses cousin record, never Maryam inference",
+        "result": "success"
+      },
+      {
+        "file": "test/lock17_circle_unread_integration_test.dart",
+        "case": "real Circle count clears only its own read facts and survives restore (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "Past summaries copy uses uncle-like record, never Ali inference",
+        "result": "success"
+      },
+      {
+        "file": "test/visual/lock17_unread_badge_capture_test.dart",
+        "case": "LOCK17 u01 u02: existing Circle unread clears only when opened (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "recorded role relationship and continuous link dates stay truthful",
+        "result": "success"
+      },
+      {
+        "file": "test/lock17_circle_unread_integration_test.dart",
+        "case": "Focus consumption cannot mark a Circle message read (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "Main Guardian with missing metadata shows role only and Not recorded date",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "manager Main Guardian omits unknown relationship without inventing a date",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "Additional Guardian with missing metadata shows role only and Not recorded date",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "manager Additional Guardian omits unknown relationship without inventing a date",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "1 Guardian pages stay clear of the resting and touched nav",
+        "result": "success"
+      },
+      {
+        "file": "test/visual/lock17_unread_badge_capture_test.dart",
+        "case": "LOCK17 u03: no linked Guardian has no Circle unread bubble (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "2 Guardian pages stay clear of the resting and touched nav",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "3 Guardian pages stay clear of the resting and touched nav",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "loading unavailable and retry copy survive the removal of steady copy",
+        "result": "success"
+      },
+      {
+        "file": "test/lock17_circle_unread_integration_test.dart",
+        "case": "opening from Focus also clears the current Circle only (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "Main View locks and unavailable Chat remain enforced and explained",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "unavailable links remain a failure with a working retry, not an empty state",
+        "result": "success"
+      },
+      {
+        "file": "test/focus_shell_guards_test.dart",
+        "case": "dated local endings appear once; undated history creates no event (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/visual/lock17_unread_badge_capture_test.dart",
+        "case": "LOCK17 u04: Guardian role adds no unsupported count (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/lock17_circle_unread_integration_test.dart",
+        "case": "no current Guardian link means zero, regardless of Focus fixture (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "200 percent short-page controls remain reachable without new UI policy",
+        "result": "success"
+      },
+      {
+        "file": "test/lock17_circle_unread_integration_test.dart",
+        "case": "an already-read different sender cannot clear current sender (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/seeker_guardian_page_polish_test.dart",
+        "case": "retained Additional preview control denies changes after revocation",
+        "result": "success"
+      },
+      {
+        "file": "test/focus_shell_guards_test.dart",
+        "case": "equal-time event kinds keep a stable order after restore (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/visual/lock17_unread_badge_capture_test.dart",
+        "case": "LOCK17 u05: actual Guardian tab at 430 and text scale 1.3 (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/lock17_circle_unread_integration_test.dart",
+        "case": "retained Circle callback expires after controls changes (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/visual/lock17_unread_badge_capture_test.dart",
+        "case": "LOCK17 isolated component count boundaries and external ring (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/focus_shell_guards_test.dart",
+        "case": "a retained request action cannot navigate after another page and return (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/lock17_circle_unread_integration_test.dart",
+        "case": "retained Circle callback expires after navigation changes (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/focus_shell_guards_test.dart",
+        "case": "Guardian Focus actions expire after developer controls open and close (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/focus_shell_guards_test.dart",
+        "case": "Seeker retained Focus actions refuse account A-B-A (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/lock17_circle_unread_integration_test.dart",
+        "case": "retained Circle callback expires after role changes (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/focus_shell_guards_test.dart",
+        "case": "Guardian retained Focus actions refuse account A-B-A (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/lock17_circle_unread_integration_test.dart",
+        "case": "retained Circle callback expires after account changes (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/lock17_circle_unread_integration_test.dart",
+        "case": "retained Circle callback expires after link changes (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/family_circle_preview_authority_test.dart",
+        "case": "raw Circle preview request cannot create Developer Access",
+        "result": "success"
+      },
+      {
+        "file": "test/focus_shell_guards_test.dart",
+        "case": "Guardian Journey opening consumes review through countdown but a new decision returns it (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/family_circle_preview_authority_test.dart",
+        "case": "raw inbox preview request cannot seed sample Circles",
+        "result": "success"
+      },
+      {
+        "file": "test/lock17_circle_unread_integration_test.dart",
+        "case": "restoring an open reader clears its messages, without another account fact (variant: TargetPlatform.iOS)",
+        "result": "success"
+      },
+      {
+        "file": "test/family_circle_preview_authority_test.dart",
+        "case": "stale context/send callbacks and delayed local send are denied",
+        "result": "success"
+      },
+      {
+        "file": "test/family_circle_preview_authority_test.dart",
+        "case": "switch-to-live withdraws preview without starting live messaging",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "fresh window and inactive-only interruptions restore",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "background duration 0:00:03.000000 restores=true",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "background duration 0:14:59.999000 restores=true",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "background duration 0:15:00.000000 restores=false",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "background duration 0:15:00.000001 restores=false",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "background duration 3:00:00.000000 restores=false",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "duplicate background events do not restart the first departure",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "long inactive sheet followed by a short background still restores",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "background without inactive starts a fresh departure",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "a backward clock resets rather than restoring a stale location",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "checkpoint snapshots all supplied collections defensively",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "Focus checkpoint defaults and bounds do not infer consumed activity",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "page and Browse-history lists remain bounded",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "photo and gallery maps are separate bounded snapshots",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "legacy checkpoints have no inferred gallery page",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "informational checkpoint subjects are detached identifiers only",
+        "result": "success"
+      },
+      {
+        "file": "test/family_circle_preview_authority_test.dart",
+        "case": "retained selected-person chip denies after context withdrawal",
+        "result": "success"
+      },
+      {
+        "file": "test/family_circle_preview_authority_test.dart",
+        "case": "an opened members sheet clears on authorization revocation",
+        "result": "success"
+      },
+      {
+        "file": "test/family_circle_preview_authority_test.dart",
+        "case": "an opened readers sheet clears on authorization revocation",
+        "result": "success"
+      },
+      {
+        "file": "test/family_circle_preview_authority_test.dart",
+        "case": "an opened context sheet clears on authorization revocation",
+        "result": "success"
+      },
+      {
+        "file": "test/family_circle_preview_authority_test.dart",
+        "case": "account generation clears an already-open readers sheet",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "position bucket stores only finite bounded double offsets",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "explicit identifiers reject object or invalid keys",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "object PageStorage key cannot become retained state",
+        "result": "success"
+      },
+      {
+        "file": "test/family_circle_preview_authority_test.dart",
+        "case": "revocation removes only the stale Circle route",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "new bucket copies scalars without reviving the old write guard",
+        "result": "success"
+      },
+      {
+        "file": "test/preview_navigation_checkpoint_test.dart",
+        "case": "initial scalar data is copied filtered and bounded to 64 entries",
+        "result": "success"
+      },
+      {
+        "file": "test/family_circle_preview_authority_test.dart",
+        "case": "removing the Circle owner withdraws its open members sheet",
+        "result": "success"
+      },
+      {
+        "file": "test/family_circle_preview_authority_test.dart",
+        "case": "removing the Circle owner withdraws its open readers sheet",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "fresh shell resumes seeker tab 0 from its captured value",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "fresh shell resumes seeker tab 1 from its captured value",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "fresh shell resumes seeker tab 2 from its captured value",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "fresh shell resumes seeker tab 3 from its captured value",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "fresh shell resumes seeker tab 4 from its captured value",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "request section 0 survives a fresh shell",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "request section 1 survives a fresh shell",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "request section 2 survives a fresh shell",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "standalone Introductions survives a fresh shell independently",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Past request checkpoint stays on Requests without remapping to Introductions",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "long absence resets location but retains all three Journeys",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "completed read-only Journey paths retain their exact subject",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "hidden inspection resumes with read-only parent ownership",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "hidden-origin checkpoint refuses no-longer-hidden profile inspection",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "hidden-origin checkpoint refuses blocked profile inspection",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Seeker resumes an informational overview without inventing a detail",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Seeker resumes informational signInSecurity/recovery with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Seeker resumes informational appLock/appLock with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Seeker resumes informational advanced/deleteAccount with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Seeker resumes informational advanced/resetProfile with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Seeker resumes informational visibility/discovery with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Seeker resumes informational hiddenProfiles/hiddenProfiles with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Seeker resumes informational notificationSettings/notifications with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Seeker resumes informational feedback/feedback with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Seeker resumes informational privacyData/privacyPolicy with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Seeker resumes informational privacyData/terms with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Seeker recreates Help without retaining its old query or callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Seeker long return drops informational destinations and subjects",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Guardian resumes an informational overview without inventing a detail",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Guardian resumes informational signInSecurity/recovery with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Guardian resumes informational appLock/appLock with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Guardian resumes informational advanced/deleteAccount with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Guardian resumes informational advanced/resetProfile with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Guardian resumes informational visibility/discovery with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Guardian resumes informational guardianPrivacy/discovery with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Guardian resumes informational notificationSettings/notifications with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Guardian resumes informational feedback/feedback with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Guardian resumes informational privacyData/privacyPolicy with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Guardian resumes informational privacyData/terms with fresh callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Guardian recreates Help without retaining its old query or callbacks",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Guardian long return drops informational destinations and subjects",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "unsafe informational IDs parents roles and siblings collapse safely",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Seeker resumes only a fresh EditProfile hub, not private editor state",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "unsafe editors camera and confirmations collapse safely",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "fresh Seeker owner restores Photos without borrowing its old editor",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "fresh Guardian owner restores Photos without borrowing its old editor",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "long Guardian return resets navigation to My ZYRA",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "a checkpoint for a different role is ignored, not borrowed",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Browse restores history and gallery on first prepared frame",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "legacy photo checkpoints open Browse details without remapping",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "Details-first gallery resumes without shifting actual photo ordinals",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "restored gallery pages require known IDs and bounded ordinals",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "profile leaf resumes its photo on the first prepared frame",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "fresh generic page restores the exact scrolled position",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "restored peer Guardians never becomes own management",
+        "result": "success"
+      },
+      {
+        "file": "test/one_journey_resume_checkpoint_test.dart",
+        "case": "fresh denial rejects retained actions and publications",
+        "result": "success"
+      }
+    ]
+  },
+  "selected_actual_owner_guards": [
+    {
+      "passed": 2,
+      "failed": 0,
+      "cases": [
+        {
+          "file": "test/guardian_circle_close_integration_test.dart",
+          "case": "Seeker retained interior selector cannot survive authorization ABA",
+          "result": "success"
+        },
+        {
+          "file": "test/guardian_circle_close_integration_test.dart",
+          "case": "Guardian retained interior selector cannot survive authorization ABA",
+          "result": "success"
+        }
+      ]
+    },
+    {
+      "passed": 3,
+      "failed": 0,
+      "cases": [
+        {
+          "file": "test/request_shell_titles_circle_test.dart",
+          "case": "developer revocation closes the shell rather than restoring old icon choices",
+          "result": "success"
+        },
+        {
+          "file": "test/request_shell_titles_circle_test.dart",
+          "case": "replacing the Circle owner guard denies instead of adopting it",
+          "result": "success"
+        },
+        {
+          "file": "test/request_shell_titles_circle_test.dart",
+          "case": "legacy supplied Circle canSend false remains read-only",
+          "result": "success"
+        }
+      ]
+    }
+  ],
+  "analyzer": "Analyzing SOURCE...                                             \nNo issues found! (ran in 4.6s)",
+  "format": "7 task-owned Dart files, zero changes, exit0",
+  "protected_sdk": {
+    "flutter": "3.44.2",
+    "pins": 5,
+    "git_exec_denial": "PASS",
+    "inherited_exec_denial": "PASS"
+  },
+  "commands": [
+    "node tooling/no_git_driver.mjs flutter test --no-pub --dart-define=ZYRA_LOCK17_CAPTURE=true [eight complete suites in final_targeted] --reporter json",
+    "node tooling/no_git_driver.mjs flutter test --no-pub test/guardian_circle_close_integration_test.dart --plain-name \"retained interior selector cannot survive authorization ABA\"",
+    "node tooling/no_git_driver.mjs flutter test --no-pub test/request_shell_titles_circle_test.dart --name \"developer revocation|replacing the Circle owner|legacy supplied\"",
+    "node tooling/no_git_driver.mjs flutter analyze --no-pub",
+    "node tooling/no_git_driver.mjs dart format --output=none --set-exit-if-changed [seven task Dart files]"
+  ],
+  "wider_results": "REGRESSION_LIMITS.json:29 founder_launch_review,5 request_shell_titles_circle,3 guardian_circle_close failures; exact cases/assertions and Circle triage included. No wider pass claimed. Existing OA-ZYRA-328 linkage and written refusals.",
+  "visual_comparison": "BADGE_GEOMETRY.json: master and corrected build exact gold bbox46x46px at3x; original34px ring error corrected. Six current renders plus comparison. u06 is a component fixture.",
+  "remaining_failure_groups": [
+    {
+      "file": "test/founder_launch_review_test.dart",
+      "failed": 29,
+      "cases": [
+        "overview_advanced Seeker normal is an internal-only non-executing specification hold",
+        "overview_advanced Seeker compact200 is an internal-only non-executing specification hold",
+        "detail_resetProfile Seeker normal is an internal-only non-executing specification hold",
+        "detail_resetProfile Seeker compact200 is an internal-only non-executing specification hold",
+        "detail_deleteAccount Seeker normal is an internal-only non-executing specification hold",
+        "detail_deleteAccount Seeker compact200 is an internal-only non-executing specification hold",
+        "overview_advanced Guardian normal is an internal-only non-executing specification hold",
+        "overview_advanced Guardian compact200 is an internal-only non-executing specification hold",
+        "detail_resetProfile Guardian normal is an internal-only non-executing specification hold",
+        "detail_resetProfile Guardian compact200 is an internal-only non-executing specification hold",
+        "detail_deleteAccount Guardian normal is an internal-only non-executing specification hold",
+        "detail_deleteAccount Guardian compact200 is an internal-only non-executing specification hold",
+        "Seeker overview_privacyData 393pxnormal is white readable and accessible",
+        "Seeker overview_privacyData 320px200% is white readable and accessible",
+        "Seeker detail_privacyPolicy 393pxnormal is white readable and accessible",
+        "Seeker detail_privacyPolicy 320px200% is white readable and accessible",
+        "Seeker detail_terms 393pxnormal is white readable and accessible",
+        "Seeker detail_terms 320px200% is white readable and accessible",
+        "Guardian overview_privacyData 393pxnormal is white readable and accessible",
+        "Guardian overview_privacyData 320px200% is white readable and accessible",
+        "Guardian detail_privacyPolicy 393pxnormal is white readable and accessible",
+        "Guardian detail_privacyPolicy 320px200% is white readable and accessible",
+        "Guardian detail_terms 393pxnormal is white readable and accessible",
+        "Guardian detail_terms 320px200% is white readable and accessible",
+        "Seeker button actual shell white canvas status return and theme restoration",
+        "Seeker edge actual shell white canvas status return and theme restoration",
+        "Guardian button actual shell white canvas status return and theme restoration",
+        "Guardian edge actual shell white canvas status return and theme restoration",
+        "old white-page Help callback cannot act after owner loss or fresh mount"
+      ]
+    },
+    {
+      "file": "test/request_shell_titles_circle_test.dart",
+      "failed": 5,
+      "cases": [
+        "all five actual Seeker tabs share title typography and top-left position",
+        "1 occupied Journeys keep the same title as the empty tab",
+        "2 occupied Journeys keep the same title as the empty tab",
+        "3 occupied Journeys keep the same title as the empty tab",
+        "empty request Circle has fictional Current names, not new Journeys"
+      ]
+    },
+    {
+      "file": "test/guardian_circle_close_integration_test.dart",
+      "failed": 3,
+      "cases": [
+        "Seeker the selected interior retains the exact conversation, then button and edge return once",
+        "Guardian the selected interior retains the exact conversation, then button and edge return once",
+        "empty Journey slots retain theme and canonical Couple navigation after Circle return"
+      ]
+    }
+  ],
+  "circle_control_triage": {
+    "cases": [
+      "Seeker the selected interior retains the exact conversation, then button and edge return once",
+      "Guardian the selected interior retains the exact conversation, then button and edge return once"
+    ],
+    "failure_point": "guardian_circle_close_integration_test.dart line552: composer TextField absent after choosing current appearance; before pull already zero TextFields and zero preview route boundaries.",
+    "observed_outer_guard": true,
+    "observed_foreground": true,
+    "observed_visibility": true,
+    "observed_can_send_fixture": true,
+    "data_identity_retained": true,
+    "diagnostic_without_badge_and_read_clearing": "Same two failures at line552. Only task calls/decorator temporarily disabled in memory; source restored in finally, no source backup written. Not an exact baseline checkout.",
+    "finding": "The retained Circle renders no children after the current appearance selection, while its outer guard is true and its data is unchanged. The Circle build gate suggests an earlier irreversible caller denial; the precise transient cause is not proven. Both failures also reproduce without LOCK17 badge decoration or read clearing.",
+    "written_refusal": "Do not change retained Circle admission/control semantics as part of unread badge LOCK17; retain exact failure cases under OA-ZYRA-328 for parent/design review."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "queue": 46,
+  "lock": 17,
+  "implemented_conversation_icons": [
+    {
+      "entry": "Seeker Guardian tab header: guardian-family-messages-top",
+      "count_source": "Same _currentCircleData() caller-owned immutable fixture as the actual Circle reader, filtered by unreadForMe after conversation+viewer+message+sender read keys.",
+      "current_count": 1,
+      "scope": "current admitted shell account, role, seeker Circle and linked participants only"
+    }
+  ],
+  "unsupported_or_excluded": [
+    {
+      "entry": "Guardian Seekers Circle entry",
+      "reason": "Full text conversation button, current Guardian fixture has zero unreadForMe messages; no icon count added."
+    },
+    {
+      "entry": "Guardian private chat and Journey chat icons",
+      "reason": "Fixed/local transcript strings contain no existing unread-count metadata; no count created."
+    },
+    {
+      "entry": "Guardian Network Connect, request icons, Focus events and notifications",
+      "reason": "These counts indicate requests or notifications, not unread conversation messages."
+    },
+    {
+      "entry": "Circle Discuss a Journey icon and topic/archive buttons",
+      "reason": "These choose a topic or open profile/summary content within an already open conversation; they do not supply a separate unread conversation count."
+    }
+  ],
+  "read_lifetime": "Bounded memory checkpoint carries only read keys, separate from Focus consumption. Host account admission/ownership remains unchanged. Newly issued header delegate uses current() backed by account generation, role, navigation revision, developer control epoch, outer navigator revision and current route. Stale ABA callback tests pass.",
+  "fixture_limits": [
+    "Local Founder sample data only; no live server unread adapter or transport.",
+    "Master u01 illustrates count2; existing admitted Seeker fixture has exactly one unread response. Count1 retained honestly.",
+    "Guardian fixture supplies no unread messages. New user/account checkpoint starts from the original fixture; this is no server read receipt."
+  ],
+  "visual_limits": [
+    "Current Guardian page composition, font glyphs, header button size/spacing, permission circles and bottom page dots are inherited. u01 prototype shows page dots above the card; queue47 owns moving them.",
+    "LOCK17 badge styling and external ring only. No prototype parity claim for surrounding Guardian layout.",
+    "No physical iPhone capture/build/install or upload. Headless430x932@3x actual shell renders;1.3textscale covered.",
+    "u06 component-count fixtures0/1/9/10 exercise sizing and capping separately; they do not invent a Circle count."
+  ],
+  "finding_disposition": {
+    "remaining_regression_failures": "REGRESSION_LIMITS.json gives exact37 cases and written refusals under existing OA-ZYRA-328.",
+    "ring_review": "Parent measured initial34px gold interior vs46px master. Corrected gold16pt plus external2pt ring; measured results in BADGE_GEOMETRY.json."
+  }
+}

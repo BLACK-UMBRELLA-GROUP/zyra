@@ -1,0 +1,33 @@
+{
+  "queue": 46,
+  "lock": 17,
+  "status": "BUILT_WITH_DISCLOSED_REGRESSION_LIMITS",
+  "source_commit": "2ba7c0f7d4546774c41f70ab900118f40a511458",
+  "flutter": "3.44.2",
+  "mode": "headless Flutter widget-test raster",
+  "target": "offline Founder shell, iOS rendering,430x932@3x",
+  "timestamp_utc": "2026-10-31T08:52:09.877756+00:00",
+  "evidence": "Screenshots, JSON and this text BUILD only. No compiled artifacts/source copies.",
+  "source_render_manifest": "SOURCE_RENDER_MANIFEST.json",
+  "validation": "VALIDATION.json",
+  "source_limits": "SOURCE_LIMITS.json",
+  "geometry": "BADGE_GEOMETRY.json",
+  "review": "Parent reviewed u01/u02 and requested outside ring; quantitative correction supplied for verification.",
+  "startup": {
+    "primary_governing_bytes": 75442,
+    "primary_kib": 73.67,
+    "includes_overlap_recovery_bytes": 10236,
+    "master_png_bytes": 750006,
+    "helper": "badge_widget",
+    "helper_text_bytes": 48099,
+    "helper_kib": 46.97,
+    "helper_tokens": "not exposed",
+    "primary_tokens": "not exposed"
+  },
+  "disk": {
+    "free_bytes": 89330032640,
+    "png_bytes": 3712532,
+    "shared_build_cache": "Remains under SOURCE/build; no compiled copy in evidence.",
+    "scratch_destination": "/Users/shakeelahmad/_to_delete/ZYRA_QUEUE46_UNREAD_BADGE_2026-10-31/work"
+  }
+}

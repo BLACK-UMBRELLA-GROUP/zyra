@@ -1,0 +1,63 @@
+{
+  "method": "Bounding box of all exact RGB #C08A3A pixels within header ROI [900,150,1200,380], at3x. Antialias boundary excluded. Component probes use four equal-width screen columns, y1100..1650.",
+  "master": {
+    "bbox": [
+      1042,
+      217,
+      1088,
+      263
+    ],
+    "width_px": 46,
+    "height_px": 46,
+    "exact_gold_pixels": 1495
+  },
+  "build": {
+    "bbox": [
+      1012,
+      217,
+      1058,
+      263
+    ],
+    "width_px": 46,
+    "height_px": 46,
+    "exact_gold_pixels": 1570
+  },
+  "isolated_component_count_probe": {
+    "0": null,
+    "1": {
+      "bbox": [
+        535,
+        1395,
+        582,
+        1443
+      ],
+      "width_px": 47,
+      "height_px": 48,
+      "exact_gold_pixels": 1629
+    },
+    "9": {
+      "bbox": [
+        822,
+        1395,
+        869,
+        1443
+      ],
+      "width_px": 47,
+      "height_px": 48,
+      "exact_gold_pixels": 1476
+    },
+    "10": {
+      "bbox": [
+        1092,
+        1395,
+        1156,
+        1443
+      ],
+      "width_px": 64,
+      "height_px": 48,
+      "exact_gold_pixels": 2133
+    }
+  },
+  "review_correction": "Initial parent measurement: master46px high, build34px. Gold shape now16pt plus external2pt zero-blur page-background spread. Preview-only action paint ordering prevents Add shadow overpainting; ordinary member header ordering retained.",
+  "geometry_contract": "Gold height16pt/minWidth16pt/padding horizontal4/radius8. Ring external2pt. Gold top/right -3pt relative to child button; tested by layout rectangles. u06 tests capping at9+ separately from real Circle count1."
+}
