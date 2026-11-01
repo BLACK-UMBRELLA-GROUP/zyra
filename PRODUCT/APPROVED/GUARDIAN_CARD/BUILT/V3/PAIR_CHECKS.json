@@ -1,0 +1,128 @@
+[
+  {
+    "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k20_normal__master_beside_build.png",
+    "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k20_guardian_basic__family_offer_needs_you.png",
+    "build": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k20_normal.png",
+    "master_size": [
+      1290,
+      2796
+    ],
+    "build_size": [
+      1290,
+      2796
+    ],
+    "build_pixels_preserved": true
+  },
+  {
+    "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k21_normal__master_beside_build.png",
+    "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k21_guardian_basic__family_offer_page.png",
+    "build": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k21_normal.png",
+    "master_size": [
+      1290,
+      2796
+    ],
+    "build_size": [
+      1290,
+      2796
+    ],
+    "build_pixels_preserved": true
+  },
+  {
+    "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k22_normal__master_beside_build.png",
+    "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k22_guardian__family_place_profile.png",
+    "build": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k22_normal.png",
+    "master_size": [
+      1290,
+      2796
+    ],
+    "build_size": [
+      1290,
+      2796
+    ],
+    "build_pixels_preserved": true
+  },
+  {
+    "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k20_larger_top__master_beside_build.png",
+    "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k20_guardian_basic__family_offer_needs_you.png",
+    "build": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k20_larger_top.png",
+    "master_size": [
+      1290,
+      2796
+    ],
+    "build_size": [
+      1170,
+      2532
+    ],
+    "build_pixels_preserved": true
+  },
+  {
+    "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k20_larger_actions__master_beside_build.png",
+    "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k20_guardian_basic__family_offer_needs_you.png",
+    "build": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k20_larger_actions.png",
+    "master_size": [
+      1290,
+      2796
+    ],
+    "build_size": [
+      1170,
+      2532
+    ],
+    "build_pixels_preserved": true
+  },
+  {
+    "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k21_larger_top__master_beside_build.png",
+    "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k21_guardian_basic__family_offer_page.png",
+    "build": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k21_larger_top.png",
+    "master_size": [
+      1290,
+      2796
+    ],
+    "build_size": [
+      1170,
+      2532
+    ],
+    "build_pixels_preserved": true
+  },
+  {
+    "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k21_larger_actions__master_beside_build.png",
+    "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k21_guardian_basic__family_offer_page.png",
+    "build": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k21_larger_actions.png",
+    "master_size": [
+      1290,
+      2796
+    ],
+    "build_size": [
+      1170,
+      2532
+    ],
+    "build_pixels_preserved": true
+  },
+  {
+    "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k22_larger_top__master_beside_build.png",
+    "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k22_guardian__family_place_profile.png",
+    "build": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k22_larger_top.png",
+    "master_size": [
+      1290,
+      2796
+    ],
+    "build_size": [
+      1170,
+      2532
+    ],
+    "build_pixels_preserved": true
+  },
+  {
+    "pair": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k22_larger_membership__master_beside_build.png",
+    "master": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k22_guardian__family_place_profile.png",
+    "build": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k22_larger_membership.png",
+    "master_size": [
+      1290,
+      2796
+    ],
+    "build_size": [
+      1170,
+      2532
+    ],
+    "build_pixels_preserved": true
+  }
+]

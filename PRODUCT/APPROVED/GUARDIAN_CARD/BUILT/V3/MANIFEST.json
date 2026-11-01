@@ -1,0 +1,330 @@
+{
+  "schema": 1,
+  "queue": 67,
+  "source_commit": "60b1ab9b781c4bddd422c2ce46e731ee45d63d64",
+  "scope": "Explicit owned changed files and named LOCK inputs only; no dependency/config/credential crawl. Streaming SHA256. Manifest excludes its own hash.",
+  "source": [
+    {
+      "path": "SOURCE/lib/dev/zyra_guardian_family_preview.dart",
+      "bytes": 5670,
+      "sha256": "2f6879d17768436c9eb0652f6a3c3c9e4c5e88a474026bdc98da52d154d88543"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "bytes": 36217,
+      "sha256": "eac940a60092bf985f58c75027e00401deb1167491134bb72467711e31e2d420"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 344921,
+      "sha256": "019b28d17481c8666d8a6dc0c636f6f04aa1ff941b0db859048c3d5d69c16601"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_action.dart",
+      "bytes": 8422,
+      "sha256": "66db4a9e4a320f47bcd5a50ef1855992e04a711fac775936507c150fccf72c54"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "bytes": 34301,
+      "sha256": "c9c0f3d5d3cb47d7a9cf34e59ec3409f38c22542d8468b19081ee37517bb0339"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "bytes": 60314,
+      "sha256": "3003d8e44dcedab41678113f9528689a7c4fe332656b205cba9a79d0c9d7f1f2"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_preview_navigation_checkpoint.dart",
+      "bytes": 8131,
+      "sha256": "b3a208a380dc8055e50081eeb3b02c8627721a1912d7c703a4bd99eea09f0441"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "bytes": 68876,
+      "sha256": "d406ae56e18a95187fbfa337987edb95ffa2db8b043786c9d189125557779675"
+    },
+    {
+      "path": "SOURCE/test/guardian_family_preview_test.dart",
+      "bytes": 9439,
+      "sha256": "73dacec842b6178175dc7e6fb03a82f42b4f1e9c3a32f273b16f4fabae9b287f"
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_v3_family_acceptance_test.dart",
+      "bytes": 16928,
+      "sha256": "08d154048eb59d2a339d11c7a552def5c68663be1d2afc7653439083121da187"
+    },
+    {
+      "path": "SOURCE/test/visual/baseline_capture_support.dart",
+      "bytes": 18089,
+      "sha256": "fcc920d7e4395d9de51128c47465e144ac1293054d4ee0ec9762d9e3fe6e4bc7"
+    },
+    {
+      "path": "SYSTEM/tools/blueprint/code_size.py",
+      "bytes": 2557,
+      "sha256": "1784f086c8e45715b9e8bcaf5741bdcdc2a7f90576dbb535f828bd5c9bf74452"
+    }
+  ],
+  "input": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BRIEFS/BUILD_BRIEF_2026-10-31_V3.md",
+      "bytes": 1896,
+      "sha256": "824b406cc7e2cbbe17fcfe590e4c590deee76c616a6abd21cfe9e80a0d73c3ad"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/RECORD/LOCK_RECORD.md",
+      "bytes": 1702,
+      "sha256": "81b93d736329a3bacb18afc72bdc0608ce8714a84e7619ed106ecd15e64e949c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/RECORD/GUARDIAN_CARD_SPEC_CURRENT_VERSION_V3.md",
+      "bytes": 12032,
+      "sha256": "7907d62c28644c9c2c7d4441de93940aeda4d6801364bff7bc73afe3e05022df"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k14_sheet__invite_sent.png",
+      "bytes": 759196,
+      "sha256": "df5d1df258bc10553b43c3995d3783b8f934b996489f6aec6e8ecd9bcc2e4649"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k15_access__ibrahim_invited.png",
+      "bytes": 858889,
+      "sha256": "5e0eb6e73b6f1694e0e6574481517be854e89791c68e7cdcd180afa9a71a43d8"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k16_access__ibrahim_accepted_chat_off.png",
+      "bytes": 855541,
+      "sha256": "efadbec6ba6dbc2f78f3ba89b88df37a1f48880ff7829d5caf3b9916d2633dc1"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k20_guardian_basic__family_offer_needs_you.png",
+      "bytes": 847069,
+      "sha256": "3ed58c9486776945acb9852d9d636aec6368da0724d0de4080b62c0c4b436b21"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k21_guardian_basic__family_offer_page.png",
+      "bytes": 730667,
+      "sha256": "33556720866f4f0bcd83de5245ca79e58d3c8854d02d8a895a21173c78c5a853"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k22_guardian__family_place_profile.png",
+      "bytes": 687728,
+      "sha256": "43604c2106814f8ae52e30f32e8537028fe5a444f31480a3d389c67c1851377c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/guardian_basic/dashboard__normal.png",
+      "bytes": 1008272,
+      "sha256": "34ba3f1261d0014a1c6081142aefe8a032810d225a986ae0ae5e9169c403a5fc"
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/guardian_basic/membership__current_basic.png",
+      "bytes": 766780,
+      "sha256": "d3d16f36128d74d2f02aca080247d3a98642e760118f61f57fd2bf35a971a4e2"
+    }
+  ],
+  "render": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k20_normal.png",
+      "bytes": 629459,
+      "sha256": "ac0890fd32be0768d1382f012ea83c41d2c289edb2d18e0536bfa215139b6d11"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k21_normal.png",
+      "bytes": 476787,
+      "sha256": "9c9c61a83e2d5c2269363fffd02943fc6cd36d0fb644b9dfb7492d6571355219"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k22_normal.png",
+      "bytes": 522136,
+      "sha256": "d1ca8d7718f4fcaab816b5d0d3c16036469485e79aec760cda3b7132fa139d0f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k20_larger_top.png",
+      "bytes": 419454,
+      "sha256": "8e6518ecfed81a546af0b78e66aa284ac72899e07d4ff567dec9dd586c77b5a4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k20_larger_actions.png",
+      "bytes": 593055,
+      "sha256": "f0c5f562e088b1aafae7316ac06bbb6e062842c9dfea17f155be331b8d8f041f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k21_larger_top.png",
+      "bytes": 424602,
+      "sha256": "023086d0f34b6f22b21b77ebde3e08991b4e2cdb4fd274a84d447db8c270a8f6"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k21_larger_actions.png",
+      "bytes": 450076,
+      "sha256": "bd12cd5f7a1e18961316b32a8ee8b4bbef264c20d5fb98933bf12fdd259f2834"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k22_larger_top.png",
+      "bytes": 405810,
+      "sha256": "858e51af0cac818a6aaefaec86ca0f01ea5c4884726a67ef2b9e34047b382796"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k22_larger_membership.png",
+      "bytes": 436064,
+      "sha256": "cb9845267305a9257a783fe29ee3decac0f686b7f5e7902dbb161bc419218173"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k20_normal__master_beside_build.png",
+      "bytes": 1344334,
+      "sha256": "ed1a1a01bbcbfeabe1ee98999f8014fde871773753acd331b33b59da4fcfe9c1"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k21_normal__master_beside_build.png",
+      "bytes": 1083066,
+      "sha256": "519a72a71db1e4dce9679513f759e389c45a6905487d449df4d95bbf09a0b459"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k22_normal__master_beside_build.png",
+      "bytes": 1101215,
+      "sha256": "7968ed61dcc2eb2ef42b926da18123eb1c058ad5d30b7185859b381f20d71f28"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k20_larger_top__master_beside_build.png",
+      "bytes": 1145722,
+      "sha256": "0f1963362537538f131facc01b4cdfc7a50e88da1cbba99a2d6108f135f306c8"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k20_larger_actions__master_beside_build.png",
+      "bytes": 1330148,
+      "sha256": "df260e55a60103a75228d564c49f59a0639e6521ec1629d7d07eea4e7a819733"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k21_larger_top__master_beside_build.png",
+      "bytes": 1048474,
+      "sha256": "b2929b04ac3a0ce29600b8127b909a0dcc80b7eb6bf4568fae24222a823bde81"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k21_larger_actions__master_beside_build.png",
+      "bytes": 1080387,
+      "sha256": "d38e87dc587250f7c4333f814f2655aad8d9cf24764963aeb43896053bbd2185"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k22_larger_top__master_beside_build.png",
+      "bytes": 1005728,
+      "sha256": "7be332b0d123560b514e47ffb293992e562edd00db5a37db46892d2390ac7d94"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k22_larger_membership__master_beside_build.png",
+      "bytes": 1037414,
+      "sha256": "174e971dbea53c305d07dc41995bd191cc18bd474234fd516e95593d94638397"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/CONTACT_SHEET.png",
+      "bytes": 884030,
+      "sha256": "9f7d656dfa01c429e86f1ed636bc71b88acd0e36bfd6bc4a826cf4e785b37992"
+    }
+  ],
+  "metadata": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k20_normal.json",
+      "bytes": 239,
+      "sha256": "96036571a461d8f11575c792ad6b01b396642f1dad0b14fec263cea52c19ead0"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k21_normal.json",
+      "bytes": 270,
+      "sha256": "6eb3967f969d20599840db1bac6070bd33979b366a65f00e780af5adc6e1fdf4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k22_normal.json",
+      "bytes": 239,
+      "sha256": "8fa89cc2acb81702fdaf172375091ec5c527cbb7d12c3a2c9086ce5d02b60c5d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k20_larger_top.json",
+      "bytes": 243,
+      "sha256": "2d8972bd1e2c70f75f137d3e4326d480e33ebd5fa04602116d94cf867ef1f92d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k20_larger_actions.json",
+      "bytes": 247,
+      "sha256": "f8715935f5b1017764b135e03d011d906b2ce3c1b497645c9146454d36903f71"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k21_larger_top.json",
+      "bytes": 274,
+      "sha256": "dd4c5648e6e480c09e91e743ca5db3f327f7d554cca5100dc757b412ffad303c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k21_larger_actions.json",
+      "bytes": 278,
+      "sha256": "b7785ce34f9384fd654eac34e66d9d5abf4cf2cd6a10a2661670845844523c5c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k22_larger_top.json",
+      "bytes": 243,
+      "sha256": "a642e668bf3b148e95889a3303b84405ffe69bd3756021a39eb5fea3c80ae6b2"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k22_larger_membership.json",
+      "bytes": 250,
+      "sha256": "07bef1f74e84db21dd7d763f19ac96472e6c97c0d160c66f5e82cf9e23fc1d60"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/QA.json",
+      "bytes": 7299,
+      "sha256": "d39a9124e85737a095eb85cb957edfa7a072638ebdf0307321765e74deff485d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/PAIR_CHECKS.json",
+      "bytes": 3786,
+      "sha256": "e2fff36600132bca5aaa9a6ddb929fae74d5dc3f9bbac5e134dc515412b528d6"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/BUILD.json",
+      "bytes": 1684,
+      "sha256": "32bad0edcc809a617949c63bc885cb6f83429229577fe96178a0c19b90e5d506"
+    }
+  ],
+  "tracker": {
+    "path": "REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md",
+    "bytes": 85843,
+    "sha256": "61ccecc64ebcf43a4b8c7e0eabb544f1a99d502e094e36a0b714fba7aebda6e2"
+  },
+  "owned_queue_row": {
+    "queue": 67,
+    "sha256": "14f516fec1b9d6fcd5e0bbfc12bea149f54be3f3e36f5027e7a82f27cf9f16f4",
+    "status": "BUILT",
+    "built_on": "2026-11-01"
+  },
+  "staging_allowlist": [
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k20_normal.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k21_normal.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k22_normal.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k20_larger_top.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k20_larger_actions.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k21_larger_top.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k21_larger_actions.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k22_larger_top.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k22_larger_membership.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k20_normal__master_beside_build.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k21_normal__master_beside_build.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k22_normal__master_beside_build.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k20_larger_top__master_beside_build.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k20_larger_actions__master_beside_build.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k21_larger_top__master_beside_build.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k21_larger_actions__master_beside_build.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k22_larger_top__master_beside_build.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/pairs/k22_larger_membership__master_beside_build.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/CONTACT_SHEET.png",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k20_normal.json",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k21_normal.json",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k22_normal.json",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k20_larger_top.json",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k20_larger_actions.json",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k21_larger_top.json",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k21_larger_actions.json",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k22_larger_top.json",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/k22_larger_membership.json",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/QA.json",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/PAIR_CHECKS.json",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/BUILD.json",
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BUILT/V3/MANIFEST.json",
+    "PRODUCT/APPROVED/BUILD_QUEUE.md"
+  ]
+}

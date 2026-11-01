@@ -1,0 +1,141 @@
+{
+  "queue": 67,
+  "lock": "19 V3",
+  "question7": "ANSWERED A; corrected brief after 60 and baseline pointers verified 1 Nov; dependency satisfied before source release.",
+  "behavior": {
+    "default": "No offer seeded by the app. Needs-you appears only for its current Guardian Basic recipient with a current local invitation.",
+    "facts": "Seeker ID/name/gender, Guardian ID/name, relationship, role and sent time captured from the actual local sheet caller; exact seven-day deadline, expired/cancelled/declined place reusable once.",
+    "accept": "Existing InitialIdentityCheckScreen in isolated devPreview mode. Unknown check is not passed. Verified Continue updates the local model and current Guardian wallet/Profile only; developer skip returns to the offer without granting.",
+    "consent": "View retained; all Chat off after acceptance, including Main. Only the Seeker subsequently enables Chat; no linking/Main/Journey changes.",
+    "decline": "Closes, toasts Declined. The place stays free for <Seeker>., remains Basic and releases once.",
+    "ownership": "Account/session/role/tab/page/render epoch and original invite revision bound. Retained action/identity callbacks deny after navigation/account replacement/expiry. Snapshot restore covered."
+  },
+  "shared_components": "Existing ZyraGuardianActionPage extended for the four locked rows/actions; reuses ZyraMonogramHead, ZyraGoldRingMonogram and ZyraMonogramCard from row60. No copy of head/card, no new page framework.",
+  "checks": {
+    "scoped_regression_passes": 271,
+    "scoped_files": [
+      "guardian_family_preview_test.dart",
+      "guardian_card_family_sheet_test.dart",
+      "guardian_card_shell_test.dart",
+      "guardian_card_interaction_test.dart",
+      "view_request_draft_model_test.dart",
+      "view_request_draft_snapshot_test.dart",
+      "view_request_draft_disclosure_test.dart",
+      "preview_navigation_checkpoint_test.dart",
+      "one_journey_resume_checkpoint_test.dart",
+      "profile_tab_monogram_contract_test.dart",
+      "visual/lock8_v7_guardian_action_test.dart",
+      "visual/lock19_v3_family_acceptance_test.dart"
+    ],
+    "final_widget_passes": 8,
+    "final_widget_reason": "Added accepted-state fresh-checkpoint assertions; final captures refreshed after test-only change. App code unchanged from the 271-case run.",
+    "analyser": "Full SOURCE clean after final change",
+    "format": "11 Dart files, 0 changes",
+    "sdk": "Protected pinned Flutter 3.44.2; five pins and direct/nested exec-denial PASS before/after",
+    "pair_pixels": "9/9 original build crops preserved exactly",
+    "whole_suite_claim": false
+  },
+  "captures": {
+    "actual_shell": 9,
+    "normal": "430x932 at 100% text",
+    "larger": "390x844 at 200% text, top plus action/membership views",
+    "master_pairs": 9,
+    "fixture": "k20-k22 explicit dated local Hassan/Adam offer (31 Oct -> 7 Nov). Additional full integration test creates the offer through the actual Seeker sheet and role switch; the app default remains unseeded.",
+    "visual_review": "Primary viewed all nine captures, two native pairs and contact sheet; pair pixel checks all nine. Parent review remains separate."
+  },
+  "findings": [
+    {
+      "id": "QUEUE67-R1",
+      "oa": "OA-ZYRA-335",
+      "finding": "Normal retained shared native font/icon/shadow/ring/frame differences. k20 detail wraps differently; source notification count is 1, master 2. Profile linked summary remains Adam, Yusuf; master shows Adam plus Father/Main sentence. Action/card vertical metrics differ by several points.",
+      "action": "Designer/parent visual review; preserve actual source facts and existing shared styles. No pixel-equality or Founder-approval claim."
+    },
+    {
+      "id": "QUEUE67-R2",
+      "oa": "OA-ZYRA-335",
+      "finding": "At 390pt/200%, existing dashboard tile words break heavily and floating root navigation overlays lower content. Profile large initial meets the ring and root navigation overlays lower rows. Family offer scroll and Accept/Decline remain reachable; payer row readable in scrolled capture.",
+      "written_refusal": "No broad shared dashboard/Profile/navigation redesign in this locked local acceptance task. Record for parent review/queue44; no full accessibility-quality claim."
+    }
+  ],
+  "size_before": {
+    "app": [
+      174614,
+      344
+    ],
+    "developer_preview": [
+      54526,
+      102
+    ],
+    "founder_preview": [
+      35317,
+      52
+    ],
+    "tests": [
+      227562,
+      536
+    ]
+  },
+  "size_after": {
+    "app": [
+      175146,
+      345
+    ],
+    "developer_preview": [
+      55058,
+      103
+    ],
+    "founder_preview": [
+      35846,
+      53
+    ],
+    "tests": [
+      228324,
+      538
+    ],
+    "goldens": [
+      2612,
+      "307 MB"
+    ],
+    "old_pause": 39,
+    "old_restart": 1
+  },
+  "classification": "Only the new zyra_guardian_family_preview.dart added explicitly to Founder patterns; already developer code by folder. New file counted in both categories; no historical reclassification.",
+  "reads": {
+    "resumed_pack_text_bytes": 54385,
+    "resumed_pack_image_bytes": 6514142,
+    "source_later_search_io": "Unmetered; do not equate returned excerpts to total I/O. No repeated lessons/whole report loading on this resumed build.",
+    "unit_helper": {
+      "name": "family_transitions_tests",
+      "scope": "Only pure transition test file; primary ran all SDK commands",
+      "tokens": null
+    },
+    "parent_guard_helper_cost": {
+      "returned_source_bytes": 39752,
+      "returned_startup_docs_bytes": 26940,
+      "extractor_shell_loaded_bytes": 344921,
+      "extractor_model_loaded_bytes": 5670,
+      "repeat_diff_for_count_bytes": 35653,
+      "limit": "Parent reports budget exceeded, OA-AIOS-419. Returned bytes are not total I/O. Constructor/identity implementation outside that helper cap; no new check rerun solely for helper report."
+    },
+    "tracker_append_guard": {
+      "bytes_loaded": 83788,
+      "finding": "Duplicate-heading guard loaded the whole tracker before slicing; this exceeded the bounded-read instruction. Recorded under OA-AIOS-419; subsequent report append uses a seek-bounded tail."
+    }
+  },
+  "pause_resume": "Founder hold observed with no operation running/no interim edits. Parent read latest review Addendum4 (1 Nov10:40), then released row67 only. Stop after67; Group2 priority before44.",
+  "scope_limits": "Local Founder preview only; no charge, server/admission guard widening, native install/build, backend, Tier3, BLUEPRINT, global/schedule or upgrades.",
+  "source_allowlist": [
+    "SOURCE/lib/dev/zyra_guardian_family_preview.dart",
+    "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_action.dart",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+    "SOURCE/lib/dev/zyra_preview_navigation_checkpoint.dart",
+    "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+    "SOURCE/test/guardian_family_preview_test.dart",
+    "SOURCE/test/visual/lock19_v3_family_acceptance_test.dart",
+    "SOURCE/test/visual/baseline_capture_support.dart",
+    "SYSTEM/tools/blueprint/code_size.py"
+  ]
+}

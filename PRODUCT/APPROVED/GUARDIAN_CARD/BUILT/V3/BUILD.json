@@ -1,0 +1,36 @@
+{
+  "queue": 67,
+  "lock": "19 V3",
+  "source_commit": "60b1ab9b781c4bddd422c2ce46e731ee45d63d64",
+  "base_source_commit": "dd49b8b6621e0bb943e6f0193379abea03791901",
+  "starting_repo_head": "e609a92255b64528a98b39ac93d90cbb5c2e0a9d",
+  "flutter_version": "3.44.2",
+  "mode": "debug Flutter widget-test renderer; actual admitted offline Founder shell",
+  "target": "430x932 100% and 390x844 200% text; 3x pixel captures",
+  "timestamp_utc": "2026-11-01T10:49:28.336188+00:00",
+  "source_allowlist": [
+    "SOURCE/lib/dev/zyra_guardian_family_preview.dart",
+    "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_action.dart",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+    "SOURCE/lib/dev/zyra_preview_navigation_checkpoint.dart",
+    "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+    "SOURCE/test/guardian_family_preview_test.dart",
+    "SOURCE/test/visual/lock19_v3_family_acceptance_test.dart",
+    "SOURCE/test/visual/baseline_capture_support.dart",
+    "SYSTEM/tools/blueprint/code_size.py"
+  ],
+  "verification": {
+    "scoped_passes": 271,
+    "final_acceptance_passes": 8,
+    "full_source_analyser": "clean",
+    "format_files": 11,
+    "format_changed": 0,
+    "pins": 5,
+    "direct_exec_denial": "PASS",
+    "nested_exec_denial": "PASS"
+  },
+  "limits": "No native build/install, store charge, server write, admission-policy change or live membership grant. No pixel equality/Founder visual approval/full accessibility-quality claim. QA records OA-ZYRA-335 and OA-AIOS-419."
+}
