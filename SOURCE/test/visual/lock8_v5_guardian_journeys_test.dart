@@ -9,7 +9,9 @@ import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/theme/zyra_colors.dart';
+import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/widgets/zyra_profiles_components.dart';
+import 'package:zyra/widgets/zyra_tap_feedback.dart';
 import 'baseline_capture_support.dart';
 
 const root = '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA';
@@ -122,6 +124,8 @@ void main() {
           find.byType(ZyraJourneyPhotoCard),
         );
         expect(photo.photo, isA<AssetImage>());
+        expect(photo.fadeStart, .3);
+        expect(photo.fadeTop, Colors.transparent);
         expect(dots(t).count, 1);
         clearance(t);
         expect(find.text('S'), findsNothing);
@@ -341,6 +345,55 @@ void main() {
     expect(h.latest.guardianHistory, isEmpty);
   });
 
+  testWidgets(
+    'V5 card admission denial permanently expires retained Open and dot handlers',
+    (t) async {
+      var admitted = true;
+      final actions = <String>[];
+      await t.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: ZyraTapFeedback(
+              level: () => ZyraHapticLevel.off,
+              canAct: () => admitted,
+              child: ZyraGuardianJourneyPager(
+                identity: Object(),
+                index: 0,
+                onAction: actions.add,
+                cards: const [
+                  ZyraGuardianJourneyCard(
+                    id: sara,
+                    title: 'Adam & Sara',
+                    details: 'View only',
+                    stageLine: 'Family Review',
+                  ),
+                  ZyraGuardianJourneyCard(
+                    id: aisha,
+                    title: 'Adam & Aisha',
+                    details: 'View only',
+                    stageLine: 'Salam Exchange',
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+      final oldOpen = t
+          .widget<FilledButton>(key('guardian_journey'))
+          .onPressed!;
+      final oldDot = dots(t).onSelected!;
+      admitted = false;
+      oldOpen();
+      oldDot(1);
+      admitted = true;
+      oldOpen();
+      oldDot(1);
+      await t.pump();
+      expect(actions, isEmpty);
+    },
+  );
+
   for (final basic in [false, true]) {
     testWidgets(
       'V5 200 percent text wraps and keeps the ${basic ? 'Basic' : 'One'} Journey action reachable',
@@ -355,6 +408,25 @@ void main() {
         await h.flush();
         expect(t.takeException(), isNull);
         clearance(t);
+        final photo = t.widget<ZyraJourneyPhotoCard>(
+          find.byType(ZyraJourneyPhotoCard),
+        );
+        expect(photo.fadeStart, 0);
+        // Bound every photo channel by white; the full-height fade guarantees
+        // readable stage, title and secondary text even at its lightest point.
+        final background = Color.alphaBlend(photo.fadeTop, Colors.white);
+        for (final finder in [
+          key('guardian_journey_stage'),
+          find.text('Adam & Sara'),
+          find.textContaining('You: Main Guardian'),
+        ]) {
+          final color = t.widget<Text>(finder).style!.color!;
+          final foreground = Color.alphaBlend(color, background);
+          final ratio =
+              (foreground.computeLuminance() + .05) /
+              (background.computeLuminance() + .05);
+          expect(ratio, greaterThanOrEqualTo(4.5));
+        }
         expect(
           find.textContaining(basic ? 'View only' : 'View and Chat'),
           findsOneWidget,

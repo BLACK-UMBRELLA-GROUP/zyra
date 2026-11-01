@@ -172,13 +172,22 @@ class _GuardianJourneyPagerState extends State<ZyraGuardianJourneyPager> {
     final identity = widget.identity;
     final index = widget.index.clamp(0, widget.cards.length - 1);
     final card = widget.cards[index];
+    final expandedText = MediaQuery.textScalerOf(context).scale(13) > 16;
     final feedback = context
         .dependOnInheritedWidgetOfExactType<ZyraTapFeedback>();
-    bool current() =>
-        mounted &&
-        revision == _revision &&
-        identical(identity, widget.identity) &&
-        (feedback?.canAct() ?? true);
+    var revoked = false;
+    bool current() {
+      if (revoked) return false;
+      if (!mounted ||
+          revision != _revision ||
+          !identical(identity, widget.identity) ||
+          !(feedback?.canAct() ?? true)) {
+        revoked = true;
+        return false;
+      }
+      return true;
+    }
+
     void select(int target) {
       if (!current() ||
           target == index ||
@@ -229,6 +238,10 @@ class _GuardianJourneyPagerState extends State<ZyraGuardianJourneyPager> {
                 surfaceKey: ValueKey('guardian_journey_person_${card.id}'),
                 scrollKey: ValueKey('guardian_journey_overlay_${card.id}'),
                 photo: card.photo,
+                fadeStart: expandedText ? 0 : .3,
+                fadeTop: expandedText
+                    ? const Color(0xA6000000)
+                    : Colors.transparent,
                 children: [
                   Text(
                     card.stageLine.toUpperCase(),

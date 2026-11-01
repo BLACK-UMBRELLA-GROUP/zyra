@@ -671,13 +671,13 @@ Reused the Seeker Journey photo surface without changing its photo, fade, border
 
 | Measure | Before | After |
 |---|---:|---:|
-| All app code | 173,794 / 341 | 174,020 / 341 |
-| Developer/preview | 53,790 / 99 | 54,016 / 99 |
-| Founder planned app | 34,581 / 49 | 34,807 / 49 |
-| Tests | 225,743 / 530 | 226,119 / 531 |
+| All app code | 173,794 / 341 | 174,038 / 341 |
+| Developer/preview | 53,790 / 99 | 54,034 / 99 |
+| Founder planned app | 34,581 / 49 | 34,825 / 49 |
+| Tests | 225,743 / 530 | 226,191 / 531 |
 | Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
 | Old Pause / Restart files | 39 / 1 | 39 / 1 |
 
-Measured with SYSTEM/tools/blueprint/code_size.py. All app changes are in existing Founder preview files and remain counted in both preview categories; row 51's explicit Circle presenter classifier is unchanged. Twelve new actual-shell/fixture checks plus 84 existing Seeker renderer, dot lease, Guardian tab and chat-owner checks pass (96 cases). Five-file analyser/format and protected Flutter 3.44.2 pin checks pass. No whole-repository test claim.
+Measured with SYSTEM/tools/blueprint/code_size.py. All app changes are in existing Founder preview files and remain counted in both preview categories; row 51's explicit Circle presenter classifier is unchanged. Thirteen new actual-shell/fixture checks plus 84 existing Seeker renderer, dot lease, Guardian tab and chat-owner checks pass (97 cases). Five-file analyser/format and protected Flutter 3.44.2 pin checks pass. No whole-repository test claim.
 
-GUARDIAN_TABS/BUILT/V5 contains ten actual captures, including the three locked master cases, continued review, Additional View/Chat, multiple Journeys, actual default-empty and 200% text, with five master/build pairs. Master cases explicitly seed active Sara in detached test models; the actual default remains empty. Current shared shadows/navigation, portrait crop, type metrics and vertical card/footer geometry differ from the masters; gold-button ink follows LOCK 14 V5. At 200%, title/switcher stack, overlay text wraps and scrolls, and the action stays reachable; the inherited photo fade may place upper wrapped text over a lighter photo area. No pixel-equality, visual-accessibility perfection or Founder visual-approval claim. These inherited renderer/palette differences are recorded as QUEUE56-R1 under OA-ZYRA-335; no unapproved surface redesign. Source/input/render hashes and BUILD/QA trace accompany the captures. Questions 8/9 answered A and retained as history; no new question, authority or server/native change.
+GUARDIAN_TABS/BUILT/V5 contains ten actual captures, including the three locked master cases, continued review, Additional View/Chat, multiple Journeys, actual default-empty and 200% text, with five master/build pairs. Master cases explicitly seed active Sara in detached test models; the actual default remains empty. Current shared shadows/navigation, portrait crop, type metrics and vertical card/footer geometry differ from the masters; gold-button ink follows LOCK 14 V5. At 200%, title/switcher stack, overlay text wraps and scrolls, and the action stays reachable. The same fade extends behind expanded text, with worst-white-photo contrast at least 4.5:1; all three normal PNG hashes remain unchanged and Seeker fade defaults remain equivalent. A denied card lease cannot revive after admission returns. No pixel-equality, visual-accessibility perfection or Founder visual-approval claim. These inherited renderer/palette differences are recorded as QUEUE56-R1 under OA-ZYRA-335; no unapproved surface redesign. Source/input/render hashes and BUILD/QA trace accompany the captures. Questions 8/9 answered A and retained as history; no new question, authority or server/native change.

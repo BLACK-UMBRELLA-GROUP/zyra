@@ -40,10 +40,15 @@ class ZyraJourneyPhotoCard extends StatelessWidget {
     required this.scrollKey,
     required this.children,
     this.photo,
+    this.fadeStart = .3,
+    this.fadeTop = Colors.transparent,
   });
   final Key surfaceKey, scrollKey;
   final ImageProvider? photo;
   final List<Widget> children;
+  // Defaults retain LOCK 13; expanded Guardian text may occupy the full photo.
+  final double fadeStart;
+  final Color fadeTop;
 
   @override
   Widget build(BuildContext context) => ZyraFloatingSurface(
@@ -72,16 +77,16 @@ class ZyraJourneyPhotoCard extends StatelessWidget {
                 child: ZyraJourneyIcon(color: ZyraColors.ink(.35), size: 64),
               ),
             Positioned(
-              top: constraints.maxHeight * .3,
+              top: constraints.maxHeight * fadeStart,
               left: 0,
               right: 0,
               bottom: 0,
-              child: const DecoratedBox(
+              child: DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Colors.transparent, Color(0xE6000000)],
+                    colors: [fadeTop, const Color(0xE6000000)],
                   ),
                 ),
               ),
