@@ -1,0 +1,144 @@
+{
+  "normal_placement": "Additional caller-only bottom clearance: Request Activity250 vs existing110pt; Guardian empty240pt. Reclaimed at enlarged text. Shared production defaults unchanged. Explicit ring96pt retained; prototype raster ring is about88pt.",
+  "geometry": [
+    {
+      "case": "e01_introductions__empty",
+      "ring_bounds_pt": [
+        167.0,
+        312.5,
+        96.0,
+        96.0
+      ],
+      "scale": 1.0,
+      "master_ring_center_pt": 360.8,
+      "actual_ring_center_pt": 360.5,
+      "center_delta_pt": -0.3
+    },
+    {
+      "case": "e01_introductions__empty__text200",
+      "ring_bounds_pt": [
+        167.0,
+        306.5,
+        96.0,
+        96.0
+      ],
+      "scale": 2.0
+    },
+    {
+      "case": "e02_ended_journeys__empty",
+      "ring_bounds_pt": [
+        167.0,
+        312.5,
+        96.0,
+        96.0
+      ],
+      "scale": 1.0,
+      "master_ring_center_pt": 360.8,
+      "actual_ring_center_pt": 360.5,
+      "center_delta_pt": -0.3
+    },
+    {
+      "case": "e02_ended_journeys__empty__text200",
+      "ring_bounds_pt": [
+        167.0,
+        362.5,
+        96.0,
+        96.0
+      ],
+      "scale": 2.0
+    },
+    {
+      "case": "g05_introductions_made__empty",
+      "ring_bounds_pt": [
+        167.0,
+        285.0,
+        96.0,
+        96.0
+      ],
+      "scale": 1.0,
+      "master_ring_center_pt": 329.8,
+      "actual_ring_center_pt": 333.0,
+      "center_delta_pt": 3.2
+    },
+    {
+      "case": "g05_introductions_made__empty__text200",
+      "ring_bounds_pt": [
+        167.0,
+        371.5,
+        96.0,
+        96.0
+      ],
+      "scale": 2.0
+    },
+    {
+      "case": "g16_connect_with_guardian__sent_empty",
+      "ring_bounds_pt": [
+        167.0,
+        314.0,
+        96.0,
+        96.0
+      ],
+      "scale": 1.0,
+      "master_ring_center_pt": 367.8,
+      "actual_ring_center_pt": 362.0,
+      "center_delta_pt": -5.8
+    },
+    {
+      "case": "g16_connect_with_guardian__sent_empty__text200",
+      "ring_bounds_pt": [
+        167.0,
+        389.0,
+        96.0,
+        96.0
+      ],
+      "scale": 2.0
+    },
+    {
+      "case": "g20_connect_with_guardian__received_empty",
+      "ring_bounds_pt": [
+        167.0,
+        345.0,
+        96.0,
+        96.0
+      ],
+      "scale": 1.0,
+      "master_ring_center_pt": 398.8,
+      "actual_ring_center_pt": 393.0,
+      "center_delta_pt": -5.8
+    },
+    {
+      "case": "g20_connect_with_guardian__received_empty__text200",
+      "ring_bounds_pt": [
+        167.0,
+        409.0,
+        96.0,
+        96.0
+      ],
+      "scale": 2.0
+    },
+    {
+      "case": "g23_ended_journeys__empty",
+      "ring_bounds_pt": [
+        167.0,
+        313.5,
+        96.0,
+        96.0
+      ],
+      "scale": 1.0,
+      "master_ring_center_pt": 360.8,
+      "actual_ring_center_pt": 361.5,
+      "center_delta_pt": 0.7
+    },
+    {
+      "case": "g23_ended_journeys__empty__text200",
+      "ring_bounds_pt": [
+        167.0,
+        369.5,
+        96.0,
+        96.0
+      ],
+      "scale": 2.0
+    }
+  ],
+  "disposition": "Initial normal group was ~70pt low for Seeker and ~120pt low for Guardian. Caller viewport clearance corrected it. Final six normal ring centers differ by -5.8 to +3.2pt; specified96pt ring preserved rather than following prototype~88pt raster ring. Parent sampled regenerated e02 normal and g16 200%: geometry concern resolved and action readable/reachable. No Founder approval or pixel-equality claim."
+}

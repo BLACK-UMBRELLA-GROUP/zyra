@@ -1,0 +1,19 @@
+{
+  "file": "e02_ended_journeys__empty.png",
+  "width": 1290,
+  "height": 2796,
+  "ring_bounds_pt": [
+    167.0,
+    312.5,
+    96.0,
+    96.0
+  ],
+  "logical_width": 430,
+  "logical_height": 932,
+  "text_scale": 1.0,
+  "route": [
+    "ended"
+  ],
+  "tab": 2,
+  "reached": "Actual admitted offline Founder shell; existing route and local sample data; no backend."
+}

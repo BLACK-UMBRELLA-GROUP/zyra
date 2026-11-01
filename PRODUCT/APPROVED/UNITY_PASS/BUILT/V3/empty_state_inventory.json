@@ -1,0 +1,354 @@
+{
+  "queue": 61,
+  "scope": "One production shared empty layout, also used by the Founder preview; inventory records presentation callsites, not authority or data policy.",
+  "shared_callsites": [
+    {
+      "path": "SOURCE/lib/widgets/zyra_state_widgets.dart",
+      "line": 257,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_state_widgets.dart",
+      "line": 300,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/widgets/searchable_list_picker.dart",
+      "line": 112,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/browse/browse_screen.dart",
+      "line": 1617,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_journey_bio_presentation.dart",
+      "line": 360,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/wali_seeker_workspace_screen.dart",
+      "line": 160,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 2344,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 2934,
+      "layout": "ZyraRequestActivityEmpty \u2192 ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 2989,
+      "layout": "ZyraRequestActivityEmpty \u2192 ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 3074,
+      "layout": "ZyraRequestActivityEmpty \u2192 ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 3983,
+      "layout": "ZyraRequestActivityEmpty \u2192 ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 4208,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 6163,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 6243,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 6825,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/past_journeys_screen.dart",
+      "line": 305,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/past_journeys_screen.dart",
+      "line": 328,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/values_preferences_flow.dart",
+      "line": 556,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/wali_network_screen.dart",
+      "line": 364,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/wali_network_screen.dart",
+      "line": 437,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "line": 298,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/wali_journey_detail_screen.dart",
+      "line": 769,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/wali_journey_detail_screen.dart",
+      "line": 1191,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/wali_journey_detail_screen.dart",
+      "line": 1247,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "line": 132,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "line": 1621,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 604,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 1170,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/wali_dashboard_screen.dart",
+      "line": 753,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/seeker_guardian_designs.dart",
+      "line": 185,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/seeker_guardian_designs.dart",
+      "line": 373,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/connections_screen.dart",
+      "line": 812,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/connections_screen.dart",
+      "line": 820,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/connections_screen.dart",
+      "line": 2155,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/connections_screen.dart",
+      "line": 2286,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/connections_screen.dart",
+      "line": 2332,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/connections_screen.dart",
+      "line": 2358,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/connections_screen.dart",
+      "line": 2454,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/connections_screen.dart",
+      "line": 2489,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/connections_screen.dart",
+      "line": 2542,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/journey/journey_flow_screen.dart",
+      "line": 1322,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/journey/journey_flow_screen.dart",
+      "line": 1344,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/journey/journey_flow_screen.dart",
+      "line": 7996,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_timeline_presentation.dart",
+      "line": 552,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/wali_seekers_screen.dart",
+      "line": 860,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/matches/journey_timeline_screen.dart",
+      "line": 965,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/matches/journey_timeline_screen.dart",
+      "line": 977,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_tab.dart",
+      "line": 256,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/wali_gn_shared.dart",
+      "line": 1165,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_activity_presentation.dart",
+      "line": 759,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/chat/chat_screen.dart",
+      "line": 394,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/chat/chat_screen.dart",
+      "line": 403,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_subscription_wallet_preview.dart",
+      "line": 662,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/safety_case_status_screen.dart",
+      "line": 157,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+      "line": 457,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/hidden_profiles_screen.dart",
+      "line": 315,
+      "layout": "ZyraEmptyState"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/hidden_profiles_screen.dart",
+      "line": 336,
+      "layout": "ZyraEmptyState"
+    }
+  ],
+  "migrated_custom_surfaces": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "surfaces": [
+        "Connect Sent",
+        "Connect Received",
+        "Introductions made",
+        "Journeys collection empty"
+      ],
+      "action": "Open Network only on Sent and Introductions; existing bound network action \u2192 tab 0"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "surfaces": [
+        "Guardian Ended Journeys g23"
+      ],
+      "route": "existing held_action; locked g23 copy; no new route/admission"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_tab.dart",
+      "surfaces": [
+        "No Journey yet"
+      ],
+      "action": "existing Browse profiles with existing current lease; Basic upsell unchanged"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "surfaces": [
+        "Parent discussion empty",
+        "Selected Journey discussion empty"
+      ],
+      "action": "none; composer/owner/receipts unchanged"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+      "surfaces": [
+        "FAQ search no results"
+      ],
+      "action": "none; existing contact availability wording retained"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_state_widgets.dart",
+      "surfaces": [
+        "Existing ZyraAddCircle blank-page invitations"
+      ],
+      "action": "Existing ring tap retained; no new action pill or words; obsolete74pt layout removed"
+    }
+  ],
+  "copy_exception": [
+    "Seeker Ended Journeys in Founder and ordinary member archive use No ended Journeys / When a Journey ends, it's kept here with its Timeline."
+  ],
+  "excluded_status_or_fields": [
+    "Guardian Seeker V6 Current Journey fact row; untouched",
+    "Shell No Guardian yet / no Main Guardian status facts; untouched",
+    "Ward-card No Journey yet status; untouched",
+    "LOCK22 V2 Focus All caught up component; separate locked status card",
+    "Silent empty Guardian invitation module; no collection page",
+    "Photo/avatar and bio field placeholders",
+    "Developer Health/session metrics and page-preview/lab scenario labels",
+    "Founder preparation fallback and quiet minimal action-card layout; not empty collections"
+  ],
+  "loading": "No spinner/loading branches changed.",
+  "inventory_limit": "Initial preflight was partial and over budget. Required callsite inventory completed after release through scoped searches and targeted classification; runtime coverage is the stated test scope."
+}

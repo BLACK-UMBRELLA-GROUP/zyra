@@ -18,10 +18,10 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 167,772 lines in 331 files |
-| Developer and preview code inside it | 48,286 lines in 90 files |
-| The Founder preview (planned app) | 29,161 lines in 40 files |
-| Test code | 214,692 lines in 496 files |
+| All app code | 174,564 lines in 344 files |
+| Developer and preview code inside it | 54,537 lines in 102 files |
+| The Founder preview (planned app) | 35,328 lines in 52 files |
+| Test code | 226,994 lines in 534 files |
 | Test screenshots (goldens) | 2,612 images, 307 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
@@ -717,3 +717,21 @@ Measured with SYSTEM/tools/blueprint/code_size.py. Old paragraph implementation 
 Eight V7 tests pass: both normal pages, actual Noor/Yusuf selection, actions/back, stale callbacks after View/route changes, and 430/390-point 200% text. The 73 existing cases across LOCK8 tabs, V6 Seeker page and three Guardian card suites passed in the combined run; that run failed only the eight new cases because the shadow-test flag was restored too late. Restoring it in each test body fixed the eight final cases. Five-file analyser/format and protected Flutter 3.44.2 pins/exec-denial pass. No whole-suite claim.
 
 Ten actual captures (two normal, eight Larger Text top/action views), master-beside-build pairs and exact source/input/render hashes are in GUARDIAN_TABS/BUILT/V7. Normal frames/type metrics, icon glyphs, decorative ring and shared floating shadows differ from prototype masters (QUEUE60-R1 / OA-ZYRA-335); approved LOCK14 V5 ink-on-gold is retained. No pixel equality or Founder visual-approval claim. Trace: OA-ZYRA-335; AD-AIOS-115/118/120. Preflight efficiency finding, including actual byte count, is recorded once in Task14 under OA-AIOS-419.
+
+
+## Queue 61 — Shared Monogram empty states LOCK22 V3 + LOCK8 V8 — 1 November 2026
+
+One production ZyraEmptyState layout now serves existing member calls and Founder/request wrappers:96pt ring/34pt icon,21pt light title,12.5pt muted body and optional40pt outline action. Existing ZyraAddCircle invitation API delegates to it and keeps its ring tap. Obsolete custom Journey, Circle, Help search and Guardian empty layouts removed. Existing copy/actions retained, explicit Seeker Ended wording applied to both paths, and new locked g23 rendered on existing held_action. Only Guardian Sent and Introductions gain Open Network via existing leased action. Loading, status facts, V6 Current Journey fact row, Focus, placeholders and Tier3 flows retained.
+
+| Measure | Before | After |
+|---|---:|---:|
+| All app code |174,547 /344|174,564 /344|
+| Developer/preview |54,543 /102|54,537 /102|
+| Founder planned app |35,334 /52|35,328 /52|
+| Tests |226,713 /533|226,994 /534|
+| Test goldens |2,612 /307 MB|2,612 /307 MB|
+| Old Pause / Restart files |39 /1|39 /1|
+
+Measured with code_size.py; no classifier change or attribution delta. Shared production state widgets remain in all-app totals, not newly attributed wholesale to Founder. Existing monogram module was already classified as preview; its optional child reuses the ring rather than duplicating it.
+
+BUILT/V3 and BUILT/V8 hold twelve actual normal/200% captures, twelve master/build pairs, contact sheet, semantic callsite inventory, geometry/QA records and exact trace manifest. Initial normal vertical offset corrected in callers only; six final ring-centre differences are -5.8 to+3.2pt.96pt ring retained; native type/icon glyphs, frame and existing segments still differ from prototype (QUEUE61-R1/OA-ZYRA-335). Larger Text scrolls and actions remain reachable. No pixel equality or Founder visual-approval claim. Current affected checks and additional legacy-fixture failures are distinguished in QA/task note; no navigation/data rewrite to satisfy old fixtures. Efficiency overruns disclosed once in Task15 under OA-AIOS-419. No native/backend/admission/BLUEPRINT/schedule change. AD-AIOS-115/118/120.

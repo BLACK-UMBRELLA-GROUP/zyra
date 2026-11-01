@@ -1,0 +1,19 @@
+{
+  "file": "g20_connect_with_guardian__received_empty.png",
+  "width": 1290,
+  "height": 2796,
+  "ring_bounds_pt": [
+    167.0,
+    345.0,
+    96.0,
+    96.0
+  ],
+  "logical_width": 430,
+  "logical_height": 932,
+  "text_scale": 1.0,
+  "route": [
+    "guardian_connect"
+  ],
+  "tab": 2,
+  "reached": "Actual admitted offline Founder shell; existing route and local sample data; no backend."
+}

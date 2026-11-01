@@ -1,0 +1,41 @@
+{
+  "queue": 61,
+  "git_commit_sha": "33da4a2f37bbefbd403838b9a06bc4329d8c427d",
+  "baseline_commit_sha": "8f5e4a2371eba6397cc053e77f7de25f1902fb72",
+  "flutter_version": "3.44.2",
+  "build_mode": "flutter-test actual admitted offline shell; RenderRepaintBoundary@3x; no native build",
+  "timestamp_utc": "2026-11-01T10:05:39Z",
+  "trace_manifest": "PRODUCT/APPROVED/UNITY_PASS/BUILT/V3/trace_manifest.json",
+  "authority": [
+    "OA-ZYRA-335",
+    "AD-AIOS-115/118/120"
+  ],
+  "tests_passed": {
+    "focused": 50,
+    "regression": 121
+  },
+  "limitations": "Additional older navigation-fixture failures and visual differences are explicitly recorded in qa_review.json. No full-suite/device or Founder approval claim.",
+  "reusable_api": {
+    "ZyraEmptyState": "one production layout; existing icon/message/title/iconWidget/ctaLabel/onCta; optional titleKey,ctaKey,canAct added",
+    "ZyraGoldRingMonogram": "optional Widget child added; existing callers unchanged",
+    "ZyraRequestActivityEmpty": "API retained; delegates to shared layout",
+    "ZyraAddCircle": "API and existing tap retained; delegates to shared layout; no new pill"
+  },
+  "queue_row": {
+    "number": 61,
+    "sha256": "e66262ce61ff6b6e6bf4e523b32953075954d4aa9457a03bf27fed8af4480197",
+    "bytes": 552
+  },
+  "feature": "GUARDIAN_TABS",
+  "lock": "LOCK8 V8",
+  "captures": [
+    "g05_introductions_made__empty.png",
+    "g05_introductions_made__empty__text200.png",
+    "g16_connect_with_guardian__sent_empty.png",
+    "g16_connect_with_guardian__sent_empty__text200.png",
+    "g20_connect_with_guardian__received_empty.png",
+    "g20_connect_with_guardian__received_empty__text200.png",
+    "g23_ended_journeys__empty.png",
+    "g23_ended_journeys__empty__text200.png"
+  ]
+}
