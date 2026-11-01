@@ -1,6 +1,6 @@
 ---
 id: DOC-ZYRA-0330
-type: LEGAL
+type: REPORT
 status: DRAFT
 feature: LEGAL
 purpose: Plain-English member terms for ZYRA (Seekers and Guardians) - drafted from the approved blueprint for a solicitor's review and the Founder's approval; part of the launch legal pack (OA-ZYRA-320)

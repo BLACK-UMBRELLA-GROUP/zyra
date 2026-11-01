@@ -16,6 +16,8 @@ files in `SOURCE/pubspec.yaml`. **The code wins** where a document disagrees; ev
 
 ## In one paragraph
 
+> **Locked to change (not built):** LOCK 14 V3 (DR-ZYRA-326) moves the app to Ivory, gold and warm neutrals with no purple. Queue line 39 failed its contrast check on 30 Oct (OA-ZYRA-327), so the values below are still the app's. When line 39 is built, this page is rewritten in place (lesson L28).
+
 ZYRA is a **dark, glass-on-purple** app. Every page sits on one background gradient — **Midnight Plum #30203F → #160E20**,
 corner to corner — and everything on it is translucent white "glass" with a thin **gold edge** where something is selected or
 important. Text is **Poppins**, mostly thin (200 for headings, 300 for body), in white at four strengths. The word **ZYRA** itself is
@@ -124,7 +126,7 @@ Blur behind glass: σ22 for the navigation bar, segmented toggle and seeker sele
 | Gold action pill | **48** tall, fully round (999) |
 | Bottom sheets and centred dialogs | corner **24** |
 | Snackbar | corner **14**, floating, inset **20** left/right/bottom |
-| Navigation bar | Full: **390** wide (at 430), **58** tall, corner **28**, **24** from the sides, **14** from the bottom. Idle (not touched): **40%** wide (**156**), **46** tall, centred; back to idle 3 s after the last touch or when the page scrolls; full size always with VoiceOver, Switch Control or Larger Text (LOCK 6, DR-ZYRA-304, spec DOC-ZYRA-0320) |
+| Navigation bar | Full: **390** wide (at 430), **58** tall, corner **28**, **24** from the sides, **14** from the bottom. Idle (not touched): **60%** wide (**234**), **50** tall, icons **18**, tap slots **38**, centred (LOCK 6 V2, DR-ZYRA-323, built 30 Oct); back to idle 3 s after the last touch or when the page scrolls; full size always with VoiceOver, Switch Control or Larger Text (LOCK 6, DR-ZYRA-304, spec DOC-ZYRA-0320) |
 
 Corners used across the app (count of places): 14 (81), 18 (58), 12 (52), 20 (45), 16 (45), fully round 999 (41), 24 (21), 50 (19).
 There is no single corner scale — see OA-ZYRA-313.
@@ -246,3 +248,4 @@ Accessibility notes (contrast, normal text needs 4.5):
 | 2026-10-29 | V1 | §3 corrected: the locked surface style is Glass Signals, not Classic Glass (Founder, 29 Oct, answering Codex's Tier 4 question; ZYRA chat) |
 | 2026-10-30 | V1 | §4 navigation bar and §5 floating navigation bar updated to LOCK 5 and LOCK 6 as built on 29 Oct (DR-ZYRA-303, DR-ZYRA-304) - Fable, 04:15 maintenance |
 | 2026-10-30 | V1 | §6: haptic on every enabled tappable control (Founder "ensure this and all buttons have haptic feedback"); queue line 22 - ZYRA chat |
+| 2026-10-31 | V1 | Note at the top: LOCK 14 Ivory (DR-ZYRA-326) locked but not built - contrast conflict OA-ZYRA-327; navigation bar idle size changed to 60% (234 × 50) as built on 30 Oct (LOCK 6 V2, DR-ZYRA-323) - Fable, 04:15 maintenance |

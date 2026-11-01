@@ -1,6 +1,6 @@
 ---
 id: DOC-ZYRA-0329
-type: DESIGN
+type: SPEC
 status: CURRENT
 feature: SERVER
 purpose: Server design that connects the planned app to real data - Introductions, Preparing, Basic place, Journey Bio, Pause/Save removal, Request restart, plus the OA-315 server rules - for the Founder's yes before Codex builds area by area
@@ -8,7 +8,7 @@ links: [OA-ZYRA-317, OA-ZYRA-315, OA-ZYRA-319, OA-ZYRA-324, DOC-ZYRA-0280, DOC-Z
 owner: Fable
 ---
 
-# ZYRA — SERVER DESIGN — 30 OCT 2026 — V1 (DRAFT)
+# ZYRA — SERVER DESIGN — 30 OCT 2026 — V1 (CURRENT)
 
 Written by Fable, 30 Oct 2026, on the Founder's "yes both" (29 Oct). Nothing here is built. This is one document for the
 Founder's **yes**; Codex builds from it afterwards, one area at a time, in the order the Founder chose.
@@ -181,6 +181,15 @@ families' Seekers through the Guardian functions, DR-306).
 | Places | An ended Journey releases both places at once (already built) | DOC-0283 §7 |
 | Ending reasons | Existing `zyra_match_ending`; "safety concern" shows to Guardians as "prefer not to say" | DOC-0290 §5; DR-268 |
 
+### 3.8 Added 31 Oct from the 30 Oct decisions (DR-ZYRA-308-327)
+
+| Need | Design | Source |
+|---|---|---|
+| Shared past Journey for a Guardian | `zyra_attempt_summary_for_guardian` and Circle cards add the other person's **first name** and dates, only while sharing is on and the link is live | DR-ZYRA-308; DPIA R13 |
+| Member location | Each member's home town stored as a real place with its position (e.g. GeoNames; licence in DPIA R14); optional approximate area, never exact or shown; real km (e.g. PostGIS); near me / country / worldwide; no City; card fields only | DR-ZYRA-319, 320, 321; DPIA R14 - **not built before the DPIA is approved** |
+| Connect with Guardian | Accepted = private chat between the two Guardians; Seekers with only a Guardian Basic left out of Network | DR-ZYRA-322; its own brief after SERVER 6 (Q6) |
+| No counts / phone access | No function returns member or profile counts; permission state stays on the phone | DR-ZYRA-317, 321 |
+
 ## 4. Data to migrate or remove, and safety
 
 **The 17 unapplied files (25 Aug - 5 Oct) - Fable's keep / rewrite / drop proposal (§6 Q5)**
@@ -218,10 +227,10 @@ families' Seekers through the Guardian functions, DR-306).
 
 | # | Queue line (suggested brief title) | Depends on | ZYRA chat LOCK first? | Server-only? |
 |---|---|---|---|---|
-| 0 | SERVER 0 - Live pass and catch-up: re-run the read-only check, apply the kept files in order, 24 Sep rewrite, replay test | Founder yes + Q5 | No | Yes |
+| 0 | SERVER 0 - Live pass and catch-up: re-run the read-only check, apply the kept files in order, 24 Sep rewrite, replay test. **30 Oct:** V2 READY for the isolated catch-up only (DR-ZYRA-313; `SERVER/RECORD/SERVER_0_READY_2026-10-30_V2.md`); live apply needs a backup and "apply SERVER 0 to live" | Founder yes + Q5 | No | Yes |
 | 1 | SERVER 1 - Requests and Guardians: request flow, hides, plan limits, Guardian limits, first-link event, Main Guardian request view, f02 boundary | 0 | LOCK 2 and LOCK 3 exist (DR-298, 301); Guardian tabs LOCK 8 (DR-306) | Mostly; app wiring follows |
 | 2 | SERVER 2 - Journey: preparing, ready, places, Journey Bio, both-answered, identity, Pause removal Stage 1-2, send rule | 1 | Preparing and Journey Bio screens need a LOCK (none yet) | Rules yes; screens after LOCK |
-| 3 | SERVER 3 - Browse: visibility, limits, filters, Hide and Pause My Profile functions | 1, 2 | Browse LOCKs exist for the card and row (DR-302, 305); Filters not locked | Yes |
+| 3 | SERVER 3 - Browse: visibility, limits, filters, Hide and Pause My Profile functions | 1, 2 | Browse LOCKs exist for the card and row (DR-302, 305); Filters LOCK 10 V6 and Location LOCK 11 built in the preview 30 Oct (DR-ZYRA-319, 320) - §3.8 | Yes |
 | 4 | SERVER 4 - Membership: plan_limits final, monthly Unlocks, Family cap, downgrade switch | 1 | Membership page not locked - rules can go first | Yes |
 | 5 | SERVER 5 - Profile and settings: Pause My Profile, hidden list, f03, account deletion detach | 3, 4 | Settings pages need LOCK 7-style baseline (chat note 29 Oct) | Rules yes |
 | 6 | SERVER 6 - Ended and restart: archive window, restart through requests, switch on | 2 | Ended section placement open (chat note 29 Oct, Past Journeys) | Yes |
@@ -259,10 +268,11 @@ Each line: a brief in `PRODUCT/APPROVED/SERVER/BRIEFS/`, "Built from: DOC-ZYRA-0
 | Date | Version | Change |
 |---|---|---|
 | 2026-10-30 | V1 | First draft for the Founder's yes (Fable; OA-ZYRA-317 "yes both", 29 Oct) |
+| 2026-10-31 | V1 | CURRENT; §3.8 from the 30 Oct LOCKs; §5 lines 0, 3 (Fable) |
 
 ## Approval
 
 | Date | Who | Words |
 |---|---|---|
 | 2026-10-30 08:15 | Founder (clickable, in the ZYRA chat) | §6: Q1 "Expires, can ask again"; Q2 "Both ways"; Q3 decided 30 Oct (12 months then anonymised, DR-ZYRA-300 note); Q4 "Stay waiting"; Q5 "Yes, Fable's plan"; Q6 "After the core" |
-| 2026-10-30 11:10 | Founder (clickable, admin chat) | "Yes, approved" - the whole design. The ZYRA chat queues SERVER 0 first, then areas 1-6 in order |
+| 2026-10-30 11:10 (the ZYRA chat noted the relay at 10:55) | Founder (clickable, admin chat) | "Yes, approved" - the whole design. The ZYRA chat queues SERVER 0 first, then areas 1-6 in order |

@@ -1,7 +1,7 @@
 ---
 id: DOC-ZYRA-0334
-type: DECISION_SHEET
-status: DRAFT (Founder accepted all 25 on 30 Oct 2026)
+type: DECISION
+status: CURRENT
 feature: LEGAL
 purpose: The 25 decisions the legal drafts need, each with Fable's recommended answer, for the Founder to confirm or change in one sitting
 links: [OA-ZYRA-320, OA-ZYRA-321, DOC-ZYRA-0330, DOC-ZYRA-0331, DOC-ZYRA-0332, DOC-ZYRA-0333]

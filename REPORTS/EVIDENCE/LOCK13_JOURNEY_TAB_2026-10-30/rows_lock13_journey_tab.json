@@ -96,5 +96,47 @@
       "journey_options"
     ],
     "tab": 1
+  },
+  {
+    "role": "Seeker",
+    "area": "journey",
+    "page": "j10_journey_options__sara",
+    "state": "j10_journey_options__sara",
+    "reached": "Actual V3 options; existing model disclosure gates and owned sample profile fields.",
+    "file": "j10_journey_options__sara.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "journey_options"
+    ],
+    "tab": 1
+  },
+  {
+    "role": "Seeker",
+    "area": "journey",
+    "page": "j11_journey_options__aisha",
+    "state": "j11_journey_options__aisha",
+    "reached": "Actual V3 options; existing model disclosure gates and owned sample profile fields.",
+    "file": "j11_journey_options__aisha.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "journey_options"
+    ],
+    "tab": 1
+  },
+  {
+    "role": "Seeker",
+    "area": "journey",
+    "page": "j12_journey_options__basic",
+    "state": "j12_journey_options__basic",
+    "reached": "Actual V3 options; existing model disclosure gates and owned sample profile fields.",
+    "file": "j12_journey_options__basic.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "journey_options"
+    ],
+    "tab": 1
   }
 ]

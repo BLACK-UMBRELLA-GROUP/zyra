@@ -57,7 +57,7 @@ holding both a Seeker and a Guardian account is shown in the app but the server 
 | Invite | Share ZYRA | — | app (share sheet) |
 | Personalisation | Background (10 choices), gold accents, haptics — kept per account on the phone | Colour theme V2 | app |
 | Notification settings | Choose which updates you get | DR-ZYRA-149, 154 | **Live** — `zyra_set_notification_preference` |
-| Phone access (Settings → PRIVACY) | One page showing what ZYRA may use on the phone — Location, Notifications, Photos, Camera, Face ID — with why and the current state; rows open the phone's Settings; never Contacts, microphone, tracking (LOCK 12, Founder 30 Oct) | — | **Missing** — client only; purpose strings in the release checklist |
+| Phone access (Settings → PRIVACY) | One page showing what ZYRA may use on the phone — Location, Notifications, Photos, Camera, Face ID — with why and the current state; a permission not yet asked goes straight to the iPhone prompt, one already decided opens ZYRA's iPhone Settings; Location is the approximate area; NEW until opened; never Contacts, microphone, tracking (LOCK 12 V2, DR-ZYRA-321; built 30 Oct, queue 40) | — | **Missing** — client only; purpose strings in the release checklist (OA-ZYRA-323) |
 | App Lock | Face ID / passcode to open ZYRA | — | app |
 | Sign-in and security | Google or Apple sign-in; one account with linked sign-in methods; a recovery email that needs no password | DR-ZYRA-209 | sign-in **Live**; recovery email change **Live** (email code) |
 | Help, Feedback, Privacy policy, Terms | Help pages; feedback form; legal pages | DR-ZYRA-239 | feedback **Live** (`app_feedback`); legal text is a launch gate |
@@ -101,3 +101,4 @@ holding both a Seeker and a Guardian account is shown in the app but the server 
 | 2026-10-26 | V1 | Founder: keep Pause My Profile, defined (DR-ZYRA-290) |
 | 2026-10-26 | V1 | Approved by the Founder ("a" - all 14 pages); status CURRENT |
 | 2026-10-30 | V2 | Phone access page (LOCK 12). V1 archived in REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_VERSIONS/ |
+| 2026-10-31 | V2 | Phone access row brought up to LOCK 12 V2 as built 30 Oct (straight to the iPhone prompt; approximate area) - Fable, 04:15 maintenance |

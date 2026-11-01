@@ -26238,6 +26238,9 @@ Update:      25 Oct - (c) DONE with the Founder's GO: the file moved to ~/_to_de
 Owner:       Fable (c) · Codex (a)(b) after the freeze · Founder approves
 Acceptance:  Haptic Off means no vibration anywhere; privacy words pass 4.5; no stray files in git.
 
+UPDATE 31 Oct (Fable): item (a) DONE - queue line 22 (d1de664, 30 Oct) routes every haptic through the shared helper;
+Fable's search finds no direct HapticFeedback call outside zyra_interaction_style.dart. Items (b) privacy-word
+contrast and (c) the stray file remain; (b) is part of the Ivory recolour (LOCK 14, OA-ZYRA-327).
 ------------------------------------------------------------
 
 OA-ZYRA-315
@@ -26315,6 +26318,9 @@ Update:      29 Oct - DR-ZYRA-293 (Founder): Tiers 1, 2 and 4 and the matching t
              (OA-ZYRA-316_* folders, about 115 MB). App code 171,658 -> 162,681 lines (342 -> 320 files, DOC-ZYRA-0284).
              Tier 3 (old member app, sign-in routes) waits for OA-ZYRA-317. Glass Signals kept (DR-ZYRA-296).
 
+UPDATE 31 Oct (Fable): queue line 29 (600f539, 30 Oct) removed the old Guardian Dashboard, Insights and Updates
+layouts from the preview; queue line 30 retired three local Code-page tests (moved to ~/_to_delete). Line 35 (all
+developer toggles, DR-ZYRA-324) waits on OA-ZYRA-327.
 ------------------------------------------------------------
 
 OA-ZYRA-317
@@ -26395,6 +26401,12 @@ APPROVED 30 Oct 11:10 (Founder, clickable "Yes, approved"): DOC-ZYRA-0329 is CUR
 can ask again; Q2 hide both ways; Q4 paused profile keeps sent requests; Q5 the 17-file plan; Q6 Connect with Guardian
 after the core). Next: the ZYRA chat queues SERVER 0 (live read-only pass), then areas 1-6 in order; Codex builds each
 from its brief; Fable checks each at 04:15.
+UPDATE 31 Oct (Fable): new server needs from 30 Oct decisions - (1) the Guardian summary of a shared past Journey
+gains the other person's first name (DR-ZYRA-308); (2) each member's home town as a real place with its position,
+approximate current area optional, distance in real km, Location = near / country / worldwide, no City filter
+(DR-ZYRA-319, 320); (3) Connect with Guardian: accepted = private Guardian chat, Seekers with only a Guardian Basic
+not on Network (DR-ZYRA-322; after SERVER 6, DR-ZYRA-312 Q6). SERVER 0 V2 is READY for the isolated catch-up only
+(line 33; DR-ZYRA-313); live apply needs a confirmed backup and his words "apply SERVER 0 to live".
 ------------------------------------------------------------
 
 OA-ZYRA-318
@@ -26493,6 +26505,12 @@ Update:      30 Oct (Fable) - two Founder decisions of 29 Oct for the DPIA, priv
 Update 30 Oct 05:41: DRAFTS written - DPIA (DOC-ZYRA-0331), safety response (DOC-ZYRA-0332), Online Safety Act
 check (DOC-ZYRA-0333), all in ZYRA/REPORTS/CURRENT/. [DECISION NEEDED] items listed for the Founder; then solicitor
 review with OA-ZYRA-320.
+UPDATE 31 Oct (Fable): the DPIA and privacy notice must also cover (1) a Guardian seeing the other person's first
+name and dates for a shared past Journey - that person never agreed (DR-ZYRA-308); (2) approximate location and
+distance filtering (DR-ZYRA-319, 320, 321), stored only after the DPIA; (3) GeoNames place data (CC-BY 4.0 -
+attribution in the app's licences page) if used.
+DONE 31 Oct (Fable, own action): DPIA draft DOC-ZYRA-0331 gains R13 (first name of a shared past Journey) and R14
+(location) with measures; solicitor question added for R13.
 ------------------------------------------------------------
 
 OA-ZYRA-322
@@ -26527,6 +26545,10 @@ Next:        Codex says in his next report what exactly is held and what he need
 Acceptance:  Codex builds and captures on the simulator (iPhone SE, iPhone 15 Pro Max, iPad) and on the phone with
              no sandbox bypass; the route is written in DOC-ZYRA-0288.
 
+UPDATE 31 Oct (Fable): two one-time Founder exceptions on 30 Oct - "Allow this one profile install" (Codex Task 12,
+iPhone update; he confirmed "It responds normally") and "Allow one PROFILE install and capture (Recommended)" (Task
+19, Filters keyboard pictures). Both consumed; the hold stays. Release checklist must carry the iPhone purpose texts
+for Location, Camera, Photos and Face ID (LOCK 12 V2 spec) and new-colour App Store pictures (LOCK 14).
 ------------------------------------------------------------
 
 OA-ZYRA-324
@@ -26555,6 +26577,9 @@ Update:      30 Oct (Fable, step 2 done, read-only): (a) the members' old app of
              stops ended Journeys giving any detail. (c) Production: the live check (DOC-ZYRA-0294) lists f02 as never
              applied, so production lacks that boundary - part of OA-ZYRA-317's catch-up (Founder's GO). Left: step 1.
 
+UPDATE 31 Oct (Fable): preview part DONE - queue line 18 (abb446f, 30 Oct): Guardian Circle past topics and archives
+need that Guardian's sharing switch, show first names and dates only (DR-ZYRA-308), disappear when sharing is off;
+removed links lose consent. Production boundary remains part of OA-ZYRA-317.
 ------------------------------------------------------------
 
 OA-ZYRA-325
@@ -26575,6 +26600,8 @@ Owner:       ZYRA chat designs each fix (a LOCK or a Founder-named line in BUILD
 Next:        ZYRA chat queues the fixes; item 4 goes with LOCK 8 (queue line 17).
 Acceptance:  Each item fixed in the preview and checked by the ZYRA chat against a new baseline picture.
 
+UPDATE 31 Oct (Fable): the Guardian Dashboard title and Insights are gone from the preview (queue line 29, 30 Oct);
+remaining items wait for the ZYRA chat's build checks (OA-ZYRA-328).
 ------------------------------------------------------------
 
 OA-ZYRA-326
@@ -26583,7 +26610,7 @@ Title:       1 GB of baseline screenshots in git and on GitHub - keep committing
 Category:    Storage / Repository
 Priority:    MEDIUM - ZYRA grew 2.5 GB in one day (disk alarm 30 Oct); every full recapture adds about 1 GB twice
 Date:        2026-10-30
-Status:      OPEN - 29 Oct: 1,165 baseline pictures (1.0 GB, PRODUCT/APPROVED/BASELINE/SCREENSHOTS) were committed and
+Status:      CLOSED 2026-10-31 (Fable, checked) - was OPEN - 29 Oct: 1,165 baseline pictures (1.0 GB, PRODUCT/APPROVED/BASELINE/SCREENSHOTS) were committed and
              pushed (ff65027, 9aea367, 339d8f0 and later commits). Git stores a second full copy (ZYRA/.git is now
              1.6 GB) and keeps every replaced picture for ever (history is never rewritten, core rule 2). They are
              LOCK inputs by Founder decision (DR-ZYRA-295), not review evidence, so the choice is his.
@@ -26597,11 +26624,106 @@ Codex adds PRODUCT/APPROVED/BASELINE/SCREENSHOTS/ to ZYRA/.gitignore and, as a o
 to core rule 2 (the obvious consequence of this decision, recorded in the 29 Oct review addendum), removes that
 folder from the index with `git rm -r --cached` - files stay on disk and in the Sunday USB snapshot. No history
 rewrite. Fable checks at 04:15 that the folder is untracked and still present.
+CLOSED 31 Oct (Fable): checked at 04:15 - ZYRA/.gitignore has PRODUCT/APPROVED/BASELINE/SCREENSHOTS/, the git index
+holds no path under it, and all 1,165 pictures are still on disk (a0ce219, 30 Oct). ZYRA shrank 8.47 → 8.32 GB on 31
+Oct.
+------------------------------------------------------------
+
+OA-ZYRA-327
+Title:       Ivory colours (LOCK 14 V3) fail the text-contrast rule - three queue lines blocked
+Category:    Design / Accessibility
+Priority:    HIGH - blocks queue lines 39, 35 (developer toggles) and 41 (My ZYRA Focus)
+Date:        2026-10-31
+Status:      OPEN - Codex queue 39 preflight, 30 Oct (Task 24): espresso #2B2420 on solid gold #A9792E, as used by
+             Check code and Send request at 14 pt regular, gives 3.97:1, under the 4.5:1 normal-text rule in
+             blueprint part 5. Line 39 FAILED; lines 35 and 41 FAILED on 31 Oct because they need 39 first. Codex was
+             right not to choose a fix.
+Owner:       ZYRA chat proposes the fix (e.g. a darker gold for filled buttons, larger or bolder button text, or
+             ivory text on gold) · Founder chooses and LOCKs · ZYRA chat queues new lines for 39, then 41 and 35
+Next:        ZYRA chat: show Shakeel 2-3 options with measured contrast; LOCK 14 V4; new queue lines (FAILED lines
+             are never retried).
+Acceptance:  New LOCK 14 version passes 4.5:1 for every text-on-colour pair; lines replacing 39, 41 and 35 BUILT.
+------------------------------------------------------------
+
+OA-ZYRA-328
+Title:       Build checks missing for the eleven 30 Oct builds
+Category:    Design loop / charters rule 8
+Priority:    MEDIUM
+Date:        2026-10-31
+Status:      OPEN - the ZYRA chat's 30 Oct note records build checks only for the 29 Oct lines. Missing: lines 18
+             (LOCK 3 V2), 19 (LOCK 7 V2), 22 (haptics), 23 (Compatibility loop), 26 (LOCK 11), 29 (LOCK 8 V2), 30
+             (LOCK 9 V2), 32 (LOCK 6 V2), 37 (LOCK 10 V6), 38 (LOCK 13 V2), 40 (LOCK 12 V2). Each has a
+             master-beside-build sheet in its BUILT/ folder; Codex lists known differences in its task notes (e.g.
+             line 37: slider centre 3 and 23 points lower than the prototype).
+Owner:       ZYRA chat (build checks) · Fable files each difference as an OA
+Next:        ZYRA chat: MATCH or the differences for each line in its next chat note (the 05:36 morning check).
+Acceptance:  A build-check line for each of the eleven builds; differences filed.
+------------------------------------------------------------
+
+OA-ZYRA-329
+Title:       ZYRA/_to_delete inside the ZYRA repo - committed to git, with old CURRENT_VERSION file names
+Category:    Folder structure / One CURRENT_VERSION
+Priority:    MEDIUM - breaks the never-delete route (move to ~/_to_delete) and the one-CURRENT_VERSION rule
+Date:        2026-10-31
+Status:      OPEN - on 30 Oct the ZYRA chat moved three superseded files (APP_COLOURS_SPEC_CURRENT_VERSION_V2.md,
+             PHONE_ACCESS_SPEC_CURRENT_VERSION_V1.md, PHONE_ACCESS_BUILD_BRIEF_2026-10-30.md) into a new
+             ZYRA/_to_delete/ folder. It is not git-ignored, so the 31 Oct sweep committed it (9c06998), and two
+             files there still carry CURRENT_VERSION names beside the real CURRENT files. Proper archive copies
+             already exist in each feature's ARCHIVE/. Its temporary picture sheets went to BLACK UMBRELLA
+             GROUP/tmp/_to_delete/ (git-ignored).
+Owner:       Codex moves the files · ZYRA chat stops using in-repo _to_delete folders
+Next:        Codex (fix now): move ZYRA/_to_delete/* to ~/_to_delete/ZYRA_CHAT_LEFTOVERS_2026-10-30/; the next sweep
+             records the removal. ZYRA chat: superseded files go to the feature's ARCHIVE/ only; leftovers to BLACK
+             UMBRELLA GROUP/tmp/_to_delete/ for Shakeel.
+Acceptance:  No ZYRA/_to_delete folder; generate_map --check shows one CURRENT_VERSION per document.
+------------------------------------------------------------
+
+OA-ZYRA-330
+Title:       Web copy of the Founder preview - third attempt failed; decide the next step
+Category:    Founder preview / testing
+Priority:    LOW
+Date:        2026-10-31
+Status:      CLOSED 31 Oct (Founder, clickable "Stop, iPhone only"): no fourth web-copy attempt; the Founder tests on the
+             iPhone and the prototype. Queue line 34 stays FAILED; the ZYRA chat marks it WITHDRAWN. Was: OPEN - queue line 34 (brief V3) FAILED 30 Oct (Codex Task 18): the compiled copy contains ZYRA's own
+             Apple and Google subscription-management links, outside V3's allowed list (fonts, framework, licence
+             text). Lines 12 and 21 failed earlier. DR-ZYRA-311.
+Owner:       ZYRA chat proposes (stub the membership pages in the temporary copy, or allow never-contacted store
+             links, or stop) · Founder chooses · Fable re-checks any new gate
+Next:        ZYRA chat: one-line choice for Shakeel; a V4 brief only after his answer.
+Acceptance:  A safe web copy published privately, or the request withdrawn in a decision.
+------------------------------------------------------------
+
+OA-ZYRA-331
+Title:       Next baseline capture - add the missing states
+Category:    Baseline pictures
+Priority:    LOW
+Date:        2026-10-31
+Status:      OPEN - from the ZYRA chat's 30 Oct note (z, 08:40 and 09:20): the Browse Hide confirmation and the Green
+             / Yellow / Red preference pages have no real screenshot, so the prototype draws them from code (lesson
+             S21). The Compatibility pages 2-7 likewise.
+Owner:       ZYRA chat (capture brief and queue line) · Codex captures
+Next:        ZYRA chat: add these states to the next capture brief.
+Acceptance:  Each state has a baseline picture; the prototype uses it.
+------------------------------------------------------------
+
+OA-ZYRA-332
+Title:       Two nationalities both labelled "Dominican" in the reference list
+Category:    Data / Onboarding
+Priority:    LOW
+Date:        2026-10-31
+Status:      OPEN - from the ZYRA chat's 30 Oct note (nn2). SOURCE/lib/data/zyra_reference_data.dart lines 109-110:
+             Dominica and Dominican Republic both have the nationality word "Dominican" (correct in English). The new
+             Filters shows the country in brackets (zyra_browse_filter.dart line 75); the sign-up nationality picker
+             (onboarding chapter 2) was not checked.
+Owner:       ZYRA chat checks the sign-up picker against a screenshot · Codex fixes only if a LOCK or Founder-named
+             brief says so
+Next:        ZYRA chat: look at the sign-up nationality picker.
+Acceptance:  A member can tell the two apart wherever nationality is chosen or shown.
 ------------------------------------------------------------
 
 TOTAL REGISTERED (this file): 309 (OA-001 through OA-ZYRA-309,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-327 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-333 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_

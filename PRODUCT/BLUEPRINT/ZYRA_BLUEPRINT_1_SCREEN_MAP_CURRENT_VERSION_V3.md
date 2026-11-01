@@ -31,9 +31,9 @@ messages in the generated inventory **DOC-ZYRA-0286** (`ZYRA_PLANNED_SCREEN_INVE
 
 | Seeker tabs | What is there |
 |---|---|
-| **Profiles** | Browse one profile at a time ("Portrait card": public details, then a swipeable photo gallery). Filters (country, nationality, ethnicity). Per profile: **Request a Journey** (tap again to cancel); options (⋯): Compatibility, Find by ZYRA Code, Filters, Hide, Report. No Save |
-| **Journey** | Your current Journeys as cards (Portrait split design), plus your Journey requests. Each card opens the Journey or its options |
-| **My ZYRA** | One page: Journey requests, Introductions, current Journeys, Ended Journeys, Guardian information, notifications; gold dots for anything new |
+| **Profiles** | Browse one profile at a time ("Portrait card": public details, then a swipeable photo gallery). Filters: four swipe cards — Age, Location, Nationality, Ethnicity (LOCK 10 V6). Per profile: **Request a Journey** (tap again to cancel); options (⋯): Compatibility, Find by ZYRA Code, Filters, Hide, Report. No Save |
+| **Journey** | One photo card per place (Seeker One 3, Seeker Basic 1), swipe and arrows that do not loop, progress and next step; empty places offer Browse; header ••• opens Journey options (LOCK 13 V2, built 30 Oct). Journey requests are reached from My ZYRA |
+| **My ZYRA** | One page: Journey requests, Introductions, Ended Journeys, Guardian information, notifications; gold dots for anything new. **LOCK 15 "Focus" (DR-ZYRA-327, not built yet):** one "Needs you" item at a time in the centre, status chips (places, Guardian), four quick-access tiles including Notifications; current Journeys live on the Journey tab |
 | **Guardian** | Your Guardians (Main and others), invite a Guardian, the Guardian Circle |
 | **Profile** | Your profile, edit profile, photos, membership, subscriptions, Compatibility Unlocks, personalisation, settings, help, switch account |
 
@@ -88,7 +88,7 @@ The browse options menu (⋯) on Profiles holds Compatibility, Find by ZYRA Code
 | Guardian (`guardian`) | One Guardian, or one Seeker's Journey status for a Guardian ("A Main Guardian is needed before the Journey can continue") | Guardian tabs, Guardian Circle |
 | Seeker profile (`guardian_linked_profile`) | A linked Seeker, seen by their Guardian | Guardian My ZYRA, Guardian |
 | Network profile (`guardian_network_profile`) | Another family's Seeker | Guardian My ZYRA, Network |
-| Speak to Guardian (`network_request`) | Send a request to that Seeker's Main Guardian; "they choose whether to respond" | Guardian My ZYRA, Network |
+| Connect with Guardian (`network_request`) | Send a request to that Seeker's Main Guardian; "they choose whether to respond" | Guardian My ZYRA, Network |
 | Guardian Circle (`guardian_circle`) | The families' discussion, one transcript with Journey discussion cards | Guardian tabs, Seeker Guardian tab, My ZYRA |
 | Invite a Guardian (`guardian_invite`) | Invite by code | Seeker Guardian tab |
 | Held action (`held_action`) | Explains an action that is not available in the preview | Guardian tabs |
@@ -123,3 +123,4 @@ The browse options menu (⋯) on Profiles holds Compatibility, Find by ZYRA Code
 | 2026-10-26 | V2 | Rewritten from the planned app (DR-ZYRA-274); generated inventory DOC-ZYRA-0286 |
 | 2026-10-26 | V2 | Approved by the Founder ("a" - all 14 pages); status CURRENT |
 | 2026-10-29 | V3 | Guardian tabs: five tabs Network · Journeys · My ZYRA · Seekers · Profile (LOCK 8, Founder "lock in 5 guardian tabs"); Guardian Dashboard and Insights removed; Speak to Guardian → Connect with Guardian. V2 archived in REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_VERSIONS/ |
+| 2026-10-31 | V3 | Tabs: Profiles Filters (LOCK 10 V6), Journey tab (LOCK 13 V2), My ZYRA LOCK 15 noted as not built; the Network request page renamed Connect with Guardian to match the V3 change. Fable, daily maintenance |

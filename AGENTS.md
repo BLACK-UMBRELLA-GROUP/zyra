@@ -17,7 +17,7 @@ document, overlay or AD says otherwise, this block wins.
 2. **Only Codex runs git, and only within these limits** (AD-AIOS-114). Allowed:
    `git status`, `git add`, `git commit`, and `git push` to `origin` on the current
    branch - in the repo of the project he is working in, at the end of a task whose
-   tests passed; plus the 04:00 job's sweep, which commits and pushes what is left in
+   tests passed; plus the 01:00 job's sweep, which commits and pushes what is left in
    every repo. Never: force-push, reset, rebase, amend or rewrite pushed history,
    `git clean`, checkout/restore over working files, delete branches, change remotes or
    git config, or commit a file over 50 MB or anything from the keys folder.
@@ -43,7 +43,7 @@ document, overlay or AD says otherwise, this block wins.
    Codex stops reading at 32 KiB.
 10. **Every finished task ends in a commit.** Codex commits and pushes his own work
     at the end of each task (message: what changed, with the OA/DR IDs) and lists the
-    commit in his task note. The 04:00 sweep commits what Fable and the business chats
+    commit in his task note. The 01:00 sweep commits what Fable and the business chats
     changed ("Admin changes <date>"). Until Codex is onboarded, the Founder commits
     from one line per changed repo. Never copy files as a backup instead — git and
     the USB are the backups.
@@ -61,7 +61,7 @@ document, overlay or AD says otherwise, this block wins.
 | Founder | Shakeel | Sole approver |
 | Lead Architect | Fable (Claude) | Architecture, governance, registers, schedules, review and verification |
 | Lead designer, per business | That business's Claude chat (ZYRA, AZMARA, WAFA…) | Product, rules, UX, layout, wording, look, master pictures and specs; records each LOCK (rule 11); writes build briefs for Codex. Never code, never git |
-| Implementation | Codex | Builds from locked designs only (rule 11): code, tests, as-built handovers. No design of his own, no admin, governance, mailbox or schedules. Exceptions: the 04:00 daily report job with its commit sweep (DOC-BUG-0027), and git within rule 2 |
+| Implementation | Codex | Builds from locked designs only (rule 11): code, tests, as-built handovers. No design of his own, no admin, governance, mailbox or schedules. Exceptions: the 01:00 daily report job with its commit sweep (DOC-BUG-0027), and git within rule 2 |
 | Admin | Fable (Claude), from the Black Umbrella Group chat | Admin for every business: registers, schedules, clean-ups, reporting, the daily review |
 
 Fable holds an active seat. Any line elsewhere saying "Fable/Claude is
@@ -87,10 +87,10 @@ Update this paragraph the same day the direction changes (lesson S13).
 | 2-5 options, one picture at a time, each with "what changed" | ZYRA chat | Chat |
 | Pick and tweak, then `LOCK` | Shakeel | Chat |
 | Record the LOCK: screen pictures at **real phone size with the real tabs/bars on top**, every state (empty, loading, error), a spec with numbers (sizes, positions, rules, data), and a `LOCK_RECORD.md` line with Shakeel's words and the date | ZYRA chat | `PRODUCT/APPROVED/<FEATURE>/` - one live copy `<NAME>_CURRENT_VERSION_V<n>.<ext>`, old ones `<NAME>_<date>_V<n>` in `ARCHIVE/` |
-| Build brief: locked file paths, "copy exactly, no improvements", what not to touch, checks; then one WAITING line in `PRODUCT/APPROVED/BUILD_QUEUE.md` | ZYRA chat | `PRODUCT/APPROVED/<FEATURE>/BUILD_BRIEF_<YYYY-MM-DD>.md`. Codex builds the queue at 04:00, or when Shakeel types GO in the ZYRA Codex chat (charter rule 9). **Every** ZYRA instruction for Codex - LOCKed builds and Founder-named tasks (captures, fixes, clean-up) - goes in as a queue line with a brief; Shakeel only types GO (Founder, 29 Oct) |
+| Build brief: locked file paths, "copy exactly, no improvements", what not to touch, checks; then one WAITING line in `PRODUCT/APPROVED/BUILD_QUEUE.md` | ZYRA chat | `PRODUCT/APPROVED/<FEATURE>/BUILD_BRIEF_<YYYY-MM-DD>.md`. Codex builds the queue at 01:00, or when Shakeel types GO in the ZYRA Codex chat (charter rule 9). **Every** ZYRA instruction for Codex - LOCKed builds and Founder-named tasks (captures, fixes, clean-up) - goes in as a queue line with a brief; Shakeel only types GO (Founder, 29 Oct) |
 | Check the locked files first, report problems, then build exactly | Codex | Task note: "Built from: <paths>" plus a screenshot of the built screen beside the master |
 | Compare the build with the master | ZYRA chat | Its chat note; Fable files the decision (DR-ZYRA) at 04:15 |
-| Every morning (05:36 scheduled task, after Codex 04:00 and Fable 04:15): read the newest app screenshots and `BUILT/` folders, compare with the masters and the prototype, update the prototype to the real app, and list every difference | ZYRA chat | Chat note row "Morning check"; differences go to Shakeel and become OAs via Fable (Founder, 29 Oct: "every morning ... check app screenshots and update prototype ... spot any differences ... and highlight it") |
+| Every morning (05:36 scheduled task, after Codex 01:00 and Fable 04:15): read the newest app screenshots and `BUILT/` folders, compare with the masters and the prototype, update the prototype to the real app, and list every difference | ZYRA chat | Chat note row "Morning check"; differences go to Shakeel and become OAs via Fable (Founder, 29 Oct: "every morning ... check app screenshots and update prototype ... spot any differences ... and highlight it") |
 
 Lessons from AZMARA: never specify a behaviour in words only - add a picture of the expected result; never lock art before the
 screen's data, navigation and states; review at real phone size before `LOCK`; locked design sources live in the repo, not only

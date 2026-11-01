@@ -1,0 +1,102 @@
+---
+id: TBC (Fable assigns)
+type: SPEC
+status: CURRENT
+feature: PRODUCT BLUEPRINT
+purpose: Spec for LOCK 22 - Unity pass, pages with no LOCK of their own moved into ZYRA's styles (V1 - Compatibility score, Compatibility Unlocks, Safety)
+links: [AD-AIOS-115]
+owner: ZYRA chat
+---
+
+# UNITY PASS — SPEC — V6 (LOCKED 31 OCT 2026)
+
+## 1. Purpose and scope
+On 31 Oct the Founder asked for every page to use ZYRA's five styles: Monogram, Photo card, Floating cards, Chat and Bottom sheet. Pages are reviewed one section at a time. Sections that touch a page already under its own LOCK go into that LOCK (Filters → LOCK 10 V7; Guardian chat → LOCK 8 V4). **This spec holds the pages that have no LOCK of their own.** It grows by version as more sections are locked.
+
+| Version | Section | Pages | Founder |
+|---|---|---|---|
+| V1 | 3 of 9 · Big ring | Compatibility score (locked state), Compatibility Unlocks, Safety | "After A · Monogram (Recommended)" |
+| V2 | 5 of 9 · Flat lists | Report profile | "After B · Monogram + cards (Recommended)" |
+| V3 | 7 of 9 · Empty pages | **Every empty state, app-wide** (Seeker and Guardian) | "After A · Monogram + action (Recommended)" |
+| V4 | 8 of 9 · Floating cards | Settings, Edit profile (Phone access, Green / Yellow / Red, Journey requests ×2, Seekers left as they are) | "After A · Tidy (Recommended)" |
+| V5 | Open finding | New **Safety & advice** page (Seeker) | "Design a real advice page" → "A · One page, LOCK" |
+| V6 | Open finding | **Guardian Safety & advice** page (Guardian One and Guardian Basic) | "After A · Guardian advice (Recommended)" |
+
+Prototype: V134. Masters: `../MASTERS/x01–x06`, `e01–e02`, `s01–s03`, `x07`, `x08–x09` (Guardian empty masters in `GUARDIAN_TABS/MASTERS/` g05, g16, g20, g23) (1290 × 2796, Ivory, @3x).
+
+## 2. Shared Monogram head
+A 96 pt circle with a 1 pt gold ring (`rgba(169,121,46,.7)`) and gold content inside. Below it: title 26 pt light, a gold small-caps line (11 pt, letter-spacing 1.2), and an optional muted line (12.5 pt). The head sits centred in the free space above the page's action. There's no empty block at the bottom.
+
+## 3. Pages
+| Page | Layout | Master |
+|---|---|---|
+| **Compatibility score** (locked; opened from a profile) | Title "Compatibility score". Head: lock icon · "You and <first name>" · "READY TO REVEAL". Floating card with two rows: **Your overall score and six areas** — "Faith & Values, Family, Lifestyle and more" · **Uses 1 Unlock** — "It stays unlocked for <first name>, also in a Journey Bio". Bottom: gold **Unlock compatibility** (existing unlock action); text button "<n> Unlock(s) left · **Get more**" → Compatibility Unlocks. The revealed state is unchanged | x01 |
+| **Compatibility Unlocks** | Title "Compatibility Unlocks". Head: the number of Unlocks left in the ring · "Unlock left" / "Unlocks left" · Seeker One: "3 MORE EACH MONTH WITH SEEKER ONE", Seeker Basic: "SEEKER ONE INCLUDES 3 EACH MONTH". Floating row: lock icon, **Your match, revealed** / "One profile. Every score.", ‹ "1 / 8" › (the existing 8 "What's included" cards). Three pack tiles: **1 Unlock £2.99** "For one profile" · **3 Unlocks £6.99** "£2.33 each" · **5 Unlocks £9.99** "£2.00 each". The chosen tile has a gold border and light gold fill, and 3 Unlocks is the default. Bottom: gold **Continue** (purchasing not available yet, as today); "Purchase terms · Purchasing isn't available yet". The "Unlocks remaining" box and the (i) button are replaced by the head | x02, x03 |
+| **Report profile** (V2) | Title "Report profile". Head: 72 pt round photo with gold ring · "<First> <Surname>" 22 light · gold small caps "CHOOSE THE REASON". One floating card with the seven reasons as radio rows (gold radio when chosen; first chosen by default): Impersonation or fake profile · Nudity or sexual content · Harassment or abusive behaviour · Minor or underage · Violence or disturbing content · Privacy or personal information · Something else. Bottom: **Submit report** outline (still a draft — LOCK 16 V2), then **Hide profile** (muted) and **Block profile** (red) → existing flows and the LOCK 16 warning sheets | x05, x06 |
+| **Safety** | Title "Safety". Head centred on the page: shield icon · "Choose a profile to report" · "Open the person's profile and choose Report. You can then pick the reason that fits best." **The disabled "Submit report" button is removed** (it did nothing) | x04 |
+
+## 3b. Empty state (V3, app-wide)
+One shared widget: 96 pt circle with a 1 pt gold ring (`rgba(169,121,46,.65)`) holding the gold outline icon (34); title 21 light; muted text 12.5 (line height 1.5, about 270 wide); optional gold-outline action pill (40 high) that opens an **existing** page. Centred in the free space. Loading spinners are not empty states and stay as they are.
+
+| Empty state (known) | Title / text | Action |
+|---|---|---|
+| Profiles — no profiles in this view | today's text | — |
+| Profiles — couldn't load | today's text | — |
+| Journey requests — received / sent / past | today's texts | — |
+| Introductions (Seeker) (e01) | "No introductions yet" / "People your Guardians put forward will appear here." | — |
+| Ended Journeys (Seeker) (e02) | **"No ended Journeys" / "When a Journey ends, it's kept here with its Timeline."** (new line) | — |
+| Guardian Journey requests — received / sent | today's texts | — |
+| Connect with Guardian · Sent (g16) | today's text | **Open Network** |
+| Connect with Guardian · Received (g20) | today's text | — |
+| Introductions you've made (g05) | today's text | **Open Network** |
+| Ended Journeys (Guardian) (g23) | today's text | — |
+| Any other "no … yet" state found in the app | today's text | — |
+
+## 3c. Settings and Edit profile (V4)
+| Page | Rule | Master |
+|---|---|---|
+| **Settings** | Standard page header: back + large left title "Settings" (was a small centred title). Top summary card unchanged (Membership · Guardians · Signed in with). The bottom **MEMBERSHIP** section is removed — Membership lives on the Profile tab (LOCK 21) and in the summary card. All other sections and rows unchanged (Account, Privacy incl. Phone access, Notifications, Support, Legal) | s01, s02 |
+| **Edit profile** | Title **Edit profile** (was "Profile"). Intro "Your answers stay private. ZYRA uses them to calculate compatibility and honour your requirements." Floating card: About you "0 of 20 answered" · Lifestyle "0 of 46 answered" · Marriage preferences "0 of 38 answered" · Green / Yellow / Red "<n> of 325 preferences set" · Hard requirements "0 introduction-blocking answers" (gold icons, chevrons, same targets). Card: Date of birth "Age 30" + lock · Gender "Brother" + lock. Note "Your date of birth and gender are saved with your account essentials and can't be edited here. If either is wrong, contact Support." Card row **Open Help & support** | s03 |
+
+## 3d. Safety & advice (V5, Seeker)
+Opened from Profile → **Safety & advice** (LOCK 21 row; previously it opened the Safety report-instructions page).
+
+| Part | Rule |
+|---|---|
+| Header | Back + title "Safety & advice" |
+| Head | Monogram 88: gold health-and-safety shield · "Stay safe on your Journey" · gold small caps "ZYRA SAFETY" |
+| Tips card | Five rows (gold icon, title, muted text): **Keep your family close** — "Your Main Guardian is part of every Journey. Talk to your Guardians before you meet anyone." · **Meet safely** — "Meet in a public place, with a Guardian or family member there. Tell someone where you are going." · **Never send money** — "No one on ZYRA should ask you for money, gifts or bank details. If they do, report them." · **Protect your details** — "Keep your address, workplace and finances private until you have met the family and feel sure." · **Trust how you feel** — "If something feels wrong, you can end a Journey, hide or block at any time. They are not told why." |
+| Help card | **Report a profile** — "Open their profile and choose Report" → the Safety page (x04) · **Help & support** → existing Help page |
+| Footer | Muted, centred: "In danger right now? Call your local emergency number (999 in the UK)." |
+| Rules | No heart icons. Fits one screen at standard text; scrolls with Larger Text |
+
+## 3e. Guardian Safety & advice (V6, Guardian One and Guardian Basic)
+Opened from the Guardian Profile tab → **Safety & advice** (today it opens the shared Safety report page; it now opens this page).
+Same layout, sizes and rules as §3d; only the words below differ.
+
+| Part | Rule |
+|---|---|
+| Header | Back + title "Safety & advice" |
+| Head | Monogram 88: gold health-and-safety shield · "Support a safe Journey" · gold small caps "ZYRA SAFETY · GUARDIANS" |
+| Tips card | Five rows (gold icon, title, muted text): **Support, don't decide** (people icon) — "You are part of every Journey a Seeker you support begins. They choose whether to continue; share your view in the Guardian Circle." · **Be there when they meet** (place) — "First meetings should be in a public place, with you or another family member present." · **Never send money** (payments) — "No one on ZYRA should ask you or the Seeker for money, gifts or bank details. If they do, report them." · **Protect family details** (lock) — "Keep your home address, work and family finances private until both families have met and feel sure." · **Speak up early** (outlined flag) — "If something worries you, talk to the Seeker first, and report the profile if you need to." |
+| Help card | **Report a profile** — "Open their profile and choose Report" → the Guardian's existing Safety page (x04 layout) · **Help & support** → existing Help page |
+| Footer | Muted, centred: "In danger right now? Call your local emergency number (999 in the UK)." |
+| Rules | Identical for Guardian One and Guardian Basic (x08, x09). No Seeker names in the tips. No heart icons |
+
+## 4. Rules
+- Prices come from the existing Unlock pack data, never typed in.
+- Larger Text: rows and tiles grow taller; nothing clips.
+- No member counts.
+
+## 5. Open finding
+Resolved in V5 (§3d) and V6 (§3e).
+
+## 6. Version history
+| Date | Version | Change |
+|---|---|---|
+| 2026-10-31 | V1 | Unity review 3 of 9 (Big ring) → "After A · Monogram" |
+| 2026-10-31 | V2 | Unity review 5 of 9 (Flat lists) → Report profile "After B · Monogram + cards" |
+| 2026-10-31 | V3 | Unity review 7 of 9 (Empty pages) → app-wide Monogram empty state, "After A · Monogram + action" |
+| 2026-10-31 | V4 | Unity review 8 of 9 (Floating cards) → Settings + Edit profile "After A · Tidy" |
+| 2026-10-31 | V5 | New Safety & advice page (Founder: "Design a real advice page" → "A · One page, LOCK") |
+| 2026-10-31 | V6 | Guardian Safety & advice page (Founder: "After A · Guardian advice (Recommended)", wording as shown) |

@@ -1,6 +1,6 @@
 ---
 id: DOC-ZYRA-0331
-type: LEGAL
+type: REPORT
 status: DRAFT
 feature: LEGAL
 purpose: Data Protection Impact Assessment for the whole ZYRA member service (ICO template order), drafted from the approved blueprint for a DPO/adviser and solicitor review and the Founder's sign-off; part of the launch legal pack (OA-ZYRA-321)
@@ -132,6 +132,8 @@ Individual rights: access, rectification (profile edit; DOB and gender frozen af
 | R10 | Profiling by compatibility score unfairly hides some members | Possible | Significant | Medium |
 | R11 | Guardian added without a real family relationship (impersonation of a Guardian) | Possible | Significant | Medium |
 | R12 | Breach of the main database | Remote | Severe | Medium |
+| R13 | A Guardian with sharing on sees the other person's first name and dates of a past Journey; that person never agreed (DR-ZYRA-308, amends DR-ZYRA-233) | Probable | Significant | High |
+| R14 | Location: home town as a real place, optional approximate current area, distance filtering (DR-ZYRA-319, 320, 321) - could reveal where someone lives or allow tracking by repeated filtering | Possible | Severe | High |
 
 ## Step 6 — Measures to reduce risk
 
@@ -149,6 +151,8 @@ Individual rights: access, rectification (profile edit; DOB and gender frozen af
 | R10 | Disclose scoring in the Privacy Notice; Browse still shows everyone eligible, scoring only orders; no solely-automated decision | Reduced | Low | [ ] |
 | R11 | Guardian states relationship; Seeker must accept; identity check for the requester; Main Guardian can be changed or removed (DOC-ZYRA-0290 §1-2) | Reduced | Low-Medium | [ ] |
 | R12 | RLS, private storage, signed links, server-authoritative functions, leaked-password protection (OA-ZYRA-312), 5 Oct security fixes to go live (DOC-ZYRA-0294) | Reduced | Low | [ ] |
+| R13 | First names and dates only, never the person's photo or details; only while the Seeker's sharing switch is on, removed when it is off or the link ends (built in the preview, queue 18); say it in the Privacy Notice section "What Guardians see" and in the Profile section; **[solicitor: is notice enough, or is the other person's agreement needed?]** | Reduced | Medium | [ ] |
+| R14 | Approximate area only, never exact, never shown, no distances on cards, profiles or to Guardians (LOCK 11); asked once with the phone's own prompt, refusal keeps the home town (LOCK 12 V2); nothing stored on the server until this DPIA is approved (OA-ZYRA-317); if GeoNames is used, CC-BY 4.0 attribution on the licences page | Reduced | Medium-Low | [ ] |
 
 ## Step 7 — Sign-off and outcomes
 
@@ -166,6 +170,7 @@ Individual rights: access, rectification (profile edit; DOB and gender frozen af
 |---|---|---|
 | 2026-10-30 | V1 | First draft from DOC-ZYRA-0280 and the part 2 blueprint pages; DR-ZYRA-299 and DR-ZYRA-300 recorded as risks R3 and R6 |
 | 2026-10-30 | V1 | Founder accepted all 25 decisions (DOC-ZYRA-0334); placeholders applied |
+| 2026-10-31 | V1 | Risks R13 (first name of a shared past Journey, DR-ZYRA-308) and R14 (location, DR-ZYRA-319-321) added from the 30 Oct LOCKs - Fable, OA-ZYRA-321 |
 
 ## Placeholders still to fill
 

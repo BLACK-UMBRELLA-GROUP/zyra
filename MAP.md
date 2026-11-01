@@ -50,7 +50,7 @@ re-run the tool.
 | DOC-ZYRA-0288 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_6_BUILD_AND_RELEASE_CURRENT_VERSION_V1.md` | 8 |
 | DOC-ZYRA-0255 (large - search it) | `SYSTEM/DOCUMENTS/ZYRA_DEVELOPER_CONTROL_SYSTEM_HANDOVER_CURRENT_VERSION_V2.md` | 228 |
 | DOC-ZYRA-0289 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_7_TRACE_CURRENT_VERSION_V1.md` | 10 |
-| DOC-ZYRA-0278 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_1_SCREEN_MAP_CURRENT_VERSION_V3.md` | 8 |
+| DOC-ZYRA-0278 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_1_SCREEN_MAP_CURRENT_VERSION_V3.md` | 9 |
 | DOC-ZYRA-0286 | `PRODUCT/BLUEPRINT/ZYRA_PLANNED_SCREEN_INVENTORY_GENERATED.md` | 11 |
 | DOC-ZYRA-0279 (large - search it) | `PRODUCT/BLUEPRINT/ZYRA_SCREEN_INVENTORY_GENERATED.md` | 54 |
 | DOC-ZYRA-0248 | `SYSTEM/DOCUMENTS/PROJECT_OVERVIEW_V1.md` | 2 |
@@ -60,8 +60,8 @@ re-run the tool.
 | DOC-ZYRA-0290 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_GUARDIAN_RULES_CURRENT_VERSION_V4.md` | 12 |
 | DOC-ZYRA-0178 (large - search it) | `SYSTEM/DOCUMENTS/ZYRA_GUARDIAN_NETWORK_CURRENT_VERSION_V2.md` | 50 |
 | DOC-ZYRA-0293 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_MESSAGING_RULES_CURRENT_VERSION_V1.md` | 6 |
-| DOC-ZYRA-0292 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_BROWSE_RULES_CURRENT_VERSION_V2.md` | 8 |
-| DOC-ZYRA-0295 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_PROFILE_RULES_CURRENT_VERSION_V2.md` | 7 |
+| DOC-ZYRA-0292 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_BROWSE_RULES_CURRENT_VERSION_V2.md` | 9 |
+| DOC-ZYRA-0295 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_PROFILE_RULES_CURRENT_VERSION_V2.md` | 8 |
 | DOC-ZYRA-0296 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_ONBOARDING_RULES_CURRENT_VERSION_V1.md` | 6 |
 | DOC-ZYRA-0283 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_JOURNEY_RULES_CURRENT_VERSION_V2.md` | 8 |
 | DOC-ZYRA-0291 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_MEMBERSHIP_RULES_CURRENT_VERSION_V1.md` | 8 |
@@ -70,7 +70,7 @@ re-run the tool.
 | DOC-ZYRA-0071 | `APP/UX Writing/Summary.md` | 9 |
 | DOC-ZYRA-0070 | `APP/UX Writing/ERROR_AND_EMPTY_STATE_STANDARD_CURRENT_VERSION_V1.md` | 6 |
 | DOC-ZYRA-0285 | `REPORTS/CURRENT/ZYRA_PLANNED_APP_DEEP_REVIEW_2026-10-26_V1.md` | 9 |
-| DOC-ZYRA-0284 (large - search it) | `REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md` | 33 |
+| DOC-ZYRA-0284 (large - search it) | `REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md` | 34 |
 | DOC-ZYRA-0102 | `BUSINESS/COLOUR THEME/Summary.md` | 7 |
 | DOC-ZYRA-0282 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_5_LOOK_AND_FEEL_CURRENT_VERSION_V1.md` | 17 |
 | DOC-ZYRA-0266 | `SYSTEM/DOCUMENTS/ZYRA_UI_CONSISTENCY_GATE_CURRENT_VERSION_V1.md` | 10 |
@@ -86,7 +86,7 @@ re-run the tool.
 
 _Stop here unless you need to look up another ID._
 
-## Documents (352 live)
+## Documents (355 live)
 
 ### APP: AUTHENTICATION
 
@@ -414,7 +414,7 @@ _Stop here unless you need to look up another ID._
 
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
-| DOC-ZYRA-0284 | `REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md` | REPORT | ZYRA code-size tracker - how much code the app has, how much is developer/preview code, and how many old-app… | OA-ZYRA-316, DR-ZYRA-274 | 33 |
+| DOC-ZYRA-0284 | `REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md` | REPORT | ZYRA code-size tracker - how much code the app has, how much is developer/preview code, and how many old-app… | OA-ZYRA-316, DR-ZYRA-274 | 34 |
 | DOC-ZYRA-0285 | `REPORTS/CURRENT/ZYRA_PLANNED_APP_DEEP_REVIEW_2026-10-26_V1.md` | REPORT | Deep review of the planned ZYRA app (the Founder preview) against the old member app and the database - what… | OA-ZYRA-316, OA-ZYRA-317, DR-ZYRA-274, DOC-ZYRA-0284 | 9 |
 
 ### CODE PAGE
@@ -500,8 +500,8 @@ _Stop here unless you need to look up another ID._
 |---|---|---|---|---|---|
 | DOC-ZYRA-0300 | `REPORTS/CURRENT/ZYRA_CHAT_HANDOVER_2026-10-27_V1.md` | REPORT | Handover from Fable to the new ZYRA chat (lead designer) - who you are, how Shakeel works, what ZYRA is… | AD-AIOS-115, DOC-BUG-0009, DOC-ZYRA-0278, DOC-ZYRA-0291, OA-ZYRA-320, OA-ZYRA-321 | 9 |
 | DOC-ZYRA-0302 | `PRODUCT/APPROVED/BUILD_QUEUE.md` | REGISTER | Build queue - every ZYRA instruction for Codex (LOCKed builds and Founder-named tasks) waits here; Codex… | AD-AIOS-115 | 14 |
-| INDEX-DECISIONS_V1 | `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1_INDEX.md` | INDEX | Generated one-line index of DECISIONS_V1.md; find the ID here, then search the register for it |  | 40 |
-| INDEX-OUTSTANDING_ACTIONS_V2 | `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2_INDEX.md` | INDEX | Generated one-line index of OUTSTANDING_ACTIONS_V2.md; find the ID here, then search the register for it |  | 13 |
+| INDEX-DECISIONS_V1 | `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1_INDEX.md` | INDEX | Generated one-line index of DECISIONS_V1.md; find the ID here, then search the register for it |  | 42 |
+| INDEX-OUTSTANDING_ACTIONS_V2 | `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2_INDEX.md` | INDEX | Generated one-line index of OUTSTANDING_ACTIONS_V2.md; find the ID here, then search the register for it |  | 14 |
 
 ### GUARDIAN NETWORK
 
@@ -575,11 +575,11 @@ _Stop here unless you need to look up another ID._
 
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
-| DOC-ZYRA-0330 | `REPORTS/CURRENT/ZYRA_MEMBER_TERMS_DRAFT_2026-10-30_V1.md` | LEGAL · DRAFT | Plain-English member terms for ZYRA (Seekers and Guardians) - drafted from the approved blueprint for a… | OA-ZYRA-320, OA-ZYRA-321, DOC-ZYRA-0291, DOC-ZYRA-0290, DOC-ZYRA-0293, DOC-ZYRA-0295, DOC-ZYRA-0296, DOC-ZYRA-0297, DOC-ZYRA-0148, DR-ZYRA-285, DR-ZYRA-287, DR-ZYRA-289, DR-ZYRA-292, DR-ZYRA-299, DR-ZYRA-300, DOC-ZYRA-0331, DOC-ZYRA-0332, DOC-ZYRA-0333 | 24 |
-| DOC-ZYRA-0331 | `REPORTS/CURRENT/ZYRA_DPIA_DRAFT_2026-10-30_V1.md` | LEGAL · DRAFT | Data Protection Impact Assessment for the whole ZYRA member service (ICO template order), drafted from the… | OA-ZYRA-321, OA-ZYRA-320, DOC-ZYRA-0280, DOC-ZYRA-0290, DOC-ZYRA-0291, DOC-ZYRA-0293, DOC-ZYRA-0295, DOC-ZYRA-0296, DOC-ZYRA-0297, DOC-ZYRA-0205, DOC-ZYRA-0148, DR-ZYRA-221, DR-ZYRA-285, DR-ZYRA-287, DR-ZYRA-292, DR-ZYRA-299, DR-ZYRA-300, DOC-ZYRA-0330, DOC-ZYRA-0332, DOC-ZYRA-0333 | 19 |
-| DOC-ZYRA-0332 | `REPORTS/CURRENT/ZYRA_SAFETY_RESPONSE_DRAFT_2026-10-30_V1.md` | LEGAL · DRAFT | ZYRA safety response procedure - how members report, how the Founder reviews reports in AIOS, response… | OA-ZYRA-321, OA-AIOS-413, DOC-ZYRA-0297, DOC-ZYRA-0290, DOC-ZYRA-0293, DOC-ZYRA-0295, DOC-ZYRA-0280, DR-ZYRA-287, DR-ZYRA-095, DR-ZYRA-131, DR-ZYRA-248, DR-ZYRA-268, DOC-ZYRA-0330, DOC-ZYRA-0331, DOC-ZYRA-0333 | 13 |
-| DOC-ZYRA-0333 | `REPORTS/CURRENT/ZYRA_ONLINE_SAFETY_ACT_CHECK_2026-10-30_V1.md` | LEGAL · DRAFT | Online Safety Act 2023 applicability check for ZYRA - whether it is a regulated user-to-user service, which… | OA-ZYRA-321, DOC-ZYRA-0297, DOC-ZYRA-0296, DOC-ZYRA-0293, DOC-ZYRA-0290, DR-ZYRA-221, DR-ZYRA-287, DOC-ZYRA-0330, DOC-ZYRA-0331, DOC-ZYRA-0332 | 12 |
-| DOC-ZYRA-0334 | `REPORTS/CURRENT/ZYRA_LEGAL_DECISIONS_2026-10-30_V1.md` | DECISION_SHEET | The 25 decisions the legal drafts need, each with Fable's recommended answer, for the Founder to confirm or… | OA-ZYRA-320, OA-ZYRA-321, DOC-ZYRA-0330, DOC-ZYRA-0331, DOC-ZYRA-0332, DOC-ZYRA-0333 | 7 |
+| DOC-ZYRA-0330 | `REPORTS/CURRENT/ZYRA_MEMBER_TERMS_DRAFT_2026-10-30_V1.md` | REPORT · DRAFT | Plain-English member terms for ZYRA (Seekers and Guardians) - drafted from the approved blueprint for a… | OA-ZYRA-320, OA-ZYRA-321, DOC-ZYRA-0291, DOC-ZYRA-0290, DOC-ZYRA-0293, DOC-ZYRA-0295, DOC-ZYRA-0296, DOC-ZYRA-0297, DOC-ZYRA-0148, DR-ZYRA-285, DR-ZYRA-287, DR-ZYRA-289, DR-ZYRA-292, DR-ZYRA-299, DR-ZYRA-300, DOC-ZYRA-0331, DOC-ZYRA-0332, DOC-ZYRA-0333 | 24 |
+| DOC-ZYRA-0331 | `REPORTS/CURRENT/ZYRA_DPIA_DRAFT_2026-10-30_V1.md` | REPORT · DRAFT | Data Protection Impact Assessment for the whole ZYRA member service (ICO template order), drafted from the… | OA-ZYRA-321, OA-ZYRA-320, DOC-ZYRA-0280, DOC-ZYRA-0290, DOC-ZYRA-0291, DOC-ZYRA-0293, DOC-ZYRA-0295, DOC-ZYRA-0296, DOC-ZYRA-0297, DOC-ZYRA-0205, DOC-ZYRA-0148, DR-ZYRA-221, DR-ZYRA-285, DR-ZYRA-287, DR-ZYRA-292, DR-ZYRA-299, DR-ZYRA-300, DOC-ZYRA-0330, DOC-ZYRA-0332, DOC-ZYRA-0333 | 20 |
+| DOC-ZYRA-0332 | `REPORTS/CURRENT/ZYRA_SAFETY_RESPONSE_DRAFT_2026-10-30_V1.md` | REPORT · DRAFT | ZYRA safety response procedure - how members report, how the Founder reviews reports in AIOS, response… | OA-ZYRA-321, OA-AIOS-413, DOC-ZYRA-0297, DOC-ZYRA-0290, DOC-ZYRA-0293, DOC-ZYRA-0295, DOC-ZYRA-0280, DR-ZYRA-287, DR-ZYRA-095, DR-ZYRA-131, DR-ZYRA-248, DR-ZYRA-268, DOC-ZYRA-0330, DOC-ZYRA-0331, DOC-ZYRA-0333 | 13 |
+| DOC-ZYRA-0333 | `REPORTS/CURRENT/ZYRA_ONLINE_SAFETY_ACT_CHECK_2026-10-30_V1.md` | REPORT · DRAFT | Online Safety Act 2023 applicability check for ZYRA - whether it is a regulated user-to-user service, which… | OA-ZYRA-321, DOC-ZYRA-0297, DOC-ZYRA-0296, DOC-ZYRA-0293, DOC-ZYRA-0290, DR-ZYRA-221, DR-ZYRA-287, DOC-ZYRA-0330, DOC-ZYRA-0331, DOC-ZYRA-0332 | 12 |
+| DOC-ZYRA-0334 | `REPORTS/CURRENT/ZYRA_LEGAL_DECISIONS_2026-10-30_V1.md` | DECISION | The 25 decisions the legal drafts need, each with Fable's recommended answer, for the Founder to confirm or… | OA-ZYRA-320, OA-ZYRA-321, DOC-ZYRA-0330, DOC-ZYRA-0331, DOC-ZYRA-0332, DOC-ZYRA-0333 | 7 |
 
 ### LOCATION
 
@@ -643,7 +643,7 @@ _Stop here unless you need to look up another ID._
 
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
-| DOC-ZYRA-0278 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_1_SCREEN_MAP_CURRENT_VERSION_V3.md` | SPEC | Blueprint part 1 V3 - the planned ZYRA app's screens - how members get in, the Seeker and Guardian tabs,… | DOC-ZYRA-0286, DOC-ZYRA-0283, DOC-ZYRA-0285, DR-ZYRA-274, OA-ZYRA-309, OA-ZYRA-317 | 8 |
+| DOC-ZYRA-0278 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_1_SCREEN_MAP_CURRENT_VERSION_V3.md` | SPEC | Blueprint part 1 V3 - the planned ZYRA app's screens - how members get in, the Seeker and Guardian tabs,… | DOC-ZYRA-0286, DOC-ZYRA-0283, DOC-ZYRA-0285, DR-ZYRA-274, OA-ZYRA-309, OA-ZYRA-317 | 9 |
 | DOC-ZYRA-0279 | `PRODUCT/BLUEPRINT/ZYRA_SCREEN_INVENTORY_GENERATED.md` | REPORT | Generated inventory of the OLD member app screens (SOURCE/lib/screens) - who it is for, what opens it, what… | OA-ZYRA-309, DOC-ZYRA-0278 | 54 |
 | DOC-ZYRA-0280 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_3_DATA_CURRENT_VERSION_V1.md` | SPEC | Blueprint part 3 - ZYRA's data in plain words: every table and what it holds, how members' data is… | OA-ZYRA-309, DOC-ZYRA-0281, OA-ZYRA-312 | 13 |
 | DOC-ZYRA-0281 | `PRODUCT/BLUEPRINT/ZYRA_DATA_INVENTORY_GENERATED.md` | REPORT | Generated inventory of ZYRA data from the migrations - every table, column, link, security rule, database… | OA-ZYRA-309, DOC-ZYRA-0280 | 81 |
@@ -655,9 +655,9 @@ _Stop here unless you need to look up another ID._
 | DOC-ZYRA-0289 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_7_TRACE_CURRENT_VERSION_V1.md` | SPEC | Blueprint part 7 - trace - for each rule of the planned app, the decision that set it (DR) and the code that… | OA-ZYRA-309, DOC-ZYRA-0278, DOC-ZYRA-0283, DOC-ZYRA-0287, DOC-ZYRA-0288, DR-ZYRA-274 | 10 |
 | DOC-ZYRA-0290 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_GUARDIAN_RULES_CURRENT_VERSION_V4.md` | SPEC | Blueprint part 2 (Guardians) - every Guardian rule of the planned app - linking by ZYRA Code, Main and… | OA-ZYRA-309, OA-ZYRA-317, DOC-ZYRA-0283, DOC-ZYRA-0289, DR-ZYRA-280 | 12 |
 | DOC-ZYRA-0291 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_MEMBERSHIP_RULES_CURRENT_VERSION_V1.md` | SPEC | Blueprint part 2 (Membership and payments) - plans and prices, the joining fee, the trial, Family places,… | OA-ZYRA-309, OA-ZYRA-317, DOC-ZYRA-0287, DOC-ZYRA-0289, DR-ZYRA-252, DR-ZYRA-275 | 8 |
-| DOC-ZYRA-0292 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_BROWSE_RULES_CURRENT_VERSION_V2.md` | SPEC | Blueprint part 2 (Browse) - how Seekers find each other in the planned app - who appears and in what order,… | OA-ZYRA-309, OA-ZYRA-317, OA-ZYRA-312, DOC-ZYRA-0283, DOC-ZYRA-0291, DR-ZYRA-280, DR-ZYRA-282 | 8 |
+| DOC-ZYRA-0292 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_BROWSE_RULES_CURRENT_VERSION_V2.md` | SPEC | Blueprint part 2 (Browse) - how Seekers find each other in the planned app - who appears and in what order,… | OA-ZYRA-309, OA-ZYRA-317, OA-ZYRA-312, DOC-ZYRA-0283, DOC-ZYRA-0291, DR-ZYRA-280, DR-ZYRA-282 | 9 |
 | DOC-ZYRA-0293 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_MESSAGING_RULES_CURRENT_VERSION_V1.md` | SPEC | Blueprint part 2 (Messaging) - when Seekers can message in a Journey, what Guardians can read and write,… | OA-ZYRA-309, OA-ZYRA-317, OA-ZYRA-319, DOC-ZYRA-0283, DOC-ZYRA-0290 | 6 |
-| DOC-ZYRA-0295 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_PROFILE_RULES_CURRENT_VERSION_V2.md` | SPEC | Blueprint part 2 (Profile and account) - what a profile holds and who sees what, photos, identity freeze,… | OA-ZYRA-309, OA-ZYRA-317, DOC-ZYRA-0294, DOC-ZYRA-0278, DOC-ZYRA-0292 | 7 |
+| DOC-ZYRA-0295 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_PROFILE_RULES_CURRENT_VERSION_V2.md` | SPEC | Blueprint part 2 (Profile and account) - what a profile holds and who sees what, photos, identity freeze,… | OA-ZYRA-309, OA-ZYRA-317, DOC-ZYRA-0294, DOC-ZYRA-0278, DOC-ZYRA-0292 | 8 |
 | DOC-ZYRA-0296 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_ONBOARDING_RULES_CURRENT_VERSION_V1.md` | SPEC | Blueprint part 2 (Onboarding) - how a new member gets in - welcome, choosing Seeker or Guardian first,… | OA-ZYRA-309, OA-ZYRA-317, DOC-ZYRA-0294, DOC-ZYRA-0295, DOC-ZYRA-0291 | 6 |
 | DOC-ZYRA-0297 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_SAFETY_RULES_CURRENT_VERSION_V1.md` | SPEC | Blueprint part 2 (Safety) - reporting profiles, photos and messages, blocking, what a safety-concern ending… | OA-ZYRA-309, OA-ZYRA-317, OA-ZYRA-312, DOC-ZYRA-0294, DOC-ZYRA-0057 | 5 |
 | DOC-ZYRA-0299 | `REPORTS/CURRENT/ZYRA_BLUEPRINT_REVIEW_PACK_2026-10-26_V1.md` | REPORT | Blueprint review pack for the Founder - the 14 draft blueprint pages in reading order, each in one… | OA-ZYRA-309, DOC-ZYRA-0278, DOC-ZYRA-0283, DOC-ZYRA-0289 | 15 |
@@ -683,30 +683,33 @@ _Stop here unless you need to look up another ID._
 | DOC-ZYRA-0323 | `PRODUCT/APPROVED/REQUEST_ROW/RECORD/REQUEST_ROW_SPEC_CURRENT_VERSION_V2.md` | SPEC | Spec for LOCK 7 - the Profiles request row (one pill with Previous, Request a Journey, Next) | DR-ZYRA-276, DOC-ZYRA-0282 | 2 |
 | DOC-ZYRA-0324 | `PRODUCT/APPROVED/REQUEST_ROW/BRIEFS/BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 7 - Profiles request row as one pill | AD-AIOS-115 | 1 |
 | DOC-ZYRA-0325 | `PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 8 - the Guardian app's five tabs (Network, Journeys, My ZYRA, Seekers, Profile) and… | AD-AIOS-115, DR-ZYRA-280, DR-ZYRA-292, DR-ZYRA-233, DOC-ZYRA-0278 | 2 |
+| DOC-ZYRA-0337 | `PRODUCT/APPROVED/APP_COLOURS/BRIEFS/BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 14 - app colours Ivory (planned app, icon, launch, splash) | AD-AIOS-115 | 2 |
+| DOC-ZYRA-0338 | `PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V3.md` | SPEC | Spec for LOCK 14 - ZYRA app colours: Ivory, gold and warm neutrals, no purple; matching app icon and splash;… | DR-ZYRA-276, AD-AIOS-115 | 6 |
+| DOC-ZYRA-0339 | `PRODUCT/APPROVED/APP_COLOURS/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 14 - ZYRA app colours (Ivory, gold, warm neutrals; matching icon and splash; no member… | AD-AIOS-115 | 2 |
+| DOC-ZYRA-0342 | `PRODUCT/APPROVED/CODE_PAGE/BRIEFS/BUILD_BRIEF_2026-10-30_V2.md` | PLAN | Codex build brief for LOCK 9 - ZYRA Code page, second attempt after queue line 24 stopped | AD-AIOS-115, DR-ZYRA-231 | 1 |
+| DOC-ZYRA-0343 | `PRODUCT/APPROVED/CODE_PAGE/RECORD/CODE_PAGE_SPEC_CURRENT_VERSION_V2.md` | SPEC | Spec for LOCK 9 - ZYRA Code page (V2 - what Check code leads to on Add a Guardian / Add a Seeker) | DOC-ZYRA-0282, DR-ZYRA-231, AD-AIOS-115 | 3 |
+| DOC-ZYRA-0344 | `PRODUCT/APPROVED/CODE_PAGE/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 9 - the ZYRA Code page (find or link someone by code), used on Scan, Add a Guardian and… | AD-AIOS-115 | 1 |
+| DOC-ZYRA-0345 | `PRODUCT/APPROVED/COMPATIBILITY_LOOP/BRIEFS/COMPATIBILITY_LOOP_BRIEF_2026-10-30.md` | PLAN | Codex task - the Compatibility score reader's 7 pages loop instead of stopping at the ends | DR-ZYRA-288, OA-ZYRA-286 | 1 |
+| DOC-ZYRA-0346 | `PRODUCT/APPROVED/DEV_TOGGLES/BRIEFS/DEV_TOGGLES_REMOVAL_BRIEF_2026-10-30.md` | PLAN | Codex brief - remove every developer toggle and developer control from the ZYRA app, completely | OA-ZYRA-325 | 3 |
+| DOC-ZYRA-0355 | `PRODUCT/APPROVED/FILTERS/BRIEFS/BUILD_BRIEF_2026-10-30_V4.md` | PLAN | Codex build brief for LOCK 10 V4 - Filters as swipe cards | AD-AIOS-115 | 2 |
+| DOC-ZYRA-0356 | `PRODUCT/APPROVED/FILTERS/RECORD/FILTERS_SPEC_CURRENT_VERSION_V6.md` | SPEC | Spec for LOCK 10 - Filters page (V4 - swipe cards, one filter per card; Where; searchable Nationality and… | DOC-ZYRA-0284, DOC-ZYRA-0329, AD-AIOS-115 | 6 |
+| DOC-ZYRA-0357 | `PRODUCT/APPROVED/FILTERS/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 10 - Filters page redesign (cards, sliders, city search, no counts) | AD-AIOS-115 | 2 |
+| DOC-ZYRA-0358 | `PRODUCT/APPROVED/GUARDIAN_TABS/BRIEFS/BUILD_BRIEF_2026-10-30_V2.md` | PLAN | Codex build brief for LOCK 8 - Guardian tabs, second attempt after queue line 20 stopped | DR-ZYRA-306, DR-ZYRA-110, OA-ZYRA-325 | 3 |
+| DOC-ZYRA-0359 | `PRODUCT/APPROVED/HAPTICS/BRIEFS/HAPTICS_BRIEF_2026-10-30.md` | PLAN | Codex task - every tappable control in the planned app gives haptic feedback at the member's chosen level | DOC-ZYRA-0282, OA-ZYRA-314 | 2 |
+| DOC-ZYRA-0361 | `PRODUCT/APPROVED/JOURNEY_TAB/BRIEFS/BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 13 - Seeker Journey tab swipe cards | AD-AIOS-115 | 1 |
+| DOC-ZYRA-0362 | `PRODUCT/APPROVED/JOURNEY_TAB/RECORD/JOURNEY_TAB_SPEC_CURRENT_VERSION_V2.md` | SPEC | Spec for LOCK 13 - Seeker Journey tab (swipe cards, one per Journey place) | DOC-ZYRA-0283, DR-ZYRA-277, AD-AIOS-115 | 4 |
+| DOC-ZYRA-0363 | `PRODUCT/APPROVED/JOURNEY_TAB/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 13 - Seeker Journey tab as swipe cards (design 2) | AD-AIOS-115 | 1 |
+| DOC-ZYRA-0365 | `PRODUCT/APPROVED/LOCATION/BRIEFS/BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 11 - Location for distance (app part) | AD-AIOS-115 | 1 |
+| DOC-ZYRA-0366 | `PRODUCT/APPROVED/LOCATION/RECORD/LOCATION_SPEC_CURRENT_VERSION_V2.md` | SPEC | Spec for LOCK 11 - location for distance (V2 - sits in the Filters Where card under Near me; real geography) | DOC-ZYRA-0329, OA-ZYRA-321 | 2 |
+| DOC-ZYRA-0367 | `PRODUCT/APPROVED/LOCATION/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 11 - Location for distance (home town by default, optional approximate current area) | AD-AIOS-115 | 1 |
+| DOC-ZYRA-0368 | `PRODUCT/APPROVED/MY_ZYRA/BRIEFS/BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 15 - Seeker My ZYRA tab, Focus design | AD-AIOS-115 | 2 |
+| DOC-ZYRA-0369 | `PRODUCT/APPROVED/MY_ZYRA/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 15 - Seeker My ZYRA tab (Focus design) and everything that lives there | AD-AIOS-115 | 1 |
+| DOC-ZYRA-0370 | `PRODUCT/APPROVED/MY_ZYRA/RECORD/MY_ZYRA_SPEC_CURRENT_VERSION_V1.md` | SPEC | Spec for LOCK 15 - Seeker My ZYRA tab, "Focus" design, and the full list of what lives there | DR-ZYRA-274, AD-AIOS-115 | 6 |
+| DOC-ZYRA-0373 | `PRODUCT/APPROVED/PHONE_ACCESS/BRIEFS/BUILD_BRIEF_2026-10-30_V2.md` | PLAN | Codex build brief for LOCK 12 V2 - Phone access page (replaces queue line 27) | AD-AIOS-115 | 1 |
+| DOC-ZYRA-0374 | `PRODUCT/APPROVED/PHONE_ACCESS/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 12 - Phone access page in Settings | AD-AIOS-115 | 1 |
+| DOC-ZYRA-0375 | `PRODUCT/APPROVED/PHONE_ACCESS/RECORD/PHONE_ACCESS_SPEC_CURRENT_VERSION_V2.md` | SPEC | Spec for LOCK 12 - Phone access page | DOC-ZYRA-0287 | 2 |
+| DOC-ZYRA-0378 | `PRODUCT/APPROVED/TAB_BAR/BRIEFS/BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 6 V2 - tab bar small state 40% to 60% | DR-ZYRA-276 | 1 |
 | OA-ZYRA-316-BASELINE-2026-10-29 | `PRODUCT/APPROVED/BASELINE/SCREENSHOTS/INDEX.md` | INDEX | Generated capture artifact for DOC-ZYRA-0301; every available planned-app page and local preview state | DOC-ZYRA-0301, DOC-ZYRA-0278, DOC-ZYRA-0286, OA-ZYRA-316 | 405 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/APP_COLOURS/BRIEFS/BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 14 - app colours Ivory (planned app, icon, launch, splash) | AD-AIOS-115 | 2 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V3.md` | SPEC | Spec for LOCK 14 - ZYRA app colours: Ivory, gold and warm neutrals, no purple; matching app icon and splash;… | DR-ZYRA-276, AD-AIOS-115 | 6 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/APP_COLOURS/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 14 - ZYRA app colours (Ivory, gold, warm neutrals; matching icon and splash; no member… | AD-AIOS-115 | 2 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/CODE_PAGE/BRIEFS/BUILD_BRIEF_2026-10-30_V2.md` | PLAN | Codex build brief for LOCK 9 - ZYRA Code page, second attempt after queue line 24 stopped | AD-AIOS-115, DR-ZYRA-231 | 1 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/CODE_PAGE/RECORD/CODE_PAGE_SPEC_CURRENT_VERSION_V2.md` | SPEC | Spec for LOCK 9 - ZYRA Code page (V2 - what Check code leads to on Add a Guardian / Add a Seeker) | DOC-ZYRA-0282, DR-ZYRA-231, AD-AIOS-115 | 3 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/CODE_PAGE/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 9 - the ZYRA Code page (find or link someone by code), used on Scan, Add a Guardian and… | AD-AIOS-115 | 1 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/COMPATIBILITY_LOOP/BRIEFS/COMPATIBILITY_LOOP_BRIEF_2026-10-30.md` | PLAN | Codex task - the Compatibility score reader's 7 pages loop instead of stopping at the ends | DR-ZYRA-288, OA-ZYRA-286 | 1 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/DEV_TOGGLES/BRIEFS/DEV_TOGGLES_REMOVAL_BRIEF_2026-10-30.md` | PLAN | Codex brief - remove every developer toggle and developer control from the ZYRA app, completely | OA-ZYRA-325 | 3 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/FILTERS/BRIEFS/BUILD_BRIEF_2026-10-30_V4.md` | PLAN | Codex build brief for LOCK 10 V4 - Filters as swipe cards | AD-AIOS-115 | 2 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/FILTERS/RECORD/FILTERS_SPEC_CURRENT_VERSION_V6.md` | SPEC | Spec for LOCK 10 - Filters page (V4 - swipe cards, one filter per card; Where; searchable Nationality and… | DOC-ZYRA-0284, DOC-ZYRA-0329, AD-AIOS-115 | 6 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/FILTERS/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 10 - Filters page redesign (cards, sliders, city search, no counts) | AD-AIOS-115 | 2 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/GUARDIAN_TABS/BRIEFS/BUILD_BRIEF_2026-10-30_V2.md` | PLAN | Codex build brief for LOCK 8 - Guardian tabs, second attempt after queue line 20 stopped | DR-ZYRA-306, DR-ZYRA-110, OA-ZYRA-325 | 3 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/HAPTICS/BRIEFS/HAPTICS_BRIEF_2026-10-30.md` | PLAN | Codex task - every tappable control in the planned app gives haptic feedback at the member's chosen level | DOC-ZYRA-0282, OA-ZYRA-314 | 2 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/JOURNEY_TAB/BRIEFS/BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 13 - Seeker Journey tab swipe cards | AD-AIOS-115 | 1 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/JOURNEY_TAB/RECORD/JOURNEY_TAB_SPEC_CURRENT_VERSION_V2.md` | SPEC | Spec for LOCK 13 - Seeker Journey tab (swipe cards, one per Journey place) | DOC-ZYRA-0283, DR-ZYRA-277, AD-AIOS-115 | 4 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/JOURNEY_TAB/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 13 - Seeker Journey tab as swipe cards (design 2) | AD-AIOS-115 | 1 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/LOCATION/BRIEFS/BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 11 - Location for distance (app part) | AD-AIOS-115 | 1 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/LOCATION/RECORD/LOCATION_SPEC_CURRENT_VERSION_V2.md` | SPEC | Spec for LOCK 11 - location for distance (V2 - sits in the Filters Where card under Near me; real geography) | DOC-ZYRA-0329, OA-ZYRA-321 | 2 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/LOCATION/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 11 - Location for distance (home town by default, optional approximate current area) | AD-AIOS-115 | 1 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/PHONE_ACCESS/BRIEFS/BUILD_BRIEF_2026-10-30_V2.md` | PLAN | Codex build brief for LOCK 12 V2 - Phone access page (replaces queue line 27) | AD-AIOS-115 | 1 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/PHONE_ACCESS/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 12 - Phone access page in Settings | AD-AIOS-115 | 1 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/PHONE_ACCESS/RECORD/PHONE_ACCESS_SPEC_CURRENT_VERSION_V2.md` | SPEC | Spec for LOCK 12 - Phone access page | DOC-ZYRA-0287 | 2 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/TAB_BAR/BRIEFS/BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 6 V2 - tab bar small state 40% to 60% | DR-ZYRA-276 | 1 |
 | TBC (Fable assigns) | `_to_delete/APP_COLOURS_SPEC_CURRENT_VERSION_V2.md` | SPEC | Spec for LOCK 14 - ZYRA app colours: Ivory, gold and warm neutrals, no purple; matching app icon and splash;… | DR-ZYRA-276, AD-AIOS-115 | 5 |
 | TBC (Fable assigns) | `_to_delete/PHONE_ACCESS_BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 12 - Phone access page | AD-AIOS-115 | 1 |
 | TBC (Fable assigns) | `_to_delete/PHONE_ACCESS_SPEC_CURRENT_VERSION_V1.md` | SPEC | Spec for LOCK 12 - Phone access page | DOC-ZYRA-0287 | 1 |
@@ -749,7 +752,7 @@ _Stop here unless you need to look up another ID._
 
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
-| DOC-ZYRA-0329 | `REPORTS/CURRENT/ZYRA_SERVER_DESIGN_2026-10-30_V1.md` | DESIGN | Server design that connects the planned app to real data - Introductions, Preparing, Basic place, Journey… | OA-ZYRA-317, OA-ZYRA-315, OA-ZYRA-319, OA-ZYRA-324, DOC-ZYRA-0280, DOC-ZYRA-0283, DOC-ZYRA-0290, DOC-ZYRA-0291, DOC-ZYRA-0294 | 28 |
+| DOC-ZYRA-0329 | `REPORTS/CURRENT/ZYRA_SERVER_DESIGN_2026-10-30_V1.md` | SPEC | Server design that connects the planned app to real data - Introductions, Preparing, Basic place, Journey… | OA-ZYRA-317, OA-ZYRA-315, OA-ZYRA-319, OA-ZYRA-324, DOC-ZYRA-0280, DOC-ZYRA-0283, DOC-ZYRA-0290, DOC-ZYRA-0291, DOC-ZYRA-0294 | 29 |
 | SERVER0-DISPOSITION-2026-10-30 | `PRODUCT/APPROVED/SERVER/RECORD/SERVER_0_READY_2026-10-30.md` | REPORT | NOT READY disposition for SERVER 0 with exact unchanged source hashes, read-only findings, isolated… | DOC-ZYRA-0329, OA-ZYRA-317, OA-ZYRA-319, OA-ZYRA-324, OA-ZYRA-198 | 12 |
 | SERVER0-V2-DISPOSITION-2026-10-30 | `PRODUCT/APPROVED/SERVER/RECORD/SERVER_0_READY_2026-10-30_V2.md` | REPORT | Authorised SERVER 0 V2 isolated catch-up proof, exact production candidate manifest and held release… | DOC-ZYRA-0329, OA-ZYRA-317, OA-ZYRA-319, OA-ZYRA-324, OA-ZYRA-198, OA-ZYRA-156 | 23 |
 
@@ -773,7 +776,7 @@ _Stop here unless you need to look up another ID._
 
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
-| TBC (Fable assigns) | `PRODUCT/APPROVED/SERVER/BRIEFS/SERVER_0_BRIEF_2026-10-30_V2.md` | PLAN | SERVER 0 second attempt - corrections R1-R4 from the 30 Oct NOT READY record; throw-away database only | DOC-ZYRA-0329, OA-ZYRA-317, OA-ZYRA-319, OA-ZYRA-198 | 5 |
+| DOC-ZYRA-0377 | `PRODUCT/APPROVED/SERVER/BRIEFS/SERVER_0_BRIEF_2026-10-30_V2.md` | PLAN | SERVER 0 second attempt - corrections R1-R4 from the 30 Oct NOT READY record; throw-away database only | DOC-ZYRA-0329, OA-ZYRA-317, OA-ZYRA-319, OA-ZYRA-198 | 5 |
 
 ### ZYRA STANDARDS
 
@@ -788,7 +791,7 @@ _Stop here unless you need to look up another ID._
 
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
-| TBC (Fable assigns) | `PRODUCT/APPROVED/WEB_COPY/BRIEFS/WEB_COPY_BRIEF_2026-10-30_V3.md` | PLAN | Real web copy of the Founder preview - third attempt; W4 allows licence text (required, never contacted) | OA-ZYRA-286, DR-ZYRA-307, DR-ZYRA-279 | 2 |
+| DOC-ZYRA-0380 | `PRODUCT/APPROVED/WEB_COPY/BRIEFS/WEB_COPY_BRIEF_2026-10-30_V3.md` | PLAN | Real web copy of the Founder preview - third attempt; W4 allows licence text (required, never contacted) | OA-ZYRA-286, DR-ZYRA-307, DR-ZYRA-279 | 2 |
 
 ## Old versions (10) — superseded or retired; open only to check history
 
@@ -805,38 +808,6 @@ _Stop here unless you need to look up another ID._
 
 ## Needs attention
 
-- `REPORTS/CURRENT/ZYRA_DPIA_DRAFT_2026-10-30_V1.md` — unknown type `LEGAL`
-- `REPORTS/CURRENT/ZYRA_LEGAL_DECISIONS_2026-10-30_V1.md` — unknown type `DECISION_SHEET`
-- `REPORTS/CURRENT/ZYRA_LEGAL_DECISIONS_2026-10-30_V1.md` — unknown status `DRAFT (Founder accepted all 25 on 30 Oct 2026)`
-- `REPORTS/CURRENT/ZYRA_MEMBER_TERMS_DRAFT_2026-10-30_V1.md` — unknown type `LEGAL`
-- `REPORTS/CURRENT/ZYRA_ONLINE_SAFETY_ACT_CHECK_2026-10-30_V1.md` — unknown type `LEGAL`
-- `REPORTS/CURRENT/ZYRA_SAFETY_RESPONSE_DRAFT_2026-10-30_V1.md` — unknown type `LEGAL`
-- `REPORTS/CURRENT/ZYRA_SERVER_DESIGN_2026-10-30_V1.md` — unknown type `DESIGN`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/APP_COLOURS/BRIEFS/BUILD_BRIEF_2026-10-30.md` and `PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V3.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V3.md` and `PRODUCT/APPROVED/APP_COLOURS/RECORD/LOCK_RECORD.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/APP_COLOURS/RECORD/LOCK_RECORD.md` and `PRODUCT/APPROVED/CODE_PAGE/BRIEFS/BUILD_BRIEF_2026-10-30_V2.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/CODE_PAGE/BRIEFS/BUILD_BRIEF_2026-10-30_V2.md` and `PRODUCT/APPROVED/CODE_PAGE/RECORD/CODE_PAGE_SPEC_CURRENT_VERSION_V2.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/CODE_PAGE/RECORD/CODE_PAGE_SPEC_CURRENT_VERSION_V2.md` and `PRODUCT/APPROVED/CODE_PAGE/RECORD/LOCK_RECORD.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/CODE_PAGE/RECORD/LOCK_RECORD.md` and `PRODUCT/APPROVED/COMPATIBILITY_LOOP/BRIEFS/COMPATIBILITY_LOOP_BRIEF_2026-10-30.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/COMPATIBILITY_LOOP/BRIEFS/COMPATIBILITY_LOOP_BRIEF_2026-10-30.md` and `PRODUCT/APPROVED/DEV_TOGGLES/BRIEFS/DEV_TOGGLES_REMOVAL_BRIEF_2026-10-30.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/DEV_TOGGLES/BRIEFS/DEV_TOGGLES_REMOVAL_BRIEF_2026-10-30.md` and `PRODUCT/APPROVED/FILTERS/BRIEFS/BUILD_BRIEF_2026-10-30_V4.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/FILTERS/BRIEFS/BUILD_BRIEF_2026-10-30_V4.md` and `PRODUCT/APPROVED/FILTERS/RECORD/FILTERS_SPEC_CURRENT_VERSION_V6.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/FILTERS/RECORD/FILTERS_SPEC_CURRENT_VERSION_V6.md` and `PRODUCT/APPROVED/FILTERS/RECORD/LOCK_RECORD.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/FILTERS/RECORD/LOCK_RECORD.md` and `PRODUCT/APPROVED/GUARDIAN_TABS/BRIEFS/BUILD_BRIEF_2026-10-30_V2.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/GUARDIAN_TABS/BRIEFS/BUILD_BRIEF_2026-10-30_V2.md` and `PRODUCT/APPROVED/HAPTICS/BRIEFS/HAPTICS_BRIEF_2026-10-30.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/HAPTICS/BRIEFS/HAPTICS_BRIEF_2026-10-30.md` and `PRODUCT/APPROVED/JOURNEY_TAB/BRIEFS/BUILD_BRIEF_2026-10-30.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/JOURNEY_TAB/BRIEFS/BUILD_BRIEF_2026-10-30.md` and `PRODUCT/APPROVED/JOURNEY_TAB/RECORD/JOURNEY_TAB_SPEC_CURRENT_VERSION_V2.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/JOURNEY_TAB/RECORD/JOURNEY_TAB_SPEC_CURRENT_VERSION_V2.md` and `PRODUCT/APPROVED/JOURNEY_TAB/RECORD/LOCK_RECORD.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/JOURNEY_TAB/RECORD/LOCK_RECORD.md` and `PRODUCT/APPROVED/LOCATION/BRIEFS/BUILD_BRIEF_2026-10-30.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/LOCATION/BRIEFS/BUILD_BRIEF_2026-10-30.md` and `PRODUCT/APPROVED/LOCATION/RECORD/LOCATION_SPEC_CURRENT_VERSION_V2.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/LOCATION/RECORD/LOCATION_SPEC_CURRENT_VERSION_V2.md` and `PRODUCT/APPROVED/LOCATION/RECORD/LOCK_RECORD.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/LOCATION/RECORD/LOCK_RECORD.md` and `PRODUCT/APPROVED/PHONE_ACCESS/BRIEFS/BUILD_BRIEF_2026-10-30_V2.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/PHONE_ACCESS/BRIEFS/BUILD_BRIEF_2026-10-30_V2.md` and `PRODUCT/APPROVED/PHONE_ACCESS/RECORD/LOCK_RECORD.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/PHONE_ACCESS/RECORD/LOCK_RECORD.md` and `PRODUCT/APPROVED/PHONE_ACCESS/RECORD/PHONE_ACCESS_SPEC_CURRENT_VERSION_V2.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/PHONE_ACCESS/RECORD/PHONE_ACCESS_SPEC_CURRENT_VERSION_V2.md` and `PRODUCT/APPROVED/SERVER/BRIEFS/SERVER_0_BRIEF_2026-10-30_V2.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/SERVER/BRIEFS/SERVER_0_BRIEF_2026-10-30_V2.md` and `PRODUCT/APPROVED/TAB_BAR/BRIEFS/BUILD_BRIEF_2026-10-30.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/TAB_BAR/BRIEFS/BUILD_BRIEF_2026-10-30.md` and `PRODUCT/APPROVED/WEB_COPY/BRIEFS/WEB_COPY_BRIEF_2026-10-30_V3.md`
-- ID `TBC (Fable assigns)` used twice: `PRODUCT/APPROVED/WEB_COPY/BRIEFS/WEB_COPY_BRIEF_2026-10-30_V3.md` and `_to_delete/APP_COLOURS_SPEC_CURRENT_VERSION_V2.md`
 - ID `TBC (Fable assigns)` used twice: `_to_delete/APP_COLOURS_SPEC_CURRENT_VERSION_V2.md` and `_to_delete/PHONE_ACCESS_BUILD_BRIEF_2026-10-30.md`
 - ID `TBC (Fable assigns)` used twice: `_to_delete/PHONE_ACCESS_BUILD_BRIEF_2026-10-30.md` and `_to_delete/PHONE_ACCESS_SPEC_CURRENT_VERSION_V1.md`
 - Over the 30 KB limit (43) — split or trim when next edited: DOC-ZYRA-0005, DOC-ZYRA-0011, DOC-ZYRA-0012, DOC-ZYRA-0018, DOC-ZYRA-0034, DOC-ZYRA-0040, DOC-ZYRA-0044, DOC-ZYRA-0052, DOC-ZYRA-0104, DOC-ZYRA-0109, OA-ZYRA-316-BASELINE-2026-10-29, DOC-ZYRA-0281, DOC-ZYRA-0279, DOC-ZYRA-9002, DOC-ZYRA-0284, DOC-ZYRA-9017, DOC-ZYRA-9026, INDEX-DECISIONS_V1, DOC-ZYRA-0263, DOC-ZYRA-0229, DOC-ZYRA-0174, DOC-ZYRA-0133, DOC-ZYRA-0255, DOC-ZYRA-0076, DOC-ZYRA-0226, DOC-ZYRA-0142, DOC-ZYRA-0143, DOC-ZYRA-0144, DOC-ZYRA-0176, DOC-ZYRA-0178, DOC-ZYRA-0189, DOC-ZYRA-0215, DOC-ZYRA-0230, DOC-ZYRA-0245, DOC-ZYRA-0084, DOC-ZYRA-0154, DOC-ZYRA-0196, DOC-ZYRA-0252, DOC-ZYRA-0209, DOC-ZYRA-0161, DOC-ZYRA-0137, DOC-ZYRA-0210, DOC-ZYRA-0267

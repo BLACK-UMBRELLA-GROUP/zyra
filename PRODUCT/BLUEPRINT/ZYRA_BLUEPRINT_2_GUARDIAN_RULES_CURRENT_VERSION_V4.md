@@ -101,6 +101,7 @@ Circle is built but not yet live, and Connect with Guardian and the agreed-acces
 |---|---|---|
 | A Guardian puts a person forward to their Seeker; it appears in the Seeker's **Introductions** with "Suggested by …"; a gold dot until seen | DR-ZYRA-280 §9, DR-ZYRA-157 | **Built** — `wali_suggestions` table, `zyra_mark_suggestions_seen` |
 | **Connect with Guardian:** a Guardian sends a request to another Seeker's Main Guardian, who chooses whether to respond (Guardian Network tab; LOCK 8 — Network also has Introduce to <Seeker>) | DR-ZYRA-280 §8 | **Missing** — client screens only, in both apps |
+| An accepted Connect opens a **private chat between the two Guardians** (report and block available). A Seeker whose only Guardian is a **Guardian Basic is not shown on Network** (LOCK 8 V2; Founder: "private chat but is the seeker only has a basic gairdian then thier profile wont be shown on network") | DR-ZYRA-322 | **Missing** — local preview only (queue 29, 30 Oct); server part after SERVER 6 (DR-ZYRA-312 Q6) |
 | Guardian My ZYRA shows what needs them across their Seekers ("All settled" otherwise) | DR-ZYRA-274 | **Built** in part — `zyra_guardian_activity` |
 
 ## 8. Family places
@@ -131,3 +132,4 @@ Circle is built but not yet live, and Connect with Guardian and the agreed-acces
 | 2026-10-29 | V2 | §3: other person told in a Profile section, not at the request (Founder "B: Profile section only"; ZYRA chat). DR number from Fable |
 | 2026-10-29 | V3 | "Speak to Guardian" renamed "Connect with Guardian" (Founder: "let change to connect with gurdian"); Guardian tabs now five (LOCK 8). V2 archived in REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_VERSIONS/ |
 | 2026-10-30 | V4 | §: a shared past Journey shows the other person's first name and dates (Founder "Show the name"; amends DR-ZYRA-233 item 4). V3 archived in REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_VERSIONS/ |
+| 2026-10-31 | V4 | §7: accepted Connect = private Guardian chat; Guardian-Basic-only Seekers not on Network (LOCK 8 V2, DR-ZYRA-322) - Fable, 04:15 maintenance |

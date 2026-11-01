@@ -1,6 +1,6 @@
 ---
 id: DOC-ZYRA-0332
-type: LEGAL
+type: REPORT
 status: DRAFT
 feature: LEGAL
 purpose: ZYRA safety response procedure - how members report, how the Founder reviews reports in AIOS, response times, abuse-image handling, emergencies, blocks, appeals, records and escalation; drafted from the Safety rules for solicitor review and Founder approval (OA-ZYRA-321)

@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**305 decisions; 3 marked superseded/retired.**
+**325 decisions; 4 marked superseded/retired.**
 
 | ID | Date | Title | Status |
 |---|---|---|---|
@@ -321,3 +321,23 @@ Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_
 | DR-ZYRA-305 | 2026-10-29 | LOCK 7 - the Profiles request row becomes one pill with larger arrows (A4) | APPROVED - Founder direct ("i dont mind… |
 | DR-ZYRA-306 | 2026-10-29 | Guardian side brought up to date - Insights scrapped, five tabs like the Seeker, "Connect… | APPROVED - Founder direct ("5 tabs, mir… |
 | DR-ZYRA-307 | 2026-10-29 | A private web copy of the Founder preview, for testing in chat - not a web app | APPROVED - Founder direct ("Yes, make a… |
+| DR-ZYRA-308 | 2026-10-30 | Guardians see first names and dates of a shared past Journey (LOCK 3 V2) | APPROVED - Founder direct ("Show the na… |
+| DR-ZYRA-309 | 2026-10-30 | The request pill grows taller at large text sizes (LOCK 7 V2) | APPROVED - Founder direct ("Pill grows … |
+| DR-ZYRA-310 | 2026-10-30 | LOCK 2 extras - the built Journey requests pages are the reference | APPROVED - Founder delegated ("whatever… |
+| DR-ZYRA-311 | 2026-10-30 | Web copy of the Founder preview - fix and retry | APPROVED - Founder direct ("Fix and ret… |
+| DR-ZYRA-312 | 2026-10-30 | Server design approved, with the six open questions answered | APPROVED - Founder direct ("Yes, approv… |
+| DR-ZYRA-313 | 2026-10-30 | SERVER 0 second attempt - throw-away replay only, and the kept hold rewritten | APPROVED - Founder direct ("Yes, throw-… |
+| DR-ZYRA-314 | 2026-10-30 | Every button gives haptic feedback | APPROVED - Founder direct (prototype co… |
+| DR-ZYRA-315 | 2026-10-30 | The Compatibility pages loop | APPROVED - Founder direct ("lets make t… |
+| DR-ZYRA-316 | 2026-10-30 | No Compatibility-score filter | REJECTED (feature) - Founder direct ("o… |
+| DR-ZYRA-317 | 2026-10-30 | Never show a count of members or profiles | APPROVED - Founder direct ("also again … |
+| DR-ZYRA-318 | 2026-10-30 | LOCK 9 - one shared Code page | APPROVED - Founder direct ("LOCK option… |
+| DR-ZYRA-319 | 2026-10-30 | LOCK 10 - Filters as four swipe cards | APPROVED - Founder direct ("1 Cards (Re… |
+| DR-ZYRA-320 | 2026-10-30 | LOCK 11 - approximate location for Near me | APPROVED - Founder direct ("LOCK as dra… |
+| DR-ZYRA-321 | 2026-10-30 | LOCK 12 - Phone access page in Settings | APPROVED - Founder direct ("LOCK as dra… |
+| DR-ZYRA-322 | 2026-10-30 | LOCK 8 V2 - Guardian tabs completed, and what Connect with Guardian leads to | APPROVED - Founder direct ("LOCK all th… |
+| DR-ZYRA-323 | 2026-10-30 | LOCK 6 V2 - the small tab bar is 60% wide | APPROVED - Founder direct ("can we chan… |
+| DR-ZYRA-324 | 2026-10-30 | Every developer toggle leaves the app | APPROVED - Founder direct ("can we get … |
+| DR-ZYRA-325 | 2026-10-30 | LOCK 13 - the Seeker Journey tab as swipe cards | APPROVED - Founder direct ("lets lock i… |
+| DR-ZYRA-326 | 2026-10-30 | LOCK 14 - app colours: Ivory, gold and warm neutrals, no purple | APPROVED - Founder direct ("Ivory · no … |
+| DR-ZYRA-327 | 2026-10-30 | LOCK 15 - Seeker My ZYRA "Focus" | APPROVED - Founder direct ("lets lock i… |

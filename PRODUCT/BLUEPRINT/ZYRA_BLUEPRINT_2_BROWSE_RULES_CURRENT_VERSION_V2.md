@@ -53,10 +53,10 @@ or Consider any more.
 
 | Filter | Planned app | Server |
 |---|---|---|
-| Age | "Any age (18+)" or a two-handle range slider 18–70 (LOCK 10) | **Missing** — not filtered on the server |
-| Distance | Slider 5 km … 500 km, then "Any distance" (LOCK 10); starts from the home town, or the approximate current area if the member allows it — never exact, never shown, no distances on cards (LOCK 11, Founder "so lets build location") | **Missing** — no location stored or filtered; in the server design DOC-ZYRA-0329 |
-| City | Search any city, several allowed (LOCK 10) | **Missing** |
-| Country of residence, nationality, ethnicity | Pick from lists | **Missing** — not filtered on the server |
+| Age | "Any age (18+)" or a two-handle range slider 18–70 (LOCK 10; one of four swipe cards with Clear (n) and "Show profiles") | **Missing** — not filtered on the server |
+| Location | One card: **Near me** (slider 5–500 km), **Country** (default the member's own country) or **Worldwide** (LOCK 10 V6, card title "Location"); Near me starts from the home town, or the approximate current area if the member allows it — never exact, never shown, no distances on cards (LOCK 11, Founder "so lets build location"). No City filter; country of residence lives in this card | **Missing** — no location stored or filtered; home town as a real place with its position and real km are in OA-ZYRA-317 / server design DOC-ZYRA-0329, after the DPIA |
+| Nationality, ethnicity | Search over the full lists, several choices shown as chips (LOCK 10 V6) | **Missing** — not filtered on the server |
+| Only what is on the card | Filters use only what the profile card shows; private and Unlock answers stay in the green / amber / red preferences (filters would reveal them); no verified, bio or membership filters (DR-ZYRA-319) | — |
 | Never | A Compatibility filter (reveals scores without an Unlock; Founder "ok", 30 Oct) and **any count of members or matching profiles** (Founder: "it exposes zyras user count") | — |
 
 ## 4. The card and photos
@@ -112,3 +112,4 @@ or Consider any more.
 | 2026-10-29 | V1 | §4 card: Details first, photos carry no name or details; Original photos not used (Founder) |
 | 2026-10-29 | V1 | §4 name row corrected to first name + surname (DR-ZYRA-162); Founder confirmed "Show the surname" (ZYRA chat) |
 | 2026-10-30 | V2 | §3 Filters: LOCK 10 (sliders, city search, no counts, no Compatibility filter) and LOCK 11 (location). V1 archived in REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_VERSIONS/ |
+| 2026-10-31 | V2 | §3 brought up to LOCK 10 V6 (built 30 Oct, queue 37): four swipe cards; Location card replaces Distance, City and country of residence; searchable nationality and ethnicity; filters only on card fields (DR-ZYRA-319). Fable, daily maintenance |

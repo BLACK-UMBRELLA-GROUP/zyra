@@ -1,6 +1,6 @@
 ---
 id: DOC-ZYRA-0333
-type: LEGAL
+type: REPORT
 status: DRAFT
 feature: LEGAL
 purpose: Online Safety Act 2023 applicability check for ZYRA - whether it is a regulated user-to-user service, which Ofcom duties apply at ZYRA's size, deadlines as best known, and a to-do list with owners; drafted for solicitor review and Founder approval (OA-ZYRA-321)

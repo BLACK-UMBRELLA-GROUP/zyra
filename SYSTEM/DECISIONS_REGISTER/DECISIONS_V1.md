@@ -15363,6 +15363,7 @@ Implementation: OA-ZYRA-291. Future notes and reciprocal access disclosure:
 
 Related:     DR-ZYRA-225 · DR-ZYRA-230 · DR-ZYRA-232 · OA-ZYRA-290 ·
              OA-ZYRA-291 · OA-ZYRA-292
+Amended:     2026-10-30 - item 4: a Guardian with sharing on sees the other person's first name and the dates (DR-ZYRA-308).
 
 ------------------------------------------------------------
 
@@ -17210,6 +17211,7 @@ Decision:    In every design comparison set only the chosen design stays. Kept o
 Consequence: Codex, after the freeze, confirms each set's chosen design from the code and lists it in
              his daily report before removing the rest; if a choice is unclear he asks the Founder.
 Related:     DR-ZYRA-274, OA-ZYRA-316 Tier 4, lesson L34.
+Amended:     2026-10-30 - colours: LOCK 14 Ivory replaces Midnight Plum once built (DR-ZYRA-326); style unchanged.
 Amended:     2026-10-29 - the surface style kept is Glass Signals, not Classic Glass (DR-ZYRA-296); the tab
              bar marks the current tab with an underline (DR-ZYRA-304).
 
@@ -17676,6 +17678,7 @@ Consequence: Not built. Line 7 failed: the preview's Guardian Circle shows past 
              shows named past topics, which DR-ZYRA-233 item 4 does not allow. The ZYRA chat corrects the spec;
              the leak is OA-ZYRA-324.
 Related:     DR-ZYRA-233, DR-ZYRA-292, DR-ZYRA-299, OA-ZYRA-324.
+Amended:     2026-10-30 - spec V2: shared past Journeys show first names and dates (DR-ZYRA-308); built queue 18.
 
 ------------------------------------------------------------
 
@@ -17720,6 +17723,7 @@ Decision:    The current tab is marked by a gold underline (replacing the Floati
 Consequence: Built 29 Oct in the Founder preview (queue line 14; a7df0e7, 9bc74cb). Changes how DR-ZYRA-276's
              Floating Glass bar shows the current tab.
 Related:     DR-ZYRA-276, DR-ZYRA-303, AD-AIOS-115.
+Amended:     2026-10-30 - small bar is 60% wide (LOCK 6 V2, DR-ZYRA-323); built queue 32.
 
 ------------------------------------------------------------
 
@@ -17737,6 +17741,7 @@ Consequence: Not built. Line 16 failed in preflight: at the largest text size th
              points and the pill has 252 at 430 wide; nothing in the LOCK says what happens then. The ZYRA
              chat locks a Larger Text rule and queues a new line.
 Related:     DR-ZYRA-276, DR-ZYRA-298, AD-AIOS-115.
+Amended:     2026-10-30 - the pill grows taller at large text (DR-ZYRA-309); built queue 19.
 
 ------------------------------------------------------------
 
@@ -17759,6 +17764,7 @@ Consequence: Not built: line 17 needs line 13 (the Circle fix, OA-ZYRA-324) firs
              Guardian Insights and the "Guardian Dashboard" title (OA-ZYRA-325). Blueprint part 1 V3 and
              Guardian rules V3 were updated by the ZYRA chat on 29 Oct.
 Related:     DR-ZYRA-280, DR-ZYRA-233, DR-ZYRA-292, DR-ZYRA-294, OA-ZYRA-324, OA-ZYRA-325.
+Amended:     2026-10-30 - LOCK 8 V2 completes the states and the Connect rule (DR-ZYRA-322); built queue 29.
 
 ------------------------------------------------------------
 
@@ -17775,12 +17781,332 @@ Consequence: Brief DOC-ZYRA-0328, queue line 12. Fable's check, 30 Oct: safe onl
              the brief (the preview's code reaches the two git-ignored key files in lib/config, so the real
              files must never be copied into the build).
 Related:     DR-ZYRA-279, DR-ZYRA-274, OA-ZYRA-286.
+Amended:     2026-10-30 - fix and retry (DR-ZYRA-311); V2 and V3 failed their safety checks (OA-ZYRA-330).
 
 ------------------------------------------------------------
 
-TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-307,
+DR-ZYRA-308
+Title:       Guardians see first names and dates of a shared past Journey (LOCK 3 V2)
+Date:        2026-10-30
+Status:      APPROVED - Founder direct ("Show the name")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (06:30 UK) - REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed
+             by Fable 31 Oct.
+Decision:    When a Seeker switches on Share past Journey summaries for a Guardian, that Guardian sees the past
+             Journey as first names and dates only ("Adam & Hafsa · 1-10 Sep 2026"); with sharing off the Guardian
+             sees nothing. The ZYRA chat had recommended no name; he chose to show it. Spec
+             WHAT_GUARDIANS_CAN_DO_SPEC_CURRENT_VERSION_V2 §3b; Guardian rules blueprint V4.
+Consequence: Built 30 Oct in the Founder preview, queue line 18 (abb446f, b4923c7). The other person never agreed to
+             their first name being shown: the DPIA and privacy notice must cover it (OA-ZYRA-321); the server
+             summary for Guardians gains a first name (OA-ZYRA-317). Amends DR-ZYRA-233 item 4 and DR-ZYRA-301.
+Related:     DR-ZYRA-233, DR-ZYRA-301, OA-ZYRA-324, OA-ZYRA-321, OA-ZYRA-317.
+
+------------------------------------------------------------
+
+DR-ZYRA-309
+Title:       The request pill grows taller at large text sizes (LOCK 7 V2)
+Date:        2026-10-30
+Status:      APPROVED - Founder direct ("Pill grows taller (Recommended)")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (06:30 UK) - REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed
+             by Fable 31 Oct.
+Decision:    At the largest text size Request a Journey wraps to two lines and the pill grows taller (88 points at
+             200% text) instead of shrinking the words. Spec REQUEST_ROW_SPEC_CURRENT_VERSION_V2 (Larger Text row).
+Consequence: Built 30 Oct, queue line 19 (0cb188e, 65afc52). Amends DR-ZYRA-305.
+Related:     DR-ZYRA-305, AD-AIOS-115.
+
+------------------------------------------------------------
+
+DR-ZYRA-310
+Title:       LOCK 2 extras - the built Journey requests pages are the reference
+Date:        2026-10-30
+Status:      APPROVED - Founder delegated ("whatever you reccomend"); the ZYRA chat recommended keeping the built
+             version
+Authority:   Founder, 30 Oct 2026, ZYRA chat (06:30 UK) - REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed
+             by Fable 31 Oct.
+Decision:    The extras Codex built for LOCK 2 stay: icons on the request buttons, a report flag, gold borders on an
+             open card, the app's Sent empty line ("Requests you send will appear here.") and no "‹ Back" (the app
+             uses swipe-back, checked against Ended Journeys and Filters). The LOCK 2 BUILT/ pictures are now the
+             reference. No rebuild.
+Consequence: Closes differences a-g of the ZYRA chat's 30 Oct build check of queue line 11. The prototype keeps a
+             Back pill outside the phone only because a browser has no swipe-back.
+Related:     DR-ZYRA-298.
+
+------------------------------------------------------------
+
+DR-ZYRA-311
+Title:       Web copy of the Founder preview - fix and retry
+Date:        2026-10-30
+Status:      APPROVED - Founder direct ("Fix and retry (Recommended)"; then "no need to explain just privide fix and
+             if you need me ask questions")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (08:15 and 13:17 UK) -
+             REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed by Fable 31 Oct.
+Decision:    After the first web copy failed its safety checks (61 MB; sign-in and remote-image addresses), the ZYRA
+             chat rewrote the brief twice: V2 (stubs for sign-in and network in the temporary copy, bundled pictures,
+             under 60 MB) and V3 (licence text that must ship is allowed). Each attempt is gated on Fable's safety
+             line.
+Consequence: Line 21 (V2) failed: licence files hold web addresses. Line 34 (V3) FAILED 30 Oct: the compiled app
+             holds ZYRA's own Apple and Google subscription-management links, outside the allowed list. No safe web
+             copy exists yet; next step OA-ZYRA-330. DR-ZYRA-279 (no web app) unchanged. Amends DR-ZYRA-307.
+Related:     DR-ZYRA-307, DR-ZYRA-279, OA-ZYRA-330.
+
+------------------------------------------------------------
+
+DR-ZYRA-312
+Title:       Server design approved, with the six open questions answered
+Date:        2026-10-30
+Status:      APPROVED - Founder direct ("Yes, approved"; Q1 "Expires, can ask again", Q2 "Both ways", Q4 "Stay
+             waiting", Q5 "Yes, Fable's plan", Q6 "After the core")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (08:15 and 11:05 UK) -
+             REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed by Fable 31 Oct.
+Decision:    Server design DOC-ZYRA-0329 is approved and CURRENT. Q1: the 48-hour I'm-ready window expires - places
+             are freed, both are told "Not started", and they may ask again with no wait. Q2: hiding works both ways
+             - each leaves the other's Profiles. Q3 was already decided (past requests kept 12 months, then
+             anonymised; legal pack DOC-ZYRA-0334). Q4: pausing keeps sent requests waiting. Q5: the 17 unapplied
+             database files are handled as §4 says. Q6: the Connect with Guardian server part is its own brief after
+             SERVER 6; the screens still come with LOCK 8.
+Consequence: SERVER 0 queued (line 28, then 33 - DR-ZYRA-313). SERVER 1-6 are queued in order as each is ready.
+             Production apply always needs a confirmed backup and his own words "apply SERVER 0 to live".
+Related:     OA-ZYRA-317, OA-ZYRA-319, DR-ZYRA-313.
+
+------------------------------------------------------------
+
+DR-ZYRA-313
+Title:       SERVER 0 second attempt - throw-away replay only, and the kept hold rewritten
+Date:        2026-10-30
+Status:      APPROVED - Founder direct ("Yes, throw-away only (Recommended)"; "Rewrite the hold (Recommended)")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (13:17 UK) - REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed
+             by Fable 31 Oct.
+Decision:    After SERVER 0 stopped NOT READY, the two quarantined August bridge files may be replayed, matched by
+             SHA-256, on throw-away databases only; the kept hold is rewritten without the retired Pause columns; the
+             prep-only f04 file stays out of the live payload; the old Pause test suite is retired.
+Consequence: Line 33 BUILT 30 Oct (30ceec1, 81d559f): PRODUCT/APPROVED/SERVER/RECORD/SERVER_0_READY_2026-10-30_V2.md
+             - ready for the isolated catch-up only. Production unchanged; member restart still held.
+Related:     DR-ZYRA-312, OA-ZYRA-317, OA-ZYRA-319.
+
+------------------------------------------------------------
+
+DR-ZYRA-314
+Title:       Every button gives haptic feedback
+Date:        2026-10-30
+Status:      APPROVED - Founder direct (prototype comment: "ensure this and all buttons have haptic feedback")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (08:20 UK) - REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed
+             by Fable 31 Oct.
+Decision:    One haptic pulse on every enabled tap, at the member's chosen level (Off, Subtle, Light, Medium,
+             Strong), through the shared helper; none when Off; none for typing, scrolling or swipes. Blueprint part
+             5 §6.
+Consequence: Built 30 Oct, queue line 22 (d1de664). Closes item (a) of OA-ZYRA-314 (the old Journey screen's four
+             direct calls).
+Related:     OA-ZYRA-314, DR-ZYRA-276.
+
+------------------------------------------------------------
+
+DR-ZYRA-315
+Title:       The Compatibility pages loop
+Date:        2026-10-30
+Status:      APPROVED - Founder direct ("lets make this a loop instead of back adn forward meaning when thhey get to
+             7 and click right button it goes to 1 again")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (08:25 UK) - REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed
+             by Fable 31 Oct.
+Decision:    On the seven Compatibility pages the arrows and swipes wrap round: next on page 7 goes to page 1,
+             previous on page 1 goes to page 7. Arrows never fade.
+Consequence: Built 30 Oct, queue line 23 (a905db9, 2cab32c).
+Related:     DR-ZYRA-288.
+
+------------------------------------------------------------
+
+DR-ZYRA-316
+Title:       No Compatibility-score filter
+Date:        2026-10-30
+Status:      REJECTED (feature) - Founder direct ("ok" to the ZYRA chat's recommendation)
+Authority:   Founder, 30 Oct 2026, ZYRA chat (08:45 and 09:25 UK) -
+             REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed by Fable 31 Oct.
+Decision:    He asked "should we add fildter by compatibily score?". No: Profiles is already ordered best match first
+             (DR-ZYRA-211, 250); a score filter would reveal scores without an Unlock and rank people by a number
+             before they are seen.
+Consequence: Nothing built. The "Best matches are shown first" line offered instead was later removed from Filters
+             (V4).
+Related:     DR-ZYRA-211, DR-ZYRA-250, DR-ZYRA-288.
+
+------------------------------------------------------------
+
+DR-ZYRA-317
+Title:       Never show a count of members or profiles
+Date:        2026-10-30
+Status:      APPROVED - Founder direct ("also again it shouldnt count number of profilers- it exposes zyras user
+             count")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (10:02 UK) - REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed
+             by Fable 31 Oct.
+Decision:    Standing product rule: no screen, button or message shows how many members or profiles there are or
+             match (it would expose ZYRA's member count). Filters reads "Show profiles"; only the number of filters
+             switched on may show.
+Consequence: Applies to every spec from now; LOCK 10 Filters follows it.
+Related:     DR-ZYRA-319.
+
+------------------------------------------------------------
+
+DR-ZYRA-318
+Title:       LOCK 9 - one shared Code page
+Date:        2026-10-30
+Status:      APPROVED - Founder direct ("LOCK option 1 (Recommended)"; "lets not have to enter a button enter code
+             for code to show up make the page look liek this"; V2: "LOCK all three (Recommended)")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (10:30 and ~13:00 UK) -
+             REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed by Fable 31 Oct.
+Decision:    One Code page serves Profiles ••• Scan, the Seeker's Add a Guardian and the Guardian sign-up's Add a
+             Seeker: intro, camera frame, "OR", and five code boxes always visible with a gold Check code. Check
+             shows only a first name, initial and role. Add pages then show Send request and Request sent; checking a
+             code never creates a link or a Main Guardian sheet by itself (V2, fixing the conflict with DR-ZYRA-231).
+Consequence: Built 30 Oct, queue line 30 (96969b5). Real code lookup and request acceptance wait for OA-ZYRA-317.
+Related:     DR-ZYRA-231, OA-ZYRA-316, OA-ZYRA-317.
+
+------------------------------------------------------------
+
+DR-ZYRA-319
+Title:       LOCK 10 - Filters as four swipe cards
+Date:        2026-10-30
+Status:      APPROVED - Founder direct ("1 Cards (Recommended)"; "LOCK it (Recommended)"; "after everythign is
+             changed lock in filter page for codex"; "the slider in real app is way to close to the 2 pills above it
+             fix that please"; "lets change this to location")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (09:45-14:00 and evening UK) -
+             REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed by Fable 31 Oct.
+Decision:    Filters is four swipe cards: Age (slider 18-70), Location (Near me 5-500 km, Country - default own
+             country - or Worldwide), Nationality and Ethnicity (search over the full lists, several choices as
+             chips). Clear (n) and "Show profiles". No City filter. Filter only on what is on the profile card:
+             private and Unlock answers stay in the green / amber / red preferences, because filters would reveal
+             them; no verified, bio or membership filters. Real places and real kilometres. Spec
+             FILTERS_SPEC_CURRENT_VERSION_V6.
+Consequence: Built 30 Oct, queue line 37 (aab4973, b448733, 9a8f3a8, 2d0c793). Distance and country filtering need
+             each member's stored home town and position (server design, OA-ZYRA-317; DPIA OA-ZYRA-321). Blueprint
+             Browse rules §3 to match.
+Related:     DR-ZYRA-318, DR-ZYRA-316, DR-ZYRA-320, OA-ZYRA-317.
+
+------------------------------------------------------------
+
+DR-ZYRA-320
+Title:       LOCK 11 - approximate location for Near me
+Date:        2026-10-30
+Status:      APPROVED - Founder direct ("LOCK as drawn (Recommended)"; "so lets build location")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (10:30 and 13:45 UK) -
+             REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed by Fable 31 Oct.
+Decision:    Near me starts from the member's home town. Change asks the phone once for an approximate area; refusal
+             keeps the home town. The position is approximate only, never shown to anyone, and no distances appear on
+             cards, profiles or to Guardians.
+Consequence: App part built 30 Oct, queue line 26 (d121802, f937c5c). Storing location on the server waits for the
+             DPIA (OA-ZYRA-321) and the server design (OA-ZYRA-317).
+Related:     DR-ZYRA-319, DR-ZYRA-321, OA-ZYRA-321.
+
+------------------------------------------------------------
+
+DR-ZYRA-321
+Title:       LOCK 12 - Phone access page in Settings
+Date:        2026-10-30
+Status:      APPROVED - Founder direct ("LOCK as drawn (Recommended)"; V2: "Straight to iPhone prompt (Recommended)",
+             "Approximate area (Recommended)", "LOCK it (Recommended)")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (10:30 and 20:52-21:05 UK) -
+             REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed by Fable 31 Oct.
+Decision:    Settings → Privacy gains Phone access: Location (approximate area, while using), Notifications, Photos,
+             Camera, Face ID (App lock), each with a status pill; no Contacts, Microphone or tracking. A permission
+             not yet asked goes straight to the iPhone prompt (no ZYRA explanation sheet); one already decided opens
+             ZYRA's iPhone Settings. Exact iPhone purpose texts are in the spec V2.
+Consequence: Built 30 Oct, queue line 40 (5549eba, 7e2f522). Native proof waits for OA-ZYRA-323; the purpose texts go
+             in the release checklist.
+Related:     DR-ZYRA-320, OA-ZYRA-323.
+
+------------------------------------------------------------
+
+DR-ZYRA-322
+Title:       LOCK 8 V2 - Guardian tabs completed, and what Connect with Guardian leads to
+Date:        2026-10-30
+Status:      APPROVED - Founder direct ("LOCK all three (Recommended)"; "private chat but is the seeker only has a
+             basic gairdian then thier profile wont be shown on network")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (11:00 and ~13:00 UK) -
+             REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed by Fable 31 Oct.
+Decision:    The Guardian five tabs (DR-ZYRA-306) gain the missing states: Family Review continue, pause and reopen;
+             Connect with Guardian sent and received. An accepted Connect opens a private chat between the two
+             Guardians. A Seeker whose only Guardian is a Guardian Basic is not shown on Network.
+Consequence: Built 30 Oct, queue line 29 (600f539); old Guardian Dashboard, Insights and Updates layouts removed. The
+             server part comes after SERVER 6 (DR-ZYRA-312 Q6). Amends DR-ZYRA-306.
+Related:     DR-ZYRA-306, DR-ZYRA-312, OA-ZYRA-325, OA-ZYRA-317.
+
+------------------------------------------------------------
+
+DR-ZYRA-323
+Title:       LOCK 6 V2 - the small tab bar is 60% wide
+Date:        2026-10-30
+Status:      APPROVED - Founder direct ("can we change this to 60% when small"; "LOCK 60% (Recommended)")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (11:13 and ~13:00 UK) -
+             REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed by Fable 31 Oct.
+Decision:    The tab bar's small state is 60% of the full bar instead of 40%; everything else in LOCK 6 stays.
+Consequence: Built 30 Oct, queue line 32 (febb9df, 0575a7a). Amends DR-ZYRA-304.
+Related:     DR-ZYRA-304.
+
+------------------------------------------------------------
+
+DR-ZYRA-324
+Title:       Every developer toggle leaves the app
+Date:        2026-10-30
+Status:      APPROVED - Founder direct ("can we get codex to remove the toggle completetly in the app. meaning toggle
+             no longer exist at all" → "Developer toggles" → "Absolutely everything")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (11:13 UK) - REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed
+             by Fable 31 Oct.
+Decision:    All developer toggles are removed from the app completely; keeping an account switch was offered and
+             declined. He will no longer switch role or plan on his phone.
+Consequence: Queue line 35, built last. FAILED 31 Oct 04:00 because its prerequisite line 39 failed (OA-ZYRA-327).
+Related:     OA-ZYRA-327.
+
+------------------------------------------------------------
+
+DR-ZYRA-325
+Title:       LOCK 13 - the Seeker Journey tab as swipe cards
+Date:        2026-10-30
+Status:      APPROVED - Founder direct ("lets lock in journey design 2"; rules: "there is no hearts in app at all",
+             "seeekr basic will have 1", "i like text in middle", "i dont liek dead space at bottom")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (13:51-14:22 UK) - REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md;
+             filed by Fable 31 Oct.
+Decision:    The Journey tab shows one photo card per place (Seeker One three, Seeker Basic one), with progress and
+             next-step text, swipe and arrows that do not loop, an empty state, Browse and Basic Plans actions. The
+             header ••• opens a Journey options page with the real tab bar and no inner ••• (V2). No hearts anywhere
+             in the app.
+Consequence: Built 30 Oct, queue line 38 (a360898, 9cb1a08). Blueprint part 1 Journey tab row updated 31 Oct.
+Related:     AD-AIOS-115, OA-ZYRA-317.
+
+------------------------------------------------------------
+
+DR-ZYRA-326
+Title:       LOCK 14 - app colours: Ivory, gold and warm neutrals, no purple
+Date:        2026-10-30
+Status:      APPROVED - Founder direct ("Ivory · no purple", "Match the app", "Ivory only (Recommended)"; V2 "LOCK it
+             (Recommended)"; V3 "Muted green + red (Recommended)", "LOCK it (Recommended)")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (14:24-14:50, 18:06-18:15, evening UK) -
+             REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md; filed by Fable 31 Oct.
+Decision:    The app moves from Midnight Plum to an Ivory background with gold and warm neutrals and no purple; the
+             app icon and splash match; members get no colour choice. V2: surfaces look floating (ivory with a soft
+             shadow, no clipped shadow edges). V3: traffic-light dots green #4E9A72, gold #A9792E, red #B84A42. Glass
+             style kept.
+Consequence: Not built: queue line 39 FAILED in preflight 30 Oct - espresso text #2B2420 on gold #A9792E at 14 pt
+             regular is 3.97:1, below the blueprint's 4.5:1 rule (OA-ZYRA-327). Lines 35 and 41 wait on it. Replaces
+             the colour part of DR-ZYRA-276 once built; App Store pictures will need the new colours.
+Related:     DR-ZYRA-276, OA-ZYRA-327, OA-ZYRA-314.
+
+------------------------------------------------------------
+
+DR-ZYRA-327
+Title:       LOCK 15 - Seeker My ZYRA "Focus"
+Date:        2026-10-30
+Status:      APPROVED - Founder direct ("lets lock in focus")
+Authority:   Founder, 30 Oct 2026, ZYRA chat (21:29-21:45 UK) - REPORTS/DAILY/2026-10/2026-10-30_ZYRA_CHAT_NOTE.md;
+             filed by Fable 31 Oct.
+Decision:    Seeker My ZYRA shows one "Needs you" item at a time in the centre (‹ › and swipe), status chips, and
+             four quick-access tiles including Notifications; a "Finish your preferences" chip as drawn. Journey
+             cards live on the Journey tab, not here. Built from the full inventory he asked for ("check with fles
+             everything we have that will live there"). Guardian My ZYRA unchanged (LOCK 8 V2).
+Consequence: Queue line 41 FAILED 31 Oct 04:00: its prerequisite line 39 failed (OA-ZYRA-327). Blueprint part 1 My
+             ZYRA row updated 31 Oct.
+Related:     DR-ZYRA-322, OA-ZYRA-327.
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-327,
   Historical Identifiers, permanent
-NEXT IDENTIFIER: DR-ZYRA-308 (Enterprise format, active
+NEXT IDENTIFIER: DR-ZYRA-328 (Enterprise format, active
   2026-07-12 — continues this sequence, does not reset;
   sequential identifiers are global and never reset per AIOS
   Package Specification Standard Part 5. See BLACK UMBRELLA

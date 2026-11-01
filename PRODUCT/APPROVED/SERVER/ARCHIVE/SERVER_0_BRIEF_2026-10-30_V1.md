@@ -1,5 +1,5 @@
 ---
-id: TBC (Fable assigns)
+id: DOC-ZYRA-0376
 type: PLAN
 status: ARCHIVED (2026-10-30)
 feature: SERVER
