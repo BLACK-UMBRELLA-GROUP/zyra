@@ -16,11 +16,13 @@ Muslim matrimonial platform. Specs live in `../APP/`, decisions in
 
 ## Device testing — THE CONFIRMED, CORRECT WAY (2026-07-19, hardened 2026-08-01)
 
+Before running, export `ZYRA_DEVICE_ID` and (for PROFILE or DEBUG) `ZYRA_INTERNAL_FOUNDER_UUID` in your private shell environment. See the root `README.md` and `.env.example`; the script does not load an env file automatically. Actual identifiers are no longer stored in `run.sh`.
+
 **Every AI session giving Shakeel run instructions must use this — and
 only this:**
 
 ```
-cd "/Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUSINESS/ZYRA/SOURCE" && ./run.sh
+cd "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE" && ./run.sh
 ```
 
 ONE LINE, joined with `&&` — corrected 2026-08-14. This block gave two
@@ -40,11 +42,11 @@ the default mechanically.
 Raw equivalent, if the script can't be used:
 
 ```
-flutter run --profile -d 00008130-001A2C1E26F8001C
+flutter run --profile --flavor production --dart-define=ZYRA_INTERNAL_FOUNDER_ACCESS=true --dart-define=ZYRA_INTERNAL_FOUNDER_UUID="$ZYRA_INTERNAL_FOUNDER_UUID" -d "$ZYRA_DEVICE_ID"
 ```
 
-- `00008130-001A2C1E26F8001C` is Shakeel's iPhone (confirm with
-  `flutter devices` if it ever changes).
+- `ZYRA_DEVICE_ID` is your local intended device identifier (confirm with
+  `flutter devices` if it changes).
 - **`--profile` is mandatory for untethered testing.** Plain
   `flutter run` installs a DEBUG build; iOS kills debug (JIT) apps the
   moment the cable is unplugged and refuses to cold-launch them from

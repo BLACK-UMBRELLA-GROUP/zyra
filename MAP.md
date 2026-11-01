@@ -86,7 +86,7 @@ re-run the tool.
 
 _Stop here unless you need to look up another ID._
 
-## Documents (355 live)
+## Documents (350 live)
 
 ### APP: AUTHENTICATION
 
@@ -570,16 +570,6 @@ _Stop here unless you need to look up another ID._
 | DOC-ZYRA-0220 | `SYSTEM/DOCUMENTS/ZYRA_JOURNEY_TIMELINE_CURRENT_VERSION_V3.md` | SPEC | ZYRA — Journey Timeline · Product Specification | 28 |
 | DOC-ZYRA-0221 | `SYSTEM/DOCUMENTS/ZYRA_OA159_REQUEST_NEW_JOURNEY_IMPLEMENTATION_PLAN_2026-08-10.md` | PLAN | OA-ZYRA-159 — Request New Journey · Implementation Plan | 9 |
 | DOC-ZYRA-0222 | `SYSTEM/DOCUMENTS/ZYRA_STEP1B_BLOCK_ENDS_JOURNEY_PLAN_2026-08-08.md` | PLAN | ZYRA — Step 1b plan: blocking ends the Journey | 9 |
-
-### LEGAL
-
-| ID | File | Type | Purpose | Links | KB |
-|---|---|---|---|---|---|
-| DOC-ZYRA-0330 | `REPORTS/CURRENT/ZYRA_MEMBER_TERMS_DRAFT_2026-10-30_V1.md` | REPORT · DRAFT | Plain-English member terms for ZYRA (Seekers and Guardians) - drafted from the approved blueprint for a… | OA-ZYRA-320, OA-ZYRA-321, DOC-ZYRA-0291, DOC-ZYRA-0290, DOC-ZYRA-0293, DOC-ZYRA-0295, DOC-ZYRA-0296, DOC-ZYRA-0297, DOC-ZYRA-0148, DR-ZYRA-285, DR-ZYRA-287, DR-ZYRA-289, DR-ZYRA-292, DR-ZYRA-299, DR-ZYRA-300, DOC-ZYRA-0331, DOC-ZYRA-0332, DOC-ZYRA-0333 | 24 |
-| DOC-ZYRA-0331 | `REPORTS/CURRENT/ZYRA_DPIA_DRAFT_2026-10-30_V1.md` | REPORT · DRAFT | Data Protection Impact Assessment for the whole ZYRA member service (ICO template order), drafted from the… | OA-ZYRA-321, OA-ZYRA-320, DOC-ZYRA-0280, DOC-ZYRA-0290, DOC-ZYRA-0291, DOC-ZYRA-0293, DOC-ZYRA-0295, DOC-ZYRA-0296, DOC-ZYRA-0297, DOC-ZYRA-0205, DOC-ZYRA-0148, DR-ZYRA-221, DR-ZYRA-285, DR-ZYRA-287, DR-ZYRA-292, DR-ZYRA-299, DR-ZYRA-300, DOC-ZYRA-0330, DOC-ZYRA-0332, DOC-ZYRA-0333 | 20 |
-| DOC-ZYRA-0332 | `REPORTS/CURRENT/ZYRA_SAFETY_RESPONSE_DRAFT_2026-10-30_V1.md` | REPORT · DRAFT | ZYRA safety response procedure - how members report, how the Founder reviews reports in AIOS, response… | OA-ZYRA-321, OA-AIOS-413, DOC-ZYRA-0297, DOC-ZYRA-0290, DOC-ZYRA-0293, DOC-ZYRA-0295, DOC-ZYRA-0280, DR-ZYRA-287, DR-ZYRA-095, DR-ZYRA-131, DR-ZYRA-248, DR-ZYRA-268, DOC-ZYRA-0330, DOC-ZYRA-0331, DOC-ZYRA-0333 | 13 |
-| DOC-ZYRA-0333 | `REPORTS/CURRENT/ZYRA_ONLINE_SAFETY_ACT_CHECK_2026-10-30_V1.md` | REPORT · DRAFT | Online Safety Act 2023 applicability check for ZYRA - whether it is a regulated user-to-user service, which… | OA-ZYRA-321, DOC-ZYRA-0297, DOC-ZYRA-0296, DOC-ZYRA-0293, DOC-ZYRA-0290, DR-ZYRA-221, DR-ZYRA-287, DOC-ZYRA-0330, DOC-ZYRA-0331, DOC-ZYRA-0332 | 12 |
-| DOC-ZYRA-0334 | `REPORTS/CURRENT/ZYRA_LEGAL_DECISIONS_2026-10-30_V1.md` | DECISION | The 25 decisions the legal drafts need, each with Fable's recommended answer, for the Founder to confirm or… | OA-ZYRA-320, OA-ZYRA-321, DOC-ZYRA-0330, DOC-ZYRA-0331, DOC-ZYRA-0332, DOC-ZYRA-0333 | 7 |
 
 ### LOCATION
 

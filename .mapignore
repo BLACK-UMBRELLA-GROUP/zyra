@@ -2,3 +2,5 @@
 SITE   # its own repo (zyra-site); mapped there if needed
 SYSTEM/DOCUMENTS/ZYRA_DOCUMENTATION_INDEX_CURRENT_VERSION_V4.md   # written whole by SYSTEM/tools/generate_doc_index.py; replaced by MAP.md
 SOURCE/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md   # Flutter template file
+ROADMAP.md   # public roadmap required by the release brief; plain Markdown for readers
+REPORTS/CURRENT/README.md   # one-line pointer to legal drafts moved to the private group repo

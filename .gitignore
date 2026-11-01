@@ -32,3 +32,14 @@ SOURCE/test/failures/
 
 # Baseline screenshots stay on the Mac and encrypted USB (Founder, 30 Oct 2026; OA-ZYRA-326).
 PRODUCT/APPROVED/BASELINE/SCREENSHOTS/
+
+# Public-repository preparation: local configuration, signing and generated output.
+.env*
+!.env.example
+*.keystore
+*.p12
+*.mobileprovision
+GoogleService-Info.plist
+google-services.json
+build/
+.dart_tool/

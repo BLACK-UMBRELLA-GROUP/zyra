@@ -24,31 +24,37 @@
 
 cd "$(dirname "$0")" || exit 1
 
-DEVICE="00008130-001A2C1E26F8001C"   # Shakeel's iPhone (check: flutter devices)
+DEVICE="${ZYRA_DEVICE_ID:-}"
+FOUNDER_UUID="${ZYRA_INTERNAL_FOUNDER_UUID:-}"
 MODE="${1:-profile}"
 
+_require_device() {
+  if [ -z "$DEVICE" ]; then
+    echo "Set ZYRA_DEVICE_ID to the intended device identifier (flutter devices)."
+    exit 64
+  fi
+}
+
 _run_internal_founder() {
+  _require_device
+  if [ -z "$FOUNDER_UUID" ]; then
+    echo "Set ZYRA_INTERNAL_FOUNDER_UUID to the approved Founder account UUID."
+    exit 64
+  fi
   flutter run \
     --flavor production \
     --dart-define=ZYRA_INTERNAL_FOUNDER_ACCESS=true \
-    --dart-define=ZYRA_INTERNAL_FOUNDER_UUID=dfcbd00d-bc22-4d6e-999b-3a9264cf3510 \
+    --dart-define=ZYRA_INTERNAL_FOUNDER_UUID="$FOUNDER_UUID" \
     "$@" || _hint
 }
 
-# HARDENED 2026-08-01 (Opus). The device id above is hardcoded, so the day
-# it stops matching — new phone, restored device, re-pairing — `flutter run`
-# fails with "No supported devices found with name or id matching...".
-# That error reads almost exactly like the debug-build bug this script
-# exists to prevent, so it would send the next session chasing the wrong
-# thing entirely. Printed only on failure, so it costs nothing on a normal
-# run (a pre-flight `flutter devices` check would add 3-8s to EVERY launch,
-# which isn't worth it for a rare failure).
+# Show pairing guidance only after a failed run; device identifiers stay local.
 _hint() {
   echo ""
   echo "⚠️  That didn't start. If the message above mentions no matching device:"
   echo "   • Is the iPhone plugged in, unlocked, and trusted?"
   echo "   • Changed phones? Run: flutter devices"
-  echo "     then update DEVICE at the top of this script."
+  echo "     then export ZYRA_DEVICE_ID with the intended identifier."
   echo "   This is NOT the debug-build problem — that one installs fine and"
   echo "   only dies after you unplug."
   echo ""
@@ -74,6 +80,7 @@ case "$MODE" in
     echo ""
     echo "🔒 PRODUCTION ZYRA — Developer Access is disabled."
     echo ""
+    _require_device
     flutter run --release --flavor production -d "$DEVICE" || _hint
     ;;
   profile)
