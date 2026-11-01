@@ -1,1 +1,1 @@
-Moved to the private [BLACK UMBRELLA GROUP/BUSINESS/ZYRA](<../../BLACK UMBRELLA GROUP/BUSINESS/ZYRA/>).
+Business planning documents (pricing, competitor research, launch guide) are kept in a private repository and are not part of this public source.
