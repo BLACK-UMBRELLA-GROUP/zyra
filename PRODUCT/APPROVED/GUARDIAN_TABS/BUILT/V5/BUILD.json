@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "queue_line": 56,
+  "lock": "LOCK 8 V5",
+  "source_commit": "50b82d046e770dec243b2dbe5d4a2c084b9d7884",
+  "source_commits": [
+    "7ad0d4003851880c26e335491ef6d61882443714",
+    "50b82d046e770dec243b2dbe5d4a2c084b9d7884"
+  ],
+  "flutter_version": "3.44.2",
+  "build_mode": "Flutter host widget-test rendering; actual admitted Founder preview, offline sample data",
+  "target": "430x932 logical at 3x, plus 200 percent text variants; no native build/install",
+  "rendered_at_utc": "2026-11-01T09:19:43Z",
+  "source_manifest": "SOURCE_MANIFEST.json",
+  "input_manifest": "INPUT_MANIFEST.json",
+  "render_manifest": "RENDER_MANIFEST.json",
+  "qa": "QA.json",
+  "tests_unique_passed": 97,
+  "actual_captures": 10,
+  "master_beside_build": 5,
+  "screenshot_claim": "Master fixtures explicitly seed active Sara; actual default screenshot stays empty. No pixel-equality/Founder approval claim."
+}

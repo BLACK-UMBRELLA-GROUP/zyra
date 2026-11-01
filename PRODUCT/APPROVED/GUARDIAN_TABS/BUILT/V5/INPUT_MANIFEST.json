@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "queue_line": 56,
+  "source_commit": "50b82d046e770dec243b2dbe5d4a2c084b9d7884",
+  "scope": "Explicit allowlist only; no configs/credentials/source copies/compiled products.",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BRIEFS/BUILD_BRIEF_2026-10-31_V5.md",
+      "bytes": 2649,
+      "sha256": "b7ac219eb2fe10dddac224a5980b520140c443230f672c7b596e6cce72d3e9bb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/LOCK_RECORD.md",
+      "bytes": 4076,
+      "sha256": "14e47fe356f0be0bd88d835b9663c5e8b483d4244dca726bc8530530fa804030"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/GUARDIAN_TABS_SPEC_CURRENT_VERSION_V9.md",
+      "bytes": 15506,
+      "sha256": "df2ec53347a56a36dc6f2f7af305550b5990dc96172009ff833faebd9cb64430"
+    },
+    {
+      "path": "PRODUCT/APPROVED/QUESTIONS.md",
+      "bytes": 11722,
+      "sha256": "a0d5524f104cbff9df5049df47a486b1dcb9728bfd0263804fd72eb8f78f0e9e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09_journeys__adam.png",
+      "bytes": 1570218,
+      "sha256": "4243262a2b7577b4aedeadc51d4d7cbc9ee2b284a9950fd620e320b067ad5863"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09b_journeys__adam_paused.png",
+      "bytes": 1571400,
+      "sha256": "4388520732e2af2592d06a9c7e9f8dff7f632f65a27cb9e42649a26b28cb5a50"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09c_journeys__adam_guardian_basic.png",
+      "bytes": 1568720,
+      "sha256": "57c9a1e775fe3acdefe418932f99b44aa434e0404c440550ac987cebb7f3fcff"
+    },
+    {
+      "path": "SYSTEM/tools/blueprint/code_size.py",
+      "bytes": 2520,
+      "sha256": "86af6df1d6e8bf8964d0c0037595f5bbc6e40e08fd62ea16d5fd6cc1f71ccc36"
+    },
+    {
+      "path": "SOURCE/tooling/no_git_driver.mjs",
+      "bytes": 5974,
+      "sha256": "518527ff1025f3611952c97a059de752de32b11ff68fc1d658fa6406ab76dfc2"
+    },
+    {
+      "path": "SOURCE/tooling/no_git.sb",
+      "bytes": 325,
+      "sha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md",
+      "bytes": 7608,
+      "sha256": "59737f0f60b4bd9dac2c3c077eb9afb359943c09b6fe9a10f28fb7b6e91042a4"
+    }
+  ]
+}

@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "queue_line": 56,
+  "source_commit": "50b82d046e770dec243b2dbe5d4a2c084b9d7884",
+  "actual_captures": 10,
+  "comparison_pairs": 5,
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V5/g09_journeys__adam.png",
+      "bytes": 1473934,
+      "sha256": "05b302ed4fd17f8c4ad3b0259e677e5ec6830b97fcf5aa2a5823bdd1f69e36d3",
+      "kind": "actual Flutter widget-test screenshot",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "meaning": "Explicit active-Sara master fixture; local review open."
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V5/g09b_journeys__adam_paused.png",
+      "bytes": 1474982,
+      "sha256": "5de90833a020ed10c95c5e2ac90d81dea1e1ab5034a3b1e69ac55d2f21c31284",
+      "kind": "actual Flutter widget-test screenshot",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "meaning": "Explicit active-Sara master fixture; local review paused."
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V5/g09c_journeys__adam_guardian_basic.png",
+      "bytes": 1472107,
+      "sha256": "cfa10abeeb7f925753de7fbc56b48420ba96eb52a9656ceaadaf0fcd77ae1054",
+      "kind": "actual Flutter widget-test screenshot",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "meaning": "Explicit active-Sara Basic master fixture; View only."
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V5/g09d_journeys__adam_continued.png",
+      "bytes": 1473826,
+      "sha256": "342b1700ca231b6d9c7b618054cc1113821f147b3a68462cdb8e30823c5085bb",
+      "kind": "actual Flutter widget-test screenshot",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "meaning": "Explicit active-Sara fixture; review continued; model is not advanced."
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V5/g09_additional_view.png",
+      "bytes": 1474317,
+      "sha256": "3031b1068e38f675da006eaf33b94cee7f8c0e91f58a1bcdca637a7f78a40b04",
+      "kind": "actual Flutter widget-test screenshot",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "meaning": "Additional Guardian; Sara View only; denied Aisha excluded."
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V5/g09_additional_chat.png",
+      "bytes": 1475811,
+      "sha256": "c03b85febe6cbfc547e3a6bb01549014783ffd3a6f518ffdc76667881656153d",
+      "kind": "actual Flutter widget-test screenshot",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "meaning": "Additional Guardian; existing Sara View and Chat grant; denied Aisha excluded."
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V5/g09_multiple_aisha.png",
+      "bytes": 1935040,
+      "sha256": "941dfee064a728b637385e805289089bf8606325856b71f7866790f1532bf28c",
+      "kind": "actual Flutter widget-test screenshot",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "meaning": "Two active Adam Journeys; Aisha first by actual activity, own stage; Sara review not copied."
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V5/g09_actual_default_empty.png",
+      "bytes": 279069,
+      "sha256": "be91d9b341e78ba4ca004f65270759894f6408641770ef230df5138a482df1fc",
+      "kind": "actual Flutter widget-test screenshot",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "meaning": "Actual default model: received Amira only, no active card and no synthetic Sara."
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V5/g09_larger_200_one.png",
+      "bytes": 1008244,
+      "sha256": "36c0b2cdf7df5653a2208531cfb0e55a58af127048748c0e5d81b3479c08c754",
+      "kind": "actual Flutter widget-test screenshot",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "meaning": "Explicit paused Sara One fixture; 200 percent, wrapped/scrollable overlay, full-height readable fade."
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V5/g09_larger_200_basic.png",
+      "bytes": 1005526,
+      "sha256": "be413a4bcb90b6590e36e3e8e727ca0d21ea9db5e700d12a49e95e8c8f097563",
+      "kind": "actual Flutter widget-test screenshot",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "meaning": "Explicit paused Sara Basic fixture; 200 percent, wrapped/scrollable overlay, View only."
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V5/compare__g09_journeys__adam.png",
+      "bytes": 2739517,
+      "sha256": "239e877e6578547281f96f0ae53de2f31aa5ac2690baee00932f849ffa3dc550",
+      "kind": "master beside actual",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09_journeys__adam.png",
+      "actual": "g09_journeys__adam.png",
+      "pixels": [
+        2580,
+        2848
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V5/compare__g09b_journeys__adam_paused.png",
+      "bytes": 2741447,
+      "sha256": "8eef4739ee864e5d112ac1a6e57c47b7e7674ca5b119e2faedf04f1a49c4e605",
+      "kind": "master beside actual",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09b_journeys__adam_paused.png",
+      "actual": "g09b_journeys__adam_paused.png",
+      "pixels": [
+        2580,
+        2848
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V5/compare__g09c_journeys__adam_guardian_basic.png",
+      "bytes": 2736859,
+      "sha256": "b85bc79a21d806554e59fbf17fcdf64b6fad454eadde4a6125eb43aee6426157",
+      "kind": "master beside actual",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09c_journeys__adam_guardian_basic.png",
+      "actual": "g09c_journeys__adam_guardian_basic.png",
+      "pixels": [
+        2580,
+        2848
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V5/compare__g09_larger_200_one.png",
+      "bytes": 2358798,
+      "sha256": "341d54bba43be29e159535b9b3d060d2e9a800e776d90cba1b9d665f112fb0dd",
+      "kind": "master beside actual",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09b_journeys__adam_paused.png",
+      "actual": "g09_larger_200_one.png",
+      "pixels": [
+        2580,
+        2848
+      ]
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V5/compare__g09_larger_200_basic.png",
+      "bytes": 2353654,
+      "sha256": "ef9383f92031cfd0e3d8e77cea564e53961cb6ad1ab1f418737afced95dfde9a",
+      "kind": "master beside actual",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09c_journeys__adam_guardian_basic.png",
+      "actual": "g09_larger_200_basic.png",
+      "pixels": [
+        2580,
+        2848
+      ]
+    }
+  ],
+  "normal_hashes_before_and_after_expanded_fade": {
+    "g09_journeys__adam.png": "05b302ed4fd17f8c4ad3b0259e677e5ec6830b97fcf5aa2a5823bdd1f69e36d3",
+    "g09b_journeys__adam_paused.png": "5de90833a020ed10c95c5e2ac90d81dea1e1ab5034a3b1e69ac55d2f21c31284",
+    "g09c_journeys__adam_guardian_basic.png": "cfa10abeeb7f925753de7fbc56b48420ba96eb52a9656ceaadaf0fcd77ae1054"
+  }
+}

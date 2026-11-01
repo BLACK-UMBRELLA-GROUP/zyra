@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "queue_line": 56,
+  "status": "BUILT locally; automated validation passed; parent visual review follows.",
+  "source_commit": "50b82d046e770dec243b2dbe5d4a2c084b9d7884",
+  "built_from": "Corrected LOCK 8 V5 brief; current V9 Journeys row; Q8/Q9 Answer A on 1 November 2026; three g09 masters.",
+  "prior_preflight": "Historical QUEUE56_PREFLIGHT.json and October Task42 retained; Q8/Q9 answered, no new question.",
+  "state_contract": [
+    "Actual cards are existing View-permitted active Adam model records, sorted by Seeker activity order. Requests never become cards.",
+    "Yusuf retains the existing no-current-Journey state.",
+    "Only permitted Sara displays local review open/paused/continued; every other peer uses its own model stage. Review never advances the Seeker model.",
+    "Open Journey revalidates that person in the permitted projection and sets existing Guardian focus; no new authority.",
+    "Basic View only and actual Additional/Main and View/Chat facts are preserved.",
+    "Ended Journeys remains the existing held sharing target; Tier3 member routes unchanged."
+  ],
+  "tests": {
+    "unique_passed": 97,
+    "failed_final": 0,
+    "skipped_final": 0,
+    "new_suite": {
+      "path": "SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "cases": 13,
+      "result": "PASS"
+    },
+    "existing_scoped_combined": {
+      "cases": 84,
+      "result": "PASS",
+      "paths": [
+        "SOURCE/test/visual/lock13_journey_tab_test.dart",
+        "SOURCE/test/visual/lock18_page_dots_capture_test.dart",
+        "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+        "SOURCE/test/guardian_chat_v4_owner_test.dart"
+      ]
+    },
+    "final_affected_rerun": {
+      "cases": 29,
+      "paths": [
+        "SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+        "SOURCE/test/visual/lock13_journey_tab_test.dart"
+      ],
+      "result": "PASS after expanded fade and denied-lease correction"
+    },
+    "coverage": [
+      "All three review states and real decoded asset photo",
+      "Basic and Additional View/Chat, denied peer, unlinked, chosen Seeker and empty default",
+      "Activity order, exact dots, swipe/ABA and person-specific Open target",
+      "Retained callbacks across seeker, route, account and admission false/true",
+      "Existing Ended target and sharing boundary",
+      "200 percent wrapping, scrolling, reachable action and navigation clearance",
+      "Expanded stage/title/secondary contrast at least 4.5:1 against a worst-case white photo"
+    ],
+    "limits": "Focused suites only; no full-repository test claim."
+  },
+  "checks": {
+    "analyser": "Five affected files: no issues.",
+    "format": "Five affected files: zero changes.",
+    "protected_sdk": "3.44.2; five pins; exec and nested-exec denial PASS.",
+    "policy_sha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d"
+  },
+  "visual_disposition": {
+    "normal_cases": "All three master-state normal PNG hashes unchanged after responsive fade correction.",
+    "gold_button": {
+      "decision": "Keep locked ink text on gold fill, not white.",
+      "authority": "APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md:40",
+      "values": {
+        "fill": "#C08A3A",
+        "text": "#2B2420",
+        "specified_contrast": "5.0:1"
+      },
+      "photo_rule": "Same file:50 keeps photo text white; V5 brief/spec Q9 correction applies to stage line."
+    },
+    "expanded_text": {
+      "decision": "Extend the same dark photo fade behind expanded overlay text; normal geometry and Seeker defaults retained.",
+      "trigger": "Scaled 13 point body text exceeds 16 points.",
+      "top_black_alpha": 166,
+      "bottom_black_alpha": 230,
+      "alpha_denominator": 255,
+      "verified_contrast_minimum": 4.5,
+      "method": "Real Text colours alpha-blended over lightest possible white photo beneath minimum fade; stage, title and caption all pass."
+    },
+    "remaining_differences": [
+      "Current shared floating shadows/navigation differ from master CSS-like shadows/icons.",
+      "Portrait crop, type metrics and card/footer vertical spacing differ modestly with current shared component and unchanged Ended tile/navigation.",
+      "200 percent comparisons demonstrate wrapping/readability, not master-state pixel equality; Basic uses longest paused stage."
+    ],
+    "written_refusal": "QUEUE56-R1 / OA-ZYRA-335: no unapproved redesign of shared shadows/navigation or claim of full-screen pixel equality/Founder visual approval."
+  },
+  "code_size": {
+    "before": {
+      "app": [
+        173794,
+        341
+      ],
+      "developer_preview": [
+        53790,
+        99
+      ],
+      "founder_preview": [
+        34581,
+        49
+      ],
+      "tests": [
+        225743,
+        530
+      ],
+      "goldens": [
+        2612,
+        307
+      ],
+      "old_pause_restart": [
+        39,
+        1
+      ]
+    },
+    "after": {
+      "app": [
+        174038,
+        341
+      ],
+      "developer_preview": [
+        54034,
+        99
+      ],
+      "founder_preview": [
+        34825,
+        49
+      ],
+      "tests": [
+        226191,
+        531
+      ],
+      "goldens": [
+        2612,
+        307
+      ],
+      "old_pause_restart": [
+        39,
+        1
+      ]
+    },
+    "classifier": "No change. All new app lines remain in existing Founder file globs; row51 explicit Circle classification retained."
+  },
+  "reading": {
+    "startup_text_bytes": 101439,
+    "master_image_bytes": 4710338,
+    "later_primary_source_search_io": "Not fully instrumented; excluded from startup count.",
+    "helper": {
+      "name": "seeker_card_inventory",
+      "purpose": "Separate read-only test/capture inventory",
+      "content_bytes": 137734,
+      "sdk_or_writes": false
+    }
+  },
+  "disk": {
+    "scratch_created": false,
+    "own_task_cache_created": false,
+    "shared_sdk_cache": "Reused under SOURCE; retained for next eligible row.",
+    "evidence_types": "PNG screenshots/comparisons plus JSON; no compiled app/source copy.",
+    "largest_deliverable_bytes": 2741447,
+    "render_bytes": 26003131
+  },
+  "boundaries": [
+    "Only row56, source allowlists and its task note.",
+    "No native install/build/upload, server, new admission, store, upgrade, global governance, schedule or BLUEPRINT write.",
+    "Direct core2 only status/add/commit/push used; no Fable scanner/history exception.",
+    "No questions to Shakeel; no new Founder decision.",
+    "AD-AIOS-118 lighter startup/one note; 21 Nov-14 Dec no upgrade/password/restart hold acknowledged."
+  ]
+}

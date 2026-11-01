@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "queue_line": 56,
+  "source_commit": "50b82d046e770dec243b2dbe5d4a2c084b9d7884",
+  "scope": "Explicit allowlist only; no configs/credentials/source copies/compiled products.",
+  "files": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_tab.dart",
+      "bytes": 22505,
+      "sha256": "3e2c17e10e6f7299cd48f7874942af38b293632d73542eaddbe7a16ffce977dd"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "bytes": 62343,
+      "sha256": "81fea50aea366c93affda3fca69a2c5b233fd5ebe67c823b2d1e29775c537463"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 334721,
+      "sha256": "4630859a6a037d802b83537a74c4d0ca7a1e1f99f701e6a5628f5e9a5b7c55d9"
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "bytes": 18655,
+      "sha256": "e42a7c37060de6f9d4755bd1c952952027416e095c2b17f619e14a642020da94"
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "bytes": 15549,
+      "sha256": "9c63ab6e3f36fed9ee6ee0696c9962cc2889be5482fad82fecef1cd8219372bd"
+    },
+    {
+      "path": "REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md",
+      "bytes": 73503,
+      "sha256": "3959a6caa944f2cb6e5837aa1f24d229b07c79cd436245065ffae5d0f3d66eec"
+    }
+  ],
+  "affected_renderers": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_tab.dart",
+      "symbols": [
+        "ZyraJourneyPhotoCard",
+        "_ZyraOneJourneyTabState._journey"
+      ],
+      "contract": "Seeker photo, fade, radius, border, keys and stage overlay defaults retained; explicit Guardian expanded-text fade parameters."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "symbols": [
+        "ZyraGuardianJourneyPager",
+        "ZyraGuardianTabsPresentation._journeys"
+      ],
+      "contract": "Full photo, Sara-only stage facts, caption, Open, dots/swipe and latched owner lease."
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "symbols": [
+        "_guardianTabJourneyPeople",
+        "_guardianTabJourneyCard",
+        "_guardianTabsAction"
+      ],
+      "contract": "Existing permitted active Adam records, activity order, actual View/Chat and specific-person destination; Yusuf stays empty."
+    }
+  ]
+}
