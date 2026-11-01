@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "queue_line": 44,
+  "status": "QUESTION",
+  "question": 10,
+  "brief": "PRODUCT/APPROVED/DEV_TOGGLES/BRIEFS/DEV_TOGGLES_REMOVAL_BRIEF_2026-10-30.md",
+  "phase": "unchanged full test baseline before developer-control removal",
+  "source_commit": "60b1ab9b781c4bddd422c2ce46e731ee45d63d64",
+  "baseline_repository_head": "18f6e51549d5bd4467d962b7368dbdc98bf2639c",
+  "later_docs_script_preparation_commit": "f96501476aa52ed7486e4d484c144f7352b8f86f",
+  "app_source_changed": false,
+  "removal_started": false,
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "json"
+  ],
+  "runtime": {
+    "flutter": "3.44.2",
+    "protected_check_before": "PASS",
+    "protected_check_after": "PASS",
+    "pinned_files_checked": 5,
+    "both_exec_denial_proofs": "PASS",
+    "policy_sha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d",
+    "policy_or_pins_changed": false
+  },
+  "run": {
+    "started_utc": "2026-11-01T11:19:12.186354+00:00",
+    "completed_utc": "2026-11-01T11:28:21.524253+00:00",
+    "elapsed_seconds": 549.34,
+    "exit_code": 1,
+    "reporter_success": false,
+    "reporter_duration_ms": 547021,
+    "started_tests": 8240,
+    "completed_tests": 8240,
+    "invalid_json_records": 0
+  },
+  "results": {
+    "ordinary_visible": {
+      "passed": 6418,
+      "error": 613,
+      "failure": 34,
+      "skipped": 119
+    },
+    "visible_loader_hooks": {
+      "passed": 11,
+      "error": 1,
+      "failure": 1
+    },
+    "hidden_successful": 1043,
+    "visible_failed_or_error_total": 649,
+    "affected_files": 91
+  },
+  "largest_failure_groups": [
+    {
+      "file": "SOURCE/test/visual/zyra_visual_regression_test.dart",
+      "count": 112
+    },
+    {
+      "group": "view_request_draft_widget",
+      "count": 77
+    },
+    {
+      "group": "monthly_capacity",
+      "count": 32
+    },
+    {
+      "group": "guardian_one_page_designs",
+      "count": 30
+    },
+    {
+      "group": "founder_launch_review",
+      "count": 29
+    },
+    {
+      "group": "floating_nav_dot_clearance",
+      "count": 22
+    }
+  ],
+  "corroborated_missing_fixture": {
+    "test": "SOURCE/test/founder_paid_only_contract_migration_test.dart",
+    "lines": [
+      6,
+      9
+    ],
+    "absent_path": "SOURCE/supabase/migrations/20260924100231_founder_paid_only_returns_guardian_circle_contract.sql",
+    "repair_authorized": false
+  },
+  "limits": [
+    "Results precede row44 removal edits; no cause or historical attribution is established.",
+    "Failure-group labels and keyword classifications do not prove golden pixel mismatches.",
+    "The 77 View-request failures are not proven obsolete developer fixtures; tests import both member and preview components.",
+    "The protected Flutter SDK was used for the headless full-suite baseline. No app/native build, device installation, backend migration, or product redesign was performed.",
+    "No full-suite pass claimed; source and existing member navigation remain unchanged."
+  ],
+  "raw_evidence": {
+    "directory": "SOURCE/.buildlog/queue44_baseline_20261101T111912Z",
+    "files": [
+      "run.json",
+      "summary.json",
+      "failure_index.json",
+      "events.jsonl",
+      "stderr.log"
+    ],
+    "tracked": false,
+    "events_jsonl_bytes": 70827960,
+    "raw_logs_not_copied_to_approved_evidence": true
+  },
+  "default": "Separate approved baseline repairs first; preserve source and evidence until the designer updates the brief or gate.",
+  "code_size": {
+    "measurement": "Unchanged Dart measurement reused from row67; no fresh code-size run or DOC-ZYRA-0284 edit for this no-code preflight.",
+    "all_app": {
+      "lines": 175146,
+      "files": 345
+    },
+    "developer_and_preview": {
+      "lines": 55058,
+      "files": 103
+    },
+    "founder_preview": {
+      "lines": 35846,
+      "files": 53
+    },
+    "tests": {
+      "lines": 228324,
+      "files": 538
+    },
+    "old_app_files_mentioning_tracked_retired_features": {
+      "Pause": 39,
+      "old_Restart": 1
+    },
+    "retired_search_limit": "Tracker Pause uses pause; old Restart uses restart_journey|restartJourney. Request restart is not classified as retired."
+  }
+}
