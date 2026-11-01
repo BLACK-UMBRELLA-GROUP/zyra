@@ -10,6 +10,7 @@ import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_focus_dashboard.dart';
 import '../widgets/zyra_profiles_components.dart';
 import 'zyra_one_journey_tab.dart' show ZyraJourneyPhotoCard;
+import 'zyra_one_journey_guardian_seeker.dart';
 import '../screens/wali/family_messaging_screens.dart'
     show ZyraFamilyMessageComposer;
 
@@ -306,6 +307,9 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     required this.page,
     required this.onAction,
     required this.photoFor,
+    required this.seekerGender,
+    this.currentSeekerJourney,
+    this.currentSeekerJourneyId,
     this.linked = true,
     this.paid = true,
     this.adamMain = true,
@@ -316,7 +320,8 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     this.journeyIdentity,
   });
   final ZyraGuardianTabsState state;
-  final String page;
+  final String page, seekerGender;
+  final String? currentSeekerJourney, currentSeekerJourneyId;
   final ValueChanged<String> onAction;
   final String? Function(String) photoFor;
   final bool linked, paid, adamMain;
@@ -347,8 +352,6 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
       size: size,
     ).copyWith(fontWeight: FontWeight.w300, height: 1.2),
   );
-  Widget _label(String text, {bool gold = false}) =>
-      _text(text, size: 11, muted: !gold, gold: gold);
   Widget _button(
     String label,
     String action, {
@@ -1292,65 +1295,20 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
       ],
     ),
   );
-  Widget _seeker() => _viewport(
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _header(state.seekerName),
-        _box(
-          Row(
-            children: [
-              _text('✓ Active', size: 12),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: _text(
-                    'Linked  ${state.main ? '20 Sep 2026' : '02 Oct 2026'}',
-                    size: 12,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        ),
-        const SizedBox(height: 16),
-        _label('YOUR ACCESS'),
-        const SizedBox(height: 4),
-        _info(
-          'Role',
-          state.main && adamMain ? 'Main Guardian' : 'Additional Guardian',
-          rule: false,
-        ),
-        _info(
-          'Journeys',
-          state.main && adamMain
-              ? 'View and Chat'
-              : 'As ${state.seekerName} allows, Journey by Journey',
-          rule: false,
-        ),
-        _info(
-          'Journey requests',
-          state.main && adamMain ? 'You see them' : 'Main Guardian only',
-          rule: false,
-        ),
-        _info('Past summaries', 'Not shared', rule: false),
-        const SizedBox(height: 16),
-        _label('JOURNEY'),
-        const SizedBox(height: 4),
-        _info(
-          'Current',
-          state.main ? 'With Sara · ${state.stage}' : 'None',
-          rule: false,
-        ),
-        const SizedBox(height: 2),
-        if (state.main && adamMain) ...[
-          _button('Open Journey', 'journey', gold: true),
-          const SizedBox(height: 8),
-        ],
-        _button("Enter ${state.seekerName}'s Guardian Circle", 'circle'),
-      ],
-    ),
+  Widget _seeker() => ZyraGuardianSeekerPage(
+    name: state.seekerName,
+    gender: seekerGender,
+    main: state.main && adamMain,
+    linkedDate: state.main ? '20 Sep 2026' : '02 Oct 2026',
+    journeys: state.main && adamMain
+        ? 'View and Chat'
+        : 'As ${state.seekerName} allows, Journey by Journey',
+    requests: state.main && adamMain ? 'You see them' : 'Main Guardian only',
+    currentJourney: currentSeekerJourney,
+    onJourney: currentSeekerJourneyId == null
+        ? null
+        : () => onAction('seeker_journey_$currentSeekerJourneyId'),
+    onCircle: () => onAction('circle'),
   );
   @override
   Widget build(BuildContext context) => switch (page) {

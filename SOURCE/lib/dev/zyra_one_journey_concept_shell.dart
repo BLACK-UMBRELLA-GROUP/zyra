@@ -6284,12 +6284,18 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   Widget _guardianTabsView(String page) {
     final people = _guardianTabJourneyPeople;
     final selected = people.indexWhere((p) => p.id == _guardianJourneyId);
+    final current = people.isEmpty ? null : people[selected < 0 ? 0 : selected];
     return ZyraGuardianTabsPresentation(
       state: _guardianTabs,
       page: page,
       linked: _conceptHassanLinked,
       paid: _guardianMembership == 'Guardian One',
       adamMain: _conceptLinkedSeeker.isMain,
+      seekerGender: _conceptLinkedSeekerProfile.gender,
+      currentSeekerJourneyId: current?.id,
+      currentSeekerJourney: current == null
+          ? null
+          : 'With ${current.firstName} · ${current.id == 'draft-sara' ? _guardianTabs.stage : _model.stageFor(current.id)?.label ?? _stateLabel(_model.stateFor(current.id)!)}',
       journeys: [for (final person in people) _guardianTabJourneyCard(person)],
       journeyIndex: selected < 0 ? 0 : selected,
       journeyIdentity: (
@@ -6365,6 +6371,17 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   void _guardianTabsAction(String action) {
     final state = _guardianTabs;
     final paid = _guardianMembership == 'Guardian One';
+    if (action.startsWith('seeker_journey_')) {
+      if (_page != 'guardian_seeker' || !state.main || !_conceptHassanLinked) {
+        return;
+      }
+      final id = action.substring('seeker_journey_'.length);
+      if (!_guardianTabJourneyPeople.any((p) => p.id == id)) return;
+      _guardianJourneyId = id;
+      if (id == 'draft-sara') state.consumedFocus.add(state.reviewFocusId);
+      _open('guardian');
+      return;
+    }
     if (action.startsWith('journey_select_') ||
         action.startsWith('journey_open_')) {
       if (_page != null || _tab != 1 || !state.main || !_conceptHassanLinked) {

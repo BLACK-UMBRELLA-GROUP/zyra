@@ -16,6 +16,7 @@ Future<ZyraFocusDashboard> _mount(
     MaterialApp(
       home: Scaffold(
         body: ZyraGuardianTabsPresentation(
+          seekerGender: 'male',
           state: state ?? ZyraGuardianTabsState(),
           page: 'my_zyra',
           paid: paid,

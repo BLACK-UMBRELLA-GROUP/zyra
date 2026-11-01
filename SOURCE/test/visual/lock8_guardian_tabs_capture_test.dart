@@ -110,7 +110,8 @@ void main() {
       await _tab(h, 3);
       expect(find.text('Journey with Sara · Paused by family'), findsOneWidget);
       await h.tap('guardian_seeker_0');
-      expect(find.text('With Sara · Paused by family'), findsOneWidget);
+      // V6 uses permitted active Journeys; this unseeded model has only requests.
+      expect(find.text('No current Journey'), findsOneWidget);
       await _back(h);
       await _tab(h, 2);
       await h.tap('guardian_reopen');
