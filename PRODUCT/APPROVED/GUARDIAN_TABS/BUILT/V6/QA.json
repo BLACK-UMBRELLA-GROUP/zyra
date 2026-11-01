@@ -110,14 +110,15 @@
   "decisions": "No new Founder question or decision requested; Q8/row56 existing projection reused. AD-AIOS-118/120 direct instructions applied.",
   "evidence_disposition": {
     "lesson": "L15: raw test outputs stay ignored; reviewed final handover JSON belongs in approved BUILT/V6.",
-    "correction": "Four REPORTS/EVIDENCE files had been force-added in 24217b4 before parent clarification. Two raw JSONL event logs are removed from tracked files and restored locally ignored; two reviewed capture environment/row JSON records are moved to BUILT/V6. No history rewrite.",
-    "raw_ignored_paths": [
-      "REPORTS/EVIDENCE/LOCK8_V6_GUARDIAN_SEEKER_2026-11-01/FINAL_ICON_CAPTURE_EVENTS.jsonl",
-      "REPORTS/EVIDENCE/LOCK8_V6_GUARDIAN_SEEKER_2026-11-01/FINAL_ALL_EVENTS.jsonl"
-    ],
+    "correction": "Four REPORTS/EVIDENCE files were briefly force-added in 24217b4. ae9ff03 untracked two raw JSONL event logs and moved two reviewed capture environment/row JSONs to BUILT/V6. Raw logs are now retained only in approved Group trash; no history rewrite or file deletion.",
     "reviewed_handover_paths": [
       "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/CAPTURE_ENVIRONMENT.json",
       "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/CAPTURE_ROWS.json"
-    ]
+    ],
+    "raw_trash_paths": [
+      "BLACK UMBRELLA GROUP/tmp/_to_delete/ZYRA_QUEUE58_2026-11-01/RAW_LOG_UNTRACK/FINAL_ICON_CAPTURE_EVENTS.jsonl",
+      "BLACK UMBRELLA GROUP/tmp/_to_delete/ZYRA_QUEUE58_2026-11-01/RAW_LOG_UNTRACK/FINAL_ALL_EVENTS.jsonl"
+    ],
+    "raw_bytes": 85702
   }
 }

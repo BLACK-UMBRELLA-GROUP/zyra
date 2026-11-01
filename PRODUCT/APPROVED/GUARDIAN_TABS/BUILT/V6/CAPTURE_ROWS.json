@@ -5,7 +5,7 @@
     "page": "g11_seeker__adam_main.png",
     "state": "fixture",
     "reached": "Actual shell with explicit existing seedJourneys(1) active-Sara model; g11 master fixture",
-    "file": "g11_seeker__adam_main.png",
+    "file": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/g11_seeker__adam_main.png",
     "width": 1290,
     "height": 2796,
     "route": [
@@ -19,7 +19,7 @@
     "page": "g12_seeker__yusuf_additional.png",
     "state": "fixture",
     "reached": "Actual existing Additional Yusuf sample; no current Journey, isolated Circle",
-    "file": "g12_seeker__yusuf_additional.png",
+    "file": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/g12_seeker__yusuf_additional.png",
     "width": 1290,
     "height": 2796,
     "route": [
@@ -33,7 +33,7 @@
     "page": "g11_actual_default_no_current.png",
     "state": "fixture",
     "reached": "Actual unseeded model: received request only, no synthetic current Journey",
-    "file": "g11_actual_default_no_current.png",
+    "file": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/g11_actual_default_no_current.png",
     "width": 1290,
     "height": 2796,
     "route": [
@@ -47,7 +47,7 @@
     "page": "g11_larger_text_top.png",
     "state": "fixture",
     "reached": "Actual shell, 200% text, top of same V6 page",
-    "file": "g11_larger_text_top.png",
+    "file": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/g11_larger_text_top.png",
     "width": 1290,
     "height": 2796,
     "route": [
@@ -61,7 +61,7 @@
     "page": "g11_larger_text_bottom.png",
     "state": "fixture",
     "reached": "Actual 200% text, scrolled to reachable Circle action",
-    "file": "g11_larger_text_bottom.png",
+    "file": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/g11_larger_text_bottom.png",
     "width": 1290,
     "height": 2796,
     "route": [
@@ -75,7 +75,7 @@
     "page": "g12_larger_text_top.png",
     "state": "fixture",
     "reached": "Actual shell, 200% text, top of same V6 page",
-    "file": "g12_larger_text_top.png",
+    "file": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/g12_larger_text_top.png",
     "width": 1290,
     "height": 2796,
     "route": [
@@ -89,7 +89,7 @@
     "page": "g12_larger_text_bottom.png",
     "state": "fixture",
     "reached": "Actual 200% text, scrolled to reachable Circle action",
-    "file": "g12_larger_text_bottom.png",
+    "file": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/g12_larger_text_bottom.png",
     "width": 1290,
     "height": 2796,
     "route": [
@@ -103,7 +103,7 @@
     "page": "g11_320pt_larger_text_bottom.png",
     "state": "200 percent text",
     "reached": "Actual admitted 320-point shell, scrolled to reachable Circle action",
-    "file": "g11_320pt_larger_text_bottom.png",
+    "file": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/g11_320pt_larger_text_bottom.png",
     "width": 960,
     "height": 2016,
     "route": [
@@ -117,7 +117,7 @@
     "page": "g12_320pt_larger_text_bottom.png",
     "state": "200 percent text",
     "reached": "Actual admitted 320-point shell, scrolled to reachable Circle action",
-    "file": "g12_320pt_larger_text_bottom.png",
+    "file": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/g12_320pt_larger_text_bottom.png",
     "width": 960,
     "height": 2016,
     "route": [

@@ -3,8 +3,8 @@
   "files": [
     {
       "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/BUILD.json",
-      "bytes": 1057,
-      "sha256": "92a804b17705705a31965f117be6eaaef94d783f5a71e8cf2f21fa48f523586d"
+      "bytes": 1159,
+      "sha256": "e2a00ff261fbc50125fc83609b9a35125094c181036f82e093fc84fab696d15f"
     },
     {
       "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/SOURCE_MANIFEST.json",
@@ -23,13 +23,13 @@
     },
     {
       "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/QA.json",
-      "bytes": 6180,
-      "sha256": "7f93b4b58e6b71432931ac62c0d61c27f28f0018a0f9c2f542e0128e459f2a74"
+      "bytes": 6247,
+      "sha256": "506c889b941e5f7b44c15fa7b491399a97bc070aca7f364b995713b554b1baa4"
     },
     {
       "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/CHECKS.json",
-      "bytes": 926,
-      "sha256": "0b6d3c15bfcf4144190720aa2765e8bb947b55bf2de1cf114e2a148e0bdd2ed9"
+      "bytes": 985,
+      "sha256": "88ea5667b99a0c301a84792fc70d36abad4abc31fc19de05e5986e4034440f08"
     },
     {
       "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/CASE_LEDGER.json",
@@ -48,8 +48,8 @@
     },
     {
       "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/CAPTURE_ROWS.json",
-      "bytes": 3144,
-      "sha256": "0f2ab8518020104275a1de25c8d91b1a68e82ef677a235b73f9d9570370d102f"
+      "bytes": 3504,
+      "sha256": "5977a3fc90b4d250a7e447aa0197eb4c2c27469cc691c02d3b85000fe47ae82f"
     }
   ]
 }

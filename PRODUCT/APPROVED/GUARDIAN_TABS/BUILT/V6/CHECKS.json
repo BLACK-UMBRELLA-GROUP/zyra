@@ -26,5 +26,5 @@
     "No whole-app test claim",
     "No native build/install/upload, backend, upgrade, model-policy or BLUEPRINT change"
   ],
-  "raw_test_events": "Raw JSONL output remains local and ignored in REPORTS/EVIDENCE/LOCK8_V6_GUARDIAN_SEEKER_2026-11-01; no forced tracking."
+  "raw_test_events": "Raw JSONL output retained only in BLACK UMBRELLA GROUP/tmp/_to_delete/ZYRA_QUEUE58_2026-11-01/RAW_LOG_UNTRACK; not tracked. CASE_LEDGER.json is the reviewed case/result handover."
 }
