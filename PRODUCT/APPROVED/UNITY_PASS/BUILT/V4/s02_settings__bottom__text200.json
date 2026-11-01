@@ -1,0 +1,38 @@
+{
+  "file": "s02_settings__bottom__text200.png",
+  "png_size": [
+    1290,
+    2796
+  ],
+  "logical_size": [
+    430,
+    932
+  ],
+  "text_scale": 2.0,
+  "route": [
+    "settings"
+  ],
+  "tab": 4,
+  "geometry_pt": {
+    "concept_settings_title": [
+      20.0,
+      75.0,
+      390.0,
+      80.0
+    ],
+    "concept_settings_privacyData": [
+      20.5,
+      667.5,
+      389.0,
+      73.0
+    ],
+    "concept_settings_phoneAccess": [
+      20.5,
+      177.5,
+      389.0,
+      73.0
+    ]
+  },
+  "reached": "Actual admitted offline Founder shell; existing routes/sample data; real close/back control; no backend or native device.",
+  "member_back": "Nonvisual Back assistive action/dismiss and 44pt left-edge swipe sensor inside captured shell. No painted Back icon exists at rest or outside the boundary; developer chrome is not the return target."
+}

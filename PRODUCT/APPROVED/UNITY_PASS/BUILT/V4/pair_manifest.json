@@ -1,0 +1,47 @@
+{
+  "queue": 62,
+  "pairs": [
+    {
+      "master": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/s01_settings__top.png",
+      "build": "s01_settings__top.png",
+      "pair": "s01_settings__top__master_beside_build.png",
+      "comparison": "Same-size native PNGs, no pixel alteration; 200% is reflow against normal master."
+    },
+    {
+      "master": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/s01_settings__top.png",
+      "build": "s01_settings__top__text200.png",
+      "pair": "s01_settings__top__text200__master_beside_build.png",
+      "comparison": "Same-size native PNGs, no pixel alteration; 200% is reflow against normal master."
+    },
+    {
+      "master": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/s02_settings__bottom.png",
+      "build": "s02_settings__bottom.png",
+      "pair": "s02_settings__bottom__master_beside_build.png",
+      "comparison": "Same-size native PNGs, no pixel alteration; 200% is reflow against normal master."
+    },
+    {
+      "master": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/s02_settings__bottom.png",
+      "build": "s02_settings__bottom__text200.png",
+      "pair": "s02_settings__bottom__text200__master_beside_build.png",
+      "comparison": "Same-size native PNGs, no pixel alteration; 200% is reflow against normal master."
+    },
+    {
+      "master": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/s03_edit_profile.png",
+      "build": "s03_edit_profile.png",
+      "pair": "s03_edit_profile__master_beside_build.png",
+      "comparison": "Same-size native PNGs, no pixel alteration; 200% is reflow against normal master."
+    },
+    {
+      "master": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/s03_edit_profile.png",
+      "build": "s03_edit_profile__text200.png",
+      "pair": "s03_edit_profile__text200__master_beside_build.png",
+      "comparison": "Same-size native PNGs, no pixel alteration; 200% is reflow against normal master."
+    },
+    {
+      "master": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/s03_edit_profile.png",
+      "build": "s03_edit_profile__text200__bottom.png",
+      "pair": "s03_edit_profile__text200__bottom__master_beside_build.png",
+      "comparison": "Same-size native PNGs, no pixel alteration; 200% is reflow against normal master."
+    }
+  ]
+}

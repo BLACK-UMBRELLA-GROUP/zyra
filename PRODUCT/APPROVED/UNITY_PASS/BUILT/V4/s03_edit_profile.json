@@ -1,0 +1,44 @@
+{
+  "file": "s03_edit_profile.png",
+  "png_size": [
+    1290,
+    2796
+  ],
+  "logical_size": [
+    430,
+    932
+  ],
+  "text_scale": 1.0,
+  "route": [
+    "edit_profile"
+  ],
+  "tab": 4,
+  "geometry_pt": {
+    "edit_profile_preview_title": [
+      20.0,
+      75.0,
+      390.0,
+      40.0
+    ],
+    "edit_profile_answers_card": [
+      20.0,
+      179.0,
+      390.0,
+      344.0
+    ],
+    "edit_profile_fixed_card": [
+      20.0,
+      539.0,
+      390.0,
+      95.0
+    ],
+    "edit_profile_open_support": [
+      20.0,
+      707.0,
+      390.0,
+      53.0
+    ]
+  },
+  "reached": "Actual admitted offline Founder shell; existing routes/sample data; real close/back control; no backend or native device.",
+  "member_back": "Nonvisual Back assistive action/dismiss and 44pt left-edge swipe sensor inside captured shell. No painted Back icon exists at rest or outside the boundary; developer chrome is not the return target."
+}

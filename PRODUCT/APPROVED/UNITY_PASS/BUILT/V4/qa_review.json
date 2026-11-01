@@ -1,0 +1,149 @@
+{
+  "queue": 62,
+  "lock": "LOCK22 V4",
+  "predecessor": {
+    "head": "8a0dca854b3392f1e164c0c325959e12597d0d32",
+    "verified_file_hashes": 82,
+    "verified_row61_sha256": "e66262ce61ff6b6e6bf4e523b32953075954d4aa9457a03bf27fed8af4480197"
+  },
+  "scope": [
+    "Founder Settings large left header; existing shell back/close lease retained",
+    "Only duplicate bottom Membership section removed; summary/Profile membership retained",
+    "Shared Edit profile title, floating answer/fixed/support cards, master icons #A9792E and right-aligned locked values"
+  ],
+  "preserved": [
+    "Every existing row callback, count, intro and note",
+    "Actual note uses cannot rather than prototype contraction, per brief unchanged-copy instruction",
+    "DOB/Gender values and locks, storage/owner leases and support TextButton API",
+    "Pause My Profile unchanged; OA-ZYRA-337 separate"
+  ],
+  "checks": {
+    "affected": "62 PASS across six files, including six new current route/action/capture cases",
+    "additional_regression": "47 PASS, one legacy Guardian fixture FAIL across whole_app_settings_destinations_test + lock12_phone_access_capture_test",
+    "analyzer": "4 items, no issues",
+    "format": "4 files, zero changes",
+    "sdk": "Protected Flutter 3.44.2; five pins and direct/inherited exec-denial proofs PASS",
+    "network": "Baseline harness forbids network; zero capture requests",
+    "full_suite": "Not run or claimed",
+    "development_correction": "Missing pages argument in initial new fixture corrected; final current checks pass. Obsolete Membership row expectation/navigation updated only for scoped removal.",
+    "log_receipts": [
+      {
+        "file": "final_affected_r2.log",
+        "sha256": "f2fac854c65fa6ed88750b93ffb8b9610e3370a9814c5cc286af23d56420d66d",
+        "bytes": 11186,
+        "exit_code": 0,
+        "stored": "own scratch; not shipped"
+      },
+      {
+        "file": "settings_regression_r2.log",
+        "sha256": "b34c6f80d6a89e6fd116e15cfddfdd7f336c00f8c327684be56165528ed4d54a",
+        "bytes": 11849,
+        "exit_code": 1,
+        "stored": "own scratch; not shipped"
+      },
+      {
+        "file": "member_back.log",
+        "sha256": "bba5b638cb0795db9ec0b23f7fbda3d3df66ed68a49c2f758ae7a7fd78a9baed",
+        "bytes": 617,
+        "exit_code": 0,
+        "stored": "own scratch; not shipped"
+      },
+      {
+        "file": "analyze_final.log",
+        "sha256": "14a60884461d1f0c94019c43c5752455ab643e66227ab543a2314b99ed87f4fb",
+        "bytes": 96,
+        "exit_code": 0,
+        "stored": "own scratch; not shipped"
+      }
+    ]
+  },
+  "visual_review": {
+    "captures": 7,
+    "master_build_pairs": 7,
+    "normal": "s01/s02 Settings change scope verified; s03 first card top 179pt and height344pt, close to master, locked values right-aligned; no duplicate section",
+    "larger_text": "200% wraps; all five editors, every Settings action, locked facts and support reached without render errors; extra s03 bottom capture",
+    "not_claimed": [
+      "Pixel equality",
+      "Founder visual approval",
+      "Device/native delivery"
+    ]
+  },
+  "written_refusals": [
+    {
+      "id": "QUEUE62-R1",
+      "action": "Expand Settings surface or global frame/font styling to match every prototype pixel",
+      "reason": "Brief preserves top summary and all other sections. Their existing tinted fills/borders, small spacing/wordmark differences and native rectangular frame remain visible in pairs; source changes confined to named scope. Existing visual review OA-ZYRA-335."
+    },
+    {
+      "id": "QUEUE62-R2",
+      "action": "Rewrite older Guardian shell admission/navigation fixture to force complete regression green",
+      "reason": "Guardian actual Settings fixture fails locating concept_settings before this screen opens. Current Guardian route/Phone access and every presenter callback pass. Membership row expectation/navigation was updated because its removal is this task. No unrelated model/admission migration. Existing OA-ZYRA-335/QUEUE61-R2."
+    }
+  ],
+  "counts": {
+    "before": {
+      "app": [
+        174564,
+        344
+      ],
+      "dev": [
+        54537,
+        102
+      ],
+      "founder": [
+        35328,
+        52
+      ],
+      "tests": [
+        226994,
+        534
+      ]
+    },
+    "after": {
+      "app": [
+        174633,
+        344
+      ],
+      "dev": [
+        54545,
+        102
+      ],
+      "founder": [
+        35336,
+        52
+      ],
+      "tests": [
+        227311,
+        535
+      ]
+    },
+    "goldens": [
+      2612,
+      "307 MB"
+    ],
+    "old_pause_restart": [
+      39,
+      1
+    ],
+    "classifier_delta": 0,
+    "attribution_delta": 0
+  },
+  "read_cost": {
+    "pack_text_bytes": 38366,
+    "pack_image_bytes": 3743917,
+    "released_reads": "Bounded excerpts, filename inventories, predecessor hash verification and necessary logs; primary text/image I/O after release was not fully byte-metered. No repeated pack payload, startup, subagents or full shell read. Efficiency limit disclosed under OA-AIOS-419."
+  },
+  "limits": [
+    "No native build/install",
+    "No backend/admission/model/BLUEPRINT/global/schedule edits",
+    "No SDK/package upgrades or Tier3 retirement",
+    "Only own records/commits; unrelated working changes preserved"
+  ],
+  "member_back": {
+    "full_tree": "The entire MaterialApp home is inside the baseline RepaintBoundary. No painted Back icon is outside it or omitted.",
+    "existing_member_target": "Shared ZyraPullDownCloseCue owns one nonvisual Back custom semantics/dismiss action and44pt left-edge sensor; Escape uses same lease. Not developer chrome.",
+    "verified": "At normal and200%, exactly one active assistive owner and one >=44pt edge inside boundary; invoking real Back action returns Settings\u2192Profile and Help\u2192Edit profile\u2192Profile. Six cases PASS again.",
+    "before44": "Preserve this member-owned return while retiring developer controls. Pictures show actual icon-free resting state; do not claim a visible Back icon. No duplicate control added.",
+    "scope_resolution": "Brief wording back + large left title uses the existing canonical member Back behavior and unchanged master treatment. No painted icon omitted or new visible control invented. Parent carries preservation to queue44 under OA-ZYRA-335."
+  }
+}

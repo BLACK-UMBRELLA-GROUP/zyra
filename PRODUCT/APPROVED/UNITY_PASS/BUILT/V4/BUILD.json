@@ -1,0 +1,35 @@
+{
+  "queue": 62,
+  "lock": "LOCK22 V4",
+  "commit_sha": "8a91fb8d607bf0545c34ea82c33c842361bf4c40",
+  "source_commits": [
+    "95dbe58a0f0825b0b6f39dcf8131498c69a8bdc3",
+    "8a91fb8d607bf0545c34ea82c33c842361bf4c40"
+  ],
+  "flutter_version": "3.44.2",
+  "build_mode": "Offline Flutter widget-test/debug rendering, no native app build",
+  "timestamp": "2026-11-01T10:20:46.871549+00:00",
+  "timezone": "Europe/London (UTC on 1 November)",
+  "logical_size": [
+    430,
+    932
+  ],
+  "png_size": [
+    1290,
+    2796
+  ],
+  "text_scales": [
+    1,
+    2
+  ],
+  "ios_status_bar": false,
+  "test_theme": "Actual ZyraApp theme and scroll behavior, bundled Poppins/Syne, documented platform glyph fallback",
+  "captures": 7,
+  "pairs": 7,
+  "known_limits": [
+    "No full-suite or device claim",
+    "One older Guardian fixture fails before Settings",
+    "Existing Settings surface/frame/font differences shown in pairs",
+    "Back is member-owned nonvisual semantics/edge action; no painted icon omitted"
+  ]
+}

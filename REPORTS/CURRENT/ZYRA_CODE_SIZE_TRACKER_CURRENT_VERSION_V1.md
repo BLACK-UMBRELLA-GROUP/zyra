@@ -18,10 +18,10 @@ to measure honestly by search; it will be counted file by file in the deep revie
 
 | What | Size |
 |---|---|
-| All app code | 174,564 lines in 344 files |
-| Developer and preview code inside it | 54,537 lines in 102 files |
-| The Founder preview (planned app) | 35,328 lines in 52 files |
-| Test code | 226,994 lines in 534 files |
+| All app code | 174,633 lines in 344 files |
+| Developer and preview code inside it | 54,545 lines in 102 files |
+| The Founder preview (planned app) | 35,336 lines in 52 files |
+| Test code | 227,311 lines in 535 files |
 | Test screenshots (goldens) | 2,612 images, 307 MB |
 | Old-app files that still mention Pause | 39 |
 | Old-app files that still mention Restart | 1 |
@@ -735,3 +735,21 @@ One production ZyraEmptyState layout now serves existing member calls and Founde
 Measured with code_size.py; no classifier change or attribution delta. Shared production state widgets remain in all-app totals, not newly attributed wholesale to Founder. Existing monogram module was already classified as preview; its optional child reuses the ring rather than duplicating it.
 
 BUILT/V3 and BUILT/V8 hold twelve actual normal/200% captures, twelve master/build pairs, contact sheet, semantic callsite inventory, geometry/QA records and exact trace manifest. Initial normal vertical offset corrected in callers only; six final ring-centre differences are -5.8 to+3.2pt.96pt ring retained; native type/icon glyphs, frame and existing segments still differ from prototype (QUEUE61-R1/OA-ZYRA-335). Larger Text scrolls and actions remain reachable. No pixel equality or Founder visual-approval claim. Current affected checks and additional legacy-fixture failures are distinguished in QA/task note; no navigation/data rewrite to satisfy old fixtures. Efficiency overruns disclosed once in Task15 under OA-AIOS-419. No native/backend/admission/BLUEPRINT/schedule change. AD-AIOS-115/118/120.
+
+
+## Queue 62 — Settings and Edit profile LOCK22 V4 — 1 November 2026
+
+Founder Settings uses the standard large left title and existing shell back control; only duplicate bottom Membership removed. Shared Edit profile has its corrected title, three floating cards, gold master icons, dividers and right-aligned locked facts. Existing row destinations, dynamic counts, intro/note (including “cannot”), DOB/Gender locks and owner/support guards retained. Old flat answer/fixed labels and icon bubbles removed. Pause My Profile retained under separate OA-ZYRA-337; no Tier3 or classifier change.
+
+| Measure | Before | After |
+|---|---:|---:|
+| All app code |174,564 /344|174,633 /344|
+| Developer/preview |54,537 /102|54,545 /102|
+| Founder planned app |35,328 /52|35,336 /52|
+| Tests |226,994 /534|227,311 /535|
+| Test goldens |2,612 /307 MB|unchanged|
+| Old Pause / Restart files |39 /1|unchanged|
+
+Measured with code_size.py; classifier and attribution delta0. Shared profile screen remains in app totals, not reclassified as Founder. 62 affected cases and47 additional cases pass; one older Guardian fixture fails before reaching Settings (QUEUE62-R2/OA-ZYRA-335), with no full-suite claim. Four-item analyser clean; format0; protected3.44.2 pins/exec-denial checks pass. Seven actual normal/200% captures, seven master/build pairs and contact sheet in UNITY_PASS/BUILT/V4. Existing Settings surface fills and native frame/font differences are shown and scoped in QUEUE62-R1; no pixel equality or visual approval claim. AD-AIOS-115/118/120.
+
+Back verification: the full capture includes the shared member-owned nonvisual Back semantics/dismiss action and44pt left-edge sensor. Exactly one active owner/edge and real Back callbacks pass at100%/200%; no painted Back icon is outside the boundary. Preserve this member return before queue44; no duplicate or redesign added.
