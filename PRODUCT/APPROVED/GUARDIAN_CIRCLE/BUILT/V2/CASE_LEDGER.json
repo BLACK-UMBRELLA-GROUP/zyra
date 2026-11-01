@@ -1,0 +1,1184 @@
+{
+  "queue_row": 51,
+  "design": "LOCK20 V2 Guardian Circle as Topics",
+  "run_scope": "Final complete seven-suite verified run after timestamp, capture decoding and grayscale corrections.",
+  "source_log": "/Users/shakeelahmad/Documents/Codex/2026-10-31/zyra-queue51-guardian-circle-topics-v2/work/verified_final.jsonl",
+  "source_log_sha256": "c7fc41412a0b839511ca99b00752fbc6dc9bc23b5b9425abdc369e84db94f414",
+  "input_bytes": 82383,
+  "aggregate": {
+    "suites": 7,
+    "actual": 145,
+    "passed": 145,
+    "failures": 0,
+    "skipped": 0,
+    "done_success": true,
+    "all_testDone_success_records": 158
+  },
+  "counting_policy": "Actual cases exclude loading, setUpAll and tearDownAll events. These excluded events are listed separately and are not counted as tests.",
+  "excluded_event_counts": {
+    "loading": 7,
+    "setUpAll": 3,
+    "tearDownAll": 3
+  },
+  "per_suite": [
+    {
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_circle_preview_authority_test.dart",
+      "actual": 12,
+      "passed": 12,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_messaging_foundation_test.dart",
+      "actual": 12,
+      "passed": 12,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "actual": 13,
+      "passed": 13,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_source_test.dart",
+      "actual": 9,
+      "passed": 9,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "actual": 45,
+      "passed": 45,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "actual": 12,
+      "passed": 12,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "actual": 42,
+      "passed": 42,
+      "failures": 0,
+      "skipped": 0
+    }
+  ],
+  "cases": [
+    {
+      "test_id": 9,
+      "name": "All contains the current transcript and preserves existing About links",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 11,
+      "name": "source Seeker One writes while the actual Additional Guardian remains Basic",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_source_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 16,
+      "name": "Journey sends retain exact About ownership; All sends remain untagged",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 20,
+      "name": "existing local discussion map filters its exact Journey without inventing a message context",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 21,
+      "name": "empty family has All and meaningful empty state without invented Journeys",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 22,
+      "name": "Guardian input exposes only current Journeys already allowed by View",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 23,
+      "name": "Guardian history sharing off supplies no Past topic or archive entry",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 24,
+      "name": "past discussion day 30 uses the actual end date and closes after day 30",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 19,
+      "name": "source Seeker Basic writes with only the actual Main Guardian",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_source_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 25,
+      "name": "past discussion day 31 uses the actual end date and closes after day 30",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 27,
+      "name": "shared Guardian past summary uses dates and first names with no photo",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 28,
+      "name": "Guardian Basic reads the transcript and opens existing membership callback without a composer",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 17,
+      "name": "LOCK20 gc01_seeker__everyone normal (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 29,
+      "name": "Seeker menu shows exact members, toggles mute and opens existing Basic Family sheet",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 26,
+      "name": "source Guardian One writes and receives only source-admitted tabs",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_source_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 31,
+      "name": "Seeker menu respects owner-only Manage and existing report instruction",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 30,
+      "name": "LOCK20 gc02_seeker__menu_members normal (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 18,
+      "name": "Seeker starts with locked Topics and Back; reset restores the Circle",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 33,
+      "name": "Guardian menu respects owner-only Manage and existing report instruction",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 36,
+      "name": "menu render replacement retires captured mute action before feedback",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 37,
+      "name": "newest message is reached after entry, tab change and send without changing supplied unread data",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 34,
+      "name": "LOCK20 gc03_seeker__topic_sara normal (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 32,
+      "name": "source Guardian Basic reads without a composer and uses the existing membership destination",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_source_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 38,
+      "name": "retained physical send denies before haptic after tab changes",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 41,
+      "name": "retained physical send denies before haptic after overlay changes",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 35,
+      "name": "Seeker Topics retain the conversation and draft across controls, then edge returns once",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 42,
+      "name": "retained physical send denies before haptic after navigation changes",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 44,
+      "name": "retained physical send denies before haptic after control changes",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 39,
+      "name": "LOCK20 gc04_seeker__past_list normal (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 45,
+      "name": "retained physical send denies before haptic after caller changes",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 40,
+      "name": "source Seeker View Journey preserves the selected exact owner",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_source_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 47,
+      "name": "retained physical send denies before haptic after developer changes",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 49,
+      "name": "retained physical send denies before haptic after generation changes",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 43,
+      "name": "Seeker retained Topics action cannot survive authorization ABA",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 50,
+      "name": "retained physical Journey target cannot retarget after selecting another Journey",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 52,
+      "name": "retained physical send cannot replay into a later draft",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 48,
+      "name": "source Guardian View Journey preserves the selected exact owner",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_source_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 53,
+      "name": "retained physical send denies a second pending attempt before feedback",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 46,
+      "name": "LOCK20 gc05_seeker__past_open_zainab normal (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 55,
+      "name": "retained semantics send denies before haptic after tab changes",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 57,
+      "name": "retained semantics send denies before haptic after overlay changes",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 51,
+      "name": "Guardian starts with locked Topics and Back; reset restores the Circle",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 58,
+      "name": "retained semantics send denies before haptic after navigation changes",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 56,
+      "name": "LOCK20 gc06_seeker__past_closed_hana normal (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 60,
+      "name": "retained semantics send denies before haptic after control changes",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 62,
+      "name": "retained semantics send denies before haptic after caller changes",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 63,
+      "name": "retained semantics send denies before haptic after developer changes",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 54,
+      "name": "source Circle entry clears its real unread facts across return",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_source_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 64,
+      "name": "retained semantics send denies before haptic after generation changes",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 66,
+      "name": "retained semantics Journey target cannot retarget after selecting another Journey",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 61,
+      "name": "LOCK20 gc07_seeker__topic_empty_maryam normal (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 67,
+      "name": "retained semantics send cannot replay into a later draft",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 59,
+      "name": "Guardian Topics retain the conversation and draft across controls, then edge returns once",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 69,
+      "name": "retained semantics send denies a second pending attempt before feedback",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 71,
+      "name": "replacement data withdraws captured Topics controls instead of retargeting",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 72,
+      "name": "replacement topics withdraws captured Topics controls instead of retargeting",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 65,
+      "name": "source Page options cover retires both retained send paths before feedback",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_source_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 73,
+      "name": "replacement role withdraws captured Topics controls instead of retargeting",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 68,
+      "name": "LOCK20 gc08_seeker_basic__menu normal (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 75,
+      "name": "replacement seeker withdraws captured Topics controls instead of retargeting",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 70,
+      "name": "Guardian retained Topics action cannot survive authorization ABA",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 77,
+      "name": "replacement design withdraws captured Topics controls instead of retargeting",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 78,
+      "name": "standalone Circle owns exactly one accessible Dismiss return",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 80,
+      "name": "standalone Circle owns exactly one interactive edge return",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 79,
+      "name": "pending publication is denied when its selected Journey changes before completion",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 81,
+      "name": "a parent return scope prevents nested Circle recognizers and double return",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 82,
+      "name": "closed deadline denies retained physical send before feedback",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 74,
+      "name": "source account generation revokes both retained send paths before feedback",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_source_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 84,
+      "name": "closed deadline denies retained semantics send before feedback",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 87,
+      "name": "message reporting retains the existing other-sender-only rule",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 76,
+      "name": "LOCK20 gc09_guardian__everyone_sharing_off normal (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 88,
+      "name": "All retains an existing About label without granting its hidden Journey a tab or target",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 83,
+      "name": "empty Circle Journey topics retain canonical Couple navigation after return",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 89,
+      "name": "LOCK20 gc10_guardian__past_list_sharing_on normal (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 92,
+      "name": "Seeker Guardian access heading is text-only without changing navigation",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 94,
+      "name": "current purple Circle edge has no legacy hint and closes only once after genuine release",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 93,
+      "name": "LOCK20 gc11_guardian__past_closed_hana normal (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 95,
+      "name": "narrow purple 200 percent Circle edge has no legacy hint and closes only once after genuine release",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 96,
+      "name": "LOCK20 gc12_guardian__menu normal (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 102,
+      "name": "production family messaging remains closed until migration cutover",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_messaging_foundation_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 103,
+      "name": "circle access rejects malformed authority rows",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_messaging_foundation_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 104,
+      "name": "circle participant rows preserve role and current-user truth",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_messaging_foundation_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 105,
+      "name": "message rows preserve the sender relationship and Circle role",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_messaging_foundation_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 100,
+      "name": "LOCK20 gc13_guardian_basic__reads_only normal (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 107,
+      "name": "LOCK20 gc14_seeker__all_new_family normal (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 108,
+      "name": "LOCK20 gc01_seeker__everyone large (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 112,
+      "name": "raw Circle preview request cannot create Developer Access",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_circle_preview_authority_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 115,
+      "name": "raw inbox preview request cannot seed sample Circles",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_circle_preview_authority_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 114,
+      "name": "LOCK20 gc02_seeker__menu_members large (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 117,
+      "name": "LOCK20 gc03_seeker__topic_sara large (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 116,
+      "name": "stale context/send callbacks and delayed local send are denied",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_circle_preview_authority_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 106,
+      "name": "developer preview sends locally with optional person context",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_messaging_foundation_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 120,
+      "name": "migration exposes reads but keeps all writes behind RPCs",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_messaging_foundation_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 121,
+      "name": "participant-list RPC is scoped to the caller membership",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_messaging_foundation_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 122,
+      "name": "message identity RPC keeps the existing Circle read boundary",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_messaging_foundation_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 123,
+      "name": "message receipt RPCs preserve participant authority boundaries",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_messaging_foundation_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 124,
+      "name": "Circle message attribution permits the declared deletion behaviour",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_messaging_foundation_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 125,
+      "name": "Circle send budget serialises by sender before locking the thread",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_messaging_foundation_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 126,
+      "name": "Circle open uses a constraint name distinct from its output variable",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_messaging_foundation_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 119,
+      "name": "switch-to-live withdraws preview without starting live messaging",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_circle_preview_authority_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 118,
+      "name": "LOCK20 gc04_seeker__past_list large (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 127,
+      "name": "retained selected-person chip denies after context withdrawal",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_circle_preview_authority_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 129,
+      "name": "an opened members sheet clears on authorization revocation",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_circle_preview_authority_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 130,
+      "name": "an opened readers sheet clears on authorization revocation",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_circle_preview_authority_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 113,
+      "name": "badge entry preserves the actual Circle composer and local send (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 131,
+      "name": "an opened context sheet clears on authorization revocation",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_circle_preview_authority_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 128,
+      "name": "LOCK20 gc05_seeker__past_open_zainab large (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 133,
+      "name": "account generation clears an already-open readers sheet",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_circle_preview_authority_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 135,
+      "name": "revocation removes only the stale Circle route",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_circle_preview_authority_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 136,
+      "name": "removing the Circle owner withdraws its open members sheet",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_circle_preview_authority_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 137,
+      "name": "removing the Circle owner withdraws its open readers sheet",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_circle_preview_authority_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 132,
+      "name": "real Circle count clears only its own read facts and survives restore (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 134,
+      "name": "LOCK20 gc06_seeker__past_closed_hana large (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 138,
+      "name": "Focus consumption cannot mark a Circle message read (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 139,
+      "name": "LOCK20 gc07_seeker__topic_empty_maryam large (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 140,
+      "name": "opening from Focus also clears the current Circle only (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 141,
+      "name": "LOCK20 gc08_seeker_basic__menu large (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 142,
+      "name": "no current Guardian link means zero, regardless of Focus fixture (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 144,
+      "name": "an already-read different sender cannot clear current sender (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 143,
+      "name": "LOCK20 gc09_guardian__everyone_sharing_off large (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 145,
+      "name": "retained Circle callback expires after controls changes (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 146,
+      "name": "LOCK20 gc10_guardian__past_list_sharing_on large (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 147,
+      "name": "retained Circle callback expires after navigation changes (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 148,
+      "name": "LOCK20 gc11_guardian__past_closed_hana large (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 149,
+      "name": "retained Circle callback expires after role changes (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 150,
+      "name": "LOCK20 gc12_guardian__menu large (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 151,
+      "name": "retained Circle callback expires after account changes (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 153,
+      "name": "retained Circle callback expires after link changes (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 152,
+      "name": "LOCK20 gc13_guardian_basic__reads_only large (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 155,
+      "name": "LOCK20 gc14_seeker__all_new_family large (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 154,
+      "name": "restoring an open reader clears its messages, without another account fact (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 156,
+      "name": "LOCK20 gc01_seeker__everyone narrow (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 158,
+      "name": "LOCK20 gc02_seeker__menu_members narrow (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 159,
+      "name": "LOCK20 gc03_seeker__topic_sara narrow (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 160,
+      "name": "LOCK20 gc04_seeker__past_list narrow (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 161,
+      "name": "LOCK20 gc05_seeker__past_open_zainab narrow (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 162,
+      "name": "LOCK20 gc06_seeker__past_closed_hana narrow (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 163,
+      "name": "LOCK20 gc07_seeker__topic_empty_maryam narrow (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 164,
+      "name": "LOCK20 gc08_seeker_basic__menu narrow (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 165,
+      "name": "LOCK20 gc09_guardian__everyone_sharing_off narrow (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 166,
+      "name": "LOCK20 gc10_guardian__past_list_sharing_on narrow (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 167,
+      "name": "LOCK20 gc11_guardian__past_closed_hana narrow (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 168,
+      "name": "LOCK20 gc12_guardian__menu narrow (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 169,
+      "name": "LOCK20 gc13_guardian_basic__reads_only narrow (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "test_id": 170,
+      "name": "LOCK20 gc14_seeker__all_new_family narrow (variant: TargetPlatform.iOS)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    }
+  ],
+  "excluded_events": [
+    {
+      "test_id": 5,
+      "kind": "loading",
+      "name": "loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_test.dart",
+      "result": "success"
+    },
+    {
+      "test_id": 3,
+      "kind": "loading",
+      "name": "loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_source_test.dart",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_topics_source_test.dart",
+      "result": "success"
+    },
+    {
+      "test_id": 1,
+      "kind": "loading",
+      "name": "loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success"
+    },
+    {
+      "test_id": 7,
+      "kind": "loading",
+      "name": "loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success"
+    },
+    {
+      "test_id": 13,
+      "kind": "setUpAll",
+      "name": "(setUpAll)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success"
+    },
+    {
+      "test_id": 15,
+      "kind": "setUpAll",
+      "name": "(setUpAll)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success"
+    },
+    {
+      "test_id": 97,
+      "kind": "tearDownAll",
+      "name": "(tearDownAll)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success"
+    },
+    {
+      "test_id": 91,
+      "kind": "loading",
+      "name": "loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_messaging_foundation_test.dart",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_messaging_foundation_test.dart",
+      "result": "success"
+    },
+    {
+      "test_id": 86,
+      "kind": "loading",
+      "name": "loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "result": "success"
+    },
+    {
+      "test_id": 99,
+      "kind": "loading",
+      "name": "loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_circle_preview_authority_test.dart",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/family_circle_preview_authority_test.dart",
+      "result": "success"
+    },
+    {
+      "test_id": 110,
+      "kind": "setUpAll",
+      "name": "(setUpAll)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "result": "success"
+    },
+    {
+      "test_id": 157,
+      "kind": "tearDownAll",
+      "name": "(tearDownAll)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "result": "success"
+    },
+    {
+      "test_id": 171,
+      "kind": "tearDownAll",
+      "name": "(tearDownAll)",
+      "suite": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "result": "success"
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "review_status": "All fourteen normal, larger-text and narrow states inspected; comparison supplied for parent review. No whole-screen pixel-equality or Founder visual-approval claim.",
+  "review_files": "COMPARE_*.png are original master left / actual widget render right; CONTACT_* pages are review indexes.",
+  "remaining_differences": [
+    "Actual Flutter canvas is rectangular; locked masters include rounded device corners.",
+    "Normal type metrics, line wraps, card height, bubble spacing, scroll position and empty-state vertical placement differ modestly from the master. Current/past header cards sit slightly lower; photos retain the actual provider crop.",
+    "At 1.3 text scale, cards and menus grow and actions/status stack. At 320 points the title wraps and topic row scrolls; these variants are accessibility evidence against the single normal-size master, not alternate approved design masters.",
+    "The same existing transcript is retained in All; viewport content can differ after wrapping/autoscroll."
+  ],
+  "states": [
+    {
+      "master_prefix": "gc01",
+      "functional_observation": "All existing transcript, About chips, separators, unread and seen state, composer",
+      "normal_pair": "COMPARE_gc01_seeker__everyone.png",
+      "larger_and_narrow": "Same state checked for readable wrapping/reachable controls; no overflow exception."
+    },
+    {
+      "master_prefix": "gc02",
+      "functional_observation": "Three-member menu; You/Seeker writes, Hassan/Main Guardian writes, Ibrahim/Additional Guardian reads only; no member count",
+      "normal_pair": "COMPARE_gc02_seeker__menu_members.png",
+      "larger_and_narrow": "Same state checked for readable wrapping/reachable controls; no overflow exception."
+    },
+    {
+      "master_prefix": "gc03",
+      "functional_observation": "Sara active topic filters existing messages; real View Journey action",
+      "normal_pair": "COMPARE_gc03_seeker__topic_sara.png",
+      "larger_and_narrow": "Same state checked for readable wrapping/reachable controls; no overflow exception."
+    },
+    {
+      "master_prefix": "gc04",
+      "functional_observation": "Seeker Past list shows Zainab open and Hana read only with controlled photos",
+      "normal_pair": "COMPARE_gc04_seeker__past_list.png",
+      "larger_and_narrow": "Same state checked for readable wrapping/reachable controls; no overflow exception."
+    },
+    {
+      "master_prefix": "gc05",
+      "functional_observation": "Zainab open through end plus 30 days; composer and All past",
+      "normal_pair": "COMPARE_gc05_seeker__past_open_zainab.png",
+      "larger_and_narrow": "Same state checked for readable wrapping/reachable controls; no overflow exception."
+    },
+    {
+      "master_prefix": "gc06",
+      "functional_observation": "Hana closed, grayscale photo, no composer, retained readable transcript, 7:15 PM local fixture",
+      "normal_pair": "COMPARE_gc06_seeker__past_closed_hana.png",
+      "larger_and_narrow": "Same state checked for readable wrapping/reachable controls; no overflow exception."
+    },
+    {
+      "master_prefix": "gc07",
+      "functional_observation": "Maryam empty topic and existing Journey action",
+      "normal_pair": "COMPARE_gc07_seeker__topic_empty_maryam.png",
+      "larger_and_narrow": "Same state checked for readable wrapping/reachable controls; no overflow exception."
+    },
+    {
+      "master_prefix": "gc08",
+      "functional_observation": "Seeker Basic local preview still writes; menu and Manage your Guardians",
+      "normal_pair": "COMPARE_gc08_seeker_basic__menu.png",
+      "larger_and_narrow": "Same state checked for readable wrapping/reachable controls; no overflow exception."
+    },
+    {
+      "master_prefix": "gc09",
+      "functional_observation": "Guardian sharing off removes Past navigation while preserving existing All transcript; About text grants no profile/tab/send authority",
+      "normal_pair": "COMPARE_gc09_guardian__everyone_sharing_off.png",
+      "larger_and_narrow": "Same state checked for readable wrapping/reachable controls; no overflow exception."
+    },
+    {
+      "master_prefix": "gc10",
+      "functional_observation": "Guardian shared Past list uses labelled icons and date ranges, no Seeker photo",
+      "normal_pair": "COMPARE_gc10_guardian__past_list_sharing_on.png",
+      "larger_and_narrow": "Same state checked for readable wrapping/reachable controls; no overflow exception."
+    },
+    {
+      "master_prefix": "gc11",
+      "functional_observation": "Guardian closed Hana uses shared label/date range, retained readable transcript, no composer or photo",
+      "normal_pair": "COMPARE_gc11_guardian__past_closed_hana.png",
+      "larger_and_narrow": "Same state checked for readable wrapping/reachable controls; no overflow exception."
+    },
+    {
+      "master_prefix": "gc12",
+      "functional_observation": "Guardian menu has correct local per-member access, no Manage your Guardians row",
+      "normal_pair": "COMPARE_gc12_guardian__menu.png",
+      "larger_and_narrow": "Same state checked for readable wrapping/reachable controls; no overflow exception."
+    },
+    {
+      "master_prefix": "gc13",
+      "functional_observation": "Guardian Basic reads existing transcript, no composer; existing See Guardian One route",
+      "normal_pair": "COMPARE_gc13_guardian_basic__reads_only.png",
+      "larger_and_narrow": "Same state checked for readable wrapping/reachable controls; no overflow exception."
+    },
+    {
+      "master_prefix": "gc14",
+      "functional_observation": "All empty state and composer; no invented Journey tabs",
+      "normal_pair": "COMPARE_gc14_seeker__all_new_family.png",
+      "larger_and_narrow": "Same state checked for readable wrapping/reachable controls; no overflow exception."
+    }
+  ]
+}

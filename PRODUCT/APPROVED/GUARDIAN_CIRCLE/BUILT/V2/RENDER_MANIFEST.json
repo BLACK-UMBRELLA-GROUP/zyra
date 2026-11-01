@@ -1,0 +1,1053 @@
+{
+  "recorded_at_utc": "2026-11-01T09:03:19.575084+00:00",
+  "raw_renders": 46,
+  "master_fixture_renders": 42,
+  "actual_source_shell_renders": 4,
+  "pairs": 42,
+  "contact_sheets": 12,
+  "normal": "430x932 logical, 1290x2796 pixels, text scale 1.0",
+  "large": "430x932 logical, 1290x2796 pixels, text scale 1.3",
+  "narrow": "320x932 logical, 960x2796 pixels, text scale 1.3",
+  "render_mode": "Flutter widget tests, iOS target variant, actual production fonts/widgets. Explicit offline fixture people/dates for master comparisons; four actual-source captures keep source model data. Mounted image frames asserted decoded before capture.",
+  "render_app_inputs": [
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "bytes": 31216,
+      "sha256": "bc7dc5960ece49ed9434cdc4ce794c1fcf2b073f4f53e73d42d341b6250f2baa"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_circle_topics_state.dart",
+      "bytes": 20788,
+      "sha256": "95d052d32c78a668eb5dde518a5365396629e0a80f2f073bc7b34aef0195eac5"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_guardian_circle_preview.dart",
+      "bytes": 4662,
+      "sha256": "80804de2683c9478c38257ea87e32255e9b77720782bbb88b3d5c7a7b23d3b9a"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 332158,
+      "sha256": "00453a85babab198e084425600c743600f609bd0c41d0fec9fe38498dbc16b87"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "bytes": 103197,
+      "sha256": "1ef40701d16dd5bf108e31f8a3a1e827ebec45329aee3e7dd496e9a38af64ac6"
+    }
+  ],
+  "render_fixture_inputs": [
+    {
+      "path": "SOURCE/test/guardian_circle_topics_source_test.dart",
+      "bytes": 12481,
+      "sha256": "bb8fac1e7831774b7c5e3f1d45dda45fa14bf12eaa56f170526d0a5a5328829a"
+    },
+    {
+      "path": "SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "bytes": 14636,
+      "sha256": "8909e4aebbb9d843e18f5ea155fa39aec9ac33a8ecff84ea6719974fa708e2f9"
+    }
+  ],
+  "images": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc01_seeker__everyone.png",
+      "bytes": 1186594,
+      "sha256": "9f7c581a3ead1ea97f7404e887767bc8e614983ad581d85a4a0eef35077bd123",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc01_seeker__everyone_large.png",
+      "bytes": 1197151,
+      "sha256": "b3be87c36a90ec20bea48541c9b5a06cff635da8e484a5c5c0c0fc17ed6e60a6",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc01_seeker__everyone_narrow.png",
+      "bytes": 1080469,
+      "sha256": "b689d5e07fb9a40c94626b3be2b853583144c786ca3db0d703851203ed1b741b",
+      "dimensions_px": [
+        2250,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc02_seeker__menu_members.png",
+      "bytes": 755464,
+      "sha256": "b1ad586ef8aca2ffd9dbc47e332edca6a099d0dab42d814d8f86c177e0ea1cbb",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc02_seeker__menu_members_large.png",
+      "bytes": 743383,
+      "sha256": "50f15deadd23cb88978816164ee7ab0a0e7d0fc07e056cc0608ab793ffc7fb88",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc02_seeker__menu_members_narrow.png",
+      "bytes": 687209,
+      "sha256": "3771320322445b1564de7ed3cd41e871d4b13eeb7b98c863de7ed09f4271d15a",
+      "dimensions_px": [
+        2250,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc03_seeker__topic_sara.png",
+      "bytes": 1067576,
+      "sha256": "dff5335691490478a7c0f788a1a25130ff77c5c9cdb568d337ef3ec2ea4c30c9",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc03_seeker__topic_sara_large.png",
+      "bytes": 1122200,
+      "sha256": "df88874a713b3f164101754a6a6377faef54097bf1268bb1522932c47ce46fca",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc03_seeker__topic_sara_narrow.png",
+      "bytes": 1063620,
+      "sha256": "053fe137804b1ce0d639f1ef690695925b5571cb4a8864ce6e83099e7bd24e6c",
+      "dimensions_px": [
+        2250,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc04_seeker__past_list.png",
+      "bytes": 1048687,
+      "sha256": "c36f6ce215574533ef84f00cec224ec3744960bf9671c68f3463944a6a9e46b5",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc04_seeker__past_list_large.png",
+      "bytes": 1096790,
+      "sha256": "1d994dfa5bc8cd5168b0d58394060040b0a64cb31d82beada6befae13ebe9f31",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc04_seeker__past_list_narrow.png",
+      "bytes": 1042700,
+      "sha256": "7bb10ee31682dfb8b466991fb7c667650b00a9e95d25535e76adea4f50292e7b",
+      "dimensions_px": [
+        2250,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc05_seeker__past_open_zainab.png",
+      "bytes": 1057284,
+      "sha256": "ddc8b7f81660e78b65ed72274a5cbcf48c7a3290a7dab10e3dd38d6028b16ccd",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc05_seeker__past_open_zainab_large.png",
+      "bytes": 1109891,
+      "sha256": "af8e6cf87811d02c43297678a76e0609b835dd06b8e1beb1d2d866776973f201",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc05_seeker__past_open_zainab_narrow.png",
+      "bytes": 1051145,
+      "sha256": "64483629ec9e314d1f74f256c3eef9985c75f4ee827eaa530fcd469a62739e87",
+      "dimensions_px": [
+        2250,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc06_seeker__past_closed_hana.png",
+      "bytes": 1042139,
+      "sha256": "9cf8e83f27d168d372cf615da1d2dab2ff298c3c3f389af0ac62e2b793c33dc5",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc06_seeker__past_closed_hana_large.png",
+      "bytes": 1086534,
+      "sha256": "833707b06c03df5d757c01e72eb82d096c03948f91d20a2b9a41ae448735e119",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc06_seeker__past_closed_hana_narrow.png",
+      "bytes": 1022477,
+      "sha256": "a2cc73b483de97aa0fa77fbd59bff718919c51a6b7255b689e79479e3766ffde",
+      "dimensions_px": [
+        2250,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc07_seeker__topic_empty_maryam.png",
+      "bytes": 951007,
+      "sha256": "88750d57d517be57e6b459b206820ebc13c98c7042de5f084341d92b89435471",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc07_seeker__topic_empty_maryam_large.png",
+      "bytes": 994683,
+      "sha256": "04b82123b5b6e6449df9086fc878ad30e1d176ccd1346a013d3352e13048214a",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc07_seeker__topic_empty_maryam_narrow.png",
+      "bytes": 919889,
+      "sha256": "72d908f451c3ffd6129a546252695f5033e567bee6c823ee56bf89d2813a1092",
+      "dimensions_px": [
+        2250,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc08_seeker_basic__menu.png",
+      "bytes": 756163,
+      "sha256": "da41932ce83a563c81ab8fd8fb1913ea4ba636e16297c858370284b8b9f38cda",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc08_seeker_basic__menu_large.png",
+      "bytes": 772889,
+      "sha256": "d56050f1e16040164480ea2ef44d9c69fd78c7710d61e5152f9c335fa67700b7",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc08_seeker_basic__menu_narrow.png",
+      "bytes": 710042,
+      "sha256": "bf856faa8c38747f22e4755a3be5d85eecbff9a1cf4d40152896471584352f7d",
+      "dimensions_px": [
+        2250,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc09_guardian__everyone_sharing_off.png",
+      "bytes": 1146270,
+      "sha256": "1f4a550d0887ee8659561690267081e3dac70f8cffef501349a30b8d4fd7efcb",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc09_guardian__everyone_sharing_off_large.png",
+      "bytes": 1180355,
+      "sha256": "487e2c2732b8e4d5614bd9ff8672a032741b2bd822b1b55f0030a6b43eddc84c",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc09_guardian__everyone_sharing_off_narrow.png",
+      "bytes": 1058702,
+      "sha256": "472e73d37786f5155ecbcd554de217a4a163881bbbaffb3c514764ad26356124",
+      "dimensions_px": [
+        2250,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc10_guardian__past_list_sharing_on.png",
+      "bytes": 890748,
+      "sha256": "472c10f7805e637a11c01515e2ef230bbb832ddf994c5d53bd330a70b3c498e3",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc10_guardian__past_list_sharing_on_large.png",
+      "bytes": 930621,
+      "sha256": "1bcd5a4a56de1abae8b7507e760a4d62bb772b2a4b90912ddeebf5f26d4a9195",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc10_guardian__past_list_sharing_on_narrow.png",
+      "bytes": 870344,
+      "sha256": "353e84acd5a10d68919e19a3b526004cab1b531710e27252f48cc0778b30cac5",
+      "dimensions_px": [
+        2250,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc11_guardian__past_closed_hana.png",
+      "bytes": 938380,
+      "sha256": "1a8fa4a923e6c6815480ef69c3823c902ce631eef437648cce408daadd07c1e1",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc11_guardian__past_closed_hana_large.png",
+      "bytes": 976286,
+      "sha256": "baa6db2648ac6257fe78ea0b687d4ffb93be4a18257edbd57f57c7df447b3763",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc11_guardian__past_closed_hana_narrow.png",
+      "bytes": 909951,
+      "sha256": "6cf3428dfda76bd480c15d4ea292023dcf49e7693594ef8c3d397434eb0f6eae",
+      "dimensions_px": [
+        2250,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc12_guardian__menu.png",
+      "bytes": 749385,
+      "sha256": "47adf2c08ca059109e187390ddd342fcf8738c3e438f8c128b3ee99ed5081577",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc12_guardian__menu_large.png",
+      "bytes": 760772,
+      "sha256": "44deab819543c63c5bb61fee768bcde640d2e16e534418205396013e73f4627e",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc12_guardian__menu_narrow.png",
+      "bytes": 698131,
+      "sha256": "8e8fd06f00d0cd897d911d724c456636fbc4c30bc564deec8a03f5cb2a7f3e63",
+      "dimensions_px": [
+        2250,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc13_guardian_basic__reads_only.png",
+      "bytes": 1229203,
+      "sha256": "b121bac006135531036fdcf0e760bc4dc411d5820f9ea35cedfaf9fd7251d632",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc13_guardian_basic__reads_only_large.png",
+      "bytes": 1232344,
+      "sha256": "277e1a3acc310827dba2bf127b4020a190c2a595a46c321aa1476804ae888218",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc13_guardian_basic__reads_only_narrow.png",
+      "bytes": 1110561,
+      "sha256": "38ece92bcf5bf8ef8d1611214852fca2e07db0bb428e57c86019057703ca8a7f",
+      "dimensions_px": [
+        2250,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc14_seeker__all_new_family.png",
+      "bytes": 840460,
+      "sha256": "7f6e5ae7236c6bda915f121f97f117d29fcaef88569674dffb59cfdb68953878",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc14_seeker__all_new_family_large.png",
+      "bytes": 873184,
+      "sha256": "df6c6571ca0b5934b3d4de337a3fa4ab4500ad055302d6d871afb6681cbbaa6d",
+      "dimensions_px": [
+        2580,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/COMPARE_gc14_seeker__all_new_family_narrow.png",
+      "bytes": 800268,
+      "sha256": "8c37ffd85bced02a2c4ce01dca17e91f55033b668ab22de6e67098cc588364fc",
+      "dimensions_px": [
+        2250,
+        2838
+      ],
+      "kind": "master_build_pair"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/CONTACT_large_1.png",
+      "bytes": 578729,
+      "sha256": "8bcd89f464cb4d34597c942e78779132788b0bc057b1b170123de4956ef973c2",
+      "dimensions_px": [
+        1240,
+        1400
+      ],
+      "kind": "review_contact_sheet"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/CONTACT_large_2.png",
+      "bytes": 497097,
+      "sha256": "b2609ce45e8466171449ffcfa08a10e93ab9bcedbee1be901d3178f3cd6b05dc",
+      "dimensions_px": [
+        1240,
+        1400
+      ],
+      "kind": "review_contact_sheet"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/CONTACT_large_3.png",
+      "bytes": 544926,
+      "sha256": "8e3e06f2219e3847f4b8285d6aa14c9ad5e9a800eb9137f56ef0ad69e00a9010",
+      "dimensions_px": [
+        1240,
+        1400
+      ],
+      "kind": "review_contact_sheet"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/CONTACT_large_4.png",
+      "bytes": 277436,
+      "sha256": "cd708d63456462d78abdc692b1b95cda084c1ee949fc97108fe576c16ef49dab",
+      "dimensions_px": [
+        1240,
+        1400
+      ],
+      "kind": "review_contact_sheet"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/CONTACT_narrow_1.png",
+      "bytes": 563682,
+      "sha256": "c3cb268ec93ba17f2d8d74f1604970d7bc00aff73ba5522ede40e0b7524a8d5e",
+      "dimensions_px": [
+        1240,
+        1400
+      ],
+      "kind": "review_contact_sheet"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/CONTACT_narrow_2.png",
+      "bytes": 488109,
+      "sha256": "71060937e914c4eb707009a8f2bbd3689dbf86b23a8f6923352d50e5a9ddd4a7",
+      "dimensions_px": [
+        1240,
+        1400
+      ],
+      "kind": "review_contact_sheet"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/CONTACT_narrow_3.png",
+      "bytes": 524304,
+      "sha256": "5f395f37eb32e8d4a43dfbb1cabb2aeba96d5ce37d45d4b021fa1e15b35175bd",
+      "dimensions_px": [
+        1240,
+        1400
+      ],
+      "kind": "review_contact_sheet"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/CONTACT_narrow_4.png",
+      "bytes": 266997,
+      "sha256": "d135f83ad04c68e4e88885a69747a40b1363b7f24e76ffcd6ef750864a26ab41",
+      "dimensions_px": [
+        1240,
+        1400
+      ],
+      "kind": "review_contact_sheet"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/CONTACT_normal_1.png",
+      "bytes": 540865,
+      "sha256": "9c0399ba7b6192e240211dfb383a71bb57364bcca852d9a42696fcb3606a8c43",
+      "dimensions_px": [
+        1240,
+        1400
+      ],
+      "kind": "review_contact_sheet"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/CONTACT_normal_2.png",
+      "bytes": 454138,
+      "sha256": "192ef88b0a460d2634431ac738e582f4e231709be08661edc11a05bcde1ce242",
+      "dimensions_px": [
+        1240,
+        1400
+      ],
+      "kind": "review_contact_sheet"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/CONTACT_normal_3.png",
+      "bytes": 502434,
+      "sha256": "649657eac18afd782383c5a4523e82c5b2d25dd64a8ee784ce61c2475e4afc0c",
+      "dimensions_px": [
+        1240,
+        1400
+      ],
+      "kind": "review_contact_sheet"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/CONTACT_normal_4.png",
+      "bytes": 264273,
+      "sha256": "c78ca80f05203260a666819add828e21d55ba7924ba43e9addf6464fafa9f14c",
+      "dimensions_px": [
+        1240,
+        1400
+      ],
+      "kind": "review_contact_sheet"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/actual_source_guardian_basic.png",
+      "bytes": 388884,
+      "sha256": "f1a03bc97e928d7b6a4c3e58d7a5a229abfed2345d83f9752035876cf5e64a68",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_source_shell"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/actual_source_guardian_one.png",
+      "bytes": 364071,
+      "sha256": "cde2e014ecbb42b6e2db369eac8b03deee78ac8e353f262d7faf3bf07fbbee65",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_source_shell"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/actual_source_seeker_basic.png",
+      "bytes": 367902,
+      "sha256": "c0913038d7921410b6e01fe5fcd3f7866b28117b59cca9a3fbcf9c23761c136e",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_source_shell"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/actual_source_seeker_one.png",
+      "bytes": 372906,
+      "sha256": "41598097a68acf828592dcc8696d3f3d1a5bba7910cb36089de81ed49750fcad",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_source_shell"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc01_seeker__everyone.png",
+      "bytes": 531155,
+      "sha256": "159fcb2786b9f41a8f4e990322192be89cdc87feca6a2b84bd93aa9a20599837",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc01_seeker__everyone_large.png",
+      "bytes": 538980,
+      "sha256": "fc516d9e22d5c8415baa13c18c0aaa9b5a44e86af0e602cf2dbcb28e29e1f637",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc01_seeker__everyone_narrow.png",
+      "bytes": 414905,
+      "sha256": "fd12218cddede0ceb94882155ae7f84592477aae932cef0344680c1bf9906557",
+      "dimensions_px": [
+        960,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc02_seeker__menu_members.png",
+      "bytes": 352068,
+      "sha256": "fc067e0089fec39d62ac0cf344ecdd3bfdb2e179cca337e4c29a363135368cba",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc02_seeker__menu_members_large.png",
+      "bytes": 338277,
+      "sha256": "8c32c1b2961b108c0bd30706e376e7a1c9e86b23e3f76433ccfb41c1cc71447b",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc02_seeker__menu_members_narrow.png",
+      "bytes": 271501,
+      "sha256": "2d54c5454f093936d365cdb017da79cd1b020b46ef0d7714c92bd96eb1f39491",
+      "dimensions_px": [
+        960,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc03_seeker__topic_sara.png",
+      "bytes": 478781,
+      "sha256": "4ec968a446005cbde4651337ec27c3881c9c6269536026d3c94e770c9dac71cc",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc03_seeker__topic_sara_large.png",
+      "bytes": 528154,
+      "sha256": "cd87d05c06088c5ac36aa2d2c8734c67179695f1066c6c5821d4d30ca0194547",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc03_seeker__topic_sara_narrow.png",
+      "bytes": 465657,
+      "sha256": "b780688d98f9d0ede62ed7312b32b52187b22367e403adcba62c54b4803a0ec2",
+      "dimensions_px": [
+        960,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc04_seeker__past_list.png",
+      "bytes": 470471,
+      "sha256": "1ec208dfff7a7dca2a81353b1c87e38a2d33af104fe73b67042a0a1ea02c0d50",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc04_seeker__past_list_large.png",
+      "bytes": 511662,
+      "sha256": "cb1386c11fbf3e7b12e07cdfaf47e04e3dd85aae8f0654d116ce7800cf50133d",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc04_seeker__past_list_narrow.png",
+      "bytes": 455962,
+      "sha256": "f52d3dc85bc80d4a280399e6b6358ee4c20355692a7b9713cbacb11802951b75",
+      "dimensions_px": [
+        960,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc05_seeker__past_open_zainab.png",
+      "bytes": 471964,
+      "sha256": "8c84de134fa77af0b5939402734d9f9dece73e669924e9b3facfd4a41b1c4fd4",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc05_seeker__past_open_zainab_large.png",
+      "bytes": 523683,
+      "sha256": "cab5e6e7da1d37c66e24eea4cdb14ea590a877238fd8442a5a8126d01327c199",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc05_seeker__past_open_zainab_narrow.png",
+      "bytes": 457046,
+      "sha256": "d3a28d2525f4a7ce97729e820cd03f39e6ad39023c0a5548774e4bca8b665068",
+      "dimensions_px": [
+        960,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc06_seeker__past_closed_hana.png",
+      "bytes": 448542,
+      "sha256": "13f232fe3633f2d4ea7b678278f5af47b2bb13e737c559f6e76b2ea3897a7472",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc06_seeker__past_closed_hana_large.png",
+      "bytes": 489145,
+      "sha256": "f782a7894c07ca1799d4d7e5ba1b35056946fc0dd61b0ab4d150ddee80e079b9",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc06_seeker__past_closed_hana_narrow.png",
+      "bytes": 422663,
+      "sha256": "db2c8580bca9f92654f9876b50f3ebd8ef6ddfd3f347bf0ab5c74a447c076cd9",
+      "dimensions_px": [
+        960,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc07_seeker__topic_empty_maryam.png",
+      "bytes": 415042,
+      "sha256": "45c25eafe08509c6c2c58c61b74cc2b748405e0a67f92bacafe698a1ccf3fa8a",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc07_seeker__topic_empty_maryam_large.png",
+      "bytes": 448538,
+      "sha256": "f168e7a36698a275d0d27cfad9b1cda4fa4409b616e223202f262534b87c6cb3",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc07_seeker__topic_empty_maryam_narrow.png",
+      "bytes": 376475,
+      "sha256": "a4e6c3c0e713630260e764726b8091a27bcd93b303cba3de75b1b8d6fd918901",
+      "dimensions_px": [
+        960,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc08_seeker_basic__menu.png",
+      "bytes": 344661,
+      "sha256": "616b0da534c069ec8e1cabe25b6699d145bc29b7a58fc8d6c2b631ee1b8f2bb6",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc08_seeker_basic__menu_large.png",
+      "bytes": 359870,
+      "sha256": "ad5be6d05822401960a4995244e4aa6ae95babfe32a46f1146daef1cbe6c0504",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc08_seeker_basic__menu_narrow.png",
+      "bytes": 292905,
+      "sha256": "30c7f9f03d6ee192320882961459f20e822f8993236a65eb24dd28bf3536aace",
+      "dimensions_px": [
+        960,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc09_guardian__everyone_sharing_off.png",
+      "bytes": 503228,
+      "sha256": "ccb804e96e27d49e97f75847aae74d12f3ac6c100a9f8582cfc3364925cd3467",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc09_guardian__everyone_sharing_off_large.png",
+      "bytes": 537294,
+      "sha256": "202b49682269ea322e10077a6677c6b9bee68f9f804bd300fc3015493d6c2212",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc09_guardian__everyone_sharing_off_narrow.png",
+      "bytes": 409674,
+      "sha256": "37d9e5936532c81096316b0ad2918e5f32ed5c2d2522cda09ba4a8a6679422d2",
+      "dimensions_px": [
+        960,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc10_guardian__past_list_sharing_on.png",
+      "bytes": 380681,
+      "sha256": "b011c6eb5dedd34a28b746b97188e404e0f570f36adb922264220b5cae84ca77",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc10_guardian__past_list_sharing_on_large.png",
+      "bytes": 413994,
+      "sha256": "c6519b6b7b26ab861088a4ca24ea531216afe0ce7566ed76868196ae1665b764",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc10_guardian__past_list_sharing_on_narrow.png",
+      "bytes": 355841,
+      "sha256": "30214972a2c4aff0ea3ac65f373c635dc9f25311de036d19a44a40a522f0ccbf",
+      "dimensions_px": [
+        960,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc11_guardian__past_closed_hana.png",
+      "bytes": 396081,
+      "sha256": "09deca24734c14d73bea0530d5dbc5b59e19ab51ccc086da242d7694c04e65cc",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc11_guardian__past_closed_hana_large.png",
+      "bytes": 435696,
+      "sha256": "6e3e1d29a6c87032861bd4285190577abeb5a66f8777347d368cd08f2a9c7c9b",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc11_guardian__past_closed_hana_narrow.png",
+      "bytes": 368941,
+      "sha256": "9d50edb1fe817129f7e708f35b6805435b162efadbf5d5d7af05b8655cf5e457",
+      "dimensions_px": [
+        960,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc12_guardian__menu.png",
+      "bytes": 345869,
+      "sha256": "c25e8eb0ee2b70079aa981b8b7a374d84f3db5b50d22a618a6515292f2542193",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc12_guardian__menu_large.png",
+      "bytes": 358900,
+      "sha256": "36b602e0f64c9386574d5df912ab9f0f4361fac229536c1649eb60185e153130",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc12_guardian__menu_narrow.png",
+      "bytes": 288777,
+      "sha256": "52d0662ca949517b72f5ee86d1f36586b6b85b6a5d51812a411d1f81c7d37ad1",
+      "dimensions_px": [
+        960,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc13_guardian_basic__reads_only.png",
+      "bytes": 544213,
+      "sha256": "0a2f710a6896aa41eddcc9ceba4321f6af2fabc281c3c2a73ffe48bbc1515d5f",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc13_guardian_basic__reads_only_large.png",
+      "bytes": 548204,
+      "sha256": "b87c0cb53e1fe196867ba1220379a9b823cac1f9059b487b60aa7a6fa3cb2756",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc13_guardian_basic__reads_only_narrow.png",
+      "bytes": 422901,
+      "sha256": "cfe420f8b9b22f8f99d659bd6dc85b2f9c0217590413dd9361bf353d5b24a7e1",
+      "dimensions_px": [
+        960,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc14_seeker__all_new_family.png",
+      "bytes": 343520,
+      "sha256": "ea08119ece21614f86326a23baa6912cb52128650d0827a08e27e0d168134f65",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc14_seeker__all_new_family_large.png",
+      "bytes": 374847,
+      "sha256": "8bd6260511792cee825af754e56ac281defcf2491a4d3f5c1d09d33939f3dbda",
+      "dimensions_px": [
+        1290,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2/gc14_seeker__all_new_family_narrow.png",
+      "bytes": 306736,
+      "sha256": "44464a937e4364f0bba9ee62eb04adddcbe6e7cb8839f87dadd096e2b8ef40e0",
+      "dimensions_px": [
+        960,
+        2796
+      ],
+      "kind": "actual_widgets_master_fixture"
+    }
+  ]
+}

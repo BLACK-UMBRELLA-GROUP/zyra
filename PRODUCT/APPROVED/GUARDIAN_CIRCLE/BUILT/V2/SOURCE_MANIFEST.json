@@ -1,0 +1,61 @@
+{
+  "recorded_at_utc": "2026-11-01T09:03:19.575084+00:00",
+  "scope": "Own explicit 11-file allowlist only. No service, backend, auth, native or release configuration changed.",
+  "files": [
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "bytes": 31216,
+      "sha256": "bc7dc5960ece49ed9434cdc4ce794c1fcf2b073f4f53e73d42d341b6250f2baa"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_circle_topics_state.dart",
+      "bytes": 20788,
+      "sha256": "95d052d32c78a668eb5dde518a5365396629e0a80f2f073bc7b34aef0195eac5"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_guardian_circle_preview.dart",
+      "bytes": 4662,
+      "sha256": "80804de2683c9478c38257ea87e32255e9b77720782bbb88b3d5c7a7b23d3b9a"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 332158,
+      "sha256": "00453a85babab198e084425600c743600f609bd0c41d0fec9fe38498dbc16b87"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "bytes": 103197,
+      "sha256": "1ef40701d16dd5bf108e31f8a3a1e827ebec45329aee3e7dd496e9a38af64ac6"
+    },
+    {
+      "path": "SOURCE/test/guardian_circle_topics_test.dart",
+      "bytes": 32967,
+      "sha256": "80fc928044901f250fca94f16702cd0489c4fde551af55c9c90a60976a5e7031"
+    },
+    {
+      "path": "SOURCE/test/guardian_circle_topics_source_test.dart",
+      "bytes": 12481,
+      "sha256": "bb8fac1e7831774b7c5e3f1d45dda45fa14bf12eaa56f170526d0a5a5328829a"
+    },
+    {
+      "path": "SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "bytes": 14636,
+      "sha256": "8909e4aebbb9d843e18f5ea155fa39aec9ac33a8ecff84ea6719974fa708e2f9"
+    },
+    {
+      "path": "SOURCE/test/guardian_circle_close_integration_test.dart",
+      "bytes": 26741,
+      "sha256": "0d9728a19fe8375d6af874125c9b251fc474e7ac868be2e34aa6a9d231a85147"
+    },
+    {
+      "path": "SOURCE/test/lock17_circle_unread_integration_test.dart",
+      "bytes": 10541,
+      "sha256": "42a01a064d9d06565133d00b8b729686912fdfa2843762c7535c63cfaacf1a7e"
+    },
+    {
+      "path": "SYSTEM/tools/blueprint/code_size.py",
+      "bytes": 2520,
+      "sha256": "86af6df1d6e8bf8964d0c0037595f5bbc6e40e08fd62ea16d5fd6cc1f71ccc36"
+    }
+  ]
+}

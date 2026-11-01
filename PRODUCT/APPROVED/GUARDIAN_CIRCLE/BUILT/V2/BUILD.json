@@ -1,0 +1,23 @@
+{
+  "source_commit_sha": "dccba8f7aa015921faa704a0db6f9e5ee05150c0",
+  "flutter_version": "3.44.2",
+  "build_mode": "Flutter widget test, iOS target variant; no native app binary",
+  "timestamp_utc": "2026-11-01T09:03:49.044146+00:00",
+  "queue_row": 51,
+  "lock": "LOCK20 V2",
+  "source_manifest": "SOURCE_MANIFEST.json",
+  "input_manifest": "INPUT_MANIFEST.json",
+  "case_ledger": "CASE_LEDGER.json",
+  "render_manifest": "RENDER_MANIFEST.json",
+  "visual_comparison": "VISUAL_COMPARISON.json",
+  "qa": "QA.json",
+  "checks": {
+    "cases_passed": 145,
+    "failed": 0,
+    "skipped": 0,
+    "analyzer": "No issues found",
+    "format": "10 files, 0 changed",
+    "pinned_driver": "PASS, five pins and exec/nested exec denial"
+  },
+  "limitations": "No native build/phone install/backend/release or complete app suite; visual comparison pending parent review, not pixel equality."
+}

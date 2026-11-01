@@ -1,0 +1,122 @@
+{
+  "recorded_at_utc": "2026-11-01T09:03:19.575084+00:00",
+  "locked_pack": "LOCK20 V2, Founder 31 October 2026; Q6 Answer A recorded 1 November in corrected brief step 6/spec section 8.",
+  "input_state": "Current on-disk designer-owned approved inputs, including Q6 amendments; those pre-existing document edits are not included in this implementation commit.",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/BRIEFS/BUILD_BRIEF_2026-10-31.md",
+      "bytes": 2930,
+      "sha256": "d8f19bd591564a5aca821844e304d74ce5bf2a064627f00775b8f55630f3e483"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/RECORD/LOCK_RECORD.md",
+      "bytes": 1524,
+      "sha256": "fa2d7f4a703a603f9d43a8b63ad096f1593c781546d03886755d9a518b813123"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/RECORD/GUARDIAN_CIRCLE_SPEC_CURRENT_VERSION_V2.md",
+      "bytes": 7153,
+      "sha256": "55a7e1878ca9a112b6bab19a8dd32bd975255a8fb59f612c8d1a9e25ca88a935"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/MASTERS/gc01_seeker__everyone.png",
+      "bytes": 914948,
+      "sha256": "0dba9dfe06789cfd4b9216fbc364b351002a1a115702228fbbc5f63d42fbfe13"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/MASTERS/gc02_seeker__menu_members.png",
+      "bytes": 514539,
+      "sha256": "01fff3beed445463e6f8b3b17e98599645c39ad360309ce23217ff1c514046d9"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/MASTERS/gc03_seeker__topic_sara.png",
+      "bytes": 796186,
+      "sha256": "a07c9baebbf3d5662f136220c1113df07fd472d3d50450bea8cbd7c2192bedf9"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/MASTERS/gc04_seeker__past_list.png",
+      "bytes": 760732,
+      "sha256": "c7a666ddaba0278f2f302d7eefcbf996062491ab8c676b6c1a336ef39f6045eb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/MASTERS/gc05_seeker__past_open_zainab.png",
+      "bytes": 794646,
+      "sha256": "e21a68abae1596baeb8ee1727c2a51d596f2ab1b3358be5c5cd794021a4988ed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/MASTERS/gc06_seeker__past_closed_hana.png",
+      "bytes": 791116,
+      "sha256": "d35c796da65cfd03c3aeb447126615298b0188a9da7e69d366e73845038110aa"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/MASTERS/gc07_seeker__topic_empty_maryam.png",
+      "bytes": 715020,
+      "sha256": "2ae069fa3fc998229697e6f7be28e40cf0bbe7839029e0a19a3ccf7a25faed17"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/MASTERS/gc08_seeker_basic__menu.png",
+      "bytes": 529310,
+      "sha256": "70f4d3ccccffa9a39d66ecde18b833564224c9d491ad83ab4e105bf7a2c23c20"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/MASTERS/gc09_guardian__everyone_sharing_off.png",
+      "bytes": 905399,
+      "sha256": "9565285326259d269e4aa4cf2467c59b14b1b290ef95b775f1c962afd45d3e33"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/MASTERS/gc10_guardian__past_list_sharing_on.png",
+      "bytes": 679247,
+      "sha256": "18029edc03d9984b63af1166cf955a6efa738e5f4c48c379f7a07946b89fbe31"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/MASTERS/gc11_guardian__past_closed_hana.png",
+      "bytes": 738056,
+      "sha256": "2d6041d7510bec34afb9aa8daaf1db9f663555ddf16f7445b0f629dbf66ef9b1"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/MASTERS/gc12_guardian__menu.png",
+      "bytes": 519011,
+      "sha256": "03a6446dd591c2d25e69281fa589076daddd909c171e84eab2bd59eeef1b4898"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/MASTERS/gc13_guardian_basic__reads_only.png",
+      "bytes": 935552,
+      "sha256": "ac4e44c1eabf0083d1de2626212da3aeaf8eae8669bd189a7515548a9a3ecdf1"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/MASTERS/gc14_seeker__all_new_family.png",
+      "bytes": 682535,
+      "sha256": "1016a6f82f851bdf576d7f1f649a09750c1333118c2ab7753de0f092100373cb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/guardians/guardian_circle__normal.png",
+      "bytes": 833951,
+      "sha256": "80b397a7fbceb14f1c2be45dfbb358e0f176c562763201649afdabe0b1cb65ed"
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/guardians/guardian_circle__bubble_current.png",
+      "bytes": 419865,
+      "sha256": "d5d095054d7f5958f0334939326ecef55c9194b2c2fa6bf64d9421312a2273fb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/seeker/guardians/controls__circle_current.png",
+      "bytes": 778560,
+      "sha256": "d1a8a46231efcc469caa2fe95be2dff3e5aaa85091788cde1be3ba4fef896e5d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/guardian/guardians/guardian_circle__normal.png",
+      "bytes": 825100,
+      "sha256": "afda1e7ce3e1110fe386e885c3c11629e7743311cd8da09035e71a4efac5b55d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/guardian/guardians/guardian_circle__bubble_current.png",
+      "bytes": 415715,
+      "sha256": "39d6e4637488229ccba4de7f282847d613a3281f5da72021c272c81ef0af519c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/BASELINE/SCREENSHOTS/guardian/guardians/controls__circle_current.png",
+      "bytes": 777582,
+      "sha256": "f33ecbc4837f86144201893f12d85d1cb65f7267efb7f593193a19eeb0b8341e"
+    }
+  ]
+}
