@@ -477,7 +477,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
                 child: Text(
-                  'Profile',
+                  'Edit profile',
                   key: const ValueKey('edit_profile_preview_title'),
                   style: ZyraText.heading(size: 28),
                 ),
@@ -524,7 +524,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 }),
               )
             : null,
-        title: Text('Profile', style: ZyraText.heading(size: 17)),
+        title: Text('Edit profile', style: ZyraText.heading(size: 28)),
+        centerTitle: false,
         iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
       ),
       body: Container(
@@ -548,55 +549,72 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         'compatibility and honour your requirements.',
         style: ZyraText.subtext(size: 12.5, color: ZyraColors.ink(0.54)),
       ),
-      SizedBox(height: 22),
+      SizedBox(height: 16),
 
-      Text(
-        'COMPATIBILITY',
-        style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+      _EditProfileCard(
+        key: const ValueKey('edit_profile_answers_card'),
+        children: [
+          if (_loadError != null) ...[
+            Text(
+              _loadError!,
+              key: const ValueKey('edit_profile_load_error'),
+              style: ZyraText.body(size: 14),
+            ),
+            if (_currentOwner)
+              TextButton(
+                key: const ValueKey('edit_profile_restore_retry'),
+                onPressed: ZyraTapFeedback.onTap(context, () {
+                  if (_canUse && (ModalRoute.of(context)?.isCurrent ?? false)) {
+                    _load();
+                  }
+                }),
+                child: Text('Try again', style: ZyraText.button(size: 14)),
+              ),
+          ] else if (_loading)
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 36),
+              child: Center(child: ZyraLoading()),
+            )
+          else if (_draft != null && _canUse)
+            for (final kind in CompatibilityEditorKind.values) ...[
+              _CompatibilityRow(
+                key: ValueKey('compatibility-editor-${kind.name}'),
+                kind: kind,
+                status: _statusFor(kind, _draft!),
+                onTap: () => _open(kind),
+              ),
+              if (kind != CompatibilityEditorKind.values.last)
+                Divider(
+                  height: 1,
+                  indent: 54,
+                  endIndent: 16,
+                  color: ZyraColors.surfaceBorder,
+                ),
+            ],
+        ],
       ),
-      SizedBox(height: 10),
-      if (_loadError != null) ...[
-        Text(
-          _loadError!,
-          key: const ValueKey('edit_profile_load_error'),
-          style: ZyraText.body(size: 14),
-        ),
-        if (_currentOwner)
-          TextButton(
-            key: const ValueKey('edit_profile_restore_retry'),
-            onPressed: ZyraTapFeedback.onTap(context, () {
-              if (_canUse && (ModalRoute.of(context)?.isCurrent ?? false)) {
-                _load();
-              }
-            }),
-            child: Text('Try again', style: ZyraText.button(size: 14)),
-          ),
-      ] else if (_loading)
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 36),
-          child: Center(child: ZyraLoading()),
-        )
-      else if (_draft != null && _canUse)
-        for (final kind in CompatibilityEditorKind.values)
-          _CompatibilityRow(
-            key: ValueKey('compatibility-editor-${kind.name}'),
-            kind: kind,
-            status: _statusFor(kind, _draft!),
-            onTap: () => _open(kind),
-          ),
 
-      SizedBox(height: 30),
+      SizedBox(height: 16),
       // Said HERE because this is where someone looks for it. A
       // person who wants to correct their birth year opens Edit
       // Profile, not Settings, and finding nothing is worse than
       // finding a plain explanation.
-      Text('FIXED', style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54))),
-      SizedBox(height: 10),
-      _FixedRow(
-        label: 'Date of birth',
-        value: _age == null ? '—' : 'Age $_age',
+      _EditProfileCard(
+        key: const ValueKey('edit_profile_fixed_card'),
+        children: [
+          _FixedRow(
+            label: 'Date of birth',
+            value: _age == null ? '—' : 'Age $_age',
+          ),
+          Divider(
+            height: 1,
+            indent: 16,
+            endIndent: 16,
+            color: ZyraColors.surfaceBorder,
+          ),
+          _FixedRow(label: 'Gender', value: ZyraGender.profileLabel(_gender)),
+        ],
       ),
-      _FixedRow(label: 'Gender', value: ZyraGender.profileLabel(_gender)),
       SizedBox(height: 10),
       Text(
         'Your date of birth and gender are saved with your account '
@@ -606,28 +624,69 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ),
       if (_explicitPreview ? _previewSupport != null : !_localPreview) ...[
         const SizedBox(height: 12),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: TextButton.icon(
-            key: const ValueKey('edit_profile_open_support'),
-            onPressed: ZyraTapFeedback.onTap(
-              context,
-              _supportCanAct ? _openSupport : null,
+        _EditProfileCard(
+          children: [
+            TextButton(
+              key: const ValueKey('edit_profile_open_support'),
+              onPressed: ZyraTapFeedback.onTap(
+                context,
+                _supportCanAct ? _openSupport : null,
+              ),
+              style: TextButton.styleFrom(
+                minimumSize: const Size(double.infinity, 52),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
+                foregroundColor: ZyraColors.foreground,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(22),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.help_outline_rounded,
+                    size: 20,
+                    color: ZyraColors.journeyGold,
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Text(
+                      'Open Help & support',
+                      style: ZyraText.body(size: 15),
+                    ),
+                  ),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    size: 19,
+                    color: ZyraColors.ink(.45),
+                  ),
+                ],
+              ),
             ),
-            style: TextButton.styleFrom(
-              minimumSize: const Size(44, 48),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              foregroundColor: ZyraColors.foreground,
-            ),
-            icon: const Icon(Icons.help_outline_rounded, size: 20),
-            label: Text(
-              'Open Help & support',
-              style: ZyraText.button(size: 13),
-            ),
-          ),
+          ],
         ),
       ],
     ],
+  );
+}
+
+class _EditProfileCard extends StatelessWidget {
+  const _EditProfileCard({super.key, required this.children});
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    child: Material(
+      color: ZyraColors.surfaceFill,
+      borderRadius: BorderRadius.circular(22),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: children,
+      ),
+    ),
   );
 }
 
@@ -652,25 +711,27 @@ class _CompatibilityRow extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: ZyraTapFeedback.onTap(context, onTap),
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(22),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12.5),
           child: Row(
             children: [
-              ZyraFloatingSurface(
-                radius: 18,
-                child: Container(
-                  width: 38,
-                  height: 38,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: ZyraColors.surfaceFill,
-                    border: Border.all(color: ZyraColors.surfaceBorder),
-                  ),
-                  child: Icon(kind.icon, size: 18, color: ZyraColors.ink(0.68)),
-                ),
+              Icon(
+                switch (kind) {
+                  CompatibilityEditorKind.aboutYou =>
+                    Icons.person_outline_rounded,
+                  CompatibilityEditorKind.lifestyle => Icons.auto_graph_rounded,
+                  CompatibilityEditorKind.marriagePreferences =>
+                    Icons.tune_rounded,
+                  CompatibilityEditorKind.trafficLights =>
+                    Icons.balance_rounded,
+                  CompatibilityEditorKind.hardRequirements =>
+                    Icons.security_rounded,
+                },
+                size: 20,
+                color: ZyraColors.journeyGold,
               ),
-              const SizedBox(width: 13),
+              const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -683,7 +744,7 @@ class _CompatibilityRow extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text(status, style: ZyraText.subtext(size: 11.5)),
+                    Text(status, style: ZyraText.subtext(size: 12.5)),
                   ],
                 ),
               ),
@@ -725,7 +786,7 @@ class _FixedRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 13),
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
     child: Row(
       children: [
         Expanded(
@@ -734,11 +795,11 @@ class _FixedRow extends StatelessWidget {
             style: ZyraText.body(size: 15, color: ZyraColors.ink(0.54)),
           ),
         ),
-        Flexible(
+        Expanded(
           child: Text(
             value,
             textAlign: TextAlign.end,
-            style: ZyraText.subtext(size: 13.5, color: ZyraColors.ink(0.65)),
+            style: ZyraText.subtext(size: 13.5, color: ZyraColors.foreground),
           ),
         ),
         SizedBox(width: 8),

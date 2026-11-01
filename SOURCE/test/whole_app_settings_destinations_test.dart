@@ -661,7 +661,7 @@ void main() {
       final expectedRows = {
         for (final action in [
           ...actions,
-          ZyraConceptAccountAction.membership,
+          ZyraConceptAccountAction.phoneAccess,
           ZyraConceptAccountAction.helpSupport,
         ])
           'concept_settings_${action.name}',
@@ -715,17 +715,9 @@ void main() {
         expect(find.byType(ZyraConceptSettingsPresentation), findsOneWidget);
         expect(owner.checkpoints.last.pages.last, 'settings');
       }
-      for (final action in [
-        ZyraConceptAccountAction.membership,
-        ZyraConceptAccountAction.helpSupport,
-      ]) {
+      for (final action in [ZyraConceptAccountAction.helpSupport]) {
         await _tap(tester, _key('concept_settings_${action.name}'));
-        expect(
-          action == ZyraConceptAccountAction.membership
-              ? find.byType(ZyraConceptMembershipPresentation)
-              : find.byType(HelpSupportScreen),
-          findsOneWidget,
-        );
+        expect(find.byType(HelpSupportScreen), findsOneWidget);
         await _back(tester);
         expect(find.byType(ZyraConceptSettingsPresentation), findsOneWidget);
       }

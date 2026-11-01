@@ -531,146 +531,155 @@ class ZyraConceptSettingsPresentation extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        title: smooth
-            ? null
-            : Text('Settings', style: ZyraText.heading(size: 17)),
-        iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
-        automaticallyImplyLeading: false,
-        leading: showBackButton
-            ? BackButton(onPressed: ZyraTapFeedback.onTap(context, onBack))
-            : null,
-      ),
-      body: SafeArea(
-        child: ListView(
-          key: const ValueKey('concept-current-settings-scroll'),
-          physics: const BouncingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics(),
-          ),
-          padding: const EdgeInsets.fromLTRB(20, 12, 20, 90),
-          children: [
-            if (smooth) ...[
-              const SizedBox(height: 38),
-              _SettingsReveal(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Settings', style: ZyraText.heading(size: 30)),
-                    const SizedBox(height: 5),
-                    Text(
-                      'Your account, your choices.',
-                      style: ZyraText.subtext(
-                        size: 13,
-                        color: ZyraColors.ink(.58),
-                      ),
-                    ),
-                  ],
-                ),
+      appBar: showBackButton
+          ? AppBar(
+              iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
+              automaticallyImplyLeading: false,
+              leading: BackButton(
+                onPressed: ZyraTapFeedback.onTap(context, onBack),
               ),
-              const SizedBox(height: 22),
-            ],
-            _SettingsReveal(
-              enabled: smooth,
-              child: _SettingsSummary(data: data),
+            )
+          : null,
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+              child: Text(
+                'Settings',
+                key: const ValueKey('concept_settings_title'),
+                style: ZyraText.heading(size: 28),
+              ),
             ),
-            const SizedBox(height: 28),
-            _SettingsSection(
-              title: 'ACCOUNT',
-              smooth: smooth,
-              children: [
-                row(
-                  'Sign-in & security',
-                  ZyraConceptAccountAction.signInSecurity,
-                  value: data.signedInWith,
+            Expanded(
+              child: ListView(
+                key: const ValueKey('concept-current-settings-scroll'),
+                physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
                 ),
-                row(
-                  'App lock',
-                  ZyraConceptAccountAction.appLock,
-                  value: data.appLock ? 'On' : 'Off',
-                ),
-                row('Advanced', ZyraConceptAccountAction.advanced),
-              ],
-            ),
-            _SettingsSection(
-              title: 'PRIVACY',
-              smooth: smooth,
-              children: [
-                row('Pause My Profile', ZyraConceptAccountAction.visibility),
-                if (data.guardian)
-                  row(
-                    'Guardian privacy',
-                    ZyraConceptAccountAction.guardianPrivacy,
-                  ),
-                if (!data.guardian)
-                  row(
-                    'Hidden Profiles',
-                    ZyraConceptAccountAction.hiddenProfiles,
-                  ),
-                row(
-                  'Phone access',
-                  ZyraConceptAccountAction.phoneAccess,
-                  isNew: !data.phoneAccessSeen,
-                ),
-              ],
-            ),
-            _SettingsSection(
-              title: 'NOTIFICATIONS',
-              smooth: smooth,
-              children: [
-                row(
-                  'Notifications & emails',
-                  ZyraConceptAccountAction.notificationSettings,
-                ),
-              ],
-            ),
-            _SettingsSection(
-              title: 'MEMBERSHIP',
-              smooth: smooth,
-              children: [
-                row(
-                  'Membership',
-                  ZyraConceptAccountAction.membership,
-                  value: data.membership,
-                ),
-              ],
-            ),
-            _SettingsSection(
-              title: 'SUPPORT',
-              smooth: smooth,
-              children: [
-                row('Help & support', ZyraConceptAccountAction.helpSupport),
-                row('Send feedback', ZyraConceptAccountAction.feedback),
-              ],
-            ),
-            _SettingsSection(
-              title: 'LEGAL',
-              smooth: smooth,
-              children: [
-                row('Privacy & data', ZyraConceptAccountAction.privacyData),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 90),
                 children: [
-                  Text(
-                    'ZYRA',
-                    style: ZyraText.wordmark(
-                      size: 11,
-                      color: ZyraColors.ink(0.24),
-                    ),
-                  ),
-                  if (data.versionLine != null) ...[
-                    const SizedBox(height: 3),
-                    SelectableText(
-                      data.versionLine!,
-                      style: ZyraText.subtext(
-                        size: 11,
-                        color: ZyraColors.ink(0.24),
+                  if (smooth) ...[
+                    _SettingsReveal(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Your account, your choices.',
+                            style: ZyraText.subtext(
+                              size: 13,
+                              color: ZyraColors.ink(.58),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
+                    const SizedBox(height: 22),
                   ],
+                  _SettingsReveal(
+                    enabled: smooth,
+                    child: _SettingsSummary(data: data),
+                  ),
+                  const SizedBox(height: 28),
+                  _SettingsSection(
+                    title: 'ACCOUNT',
+                    smooth: smooth,
+                    children: [
+                      row(
+                        'Sign-in & security',
+                        ZyraConceptAccountAction.signInSecurity,
+                        value: data.signedInWith,
+                      ),
+                      row(
+                        'App lock',
+                        ZyraConceptAccountAction.appLock,
+                        value: data.appLock ? 'On' : 'Off',
+                      ),
+                      row('Advanced', ZyraConceptAccountAction.advanced),
+                    ],
+                  ),
+                  _SettingsSection(
+                    title: 'PRIVACY',
+                    smooth: smooth,
+                    children: [
+                      row(
+                        'Pause My Profile',
+                        ZyraConceptAccountAction.visibility,
+                      ),
+                      if (data.guardian)
+                        row(
+                          'Guardian privacy',
+                          ZyraConceptAccountAction.guardianPrivacy,
+                        ),
+                      if (!data.guardian)
+                        row(
+                          'Hidden Profiles',
+                          ZyraConceptAccountAction.hiddenProfiles,
+                        ),
+                      row(
+                        'Phone access',
+                        ZyraConceptAccountAction.phoneAccess,
+                        isNew: !data.phoneAccessSeen,
+                      ),
+                    ],
+                  ),
+                  _SettingsSection(
+                    title: 'NOTIFICATIONS',
+                    smooth: smooth,
+                    children: [
+                      row(
+                        'Notifications & emails',
+                        ZyraConceptAccountAction.notificationSettings,
+                      ),
+                    ],
+                  ),
+                  _SettingsSection(
+                    title: 'SUPPORT',
+                    smooth: smooth,
+                    children: [
+                      row(
+                        'Help & support',
+                        ZyraConceptAccountAction.helpSupport,
+                      ),
+                      row('Send feedback', ZyraConceptAccountAction.feedback),
+                    ],
+                  ),
+                  _SettingsSection(
+                    title: 'LEGAL',
+                    smooth: smooth,
+                    children: [
+                      row(
+                        'Privacy & data',
+                        ZyraConceptAccountAction.privacyData,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'ZYRA',
+                          style: ZyraText.wordmark(
+                            size: 11,
+                            color: ZyraColors.ink(0.24),
+                          ),
+                        ),
+                        if (data.versionLine != null) ...[
+                          const SizedBox(height: 3),
+                          SelectableText(
+                            data.versionLine!,
+                            style: ZyraText.subtext(
+                              size: 11,
+                              color: ZyraColors.ink(0.24),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -923,7 +932,6 @@ class _SettingsRow extends StatelessWidget {
     'Hidden Profiles' => Icons.person_off_outlined,
     'Phone access' => Icons.phonelink_lock_outlined,
     'Notifications & emails' => Icons.notifications_outlined,
-    'Membership' => Icons.workspace_premium_outlined,
     'Help & support' => Icons.help_outline_rounded,
     'Send feedback' => Icons.chat_bubble_outline_rounded,
     'Privacy & data' => Icons.shield_outlined,
