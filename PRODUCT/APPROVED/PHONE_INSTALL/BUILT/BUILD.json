@@ -1,0 +1,125 @@
+{
+  "queue_line": 72,
+  "status": "BUILT",
+  "built_from": [
+    "PRODUCT/APPROVED/PHONE_INSTALL/BRIEFS/INSTALL_BRIEF_2026-10-31_ONCE.md",
+    "PRODUCT/APPROVED/QUESTIONS.md row 2 (A-one-time)"
+  ],
+  "source_sha": "0c20752102731f362bf7dc859259f178b332466a",
+  "latest_app_source_change": "373820e5",
+  "flutter_version": "3.44.2 stable",
+  "build_mode": "profile",
+  "flavor": "production",
+  "target": "00008130-001A2C1E26F8001C",
+  "build_timestamp_uk": "2026-11-01T00:09:53+00:00",
+  "xcode_build_duration_seconds": 99.6,
+  "installer_invocations": 1,
+  "installer_command": "./run.sh profile",
+  "installer_exit_code": 0,
+  "wireless_preflight": {
+    "connected": true,
+    "paired": true,
+    "transport": "localNetwork",
+    "passcodeRequired": false,
+    "unlockedSinceBoot": true
+  },
+  "identity": {
+    "bundle_id": "app.zyraconnect.zyra",
+    "version": "1.0.0",
+    "build": "5",
+    "signed_team": "9Y7Z8F36SJ",
+    "changed": false
+  },
+  "replacement_evidence": {
+    "before_container": "E2F9EAFC-D69C-423D-B6E3-FC435D9BDC84",
+    "after_container": "EDB84428-B923-4FCB-A5CF-E4B1E57FBB06",
+    "first_runner_pid": 68750,
+    "standalone_runner_pid": 68758
+  },
+  "verification": {
+    "protected_check": "PASS (5 pins, direct and inherited exec denial)",
+    "preview_analyzer": "PASS, 3 files, no issues",
+    "source_status_before": "clean",
+    "source_status_after": "clean",
+    "host_flutter_dart_xcode_debugger_processes_after": 0,
+    "standalone_launch": "PASS; activated true; startStopped false; no console/debugger",
+    "screenshot": "zyra_open.png, 1290x2796; Ivory Profiles page with real tabs",
+    "tap_responsiveness": "not tested",
+    "tests_run": 0,
+    "reason_no_functional_tests": "delivery only; app source unchanged; prior source68 evidence remains authoritative"
+  },
+  "limits": [
+    "d detach requested but not accepted during wireless VM discovery. Ctrl-C ended Flutter wait, exit0; installed app then reopened using ordinary Apple launch without debugger. No second install.",
+    "No full-suite or tap-responsiveness claim. Prior source68 disclosed 14 wider failures; prior Circle48 tests not rerun.",
+    "No upgrades, signing/team/bundle/version changes, password prompt/restart, backend changes or upload. Flutter only announced newer versions.",
+    "Phone restored photo-page state (third dot); master d01 is information-page state (first dot). Screenshot comparison is a delivery reference, not a new design acceptance."
+  ],
+  "comparison": {
+    "master_reference": "PRODUCT/APPROVED/PAGE_DOTS/MASTERS/d01_profiles.png",
+    "phone": "PRODUCT/APPROVED/PHONE_INSTALL/BUILT/zyra_open.png",
+    "status": "parent verifies; differing restored page content/state disclosed"
+  },
+  "code_size_before_after": {
+    "app": [
+      172093,
+      339
+    ],
+    "developer_preview": [
+      52151,
+      97
+    ],
+    "founder_preview": [
+      32973,
+      47
+    ],
+    "tests": [
+      224074,
+      527
+    ],
+    "measurement": "inherited latest source68 counts, unchanged SOURCE; no code-size rerun for no-code delivery",
+    "old_pause": 39,
+    "old_restart": 1
+  },
+  "startup_text_bytes_loaded": 189273,
+  "startup_text_KiB": 184.84,
+  "startup_limit_notes": "Includes actual full bounded scans, not merely emitted excerpts; source project.pbxproj scanned linewise for identity only. Queue was reread later (29404 bytes) for master reference/prerequisites. No usage-log reads.",
+  "fable_addenda": "Read exact Addendum4 and5; no upgrades; nothing to build from Add5.",
+  "helper": {
+    "name": "install_metadata",
+    "purpose": "separate exact-root metadata inventory only",
+    "tokens": "unavailable; no usage logs read"
+  },
+  "for_fable_to_clear": {
+    "path_details": "FOR_FABLE_TO_CLEAR.json",
+    "created_entries": 2824,
+    "changed_entries": 1015,
+    "departed_entries": 213,
+    "net_cache_growth_bytes": 638233399,
+    "new_regular_file_bytes": 647243160,
+    "changed_regular_file_bytes_after": 34418951,
+    "cleanup_owner": "Fable; no deletion/move/cleanup by Codex",
+    "temporary_files": [
+      {
+        "path": "/Users/shakeelahmad/Documents/Codex/2026-11-01/zyra-queue72-one-time-wireless-profile-install/work/queue72_before_metadata.json",
+        "bytes": 9194028
+      },
+      {
+        "path": "/Users/shakeelahmad/Documents/Codex/2026-11-01/zyra-queue72-one-time-wireless-profile-install/work/queue72_after_metadata.json",
+        "bytes": 9789706
+      },
+      {
+        "path": "/Users/shakeelahmad/Documents/Codex/2026-11-01/zyra-queue72-one-time-wireless-profile-install/work/queue72_metadata_delta.json",
+        "bytes": 1163709
+      },
+      {
+        "path": "/Users/shakeelahmad/Documents/Codex/2026-11-01/zyra-queue72-one-time-wireless-profile-install/work/stage_queue72_rows.py",
+        "bytes": 1793
+      },
+      {
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/PHONE_INSTALL/BUILT/phone_after.png",
+        "bytes": 866236
+      }
+    ],
+    "capture_note": "Initial wrong-app screenshot had already been overwritten with ZYRA splash before parent instruction arrived. No wrong-app image retained or committed. phone_after.png now contains splash and is uncommitted; final distinct zyra_open.png only is app evidence."
+  }
+}

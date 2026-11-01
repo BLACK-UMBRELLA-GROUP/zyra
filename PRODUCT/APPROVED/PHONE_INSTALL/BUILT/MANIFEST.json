@@ -1,0 +1,53 @@
+{
+  "queue_line": 72,
+  "source_sha": "0c20752102731f362bf7dc859259f178b332466a",
+  "stage_commit_allowlist": [
+    "PRODUCT/APPROVED/BUILD_QUEUE.md",
+    "PRODUCT/APPROVED/QUESTIONS.md",
+    "PRODUCT/APPROVED/PHONE_INSTALL/BUILT/QUEUE72_ATTEMPT.json",
+    "PRODUCT/APPROVED/PHONE_INSTALL/BUILT/BUILD.json",
+    "PRODUCT/APPROVED/PHONE_INSTALL/BUILT/FOR_FABLE_TO_CLEAR.json",
+    "PRODUCT/APPROVED/PHONE_INSTALL/BUILT/zyra_open.png",
+    "PRODUCT/APPROVED/PHONE_INSTALL/BUILT/MANIFEST.json"
+  ],
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/PHONE_INSTALL/BUILT/QUEUE72_ATTEMPT.json",
+      "bytes": 902,
+      "sha256": "950457f87b5e7a6c3f0b8348338edd5ac5281aa96b9a2e5e502e38870facde72"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PHONE_INSTALL/BUILT/BUILD.json",
+      "bytes": 5268,
+      "sha256": "b8afae83dde2d21c025322ee77132484cdfb75e0303b5e1478c9ce13878a1a2e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PHONE_INSTALL/BUILT/FOR_FABLE_TO_CLEAR.json",
+      "bytes": 1163709,
+      "sha256": "e8444224bfa3038bc600415205cd94ffa111ed57593172dffcaac5c0a0bce2b0"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PHONE_INSTALL/BUILT/zyra_open.png",
+      "bytes": 2008696,
+      "sha256": "5a66fc13abbd63d542eccb7d8dc92c09dab7532ec04d2d631a245a1f0e13f633"
+    }
+  ],
+  "owned_rows": [
+    {
+      "path": "PRODUCT/APPROVED/BUILD_QUEUE.md",
+      "row": "| 72 |",
+      "sha256": "8bdbe72477b51d5ce43964f693445ab884bc6d38903769aa5dbb224b9cd38cf6"
+    },
+    {
+      "path": "PRODUCT/APPROVED/QUESTIONS.md",
+      "row": "| 2 |",
+      "sha256": "07026ecbb1550cd58a63aad553777d4d0cef7c58b637a3f01a722daedca9e9bb"
+    }
+  ],
+  "excluded": "No app source edits. Never read/hash ignored local configuration, credentials or keys; manifest hashes only this task evidence and named rows. phone_after.png excluded (unneeded splash).",
+  "render_reference": {
+    "phone": "zyra_open.png",
+    "master": "PRODUCT/APPROVED/PAGE_DOTS/MASTERS/d01_profiles.png",
+    "comparison_scope": "Actual phone delivery; restored photo page vs master info page; parent verifies."
+  }
+}

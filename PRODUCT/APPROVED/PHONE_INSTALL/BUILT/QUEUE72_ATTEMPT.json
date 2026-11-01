@@ -1,0 +1,19 @@
+{
+  "queue_line": 72,
+  "run_count": 1,
+  "state": "completed-install-and-standalone-open",
+  "claimed_at_uk": "2026-11-01T00:03:48+00:00",
+  "source_sha": "0c20752102731f362bf7dc859259f178b332466a",
+  "command": "./run.sh profile",
+  "cwd": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE",
+  "device_udid": "00008130-001A2C1E26F8001C",
+  "transport": "localNetwork",
+  "authority": "INSTALL_BRIEF_2026-10-31_ONCE.md / Q2 A-one-time; Founder wireless GO 1 Nov",
+  "no_retry": true,
+  "invoked_at_uk": "2026-11-01T00:03:53+00:00",
+  "finished_at_uk": "2026-11-01T00:09:53+00:00",
+  "installer_exit_code": 0,
+  "detach_requested": "d followed by newline; not accepted while discovering wireless VM service",
+  "termination": "Ctrl-C ended waiting Flutter invocation; exit 0",
+  "standalone_launch": "devicectl process launch --terminate-existing; activated true; startStopped false; PID 68758"
+}
