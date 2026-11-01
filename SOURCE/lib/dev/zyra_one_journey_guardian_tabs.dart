@@ -11,6 +11,7 @@ import '../widgets/zyra_focus_dashboard.dart';
 import '../widgets/zyra_profiles_components.dart';
 import 'zyra_one_journey_tab.dart' show ZyraJourneyPhotoCard;
 import 'zyra_one_journey_guardian_seeker.dart';
+import 'zyra_one_journey_guardian_action.dart';
 import '../screens/wali/family_messaging_screens.dart'
     show ZyraFamilyMessageComposer;
 
@@ -1107,50 +1108,12 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   );
   Widget _confirm(bool introduction) {
     final person = ZyraGuardianTabsState.network[state.networkIndex];
-    return _viewport(
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _header(
-            introduction
-                ? 'Introduce to ${state.seekerName}'
-                : 'Connect with Guardian',
-          ),
-          const SizedBox(height: 8),
-          _title(
-            introduction
-                ? 'Put ${person.name} forward to ${state.seekerName}?'
-                : "${person.name}'s Main Guardian",
-            size: 22,
-          ),
-          const SizedBox(height: 8),
-          _text(
-            introduction
-                ? '${state.seekerName} sees ${person.name} in his Introductions, marked "Suggested by Hassan". ${state.seekerName} decides whether to send a Journey request. ${person.name} and her family are not told.'
-                : 'Send a request to the Main Guardian supporting this Seeker. They choose whether to respond.',
-            size: 13,
-          ),
-          const Spacer(),
-          _button(
-            introduction ? 'Introduce' : 'Send request',
-            introduction ? 'introduce_send' : 'connect_send',
-            gold: true,
-          ),
-          Builder(
-            builder: (context) => TextButton(
-              onPressed: ZyraTapFeedback.onTap(context, () => onAction('back')),
-              style: TextButton.styleFrom(
-                minimumSize: const Size(0, 38),
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              child: _text(introduction ? 'Not now' : 'Not yet', size: 13),
-            ),
-          ),
-          const SizedBox(height: 23),
-        ],
-      ),
-      scroll: false,
+    return ZyraGuardianActionPage(
+      introduction: introduction,
+      personName: person.name,
+      seekerName: state.seekerName,
+      seekerGender: seekerGender,
+      onAction: onAction,
     );
   }
 

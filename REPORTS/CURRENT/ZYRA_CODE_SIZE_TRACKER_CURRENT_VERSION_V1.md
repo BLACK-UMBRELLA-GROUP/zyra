@@ -698,3 +698,22 @@ Built the g11/g12 monogram head and two floating cards from the V6 row in the cu
 Measured with SYSTEM/tools/blueprint/code_size.py; the new presenter matches the existing Founder glob and is counted in both preview categories. No classifier change. Ten new behavior/render cases and 121 affected regressions pass; six-file analyser/format and protected Flutter 3.44.2 pin checks pass. Main/Additional values, gender, selected and denied targets, stale actions, isolated Circle and 430/320-point 200% text are covered. The old paused-Sara assertion in an unseeded request-only fixture now expects No current Journey because row 56's existing projection is empty; seeded g11 is explicitly labelled. No second data-policy change or synthetic Journey.
 
 GUARDIAN_TABS/BUILT/V6 holds nine actual captures, two full-size master/build pairs, contact sheet, case/check/QA records and explicit source/input/render/metadata hashes. Current shared shadows, type metrics, frame and canonical Journey icon differ from the original masters (QUEUE58-R1 / OA-ZYRA-335); no shared renderer redesign, pixel-equality or Founder visual-approval claim. Default-empty evidence is separate from the explicit active-Sara master fixture. Historical queue refusal remains in the row text. No native/server/BLUEPRINT/global/schedule change. Trace: OA-ZYRA-335; AD-AIOS-115/118/120.
+
+## Queue 60 — Guardian action pages LOCK 8 V7 — 1 November 2026
+
+Built only g07/g08: 96-point gold-ring monogram, 24-point light title, gold eyebrow, three icon/text rows and gold action with secondary back. Chosen Network family and supported Seeker names come from existing state; the existing sample Hassan attribution remains. The shell handlers, Basic-only family filter, membership/link checks and account/route/View callback leases are unchanged. No admission, private-chat, backend or native change.
+
+| Measure | Before | After |
+|---|---:|---:|
+| All app code | 174,295 / 342 | 174,547 / 344 |
+| Developer/preview | 54,291 / 100 | 54,543 / 102 |
+| Founder planned app | 35,082 / 50 | 35,334 / 52 |
+| Tests | 226,494 / 532 | 226,713 / 533 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py. Old paragraph implementation removed. The existing LOCK19 ring implementation is extracted as ZyraGoldRingMonogram with its original dimensions, scaling, type weight and ring colour retained at that caller. V7 uses it through ZyraMonogramHead; ZyraMonogramCard reuses the floating surface. These public presenters are available to queue 67 without copying widgets; their exact API is in BUILT/V7/BUILD.json.
+
+Eight V7 tests pass: both normal pages, actual Noor/Yusuf selection, actions/back, stale callbacks after View/route changes, and 430/390-point 200% text. The 73 existing cases across LOCK8 tabs, V6 Seeker page and three Guardian card suites passed in the combined run; that run failed only the eight new cases because the shadow-test flag was restored too late. Restoring it in each test body fixed the eight final cases. Five-file analyser/format and protected Flutter 3.44.2 pins/exec-denial pass. No whole-suite claim.
+
+Ten actual captures (two normal, eight Larger Text top/action views), master-beside-build pairs and exact source/input/render hashes are in GUARDIAN_TABS/BUILT/V7. Normal frames/type metrics, icon glyphs, decorative ring and shared floating shadows differ from prototype masters (QUEUE60-R1 / OA-ZYRA-335); approved LOCK14 V5 ink-on-gold is retained. No pixel equality or Founder visual-approval claim. Trace: OA-ZYRA-335; AD-AIOS-115/118/120. Preflight efficiency finding, including actual byte count, is recorded once in Task14 under OA-AIOS-419.

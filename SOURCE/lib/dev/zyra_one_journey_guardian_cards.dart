@@ -9,6 +9,7 @@ import '../screens/wali/seeker_guardian_designs.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_floating_surface.dart';
+import 'zyra_one_journey_monogram_presentation.dart';
 import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'zyra_conversation_unread_badge.dart';
@@ -478,23 +479,10 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
 
   Widget _monogram(String name, {bool faded = false}) => Opacity(
     opacity: faded ? .55 : 1,
-    child: Container(
-      width: 110 * math.min(1.5, MediaQuery.textScalerOf(context).scale(1)),
-      height: 110 * math.min(1.5, MediaQuery.textScalerOf(context).scale(1)),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: const Color(0xFFA9792E).withValues(alpha: .7),
-        ),
-      ),
-      child: Text(
-        name.substring(0, 1),
-        style: ZyraText.heading(
-          size: 52,
-          color: ZyraColors.journeyGold,
-        ).copyWith(fontWeight: FontWeight.w200),
-      ),
+    child: ZyraGoldRingMonogram(
+      name: name,
+      size: 110 * math.min(1.5, MediaQuery.textScalerOf(context).scale(1)),
+      fontSize: 52,
     ),
   );
   Widget _row(IconData icon, String text) => Container(
