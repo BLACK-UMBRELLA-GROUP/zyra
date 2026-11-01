@@ -18,7 +18,7 @@ See [ROADMAP.md](ROADMAP.md) for the next work, including bringing the full test
 
 ## Run locally
 
-Install the required Flutter toolchain and platform tools first. Backend and OAuth configuration is local: supply the existing ignored files `SOURCE/lib/config/supabase_config.dart` and `SOURCE/lib/config/oauth_config.dart` through your own approved development setup. This repository does not supply private configuration.
+Install Flutter 3.44 and the platform tools first. Backend and OAuth configuration is local and not committed: copy `SOURCE/lib/config/supabase_config.dart.example` to `supabase_config.dart` and `oauth_config.dart.example` to `oauth_config.dart`, then fill in your own Supabase project's public URL and publishable key and your own OAuth client IDs.
 
 From the repository root, resolve dependencies:
 
