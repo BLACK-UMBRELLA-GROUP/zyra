@@ -4,6 +4,7 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
+import '../widgets/zyra_journey_icon.dart';
 
 class ZyraGuardianSeekerPage extends StatelessWidget {
   const ZyraGuardianSeekerPage({
@@ -118,7 +119,7 @@ class ZyraGuardianSeekerPage extends StatelessWidget {
     BuildContext context,
     String label,
     String key,
-    IconData icon,
+    Widget icon,
     VoidCallback action, {
     String? detail,
   }) => InkWell(
@@ -129,7 +130,7 @@ class ZyraGuardianSeekerPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Row(
         children: [
-          Icon(icon, size: 22, color: ZyraColors.journeyGold),
+          icon,
           const SizedBox(width: 14),
           Expanded(
             child: Column(
@@ -161,7 +162,7 @@ class ZyraGuardianSeekerPage extends StatelessWidget {
             context,
             'Current Journey',
             'guardian_journey',
-            Icons.family_restroom,
+            ZyraJourneyIcon(size: 22, color: ZyraColors.journeyGold),
             onJourney!,
             detail: currentJourney,
           )
@@ -175,7 +176,7 @@ class ZyraGuardianSeekerPage extends StatelessWidget {
           context,
           '$name’s Guardian Circle',
           'guardian_circle',
-          Icons.people_outline,
+          Icon(Icons.people_outline, size: 22, color: ZyraColors.journeyGold),
           onCircle,
         ),
       ],
