@@ -753,3 +753,18 @@ Founder Settings uses the standard large left title and existing shell back cont
 Measured with code_size.py; classifier and attribution delta0. Shared profile screen remains in app totals, not reclassified as Founder. 62 affected cases and47 additional cases pass; one older Guardian fixture fails before reaching Settings (QUEUE62-R2/OA-ZYRA-335), with no full-suite claim. Four-item analyser clean; format0; protected3.44.2 pins/exec-denial checks pass. Seven actual normal/200% captures, seven master/build pairs and contact sheet in UNITY_PASS/BUILT/V4. Existing Settings surface fills and native frame/font differences are shown and scoped in QUEUE62-R1; no pixel equality or visual approval claim. AD-AIOS-115/118/120.
 
 Back verification: the full capture includes the shared member-owned nonvisual Back semantics/dismiss action and44pt left-edge sensor. Exactly one active owner/edge and real Back callbacks pass at100%/200%; no painted Back icon is outside the boundary. Preserve this member return before queue44; no duplicate or redesign added.
+
+## Queue 63 — Network gold-ring monogram LOCK8 V9 — 1 November 2026
+
+Network now reuses the LOCK19/21 ZyraGoldRingMonogram: public initial only, 110pt ring, 1pt rgba(169,121,46,.7), 52pt weight200 gold initial, 34pt light name/age. Old nested dark avatar removed; shared widget unchanged. Existing card/details/actions/filter/privacy and owner leases retained. No photo, surname or hidden full name in Network semantics.
+
+| Measure | Before | After |
+|---|---:|---:|
+| All app code |174,633 /344|174,614 /344|
+| Developer/preview |54,545 /102|54,526 /102|
+| Founder planned app |35,336 /52|35,317 /52|
+| Tests |227,311 /535|227,562 /536|
+| Test goldens |2,612 /307 MB|unchanged|
+| Old Pause / Restart files |39 /1|unchanged|
+
+Measured with code_size.py; classifier/attribution delta0. Fifteen scoped cases pass (5 V9, 2 existing Network geometry/boundary, 8 V7 action and stale-owner cases). Four-item analyser clean, format0, protected Flutter3.44.2/five pins/both exec-denial proofs pass. Five actual normal/200% captures and native-size master/build pairs in GUARDIAN_TABS/BUILT/V9; pairs preserve build pixels exactly. Existing frame/surface/navigation/font-metric differences and heavy Larger Text title/action wrapping are shown (QUEUE63-R1/OA-ZYRA-335); reachable by scrolling with no overflow exception. Per avatar/name-only brief, broader layout redesign is refused here and deferred to queue44 visual review. No full-suite, device, pixel-equality or Founder visual-approval claim. AD-AIOS-115/118/120.

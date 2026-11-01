@@ -1,0 +1,97 @@
+{
+  "queue": 63,
+  "native_scale": true,
+  "header_height": 72,
+  "pairs": [
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g06_network__for_adam.png",
+      "build": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V9/g06_network_large_390_actions.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V9/g06_network_large_390_actions__master_beside_build.png",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "build_size": [
+        1170,
+        2532
+      ],
+      "build_offset": [
+        1290,
+        72
+      ],
+      "build_pixels_exact": true
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g06_network__for_adam.png",
+      "build": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V9/g06_network_large_390_top.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V9/g06_network_large_390_top__master_beside_build.png",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "build_size": [
+        1170,
+        2532
+      ],
+      "build_offset": [
+        1290,
+        72
+      ],
+      "build_pixels_exact": true
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g06_network__for_adam.png",
+      "build": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V9/g06_network_large_430_actions.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V9/g06_network_large_430_actions__master_beside_build.png",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "build_size": [
+        1290,
+        2532
+      ],
+      "build_offset": [
+        1290,
+        72
+      ],
+      "build_pixels_exact": true
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g06_network__for_adam.png",
+      "build": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V9/g06_network_large_430_top.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V9/g06_network_large_430_top__master_beside_build.png",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "build_size": [
+        1290,
+        2532
+      ],
+      "build_offset": [
+        1290,
+        72
+      ],
+      "build_pixels_exact": true
+    },
+    {
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g06_network__for_adam.png",
+      "build": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V9/g06_network_normal.png",
+      "pair": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V9/g06_network_normal__master_beside_build.png",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "build_size": [
+        1290,
+        2796
+      ],
+      "build_offset": [
+        1290,
+        72
+      ],
+      "build_pixels_exact": true
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "queue": 63,
+  "status": "PASS",
+  "tests": {
+    "v9_public_initial_privacy_semantics_geometry_larger_text_actions": 5,
+    "existing_network_geometry_boundaries": 2,
+    "v7_actions_back_stale_view_route_leases_larger_text": 8,
+    "total": 15
+  },
+  "analyser": {
+    "items": 4,
+    "issues": 0
+  },
+  "format": {
+    "files": 3,
+    "changes": 0
+  },
+  "sdk": {
+    "version": "3.44.2",
+    "pins": 5,
+    "exec_denial": "PASS",
+    "nested_exec_denial": "PASS",
+    "policy_sha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d"
+  },
+  "raw_logs": {
+    "network_final.log": {
+      "bytes": 735,
+      "sha256": "262c1f42d5560b01f26359880dbdc3e1b451dcfdb19b2e8462b9e1c8b6424198"
+    },
+    "network_existing.log": {
+      "bytes": 507,
+      "sha256": "706b6b5f4da0ac686d58d7bf962e919c2e38947145a7e1e3f4e0de9711eb6080"
+    },
+    "actions.log": {
+      "bytes": 1179,
+      "sha256": "b4a97f037a0a3583f0da6e00da94d14d1a7ae6fff31dbc2e4671ca8941562023"
+    },
+    "analyze_final.log": {
+      "bytes": 96,
+      "sha256": "a0e4625e026e8367dbabfa6474f495c40a1f325602c67e955437b5587951534e"
+    }
+  },
+  "initial_test_harness_repairs": [
+    "Dispose semantics handles before test body completes.",
+    "Scroll existing V7 confirmation to its actions before hit testing.",
+    "Use rootPipelineOwner traversal for nondeprecated whole-tree semantics inspection."
+  ],
+  "full_suite_claim": false
+}

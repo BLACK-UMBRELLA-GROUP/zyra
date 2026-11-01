@@ -1,0 +1,51 @@
+{
+  "queue": 63,
+  "lock": "LOCK8 V9",
+  "commit_sha": "dd49b8b6621e0bb943e6f0193379abea03791901",
+  "flutter_version": "3.44.2",
+  "build_mode": "Offline Flutter widget-test/debug rendering; no native app build",
+  "timestamp": "2026-11-01T10:27:52.047297+00:00",
+  "timezone": "Europe/London (UTC on 1 November)",
+  "logical_sizes": [
+    [
+      430,
+      932
+    ],
+    [
+      430,
+      844
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "png_sizes": [
+    [
+      1290,
+      2796
+    ],
+    [
+      1290,
+      2532
+    ],
+    [
+      1170,
+      2532
+    ]
+  ],
+  "text_scales": [
+    1,
+    2
+  ],
+  "ios_status_bar": false,
+  "captures": 5,
+  "pairs": 5,
+  "test_theme": "Actual ZyraApp theme/scroll behavior; bundled Poppins/Syne and documented platform glyph fallback",
+  "scope": "Only Network avatar and public name typography changed; shared monogram reused unchanged.",
+  "known_limits": [
+    "No full-suite, native-device, pixel-equality or Founder visual-approval claim.",
+    "Existing Network frame/surface/navigation/font-metric differences shown in pairs.",
+    "Existing Larger Text title/action wrapping; all details/actions reachable by scrolling."
+  ]
+}

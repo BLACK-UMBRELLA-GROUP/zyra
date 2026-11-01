@@ -1,0 +1,87 @@
+{
+  "queue": 63,
+  "review": "Code/contract and actual normal/200% capture review; no Founder visual approval claimed.",
+  "built_from": [
+    "PRODUCT/APPROVED/GUARDIAN_TABS/BRIEFS/BUILD_BRIEF_2026-10-31_V9.md",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/GUARDIAN_TABS_SPEC_CURRENT_VERSION_V9.md",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/LOCK_RECORD.md",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g06_network__for_adam.png"
+  ],
+  "contract": {
+    "110pt_ring_1pt_rgba_169_121_46_0_7": true,
+    "gold_initial_52pt_weight200": true,
+    "public_name_34pt_light": true,
+    "shared_lock19_21_widget_unchanged": true,
+    "initial_only_no_photo_surname_or_hidden_fullname": true,
+    "card_details_actions_filter_and_leases_preserved": true,
+    "larger_text_no_overflow_exception_actions_reachable": true,
+    "all_five_pair_build_pixels_verified": true
+  },
+  "observations": [
+    {
+      "id": "QUEUE63-R1",
+      "action": "OA-ZYRA-335",
+      "finding": "Native frame/surface/navigation/font metrics differ from master; Larger Text retains heavy existing title/action wrapping. All content and actions remain reachable by scrolling.",
+      "disposition": "Broader layout redesign refused in this avatar/name-only build. Carry existing visual limits to queue44 visual gate; no pixel-equality claim."
+    }
+  ],
+  "predecessor": {
+    "queue": 62,
+    "verified_file_hashes": 48,
+    "owned_row_sha_verified": true
+  },
+  "reads": {
+    "pack_text_bytes_including_repeated_excerpts_and_parallel_check": 54480,
+    "pack_filename_bytes": 2599,
+    "pack_image_original_bytes": 583980,
+    "source_before_release_bytes": 0,
+    "later_reads": "Bounded current APIs and targeted tests; not fully byte-metered, no exact later-I/O claim."
+  },
+  "code_size": {
+    "before": {
+      "app": [
+        174633,
+        344
+      ],
+      "dev": [
+        54545,
+        102
+      ],
+      "founder": [
+        35336,
+        52
+      ],
+      "tests": [
+        227311,
+        535
+      ]
+    },
+    "after": {
+      "app": [
+        174614,
+        344
+      ],
+      "dev": [
+        54526,
+        102
+      ],
+      "founder": [
+        35317,
+        52
+      ],
+      "tests": [
+        227562,
+        536
+      ]
+    },
+    "goldens": [
+      2612,
+      307
+    ],
+    "old_pause_restart": [
+      39,
+      1
+    ],
+    "classifier_delta": 0
+  }
+}
