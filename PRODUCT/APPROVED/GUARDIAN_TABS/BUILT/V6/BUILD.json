@@ -20,5 +20,7 @@
   "checks": "CHECKS.json",
   "qa": "QA.json",
   "case_ledger": "CASE_LEDGER.json",
-  "claim": "Explicit seeded g11/g12 fixtures labelled; actual default stays empty. No pixel-equality or Founder approval claim."
+  "claim": "Explicit seeded g11/g12 fixtures labelled; actual default stays empty. No pixel-equality or Founder approval claim.",
+  "capture_environment": "CAPTURE_ENVIRONMENT.json",
+  "capture_rows": "CAPTURE_ROWS.json"
 }

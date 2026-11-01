@@ -20,5 +20,18 @@
     "bytes": 7872432,
     "sha256": "44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571",
     "purpose": "San Francisco platform fallback for U+2713; primary fonts unchanged; font not copied"
-  }
+  },
+  "additional_capture_variants": [
+    {
+      "logical_size": [
+        320,
+        672
+      ],
+      "png_size": [
+        960,
+        2016
+      ],
+      "text_scale": 2
+    }
+  ]
 }

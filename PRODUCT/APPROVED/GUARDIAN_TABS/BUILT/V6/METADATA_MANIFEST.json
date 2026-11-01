@@ -3,8 +3,8 @@
   "files": [
     {
       "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/BUILD.json",
-      "bytes": 965,
-      "sha256": "aec83f2321d54f69c0b178168a589b63fdaf1f82d3a08baff4118a656ba6a172"
+      "bytes": 1057,
+      "sha256": "92a804b17705705a31965f117be6eaaef94d783f5a71e8cf2f21fa48f523586d"
     },
     {
       "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/SOURCE_MANIFEST.json",
@@ -23,13 +23,13 @@
     },
     {
       "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/QA.json",
-      "bytes": 5355,
-      "sha256": "8aba825fc16ebb330cf5098f1edcc54c9ec8adbca0b999f0177db1432a8ecf5c"
+      "bytes": 6180,
+      "sha256": "7f93b4b58e6b71432931ac62c0d61c27f28f0018a0f9c2f542e0128e459f2a74"
     },
     {
       "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/CHECKS.json",
-      "bytes": 859,
-      "sha256": "465c5366788aa02796310917df9782dc61137773f00c3456554dd9f3adde7d80"
+      "bytes": 926,
+      "sha256": "0b6d3c15bfcf4144190720aa2765e8bb947b55bf2de1cf114e2a148e0bdd2ed9"
     },
     {
       "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/CASE_LEDGER.json",
@@ -37,29 +37,19 @@
       "sha256": "002520243ad53aec6c32fd7d360ca4fd4e5f65e3a878e0af294f4b8936b69edf"
     },
     {
-      "path": "REPORTS/EVIDENCE/LOCK8_V6_GUARDIAN_SEEKER_2026-11-01/FINAL_ICON_CAPTURE_EVENTS.jsonl",
-      "bytes": 6814,
-      "sha256": "40b51721c342ed74a3cb5491bf62802ae8d2f7bf7a97b0a16d25ea9337c2e142"
-    },
-    {
-      "path": "REPORTS/EVIDENCE/LOCK8_V6_GUARDIAN_SEEKER_2026-11-01/FINAL_ALL_EVENTS.jsonl",
-      "bytes": 78888,
-      "sha256": "3fab2f1227acfe0c9b9dce4527ff87756eec5fdaffff6d3ec9d84c042c408322"
-    },
-    {
-      "path": "REPORTS/EVIDENCE/LOCK8_V6_GUARDIAN_SEEKER_2026-11-01/capture_environment.json",
-      "bytes": 714,
-      "sha256": "5827d6bda09c0ac40982c1fa0b0fcb7789750e8b509f3e1a4a0cb31a927f4b6a"
-    },
-    {
-      "path": "REPORTS/EVIDENCE/LOCK8_V6_GUARDIAN_SEEKER_2026-11-01/rows_lock8_v6.json",
-      "bytes": 2407,
-      "sha256": "cb4e97cb5d8a83b811fd437a6a0976c3a7552137e8b3f2110a78db7d831b1194"
-    },
-    {
       "path": "REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md",
       "bytes": 75840,
       "sha256": "5418114593bc61e7928e7afd060499c24d04e6268cb0d2dae4826a7372122ff7"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/CAPTURE_ENVIRONMENT.json",
+      "bytes": 902,
+      "sha256": "7d59a12d4360a86f86d13cb8094eee7b692349d91fe7913aea45c137c737d87b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/CAPTURE_ROWS.json",
+      "bytes": 3144,
+      "sha256": "0f2ab8518020104275a1de25c8d91b1a68e82ef677a235b73f9d9570370d102f"
     }
   ]
 }

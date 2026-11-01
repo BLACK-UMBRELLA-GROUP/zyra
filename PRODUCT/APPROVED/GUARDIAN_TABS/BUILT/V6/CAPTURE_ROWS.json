@@ -96,5 +96,33 @@
       "guardian_seeker"
     ],
     "tab": 3
+  },
+  {
+    "role": "Guardian",
+    "area": "seeker",
+    "page": "g11_320pt_larger_text_bottom.png",
+    "state": "200 percent text",
+    "reached": "Actual admitted 320-point shell, scrolled to reachable Circle action",
+    "file": "g11_320pt_larger_text_bottom.png",
+    "width": 960,
+    "height": 2016,
+    "route": [
+      "guardian_seeker"
+    ],
+    "tab": 3
+  },
+  {
+    "role": "Guardian",
+    "area": "seeker",
+    "page": "g12_320pt_larger_text_bottom.png",
+    "state": "200 percent text",
+    "reached": "Actual admitted 320-point shell, scrolled to reachable Circle action",
+    "file": "g12_320pt_larger_text_bottom.png",
+    "width": 960,
+    "height": 2016,
+    "route": [
+      "guardian_seeker"
+    ],
+    "tab": 3
   }
 ]
