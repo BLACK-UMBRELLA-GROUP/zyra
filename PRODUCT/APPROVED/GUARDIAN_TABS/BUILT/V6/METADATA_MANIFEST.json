@@ -1,0 +1,65 @@
+{
+  "queue_line": 58,
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/BUILD.json",
+      "bytes": 965,
+      "sha256": "aec83f2321d54f69c0b178168a589b63fdaf1f82d3a08baff4118a656ba6a172"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/SOURCE_MANIFEST.json",
+      "bytes": 2533,
+      "sha256": "055b4d951d99db39d4d2e100d5736202063d4f88818254a9e873dc80dca48e66"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/INPUT_MANIFEST.json",
+      "bytes": 1074,
+      "sha256": "13aeb773479e06c27d35c24f3d6b6cb5bf86e6cbda574c3084942da95f5b9b1d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/RENDER_MANIFEST.json",
+      "bytes": 3786,
+      "sha256": "30329e37ccc14d80489a4db4aaea1ed6afe29f616f5d0db553d4fcee50a2f3b4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/QA.json",
+      "bytes": 5355,
+      "sha256": "8aba825fc16ebb330cf5098f1edcc54c9ec8adbca0b999f0177db1432a8ecf5c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/CHECKS.json",
+      "bytes": 859,
+      "sha256": "465c5366788aa02796310917df9782dc61137773f00c3456554dd9f3adde7d80"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V6/CASE_LEDGER.json",
+      "bytes": 35404,
+      "sha256": "002520243ad53aec6c32fd7d360ca4fd4e5f65e3a878e0af294f4b8936b69edf"
+    },
+    {
+      "path": "REPORTS/EVIDENCE/LOCK8_V6_GUARDIAN_SEEKER_2026-11-01/FINAL_ICON_CAPTURE_EVENTS.jsonl",
+      "bytes": 6814,
+      "sha256": "40b51721c342ed74a3cb5491bf62802ae8d2f7bf7a97b0a16d25ea9337c2e142"
+    },
+    {
+      "path": "REPORTS/EVIDENCE/LOCK8_V6_GUARDIAN_SEEKER_2026-11-01/FINAL_ALL_EVENTS.jsonl",
+      "bytes": 78888,
+      "sha256": "3fab2f1227acfe0c9b9dce4527ff87756eec5fdaffff6d3ec9d84c042c408322"
+    },
+    {
+      "path": "REPORTS/EVIDENCE/LOCK8_V6_GUARDIAN_SEEKER_2026-11-01/capture_environment.json",
+      "bytes": 714,
+      "sha256": "5827d6bda09c0ac40982c1fa0b0fcb7789750e8b509f3e1a4a0cb31a927f4b6a"
+    },
+    {
+      "path": "REPORTS/EVIDENCE/LOCK8_V6_GUARDIAN_SEEKER_2026-11-01/rows_lock8_v6.json",
+      "bytes": 2407,
+      "sha256": "cb4e97cb5d8a83b811fd437a6a0976c3a7552137e8b3f2110a78db7d831b1194"
+    },
+    {
+      "path": "REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md",
+      "bytes": 75840,
+      "sha256": "5418114593bc61e7928e7afd060499c24d04e6268cb0d2dae4826a7372122ff7"
+    }
+  ]
+}

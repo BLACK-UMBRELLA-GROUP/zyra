@@ -1,0 +1,796 @@
+{
+  "queue_line": 58,
+  "source_commit": "dab5ffb11fd60162a863a886aca670944880b017",
+  "total": 131,
+  "passed": 131,
+  "failed": 0,
+  "skipped": 0,
+  "cases": [
+    {
+      "name": "V6 Main facts and 84pt monogram; Current Journey opens projected Sara",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v6_guardian_seeker_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "LOCK8 opens My ZYRA and has five ordered tabs; real transitions and attention (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V6 Additional Yusuf preserves facts, has no Adam Journey, opens Yusuf Circle",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v6_guardian_seeker_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Guardian Focus keeps review and Connect actions distinct",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_focus_dashboard_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V5 active Sara fixture uses open review and shared photo card",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Guardian Focus paused review preserves Reopen and actual counts",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_focus_dashboard_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Guardian Basic hides paid Focus and keeps both locked tiles",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_focus_dashboard_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V6 actual default requests do not invent a current Journey",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v6_guardian_seeker_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Additional Guardian sees review status without decisions",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_focus_dashboard_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Focus consumption preserves review, Connect, and attention state",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_focus_dashboard_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V5 active Sara fixture uses paused review and shared photo card",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V6 demoted Adam View grant retains existing Chat=false and denied target stays closed",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v6_guardian_seeker_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Review consumption follows event revision through countdown and restore",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_focus_dashboard_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Negative review revision restores to the initial event",
+      "file": null,
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Unlinked Guardian has no family Focus or private status chips",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_focus_dashboard_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V6 demoted Adam View grant retains existing Chat=true and denied target stays closed",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v6_guardian_seeker_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V5 active Sara fixture uses continued review and shared photo card",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "LOCK8 read-only Journey requests, switchers, confirmations and Network filter (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V5 Basic remains View only and uses the existing permitted Journey target",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V6 retained page actions expire after Circle navigation",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v6_guardian_seeker_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V6 selected permitted Journey label and target stay on Aisha",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v6_guardian_seeker_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V6 Main wording uses supplied female gender",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v6_guardian_seeker_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V5 default requests never become cards; Yusuf and removed link expose no Adam card",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V6 Seeker 0 Larger Text scroll reaches all values and Circle at 430 and 320pt",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v6_guardian_seeker_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V5 Additional permitted View and Chat=false retain actual role and access",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V6 Seeker 1 Larger Text scroll reaches all values and Circle at 430 and 320pt",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v6_guardian_seeker_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V5 Additional permitted View and Chat=true retain actual role and access",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "LOCK8 Connect accepted, private composer, not now and all empty states (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V5 activity order, dots/swipe and Open Journey follow each actual person",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V5 retained card and dot actions expire across seeker, route and account changes",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V5 Ended Journeys retains its existing held sharing target",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V5 card admission denial permanently expires retained Open and dot handlers",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V5 200 percent text wraps and keeps the One Journey action reachable",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "LOCK8 Journeys Seekers Profile and all-caught-up masters; Additional has no decisions (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V5 200 percent text wraps and keeps the Basic Journey action reachable",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "LOCK8 fresh role launch defaults to My ZYRA (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "LOCK8 Additional authority and revoked connection fail closed (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "LOCK8 long return retains local decisions while returning My ZYRA (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "LOCK8 Yusuf Circle isolates the local seeker identity and topics (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "dated local endings appear once; undated history creates no event (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/focus_shell_guards_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "LOCK8 local private chat report and block end only this connection (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "LOCK8 Network actions remain clear of nav and keep master label colours (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "equal-time event kinds keep a stable order after restore (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/focus_shell_guards_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "LOCK8 all five tabs remain readable on compact phone at 200 percent text (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Seeker starts with locked Topics and Back; reset restores the Circle",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "a retained request action cannot navigate after another page and return (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/focus_shell_guards_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "LOCK8 Network arrows stop at both boundaries and keep the master colours (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Guardian Focus actions expire after developer controls open and close (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/focus_shell_guards_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Seeker One keeps locked row order and caller actions",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Seeker One Larger Text keeps pills and rows readable",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Seeker retained Focus actions refuse account A-B-A (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/focus_shell_guards_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Guardian retained Focus actions refuse account A-B-A (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/focus_shell_guards_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Seeker Topics retain the conversation and draft across controls, then edge returns once",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Seeker retained Topics action cannot survive authorization ABA",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Guardian Journey opening consumes review through countdown but a new decision returns it (variant: TargetPlatform.iOS)",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/focus_shell_guards_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Guardian starts with locked Topics and Back; reset restores the Circle",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Guardian Topics retain the conversation and draft across controls, then edge returns once",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Seeker One retains membership, wallet and settings destinations",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Guardian retained Topics action cannot survive authorization ABA",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "standalone Circle owns exactly one accessible Dismiss return",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "standalone Circle owns exactly one interactive edge return",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "a parent return scope prevents nested Circle recognizers and double return",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Seeker Basic keeps locked row order and caller actions",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Seeker Basic Larger Text keeps pills and rows readable",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 actual sent text replaces the empty state and reuses composer",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "empty Circle Journey topics retain canonical Couple navigation after return",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 fresh physical options report has one feedback and exact effect",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Seeker Guardian access heading is text-only without changing navigation",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 fresh physical options block has one feedback and exact effect",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "current purple Circle edge has no legacy hint and closes only once after genuine release",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "narrow purple 200 percent Circle edge has no legacy hint and closes only once after genuine release",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_circle_close_integration_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 fresh physical options done has one feedback and exact effect",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Seeker Basic retains membership, wallet and settings destinations",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 press hold report keeps Guardian target with empty conversation",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Guardian One keeps locked row order and caller actions",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Guardian One Larger Text keeps pills and rows readable",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 options report keeps Guardian target with empty conversation",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 press hold report keeps Guardian target with own message only",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 options report keeps Guardian target with own message only",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 options preserve sent text and draft while route departure clears both",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Guardian One retains membership, wallet and settings destinations",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 account ABA rebuild isolates actual transcript and draft",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Guardian Basic keeps locked row order and caller actions",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Guardian Basic Larger Text keeps pills and rows readable",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 replacement connection and same-host reset isolate chat state",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 physical send checks owner revoked before feedback",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 physical options checks owner revoked before feedback",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 physical press hold checks owner revoked before feedback",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Guardian Basic retains membership, wallet and settings destinations",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Profile controls obey Off and revoke disabled taps",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 physical send checks account ABA before feedback",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "Profile controls obey Subtle and revoke disabled taps",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 physical options checks account ABA before feedback",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "retained Profile actions reject changed revoked admission owner",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 physical press hold checks account ABA before feedback",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "retained Profile actions reject changed account generation owner",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained composer and header callbacks reject owner revoked",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "retained Profile actions reject changed route owner",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained composer and header callbacks reject account ABA",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained composer and header callbacks reject navigator ABA",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained composer and header callbacks reject route covered",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained composer and header callbacks reject controls ABA",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained composer and header callbacks reject role",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained composer and header callbacks reject reset",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained composer and header callbacks reject connection blocked",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained composer and header callbacks reject UI revision",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained composer and header callbacks reject disposal",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 denied chat callbacks cannot revive when owner admission returns",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 denied sheet callbacks cannot revive when owned admission returns",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 physical sheet report checks owner revoked before feedback",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 physical sheet block checks owner revoked before feedback",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 physical sheet done checks owner revoked before feedback",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 physical sheet report checks owned admission revoked before feedback",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 physical sheet block checks owned admission revoked before feedback",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 physical sheet done checks owned admission revoked before feedback",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained sheet callbacks reject owner revoked and replay",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained sheet callbacks reject owned admission revoked and replay",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained sheet callbacks reject account ABA and replay",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained sheet callbacks reject navigator ABA and replay",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained sheet callbacks reject route covered and replay",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained sheet callbacks reject controls ABA and replay",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained sheet callbacks reject role and replay",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained sheet callbacks reject reset and replay",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained sheet callbacks reject connection blocked and replay",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 retained sheet callbacks reject disposal and replay",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 private route remains unavailable for Basic",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 private route remains unavailable for Additional",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 private route remains unavailable for missing Main",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 private route remains unavailable for pending",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 private route remains unavailable for dismissed",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    },
+    {
+      "name": "V4 private route remains unavailable for blocked",
+      "file": "file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "result": "success",
+      "skipped": false
+    }
+  ]
+}

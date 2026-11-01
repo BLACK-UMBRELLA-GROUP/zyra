@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "queue_line": 58,
+  "lock": "LOCK 8 V6",
+  "source_commit": "dab5ffb11fd60162a863a886aca670944880b017",
+  "source_commits": [
+    "d72100479d438e3a80161b555b74b8a15773470b",
+    "dab5ffb11fd60162a863a886aca670944880b017"
+  ],
+  "flutter_version": "3.44.2",
+  "build_mode": "Flutter host widget-test rendering; actual admitted offline Founder preview, fictional sample data",
+  "timestamp_utc": "2026-11-01T09:32:37.985578+00:00",
+  "target": "430x932 logical at 3x; 320x672 at 3x; 200 percent text variants",
+  "actual_captures": 9,
+  "master_beside_build": 2,
+  "tests_unique_passed": 131,
+  "source_manifest": "SOURCE_MANIFEST.json",
+  "input_manifest": "INPUT_MANIFEST.json",
+  "render_manifest": "RENDER_MANIFEST.json",
+  "checks": "CHECKS.json",
+  "qa": "QA.json",
+  "case_ledger": "CASE_LEDGER.json",
+  "claim": "Explicit seeded g11/g12 fixtures labelled; actual default stays empty. No pixel-equality or Founder approval claim."
+}

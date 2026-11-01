@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "queue_line": 58,
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BRIEFS/BUILD_BRIEF_2026-10-31_V6.md",
+      "bytes": 1459,
+      "sha256": "a79f1be262be5c1f1834755fde7c22cd34fc98f94e17a20e5fde709a15338de1"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/LOCK_RECORD.md",
+      "bytes": 4076,
+      "sha256": "14e47fe356f0be0bd88d835b9663c5e8b483d4244dca726bc8530530fa804030"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/GUARDIAN_TABS_SPEC_CURRENT_VERSION_V9.md",
+      "bytes": 15506,
+      "sha256": "df2ec53347a56a36dc6f2f7af305550b5990dc96172009ff833faebd9cb64430"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g11_seeker__adam_main.png",
+      "bytes": 516859,
+      "sha256": "960758f0dbc7e8981c0a062513a146c3a733872de2865b3f72868574690c8d78"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g12_seeker__yusuf_additional.png",
+      "bytes": 517489,
+      "sha256": "18ba3115a06cfb57c0fa71a3e9aa4fc270f55111d10816d8563e3365402ca1d0"
+    }
+  ]
+}

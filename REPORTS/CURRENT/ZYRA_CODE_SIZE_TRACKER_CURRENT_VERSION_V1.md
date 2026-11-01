@@ -681,3 +681,20 @@ Reused the Seeker Journey photo surface without changing its photo, fade, border
 Measured with SYSTEM/tools/blueprint/code_size.py. All app changes are in existing Founder preview files and remain counted in both preview categories; row 51's explicit Circle presenter classifier is unchanged. Thirteen new actual-shell/fixture checks plus 84 existing Seeker renderer, dot lease, Guardian tab and chat-owner checks pass (97 cases). Five-file analyser/format and protected Flutter 3.44.2 pin checks pass. No whole-repository test claim.
 
 GUARDIAN_TABS/BUILT/V5 contains ten actual captures, including the three locked master cases, continued review, Additional View/Chat, multiple Journeys, actual default-empty and 200% text, with five master/build pairs. Master cases explicitly seed active Sara in detached test models; the actual default remains empty. Current shared shadows/navigation, portrait crop, type metrics and vertical card/footer geometry differ from the masters; gold-button ink follows LOCK 14 V5. At 200%, title/switcher stack, overlay text wraps and scrolls, and the action stays reachable. The same fade extends behind expanded text, with worst-white-photo contrast at least 4.5:1; all three normal PNG hashes remain unchanged and Seeker fade defaults remain equivalent. A denied card lease cannot revive after admission returns. No pixel-equality, visual-accessibility perfection or Founder visual-approval claim. These inherited renderer/palette differences are recorded as QUEUE56-R1 under OA-ZYRA-335; no unapproved surface redesign. Source/input/render hashes and BUILD/QA trace accompany the captures. Questions 8/9 answered A and retained as history; no new question, authority or server/native change.
+
+## Queue 58 — Guardian Seeker page LOCK 8 V6 — 1 November 2026
+
+Built the g11/g12 monogram head and two floating cards from the V6 row in the current Guardian Tabs spec. The cards grow 5:2 above their content heights; Larger Text stacks facts and scrolls. Main/Additional values and dates remain the existing sample values. The admitted shell supplies gender and Current Journey from row 56's existing `_guardianTabJourneyPeople` projection, which filters the chosen Seeker's active Journeys through `_permittedGuardianJourneys`. The selected permitted person determines both the label and guarded destination. Yusuf retains his isolated Circle and no current Journey. No new active-state, View/Chat or admission rule.
+
+| Measure | Before | After |
+|---|---:|---:|
+| All app code | 174,038 / 341 | 174,295 / 342 |
+| Developer/preview | 54,034 / 99 | 54,291 / 100 |
+| Founder planned app | 34,825 / 49 | 35,082 / 50 |
+| Tests | 226,191 / 531 | 226,494 / 532 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py; the new presenter matches the existing Founder glob and is counted in both preview categories. No classifier change. Ten new behavior/render cases and 121 affected regressions pass; six-file analyser/format and protected Flutter 3.44.2 pin checks pass. Main/Additional values, gender, selected and denied targets, stale actions, isolated Circle and 430/320-point 200% text are covered. The old paused-Sara assertion in an unseeded request-only fixture now expects No current Journey because row 56's existing projection is empty; seeded g11 is explicitly labelled. No second data-policy change or synthetic Journey.
+
+GUARDIAN_TABS/BUILT/V6 holds nine actual captures, two full-size master/build pairs, contact sheet, case/check/QA records and explicit source/input/render/metadata hashes. Current shared shadows, type metrics, frame and canonical Journey icon differ from the original masters (QUEUE58-R1 / OA-ZYRA-335); no shared renderer redesign, pixel-equality or Founder visual-approval claim. Default-empty evidence is separate from the explicit active-Sara master fixture. Historical queue refusal remains in the row text. No native/server/BLUEPRINT/global/schedule change. Trace: OA-ZYRA-335; AD-AIOS-115/118/120.

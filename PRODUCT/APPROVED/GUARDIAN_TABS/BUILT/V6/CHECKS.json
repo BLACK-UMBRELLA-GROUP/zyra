@@ -1,0 +1,26 @@
+{
+  "queue_line": 58,
+  "source_commit": "dab5ffb11fd60162a863a886aca670944880b017",
+  "flutter": "3.44.2",
+  "sdk_driver": "SOURCE/tooling/no_git_driver.mjs",
+  "pins": 5,
+  "exec_denial": "PASS",
+  "nested_exec_denial": "PASS",
+  "analyser": "6 affected files; no issues",
+  "format": "6 affected files; 0 changed; final icon presenter separately rechecked",
+  "tests": {
+    "complete_scoped_suites": 8,
+    "unique_passed": 131,
+    "failed": 0,
+    "skipped": 0,
+    "final_event_file": "REPORTS/EVIDENCE/LOCK8_V6_GUARDIAN_SEEKER_2026-11-01/FINAL_ALL_EVENTS.jsonl"
+  },
+  "captures": {
+    "passed": 10,
+    "event_file": "REPORTS/EVIDENCE/LOCK8_V6_GUARDIAN_SEEKER_2026-11-01/FINAL_ICON_CAPTURE_EVENTS.jsonl"
+  },
+  "limits": [
+    "No whole-app test claim",
+    "No native build/install/upload, backend, upgrade, model-policy or BLUEPRINT change"
+  ]
+}

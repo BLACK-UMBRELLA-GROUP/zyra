@@ -1,0 +1,111 @@
+{
+  "queue_line": 58,
+  "lock": "LOCK 8 V6",
+  "status": "Built; Founder visual approval not claimed",
+  "built_from": [
+    "PRODUCT/APPROVED/GUARDIAN_TABS/BRIEFS/BUILD_BRIEF_2026-10-31_V6.md",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/LOCK_RECORD.md",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/GUARDIAN_TABS_SPEC_CURRENT_VERSION_V9.md:V6 row",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g11_seeker__adam_main.png",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g12_seeker__yusuf_additional.png"
+  ],
+  "data_and_routes": {
+    "existing_facts": "Existing Main/Additional role, Journeys access wording, request wording, linked dates and Not shared retained; gender comes from _conceptLinkedSeekerProfile.gender.",
+    "projection": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart::_guardianTabJourneyPeople introduced by queue56: Yusuf returns empty; Adam uses _tabJourneys order filtered through _permittedGuardianJourneys. The latter requires linked Guardian and active, unblocked Journey plus Main or existing View grant.",
+    "selected_target": "_guardianTabsView selects existing guardianJourneyId or first permitted current person; same person supplies Current Journey fact and seeker_journey_<id>. Existing bound action account/admission/page/tab/revision lease and permitted projection are rechecked before opening guardian.",
+    "privacy": "Yusuf opens draft-linked-yusuf Circle with no Adam contexts. Basic/One, View/Chat, identity/admission policy unchanged."
+  },
+  "changed_tests": [
+    {
+      "path": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "reason": "Old With Sara \u00b7 Paused by family assertion used an unseeded request-only model. Q8/queue56 already established requests do not create current Journeys. V6 now reuses that exact projection and displays No current Journey when it is empty; no second data-policy correction and no synthetic Sara.",
+      "old_expected": "With Sara \u00b7 Paused by family",
+      "new_expected": "No current Journey"
+    },
+    {
+      "path": "SOURCE/test/guardian_focus_dashboard_test.dart",
+      "reason": "Explicit existing male Adam fixture supplied to required presentation gender argument."
+    }
+  ],
+  "fixtures": {
+    "g11": "Actual admitted shell with detached existing seedJourneys(1), active Sara, Family Review open. Explicit fixture, not actual default.",
+    "g12": "Actual admitted shell with selected Additional Yusuf and Adam seedJourneys(1) only to verify no cross-Seeker disclosure. Yusuf has no current Journey.",
+    "actual_default": "Separate g11_actual_default_no_current.png uses unseeded request-only model."
+  },
+  "visual": {
+    "normal": "84pt monogram; 24pt light name; 11pt gold small caps; two cards fill page and grow 5:2 above content height. Old status strip/section labels/outline buttons and unused label helper removed.",
+    "larger_text": "200 percent at 430 and 320 points: fact label/value stack, wrapping and vertical scrolling; Circle and Current Journey remain reachable. Decorative monogram stays inside fixed 84pt ring; name and facts scale.",
+    "reviewed": [
+      "g11/g12 normal",
+      "g11/g12 200 percent top and bottom",
+      "g11/g12 320pt 200 percent bottom"
+    ],
+    "differences": [
+      {
+        "id": "QUEUE58-R1",
+        "oa": "OA-ZYRA-335",
+        "description": "Current shared floating surface shadows/border, palette ink, Poppins type metrics and rectangular native frame differ from masters. Card/head edges vary slightly with native font metrics. Current Journey uses the existing canonical Couple icon; Circle uses existing material people outline.",
+        "disposition": "Written refusal to redesign shared surfaces/type/icon system under this Seeker-page row. Preserve current LOCK14 V5 palette and existing shared components; parent/designer comparison remains under OA-ZYRA-335."
+      }
+    ],
+    "claims_excluded": [
+      "Pixel equality",
+      "Founder visual approval",
+      "Full accessibility perfection",
+      "Native phone delivery"
+    ]
+  },
+  "size_before": {
+    "app": [
+      174038,
+      341
+    ],
+    "developer_preview": [
+      54034,
+      99
+    ],
+    "founder": [
+      34825,
+      49
+    ],
+    "tests": [
+      226191,
+      531
+    ]
+  },
+  "size_after": {
+    "app": [
+      174295,
+      342
+    ],
+    "developer_preview": [
+      54291,
+      100
+    ],
+    "founder": [
+      35082,
+      50
+    ],
+    "tests": [
+      226494,
+      532
+    ]
+  },
+  "classification": "New zyra_one_journey_guardian_seeker.dart matches existing Founder glob and is counted in developer/preview and Founder categories; no classifier changes.",
+  "startup": {
+    "counted_named_text_bytes": 47846,
+    "counted_bounded_source_test_bytes": 43456,
+    "units": "bytes",
+    "limitation": "Additional targeted search/discovery output was not byte-metered; later release reads not included. No repeat lessons/operating model or helper.",
+    "master_image_bytes": 1034348
+  },
+  "cleanup": {
+    "moved_run_records": 8,
+    "bytes": 194289,
+    "destination": "BLACK UMBRELLA GROUP/tmp/_to_delete/ZYRA_QUEUE58_2026-11-01",
+    "source_copies": 0,
+    "compiled_apps": 0,
+    "moved_staging_helper_bytes": 490
+  },
+  "decisions": "No new Founder question or decision requested; Q8/row56 existing projection reused. AD-AIOS-118/120 direct instructions applied."
+}
