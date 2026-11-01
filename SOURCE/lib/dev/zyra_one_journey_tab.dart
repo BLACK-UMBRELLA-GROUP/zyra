@@ -31,6 +31,82 @@ class ZyraJourneyTabCard {
   final bool unavailable;
 }
 
+/// The LOCK 13 photo surface, reused by Guardian Journeys (LOCK 8 V5).
+/// Callers supply display content and retain all action/permission authority.
+class ZyraJourneyPhotoCard extends StatelessWidget {
+  const ZyraJourneyPhotoCard({
+    super.key,
+    required this.surfaceKey,
+    required this.scrollKey,
+    required this.children,
+    this.photo,
+  });
+  final Key surfaceKey, scrollKey;
+  final ImageProvider? photo;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    radius: 22,
+    circle: false,
+    gold: false,
+    child: Container(
+      key: surfaceKey,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(22),
+      ),
+      foregroundDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: ZyraColors.journeyGold.withValues(alpha: .6)),
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) => Stack(
+          fit: StackFit.expand,
+          children: [
+            if (photo != null)
+              Image(image: photo!, fit: BoxFit.cover)
+            else
+              Center(
+                child: ZyraJourneyIcon(color: ZyraColors.ink(.35), size: 64),
+              ),
+            Positioned(
+              top: constraints.maxHeight * .3,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: const DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.transparent, Color(0xE6000000)],
+                  ),
+                ),
+              ),
+            ),
+            ZyraShadowScrollView(
+              key: scrollKey,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: Padding(
+                  padding: const EdgeInsets.all(18),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: children,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
 /// A bounded, caller-controlled pager: a place per card and no wrap at the ends.
 /// Every retained callback expires on a rebuild or page move, including an
 /// index/account/route round trip back to the same displayed person.
@@ -289,139 +365,76 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
               '${card.stageLabel}, ${card.nextStep.replaceAll(' · ', ' ')}, '
               '${index + 1} of ${widget.capacity}',
     excludeSemantics: !card.unavailable,
-    child: ZyraFloatingSurface(
-      radius: 22,
-      circle: false,
-      gold: false,
-      child: Container(
-        key: ValueKey('journey_tab_person_${card.id}'),
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-          color: ZyraColors.surfaceFill,
-          borderRadius: BorderRadius.circular(22),
-        ),
-        foregroundDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(22),
-          border: Border.all(
-            color: ZyraColors.journeyGold.withValues(alpha: .6),
+    child: ZyraJourneyPhotoCard(
+      surfaceKey: ValueKey('journey_tab_person_${card.id}'),
+      scrollKey: ValueKey('journey_tab_overlay_scroll_${card.id}'),
+      photo: card.unavailable ? null : card.photo,
+      children: [
+        if (!card.unavailable)
+          Text(
+            card.stageNumber > 0
+                ? 'Stage ${card.stageNumber} of 8 · ${card.stageLabel}'
+                : card.stageLabel,
+            style: ZyraText.body(size: 12.5, color: Colors.white),
           ),
+        const SizedBox(height: 6),
+        Text(
+          card.unavailable ? 'User not found' : card.firstName,
+          style: ZyraText.heading(size: 30, color: Colors.white),
         ),
-        child: LayoutBuilder(
-          builder: (context, constraints) => Stack(
-            fit: StackFit.expand,
+        if (card.unavailable) ...[
+          const SizedBox(height: 8),
+          Text(
+            'This Journey place is retained. The profile and conversation are unavailable.',
+            style: ZyraText.body(color: Colors.white.withValues(alpha: .7)),
+          ),
+          if (widget.onEndUnavailable != null) ...[
+            const SizedBox(height: 12),
+            _button(
+              key: 'journey_tab_end_unavailable',
+              label: 'End Journey',
+              action: widget.onEndUnavailable!,
+              current: current,
+              color: ZyraColors.destructive,
+            ),
+          ],
+        ],
+        const SizedBox(height: 2),
+        if (!card.unavailable)
+          Text(
+            card.details,
+            style: ZyraText.body(size: 15, color: Colors.white),
+          ),
+        const SizedBox(height: 12),
+        if (!card.unavailable && card.stageNumber > 0)
+          Row(
             children: [
-              if (card.photo != null && !card.unavailable)
-                Image(image: card.photo!, fit: BoxFit.cover)
-              else
-                Center(
-                  child: ZyraJourneyIcon(color: ZyraColors.ink(.35), size: 64),
-                ),
-              Positioned(
-                top: constraints.maxHeight * .3,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: const DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Colors.transparent, Color(0xE6000000)],
+              for (var stage = 1; stage <= 8; stage++) ...[
+                if (stage > 1) const SizedBox(width: 3),
+                Expanded(
+                  child: Container(
+                    height: 4,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(2),
+                      color: stage <= card.stageNumber
+                          ? ZyraColors.journeyGold
+                          : Colors.white.withValues(alpha: .2),
                     ),
                   ),
                 ),
-              ),
-              ZyraShadowScrollView(
-                key: ValueKey('journey_tab_overlay_scroll_${card.id}'),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                  child: Padding(
-                    padding: const EdgeInsets.all(18),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        if (!card.unavailable)
-                          Text(
-                            card.stageNumber > 0
-                                ? 'Stage ${card.stageNumber} of 8 · ${card.stageLabel}'
-                                : card.stageLabel,
-                            style: ZyraText.body(
-                              size: 12.5,
-                              color: Colors.white,
-                            ),
-                          ),
-                        const SizedBox(height: 6),
-                        Text(
-                          card.unavailable ? 'User not found' : card.firstName,
-                          style: ZyraText.heading(
-                            size: 30,
-                            color: Colors.white,
-                          ),
-                        ),
-                        if (card.unavailable) ...[
-                          const SizedBox(height: 8),
-                          Text(
-                            'This Journey place is retained. The profile and conversation are unavailable.',
-                            style: ZyraText.body(
-                              color: Colors.white.withValues(alpha: .7),
-                            ),
-                          ),
-                          if (widget.onEndUnavailable != null) ...[
-                            const SizedBox(height: 12),
-                            _button(
-                              key: 'journey_tab_end_unavailable',
-                              label: 'End Journey',
-                              action: widget.onEndUnavailable!,
-                              current: current,
-                              color: ZyraColors.destructive,
-                            ),
-                          ],
-                        ],
-                        const SizedBox(height: 2),
-                        if (!card.unavailable)
-                          Text(
-                            card.details,
-                            style: ZyraText.body(size: 15, color: Colors.white),
-                          ),
-                        const SizedBox(height: 12),
-                        if (!card.unavailable && card.stageNumber > 0)
-                          Row(
-                            children: [
-                              for (var stage = 1; stage <= 8; stage++) ...[
-                                if (stage > 1) const SizedBox(width: 3),
-                                Expanded(
-                                  child: Container(
-                                    height: 4,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(2),
-                                      color: stage <= card.stageNumber
-                                          ? ZyraColors.journeyGold
-                                          : Colors.white.withValues(alpha: .2),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ],
-                          ),
-                        const SizedBox(height: 6),
-                        if (!card.unavailable)
-                          Text(
-                            card.nextStep,
-                            style: ZyraText.body(
-                              size: 12,
-                              color: Colors.white.withValues(alpha: .75),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              ],
             ],
           ),
-        ),
-      ),
+        const SizedBox(height: 6),
+        if (!card.unavailable)
+          Text(
+            card.nextStep,
+            style: ZyraText.body(
+              size: 12,
+              color: Colors.white.withValues(alpha: .75),
+            ),
+          ),
+      ],
     ),
   );
 

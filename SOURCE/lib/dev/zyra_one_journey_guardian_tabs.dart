@@ -8,6 +8,8 @@ import '../theme/zyra_interaction_style.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_focus_dashboard.dart';
+import '../widgets/zyra_profiles_components.dart';
+import 'zyra_one_journey_tab.dart' show ZyraJourneyPhotoCard;
 import '../screens/wali/family_messaging_screens.dart'
     show ZyraFamilyMessageComposer;
 
@@ -130,6 +132,160 @@ class ZyraGuardianTabsState {
   );
 }
 
+/// Display facts projected by the admitted shell; this card grants no access.
+class ZyraGuardianJourneyCard {
+  const ZyraGuardianJourneyCard({
+    required this.id,
+    required this.title,
+    required this.details,
+    required this.stageLine,
+    this.photo,
+  });
+  final String id, title, details, stageLine;
+  final ImageProvider? photo;
+}
+
+class ZyraGuardianJourneyPager extends StatefulWidget {
+  const ZyraGuardianJourneyPager({
+    super.key,
+    required this.cards,
+    required this.index,
+    required this.identity,
+    required this.onAction,
+  }) : assert(cards.length > 0);
+  final List<ZyraGuardianJourneyCard> cards;
+  final int index;
+  final Object? identity;
+  final ValueChanged<String> onAction;
+
+  @override
+  State<ZyraGuardianJourneyPager> createState() => _GuardianJourneyPagerState();
+}
+
+class _GuardianJourneyPagerState extends State<ZyraGuardianJourneyPager> {
+  int _revision = 0;
+  double _drag = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final revision = ++_revision;
+    final identity = widget.identity;
+    final index = widget.index.clamp(0, widget.cards.length - 1);
+    final card = widget.cards[index];
+    final feedback = context
+        .dependOnInheritedWidgetOfExactType<ZyraTapFeedback>();
+    bool current() =>
+        mounted &&
+        revision == _revision &&
+        identical(identity, widget.identity) &&
+        (feedback?.canAct() ?? true);
+    void select(int target) {
+      if (!current() ||
+          target == index ||
+          target < 0 ||
+          target >= widget.cards.length) {
+        return;
+      }
+      setState(() => _revision++);
+      widget.onAction('journey_select_${widget.cards[target].id}');
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SizedBox(
+          height: 28,
+          child: Center(
+            child: ZyraProfilesDots(
+              count: widget.cards.length,
+              index: index,
+              dotKey: (i) => ValueKey('guardian_journey_dot_$i'),
+              targetKey: (i) => ValueKey('guardian_journey_dot_target_$i'),
+              canAct: current,
+              onSelected: select,
+            ),
+          ),
+        ),
+        Expanded(
+          child: GestureDetector(
+            key: const ValueKey('guardian_journey_card'),
+            behavior: HitTestBehavior.opaque,
+            onHorizontalDragStart: (_) => _drag = 0,
+            onHorizontalDragUpdate: (d) {
+              if (current()) _drag += d.primaryDelta ?? 0;
+            },
+            onHorizontalDragEnd: (d) {
+              if (!current()) return;
+              final velocity = d.primaryVelocity ?? 0;
+              if (_drag.abs() < 24 && velocity.abs() < 100) return;
+              final direction = velocity.abs() >= 100 ? velocity : _drag;
+              select(index + (direction < 0 ? 1 : -1));
+            },
+            child: Semantics(
+              container: true,
+              label:
+                  '${card.title}, ${card.stageLine}, ${index + 1} of ${widget.cards.length}',
+              child: ZyraJourneyPhotoCard(
+                surfaceKey: ValueKey('guardian_journey_person_${card.id}'),
+                scrollKey: ValueKey('guardian_journey_overlay_${card.id}'),
+                photo: card.photo,
+                children: [
+                  Text(
+                    card.stageLine.toUpperCase(),
+                    key: const ValueKey('guardian_journey_stage'),
+                    style: ZyraText.body(
+                      size: 11,
+                      color: Colors.white,
+                    ).copyWith(letterSpacing: 1.1, height: 1.4),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    card.title,
+                    style: ZyraText.heading(
+                      size: 28,
+                      color: Colors.white,
+                    ).copyWith(fontWeight: FontWeight.w300, height: 1.2),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    card.details,
+                    style: ZyraText.body(
+                      size: 13,
+                      color: Colors.white.withValues(alpha: .78),
+                    ).copyWith(height: 1.4),
+                  ),
+                  const SizedBox(height: 16),
+                  FilledButton(
+                    key: const ValueKey('guardian_journey'),
+                    onPressed: ZyraTapFeedback.onTap(context, () {
+                      if (!current()) return;
+                      setState(() => _revision++);
+                      widget.onAction('journey_open_${card.id}');
+                    }, canAct: current),
+                    style: FilledButton.styleFrom(
+                      minimumSize: const Size(0, 42),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 10,
+                      ),
+                      backgroundColor: ZyraColors.goldTextFill,
+                      foregroundColor: ZyraColors.foreground,
+                      textStyle: ZyraText.body(size: 14),
+                      shape: const StadiumBorder(),
+                    ),
+                    child: const Text('Open Journey'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class ZyraGuardianTabsPresentation extends StatelessWidget {
   const ZyraGuardianTabsPresentation({
     super.key,
@@ -142,6 +298,9 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     this.adamMain = true,
     this.focusItems,
     this.notificationCount = 0,
+    this.journeys = const [],
+    this.journeyIndex = 0,
+    this.journeyIdentity,
   });
   final ZyraGuardianTabsState state;
   final String page;
@@ -150,6 +309,9 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   final bool linked, paid, adamMain;
   final List<ZyraFocusItem>? focusItems;
   final int notificationCount;
+  final List<ZyraGuardianJourneyCard> journeys;
+  final int journeyIndex;
+  final Object? journeyIdentity;
   Widget _text(
     String text, {
     double size = 14,
@@ -977,72 +1139,60 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   }
 
   Widget _journeys() => _viewport(
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _header(
-          'Journeys',
-          trailing: _switcher('for ${state.seekerName}', 'seeker'),
-        ),
-        if (linked && state.main)
-          _box(
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 140,
-                  height: 170,
-                  decoration: BoxDecoration(
-                    color: ZyraColors.avatarSand,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Center(child: _text('S', size: 40, muted: true)),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(minHeight: 170),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        _text('Adam & Sara', size: 18),
-                        _text(
-                          'Sara Ahmed · 27 · Birmingham',
-                          size: 12,
-                          muted: true,
-                        ),
-                        const SizedBox(height: 6),
-                        _text(state.stageLine, size: 12, gold: true),
-                        const SizedBox(height: 5),
-                        _text(
-                          'You: Main Guardian · View and Chat',
-                          size: 11,
-                          muted: true,
-                        ),
-                        const SizedBox(height: 30),
-                        _button('Open Journey', 'journey'),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+    Padding(
+      padding: const EdgeInsets.only(bottom: 98),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final switcher = _switcher('for ${state.seekerName}', 'seeker');
+                if (MediaQuery.textScalerOf(context).scale(28) > 36 ||
+                    constraints.maxWidth < 360) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _title('Journeys'),
+                      const SizedBox(height: 12),
+                      Align(alignment: Alignment.centerRight, child: switcher),
+                    ],
+                  );
+                }
+                return Row(
+                  children: [
+                    Expanded(child: _title('Journeys')),
+                    switcher,
+                  ],
+                );
+              },
             ),
-            gold: true,
-            padding: const EdgeInsets.all(12),
-          )
-        else
-          _text('No current Journey', muted: true),
-        const SizedBox(height: 10),
-        if (linked)
-          _tile(
-            'Ended Journeys',
-            'Only what ${state.seekerName} shares with you',
-            Icons.history,
-            'ended',
           ),
-      ],
+          if (linked && journeys.isNotEmpty)
+            Expanded(
+              child: ZyraGuardianJourneyPager(
+                cards: journeys,
+                index: journeyIndex,
+                identity: journeyIdentity,
+                onAction: onAction,
+              ),
+            )
+          else
+            _text('No current Journey', muted: true),
+          const SizedBox(height: 10),
+          if (linked)
+            _tile(
+              'Ended Journeys',
+              'Only what ${state.seekerName} shares with you',
+              Icons.history,
+              'ended',
+            ),
+          if (!linked || journeys.isEmpty) const Spacer(),
+        ],
+      ),
     ),
+    scroll: false,
   );
   Widget _seekers() => _viewport(
     Column(

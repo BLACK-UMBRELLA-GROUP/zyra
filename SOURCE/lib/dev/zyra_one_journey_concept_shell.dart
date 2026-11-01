@@ -651,6 +651,14 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           .firstOrNull ??
       _permittedGuardianJourneys.firstOrNull;
 
+  // The model belongs to Adam. Yusuf's existing sample has no current Journey.
+  // Preserve the View projection and apply the Seeker tab's activity ordering.
+  List<DraftProfile> get _guardianTabJourneyPeople {
+    if (!_guardianTabs.main) return const [];
+    final permitted = _permittedGuardianJourneys.map((p) => p.id).toSet();
+    return _tabJourneys.where((p) => permitted.contains(p.id)).toList();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -6273,27 +6281,63 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     );
   }
 
-  Widget _guardianTabsView(String page) => ZyraGuardianTabsPresentation(
-    state: _guardianTabs,
-    page: page,
-    linked: _conceptHassanLinked,
-    paid: _guardianMembership == 'Guardian One',
-    adamMain: _conceptLinkedSeeker.isMain,
-    photoFor: (id) {
-      final index = draftProfiles.indexWhere((p) => p.id == 'draft-$id');
-      return index < 0 ? null : _photos?.forIndex(index).firstOrNull;
-    },
-    notificationCount: _conceptHassanLinked
-        ? (_guardianTabs.review != ZyraGuardianReview.continued ? 1 : 0) +
-              (_guardianMembership == 'Guardian One' &&
-                      _guardianTabs.connection ==
-                          ZyraGuardianConnection.pending &&
-                      !_guardianTabs.consumedFocus.contains('connect-pending')
-                  ? 1
-                  : 0)
-        : 0,
-    onAction: _boundGuardianAction(page),
-  );
+  Widget _guardianTabsView(String page) {
+    final people = _guardianTabJourneyPeople;
+    final selected = people.indexWhere((p) => p.id == _guardianJourneyId);
+    return ZyraGuardianTabsPresentation(
+      state: _guardianTabs,
+      page: page,
+      linked: _conceptHassanLinked,
+      paid: _guardianMembership == 'Guardian One',
+      adamMain: _conceptLinkedSeeker.isMain,
+      journeys: [for (final person in people) _guardianTabJourneyCard(person)],
+      journeyIndex: selected < 0 ? 0 : selected,
+      journeyIdentity: (
+        _uiRevision,
+        _devControlsEpoch,
+        _devRouteStamp,
+        _guardianTabs.seeker,
+      ),
+      photoFor: (id) {
+        final index = draftProfiles.indexWhere((p) => p.id == 'draft-$id');
+        return index < 0 ? null : _photos?.forIndex(index).firstOrNull;
+      },
+      notificationCount: _conceptHassanLinked
+          ? (_guardianTabs.review != ZyraGuardianReview.continued ? 1 : 0) +
+                (_guardianMembership == 'Guardian One' &&
+                        _guardianTabs.connection ==
+                            ZyraGuardianConnection.pending &&
+                        !_guardianTabs.consumedFocus.contains('connect-pending')
+                    ? 1
+                    : 0)
+          : 0,
+      onAction: _boundGuardianAction(page),
+    );
+  }
+
+  ZyraGuardianJourneyCard _guardianTabJourneyCard(DraftProfile person) {
+    final stage = _model.stageFor(person.id);
+    final chat =
+        _guardianMembership == 'Guardian One' &&
+        _conceptAccessFor('draft-guardian-hassan', person.id).chat;
+    final role = _conceptLinkedSeeker.isMain
+        ? 'Main Guardian'
+        : 'Additional Guardian';
+    return ZyraGuardianJourneyCard(
+      id: person.id,
+      title: 'Adam & ${person.firstName}',
+      details:
+          '${person.firstName} ${person.surname} · ${person.age} · ${person.city} · You: $role · ${chat ? 'View and Chat' : 'View only'}',
+      stageLine: person.id == 'draft-sara'
+          ? _guardianTabs.stageLine
+          : 'Stage ${stage?.order ?? 1} of 8 · ${stage?.label ?? _stateLabel(_model.stateFor(person.id)!)}',
+      photo: _photos == null
+          ? null
+          : AssetImage(
+              'assets/dev/one_journey_photos/${ZyraOneJourneySamplePhotos.seeds[draftProfiles.indexOf(person)].first}.jpg',
+            ),
+    );
+  }
 
   ValueChanged<String> _boundGuardianAction(String source) {
     final account = (ZyraAccountState.userId, ZyraAccountState.generation);
@@ -6321,6 +6365,25 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   void _guardianTabsAction(String action) {
     final state = _guardianTabs;
     final paid = _guardianMembership == 'Guardian One';
+    if (action.startsWith('journey_select_') ||
+        action.startsWith('journey_open_')) {
+      if (_page != null || _tab != 1 || !state.main || !_conceptHassanLinked) {
+        return;
+      }
+      final opening = action.startsWith('journey_open_');
+      final id = action.substring(
+        opening ? 'journey_open_'.length : 'journey_select_'.length,
+      );
+      if (!_guardianTabJourneyPeople.any((p) => p.id == id)) return;
+      if (!opening) {
+        _act(() => _guardianJourneyId = id);
+      } else {
+        _guardianJourneyId = id;
+        if (id == 'draft-sara') state.consumedFocus.add(state.reviewFocusId);
+        _open('guardian');
+      }
+      return;
+    }
     if (action.startsWith('focus_index_')) {
       final index = int.tryParse(action.substring('focus_index_'.length));
       if (index != null && index >= 0 && index < 2) {

@@ -664,3 +664,20 @@ Built the locked All/current-Journey/Past presentation on the retained local Cir
 Measured with SYSTEM/tools/blueprint/code_size.py; exact new presenter classifier added, new state part uses existing Founder glob. Seven complete scoped suites pass: 145 actual cases, zero failures/skips, including the three previously disclosed Circle regression failures after affected Topics fixture/key migration. Ten-file format, analyser and protected pinned-driver checks pass on Flutter 3.44.2. Day30/day31, mixed Basic/One, sharing, malformed archives, stale/replaced source and route/sheet callbacks, pending replay, feedback, drafts, transcript, unread and legacy authority are covered. No full-repository test claim.
 
 GUARDIAN_CIRCLE/BUILT/V2 contains 42 master-fixture captures (14 normal, 14 at 1.3 text, 14 at 320 points/1.3), four real-source shell captures, 42 original-master/build pairs and twelve contact sheets; source/input/render hashes, case ledger, comparison/QA and text BUILD metadata. Photos are decoded before capture; no overflow exception. Normal type metrics, wraps, bubble/card spacing, scroll position and rectangular frame differ modestly; larger/narrow controls stack. No pixel-equality or Founder visual-approval claim; parent review follows. Native/backend/install/release changes and old path removal remain outside this row (OA-ZYRA-317). Historical Q6 preflight/refusal retained. Trace: OA-ZYRA-335; AD-AIOS-115/116/118.
+
+## Queue 56 — Guardian Journeys photo card LOCK 8 V5 — 1 November 2026
+
+Reused the Seeker Journey photo surface without changing its photo, fade, border, overlay defaults or stage renderer. Guardian cards use Adam's existing permitted active projection in Seeker activity order; Yusuf retains his existing no-current-Journey state. Sara alone uses the local Family Review mapping. Captions retain actual Main/Additional and View/Chat/Basic facts; selection and Open Journey validate the permitted person and keep existing owner/admission guards. Ended Journeys keeps its held sharing target. Default requests do not create cards or mutate the Seeker model.
+
+| Measure | Before | After |
+|---|---:|---:|
+| All app code | 173,794 / 341 | 174,020 / 341 |
+| Developer/preview | 53,790 / 99 | 54,016 / 99 |
+| Founder planned app | 34,581 / 49 | 34,807 / 49 |
+| Tests | 225,743 / 530 | 226,119 / 531 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py. All app changes are in existing Founder preview files and remain counted in both preview categories; row 51's explicit Circle presenter classifier is unchanged. Twelve new actual-shell/fixture checks plus 84 existing Seeker renderer, dot lease, Guardian tab and chat-owner checks pass (96 cases). Five-file analyser/format and protected Flutter 3.44.2 pin checks pass. No whole-repository test claim.
+
+GUARDIAN_TABS/BUILT/V5 contains ten actual captures, including the three locked master cases, continued review, Additional View/Chat, multiple Journeys, actual default-empty and 200% text, with five master/build pairs. Master cases explicitly seed active Sara in detached test models; the actual default remains empty. Current shared shadows/navigation, portrait crop, type metrics and vertical card/footer geometry differ from the masters; gold-button ink follows LOCK 14 V5. At 200%, title/switcher stack, overlay text wraps and scrolls, and the action stays reachable; the inherited photo fade may place upper wrapped text over a lighter photo area. No pixel-equality, visual-accessibility perfection or Founder visual-approval claim. These inherited renderer/palette differences are recorded as QUEUE56-R1 under OA-ZYRA-335; no unapproved surface redesign. Source/input/render hashes and BUILD/QA trace accompany the captures. Questions 8/9 answered A and retained as history; no new question, authority or server/native change.

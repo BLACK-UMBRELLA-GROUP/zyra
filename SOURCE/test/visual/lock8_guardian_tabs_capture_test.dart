@@ -36,12 +36,15 @@ Future<void> _mount(
   int tab = 2,
   List<String> pages = const [],
   ZyraGuardianTabsSnapshot state = const ZyraGuardianTabsSnapshot(),
+  int activeJourneys = 0,
 }) async {
+  final model = ViewRequestDraftModel(capacity: 3);
+  if (activeJourneys > 0) expect(model.seedJourneys(activeJourneys), isTrue);
   await h.mount(
     guardian: true,
     checkpoint: ZyraPreviewNavigationCheckpoint(
       guardian: true,
-      model: ViewRequestDraftModel(capacity: 3).snapshot(),
+      model: model.snapshot(),
       tab: tab,
       pages: pages,
       guardianTabs: state,
@@ -103,7 +106,7 @@ void main() {
       expect(find.textContaining('fresh 48 hours.'), findsOneWidget);
       await _cap(h, 'g15_my_zyra', 'review_paused');
       await _tab(h, 1);
-      expect(find.text('Stage 4 of 8 · Paused by family'), findsOneWidget);
+      expect(find.text('No current Journey'), findsOneWidget);
       await _tab(h, 3);
       expect(find.text('Journey with Sara · Paused by family'), findsOneWidget);
       await h.tap('guardian_seeker_0');
@@ -123,7 +126,7 @@ void main() {
       await _back(h);
       expect(find.text('Nothing needs you right now.'), findsOneWidget);
       await _tab(h, 1);
-      expect(find.text('Stage 5 of 8 · Building a Life'), findsOneWidget);
+      expect(find.text('No current Journey'), findsOneWidget);
       expect(
         h.latest.model.states,
         {'draft-amira': DraftJourneyState.received},
@@ -228,7 +231,7 @@ void main() {
     'LOCK8 Journeys Seekers Profile and all-caught-up masters; Additional has no decisions',
     (t) async {
       final h = _h(t, 'pages');
-      await _mount(h, tab: 1);
+      await _mount(h, tab: 1, activeJourneys: 1);
       await _cap(h, 'g09_journeys', 'adam');
       await _mount(h, tab: 3);
       await _cap(h, 'g10_seekers', 'list');
