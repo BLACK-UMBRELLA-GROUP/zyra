@@ -2,19 +2,14 @@
 // Writing/ERROR_AND_EMPTY_STATE_STANDARD_CURRENT_VERSION_V1.md (DR-ZYRA-080).
 // Every screen should use these rather than one-off Text() error strings,
 // so the warm tone and visual treatment stay consistent app-wide.
-//
-// 2026-08-23 (Founder, GN Draft 3.2, from phone screenshots): ZyraAddCircle
-// added at the end of this file — the Guardians page's large "+" blank-page
-// invitation, extracted so every empty Wali surface (Dashboard, Network,
-// Seekers) renders the identical pattern instead of a mid-screen paragraph
-// with a pill button. Visuals copied 1:1 from seeker_wali_tab.dart's
-// _AddGuardianButton(large: true) + its label line.
+// LOCK22 V3 now supplies the shared empty layout, including legacy invitations.
 
 import 'zyra_tap_feedback.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
+import '../dev/zyra_one_journey_monogram_presentation.dart';
 
 /// Inline field-level validation message (Category 1 of the standard).
 /// Sits directly under a form field — no icon, no modal, low emphasis.
@@ -107,25 +102,23 @@ class ZyraErrorBanner extends StatelessWidget {
   }
 }
 
-/// Full empty-state layout (Category 3) — "nothing here yet", not an
-/// error. Centred icon + one line of copy + optional single CTA.
+/// LOCK22 V3 / LOCK8 V8 shared Monogram empty-state layout.
 class ZyraEmptyState extends StatelessWidget {
   final IconData icon;
 
   /// Optional shared artwork for a destination with a canonical custom icon.
-  /// All existing Material-icon empty states retain their original treatment.
   final Widget? iconWidget;
 
-  /// Optional heading above the message (2026-08-13). Null on every
-  /// existing empty state — those stay exactly as they were, one line
-  /// under the icon. Supplied only where the empty state names the
-  /// thing that is empty before saying what will fill it.
+  /// Existing headings remain optional; the layout never invents copy.
   final String? title;
 
   /// Empty omits the paragraph and its gap, retaining an optional heading.
   final String message;
   final String? ctaLabel;
   final VoidCallback? onCta;
+  final Key? titleKey;
+  final Key? ctaKey;
+  final bool Function()? canAct;
 
   const ZyraEmptyState({
     super.key,
@@ -135,45 +128,120 @@ class ZyraEmptyState extends StatelessWidget {
     this.title,
     this.ctaLabel,
     this.onCta,
+    this.titleKey,
+    this.ctaKey,
+    this.canAct,
   });
+
+  Widget _heading(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final style = ZyraText.heading(
+        size: 21,
+      ).copyWith(fontWeight: FontWeight.w300, height: 1.2);
+      final scaler = MediaQuery.textScalerOf(context);
+      var widest = 0.0;
+      for (final word in title!.split(RegExp(r'\s+'))) {
+        final painter = TextPainter(
+          text: TextSpan(
+            text: word,
+            style: DefaultTextStyle.of(context).style.merge(style),
+          ),
+          textDirection: Directionality.of(context),
+          textScaler: scaler,
+        )..layout();
+        if (painter.width > widest) widest = painter.width;
+        painter.dispose();
+      }
+      return Text(
+        title!,
+        key: titleKey,
+        style: style,
+        textAlign: TextAlign.center,
+        textScaler: widest > constraints.maxWidth
+            ? TextScaler.linear(
+                scaler.scale(21) / 21 * constraints.maxWidth / widest * .995,
+              )
+            : scaler,
+      );
+    },
+  );
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    final content = Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 36),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            iconWidget ?? Icon(icon, color: ZyraColors.ink(0.35), size: 30),
-            SizedBox(height: 14),
-            if (title != null)
-              Text(
-                title!,
-                style: ZyraText.heading(size: 15),
-                textAlign: TextAlign.center,
+            ZyraGoldRingMonogram(
+              name: '',
+              size: 96,
+              fontSize: 34,
+              ringColor: const Color(0xFFA9792E).withValues(alpha: .65),
+              child: IconTheme(
+                data: IconThemeData(color: ZyraColors.journeyGold, size: 34),
+                child:
+                    iconWidget ??
+                    Icon(icon, size: 34, color: ZyraColors.journeyGold),
               ),
+            ),
+            const SizedBox(height: 20),
+            if (title != null) _heading(context),
             if (message.isNotEmpty) ...[
-              if (title != null) SizedBox(height: 6),
-              Text(
-                message,
-                style: ZyraText.subtext(size: 13.5),
-                textAlign: TextAlign.center,
+              if (title != null) const SizedBox(height: 10),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 270),
+                child: Text(
+                  message,
+                  style: ZyraText.subtext(size: 12.5).copyWith(height: 1.5),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ],
             if (ctaLabel != null) ...[
-              SizedBox(height: 16),
-              FilledButton(
-                // Shared primary geometry, focus/semantics and disabled
-                // state, rather than a small purple gesture-only bubble.
-                onPressed: ZyraTapFeedback.onTap(context, onCta),
-                style: FilledButton.styleFrom(minimumSize: const Size(0, 48)),
-                child: Text(ctaLabel!, style: ZyraText.button(size: 13)),
+              const SizedBox(height: 22),
+              OutlinedButton(
+                key: ctaKey,
+                onPressed: ZyraTapFeedback.onTap(
+                  context,
+                  onCta,
+                  canAct: canAct,
+                ),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(0, 40),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 22,
+                    vertical: 10,
+                  ),
+                  side: BorderSide(
+                    color: ZyraColors.journeyGold.withValues(alpha: .65),
+                  ),
+                  shape: const StadiumBorder(),
+                ),
+                child: Text(
+                  ctaLabel!,
+                  style: ZyraText.button(
+                    size: 12.5,
+                    color: ZyraColors.journeyGold,
+                  ),
+                ),
               ),
             ],
           ],
         ),
       ),
+    );
+    return LayoutBuilder(
+      builder: (context, constraints) => constraints.hasBoundedHeight
+          ? SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: content,
+              ),
+            )
+          : content,
     );
   }
 }
@@ -216,50 +284,20 @@ class ZyraDisabledHint extends StatelessWidget {
   }
 }
 
-/// The large "+" invitation for a blank page — one circle, one short
-/// line, centred in the usable page. EXTRACTED 2026-08-23 (GN Draft 3.2) from
-/// seeker_wali_tab.dart's private _AddGuardianButton so the Wali side's
-/// empty surfaces (Dashboard, Network, Seekers) match the Guardians
-/// page exactly (Founder: "it should copy picture 1").
-///
-/// Layout contract at every empty-state call site (Founder follow-up,
-/// 2026-08-23): page title remains at the top; this control sits dead-centre
-/// in the remaining usable page, above the floating navigation clearance.
+/// Compatibility API for existing blank-page invitations. The existing tap
+/// remains on the same control; its artwork/copy use the one shared layout.
 class ZyraAddCircle extends StatelessWidget {
   final VoidCallback onTap;
   final String? label;
   const ZyraAddCircle({super.key, required this.onTap, this.label});
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Material(
-          color: ZyraColors.frostFill,
-          shape: const CircleBorder(),
-          child: InkWell(
-            customBorder: const CircleBorder(),
-            onTap: ZyraTapFeedback.onTap(context, onTap),
-            child: Container(
-              width: 74,
-              height: 74,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: ZyraColors.frostBorder, width: 1),
-              ),
-              child: Icon(Icons.add, size: 34, color: ZyraColors.foreground),
-            ),
-          ),
-        ),
-        if (label != null && label!.isNotEmpty) ...[
-          SizedBox(height: 14),
-          Text(
-            label!,
-            style: ZyraText.body(size: 15, color: ZyraColors.ink(0.75)),
-          ),
-        ],
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Material(
+    type: MaterialType.transparency,
+    child: InkWell(
+      borderRadius: BorderRadius.circular(48),
+      onTap: ZyraTapFeedback.onTap(context, onTap),
+      child: ZyraEmptyState(icon: Icons.add_outlined, message: label ?? ''),
+    ),
+  );
 }

@@ -13,12 +13,16 @@ class ZyraGoldRingMonogram extends StatelessWidget {
     this.ringColor,
     this.weight = FontWeight.w200,
     this.textScaler,
+    this.child,
   });
   final String name;
   final double size, fontSize;
   final Color? ringColor;
   final FontWeight weight;
   final TextScaler? textScaler;
+
+  /// Optional outline artwork within the same shared ring geometry.
+  final Widget? child;
   @override
   Widget build(BuildContext context) => Container(
     width: size,
@@ -30,14 +34,16 @@ class ZyraGoldRingMonogram extends StatelessWidget {
         color: ringColor ?? const Color(0xFFA9792E).withValues(alpha: .7),
       ),
     ),
-    child: Text(
-      name.characters.firstOrNull ?? '',
-      textScaler: textScaler,
-      style: ZyraText.heading(
-        size: fontSize,
-        color: ZyraColors.journeyGold,
-      ).copyWith(fontWeight: weight),
-    ),
+    child:
+        child ??
+        Text(
+          name.characters.firstOrNull ?? '',
+          textScaler: textScaler,
+          style: ZyraText.heading(
+            size: fontSize,
+            color: ZyraColors.journeyGold,
+          ).copyWith(fontWeight: weight),
+        ),
   );
 }
 

@@ -226,7 +226,14 @@ class _ZyraRequestActivityPresentationState
       // Like the Journey empty page: centre in the available body, with
       // natural scrolling only when enlarged text needs more reading space.
       return Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 110),
+        // The locked normal frame reserves the lower quiet area. Enlarged
+        // text reclaims it and keeps the existing natural reading scroll.
+        padding: EdgeInsets.fromLTRB(
+          20,
+          0,
+          20,
+          MediaQuery.textScalerOf(context).scale(12.5) <= 12.5 ? 250 : 110,
+        ),
         child: LayoutBuilder(
           key: ValueKey('request_activity_empty_viewport_$index'),
           builder: (context, constraints) => ZyraShadowScrollView(

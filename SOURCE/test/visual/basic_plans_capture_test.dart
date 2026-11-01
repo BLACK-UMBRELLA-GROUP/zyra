@@ -358,7 +358,7 @@ void main() {
             'The capacity replacement chooser is only implemented for3 places.',
       );
       await _mount(h, tab: 2, pages: const ['ended']);
-      expect(find.text('No ended Journeys.'), findsOneWidget);
+      expect(find.text('No ended Journeys'), findsOneWidget);
       await _page(
         h,
         'ended',

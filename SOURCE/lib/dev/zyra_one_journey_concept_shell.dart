@@ -1605,6 +1605,9 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     final fullPhoto = _isPhotoPage;
     final ownsViewport =
         _page == null ||
+        (_page == 'held_action' &&
+            _guardianRole &&
+            _heldTitle == 'Ended Journeys') ||
         fullPhoto ||
         [
           'filters',
@@ -3978,9 +3981,9 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     return people.isEmpty
         ? [
             ZyraRequestActivityEmpty(
-              icon: Icons.route_outlined,
-              title: 'No ended Journeys.',
-              message: '',
+              icon: Icons.history_outlined,
+              title: 'No ended Journeys',
+              message: "When a Journey ends, it's kept here with its Timeline.",
             ),
           ]
         : [
@@ -6575,7 +6578,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     if (action == 'ended') {
       _holdPreviewAction(
         'Ended Journeys',
-        'Only what ${state.seekerName} shares with you. Past summaries are not shared.',
+        "You see ${state.seekerName}'s past Journeys only if he shares their summaries with you.",
       );
       return;
     }
@@ -6800,14 +6803,45 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     );
   }
 
-  Widget _heldPreviewAction() => Column(
-    key: const ValueKey('concept_held_action'),
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      _heading(_heldTitle, ''),
-      _card([_body(_heldDetail)]),
-    ],
-  );
+  Widget _heldPreviewAction() => _guardianRole && _heldTitle == 'Ended Journeys'
+      ? SafeArea(
+          bottom: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+            child: Column(
+              key: const ValueKey('concept_held_action'),
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _heading(_heldTitle, ''),
+                Expanded(
+                  child: Builder(
+                    builder: (context) => Padding(
+                      padding: EdgeInsets.only(
+                        bottom:
+                            MediaQuery.textScalerOf(context).scale(12.5) <= 12.5
+                            ? 240
+                            : 0,
+                      ),
+                      child: ZyraEmptyState(
+                        icon: Icons.history_outlined,
+                        title: 'No ended Journeys to show.',
+                        message: _heldDetail,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        )
+      : Column(
+          key: const ValueKey('concept_held_action'),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _heading(_heldTitle, ''),
+            _card([_body(_heldDetail)]),
+          ],
+        );
 
   Widget _ownProfilePreview() {
     if (_photos == null && !_photoLoadFailed) {

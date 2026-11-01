@@ -6,6 +6,7 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../theme/zyra_interaction_style.dart';
 import '../widgets/zyra_tap_feedback.dart';
+import '../widgets/zyra_state_widgets.dart';
 import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_focus_dashboard.dart';
 import '../widgets/zyra_profiles_components.dart';
@@ -587,22 +588,27 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
                 child: child,
               ),
       );
-  Widget _quiet(String title, String detail, IconData icon) => Expanded(
-    child: Align(
-      alignment: const Alignment(0, -.35),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 25, color: ZyraColors.ink(.55)),
-          const SizedBox(height: 13),
-          _text(title),
-          const SizedBox(height: 5),
-          Text(
-            detail,
-            textAlign: TextAlign.center,
-            style: ZyraText.subtext(size: 13).copyWith(height: 1.45),
-          ),
-        ],
+  Widget _quiet(
+    String title,
+    String detail,
+    IconData icon, {
+    bool network = false,
+  }) => Expanded(
+    child: Builder(
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.textScalerOf(context).scale(12.5) <= 12.5
+              ? 240
+              : 0,
+        ),
+        child: ZyraEmptyState(
+          icon: icon,
+          title: title,
+          message: detail,
+          ctaLabel: network ? 'Open Network' : null,
+          ctaKey: network ? const ValueKey('guardian_empty_network') : null,
+          onCta: network ? () => onAction('network') : null,
+        ),
       ),
     ),
   );
@@ -819,6 +825,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
                   ? "When another family's Guardian asks to speak about Adam, it appears here."
                   : 'Find a family in Network and choose Connect with Guardian.',
               Icons.forum_outlined,
+              network: !received,
             )
           else ...[
             if (received)
@@ -909,6 +916,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
                 'No introductions yet.',
                 'Find someone in Network and choose Introduce to ${state.seekerName}.',
                 Icons.groups_outlined,
+                network: true,
               ),
             ],
           ),
@@ -1158,7 +1166,12 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
               ),
             )
           else
-            _text('No current Journey', muted: true),
+            const Expanded(
+              child: ZyraEmptyState(
+                icon: Icons.route_outlined,
+                message: 'No current Journey',
+              ),
+            ),
           const SizedBox(height: 10),
           if (linked)
             _tile(
@@ -1167,7 +1180,6 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
               Icons.history,
               'ended',
             ),
-          if (!linked || journeys.isEmpty) const Spacer(),
         ],
       ),
     ),

@@ -295,54 +295,13 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
     );
   }
 
-  Widget _empty(BuildContext context) => LayoutBuilder(
-    builder: (context, constraints) => SingleChildScrollView(
-      padding: EdgeInsets.fromLTRB(
-        _side,
-        selected == null ? 80 : 48,
-        _side,
-        24,
-      ),
-      child: selected != null
-          ? Text(
-              'No messages about ${selected!.name} yet.\nStart the discussion below.',
-              textAlign: TextAlign.center,
-              style: ZyraText.body(size: 14, color: ZyraColors.foregroundMuted),
-            )
-          : Column(
-              children: [
-                Container(
-                  width: 64,
-                  height: 64,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: ZyraColors.surfaceEmphasisBorder),
-                  ),
-                  child: Icon(
-                    Icons.forum_outlined,
-                    size: 18,
-                    color: ZyraColors.journeyGold,
-                  ),
-                ),
-                const SizedBox(height: 18),
-                Text(
-                  'Talk about your search',
-                  textAlign: TextAlign.center,
-                  style: ZyraText.heading(size: 21),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Who to request, introductions, and what matters to your family. '
-                  'Each Journey gets its own tab when it begins.',
-                  textAlign: TextAlign.center,
-                  style: ZyraText.body(
-                    size: 14,
-                    color: ZyraColors.foregroundMuted,
-                  ),
-                ),
-              ],
-            ),
-    ),
+  Widget _empty(BuildContext context) => ZyraEmptyState(
+    icon: Icons.forum_outlined,
+    title: selected == null ? 'Talk about your search' : null,
+    message: selected == null
+        ? 'Who to request, introductions, and what matters to your family. '
+              'Each Journey gets its own tab when it begins.'
+        : 'No messages about ${selected!.name} yet.\nStart the discussion below.',
   );
 
   Widget _pastRows(BuildContext context) => ListView(

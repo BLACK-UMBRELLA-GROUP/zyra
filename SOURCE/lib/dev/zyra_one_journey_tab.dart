@@ -1,3 +1,4 @@
+import '../widgets/zyra_state_widgets.dart';
 import '../widgets/zyra_floating_surface.dart';
 import 'dart:math' as math;
 
@@ -251,47 +252,22 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Center(
-                child: Container(
-                  width: 64,
-                  height: 64,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: ZyraColors.journeyGold.withValues(alpha: .6),
-                    ),
-                  ),
-                  child: const Center(
-                    child: ZyraJourneyIcon(
-                      size: 26,
-                      color: ZyraColors.journeyGold,
-                    ),
-                  ),
+              ZyraEmptyState(
+                icon: Icons.route_outlined,
+                iconWidget: const ZyraJourneyIcon(
+                  size: 34,
+                  color: ZyraColors.journeyGold,
                 ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'No Journey yet',
-                key: const ValueKey('journey_tab_empty_title'),
-                textAlign: TextAlign.center,
-                style: ZyraText.heading(size: 22),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'You have ${widget.capacity} ${widget.capacity == 1 ? 'place' : 'places'}. '
-                'Send a Journey request from Profiles to begin.',
-                textAlign: TextAlign.center,
-                style: ZyraText.body(size: 13, color: ZyraColors.ink(.65)),
-              ),
-              const SizedBox(height: 20),
-              _button(
-                key: 'journey_tab_browse',
-                label: 'Browse profiles',
-                action: widget.onBrowse,
-                current: current,
-                filled: true,
+                title: 'No Journey yet',
+                titleKey: const ValueKey('journey_tab_empty_title'),
+                message:
+                    'You have ${widget.capacity} ${widget.capacity == 1 ? 'place' : 'places'}. '
+                    'Send a Journey request from Profiles to begin.',
+                ctaLabel: 'Browse profiles',
+                ctaKey: const ValueKey('journey_tab_browse'),
+                onCta: widget.onBrowse,
+                canAct: current,
               ),
               if (widget.capacity == 1) ...[
                 const SizedBox(height: 14),

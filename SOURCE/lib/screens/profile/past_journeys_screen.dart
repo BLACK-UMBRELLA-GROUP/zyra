@@ -329,12 +329,10 @@ class _PastJourneysScreenState extends State<PastJourneysScreen> {
             icon: index == 0
                 ? Icons.pause_circle_outline_rounded
                 : Icons.history_rounded,
-            title: index == 0
-                ? 'No Paused Journeys yet'
-                : 'No Ended Journeys yet',
+            title: index == 0 ? 'No Paused Journeys yet' : 'No ended Journeys',
             message: index == 0
                 ? 'Journeys placed on hold will appear here until they continue or end.'
-                : 'Journeys brought to a close will appear here, with their history kept.',
+                : "When a Journey ends, it's kept here with its Timeline.",
           ),
         ),
       );

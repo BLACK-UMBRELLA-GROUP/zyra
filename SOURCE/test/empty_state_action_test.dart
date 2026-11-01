@@ -7,7 +7,7 @@ void main() {
   setUp(() => ZyraText.useTestFontStubs = true);
   tearDown(() => ZyraText.useTestFontStubs = false);
 
-  testWidgets('empty-state action is a standard 48px working primary control', (
+  testWidgets('empty-state action is a working 40pt gold outline control', (
     tester,
   ) async {
     var taps = 0;
@@ -24,11 +24,8 @@ void main() {
         ),
       ),
     );
-    expect(find.byType(FilledButton), findsOneWidget);
-    expect(
-      tester.getSize(find.byType(FilledButton)).height,
-      greaterThanOrEqualTo(48),
-    );
+    expect(find.byType(OutlinedButton), findsOneWidget);
+    expect(tester.getSize(find.byType(OutlinedButton)).height, equals(40));
     await tester.tap(find.text('Try again'));
     expect(taps, 1);
     expect(
@@ -53,9 +50,63 @@ void main() {
       ),
     );
     expect(
-      tester.widget<FilledButton>(find.byType(FilledButton)).onPressed,
+      tester.widget<OutlinedButton>(find.byType(OutlinedButton)).onPressed,
       isNull,
     );
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('Larger Text remains scrollable and revoked actions stay inert', (
+    tester,
+  ) async {
+    var current = true;
+    var taps = 0;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: MediaQuery(
+          data: const MediaQueryData(textScaler: TextScaler.linear(2)),
+          child: Scaffold(
+            body: SizedBox(
+              width: 320,
+              height: 300,
+              child: ZyraEmptyState(
+                icon: Icons.forum_outlined,
+                title: 'No requests sent yet.',
+                message:
+                    'Find a family in Network and choose Connect with Guardian.',
+                ctaLabel: 'Open Network',
+                onCta: () => taps++,
+                canAct: () => current,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.ensureVisible(find.text('Open Network'));
+    await tester.tap(find.text('Open Network'));
+    expect(taps, 1);
+    current = false;
+    await tester.tap(find.text('Open Network'));
+    expect(taps, 1);
+    expect(tester.takeException(), isNull);
+  });
+  testWidgets(
+    'existing blank-page invitation reuses the shared layout and action',
+    (tester) async {
+      var taps = 0;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: ZyraAddCircle(label: 'Invite a Seeker', onTap: () => taps++),
+          ),
+        ),
+      );
+      expect(find.byType(ZyraEmptyState), findsOneWidget);
+      expect(find.byType(OutlinedButton), findsNothing);
+      await tester.tap(find.byIcon(Icons.add_outlined));
+      expect(taps, 1);
+      expect(tester.takeException(), isNull);
+    },
+  );
 }

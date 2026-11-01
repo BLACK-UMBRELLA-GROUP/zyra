@@ -756,7 +756,7 @@ void main() {
       await _mount(tester);
       await _nav(tester, 2);
       await _tap(tester, 'my-zyra-route-concept-my-ended');
-      expect(find.text('No ended Journeys.'), findsOneWidget);
+      expect(find.text('No ended Journeys'), findsOneWidget);
       await _toggleOptions(tester);
       _context(tester, 'Ended Journeys');
       _inventory(tester, myZyra: true);

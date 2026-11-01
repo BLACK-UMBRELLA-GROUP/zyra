@@ -683,7 +683,7 @@ void main() {
       expect(_key('my-zyra-route-concept-my-ended'), findsOneWidget);
       expect(find.text('0 ended'), findsOneWidget);
       await _press(tester, 'my-zyra-route-concept-my-ended');
-      expect(find.text('No ended Journeys.'), findsOneWidget);
+      expect(find.text('No ended Journeys'), findsOneWidget);
       await _controls(tester, page: 'Journey');
       expect(_action(tester, 'concept_journey_preview_3'), isNotNull);
       expect(AppState.instance.activeJourneys, isEmpty);

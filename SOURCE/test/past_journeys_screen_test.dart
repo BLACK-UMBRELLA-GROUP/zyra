@@ -130,11 +130,9 @@ void main() {
 
     await tester.tap(find.text('Ended'));
     await tester.pumpAndSettle();
-    expect(find.text('No Ended Journeys yet'), findsOneWidget);
+    expect(find.text('No ended Journeys'), findsOneWidget);
     expect(
-      find.text(
-        'Journeys brought to a close will appear here, with their history kept.',
-      ),
+      find.text("When a Journey ends, it's kept here with its Timeline."),
       findsOneWidget,
     );
   });

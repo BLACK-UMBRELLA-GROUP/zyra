@@ -511,7 +511,7 @@ void main() {
         _expectOccupied(tester, _occupied);
         await _nav(tester, 2);
         await _press(tester, 'concept-my-ended');
-        expect(find.text('No ended Journeys.'), findsOneWidget);
+        expect(find.text('No ended Journeys'), findsOneWidget);
       },
     );
 

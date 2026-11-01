@@ -1,3 +1,4 @@
+import '../../widgets/zyra_state_widgets.dart';
 // Help & Support — rebuilt 2026-08-01 (Founder: "the help and support
 // page we gotta start building it... start building Q/A etc to let users
 // navigate for any issues").
@@ -451,30 +452,16 @@ class _NoResults extends StatelessWidget {
   const _NoResults({required this.query, this.contactAvailable = true});
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 28),
-      child: Column(
-        children: [
-          Icon(Icons.search_off, color: ZyraColors.ink(0.38), size: 30),
-          SizedBox(height: 12),
-          Text(
-            'Nothing matched "$query"',
-            style: ZyraText.body(size: 15, color: Colors.white),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 6),
-          Text(
-            contactAvailable
-                ? 'Try a different word, or use the support email below.'
-                : 'Try a different word.',
-            style: ZyraText.subtext(size: 13),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 28),
+    child: ZyraEmptyState(
+      icon: Icons.search_off_outlined,
+      title: 'Nothing matched "$query"',
+      message: contactAvailable
+          ? 'Try a different word, or use the support email below.'
+          : 'Try a different word.',
+    ),
+  );
 }
 
 /// Last resort, at the bottom. There is genuinely no ticketing system yet

@@ -341,7 +341,7 @@ void _expectPlainEmpty(
   expect(viewport, findsOneWidget);
   expect(empty, findsOneWidget);
   expect(shared, findsOneWidget);
-  for (final type in [Container, DecoratedBox, Material, FilledButton]) {
+  for (final type in [Material, FilledButton, OutlinedButton]) {
     expect(
       find.descendant(of: empty, matching: find.byType(type)),
       findsNothing,
@@ -351,9 +351,9 @@ void _expectPlainEmpty(
   final artwork = tester.widget<Icon>(
     find.descendant(of: empty, matching: find.byIcon(icon)),
   );
-  expect(artwork.size, 30);
-  expect(artwork.color, ZyraColors.ink(.35));
-  expect(tester.widget<Text>(find.text(title)).style!.fontSize, 15);
+  expect(artwork.size, 34);
+  expect(artwork.color, ZyraColors.journeyGold);
+  expect(tester.widget<Text>(find.text(title)).style!.fontSize, 21);
   final emptyState = tester.widget<ZyraEmptyState>(shared);
   expect(emptyState.ctaLabel, isNull);
   expect(emptyState.onCta, isNull);
@@ -574,7 +574,7 @@ void main() {
               .widget<Text>(find.text('No introductions yet'))
               .style!
               .fontSize,
-          15,
+          21,
         );
         _expectNaturalText(tester);
         await tester.drag(
@@ -676,7 +676,7 @@ void main() {
           final heading = tester.widget<Text>(
             find.text('No introductions yet'),
           );
-          expect(heading.style!.fontSize, 15);
+          expect(heading.style!.fontSize, 21);
           final headingContext = tester.element(
             find.text('No introductions yet'),
           );
@@ -751,7 +751,7 @@ void main() {
             MediaQuery.textScalerOf(
               tester.element(find.text(title)),
             ).scale(heading.style!.fontSize!),
-            30,
+            42,
           );
           final empty = tester.widget<ZyraEmptyState>(
             find.descendant(

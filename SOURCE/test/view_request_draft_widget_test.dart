@@ -4364,7 +4364,7 @@ void main() {
           expect(_key('concept_activity_ended'), findsOneWidget);
           expect(_key('draft_journey_${_fixture}_header'), findsOneWidget);
           expect(find.text('No paused Journeys.'), findsNothing);
-          expect(find.text('No ended Journeys.'), findsNothing);
+          expect(find.text('No ended Journeys'), findsNothing);
           expect(tester.takeException(), isNull);
         }, network);
       } finally {
