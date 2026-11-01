@@ -1,0 +1,156 @@
+{
+  "captures": [
+    {
+      "file": "g07_large_390_actions.png",
+      "width": 1170,
+      "height": 2532,
+      "logical_width": 390.0,
+      "logical_height": 844.0,
+      "text_scale": 2.0,
+      "route": [
+        "guardian_introduce"
+      ],
+      "tab": 0,
+      "reached": "Actual admitted offline Founder Guardian shell via Network; selected sample family; no backend.",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g07_introduce_to_adam__confirm.png",
+      "comparison": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_large_390_actions_master_beside_build.png"
+    },
+    {
+      "file": "g07_large_390_top.png",
+      "width": 1170,
+      "height": 2532,
+      "logical_width": 390.0,
+      "logical_height": 844.0,
+      "text_scale": 2.0,
+      "route": [
+        "guardian_introduce"
+      ],
+      "tab": 0,
+      "reached": "Actual admitted offline Founder Guardian shell via Network; selected sample family; no backend.",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g07_introduce_to_adam__confirm.png",
+      "comparison": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_large_390_top_master_beside_build.png"
+    },
+    {
+      "file": "g07_large_430_actions.png",
+      "width": 1290,
+      "height": 2532,
+      "logical_width": 430.0,
+      "logical_height": 844.0,
+      "text_scale": 2.0,
+      "route": [
+        "guardian_introduce"
+      ],
+      "tab": 0,
+      "reached": "Actual admitted offline Founder Guardian shell via Network; selected sample family; no backend.",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g07_introduce_to_adam__confirm.png",
+      "comparison": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_large_430_actions_master_beside_build.png"
+    },
+    {
+      "file": "g07_large_430_top.png",
+      "width": 1290,
+      "height": 2532,
+      "logical_width": 430.0,
+      "logical_height": 844.0,
+      "text_scale": 2.0,
+      "route": [
+        "guardian_introduce"
+      ],
+      "tab": 0,
+      "reached": "Actual admitted offline Founder Guardian shell via Network; selected sample family; no backend.",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g07_introduce_to_adam__confirm.png",
+      "comparison": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_large_430_top_master_beside_build.png"
+    },
+    {
+      "file": "g07_normal.png",
+      "width": 1290,
+      "height": 2796,
+      "logical_width": 430.0,
+      "logical_height": 932.0,
+      "text_scale": 1.0,
+      "route": [
+        "guardian_introduce"
+      ],
+      "tab": 0,
+      "reached": "Actual admitted offline Founder Guardian shell via Network; selected sample family; no backend.",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g07_introduce_to_adam__confirm.png",
+      "comparison": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_normal_master_beside_build.png"
+    },
+    {
+      "file": "g08_large_390_actions.png",
+      "width": 1170,
+      "height": 2532,
+      "logical_width": 390.0,
+      "logical_height": 844.0,
+      "text_scale": 2.0,
+      "route": [
+        "network_request"
+      ],
+      "tab": 0,
+      "reached": "Actual admitted offline Founder Guardian shell via Network; selected sample family; no backend.",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g08_connect_with_guardian__confirm.png",
+      "comparison": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_large_390_actions_master_beside_build.png"
+    },
+    {
+      "file": "g08_large_390_top.png",
+      "width": 1170,
+      "height": 2532,
+      "logical_width": 390.0,
+      "logical_height": 844.0,
+      "text_scale": 2.0,
+      "route": [
+        "network_request"
+      ],
+      "tab": 0,
+      "reached": "Actual admitted offline Founder Guardian shell via Network; selected sample family; no backend.",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g08_connect_with_guardian__confirm.png",
+      "comparison": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_large_390_top_master_beside_build.png"
+    },
+    {
+      "file": "g08_large_430_actions.png",
+      "width": 1290,
+      "height": 2532,
+      "logical_width": 430.0,
+      "logical_height": 844.0,
+      "text_scale": 2.0,
+      "route": [
+        "network_request"
+      ],
+      "tab": 0,
+      "reached": "Actual admitted offline Founder Guardian shell via Network; selected sample family; no backend.",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g08_connect_with_guardian__confirm.png",
+      "comparison": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_large_430_actions_master_beside_build.png"
+    },
+    {
+      "file": "g08_large_430_top.png",
+      "width": 1290,
+      "height": 2532,
+      "logical_width": 430.0,
+      "logical_height": 844.0,
+      "text_scale": 2.0,
+      "route": [
+        "network_request"
+      ],
+      "tab": 0,
+      "reached": "Actual admitted offline Founder Guardian shell via Network; selected sample family; no backend.",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g08_connect_with_guardian__confirm.png",
+      "comparison": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_large_430_top_master_beside_build.png"
+    },
+    {
+      "file": "g08_normal.png",
+      "width": 1290,
+      "height": 2796,
+      "logical_width": 430.0,
+      "logical_height": 932.0,
+      "text_scale": 1.0,
+      "route": [
+        "network_request"
+      ],
+      "tab": 0,
+      "reached": "Actual admitted offline Founder Guardian shell via Network; selected sample family; no backend.",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g08_connect_with_guardian__confirm.png",
+      "comparison": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_normal_master_beside_build.png"
+    }
+  ],
+  "count": 10,
+  "note": "Normal master alongside actual. Larger Text views are accessibility evidence, without a separate locked Larger Text master. All local sample data; unchanged action admission."
+}

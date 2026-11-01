@@ -1,0 +1,47 @@
+{
+  "queue": 60,
+  "lock": "8 V7",
+  "source_commit": "3331e38100df4e45ad41fe6d09b17edcbf1faca6",
+  "flutter": "3.44.2",
+  "build_mode": "widget test, actual admitted offline Founder Guardian shell; no compiled/native app",
+  "timestamp": "2026-11-01T09:43:04.352202+00:00",
+  "built_from": [
+    "PRODUCT/APPROVED/GUARDIAN_TABS/BRIEFS/BUILD_BRIEF_2026-10-31_V7.md",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/ARCHIVE/GUARDIAN_TABS_SPEC_2026-10-31_V7.md",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/LOCK_RECORD.md",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g07_introduce_to_adam__confirm.png",
+    "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g08_connect_with_guardian__confirm.png"
+  ],
+  "handover": {
+    "entry": "ZyraGuardianTabsPresentation._confirm -> ZyraGuardianActionPage; existing selected family/state.seekerName; no shell edits",
+    "actions": "Same onAction introduce_send/connect_send/back; _boundGuardianAction and existing entitlement/link/filter/route/View guards untouched.",
+    "privacy": "Initial only; no photo/surname. Existing sample Hassan attribution retained; no identity/backend invention.",
+    "reusable_api": {
+      "path": "SOURCE/lib/dev/zyra_one_journey_monogram_presentation.dart",
+      "symbols": [
+        {
+          "name": "ZyraGoldRingMonogram",
+          "line": 7,
+          "parameters": "required name, size, fontSize; optional ringColor, weight(w200), textScaler; existing LOCK19 caller retains 110pt adaptive ring/52pt type and original alpha .7"
+        },
+        {
+          "name": "ZyraMonogramHead",
+          "line": 44,
+          "parameters": "required name, title, eyebrow; optional monogramKey; 96pt gold ring/44pt initial, 24pt light title, gold 11pt eyebrow"
+        },
+        {
+          "name": "ZyraMonogramCard",
+          "line": 87,
+          "parameters": "required child; optional padding(default horizontal18); existing floating surface/radius20/surface fill and border"
+        }
+      ]
+    },
+    "next_owner": "Queue67 supplies its own locked rows/actions and reuses these symbols without widget copies. No queue67 behavior built here.",
+    "migrations": "none",
+    "limitations": "Local preview only; shared renderer differences QUEUE60-R1/OA-ZYRA-335; no device or full-suite assertion."
+  },
+  "captures": "CAPTURES.json",
+  "checks": "CHECKS.json",
+  "qa": "QA.json",
+  "trace": "MANIFEST.json"
+}

@@ -1,0 +1,13 @@
+{
+  "file": "g08_large_430_top.png",
+  "width": 1290,
+  "height": 2532,
+  "logical_width": 430.0,
+  "logical_height": 844.0,
+  "text_scale": 2.0,
+  "route": [
+    "network_request"
+  ],
+  "tab": 0,
+  "reached": "Actual admitted offline Founder Guardian shell via Network; selected sample family; no backend."
+}

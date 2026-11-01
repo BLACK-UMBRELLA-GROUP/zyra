@@ -1,0 +1,28 @@
+{
+  "authority": [
+    "DOC-ZYRA-0404 / LOCK8 V7",
+    "AD-AIOS-115",
+    "AD-AIOS-118",
+    "AD-AIOS-120",
+    "OA-ZYRA-335"
+  ],
+  "normal": "96-point ring, 24-point light head, three gold-icon rows; LOCK14 V5 primaryAction C08A3A with foreground ink; source Poppins and real app frame.",
+  "larger_text": "430/390pt at 200%, 844pt tall. Content scrolls, all three rows wrap, both send/back remain reachable. Ten actual captures: two normal and eight top/action views.",
+  "visual_sampling": [
+    "g07 normal (initial pass, geometry unchanged)",
+    "g08 normal (final)",
+    "g07 390pt 200% top (final)",
+    "g08 390pt 200% actions (final)"
+  ],
+  "finding": {
+    "id": "QUEUE60-R1",
+    "action": "OA-ZYRA-335",
+    "detail": "Shared app type/frame metrics, decorative ring colour, icon glyphs and floating shadows differ from prototype masters. Normal content/card bounds vary slightly with real type metrics. Approved shared renderer retained; no speculative redesign, pixel-equality or Founder visual-approval claim."
+  },
+  "efficiency": {
+    "action": "OA-AIOS-419",
+    "preflight_text_bytes": 1377074,
+    "preflight_image_bytes": 1344307,
+    "detail": "Includes initial buffered MAP/review overread and repeated source scans. Reported honestly in single Task14; no extra note/question."
+  }
+}

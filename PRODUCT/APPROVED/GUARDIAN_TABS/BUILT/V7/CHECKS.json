@@ -1,0 +1,36 @@
+{
+  "sdk": "protected no_git_driver.mjs, pinned Flutter 3.44.2; 5 pins, exec-denial and nested exec-denial PASS",
+  "sdk_commands_prefix": "/Users/shakeelahmad/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node tooling/no_git_driver.mjs",
+  "v7": {
+    "test": "SOURCE/test/visual/lock8_v7_guardian_action_test.dart",
+    "passed": 8,
+    "final_exit": 0,
+    "capture_define": "ZYRA_LOCK8_V7_CAPTURE=true",
+    "arguments": "flutter test --no-pub --concurrency=1 --reporter expanded"
+  },
+  "regressions": {
+    "passed": 73,
+    "files": [
+      "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "SOURCE/test/visual/lock8_v6_guardian_seeker_test.dart",
+      "SOURCE/test/guardian_card_shell_test.dart",
+      "SOURCE/test/guardian_card_interaction_test.dart",
+      "SOURCE/test/guardian_card_family_sheet_test.dart"
+    ],
+    "run_exit": 1,
+    "run_note": "The combined run passed these 73 existing cases and failed 8 new cases only on the painting-debug-variable invariant. The V7 shadow flag is now restored in each test body finally; all 8 final V7 cases pass. No app failure remained."
+  },
+  "analyzer": {
+    "items": 5,
+    "exit": 0,
+    "result": "No issues found"
+  },
+  "format": {
+    "files": 5,
+    "changed": 0,
+    "exit": 0
+  },
+  "full_suite": "not run",
+  "native_device": "not run",
+  "backend": "none"
+}

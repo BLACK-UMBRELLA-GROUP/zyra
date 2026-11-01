@@ -1,0 +1,344 @@
+{
+  "source_commit": "3331e38100df4e45ad41fe6d09b17edcbf1faca6",
+  "source_scope": "Explicit changed sources/tests and relevant unchanged lease/render entry dependencies; source commit identifies the repository snapshot. No source copies in evidence.",
+  "source": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_action.dart",
+      "bytes": 6283,
+      "sha256": "620288829dc7598ee9d2256204dd7f4b3e8a6bf0f9c02aa9e1267c693d883838"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_monogram_presentation.dart",
+      "bytes": 2835,
+      "sha256": "9ae1fe5e8eb25c4c0a4a4192532014f3ad6a8617c15c090939249699caca010e"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "bytes": 59756,
+      "sha256": "bd7cd882f56c15b504e07cac3018ac01aea297f558c6c8a3dec089f29f58e9b0"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "bytes": 33714,
+      "sha256": "37e72bc81ba92e04ccab3684ab99cbdfafc7d75f8a0802364b00bda05bbf81d6"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_seeker.dart",
+      "bytes": 8459,
+      "sha256": "7901bae23650405a9019372b972a052bc9a003a742e03887145df4d7e53b1ead"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 335574,
+      "sha256": "84fa99d2cd9c965ae996f7504befe043a509b652e2afcc49b4811361b5f6322c"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_preview_navigation_checkpoint.dart",
+      "bytes": 8003,
+      "sha256": "277c4333a7768d42134860e6c931dd742668db88d78eb2c8fca83dae27897d08"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "bytes": 67865,
+      "sha256": "32a8b585e626596fb6338752b91757d7a4df75c66664d427961faad69a4615b8"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_floating_surface.dart",
+      "bytes": 4561,
+      "sha256": "fd644ebb853c74e1b6b2aae2723c2e42b2b2446746d8bfeb24e2844cde7c4117"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_tap_feedback.dart",
+      "bytes": 1928,
+      "sha256": "4448d7539e855ee45380bb84a75c8c24003db464de9311e534f23f0334703599"
+    },
+    {
+      "path": "SOURCE/lib/theme/zyra_colors.dart",
+      "bytes": 18956,
+      "sha256": "69bd460c2f1be177bac90643edc5780cdc0f17df117296413f30dadccb6a474e"
+    },
+    {
+      "path": "SOURCE/lib/theme/zyra_text.dart",
+      "bytes": 15952,
+      "sha256": "7ce08b59ebd62c130c883b5ab0df6643518fd7f41c1ae88d6093b799378a6f4d"
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_v7_guardian_action_test.dart",
+      "bytes": 7853,
+      "sha256": "b9f0cb8c2a580d76ca175119500d46f9ac20c11ef3533322d2a037b3b638c696"
+    },
+    {
+      "path": "SOURCE/test/visual/baseline_capture_support.dart",
+      "bytes": 18034,
+      "sha256": "7a1bc19b53884f38b5360069d7a6981a73980c8f8bea2db1e97ffcd54c760f1d"
+    },
+    {
+      "path": "SOURCE/test/support/zyra_hidden_dev_controls_driver.dart",
+      "bytes": 8632,
+      "sha256": "d5dde5c9d5259a31a259d1200877451b823461766f99c01a7ed2b3adf743f23e"
+    }
+  ],
+  "input": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BRIEFS/BUILD_BRIEF_2026-10-31_V7.md",
+      "bytes": 1776,
+      "sha256": "3f056ccfe017ebefb997a2a6a224956a40196f66bbf767a0095578ba1f61a526"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/ARCHIVE/GUARDIAN_TABS_SPEC_2026-10-31_V7.md",
+      "bytes": 13710,
+      "sha256": "c0e656ca65481776a9370d437be9326a10c6d00b65f7f15cd1948118a162de03"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/LOCK_RECORD.md",
+      "bytes": 4076,
+      "sha256": "14e47fe356f0be0bd88d835b9663c5e8b483d4244dca726bc8530530fa804030"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g07_introduce_to_adam__confirm.png",
+      "bytes": 675670,
+      "sha256": "4e20f6b8e9b9b68268da4ab45d60eac579331b999e4dd14621d00c5bbc775208"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g08_connect_with_guardian__confirm.png",
+      "bytes": 668637,
+      "sha256": "43e351cad36c8955fee713fe2bc905d6195ce9a724b969989b74ce1facac7538"
+    },
+    {
+      "path": "SOURCE/tooling/sdk_pins.json",
+      "bytes": 687,
+      "sha256": "6a12ab7d1db5f91d8c69eb425342c2f2ab090ae9fbef10559c873cf2f78fcd1d"
+    },
+    {
+      "path": "SOURCE/tooling/no_git_driver.mjs",
+      "bytes": 5974,
+      "sha256": "518527ff1025f3611952c97a059de752de32b11ff68fc1d658fa6406ab76dfc2"
+    },
+    {
+      "path": "SOURCE/tooling/no_git.sb",
+      "bytes": 325,
+      "sha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d"
+    },
+    {
+      "path": "SOURCE/assets/fonts/Poppins-ExtraLight.ttf",
+      "bytes": 163568,
+      "sha256": "55c03314cc754e26f741f97890e5e9cbe3b3278fe3abcecfecafd60111b2643d"
+    },
+    {
+      "path": "SOURCE/assets/fonts/Poppins-Light.ttf",
+      "bytes": 161936,
+      "sha256": "650ba57fa99d12ec40c31ccfb680be656be4497fbe14164617d67e32ffe9cd46"
+    },
+    {
+      "path": "SOURCE/assets/fonts/Poppins-Medium.ttf",
+      "bytes": 158576,
+      "sha256": "90373e7d838d32468438fc3e152dca0bdb12edcab99ea639f158790b1ba1fd05"
+    },
+    {
+      "path": "SOURCE/assets/fonts/Poppins-Regular.ttf",
+      "bytes": 160316,
+      "sha256": "7e65201e9b79159e2300267cc885e16c8dcef2424cdfa09a29bfb0980a94a7ba"
+    },
+    {
+      "path": "SOURCE/assets/fonts/Poppins-Bold.ttf",
+      "bytes": 155996,
+      "sha256": "983676516167748b74de6f4771fb384c664fd913acb8b471122ecacf5da5ea6c"
+    },
+    {
+      "path": "SOURCE/assets/fonts/Poppins-SemiBold.ttf",
+      "bytes": 157312,
+      "sha256": "d3bf1bdaf0550e83da9ac0b1d1d9fe6db086835a83aa28578e609a394b9a0286"
+    }
+  ],
+  "render": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/CONTACT_SHEET.png",
+      "bytes": 2224947,
+      "sha256": "9503ebccb724c795b4e4252568565e7b4240cbe86af689e8e0eba47d5e282ea6"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_large_390_actions.png",
+      "bytes": 443510,
+      "sha256": "6a287761e7da4a66d3dee75854a938ba5dbf87dc58b043d4e0a848cfe933a580"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_large_390_actions_master_beside_build.png",
+      "bytes": 956336,
+      "sha256": "c04b91f15751df1f3ee207d26600beaca77f0a85d22374b2c446e04ac5d329ad"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_large_390_top.png",
+      "bytes": 424356,
+      "sha256": "c572f386e4193eb73252e767d30562a8ebcc6dc3a2488249735a1149e213f418"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_large_390_top_master_beside_build.png",
+      "bytes": 934049,
+      "sha256": "ba4c34bedfa6e371371f81170b42785e43a77b9b05073ab55bad63d1884a51ca"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_large_430_actions.png",
+      "bytes": 455056,
+      "sha256": "182e5a088c47e04d6dbfedd4688c5402079b7f4edeaea09245b29a9c9dc2a3fb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_large_430_actions_master_beside_build.png",
+      "bytes": 965204,
+      "sha256": "da052ae66a8959d1fd02cd56e979adc5475ab91317eeff1b19d8650976bec2a3"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_large_430_top.png",
+      "bytes": 450255,
+      "sha256": "6aa54d99f24ec19008c8cea9a2f41cd3a3eaddeca515251038b321775e9a7b60"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_large_430_top_master_beside_build.png",
+      "bytes": 957196,
+      "sha256": "136db902632e2a3c5a2fef86cd9e06638d007967703d2eea83dacdde9a62ce49"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_normal.png",
+      "bytes": 406394,
+      "sha256": "f0b49f4ac45a0e4279703821722e1ea0e6ed3f7852badb6d72b4110b60f66f30"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_normal_master_beside_build.png",
+      "bytes": 911857,
+      "sha256": "67a89fefe0d54eea81f975403c5c84d4617b6382d3b69970be9aa540ef15eb9d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_large_390_actions.png",
+      "bytes": 444538,
+      "sha256": "19f23d22105fd1321ff90a50b0df009ef6f9d50450c5d5139a6f56e91a35568a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_large_390_actions_master_beside_build.png",
+      "bytes": 950393,
+      "sha256": "053931ccc3b96c83481a9c056c7b86b35c9c8065e1575a47275683d08e5bfba2"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_large_390_top.png",
+      "bytes": 430450,
+      "sha256": "75efee4bfddb4187b1aabeeab32afd4dcbe274028aa7e39d57da1e46e4607ffb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_large_390_top_master_beside_build.png",
+      "bytes": 936691,
+      "sha256": "5e7e98195f6e73f5abcae806bf3da904c5aa223fdd2aefee9bc8eb953ccc6ade"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_large_430_actions.png",
+      "bytes": 478333,
+      "sha256": "e81028998666d1057cd093d43e43801155cf8e43f016efe9b497240370d0fc3c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_large_430_actions_master_beside_build.png",
+      "bytes": 978559,
+      "sha256": "e7a29d3ac32b2579cafc71d13b1997604943710fc6329bd52f873b7cc0b01b0b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_large_430_top.png",
+      "bytes": 467255,
+      "sha256": "fe7279ab11638478d9a070d3c81fb8da764d15a2fe9ed8c0c01671bf0384f3b6"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_large_430_top_master_beside_build.png",
+      "bytes": 969026,
+      "sha256": "f2caf1d9d1767e14993ccd1d7ca724746e624339a6f267a4c2cc4ba51b441fa2"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_normal.png",
+      "bytes": 405481,
+      "sha256": "48986d53072cce0d944d5b19627b290ea39db7750a76ebad775824174ef8b7a3"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_normal_master_beside_build.png",
+      "bytes": 906262,
+      "sha256": "1d3fbca20661c201fcc66183b54757e726199ca9949c9278a5fe198c07329378"
+    }
+  ],
+  "metadata": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/BUILD.json",
+      "bytes": 2372,
+      "sha256": "42bce40d38f535ded612f160a9ce29db94803deb0e1cbee8518d097e65e75231"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/CAPTURES.json",
+      "bytes": 5885,
+      "sha256": "e41684c03d46de761febed4f7f74531d15a52c97a8608c36bfdd11c3a6d9af33"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/CHECKS.json",
+      "bytes": 1367,
+      "sha256": "a79e2771c337f3ed4d51460ccfce28cede4326269adc81dae1524dd3ee0f681a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/QA.json",
+      "bytes": 1310,
+      "sha256": "b8fcf4191ea3dd589d181a5aef9800f473e5665751e15c93ea0137510901e31c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_large_390_actions.json",
+      "bytes": 317,
+      "sha256": "480c474df37804c871f91190d495404a8325b64b485cb68d16e2b34c146b69b4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_large_390_top.json",
+      "bytes": 313,
+      "sha256": "6c5ae1c64f41fb204fb4e261ca7c3e0ec3a1610166c99d337145c736d687a1b1"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_large_430_actions.json",
+      "bytes": 317,
+      "sha256": "53a3c94611bdc95f2a12b468cb083df24107e2c4aa9b7b710f972c09068f514c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_large_430_top.json",
+      "bytes": 313,
+      "sha256": "1d4adfdd7b6a2865223ceedecd6e94a79ae41f86298a279be489a41d615373bb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g07_normal.json",
+      "bytes": 306,
+      "sha256": "c1e181a9784cc31918b77dc07cb09ad0d28539aca4799e1ba8e5b1875fc32f61"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_large_390_actions.json",
+      "bytes": 314,
+      "sha256": "88012bccbb0121630f97679301777dc22e6f6a72f2a809b668e70d1c826e9513"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_large_390_top.json",
+      "bytes": 310,
+      "sha256": "5cf3b9e140289d43dbc2f595ad11155e327fbf65c1ca213c9b2768fc6a9e833b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_large_430_actions.json",
+      "bytes": 314,
+      "sha256": "37e02071c34d74a5df1912b476b29045f0a68d813dc08f5b65b51a90ff9ed2e8"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_large_430_top.json",
+      "bytes": 310,
+      "sha256": "b241b0f1a069345f70e18a23b61adafd48e1d73dfc03b407581c44a37c21153b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V7/g08_normal.json",
+      "bytes": 303,
+      "sha256": "504932634dc0c1fd4c82b9a38129ea050b913e67a6079dd992fb1d84abba49e1"
+    }
+  ],
+  "tracker": {
+    "path": "REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md",
+    "bytes": 78226,
+    "sha256": "a10c2567af4100b2e96e742003dfe72f38cb4068fa38a254231418cb5ada2929"
+  },
+  "owned_rows": [
+    {
+      "path": "PRODUCT/APPROVED/BUILD_QUEUE.md",
+      "row": "| 60 |",
+      "sha256": "8bc64a19ba03b1bf59334f912a4546ae476a222d981af510a055f8a23a0edd56"
+    }
+  ]
+}
