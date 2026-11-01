@@ -7,7 +7,7 @@ from pathlib import Path
 import generate_doc_index as index
 
 
-PRICING = Path(__file__).parent.parent.parent / "BUSINESS" / "ZYRA PRICING"
+PRICING = Path(__file__).parents[3] / "BLACK UMBRELLA GROUP" / "BUSINESS" / "ZYRA" / "ZYRA PRICING"
 # Superseded versions were renamed into ARCHIVE on 2026-10-24 (one-CURRENT rule).
 PRICING_ARCHIVE = PRICING / "ARCHIVE"
 ARCHIVED = {3: "ZYRA_PRICING_2026-09-18_V3.md", 4: "ZYRA_PRICING_2026-09-21_V4.md", 5: "ZYRA_PRICING_2026-09-24_V5.md"}
