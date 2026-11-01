@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+import 'zyra_guardian_circle_topic_options.dart';
+import 'zyra_circle_topics_presentation.dart';
 import '../services/zyra_family_messaging_service.dart';
 
 /// Immutable caller-owned examples for the retained Circle presentation.
@@ -86,3 +89,31 @@ ZyraFamilyMessage _snapshotMessage(ZyraFamilyMessage message) =>
       readBy: List.unmodifiable(message.readBy),
       unreadForMe: message.unreadForMe,
     );
+
+/// LOCK 20 display metadata for an already-admitted local preview. It never
+/// enables preview, links a member, or supplies a server writing entitlement.
+@immutable
+class ZyraCircleTopicsPreview {
+  ZyraCircleTopicsPreview({
+    required Iterable<ZyraCircleTopicTile> tiles,
+    required Iterable<String> readOnlyParticipantIds,
+    required this.guardianBasic,
+    required this.onManageGuardians,
+    required this.onMembership,
+    this.clock,
+    Map<String, ZyraCircleDiscussionTopic> messageTopics = const {},
+  }) : tiles = List.unmodifiable(tiles),
+       readOnlyParticipantIds = Set.unmodifiable(readOnlyParticipantIds),
+       messageTopics = Map.unmodifiable(messageTopics);
+
+  final List<ZyraCircleTopicTile> tiles;
+  final Set<String> readOnlyParticipantIds;
+  final bool guardianBasic;
+  final VoidCallback onManageGuardians;
+  final VoidCallback onMembership;
+  final DateTime Function()? clock;
+
+  /// Labels already carried by this admitted transcript. These never add a
+  /// tab, archive, profile, or send target when a Journey is not accessible.
+  final Map<String, ZyraCircleDiscussionTopic> messageTopics;
+}

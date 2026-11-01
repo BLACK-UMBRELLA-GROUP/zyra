@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart' show ScrollDirection;
 import '../../dev/zyra_app_gold_preview.dart';
 import '../../dev/zyra_guardian_circle_preview.dart';
+import '../../dev/zyra_circle_topics_presentation.dart';
+import '../../dev/zyra_one_journey_guardian_family_sheet.dart';
 import '../../dev/zyra_guardian_circle_topic_options.dart';
 import '../../dev/zyra_circle_discussion_archive.dart';
 import '../../dev/zyra_circle_discussion_picker_presentation.dart';
@@ -28,6 +30,8 @@ import '../../widgets/zyra_state_widgets.dart';
 import '../journey/journey_flow_screen.dart';
 import '../profile/seeker_profile_screen.dart';
 import 'wali_journey_detail_screen.dart';
+
+part '../../dev/zyra_one_journey_circle_topics_state.dart';
 
 class ZyraGuardianCirclesInboxScreen extends StatefulWidget {
   final bool preview;
@@ -169,6 +173,7 @@ class ZyraGuardianCircleScreen extends StatefulWidget {
   final ZyraGuardianCircleSummary? initialCircle;
   final ValueChanged<ZyraFamilyMessageContext>? onOpenContext;
   final ZyraGuardianCirclePreviewData? previewData;
+  final ZyraCircleTopicsPreview? previewTopics;
   // Detached developer presentation only. None of these values grants
   // preview, member access, history access or a send entitlement.
   final ValueListenable<ZyraCircleBubbleDesign>? previewBubbleDesign;
@@ -199,6 +204,7 @@ class ZyraGuardianCircleScreen extends StatefulWidget {
     this.initialCircle,
     this.onOpenContext,
     this.previewData,
+    this.previewTopics,
     this.previewBubbleDesign,
     this.previewCurrentTopics = const [],
     this.previewPastTopics = const [],
@@ -265,6 +271,25 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
   int _discussionMarkerSequence = 0;
   int _topicPickRequest = 0;
   int _messageReferenceEpoch = 0;
+  late final ZyraCircleTopicsPreview? _topics;
+  ZyraCircleDiscussionTopic? _topicsSelection;
+  bool _topicsPast = false;
+  bool _topicsMuted = false;
+  int _topicsEpoch = 0;
+  Object? _topicsSheet;
+  final _familyInvites = <String>{};
+  bool _topicsLaidOut = false;
+  bool? _topicsRouteCurrent;
+  void _topicsChange(VoidCallback change) => setState(change);
+  bool get _topicsEnabled => _authority.canPreview && _topics != null;
+  DateTime get _topicsNow => _topics?.clock?.call() ?? DateTime.now();
+  bool get _topicsClosed {
+    final selected = _topicsSelection;
+    if (selected == null || !selected.isPast) return false;
+    final archive = _topicsArchiveFor(selected);
+    return archive == null ||
+        _topicsNow.isAfter(archive.endedOn.add(const Duration(days: 30)));
+  }
 
   static const _previewContexts = <ZyraFamilyMessageContext>[
     ZyraFamilyMessageContext(
@@ -297,7 +322,8 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
       !_loading &&
       _confirmedCanSend &&
       _threadId != null &&
-      _access == ZyraFamilyMessageAccess.ready;
+      _access == ZyraFamilyMessageAccess.ready &&
+      (!_topicsEnabled || (!_topics!.guardianBasic && !_topicsClosed));
   bool get _canSend => _canInteract && _canPresentComposer;
 
   bool get _topicOptionsEnabled =>
@@ -339,7 +365,9 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
     if (contexts.isEmpty) {
       // Detached names make the empty protected picker testable. They are not
       // actual contexts, Journey state, profile capabilities or history grants.
-      return _topicOptionsEnabled ? _currentTopicExamples : const [];
+      return !_topicsEnabled && _topicOptionsEnabled
+          ? _currentTopicExamples
+          : const [];
     }
     return [
       for (final item in contexts)
@@ -375,6 +403,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
     }
     final data = _previewData;
     if (!allowed ||
+        (_topics != null && !_validTopicsMetadata) ||
         (widget.initialCircle != null &&
             widget.initialCircle!.seekerId != widget.seekerId) ||
         (data != null &&
@@ -421,6 +450,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
   void initState() {
     super.initState();
     _previewData = widget.previewData;
+    _topics = widget.previewTopics;
     _callerGuard = widget.canAct;
     _bubbleDesign = widget.previewBubbleDesign;
     _currentTopicExamples = List.unmodifiable(widget.previewCurrentTopics);
@@ -444,6 +474,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
         oldWidget.preview != widget.preview ||
         !identical(_callerGuard, widget.canAct) ||
         !identical(_previewData, widget.previewData) ||
+        !identical(_topics, widget.previewTopics) ||
         !identical(_bubbleDesign, widget.previewBubbleDesign) ||
         !identical(
           oldWidget.previewCurrentTopics,
@@ -509,6 +540,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
   }
 
   void _topicVisibilityChanged() {
+    _topicsEpoch++;
     if (!mounted || !_authority.isCurrent || !_callerCurrent) return;
     _messageReferenceEpoch++;
     setState(() {});
@@ -960,6 +992,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
 
   Future<void> _load() async {
     final request = ++_loadRequest;
+    _topicsEpoch++;
     if (!_canInteract) {
       _withdraw();
       return;
@@ -979,6 +1012,22 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
               ? ZyraFamilyMessageAccess.ready
               : ZyraFamilyMessageAccess.membershipRequired;
           _messages = data.messages;
+          if (_topicsEnabled) {
+            for (final entry in _topics!.messageTopics.entries) {
+              // A transcript's existing About label is display metadata, even
+              // when its Journey has no admitted tab. It grants no target.
+              final tag = entry.value;
+              if (_messages.any((message) => message.id == entry.key) &&
+                  tag.id.isNotEmpty &&
+                  tag.id.length <= 200 &&
+                  tag.firstName.trim().isNotEmpty &&
+                  tag.firstName.length <= 80 &&
+                  !tag.isGeneral &&
+                  (!tag.isPast || tag.endedOn != null)) {
+                _discussionMessageTags[entry.key] = entry.value;
+              }
+            }
+          }
         });
         return;
       }
@@ -1102,9 +1151,15 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
         threadId == null) {
       return;
     }
-    final comparison = _topicOptionsEnabled;
-    final discussionTopic = comparison ? _discussionTopic : null;
-    if (discussionTopic != null && !_includesDiscussionTopic(discussionTopic)) {
+    final comparison = _topicsEnabled || _topicOptionsEnabled;
+    final discussionTopic = _topicsEnabled
+        ? _topicsSelection
+        : comparison
+        ? _discussionTopic
+        : null;
+    if ((_topicsEnabled &&
+            (_topicsPast && discussionTopic == null || _topicsClosed)) ||
+        discussionTopic != null && !_includesDiscussionTopic(discussionTopic)) {
       return;
     }
     final request = ++_sendRequest;
@@ -1122,11 +1177,15 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
           loadRequest != _loadRequest ||
           threadId != _threadId ||
           senderId != _currentSenderId ||
-          comparison != _topicOptionsEnabled ||
+          comparison != (_topicsEnabled || _topicOptionsEnabled) ||
           (comparison &&
               (topicPickRequest != _topicPickRequest ||
                   referenceEpoch != _messageReferenceEpoch ||
-                  !identical(discussionTopic, _discussionTopic))) ||
+                  !identical(
+                    discussionTopic,
+                    _topicsEnabled ? _topicsSelection : _discussionTopic,
+                  ))) ||
+          (_topicsEnabled && _topicsClosed) ||
           (discussionTopic != null &&
               !_includesDiscussionTopic(discussionTopic))) {
         _finishSending(request);
@@ -1161,11 +1220,12 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
                 .firstOrNull
                 ?.roleLabel,
             body: text,
-            createdAt: DateTime.now(),
+            createdAt: _topicsEnabled ? _topicsNow : DateTime.now(),
             context: selectedContext,
           ),
         ];
         _sending = false;
+        _topicsEpoch++;
         _selectedContext = null;
         if (identical(_discussionTopic, discussionTopic)) {
           _discussionTopic = null;
@@ -1508,6 +1568,8 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
   @override
   Widget build(BuildContext context) => !_callerCurrent
       ? const SizedBox.shrink()
+      : _topicsEnabled
+      ? _buildTopics(context)
       : _withBackReturn(
           context,
           ZyraGuardianPreviewRouteBoundary(

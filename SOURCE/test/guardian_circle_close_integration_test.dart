@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
+import 'package:zyra/dev/zyra_circle_topics_presentation.dart';
 import 'package:zyra/dev/zyra_guardian_circle_preview.dart';
 import 'package:zyra/dev/zyra_guardian_circle_topic_options.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
@@ -31,12 +32,13 @@ const _captureKey = ValueKey('circle-close-integration-capture');
 Finder _key(String value) => find.byKey(ValueKey(value));
 Finder get _circle => find.byType(ZyraGuardianCircleScreen);
 Finder get _hint => _key('zyra_pull_down_close_hint');
-Finder get _composer => find.descendant(
-  of: _key('guardian-circle-composer'),
-  matching: find.byType(TextField),
-);
-Finder get _bubbleDropdown =>
-    find.byType(DropdownButtonFormField<ZyraCircleBubbleDesign>);
+Finder get _composer =>
+    find.byType(ZyraCircleTopicsPresentation).evaluate().isNotEmpty
+    ? _key('circle_topics_composer')
+    : find.descendant(
+        of: _key('guardian-circle-composer'),
+        matching: find.byType(TextField),
+      );
 Finder get _backButton => _key('zyra_visible_back_button');
 
 class _NoNetwork extends HttpOverrides {
@@ -162,9 +164,11 @@ Future<void> _nav(WidgetTester tester, int index) async {
 }
 
 Future<void> _openCircle(WidgetTester tester, {bool guardian = false}) async {
-  await _nav(tester, 3);
-  if (guardian) {
-    await _press(tester, _key('guardian_seeker_0'));
+  if (!guardian || _key('guardian_circle').evaluate().isEmpty) {
+    await _nav(tester, 3);
+    if (guardian) {
+      await _press(tester, _key('guardian_seeker_0'));
+    }
   }
   await _press(
     tester,
@@ -233,40 +237,22 @@ Future<void> _openOptions(WidgetTester tester) async {
   );
 }
 
-Future<void> _selectPopup(
-  WidgetTester tester,
-  Finder dropdown,
-  String itemKey,
-) async {
-  await _press(tester, dropdown);
-  final popup = find.byElementPredicate(
-    (element) =>
-        element.widget is Scrollable &&
-        (ModalRoute.of(element)?.isCurrent ?? false),
+void _expectTopics(WidgetTester tester) {
+  expect(find.byType(ZyraCircleTopicsPresentation), findsOneWidget);
+  expect(
+    tester.widget<ZyraGuardianCircleScreen>(_circle).previewTopics,
+    isNotNull,
   );
-  expect(popup, findsOneWidget);
-  final item = find.descendant(of: popup, matching: _key(itemKey));
-  await _press(
-    tester,
-    find.ancestor(of: item, matching: find.byType(InkWell)).first,
-  );
+  expect(_key('circle_topics_menu'), findsOneWidget);
+  expect(_key('circle_topics_all'), findsOneWidget);
+  expect(_key('circle_topics_composer'), findsOneWidget);
+  expect(_key('circle_discuss_floatingButton'), findsNothing);
+  expect(_key('circle_topic_bar'), findsNothing);
+  expect(_key('circle_topic_entry'), findsNothing);
 }
 
-Future<void> _setBubbleDesign(
-  WidgetTester tester,
-  ZyraCircleBubbleDesign design,
-) async {
-  await _openOptions(tester);
-  _expectNoLegacyControl();
-  await _selectPopup(
-    tester,
-    _bubbleDropdown,
-    'concept_circle_bubble_design_${design.name}',
-  );
-  await toggleZyraDevControls(tester);
-  expect(find.text('Page options'), findsNothing);
-  _expectReturn(tester);
-}
+VoidCallback _topicsMenuAction(WidgetTester tester) =>
+    tester.widget<Semantics>(_key('circle_topics_menu')).properties.onTap!;
 
 Future<TestGesture> _holdEdge(
   WidgetTester tester, {
@@ -318,15 +304,20 @@ Future<TestGesture> _holdPull(
   return finger;
 }
 
-int _transcriptLength(WidgetTester tester) =>
-    (tester
-                .widget<ListView>(
-                  find.descendant(of: _circle, matching: find.byType(ListView)),
-                )
-                .childrenDelegate
-            as SliverChildListDelegate)
-        .children
-        .length;
+int _transcriptLength(WidgetTester tester) {
+  final topics = find.byType(ZyraCircleTopicsPresentation);
+  if (topics.evaluate().isNotEmpty) {
+    return tester.widget<ZyraCircleTopicsPresentation>(topics).messages.length;
+  }
+  return (tester
+              .widget<ListView>(
+                find.descendant(of: _circle, matching: find.byType(ListView)),
+              )
+              .childrenDelegate
+          as SliverChildListDelegate)
+      .children
+      .length;
+}
 
 Future<void> _capture(WidgetTester tester, String name) async {
   if (_captures.isEmpty) return;
@@ -473,20 +464,11 @@ void main() {
   for (final guardian in [false, true]) {
     final role = guardian ? 'Guardian' : 'Seeker';
     testWidgets(
-      '$role starts with fixed floating entry and Back; reset restores interior defaults',
+      '$role starts with locked Topics and Back; reset restores the Circle',
       (tester) async {
         await _mountShell(tester, guardian: guardian);
         await _openCircle(tester, guardian: guardian);
-        expect(_key('circle_topic_bar'), findsNothing);
-        expect(_key('circle_discuss_floatingButton'), findsOneWidget);
-        expect(
-          tester
-              .widget<ZyraGuardianCircleScreen>(_circle)
-              .previewBubbleDesign!
-              .value,
-          ZyraCircleBubbleDesign.current,
-        );
-        expect(_key('circle_topic_entry'), findsNothing);
+        _expectTopics(tester);
         _expectOneHeaderBack();
         expect(
           _onlyScope(tester).key,
@@ -496,42 +478,23 @@ void main() {
         await _capture(tester, 'circle-${role.toLowerCase()}-in-chat-default');
         await _openOptions(tester);
         _expectNoLegacyControl();
-        await _selectPopup(
-          tester,
-          _bubbleDropdown,
-          'concept_circle_bubble_design_current',
-        );
         await _press(tester, _key('draft_reset'));
         // Reset preview intentionally returns to the existing Seeker role.
         await _openCircle(tester);
-        expect(_key('circle_topic_bar'), findsNothing);
-        expect(_key('circle_discuss_floatingButton'), findsOneWidget);
-        expect(
-          tester
-              .widget<ZyraGuardianCircleScreen>(_circle)
-              .previewBubbleDesign!
-              .value,
-          ZyraCircleBubbleDesign.current,
-        );
+        _expectTopics(tester);
         _expectReturn(tester);
         _expectOneHeaderBack();
       },
     );
 
     testWidgets(
-      '$role the selected interior retains the exact conversation, then button and edge return once',
+      '$role Topics retain the conversation and draft across controls, then edge returns once',
       (tester) async {
         await _mountShell(tester, guardian: guardian);
         await _openCircle(tester, guardian: guardian);
         const sent = 'A retained message in our one Circle.';
         await tester.enterText(_composer, sent);
-        await _press(
-          tester,
-          find.descendant(
-            of: _circle,
-            matching: find.byTooltip('Send message'),
-          ),
-        );
+        await _press(tester, _key('circle_topics_send'));
         expect(find.text(sent), findsOneWidget);
         await tester.enterText(_composer, 'Keep this unsent Circle draft');
         final state = tester.state(_circle);
@@ -540,8 +503,13 @@ void main() {
             .widget<ZyraGuardianCircleScreen>(_circle)
             .previewData;
         final length = _transcriptLength(tester);
-        for (final design in ZyraCircleBubbleDesign.values) {
-          await _setBubbleDesign(tester, design);
+        final stale = _topicsMenuAction(tester);
+        for (var round = 0; round < 2; round++) {
+          await _openOptions(tester);
+          _expectNoLegacyControl();
+          await toggleZyraDevControls(tester);
+          expect(find.text('Page options'), findsNothing);
+          _expectTopics(tester);
           final ignoredPull = await _holdPull(tester, distance: 240);
           _expectNoLegacyHint();
           expect(tester.state(_circle), same(state));
@@ -562,17 +530,14 @@ void main() {
           _expectOneHeaderBack();
           await _capture(
             tester,
-            'circle-${role.toLowerCase()}-${design.name}-retained',
+            'circle-${role.toLowerCase()}-topics-controls-$round-retained',
           );
         }
-        await _openOptions(tester);
-        _expectNoLegacyControl();
-        final stale = tester
-            .widget<DropdownButtonFormField<ZyraCircleBubbleDesign>>(
-              _bubbleDropdown,
-            )
-            .onChanged!;
-        await toggleZyraDevControls(tester);
+        // Reopening controls invalidates an already-issued Topics action.
+        stale();
+        await tester.pumpAndSettle();
+        expect(_key('circle_topics_done'), findsNothing);
+        expect(_transcriptLength(tester), length);
         final firstReturn = _onlyScope(tester).onBack;
         await swipeZyraBack(tester);
         _expectCircleParent(guardian: guardian);
@@ -580,19 +545,11 @@ void main() {
         await tester.pumpAndSettle();
         _expectCircleParent(guardian: guardian);
         await _openCircle(tester, guardian: guardian);
-        await _openOptions(tester);
-        stale(ZyraCircleBubbleDesign.current);
+        stale();
         await tester.pumpAndSettle();
-        expect(
-          tester
-              .widget<DropdownButtonFormField<ZyraCircleBubbleDesign>>(
-                _bubbleDropdown,
-              )
-              .initialValue,
-          ZyraCircleBubbleDesign.current,
-        );
+        expect(_key('circle_topics_done'), findsNothing);
+        _expectTopics(tester);
         _expectNoLegacyControl();
-        await toggleZyraDevControls(tester);
         _expectReturn(tester);
         final secondReturn = _onlyScope(tester).onBack;
         firstReturn();
@@ -607,23 +564,18 @@ void main() {
     );
 
     testWidgets(
-      '$role retained interior selector cannot survive authorization ABA',
+      '$role retained Topics action cannot survive authorization ABA',
       (tester) async {
         await _mountShell(tester, guardian: guardian);
         await _openCircle(tester, guardian: guardian);
-        await _openOptions(tester);
         _expectNoLegacyControl();
-        final stale = tester
-            .widget<DropdownButtonFormField<ZyraCircleBubbleDesign>>(
-              _bubbleDropdown,
-            )
-            .onChanged!;
+        final stale = _topicsMenuAction(tester);
         ZyraDeveloperAccess.setAuthorizedForTesting(false);
         ZyraDeveloperAccess.setAuthorizedForTesting(true);
         await tester.pumpAndSettle();
-        stale(ZyraCircleBubbleDesign.current);
+        stale();
         await tester.pumpAndSettle();
-        expect(_bubbleDropdown, findsNothing);
+        expect(_key('circle_topics_done'), findsNothing);
         _expectNoLegacyControl();
         expect(_circle, findsNothing);
         expect(find.text('Preview closed'), findsOneWidget);
@@ -700,10 +652,15 @@ void main() {
   );
 
   testWidgets(
-    'empty Journey slots retain theme and canonical Couple navigation after Circle return',
+    'empty Circle Journey topics retain canonical Couple navigation after return',
     (tester) async {
       await _mountShell(tester);
       await _openCircle(tester);
+      final topics = tester.widget<ZyraCircleTopicsPresentation>(
+        find.byType(ZyraCircleTopicsPresentation),
+      );
+      expect(topics.current, isEmpty);
+      expect(topics.selected, isNull);
       final finger = await _holdEdge(tester, distance: 240);
       await finger.up();
       await tester.pumpAndSettle();
@@ -720,28 +677,8 @@ void main() {
         painter(_key('floating-nav-item-1')).design,
         ZyraJourneyIconDesign.couple,
       );
-      expect(find.text('Awaiting a Journey'), findsNWidgets(3));
-      for (var index = 0; index < 3; index++) {
-        final slot = _key('concept_journey_capacity_slot_$index');
-        expect(slot, findsOneWidget);
-        final decoration =
-            tester.widget<Container>(slot).decoration! as BoxDecoration;
-        expect(decoration.color, ZyraColors.surfaceFill);
-        expect(decoration.border, Border.all(color: ZyraColors.surfaceBorder));
-        final copy = tester.widget<Text>(
-          find.descendant(of: slot, matching: find.byType(Text)),
-        );
-        expect(copy.style?.fontSize, 14);
-        expect(copy.style?.color, ZyraColors.ink(.65));
-        expect(
-          find.descendant(
-            of: slot,
-            matching: find.byIcon(Icons.route_outlined),
-          ),
-          findsNothing,
-        );
-      }
-      await _capture(tester, 'journey-empty-three-slots-canonical-navigation');
+      expect(tester.takeException(), isNull);
+      await _capture(tester, 'journey-empty-topics-canonical-navigation');
     },
   );
 

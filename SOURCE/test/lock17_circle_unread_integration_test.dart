@@ -2,11 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_conversation_unread_badge.dart';
+import 'package:zyra/dev/zyra_circle_topics_presentation.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
 import 'package:zyra/dev/zyra_one_journey_phone_access.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/screens/wali/family_messaging_screens.dart';
-import 'package:zyra/screens/wali/seeker_guardian_designs.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
@@ -29,8 +30,10 @@ BaselineHarness _h(WidgetTester t) {
   return BaselineHarness(t, group: 'lock17', evidenceRoot: _evidence);
 }
 
-SeekerGuardianPage _page(WidgetTester t) =>
-    t.widget<SeekerGuardianPage>(find.byType(SeekerGuardianPage));
+ZyraOneJourneyGuardianCards _page(WidgetTester t) =>
+    t.widget<ZyraOneJourneyGuardianCards>(
+      find.byType(ZyraOneJourneyGuardianCards),
+    );
 int _count(WidgetTester t) => t
     .widget<ZyraConversationUnreadBadge>(
       find.byType(ZyraConversationUnreadBadge),
@@ -83,10 +86,8 @@ void main() {
       await h.mount(tab: 3);
       await h.tap('guardian-family-messages-top');
       h.assertPage('guardian_circle');
-      final field = find.descendant(
-        of: find.byKey(const ValueKey('guardian-circle-composer')),
-        matching: find.byType(TextField),
-      );
+      expect(find.byType(ZyraCircleTopicsPresentation), findsOneWidget);
+      final field = find.byKey(const ValueKey('circle_topics_composer'));
       expect(field, findsOneWidget);
       final reader = t.widget<ZyraGuardianCircleScreen>(
         find.byType(ZyraGuardianCircleScreen),
@@ -103,7 +104,7 @@ void main() {
             .previewData,
         same(reader.previewData),
       );
-      await t.tap(find.byTooltip('Send message'));
+      await t.tap(find.byKey(const ValueKey('circle_topics_send')));
       await h.flush();
       expect(find.text('One scoped local Circle message.'), findsOneWidget);
       expect(h.latest.circleReadMessageKeys, {_readKey});
@@ -172,7 +173,7 @@ void main() {
     (t) async {
       final h = _h(t);
       await h.mount(tab: 2);
-      await h.tap('focus-next');
+      await h.tap('focus-dot-target-1');
       await h.tap('focus-open-guardian_circle');
       h.assertPage('guardian_circle');
       expect(h.latest.circleReadMessageKeys, {_readKey});
@@ -197,7 +198,7 @@ void main() {
         ),
       );
       expect(_count(t), 0);
-      _page(t).onOpenMessages!();
+      _page(t).onCircle();
       await h.flush();
       expect(find.byType(ZyraGuardianCircleScreen), findsNothing);
       expect(h.latest.circleReadMessageKeys, isEmpty);
@@ -237,7 +238,7 @@ void main() {
       (t) async {
         final h = _h(t);
         await h.mount(tab: 3);
-        final retained = _page(t).onOpenMessages!;
+        final retained = _page(t).onCircle;
         switch (scenario) {
           case 'controls':
             await h.controls();
@@ -258,10 +259,7 @@ void main() {
             });
             ZyraDeveloperAccess.setAuthorizedForTesting(true);
           case 'link':
-            expect(
-              await _page(t).removeGuardian!('draft-guardian-hassan'),
-              isNull,
-            );
+            expect(await _page(t).remove('draft-guardian-hassan'), isNull);
             await h.flush();
         }
         final before = h.latest;
@@ -277,7 +275,7 @@ void main() {
         if (scenario != 'account') {
           expect(_count(t), 1);
           // A newly issued callback remains usable.
-          _page(t).onOpenMessages!();
+          _page(t).onCircle();
           await h.flush();
           h.assertPage('guardian_circle');
           expect(h.latest.circleReadMessageKeys, hasLength(1));

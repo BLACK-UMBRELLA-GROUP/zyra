@@ -647,3 +647,20 @@ Every current Founder page pager now uses one shared 30×6 active pill, 6×6 dot
 Measured with SYSTEM/tools/blueprint/code_size.py. No new app file or classifier change. 233 focused regressions, two wallet layout cases and five actual-route/lifetime/capture cases pass (240 total); 430/320-point, 200% text and actual tap/swipe/scroll paths. Image providers are explicitly decoded before capture. Analyser/20-file format and protected pinned-driver checks pass. PAGE_DOTS/BUILT/V2 holds d01–d04 beside masters, other real screens, narrow action/bottom frames, case/refusal details, hashes and text BUILD metadata. No whole-screen pixel-match claim: d03 preserves newer LOCK19 cards; request/stage data and existing framing differ.
 
 Written refusals QUEUE68-R1–R4 (OA-ZYRA-328), detailed in QA.json: twelve wider photo-navigation haptic timing/count cases and two unchanged Profile-row lookup cases remain failures; no historical cause claimed. A representative haptic case also fails alone (3 expected, 1 actual). Explicit baseline/current comparisons prove the photo pager implementation, excluded full-screen sources, feedback helpers and Profile presenter unchanged. Profiles header grows 16→24 for the target, reducing its available photo budget by eight; this geometry change is disclosed. At320/200%, existing Focus tile text splits words and the revealed Photos Adjust label clips in the unchanged54-point tray; tiles/actions are reachable, not claimed visually flawless. Those wider layout/feedback changes need their own authorised scope. Row48's three wider Circle failures remain disclosed and were not rerun. No native/backend/upgrade action.
+
+## Queue 51 — Guardian Circle Topics LOCK20 V2 — 1 November 2026
+
+Built the locked All/current-Journey/Past presentation on the retained local Circle controller and transcript. Q6 Answer A corrects only the Founder preview per-member writing guard: Seeker One/Basic and Guardian One write; Guardian Basic reads and never blocks them. Shared Guardian Past keeps summary/date icons without Seeker photos. Existing Family/membership routes and old member paths remain; server/admission/release/retention policy is unchanged. Route/source/modal/render/send leases reject stale and replayed actions before feedback.
+
+| Measure | Before | After |
+|---|---:|---:|
+| All app code | 172,093 / 339 | 173,794 / 341 |
+| Developer/preview | 52,151 / 97 | 53,790 / 99 |
+| Founder planned app | 32,973 / 47 | 34,581 / 49 |
+| Tests | 224,074 / 527 | 225,743 / 530 |
+| Test goldens | 2,612 / 307 MB | 2,612 / 307 MB |
+| Old Pause / Restart files | 39 / 1 | 39 / 1 |
+
+Measured with SYSTEM/tools/blueprint/code_size.py; exact new presenter classifier added, new state part uses existing Founder glob. Seven complete scoped suites pass: 145 actual cases, zero failures/skips, including the three previously disclosed Circle regression failures after affected Topics fixture/key migration. Ten-file format, analyser and protected pinned-driver checks pass on Flutter 3.44.2. Day30/day31, mixed Basic/One, sharing, malformed archives, stale/replaced source and route/sheet callbacks, pending replay, feedback, drafts, transcript, unread and legacy authority are covered. No full-repository test claim.
+
+GUARDIAN_CIRCLE/BUILT/V2 contains 42 master-fixture captures (14 normal, 14 at 1.3 text, 14 at 320 points/1.3), four real-source shell captures, 42 original-master/build pairs and twelve contact sheets; source/input/render hashes, case ledger, comparison/QA and text BUILD metadata. Photos are decoded before capture; no overflow exception. Normal type metrics, wraps, bubble/card spacing, scroll position and rectangular frame differ modestly; larger/narrow controls stack. No pixel-equality or Founder visual-approval claim; parent review follows. Native/backend/install/release changes and old path removal remain outside this row (OA-ZYRA-317). Historical Q6 preflight/refusal retained. Trace: OA-ZYRA-335; AD-AIOS-115/116/118.

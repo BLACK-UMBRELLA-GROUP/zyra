@@ -74,6 +74,7 @@ import 'zyra_request_help_content.dart';
 import 'zyra_request_account_session.dart';
 import 'zyra_request_capacity_choice.dart';
 import 'zyra_guardian_circle_preview.dart';
+import 'zyra_circle_topics_presentation.dart';
 import 'zyra_guardian_circle_topic_options.dart';
 import 'zyra_circle_discussion_archive.dart';
 import 'zyra_one_journey_sample_photos.dart';
@@ -5557,6 +5558,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
               isMain: false,
             ),
           ]
+        : _seekerMembership == 'Seeker Basic'
+        ? _conceptGuardianPeople.take(1).toList()
         : _conceptGuardianPeople;
     if (people.isEmpty) return null;
     final senderId = guardian ? 'draft-guardian-hassan' : 'draft-self';
@@ -5571,16 +5574,12 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             kind: ZyraFamilyMessageContextKind.active,
           ),
     ];
-    // The later paid-participant contract remains held server-side. Mirror
-    // its restrictive display boundary here; another person's plan cannot
-    // grant a Basic participant paid conversation access.
-    final funded =
-        _seekerMembership == 'Seeker One' &&
-        people.every(
-          (person) =>
-              _model.sampleGuardianMembershipFor(person.id) ==
-              DraftGuardianMembership.one,
-        );
+    // LOCK20 / answered question6: local fixture writing is per member.
+    // This neither admits a live member nor changes a service/server guard.
+    final funded = guardian
+        ? _guardianMembership == 'Guardian One'
+        : _seekerMembership == 'Seeker One' ||
+              _seekerMembership == 'Seeker Basic';
     final circleSeekerId = circleYusuf ? 'draft-linked-yusuf' : 'draft-self';
     final circleSeekerName = circleYusuf ? 'Yusuf' : 'Adam';
     return ZyraGuardianCirclePreviewData(
@@ -5705,9 +5704,27 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         !guardian ||
         (_conceptHassanLinked && _conceptGuardianHistory[senderId] == true);
     final pastShared = (!guardian || _guardianTabs.main) && canReadPast();
-    String linkStamp() => _conceptGuardianPeople
-        .map((person) => '${person.id}:${person.isMain}')
-        .join('|');
+    String linkStamp() => [
+      _seekerMembership,
+      _guardianMembership,
+      _guardianTabs.seeker,
+      _conceptMainGuardianId,
+      _model.ownMainGuardianPresent,
+      for (final person in _conceptGuardianPeople) ...[
+        person.id,
+        person.isMain,
+        _model.sampleGuardianMembershipFor(person.id),
+        _conceptGuardianHistory[person.id] ?? _shareHistory,
+        for (final journey in _guardianJourneys) ...[
+          journey.id,
+          _model.attemptRevisionFor(journey.id),
+          _model.stateFor(journey.id),
+          _model.isBlocked(journey.id),
+          _conceptAccessFor(person.id, journey.id).view,
+          _conceptAccessFor(person.id, journey.id).chat,
+        ],
+      ],
+    ].join('|');
     final stamp = linkStamp();
     bool current() =>
         _allowed &&
@@ -5826,6 +5843,55 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       );
     }
 
+    final topicsPreview = ZyraCircleTopicsPreview(
+      guardianBasic: guardian && _guardianMembership == 'Guardian Basic',
+      readOnlyParticipantIds: [
+        for (final participant in data.participants)
+          if (participant.memberRole == 'guardian' &&
+              (guardian && participant.userId == senderId
+                  ? _guardianMembership == 'Guardian Basic'
+                  : _model.sampleGuardianMembershipFor(participant.userId) ==
+                        DraftGuardianMembership.basic))
+            participant.userId,
+      ],
+      tiles: [
+        for (final context in contexts)
+          for (final person in _guardianJourneys)
+            if (person.id == context.referenceId)
+              ZyraCircleTopicTile(
+                id: context.referenceId,
+                name: context.firstName,
+                stage:
+                    'Stage ${_model.stageFor(person.id)?.order ?? 1} of 8 · ${_model.stageFor(person.id)?.label ?? 'Salam Exchange'}',
+                photo: _photos
+                    ?.forIndex(draftProfiles.indexOf(person))
+                    .firstOrNull,
+              ),
+        for (var index = 0; index < pastTopics.length; index++)
+          ZyraCircleTopicTile(
+            id: pastTopics[index].id,
+            name: pastTopics[index].firstName,
+            photo: guardian ? null : _photos?.forIndex(index).firstOrNull,
+          ),
+      ],
+      onManageGuardians: () {
+        if (current() && foreground() && !guardian) {
+          _move(() {
+            _pages.clear();
+            _tab = 3;
+          });
+        }
+      },
+      onMembership: () {
+        if (current() && foreground() && guardian) {
+          _membershipDraft = _membershipDraft.copyWith(
+            section: ZyraMembershipSection.guardian,
+          );
+          _open('membership');
+        }
+      },
+    );
+
     return _circleEntryView = Navigator(
       observers: [ZyraDevControlsRouteObserver()],
       key: navigator,
@@ -5837,6 +5903,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           viewerIsSeeker: !guardian,
           preview: true,
           previewData: data,
+          previewTopics: topicsPreview,
           previewBubbleDesign: _circleBubbleDesign,
           previewForeground: foreground,
           previewVisibility: _circleVisibility,

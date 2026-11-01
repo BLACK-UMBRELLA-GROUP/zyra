@@ -11,7 +11,8 @@ LIB = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..',
 LIB = os.path.normpath(LIB)
 PREVIEW = ['zyra_one_journey_*.dart', 'zyra_view_request_draft_model.dart', 'zyra_request_*.dart',
            'zyra_draft_*.dart', 'zyra_founder_launch_*.dart', 'dev_discovery_directions.dart',
-           'zyra_my_zyra_focus.dart', 'zyra_conversation_unread_badge.dart']
+           'zyra_my_zyra_focus.dart', 'zyra_conversation_unread_badge.dart',
+           'zyra_circle_topics_presentation.dart']
 # LOCK15: this shared presenter is currently imported only by the two Founder hosts.
 FOUNDER_ONLY_SHARED = [os.path.join(LIB, 'widgets', 'zyra_focus_dashboard.dart')]
 # 'Save' (saved profiles) is not counted: the word is too common to measure honestly by search.
