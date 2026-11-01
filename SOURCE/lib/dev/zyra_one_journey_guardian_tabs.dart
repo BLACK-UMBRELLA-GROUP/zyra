@@ -13,6 +13,7 @@ import '../widgets/zyra_profiles_components.dart';
 import 'zyra_one_journey_tab.dart' show ZyraJourneyPhotoCard;
 import 'zyra_one_journey_guardian_seeker.dart';
 import 'zyra_one_journey_guardian_action.dart';
+import 'zyra_one_journey_monogram_presentation.dart';
 import '../screens/wali/family_messaging_screens.dart'
     show ZyraFamilyMessageComposer;
 
@@ -1006,35 +1007,15 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Container(
-                          width: 56,
-                          height: 56,
-                          padding: const EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: ZyraColors.journeyGold.withValues(
-                                alpha: .7,
-                              ),
-                            ),
-                          ),
-                          child: DecoratedBox(
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: ZyraColors.avatarDeepSand,
-                            ),
-                            child: Center(
-                              child: Text(
-                                person.name[0],
-                                style: ZyraText.body(
-                                  size: 22,
-                                ).copyWith(fontWeight: FontWeight.w700),
-                              ),
-                            ),
-                          ),
+                        ZyraGoldRingMonogram(
+                          key: const ValueKey('guardian_network_monogram'),
+                          name: person.name[0],
+                          size: 110,
+                          fontSize: 52,
+                          textScaler: TextScaler.noScaling,
                         ),
                         const SizedBox(height: 20),
-                        _title('${person.name[0]}., ${person.age}', size: 40),
+                        _title('${person.name[0]}., ${person.age}', size: 34),
                         _text(person.city, size: 20),
                         const SizedBox(height: 18),
                         _info('Main Guardian', 'Father · ✓ Verified'),

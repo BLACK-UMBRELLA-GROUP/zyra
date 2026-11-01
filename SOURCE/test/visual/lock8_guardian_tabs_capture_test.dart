@@ -436,7 +436,7 @@ void main() {
         );
         expect(label.style!.color, ZyraColors.foreground);
       }
-      expect(t.widget<Text>(find.text('A')).style!.fontWeight, FontWeight.w700);
+      expect(t.widget<Text>(find.text('A')).style!.fontWeight, FontWeight.w200);
     },
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );
