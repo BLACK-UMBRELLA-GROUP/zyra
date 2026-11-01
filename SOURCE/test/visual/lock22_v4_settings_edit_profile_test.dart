@@ -17,6 +17,34 @@ const _raw =
 const _capture = bool.fromEnvironment('ZYRA_LOCK22_V4_CAPTURE');
 Finder k(String id) => find.byKey(ValueKey(id));
 
+Future<void> _memberBack(BaselineHarness h) async {
+  final boundary = k('zyra-founder-baseline-boundary');
+  final owners = h.tester
+      .widgetList<Semantics>(
+        find.descendant(
+          of: boundary,
+          matching: k('zyra_pull_down_back_semantics'),
+        ),
+      )
+      .where(
+        (s) =>
+            s.properties.customSemanticsActions?.keys.any(
+              (a) => a.label == 'Back',
+            ) ??
+            false,
+      )
+      .toList();
+  expect(owners, hasLength(1));
+  final edge = find.descendant(
+    of: boundary,
+    matching: k('zyra_back_swipe_edge'),
+  );
+  expect(edge, findsOneWidget);
+  expect(h.tester.getRect(edge).width, greaterThanOrEqualTo(44));
+  owners.single.properties.customSemanticsActions!.values.single();
+  await h.flush();
+}
+
 Future<void> _reveal(BaselineHarness h, String scrollId, Finder target) async {
   final scroll = find
       .descendant(of: k(scrollId), matching: find.byType(Scrollable))
@@ -88,6 +116,8 @@ Future<void> _cap(BaselineHarness h, String name) async {
             'geometry_pt': geometry,
             'reached':
                 'Actual admitted offline Founder shell; existing routes/sample data; real close/back control; no backend or native device.',
+            'member_back':
+                'Nonvisual Back assistive action/dismiss and 44pt left-edge swipe sensor inside captured shell. No painted Back icon exists at rest or outside the boundary; developer chrome is not the return target.',
           }),
         );
       } finally {
@@ -131,8 +161,7 @@ void main() {
         k('concept_settings_privacyData'),
       );
       await _cap(h, 's02_settings__bottom$suffix');
-      await t.binding.handlePopRoute();
-      await h.flush();
+      await _memberBack(h);
       expect(h.latest.pages, isEmpty);
 
       await h.mount(tab: 4, pages: ['edit_profile']);
@@ -209,11 +238,9 @@ void main() {
       await t.tap(k('edit_profile_open_support'));
       await h.flush();
       h.assertPage('help_support');
-      await t.binding.handlePopRoute();
-      await h.flush();
+      await _memberBack(h);
       h.assertPage('edit_profile');
-      await t.binding.handlePopRoute();
-      await h.flush();
+      await _memberBack(h);
       expect(h.latest.pages, isEmpty);
       expect(t.takeException(), isNull);
     });
