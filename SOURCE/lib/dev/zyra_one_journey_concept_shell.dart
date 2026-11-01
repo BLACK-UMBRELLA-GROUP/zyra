@@ -25,6 +25,7 @@ import '../screens/wali/seeker_guardian_designs.dart';
 import '../screens/wali/link_guardian_panel.dart';
 import '../screens/wali/zyra_code_screen.dart' show ZyraCodeLocalPreview;
 import '../screens/settings/help_support_screen.dart';
+import '../screens/onboarding/identity_verification_screen.dart';
 import '../screens/settings/personalisation_screen.dart';
 import '../screens/profile/edit_profile_screen.dart';
 import '../screens/profile/compatibility_editors.dart';
@@ -88,6 +89,8 @@ import 'zyra_one_journey_options_page.dart';
 import 'zyra_one_journey_tab.dart';
 import 'zyra_one_journey_guardian_tabs.dart';
 import 'zyra_one_journey_guardian_cards.dart';
+import 'zyra_one_journey_guardian_family_sheet.dart';
+import 'zyra_guardian_family_preview.dart';
 import 'zyra_journey_peer_guardians_presentation.dart';
 import 'zyra_one_journey_account_presentation.dart';
 import 'zyra_one_journey_guardian_info_presentation.dart';
@@ -293,6 +296,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   );
   String _seekerMembership = 'Seeker One';
   String _guardianMembership = 'Guardian One';
+  ZyraGuardianFamilyPreview _guardianFamily = ZyraGuardianFamilyPreview();
+  Timer? _guardianFamilyDeadline;
   String get _membership =>
       _guardianRole ? _guardianMembership : _seekerMembership;
 
@@ -730,6 +735,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       );
     }
     unawaited(_loadBrowsePhotos());
+    _armGuardianFamilyExpiry();
     unawaited(_loadGuardianInfoSeen());
     unawaited(_loadPhoneAccessSeen());
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -788,6 +794,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       };
 
   void _restoreCheckpoint(ZyraPreviewNavigationCheckpoint saved) {
+    _guardianFamily = ZyraGuardianFamilyPreview(snapshot: saved.guardianFamily);
+    _guardianFamily.expire(_previewNow);
     _guardianTabs = ZyraGuardianTabsState(saved.guardianTabs);
     _myZyraConsumedFocusTokens.addAll(saved.myZyraConsumedFocusTokens);
     _circleReadMessageKeys.addAll(saved.circleReadMessageKeys);
@@ -919,6 +927,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       'guardian',
       'network_request',
       'guardian_introduce',
+      'guardian_family_offer',
+      'guardian_family_identity',
     };
     final accountDestination = ZyraConceptAccountAction.values
         .where((action) => action.name == saved.accountDestination)
@@ -930,6 +940,10 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       final page = savedPage;
       if (page == 'controls') break;
       if (_guardianRole && guardianPages.contains(page)) {
+        if (page.startsWith('guardian_family_') &&
+            (_tab != 2 || _pendingGuardianFamilyOffer == null)) {
+          break;
+        }
         if (page == 'guardian_private_chat' &&
             _guardianTabs.connection != ZyraGuardianConnection.accepted) {
           break;
@@ -1113,6 +1127,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
         networkSent: _conceptNetworkSent,
         seekerMembership: _seekerMembership,
         guardianMembership: _guardianMembership,
+        guardianFamily: _guardianFamily.snapshot,
         guardianTabs: _guardianTabs.snapshot,
         compatibilityBalance: _compatibilityAccess.balance,
         compatibilityRevealed:
@@ -1177,6 +1192,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   void _act(VoidCallback change, {bool preserveCircle = false}) {
     if (!_allowed) return;
+    _guardianFamily.expire(_previewNow);
     _closeLocationFlow();
     _cancelEndedReadDeadline();
     setState(() {
@@ -1553,6 +1569,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
 
   @override
   void dispose() {
+    _guardianFamilyDeadline?.cancel();
     ZyraDevControlsRouteObserver.navigationChanges.removeListener(
       _devRouteChanged,
     );
@@ -1649,6 +1666,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
           'guardian_private_chat',
           'guardian_introduce',
           'network_request',
+          'guardian_family_offer',
+          'guardian_family_identity',
           'requests',
           'introductions',
           'saved',
@@ -2024,6 +2043,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     'guardian_info' => _guardianInfo(),
     'network_request' => _guardianTabsView('connect_confirm'),
     'guardian_introduce' => _guardianTabsView('introduce_confirm'),
+    'guardian_family_offer' => _guardianTabsView('family_offer'),
+    'guardian_family_identity' => _guardianFamilyIdentity(),
     'guardian_requests' => _guardianTabsView('requests'),
     'guardian_connect' => _guardianTabsView('connect'),
     'guardian_introductions' => _guardianTabsView('introductions'),
@@ -5957,6 +5978,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   }
 
   Widget _guardians() {
+    _guardianFamily.expire(_previewNow);
     final account = (ZyraAccountState.userId, ZyraAccountState.generation);
     final session = _accountSession;
     final revision = _uiRevision;
@@ -6029,6 +6051,10 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                 ? 'Guardian One'
                 : 'Guardian Basic',
             history: _conceptGuardianHistory[p.id] ?? _shareHistory,
+            familyPlace:
+                _guardianFamily.inviteFor(p.id)?.status ==
+                    ZyraGuardianFamilyInviteStatus.accepted &&
+                _model.canUseSampleGuardianChat(p.id),
           ),
       ],
       journeysFor: (id) => [
@@ -6045,11 +6071,52 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
             canChange:
                 people.where((g) => g.id == id).firstOrNull?.isMain != true &&
                 !_model.hasRequiredPaidGuardianAccess(id, p.id),
+            chatCanChange:
+                !_model.hasRequiredPaidGuardianAccess(id, p.id) &&
+                (people.where((g) => g.id == id).firstOrNull?.isMain != true ||
+                    _guardianFamily.inviteFor(id)?.status ==
+                        ZyraGuardianFamilyInviteStatus.accepted),
           ),
       ],
       capacity: _seekerMembership.contains('Basic') ? 1 : _model.capacity,
       basic: _seekerMembership.contains('Basic'),
       initialPage: _guardianPage,
+      familyState: _guardianFamily.freePlaces > 0
+          ? ZyraGuardianFamilyState.freePlace
+          : ZyraGuardianFamilyState.noFamily,
+      familyInvited: (id) =>
+          _guardianFamily.inviteFor(id)?.pendingAt(_previewNow) == true,
+      onFamilyInvite: (id) {
+        if (!current() ||
+            _guardianPage >= people.length ||
+            people[_guardianPage].id != id ||
+            _model.canUseSampleGuardianChat(id)) {
+          return;
+        }
+        final guardian = people[_guardianPage];
+        final seeker = _accountSession.ownProfile(false);
+        final relationship = guardian.relationshipLabel;
+        if (relationship == null) return;
+        _guardianFamily.send(
+          guardianId: id,
+          guardianName: guardian.firstName,
+          seekerId: seeker.id,
+          seekerName: seeker.firstName,
+          seekerGender: seeker.gender,
+          relationship: relationship,
+          main: guardian.isMain,
+          now: _previewNow,
+        );
+        _armGuardianFamilyExpiry();
+        _publishCheckpoint();
+      },
+      onFamilyCancel: (id) {
+        if (!current()) return;
+        final invite = _guardianFamily.inviteFor(id);
+        if (invite != null) _guardianFamily.cancel(invite, _previewNow);
+        _armGuardianFamilyExpiry();
+        _publishCheckpoint();
+      },
       canAct: current,
       interactionEpoch: () => (_uiRevision, _devControlsEpoch, _devRouteStamp),
       contextIdentity: (
@@ -6085,7 +6152,10 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       onPermission: (id, journeyId, {view, chat}) {
         final guardian = target(id);
         if (guardian == null ||
-            guardian.isMain ||
+            (guardian.isMain &&
+                (view != null ||
+                    _guardianFamily.inviteFor(id)?.status !=
+                        ZyraGuardianFamilyInviteStatus.accepted)) ||
             !journeys.any((p) => p.id == journeyId) ||
             _model.hasRequiredPaidGuardianAccess(id, journeyId)) {
           return;
@@ -6247,6 +6317,115 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     ),
   );
 
+  ZyraGuardianFamilyInvite? get _pendingGuardianFamilyOffer {
+    final offer = _guardianFamily.inviteFor('draft-guardian-hassan');
+    if (!_guardianRole ||
+        !_conceptHassanLinked ||
+        _guardianMembership != 'Guardian Basic' ||
+        _model.sampleGuardianMembershipFor('draft-guardian-hassan') !=
+            DraftGuardianMembership.basic ||
+        offer?.pendingAt(_previewNow) != true) {
+      return null;
+    }
+    final guardian = _conceptGuardianPeople
+        .where((p) => p.id == offer!.guardianId)
+        .firstOrNull;
+    final seeker = _accountSession.ownProfile(false);
+    return guardian != null &&
+            guardian.isMain == offer!.main &&
+            guardian.relationshipLabel == offer.relationship &&
+            seeker.id == offer.seekerId &&
+            seeker.firstName == offer.seekerName &&
+            seeker.gender == offer.seekerGender
+        ? offer
+        : null;
+  }
+
+  bool Function() _guardianFamilyGuard(
+    String page,
+    ZyraGuardianFamilyInvite offer,
+  ) {
+    final fresh = _accountFreshGuard();
+    final family = _guardianFamily;
+    var revoked = false;
+    return () {
+      final current =
+          !revoked &&
+          fresh() &&
+          _accountSession.current &&
+          !_devControlsVisible &&
+          _guardianRole &&
+          _tab == 2 &&
+          _page == page &&
+          identical(family, _guardianFamily) &&
+          _pendingGuardianFamilyOffer?.revision == offer.revision;
+      if (!current) revoked = true;
+      return current;
+    };
+  }
+
+  void _armGuardianFamilyExpiry() {
+    _guardianFamilyDeadline?.cancel();
+    final pending =
+        _guardianFamily.invites.where((i) => i.pendingAt(_previewNow)).toList()
+          ..sort((a, b) => a.expiresAt.compareTo(b.expiresAt));
+    if (pending.isEmpty) return;
+    _guardianFamilyDeadline = Timer(
+      pending.first.expiresAt.difference(_previewNow),
+      () {
+        if (!_allowed) return;
+        _act(() {
+          _guardianFamily.expire(_previewNow);
+          if (_pendingGuardianFamilyOffer == null) {
+            _pages.removeWhere(
+              (p) =>
+                  p == 'guardian_family_offer' ||
+                  p == 'guardian_family_identity',
+            );
+          }
+        });
+        _armGuardianFamilyExpiry();
+      },
+    );
+  }
+
+  Widget _guardianFamilyIdentity() {
+    final offer = _pendingGuardianFamilyOffer;
+    if (offer == null) return const SizedBox.shrink();
+    final current = _guardianFamilyGuard('guardian_family_identity', offer);
+    return InitialIdentityCheckScreen(
+      key: ValueKey(('family-identity', offer.revision)),
+      devPreview: true,
+      // Reuse the real verification page in its isolated local mode. Unknown
+      // identity is not a passed check; its verified Continue owns this result.
+      onContinue: (_) async {
+        if (!current() ||
+            !_guardianFamily.accept(
+              offer,
+              _previewNow,
+              identityVerified: true,
+            )) {
+          return;
+        }
+        if (!_model.acceptSampleGuardianFamilyPlace(offer.guardianId)) return;
+        _move(() {
+          _guardianMembership = 'Guardian One';
+          _subscriptionWallet = _subscriptionWallet.withRole(
+            ZyraWalletRole.guardian,
+            coverage: ZyraWalletCoverage.assignedFamily,
+          );
+          _pages.clear();
+          _guardianTabs.focusIndex = 0;
+        });
+        _armGuardianFamilyExpiry();
+      },
+      // Developer skip returns to the offer; it never accepts or verifies it.
+      onDevSkip: (_) async {
+        if (current()) _back();
+      },
+    );
+  }
+
   Widget _guardianJourneySelector() {
     final people = _permittedGuardianJourneys;
     final selected = people.indexWhere((p) => p.id == _guardianFocus?.id);
@@ -6285,6 +6464,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   }
 
   Widget _guardianTabsView(String page) {
+    _guardianFamily.expire(_previewNow);
+    final offer = _pendingGuardianFamilyOffer;
     final people = _guardianTabJourneyPeople;
     final selected = people.indexWhere((p) => p.id == _guardianJourneyId);
     final current = people.isEmpty ? null : people[selected < 0 ? 0 : selected];
@@ -6295,6 +6476,10 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       paid: _guardianMembership == 'Guardian One',
       adamMain: _conceptLinkedSeeker.isMain,
       seekerGender: _conceptLinkedSeekerProfile.gender,
+      familyOffer: offer,
+      familyCanAct: offer == null
+          ? () => false
+          : _guardianFamilyGuard('guardian_family_offer', offer),
       currentSeekerJourneyId: current?.id,
       currentSeekerJourney: current == null
           ? null
@@ -6372,6 +6557,25 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
   }
 
   void _guardianTabsAction(String action) {
+    if (action == 'family_view' ||
+        action == 'family_accept' ||
+        action == 'family_decline') {
+      final offer = _pendingGuardianFamilyOffer;
+      if (offer == null) return;
+      if (action == 'family_view') {
+        if (_page == null && _tab == 2) _open('guardian_family_offer');
+      } else if (_guardianFamilyGuard('guardian_family_offer', offer)()) {
+        if (action == 'family_accept') {
+          _open('guardian_family_identity');
+        } else if (_guardianFamily.decline(offer, _previewNow)) {
+          _move(() {
+            _pages.clear();
+            _notice = 'Declined. The place stays free for ${offer.seekerName}.';
+          });
+        }
+      }
+      return;
+    }
     final state = _guardianTabs;
     final paid = _guardianMembership == 'Guardian One';
     if (action.startsWith('seeker_journey_')) {
@@ -6879,6 +7083,13 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     relationship: 'Father',
     linkedSeekers: _conceptHassanLinked ? '2' : '0',
     linkedSeekerSummary: _conceptHassanLinked ? 'Adam, Yusuf' : null,
+    familyPlacePayer:
+        _guardianRole &&
+            _guardianMembership == 'Guardian One' &&
+            _guardianFamily.inviteFor('draft-guardian-hassan')?.status ==
+                ZyraGuardianFamilyInviteStatus.accepted
+        ? _guardianFamily.inviteFor('draft-guardian-hassan')!.seekerName
+        : null,
     guardianCount: '${_conceptGuardianPeople.length}',
     signedInWith: 'Apple',
     backgroundLabel: _accountSession.palette.label.replaceAll(' · Current', ''),
@@ -8716,6 +8927,8 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
               _paidGuardianAgreement = null;
               _model.setCapacity(3);
               _model.reset();
+              _guardianFamily = ZyraGuardianFamilyPreview();
+              _guardianFamilyDeadline?.cancel();
               _seenBrowseProfileIds.clear();
               _browseHistory.reset();
               _messages.clear();

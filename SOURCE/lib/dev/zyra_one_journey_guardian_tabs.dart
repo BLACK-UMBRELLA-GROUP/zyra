@@ -14,6 +14,7 @@ import 'zyra_one_journey_tab.dart' show ZyraJourneyPhotoCard;
 import 'zyra_one_journey_guardian_seeker.dart';
 import 'zyra_one_journey_guardian_action.dart';
 import 'zyra_one_journey_monogram_presentation.dart';
+import 'zyra_guardian_family_preview.dart';
 import '../screens/wali/family_messaging_screens.dart'
     show ZyraFamilyMessageComposer;
 
@@ -321,6 +322,8 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     this.journeys = const [],
     this.journeyIndex = 0,
     this.journeyIdentity,
+    this.familyOffer,
+    this.familyCanAct,
   });
   final ZyraGuardianTabsState state;
   final String page, seekerGender;
@@ -333,6 +336,8 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   final List<ZyraGuardianJourneyCard> journeys;
   final int journeyIndex;
   final Object? journeyIdentity;
+  final ZyraGuardianFamilyInvite? familyOffer;
+  final bool Function()? familyCanAct;
   Widget _text(
     String text, {
     double size = 14,
@@ -618,6 +623,17 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     final review = state.review;
     final hours = state.hours;
     return [
+      if (familyOffer case final offer?)
+        ZyraFocusItem(
+          id: 'family-offer-${offer.revision}',
+          icon: Icons.verified_user_outlined,
+          title: '${offer.seekerName} has given\nyou Guardian One',
+          detail:
+              'A place in ${offer.seekerName}’s ZYRA Family. You pay nothing. Choose by ${offer.chooseBy}.',
+          actionLabel: 'View',
+          actionKey: 'guardian_family_view',
+          onAction: () => onAction('family_view'),
+        ),
       if (linked && review != ZyraGuardianReview.continued)
         ZyraFocusItem(
           id: state.reviewFocusId,
@@ -1275,6 +1291,18 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     'network' => _network(context),
     'introduce_confirm' => _confirm(true),
     'connect_confirm' => _confirm(false),
+    'family_offer' =>
+      familyOffer == null
+          ? const SizedBox.shrink()
+          : ZyraGuardianActionPage(
+              introduction: false,
+              personName: familyOffer!.seekerName,
+              seekerName: familyOffer!.seekerName,
+              seekerGender: familyOffer!.seekerGender,
+              familyInvite: familyOffer,
+              canAct: familyCanAct,
+              onAction: onAction,
+            ),
     'journeys' => _journeys(),
     'seekers' => _seekers(),
     'seeker' => _seeker(),

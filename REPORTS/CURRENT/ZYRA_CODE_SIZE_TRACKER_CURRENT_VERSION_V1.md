@@ -768,3 +768,20 @@ Network now reuses the LOCK19/21 ZyraGoldRingMonogram: public initial only, 110p
 | Old Pause / Restart files |39 /1|unchanged|
 
 Measured with code_size.py; classifier/attribution delta0. Fifteen scoped cases pass (5 V9, 2 existing Network geometry/boundary, 8 V7 action and stale-owner cases). Four-item analyser clean, format0, protected Flutter3.44.2/five pins/both exec-denial proofs pass. Five actual normal/200% captures and native-size master/build pairs in GUARDIAN_TABS/BUILT/V9; pairs preserve build pixels exactly. Existing frame/surface/navigation/font-metric differences and heavy Larger Text title/action wrapping are shown (QUEUE63-R1/OA-ZYRA-335); reachable by scrolling with no overflow exception. Per avatar/name-only brief, broader layout redesign is refused here and deferred to queue44 visual review. No full-suite, device, pixel-equality or Founder visual-approval claim. AD-AIOS-115/118/120.
+
+## Queue 67 — Guardian accepts/declines Family place LOCK19 V3 — 1 November 2026
+
+Local sheet invitations now survive the owned role switch/checkpoint and feed the Guardian Basic Needs-you item and shared full page. Names, pronouns, role, relationship and seven-day deadline come from that invite. Existing isolated identity-check Continue precedes local Guardian One acceptance; developer skip grants nothing. Profile shows the Family payer; Seeker card shows funded access with Chat off (including Main), existing View retained. Decline/cancel/expiry release the local place once. No charge, service, admission-guard or live account change. Existing row60 head/card reused.
+
+| Measure | Before | After |
+|---|---:|---:|
+| All app code |174,614 /344|175,146 /345|
+| Developer/preview |54,526 /102|55,058 /103|
+| Founder planned app |35,317 /52|35,846 /53|
+| Tests |227,562 /536|228,324 /538|
+| Test goldens |2,612 /307 MB|unchanged|
+| Old Pause / Restart files |39 /1|unchanged|
+
+Measured with code_size.py. Its only classifier addition is the new `zyra_guardian_family_preview.dart`, explicitly counted in both developer/preview and Founder categories; no historical files reclassified. Twelve-file scoped run271 passes, final eight acceptance cases (including added checkpoint assertions) pass; full SOURCE analyser clean,11-file format0, protected3.44.2/five pins/exec-denial checks pass. No full-suite claim.
+
+GUARDIAN_CARD/BUILT/V3 holds nine actual normal/200% captures, nine native-size master/build pairs (build pixels preserved exactly), contact sheet, QA and exact manifests. Shared frame/type/icon/shadow differences, source notification/linked-summary facts and existing 200% dashboard/Profile/nav limits remain visible (QUEUE67-R1/R2, OA-ZYRA-335). Scoped offer actions and payer row reachable by scrolling; no pixel equality, full accessibility-quality or Founder visual-approval claim. Read-cost caveat, including parent guard-helper overrun, is in QA and the single task note under OA-AIOS-419. AD-AIOS-115/118/120; DR-ZYRA-291/221.

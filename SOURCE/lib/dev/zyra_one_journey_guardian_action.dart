@@ -5,6 +5,7 @@ import '../theme/zyra_text.dart';
 import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'zyra_one_journey_monogram_presentation.dart';
+import 'zyra_guardian_family_preview.dart';
 
 class ZyraGuardianActionPage extends StatelessWidget {
   const ZyraGuardianActionPage({
@@ -14,11 +15,15 @@ class ZyraGuardianActionPage extends StatelessWidget {
     required this.seekerName,
     required this.seekerGender,
     required this.onAction,
+    this.canAct,
+    this.familyInvite,
   });
 
   final bool introduction;
   final String personName, seekerName, seekerGender;
   final ValueChanged<String> onAction;
+  final bool Function()? canAct;
+  final ZyraGuardianFamilyInvite? familyInvite;
 
   Widget _text(String value, {bool muted = false}) => Text(
     value,
@@ -50,7 +55,31 @@ class ZyraGuardianActionPage extends StatelessWidget {
 
   Widget _card() {
     final his = seekerGender.toLowerCase() == 'female' ? 'her' : 'his';
-    final rows = introduction
+    final invite = familyInvite;
+    final rows = invite != null
+        ? [
+            (
+              Icons.workspace_premium_outlined,
+              'What Guardian One adds',
+              'Chat in ${invite.seekerName}’s Journeys when ${invite.pronoun} turns it on, plus Connect with Guardian and Introductions.',
+            ),
+            (
+              Icons.payments,
+              '${invite.seekerName} pays',
+              'It’s a place in ${invite.seekerName}’s ZYRA Family. You pay nothing.',
+            ),
+            (
+              Icons.people,
+              'Your role stays the same',
+              'You stay ${invite.seekerName}’s ${invite.relationship} and ${invite.main ? 'Main' : 'Additional'} Guardian. Chat stays off until ${invite.seekerName} turns it on.',
+            ),
+            (
+              Icons.history,
+              'Choose by ${invite.chooseBy}',
+              'If you don’t accept, the place stays free for ${invite.seekerName}.',
+            ),
+          ]
+        : introduction
         ? [
             (
               Icons.person_outline,
@@ -101,11 +130,17 @@ class ZyraGuardianActionPage extends StatelessWidget {
 
   Widget _head() => ZyraMonogramHead(
     monogramKey: const ValueKey('guardian_action_monogram'),
-    name: personName,
-    title: introduction
+    name: familyInvite?.seekerName ?? personName,
+    title: familyInvite != null
+        ? '${familyInvite!.seekerName} has given you Guardian One'
+        : introduction
         ? 'Put $personName forward to $seekerName?'
         : '$personName’s Main Guardian',
-    eyebrow: introduction ? 'INTRODUCTION' : 'CONNECT WITH GUARDIAN',
+    eyebrow: familyInvite != null
+        ? 'ZYRA FAMILY PLACE'
+        : introduction
+        ? 'INTRODUCTION'
+        : 'CONNECT WITH GUARDIAN',
   );
 
   Widget _actions(BuildContext context) => Column(
@@ -116,11 +151,22 @@ class ZyraGuardianActionPage extends StatelessWidget {
         radius: 28,
         child: TextButton(
           key: ValueKey(
-            'guardian_${introduction ? 'introduce_send' : 'connect_send'}',
+            'guardian_${familyInvite != null
+                ? 'family_accept'
+                : introduction
+                ? 'introduce_send'
+                : 'connect_send'}',
           ),
           onPressed: ZyraTapFeedback.onTap(
             context,
-            () => onAction(introduction ? 'introduce_send' : 'connect_send'),
+            () => onAction(
+              familyInvite != null
+                  ? 'family_accept'
+                  : introduction
+                  ? 'introduce_send'
+                  : 'connect_send',
+            ),
+            canAct: canAct,
           ),
           style: TextButton.styleFrom(
             minimumSize: const Size(0, 48),
@@ -130,20 +176,38 @@ class ZyraGuardianActionPage extends StatelessWidget {
             shape: const StadiumBorder(),
           ),
           child: Text(
-            introduction ? 'Introduce' : 'Send request',
+            familyInvite != null
+                ? 'Accept Guardian One'
+                : introduction
+                ? 'Introduce'
+                : 'Send request',
             style: ZyraText.body(size: 14, color: ZyraColors.foreground),
           ),
         ),
       ),
       const SizedBox(height: 12),
       TextButton(
-        key: const ValueKey('guardian_action_back'),
-        onPressed: ZyraTapFeedback.onTap(context, () => onAction('back')),
+        key: ValueKey(
+          familyInvite != null
+              ? 'guardian_family_decline'
+              : 'guardian_action_back',
+        ),
+        onPressed: ZyraTapFeedback.onTap(
+          context,
+          () => onAction(familyInvite != null ? 'family_decline' : 'back'),
+          canAct: canAct,
+        ),
         style: TextButton.styleFrom(
           minimumSize: const Size(0, 38),
           padding: const EdgeInsets.symmetric(vertical: 8),
         ),
-        child: _text(introduction ? 'Not now' : 'Not yet'),
+        child: _text(
+          familyInvite != null
+              ? 'Decline'
+              : introduction
+              ? 'Not now'
+              : 'Not yet',
+        ),
       ),
     ],
   );
@@ -162,7 +226,9 @@ class ZyraGuardianActionPage extends StatelessWidget {
           mainAxisSize: scroll ? MainAxisSize.min : MainAxisSize.max,
           children: [
             Text(
-              introduction
+              familyInvite != null
+                  ? 'Guardian One'
+                  : introduction
                   ? 'Introduce to $seekerName'
                   : 'Connect with Guardian',
               style: ZyraText.heading(

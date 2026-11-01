@@ -374,6 +374,9 @@ final class ViewRequestDraftSnapshot {
         model._peerMainGuardianOverrides,
       ),
       guardianMemberships = Map.unmodifiable(model._guardianMemberships),
+      familyGuardianChatConsent = Set.unmodifiable(
+        model._familyGuardianChatConsent,
+      ),
       guardianAccess = Map.unmodifiable(model._guardianAccess),
       requiredPaidGuardianAccess = Set.unmodifiable(
         model._requiredPaidGuardianAccess,
@@ -406,6 +409,7 @@ final class ViewRequestDraftSnapshot {
   final Map<String, ViewRequestDraftProgressSnapshot> progress;
   final Map<String, bool> peerMainGuardianOverrides;
   final Map<String, DraftGuardianMembership> guardianMemberships;
+  final Set<String> familyGuardianChatConsent;
   final Map<String, ({bool view, bool chat})> guardianAccess;
   final Set<String> requiredPaidGuardianAccess;
   final bool ownMainGuardianPresent;
@@ -578,6 +582,7 @@ final class ViewRequestDraftSnapshot {
               entry.value == DraftJourneyState.acceptedWaiting ||
               progress.containsKey(entry.key),
         ) &&
+        familyGuardianChatConsent.every(guardians.contains) &&
         guardianAccess.entries.every((entry) {
           final pair = entry.key.split('|');
           return pair.length == 2 &&
@@ -736,6 +741,7 @@ class ViewRequestDraftModel {
     }
     _peerMainGuardianOverrides.addAll(snapshot.peerMainGuardianOverrides);
     _guardianMemberships.addAll(snapshot.guardianMemberships);
+    _familyGuardianChatConsent.addAll(snapshot.familyGuardianChatConsent);
     _guardianAccess.addAll(snapshot.guardianAccess);
     _requiredPaidGuardianAccess.addAll(snapshot.requiredPaidGuardianAccess);
     _ownMainGuardian = snapshot.ownMainGuardianPresent;
@@ -776,6 +782,7 @@ class ViewRequestDraftModel {
   final Map<String, String> _currentEndedAttemptIds = {};
   final Map<String, bool> _peerMainGuardianOverrides = {};
   final Map<String, DraftGuardianMembership> _guardianMemberships = {};
+  final Set<String> _familyGuardianChatConsent = {};
   final Map<String, ({bool view, bool chat})> _guardianAccess = {};
   final Set<String> _requiredPaidGuardianAccess = {};
   bool _ownMainGuardian = true;
@@ -1112,6 +1119,7 @@ class ViewRequestDraftModel {
     if (!_knownGuardian(id)) return false;
     _guardianMemberships[id] = value;
     if (value == DraftGuardianMembership.basic) {
+      _familyGuardianChatConsent.remove(id);
       _requiredPaidGuardianAccess.removeWhere((key) => key.startsWith('$id|'));
       // Revocation is stored, not merely painted disabled. Upgrading later
       // cannot silently restore an Additional Guardian's earlier chat grant.
@@ -1121,6 +1129,18 @@ class ViewRequestDraftModel {
         _guardianAccess[key] = (view: old?.view ?? true, chat: false);
       }
     }
+    return true;
+  }
+
+  /// LOCK19 local consent: funded membership never restores a prior Chat grant,
+  /// including Main's usual default. The Seeker must explicitly enable Chat.
+  bool acceptSampleGuardianFamilyPlace(String id) {
+    if (sampleGuardianMembershipFor(id) != DraftGuardianMembership.basic) {
+      return false;
+    }
+    setSampleGuardianMembership(id, DraftGuardianMembership.basic);
+    _guardianMemberships[id] = DraftGuardianMembership.one;
+    _familyGuardianChatConsent.add(id);
     return true;
   }
 
@@ -1166,7 +1186,9 @@ class ViewRequestDraftModel {
       chat:
           canUseSampleGuardianChat(guardianId) &&
           view &&
-          (isMain || required || grant.chat),
+          ((isMain && !_familyGuardianChatConsent.contains(guardianId)) ||
+              required ||
+              grant.chat),
     );
   }
 
@@ -1822,6 +1844,7 @@ class ViewRequestDraftModel {
   /// Clears fictional interaction state, retaining the configured local cap.
   void reset() {
     _guardianMemberships.clear();
+    _familyGuardianChatConsent.clear();
     _seed();
   }
 

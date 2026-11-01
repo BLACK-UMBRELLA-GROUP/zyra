@@ -260,6 +260,7 @@ class BaselineHarness {
     String guardianMembership = 'Guardian One',
     bool initialSeekerBasic = false,
     bool initialGuardianBasic = false,
+    DateTime Function()? previewClock,
   }) async {
     this.guardian = guardian;
     ZyraColors.restoreAppPalette(null);
@@ -298,7 +299,7 @@ class BaselineHarness {
                 seekerMembership: seekerMembership,
                 guardianMembership: guardianMembership,
               ),
-          previewClock: () => DateTime.utc(2026, 10, 29, 12),
+          previewClock: previewClock ?? () => DateTime.utc(2026, 10, 29, 12),
           onCheckpoint: checkpoints.add,
           onPresentationReady: () {
             if (!ready.isCompleted) ready.complete();

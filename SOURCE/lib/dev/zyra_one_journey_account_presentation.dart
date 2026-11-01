@@ -61,6 +61,7 @@ class ZyraConceptAccountData {
     required this.hapticLabel,
     required this.gold,
     this.linkedSeekerSummary,
+    this.familyPlacePayer,
     this.guardianInfoSeen = false,
     this.photoAsset,
     this.standardUnlocks,
@@ -83,6 +84,7 @@ class ZyraConceptAccountData {
   final String relationship;
   final String linkedSeekers;
   final String? linkedSeekerSummary;
+  final String? familyPlacePayer;
   final String guardianCount;
   final String signedInWith;
   final String backgroundLabel;
@@ -361,7 +363,9 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
                       data.membership,
                       Icons.workspace_premium_outlined,
                       ZyraConceptAccountAction.membership,
-                      detail: data.isOne
+                      detail: data.isOne && data.familyPlacePayer != null
+                          ? 'Family place · paid by ${data.familyPlacePayer}'
+                          : data.isOne
                           ? 'Manage membership'
                           : 'See ${data.guardian ? 'Guardian' : 'Seeker'} One',
                     ),

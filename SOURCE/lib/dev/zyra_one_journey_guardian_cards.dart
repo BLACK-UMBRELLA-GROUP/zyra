@@ -37,12 +37,14 @@ class ZyraGuardianCardJourney {
     required this.view,
     required this.chat,
     required this.canChange,
+    this.chatCanChange,
     this.photo,
   });
   final String id, name, stage;
   final int? attempt;
   final String? photo;
   final bool view, chat, canChange;
+  final bool? chatCanChange;
 }
 
 typedef ZyraGuardianCardPermission =
@@ -76,6 +78,9 @@ class ZyraOneJourneyGuardianCards extends StatefulWidget {
     this.onResume,
     this.initialPage = 0,
     this.familyState = ZyraGuardianFamilyState.noFamily,
+    this.familyInvited,
+    this.onFamilyInvite,
+    this.onFamilyCancel,
   });
   final List<ZyraGuardianCardPerson> people;
   final List<ZyraGuardianCardJourney> Function(String id) journeysFor;
@@ -93,6 +98,8 @@ class ZyraOneJourneyGuardianCards extends StatefulWidget {
   final VoidCallback onAdd, onCircle;
   final VoidCallback? onResume;
   final ZyraGuardianFamilyState familyState;
+  final bool Function(String)? familyInvited;
+  final ValueChanged<String>? onFamilyInvite, onFamilyCancel;
 
   @override
   State<ZyraOneJourneyGuardianCards> createState() => _GuardianCardsState();
@@ -260,7 +267,8 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
           return ZyraGuardianFamilySheet(
             guardianName: person.person.firstName,
             canAct: current,
-            invited: _invites.contains(target),
+            invited:
+                widget.familyInvited?.call(target) ?? _invites.contains(target),
             familyState: widget.familyState,
             onInvite: () {
               if (current()) {
@@ -268,6 +276,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
                   _invites.add(target);
                   _render++;
                 });
+                widget.onFamilyInvite?.call(target);
               }
             },
             onCancelInvite: () {
@@ -276,6 +285,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
                   _invites.remove(target);
                   _render++;
                 });
+                widget.onFamilyCancel?.call(target);
               }
             },
             onClose: () {
@@ -757,10 +767,18 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     required bool chat,
   }) {
     final locked = chat && person.basic;
-    final invited = locked && _invites.contains(person.person.id);
+    final invited =
+        locked &&
+        (widget.familyInvited?.call(person.person.id) ??
+            _invites.contains(person.person.id));
     final enabled = chat ? journey.chat : journey.view;
     final label = chat ? (invited ? 'Invited' : 'Chat') : 'View';
-    final canChange = locked || (journey.canChange && (!chat || journey.view));
+    final canChange =
+        locked ||
+        ((chat
+                ? journey.chatCanChange ?? journey.canChange
+                : journey.canChange) &&
+            (!chat || journey.view));
     final action = canChange
         ? _action(
             () => locked

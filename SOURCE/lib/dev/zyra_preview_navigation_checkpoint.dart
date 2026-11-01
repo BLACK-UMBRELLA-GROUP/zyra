@@ -6,6 +6,7 @@ import 'zyra_browse_filter.dart';
 import 'zyra_subscription_wallet_draft.dart' show ZyraWalletReadiness;
 import 'zyra_one_journey_guardian_tabs.dart' show ZyraGuardianTabsSnapshot;
 import 'zyra_view_request_draft_model.dart';
+import 'zyra_guardian_family_preview.dart';
 
 /// Measures the first real background departure, not the authorization wait.
 /// Inactive-only system sheets do not start the reset interval.
@@ -78,6 +79,7 @@ class ZyraPreviewNavigationCheckpoint {
     Iterable<String> networkSent = const [],
     this.seekerMembership = 'Seeker One',
     this.guardianMembership = 'Guardian One',
+    this.guardianFamily,
     this.compatibilityBalance,
     this.compatibilityRevealed = false,
     this.accountDestination,
@@ -132,6 +134,7 @@ class ZyraPreviewNavigationCheckpoint {
   final Map<String, double> positions;
   final double scrollOffset;
   final String mainGuardianId, seekerMembership, guardianMembership;
+  final ZyraGuardianFamilyPreviewSnapshot? guardianFamily;
   final String? pendingMainGuardianNoticeId;
   final Set<String> removedGuardians, networkSent;
   final Map<String, bool> guardianHistory;
