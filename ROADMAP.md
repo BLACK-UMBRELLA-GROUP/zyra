@@ -1,5 +1,7 @@
 # ZYRA roadmap
 
+**Overall:** roughly **400 hours** of work remain to launch (server rules and real data, Android, safety and consent, onboarding, purchases, the full test suite back to green, store release). The table below is the first slice, drawn from the open actions and build queue.
+
 ZYRA is pre-launch. This is an estimate of the next 26 hours of work from the open actions and build queue, not an approval to start new implementation. Each item needs the Founder's direction and any required locked designs. Actual effort may change when the checks expose more work.
 
 | Work | Estimated hours | Intended result |
