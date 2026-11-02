@@ -26534,7 +26534,7 @@ Title:       Codex's native iOS build route is held - phone and simulator builds
 Category:    Build tooling / Release
 Priority:    HIGH - iPad and iPhone SE pictures (DR-ZYRA-297), phone checks and any TestFlight build depend on it
 Date:        2026-10-30
-Status:      OPEN - from the 29 Oct ZYRA chat note (items l, n) and Codex tasks 6-24: the native route is "HELD" by
+Status:      UPDATED 1 Nov (Fable): the Founder's one-time PROFILE install ran 1 Nov 00:03 (queue line 72, 83dcb15, DR-ZYRA-339) and is used up. Founder, 31 Oct: repair the protected install route before 21 Nov (he is abroad 21 Nov - 14 Dec, OA-AIOS-420). Deadline 20 Nov. Was: OPEN - from the 29 Oct ZYRA chat note (items l, n) and Codex tasks 6-24: the native route is "HELD" by
              a SwiftPM nested-sandbox refusal in Codex's no_git_driver.mjs; on 29 Oct the paired iPhone 15 Pro Max
              was disconnected and no matching simulator existed. Codex captured with the visual-test render
              instead (430x932 @3x, no native status bar) and, rightly, did not install, bypass or create a
@@ -26634,7 +26634,7 @@ Title:       Ivory colours (LOCK 14 V3) fail the text-contrast rule - three queu
 Category:    Design / Accessibility
 Priority:    HIGH - blocks queue lines 39, 35 (developer toggles) and 41 (My ZYRA Focus)
 Date:        2026-10-31
-Status:      OPEN - Codex queue 39 preflight, 30 Oct (Task 24): espresso #2B2420 on solid gold #A9792E, as used by
+Status:      CLOSED 1 Nov (Fable): LOCK 14 V4/V5 (DR-ZYRA-328) fixed contrast - gold fills #C08A3A with espresso text 5.0:1, small gold text #845F24; built 31 Oct as line 42 (37f5323, 4eaf3d3) with the pill fix line 71. Lines 35/39/41 withdrawn. Was: OPEN - Codex queue 39 preflight, 30 Oct (Task 24): espresso #2B2420 on solid gold #A9792E, as used by
              Check code and Send request at 14 pt regular, gives 3.97:1, under the 4.5:1 normal-text rule in
              blueprint part 5. Line 39 FAILED; lines 35 and 41 FAILED on 31 Oct because they need 39 first. Codex was
              right not to choose a fix.
@@ -26650,7 +26650,7 @@ Title:       Build checks missing for the eleven 30 Oct builds
 Category:    Design loop / charters rule 8
 Priority:    MEDIUM
 Date:        2026-10-31
-Status:      OPEN - the ZYRA chat's 30 Oct note records build checks only for the 29 Oct lines. Missing: lines 18
+Status:      CLOSED 1 Nov (Fable): the ZYRA chat's 31 Oct 05:41 morning check recorded MATCH for lines 18, 19, 23, 26, 29, 30, 32, 37, 38, 40 (22 and 33 have no picture). New gaps for 31 Oct builds: OA-ZYRA-335. Was: OPEN - the ZYRA chat's 30 Oct note records build checks only for the 29 Oct lines. Missing: lines 18
              (LOCK 3 V2), 19 (LOCK 7 V2), 22 (haptics), 23 (Compatibility loop), 26 (LOCK 11), 29 (LOCK 8 V2), 30
              (LOCK 9 V2), 32 (LOCK 6 V2), 37 (LOCK 10 V6), 38 (LOCK 13 V2), 40 (LOCK 12 V2). Each has a
              master-beside-build sheet in its BUILT/ folder; Codex lists known differences in its task notes (e.g.
@@ -26665,7 +26665,7 @@ Title:       ZYRA/_to_delete inside the ZYRA repo - committed to git, with old C
 Category:    Folder structure / One CURRENT_VERSION
 Priority:    MEDIUM - breaks the never-delete route (move to ~/_to_delete) and the one-CURRENT_VERSION rule
 Date:        2026-10-31
-Status:      OPEN - on 30 Oct the ZYRA chat moved three superseded files (APP_COLOURS_SPEC_CURRENT_VERSION_V2.md,
+Status:      CLOSED 1 Nov (Fable): Codex moved the folder to ~/_to_delete/ZYRA_CHAT_LEFTOVERS_2026-10-30/ (9d31d06); the ZYRA chat refilled it seven times on 31 Oct and Codex moved those out too; no ZYRA/_to_delete on 1 Nov and no _to_delete path in any git index. Root cause - the prototype standard told chats to use <business>/_to_delete/ - fixed by Fable 1 Nov (lesson F26); core rule 4 wording proposed to the Founder. Was: OPEN - on 30 Oct the ZYRA chat moved three superseded files (APP_COLOURS_SPEC_CURRENT_VERSION_V2.md,
              PHONE_ACCESS_SPEC_CURRENT_VERSION_V1.md, PHONE_ACCESS_BUILD_BRIEF_2026-10-30.md) into a new
              ZYRA/_to_delete/ folder. It is not git-ignored, so the 31 Oct sweep committed it (9c06998), and two
              files there still carry CURRENT_VERSION names beside the real CURRENT files. Proper archive copies
@@ -26721,9 +26721,114 @@ Next:        ZYRA chat: look at the sign-up nationality picker.
 Acceptance:  A member can tell the two apart wherever nationality is chosen or shown.
 ------------------------------------------------------------
 
+OA-ZYRA-333
+Title:       Adverts for Basic members - later, when the app is near finished
+Category:    Monetisation / Basic plans
+Priority:    LOW - not before the app is near finished
+Date:        2026-11-01
+Status:      OPEN - LATER. Founder, 31 Oct 06:57 (ZYRA chat): "i want added to oa but we wont do yet but when we get
+             to section or clsoer to app finiashed is setting up adverts for basic users and a tour of app for first
+             time users". No design or queue line yet.
+Owner:       ZYRA chat proposes when the app is near finished · Founder decides
+Next:        Nothing now; raise when the app is near finished.
+Acceptance:  An approved advert design for Seeker and Guardian Basic, LOCKed and queued.
+------------------------------------------------------------
+
+OA-ZYRA-334
+Title:       First-time app tour for new members - later, when the app is near finished
+Category:    Onboarding
+Priority:    LOW - not before the app is near finished
+Date:        2026-11-01
+Status:      OPEN - LATER. Same Founder words as OA-ZYRA-333 (31 Oct 06:57, ZYRA chat).
+Owner:       ZYRA chat proposes when the app is near finished · Founder decides
+Next:        Nothing now; raise when the app is near finished.
+Acceptance:  An approved first-time tour, LOCKed and queued.
+------------------------------------------------------------
+
+OA-ZYRA-335
+Title:       Build checks missing for the 31 Oct builds 43, 46, 48 and 68 (and the line 72 phone picture)
+Category:    Design loop / charters rule 8
+Priority:    MEDIUM
+Date:        2026-11-01
+Status:      OPEN - the ZYRA chat's 31 Oct note has build checks for lines 42, 52, 53, 55, 57, 59, 64-66 and 69-71,
+             but none for 43 (My ZYRA Focus V2), 46 (unread badge), 48 (Guardian cards V2) or 68 (page dots V2); line
+             72's phone picture shows photo page 3 against master d01 (page 1).
+Owner:       ZYRA chat
+Next:        ZYRA chat: compare each BUILT/ folder with its masters at the next morning check; file differences.
+Acceptance:  A MATCH or list of differences for each line in a chat note.
+------------------------------------------------------------
+
+OA-ZYRA-336
+Title:       Preview sample data disagrees between the Seeker and Guardian views
+Category:    Founder preview / sample data
+Priority:    LOW
+Date:        2026-11-01
+Status:      OPEN - ZYRA chat morning check 31 Oct, item (b): the Seeker Journey tab shows Sara 'Your turn: answer
+             Faith & Values' while the Guardian's My ZYRA and Journeys show Adam & Sara in Family Review, 41 hours
+             left; master j02 shows Family Review. QUESTIONS.md row 8 (line 56) raises the same sample conflict.
+Owner:       ZYRA chat writes the sample rule into a brief · Codex aligns the preview
+Next:        ZYRA chat: answer QUESTIONS.md row 8 with one shared sample.
+Acceptance:  Both views show the same Journey state.
+------------------------------------------------------------
+
+OA-ZYRA-337
+Title:       Settings still lists 'Pause My Profile' though Pause is retired for ZYRA
+Category:    Product rules / Settings
+Priority:    MEDIUM - app, masters and prototype contradict DR-ZYRA-274
+Date:        2026-11-01
+Status:      OPEN - ZYRA chat morning check 31 Oct, item (f): Settings shows 'Pause My Profile' in the app, the LOCK
+             12 masters and the prototype, but DR-ZYRA-274 retired Pause. Needs a decision: remove the row, or record
+             an exception.
+Owner:       ZYRA chat shows the choice · Founder decides
+Next:        ZYRA chat: one clickable question to Shakeel.
+Acceptance:  The row removed (LOCK + queue line) or an exception filed as a decision.
+------------------------------------------------------------
+
+OA-ZYRA-338
+Title:       Masters to redraw at the next change of their feature
+Category:    Design records
+Priority:    LOW
+Date:        2026-11-01
+Status:      OPEN - ZYRA chat morning check 31 Oct, items (c), (d), (e), (h): LOCK 12 master has a centred Settings
+             title (app left-aligned); LOCK 10 Country row grey 'Change' + arrow (app gold 'Change ›'); LOCK 8
+             masters draw a different Network/Introductions icon (app uses the spec's 'group' icon); LOCK 3 masters
+             keep '‹ Back' and retired Profile rows. In each case the app is right and the BUILT pictures are the
+             reference.
+Owner:       ZYRA chat
+Next:        ZYRA chat: redraw each master when its feature next changes.
+Acceptance:  Masters match the built app.
+------------------------------------------------------------
+
+OA-ZYRA-339
+Title:       Six queue lines FAILED only because their prerequisites are QUESTION
+Category:    Build queue / charters rule 9
+Priority:    MEDIUM
+Date:        2026-11-01
+Status:      OPEN - at 01:00 on 1 Nov Codex marked lines 44, 58, 60, 61, 62 and 63 FAILED because lines 51, 56 and 67
+             are QUESTION (rows 6-9 open); 35 and 41 failed the same way on 30-31 Oct. FAILED lines are never
+             retried, so each needs a new line. Proposal for the Founder (review 1 Nov): a line whose prerequisite is
+             not BUILT stays WAITING and is skipped.
+Owner:       ZYRA chat reissues after answering rows 6-9 · Founder decides the rule
+Next:        ZYRA chat: answer QUESTIONS.md rows 6-9, then reissue the six lines in order.
+Acceptance:  All six built from new lines; rule decided.
+------------------------------------------------------------
+
+OA-ZYRA-340
+Title:       Server design and blueprint to carry the 31 Oct rules (LOCK 2 V2, LOCK 16, LOCK 20)
+Category:    Blueprint / server design
+Priority:    MEDIUM
+Date:        2026-11-01
+Status:      UPDATED 1 Nov (Fable): blueprint part 2 Journey rules §1 and §3 and Guardian rules §6 now carry these rules (change-log rows). Left: server design DOC-ZYRA-0329. Was: OPEN - new member rules from DR-ZYRA-330, 334 and 338: Hide ends a Journey; Guardian Basic reads the
+             Circle; Past topics open 30 days then read only; a Journey starts only when both have a free place, held
+             ending in Both full, neutral waiting wording. The Circle server part is not queued.
+Owner:       Fable (blueprint part 2 and server design DOC-ZYRA-0329)
+Next:        Fable: update blueprint part 2 Journey rules and the server design.
+Acceptance:  Blueprint and server design state each rule with its DR.
+------------------------------------------------------------
+
 TOTAL REGISTERED (this file): 309 (OA-001 through OA-ZYRA-309,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-333 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-341 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_

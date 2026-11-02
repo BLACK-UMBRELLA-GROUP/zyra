@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**325 decisions; 4 marked superseded/retired.**
+**337 decisions; 4 marked superseded/retired.**
 
 | ID | Date | Title | Status |
 |---|---|---|---|
@@ -341,3 +341,15 @@ Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_
 | DR-ZYRA-325 | 2026-10-30 | LOCK 13 - the Seeker Journey tab as swipe cards | APPROVED - Founder direct ("lets lock i… |
 | DR-ZYRA-326 | 2026-10-30 | LOCK 14 - app colours: Ivory, gold and warm neutrals, no purple | APPROVED - Founder direct ("Ivory · no … |
 | DR-ZYRA-327 | 2026-10-30 | LOCK 15 - Seeker My ZYRA "Focus" | APPROVED - Founder direct ("lets lock i… |
+| DR-ZYRA-328 | 2026-10-31 | LOCK 14 V4/V5 - gold fills and small gold text that pass contrast; bottom pill stays light | APPROVED - Founder direct ("Fable says … |
+| DR-ZYRA-329 | 2026-10-31 | LOCK 15 V2/V3 and LOCK 8 V3 - Guardian My ZYRA in the Focus style | APPROVED - Founder direct ("continue" t… |
+| DR-ZYRA-330 | 2026-10-31 | LOCK 16 V1/V2 - block or hide inside a Journey warns first and ends the Journey | APPROVED - Founder direct ("end journey… |
+| DR-ZYRA-331 | 2026-10-31 | LOCK 17 - gold unread badge | APPROVED - Founder direct ("lock in thi… |
+| DR-ZYRA-332 | 2026-10-31 | LOCK 18 V1/V2 - page dots at the top, app-wide | APPROVED - Founder direct ("also we nee… |
+| DR-ZYRA-333 | 2026-10-31 | LOCK 19 V1-V3 - Guardian cards on the Seeker's Guardian tab, and accepting a Family place | APPROVED - Founder direct ("no i dont l… |
+| DR-ZYRA-334 | 2026-10-31 | LOCK 20 V1/V2 - Guardian Circle as Topics; Basic Guardians read only; past Journeys open … | APPROVED - Founder direct ("i like topi… |
+| DR-ZYRA-335 | 2026-10-31 | LOCK 21 - Profile tab in the Monogram style | APPROVED - Founder direct ("does this w… |
+| DR-ZYRA-336 | 2026-10-31 | Unity pass - one look across the remaining pages (LOCK 10 V7, LOCK 8 V4-V9, LOCK 13 V3, L… | APPROVED - Founder direct ("lets work w… |
+| DR-ZYRA-337 | 2026-10-31 | LOCK 22 V5/V6 - real Safety & advice pages for Seekers and Guardians | APPROVED - Founder direct (clickable "D… |
+| DR-ZYRA-338 | 2026-10-31 | LOCK 2 V2 - accepting a Journey when places are full | APPROVED - Founder direct (rule propose… |
+| DR-ZYRA-339 | 2026-10-31 | One-time iPhone install with the old PROFILE installer | APPROVED - Founder direct (clickable "Y… |

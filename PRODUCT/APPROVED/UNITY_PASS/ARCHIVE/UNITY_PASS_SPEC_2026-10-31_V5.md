@@ -1,5 +1,5 @@
 ---
-id: TBC (Fable assigns)
+id: DOC-ZYRA-0426
 type: SPEC
 status: ARCHIVED (2026-10-31, replaced by UNITY_PASS_SPEC_CURRENT_VERSION_V6.md)
 feature: PRODUCT BLUEPRINT

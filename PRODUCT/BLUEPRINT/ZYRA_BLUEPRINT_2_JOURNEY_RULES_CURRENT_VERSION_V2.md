@@ -37,7 +37,7 @@ means a brand-new request the other person must accept.
 | Who you see | People not hidden, not blocked, and with a free place themselves | **Different** — no place-based visibility |
 | When you can browse | While you have a free place; ZYRA One (3 places) can browse even when full | **Missing** |
 | Who sees you | Only while you have a free place | **Missing** |
-| Hide / block | Hide removes someone from Browse; block removes them everywhere | **Built** (blocks); hide **Missing** |
+| Hide / block | Hide removes someone from Browse; block removes them everywhere. If you are in a Journey with them, a confirm sheet comes first ("Keep this Journey" / "End Journey and block/hide") and confirming **ends the Journey** - hiding ends it too (LOCK 16 V2, DR-ZYRA-330) | **Built** (blocks); hide **Missing**; Journey ending on hide/block **Missing** |
 | Save | Not in the app | **Different** — `saves` table still exists (remove) |
 
 ## 2. Places
@@ -55,7 +55,7 @@ means a brand-new request the other person must accept.
 |---|---|---|
 | Send | "Request a Journey" on a visible profile you have no history with; tap again to cancel | **Missing** — Journeys start from a mutual like + one tap |
 | Received / Sent | Two tabs in Journey requests; a gold dot for unseen received requests | **Missing** |
-| Accept | Needs a free place on both sides | **Missing** |
+| Accept | Needs a free place on both sides (LOCK 2 V2, DR-ZYRA-338): whoever is full chooses which Journey to end before the new one starts; when **both** are full the chosen ending is held until the other person confirms, so nobody loses a Journey for nothing; the waiting card says "Waiting for <name> to confirm" and never says the other person is full. Not decided: how long an acceptance waits | **Missing** |
 | Decline / cancel | Nothing is reserved; the sender sees **"Not taken up"** (same as expired) and waits **30 days** before asking that person again; the decliner may also **Hide** the sender, which stops further requests (DR-ZYRA-284) | **Missing** |
 | Past requests | A third tab, **Past**: your declined, expired and cancelled sent requests, and requests you declined. They **stay there** — no 30-day limit (Founder 29 Oct, changes DR-ZYRA-284 §1) | **Missing** |
 | Introductions | People your Guardians put forward appear here | **Built** — `wali_suggestions` (corrected 26 Oct) |
@@ -128,3 +128,4 @@ Still open for the server design: what happens when the 48-hour ready window run
 | 2026-10-26 | V2 | §8 decided (DR-ZYRA-277): Family Review kept, request limits, restart expiry |
 | 2026-10-26 | V2 | Approved by the Founder ("a" - all 14 pages); status CURRENT |
 | 2026-10-29 | V2 | §3 Past requests stay (no 30-day limit) - Founder (ZYRA chat); DR from Fable |
+| 2026-11-01 | V2 | §1 hide/block inside a Journey (LOCK 16 V2, DR-ZYRA-330) and §3 accepting when places are full (LOCK 2 V2, DR-ZYRA-338) - Founder, 31 Oct (ZYRA chat); added by Fable |

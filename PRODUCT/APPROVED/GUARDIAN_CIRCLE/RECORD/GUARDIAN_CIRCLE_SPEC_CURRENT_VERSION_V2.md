@@ -1,5 +1,5 @@
 ---
-id: TBC (Fable assigns)
+id: DOC-ZYRA-0391
 type: SPEC
 status: CURRENT
 feature: PRODUCT BLUEPRINT
@@ -78,7 +78,7 @@ Founder 31 Oct: **"Read only"**. A Guardian Basic **is in the Circle and reads e
 | (none) | Past Journey topics open for 30 days after the Journey ends, then read only | "30 days, then read-only (Recommended)", 31 Oct |
 
 ## 8. Build stage in this line
-Founder preview, **local preview**: the read-only Guardian Basic view and the 30-day close use preview data; **no server guard, admission rule or retention change**. The server part (Basic read access, closing past topics) is separate SERVER work after Fable logs §7.
+Founder preview, **local preview**: the read-only Guardian Basic view and the 30-day close use preview data; **no server guard, admission rule or retention change**. The server part (Basic read access, closing past topics) is separate SERVER work after Fable logs §7. **Preview writing rule (clarified 1 Nov, Codex question 6, as masters gc02/gc08/gc13 show):** the Seeker writes on Seeker One or Seeker Basic; a Guardian One writes; a Guardian Basic reads only and never stops others writing. Founder-preview check only.
 
 ## 9. Version history
 | Date | Version | Change |

@@ -18104,9 +18104,205 @@ Related:     DR-ZYRA-322, OA-ZYRA-327.
 
 ------------------------------------------------------------
 
-TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-327,
+DR-ZYRA-328
+Title:       LOCK 14 V4/V5 - gold fills and small gold text that pass contrast; bottom pill stays light
+Date:        2026-10-31
+Status:      APPROVED - Founder direct ("Fable says the Ivory gold buttons fail contrast (3.97 vs 4.5). Show me
+             options and I'll LOCK one." -> clickable "1 · Brighter gold (Recommended)"; then "Deeper gold
+             (Recommended)"; then "Light, as the masters (Recommended)")
+Authority:   Founder, 31 Oct 2026, ZYRA chat (06:46-07:40, 15:30 UK) -
+             REPORTS/DAILY/2026-10/2026-10-31_ZYRA_CHAT_NOTE.md; filed by Fable 1 Nov.
+Decision:    Gold fills that carry text use #C08A3A with espresso text #2B2420 (5.0:1); small gold text uses #845F24
+             (at least 4.65:1); accent gold #A9792E stays for icons and lines. The bottom ‹ · label · › pill stays
+             ivory on every page, as the masters show.
+Consequence: Built 31 Oct: queue line 42 (37f5323, 4eaf3d3) and fix line 71. Lines 35/39/41 withdrawn and replaced.
+             Closes OA-ZYRA-327.
+Related:     DR-ZYRA-326, OA-ZYRA-327.
+
+------------------------------------------------------------
+
+DR-ZYRA-329
+Title:       LOCK 15 V2/V3 and LOCK 8 V3 - Guardian My ZYRA in the Focus style
+Date:        2026-10-31
+Status:      APPROVED - Founder direct ("continue" to the Guardian Focus proposal; clickable "LOCK Focus
+             (Recommended)")
+Authority:   Founder, 31 Oct 2026, ZYRA chat (07:09-07:58 UK) - REPORTS/DAILY/2026-10/2026-10-31_ZYRA_CHAT_NOTE.md;
+             filed by Fable 1 Nov.
+Decision:    Guardian My ZYRA uses the same Focus layout as the Seeker's: greeting, Family Review, Connect request
+             and quick access kept from LOCK 8, plus Seeker chips, a Notifications tile and more 'Needs you' items.
+             Guardian Basic sees Connect and Introductions locked. V3 (with LOCK 18): page dots at the top, no ‹ ›.
+Consequence: Built 31 Oct: queue line 43 (a4f4f4f, 5f8212d, 68ec6e2) and line 68 for the dots.
+Related:     DR-ZYRA-327, AD-AIOS-115.
+
+------------------------------------------------------------
+
+DR-ZYRA-330
+Title:       LOCK 16 V1/V2 - block or hide inside a Journey warns first and ends the Journey
+Date:        2026-10-31
+Status:      APPROVED - Founder direct ("end journey takes us to a nice page but if we click report and choose to
+             block it just executes i think we should give a wanring also that they end journy and block or hide
+             profile..."; clickable "Hide ends the Journey (Recommended)", "LOCK it (Recommended)"; V2 "Keep draft as
+             today (Recommended)")
+Authority:   Founder, 31 Oct 2026, ZYRA chat (07:19-07:58, 09:04 UK) -
+             REPORTS/DAILY/2026-10/2026-10-31_ZYRA_CHAT_NOTE.md; filed by Fable 1 Nov.
+Decision:    Blocking or hiding someone you are in a Journey with opens a confirm sheet ('Keep this Journey' / 'End
+             Journey and block/hide'); confirming ends the Journey. Hiding now ends a Journey too (today's Hidden
+             Profiles text changes where it exists). V2: the report stays a draft and nothing is sent, as today.
+Consequence: Built 31 Oct: queue line 69 (reissue of 45/50). Blueprint part 2 Journey rules to show 'Hide ends the
+             Journey'.
+Related:     AD-AIOS-115, QUESTIONS.md row 1.
+
+------------------------------------------------------------
+
+DR-ZYRA-331
+Title:       LOCK 17 - gold unread badge
+Date:        2026-10-31
+Status:      APPROVED - Founder direct ("lock in this notificaiton bubble tho i like that- should red be the colour
+             though" -> clickable "Gold (Recommended)")
+Authority:   Founder, 31 Oct 2026, ZYRA chat (08:24-08:55 UK) - REPORTS/DAILY/2026-10/2026-10-31_ZYRA_CHAT_NOTE.md;
+             filed by Fable 1 Nov.
+Decision:    Unread counts use a gold #C08A3A badge with a dark number, '9+' above nine, clearing when opened.
+Consequence: Built 31 Oct: queue line 46.
+Related:     AD-AIOS-115.
+
+------------------------------------------------------------
+
+DR-ZYRA-332
+Title:       LOCK 18 V1/V2 - page dots at the top, app-wide
+Date:        2026-10-31
+Status:      APPROVED - Founder direct ("also we need unity of this across whole app. is it at top or bottom
+             whichever you decide ensure its across all app where relevent" - placement delegated to the ZYRA chat,
+             which chose top; clickable "LOCK dots at top (Recommended)"; V2 "Leave them as is (Recommended)")
+Authority:   Founder, 31 Oct 2026, ZYRA chat (08:24-09:12 UK) - REPORTS/DAILY/2026-10/2026-10-31_ZYRA_CHAT_NOTE.md;
+             filed by Fable 1 Nov.
+Decision:    Page dots sit at the top wherever the app pages horizontally; today's bottom dots move. V2: photo dots
+             on title-less photo views stay as they are.
+Consequence: Built 31 Oct: queue line 68 (reissue of 47/49).
+Related:     AD-AIOS-115.
+
+------------------------------------------------------------
+
+DR-ZYRA-333
+Title:       LOCK 19 V1-V3 - Guardian cards on the Seeker's Guardian tab, and accepting a Family place
+Date:        2026-10-31
+Status:      APPROVED - Founder direct ("no i dont like any design i still want profile cards but i want the actual
+             design changed"; "we will set monogram"; clickable "LOCK it (Recommended)", "LOCK it in 19
+             (Recommended)"; V3 "After A · Full page (Recommended)")
+Authority:   Founder, 31 Oct 2026, ZYRA chat (07:41-09:20, 14:35-14:50 UK) -
+             REPORTS/DAILY/2026-10/2026-10-31_ZYRA_CHAT_NOTE.md; filed by Fable 1 Nov.
+Decision:    One Monogram card per Guardian, swiped like Profiles, access side with one tile per Journey place, past
+             summaries on the front. A Guardian Basic's Chat pill is locked and opens a sheet with the ZYRA Family
+             routes from Pricing V6 (no upgrade button for the Seeker). V2: the sheet adds 'and read your Guardian
+             Circle'. V3: a Guardian accepts a Family place on a full page (Accept -> Guardian One, 'Family place ·
+             paid by Adam'; Decline -> place stays free).
+Consequence: Built 31 Oct: queue line 48 (V2). Line 67 (V3) is QUESTION (QUESTIONS.md row 7).
+Related:     Pricing V6, AD-AIOS-115.
+
+------------------------------------------------------------
+
+DR-ZYRA-334
+Title:       LOCK 20 V1/V2 - Guardian Circle as Topics; Basic Guardians read only; past Journeys open 30 days
+Date:        2026-10-31
+Status:      APPROVED - Founder direct ("i like topics but waht about past journyes? ... past journey can be 30 days
+             to talk about" -> "30 days, then read-only (Recommended)"; "also why cant ibrahim join this chat because
+             hes gurdian basic..." -> "Read only (Recommended)"; "LOCK Topics (Recommended)"; V2 "Keep, rename "All"
+             (Recommended)")
+Authority:   Founder, 31 Oct 2026, ZYRA chat (08:42-09:25 UK) - REPORTS/DAILY/2026-10/2026-10-31_ZYRA_CHAT_NOTE.md;
+             filed by Fable 1 Nov.
+Decision:    The Guardian Circle uses Topics (All, per-Journey and Past tabs, no member counts). A Past topic stays
+             open 30 days after a Journey ends, then reads only; Guardians see it only if summaries were shared. A
+             Guardian Basic can read the Circle; writing comes with Guardian One. The Everyone tab is kept and
+             renamed 'All'.
+Consequence: Amends DR-ZYRA-248 and DR-ZYRA-268 (Basic Guardians and the Circle). Queue line 51 is QUESTION (row 6).
+             Server part not queued.
+Related:     DR-ZYRA-248, DR-ZYRA-268.
+
+------------------------------------------------------------
+
+DR-ZYRA-335
+Title:       LOCK 21 - Profile tab in the Monogram style
+Date:        2026-10-31
+Status:      APPROVED - Founder direct ("does this whole page need improvment..."; "so with your options what best
+             suits our current culture" -> clickable "LOCK Monogram (Recommended)")
+Authority:   Founder, 31 Oct 2026, ZYRA chat (09:43-10:05 UK) - REPORTS/DAILY/2026-10/2026-10-31_ZYRA_CHAT_NOTE.md;
+             filed by Fable 1 Nov.
+Decision:    Profile tab (Seeker and Guardian) in the Monogram layout: the person first, buying lower, 'Profiles &
+             Family places', Sign out red and last.
+Consequence: Built 31 Oct: queue line 52.
+Related:     AD-AIOS-115.
+
+------------------------------------------------------------
+
+DR-ZYRA-336
+Title:       Unity pass - one look across the remaining pages (LOCK 10 V7, LOCK 8 V4-V9, LOCK 13 V3, LOCK 22 V1-V4)
+Date:        2026-10-31
+Status:      APPROVED - Founder direct ("lets work with that table… go though each section… low to high… show the
+             apge explan the curent page alyout and give options"; then a clickable "After A/B ... (Recommended)"
+             choice for each of the nine sections)
+Authority:   Founder, 31 Oct 2026, ZYRA chat (09:55-11:45 UK) - REPORTS/DAILY/2026-10/2026-10-31_ZYRA_CHAT_NOTE.md;
+             filed by Fable 1 Nov.
+Decision:    Filters (L10 V7), Guardian chat (L8 V4), Compatibility score/Unlocks/Safety (L22 V1), Guardian Journeys
+             photo card (L8 V5), Journey options (L13 V3), Guardian's Seeker page (L8 V6), Report profile (L22 V2),
+             Connect and Introduce pages (L8 V7), every empty state (L22 V3 + L8 V8; new copy 'When a Journey ends,
+             it's kept here with its Timeline.'), Settings and Edit profile (L22 V4) and the Network card (L8 V9)
+             take the Monogram/gold-ring look.
+Consequence: Built 31 Oct: lines 53, 55, 57, 59, 70. Lines 56 QUESTION; 58, 60-63 FAILED 1 Nov (waiting on QUESTION
+             lines) and need reissuing.
+Related:     AD-AIOS-115.
+
+------------------------------------------------------------
+
+DR-ZYRA-337
+Title:       LOCK 22 V5/V6 - real Safety & advice pages for Seekers and Guardians
+Date:        2026-10-31
+Status:      APPROVED - Founder direct (clickable "Design a real advice page (Recommended)" -> "A · One page, LOCK
+             (Recommended)"; Guardian: "After A · Guardian advice (Recommended)")
+Authority:   Founder, 31 Oct 2026, ZYRA chat (11:45-11:55, 14:05-14:15 UK) -
+             REPORTS/DAILY/2026-10/2026-10-31_ZYRA_CHAT_NOTE.md; filed by Fable 1 Nov.
+Decision:    Profile -> Safety & advice opens a page of five tips plus Report a profile, Help & support and the
+             emergency line; Guardians get five Guardian tips. The tip wording was drafted by the ZYRA chat and
+             approved by his click.
+Consequence: Built 31 Oct: queue lines 64 and 66.
+Related:     AD-AIOS-115.
+
+------------------------------------------------------------
+
+DR-ZYRA-338
+Title:       LOCK 2 V2 - accepting a Journey when places are full
+Date:        2026-10-31
+Status:      APPROVED - Founder direct (rule proposed by him: whoever is full decides who to end before accepting;
+             clickable "Yes, hold the ending (Recommended)", "Neutral wording (Recommended)", "LOCK it
+             (Recommended)")
+Authority:   Founder, 31 Oct 2026, ZYRA chat (11:55-13:45 UK) - REPORTS/DAILY/2026-10/2026-10-31_ZYRA_CHAT_NOTE.md;
+             filed by Fable 1 Nov.
+Decision:    A Journey starts preparing only when both people have a free place. Whoever is full chooses which
+             Journey to end; when both are full the chosen ending is held until the other person confirms, so nobody
+             loses a Journey for nothing. The waiting card says 'Waiting for Hana to confirm' and never says the
+             other person is full. Not decided: how long an acceptance waits.
+Consequence: Built 31 Oct: queue line 65. Fills the gap in blueprint part 2 Journey rules ('Accept needs a free place
+             on both sides').
+Related:     DR-ZYRA-233, AD-AIOS-115.
+
+------------------------------------------------------------
+
+DR-ZYRA-339
+Title:       One-time iPhone install with the old PROFILE installer
+Date:        2026-10-31
+Status:      APPROVED - Founder direct (clickable "Yes, once" + "yes once but ensure its only once and any uneeded
+             file must be cleared up by black umbreall chat and he need to make a note of that")
+Authority:   Founder, 31 Oct 2026, ZYRA chat (23:57 UK) - REPORTS/DAILY/2026-10/2026-10-31_ZYRA_CHAT_NOTE.md; filed
+             by Fable 1 Nov.
+Decision:    Codex may run the PROFILE installer once (no retry, no upgrades) to put the newest ZYRA on his iPhone;
+             leftovers are listed for the Black Umbrella Group chat to clear and record.
+Consequence: Done 1 Nov 00:03 (queue line 72, 83dcb15); the exception is used up. Repair of the protected install
+             route before 21 Nov: OA-ZYRA-339.
+Related:     QUESTIONS.md row 2, OA-ZYRA-323, OA-AIOS-420.
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-339,
   Historical Identifiers, permanent
-NEXT IDENTIFIER: DR-ZYRA-328 (Enterprise format, active
+NEXT IDENTIFIER: DR-ZYRA-340 (Enterprise format, active
   2026-07-12 — continues this sequence, does not reset;
   sequential identifiers are global and never reset per AIOS
   Package Specification Standard Part 5. See BLACK UMBRELLA

@@ -89,8 +89,9 @@ Circle is built but not yet live, and Connect with Guardian and the agreed-acces
 
 | Rule | Decision | Server |
 |---|---|---|
-| The families' discussion: one transcript, with Journey discussion cards | DR-ZYRA-248 | **Built, not live** — `zyra_open_family_message_circle`, `zyra_send_family_message`; release switch `familyMessagingEnabled` off; OA-ZYRA-298 not applied live |
-| Every Circle member needs their own paid role | DR-ZYRA-248 | **Built** |
+| The families' discussion in **Topics**: an All tab, one topic per Journey and a Past tab; no member counts (LOCK 20 V2) | DR-ZYRA-248, DR-ZYRA-334 | **Different** — server has one transcript with Journey cards, not topics; built, not live (`zyra_open_family_message_circle`, `zyra_send_family_message`; switch `familyMessagingEnabled` off; OA-ZYRA-298 not applied live) |
+| A Past topic stays open **30 days** after its Journey ends, then reads only; Guardians see it only if summaries were shared | DR-ZYRA-334 | **Missing** (OA-ZYRA-340) |
+| Writing needs a paid role; a **Guardian Basic reads** the Circle (read only, writing comes with Guardian One) | DR-ZYRA-248 as amended by DR-ZYRA-334 | **Different** — server requires a paid role to open the Circle at all (OA-ZYRA-340) |
 | Mute, report a message, read receipts | DR-ZYRA-248 | **Built** — `zyra_set_family_message_muted`, `zyra_report_family_message`, `zyra_mark_family_messages_read` |
 | Messages and reports are kept for a set time, then purged | DR-ZYRA-248 | **Built** — `zyra_purge_expired_family_message_data` |
 | Blocks and unlinking end Circle access | DR-ZYRA-248 | **Built** — lifecycle triggers |
@@ -133,3 +134,4 @@ Circle is built but not yet live, and Connect with Guardian and the agreed-acces
 | 2026-10-29 | V3 | "Speak to Guardian" renamed "Connect with Guardian" (Founder: "let change to connect with gurdian"); Guardian tabs now five (LOCK 8). V2 archived in REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_VERSIONS/ |
 | 2026-10-30 | V4 | §: a shared past Journey shows the other person's first name and dates (Founder "Show the name"; amends DR-ZYRA-233 item 4). V3 archived in REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_VERSIONS/ |
 | 2026-10-31 | V4 | §7: accepted Connect = private Guardian chat; Guardian-Basic-only Seekers not on Network (LOCK 8 V2, DR-ZYRA-322) - Fable, 04:15 maintenance |
+| 2026-11-01 | V4 | §6: Circle as Topics, Past topics 30 days then read only, Guardian Basic reads only (LOCK 20 V2, DR-ZYRA-334, amends DR-ZYRA-248/268) - Fable, 04:15 maintenance |

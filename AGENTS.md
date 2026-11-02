@@ -22,12 +22,17 @@ document, overlay or AD says otherwise, this block wins.
    `git clean`, checkout/restore over working files, delete branches, change remotes or
    git config, or commit a file over 50 MB or anything from the keys folder.
    `ZYRA/SITE`: commit, but never push until Shakeel's Cloudflare check (OA-AIOS-407).
+   Read-only commands are always allowed (`git log`, `git rev-list`, `git show`, `git diff`,
+   `git ls-files`, `git branch -a`) and so are read-only scanners such as gitleaks; the
+   limits above are about writing (Founder, 1 Nov 2026: "Yes, permanently" - AD-AIOS-120).
    Claude chats (Fable and the business chats) never run git.
 3. **Never touch `PRIVATE — API KEYS — DO NOT SYNC`** — never open, list,
    copy or quote it, wherever it lives. Never put keys, tokens or
    credentials in a conversation.
-4. **Never delete.** Move unwanted files into a `_to_delete` folder; the
-   Founder empties it. If `_to_delete` is missing, create it.
+4. **Never delete.** Move unwanted files to `~/_to_delete/<WHAT>_<date>/` on the Mac,
+   or `BLACK UMBRELLA GROUP/tmp/_to_delete/<BUSINESS>_<date>/` for repo files;
+   **never a `_to_delete` inside a business repo** (S22). The Founder empties it.
+   If the folder is missing, create it.
 5. **Findings become actions** — every finding gets an OA number or a
    written refusal.
 6. **One CURRENT_VERSION per document system.** Register entries append
@@ -113,7 +118,7 @@ History (build 3, mailboxes 110-116, the Test-app retirement): `REPORTS/ARCHIVE/
 
 0. The core rules at the top of this file - they win on any conflict. Master copy:
    `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_CORE_RULES_CURRENT_VERSION_V4.md`.
-   New agent? Read once: `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/OPERATING_MODEL_CURRENT_VERSION_V1.md`
+   New agent (an AI's first ever session in this repo - not a fresh Codex queue chat, which reads only what charters rule 9 lists; Founder, 1 Nov 2026)? Read once: `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/OPERATING_MODEL_CURRENT_VERSION_V1.md`
    (roles, how work flows, GO, reporting) and `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/AGENT_LESSONS_LEARNED_CURRENT_VERSION_V2.md`.
 1. `MAP.md` - the **task routes** say which 2-5 documents to open for your kind of task. Open only those. Read the map
    only down to "Route paths" (the file paths); search the rest by ID. Re-run

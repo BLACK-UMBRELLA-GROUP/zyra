@@ -1,5 +1,5 @@
 ---
-id: TBC (Fable assigns)
+id: DOC-ZYRA-0412
 type: SPEC
 status: ARCHIVED (2026-10-31)
 feature: PRODUCT BLUEPRINT
