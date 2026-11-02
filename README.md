@@ -1,8 +1,8 @@
 # ZYRA
 
-ZYRA is a Muslim matrimonial app for people seeking marriage. It brings profiles, preferences, requests and guardian participation into one place so members can consider a match with their family involved.
+ZYRA is a matrimonial app for a faith community where the family is part of finding a spouse. It brings profiles, preferences, requests and guardian participation into one place so members can consider a match with their family involved.
 
-The app is intended for adult Muslim members and their guardians. It is being developed before launch; the current Founder preview uses made-up sample profiles while the server rules and real member journeys are completed.
+The app is intended for adult members of that community and their guardians. It is being developed before launch; the current Founder preview uses made-up sample profiles while the server rules and real member journeys are completed.
 
 ## Status
 
