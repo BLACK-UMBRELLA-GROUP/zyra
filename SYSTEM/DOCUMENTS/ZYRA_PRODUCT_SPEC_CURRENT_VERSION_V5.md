@@ -901,9 +901,9 @@ A feature that cannot answer these three questions without introducing a new rel
 
 ### Purpose
 
-ZYRA is a marriage platform designed specifically for Muslims seeking a serious path towards marriage.
+ZYRA is a marriage platform designed specifically for members of a faith community seeking a serious path towards marriage.
 
-Unlike traditional dating applications, ZYRA is designed around commitment, transparency, family involvement and Islamic values.
+Unlike traditional dating applications, ZYRA is designed around commitment, transparency, family involvement and the community's religious values.
 
 The platform encourages users to focus on one genuine marriage journey at a time rather than maintaining multiple conversations with multiple people.
 
@@ -976,7 +976,7 @@ Seekers browse profiles, save profiles, express interest, communicate with match
 
 **Purpose:** To represent and support their linked Seeker.
 
-A Guardian is a male guardian who supports a Seeker through their marriage journey in accordance with Islamic guidance.
+A Guardian is a male guardian who supports a Seeker through their marriage journey in accordance with the community's religious guidance.
 
 **Guardian capability model:** Guardian accounts carry identity only. Guardian capabilities are not stored on the Guardian account. They are granted by AIOS per Journey relationship, based on the entitlement held by the Guardian's own account. A Guardian with multiple linked Seekers may simultaneously hold different capability grants for different Journey relationships if their entitlement or the relationship context differs.
 

@@ -61,7 +61,7 @@ Every piece of wording should:
 • Feel respectful
 • Feel family-orientated
 • Feel calm and intentional
-• Feel Islamic where appropriate, without being preachy
+• Reflect the community's faith where appropriate, without being preachy
 • Encourage rather than pressure
 • Make progress feel meaningful
 • Avoid gamification

@@ -9375,7 +9375,7 @@ Decision:
      exchange IS the moment), and Unlock purchased (a
      purchase, not a milestone).
 
-  OPEN (doc §5, unanswered by design): Islamic wording depth
+  OPEN (doc §5, unanswered by design): religious wording depth
   (draft stays restrained — "Alhamdulillah" at Nikah only),
   haptics, the server-side seen_moments store once-ever
   moments require, and whether the Guardian-side moment joins

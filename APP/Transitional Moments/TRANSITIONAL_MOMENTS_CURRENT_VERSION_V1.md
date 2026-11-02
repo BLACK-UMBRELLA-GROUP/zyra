@@ -97,7 +97,7 @@ Notes worth keeping: **R2 is one design, parameterised by the canonical stage ma
 
 ## 5. Open questions for the Founder
 
-1. **Religious wording depth.** Draft copy stays restrained (e.g. "Alhamdulillah" appears only in the Nikah moment). Whether moments should carry fuller Islamic phrasing — Bismillah at Journey Begins, a du'a at Nikah — is yours to set, ideally with wording you'd stand behind culturally and Islamically.
+1. **Religious wording depth.** Draft copy stays restrained (e.g. "Alhamdulillah" appears only in the Nikah moment). Whether moments should carry fuller religious phrasing — Bismillah at Journey Begins, a du'a at Nikah — is yours to set, ideally with wording you'd stand behind culturally and religiously.
 2. **Sound and haptics.** A single soft haptic on the headline line would deepen E1/E5 considerably; no sound anywhere is also defensible. Preference?
 3. **Once-ever moments need memory.** E6, R4, first-match extra line require a small `seen_moments` store (server-side, per account) so reinstalls don't repeat them. Implementation detail, flagged now so it isn't a surprise later.
 4. **The Guardian's side.** R4 proposes a Wali-facing moment too. Wali surfaces have had less design love; say if you want that included in round one or parked.

@@ -94,14 +94,14 @@ WHO IS A GUARDIAN
 ------------------------------------------------------------
 
 The Guardian is a male guardian who supports a Seeker through
-their marriage journey in accordance with Islamic guidance.
+their marriage journey in accordance with the community's religious guidance.
 
 Eligible Guardian relationships include:
   — Father
   — Grandfather
   — Brother
   — Paternal Uncle
-  — Other eligible male guardian per Islamic guidance
+  — Other eligible male guardian per the community's religious guidance
 
 Exceptional cases (Seeker has no available Guardian) are
 governed separately under ZYRA's Islamic Governance
@@ -180,7 +180,7 @@ PATH 2B — Guardian Purchases ZYRA One
 PATH 3 — Guardian Starts First
 
   A parent or guardian organises everything before the Seeker
-  joins. This reflects how many Muslim families naturally
+  joins. This reflects how many families in the community naturally
   operate and is a first-class path.
 
   1. Guardian creates a Guardian account.
@@ -701,7 +701,7 @@ The following scenarios are not handled in core onboarding.
 Deferred to ZYRA's Islamic Governance document:
 
   — Seeker has no living male guardian
-  — Seeker is a revert with no Muslim male family member
+  — Seeker is a revert with no male family member who shares their faith
   — Dispute over who has Guardian authority
   — Guardian becomes unavailable mid-journey
   — Female guardian acting in Guardian capacity in exceptional

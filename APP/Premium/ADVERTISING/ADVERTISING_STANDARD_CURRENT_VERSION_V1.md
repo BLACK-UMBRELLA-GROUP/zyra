@@ -61,7 +61,7 @@ Use a certified advertising network with ZYRA's category blocklist applied. No l
 **Requirement:** The selected network must support category-level blocking. Any network that cannot guarantee category exclusion will not be used.
 
 ### Phase 2 — Curated Sponsor Portal (Medium Term)
-Manual onboarding of individual sponsors. ZYRA vets each sponsor against the Advertising Standard before their campaign goes live. Sponsors are aligned Muslim-friendly businesses rather than network-sourced placements.
+Manual onboarding of individual sponsors. ZYRA vets each sponsor against the Advertising Standard before their campaign goes live. Sponsors are businesses aligned with the community's religious values rather than network-sourced placements.
 
 ### Phase 3 — Local Sponsorship Platform (Long Term)
 Full self-serve or managed sponsorship with geographic targeting, campaign management, impression reporting, and category exclusivity enforcement. This is a B2B product surface requiring its own portal and account management.
@@ -72,10 +72,10 @@ Full self-serve or managed sponsorship with geographic targeting, campaign manag
 
 The following categories are provisionally accepted, subject to individual vetting of each advertiser:
 
-- Islamic books and publishing
+- Books and publishing focused on the community's faith
 - Halal travel and tourism
 - Hajj and Umrah providers
-- Islamic finance and banking
+- Finance and banking in line with the community's religious principles
 - Modest clothing and fashion
 - Halal food and restaurants
 - Education and universities
@@ -83,8 +83,8 @@ The following categories are provisionally accepted, subject to individual vetti
 - Health and wellbeing
 - Home services
 - Wedding services
-- Local Muslim businesses
-- General mainstream brands that do not conflict with Islamic values
+- Local businesses in the faith community
+- General mainstream brands that do not conflict with the community's religious values
 
 ---
 
@@ -94,22 +94,22 @@ The following categories are permanently rejected. No commercial arrangement ove
 
 - Gambling and betting of any kind
 - Alcohol and alcohol-adjacent products
-- Dating apps and non-Islamic matchmaking platforms
+- Dating apps and matchmaking platforms outside the community's faith tradition
 - Interest-based financial products (Riba)
 - Adult content of any kind
 - Explicit entertainment
 - Tobacco and vaping products
-- Any content that conflicts with ZYRA's values or Islamic principles
+- Any content that conflicts with ZYRA's values or the community's religious principles
 
 ---
 
 ## Long-Term Vision — Curated Sponsorship Platform
 
-The long-term goal is for ZYRA to become a curated sponsorship platform for Muslim-friendly businesses — not an automated advertising network.
+The long-term goal is for ZYRA to become a curated sponsorship platform for businesses aligned with the community's religious values — not an automated advertising network.
 
 This matters because:
 - Curated sponsors are vetted against ZYRA's values before going live
-- Advertisers reach a trusted Muslim audience, not a generic one
+- Advertisers reach a trusted audience from the faith community, not a generic one
 - Local businesses can reach their own communities affordably
 - ZYRA retains editorial control over every placement
 

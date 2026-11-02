@@ -600,7 +600,7 @@ List<String> get zyraGuardianRelationshipNames => [
 ///      Daughter, Niece, Mother-in-law, Sister-in-law, Wife) would settle a
 ///      question the Founder ordered a separate review for on 2026-08-06,
 ///      by implication rather than decision.
-///   2. ISLAMIC VALIDITY. The Guardian is the wali. Imam and Legal Guardian
+///   2. RELIGIOUS VALIDITY. The Guardian is the wali. Imam and Legal Guardian
 ///      have standing; Family Friend and Trusted Friend need a scholar's
 ///      view, not a product one.
 ///   3. PATERNAL DISTINCTIONS. "Uncle" and "Cousin" drop the paternal

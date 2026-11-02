@@ -26,7 +26,7 @@ owner: ZYRA chat
 
 ## A · Who is instructing and product context
 
-- ZYRA is a UK-first Muslim matrimonial (marriage-seeking) mobile app,
+- ZYRA is a UK-first matrimonial (marriage-seeking) mobile app for a faith community,
   pre-launch, operated by its sole founder (company structure to be confirmed
   in the engagement; currently enrolled with Apple as an Individual
   developer).

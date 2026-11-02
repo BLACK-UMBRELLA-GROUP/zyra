@@ -106,7 +106,7 @@ expresses interest — not when someone reciprocates.
 
 **Founder, 2026-08-06.** The architecture is now solid enough that this has
 stopped being a technical question and become a product and religious one.
-**Held pending Islamic review.**
+**Held pending religious review.**
 
 > *"Real marriage journeys are rarely synchronous. Families may take weeks
 > or months to respond because of travel, illness, exams, work commitments
@@ -121,7 +121,7 @@ exactly why the number can safely stay open.
 **Nothing in this record depends on the answer being 1.**
 
 > **The architecture supports multiple Active Journeys; whether the product
-> should permit them is a separate governance decision informed by Islamic
+> should permit them is a separate governance decision informed by religious
 > guidance and product philosophy.**
 
 Recorded so the undecided value is never mistaken for an unfinished design.

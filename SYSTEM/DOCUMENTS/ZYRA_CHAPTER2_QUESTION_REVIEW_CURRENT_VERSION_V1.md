@@ -41,7 +41,7 @@ one blocker before any of it is stored.
 | `mockLanguages` | 20 | Hundreds |
 | `mockEthnicities` | 12 | — |
 
-A Muslim Seeker from Kenya, Kosovo, Uzbekistan, the Philippines or Sri Lanka
+A Seeker in the community from Kenya, Kosovo, Uzbekistan, the Philippines or Sri Lanka
 **cannot answer** "which country were you born in". There is no "Other" and no
 free-text fallback on that picker.
 

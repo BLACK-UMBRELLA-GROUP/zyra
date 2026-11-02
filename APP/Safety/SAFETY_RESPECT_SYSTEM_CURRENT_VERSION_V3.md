@@ -17,7 +17,7 @@ Authors: Lead Architect (Claude) + Architectural Reviewer (ChatGPT)
 
 ## Governing Principle
 
-ZYRA is built on trust. The Safety & Respect System exists to protect that trust — not to surveil users or enforce a rigid interpretation of Islamic etiquette.
+ZYRA is built on trust. The Safety & Respect System exists to protect that trust — not to surveil users or enforce a rigid interpretation of the community's religious etiquette.
 
 **Messages remain private by default.**
 
@@ -30,7 +30,7 @@ The system detects patterns and signals, not individual messages. Human review i
 | Does | Does Not |
 |------|----------|
 | Detect harmful, coercive, and exploitative behaviour | Read and archive every message for routine review |
-| Gently nudge users when conversations drift from ZYRA's purpose | Judge whether every conversation is "Islamic enough" |
+| Gently nudge users when conversations drift from ZYRA's purpose | Judge whether every conversation is religious enough |
 | Build internal trust signals over time | Punish users based on a single automated signal |
 | Escalate to human review for long-term or permanent restrictions | Restrict users without explanation |
 | Protect users from scams, abuse, and grooming | Flag respectful conversations about marriage expectations, health, or sensitive family topics |
@@ -225,16 +225,16 @@ The Respect Score is personal data. It must be:
 
 ## Moderation Philosophy
 
-ZYRA's moderation protects users from harm. It does not attempt to replace Islamic scholarship or judge the quality of someone's faith through their messages.
+ZYRA's moderation protects users from harm. It does not attempt to replace religious scholarship or judge the quality of someone's faith through their messages.
 
-The line is not between "Islamic" and "un-Islamic." The line is between **respectful and harmful**.
+The line is not between adherence and non-adherence to the community's religious principles. The line is between **respectful and harmful**.
 
 > Strong moderation for safety, scams, abuse, coercion, explicit content, and harassment.
 > Gentle guidance aligned with ZYRA's values.
 > Pattern-based AI with context awareness rather than keyword filtering.
 > Explainability at every escalation stage.
 > Human review before any long-term or permanent restriction.
-> No attempt to judge whether every conversation is sufficiently Islamic.
+> No attempt to judge whether every conversation is sufficiently religious.
 
 ---
 

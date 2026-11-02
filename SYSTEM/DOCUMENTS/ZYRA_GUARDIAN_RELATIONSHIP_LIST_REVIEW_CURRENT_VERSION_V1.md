@@ -54,7 +54,7 @@ no, but because it should be an answer.
 
 ### 2. Some values are religious questions, not product ones
 
-The Guardian is the **wali**. In Islamic marriage law the wali for a woman
+The Guardian is the **wali**. In the community's religious marriage law the wali for a woman
 is a specific role with a defined order of entitlement — father, paternal
 grandfather, son, brother, paternal uncle — and a defined fallback to
 **wali al-hakim**, the judge or, in practice, an imam, when no family wali

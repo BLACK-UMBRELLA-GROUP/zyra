@@ -18,8 +18,8 @@ owner: ZYRA chat
 
 ## 1. What is ZYRA?
 
-ZYRA is a Flutter-based Islamic matchmaking mobile application. It connects
-Muslim Seekers with compatible matches using a structured compatibility system,
+ZYRA is a Flutter-based matrimonial mobile application for a faith community. It connects
+Seekers from the community with compatible matches using a structured compatibility system,
 with guardian (Guardian) involvement built into the journey.
 
 ---

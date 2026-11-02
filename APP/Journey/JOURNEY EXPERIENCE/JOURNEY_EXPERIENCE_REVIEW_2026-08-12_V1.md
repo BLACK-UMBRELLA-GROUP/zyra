@@ -152,7 +152,7 @@ And one prohibition: **the app never nags the other party.** No "remind Aisha" b
 
 ### 4.4 · The voice — principles and concrete rewrites
 
-Principles: the witness's register — calm, plural where the pair acts together ("You both…"), verbs of record (*kept, sealed, written, part of your story*), dates spoken in full ("14 August 2026" — the Timeline's own format), no exclamation marks anywhere in the Journey, honesty kept blunt where it protects people (the Guardian-visibility line, the pause caps, "that is information, not a verdict"). English throughout, Islamic terms used naturally and never decoratively.
+Principles: the witness's register — calm, plural where the pair acts together ("You both…"), verbs of record (*kept, sealed, written, part of your story*), dates spoken in full ("14 August 2026" — the Timeline's own format), no exclamation marks anywhere in the Journey, honesty kept blunt where it protects people (the Guardian-visibility line, the pause caps, "that is information, not a verdict"). English throughout, the community's religious terms used naturally and never decoratively.
 
 | Today | Proposed |
 |---|---|

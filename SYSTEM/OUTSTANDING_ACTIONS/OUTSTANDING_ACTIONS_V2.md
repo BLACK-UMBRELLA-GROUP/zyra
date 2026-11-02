@@ -6761,7 +6761,7 @@ Description: Endings currently record only ended_at. There is no ended_by
              different field); mutual decision (unverifiable from one
              person's tap); personal readiness and life priorities (both
              are 'circumstances changed'); religious incompatibility
-             (invites one Muslim to formally record a judgement about
+             (invites one member to formally record a judgement about
              another's deen — stays inside 'not compatible'). TWO RULES:
              only 'safety concern' is hidden from the other party; a
              safety ending places a safety hold on the pair.
@@ -9939,7 +9939,7 @@ Description: Chapter 4's Hard Requirements became per-OPTION on
              reads it that way: ANY red sect excludes.
 
              So on the most sensitive question in the app —
-             Islamic sect, UK GDPR Article 9 data — the Seeker
+             religious denomination, UK GDPR Article 9 data — the Seeker
              gets the coarse control Chapter 4 just retired.
 
              WHY NOT IN THE SAME PASS. Two reasons, both
@@ -10236,7 +10236,7 @@ Description: ZYRA_ONBOARDING_UX_REVIEW_2026-08-05_V1.md §H4
                'Planning to in the future', which is perfectly
                compatible with having no debt today.
              - ch3_q3 = No -> skip ch3_q29 (homeschooling) and
-               ch3_q48 (children's Islamic education). Defensible
+               ch3_q48 (children's religious education). Defensible
                but NOT mechanical — someone who wants no children
                of their own may marry someone who has them, and
                the Chapter 4 counterparts ask what they want in a
@@ -17546,7 +17546,7 @@ FABLE-003 · Specify what a Guardian SEES when the bundle ends
 FABLE-004 · Get real competitor prices before DECISION-001
   Reason:    §8 says market data is required and the report then
              recommends no way of getting any. A competitor price scan
-             of Muslim matrimonial apps with family/guardian features
+             of matrimonial apps for faith communities with family/guardian features
              is cheap, fast, and would materially inform both
              DECISION-001 and DECISION-007. REC-003 tells you to
              reprice "against market comparables" without naming a
@@ -18011,7 +18011,7 @@ REC-019 HIGH — Adopt the photo edge-case rules, in particular:
   religious and cultural head coverings are NOT a failure; require
   only the facial area technically necessary; provide private guidance
   and a human route; and demand demographic and head-covering accuracy
-  evidence from the vendor. For a Muslim matrimonial product this is
+  evidence from the vendor. For a matrimonial product for a faith community this is
   not an edge case, it is a core case. Source: Phase 3.
 
 REC-020 MEDIUM — Adopt the accessibility requirement: a supported
@@ -18388,8 +18388,8 @@ FABLE-03  MEDIUM — Decouple the programme. The report presents F01-F12
 FABLE-04  MEDIUM — Ask the vendors the fairness question in writing,
   as a scored RFP item rather than a diligence topic. The report asks
   for demographic and head-covering evidence, which is right, but
-  places it among many other requirements. For a Muslim matrimonial
-  product with a UK and Saudi user base, false-reject rates on covered
+  places it among many other requirements. For a matrimonial
+  product for a faith community with a UK and Saudi user base, false-reject rates on covered
   faces and on darker skin tones are a primary selection criterion,
   not a compliance checkbox. Recommend requiring published or
   contractually warranted per-demographic false-reject figures, and
@@ -23869,7 +23869,7 @@ THE TOONBEE GATE IS REMOVED - CORRECTED 2026-09-24
 
 WHAT THIS MUST NOT DO
              A constraint, from the Founder's own governance: ZYRA is a
-             Muslim matrimonial product. Marketing copy carries a trust and
+             matrimonial product for a faith community. Marketing copy carries a trust and
              modesty standard that ordinary app marketing does not. Nothing in
              this action authorises any wording; every public sentence is the
              Founder's to approve.
@@ -23895,7 +23895,7 @@ ACTIONS
      company.
   7. OPEN — evaluate Toonbee when ad creative is being made, carried across
      from OA-ZYRA-235. Whether an AI animated-video tool suits ZYRA is a real
-     question and not only a cost one: a Muslim matrimonial product is judged
+     question and not only a cost one: a matrimonial product for a faith community is judged
      on whether it feels trustworthy and respectful, and generated video can
      read as cheap in a way that damages exactly that. Worth trying, worth
      looking at honestly before it goes out under the ZYRA name.

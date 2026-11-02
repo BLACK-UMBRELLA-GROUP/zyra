@@ -2392,7 +2392,7 @@ Al-Mardawi attributes the passage to Imam Ahmad, but no contemporaneous
 transmission chain or direct Ahmad-era wording was independently established.
 The screen accordingly says “It is reported from”, identifies its card as
 a translated **excerpt**, and does not present the report as Qur'an, hadith,
-a guaranteed legal ruling, or the only Islamic way to choose a spouse.
+a guaranteed legal ruling, or the only way to choose a spouse within the community's faith.
 The excerpt does not show the full inverse-case explanation; the citation
 and this handover preserve that context.
 

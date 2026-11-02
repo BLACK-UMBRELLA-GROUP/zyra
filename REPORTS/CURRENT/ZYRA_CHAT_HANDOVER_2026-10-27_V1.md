@@ -53,7 +53,7 @@ shifts, so he may be away for days; your chat note is how work survives that.
 
 | Item | State |
 |---|---|
-| Product | A Muslim marriage app (marriage, not dating). Seekers look for a spouse; Guardians (family, wali) take part. Shakeel wants it **open for Seekers and Guardians** |
+| Product | A marriage app for a faith community (marriage, not dating). Seekers look for a spouse; Guardians (family, wali) take part. Shakeel wants it **open for Seekers and Guardians** |
 | The planned app | **The Founder preview** - the latest design, opened when the Founder signs in (`ZyraOneJourneyConceptShell`). Runs on sample people. The old member app (`HomeShell`) is being replaced (DR-ZYRA-274, OA-ZYRA-316) |
 | Rules | **The blueprint** - 14 pages, approved 26 Oct: part 1 screen map, part 2 rule pages (Journey, Guardians, Membership, Browse, Messages, Profile, Onboarding, Safety), parts 3-7 (data, outside connections, look and feel, build and release, trace). Summary: DOC-ZYRA-0299 |
 | Build freeze | **On** (OA-AIOS-406) until Shakeel lifts it in writing. You can design and LOCK now; Codex builds after the freeze lifts |

@@ -78,7 +78,7 @@ relationship list.
 - Whether male Seekers have Guardians
 - Every affected document and implementation
 
-## 3. Islamic validity of the proposed relationship values
+## 3. Religious validity of the proposed relationship values
 
 Family Friend · Trusted Friend · Cousin · the paternal qualifiers. Needs a
 scholar, not a product review. See

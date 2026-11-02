@@ -132,7 +132,7 @@ These three principles reinforce each other:
 - **Multi-Language by Design** makes the product usable in every market.
 - **Cross-Language Communication** makes the product *meaningful* in every market — particularly in diaspora communities where generations speak different languages at home.
 
-Together they position ZYRA not as a UK app with international support, but as a global Muslim marriage platform built for how Muslim families actually live.
+Together they position ZYRA not as a UK app with international support, but as a global marriage platform for a faith community built for how families in the community actually live.
 
 ---
 

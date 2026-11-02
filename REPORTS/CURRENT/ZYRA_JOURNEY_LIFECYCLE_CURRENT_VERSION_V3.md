@@ -249,7 +249,7 @@ Six, deliberately. **Long lists at painful moments produce whichever option is l
 | No response / ghosting | The person who ghosts never opens the dropdown. **System-detected** — `ended_by: system` after N days — not a chosen reason. |
 | Mutual decision | Unverifiable from one person's tap, and it invites the ender to soften their own account. |
 | Personal readiness / life priorities | Both are "circumstances changed" wearing different coats. |
-| Religious incompatibility | Analytically the most valuable, and still no. It invites one Muslim to formally record a judgement about another's deen — heavier than a product taxonomy should casually enable. It stays inside "not compatible". |
+| Religious incompatibility | Analytically the most valuable, and still no. It invites one member to formally record a judgement about another's deen — heavier than a product taxonomy should casually enable. It stays inside "not compatible". |
 
 **Do not tax a person at an emotional moment for insight you can compute.** Stage-at-end, duration, who ended, and whether a report exists give most of the analytics for free.
 

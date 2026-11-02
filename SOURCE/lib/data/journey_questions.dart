@@ -57,7 +57,7 @@ class JourneyQuestions {
   // phase_1, shown as "Faith & Values". Guiding question: "Are we
   // fundamentally compatible?" — the question itself now lives on
   // ZyraJourneyStage.guidingQuestion; this is a pointer, not a copy.
-  // Topics: practising Islam, marriage intentions, core
+  // Topics: practising the faith, marriage intentions, core
   // values, non-negotiables, daily lifestyle, personality basics.
   static const List<JourneyQuestion> phase1 = [
     JourneyQuestion(

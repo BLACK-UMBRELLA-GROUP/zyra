@@ -31,7 +31,7 @@ for this terminology-only correction.
 DESIGN PHILOSOPHY
 ============================================================
 
-ZYRA is a premium Muslim matrimonial platform built around:
+ZYRA is a premium matrimonial platform for a faith community built around:
 • Trust
 • Family involvement
 • Simplicity

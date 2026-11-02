@@ -527,7 +527,7 @@ PHASE 1 — FOUNDATIONS
 ------------------------------------------------------------
 
 Guiding Question: "Are we fundamentally compatible?"
-Topics: Practising Islam, marriage intentions, core values,
+Topics: Practising the faith, marriage intentions, core values,
 non-negotiables, daily lifestyle, personality basics.
 
 Timeline Milestone (on Continue):
@@ -586,7 +586,7 @@ THREE DIRECTIONS OF ENGAGEMENT:
 3. GUARDIAN ↔ GUARDIAN (if both matched parties have a Guardian)
    The two Guardians can engage with each other directly.
    This mirrors how families speak to each other in
-   traditional Islamic marriage processes.
+   traditional marriage processes in the faith community.
    Exact format and questions: TBC.
 
 4. OPTIONAL FAMILY INTRODUCTIONS (future)

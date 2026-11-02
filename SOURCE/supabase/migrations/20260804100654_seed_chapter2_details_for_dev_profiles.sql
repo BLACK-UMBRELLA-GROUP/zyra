@@ -19,7 +19,7 @@
 -- this data exists to find: if every profile has a different ethnicity,
 -- nothing ever collides, and a matching bug that only appears when two
 -- people share an attribute never appears at all. The distribution is
--- weighted the way a British Muslim user base plausibly is — heavily
+-- weighted the way a British faith-community user base plausibly is — heavily
 -- GB-born, Sunni-majority, English plus a heritage language — with enough
 -- repetition that overlap actually occurs.
 --

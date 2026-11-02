@@ -76,7 +76,7 @@ family_representative · other
 ```
 
 A wider list of ~23 values was drafted and grouped for preview but is
-**not live**. It is blocked behind an Islamic validity review of Family
+**not live**. It is blocked behind a religious validity review of Family
 Friend, Trusted Friend, Cousin and the paternal qualifiers.
 
 **Who states the relationship:** the person creating the link states it

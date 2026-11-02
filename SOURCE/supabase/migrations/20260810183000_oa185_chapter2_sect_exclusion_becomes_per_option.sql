@@ -5,7 +5,7 @@
 -- WHAT WAS WRONG. seeker_details.preferences held
 -- {sect: {matrix: {...}, hard_requirement: BOOL}} and score_candidates()
 -- excluded on ANY red sect when the flag was set. So on the most sensitive
--- question in the app — Islamic sect, UK GDPR Article 9 data — a Seeker could
+-- question in the app — religious denomination, UK GDPR Article 9 data — a Seeker could
 -- not say "Ibadi, never" while leaving "Shia" a soft red. One tick excluded
 -- both; no tick excluded neither.
 --

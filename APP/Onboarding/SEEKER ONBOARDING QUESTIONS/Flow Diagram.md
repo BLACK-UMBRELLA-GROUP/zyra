@@ -134,7 +134,7 @@ TRANSITION — Private Values (before Chapter 3)
 
   🔒 Private
   Explains that Chapter 3 answers are private.
-  References Islamic principle of protecting dignity.
+  References the community's religious principle of protecting dignity.
   "Continue" glass pill button (below fold, scrollable)
         │
         ▼

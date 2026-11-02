@@ -23,7 +23,7 @@
 -- their own account), "personal readiness" and "life priorities" (both are
 -- circumstances_changed wearing different coats), and "religious
 -- incompatibility" — analytically the most valuable and still refused,
--- because it invites one Muslim to formally record a judgement about
+-- because it invites one member to formally record a judgement about
 -- another's deen. It stays inside not_compatible.
 --
 -- `no_response` is the seventh value and is NOT selectable. Ghosting is

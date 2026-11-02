@@ -10,7 +10,7 @@ owner: ZYRA chat
 
 # ZYRA — Flutter Source
 
-Muslim matrimonial platform. Specs live in `../APP/`, decisions in
+Matrimonial platform for a faith community. Specs live in `../APP/`, decisions in
 `../SYSTEM/DECISIONS_REGISTER/DECISIONS_V1.md`, session reports in
 `../REPORTS/CURRENT/`. Read those before changing anything here.
 
