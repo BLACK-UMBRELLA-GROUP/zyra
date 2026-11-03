@@ -26750,7 +26750,9 @@ Title:       Build checks missing for the 31 Oct builds 43, 46, 48 and 68 (and t
 Category:    Design loop / charters rule 8
 Priority:    MEDIUM
 Date:        2026-11-01
-Status:      OPEN - the ZYRA chat's 31 Oct note has build checks for lines 42, 52, 53, 55, 57, 59, 64-66 and 69-71,
+Status:      UPDATED 2 Nov (Fable): the 1 Nov 05:41 check covered 48 (MATCH, two small differences -> OA-ZYRA-341,
+             342), 68 (MATCH) and 72 (delivered). Still missing: 43 and 46, plus the eight 1 Nov builds 51, 56, 58,
+             60, 61, 62, 63, 67 (due at the 2 Nov 05:36 check). Was: OPEN - the ZYRA chat's 31 Oct note has build checks for lines 42, 52, 53, 55, 57, 59, 64-66 and 69-71,
              but none for 43 (My ZYRA Focus V2), 46 (unread badge), 48 (Guardian cards V2) or 68 (page dots V2); line
              72's phone picture shows photo page 3 against master d01 (page 1).
 Owner:       ZYRA chat
@@ -26763,7 +26765,10 @@ Title:       Preview sample data disagrees between the Seeker and Guardian views
 Category:    Founder preview / sample data
 Priority:    LOW
 Date:        2026-11-01
-Status:      OPEN - ZYRA chat morning check 31 Oct, item (b): the Seeker Journey tab shows Sara 'Your turn: answer
+Status:      UPDATED 2 Nov (Fable): 1 Nov check item (d) - the build d02 now shows Sara 'Stage 1 of 8 · Salam
+             Exchange · Your turn: send Salam' while master j02/d02, the prototype and the Guardian side show Stage 4
+             Family Review, 41 hours left. Question 8 was answered 1 Nov (line 56 BUILT); the Seeker sample is still
+             not aligned. Was: OPEN - ZYRA chat morning check 31 Oct, item (b): the Seeker Journey tab shows Sara 'Your turn: answer
              Faith & Values' while the Guardian's My ZYRA and Journeys show Adam & Sara in Family Review, 41 hours
              left; master j02 shows Family Review. QUESTIONS.md row 8 (line 56) raises the same sample conflict.
 Owner:       ZYRA chat writes the sample rule into a brief · Codex aligns the preview
@@ -26789,7 +26794,9 @@ Title:       Masters to redraw at the next change of their feature
 Category:    Design records
 Priority:    LOW
 Date:        2026-11-01
-Status:      OPEN - ZYRA chat morning check 31 Oct, items (c), (d), (e), (h): LOCK 12 master has a centred Settings
+Status:      UPDATED 2 Nov (Fable): add 1 Nov check item (b) - LOCK 19 and LOCK 18 masters draw the bottom pill
+             label gold; the app shows it in ink everywhere (line 71 rule); the prototype now follows the app (V138).
+             Was: OPEN - ZYRA chat morning check 31 Oct, items (c), (d), (e), (h): LOCK 12 master has a centred Settings
              title (app left-aligned); LOCK 10 Country row grey 'Change' + arrow (app gold 'Change ›'); LOCK 8
              masters draw a different Network/Introductions icon (app uses the spec's 'group' icon); LOCK 3 masters
              keep '‹ Back' and retired Profile rows. In each case the app is right and the BUILT pictures are the
@@ -26804,7 +26811,10 @@ Title:       Six queue lines FAILED only because their prerequisites are QUESTIO
 Category:    Build queue / charters rule 9
 Priority:    MEDIUM
 Date:        2026-11-01
-Status:      OPEN - at 01:00 on 1 Nov Codex marked lines 44, 58, 60, 61, 62 and 63 FAILED because lines 51, 56 and 67
+Status:      CLOSED 2 Nov (Fable): rule decided (AD-AIOS-118, Founder yes 1 Nov - blocked lines stay WAITING); the
+             ZYRA chat set the lines back to WAITING on 1 Nov and Codex built 51, 56, 58, 60, 61, 62, 63 and 67 the
+             same day (queue rows BUILT 2026-11-01). Line 44 is QUESTION on its own test baseline (QUESTIONS row 10),
+             not on a dependency. Was: OPEN - at 01:00 on 1 Nov Codex marked lines 44, 58, 60, 61, 62 and 63 FAILED because lines 51, 56 and 67
              are QUESTION (rows 6-9 open); 35 and 41 failed the same way on 30-31 Oct. FAILED lines are never
              retried, so each needs a new line. Proposal for the Founder (review 1 Nov): a line whose prerequisite is
              not BUILT stays WAITING and is skipped.
@@ -26818,7 +26828,9 @@ Title:       Server design and blueprint to carry the 31 Oct rules (LOCK 2 V2, L
 Category:    Blueprint / server design
 Priority:    MEDIUM
 Date:        2026-11-01
-Status:      UPDATED 1 Nov (Fable): blueprint part 2 Journey rules §1 and §3 and Guardian rules §6 now carry these rules (change-log rows). Left: server design DOC-ZYRA-0329. Was: OPEN - new member rules from DR-ZYRA-330, 334 and 338: Hide ends a Journey; Guardian Basic reads the
+Status:      CLOSED 2 Nov (Fable): server design DOC-ZYRA-0329 §3.9 now carries all three rules (proposal for the
+             server brief; one open point - how long an acceptance waits - stays with the Founder). Blueprint done 1 Nov.
+             Was: UPDATED 1 Nov (Fable): blueprint part 2 Journey rules §1 and §3 and Guardian rules §6 now carry these rules (change-log rows). Left: server design DOC-ZYRA-0329. Was: OPEN - new member rules from DR-ZYRA-330, 334 and 338: Hide ends a Journey; Guardian Basic reads the
              Circle; Past topics open 30 days then read only; a Journey starts only when both have a free place, held
              ending in Both full, neutral waiting wording. The Circle server part is not queued.
 Owner:       Fable (blueprint part 2 and server design DOC-ZYRA-0329)
@@ -26826,9 +26838,35 @@ Next:        Fable: update blueprint part 2 Journey rules and the server design.
 Acceptance:  Blueprint and server design state each rule with its DR.
 ------------------------------------------------------------
 
+OA-ZYRA-341
+Title:       Main Guardian card built without its gold outline (LOCK 19 V2)
+Category:    Build fidelity / charters rule 8
+Priority:    MEDIUM - a LOCKed detail missing from the build
+Date:        2026-11-02
+Status:      OPEN - ZYRA chat 1 Nov 05:41 check of line 48, item (a): masters k01, k02, k03, k17, k18 draw the Main
+             Guardian (Hassan) card with a gold border; the built cards have the plain border. LOCK 19 V2 and LOCK 14
+             V5 ("gold borders stay gold") apply; the prototype keeps gold.
+Owner:       ZYRA chat writes a fix line (LOCKed already) · Codex builds
+Next:        ZYRA chat: one fix-to-match-masters line in BUILD_QUEUE.md naming k01-k03, k17, k18.
+Acceptance:  BUILT pictures show the gold outline on the Main Guardian card; chat note says MATCH.
+------------------------------------------------------------
+
+OA-ZYRA-342
+Title:       Line 48 ZYRA Family sheets sit higher than the masters; price sheet splits "Now"
+Category:    Build fidelity / charters rule 8
+Priority:    LOW
+Date:        2026-11-02
+Status:      OPEN - ZYRA chat 1 Nov 05:41 check of line 48, item (c): built ZYRA Family sheets sit about 30 pt higher,
+             and the price sheet puts "Now" in its own row above the "New" card (masters: one card). Words and buttons
+             match.
+Owner:       ZYRA chat (fix line, or record that the build is right and redraw) · Codex
+Next:        ZYRA chat: decide at the next Guardian card change.
+Acceptance:  Build and masters agree.
+------------------------------------------------------------
+
 TOTAL REGISTERED (this file): 309 (OA-001 through OA-ZYRA-309,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-341 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-343 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_

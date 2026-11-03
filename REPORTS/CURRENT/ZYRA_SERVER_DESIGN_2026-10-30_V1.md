@@ -190,6 +190,16 @@ families' Seekers through the Guardian functions, DR-306).
 | Connect with Guardian | Accepted = private chat between the two Guardians; Seekers with only a Guardian Basic left out of Network | DR-ZYRA-322; its own brief after SERVER 6 (Q6) |
 | No counts / phone access | No function returns member or profile counts; permission state stays on the phone | DR-ZYRA-317, 321 |
 
+### 3.9 Added 2 Nov from the 31 Oct LOCKs (DR-ZYRA-330, 334, 338)
+
+The rules are the Founder's; the "how" column is Fable's proposal for the server brief, built only from a queue line.
+
+| Need | How the server enforces it (proposal) | Source |
+|---|---|---|
+| Hide or block inside a Journey ends it | The existing hide/block functions, when the two share a live Journey, end that Journey in the same transaction (ending reason = the member's choice of block or hide) after the app's confirm sheet; a report stays a draft and sends nothing | DR-ZYRA-330 (LOCK 16 V2); blueprint part 2 Journey §1 |
+| Accepting needs a free place on both sides | Accepting a request refuses unless both have a free place. Whoever is full names the Journey to end; when both are full the chosen endings are held (`pending_end`) until the other side confirms, then ended and the new Journey opens together. No function tells either person the other is full ("Waiting for <name> to confirm"). How long an acceptance waits is **not decided** (question for the Founder before the brief) | DR-ZYRA-338 (LOCK 2 V2); blueprint part 2 Journey §3 |
+| Guardian Circle as Topics | Circle messages carry a topic: All, or one Journey. Writing needs Guardian One; a Guardian Basic reads only. A Journey's topic stays writable for 30 days after it ends, then read only; Guardians see a past topic only while summaries are shared. No member counts returned | DR-ZYRA-334 (LOCK 20 V2); blueprint part 2 Guardian §6; amends DR-ZYRA-248, 268 |
+
 ## 4. Data to migrate or remove, and safety
 
 **The 17 unapplied files (25 Aug - 5 Oct) - Fable's keep / rewrite / drop proposal (§6 Q5)**
@@ -269,6 +279,7 @@ Each line: a brief in `PRODUCT/APPROVED/SERVER/BRIEFS/`, "Built from: DOC-ZYRA-0
 |---|---|---|
 | 2026-10-30 | V1 | First draft for the Founder's yes (Fable; OA-ZYRA-317 "yes both", 29 Oct) |
 | 2026-10-31 | V1 | CURRENT; §3.8 from the 30 Oct LOCKs; §5 lines 0, 3 (Fable) |
+| 2026-11-02 | V1 | §3.9 from the 31 Oct LOCKs (DR-ZYRA-330, 334, 338); one open point (acceptance wait time) (Fable, OA-ZYRA-340) |
 
 ## Approval
 

@@ -25,6 +25,8 @@ another role, developer reset buttons and developer sign-up shortcuts.
 Personalisation choices), and **anything drawn in a LOCK master** (e.g. "⇄ Switch" on the Guardian Profile, g13) — those stay and
 work as drawn.
 
+**ROADMAP row (charter rule 12, added 2 Nov):** "Test baseline and final interface pass" in `ZYRA/ROADMAP.md` (its last sentence: "Remove Developer Access controls…"). This line does that part; the row is ticked and its GitHub issue closed only when line 73 (test clean-up) is also BUILT.
+
 | Step | Detail |
 |---|---|
 | 1 | Build after every earlier WAITING line in `BUILD_QUEUE.md` that touches the Founder preview (they rely on today's code) |
@@ -33,5 +35,5 @@ work as drawn.
 | 4 | Start of the app: the Founder's iPhone build opens where it opens today. If that start depended on a developer control, it opens the planned app on the Seeker side (sample Adam, Seeker One). Other roles and plans stay in the code for later real accounts but have no developer switch |
 | 5 | Captures and tests: the capture/baseline tools and widget tests reach other roles and states **from code only** (test fixtures, test-only parameters), never through a control compiled into the app. Update tests that drove the removed controls; keep every LOCK test passing |
 | 6 | Release safety: nothing developer-only may remain reachable in any build. Add one test that fails if a known developer key (`dev_` value keys, the rail) is present in the widget tree |
-| 7 | Analyser clean; full test suite. Task note: inventory table, files moved, before/after code-size table, what the Founder can no longer do on the phone. Rollback: revert the commit; moved files are in `~/_to_delete/` |
+| 7 | Analyser clean. **Test gate (Founder 2 Nov, Codex question 10, option C):** run the full suite and compare with the baseline `DEV_TOGGLES/BUILT/QUEUE44_BASELINE_QA.json` (app source 60b1ab9: 649 visible failed/error in 91 files). Pass = no test that passed in the baseline fails; total failed/error ≤ 649; every LOCK test passes; the new release-safety test passes. Do not repair, skip or delete baseline-failing tests in this line (that is line 73). List every remaining failure by file in the task note. Task note: inventory table, files moved, before/after code-size table, what the Founder can no longer do on the phone. Rollback: revert the commit; moved files are in `~/_to_delete/` |
 | 8 | Commit within core rule 2, mark the queue line BUILT or FAILED |
