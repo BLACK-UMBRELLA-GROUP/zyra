@@ -1,0 +1,8 @@
+[
+  {
+    "suite_path": "test/local_code_page_lock9_test.dart",
+    "name": "empty or wrong-role local result cannot disclose identity Instance of 'ZyraLocalCodeIdentity'",
+    "kind": "case",
+    "occurrences": 2
+  }
+]

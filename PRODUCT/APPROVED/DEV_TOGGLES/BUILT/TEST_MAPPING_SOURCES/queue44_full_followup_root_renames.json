@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "mappings": [
+    {
+      "from": {
+        "suite_path": "test/app_shell_correctness_test.dart",
+        "name": "developer page options use the approved shared grouped dropdown",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/app_shell_correctness_test.dart",
+        "name": "member entry has no developer page options or rail",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03; Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed grouped developer UI policy becomes actual app-frame/member Welcome rendering with provider actions intact, retired key/widget absence and retired source-module absence; original baseline-failing cases untouched."
+    },
+    {
+      "from": {
+        "suite_path": "test/profile_ready_screen_test.dart",
+        "name": "compact large text keeps review controls and DEV skip usable",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/profile_ready_screen_test.dart",
+        "name": "compact large text keeps member review controls without DEV skip",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03; Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Authorized control retirement replaces obsolete developer presence/disabled implementation assertions with explicit absence; existing member actions, source ownership and release safety assertions retained."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_one_app_release_tooling_contract_test.dart",
+        "name": "legacy live-account Journey jump controls remain disabled",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_one_app_release_tooling_contract_test.dart",
+        "name": "legacy live-account Journey jump controls and client helpers are absent",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03; Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Authorized control retirement replaces obsolete developer presence/disabled implementation assertions with explicit absence; existing member actions, source ownership and release safety assertions retained."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_one_app_release_tooling_contract_test.dart",
+        "name": "every Developer Access entry and destination performs a refresh",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_one_app_release_tooling_contract_test.dart",
+        "name": "retired Developer Access entries and destinations have no source route",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03; Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Authorized control retirement replaces obsolete developer presence/disabled implementation assertions with explicit absence; existing member actions, source ownership and release safety assertions retained."
+    }
+  ],
+  "independent_review": {
+    "reviewer": "/root/remove_shell_controls",
+    "reviewed_at_utc": "2026-11-03T22:21:56.978244+00:00",
+    "status": "independent source/coverage review complete; serialized root combined scope pending",
+    "scope": "Six requested followup suites and four rename pairs. Source read-only; no reviewer Flutter run.",
+    "one_to_one_mappings": 4,
+    "test_cases_removed_or_skipped": 0,
+    "source_sha256": {
+      "test/app_shell_correctness_test.dart": "8f00558607b03170ce342475694d8be2c76fd3d5614fea0975886fc8d4c5f812",
+      "test/visual/member_gold_personalisation_visual_test.dart": "7d32e32775dcd99ba4e8bf986fb1a857ad2166d311a6a24d09ced5f621c94241",
+      "test/my_zyra_retirement_test.dart": "502e0f7c795c659b76abfd19093b52b377452e4d19cfad0ce62e99d4d6546177",
+      "test/profile_ready_screen_test.dart": "5f43bccd8633312317fde5a7815d4a57520391641796b23d40fc04b2236cf30e",
+      "test/zyra_one_app_release_tooling_contract_test.dart": "143087fc2a040e95b110ce5f92d988b4f60891d4281172ecc35625bfab81ddde",
+      "test/zyra_run_target_contract_test.dart": "6909eff3d7d6c8d26875a788b5f3ae7086a8bb554a2ec81b5c0f903892da8c36"
+    },
+    "baseline_failure_proof": {
+      "suite_path": "test/my_zyra_retirement_test.dart",
+      "name": "current single-page and ordinary member dashboards share one renderer",
+      "body_identical_to_HEAD": true,
+      "body_sha256": "2825c4185aff6f17485239ed519b185d01176c204827ae0e7f5f3db72fe6fa63"
+    },
+    "preserved_checks": [
+      "Actual Welcome provider controls and production app-frame absence of retired developer UI.",
+      "Actual compact Profile review member actions; only retired Skip expectation becomes absence.",
+      "Current source owner capability refresh, token event, lifecycle, redirect and dispose/remove-listener contracts.",
+      "Gold member On/Off, visible-pixel reversal, reduced motion, retained screen identity and painter disposal.",
+      "Existing fake-Flutter invocation target/mode assertions with explicit synthetic device and Founder UUID; run.sh/native/dependency files unchanged."
+    ],
+    "review_notes": "Removing contradictory retired temporary-override assertion is required because member style/rendering is now the sole Gold selection. Removed source files are asserted absent rather than read; remaining member/source contracts retained."
+  }
+}

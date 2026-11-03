@@ -1,0 +1,765 @@
+{
+  "schema_version": 1,
+  "authority": "OA-ZYRA-325 / queue44 independent final evidence review",
+  "reviewer": "/root/remove_shell_controls",
+  "reviewed_at_utc": "2026-11-03T22:32:52.329060+00:00",
+  "scope": "Read-only source/evidence review while root Full2 runs. No Flutter, git, source/test/map edits or new test jobs. Final Full2 identity gate remains root responsibility.",
+  "canonical_mapping_review": {
+    "canonical_path": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/QUEUE44_REVIEWED_TEST_MAPPINGS.json",
+    "canonical_sha256": "3c5380dcae4a2fdb4a7299f7245cf47cc3cdaea728084950f4ca7a2138e08a29",
+    "mapping_count": 216,
+    "source_records": [
+      {
+        "source": "queue44_root_reviewed_renames.json",
+        "count": 45,
+        "recorded_count_matches": true,
+        "recorded_sha256_matches": true
+      },
+      {
+        "source": "queue44_gold_harness_renames.json",
+        "count": 15,
+        "recorded_count_matches": true,
+        "recorded_sha256_matches": true
+      },
+      {
+        "source": "queue44_contract_harness_renames.json",
+        "count": 45,
+        "recorded_count_matches": true,
+        "recorded_sha256_matches": true
+      },
+      {
+        "source": "queue44_page_options_harness_renames.json",
+        "count": 18,
+        "recorded_count_matches": true,
+        "recorded_sha256_matches": true
+      },
+      {
+        "source": "queue44_auth_entry_harness_renames.json",
+        "count": 21,
+        "recorded_count_matches": true,
+        "recorded_sha256_matches": true
+      },
+      {
+        "source": "external_test_rename_map.json",
+        "count": 59,
+        "recorded_count_matches": true,
+        "recorded_sha256_matches": true
+      },
+      {
+        "source": "queue44_full_followup_root_renames.json",
+        "count": 4,
+        "recorded_count_matches": true,
+        "recorded_sha256_matches": true
+      },
+      {
+        "source": "queue44_followup_onboarding_renames.json",
+        "count": 2,
+        "recorded_count_matches": true,
+        "recorded_sha256_matches": true
+      },
+      {
+        "source": "queue44_location_stable_case_renames.json",
+        "count": 7,
+        "recorded_count_matches": true,
+        "recorded_sha256_matches": true
+      }
+    ],
+    "duplicate_from": [],
+    "duplicate_to": [],
+    "cross_suite_or_kind": [],
+    "self_mappings": [],
+    "from_target_collisions": [],
+    "empty_reviewer_or_reason": [],
+    "union9_maps_exact": true,
+    "from_exact_baseline_occurrence_issues": [],
+    "to_not_seen_in_completed_full1_or_followups": [],
+    "current_canonical35_source_hash_checks": [
+      {
+        "suite_path": "test/compatibility_route_toggle_test.dart",
+        "sha256": "1d60b00784b83d2dc13a96af3ce0d5cd4afcb8bc8f4547ce5f703f358bd5809f",
+        "matches": true
+      },
+      {
+        "suite_path": "test/dashboard_lab_test.dart",
+        "sha256": "f217ef7d85e2e39a89f3d2e180b98fa66f0142bf51b4cf8e31dc2b268333ac21",
+        "matches": true
+      },
+      {
+        "suite_path": "test/deferred_onboarding_preview_safety_test.dart",
+        "sha256": "5eb6dd87aa3301024502760016b1e5b2c52d2f336e7aa4cf127e7bd082506fba",
+        "matches": true
+      },
+      {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "sha256": "a65793949709965cddf2c59d52b9d638b3df9866834b3b46d7c216d06e13e418",
+        "matches": true
+      },
+      {
+        "suite_path": "test/dev_onboarding_gold_design_test.dart",
+        "sha256": "c40af9b2c34bf937c992edecbb6492733ca6166fd81803177c12159d2c8bdb5b",
+        "matches": true
+      },
+      {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "sha256": "1b43b5577fff24581903e39ed181f297d84f0c8adceead06bf1027986b9eeb25",
+        "matches": true
+      },
+      {
+        "suite_path": "test/dev_onboarding_transition_test.dart",
+        "sha256": "5befe3de8dacd3cbe379b9e24f42cdeb929e80479a397a51fe2304ee90775430",
+        "matches": true
+      },
+      {
+        "suite_path": "test/dev_onboarding_welcome_motion_test.dart",
+        "sha256": "9eeafe8fede67ab3ba6c767d0304b79da579e6097c245e9b1dd5704b5f8e3bff",
+        "matches": true
+      },
+      {
+        "suite_path": "test/dev_role_choice_design_test.dart",
+        "sha256": "ea130250cfd977a63690a21c6aa7d713aac5647c5dee0a4ca69788788a5232a9",
+        "matches": true
+      },
+      {
+        "suite_path": "test/dev_settings_design_test.dart",
+        "sha256": "43438e9ba26d64662ff79188afafa7ece3af03d5bcb2e7617f6b1d54f24d054c",
+        "matches": true
+      },
+      {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "sha256": "64e1586ee1f148bbe8f4cd280ff58d883670be7c1a50de65fb08043aee13cd61",
+        "matches": true
+      },
+      {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "sha256": "f9b1d49ebacf5972285b5dcd5bcf6ad4010bd3a367de6d7e0ac2a6672a7bdd68",
+        "matches": true
+      },
+      {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "sha256": "b5f8f38b4f38582e36f50685327742b79c158d5235158c3e93adf5414ecbc10e",
+        "matches": true
+      },
+      {
+        "suite_path": "test/dev_signup_toggle_options_test.dart",
+        "sha256": "1a9fda74511426bcce9e1273e2af61f341294d26313d87da22b29273a4204576",
+        "matches": true
+      },
+      {
+        "suite_path": "test/dev_splash_directions_test.dart",
+        "sha256": "a12492c9fcdeac2acf81c128dce5491c0c6efe0421c4a3c29a083131b0c04e6f",
+        "matches": true
+      },
+      {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "sha256": "881c2de721f6004146e0e8a08097b8fc6ebf8d21bf8a6d6a18c791556cab37d6",
+        "matches": true
+      },
+      {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "sha256": "2c4ba264e4bc9793beb0cc971e30c451d9a2c8f806fb2e0952d82d9127f3f004",
+        "matches": true
+      },
+      {
+        "suite_path": "test/global_hidden_dev_controls_test.dart",
+        "sha256": "d5e9655de0105e76aa9555a818aeab0d0a764f6d54eca7c535b41d3977923341",
+        "matches": true
+      },
+      {
+        "suite_path": "test/guardian_onboarding_dev_skip_test.dart",
+        "sha256": "7f17bc9d55b1e73474c86547536518672e3acf1c9e9e97579ed2839bb37bb678",
+        "matches": true
+      },
+      {
+        "suite_path": "test/initial_identity_check_screen_test.dart",
+        "sha256": "fa5e97ef9daa1d5097392deef9847536ae20bcfa02909408823b690560d54ba1",
+        "matches": true
+      },
+      {
+        "suite_path": "test/onboarding_stage_arrow_swipe_test.dart",
+        "sha256": "d4420b9ee199313419501130b2bee4b7006dade4b4dd6ca3f13ba7f2af1d442d",
+        "matches": true
+      },
+      {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "sha256": "47e78e47b50e5ab6702dcc6ffa79a451f6d88b1fa7f10020b6d31f1aa9d0af2a",
+        "matches": true
+      },
+      {
+        "suite_path": "test/visual/continuous_onboarding_visual_test.dart",
+        "sha256": "9eb54aa53f353745dde9c12633938daad06a6362083a763ffa6b2748140c16c8",
+        "matches": true
+      },
+      {
+        "suite_path": "test/visual/dev_toggle_sections_visual_test.dart",
+        "sha256": "6728d11481bb81f9c9c57c04f37e6a7b9a902dcb3f132a488654ef468eaa5b54",
+        "matches": true
+      },
+      {
+        "suite_path": "test/visual/lock19_v3_family_acceptance_test.dart",
+        "sha256": "2c81685c2c21832112a21938971972a73bfa72e5a69f13ec21778db281318b5a",
+        "matches": true
+      },
+      {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "sha256": "5ba95caae122f5762b91ca986bbdccb570a69025c696883e760067e2f679c101",
+        "matches": true
+      },
+      {
+        "suite_path": "test/zyra_concept_preview_boundary_test.dart",
+        "sha256": "13bb2d37687e002d1886d3c9fb2dc6540655587ba89682410926a6086a6318d8",
+        "matches": true
+      },
+      {
+        "suite_path": "test/zyra_dashboard_page_options_test.dart",
+        "sha256": "ac3e852879bc2386ee930725f441914e08ff0cd1ee451b616ec7254d5b15fbd7",
+        "matches": true
+      },
+      {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "sha256": "333fd1a6c5aa0745b1cda81e688cf95fe58fd5f7732113f50b49014307904eb8",
+        "matches": true
+      },
+      {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "sha256": "1a7f19818d25cb2167f2fa8c9449a19c01d23bda3e06a37a9cbe14ade351e6b4",
+        "matches": true
+      },
+      {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "sha256": "0c55651ad36356587e845ff481fc7e1cc1dd9ee0f57d11dd33e7b66681ec46e7",
+        "matches": true
+      },
+      {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "sha256": "51ccddf87d384fd6e53fef3b52e9de3a0307e950e0d29ad0f5b0d1e7157f5ade",
+        "matches": true
+      },
+      {
+        "suite_path": "test/zyra_developer_route_gate_test.dart",
+        "sha256": "4b7697a517c617a1946f8cd75f19cbb925161d7da8bd98a928681b799e275631",
+        "matches": true
+      },
+      {
+        "suite_path": "test/zyra_external_tester_access_test.dart",
+        "sha256": "d3ab00ba2a5d332b7f3bce1fc4525cac362a724407d037326ec0a0d55ffd9327",
+        "matches": true
+      },
+      {
+        "suite_path": "test/zyra_member_app_gold_test.dart",
+        "sha256": "93c528eb1473363ce8b66f77bdd55fbabe21efc12dd8c9da2fa6f1c95dac2754",
+        "matches": true
+      }
+    ],
+    "content_review_basis": "Nine map artifacts are exact hash-identical to independently reviewed versions, including prior semantic permutation fixes, five actual-production callback replacements and thirteen production-owned lifetime replacements. No name-only remap outside reviewed source union accepted."
+  },
+  "completed_log_proof": [
+    {
+      "path": "SOURCE/.buildlog/queue44_baseline_20261101T111912Z/events.jsonl",
+      "sha256": "d925d0fdaa1453916e10827a29239966257708108a722668584e4c5324151ad8",
+      "done_events": 1,
+      "invalid_json_records": 0,
+      "starts": 8240,
+      "completions": 8240
+    },
+    {
+      "path": "SOURCE/.buildlog/queue44_20261103/full_final/events.jsonl",
+      "sha256": "d830ebae1eedca9034c96b6617282c0ff030b1a4ddf452009bc0261813ec6783",
+      "done_events": 1,
+      "invalid_json_records": 0,
+      "starts": 8246,
+      "completions": 8246
+    },
+    {
+      "path": "SOURCE/.buildlog/queue44_20261103/full_followup_scope1.jsonl",
+      "sha256": "4d0af51bb1b09209154727626081c0739356b8a67196d4bbe6dfadbf433c9a73",
+      "done_events": 1,
+      "invalid_json_records": 0,
+      "starts": 406,
+      "completions": 406
+    },
+    {
+      "path": "SOURCE/.buildlog/queue44_20261103/full_followup_scope2.jsonl",
+      "sha256": "7634589d3bceebe8a1382b5821d078f2f276f12e1edb26e9246a7cb8665f6016",
+      "done_events": 1,
+      "invalid_json_records": 0,
+      "starts": 84,
+      "completions": 84
+    }
+  ],
+  "followup_case_and_hook_review": [
+    {
+      "log": "SOURCE/.buildlog/queue44_20261103/full_followup_scope1.jsonl",
+      "suites": 24,
+      "baseline_identity_occurrences": 406,
+      "current_identity_occurrences": 406,
+      "missing_baseline_identities": [],
+      "additional_current_identities": [],
+      "skipped": [],
+      "baseline_failed_case_outcomes": [
+        {
+          "baseline": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "Guardian parent authorization ABA refuses the retained topic-design callback",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "Guardian parent authorization ABA refuses the retained topic-design callback",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "Guardian parent role ABA refuses the retained topic-design callback",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "Guardian parent role ABA refuses the retained topic-design callback",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "Guardian parent tab ABA refuses the retained topic-design callback",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "Guardian parent tab ABA refuses the retained topic-design callback",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "Guardian parent toggle selects Current plus five bubble interiors with the same fixed floating entry",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "Guardian parent toggle selects Current plus five bubble interiors with the same fixed floating entry",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "Guardian unrelated parent tabs do not expose Journey discussion options",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "Guardian unrelated parent tabs do not expose Journey discussion options",
+            "kind": "case"
+          },
+          "current_result": "success"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "Seeker parent role ABA refuses the retained topic-design callback",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "Seeker parent role ABA refuses the retained topic-design callback",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "Seeker parent tab ABA refuses the retained topic-design callback",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "Seeker parent tab ABA refuses the retained topic-design callback",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "Seeker parent toggle selects Current plus five bubble interiors with the same fixed floating entry",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "Seeker parent toggle selects Current plus five bubble interiors with the same fixed floating entry",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "actual Guardian shell shares the bubble-design dropdown and the one admitted Circle",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "actual Guardian shell shares the bubble-design dropdown and the one admitted Circle",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "actual protected shell offers the Current Circle interior and preserves the mounted shared chat",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "actual protected shell offers the Current Circle interior and preserves the mounted shared chat",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "embedded discuss control current supports compact keyboard and long draft",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/guardian_circle_topic_options_test.dart",
+            "name": "embedded discuss control current supports compact keyboard and long draft",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "Portrait split keeps readable 2x text and safe scroll fallback at 320",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "Portrait split keeps readable 2x text and safe scroll fallback at 320",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "Portrait split keeps three stable places with 1 Journeys and balances the selected expanded action",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "Portrait split keeps three stable places with 1 Journeys and balances the selected expanded action",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "Portrait split keeps three stable places with 2 Journeys and balances the selected expanded action",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "Portrait split keeps three stable places with 2 Journeys and balances the selected expanded action",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "Portrait split keeps three stable places with 3 Journeys and balances the selected expanded action",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "Portrait split keeps three stable places with 3 Journeys and balances the selected expanded action",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "Portrait split uses Continue Journey without changing real draft progress",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "Portrait split uses Continue Journey without changing real draft progress",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "denied owner cannot use retained card or inline actions or publish a checkpoint",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "denied owner cannot use retained card or inline actions or publish a checkpoint",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "intermediate-height expansion scrolls the whole selected card and reaches every option",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "intermediate-height expansion scrolls the whole selected card and reaches every option",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "retained inline options cannot navigate after collapse and reopening",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "retained inline options cannot navigate after collapse and reopening",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "retained primary and menu actions are rejected after role switch",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "retained primary and menu actions are rejected after role switch",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "tall phone keeps 12px expanded primary gaps and all seven options visible without scroll",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "tall phone keeps 12px expanded primary gaps and all seven options visible without scroll",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "warm return, fresh owner and Reset all use Portrait split without choosing a layout",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/journey_card_layout_choices_test.dart",
+            "name": "warm return, fresh owner and Reset all use Portrait split without choosing a layout",
+            "kind": "case"
+          },
+          "current_result": "error"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/my_zyra_retirement_test.dart",
+            "name": "current single-page and ordinary member dashboards share one renderer",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/my_zyra_retirement_test.dart",
+            "name": "current single-page and ordinary member dashboards share one renderer",
+            "kind": "case"
+          },
+          "current_result": "failure"
+        },
+        {
+          "baseline": {
+            "suite_path": "test/whole_app_settings_destinations_test.dart",
+            "name": "Guardian actual Settings rows and every subpage keep their own return destination",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/whole_app_settings_destinations_test.dart",
+            "name": "Guardian actual Settings rows and every subpage keep their own return destination",
+            "kind": "case"
+          },
+          "current_result": "error"
+        }
+      ]
+    },
+    {
+      "log": "SOURCE/.buildlog/queue44_20261103/full_followup_scope2.jsonl",
+      "suites": 4,
+      "baseline_identity_occurrences": 84,
+      "current_identity_occurrences": 84,
+      "missing_baseline_identities": [],
+      "additional_current_identities": [],
+      "skipped": [],
+      "baseline_failed_case_outcomes": [
+        {
+          "baseline": {
+            "suite_path": "test/whole_app_settings_destinations_test.dart",
+            "name": "Guardian actual Settings rows and every subpage keep their own return destination",
+            "kind": "case"
+          },
+          "current": {
+            "suite_path": "test/whole_app_settings_destinations_test.dart",
+            "name": "Guardian actual Settings rows and every subpage keep their own return destination",
+            "kind": "case"
+          },
+          "current_result": "error"
+        }
+      ]
+    }
+  ],
+  "followup_source_hash_checks": {
+    "root6": [
+      {
+        "suite_path": "test/app_shell_correctness_test.dart",
+        "sha256": "8f00558607b03170ce342475694d8be2c76fd3d5614fea0975886fc8d4c5f812",
+        "recorded_sha256_matches": true
+      },
+      {
+        "suite_path": "test/visual/member_gold_personalisation_visual_test.dart",
+        "sha256": "7d32e32775dcd99ba4e8bf986fb1a857ad2166d311a6a24d09ced5f621c94241",
+        "recorded_sha256_matches": true
+      },
+      {
+        "suite_path": "test/my_zyra_retirement_test.dart",
+        "sha256": "502e0f7c795c659b76abfd19093b52b377452e4d19cfad0ce62e99d4d6546177",
+        "recorded_sha256_matches": true
+      },
+      {
+        "suite_path": "test/profile_ready_screen_test.dart",
+        "sha256": "5f43bccd8633312317fde5a7815d4a57520391641796b23d40fc04b2236cf30e",
+        "recorded_sha256_matches": true
+      },
+      {
+        "suite_path": "test/zyra_one_app_release_tooling_contract_test.dart",
+        "sha256": "bbbecc4702671da8150ec2205fbd9cfddda459ffe206361b55e9856f87ee36ef",
+        "recorded_sha256_matches": false
+      },
+      {
+        "suite_path": "test/zyra_run_target_contract_test.dart",
+        "sha256": "6909eff3d7d6c8d26875a788b5f3ae7086a8bb554a2ec81b5c0f903892da8c36",
+        "recorded_sha256_matches": true
+      }
+    ],
+    "shell9": [
+      {
+        "suite_path": "test/guardian_circle_close_integration_test.dart",
+        "sha256": "a86f312e617ca3b911d8f1f02af38a6056c92e7aee48909e3bc8120decfbe0c3",
+        "recorded_sha256_matches": true
+      },
+      {
+        "suite_path": "test/guardian_design_control_test.dart",
+        "sha256": "710588c6a8a25afbad9230a45fabb3cde660ad4fd1735c2c29188e31f5277397",
+        "recorded_sha256_matches": true
+      },
+      {
+        "suite_path": "test/personalisation_page_health_test.dart",
+        "sha256": "06c0fdf04276a0c4490a12b04ded2f52a56dfbb6fdc872a2dcd40fa7365ecd91",
+        "recorded_sha256_matches": true
+      },
+      {
+        "suite_path": "test/zyra_draft_compatibility_route_test.dart",
+        "sha256": "a3be11c0077a54569f51f84270190bc83008b8331f6a263ac543f2f500b18970",
+        "recorded_sha256_matches": true
+      },
+      {
+        "suite_path": "test/guardian_circle_topics_source_test.dart",
+        "sha256": "aeb9798bbff92e4e6122368eadc59001fad03124e51cd981d225e78312158372",
+        "recorded_sha256_matches": true
+      },
+      {
+        "suite_path": "test/whole_app_settings_destinations_test.dart",
+        "sha256": "88a468e212bb6da610cc79df93c24b3d5968330aea1c8f7ceba8791a1df20881",
+        "recorded_sha256_matches": true
+      },
+      {
+        "suite_path": "test/support/zyra_hidden_dev_controls_driver.dart",
+        "sha256": "f4212fb7011cd9d247065118fc966a6708077629ab21b92cb6617bbee3e831e0",
+        "recorded_sha256_matches": true
+      },
+      {
+        "suite_path": "test/guardian_circle_topic_options_test.dart",
+        "sha256": "8b2dcbe0a6fffd65950ae1b140f31634145f40a7bea806fb3f71360e3bf13c80",
+        "recorded_sha256_matches": true
+      },
+      {
+        "suite_path": "test/journey_card_layout_choices_test.dart",
+        "sha256": "c2a6b2ad5c5944b6d82c906095f6b4171ba784504cf1d684a7c5ad89332f0ff1",
+        "recorded_sha256_matches": true
+      }
+    ],
+    "onboarding2": [
+      {
+        "suite_path": "test/onboarding_compatibility_flow_test.dart",
+        "sha256": "9bbaa255e9e8f7b615110b7d7269748240f043d90be4eea1e834e3ec35b00ff8",
+        "recorded_sha256_matches": true
+      },
+      {
+        "suite_path": "test/seeker_post_identity_choice_test.dart",
+        "sha256": "d5e6852ec96c8e91b37e18f68f61b6dc58898d2d7b74fe14a0494ec32af04e5a",
+        "recorded_sha256_matches": true
+      }
+    ]
+  },
+  "release_contract_analyzer_only_correction": {
+    "file": "test/zyra_one_app_release_tooling_contract_test.dart",
+    "current_sha256": "bbbecc4702671da8150ec2205fbd9cfddda459ffe206361b55e9856f87ee36ef",
+    "reviewed_sha256": "143087fc2a040e95b110ce5f92d988b4f60891d4281172ecc35625bfab81ddde",
+    "inverse_braces_only_sha256": "143087fc2a040e95b110ce5f92d988b4f60891d4281172ecc35625bfab81ddde",
+    "exact_prior_review_hash_reconstructed": true,
+    "change": "Only braces added around protected-name walker continue; guards, assertions, test names, fixture data and registration unchanged. Verified by in-memory inverse, no git or file rewrite."
+  },
+  "baseline_assertion_proof": {
+    "my_zyra_failure": {
+      "suite_path": "test/my_zyra_retirement_test.dart",
+      "name": "current single-page and ordinary member dashboards share one renderer",
+      "current_full_case_lines": [
+        110,
+        133
+      ],
+      "current_full_case_sha256": "2825c4185aff6f17485239ed519b185d01176c204827ae0e7f5f3db72fe6fa63",
+      "matches_independently_reviewed_identical_baseline_case_sha256": true
+    },
+    "latest_three_cover_corrections": {
+      "files": [
+        "test/personalisation_page_health_test.dart",
+        "test/whole_app_settings_destinations_test.dart"
+      ],
+      "production_owner": "ViewRequestDraftScreen in lib/dev/dev_discovery_directions.dart",
+      "source_guard": "_canAct = mounted && _owner.current && (ModalRoute.of(context)?.isCurrent ?? false)",
+      "case_names_and_assertions_retained": true,
+      "checks": "Seeker+Guardian saved Gold/haptic/Back callbacks and Settings overview/detail/help/Back run under real root Navigator covers; unchanged checkpoint equality/identity, retained state/element, return, and subsequent fresh member action assertions remain. No handwritten freshness predicate or retired overlay replica. Only these three mounts select guardedRouteOwner:true."
+    },
+    "location7": "Existing independent source proof verifies identical payload list and entire assertion body, with names only replacing process-dependent object hashcodes. All seven baseline occurrences map uniquely and current completed scope registers all seven stable labels.",
+    "natural_removed_control_outcome": "Existing Guardian unrelated-tab dropdown-absence assertion may naturally pass after picker removal; this is not forced failure or baseline assertion suppression. Outcome is recorded in completed-scope baseline-failure transitions."
+  },
+  "verdict": "Canonical216 is complete, one-to-one and hash-linked to reviewed source. Completed followup logs preserve every mapped baseline case/hook occurrence with no skips. No baseline assertion suppression found in final bounded owner/style corrections; final Full2 aggregate comparison pending.",
+  "publication_presentation_note": "Reviewed snapshot digest precedes path/digest record formatting. Exact presentation-only transformations and current digests: QUEUE44_PUBLICATION_NORMALIZATION.json; all216 mapping records and all file digest values unchanged."
+}

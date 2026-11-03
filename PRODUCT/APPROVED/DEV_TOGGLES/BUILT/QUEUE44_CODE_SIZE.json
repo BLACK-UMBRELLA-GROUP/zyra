@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "measured_at_utc": "2026-11-03T22:30:31.639942+00:00",
+  "authority": "OA-ZYRA-325 / queue44 read-only final measurement",
+  "classifier": "SYSTEM/tools/blueprint/code_size.py unchanged",
+  "classifier_sha256": "1784f086c8e45715b9e8bcaf5741bdcdc2a7f90576dbb535f828bd5c9bf74452",
+  "same_classifier_hash_as_prior": true,
+  "enumeration": "Same existing glob classifications and line counting; lexical protected-directory and symlink exclusions occur before traversal/content access.",
+  "enumeration_roots": [
+    "SOURCE/lib",
+    "SOURCE/test"
+  ],
+  "protected_names_checked_before_stat_or_traversal": true,
+  "symlinks_followed": false,
+  "skipped_entries": [],
+  "before": {
+    "app": [
+      175146,
+      345
+    ],
+    "developer_preview": [
+      55058,
+      103
+    ],
+    "founder_planned": [
+      35846,
+      53
+    ],
+    "tests": [
+      228324,
+      538
+    ],
+    "goldens": [
+      3044,
+      333
+    ],
+    "old_pause_mentions": 39,
+    "old_restart_mentions": 1
+  },
+  "final": {
+    "app": [
+      162668,
+      320
+    ],
+    "developer_preview": [
+      44347,
+      78
+    ],
+    "founder_planned": [
+      34482,
+      52
+    ],
+    "tests": [
+      231030,
+      554
+    ],
+    "goldens": [
+      3044,
+      333
+    ],
+    "old_pause_mentions": 40,
+    "old_restart_mentions": 1
+  },
+  "delta_from_before": {
+    "app": [
+      -12478,
+      -25
+    ],
+    "developer_preview": [
+      -10711,
+      -25
+    ],
+    "founder_planned": [
+      -1364,
+      -1
+    ],
+    "tests": [
+      2706,
+      16
+    ],
+    "goldens": [
+      0,
+      0
+    ],
+    "old_pause_mentions": 1,
+    "old_restart_mentions": 0
+  },
+  "after_table": "| What | Size |\n|---|---|\n| All app code | 162,668 lines in 320 files |\n| Developer and preview code inside it | 44,347 lines in 78 files |\n| The Founder preview (planned app) | 34,482 lines in 52 files |\n| Test code | 231,030 lines in 554 files |\n| Test screenshots (goldens) | 3,044 images, 333 MB |\n| Old-app files that still mention Pause | 40 |\n| Old-app files that still mention Restart | 1 |\n",
+  "old_app_match_paths": {
+    "Pause": [
+      "SOURCE/lib/constants/zyra_plan_names.dart",
+      "SOURCE/lib/data/help_content.dart",
+      "SOURCE/lib/data/zyra_entitlements.dart",
+      "SOURCE/lib/data/zyra_journey_pause_state.dart",
+      "SOURCE/lib/data/zyra_timeline_milestones.dart",
+      "SOURCE/lib/models/journey_match.dart",
+      "SOURCE/lib/models/zyra_dashboard_lab.dart",
+      "SOURCE/lib/models/zyra_dashboard_resolution.dart",
+      "SOURCE/lib/models/zyra_journey_presentation.dart",
+      "SOURCE/lib/models/zyra_supportive_dashboard.dart",
+      "SOURCE/lib/screens/connections/connections_screen.dart",
+      "SOURCE/lib/screens/journey/journey_flow_screen.dart",
+      "SOURCE/lib/screens/matches/journey_timeline_screen.dart",
+      "SOURCE/lib/screens/profile/past_journeys_screen.dart",
+      "SOURCE/lib/screens/profile/profile_screen.dart",
+      "SOURCE/lib/screens/profile/seeker_profile_screen.dart",
+      "SOURCE/lib/screens/settings/privacy_settings_screen.dart",
+      "SOURCE/lib/screens/settings/settings_screen.dart",
+      "SOURCE/lib/screens/splash_screen.dart",
+      "SOURCE/lib/screens/subscription/profile_unlock_screen.dart",
+      "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "SOURCE/lib/screens/wali/wali_journey_detail_screen.dart",
+      "SOURCE/lib/services/zyra_app_lock.dart",
+      "SOURCE/lib/services/zyra_dashboard_adapter.dart",
+      "SOURCE/lib/services/zyra_dashboard_updates_service.dart",
+      "SOURCE/lib/services/zyra_family_messaging_service.dart",
+      "SOURCE/lib/services/zyra_guardian_seeker_roster_resolver.dart",
+      "SOURCE/lib/services/zyra_journey_service.dart",
+      "SOURCE/lib/services/zyra_match_service.dart",
+      "SOURCE/lib/services/zyra_notification_service.dart",
+      "SOURCE/lib/services/zyra_photo_service.dart",
+      "SOURCE/lib/services/zyra_profile_pause_service.dart",
+      "SOURCE/lib/services/zyra_session_router.dart",
+      "SOURCE/lib/services/zyra_truthful_write.dart",
+      "SOURCE/lib/services/zyra_wali_journey_service.dart",
+      "SOURCE/lib/services/zyra_wali_link_service.dart",
+      "SOURCE/lib/state/app_state.dart",
+      "SOURCE/lib/widgets/zyra_account_session_host.dart",
+      "SOURCE/lib/widgets/zyra_comet_rule.dart",
+      "SOURCE/lib/widgets/zyra_splash_artwork.dart"
+    ],
+    "Restart": [
+      "SOURCE/lib/screens/journey/journey_flow_screen.dart"
+    ]
+  },
+  "pause_qualification": {
+    "raw_final_file_count": 40,
+    "raw_before_file_count": 39,
+    "neutral_new_host": "SOURCE/lib/widgets/zyra_account_session_host.dart",
+    "matches": [
+      {
+        "line": 373,
+        "text": "    // withdrew proof while paused. It is not a cached authorization grant."
+      }
+    ],
+    "qualified_existing_member_file_count": 39,
+    "explanation": "The unchanged case-insensitive pause regex counts the neutral lifecycle/authorization comment \"while paused\" in the new account session host. The current host does not contain an AppLifecycleState.paused enum reference. This extra raw match is not a new member Pause control; ordinary member Pause/Save APIs and Journey navigation remain. The earlier attribution to an enum case is corrected by the source line evidence here."
+  },
+  "scope": "Read-only code/content and PNG metadata measurement. No Flutter, git, source/test edits, backend/schema or classifier changes."
+}

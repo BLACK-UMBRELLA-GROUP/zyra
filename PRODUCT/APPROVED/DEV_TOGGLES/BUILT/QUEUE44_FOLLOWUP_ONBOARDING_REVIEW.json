@@ -1,0 +1,70 @@
+{
+  "reviewer": "Codex audit_controls independent technical review,2026-11-03",
+  "map": "work/queue44_followup_onboarding_renames.json",
+  "source_hashes_match": true,
+  "baseline_visible_cases_by_file": {
+    "test/onboarding_compatibility_flow_test.dart": 2,
+    "test/seeker_post_identity_choice_test.dart": 18
+  },
+  "baseline_hidden_by_file": {
+    "test/onboarding_compatibility_flow_test.dart": 1,
+    "test/seeker_post_identity_choice_test.dart": 3
+  },
+  "baseline_failures": 0,
+  "baseline_skips": 0,
+  "pairs": [
+    {
+      "from": {
+        "suite_path": "test/onboarding_compatibility_flow_test.dart",
+        "name": "developer preview can skip an unanswered question",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/onboarding_compatibility_flow_test.dart",
+        "name": "code-only preview advances an unanswered question without Skip",
+        "kind": "case"
+      },
+      "baseline_matches": 1,
+      "baseline_results": [
+        "success"
+      ]
+    },
+    {
+      "from": {
+        "suite_path": "test/seeker_post_identity_choice_test.dart",
+        "name": "both role overviews have a protected next-page skip",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/seeker_post_identity_choice_test.dart",
+        "name": "both role overviews use protected Continue without developer Skip",
+        "kind": "case"
+      },
+      "baseline_matches": 1,
+      "baseline_results": [
+        "success"
+      ]
+    }
+  ],
+  "source_guards": {
+    "ValuesPreferencesFlow": "_nextchecks_canProceed(mounted,freshauth,restoring/saving/leaving,error)andcurrentroute. VisibleContinuefabActivefalseasserted; sourcecodepreviewpermitsunansweredinputasretainedbaselinefixturebehavior.",
+    "SeekerOnboardingOverviewScreen": "Actual_openQuestionscallbackchecksmounted/navigationlatch/checkpoint/auth/isolationthenbuildsrealChapter2Flow.",
+    "GuardianOnboardingOverviewScreen": "Actual_continuecallbackchecksmounted/currentroute/navigationlatch/auth/isolationthenbuildsrealWaliOnboardingFlow."
+  },
+  "same_name_data_coverage": "localoptioncarriesidentitytorealnextoverviewnowadditionallyassertsChapter2genderfemale,devPreviewtrueandnameAaliyahafteractualsourceContinue.",
+  "hook_review": "2baselinesuitesunchangedsetUp/tearDownregistration;SeekerretainssetUpAll/tearDownAllfontfixture. No newtests,droppedcases,skips,suppressionsorbaselinefailureassertionrepairs.",
+  "findings": [],
+  "validation": "Rootserializedcombined24suitescoperunning;reviewerlaunchesnoFluttercommands.",
+  "current_source_sha256": {
+    "test/onboarding_compatibility_flow_test.dart": "9bbaa255e9e8f7b615110b7d7269748240f043d90be4eea1e834e3ec35b00ff8",
+    "test/seeker_post_identity_choice_test.dart": "d5e6852ec96c8e91b37e18f68f61b6dc58898d2d7b74fe14a0494ec32af04e5a"
+  },
+  "scope1_harness_correction_recheck": {
+    "reviewed_by": "Codex audit_controls independent technical coverage review,2026-11-03",
+    "result": "Accepted; no source edits by reviewer.",
+    "compatibility": "Uses real values_preview_denied while revoked; disposes old owner, mounts new authorized owner, verifies old production callback cannot advance new owner and fresh actual sourceContinue does advance unanswered fixture with fabActivefalse.",
+    "overviews": "Captures actual ZyraOnboardingArrowAction.onPressed for Guardian. Each role rejects real source callback underrevocation andafterdisposal, then fresh sourcecallback reaches real nextflow.",
+    "baseline_loss": "Original20ordinarycases/4hiddenhooks and2renamepairs unchanged; no skip/add/drop or baseline-failingassertion repair.",
+    "validation": "Root owns affected4suite serializedscope2; reviewer launches noFlutter."
+  }
+}

@@ -1,0 +1,267 @@
+{
+  "schema_version": 1,
+  "finding_authority": "OA-ZYRA-325",
+  "status": "NINE_LITERAL_LOCK_GATE_CONFLICTS_NO_WAIVER",
+  "gate_text": "Every LOCK test passes.",
+  "evidence_note": "Each exact case is error in baseline, Full1 and Full2. Failure at an obsolete finder does not establish a product defect or prove that no other passing test covers the requirement. The literal every-LOCK-test gate remains unmet; no waiver applied.",
+  "authorities": {
+    "lock2_main_notice": {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/RECORD/REQUESTS_AND_GUARDIANS_SPEC_CURRENT_VERSION_V2.md",
+      "section": "\u00a72.4 one-time Main Guardian message",
+      "line": 63,
+      "sha256": "c3d17648b0ce615d2d3cc7e2f54f8207c6dd826a2169c9cc2c9fe66a2d4b870a"
+    },
+    "lock5_tab_attention": {
+      "path": "PRODUCT/APPROVED/TAB_ATTENTION/RECORD/TAB_ATTENTION_SPEC_CURRENT_VERSION_V1.md",
+      "section": "Meaning/clearing/comingback rules",
+      "line": 16,
+      "sha256": "b3fb35ae66a7455c07436153c8fc014e29984ce104174ac88015de98cccb5ef3"
+    },
+    "lock19_monogram_guardian": {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/RECORD/GUARDIAN_CARD_SPEC_CURRENT_VERSION_V3.md",
+      "section": "\u00a7\u00a71\u20134 Monogram Guardian cards; existing MakeMain confirm flows retained",
+      "line": 14,
+      "sha256": "7907d62c28644c9c2c7d4441de93940aeda4d6801364bff7bc73afe3e05022df"
+    },
+    "lock15_focus": {
+      "path": "PRODUCT/APPROVED/MY_ZYRA/RECORD/MY_ZYRA_SPEC_CURRENT_VERSION_V3.md",
+      "section": "\u00a71 old Newactivity layout removed; \u00a75 preservesLOCK5goldrule",
+      "line": 31,
+      "sha256": "9a51f0c8a4fe1834ca5a3d17a679caf283b35b89ab383820f7e6d3f096728669"
+    }
+  },
+  "baseline_event_sha256": "d925d0fdaa1453916e10827a29239966257708108a722668584e4c5324151ad8",
+  "full1_event_sha256": "d830ebae1eedca9034c96b6617282c0ff030b1a4ddf452009bc0261813ec6783",
+  "source_authority_audit": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/QUEUE44_CURRENT_LOCK_AUTHORITY.json",
+  "case_count": 9,
+  "cases": [
+    {
+      "suite_path": "test/requests_guardians_lock2_shell_test.dart",
+      "name": "Main notice appears once for each effective H to Y to H change",
+      "kind": "case",
+      "current_test_name_line": 511,
+      "baseline": {
+        "outcome": "error",
+        "first_error": "The following StateError was thrown running a test:\nBad state: No element",
+        "obsolete_harness_failure_line": 164,
+        "caller_line": 514
+      },
+      "full1": {
+        "outcome": "error",
+        "first_error": "The following StateError was thrown running a test:\nBad state: No element",
+        "obsolete_harness_failure_line": 166,
+        "caller_line": 516
+      },
+      "current_requirement_ref": "lock2_main_notice",
+      "obsolete_layout_ref": "lock19_monogram_guardian",
+      "obsolete_harness": "SeekerGuardianPage/guardian-page-view finder",
+      "waiver": false,
+      "full2_outcomes": {
+        "error": 1
+      }
+    },
+    {
+      "suite_path": "test/requests_guardians_lock2_shell_test.dart",
+      "name": "a pending Main notice resumes for its exact subject then stays consumed",
+      "kind": "case",
+      "current_test_name_line": 549,
+      "baseline": {
+        "outcome": "error",
+        "first_error": "The following assertion was thrown running a test:\nThe finder \"Found 0 widgets with key [<'guardian-page-view'>]: []\" (used in a call to \"drag()\")\ncould not find any matching widgets.",
+        "obsolete_harness_failure_line": 188,
+        "caller_line": 551
+      },
+      "full1": {
+        "outcome": "error",
+        "first_error": "The following assertion was thrown running a test:\nThe finder \"Found 0 widgets with key [<'guardian-page-view'>]: []\" (used in a call to \"drag()\")\ncould not find any matching widgets.",
+        "obsolete_harness_failure_line": 190,
+        "caller_line": 553
+      },
+      "current_requirement_ref": "lock2_main_notice",
+      "obsolete_layout_ref": "lock19_monogram_guardian",
+      "obsolete_harness": "SeekerGuardianPage/guardian-page-view finder",
+      "waiver": false,
+      "full2_outcomes": {
+        "error": 1
+      }
+    },
+    {
+      "suite_path": "test/requests_guardians_lock2_shell_test.dart",
+      "name": "a stale Make Main callback cannot create a notice",
+      "kind": "case",
+      "current_test_name_line": 572,
+      "baseline": {
+        "outcome": "error",
+        "first_error": "The following assertion was thrown running a test:\nThe finder \"Found 0 widgets with key [<'guardian-page-view'>]: []\" (used in a call to \"drag()\")\ncould not find any matching widgets.",
+        "obsolete_harness_failure_line": 188,
+        "caller_line": 574
+      },
+      "full1": {
+        "outcome": "error",
+        "first_error": "The following assertion was thrown running a test:\nThe finder \"Found 0 widgets with key [<'guardian-page-view'>]: []\" (used in a call to \"drag()\")\ncould not find any matching widgets.",
+        "obsolete_harness_failure_line": 190,
+        "caller_line": 576
+      },
+      "current_requirement_ref": "lock2_main_notice",
+      "obsolete_layout_ref": "lock19_monogram_guardian",
+      "obsolete_harness": "SeekerGuardianPage/guardian-page-view finder",
+      "waiver": false,
+      "full2_outcomes": {
+        "error": 1
+      }
+    },
+    {
+      "suite_path": "test/requests_guardians_lock2_shell_test.dart",
+      "name": "a revoked Make Main callback cannot create a notice",
+      "kind": "case",
+      "current_test_name_line": 572,
+      "baseline": {
+        "outcome": "error",
+        "first_error": "The following assertion was thrown running a test:\nThe finder \"Found 0 widgets with key [<'guardian-page-view'>]: []\" (used in a call to \"drag()\")\ncould not find any matching widgets.",
+        "obsolete_harness_failure_line": 188,
+        "caller_line": 574
+      },
+      "full1": {
+        "outcome": "error",
+        "first_error": "The following assertion was thrown running a test:\nThe finder \"Found 0 widgets with key [<'guardian-page-view'>]: []\" (used in a call to \"drag()\")\ncould not find any matching widgets.",
+        "obsolete_harness_failure_line": 190,
+        "caller_line": 576
+      },
+      "current_requirement_ref": "lock2_main_notice",
+      "obsolete_layout_ref": "lock19_monogram_guardian",
+      "obsolete_harness": "SeekerGuardianPage/guardian-page-view finder",
+      "waiver": false,
+      "full2_outcomes": {
+        "error": 1
+      }
+    },
+    {
+      "suite_path": "test/tab_attention_open_marker_test.dart",
+      "name": "opening My ZYRA clears only tab attention and preserves pending New activity",
+      "kind": "case",
+      "current_test_name_line": 285,
+      "baseline": {
+        "outcome": "error",
+        "first_error": "The following StateError was thrown running a test:\nBad state: No element",
+        "obsolete_harness_failure_line": 191,
+        "caller_line": 306
+      },
+      "full1": {
+        "outcome": "error",
+        "first_error": "The following StateError was thrown running a test:\nBad state: No element",
+        "obsolete_harness_failure_line": 192,
+        "caller_line": 307
+      },
+      "current_requirement_ref": "lock5_tab_attention",
+      "obsolete_layout_ref": "lock15_focus",
+      "obsolete_harness": "ZyraQuietDashboard in _expectItemAttention; old Newactivity layout",
+      "waiver": false,
+      "full2_outcomes": {
+        "error": 1
+      }
+    },
+    {
+      "suite_path": "test/tab_attention_open_marker_test.dart",
+      "name": "a newer arrival from the same peer restores gold tab attention",
+      "kind": "case",
+      "current_test_name_line": 320,
+      "baseline": {
+        "outcome": "error",
+        "first_error": "The following StateError was thrown running a test:\nBad state: No element",
+        "obsolete_harness_failure_line": 191,
+        "caller_line": 326
+      },
+      "full1": {
+        "outcome": "error",
+        "first_error": "The following StateError was thrown running a test:\nBad state: No element",
+        "obsolete_harness_failure_line": 192,
+        "caller_line": 327
+      },
+      "current_requirement_ref": "lock5_tab_attention",
+      "obsolete_layout_ref": "lock15_focus",
+      "obsolete_harness": "ZyraQuietDashboard in _expectItemAttention; old Newactivity layout",
+      "waiver": false,
+      "full2_outcomes": {
+        "error": 1
+      }
+    },
+    {
+      "suite_path": "test/tab_attention_open_marker_test.dart",
+      "name": "a fresh shell restores the consumed marker without reading items",
+      "kind": "case",
+      "current_test_name_line": 355,
+      "baseline": {
+        "outcome": "error",
+        "first_error": "The following StateError was thrown running a test:\nBad state: No element",
+        "obsolete_harness_failure_line": 191,
+        "caller_line": 377
+      },
+      "full1": {
+        "outcome": "error",
+        "first_error": "The following StateError was thrown running a test:\nBad state: No element",
+        "obsolete_harness_failure_line": 192,
+        "caller_line": 378
+      },
+      "current_requirement_ref": "lock5_tab_attention",
+      "obsolete_layout_ref": "lock15_focus",
+      "obsolete_harness": "ZyraQuietDashboard in _expectItemAttention; old Newactivity layout",
+      "waiver": false,
+      "full2_outcomes": {
+        "error": 1
+      }
+    },
+    {
+      "suite_path": "test/tab_attention_open_marker_test.dart",
+      "name": "resuming directly on My ZYRA consumes tab attention alone",
+      "kind": "case",
+      "current_test_name_line": 383,
+      "baseline": {
+        "outcome": "error",
+        "first_error": "The following StateError was thrown running a test:\nBad state: No element",
+        "obsolete_harness_failure_line": 191,
+        "caller_line": 396
+      },
+      "full1": {
+        "outcome": "error",
+        "first_error": "The following StateError was thrown running a test:\nBad state: No element",
+        "obsolete_harness_failure_line": 192,
+        "caller_line": 397
+      },
+      "current_requirement_ref": "lock5_tab_attention",
+      "obsolete_layout_ref": "lock15_focus",
+      "obsolete_harness": "ZyraQuietDashboard in _expectItemAttention; old Newactivity layout",
+      "waiver": false,
+      "full2_outcomes": {
+        "error": 1
+      }
+    },
+    {
+      "suite_path": "test/tab_attention_open_marker_test.dart",
+      "name": "long absence opens My ZYRA and clears the marker without item ack",
+      "kind": "case",
+      "current_test_name_line": 403,
+      "baseline": {
+        "outcome": "error",
+        "first_error": "The following StateError was thrown running a test:\nBad state: No element",
+        "obsolete_harness_failure_line": 191,
+        "caller_line": 418
+      },
+      "full1": {
+        "outcome": "error",
+        "first_error": "The following StateError was thrown running a test:\nBad state: No element",
+        "obsolete_harness_failure_line": 192,
+        "caller_line": 419
+      },
+      "current_requirement_ref": "lock5_tab_attention",
+      "obsolete_layout_ref": "lock15_focus",
+      "obsolete_harness": "ZyraQuietDashboard in _expectItemAttention; old Newactivity layout",
+      "waiver": false,
+      "full2_outcomes": {
+        "error": 1
+      }
+    }
+  ],
+  "waiver_applied": false,
+  "tests_changed_by_this_audit": false,
+  "full2_event_sha256": "722597b60927ea8a0646a9e809849ed96720e96dedd4d8af56fc8ce467517a07"
+}

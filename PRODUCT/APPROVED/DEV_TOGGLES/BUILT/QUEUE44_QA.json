@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "authority": "OA-ZYRA-325 / queue44 brief step7 / question10",
+  "status": "QUESTION_NOT_BUILT",
+  "implementation_commit": null,
+  "scope": "Remove authorized developer controls and their dead client code; preserve current LOCK-drawn member controls and inline local Demo actions.",
+  "unchanged_boundaries": [
+    "No phone or native build/install",
+    "No backend/schema/RPC implementation changes",
+    "No auth behavior or dependency/toolchain changes",
+    "No version or release bump",
+    "ROADMAP row stays OPEN; line73 not started"
+  ],
+  "component_checks": {
+    "format": "PASS: 200 changed/new Dart files, zero formatting changes",
+    "analyzer": "PASS: No issues found (4.5 seconds)",
+    "serialized_followup": "PASS: zero baseline-pass deficits in 24-suite migration scope after four-suite correction check",
+    "release_safety_capture": "PASS: actual role/plan combinations, stable tabs and no developer controls during 4-second holds",
+    "strict_every_LOCK_test": "FAIL: nine unchanged baseline-failing cases; no waiver",
+    "unchanged_baseline_failure_assertions": "NOT unchanged: five obsolete developer-UI assertion migrations, four in shared helpers and one in a case body, require explicit scope clarification. Exact audits retained.",
+    "baseline_non_regression": "PASS"
+  },
+  "evidence": {
+    "controls": "QUEUE44_CONTROLS_INVENTORY.json",
+    "mappings": "QUEUE44_REVIEWED_TEST_MAPPINGS.json",
+    "nine_cases": "QUEUE44_NINE_LOCK_GATE_CONFLICTS.json",
+    "authority": "QUEUE44_CURRENT_LOCK_AUTHORITY.json",
+    "visual": "QUEUE44_VISUAL_REVIEW.json",
+    "dirty_candidate": "QUEUE44_DIRTY_CANDIDATE_MANIFEST.json",
+    "baseline_assertion_migrations": "QUEUE44_BASELINE_ASSERTION_MIGRATIONS.json",
+    "final_controls_review": "QUEUE44_FINAL_CONTROLS_REVIEW.json",
+    "code_size": "QUEUE44_CODE_SIZE.json",
+    "full_comparison": "QUEUE44_COMPARISON_SUMMARY.json",
+    "identity_scope": "QUEUE44_IDENTITY_SCOPE_AUDIT.json",
+    "remaining_failures": "QUEUE44_CURRENT_FAILURE_MANIFEST.json",
+    "mapping_review": "QUEUE44_FINAL_TEST_MAPPING_REVIEW.json",
+    "mapping_sources": "TEST_MAPPING_SOURCES/",
+    "fifth_transition": "QUEUE44_FIFTH_BASELINE_IMPROVEMENT.json"
+  },
+  "handover": "Line44 QUESTION. No further code/build work until written clarification. Source/tests/README remain uncommitted under the dirty candidate manifest. Line73 not started; no phone action.",
+  "completed_utc": "2026-11-03T22:37:39.540567+00:00",
+  "full_comparison": {
+    "baseline_failed_or_error": 649,
+    "current_failed_or_error": 644,
+    "failure_files": 91,
+    "started_and_completed": 8246,
+    "baseline_comparison_gate": "PASS",
+    "baseline_pass_regression_occurrences": 0,
+    "baseline_multiplicity_changes": 0,
+    "baseline_skipped_outcome_changes": 0,
+    "new_identity_errors": 0,
+    "ordinary_successes": 6435,
+    "loader_hook_successes": 1048,
+    "skips": 119,
+    "reporter_success": false,
+    "full_event_sha256": "722597b60927ea8a0646a9e809849ed96720e96dedd4d8af56fc8ce467517a07",
+    "qualification": "Baseline non-regression passes. The complete queue44 gate FAILS: every-LOCK-pass condition is not met, and five removed-control assertion migrations require explicit scope clarification."
+  },
+  "baseline_failure_transition_note": "Five error-to-success transitions: four shared developer-UI helper migrations in QUEUE44_BASELINE_ASSERTION_MIGRATIONS.json; fifth test/guardian_circle_topic_options_test.dart: Guardian unrelated parent tabs do not expose Journey discussion options. In the fifth case, Page options presence became absence while the original failing dropdown-absence assertion remains unchanged and naturally passes after picker removal; the case also mounts a code-only real-shell fixture. Exact audit: QUEUE44_FIFTH_BASELINE_IMPROVEMENT.json. None of the five cases was skipped or deleted; no member-behavior assertion was removed.",
+  "written_question": {
+    "path": "PRODUCT/APPROVED/QUESTIONS.md",
+    "row": 12,
+    "status": "OPEN"
+  },
+  "candidate_phone_effect": "The uncommitted candidate removes developer Home/Preview, selectors, role/plan/account scenarios, reset/skip and IDV shortcuts. Existing installed phone app was not changed. Member Switch, settings and current inline Demo actions remain.",
+  "publication_verification": "Commit-bound exact push-range verification and documentation commit SHA are recorded in the Group daily task note; this QA does not claim an implementation commit."
+}

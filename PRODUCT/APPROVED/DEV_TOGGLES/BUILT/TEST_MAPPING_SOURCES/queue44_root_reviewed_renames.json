@@ -1,0 +1,1034 @@
+{
+  "schema_version": 1,
+  "finding_authority": "OA-ZYRA-325",
+  "review_status": "REVIEWED \u2014 manual semantic pairing against edited test bodies; unchanged same-name gender cases require no mapping",
+  "method": "Same suite and kind, preserved registration order, counts and multiplicity must match; source line metadata assists review.",
+  "checks": {
+    "test/dashboard_lab_test.dart::case": {
+      "baseline_keys": 3,
+      "current_keys": 3
+    },
+    "test/dashboard_lab_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/dashboard_lab_test.dart::setUpAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/dashboard_lab_test.dart::tearDownAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/deferred_onboarding_preview_safety_test.dart::case": {
+      "baseline_keys": 11,
+      "current_keys": 11
+    },
+    "test/deferred_onboarding_preview_safety_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/deferred_onboarding_preview_safety_test.dart::setUpAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/deferred_onboarding_preview_safety_test.dart::tearDownAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/dev_app_icon_directions_test.dart::case": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/dev_app_icon_directions_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/dev_app_icon_directions_test.dart::setUpAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/dev_app_icon_directions_test.dart::tearDownAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/dev_home_navigation_test.dart::case": {
+      "baseline_keys": 10,
+      "current_keys": 10
+    },
+    "test/dev_home_navigation_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/dev_home_navigation_test.dart::setUpAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/dev_home_navigation_test.dart::tearDownAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/dev_role_choice_design_test.dart::case": {
+      "baseline_keys": 3,
+      "current_keys": 3
+    },
+    "test/dev_role_choice_design_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/dev_role_choice_design_test.dart::setUpAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/dev_role_choice_design_test.dart::tearDownAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/dev_settings_design_test.dart::case": {
+      "baseline_keys": 4,
+      "current_keys": 4
+    },
+    "test/dev_settings_design_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/dev_settings_design_test.dart::setUpAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/dev_settings_design_test.dart::tearDownAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/dev_splash_directions_test.dart::case": {
+      "baseline_keys": 11,
+      "current_keys": 11
+    },
+    "test/dev_splash_directions_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/dev_splash_directions_test.dart::setUpAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/dev_splash_directions_test.dart::tearDownAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/developer_controls_release_safety_test.dart::case": {
+      "baseline_keys": 0,
+      "current_keys": 1
+    },
+    "test/developer_controls_release_safety_test.dart::loader": {
+      "baseline_keys": 0,
+      "current_keys": 1
+    },
+    "test/developer_controls_release_safety_test.dart::setUpAll": {
+      "baseline_keys": 0,
+      "current_keys": 1
+    },
+    "test/developer_controls_release_safety_test.dart::tearDownAll": {
+      "baseline_keys": 0,
+      "current_keys": 1
+    },
+    "test/founder_launch_style_test.dart::case": {
+      "baseline_keys": 98,
+      "current_keys": 98
+    },
+    "test/founder_launch_style_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/founder_launch_style_test.dart::setUpAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/founder_launch_style_test.dart::tearDownAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/identity_privacy_preview_boundary_test.dart::case": {
+      "baseline_keys": 8,
+      "current_keys": 8
+    },
+    "test/identity_privacy_preview_boundary_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/identity_privacy_preview_boundary_test.dart::setUpAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/identity_privacy_preview_boundary_test.dart::tearDownAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/menu_design_preview_test.dart::case": {
+      "baseline_keys": 2,
+      "current_keys": 2
+    },
+    "test/menu_design_preview_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/menu_design_preview_test.dart::setUpAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/menu_design_preview_test.dart::tearDownAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/onboarding_question_style_unification_test.dart::case": {
+      "baseline_keys": 14,
+      "current_keys": 14
+    },
+    "test/onboarding_question_style_unification_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/onboarding_question_style_unification_test.dart::setUpAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/onboarding_question_style_unification_test.dart::tearDownAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/onboarding_stage_arrow_swipe_test.dart::case": {
+      "baseline_keys": 13,
+      "current_keys": 13
+    },
+    "test/onboarding_stage_arrow_swipe_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/onboarding_stage_arrow_swipe_test.dart::setUpAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/onboarding_stage_arrow_swipe_test.dart::tearDownAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/onboarding_stage_handoff_owner_test.dart::case": {
+      "baseline_keys": 15,
+      "current_keys": 15
+    },
+    "test/onboarding_stage_handoff_owner_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/onboarding_stage_handoff_owner_test.dart::setUpAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/onboarding_stage_handoff_owner_test.dart::tearDownAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/startup_preparation_handoff_test.dart::case": {
+      "baseline_keys": 44,
+      "current_keys": 44
+    },
+    "test/startup_preparation_handoff_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/startup_preparation_handoff_test.dart::setUpAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/startup_preparation_handoff_test.dart::tearDownAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/visual/app_gold_preview_visual_test.dart::case": {
+      "baseline_keys": 10,
+      "current_keys": 10
+    },
+    "test/visual/app_gold_preview_visual_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/visual/app_gold_preview_visual_test.dart::setUpAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/visual/app_gold_preview_visual_test.dart::tearDownAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/visual/dev_home_navigation_visual_test.dart::case": {
+      "baseline_keys": 2,
+      "current_keys": 2
+    },
+    "test/visual/dev_home_navigation_visual_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/visual/dev_home_navigation_visual_test.dart::setUpAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/visual/dev_home_navigation_visual_test.dart::tearDownAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/visual/dev_toggle_sections_visual_test.dart::case": {
+      "baseline_keys": 2,
+      "current_keys": 2
+    },
+    "test/visual/dev_toggle_sections_visual_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/visual/dev_toggle_sections_visual_test.dart::setUpAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/visual/dev_toggle_sections_visual_test.dart::tearDownAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/visual/lock19_v3_family_acceptance_test.dart::case": {
+      "baseline_keys": 8,
+      "current_keys": 8
+    },
+    "test/visual/lock19_v3_family_acceptance_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/visual/lock19_v3_family_acceptance_test.dart::setUpAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/visual/lock19_v3_family_acceptance_test.dart::tearDownAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/visual/zyra_developer_access_visual_test.dart::case": {
+      "baseline_keys": 4,
+      "current_keys": 4
+    },
+    "test/visual/zyra_developer_access_visual_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/visual/zyra_developer_access_visual_test.dart::setUpAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/visual/zyra_developer_access_visual_test.dart::tearDownAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/zyra_dashboard_page_options_test.dart::case": {
+      "baseline_keys": 14,
+      "current_keys": 14
+    },
+    "test/zyra_dashboard_page_options_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/zyra_dashboard_page_options_test.dart::setUpAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/zyra_dashboard_page_options_test.dart::tearDownAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/zyra_dev_home_tools_test.dart::case": {
+      "baseline_keys": 7,
+      "current_keys": 7
+    },
+    "test/zyra_dev_home_tools_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/zyra_dev_home_tools_test.dart::setUpAll": {
+      "baseline_keys": 0,
+      "current_keys": 1
+    },
+    "test/zyra_dev_home_tools_test.dart::tearDownAll": {
+      "baseline_keys": 0,
+      "current_keys": 1
+    },
+    "test/zyra_dev_preview_gender_test.dart::case": {
+      "baseline_keys": 3,
+      "current_keys": 3
+    },
+    "test/zyra_dev_preview_gender_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/zyra_dev_preview_gender_test.dart::setUpAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/zyra_dev_preview_gender_test.dart::tearDownAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/zyra_startup_routing_test.dart::case": {
+      "baseline_keys": 15,
+      "current_keys": 15
+    },
+    "test/zyra_startup_routing_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/zyra_startup_routing_test.dart::setUpAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/zyra_startup_routing_test.dart::tearDownAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    }
+  },
+  "manual_mapping_required": [
+    "test/developer_controls_release_safety_test.dart::case",
+    "test/developer_controls_release_safety_test.dart::loader",
+    "test/developer_controls_release_safety_test.dart::setUpAll",
+    "test/developer_controls_release_safety_test.dart::tearDownAll",
+    "test/zyra_dev_home_tools_test.dart::setUpAll",
+    "test/zyra_dev_home_tools_test.dart::tearDownAll"
+  ],
+  "mappings": [
+    {
+      "from": {
+        "suite_path": "test/dashboard_lab_test.dart",
+        "name": "Dashboard controls expose a dropdown per contextual category",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dashboard_lab_test.dart",
+        "name": "Dashboard sample categories are code-only and expose no controls",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed contextual dropdown replaced by the unchanged immutable code-only choice catalog and actual callbacks; group/tab/provider counts and absence of runtime dropdowns remain checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/dashboard_lab_test.dart",
+        "name": "Dashboard dropdown follows the mounted supportive tab",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dashboard_lab_test.dart",
+        "name": "code-selected supportive tab changes its data catalog without a picker",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed contextual dropdown replaced by the unchanged immutable code-only choice catalog and actual callbacks; group/tab/provider counts and absence of runtime dropdowns remain checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/deferred_onboarding_preview_safety_test.dart",
+        "name": "stale Chapter2 dev skip cannot advance after revocation",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/deferred_onboarding_preview_safety_test.dart",
+        "name": "stale Chapter2 Continue cannot advance after revocation",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Skip API replaced by actual guarded Continue callback from code; complete Chapter2/Bio/Values traversal, consent, revoked callback denial and compact member content still execute."
+    },
+    {
+      "from": {
+        "suite_path": "test/deferred_onboarding_preview_safety_test.dart",
+        "name": "Values non-question stages expose local skip then deny it",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/deferred_onboarding_preview_safety_test.dart",
+        "name": "Values non-question Continue rejects a stale revoked callback",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Skip API replaced by actual guarded Continue callback from code; complete Chapter2/Bio/Values traversal, consent, revoked callback denial and compact member content still execute."
+    },
+    {
+      "from": {
+        "suite_path": "test/deferred_onboarding_preview_safety_test.dart",
+        "name": "DEV skips traverse deferred Seeker pages to the safe end",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/deferred_onboarding_preview_safety_test.dart",
+        "name": "code-selected real Continue callbacks traverse deferred Seeker pages to the safe end",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Skip API replaced by actual guarded Continue callback from code; complete Chapter2/Bio/Values traversal, consent, revoked callback denial and compact member content still execute."
+    },
+    {
+      "from": {
+        "suite_path": "test/deferred_onboarding_preview_safety_test.dart",
+        "name": "deferred skip controls remain usable on compact large text",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/deferred_onboarding_preview_safety_test.dart",
+        "name": "deferred member content remains usable on compact large text without Skip",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Skip API replaced by actual guarded Continue callback from code; complete Chapter2/Bio/Values traversal, consent, revoked callback denial and compact member content still execute."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "Home refreshes proof and uses root navigation from outer flow without member mutation",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "outer member navigation has no Home entry or mutation",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "Home refreshes proof and uses root navigation from nested flow without member mutation",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "nested member navigation has no Home entry or mutation",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "Home denies absent authority before refreshing",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "absent Home never refreshes without authority",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "Home rejects revoked fresh proof rather than trusting cached authority",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "revoked Founder proof cannot restore Home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "double Home while proof is pending commits only one landing",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "two held gestures create no Home route",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "Home denies generation changes during pending proof",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "account generation changes cannot restore Home during a hold",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "Home denies disposal changes during pending proof",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "disposing a member route cannot resurrect Home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "Home denies owner-current changes during pending proof",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "covering the current owner cannot restore Home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "stale null-route Home refuses newly registered and covered onboarding owners",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "covered and replaced member pages cannot revive Home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "null-route Home refuses an owner registered during pending proof",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "a route-less app frame has no Home action",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_role_choice_design_test.dart",
+        "name": "mounted route must be current for any role-design selection",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_role_choice_design_test.dart",
+        "name": "member role choice rejects covered and revoked callbacks",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed design selector/coordinator replaced by actual member role cards and guarded Continue; covered/revoked callbacks and canonical no-picker presentation are exercised."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_role_choice_design_test.dart",
+        "name": "entry Actions exposes chosen Guided Paths only on role-choice route",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_role_choice_design_test.dart",
+        "name": "chosen Guided Paths member role page has no design picker",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed design selector/coordinator replaced by actual member role cards and guarded Continue; covered/revoked callbacks and canonical no-picker presentation are exercised."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_settings_design_test.dart",
+        "name": "Founder can select and open the same Guardian Settings routes",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_settings_design_test.dart",
+        "name": "Founder opens the current Guardian Settings without a design picker",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed contextual dropdown replaced by the unchanged immutable code-only choice catalog and actual callbacks; group/tab/provider counts and absence of runtime dropdowns remain checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_settings_design_test.dart",
+        "name": "smooth cards fits a compact phone with enlarged text",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_settings_design_test.dart",
+        "name": "current Settings fits a compact phone with enlarged text",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed contextual dropdown replaced by the unchanged immutable code-only choice catalog and actual callbacks; group/tab/provider counts and absence of runtime dropdowns remain checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_settings_design_test.dart",
+        "name": "Seeker candidate retains seeker privacy destinations",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_settings_design_test.dart",
+        "name": "Seeker current Settings retains seeker privacy destinations",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed contextual dropdown replaced by the unchanged immutable code-only choice catalog and actual callbacks; group/tab/provider counts and absence of runtime dropdowns remain checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_splash_directions_test.dart",
+        "name": "shared Home keeps Quiet Horizon and opens its preview",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_splash_directions_test.dart",
+        "name": "selected Quiet Horizon artwork is code-selected with no Home picker",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home/comparison route replaced by code-selected shared artwork or real SplashScreen; completion, stack preservation, authority isolation and selector absence are checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_splash_directions_test.dart",
+        "name": "direct unauthorized preview and Home picker are denied",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_splash_directions_test.dart",
+        "name": "ordinary splash retains its completion without a developer route",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home/comparison route replaced by code-selected shared artwork or real SplashScreen; completion, stack preservation, authority isolation and selector absence are checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_splash_directions_test.dart",
+        "name": "the selected visual preview preserves the underlying route",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_splash_directions_test.dart",
+        "name": "code-selected artwork preserves the underlying route and authority",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home/comparison route replaced by code-selected shared artwork or real SplashScreen; completion, stack preservation, authority isolation and selector absence are checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_splash_directions_test.dart",
+        "name": "revoked artwork permission hides preview without resetting stack",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_splash_directions_test.dart",
+        "name": "revoked developer authority cannot add splash controls or reset the stack",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home/comparison route replaced by code-selected shared artwork or real SplashScreen; completion, stack preservation, authority isolation and selector absence are checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "quiet refresh photo-stall recovery offers the existing guarded Developer Home",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "quiet refresh photo-stall recovery has no Developer Home and retains guarded retry",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer recovery/reset/Home path or cached developer role input replaced by absence/default-Seeker expectation. Actual guarded retry, admission, account isolation, relaunch and member stack assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "cold launch retains the Seeker presentation role",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "cold launch opens Seeker after the former Seeker selection",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer recovery/reset/Home path or cached developer role input replaced by absence/default-Seeker expectation. Actual guarded retry, admission, account isolation, relaunch and member stack assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "cold launch retains the Guardian presentation role",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "cold launch opens Seeker after the former Guardian selection",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer recovery/reset/Home path or cached developer role input replaced by absence/default-Seeker expectation. Actual guarded retry, admission, account isolation, relaunch and member stack assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "Seeker current presentation retains role across cold relaunch",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "Seeker presentation remains default across cold relaunch after former Seeker input",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer recovery/reset/Home path or cached developer role input replaced by absence/default-Seeker expectation. Actual guarded retry, admission, account isolation, relaunch and member stack assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "Guardian current presentation retains role across cold relaunch",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "Seeker presentation remains default across cold relaunch after former Guardian input",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer recovery/reset/Home path or cached developer role input replaced by absence/default-Seeker expectation. Actual guarded retry, admission, account isolation, relaunch and member stack assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "Guardian preview reset returns the current Seeker presentation",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "former Guardian preview selection cannot change the default Seeker presentation",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer recovery/reset/Home path or cached developer role input replaced by absence/default-Seeker expectation. Actual guarded retry, admission, account isolation, relaunch and member stack assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "Developer Home does not change the remembered presentation role",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "Developer Home is absent while the current presentation role is preserved",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer recovery/reset/Home path or cached developer role input replaced by absence/default-Seeker expectation. Actual guarded retry, admission, account isolation, relaunch and member stack assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/onboarding_stage_arrow_swipe_test.dart",
+        "name": "compact arrow-mode Skip is dim, bottom-right, and clear of centered action",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/onboarding_stage_arrow_swipe_test.dart",
+        "name": "compact arrow mode removes Skip and keeps the centered member action",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Skip is removed as authorized; centered member action, compact scroll, page handoff, overscroll and exactly-once completion remain checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/onboarding_stage_arrow_swipe_test.dart",
+        "name": "Continue mode keeps original top Skip and ignores child overscroll completion",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/onboarding_stage_arrow_swipe_test.dart",
+        "name": "Continue mode removes Skip and ignores child overscroll completion",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Skip is removed as authorized; centered member action, compact scroll, page handoff, overscroll and exactly-once completion remain checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/visual/dev_toggle_sections_visual_test.dart",
+        "name": "Network categories closed",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/visual/dev_toggle_sections_visual_test.dart",
+        "name": "member Network recommended has no developer categories",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer category dropdown states replaced by code-selected real Guardian Network recommended/sent states with every retired category key absent."
+    },
+    {
+      "from": {
+        "suite_path": "test/visual/dev_toggle_sections_visual_test.dart",
+        "name": "Network categories expanded",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/visual/dev_toggle_sections_visual_test.dart",
+        "name": "member Network sent has no developer categories",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer category dropdown states replaced by code-selected real Guardian Network recommended/sent states with every retired category key absent."
+    },
+    {
+      "from": {
+        "suite_path": "test/visual/lock19_v3_family_acceptance_test.dart",
+        "name": "existing identity skip and stale verified callback grant nothing",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/visual/lock19_v3_family_acceptance_test.dart",
+        "name": "leaving identity without a verified result and stale callback grant nothing",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed identity Skip replaced by leaving the actual identity page through code fixture Back; stale verified owner callback still grants no membership or invitation change."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dashboard_page_options_test.dart",
+        "name": "host-provided choices have their own category dropdown",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dashboard_page_options_test.dart",
+        "name": "host-provided fixture choices act only through code without dropdowns",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed contextual dropdown replaced by the unchanged immutable code-only choice catalog and actual callbacks; group/tab/provider counts and absence of runtime dropdowns remain checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "entry Home keeps one Developer Access heading and other headers stay contextual",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "entry page has no Developer Access heading or contextual tools",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home headings/actions replaced by role-context absence, real member recovery/provider entry, loading-state immutability and compact member presentation. Semantic context pairing was corrected manually; no replica tools exist."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "Seeker Home keeps one Developer Access heading and other headers stay contextual",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "Seeker page has no Developer Access heading or contextual tools",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home headings/actions replaced by role-context absence, real member recovery/provider entry, loading-state immutability and compact member presentation. Semantic context pairing was corrected manually; no replica tools exist."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "Guardian Home keeps one Developer Access heading and other headers stay contextual",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "Guardian page has no Developer Access heading or contextual tools",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home headings/actions replaced by role-context absence, real member recovery/provider entry, loading-state immutability and compact member presentation. Semantic context pairing was corrected manually; no replica tools exist."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "Home leads with a separate Home action and preserves account actions",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "member sign-in remains available with every Home tool removed",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home headings/actions replaced by role-context absence, real member recovery/provider entry, loading-state immutability and compact member presentation. Semantic context pairing was corrected manually; no replica tools exist."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "the four Home actions each invoke only their supplied callback once",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "member signup remains available without developer signup shortcuts",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home headings/actions replaced by role-context absence, real member recovery/provider entry, loading-state immutability and compact member presentation. Semantic context pairing was corrected manually; no replica tools exist."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "busy reset disables Home and reset without changing account callbacks",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "a waiting member page has no Home or reset actions",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home headings/actions replaced by role-context absence, real member recovery/provider entry, loading-state immutability and compact member presentation. Semantic context pairing was corrected manually; no replica tools exist."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "the simplified Home panel fits narrow large text and remains actionable",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "member entry stays usable at narrow enlarged text without a tools panel",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home headings/actions replaced by role-context absence, real member recovery/provider entry, loading-state immutability and compact member presentation. Semantic context pairing was corrected manually; no replica tools exist."
+    }
+  ],
+  "new_cases_and_hooks": "New release-safety suite and two added local mock-transport hooks in Home-tools suite are additions, not baseline identity replacements.",
+  "source_line_note": "Reporter wrapper-line metadata is omitted; identities use exact full suite path, full name, kind and multiplicity."
+}

@@ -1,0 +1,969 @@
+{
+  "schema_version": 1,
+  "finding_authority": "OA-ZYRA-325",
+  "purpose": "Evidence-led current LOCK classification; no test exclusions or gate changes are authorized by this audit.",
+  "status": "CURRENT_LOCK_GATE_NOT_PROVEN_FULL1_COMPLETE_FOUNDER_SCOPE_CLARIFICATION_PENDING",
+  "scope": "Current approved authority metadata LOCK2–22; exact failing LOCK-named/header suites and corresponding changed authority sections. Remaining baseline failures remain in the complete failure manifest and full comparator.",
+  "current_full_run": "SOURCE/.buildlog/queue44_20261103/full_final/events.jsonl",
+  "baseline_failure_manifest": "work/queue44_baseline_validation/baseline_failure_manifest.json",
+  "current_authorities": [
+    {
+      "lock": 2,
+      "current_spec": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/RECORD/REQUESTS_AND_GUARDIANS_SPEC_CURRENT_VERSION_V2.md",
+      "document_id": "DOC-ZYRA-0308",
+      "heading": "# JOURNEY REQUESTS AND GUARDIANS — SPEC — V2 (LOCKED 29 OCT 2026 · V2 LOCKED 31 OCT 2026)",
+      "sha256": "c3d17648b0ce615d2d3cc7e2f54f8207c6dd826a2169c9cc2c9fe66a2d4b870a"
+    },
+    {
+      "lock": 3,
+      "current_spec": "PRODUCT/APPROVED/GUARDIAN_INFO/RECORD/WHAT_GUARDIANS_CAN_DO_SPEC_CURRENT_VERSION_V2.md",
+      "document_id": "DOC-ZYRA-0311",
+      "heading": "# WHAT GUARDIANS CAN DO — SPEC — V2 (LOCKED 29 OCT 2026)",
+      "sha256": "bdba190cd974e6381edca797ea9068146c605e2e40b4f3d6c1aac6edb845a812"
+    },
+    {
+      "lock": 4,
+      "current_spec": "PRODUCT/APPROVED/PROFILES_DETAILS_CARD/RECORD/PROFILES_DETAILS_CARD_SPEC_CURRENT_VERSION_V1.md",
+      "document_id": "DOC-ZYRA-0314",
+      "heading": "# PROFILES DETAILS CARD PHOTO — SPEC — V1 (LOCKED 29 OCT 2026)",
+      "sha256": "2c61738a51dc162d19b11ee867cb68797d6ec18b9984a6dd751daab57c727e39"
+    },
+    {
+      "lock": 5,
+      "current_spec": "PRODUCT/APPROVED/TAB_ATTENTION/RECORD/TAB_ATTENTION_SPEC_CURRENT_VERSION_V1.md",
+      "document_id": "DOC-ZYRA-0317",
+      "heading": "# TAB ICON ATTENTION — SPEC — V1 (LOCKED 29 OCT 2026)",
+      "sha256": "b3fb35ae66a7455c07436153c8fc014e29984ce104174ac88015de98cccb5ef3"
+    },
+    {
+      "lock": 6,
+      "current_spec": "PRODUCT/APPROVED/TAB_BAR/RECORD/TAB_BAR_SPEC_CURRENT_VERSION_V2.md",
+      "document_id": "DOC-ZYRA-0421",
+      "heading": "# TAB BAR — SPEC — V2 (LOCKED 30 OCT 2026)",
+      "sha256": "4b0dad8b15fe8f68a36e602b02432f2181de597fef2024e00bd4b14643662212"
+    },
+    {
+      "lock": 7,
+      "current_spec": "PRODUCT/APPROVED/REQUEST_ROW/RECORD/REQUEST_ROW_SPEC_CURRENT_VERSION_V2.md",
+      "document_id": "DOC-ZYRA-0323",
+      "heading": "# REQUEST ROW — SPEC — V2 (LOCKED 29 OCT 2026, LARGER TEXT RULE 30 OCT)",
+      "sha256": "68e4251ff8cc385cfb1f674e0952cc337b4f60f3bb7c97e3c878ca5743ea8e45"
+    },
+    {
+      "lock": 8,
+      "current_spec": "PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/GUARDIAN_TABS_SPEC_CURRENT_VERSION_V9.md",
+      "document_id": "DOC-ZYRA-0406",
+      "heading": "# GUARDIAN TABS — SPEC — V9 (LOCKED 31 OCT 2026)",
+      "sha256": "df2ec53347a56a36dc6f2f7af305550b5990dc96172009ff833faebd9cb64430"
+    },
+    {
+      "lock": 9,
+      "current_spec": "PRODUCT/APPROVED/CODE_PAGE/RECORD/CODE_PAGE_SPEC_CURRENT_VERSION_V2.md",
+      "document_id": "DOC-ZYRA-0343",
+      "heading": "# CODE PAGE — SPEC — V2 (LOCKED 30 OCT 2026)",
+      "sha256": "24480b3acbbe60caf8dfe21125b0fa6c4e56d2c68cda4f86061eaff5937b06dd"
+    },
+    {
+      "lock": 10,
+      "current_spec": "PRODUCT/APPROVED/FILTERS/RECORD/FILTERS_SPEC_CURRENT_VERSION_V7.md",
+      "document_id": "DOC-ZYRA-0356",
+      "heading": "# FILTERS — SPEC — V7 (LOCKED 31 OCT 2026)",
+      "sha256": "d9c6b9c3d30f67faaf6cf304ccbc529a228a9314916dd01c9dc8f07cf7a65813"
+    },
+    {
+      "lock": 11,
+      "current_spec": "PRODUCT/APPROVED/LOCATION/RECORD/LOCATION_SPEC_CURRENT_VERSION_V2.md",
+      "document_id": "DOC-ZYRA-0366",
+      "heading": "# LOCATION — SPEC — V2 (LOCKED 30 OCT 2026)",
+      "sha256": "deb23f95d31e8e4350f26a4248f74144404b680a114c4f2630efaf8397538c6c"
+    },
+    {
+      "lock": 12,
+      "current_spec": "PRODUCT/APPROVED/PHONE_ACCESS/RECORD/PHONE_ACCESS_SPEC_CURRENT_VERSION_V2.md",
+      "document_id": "DOC-ZYRA-0375",
+      "heading": "# PHONE ACCESS — SPEC — V2 (LOCKED 30 OCT 2026)",
+      "sha256": "9cda31a2aa7bbe412a97b3e67fa756d0fa2bd474e1e152d068dfd412519f28b5"
+    },
+    {
+      "lock": 13,
+      "current_spec": "PRODUCT/APPROVED/JOURNEY_TAB/RECORD/JOURNEY_TAB_SPEC_CURRENT_VERSION_V3.md",
+      "document_id": "DOC-ZYRA-0362",
+      "heading": "# JOURNEY TAB — SPEC — V3 (LOCKED 31 OCT 2026)",
+      "sha256": "4d49b9d284b944e4820ec4c398e47e4708fa0c5fe209efb0d513f68b4b6b18cd"
+    },
+    {
+      "lock": 14,
+      "current_spec": "PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md",
+      "document_id": "DOC-ZYRA-0338",
+      "heading": "# APP COLOURS — SPEC — V5 (LOCKED 31 OCT 2026)",
+      "sha256": "59737f0f60b4bd9dac2c3c077eb9afb359943c09b6fe9a10f28fb7b6e91042a4"
+    },
+    {
+      "lock": 15,
+      "current_spec": "PRODUCT/APPROVED/MY_ZYRA/RECORD/MY_ZYRA_SPEC_CURRENT_VERSION_V3.md",
+      "document_id": "DOC-ZYRA-0370",
+      "heading": "# MY ZYRA (SEEKER + GUARDIAN) — SPEC — V3 (LOCKED 31 OCT 2026)",
+      "sha256": "9a51f0c8a4fe1834ca5a3d17a679caf283b35b89ab383820f7e6d3f096728669"
+    },
+    {
+      "lock": 16,
+      "current_spec": "PRODUCT/APPROVED/JOURNEY_BLOCK_HIDE/RECORD/JOURNEY_BLOCK_HIDE_SPEC_CURRENT_VERSION_V2.md",
+      "document_id": "DOC-ZYRA-0409",
+      "heading": "# BLOCK / HIDE DURING A JOURNEY — SPEC — V2 (LOCKED 31 OCT 2026)",
+      "sha256": "f02475d260ee0b3b6d63187d8677baa24b3d9a164049864e1ba746635dff5e94"
+    },
+    {
+      "lock": 17,
+      "current_spec": "PRODUCT/APPROVED/UNREAD_BADGE/RECORD/UNREAD_BADGE_SPEC_CURRENT_VERSION_V1.md",
+      "document_id": "DOC-ZYRA-0437",
+      "heading": "# UNREAD BUBBLE — SPEC — V1 (LOCKED 31 OCT 2026)",
+      "sha256": "191ef71e77a601fb9fb0572cffd97907dd22cb40108b752018bbdb0f72b484cd"
+    },
+    {
+      "lock": 18,
+      "current_spec": "PRODUCT/APPROVED/PAGE_DOTS/RECORD/PAGE_DOTS_SPEC_CURRENT_VERSION_V2.md",
+      "document_id": "DOC-ZYRA-0415",
+      "heading": "# PAGE DOTS — SPEC — V2 (LOCKED 31 OCT 2026)",
+      "sha256": "f9393cbab8773d6263a44b619b6b0979b533962c68838d3e0bf6af2c21b1b4e5"
+    },
+    {
+      "lock": 19,
+      "current_spec": "PRODUCT/APPROVED/GUARDIAN_CARD/RECORD/GUARDIAN_CARD_SPEC_CURRENT_VERSION_V3.md",
+      "document_id": "DOC-ZYRA-0387",
+      "heading": "# GUARDIAN CARD — SPEC — V3 (LOCKED 31 OCT 2026)",
+      "sha256": "7907d62c28644c9c2c7d4441de93940aeda4d6801364bff7bc73afe3e05022df"
+    },
+    {
+      "lock": 20,
+      "current_spec": "PRODUCT/APPROVED/GUARDIAN_CIRCLE/RECORD/GUARDIAN_CIRCLE_SPEC_CURRENT_VERSION_V2.md",
+      "document_id": "DOC-ZYRA-0391",
+      "heading": "# GUARDIAN CIRCLE — SPEC — V2 (LOCKED 31 OCT 2026)",
+      "sha256": "55a7e1878ca9a112b6bab19a8dd32bd975255a8fb59f612c8d1a9e25ca88a935"
+    },
+    {
+      "lock": 21,
+      "current_spec": "PRODUCT/APPROVED/PROFILE_TAB/RECORD/PROFILE_TAB_SPEC_CURRENT_VERSION_V1.md",
+      "document_id": "DOC-ZYRA-0419",
+      "heading": "# PROFILE TAB — SPEC — V1 (LOCKED 31 OCT 2026)",
+      "sha256": "4b8cb274518961802d4da12370fab2b4a393433dbcf456e271f2b3867622f892"
+    },
+    {
+      "lock": 22,
+      "current_spec": "PRODUCT/APPROVED/UNITY_PASS/RECORD/UNITY_PASS_SPEC_CURRENT_VERSION_V6.md",
+      "document_id": "DOC-ZYRA-0434",
+      "heading": "# UNITY PASS — SPEC — V6 (LOCKED 31 OCT 2026)",
+      "sha256": "7f921b09f29d03c2ded0d407edac4bd53f60a54c87ad51f901453db3761d9138"
+    }
+  ],
+  "lock1_authority": "Parent-suggested PROFILES_DETAILS_CARD spec/record/brief were read and explicitly identify LOCK4 (DOC-ZYRA-0313/0314/0315), notLOCK1. No independentLOCK1authoritylocated; no inventednumber mapping.",
+  "gate_rule": {
+    "authority": "PRODUCT/APPROVED/DEV_TOGGLES/BRIEFS/DEV_TOGGLES_REMOVAL_BRIEF_2026-10-30.md",
+    "section": "Step7",
+    "requirements": [
+      "No baseline-passing identity may fail/disappear/become skipped; multiplicity protected.",
+      "Failure/error total at most649.",
+      "Every LOCK test passes.",
+      "New release-safety test passes.",
+      "Do not repair/skip/delete baseline failures in queue44."
+    ],
+    "interpretation": "An unchanged baseline failure can satisfy nonregression yet prevent the separate every-LOCK-test gate. A stale harness must not be silently treated as passing or excluded."
+  },
+  "verified_superseded_assertions": [
+    {
+      "identity": {
+        "suite_path": "test/visual/lock8_v5_guardian_journeys_test.dart",
+        "name": "V5 Ended Journeys retains its existing held sharing target",
+        "kind": "case",
+        "baseline_outcomes": {
+          "error": 1
+        },
+        "full1_outcomes": {
+          "error": 1
+        }
+      },
+      "classification": "superseded expected wording; behavior remains gated by current held-route/empty-state tests",
+      "old_failed_assertion": "Expected text containing Past summaries are not shared. at source340",
+      "current_authority": [
+        "GUARDIAN_TABS/RECORD/GUARDIAN_TABS_SPEC_CURRENT_VERSION_V9.md introductory V8 change",
+        "GUARDIAN_TABS/RECORD/LOCK_RECORD.md:30",
+        "UNITY_PASS/RECORD/UNITY_PASS_SPEC_CURRENT_VERSION_V6.md §3b",
+        "UNITY_PASS/RECORD/LOCK_RECORD.md:19"
+      ],
+      "current_master": {
+        "path": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g23_ended_journeys__empty.png",
+        "sha256": "23fed3f731c768a036c40df9b509f4285d37ce0ce150801501d8113fba489f91",
+        "visually_verified_words": "No ended Journeys to show. / You see Adam’s past Journeys only if he shares their summaries with you."
+      },
+      "current_equivalent_passes": [
+        {
+          "suite_path": "test/visual/lock22_v3_empty_states_test.dart",
+          "name": "LOCK22 V3 six real empty routes and guarded Network actions at 1.0 (variant: TargetPlatform.iOS)",
+          "kind": "case",
+          "baseline_outcomes": {
+            "success": 1
+          },
+          "full1_outcomes": {
+            "success": 1
+          }
+        },
+        {
+          "suite_path": "test/visual/lock22_v3_empty_states_test.dart",
+          "name": "LOCK22 V3 six real empty routes and guarded Network actions at 2.0 (variant: TargetPlatform.iOS)",
+          "kind": "case",
+          "baseline_outcomes": {
+            "success": 1
+          },
+          "full1_outcomes": {
+            "success": 1
+          }
+        }
+      ],
+      "test_body_evidence": "lock22_v3_empty_states_test.dart:179–191 opens actual guardian_ended, asserts held_action + ZyraEmptyState + current title; runs1.0 and2.0 scale.",
+      "exclusion_authorized": false
+    }
+  ],
+  "legacy_harness_with_current_requirement": [
+    {
+      "suite_path": "test/requests_guardians_lock2_shell_test.dart",
+      "identities": [
+        {
+          "suite_path": "test/requests_guardians_lock2_shell_test.dart",
+          "name": "Main notice appears once for each effective H to Y to H change",
+          "kind": "case",
+          "baseline_outcomes": {
+            "error": 1
+          },
+          "full1_outcomes": {
+            "error": 1
+          }
+        },
+        {
+          "suite_path": "test/requests_guardians_lock2_shell_test.dart",
+          "name": "a pending Main notice resumes for its exact subject then stays consumed",
+          "kind": "case",
+          "baseline_outcomes": {
+            "error": 1
+          },
+          "full1_outcomes": {
+            "error": 1
+          }
+        },
+        {
+          "suite_path": "test/requests_guardians_lock2_shell_test.dart",
+          "name": "a stale Make Main callback cannot create a notice",
+          "kind": "case",
+          "baseline_outcomes": {
+            "error": 1
+          },
+          "full1_outcomes": {
+            "error": 1
+          }
+        },
+        {
+          "suite_path": "test/requests_guardians_lock2_shell_test.dart",
+          "name": "a revoked Make Main callback cannot create a notice",
+          "kind": "case",
+          "baseline_outcomes": {
+            "error": 1
+          },
+          "full1_outcomes": {
+            "error": 1
+          }
+        }
+      ],
+      "failure_point": "SeekerGuardianPage finder (_guardians) or guardian-page-view drag finder; behavior assertions never reached.",
+      "layout_supersession": "LOCK19V3 GuardianCard spec §§1–4 replaces Guardian tab with Monogram Guardian cards and retains MakeMain existing confirm flow.",
+      "requirement_still_current": "LOCK2V2 Requests/Guardians spec §2.4 requires one Main notice for every effective Main change.",
+      "passing_current_coverage": [
+        {
+          "suite_path": "test/guardian_card_shell_test.dart",
+          "name": "actual tab switch invalidates retained confirm and permission delegates",
+          "kind": "case",
+          "baseline_outcomes": {
+            "success": 1
+          }
+        },
+        {
+          "suite_path": "test/guardian_card_shell_test.dart",
+          "name": "actual Make Main confirms into existing notice without removing links or Journeys",
+          "kind": "case",
+          "baseline_outcomes": {
+            "success": 1
+          }
+        }
+      ],
+      "coverage_gap": "Current passing MakeMain case checks one confirmation->notice and preserved links/Journeys. It does not prove H->Y->H once-only notices, pending notice resume/consume, or exact revoked MakeMain callback behavior. No complete one-to-one replacement located in bounded source review.",
+      "gate_disposition": "BLOCKER to an unconditional everyCURRENTLOCKpasses claim; retained unchanged failures remain for queue73, unless parent obtains explicit Founder gate scope decision.",
+      "exclusion_authorized": false,
+      "other_candidate_evidence_examined": [
+        {
+          "identity": {
+            "suite_path": "test/visual/lock2_requests_guardians_capture_test.dart",
+            "name": "LOCK 2 actual local Make Main opens the one-time Yusuf message (variant: TargetPlatform.iOS)",
+            "kind": "case",
+            "baseline_outcomes": {
+              "skipped": 1
+            }
+          },
+          "result": "Skipped inbaseline; source still uses obsolete guardian-page-view and old confirmationfinder. No passing replacement proof."
+        },
+        {
+          "identity": {
+            "suite_path": "test/view_request_draft_widget_test.dart",
+            "name": "Guardian gate and all eight stages remain meaningful",
+            "kind": "case",
+            "baseline_outcomes": {
+              "error": 1
+            }
+          },
+          "result": "Baseline error; helper _confirmGuardianMain at801–832 uses old SeekerGuardianPage/guardian-page-view and cannot supply passing proof."
+        },
+        {
+          "suite_path": "test/one_journey_guardian_details_polish_test.dart",
+          "result": "16baselineerrors/2metadata-onlypasses. _makeMain at246–255 usesoldquietsectionactions; Main-reassignment/Basic-promotion cases are amongbaselineerrors."
+        }
+      ]
+    },
+    {
+      "suite_path": "test/tab_attention_open_marker_test.dart",
+      "identities": [
+        {
+          "suite_path": "test/tab_attention_open_marker_test.dart",
+          "name": "opening My ZYRA clears only tab attention and preserves pending New activity",
+          "kind": "case",
+          "baseline_outcomes": {
+            "error": 1
+          },
+          "full1_outcomes": {
+            "error": 1
+          }
+        },
+        {
+          "suite_path": "test/tab_attention_open_marker_test.dart",
+          "name": "a newer arrival from the same peer restores gold tab attention",
+          "kind": "case",
+          "baseline_outcomes": {
+            "error": 1
+          },
+          "full1_outcomes": {
+            "error": 1
+          }
+        },
+        {
+          "suite_path": "test/tab_attention_open_marker_test.dart",
+          "name": "a fresh shell restores the consumed marker without reading items",
+          "kind": "case",
+          "baseline_outcomes": {
+            "error": 1
+          },
+          "full1_outcomes": {
+            "error": 1
+          }
+        },
+        {
+          "suite_path": "test/tab_attention_open_marker_test.dart",
+          "name": "resuming directly on My ZYRA consumes tab attention alone",
+          "kind": "case",
+          "baseline_outcomes": {
+            "error": 1
+          },
+          "full1_outcomes": {
+            "error": 1
+          }
+        },
+        {
+          "suite_path": "test/tab_attention_open_marker_test.dart",
+          "name": "long absence opens My ZYRA and clears the marker without item ack",
+          "kind": "case",
+          "baseline_outcomes": {
+            "error": 1
+          },
+          "full1_outcomes": {
+            "error": 1
+          }
+        }
+      ],
+      "failure_point": "_expectItemAttention queries removed ZyraQuietDashboard before its old Newactivity heading assertions.",
+      "layout_supersession": "CurrentLOCK15V3 §1 explicitly removes Newactivity heading/old tiles and replaces them with Focus.",
+      "requirement_still_current": "LOCK5V1 tab attention clearing remains explicitly unchanged by LOCK15V3 §5 and LOCK6V2.",
+      "coverage_note": "Candidate visual LOCK5clear-on-open test is SKIPPED in baseline, so it is not passing replacement proof. CurrentLOCK15V3explicitlyremovesoldNewactivityheading, whileLOCK5behavior remainsunchanged. No complete passing replacement of five oldfinder cases established inthisbounded audit.",
+      "gate_disposition": "Unresolved current requirement coverage: five unchanged failures plus skipped visual candidate cannot establish strict currentLOCK5pass.",
+      "exclusion_authorized": false,
+      "candidate_visual_coverage": [
+        {
+          "suite_path": "test/visual/lock5_tab_attention_capture_test.dart",
+          "name": "LOCK 5 actual tab open clears gold while request remains unseen (variant: TargetPlatform.iOS)",
+          "kind": "case",
+          "baseline_outcomes": {
+            "skipped": 1
+          }
+        }
+      ],
+      "passing_current_coverage": []
+    }
+  ],
+  "explicit_lock_suite_baseline_inventory": [
+    {
+      "suite_path": "test/compact_tab_bar_lock6_test.dart",
+      "baseline_ordinary": {
+        "success": 29
+      },
+      "baseline_successful_loaders_hooks": 1,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/filters_lock10_accessibility_test.dart",
+      "baseline_ordinary": {
+        "success": 2
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/filters_lock10_v7_test.dart",
+      "baseline_ordinary": {
+        "success": 12
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/focus_shell_guards_test.dart",
+      "baseline_ordinary": {
+        "success": 7
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/guardian_circle_topics_source_test.dart",
+      "baseline_ordinary": {
+        "success": 9
+      },
+      "baseline_successful_loaders_hooks": 1,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/guardian_circle_topics_test.dart",
+      "baseline_ordinary": {
+        "success": 45
+      },
+      "baseline_successful_loaders_hooks": 1,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/guardian_info_lock3_test.dart",
+      "baseline_ordinary": {
+        "success": 6
+      },
+      "baseline_successful_loaders_hooks": 1,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/guardian_invite_reuse_test.dart",
+      "baseline_ordinary": {
+        "success": 7
+      },
+      "baseline_successful_loaders_hooks": 1,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/journey_activity_lock13_test.dart",
+      "baseline_ordinary": {
+        "success": 7
+      },
+      "baseline_successful_loaders_hooks": 1,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/journey_block_hide_v2_guard_test.dart",
+      "baseline_ordinary": {
+        "success": 36
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/journey_block_hide_v2_model_test.dart",
+      "baseline_ordinary": {
+        "success": 33
+      },
+      "baseline_successful_loaders_hooks": 1,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/journey_options_v3_layout_test.dart",
+      "baseline_ordinary": {
+        "success": 9
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/local_code_page_lock9_test.dart",
+      "baseline_ordinary": {
+        "success": 26
+      },
+      "baseline_successful_loaders_hooks": 1,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/lock17_circle_unread_integration_test.dart",
+      "baseline_ordinary": {
+        "success": 12
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/lock22_guardian_safety_advice_contract_test.dart",
+      "baseline_ordinary": {
+        "success": 34
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/lock22_safety_advice_contract_test.dart",
+      "baseline_ordinary": {
+        "success": 13
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/profile_unlock_breakdown_test.dart",
+      "baseline_ordinary": {
+        "success": 3
+      },
+      "baseline_successful_loaders_hooks": 1,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/profile_unlock_preview_test.dart",
+      "baseline_ordinary": {
+        "success": 3
+      },
+      "baseline_successful_loaders_hooks": 1,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/request_capacity_v2_flow_test.dart",
+      "baseline_ordinary": {
+        "success": 14
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/request_row_lock7_test.dart",
+      "baseline_ordinary": {
+        "success": 7
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/requests_guardians_lock2_shell_test.dart",
+      "baseline_ordinary": {
+        "success": 10,
+        "error": 4
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 4
+    },
+    {
+      "suite_path": "test/tab_attention_open_marker_test.dart",
+      "baseline_ordinary": {
+        "error": 5,
+        "success": 5
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 5
+    },
+    {
+      "suite_path": "test/view_request_draft_widget_test.dart",
+      "baseline_ordinary": {
+        "success": 30,
+        "error": 77
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 77
+    },
+    {
+      "suite_path": "test/visual/guardian_chat_v4_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 3
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock10_filters_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 3
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock10_v7fix_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 1
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock11_location_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 5
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock12_phone_access_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 5
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock13_journey_tab_test.dart",
+      "baseline_ordinary": {
+        "success": 16
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock14_ivory_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 3
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock15_focus_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 9
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock16_journey_block_hide_v2_test.dart",
+      "baseline_ordinary": {
+        "success": 17
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock17_unread_badge_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 5
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock18_page_dots_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 5
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock19_guardian_card_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 7
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock19_v3_family_acceptance_test.dart",
+      "baseline_ordinary": {
+        "success": 8
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock20_circle_topics_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 42
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock22_report_v2_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 15
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock22_safety_advice_v5_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 3
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock22_safety_advice_v6_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 6
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock22_unity_v1_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 2
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock22_v3_empty_states_test.dart",
+      "baseline_ordinary": {
+        "success": 4
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock22_v4_settings_edit_profile_test.dart",
+      "baseline_ordinary": {
+        "success": 6
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock2_requests_guardians_capture_test.dart",
+      "baseline_ordinary": {
+        "skipped": 4
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock4_profiles_details_capture_test.dart",
+      "baseline_ordinary": {
+        "skipped": 1
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock5_tab_attention_capture_test.dart",
+      "baseline_ordinary": {
+        "skipped": 1
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock6_tab_bar_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 4,
+        "skipped": 2
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock7_request_row_capture_test.dart",
+      "baseline_ordinary": {
+        "skipped": 3
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock8_guardian_tabs_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 12
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock8_v5_guardian_journeys_test.dart",
+      "baseline_ordinary": {
+        "success": 12,
+        "error": 1
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 1
+    },
+    {
+      "suite_path": "test/visual/lock8_v6_guardian_seeker_test.dart",
+      "baseline_ordinary": {
+        "success": 10
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock8_v7_guardian_action_test.dart",
+      "baseline_ordinary": {
+        "success": 8
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock8_v9_network_monogram_test.dart",
+      "baseline_ordinary": {
+        "success": 5
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/lock9_code_page_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 3
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/profile_tab_monogram_capture_test.dart",
+      "baseline_ordinary": {
+        "success": 2
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/visual/zyra_retained_code_help_reuse_visual_test.dart",
+      "baseline_ordinary": {
+        "success": 2
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/zyra_app_lock_lifecycle_test.dart",
+      "baseline_ordinary": {
+        "success": 14
+      },
+      "baseline_successful_loaders_hooks": 1,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/zyra_draft_code_reuse_test.dart",
+      "baseline_ordinary": {
+        "success": 5
+      },
+      "baseline_successful_loaders_hooks": 1,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/zyra_draft_compatibility_store_presentation_test.dart",
+      "baseline_ordinary": {
+        "success": 17
+      },
+      "baseline_successful_loaders_hooks": 1,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/zyra_ivory_lock14_test.dart",
+      "baseline_ordinary": {
+        "success": 6
+      },
+      "baseline_successful_loaders_hooks": 1,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/zyra_location_lock11_test.dart",
+      "baseline_ordinary": {
+        "success": 25
+      },
+      "baseline_successful_loaders_hooks": 1,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/zyra_phone_access_lock12_test.dart",
+      "baseline_ordinary": {
+        "success": 38
+      },
+      "baseline_successful_loaders_hooks": 1,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/zyra_profile_details_photo_test.dart",
+      "baseline_ordinary": {
+        "success": 6
+      },
+      "baseline_successful_loaders_hooks": 1,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/zyra_unlock_ownership_read_test.dart",
+      "baseline_ordinary": {
+        "success": 22
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/zyra_unlock_recovery_test.dart",
+      "baseline_ordinary": {
+        "success": 31
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    },
+    {
+      "suite_path": "test/zyra_unlock_score_disclosure_test.dart",
+      "baseline_ordinary": {
+        "success": 24
+      },
+      "baseline_successful_loaders_hooks": 3,
+      "baseline_failed_count": 0
+    }
+  ],
+  "other_baseline_failures": {
+    "files": 91,
+    "failures_errors": 649,
+    "policy": "All remain counted by comparator; no unreviewed old/superseded classification is applied merely because a test predates currentmasters."
+  },
+  "conclusion": "Current Ended wording has direct superseding authority and two genuinely passing current g23 route tests (1.0/2.0). Four Mainnotice failures still concern currentLOCK2 behavior, and fiveLOCK5 failures still concern preserved attention behavior throughobsoleteharnesses. Candidate LOCK2/5visualreplacementtests are skipped, notpasses. Strict everyLOCKtestgate is not proven; no exclusions are authorized.",
+  "inventory_policy": "Explicit LOCK mention/file inventory is discovery only, not automatic current-scope classification. Full original names for everyfailure remain in baseline_failure_manifest.json; classified cases below keep exact full reporter names.",
+  "finding_summary": {
+    "verified_superseded_wording_assertions": 1,
+    "still_current_requirement_failures_with_obsolete_finders": 9,
+    "current_requirement_blocker_suites": [
+      "test/requests_guardians_lock2_shell_test.dart",
+      "test/tab_attention_open_marker_test.dart"
+    ],
+    "product_behavior_failure_proven": false,
+    "test_gate_coverage_blocker_proven": true,
+    "note": "Obsolete finder errors do not prove a productdefect, but cannot be claimed as current behavior passes."
+  },
+  "full1_completed_stats": {
+    "sha256": "d830ebae1eedca9034c96b6617282c0ff030b1a4ddf452009bc0261813ec6783",
+    "started_tests": 8246,
+    "completed_tests": 8246,
+    "failed_or_error_total": 707,
+    "invalid_json_records": 0,
+    "protocol_error_count": 0,
+    "reporter_duration_ms": 588431
+  },
+  "full1_current_lock_failure_count_in_classified_suites": 9,
+  "scope_note": "Root is asking Founder toresolve currentLOCKbaselineconflict. This audit makesnoexclusions. Other newly foundFull1callerharnessregressions are trackedseparately in work/queue44_full1_completed_regression_audit.json."
+}

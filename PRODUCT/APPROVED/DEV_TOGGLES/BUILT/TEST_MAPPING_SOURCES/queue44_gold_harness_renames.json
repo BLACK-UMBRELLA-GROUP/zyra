@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "finding_authority": "OA-ZYRA-325",
+  "review_status": "independent technical coverage review complete; Founder approval not inferred",
+  "mappings": [
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "app gold defaults Off and unauthorized accounts cannot enable it",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "app gold defaults Off and members need no developer authority",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Developer authorization is no longer a Gold selection API; member choice defaults Off and remains available without developer authority."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "revocation and reauthorization do not revive a previous On choice",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "developer revocation cannot change a previous member On choice",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed temporary override selection; retain developer authority transition coverage by proving it cannot alter real member preference or rendering."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "On changes visible pixels; revocation restores identical Off pixels",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "On changes visible pixels; member Off restores identical original pixels",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Pixel reversibility now drives the real member Off choice; also prove authorization revocation leaves member On pixels unchanged."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "picker updates immediately, refuses stale callbacks and hides on revocation",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "member picker updates immediately and refuses stale account callbacks",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed DevAppGoldPicker; real Personalisation member Switch retains immediate update, stale revision/generation callback refusal, and developer-authority independence."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "busy picker is disabled; compact layout remains scrollable",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "disabled member gold control remains scrollable at compact 200% text",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed developer busy picker; retained member content with explicit disabled callbacks tests disabled Gold affordance, compact layout, and scroll reachability."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_member_app_gold_test.dart",
+        "name": "temporary developer preview does not overwrite a member preference",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_member_app_gold_test.dart",
+        "name": "developer authorization cannot override a saved member preference",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed all temporary override APIs; developer authorization changes must not mutate member rendering or persisted Off/On preference."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_member_app_gold_test.dart",
+        "name": "member selections clear temporary preview immediately even for unchanged values",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_member_app_gold_test.dart",
+        "name": "repeated member selections reject stale callbacks and remain authoritative",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed temporary override API; repeated real member Off/On choices must invalidate retained callbacks and remain the sole rendered/persisted selection."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Entry shared Home omits gold without changing member choice",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Entry member Personalisation preserves gold without developer controls",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed shared developer Home; code-only account-role fixture renders real member Personalisation and verifies saved Gold, semantics, and absence of developer Home/Gold controls."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Entry developer Home and gold toggle are absent for ordinary accounts",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Entry ordinary member gold remains available without developer Home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed developer panel; code-only account-role fixture verifies ordinary member Gold choice works while developer Home/Gold controls remain absent."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Seeker shared Home omits gold without changing member choice",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Seeker member Personalisation preserves gold without developer controls",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed shared developer Home; code-only account-role fixture renders real member Personalisation and verifies saved Gold, semantics, and absence of developer Home/Gold controls."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Seeker developer Home and gold toggle are absent for ordinary accounts",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Seeker ordinary member gold remains available without developer Home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed developer panel; code-only account-role fixture verifies ordinary member Gold choice works while developer Home/Gold controls remain absent."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Guardian shared Home omits gold without changing member choice",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Guardian member Personalisation preserves gold without developer controls",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed shared developer Home; code-only account-role fixture renders real member Personalisation and verifies saved Gold, semantics, and absence of developer Home/Gold controls."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Guardian developer Home and gold toggle are absent for ordinary accounts",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Guardian ordinary member gold remains available without developer Home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed developer panel; code-only account-role fixture verifies ordinary member Gold choice works while developer Home/Gold controls remain absent."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "busy Seeker shared Home has no gold toggle",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "disabled Seeker member Personalisation has no developer gold toggle",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed busy developer Home; real member content fixture retains disabled member Gold affordance and absence of developer Gold controls for the account role."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "busy Guardian shared Home has no gold toggle",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "disabled Guardian member Personalisation has no developer gold toggle",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed busy developer Home; real member content fixture retains disabled member Gold affordance and absence of developer Gold controls for the account role."
+    }
+  ],
+  "technical_review": {
+    "reviewer": "/root/remove_shell_controls",
+    "reviewed_at_utc": "2026-11-03T21:58:47.343055+00:00",
+    "method": "Compared actual HEAD/current test diffs, replacement production widgets and callbacks, case/hook reporter inventories, and QA source hashes. No source changes or test run performed by reviewer.",
+    "one_to_one_case_identity_mapping": true,
+    "missing_or_skipped_cases": 0,
+    "baseline_failure_cases_in_these_suites": 0,
+    "source_sha256": {
+      "test/zyra_app_gold_preview_test.dart": "5ba95caae122f5762b91ca986bbdccb570a69025c696883e760067e2f679c101",
+      "test/zyra_member_app_gold_test.dart": "93c528eb1473363ce8b66f77bdd55fbabe21efc12dd8c9da2fa6f1c95dac2754"
+    },
+    "scoped_qa_file": "queue44_gold_migration_qa.json",
+    "semantic_scope": "Removed developer-only selection/authority behavior is explicitly replaced by the corresponding real member choice/rendering/ownership contract; maps do not assert the removed developer feature remains functional."
+  }
+}

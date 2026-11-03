@@ -1,0 +1,4355 @@
+{
+  "total_failed_or_error": 649,
+  "affected_files": 91,
+  "files": {
+    "test/account_essentials_artwork_test.dart": {
+      "failed_or_error": 10,
+      "tests": [
+        {
+          "name": "account artwork is local in ahead",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "account artwork is local in atoms",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "account artwork is local in current",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "account artwork is local in headspace",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "account artwork is local in howWeFeel",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "account artwork is local in mozi",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "account artwork is local in revolut",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "account artwork is local in structured",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "account artwork is local in uber",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "account artwork is local in wise",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/browse_edge_alignment_test.dart": {
+      "failed_or_error": 6,
+      "tests": [
+        {
+          "name": "Actual Browse has one 20px edge at 375.0, quiet=false",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Actual Browse has one 20px edge at 375.0, quiet=true",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Actual Browse has one 20px edge at 393.0, quiet=false",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Actual Browse has one 20px edge at 393.0, quiet=true",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Actual Browse has one 20px edge at 430.0, quiet=false",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Actual Browse has one 20px edge at 430.0, quiet=true",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/browse_options_menu_test.dart": {
+      "failed_or_error": 5,
+      "tests": [
+        {
+          "name": "Compatibility score keeps the selected person and reveals all with one local unlock",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Filters remain functional and do not cancel the first invitation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Hide applies only to displayed Sara and preserves her sent invitation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "first held bar touch removes cue before breathing false",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "first held bar touch removes cue before breathing true",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/browse_photo_tap_navigation_test.dart": {
+      "failed_or_error": 12,
+      "tests": [
+        {
+          "name": "3-photo gallery wraps to details over 420ms",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "4-photo gallery wraps to details over 420ms",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "a captured tap cannot act after photo count changes",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "a captured tap cannot act after photos changes",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "a tap cannot interrupt an in-progress finger swipe",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "accessible tap and Next page advance details and photos",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "additional taps during an animated page move are ignored",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "enabling accessible navigation finishes the owned adjacent tap",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "enabling reduced motion finishes the owned adjacent tap",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "real photo swipe interrupts wrap slide and owns the next index",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "same-count source replacement cancels an early adjacent move",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "tap then swipe uses the same pager and selected gold dot",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/browse_photo_wrap_motion_test.dart": {
+      "failed_or_error": 9,
+      "tests": [
+        {
+          "name": "2-photo gallery scrolls from its last photo to details over 420ms",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "3-photo gallery scrolls from its last photo to details over 420ms",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "A drag from the outgoing left photograph cancels wrap translation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Previous page semantics wraps from details to the last photo with horizontal motion",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Quiet wrap is immediate with no translation, accessible=false",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Quiet wrap is immediate with no translation, accessible=true",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Reduced motion enabled mid-wrap settles immediately with no later translation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Wrap translation is revoked by disposal with no late motion",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Wrap translation is revoked by source replacement with no late motion",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/compatibility_route_toggle_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "route balance choices never purchase or change catalogue selection",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/dashboard_landing_and_surface_persistence_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "member Personalisation keeps colour and haptic; old font choice cannot restore",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    },
+    "test/dev_onboarding_directions_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "the selected Luma onboarding study does not replace the main splash",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    },
+    "test/dev_onboarding_interaction_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "two-mode control is independent of all eleven directions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/dev_scenario_panel_policy_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "palette lab is live and restores the current default background",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    },
+    "test/dev_splash_directions_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "dawnHorizon uses the app-wide dark purple gradient",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/floating_nav_confirmation_layout_test.dart": {
+      "failed_or_error": 6,
+      "tests": [
+        {
+          "name": "Hide confirmation fits 320.0px at 1.0x text",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Hide confirmation fits 320.0px at 2.0x text",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Hide confirmation fits 393.0px at 1.0x text",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Hide confirmation fits 393.0px at 2.0x text",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Hide confirmation fits 430.0px at 1.0x text",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Hide confirmation fits 430.0px at 2.0x text",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/floating_nav_dot_clearance_test.dart": {
+      "failed_or_error": 22,
+      "tests": [
+        {
+          "name": "all five unread glyphs tab 0 motion at 320px",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "all five unread glyphs tab 0 reduced at 320px",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "all five unread glyphs tab 1 motion at 320px",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "all five unread glyphs tab 1 reduced at 320px",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "all five unread glyphs tab 2 motion at 320px",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "all five unread glyphs tab 2 reduced at 320px",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "all five unread glyphs tab 3 motion at 320px",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "all five unread glyphs tab 3 reduced at 320px",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "all five unread glyphs tab 4 motion at 320px",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "all five unread glyphs tab 4 reduced at 320px",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "unread glyph geometry 320px Browse motion",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "unread glyph geometry 320px Browse reduced",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "unread glyph geometry 320px MyZYRA motion",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "unread glyph geometry 320px MyZYRA reduced",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "unread glyph geometry 393px Browse motion",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "unread glyph geometry 393px Browse reduced",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "unread glyph geometry 393px MyZYRA motion",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "unread glyph geometry 393px MyZYRA reduced",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "unread glyph geometry 430px Browse motion",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "unread glyph geometry 430px Browse reduced",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "unread glyph geometry 430px MyZYRA motion",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "unread glyph geometry 430px MyZYRA reduced",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/founder_launch_review_test.dart": {
+      "failed_or_error": 29,
+      "tests": [
+        {
+          "name": "Guardian button actual shell white canvas status return and theme restoration",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian detail_privacyPolicy 320px200% is white readable and accessible",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian detail_privacyPolicy 393pxnormal is white readable and accessible",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian detail_terms 320px200% is white readable and accessible",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian detail_terms 393pxnormal is white readable and accessible",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian edge actual shell white canvas status return and theme restoration",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian overview_privacyData 320px200% is white readable and accessible",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian overview_privacyData 393pxnormal is white readable and accessible",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Seeker button actual shell white canvas status return and theme restoration",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Seeker detail_privacyPolicy 320px200% is white readable and accessible",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Seeker detail_privacyPolicy 393pxnormal is white readable and accessible",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Seeker detail_terms 320px200% is white readable and accessible",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Seeker detail_terms 393pxnormal is white readable and accessible",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Seeker edge actual shell white canvas status return and theme restoration",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Seeker overview_privacyData 320px200% is white readable and accessible",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Seeker overview_privacyData 393pxnormal is white readable and accessible",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "detail_deleteAccount Guardian compact200 is an internal-only non-executing specification hold",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "detail_deleteAccount Guardian normal is an internal-only non-executing specification hold",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "detail_deleteAccount Seeker compact200 is an internal-only non-executing specification hold",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "detail_deleteAccount Seeker normal is an internal-only non-executing specification hold",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "detail_resetProfile Guardian compact200 is an internal-only non-executing specification hold",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "detail_resetProfile Guardian normal is an internal-only non-executing specification hold",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "detail_resetProfile Seeker compact200 is an internal-only non-executing specification hold",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "detail_resetProfile Seeker normal is an internal-only non-executing specification hold",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "old white-page Help callback cannot act after owner loss or fresh mount",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "overview_advanced Guardian compact200 is an internal-only non-executing specification hold",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "overview_advanced Guardian normal is an internal-only non-executing specification hold",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "overview_advanced Seeker compact200 is an internal-only non-executing specification hold",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "overview_advanced Seeker normal is an internal-only non-executing specification hold",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/founder_paid_only_contract_migration_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "loading test/founder_paid_only_contract_migration_test.dart",
+          "kind": "loader",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/global_app_surface_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "dark selected cards and legacy aliases use quiet fill and gold edge",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    },
+    "test/guardian_circle_discussion_bubble_test.dart": {
+      "failed_or_error": 2,
+      "tests": [
+        {
+          "name": "owned archive rebuild preserves the same chat and draft",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "selection stages a gold composer chip and publishes its context only with Send",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/guardian_circle_topic_options_test.dart": {
+      "failed_or_error": 11,
+      "tests": [
+        {
+          "name": "Guardian parent authorization ABA refuses the retained topic-design callback",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian parent role ABA refuses the retained topic-design callback",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian parent tab ABA refuses the retained topic-design callback",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian parent toggle selects Current plus five bubble interiors with the same fixed floating entry",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian unrelated parent tabs do not expose Journey discussion options",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Seeker parent role ABA refuses the retained topic-design callback",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Seeker parent tab ABA refuses the retained topic-design callback",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Seeker parent toggle selects Current plus five bubble interiors with the same fixed floating entry",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "actual Guardian shell shares the bubble-design dropdown and the one admitted Circle",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "actual protected shell offers the Current Circle interior and preserves the mounted shared chat",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "embedded discuss control current supports compact keyboard and long draft",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/guardian_dashboard_greeting_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "View profile opens the selected ID even when two names match",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/guardian_onboarding_dev_skip_test.dart": {
+      "failed_or_error": 4,
+      "tests": [
+        {
+          "name": "Guardian basic completed rehearsal chooses only local capability",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian family completed rehearsal chooses only local capability",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian one completed rehearsal chooses only local capability",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "final Guardian Skip lands in a fresh zero-linked dashboard",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/guardian_one_page_designs_test.dart": {
+      "failed_or_error": 30,
+      "tests": [
+        {
+          "name": "Additional Guardian preview can show three active Journeys",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Additional production failures fit 320x568 at 1.4x text",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Additional production failures fit 320x568 at 2.0x text",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Additional with 0 active Journeys uses three rows on 320x568",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Additional with 0 active Journeys uses three rows on 390x844",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Additional with 0 active Journeys uses three rows on 430x932",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Additional with 1 active Journeys uses three rows on 320x568",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Additional with 1 active Journeys uses three rows on 390x844",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Additional with 1 active Journeys uses three rows on 430x932",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Additional with 2 active Journeys uses three rows on 320x568",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Additional with 2 active Journeys uses three rows on 390x844",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Additional with 2 active Journeys uses three rows on 430x932",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Additional with 3 active Journeys uses three rows on 320x568",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Additional with 3 active Journeys uses three rows on 390x844",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Additional with 3 active Journeys uses three rows on 430x932",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Main access stays visible and Manage stays quiet",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Main production failures fit 320x568 at 1.4x text",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Main production failures fit 320x568 at 2.0x text",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Main with 0 active Journeys uses three rows on 320x568",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Main with 0 active Journeys uses three rows on 390x844",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Main with 0 active Journeys uses three rows on 430x932",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Main with 1 active Journeys uses three rows on 320x568",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Main with 1 active Journeys uses three rows on 390x844",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Main with 1 active Journeys uses three rows on 430x932",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Main with 2 active Journeys uses three rows on 320x568",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Main with 2 active Journeys uses three rows on 390x844",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Main with 2 active Journeys uses three rows on 430x932",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Main with 3 active Journeys uses three rows on 320x568",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Main with 3 active Journeys uses three rows on 390x844",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Main with 3 active Journeys uses three rows on 430x932",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/guardian_section_labels_test.dart": {
+      "failed_or_error": 3,
+      "tests": [
+        {
+          "name": "Additional larger permission header remains aligned at 320x568 with 2x text",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Main larger permission header remains aligned at 320x568 with 2x text",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "normal page still fits and pagination/nav clearance does not change",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/guardianship_manager_phase1_test.dart": {
+      "failed_or_error": 5,
+      "tests": [
+        {
+          "name": "Guardian keeps one Add flow in the top-right plus",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "compact 200 percent Guardian empty retains shared styling and top Add",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "confirmed empty Seekers uses the shared prompt at compact200 size",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "confirmed empty Seekers uses the shared prompt at normal size",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "empty Add a Guardian group is vertically centred",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/hidden_profiles_and_support_test.dart": {
+      "failed_or_error": 2,
+      "tests": [
+        {
+          "name": "confirmed Hidden empty uses a bounded plain state at compact200 size",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "confirmed Hidden empty uses a bounded plain state at normal size",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/hidden_profiles_opening_owner_test.dart": {
+      "failed_or_error": 5,
+      "tests": [
+        {
+          "name": "queued SDK-only ABA permanently revokes the opening action",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "rendered Unhide refuses ABA opening lifetime",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "rendered Unhide refuses replacement opening lifetime",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "rendered Unhide refuses same-ID-generation opening lifetime",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "same-ID SDK session replacement revokes without generation change",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/journey_card_layout_choices_test.dart": {
+      "failed_or_error": 11,
+      "tests": [
+        {
+          "name": "Portrait split keeps readable 2x text and safe scroll fallback at 320",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Portrait split keeps three stable places with 1 Journeys and balances the selected expanded action",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Portrait split keeps three stable places with 2 Journeys and balances the selected expanded action",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Portrait split keeps three stable places with 3 Journeys and balances the selected expanded action",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Portrait split uses Continue Journey without changing real draft progress",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "denied owner cannot use retained card or inline actions or publish a checkpoint",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "intermediate-height expansion scrolls the whole selected card and reaches every option",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "retained inline options cannot navigate after collapse and reopening",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "retained primary and menu actions are rejected after role switch",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "tall phone keeps 12px expanded primary gaps and all seven options visible without scroll",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "warm return, fresh owner and Reset all use Portrait split without choosing a layout",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/membership_wallet_visual_test.dart": {
+      "failed_or_error": 2,
+      "tests": [
+        {
+          "name": "component: Profile row targets and arrows compact=false",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "component: Profile row targets and arrows compact=true",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/migration_inventory_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "active migrations retain unique versions beyond the historical frontier",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    },
+    "test/my_zyra_retirement_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "current single-page and ordinary member dashboards share one renderer",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    },
+    "test/no_heart_icons_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "production Flutter UI contains no heart icon symbols or glyphs",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    },
+    "test/onboarding_checkpoint_persistence_test.dart": {
+      "failed_or_error": 2,
+      "tests": [
+        {
+          "name": "Values waits for each answer save, retains a failed answer and retries once",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "finish later saves only the partial draft and cannot bypass IDV",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_back_button_preview_test.dart": {
+      "failed_or_error": 7,
+      "tests": [
+        {
+          "name": "Circle Back returns from its nested archive then from the same conversation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Circle preserves unsent composer text through controls and Back closes options first",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Compact 2x Circle and Settings retain edge return without Back chrome or clipped controls",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Journey peer Guardian pager keeps center swipes and edge returns only to the selected Journey without changing its read-only roster",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Own Guardian root retains both center swipe directions without a faux Back and Circle edge returns to the same roster",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Seeker own photo and retained editors use the same button; role changes preserve mode",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "default Circle edge swipe returns from archive then the same conversation with draft intact",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_basic_joining_history_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "Guardian paid draft clears Basic when history changes, with no model write",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_bottom_close_cue_test.dart": {
+      "failed_or_error": 7,
+      "tests": [
+        {
+          "name": "Circle archive child keeps one edge return with an accessible bridge",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Circle profile child keeps one edge return with an accessible bridge",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "compact double-text locked Bio continues to the real Salam arrival without overflow",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "expanded inline Journey options do not claim full-page close",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked bio explanation inherits one edge return without disclosure",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked compatibility explanation inherits one edge return without disclosure",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "sensitive End Journey confirmation has no Back return or pull grant",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_capacity_slots_test.dart": {
+      "failed_or_error": 15,
+      "tests": [
+        {
+          "name": "Basic locked slots open Membership without granting places",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Basic one-Journey compact 200-percent slots remain readable",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Basic zero-Journey compact 200-percent slots remain readable",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "One one-Journey compact 200-percent slots remain readable",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "One zero-Journey compact 200-percent slots remain readable",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "active places remain occupied cards",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "covered, denied and disposed Basic one-Journey upgrade callbacks are inert",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "covered, denied and disposed Basic zero-Journey upgrade callbacks are inert",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "expanded Journey options replace slots without losing return",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "one, two and three Journeys keep the same three compact slots",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "preparing places remain occupied cards",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "retained Basic one-Journey upgrade is inert after route withdrawal",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "retained Basic zero-Journey upgrade is inert after route withdrawal",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "zero Basic Journeys keeps one awaiting and two guarded upgrades",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "zero One Journeys shows three inert awaiting slots",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_card_expansion_test.dart": {
+      "failed_or_error": 20,
+      "tests": [
+        {
+          "name": "200% inline options remain readable and reachable at Size(320.0, 568.0)",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "200% inline options remain readable and reachable at Size(393.0, 852.0)",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Journey cards expand and collapse in accessible navigation mode",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Journey cards expand and collapse in disable animations mode",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Journey cards expand and collapse in ordinary mode",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "each Journey opens the peer family, never own management",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "inline options refuse retained callbacks after collapse",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "inline options refuse retained callbacks after reset",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "inline options refuse retained callbacks after role",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "inline options refuse retained callbacks after tab",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "inline options refuse stale owner after ABA",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "inline options refuse stale owner after account generation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "inline options refuse stale owner after revocation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "inline options refuse stale owner after unmount",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "inline options reuse addressed destinations and End confirmation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "peer family is removed after ABA",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "peer family is removed after account generation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "peer family is removed after revocation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "peer family is removed after unmount",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "re-expansion cannot revive another card’s retained options",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_compact_controls_test.dart": {
+      "failed_or_error": 8,
+      "tests": [
+        {
+          "name": "compact 200% controls wrap and remain genuinely reachable",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "compact Active/Ended/reset actions preserve current and ordinary state",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "compact Guardian/Seeker account controls keep role-specific routes",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "compact controls reject retained callbacks after a newer choice",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "compact count 1 seeds only the intended Journey page",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "compact count 2 seeds only the intended Journey page",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "compact count 3 seeds only the intended Journey page",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "compact membership preserves Basic/Monthly capacity and disabled gates",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_current_presentation_test.dart": {
+      "failed_or_error": 5,
+      "tests": [
+        {
+          "name": "Guardian Settings keeps the actual category and row wording",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Seeker Settings keeps the actual category and row wording",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "portraitCard bounded Browse at 1.0 is local and deliberate",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "portraitCard bounded Browse at 1.4 is local and deliberate",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "portraitCard bounded Browse at 2.0 is local and deliberate",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_ended_card_test.dart": {
+      "failed_or_error": 3,
+      "tests": [
+        {
+          "name": "Ended retained actions deny after role",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "a real prior profile unlock survives the physical End flow",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "ordinary compatibility spends once and grants no ended Bio",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_guardian_details_polish_test.dart": {
+      "failed_or_error": 16,
+      "tests": [
+        {
+          "name": "Basic chat remains denied for draft-guardian-hassan including a Main promotion",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Basic chat remains denied for draft-guardian-yusuf including a Main promotion",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian details and real controls stay reachable at 1.0x text",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian details and real controls stay reachable at 2.0x text",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "compact double-text history information scrolls to the privacy explanation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "fixture relationship and linked date survive Main reassignment with clear dots",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "history information remains open for draft-guardian-hassan without changing consent",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "history information remains open for draft-guardian-yusuf without changing consent",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "history on/off stays confirmed without rebuilding draft-guardian-hassan controls",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "history on/off stays confirmed without rebuilding draft-guardian-yusuf controls",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "protected Guardian polish never changes ordinary account state",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "retained Guardian loaders refuse ABA before disclosure or writes",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "retained Guardian loaders refuse account generation before disclosure or writes",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "retained Guardian loaders refuse revocation before disclosure or writes",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "retained Guardian loaders refuse tab before disclosure or writes",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "three exact attempts and per-Guardian consent remain independent",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_monthly_capacity_widget_test.dart": {
+      "failed_or_error": 32,
+      "tests": [
+        {
+          "name": "1 monthly Journeys fill available canvas on iphone393",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "1 monthly Journeys fill available canvas on iphone430",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "1 monthly Journeys fill available canvas on phone390",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "1 monthly preview Journeys each open their own person",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "2 monthly Journeys fill available canvas on iphone393",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "2 monthly Journeys fill available canvas on iphone430",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "2 monthly Journeys fill available canvas on phone390",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "2 monthly preview Journeys each open their own person",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "3 monthly Journeys fill available canvas on iphone393",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "3 monthly Journeys fill available canvas on iphone430",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "3 monthly Journeys fill available canvas on phone390",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "3 monthly preview Journeys each open their own person",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Basic refuses reduction below occupied places and keeps one place",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian permissions stay separate across three actual attempts",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Portrait split is locked with no chooser and no local state reset",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "empty Journey keeps three readable capacity slots at 1.0x",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "empty Journey keeps three readable capacity slots at 1.4x",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "empty Journey keeps three readable capacity slots at 2.0x",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked card and remaining controls refuse stale owner after ABA",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked card and remaining controls refuse stale owner after account generation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked card and remaining controls refuse stale owner after revocation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked cards preserve actual stages states and member data",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked cards preserve outer geometry on iphone393",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked cards preserve outer geometry on phone390",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked portraits and actions remain reachable at 200 percent",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked single and two cards retain three-slot rectangles",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "monthly Browse remains available even while all three places are used",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "monthly Journey progress remains separate for each person",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "monthly controls keep Portrait and single My ZYRA without Save or Pause",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "monthly starts with three places and no fabricated Journey",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "one two and three monthly cards at 200% keep every Journey action reachable",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "other empty states retain their paragraph styling and gap",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_portrait_card_layout_test.dart": {
+      "failed_or_error": 4,
+      "tests": [
+        {
+          "name": "Portrait fills 320_2photos below highest title",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Portrait fills 393_2photos below highest title",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Portrait fills 430_3photos below highest title",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "compact 200% Portrait exposes real gallery/request/navigation taps",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_prior_compatibility_access_test.dart": {
+      "failed_or_error": 2,
+      "tests": [
+        {
+          "name": "actual Profiles unlock survives request, mutual preparation and Journey menu without buying consent",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "used access for Sara never opens Aisha or spends again",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_pull_down_routes_test.dart": {
+      "failed_or_error": 3,
+      "tests": [
+        {
+          "name": "Journey body retains vertical stage traversal; Back returns one route",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "end confirmation pull is inert and Keep this Journey still works",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "modal rebuild and Cancel retain a fresh one-route Back return",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_stage_disclosure_test.dart": {
+      "failed_or_error": 4,
+      "tests": [
+        {
+          "name": "early bio menu is locked and explains the uncompleted step",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "early compatibility menu is locked and explains the uncompleted step",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "early locked disclosures do not remove essential profile access",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "early locked disclosures do not remove essential report access",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_switch_signup_preview_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "Guardian covered missing profile finishes setup without repurchase",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_theme_actions_test.dart": {
+      "failed_or_error": 16,
+      "tests": [
+        {
+          "name": "Inline Options single flight and repeated compatibility selection keep one owner",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "authorized role change invalidates previously collapsed inline actions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "cancelled sheet and confirmation delegates cannot act on another person",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "confirmation refuses stale actions after ABA",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "confirmation refuses stale actions after account generation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "confirmation refuses stale actions after revocation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "inline options refuses stale actions after ABA",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "inline options refuses stale actions after account generation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "inline options refuses stale actions after revocation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked card Options route the actual person and cancel without mutation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked card confirmed End affects only its addressed Journey",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked enlarged cards keep Options and confirmations reachable",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked overview enlarges photos and keeps the addressed Continue Journey label",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "simplified active Journey has no Pause action or Paused route",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "theme and local Journey choices never change member authority or preferences",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "two immediate End callbacks end the addressed Journey only once",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_timeline_controls_test.dart": {
+      "failed_or_error": 3,
+      "tests": [
+        {
+          "name": "actual All events popup selection survives covered controls and cannot change Journey facts",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "all 17 event choices and eight stage positions reach the current Timeline presenter",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "closing Timeline or opening another subject resets examples and rejects stale control and action callbacks",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/one_journey_timeline_test.dart": {
+      "failed_or_error": 2,
+      "tests": [
+        {
+          "name": "standalone ready empty Timeline centers its plain state at compact200 size",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "standalone ready empty Timeline centers its plain state at normal size",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/option_retirement_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "retirement preserves member destinations and Founder attention white",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    },
+    "test/paid_only_membership_catalog_test.dart": {
+      "failed_or_error": 4,
+      "tests": [
+        {
+          "name": "membership information fits 320.0 at text scale 1.0",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "membership information fits 320.0 at text scale 2.0",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "membership information fits 390.0 at text scale 1.0",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "membership information fits 390.0 at text scale 2.0",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/privacy_log_redaction_source_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "zyra_reset_profile returned an unknown status diagnostics exclude RPC responses",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    },
+    "test/profile_membership_consistency_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "Seeker orders membership, compatibility, profile and about",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/request_page_options_context_test.dart": {
+      "failed_or_error": 12,
+      "tests": [
+        {
+          "name": "200 percent Page options remain readable and every compact action is reachable",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Ended options add local archive history and return to the same archive",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian My ZYRA never inherits Seeker-only controls",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian Network never inherits Seeker-only controls",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian Profile never inherits Seeker-only controls",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian Seekers never inherits Seeker-only controls",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Journey count controls change the actual one, two and three-card reader",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "My ZYRA keeps requests, Introductions and archive without duplicating active Journey cards",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Requests and Introductions retain their separate routes after Back and reset",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Requests options select Received, Sent and Past without creating records",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "permanent Quick access cards use the whole row for their separate destinations",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "standalone Introductions keeps its own route and has no request selector",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/request_shell_titles_circle_test.dart": {
+      "failed_or_error": 11,
+      "tests": [
+        {
+          "name": "1 occupied Journeys keep the same title as the empty tab",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "2 occupied Journeys keep the same title as the empty tab",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "3 occupied Journeys keep the same title as the empty tab",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian Circle returns to its Guardian owner with the shared interactive left-edge gesture",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian Circle reuses its working preview, sends locally and returns by edge swipe",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "a Basic guardian cannot inherit Circle sending from other One participants",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "a Basic seeker cannot inherit Circle sending from other One participants",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "account A to B to A withdraws the Circle and retained local send",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "all five actual Seeker tabs share title typography and top-left position",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "empty request Circle has fictional Current names, not new Journeys",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "revocation followed by restored authorization cannot publish a delayed Circle send",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/requests_guardians_lock2_shell_test.dart": {
+      "failed_or_error": 4,
+      "tests": [
+        {
+          "name": "Main notice appears once for each effective H to Y to H change",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "a pending Main notice resumes for its exact subject then stays consumed",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "a revoked Make Main callback cannot create a notice",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "a stale Make Main callback cannot create a notice",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/role_selection_cards_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "both role choices stay legible and tappable in all visual directions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/seeker_wali_tab_truth_test.dart": {
+      "failed_or_error": 2,
+      "tests": [
+        {
+          "name": "Add a Guardian opens permanent code and request paths",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "failed link read retries into a truthful successful empty",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/splash_motion_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "default production splash is Quiet Horizon with gold ZYRA",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/tab_attention_open_marker_test.dart": {
+      "failed_or_error": 5,
+      "tests": [
+        {
+          "name": "a fresh shell restores the consumed marker without reading items",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "a newer arrival from the same peer restores gold tab attention",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "long absence opens My ZYRA and clears the marker without item ack",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "opening My ZYRA clears only tab attention and preserves pending New activity",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "resuming directly on My ZYRA consumes tab attention alone",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/two_door_dev_controls_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "Actions selection keeps the existing gold icon and marker",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/view_request_draft_widget_test.dart": {
+      "failed_or_error": 77,
+      "tests": [
+        {
+          "name": "Back stops at ten visits and Next replays the exact ten",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Basic accepted request reserves its place; readiness is mutual and deliberate",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Basic draft-guardian-hassan has view but no chat including forged local writes",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Basic draft-guardian-yusuf has view but no chat including forged local writes",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Browse arrows move exactly one eligible profile per actual tap",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Browse is view-only; requests are deliberate, not automatic likes",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Browse shares current navigation, full fake names and offline photos",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Connections shows only the current Journey; activity belongs to My ZYRA",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Current bounded invitation double taps use only current delegates",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Current photo cycling leaves inline invitation state untouched",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Current photo taps cycle the filtered Browse without expanding at reduce=false",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Current photo taps cycle the filtered Browse without expanding at reduce=true",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian gate and all eight stages remain meaningful",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian permission choices stay linked and chat needs view",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Guardian plus reuses the Code page while Guardian-role invitations stay held and Circle stays working",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Hide preserves request counts and item attention while My ZYRA clears its tab badge",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Introductions accessible custom Back returns to My ZYRA with its captured Back return",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Introductions accessible dismiss returns to My ZYRA with its captured Back return",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Introductions accessible system Back returns to My ZYRA with its captured Back return",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Journey title and three empty slots remain nav-safe 1.0",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Journey title and three empty slots remain nav-safe 1.4",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Journey title and three empty slots remain nav-safe 2.0",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Next after Back replays the viewed profile before new profiles",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Requests Sent profile Back returns one level with its selected tab reduce=false",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Requests Sent profile Back returns one level with its selected tab reduce=true",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Requests downward scroll below the reading origin does not close reduce=false",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Requests downward scroll below the reading origin does not close reduce=true",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Requests has two swipe pages and Introductions is a separate leaf compact200 reduce=false",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Requests has two swipe pages and Introductions is a separate leaf compact200 reduce=true",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Requests has two swipe pages and Introductions is a separate leaf standard reduce=false",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Requests has two swipe pages and Introductions is a separate leaf standard reduce=true",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Retained Current photo tap cannot affect a changed invitation or route",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Salam comes first and both compatibility choices are required",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "actions expose labelled current-app targets and tokens",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "blocked active Journey retains capacity but has redacted safe End action",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "blocked received request keeps its record but hides identity",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "blocked sent request keeps its record but hides identity",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "cancellation and decline do not create a Journey",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "compact 320×568 at scale 1.0 stays scroll reachable",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "compact 320×568 at scale 1.4 stays scroll reachable",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "compact 320×568 at scale 2.0 stays scroll reachable",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "fictional block excludes Browse but retains ended archive without stale writes",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "fictional hide excludes Browse but retains ended archive without stale writes",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "fresh Back is disabled and never exposes an unviewed profile",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "fresh inactive Requests card actions cannot act behind another tab",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "fresh whole-app real-font candidates are not approval_compact140_final",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "fresh whole-app real-font candidates are not approval_compact200_final",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "fresh whole-app real-font candidates are not approval_standard_final",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "local notification dispatcher routes requests to My ZYRA and focus to Journey",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "local reset clears seen Browse profiles without sending",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked card addressed options keep both Journeys read-only compact140",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked card addressed options keep both Journeys read-only compact200",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked card addressed options keep both Journeys read-only standard",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked card compatibility follows both reveal choices without computing a score",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked card dismissed compatibility handlers refuse after role ABA and preserve a fresh addressed page",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked card dismissed guardians handlers refuse after role ABA and preserve a fresh addressed page",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked card open compatibility inline options refuse revoked authorization intent",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "locked card open guardians inline options refuse revoked authorization intent",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "own Profile Preview has visible and accessible Back; Ended archive lives only in My ZYRA",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "preview exposes no Pause; End stays deliberate, retains history and reset is draft-only",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "received requests follow the same mutual preparation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "removing the actual Main Guardian revokes all local linked context and stale loaders",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "sent invitation stays in Browse after each other eligible profile is seen",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "shared account widgets and My ZYRA keep sample destinations local",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "simplified My ZYRA is one guarded information page compact140",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "simplified My ZYRA is one guarded information page compact200",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "simplified My ZYRA is one guarded information page standard",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "simplified My ZYRA retained navigation refuses account generation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "simplified My ZYRA retained navigation refuses page ABA",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "simplified My ZYRA retained navigation refuses role ABA",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "stale Guardian grants refuse after end",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "stale Guardian grants refuse after navigation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "stale Guardian grants refuse after stage progress",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "stale request segments and single-page Dashboard routes refuse navigation ABA",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "whole-app portraitCard compact140 neutral Browse keeps decisions deliberate",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "whole-app portraitCard compact200 neutral Browse keeps decisions deliberate",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "whole-app portraitCard standard neutral Browse keeps decisions deliberate",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/visual/dev_home_navigation_visual_test.dart": {
+      "failed_or_error": 2,
+      "tests": [
+        {
+          "name": "shared Home and destination real-font compact_140",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "shared Home and destination real-font standard",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/visual/lock8_v5_guardian_journeys_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "V5 Ended Journeys retains its existing held sharing target",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/visual/signup_membership_choice_visual_test.dart": {
+      "failed_or_error": 2,
+      "tests": [
+        {
+          "name": "guardian Membership real fonts compact200",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker Membership real fonts compact200",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/visual/zyra_back_swipe_motion_visual_test.dart": {
+      "failed_or_error": 3,
+      "tests": [
+        {
+          "name": "320x568 real shell edge motion paints held and finishing canvas before its parent return",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "393x852 real shell edge motion paints held and finishing canvas before its parent return",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "short real shell edge swipe visibly restores without leaving Security",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/visual/zyra_compatibility_choices_visual_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "locked Halo zero-credit action remains visibly unavailable",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/visual/zyra_developer_access_visual_test.dart": {
+      "failed_or_error": 4,
+      "tests": [
+        {
+          "name": "large landing renders without overflow",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "small landing renders without overflow",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "standard landing renders without overflow",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "standard__text-130 landing renders without overflow",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/visual/zyra_draft_compatibility_reveal_visual_test.dart": {
+      "failed_or_error": 2,
+      "tests": [
+        {
+          "name": "375x812 locked and settled remain readable and reachable",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "393x852 locked card becomes Golden Halo with one caller-owned reveal",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/visual/zyra_retained_account_reuse_visual_test.dart": {
+      "failed_or_error": 3,
+      "tests": [
+        {
+          "name": "personalisation compact140 retains theme and has no overflow",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "personalisation compact200 retains theme and has no overflow",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "personalisation phone retains theme and has no overflow",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/visual/zyra_visual_regression_test.dart": {
+      "failed_or_error": 112,
+      "tests": [
+        {
+          "name": "guardian-dashboard-thinned-additional-neutral__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-thinned-additional-neutral__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-thinned-additional-neutral__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-thinned-additional-neutral__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-thinned-empty__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-thinned-empty__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-thinned-empty__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-thinned-empty__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-thinned-main-priority__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-thinned-main-priority__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-thinned-main-priority__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-thinned-main-priority__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-thinned-unavailable__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-thinned-unavailable__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-thinned-unavailable__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-thinned-unavailable__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-updates-empty__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-updates-empty__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-updates-empty__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-updates-empty__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-updates-last-known__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-updates-last-known__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-updates-last-known__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-updates-last-known__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-updates-populated__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-updates-populated__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-updates-populated__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-dashboard-updates-populated__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-manager-empty__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-manager-empty__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-manager-empty__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-manager-empty__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-manager-loaded-pending__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-manager-loaded-pending__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-manager-loaded-pending__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-manager-loaded-pending__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-manager-main__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-manager-main__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-manager-main__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-manager-main__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-manager-unavailable__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-manager-unavailable__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-manager-unavailable__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-manager-unavailable__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-additional-neutral__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-additional-neutral__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-additional-neutral__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-additional-neutral__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-empty__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-empty__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-empty__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-empty__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-main-lower-groups__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-main-lower-groups__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-main-lower-groups__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-main-lower-groups__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-main-priority__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-main-priority__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-main-priority__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-main-priority__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-unavailable__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-unavailable__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-unavailable__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-roster-unavailable__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-workspace-additional__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-workspace-additional__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-workspace-additional__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-workspace-additional__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-workspace-main-empty__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-workspace-main-empty__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-workspace-main-empty__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-workspace-main-empty__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-workspace-main-loaded__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-workspace-main-loaded__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-workspace-main-loaded__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-workspace-main-loaded__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-workspace-main-unavailable__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-workspace-main-unavailable__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-workspace-main-unavailable__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "guardian-seeker-workspace-main-unavailable__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-insights-empty__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-insights-empty__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-insights-empty__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-insights-empty__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-thinned-connected__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-thinned-connected__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-thinned-connected__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-thinned-connected__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-thinned-no-guardian__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-thinned-no-guardian__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-thinned-no-guardian__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-thinned-no-guardian__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-thinned-pending-invitation__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-thinned-pending-invitation__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-thinned-pending-invitation__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-thinned-pending-invitation__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-thinned-unavailable__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-thinned-unavailable__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-thinned-unavailable__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-thinned-unavailable__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-updates-empty__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-updates-empty__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-updates-empty__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-updates-empty__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-updates-last-known__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-updates-last-known__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-updates-last-known__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-updates-last-known__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-updates-populated__large renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-updates-populated__small renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-updates-populated__standard renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "seeker-dashboard-updates-populated__standard__text-130 renders without overflow or exceptions",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/whole_app_settings_destinations_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "Guardian actual Settings rows and every subpage keep their own return destination",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/whole_app_theme_adoption_test.dart": {
+      "failed_or_error": 11,
+      "tests": [
+        {
+          "name": "Midnight blue is optional and leaves default and surfaces unchanged",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        },
+        {
+          "name": "Midnight blue preference cannot follow a different account",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        },
+        {
+          "name": "explicit Midnight blue survives a same-owner cold restoration",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        },
+        {
+          "name": "later explicit personalisation is not reset on every launch",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        },
+        {
+          "name": "startup adopts Hulu across the app from saved deepEmerald",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        },
+        {
+          "name": "startup adopts Hulu across the app from saved midnightPlum",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        },
+        {
+          "name": "startup adopts Hulu across the app from saved null",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        },
+        {
+          "name": "startup adopts Hulu across the app from saved paperWhite",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        },
+        {
+          "name": "startup adopts Hulu across the app from saved royalBlue",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        },
+        {
+          "name": "startup adopts Hulu across the app from saved unknown",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        },
+        {
+          "name": "startup adopts Hulu across the app from saved zyraPurple",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    },
+    "test/widget_test.dart": {
+      "failed_or_error": 5,
+      "tests": [
+        {
+          "name": "ZyraColors unified background every bottom sheet and dark popup shares the new plum surface",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        },
+        {
+          "name": "ZyraColors unified background foreground, gold and action text retain readable dark contrast",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        },
+        {
+          "name": "ZyraColors unified background native launch and adaptive icon use the dark canvas endpoint",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        },
+        {
+          "name": "ZyraColors unified background persisted Midnight Plum receives the darker theme without reset",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        },
+        {
+          "name": "ZyraColors unified background the unified gradient uses the current Midnight Plum endpoints",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    },
+    "test/zyra_browse_gallery_design_test.dart": {
+      "failed_or_error": 4,
+      "tests": [
+        {
+          "name": "Current taps cycle and wrap photos without calling profile open",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Portrait swipes only photos and resets on profile navigation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "icon navigation, photo alternatives and disabled request have semantic names",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "retained photo callbacks cannot mutate after update or dispose",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/zyra_browse_options_alignment_test.dart": {
+      "failed_or_error": 2,
+      "tests": [
+        {
+          "name": "held circle is glyph-centred and unclipped at 320.0px",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "held circle is glyph-centred and unclipped at 393.0px",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/zyra_compatibility_design_choices_test.dart": {
+      "failed_or_error": 3,
+      "tests": [
+        {
+          "name": "Journey result keeps fixed Halo through controls without spending or Bio disclosure",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "center paging and first-page overscroll do not close; the 44px edge returns once",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "reveal once and controls roundtrip preserve the selected score page and grant",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/zyra_dev_app_icon_test.dart": {
+      "failed_or_error": 3,
+      "tests": [
+        {
+          "name": "all eleven native icons use opaque Midnight Plum endpoints",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        },
+        {
+          "name": "all icon wordmarks use the exact Quiet Horizon splash gold",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        },
+        {
+          "name": "eleven preview assets match their native masters and are distinct",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    },
+    "test/zyra_dev_personal_code_fixtures_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "Copy stays confirmed and repeat taps replay feedback",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/zyra_draft_journey_bio_presentation_test.dart": {
+      "failed_or_error": 4,
+      "tests": [
+        {
+          "name": "admitted empty Bio is unboxed beneath its profile in embedded compact200 reading",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "admitted empty Bio is unboxed beneath its profile in embedded normal reading",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "admitted empty Bio is unboxed beneath its profile in owned compact200 reading",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "admitted empty Bio is unboxed beneath its profile in owned normal reading",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/zyra_guardian_server_truth_migration_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "canonical harness adds every ruled DR-225 case and rolls back",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    },
+    "test/zyra_journey_navigation_icon_test.dart": {
+      "failed_or_error": 2,
+      "tests": [
+        {
+          "name": "Journey glyph keeps dimming/unread precedence selected=0 unread=false",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "Journey remains reachable through the existing drag scrub",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/zyra_main_guardian_optional_migration_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "(setUpAll)",
+          "kind": "setUpAll",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    },
+    "test/zyra_oa198_probe_score_replay_bridge_artifact_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "probe bridge is byte-pinned, quarantined and correctly ordered",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    },
+    "test/zyra_oa198_replay_bridge_artifact_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "bridge is byte-pinned and quarantined outside active migrations",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    },
+    "test/zyra_oa198_replay_bridge_v2_artifact_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "V2 is quarantined and changes exactly the column ACL fallback",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    },
+    "test/zyra_request_page_titles_test.dart": {
+      "failed_or_error": 3,
+      "tests": [
+        {
+          "name": "main 3 Guardian title",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "main 3 Guardian title narrow",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "shared ordinary headings retain their original alignment",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/zyra_signout_intent_test.dart": {
+      "failed_or_error": 11,
+      "tests": [
+        {
+          "name": "delayed native cleanup preserves terminal error after raw SDK A to B to A replacement",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "delayed native cleanup preserves terminal error after raw SDK B replacement",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "delayed native cleanup preserves terminal error after raw SDK fresh A replacement",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "failed exit retry is terminally denied after raw SDK A to B to A replacement",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "failed exit retry is terminally denied after raw SDK B replacement",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "failed exit retry is terminally denied after raw SDK fresh A replacement",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "onboarding exit cannot reuse a previous same-ID lifetime confirmation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "onboarding exit permits only one confirmation flight",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "owned exit allows healthy refresh and its own signed-out event before Welcome",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "owned protected-erasure failure can be retried twice from the same exit control",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "raw SDK A to B to A cannot inherit an already open exit confirmation",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/zyra_signup_runtime_test.dart": {
+      "failed_or_error": 1,
+      "tests": [
+        {
+          "name": "personal Google signup exit confirms one local logout and clears only its draft",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/zyra_subscription_wallet_preview_test.dart": {
+      "failed_or_error": 2,
+      "tests": [
+        {
+          "name": "confirmed zero Family places is a plain empty state at compact200 size",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "confirmed zero Family places is a plain empty state at normal size",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        }
+      ]
+    },
+    "test/zyra_wordmark_colour_test.dart": {
+      "failed_or_error": 3,
+      "tests": [
+        {
+          "name": "previewAccess recovery uses gold for the wordmark only",
+          "kind": "case",
+          "failure": 0,
+          "error": 1
+        },
+        {
+          "name": "production wordmark defaults to the approved splash gold",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        },
+        {
+          "name": "test-stub wordmark defaults to the approved splash gold",
+          "kind": "case",
+          "failure": 1,
+          "error": 0
+        }
+      ]
+    }
+  }
+}

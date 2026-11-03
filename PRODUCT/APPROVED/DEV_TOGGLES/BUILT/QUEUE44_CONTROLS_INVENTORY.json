@@ -1,0 +1,2728 @@
+{
+  "authority": "OA-ZYRA-325 / DOC-ZYRA-0346",
+  "phase": "Inventory captured before removal; explicit current LOCK exceptions retained.",
+  "root": [
+    {
+      "file": "SOURCE/lib/main.dart",
+      "line": 19,
+      "control": "zyra_dev_control_system",
+      "effect": "App-wide developer controls and navigation observer",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    },
+    {
+      "file": "SOURCE/lib/main.dart",
+      "line": 563,
+      "control": "ZyraGlobalDevOverlayHost",
+      "effect": "App-wide developer controls and navigation observer",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_discovery_directions.dart",
+      "line": 57,
+      "control": "class DevDiscoveryDirectionPicker",
+      "effect": "Open developer preview from picker or leave to developer Home",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_discovery_directions.dart",
+      "line": 166,
+      "control": "onDeveloperHome",
+      "effect": "Open developer preview from picker or leave to developer Home",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_discovery_directions.dart",
+      "line": 183,
+      "control": "onDeveloperHome",
+      "effect": "Open developer preview from picker or leave to developer Home",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_discovery_directions.dart",
+      "line": 200,
+      "control": "onDeveloperHome",
+      "effect": "Open developer preview from picker or leave to developer Home",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_discovery_directions.dart",
+      "line": 285,
+      "control": "onDeveloperHome",
+      "effect": "Open developer preview from picker or leave to developer Home",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_discovery_directions.dart",
+      "line": 288,
+      "control": "onDeveloperHome",
+      "effect": "Open developer preview from picker or leave to developer Home",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_discovery_directions.dart",
+      "line": 315,
+      "control": "class _DraftButton",
+      "effect": "Open developer preview from picker or leave to developer Home",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_app_gold_preview.dart",
+      "line": 13,
+      "control": "class ZyraDevAppGold",
+      "effect": "Temporary developer Gold override; member Gold remains",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_app_gold_preview.dart",
+      "line": 275,
+      "control": "class DevAppGoldPicker",
+      "effect": "Temporary developer Gold override; member Gold remains",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_founder_launch_screen.dart",
+      "line": 77,
+      "control": "cachedFounderPreviewRole",
+      "effect": "Remembered developer role start and developer Home recovery/exit",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_founder_launch_screen.dart",
+      "line": 132,
+      "control": "Developer Home",
+      "effect": "Remembered developer role start and developer Home recovery/exit",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_founder_launch_screen.dart",
+      "line": 134,
+      "control": "Developer Home",
+      "effect": "Remembered developer role start and developer Home recovery/exit",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_founder_launch_screen.dart",
+      "line": 976,
+      "control": "Developer Home",
+      "effect": "Remembered developer role start and developer Home recovery/exit",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_founder_launch_screen.dart",
+      "line": 918,
+      "control": "onDeveloperHome",
+      "effect": "Remembered developer role start and developer Home recovery/exit",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    },
+    {
+      "file": "SOURCE/lib/screens/auth/tester_access_screen.dart",
+      "line": 11,
+      "control": "class TesterAccessScreen",
+      "effect": "Developer tester credentials and role picker route",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    },
+    {
+      "file": "SOURCE/lib/screens/dev/developer_access_screen.dart",
+      "line": 16,
+      "control": "class DeveloperAccessScreen",
+      "effect": "Developer landing role/plan account picker/reset/signup shortcuts",
+      "removal": "Control, routes and unused state removed; code-only role fixtures retained."
+    }
+  ],
+  "shell": {
+    "task": "queue44 OA-ZYRA-325",
+    "inventory_before_edit": true,
+    "items": [
+      {
+        "kind": "developer_entry_callback",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 119,
+        "end_line": 137,
+        "control": "onDeveloperHome",
+        "effect": "Returns from the shell to developer launch home; remove callback.",
+        "keys": [],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "developer_rail_state_and_route_safety",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 341,
+        "end_line": 374,
+        "control": "_devControlsVisible/_devControlsEpoch/_devControlsScroll",
+        "effect": "Tracks rail visibility/epochs; remove rail state. Preserve shared route epochs as generic stale-action safety.",
+        "keys": [],
+        "outcome": "REMOVED rail state; generic ZyraPreviewRouteObserver retains route freshness for member actions."
+      },
+      {
+        "kind": "page_context",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 394,
+        "end_line": 445,
+        "control": "_pageOptionsSource/_pageOptionsTitle",
+        "effect": "Labels context-specific developer options; remove entire context map.",
+        "keys": [],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "developer_rail_open_close",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 447,
+        "end_line": 477,
+        "control": "_canOpenDevControls/_openDevControls/_closeDevControls",
+        "effect": "Opens and closes rail; phone can no longer invoke controls by hold.",
+        "keys": [],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "hold_entry",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 1723,
+        "end_line": 1735,
+        "control": "ZyraDevHoldToOpen",
+        "effect": "Three-second edge hold opens developer rail; remove wrapper.",
+        "keys": [],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "developer_page",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 1968,
+        "end_line": 2023,
+        "control": "_devControlsPage/_buildDevControls",
+        "effect": "Renders close/Home/control panel; remove entire presentation and controls route.",
+        "keys": [
+          {
+            "line": 1971,
+            "key": "dev_controls_page"
+          },
+          {
+            "line": 1980,
+            "key": "dev_controls_close"
+          },
+          {
+            "line": 1989,
+            "key": "draft_close"
+          },
+          {
+            "line": 2004,
+            "key": "dev_controls_scroll"
+          }
+        ],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "received_request_peer_simulation",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 3139,
+        "end_line": 3156,
+        "control": "draft_waiting_confirm_/draft_waiting_decline_",
+        "effect": "Simulates remote confirmation or refusal; removed from phone.",
+        "keys": [
+          {
+            "line": 3142,
+            "key": "draft_waiting_confirm_${p.id}"
+          },
+          {
+            "line": 3148,
+            "key": "draft_waiting_decline_${p.id}"
+          }
+        ],
+        "outcome": "PRESERVED: current LOCK2V2 exception; remains functional as drawn."
+      },
+      {
+        "kind": "sent_request_peer_simulation",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 3194,
+        "end_line": 3202,
+        "control": "draft_recipient_",
+        "effect": "Simulates recipient acceptance; removed from phone.",
+        "keys": [
+          {
+            "line": 3196,
+            "key": "draft_recipient_${p.id}"
+          }
+        ],
+        "outcome": "PRESERVED: current LOCK2V2 exception; remains functional as drawn."
+      },
+      {
+        "kind": "preparing_journey_peer_simulation",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 4285,
+        "end_line": 4291,
+        "control": "draft_peer_ready_",
+        "effect": "Simulates remote readiness; removed from phone.",
+        "keys": [
+          {
+            "line": 4286,
+            "key": "draft_peer_ready_$id"
+          }
+        ],
+        "outcome": "PRESERVED: current LOCK2V2 exception; remains functional as drawn."
+      },
+      {
+        "kind": "journey_stage_peer_simulations",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 4560,
+        "end_line": 4665,
+        "control": "draft_peer_salam_/draft_peer_reveal_/draft_stage_peer_ready_",
+        "effect": "Simulates peer stage decisions; remove peer controls and LOCAL PREVIEW CONTROLS labels. Preserve member self choices and local conversation form pending LOCK audit.",
+        "keys": [
+          {
+            "line": 4578,
+            "key": "draft_peer_salam_$id"
+          },
+          {
+            "line": 4588,
+            "key": "draft_peer_reveal_$id"
+          },
+          {
+            "line": 4604,
+            "key": "concept_message"
+          },
+          {
+            "line": 4612,
+            "key": "concept_send_message"
+          },
+          {
+            "line": 4628,
+            "key": "draft_stage_ready_$id"
+          },
+          {
+            "line": 4637,
+            "key": "draft_stage_peer_ready_$id"
+          },
+          {
+            "line": 4647,
+            "key": "draft_stage_next_$id"
+          }
+        ],
+        "outcome": "REMOVED: stage peer Salam/reveal/stage-ready simulation controls and developer labels. Preserved member own choices and conversation form."
+      },
+      {
+        "kind": "activity_checklist_and_bar",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 4893,
+        "end_line": 4932,
+        "control": "_clearActivityRehearsal/_activityAction/_selectActivityExample/_stepActivityExample",
+        "effect": "Cycles fictional activity examples and checklist; remove interactions, keep optional code fixture feed.",
+        "keys": [],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "activity_preview_bar",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 5250,
+        "end_line": 5264,
+        "control": "ZyraMyZyraActivityPreviewBar",
+        "effect": "Displays Previous/Next/Checklist/Current preview actions; remove.",
+        "keys": [],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "guardian_identity_skip",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 6422,
+        "end_line": 6426,
+        "control": "onDevSkip",
+        "effect": "Bypasses verification preview back to offer; remove skip callback.",
+        "keys": [],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "compatibility_credits",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8117,
+        "end_line": 8143,
+        "control": "draft_compatibility_unlock_",
+        "effect": "Assigns sample credit count 0/1/5; remove phone presets; retain code-owned compatibility store.",
+        "keys": [
+          {
+            "line": 8125,
+            "key": "draft_compatibility_unlock_$count"
+          }
+        ],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "journey_count",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8535,
+        "end_line": 8553,
+        "control": "_showJourneyCount",
+        "effect": "Seeds 1/2/3 Journeys; remove action, allow external model fixture setup.",
+        "keys": [],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "seeker_membership",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8555,
+        "end_line": 8568,
+        "control": "_sampleSeekerMembership",
+        "effect": "Changes sample capacity/plan/wallet; remove phone action; existing initialBasic and fixture remain.",
+        "keys": [],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "page_options_root",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8570,
+        "end_line": 8592,
+        "control": "_controls",
+        "effect": "Builds developer-only context-specific rows; remove entire function.",
+        "keys": [],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "circle_appearance",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8606,
+        "end_line": 8616,
+        "control": "concept_circle_bubble_design",
+        "effect": "Selects bubble styling; phone loses style comparison, current design remains.",
+        "keys": [
+          {
+            "line": 8608,
+            "key": "concept_circle_bubble_design"
+          }
+        ],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "timeline_scenarios",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8618,
+        "end_line": 8621,
+        "control": "_timelineControls",
+        "effect": "Selects fictional Timeline scenarios; phone loses scenario selection, code fixture factory remains.",
+        "keys": [],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "peer_bio",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8622,
+        "end_line": 8648,
+        "control": "draft_peer_bio_reveal_/draft_peer_bio_ready_",
+        "effect": "Simulates peer Bio reveal/continue; remove, external model fixture can seed.",
+        "keys": [
+          {
+            "line": 8627,
+            "key": "draft_peer_bio_reveal_$_personId"
+          },
+          {
+            "line": 8637,
+            "key": "draft_peer_bio_ready_$_personId"
+          }
+        ],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "next_motion",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8657,
+        "end_line": 8665,
+        "control": "_nextMotionPicker",
+        "effect": "Selects Browse next-card animation; current animation remains; fixture can supply alternatives.",
+        "keys": [],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "journey_count_rows",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8666,
+        "end_line": 8688,
+        "control": "concept_journey_preview_",
+        "effect": "Seeds 1/2/3 Journeys; remove.",
+        "keys": [
+          {
+            "line": 8673,
+            "key": "concept_journey_preview_$count"
+          }
+        ],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "wallet_readiness",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8689,
+        "end_line": 8725,
+        "control": "concept_switch_ready/concept_switch_needs_signup",
+        "effect": "Changes other role readiness; remove; preserve member g13 Switch.",
+        "keys": [
+          {
+            "line": 8694,
+            "key": "concept_switch_ready"
+          },
+          {
+            "line": 8708,
+            "key": "concept_switch_needs_signup"
+          }
+        ],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "wallet_coverage",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8727,
+        "end_line": 8780,
+        "control": "concept_wallet_coverage_/concept_wallet_spare_place",
+        "effect": "Assigns fictional coverage/place inventory; remove; code fixture wallet remains.",
+        "keys": [
+          {
+            "line": 8735,
+            "key": "concept_wallet_coverage_${coverage.name}"
+          },
+          {
+            "line": 8759,
+            "key": "concept_wallet_spare_place"
+          }
+        ],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "payment_history",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8782,
+        "end_line": 8814,
+        "control": "concept_membership_history_",
+        "effect": "Changes paid/never/unknown records; remove; code fixture history remains.",
+        "keys": [
+          {
+            "line": 8789,
+            "key": "concept_membership_history_${history.name}"
+          }
+        ],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "membership_rows",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8815,
+        "end_line": 8836,
+        "control": "draft_membership_seeker_basic/draft_membership_seeker_one",
+        "effect": "Switches sample seeker plan/capacity; remove.",
+        "keys": [
+          {
+            "line": 8821,
+            "key": "draft_membership_seeker_basic"
+          },
+          {
+            "line": 8828,
+            "key": "draft_membership_seeker_one"
+          }
+        ],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "guardian_membership_rows",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8837,
+        "end_line": 8870,
+        "control": "concept_guardian_plan_",
+        "effect": "Switches sample guardian plan; remove; existing initialBasic/model setup remains.",
+        "keys": [
+          {
+            "line": 8866,
+            "key": "concept_guardian_plan_${guardian.id}"
+          }
+        ],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "request_tab_rows",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8871,
+        "end_line": 8882,
+        "control": "concept_requests_controls",
+        "effect": "Forces request list tab; remove duplicate developer picker; member request tabs remain.",
+        "keys": [
+          {
+            "line": 8878,
+            "key": "concept_requests_controls"
+          }
+        ],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "activity_checklist",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8883,
+        "end_line": 8905,
+        "control": "concept_activity_checklist",
+        "effect": "Selects activity rehearsal scenario; remove.",
+        "keys": [
+          {
+            "line": 8886,
+            "key": "concept_activity_checklist"
+          }
+        ],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "ended_history_seed",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8906,
+        "end_line": 8919,
+        "control": "draft_history",
+        "effect": "Adds fictional ended history; remove action; external model seed remains.",
+        "keys": [
+          {
+            "line": 8911,
+            "key": "draft_history"
+          }
+        ],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "reset",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8920,
+        "end_line": 8972,
+        "control": "draft_reset",
+        "effect": "Resets all sample state, plans/wallet, profile visibility and role; remove.",
+        "keys": [
+          {
+            "line": 8923,
+            "key": "draft_reset"
+          }
+        ],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "role_switch",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8973,
+        "end_line": 8993,
+        "control": "draft_role_guardian/draft_role_seeker",
+        "effect": "Switches developer role; remove; member wallet Switch retains _switchRole.",
+        "keys": [
+          {
+            "line": 8977,
+            "key": "draft_role_guardian"
+          },
+          {
+            "line": 8984,
+            "key": "draft_role_seeker"
+          }
+        ],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "timeline_pickers",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 8995,
+        "end_line": 9086,
+        "control": "concept_timeline_",
+        "effect": "Scenario/event/stage dropdown widgets; remove.",
+        "keys": [
+          {
+            "line": 9060,
+            "key": "concept_timeline_${kind}_dropdown"
+          },
+          {
+            "line": 9078,
+            "key": "concept_timeline_${kind}_${choice.$1}"
+          }
+        ],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "appearance_picker",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 9088,
+        "end_line": 9145,
+        "control": "_circleAppearancePicker",
+        "effect": "Generic circle design dropdown; remove.",
+        "keys": [],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "next_motion_picker",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 9147,
+        "end_line": 9186,
+        "control": "concept_next_motion_dropdown/concept_browse_next_motion_",
+        "effect": "Browse motion dropdown; remove.",
+        "keys": [
+          {
+            "line": 9150,
+            "key": "concept_next_motion_dropdown"
+          },
+          {
+            "line": 9175,
+            "key": "concept_browse_next_motion_${motion.name}"
+          }
+        ],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "developer_helpers",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 9232,
+        "end_line": 9313,
+        "control": "_controlSection/_previewAction",
+        "effect": "Developer compact tool cards and rows; remove.",
+        "keys": [],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      },
+      {
+        "kind": "developer_segmented_choices",
+        "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "start_line": 9445,
+        "end_line": 9489,
+        "control": "_choices",
+        "effect": "Developer plan/request segmented choices; remove unused helper.",
+        "keys": [],
+        "outcome": "REMOVED; alternate sample values available only through constructor test fixtures where applicable."
+      }
+    ],
+    "resolution": "Brief exception preserves controls drawn in current LOCK masters. Parent verified LOCK2V2 spec section 2.5/LOCK record line 27 for the four inline Demo action keys.",
+    "code_only_fixture_api": {
+      "shell": "ZyraOneJourneyShellFixture + ZyraOneJourneyShellFixtureState",
+      "test_support": "ZyraShellTestFixture in SOURCE/test/support/zyra_hidden_dev_controls_driver.dart",
+      "ownership_gate": "Exact fixture identity, account generation, current route, mounted and canAct required before fixture application.",
+      "member_preserved": [
+        "Profile Switch",
+        "Personalisation/Gold/haptics/notifications/app lock",
+        "Journey options",
+        "LOCK2V2 inline Demo accepts/confirms/declines/readiness"
+      ],
+      "retained_callback_guard": "onCaptureGuardAttached supplies existing _accountFreshGuard factory; test delegates additionally bind fixture revision; route-stale test harnesses install generic ZyraPreviewRouteObserver."
+    }
+  },
+  "external": {
+    "action": "OA-ZYRA-325",
+    "source": "DOC-ZYRA-0346",
+    "before_edits": true,
+    "rows": [
+      {
+        "file": "lib/widgets/onboarding_scaffold.dart",
+        "line": 184,
+        "effect": "Question skip button shared across Seeker, Guardian, chapter 2, Bio, membership and values onboarding.",
+        "removal_consequence": "No phone bypass of a question; member Continue/Finish later and swipe back remain."
+      },
+      {
+        "file": "lib/screens/onboarding/onboarding_stage_intro_screen.dart",
+        "line": 322,
+        "effect": "Skip welcome/stage handoff.",
+        "removal_consequence": "Founder follows the real onboarding continuation."
+      },
+      {
+        "file": "lib/screens/onboarding/transition_screen.dart",
+        "line": 81,
+        "effect": "Skip Guardian support/consent handoff (plain and styled forms at line184).",
+        "removal_consequence": "No skip of handoff; real Continue remains."
+      },
+      {
+        "file": "lib/screens/onboarding/account_path_overview_screen.dart",
+        "line": 1007,
+        "effect": "Skip account-path overview.",
+        "removal_consequence": "No separate developer skip; real continuation remains."
+      },
+      {
+        "file": "lib/screens/onboarding/values_preferences_flow.dart",
+        "line": 566,
+        "effect": "Floating developer skip around compatibility category/reveal screens.",
+        "removal_consequence": "No phone skip of deferred onboarding section."
+      },
+      {
+        "file": "lib/screens/onboarding/profile_ready_screen.dart",
+        "line": 352,
+        "effect": "Skip profile setup review into Home.",
+        "removal_consequence": "No developer shortcut to Home."
+      },
+      {
+        "file": "lib/screens/onboarding/identity_verification_screen.dart",
+        "line": 364,
+        "effect": "Skip identity handoff plus local verification result selector (lines684/1026).",
+        "removal_consequence": "No developer skip or result-chip simulation on phone; code-only fixtures retain state captures."
+      },
+      {
+        "file": "lib/screens/welcome_screen.dart",
+        "line": 278,
+        "effect": "Developer signup Skip plus external review entry at line306.",
+        "removal_consequence": "No developer signup shortcut/review account picker from Welcome."
+      },
+      {
+        "file": "lib/screens/wali/zyra_code_screen.dart",
+        "line": 407,
+        "effect": "Skip to Guardian developer preview from onboarding code screen (button line1280).",
+        "removal_consequence": "No phone shortcut from code linking into Guardian fixture."
+      },
+      {
+        "file": "lib/screens/journey/journey_flow_screen.dart",
+        "line": 4674,
+        "effect": "Inline developer stage jumper: stage, Bio/fields, Guardian selection/account paid-unlock controls; on-page counterpart User action line1508.",
+        "removal_consequence": "No phone stage jump, simulated counterpart action, Guardian/scenario changes or paid-unlock simulation; real Pause/Save behavior remains."
+      },
+      {
+        "file": "lib/screens/settings/settings_screen.dart",
+        "line": 412,
+        "effect": "Developer Settings layout selection listener, smooth-card comparison state; private getter line954.",
+        "removal_consequence": "Settings uses its current selected official layout; member settings remain."
+      },
+      {
+        "file": "lib/theme/zyra_text.dart",
+        "line": 22,
+        "effect": "18 font comparison candidates and session selector (line61).",
+        "removal_consequence": "Official Poppins stays; no phone font comparison."
+      },
+      {
+        "file": "lib/theme/zyra_interaction_style.dart",
+        "line": 8,
+        "effect": "Seven navigation comparison candidates and session selector (line75).",
+        "removal_consequence": "Official Floating Glass stays; member haptic selection/persistence remains."
+      },
+      {
+        "file": "lib/theme/zyra_colors.dart",
+        "line": 386,
+        "effect": "Developer palette/session surface comparison state.",
+        "removal_consequence": "Official Ivory/locked defaults stay; Personalisation Gold/haptics and app backgrounds remain."
+      },
+      {
+        "file": "lib/screens/home/home_shell.dart",
+        "line": 297,
+        "effect": "Global developer rail page/Connections callbacks and page-selection state.",
+        "removal_consequence": "No developer navigation from rail; existing member tab actions/controllers remain.",
+        "original_location_read_before_edit": true
+      },
+      {
+        "file": "lib/screens/wali/wali_home_shell.dart",
+        "line": 191,
+        "effect": "Global developer rail Guardian-page callback.",
+        "removal_consequence": "No developer page jump; real Guardian tabs remain.",
+        "original_location_read_before_edit": true
+      },
+      {
+        "file": "lib/screens/auth/role_selection_screen.dart",
+        "line": 82,
+        "effect": "Registers role-selection surface with global developer overlay coordinator.",
+        "removal_consequence": "No overlay coupling; real first-use Seeker/Guardian choice and animations remain.",
+        "original_location_read_before_edit": true
+      },
+      {
+        "file": "lib/screens/subscription/profile_unlock_screen.dart",
+        "line": 232,
+        "effect": "Registers global developer wallet balance controls and mutation callback.",
+        "removal_consequence": "No 0/1/5 developer wallet picker; real Compatibility action and fixture default balance remain.",
+        "original_location_read_before_edit": true
+      },
+      {
+        "file": "lib/screens/wali/family_messaging_screens.dart",
+        "line": 1326,
+        "effect": "Developer-only fallback after sample Journey has no server row calls global seeker Connections coordinator.",
+        "removal_consequence": "Founder no longer jumps from a missing old-app sample Journey into Connections; actual member Journey route and final truthful unavailable path remain.",
+        "original_location_read_before_edit": true
+      }
+    ],
+    "resumed": true,
+    "locked_demo_exception": "LOCK2V2 Demo peer actions retained by root; external onboarding skip controls are removed.",
+    "theme_rows_status": "Audit only; theme files unchanged. Settings current-layout comparison branches were removed as parent separately authorized.",
+    "source_status": "External controls removal reapplied;21externalfiles plus canonical gold/welcome selector split complete. Whole SOURCE analyzer clean. Onboarding tests migrated to real-screen/code-only fixtures with complete visible-case accounting.",
+    "member_preserved": [
+      "Current Settings layout and all member account preferences/actions",
+      "Personalisation, Gold accents, haptics and app lock",
+      "Ordinary first-use role choice and existing member onboarding continuation",
+      "Existing old member Pause/Save and server actions",
+      "Current LOCK2V2 Demo peer actions retained by root"
+    ],
+    "unused_candidates": [
+      "lib/dev/zyra_dev_surface_coordinator.dart (only self-definition references remain in lib)",
+      "lib/dev/dev_settings_design_state.dart (Settings no longer imports it; root should check remaining fixture refs before move)"
+    ],
+    "final_validation": {
+      "all_source_analyzer": "SOURCE/.buildlog/queue44_20261103/analyze_external_final.log",
+      "all_source_analyzer_result": "exit0; No issues found;4.9s",
+      "test_case_comparison": "work/external_scoped_case_comparison.json",
+      "baseline_visible_cases": 367,
+      "current_visible_cases": 367,
+      "baseline_failures": 6,
+      "current_failures": 6,
+      "baseline_skips": 8,
+      "current_skips": 8,
+      "missing_cases": 0,
+      "added_cases": 0,
+      "baseline_passing_regressions": 0,
+      "renamed_case_map": "work/external_test_rename_map.json",
+      "rename_review": "peer review pending; reviewed_by empty until reviewer validates"
+    },
+    "unused_candidates_status": "Initial recommendations sent to root; root owns hash/move completion and final unused-file audit."
+  },
+  "retired_declarations": [
+    {
+      "file": "SOURCE/lib/screens/auth/tester_access_screen.dart",
+      "line": 11,
+      "control_or_scope": "class TesterAccessScreen extends StatefulWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/auth/tester_access_screen.dart",
+      "line": 18,
+      "control_or_scope": "class _TesterAccessScreenState extends State<TesterAccessScreen> {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/auth/tester_access_screen.dart",
+      "line": 59,
+      "control_or_scope": "onPressed: () => Navigator.of(context).maybePop(),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/auth/tester_access_screen.dart",
+      "line": 72,
+      "control_or_scope": "key: const ValueKey('tester_username_field'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/auth/tester_access_screen.dart",
+      "line": 90,
+      "control_or_scope": "key: const ValueKey('tester_password_field'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/auth/tester_access_screen.dart",
+      "line": 116,
+      "control_or_scope": "key: const ValueKey('tester_verify_button'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/auth/tester_access_screen.dart",
+      "line": 117,
+      "control_or_scope": "onPressed: _verify,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/auth/tester_access_screen.dart",
+      "line": 132,
+      "control_or_scope": "onPressed: () => _openPreview(guardian: false),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/auth/tester_access_screen.dart",
+      "line": 136,
+      "control_or_scope": "onPressed: () => _openPreview(guardian: true),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/auth/tester_access_screen.dart",
+      "line": 152,
+      "control_or_scope": "class _PreviewButton extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/auth/tester_access_screen.dart",
+      "line": 163,
+      "control_or_scope": "onPressed: onPressed,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/dev/developer_access_screen.dart",
+      "line": 16,
+      "control_or_scope": "class DeveloperAccessScreen extends StatefulWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/dev/developer_access_screen.dart",
+      "line": 23,
+      "control_or_scope": "class _DeveloperAccessScreenState extends State<DeveloperAccessScreen> {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/dev/developer_access_screen.dart",
+      "line": 113,
+      "control_or_scope": "key: const ValueKey('dev_access_health_usage'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/dev/developer_access_screen.dart",
+      "line": 128,
+      "control_or_scope": "key: const ValueKey('dev_access_seeker'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/dev/developer_access_screen.dart",
+      "line": 138,
+      "control_or_scope": "key: const ValueKey('dev_access_seeker_basic'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/dev/developer_access_screen.dart",
+      "line": 148,
+      "control_or_scope": "key: const ValueKey('dev_access_guardian'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/dev/developer_access_screen.dart",
+      "line": 158,
+      "control_or_scope": "key: const ValueKey('dev_access_guardian_basic'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/dev/developer_access_screen.dart",
+      "line": 168,
+      "control_or_scope": "key: const ValueKey('dev_access_signup'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/screens/dev/developer_access_screen.dart",
+      "line": 187,
+      "control_or_scope": "class _DevPill extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 55,
+      "control_or_scope": "class ZyraDevControlsRouteObserver extends NavigatorObserver",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 116,
+      "control_or_scope": "class ZyraDevControlsPageHeader extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 143,
+      "control_or_scope": "key: const ValueKey('dev_controls_close'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 145,
+      "control_or_scope": "onPressed: onClose,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 178,
+      "control_or_scope": "key: ValueKey('dev_controls_tab_${section.name}'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 179,
+      "control_or_scope": "onPressed: () => onSelected(section),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 209,
+      "control_or_scope": "class ZyraDevControlRail extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 254,
+      "control_or_scope": "ValueKey('dev_rail_${section.name}'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 295,
+      "control_or_scope": "class ZyraDevPreviewLauncher extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 313,
+      "control_or_scope": "key: const ValueKey('dev_open_page_preview'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 323,
+      "control_or_scope": "class ZyraDevHomeTools extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 353,
+      "control_or_scope": "key: const ValueKey('dev_home_section_navigation'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 355,
+      "control_or_scope": "key: const ValueKey('dev_home_navigation'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 363,
+      "control_or_scope": "key: const ValueKey('dev_home_section_discovery_direction'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 371,
+      "control_or_scope": "key: const ValueKey('dev_home_section_splash'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 379,
+      "control_or_scope": "key: const ValueKey('dev_home_section_onboarding'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 387,
+      "control_or_scope": "key: const ValueKey('dev_home_section_settings'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 396,
+      "control_or_scope": "key: const ValueKey('dev_home_section_account'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 403,
+      "control_or_scope": "key: const ValueKey('dev_home_login'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 410,
+      "control_or_scope": "key: const ValueKey('dev_reset_state'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 417,
+      "control_or_scope": "key: const ValueKey('dev_switch_accounts'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 432,
+      "control_or_scope": "class ZyraDevAppSurfacePicker extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 459,
+      "control_or_scope": "class _DevAppSurfaceOption extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 483,
+      "control_or_scope": "key: ValueKey('dev_app_surface_${style.name}'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 532,
+      "control_or_scope": "class ZyraDevStylePanel extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 586,
+      "control_or_scope": "key: const ValueKey('dev_haptic_level'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 620,
+      "control_or_scope": "key: const ValueKey('dev_style_reset'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 639,
+      "control_or_scope": "class _NavStyleChoice extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 655,
+      "control_or_scope": "key: ValueKey('dev_nav_style_${style.name}'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 682,
+      "control_or_scope": "class _NavStyleGlyph extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 730,
+      "control_or_scope": "class _PaletteOption extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 746,
+      "control_or_scope": "key: ValueKey('dev_palette_${palette.name}'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 784,
+      "control_or_scope": "class _FontChoice extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 795,
+      "control_or_scope": "key: ValueKey('dev_font_${font.name}'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "line": 834,
+      "control_or_scope": "class _DevSharedAction extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 16,
+      "control_or_scope": "class DevOnboardingDirectionsScreen extends StatefulWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 28,
+      "control_or_scope": "class _DevOnboardingDirectionsScreenState",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 55,
+      "control_or_scope": "key: ValueKey(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 61,
+      "control_or_scope": "key: const ValueKey('dev_onboarding_static_canvas'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 73,
+      "control_or_scope": "key: const ValueKey('dev_onboarding_close'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 75,
+      "control_or_scope": "onPressed: () => Navigator.of(context).maybePop(),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 83,
+      "control_or_scope": "key: const ValueKey(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 92,
+      "control_or_scope": "key: const ValueKey(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 96,
+      "control_or_scope": "onPressed: () => _cycle(-1),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 101,
+      "control_or_scope": "key: const ValueKey(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 105,
+      "control_or_scope": "onPressed: () => _cycle(1),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 115,
+      "control_or_scope": "key: ValueKey(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 137,
+      "control_or_scope": "class _OnboardingWalkthrough extends StatefulWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 146,
+      "control_or_scope": "class _OnboardingWalkthroughState extends State<_OnboardingWalkthrough> {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 367,
+      "control_or_scope": "key: const ValueKey('dev_onboarding_page_view'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 407,
+      "control_or_scope": "key: const ValueKey('dev_onboarding_back'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 408,
+      "control_or_scope": "onPressed: _canNavigate",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 426,
+      "control_or_scope": "key: ValueKey('dev_onboarding_page_dots'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 435,
+      "control_or_scope": "key: const ValueKey('dev_onboarding_page_count'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 447,
+      "control_or_scope": "key: const ValueKey('dev_onboarding_skip'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 448,
+      "control_or_scope": "onPressed: _canNavigate ? _skip : null,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 468,
+      "control_or_scope": "key: const ValueKey('dev_onboarding_continue'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 470,
+      "control_or_scope": "onPressed: _canNavigate ? _continue : null,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 477,
+      "control_or_scope": "key: const ValueKey('dev_onboarding_skip'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 478,
+      "control_or_scope": "onPressed: _canNavigate ? _skip : null,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 503,
+      "control_or_scope": "key: const ValueKey('dev_onboarding_continue'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 504,
+      "control_or_scope": "onPressed: _canNavigate ? _continue : null,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 530,
+      "control_or_scope": "class DevOnboardingIntroduction extends StatefulWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "line": 551,
+      "control_or_scope": "class _DevOnboardingIntroductionState extends State<DevOnboardingIntroduction> {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_page_options.dart",
+      "line": 13,
+      "control_or_scope": "class ZyraDevPageOption {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_page_options.dart",
+      "line": 33,
+      "control_or_scope": "class ZyraDevPageOptions extends StatefulWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_page_options.dart",
+      "line": 49,
+      "control_or_scope": "class _ZyraDevPageOptionsState extends State<ZyraDevPageOptions> {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_page_options.dart",
+      "line": 206,
+      "control_or_scope": "key: const ValueKey('dev_page_options_control'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_page_options.dart",
+      "line": 218,
+      "control_or_scope": "key: ValueKey('dev_page_options_group_${entry.key}'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_page_options.dart",
+      "line": 237,
+      "control_or_scope": "key: const ValueKey('dev_page_option_error'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_page_options.dart",
+      "line": 259,
+      "control_or_scope": "key: ValueKey('dev_page_options_dropdown_$group'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_page_options.dart",
+      "line": 319,
+      "control_or_scope": "key: const ValueKey('dev_page_options_inline_menu'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_page_options.dart",
+      "line": 327,
+      "control_or_scope": "key: const ValueKey('dev_page_options_scroll'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_page_options.dart",
+      "line": 345,
+      "control_or_scope": "key: ValueKey(option.id),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_hold_to_open.dart",
+      "line": 6,
+      "control_or_scope": "class ZyraDevHoldToOpen extends StatefulWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_hold_to_open.dart",
+      "line": 26,
+      "control_or_scope": "class _HoldBinding {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_hold_to_open.dart",
+      "line": 42,
+      "control_or_scope": "class _ZyraDevHoldToOpenState extends State<ZyraDevHoldToOpen>",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_hold_to_open.dart",
+      "line": 160,
+      "control_or_scope": "key: const ValueKey('dev_controls_hold_surface'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_hold_to_open.dart",
+      "line": 185,
+      "control_or_scope": "class _DevHoldGestureRecognizer extends LongPressGestureRecognizer {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_signup_process.dart",
+      "line": 23,
+      "control_or_scope": "class DevSignUpProcessScreen extends StatefulWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_signup_process.dart",
+      "line": 35,
+      "control_or_scope": "class _DevSignUpProcessScreenState extends State<DevSignUpProcessScreen> {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_signup_process.dart",
+      "line": 177,
+      "control_or_scope": "key: ValueKey(allowed ? 'dev_signup_process' : 'dev_signup_denied'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_signup.dart",
+      "line": 15,
+      "control_or_scope": "class ZyraDevSignUp {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 32,
+      "control_or_scope": "class WaliDevScenarioPanel extends StatefulWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 46,
+      "control_or_scope": "class _WaliDevScenarioPanelState extends State<WaliDevScenarioPanel> {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 227,
+      "control_or_scope": "onSelected: denied == null ? () => onChanged(count) : null,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 241,
+      "control_or_scope": "onSelected: () {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 288,
+      "control_or_scope": "onSelected: _roleDenial == null ? () => _s.setWaliStageIndex(i) : null,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 320,
+      "control_or_scope": "onSelected: _roleDenial == null && _s.waliActiveJourneys > 0",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 374,
+      "control_or_scope": "onSelected: () =>",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 390,
+      "control_or_scope": "onSelected: preview ? () => context.setScene(scene) : null,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 399,
+      "control_or_scope": "onSelected: preview",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 410,
+      "control_or_scope": "onSelected: preview",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 426,
+      "control_or_scope": "onSelected: preview",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 435,
+      "control_or_scope": "onSelected: preview",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 447,
+      "control_or_scope": "onSelected: () {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 477,
+      "control_or_scope": "onSelected: () => _copySeekerTestCode(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 488,
+      "control_or_scope": "onSelected: () => _copySeekerTestCode(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 531,
+      "control_or_scope": "key: const ValueKey('dev_controls_page'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 541,
+      "control_or_scope": "onSelected: _selectSection,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 617,
+      "control_or_scope": "class _WaliInlineNotice extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "line": 645,
+      "control_or_scope": "onPressed: onDismiss,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_settings_design.dart",
+      "line": 12,
+      "control_or_scope": "class DevSettingsDesignPicker extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_settings_design.dart",
+      "line": 44,
+      "control_or_scope": "key: ValueKey('dev_settings_design_${design.name}'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_settings_design.dart",
+      "line": 53,
+      "control_or_scope": "onSelected: enabled",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_settings_design.dart",
+      "line": 61,
+      "control_or_scope": "key: const ValueKey('dev_settings_open'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_settings_design.dart",
+      "line": 62,
+      "control_or_scope": "onPressed: enabled",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "line": 55,
+      "control_or_scope": "class ZyraGlobalDevOverlayHost extends StatefulWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "line": 90,
+      "control_or_scope": "class _ZyraGlobalDevOverlayHostState extends State<ZyraGlobalDevOverlayHost>",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "line": 606,
+      "control_or_scope": "class _DeferredDevHoldUpdates extends ChangeNotifier {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "line": 645,
+      "control_or_scope": "class ZyraGlobalDevOverlay extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "line": 693,
+      "control_or_scope": "class ZyraEntryDevPanel extends StatefulWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "line": 707,
+      "control_or_scope": "class _ZyraEntryDevPanelState extends State<ZyraEntryDevPanel> {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "line": 773,
+      "control_or_scope": "onSelected: () {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "line": 876,
+      "control_or_scope": "key: const ValueKey('dev_controls_page'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "line": 884,
+      "control_or_scope": "onSelected: _select,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "line": 900,
+      "control_or_scope": "key: const ValueKey('dev_entry_section_onboarding'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "line": 907,
+      "control_or_scope": "key: ValueKey(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "line": 928,
+      "control_or_scope": "onSelected: () {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "line": 943,
+      "control_or_scope": "onSelected: _accounts,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "line": 949,
+      "control_or_scope": "onSelected: _signUp,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_splash_directions.dart",
+      "line": 14,
+      "control_or_scope": "class DevSplashDirectionPicker extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_splash_directions.dart",
+      "line": 39,
+      "control_or_scope": "key: ValueKey('dev_splash_${direction.name}'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_splash_directions.dart",
+      "line": 41,
+      "control_or_scope": "onPressed: !enabled",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_splash_directions.dart",
+      "line": 61,
+      "control_or_scope": "class DevSplashDirectionsScreen extends StatefulWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_splash_directions.dart",
+      "line": 73,
+      "control_or_scope": "class _DevSplashDirectionsScreenState extends State<DevSplashDirectionsScreen> {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_splash_directions.dart",
+      "line": 94,
+      "control_or_scope": "key: const ValueKey('dev_splash_directions_denied'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_splash_directions.dart",
+      "line": 98,
+      "control_or_scope": "onPressed: () => Navigator.of(context).maybePop(),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_splash_directions.dart",
+      "line": 109,
+      "control_or_scope": "key: ValueKey('${_direction.name}_$_run'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_splash_directions.dart",
+      "line": 117,
+      "control_or_scope": "onPressed: () => Navigator.of(context).maybePop(),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_splash_directions.dart",
+      "line": 139,
+      "control_or_scope": "onPressed: () => _select(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_splash_directions.dart",
+      "line": 146,
+      "control_or_scope": "onPressed: () => setState(() => _run++),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_splash_directions.dart",
+      "line": 155,
+      "control_or_scope": "onPressed: () => _select(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_directions.dart",
+      "line": 21,
+      "control_or_scope": "class DevOnboardingDirectionPicker extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_directions.dart",
+      "line": 47,
+      "control_or_scope": "key: ValueKey('dev_onboarding_${direction.name}'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_directions.dart",
+      "line": 49,
+      "control_or_scope": "onPressed: !enabled",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_directions.dart",
+      "line": 76,
+      "control_or_scope": "key: ValueKey('dev_onboarding_story_${mode.name}'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_directions.dart",
+      "line": 87,
+      "control_or_scope": "onPressed: enabled",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_directions.dart",
+      "line": 123,
+      "control_or_scope": "key: ValueKey(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_directions.dart",
+      "line": 179,
+      "control_or_scope": "class DevOnboardingTransitionPicker extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_directions.dart",
+      "line": 220,
+      "control_or_scope": "key: ValueKey('dev_welcome_text_motion_${motion.name}'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_directions.dart",
+      "line": 272,
+      "control_or_scope": "key: ValueKey('dev_onboarding_gold_design_${design.name}'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_directions.dart",
+      "line": 321,
+      "control_or_scope": "key: ValueKey('dev_onboarding_gold_motion_${motion.name}'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_directions.dart",
+      "line": 326,
+      "control_or_scope": "onPressed: enabled",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_directions.dart",
+      "line": 349,
+      "control_or_scope": "key: ValueKey(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 52,
+      "control_or_scope": "class DevScenarioPanelV2 extends StatefulWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 70,
+      "control_or_scope": "class _DevScenarioPanelV2State extends State<DevScenarioPanelV2> {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 636,
+      "control_or_scope": "onSelected: () async {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 669,
+      "control_or_scope": "onSelected: () => onSelected(count),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 680,
+      "control_or_scope": "onSelected: () => _scenario.setBrowseSwipeFeedbackStyle(style),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 686,
+      "control_or_scope": "onSelected: () => _showBrowsePopup(DevPopup.saveLimit),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 693,
+      "control_or_scope": "onSelected: () => _showBrowsePopup(DevPopup.considerLimit),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 699,
+      "control_or_scope": "onSelected: () => _showBrowsePopup(DevPopup.dailyLimit),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 710,
+      "control_or_scope": "onSelected: _openLiveJourney,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 720,
+      "control_or_scope": "onSelected: _scenario.setActiveJourneys,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 727,
+      "control_or_scope": "onSelected: _scenario.setQueuedJourneys,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 734,
+      "control_or_scope": "onSelected: _scenario.setPausedJourneys,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 741,
+      "control_or_scope": "onSelected: _scenario.setEndedJourneys,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 751,
+      "control_or_scope": "onSelected: _scenario.setConsideredPreviewCount,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 758,
+      "control_or_scope": "onSelected: _scenario.setSavedPreviewCount,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 765,
+      "control_or_scope": "onSelected: _scenario.setPassedPreviewCount,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 773,
+      "control_or_scope": "onSelected: () => _grantCredits(ZyraUnlockService.currentTier, count),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 780,
+      "control_or_scope": "onSelected: _setGuardiansOnDecided,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 793,
+      "control_or_scope": "onSelected: () => _copyGuardianTestCode(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 802,
+      "control_or_scope": "onSelected: () => _copyGuardianTestCode(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 815,
+      "control_or_scope": "onSelected: () => _scenario.setUseLiveGuardianData(live),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 824,
+      "control_or_scope": "onSelected: () =>",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 833,
+      "control_or_scope": "onSelected: () => _scenario.setMainGuardian(linked),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 840,
+      "control_or_scope": "onSelected: _scenario.setAdditionalGuardians,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 852,
+      "control_or_scope": "onSelected: () => _setMembership(one),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 858,
+      "control_or_scope": "onSelected: () {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 870,
+      "control_or_scope": "onSelected: _promotion.resetDeveloperPolicy,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 883,
+      "control_or_scope": "onSelected: () => controls.setBalance(true, count),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 898,
+      "control_or_scope": "onSelected: _setIntroductionPreviews,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 910,
+      "control_or_scope": "onSelected: () => _scenario.setPauseScenario(scenario),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 924,
+      "control_or_scope": "key: const ValueKey('seeker_page_options'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 938,
+      "control_or_scope": "key: const ValueKey('dev_controls_page'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 946,
+      "control_or_scope": "onSelected: _selectSection,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 1043,
+      "control_or_scope": "class _LocalOnlyBanner extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 1048,
+      "control_or_scope": "key: const ValueKey('main_app_founder_preview_panel_banner'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 1065,
+      "control_or_scope": "class _PanelHeading extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 1079,
+      "control_or_scope": "class _ToolCard extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 1097,
+      "control_or_scope": "class _ToolAction extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 1128,
+      "control_or_scope": "class _InlineNotice extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "line": 1163,
+      "control_or_scope": "onPressed: onDismiss,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_developer_route_gate.dart",
+      "line": 10,
+      "control_or_scope": "class ZyraDeveloperRouteGate extends StatefulWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_developer_route_gate.dart",
+      "line": 32,
+      "control_or_scope": "class _ZyraDeveloperRouteGateState extends State<ZyraDeveloperRouteGate> {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 21,
+      "control_or_scope": "class DevOnboardingOpening extends StatefulWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 39,
+      "control_or_scope": "class _DevOnboardingOpeningState extends State<DevOnboardingOpening>",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 76,
+      "control_or_scope": "? const ValueKey('dev_onboarding_verification_intro')",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 77,
+      "control_or_scope": ": ValueKey(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 292,
+      "control_or_scope": "key: const ValueKey('dev_opening_quote_toggle'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 329,
+      "control_or_scope": "key: const ValueKey('dev_opening_quote'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 368,
+      "control_or_scope": "? const ValueKey('dev_onboarding_verification_art')",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 369,
+      "control_or_scope": ": ValueKey('dev_opening_art_$_page'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 381,
+      "control_or_scope": "? const ValueKey('dev_onboarding_verification_heading')",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 382,
+      "control_or_scope": ": ValueKey('dev_opening_heading_$_page'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 393,
+      "control_or_scope": "? const ValueKey('dev_onboarding_verification_body')",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 394,
+      "control_or_scope": ": ValueKey('dev_opening_body_$_page'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 416,
+      "control_or_scope": "key: const ValueKey('dev_onboarding_verification_closing'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 453,
+      "control_or_scope": "key: ValueKey(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 460,
+      "control_or_scope": "onPressed:",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 475,
+      "control_or_scope": "key: ValueKey('dev_onboarding_story_dot_$index'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 510,
+      "control_or_scope": "key: const ValueKey('dev_onboarding_page_count'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 525,
+      "control_or_scope": "key: ValueKey(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 533,
+      "control_or_scope": "key: ValueKey(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 541,
+      "control_or_scope": "onPressed: _canAdvance ? _next : null,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 553,
+      "control_or_scope": "key: ValueKey(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 558,
+      "control_or_scope": "onPressed: _canAdvance ? _next : null,",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 567,
+      "control_or_scope": "key: const ValueKey('dev_onboarding_skip'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 568,
+      "control_or_scope": "onPressed: _moving ? null : () => _next(skip: true),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 590,
+      "control_or_scope": "key: ValueKey('dev_onboarding_introduction_${widget.direction.name}'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 592,
+      "control_or_scope": "key: const ValueKey('dev_onboarding_static_canvas'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 618,
+      "control_or_scope": "key: const ValueKey('dev_opening_section'),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 639,
+      "control_or_scope": "key: ValueKey(_currentPage),",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 679,
+      "control_or_scope": "key: const ValueKey(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "line": 684,
+      "control_or_scope": "key: const ValueKey(",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_page_preview_screen.dart",
+      "line": 14,
+      "control_or_scope": "class ZyraPagePreviewScreen extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_page_preview_screen.dart",
+      "line": 192,
+      "control_or_scope": "class _PreviewGroup {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_page_preview_screen.dart",
+      "line": 200,
+      "control_or_scope": "class _PreviewGroupCard extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_preview_controls.dart",
+      "line": 8,
+      "control_or_scope": "class ZyraConceptPreviewChoice extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_tool_section.dart",
+      "line": 7,
+      "control_or_scope": "class ZyraDevToolSection extends StatelessWidget {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_dev_home.dart",
+      "line": 11,
+      "control_or_scope": "abstract final class ZyraDevHome {",
+      "removal_effect": "No phone entry or control remains; tests use code fixtures."
+    }
+  ],
+  "unused_client_helpers": {
+    "finding_authority": "OA-ZYRA-325",
+    "file": "SOURCE/lib/services/zyra_journey_service.dart",
+    "before_sha256": "09875f9e6c98cd4cd05424a0b38e962980b6ef4bb571addbd335c67b5321d12f",
+    "before_bytes": 75836,
+    "inventory_before_edit": true,
+    "items": [
+      {
+        "identifier": "devSetStage",
+        "before_declaration_line": 1621,
+        "before_reference_lines": [
+          "lib/services/zyra_journey_service.dart:1621:  static Future<String> devSetStage(String matchId, String stage) async {",
+          "lib/services/zyra_journey_service.dart:1635:      debugPrint('ZYRA: devSetStage($matchId, $stage) failed \u2014 $e');",
+          "lib/services/zyra_journey_service.dart:1645:  /// \u26a0\ufe0f Server-guarded on `@zyra.test`, like [devSetStage]. It sets the"
+        ],
+        "production_callers_outside_service": [],
+        "test_callers": [],
+        "disposition": "REMOVE unused developer-only client helper/type",
+        "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+        "after_reference_lines": []
+      },
+      {
+        "identifier": "devSetCounterpartReveal",
+        "before_declaration_line": 1656,
+        "before_reference_lines": [
+          "lib/services/zyra_journey_service.dart:1656:  static Future<bool> devSetCounterpartReveal(",
+          "lib/services/zyra_journey_service.dart:1669:        'ZYRA: devSetCounterpartReveal($matchId, $revealed) failed \u2014 $e',"
+        ],
+        "production_callers_outside_service": [],
+        "test_callers": [],
+        "disposition": "REMOVE unused developer-only client helper/type",
+        "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+        "after_reference_lines": []
+      },
+      {
+        "identifier": "devCounterpartComplete",
+        "before_declaration_line": 1826,
+        "before_reference_lines": [
+          "lib/services/zyra_journey_service.dart:1826:  static Future<String> devCounterpartComplete(",
+          "lib/services/zyra_journey_service.dart:1838:      debugPrint('ZYRA: devCounterpartComplete($matchId) failed - $e');"
+        ],
+        "production_callers_outside_service": [],
+        "test_callers": [],
+        "disposition": "REMOVE unused developer-only client helper/type",
+        "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+        "after_reference_lines": []
+      },
+      {
+        "identifier": "devRewindJourney",
+        "before_declaration_line": 1862,
+        "before_reference_lines": [
+          "lib/services/zyra_journey_service.dart:1862:  static Future<String> devRewindJourney({String? matchId}) async {",
+          "lib/services/zyra_journey_service.dart:1871:      debugPrint('ZYRA: devRewindJourney($matchId) failed - $e');"
+        ],
+        "production_callers_outside_service": [],
+        "test_callers": [],
+        "disposition": "REMOVE unused developer-only client helper/type",
+        "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+        "after_reference_lines": []
+      },
+      {
+        "identifier": "devSetPlusUnlock",
+        "before_declaration_line": 1876,
+        "before_reference_lines": [
+          "lib/services/zyra_journey_service.dart:1876:  static Future<bool> devSetPlusUnlock(String otherId, bool has) async {",
+          "lib/services/zyra_journey_service.dart:1885:      debugPrint('ZYRA: devSetPlusUnlock($otherId, $has) failed \u2014 $e');"
+        ],
+        "production_callers_outside_service": [],
+        "test_callers": [],
+        "disposition": "REMOVE unused developer-only client helper/type",
+        "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+        "after_reference_lines": []
+      },
+      {
+        "identifier": "devSetCompatibility",
+        "before_declaration_line": 1740,
+        "before_reference_lines": [
+          "lib/services/zyra_journey_service.dart:1740:  static Future<double?> devSetCompatibility(",
+          "lib/services/zyra_journey_service.dart:1751:      debugPrint('ZYRA: devSetCompatibility failed \u2014 $e');"
+        ],
+        "production_callers_outside_service": [],
+        "test_callers": [],
+        "disposition": "REMOVE unused developer-only client helper/type",
+        "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+        "after_reference_lines": []
+      },
+      {
+        "identifier": "fetchCounterpartRevealed",
+        "before_declaration_line": 1679,
+        "before_reference_lines": [
+          "lib/services/zyra_journey_service.dart:1679:  static Future<ZyraCompatibilityReadResult> fetchCounterpartRevealed("
+        ],
+        "production_callers_outside_service": [],
+        "test_callers": [],
+        "disposition": "REMOVE unused developer-only client helper/type",
+        "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+        "after_reference_lines": []
+      },
+      {
+        "identifier": "fetchHasPlusUnlock",
+        "before_declaration_line": 1893,
+        "before_reference_lines": [
+          "lib/services/zyra_journey_service.dart:1893:  static Future<bool> fetchHasPlusUnlock(String otherId) async {",
+          "lib/services/zyra_journey_service.dart:1910:      debugPrint('ZYRA: fetchHasPlusUnlock($otherId) failed \u2014 $e');"
+        ],
+        "production_callers_outside_service": [],
+        "test_callers": [],
+        "disposition": "REMOVE unused developer-only client helper/type",
+        "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+        "after_reference_lines": []
+      },
+      {
+        "identifier": "DevOnlyException",
+        "before_declaration_line": 1918,
+        "before_reference_lines": [
+          "lib/services/zyra_journey_service.dart:1619:  /// Throws [DevOnlyException] when the signed-in account is not a seeded test",
+          "lib/services/zyra_journey_service.dart:1631:      if (e.toString().contains('dev_only')) throw const DevOnlyException();",
+          "lib/services/zyra_journey_service.dart:1667:      if (e.toString().contains('dev_only')) throw const DevOnlyException();",
+          "lib/services/zyra_journey_service.dart:1837:      if (e.toString().contains('dev_only')) throw const DevOnlyException();",
+          "lib/services/zyra_journey_service.dart:1870:      if (e.toString().contains('dev_only')) throw const DevOnlyException();",
+          "lib/services/zyra_journey_service.dart:1884:      if (e.toString().contains('dev_only')) throw const DevOnlyException();",
+          "lib/services/zyra_journey_service.dart:1918:class DevOnlyException implements Exception {",
+          "lib/services/zyra_journey_service.dart:1919:  const DevOnlyException();"
+        ],
+        "production_callers_outside_service": [],
+        "test_callers": [],
+        "disposition": "REMOVE unused developer-only client helper/type",
+        "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+        "after_reference_lines": []
+      },
+      {
+        "identifier": "JourneyNotActiveException",
+        "before_declaration_line": 1927,
+        "before_reference_lines": [
+          "lib/services/zyra_journey_service.dart:1633:        throw const JourneyNotActiveException();",
+          "lib/services/zyra_journey_service.dart:1927:class JourneyNotActiveException implements Exception {",
+          "lib/services/zyra_journey_service.dart:1928:  const JourneyNotActiveException();"
+        ],
+        "production_callers_outside_service": [],
+        "test_callers": [],
+        "disposition": "REMOVE unused developer-only client helper/type",
+        "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+        "after_reference_lines": []
+      },
+      {
+        "identifier": "devSeedJourney",
+        "before_declaration_line": 494,
+        "before_reference_lines": [
+          "lib/services/zyra_journey_service.dart:494:  static Future<String> devSeedJourney() async {"
+        ],
+        "production_callers_outside_service": [],
+        "test_callers": [],
+        "disposition": "REMOVE after root retired mock-only Connections entry fallback",
+        "authority": "OA-ZYRA-325 queue44; parent actual non-mock navigation tail unchanged proof work/queue44_mock_journey_entry_inventory.json",
+        "removed_block_start_line": 486,
+        "removed_block_end_line": 498,
+        "removed_block_sha256": "87d30bd88198dc79dcdb38c36e45c66f0448706e4ffb585e6b0ae264d72cdd65",
+        "removed_block_bytes": 705,
+        "after_reference_lines": []
+      }
+    ],
+    "removed_blocks": [
+      {
+        "before_start_line": 1599,
+        "before_end_line": 1682,
+        "bytes": 3695,
+        "sha256": "a14d9cf1ea977e135c392942deb806f9b3e4939fd4c1cbee9e26101c9447e36f"
+      },
+      {
+        "before_start_line": 1721,
+        "before_end_line": 1755,
+        "bytes": 1429,
+        "sha256": "4ad2afc0e1053cd812bde9e447b05d39d75c9ae69d99df553c489bcae9b6e95d"
+      },
+      {
+        "before_start_line": 1811,
+        "before_end_line": 1912,
+        "bytes": 4180,
+        "sha256": "1e4b37ed07acd575352d07aa3678f16a4815d7b3c671672349f213ff4da1cc6d"
+      },
+      {
+        "before_start_line": 1916,
+        "before_end_line": 1931,
+        "bytes": 644,
+        "sha256": "897dc38d9770f6b403ac2951c36d992a446bd2ff21b709f2da672e896841360e"
+      }
+    ],
+    "retained_developer_helper": {
+      "identifier": "devSeedJourney",
+      "final_disposition": "REMOVED after parent removed final productioncaller",
+      "parent_inventory": "work/queue44_mock_journey_entry_inventory.json"
+    },
+    "backend_schema_rpc_definitions_auth_behavior_changed": false,
+    "after_sha256": "3c5768f4038843d2bcb445190d164c0fa37018045bfe37345570a4fc807cddeb",
+    "after_bytes": 65180,
+    "removed_bytes": 10656,
+    "retained_source_byte_identity": "Only enumerated obsolete helper/type blocks removed; formatter normalized one blank line at class end. Retained member method bodies are unchanged.",
+    "verification": {
+      "analyzer": "dart analyze lib/services/zyra_journey_service.dart lib/screens/connections/connections_screen.dart \u2014 No issues found after final devSeedJourney removal",
+      "focused_tests": {
+        "command": "flutter test --no-pub test/journey_busy_flags_test.dart test/zyra_journey_profile_hydration_test.dart --reporter json",
+        "event_log": ".buildlog/queue44_journey_service_unused_wrappers.jsonl",
+        "ordinary_passed": 17,
+        "loaders_passed": 2,
+        "failures": 0,
+        "skipped": 0,
+        "timing": "Run after first10unusedhelpers/types removal; finaldevSeedJourney removal followed parent0caller confirmation and analyzer. No newruntime behavior added."
+      },
+      "final_reference_scan": "rg across lib/test/tooling for all11identifiers returned0matches"
+    },
+    "second_pass_before_sha256": "f015346c370333cc9265e4bc007583f2bd8575fcb649b5b3951d48d4041d6dcd",
+    "removed_item_count": 11,
+    "source_frozen_after_scoped_analyzer": true
+  },
+  "retired_mock_real_write_fallback": {
+    "authority": "OA-ZYRA-325 / developer-control code removal",
+    "file": "SOURCE/lib/screens/connections/connections_screen.dart",
+    "line_before": 1998,
+    "control": "Retired mock Active-card entry found or seeded a real test Journey via developer RPC and directed the user to the removed panel.",
+    "effect_after": "Mock-only entry returns without a read/write/navigation. Real Journey navigation tail is byte-identical. Ordinary member Pause/Save, live Journey data and backend functions are unchanged.",
+    "removed_block_sha256": "88fc96bcee2c2674d77f3df470aae95deba42ed39fed53da4814c87bcaadc91d",
+    "removed_bytes": 2385,
+    "member_navigation_tail_sha256": "8940691d0a0bbfa7ec79ec0ad6ccf02542b72b5437daf8d9a85153f69b77b800",
+    "member_navigation_tail_unchanged": true,
+    "backend_retirement": "No backend/RPC/schema removal. Broader server cleanup remains outside this line under existing OA-ZYRA-184."
+  },
+  "moved_files": [
+    {
+      "source": "SOURCE/lib/screens/auth/tester_access_screen.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/screens/auth/tester_access_screen.dart",
+      "bytes": 6198,
+      "sha256_before": "2c91e4a7b7168892fe04a16694ea86a0cb70a8571f9b10455dc05d0a413c76bf",
+      "sha256_after": "2c91e4a7b7168892fe04a16694ea86a0cb70a8571f9b10455dc05d0a413c76bf"
+    },
+    {
+      "source": "SOURCE/lib/screens/dev/developer_access_screen.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/screens/dev/developer_access_screen.dart",
+      "bytes": 8036,
+      "sha256_before": "d8fc24714f46bbf164bfe1e34100f49971c567f4ba6c5829d4fe81efa6e98c17",
+      "sha256_after": "d8fc24714f46bbf164bfe1e34100f49971c567f4ba6c5829d4fe81efa6e98c17"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "bytes": 29711,
+      "sha256_before": "9f4a9082496f42d51e7e6563f5a93fa76ca710f2df5b5c972ebd72feed45352a",
+      "sha256_after": "9f4a9082496f42d51e7e6563f5a93fa76ca710f2df5b5c972ebd72feed45352a"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "bytes": 19633,
+      "sha256_before": "3bce1fd5133f9ed14c9383b5a38012429d85644561939bd1d1d2e623325a8873",
+      "sha256_after": "3bce1fd5133f9ed14c9383b5a38012429d85644561939bd1d1d2e623325a8873"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_dev_page_options.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_page_options.dart",
+      "bytes": 12418,
+      "sha256_before": "0bc9faea5f7542d1d2b3381f85e5357a901baed24f6907ef23d874d100c36b3f",
+      "sha256_after": "0bc9faea5f7542d1d2b3381f85e5357a901baed24f6907ef23d874d100c36b3f"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_dev_hold_to_open.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_hold_to_open.dart",
+      "bytes": 8047,
+      "sha256_before": "6c623c5211eda159c9ceea6005c1d4b006bed0c88362fff016d84ea111114df2",
+      "sha256_after": "6c623c5211eda159c9ceea6005c1d4b006bed0c88362fff016d84ea111114df2"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_signup_process.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_signup_process.dart",
+      "bytes": 7303,
+      "sha256_before": "b11ad90ced98932aa75c6f2f467bff1e6a01558bc30ff3c69d9ad3088af99e5d",
+      "sha256_after": "b11ad90ced98932aa75c6f2f467bff1e6a01558bc30ff3c69d9ad3088af99e5d"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_dev_signup.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_signup.dart",
+      "bytes": 2044,
+      "sha256_before": "739f23fbfd6d2a0b5832b816c2aa53ab83c48dd4b85ecd33a06e5e5bff694112",
+      "sha256_after": "739f23fbfd6d2a0b5832b816c2aa53ab83c48dd4b85ecd33a06e5e5bff694112"
+    },
+    {
+      "source": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "bytes": 21872,
+      "sha256_before": "668f970b44fe349b82e11528b02305bb96b7dc5b5092d0bdd8d110e2f400a485",
+      "sha256_after": "668f970b44fe349b82e11528b02305bb96b7dc5b5092d0bdd8d110e2f400a485"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_settings_design.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_settings_design.dart",
+      "bytes": 2889,
+      "sha256_before": "2aedf6ba4c92a6432b5fd83643fc69e7a7e6a9461295bb8f5c7b98d5e4a78950",
+      "sha256_after": "2aedf6ba4c92a6432b5fd83643fc69e7a7e6a9461295bb8f5c7b98d5e4a78950"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "bytes": 34998,
+      "sha256_before": "742212847024651a73d7421161b1bebdfed095cd1b5011911c271afc03356fa7",
+      "sha256_after": "742212847024651a73d7421161b1bebdfed095cd1b5011911c271afc03356fa7"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_splash_directions.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_splash_directions.dart",
+      "bytes": 5980,
+      "sha256_before": "9b2f055d28d15dca548304c8669c76d947b53b1c09470436f422f217e81c2976",
+      "sha256_after": "9b2f055d28d15dca548304c8669c76d947b53b1c09470436f422f217e81c2976"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_onboarding_directions.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_onboarding_directions.dart",
+      "bytes": 16281,
+      "sha256_before": "9307fbc3d66bc38dcbc5320c42667728a496e6ee793cf7f7e2de78eb7383718d",
+      "sha256_after": "9307fbc3d66bc38dcbc5320c42667728a496e6ee793cf7f7e2de78eb7383718d"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "bytes": 37999,
+      "sha256_before": "df68715ebfe4603918864f3a1c8225c80989b28de1852263cc7cf00fb4f797e8",
+      "sha256_after": "df68715ebfe4603918864f3a1c8225c80989b28de1852263cc7cf00fb4f797e8"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_developer_route_gate.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_developer_route_gate.dart",
+      "bytes": 2642,
+      "sha256_before": "7628eeac70513f8bcd83bbbbd9717d0bd93a65d185b7e91e3376580fb06f22d6",
+      "sha256_after": "7628eeac70513f8bcd83bbbbd9717d0bd93a65d185b7e91e3376580fb06f22d6"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "bytes": 26374,
+      "sha256_before": "7d3a352f6a617cb52b6a7f8151a739206a45c6763ae38613ae301c9fb90eeed4",
+      "sha256_after": "7d3a352f6a617cb52b6a7f8151a739206a45c6763ae38613ae301c9fb90eeed4"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_page_preview_screen.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_page_preview_screen.dart",
+      "bytes": 19877,
+      "sha256_before": "e5f0490cc79f7f05a0d18049dd423104da2631ce8ca2957bf314db8a47f8defe",
+      "sha256_after": "e5f0490cc79f7f05a0d18049dd423104da2631ce8ca2957bf314db8a47f8defe"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_one_journey_preview_controls.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_one_journey_preview_controls.dart",
+      "bytes": 2827,
+      "sha256_before": "e73a6d265e8a5ecd74fd5d7e2ff558d45a8a20de8a189d4ee35ac54b3217f7cc",
+      "sha256_after": "e73a6d265e8a5ecd74fd5d7e2ff558d45a8a20de8a189d4ee35ac54b3217f7cc"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_dev_tool_section.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_tool_section.dart",
+      "bytes": 689,
+      "sha256_before": "5acf5eb3f41babea654e2d619291215c10506b31bda1b27eb9cb805ca87079aa",
+      "sha256_after": "5acf5eb3f41babea654e2d619291215c10506b31bda1b27eb9cb805ca87079aa"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_dev_home.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_home.dart",
+      "bytes": 2663,
+      "sha256_before": "88fe61ba4337d23cb7215f15b15aa9f66970a1c2ad51e2370b15d9d23adc2969",
+      "sha256_after": "88fe61ba4337d23cb7215f15b15aa9f66970a1c2ad51e2370b15d9d23adc2969"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_dashboard_lab_controls.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dashboard_lab_controls.dart",
+      "bytes": 13282,
+      "sha256_before": "0bb7f46b925df29c96df68a5b8ff5f4b05bdc3961dff87ddbabc35f7d032f511",
+      "sha256_after": "0bb7f46b925df29c96df68a5b8ff5f4b05bdc3961dff87ddbabc35f7d032f511"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_dev_surface_coordinator.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_surface_coordinator.dart",
+      "bytes": 10644,
+      "sha256_before": "fdbaa958af2f93e122974ef218c29c2ab95d926e695a3bab67bde309837ce15f",
+      "sha256_after": "fdbaa958af2f93e122974ef218c29c2ab95d926e695a3bab67bde309837ce15f"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_settings_design_state.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_settings_design_state.dart",
+      "bytes": 547,
+      "sha256_before": "417170c071988a6cce393aead79010987035810e6e217c8ccc091c0a585ada6f",
+      "sha256_after": "417170c071988a6cce393aead79010987035810e6e217c8ccc091c0a585ada6f"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_onboarding_interaction.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_onboarding_interaction.dart",
+      "bytes": 3159,
+      "sha256_before": "76dda3b890ef76f73ad3077bfc11297c67f005a6da434169abaf8f8f88022812",
+      "sha256_after": "76dda3b890ef76f73ad3077bfc11297c67f005a6da434169abaf8f8f88022812"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_onboarding_transition.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_onboarding_transition.dart",
+      "bytes": 10080,
+      "sha256_before": "ff80f2bc9f126748e5483f6108af7146d310c20beec59a0836b02b60b3a31b58",
+      "sha256_after": "ff80f2bc9f126748e5483f6108af7146d310c20beec59a0836b02b60b3a31b58"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_role_choice_design.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_role_choice_design.dart",
+      "bytes": 1608,
+      "sha256_before": "a47d7a6ff649337ea761bcb6f1c147a43885b36103aaf50bc265d4a4828484a9",
+      "sha256_after": "a47d7a6ff649337ea761bcb6f1c147a43885b36103aaf50bc265d4a4828484a9"
+    }
+  ],
+  "keep_exceptions": [
+    "Current LOCK21 Guardian/Seeker Profile Switch and its guarded member flow.",
+    "Current LOCK2 V2 four inline local Demo actions, explicit 31 Oct lock27/spec2.5/buildbriefstep4.",
+    "Member Gold, appearance/haptics, notifications, app lock, privacy and ordinary Tier3 navigation/Pause/Save.",
+    "Nondeveloper account-session/auth/resume safety extracted into neutral ZyraAccountSessionHost; generic navigation epoch observer retained."
+  ]
+}

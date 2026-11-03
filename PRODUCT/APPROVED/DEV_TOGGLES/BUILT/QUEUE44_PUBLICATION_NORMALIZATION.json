@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "authority": "OA-ZYRA-325 / public documentation checkA",
+  "reason": "Default scanner flagged six path-keyed SHA256 metadata entries. They are verified file digests, not credentials. No finding is bypassed: retain the same paths/digests as labelled file/sha256 records and rescan with unchanged defaults.",
+  "source_code_changed": false,
+  "test_mapping_records_changed": false,
+  "allowlist_or_rule_suppression": false,
+  "transformations": [
+    {
+      "file": "QUEUE44_FINAL_CONTROLS_REVIEW.json",
+      "before_sha256": "902e17055594598a6cd5b2010e0bf1b3f8a2694e86a3a8c56934832c133f2707",
+      "after_sha256": "d77e98b165d41fcad172d9ac03dd0d66932f6f50b31188e6b7156ed8e045222f",
+      "dictionary_fields_converted_to_file_digest_records": [
+        "$.dirty_source_hashes"
+      ],
+      "all_path_and_digest_values_preserved": true,
+      "mapping_identities_and_reasons_unchanged": true
+    },
+    {
+      "file": "TEST_MAPPING_SOURCES/queue44_auth_entry_harness_renames.json",
+      "before_sha256": "d0ae2ddc6cddacc3222450c5debfb994d8f3788e9f5ccfb3a4a6d50f8348227f",
+      "after_sha256": "55b5961c4a9079da9459ac1c5b8e24f175f63544b97f09e58a23f8f8171bab89",
+      "dictionary_fields_converted_to_file_digest_records": [
+        "$.technical_review.source_sha256"
+      ],
+      "all_path_and_digest_values_preserved": true,
+      "mapping_identities_and_reasons_unchanged": true
+    },
+    {
+      "file": "QUEUE44_REVIEWED_TEST_MAPPINGS.json",
+      "before_sha256": "3c5380dcae4a2fdb4a7299f7245cf47cc3cdaea728084950f4ca7a2138e08a29",
+      "after_sha256": "d3bb973187f6813317a2fd7e21b86517fbddccf964a22e7dcbebfb34356b7417",
+      "dictionary_fields_converted_to_file_digest_records": [
+        "$.final_current_file_sha256"
+      ],
+      "all_path_and_digest_values_preserved": true,
+      "mapping_identities_and_reasons_unchanged": true
+    }
+  ]
+}

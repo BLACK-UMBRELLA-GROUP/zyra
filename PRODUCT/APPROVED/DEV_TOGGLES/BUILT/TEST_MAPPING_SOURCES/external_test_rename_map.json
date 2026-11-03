@@ -1,0 +1,415 @@
+[
+  {
+    "file": "test/dev_onboarding_gold_design_test.dart",
+    "old_name": "the protected toggle retains selected dust and both motions without a pulse control",
+    "new_name": "code-selected dust and motion render without developer pickers",
+    "reason": "Retired UI picker replaced by code-only fixture parameters with real shared onboarding rendering and explicit picker absence.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_onboarding_transition_test.dart",
+    "old_name": "developer toggle offers six choices and honours busy/access",
+    "new_name": "code-selected transition has no developer picker and honours access",
+    "reason": "Retired UI picker replaced by code-only fixture parameters with real shared onboarding rendering and explicit picker absence.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_onboarding_welcome_motion_test.dart",
+    "old_name": "toggle shows five whole-page motion choices without typing or a dead pulse slider",
+    "new_name": "code-selected welcome motion renders without developer choices",
+    "reason": "Retired UI picker replaced by code-only fixture parameters with real shared onboarding rendering and explicit picker absence.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_surface_coordinator_test.dart",
+    "old_name": "onboarding restart targets only the latest attached owner",
+    "new_name": "only the latest pushed member route can dispatch its owned action",
+    "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only.",
+    "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_surface_coordinator_test.dart",
+    "old_name": "revoked onboarding restart and removed owners cannot be reused",
+    "new_name": "removed member routes cannot reuse their owned callbacks",
+    "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only.",
+    "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_surface_coordinator_test.dart",
+    "old_name": "Home Exit closes only the current top onboarding owner",
+    "new_name": "pop disposes the top member action and restores fresh parent action",
+    "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only.",
+    "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_surface_coordinator_test.dart",
+    "old_name": "Home Exit never falls through a covered or non-closable top owner",
+    "new_name": "a covered member callback cannot dispatch or regain revoked admission",
+    "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only.",
+    "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_surface_coordinator_test.dart",
+    "old_name": "revocation and detached onboarding owners deny Home Exit",
+    "new_name": "disposed member ownership stays denied after another route opens",
+    "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only.",
+    "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_surface_coordinator_test.dart",
+    "old_name": "a bound Home Exit cannot close a replacement or reattached owner",
+    "new_name": "replacement invalidates the prior member callback and route epoch",
+    "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only.",
+    "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_surface_coordinator_test.dart",
+    "old_name": "nested Seeker shell restores every invoking shell callback",
+    "new_name": "nested Seeker member presentation restores its page with fresh owned actions",
+    "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only.",
+    "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_surface_coordinator_test.dart",
+    "old_name": "nested Guardian shell restores the invoking Guardian callback",
+    "new_name": "nested Guardian member presentation restores its page with fresh owned actions",
+    "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only.",
+    "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_surface_coordinator_test.dart",
+    "old_name": "a Seeker disposed while covered is never resurrected after signup",
+    "new_name": "a Seeker member removed while covered cannot resurrect its action",
+    "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only.",
+    "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_surface_coordinator_test.dart",
+    "old_name": "a Guardian disposed while covered is never resurrected after signup",
+    "new_name": "a Guardian member removed while covered cannot resurrect its action",
+    "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only.",
+    "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_surface_coordinator_test.dart",
+    "old_name": "out-of-order disposal restores the latest still-mounted Seeker",
+    "new_name": "out-of-order member removal preserves only the live parent action",
+    "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only.",
+    "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_surface_coordinator_test.dart",
+    "old_name": "reattaching an owner updates recency without duplicate registrations",
+    "new_name": "replacing one member owner records one epoch and rejects its old action",
+    "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only.",
+    "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_surface_coordinator_test.dart",
+    "old_name": "signup entry override and existing cross-role precedence stay intact",
+    "new_name": "nested member routes preserve cross-role order without reviving covered actions",
+    "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only.",
+    "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03"
+  },
+  {
+    "file": "test/visual/continuous_onboarding_visual_test.dart",
+    "old_name": "developer landing real-font Onboarding label",
+    "new_name": "provider entry real-font defaults exclude developer account selectors",
+    "reason": "Developer Access landing removed; review actual entry provider controls at same real-font viewport and assert removed role/plan/signup selectors absent.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/guardian_onboarding_dev_skip_test.dart",
+    "old_name": "Guardian transition Skip is protected and keeps Continue",
+    "new_name": "Guardian transition has no developer Skip and keeps ordinary Continue",
+    "reason": "Developer Skip removed; preserve actual member continuation and revocation guard through the real code-page Copy callback. Known four baseline-failing cases unchanged.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/guardian_onboarding_dev_skip_test.dart",
+    "old_name": "code Skip requires a complete draft and live developer proof",
+    "new_name": "code page excludes developer Skip and denies retained copy after revocation",
+    "reason": "Developer Skip removed; preserve actual member continuation and revocation guard through the real code-page Copy callback. Known four baseline-failing cases unchanged.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/initial_identity_check_screen_test.dart",
+    "old_name": "protected identity DEV skip from consent uses only the preview callback",
+    "new_name": "code identity state from consent requires verified ordinary Continue",
+    "reason": "Removed skip route; code-only initialState fixture exercises actual verified Continue with no finalizer or live request.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/initial_identity_check_screen_test.dart",
+    "old_name": "protected identity DEV skip from pending uses only the preview callback",
+    "new_name": "code identity state from pending requires verified ordinary Continue",
+    "reason": "Removed skip route; code-only initialState fixture exercises actual verified Continue with no finalizer or live request.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/initial_identity_check_screen_test.dart",
+    "old_name": "protected identity DEV skip from cancelled uses only the preview callback",
+    "new_name": "code identity state from cancelled requires verified ordinary Continue",
+    "reason": "Removed skip route; code-only initialState fixture exercises actual verified Continue with no finalizer or live request.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/initial_identity_check_screen_test.dart",
+    "old_name": "identity DEV skip is absent live and inert after revocation",
+    "new_name": "identity skip stays absent and verified Continue rejects revocation",
+    "reason": "Removed developer skip/state chips; actual guarded ordinary Continue and constructor state fixture preserve refusal/authority/privacy behavior.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/initial_identity_check_screen_test.dart",
+    "old_name": "developer preview runs consent and all coarse states locally",
+    "new_name": "code fixture runs consent and verified state without developer controls",
+    "reason": "Removed developer skip/state chips; actual guarded ordinary Continue and constructor state fixture preserve refusal/authority/privacy behavior.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_onboarding_home_integration_test.dart",
+    "old_name": "Home keeps the selected onboarding choice without motion or icon comparisons",
+    "new_name": "member entry retains provider defaults without developer comparisons",
+    "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_onboarding_home_integration_test.dart",
+    "old_name": "every Home choice starts full onboarding at Welcome without account callbacks",
+    "new_name": "code-selected signup starts at Welcome and preserves invoking route identity",
+    "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_onboarding_home_integration_test.dart",
+    "old_name": "busy Home disables the selected onboarding preview choice",
+    "new_name": "busy member provider rejects duplicate entry while its request is pending",
+    "reason": "Retired Home busy control replaced by actual ordinary Welcome provider callback invoked twice while its injected provider Future is pending; production loading guard permits one request and no onboarding navigation.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_onboarding_home_integration_test.dart",
+    "old_name": "picker rechecks revoked access before opening a preview",
+    "new_name": "revoked Welcome provider callback cannot open onboarding",
+    "reason": "Retired picker admission replaced by retained actual Welcome preview provider callback; production authorization guard denies navigation and OAuth after revocation and paints denied state.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_onboarding_home_integration_test.dart",
+    "old_name": "separate picker remains usable at narrow width and large text",
+    "new_name": "member question Continue stays reachable at320px and2xtext without pickers",
+    "reason": "Removed compact developer menu; preserve enlarged-text reachable-action coverage using the actual scrollable member question and Continue. Ordinary Welcome has a pre-existing fixed non-responsive80pt wordmark, so this case does not extend into that unrelated baseline layout.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_onboarding_home_integration_test.dart",
+    "old_name": "unauthorized picker exposes no comparisons",
+    "new_name": "unauthorized member entry exposes no developer comparisons or signup shortcut",
+    "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_onboarding_home_integration_test.dart",
+    "old_name": "entry Home opens onboarding above its existing page",
+    "new_name": "entry member screen survives a code-only onboarding route",
+    "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_onboarding_home_integration_test.dart",
+    "old_name": "Seeker Home opens onboarding above its existing page",
+    "new_name": "Seeker member screen survives a code-only onboarding route",
+    "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_onboarding_home_integration_test.dart",
+    "old_name": "Guardian Home opens onboarding above its existing page",
+    "new_name": "Guardian member screen survives a code-only onboarding route",
+    "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_toggle_options_test.dart",
+    "old_name": "entry Home retains the separate onboarding category",
+    "new_name": "member entry keeps providers while developer Onboarding categories are absent",
+    "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_toggle_options_test.dart",
+    "old_name": "the selected entry style restarts the existing onboarding without a root route",
+    "new_name": "code-selected entry state restarts its nested Navigator without a root route",
+    "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_toggle_options_test.dart",
+    "old_name": "revoked stale entry preview tap does not navigate",
+    "new_name": "revoked retained provider preview callback cannot navigate or call OAuth",
+    "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_toggle_options_test.dart",
+    "old_name": "signup Actions category scrolls cleanly at320px and2xtext",
+    "new_name": "member role choices remain reachable at320px and2xtext without Actions menu",
+    "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_toggle_options_test.dart",
+    "old_name": "unauthorized entry page exposes no developer choices",
+    "new_name": "unauthorized entry retains member recovery without developer choices",
+    "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_toggle_options_test.dart",
+    "old_name": "Seeker sign-up Actions separate styles and offer one Onboarding",
+    "new_name": "Seeker signup preserves its member action without developer style options",
+    "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_toggle_options_test.dart",
+    "old_name": "Guardian sign-up Actions separate styles and offer one Onboarding",
+    "new_name": "Guardian signup preserves its member action without developer style options",
+    "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_toggle_options_test.dart",
+    "old_name": "Onboarding Actions separate styles and offer one Onboarding",
+    "new_name": "Onboarding signup preserves its member action without developer style options",
+    "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_process_test.dart",
+    "old_name": "Home is available at Welcome without on-page close chrome",
+    "new_name": "code fixture exit is available at Welcome without on-page close chrome",
+    "reason": "Removed UI driver replaced by guarded code-only fixture callbacks while existing real-screen flow, privacy, route and ownership assertions remain.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_process_test.dart",
+    "old_name": "retained Home cannot close after revocation or owner disposal",
+    "new_name": "retained Personalisation action rejects revocation and owner disposal",
+    "reason": "Retired fixture exit replaced by actual production PersonalisationScreen owned action: revoked admission and later disposed owner reject the captured source callback without popping member routes or live writes.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_process_test.dart",
+    "old_name": "an old rendered Home cannot close the next onboarding flow",
+    "new_name": "an old Personalisation action cannot mutate the next mounted owner",
+    "reason": "Retired fixture epoch exit replaced by actual production PersonalisationScreen owned callback after disposal and replacement; old callbacks cannot mutate either owner, while the next current source callback succeeds.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_process_test.dart",
+    "old_name": "Welcome and four-slide introduction stay connected with DEV Back",
+    "new_name": "Welcome and four-slide introduction stay connected with ordinary Back",
+    "reason": "Removed UI driver replaced by guarded code-only fixture callbacks while existing real-screen flow, privacy, route and ownership assertions remain.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_process_test.dart",
+    "old_name": "Back DEV on first welcome line returns to provider entry",
+    "new_name": "Back on first welcome line returns to provider entry",
+    "reason": "Removed UI driver replaced by guarded code-only fixture callbacks while existing real-screen flow, privacy, route and ownership assertions remain.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_process_test.dart",
+    "old_name": "DEV skips traverse the Seeker entry to unfinished My ZYRA",
+    "new_name": "code fixtures traverse real Seeker forms to unfinished My ZYRA",
+    "reason": "Removed UI driver replaced by guarded code-only fixture callbacks while existing real-screen flow, privacy, route and ownership assertions remain.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_process_test.dart",
+    "old_name": "neutral Onboarding action restarts an already open flow",
+    "new_name": "code-selected Onboarding fixture restarts an already open flow",
+    "reason": "Removed UI driver replaced by guarded code-only fixture callbacks while existing real-screen flow, privacy, route and ownership assertions remain.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_process_test.dart",
+    "old_name": "completed Seeker flow restarts cleanly through the global toggle",
+    "new_name": "completed Seeker flow restarts cleanly through code fixture state",
+    "reason": "Removed UI driver replaced by guarded code-only fixture callbacks while existing real-screen flow, privacy, route and ownership assertions remain.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_process_test.dart",
+    "old_name": "global toggle options remain available within full signup",
+    "new_name": "signup fixture selects state from code without global developer options",
+    "reason": "Global developer options removed; code-selected restart and absence are exercised against the same actual signup route and no-side-effect assertions.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_entry_compatibility_test.dart",
+    "old_name": "ordinary signup entry retains its two existing option groups",
+    "new_name": "ordinary signup entry has no developer option groups and retains its nested route",
+    "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_entry_compatibility_test.dart",
+    "old_name": "entry choices assign exact repeatable unified credits",
+    "new_name": "code credit fixtures assign exact repeatable unified balances without member mutation",
+    "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_entry_compatibility_test.dart",
+    "old_name": "covered nested route refuses retained entry choices",
+    "new_name": "covered nested route refuses retained code credit mutation",
+    "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_entry_compatibility_test.dart",
+    "old_name": "a new nested sample owner invalidates the old choice",
+    "new_name": "a new nested sample owner rejects the first owner code mutation",
+    "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_entry_compatibility_test.dart",
+    "old_name": "revocation hides entry choices and refuses an old callback",
+    "new_name": "revocation keeps credit menus absent and refuses a captured fixture callback",
+    "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_entry_compatibility_test.dart",
+    "old_name": "Home opens Developer Access, retains first root and rejects disposed choices",
+    "new_name": "code close retains the invoking root and rejects disposed credit callbacks",
+    "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_entry_compatibility_test.dart",
+    "old_name": "real UUIDs never acquire the sample credit groups in Entry",
+    "new_name": "real UUIDs never acquire code credit capability or sample menus",
+    "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_entry_compatibility_test.dart",
+    "old_name": "nested Compatibility has one reachable group at 390.0/1.0",
+    "new_name": "nested Compatibility member action stays reachable without credit menus at 390.0/1.0",
+    "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  },
+  {
+    "file": "test/dev_signup_entry_compatibility_test.dart",
+    "old_name": "nested Compatibility has one reachable group at 320.0/1.3",
+    "new_name": "nested Compatibility member action stays reachable without credit menus at 320.0/1.3",
+    "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls.",
+    "reviewed_by": "baseline_compare technical peer review 2026-11-03"
+  }
+]

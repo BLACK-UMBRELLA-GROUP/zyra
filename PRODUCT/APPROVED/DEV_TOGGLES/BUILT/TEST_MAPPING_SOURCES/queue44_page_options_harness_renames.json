@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "finding_authority": "OA-ZYRA-325",
+  "review_status": "independent technical coverage review complete; Founder approval not inferred",
+  "mappings": [
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "developer dropdown uses shared app surfaces",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "retained member choices use shared app surfaces without developer menus",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Shared surface styling is verified on the retained member sheet; retired developer menu keys must be absent."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "current state replaces the last choice after an external change",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "member current choices follow external owner presentation changes",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "A returned real member haptic choice is followed by an external owner snapshot, and the next sheet must select the current supplied value."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "leaving a page and returning cannot revive its old menu",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "route ABA cannot revive a retained member choice intent",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "A retained member Gold intent is denied across a real Navigator route A-to-B-to-A round trip."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "losing and restoring authority cannot revive an old menu",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "losing and restoring owner admission cannot revive a member intent",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Observed owner admission loss remains revoked after owner returns; a retained member intent cannot revive."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "a fully restricted catalog can still explain its denied states",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "member unavailable states explain denial without a developer catalog",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "The retained member empty-state component renders its denial reason with no callback or developer catalog."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "separate category menus delegate only their own selected choice",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "member haptic and Gold choices dispatch only their own values",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Actual member haptic and Gold controls dispatch only their own caller-owned values, without changing global member preferences."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "unavailable entries retain a truthful reason and no callback",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "unavailable member actions retain truthful reasons and refuse dispatch",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "The retained member unavailable-state action keeps its denial reason and current admission guard refuses dispatch."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "non-contiguous categories merge without mixing their options",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "interleaved member choice labels remain bound to their own values",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Actual member sheet keys keep interleaved duplicate labels bound to distinct caller-owned option values."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "each category displays its own current state simultaneously",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "member preferences show their supplied states simultaneously",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Actual member settings render Gold, haptic and fixed-font values concurrently from the current supplied snapshot."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "category change invalidates a captured old option callback",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "member callback replacement invalidates captured previous intent",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Replacing the actual member callback invalidates the captured previous intent; only the fresh replacement acts."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "empty catalog is honest and busy catalog cannot act",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "member empty and disabled presentations never gain developer actions",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retained member empty and disabled content render no invented action and no developer menu."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "ordinary accounts cannot see the dropdown",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "ordinary accounts retain member choices without developer dropdowns",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Ordinary accounts retain a functioning member Gold preference while the retired developer dropdown remains absent."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "authorization loss refuses an already-open selection",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "owner admission loss refuses an already-open member selection",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Actual owner admission loss while a member sheet is pending prevents its returned choice from acting."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "page change refuses a stale menu even with reused option IDs",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "member page replacement refuses retained choices despite reused labels",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Replacing the member page disposes its old owner even when labels are reused; the old sheet cannot act and fresh settings remain usable."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "removing an option while open prevents its stale callback",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "removing member settings while a sheet is open leaves callbacks inert",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removing the member settings owner leaves its outstanding real sheet callback inert."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "failed callback is visible and is not promoted to selected",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "failed member callbacks surface errors without claiming a new selection",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "A thrown member callback is surfaced without claiming a different controlled selection; no retired developer error menu is restored."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "late async completion cannot mark a different page selected",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "late member sheet completion cannot overwrite a newer supplied choice",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Late completion of the actual member sheet cannot overwrite an externally supplied newer value."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "long names and disabled explanations fit a narrow large-text menu",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "long member choice labels and denial reasons fit narrow large text",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "The real member sheet wraps long labels and denial details at narrow 200% text; caller admission still refuses dispatch."
+    }
+  ],
+  "technical_review": {
+    "reviewer": "/root/remove_shell_controls",
+    "reviewed_at_utc": "2026-11-03T21:58:47.343984+00:00",
+    "method": "Compared actual HEAD/current test diffs, replacement production widgets and callbacks, case/hook reporter inventories, and QA source hashes. No source changes or test run performed by reviewer.",
+    "one_to_one_case_identity_mapping": true,
+    "missing_or_skipped_cases": 0,
+    "baseline_failure_cases_in_these_suites": 0,
+    "source_sha256": {
+      "test/zyra_dev_page_options_test.dart": "0c55651ad36356587e845ff481fc7e1cc1dd9ee0f57d11dd33e7b66681ec46e7"
+    },
+    "scoped_qa_file": "queue44_page_options_migration_qa.json",
+    "semantic_scope": "Removed developer-only selection/authority behavior is explicitly replaced by the corresponding real member choice/rendering/ownership contract; maps do not assert the removed developer feature remains functional."
+  }
+}

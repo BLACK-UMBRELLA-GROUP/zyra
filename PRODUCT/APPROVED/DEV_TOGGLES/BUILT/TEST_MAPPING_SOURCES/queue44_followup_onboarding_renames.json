@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "finding_authority": "OA-ZYRA-325",
+  "status": "SCOPE1_FIXTURE_FAILURES_CORRECTED_PENDING_ROOT_SCOPE2_VALIDATION",
+  "mappings": [
+    {
+      "from": {
+        "suite_path": "test/onboarding_compatibility_flow_test.dart",
+        "name": "developer preview can skip an unanswered question",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/onboarding_compatibility_flow_test.dart",
+        "name": "code-only preview advances an unanswered question without Skip",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex audit_controls independent technical coverage review, 2026-11-03",
+      "reason": "Removed developer Skip is absent. The real ValuesPreferencesFlow-supplied OnboardingScaffold.onContinue callback advances code-only preview state and denies fresh revoked authorization; ordinary visible Continue stays disabled for an unanswered question."
+    },
+    {
+      "from": {
+        "suite_path": "test/seeker_post_identity_choice_test.dart",
+        "name": "both role overviews have a protected next-page skip",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/seeker_post_identity_choice_test.dart",
+        "name": "both role overviews use protected Continue without developer Skip",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex audit_controls independent technical coverage review, 2026-11-03",
+      "reason": "Both real overview source Continue callbacks replace removed Skip controls. The Seeker overview reaches real Chapter2Flow and Guardian overview reaches WaliOnboardingFlow, with each retained source callback first rejected under revoked proof."
+    }
+  ],
+  "source_sha256": {
+    "test/onboarding_compatibility_flow_test.dart": "9bbaa255e9e8f7b615110b7d7269748240f043d90be4eea1e834e3ec35b00ff8",
+    "test/seeker_post_identity_choice_test.dart": "d5e6852ec96c8e91b37e18f68f61b6dc58898d2d7b74fe14a0494ec32af04e5a"
+  },
+  "baseline_cases": {
+    "test/onboarding_compatibility_flow_test.dart": 2,
+    "test/seeker_post_identity_choice_test.dart": 18
+  },
+  "baseline_failures": 0,
+  "additional_same_name_migration": "local option carries identity to real next overview retains original name; removed Skip assertion now absence, actual overview Continue source callback then verifies Chapter2Flow receives carried female gender and name remains Aaliyah.",
+  "validation": "No Flutter test launched because parent coordinates native asset preparation after ongoingfull1.",
+  "scope1_corrections": {
+    "compatibility": "Revoked preview deliberately paints values_preview_denied, not the old question. Positive advance uses newly mounted source owner; retained old callback is explicitly denied after disposal while fresh source callback advances unanswered preview.",
+    "overviews": "Guardian defaultContinue uses ZyraOnboardingArrowAction, notButtonStyleButton. Each role tests revokedsourcecallback, disposesowner, mountsnewauthorizedowner, rejectsoldcallback, then invokesfreshrealContinue toreachactualnextflow."
+  },
+  "source_recheck_pending": false,
+  "source_recheck_reviewed_by": "Codex audit_controls independent technical coverage review, 2026-11-03",
+  "source_recheck_evidence": "work/queue44_followup_onboarding_independent_review.json"
+}

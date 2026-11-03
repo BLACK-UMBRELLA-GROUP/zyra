@@ -1,0 +1,184 @@
+[
+  {
+    "source": "SOURCE/lib/screens/auth/tester_access_screen.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/screens/auth/tester_access_screen.dart",
+    "bytes": 6198,
+    "sha256_before": "2c91e4a7b7168892fe04a16694ea86a0cb70a8571f9b10455dc05d0a413c76bf",
+    "sha256_after": "2c91e4a7b7168892fe04a16694ea86a0cb70a8571f9b10455dc05d0a413c76bf"
+  },
+  {
+    "source": "SOURCE/lib/screens/dev/developer_access_screen.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/screens/dev/developer_access_screen.dart",
+    "bytes": 8036,
+    "sha256_before": "d8fc24714f46bbf164bfe1e34100f49971c567f4ba6c5829d4fe81efa6e98c17",
+    "sha256_after": "d8fc24714f46bbf164bfe1e34100f49971c567f4ba6c5829d4fe81efa6e98c17"
+  },
+  {
+    "source": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_control_system.dart",
+    "bytes": 29711,
+    "sha256_before": "9f4a9082496f42d51e7e6563f5a93fa76ca710f2df5b5c972ebd72feed45352a",
+    "sha256_after": "9f4a9082496f42d51e7e6563f5a93fa76ca710f2df5b5c972ebd72feed45352a"
+  },
+  {
+    "source": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_onboarding_lab.dart",
+    "bytes": 19633,
+    "sha256_before": "3bce1fd5133f9ed14c9383b5a38012429d85644561939bd1d1d2e623325a8873",
+    "sha256_after": "3bce1fd5133f9ed14c9383b5a38012429d85644561939bd1d1d2e623325a8873"
+  },
+  {
+    "source": "SOURCE/lib/dev/zyra_dev_page_options.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_page_options.dart",
+    "bytes": 12418,
+    "sha256_before": "0bc9faea5f7542d1d2b3381f85e5357a901baed24f6907ef23d874d100c36b3f",
+    "sha256_after": "0bc9faea5f7542d1d2b3381f85e5357a901baed24f6907ef23d874d100c36b3f"
+  },
+  {
+    "source": "SOURCE/lib/dev/zyra_dev_hold_to_open.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_hold_to_open.dart",
+    "bytes": 8047,
+    "sha256_before": "6c623c5211eda159c9ceea6005c1d4b006bed0c88362fff016d84ea111114df2",
+    "sha256_after": "6c623c5211eda159c9ceea6005c1d4b006bed0c88362fff016d84ea111114df2"
+  },
+  {
+    "source": "SOURCE/lib/dev/dev_signup_process.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_signup_process.dart",
+    "bytes": 7303,
+    "sha256_before": "b11ad90ced98932aa75c6f2f467bff1e6a01558bc30ff3c69d9ad3088af99e5d",
+    "sha256_after": "b11ad90ced98932aa75c6f2f467bff1e6a01558bc30ff3c69d9ad3088af99e5d"
+  },
+  {
+    "source": "SOURCE/lib/dev/zyra_dev_signup.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_signup.dart",
+    "bytes": 2044,
+    "sha256_before": "739f23fbfd6d2a0b5832b816c2aa53ab83c48dd4b85ecd33a06e5e5bff694112",
+    "sha256_after": "739f23fbfd6d2a0b5832b816c2aa53ab83c48dd4b85ecd33a06e5e5bff694112"
+  },
+  {
+    "source": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+    "bytes": 21872,
+    "sha256_before": "668f970b44fe349b82e11528b02305bb96b7dc5b5092d0bdd8d110e2f400a485",
+    "sha256_after": "668f970b44fe349b82e11528b02305bb96b7dc5b5092d0bdd8d110e2f400a485"
+  },
+  {
+    "source": "SOURCE/lib/dev/dev_settings_design.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_settings_design.dart",
+    "bytes": 2889,
+    "sha256_before": "2aedf6ba4c92a6432b5fd83643fc69e7a7e6a9461295bb8f5c7b98d5e4a78950",
+    "sha256_after": "2aedf6ba4c92a6432b5fd83643fc69e7a7e6a9461295bb8f5c7b98d5e4a78950"
+  },
+  {
+    "source": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+    "bytes": 34998,
+    "sha256_before": "742212847024651a73d7421161b1bebdfed095cd1b5011911c271afc03356fa7",
+    "sha256_after": "742212847024651a73d7421161b1bebdfed095cd1b5011911c271afc03356fa7"
+  },
+  {
+    "source": "SOURCE/lib/dev/dev_splash_directions.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_splash_directions.dart",
+    "bytes": 5980,
+    "sha256_before": "9b2f055d28d15dca548304c8669c76d947b53b1c09470436f422f217e81c2976",
+    "sha256_after": "9b2f055d28d15dca548304c8669c76d947b53b1c09470436f422f217e81c2976"
+  },
+  {
+    "source": "SOURCE/lib/dev/dev_onboarding_directions.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_onboarding_directions.dart",
+    "bytes": 16281,
+    "sha256_before": "9307fbc3d66bc38dcbc5320c42667728a496e6ee793cf7f7e2de78eb7383718d",
+    "sha256_after": "9307fbc3d66bc38dcbc5320c42667728a496e6ee793cf7f7e2de78eb7383718d"
+  },
+  {
+    "source": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+    "bytes": 37999,
+    "sha256_before": "df68715ebfe4603918864f3a1c8225c80989b28de1852263cc7cf00fb4f797e8",
+    "sha256_after": "df68715ebfe4603918864f3a1c8225c80989b28de1852263cc7cf00fb4f797e8"
+  },
+  {
+    "source": "SOURCE/lib/dev/zyra_developer_route_gate.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_developer_route_gate.dart",
+    "bytes": 2642,
+    "sha256_before": "7628eeac70513f8bcd83bbbbd9717d0bd93a65d185b7e91e3376580fb06f22d6",
+    "sha256_after": "7628eeac70513f8bcd83bbbbd9717d0bd93a65d185b7e91e3376580fb06f22d6"
+  },
+  {
+    "source": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_onboarding_opening.dart",
+    "bytes": 26374,
+    "sha256_before": "7d3a352f6a617cb52b6a7f8151a739206a45c6763ae38613ae301c9fb90eeed4",
+    "sha256_after": "7d3a352f6a617cb52b6a7f8151a739206a45c6763ae38613ae301c9fb90eeed4"
+  },
+  {
+    "source": "SOURCE/lib/dev/zyra_page_preview_screen.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_page_preview_screen.dart",
+    "bytes": 19877,
+    "sha256_before": "e5f0490cc79f7f05a0d18049dd423104da2631ce8ca2957bf314db8a47f8defe",
+    "sha256_after": "e5f0490cc79f7f05a0d18049dd423104da2631ce8ca2957bf314db8a47f8defe"
+  },
+  {
+    "source": "SOURCE/lib/dev/zyra_one_journey_preview_controls.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_one_journey_preview_controls.dart",
+    "bytes": 2827,
+    "sha256_before": "e73a6d265e8a5ecd74fd5d7e2ff558d45a8a20de8a189d4ee35ac54b3217f7cc",
+    "sha256_after": "e73a6d265e8a5ecd74fd5d7e2ff558d45a8a20de8a189d4ee35ac54b3217f7cc"
+  },
+  {
+    "source": "SOURCE/lib/dev/zyra_dev_tool_section.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_tool_section.dart",
+    "bytes": 689,
+    "sha256_before": "5acf5eb3f41babea654e2d619291215c10506b31bda1b27eb9cb805ca87079aa",
+    "sha256_after": "5acf5eb3f41babea654e2d619291215c10506b31bda1b27eb9cb805ca87079aa"
+  },
+  {
+    "source": "SOURCE/lib/dev/zyra_dev_home.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_home.dart",
+    "bytes": 2663,
+    "sha256_before": "88fe61ba4337d23cb7215f15b15aa9f66970a1c2ad51e2370b15d9d23adc2969",
+    "sha256_after": "88fe61ba4337d23cb7215f15b15aa9f66970a1c2ad51e2370b15d9d23adc2969"
+  },
+  {
+    "source": "SOURCE/lib/dev/zyra_dashboard_lab_controls.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dashboard_lab_controls.dart",
+    "bytes": 13282,
+    "sha256_before": "0bb7f46b925df29c96df68a5b8ff5f4b05bdc3961dff87ddbabc35f7d032f511",
+    "sha256_after": "0bb7f46b925df29c96df68a5b8ff5f4b05bdc3961dff87ddbabc35f7d032f511"
+  },
+  {
+    "source": "SOURCE/lib/dev/zyra_dev_surface_coordinator.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_surface_coordinator.dart",
+    "bytes": 10644,
+    "sha256_before": "fdbaa958af2f93e122974ef218c29c2ab95d926e695a3bab67bde309837ce15f",
+    "sha256_after": "fdbaa958af2f93e122974ef218c29c2ab95d926e695a3bab67bde309837ce15f"
+  },
+  {
+    "source": "SOURCE/lib/dev/dev_settings_design_state.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_settings_design_state.dart",
+    "bytes": 547,
+    "sha256_before": "417170c071988a6cce393aead79010987035810e6e217c8ccc091c0a585ada6f",
+    "sha256_after": "417170c071988a6cce393aead79010987035810e6e217c8ccc091c0a585ada6f"
+  },
+  {
+    "source": "SOURCE/lib/dev/dev_onboarding_interaction.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_onboarding_interaction.dart",
+    "bytes": 3159,
+    "sha256_before": "76dda3b890ef76f73ad3077bfc11297c67f005a6da434169abaf8f8f88022812",
+    "sha256_after": "76dda3b890ef76f73ad3077bfc11297c67f005a6da434169abaf8f8f88022812"
+  },
+  {
+    "source": "SOURCE/lib/dev/dev_onboarding_transition.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_onboarding_transition.dart",
+    "bytes": 10080,
+    "sha256_before": "ff80f2bc9f126748e5483f6108af7146d310c20beec59a0836b02b60b3a31b58",
+    "sha256_after": "ff80f2bc9f126748e5483f6108af7146d310c20beec59a0836b02b60b3a31b58"
+  },
+  {
+    "source": "SOURCE/lib/dev/dev_role_choice_design.dart",
+    "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_role_choice_design.dart",
+    "bytes": 1608,
+    "sha256_before": "a47d7a6ff649337ea761bcb6f1c147a43885b36103aaf50bc265d4a4828484a9",
+    "sha256_after": "a47d7a6ff649337ea761bcb6f1c147a43885b36103aaf50bc265d4a4828484a9"
+  }
+]

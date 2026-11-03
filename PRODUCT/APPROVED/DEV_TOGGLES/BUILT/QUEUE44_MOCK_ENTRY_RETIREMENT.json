@@ -1,0 +1,12 @@
+{
+  "authority": "OA-ZYRA-325 / developer-control code removal",
+  "file": "SOURCE/lib/screens/connections/connections_screen.dart",
+  "line_before": 1998,
+  "control": "Retired mock Active-card entry found or seeded a real test Journey via developer RPC and directed the user to the removed panel.",
+  "effect_after": "Mock-only entry returns without a read/write/navigation. Real Journey navigation tail is byte-identical. Ordinary member Pause/Save, live Journey data and backend functions are unchanged.",
+  "removed_block_sha256": "88fc96bcee2c2674d77f3df470aae95deba42ed39fed53da4814c87bcaadc91d",
+  "removed_bytes": 2385,
+  "member_navigation_tail_sha256": "8940691d0a0bbfa7ec79ec0ad6ccf02542b72b5437daf8d9a85153f69b77b800",
+  "member_navigation_tail_unchanged": true,
+  "backend_retirement": "No backend/RPC/schema removal. Broader server cleanup remains outside this line under existing OA-ZYRA-184."
+}

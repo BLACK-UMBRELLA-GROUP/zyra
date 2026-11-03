@@ -1,0 +1,20 @@
+{
+  "queue": 44,
+  "authority": "OA-ZYRA-325 / question10; literal LOCK gate evaluated separately",
+  "command": [
+    "/Users/shakeelahmad/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "json"
+  ],
+  "started_utc": "2026-11-03T22:28:08.613758+00:00",
+  "baseline_rerun": false,
+  "post_change_full_run": 2,
+  "reason": "Full1 found 62 prior-pass regressions; reviewed test-only harness migrations and stable names now validated in serialized affected scope with zero deficits; production frozen.",
+  "completed_utc": "2026-11-03T22:37:06.339912+00:00",
+  "elapsed_seconds": 537.73,
+  "exit_code": 1
+}

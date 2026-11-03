@@ -1,0 +1,3276 @@
+{
+  "schema_version": 1,
+  "finding_authority": "OA-ZYRA-325",
+  "generated_utc": "2026-11-03T22:37:12.395111+00:00",
+  "key_semantics": "normalized SOURCE-relative suite path + full reporter test/group name + exact kind; outcome multiplicities retained",
+  "baseline": {
+    "sha256": "d925d0fdaa1453916e10827a29239966257708108a722668584e4c5324151ad8",
+    "started_tests": 8240,
+    "completed_tests": 8240,
+    "unique_keys": 8239,
+    "duplicate_keys": 1,
+    "duplicate_occurrences_beyond_first": 1,
+    "starts_by_kind": {
+      "loader": 531,
+      "setUpAll": 257,
+      "case": 7195,
+      "tearDownAll": 257
+    },
+    "outcomes": {
+      "success": 7472,
+      "error": 614,
+      "failure": 35,
+      "skipped": 119
+    },
+    "ordinary_outcomes_including_visible_successes": {
+      "success": 6429,
+      "error": 613,
+      "failure": 34,
+      "skipped": 119
+    },
+    "loader_hook_outcomes_including_hidden_successes": {
+      "success": 1043,
+      "error": 1,
+      "failure": 1
+    },
+    "hidden_successes_by_kind": {
+      "loader": 530,
+      "setUpAll": 256,
+      "tearDownAll": 257
+    },
+    "hidden_successful": 1043,
+    "failed_or_error_total": 649,
+    "affected_failure_files": 91,
+    "invalid_json_records": 0,
+    "protocol_error_count": 0,
+    "reporter_success": false,
+    "reporter_duration_ms": 547021,
+    "done_event_count": 1
+  },
+  "baseline_summary_correction": {
+    "reason": "Historical startswith('loading ') classifier collapsed 11 ordinary cases in 6 suites into loader identities.",
+    "historical_flawed_unique_keys": 8228,
+    "historical_flawed_duplicate_keys": 7,
+    "ordinary_loading_named_cases": [
+      {
+        "suite_path": "test/chat_screen_truth_test.dart",
+        "name": "loading and unavailable chat cannot fabricate a message or send",
+        "kind": "case"
+      },
+      {
+        "suite_path": "test/seeker_guardian_page_polish_test.dart",
+        "name": "loading unavailable and retry copy survive the removal of steady copy",
+        "kind": "case"
+      },
+      {
+        "suite_path": "test/notification_settings_parity_test.dart",
+        "name": "loading and saving exceptions leave a retryable honest state",
+        "kind": "case"
+      },
+      {
+        "suite_path": "test/zyra_quiet_dashboard_test.dart",
+        "name": "loading cannot claim an all-clear",
+        "kind": "case"
+      },
+      {
+        "suite_path": "test/guardian_dashboard_greeting_test.dart",
+        "name": "loading profile details keeps the identity card neutral and disabled",
+        "kind": "case"
+      },
+      {
+        "suite_path": "test/visual/guardian_dashboard_profile_card_visual_test.dart",
+        "name": "loading width 320.0 text 1.0",
+        "kind": "case"
+      },
+      {
+        "suite_path": "test/visual/guardian_dashboard_profile_card_visual_test.dart",
+        "name": "loading width 320.0 text 1.4",
+        "kind": "case"
+      },
+      {
+        "suite_path": "test/visual/guardian_dashboard_profile_card_visual_test.dart",
+        "name": "loading width 390.0 text 1.0",
+        "kind": "case"
+      },
+      {
+        "suite_path": "test/visual/guardian_dashboard_profile_card_visual_test.dart",
+        "name": "loading width 390.0 text 1.4",
+        "kind": "case"
+      },
+      {
+        "suite_path": "test/visual/guardian_dashboard_profile_card_visual_test.dart",
+        "name": "loading width 430.0 text 1.0",
+        "kind": "case"
+      },
+      {
+        "suite_path": "test/visual/guardian_dashboard_profile_card_visual_test.dart",
+        "name": "loading width 430.0 text 1.4",
+        "kind": "case"
+      }
+    ],
+    "correct_ordinary_visible_passes": 6429,
+    "historical_recorded_ordinary_visible_passes": 6418,
+    "historical_recorded_visible_loader_hook_passes": 11,
+    "baseline_failure_count_unchanged": true
+  },
+  "current": {
+    "sha256": "722597b60927ea8a0646a9e809849ed96720e96dedd4d8af56fc8ce467517a07",
+    "started_tests": 8246,
+    "completed_tests": 8246,
+    "unique_keys": 8245,
+    "duplicate_keys": 1,
+    "duplicate_occurrences_beyond_first": 1,
+    "starts_by_kind": {
+      "loader": 532,
+      "setUpAll": 259,
+      "case": 7196,
+      "tearDownAll": 259
+    },
+    "outcomes": {
+      "success": 7483,
+      "error": 609,
+      "failure": 35,
+      "skipped": 119
+    },
+    "ordinary_outcomes_including_visible_successes": {
+      "success": 6435,
+      "error": 608,
+      "failure": 34,
+      "skipped": 119
+    },
+    "loader_hook_outcomes_including_hidden_successes": {
+      "success": 1048,
+      "error": 1,
+      "failure": 1
+    },
+    "hidden_successes_by_kind": {
+      "loader": 531,
+      "setUpAll": 258,
+      "tearDownAll": 259
+    },
+    "hidden_successful": 1048,
+    "failed_or_error_total": 644,
+    "affected_failure_files": 91,
+    "invalid_json_records": 0,
+    "protocol_error_count": 0,
+    "reporter_success": false,
+    "reporter_duration_ms": 534919,
+    "done_event_count": 1
+  },
+  "reviewed_renames": [
+    {
+      "from": {
+        "suite_path": "test/dashboard_lab_test.dart",
+        "name": "Dashboard controls expose a dropdown per contextual category",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dashboard_lab_test.dart",
+        "name": "Dashboard sample categories are code-only and expose no controls",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed contextual dropdown replaced by the unchanged immutable code-only choice catalog and actual callbacks; group/tab/provider counts and absence of runtime dropdowns remain checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/dashboard_lab_test.dart",
+        "name": "Dashboard dropdown follows the mounted supportive tab",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dashboard_lab_test.dart",
+        "name": "code-selected supportive tab changes its data catalog without a picker",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed contextual dropdown replaced by the unchanged immutable code-only choice catalog and actual callbacks; group/tab/provider counts and absence of runtime dropdowns remain checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/deferred_onboarding_preview_safety_test.dart",
+        "name": "stale Chapter2 dev skip cannot advance after revocation",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/deferred_onboarding_preview_safety_test.dart",
+        "name": "stale Chapter2 Continue cannot advance after revocation",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Skip API replaced by actual guarded Continue callback from code; complete Chapter2/Bio/Values traversal, consent, revoked callback denial and compact member content still execute."
+    },
+    {
+      "from": {
+        "suite_path": "test/deferred_onboarding_preview_safety_test.dart",
+        "name": "Values non-question stages expose local skip then deny it",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/deferred_onboarding_preview_safety_test.dart",
+        "name": "Values non-question Continue rejects a stale revoked callback",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Skip API replaced by actual guarded Continue callback from code; complete Chapter2/Bio/Values traversal, consent, revoked callback denial and compact member content still execute."
+    },
+    {
+      "from": {
+        "suite_path": "test/deferred_onboarding_preview_safety_test.dart",
+        "name": "DEV skips traverse deferred Seeker pages to the safe end",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/deferred_onboarding_preview_safety_test.dart",
+        "name": "code-selected real Continue callbacks traverse deferred Seeker pages to the safe end",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Skip API replaced by actual guarded Continue callback from code; complete Chapter2/Bio/Values traversal, consent, revoked callback denial and compact member content still execute."
+    },
+    {
+      "from": {
+        "suite_path": "test/deferred_onboarding_preview_safety_test.dart",
+        "name": "deferred skip controls remain usable on compact large text",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/deferred_onboarding_preview_safety_test.dart",
+        "name": "deferred member content remains usable on compact large text without Skip",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Skip API replaced by actual guarded Continue callback from code; complete Chapter2/Bio/Values traversal, consent, revoked callback denial and compact member content still execute."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "Home refreshes proof and uses root navigation from outer flow without member mutation",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "outer member navigation has no Home entry or mutation",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "Home refreshes proof and uses root navigation from nested flow without member mutation",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "nested member navigation has no Home entry or mutation",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "Home denies absent authority before refreshing",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "absent Home never refreshes without authority",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "Home rejects revoked fresh proof rather than trusting cached authority",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "revoked Founder proof cannot restore Home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "double Home while proof is pending commits only one landing",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "two held gestures create no Home route",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "Home denies generation changes during pending proof",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "account generation changes cannot restore Home during a hold",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "Home denies disposal changes during pending proof",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "disposing a member route cannot resurrect Home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "Home denies owner-current changes during pending proof",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "covering the current owner cannot restore Home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "stale null-route Home refuses newly registered and covered onboarding owners",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "covered and replaced member pages cannot revive Home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "null-route Home refuses an owner registered during pending proof",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_home_navigation_test.dart",
+        "name": "a route-less app frame has no Home action",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home action replaced under the same authority, generation, disposal, nested/outer, coverage, duplicate-hold or route-loss condition; real member stack/draft absence assertions retained. Semantic pairing was corrected manually rather than inferred from registration order."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_role_choice_design_test.dart",
+        "name": "mounted route must be current for any role-design selection",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_role_choice_design_test.dart",
+        "name": "member role choice rejects covered and revoked callbacks",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed design selector/coordinator replaced by actual member role cards and guarded Continue; covered/revoked callbacks and canonical no-picker presentation are exercised."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_role_choice_design_test.dart",
+        "name": "entry Actions exposes chosen Guided Paths only on role-choice route",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_role_choice_design_test.dart",
+        "name": "chosen Guided Paths member role page has no design picker",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed design selector/coordinator replaced by actual member role cards and guarded Continue; covered/revoked callbacks and canonical no-picker presentation are exercised."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_settings_design_test.dart",
+        "name": "Founder can select and open the same Guardian Settings routes",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_settings_design_test.dart",
+        "name": "Founder opens the current Guardian Settings without a design picker",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed contextual dropdown replaced by the unchanged immutable code-only choice catalog and actual callbacks; group/tab/provider counts and absence of runtime dropdowns remain checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_settings_design_test.dart",
+        "name": "smooth cards fits a compact phone with enlarged text",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_settings_design_test.dart",
+        "name": "current Settings fits a compact phone with enlarged text",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed contextual dropdown replaced by the unchanged immutable code-only choice catalog and actual callbacks; group/tab/provider counts and absence of runtime dropdowns remain checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_settings_design_test.dart",
+        "name": "Seeker candidate retains seeker privacy destinations",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_settings_design_test.dart",
+        "name": "Seeker current Settings retains seeker privacy destinations",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed contextual dropdown replaced by the unchanged immutable code-only choice catalog and actual callbacks; group/tab/provider counts and absence of runtime dropdowns remain checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_splash_directions_test.dart",
+        "name": "shared Home keeps Quiet Horizon and opens its preview",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_splash_directions_test.dart",
+        "name": "selected Quiet Horizon artwork is code-selected with no Home picker",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home/comparison route replaced by code-selected shared artwork or real SplashScreen; completion, stack preservation, authority isolation and selector absence are checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_splash_directions_test.dart",
+        "name": "direct unauthorized preview and Home picker are denied",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_splash_directions_test.dart",
+        "name": "ordinary splash retains its completion without a developer route",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home/comparison route replaced by code-selected shared artwork or real SplashScreen; completion, stack preservation, authority isolation and selector absence are checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_splash_directions_test.dart",
+        "name": "the selected visual preview preserves the underlying route",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_splash_directions_test.dart",
+        "name": "code-selected artwork preserves the underlying route and authority",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home/comparison route replaced by code-selected shared artwork or real SplashScreen; completion, stack preservation, authority isolation and selector absence are checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_splash_directions_test.dart",
+        "name": "revoked artwork permission hides preview without resetting stack",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_splash_directions_test.dart",
+        "name": "revoked developer authority cannot add splash controls or reset the stack",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home/comparison route replaced by code-selected shared artwork or real SplashScreen; completion, stack preservation, authority isolation and selector absence are checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "quiet refresh photo-stall recovery offers the existing guarded Developer Home",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "quiet refresh photo-stall recovery has no Developer Home and retains guarded retry",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer recovery/reset/Home path or cached developer role input replaced by absence/default-Seeker expectation. Actual guarded retry, admission, account isolation, relaunch and member stack assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "cold launch retains the Seeker presentation role",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "cold launch opens Seeker after the former Seeker selection",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer recovery/reset/Home path or cached developer role input replaced by absence/default-Seeker expectation. Actual guarded retry, admission, account isolation, relaunch and member stack assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "cold launch retains the Guardian presentation role",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "cold launch opens Seeker after the former Guardian selection",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer recovery/reset/Home path or cached developer role input replaced by absence/default-Seeker expectation. Actual guarded retry, admission, account isolation, relaunch and member stack assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "Seeker current presentation retains role across cold relaunch",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "Seeker presentation remains default across cold relaunch after former Seeker input",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer recovery/reset/Home path or cached developer role input replaced by absence/default-Seeker expectation. Actual guarded retry, admission, account isolation, relaunch and member stack assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "Guardian current presentation retains role across cold relaunch",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "Seeker presentation remains default across cold relaunch after former Guardian input",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer recovery/reset/Home path or cached developer role input replaced by absence/default-Seeker expectation. Actual guarded retry, admission, account isolation, relaunch and member stack assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "Guardian preview reset returns the current Seeker presentation",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "former Guardian preview selection cannot change the default Seeker presentation",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer recovery/reset/Home path or cached developer role input replaced by absence/default-Seeker expectation. Actual guarded retry, admission, account isolation, relaunch and member stack assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "Developer Home does not change the remembered presentation role",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/founder_launch_style_test.dart",
+        "name": "Developer Home is absent while the current presentation role is preserved",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer recovery/reset/Home path or cached developer role input replaced by absence/default-Seeker expectation. Actual guarded retry, admission, account isolation, relaunch and member stack assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/onboarding_stage_arrow_swipe_test.dart",
+        "name": "compact arrow-mode Skip is dim, bottom-right, and clear of centered action",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/onboarding_stage_arrow_swipe_test.dart",
+        "name": "compact arrow mode removes Skip and keeps the centered member action",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Skip is removed as authorized; centered member action, compact scroll, page handoff, overscroll and exactly-once completion remain checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/onboarding_stage_arrow_swipe_test.dart",
+        "name": "Continue mode keeps original top Skip and ignores child overscroll completion",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/onboarding_stage_arrow_swipe_test.dart",
+        "name": "Continue mode removes Skip and ignores child overscroll completion",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Skip is removed as authorized; centered member action, compact scroll, page handoff, overscroll and exactly-once completion remain checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/visual/dev_toggle_sections_visual_test.dart",
+        "name": "Network categories closed",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/visual/dev_toggle_sections_visual_test.dart",
+        "name": "member Network recommended has no developer categories",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer category dropdown states replaced by code-selected real Guardian Network recommended/sent states with every retired category key absent."
+    },
+    {
+      "from": {
+        "suite_path": "test/visual/dev_toggle_sections_visual_test.dart",
+        "name": "Network categories expanded",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/visual/dev_toggle_sections_visual_test.dart",
+        "name": "member Network sent has no developer categories",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed developer category dropdown states replaced by code-selected real Guardian Network recommended/sent states with every retired category key absent."
+    },
+    {
+      "from": {
+        "suite_path": "test/visual/lock19_v3_family_acceptance_test.dart",
+        "name": "existing identity skip and stale verified callback grant nothing",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/visual/lock19_v3_family_acceptance_test.dart",
+        "name": "leaving identity without a verified result and stale callback grant nothing",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed identity Skip replaced by leaving the actual identity page through code fixture Back; stale verified owner callback still grants no membership or invitation change."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dashboard_page_options_test.dart",
+        "name": "host-provided choices have their own category dropdown",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dashboard_page_options_test.dart",
+        "name": "host-provided fixture choices act only through code without dropdowns",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed contextual dropdown replaced by the unchanged immutable code-only choice catalog and actual callbacks; group/tab/provider counts and absence of runtime dropdowns remain checked."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "entry Home keeps one Developer Access heading and other headers stay contextual",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "entry page has no Developer Access heading or contextual tools",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home headings/actions replaced by role-context absence, real member recovery/provider entry, loading-state immutability and compact member presentation. Semantic context pairing was corrected manually; no replica tools exist."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "Seeker Home keeps one Developer Access heading and other headers stay contextual",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "Seeker page has no Developer Access heading or contextual tools",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home headings/actions replaced by role-context absence, real member recovery/provider entry, loading-state immutability and compact member presentation. Semantic context pairing was corrected manually; no replica tools exist."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "Guardian Home keeps one Developer Access heading and other headers stay contextual",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "Guardian page has no Developer Access heading or contextual tools",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home headings/actions replaced by role-context absence, real member recovery/provider entry, loading-state immutability and compact member presentation. Semantic context pairing was corrected manually; no replica tools exist."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "Home leads with a separate Home action and preserves account actions",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "member sign-in remains available with every Home tool removed",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home headings/actions replaced by role-context absence, real member recovery/provider entry, loading-state immutability and compact member presentation. Semantic context pairing was corrected manually; no replica tools exist."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "the four Home actions each invoke only their supplied callback once",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "member signup remains available without developer signup shortcuts",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home headings/actions replaced by role-context absence, real member recovery/provider entry, loading-state immutability and compact member presentation. Semantic context pairing was corrected manually; no replica tools exist."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "busy reset disables Home and reset without changing account callbacks",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "a waiting member page has no Home or reset actions",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home headings/actions replaced by role-context absence, real member recovery/provider entry, loading-state immutability and compact member presentation. Semantic context pairing was corrected manually; no replica tools exist."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "the simplified Home panel fits narrow large text and remains actionable",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_home_tools_test.dart",
+        "name": "member entry stays usable at narrow enlarged text without a tools panel",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03",
+      "reason": "Removed Home headings/actions replaced by role-context absence, real member recovery/provider entry, loading-state immutability and compact member presentation. Semantic context pairing was corrected manually; no replica tools exist."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "app gold defaults Off and unauthorized accounts cannot enable it",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "app gold defaults Off and members need no developer authority",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Developer authorization is no longer a Gold selection API; member choice defaults Off and remains available without developer authority."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "revocation and reauthorization do not revive a previous On choice",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "developer revocation cannot change a previous member On choice",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed temporary override selection; retain developer authority transition coverage by proving it cannot alter real member preference or rendering."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "On changes visible pixels; revocation restores identical Off pixels",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "On changes visible pixels; member Off restores identical original pixels",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Pixel reversibility now drives the real member Off choice; also prove authorization revocation leaves member On pixels unchanged."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "picker updates immediately, refuses stale callbacks and hides on revocation",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "member picker updates immediately and refuses stale account callbacks",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed DevAppGoldPicker; real Personalisation member Switch retains immediate update, stale revision/generation callback refusal, and developer-authority independence."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "busy picker is disabled; compact layout remains scrollable",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "disabled member gold control remains scrollable at compact 200% text",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed developer busy picker; retained member content with explicit disabled callbacks tests disabled Gold affordance, compact layout, and scroll reachability."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_member_app_gold_test.dart",
+        "name": "temporary developer preview does not overwrite a member preference",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_member_app_gold_test.dart",
+        "name": "developer authorization cannot override a saved member preference",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed all temporary override APIs; developer authorization changes must not mutate member rendering or persisted Off/On preference."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_member_app_gold_test.dart",
+        "name": "member selections clear temporary preview immediately even for unchanged values",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_member_app_gold_test.dart",
+        "name": "repeated member selections reject stale callbacks and remain authoritative",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed temporary override API; repeated real member Off/On choices must invalidate retained callbacks and remain the sole rendered/persisted selection."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Entry shared Home omits gold without changing member choice",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Entry member Personalisation preserves gold without developer controls",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed shared developer Home; code-only account-role fixture renders real member Personalisation and verifies saved Gold, semantics, and absence of developer Home/Gold controls."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Entry developer Home and gold toggle are absent for ordinary accounts",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Entry ordinary member gold remains available without developer Home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed developer panel; code-only account-role fixture verifies ordinary member Gold choice works while developer Home/Gold controls remain absent."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Seeker shared Home omits gold without changing member choice",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Seeker member Personalisation preserves gold without developer controls",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed shared developer Home; code-only account-role fixture renders real member Personalisation and verifies saved Gold, semantics, and absence of developer Home/Gold controls."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Seeker developer Home and gold toggle are absent for ordinary accounts",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Seeker ordinary member gold remains available without developer Home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed developer panel; code-only account-role fixture verifies ordinary member Gold choice works while developer Home/Gold controls remain absent."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Guardian shared Home omits gold without changing member choice",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Guardian member Personalisation preserves gold without developer controls",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed shared developer Home; code-only account-role fixture renders real member Personalisation and verifies saved Gold, semantics, and absence of developer Home/Gold controls."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Guardian developer Home and gold toggle are absent for ordinary accounts",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "Guardian ordinary member gold remains available without developer Home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed developer panel; code-only account-role fixture verifies ordinary member Gold choice works while developer Home/Gold controls remain absent."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "busy Seeker shared Home has no gold toggle",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "disabled Seeker member Personalisation has no developer gold toggle",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed busy developer Home; real member content fixture retains disabled member Gold affordance and absence of developer Gold controls for the account role."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "busy Guardian shared Home has no gold toggle",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_app_gold_preview_test.dart",
+        "name": "disabled Guardian member Personalisation has no developer gold toggle",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed busy developer Home; real member content fixture retains disabled member Gold affordance and absence of developer Gold controls for the account role."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "Seeker coordinator forwards the dedicated Introductions route",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "member Introductions navigation retains route epochs without developer dispatch",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retained account session safety is exercised through the extracted production ZyraAccountSessionHost; retired-control UI cases now exercise real app frame navigation, member drafts, role changes and rejection of retired developer routes, preserving the named safety intent. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "entry and sign-up pages receive three developer doors",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "entry and sign-up pages retain content without developer doors",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retained account session safety is exercised through the extracted production ZyraAccountSessionHost; retired-control UI cases now exercise real app frame navigation, member drafts, role changes and rejection of retired developer routes, preserving the named safety intent. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "the hidden controls open above a pushed route",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "holds on a pushed route cannot expose developer controls",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retained account session safety is exercised through the extracted production ZyraAccountSessionHost; retired-control UI cases now exercise real app frame navigation, member drafts, role changes and rejection of retired developer routes, preserving the named safety intent. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "the app-wide rail retracts when capability is revoked",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "developer capability changes cannot insert an app-wide rail",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retained account session safety is exercised through the extracted production ZyraAccountSessionHost; retired-control UI cases now exercise real app frame navigation, member drafts, role changes and rejection of retired developer routes, preserving the named safety intent. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "direct developer sign-up call denies an unauthorized caller",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "unauthorized entry cannot navigate to a retired developer sign-up route",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retained account session safety is exercised through the extracted production ZyraAccountSessionHost; retired-control UI cases now exercise real app frame navigation, member drafts, role changes and rejection of retired developer routes, preserving the named safety intent. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "the global owner selects the live Seeker or Guardian panel",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "member role changes retain drafts without inserting developer panels",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retained account session safety is exercised through the extracted production ZyraAccountSessionHost; retired-control UI cases now exercise real app frame navigation, member drafts, role changes and rejection of retired developer routes, preserving the named safety intent. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "Entry Home uses a separate Home icon action, not Exit onboarding",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "entry navigation has no developer Home or Exit onboarding action",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retained account session safety is exercised through the extracted production ZyraAccountSessionHost; retired-control UI cases now exercise real app frame navigation, member drafts, role changes and rejection of retired developer routes, preserving the named safety intent. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_hidden_dev_controls_test.dart",
+        "name": "ZyraDevSurface.entry opens hidden page options and X restores member page",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_hidden_dev_controls_test.dart",
+        "name": "entry holds retain member drafts without hidden page options",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired positive hidden-control opening is replaced by holds through the real production app frame: member draft and route ownership are preserved and no retired control is attached, including role and same-frame presentation changes. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_hidden_dev_controls_test.dart",
+        "name": "ZyraDevSurface.seeker opens hidden page options and X restores member page",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_hidden_dev_controls_test.dart",
+        "name": "seeker holds retain member drafts without hidden page options",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired positive hidden-control opening is replaced by holds through the real production app frame: member draft and route ownership are preserved and no retired control is attached, including role and same-frame presentation changes. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_hidden_dev_controls_test.dart",
+        "name": "ZyraDevSurface.guardian opens hidden page options and X restores member page",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_hidden_dev_controls_test.dart",
+        "name": "guardian holds retain member drafts without hidden page options",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired positive hidden-control opening is replaced by holds through the real production app frame: member draft and route ownership are preserved and no retired control is attached, including role and same-frame presentation changes. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_hidden_dev_controls_test.dart",
+        "name": "same-frame context ABA cannot complete a pending hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_hidden_dev_controls_test.dart",
+        "name": "same-frame presentation ABA cannot expose hidden controls",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired positive hidden-control opening is replaced by holds through the real production app frame: member draft and route ownership are preserved and no retired control is attached, including role and same-frame presentation changes. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "the exact three-second boundary opens once and rearms on a new press",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "the three-second boundary and repeated presses never open developer entry",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "ordinary taps survive but a successful hold cancels the underlying tap",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "ordinary taps and long holds reach the underlying member tap target",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "early up cancels the hold without opening",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "early up preserves normal member gesture cancellation without developer entry",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "cancel cancels the hold without opening",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "cancel preserves normal member gesture cancellation without developer entry",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "movement cancels the hold without opening",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "movement preserves normal member gesture cancellation without developer entry",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "the child ordinary long press wins before developer entry",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "the child ordinary long press remains the only hold action",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "a second pointer cancels and both fingers must leave before rearming",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "multiple member pointers cannot arm hidden controls and fresh taps still work",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "a second finger outside the surface also cancels the hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "outside pointers cannot create developer entry or consume member touches",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "identity replacement cancels the captured hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "identity member replacement rejects retained actions while holds stay inert",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "open callback replacement cancels the captured hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "open callback member replacement rejects retained actions while holds stay inert",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "admission callback replacement cancels the captured hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "admission callback member replacement rejects retained actions while holds stay inert",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "disabled replacement cancels the captured hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "disabled member replacement rejects retained actions while holds stay inert",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "identity A to B to A cannot revive the old hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "member identity ABA during a hold preserves its draft without hidden entry",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "current admission is checked at the start and at completion",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "member action admission is checked at dispatch while long holds stay inert",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "enabling during a denied press requires a fresh three-second hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "enabling a disabled member action during a press requires a fresh press",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "admission exceptions at start fail closed",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "authorization refresh exceptions at start leave member gestures safe",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "admission exceptions at completion fail closed",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "authorization refresh exceptions at completion leave member gestures safe",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "AppLifecycleState.inactive and a resume cannot revive a captured hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "AppLifecycleState.inactive and resume preserve member gestures without hidden holds",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "AppLifecycleState.hidden and a resume cannot revive a captured hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "AppLifecycleState.hidden and resume preserve member gestures without hidden holds",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "AppLifecycleState.paused and a resume cannot revive a captured hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "AppLifecycleState.paused and resume preserve member gestures without hidden holds",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "AppLifecycleState.detached and a resume cannot revive a captured hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "AppLifecycleState.detached and resume preserve member gestures without hidden holds",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "covered route and route ABA cannot finish the old hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "covered route and route ABA cannot expose developer hold entry",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "unmount cancels a pending deadline",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "unmount during a long press leaves no developer deadline or callback",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "enabled and identity changes preserve child state, draft and scroll",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "authority and member role changes preserve child state, draft and scroll",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "legacy constructor retains the three-door default",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "production routes reject every retired developer door",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "legacy default keeps icons, order and touch geometry",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "member Gold touch geometry and actions survive rail removal",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "two doors omit the eye, its hit target and semantics",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "removed doors leave no eye hit target or developer semantics",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "custom keys and labels survive without the hidden custom eye",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "member content retains caller scroll keys without custom developer doors",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "an omitted selected door never produces a marker or eye",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "member Gold selection cannot produce a retired rail marker or eye",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "caller order is honoured rather than restored to enum order",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "member choice sheets retain caller order and dispatch their own values",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "Seeker two doors stay compact at Size(320.0, 568.0) and 200% text",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "Seeker member Gold remains reachable at Size(320.0, 568.0) and 200% text without developer doors",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "Seeker two doors stay compact at Size(393.0, 852.0) and 200% text",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "Seeker member Gold remains reachable at Size(393.0, 852.0) and 200% text without developer doors",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "Guardian two doors stay compact at Size(320.0, 568.0) and 200% text",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "Guardian member Gold remains reachable at Size(320.0, 568.0) and 200% text without developer doors",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "Guardian two doors stay compact at Size(393.0, 852.0) and 200% text",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "Guardian member Gold remains reachable at Size(393.0, 852.0) and 200% text without developer doors",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "developer dropdown uses shared app surfaces",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "retained member choices use shared app surfaces without developer menus",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Shared surface styling is verified on the retained member sheet; retired developer menu keys must be absent."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "current state replaces the last choice after an external change",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "member current choices follow external owner presentation changes",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "A returned real member haptic choice is followed by an external owner snapshot, and the next sheet must select the current supplied value."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "leaving a page and returning cannot revive its old menu",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "route ABA cannot revive a retained member choice intent",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "A retained member Gold intent is denied across a real Navigator route A-to-B-to-A round trip."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "losing and restoring authority cannot revive an old menu",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "losing and restoring owner admission cannot revive a member intent",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Observed owner admission loss remains revoked after owner returns; a retained member intent cannot revive."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "a fully restricted catalog can still explain its denied states",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "member unavailable states explain denial without a developer catalog",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "The retained member empty-state component renders its denial reason with no callback or developer catalog."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "separate category menus delegate only their own selected choice",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "member haptic and Gold choices dispatch only their own values",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Actual member haptic and Gold controls dispatch only their own caller-owned values, without changing global member preferences."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "unavailable entries retain a truthful reason and no callback",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "unavailable member actions retain truthful reasons and refuse dispatch",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "The retained member unavailable-state action keeps its denial reason and current admission guard refuses dispatch."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "non-contiguous categories merge without mixing their options",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "interleaved member choice labels remain bound to their own values",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Actual member sheet keys keep interleaved duplicate labels bound to distinct caller-owned option values."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "each category displays its own current state simultaneously",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "member preferences show their supplied states simultaneously",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Actual member settings render Gold, haptic and fixed-font values concurrently from the current supplied snapshot."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "category change invalidates a captured old option callback",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "member callback replacement invalidates captured previous intent",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Replacing the actual member callback invalidates the captured previous intent; only the fresh replacement acts."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "empty catalog is honest and busy catalog cannot act",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "member empty and disabled presentations never gain developer actions",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retained member empty and disabled content render no invented action and no developer menu."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "ordinary accounts cannot see the dropdown",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "ordinary accounts retain member choices without developer dropdowns",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Ordinary accounts retain a functioning member Gold preference while the retired developer dropdown remains absent."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "authorization loss refuses an already-open selection",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "owner admission loss refuses an already-open member selection",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Actual owner admission loss while a member sheet is pending prevents its returned choice from acting."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "page change refuses a stale menu even with reused option IDs",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "member page replacement refuses retained choices despite reused labels",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Replacing the member page disposes its old owner even when labels are reused; the old sheet cannot act and fresh settings remain usable."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "removing an option while open prevents its stale callback",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "removing member settings while a sheet is open leaves callbacks inert",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removing the member settings owner leaves its outstanding real sheet callback inert."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "failed callback is visible and is not promoted to selected",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "failed member callbacks surface errors without claiming a new selection",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "A thrown member callback is surfaced without claiming a different controlled selection; no retired developer error menu is restored."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "late async completion cannot mark a different page selected",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "late member sheet completion cannot overwrite a newer supplied choice",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Late completion of the actual member sheet cannot overwrite an externally supplied newer value."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "long names and disabled explanations fit a narrow large-text menu",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_page_options_test.dart",
+        "name": "long member choice labels and denial reasons fit narrow large text",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "The real member sheet wraps long labels and denial details at narrow 200% text; caller admission still refuses dispatch."
+    },
+    {
+      "from": {
+        "suite_path": "test/compatibility_route_toggle_test.dart",
+        "name": "real route toggle has one reachable credit group at 390.0/1.0",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/compatibility_route_toggle_test.dart",
+        "name": "code-only sample balances render without developer selectors at 390.0/1.0",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired credit-menu geometry now covers actual sample member action reachability at the same viewport/text scale with assertion-only source fixture balances0/1/5; real current-owner/auth/route-epoch guards retain the remaining callback safety cases."
+    },
+    {
+      "from": {
+        "suite_path": "test/compatibility_route_toggle_test.dart",
+        "name": "real route toggle has one reachable credit group at 320.0/1.3",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/compatibility_route_toggle_test.dart",
+        "name": "code-only sample balances render without developer selectors at 320.0/1.3",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired credit-menu geometry now covers actual sample member action reachability at the same viewport/text scale with assertion-only source fixture balances0/1/5; real current-owner/auth/route-epoch guards retain the remaining callback safety cases."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_concept_preview_boundary_test.dart",
+        "name": "ZyraDevSurface.entry ordinary controls hide and restore without rerouting",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_concept_preview_boundary_test.dart",
+        "name": "entry isolation retains member route ownership without restoring developer controls",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer dispatch replaced by actual account-session host and concept isolation boundaries; underlying route/account lifetime, zero-network isolation and three-second hold absence remain exercised separately for entry/Seeker/Guardian."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_concept_preview_boundary_test.dart",
+        "name": "ZyraDevSurface.seeker ordinary controls hide and restore without rerouting",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_concept_preview_boundary_test.dart",
+        "name": "seeker isolation retains member route ownership without restoring developer controls",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer dispatch replaced by actual account-session host and concept isolation boundaries; underlying route/account lifetime, zero-network isolation and three-second hold absence remain exercised separately for entry/Seeker/Guardian."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_concept_preview_boundary_test.dart",
+        "name": "ZyraDevSurface.guardian ordinary controls hide and restore without rerouting",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_concept_preview_boundary_test.dart",
+        "name": "guardian isolation retains member route ownership without restoring developer controls",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer dispatch replaced by actual account-session host and concept isolation boundaries; underlying route/account lifetime, zero-network isolation and three-second hold absence remain exercised separately for entry/Seeker/Guardian."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess landing has five text pills at 390.0 width and 1.0 text scale",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess planned member navigation has five destinations without access pills at 390.0 width and 1.0 text scale",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess landing has five text pills at 320.0 width and 1.5 text scale",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess planned member navigation has five destinations without access pills at 320.0 width and 1.5 text scale",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Seeker real shell Home opens five-button landing without signout or reset",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Seeker member Appearance route returns without signout or reset",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Guardian real shell Home opens five-button landing without signout or reset",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Guardian member Appearance route returns without signout or reset",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess dev_access_seeker refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Seeker fixture entry refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess dev_access_seeker_basic refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Seeker Basic fixture entry refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess dev_access_guardian refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Guardian fixture entry refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess dev_access_guardian_basic refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Guardian Basic fixture entry refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess dev_access_signup refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Onboarding fixture entry refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Seeker gender switch survives removal of its overlay control during fresh authorization",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Seeker code fixture entry survives disposal of its initiating child during fresh authorization",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Guardian gender switch survives removal of its overlay control during fresh authorization",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Guardian code fixture entry survives disposal of its initiating child during fresh authorization",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_route_gate_test.dart",
+        "name": "stale local proof cannot paint content after the fresh check fails",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_route_gate_test.dart",
+        "name": "stale local proof cannot retain content after a fresh resume check fails",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed developer route gate safety now follows actual extracted account-session host fresh resume authorization success/denial, with former obsolete source-boundary assertion replaced by exact retired-leaf source absence."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_route_gate_test.dart",
+        "name": "fresh authorization paints the protected content",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_route_gate_test.dart",
+        "name": "fresh resume authorization preserves the protected content",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed developer route gate safety now follows actual extracted account-session host fresh resume authorization success/denial, with former obsolete source-boundary assertion replaced by exact retired-leaf source absence."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_route_gate_test.dart",
+        "name": "every direct developer leaf uses the fresh route gate",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_route_gate_test.dart",
+        "name": "retired developer leaves are absent from production source",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed developer route gate safety now follows actual extracted account-session host fresh resume authorization success/denial, with former obsolete source-boundary assertion replaced by exact retired-leaf source absence."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_external_tester_access_test.dart",
+        "name": "valid review details reveal both complete app experiences",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_external_tester_access_test.dart",
+        "name": "valid review fixture cannot restore a retired review entry route",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Real review service validation remains; removed review UI routes are tested absent through the real app frame, with valid and invalid fixture credentials unable to restore sample entry."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_external_tester_access_test.dart",
+        "name": "invalid review details show a clear error",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_external_tester_access_test.dart",
+        "name": "invalid review fixture cannot authorize or reveal sample entry",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Real review service validation remains; removed review UI routes are tested absent through the real app frame, with valid and invalid fixture credentials unable to restore sample entry."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_onboarding_gold_design_test.dart",
+        "name": "the protected toggle retains selected dust and both motions without a pulse control",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_onboarding_gold_design_test.dart",
+        "name": "code-selected dust and motion render without developer pickers",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired UI picker replaced by code-only fixture parameters with real shared onboarding rendering and explicit picker absence."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_onboarding_transition_test.dart",
+        "name": "developer toggle offers six choices and honours busy/access",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_onboarding_transition_test.dart",
+        "name": "code-selected transition has no developer picker and honours access",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired UI picker replaced by code-only fixture parameters with real shared onboarding rendering and explicit picker absence."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_onboarding_welcome_motion_test.dart",
+        "name": "toggle shows five whole-page motion choices without typing or a dead pulse slider",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_onboarding_welcome_motion_test.dart",
+        "name": "code-selected welcome motion renders without developer choices",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired UI picker replaced by code-only fixture parameters with real shared onboarding rendering and explicit picker absence."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "onboarding restart targets only the latest attached owner",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "only the latest pushed member route can dispatch its owned action",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "revoked onboarding restart and removed owners cannot be reused",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "removed member routes cannot reuse their owned callbacks",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "Home Exit closes only the current top onboarding owner",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "pop disposes the top member action and restores fresh parent action",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "Home Exit never falls through a covered or non-closable top owner",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "a covered member callback cannot dispatch or regain revoked admission",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "revocation and detached onboarding owners deny Home Exit",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "disposed member ownership stays denied after another route opens",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "a bound Home Exit cannot close a replacement or reattached owner",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "replacement invalidates the prior member callback and route epoch",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "nested Seeker shell restores every invoking shell callback",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "nested Seeker member presentation restores its page with fresh owned actions",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "nested Guardian shell restores the invoking Guardian callback",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "nested Guardian member presentation restores its page with fresh owned actions",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "a Seeker disposed while covered is never resurrected after signup",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "a Seeker member removed while covered cannot resurrect its action",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "a Guardian disposed while covered is never resurrected after signup",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "a Guardian member removed while covered cannot resurrect its action",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "out-of-order disposal restores the latest still-mounted Seeker",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "out-of-order member removal preserves only the live parent action",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "reattaching an owner updates recency without duplicate registrations",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "replacing one member owner records one epoch and rejects its old action",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "signup entry override and existing cross-role precedence stay intact",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_surface_coordinator_test.dart",
+        "name": "nested member routes preserve cross-role order without reviving covered actions",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired coordinator ownership is now exercised by callbacks created and guarded inside production PersonalisationScreen.preview. Real cover/pop/removal/replacement/cross-role route-order cases reject stale source callbacks and accept only fresh current member actions; test code supplies admission boolean and call recording only."
+    },
+    {
+      "from": {
+        "suite_path": "test/visual/continuous_onboarding_visual_test.dart",
+        "name": "developer landing real-font Onboarding label",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/visual/continuous_onboarding_visual_test.dart",
+        "name": "provider entry real-font defaults exclude developer account selectors",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Developer Access landing removed; review actual entry provider controls at same real-font viewport and assert removed role/plan/signup selectors absent."
+    },
+    {
+      "from": {
+        "suite_path": "test/guardian_onboarding_dev_skip_test.dart",
+        "name": "Guardian transition Skip is protected and keeps Continue",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/guardian_onboarding_dev_skip_test.dart",
+        "name": "Guardian transition has no developer Skip and keeps ordinary Continue",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Developer Skip removed; preserve actual member continuation and revocation guard through the real code-page Copy callback. Known four baseline-failing cases unchanged."
+    },
+    {
+      "from": {
+        "suite_path": "test/guardian_onboarding_dev_skip_test.dart",
+        "name": "code Skip requires a complete draft and live developer proof",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/guardian_onboarding_dev_skip_test.dart",
+        "name": "code page excludes developer Skip and denies retained copy after revocation",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Developer Skip removed; preserve actual member continuation and revocation guard through the real code-page Copy callback. Known four baseline-failing cases unchanged."
+    },
+    {
+      "from": {
+        "suite_path": "test/initial_identity_check_screen_test.dart",
+        "name": "protected identity DEV skip from consent uses only the preview callback",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/initial_identity_check_screen_test.dart",
+        "name": "code identity state from consent requires verified ordinary Continue",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed skip route; code-only initialState fixture exercises actual verified Continue with no finalizer or live request."
+    },
+    {
+      "from": {
+        "suite_path": "test/initial_identity_check_screen_test.dart",
+        "name": "protected identity DEV skip from pending uses only the preview callback",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/initial_identity_check_screen_test.dart",
+        "name": "code identity state from pending requires verified ordinary Continue",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed skip route; code-only initialState fixture exercises actual verified Continue with no finalizer or live request."
+    },
+    {
+      "from": {
+        "suite_path": "test/initial_identity_check_screen_test.dart",
+        "name": "protected identity DEV skip from cancelled uses only the preview callback",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/initial_identity_check_screen_test.dart",
+        "name": "code identity state from cancelled requires verified ordinary Continue",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed skip route; code-only initialState fixture exercises actual verified Continue with no finalizer or live request."
+    },
+    {
+      "from": {
+        "suite_path": "test/initial_identity_check_screen_test.dart",
+        "name": "identity DEV skip is absent live and inert after revocation",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/initial_identity_check_screen_test.dart",
+        "name": "identity skip stays absent and verified Continue rejects revocation",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed developer skip/state chips; actual guarded ordinary Continue and constructor state fixture preserve refusal/authority/privacy behavior."
+    },
+    {
+      "from": {
+        "suite_path": "test/initial_identity_check_screen_test.dart",
+        "name": "developer preview runs consent and all coarse states locally",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/initial_identity_check_screen_test.dart",
+        "name": "code fixture runs consent and verified state without developer controls",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed developer skip/state chips; actual guarded ordinary Continue and constructor state fixture preserve refusal/authority/privacy behavior."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "Home keeps the selected onboarding choice without motion or icon comparisons",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "member entry retains provider defaults without developer comparisons",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "every Home choice starts full onboarding at Welcome without account callbacks",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "code-selected signup starts at Welcome and preserves invoking route identity",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "busy Home disables the selected onboarding preview choice",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "busy member provider rejects duplicate entry while its request is pending",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired Home busy control replaced by actual ordinary Welcome provider callback invoked twice while its injected provider Future is pending; production loading guard permits one request and no onboarding navigation."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "picker rechecks revoked access before opening a preview",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "revoked Welcome provider callback cannot open onboarding",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired picker admission replaced by retained actual Welcome preview provider callback; production authorization guard denies navigation and OAuth after revocation and paints denied state."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "separate picker remains usable at narrow width and large text",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "member question Continue stays reachable at320px and2xtext without pickers",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed compact developer menu; preserve enlarged-text reachable-action coverage using the actual scrollable member question and Continue. Ordinary Welcome has a pre-existing fixed non-responsive80pt wordmark, so this case does not extend into that unrelated baseline layout."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "unauthorized picker exposes no comparisons",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "unauthorized member entry exposes no developer comparisons or signup shortcut",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "entry Home opens onboarding above its existing page",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "entry member screen survives a code-only onboarding route",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "Seeker Home opens onboarding above its existing page",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "Seeker member screen survives a code-only onboarding route",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "Guardian Home opens onboarding above its existing page",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_onboarding_home_integration_test.dart",
+        "name": "Guardian member screen survives a code-only onboarding route",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_toggle_options_test.dart",
+        "name": "entry Home retains the separate onboarding category",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_toggle_options_test.dart",
+        "name": "member entry keeps providers while developer Onboarding categories are absent",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_toggle_options_test.dart",
+        "name": "the selected entry style restarts the existing onboarding without a root route",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_toggle_options_test.dart",
+        "name": "code-selected entry state restarts its nested Navigator without a root route",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_toggle_options_test.dart",
+        "name": "revoked stale entry preview tap does not navigate",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_toggle_options_test.dart",
+        "name": "revoked retained provider preview callback cannot navigate or call OAuth",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_toggle_options_test.dart",
+        "name": "signup Actions category scrolls cleanly at320px and2xtext",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_toggle_options_test.dart",
+        "name": "member role choices remain reachable at320px and2xtext without Actions menu",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_toggle_options_test.dart",
+        "name": "unauthorized entry page exposes no developer choices",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_toggle_options_test.dart",
+        "name": "unauthorized entry retains member recovery without developer choices",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_toggle_options_test.dart",
+        "name": "Seeker sign-up Actions separate styles and offer one Onboarding",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_toggle_options_test.dart",
+        "name": "Seeker signup preserves its member action without developer style options",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_toggle_options_test.dart",
+        "name": "Guardian sign-up Actions separate styles and offer one Onboarding",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_toggle_options_test.dart",
+        "name": "Guardian signup preserves its member action without developer style options",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_toggle_options_test.dart",
+        "name": "Onboarding Actions separate styles and offer one Onboarding",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_toggle_options_test.dart",
+        "name": "Onboarding signup preserves its member action without developer style options",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired developer Home/picker removed; corresponding real member entry/form action, code-only fixture navigation/owner lifetime or matching viewport safety retained without replacement picker UI."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "Home is available at Welcome without on-page close chrome",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "code fixture exit is available at Welcome without on-page close chrome",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed UI driver replaced by guarded code-only fixture callbacks while existing real-screen flow, privacy, route and ownership assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "retained Home cannot close after revocation or owner disposal",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "retained Personalisation action rejects revocation and owner disposal",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired fixture exit replaced by actual production PersonalisationScreen owned action: revoked admission and later disposed owner reject the captured source callback without popping member routes or live writes."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "an old rendered Home cannot close the next onboarding flow",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "an old Personalisation action cannot mutate the next mounted owner",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Retired fixture epoch exit replaced by actual production PersonalisationScreen owned callback after disposal and replacement; old callbacks cannot mutate either owner, while the next current source callback succeeds."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "Welcome and four-slide introduction stay connected with DEV Back",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "Welcome and four-slide introduction stay connected with ordinary Back",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed UI driver replaced by guarded code-only fixture callbacks while existing real-screen flow, privacy, route and ownership assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "Back DEV on first welcome line returns to provider entry",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "Back on first welcome line returns to provider entry",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed UI driver replaced by guarded code-only fixture callbacks while existing real-screen flow, privacy, route and ownership assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "DEV skips traverse the Seeker entry to unfinished My ZYRA",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "code fixtures traverse real Seeker forms to unfinished My ZYRA",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed UI driver replaced by guarded code-only fixture callbacks while existing real-screen flow, privacy, route and ownership assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "neutral Onboarding action restarts an already open flow",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "code-selected Onboarding fixture restarts an already open flow",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed UI driver replaced by guarded code-only fixture callbacks while existing real-screen flow, privacy, route and ownership assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "completed Seeker flow restarts cleanly through the global toggle",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "completed Seeker flow restarts cleanly through code fixture state",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed UI driver replaced by guarded code-only fixture callbacks while existing real-screen flow, privacy, route and ownership assertions remain."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "global toggle options remain available within full signup",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_process_test.dart",
+        "name": "signup fixture selects state from code without global developer options",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Global developer options removed; code-selected restart and absence are exercised against the same actual signup route and no-side-effect assertions."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "ordinary signup entry retains its two existing option groups",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "ordinary signup entry has no developer option groups and retains its nested route",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "entry choices assign exact repeatable unified credits",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "code credit fixtures assign exact repeatable unified balances without member mutation",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "covered nested route refuses retained entry choices",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "covered nested route refuses retained code credit mutation",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "a new nested sample owner invalidates the old choice",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "a new nested sample owner rejects the first owner code mutation",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "revocation hides entry choices and refuses an old callback",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "revocation keeps credit menus absent and refuses a captured fixture callback",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "Home opens Developer Access, retains first root and rejects disposed choices",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "code close retains the invoking root and rejects disposed credit callbacks",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "real UUIDs never acquire the sample credit groups in Entry",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "real UUIDs never acquire code credit capability or sample menus",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "nested Compatibility has one reachable group at 390.0/1.0",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "nested Compatibility member action stays reachable without credit menus at 390.0/1.0",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls."
+    },
+    {
+      "from": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "nested Compatibility has one reachable group at 320.0/1.3",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/dev_signup_entry_compatibility_test.dart",
+        "name": "nested Compatibility member action stays reachable without credit menus at 320.0/1.3",
+        "kind": "case"
+      },
+      "reviewed_by": "baseline_compare technical peer review 2026-11-03",
+      "reason": "Removed developer menu entry; exercise the actual ProfileUnlockScreen member action and route-owned code fixture balances, lifetime and authorization guards without replacement controls."
+    },
+    {
+      "from": {
+        "suite_path": "test/app_shell_correctness_test.dart",
+        "name": "developer page options use the approved shared grouped dropdown",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/app_shell_correctness_test.dart",
+        "name": "member entry has no developer page options or rail",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03; Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed grouped developer UI policy becomes actual app-frame/member Welcome rendering with provider actions intact, retired key/widget absence and retired source-module absence; original baseline-failing cases untouched."
+    },
+    {
+      "from": {
+        "suite_path": "test/profile_ready_screen_test.dart",
+        "name": "compact large text keeps review controls and DEV skip usable",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/profile_ready_screen_test.dart",
+        "name": "compact large text keeps member review controls without DEV skip",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03; Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Authorized control retirement replaces obsolete developer presence/disabled implementation assertions with explicit absence; existing member actions, source ownership and release safety assertions retained."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_one_app_release_tooling_contract_test.dart",
+        "name": "legacy live-account Journey jump controls remain disabled",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_one_app_release_tooling_contract_test.dart",
+        "name": "legacy live-account Journey jump controls and client helpers are absent",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03; Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Authorized control retirement replaces obsolete developer presence/disabled implementation assertions with explicit absence; existing member actions, source ownership and release safety assertions retained."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_one_app_release_tooling_contract_test.dart",
+        "name": "every Developer Access entry and destination performs a refresh",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_one_app_release_tooling_contract_test.dart",
+        "name": "retired Developer Access entries and destinations have no source route",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex root technical coverage review, 2026-11-03; Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Authorized control retirement replaces obsolete developer presence/disabled implementation assertions with explicit absence; existing member actions, source ownership and release safety assertions retained."
+    },
+    {
+      "from": {
+        "suite_path": "test/onboarding_compatibility_flow_test.dart",
+        "name": "developer preview can skip an unanswered question",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/onboarding_compatibility_flow_test.dart",
+        "name": "code-only preview advances an unanswered question without Skip",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex audit_controls independent technical coverage review, 2026-11-03",
+      "reason": "Removed developer Skip is absent. The real ValuesPreferencesFlow-supplied OnboardingScaffold.onContinue callback advances code-only preview state and denies fresh revoked authorization; ordinary visible Continue stays disabled for an unanswered question."
+    },
+    {
+      "from": {
+        "suite_path": "test/seeker_post_identity_choice_test.dart",
+        "name": "both role overviews have a protected next-page skip",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/seeker_post_identity_choice_test.dart",
+        "name": "both role overviews use protected Continue without developer Skip",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex audit_controls independent technical coverage review, 2026-11-03",
+      "reason": "Both real overview source Continue callbacks replace removed Skip controls. The Seeker overview reaches real Chapter2Flow and Guardian overview reaches WaliOnboardingFlow, with each retained source callback first rejected under revoked proof."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 2011 stays home",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply null stays home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Unchanged payload/assertion body; replace process-dependent Object.hashCode with stable semantic fixture label. Exact baseline registration order determines payload case1.",
+      "payload_registration_index": 1,
+      "full1_identity": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 2011 stays home",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "success": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      }
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 869019044 stays home",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply missing coordinates stays home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Unchanged payload/assertion body; replace process-dependent Object.hashCode with stable semantic fixture label. Exact baseline registration order determines payload case2.",
+      "payload_registration_index": 2,
+      "full1_identity": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 948917462 stays home",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "success": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      }
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 1019311159 stays home",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply latitude out of range stays home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Unchanged payload/assertion body; replace process-dependent Object.hashCode with stable semantic fixture label. Exact baseline registration order determines payload case3.",
+      "payload_registration_index": 3,
+      "full1_identity": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 547147386 stays home",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "success": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      }
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 30994959 stays home",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply non-finite latitude stays home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Unchanged payload/assertion body; replace process-dependent Object.hashCode with stable semantic fixture label. Exact baseline registration order determines payload case4.",
+      "payload_registration_index": 4,
+      "full1_identity": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 223563913 stays home",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "success": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      }
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 1007081001 stays home",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply overly precise coordinates stays home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Unchanged payload/assertion body; replace process-dependent Object.hashCode with stable semantic fixture label. Exact baseline registration order determines payload case5.",
+      "payload_registration_index": 5,
+      "full1_identity": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 255452361 stays home",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "success": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      }
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 1017507459 stays home",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply non-numeric latitude stays home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Unchanged payload/assertion body; replace process-dependent Object.hashCode with stable semantic fixture label. Exact baseline registration order determines payload case6.",
+      "payload_registration_index": 6,
+      "full1_identity": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 978130413 stays home",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "success": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      }
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 360622122 stays home",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply unavailable status stays home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Unchanged payload/assertion body; replace process-dependent Object.hashCode with stable semantic fixture label. Exact baseline registration order determines payload case7.",
+      "payload_registration_index": 7,
+      "full1_identity": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 892200738 stays home",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "success": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      }
+    }
+  ],
+  "baseline_pass_regression_keys": 0,
+  "baseline_pass_regression_occurrences": 0,
+  "complete_valid_reporter_runs": true,
+  "failed_or_error_not_increased": true,
+  "baseline_comparison_gate": "PASS",
+  "gate_scope": "Baseline non-regression only. Current LOCK authority and release-safety case pass must be assessed separately."
+}

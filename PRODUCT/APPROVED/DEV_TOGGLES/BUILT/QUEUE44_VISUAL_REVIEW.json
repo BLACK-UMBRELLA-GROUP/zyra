@@ -1,0 +1,210 @@
+{
+  "authority": "OA-ZYRA-325; current LOCK keep exception",
+  "pairs": [
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p01_seeker_one__top.png",
+      "master_sha256": "d8dfdf7b1f62ad61f28ef586b07ae345617cd7191110b7a2db92d239870f0995",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/seeker_one_profile__100.png",
+      "actual_sha256": "01cff18baafece966d76bb0d9ff5905394c87c9cb38fe586d5cd0829299a06a2",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/seeker_one_profile__100.png",
+      "pair_sha256": "d38edb1e60be9d2260386222e15a90786a4cda255927ca0901003867438d74f2",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p03_seeker_basic__top.png",
+      "master_sha256": "870fe4a0ad7dbded989e29ad7ecb52c740fbbb76651b9ee853a4514e55cac4de",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/seeker_basic_profile__100.png",
+      "actual_sha256": "b380ddc8d53ce75b4231462224d3f7607ceead6bc2c91d9dc970d9bf5fc4713a",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/seeker_basic_profile__100.png",
+      "pair_sha256": "0f1039231d8b7cba0c52fee2552fdd6d5be956e95cf01eb97eec2db93ddc5eb6",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p01_seeker_one__top.png",
+      "master_sha256": "d8dfdf7b1f62ad61f28ef586b07ae345617cd7191110b7a2db92d239870f0995",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/seeker_one_profile__200.png",
+      "actual_sha256": "4d0c5bbaa795dbd1da14118d18740ee9098f77cda01d272191c2c45d94857124",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/seeker_one_profile__200.png",
+      "pair_sha256": "03aa59db593cd877817bc4c0c8c584d77d2af79a5f7f420608ae20f372b03c91",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/s01_settings__top.png",
+      "master_sha256": "95d6985f181fe38654ad220c157f0cba2869427163fb763630990746ea1ecb6c",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/seeker_settings__100.png",
+      "actual_sha256": "dc26db6546c8aa6650b16fe8733261083b7d233247acc12f5e489b9ab70177f4",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/seeker_settings__100.png",
+      "pair_sha256": "aa33db1943768306b4665b28aad0d24f2a31e324a67639a75cc06892cce52493",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/s01_settings__top.png",
+      "master_sha256": "95d6985f181fe38654ad220c157f0cba2869427163fb763630990746ea1ecb6c",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/seeker_settings__200.png",
+      "actual_sha256": "bb5be85de742798f724875e3ed5e8a13b23ac28ae6b6e7c4d37fdd2527fa3350",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/seeker_settings__200.png",
+      "pair_sha256": "ccd1e4d2c6f1a55f3d0e89124f4c89fd387d0784a6132a9a7edea4f7d217291f",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p04_guardian_one__top.png",
+      "master_sha256": "0fab5eb1af84ec7bc055f545165a5c6ca99737c5acd1b6e1a32a2abaf9f97680",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/guardian_one_profile__100.png",
+      "actual_sha256": "97a8db0b56201b3fcf505434e7c22b585ea81ee46bbfebf49963ee9f3c8024a8",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/guardian_one_profile__100.png",
+      "pair_sha256": "870af41c37bf77b3e0c131d2de05b5157e0b06e210da2665e24a48f3a7a40111",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p06_guardian_basic__top.png",
+      "master_sha256": "3541d63fd96b2fde8077a42ed0536d57341f16c2692e7e81cb33f0ef9909d502",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/guardian_basic_profile__100.png",
+      "actual_sha256": "c474bcaa0abf1800e198f9737ad672431d54169e84bd54ac5c48b8484dbc6474",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/guardian_basic_profile__100.png",
+      "pair_sha256": "0d92b15c6e81a9d32fb776c9ce5f8670192da30735e2fb7cb5e246014feb8930",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p04_guardian_one__top.png",
+      "master_sha256": "0fab5eb1af84ec7bc055f545165a5c6ca99737c5acd1b6e1a32a2abaf9f97680",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/guardian_one_profile__200.png",
+      "actual_sha256": "20b876ef263d0c4bd6946eae954f42090d8fe17e767c763be619ba91a5014275",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/guardian_one_profile__200.png",
+      "pair_sha256": "61541d1be9bf3e0e9c20a58cff55b45275532ad4d47681c563e623dbb06e062d",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/s01_settings__top.png",
+      "master_sha256": "95d6985f181fe38654ad220c157f0cba2869427163fb763630990746ea1ecb6c",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/guardian_settings__100.png",
+      "actual_sha256": "65c993fb7c2abbbfa2176386478105ad8ca30e87939ede6568095800dea86692",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/guardian_settings__100.png",
+      "pair_sha256": "65300bda62e9a949d8ee3f925cbc67f6cba7a8cdf1399789126e9c469ca8ea73",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/s01_settings__top.png",
+      "master_sha256": "95d6985f181fe38654ad220c157f0cba2869427163fb763630990746ea1ecb6c",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/guardian_settings__200.png",
+      "actual_sha256": "4a748d63fc3bddbe782c7e1af1a8faa680d31cfcc1940043fcdd6788d6b351f2",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/guardian_settings__200.png",
+      "pair_sha256": "75e4786b0291c2384376482f3bc890fd9cbe59d9cea788afc0c56b0f9bd55beb",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c01_profiles.png",
+      "master_sha256": "0ac8b279917b91f073f565aaf53989320d9d494c38312863e65857b31e7d4991",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/seeker_one_browse__100.png",
+      "actual_sha256": "d1391193ae625b8b92ee743a2a6750bd952173432ee9ec81284bfe2bef0d317a",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/seeker_one_browse__100.png",
+      "pair_sha256": "b6eccb1bbd371b3bfa020fb4284c761cd4ec515961e36b9e33872cd5f6e00169",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    }
+  ],
+  "review": {
+    "developer_controls": "No rail, Home, Preview, Actions or pickers in actual captures; held-trigger release test passes.",
+    "member_controls": "Profile Switch, Settings and normal bottom navigation remain.",
+    "differences": "Existing native frame, shadow, type/icon glyph and linked-summary sample-data differences remain visible. 200% content scrolls within the existing screen. Broader visual redesign refused under queue44; existing OA-ZYRA-335 remains the review action.",
+    "limits": "Headless actual Flutter widget captures, no native/device build or Founder visual-approval claim. Guardian Settings reuses Seeker master layout with role-specific data; 200% pairs use the normal-size master to show wrapping."
+  },
+  "release_capture_fixture_note": "All four current role/plan combinations are asserted explicitly before held-trigger checks. Corrected initial Basic fixture values to match actual checkpoint membership; final capture run passed."
+}

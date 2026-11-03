@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "finding_authority": "OA-ZYRA-325",
+  "review_type": "Independent exact fifth baseline-improvement assertion audit",
+  "method": "Read-only git show HEAD of two exact safe test/driver paths; current text comparison and streaming exact-name extraction from baseline, full1, and full2 reporter logs. No Flutter execution, source/test edits, or git writes.",
+  "identity": {
+    "suite_path": "test/guardian_circle_topic_options_test.dart",
+    "name": "Guardian unrelated parent tabs do not expose Journey discussion options",
+    "kind": "case"
+  },
+  "case_retained": true,
+  "exact_case_multiplicity_each_run": 1,
+  "case_renamed": false,
+  "case_skipped_or_suppressed": false,
+  "forced_failure_or_success_added": false,
+  "waiver_applied": false,
+  "source_sha256": {
+    "test/guardian_circle_topic_options_test.dart": {
+      "HEAD": "c442673ae8b0dddee164a5f3f9b6dc180416768502977ce4cebc2d7d0c005d49",
+      "current": "8b2dcbe0a6fffd65950ae1b140f31634145f40a7bea806fb3f71360e3bf13c80"
+    },
+    "test/support/zyra_hidden_dev_controls_driver.dart": {
+      "HEAD": "d5dde5c9d5259a31a259d1200877451b823461766f99c01a7ed2b3adf743f23e",
+      "current": "f4212fb7011cd9d247065118fc966a6708077629ab21b92cb6617bbee3e831e0"
+    }
+  },
+  "case_body": {
+    "HEAD_line": 2228,
+    "current_line": 2229,
+    "HEAD_raw_sha256": "ed7e76adebef0fd0d3fa28aec7000b0cc527828297fdb0e94e44b140e67ad0d3",
+    "current_raw_sha256": "7ee5effab205005654dd08aa98ad5e90cf934b10873fcc4b5df0c06483920343",
+    "HEAD_format_normalized_sha256": "c2858d0646f769bf42a996c6db80a494df9cfb26546f514bb8311ae0d5331c80",
+    "current_format_normalized_sha256": "790f7c178e0e6663d2152fac333506e1a89a1ddc1f9d076c8a0d7ea893b7ba5e",
+    "unchanged": false,
+    "HEAD_assertion_count": 6,
+    "current_assertion_count": 6,
+    "diff": "--- HEAD case body\n+++ current case body\n@@ -4,7 +4,7 @@\n           if (tab == parentTab) continue;\n           await _nav(tester, tab);\n           await toggleZyraDevControls(tester);\n-          expect(find.text('Page options'), findsOneWidget);\n+          expect(find.text('Page options'), findsNothing);\n           expect(dropdown, findsNothing);\n           expect(find.text('Floating bubble action'), findsNothing);\n           expect(_key('concept_circle_send_design'), findsNothing);\n",
+    "HEAD_declaration_line": 2227,
+    "current_declaration_line": 2228
+  },
+  "changed_case_assertions": [
+    {
+      "HEAD": "expect(find.text('Page options'), findsOneWidget);",
+      "current": "expect(find.text('Page options'), findsNothing);",
+      "HEAD_line": 2234,
+      "current_line": 2235,
+      "HEAD_sha256": "c020e651124ebadfa760f3ce15ae04058b87cc452754ba42e4a8ddc725ee016b",
+      "current_sha256": "aefc0d6ab508c7b2c35e4445326ba38e15d032aec22294a6671f6873ed5e960b"
+    }
+  ],
+  "original_baseline_failing_assertion": {
+    "source": "expect(dropdown, findsNothing);",
+    "HEAD_line": 2235,
+    "current_line": 2236,
+    "HEAD_sha256": "068c60827f213e71135869589884de426048ffff4cdbb7aac2b0fb74aadb8f2a",
+    "current_sha256": "068c60827f213e71135869589884de426048ffff4cdbb7aac2b0fb74aadb8f2a",
+    "literally_preserved": true,
+    "meaning": "Journey discussion bubble selector must not appear on an unrelated parent tab. Baseline found one removed DropdownButtonFormField<ZyraCircleBubbleDesign>."
+  },
+  "preserved_case_assertions": [
+    "expect(dropdown, findsNothing);",
+    "expect(find.text('Floating bubble action'), findsNothing);",
+    "expect(_key('concept_circle_send_design'), findsNothing);",
+    "expect(find.text('Send button'), findsNothing);",
+    "expect(find.text('Page options'), findsNothing);"
+  ],
+  "loop_inputs_unchanged": {
+    "roles": [
+      "Seeker",
+      "Guardian"
+    ],
+    "guardian_parent_tab_excluded": 2,
+    "guardian_tabs_tested": [
+      0,
+      1,
+      3
+    ],
+    "seeker_parent_tab_excluded": 3,
+    "seeker_tabs_tested": [
+      0,
+      1,
+      2,
+      4
+    ]
+  },
+  "helper_changes": {
+    "mount": {
+      "file": "test/guardian_circle_topic_options_test.dart",
+      "HEAD_line": 411,
+      "current_line": 411,
+      "HEAD_sha256": "5e926ccd271a9d000c3ff84e3cb6ee36da43fd0af63d9a56f0c3b32df6bb4084",
+      "current_sha256": "a8204300b171c672af1977df4148bc506489488fcdcc455ec1420d94a4f1c9b4",
+      "normalized_unchanged": false,
+      "diff": "--- HEAD\n+++ current\n@@ -6,6 +6,7 @@\n   await tester.pumpWidget(\n     _app(\n       ViewRequestDraftScreen(\n+        fixture: ZyraShellTestFixture().fixture,\n         ownerGeneration: ZyraAccountState.generation,\n         ownerId: ZyraAccountState.userId,\n         initialGuardianRole: guardian,\n"
+    },
+    "physical_member_navigation": {
+      "file": "test/guardian_circle_topic_options_test.dart",
+      "HEAD_line": 458,
+      "current_line": 459,
+      "HEAD_sha256": "eed332cf313e9f1d4ae36ffd47672dd2ea44f54a292cee2255d5b1cfdcf49e8c",
+      "current_sha256": "eed332cf313e9f1d4ae36ffd47672dd2ea44f54a292cee2255d5b1cfdcf49e8c",
+      "normalized_unchanged": true,
+      "diff": ""
+    },
+    "toggle_driver": {
+      "file": "test/support/zyra_hidden_dev_controls_driver.dart",
+      "HEAD_line": 92,
+      "current_line": 385,
+      "HEAD_sha256": "50cc113ba2d28f2d4b175ce5e09878326e80c2f04abdb942d3cdb44bdf31d735",
+      "current_sha256": "4980680dabfbb3d93d25ae5ace4f21ec6c83015acdaca6d964ec25f2d5623d3a",
+      "normalized_unchanged": false,
+      "diff": "--- HEAD\n+++ current\n@@ -1,7 +1,8 @@\n {\n-  if (find.byKey(_page).evaluate().isEmpty) {\n-    await openZyraDevControls(tester);\n-  } else {\n-    await closeZyraDevControls(tester);\n+  final fixture = zyraShellFixtureFor(tester);\n+  if (fixture.current) {\n+    fixture.setupScopeOpen = !fixture.setupScopeOpen;\n+    fixture.refresh();\n   }\n+  await tester.pump();\n }"
+    },
+    "expand_nav_driver": {
+      "file": "test/support/zyra_hidden_dev_controls_driver.dart",
+      "HEAD_line": 17,
+      "current_line": 325,
+      "HEAD_sha256": "743d057e1b767f2a03e3a772d96d7c3a19b1b1e905bcb9785f695f63da203f97",
+      "current_sha256": "743d057e1b767f2a03e3a772d96d7c3a19b1b1e905bcb9785f695f63da203f97",
+      "normalized_unchanged": true,
+      "diff": ""
+    }
+  },
+  "environment_explanation": "The developer Page options surface and its bubble dropdown were removed from production. _mountShell now supplies ZyraShellTestFixture().fixture to the real ViewRequestDraftScreen. Actual member navigation _nav is unchanged. The old toggle driver physically opened/closed the developer overlay; its new code-only session toggles fixture.setupScopeOpen, refreshes the current owner, and pumps without creating a panel. The case replaces the obsolete expectation that Page options exists with an absence expectation. Original dropdown/Floating bubble action/send-design/Send button absence checks remain. Full1 still errored before those checks at the obsolete Page options presence assertion; Full2 reaches and passes the retained absence checks.",
+  "remaining_non_developer_behavior_assertions_removed": false,
+  "all_original_assertions_preserved": false,
+  "outcomes": {
+    "baseline": {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/.buildlog/queue44_baseline_20261101T111912Z/events.jsonl",
+      "sha256": "d925d0fdaa1453916e10827a29239966257708108a722668584e4c5324151ad8",
+      "exact_case_occurrences": 1,
+      "case_records": [
+        {
+          "test_start_line": 174,
+          "outcome": "error",
+          "skipped": false,
+          "first_test_failure_location": {
+            "file": "test/guardian_circle_topic_options_test.dart",
+            "line": 2235,
+            "column": 11
+          },
+          "first_error_summary": "Expected no DropdownButtonFormField<ZyraCircleBubbleDesign>; found one keyed (concept_circle_bubble_design, ZyraCircleBubbleDesign.current)."
+        }
+      ],
+      "reporter_done": {
+        "success": false,
+        "time_ms": 547021
+      }
+    },
+    "full1": {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/.buildlog/queue44_20261103/full_final/events.jsonl",
+      "sha256": "d830ebae1eedca9034c96b6617282c0ff030b1a4ddf452009bc0261813ec6783",
+      "exact_case_occurrences": 1,
+      "case_records": [
+        {
+          "test_start_line": 174,
+          "outcome": "error",
+          "skipped": false,
+          "first_test_failure_location": {
+            "file": "test/guardian_circle_topic_options_test.dart",
+            "line": 2235,
+            "column": 11
+          },
+          "first_error_summary": "Expected exactly one text Page options; found none."
+        }
+      ],
+      "reporter_done": {
+        "success": false,
+        "time_ms": 588431
+      }
+    },
+    "full2": {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/.buildlog/queue44_20261103/full_second/events.jsonl",
+      "sha256": "722597b60927ea8a0646a9e809849ed96720e96dedd4d8af56fc8ce467517a07",
+      "exact_case_occurrences": 1,
+      "case_records": [
+        {
+          "test_start_line": 174,
+          "outcome": "success",
+          "skipped": false,
+          "first_test_failure_location": null,
+          "first_error_summary": null
+        }
+      ],
+      "reporter_done": {
+        "success": false,
+        "time_ms": 534919
+      }
+    }
+  },
+  "disclosure": "This is a retained exact case with one explicit obsolete developer-UI presence-to-absence assertion migration and shared driver/mount changes. Its original baseline-failing dropdown absence assertion is unchanged and naturally passes after removal. Do not describe the whole case body or harness as unchanged."
+}

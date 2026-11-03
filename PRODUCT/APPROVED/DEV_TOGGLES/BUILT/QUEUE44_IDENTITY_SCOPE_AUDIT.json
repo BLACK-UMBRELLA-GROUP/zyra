@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "authority": "OA-ZYRA-325",
+  "baseline_multiplicity_changes": [],
+  "baseline_skipped_outcome_changes": [],
+  "baseline_failed_outcome_changes": [
+    {
+      "identity": {
+        "suite_path": "test/request_page_options_context_test.dart",
+        "name": "Guardian Network never inherits Seeker-only controls",
+        "kind": "case"
+      },
+      "baseline": {
+        "error": 1
+      },
+      "current": {
+        "success": 1
+      }
+    },
+    {
+      "identity": {
+        "suite_path": "test/request_page_options_context_test.dart",
+        "name": "Guardian Seekers never inherits Seeker-only controls",
+        "kind": "case"
+      },
+      "baseline": {
+        "error": 1
+      },
+      "current": {
+        "success": 1
+      }
+    },
+    {
+      "identity": {
+        "suite_path": "test/request_page_options_context_test.dart",
+        "name": "Guardian Profile never inherits Seeker-only controls",
+        "kind": "case"
+      },
+      "baseline": {
+        "error": 1
+      },
+      "current": {
+        "success": 1
+      }
+    },
+    {
+      "identity": {
+        "suite_path": "test/guardian_circle_topic_options_test.dart",
+        "name": "Guardian unrelated parent tabs do not expose Journey discussion options",
+        "kind": "case"
+      },
+      "baseline": {
+        "error": 1
+      },
+      "current": {
+        "success": 1
+      }
+    },
+    {
+      "identity": {
+        "suite_path": "test/one_journey_compact_controls_test.dart",
+        "name": "compact controls reject retained callbacks after a newer choice",
+        "kind": "case"
+      },
+      "baseline": {
+        "error": 1
+      },
+      "current": {
+        "success": 1
+      }
+    }
+  ],
+  "new_identity_errors": [],
+  "new_case_identities": [
+    {
+      "suite_path": "test/zyra_dev_home_tools_test.dart",
+      "name": "(setUpAll)",
+      "kind": "setUpAll"
+    },
+    {
+      "suite_path": "test/zyra_dev_home_tools_test.dart",
+      "name": "(tearDownAll)",
+      "kind": "tearDownAll"
+    },
+    {
+      "suite_path": "test/developer_controls_release_safety_test.dart",
+      "name": "loading test/developer_controls_release_safety_test.dart",
+      "kind": "loader"
+    },
+    {
+      "suite_path": "test/developer_controls_release_safety_test.dart",
+      "name": "(setUpAll)",
+      "kind": "setUpAll"
+    },
+    {
+      "suite_path": "test/developer_controls_release_safety_test.dart",
+      "name": "retired developer controls cannot be reached in any sample role or plan",
+      "kind": "case"
+    },
+    {
+      "suite_path": "test/developer_controls_release_safety_test.dart",
+      "name": "(tearDownAll)",
+      "kind": "tearDownAll"
+    }
+  ]
+}

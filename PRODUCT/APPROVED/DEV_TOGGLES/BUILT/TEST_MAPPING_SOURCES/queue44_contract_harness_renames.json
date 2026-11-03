@@ -1,0 +1,670 @@
+{
+  "schema_version": 1,
+  "finding_authority": "OA-ZYRA-325",
+  "review_status": "independent technical coverage review complete after five corrected substitutions; Founder approval not inferred",
+  "mappings": [
+    {
+      "from": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "Seeker coordinator forwards the dedicated Introductions route",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "member Introductions navigation retains route epochs without developer dispatch",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retained account session safety is exercised through the extracted production ZyraAccountSessionHost; retired-control UI cases now exercise real app frame navigation, member drafts, role changes and rejection of retired developer routes, preserving the named safety intent. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "entry and sign-up pages receive three developer doors",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "entry and sign-up pages retain content without developer doors",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retained account session safety is exercised through the extracted production ZyraAccountSessionHost; retired-control UI cases now exercise real app frame navigation, member drafts, role changes and rejection of retired developer routes, preserving the named safety intent. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "the hidden controls open above a pushed route",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "holds on a pushed route cannot expose developer controls",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retained account session safety is exercised through the extracted production ZyraAccountSessionHost; retired-control UI cases now exercise real app frame navigation, member drafts, role changes and rejection of retired developer routes, preserving the named safety intent. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "the app-wide rail retracts when capability is revoked",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "developer capability changes cannot insert an app-wide rail",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retained account session safety is exercised through the extracted production ZyraAccountSessionHost; retired-control UI cases now exercise real app frame navigation, member drafts, role changes and rejection of retired developer routes, preserving the named safety intent. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "direct developer sign-up call denies an unauthorized caller",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "unauthorized entry cannot navigate to a retired developer sign-up route",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retained account session safety is exercised through the extracted production ZyraAccountSessionHost; retired-control UI cases now exercise real app frame navigation, member drafts, role changes and rejection of retired developer routes, preserving the named safety intent. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "the global owner selects the live Seeker or Guardian panel",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "member role changes retain drafts without inserting developer panels",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retained account session safety is exercised through the extracted production ZyraAccountSessionHost; retired-control UI cases now exercise real app frame navigation, member drafts, role changes and rejection of retired developer routes, preserving the named safety intent. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "Entry Home uses a separate Home icon action, not Exit onboarding",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_dev_overlay_test.dart",
+        "name": "entry navigation has no developer Home or Exit onboarding action",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retained account session safety is exercised through the extracted production ZyraAccountSessionHost; retired-control UI cases now exercise real app frame navigation, member drafts, role changes and rejection of retired developer routes, preserving the named safety intent. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_hidden_dev_controls_test.dart",
+        "name": "ZyraDevSurface.entry opens hidden page options and X restores member page",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_hidden_dev_controls_test.dart",
+        "name": "entry holds retain member drafts without hidden page options",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired positive hidden-control opening is replaced by holds through the real production app frame: member draft and route ownership are preserved and no retired control is attached, including role and same-frame presentation changes. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_hidden_dev_controls_test.dart",
+        "name": "ZyraDevSurface.seeker opens hidden page options and X restores member page",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_hidden_dev_controls_test.dart",
+        "name": "seeker holds retain member drafts without hidden page options",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired positive hidden-control opening is replaced by holds through the real production app frame: member draft and route ownership are preserved and no retired control is attached, including role and same-frame presentation changes. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_hidden_dev_controls_test.dart",
+        "name": "ZyraDevSurface.guardian opens hidden page options and X restores member page",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_hidden_dev_controls_test.dart",
+        "name": "guardian holds retain member drafts without hidden page options",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired positive hidden-control opening is replaced by holds through the real production app frame: member draft and route ownership are preserved and no retired control is attached, including role and same-frame presentation changes. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/global_hidden_dev_controls_test.dart",
+        "name": "same-frame context ABA cannot complete a pending hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/global_hidden_dev_controls_test.dart",
+        "name": "same-frame presentation ABA cannot expose hidden controls",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired positive hidden-control opening is replaced by holds through the real production app frame: member draft and route ownership are preserved and no retired control is attached, including role and same-frame presentation changes. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "the exact three-second boundary opens once and rearms on a new press",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "the three-second boundary and repeated presses never open developer entry",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "ordinary taps survive but a successful hold cancels the underlying tap",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "ordinary taps and long holds reach the underlying member tap target",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "early up cancels the hold without opening",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "early up preserves normal member gesture cancellation without developer entry",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "cancel cancels the hold without opening",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "cancel preserves normal member gesture cancellation without developer entry",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "movement cancels the hold without opening",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "movement preserves normal member gesture cancellation without developer entry",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "the child ordinary long press wins before developer entry",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "the child ordinary long press remains the only hold action",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "a second pointer cancels and both fingers must leave before rearming",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "multiple member pointers cannot arm hidden controls and fresh taps still work",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "a second finger outside the surface also cancels the hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "outside pointers cannot create developer entry or consume member touches",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "identity replacement cancels the captured hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "identity member replacement rejects retained actions while holds stay inert",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "open callback replacement cancels the captured hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "open callback member replacement rejects retained actions while holds stay inert",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "admission callback replacement cancels the captured hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "admission callback member replacement rejects retained actions while holds stay inert",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "disabled replacement cancels the captured hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "disabled member replacement rejects retained actions while holds stay inert",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "identity A to B to A cannot revive the old hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "member identity ABA during a hold preserves its draft without hidden entry",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "current admission is checked at the start and at completion",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "member action admission is checked at dispatch while long holds stay inert",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "enabling during a denied press requires a fresh three-second hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "enabling a disabled member action during a press requires a fresh press",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "admission exceptions at start fail closed",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "authorization refresh exceptions at start leave member gestures safe",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "admission exceptions at completion fail closed",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "authorization refresh exceptions at completion leave member gestures safe",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "AppLifecycleState.inactive and a resume cannot revive a captured hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "AppLifecycleState.inactive and resume preserve member gestures without hidden holds",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "AppLifecycleState.hidden and a resume cannot revive a captured hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "AppLifecycleState.hidden and resume preserve member gestures without hidden holds",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "AppLifecycleState.paused and a resume cannot revive a captured hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "AppLifecycleState.paused and resume preserve member gestures without hidden holds",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "AppLifecycleState.detached and a resume cannot revive a captured hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "AppLifecycleState.detached and resume preserve member gestures without hidden holds",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "covered route and route ABA cannot finish the old hold",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "covered route and route ABA cannot expose developer hold entry",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "unmount cancels a pending deadline",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "unmount during a long press leaves no developer deadline or callback",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "enabled and identity changes preserve child state, draft and scroll",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_dev_hold_to_open_test.dart",
+        "name": "authority and member role changes preserve child state, draft and scroll",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer hold mechanics are replaced by the same member-safety intent through the real app frame: timing, ordinary tap/scroll/text selection, pointer delivery, retained action ownership, failed refresh, lifecycle, navigation ABA and draft/scroll preservation. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "legacy constructor retains the three-door default",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "production routes reject every retired developer door",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "legacy default keeps icons, order and touch geometry",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "member Gold touch geometry and actions survive rail removal",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "two doors omit the eye, its hit target and semantics",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "removed doors leave no eye hit target or developer semantics",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "custom keys and labels survive without the hidden custom eye",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "member content retains caller scroll keys without custom developer doors",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "an omitted selected door never produces a marker or eye",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "member Gold selection cannot produce a retired rail marker or eye",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "caller order is honoured rather than restored to enum order",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "member choice sheets retain caller order and dispatch their own values",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "Seeker two doors stay compact at Size(320.0, 568.0) and 200% text",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "Seeker member Gold remains reachable at Size(320.0, 568.0) and 200% text without developer doors",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "Seeker two doors stay compact at Size(393.0, 852.0) and 200% text",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "Seeker member Gold remains reachable at Size(393.0, 852.0) and 200% text without developer doors",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "Guardian two doors stay compact at Size(320.0, 568.0) and 200% text",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "Guardian member Gold remains reachable at Size(320.0, 568.0) and 200% text without developer doors",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    },
+    {
+      "from": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "Guardian two doors stay compact at Size(393.0, 852.0) and 200% text",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/two_door_dev_controls_test.dart",
+        "name": "Guardian member Gold remains reachable at Size(393.0, 852.0) and 200% text without developer doors",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired rail interaction is replaced by real retained member Personalisation/choice-sheet reachability, semantics, caller order, narrow large-text behavior and rejection of retired developer named routes. The preexisting failing gold-icon case remains unchanged and fails naturally. Full original and replacement case names are shown in from/to for owner review."
+    }
+  ],
+  "technical_review": {
+    "reviewer": "/root/remove_shell_controls",
+    "reviewed_at_utc": "2026-11-03T22:02:41.377895+00:00",
+    "method": "Compared actual HEAD/current test bodies, production app-frame/session host/member widgets and callbacks, source hashes and scoped reporter inventories. Review found five weak substitutions; author corrected them and reran the two affected suites. No source changes or additional tests run by reviewer.",
+    "one_to_one_case_identity_mapping": true,
+    "missing_or_skipped_cases": 0,
+    "baseline_failure_check": "Actions selection keeps the existing gold icon and marker has identical original/current assertion body except retired enum name; remains natural missing-Icon failure, no fail/skip substitute.",
+    "source_sha256": {
+      "test/global_dev_overlay_test.dart": "2c4ba264e4bc9793beb0cc971e30c451d9a2c8f806fb2e0952d82d9127f3f004",
+      "test/global_hidden_dev_controls_test.dart": "d5e9655de0105e76aa9555a818aeab0d0a764f6d54eca7c535b41d3977923341",
+      "test/two_door_dev_controls_test.dart": "47e78e47b50e5ab6702dcc6ffa79a451f6d88b1fa7f10020b6d31f1aa9d0af2a",
+      "test/zyra_dev_hold_to_open_test.dart": "333fd1a6c5aa0745b1cda81e688cf95fe58fd5f7732113f50b49014307904eb8"
+    },
+    "scoped_qa_file": "queue44_contract_migration_qa.json",
+    "corrected_followup_log": ".buildlog/queue44_20261103/external_peer5_scope2.jsonl",
+    "corrected_followup_result": "43 started/completed events, zero errors/failures; affected two suites only.",
+    "corrections": [
+      {
+        "mapping_index": 0,
+        "result": "Actual planned-shell member My ZYRA Introductions dispatch/title/labels/checkpoint/Back and source navigation guard replace synthetic route."
+      },
+      {
+        "mapping_indices": [
+          19,
+          20,
+          21,
+          22
+        ],
+        "result": "Distinct actual PersonalisationScreen key/callback/admission function/admission boolean replacements exercise production-owned guards, with stale delegates denied and current delegates working where owner remains admitted."
+      }
+    ],
+    "semantic_scope": "Retired developer-only controls/holds are absent; corresponding retained member gesture, choice and route-owner contracts are exercised through actual production components, not recreated developer UI."
+  }
+}

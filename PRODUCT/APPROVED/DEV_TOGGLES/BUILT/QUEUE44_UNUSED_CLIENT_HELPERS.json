@@ -1,0 +1,214 @@
+{
+  "finding_authority": "OA-ZYRA-325",
+  "file": "SOURCE/lib/services/zyra_journey_service.dart",
+  "before_sha256": "09875f9e6c98cd4cd05424a0b38e962980b6ef4bb571addbd335c67b5321d12f",
+  "before_bytes": 75836,
+  "inventory_before_edit": true,
+  "items": [
+    {
+      "identifier": "devSetStage",
+      "before_declaration_line": 1621,
+      "before_reference_lines": [
+        "lib/services/zyra_journey_service.dart:1621:  static Future<String> devSetStage(String matchId, String stage) async {",
+        "lib/services/zyra_journey_service.dart:1635:      debugPrint('ZYRA: devSetStage($matchId, $stage) failed \u2014 $e');",
+        "lib/services/zyra_journey_service.dart:1645:  /// \u26a0\ufe0f Server-guarded on `@zyra.test`, like [devSetStage]. It sets the"
+      ],
+      "production_callers_outside_service": [],
+      "test_callers": [],
+      "disposition": "REMOVE unused developer-only client helper/type",
+      "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+      "after_reference_lines": []
+    },
+    {
+      "identifier": "devSetCounterpartReveal",
+      "before_declaration_line": 1656,
+      "before_reference_lines": [
+        "lib/services/zyra_journey_service.dart:1656:  static Future<bool> devSetCounterpartReveal(",
+        "lib/services/zyra_journey_service.dart:1669:        'ZYRA: devSetCounterpartReveal($matchId, $revealed) failed \u2014 $e',"
+      ],
+      "production_callers_outside_service": [],
+      "test_callers": [],
+      "disposition": "REMOVE unused developer-only client helper/type",
+      "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+      "after_reference_lines": []
+    },
+    {
+      "identifier": "devCounterpartComplete",
+      "before_declaration_line": 1826,
+      "before_reference_lines": [
+        "lib/services/zyra_journey_service.dart:1826:  static Future<String> devCounterpartComplete(",
+        "lib/services/zyra_journey_service.dart:1838:      debugPrint('ZYRA: devCounterpartComplete($matchId) failed - $e');"
+      ],
+      "production_callers_outside_service": [],
+      "test_callers": [],
+      "disposition": "REMOVE unused developer-only client helper/type",
+      "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+      "after_reference_lines": []
+    },
+    {
+      "identifier": "devRewindJourney",
+      "before_declaration_line": 1862,
+      "before_reference_lines": [
+        "lib/services/zyra_journey_service.dart:1862:  static Future<String> devRewindJourney({String? matchId}) async {",
+        "lib/services/zyra_journey_service.dart:1871:      debugPrint('ZYRA: devRewindJourney($matchId) failed - $e');"
+      ],
+      "production_callers_outside_service": [],
+      "test_callers": [],
+      "disposition": "REMOVE unused developer-only client helper/type",
+      "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+      "after_reference_lines": []
+    },
+    {
+      "identifier": "devSetPlusUnlock",
+      "before_declaration_line": 1876,
+      "before_reference_lines": [
+        "lib/services/zyra_journey_service.dart:1876:  static Future<bool> devSetPlusUnlock(String otherId, bool has) async {",
+        "lib/services/zyra_journey_service.dart:1885:      debugPrint('ZYRA: devSetPlusUnlock($otherId, $has) failed \u2014 $e');"
+      ],
+      "production_callers_outside_service": [],
+      "test_callers": [],
+      "disposition": "REMOVE unused developer-only client helper/type",
+      "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+      "after_reference_lines": []
+    },
+    {
+      "identifier": "devSetCompatibility",
+      "before_declaration_line": 1740,
+      "before_reference_lines": [
+        "lib/services/zyra_journey_service.dart:1740:  static Future<double?> devSetCompatibility(",
+        "lib/services/zyra_journey_service.dart:1751:      debugPrint('ZYRA: devSetCompatibility failed \u2014 $e');"
+      ],
+      "production_callers_outside_service": [],
+      "test_callers": [],
+      "disposition": "REMOVE unused developer-only client helper/type",
+      "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+      "after_reference_lines": []
+    },
+    {
+      "identifier": "fetchCounterpartRevealed",
+      "before_declaration_line": 1679,
+      "before_reference_lines": [
+        "lib/services/zyra_journey_service.dart:1679:  static Future<ZyraCompatibilityReadResult> fetchCounterpartRevealed("
+      ],
+      "production_callers_outside_service": [],
+      "test_callers": [],
+      "disposition": "REMOVE unused developer-only client helper/type",
+      "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+      "after_reference_lines": []
+    },
+    {
+      "identifier": "fetchHasPlusUnlock",
+      "before_declaration_line": 1893,
+      "before_reference_lines": [
+        "lib/services/zyra_journey_service.dart:1893:  static Future<bool> fetchHasPlusUnlock(String otherId) async {",
+        "lib/services/zyra_journey_service.dart:1910:      debugPrint('ZYRA: fetchHasPlusUnlock($otherId) failed \u2014 $e');"
+      ],
+      "production_callers_outside_service": [],
+      "test_callers": [],
+      "disposition": "REMOVE unused developer-only client helper/type",
+      "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+      "after_reference_lines": []
+    },
+    {
+      "identifier": "DevOnlyException",
+      "before_declaration_line": 1918,
+      "before_reference_lines": [
+        "lib/services/zyra_journey_service.dart:1619:  /// Throws [DevOnlyException] when the signed-in account is not a seeded test",
+        "lib/services/zyra_journey_service.dart:1631:      if (e.toString().contains('dev_only')) throw const DevOnlyException();",
+        "lib/services/zyra_journey_service.dart:1667:      if (e.toString().contains('dev_only')) throw const DevOnlyException();",
+        "lib/services/zyra_journey_service.dart:1837:      if (e.toString().contains('dev_only')) throw const DevOnlyException();",
+        "lib/services/zyra_journey_service.dart:1870:      if (e.toString().contains('dev_only')) throw const DevOnlyException();",
+        "lib/services/zyra_journey_service.dart:1884:      if (e.toString().contains('dev_only')) throw const DevOnlyException();",
+        "lib/services/zyra_journey_service.dart:1918:class DevOnlyException implements Exception {",
+        "lib/services/zyra_journey_service.dart:1919:  const DevOnlyException();"
+      ],
+      "production_callers_outside_service": [],
+      "test_callers": [],
+      "disposition": "REMOVE unused developer-only client helper/type",
+      "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+      "after_reference_lines": []
+    },
+    {
+      "identifier": "JourneyNotActiveException",
+      "before_declaration_line": 1927,
+      "before_reference_lines": [
+        "lib/services/zyra_journey_service.dart:1633:        throw const JourneyNotActiveException();",
+        "lib/services/zyra_journey_service.dart:1927:class JourneyNotActiveException implements Exception {",
+        "lib/services/zyra_journey_service.dart:1928:  const JourneyNotActiveException();"
+      ],
+      "production_callers_outside_service": [],
+      "test_callers": [],
+      "disposition": "REMOVE unused developer-only client helper/type",
+      "authority": "OA-ZYRA-325 queue44 remove obsolete control code; no backend changes",
+      "after_reference_lines": []
+    },
+    {
+      "identifier": "devSeedJourney",
+      "before_declaration_line": 494,
+      "before_reference_lines": [
+        "lib/services/zyra_journey_service.dart:494:  static Future<String> devSeedJourney() async {"
+      ],
+      "production_callers_outside_service": [],
+      "test_callers": [],
+      "disposition": "REMOVE after root retired mock-only Connections entry fallback",
+      "authority": "OA-ZYRA-325 queue44; parent actual non-mock navigation tail unchanged proof work/queue44_mock_journey_entry_inventory.json",
+      "removed_block_start_line": 486,
+      "removed_block_end_line": 498,
+      "removed_block_sha256": "87d30bd88198dc79dcdb38c36e45c66f0448706e4ffb585e6b0ae264d72cdd65",
+      "removed_block_bytes": 705,
+      "after_reference_lines": []
+    }
+  ],
+  "removed_blocks": [
+    {
+      "before_start_line": 1599,
+      "before_end_line": 1682,
+      "bytes": 3695,
+      "sha256": "a14d9cf1ea977e135c392942deb806f9b3e4939fd4c1cbee9e26101c9447e36f"
+    },
+    {
+      "before_start_line": 1721,
+      "before_end_line": 1755,
+      "bytes": 1429,
+      "sha256": "4ad2afc0e1053cd812bde9e447b05d39d75c9ae69d99df553c489bcae9b6e95d"
+    },
+    {
+      "before_start_line": 1811,
+      "before_end_line": 1912,
+      "bytes": 4180,
+      "sha256": "1e4b37ed07acd575352d07aa3678f16a4815d7b3c671672349f213ff4da1cc6d"
+    },
+    {
+      "before_start_line": 1916,
+      "before_end_line": 1931,
+      "bytes": 644,
+      "sha256": "897dc38d9770f6b403ac2951c36d992a446bd2ff21b709f2da672e896841360e"
+    }
+  ],
+  "retained_developer_helper": {
+    "identifier": "devSeedJourney",
+    "final_disposition": "REMOVED after parent removed final productioncaller",
+    "parent_inventory": "work/queue44_mock_journey_entry_inventory.json"
+  },
+  "backend_schema_rpc_definitions_auth_behavior_changed": false,
+  "after_sha256": "3c5768f4038843d2bcb445190d164c0fa37018045bfe37345570a4fc807cddeb",
+  "after_bytes": 65180,
+  "removed_bytes": 10656,
+  "retained_source_byte_identity": "Only enumerated obsolete helper/type blocks removed; formatter normalized one blank line at class end. Retained member method bodies are unchanged.",
+  "verification": {
+    "analyzer": "dart analyze lib/services/zyra_journey_service.dart lib/screens/connections/connections_screen.dart \u2014 No issues found after final devSeedJourney removal",
+    "focused_tests": {
+      "command": "flutter test --no-pub test/journey_busy_flags_test.dart test/zyra_journey_profile_hydration_test.dart --reporter json",
+      "event_log": ".buildlog/queue44_journey_service_unused_wrappers.jsonl",
+      "ordinary_passed": 17,
+      "loaders_passed": 2,
+      "failures": 0,
+      "skipped": 0,
+      "timing": "Run after first10unusedhelpers/types removal; finaldevSeedJourney removal followed parent0caller confirmation and analyzer. No newruntime behavior added."
+    },
+    "final_reference_scan": "rg across lib/test/tooling for all11identifiers returned0matches"
+  },
+  "second_pass_before_sha256": "f015346c370333cc9265e4bc007583f2bd8575fcb649b5b3951d48d4041d6dcd",
+  "removed_item_count": 11,
+  "source_frozen_after_scoped_analyzer": true
+}

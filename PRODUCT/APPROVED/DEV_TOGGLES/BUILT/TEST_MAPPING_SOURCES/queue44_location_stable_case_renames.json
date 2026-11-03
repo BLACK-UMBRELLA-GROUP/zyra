@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "finding_authority": "OA-ZYRA-325",
+  "status": "INDEPENDENT_REVIEW_COMPLETE_ROOT_COMBINED_SCOPE_PENDING",
+  "mappings": [
+    {
+      "from": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 2011 stays home",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply null stays home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Unchanged payload/assertion body; replace process-dependent Object.hashCode with stable semantic fixture label. Exact baseline registration order determines payload case1.",
+      "payload_registration_index": 1,
+      "full1_identity": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 2011 stays home",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "success": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      }
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 869019044 stays home",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply missing coordinates stays home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Unchanged payload/assertion body; replace process-dependent Object.hashCode with stable semantic fixture label. Exact baseline registration order determines payload case2.",
+      "payload_registration_index": 2,
+      "full1_identity": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 948917462 stays home",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "success": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      }
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 1019311159 stays home",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply latitude out of range stays home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Unchanged payload/assertion body; replace process-dependent Object.hashCode with stable semantic fixture label. Exact baseline registration order determines payload case3.",
+      "payload_registration_index": 3,
+      "full1_identity": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 547147386 stays home",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "success": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      }
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 30994959 stays home",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply non-finite latitude stays home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Unchanged payload/assertion body; replace process-dependent Object.hashCode with stable semantic fixture label. Exact baseline registration order determines payload case4.",
+      "payload_registration_index": 4,
+      "full1_identity": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 223563913 stays home",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "success": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      }
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 1007081001 stays home",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply overly precise coordinates stays home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Unchanged payload/assertion body; replace process-dependent Object.hashCode with stable semantic fixture label. Exact baseline registration order determines payload case5.",
+      "payload_registration_index": 5,
+      "full1_identity": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 255452361 stays home",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "success": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      }
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 1017507459 stays home",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply non-numeric latitude stays home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Unchanged payload/assertion body; replace process-dependent Object.hashCode with stable semantic fixture label. Exact baseline registration order determines payload case6.",
+      "payload_registration_index": 6,
+      "full1_identity": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 978130413 stays home",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "success": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      }
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 360622122 stays home",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply unavailable status stays home",
+        "kind": "case"
+      },
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Unchanged payload/assertion body; replace process-dependent Object.hashCode with stable semantic fixture label. Exact baseline registration order determines payload case7.",
+      "payload_registration_index": 7,
+      "full1_identity": {
+        "suite_path": "test/zyra_location_lock11_test.dart",
+        "name": "invalid/coarse-boundary reply 892200738 stays home",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "success": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      }
+    }
+  ],
+  "source_sha256": "35b3deaa637f8d3caf87113521489d1f48e2525d4eda0de48bdefd39f386c75b",
+  "payload_list_and_case_body_unchanged": true,
+  "normalized_payload_and_body_sha256": "bc791b0806f5a38fba7872368a56f6d620e954bcbda894ee14a80bfcead46242",
+  "normalization": "Only added semantic label lookup and interpolated testname differ; originalpayloadlist and alltestbody assertions verified equal againstgitHEAD afterwhitespace/optionaltrailingcomma normalization.",
+  "casecount": 7,
+  "baseline_casecount_and_multiplicity_preserved": true,
+  "full1_all7payloadcases_passed": true,
+  "note": "SixObjecthashes changebetweenprocesses;nullhash2011wasstable. Allsevennamesnowsemantic ratherthanpartialnumericnaming. NoFlutterrunlaunched.",
+  "independent_review": {
+    "reviewer": "/root/remove_shell_controls",
+    "reviewed_at_utc": "2026-11-03T22:21:56.978244+00:00",
+    "source_sha256_verified": true,
+    "payload_list_equal_to_HEAD_after_whitespace_normalization": true,
+    "entire_case_assertion_body_equal_to_HEAD_after_whitespace_normalization": true,
+    "baseline_numeric_identity_registration_order_verified_from_raw_log": true,
+    "full1_numeric_identity_registration_order_verified_from_raw_log": true,
+    "case_count_and_multiplicity_preserved": 7,
+    "test_data_or_assertions_changed": false,
+    "extra_Flutter_runs_by_reviewer": 0,
+    "notes": "Only stable semantic display names replace process-dependent Object.hashCode. All seven payload fixtures, requests and assertions remain unchanged."
+  }
+}

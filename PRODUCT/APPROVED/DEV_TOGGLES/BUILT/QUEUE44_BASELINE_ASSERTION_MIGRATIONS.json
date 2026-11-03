@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "finding_authority": "OA-ZYRA-325",
+  "review_type": "Independent read-only HEAD/current assertion audit",
+  "method": "Read-only git show on exactly two known-safe test paths; lexical case/helper comparison; baseline/full1 exact case identity and multiplicity counters. No source/test edits, Flutter run, or git write.",
+  "status": "FOUR_CASES_RETAINED_BUT_FAILING_DEVELOPER_UI_HELPER_ASSERTIONS_CHANGED",
+  "source_sha256": {
+    "test/one_journey_compact_controls_test.dart": {
+      "HEAD_sha256": "d6a0a93b448c53e8f8ee3e639a31ac76055cf189666562c59cd280ad60606c30",
+      "current_sha256": "fddafb942e690a22eab4614191252062fcfcea50ebaba0c9cdc7cd221a68936c"
+    },
+    "test/request_page_options_context_test.dart": {
+      "HEAD_sha256": "6d622e3ff239ad9f1b324dbf34577d53755af87509ca726bd6311b0d92e72515",
+      "current_sha256": "3d6f8b455b65f1a8f73910eab0c90514c52c655eca5439cb47b985f9633551d9"
+    }
+  },
+  "case_count": 4,
+  "all_four_case_identities_and_multiplicity_retained": true,
+  "all_original_assertions_preserved": false,
+  "remaining_non_developer_behavior_assertions_removed_in_audited_cases": false,
+  "waiver_applied": false,
+  "cases": [
+    {
+      "identity": {
+        "suite_path": "test/request_page_options_context_test.dart",
+        "name": "Guardian Network never inherits Seeker-only controls",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "error": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      },
+      "case_multiplicity": {
+        "baseline": 1,
+        "full1": 1
+      },
+      "current_case_body_line": 435,
+      "head_case_body_line": 445,
+      "case_body_unchanged_after_format_normalization": true,
+      "head_case_body_sha256": "4d9584d4f7830a2e3c3ef9ba588af9196873aeaf20ba95a973df981dc74338be",
+      "current_case_body_sha256": "4d9584d4f7830a2e3c3ef9ba588af9196873aeaf20ba95a973df981dc74338be",
+      "assertion_count_in_case_body": {
+        "HEAD": 1,
+        "current": 1
+      },
+      "skip_or_forced_failure_added": false,
+      "case_suppressed_or_removed": false,
+      "baseline_failing_assertion_preserved": false,
+      "baseline_failure": "_context oldline171 expected retired page-options title Network; actual legacy tab title differs.",
+      "changed_helper": "_context",
+      "head_failing_assertion": "expect(context.data, title);",
+      "current_replacement": "Page options and all listed retired keys must be absent; title parameter remains unused.",
+      "other_helper_changes": "_inventory changes developer selector counts/buttons from page-dependent presence to absence. Test command helpers use code fixtures.",
+      "remaining_non_developer_behavior_assertions_removed": false,
+      "preserved_non_developer_case_assertion": "Actual ZyraShellNavigation.currentIndex equals the requested tab after returning; unchanged in case body.",
+      "classification": "Unchanged case body, changed shared developer-UI assertions. Outcome improved because the obsolete failing helper assertion no longer applies; cannot describe all baseline assertions as preserved."
+    },
+    {
+      "identity": {
+        "suite_path": "test/request_page_options_context_test.dart",
+        "name": "Guardian Seekers never inherits Seeker-only controls",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "error": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      },
+      "case_multiplicity": {
+        "baseline": 1,
+        "full1": 1
+      },
+      "current_case_body_line": 435,
+      "head_case_body_line": 445,
+      "case_body_unchanged_after_format_normalization": true,
+      "head_case_body_sha256": "4d9584d4f7830a2e3c3ef9ba588af9196873aeaf20ba95a973df981dc74338be",
+      "current_case_body_sha256": "4d9584d4f7830a2e3c3ef9ba588af9196873aeaf20ba95a973df981dc74338be",
+      "assertion_count_in_case_body": {
+        "HEAD": 1,
+        "current": 1
+      },
+      "skip_or_forced_failure_added": false,
+      "case_suppressed_or_removed": false,
+      "baseline_failing_assertion_preserved": false,
+      "baseline_failure": "_context oldline171 expected retired page-options title Seekers; actual legacy tab title differs.",
+      "changed_helper": "_context",
+      "head_failing_assertion": "expect(context.data, title);",
+      "current_replacement": "Page options and all listed retired keys must be absent; title parameter remains unused.",
+      "other_helper_changes": "_inventory changes developer selector counts/buttons from page-dependent presence to absence. Test command helpers use code fixtures.",
+      "remaining_non_developer_behavior_assertions_removed": false,
+      "preserved_non_developer_case_assertion": "Actual ZyraShellNavigation.currentIndex equals the requested tab after returning; unchanged in case body.",
+      "classification": "Unchanged case body, changed shared developer-UI assertions. Outcome improved because the obsolete failing helper assertion no longer applies; cannot describe all baseline assertions as preserved."
+    },
+    {
+      "identity": {
+        "suite_path": "test/request_page_options_context_test.dart",
+        "name": "Guardian Profile never inherits Seeker-only controls",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "error": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      },
+      "case_multiplicity": {
+        "baseline": 1,
+        "full1": 1
+      },
+      "current_case_body_line": 435,
+      "head_case_body_line": 445,
+      "case_body_unchanged_after_format_normalization": true,
+      "head_case_body_sha256": "4d9584d4f7830a2e3c3ef9ba588af9196873aeaf20ba95a973df981dc74338be",
+      "current_case_body_sha256": "4d9584d4f7830a2e3c3ef9ba588af9196873aeaf20ba95a973df981dc74338be",
+      "assertion_count_in_case_body": {
+        "HEAD": 1,
+        "current": 1
+      },
+      "skip_or_forced_failure_added": false,
+      "case_suppressed_or_removed": false,
+      "baseline_failing_assertion_preserved": false,
+      "baseline_failure": "_context oldline171 expected retired page-options title Profile; actual legacy tab title differs.",
+      "changed_helper": "_context",
+      "head_failing_assertion": "expect(context.data, title);",
+      "current_replacement": "Page options and all listed retired keys must be absent; title parameter remains unused.",
+      "other_helper_changes": "_inventory changes developer selector counts/buttons from page-dependent presence to absence. Test command helpers use code fixtures.",
+      "remaining_non_developer_behavior_assertions_removed": false,
+      "preserved_non_developer_case_assertion": "Actual ZyraShellNavigation.currentIndex equals the requested tab after returning; unchanged in case body.",
+      "classification": "Unchanged case body, changed shared developer-UI assertions. Outcome improved because the obsolete failing helper assertion no longer applies; cannot describe all baseline assertions as preserved."
+    },
+    {
+      "identity": {
+        "suite_path": "test/one_journey_compact_controls_test.dart",
+        "name": "compact controls reject retained callbacks after a newer choice",
+        "kind": "case"
+      },
+      "baseline_outcomes": {
+        "error": 1
+      },
+      "full1_outcomes": {
+        "success": 1
+      },
+      "case_multiplicity": {
+        "baseline": 1,
+        "full1": 1
+      },
+      "current_case_body_line": 604,
+      "head_case_body_line": 762,
+      "case_body_unchanged_after_format_normalization": false,
+      "head_case_body_sha256": "9b10f3aaae8df2e3243b847111c6f76a33baf5b104de27ef3795219bac551848",
+      "current_case_body_sha256": "f86f70c0dc8408443b9fd6137e5a71897b5987e73e661175de3fb2a7802bbf21",
+      "assertion_count_in_case_body": {
+        "HEAD": 6,
+        "current": 6
+      },
+      "skip_or_forced_failure_added": false,
+      "case_suppressed_or_removed": false,
+      "baseline_failing_assertion_preserved": false,
+      "baseline_failure": "_controls(page:Journey) oldline192 expected visible Journey label in retired Page options; absent before this case reached its retained callback assertions.",
+      "changed_helper": "_controls",
+      "head_failing_assertion": "if (page != null) expect(find.text(page), findsOneWidget);",
+      "current_replacement": "Open code-fixture session; assert Page options absent and preview isolation active.",
+      "changed_case_assertions": [
+        {
+          "HEAD": "expect(find.text('Page options'), findsOneWidget);",
+          "current": "expect(find.text('Page options'), findsNothing);",
+          "scope": "Removed developer UI visibility only."
+        },
+        {
+          "HEAD": "DropdownButtonFormField<ZyraBrowseNextMotion>.initialValue == cardRock",
+          "current": "ZyraOneJourneyBrowseDesigns.nextProfileMotion == cardRock",
+          "scope": "Same selected motion value verified on actual member renderer instead of removed selector."
+        }
+      ],
+      "remaining_non_developer_behavior_assertions_removed": false,
+      "preserved_non_developer_assertions": [
+        "browse.design == portraitCard",
+        "browse.nextProfileMotion == cardRock",
+        "_destinations(tester).first == Profiles",
+        "AppState.instance.activeJourneys is empty"
+      ],
+      "callback_coverage": "Captured count/role/reset/motion callbacks are invoked after a newer motion choice. Source test fixtures/renderer checks replace retired UI callback capture.",
+      "classification": "Case body adapted where it referenced retired UI. Member renderer/navigation/state assertions retained. Exact former failing helper assertion removed; no claim of literal assertion preservation."
+    }
+  ],
+  "conclusion": "Three Guardian case bodies are unchanged but their failing shared developer-page-title assertion was removed. Compact case changes retired Page options visibility and replaces dropdown selection readback with actual renderer motion; its non-developer renderer/navigation/account-state assertions remain. No case skip/removal/forcedfailure found. These are explicit obsolete developer-UI assertion migrations, not four unchanged failing tests naturally turning green. Parent must disclose and decide scope under the written question."
+}

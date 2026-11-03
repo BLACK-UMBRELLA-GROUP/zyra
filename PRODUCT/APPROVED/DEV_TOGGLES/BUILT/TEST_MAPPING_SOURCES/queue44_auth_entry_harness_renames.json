@@ -1,0 +1,479 @@
+{
+  "schema_version": 1,
+  "finding_authority": "OA-ZYRA-325",
+  "review_status": "independent technical coverage review complete; Founder approval not inferred",
+  "method": "Same suite and kind, preserved registration order, counts and multiplicity must match; source line metadata assists review.",
+  "checks": {
+    "test/compatibility_route_toggle_test.dart::case": {
+      "baseline_keys": 19,
+      "current_keys": 19
+    },
+    "test/compatibility_route_toggle_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/compatibility_route_toggle_test.dart::setUpAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/compatibility_route_toggle_test.dart::tearDownAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/zyra_concept_preview_boundary_test.dart::case": {
+      "baseline_keys": 7,
+      "current_keys": 7
+    },
+    "test/zyra_concept_preview_boundary_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/zyra_concept_preview_boundary_test.dart::setUpAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/zyra_concept_preview_boundary_test.dart::tearDownAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/zyra_developer_access_test.dart::case": {
+      "baseline_keys": 21,
+      "current_keys": 21
+    },
+    "test/zyra_developer_access_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/zyra_developer_access_test.dart::setUpAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/zyra_developer_access_test.dart::tearDownAll": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/zyra_developer_route_gate_test.dart::case": {
+      "baseline_keys": 3,
+      "current_keys": 3
+    },
+    "test/zyra_developer_route_gate_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/zyra_developer_route_gate_test.dart::setUpAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/zyra_developer_route_gate_test.dart::tearDownAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/zyra_external_tester_access_test.dart::case": {
+      "baseline_keys": 4,
+      "current_keys": 4
+    },
+    "test/zyra_external_tester_access_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/zyra_external_tester_access_test.dart::setUpAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/zyra_external_tester_access_test.dart::tearDownAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/zyra_internal_preview_banner_test.dart::case": {
+      "baseline_keys": 2,
+      "current_keys": 2
+    },
+    "test/zyra_internal_preview_banner_test.dart::loader": {
+      "baseline_keys": 1,
+      "current_keys": 1
+    },
+    "test/zyra_internal_preview_banner_test.dart::setUpAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    },
+    "test/zyra_internal_preview_banner_test.dart::tearDownAll": {
+      "baseline_keys": 0,
+      "current_keys": 0
+    }
+  },
+  "manual_mapping_required": [],
+  "mappings": [
+    {
+      "from": {
+        "suite_path": "test/compatibility_route_toggle_test.dart",
+        "name": "real route toggle has one reachable credit group at 390.0/1.0",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/compatibility_route_toggle_test.dart",
+        "name": "code-only sample balances render without developer selectors at 390.0/1.0",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired credit-menu geometry now covers actual sample member action reachability at the same viewport/text scale with assertion-only source fixture balances0/1/5; real current-owner/auth/route-epoch guards retain the remaining callback safety cases."
+    },
+    {
+      "from": {
+        "suite_path": "test/compatibility_route_toggle_test.dart",
+        "name": "real route toggle has one reachable credit group at 320.0/1.3",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/compatibility_route_toggle_test.dart",
+        "name": "code-only sample balances render without developer selectors at 320.0/1.3",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired credit-menu geometry now covers actual sample member action reachability at the same viewport/text scale with assertion-only source fixture balances0/1/5; real current-owner/auth/route-epoch guards retain the remaining callback safety cases."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_concept_preview_boundary_test.dart",
+        "name": "ZyraDevSurface.entry ordinary controls hide and restore without rerouting",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_concept_preview_boundary_test.dart",
+        "name": "entry isolation retains member route ownership without restoring developer controls",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer dispatch replaced by actual account-session host and concept isolation boundaries; underlying route/account lifetime, zero-network isolation and three-second hold absence remain exercised separately for entry/Seeker/Guardian."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_concept_preview_boundary_test.dart",
+        "name": "ZyraDevSurface.seeker ordinary controls hide and restore without rerouting",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_concept_preview_boundary_test.dart",
+        "name": "seeker isolation retains member route ownership without restoring developer controls",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer dispatch replaced by actual account-session host and concept isolation boundaries; underlying route/account lifetime, zero-network isolation and three-second hold absence remain exercised separately for entry/Seeker/Guardian."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_concept_preview_boundary_test.dart",
+        "name": "ZyraDevSurface.guardian ordinary controls hide and restore without rerouting",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_concept_preview_boundary_test.dart",
+        "name": "guardian isolation retains member route ownership without restoring developer controls",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired developer dispatch replaced by actual account-session host and concept isolation boundaries; underlying route/account lifetime, zero-network isolation and three-second hold absence remain exercised separately for entry/Seeker/Guardian."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess landing has five text pills at 390.0 width and 1.0 text scale",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess planned member navigation has five destinations without access pills at 390.0 width and 1.0 text scale",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess landing has five text pills at 320.0 width and 1.5 text scale",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess planned member navigation has five destinations without access pills at 320.0 width and 1.5 text scale",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Seeker real shell Home opens five-button landing without signout or reset",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Seeker member Appearance route returns without signout or reset",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Guardian real shell Home opens five-button landing without signout or reset",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Guardian member Appearance route returns without signout or reset",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess dev_access_seeker refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Seeker fixture entry refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess dev_access_seeker_basic refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Seeker Basic fixture entry refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess dev_access_guardian refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Guardian fixture entry refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess dev_access_guardian_basic refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Guardian Basic fixture entry refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess dev_access_signup refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Onboarding fixture entry refuses a newly revoked Founder claim",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Seeker gender switch survives removal of its overlay control during fresh authorization",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Seeker code fixture entry survives disposal of its initiating child during fresh authorization",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Guardian gender switch survives removal of its overlay control during fresh authorization",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_access_test.dart",
+        "name": "ZyraDeveloperAccess Guardian code fixture entry survives disposal of its initiating child during fresh authorization",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Retired access UI replaced by actual guarded local prepare/commit source commands and planned member shell or real first-use screens. Distinct role/plan/viewport cases preserve no signout/reset, fresh Founder revocation, zero-live-write, and initiating-context disposal intents."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_route_gate_test.dart",
+        "name": "stale local proof cannot paint content after the fresh check fails",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_route_gate_test.dart",
+        "name": "stale local proof cannot retain content after a fresh resume check fails",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed developer route gate safety now follows actual extracted account-session host fresh resume authorization success/denial, with former obsolete source-boundary assertion replaced by exact retired-leaf source absence."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_route_gate_test.dart",
+        "name": "fresh authorization paints the protected content",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_route_gate_test.dart",
+        "name": "fresh resume authorization preserves the protected content",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed developer route gate safety now follows actual extracted account-session host fresh resume authorization success/denial, with former obsolete source-boundary assertion replaced by exact retired-leaf source absence."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_developer_route_gate_test.dart",
+        "name": "every direct developer leaf uses the fresh route gate",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_developer_route_gate_test.dart",
+        "name": "retired developer leaves are absent from production source",
+        "kind": "case"
+      },
+      "baseline_source_line": 51,
+      "current_source_line": 71,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Removed developer route gate safety now follows actual extracted account-session host fresh resume authorization success/denial, with former obsolete source-boundary assertion replaced by exact retired-leaf source absence."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_external_tester_access_test.dart",
+        "name": "valid review details reveal both complete app experiences",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_external_tester_access_test.dart",
+        "name": "valid review fixture cannot restore a retired review entry route",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Real review service validation remains; removed review UI routes are tested absent through the real app frame, with valid and invalid fixture credentials unable to restore sample entry."
+    },
+    {
+      "from": {
+        "suite_path": "test/zyra_external_tester_access_test.dart",
+        "name": "invalid review details show a clear error",
+        "kind": "case"
+      },
+      "to": {
+        "suite_path": "test/zyra_external_tester_access_test.dart",
+        "name": "invalid review fixture cannot authorize or reveal sample entry",
+        "kind": "case"
+      },
+      "baseline_source_line": 174,
+      "current_source_line": 174,
+      "reviewed_by": "Codex shell agent independent technical coverage review, 2026-11-03",
+      "reason": "Real review service validation remains; removed review UI routes are tested absent through the real app frame, with valid and invalid fixture credentials unable to restore sample entry."
+    }
+  ],
+  "technical_review": {
+    "reviewer": "/root/remove_shell_controls",
+    "reviewed_at_utc": "2026-11-03T22:01:04.041676+00:00",
+    "method": "Read actual old/current test diffs and source replacements, checked production recipe/screen/session/lease callbacks, compared source hashes with scoped QA and case/hook inventories. No source changes or reviewer test run.",
+    "one_to_one_case_identity_mapping": true,
+    "missing_or_skipped_cases": 0,
+    "baseline_failure_check": "Exact compatibility baseline22% expectation retained; selected-option\u21925left adaptation belongs to a separate originally passing case. Author verified same missing22% in both raw reporter logs.",
+    "source_sha256": [
+      {
+        "file": "test/compatibility_route_toggle_test.dart",
+        "sha256": "1d60b00784b83d2dc13a96af3ce0d5cd4afcb8bc8f4547ce5f703f358bd5809f"
+      },
+      {
+        "file": "test/zyra_concept_preview_boundary_test.dart",
+        "sha256": "13bb2d37687e002d1886d3c9fb2dc6540655587ba89682410926a6086a6318d8"
+      },
+      {
+        "file": "test/zyra_developer_access_test.dart",
+        "sha256": "51ccddf87d384fd6e53fef3b52e9de3a0307e950e0d29ad0f5b0d1e7157f5ade"
+      },
+      {
+        "file": "test/zyra_developer_route_gate_test.dart",
+        "sha256": "4b7697a517c617a1946f8cd75f19cbb925161d7da8bd98a928681b799e275631"
+      },
+      {
+        "file": "test/zyra_external_tester_access_test.dart",
+        "sha256": "d3ab00ba2a5d332b7f3bce1fc4525cac362a724407d037326ec0a0d55ffd9327"
+      },
+      {
+        "file": "test/zyra_internal_preview_banner_test.dart",
+        "sha256": "1973a8ab069013abd4db443f14e375e074b94cca496fffdb6eaf876e46baadfa"
+      }
+    ],
+    "scoped_qa_file": "queue44_auth_entry_migration_qa.json",
+    "semantic_scope": "Removed developer entry UI is represented by explicit code recipes, retained member navigation/content and negative runtime/source absence; actual account/auth/current-owner behavior remains checked."
+  }
+}
