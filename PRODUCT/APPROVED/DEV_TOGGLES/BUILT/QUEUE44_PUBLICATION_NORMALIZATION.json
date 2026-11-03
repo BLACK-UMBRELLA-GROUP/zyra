@@ -36,5 +36,51 @@
       "all_path_and_digest_values_preserved": true,
       "mapping_identities_and_reasons_unchanged": true
     }
-  ]
+  ],
+  "initial_default_scanner_findings": 6,
+  "exact_current_source_digest_checks": [
+    {
+      "evidence": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/QUEUE44_FINAL_CONTROLS_REVIEW.json",
+      "path": "SOURCE/lib/config/oauth_config.dart",
+      "recorded_sha256": "3001164dadb455696c4ed0e6e83e82cc0d2dde795f36f3cf6a64a5f671583cb5",
+      "actual_sha256": "3001164dadb455696c4ed0e6e83e82cc0d2dde795f36f3cf6a64a5f671583cb5",
+      "exact_match": true
+    },
+    {
+      "evidence": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/QUEUE44_FINAL_CONTROLS_REVIEW.json",
+      "path": "SOURCE/lib/screens/auth_gate.dart",
+      "recorded_sha256": "0f946e86084b21cd7d8531b7779d442568b16f376b49298efe8f158f6487c39b",
+      "actual_sha256": "0f946e86084b21cd7d8531b7779d442568b16f376b49298efe8f158f6487c39b",
+      "exact_match": true
+    },
+    {
+      "evidence": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/TEST_MAPPING_SOURCES/queue44_auth_entry_harness_renames.json",
+      "path": "SOURCE/test/zyra_developer_access_test.dart",
+      "recorded_sha256": "51ccddf87d384fd6e53fef3b52e9de3a0307e950e0d29ad0f5b0d1e7157f5ade",
+      "actual_sha256": "51ccddf87d384fd6e53fef3b52e9de3a0307e950e0d29ad0f5b0d1e7157f5ade",
+      "exact_match": true
+    },
+    {
+      "evidence": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/TEST_MAPPING_SOURCES/queue44_auth_entry_harness_renames.json",
+      "path": "SOURCE/test/zyra_external_tester_access_test.dart",
+      "recorded_sha256": "d3ab00ba2a5d332b7f3bce1fc4525cac362a724407d037326ec0a0d55ffd9327",
+      "actual_sha256": "d3ab00ba2a5d332b7f3bce1fc4525cac362a724407d037326ec0a0d55ffd9327",
+      "exact_match": true
+    },
+    {
+      "evidence": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/QUEUE44_REVIEWED_TEST_MAPPINGS.json",
+      "path": "SOURCE/test/zyra_developer_access_test.dart",
+      "recorded_sha256": "51ccddf87d384fd6e53fef3b52e9de3a0307e950e0d29ad0f5b0d1e7157f5ade",
+      "actual_sha256": "51ccddf87d384fd6e53fef3b52e9de3a0307e950e0d29ad0f5b0d1e7157f5ade",
+      "exact_match": true
+    },
+    {
+      "evidence": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/QUEUE44_REVIEWED_TEST_MAPPINGS.json",
+      "path": "SOURCE/test/zyra_external_tester_access_test.dart",
+      "recorded_sha256": "d3ab00ba2a5d332b7f3bce1fc4525cac362a724407d037326ec0a0d55ffd9327",
+      "actual_sha256": "d3ab00ba2a5d332b7f3bce1fc4525cac362a724407d037326ec0a0d55ffd9327",
+      "exact_match": true
+    }
+  ],
+  "verification": "All six values equal SHA256 of the exact current regular source/test file, with lexical protected-name and symlink ancestor checks before reading. No credentials or raw scanner matches are included. Values were preserved while only the metadata representation changed."
 }
