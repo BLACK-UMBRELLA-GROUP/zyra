@@ -186,5 +186,6 @@
       "classification": "Case body adapted where it referenced retired UI. Member renderer/navigation/state assertions retained. Exact former failing helper assertion removed; no claim of literal assertion preservation."
     }
   ],
-  "conclusion": "Three Guardian case bodies are unchanged but their failing shared developer-page-title assertion was removed. Compact case changes retired Page options visibility and replaces dropdown selection readback with actual renderer motion; its non-developer renderer/navigation/account-state assertions remain. No case skip/removal/forcedfailure found. These are explicit obsolete developer-UI assertion migrations, not four unchanged failing tests naturally turning green. Parent must disclose and decide scope under the written question."
+  "conclusion": "Three Guardian case bodies are unchanged but their failing shared developer-page-title assertion was removed. Compact case changes retired Page options visibility and replaces dropdown selection readback with actual renderer motion; its non-developer renderer/navigation/account-state assertions remain. No case skip/removal/forcedfailure found. These are explicit obsolete developer-UI assertion migrations, not four unchanged failing tests naturally turning green. Parent must disclose and decide scope under the written question.",
+  "accepted_scope_decision": "Question 12 ANSWERED B, Founder 4 November 2026; accepted under brief step 5. Original audit below remains historical evidence; five cases retained, no new skips or deletions."
 }

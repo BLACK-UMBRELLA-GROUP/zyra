@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "authority": "OA-ZYRA-325 / DOC-ZYRA-0346 / QUESTIONS row 12, answered B by Founder on 4 November 2026",
+  "checked_at_utc": "2026-11-04T09:47:25.305082+00:00",
+  "status": "PASS_WITH_AUTHORIZED_BASELINE_EXCEPTIONS",
+  "reused_checks": true,
+  "reason": "Only the written gate changed; all 227 recorded candidate paths, controls-review source hashes, moved files, current LOCK specifications and all master/build capture hashes match. No additional dirty SOURCE inputs exist.",
+  "candidate_paths_checked": 227,
+  "candidate_mismatches": 0,
+  "retired_files_verified": 26,
+  "controls_review_paths": 71,
+  "current_lock_specs_verified": 21,
+  "master_build_pairs_verified": 11,
+  "completed_reporter_entries": 8246,
+  "failures_or_errors": 644,
+  "baseline_failures_or_errors": 649,
+  "prior_pass_regressions": 0,
+  "baseline_skip_changes": 0,
+  "unchanged_skips": 119,
+  "baseline_missing_or_multiplicity_changes": 0,
+  "exceptions": {
+    "nine_cases": "QUEUE44_NINE_LOCK_GATE_CONFLICTS.json; repaired first in line 73, no tests skipped in line 44",
+    "five_assertion_migrations": "QUEUE44_BASELINE_ASSERTION_MIGRATIONS.json and QUEUE44_FIFTH_BASELINE_IMPROVEMENT.json; accepted by Question 12"
+  },
+  "analysis": "Saved final analyzer: no issues found; format: 200 files, zero changes.",
+  "release_safety": "PASS: QUEUE44_ACCEPTANCE_TEST_DETAILS.json.release_safety_test records the named safety case success once in final full run and once in scoped saved run (testID 4, testDone.result=success, skipped=false; done.success=true).",
+  "qualification": "The full suite still exits 1. Acceptance is only against the revised line 44 gate; line 73 and the roadmap row remain open.",
+  "implementation_commit": "ff49601d7059533ed77ba730986eef39b38028b9",
+  "test_detail_evidence": "QUEUE44_ACCEPTANCE_TEST_DETAILS.json",
+  "baseline_missing_identity_keys": 0,
+  "baseline_missing_identity_occurrences": 0
+}

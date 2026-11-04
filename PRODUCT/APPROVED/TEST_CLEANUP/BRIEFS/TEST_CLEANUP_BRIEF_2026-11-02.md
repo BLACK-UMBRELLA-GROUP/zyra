@@ -20,6 +20,7 @@ strict 21 Nov – 14 Dec). Unclear → file a question in `QUESTIONS.md` and con
 
 | Step | Detail |
 |---|---|
+| 0 | **First:** the nine LOCK 2 / LOCK 5 cases in `DEV_TOGGLES/BUILT/QUEUE44_NINE_LOCK_GATE_CONFLICTS.json` (Main Guardian notice and My ZYRA tab-attention tests that fail in their old harness before reaching their assertions). Repair their harness so each reaches and checks its real LOCK requirement; if a requirement fails against the app, that is a Finding (step 2), not an app change |
 | 1 | Start from line 44's task-note failure list (or re-run the suite at the current commit) and group failures by file |
 | 2 | For each failing test decide one of: **Update** — it checks a screen or rule that a later LOCK changed: update it to the current LOCK spec/masters (cite the LOCK and master in a comment); **Retire** — the feature or screen no longer exists in the app: move the test file to `~/_to_delete/ZYRA_TESTS_RETIRED_<date>/` (never delete); **Fixture** — a missing or stale fixture (e.g. the absent `20260924100231_…guardian_circle_contract.sql`): point the test at the current file if one exists, else retire it; **Finding** — the app itself looks wrong against a LOCK: do NOT change app code; add a `QUESTIONS.md` row for the ZYRA chat |
 | 3 | Visual goldens (e.g. `zyra_visual_regression_test.dart`): regenerate only for screens whose current build matches its LOCK masters (the ZYRA chat's BUILT checks); otherwise list as a finding |

@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "finding_authority": "OA-ZYRA-325",
-  "status": "NINE_LITERAL_LOCK_GATE_CONFLICTS_NO_WAIVER",
-  "gate_text": "Every LOCK test passes.",
-  "evidence_note": "Each exact case is error in baseline, Full1 and Full2. Failure at an obsolete finder does not establish a product defect or prove that no other passing test covers the requirement. The literal every-LOCK-test gate remains unmet; no waiver applied.",
+  "status": "NINE_BASELINE_CASES_EXCEPTED_BY_QUESTION12_FOR_LINE44",
+  "gate_text": "Every LOCK test passes except the nine specifically listed baseline LOCK 2 / LOCK 5 cases, explicitly deferred to line 73 by Question 12.",
+  "evidence_note": "Nine cases remain unchanged and failed in baseline and both full runs. Founder explicitly excepted only these cases for line 44 on 4 November 2026. They must be repaired first in line 73; no test was skipped by line 44.",
   "authorities": {
     "lock2_main_notice": {
       "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/RECORD/REQUESTS_AND_GUARDIANS_SPEC_CURRENT_VERSION_V2.md",
-      "section": "\u00a72.4 one-time Main Guardian message",
+      "section": "§2.4 one-time Main Guardian message",
       "line": 63,
       "sha256": "c3d17648b0ce615d2d3cc7e2f54f8207c6dd826a2169c9cc2c9fe66a2d4b870a"
     },
@@ -19,13 +19,13 @@
     },
     "lock19_monogram_guardian": {
       "path": "PRODUCT/APPROVED/GUARDIAN_CARD/RECORD/GUARDIAN_CARD_SPEC_CURRENT_VERSION_V3.md",
-      "section": "\u00a7\u00a71\u20134 Monogram Guardian cards; existing MakeMain confirm flows retained",
+      "section": "§§1–4 Monogram Guardian cards; existing MakeMain confirm flows retained",
       "line": 14,
       "sha256": "7907d62c28644c9c2c7d4441de93940aeda4d6801364bff7bc73afe3e05022df"
     },
     "lock15_focus": {
       "path": "PRODUCT/APPROVED/MY_ZYRA/RECORD/MY_ZYRA_SPEC_CURRENT_VERSION_V3.md",
-      "section": "\u00a71 old Newactivity layout removed; \u00a75 preservesLOCK5goldrule",
+      "section": "§1 old Newactivity layout removed; §5 preservesLOCK5goldrule",
       "line": 31,
       "sha256": "9a51f0c8a4fe1834ca5a3d17a679caf283b35b89ab383820f7e6d3f096728669"
     }
@@ -261,7 +261,11 @@
       }
     }
   ],
-  "waiver_applied": false,
+  "waiver_applied": true,
   "tests_changed_by_this_audit": false,
-  "full2_event_sha256": "722597b60927ea8a0646a9e809849ed96720e96dedd4d8af56fc8ce467517a07"
+  "full2_event_sha256": "722597b60927ea8a0646a9e809849ed96720e96dedd4d8af56fc8ce467517a07",
+  "historical_status": "NINE_LITERAL_LOCK_GATE_CONFLICTS_NO_WAIVER",
+  "historical_evidence_note": "Each exact case is error in baseline, Full1 and Full2. Failure at an obsolete finder does not establish a product defect or prove that no other passing test covers the requirement. The literal every-LOCK-test gate remains unmet; no waiver applied.",
+  "waiver_authority": "QUESTIONS row 12 ANSWERED B; revised brief step 7, 4 November 2026",
+  "historical_gate_text": "Every LOCK test passes."
 }

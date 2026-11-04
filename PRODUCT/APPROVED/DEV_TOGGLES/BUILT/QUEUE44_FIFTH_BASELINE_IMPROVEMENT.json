@@ -188,5 +188,6 @@
       }
     }
   },
-  "disclosure": "This is a retained exact case with one explicit obsolete developer-UI presence-to-absence assertion migration and shared driver/mount changes. Its original baseline-failing dropdown absence assertion is unchanged and naturally passes after removal. Do not describe the whole case body or harness as unchanged."
+  "disclosure": "This is a retained exact case with one explicit obsolete developer-UI presence-to-absence assertion migration and shared driver/mount changes. Its original baseline-failing dropdown absence assertion is unchanged and naturally passes after removal. Do not describe the whole case body or harness as unchanged.",
+  "accepted_scope_decision": "Question 12 ANSWERED B, Founder 4 November 2026; accepted under brief step 5. Original audit below remains historical evidence; five cases retained, no new skips or deletions."
 }

@@ -2,9 +2,9 @@
   "schema_version": 1,
   "authority": "DOC-ZYRA-0346 / OA-ZYRA-325",
   "queue": 44,
-  "status": "DIRTY_CANDIDATE_NOT_BUILT",
-  "commit_sha": null,
-  "source_commit": null,
+  "status": "BUILT_REVISED_GATE_PASS",
+  "commit_sha": "ff49601d7059533ed77ba730986eef39b38028b9",
+  "source_commit": "ff49601d7059533ed77ba730986eef39b38028b9",
   "base_commit_sha": "3075117c6091b78f136e2fb3ac658f28b34e3d23",
   "dirty_working_tree": true,
   "candidate_manifest": "QUEUE44_DIRTY_CANDIDATE_MANIFEST.json",
@@ -19,5 +19,11 @@
     "policy_sha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d"
   },
   "capture_review": "QUEUE44_VISUAL_REVIEW.json",
-  "qualification": "Screenshots represent the uncommitted candidate. Neither an implementation commit nor Founder approval is implied."
+  "qualification": "Saved widget captures and checks match committed implementation ff49601d7059533ed77ba730986eef39b38028b9. Only unrelated Fable documents remain dirty. Revised line 44 gate passes with the nine specified baseline LOCK2/5 exceptions and five accepted assertion migrations. Full suite still has 644 failures/errors; no native build, phone installation or Founder visual approval is claimed.",
+  "implementation_working_tree_dirty": false,
+  "repository_has_unrelated_uncommitted_changes": true,
+  "accepted_at_utc": "2026-11-04T09:51:25.467871+00:00",
+  "acceptance": "QUEUE44_ACCEPTANCE_2026-11-04.json",
+  "as_built": "QUEUE44_AS_BUILT.json",
+  "log_relocation": "QUEUE44_BUILDLOG_RELOCATION.json"
 }

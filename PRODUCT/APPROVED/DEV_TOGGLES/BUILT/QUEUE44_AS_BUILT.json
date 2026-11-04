@@ -1,0 +1,2312 @@
+{
+  "schema_version": 1,
+  "authority": "DOC-ZYRA-0346 / OA-ZYRA-325 / AD-AIOS-116 / Question 12 answered B",
+  "queue": 44,
+  "status": "BUILT_REVISED_GATE_PASS",
+  "built_on": "2026-11-04",
+  "source_commit": "ff49601d7059533ed77ba730986eef39b38028b9",
+  "updated_at_utc": "2026-11-04T09:51:25.467871+00:00",
+  "what_was_built": "All authorized developer controls, their UI routes/state, 26 unused production modules and 11 unused client helpers removed. Founder cold start is sample Adam / Seeker One. No developer rail, Home/Preview/Actions, comparison/role/plan/wallet picker, reset, skip or simulated IDV shortcut remains.",
+  "why": "Founder named removal of Absolutely everything developer-only. Current LOCK drawings retain member controls, including real Profile Switch, member Gold, settings/haptics, Glass Signals and four LOCK2 V2 inline local Demo actions. Question 12 excepts exactly nine baseline failures and accepts exactly five developer-UI assertion migrations.",
+  "built_from": [
+    "PRODUCT/APPROVED/DEV_TOGGLES/BRIEFS/DEV_TOGGLES_REMOVAL_BRIEF_2026-10-30.md",
+    "PRODUCT/APPROVED/QUESTIONS.md row 12",
+    "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/RECORD/REQUESTS_AND_GUARDIANS_SPEC_CURRENT_VERSION_V2.md §2.5",
+    "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/",
+    "PRODUCT/APPROVED/TAB_ATTENTION/RECORD/TAB_ATTENTION_SPEC_CURRENT_VERSION_V1.md",
+    "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/QUEUE44_CURRENT_LOCK_AUTHORITY.json"
+  ],
+  "live_files": {
+    "SOURCE/lib/main.dart": "Neutral account-session host replaces overlay host; normal auth remains.",
+    "SOURCE/lib/widgets/zyra_account_session_host.dart": "Account ownership, signout and resume safety; no developer UI.",
+    "SOURCE/lib/dev/zyra_founder_launch_screen.dart": "Existing exact-Founder guarded startup.",
+    "SOURCE/lib/dev/dev_discovery_directions.dart": "Code-only fixture entry to real sample shell, no picker.",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart": "Current planned presentation and member actions; local test fixture seam.",
+    "SOURCE/test/support/": "Code-only role/plan/scenario catalogs and drivers; no compiled developer control.",
+    "SOURCE/test/developer_controls_release_safety_test.dart": "All four sample role/plan combinations; known dev keys/rail absent including 4-second holds.",
+    "README.md": "Current behavior and pinned check commands."
+  },
+  "changed_paths": [
+    {
+      "path": "README.md",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 4986,
+      "sha256": "a8045d52cef6ff88ea33703e444359a8a5d46203572c618d21b80229e28769d7"
+    },
+    {
+      "path": "SOURCE/lib/dev/dev_discovery_directions.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 5459,
+      "sha256": "515927ed903a4d2ae65f6abe6ff8a856d4f2c618d94f036336f6261f522f9760"
+    },
+    {
+      "path": "SOURCE/lib/dev/dev_onboarding_directions.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/dev_onboarding_gold_design.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 6797,
+      "sha256": "026f657696133d5474ee8855a8e39fbc0972b4c688bbf097f9ceb0c30ca28c93"
+    },
+    {
+      "path": "SOURCE/lib/dev/dev_onboarding_interaction.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/dev_onboarding_transition.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/dev_onboarding_welcome_motion.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 11808,
+      "sha256": "b35ab2b364422ef07d8666b06ce027f80902b23acf761e954725e1f8676634f3"
+    },
+    {
+      "path": "SOURCE/lib/dev/dev_role_choice_design.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/dev_settings_design.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/dev_settings_design_state.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/dev_signup_process.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/dev_splash_directions.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_app_gold_preview.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 6219,
+      "sha256": "11b82b5004961de4973ee3ca277c945de450792ed837fff3299f2eb98e324112"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_dashboard_lab_controls.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_dev_hold_to_open.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_dev_home.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_dev_local_preview.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 17755,
+      "sha256": "cc0c1c636b0475d5d9ed55917e4e87b91a315ccd226de7db80802621f8af3910"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_dev_page_options.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_dev_signup.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_dev_surface_coordinator.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_dev_tool_section.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_developer_route_gate.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_founder_launch_screen.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 37489,
+      "sha256": "d52b727eb447edca5301627793d852ad2b5bdd0340ebafe78719d8821e9f8fa4"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_my_zyra_activity_preview.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 8174,
+      "sha256": "2ccc27eba6fc407e5bda0f9e3e94540580b56f25a3a7814e3d982f23230627e3"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 305224,
+      "sha256": "07d7512ffc061066b03597c3596f1c2baf0e61578a8b2f6fafe9ad35b462eb96"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_preview_controls.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_page_preview_screen.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_preview_navigation_checkpoint.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 10065,
+      "sha256": "63ba3a0f5c6bc952b04bde7478d82bc5b5578045b50d5aa0c623fa9c26b7d543"
+    },
+    {
+      "path": "SOURCE/lib/main.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 32818,
+      "sha256": "ea8200b8575f49f456a08f2b3d61523035dbad3d145e806d70b95654934d278f"
+    },
+    {
+      "path": "SOURCE/lib/screens/auth/role_selection_screen.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 25772,
+      "sha256": "63545a9c01b0df18a4bfcdf42c7960c8cc358c6f0c0528e7a42efce8f0f74e45"
+    },
+    {
+      "path": "SOURCE/lib/screens/auth/tester_access_screen.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/screens/auth_gate.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 23113,
+      "sha256": "0f946e86084b21cd7d8531b7779d442568b16f376b49298efe8f158f6487c39b"
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/connections_screen.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 220222,
+      "sha256": "742097f4cd212a250be654bf56605d3ab1b8700c8e587e3af630169a076a422f"
+    },
+    {
+      "path": "SOURCE/lib/screens/dev/developer_access_screen.dart",
+      "git_kind": "tracked",
+      "state": "retired_moved"
+    },
+    {
+      "path": "SOURCE/lib/screens/home/home_shell.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 30130,
+      "sha256": "44601acc6afa076791524627b9c59e9dd985bf9d93c58cbdbeb85a95e9757159"
+    },
+    {
+      "path": "SOURCE/lib/screens/journey/journey_flow_screen.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 318534,
+      "sha256": "45797ddc20472d16d546e36ee522b755d5a6f59e5cab6180d00a703706957a7a"
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/account_path_overview_screen.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 41094,
+      "sha256": "2e42254d476cb81317b13a2724f5a6c66a64fd3793f4ccd05c3245bd5b4f388a"
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/bio_onboarding_flow.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 22840,
+      "sha256": "0c09d26ec312b5c671d02d8b84f08a23e5cb2e909aef2606bfd7841d2296d9f0"
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/chapter2_flow.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 54015,
+      "sha256": "ca42a8bbdf094376e4468c91c7a9b69a10f6d58d59ab47b536e6533bb0878236"
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/identity_verification_screen.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 40872,
+      "sha256": "a0fc2091a0cc4e0b82ea7e0f1787077497ac220fb4f186a2cd362d0217a11c4b"
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/onboarding_flow.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 29010,
+      "sha256": "caf7b105ea356ec9165281e88ba7122429d8e463418b468af4aa76dd9896ffdd"
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/onboarding_stage_intro_screen.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 39933,
+      "sha256": "724b717218aeaa89c81104bace6d944e807fbb8fd9dec4a8dbd5968322c641d5"
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/profile_ready_screen.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 21703,
+      "sha256": "10913f8a356ecf2f8140c9d65ac4cb3d06d0f66ee822a46f52bb94f5554f306c"
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/signup_membership_choice_screen.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 16836,
+      "sha256": "cf53f7988e4386d0474817508650ad4f635324010375fdd1f84ecf5a0742757a"
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/transition_screen.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 10037,
+      "sha256": "3633e4e746ea85763ef89501ff5fd2732ceae65fed9a19b94d0414bf2c093696"
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/values_preferences_flow.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 34412,
+      "sha256": "4a221714658e56efdd836551d78edb1cd89ca2665559ce21ca9c619dd096421b"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/settings_screen.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 31134,
+      "sha256": "405f18318acf57acc6cb1f8faa96cb09e0f04f661dddec5e009c3c7c71ca124f"
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/profile_unlock_screen.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 49988,
+      "sha256": "f4e72f93498772a0b022e8cdad0a4eac16d3de14569d48c7640c3fb41af1df01"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 102730,
+      "sha256": "2ea61a2821714b4d5bfd2237a95e676559de047c6887d053c4e2c5ee5f7d1d5f"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/wali_home_shell.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 17213,
+      "sha256": "c3bd52e5cf77e629e4095a609fae0f7cd52a67123360fcdef71c56f3fc33f29b"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/wali_onboarding_flow.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 32295,
+      "sha256": "372809bafd1f6fdc939636b09e9f4d8f8aa76a0aaf5db855e83b1f66879b62fd"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/zyra_code_screen.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 81820,
+      "sha256": "f4202974de809b25b62d94a9d47d7e9c8f83d3e70d5d6de0f7d5766c7d1f8d1d"
+    },
+    {
+      "path": "SOURCE/lib/screens/welcome_screen.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 17794,
+      "sha256": "0ecbafd841b30f73c931d85282ad9b49966d34e42474497f85b3617a45eb1941"
+    },
+    {
+      "path": "SOURCE/lib/services/zyra_journey_service.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 65180,
+      "sha256": "3c5768f4038843d2bcb445190d164c0fa37018045bfe37345570a4fc807cddeb"
+    },
+    {
+      "path": "SOURCE/lib/widgets/onboarding_scaffold.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 12934,
+      "sha256": "2cf1c1cfe1d6684de6902051de3baf1591c1b5fb4faca838167d6de639243af3"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_account_session_host.dart",
+      "git_kind": "untracked",
+      "state": "modified",
+      "bytes": 16245,
+      "sha256": "80c2e700f4977a51db9f86d020481c809ca45910384aa4fbeafc78c89710ec56"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_full_screen_error.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 15480,
+      "sha256": "d44bb683f1ba0b08552834c51be6765e1dfd3d1386bf4f401d3b9256ea7abd00"
+    },
+    {
+      "path": "SOURCE/test/app_shell_correctness_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 16709,
+      "sha256": "8f00558607b03170ce342475694d8be2c76fd3d5614fea0975886fc8d4c5f812"
+    },
+    {
+      "path": "SOURCE/test/browse_edge_alignment_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 18799,
+      "sha256": "4e34bf466a1098a87b265854a68d5db2ca591781f885c71f2412323a0ba37f96"
+    },
+    {
+      "path": "SOURCE/test/browse_feedback_haptics_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 14480,
+      "sha256": "879a7997bb905da53f0b428b732907d8605c2340c67cc6f504df99e70e846173"
+    },
+    {
+      "path": "SOURCE/test/browse_next_motion_shell_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 40905,
+      "sha256": "594fefb3e53eaaf2a08682269c5972cfd53a8ddb815946bc1992d7cab0c8d2d8"
+    },
+    {
+      "path": "SOURCE/test/browse_options_menu_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 47838,
+      "sha256": "d06ef3945891ea0d49ba51a4ef0a3bce9c1e002c7d82a7e98bbd4ef21ae59b28"
+    },
+    {
+      "path": "SOURCE/test/browse_photo_controls_polish_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 15551,
+      "sha256": "16406073aa335d1ab29e02517745b2a3d88c9cfdb190c60435e9705edfb5ff80"
+    },
+    {
+      "path": "SOURCE/test/browse_photo_top_pagination_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 17693,
+      "sha256": "31eae77c504a472699c52955cf671df2d23d53e3fc043e086c96667be28ac2c0"
+    },
+    {
+      "path": "SOURCE/test/browse_screen_invitation_frame_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 21091,
+      "sha256": "f494e642f20371b434926402a9f6b747d3ea0d24c3a4905a99a14d7f62d16513"
+    },
+    {
+      "path": "SOURCE/test/compatibility_route_toggle_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 33896,
+      "sha256": "1d60b00784b83d2dc13a96af3ce0d5cd4afcb8bc8f4547ce5f703f358bd5809f"
+    },
+    {
+      "path": "SOURCE/test/dashboard_lab_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 3202,
+      "sha256": "f217ef7d85e2e39a89f3d2e180b98fa66f0142bf51b4cf8e31dc2b268333ac21"
+    },
+    {
+      "path": "SOURCE/test/deferred_onboarding_preview_safety_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 9080,
+      "sha256": "5eb6dd87aa3301024502760016b1e5b2c52d2f336e7aa4cf127e7bd082506fba"
+    },
+    {
+      "path": "SOURCE/test/dev_app_icon_directions_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 1957,
+      "sha256": "5c2dbda15b304172ddbe72def45ee6fb31df80739b0288106a2eadbbc2d6be81"
+    },
+    {
+      "path": "SOURCE/test/dev_home_navigation_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 4945,
+      "sha256": "a65793949709965cddf2c59d52b9d638b3df9866834b3b46d7c216d06e13e418"
+    },
+    {
+      "path": "SOURCE/test/dev_onboarding_directions_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 17756,
+      "sha256": "db517f31ffe662a2ff72d836f4ab81acbd69ff06d4ca52b3ad312bd7de4f65e8"
+    },
+    {
+      "path": "SOURCE/test/dev_onboarding_gold_design_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 18496,
+      "sha256": "c40af9b2c34bf937c992edecbb6492733ca6166fd81803177c12159d2c8bdb5b"
+    },
+    {
+      "path": "SOURCE/test/dev_onboarding_home_integration_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 8336,
+      "sha256": "1b43b5577fff24581903e39ed181f297d84f0c8adceead06bf1027986b9eeb25"
+    },
+    {
+      "path": "SOURCE/test/dev_onboarding_interaction_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 4018,
+      "sha256": "08411e41f1ad25dc5406f8cc292374b4051c18b7adb042508750b1ccbb98b0cb"
+    },
+    {
+      "path": "SOURCE/test/dev_onboarding_story_navigation_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 15756,
+      "sha256": "770bb30a2a613a8448f1fc29c9bdf00eb44ced304a9eb76968cb01003afd884e"
+    },
+    {
+      "path": "SOURCE/test/dev_onboarding_story_reveal_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 15045,
+      "sha256": "7fa953a0eb1e85d0ae85292bc33279d3f14ff9fbf4bfbca22e3e14fdd0f191ff"
+    },
+    {
+      "path": "SOURCE/test/dev_onboarding_transition_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 30050,
+      "sha256": "5befe3de8dacd3cbe379b9e24f42cdeb929e80479a397a51fe2304ee90775430"
+    },
+    {
+      "path": "SOURCE/test/dev_onboarding_verification_copy_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 17010,
+      "sha256": "92230edcefaf8f43eef14ca50e50aeb9cb056995766ce9c941d9c959900cc163"
+    },
+    {
+      "path": "SOURCE/test/dev_onboarding_welcome_motion_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 14374,
+      "sha256": "9eeafe8fede67ab3ba6c767d0304b79da579e6097c245e9b1dd5704b5f8e3bff"
+    },
+    {
+      "path": "SOURCE/test/dev_role_choice_design_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 4121,
+      "sha256": "ea130250cfd977a63690a21c6aa7d713aac5647c5dee0a4ca69788788a5232a9"
+    },
+    {
+      "path": "SOURCE/test/dev_scenario_panel_policy_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 25426,
+      "sha256": "ce8c6bcf22f91ac5b09b7733e1757c26b18e6e7b872d9befee6bcc0c9b40a036"
+    },
+    {
+      "path": "SOURCE/test/dev_settings_design_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 3878,
+      "sha256": "43438e9ba26d64662ff79188afafa7ece3af03d5bcb2e7617f6b1d54f24d054c"
+    },
+    {
+      "path": "SOURCE/test/dev_signup_entry_compatibility_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 12965,
+      "sha256": "64e1586ee1f148bbe8f4cd280ff58d883670be7c1a50de65fb08043aee13cd61"
+    },
+    {
+      "path": "SOURCE/test/dev_signup_process_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 119738,
+      "sha256": "f9b1d49ebacf5972285b5dcd5bcf6ad4010bd3a367de6d7e0ac2a6672a7bdd68"
+    },
+    {
+      "path": "SOURCE/test/dev_signup_surface_coordinator_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 10284,
+      "sha256": "b5f8f38b4f38582e36f50685327742b79c158d5235158c3e93adf5414ecbc10e"
+    },
+    {
+      "path": "SOURCE/test/dev_signup_toggle_options_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 7505,
+      "sha256": "1a9fda74511426bcce9e1273e2af61f341294d26313d87da22b29273a4204576"
+    },
+    {
+      "path": "SOURCE/test/dev_splash_directions_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 7744,
+      "sha256": "a12492c9fcdeac2acf81c128dce5491c0c6efe0421c4a3c29a083131b0c04e6f"
+    },
+    {
+      "path": "SOURCE/test/dev_toggle_subtext_cleanup_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 20026,
+      "sha256": "30ab26ec998ae517e2024e57c6517adedba326ec877fbe3efc5fe8bce7868d1a"
+    },
+    {
+      "path": "SOURCE/test/developer_controls_release_safety_test.dart",
+      "git_kind": "untracked",
+      "state": "modified",
+      "bytes": 5624,
+      "sha256": "58ebb897ce1830866c065c7237c0a84405cc69f31bb86ef5524e78e3280d49b5"
+    },
+    {
+      "path": "SOURCE/test/founder_launch_review_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 31742,
+      "sha256": "719a4e2e1a151a9001e5e5d52d895a6f57f4769afa7b786fd757561056a7ef13"
+    },
+    {
+      "path": "SOURCE/test/founder_launch_style_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 184594,
+      "sha256": "881c2de721f6004146e0e8a08097b8fc6ebf8d21bf8a6d6a18c791556cab37d6"
+    },
+    {
+      "path": "SOURCE/test/global_dev_overlay_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 27717,
+      "sha256": "2c4ba264e4bc9793beb0cc971e30c451d9a2c8f806fb2e0952d82d9127f3f004"
+    },
+    {
+      "path": "SOURCE/test/global_hidden_dev_controls_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 6656,
+      "sha256": "d5e9655de0105e76aa9555a818aeab0d0a764f6d54eca7c535b41d3977923341"
+    },
+    {
+      "path": "SOURCE/test/guardian_chat_v4_owner_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 30533,
+      "sha256": "173d76ed7cdffd88cd46927d97e7f9d9b4e9ab32eb01939606e29053ddc403b9"
+    },
+    {
+      "path": "SOURCE/test/guardian_circle_close_integration_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 27587,
+      "sha256": "a86f312e617ca3b911d8f1f02af38a6056c92e7aee48909e3bc8120decfbe0c3"
+    },
+    {
+      "path": "SOURCE/test/guardian_circle_topic_options_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 89019,
+      "sha256": "8b2dcbe0a6fffd65950ae1b140f31634145f40a7bea806fb3f71360e3bf13c80"
+    },
+    {
+      "path": "SOURCE/test/guardian_circle_topics_source_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 12907,
+      "sha256": "aeb9798bbff92e4e6122368eadc59001fad03124e51cd981d225e78312158372"
+    },
+    {
+      "path": "SOURCE/test/guardian_design_control_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 5009,
+      "sha256": "710588c6a8a25afbad9230a45fabb3cde660ad4fd1735c2c29188e31f5277397"
+    },
+    {
+      "path": "SOURCE/test/guardian_onboarding_dev_skip_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 10250,
+      "sha256": "7f17bc9d55b1e73474c86547536518672e3acf1c9e9e97579ed2839bb37bb678"
+    },
+    {
+      "path": "SOURCE/test/guardian_signup_first_photo_flow_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 37581,
+      "sha256": "4ee106216ea9fc29c28cef782e2ba652b6fb498ad4e6f925619ea71793bd95d4"
+    },
+    {
+      "path": "SOURCE/test/identity_privacy_preview_boundary_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 14765,
+      "sha256": "c1882ac650a72fa9ce8458a5ac20aa3de4cd6f6d6902cc191b8ad073a1c33405"
+    },
+    {
+      "path": "SOURCE/test/initial_identity_check_screen_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 34532,
+      "sha256": "fa5e97ef9daa1d5097392deef9847536ae20bcfa02909408823b690560d54ba1"
+    },
+    {
+      "path": "SOURCE/test/journey_block_hide_v2_guard_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 20001,
+      "sha256": "a753312c02222056938ab11972755ebb4c731bd9bb05ef2d47cb9546a8b622fd"
+    },
+    {
+      "path": "SOURCE/test/journey_card_layout_choices_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 41994,
+      "sha256": "c2a6b2ad5c5944b6d82c906095f6b4171ba784504cf1d684a7c5ad89332f0ff1"
+    },
+    {
+      "path": "SOURCE/test/lock22_guardian_safety_advice_contract_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 12418,
+      "sha256": "42a4b2686e25e7be360b11fae6b0d41b35a0c38f55e76abeff69728934855d82"
+    },
+    {
+      "path": "SOURCE/test/lock22_safety_advice_contract_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 7392,
+      "sha256": "743de4344b96849b3584fecdf24e6e465e4db4f81326f6ae076d84710583e6fe"
+    },
+    {
+      "path": "SOURCE/test/menu_design_preview_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 2110,
+      "sha256": "9c35635a49e6faf4b9dd4405d3c1e4e05d558c7e0789f3cfc4ba940a1898c957"
+    },
+    {
+      "path": "SOURCE/test/my_zyra_retirement_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 7615,
+      "sha256": "502e0f7c795c659b76abfd19093b52b377452e4d19cfad0ce62e99d4d6546177"
+    },
+    {
+      "path": "SOURCE/test/onboarding_compatibility_flow_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 4227,
+      "sha256": "9bbaa255e9e8f7b615110b7d7269748240f043d90be4eea1e834e3ec35b00ff8"
+    },
+    {
+      "path": "SOURCE/test/onboarding_cta_coverage_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 26944,
+      "sha256": "d973bdee78b00f22a74e6e8996f094372c31a32ee6a3f7a4f5b0f2d613e3d4fd"
+    },
+    {
+      "path": "SOURCE/test/onboarding_current_journey_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 22561,
+      "sha256": "537e5808afb3969f97239549d9e9da29696216963a2e29ea413aa00fcbf079cf"
+    },
+    {
+      "path": "SOURCE/test/onboarding_dob_lifecycle_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 7638,
+      "sha256": "b2008bfc93999a36837373ed51d4e988ef9b5422e9060a8fd1bf8fa6e9019038"
+    },
+    {
+      "path": "SOURCE/test/onboarding_progress_consistency_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 12897,
+      "sha256": "b4dad90a52fa9a4b8d8dbac02e4a32b9f9e9d0fa2c5d2b454831f188e2f7c480"
+    },
+    {
+      "path": "SOURCE/test/onboarding_question_style_unification_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 12639,
+      "sha256": "070a94afaed908ae528edb96d31598b1fcb105d6f29a550403fb5cface0ddf46"
+    },
+    {
+      "path": "SOURCE/test/onboarding_stage_arrow_swipe_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 18745,
+      "sha256": "d4420b9ee199313419501130b2bee4b7006dade4b4dd6ca3f13ba7f2af1d442d"
+    },
+    {
+      "path": "SOURCE/test/onboarding_stage_handoff_owner_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 13465,
+      "sha256": "269422138e49741c4014770dd5325361c17ed258f087a12bccd08a1ca21ae788"
+    },
+    {
+      "path": "SOURCE/test/one_journey_back_button_preview_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 38765,
+      "sha256": "087d8a869d460876e39b5ad0ee484ecedf6135e7be808c99359aee906101fbb0"
+    },
+    {
+      "path": "SOURCE/test/one_journey_basic_joining_history_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 26669,
+      "sha256": "ea6b18223426f148b0ee88d7be54b2c3634aab5611e19a59c106b07cddcc74ac"
+    },
+    {
+      "path": "SOURCE/test/one_journey_bottom_close_cue_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 35272,
+      "sha256": "fad31790abc661fa306ba3d195036355b4a3926bd5f367f187e497e8a6eff578"
+    },
+    {
+      "path": "SOURCE/test/one_journey_capacity_slots_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 19704,
+      "sha256": "2203b9f06210539cf9bc1468a81af20b6354faf084e7c04a4b0607dbaada36b3"
+    },
+    {
+      "path": "SOURCE/test/one_journey_card_expansion_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 28195,
+      "sha256": "be2274cdd586df72dd8fff5c7bb9320cf2a7552966f46d64c2922b9b464968ab"
+    },
+    {
+      "path": "SOURCE/test/one_journey_compact_controls_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 27035,
+      "sha256": "fddafb942e690a22eab4614191252062fcfcea50ebaba0c9cdc7cd221a68936c"
+    },
+    {
+      "path": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 55805,
+      "sha256": "dc2b6203411227e23c046aaec641df80bc0023ebebc2d39df886a6a9bb69cff5"
+    },
+    {
+      "path": "SOURCE/test/one_journey_ended_card_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 42320,
+      "sha256": "6e05992bc463a29b0aa856ee11437fa10b023edabceee6cfdce76188d6ed110d"
+    },
+    {
+      "path": "SOURCE/test/one_journey_full_capacity_flow_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 29549,
+      "sha256": "fa47db05eb1ea1e4a5de16662491a8a93d7c3d32e6a20d914d621e00fabc2532"
+    },
+    {
+      "path": "SOURCE/test/one_journey_guardian_agreement_flow_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 19954,
+      "sha256": "2748fb1fcf07e0e363e5506f01e3ee8564db910006ffc07617ab85c65ce1fe60"
+    },
+    {
+      "path": "SOURCE/test/one_journey_guardian_details_polish_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 38011,
+      "sha256": "6393928255107f97225621fb8e9c445b1f56779c041df7c23ecae5c32a97ed64"
+    },
+    {
+      "path": "SOURCE/test/one_journey_hidden_profiles_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 53231,
+      "sha256": "247d8bc529ac3f2db50f49277b779d796032042e4bb3b8f18b578e0796f9e626"
+    },
+    {
+      "path": "SOURCE/test/one_journey_monthly_capacity_widget_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 63575,
+      "sha256": "074dcc1a3486fd8316cb1c5bd567dc565906cc884243e179f5a85b659613efc4"
+    },
+    {
+      "path": "SOURCE/test/one_journey_portrait_card_layout_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 18165,
+      "sha256": "f806d8d19c21d64cbc4223a17bf9bb505de566b7e6f5d8c449c399a5dc539188"
+    },
+    {
+      "path": "SOURCE/test/one_journey_prior_compatibility_access_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 19218,
+      "sha256": "8c61b48f5efc67368ec917ead888dd0db9948ed065a0ec2d47fc6c881db0824f"
+    },
+    {
+      "path": "SOURCE/test/one_journey_pull_down_routes_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 21003,
+      "sha256": "8f2efbb70accfa50869b67dc9a6ebfeedc1978ecf9b8fa80b82cf8b28b47ffe2"
+    },
+    {
+      "path": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 44917,
+      "sha256": "39eab48c10f33c286607aabd54c1330000671a87356f9a1257e4bc57ac470510"
+    },
+    {
+      "path": "SOURCE/test/one_journey_stage_disclosure_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 26572,
+      "sha256": "ef89426e1ee7108ecdacf937ab132395021ed66da4168d223b3ffc867b1d112c"
+    },
+    {
+      "path": "SOURCE/test/one_journey_switch_signup_preview_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 23315,
+      "sha256": "407fb98cf4b7b122a3122c9c387a825f9d07114ce59e466d044003a74479997d"
+    },
+    {
+      "path": "SOURCE/test/one_journey_theme_actions_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 39107,
+      "sha256": "844209c34ff0dde7bdc727c2a02ebc9785c9fa72b177b0e8ced1d3ae21d27d39"
+    },
+    {
+      "path": "SOURCE/test/one_journey_timeline_controls_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 19959,
+      "sha256": "d72811a56b6746a9d2c89bf83e612db24f14c5ba70a6898d808a8e76c85488b9"
+    },
+    {
+      "path": "SOURCE/test/personalisation_page_health_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 31509,
+      "sha256": "06c0fdf04276a0c4490a12b04ded2f52a56dfbb6fdc872a2dcd40fa7365ecd91"
+    },
+    {
+      "path": "SOURCE/test/personalisation_screen_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 7545,
+      "sha256": "890667210d07f645b87da41f7a353754b2b680f6db0f44126ba21a7fd84247ec"
+    },
+    {
+      "path": "SOURCE/test/profile_ready_screen_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 11953,
+      "sha256": "5f43bccd8633312317fde5a7815d4a57520391641796b23d40fc04b2236cf30e"
+    },
+    {
+      "path": "SOURCE/test/profile_tab_monogram_contract_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 18024,
+      "sha256": "8e56ec6747c96bd55816fa3985ad8f9ba5c8340213f90c21be2a23c017ddd43d"
+    },
+    {
+      "path": "SOURCE/test/request_page_options_context_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 36049,
+      "sha256": "3d6f8b455b65f1a8f73910eab0c90514c52c655eca5439cb47b985f9633551d9"
+    },
+    {
+      "path": "SOURCE/test/request_shell_titles_circle_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 23053,
+      "sha256": "6a8cd03c0d8f95b9f18b692f849f56e479d9e20d9ab3cbfd80a4a6c0b37f1f7f"
+    },
+    {
+      "path": "SOURCE/test/requests_guardians_lock2_shell_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 27129,
+      "sha256": "cfaf9285dafb7c215124be30a0abeb4b6406bc51ac8c2f13740582b87a867162"
+    },
+    {
+      "path": "SOURCE/test/retained_account_routes_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 24629,
+      "sha256": "7a9de548ce8f42b87dc115b83d7596d66340ca746af22131477231c3633217b5"
+    },
+    {
+      "path": "SOURCE/test/retained_personalisation_reuse_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 26109,
+      "sha256": "c2d71097f807ad91447b83394e4eb711a26053d02cce4f3a11a86a53d53c0fd3"
+    },
+    {
+      "path": "SOURCE/test/seeker_post_identity_choice_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 19680,
+      "sha256": "d5e6852ec96c8e91b37e18f68f61b6dc58898d2d7b74fe14a0494ec32af04e5a"
+    },
+    {
+      "path": "SOURCE/test/signup_first_photo_flow_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 33815,
+      "sha256": "405e65ce5dbe2e0fd00092527da8b366efc2d315eec7e13980f680d564557f8c"
+    },
+    {
+      "path": "SOURCE/test/signup_membership_choice_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 32218,
+      "sha256": "c969d28e1f2d6bcc0fc82838d81f1ffeb81e7fc06daed23b9c92fb68610d573d"
+    },
+    {
+      "path": "SOURCE/test/startup_preparation_handoff_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 53680,
+      "sha256": "d7b7fa1315667cf8638d23b9ec4bb56b4f98bed3bcd1bd75b8d8286a310c8f53"
+    },
+    {
+      "path": "SOURCE/test/support/queue44_activity_fixture_catalog.dart",
+      "git_kind": "untracked",
+      "state": "modified",
+      "bytes": 1649,
+      "sha256": "9e5d36725797fa8abcea560846103637d487677a81d24b1974827f7af7b983af"
+    },
+    {
+      "path": "SOURCE/test/support/queue44_dashboard_fixture_catalog.dart",
+      "git_kind": "untracked",
+      "state": "modified",
+      "bytes": 12498,
+      "sha256": "f2e5fbc2693a417107efab2d24652236364cac7dc7d65f0922ae914810ff574c"
+    },
+    {
+      "path": "SOURCE/test/support/queue44_gold_fixture.dart",
+      "git_kind": "untracked",
+      "state": "modified",
+      "bytes": 5179,
+      "sha256": "391b16a6fd305d829b9f7b0aac1ef45b21ba3c970415568b08d10137ee996f61"
+    },
+    {
+      "path": "SOURCE/test/support/queue44_home_fixture_catalog.dart",
+      "git_kind": "untracked",
+      "state": "modified",
+      "bytes": 4008,
+      "sha256": "cf0b19f67455553976c4a8c44f80e2b39f73a4cc1d9e71d87a2f868e51f75027"
+    },
+    {
+      "path": "SOURCE/test/support/queue44_onboarding_interaction_fixture.dart",
+      "git_kind": "untracked",
+      "state": "modified",
+      "bytes": 3263,
+      "sha256": "8e510727c8e60bd988779c82304cd176c198bfa187f485bb12d5a50ffb449cf4"
+    },
+    {
+      "path": "SOURCE/test/support/queue44_onboarding_opening_fixture.dart",
+      "git_kind": "untracked",
+      "state": "modified",
+      "bytes": 26664,
+      "sha256": "6e973cfe0f9afe621fd7544e7b524014db2b1df49f3ebcbf184ceb3b2fabe1c5"
+    },
+    {
+      "path": "SOURCE/test/support/queue44_onboarding_story_fixture.dart",
+      "git_kind": "untracked",
+      "state": "modified",
+      "bytes": 16180,
+      "sha256": "95ce59f0b6ea187a6a54a0324c83fbf4989e8f66e2f87186b9403964ed993c8f"
+    },
+    {
+      "path": "SOURCE/test/support/queue44_onboarding_transition_fixture.dart",
+      "git_kind": "untracked",
+      "state": "modified",
+      "bytes": 10194,
+      "sha256": "747b030a423e0919953736d88a67c6a88db60145ee9bcaaeb4b116895ed19238"
+    },
+    {
+      "path": "SOURCE/test/support/queue44_removed_controls_fixture.dart",
+      "git_kind": "untracked",
+      "state": "modified",
+      "bytes": 2129,
+      "sha256": "fa363d23441ecbde946d6ff86fb00fd4d10f6018aa13a1e3d1166cacfdd7bc0a"
+    },
+    {
+      "path": "SOURCE/test/support/queue44_role_choice_fixture.dart",
+      "git_kind": "untracked",
+      "state": "modified",
+      "bytes": 1712,
+      "sha256": "7028e42c4e0980ed6abca1a3e34d2c763bb05a8b0a1812a01671b01eab21d18e"
+    },
+    {
+      "path": "SOURCE/test/support/queue44_scenario_fixture_catalog.dart",
+      "git_kind": "untracked",
+      "state": "modified",
+      "bytes": 24287,
+      "sha256": "40fcc6b20273f5b2c5834bb723f9b09df44a071e35c73fd0968d14526fa13635"
+    },
+    {
+      "path": "SOURCE/test/support/queue44_settings_fixture.dart",
+      "git_kind": "untracked",
+      "state": "modified",
+      "bytes": 456,
+      "sha256": "9297a78d1c155c02db302eea815ce630e29b4c52c0583389d46811315ae552b7"
+    },
+    {
+      "path": "SOURCE/test/support/queue44_signup_flow_driver.dart",
+      "git_kind": "untracked",
+      "state": "modified",
+      "bytes": 8676,
+      "sha256": "a5d8cf59a0dd6571a0016baff1530eeec8d2931646b393f7d136fcb69c1f7a31"
+    },
+    {
+      "path": "SOURCE/test/support/queue44_signup_flow_fixture.dart",
+      "git_kind": "untracked",
+      "state": "modified",
+      "bytes": 9407,
+      "sha256": "b984df0538bd3b223b70bd9198f07871e53a5eda29418c2f164fbff6bee4a23a"
+    },
+    {
+      "path": "SOURCE/test/support/queue44_welcome_motion_fixture.dart",
+      "git_kind": "untracked",
+      "state": "modified",
+      "bytes": 3892,
+      "sha256": "913088ffbae022100f33d8f30e34635440097a636158e7340e1264310db7590e"
+    },
+    {
+      "path": "SOURCE/test/support/zyra_hidden_dev_controls_driver.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 26433,
+      "sha256": "f4212fb7011cd9d247065118fc966a6708077629ab21b92cb6617bbee3e831e0"
+    },
+    {
+      "path": "SOURCE/test/tab_attention_open_marker_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 18949,
+      "sha256": "506ae72e6c5baf1b1088e0d8525bb29368192d4f414525ebbfa430e9b5d1de69"
+    },
+    {
+      "path": "SOURCE/test/two_door_dev_controls_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 9485,
+      "sha256": "47e78e47b50e5ab6702dcc6ffa79a451f6d88b1fa7f10020b6d31f1aa9d0af2a"
+    },
+    {
+      "path": "SOURCE/test/view_request_draft_widget_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 195131,
+      "sha256": "a1563ed715de3ea85016f61d31812765c0d8611c55dbd73ee6405303af7abcaa"
+    },
+    {
+      "path": "SOURCE/test/visual/app_gold_preview_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 14888,
+      "sha256": "f4924a3c4c17224e7e0438ec40d800dac1a9cc4449de19d54569d161c30f9d5b"
+    },
+    {
+      "path": "SOURCE/test/visual/baseline_capture_support.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 18284,
+      "sha256": "d765b1c487dedf6c51836ad3b11ada2323c496d20de22297fb25bfff7a87feae"
+    },
+    {
+      "path": "SOURCE/test/visual/compatibility_plus_demo_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 5922,
+      "sha256": "1e6caa4f28373d5628033bf601397001a9a552a53b12f665b7ba1a31f9ad4338"
+    },
+    {
+      "path": "SOURCE/test/visual/continuous_onboarding_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 22600,
+      "sha256": "9eb54aa53f353745dde9c12633938daad06a6362083a763ffa6b2748140c16c8"
+    },
+    {
+      "path": "SOURCE/test/visual/dev_home_navigation_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 8583,
+      "sha256": "87645198c7b05da8b0d302dde3145ae637d0177977eb46fd0a43f569cc6aaac0"
+    },
+    {
+      "path": "SOURCE/test/visual/dev_toggle_sections_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 3407,
+      "sha256": "6728d11481bb81f9c9c57c04f37e6a7b9a902dcb3f132a488654ef468eaa5b54"
+    },
+    {
+      "path": "SOURCE/test/visual/guardian_signup_first_photo_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 9035,
+      "sha256": "c671f3652c6138f36332a76c64130ab18bbba0a5866b4c618960015daef32906"
+    },
+    {
+      "path": "SOURCE/test/visual/lock11_location_capture_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 10516,
+      "sha256": "e9ce94fee2f5768a7bfc86af916580b760d0d3932d7ffd5b71de8546cbdc8afb"
+    },
+    {
+      "path": "SOURCE/test/visual/lock13_journey_tab_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 27377,
+      "sha256": "c8f88e1ef38c0b1d4db5bdec7381fa6bdf878e379c4e76033f709ad0cda9d8dc"
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_v3_family_acceptance_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 16975,
+      "sha256": "2c81685c2c21832112a21938971972a73bfa72e5a69f13ec21778db281318b5a"
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 18884,
+      "sha256": "9e3d7717d69580a0aa02399070ab6646f450b95c9bec4aef538697abc97209f8"
+    },
+    {
+      "path": "SOURCE/test/visual/member_gold_personalisation_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 9289,
+      "sha256": "7d32e32775dcd99ba4e8bf986fb1a857ad2166d311a6a24d09ced5f621c94241"
+    },
+    {
+      "path": "SOURCE/test/visual/onboarding_directions_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 11019,
+      "sha256": "da12e983cc9a6e4decc11840a0da36bd09a45362d496a90cf04de2b52be5a2ba"
+    },
+    {
+      "path": "SOURCE/test/visual/onboarding_down_handoff_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 8096,
+      "sha256": "2b48c4c43783a6e086454014f11cf9f9fb6a35bcf081928af04d898269a46caa"
+    },
+    {
+      "path": "SOURCE/test/visual/onboarding_hint_cleanup_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 5960,
+      "sha256": "9c889317ea890ae68adffd77d30f4545c36aedc63893b29db3171742faa42156"
+    },
+    {
+      "path": "SOURCE/test/visual/onboarding_progress_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 7903,
+      "sha256": "87daa5d96719203609e889cb31ccf96829df4dc8dd66d37f486defd18af75a48"
+    },
+    {
+      "path": "SOURCE/test/visual/onboarding_transition_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 10640,
+      "sha256": "af7ba02c2d87f4eece391d9a4f0f88e9421d82249e4fa38d2b76b1e07feba7fc"
+    },
+    {
+      "path": "SOURCE/test/visual/purpose_led_opening_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 8410,
+      "sha256": "123bc5572f2addc6f07794e33a3868917558d85982dd0a0a153b4820b931a8ad"
+    },
+    {
+      "path": "SOURCE/test/visual/signup_capture_support.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 3833,
+      "sha256": "9cccad94c4adbd7c24cf5dd78a5718ac1a85e077f641ce7b46945ee8b36a7b4b"
+    },
+    {
+      "path": "SOURCE/test/visual/signup_entry_guardian_capture_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 23712,
+      "sha256": "a62413e83732714963d00d04a4a631c13995edb1d7358a1f8be02d7743a1710d"
+    },
+    {
+      "path": "SOURCE/test/visual/signup_first_photo_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 8048,
+      "sha256": "bfbf45bf82b00642a1f4e7e211f7e0faa0d22c24c2d1238be81ac8019af1737f"
+    },
+    {
+      "path": "SOURCE/test/visual/signup_identity_states_capture_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 4078,
+      "sha256": "dd7cfe74f34f2887a3d573ea4ad811ab6bc8b5e300bdcf6944a4a7449a1a566e"
+    },
+    {
+      "path": "SOURCE/test/visual/signup_seeker_essentials_capture_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 14609,
+      "sha256": "6eba2cb78e9f998c9c29d6d1cad0b8f5d47c7f520b8827b364db90c1cf99b191"
+    },
+    {
+      "path": "SOURCE/test/visual/splash_directions_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 3267,
+      "sha256": "a6b2efbac4266c42348ed5180bad09b79ddd4c092769bc0b2ba91b3334b5babb"
+    },
+    {
+      "path": "SOURCE/test/visual/zyra_back_swipe_motion_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 15307,
+      "sha256": "fc731b93459f815df87e28a28d4b18f050841e29612b73b7f8ce7eda3b2347de"
+    },
+    {
+      "path": "SOURCE/test/visual/zyra_developer_access_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 7892,
+      "sha256": "ba4d1b9159386d19ba62e4e171269a1de9816eab1d037f726b7a51d50c53cf9c"
+    },
+    {
+      "path": "SOURCE/test/visual/zyra_retained_account_reuse_visual_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 13347,
+      "sha256": "b63334f0b24d6b14700d97fa86cc1e4a561215e09cf428bbe367d8d3958ccef9"
+    },
+    {
+      "path": "SOURCE/test/wali_onboarding_gender_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 1781,
+      "sha256": "4422c99052a6fcce7600bbee57df971779b79ba86ffb506de46fed8fd809e509"
+    },
+    {
+      "path": "SOURCE/test/whole_app_settings_destinations_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 33623,
+      "sha256": "88a468e212bb6da610cc79df93c24b3d5968330aea1c8f7ceba8791a1df20881"
+    },
+    {
+      "path": "SOURCE/test/zyra_app_gold_preview_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 24211,
+      "sha256": "5ba95caae122f5762b91ca986bbdccb570a69025c696883e760067e2f679c101"
+    },
+    {
+      "path": "SOURCE/test/zyra_compatibility_design_choices_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 17883,
+      "sha256": "fe23e467c480c3819eb00714c1a7ba4de366e1f65ccb9aceaa52e879a0598d0f"
+    },
+    {
+      "path": "SOURCE/test/zyra_concept_preview_boundary_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 9460,
+      "sha256": "13bb2d37687e002d1886d3c9fb2dc6540655587ba89682410926a6086a6318d8"
+    },
+    {
+      "path": "SOURCE/test/zyra_dashboard_page_options_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 19535,
+      "sha256": "ac3e852879bc2386ee930725f441914e08ff0cd1ee451b616ec7254d5b15fbd7"
+    },
+    {
+      "path": "SOURCE/test/zyra_dev_hold_to_open_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 19968,
+      "sha256": "333fd1a6c5aa0745b1cda81e688cf95fe58fd5f7732113f50b49014307904eb8"
+    },
+    {
+      "path": "SOURCE/test/zyra_dev_home_tools_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 4890,
+      "sha256": "1a7f19818d25cb2167f2fa8c9449a19c01d23bda3e06a37a9cbe14ade351e6b4"
+    },
+    {
+      "path": "SOURCE/test/zyra_dev_page_options_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 17850,
+      "sha256": "0c55651ad36356587e845ff481fc7e1cc1dd9ee0f57d11dd33e7b66681ec46e7"
+    },
+    {
+      "path": "SOURCE/test/zyra_dev_preview_gender_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 2229,
+      "sha256": "676c0598b7045eaf93477df69a7f111b0e0dd535c211e5b2be748bf797059bbe"
+    },
+    {
+      "path": "SOURCE/test/zyra_developer_access_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 25965,
+      "sha256": "51ccddf87d384fd6e53fef3b52e9de3a0307e950e0d29ad0f5b0d1e7157f5ade"
+    },
+    {
+      "path": "SOURCE/test/zyra_developer_route_gate_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 2688,
+      "sha256": "4b7697a517c617a1946f8cd75f19cbb925161d7da8bd98a928681b799e275631"
+    },
+    {
+      "path": "SOURCE/test/zyra_draft_compatibility_route_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 34720,
+      "sha256": "a3be11c0077a54569f51f84270190bc83008b8331f6a263ac543f2f500b18970"
+    },
+    {
+      "path": "SOURCE/test/zyra_external_tester_access_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 4012,
+      "sha256": "d3ab00ba2a5d332b7f3bce1fc4525cac362a724407d037326ec0a0d55ffd9327"
+    },
+    {
+      "path": "SOURCE/test/zyra_guardian_page_options_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 15889,
+      "sha256": "3b299c13f85157a65c9ed4c58996a688c9e0696881fbae6277c15852d8c3249f"
+    },
+    {
+      "path": "SOURCE/test/zyra_internal_preview_banner_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 4653,
+      "sha256": "1973a8ab069013abd4db443f14e375e074b94cca496fffdb6eaf876e46baadfa"
+    },
+    {
+      "path": "SOURCE/test/zyra_location_lock11_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 12278,
+      "sha256": "35b3deaa637f8d3caf87113521489d1f48e2525d4eda0de48bdefd39f386c75b"
+    },
+    {
+      "path": "SOURCE/test/zyra_member_app_gold_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 11288,
+      "sha256": "93c528eb1473363ce8b66f77bdd55fbabe21efc12dd8c9da2fa6f1c95dac2754"
+    },
+    {
+      "path": "SOURCE/test/zyra_my_zyra_activity_preview_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 9196,
+      "sha256": "2aa6d3246a9f91218aad5d006382bad7ce795fc3244f2fb5b0719d5244fcc766"
+    },
+    {
+      "path": "SOURCE/test/zyra_one_app_release_tooling_contract_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 9388,
+      "sha256": "bbbecc4702671da8150ec2205fbd9cfddda459ffe206361b55e9856f87ee36ef"
+    },
+    {
+      "path": "SOURCE/test/zyra_request_haptic_parity_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 13281,
+      "sha256": "9a170ef3f9b18232135efc56d5ad67e801325e79f82cef14d2d8b0121ff5298c"
+    },
+    {
+      "path": "SOURCE/test/zyra_retained_route_reuse_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 7866,
+      "sha256": "1971c1309ac30e4d958cf405337174b1fbdc96d1fad6c38f70b9d189003f1704"
+    },
+    {
+      "path": "SOURCE/test/zyra_run_target_contract_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 5203,
+      "sha256": "6909eff3d7d6c8d26875a788b5f3ae7086a8bb554a2ec81b5c0f903892da8c36"
+    },
+    {
+      "path": "SOURCE/test/zyra_seeker_page_options_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 14617,
+      "sha256": "824b99e8e41df9adb38f1b95af1b1b616c1bd1585f8b6c5918cebb034b7558c6"
+    },
+    {
+      "path": "SOURCE/test/zyra_startup_routing_test.dart",
+      "git_kind": "tracked",
+      "state": "modified",
+      "bytes": 20590,
+      "sha256": "077ffc01f7d2e41a02c869c8c10b60b0c40fc15eb466111cb59fb76d6ea44ad9"
+    }
+  ],
+  "architecture": "ZyraAccountSessionHost owns shared auth/session lifecycle safety. Existing authorization still requires compile-time opt-in, exact Founder account, company database and role. Preview ownership/generation guards and generic navigation epochs invalidate stale callbacks. Test fixtures provide values through code only.",
+  "data_flow": "Authenticated Founder entry -> guarded local preview -> sample Adam / Seeker One. Other test roles/plans use test-only fixture values. Member settings keep existing persistence. Preview does not write live member or relationship state; stale ownership revokes local actions.",
+  "entry_points": "Ordinary member app and sign-ins remain. Only exact authorized Founder enters sample preview. No runtime developer navigation door or remote developer client helper was retained.",
+  "developer_controls": {
+    "inventory": "QUEUE44_CONTROLS_INVENTORY.json; complete pre-removal file/line/control/effect records, including 243 retired declarations",
+    "final_source_review": "QUEUE44_FINAL_CONTROLS_REVIEW.json; hashes rechecked on 4 November",
+    "member_exceptions": [
+      "Current LOCK21 Guardian/Seeker Profile Switch and its guarded member flow.",
+      "Current LOCK2 V2 four inline local Demo actions, explicit 31 Oct lock27/spec2.5/buildbriefstep4.",
+      "Member Gold, appearance/haptics, notifications, app lock, privacy and ordinary Tier3 navigation/Pause/Save.",
+      "Nondeveloper account-session/auth/resume safety extracted into neutral ZyraAccountSessionHost; generic navigation epoch observer retained.",
+      "Glass Signals presentation stays."
+    ],
+    "test_fixtures": "SOURCE/test/support/ immutable catalogs and shell fixtures; no reachable production selector."
+  },
+  "mock_vs_production": "Founder preview and four retained Demo actions remain local/sample only. Ordinary Tier3 app, real sign-ins and server Pause/Save remain pending OA-ZYRA-317. Backend/schema/auth/dependencies/SDK unchanged.",
+  "limitations_and_owners": [
+    {
+      "action": "OA-ZYRA-325 / queue 73",
+      "owner": "Fresh line 73 Codex owner",
+      "gap": "644 remaining baseline failures/errors in 91 files, including the nine excepted LOCK2/5 harness failures; fix the nine first. No line 73 work performed here."
+    },
+    {
+      "action": "OA-ZYRA-335",
+      "owner": "ZYRA design review",
+      "gap": "Existing frame/type/shadow/sample-data differences in headless master/build pairs; no redesign or visual approval claimed."
+    },
+    {
+      "action": "OA-ZYRA-317 / OA-ZYRA-184",
+      "owner": "Existing approved integration work",
+      "gap": "Ordinary Tier3 app, sign-ins, server Pause/Save and broader backend cleanup remain outside line 44."
+    }
+  ],
+  "migrations": "None. No backend, auth, dependencies, SDK, version bump, native build, phone install or release.",
+  "tests": {
+    "acceptance": "QUEUE44_ACCEPTANCE_2026-11-04.json",
+    "precise_test_and_missing_identity_result": "QUEUE44_ACCEPTANCE_TEST_DETAILS.json",
+    "comparison": "QUEUE44_COMPARISON_SUMMARY.json",
+    "baseline": "649 failures/errors across 91 files; 8,240 reporter entries / 8,239 unique identities and one duplicate",
+    "final": "644 failures/errors across 91 files; 8,246 completed reporter entries; zero prior-pass failures, missing identities, multiplicity deficits or skip changes; 119 unchanged skips",
+    "five_migrations": "QUEUE44_BASELINE_ASSERTION_MIGRATIONS.json and QUEUE44_FIFTH_BASELINE_IMPROVEMENT.json",
+    "saved_command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter json; exit 1, accepted only under revised gate",
+    "checks_reused": "All 227 candidate paths and saved source/capture anchors match; gate text changed only. No entire-suite rerun."
+  },
+  "verification": {
+    "analyzer": "Saved node tooling/no_git_driver.mjs flutter analyze --no-pub: no issues found, 4.5 seconds.",
+    "format": "Saved 200 changed/new Dart files: zero changes.",
+    "release_safety_test": "Explicit named test success in final full run and focused run; QUEUE44_ACCEPTANCE_TEST_DETAILS.json.release_safety_test.",
+    "visual": "11 master/build pairs under MASTER_BUILD_PAIRS/ and QUEUE44_VISUAL_REVIEW.json; hashes match. Actual Flutter widget software render at 430×932 logical @3x, 100% and 200% text where recorded.",
+    "device": "No native build or phone observation/installation.",
+    "review": "Fable verification / Founder visual approval remains separate; this handover is implementation evidence."
+  },
+  "code_size": {
+    "schema_version": 1,
+    "measured_at_utc": "2026-11-03T22:30:31.639942+00:00",
+    "authority": "OA-ZYRA-325 / queue44 read-only final measurement",
+    "classifier": "SYSTEM/tools/blueprint/code_size.py unchanged",
+    "classifier_sha256": "1784f086c8e45715b9e8bcaf5741bdcdc2a7f90576dbb535f828bd5c9bf74452",
+    "same_classifier_hash_as_prior": true,
+    "enumeration": "Same existing glob classifications and line counting; lexical protected-directory and symlink exclusions occur before traversal/content access.",
+    "enumeration_roots": [
+      "SOURCE/lib",
+      "SOURCE/test"
+    ],
+    "protected_names_checked_before_stat_or_traversal": true,
+    "symlinks_followed": false,
+    "skipped_entries": [],
+    "before": {
+      "app": [
+        175146,
+        345
+      ],
+      "developer_preview": [
+        55058,
+        103
+      ],
+      "founder_planned": [
+        35846,
+        53
+      ],
+      "tests": [
+        228324,
+        538
+      ],
+      "goldens": [
+        3044,
+        333
+      ],
+      "old_pause_mentions": 39,
+      "old_restart_mentions": 1
+    },
+    "final": {
+      "app": [
+        162668,
+        320
+      ],
+      "developer_preview": [
+        44347,
+        78
+      ],
+      "founder_planned": [
+        34482,
+        52
+      ],
+      "tests": [
+        231030,
+        554
+      ],
+      "goldens": [
+        3044,
+        333
+      ],
+      "old_pause_mentions": 40,
+      "old_restart_mentions": 1
+    },
+    "delta_from_before": {
+      "app": [
+        -12478,
+        -25
+      ],
+      "developer_preview": [
+        -10711,
+        -25
+      ],
+      "founder_planned": [
+        -1364,
+        -1
+      ],
+      "tests": [
+        2706,
+        16
+      ],
+      "goldens": [
+        0,
+        0
+      ],
+      "old_pause_mentions": 1,
+      "old_restart_mentions": 0
+    },
+    "after_table": "| What | Size |\n|---|---|\n| All app code | 162,668 lines in 320 files |\n| Developer and preview code inside it | 44,347 lines in 78 files |\n| The Founder preview (planned app) | 34,482 lines in 52 files |\n| Test code | 231,030 lines in 554 files |\n| Test screenshots (goldens) | 3,044 images, 333 MB |\n| Old-app files that still mention Pause | 40 |\n| Old-app files that still mention Restart | 1 |\n",
+    "old_app_match_paths": {
+      "Pause": [
+        "SOURCE/lib/constants/zyra_plan_names.dart",
+        "SOURCE/lib/data/help_content.dart",
+        "SOURCE/lib/data/zyra_entitlements.dart",
+        "SOURCE/lib/data/zyra_journey_pause_state.dart",
+        "SOURCE/lib/data/zyra_timeline_milestones.dart",
+        "SOURCE/lib/models/journey_match.dart",
+        "SOURCE/lib/models/zyra_dashboard_lab.dart",
+        "SOURCE/lib/models/zyra_dashboard_resolution.dart",
+        "SOURCE/lib/models/zyra_journey_presentation.dart",
+        "SOURCE/lib/models/zyra_supportive_dashboard.dart",
+        "SOURCE/lib/screens/connections/connections_screen.dart",
+        "SOURCE/lib/screens/journey/journey_flow_screen.dart",
+        "SOURCE/lib/screens/matches/journey_timeline_screen.dart",
+        "SOURCE/lib/screens/profile/past_journeys_screen.dart",
+        "SOURCE/lib/screens/profile/profile_screen.dart",
+        "SOURCE/lib/screens/profile/seeker_profile_screen.dart",
+        "SOURCE/lib/screens/settings/privacy_settings_screen.dart",
+        "SOURCE/lib/screens/settings/settings_screen.dart",
+        "SOURCE/lib/screens/splash_screen.dart",
+        "SOURCE/lib/screens/subscription/profile_unlock_screen.dart",
+        "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+        "SOURCE/lib/screens/wali/wali_journey_detail_screen.dart",
+        "SOURCE/lib/services/zyra_app_lock.dart",
+        "SOURCE/lib/services/zyra_dashboard_adapter.dart",
+        "SOURCE/lib/services/zyra_dashboard_updates_service.dart",
+        "SOURCE/lib/services/zyra_family_messaging_service.dart",
+        "SOURCE/lib/services/zyra_guardian_seeker_roster_resolver.dart",
+        "SOURCE/lib/services/zyra_journey_service.dart",
+        "SOURCE/lib/services/zyra_match_service.dart",
+        "SOURCE/lib/services/zyra_notification_service.dart",
+        "SOURCE/lib/services/zyra_photo_service.dart",
+        "SOURCE/lib/services/zyra_profile_pause_service.dart",
+        "SOURCE/lib/services/zyra_session_router.dart",
+        "SOURCE/lib/services/zyra_truthful_write.dart",
+        "SOURCE/lib/services/zyra_wali_journey_service.dart",
+        "SOURCE/lib/services/zyra_wali_link_service.dart",
+        "SOURCE/lib/state/app_state.dart",
+        "SOURCE/lib/widgets/zyra_account_session_host.dart",
+        "SOURCE/lib/widgets/zyra_comet_rule.dart",
+        "SOURCE/lib/widgets/zyra_splash_artwork.dart"
+      ],
+      "Restart": [
+        "SOURCE/lib/screens/journey/journey_flow_screen.dart"
+      ]
+    },
+    "pause_qualification": {
+      "raw_final_file_count": 40,
+      "raw_before_file_count": 39,
+      "neutral_new_host": "SOURCE/lib/widgets/zyra_account_session_host.dart",
+      "matches": [
+        {
+          "line": 373,
+          "text": "    // withdrew proof while paused. It is not a cached authorization grant."
+        }
+      ],
+      "qualified_existing_member_file_count": 39,
+      "explanation": "The unchanged case-insensitive pause regex counts the neutral lifecycle/authorization comment \"while paused\" in the new account session host. The current host does not contain an AppLifecycleState.paused enum reference. This extra raw match is not a new member Pause control; ordinary member Pause/Save APIs and Journey navigation remain. The earlier attribution to an enum case is corrected by the source line evidence here."
+    },
+    "scope": "Read-only code/content and PNG metadata measurement. No Flutter, git, source/test edits, backend/schema or classifier changes."
+  },
+  "moved_files": [
+    {
+      "source": "SOURCE/lib/screens/auth/tester_access_screen.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/screens/auth/tester_access_screen.dart",
+      "bytes": 6198,
+      "sha256_before": "2c91e4a7b7168892fe04a16694ea86a0cb70a8571f9b10455dc05d0a413c76bf",
+      "sha256_after": "2c91e4a7b7168892fe04a16694ea86a0cb70a8571f9b10455dc05d0a413c76bf"
+    },
+    {
+      "source": "SOURCE/lib/screens/dev/developer_access_screen.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/screens/dev/developer_access_screen.dart",
+      "bytes": 8036,
+      "sha256_before": "d8fc24714f46bbf164bfe1e34100f49971c567f4ba6c5829d4fe81efa6e98c17",
+      "sha256_after": "d8fc24714f46bbf164bfe1e34100f49971c567f4ba6c5829d4fe81efa6e98c17"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_control_system.dart",
+      "bytes": 29711,
+      "sha256_before": "9f4a9082496f42d51e7e6563f5a93fa76ca710f2df5b5c972ebd72feed45352a",
+      "sha256_after": "9f4a9082496f42d51e7e6563f5a93fa76ca710f2df5b5c972ebd72feed45352a"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_onboarding_lab.dart",
+      "bytes": 19633,
+      "sha256_before": "3bce1fd5133f9ed14c9383b5a38012429d85644561939bd1d1d2e623325a8873",
+      "sha256_after": "3bce1fd5133f9ed14c9383b5a38012429d85644561939bd1d1d2e623325a8873"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_dev_page_options.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_page_options.dart",
+      "bytes": 12418,
+      "sha256_before": "0bc9faea5f7542d1d2b3381f85e5357a901baed24f6907ef23d874d100c36b3f",
+      "sha256_after": "0bc9faea5f7542d1d2b3381f85e5357a901baed24f6907ef23d874d100c36b3f"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_dev_hold_to_open.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_hold_to_open.dart",
+      "bytes": 8047,
+      "sha256_before": "6c623c5211eda159c9ceea6005c1d4b006bed0c88362fff016d84ea111114df2",
+      "sha256_after": "6c623c5211eda159c9ceea6005c1d4b006bed0c88362fff016d84ea111114df2"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_signup_process.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_signup_process.dart",
+      "bytes": 7303,
+      "sha256_before": "b11ad90ced98932aa75c6f2f467bff1e6a01558bc30ff3c69d9ad3088af99e5d",
+      "sha256_after": "b11ad90ced98932aa75c6f2f467bff1e6a01558bc30ff3c69d9ad3088af99e5d"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_dev_signup.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_signup.dart",
+      "bytes": 2044,
+      "sha256_before": "739f23fbfd6d2a0b5832b816c2aa53ab83c48dd4b85ecd33a06e5e5bff694112",
+      "sha256_after": "739f23fbfd6d2a0b5832b816c2aa53ab83c48dd4b85ecd33a06e5e5bff694112"
+    },
+    {
+      "source": "SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/wali_dev_scenario_panel.dart",
+      "bytes": 21872,
+      "sha256_before": "668f970b44fe349b82e11528b02305bb96b7dc5b5092d0bdd8d110e2f400a485",
+      "sha256_after": "668f970b44fe349b82e11528b02305bb96b7dc5b5092d0bdd8d110e2f400a485"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_settings_design.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_settings_design.dart",
+      "bytes": 2889,
+      "sha256_before": "2aedf6ba4c92a6432b5fd83643fc69e7a7e6a9461295bb8f5c7b98d5e4a78950",
+      "sha256_after": "2aedf6ba4c92a6432b5fd83643fc69e7a7e6a9461295bb8f5c7b98d5e4a78950"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_global_dev_overlay.dart",
+      "bytes": 34998,
+      "sha256_before": "742212847024651a73d7421161b1bebdfed095cd1b5011911c271afc03356fa7",
+      "sha256_after": "742212847024651a73d7421161b1bebdfed095cd1b5011911c271afc03356fa7"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_splash_directions.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_splash_directions.dart",
+      "bytes": 5980,
+      "sha256_before": "9b2f055d28d15dca548304c8669c76d947b53b1c09470436f422f217e81c2976",
+      "sha256_after": "9b2f055d28d15dca548304c8669c76d947b53b1c09470436f422f217e81c2976"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_onboarding_directions.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_onboarding_directions.dart",
+      "bytes": 16281,
+      "sha256_before": "9307fbc3d66bc38dcbc5320c42667728a496e6ee793cf7f7e2de78eb7383718d",
+      "sha256_after": "9307fbc3d66bc38dcbc5320c42667728a496e6ee793cf7f7e2de78eb7383718d"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+      "bytes": 37999,
+      "sha256_before": "df68715ebfe4603918864f3a1c8225c80989b28de1852263cc7cf00fb4f797e8",
+      "sha256_after": "df68715ebfe4603918864f3a1c8225c80989b28de1852263cc7cf00fb4f797e8"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_developer_route_gate.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_developer_route_gate.dart",
+      "bytes": 2642,
+      "sha256_before": "7628eeac70513f8bcd83bbbbd9717d0bd93a65d185b7e91e3376580fb06f22d6",
+      "sha256_after": "7628eeac70513f8bcd83bbbbd9717d0bd93a65d185b7e91e3376580fb06f22d6"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_onboarding_opening.dart",
+      "bytes": 26374,
+      "sha256_before": "7d3a352f6a617cb52b6a7f8151a739206a45c6763ae38613ae301c9fb90eeed4",
+      "sha256_after": "7d3a352f6a617cb52b6a7f8151a739206a45c6763ae38613ae301c9fb90eeed4"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_page_preview_screen.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_page_preview_screen.dart",
+      "bytes": 19877,
+      "sha256_before": "e5f0490cc79f7f05a0d18049dd423104da2631ce8ca2957bf314db8a47f8defe",
+      "sha256_after": "e5f0490cc79f7f05a0d18049dd423104da2631ce8ca2957bf314db8a47f8defe"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_one_journey_preview_controls.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_one_journey_preview_controls.dart",
+      "bytes": 2827,
+      "sha256_before": "e73a6d265e8a5ecd74fd5d7e2ff558d45a8a20de8a189d4ee35ac54b3217f7cc",
+      "sha256_after": "e73a6d265e8a5ecd74fd5d7e2ff558d45a8a20de8a189d4ee35ac54b3217f7cc"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_dev_tool_section.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_tool_section.dart",
+      "bytes": 689,
+      "sha256_before": "5acf5eb3f41babea654e2d619291215c10506b31bda1b27eb9cb805ca87079aa",
+      "sha256_after": "5acf5eb3f41babea654e2d619291215c10506b31bda1b27eb9cb805ca87079aa"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_dev_home.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_home.dart",
+      "bytes": 2663,
+      "sha256_before": "88fe61ba4337d23cb7215f15b15aa9f66970a1c2ad51e2370b15d9d23adc2969",
+      "sha256_after": "88fe61ba4337d23cb7215f15b15aa9f66970a1c2ad51e2370b15d9d23adc2969"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_dashboard_lab_controls.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dashboard_lab_controls.dart",
+      "bytes": 13282,
+      "sha256_before": "0bb7f46b925df29c96df68a5b8ff5f4b05bdc3961dff87ddbabc35f7d032f511",
+      "sha256_after": "0bb7f46b925df29c96df68a5b8ff5f4b05bdc3961dff87ddbabc35f7d032f511"
+    },
+    {
+      "source": "SOURCE/lib/dev/zyra_dev_surface_coordinator.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/zyra_dev_surface_coordinator.dart",
+      "bytes": 10644,
+      "sha256_before": "fdbaa958af2f93e122974ef218c29c2ab95d926e695a3bab67bde309837ce15f",
+      "sha256_after": "fdbaa958af2f93e122974ef218c29c2ab95d926e695a3bab67bde309837ce15f"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_settings_design_state.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_settings_design_state.dart",
+      "bytes": 547,
+      "sha256_before": "417170c071988a6cce393aead79010987035810e6e217c8ccc091c0a585ada6f",
+      "sha256_after": "417170c071988a6cce393aead79010987035810e6e217c8ccc091c0a585ada6f"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_onboarding_interaction.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_onboarding_interaction.dart",
+      "bytes": 3159,
+      "sha256_before": "76dda3b890ef76f73ad3077bfc11297c67f005a6da434169abaf8f8f88022812",
+      "sha256_after": "76dda3b890ef76f73ad3077bfc11297c67f005a6da434169abaf8f8f88022812"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_onboarding_transition.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_onboarding_transition.dart",
+      "bytes": 10080,
+      "sha256_before": "ff80f2bc9f126748e5483f6108af7146d310c20beec59a0836b02b60b3a31b58",
+      "sha256_after": "ff80f2bc9f126748e5483f6108af7146d310c20beec59a0836b02b60b3a31b58"
+    },
+    {
+      "source": "SOURCE/lib/dev/dev_role_choice_design.dart",
+      "destination": "/Users/shakeelahmad/_to_delete/DEV_TOGGLES_2026-10-30/queue44_2026-11-03/SOURCE/lib/dev/dev_role_choice_design.dart",
+      "bytes": 1608,
+      "sha256_before": "a47d7a6ff649337ea761bcb6f1c147a43885b36103aaf50bc265d4a4828484a9",
+      "sha256_after": "a47d7a6ff649337ea761bcb6f1c147a43885b36103aaf50bc265d4a4828484a9"
+    }
+  ],
+  "log_relocation": "QUEUE44_BUILDLOG_RELOCATION.json; 71 files, 216,634,073 bytes moved with matching hashes; 0 bytes freed; use new_root plus original relative suffix.",
+  "remaining_failures_by_file": {
+    "test/account_essentials_artwork_test.dart": 10,
+    "test/browse_edge_alignment_test.dart": 6,
+    "test/browse_options_menu_test.dart": 5,
+    "test/browse_photo_tap_navigation_test.dart": 12,
+    "test/browse_photo_wrap_motion_test.dart": 9,
+    "test/compatibility_route_toggle_test.dart": 1,
+    "test/dashboard_landing_and_surface_persistence_test.dart": 1,
+    "test/dev_onboarding_directions_test.dart": 1,
+    "test/dev_onboarding_interaction_test.dart": 1,
+    "test/dev_scenario_panel_policy_test.dart": 1,
+    "test/dev_splash_directions_test.dart": 1,
+    "test/floating_nav_confirmation_layout_test.dart": 6,
+    "test/floating_nav_dot_clearance_test.dart": 22,
+    "test/founder_launch_review_test.dart": 29,
+    "test/founder_paid_only_contract_migration_test.dart": 1,
+    "test/global_app_surface_test.dart": 1,
+    "test/guardian_circle_discussion_bubble_test.dart": 2,
+    "test/guardian_circle_topic_options_test.dart": 10,
+    "test/guardian_dashboard_greeting_test.dart": 1,
+    "test/guardian_onboarding_dev_skip_test.dart": 4,
+    "test/guardian_one_page_designs_test.dart": 30,
+    "test/guardian_section_labels_test.dart": 3,
+    "test/guardianship_manager_phase1_test.dart": 5,
+    "test/hidden_profiles_and_support_test.dart": 2,
+    "test/hidden_profiles_opening_owner_test.dart": 5,
+    "test/journey_card_layout_choices_test.dart": 11,
+    "test/membership_wallet_visual_test.dart": 2,
+    "test/migration_inventory_test.dart": 1,
+    "test/my_zyra_retirement_test.dart": 1,
+    "test/no_heart_icons_test.dart": 1,
+    "test/onboarding_checkpoint_persistence_test.dart": 2,
+    "test/one_journey_back_button_preview_test.dart": 7,
+    "test/one_journey_basic_joining_history_test.dart": 1,
+    "test/one_journey_bottom_close_cue_test.dart": 7,
+    "test/one_journey_capacity_slots_test.dart": 15,
+    "test/one_journey_card_expansion_test.dart": 20,
+    "test/one_journey_compact_controls_test.dart": 7,
+    "test/one_journey_current_presentation_test.dart": 5,
+    "test/one_journey_ended_card_test.dart": 3,
+    "test/one_journey_guardian_details_polish_test.dart": 16,
+    "test/one_journey_monthly_capacity_widget_test.dart": 32,
+    "test/one_journey_portrait_card_layout_test.dart": 4,
+    "test/one_journey_prior_compatibility_access_test.dart": 2,
+    "test/one_journey_pull_down_routes_test.dart": 3,
+    "test/one_journey_stage_disclosure_test.dart": 4,
+    "test/one_journey_switch_signup_preview_test.dart": 1,
+    "test/one_journey_theme_actions_test.dart": 16,
+    "test/one_journey_timeline_controls_test.dart": 3,
+    "test/one_journey_timeline_test.dart": 2,
+    "test/option_retirement_test.dart": 1,
+    "test/paid_only_membership_catalog_test.dart": 4,
+    "test/privacy_log_redaction_source_test.dart": 1,
+    "test/profile_membership_consistency_test.dart": 1,
+    "test/request_page_options_context_test.dart": 9,
+    "test/request_shell_titles_circle_test.dart": 11,
+    "test/requests_guardians_lock2_shell_test.dart": 4,
+    "test/role_selection_cards_test.dart": 1,
+    "test/seeker_wali_tab_truth_test.dart": 2,
+    "test/splash_motion_test.dart": 1,
+    "test/tab_attention_open_marker_test.dart": 5,
+    "test/two_door_dev_controls_test.dart": 1,
+    "test/view_request_draft_widget_test.dart": 77,
+    "test/visual/dev_home_navigation_visual_test.dart": 2,
+    "test/visual/lock8_v5_guardian_journeys_test.dart": 1,
+    "test/visual/signup_membership_choice_visual_test.dart": 2,
+    "test/visual/zyra_back_swipe_motion_visual_test.dart": 3,
+    "test/visual/zyra_compatibility_choices_visual_test.dart": 1,
+    "test/visual/zyra_developer_access_visual_test.dart": 4,
+    "test/visual/zyra_draft_compatibility_reveal_visual_test.dart": 2,
+    "test/visual/zyra_retained_account_reuse_visual_test.dart": 3,
+    "test/visual/zyra_visual_regression_test.dart": 112,
+    "test/whole_app_settings_destinations_test.dart": 1,
+    "test/whole_app_theme_adoption_test.dart": 11,
+    "test/widget_test.dart": 5,
+    "test/zyra_browse_gallery_design_test.dart": 4,
+    "test/zyra_browse_options_alignment_test.dart": 2,
+    "test/zyra_compatibility_design_choices_test.dart": 3,
+    "test/zyra_dev_app_icon_test.dart": 3,
+    "test/zyra_dev_personal_code_fixtures_test.dart": 1,
+    "test/zyra_draft_journey_bio_presentation_test.dart": 4,
+    "test/zyra_guardian_server_truth_migration_test.dart": 1,
+    "test/zyra_journey_navigation_icon_test.dart": 2,
+    "test/zyra_main_guardian_optional_migration_test.dart": 1,
+    "test/zyra_oa198_probe_score_replay_bridge_artifact_test.dart": 1,
+    "test/zyra_oa198_replay_bridge_artifact_test.dart": 1,
+    "test/zyra_oa198_replay_bridge_v2_artifact_test.dart": 1,
+    "test/zyra_request_page_titles_test.dart": 3,
+    "test/zyra_signout_intent_test.dart": 11,
+    "test/zyra_signup_runtime_test.dart": 1,
+    "test/zyra_subscription_wallet_preview_test.dart": 2,
+    "test/zyra_wordmark_colour_test.dart": 3
+  },
+  "remaining_failure_cases": "QUEUE44_CURRENT_FAILURE_MANIFEST.json (all exact case identities and counts)",
+  "master_build_pairs": [
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p01_seeker_one__top.png",
+      "master_sha256": "d8dfdf7b1f62ad61f28ef586b07ae345617cd7191110b7a2db92d239870f0995",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/seeker_one_profile__100.png",
+      "actual_sha256": "01cff18baafece966d76bb0d9ff5905394c87c9cb38fe586d5cd0829299a06a2",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/seeker_one_profile__100.png",
+      "pair_sha256": "d38edb1e60be9d2260386222e15a90786a4cda255927ca0901003867438d74f2",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p03_seeker_basic__top.png",
+      "master_sha256": "870fe4a0ad7dbded989e29ad7ecb52c740fbbb76651b9ee853a4514e55cac4de",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/seeker_basic_profile__100.png",
+      "actual_sha256": "b380ddc8d53ce75b4231462224d3f7607ceead6bc2c91d9dc970d9bf5fc4713a",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/seeker_basic_profile__100.png",
+      "pair_sha256": "0f1039231d8b7cba0c52fee2552fdd6d5be956e95cf01eb97eec2db93ddc5eb6",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p01_seeker_one__top.png",
+      "master_sha256": "d8dfdf7b1f62ad61f28ef586b07ae345617cd7191110b7a2db92d239870f0995",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/seeker_one_profile__200.png",
+      "actual_sha256": "4d0c5bbaa795dbd1da14118d18740ee9098f77cda01d272191c2c45d94857124",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/seeker_one_profile__200.png",
+      "pair_sha256": "03aa59db593cd877817bc4c0c8c584d77d2af79a5f7f420608ae20f372b03c91",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/s01_settings__top.png",
+      "master_sha256": "95d6985f181fe38654ad220c157f0cba2869427163fb763630990746ea1ecb6c",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/seeker_settings__100.png",
+      "actual_sha256": "dc26db6546c8aa6650b16fe8733261083b7d233247acc12f5e489b9ab70177f4",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/seeker_settings__100.png",
+      "pair_sha256": "aa33db1943768306b4665b28aad0d24f2a31e324a67639a75cc06892cce52493",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/s01_settings__top.png",
+      "master_sha256": "95d6985f181fe38654ad220c157f0cba2869427163fb763630990746ea1ecb6c",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/seeker_settings__200.png",
+      "actual_sha256": "bb5be85de742798f724875e3ed5e8a13b23ac28ae6b6e7c4d37fdd2527fa3350",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/seeker_settings__200.png",
+      "pair_sha256": "ccd1e4d2c6f1a55f3d0e89124f4c89fd387d0784a6132a9a7edea4f7d217291f",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p04_guardian_one__top.png",
+      "master_sha256": "0fab5eb1af84ec7bc055f545165a5c6ca99737c5acd1b6e1a32a2abaf9f97680",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/guardian_one_profile__100.png",
+      "actual_sha256": "97a8db0b56201b3fcf505434e7c22b585ea81ee46bbfebf49963ee9f3c8024a8",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/guardian_one_profile__100.png",
+      "pair_sha256": "870af41c37bf77b3e0c131d2de05b5157e0b06e210da2665e24a48f3a7a40111",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p06_guardian_basic__top.png",
+      "master_sha256": "3541d63fd96b2fde8077a42ed0536d57341f16c2692e7e81cb33f0ef9909d502",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/guardian_basic_profile__100.png",
+      "actual_sha256": "c474bcaa0abf1800e198f9737ad672431d54169e84bd54ac5c48b8484dbc6474",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/guardian_basic_profile__100.png",
+      "pair_sha256": "0d92b15c6e81a9d32fb776c9ce5f8670192da30735e2fb7cb5e246014feb8930",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p04_guardian_one__top.png",
+      "master_sha256": "0fab5eb1af84ec7bc055f545165a5c6ca99737c5acd1b6e1a32a2abaf9f97680",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/guardian_one_profile__200.png",
+      "actual_sha256": "20b876ef263d0c4bd6946eae954f42090d8fe17e767c763be619ba91a5014275",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/guardian_one_profile__200.png",
+      "pair_sha256": "61541d1be9bf3e0e9c20a58cff55b45275532ad4d47681c563e623dbb06e062d",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/s01_settings__top.png",
+      "master_sha256": "95d6985f181fe38654ad220c157f0cba2869427163fb763630990746ea1ecb6c",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/guardian_settings__100.png",
+      "actual_sha256": "65c993fb7c2abbbfa2176386478105ad8ca30e87939ede6568095800dea86692",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/guardian_settings__100.png",
+      "pair_sha256": "65300bda62e9a949d8ee3f925cbc67f6cba7a8cdf1399789126e9c469ca8ea73",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/s01_settings__top.png",
+      "master_sha256": "95d6985f181fe38654ad220c157f0cba2869427163fb763630990746ea1ecb6c",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/guardian_settings__200.png",
+      "actual_sha256": "4a748d63fc3bddbe782c7e1af1a8faa680d31cfcc1940043fcdd6788d6b351f2",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/guardian_settings__200.png",
+      "pair_sha256": "75e4786b0291c2384376482f3bc890fd9cbe59d9cea788afc0c56b0f9bd55beb",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    },
+    {
+      "master": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c01_profiles.png",
+      "master_sha256": "0ac8b279917b91f073f565aaf53989320d9d494c38312863e65857b31e7d4991",
+      "actual": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/SCREENSHOTS/seeker_one_browse__100.png",
+      "actual_sha256": "d1391193ae625b8b92ee743a2a6750bd952173432ee9ec81284bfe2bef0d317a",
+      "pair": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/MASTER_BUILD_PAIRS/seeker_one_browse__100.png",
+      "pair_sha256": "b6eccb1bbd371b3bfa020fb4284c761cd4ec515961e36b9e33872cd5f6e00169",
+      "master_size": [
+        1290,
+        2796
+      ],
+      "actual_size": [
+        1290,
+        2796
+      ],
+      "actual_pixels_preserved": true,
+      "same_pixel_claim": false
+    }
+  ],
+  "controls_inventory_table": {
+    "columns": [
+      "File / before line",
+      "Control / effect",
+      "Result"
+    ],
+    "rows": [
+      [
+        "SOURCE/lib/main.dart:19,563",
+        "App-wide overlay / route rail",
+        "Removed; neutral account host retains session safety."
+      ],
+      [
+        "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart:119–477",
+        "Developer callbacks, rail state and contextual options",
+        "Removed; current member navigation stays."
+      ],
+      [
+        "SOURCE/lib/dev/zyra_dev_control_system.dart",
+        "Developer Home / Preview / Actions",
+        "Whole module moved; unavailable on phone."
+      ],
+      [
+        "SOURCE/lib/dev/dev_scenario_panel_v2.dart",
+        "Role, plan, wallet and scenario previews",
+        "Whole module moved; fixtures in test/support only."
+      ],
+      [
+        "SOURCE/lib/widgets/onboarding_scaffold.dart:184",
+        "Developer skip",
+        "Removed; normal Continue remains."
+      ],
+      [
+        "SOURCE/lib/screens/onboarding/identity_verification_screen.dart:364",
+        "Skip and simulated IDV results",
+        "Removed; normal verification flow remains."
+      ],
+      [
+        "SOURCE/lib/screens/dev/developer_access_screen.dart",
+        "Developer account and reset surface",
+        "Whole module moved."
+      ],
+      [
+        "SOURCE/lib/services/zyra_journey_service.dart",
+        "11 uncalled developer client helpers",
+        "Removed; backend unchanged."
+      ]
+    ],
+    "complete_inventory": "QUEUE44_CONTROLS_INVENTORY.json (original before lines, effects and removal consequences)"
+  },
+  "next_steps": [
+    "OA-ZYRA-325: line 73 owner repairs the nine LOCK2/5 harnesses first, then remaining 644 baseline failures per its brief.",
+    "Keep ROADMAP row and issue open until both lines are BUILT and remaining failures are zero.",
+    "OA-ZYRA-335: ZYRA design review compares retained headless pairs; no design changes authorized here."
+  ],
+  "rollback": "Founder-authorized revert of source commit, performed only within then-current git authority. 26 moved source files remain at recorded _to_delete paths; no copies in evidence.",
+  "authority_map": {
+    "brief": "DOC-ZYRA-0346",
+    "governing_action": "OA-ZYRA-325",
+    "test_cleanup_brief": "PRODUCT/APPROVED/TEST_CLEANUP/BRIEFS/TEST_CLEANUP_BRIEF_2026-11-02.md",
+    "decision": "QUESTIONS.md row 12 ANSWERED B, Founder 4 November 2026",
+    "handover": "This technical JSON and BUILD.json supersede candidate-only QA state. Historical manifest and run audits remain evidence."
+  }
+}

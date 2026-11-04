@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "authority": "OA-ZYRA-325 / Question 12 / revised brief step 7",
+  "method": "Read-only recount of saved baseline and final reporter JSONL using SOURCE-relative suite path, exact full reporter name and exact loader/hook/case kind; apply only 216 previously reviewed identity mappings; retain occurrence multiplicities. No tests rerun or source/test changes.",
+  "baseline_events": "/Users/shakeelahmad/_to_delete/ZYRA_BUILDLOG_2026-11-04/.buildlog/queue44_baseline_20261101T111912Z/events.jsonl",
+  "final_events": "/Users/shakeelahmad/_to_delete/ZYRA_BUILDLOG_2026-11-04/.buildlog/queue44_20261103/full_second/events.jsonl",
+  "baseline_started_and_completed": 8240,
+  "final_started_and_completed": 8246,
+  "reviewed_mappings": 216,
+  "baseline_missing_identity_keys": 0,
+  "baseline_missing_identity_occurrences": 0,
+  "prior_pass_regression_keys": 0,
+  "baseline_identity_multiplicity_deficits": 0,
+  "release_safety_test": {
+    "suite": "test/developer_controls_release_safety_test.dart",
+    "name": "retired developer controls cannot be reached in any sample role or plan",
+    "final_full_run_occurrences": 1,
+    "final_full_run_successes": 1,
+    "final_full_run_skipped": 0,
+    "scoped_events": "/Users/shakeelahmad/_to_delete/ZYRA_BUILDLOG_2026-11-04/.buildlog/queue44_20261103/release_capture_final.jsonl",
+    "scoped_test_id": 4,
+    "scoped_testDone_result": "success",
+    "scoped_testDone_skipped": false,
+    "scoped_done_success": true
+  },
+  "full_reporter_done_success": false,
+  "qualification": "644 baseline failures/errors remain. Full suite is not green. Revised line 44 gate passes with only the nine named LOCK2/5 exceptions and five accepted developer-UI assertion migrations.",
+  "mapping_digest_note": "Canonical mappings preserve published d3bb973187f6813317a2fd7e21b86517fbddccf964a22e7dcbebfb34356b7417; historical audit digest 3c5380dcae4a2fdb4a7299f7245cf47cc3cdaea728084950f4ca7a2138e08a29 is reconciled by QUEUE44_PUBLICATION_NORMALIZATION.json.transformations. Mapping identities and reasons unchanged."
+}

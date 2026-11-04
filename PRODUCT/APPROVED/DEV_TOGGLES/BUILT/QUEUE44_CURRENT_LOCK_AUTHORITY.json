@@ -2,10 +2,10 @@
   "schema_version": 1,
   "finding_authority": "OA-ZYRA-325",
   "purpose": "Evidence-led current LOCK classification; no test exclusions or gate changes are authorized by this audit.",
-  "status": "CURRENT_LOCK_GATE_NOT_PROVEN_FULL1_COMPLETE_FOUNDER_SCOPE_CLARIFICATION_PENDING",
+  "status": "AUDIT_RESOLVED_BY_QUESTION12",
   "scope": "Current approved authority metadata LOCK2–22; exact failing LOCK-named/header suites and corresponding changed authority sections. Remaining baseline failures remain in the complete failure manifest and full comparator.",
-  "current_full_run": "SOURCE/.buildlog/queue44_20261103/full_final/events.jsonl",
-  "baseline_failure_manifest": "work/queue44_baseline_validation/baseline_failure_manifest.json",
+  "current_full_run": "/Users/shakeelahmad/_to_delete/ZYRA_BUILDLOG_2026-11-04/.buildlog/queue44_20261103/full_second/events.jsonl",
+  "baseline_failure_manifest": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/QUEUE44_BASELINE_FAILURE_MANIFEST.json",
   "current_authorities": [
     {
       "lock": 2,
@@ -965,5 +965,7 @@
     "reporter_duration_ms": 588431
   },
   "full1_current_lock_failure_count_in_classified_suites": 9,
-  "scope_note": "Root is asking Founder toresolve currentLOCKbaselineconflict. This audit makesnoexclusions. Other newly foundFull1callerharnessregressions are trackedseparately in work/queue44_full1_completed_regression_audit.json."
+  "scope_note": "Root is asking Founder toresolve currentLOCKbaselineconflict. This audit makesnoexclusions. Other newly foundFull1callerharnessregressions are trackedseparately in work/queue44_full1_completed_regression_audit.json.",
+  "historical_status": "CURRENT_LOCK_GATE_NOT_PROVEN_FULL1_COMPLETE_FOUNDER_SCOPE_CLARIFICATION_PENDING",
+  "resolution": "Historical Full1 classification retained. Final Full2 non-regression passes; nine current LOCK2/5 baseline harness failures explicitly excepted for line 44 by Founder 4 November 2026. No additional exception or product approval inferred."
 }

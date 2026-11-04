@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "authority": "OA-ZYRA-325 / queue44 brief step7 / question10",
-  "status": "QUESTION_NOT_BUILT",
-  "implementation_commit": null,
+  "status": "BUILT_REVISED_GATE_PASS",
+  "implementation_commit": "ff49601d7059533ed77ba730986eef39b38028b9",
   "scope": "Remove authorized developer controls and their dead client code; preserve current LOCK-drawn member controls and inline local Demo actions.",
   "unchanged_boundaries": [
     "No phone or native build/install",
@@ -16,9 +16,10 @@
     "analyzer": "PASS: No issues found (4.5 seconds)",
     "serialized_followup": "PASS: zero baseline-pass deficits in 24-suite migration scope after four-suite correction check",
     "release_safety_capture": "PASS: actual role/plan combinations, stable tabs and no developer controls during 4-second holds",
-    "strict_every_LOCK_test": "FAIL: nine unchanged baseline-failing cases; no waiver",
-    "unchanged_baseline_failure_assertions": "NOT unchanged: five obsolete developer-UI assertion migrations, four in shared helpers and one in a case body, require explicit scope clarification. Exact audits retained.",
-    "baseline_non_regression": "PASS"
+    "strict_every_LOCK_test": "PASS under revised gate only: nine named baseline LOCK2/5 failures explicitly excepted by Question 12, repaired first in line 73; no other exception.",
+    "unchanged_baseline_failure_assertions": "Five obsolete developer-UI assertion migrations explicitly accepted under brief step 5 and Question 12; case identities retained and no member-behavior assertion removed.",
+    "baseline_non_regression": "PASS",
+    "release_safety_test": "PASS: QUEUE44_ACCEPTANCE_TEST_DETAILS.json.release_safety_test; named case succeeded once in final full run and once in focused run, not skipped. Scoped testID 4 testDone.result=success; done.success=true."
   },
   "evidence": {
     "controls": "QUEUE44_CONTROLS_INVENTORY.json",
@@ -35,9 +36,13 @@
     "remaining_failures": "QUEUE44_CURRENT_FAILURE_MANIFEST.json",
     "mapping_review": "QUEUE44_FINAL_TEST_MAPPING_REVIEW.json",
     "mapping_sources": "TEST_MAPPING_SOURCES/",
-    "fifth_transition": "QUEUE44_FIFTH_BASELINE_IMPROVEMENT.json"
+    "fifth_transition": "QUEUE44_FIFTH_BASELINE_IMPROVEMENT.json",
+    "acceptance": "QUEUE44_ACCEPTANCE_2026-11-04.json",
+    "test_details": "QUEUE44_ACCEPTANCE_TEST_DETAILS.json",
+    "as_built": "QUEUE44_AS_BUILT.json",
+    "log_relocation": "QUEUE44_BUILDLOG_RELOCATION.json"
   },
-  "handover": "Line44 QUESTION. No further code/build work until written clarification. Source/tests/README remain uncommitted under the dirty candidate manifest. Line73 not started; no phone action.",
+  "handover": "Line 44 BUILT on 4 November 2026 under the amended brief and answered Question 12. Implementation committed and pushed; line 73 remains WAITING for its fresh owner. See QUEUE44_AS_BUILT.json.",
   "completed_utc": "2026-11-03T22:37:39.540567+00:00",
   "full_comparison": {
     "baseline_failed_or_error": 649,
@@ -54,14 +59,21 @@
     "skips": 119,
     "reporter_success": false,
     "full_event_sha256": "722597b60927ea8a0646a9e809849ed96720e96dedd4d8af56fc8ce467517a07",
-    "qualification": "Baseline non-regression passes. The complete queue44 gate FAILS: every-LOCK-pass condition is not met, and five removed-control assertion migrations require explicit scope clarification."
+    "qualification": "Full reporter exits 1 with 644 failures/errors. Revised line 44 acceptance passes: nine specified baseline LOCK2/5 failures excepted, five developer-UI assertion migrations accepted; all other gates unchanged.",
+    "baseline_missing_identity_keys": 0,
+    "baseline_missing_identity_occurrences": 0,
+    "test_detail_evidence": "QUEUE44_ACCEPTANCE_TEST_DETAILS.json"
   },
   "baseline_failure_transition_note": "Five error-to-success transitions: four shared developer-UI helper migrations in QUEUE44_BASELINE_ASSERTION_MIGRATIONS.json; fifth test/guardian_circle_topic_options_test.dart: Guardian unrelated parent tabs do not expose Journey discussion options. In the fifth case, Page options presence became absence while the original failing dropdown-absence assertion remains unchanged and naturally passes after picker removal; the case also mounts a code-only real-shell fixture. Exact audit: QUEUE44_FIFTH_BASELINE_IMPROVEMENT.json. None of the five cases was skipped or deleted; no member-behavior assertion was removed.",
   "written_question": {
     "path": "PRODUCT/APPROVED/QUESTIONS.md",
     "row": 12,
-    "status": "OPEN"
+    "status": "ANSWERED",
+    "answer": "B",
+    "founder_words": "Yes, skip them, 73 fixes (Recommended)",
+    "answered_date": "2026-11-04"
   },
-  "candidate_phone_effect": "The uncommitted candidate removes developer Home/Preview, selectors, role/plan/account scenarios, reset/skip and IDV shortcuts. Existing installed phone app was not changed. Member Switch, settings and current inline Demo actions remain.",
-  "publication_verification": "Commit-bound exact push-range verification and documentation commit SHA are recorded in the Group daily task note; this QA does not claim an implementation commit."
+  "candidate_phone_effect": "Developer Home/Preview, selectors, role/plan/account scenarios, reset/skip and IDV shortcuts are removed from committed app source. Existing installed phone app was not changed. Member Switch, settings, Gold, haptics, Glass Signals and four current LOCK2 V2 inline Demo actions remain.",
+  "publication_verification": "Source ff49601d7059533ed77ba730986eef39b38028b9 pushed to origin/main after exact origin/main..HEAD trusted-default gitleaks 8.30.1 scan: zero findings. Evidence publication recorded in Group daily task note. No suite-green claim.",
+  "accepted_utc": "2026-11-04T09:51:25.467871+00:00"
 }
