@@ -20,7 +20,6 @@ class SignupMembershipChoiceScreen extends StatelessWidget {
     this.saving = false,
     this.error,
     this.devPreview = false,
-    this.onDevSkip,
     this.expectedUserId,
   });
 
@@ -33,7 +32,6 @@ class SignupMembershipChoiceScreen extends StatelessWidget {
   final bool saving;
   final String? error;
   final bool devPreview;
-  final VoidCallback? onDevSkip;
   final String? expectedUserId;
 
   bool get _guardian => role == ZyraSignupRole.guardian;
@@ -83,8 +81,6 @@ class SignupMembershipChoiceScreen extends StatelessWidget {
       onContinue: onContinue,
       onSwipeBack: saving ? null : onBack,
       devPreview: devPreview,
-      onDevSkip: saving ? null : onDevSkip,
-      devSkipLabel: 'Skip',
       showAccountExit: true,
       accountExitExpectedUserId: expectedUserId,
       continueActionKey: const ValueKey('signup_membership_continue'),

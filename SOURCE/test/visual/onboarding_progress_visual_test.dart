@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_role_choice_design.dart';
+import '../support/queue44_role_choice_fixture.dart';
 import 'package:zyra/screens/auth/role_selection_screen.dart';
 import 'package:zyra/screens/onboarding/onboarding_stage_intro_screen.dart';
 import 'package:zyra/screens/wali/wali_onboarding_flow.dart';

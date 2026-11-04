@@ -1,3 +1,4 @@
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 // OA-ZYRA-151: protected Founder presentation launch and resume integration.
 // Sessions, refreshed users and member rows are synthetic. Every backend
 // request is intercepted; this is not deployed Auth/RLS/provider acceptance.
@@ -25,16 +26,13 @@ import 'package:zyra/config/zyra_internal_founder_policy.dart';
 import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/dev/zyra_concept_preview_boundary.dart';
 import 'package:zyra/dev/zyra_dev_local_preview.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
 import 'package:zyra/dev/zyra_founder_launch_screen.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
-import 'package:zyra/dev/zyra_global_dev_overlay.dart';
+import 'package:zyra/widgets/zyra_account_session_host.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_sample_photos.dart';
 import 'package:zyra/dev/zyra_preview_resume_transition.dart';
 import 'package:zyra/main.dart';
-import 'package:zyra/screens/dev/developer_access_screen.dart';
 import 'package:zyra/screens/home/home_shell.dart';
 import 'package:zyra/screens/profile/edit_photos_screen.dart';
 import 'package:zyra/screens/profile/my_profile_preview_screen.dart';
@@ -762,7 +760,6 @@ void main() {
     ZyraInternalPreviewClient.finishSignOut();
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     ZyraDeveloperAccess.resetAuthorizationForTesting();
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
     SharedPreferences.setMockInitialValues({'ordinary-setting': 'preserved'});
     await ZyraLocalPrefs.init();
     await _session(_founder, founderClaim: true);
@@ -772,8 +769,7 @@ void main() {
         _quietCaptureDirectory.isEmpty && _accessCaptureDirectory.isEmpty
         ? null
         : _quietFont;
-    ZyraDevAppGold.instance.resetForTesting();
-    ZyraDevLocalPreview.genderSelection.value = 'male';
+    ZyraAppGoldRenderer.instance.resetForTesting();
     refresh = () async => supabase.auth.currentUser;
     ZyraDeveloperAccess.configureAuthorizationForTesting(
       variant: ZyraAppVariant.production,
@@ -798,7 +794,6 @@ void main() {
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraInternalPreviewClient.finishSignOut();
     ZyraAccountState.clearImagesForTesting = null;
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
     ZyraText.useTestFontStubs = false;
     ZyraText.testReadingFontFamily = null;
   });
@@ -818,15 +813,14 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     final navigator = GlobalKey<NavigatorState>();
-    final routes = ZyraDevControlsRouteObserver();
+    final routes = ZyraPreviewRouteObserver();
     await tester.pumpWidget(
       MaterialApp(
         navigatorKey: navigator,
         navigatorObservers: [routes],
         theme: ThemeData.dark(),
-        builder: (context, child) => ZyraGlobalDevOverlayHost(
+        builder: (context, child) => ZyraAccountSessionHost(
           navigatorKey: navigator,
-          routeObserver: routes,
           authStateChangesOverride: authStates,
           resumeAuthorizationRefreshOverride:
               resumeRefresh ??
@@ -922,7 +916,6 @@ void main() {
     old.toggle();
     old.shell.onPresentationReady?.call();
     old.shell.onRoleChanged?.call(true);
-    old.shell.onDeveloperHome?.call();
   }
 
   Future<void> expectFreshLockscreenPhotos(
@@ -949,7 +942,12 @@ void main() {
     await tester.pump();
     expect(_key('photos-title'), findsOneWidget);
     expect(_key('photos-compact-view'), findsNothing);
-    expect(find.byType(DeveloperAccessScreen), findsNothing);
+    expect(
+      find.byWidgetPredicate(
+        (w) => w.runtimeType.toString() == 'DeveloperAccessScreen',
+      ),
+      findsNothing,
+    );
     expect(AppState.instance.photos, old.memberPhotos);
     expect(forwarded, 0);
   }
@@ -1369,7 +1367,6 @@ void main() {
           expect(preparing.canAct(), isFalse);
           preparing.onPresentationReady?.call();
           preparing.onRoleChanged?.call(true);
-          preparing.onDeveloperHome?.call();
           _returnFromBackground(tester);
           await tester.pump();
           expect(
@@ -1423,7 +1420,12 @@ void main() {
           expect(admission!.isCurrent, isTrue);
           denyOldLockscreenActions(old);
           expect(old.editor.mounted, isFalse);
-          expect(find.byType(DeveloperAccessScreen), findsNothing);
+          expect(
+            find.byWidgetPredicate(
+              (w) => w.runtimeType.toString() == 'DeveloperAccessScreen',
+            ),
+            findsNothing,
+          );
           expect(find.byType(HomeShell), findsNothing);
           expect(find.byType(WaliHomeShell), findsNothing);
           expect(calls, 2);
@@ -1657,7 +1659,12 @@ void main() {
           expect(_key('founder_resume_continuity'), findsNothing);
           expect(_key('founder_resume_quiet_background'), findsNothing);
           expect(old.editor.mounted, isFalse);
-          expect(find.byType(DeveloperAccessScreen), findsNothing);
+          expect(
+            find.byWidgetPredicate(
+              (w) => w.runtimeType.toString() == 'DeveloperAccessScreen',
+            ),
+            findsNothing,
+          );
           expect(calls, 1);
           expect(await preferenceSnapshot(tester), old.preferences);
           expect(AppState.instance.photos, old.memberPhotos);
@@ -2137,12 +2144,7 @@ void main() {
               .onPressed,
           isNull,
         );
-        expect(
-          tester
-              .widget<ButtonStyleButton>(_key('founder_resume_home'))
-              .onPressed,
-          isNull,
-        );
+        expect(_key('founder_resume_home'), findsNothing);
         denyOldLockscreenActions(old);
         expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);
         expect(calls, 1);
@@ -2301,7 +2303,12 @@ void main() {
           expect(_key('founder_resume_quiet_background'), findsNothing);
           denyOldLockscreenActions(old);
           await tester.pump();
-          expect(find.byType(DeveloperAccessScreen), findsNothing);
+          expect(
+            find.byWidgetPredicate(
+              (w) => w.runtimeType.toString() == 'DeveloperAccessScreen',
+            ),
+            findsNothing,
+          );
           expect(find.byType(HomeShell), findsNothing);
           expect(find.byType(WaliHomeShell), findsNothing);
           if (invalidation == 'covered route') {
@@ -3481,7 +3488,6 @@ void main() {
           expect(ZyraConceptPreviewIsolation.active, isTrue);
           expect(ZyraInternalPreviewClient.isActive, isTrue);
           expect(old.canAct(), isFalse);
-          old.onDeveloperHome?.call();
           old.onRoleChanged?.call(true);
           await tester.pump();
           _expectResumeContinuity(tester);
@@ -3524,7 +3530,6 @@ void main() {
         expect(_key('founder_resume_status'), findsNothing);
         expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);
         expect(old.canAct(), isFalse);
-        old.onDeveloperHome?.call();
         old.onRoleChanged?.call(true);
         expect(forwarded, 0);
         await _captureQuiet(tester, 'quiet_refresh_no_previous_layer');
@@ -3779,12 +3784,7 @@ void main() {
               .onPressed,
           isNull,
         );
-        expect(
-          tester
-              .widget<ButtonStyleButton>(_key('founder_resume_home'))
-              .onPressed,
-          isNull,
-        );
+        expect(_key('founder_resume_home'), findsNothing);
         expect(ZyraPreviewResumeTransition.changes.value, same(ticket));
         expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);
         expect(old.canAct(), isFalse);
@@ -3914,11 +3914,8 @@ void main() {
         final retry = tester
             .widget<ButtonStyleButton>(_key('founder_resume_retry'))
             .onPressed;
-        final home = tester
-            .widget<ButtonStyleButton>(_key('founder_resume_home'))
-            .onPressed;
+        expect(_key('founder_resume_home'), findsNothing);
         expect(retry, isNotNull);
-        expect(home, isNotNull);
         retry!();
         await tester.pump();
         expect(_key('founder_resume_recovery'), findsNothing);
@@ -3930,7 +3927,6 @@ void main() {
         expect(first.canAct(), isFalse);
         first.onPresentationReady?.call();
         retry();
-        home!();
         await tester.pump();
         expect(
           tester.widget<ZyraOneJourneyConceptShell>(
@@ -3938,7 +3934,12 @@ void main() {
           ),
           same(replacement),
         );
-        expect(find.byType(DeveloperAccessScreen), findsNothing);
+        expect(
+          find.byWidgetPredicate(
+            (w) => w.runtimeType.toString() == 'DeveloperAccessScreen',
+          ),
+          findsNothing,
+        );
         expect(find.byType(HomeShell), findsNothing);
         expect(calls, 1);
         expect(await preferenceSnapshot(tester), before);
@@ -3963,7 +3964,7 @@ void main() {
   );
 
   testWidgets(
-    'quiet refresh photo-stall recovery offers the existing guarded Developer Home',
+    'quiet refresh photo-stall recovery has no Developer Home and retains guarded retry',
     (tester) async {
       await launch(tester);
       await _withHeldBrowsePhotos(tester, (photos) async {
@@ -3971,19 +3972,10 @@ void main() {
         await _settle(tester);
         await tester.pump(const Duration(seconds: 10));
         expect(_key('founder_resume_recovery'), findsOneWidget);
-        final home = tester
-            .widget<ButtonStyleButton>(_key('founder_resume_home'))
-            .onPressed;
-        expect(home, isNotNull);
-        home!();
-        await _settle(tester);
-        expect(find.byType(DeveloperAccessScreen), findsOneWidget);
-        expect(find.byType(ZyraFounderReviewSurface), findsNothing);
-        expect(_key('founder_resume_recovery'), findsNothing);
-        home();
-        await tester.pump();
-        expect(find.byType(DeveloperAccessScreen), findsOneWidget);
-        expect(ZyraConceptPreviewIsolation.active, isFalse);
+        expect(_key('founder_resume_home'), findsNothing);
+        expect(_key('founder_resume_retry'), findsOneWidget);
+        expect(find.byType(ZyraFounderReviewSurface), findsOneWidget);
+        expect(ZyraConceptPreviewIsolation.active, isTrue);
         expect(ZyraInternalPreviewClient.isActive, isTrue);
         expect(forwarded, 0);
         photos.complete();
@@ -4012,9 +4004,7 @@ void main() {
           final retry = tester
               .widget<ButtonStyleButton>(_key('founder_resume_retry'))
               .onPressed!;
-          final home = tester
-              .widget<ButtonStyleButton>(_key('founder_resume_home'))
-              .onPressed!;
+          expect(_key('founder_resume_home'), findsNothing);
           final before = await preferenceSnapshot(tester);
           NavigatorState? cover;
           switch (invalidation) {
@@ -4051,9 +4041,13 @@ void main() {
           }
           await tester.pump(const Duration(milliseconds: 300));
           retry();
-          home();
           await tester.pump();
-          expect(find.byType(DeveloperAccessScreen), findsNothing);
+          expect(
+            find.byWidgetPredicate(
+              (w) => w.runtimeType.toString() == 'DeveloperAccessScreen',
+            ),
+            findsNothing,
+          );
           expect(find.byType(HomeShell), findsNothing);
           expect(find.byType(WaliHomeShell), findsNothing);
           expect(forwarded, 0);
@@ -4071,22 +4065,30 @@ void main() {
             // The legitimate return replaces an unready owner; stale actions
             // must not replace that fresh owner a second time.
             retry();
-            home();
             await tester.pump();
             expect(
               tester.element(find.byType(ViewRequestDraftScreen)),
               same(returned),
             );
-            expect(find.byType(DeveloperAccessScreen), findsNothing);
+            expect(
+              find.byWidgetPredicate(
+                (w) => w.runtimeType.toString() == 'DeveloperAccessScreen',
+              ),
+              findsNothing,
+            );
             expect(await preferenceSnapshot(tester), before);
           }
           photos.complete();
           ZyraAppLock.instance.clearForSignOut();
           await _settle(tester);
           retry();
-          home();
           await tester.pump();
-          expect(find.byType(DeveloperAccessScreen), findsNothing);
+          expect(
+            find.byWidgetPredicate(
+              (w) => w.runtimeType.toString() == 'DeveloperAccessScreen',
+            ),
+            findsNothing,
+          );
           expect(forwarded, 0);
         });
         await _dispose(tester);
@@ -4130,7 +4132,7 @@ void main() {
           'quiet_access_waiting_compact200_top',
           directory: _accessCaptureDirectory,
         );
-        for (final action in ['founder_resume_retry', 'founder_resume_home']) {
+        for (final action in ['founder_resume_retry']) {
           await tester.ensureVisible(_key(action));
           await tester.pump();
           expect(_key(action).hitTestable(), findsOneWidget);
@@ -4324,7 +4326,6 @@ void main() {
             expect(find.byType(HomeShell), findsNothing);
             expect(find.byType(WaliHomeShell), findsNothing);
             expect(old.canAct(), isFalse);
-            old.onDeveloperHome!();
             old.onRoleChanged!(true);
             await tester.pump();
             _expectResumeContinuity(tester);
@@ -4475,7 +4476,7 @@ void main() {
 
   for (final guardian in [false, true]) {
     testWidgets(
-      'cold launch retains the ${guardian ? 'Guardian' : 'Seeker'} presentation role',
+      'cold launch opens Seeker after the former ${guardian ? 'Guardian' : 'Seeker'} selection',
       (tester) async {
         await tester.runAsync(() async {
           await ZyraLocalPrefs.setFounderPreviewRole(
@@ -4502,14 +4503,11 @@ void main() {
                 find.byType(ZyraOneJourneyConceptShell),
               )
               .initialGuardianRole,
-          guardian,
+          isFalse,
         );
-        expect(
-          ZyraLocalPrefs.cachedFounderPreviewRole,
-          guardian ? 'guardian' : 'seeker',
-        );
+        expect(ZyraLocalPrefs.cachedFounderPreviewRole, 'seeker');
         final prefs = await tester.runAsync(SharedPreferences.getInstance);
-        expect(prefs!.getString(_roleKey), guardian ? 'guardian' : 'seeker');
+        expect(prefs!.getString(_roleKey), 'seeker');
         expect(ZyraInternalPreviewClient.isActive, isTrue);
         expect(forwarded, 0);
         await _dispose(tester);
@@ -4519,7 +4517,7 @@ void main() {
 
   for (final guardian in [false, true]) {
     testWidgets(
-      '${guardian ? 'Guardian' : 'Seeker'} current presentation retains role across cold relaunch',
+      'Seeker presentation remains default across cold relaunch after former ${guardian ? 'Guardian' : 'Seeker'} input',
       (tester) async {
         await tester.runAsync(
           () => ZyraLocalPrefs.setFounderPreviewRole(
@@ -4537,20 +4535,17 @@ void main() {
                   find.byType(ZyraOneJourneyConceptShell),
                 )
                 .initialGuardianRole,
-            guardian,
+            isFalse,
           );
           expect(find.byType(HomeShell), findsNothing);
           expect(find.byType(WaliHomeShell), findsNothing);
-          expect(
-            ZyraLocalPrefs.cachedFounderPreviewRole,
-            guardian ? 'guardian' : 'seeker',
-          );
+          expect(ZyraLocalPrefs.cachedFounderPreviewRole, 'seeker');
 
           if (launchIndex == 0) {
             // Dispose the process-local presentation, then rebind the same
             // synthetic authenticated owner from disk as cold startup does.
-            // Unlike sign-out, this retains the deliberately saved role so
-            // the next launch exercises role restoration with a fresh owner.
+            // The next launch receives a fresh owner and keeps the default
+            // Seeker presentation after the retired role-selector input.
             await tester.pumpWidget(const SizedBox.shrink());
             await _settle(tester);
             expect(ZyraConceptPreviewIsolation.active, isFalse);
@@ -4565,7 +4560,6 @@ void main() {
                 (() async {
                   ZyraDeveloperAccess.clearRefreshedClaims();
                   ZyraAccountState.resetForTesting();
-                  ZyraDevSurfaceCoordinator.instance.resetForTesting();
                   await ZyraLocalPrefs.init();
                   await ZyraAccountState.synchronize(_founder);
                 })().then<void>(
@@ -4590,10 +4584,7 @@ void main() {
             }
             expect(rebindError, isNull);
             expect(rebound, isTrue, reason: 'Cold rebind drains both zones');
-            expect(
-              ZyraLocalPrefs.cachedFounderPreviewRole,
-              guardian ? 'guardian' : 'seeker',
-            );
+            expect(ZyraLocalPrefs.cachedFounderPreviewRole, 'seeker');
           }
         }
         expect(forwarded, 0);
@@ -4603,7 +4594,7 @@ void main() {
   }
 
   testWidgets(
-    'Guardian preview reset returns the current Seeker presentation',
+    'former Guardian preview selection cannot change the default Seeker presentation',
     (tester) async {
       await tester.runAsync(
         () => ZyraLocalPrefs.setFounderPreviewRole(
@@ -4613,35 +4604,32 @@ void main() {
         ),
       );
       await launch(tester);
-      expect(
-        tester
-            .widget<ZyraOneJourneyConceptShell>(
-              find.byType(ZyraOneJourneyConceptShell),
-            )
-            .initialGuardianRole,
-        isTrue,
+      final shell = tester.widget<ZyraOneJourneyConceptShell>(
+        find.byType(ZyraOneJourneyConceptShell),
       );
-      await openZyraDevControls(tester);
-      await _press(tester, 'draft_reset');
-      expect(find.byType(ZyraOneJourneyConceptShell), findsOneWidget);
+      expect(shell.initialGuardianRole, isFalse);
+      expect(shell.initialSeekerBasic, isFalse);
+      expect(find.byKey(const ValueKey('draft_reset')), findsNothing);
+      expect(ZyraLocalPrefs.cachedFounderPreviewRole, 'seeker');
       expect(find.byType(HomeShell), findsNothing);
       expect(find.byType(WaliHomeShell), findsNothing);
-      expect(ZyraLocalPrefs.cachedFounderPreviewRole, 'seeker');
       expect(forwarded, 0);
       await _dispose(tester);
     },
   );
 
   testWidgets(
-    'Developer Home does not change the remembered presentation role',
+    'Developer Home is absent while the current presentation role is preserved',
     (tester) async {
       await launch(tester);
       final before = ZyraLocalPrefs.cachedFounderPreviewRole;
-      await leaveZyraDeveloperPreview(tester);
-
-      expect(find.byType(DeveloperAccessScreen), findsOneWidget);
-      expect(find.byType(ZyraFounderReviewSurface), findsNothing);
-      expect(ZyraConceptPreviewIsolation.active, isFalse);
+      expect(find.byKey(const ValueKey('draft_close')), findsNothing);
+      final finger = await tester.startGesture(const Offset(215, 70));
+      await tester.pump(const Duration(seconds: 4));
+      await finger.up();
+      await tester.pump();
+      expect(find.byKey(const ValueKey('dev_controls_page')), findsNothing);
+      expect(find.byType(ZyraFounderReviewSurface), findsOneWidget);
       expect(ZyraLocalPrefs.cachedFounderPreviewRole, before);
       expect(ZyraInternalPreviewClient.isActive, isTrue);
       expect(forwarded, 0);
@@ -4656,7 +4644,6 @@ void main() {
       final old = tester.widget<ZyraOneJourneyConceptShell>(
         find.byType(ZyraOneJourneyConceptShell),
       );
-      final oldHome = old.onDeveloperHome!;
       final oldRole = old.onRoleChanged!;
       final pending = Completer<User?>();
       refresh = () => pending.future;
@@ -4672,7 +4659,6 @@ void main() {
       expect(ZyraConceptPreviewIsolation.active, isTrue);
       expect(ZyraInternalPreviewClient.isActive, isTrue);
       expect(old.canAct(), isFalse);
-      oldHome();
       oldRole(true);
       pending.complete(supabase.auth.currentUser);
       await _settle(tester);
@@ -4683,12 +4669,16 @@ void main() {
       expect(identical(old, replacement), isFalse);
       expect(replacement.canAct(), isTrue);
       expect(old.canAct(), isFalse);
-      oldHome();
       oldRole(true);
       await _settle(tester);
       expect(find.byType(ZyraOneJourneyConceptShell), findsOneWidget);
       expect(find.byType(HomeShell), findsNothing);
-      expect(find.byType(DeveloperAccessScreen), findsNothing);
+      expect(
+        find.byWidgetPredicate(
+          (w) => w.runtimeType.toString() == 'DeveloperAccessScreen',
+        ),
+        findsNothing,
+      );
       expect(ZyraLocalPrefs.cachedFounderPreviewRole, 'seeker');
       expect(forwarded, 0);
       await _dispose(tester);

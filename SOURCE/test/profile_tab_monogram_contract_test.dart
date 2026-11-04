@@ -1,3 +1,4 @@
+import 'support/zyra_hidden_dev_controls_driver.dart';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -110,6 +111,7 @@ Future<void> _mount(
 }
 
 Future<void> _tap(WidgetTester tester, String key) async {
+  if (await pressZyraDevControlKey(tester, key)) return;
   final control = _key(key);
   expect(control, findsOneWidget);
   await tester.ensureVisible(control);
@@ -131,6 +133,7 @@ Future<void> _mountShell(
   await _mount(
     tester,
     ZyraOneJourneyConceptShell(
+      fixture: ZyraShellTestFixture().fixture,
       key: UniqueKey(),
       canAct: canAct,
       onExit: onExit,

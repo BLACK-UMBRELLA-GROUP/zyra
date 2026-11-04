@@ -1,3 +1,4 @@
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 // Actual local-shell route coverage. Back uses only the existing caller-owned
 // return, without granting navigation, disclosure or member-data access.
 import 'dart:async';
@@ -9,7 +10,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/data/zyra_journey_stages.dart';
-import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/dev/zyra_circle_discussion_archive.dart';
 import 'package:zyra/dev/zyra_guardian_circle_topic_options.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
@@ -102,6 +102,7 @@ class _Owner {
           child: RepaintBoundary(key: _captureKey, child: child!),
         ),
         home: ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           key: UniqueKey(),
           canAct: () => true,
           onExit: () => fail('A page return must not exit the shell.'),
@@ -136,6 +137,7 @@ class _Owner {
 }
 
 Future<void> _pressFinder(WidgetTester tester, Finder target) async {
+  if (await pressZyraFixtureFinder(tester, target)) return;
   expect(target, findsOneWidget);
   if (find
       .ancestor(of: target, matching: find.byType(Scrollable))
@@ -150,8 +152,10 @@ Future<void> _pressFinder(WidgetTester tester, Finder target) async {
   _expectNoException(tester);
 }
 
-Future<void> _press(WidgetTester tester, String id) =>
-    _pressFinder(tester, _key(id));
+Future<void> _press(WidgetTester tester, String id) async {
+  if (await pressZyraDevControlKey(tester, id)) return;
+  await _pressFinder(tester, _key(id));
+}
 
 Future<void> _nav(WidgetTester tester, int index) async {
   await expandZyraPreviewTabBarIfIdle(tester);
@@ -354,7 +358,7 @@ void main() {
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     AppState.instance.resetForAccountChange();
     ZyraAccountState.clearImagesForTesting = () async {};
-    final gold = ZyraDevAppGold.instance;
+    final gold = ZyraAppGoldStyle.instance;
     gold.select(
       false,
       expectedGeneration: ZyraAccountState.generation,

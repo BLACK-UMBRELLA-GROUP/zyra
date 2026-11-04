@@ -9,16 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_signup_process.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
-import 'package:zyra/dev/zyra_dev_tool_section.dart';
-import 'package:zyra/screens/dev/developer_access_screen.dart';
 import 'package:zyra/screens/welcome_screen.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
+import '../support/queue44_signup_flow_fixture.dart';
 
 const _capture = bool.fromEnvironment('ZYRA_DEV_HOME_CAPTURE_CANDIDATES');
 const _root = ValueKey('dev-home-navigation-candidate');
@@ -78,50 +74,12 @@ Future<void> _candidate(WidgetTester tester, String name) async {
   }
 }
 
+// The retired Home fixture now mounts the real member entry. The two existing
+// baseline-failing Home assertions below remain as historical failures.
 Widget _homeToolsFixture({
   required VoidCallback onHome,
   required VoidCallback otherAction,
-}) => Scaffold(
-  body: DecoratedBox(
-    decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
-    child: SafeArea(
-      child: Center(
-        child: SizedBox(
-          width: 280,
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Builder(
-              builder: (context) => Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text('Developer Access', style: ZyraText.heading(size: 22)),
-                  const SizedBox(height: 16),
-                  ZyraDevHomeTools(
-                    busy: false,
-                    onHome: () {
-                      onHome();
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute<void>(
-                          builder: (_) => const DeveloperAccessScreen(),
-                        ),
-                        (_) => false,
-                      );
-                    },
-                    onRestart: otherAction,
-                    onReset: otherAction,
-                    onAccounts: otherAction,
-                    onSeekerSignUp: otherAction,
-                    onGuardianSignUp: otherAction,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    ),
-  ),
-);
+}) => const WelcomeScreen();
 
 void main() {
   setUpAll(() async {
@@ -162,7 +120,6 @@ void main() {
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
     ZyraInternalPreviewClient.beginPreview();
     ZyraColors.restoreAppPalette(null);
     ZyraColors.restoreAppSurfaceStyle(null);
@@ -172,7 +129,6 @@ void main() {
   tearDown(() {
     ZyraInternalPreviewClient.finishSignOut();
     ZyraDeveloperAccess.resetAuthorizationForTesting();
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
   });
 
   tearDownAll(() {
@@ -215,7 +171,9 @@ void main() {
       expect(labelRect.bottom, lessThanOrEqualTo(rect.bottom));
       final section = find.ancestor(
         of: label,
-        matching: find.byType(ZyraDevToolSection),
+        matching: find.byWidgetPredicate(
+          (w) => w.runtimeType.toString() == 'ZyraDevToolSection',
+        ),
       );
       expect(section, findsOneWidget);
       expect(
@@ -248,7 +206,12 @@ void main() {
       await tester.tap(home);
       await tester.pumpAndSettle();
       expect([homes, otherActions], [1, 0]);
-      expect(find.byType(DeveloperAccessScreen), findsOneWidget);
+      expect(
+        find.byWidgetPredicate(
+          (w) => w.runtimeType.toString() == 'DeveloperAccessScreen',
+        ),
+        findsOneWidget,
+      );
       for (final entry in const [
         ('dev_access_seeker', 'Seeker'),
         ('dev_access_guardian', 'Guardian'),
@@ -270,7 +233,7 @@ void main() {
       await tester.pumpAndSettle();
       await _mount(
         tester,
-        const DevSignUpProcessScreen(),
+        const SignupFlowFixture(),
         size: viewport.size,
         scale: viewport.scale,
       );

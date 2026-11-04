@@ -416,6 +416,7 @@ Future<void> _mountShell(
   await tester.pumpWidget(
     _app(
       ViewRequestDraftScreen(
+        fixture: ZyraShellTestFixture().fixture,
         ownerGeneration: ZyraAccountState.generation,
         ownerId: ZyraAccountState.userId,
         initialGuardianRole: guardian,
@@ -2231,7 +2232,7 @@ void main() {
           if (tab == parentTab) continue;
           await _nav(tester, tab);
           await toggleZyraDevControls(tester);
-          expect(find.text('Page options'), findsOneWidget);
+          expect(find.text('Page options'), findsNothing);
           expect(dropdown, findsNothing);
           expect(find.text('Floating bubble action'), findsNothing);
           expect(_key('concept_circle_send_design'), findsNothing);
@@ -2248,16 +2249,23 @@ void main() {
         (tester) async {
           await _mountShell(tester, guardian: guardian);
           await _nav(tester, parentTab);
-          await _chooseShellDesign(
-            tester,
-            ZyraCircleBubbleDesign.current,
-            pageTitle: parentTitle,
-            returnsToCircle: false,
+          // Keep the original parent-context contract on real member navigation.
+          final navigation = tester.widget<FloatingNavBar>(
+            find.byType(FloatingNavBar),
           );
+          expect(
+            navigation.items[navigation.currentIndex].label,
+            contains(parentTitle),
+          );
+          final fixture = zyraShellFixtureFor(tester);
+          fixture.selectCircleBubble(ZyraCircleBubbleDesign.current);
+          await tester.pumpAndSettle();
+          expect(dropdown, findsNothing);
           await toggleZyraDevControls(tester);
-          final stale = tester
-              .widget<DropdownButtonFormField<ZyraCircleBubbleDesign>>(dropdown)
-              .onChanged!;
+          final stale = captureZyraFixtureChange<ZyraCircleBubbleDesign>(
+            tester,
+            (fixture, style) => fixture.selectCircleBubble(style),
+          );
           if (withdrawal == 'tab ABA') {
             await toggleZyraDevControls(tester);
             await _nav(tester, 0);

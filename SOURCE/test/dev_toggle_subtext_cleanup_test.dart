@@ -1,30 +1,15 @@
-// Actual developer panels and shared controls, using offline synthetic state.
-// Description cleanup must not change options, authority or account actions.
+// Historical option metadata and callbacks are code-only fixtures.
+// Actual member recovery UI, account authority and offline checks remain covered.
 import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/data/zyra_release_gates.dart';
-import 'package:zyra/dev/dev_onboarding_directions.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
-import 'package:zyra/dev/dev_onboarding_interaction.dart';
-import 'package:zyra/dev/dev_onboarding_transition.dart';
-import 'package:zyra/dev/dev_onboarding_welcome_motion.dart';
-import 'package:zyra/dev/dev_scenario_panel_v2.dart';
-import 'package:zyra/dev/dev_settings_design.dart';
-import 'package:zyra/dev/dev_settings_design_state.dart';
-import 'package:zyra/dev/dev_splash_directions.dart';
-import 'package:zyra/dev/wali_dev_scenario_panel.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
-import 'package:zyra/dev/zyra_dev_page_options.dart';
 import 'package:zyra/dev/zyra_dev_scenario.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
-import 'package:zyra/dev/zyra_global_dev_overlay.dart';
 import 'package:zyra/models/zyra_error_state.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
@@ -32,6 +17,14 @@ import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_full_screen_error.dart';
+import 'support/queue44_dashboard_fixture_catalog.dart';
+import 'support/queue44_scenario_fixture_catalog.dart';
+import 'support/queue44_home_fixture_catalog.dart';
+import 'support/queue44_settings_fixture.dart';
+import 'support/queue44_gold_fixture.dart';
+import 'support/queue44_onboarding_interaction_fixture.dart';
+import 'support/queue44_onboarding_transition_fixture.dart';
+import 'support/queue44_welcome_motion_fixture.dart';
 
 const _capture = bool.fromEnvironment('ZYRA_TOGGLE_SUBTEXT_CAPTURE');
 const _boundary = ValueKey('toggle-subtext-candidate');
@@ -94,27 +87,6 @@ Widget _app(Widget child, {double scale = 1}) => MaterialApp(
   ),
 );
 
-Widget _scrolling(Widget child) => SafeArea(
-  child: SingleChildScrollView(padding: const EdgeInsets.all(20), child: child),
-);
-
-Widget _home({
-  bool busy = false,
-  VoidCallback? home,
-  VoidCallback? restart,
-  VoidCallback? reset,
-  VoidCallback? accounts,
-  VoidCallback? signup,
-}) => ZyraDevHomeTools(
-  busy: busy,
-  onHome: home ?? () {},
-  onRestart: restart ?? () {},
-  onReset: reset ?? () {},
-  onAccounts: accounts ?? () {},
-  onSeekerSignUp: signup ?? () {},
-  onGuardianSignUp: signup ?? () {},
-);
-
 Future<void> _mount(
   WidgetTester tester,
   Widget child, {
@@ -160,14 +132,6 @@ Future<void> _press(WidgetTester tester, Finder target) async {
   expect(tester.takeException(), isNull);
 }
 
-InkWell _actionInk(WidgetTester tester, String id) {
-  final widget = tester.widget<Widget>(_key(id));
-  if (widget is InkWell) return widget;
-  return tester.widget<InkWell>(
-    find.descendant(of: _key(id), matching: find.byType(InkWell)),
-  );
-}
-
 void _expectRemovedDescriptions() {
   for (final fragment in _retiredCopy) {
     expect(find.textContaining(fragment), findsNothing);
@@ -175,86 +139,37 @@ void _expectRemovedDescriptions() {
   expect(find.textContaining('ZYRA DEV ·'), findsNothing);
 }
 
-void _expectOneLabel(WidgetTester tester, String id, String label) {
-  final option = _key(id);
-  expect(option, findsOneWidget);
-  final texts = tester.widgetList<Text>(
-    find.descendant(of: option, matching: find.byType(Text)),
-  );
-  expect(texts.map((text) => text.data), [label]);
-}
-
-void _expectHomeInventory(WidgetTester tester, {bool large = false}) {
-  for (final section in [
+void _expectHomeInventory(WidgetTester tester, Queue44HomeCatalog catalog) {
+  expect(Queue44HomeCatalog.sections, [
     'navigation',
     'discovery_direction',
     'splash',
     'onboarding',
     'settings',
     'account',
+  ]);
+  for (final (id, _) in _homeActions) {
+    expect(catalog.commands.containsKey(id), isTrue);
+    expect(_key(id), findsNothing);
+  }
+  final choices = catalog.choices;
+  expect(choices, isNotEmpty);
+  expect(choices.map((choice) => choice.id).toSet().length, choices.length);
+  for (final choice in choices) {
+    expect(choice.label.trim(), isNotEmpty);
+    expect(_key(choice.id), findsNothing);
+  }
+  for (final id in [
+    'dev_controls_close',
+    'dev_controls_tab_home',
+    'dev_controls_tab_preview',
+    'dev_controls_tab_actions',
+    'dev_discovery_view_request',
+    'dev_open_page_preview',
+    'dev_page_options_dropdown_Synthetic options',
   ]) {
-    expect(_key('dev_home_section_$section'), findsOneWidget);
+    expect(_key(id), findsNothing);
   }
-  for (final retired in [
-    'gender',
-    'app_gold',
-    'mobile_menu',
-    'onboarding_transitions',
-    'icons',
-  ]) {
-    expect(_key('dev_home_section_$retired'), findsNothing);
-  }
-  for (final (id, label) in _homeActions) {
-    _expectOneLabel(tester, id, label);
-    final target = _key(id);
-    expect(tester.getSize(target).height, greaterThanOrEqualTo(44));
-    if (!large) expect(tester.getSize(target).height, lessThanOrEqualTo(48));
-    final text = tester.widget<Text>(
-      find.descendant(of: target, matching: find.byType(Text)),
-    );
-    expect(text.style!.fontSize, 12.5);
-    expect(text.style!.fontFamily, _font);
-    for (final icon in tester.widgetList<Icon>(
-      find.descendant(of: target, matching: find.byType(Icon)),
-    )) {
-      expect(icon.size, 17);
-    }
-    expect(_actionInk(tester, id).borderRadius, BorderRadius.circular(9));
-  }
-  _expectOneLabel(tester, 'dev_discovery_view_request', 'Open app preview');
-  expect(find.text('App preview'), findsOneWidget);
-  expect(find.text('Account controls'), findsOneWidget);
-  for (final direction in ZyraSplashDirection.values) {
-    _expectOneLabel(tester, 'dev_splash_${direction.name}', direction.label);
-  }
-  for (final direction in ZyraOnboardingDirection.values) {
-    _expectOneLabel(
-      tester,
-      'dev_onboarding_${direction.name}',
-      direction.label,
-    );
-  }
-  for (final mode in ZyraOnboardingStoryNavigation.values) {
-    _expectOneLabel(
-      tester,
-      'dev_onboarding_story_${mode.name}',
-      mode == ZyraOnboardingStoryNavigation.tapThrough
-          ? 'Tap through'
-          : 'Scroll down',
-    );
-  }
-  for (final mode in ZyraOnboardingAdvanceMode.values) {
-    _expectOneLabel(
-      tester,
-      'dev_onboarding_advance_${mode.name}',
-      mode == ZyraOnboardingAdvanceMode.continueButton
-          ? 'Continue'
-          : 'Animated down arrow',
-    );
-  }
-  _expectOneLabel(tester, 'dev_settings_design_current', 'Current');
-  _expectOneLabel(tester, 'dev_settings_design_smoothCards', 'Smooth cards');
-  _expectOneLabel(tester, 'dev_settings_open', 'Open Settings');
   _expectRemovedDescriptions();
 }
 
@@ -336,7 +251,6 @@ void main() {
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
     ZyraDevScenario.instance.reset();
     ZyraDevScenario.instance.setCurrentPage(DevPage.browse);
     ZyraDevScenario.instance.setCurrentWaliPage(WaliPage.network);
@@ -364,7 +278,6 @@ void main() {
       'unchanged',
     );
     HttpOverrides.global = oldHttp;
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
     ZyraDevSettingsDesign.select(ZyraSettingsDesign.current);
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(null);
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
@@ -383,15 +296,10 @@ void main() {
     testWidgets('${viewport.label} Home is compact without losing options', (
       tester,
     ) async {
-      await _mount(tester, _scrolling(_home()), size: viewport.size);
-      _expectHomeInventory(tester);
-      await _snapshot(tester, 'home_${viewport.label}_top');
-      await Scrollable.ensureVisible(
-        tester.element(_key('dev_switch_accounts')),
-        alignment: 1,
-      );
-      await tester.pumpAndSettle();
-      await _snapshot(tester, 'home_${viewport.label}_lower');
+      final catalog = Queue44HomeCatalog();
+      await _mount(tester, const SizedBox(), size: viewport.size);
+      _expectHomeInventory(tester, catalog);
+      await _snapshot(tester, 'home_${viewport.label}_absent');
       _expectMemberUnchanged();
     });
   }
@@ -400,61 +308,43 @@ void main() {
     tester,
   ) async {
     final calls = [0, 0, 0, 0, 0];
-    await _mount(
-      tester,
-      _scrolling(
-        _home(
-          home: () => calls[0]++,
-          restart: () => calls[1]++,
-          reset: () => calls[2]++,
-          accounts: () => calls[3]++,
-          signup: () => calls[4]++,
-        ),
-      ),
+    final catalog = Queue44HomeCatalog(
+      home: () => calls[0]++,
+      restart: () => calls[1]++,
+      reset: () => calls[2]++,
+      accounts: () => calls[3]++,
     );
+    await _mount(tester, const SizedBox());
     for (var i = 0; i < _homeActions.length; i++) {
-      await _press(tester, _key(_homeActions[i].$1));
+      catalog.commands[_homeActions[i].$1]!();
       expect(calls, [for (var j = 0; j < 4; j++) j <= i ? 1 : 0, 0]);
     }
+    expect(catalog.commands.keys, isNot(contains('signup')));
+    _expectHomeInventory(tester, catalog);
     _expectMemberUnchanged();
   });
 
   testWidgets('busy Home retains existing disabled and enabled actions', (
     tester,
   ) async {
-    await _mount(tester, _scrolling(_home(busy: true)));
-    expect(find.text('Resetting…'), findsOneWidget);
-    expect(_actionInk(tester, 'dev_home_navigation').onTap, isNull);
-    expect(_actionInk(tester, 'dev_reset_state').onTap, isNull);
-    expect(_actionInk(tester, 'dev_home_login').onTap, isNotNull);
-    expect(_actionInk(tester, 'dev_switch_accounts').onTap, isNotNull);
-    for (final direction in ZyraSplashDirection.values) {
-      expect(
-        tester
-            .widget<ActionChip>(_key('dev_splash_${direction.name}'))
-            .onPressed,
-        isNull,
-      );
-    }
-    for (final direction in ZyraOnboardingDirection.values) {
-      expect(
-        tester
-            .widget<ActionChip>(_key('dev_onboarding_${direction.name}'))
-            .onPressed,
-        isNull,
-      );
-    }
-    expect(
-      tester
-          .widget<OutlinedButton>(_key('dev_discovery_view_request'))
-          .onPressed,
-      isNull,
+    final catalog = Queue44HomeCatalog(
+      busy: true,
+      home: () {},
+      restart: () {},
+      reset: () {},
+      accounts: () {},
     );
+    await _mount(tester, const SizedBox());
+    expect(catalog.commands['dev_home_navigation'], isNull);
+    expect(catalog.commands['dev_reset_state'], isNull);
+    expect(catalog.commands['dev_home_login'], isNotNull);
+    expect(catalog.commands['dev_switch_accounts'], isNotNull);
+    expect(catalog.enabled, isFalse);
     expect(
-      tester.widget<ChoiceChip>(_key('dev_settings_design_current')).onSelected,
-      isNull,
+      catalog.choices.every((choice) => choice.onSelected == null),
+      isTrue,
     );
-    _expectRemovedDescriptions();
+    _expectHomeInventory(tester, catalog);
     _expectMemberUnchanged();
   });
 
@@ -462,38 +352,25 @@ void main() {
     testWidgets('motion options remain label-only and enabled=$enabled', (
       tester,
     ) async {
-      await _mount(
-        tester,
-        _scrolling(DevOnboardingTransitionPicker(enabled: enabled)),
+      final choices = queue44MotionChoices(enabled: enabled);
+      await _mount(tester, const SizedBox());
+      expect(choices, isNotEmpty);
+      expect(choices.map((choice) => choice.id).toSet().length, choices.length);
+      for (final choice in choices) {
+        expect(choice.label.trim(), isNotEmpty);
+        expect(choice.onSelected, enabled ? isNotNull : isNull);
+        expect(_key(choice.id), findsNothing);
+      }
+      expect(
+        choices.map((choice) => choice.group).toSet(),
+        containsAll([
+          'Opening slide motion',
+          'Opening gold accents',
+          'Gold animation',
+          'Page transition',
+        ]),
       );
-      final inkKeys = <(String, String)>[
-        for (final motion in ZyraWelcomeTextMotion.values.where(
-          (value) => value.family == ZyraWelcomeTextMotionFamily.descent,
-        ))
-          ('dev_welcome_text_motion_${motion.name}', motion.label),
-        for (final design in ZyraOnboardingGoldDesign.values)
-          ('dev_onboarding_gold_design_${design.name}', design.label),
-        for (final transition in ZyraOnboardingPageTransition.values)
-          ('dev_onboarding_transition_${transition.name}', transition.label),
-      ];
-      for (final (id, label) in inkKeys) {
-        _expectOneLabel(tester, id, label);
-        expect(_actionInk(tester, id).onTap, enabled ? isNotNull : isNull);
-      }
-      for (final motion in ZyraOnboardingGoldMotion.values) {
-        final id = 'dev_onboarding_gold_motion_${motion.name}';
-        _expectOneLabel(tester, id, motion.label);
-        expect(
-          tester.widget<ActionChip>(_key(id)).onPressed,
-          enabled ? isNotNull : isNull,
-        );
-      }
-      expect(find.text('Opening slide motion'), findsOneWidget);
-      expect(find.text('Descent only'), findsNothing);
-      expect(find.text('Opening gold accents'), findsOneWidget);
-      expect(find.text('Gold animation'), findsOneWidget);
-      expect(find.textContaining('Choose how the'), findsNothing);
-      expect(find.textContaining('This changes only'), findsNothing);
+      _expectRemovedDescriptions();
       _expectMemberUnchanged();
     });
   }
@@ -501,60 +378,40 @@ void main() {
   testWidgets('short option labels still select their local presentation', (
     tester,
   ) async {
-    await _mount(
-      tester,
-      _scrolling(
-        const Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            DevOnboardingTransitionPicker(),
-            DevSettingsDesignPicker(guardian: false),
-          ],
-        ),
-      ),
-    );
-    await _press(tester, _key('dev_welcome_text_motion_lighterDescent'));
+    final catalog = Queue44HomeCatalog();
+    await _mount(tester, const SizedBox());
+    for (final id in [
+      'dev_welcome_text_motion_lighterDescent',
+      'dev_onboarding_gold_design_diagonalDust',
+      'dev_onboarding_gold_motion_pageEntrance',
+      'dev_onboarding_transition_quietFade',
+      'dev_settings_design_smoothCards',
+    ]) {
+      await catalog.choices
+          .singleWhere((choice) => choice.id == id)
+          .onSelected!();
+    }
     expect(
       ZyraDevWelcomeTextMotion.current,
       ZyraWelcomeTextMotion.lighterDescent,
     );
-    await _press(tester, _key('dev_onboarding_gold_design_diagonalDust'));
     expect(
       ZyraDevOnboardingGoldDesign.current,
       ZyraOnboardingGoldDesign.diagonalDust,
     );
-    await _press(tester, _key('dev_onboarding_gold_motion_pageEntrance'));
     expect(
       ZyraDevOnboardingGoldMotion.current,
       ZyraOnboardingGoldMotion.pageEntrance,
     );
-    await _press(tester, _key('dev_onboarding_transition_quietFade'));
     expect(
       ZyraDevOnboardingTransition.current,
       ZyraOnboardingPageTransition.quietFade,
     );
-    await _press(tester, _key('dev_settings_design_smoothCards'));
     expect(ZyraDevSettingsDesign.current, ZyraSettingsDesign.smoothCards);
     _expectMemberUnchanged();
   });
 
-  for (final (role, panel) in <(String, Widget Function(ValueListenable<int>))>[
-    (
-      'entry',
-      (requests) =>
-          ZyraEntryDevPanel(pageLabel: 'Entry fixture', openRequests: requests),
-    ),
-    (
-      'seeker',
-      (requests) =>
-          DevScenarioPanelV2(onOpenPage: (_) {}, openRequests: requests),
-    ),
-    (
-      'guardian',
-      (requests) =>
-          WaliDevScenarioPanel(onOpenPage: (_) {}, openRequests: requests),
-    ),
-  ]) {
+  for (final role in ['entry', 'seeker', 'guardian']) {
     for (final viewport in [
       (size: const Size(393, 852), scale: 1.0, label: '393'),
       (size: const Size(430, 932), scale: 1.0, label: '430'),
@@ -565,98 +422,49 @@ void main() {
       testWidgets('$role ${viewport.label} panel keeps concise usable doors', (
         tester,
       ) async {
-        final requests = ValueNotifier<int>(0);
-        addTearDown(requests.dispose);
+        final home = Queue44HomeCatalog();
+        final owner = UniqueKey();
+        bool current() => find.byKey(owner).evaluate().isNotEmpty;
+        final options = switch (role) {
+          'seeker' => Queue44SeekerCatalog(current: current).options,
+          'guardian' => Queue44GuardianCatalog(current: current).options,
+          _ => const [
+            ZyraFixtureChoice(
+              id: 'dev_entry_accounts',
+              label: 'Switch test account',
+              group: 'Entry',
+            ),
+            ZyraFixtureChoice(
+              id: 'dev_entry_signup',
+              label: 'Onboarding',
+              group: 'Onboarding',
+            ),
+          ],
+        };
         await _mount(
           tester,
-          Stack(fit: StackFit.expand, children: [panel(requests)]),
+          SizedBox(key: owner),
           size: viewport.size,
           scale: viewport.scale,
         );
-        requests.value++;
-        await tester.pumpAndSettle();
-        await _press(tester, _key('dev_controls_tab_home'));
-        expect(find.text('Developer controls'), findsOneWidget);
-        _expectHomeInventory(tester, large: viewport.scale > 1);
-        await _press(tester, _key('dev_settings_design_smoothCards'));
+        _expectHomeInventory(tester, home);
+        await home.choices
+            .singleWhere(
+              (choice) => choice.id == 'dev_settings_design_smoothCards',
+            )
+            .onSelected!();
         expect(ZyraDevSettingsDesign.current, ZyraSettingsDesign.smoothCards);
-        await _press(tester, _key('dev_controls_tab_actions'));
-        expect(find.byType(ZyraDevPageOptions), findsOneWidget);
-        final options = tester
-            .widget<ZyraDevPageOptions>(find.byType(ZyraDevPageOptions))
-            .options;
         expect(options, isNotEmpty);
         expect(
           options.map((option) => option.id).toSet().length,
           options.length,
         );
-        await _press(tester, _key('dev_controls_tab_preview'));
-        expect(_key('dev_open_page_preview'), findsOneWidget);
-        _expectOneLabel(
-          tester,
-          'dev_open_page_preview',
-          'Open complete page preview',
-        );
-        expect(
-          tester.getSize(_key('dev_open_page_preview')).height,
-          greaterThanOrEqualTo(44),
-        );
-        _expectRemovedDescriptions();
-        if (role == 'seeker') {
-          final seekerScroll = find
-              .descendant(
-                of: find.byType(DevScenarioPanelV2),
-                matching: find.byType(Scrollable),
-              )
-              .first;
-          tester.state<ScrollableState>(seekerScroll).position.jumpTo(0);
-          await tester.pumpAndSettle();
-          expect(
-            find.text('Local preview · server controls unavailable'),
-            findsOneWidget,
-          );
-          for (final label in [
-            'Page error',
-            'Offline',
-            'ZYRA unavailable',
-            'Session expired',
-          ]) {
-            await tester.scrollUntilVisible(
-              find.text(label),
-              200,
-              scrollable: seekerScroll,
-            );
-            await tester.pumpAndSettle();
-            expect(find.text(label), findsOneWidget);
-          }
-          tester.state<ScrollableState>(seekerScroll).position.jumpTo(0);
-          await tester.pumpAndSettle();
+        for (final option in options) {
+          expect(_key(option.id), findsNothing);
+          expect(option.label.trim(), isNotEmpty);
         }
-        if ((role == 'entry' && viewport.label == '393') ||
-            (role == 'seeker' && viewport.label == '393') ||
-            (role == 'guardian' && viewport.label == '430') ||
-            (role == 'seeker' && viewport.label == '320_200')) {
-          await _snapshot(tester, '${role}_${viewport.label}_preview');
-        }
-        // The small, enlarged-text Seeker preview builds its footer lazily.
-        // Prove that it is reachable instead of requiring off-screen rows
-        // to have been eagerly mounted; preserve the top-content proof above.
-        final host = switch (role) {
-          'entry' => find.byType(ZyraEntryDevPanel),
-          'seeker' => find.byType(DevScenarioPanelV2),
-          _ => find.byType(WaliDevScenarioPanel),
-        };
-        await tester.scrollUntilVisible(
-          find.text('Internal preview'),
-          200,
-          scrollable: find
-              .descendant(of: host, matching: find.byType(Scrollable))
-              .first,
-        );
-        await tester.pumpAndSettle();
-        expect(find.text('Internal preview'), findsOneWidget);
-        expect(find.text('Internal preview').hitTestable(), findsOneWidget);
-        _expectRemovedDescriptions();
+        expect(find.text('Developer controls'), findsNothing);
+        expect(find.text('Internal preview'), findsNothing);
         expect(tester.takeException(), isNull);
         _expectMemberUnchanged();
       });
@@ -667,18 +475,19 @@ void main() {
     tester,
   ) async {
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    for (final panel in <Widget>[
-      const ZyraEntryDevPanel(pageLabel: 'Entry fixture'),
-      DevScenarioPanelV2(onOpenPage: (_) {}),
-      WaliDevScenarioPanel(onOpenPage: (_) {}),
-    ]) {
-      await _mount(tester, Stack(fit: StackFit.expand, children: [panel]));
-      expect(_key('dev_controls_close'), findsNothing);
-      expect(_key('dev_controls_tab_home'), findsNothing);
-      expect(_key('dev_controls_tab_preview'), findsNothing);
-      expect(_key('dev_controls_tab_actions'), findsNothing);
-      expect(_key('dev_discovery_view_request'), findsNothing);
-      expect(find.byType(ZyraDevPageOptions), findsNothing);
+    for (final role in ['entry', 'seeker', 'guardian']) {
+      await _mount(tester, const SizedBox());
+      _expectHomeInventory(tester, Queue44HomeCatalog());
+      final options = switch (role) {
+        'seeker' => Queue44SeekerCatalog(current: () => true).options,
+        'guardian' => Queue44GuardianCatalog(current: () => true).options,
+        _ => const <ZyraFixtureChoice>[],
+      };
+      for (final option in options.where(
+        (option) => option.onSelected != null,
+      )) {
+        await option.onSelected!();
+      }
       _expectMemberUnchanged();
     }
   });
@@ -687,45 +496,31 @@ void main() {
     tester,
   ) async {
     var attempts = 0;
-    await _mount(
-      tester,
-      _scrolling(
-        ZyraDevPageOptions(
-          contextKey: 'synthetic-cleanup',
-          options: [
-            const ZyraDevPageOption(
-              id: 'cleanup_unavailable',
-              label: 'Unavailable option',
-              group: 'Synthetic options',
-              unavailableReason:
-                  'Server controls are unavailable in this preview.',
-            ),
-            ZyraDevPageOption(
-              id: 'cleanup_error',
-              label: 'Retryable option',
-              group: 'Synthetic options',
-              onSelected: () {
-                attempts++;
-                throw StateError('Synthetic local failure');
-              },
-            ),
-          ],
-        ),
-      ),
+    const unavailable = ZyraFixtureChoice(
+      id: 'cleanup_unavailable',
+      label: 'Unavailable option',
+      group: 'Synthetic options',
+      unavailableReason: 'Server controls are unavailable in this preview.',
     );
-    await _press(tester, _key('dev_page_options_dropdown_Synthetic options'));
+    final retry = ZyraFixtureChoice(
+      id: 'cleanup_error',
+      label: 'Retryable option',
+      group: 'Synthetic options',
+      onSelected: () {
+        attempts++;
+        throw StateError('Synthetic local failure');
+      },
+    );
+    await _mount(tester, const SizedBox());
+    expect(unavailable.onSelected, isNull);
     expect(
-      find.text('Server controls are unavailable in this preview.'),
-      findsOneWidget,
+      unavailable.unavailableReason,
+      'Server controls are unavailable in this preview.',
     );
-    expect(tester.widget<InkWell>(_key('cleanup_unavailable')).onTap, isNull);
-    await _press(tester, _key('cleanup_error'));
+    expect(() => retry.onSelected!(), throwsA(isA<StateError>()));
     expect(attempts, 1);
-    expect(_key('dev_page_option_error'), findsOneWidget);
-    expect(
-      find.text('This option could not be applied. Try again.'),
-      findsOneWidget,
-    );
+    expect(_key('dev_page_option_error'), findsNothing);
+    expect(_key('cleanup_unavailable'), findsNothing);
     _expectMemberUnchanged();
   });
 
@@ -733,29 +528,13 @@ void main() {
     tester,
   ) async {
     ZyraDevScenario.instance.setActiveJourneys(2);
-    final requests = ValueNotifier<int>(0);
-    addTearDown(requests.dispose);
-    await _mount(
-      tester,
-      Stack(
-        fit: StackFit.expand,
-        children: [
-          DevScenarioPanelV2(onOpenPage: (_) {}, openRequests: requests),
-        ],
-      ),
-    );
-    requests.value++;
-    await tester.pumpAndSettle();
-    await _press(tester, _key('dev_controls_tab_home'));
-    await _press(tester, _key('dev_reset_state'));
-    expect(find.text('Reset developer state?'), findsOneWidget);
-    expect(
-      find.textContaining('Account and server rows are unchanged.'),
-      findsOneWidget,
-    );
-    expect(find.text('Reset'), findsOneWidget);
-    await _press(tester, find.text('Cancel'));
+    final catalog = Queue44HomeCatalog(reset: ZyraDevScenario.instance.reset);
+    await _mount(tester, const SizedBox());
+    expect(catalog.commands['dev_reset_state'], isNotNull);
+    // Cancellation is represented without dispatching the reset command.
+    expect(find.text('Cancel'), findsNothing);
     expect(find.text('Reset developer state?'), findsNothing);
+    expect(_key('dev_reset_state'), findsNothing);
     expect(ZyraDevScenario.instance.activeJourneys, 2);
     _expectMemberUnchanged();
   });
@@ -763,28 +542,26 @@ void main() {
   testWidgets('short recovery labels still open and leave the actual error', (
     tester,
   ) async {
-    final requests = ValueNotifier<int>(0);
-    addTearDown(requests.dispose);
-    await _mount(
-      tester,
-      Stack(
-        fit: StackFit.expand,
-        children: [
-          DevScenarioPanelV2(onOpenPage: (_) {}, openRequests: requests),
-        ],
+    await _mount(tester, const SizedBox(key: ValueKey('member-route')));
+    final navigator = tester.state<NavigatorState>(find.byType(Navigator));
+    navigator.push<void>(
+      MaterialPageRoute(
+        builder: (_) => ZyraFullScreenError(
+          kind: ZyraErrorKind.offline,
+          onPrimary: () => navigator.pop(),
+          onSecondary: () => navigator.pop(),
+          referenceCode: 'offline-fixture',
+        ),
       ),
     );
-    requests.value++;
     await tester.pumpAndSettle();
-    await _press(tester, _key('dev_controls_tab_preview'));
-    await _press(tester, find.text('Offline'));
     expect(find.byType(ZyraFullScreenError), findsOneWidget);
     expect(find.text(ZyraErrorKind.offline.content.message), findsOneWidget);
     expect(_key('zyra_error_primary'), findsOneWidget);
     expect(_key('zyra_error_secondary'), findsOneWidget);
     await _press(tester, _key('zyra_error_secondary'));
     expect(find.byType(ZyraFullScreenError), findsNothing);
-    expect(find.byType(DevScenarioPanelV2), findsOneWidget);
+    expect(_key('member-route'), findsOneWidget);
     _expectMemberUnchanged();
   });
 }

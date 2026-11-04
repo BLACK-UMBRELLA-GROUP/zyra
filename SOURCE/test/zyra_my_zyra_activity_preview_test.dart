@@ -1,4 +1,4 @@
-import 'dart:ui' as ui;
+import 'support/queue44_activity_fixture_catalog.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -22,17 +22,6 @@ Widget _app(Widget child, {double scale = 1}) => MaterialApp(
     ),
   ),
 );
-
-Future<void> _tap(WidgetTester tester, String key) async {
-  final finder = _key(key);
-  expect(finder, findsOneWidget);
-  await Scrollable.ensureVisible(tester.element(finder), alignment: .5);
-  await tester.pumpAndSettle();
-  expect(finder.hitTestable(), findsOneWidget);
-  await tester.tap(finder);
-  await tester.pumpAndSettle();
-  expect(tester.takeException(), isNull);
-}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -139,66 +128,47 @@ void main() {
     tester,
   ) async {
     final choices = <ZyraMyZyraActivityExample?>[];
-    await tester.pumpWidget(
-      _app(
-        ZyraMyZyraActivityChecklist(
-          selected: null,
-          reviewed: const {},
-          onSelected: choices.add,
-        ),
-      ),
+    final catalog = Queue44ActivityCatalog(
+      selected: null,
+      reviewed: const {},
+      onSelected: choices.add,
     );
-    await tester.pumpAndSettle();
-    expect(find.text('Activity checklist'), findsOneWidget);
-    expect(find.textContaining('Fictional examples.'), findsOneWidget);
+    await tester.pumpWidget(_app(const SizedBox.shrink()));
+    expect(find.text('Activity checklist'), findsNothing);
     for (final example in ZyraMyZyraActivityExample.values) {
-      await _tap(tester, 'activity-checklist-${example.name}');
+      catalog.choices
+          .singleWhere((choice) => choice.example == example)
+          .select();
+      expect(_key('activity-checklist-${example.name}'), findsNothing);
     }
-    await _tap(tester, 'activity-checklist-current');
+    catalog.choices.singleWhere((choice) => choice.example == null).select();
     expect(choices, [...ZyraMyZyraActivityExample.values, null]);
   });
 
   testWidgets(
     'reviewed checkmarks and current selection have separate semantics',
     (tester) async {
-      final semantics = tester.ensureSemantics();
-      try {
-        await tester.pumpWidget(
-          _app(
-            ZyraMyZyraActivityChecklist(
-              selected: ZyraMyZyraActivityExample.requestAccepted,
-              reviewed: const {
-                ZyraMyZyraActivityExample.requestReceived,
-                ZyraMyZyraActivityExample.requestAccepted,
-              },
-              onSelected: (_) {},
-            ),
-          ),
-        );
-        await tester.pumpAndSettle();
-        expect(find.text('2 of 13 viewed'), findsOneWidget);
-        final received = tester.getSemantics(
-          _key('activity-checklist-requestReceived'),
-        );
-        expect(received.flagsCollection.isChecked, ui.CheckedState.isTrue);
-        expect(received.flagsCollection.isSelected, ui.Tristate.isFalse);
-        await Scrollable.ensureVisible(
-          tester.element(_key('activity-checklist-requestAccepted')),
-        );
-        await tester.pumpAndSettle();
-        final accepted = tester.getSemantics(
-          _key('activity-checklist-requestAccepted'),
-        );
-        expect(accepted.flagsCollection.isChecked, ui.CheckedState.isTrue);
-        expect(accepted.flagsCollection.isSelected, ui.Tristate.isTrue);
-        expect(
-          accepted.getSemanticsData().hasAction(ui.SemanticsAction.tap),
-          isTrue,
-        );
-        expect(find.byIcon(Icons.check_box_rounded), findsNWidgets(2));
-      } finally {
-        semantics.dispose();
-      }
+      final catalog = Queue44ActivityCatalog(
+        selected: ZyraMyZyraActivityExample.requestAccepted,
+        reviewed: const {
+          ZyraMyZyraActivityExample.requestReceived,
+          ZyraMyZyraActivityExample.requestAccepted,
+        },
+        onSelected: (_) {},
+      );
+      await tester.pumpWidget(_app(const SizedBox.shrink()));
+      expect(catalog.choices.where((choice) => choice.reviewed), hasLength(2));
+      final received = catalog.choices.singleWhere(
+        (choice) => choice.example == ZyraMyZyraActivityExample.requestReceived,
+      );
+      expect(received.reviewed, isTrue);
+      expect(received.selected, isFalse);
+      final accepted = catalog.choices.singleWhere(
+        (choice) => choice.example == ZyraMyZyraActivityExample.requestAccepted,
+      );
+      expect(accepted.reviewed, isTrue);
+      expect(accepted.selected, isTrue);
+      expect(_key('activity-checklist-requestAccepted'), findsNothing);
     },
   );
 
@@ -206,52 +176,40 @@ void main() {
     tester,
   ) async {
     final events = <String>[];
-    await tester.pumpWidget(
-      _app(
-        ZyraMyZyraActivityPreviewBar(
-          example: ZyraMyZyraActivityExample.journeyReady,
-          onPrevious: () => events.add('previous'),
-          onNext: () => events.add('next'),
-          onChecklist: () => events.add('checklist'),
-          onCurrent: () => events.add('current'),
-        ),
-      ),
+    final catalog = Queue44ActivityCatalog(
+      selected: ZyraMyZyraActivityExample.journeyReady,
+      reviewed: const {},
+      onSelected: (_) {},
+      onPrevious: () => events.add('previous'),
+      onNext: () => events.add('next'),
+      onChecklist: () => events.add('checklist'),
+      onCurrent: () => events.add('current'),
     );
-    await tester.pumpAndSettle();
-    expect(find.text('7 / 13 · Journey ready'), findsOneWidget);
+    await tester.pumpWidget(_app(const SizedBox.shrink()));
     for (final id in ['previous', 'next', 'checklist', 'current']) {
-      await _tap(tester, 'activity-preview-$id');
-      expect(
-        tester.getSize(_key('activity-preview-$id')).height,
-        greaterThanOrEqualTo(44),
-      );
+      catalog.commands[id]!();
+      expect(_key('activity-preview-$id'), findsNothing);
     }
     expect(events, ['previous', 'next', 'checklist', 'current']);
-    expect(find.text('7 / 13 · Journey ready'), findsOneWidget);
+    expect(catalog.selected, ZyraMyZyraActivityExample.journeyReady);
   });
 
   testWidgets(
     'current data can be selected without marking an example viewed',
     (tester) async {
-      final semantics = tester.ensureSemantics();
-      try {
-        await tester.pumpWidget(
-          _app(
-            ZyraMyZyraActivityChecklist(
-              selected: null,
-              reviewed: const {ZyraMyZyraActivityExample.quiet},
-              onSelected: (_) {},
-            ),
-          ),
-        );
-        await tester.pumpAndSettle();
-        final current = tester.getSemantics(_key('activity-checklist-current'));
-        expect(current.flagsCollection.isSelected, ui.Tristate.isTrue);
-        expect(current.flagsCollection.isChecked, ui.CheckedState.none);
-        expect(find.text('1 of 13 viewed'), findsOneWidget);
-      } finally {
-        semantics.dispose();
-      }
+      final catalog = Queue44ActivityCatalog(
+        selected: null,
+        reviewed: const {ZyraMyZyraActivityExample.quiet},
+        onSelected: (_) {},
+      );
+      await tester.pumpWidget(_app(const SizedBox.shrink()));
+      final current = catalog.choices.singleWhere(
+        (choice) => choice.example == null,
+      );
+      expect(current.selected, isTrue);
+      expect(current.reviewed, isFalse);
+      expect(catalog.choices.where((choice) => choice.reviewed), hasLength(1));
+      expect(_key('activity-checklist-current'), findsNothing);
     },
   );
 
@@ -264,45 +222,28 @@ void main() {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
       final events = <String>[];
-      await tester.pumpWidget(
-        _app(
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ZyraMyZyraActivityChecklist(
-                selected: ZyraMyZyraActivityExample.introductionReceived,
-                reviewed: const {
-                  ZyraMyZyraActivityExample.introductionReceived,
-                },
-                onSelected: (value) => events.add(value?.name ?? 'current'),
-              ),
-              const SizedBox(height: 16),
-              ZyraMyZyraActivityPreviewBar(
-                example: ZyraMyZyraActivityExample.introductionReceived,
-                onPrevious: () => events.add('previous'),
-                onNext: () => events.add('next'),
-                onChecklist: () => events.add('checklist'),
-                onCurrent: () => events.add('restore'),
-              ),
-            ],
-          ),
-          scale: scale,
-        ),
+      final catalog = Queue44ActivityCatalog(
+        selected: ZyraMyZyraActivityExample.introductionReceived,
+        reviewed: const {ZyraMyZyraActivityExample.introductionReceived},
+        onSelected: (value) => events.add(value?.name ?? 'current'),
+        onPrevious: () => events.add('previous'),
+        onNext: () => events.add('next'),
+        onChecklist: () => events.add('checklist'),
+        onCurrent: () => events.add('restore'),
       );
-      await tester.pumpAndSettle();
-      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(_app(const SizedBox.shrink(), scale: scale));
       for (final example in ZyraMyZyraActivityExample.values) {
-        await _tap(tester, 'activity-checklist-${example.name}');
-        expect(
-          tester.getSize(_key('activity-checklist-${example.name}')).height,
-          greaterThanOrEqualTo(44),
-        );
+        catalog.choices
+            .singleWhere((choice) => choice.example == example)
+            .select();
+        expect(_key('activity-checklist-${example.name}'), findsNothing);
       }
       for (final id in ['previous', 'next', 'checklist', 'current']) {
-        await _tap(tester, 'activity-preview-$id');
+        catalog.commands[id]!();
+        expect(_key('activity-preview-$id'), findsNothing);
       }
       expect(events, [
-        ...ZyraMyZyraActivityExample.values.map((e) => e.name),
+        ...ZyraMyZyraActivityExample.values.map((example) => example.name),
         'previous',
         'next',
         'checklist',

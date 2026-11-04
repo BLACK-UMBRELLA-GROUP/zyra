@@ -18,9 +18,8 @@ import 'package:zyra/config/zyra_app_variant.dart';
 import 'package:zyra/config/zyra_internal_founder_policy.dart';
 import 'package:zyra/dev/zyra_concept_preview_boundary.dart';
 import 'package:zyra/dev/zyra_dev_local_preview.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
 import 'package:zyra/dev/zyra_founder_launch_screen.dart';
-import 'package:zyra/dev/zyra_global_dev_overlay.dart';
+import 'package:zyra/widgets/zyra_account_session_host.dart';
 import 'package:zyra/main.dart';
 import 'package:zyra/screens/auth_gate.dart';
 import 'package:zyra/screens/splash_screen.dart';
@@ -182,7 +181,6 @@ void main() {
     ZyraInternalPreviewClient.finishSignOut();
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     ZyraDeveloperAccess.resetAuthorizationForTesting();
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
     SharedPreferences.setMockInitialValues({});
     await _wait(tester, ZyraLocalPrefs.init());
     await _wait(tester, _session(_founder));
@@ -203,7 +201,6 @@ void main() {
     // Only compile-time presentation is enabled here. Fresh exact identity
     // and app_metadata still decide every real preparation's proof.
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
-    ZyraDevLocalPreview.genderSelection.value = 'male';
   }
 
   Future<void> close(WidgetTester tester) async {
@@ -229,7 +226,6 @@ void main() {
     await _wait(tester, ZyraAccountState.synchronize(null));
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraInternalPreviewClient.finishSignOut();
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
     ZyraAccountState.clearImagesForTesting = null;
     ZyraText.useTestFontStubs = false;
     expect(ZyraConceptPreviewIsolation.active, isFalse);
@@ -256,7 +252,7 @@ void main() {
             child: child!,
           );
           final presented = realOverlay
-              ? ZyraGlobalDevOverlayHost(
+              ? ZyraAccountSessionHost(
                   navigatorKey: navigatorKey,
                   // Deliberately use the production Auth stream and refresh
                   // policy, rather than the older empty-stream test seam.
@@ -1300,7 +1296,7 @@ void main() {
         };
         await mount(tester, realOverlay: true);
         expect(refreshCalls, 2);
-        expect(find.byType(ZyraGlobalDevOverlayHost), findsOneWidget);
+        expect(find.byType(ZyraAccountSessionHost), findsOneWidget);
         expect(AppState.instance.name, isNull);
         await _advance(tester, const Duration(milliseconds: 3049));
         expect(find.byType(ZyraLoading), findsNothing);

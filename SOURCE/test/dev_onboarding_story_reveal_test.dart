@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_onboarding_lab.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
+import 'support/queue44_onboarding_story_fixture.dart';
+import 'support/queue44_gold_fixture.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/theme/zyra_text.dart';
-import 'package:zyra/widgets/zyra_onboarding_study.dart';
 
 const _arrow = ValueKey('dev_onboarding_continue');
 const _skip = ValueKey('dev_onboarding_skip');
@@ -32,7 +31,7 @@ Future<void> _open(
         ),
         child: child!,
       ),
-      home: DevOnboardingDirectionsScreen(
+      home: OnboardingStoryFixture(
         key: ValueKey('story-${direction.name}'),
         initialDirection: direction,
       ),
@@ -105,7 +104,7 @@ void main() {
           reason: '${direction.name} card $page heading',
         );
         if (page < ZyraOnboardingDirection.storyPageCount - 1) {
-          await tester.tap(find.byKey(_skip));
+          storyFixtureSkipCallback(tester)!();
           await tester.pumpAndSettle();
         }
       }
@@ -354,7 +353,7 @@ void main() {
     expect(find.text('2 / 4'), findsOneWidget);
     expect(find.text('3 / 4'), findsNothing);
 
-    await tester.tap(find.byKey(_skip));
+    storyFixtureSkipCallback(tester)!();
     await tester.pumpAndSettle();
     expect(find.text('3 / 4'), findsOneWidget);
     expect(find.byKey(_arrow), findsNothing);
@@ -369,7 +368,7 @@ void main() {
     for (var page = 0; page < 3; page++) {
       expect(find.text('${page + 1} / 4'), findsOneWidget);
       expect(find.byKey(_arrow), findsNothing);
-      await tester.tap(find.byKey(_skip));
+      storyFixtureSkipCallback(tester)!();
       await tester.pumpAndSettle();
     }
     expect(find.text('4 / 4'), findsOneWidget);
@@ -407,7 +406,7 @@ void main() {
         await _tapStory(tester, page);
       } else {
         expect(find.byKey(_arrow), findsOneWidget);
-        expect(find.byKey(_skip), findsOneWidget);
+        expect(find.byKey(_skip), findsNothing);
       }
     }
 

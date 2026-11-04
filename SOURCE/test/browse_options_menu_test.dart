@@ -105,6 +105,7 @@ Future<void> _mount(
         child:
             body ??
             ZyraOneJourneyConceptShell(
+              fixture: ZyraShellTestFixture().fixture,
               canAct: canAct ?? () => true,
               onExit: () {},
               initialGuardianRole: guardian,

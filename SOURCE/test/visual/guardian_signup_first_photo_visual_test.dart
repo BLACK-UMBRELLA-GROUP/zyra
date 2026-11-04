@@ -15,6 +15,7 @@ import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_onboarding_continue_action.dart';
 import 'package:zyra/widgets/zyra_onboarding_direction_style.dart';
+import '../support/queue44_signup_flow_driver.dart';
 
 const _capture = bool.fromEnvironment('ZYRA_GUARDIAN_FIRST_PHOTO_CAPTURE');
 const _captureDirectory = String.fromEnvironment(
@@ -146,7 +147,7 @@ void main() {
       );
       await tester.pumpAndSettle();
       for (var question = 0; question < 4; question++) {
-        await _tap(tester, const ValueKey('onboarding_dev_skip'));
+        await advanceSignupQuestionFromCode(tester, installPhotoFixture: false);
       }
       expect(find.byKey(_question), findsOneWidget);
       expect(find.text('QUESTION 5 OF 5'), findsOneWidget);

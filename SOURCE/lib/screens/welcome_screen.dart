@@ -27,9 +27,7 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_state_widgets.dart';
 import 'auth/email_recovery_screen.dart';
-import 'auth/tester_access_screen.dart';
 import 'auth/role_selection_screen.dart';
-import '../config/zyra_external_tester_policy.dart';
 
 class WelcomeScreen extends StatefulWidget {
   final Future<ZyraAuthResult> Function()? googleSignIn;
@@ -47,6 +45,10 @@ class WelcomeScreen extends StatefulWidget {
   /// Ordinary authentication never reads this route factory.
   final PageRoute<void> Function(WidgetBuilder)? devIntroductionRouteBuilder;
 
+  final ZyraOnboardingGoldDesign onboardingGoldDesign;
+  final ZyraOnboardingGoldMotion onboardingGoldMotion;
+  final Listenable? onboardingPageEntries;
+
   const WelcomeScreen({
     super.key,
     this.googleSignIn,
@@ -54,6 +56,9 @@ class WelcomeScreen extends StatefulWidget {
     this.devPreview = false,
     this.devIntroductionBuilder,
     this.devIntroductionRouteBuilder,
+    this.onboardingGoldDesign = ZyraOnboardingGoldDesign.diagonalDust,
+    this.onboardingGoldMotion = ZyraOnboardingGoldMotion.liveDrift,
+    this.onboardingPageEntries,
   });
 
   @override
@@ -196,7 +201,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            if (widget.devPreview) const ZyraOnboardingGoldBackdrop(),
+            if (widget.devPreview)
+              ZyraOnboardingGoldBackdrop(
+                design: widget.onboardingGoldDesign,
+                motion: widget.onboardingGoldMotion,
+                pageEntries: widget.onboardingPageEntries,
+              ),
             SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 28),
@@ -275,18 +285,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       button: orderedButtons[1],
                       height: 46,
                     ),
-                    if (widget.devPreview)
-                      TextButton(
-                        key: const ValueKey('welcome_dev_skip'),
-                        onPressed: _loading ? null : _continueWithGoogle,
-                        child: Text(
-                          'Skip · DEV',
-                          style: ZyraText.button(
-                            size: 11,
-                            color: ZyraColors.goldText,
-                          ),
-                        ),
-                      ),
                     const SizedBox(height: 12),
                     if (!widget.devPreview)
                       TextButton(
@@ -300,21 +298,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               ),
                         child: Text(
                           'Use recovery email',
-                          style: ZyraText.subtext(size: 12.5),
-                        ),
-                      ),
-                    if (!widget.devPreview && ZyraExternalTesterPolicy.enabled)
-                      TextButton(
-                        key: const ValueKey('welcome_tester_access'),
-                        onPressed: _loading
-                            ? null
-                            : () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => const TesterAccessScreen(),
-                                ),
-                              ),
-                        child: Text(
-                          'Review & tester access',
                           style: ZyraText.subtext(size: 12.5),
                         ),
                       ),

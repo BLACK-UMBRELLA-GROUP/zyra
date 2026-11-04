@@ -1,3 +1,4 @@
+import '../support/queue44_signup_flow_fixture.dart';
 // Queue 10: actual shared entry and Guardian signup, with bounded offline
 // presenter fixtures for transient states. No OAuth success or real ID check.
 import 'dart:async';
@@ -7,9 +8,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_onboarding_interaction.dart';
-import 'package:zyra/dev/dev_signup_process.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
+import '../support/queue44_onboarding_interaction_fixture.dart';
 import 'package:zyra/models/zyra_signup_membership_choice.dart';
 import 'package:zyra/screens/auth/role_selection_screen.dart';
 import 'package:zyra/screens/onboarding/account_path_overview_screen.dart';
@@ -140,7 +139,7 @@ Future<void> _entry(
   required bool guardian,
 }) async {
   final tester = h.tester;
-  await h.mount(const DevSignUpProcessScreen());
+  await h.mount(const SignupFlowFixture());
   expect(find.byType(WelcomeScreen), findsOneWidget);
   expect(ZyraInternalPreviewClient.isActive, isTrue);
   expect(
@@ -518,7 +517,7 @@ void main() {
   });
   setUp(() {
     if (!signupCaptureEnabled) return;
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
+    OnboardingFixtureController.instance.resetForTesting();
     AppState.instance.resetForAccountChange();
     ZyraDevOnboardingInteraction.resetForTesting();
     ZyraDevOnboardingStoryNavigation.resetForTesting();

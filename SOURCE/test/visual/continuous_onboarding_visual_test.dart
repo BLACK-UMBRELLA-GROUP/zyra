@@ -1,3 +1,4 @@
+import '../support/queue44_signup_flow_fixture.dart';
 // Candidate-only real-font evidence for the continuous local onboarding flow.
 // Does not promote approved pixels or invoke account/provider/backend paths.
 // Capture with --update-goldens and
@@ -13,13 +14,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_onboarding_lab.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
-import 'package:zyra/dev/dev_role_choice_design.dart';
-import 'package:zyra/dev/dev_signup_process.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
+import '../support/queue44_onboarding_story_fixture.dart';
+import '../support/queue44_gold_fixture.dart';
+import '../support/queue44_role_choice_fixture.dart';
 import 'package:zyra/screens/auth/role_selection_screen.dart';
-import 'package:zyra/screens/dev/developer_access_screen.dart';
 import 'package:zyra/screens/onboarding/onboarding_stage_intro_screen.dart';
 import 'package:zyra/screens/splash_screen.dart';
 import 'package:zyra/screens/welcome_screen.dart';
@@ -29,7 +27,6 @@ import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_onboarding_direction_style.dart';
 import 'package:zyra/widgets/zyra_onboarding_continue_action.dart';
-import 'package:zyra/widgets/zyra_onboarding_study.dart';
 
 const _capture = bool.fromEnvironment(
   'ZYRA_CONTINUOUS_ONBOARDING_CAPTURE_CANDIDATES',
@@ -74,7 +71,7 @@ Future<void> _mount(
     ),
   );
   await tester.pumpAndSettle();
-  if (screen is DevSignUpProcessScreen) {
+  if (screen is SignupFlowFixture) {
     await tester.runAsync(() async {
       await precacheImage(
         const AssetImage('assets/auth/google_g_logo.png'),
@@ -106,7 +103,7 @@ void _checkEdgeToEdge(WidgetTester tester, Size viewport, Type screenType) {
     findsNothing,
   );
   expect(find.byKey(const ValueKey('dev_onboarding_close')), findsNothing);
-  expect(find.byType(DevOnboardingDirectionsScreen), findsNothing);
+  expect(find.byType(OnboardingStoryFixture), findsNothing);
   expect(tester.takeException(), isNull);
 }
 
@@ -229,7 +226,7 @@ void main() {
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
+    OnboardingFixtureController.instance.resetForTesting();
     ZyraDevRoleChoiceDesign.resetForTesting();
     ZyraInternalPreviewClient.beginPreview();
     ZyraDevOnboardingGoldMotion.select(ZyraOnboardingGoldMotion.pageEntrance);
@@ -242,7 +239,7 @@ void main() {
     ZyraInternalPreviewClient.finishSignOut();
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     ZyraDeveloperAccess.resetAuthorizationForTesting();
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
+    OnboardingFixtureController.instance.resetForTesting();
   });
 
   tearDownAll(() {
@@ -251,30 +248,37 @@ void main() {
     ZyraText.testWordmarkFontFamily = null;
   });
 
-  testWidgets('developer landing real-font Onboarding label', (tester) async {
-    await _mount(
-      tester,
-      const DeveloperAccessScreen(),
-      size: const Size(390, 844),
-    );
-    for (final action in const [
-      ('dev_access_seeker', 'Seeker'),
-      ('dev_access_guardian', 'Guardian'),
-      ('dev_access_signup', 'Onboarding'),
-    ]) {
-      final button = find.byKey(ValueKey(action.$1));
-      expect(button.hitTestable(), findsOneWidget);
+  testWidgets(
+    'provider entry real-font defaults exclude developer account selectors',
+    (tester) async {
+      await _mount(
+        tester,
+        const Queue44WelcomeFixture(devPreview: true),
+        size: const Size(390, 844),
+      );
+      for (final key in const [
+        'dev_access_seeker',
+        'dev_access_guardian',
+        'dev_access_signup',
+        'welcome_dev_skip',
+        'welcome_tester_access',
+      ]) {
+        expect(find.byKey(ValueKey(key)), findsNothing);
+      }
       expect(
-        find.descendant(of: button, matching: find.text(action.$2)),
+        find.byKey(const ValueKey('welcome_google')).hitTestable(),
         findsOneWidget,
       );
-    }
-    expect(find.text('Sign up'), findsNothing);
-    expect(tester.takeException(), isNull);
-    await _candidate(tester, 'developer_landing__standard');
-    await tester.pumpWidget(const SizedBox.shrink());
-    await tester.pumpAndSettle();
-  });
+      expect(
+        find.byKey(const ValueKey('welcome_apple')).hitTestable(),
+        findsOneWidget,
+      );
+      expect(tester.takeException(), isNull);
+      await _candidate(tester, 'provider_entry__standard');
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pumpAndSettle();
+    },
+  );
 
   for (final viewport in const [
     (size: Size(390, 844), name: 'standard'),
@@ -300,14 +304,12 @@ void main() {
     ) async {
       await _mount(
         tester,
-        const DevSignUpProcessScreen(
-          initialDirection: ZyraOnboardingDirection.luma,
-        ),
+        const SignupFlowFixture(initialDirection: ZyraOnboardingDirection.luma),
         size: viewport.size,
         scale: viewport.scale,
       );
       expect(find.byType(WelcomeScreen), findsOneWidget);
-      expect(find.byType(DevOnboardingIntroduction), findsNothing);
+      expect(find.byType(OnboardingIntroductionFixture), findsNothing);
       _checkEdgeToEdge(tester, viewport.size, WelcomeScreen);
       for (final provider in const ['apple', 'google']) {
         final button = find.byKey(ValueKey('welcome_$provider'));
@@ -349,7 +351,7 @@ void main() {
       await tester.tap(welcomeContinue);
       await tester.pumpAndSettle();
       for (var page = 0; page < 4; page++) {
-        expect(find.byType(DevOnboardingIntroduction), findsOneWidget);
+        expect(find.byType(OnboardingIntroductionFixture), findsOneWidget);
         final content = find.byKey(
           ValueKey(
             page == 0
@@ -361,7 +363,7 @@ void main() {
         expect(find.text('${page + 1} / 4'), findsOneWidget);
         expect(find.byType(RoleSelectionScreen), findsNothing);
         expect(find.text('Finish preview'), findsNothing);
-        _checkEdgeToEdge(tester, viewport.size, DevOnboardingIntroduction);
+        _checkEdgeToEdge(tester, viewport.size, OnboardingIntroductionFixture);
         if (page == 0) {
           await _candidate(
             tester,
@@ -384,7 +386,7 @@ void main() {
         await tester.pumpAndSettle();
       }
       expect(find.byType(RoleSelectionScreen), findsOneWidget);
-      expect(find.byType(DevOnboardingIntroduction), findsNothing);
+      expect(find.byType(OnboardingIntroductionFixture), findsNothing);
       _checkEdgeToEdge(tester, viewport.size, RoleSelectionScreen);
       await _candidate(
         tester,

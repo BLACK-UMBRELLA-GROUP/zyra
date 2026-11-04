@@ -1,3 +1,4 @@
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -8,7 +9,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
 import 'package:zyra/dev/zyra_draft_timeline_presentation.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_tab.dart';
 import 'package:zyra/dev/zyra_request_capacity_choice.dart';
@@ -53,7 +53,7 @@ Future<void> _mount(
   addTearDown(tester.view.resetDevicePixelRatio);
   await tester.pumpWidget(
     MaterialApp(
-      navigatorObservers: [ZyraDevControlsRouteObserver()],
+      navigatorObservers: [ZyraPreviewRouteObserver()],
       theme: ThemeData.dark(),
       builder: (context, child) => MediaQuery(
         data: MediaQuery.of(context).copyWith(
@@ -65,6 +65,7 @@ Future<void> _mount(
         child: RepaintBoundary(key: _boundary, child: child!),
       ),
       home: ViewRequestDraftScreen(
+        fixture: ZyraShellTestFixture().fixture,
         ownerGeneration: ZyraAccountState.generation,
         ownerId: ZyraAccountState.userId,
       ),
@@ -201,7 +202,7 @@ Future<void> _nav(WidgetTester tester, int index) async {
     find.byType(ZyraShellNavigation).evaluate().isEmpty && depth < 8;
     depth++
   ) {
-    if (find.byKey(const ValueKey('dev_controls_page')).evaluate().isNotEmpty) {
+    if (zyraShellFixtureFor(tester).setupScopeOpen) {
       await closeZyraDevControls(tester);
       continue;
     }
@@ -229,24 +230,15 @@ Future<void> _nav(WidgetTester tester, int index) async {
 }
 
 Future<void> _controls(WidgetTester tester) async {
-  for (
-    var depth = 0;
-    _key('concept_page_options_context').evaluate().isEmpty && depth < 10;
-    depth++
-  ) {
-    await _press(tester, 'draft_back');
-  }
-  expect(find.text('Page options'), findsOneWidget);
-  expect(_key('concept_page_options_context'), findsOneWidget);
+  await openZyraDevControls(tester);
+  expect(find.text('Page options'), findsNothing);
+  expect(_key('concept_page_options_context'), findsNothing);
 }
 
 Future<void> _seed(WidgetTester tester) async {
   await _nav(tester, 1);
   await _controls(tester);
-  expect(
-    tester.widget<Text>(_key('concept_page_options_context')).data,
-    'Journey',
-  );
+  expect(_key('concept_page_options_context'), findsNothing);
   await _press(tester, 'concept_journey_preview_3');
   _expectOccupied(tester, _occupied);
 }

@@ -82,6 +82,7 @@ Future<void> _mount(
   await h.mountPresentation(
     checkpoint: initial,
     child: ZyraOneJourneyConceptShell(
+      fixture: ZyraShellTestFixture().fixture,
       key: UniqueKey(),
       canAct: canAct ?? () => true,
       onExit: () => fail('Guardian safety must remain local.'),

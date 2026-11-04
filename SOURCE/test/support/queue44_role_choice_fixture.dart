@@ -1,9 +1,10 @@
+// Test-only code-selected fixture state and presentation; no application controls.
 // Chosen presentation for the protected first-use role-choice page.
 // This never changes account role, signup drafts, or ordinary onboarding.
 import 'package:flutter/foundation.dart';
 
-import '../services/zyra_account_state.dart';
-import '../services/zyra_developer_access.dart';
+import 'package:zyra/services/zyra_account_state.dart';
+import 'package:zyra/services/zyra_developer_access.dart';
 
 enum ZyraRoleChoiceDesign {
   guidedPaths('2 · Guided paths');

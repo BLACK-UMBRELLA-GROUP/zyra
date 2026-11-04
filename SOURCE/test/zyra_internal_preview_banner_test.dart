@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
-import 'package:zyra/dev/zyra_global_dev_overlay.dart';
-import 'package:zyra/screens/dev/developer_access_screen.dart';
+import 'package:zyra/widgets/zyra_account_session_host.dart';
+import 'package:zyra/dev/dev_discovery_directions.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
+import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/theme/zyra_text.dart';
 
@@ -13,7 +13,6 @@ void main() {
   const bannerKey = ValueKey('main_app_founder_preview_safety_banner');
 
   setUp(() {
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
     ZyraText.useTestFontStubs = true;
   });
 
@@ -21,7 +20,6 @@ void main() {
     ZyraInternalPreviewClient.finishSignOut();
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     ZyraDeveloperAccess.resetAuthorizationForTesting();
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
     ZyraText.useTestFontStubs = false;
   });
 
@@ -35,23 +33,20 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         navigatorKey: navigatorKey,
-        builder: (context, child) => ZyraGlobalDevOverlayHost(
+        builder: (context, child) => ZyraAccountSessionHost(
           navigatorKey: navigatorKey,
           authStateChangesOverride: const Stream.empty(),
           child: child ?? const SizedBox.shrink(),
         ),
-        home: const DeveloperAccessScreen(),
+        home: ViewRequestDraftScreen(
+          ownerGeneration: ZyraAccountState.generation,
+          ownerId: ZyraAccountState.userId,
+        ),
       ),
     );
     await tester.pumpAndSettle();
 
-    expect(
-      find.descendant(
-        of: find.byType(DeveloperAccessScreen),
-        matching: find.text('Developer Access'),
-      ),
-      findsOneWidget,
-    );
+    expect(find.byType(ViewRequestDraftScreen), findsOneWidget);
     expect(find.byKey(bannerKey), findsNothing);
     expect(ZyraInternalPreviewClient.isActive, isTrue);
 
@@ -69,13 +64,7 @@ void main() {
 
     navigatorKey.currentState!.pop();
     await tester.pumpAndSettle();
-    expect(
-      find.descendant(
-        of: find.byType(DeveloperAccessScreen),
-        matching: find.text('Developer Access'),
-      ),
-      findsOneWidget,
-    );
+    expect(find.byType(ViewRequestDraftScreen), findsOneWidget);
     expect(find.byKey(bannerKey), findsNothing);
     expect(ZyraInternalPreviewClient.isActive, isTrue);
 
@@ -89,7 +78,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.byType(DeveloperAccessScreen), findsNothing);
+    expect(find.byType(ViewRequestDraftScreen), findsNothing);
     expect(find.text('Replacement preview page'), findsOneWidget);
     expect(find.byKey(bannerKey), findsNothing);
     expect(ZyraInternalPreviewClient.isActive, isTrue);
@@ -110,7 +99,7 @@ void main() {
           valueListenable: authority,
           builder: (context, allowed, _) => MaterialApp(
             navigatorKey: navigatorKey,
-            builder: (context, child) => ZyraGlobalDevOverlayHost(
+            builder: (context, child) => ZyraAccountSessionHost(
               navigatorKey: navigatorKey,
               authorizationReaderOverride: () => allowed,
               authStateChangesOverride: const Stream.empty(),

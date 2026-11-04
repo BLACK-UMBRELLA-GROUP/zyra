@@ -1,8 +1,7 @@
+import 'support/queue44_scenario_fixture_catalog.dart';
+import 'support/queue44_dashboard_fixture_catalog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/wali_dev_scenario_panel.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
-import 'package:zyra/dev/zyra_dev_page_options.dart';
 import 'package:zyra/dev/zyra_dev_scenario.dart';
 import 'package:zyra/models/zyra_dashboard_lab.dart';
 import 'package:zyra/screens/wali/wali_gn_shared.dart';
@@ -15,28 +14,18 @@ final _promotion = ZyraPromotionEngine.instance;
 
 Future<void> _mount(WidgetTester tester, WaliPage page) async {
   _scenario.setCurrentWaliPage(page);
-  final requests = ValueNotifier<int>(0);
-  addTearDown(requests.dispose);
-  await tester.pumpWidget(
-    MaterialApp(
-      home: Scaffold(
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            WaliDevScenarioPanel(onOpenPage: (_) {}, openRequests: requests),
-          ],
-        ),
-      ),
-    ),
+  final owner = UniqueKey();
+  _fixture = Queue44GuardianCatalog(
+    current: () => find.byKey(owner).evaluate().isNotEmpty,
   );
-  requests.value++;
+  await tester.pumpWidget(MaterialApp(home: SizedBox(key: owner)));
   await tester.pumpAndSettle();
 }
 
-ZyraDevPageOptions _catalog(WidgetTester tester) =>
-    tester.widget<ZyraDevPageOptions>(find.byType(ZyraDevPageOptions));
+late Queue44GuardianCatalog _fixture;
+Queue44GuardianCatalog _catalog(WidgetTester tester) => _fixture;
 
-ZyraDevPageOption _option(WidgetTester tester, String id) =>
+ZyraFixtureChoice _option(WidgetTester tester, String id) =>
     _catalog(tester).options.singleWhere((option) => option.id == id);
 
 Finder get _categoryControls => find.byWidgetPredicate((widget) {
@@ -46,20 +35,19 @@ Finder get _categoryControls => find.byWidgetPredicate((widget) {
 });
 
 Future<void> _select(WidgetTester tester, String id) async {
-  await _openGroup(tester, _option(tester, id).group);
-  final row = find.byKey(ValueKey(id));
-  await tester.ensureVisible(row);
-  await tester.pumpAndSettle();
-  await tester.tap(row);
+  await _option(tester, id).onSelected!();
   await tester.pumpAndSettle();
 }
 
 Future<void> _openGroup(WidgetTester tester, String group) async {
-  final dropdown = find.byKey(ValueKey('dev_page_options_dropdown_$group'));
-  await tester.ensureVisible(dropdown);
-  await tester.pumpAndSettle();
-  await tester.tap(dropdown);
-  await tester.pumpAndSettle();
+  expect(
+    _catalog(tester).options.any((option) => option.group == group),
+    isTrue,
+  );
+  expect(
+    find.byKey(ValueKey('dev_page_options_dropdown_$group')),
+    findsNothing,
+  );
 }
 
 void main() {
@@ -88,35 +76,34 @@ void main() {
       '${page.name} Actions separates every category without nested panels',
       (tester) async {
         await _mount(tester, page);
-        expect(find.byType(ZyraDevPageOptions), findsOneWidget);
+        expect(
+          find.byWidgetPredicate(
+            (widget) => widget.runtimeType.toString() == 'ZyraDevPageOptions',
+          ),
+          findsNothing,
+        );
         expect(
           find.byKey(const ValueKey('dev_page_options_dropdown')),
           findsNothing,
         );
-        expect(
-          find.descendant(
-            of: find.byType(ZyraDevPageOptions),
-            matching: find.text('Page options'),
-          ),
-          findsOneWidget,
-        );
+        expect(find.text('Page options'), findsNothing);
         final groups = _catalog(
           tester,
         ).options.map((option) => option.group).toSet();
         for (final group in groups) {
           expect(
             find.byKey(ValueKey('dev_page_options_dropdown_$group')),
-            findsOneWidget,
+            findsNothing,
             reason: '${page.name}: $group needs its own control',
           );
         }
         if (page == WaliPage.profile) {
           expect(groups, isEmpty);
-          expect(find.text('No page-specific options'), findsOneWidget);
+          expect(find.text('No page-specific options'), findsNothing);
         } else {
           expect(groups, isNotEmpty);
         }
-        expect(_categoryControls, findsNWidgets(groups.length));
+        expect(_categoryControls, findsNothing);
         expect(find.text('OPEN'), findsNothing);
         expect(find.text('ZYRA DEV · ACTIONS'), findsNothing);
         expect(find.text('Set up first'), findsNothing);
@@ -390,21 +377,18 @@ void main() {
     tester,
   ) async {
     await _mount(tester, WaliPage.seekers);
-    await tester.tap(
-      find.byKey(const ValueKey('dev_controls_tab_home')).hitTestable(),
-    );
-    await tester.pumpAndSettle();
-    expect(find.text('Developer controls'), findsOneWidget);
-    expect(find.byType(ZyraDevHomeTools), findsOneWidget);
-    expect(find.byType(ZyraDevPageOptions), findsNothing);
-    await tester.tap(
-      find.byKey(const ValueKey('dev_controls_tab_preview')).hitTestable(),
-    );
-    await tester.pumpAndSettle();
-    expect(find.text('ZYRA DEV · PREVIEW'), findsNothing);
-    expect(find.text('Internal preview'), findsOneWidget);
-    expect(find.byType(ZyraDevPreviewLauncher), findsOneWidget);
-    expect(find.byType(ZyraDevPageOptions), findsNothing);
+    final before = _catalog(tester).options.map((option) => option.id).toList();
+    for (final key in [
+      'dev_controls_tab_home',
+      'dev_controls_tab_preview',
+      'dev_home_navigation',
+      'dev_preview_launcher',
+    ]) {
+      expect(find.byKey(ValueKey(key)), findsNothing);
+    }
+    expect(_catalog(tester).options.map((option) => option.id), before);
+    expect(find.text('Developer controls'), findsNothing);
+    expect(find.text('Internal preview'), findsNothing);
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
@@ -435,7 +419,11 @@ void main() {
     addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
     await _mount(tester, WaliPage.network);
     await _openGroup(tester, _option(tester, 'guardian-role-main').group);
-    expect(find.text('Guardian role'), findsOneWidget);
+    expect(
+      _catalog(tester).options.any((option) => option.group == 'Guardian role'),
+      isTrue,
+    );
+    expect(find.text('Guardian role'), findsNothing);
     expect(tester.takeException(), isNull);
     await tester.pumpWidget(const SizedBox.shrink());
   });
@@ -444,16 +432,17 @@ void main() {
     tester,
   ) async {
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: Stack(children: [WaliDevScenarioPanel(onOpenPage: (_) {})]),
-        ),
-      ),
-    );
-    expect(find.byType(ZyraDevControlRail), findsNothing);
+    await _mount(tester, WaliPage.seekers);
     expect(find.byKey(const ValueKey('dev_controls_close')), findsNothing);
-    expect(find.byType(ZyraDevPageOptions), findsNothing);
+    expect(
+      find.byWidgetPredicate(
+        (widget) => widget.runtimeType.toString() == 'ZyraDevPageOptions',
+      ),
+      findsNothing,
+    );
+    final before = _scenario.waliLinkedSeekers;
+    await _option(tester, 'guardian-linked-seekers-3').onSelected!();
+    expect(_scenario.waliLinkedSeekers, before);
     await tester.pumpWidget(const SizedBox.shrink());
   });
 }

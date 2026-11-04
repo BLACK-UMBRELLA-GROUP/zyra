@@ -9,8 +9,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../../dev/dev_role_choice_design.dart';
-import '../../dev/zyra_dev_surface_coordinator.dart';
 import '../../services/zyra_auth.dart';
 import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_initial_signup_draft_service.dart';
@@ -79,15 +77,6 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
       duration: const Duration(milliseconds: 520),
       value: widget.devPreview && widget.animateDevEntrance ? 0 : 1,
     )..addStatusListener(_onEntranceStatus);
-    if (widget.devPreview) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
-        ZyraDevSurfaceCoordinator.instance.attachRoleChoice(
-          this,
-          isCurrent: () => mounted && ModalRoute.of(context)?.isCurrent == true,
-        );
-      });
-    }
     // A requested preview is never a live draft reader, even when denied.
     if (widget.devPreview) return;
     try {
@@ -128,9 +117,6 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
   void dispose() {
     _roleFocusTimer?.cancel();
     _roleFocusRevision++;
-    if (widget.devPreview) {
-      ZyraDevSurfaceCoordinator.instance.detachRoleChoice(this);
-    }
     _scrollController.dispose();
     _entrance.removeStatusListener(_onEntranceStatus);
     _entrance.dispose();
@@ -222,10 +208,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
 
   @override
   Widget build(BuildContext context) => ListenableBuilder(
-    listenable: Listenable.merge([
-      ZyraDeveloperAccess.authorizationChanges,
-      if (widget.devPreview) ZyraDevRoleChoiceDesign.changes,
-    ]),
+    listenable: Listenable.merge([ZyraDeveloperAccess.authorizationChanges]),
     builder: (context, _) {
       if (widget.devPreview && !ZyraDeveloperAccess.canUseDeveloperTools) {
         return Scaffold(
@@ -346,7 +329,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
                     _entrance.value,
                   );
                   return Opacity(
-                    key: const ValueKey('dev_onboarding_downward_entry'),
+                    key: const ValueKey('onboarding_downward_entry'),
                     opacity: .08 + .92 * progress,
                     child: Transform.translate(
                       offset: Offset(0, 54 * (1 - progress)),

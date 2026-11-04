@@ -10,6 +10,8 @@ import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/onboarding_scaffold.dart';
 
 import 'initial_signup_draft_test.dart' show FakeSignupStore;
+import 'support/queue44_signup_flow_driver.dart';
+import 'package:zyra/screens/onboarding/onboarding_stage_intro_screen.dart';
 
 const _ownerId = 'dob-test-owner';
 
@@ -87,14 +89,15 @@ void main() {
     await tester.pumpAndSettle();
     if (preview) {
       if (role == ZyraSignupRole.seeker) {
-        await tester.tap(
-          find.byKey(const ValueKey('onboarding_stage_dev_skip')),
-        );
+        tester
+            .widget<OnboardingStageIntroScreen>(
+              find.byType(OnboardingStageIntroScreen),
+            )
+            .onContinue();
         await tester.pumpAndSettle();
       }
       for (var step = 0; step < draft.step; step++) {
-        await tester.tap(find.byKey(const ValueKey('onboarding_dev_skip')));
-        await tester.pumpAndSettle();
+        await advanceSignupQuestionFromCode(tester, installPhotoFixture: false);
       }
     }
     expect(find.text('When were you born?'), findsOneWidget);

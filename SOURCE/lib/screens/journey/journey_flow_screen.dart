@@ -55,10 +55,8 @@ import '../../data/zyra_journey_intelligence.dart';
 import '../../data/zyra_journey_pause_state.dart';
 import '../../data/zyra_journey_scroll.dart';
 import '../../data/zyra_journey_stages.dart';
-import '../../data/zyra_reference_data.dart';
 import '../../data/zyra_release_gates.dart';
 import '../../dev/zyra_dev_scenario.dart';
-import '../../dev/zyra_dev_tool_section.dart';
 import '../../models/journey_match.dart';
 import '../../models/seeker_profile.dart';
 import '../../models/zyra_gender.dart';
@@ -88,7 +86,6 @@ import '../wali/link_wali_screen.dart';
 // zyra_report_service / anchored_card_overlay / report_profile_sheet
 // imports left with the ⋮ menu (2026-08-13) — reporting from a Journey
 // now happens at the person: the Active card's flag on Connections.
-import '../../widgets/zyra_glass_dialog.dart';
 import '../../widgets/zyra_intelligence_card.dart';
 import '../../widgets/zyra_loading.dart';
 import '../../widgets/zyra_profile_image.dart';
@@ -168,18 +165,13 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
   ZyraJourneyPauseState? _devPausePreview;
   ZyraPauseDevScenario _devPauseScenario = ZyraPauseDevScenario.active;
   bool _devPauseEnded = false;
-  Set<int> _devGuardianSelections = const <int>{};
   bool _lifeSnapshotOpen = false;
-  bool _lifeSnapshotOpenedFromDevJump = false;
   bool _lifeSnapshotMineRevealed = false;
   bool _lifeSnapshotTheirsRevealed = false;
   bool _guardianProfilesMineRevealed = false;
-  bool _guardianProfilesTheirsRevealed = false;
+  final bool _guardianProfilesTheirsRevealed = false;
   Set<int> _guardianSalamIndices = const <int>{};
   List<_JourneyGuardianPortrait>? _guardianHistoryPortraits;
-  bool _devLifeSnapshotHasBio = true;
-  Set<String> _devLifeSnapshotFieldIds =
-      ZyraJourneyLifeSnapshotMock.defaultVisibleFieldIds;
   final Map<String, GlobalKey<_JourneyStageScrollShellState>> _stageScrollKeys =
       {};
 
@@ -256,7 +248,6 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
     if (_journeyExperienceStarted) return;
     _journeyExperienceStarted = true;
     _refresh();
-    _loadPlusUnlock();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) _warmJourneyPortraits();
     });
@@ -492,7 +483,6 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
         if (stageChanged) {
           _advanceReason = null;
           _lifeSnapshotOpen = false;
-          _lifeSnapshotOpenedFromDevJump = false;
           _lifeSnapshotMineRevealed = false;
           _lifeSnapshotTheirsRevealed = false;
           _stageDecision = null;
@@ -892,138 +882,10 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
     if (mounted) Navigator.of(context).pop();
   }
 
-  /// Legacy live-account Journey controls stay disabled in the one-app model.
-  // Legacy server-backed Journey jump controls are not part of local previews.
-  // Keep disabled; the shared local scenario panel owns preview controls.
-  bool get _isDevAccount => false;
-
-  bool _jumping = false;
-
-  /// DR-ZYRA-135. Whether this account holds a simulated Compatibility
-  /// Unlock+ on the other Seeker. Read from the server, not held
-  /// locally — a switch that shows its own last write is a switch that
-  /// lies.
-  bool _hasPlus = false;
-
-  Future<void> _loadPlusUnlock() async {
-    if (!_isDevAccount) return;
-    final v = await ZyraJourneyService.fetchHasPlusUnlock(widget.profile.id);
-    if (mounted) setState(() => _hasPlus = v);
-  }
-
-  Future<void> _setPlusUnlock(bool value) async {
-    if (_jumping) return;
-    setState(() => _jumping = true);
-    try {
-      await ZyraJourneyService.devSetPlusUnlock(widget.profile.id, value);
-      await _loadPlusUnlock();
-      await _refresh(showSpinner: false);
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
-    } finally {
-      if (mounted) setState(() => _jumping = false);
-    }
-  }
-
-  /// DEV ONLY. Does the OTHER party's half of the stage the Journey is
-  /// standing on — their Salam, their answers, their Continue, their
-  /// Guardian's answers — and nothing else.
-  ///
-  /// Founder, 2026-08-11: "make the whole journey process until the message
-  /// stage." It could not be walked at all before this. Every stage from the
-  /// Salam onwards is mutual BY DESIGN, so one person testing alone reaches
-  /// "Waiting for their answers" at stage two and stops; six of the eight
-  /// stages had therefore never been seen running.
-  ///
-  /// This is not a skip. It does not move the Journey on — the tester still
-  /// presses their own buttons, still sees their own waiting states, and the
-  /// real gates still decide. What ends is the wait for a person who is never
-  /// going to open the app.
-  ///
-  /// The question ids travel from here because the bank lives in
-  /// data/journey_questions.dart and the database has never been told about
-  /// it. Sending the wrong set would write answers to questions that are not
-  /// on screen, so it is read from the same [JourneyQuestions] the stage view
-  /// itself renders rather than a second list.
-  Future<void> _counterpartComplete() async {
-    if (_jumping) return;
-    if (_lifeSnapshotOpen && _stage == 'compatibility_reveal') {
-      if (_lifeSnapshotTheirsRevealed) {
-        return;
-      }
-      setState(() => _lifeSnapshotTheirsRevealed = true);
-      return;
-    }
-    if (_stage == 'wali_gate') {
-      if (_guardianProfilesTheirsRevealed) {
-        return;
-      }
-      setState(() => _guardianProfilesTheirsRevealed = true);
-      return;
-    }
-    setState(() => _jumping = true);
-    try {
-      final ids = switch (_stage) {
-        'phase_1' => JourneyQuestions.phase1.map((q) => q.id).toList(),
-        'phase_2' => JourneyQuestions.phase2.map((q) => q.id).toList(),
-        'phase_3' => JourneyQuestions.phase3.map((q) => q.id).toList(),
-        'family_stage' =>
-          JourneyQuestions.seekerToWali.map((q) => q.id).toList(),
-        _ => const <String>[],
-      };
-      await ZyraJourneyService.devCounterpartComplete(
-        widget.matchId,
-        questionIds: ids,
-      );
-      await _refresh(showSpinner: false);
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
-    } finally {
-      if (mounted) setState(() => _jumping = false);
-    }
-  }
-
-  void _toggleDevGuardian(int index) {
-    if (_jumping || _pauseActionBusy) return;
-    setState(() {
-      _devGuardianSelections = ZyraJourneyGuardianSelection.toggle(
-        _devGuardianSelections,
-        index,
-      );
-    });
-  }
-
-  void _setDevLifeSnapshotBio(bool value) {
-    if (_jumping || _pauseActionBusy) return;
-    setState(() => _devLifeSnapshotHasBio = value);
-  }
-
-  void _toggleDevLifeSnapshotField(String id) {
-    if (_jumping || _pauseActionBusy) return;
-    setState(() {
-      _devLifeSnapshotFieldIds = ZyraJourneyLifeSnapshotMock.toggle(
-        _devLifeSnapshotFieldIds,
-        id,
-      );
-    });
-  }
-
-  void _setAllDevLifeSnapshotFields(bool visible) {
-    if (_jumping || _pauseActionBusy) return;
-    setState(() {
-      _devLifeSnapshotFieldIds = visible
-          ? ZyraJourneyLifeSnapshotMock.defaultVisibleFieldIds
-          : const <String>{};
-    });
-  }
-
-  Future<void> _openLifeSnapshot({bool fromDevJump = false}) async {
+  Future<void> _openLifeSnapshot() async {
     if (!mounted) return;
     setState(() {
       _lifeSnapshotOpen = true;
-      _lifeSnapshotOpenedFromDevJump = fromDevJump;
       _lifeSnapshotMineRevealed = false;
       _lifeSnapshotTheirsRevealed = false;
       _viewedRibbonStage = null;
@@ -1058,19 +920,6 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
   List<_JourneyGuardianPortrait> get _guardianPortraitsForHistory {
     final remembered = _guardianHistoryPortraits;
     if (remembered != null && remembered.isNotEmpty) return remembered;
-    if (_isDevAccount) {
-      return [
-        for (final guardian
-            in ZyraJourneyGuardianSelection.otherGuardianPreview)
-          _JourneyGuardianPortrait(
-            firstName: guardian.firstName,
-            relationship:
-                zyraRelationshipLabel(guardian.relationship) ??
-                guardian.relationship,
-            isMain: guardian.isMain,
-          ),
-      ];
-    }
     return const [_JourneyGuardianPortrait(firstName: null, isMain: true)];
   }
 
@@ -1084,120 +933,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
   }
 
   Future<void> _continueLifeSnapshot() async {
-    if (_isDevAccount && _lifeSnapshotOpenedFromDevJump) {
-      await _jumpToStage('wali_gate');
-      return;
-    }
     await _advance('compatibility_reveal');
-  }
-
-  /// The Guardian stage's six named Guardians are a visual developer mock,
-  /// but its Main
-  /// Guardian also needs to satisfy the real server gate before the tester can
-  /// move on. The existing dev RPC creates one active Main for each Seeker;
-  /// the five Additional selections remain display-only because production
-  /// has no artificial Guardian count cap and this panel must not invent one.
-  Future<bool> _prepareDevGuardianGate() async {
-    if (!_isDevAccount ||
-        !_devGuardianSelections.contains(
-          ZyraJourneyGuardianSelection.mainIndex,
-        ) ||
-        _jumping) {
-      return false;
-    }
-    setState(() => _jumping = true);
-    try {
-      await ZyraJourneyService.devCounterpartComplete(widget.matchId);
-      await _refresh(showSpinner: false);
-      return true;
-    } catch (e) {
-      if (!mounted) return false;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
-      return false;
-    } finally {
-      if (mounted) setState(() => _jumping = false);
-    }
-  }
-
-  /// DEV ONLY, DESTRUCTIVE. Puts this Journey back to its first stage and
-  /// throws away everything done inside it, so it can be walked again.
-  ///
-  /// CONFIRMED FIRST. It is the only control in this panel that destroys
-  /// anything — the rest move a stage or fill in the other person's half, and
-  /// both are recoverable by carrying on. This is not, and after a long
-  /// walk-through there is real work behind that tap.
-  Future<void> _rewindJourney() async {
-    if (_jumping) return;
-    final ok = await showZyraGlassChoice(
-      context: context,
-      icon: Icons.restart_alt,
-      title: 'Start this Journey again?',
-      body:
-          'Puts you back at Compatibility Reveal and clears everything you '
-          'both did — answers, ratings, Salams, the reveal, family answers, '
-          'messages and Timeline milestones.\n\nThe match itself stays, and so '
-          'does your Guardian link.',
-      primaryLabel: 'Start again',
-      secondaryLabel: 'Cancel',
-    );
-    if (ok != true || !mounted) return;
-
-    setState(() => _jumping = true);
-    try {
-      await ZyraJourneyService.devRewindJourney(matchId: widget.matchId);
-      if (mounted) {
-        setState(() {
-          _guardianProfilesMineRevealed = false;
-          _guardianProfilesTheirsRevealed = false;
-          _guardianSalamIndices = const <int>{};
-          _guardianHistoryPortraits = null;
-        });
-      }
-      await _refresh(showSpinner: false);
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
-    } finally {
-      if (mounted) setState(() => _jumping = false);
-    }
-  }
-
-  /// DEV ONLY. Skips the Pre-Journey Ritual, the Guardian Gate and the
-  /// 48-hour Family Review Period in one tap.
-  Future<void> _jumpToStage(String stage) async {
-    if (_jumping) return;
-    setState(() => _jumping = true);
-    try {
-      final serverStage = stage == ZyraJourneyStages.lifeSnapshotPreview.value
-          ? 'compatibility_reveal'
-          : stage;
-      await ZyraJourneyService.devSetStage(widget.matchId, serverStage);
-      final targetOrder = ZyraJourneyStages.previewOf(stage)?.order;
-      if (mounted &&
-          targetOrder != null &&
-          targetOrder <= ZyraJourneyStages.previewOf('wali_gate')!.order) {
-        setState(() {
-          _guardianProfilesMineRevealed = false;
-          _guardianProfilesTheirsRevealed = false;
-          _guardianSalamIndices = const <int>{};
-          _guardianHistoryPortraits = null;
-        });
-      }
-      // The server is the source of truth for where the Journey now is, so
-      // re-read rather than assuming the jump landed where it was asked to.
-      // A local setState here would show the requested stage even if the
-      // server had quietly done something else — the exact shape of the
-      // 2026-08-07 release blocker, where a no-op looked like a success.
-      await _refresh(showSpinner: false);
-      if (stage == ZyraJourneyStages.lifeSnapshotPreview.value && mounted) {
-        await _openLifeSnapshot(fromDevJump: true);
-      }
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
-    } finally {
-      if (mounted) setState(() => _jumping = false);
-    }
   }
 
   @override
@@ -1274,35 +1010,6 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
             SafeArea(
               child: _loading ? const ZyraLoading() : _buildBody(context),
             ),
-            // DEV ONLY — the right-edge pull-out, matching dev_scenario_panel.
-            //
-            // In the Stack rather than the Column so it floats over the stage
-            // content the way the app's other developer panel floats over
-            // HomeShell. It remains reachable on a paused Journey because its
-            // display-only pause selector is how every ownership state is
-            // reviewed; stage-changing controls disable while the live row is
-            // paused.
-            //
-            // Client capability decides whether this is drawn; the staging
-            // RPC boundary independently repeats the exact protected-persona
-            // check before changing server state.
-            if (_isDevAccount && _stageLoaded && _status == 'active')
-              _DevStageJumper(
-                current: _displayStage.value,
-                busy: _jumping || _pauseActionBusy,
-                onJump: _jumpToStage,
-                lifeSnapshotHasBio: _devLifeSnapshotHasBio,
-                lifeSnapshotFieldIds: _devLifeSnapshotFieldIds,
-                onLifeSnapshotBioChanged: _setDevLifeSnapshotBio,
-                onLifeSnapshotFieldToggle: _toggleDevLifeSnapshotField,
-                onLifeSnapshotShowAll: _setAllDevLifeSnapshotFields,
-                selectedGuardians: _devGuardianSelections,
-                onGuardianToggle: _toggleDevGuardian,
-                hasPlus: _hasPlus,
-                onHasPlusChanged: _setPlusUnlock,
-                onRewind: _rewindJourney,
-                livePaused: _pauseState.isLocked,
-              ),
           ],
         ),
       ),
@@ -1322,12 +1029,9 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
       return ZyraEmptyState(
         icon: Icons.cloud_off_outlined,
         title: "Couldn't load this Journey",
-        message: _isDevAccount
-            ? 'Nothing arrived from the server for it. A dev stand-in '
-                  'has no real Journey behind it and never loads here; a '
-                  'real one appears when the connection returns. (dev)'
-            : 'Nothing arrived from the server. Check your connection, '
-                  'then try again.',
+        message:
+            'Nothing arrived from the server. Check your connection, '
+            'then try again.',
         ctaLabel: 'Try again',
         onCta: () => _refresh(),
       );
@@ -1437,8 +1141,9 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
                       ),
                       lifeSnapshotHistoryChild: _LifeSnapshotView(
                         profile: widget.profile,
-                        showBio: _devLifeSnapshotHasBio,
-                        visibleFieldIds: _devLifeSnapshotFieldIds,
+                        showBio: true,
+                        visibleFieldIds:
+                            ZyraJourneyLifeSnapshotMock.defaultVisibleFieldIds,
                         mineRevealed: true,
                         theirsRevealed: true,
                         onReveal: () {},
@@ -1497,47 +1202,6 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 2, bottom: 6),
             child: ZyraLoading(label: _waitingLine),
-          ),
-        // DEV ONLY — the on-page "User" action (DR-ZYRA-181). Does the
-        // OTHER person's half of the current step, on press — it
-        // REPLACED the auto toggle so the waiting states are seen
-        // first: complete your side, see the wait, press User, watch
-        // the Journey move. It stays during a Family Review (its RPC's
-        // closing block is the only fast exit from one). Subtle and
-        // apart from the Journey's own controls; never in release.
-        if (ZyraDeveloperAccess.canUseDeveloperTools &&
-            _isDevAccount &&
-            _status == 'active' &&
-            !_pauseState.isLocked)
-          Padding(
-            padding: const EdgeInsets.only(top: 2, bottom: 10),
-            child: Center(
-              child: InkWell(
-                borderRadius: BorderRadius.circular(999),
-                onTap: _jumping ? null : _counterpartComplete,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: ZyraColors.foreground.withValues(alpha: 0.05),
-                    borderRadius: BorderRadius.circular(999),
-                    border: Border.all(
-                      color: ZyraColors.foreground.withValues(alpha: 0.14),
-                      width: 0.5,
-                    ),
-                  ),
-                  child: Text(
-                    'User',
-                    style: ZyraText.subtext(
-                      size: 11.5,
-                      color: ZyraColors.foreground.withValues(alpha: 0.6),
-                    ),
-                  ),
-                ),
-              ),
-            ),
           ),
       ],
     );
@@ -1650,8 +1314,8 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
     if (_lifeSnapshotOpen && _stage == 'compatibility_reveal') {
       return _LifeSnapshotView(
         profile: widget.profile,
-        showBio: _devLifeSnapshotHasBio,
-        visibleFieldIds: _devLifeSnapshotFieldIds,
+        showBio: true,
+        visibleFieldIds: ZyraJourneyLifeSnapshotMock.defaultVisibleFieldIds,
         mineRevealed: _lifeSnapshotMineRevealed,
         theirsRevealed: _lifeSnapshotTheirsRevealed,
         onReveal: _revealLifeSnapshot,
@@ -1696,9 +1360,6 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
           otherFirstName: widget.profile.firstName,
           reason: _advanceReason,
           onChanged: _resetGuardianGate,
-          devMode: _isDevAccount,
-          selectedGuardianIndices: _devGuardianSelections,
-          onPrepareDevGuardians: _prepareDevGuardianGate,
           mineRevealed: _guardianProfilesMineRevealed,
           theirsRevealed: _guardianProfilesTheirsRevealed,
           onReveal: _revealGuardianProfiles,
@@ -4667,538 +4328,6 @@ class _JourneyCompletedStage extends StatelessWidget {
 ///   1. the caller only builds it for an @zyra.test account
 ///   2. build() returns SizedBox.shrink() in a release build regardless
 ///
-/// LABELS COME FROM THE CANONICAL MAP (DR-ZYRA-129). No stage name is written
-/// here. Three screens once each kept their own switch over the same eight
-/// strings and all three drifted; a debug tool showing different names from
-/// the product would be a debug tool that lies about what it is debugging.
-class _DevStageJumper extends StatefulWidget {
-  final String? current;
-  final bool busy;
-  final ValueChanged<String> onJump;
-  final bool lifeSnapshotHasBio;
-  final Set<String> lifeSnapshotFieldIds;
-  final ValueChanged<bool> onLifeSnapshotBioChanged;
-  final ValueChanged<String> onLifeSnapshotFieldToggle;
-  final ValueChanged<bool> onLifeSnapshotShowAll;
-  final Set<int> selectedGuardians;
-  final ValueChanged<int> onGuardianToggle;
-  final bool hasPlus;
-  final ValueChanged<bool> onHasPlusChanged;
-  final VoidCallback onRewind;
-  final bool livePaused;
-
-  const _DevStageJumper({
-    required this.current,
-    required this.busy,
-    required this.onJump,
-    required this.lifeSnapshotHasBio,
-    required this.lifeSnapshotFieldIds,
-    required this.onLifeSnapshotBioChanged,
-    required this.onLifeSnapshotFieldToggle,
-    required this.onLifeSnapshotShowAll,
-    required this.selectedGuardians,
-    required this.onGuardianToggle,
-    required this.hasPlus,
-    required this.onHasPlusChanged,
-    required this.onRewind,
-    required this.livePaused,
-  });
-
-  @override
-  State<_DevStageJumper> createState() => _DevStageJumperState();
-}
-
-class _DevStageJumperState extends State<_DevStageJumper> {
-  bool _open = false;
-
-  static const double _tabWidth = 22;
-  static const double _panelWidth = 232;
-
-  // The display order includes the Journey-only Bio mock inserted between
-  // Compatibility Reveal and Guardian Gate. Stored values still come from
-  // the canonical model; the preview never reaches the stage RPC.
-  static final _stages = ZyraJourneyStages.previewAll
-      .map((stage) => stage.value)
-      .toList(growable: false);
-
-  Widget _guardianChip(int index) {
-    final guardian = ZyraDevScenario.fakeGuardians[index];
-    final selected = widget.selectedGuardians.contains(index);
-    final role = index == ZyraJourneyGuardianSelection.mainIndex
-        ? 'Main'
-        : 'Additional';
-    return GestureDetector(
-      onTap: widget.busy || widget.livePaused
-          ? null
-          : () => widget.onGuardianToggle(index),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 7),
-        decoration: BoxDecoration(
-          color: selected
-              ? ZyraColors.journeyGold.withValues(alpha: 0.2)
-              : ZyraColors.foreground.withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: selected
-                ? ZyraColors.journeyGold.withValues(alpha: 0.72)
-                : ZyraColors.foreground.withValues(alpha: 0.12),
-            width: 0.7,
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              selected ? Icons.check_circle_rounded : Icons.circle_outlined,
-              size: 13,
-              color: selected ? ZyraColors.journeyGold : ZyraColors.ink(0.54),
-            ),
-            SizedBox(width: 5),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  guardian.name,
-                  style: ZyraText.subtext(size: 10.5, color: Colors.white),
-                ),
-                Text(
-                  role,
-                  style: ZyraText.subtext(
-                    size: 8.5,
-                    color: ZyraColors.foreground.withValues(alpha: 0.52),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _lifeSnapshotFieldChip(ZyraJourneyLifeSnapshotField field) {
-    final selected = widget.lifeSnapshotFieldIds.contains(field.id);
-    return GestureDetector(
-      onTap: widget.busy || widget.livePaused
-          ? null
-          : () => widget.onLifeSnapshotFieldToggle(field.id),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 7),
-        decoration: BoxDecoration(
-          color: selected
-              ? ZyraColors.journeyGold.withValues(alpha: 0.2)
-              : ZyraColors.foreground.withValues(alpha: 0.06),
-          borderRadius: BorderRadius.circular(999),
-          border: Border.all(
-            color: selected
-                ? ZyraColors.journeyGold.withValues(alpha: 0.72)
-                : ZyraColors.foreground.withValues(alpha: 0.12),
-            width: 0.7,
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              selected ? Icons.check_rounded : Icons.add_rounded,
-              size: 12,
-              color: selected ? ZyraColors.journeyGold : ZyraColors.ink(0.54),
-            ),
-            SizedBox(width: 4),
-            Text(
-              field.label,
-              style: ZyraText.subtext(
-                size: 10,
-                color: selected ? Colors.white : ZyraColors.ink(0.70),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (!ZyraDeveloperAccess.canUseDeveloperTools) {
-      return SizedBox.shrink();
-    }
-
-    return Positioned(
-      top: 0,
-      bottom: 0,
-      right: _open ? 0 : -_panelWidth,
-      width: _panelWidth + _tabWidth,
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () => setState(() => _open = !_open),
-            child: Center(
-              child: Container(
-                width: _tabWidth,
-                height: 92,
-                decoration: BoxDecoration(
-                  color: ZyraColors.modalSheetSurface.withValues(
-                    alpha: 242 / 255,
-                  ),
-                  borderRadius: const BorderRadius.horizontal(
-                    left: Radius.circular(8),
-                  ),
-                  border: Border.all(
-                    color: ZyraColors.foreground.withValues(alpha: 0.16),
-                    width: 0.5,
-                  ),
-                ),
-                child: Center(
-                  child: Icon(
-                    _open ? Icons.chevron_right : Icons.tune,
-                    size: 15,
-                    color: ZyraColors.foreground.withValues(alpha: 0.75),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: Material(
-              color: ZyraColors.modalSheetSurface.withValues(alpha: 242 / 255),
-              child: SafeArea(
-                left: false,
-                child: ListView(
-                  padding: const EdgeInsets.fromLTRB(14, 14, 14, 24),
-                  children: [
-                    // START OVER — TOP, at the Founder's word (DR-ZYRA-176:
-                    // "PUT START OVER AT THE TOP"): every full walk of the
-                    // six experiences begins here, so the reset earns the
-                    // first reach, not a scroll. Still the only destructive
-                    // thing in the panel, still tinted like the account
-                    // reset in dev_scenario_panel, still asks first.
-                    ZyraDevToolSection(
-                      key: const ValueKey('dev_journey_section_start'),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(
-                            'START OVER',
-                            style: ZyraText.chapterLabel(
-                              color: ZyraColors.ink(0.70),
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton(
-                              onPressed: widget.busy || widget.livePaused
-                                  ? null
-                                  : widget.onRewind,
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(
-                                  color: ZyraColors.destructiveBorder,
-                                  width: 0.7,
-                                ),
-                              ),
-                              child: Text(
-                                'Start this Journey again',
-                                style: ZyraText.subtext(
-                                  size: 12,
-                                  color: ZyraColors.destructive,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 6),
-                          Text(
-                            'Back to Compatibility Reveal, with everything you both '
-                            'did inside it cleared. The match and your Guardian link '
-                            'stay. Asks first.',
-                            style: ZyraText.subtext(size: 10.5),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    ZyraDevToolSection(
-                      key: const ValueKey('dev_journey_section_stages'),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'SKIP TO STAGE',
-                                style: ZyraText.chapterLabel(
-                                  color: ZyraColors.ink(0.70),
-                                ),
-                              ),
-                              const Spacer(),
-                              if (widget.busy)
-                                SizedBox(
-                                  width: 12,
-                                  height: 12,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 1.6,
-                                    color: ZyraColors.ink(0.70),
-                                  ),
-                                ),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                          // CHIPS, not a tower — 2026-08-12 (premium-tool pass).
-                          // Full-width rows pushed the panel past one screen;
-                          // wrapped chips keep the whole sequence visible.
-                          // Labels still come from the canonical map, never a
-                          // literal here.
-                          Wrap(
-                            spacing: 6,
-                            runSpacing: 6,
-                            children: [
-                              for (final s in _stages)
-                                Builder(
-                                  builder: (_) {
-                                    final isCurrent = s == widget.current;
-                                    return GestureDetector(
-                                      onTap:
-                                          widget.busy ||
-                                              widget.livePaused ||
-                                              isCurrent
-                                          ? null
-                                          : () => widget.onJump(s),
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 10,
-                                          vertical: 7,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: isCurrent
-                                              ? ZyraColors.foreground
-                                                    .withValues(alpha: 0.22)
-                                              : ZyraColors.foreground
-                                                    .withValues(alpha: 0.06),
-                                          borderRadius: BorderRadius.circular(
-                                            999,
-                                          ),
-                                          border: Border.all(
-                                            color: ZyraColors.foreground
-                                                .withValues(
-                                                  alpha: isCurrent
-                                                      ? 0.35
-                                                      : 0.12,
-                                                ),
-                                            width: 0.5,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          ZyraJourneyStages.previewLabelFor(s),
-                                          style: ZyraText.subtext(
-                                            size: 11,
-                                            color: isCurrent
-                                                ? Colors.white
-                                                : ZyraColors.ink(0.70),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    if (widget.current ==
-                        ZyraJourneyStages.lifeSnapshotPreview.value) ...[
-                      const SizedBox(height: 16),
-                      ZyraDevToolSection(
-                        key: const ValueKey('dev_journey_section_bio'),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              'STAGE 3 BIO',
-                              style: ZyraText.chapterLabel(
-                                color: ZyraColors.ink(0.70),
-                              ),
-                            ),
-                            SizedBox(height: 6),
-                            Text(
-                              'Preview only what the other person chose to share '
-                              'for this Journey.',
-                              style: ZyraText.subtext(size: 10.5),
-                            ),
-                            SizedBox(height: 8),
-                            SwitchListTile.adaptive(
-                              contentPadding: EdgeInsets.zero,
-                              dense: true,
-                              title: Text(
-                                'Journey bio added',
-                                style: ZyraText.subtext(
-                                  size: 11.5,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              subtitle: Text(
-                                widget.lifeSnapshotHasBio
-                                    ? '${ZyraJourneyLifeSnapshotMock.bio.length} / '
-                                          '${ZyraJourneyLifeSnapshotMock.bioCharacterLimit} characters'
-                                    : 'No biography will appear',
-                                style: ZyraText.subtext(size: 9.5),
-                              ),
-                              value: widget.lifeSnapshotHasBio,
-                              onChanged: widget.busy || widget.livePaused
-                                  ? null
-                                  : widget.onLifeSnapshotBioChanged,
-                              activeTrackColor: const Color(
-                                0xFFE8C98A,
-                              ).withValues(alpha: 0.65),
-                            ),
-                            Row(
-                              children: [
-                                TextButton(
-                                  onPressed: widget.busy || widget.livePaused
-                                      ? null
-                                      : () =>
-                                            widget.onLifeSnapshotShowAll(true),
-                                  child: const Text('Show all'),
-                                ),
-                                TextButton(
-                                  onPressed: widget.busy || widget.livePaused
-                                      ? null
-                                      : () =>
-                                            widget.onLifeSnapshotShowAll(false),
-                                  child: const Text('Show none'),
-                                ),
-                              ],
-                            ),
-                            Wrap(
-                              spacing: 6,
-                              runSpacing: 6,
-                              children: [
-                                for (final field
-                                    in ZyraJourneyLifeSnapshotMock.fields)
-                                  _lifeSnapshotFieldChip(field),
-                              ],
-                            ),
-                            SizedBox(height: 7),
-                            Text(
-                              '${widget.lifeSnapshotFieldIds.length} of '
-                              '${ZyraJourneyLifeSnapshotMock.fields.length} details shared',
-                              style: ZyraText.subtext(
-                                size: 10,
-                                color: ZyraColors.goldText,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-
-                    if (widget.current == 'wali_gate') ...[
-                      const SizedBox(height: 16),
-                      ZyraDevToolSection(
-                        key: const ValueKey('dev_journey_section_guardians'),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              'STAGE 4 GUARDIANS',
-                              style: ZyraText.chapterLabel(
-                                color: ZyraColors.ink(0.70),
-                              ),
-                            ),
-                            SizedBox(height: 6),
-                            Text(
-                              'Choose the one Main and any of the five Additional '
-                              'mock Guardians, then send Salam on the stage.',
-                              style: ZyraText.subtext(size: 10.5),
-                            ),
-                            SizedBox(height: 9),
-                            Wrap(
-                              spacing: 6,
-                              runSpacing: 6,
-                              children: [
-                                for (
-                                  var index = 0;
-                                  index < ZyraDevScenario.fakeGuardians.length;
-                                  index++
-                                )
-                                  _guardianChip(index),
-                              ],
-                            ),
-                            SizedBox(height: 7),
-                            Text(
-                              widget.selectedGuardians.isEmpty
-                                  ? 'None selected'
-                                  : '${widget.selectedGuardians.length} selected',
-                              style: ZyraText.subtext(
-                                size: 10,
-                                color: ZyraColors.goldText,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-
-                    const SizedBox(height: 16),
-                    ZyraDevToolSection(
-                      key: const ValueKey('dev_journey_section_account'),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          // DR-ZYRA-135 / OA-ZYRA-152. Simulates having bought
-                          // Compatibility Unlock+, which lets you see the score
-                          // before the other Seeker reveals.
-                          //
-                          // With THE OTHER PERSON's auto half left OFF, this
-                          // reaches the state that could not exist before today:
-                          // you see the number, she has not revealed, and she has
-                          // not been told.
-                          Text(
-                            'THIS ACCOUNT',
-                            style: ZyraText.chapterLabel(
-                              color: ZyraColors.ink(0.70),
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          SwitchListTile.adaptive(
-                            contentPadding: EdgeInsets.zero,
-                            dense: true,
-                            value: widget.hasPlus,
-                            onChanged: widget.busy || widget.livePaused
-                                ? null
-                                : widget.onHasPlusChanged,
-                            title: Text(
-                              'Has paid for Compatibility Unlock',
-                              style: ZyraText.subtext(
-                                size: 12,
-                                color: Colors.white,
-                              ),
-                            ),
-                            subtitle: Text(
-                              widget.hasPlus
-                                  ? 'You see the score early. They are told nothing.'
-                                  : 'Mutual reveal applies — neither sees it first.',
-                              style: ZyraText.subtext(size: 10.5),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 // BACK AND A NAME — that is the whole header now.
 //
 // THE ⋮ WENT FIRST (2026-08-13, morning — Founder: "those 3 dots of top
@@ -7527,9 +6656,6 @@ class _WaliGateView extends StatefulWidget {
   /// than waiting up to three seconds for the timer.
   final VoidCallback onChanged;
   final Future<void> Function() onContinue;
-  final bool devMode;
-  final Set<int> selectedGuardianIndices;
-  final Future<bool> Function() onPrepareDevGuardians;
   final bool mineRevealed;
   final bool theirsRevealed;
   final VoidCallback onReveal;
@@ -7543,9 +6669,6 @@ class _WaliGateView extends StatefulWidget {
     required this.reason,
     required this.onChanged,
     required this.onContinue,
-    required this.devMode,
-    required this.selectedGuardianIndices,
-    required this.onPrepareDevGuardians,
     required this.mineRevealed,
     required this.theirsRevealed,
     required this.onReveal,
@@ -7573,9 +6696,7 @@ class _WaliGateViewState extends State<_WaliGateView> {
     super.initState();
     // Guardian identities load quietly behind the protected portrait. Mutual
     // consent can therefore reveal settled content without a second loader.
-    if (!widget.devMode) {
-      _otherGuardianLookup = _loadOtherGuardians();
-    }
+    _otherGuardianLookup = _loadOtherGuardians();
   }
 
   Future<void> _loadOtherGuardians() async {
@@ -7601,20 +6722,7 @@ class _WaliGateViewState extends State<_WaliGateView> {
 
   Future<void> _revealProfiles() async {
     if (_revealing || widget.mineRevealed) return;
-    if (widget.devMode &&
-        !widget.selectedGuardianIndices.contains(
-          ZyraJourneyGuardianSelection.mainIndex,
-        )) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Select the Main Guardian in the Stage 4 toggle.'),
-        ),
-      );
-      return;
-    }
-
     setState(() => _revealing = true);
-    final ready = !widget.devMode || await widget.onPrepareDevGuardians();
     final guardianLookup = _otherGuardianLookup;
     if (guardianLookup != null) {
       try {
@@ -7626,7 +6734,7 @@ class _WaliGateViewState extends State<_WaliGateView> {
     }
     if (!mounted) return;
     setState(() => _revealing = false);
-    if (ready) widget.onReveal();
+    widget.onReveal();
   }
 
   Future<void> _sendGuardianSalam(int guardianIndex) async {
@@ -7665,20 +6773,6 @@ class _WaliGateViewState extends State<_WaliGateView> {
   }
 
   List<_JourneyGuardianPortrait> get _portraitGuardians {
-    if (widget.devMode) {
-      return [
-        for (final guardian
-            in ZyraJourneyGuardianSelection.otherGuardianPreview)
-          _JourneyGuardianPortrait(
-            firstName: guardian.firstName,
-            relationship:
-                zyraRelationshipLabel(guardian.relationship) ??
-                guardian.relationship,
-            isMain: guardian.isMain,
-          ),
-      ];
-    }
-
     final guardians = _otherGuardians;
     if (guardians != null && guardians.isNotEmpty) {
       return [

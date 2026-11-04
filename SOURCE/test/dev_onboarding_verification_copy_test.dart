@@ -3,13 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
-import 'package:zyra/dev/dev_onboarding_interaction.dart';
-import 'package:zyra/dev/dev_onboarding_lab.dart';
-import 'package:zyra/dev/dev_onboarding_welcome_motion.dart';
+import 'support/queue44_gold_fixture.dart';
+import 'support/queue44_onboarding_interaction_fixture.dart';
+import 'support/queue44_onboarding_story_fixture.dart';
+import 'support/queue44_welcome_motion_fixture.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/theme/zyra_text.dart';
-import 'package:zyra/widgets/zyra_onboarding_study.dart';
 
 const _oldRequirement =
     'Identity verification is required to complete sign-up.';
@@ -57,7 +56,7 @@ Future<void> _mount(
         ),
         child: RepaintBoundary(key: _captureRoot, child: child!),
       ),
-      home: DevOnboardingIntroduction(
+      home: OnboardingIntroductionFixture(
         direction: direction,
         welcomeName: 'Amina Zahra',
         onContinue: onContinue ?? () {},
@@ -348,10 +347,10 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('dev_onboarding_welcome_back')));
     await tester.pump();
     expect(returnedToProvider, 1);
-    await tester.tap(find.byKey(const ValueKey('dev_onboarding_skip')));
+    storyFixtureSkipCallback(tester)!();
     await tester.pump();
     expect(find.byKey(_trustPage), findsOneWidget);
-    await tester.tap(find.byKey(const ValueKey('dev_onboarding_skip')));
+    storyFixtureSkipCallback(tester)!();
     await tester.pump();
     expect(find.text('2 / 4'), findsOneWidget);
     expect(find.byKey(const ValueKey('dev_opening_page_2')), findsNothing);
@@ -384,9 +383,7 @@ void main() {
     var completed = 0;
     await _mount(tester, onContinue: () => completed++);
     await _openTrust(tester);
-    final skip = tester
-        .widget<TextButton>(find.byKey(const ValueKey('dev_onboarding_skip')))
-        .onPressed!;
+    final skip = storyFixtureSkipCallback(tester)!;
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     await tester.pump();
     await tester.pump(const Duration(seconds: 4));

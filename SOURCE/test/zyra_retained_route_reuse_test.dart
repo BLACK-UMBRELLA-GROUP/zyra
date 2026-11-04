@@ -43,6 +43,7 @@ Future<void> _mount(WidgetTester tester, {bool guardian = false}) async {
         child: child!,
       ),
       home: ZyraOneJourneyConceptShell(
+        fixture: ZyraShellTestFixture().fixture,
         canAct: () => true,
         onExit: () => fail('A leaf return must not exit the app.'),
         initialGuardianRole: guardian,

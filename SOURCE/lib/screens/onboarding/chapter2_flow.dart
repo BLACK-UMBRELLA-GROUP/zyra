@@ -576,7 +576,6 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
           return OnboardingStageIntroScreen(
             stage: SeekerOnboardingStage.journeyBio,
             devPreview: devPreview,
-            onDevSkip: devPreview ? openBio : null,
             onContinue: openBio,
           );
         },
@@ -684,20 +683,6 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
           _goToBioTransition();
         }
     }
-  }
-
-  void _devSkipCurrentQuestion() {
-    if (!_devPreview || !_canProceed) return;
-    if (_step == _firstArticle9Step - 1 && _article9Consent == null) {
-      setState(() {
-        // Developer preview never persists these answers, so it may bypass
-        // the consent ceremony while still visiting each question in order.
-        _article9Consent = true;
-        _step = _firstArticle9Step;
-      });
-      return;
-    }
-    _next();
   }
 
   /// Swipe-right-to-go-back — mirrors _next()'s conditional skip jumps
@@ -1227,7 +1212,6 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
       fabActive: _canContinue,
       onContinue: _next,
       devPreview: _devPreview,
-      onDevSkip: _devSkipCurrentQuestion,
       onSwipeBack: _step > 0 ? _back : null,
       onFinishLater: _finishLater,
       content: IgnorePointer(

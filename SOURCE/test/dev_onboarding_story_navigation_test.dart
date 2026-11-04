@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
-import 'package:zyra/dev/dev_onboarding_interaction.dart';
-import 'package:zyra/dev/dev_onboarding_lab.dart';
-import 'package:zyra/dev/dev_onboarding_welcome_motion.dart';
+import 'support/queue44_gold_fixture.dart';
+import 'support/queue44_onboarding_interaction_fixture.dart';
+import 'support/queue44_onboarding_story_fixture.dart';
+import 'support/queue44_welcome_motion_fixture.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_onboarding_continue_action.dart';
-import 'package:zyra/widgets/zyra_onboarding_study.dart';
 
 const _welcome = ValueKey('dev_onboarding_welcome_prelude');
 const _welcomeArrow = ValueKey('dev_onboarding_welcome_continue');
@@ -42,7 +41,7 @@ Future<void> _mount(
         ),
         child: child!,
       ),
-      home: DevOnboardingIntroduction(
+      home: OnboardingIntroductionFixture(
         direction: ZyraOnboardingDirection.luma,
         welcomeName: welcomeName,
         onContinue: onContinue ?? () {},
@@ -164,14 +163,7 @@ void main() {
       // Cross the ticker's duration boundary, then build the completed state.
       await tester.pump(const Duration(milliseconds: 1));
       await tester.pump();
-      expect(
-        tester
-            .widget<TextButton>(
-              find.byKey(const ValueKey('dev_onboarding_skip')),
-            )
-            .onPressed,
-        isNotNull,
-      );
+      expect(storyFixtureSkipCallback(tester), isNotNull);
       await tester.pump(const Duration(milliseconds: 2999));
       expect(find.byKey(_welcomeArrow), findsNothing);
       await tester.pump(const Duration(milliseconds: 1));
@@ -263,9 +255,11 @@ void main() {
         ),
         findsOneWidget,
       );
-      final toggle = find.byKey(const ValueKey('dev_opening_quote_toggle'));
-      await tester.ensureVisible(toggle);
-      await tester.tap(toggle);
+      expect(
+        find.byKey(const ValueKey('dev_opening_quote_toggle')),
+        findsNothing,
+      );
+      setOpeningQuoteFixtureFromCode(tester, true);
       await tester.pumpAndSettle();
       expect(find.textContaining('Imam Ahmad'), findsWidgets);
       expect(find.text('2 / 4'), findsOneWidget);

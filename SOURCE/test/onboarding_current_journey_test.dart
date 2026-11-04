@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/models/journey_bio.dart';
+import 'package:zyra/models/zyra_identity_verification.dart';
+import 'package:zyra/services/zyra_identity_verification_service.dart';
+import 'package:zyra/screens/profile/zyra_photo_batch_flow.dart';
 import 'package:zyra/models/seeker_setup_checkpoint.dart';
 import 'package:zyra/screens/home/home_shell.dart';
 import 'package:zyra/screens/onboarding/account_path_overview_screen.dart';
@@ -288,7 +291,22 @@ void main() {
   ) async {
     await _mountJourney(
       tester,
-      const OnboardingFlow(devPreview: true, welcomeName: 'Aaliyah Hassan'),
+      OnboardingFlow(
+        devPreview: true,
+        welcomeName: 'Aaliyah Hassan',
+        photoRunner: (_, _, _) async => const ZyraPhotoBatchResult.added([
+          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=',
+        ]),
+        initialVerificationState: ZyraIdentityVerificationState(
+          result: ZyraIdentityVerificationResult.verified,
+          duplicateReview: ZyraDuplicateReviewState.clear,
+          consentGranted: true,
+          consentVersion: kIdentityVerificationConsentVersion,
+          consentRecordedAt: DateTime.now().toUtc(),
+          updatedAt: DateTime.now().toUtc(),
+          decidedAt: DateTime.now().toUtc(),
+        ),
+      ),
     );
 
     expect(find.text('First, your account.'), findsOneWidget);
@@ -333,7 +351,9 @@ void main() {
       find.byKey(const ValueKey('signup_membership_choice')),
       findsNothing,
     );
-    await _tapAction(tester, 'onboarding_dev_skip');
+    expect(find.byKey(const ValueKey('onboarding_dev_skip')), findsNothing);
+    await _tapAction(tester, 'signup_first_photo_choose');
+    await _tapAction(tester, 'onboarding_continue');
 
     expect(
       find.byKey(const ValueKey('signup_membership_choice')),
@@ -351,9 +371,10 @@ void main() {
     expect(AppState.instance.gender, 'female');
     expect(tester.takeException(), isNull);
 
-    // A local walkthrough may rehearse this checkpoint without claiming
-    // production verification. The dedicated IDV suite covers server gates.
-    await _tapAction(tester, 'identity_dev_skip');
+    // The constructor supplies a local verified state; the real Continue owns
+    // the handoff. The dedicated IDV suite covers server verification gates.
+    expect(find.byKey(const ValueKey('identity_dev_skip')), findsNothing);
+    await _tapAction(tester, 'identity-continue');
     expect(find.byType(SeekerPostIdentityChoiceScreen), findsOneWidget);
     expect(find.text('Together, we’ll build four things.'), findsNothing);
     await _tapAction(tester, 'seeker_post_identity_continue_setup');

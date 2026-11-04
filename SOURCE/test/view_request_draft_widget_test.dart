@@ -1,3 +1,4 @@
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -210,6 +211,7 @@ Widget _app({
   VoidCallback? onBeforeOpen,
   int? generation,
 }) => MaterialApp(
+  navigatorObservers: [ZyraPreviewRouteObserver()],
   debugShowCheckedModeBanner: false,
   theme: ThemeData.dark(),
   builder: (context, child) => MediaQuery(
@@ -222,21 +224,34 @@ Widget _app({
     child: RepaintBoundary(key: _boundary, child: child!),
   ),
   home: launcher
-      ? Scaffold(
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: DevDiscoveryDirectionPicker(
-                enabled: enabled,
-                onBeforeOpen: onBeforeOpen,
-              ),
-            ),
-          ),
-        )
+      ? const Scaffold(body: SizedBox(key: ValueKey('code-fixture-root')))
       : ViewRequestDraftScreen(
+          fixture: ZyraShellTestFixture().fixture,
           ownerGeneration: generation ?? ZyraAccountState.generation,
           ownerId: ZyraAccountState.userId,
         ),
 );
+
+Future<void> _openCodeFixture(
+  WidgetTester tester, {
+  VoidCallback? before,
+}) async {
+  final generation = ZyraAccountState.generation;
+  final userId = ZyraAccountState.userId;
+  before?.call();
+  final navigator = tester.state<NavigatorState>(find.byType(Navigator));
+  navigator.push<void>(
+    MaterialPageRoute(
+      builder: (_) => ViewRequestDraftScreen(
+        ownerGeneration: generation,
+        ownerId: userId,
+        fixture: ZyraShellTestFixture().fixture,
+      ),
+    ),
+  );
+  await tester.pumpAndSettle();
+  expect(_key('dev_discovery_view_request'), findsNothing);
+}
 
 Future<void> _mount(
   WidgetTester tester, {
@@ -293,12 +308,9 @@ Future<void> _mount(
 
 Future<void> _press(WidgetTester tester, String id) async {
   if (id == 'draft_rules') {
-    if (_key('dev_controls_page').evaluate().isEmpty) {
-      await openZyraDevControls(tester);
-    }
-    expect(find.text('Page options'), findsOneWidget);
-    expect(_key('dev_controls_close'), findsOneWidget);
-    expect(_key('draft_back'), findsNothing);
+    await openZyraDevControls(tester);
+    expect(find.text('Page options'), findsNothing);
+    expect(_key('dev_controls_close'), findsNothing);
     expect(_key('draft_rules'), findsNothing);
     return;
   }
@@ -719,6 +731,10 @@ Future<void> _chooseBrowseFilter(
 }
 
 VoidCallback? _action(WidgetTester tester, String id) {
+  if (isZyraFixtureCommandKey(id) ||
+      ['draft_close', 'dev_controls_close'].contains(id)) {
+    return captureZyraFixtureCommand(tester, id);
+  }
   final target = tester.widget<Widget>(_key(id));
   if (target is ButtonStyleButton) return target.onPressed;
   if (target is InkWell) return target.onTap;
@@ -1235,16 +1251,16 @@ void main() {
       await _mount(tester);
       expect(_key('draft_close'), findsNothing);
       expect(_key('draft_back'), findsNothing);
-      expect(_key('dev_controls_hold_surface'), findsOneWidget);
+      expect(_key('dev_controls_hold_surface'), findsNothing);
       expect(_key('draft_rules'), findsNothing);
       await _press(tester, 'draft_rules');
       expect(_key('draft_rules'), findsNothing);
-      expect(find.text('Page options'), findsOneWidget);
+      expect(find.text('Page options'), findsNothing);
       expect(_key('draft_back'), findsNothing);
-      expect(_key('dev_controls_close'), findsOneWidget);
+      expect(_key('dev_controls_close'), findsNothing);
       expect(
         find.byType(DropdownButtonFormField<ZyraBrowseNextMotion>),
-        findsOneWidget,
+        findsNothing,
       );
       for (final name in _historicalBrowseControlNames) {
         expect(_key('concept_browse_design_$name'), findsNothing);
@@ -2907,14 +2923,8 @@ void main() {
       enabled: false,
       onBeforeOpen: () => beforeCalls++,
     );
-    expect(
-      tester
-          .widget<OutlinedButton>(_key('dev_discovery_view_request'))
-          .onPressed,
-      isNull,
-    );
-    await tester.tap(_key('dev_discovery_view_request'));
-    await tester.pumpAndSettle();
+    expect(_key('dev_discovery_view_request'), findsNothing);
+    expect(find.byType(OutlinedButton), findsNothing);
     expect(beforeCalls, 0);
     expect(find.byType(ViewRequestDraftScreen), findsNothing);
   });
@@ -2923,8 +2933,8 @@ void main() {
     tester,
   ) async {
     var beforeCalls = 0;
-    await _mount(tester, launcher: true, onBeforeOpen: () => beforeCalls++);
-    await _press(tester, 'dev_discovery_view_request');
+    await _mount(tester, launcher: true);
+    await _openCodeFixture(tester, before: () => beforeCalls++);
     expect(beforeCalls, 1);
     expect(find.byType(ZyraOneJourneyConceptShell), findsOneWidget);
     expect(find.byType(FloatingNavBar), findsOneWidget);
@@ -2932,7 +2942,8 @@ void main() {
     expect(_key('draft_profile_$_fixture'), findsOneWidget);
     await leaveZyraDeveloperPreview(tester);
     await tester.pumpAndSettle();
-    expect(_key('dev_discovery_view_request'), findsOneWidget);
+    expect(_key('code-fixture-root'), findsOneWidget);
+    expect(_key('dev_discovery_view_request'), findsNothing);
     expect(_key('draft_scroll'), findsNothing);
     expect(find.byType(ZyraOneJourneyConceptShell), findsNothing);
     expect(ZyraConceptPreviewIsolation.active, isFalse);
@@ -2943,7 +2954,7 @@ void main() {
       tester,
     ) async {
       await _mount(tester, launcher: true);
-      await _press(tester, 'dev_discovery_view_request');
+      await _openCodeFixture(tester);
       if (exit == 'draft_close') {
         await _openGallerySara(tester);
         await _press(tester, 'concept_filters');
@@ -2952,11 +2963,12 @@ void main() {
         await _nav(tester, 4);
       }
       await _press(tester, exit);
-      expect(_key('dev_discovery_view_request'), findsOneWidget);
+      expect(_key('code-fixture-root'), findsOneWidget);
+      expect(_key('dev_discovery_view_request'), findsNothing);
       expect(_key('draft_scroll'), findsNothing);
       expect(find.byType(ZyraOneJourneyConceptShell), findsNothing);
       expect(ZyraConceptPreviewIsolation.active, isFalse);
-      await _press(tester, 'dev_discovery_view_request');
+      await _openCodeFixture(tester);
       await _openGallerySara(tester);
       expect(find.text('Save'), findsNothing);
       expect(_key('draft_save'), findsNothing);
@@ -2968,21 +2980,26 @@ void main() {
     testWidgets('$change refuses a captured stale launcher callback', (
       tester,
     ) async {
-      var beforeCalls = 0;
-      await _mount(tester, launcher: true, onBeforeOpen: () => beforeCalls++);
-      final stale = _callback(tester, 'dev_discovery_view_request');
+      await _mount(tester, launcher: true);
+      await _openCodeFixture(tester);
+      final shell = tester.widget<ZyraOneJourneyConceptShell>(
+        find.byType(ZyraOneJourneyConceptShell),
+      );
+      final navigation = tester.widget<ZyraShellNavigation>(
+        find.byType(ZyraShellNavigation),
+      );
+      final stale = navigation.onTap;
       if (change == 'account generation') {
         ZyraAccountState.resetForTesting();
         AppState.instance.resetForAccountChange();
       } else {
         ZyraDeveloperAccess.setAuthorizedForTesting(false);
-        if (change == 'ABA') {
-          ZyraDeveloperAccess.setAuthorizedForTesting(true);
-        }
+        if (change == 'ABA') ZyraDeveloperAccess.setAuthorizedForTesting(true);
       }
-      stale();
+      stale(1);
       await tester.pumpAndSettle();
-      expect(beforeCalls, 0);
+      expect(shell.canAct(), isFalse);
+      expect(find.text('Preview closed'), findsOneWidget);
       expect(_key('draft_scroll'), findsNothing);
       expect(find.byType(ZyraOneJourneyConceptShell), findsNothing);
       expect(_key('dev_discovery_view_request'), findsNothing);
@@ -3019,7 +3036,7 @@ void main() {
     tester,
   ) async {
     await _mount(tester, launcher: true);
-    await _press(tester, 'dev_discovery_view_request');
+    await _openCodeFixture(tester);
     await _openGallerySara(tester);
     await _press(tester, 'concept_filters');
     final navigator = tester.state<NavigatorState>(find.byType(Navigator));
@@ -3031,23 +3048,24 @@ void main() {
     expect(ZyraConceptPreviewIsolation.active, isTrue);
     await leaveZyraDeveloperPreview(tester);
     await tester.pumpAndSettle();
-    expect(_key('dev_discovery_view_request'), findsOneWidget);
+    expect(_key('code-fixture-root'), findsOneWidget);
+    expect(_key('dev_discovery_view_request'), findsNothing);
     expect(ZyraConceptPreviewIsolation.active, isFalse);
   });
 
   testWidgets('onBeforeOpen account drift refuses route construction', (
     tester,
   ) async {
-    await _mount(
+    await _mount(tester, launcher: true);
+    await _openCodeFixture(
       tester,
-      launcher: true,
-      onBeforeOpen: () {
+      before: () {
         ZyraAccountState.resetForTesting();
         AppState.instance.resetForAccountChange();
       },
     );
-    await _press(tester, 'dev_discovery_view_request');
-    expect(find.byType(ViewRequestDraftScreen), findsNothing);
+    expect(find.text('Preview closed'), findsOneWidget);
+    expect(find.byType(ZyraOneJourneyConceptShell), findsNothing);
     expect(_key('dev_discovery_view_request'), findsNothing);
   });
 
@@ -3055,11 +3073,19 @@ void main() {
     tester,
   ) async {
     await _mount(tester, launcher: true);
-    // Route construction is lazy: revoke and restore before its first frame.
-    await tester.tap(_key('dev_discovery_view_request'));
+    await _openCodeFixture(tester);
+    // The actual guarded owner, once admitted, cannot regain authority after ABA.
+    final shell = tester.widget<ZyraOneJourneyConceptShell>(
+      find.byType(ZyraOneJourneyConceptShell),
+    );
+    final navigation = tester.widget<ZyraShellNavigation>(
+      find.byType(ZyraShellNavigation),
+    );
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
+    navigation.onTap(1);
     await tester.pumpAndSettle();
+    expect(shell.canAct(), isFalse);
     expect(find.text('Preview closed'), findsOneWidget);
     expect(_key('draft_scroll'), findsNothing);
     expect(find.byType(ZyraOneJourneyConceptShell), findsNothing);
@@ -3071,7 +3097,7 @@ void main() {
     tester,
   ) async {
     await _mount(tester, launcher: true);
-    await _press(tester, 'dev_discovery_view_request');
+    await _openCodeFixture(tester);
     await openZyraDevControls(tester);
     final staleClose = _callback(tester, 'draft_close');
     final navigator = tester.state<NavigatorState>(find.byType(Navigator));
@@ -3088,10 +3114,12 @@ void main() {
     await tester.pumpAndSettle();
     await leaveZyraDeveloperPreview(tester);
     await tester.pumpAndSettle();
-    expect(_key('dev_discovery_view_request'), findsOneWidget);
+    expect(_key('code-fixture-root'), findsOneWidget);
+    expect(_key('dev_discovery_view_request'), findsNothing);
     staleClose();
     await tester.pumpAndSettle();
-    expect(_key('dev_discovery_view_request'), findsOneWidget);
+    expect(_key('code-fixture-root'), findsOneWidget);
+    expect(_key('dev_discovery_view_request'), findsNothing);
     expect(tester.takeException(), isNull);
   });
 
@@ -3110,7 +3138,7 @@ void main() {
     tester,
   ) async {
     await _mount(tester, launcher: true);
-    await _press(tester, 'dev_discovery_view_request');
+    await _openCodeFixture(tester);
     await _openGallerySara(tester);
     final request = _callback(tester, 'draft_profile_$_fixture');
     final navigator = tester.state<NavigatorState>(find.byType(Navigator));

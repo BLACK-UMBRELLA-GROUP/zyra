@@ -18,7 +18,6 @@ import 'package:zyra/models/seeker_profile.dart';
 import 'package:zyra/main.dart';
 import 'package:zyra/models/zyra_error_state.dart';
 import 'package:zyra/screens/auth_gate.dart';
-import 'package:zyra/screens/dev/developer_access_screen.dart';
 import 'package:zyra/screens/home/home_shell.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
@@ -444,7 +443,12 @@ void main() {
     await _settlePreview(tester);
     expect(find.byType(ZyraFounderReviewSurface), findsOneWidget);
     expect(find.byType(ZyraOneJourneyConceptShell), findsOneWidget);
-    expect(find.byType(DeveloperAccessScreen), findsNothing);
+    expect(
+      find.byWidgetPredicate(
+        (w) => w.runtimeType.toString() == 'DeveloperAccessScreen',
+      ),
+      findsNothing,
+    );
     expect(find.byType(HomeShell), findsNothing);
     expect(ZyraInternalPreviewClient.isActive, isTrue);
     expect(ZyraConceptPreviewIsolation.active, isTrue);
@@ -486,7 +490,12 @@ void main() {
       );
       expect(recovery.kind, ZyraErrorKind.serviceUnavailable);
       expect(find.byType(HomeShell), findsNothing);
-      expect(find.byType(DeveloperAccessScreen), findsNothing);
+      expect(
+        find.byWidgetPredicate(
+          (w) => w.runtimeType.toString() == 'DeveloperAccessScreen',
+        ),
+        findsNothing,
+      );
       expect(AppState.instance.hydrated, isFalse);
       expect(find.textContaining('synthetic'), findsNothing);
       final failedProfileReads = requests
@@ -500,7 +509,12 @@ void main() {
       expect(tester.takeException(), isNull);
       expect(find.byType(HomeShell), findsOneWidget);
       expect(find.byType(ZyraFullScreenError), findsNothing);
-      expect(find.byType(DeveloperAccessScreen), findsNothing);
+      expect(
+        find.byWidgetPredicate(
+          (w) => w.runtimeType.toString() == 'DeveloperAccessScreen',
+        ),
+        findsNothing,
+      );
       expect(supabase.auth.currentUser?.id, _a);
       expect(AppState.instance.name, 'Prior member');
       expect(AppState.instance.gender, 'female');
@@ -523,7 +537,12 @@ void main() {
       expect(tester.takeException(), isNull);
       expect(find.byType(HomeShell), findsOneWidget);
       expect(find.byType(ZyraFullScreenError), findsNothing);
-      expect(find.byType(DeveloperAccessScreen), findsNothing);
+      expect(
+        find.byWidgetPredicate(
+          (w) => w.runtimeType.toString() == 'DeveloperAccessScreen',
+        ),
+        findsNothing,
+      );
       expect(supabase.auth.currentUser?.id, _a);
       expect(AppState.instance.name, 'Prior member');
       expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);

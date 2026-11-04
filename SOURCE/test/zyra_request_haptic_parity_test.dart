@@ -56,7 +56,11 @@ Future<void> _mount(WidgetTester tester, Widget body) async {
 Future<void> _mountShell(WidgetTester tester) async {
   await _mount(
     tester,
-    ZyraOneJourneyConceptShell(canAct: () => true, onExit: () {}),
+    ZyraOneJourneyConceptShell(
+      fixture: ZyraShellTestFixture().fixture,
+      canAct: () => true,
+      onExit: () {},
+    ),
   );
   await tester.runAsync(() async {
     final deadline = DateTime.now().add(const Duration(seconds: 5));
@@ -310,6 +314,7 @@ void main() {
       await _mount(
         tester,
         ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           canAct: () => true,
           onExit: () {},
           initialGuardianRole: true,

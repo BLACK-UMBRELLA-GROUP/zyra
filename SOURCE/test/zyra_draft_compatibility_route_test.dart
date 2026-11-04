@@ -1,3 +1,4 @@
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 // Real local-shell routing with fictional peers only. No account ledger,
 // network, private answers, purchases or Journey consent is involved.
 import 'dart:io';
@@ -55,6 +56,7 @@ Future<void> _mount(
   addTearDown(tester.view.resetDevicePixelRatio);
   await tester.pumpWidget(
     MaterialApp(
+      navigatorObservers: [ZyraPreviewRouteObserver()],
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
       builder: (context, child) => MediaQuery(
@@ -70,6 +72,7 @@ Future<void> _mount(
       home: RepaintBoundary(
         key: _boundary,
         child: ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           canAct: canAct ?? () => true,
           onExit: () {},
         ),
@@ -361,7 +364,9 @@ void main() {
       await _press(tester, 'draft_compatibility_unlock_0');
       await _press(tester, 'draft_compatibility_unlock_5');
       await _press(tester, 'draft_compatibility_unlock_5');
-      await tester.ensureVisible(find.text('Page options'));
+      expect(find.text('Page options'), findsNothing);
+      expect(_key('dev_controls_page'), findsNothing);
+      expect(zyraShellFixtureFor(tester).compatibilityAccess!.balance, 5);
       await tester.pumpAndSettle();
       await _snapshot(tester, 'controls');
       expect(_key('draft_compatibility_standard_5'), findsNothing);
@@ -414,9 +419,10 @@ void main() {
       oldUnlock();
       oldUnlock();
       await tester.pumpAndSettle();
-      final staleCount = tester
-          .widget<OutlinedButton>(_key('draft_compatibility_unlock_5'))
-          .onPressed!;
+      final staleCount = captureZyraFixtureCommand(
+        tester,
+        'draft_compatibility_unlock_5',
+      )!;
       await _press(tester, 'draft_compatibility_unlock_0');
       await _press(tester, 'draft_back');
       await _open(tester);

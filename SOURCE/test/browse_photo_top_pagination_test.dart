@@ -1,3 +1,4 @@
+import 'support/zyra_hidden_dev_controls_driver.dart';
 // The shared presenter, offline paint fixtures and an optional actual-shell
 // PNG. No member data, provider, device, golden baseline or photo editing.
 import 'dart:async';
@@ -467,6 +468,7 @@ void main() {
         await tester.pumpWidget(
           _app(
             ZyraOneJourneyConceptShell(
+              fixture: ZyraShellTestFixture().fixture,
               canAct: () => true,
               onExit: () {},
               onPresentationReady: () {

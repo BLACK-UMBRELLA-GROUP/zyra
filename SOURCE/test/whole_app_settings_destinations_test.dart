@@ -1,3 +1,4 @@
+import 'package:zyra/dev/dev_discovery_directions.dart';
 // OA304: Settings must lead to subject-specific, truthful local destinations.
 // No member setting, device security, legal acceptance or submission is faked.
 import 'dart:async';
@@ -138,6 +139,7 @@ class _NoNetwork extends HttpOverrides {
 }
 
 Widget _app(Widget child, {bool compact = false}) => MaterialApp(
+  navigatorObservers: [ZyraPreviewRouteObserver()],
   theme: ThemeData.dark(),
   builder: (context, child) => MediaQuery(
     data: MediaQuery.of(context).copyWith(
@@ -320,27 +322,53 @@ class _ShellOwner {
 
   bool canAct() => allowed;
 
-  Future<void> mount(WidgetTester tester, {bool guardian = false}) async {
+  Future<void> mount(
+    WidgetTester tester, {
+    bool guardian = false,
+    bool guardedRouteOwner = false,
+  }) async {
     _size(tester);
     final ready = Completer<void>();
     await tester.pumpWidget(
       _app(
-        ZyraOneJourneyConceptShell(
-          key: UniqueKey(),
-          canAct: canAct,
-          onExit: () => fail('A Settings child must return within its owner.'),
-          initialGuardianRole: guardian,
-          initialCheckpoint: ZyraPreviewNavigationCheckpoint(
-            guardian: guardian,
-            model: ViewRequestDraftModel(capacity: 3).snapshot(),
-            tab: guardian ? 3 : 4,
-            pages: const [],
-          ),
-          onCheckpoint: checkpoints.add,
-          onPresentationReady: () {
-            if (!ready.isCompleted) ready.complete();
-          },
-        ),
+        guardedRouteOwner
+            ? ViewRequestDraftScreen(
+                fixture: ZyraShellTestFixture().fixture,
+                key: UniqueKey(),
+                ownerGeneration: ZyraAccountState.generation,
+                ownerId: ZyraAccountState.userId,
+                onExit: () =>
+                    fail('A Settings child must return within its owner.'),
+                initialGuardianRole: guardian,
+                initialCheckpoint: ZyraPreviewNavigationCheckpoint(
+                  guardian: guardian,
+                  model: ViewRequestDraftModel(capacity: 3).snapshot(),
+                  tab: guardian ? 3 : 4,
+                  pages: const [],
+                ),
+                onCheckpoint: checkpoints.add,
+                onPresentationReady: () {
+                  if (!ready.isCompleted) ready.complete();
+                },
+              )
+            : ZyraOneJourneyConceptShell(
+                fixture: ZyraShellTestFixture().fixture,
+                key: UniqueKey(),
+                canAct: canAct,
+                onExit: () =>
+                    fail('A Settings child must return within its owner.'),
+                initialGuardianRole: guardian,
+                initialCheckpoint: ZyraPreviewNavigationCheckpoint(
+                  guardian: guardian,
+                  model: ViewRequestDraftModel(capacity: 3).snapshot(),
+                  tab: guardian ? 3 : 4,
+                  pages: const [],
+                ),
+                onCheckpoint: checkpoints.add,
+                onPresentationReady: () {
+                  if (!ready.isCompleted) ready.complete();
+                },
+              ),
       ),
     );
     for (var frame = 0; frame < 100 && !ready.isCompleted; frame++) {
@@ -418,7 +446,7 @@ void main() {
     ZyraInteractionStyle.hapticLevel,
     ZyraText.appFont,
     ZyraAppGoldStyle.instance.enabled,
-    ZyraDevAppGold.instance.renderingEnabled,
+    ZyraAppGoldRenderer.instance.renderingEnabled,
   ];
 
   setUpAll(() async {
@@ -462,7 +490,7 @@ void main() {
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraAppGoldStyle.instance.restore(false);
-    ZyraDevAppGold.instance.resetForTesting();
+    ZyraAppGoldRenderer.instance.resetForTesting();
     ZyraColors.restoreAppPalette(null);
     ZyraInteractionStyle.restoreHapticLevel(null);
     ZyraText.restoreAppFont(null);
@@ -729,7 +757,7 @@ void main() {
     'actual hold cover denies saved Settings overview and detail actions',
     (tester) async {
       final owner = _ShellOwner();
-      await owner.mount(tester);
+      await owner.mount(tester, guardedRouteOwner: true);
       await owner.settings(tester);
       await owner.overview(tester, ZyraConceptAccountAction.signInSecurity);
       final overview = tester.widget<ZyraConceptSettingsOverview>(
@@ -741,19 +769,31 @@ void main() {
       final back = tester
           .widget<ZyraPullDownBackScope>(_key('concept_pull_down_back_scope'))
           .onBack;
-      await openZyraDevControls(tester);
-      expect(
-        tester.widget<Text>(_key('concept_page_options_context')).data,
-        'Sign-in & security',
+      final navigator = tester.state<NavigatorState>(
+        find.byType(Navigator).first,
       );
+      Future<void> cover() async {
+        navigator.push<void>(
+          MaterialPageRoute(
+            builder: (_) => const Scaffold(body: Text('Member Settings cover')),
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(_key('dev_controls_page'), findsNothing);
+        expect(_key('concept_page_options_context'), findsNothing);
+      }
+
+      await cover();
       final checkpoint = owner.checkpoints.last;
       overview.onOpenDetail(ZyraConceptSettingsDetail.recovery);
       overview.onHelp();
       back();
       await tester.pump();
-      expect(_key('dev_controls_page'), findsOneWidget);
+      expect(_key('dev_controls_page'), findsNothing);
+      expect(find.text('Member Settings cover'), findsOneWidget);
       expect(owner.checkpoints.last, same(checkpoint));
-      await closeZyraDevControls(tester);
+      navigator.pop();
+      await tester.pumpAndSettle();
       expect(
         tester.element(find.byType(ZyraConceptSettingsOverview)),
         same(beforeElement),
@@ -768,12 +808,13 @@ void main() {
       final detail = tester.widget<ZyraConceptSettingsDetailPresentation>(
         find.byType(ZyraConceptSettingsDetailPresentation),
       );
-      await openZyraDevControls(tester);
+      await cover();
       final detailCheckpoint = owner.checkpoints.last;
       detail.onHelp();
       await tester.pump();
       expect(owner.checkpoints.last, same(detailCheckpoint));
-      await closeZyraDevControls(tester);
+      navigator.pop();
+      await tester.pumpAndSettle();
       expect(_detail(ZyraConceptSettingsDetail.recovery), findsOneWidget);
       await _tap(tester, _key('concept_settings_help_detail_recovery'));
       expect(find.byType(HelpSupportScreen), findsOneWidget);

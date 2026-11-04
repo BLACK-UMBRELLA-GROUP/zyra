@@ -18,7 +18,6 @@ const _skip = ValueKey('onboarding_stage_dev_skip');
 Future<void> _pumpIntro(
   WidgetTester tester, {
   required FutureOr<void> Function() onContinue,
-  VoidCallback? onSkip,
   bool arrowMode = true,
   SeekerOnboardingStage stage = SeekerOnboardingStage.buildProfile,
   Size size = const Size(375, 667),
@@ -38,7 +37,6 @@ Future<void> _pumpIntro(
       devPreview: true,
       allowPreviewScrolling: true,
       onContinue: onContinue,
-      onDevSkip: onSkip,
     ),
   );
   await tester.pumpWidget(
@@ -420,20 +418,16 @@ void main() {
   );
 
   testWidgets(
-    'compact arrow-mode Skip is dim, bottom-right, and clear of centered action',
+    'compact arrow mode removes Skip and keeps the centered member action',
     (tester) async {
       await _pumpIntro(
         tester,
         onContinue: () {},
-        onSkip: () {},
         size: const Size(320, 568),
         textScale: 1.4,
       );
       await _revealRoadmap(tester);
-      final skipRect = tester.getRect(find.byKey(_skip));
-      expect(skipRect.right, closeTo(304, 1));
-      expect(skipRect.center.dy, greaterThan(450));
-      expect(skipRect.bottom, lessThanOrEqualTo(568));
+      expect(find.byKey(_skip), findsNothing);
 
       // Larger copy must scroll before a new bottom gesture can advance.
       final welcomePosition = tester
@@ -459,7 +453,6 @@ void main() {
       await tester.ensureVisible(find.byKey(_welcomeAction));
       await tester.pumpAndSettle();
       final arrowRect = tester.getRect(find.byKey(_welcomeAction));
-      expect(arrowRect.overlaps(skipRect), isFalse);
       expect(arrowRect.center.dx, closeTo(160, 8));
       expect(tester.takeException(), isNull);
     },
@@ -579,16 +572,15 @@ void main() {
   );
 
   testWidgets(
-    'Continue mode keeps original top Skip and ignores child overscroll completion',
+    'Continue mode removes Skip and ignores child overscroll completion',
     (tester) async {
       var completions = 0;
       await _pumpIntro(
         tester,
         onContinue: () => completions++,
-        onSkip: () {},
         arrowMode: false,
       );
-      expect(tester.getRect(find.byKey(_skip)).top, lessThan(100));
+      expect(find.byKey(_skip), findsNothing);
       await _revealRoadmap(tester);
       await tester.ensureVisible(find.byKey(_welcomeAction));
       await tester.pumpAndSettle();

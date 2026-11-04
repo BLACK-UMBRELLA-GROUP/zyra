@@ -19,7 +19,6 @@ import '../services/zyra_auth.dart';
 import '../services/zyra_account_state.dart';
 import '../services/zyra_app_lock.dart';
 import '../services/zyra_developer_access.dart';
-import '../services/zyra_local_prefs.dart';
 import '../services/zyra_session_router.dart';
 import '../widgets/zyra_full_screen_error.dart';
 import '../widgets/zyra_loading.dart';
@@ -214,7 +213,7 @@ class _AuthGateState extends State<AuthGate> with WidgetsBindingObserver {
           _callbackCurrent(owner, generation, request) && _foreground,
       route: ModalRoute.of(context),
       onCreated: (preparation) => _preparation = preparation,
-      isWali: ZyraLocalPrefs.cachedFounderPreviewRole == 'guardian',
+      isWali: false,
     );
     if (!_callbackCurrent(owner, generation, request) || preparation == null) {
       preparation?.dispose();

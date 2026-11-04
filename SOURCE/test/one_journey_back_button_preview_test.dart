@@ -1,3 +1,4 @@
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 // Detached developer-shell integration. All people and conversations are
 // bundled draft data; no provider, account, purchase or member route is used.
 import 'dart:io';
@@ -25,7 +26,6 @@ import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_journey_icon.dart';
 import 'package:zyra/widgets/zyra_browse_designs.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart' show ZyraDevControlRail;
 
 import 'support/zyra_hidden_dev_controls_driver.dart';
 
@@ -63,6 +63,7 @@ Future<void> _mount(
   final theme = ThemeData.dark();
   await tester.pumpWidget(
     MaterialApp(
+      navigatorObservers: [ZyraPreviewRouteObserver()],
       theme: theme.copyWith(
         textTheme: theme.textTheme.apply(fontFamily: _font),
       ),
@@ -77,12 +78,14 @@ Future<void> _mount(
       ),
       home: protectedHost
           ? ViewRequestDraftScreen(
+              fixture: ZyraShellTestFixture().fixture,
               ownerGeneration: ZyraAccountState.generation,
               ownerId: ZyraAccountState.userId,
               initialGuardianRole: guardian,
               onExit: () => fail('An in-app Back must not exit its owner.'),
             )
           : ZyraOneJourneyConceptShell(
+              fixture: ZyraShellTestFixture().fixture,
               canAct: canAct ?? () => true,
               onExit: () => fail('An in-app Back must not exit the preview.'),
               initialGuardianRole: guardian,
@@ -114,6 +117,7 @@ Future<void> _mount(
 }
 
 Future<void> _press(WidgetTester tester, Finder target) async {
+  if (await pressZyraFixtureFinder(tester, target)) return;
   if (target.evaluate().isEmpty) {
     // The shell's settings/profile options are lazily built. Scroll the
     // existing page owner before asserting the actual tap target exists.
@@ -146,7 +150,10 @@ Future<void> _press(WidgetTester tester, Finder target) async {
   expect(tester.takeException(), isNull);
 }
 
-Future<void> _tap(WidgetTester tester, String key) => _press(tester, _key(key));
+Future<void> _tap(WidgetTester tester, String key) async {
+  if (await pressZyraDevControlKey(tester, key)) return;
+  await _press(tester, _key(key));
+}
 
 Future<void> _nav(WidgetTester tester, String label) async {
   await expandZyraPreviewTabBarIfIdle(tester);
@@ -179,12 +186,12 @@ Future<void> _nav(WidgetTester tester, String label) async {
 
 Future<void> _openOptions(WidgetTester tester) async {
   await openZyraDevControls(tester);
-  expect(find.text('Page options'), findsOneWidget);
+  expect(find.text('Page options'), findsNothing);
   expect(find.text('Back navigation'), findsNothing);
 }
 
 Future<void> _back(WidgetTester tester) =>
-    _key('dev_controls_close').evaluate().isNotEmpty
+    zyraShellFixtureFor(tester).setupScopeOpen
     ? closeZyraDevControls(tester)
     : _swipeBack(tester);
 
@@ -382,7 +389,7 @@ void main() {
       await _openOptions(tester);
 
       expect(find.text('Back navigation'), findsNothing);
-      expect(_key('dev_controls_close'), findsOneWidget);
+      expect(_key('dev_controls_close'), findsNothing);
       _noBackButton(); // Controls always have X, never a duplicate return.
       await _back(tester);
       expect(find.text('Page options'), findsNothing);
@@ -427,35 +434,39 @@ void main() {
     tester,
   ) async {
     await _mount(tester);
-    expect(find.byType(ZyraDevControlRail), findsNothing);
-    expect(_key('draft_back'), findsNothing);
-    expect(_key('draft_close'), findsNothing);
-    final surface = _key('dev_controls_hold_surface');
-    final rect = tester.getRect(surface);
+    expect(_key('dev_controls_hold_surface'), findsNothing);
+    final navigation = tester.widget<ZyraShellNavigation>(
+      find.byType(ZyraShellNavigation),
+    );
+    final initialTab = navigation.currentIndex;
+    final rect = tester.getRect(find.byType(Scaffold).last);
     final gesture = await tester.startGesture(
-      Offset(rect.center.dx, rect.top + 52),
+      Offset(rect.center.dx, rect.top + 67),
     );
     await tester.pump(const Duration(milliseconds: 2999));
     expect(_key('dev_controls_page'), findsNothing);
     await tester.pump(const Duration(milliseconds: 1));
-    expect(_key('dev_controls_page'), findsOneWidget);
     await gesture.up();
     await tester.pumpAndSettle();
-    final close = tester
-        .widget<IconButton>(_key('dev_controls_close'))
-        .onPressed!;
-    final bounds = tester.getRect(_key('dev_controls_close'));
-    expect(bounds.left, lessThan(24));
-    expect(bounds.top, greaterThanOrEqualTo(44));
+    expect(_key('dev_controls_page'), findsNothing);
+    expect(_key('dev_controls_close'), findsNothing);
+    expect(
+      tester
+          .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
+          .currentIndex,
+      initialTab,
+    );
     _noBackButton();
     await _capture(tester, '09-hidden-page-options');
-    await closeZyraDevControls(tester);
-    expect(_key('dev_controls_page'), findsNothing);
-    expect(find.byType(ZyraShellNavigation), findsOneWidget);
     await openZyraDevControls(tester);
-    close(); // A retained X from the prior opening is inert after ABA.
+    final fixture = zyraShellFixtureFor(tester);
+    final close = captureZyraFixtureCommand(tester, 'dev_controls_close')!;
+    await closeZyraDevControls(tester);
+    await openZyraDevControls(tester);
+    close();
     await tester.pumpAndSettle();
-    expect(_key('dev_controls_page'), findsOneWidget);
+    expect(fixture.setupScopeOpen, isTrue);
+    expect(_key('dev_controls_page'), findsNothing);
     await closeZyraDevControls(tester);
     expect(find.byType(ZyraShellNavigation), findsOneWidget);
   });
@@ -552,8 +563,13 @@ void main() {
       await tester.pumpAndSettle();
       final offset = state.position.pixels;
       await openZyraDevControls(tester);
-      expect(_key('dev_controls_page'), findsOneWidget);
-      expect(find.byType(ZyraDevControlRail), findsNothing);
+      expect(_key('dev_controls_page'), findsNothing);
+      expect(
+        find.byWidgetPredicate(
+          (widget) => widget.runtimeType.toString() == 'ZyraDevControlRail',
+        ),
+        findsNothing,
+      );
       await closeZyraDevControls(tester);
       expect(identical(tester.state<ScrollableState>(scroll), state), isTrue);
       expect(state.position.pixels, offset);
@@ -567,18 +583,29 @@ void main() {
   ) async {
     var admitted = true;
     await _mount(tester, canAct: () => admitted);
-    final rect = tester.getRect(_key('dev_controls_hold_surface'));
+    expect(_key('dev_controls_hold_surface'), findsNothing);
+    final shell = tester.widget<ZyraOneJourneyConceptShell>(
+      find.byType(ZyraOneJourneyConceptShell),
+    );
+    final rect = tester.getRect(find.byType(Scaffold).last);
     final gesture = await tester.startGesture(
-      Offset(rect.center.dx, rect.top + 52),
+      Offset(rect.center.dx, rect.top + 67),
     );
     await tester.pump(const Duration(seconds: 2));
     admitted = false;
     await tester.pump(const Duration(seconds: 2));
     await gesture.up();
     await tester.pumpAndSettle();
+    expect(shell.canAct(), isFalse);
+    expect(zyraShellFixtureFor(tester).current, isFalse);
     expect(_key('dev_controls_page'), findsNothing);
     expect(_key('dev_controls_close'), findsNothing);
-    expect(find.byType(ZyraDevControlRail), findsNothing);
+    expect(
+      find.byWidgetPredicate(
+        (widget) => widget.runtimeType.toString() == 'ZyraDevControlRail',
+      ),
+      findsNothing,
+    );
   });
 
   testWidgets(
@@ -685,7 +712,7 @@ void main() {
       await tester.enterText(composer, 'Unsent local draft');
       await tester.pumpAndSettle();
       await _openOptions(tester);
-      expect(_key('dev_controls_close'), findsOneWidget);
+      expect(_key('dev_controls_close'), findsNothing);
       _noBackButton();
       _noBackButton();
       await _back(tester);

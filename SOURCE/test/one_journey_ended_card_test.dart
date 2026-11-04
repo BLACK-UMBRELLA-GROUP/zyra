@@ -1,3 +1,4 @@
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 // Real protected-shell coverage for the Ended portrait card. Every subject,
 // disclosure and credit is a caller-owned offline fixture, never member data.
 import 'dart:async';
@@ -9,8 +10,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
-import 'package:zyra/dev/zyra_app_gold_preview.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
 import 'package:zyra/dev/zyra_draft_browse_utility_presentation.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_access_store.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_presentation.dart';
@@ -64,7 +63,7 @@ class _NoNetwork extends HttpOverrides {
 
 class _Owner {
   final navigator = GlobalKey<NavigatorState>();
-  final observer = ZyraDevControlsRouteObserver();
+  final observer = ZyraPreviewRouteObserver();
   final checkpoints = <ZyraPreviewNavigationCheckpoint>[];
   late final access = ZyraDraftCompatibilityAccessStore(canAct: () => true);
 
@@ -110,6 +109,7 @@ class _Owner {
         ),
         home: clock != null
             ? ZyraOneJourneyConceptShell(
+                fixture: ZyraShellTestFixture().fixture,
                 key: UniqueKey(),
                 canAct: () =>
                     ZyraDeveloperAccess.isAuthorizedOperator &&
@@ -125,6 +125,7 @@ class _Owner {
                 },
               )
             : ViewRequestDraftScreen(
+                fixture: ZyraShellTestFixture().fixture,
                 key: UniqueKey(),
                 ownerGeneration: ZyraAccountState.generation,
                 ownerId: ZyraAccountState.userId,
@@ -205,6 +206,7 @@ VoidCallback _action(WidgetTester tester, Finder target) {
 }
 
 Future<void> _press(WidgetTester tester, Finder target) async {
+  if (await pressZyraFixtureFinder(tester, target)) return;
   if (target.evaluate().isEmpty) {
     final controls = _key('dev_controls_scroll');
     expect(controls, findsOneWidget);
@@ -415,7 +417,7 @@ void main() {
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     AppState.instance.resetForAccountChange();
     ZyraAccountState.clearImagesForTesting = () async {};
-    final gold = ZyraDevAppGold.instance;
+    final gold = ZyraAppGoldStyle.instance;
     gold.select(
       false,
       expectedGeneration: ZyraAccountState.generation,

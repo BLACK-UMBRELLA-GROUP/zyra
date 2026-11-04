@@ -8,7 +8,9 @@ The app is intended for adult members of that community and their guardians. It 
 
 Pre-launch, built solo since June 2026. Version 1.0.0 (build 5) runs on the Founder's iPhone for internal testing; the redesigned interface is a Founder preview over the existing app, and server integration, pricing and purchases are not yet connected to it. The website is [zyraconnect.app](https://zyraconnect.app).
 
-See [ROADMAP.md](ROADMAP.md) for the next work, including bringing the full test suite back to green.
+The app has no developer rail, Home/Preview/Actions panel, comparison picker, role/plan/wallet selector, reset or onboarding skip shortcut. The protected Founder entry starts with sample Adam on Seeker One. Member settings and controls drawn in current LOCK masters remain, including the Profile Switch flow and the locked local request Demo actions.
+
+See [ROADMAP.md](ROADMAP.md) for the next work, including bringing the full test suite back to green. Queue 44 removes developer controls; the roadmap row remains open until queue 73 also completes.
 
 ## Built with
 
@@ -36,6 +38,17 @@ export ZYRA_INTERNAL_FOUNDER_UUID='YOUR_APPROVED_FOUNDER_ACCOUNT_UUID'
 ```
 
 The default is PROFILE mode, which supports reopening the installed app after unplugging. `./run.sh dev` (or `debug`) starts DEBUG mode and requires the cable to remain connected. Both routes retain the existing opt-in for the exact authenticated Founder account; setting a variable does not grant another account access. `./run.sh release` uses production RELEASE mode with no Founder opt-in and needs only `ZYRA_DEVICE_ID`. Missing required variables stop the script before Flutter runs. The separate Test target is retired.
+
+Widget and capture tests select other sample roles, plans and states from code. The shell uses `ZyraOneJourneyShellFixture` through `SOURCE/test/support/zyra_hidden_dev_controls_driver.dart`; onboarding fixtures and immutable scenario catalogs also live under `SOURCE/test/support/`. These helpers provide values and call guarded source callbacks. They add no runtime picker or navigation door. Ordinary member navigation, saved Personalisation choices and account ownership checks remain with the app.
+
+Use the protected local driver with the installed pinned SDK for checks, without resolving dependencies again:
+
+```sh
+cd SOURCE
+node tooling/no_git_driver.mjs check
+node tooling/no_git_driver.mjs flutter analyze --no-pub
+node tooling/no_git_driver.mjs flutter test --no-pub --reporter json
+```
 
 ## Repository layout
 

@@ -117,6 +117,7 @@ Future<void> _mount(
         child: RepaintBoundary(key: _boundary, child: child!),
       ),
       home: ViewRequestDraftScreen(
+        fixture: ZyraShellTestFixture().fixture,
         ownerGeneration: ZyraAccountState.generation,
         ownerId: ZyraAccountState.userId,
       ),
@@ -254,7 +255,7 @@ Future<void> _nav(WidgetTester tester, int index) async {
     find.byType(ZyraShellNavigation).evaluate().isEmpty && depth < 6;
     depth++
   ) {
-    if (find.byKey(const ValueKey('dev_controls_page')).evaluate().isNotEmpty) {
+    if (zyraShellFixtureFor(tester).setupScopeOpen) {
       await closeZyraDevControls(tester);
       continue;
     }
@@ -282,16 +283,9 @@ Future<void> _nav(WidgetTester tester, int index) async {
 }
 
 Future<void> _openControls(WidgetTester tester) async {
-  for (
-    var depth = 0;
-    _key('concept_page_options_context').evaluate().isEmpty && depth < 8;
-    depth++
-  ) {
-    await _press(tester, 'draft_back');
-  }
-  expect(find.text('Page options'), findsOneWidget);
-  expect(_key('concept_page_options_context'), findsOneWidget);
-  expect(_key('draft_rules'), findsNothing);
+  await openZyraDevControls(tester);
+  expect(find.text('Page options'), findsNothing);
+  expect(_key('concept_page_options_context'), findsNothing);
 }
 
 void _expectNoBrowseChooser() {
@@ -304,10 +298,7 @@ void _expectNoBrowseChooser() {
 Future<void> _scenario(WidgetTester tester, int count) async {
   await _nav(tester, 1);
   await _openControls(tester);
-  expect(
-    tester.widget<Text>(_key('concept_page_options_context')).data,
-    'Journey',
-  );
+  expect(_key('concept_page_options_context'), findsNothing);
   await _press(tester, 'concept_journey_preview_$count');
 }
 
@@ -876,7 +867,7 @@ void main() {
     tester,
   ) async {
     await tester.pumpWidget(
-      const MaterialApp(
+      MaterialApp(
         home: Scaffold(
           body: ZyraEmptyState(
             icon: Icons.search,

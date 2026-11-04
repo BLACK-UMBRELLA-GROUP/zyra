@@ -1995,69 +1995,10 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     return rows.take(window).any((row) => row.matchId == journey.matchId);
   }
 
-  /// Developer Active previews used to look fully interactive and then stop
-  /// at the door with a bottom snackbar because their fake match id had no
-  /// server row. A developer tool must never create that trap. If an old
-  /// preview card survives a hot reload, entering it now finds or seeds a
-  /// real walkable Journey and opens that instead.
+  // Sample cards have no server Journey and cannot create one from the app.
   Future<void> _enterJourney(JourneyMatch selected) async {
-    var target = selected;
-    String? seedResult;
-    if (selected.isMock) {
-      try {
-        var rows = await ZyraJourneyService.fetchJourneyMatches(
-          statuses: const ['active'],
-        );
-        var live = rows
-            ?.where((journey) => !journey.isMock && !journey.isSuspended)
-            .toList();
-        if (live == null || live.isEmpty) {
-          seedResult = await ZyraJourneyService.devSeedJourney();
-          rows = await ZyraJourneyService.fetchJourneyMatches(
-            statuses: const ['active'],
-          );
-          live = rows
-              ?.where((journey) => !journey.isMock && !journey.isSuspended)
-              .toList();
-        }
-        if (live == null || live.isEmpty) {
-          if (!mounted) return;
-          await showZyraMoment(
-            context,
-            mark: Icons.cloud_off_outlined,
-            lines: [
-              const ZyraMomentLine.heading('Journey unavailable'),
-              ZyraMomentLine.body(
-                seedResult ??
-                    'A live test Journey could not be created for this account.',
-              ),
-              const ZyraMomentLine.quiet(
-                'Open the developer panel and choose Open live Journey to try again.',
-              ),
-            ],
-            ctaLabel: 'Back to Connections',
-          );
-          return;
-        }
-        target = live.first;
-        ZyraDevScenario.instance.refreshJourneys();
-      } catch (error) {
-        debugPrint('ZYRA dev Journey entry failed — $error');
-        if (!mounted) return;
-        await showZyraMoment(
-          context,
-          mark: Icons.cloud_off_outlined,
-          lines: const [
-            ZyraMomentLine.heading('Journey unavailable'),
-            ZyraMomentLine.body(
-              'The live test Journey could not be opened. Check the connection and try again.',
-            ),
-          ],
-          ctaLabel: 'Back to Connections',
-        );
-        return;
-      }
-    }
+    if (selected.isMock) return;
+    final target = selected;
     if (!mounted) return;
     await Navigator.of(context).push<void>(
       MaterialPageRoute(

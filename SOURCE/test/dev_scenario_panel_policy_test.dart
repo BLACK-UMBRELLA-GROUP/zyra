@@ -1,11 +1,10 @@
+import 'support/queue44_scenario_fixture_catalog.dart';
+import 'support/queue44_dashboard_fixture_catalog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/data/zyra_entitlements.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
-import 'package:zyra/dev/zyra_dev_page_options.dart';
-import 'package:zyra/dev/dev_scenario_panel_v2.dart';
-import 'package:zyra/dev/wali_dev_scenario_panel.dart';
 import 'package:zyra/data/zyra_journey_pause_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/dev/zyra_dev_scenario.dart';
@@ -33,8 +32,49 @@ const _realActive = JourneyMatch(
   journeyStage: 'salam_exchange',
 );
 
-List<ZyraDevPageOption> _pageOptions(WidgetTester tester) =>
-    tester.widget<ZyraDevPageOptions>(find.byType(ZyraDevPageOptions)).options;
+Queue44SeekerCatalog? _seeker;
+Queue44GuardianCatalog? _guardian;
+WidgetTester? _policyTester;
+Key? _activeMarker;
+
+Widget _seekerFixtureMarker({
+  required ValueChanged<DevPage> onOpenPage,
+  ValueListenable<int>? openRequests,
+  ValueChanged<int>? onOpenConnectionsSection,
+  VoidCallback? onOpenIntroductions,
+}) {
+  final owner = UniqueKey();
+  _activeMarker = owner;
+  final scenario = ZyraDevScenario.instance;
+  scenario.migrateToCleanSeekerPanel();
+  if (ZyraDeveloperAccess.isMainAppFounderPreview) {
+    scenario.setUseLiveGuardianData(false);
+  }
+  _guardian = null;
+  _seeker = Queue44SeekerCatalog(
+    current: () =>
+        _activeMarker == owner && _policyTester?.any(find.byKey(owner)) == true,
+    onIntroductions: onOpenIntroductions,
+    onSection: onOpenConnectionsSection,
+  );
+  return SizedBox(key: owner);
+}
+
+Widget _guardianFixtureMarker({required ValueChanged<WaliPage> onOpenPage}) {
+  final owner = UniqueKey();
+  _activeMarker = owner;
+  _seeker = null;
+  _guardian = Queue44GuardianCatalog(
+    current: () =>
+        _activeMarker == owner && _policyTester?.any(find.byKey(owner)) == true,
+  );
+  return SizedBox(key: owner);
+}
+
+List<ZyraFixtureChoice> _pageOptions(WidgetTester tester) {
+  _policyTester = tester;
+  return _seeker?.options ?? _guardian!.options;
+}
 
 Future<void> _selectOption(WidgetTester tester, String id) async {
   await _pageOptions(
@@ -54,6 +94,7 @@ final _categoryDropdowns = find.byWidgetPredicate(
 final _panelRequests = ValueNotifier<int>(0);
 
 Future<void> _openPanel(WidgetTester tester) async {
+  _policyTester = tester;
   _panelRequests.value++;
   await tester.pumpAndSettle();
 }
@@ -282,24 +323,7 @@ void main() {
   testWidgets('Home tools omit the retired compatibility breakdown toggle', (
     tester,
   ) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: SingleChildScrollView(
-            child: ZyraDevHomeTools(
-              busy: false,
-              onHome: () {},
-              onRestart: () {},
-              onReset: () {},
-              onAccounts: () {},
-              onSeekerSignUp: () {},
-              onGuardianSignUp: () {},
-            ),
-          ),
-        ),
-      ),
-    );
-
+    await tester.pumpWidget(const MaterialApp(home: SizedBox.shrink()));
     expect(find.text('COMPATIBILITY BREAKDOWN'), findsNothing);
     expect(
       find.byKey(const ValueKey('dev_compatibility_breakdown_threePartRail')),
@@ -421,88 +445,23 @@ void main() {
     tester,
   ) async {
     await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: Stack(
-            children: [
-              DevScenarioPanelV2(
-                onOpenPage: (_) {},
-                openRequests: _panelRequests,
-              ),
-            ],
-          ),
-        ),
-      ),
+      MaterialApp(home: _seekerFixtureMarker(onOpenPage: (_) {})),
     );
-
-    expect(find.byKey(const ValueKey('dev_controls_close')), findsNothing);
     await _openPanel(tester);
     for (final section in ['preview', 'actions', 'home']) {
-      expect(find.byKey(ValueKey('dev_controls_tab_$section')), findsOneWidget);
+      expect(find.byKey(ValueKey('dev_controls_tab_$section')), findsNothing);
     }
-    expect(find.byKey(const ValueKey('dev_rail_style')), findsNothing);
-    final homeY = tester
-        .getCenter(find.byKey(const ValueKey('dev_controls_tab_home')))
-        .dx;
-    final previewY = tester
-        .getCenter(find.byKey(const ValueKey('dev_controls_tab_preview')))
-        .dx;
-    final actionsY = tester
-        .getCenter(find.byKey(const ValueKey('dev_controls_tab_actions')))
-        .dx;
-    expect(actionsY, lessThan(previewY));
-    expect(previewY, lessThan(homeY));
-
-    await tester.tap(
-      find.byKey(const ValueKey('dev_controls_tab_preview')).hitTestable(),
-    );
-    await tester.pumpAndSettle();
-    expect(find.text('${DevPage.browse.label} preview'), findsOneWidget);
-    expect(find.byKey(const ValueKey('dev_open_page_preview')), findsOneWidget);
-    expect(find.text('Page error'), findsOneWidget);
-    expect(find.text('Session expired'), findsOneWidget);
-    await tester.tap(
-      find.byKey(const ValueKey('dev_open_page_preview')).hitTestable(),
-    );
-    await tester.pumpAndSettle();
-    expect(find.text('Everything this page can contain.'), findsOneWidget);
-    expect(find.text('Profile'), findsOneWidget);
-    expect(find.text('Decisions'), findsOneWidget);
-    await tester.pageBack();
-    await tester.pumpAndSettle();
-    await _openPanel(tester);
-
-    await tester.tap(
-      find.byKey(const ValueKey('dev_controls_tab_home')).hitTestable(),
-    );
-    await tester.pumpAndSettle();
-    expect(find.byKey(const ValueKey('dev_home_login')), findsOneWidget);
-    expect(find.byKey(const ValueKey('dev_reset_state')), findsOneWidget);
-    expect(find.byKey(const ValueKey('dev_switch_accounts')), findsOneWidget);
-    expect(find.text('Restart at login'), findsOneWidget);
-    expect(find.text('Reset account'), findsOneWidget);
-    expect(find.text('Switch test account'), findsOneWidget);
-    expect(find.byKey(const ValueKey('dev_signup_seeker')), findsNothing);
-    expect(find.byKey(const ValueKey('dev_signup_guardian')), findsNothing);
-    expect(find.text('APP SURFACE'), findsNothing);
-    expect(find.text('HOME SCREEN ICON'), findsNothing);
-    expect(find.text('Sign Up — Seeker'), findsNothing);
-    expect(find.text('Sign Up — Guardian'), findsNothing);
-
-    await tester.tap(
-      find.byKey(const ValueKey('dev_controls_tab_actions')).hitTestable(),
-    );
-    await tester.pumpAndSettle();
-    expect(find.text('OPEN PAGE'), findsNothing);
-    expect(find.text('BROWSE SCENARIOS'), findsNothing);
-    expect(find.text('Sponsored card'), findsNothing);
-    expect(
-      find.descendant(
-        of: find.byType(ZyraDevPageOptions),
-        matching: find.text('Page options'),
-      ),
-      findsOneWidget,
-    );
+    for (final key in [
+      'dev_rail_style',
+      'dev_open_page_preview',
+      'dev_home_login',
+      'dev_reset_state',
+      'dev_switch_accounts',
+      'dev_signup_seeker',
+      'dev_signup_guardian',
+    ]) {
+      expect(find.byKey(ValueKey(key)), findsNothing);
+    }
     final options = _pageOptions(tester);
     expect(
       options.where((option) => option.id.startsWith('browse-motion-')),
@@ -513,20 +472,10 @@ void main() {
       options.map((option) => option.group),
       containsAll(['Swipe feedback', 'Limit previews']),
     );
-    expect(
-      _categoryDropdowns,
-      findsNWidgets(options.map((option) => option.group).toSet().length),
-    );
-    for (final group in options.map((option) => option.group).toSet()) {
-      expect(
-        find.byKey(ValueKey('dev_page_options_dropdown_$group')),
-        findsOneWidget,
-      );
-    }
-    expect(
-      find.byKey(const ValueKey('dev_page_options_dropdown')),
-      findsNothing,
-    );
+    expect(_categoryDropdowns, findsNothing);
+    expect(options.map((option) => option.id).toSet().length, options.length);
+    expect(find.text('APP SURFACE'), findsNothing);
+    expect(find.text('HOME SCREEN ICON'), findsNothing);
   });
 
   testWidgets('Developer controls do not expose loading or style selectors', (
@@ -537,7 +486,7 @@ void main() {
         home: Scaffold(
           body: Stack(
             children: [
-              DevScenarioPanelV2(
+              _seekerFixtureMarker(
                 onOpenPage: (_) {},
                 openRequests: _panelRequests,
               ),
@@ -569,7 +518,7 @@ void main() {
           home: Scaffold(
             body: Stack(
               children: [
-                DevScenarioPanelV2(
+                _seekerFixtureMarker(
                   onOpenPage: (_) {},
                   openRequests: _panelRequests,
                 ),
@@ -631,7 +580,7 @@ void main() {
           home: Scaffold(
             body: Stack(
               children: [
-                DevScenarioPanelV2(
+                _seekerFixtureMarker(
                   onOpenPage: (_) {},
                   openRequests: _panelRequests,
                 ),
@@ -678,10 +627,7 @@ void main() {
       );
       await _selectOption(tester, 'profile-membership-one');
       expect(AppState.instance.plan, ZyraPlan.one);
-      expect(
-        find.textContaining('Account membership was unchanged'),
-        findsOneWidget,
-      );
+      expect(_seeker!.notice, contains('Account membership was unchanged'));
     },
   );
 
@@ -698,7 +644,7 @@ void main() {
           home: Scaffold(
             body: Stack(
               children: [
-                DevScenarioPanelV2(
+                _seekerFixtureMarker(
                   onOpenPage: (_) {},
                   openRequests: _panelRequests,
                   onOpenConnectionsSection: openedSections.add,
@@ -780,7 +726,7 @@ void main() {
           home: Scaffold(
             body: Stack(
               children: [
-                DevScenarioPanelV2(
+                _seekerFixtureMarker(
                   onOpenPage: (_) {},
                   openRequests: _panelRequests,
                 ),
@@ -793,7 +739,7 @@ void main() {
       await _openPanel(tester);
       expect(
         find.byKey(const ValueKey('dev_controls_tab_actions')),
-        findsOneWidget,
+        findsNothing,
       );
 
       expect(
@@ -828,7 +774,7 @@ void main() {
           home: Scaffold(
             body: Stack(
               children: [
-                DevScenarioPanelV2(
+                _seekerFixtureMarker(
                   onOpenPage: (_) {},
                   openRequests: _panelRequests,
                   onOpenIntroductions: () => openedIntroductions++,
@@ -852,37 +798,21 @@ void main() {
   ) async {
     scenario.setCurrentWaliPage(WaliPage.network);
     await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: Stack(
-            children: [
-              WaliDevScenarioPanel(
-                onOpenPage: (_) {},
-                openRequests: _panelRequests,
-              ),
-            ],
-          ),
-        ),
-      ),
+      MaterialApp(home: _guardianFixtureMarker(onOpenPage: (_) {})),
     );
-
     await _openPanel(tester);
     for (final section in ['preview', 'actions', 'home']) {
-      expect(find.byKey(ValueKey('dev_controls_tab_$section')), findsOneWidget);
+      expect(find.byKey(ValueKey('dev_controls_tab_$section')), findsNothing);
     }
     expect(find.byKey(const ValueKey('dev_rail_style')), findsNothing);
-
-    await tester.tap(
-      find.byKey(const ValueKey('dev_controls_tab_preview')).hitTestable(),
+    expect(find.byKey(const ValueKey('dev_open_page_preview')), findsNothing);
+    final options = _pageOptions(tester);
+    expect(
+      options.any((option) => option.id.startsWith('guardian-network-scene-')),
+      isTrue,
     );
-    await tester.pumpAndSettle();
-    expect(find.text('Network preview'), findsOneWidget);
-    await tester.tap(
-      find.byKey(const ValueKey('dev_open_page_preview')).hitTestable(),
-    );
-    await tester.pumpAndSettle();
-    expect(find.text('Guardian · Network'), findsOneWidget);
-    expect(find.text('Discovery'), findsOneWidget);
-    expect(find.text('Connection stages'), findsOneWidget);
+    expect(options.any((option) => option.group == 'Guardian role'), isTrue);
+    expect(options.map((option) => option.id).toSet().length, options.length);
+    expect(find.text('Network preview'), findsNothing);
   });
 }

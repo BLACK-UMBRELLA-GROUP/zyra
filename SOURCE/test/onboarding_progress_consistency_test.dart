@@ -1,3 +1,6 @@
+import 'package:zyra/screens/onboarding/category_summary_screen.dart';
+import 'package:zyra/screens/onboarding/compatibility_category_intro_screen.dart';
+import 'support/queue44_signup_flow_driver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/screens/auth/role_selection_screen.dart';
@@ -166,7 +169,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(home: OnboardingFlow(devPreview: true)),
       );
-      await tester.tap(find.byKey(const ValueKey('onboarding_stage_dev_skip')));
+      await tester.tap(find.byKey(const ValueKey('onboarding_stage_continue')));
       await tester.pumpAndSettle();
 
       for (var question = 1; question <= 4; question++) {
@@ -179,7 +182,7 @@ void main() {
         expect(scaffold.chapterComplete, isFalse);
         expect(find.text('QUESTION $question OF 4'), findsOneWidget);
         if (question < 4) {
-          await tester.tap(find.byKey(const ValueKey('onboarding_dev_skip')));
+          await advanceSignupQuestionFromCode(tester);
           await tester.pumpAndSettle();
         }
       }
@@ -198,7 +201,7 @@ void main() {
       expect(find.text('ACCOUNT ESSENTIALS'), findsOneWidget);
       expect(find.text('QUESTION $question OF 5'), findsOneWidget);
       if (question < 5) {
-        await tester.tap(find.byKey(const ValueKey('onboarding_dev_skip')));
+        await advanceSignupQuestionFromCode(tester);
         await tester.pumpAndSettle();
       }
     }
@@ -231,11 +234,20 @@ void main() {
           reachedSecondSection = true;
           break;
         }
-        scaffold.onDevSkip!();
+        scaffold.onContinue!();
       } else {
-        final skip = find.byKey(const ValueKey('deferred_onboarding_dev_skip'));
-        expect(skip, findsOneWidget, reason: 'No DEV path on page $page');
-        tester.widget<TextButton>(skip).onPressed!();
+        expect(
+          find.byKey(const ValueKey('deferred_onboarding_dev_skip')),
+          findsNothing,
+        );
+        final intro = find.byType(CompatibilityCategoryIntroScreen);
+        if (intro.evaluate().isNotEmpty) {
+          tester.widget<CompatibilityCategoryIntroScreen>(intro).onContinue();
+        } else {
+          tester
+              .widget<CategorySummaryScreen>(find.byType(CategorySummaryScreen))
+              .onContinue();
+        }
       }
       await tester.pumpAndSettle();
     }
@@ -256,7 +268,7 @@ void main() {
           find.byType(OnboardingScaffold),
         );
         expect(scaffold.progressLabel, 'STEP $step OF 21');
-        scaffold.onDevSkip!();
+        scaffold.onContinue!();
         await tester.pumpAndSettle();
       }
 
@@ -281,7 +293,7 @@ void main() {
       expect(scaffold.progressLabel, 'STEP 5 OF 7');
       expect(scaffold.chapterProgress, closeTo(5 / 7, .0001));
 
-      scaffold.onDevSkip!();
+      scaffold.onContinue!();
       await tester.pumpAndSettle();
       scaffold = tester.widget<OnboardingScaffold>(
         find.byType(OnboardingScaffold),

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/config/zyra_app_variant.dart';
-import 'package:zyra/dev/dev_splash_directions.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
 import 'package:zyra/screens/splash_screen.dart';
-import 'package:zyra/dev/zyra_developer_route_gate.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/theme/zyra_colors.dart';
@@ -72,125 +69,95 @@ void main() {
     expect(tester.hasRunningAnimations, isFalse);
   });
 
-  testWidgets('shared Home keeps Quiet Horizon and opens its preview', (
-    tester,
-  ) async {
-    var panelClosed = false;
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: SingleChildScrollView(
-            child: ZyraDevHomeTools(
-              busy: false,
-              onHome: () {},
-              onRestart: () {},
-              onReset: null,
-              onOpenSplashPreview: () => panelClosed = true,
-              onAccounts: () {},
-              onSeekerSignUp: () {},
-              onGuardianSignUp: () {},
-            ),
-          ),
+  testWidgets(
+    'selected Quiet Horizon artwork is code-selected with no Home picker',
+    (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: ZyraSplashStudy(direction: ZyraSplashDirection.dawnHorizon),
         ),
-      ),
-    );
-    for (final direction in ZyraSplashDirection.values) {
-      expect(
-        find.byKey(ValueKey('dev_splash_${direction.name}')),
-        findsOneWidget,
       );
-    }
-    expect(ZyraSplashDirection.values, [ZyraSplashDirection.dawnHorizon]);
-    expect(ZyraSplashDirection.dawnHorizon.label, '6 · Quiet Horizon · Main');
-    expect(find.text('6 · Quiet Horizon · Main'), findsOneWidget);
-    for (final removed in ['disney', 'moonly', 'luma', 'headspace', 'tinder']) {
-      expect(find.byKey(ValueKey('dev_splash_$removed')), findsNothing);
-    }
-    await tester.tap(find.byKey(const ValueKey('dev_splash_dawnHorizon')));
-    expect(panelClosed, isTrue);
-    await tester.pumpAndSettle();
-    expect(
-      find.byKey(const ValueKey('splash_study_dawnHorizon')),
-      findsOneWidget,
-    );
-  });
-
-  testWidgets('direct unauthorized preview and Home picker are denied', (
-    tester,
-  ) async {
-    ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    await tester.pumpWidget(
-      const MaterialApp(home: DevSplashDirectionsScreen()),
-    );
-    expect(
-      find.byKey(const ValueKey('dev_splash_directions_denied')),
-      findsOneWidget,
-    );
-    expect(find.byType(SplashScreen), findsNothing);
-    await tester.pumpWidget(
-      const MaterialApp(home: Scaffold(body: DevSplashDirectionPicker())),
-    );
-    expect(find.byType(ActionChip), findsNothing);
-  });
-
-  testWidgets('the selected visual preview preserves the underlying route', (
-    tester,
-  ) async {
-    var restartCalls = 0;
-    var refreshCalls = 0;
-    ZyraDeveloperAccess.configureAuthorizationForTesting(
-      variant: ZyraAppVariant.production,
-      currentUser: () => null,
-      refreshSession: () async {
-        refreshCalls++;
-        return null;
-      },
-      founderIdentityMatches: (_) => false,
-    );
-    final navigator = GlobalKey<NavigatorState>();
-    await tester.pumpWidget(
-      MaterialApp(
-        navigatorKey: navigator,
-        home: Scaffold(
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                const Text('Existing profile stays here'),
-                ZyraDevHomeTools(
-                  busy: false,
-                  onHome: () {},
-                  onRestart: () => restartCalls++,
-                  onReset: null,
-                  onAccounts: () {},
-                  onSeekerSignUp: () {},
-                  onGuardianSignUp: () {},
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-    await tester.tap(find.byKey(const ValueKey('dev_splash_dawnHorizon')));
-    await tester.pumpAndSettle();
-    for (final direction in ZyraSplashDirection.values) {
-      expect(find.text(direction.label), findsOneWidget);
-      expect(find.byType(ZyraDeveloperRouteGate), findsNothing);
-      expect(navigator.currentState!.canPop(), isTrue);
-      await tester.tap(find.text('Replay'));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byTooltip('Next direction'));
-      await tester.pumpAndSettle();
-    }
-    await tester.tap(find.byTooltip('Close splash preview'));
-    await tester.pumpAndSettle();
-    expect(find.text('Existing profile stays here'), findsOneWidget);
-    expect(restartCalls, 0);
-    expect(refreshCalls, 0);
-  });
+      expect(ZyraSplashDirection.values, [ZyraSplashDirection.dawnHorizon]);
+      expect(ZyraSplashDirection.dawnHorizon.label, '6 · Quiet Horizon · Main');
+      for (final name in [
+        'dawnHorizon',
+        'disney',
+        'moonly',
+        'luma',
+        'headspace',
+        'tinder',
+      ]) {
+        expect(find.byKey(ValueKey('dev_splash_$name')), findsNothing);
+      }
+      expect(find.byType(ZyraSplashArtworkFrame), findsOneWidget);
+      await tester.pump(
+        zyraSplashTotalDuration + const Duration(milliseconds: 2),
+      );
+      expect(tester.hasRunningAnimations, isFalse);
+    },
+  );
 
   testWidgets(
-    'revoked artwork permission hides preview without resetting stack',
+    'ordinary splash retains its completion without a developer route',
+    (tester) async {
+      ZyraDeveloperAccess.setAuthorizedForTesting(false);
+      var completed = 0;
+      await tester.pumpWidget(
+        MaterialApp(home: SplashScreen(onFinished: () => completed++)),
+      );
+      expect(find.byType(SplashScreen), findsOneWidget);
+      expect(find.byType(ActionChip), findsNothing);
+      expect(
+        find.byKey(const ValueKey('dev_splash_directions_denied')),
+        findsNothing,
+      );
+      await tester.pump(
+        zyraSplashTotalDuration + const Duration(milliseconds: 2),
+      );
+      expect(completed, 1);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'code-selected artwork preserves the underlying route and authority',
+    (tester) async {
+      var refreshCalls = 0;
+      ZyraDeveloperAccess.configureAuthorizationForTesting(
+        variant: ZyraAppVariant.production,
+        currentUser: () => null,
+        refreshSession: () async {
+          refreshCalls++;
+          return null;
+        },
+        founderIdentityMatches: (_) => false,
+      );
+      final navigator = GlobalKey<NavigatorState>();
+      await tester.pumpWidget(
+        MaterialApp(
+          navigatorKey: navigator,
+          home: const Scaffold(body: Text('Existing profile stays here')),
+        ),
+      );
+      navigator.currentState!.push(
+        MaterialPageRoute<void>(
+          builder: (_) =>
+              const ZyraSplashStudy(direction: ZyraSplashDirection.dawnHorizon),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(navigator.currentState!.canPop(), isTrue);
+      expect(find.byType(ZyraSplashArtworkFrame), findsOneWidget);
+      expect(find.byType(ActionChip), findsNothing);
+      navigator.currentState!.pop();
+      await tester.pumpAndSettle();
+      expect(find.text('Existing profile stays here'), findsOneWidget);
+      expect(refreshCalls, 0);
+    },
+  );
+
+  testWidgets(
+    'revoked developer authority cannot add splash controls or reset the stack',
     (tester) async {
       final navigator = GlobalKey<NavigatorState>();
       await tester.pumpWidget(
@@ -200,19 +167,24 @@ void main() {
         ),
       );
       navigator.currentState!.push(
-        MaterialPageRoute(builder: (_) => const DevSplashDirectionsScreen()),
+        MaterialPageRoute<void>(
+          builder: (_) =>
+              const ZyraSplashStudy(direction: ZyraSplashDirection.dawnHorizon),
+        ),
       );
       await tester.pumpAndSettle();
       ZyraDeveloperAccess.setAuthorizedForTesting(false);
       await tester.pumpAndSettle();
+      expect(find.byType(ActionChip), findsNothing);
       expect(
-        find.byKey(const ValueKey('dev_splash_directions_denied')),
-        findsOneWidget,
+        find.byKey(const ValueKey('dev_splash_dawnHorizon')),
+        findsNothing,
       );
       expect(navigator.currentState!.canPop(), isTrue);
-      await tester.tap(find.byTooltip('Close splash preview'));
+      navigator.currentState!.pop();
       await tester.pumpAndSettle();
       expect(find.text('Original page'), findsOneWidget);
+      expect(tester.takeException(), isNull);
     },
   );
 

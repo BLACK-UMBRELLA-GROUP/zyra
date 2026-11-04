@@ -1,9 +1,10 @@
+// Test-only code-selected fixture state and presentation; no application controls.
 // A local comparison setting for the onboarding next-step control. It is
 // independent of the eleven visual directions and never changes live signup.
 import 'package:flutter/foundation.dart';
 
-import '../services/zyra_account_state.dart';
-import '../services/zyra_developer_access.dart';
+import 'package:zyra/services/zyra_account_state.dart';
+import 'package:zyra/services/zyra_developer_access.dart';
 
 enum ZyraOnboardingAdvanceMode { continueButton, animatedDownArrow }
 

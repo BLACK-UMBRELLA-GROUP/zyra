@@ -2,16 +2,24 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
-const _deviceId = '00008130-001A2C1E26F8001C';
+const _deviceId = 'queue44-local-fixture-device';
+const _founderUuid = '00000000-0000-0000-0000-000000000044';
 const _founderAccessDefine = 'ZYRA_INTERNAL_FOUNDER_ACCESS=true';
-const _founderUuidDefine =
-    'ZYRA_INTERNAL_FOUNDER_UUID=dfcbd00d-bc22-4d6e-999b-3a9264cf3510';
+const _founderUuidDefine = 'ZYRA_INTERNAL_FOUNDER_UUID=$_founderUuid';
 
 Future<({ProcessResult result, List<String> flutterArgs})> _invoke(
   List<String> arguments,
 ) async {
   final sandbox = Directory.systemTemp.createTempSync('zyra-run-target-');
-  addTearDown(() => sandbox.deleteSync(recursive: true));
+  addTearDown(() {
+    final trash = Directory(
+      '${Platform.environment['HOME']}/_to_delete/DEV_TOGGLES_2026-10-30/queue44_run_target_fixtures_2026-11-03',
+    )..createSync(recursive: true);
+    final name = sandbox.uri.pathSegments.where((part) => part.isNotEmpty).last;
+    final destination = '${trash.path}/$name';
+    expect(Directory(destination).existsSync(), isFalse);
+    sandbox.renameSync(destination);
+  });
   final captured = File('${sandbox.path}/flutter.args');
   final fakeFlutter = File('${sandbox.path}/flutter')
     ..writeAsStringSync('''#!/bin/sh
@@ -22,7 +30,9 @@ printf '%s\\n' "\$@" > "\$ZYRA_FAKE_FLUTTER_ARGS"
 
   final environment = Map<String, String>.from(Platform.environment)
     ..['PATH'] = '${sandbox.path}:${Platform.environment['PATH'] ?? ''}'
-    ..['ZYRA_FAKE_FLUTTER_ARGS'] = captured.path;
+    ..['ZYRA_FAKE_FLUTTER_ARGS'] = captured.path
+    ..['ZYRA_DEVICE_ID'] = _deviceId
+    ..['ZYRA_INTERNAL_FOUNDER_UUID'] = _founderUuid;
   final result = await Process.run(
     '/bin/bash',
     ['run.sh', ...arguments],
@@ -43,7 +53,12 @@ void main() {
     expect(script, contains('_run_internal_founder --profile'));
     expect(script, contains('--flavor production'));
     expect(script, contains('--dart-define=$_founderAccessDefine'));
-    expect(script, contains('--dart-define=$_founderUuidDefine'));
+    expect(
+      script,
+      contains(r'--dart-define=ZYRA_INTERNAL_FOUNDER_UUID="$FOUNDER_UUID"'),
+    );
+    expect(script, contains(r'DEVICE="${ZYRA_DEVICE_ID:-}"'));
+    expect(script, contains(r'FOUNDER_UUID="${ZYRA_INTERNAL_FOUNDER_UUID:-}"'));
     expect(script, isNot(contains('--flavor foundertest')));
     expect(script, isNot(contains('--dart-define-from-file=')));
     expect(script, isNot(contains('validate_founder_test_config.dart')));

@@ -1,3 +1,5 @@
+import 'support/queue44_signup_flow_driver.dart';
+import 'support/queue44_signup_flow_fixture.dart';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -8,11 +10,9 @@ import 'package:http/testing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/config/zyra_internal_founder_policy.dart';
-import 'package:zyra/dev/dev_onboarding_interaction.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
-import 'package:zyra/dev/dev_onboarding_lab.dart';
-import 'package:zyra/dev/dev_signup_process.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
+import 'support/queue44_onboarding_interaction_fixture.dart';
+import 'support/queue44_gold_fixture.dart';
+import 'support/queue44_onboarding_story_fixture.dart';
 import 'package:zyra/screens/auth/role_selection_screen.dart';
 import 'package:zyra/screens/onboarding/account_path_overview_screen.dart';
 import 'package:zyra/screens/onboarding/chapter2_flow.dart';
@@ -29,7 +29,6 @@ import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/services/zyra_local_prefs.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_onboarding_continue_action.dart';
-import 'package:zyra/widgets/zyra_onboarding_study.dart';
 
 import 'initial_signup_draft_test.dart' show FakeSignupStore;
 
@@ -75,7 +74,7 @@ Future<void> _mount(
         ),
         child: child!,
       ),
-      home: DevSignUpProcessScreen(initialDirection: direction),
+      home: SignupFlowFixture(initialDirection: direction),
     ),
   );
   await tester.pumpAndSettle();
@@ -147,6 +146,10 @@ void _expectAction(
 }
 
 Future<void> _advance(WidgetTester tester, String key) async {
+  if (key == 'onboarding_dev_skip') {
+    await advanceSignupQuestionFromCode(tester);
+    return;
+  }
   final action = find.byKey(ValueKey(key));
   expect(action.hitTestable(), findsOneWidget);
   await tester.tap(action);
@@ -230,7 +233,7 @@ Future<void> _reachFirstQuestion(
   await _advance(tester, 'welcome_google');
   await _enterOpeningStory(tester);
   for (var page = 0; page < _openingThemeCount; page++) {
-    expect(find.byType(DevOnboardingIntroduction), findsOneWidget);
+    expect(find.byType(OnboardingIntroductionFixture), findsOneWidget);
     expect(
       find.byKey(ValueKey('dev_opening_page_${page + 1}')),
       findsOneWidget,
@@ -365,7 +368,7 @@ void main() {
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraDevOnboardingGoldMotion.select(ZyraOnboardingGoldMotion.pageEntrance);
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
+    OnboardingFixtureController.instance.resetForTesting();
     ZyraDevOnboardingInteraction.resetForTesting();
     ZyraDevOnboardingStoryNavigation.resetForTesting();
     ZyraText.useTestFontStubs = true;
@@ -376,7 +379,7 @@ void main() {
     ZyraInternalPreviewClient.finishSignOut();
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     ZyraDeveloperAccess.resetAuthorizationForTesting();
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
+    OnboardingFixtureController.instance.resetForTesting();
     ZyraDevOnboardingInteraction.resetForTesting();
     ZyraDevOnboardingStoryNavigation.resetForTesting();
     ZyraText.useTestFontStubs = false;
@@ -605,13 +608,13 @@ void main() {
         isTrue,
       );
       await tester.pumpAndSettle();
-      expect(find.byType(DevSignUpProcessScreen), findsOneWidget);
+      expect(find.byType(SignupFlowFixture), findsOneWidget);
       expect(find.text("What's your name?"), findsOneWidget);
       expect(
         tester.widget<TextField>(find.byKey(_lastNameField)).controller?.text,
         'Ahmed',
       );
-      expect(find.byType(DevOnboardingIntroduction), findsNothing);
+      expect(find.byType(OnboardingIntroductionFixture), findsNothing);
       _expectAction(
         tester,
         key,
@@ -654,11 +657,7 @@ void main() {
       await _advance(tester, 'signup_membership_continue');
       expect(find.byType(InitialIdentityCheckScreen), findsOneWidget);
       await _advance(tester, 'identity-consent-agree');
-      final verified = find.byKey(const ValueKey('identity-dev-verified'));
-      await tester.ensureVisible(verified);
-      await tester.pumpAndSettle();
-      await tester.tap(verified);
-      await tester.pumpAndSettle();
+      await verifyIdentityFromCode(tester);
       if (_isArrow(mode)) {
         _expectAction(tester, 'identity-continue', mode, enabled: true);
       } else {
@@ -713,11 +712,7 @@ void main() {
         await _advance(tester, 'signup_membership_continue');
         expect(find.byType(InitialIdentityCheckScreen), findsOneWidget);
         await _advance(tester, 'identity-consent-agree');
-        final verified = find.byKey(const ValueKey('identity-dev-verified'));
-        await tester.ensureVisible(verified);
-        await tester.pumpAndSettle();
-        await tester.tap(verified);
-        await tester.pumpAndSettle();
+        await verifyIdentityFromCode(tester);
         if (_isArrow(mode)) {
           _expectAction(tester, 'identity-continue', mode, enabled: true);
         } else {

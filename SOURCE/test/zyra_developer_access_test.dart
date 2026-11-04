@@ -8,15 +8,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/config/zyra_app_variant.dart';
 import 'package:zyra/config/zyra_internal_founder_policy.dart';
+import 'package:zyra/dev/dev_discovery_directions.dart';
 import 'package:zyra/dev/zyra_dev_local_preview.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
-import 'package:zyra/dev/dev_signup_process.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
-import 'package:zyra/dev/zyra_global_dev_overlay.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/models/zyra_signup_membership_choice.dart';
 import 'package:zyra/screens/auth/role_selection_screen.dart';
-import 'package:zyra/screens/dev/developer_access_screen.dart';
 import 'package:zyra/screens/onboarding/account_path_overview_screen.dart';
 import 'package:zyra/screens/onboarding/onboarding_flow.dart';
 import 'package:zyra/screens/wali/wali_onboarding_flow.dart';
@@ -26,10 +22,99 @@ import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/screens/home/home_shell.dart';
 import 'package:zyra/screens/wali/wali_home_shell.dart';
+import 'package:zyra/screens/settings/personalisation_screen.dart';
 import 'package:zyra/state/app_state.dart';
+import 'package:zyra/theme/zyra_colors.dart';
+import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
+import 'package:zyra/widgets/zyra_account_session_host.dart';
+import 'package:zyra/widgets/zyra_onboarding_study.dart';
+import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
-import 'support/zyra_hidden_dev_controls_driver.dart';
+import 'support/queue44_gold_fixture.dart';
+import 'support/queue44_onboarding_opening_fixture.dart';
+
+const _founder = User(
+  id: '11111111-1111-4111-8111-111111111111',
+  appMetadata: {'zyra_role': 'founder'},
+  userMetadata: {},
+  aud: 'authenticated',
+  createdAt: '2026-09-14T00:00:00Z',
+);
+const _member = User(
+  id: '11111111-1111-4111-8111-111111111111',
+  appMetadata: {},
+  userMetadata: {},
+  aud: 'authenticated',
+  createdAt: '2026-09-14T00:00:00Z',
+);
+
+Future<ZyraLocalPreviewPresentation> _prepare({
+  required bool guardian,
+  bool premium = true,
+  String gender = 'male',
+}) async {
+  final preparation = await ZyraDevLocalPreview.prepare(
+    current: () => true,
+    isWali: guardian,
+    premium: premium,
+    gender: gender,
+  );
+  expect(preparation, isNotNull);
+  final presentation = preparation!.commit();
+  expect(presentation, isNotNull);
+  return presentation!;
+}
+
+Widget _screen(ZyraLocalPreviewPresentation recipe) => ViewRequestDraftScreen(
+  key: UniqueKey(),
+  ownerGeneration: recipe.generation,
+  ownerId: recipe.ownerId,
+  restoreLocation: false,
+  initialGuardianRole: recipe.guardian,
+  initialSeekerBasic: !recipe.premium,
+  initialGuardianBasic: !recipe.premium,
+);
+
+Future<void> _render(
+  WidgetTester tester,
+  ZyraLocalPreviewPresentation recipe, {
+  double textScale = 1,
+  GlobalKey<NavigatorState>? navigatorKey,
+}) async {
+  final navigator = navigatorKey ?? GlobalKey<NavigatorState>();
+  await tester.pumpWidget(
+    MaterialApp(
+      navigatorKey: navigator,
+      navigatorObservers: [ZyraPreviewRouteObserver()],
+      builder: (context, child) => ZyraAccountSessionHost(
+        navigatorKey: navigator,
+        authStateChangesOverride: const Stream<AuthState>.empty(),
+        child: MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaler: TextScaler.linear(textScale),
+            disableAnimations: true,
+          ),
+          child: child!,
+        ),
+      ),
+      home: _screen(recipe),
+    ),
+  );
+  await tester.pumpAndSettle();
+}
+
+void _noRetiredEntry() {
+  for (final key in const [
+    'dev_access_seeker',
+    'dev_access_guardian',
+    'dev_access_signup',
+    'dev_controls_hold_surface',
+    'dev_controls_overlay',
+  ]) {
+    expect(find.byKey(ValueKey(key)), findsNothing);
+  }
+}
 
 void main() {
   var httpCalls = 0;
@@ -61,8 +146,6 @@ void main() {
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraDevOnboardingGoldMotion.select(ZyraOnboardingGoldMotion.pageEntrance);
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
-    ZyraDevLocalPreview.genderSelection.value = 'male';
     ZyraText.useTestFontStubs = true;
   });
 
@@ -70,8 +153,6 @@ void main() {
     ZyraInternalPreviewClient.finishSignOut();
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     ZyraDeveloperAccess.resetAuthorizationForTesting();
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
-    ZyraDevLocalPreview.genderSelection.value = 'male';
     ZyraText.useTestFontStubs = false;
   });
 
@@ -142,99 +223,59 @@ void main() {
       (size: const Size(390, 844), textScale: 1.0),
       (size: const Size(320, 568), textScale: 1.5),
     ]) {
-      testWidgets('landing has five text pills at ${viewport.size.width} width '
-          'and ${viewport.textScale} text scale', (tester) async {
-        tester.view.physicalSize = viewport.size;
-        tester.view.devicePixelRatio = 1;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
-        await tester.pumpWidget(
-          MaterialApp(
-            builder: (context, child) => MediaQuery(
-              data: MediaQuery.of(
-                context,
-              ).copyWith(textScaler: TextScaler.linear(viewport.textScale)),
-              child: child!,
-            ),
-            home: const DeveloperAccessScreen(),
-          ),
-        );
-        await tester.pumpAndSettle();
-
-        expect(
-          tester.widgetList<Text>(find.byType(Text)).map((text) => text.data),
-          orderedEquals(const [
-            'Developer Access',
-            'Seeker',
-            'Seeker Basic',
-            'Guardian',
-            'Guardian Basic',
-            'Onboarding',
-          ]),
-        );
-        expect(find.byType(InkWell), findsNWidgets(5));
-        expect(find.byType(Icon), findsNothing);
-        expect(find.text('Seeker Basic'), findsOneWidget);
-        expect(find.text('Guardian Basic'), findsOneWidget);
-        expect(
-          tester.getCenter(find.text('Developer Access')).dx,
-          closeTo(viewport.size.width / 2, 1),
-        );
-        for (final action in const [
-          ('dev_access_seeker', 'Seeker'),
-          ('dev_access_seeker_basic', 'Seeker Basic'),
-          ('dev_access_guardian', 'Guardian'),
-          ('dev_access_guardian_basic', 'Guardian Basic'),
-          ('dev_access_signup', 'Onboarding'),
-        ]) {
-          final pill = find.byKey(ValueKey(action.$1));
-          await tester.ensureVisible(pill);
-          await tester.pump();
-          final inkWell = find.ancestor(
-            of: find.text(action.$2),
-            matching: find.byType(InkWell),
+      testWidgets(
+        'planned member navigation has five destinations without access pills at ${viewport.size.width} width '
+        'and ${viewport.textScale} text scale',
+        (tester) async {
+          tester.view.physicalSize = viewport.size;
+          tester.view.devicePixelRatio = 1;
+          addTearDown(tester.view.resetPhysicalSize);
+          addTearDown(tester.view.resetDevicePixelRatio);
+          await _render(
+            tester,
+            await _prepare(guardian: false),
+            textScale: viewport.textScale,
           );
-          expect(pill.hitTestable(), findsOneWidget);
-          expect(tester.getSize(pill).height, greaterThanOrEqualTo(80));
-          expect(tester.widget<InkWell>(inkWell).onTap, isNotNull);
+          final navigation = tester.widget<ZyraShellNavigation>(
+            find.byType(ZyraShellNavigation),
+          );
           expect(
-            tester.getCenter(pill).dx,
-            closeTo(viewport.size.width / 2, 1),
+            navigation.items.map((item) => item.label),
+            orderedEquals([
+              'Profiles',
+              'Journey',
+              'My ZYRA',
+              'Guardian',
+              'Profile',
+            ]),
           );
-        }
-        expect(tester.takeException(), isNull);
-        await tester.pumpWidget(const SizedBox.shrink());
-      });
+          expect(navigation.interactionEnabled, isTrue);
+          for (var index = 0; index < 5; index++) {
+            final item = find.byKey(ValueKey('floating-nav-item-$index'));
+            expect(item, findsOneWidget);
+            final semantics = tester.widget<Semantics>(item).properties;
+            expect(semantics.button, isTrue);
+            expect(semantics.enabled, isTrue);
+            expect(semantics.onTap, isNotNull);
+            final rect = tester.getRect(item);
+            expect(rect.left, greaterThanOrEqualTo(0));
+            expect(rect.right, lessThanOrEqualTo(viewport.size.width));
+          }
+          _noRetiredEntry();
+          expect(tester.takeException(), isNull);
+          await tester.pumpWidget(const SizedBox.shrink());
+        },
+      );
     }
 
     for (final guardian in [false, true]) {
       testWidgets(
-        '${guardian ? 'Guardian' : 'Seeker'} real shell Home opens five-button landing without signout or reset',
+        '${guardian ? 'Guardian' : 'Seeker'} member Appearance route returns without signout or reset',
         (tester) async {
           final navigator = GlobalKey<NavigatorState>();
-          final controlsRouteObserver = ZyraDevControlsRouteObserver();
-          await tester.pumpWidget(
-            MaterialApp(
-              navigatorKey: navigator,
-              navigatorObservers: [controlsRouteObserver],
-              builder: (context, child) => ZyraGlobalDevOverlayHost(
-                navigatorKey: navigator,
-                routeObserver: controlsRouteObserver,
-                authStateChangesOverride: const Stream<AuthState>.empty(),
-                child: child!,
-              ),
-              home: const DeveloperAccessScreen(),
-            ),
-          );
-          await tester.pumpAndSettle();
-          await tester.tap(
-            find.byKey(
-              ValueKey(guardian ? 'dev_access_guardian' : 'dev_access_seeker'),
-            ),
-          );
-          await tester.pumpAndSettle();
-          final shell = guardian ? WaliHomeShell : HomeShell;
-          expect(find.byType(shell), findsOneWidget);
+          final recipe = await _prepare(guardian: guardian);
+          await _render(tester, recipe, navigatorKey: navigator);
+          final original = tester.state(find.byType(ViewRequestDraftScreen));
           final state = AppState.instance;
           final before = (
             state.name,
@@ -244,38 +285,29 @@ void main() {
             ZyraAccountState.generation,
             Supabase.instance.client.auth.currentSession,
           );
-          expect(ZyraInternalPreviewClient.isActive, isTrue);
-          await openZyraDevControls(tester);
-          await tester.tap(
-            find.byKey(const ValueKey('dev_controls_tab_home')).hitTestable(),
-          );
-          await tester.pumpAndSettle();
-          final home = find.byKey(const ValueKey('dev_home_navigation'));
-          await tester.ensureVisible(home);
-          await tester.pumpAndSettle();
-          expect(find.text('Exit onboarding'), findsNothing);
-          expect(
-            find.descendant(
-              of: home,
-              matching: find.byIcon(Icons.home_outlined),
+          navigator.currentState!.push(
+            MaterialPageRoute<void>(
+              builder: (_) => PersonalisationScreen.preview(
+                canAct: () =>
+                    ZyraDeveloperAccess.canUseDeveloperTools &&
+                    recipe.generation == ZyraAccountState.generation,
+                palette: ZyraDevPalette.ivory,
+                hapticLevel: ZyraHapticLevel.medium,
+                goldEnabled: true,
+                onHapticChanged: (_) {},
+                onGoldChanged: (_) {},
+                embedded: false,
+              ),
             ),
-            findsOneWidget,
           );
-          await tester.tap(home);
           await tester.pumpAndSettle();
-          expect(find.byType(DeveloperAccessScreen), findsOneWidget);
-          for (final key in const [
-            'dev_access_seeker',
-            'dev_access_guardian',
-            'dev_access_signup',
-          ]) {
-            expect(find.byKey(ValueKey(key)).hitTestable(), findsOneWidget);
-          }
-          expect(find.byType(shell), findsNothing);
+          expect(find.byType(PersonalisationScreen), findsOneWidget);
+          _noRetiredEntry();
+          navigator.currentState!.pop();
+          await tester.pumpAndSettle();
           expect(
-            find.byType(shell, skipOffstage: false),
-            findsOneWidget,
-            reason: 'The first root stays retained, not reset or signed out',
+            tester.state(find.byType(ViewRequestDraftScreen)),
+            same(original),
           );
           expect((
             state.name,
@@ -290,11 +322,7 @@ void main() {
             httpCalls,
             0,
             reason:
-                'All transport is mocked; Home makes no member/OAuth/signout request',
-          );
-          expect(
-            ZyraDevSurfaceCoordinator.instance.entryLabel,
-            'Developer Access',
+                'Member navigation makes no OAuth, membership or signout request.',
           );
           expect(tester.takeException(), isNull);
           await tester.pumpWidget(const SizedBox.shrink());
@@ -305,27 +333,14 @@ void main() {
         testWidgets(
           'main local $gender ${guardian ? 'Guardian' : 'Seeker'} preview opens its shell',
           (tester) async {
-            ZyraDevLocalPreview.genderSelection.value = gender;
-            tester.view.physicalSize = const Size(390, 844);
-            tester.view.devicePixelRatio = 1;
-            addTearDown(tester.view.resetPhysicalSize);
-            addTearDown(tester.view.resetDevicePixelRatio);
-            await tester.pumpWidget(
-              const MaterialApp(home: DeveloperAccessScreen()),
+            final recipe = await _prepare(guardian: guardian, gender: gender);
+            await _render(tester, recipe);
+            final screen = tester.widget<ViewRequestDraftScreen>(
+              find.byType(ViewRequestDraftScreen),
             );
-            await tester.pumpAndSettle();
-            await tester.tap(
-              find.byKey(
-                ValueKey(
-                  guardian ? 'dev_access_guardian' : 'dev_access_seeker',
-                ),
-              ),
-            );
-            await tester.pumpAndSettle();
-            expect(
-              find.byType(guardian ? WaliHomeShell : HomeShell),
-              findsOneWidget,
-            );
+            expect(screen.initialGuardianRole, guardian);
+            expect(recipe.guardian, guardian);
+            expect(recipe.premium, isTrue);
             expect(ZyraInternalPreviewClient.isActive, isTrue);
             if (guardian) {
               expect(AppState.instance.waliHasWaliOne, isTrue);
@@ -339,6 +354,8 @@ void main() {
                   ? (gender == 'female' ? 'Khadija' : 'Ibrahim')
                   : (gender == 'female' ? 'Maryam' : 'Adam'),
             );
+            expect(httpCalls, 0);
+            _noRetiredEntry();
             expect(tester.takeException(), isNull);
             await tester.pumpWidget(const SizedBox.shrink());
           },
@@ -348,37 +365,34 @@ void main() {
       testWidgets(
         '${guardian ? 'Guardian' : 'Seeker'} Basic stays a local sample on gender change',
         (tester) async {
-          await tester.pumpWidget(
-            const MaterialApp(home: DeveloperAccessScreen()),
+          await _render(
+            tester,
+            await _prepare(guardian: guardian, premium: false),
           );
-          await tester.pumpAndSettle();
-          final action = find.byKey(
-            ValueKey(
-              guardian
-                  ? 'dev_access_guardian_basic'
-                  : 'dev_access_seeker_basic',
-            ),
-          );
-          await tester.ensureVisible(action);
-          await tester.tap(action);
-          await tester.pumpAndSettle();
-          final shell = find.byType(guardian ? WaliHomeShell : HomeShell);
-          expect(shell, findsOneWidget);
-          expect(ZyraInternalPreviewClient.isActive, isTrue);
           expect(AppState.instance.plan, ZyraPlan.basic);
           expect(AppState.instance.waliHasWaliOne, isFalse);
           expect(
             ZyraDevLocalPreview.basicMembershipPreviewLabel(guardian: guardian),
             '${guardian ? 'Guardian' : 'Seeker'} Basic · Preview',
           );
-          await ZyraDevLocalPreview.selectGender(
-            tester.element(shell),
-            'female',
+          await _render(
+            tester,
+            await _prepare(
+              guardian: guardian,
+              premium: false,
+              gender: 'female',
+            ),
           );
-          await tester.pumpAndSettle();
           expect(AppState.instance.gender, 'female');
           expect(AppState.instance.plan, ZyraPlan.basic);
           expect(AppState.instance.waliHasWaliOne, isFalse);
+          final screen = tester.widget<ViewRequestDraftScreen>(
+            find.byType(ViewRequestDraftScreen),
+          );
+          expect(
+            guardian ? screen.initialGuardianBasic : screen.initialSeekerBasic,
+            isTrue,
+          );
           expect(httpCalls, 0, reason: 'Local samples never write membership.');
           ZyraDeveloperAccess.setAuthorizedForTesting(false);
           expect(
@@ -397,26 +411,37 @@ void main() {
           addTearDown(tester.view.resetPhysicalSize);
           addTearDown(tester.view.resetDevicePixelRatio);
           final navigatorKey = GlobalKey<NavigatorState>();
+          ZyraInternalPreviewClient.beginPreview();
           await tester.pumpWidget(
             MaterialApp(
               navigatorKey: navigatorKey,
-              home: const DeveloperAccessScreen(),
+              home: const Scaffold(body: Text('Member origin')),
+            ),
+          );
+          navigatorKey.currentState!.push(
+            MaterialPageRoute<void>(
+              builder: (_) => Queue44WelcomeFixture(
+                devPreview: true,
+                devIntroductionBuilder: (context) => OnboardingOpeningFixture(
+                  direction: ZyraOnboardingDirection.luma,
+                  welcomeName: 'Adam',
+                  onContinue: () => Navigator.of(context).pushReplacement(
+                    MaterialPageRoute<void>(
+                      builder: (_) =>
+                          const RoleSelectionScreen(devPreview: true),
+                    ),
+                  ),
+                ),
+              ),
             ),
           );
           await tester.pumpAndSettle();
-
-          await tester.tap(find.byKey(const ValueKey('dev_access_signup')));
-          await tester.pumpAndSettle();
-          expect(find.byType(DevSignUpProcessScreen), findsOneWidget);
           expect(find.byType(WelcomeScreen), findsOneWidget);
           expect(
             tester.widget<WelcomeScreen>(find.byType(WelcomeScreen)).devPreview,
             isTrue,
           );
-          expect(
-            find.byKey(const ValueKey('dev_access_signup_roles')),
-            findsNothing,
-          );
+          _noRetiredEntry();
           await tester.tap(find.byKey(const ValueKey('welcome_google')));
           await tester.pumpAndSettle();
           // Welcome precedes one four-page verification/How ZYRA works section.
@@ -523,123 +548,101 @@ void main() {
           }
           expect(tester.takeException(), isNull);
 
-          expect(find.byKey(const ValueKey('dev_signup_close')), findsNothing);
-          expect(ZyraDevSurfaceCoordinator.instance.canCloseOnboarding, isTrue);
-          expect(ZyraDevSurfaceCoordinator.instance.closeOnboarding(), isTrue);
+          navigatorKey.currentState!.popUntil((route) => route.isFirst);
           await tester.pumpAndSettle();
-          expect(navigatorKey.currentState!.canPop(), isTrue);
-          expect(
-            ZyraDevSurfaceCoordinator.instance.canCloseOnboarding,
-            isFalse,
-          );
-          expect(find.byType(DeveloperAccessScreen), findsOneWidget);
-          expect(
-            find.byKey(const ValueKey('dev_access_signup')),
-            findsOneWidget,
-          );
+          expect(find.text('Member origin'), findsOneWidget);
+          expect(ZyraInternalPreviewClient.isActive, isTrue);
+          expect(httpCalls, 0);
+          _noRetiredEntry();
           await tester.pumpWidget(const SizedBox.shrink());
         },
       );
     }
 
-    for (final action in const [
-      'dev_access_seeker',
-      'dev_access_seeker_basic',
-      'dev_access_guardian',
-      'dev_access_guardian_basic',
-      'dev_access_signup',
+    for (final command in const [
+      (name: 'Seeker', guardian: false, premium: true),
+      (name: 'Seeker Basic', guardian: false, premium: false),
+      (name: 'Guardian', guardian: true, premium: true),
+      (name: 'Guardian Basic', guardian: true, premium: false),
+      (name: 'Onboarding', guardian: false, premium: false),
     ]) {
-      testWidgets('$action refuses a newly revoked Founder claim', (
-        tester,
-      ) async {
-        ZyraDeveloperAccess.setAuthorizedForTesting(false);
-        const founder = User(
-          id: '11111111-1111-4111-8111-111111111111',
-          appMetadata: {'zyra_role': 'founder'},
-          userMetadata: {},
-          aud: 'authenticated',
-          createdAt: '2026-09-14T00:00:00Z',
-        );
-        const member = User(
-          id: '11111111-1111-4111-8111-111111111111',
-          appMetadata: {},
-          userMetadata: {},
-          aud: 'authenticated',
-          createdAt: '2026-09-14T00:00:00Z',
-        );
-        User current = founder;
-        var refreshCalls = 0;
-        ZyraDeveloperAccess.configureAuthorizationForTesting(
-          variant: ZyraAppVariant.production,
-          currentUser: () => current,
-          refreshSession: () async {
-            refreshCalls++;
-            if (refreshCalls > 1) current = member;
-            return current;
-          },
-          founderIdentityMatches: (user) =>
-              user.appMetadata['zyra_role'] == 'founder',
-        );
-        await tester.pumpWidget(
-          const MaterialApp(home: DeveloperAccessScreen()),
-        );
-        await tester.pumpAndSettle();
-        expect(ZyraDeveloperAccess.isAuthorizedOperator, isTrue);
-
-        final actionFinder = find.byKey(ValueKey(action));
-        await tester.ensureVisible(actionFinder);
-        await tester.pump();
-        await tester.tap(actionFinder);
-        await tester.pumpAndSettle();
-
-        expect(refreshCalls, 2);
-        expect(ZyraDeveloperAccess.isAuthorizedOperator, isFalse);
-        expect(find.byType(HomeShell), findsNothing);
-        expect(find.byType(WaliHomeShell), findsNothing);
-        expect(
-          find.byKey(const ValueKey('dev_access_signup_roles')),
-          findsNothing,
-        );
-        expect(find.byType(DevSignUpProcessScreen), findsNothing);
-        expect(tester.takeException(), isNull);
-        await tester.pumpWidget(const SizedBox.shrink());
-      });
+      testWidgets(
+        '${command.name} fixture entry refuses a newly revoked Founder claim',
+        (tester) async {
+          ZyraDeveloperAccess.setAuthorizedForTesting(false);
+          User current = _founder;
+          var refreshCalls = 0;
+          ZyraDeveloperAccess.configureAuthorizationForTesting(
+            variant: ZyraAppVariant.production,
+            currentUser: () => current,
+            refreshSession: () async {
+              refreshCalls++;
+              if (refreshCalls > 1) current = _member;
+              return current;
+            },
+            founderIdentityMatches: (user) =>
+                user.appMetadata['zyra_role'] == 'founder',
+          );
+          expect(
+            await ZyraDeveloperAccess.refreshCurrentAuthorization(),
+            isTrue,
+          );
+          expect(ZyraDeveloperAccess.isAuthorizedOperator, isTrue);
+          if (command.name == 'Onboarding') {
+            expect(
+              await ZyraDeveloperAccess.refreshCurrentAuthorization(),
+              isFalse,
+            );
+            await tester.pumpWidget(
+              const MaterialApp(home: Queue44WelcomeFixture(devPreview: true)),
+            );
+            await tester.pumpAndSettle();
+            expect(
+              find.byKey(const ValueKey('welcome_preview_denied')),
+              findsOneWidget,
+            );
+            expect(find.byKey(const ValueKey('welcome_google')), findsNothing);
+            expect(find.byType(RoleSelectionScreen), findsNothing);
+            expect(find.byType(OnboardingFlow), findsNothing);
+          } else {
+            final preparation = await ZyraDevLocalPreview.prepare(
+              current: () => true,
+              isWali: command.guardian,
+              premium: command.premium,
+            );
+            expect(preparation, isNull);
+            await tester.pumpWidget(
+              const MaterialApp(home: Scaffold(body: Text('Member origin'))),
+            );
+          }
+          expect(refreshCalls, 2);
+          expect(ZyraDeveloperAccess.isAuthorizedOperator, isFalse);
+          expect(find.byType(ViewRequestDraftScreen), findsNothing);
+          expect(find.byType(HomeShell), findsNothing);
+          expect(find.byType(WaliHomeShell), findsNothing);
+          expect(httpCalls, 0);
+          _noRetiredEntry();
+          expect(tester.takeException(), isNull);
+          await tester.pumpWidget(const SizedBox.shrink());
+        },
+      );
     }
 
     for (final guardian in [false, true]) {
       testWidgets(
-        '${guardian ? 'Guardian' : 'Seeker'} gender switch survives removal of '
-        'its overlay control during fresh authorization',
+        '${guardian ? 'Guardian' : 'Seeker'} code fixture entry survives disposal of its initiating child during fresh authorization',
         (tester) async {
           ZyraDeveloperAccess.setAuthorizedForTesting(false);
-          const founder = User(
-            id: '11111111-1111-4111-8111-111111111111',
-            appMetadata: {'zyra_role': 'founder'},
-            userMetadata: {},
-            aud: 'authenticated',
-            createdAt: '2026-09-14T00:00:00Z',
-          );
           final freshSession = Completer<User?>();
           ZyraDeveloperAccess.configureAuthorizationForTesting(
             variant: ZyraAppVariant.production,
-            currentUser: () => founder,
+            currentUser: () => _founder,
             refreshSession: () => freshSession.future,
             founderIdentityMatches: (user) =>
                 user.appMetadata['zyra_role'] == 'founder',
           );
-          await ZyraDeveloperAccess.acceptFreshTokenRefresh(founder);
-          final coordinator = ZyraDevSurfaceCoordinator.instance;
-          final owner = Object();
-          if (guardian) {
-            coordinator.attachGuardian(owner, (_) {});
-          } else {
-            coordinator.attachSeeker(owner, (_) {});
-          }
+          await ZyraDeveloperAccess.acceptFreshTokenRefresh(_founder);
           BuildContext? initiatingContext;
-          tester.view.physicalSize = const Size(390, 844);
-          tester.view.devicePixelRatio = 1;
-          addTearDown(tester.view.resetPhysicalSize);
-          addTearDown(tester.view.resetDevicePixelRatio);
           await tester.pumpWidget(
             MaterialApp(
               home: Scaffold(
@@ -648,34 +651,31 @@ void main() {
                   builder: (context, _) =>
                       ZyraDeveloperAccess.canUseDeveloperTools
                       ? Builder(
-                          builder: (controlContext) => TextButton(
-                            onPressed: () {
-                              initiatingContext = controlContext;
-                              unawaited(
-                                ZyraDevLocalPreview.selectGender(
-                                  controlContext,
-                                  'female',
-                                ),
-                              );
-                            },
-                            child: const Text('Preview female'),
-                          ),
+                          builder: (memberContext) {
+                            initiatingContext = memberContext;
+                            return const Text('Member page');
+                          },
                         )
                       : const Text('Refreshing access'),
                 ),
               ),
             ),
           );
-          await tester.tap(find.text('Preview female'));
+          final context = initiatingContext!;
+          final route = ModalRoute.of(context);
+          final operation = ZyraDevLocalPreview.open(
+            context,
+            isWali: guardian,
+            gender: 'female',
+          );
           await tester.pump();
-
           expect(ZyraDeveloperAccess.isAuthorizedOperator, isFalse);
-          expect(initiatingContext!.mounted, isFalse);
+          expect(context.mounted, isFalse);
+          expect(route!.isCurrent, isTrue);
           expect(find.text('Refreshing access'), findsOneWidget);
-
-          freshSession.complete(founder);
+          freshSession.complete(_founder);
           await tester.pumpAndSettle();
-
+          expect(await operation, isTrue);
           expect(ZyraDeveloperAccess.isAuthorizedOperator, isTrue);
           expect(
             find.byType(guardian ? WaliHomeShell : HomeShell),
@@ -683,6 +683,8 @@ void main() {
           );
           expect(AppState.instance.gender, 'female');
           expect(AppState.instance.name, guardian ? 'Khadija' : 'Maryam');
+          expect(httpCalls, 0);
+          _noRetiredEntry();
           expect(tester.takeException(), isNull);
           await tester.pumpWidget(const SizedBox.shrink());
         },

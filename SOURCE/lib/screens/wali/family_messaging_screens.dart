@@ -12,7 +12,6 @@ import '../../dev/zyra_circle_discussion_picker_presentation.dart';
 import '../../dev/zyra_circle_send_button_presentation.dart';
 
 import '../../data/zyra_release_gates.dart';
-import '../../dev/zyra_dev_surface_coordinator.dart';
 import '../../models/journey_match.dart';
 import '../../models/seeker_profile.dart';
 import '../../services/zyra_auth.dart';
@@ -1321,16 +1320,6 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
               ),
             ),
           );
-          return;
-        }
-        if (_authority.canPreview) {
-          // A fixture has no server Journey to open. Move to the real Journey
-          // owner instead of presenting a broken Journey route.
-          ZyraDevSurfaceCoordinator.instance.openSeekerConnectionsSection(0);
-          Navigator.of(
-            context,
-            rootNavigator: true,
-          ).popUntil((route) => route.isFirst);
           return;
         }
       } else {

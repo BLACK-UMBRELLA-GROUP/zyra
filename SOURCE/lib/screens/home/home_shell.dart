@@ -48,8 +48,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart' show setEquals, visibleForTesting;
 import 'package:flutter/material.dart';
 
-import '../../dev/zyra_dev_scenario.dart';
-import '../../dev/zyra_dev_surface_coordinator.dart';
 import '../../services/zyra_notification_service.dart';
 import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_internal_preview_client.dart';
@@ -110,18 +108,6 @@ class _HomeShellState extends State<HomeShell> {
   /// its corners (2026-08-01, Founder: "the skip in the top right is
   /// behind the bell icon").
   bool _chromeHidden = false;
-
-  /// Tab index -> the page the dev scenario panel gates on. The panel is
-  /// a sibling of the IndexedStack, not a child, so it cannot read this
-  /// itself — it has to be pushed. Debug-only work; in a release build the
-  /// panel does not exist and this is a field assignment nothing reads.
-  static const _devPages = [
-    DevPage.browse,
-    DevPage.connections,
-    DevPage.dashboard,
-    DevPage.guardian,
-    DevPage.profile,
-  ];
 
   static const _telemetryFeatures = [
     ZyraTelemetryFeature.browse,
@@ -285,25 +271,14 @@ class _HomeShellState extends State<HomeShell> {
       currentScope: () =>
           (ZyraAccountState.userId, ZyraAccountState.generation),
     );
-    _tab = widget.initialTab.clamp(0, _devPages.length - 1);
+    _tab = widget.initialTab.clamp(0, _telemetryFeatures.length - 1);
     _onboardingProgress = widget.initialOnboardingProgress;
-    ZyraDevScenario.instance.setCurrentPage(_devPages[_tab]);
     ZyraProductTelemetry.instance.record(
       feature: _telemetryFeatures[_tab],
       name: ZyraTelemetryEventName.opened,
       action: ZyraTelemetryAction.pageView,
       surface: ZyraTelemetrySurface.seeker,
     );
-    if (ZyraDeveloperAccess.canUseDeveloperTools) {
-      ZyraDevSurfaceCoordinator.instance.attachSeeker(
-        this,
-        _openDevPage,
-        onOpenConnectionsSection: (section) =>
-            _openConnectionsSection(ZyraConnectionsSection.fromPage(section)),
-        onOpenIntroductions: () =>
-            _openConnectionsSection(ZyraConnectionsSection.introductions),
-      );
-    }
     if (!widget.deferredOnboardingDevPreview) {
       ZyraNotificationService.confirmedAcknowledgements.addListener(
         _onConfirmedAcknowledgement,
@@ -357,17 +332,7 @@ class _HomeShellState extends State<HomeShell> {
     _unreadPoll?.cancel();
     _unreadCoordinator.dispose();
     _connectionsSection.dispose();
-    ZyraDevSurfaceCoordinator.instance.detachSeeker(this);
     super.dispose();
-  }
-
-  void _openDevPage(DevPage page) {
-    if (!mounted) return;
-    _goToTab(_devPages.indexOf(page));
-    Navigator.of(
-      context,
-      rootNavigator: true,
-    ).popUntil((route) => route.isFirst);
   }
 
   Future<void> _refreshUnread() {
@@ -420,7 +385,6 @@ class _HomeShellState extends State<HomeShell> {
         surface: ZyraTelemetrySurface.seeker,
       );
     }
-    ZyraDevScenario.instance.setCurrentPage(_devPages[index]);
     if (widget.deferredOnboardingDevPreview || !_currentAccount) return;
     // Arrival is not acknowledgement of every unseen item in a section.
     // Only explicit, exact-item actions may change read_at.

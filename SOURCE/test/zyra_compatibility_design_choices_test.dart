@@ -1,3 +1,4 @@
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 // Actual protected shell, physical controls entry and caller-owned fictional
 // access only. No member answers, SDK sessions, ledger, service or PNG I/O.
 import 'dart:async';
@@ -6,8 +7,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_app_gold_preview.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_access_store.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_presentation.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_score_designs.dart';
@@ -103,7 +102,7 @@ class _Owner {
     await tester.pumpWidget(
       MaterialApp(
         navigatorKey: navigator,
-        navigatorObservers: [ZyraDevControlsRouteObserver()],
+        navigatorObservers: [ZyraPreviewRouteObserver()],
         theme: ThemeData.dark(),
         builder: (context, child) => MediaQuery(
           data: MediaQuery.of(context).copyWith(
@@ -115,6 +114,7 @@ class _Owner {
           child: child!,
         ),
         home: ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           key: UniqueKey(),
           canAct: () => allowed && epoch.current,
           onExit: () =>
@@ -222,7 +222,7 @@ void main() {
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     AppState.instance.resetForAccountChange();
-    final gold = ZyraDevAppGold.instance;
+    final gold = ZyraAppGoldStyle.instance;
     gold.select(
       false,
       expectedGeneration: ZyraAccountState.generation,

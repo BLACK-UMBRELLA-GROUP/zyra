@@ -1,3 +1,4 @@
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -6,7 +7,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
-import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/dev/zyra_dev_scenario.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
@@ -77,6 +77,7 @@ Future<void> _mount(
       home:
           home ??
           ViewRequestDraftScreen(
+            fixture: ZyraShellTestFixture().fixture,
             ownerGeneration: ZyraAccountState.generation,
             ownerId: ZyraAccountState.userId,
             onCheckpoint: onCheckpoint,
@@ -106,6 +107,7 @@ Future<void> _mount(
 }
 
 Future<void> _press(WidgetTester tester, Finder target) async {
+  if (await pressZyraFixtureFinder(tester, target)) return;
   if (target.evaluate().isEmpty) {
     await tester.scrollUntilVisible(
       target,
@@ -135,7 +137,7 @@ Future<void> _nav(WidgetTester tester, int index) async {
     find.byType(ZyraShellNavigation).evaluate().isEmpty && depth < 8;
     depth++
   ) {
-    if (find.byKey(const ValueKey('dev_controls_page')).evaluate().isNotEmpty) {
+    if (zyraShellFixtureFor(tester).setupScopeOpen) {
       await closeZyraDevControls(tester);
       continue;
     }
@@ -177,19 +179,10 @@ Future<void> _nav(WidgetTester tester, int index) async {
 }
 
 Future<void> _controls(WidgetTester tester, {required int tab}) async {
-  // Reach the real owner before opening its options; Journey counts and
-  // Guardian plans deliberately no longer share a generic Browse menu.
   await _nav(tester, tab);
-  await toggleZyraDevControls(tester);
-  expect(find.text('Page options'), findsOneWidget);
-  expect(
-    tester.widget<Text>(_key('concept_page_options_context')).data,
-    tab == 1 ? 'Journey' : 'Guardian',
-  );
-  expect(
-    _key('concept_journey_preview_3'),
-    tab == 1 ? findsOneWidget : findsNothing,
-  );
+  await openZyraDevControls(tester);
+  expect(find.text('Page options'), findsNothing);
+  expect(_key('concept_page_options_context'), findsNothing);
 }
 
 Future<void> _seed(WidgetTester tester) async {
@@ -329,7 +322,7 @@ void main() {
     AppState.instance.resetForAccountChange();
     ZyraDevScenario.instance.reset();
     ZyraAccountState.clearImagesForTesting = () async {};
-    final gold = ZyraDevAppGold.instance;
+    final gold = ZyraAppGoldStyle.instance;
     gold.select(
       false,
       expectedGeneration: ZyraAccountState.generation,

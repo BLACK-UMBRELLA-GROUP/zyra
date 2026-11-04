@@ -110,7 +110,7 @@ void main() {
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     ZyraAppGoldStyle.instance.restore(false);
-    ZyraDevAppGold.instance.resetForTesting();
+    ZyraAppGoldRenderer.instance.resetForTesting();
     ZyraColors.restoreAppPalette(null);
     ZyraColors.restoreAppSurfaceStyle(null);
     ZyraText.restoreAppFont(null);
@@ -121,7 +121,7 @@ void main() {
 
   tearDown(() {
     ZyraAppGoldStyle.instance.restore(false);
-    ZyraDevAppGold.instance.resetForTesting();
+    ZyraAppGoldRenderer.instance.resetForTesting();
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraAccountState.resetForTesting();
     ZyraColors.restoreAppPalette(null);
@@ -197,8 +197,8 @@ void main() {
         await tester.pumpAndSettle();
         _expectControlReachable(tester, layout.size);
         expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);
-        expect(ZyraDevAppGold.instance.enabled, isFalse);
-        expect(ZyraDevAppGold.instance.renderingEnabled, isFalse);
+        expect(ZyraAppGoldStyle.instance.enabled, isFalse);
+        expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
         expect(tester.widget<Switch>(find.byKey(_goldToggle)).value, isFalse);
         final mountedScreen = find
             .byType(PersonalisationScreen)
@@ -214,9 +214,8 @@ void main() {
         _expectControlReachable(tester, layout.size);
         expect(tester.widget<Switch>(find.byKey(_goldToggle)).value, isTrue);
         expect(ZyraAppGoldStyle.instance.enabled, isTrue);
-        expect(ZyraDevAppGold.instance.enabled, isFalse);
-        expect(ZyraDevAppGold.instance.renderingEnabled, isTrue);
-        expect(ZyraDevAppGold.instance.reducedMotion, isTrue);
+        expect(ZyraAppGoldRenderer.instance.renderingEnabled, isTrue);
+        expect(ZyraAppGoldRenderer.instance.reducedMotion, isTrue);
         expect(
           find.byType(PersonalisationScreen).evaluate().single,
           same(mountedScreen),
@@ -228,14 +227,14 @@ void main() {
         ZyraAppGoldStyle.instance.restore(false);
         await tester.pumpAndSettle();
         expect(tester.widget<Switch>(find.byKey(_goldToggle)).value, isFalse);
-        expect(ZyraDevAppGold.instance.renderingEnabled, isFalse);
+        expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
         expect(await _pixels(tester), orderedEquals(off));
         expect(ZyraLocalPrefs.cachedRole, role);
         expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);
         expect(tester.takeException(), isNull);
         await tester.pumpWidget(const SizedBox.shrink());
         await tester.pumpAndSettle();
-        expect(ZyraDevAppGold.instance.debugPainterCount, 0);
+        expect(ZyraAppGoldRenderer.instance.debugPainterCount, 0);
       });
     }
   }

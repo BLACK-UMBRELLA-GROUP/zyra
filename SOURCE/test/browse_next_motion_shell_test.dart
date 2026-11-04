@@ -374,6 +374,7 @@ Future<void> _mount(
       home: RepaintBoundary(
         key: _boundary,
         child: ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           canAct: canAct ?? () => true,
           onExit: () {},
         ),
@@ -467,104 +468,17 @@ Future<void> _tapBar(WidgetTester tester, String label) async {
 }
 
 Future<void> _openControls(WidgetTester tester) async {
-  for (
-    var depth = 0;
-    _key('concept_page_options_context').evaluate().isEmpty && depth < 8;
-    depth++
-  ) {
-    await _tap(tester, 'draft_back');
-  }
-  expect(find.text('Page options'), findsOneWidget);
-  expect(_key('concept_page_options_context'), findsOneWidget);
-  expect(_key('draft_rules'), findsNothing);
+  await openZyraDevControls(tester);
+  expect(find.text('Page options'), findsNothing);
+  expect(_key('concept_page_options_context'), findsNothing);
 }
 
 Future<void> _select(WidgetTester tester, ZyraBrowseNextMotion style) async {
   final previousEpoch = _motion(tester).epoch;
   final previousId = _selectedId(tester);
-  await _openControls(tester);
-  expect(
-    tester.widget<Text>(_key('concept_page_options_context')).data,
-    'Profiles',
-  );
-  expect(find.text('Next animation'), findsOneWidget);
-  expect(_key('concept_journey_preview_1'), findsNothing);
-  expect(ZyraBrowseNextMotion.values, hasLength(11));
-  expect(_motionDropdown, findsOneWidget);
-  await tester.ensureVisible(_motionDropdown);
+  expect(zyraShellFixtureFor(tester).selectBrowseMotion(style), isTrue);
   await tester.pumpAndSettle();
-  final selected = tester
-      .widget<DropdownButtonFormField<ZyraBrowseNextMotion>>(_motionDropdown)
-      .initialValue!;
-  await tester.tap(_motionDropdown);
-  await tester.pumpAndSettle();
-  // The button's IndexedStack also retains keyed items. Select only inside
-  // the actual popup route, whose ListView builds lower choices lazily.
-  final popup = find.byWidgetPredicate(
-    (widget) =>
-        widget is Semantics && widget.properties.role == ui.SemanticsRole.menu,
-    description: 'Next animation popup menu',
-  );
-  expect(popup, findsOneWidget);
-  final popupScrollable = find.descendant(
-    of: popup,
-    matching: find.byType(Scrollable),
-  );
-  expect(popupScrollable, findsOneWidget);
-  final option = find.descendant(
-    of: popup,
-    matching: _key('concept_browse_next_motion_${style.name}'),
-  );
-  await tester.scrollUntilVisible(
-    option,
-    style.index < selected.index ? -80 : 80,
-    scrollable: popupScrollable,
-    maxScrolls: 24,
-  );
-  await tester.pumpAndSettle();
-  expect(option, findsOneWidget);
-  // DropdownMenuItem is aligned content, not the popup's pointer receiver.
-  // Its blank centre need not hit its descendants; the native enabled InkWell
-  // wrapping this exact keyed choice owns the real selection action.
-  final receiver = find
-      .ancestor(
-        of: option,
-        matching: find.byWidgetPredicate(
-          (widget) => widget is InkWell && widget.onTap != null,
-        ),
-      )
-      .first;
-  expect(receiver, findsOneWidget);
-  await Scrollable.ensureVisible(tester.element(receiver), alignment: 0.5);
-  await tester.pumpAndSettle();
-  final rect = tester.getRect(receiver);
-  final logicalSize = tester.view.physicalSize / tester.view.devicePixelRatio;
-  final visible = rect
-      .intersect(tester.getRect(popupScrollable))
-      .intersect(Offset.zero & logicalSize);
-  expect(visible.width, greaterThan(0));
-  expect(visible.height, greaterThan(0));
-  final point = Alignment(
-    2 * (visible.center.dx - rect.left) / rect.width - 1,
-    2 * (visible.center.dy - rect.top) / rect.height - 1,
-  );
-  expect(
-    receiver.hitTestable(at: point),
-    findsOneWidget,
-    reason:
-        'Native popup receiver for ${style.name}: '
-        'rect=$rect, visible=$visible, tap=${visible.center}.',
-  );
-  await tester.tapAt(visible.center);
-  await tester.pumpAndSettle();
-  expect(popup, findsNothing);
-  expect(
-    tester
-        .widget<DropdownButtonFormField<ZyraBrowseNextMotion>>(_motionDropdown)
-        .initialValue,
-    style,
-  );
-  await _tap(tester, 'draft_back');
+  expect(_motionDropdown, findsNothing);
   expect(_motion(tester).style, style);
   expect(_motion(tester).epoch, previousEpoch);
   expect(_selectedId(tester), previousId);
@@ -1078,17 +992,15 @@ void main() {
       find.byWidgetPredicate((widget) {
         final key = widget.key;
         return key is ValueKey<String> &&
-            key.value.startsWith('concept_browse_design_');
+            key.value.startsWith('concept_browse_design_') &&
+            key.value != 'concept_browse_design_scroll';
       }),
       findsNothing,
     );
     oldNext();
     await tester.pumpAndSettle();
-    expect(
-      tester.widget<Text>(_key('concept_page_options_context')).data,
-      'Profiles',
-    );
-    expect(_motionDropdown, findsOneWidget);
+    expect(_key('concept_page_options_context'), findsNothing);
+    expect(_motionDropdown, findsNothing);
     await _tap(tester, 'draft_back');
     expect(_selectedId(tester), _aisha);
     expect(_browse(tester).design, ZyraOneJourneyBrowseDesign.portraitCard);

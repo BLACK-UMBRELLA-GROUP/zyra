@@ -58,6 +58,7 @@ Future<void> _mount(
         child: child!,
       ),
       home: ZyraOneJourneyConceptShell(
+        fixture: ZyraShellTestFixture().fixture,
         canAct: () => true,
         onExit: () => fail('Account return must not exit the app.'),
         initialGuardianRole: guardian,

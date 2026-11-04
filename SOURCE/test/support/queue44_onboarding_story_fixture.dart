@@ -1,131 +1,74 @@
+export 'package:zyra/widgets/zyra_onboarding_study.dart'
+    show ZyraOnboardingDirection, zyraDefaultDevOnboardingDirection;
+// Test-only code-selected host for real shared onboarding rendering.
+// No direction or style picker is recreated here.
 // Visual-only welcome walkthroughs. Never re-enter signup, mutate completion,
 // refresh Auth, store a selection, or request device permissions.
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+export 'queue44_onboarding_opening_fixture.dart'
+    show openingFixtureSkipCallback, setOpeningQuoteFixtureFromCode;
 
-import '../services/zyra_developer_access.dart';
-import '../theme/zyra_colors.dart';
-import '../theme/zyra_text.dart';
-import '../widgets/zyra_onboarding_continue_action.dart';
-import '../widgets/zyra_onboarding_edge_swipe.dart';
-import '../widgets/zyra_onboarding_study.dart';
-import 'dev_onboarding_gold_design.dart';
-import 'dev_onboarding_interaction.dart';
-import 'dev_onboarding_opening.dart';
-import 'dev_onboarding_transition.dart';
+import 'package:zyra/services/zyra_developer_access.dart';
+import 'package:zyra/theme/zyra_colors.dart';
+import 'package:zyra/theme/zyra_text.dart';
+import 'package:zyra/widgets/zyra_onboarding_continue_action.dart';
+import 'package:zyra/widgets/zyra_onboarding_edge_swipe.dart';
+import 'package:zyra/widgets/zyra_onboarding_study.dart';
+import 'queue44_gold_fixture.dart';
+import 'queue44_onboarding_interaction_fixture.dart';
+import 'queue44_onboarding_opening_fixture.dart';
+import 'queue44_onboarding_transition_fixture.dart';
 
-class DevOnboardingDirectionsScreen extends StatefulWidget {
-  const DevOnboardingDirectionsScreen({
+/// A code-selected story specimen. No direction, style or account picker.
+class OnboardingStoryFixture extends StatelessWidget {
+  const OnboardingStoryFixture({
     super.key,
     this.initialDirection = zyraDefaultDevOnboardingDirection,
   });
   final ZyraOnboardingDirection initialDirection;
 
   @override
-  State<DevOnboardingDirectionsScreen> createState() =>
-      _DevOnboardingDirectionsScreenState();
-}
-
-class _DevOnboardingDirectionsScreenState
-    extends State<DevOnboardingDirectionsScreen> {
-  late ZyraOnboardingDirection _direction = widget.initialDirection;
-
-  void _cycle(int delta) {
-    if (!ZyraDeveloperAccess.canUseDeveloperTools) return;
-    setState(() {
-      _direction =
-          ZyraOnboardingDirection.values[(_direction.index + delta) %
-              ZyraOnboardingDirection.values.length];
-    });
-    ZyraDevOnboardingGoldMotion.pageEntered();
-  }
-
-  @override
   Widget build(BuildContext context) => ListenableBuilder(
-    listenable: Listenable.merge([
-      ZyraDeveloperAccess.authorizationChanges,
-      ZyraDevOnboardingInteraction.changes,
-    ]),
+    listenable: ZyraDeveloperAccess.authorizationChanges,
     builder: (context, _) {
-      final authorized = ZyraDeveloperAccess.canUseDeveloperTools;
+      final allowed = ZyraDeveloperAccess.canUseDeveloperTools;
       return ZyraOnboardingArrowScope(
         enabled:
             ZyraDevOnboardingInteraction.current ==
             ZyraOnboardingAdvanceMode.animatedDownArrow,
         child: Scaffold(
           key: ValueKey(
-            authorized
+            allowed
                 ? 'dev_onboarding_directions_preview'
                 : 'dev_onboarding_directions_denied',
           ),
           body: DecoratedBox(
             key: const ValueKey('dev_onboarding_static_canvas'),
             decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                if (authorized) const ZyraOnboardingGoldBackdrop(),
-                SafeArea(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            key: const ValueKey('dev_onboarding_close'),
-                            tooltip: 'Close onboarding preview',
-                            onPressed: () => Navigator.of(context).maybePop(),
-                            icon: const Icon(Icons.close_rounded),
-                            color: ZyraColors.foregroundSecondary,
-                          ),
-                          if (authorized) ...[
-                            Expanded(
-                              child: Text(
-                                'Preview · ${_direction.label}',
-                                key: const ValueKey(
-                                  'dev_onboarding_direction_label',
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: ZyraText.subtext(size: 11),
-                              ),
-                            ),
-                            IconButton(
-                              key: const ValueKey(
-                                'dev_onboarding_previous_direction',
-                              ),
-                              tooltip: 'Previous onboarding design',
-                              onPressed: () => _cycle(-1),
-                              icon: const Icon(Icons.chevron_left_rounded),
-                              color: ZyraColors.journeyGold,
-                            ),
-                            IconButton(
-                              key: const ValueKey(
-                                'dev_onboarding_next_direction',
-                              ),
-                              tooltip: 'Next onboarding design',
-                              onPressed: () => _cycle(1),
-                              icon: const Icon(Icons.chevron_right_rounded),
-                              color: ZyraColors.journeyGold,
-                            ),
-                          ],
-                        ],
-                      ),
-                      if (authorized)
-                        Expanded(
-                          child: KeyedSubtree(
-                            key: ValueKey(
-                              'onboarding-direction-${_direction.name}',
-                            ),
-                            child: _OnboardingWalkthrough(
-                              direction: _direction,
-                            ),
-                          ),
-                        )
-                      else
-                        const Expanded(child: SizedBox.shrink()),
-                    ],
+            child: SafeArea(
+              child: Column(
+                children: [
+                  IconButton(
+                    key: const ValueKey('dev_onboarding_close'),
+                    onPressed: () => Navigator.of(context).maybePop(),
+                    icon: const Icon(Icons.close_rounded),
                   ),
-                ),
-              ],
+                  if (allowed)
+                    Expanded(
+                      child: KeyedSubtree(
+                        key: ValueKey(
+                          'onboarding-direction-${initialDirection.name}',
+                        ),
+                        child: _OnboardingWalkthrough(
+                          direction: initialDirection,
+                        ),
+                      ),
+                    )
+                  else
+                    const Expanded(child: SizedBox.shrink()),
+                ],
+              ),
             ),
           ),
         ),
@@ -414,7 +357,7 @@ class _OnboardingWalkthroughState extends State<_OnboardingWalkthrough> {
                                 minimumSize: const Size(44, 44),
                               ),
                               child: Text(
-                                'Back · DEV',
+                                'Back',
                                 maxLines: 2,
                                 textAlign: TextAlign.left,
                                 style: ZyraText.subtext(size: 10),
@@ -440,21 +383,6 @@ class _OnboardingWalkthroughState extends State<_OnboardingWalkthrough> {
                   ],
                 ),
                 const SizedBox(height: 8),
-                if (!arrowMode)
-                  SizedBox(
-                    height: 36,
-                    child: TextButton(
-                      key: const ValueKey('dev_onboarding_skip'),
-                      onPressed: _canNavigate ? _skip : null,
-                      child: Text(
-                        'Skip · DEV',
-                        style: ZyraText.button(
-                          size: 11,
-                          color: ZyraColors.goldText,
-                        ),
-                      ),
-                    ),
-                  ),
                 if (arrowMode)
                   SizedBox(
                     height: 56,
@@ -470,28 +398,6 @@ class _OnboardingWalkthroughState extends State<_OnboardingWalkthrough> {
                             onPressed: _canNavigate ? _continue : null,
                             semanticLabel: 'Finish preview',
                           ),
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              key: const ValueKey('dev_onboarding_skip'),
-                              onPressed: _canNavigate ? _skip : null,
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                              ),
-                              child: Text(
-                                'Skip · DEV',
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.right,
-                                style: ZyraText.subtext(
-                                  size: 11,
-                                  color: ZyraColors.foregroundSecondary,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   )
@@ -527,8 +433,8 @@ class _OnboardingWalkthroughState extends State<_OnboardingWalkthrough> {
 /// The selected welcome story inside the continuous local onboarding flow.
 /// No lab header, design arrows or finish/pop shortcut. The outer process owns
 /// Close and the nested Navigator; capability loss remains deny-first.
-class DevOnboardingIntroduction extends StatefulWidget {
-  const DevOnboardingIntroduction({
+class OnboardingIntroductionFixture extends StatefulWidget {
+  const OnboardingIntroductionFixture({
     super.key,
     required this.direction,
     required this.onContinue,
@@ -544,16 +450,25 @@ class DevOnboardingIntroduction extends StatefulWidget {
   final String welcomeName;
 
   @override
-  State<DevOnboardingIntroduction> createState() =>
-      _DevOnboardingIntroductionState();
+  State<OnboardingIntroductionFixture> createState() =>
+      _OnboardingIntroductionFixtureState();
 }
 
-class _DevOnboardingIntroductionState extends State<DevOnboardingIntroduction> {
+class _OnboardingIntroductionFixtureState
+    extends State<OnboardingIntroductionFixture> {
   @override
-  Widget build(BuildContext context) => DevOnboardingOpening(
+  Widget build(BuildContext context) => OnboardingOpeningFixture(
     direction: widget.direction,
     welcomeName: widget.welcomeName,
     onContinue: widget.onContinue,
     onBackToProvider: widget.onBackToProvider,
   );
+}
+
+/// Retained callback fixture, never a widget or an application entry point.
+VoidCallback? storyFixtureSkipCallback(WidgetTester tester) {
+  final walk = find.byType(_OnboardingWalkthrough);
+  if (walk.evaluate().isEmpty) return openingFixtureSkipCallback(tester);
+  final state = tester.state<_OnboardingWalkthroughState>(walk);
+  return state._canNavigate ? state._skip : null;
 }

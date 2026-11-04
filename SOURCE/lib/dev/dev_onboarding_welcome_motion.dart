@@ -1,10 +1,7 @@
-// Protected, session-local motion choices for the continuous opening story.
-// This does not change ordinary member onboarding.
+// Pure motion rendering for onboarding content. Callers provide presentation values.
 
 import 'package:flutter/material.dart';
 
-import '../services/zyra_account_state.dart';
-import '../services/zyra_developer_access.dart';
 import '../theme/zyra_colors.dart';
 
 enum ZyraWelcomeTextMotionFamily { descent, typewriter, blend }
@@ -119,128 +116,11 @@ enum ZyraWelcomeTextMotion {
   Duration get duration => Duration(milliseconds: milliseconds);
 }
 
-abstract final class ZyraDevWelcomeTextMotion {
-  static const defaultMotion = ZyraWelcomeTextMotion.slowDescent;
-  static final ValueNotifier<ZyraWelcomeTextMotion> _selection = ValueNotifier(
-    defaultMotion,
-  );
-  static int _accountGeneration = ZyraAccountState.generation;
-
-  static Listenable get changes => _selection;
-  static ZyraWelcomeTextMotion get current =>
-      _accountGeneration == ZyraAccountState.generation
-      ? _selection.value
-      : defaultMotion;
-
-  static bool select(ZyraWelcomeTextMotion motion) {
-    if (!ZyraDeveloperAccess.canUseDeveloperTools) return false;
-    final generation = ZyraAccountState.generation;
-    if (_accountGeneration != generation) {
-      _accountGeneration = generation;
-      _selection.value = defaultMotion;
-    }
-    _selection.value = motion;
-    return true;
-  }
-
-  @visibleForTesting
-  static void resetForTesting() {
-    assert(() {
-      _accountGeneration = ZyraAccountState.generation;
-      _selection.value = defaultMotion;
-      return true;
-    }());
-  }
-}
-
-/// A session-local Founder comparison; Balanced is the approved default.
-abstract final class ZyraDevWelcomePulseIntensity {
-  static const defaultLevel = 3;
-  static const minLevel = 1;
-  static const maxLevel = 5;
-  static const _labels = <String>[
-    'Subtle',
-    'Soft',
-    'Balanced',
-    'Strong',
-    'Bold',
-  ];
-  static const _amplitudes = <double>[.08, .14, .20, .27, .35];
-  static final ValueNotifier<int> _selection = ValueNotifier(defaultLevel);
-  static int _accountGeneration = ZyraAccountState.generation;
-
-  static Listenable get changes => _selection;
-  static int get level => _accountGeneration == ZyraAccountState.generation
-      ? _selection.value
-      : defaultLevel;
-  static String labelFor(int level) => _labels[level - 1];
-  static String get label => labelFor(level);
-  static double get amplitude => _amplitudes[level - 1];
-
-  static bool select(int level) {
-    if (!ZyraDeveloperAccess.canUseDeveloperTools ||
-        level < minLevel ||
-        level > maxLevel) {
-      return false;
-    }
-    final generation = ZyraAccountState.generation;
-    if (_accountGeneration != generation) {
-      _accountGeneration = generation;
-      _selection.value = defaultLevel;
-    }
-    _selection.value = level;
-    return true;
-  }
-
-  @visibleForTesting
-  static void resetForTesting() {
-    assert(() {
-      _accountGeneration = ZyraAccountState.generation;
-      _selection.value = defaultLevel;
-      return true;
-    }());
-  }
-}
-
 enum ZyraWelcomePulseDesign {
   softBloom('Soft bloom');
 
   const ZyraWelcomePulseDesign(this.label);
   final String label;
-}
-
-abstract final class ZyraDevWelcomePulseDesign {
-  static const defaultDesign = ZyraWelcomePulseDesign.softBloom;
-  static final ValueNotifier<ZyraWelcomePulseDesign> _selection = ValueNotifier(
-    defaultDesign,
-  );
-  static int _accountGeneration = ZyraAccountState.generation;
-
-  static Listenable get changes => _selection;
-  static ZyraWelcomePulseDesign get current =>
-      _accountGeneration == ZyraAccountState.generation
-      ? _selection.value
-      : defaultDesign;
-
-  static bool select(ZyraWelcomePulseDesign design) {
-    if (!ZyraDeveloperAccess.canUseDeveloperTools) return false;
-    final generation = ZyraAccountState.generation;
-    if (_accountGeneration != generation) {
-      _accountGeneration = generation;
-      _selection.value = defaultDesign;
-    }
-    _selection.value = design;
-    return true;
-  }
-
-  @visibleForTesting
-  static void resetForTesting() {
-    assert(() {
-      _accountGeneration = ZyraAccountState.generation;
-      _selection.value = defaultDesign;
-      return true;
-    }());
-  }
 }
 
 class ZyraWelcomePulseMark extends StatelessWidget {
@@ -262,11 +142,11 @@ class ZyraWelcomePulseMark extends StatelessWidget {
     width: preview ? 34 : size ?? 56,
     height: preview ? 34 : size ?? 56,
     child: CustomPaint(
-      key: const ValueKey('dev_onboarding_pulse_canvas'),
+      key: const ValueKey('onboarding_pulse_canvas'),
       painter: ZyraWelcomePulsePainter(design, progress),
       child: Center(
         child: Container(
-          key: preview ? null : const ValueKey('dev_onboarding_welcome_dot'),
+          key: preview ? null : const ValueKey('onboarding_welcome_dot'),
           width: preview ? 6 : 12 * (size ?? 56) / 56,
           height: preview ? 6 : 12 * (size ?? 56) / 56,
           decoration: const BoxDecoration(
@@ -358,7 +238,7 @@ class ZyraWelcomeLine extends StatelessWidget {
   Widget build(BuildContext context) {
     if (entranceAnimation case final entrance?) {
       return ZyraWelcomeTextMotionFrame(
-        key: const ValueKey('dev_welcome_first_line_entrance'),
+        key: const ValueKey('welcome_first_line_entrance'),
         motion: entranceMotion!,
         animation: entrance,
         child: ZyraWelcomeLine(

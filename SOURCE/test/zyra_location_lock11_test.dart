@@ -63,6 +63,16 @@ void main() {
     expect(location.point, isNull);
   });
 
+  const invalidPayloadCases = [
+    'null',
+    'missing coordinates',
+    'latitude out of range',
+    'non-finite latitude',
+    'overly precise coordinates',
+    'non-numeric latitude',
+    'unavailable status',
+  ];
+  var invalidPayloadIndex = 0;
   for (final payload in <Object?>[
     null,
     {'status': 'allowed'},
@@ -72,16 +82,16 @@ void main() {
     {'status': 'allowed', 'latitude': '53.5', 'longitude': -2.2},
     {'status': 'unavailable', 'latitude': 53.5, 'longitude': -2.2},
   ]) {
-    testWidgets(
-      'invalid/coarse-boundary reply ${payload.hashCode} stays home',
-      (t) async {
-        reply = payload;
-        final request = location.request(() => true);
-        await t.pump();
-        expect(await request, isFalse);
-        expect(location.point, isNull);
-      },
-    );
+    final payloadCase = invalidPayloadCases[invalidPayloadIndex++];
+    testWidgets('invalid/coarse-boundary reply $payloadCase stays home', (
+      t,
+    ) async {
+      reply = payload;
+      final request = location.request(() => true);
+      await t.pump();
+      expect(await request, isFalse);
+      expect(location.point, isNull);
+    });
   }
   testWidgets('denial stays home; later explicit attempt opens Settings only', (
     t,

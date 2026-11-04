@@ -1,3 +1,4 @@
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 // New-Journey paid Additional Guardian consent through the admitted UI host.
 // Offline fixtures only: this does not activate live access or entitlements.
 import 'dart:async';
@@ -7,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
-import 'package:zyra/dev/zyra_app_gold_preview.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_access_store.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
@@ -61,7 +60,7 @@ ViewRequestDraftModel _preparing({bool basic = false}) {
 
 class _Owner {
   final navigator = GlobalKey<NavigatorState>();
-  final observer = ZyraDevControlsRouteObserver();
+  final observer = ZyraPreviewRouteObserver();
   final checkpoints = <ZyraPreviewNavigationCheckpoint>[];
   late final access = ZyraDraftCompatibilityAccessStore(canAct: () => true);
   ZyraPreviewNavigationCheckpoint get latest => checkpoints.last;
@@ -93,6 +92,7 @@ class _Owner {
           child: child!,
         ),
         home: ViewRequestDraftScreen(
+          fixture: ZyraShellTestFixture().fixture,
           ownerGeneration: ZyraAccountState.generation,
           ownerId: ZyraAccountState.userId,
           initialCheckpoint: ZyraPreviewNavigationCheckpoint(
@@ -135,6 +135,7 @@ class _Owner {
 }
 
 Future<void> _press(WidgetTester tester, String id) async {
+  if (await pressZyraDevControlKey(tester, id)) return;
   final target = _key(id);
   if (target.evaluate().isEmpty) {
     await tester.scrollUntilVisible(
@@ -209,7 +210,7 @@ void main() {
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraAccountState.clearImagesForTesting = () async {};
     AppState.instance.resetForAccountChange();
-    final gold = ZyraDevAppGold.instance;
+    final gold = ZyraAppGoldStyle.instance;
     gold.select(
       false,
       expectedGeneration: ZyraAccountState.generation,

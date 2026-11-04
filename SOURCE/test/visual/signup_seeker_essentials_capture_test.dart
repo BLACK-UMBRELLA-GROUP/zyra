@@ -7,8 +7,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_onboarding_interaction.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
+import '../support/queue44_onboarding_interaction_fixture.dart';
 import 'package:zyra/models/zyra_signup_membership_choice.dart';
 import 'package:zyra/screens/home/home_shell.dart';
 import 'package:zyra/screens/home/seeker_dashboard_screen.dart';
@@ -143,7 +142,6 @@ void main() {
   });
   setUp(() {
     if (!signupCaptureEnabled) return;
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
     AppState.instance.resetForAccountChange();
     ZyraDevOnboardingInteraction.resetForTesting();
     ZyraInternalPreviewClient.beginPreview();

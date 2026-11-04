@@ -4,6 +4,7 @@ import 'package:zyra/screens/browse/browse_screen.dart';
 import 'package:zyra/screens/home/home_shell.dart';
 import 'package:zyra/screens/onboarding/account_path_overview_screen.dart';
 import 'package:zyra/screens/onboarding/chapter2_flow.dart';
+import 'package:zyra/screens/onboarding/onboarding_stage_intro_screen.dart';
 import 'package:zyra/screens/wali/wali_onboarding_flow.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_account_state.dart';
@@ -14,6 +15,7 @@ import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/widgets/floating_nav_bar.dart';
 import 'package:zyra/widgets/zyra_onboarding_direction_style.dart';
+import 'package:zyra/widgets/zyra_onboarding_continue_action.dart';
 
 import 'initial_signup_draft_test.dart' show FakeSignupStore;
 
@@ -338,8 +340,18 @@ void main() {
     expect(AppState.instance.gender, 'female');
     expect(
       find.byKey(const ValueKey('onboarding_stage_dev_skip')),
-      findsOneWidget,
+      findsNothing,
     );
+    tester
+        .widget<OnboardingStageIntroScreen>(
+          find.byType(OnboardingStageIntroScreen),
+        )
+        .onContinue();
+    await tester.pumpAndSettle();
+    final profile = tester.widget<Chapter2Flow>(find.byType(Chapter2Flow));
+    expect(profile.gender, 'female');
+    expect(profile.devPreview, isTrue);
+    expect(AppState.instance.name, 'Aaliyah');
     expect(tester.takeException(), isNull);
   });
 
@@ -410,34 +422,89 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('both role overviews have a protected next-page skip', (
-    tester,
-  ) async {
-    ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    ZyraInternalPreviewClient.beginPreview();
-    AppState.instance.applyDevPreset(gender: 'female');
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: SeekerOnboardingOverviewScreen(
-          gender: 'female',
-          devPreview: true,
+  testWidgets(
+    'both role overviews use protected Continue without developer Skip',
+    (tester) async {
+      ZyraDeveloperAccess.setAuthorizedForTesting(true);
+      ZyraInternalPreviewClient.beginPreview();
+      AppState.instance.applyDevPreset(gender: 'female');
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: SeekerOnboardingOverviewScreen(
+            gender: 'female',
+            devPreview: true,
+          ),
         ),
-      ),
-    );
-    await tester.tap(find.byKey(const ValueKey('onboarding_stage_dev_skip')));
-    await tester.pumpAndSettle();
-    expect(find.byType(Chapter2Flow), findsOneWidget);
-    await tester.pumpWidget(const SizedBox.shrink());
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: GuardianOnboardingOverviewScreen(devPreview: true),
-      ),
-    );
-    await tester.tap(find.byKey(const ValueKey('onboarding_dev_skip')));
-    await tester.pumpAndSettle();
-    expect(find.byType(WaliOnboardingFlow), findsOneWidget);
-    expect(tester.takeException(), isNull);
-  });
+      );
+      expect(
+        find.byKey(const ValueKey('onboarding_stage_dev_skip')),
+        findsNothing,
+      );
+      final seekerContinue = tester
+          .widget<OnboardingStageIntroScreen>(
+            find.byType(OnboardingStageIntroScreen),
+          )
+          .onContinue;
+      ZyraDeveloperAccess.setAuthorizedForTesting(false);
+      seekerContinue();
+      await tester.pumpAndSettle();
+      expect(find.byType(Chapter2Flow), findsNothing);
+      await tester.pumpWidget(const SizedBox.shrink());
+      ZyraDeveloperAccess.setAuthorizedForTesting(true);
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: SeekerOnboardingOverviewScreen(
+            gender: 'female',
+            devPreview: true,
+          ),
+        ),
+      );
+      seekerContinue();
+      await tester.pumpAndSettle();
+      expect(find.byType(Chapter2Flow), findsNothing);
+      tester
+          .widget<OnboardingStageIntroScreen>(
+            find.byType(OnboardingStageIntroScreen),
+          )
+          .onContinue();
+      await tester.pumpAndSettle();
+      expect(find.byType(Chapter2Flow), findsOneWidget);
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: GuardianOnboardingOverviewScreen(devPreview: true),
+        ),
+      );
+      expect(find.byKey(const ValueKey('onboarding_dev_skip')), findsNothing);
+      final guardianContinue = tester
+          .widget<ZyraOnboardingArrowAction>(
+            find.byKey(const ValueKey('account_path_overview_continue')),
+          )
+          .onPressed!;
+      ZyraDeveloperAccess.setAuthorizedForTesting(false);
+      guardianContinue();
+      await tester.pumpAndSettle();
+      expect(find.byType(WaliOnboardingFlow), findsNothing);
+      await tester.pumpWidget(const SizedBox.shrink());
+      ZyraDeveloperAccess.setAuthorizedForTesting(true);
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: GuardianOnboardingOverviewScreen(devPreview: true),
+        ),
+      );
+      guardianContinue();
+      await tester.pumpAndSettle();
+      expect(find.byType(WaliOnboardingFlow), findsNothing);
+      tester
+          .widget<ZyraOnboardingArrowAction>(
+            find.byKey(const ValueKey('account_path_overview_continue')),
+          )
+          .onPressed!();
+      await tester.pumpAndSettle();
+      expect(find.byType(WaliOnboardingFlow), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets('first-use My ZYRA mounts no inactive account readers', (
     tester,

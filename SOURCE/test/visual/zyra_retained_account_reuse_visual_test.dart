@@ -1,3 +1,4 @@
+import '../support/zyra_hidden_dev_controls_driver.dart';
 // Real-font, offline review of retained account pages in the request shell.
 // Captures are evidence, not native acceptance or live-account save proof.
 import 'dart:io';
@@ -232,6 +233,7 @@ void main() {
                 child: RepaintBoundary(key: _boundary, child: child!),
               ),
               home: ZyraOneJourneyConceptShell(
+                fixture: ZyraShellTestFixture().fixture,
                 canAct: () => true,
                 onExit: () {},
               ),

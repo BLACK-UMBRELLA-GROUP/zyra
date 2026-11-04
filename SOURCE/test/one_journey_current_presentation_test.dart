@@ -1,3 +1,4 @@
+import 'support/zyra_hidden_dev_controls_driver.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -161,6 +162,7 @@ Future<void> _expectCopy(
 }
 
 Future<void> _purePress(WidgetTester tester, String key) async {
+  if (await pressZyraDevControlKey(tester, key)) return;
   final target = _key(key);
   expect(target, findsOneWidget);
   if (target.hitTestable().evaluate().isEmpty) {

@@ -1,10 +1,11 @@
+// Test-only code-selected fixture state and presentation; no application controls.
 // Protected, session-local motion comparisons for the four welcome-story
 // pages. This never selects a production onboarding transition.
 import 'package:flutter/material.dart';
 
-import '../services/zyra_account_state.dart';
-import '../services/zyra_developer_access.dart';
-import '../theme/zyra_colors.dart';
+import 'package:zyra/services/zyra_account_state.dart';
+import 'package:zyra/services/zyra_developer_access.dart';
+import 'package:zyra/theme/zyra_colors.dart';
 
 enum ZyraOnboardingPageTransition {
   current('Current slide', Duration(milliseconds: 260), Curves.easeOutCubic),

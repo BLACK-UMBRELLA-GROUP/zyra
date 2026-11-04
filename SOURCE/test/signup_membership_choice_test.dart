@@ -1,3 +1,4 @@
+import 'support/queue44_signup_flow_driver.dart';
 import 'dart:convert';
 import 'dart:async';
 
@@ -434,9 +435,7 @@ void main() {
           await tester.pumpAndSettle();
         }
         for (var index = 0; index < completed(role).questionCount; index++) {
-          tester
-              .widget<OnboardingScaffold>(find.byType(OnboardingScaffold))
-              .onDevSkip!();
+          await advanceSignupQuestionFromCode(tester);
           await tester.pumpAndSettle();
         }
         expect(find.byType(SignupMembershipChoiceScreen), findsOneWidget);
@@ -860,9 +859,7 @@ void main() {
           await tester.pumpAndSettle();
         }
         for (var index = 0; index < completed(role).questionCount; index++) {
-          tester
-              .widget<OnboardingScaffold>(find.byType(OnboardingScaffold))
-              .onDevSkip!();
+          await advanceSignupQuestionFromCode(tester);
           await tester.pumpAndSettle();
         }
         final retained = tester.widget<SignupMembershipChoiceScreen>(
@@ -872,7 +869,7 @@ void main() {
         await tester.pump();
         ZyraDeveloperAccess.setAuthorizedForTesting(false);
         retained.onContinue();
-        retained.onDevSkip!();
+        expect(find.byKey(const ValueKey('onboarding_dev_skip')), findsNothing);
         retained.onChanged(
           const ZyraSignupMembershipChoice(kind: ZyraSignupMembershipKind.one),
         );

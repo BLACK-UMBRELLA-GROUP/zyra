@@ -217,7 +217,7 @@ void main() {
     ZyraAccountState.clearImagesForTesting = () async {};
     await ZyraAccountState.synchronize('member-a');
     ZyraAppGoldStyle.instance.restore(false);
-    ZyraDevAppGold.instance.resetForTesting();
+    ZyraAppGoldRenderer.instance.resetForTesting();
     ZyraColors.restoreAppPalette(null);
     ZyraInteractionStyle.restoreHapticLevel(null);
     ZyraText.restoreAppFont(null);
@@ -229,7 +229,7 @@ void main() {
   tearDown(() async {
     await ZyraAccountState.synchronize(null);
     ZyraAccountState.clearImagesForTesting = null;
-    ZyraDevAppGold.instance.resetForTesting();
+    ZyraAppGoldRenderer.instance.resetForTesting();
     ZyraText.useTestFontStubs = false;
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(SystemChannels.platform, null);

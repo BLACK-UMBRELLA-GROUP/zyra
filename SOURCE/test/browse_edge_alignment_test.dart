@@ -202,7 +202,11 @@ Future<void> _mount(
         key: _boundary,
         child:
             body ??
-            ZyraOneJourneyConceptShell(canAct: () => true, onExit: () {}),
+            ZyraOneJourneyConceptShell(
+              fixture: ZyraShellTestFixture().fixture,
+              canAct: () => true,
+              onExit: () {},
+            ),
       ),
     ),
   );
@@ -250,6 +254,7 @@ Future<void> _mount(
 }
 
 Future<void> _press(WidgetTester tester, String key) async {
+  if (await pressZyraDevControlKey(tester, key)) return;
   _target(tester, _key(key));
   await tester.tap(_key(key));
   await tester.pumpAndSettle();

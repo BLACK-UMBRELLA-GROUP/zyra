@@ -192,33 +192,6 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     }
   }
 
-  void _devSkipCurrentQuestion() {
-    if (!_devPreview || !_canProceed || _saving || _photoBusy) return;
-    final now = DateTime.now();
-    setState(() {
-      if (_step == 0) {
-        if (_nameController.text.trim().isEmpty) {
-          _nameController.text = widget.welcomeName?.trim().isNotEmpty == true
-              ? widget.welcomeName!.trim().split(RegExp(r'\s+')).first
-              : 'Dev Seeker';
-        }
-        if (_lastNameController.text.trim().isEmpty) {
-          _lastNameController.text = 'Preview';
-        }
-      } else if (_step == 1) {
-        _gender ??= 'male';
-      } else if (_step == 2) {
-        _dob ??= DateTime(now.year - 30, 1, 1);
-        _dobError = null;
-      } else if (_step == 3) {
-        // Labelled protected walkthrough fixture; never saved or uploaded.
-        _firstPhotoUrl ??=
-            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';
-      }
-    });
-    _next();
-  }
-
   Future<void> _next() async {
     if (!_canProceed || _saving || !_fabActive) return;
     final draft = _draft(step: _step + 1);
@@ -513,83 +486,54 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     }
   }
 
-  Widget _verificationScreen(
-    ZyraInitialSignupDraft draft,
-  ) => InitialIdentityCheckScreen(
-    devPreview: _devPreview,
-    initialState: _verificationState,
-    // DR-ZYRA-221: create the ordinary profile row only AFTER the
-    // server result is verified. Before this change, closing the app on
-    // the verification placeholder left a routable profile row, so a
-    // relaunch could step around the onboarding gate.
-    finalizeOnboarding: () async {
-      if (_devPreview) return null;
-      if (!_signupAuthorized) return 'Sign in again to continue setup.';
-      return ZyraInitialSignupDraftService.finalize(_signupUserId!, draft);
-    },
-    onContinue: (verificationContext) async {
-      if (!verificationContext.mounted || !_signupAuthorized) {
-        return;
-      }
-      if (!_devPreview) {
-        ZyraInitialSignupDraftService.repository.requireOwner(_signupUserId!);
-      }
-      AppState.instance.saveChapter1(
-        name: draft.firstName!,
-        surnameLine: draft.lastName!,
-        gender: draft.gender!,
-        dob: draft.dob!,
-      );
-      _projectFirstPhoto();
-      if (_devPreview) {
-        final applied = ZyraDevLocalPreview.applySignupMembershipPreview(
-          role: draft.role,
-          choice: draft.membershipChoice!,
-        );
-        if (!applied) return;
-      }
-      Navigator.of(verificationContext).pushAndRemoveUntil(
-        MaterialPageRoute(
-          allowSnapshotting: !_devPreview,
-          builder: (_) => SeekerPostIdentityChoiceScreen(
-            devPreview: _devPreview,
-            expectedUserId: _signupUserId,
-          ),
-        ),
-        (_) => false,
-      );
-    },
-    onDevSkip: _devPreview
-        ? (verificationContext) async {
-            if (!verificationContext.mounted ||
-                !ZyraDeveloperAccess.canUseDeveloperTools) {
-              return;
-            }
-            // A protected walkthrough shortcut only: no verification
-            // state, profile finalisation or live account grant.
-            AppState.instance.saveChapter1(
-              name: draft.firstName!,
-              surnameLine: draft.lastName!,
-              gender: draft.gender!,
-              dob: draft.dob!,
+  Widget _verificationScreen(ZyraInitialSignupDraft draft) =>
+      InitialIdentityCheckScreen(
+        devPreview: _devPreview,
+        initialState: _verificationState,
+        // DR-ZYRA-221: create the ordinary profile row only AFTER the
+        // server result is verified. Before this change, closing the app on
+        // the verification placeholder left a routable profile row, so a
+        // relaunch could step around the onboarding gate.
+        finalizeOnboarding: () async {
+          if (_devPreview) return null;
+          if (!_signupAuthorized) return 'Sign in again to continue setup.';
+          return ZyraInitialSignupDraftService.finalize(_signupUserId!, draft);
+        },
+        onContinue: (verificationContext) async {
+          if (!verificationContext.mounted || !_signupAuthorized) {
+            return;
+          }
+          if (!_devPreview) {
+            ZyraInitialSignupDraftService.repository.requireOwner(
+              _signupUserId!,
             );
-            _projectFirstPhoto();
+          }
+          AppState.instance.saveChapter1(
+            name: draft.firstName!,
+            surnameLine: draft.lastName!,
+            gender: draft.gender!,
+            dob: draft.dob!,
+          );
+          _projectFirstPhoto();
+          if (_devPreview) {
             final applied = ZyraDevLocalPreview.applySignupMembershipPreview(
               role: draft.role,
               choice: draft.membershipChoice!,
             );
             if (!applied) return;
-            Navigator.of(verificationContext).pushAndRemoveUntil(
-              MaterialPageRoute(
-                allowSnapshotting: false,
-                builder: (_) =>
-                    const SeekerPostIdentityChoiceScreen(devPreview: true),
-              ),
-              (_) => false,
-            );
           }
-        : null,
-  );
+          Navigator.of(verificationContext).pushAndRemoveUntil(
+            MaterialPageRoute(
+              allowSnapshotting: !_devPreview,
+              builder: (_) => SeekerPostIdentityChoiceScreen(
+                devPreview: _devPreview,
+                expectedUserId: _signupUserId,
+              ),
+            ),
+            (_) => false,
+          );
+        },
+      );
 
   void _checkDob(DateTime picked) {
     // The root dialog can outlive this form, a sign-out or a replaced
@@ -660,17 +604,6 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         saving: _saving,
         error: _saveError,
         devPreview: _devPreview,
-        onDevSkip: _devPreview
-            ? () {
-                if (!_canProceed || _saving) return;
-                setState(
-                  () => _membershipChoice ??= const ZyraSignupMembershipChoice(
-                    kind: ZyraSignupMembershipKind.basic,
-                  ),
-                );
-                _continueAfterMembership();
-              }
-            : null,
         expectedUserId: _signupUserId,
       );
     }
@@ -679,13 +612,6 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         children: [
           AccountEssentialsIntroScreen(
             devPreview: _devPreview,
-            onDevSkip: _devPreview
-                ? () {
-                    if (_canProceed && !_saving) {
-                      setState(() => _showStageIntroduction = false);
-                    }
-                  }
-                : null,
             // The protected continuous rehearsal must remain reachable on a
             // compact/large-text phone. Live signup keeps the original default.
             accountExit: _devPreview || _signupUserId == null
@@ -728,7 +654,6 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           fabActive: _fabActive,
           onContinue: _next,
           devPreview: _devPreview,
-          onDevSkip: _devSkipCurrentQuestion,
           onSwipeBack: _step > 0 ? _back : null,
           showAccountExit: true,
           accountExitExpectedUserId: _signupUserId,
@@ -765,7 +690,6 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           fabActive: _fabActive,
           onContinue: _next,
           devPreview: _devPreview,
-          onDevSkip: _devSkipCurrentQuestion,
           onSwipeBack: _back,
           showAccountExit: true,
           accountExitExpectedUserId: _signupUserId,
@@ -805,7 +729,6 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           fabActive: _fabActive,
           onContinue: _next,
           devPreview: _devPreview,
-          onDevSkip: _devSkipCurrentQuestion,
           onSwipeBack: _back,
           showAccountExit: true,
           accountExitExpectedUserId: _signupUserId,
@@ -835,7 +758,6 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           fabActive: _fabActive,
           onContinue: _next,
           devPreview: _devPreview,
-          onDevSkip: _devSkipCurrentQuestion,
           onSwipeBack: _back,
           showAccountExit: true,
           accountExitExpectedUserId: _signupUserId,

@@ -45,7 +45,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 import '../../services/zyra_account_state.dart';
 import '../../services/zyra_auth.dart';
 import '../../services/zyra_internal_preview_client.dart';
-import '../../dev/dev_settings_design_state.dart';
 import '../../dev/zyra_dev_local_preview.dart';
 import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_notification_prefs_service.dart';
@@ -408,26 +407,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      ValueListenableBuilder<ZyraSettingsDesign>(
-        valueListenable: ZyraDevSettingsDesign.selection,
-        builder: (context, design, _) {
-          final smoothCards =
-              ZyraDeveloperAccess.isMainAppFounderPreview &&
-              design == ZyraSettingsDesign.smoothCards;
-          final display = widget.guardian
-              ? widget.guardianMembershipDisplay
-              : null;
-          if (display == null) return _buildSettings(context, smoothCards);
-          return ValueListenableBuilder<String>(
-            valueListenable: display,
-            builder: (context, value, _) =>
-                _buildSettings(context, smoothCards),
-          );
-        },
-      );
+  Widget build(BuildContext context) {
+    final display = widget.guardian ? widget.guardianMembershipDisplay : null;
+    if (display == null) return _buildSettings(context);
+    return ValueListenableBuilder<String>(
+      valueListenable: display,
+      builder: (context, value, _) => _buildSettings(context),
+    );
+  }
 
-  Widget _buildSettings(BuildContext context, bool smoothCards) {
+  Widget _buildSettings(BuildContext context) {
     final state = AppState.instance;
 
     return Scaffold(
@@ -438,9 +427,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         leading: Navigator.of(context).canPop()
             ? BackButton(onPressed: _back)
             : null,
-        title: smoothCards
-            ? null
-            : Text('Settings', style: ZyraText.heading(size: 17)),
+        title: Text('Settings', style: ZyraText.heading(size: 17)),
         iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
       ),
       body: Container(
@@ -454,33 +441,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 90),
             children: [
-              if (smoothCards) ...[
-                const SizedBox(height: 38),
-                _SettingsReveal(
-                  key: const ValueKey('settings_smooth_header'),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Settings', style: ZyraText.heading(size: 30)),
-                      const SizedBox(height: 5),
-                      Text(
-                        'Your account, your choices.',
-                        style: ZyraText.subtext(
-                          size: 13,
-                          color: ZyraColors.ink(.58),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 22),
-              ],
               // §1 — the page answers "what can I control?" before it offers
               // anything to control. Every value here is real; nothing is a
               // placeholder for a feature that does not exist.
-              _SettingsReveal(
-                key: ValueKey('settings_summary_$smoothCards'),
-                enabled: smoothCards,
+              KeyedSubtree(
+                key: const ValueKey('settings_summary_false'),
                 child: _SummaryCard(
                   membership: _membershipLabel,
                   relationshipLabel: widget.guardian
@@ -681,46 +646,18 @@ class _SummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final smoothCards = _settingsSmoothCards;
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: smoothCards ? 20 : 18,
-        vertical: smoothCards ? 22 : 18,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 18),
       decoration: BoxDecoration(
-        color: ZyraColors.foreground.withValues(alpha: smoothCards ? .11 : .09),
-        borderRadius: BorderRadius.circular(
-          smoothCards ? 24 : ZyraCardMetrics.cardRadius,
-        ),
+        color: ZyraColors.foreground.withValues(alpha: .09),
+        borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
         border: Border.all(
-          color: smoothCards
-              ? ZyraColors.unlockText.withValues(alpha: .28)
-              : ZyraColors.foreground.withValues(alpha: .14),
+          color: ZyraColors.foreground.withValues(alpha: .14),
           width: 0.5,
         ),
       ),
       child: Column(
         children: [
-          if (smoothCards) ...[
-            Row(
-              children: [
-                Icon(
-                  Icons.tune_rounded,
-                  color: ZyraColors.unlockText,
-                  size: 20,
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    'Your account',
-                    maxLines: 2,
-                    style: ZyraText.body(size: 16),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-          ],
           _line('Membership', membership),
           _divider(),
           _line(relationshipLabel, relationshipValue),
@@ -741,18 +678,7 @@ class _SummaryCard extends StatelessWidget {
             style: ZyraText.subtext(size: 13, color: ZyraColors.ink(0.54)),
           ),
         ),
-        if (_settingsSmoothCards)
-          Flexible(
-            child: Text(
-              v,
-              textAlign: TextAlign.right,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: ZyraText.body(size: 14, color: Colors.white),
-            ),
-          )
-        else
-          Text(v, style: ZyraText.body(size: 14, color: Colors.white)),
+        Text(v, style: ZyraText.body(size: 14, color: Colors.white)),
       ],
     ),
   );
@@ -837,7 +763,6 @@ class _Section extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final smoothCards = _settingsSmoothCards;
     final content = Padding(
       padding: const EdgeInsets.only(bottom: 26),
       child: Column(
@@ -847,31 +772,24 @@ class _Section extends StatelessWidget {
             title,
             style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
           ),
-          SizedBox(height: smoothCards ? 12 : 10),
+          SizedBox(height: 10),
           Container(
             decoration: BoxDecoration(
-              color: ZyraColors.foreground.withValues(
-                alpha: smoothCards ? .085 : .05,
-              ),
-              borderRadius: BorderRadius.circular(
-                smoothCards ? 23 : ZyraCardMetrics.cardRadius,
-              ),
+              color: ZyraColors.foreground.withValues(alpha: .05),
+              borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
               border: Border.all(
-                color: ZyraColors.foreground.withValues(
-                  alpha: smoothCards ? .16 : .10,
-                ),
+                color: ZyraColors.foreground.withValues(alpha: .10),
                 width: 0.5,
               ),
             ),
-            clipBehavior: smoothCards ? Clip.antiAlias : Clip.none,
+            clipBehavior: Clip.none,
             child: Column(children: children),
           ),
         ],
       ),
     );
-    return _SettingsReveal(
-      key: ValueKey('settings_section_${title}_$smoothCards'),
-      enabled: smoothCards,
+    return KeyedSubtree(
+      key: ValueKey('settings_section_${title}_false'),
       child: content,
     );
   }
@@ -890,34 +808,14 @@ class _Row extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final smoothCards = _settingsSmoothCards;
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: smoothCards ? 18 : 16,
-            vertical: smoothCards ? 17 : 15,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 15),
           child: Row(
             children: [
-              if (smoothCards) ...[
-                Container(
-                  width: 38,
-                  height: 38,
-                  decoration: BoxDecoration(
-                    color: ZyraColors.unlockText.withValues(alpha: .11),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(
-                    _settingsIcon(label),
-                    size: 18,
-                    color: ZyraColors.unlockText,
-                  ),
-                ),
-                const SizedBox(width: 13),
-              ],
               Expanded(
                 child: Text(
                   label,
@@ -947,50 +845,6 @@ class _Row extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-bool get _settingsSmoothCards =>
-    ZyraDeveloperAccess.isMainAppFounderPreview &&
-    ZyraDevSettingsDesign.current == ZyraSettingsDesign.smoothCards;
-
-IconData _settingsIcon(String label) => switch (label) {
-  'Sign-in & security' => Icons.verified_user_outlined,
-  'App lock' => Icons.lock_outline_rounded,
-  'Advanced' => Icons.tune_rounded,
-  'Pause My Profile' => Icons.pause_circle_outline,
-  'Guardian privacy' => Icons.shield_outlined,
-  'Hidden Profiles' => Icons.person_off_outlined,
-  'Notifications & emails' => Icons.notifications_outlined,
-  'Membership' => Icons.workspace_premium_outlined,
-  'Help & support' => Icons.help_outline_rounded,
-  'Send feedback' => Icons.chat_bubble_outline_rounded,
-  'Privacy & data' => Icons.shield_outlined,
-  _ => Icons.chevron_right_rounded,
-};
-
-class _SettingsReveal extends StatelessWidget {
-  const _SettingsReveal({super.key, this.enabled = true, required this.child});
-
-  final bool enabled;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    if (!enabled || MediaQuery.disableAnimationsOf(context)) return child;
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0, end: 1),
-      duration: const Duration(milliseconds: 440),
-      curve: Curves.easeOutCubic,
-      builder: (context, value, child) => Opacity(
-        opacity: value,
-        child: Transform.translate(
-          offset: Offset(0, 12 * (1 - value)),
-          child: child,
-        ),
-      ),
-      child: child,
     );
   }
 }

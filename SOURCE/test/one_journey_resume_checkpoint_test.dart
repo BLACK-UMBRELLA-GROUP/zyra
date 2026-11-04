@@ -1,3 +1,4 @@
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 // Fresh shell owners restore only detached fictional presentation values.
 // These tests do not grant admission or call a member-data adapter.
 import 'dart:async';
@@ -7,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'support/zyra_hidden_dev_controls_driver.dart';
-import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/dev/zyra_journey_peer_guardians_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
@@ -102,6 +102,7 @@ class _Owner {
           child: child!,
         ),
         home: ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           key: UniqueKey(),
           canAct: () => allowed,
           onExit: () => exits++,
@@ -187,7 +188,7 @@ void main() {
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     AppState.instance.resetForAccountChange();
     ZyraAccountState.clearImagesForTesting = () async {};
-    final gold = ZyraDevAppGold.instance;
+    final gold = ZyraAppGoldStyle.instance;
     gold.select(
       false,
       expectedGeneration: ZyraAccountState.generation,

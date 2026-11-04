@@ -117,7 +117,7 @@ Future<void> baselineSetUp({String evidenceRoot = baselineEvidence}) async {
   ZyraDeveloperAccess.setAuthorizedForTesting(true);
   AppState.instance.resetForAccountChange();
   ZyraColors.restoreAppPalette(null);
-  ZyraDevAppGold.instance.resetForTesting();
+  ZyraAppGoldRenderer.instance.resetForTesting();
   ZyraInteractionStyle.restoreDefaults();
   ZyraText.restoreAppFont(null);
   TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
@@ -264,7 +264,7 @@ class BaselineHarness {
   }) async {
     this.guardian = guardian;
     ZyraColors.restoreAppPalette(null);
-    ZyraDevAppGold.instance.resetForTesting();
+    ZyraAppGoldRenderer.instance.resetForTesting();
     ZyraInteractionStyle.restoreDefaults();
     ZyraText.restoreAppFont(null);
     checkpoints.clear();
@@ -276,6 +276,7 @@ class BaselineHarness {
         textScale: textScale,
         highContrast: highContrast,
         child: ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           key: UniqueKey(),
           canAct: () => true,
           onExit: () => fail('Capture must stay in the local Founder preview.'),
@@ -330,10 +331,15 @@ class BaselineHarness {
   Future<void> controls() => openZyraDevControls(tester);
   Future<void> closeControls() => closeZyraDevControls(tester);
 
-  Future<void> tap(String id) async => tapFinder(key(id));
+  Future<void> tap(String id) async {
+    if (await pressZyraDevControlKey(tester, id)) return;
+    await tapFinder(key(id));
+  }
+
   Future<void> tapText(String label, {bool contains = false}) async =>
       tapFinder(contains ? find.textContaining(label) : find.text(label));
   Future<void> tapFinder(Finder target) async {
+    if (await pressZyraFixtureFinder(tester, target)) return;
     if (target.evaluate().isEmpty) {
       final containers = [
         key('dev_controls_scroll'),

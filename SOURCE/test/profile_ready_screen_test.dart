@@ -302,34 +302,35 @@ void main() {
     expect(repository.publications, 0);
   });
 
-  testWidgets('compact large text keeps review controls and DEV skip usable', (
-    tester,
-  ) async {
-    ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    tester.view.physicalSize = const Size(320, 568);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
-    await tester.pumpWidget(
-      MaterialApp(
-        builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(
-            context,
-          ).copyWith(textScaler: const TextScaler.linear(1.4)),
-          child: child!,
+  testWidgets(
+    'compact large text keeps member review controls without DEV skip',
+    (tester) async {
+      ZyraDeveloperAccess.setAuthorizedForTesting(true);
+      tester.view.physicalSize = const Size(320, 568);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(
+        MaterialApp(
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(
+              context,
+            ).copyWith(textScaler: const TextScaler.linear(1.4)),
+            child: child!,
+          ),
+          home: const ProfileReadyScreen(devPreview: true),
         ),
-        home: const ProfileReadyScreen(devPreview: true),
-      ),
-    );
-    await tester.pumpAndSettle();
-    expect(
-      find.byKey(const ValueKey('profile_ready_dev_skip')).hitTestable(),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const ValueKey('profile_review_my_zyra')).hitTestable(),
-      findsOneWidget,
-    );
-    expect(tester.takeException(), isNull);
-  });
+      );
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const ValueKey('profile_ready_dev_skip')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const ValueKey('profile_review_my_zyra')).hitTestable(),
+        findsOneWidget,
+      );
+      expect(tester.takeException(), isNull);
+    },
+  );
 }

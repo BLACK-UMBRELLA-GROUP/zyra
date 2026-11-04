@@ -1,9 +1,9 @@
+import '../support/zyra_hidden_dev_controls_driver.dart';
 // LOCK13 actual admitted sample shell: local portraits, state, routes and gates.
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_options.dart';
@@ -625,7 +625,7 @@ void main() {
           await t.pumpWidget(
             MaterialApp(
               theme: ThemeData.dark(),
-              navigatorObservers: [ZyraDevControlsRouteObserver()],
+              navigatorObservers: [ZyraPreviewRouteObserver()],
               builder: (context, child) => MediaQuery(
                 data: MediaQuery.of(context).copyWith(
                   padding: const EdgeInsets.only(top: 20, bottom: 20),
@@ -635,6 +635,7 @@ void main() {
                 child: child!,
               ),
               home: ZyraOneJourneyConceptShell(
+                fixture: ZyraShellTestFixture().fixture,
                 key: UniqueKey(),
                 canAct: () => generation == ZyraAccountState.generation,
                 onCheckpoint: checkpoints.add,

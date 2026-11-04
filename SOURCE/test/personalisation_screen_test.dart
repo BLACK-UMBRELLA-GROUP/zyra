@@ -16,7 +16,7 @@ void main() {
 
   setUp(() {
     ZyraAppGoldStyle.instance.restore(false);
-    ZyraDevAppGold.instance.resetForTesting();
+    ZyraAppGoldRenderer.instance.resetForTesting();
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraText.useTestFontStubs = true;
     ZyraColors.restoreAppPalette(null);
@@ -28,7 +28,7 @@ void main() {
 
   tearDown(() {
     ZyraAppGoldStyle.instance.restore(false);
-    ZyraDevAppGold.instance.resetForTesting();
+    ZyraAppGoldRenderer.instance.resetForTesting();
     ZyraColors.restoreAppPalette(null);
     ZyraText.restoreAppFont(null);
     ZyraInteractionStyle.restoreHapticLevel(null);
@@ -120,11 +120,11 @@ void main() {
         await tester.pumpAndSettle();
         expect(tester.widget<Switch>(toggle).value, isTrue);
         expect(ZyraAppGoldStyle.instance.enabled, isTrue);
-        expect(ZyraDevAppGold.instance.renderingEnabled, isTrue);
+        expect(ZyraAppGoldRenderer.instance.renderingEnabled, isTrue);
         await tester.tap(toggle);
         await tester.pumpAndSettle();
         expect(tester.widget<Switch>(toggle).value, isFalse);
-        expect(ZyraDevAppGold.instance.renderingEnabled, isFalse);
+        expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
         expect(tester.takeException(), isNull);
         ZyraLocalPrefs.setCachedRole(null);
       },

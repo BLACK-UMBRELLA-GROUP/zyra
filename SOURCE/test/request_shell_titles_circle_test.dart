@@ -66,6 +66,7 @@ Future<void> _mount(
         child: RepaintBoundary(key: _captureKey, child: child!),
       ),
       home: ViewRequestDraftScreen(
+        fixture: ZyraShellTestFixture().fixture,
         ownerGeneration: ZyraAccountState.generation,
         ownerId: ZyraAccountState.userId,
         initialSeekerBasic: seekerBasic,
@@ -113,6 +114,7 @@ Future<void> _capture(WidgetTester tester, String name) async {
 }
 
 Future<void> _press(WidgetTester tester, Finder target) async {
+  if (await pressZyraFixtureFinder(tester, target)) return;
   expect(target, findsOneWidget);
   final scrolls = find.ancestor(of: target, matching: find.byType(Scrollable));
   if (scrolls.evaluate().isNotEmpty) {
@@ -623,7 +625,7 @@ void main() {
     tester,
   ) async {
     await tester.pumpWidget(
-      const MaterialApp(
+      MaterialApp(
         home: ZyraGuardianCircleScreen(
           seekerId: 'draft-self',
           seekerFirstName: 'Adam',

@@ -83,6 +83,7 @@ Future<void> _mount(
       home: RepaintBoundary(
         key: _boundary,
         child: ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           canAct: canAct ?? () => true,
           onExit: () {},
         ),
@@ -419,7 +420,8 @@ void main() {
       await _tap(tester, 'draft_profile_$_sara');
       await _tap(tester, 'draft_back');
       expect(_frames, findsNothing);
-      expect(_photoOutline(_sara), findsNothing);
+      _expectPhotoOutline(tester, _sara, sent: true);
+      expect(_key('dev_controls_page'), findsNothing);
       await _tap(tester, 'draft_back');
       _expectPhotoOutline(tester, _sara, sent: true);
       await _tapBar(tester, 'My ZYRA');
@@ -481,10 +483,7 @@ void main() {
       _expectPhotoOutline(tester, _sara, sent: true);
       await _tapBar(tester, 'Journey');
       await _tap(tester, 'draft_back');
-      expect(
-        tester.widget<Text>(_key('concept_page_options_context')).data,
-        'Journey',
-      );
+      expect(_key('concept_page_options_context'), findsNothing);
       await _tap(tester, 'concept_journey_preview_3');
       expect(_frames, findsNothing);
       await _tapBar(tester, 'Profiles');

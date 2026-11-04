@@ -7,13 +7,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_onboarding_lab.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
+import '../support/queue44_onboarding_story_fixture.dart';
+import '../support/queue44_gold_fixture.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_onboarding_continue_action.dart';
-import 'package:zyra/widgets/zyra_onboarding_study.dart';
 
 const _capture = bool.fromEnvironment(
   'ZYRA_ONBOARDING_HINT_CLEANUP_CAPTURE_CANDIDATES',
@@ -108,7 +107,7 @@ void main() {
           key: _boundary,
           child: ZyraOnboardingArrowScope(
             enabled: true,
-            child: DevOnboardingIntroduction(
+            child: OnboardingIntroductionFixture(
               direction: ZyraOnboardingDirection.luma,
               onContinue: () {},
             ),
@@ -149,7 +148,7 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('3 / 4'), findsOneWidget);
-    expect(find.byKey(const ValueKey('dev_onboarding_skip')), findsOneWidget);
+    expect(find.byKey(const ValueKey('dev_onboarding_skip')), findsNothing);
     expect(find.text('Tap the page to continue reading'), findsNothing);
     expect(find.text('Swipe right for the next page'), findsNothing);
     expect(tester.takeException(), isNull);

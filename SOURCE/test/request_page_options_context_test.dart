@@ -1,3 +1,4 @@
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 // Real protected request-shell page ownership. The bundled people, credits
 // and history stay disposable; this suite cannot establish member authority.
 import 'dart:io';
@@ -9,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
@@ -78,6 +78,7 @@ Future<void> _mount(
   addTearDown(tester.view.resetDevicePixelRatio);
   await tester.pumpWidget(
     MaterialApp(
+      navigatorObservers: [ZyraPreviewRouteObserver()],
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
       builder: (context, child) => MediaQuery(
@@ -90,6 +91,7 @@ Future<void> _mount(
         child: RepaintBoundary(key: _boundary, child: child!),
       ),
       home: ViewRequestDraftScreen(
+        fixture: ZyraShellTestFixture().fixture,
         ownerGeneration: ZyraAccountState.generation,
         ownerId: ZyraAccountState.userId,
         initialGuardianRole: guardian,
@@ -121,6 +123,7 @@ Future<void> _mount(
 }
 
 Future<void> _press(WidgetTester tester, Finder target) async {
+  if (await pressZyraFixtureFinder(tester, target)) return;
   expect(target, findsOneWidget);
   if (find
       .ancestor(of: target, matching: find.byType(Scrollable))
@@ -135,7 +138,10 @@ Future<void> _press(WidgetTester tester, Finder target) async {
   expect(tester.takeException(), isNull);
 }
 
-Future<void> _tap(WidgetTester tester, String key) => _press(tester, _key(key));
+Future<void> _tap(WidgetTester tester, String key) async {
+  if (await pressZyraDevControlKey(tester, key)) return;
+  await _press(tester, _key(key));
+}
 
 Future<void> _nav(WidgetTester tester, int index) async {
   await expandZyraPreviewTabBarIfIdle(tester);
@@ -163,28 +169,19 @@ Future<void> _toggleOptions(WidgetTester tester) =>
     toggleZyraDevControls(tester);
 
 void _context(WidgetTester tester, String title) {
-  expect(find.text('Page options'), findsOneWidget);
-  expect(find.text('Option 1'), findsNothing);
-  expect(find.text('Option 2'), findsNothing);
-  expect(find.text('App design'), findsNothing);
-  final context = tester.widget<Text>(_key('concept_page_options_context'));
-  expect(context.data, title);
-  expect(context.style!.fontSize, 15);
-  expect(_key('dev_controls_page'), findsOneWidget);
-  expect(_key('dev_controls_close'), findsOneWidget);
-  expect(_key('draft_close'), findsOneWidget);
-  expect(_key('draft_back'), findsNothing);
-  expect(find.byType(ZyraDevControlRail), findsNothing);
-  expect(_key('draft_rules'), findsNothing);
-  expect(find.byIcon(Icons.visibility_outlined), findsNothing);
+  expect(find.text('Page options'), findsNothing);
   for (final key in [
+    'concept_page_options_context',
+    'dev_controls_page',
+    'dev_controls_close',
+    'draft_close',
+    'draft_back',
+    'draft_rules',
     'draft_reset',
-    'draft_role_seeker',
-    'draft_role_guardian',
+    'draft_fill',
   ]) {
-    expect(_key(key), findsOneWidget);
+    expect(_key(key), findsNothing);
   }
-  expect(_key('draft_fill'), findsNothing);
 }
 
 void _inventory(
@@ -198,43 +195,29 @@ void _inventory(
   bool compatibility = false,
   bool requests = false,
 }) {
-  expect(_motionPicker, browse ? findsOneWidget : findsNothing);
+  expect(_motionPicker, findsNothing);
   expect(_iconPicker, findsNothing);
-  expect(find.text('Journey icon'), findsNothing);
   for (final count in [0, 1, 5]) {
-    expect(
-      _key('draft_compatibility_unlock_$count'),
-      browse || compatibility ? findsOneWidget : findsNothing,
-    );
+    expect(_key('draft_compatibility_unlock_$count'), findsNothing);
   }
   for (final count in [1, 2, 3]) {
-    expect(
-      _key('concept_journey_preview_$count'),
-      journey ? findsOneWidget : findsNothing,
-    );
+    expect(_key('concept_journey_preview_$count'), findsNothing);
   }
-  expect(_key('draft_history'), myZyra ? findsOneWidget : findsNothing);
+  expect(_key('draft_history'), findsNothing);
   for (final plan in ['basic', 'one']) {
-    expect(
-      _key('draft_membership_seeker_$plan'),
-      profile && seeker ? findsOneWidget : findsNothing,
-    );
+    expect(_key('draft_membership_seeker_$plan'), findsNothing);
   }
   for (final person in ['hassan', 'yusuf']) {
     for (final plan in [0, 1]) {
       expect(
         _key('concept_guardian_plan_draft-guardian-${person}_$plan'),
-        guardian ? findsOneWidget : findsNothing,
+        findsNothing,
       );
     }
   }
-  for (final tab in [0, 1, 2]) {
-    expect(
-      _key('concept_requests_controls_$tab'),
-      requests ? findsOneWidget : findsNothing,
-    );
+  for (final tab in [0, 1, 2, 3]) {
+    expect(_key('concept_requests_controls_$tab'), findsNothing);
   }
-  expect(_key('concept_requests_controls_3'), findsNothing);
 }
 
 ZyraOneJourneyBrowseDesigns _browse(WidgetTester tester) =>
@@ -282,9 +265,16 @@ Future<void> _openCompatibility(WidgetTester tester) async {
 }
 
 VoidCallback _retainedButton(WidgetTester tester, String key) =>
-    tester.widget<OutlinedButton>(_key(key)).onPressed!;
+    isZyraFixtureCommandKey(key)
+    ? captureZyraFixtureCommand(tester, key)!
+    : tester.widget<OutlinedButton>(_key(key)).onPressed!;
 
 VoidCallback _retainedControlPress(WidgetTester tester, String key) {
+  if (isZyraFixtureCommandKey(key) ||
+      key == 'dev_controls_close' ||
+      key == 'draft_close') {
+    return captureZyraFixtureCommand(tester, key)!;
+  }
   final callback = switch (tester.widget<Widget>(_key(key))) {
     IconButton(:final onPressed) => onPressed,
     ButtonStyleButton(:final onPressed) => onPressed,
@@ -819,11 +809,7 @@ void main() {
           tester,
           'draft_compatibility_unlock_5',
         );
-        final staleMotion = tester
-            .widget<DropdownButtonFormField<ZyraBrowseNextMotion>>(
-              _motionPicker,
-            )
-            .onChanged!;
+        final staleMotion = captureZyraBrowseMotionAction(tester);
         final staleClose = _retainedControlPress(tester, 'dev_controls_close');
         final staleHome = _retainedControlPress(tester, 'draft_close');
         if (change == 'tab ABA') {
@@ -855,10 +841,10 @@ void main() {
           _context(tester, 'Profiles');
           expect(
             tester
-                .widget<DropdownButtonFormField<ZyraBrowseNextMotion>>(
-                  _motionPicker,
+                .widget<ZyraOneJourneyBrowseDesigns>(
+                  find.byType(ZyraOneJourneyBrowseDesigns),
                 )
-                .initialValue,
+                .nextProfileMotion,
             ZyraBrowseNextMotion.current,
           );
           await _toggleOptions(tester);
@@ -905,7 +891,12 @@ void main() {
       await _nav(tester, 4);
       await _tap(tester, 'concept_edit_profile');
       expect(find.byType(EditProfileScreen), findsOneWidget);
-      expect(find.byType(ZyraDevControlRail), findsNothing);
+      expect(
+        find.byWidgetPredicate(
+          (widget) => widget.runtimeType.toString() == 'ZyraDevControlRail',
+        ),
+        findsNothing,
+      );
       compatibilityClose();
       compatibilityHome();
       await tester.pumpAndSettle();

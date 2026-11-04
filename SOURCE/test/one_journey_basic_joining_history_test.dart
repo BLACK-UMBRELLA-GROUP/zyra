@@ -105,6 +105,7 @@ class _NoNetwork extends HttpOverrides {
 }
 
 Widget _app(Widget home, {bool compact = false}) => MaterialApp(
+  navigatorObservers: [ZyraPreviewRouteObserver()],
   theme: ThemeData.dark(),
   builder: (context, child) => MediaQuery(
     data: MediaQuery.of(context).copyWith(
@@ -161,6 +162,7 @@ Future<void> _reveal(WidgetTester tester, Finder target) async {
 }
 
 Future<void> _tap(WidgetTester tester, Finder target) async {
+  if (await pressZyraFixtureFinder(tester, target)) return;
   await _reveal(tester, target);
   await tester.tap(target);
   await tester.pumpAndSettle();
@@ -257,6 +259,7 @@ class _Owner {
     await tester.pumpWidget(
       _app(
         ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           key: UniqueKey(),
           canAct: () => allowed,
           onExit: () => fail('Joining-fee review stays inside its owner.'),
@@ -590,8 +593,11 @@ void main() {
       await _tap(tester, _key('concept_membership'));
       await openZyraDevControls(tester);
       final paid = _key('concept_membership_history_paidBefore');
-      await _reveal(tester, paid);
-      final oldPaid = tester.widget<OutlinedButton>(paid).onPressed!;
+      expect(paid, findsNothing);
+      final oldPaid = captureZyraFixtureCommand(
+        tester,
+        'concept_membership_history_paidBefore',
+      )!;
       await _tap(tester, _key('concept_membership_history_neverPaid'));
       oldPaid();
       await tester.pumpAndSettle();
@@ -607,8 +613,11 @@ void main() {
         ZyraMembershipPaymentHistory.neverPaid,
       );
       await openZyraDevControls(tester);
-      await _reveal(tester, paid);
-      final denied = tester.widget<OutlinedButton>(paid).onPressed!;
+      expect(paid, findsNothing);
+      final denied = captureZyraFixtureCommand(
+        tester,
+        'concept_membership_history_paidBefore',
+      )!;
       final count = owner.checkpoints.length;
       owner.allowed = false;
       denied();

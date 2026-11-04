@@ -1,12 +1,27 @@
-import 'package:flutter/material.dart';
+// Code-only Dashboard samples. No controls, routes or widgets are provided.
+import 'dart:async';
+import 'package:flutter/foundation.dart';
+import 'package:zyra/models/zyra_dashboard_lab.dart';
+import 'package:zyra/services/zyra_developer_access.dart';
+import 'package:zyra/dev/zyra_dev_scenario.dart';
+import 'package:zyra/dev/zyra_supportive_dashboard_preview.dart';
 
-import '../models/zyra_dashboard_lab.dart';
-import '../services/zyra_developer_access.dart';
-import 'zyra_dev_page_options.dart';
-import 'zyra_dev_scenario.dart';
-import 'zyra_supportive_dashboard_preview.dart';
+@immutable
+class ZyraFixtureChoice {
+  const ZyraFixtureChoice({
+    required this.id,
+    required this.label,
+    required this.group,
+    this.onSelected,
+    this.selected = false,
+    this.unavailableReason,
+  });
+  final String id, label, group;
+  final FutureOr<void> Function()? onSelected;
+  final bool selected;
+  final String? unavailableReason;
+}
 
-/// Follows the tab on the mounted renderer, not an independent panel switch.
 String zyraDashboardOptionsTitle(
   ZyraDevScenario scenario,
   ZyraDashboardRole hostRole,
@@ -21,56 +36,21 @@ String zyraDashboardOptionsTitle(
   return tab.label;
 }
 
-/// The third developer door contains separate category dropdowns. The page owners
-/// still own rendering, navigation, data sources and authorization.
-class ZyraDashboardLabControls extends StatelessWidget {
-  final ZyraDevScenario scenario;
-  final ZyraDashboardRole hostRole;
-  final List<ZyraDevPageOption> additionalOptions;
-
-  const ZyraDashboardLabControls({
-    super.key,
-    required this.scenario,
-    this.hostRole = ZyraDashboardRole.seeker,
-    this.additionalOptions = const [],
-  });
-
-  @override
-  Widget build(BuildContext context) => ListenableBuilder(
-    listenable: Listenable.merge([
-      scenario,
-      SupportiveDashboardPreview.instance,
-      ZyraDeveloperAccess.authorizationChanges,
-    ]),
-    builder: (context, _) => ZyraDevPageOptions(
-      contextKey:
-          'dashboard-${hostRole.name}-'
-          '${zyraDashboardOptionsTitle(scenario, hostRole)}-'
-          '${hostRole == ZyraDashboardRole.guardian ? scenario.waliRole.name : 'seeker'}',
-      options: [
-        ...zyraDashboardPageOptions(scenario, hostRole),
-        ...additionalOptions,
-      ],
-    ),
-  );
-}
-
-/// Public composition seam for the existing role-specific panel hosts.
-List<ZyraDevPageOption> zyraDashboardPageOptions(
+List<ZyraFixtureChoice> zyraDashboardPageOptions(
   ZyraDevScenario scenario,
   ZyraDashboardRole hostRole,
 ) => hostRole == ZyraDashboardRole.seeker
     ? _seekerOptions(scenario)
     : _guardianOptions(scenario);
 
-List<ZyraDevPageOption> _seekerOptions(ZyraDevScenario scenario) {
+List<ZyraFixtureChoice> _seekerOptions(ZyraDevScenario scenario) {
   final preview = SupportiveDashboardPreview.instance;
   final insights =
       zyraDashboardOptionsTitle(scenario, ZyraDashboardRole.seeker) ==
       'Insights';
   final prefix = insights ? 'seeker-insights' : 'seeker-now';
   final sample = preview.enabled && !preview.useCurrentSources;
-  final options = <ZyraDevPageOption>[];
+  final options = <ZyraFixtureChoice>[];
 
   void add(
     String id,
@@ -80,7 +60,7 @@ List<ZyraDevPageOption> _seekerOptions(ZyraDevScenario scenario) {
     bool selected = false,
   }) {
     options.add(
-      ZyraDevPageOption(
+      ZyraFixtureChoice(
         id: '$prefix-$id',
         label: label,
         group: group,
@@ -330,10 +310,10 @@ List<ZyraDevPageOption> _seekerOptions(ZyraDevScenario scenario) {
   return options;
 }
 
-List<ZyraDevPageOption> _guardianOptions(ZyraDevScenario scenario) {
+List<ZyraFixtureChoice> _guardianOptions(ZyraDevScenario scenario) {
   final insights = scenario.dashboardTab == ZyraDashboardTab.insights;
   final prefix = insights ? 'guardian-insights' : 'guardian-now';
-  final options = <ZyraDevPageOption>[];
+  final options = <ZyraFixtureChoice>[];
 
   void add(
     String id,
@@ -343,7 +323,7 @@ List<ZyraDevPageOption> _guardianOptions(ZyraDevScenario scenario) {
     bool selected = false,
   }) {
     options.add(
-      ZyraDevPageOption(
+      ZyraFixtureChoice(
         id: '$prefix-$id',
         label: label,
         group: group,

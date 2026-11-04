@@ -14,15 +14,12 @@ import '../../dev/zyra_dev_scenario.dart';
 import '../../dev/zyra_draft_local_code_page.dart';
 import '../../dev/zyra_draft_local_code_aliases.dart';
 import '../../dev/zyra_dev_personal_code_fixtures.dart';
-import '../../dev/zyra_dev_surface_coordinator.dart';
-import '../../dev/zyra_dev_local_preview.dart';
 import '../../models/zyra_initial_signup_draft.dart';
 import '../../services/zyra_account_state.dart';
 import '../../services/zyra_auth.dart';
 import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_internal_preview_client.dart';
 import '../../services/zyra_product_telemetry.dart';
-import '../../services/zyra_promotion_engine.dart';
 import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
@@ -35,7 +32,6 @@ import '../../widgets/zyra_glass_dialog.dart';
 import '../../widgets/zyra_onboarding_direction_style.dart';
 import '../../widgets/zyra_pull_down_back_scope.dart';
 import 'accept_wali_invite_screen.dart';
-import 'wali_home_shell.dart';
 
 /// Caller-owned, session-only data for the protected concept's existing code UI.
 /// A revoked or replaced adapter can never become a live-service route.
@@ -148,7 +144,6 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
   int _rowsOwnerGeneration = -1;
   bool _requestMutationInFlight = false;
   String? _signupPreviewNotice;
-  bool _enteringGuardianPreview = false;
   late final ZyraCodeLocalPreview? _localPreview;
   late final bool _localRole;
   late final String? _localOwner;
@@ -402,61 +397,6 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
   void _signupInformation(String message) {
     if (!_signupPreviewAllowed) return;
     setState(() => _signupPreviewNotice = message);
-  }
-
-  bool get _canEnterGuardianPreview {
-    final draft = widget.signupPreviewIdentity;
-    return widget.signupPreview &&
-        widget.asGuardian &&
-        _signupPreviewAllowed &&
-        ZyraDeveloperAccess.isMainAppPreview &&
-        ZyraInternalPreviewClient.isActive &&
-        draft != null &&
-        draft.role == ZyraSignupRole.guardian &&
-        draft.awaitsVerification &&
-        draft.isValid();
-  }
-
-  void _enterGuardianPreview() {
-    if (_enteringGuardianPreview || !_canEnterGuardianPreview) return;
-    final draft = widget.signupPreviewIdentity!;
-    final navigator = Navigator.of(context);
-    _enteringGuardianPreview = true;
-
-    // A first-use Guardian has no linked Seekers. Simulate the chosen local
-    // membership only; no real joining payment or subscription is completed.
-    // Reset only the local, network-denied sample; no account or link is
-    // created and no persistent member data is written.
-    ZyraDevScenario.instance.reset();
-    AppState.instance.applyDevPreset(
-      name: draft.firstName,
-      gender: draft.gender,
-      dob: draft.dob,
-      waliName: draft.firstName,
-      waliRelationship: draft.relationship,
-    );
-    final choice = draft.membershipChoice;
-    if (choice != null &&
-        !ZyraDevLocalPreview.applySignupMembershipPreview(
-          role: draft.role,
-          choice: choice,
-        )) {
-      _enteringGuardianPreview = false;
-      return;
-    }
-    ZyraPromotionEngine.instance.setDeveloperGuardianNetworkState(
-      AppState.instance.waliHasWaliOne
-          ? ZyraDeveloperGuardianNetworkState.unlinkedEntitled
-          : ZyraDeveloperGuardianNetworkState.unlinkedBasic,
-    );
-    ZyraDevSurfaceCoordinator.instance.endEntryFlow();
-    navigator.pushAndRemoveUntil(
-      MaterialPageRoute<void>(
-        allowSnapshotting: false,
-        builder: (_) => const WaliHomeShell(initialOnboardingPreview: true),
-      ),
-      (_) => false,
-    );
   }
 
   Future<void> _load({bool keepRows = false}) async {
@@ -1276,15 +1216,6 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
                   _signupPreviewNotice!,
                   key: const ValueKey('signup_code_action_info'),
                   style: ZyraText.subtext(size: 12.5),
-                ),
-              if (_canEnterGuardianPreview)
-                TextButton(
-                  key: const ValueKey('onboarding_dev_skip'),
-                  onPressed: ZyraTapFeedback.onTap(
-                    context,
-                    _enterGuardianPreview,
-                  ),
-                  child: const Text('Skip to Guardian · DEV'),
                 ),
             ],
           ),

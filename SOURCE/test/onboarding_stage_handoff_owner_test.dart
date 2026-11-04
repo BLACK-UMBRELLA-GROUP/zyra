@@ -21,6 +21,7 @@ import 'package:zyra/services/zyra_onboarding_answers_service.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/onboarding_scaffold.dart';
+import 'support/queue44_signup_flow_driver.dart';
 
 const _userA = '00000000-0000-0000-0000-000000000001';
 const _userB = '00000000-0000-0000-0000-000000000002';
@@ -149,17 +150,11 @@ Future<OnboardingStageIntroScreen> _stage(
     if (find.byType(OnboardingStageIntroScreen).evaluate().isNotEmpty) break;
     final scaffold = find.byType(OnboardingScaffold);
     String? before;
-    late VoidCallback advance;
     if (scaffold.evaluate().isNotEmpty) {
       final widget = tester.widget<OnboardingScaffold>(scaffold);
       before = '${widget.progressLabel}|${widget.question}';
-      advance = devPreview ? widget.onDevSkip! : widget.onContinue!;
-    } else {
-      final skip = find.byKey(const ValueKey('deferred_onboarding_dev_skip'));
-      expect(devPreview, isTrue);
-      expect(skip, findsOneWidget);
-      advance = tester.widget<TextButton>(skip).onPressed!;
     }
+    final advance = deferredOnboardingContinueFixtureCallback(tester);
     await _settleHandoff(tester, devPreview: devPreview, advance: advance);
     if (before != null && scaffold.evaluate().isNotEmpty) {
       final current = tester.widget<OnboardingScaffold>(scaffold);
@@ -356,7 +351,7 @@ void main() {
       final stage = await _stage(tester, handoff, devPreview: true);
       expect(stage.devPreview, isTrue);
       final staleContinue = stage.onContinue;
-      final staleSkip = stage.onDevSkip!;
+      final staleSkip = stage.onContinue;
       ZyraDeveloperAccess.setAuthorizedForTesting(false);
       await tester.pumpAndSettle();
       staleContinue();
@@ -375,7 +370,7 @@ void main() {
       final stage = await _stage(tester, handoff, devPreview: true);
       final replacementsBefore = _observer.replacements;
       stage.onContinue();
-      stage.onDevSkip!();
+      stage.onContinue();
       stage.onContinue();
       await tester.pumpAndSettle();
       expect(_nextForm(handoff), findsOneWidget);

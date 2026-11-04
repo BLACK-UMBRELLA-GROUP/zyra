@@ -17,7 +17,6 @@ import '../widgets/zyra_full_screen_error.dart';
 import '../widgets/zyra_loading.dart';
 import 'dev_discovery_directions.dart';
 import 'zyra_concept_preview_boundary.dart';
-import 'zyra_dev_home.dart';
 import 'zyra_dev_local_preview.dart';
 import 'zyra_local_photo_import.dart';
 import 'zyra_draft_compatibility_access_store.dart';
@@ -74,7 +73,7 @@ class _ZyraFounderLaunchScreenState extends State<ZyraFounderLaunchScreen> {
       current: () => _current,
       route: ModalRoute.of(context),
       onCreated: (preparation) => _preparation = preparation,
-      isWali: ZyraLocalPrefs.cachedFounderPreviewRole == 'guardian',
+      isWali: false,
     );
     if (!mounted) {
       preparation?.dispose();
@@ -129,13 +128,10 @@ class _ZyraFounderLaunchScreenState extends State<ZyraFounderLaunchScreen> {
       body: ZyraCompactRecoverySurface(
         noticeKey: const ValueKey('founder_launch_recovery'),
         title: 'Couldn’t open this page.',
-        message: 'Please try again, or return to Developer Home.',
+        message: 'Please try again.',
         primaryLabel: 'Try again',
-        secondaryLabel: 'Developer Home',
         primaryKey: const ValueKey('founder_launch_retry'),
-        secondaryKey: const ValueKey('founder_launch_developer_home'),
         onPrimary: _open,
-        onSecondary: () => ZyraDevHome.open(context),
       ),
     );
   }
@@ -910,16 +906,6 @@ class _ZyraFounderReviewSurfaceState extends State<ZyraFounderReviewSurface>
                       _admitAfterPaint(epoch);
                       _repaint();
                     },
-                    onExit: () {
-                      if (_callbackCurrent(epoch)) {
-                        ZyraDevHome.open(context, replacePreviewRoot: true);
-                      }
-                    },
-                    onDeveloperHome: () {
-                      if (_callbackCurrent(epoch)) {
-                        ZyraDevHome.open(context, replacePreviewRoot: true);
-                      }
-                    },
                     onRoleChanged: (guardian) {
                       if (_callbackCurrent(epoch)) _rememberRole(guardian);
                     },
@@ -973,17 +959,9 @@ class _ZyraFounderReviewSurfaceState extends State<ZyraFounderReviewSurface>
             ? 'Your page is still being prepared. You can try again without losing your Journey.'
             : 'Your page isn’t ready yet. Please wait a little longer.',
         primaryLabel: 'Try again',
-        secondaryLabel: 'Developer Home',
         primaryKey: const ValueKey('founder_resume_retry'),
-        secondaryKey: const ValueKey('founder_resume_home'),
         onPrimary: canRecover
             ? () => _retryPresentation(epoch, revision)
-            : null,
-        onSecondary: canRecover
-            ? () {
-                if (!_canRecover(epoch, revision)) return;
-                unawaited(ZyraDevHome.open(context, replacePreviewRoot: true));
-              }
             : null,
       ),
     );

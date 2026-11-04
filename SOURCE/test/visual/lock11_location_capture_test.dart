@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_location.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
@@ -251,8 +250,9 @@ void main() {
       await t.pumpWidget(
         MaterialApp(
           navigatorKey: nav,
-          navigatorObservers: [ZyraDevControlsRouteObserver()],
+          navigatorObservers: [ZyraPreviewRouteObserver()],
           home: ViewRequestDraftScreen(
+            fixture: ZyraShellTestFixture().fixture,
             ownerGeneration: ZyraAccountState.generation,
             ownerId: ZyraAccountState.userId,
             onPresentationReady: () {

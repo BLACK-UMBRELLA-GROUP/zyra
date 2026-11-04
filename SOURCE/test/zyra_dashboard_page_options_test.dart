@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_dashboard_lab_controls.dart';
-import 'package:zyra/dev/zyra_dev_page_options.dart';
+import 'support/queue44_dashboard_fixture_catalog.dart';
 import 'package:zyra/dev/zyra_dev_scenario.dart';
 import 'package:zyra/dev/zyra_supportive_dashboard_preview.dart';
 import 'package:zyra/models/zyra_dashboard_lab.dart';
@@ -27,7 +26,7 @@ final _categoryDropdowns = find.byWidgetPredicate(
       ),
 );
 
-List<ZyraDevPageOption> options([
+List<ZyraFixtureChoice> options([
   ZyraDashboardRole role = ZyraDashboardRole.seeker,
 ]) => zyraDashboardPageOptions(scenario, role);
 
@@ -441,71 +440,31 @@ void main() {
     },
   );
 
-  testWidgets('host-provided choices have their own category dropdown', (
-    tester,
-  ) async {
-    var selected = false;
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: SingleChildScrollView(
-            child: ZyraDashboardLabControls(
-              scenario: scenario,
-              additionalOptions: [
-                ZyraDevPageOption(
-                  id: 'extra-role',
-                  label: 'Existing role choice',
-                  group: 'Role',
-                  onSelected: () => selected = true,
-                ),
-              ],
-            ),
-          ),
+  testWidgets(
+    'host-provided fixture choices act only through code without dropdowns',
+    (tester) async {
+      var selected = false;
+      final pageOptions = [
+        ...options(),
+        ZyraFixtureChoice(
+          id: 'extra-role',
+          label: 'Existing role choice',
+          group: 'Role',
+          onSelected: () => selected = true,
         ),
-      ),
-    );
-    final pageOptions = tester
-        .widget<ZyraDevPageOptions>(find.byType(ZyraDevPageOptions))
-        .options;
-    expect(
-      _categoryDropdowns,
-      findsNWidgets(pageOptions.map((option) => option.group).toSet().length),
-    );
-    for (final group in pageOptions.map((option) => option.group).toSet()) {
-      expect(
-        find.byKey(ValueKey('dev_page_options_dropdown_$group')),
-        findsOneWidget,
+      ];
+      await tester.pumpWidget(
+        const MaterialApp(home: Scaffold(body: Text('Member page'))),
       );
-    }
-    expect(
-      find.byKey(const ValueKey('dev_page_options_dropdown')),
-      findsNothing,
-    );
-    expect(find.byType(ChoiceChip), findsNothing);
-    expect(find.byType(Switch), findsNothing);
-    expect(find.byType(ExpansionTile), findsNothing);
-    expect(
-      tester
-          .widget<ZyraDevPageOptions>(find.byType(ZyraDevPageOptions))
-          .options,
-      hasLength(41),
-    );
-    final group = pageOptions
-        .singleWhere((option) => option.id == 'extra-role')
-        .group;
-    final dropdown = find.byKey(ValueKey('dev_page_options_dropdown_$group'));
-    await tester.ensureVisible(dropdown);
-    await tester.pumpAndSettle();
-    await tester.tap(dropdown);
-    await tester.pumpAndSettle();
-    final extra = find.byKey(const ValueKey('extra-role'));
-    expect(find.byKey(ValueKey(pageOptions.first.id)), findsNothing);
-    await tester.ensureVisible(extra);
-    await tester.pumpAndSettle();
-    await tester.tap(extra);
-    await tester.pumpAndSettle();
-    expect(selected, isTrue);
-  });
+      expect(_categoryDropdowns, findsNothing);
+      expect(pageOptions, hasLength(41));
+      expect(pageOptions.map((e) => e.group), contains('Role'));
+      await pageOptions.singleWhere((e) => e.id == 'extra-role').onSelected!();
+      expect(selected, isTrue);
+      expect(find.byKey(const ValueKey('extra-role')), findsNothing);
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets('Seeker current-data swipe controls options without a tab jump', (
     tester,

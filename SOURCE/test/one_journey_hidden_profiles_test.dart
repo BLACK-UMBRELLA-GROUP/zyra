@@ -1,3 +1,4 @@
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 // The protected Profiles and Settings pages share one fictional hidden set.
 // No live HiddenProfilesScreen, member store, server or platform camera is used.
 import 'dart:async';
@@ -9,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_app_gold_preview.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_access_store.dart';
 import 'package:zyra/dev/zyra_founder_launch_review.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
@@ -128,7 +127,7 @@ class _Owner {
       MaterialApp(
         key: UniqueKey(),
         navigatorKey: navigator,
-        navigatorObservers: [ZyraDevControlsRouteObserver()],
+        navigatorObservers: [ZyraPreviewRouteObserver()],
         theme: ThemeData.dark(),
         builder: (context, child) => MediaQuery(
           data: MediaQuery.of(context).copyWith(
@@ -142,6 +141,7 @@ class _Owner {
         home: RepaintBoundary(
           key: _captureRoot,
           child: ZyraOneJourneyConceptShell(
+            fixture: ZyraShellTestFixture().fixture,
             key: UniqueKey(),
             canAct: () => allowed,
             onExit: () => fail('Hidden Profiles stays within its shell owner.'),
@@ -210,6 +210,7 @@ Future<void> _reveal(WidgetTester tester, String key) async {
 }
 
 Future<void> _press(WidgetTester tester, String key) async {
+  if (await pressZyraDevControlKey(tester, key)) return;
   await _reveal(tester, key);
   await tester.tap(_key(key));
   await tester.pumpAndSettle();
@@ -433,10 +434,10 @@ void main() {
     AppState.instance.resetForAccountChange();
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    ZyraDevAppGold.instance.select(
+    ZyraAppGoldStyle.instance.select(
       false,
       expectedGeneration: ZyraAccountState.generation,
-      expectedRevision: ZyraDevAppGold.instance.revision,
+      expectedRevision: ZyraAppGoldStyle.instance.revision,
     );
     oldHaptics = ZyraInteractionStyle.hapticLevel;
     ZyraInteractionStyle.selectHapticLevel(ZyraHapticLevel.off);
@@ -1192,7 +1193,7 @@ void main() {
           await openZyraDevControls(tester);
           retained();
           await tester.pump();
-          expect(_key('dev_controls_page'), findsOneWidget);
+          expect(_key('dev_controls_page'), findsNothing);
           await closeZyraDevControls(tester);
         case 'role':
           // Role Switch belongs to Profile, not Hidden page options. Keep

@@ -135,20 +135,16 @@ Future<void> verify(BaselineHarness h) async {
   h.assertPage('guardian_family_identity');
   expect(find.byType(InitialIdentityCheckScreen), findsOneWidget);
   expect(h.latest.guardianMembership, 'Guardian Basic');
-  await h.tap('identity-consent-agree');
-  await h.tester.scrollUntilVisible(
-    key('identity-dev-verified'),
-    160,
-    scrollable: find
-        .descendant(
-          of: find.byType(InitialIdentityCheckScreen),
-          matching: find.byType(Scrollable),
-        )
-        .last,
-    maxScrolls: 30,
+  // A code-only local verified result reaches the existing guarded owner.
+  // Real verification behavior is covered by the identity screen contracts.
+  expect(key('identity-dev-verified'), findsNothing);
+  final screen = h.tester.widget<InitialIdentityCheckScreen>(
+    find.byType(InitialIdentityCheckScreen),
   );
-  await h.tap('identity-dev-verified');
-  await h.tap('identity-continue');
+  await screen.onContinue!(
+    h.tester.element(find.byType(InitialIdentityCheckScreen)),
+  );
+  await h.flush();
   expect(h.latest.guardianMembership, 'Guardian One');
   expect(h.latest.pages, isEmpty);
 }
@@ -398,7 +394,7 @@ void main() {
     },
   );
   testWidgets(
-    'existing identity skip and stale verified callback grant nothing',
+    'leaving identity without a verified result and stale callback grant nothing',
     (t) async {
       final h = await mount(t);
       await h.tap('guardian_family_view');
@@ -406,9 +402,8 @@ void main() {
       final screen = t.widget<InitialIdentityCheckScreen>(
         find.byType(InitialIdentityCheckScreen),
       );
-      await screen.onDevSkip!(
-        t.element(find.byType(InitialIdentityCheckScreen)),
-      );
+      expect(key('identity-dev-skip'), findsNothing);
+      await returnZyraPreviewPage(t);
       await h.flush();
       h.assertPage('guardian_family_offer');
       expect(h.latest.guardianMembership, 'Guardian Basic');

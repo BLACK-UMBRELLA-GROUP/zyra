@@ -1,27 +1,25 @@
-// A bounded, local-only rehearsal of the existing first-use screens.
-// The nested Navigator contains their replacement/removal transitions so
-// Home in the developer toggle returns to the Developer Access landing.
-// Child screens own their safe insets; no rehearsal chrome frames the flow.
+export 'package:zyra/widgets/zyra_onboarding_study.dart'
+    show ZyraOnboardingDirection, zyraDefaultDevOnboardingDirection;
+// Test-only nested navigation of real first-use screens. No app route or picker.
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
+// The nested Navigator contains real first-use replacement/removal transitions.
+// Code-only close returns to the invoking route; child screens own safe insets.
 import 'package:flutter/material.dart';
 
-import '../screens/welcome_screen.dart';
-import '../screens/auth/role_selection_screen.dart';
-import '../services/zyra_developer_access.dart';
-import '../services/zyra_internal_preview_client.dart';
-import '../theme/zyra_colors.dart';
-import '../state/app_state.dart';
-import '../widgets/zyra_onboarding_direction_style.dart';
-import '../widgets/zyra_onboarding_continue_action.dart';
-import '../widgets/zyra_onboarding_study.dart';
-import 'dev_onboarding_interaction.dart';
-import 'dev_onboarding_lab.dart';
-import 'dev_onboarding_transition.dart';
-import 'zyra_dev_surface_coordinator.dart';
-import 'zyra_dev_home.dart';
-import 'zyra_dev_control_system.dart' show ZyraDevControlsRouteObserver;
+import 'queue44_gold_fixture.dart';
+import 'package:zyra/screens/auth/role_selection_screen.dart';
+import 'package:zyra/services/zyra_developer_access.dart';
+import 'package:zyra/services/zyra_internal_preview_client.dart';
+import 'package:zyra/theme/zyra_colors.dart';
+import 'package:zyra/state/app_state.dart';
+import 'package:zyra/widgets/zyra_onboarding_direction_style.dart';
+import 'package:zyra/widgets/zyra_onboarding_continue_action.dart';
+import 'queue44_onboarding_interaction_fixture.dart';
+import 'queue44_onboarding_story_fixture.dart';
+import 'queue44_onboarding_transition_fixture.dart';
 
-class DevSignUpProcessScreen extends StatefulWidget {
-  const DevSignUpProcessScreen({
+class SignupFlowFixture extends StatefulWidget {
+  const SignupFlowFixture({
     super.key,
     this.initialDirection = zyraDefaultDevOnboardingDirection,
   });
@@ -29,12 +27,12 @@ class DevSignUpProcessScreen extends StatefulWidget {
   final ZyraOnboardingDirection initialDirection;
 
   @override
-  State<DevSignUpProcessScreen> createState() => _DevSignUpProcessScreenState();
+  State<SignupFlowFixture> createState() => _SignupFlowFixtureState();
 }
 
-class _DevSignUpProcessScreenState extends State<DevSignUpProcessScreen> {
+class _SignupFlowFixtureState extends State<SignupFlowFixture> {
   GlobalKey<NavigatorState> _flowNavigator = GlobalKey<NavigatorState>();
-  List<NavigatorObserver> _flowObservers = [ZyraDevControlsRouteObserver()];
+  List<NavigatorObserver> _flowObservers = [ZyraPreviewRouteObserver()];
   late ZyraOnboardingDirection _direction = widget.initialDirection;
   int _generation = 0;
   bool _isolated = false;
@@ -48,7 +46,7 @@ class _DevSignUpProcessScreenState extends State<DevSignUpProcessScreen> {
     if (ZyraDeveloperAccess.canUseDeveloperTools) {
       ZyraInternalPreviewClient.beginPreview();
       _isolated = true;
-      ZyraDevSurfaceCoordinator.instance.attachOnboarding(
+      OnboardingFixtureController.instance.attach(
         this,
         _restart,
         onClose: _closeFlow,
@@ -67,16 +65,7 @@ class _DevSignUpProcessScreenState extends State<DevSignUpProcessScreen> {
   Future<void> _closeFlow() async {
     if (!_isCurrent()) return;
     _closing = true;
-    final generation = _generation;
-    final route = ModalRoute.of(context);
-    final closed = await ZyraDevHome.open(
-      context,
-      isCurrent: () =>
-          mounted &&
-          _isolated &&
-          generation == _generation &&
-          route?.isCurrent == true,
-    );
+    final closed = await Navigator.of(context).maybePop();
     if (mounted && !closed) _closing = false;
   }
 
@@ -89,14 +78,14 @@ class _DevSignUpProcessScreenState extends State<DevSignUpProcessScreen> {
       _direction = direction;
       _generation++;
       _flowNavigator = GlobalKey<NavigatorState>();
-      _flowObservers = [ZyraDevControlsRouteObserver()];
+      _flowObservers = [ZyraPreviewRouteObserver()];
     });
   }
 
   Widget _welcome() {
     final generation = _generation;
     final direction = _direction;
-    return WelcomeScreen(
+    return Queue44WelcomeFixture(
       devPreview: true,
       devIntroductionRouteBuilder: (builder) {
         final transition = ZyraDevOnboardingTransition.current;
@@ -113,7 +102,7 @@ class _DevSignUpProcessScreenState extends State<DevSignUpProcessScreen> {
               ),
         );
       },
-      devIntroductionBuilder: (introContext) => DevOnboardingIntroduction(
+      devIntroductionBuilder: (introContext) => OnboardingIntroductionFixture(
         direction: direction,
         welcomeName: 'Shakeel',
         onBackToProvider: () {
@@ -161,7 +150,7 @@ class _DevSignUpProcessScreenState extends State<DevSignUpProcessScreen> {
 
   @override
   void dispose() {
-    ZyraDevSurfaceCoordinator.instance.detachOnboarding(this);
+    OnboardingFixtureController.instance.detach(this);
     super.dispose();
   }
 
@@ -205,4 +194,91 @@ class _DevSignUpProcessScreenState extends State<DevSignUpProcessScreen> {
       );
     },
   );
+}
+
+/// A fixture lifetime owns only a mounted route's restart/close callbacks.
+/// It is deliberately unrelated to production account/role/surface state.
+class OnboardingFixtureController {
+  static final instance = OnboardingFixtureController();
+  Object? _owner;
+  ValueChanged<ZyraOnboardingDirection>? _restart;
+  VoidCallback? _close;
+  bool Function()? _current;
+  int _epoch = 0;
+  String get entryLabel => _owner == null ? 'Fixture host' : 'Onboarding';
+  bool get canCloseOnboarding =>
+      _owner != null &&
+      ZyraDeveloperAccess.canUseDeveloperTools &&
+      _current?.call() == true;
+
+  void attach(
+    Object owner,
+    ValueChanged<ZyraOnboardingDirection> restart, {
+    required VoidCallback onClose,
+    required bool Function() isCurrent,
+  }) {
+    _owner = owner;
+    _restart = restart;
+    _close = onClose;
+    _current = isCurrent;
+    _epoch++;
+  }
+
+  void detach(Object owner) {
+    if (!identical(owner, _owner)) return;
+    resetForTesting();
+  }
+
+  bool restartOnboarding(ZyraOnboardingDirection direction) {
+    if (!canCloseOnboarding) return false;
+    _restart!(direction);
+    _epoch++;
+    return true;
+  }
+
+  bool closeOnboarding() {
+    if (!canCloseOnboarding) return false;
+    _close!();
+    return true;
+  }
+
+  bool Function()? get onboardingExit {
+    if (!canCloseOnboarding) return null;
+    final epoch = _epoch;
+    final owner = _owner;
+    return () =>
+        epoch == _epoch && identical(owner, _owner) && closeOnboarding();
+  }
+
+  void resetForTesting() {
+    OnboardingFixtureLauncher._opening = false;
+    _owner = null;
+    _restart = null;
+    _close = null;
+    _current = null;
+    _epoch++;
+  }
+}
+
+class OnboardingFixtureLauncher {
+  static bool _opening = false;
+  static Future<void> start(
+    BuildContext context, {
+    ZyraOnboardingDirection direction = zyraDefaultDevOnboardingDirection,
+  }) async {
+    if (_opening || !ZyraDeveloperAccess.canUseDeveloperTools) return;
+    _opening = true;
+    ZyraInternalPreviewClient.beginPreview();
+    AppState.instance.applyDevPreset();
+    try {
+      await Navigator.of(context).push<void>(
+        MaterialPageRoute<void>(
+          allowSnapshotting: false,
+          builder: (_) => SignupFlowFixture(initialDirection: direction),
+        ),
+      );
+    } finally {
+      _opening = false;
+    }
+  }
 }

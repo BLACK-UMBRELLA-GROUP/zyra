@@ -403,7 +403,6 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
           return OnboardingStageIntroScreen(
             stage: SeekerOnboardingStage.review,
             devPreview: devPreview,
-            onDevSkip: devPreview ? openReview : null,
             onContinue: openReview,
           );
         },
@@ -473,8 +472,6 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
       onContinue: _next,
       onFinishLater: _canProceed ? _finishLater : null,
       devPreview: _devPreview,
-      onDevSkip: _next,
-      devSkipLabel: 'Skip section',
       onSwipeBack: _back,
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -563,33 +560,6 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
     ),
   );
 
-  Widget _withDevSkip(Widget child) {
-    if (!_devPreview) return child;
-    return Stack(
-      children: [
-        child,
-        Positioned(
-          top: MediaQuery.paddingOf(context).top + 12,
-          right: 18,
-          child: SafeArea(
-            top: false,
-            child: TextButton.icon(
-              key: const ValueKey('deferred_onboarding_dev_skip'),
-              onPressed: _canProceed ? _next : null,
-              icon: const Icon(Icons.skip_next_rounded, size: 18),
-              label: const Text('Skip · DEV'),
-              style: TextButton.styleFrom(
-                foregroundColor: ZyraColors.unlockText,
-                backgroundColor: ZyraColors.modalSheetSurface,
-                minimumSize: const Size(104, 44),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildFlow(BuildContext context) {
     if (_restoring) {
       return const ZyraLoading.fullScreen(
@@ -600,68 +570,58 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
 
     if (step.kind == _FlowStepKind.categoryIntro) {
       final category = step.category!;
-      return _withDevSkip(
-        CompatibilityCategoryIntroScreen(
-          category: category,
-          sectionIndex: _sectionIndex(category),
-          totalSections: chapter3Categories.length,
-          questionCount: _visible(category).length,
-          onContinue: _next,
-          onBack: _stepIndex > 0 ? _back : null,
-        ),
+      return CompatibilityCategoryIntroScreen(
+        category: category,
+        sectionIndex: _sectionIndex(category),
+        totalSections: chapter3Categories.length,
+        questionCount: _visible(category).length,
+        onContinue: _next,
+        onBack: _stepIndex > 0 ? _back : null,
       );
     }
 
     if (step.kind == _FlowStepKind.summary) {
       final category = step.category!;
-      return _withDevSkip(
-        CategorySummaryScreen(
-          background: _background,
-          categoryName: category.name,
-          questions: _visible(category),
-          answers: _ch3Answers,
-          onContinue: _next,
-          onBack: _back,
-        ),
+      return CategorySummaryScreen(
+        background: _background,
+        categoryName: category.name,
+        questions: _visible(category),
+        answers: _ch3Answers,
+        onContinue: _next,
+        onBack: _back,
       );
     }
 
     if (step.kind == _FlowStepKind.aboutYouComplete) {
-      return _withDevSkip(
-        _CompatibilityBoundaryScreen(
-          eyebrow: 'COMPATIBILITY · PART 1 COMPLETE',
-          title: 'About You saved.',
-          description:
-              'Your private answers across all 11 sections are complete.',
-          count: chapter3Categories.expand(_visible).length.toString(),
-          countLabel: 'about-you answers',
-          continueLabel: 'Continue',
-          onContinue: _next,
-          onBack: _back,
-        ),
+      return _CompatibilityBoundaryScreen(
+        eyebrow: 'COMPATIBILITY · PART 1 COMPLETE',
+        title: 'About You saved.',
+        description:
+            'Your private answers across all 11 sections are complete.',
+        count: chapter3Categories.expand(_visible).length.toString(),
+        countLabel: 'about-you answers',
+        continueLabel: 'Continue',
+        onContinue: _next,
+        onBack: _back,
       );
     }
 
     if (step.kind == _FlowStepKind.preferencesIntro) {
-      return _withDevSkip(
-        _CompatibilityBoundaryScreen(
-          eyebrow: 'COMPATIBILITY · PART 2',
-          title: 'Partner Preferences',
-          description:
-              'Move through the same sections again and set what you prefer, feel neutral about or would rather avoid.',
-          count: '11',
-          countLabel: 'scrolling sections',
-          continueLabel: 'Begin Partner Preferences',
-          onContinue: _next,
-          onBack: _back,
-        ),
+      return _CompatibilityBoundaryScreen(
+        eyebrow: 'COMPATIBILITY · PART 2',
+        title: 'Partner Preferences',
+        description:
+            'Move through the same sections again and set what you prefer, feel neutral about or would rather avoid.',
+        count: '11',
+        countLabel: 'scrolling sections',
+        continueLabel: 'Begin Partner Preferences',
+        onContinue: _next,
+        onBack: _back,
       );
     }
 
     if (step.kind == _FlowStepKind.preferenceGuide) {
-      return _withDevSkip(
-        _PreferenceGuideScreen(onContinue: _next, onBack: _back),
-      );
+      return _PreferenceGuideScreen(onContinue: _next, onBack: _back);
     }
 
     if (step.kind == _FlowStepKind.preferenceSection) {
@@ -700,7 +660,6 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
       onContinue: _next,
       onFinishLater: _canProceed ? _finishLater : null,
       devPreview: _devPreview,
-      onDevSkip: _next,
       onSwipeBack: _stepIndex > 0 ? _back : null,
       content: GenericSelectQuestionScreen(
         key: ValueKey('ch3_${question.responseKey}_${widget.gender}'),

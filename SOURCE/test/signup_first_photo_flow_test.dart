@@ -15,6 +15,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/models/zyra_initial_signup_draft.dart';
+import 'package:zyra/models/zyra_identity_verification.dart';
+import 'package:zyra/services/zyra_identity_verification_service.dart';
 import 'package:zyra/screens/onboarding/account_path_overview_screen.dart';
 import 'package:zyra/screens/onboarding/chapter2_flow.dart';
 import 'package:zyra/screens/onboarding/onboarding_flow.dart';
@@ -35,6 +37,7 @@ import 'package:zyra/widgets/zyra_signup_first_photo_card.dart';
 import 'package:zyra/widgets/zyra_state_widgets.dart';
 
 import 'initial_signup_draft_test.dart' show FakeSignupStore;
+import 'support/queue44_signup_flow_driver.dart';
 
 const _ownerId = 'signup-photo-owner';
 const _firstUrl =
@@ -189,6 +192,7 @@ Future<void> _installLocalSession(WidgetTester tester) async {
 Future<void> _openDevPhoto(
   WidgetTester tester, {
   ZyraPhotoBatchRunner? runner,
+  ZyraIdentityVerificationState? verificationState,
   Size size = const Size(390, 844),
   double scale = 1,
 }) async {
@@ -197,13 +201,18 @@ Future<void> _openDevPhoto(
   ZyraInternalPreviewClient.beginPreview();
   await _mount(
     tester,
-    OnboardingFlow(devPreview: true, welcomeName: 'Amina', photoRunner: runner),
+    OnboardingFlow(
+      devPreview: true,
+      welcomeName: 'Amina',
+      photoRunner: runner,
+      initialVerificationState: verificationState,
+    ),
     size: size,
     scale: scale,
   );
   await _tap(tester, const ValueKey('onboarding_stage_continue'));
   for (var index = 0; index < 3; index++) {
-    await _tap(tester, const ValueKey('onboarding_dev_skip'));
+    await advanceSignupQuestionFromCode(tester, installPhotoFixture: false);
   }
   expect(find.byKey(_question), findsOneWidget);
 }
@@ -863,6 +872,15 @@ void main() {
     (tester) async {
       await _openDevPhoto(
         tester,
+        verificationState: ZyraIdentityVerificationState(
+          result: ZyraIdentityVerificationResult.verified,
+          duplicateReview: ZyraDuplicateReviewState.clear,
+          consentGranted: true,
+          consentVersion: kIdentityVerificationConsentVersion,
+          consentRecordedAt: DateTime.now().toUtc(),
+          updatedAt: DateTime.now().toUtc(),
+          decidedAt: DateTime.now().toUtc(),
+        ),
         runner: (context, remaining, progress) async =>
             const ZyraPhotoBatchResult.added([_localPhoto]),
       );
@@ -870,7 +888,8 @@ void main() {
       await _tap(tester, _continue);
       await _tap(tester, const ValueKey('signup_membership_basic'));
       await _tap(tester, const ValueKey('signup_membership_continue'));
-      await _tap(tester, const ValueKey('identity_dev_skip'));
+      expect(find.byKey(const ValueKey('identity_dev_skip')), findsNothing);
+      await _tap(tester, const ValueKey('identity-continue'));
       expect(find.byType(SeekerPostIdentityChoiceScreen), findsOneWidget);
       expect(AppState.instance.photos, [_localPhoto]);
       // IDV replaced the Navigator's home route. A different home on the same

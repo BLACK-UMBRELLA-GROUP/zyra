@@ -1,3 +1,4 @@
+import 'support/zyra_hidden_dev_controls_driver.dart';
 // Founder-requested Portrait-card layout only. This directly exercises the
 // offline presenter; root shell tests remain the owner/authority boundary.
 import 'dart:async';
@@ -153,6 +154,7 @@ ScrollableState _scrollState(WidgetTester tester) =>
     );
 
 Future<void> _press(WidgetTester tester, String id) async {
+  if (await pressZyraDevControlKey(tester, id)) return;
   final target = _key(id);
   expect(target, findsOneWidget);
   final ancestor = find.ancestor(of: target, matching: find.byType(Scrollable));

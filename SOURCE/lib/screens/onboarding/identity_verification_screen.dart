@@ -44,7 +44,6 @@ class InitialIdentityCheckScreen extends StatefulWidget {
 
   /// Local rehearsal only. This never grants an identity result or calls the
   /// production finalizer; the owning preview route supplies its destination.
-  final Future<void> Function(BuildContext context)? onDevSkip;
 
   const InitialIdentityCheckScreen({
     super.key,
@@ -53,7 +52,6 @@ class InitialIdentityCheckScreen extends StatefulWidget {
     this.requireDuplicateResolution = false,
     this.finalizeOnboarding,
     this.onContinue,
-    this.onDevSkip,
   });
 
   @override
@@ -77,7 +75,6 @@ class _InitialIdentityCheckScreenState
   late final bool _duplicateResolution;
   late final Future<String?> Function()? _openingFinalizer;
   late final Future<void> Function(BuildContext)? _openingContinue;
-  late final Future<void> Function(BuildContext)? _openingSkip;
   bool _modeRevoked = false;
   bool _previewRevoked = false;
   final _openingAccountGeneration = ZyraAccountState.generation;
@@ -140,7 +137,6 @@ class _InitialIdentityCheckScreenState
     _duplicateResolution = widget.requireDuplicateResolution;
     _openingFinalizer = widget.finalizeOnboarding;
     _openingContinue = widget.onContinue;
-    _openingSkip = widget.onDevSkip;
     _observePreviewBoundary();
     ZyraDeveloperAccess.authorizationChanges.addListener(
       _observePreviewBoundary,
@@ -361,52 +357,6 @@ class _InitialIdentityCheckScreenState
     }
   }
 
-  Future<void> _devSkip() async {
-    final onSkip = _openingSkip;
-    if (!_isDevPreview ||
-        widget.requireDuplicateResolution ||
-        onSkip == null ||
-        _busy ||
-        !_routeCurrent ||
-        !_guardPrincipal()) {
-      return;
-    }
-    setState(() {
-      _busy = true;
-      _error = null;
-    });
-    try {
-      // Deliberately separate from _continue: no consent, provider result,
-      // verified-state fixture, or signup finalisation is manufactured here.
-      if (_guardPrincipal()) await onSkip(context);
-    } catch (_) {
-      if (mounted && ZyraDeveloperAccess.canUseDeveloperTools) {
-        setState(() => _error = 'The preview could not continue. Try again.');
-      }
-    } finally {
-      if (mounted) setState(() => _busy = false);
-    }
-  }
-
-  Widget _devSkipButton() => SizedBox(
-    width: double.infinity,
-    height: 42,
-    child: TextButton(
-      key: const ValueKey('identity_dev_skip'),
-      onPressed: _busy ? null : _devSkip,
-      child: Text(
-        'Skip · DEV',
-        style: ZyraText.button(size: 12, color: ZyraColors.goldText),
-      ),
-    ),
-  );
-
-  bool get _showDevSkip =>
-      _isDevPreview &&
-      !widget.requireDuplicateResolution &&
-      _openingSkip != null &&
-      ZyraDeveloperAccess.canUseDeveloperTools;
-
   Future<void> _leave({required bool deleteAttempt}) async {
     if (_busy || !_routeCurrent || !_guardPrincipal()) return;
     setState(() {
@@ -468,23 +418,6 @@ class _InitialIdentityCheckScreenState
     } finally {
       if (mounted) setState(() => _busy = false);
     }
-  }
-
-  void _setDevState(ZyraIdentityVerificationResult result) {
-    if (!_isDevPreview || !_guardPrincipal()) return;
-    setState(() {
-      _launchOutcome = null;
-      _error = null;
-      _state = _devState(
-        result,
-        duplicate: result == ZyraIdentityVerificationResult.verified
-            ? ZyraDuplicateReviewState.clear
-            : result == ZyraIdentityVerificationResult.reviewRequired
-            ? ZyraDuplicateReviewState.reviewRequired
-            : ZyraDuplicateReviewState.notEvaluated,
-        consentGranted: result != ZyraIdentityVerificationResult.cancelled,
-      );
-    });
   }
 
   @override
@@ -612,7 +545,6 @@ class _InitialIdentityCheckScreenState
             ),
           ),
         ),
-        if (_showDevSkip) _devSkipButton(),
         _PrimaryButton(
           key: const ValueKey('identity-consent-agree'),
           label: 'I agree — verify me',
@@ -681,17 +613,9 @@ class _InitialIdentityCheckScreenState
                   style: ZyraText.body(size: 14.2).copyWith(height: 1.5),
                 ),
                 if (_error != null) _ErrorText(_error!),
-                if (_isDevPreview) ...[
-                  const SizedBox(height: 24),
-                  _DevStateControls(
-                    selected: state.result,
-                    onSelected: _setDevState,
-                  ),
-                ],
               ],
             ),
           ),
-          if (_showDevSkip) _devSkipButton(),
           if (mayContinue)
             if (_isDevPreview && ZyraOnboardingArrowScope.enabledOf(context))
               Center(
@@ -782,7 +706,6 @@ class _InitialIdentityCheckScreenState
         ),
         if (_error != null) _ErrorText(_error!),
         const Spacer(),
-        if (_showDevSkip) _devSkipButton(),
         _PrimaryButton(
           key: const ValueKey('identity-return-to-consent'),
           label: 'Review consent again',
@@ -1021,51 +944,6 @@ class _ErrorText extends StatelessWidget {
       style: ZyraText.subtext(size: 12, color: ZyraColors.destructive),
     ),
   );
-}
-
-class _DevStateControls extends StatelessWidget {
-  final ZyraIdentityVerificationResult selected;
-  final ValueChanged<ZyraIdentityVerificationResult> onSelected;
-
-  const _DevStateControls({required this.selected, required this.onSelected});
-
-  @override
-  Widget build(BuildContext context) {
-    final previewStyle = OnboardingPreviewStyle.maybeOf(context);
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration:
-          previewStyle?.cardDecoration() ??
-          BoxDecoration(
-            color: ZyraColors.iconButtonBg,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: ZyraColors.iconButtonBorder),
-          ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'DEVELOPER STATE · LOCAL ONLY',
-            style: ZyraText.chapterLabel(color: ZyraColors.ink(0.46)),
-          ),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 7,
-            runSpacing: 7,
-            children: [
-              for (final result in ZyraIdentityVerificationResult.values)
-                ChoiceChip(
-                  key: ValueKey('identity-dev-${result.storageValue}'),
-                  label: Text(result.storageValue.replaceAll('_', ' ')),
-                  selected: selected == result,
-                  onSelected: (_) => onSelected(result),
-                ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 /// Temporary Phase A destination. It links to the truthful current summary

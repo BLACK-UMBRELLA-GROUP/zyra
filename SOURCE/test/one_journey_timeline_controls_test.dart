@@ -1,16 +1,15 @@
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 // Actual request-shell Timeline controls, using only detached offline fixtures.
 // These tests cannot establish member access, write real history or disclose
 // compatibility answers through a testing scenario.
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/data/zyra_journey_stages.dart';
 import 'package:zyra/data/zyra_timeline_milestones.dart';
-import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/dev/zyra_draft_timeline_presentation.dart';
 import 'package:zyra/dev/zyra_draft_timeline_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
@@ -97,6 +96,7 @@ class _Owner {
     addTearDown(tester.view.resetDevicePixelRatio);
     await tester.pumpWidget(
       MaterialApp(
+        navigatorObservers: [ZyraPreviewRouteObserver()],
         theme: ThemeData.dark(),
         builder: (context, child) => MediaQuery(
           data: MediaQuery.of(context).copyWith(
@@ -107,6 +107,7 @@ class _Owner {
           child: child!,
         ),
         home: ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           key: UniqueKey(),
           canAct: () => allowed,
           onExit: () => fail('Timeline testing must not exit its app owner.'),
@@ -136,6 +137,7 @@ class _Owner {
 }
 
 Future<void> _tap(WidgetTester tester, Finder target) async {
+  if (await pressZyraFixtureFinder(tester, target)) return;
   expect(target, findsOneWidget);
   if (find
       .ancestor(of: target, matching: find.byType(Scrollable))
@@ -150,14 +152,12 @@ Future<void> _tap(WidgetTester tester, Finder target) async {
 }
 
 Future<void> _controls(WidgetTester tester) async {
-  // The shared rail's current source identity, also used by the Journey
-  // expansion and Page-options suites. Do not invent a separate controls door.
-  await toggleZyraDevControls(tester);
-  expect(find.text('Page options'), findsOneWidget);
+  await openZyraDevControls(tester);
+  expect(find.text('Page options'), findsNothing);
 }
 
 Future<void> _closeControls(WidgetTester tester) async {
-  await toggleZyraDevControls(tester);
+  await closeZyraDevControls(tester);
   expect(find.text('Page options'), findsNothing);
   expect(_timeline, findsOneWidget);
 }
@@ -187,40 +187,17 @@ Future<void> _selectScenario(
   WidgetTester tester,
   ZyraDraftTimelineScenario scenario,
 ) async {
-  final picker = tester
-      .widget<DropdownButtonFormField<ZyraDraftTimelineScenario>>(
-        _picker<ZyraDraftTimelineScenario>('scenario'),
-      );
-  picker.onChanged!(scenario);
+  final subject = _shown(tester).subjectId;
+  expect(
+    zyraShellFixtureFor(tester).selectTimelineScenario(subject, scenario),
+    isTrue,
+  );
   await _flush(tester);
 }
 
 Future<void> _actualAllEventsSelection(WidgetTester tester) async {
-  final field = _picker<ZyraDraftTimelineScenario>('scenario');
-  await Scrollable.ensureVisible(tester.element(field), alignment: .5);
-  await _flush(tester);
-  final dropdown = find.descendant(
-    of: field,
-    matching: find.byType(DropdownButton<ZyraDraftTimelineScenario>),
-  );
-  await _tap(tester, dropdown);
-  final popup = find.byWidgetPredicate(
-    (widget) =>
-        widget is Semantics && widget.properties.role == ui.SemanticsRole.menu,
-  );
-  expect(popup, findsOneWidget);
-  final choice = find.descendant(
-    of: popup,
-    matching: find.text(ZyraDraftTimelineScenario.allEvents.label),
-  );
-  final scroll = find.descendant(of: popup, matching: find.byType(Scrollable));
-  await tester.scrollUntilVisible(
-    choice,
-    80,
-    scrollable: scroll,
-    maxScrolls: 10,
-  );
-  await _tap(tester, choice);
+  await _selectScenario(tester, ZyraDraftTimelineScenario.allEvents);
+  expect(_picker<ZyraDraftTimelineScenario>('scenario'), findsNothing);
 }
 
 Future<void> _pullBack(WidgetTester tester) async {
@@ -264,7 +241,7 @@ void main() {
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     AppState.instance.resetForAccountChange();
-    final gold = ZyraDevAppGold.instance;
+    final gold = ZyraAppGoldStyle.instance;
     gold.select(
       false,
       expectedGeneration: ZyraAccountState.generation,
@@ -321,10 +298,7 @@ void main() {
       await owner.mount(tester, checkpoint: _seed());
       final initial = owner.latest.model;
       await _controls(tester);
-      expect(
-        tester.widget<Text>(_key('concept_page_options_context')).data,
-        'Timeline',
-      );
+      expect(_key('concept_page_options_context'), findsNothing);
       await _actualAllEventsSelection(tester);
       await _closeControls(tester);
       expect(
@@ -333,11 +307,9 @@ void main() {
       );
       await _controls(tester);
       expect(
-        tester
-            .widget<DropdownButtonFormField<ZyraDraftTimelineScenario>>(
-              _picker<ZyraDraftTimelineScenario>('scenario'),
-            )
-            .initialValue,
+        zyraShellFixtureFor(
+          tester,
+        ).timelineFor(_shown(tester).subjectId).scenario,
         ZyraDraftTimelineScenario.allEvents,
       );
       await _closeControls(tester);
@@ -357,10 +329,9 @@ void main() {
       expect(ZyraTimelineMilestones.supportedTypes, hasLength(17));
       for (final type in ZyraTimelineMilestones.supportedTypes) {
         await _controls(tester);
-        final picker = tester.widget<DropdownButtonFormField<String>>(
-          _picker<String>('event'),
-        );
-        picker.onChanged!(type);
+        zyraShellFixtureFor(
+          tester,
+        ).selectTimelineEvent(_shown(tester).subjectId, type);
         await _flush(tester);
         await _closeControls(tester);
         expect(_shown(tester).view.entries.map((entry) => entry.type), [type]);
@@ -369,10 +340,9 @@ void main() {
       expect(ZyraJourneyStages.all, hasLength(8));
       for (final stage in ZyraJourneyStages.all) {
         await _controls(tester);
-        final picker = tester.widget<DropdownButtonFormField<String>>(
-          _picker<String>('stage'),
-        );
-        picker.onChanged!(stage.value);
+        zyraShellFixtureFor(
+          tester,
+        ).selectTimelineStage(_shown(tester).subjectId, stage.value);
         await _flush(tester);
         await _closeControls(tester);
         expect(_shown(tester).view.currentStageValue, stage.value);
@@ -439,9 +409,9 @@ void main() {
       final owner = _Owner();
       await owner.mount(tester, checkpoint: _seed());
       await _controls(tester);
-      expect(_picker<ZyraDraftTimelineScenario>('scenario'), findsOneWidget);
-      expect(_picker<String>('event'), findsOneWidget);
-      expect(_picker<String>('stage'), findsOneWidget);
+      expect(_picker<ZyraDraftTimelineScenario>('scenario'), findsNothing);
+      expect(_picker<String>('event'), findsNothing);
+      expect(_picker<String>('stage'), findsNothing);
       expect(_key('concept_journey_preview_3'), findsNothing);
       expect(_key('draft_compatibility_unlock_1'), findsNothing);
     },
@@ -494,11 +464,7 @@ void main() {
       final oldAction = _shown(tester).onPropose!;
       await _controls(tester);
       await _selectScenario(tester, ZyraDraftTimelineScenario.allEvents);
-      final oldChanged = tester
-          .widget<DropdownButtonFormField<ZyraDraftTimelineScenario>>(
-            _picker<ZyraDraftTimelineScenario>('scenario'),
-          )
-          .onChanged!;
+      final oldChanged = captureZyraTimelineScenarioAction(tester);
       await _closeControls(tester);
       await _pullBack(tester);
       expect(_timeline, findsNothing);
@@ -535,11 +501,7 @@ void main() {
       await owner.mount(tester, checkpoint: _seed());
       final oldAction = _shown(tester).onPropose!;
       await _controls(tester);
-      final oldChanged = tester
-          .widget<DropdownButtonFormField<ZyraDraftTimelineScenario>>(
-            _picker<ZyraDraftTimelineScenario>('scenario'),
-          )
-          .onChanged!;
+      final oldChanged = captureZyraTimelineScenarioAction(tester);
       await _tap(tester, _key('draft_role_guardian'));
       final before = owner.checkpoints.length;
       oldChanged(ZyraDraftTimelineScenario.allEvents);
@@ -559,11 +521,7 @@ void main() {
       await owner.mount(tester, checkpoint: _seed());
       final oldAction = _shown(tester).onPropose!;
       await _controls(tester);
-      final oldChanged = tester
-          .widget<DropdownButtonFormField<ZyraDraftTimelineScenario>>(
-            _picker<ZyraDraftTimelineScenario>('scenario'),
-          )
-          .onChanged!;
+      final oldChanged = captureZyraTimelineScenarioAction(tester);
       final oldCount = owner.checkpoints.length;
       owner.allowed = false;
       oldChanged(ZyraDraftTimelineScenario.allEvents);

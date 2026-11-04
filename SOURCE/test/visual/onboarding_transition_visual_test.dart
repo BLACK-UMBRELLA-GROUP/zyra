@@ -7,14 +7,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_onboarding_lab.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
-import 'package:zyra/dev/dev_onboarding_transition.dart';
+import '../support/queue44_onboarding_story_fixture.dart';
+import '../support/queue44_gold_fixture.dart';
+import '../support/queue44_onboarding_transition_fixture.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_onboarding_continue_action.dart';
-import 'package:zyra/widgets/zyra_onboarding_study.dart';
 
 const _capture = bool.fromEnvironment(
   'ZYRA_ONBOARDING_TRANSITION_CAPTURE_CANDIDATES',
@@ -121,7 +120,7 @@ void main() {
           key: _root,
           child: ZyraOnboardingArrowScope(
             enabled: true,
-            child: const DevOnboardingDirectionsScreen(
+            child: const OnboardingStoryFixture(
               initialDirection: ZyraOnboardingDirection.luma,
             ),
           ),
@@ -186,7 +185,7 @@ void main() {
             key: _root,
             child: ZyraOnboardingArrowScope(
               enabled: true,
-              child: const DevOnboardingDirectionsScreen(
+              child: const OnboardingStoryFixture(
                 initialDirection: ZyraOnboardingDirection.luma,
               ),
             ),

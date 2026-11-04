@@ -29,7 +29,6 @@ Widget _question({
   onContinue: onContinue,
   onFinishLater: onFinishLater,
   onSwipeBack: () {},
-  onDevSkip: () {},
 );
 
 void main() {

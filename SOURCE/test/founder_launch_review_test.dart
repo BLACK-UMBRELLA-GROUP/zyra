@@ -221,6 +221,7 @@ class _Owner {
     await tester.pumpWidget(
       _app(
         ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           key: UniqueKey(),
           canAct: canAct,
           onExit: () => fail('A review leaf must return within its owner.'),
@@ -362,7 +363,7 @@ void main() {
     ZyraInteractionStyle.hapticLevel,
     ZyraText.appFont,
     ZyraAppGoldStyle.instance.enabled,
-    ZyraDevAppGold.instance.renderingEnabled,
+    ZyraAppGoldRenderer.instance.renderingEnabled,
   ];
 
   setUpAll(() async {
@@ -404,7 +405,7 @@ void main() {
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraAppGoldStyle.instance.restore(false);
-    ZyraDevAppGold.instance.resetForTesting();
+    ZyraAppGoldRenderer.instance.resetForTesting();
     ZyraColors.restoreAppPalette(null);
     ZyraInteractionStyle.restoreHapticLevel(null);
     ZyraText.restoreAppFont(null);

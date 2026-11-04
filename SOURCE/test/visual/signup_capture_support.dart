@@ -1,10 +1,11 @@
+import '../support/queue44_signup_flow_driver.dart';
 // Queue 10: capture existing signup presenters offline without a member account.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
-import 'package:zyra/dev/dev_onboarding_interaction.dart';
-import 'package:zyra/dev/dev_onboarding_transition.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
+import '../support/queue44_gold_fixture.dart';
+import '../support/queue44_onboarding_interaction_fixture.dart';
+import '../support/queue44_onboarding_transition_fixture.dart';
+import '../support/queue44_signup_flow_fixture.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
@@ -21,7 +22,7 @@ Future<void> signupCaptureSetUp() async {
   await baselineSetUp(evidenceRoot: signupEvidence);
   ZyraInternalPreviewClient.finishSignOut();
   ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
-  ZyraDevSurfaceCoordinator.instance.resetForTesting();
+  OnboardingFixtureController.instance.resetForTesting();
   ZyraDevOnboardingGoldMotion.resetForTesting();
   ZyraDevOnboardingInteraction.resetForTesting();
   ZyraDevOnboardingStoryNavigation.resetForTesting();
@@ -30,7 +31,7 @@ Future<void> signupCaptureSetUp() async {
 }
 
 Future<void> signupCaptureTearDown() async {
-  ZyraDevSurfaceCoordinator.instance.resetForTesting();
+  OnboardingFixtureController.instance.resetForTesting();
   ZyraInternalPreviewClient.finishSignOut();
   AppState.instance.resetForAccountChange();
   await baselineTearDown();
@@ -72,7 +73,18 @@ class SignupCaptureHarness {
     await _capture.flush();
   }
 
-  Future<void> tap(String key) => tapFinder(find.byKey(ValueKey(key)));
+  Future<void> tap(String key) async {
+    if (key == 'onboarding_dev_skip') {
+      await advanceSignupQuestionFromCode(tester);
+      return;
+    }
+    if (key == 'identity_dev_skip') {
+      await verifyIdentityFromCode(tester);
+      await tapFinder(find.byKey(const ValueKey('identity-continue')));
+      return;
+    }
+    await tapFinder(find.byKey(ValueKey(key)));
+  }
 
   Future<void> tapFinder(Finder target) async {
     expect(target, findsOneWidget);

@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_onboarding_interaction.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
-import 'package:zyra/dev/dev_onboarding_lab.dart';
+import 'support/queue44_onboarding_interaction_fixture.dart';
+import 'support/queue44_gold_fixture.dart';
+import 'support/queue44_onboarding_story_fixture.dart';
 import 'package:zyra/screens/onboarding/onboarding_stage_intro_screen.dart';
 import 'package:zyra/screens/splash_screen.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
@@ -64,8 +64,7 @@ Future<GlobalKey<NavigatorState>> _open(
   );
   navigator.currentState!.push(
     MaterialPageRoute(
-      builder: (_) =>
-          DevOnboardingDirectionsScreen(initialDirection: direction),
+      builder: (_) => OnboardingStoryFixture(initialDirection: direction),
     ),
   );
   await tester.pumpAndSettle();
@@ -116,16 +115,14 @@ void main() {
 
   testWidgets('standalone directions preview starts with Luma', (tester) async {
     ZyraDevOnboardingInteraction.resetForTesting();
-    await tester.pumpWidget(
-      const MaterialApp(home: DevOnboardingDirectionsScreen()),
-    );
+    await tester.pumpWidget(const MaterialApp(home: OnboardingStoryFixture()));
     expect(
       find.byKey(const ValueKey('onboarding-direction-luma')),
       findsOneWidget,
     );
     expect(
       find.text('Preview · ${ZyraOnboardingDirection.luma.label}'),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
       tester
@@ -163,7 +160,7 @@ void main() {
       expect(navigator.currentState!.canPop(), isFalse);
       expect(find.byKey(_host), findsOneWidget);
       expect(find.text('Existing profile stays here'), findsOneWidget);
-      expect(find.byType(DevOnboardingDirectionsScreen), findsNothing);
+      expect(find.byType(OnboardingStoryFixture), findsNothing);
       expect(tester.takeException(), isNull);
     });
 
@@ -359,9 +356,7 @@ void main() {
     tester,
   ) async {
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    await tester.pumpWidget(
-      const MaterialApp(home: DevOnboardingDirectionsScreen()),
-    );
+    await tester.pumpWidget(const MaterialApp(home: OnboardingStoryFixture()));
     expect(
       find.byKey(const ValueKey('dev_onboarding_directions_denied')),
       findsOneWidget,
@@ -428,7 +423,9 @@ void main() {
       final study = File(
         'lib/widgets/zyra_onboarding_study.dart',
       ).readAsStringSync();
-      final lab = File('lib/dev/dev_onboarding_lab.dart').readAsStringSync();
+      final lab = File(
+        'test/support/queue44_onboarding_story_fixture.dart',
+      ).readAsStringSync();
       final imports = RegExp(r"^import\s+'([^']+)'", multiLine: true);
       expect(
         imports.allMatches(study).map((m) => m.group(1)),
@@ -456,10 +453,7 @@ void main() {
       for (final productionSource in [splash, signup]) {
         expect(productionSource, isNot(contains('ZyraOnboardingDirection')));
         expect(productionSource, isNot(contains('ZyraOnboardingStudy')));
-        expect(
-          productionSource,
-          isNot(contains('DevOnboardingDirectionsScreen')),
-        );
+        expect(productionSource, isNot(contains('OnboardingStoryFixture')));
       }
       final liveIntro = OnboardingStageIntroScreen(
         stage: SeekerOnboardingStage.buildProfile,

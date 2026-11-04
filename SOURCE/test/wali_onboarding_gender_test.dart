@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/screens/wali/wali_onboarding_flow.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
+import 'support/queue44_signup_flow_driver.dart';
 
 void main() {
   setUp(() => ZyraDeveloperAccess.setAuthorizedForTesting(true));
@@ -19,11 +20,9 @@ void main() {
     );
     expect(tester.takeException(), isNull, reason: 'name page');
 
-    await tester.tap(find.byKey(const ValueKey('onboarding_dev_skip')));
-    await tester.pumpAndSettle();
+    await advanceSignupQuestionFromCode(tester, installPhotoFixture: false);
     expect(tester.takeException(), isNull, reason: 'date-of-birth page');
-    await tester.tap(find.byKey(const ValueKey('onboarding_dev_skip')));
-    await tester.pumpAndSettle();
+    await advanceSignupQuestionFromCode(tester, installPhotoFixture: false);
     expect(tester.takeException(), isNull, reason: 'gender page');
 
     expect(find.text('What’s your gender?'), findsOneWidget);

@@ -2,6 +2,24 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
+Iterable<File> _dartFiles(Directory directory) sync* {
+  for (final entity in directory.listSync(followLinks: false)) {
+    final name = entity.uri.pathSegments
+        .where((part) => part.isNotEmpty)
+        .last
+        .toUpperCase();
+    if (name.startsWith('PRIVATE') ||
+        (name.contains('API') && name.contains('KEY'))) {
+      continue;
+    }
+    if (entity is Directory) {
+      yield* _dartFiles(entity);
+    } else if (entity is File && entity.path.endsWith('.dart')) {
+      yield entity;
+    }
+  }
+}
+
 void main() {
   test('TestFlight developer surfaces use capability, not build mode', () {
     const capabilityGatedScreens = <String>[
@@ -27,13 +45,18 @@ void main() {
     expect(source, isNot(contains("endsWith('@zyra.test')")));
   });
 
-  test('legacy live-account Journey jump controls remain disabled', () {
-    final source = File(
-      'lib/screens/journey/journey_flow_screen.dart',
-    ).readAsStringSync();
-    expect(source, contains('bool get _isDevAccount => false;'));
-    expect(source, isNot(contains("endsWith('@zyra.test')")));
-  });
+  test(
+    'legacy live-account Journey jump controls and client helpers are absent',
+    () {
+      final source = File(
+        'lib/screens/journey/journey_flow_screen.dart',
+      ).readAsStringSync();
+      expect(source, isNot(contains('_isDevAccount')));
+      expect(source, isNot(contains('_devJumpStage')));
+      expect(source, isNot(contains('devSetStage(')));
+      expect(source, isNot(contains("endsWith('@zyra.test')")));
+    },
+  );
 
   test('sign-out clears refreshed Founder proof on every path', () {
     final source = File('lib/services/zyra_auth.dart').readAsStringSync();
@@ -95,16 +118,12 @@ void main() {
       ),
     );
 
-    final signUp = File('lib/dev/zyra_dev_signup.dart').readAsStringSync();
-    expect(
-      signUp,
-      contains('if (!ZyraDeveloperAccess.canUseDeveloperTools) return;'),
-    );
+    expect(File('lib/dev/zyra_dev_signup.dart').existsSync(), isFalse);
   });
 
   test('app-wide owner refreshes and routes away after authority loss', () {
     final source = File(
-      'lib/dev/zyra_global_dev_overlay.dart',
+      'lib/widgets/zyra_account_session_host.dart',
     ).readAsStringSync();
     expect(source, contains('ZyraDeveloperAccess.authorizationChanges'));
     expect(source, contains('AuthChangeEvent.tokenRefreshed'));
@@ -138,10 +157,16 @@ void main() {
     final source = File(
       'lib/screens/wali/wali_home_shell.dart',
     ).readAsStringSync();
-    final dispose = source.substring(
-      source.indexOf('void dispose()'),
-      source.indexOf('void _openDevPage'),
-    );
+    final start = source.indexOf('void dispose()');
+    var cursor = source.indexOf('{', start) + 1;
+    var depth = 1;
+    for (; cursor < source.length && depth > 0; cursor++) {
+      if (source[cursor] == '{') depth++;
+      if (source[cursor] == '}') depth--;
+    }
+    expect(start, greaterThanOrEqualTo(0));
+    expect(depth, 0);
+    final dispose = source.substring(start, cursor);
     expect(
       dispose,
       contains('ZyraDevScenario.instance.removeListener(_onScenarioChange)'),
@@ -160,14 +185,13 @@ void main() {
       'lib/config/zyra_native_identity_policy.dart',
       'lib/config/zyra_supabase_config_policy.dart',
       'lib/config/zyra_internal_founder_policy.dart',
-      'lib/dev/zyra_global_dev_overlay.dart',
+      'lib/widgets/zyra_account_session_host.dart',
       'lib/main.dart',
       'lib/services/zyra_developer_access.dart',
       'lib/services/zyra_internal_preview_client.dart',
     };
     final actual = <String>{};
-    for (final entity in Directory('lib').listSync(recursive: true)) {
-      if (entity is! File || !entity.path.endsWith('.dart')) continue;
+    for (final entity in _dartFiles(Directory('lib'))) {
       final source = entity.readAsStringSync();
       if (!source.contains('ZyraAppVariant') &&
           !source.contains('zyra_app_variant.dart')) {
@@ -191,20 +215,19 @@ void main() {
     );
   });
 
-  test('every Developer Access entry and destination performs a refresh', () {
-    for (final path in const [
-      'lib/dev/dev_scenario_panel_v2.dart',
-      'lib/dev/wali_dev_scenario_panel.dart',
-      'lib/dev/zyra_global_dev_overlay.dart',
-      'lib/screens/dev/developer_access_screen.dart',
-    ]) {
-      expect(
-        File(path).readAsStringSync(),
-        contains('refreshCurrentAuthorization()'),
-        reason: path,
-      );
-    }
-  });
+  test(
+    'retired Developer Access entries and destinations have no source route',
+    () {
+      for (final path in const [
+        'lib/dev/dev_scenario_panel_v2.dart',
+        'lib/dev/wali_dev_scenario_panel.dart',
+        'lib/dev/zyra_global_dev_overlay.dart',
+        'lib/screens/dev/developer_access_screen.dart',
+      ]) {
+        expect(File(path).existsSync(), isFalse, reason: path);
+      }
+    },
+  );
 
   test(
     'demo ZYRA Codes require both Founder authority and preview isolation',

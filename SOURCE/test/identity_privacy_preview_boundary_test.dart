@@ -402,29 +402,12 @@ void main() {
       final page = GlobalKey();
       var opening = 0, replacement = 0;
       await tester.pumpWidget(
-        _app(
-          InitialIdentityCheckScreen(
-            key: page,
-            devPreview: true,
-            onDevSkip: (_) async {
-              opening++;
-            },
-          ),
-        ),
+        _app(InitialIdentityCheckScreen(key: page, devPreview: true)),
       );
       final privacy = tester
           .widget<TextButton>(_key('identity-privacy-policy'))
           .onPressed!;
-      await tester.pumpWidget(
-        _app(
-          InitialIdentityCheckScreen(
-            key: page,
-            onDevSkip: (_) async {
-              replacement++;
-            },
-          ),
-        ),
-      );
+      await tester.pumpWidget(_app(InitialIdentityCheckScreen(key: page)));
       privacy();
       await tester.pumpAndSettle();
       expect(_key('identity-session-changed'), findsOneWidget);

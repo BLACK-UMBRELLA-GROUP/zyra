@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
 import 'package:zyra/dev/zyra_draft_browse_utility_presentation.dart';
 import 'package:zyra/dev/zyra_draft_journey_block_hide_sheet.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
@@ -103,7 +102,7 @@ class _GuardHarness {
     await tester.pumpWidget(
       MaterialApp(
         navigatorKey: navigator,
-        navigatorObservers: [ZyraDevControlsRouteObserver()],
+        navigatorObservers: [ZyraPreviewRouteObserver()],
         theme: ThemeData(platform: TargetPlatform.iOS),
         builder: (context, child) => MediaQuery(
           data: MediaQuery.of(context).copyWith(
@@ -116,6 +115,7 @@ class _GuardHarness {
           builder: (context) {
             routeContext = context;
             return ZyraOneJourneyConceptShell(
+              fixture: ZyraShellTestFixture().fixture,
               canAct: () => ownerAdmitted && routeCurrent,
               canActInOwnedDialog: () => ownerAdmitted,
               onExit: () => fail('Safety action must remain in the preview.'),
@@ -148,6 +148,7 @@ class _GuardHarness {
   }
 
   Future<void> tap(String id) async {
+    if (await pressZyraDevControlKey(tester, id)) return;
     final target = _key(id);
     expect(target, findsOneWidget);
     await Scrollable.ensureVisible(tester.element(target), alignment: .5);

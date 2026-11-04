@@ -108,6 +108,7 @@ void main() {
             pages: const [],
           ),
           child: ZyraOneJourneyConceptShell(
+            fixture: ZyraShellTestFixture().fixture,
             key: UniqueKey(),
             canAct: () => allowed,
             onExit: () => fail('Must remain local'),

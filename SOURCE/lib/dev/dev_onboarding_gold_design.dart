@@ -1,11 +1,8 @@
-// Protected, session-local gold backdrop comparisons for the opening story.
-// These are decorative only: no input, persistence, account or score changes.
+// Canonical gold backdrop rendering with explicit presentation inputs.
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../services/zyra_account_state.dart';
-import '../services/zyra_developer_access.dart';
 import '../theme/zyra_colors.dart';
 
 enum ZyraOnboardingGoldDesign {
@@ -23,83 +20,17 @@ enum ZyraOnboardingGoldMotion {
   final String label;
 }
 
-abstract final class ZyraDevOnboardingGoldMotion {
-  static const defaultMotion = ZyraOnboardingGoldMotion.liveDrift;
-  static final ValueNotifier<ZyraOnboardingGoldMotion> _selection =
-      ValueNotifier(defaultMotion);
-  static final ValueNotifier<int> _pageEntry = ValueNotifier(0);
-  static int _accountGeneration = ZyraAccountState.generation;
-
-  static Listenable get changes => _selection;
-  static Listenable get pageEntries => _pageEntry;
-  static ZyraOnboardingGoldMotion get current =>
-      _accountGeneration == ZyraAccountState.generation
-      ? _selection.value
-      : defaultMotion;
-
-  static bool select(ZyraOnboardingGoldMotion motion) {
-    if (!ZyraDeveloperAccess.canUseDeveloperTools) return false;
-    final generation = ZyraAccountState.generation;
-    if (_accountGeneration != generation) {
-      _accountGeneration = generation;
-      _selection.value = defaultMotion;
-    }
-    _selection.value = motion;
-    return true;
-  }
-
-  static void pageEntered() {
-    if (!ZyraDeveloperAccess.canUseDeveloperTools) return;
-    _pageEntry.value++;
-  }
-
-  @visibleForTesting
-  static void resetForTesting() {
-    assert(() {
-      _accountGeneration = ZyraAccountState.generation;
-      _selection.value = defaultMotion;
-      _pageEntry.value = 0;
-      return true;
-    }());
-  }
-}
-
-abstract final class ZyraDevOnboardingGoldDesign {
-  static const defaultDesign = ZyraOnboardingGoldDesign.diagonalDust;
-  static final ValueNotifier<ZyraOnboardingGoldDesign> _selection =
-      ValueNotifier(defaultDesign);
-  static int _accountGeneration = ZyraAccountState.generation;
-
-  static Listenable get changes => _selection;
-  static ZyraOnboardingGoldDesign get current =>
-      _accountGeneration == ZyraAccountState.generation
-      ? _selection.value
-      : defaultDesign;
-
-  static bool select(ZyraOnboardingGoldDesign design) {
-    if (!ZyraDeveloperAccess.canUseDeveloperTools) return false;
-    final generation = ZyraAccountState.generation;
-    if (_accountGeneration != generation) {
-      _accountGeneration = generation;
-      _selection.value = defaultDesign;
-    }
-    _selection.value = design;
-    return true;
-  }
-
-  @visibleForTesting
-  static void resetForTesting() {
-    assert(() {
-      _accountGeneration = ZyraAccountState.generation;
-      _selection.value = defaultDesign;
-      return true;
-    }());
-  }
-}
-
 /// Paints under the fixed purple canvas content, never above a tappable page.
 class ZyraOnboardingGoldBackdrop extends StatefulWidget {
-  const ZyraOnboardingGoldBackdrop({super.key});
+  const ZyraOnboardingGoldBackdrop({
+    super.key,
+    this.design = ZyraOnboardingGoldDesign.diagonalDust,
+    this.motion = ZyraOnboardingGoldMotion.liveDrift,
+    this.pageEntries,
+  });
+  final ZyraOnboardingGoldDesign design;
+  final ZyraOnboardingGoldMotion motion;
+  final Listenable? pageEntries;
 
   @override
   State<ZyraOnboardingGoldBackdrop> createState() =>
@@ -115,8 +46,17 @@ class _ZyraOnboardingGoldBackdropState extends State<ZyraOnboardingGoldBackdrop>
   @override
   void initState() {
     super.initState();
-    ZyraDevOnboardingGoldMotion.changes.addListener(_startMotion);
-    ZyraDevOnboardingGoldMotion.pageEntries.addListener(_onPageEntered);
+    widget.pageEntries?.addListener(_onPageEntered);
+  }
+
+  @override
+  void didUpdateWidget(covariant ZyraOnboardingGoldBackdrop oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.pageEntries != widget.pageEntries) {
+      oldWidget.pageEntries?.removeListener(_onPageEntered);
+      widget.pageEntries?.addListener(_onPageEntered);
+    }
+    if (oldWidget.motion != widget.motion) _startMotion();
   }
 
   @override
@@ -139,7 +79,7 @@ class _ZyraOnboardingGoldBackdropState extends State<ZyraOnboardingGoldBackdrop>
       _motion.value = 1;
       return;
     }
-    switch (ZyraDevOnboardingGoldMotion.current) {
+    switch (widget.motion) {
       case ZyraOnboardingGoldMotion.pageEntrance:
         _motion.duration = const Duration(milliseconds: 1050);
         _motion.forward(from: 0);
@@ -150,16 +90,14 @@ class _ZyraOnboardingGoldBackdropState extends State<ZyraOnboardingGoldBackdrop>
   }
 
   void _onPageEntered() {
-    if (ZyraDevOnboardingGoldMotion.current ==
-        ZyraOnboardingGoldMotion.pageEntrance) {
+    if (widget.motion == ZyraOnboardingGoldMotion.pageEntrance) {
       _startMotion();
     }
   }
 
   @override
   void dispose() {
-    ZyraDevOnboardingGoldMotion.changes.removeListener(_startMotion);
-    ZyraDevOnboardingGoldMotion.pageEntries.removeListener(_onPageEntered);
+    widget.pageEntries?.removeListener(_onPageEntered);
     _motion.dispose();
     super.dispose();
   }
@@ -167,41 +105,16 @@ class _ZyraOnboardingGoldBackdropState extends State<ZyraOnboardingGoldBackdrop>
   @override
   Widget build(BuildContext context) => IgnorePointer(
     child: ListenableBuilder(
-      listenable: Listenable.merge([
-        ZyraDevOnboardingGoldDesign.changes,
-        ZyraDevOnboardingGoldMotion.changes,
-        _motion,
-      ]),
+      listenable: _motion,
       builder: (context, _) => CustomPaint(
-        key: const ValueKey('dev_onboarding_gold_backdrop'),
+        key: const ValueKey('onboarding_gold_backdrop'),
         painter: ZyraOnboardingGoldPainter(
-          ZyraDevOnboardingGoldDesign.current,
-          motion: ZyraDevOnboardingGoldMotion.current,
+          widget.design,
+          motion: widget.motion,
           motionValue: _motion.value,
           reducedMotion: _reducedMotion,
         ),
         child: const SizedBox.expand(),
-      ),
-    ),
-  );
-}
-
-/// The small toggle preview uses the same geometry with stronger visibility.
-class ZyraOnboardingGoldSwatch extends StatelessWidget {
-  const ZyraOnboardingGoldSwatch(this.design, {super.key});
-  final ZyraOnboardingGoldDesign design;
-
-  @override
-  Widget build(BuildContext context) => ClipRRect(
-    borderRadius: BorderRadius.circular(7),
-    child: DecoratedBox(
-      decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
-      child: SizedBox(
-        width: 56,
-        height: 36,
-        child: CustomPaint(
-          painter: ZyraOnboardingGoldPainter(design, preview: true),
-        ),
       ),
     ),
   );

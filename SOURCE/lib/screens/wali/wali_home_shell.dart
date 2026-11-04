@@ -61,7 +61,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../dev/zyra_app_gold_preview.dart';
 import '../../dev/zyra_dev_scenario.dart';
-import '../../dev/zyra_dev_surface_coordinator.dart';
 import '../../services/zyra_notification_service.dart';
 import '../../services/zyra_account_state.dart';
 import '../../services/zyra_developer_access.dart';
@@ -188,7 +187,6 @@ class _WaliHomeShellState extends State<WaliHomeShell> {
       ZyraDevScenario.instance.setCurrentWaliPage(_page);
       ZyraDevScenario.instance.addListener(_onScenarioChange);
       ZyraPromotionEngine.instance.addListener(_onMembershipPreviewChange);
-      ZyraDevSurfaceCoordinator.instance.attachGuardian(this, _openDevPage);
     }
   }
 
@@ -211,21 +209,7 @@ class _WaliHomeShellState extends State<WaliHomeShell> {
     // removal must be unconditional to avoid a dead shell retaining callbacks.
     ZyraDevScenario.instance.removeListener(_onScenarioChange);
     ZyraPromotionEngine.instance.removeListener(_onMembershipPreviewChange);
-    ZyraDevSurfaceCoordinator.instance.detachGuardian(this);
     super.dispose();
-  }
-
-  void _openDevPage(WaliPage page) {
-    if (!mounted) return;
-    // The retired Notifications preview resolves to its live owner: Dashboard.
-    final destination = page == WaliPage.notifications
-        ? WaliPage.dashboard
-        : page;
-    _goToPage(destination);
-    Navigator.of(
-      context,
-      rootNavigator: true,
-    ).popUntil((route) => route.isFirst);
   }
 
   /// Repaints the badge when the panel's staged unread count changes.

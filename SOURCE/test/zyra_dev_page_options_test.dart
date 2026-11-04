@@ -1,641 +1,543 @@
-import 'dart:async';
-
+// Retained member choice/ownership contracts after developer menu retirement.
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_dev_page_options.dart';
+import 'package:zyra/main.dart' show ZyraApp, zyraNavigatorKey;
+import 'package:zyra/screens/settings/personalisation_screen.dart';
+import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 import 'package:zyra/theme/zyra_colors.dart';
+import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
+import 'package:zyra/widgets/zyra_personalisation_content.dart';
+import 'package:zyra/widgets/zyra_state_widgets.dart';
+import 'package:zyra/widgets/zyra_tap_feedback.dart';
 
-Widget _host(
-  List<ZyraDevPageOption> options, {
-  String contextKey = 'page-a',
-  bool busy = false,
-  double textScale = 1,
-}) {
-  return MaterialApp(
-    home: Scaffold(
-      body: Builder(
-        builder: (context) => MediaQuery(
-          data: MediaQuery.of(
-            context,
-          ).copyWith(textScaler: TextScaler.linear(textScale)),
-          child: Center(
-            child: SizedBox(
-              width: 258,
-              child: SingleChildScrollView(
-                child: ZyraDevPageOptions(
-                  options: options,
-                  contextKey: contextKey,
-                  busy: busy,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+const _gold = ValueKey('personalisation_gold_toggle');
+const _haptic = ValueKey('personalisation_haptic');
+
+void _expectNoDeveloperMenu() {
+  expect(
+    find.byWidgetPredicate(
+      (widget) =>
+          widget.key is ValueKey<String> &&
+          ((widget.key! as ValueKey<String>).value.startsWith(
+                'dev_page_options_',
+              ) ||
+              (widget.key! as ValueKey<String>).value.startsWith(
+                'dev_controls_',
+              )),
     ),
+    findsNothing,
   );
 }
 
-Finder get _dropdown => find.byWidgetPredicate(
-  (widget) =>
-      widget is InkWell &&
-      widget.key is ValueKey<String> &&
-      (widget.key! as ValueKey<String>).value.startsWith(
-        'dev_page_options_dropdown_',
-      ),
-);
-
-Future<void> _open(WidgetTester tester, {String? group}) async {
-  final dropdown = group == null
-      ? _dropdown.first
-      : find.byKey(ValueKey('dev_page_options_dropdown_$group'));
-  await tester.ensureVisible(dropdown);
-  await tester.pumpAndSettle();
-  await tester.tap(dropdown);
+Future<void> _mountFrame(
+  WidgetTester tester,
+  Widget child, {
+  double textScale = 1,
+}) async {
+  tester.view.physicalSize = const Size(320, 568);
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.resetPhysicalSize);
+  addTearDown(tester.view.resetDevicePixelRatio);
+  await tester.pumpWidget(
+    Builder(
+      builder: (context) {
+        final rebuild = const ZyraApp().build(context) as ListenableBuilder;
+        final app = rebuild.builder(context, null) as MaterialApp;
+        return MaterialApp(
+          navigatorKey: app.navigatorKey,
+          navigatorObservers:
+              app.navigatorObservers ?? const <NavigatorObserver>[],
+          theme: app.theme,
+          builder: (context, content) => app.builder!(
+            context,
+            MediaQuery(
+              data: MediaQuery.of(
+                context,
+              ).copyWith(textScaler: TextScaler.linear(textScale)),
+              child: content!,
+            ),
+          ),
+          home: Scaffold(body: child),
+        );
+      },
+    ),
+  );
   await tester.pumpAndSettle();
 }
+
+class _MemberChoices extends StatefulWidget {
+  const _MemberChoices({super.key});
+  @override
+  State<_MemberChoices> createState() => _MemberChoicesState();
+}
+
+class _MemberChoicesState extends State<_MemberChoices> {
+  bool allowed = true, gold = false, alternate = false, visible = true;
+  String page = 'first';
+  ZyraHapticLevel haptic = ZyraHapticLevel.subtle;
+  int hapticCalls = 0, goldCalls = 0, alternateCalls = 0;
+  bool canAct() => allowed;
+  void chooseHaptic(ZyraHapticLevel value) => setState(() {
+    haptic = value;
+    hapticCalls++;
+  });
+  void alternateHaptic(ZyraHapticLevel value) =>
+      setState(() => alternateCalls++);
+  void chooseGold(bool value) => setState(() {
+    gold = value;
+    goldCalls++;
+  });
+  void alternateGold(bool value) => setState(() => alternateCalls++);
+  void change(VoidCallback mutation) => setState(mutation);
+  @override
+  Widget build(BuildContext context) => visible
+      ? PersonalisationScreen.preview(
+          key: ValueKey('member-settings-$page'),
+          canAct: canAct,
+          palette: ZyraDevPalette.ivory,
+          hapticLevel: haptic,
+          goldEnabled: gold,
+          onHapticChanged: alternate ? alternateHaptic : chooseHaptic,
+          onGoldChanged: alternate ? alternateGold : chooseGold,
+        )
+      : const Text('Member settings unavailable');
+}
+
+Future<_MemberChoicesState> _mount(WidgetTester tester) async {
+  final key = GlobalKey<_MemberChoicesState>();
+  await _mountFrame(tester, _MemberChoices(key: key));
+  await _reveal(tester, find.byKey(_gold));
+  return key.currentState!;
+}
+
+Future<void> _reveal(WidgetTester tester, Finder finder) async {
+  if (finder.evaluate().isEmpty) {
+    await tester.scrollUntilVisible(
+      finder,
+      160,
+      scrollable: find.descendant(
+        of: find.byKey(const ValueKey('personalisation-scroll')),
+        matching: find.byType(Scrollable),
+      ),
+    );
+  }
+  await Scrollable.ensureVisible(tester.element(finder), alignment: .5);
+  await tester.pumpAndSettle();
+}
+
+Future<void> _open(WidgetTester tester) async {
+  final row = find.byKey(_haptic);
+  await _reveal(tester, row);
+  await tester.tap(row);
+  await tester.pumpAndSettle();
+}
+
+ZyraPersonalisationChoiceSheet<ZyraHapticLevel> _sheet(WidgetTester tester) =>
+    tester.widget<ZyraPersonalisationChoiceSheet<ZyraHapticLevel>>(
+      find.byType(ZyraPersonalisationChoiceSheet<ZyraHapticLevel>),
+    );
 
 void main() {
   setUp(() {
-    ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    ZyraColors.selectDevPalette(ZyraColors.currentDefaultPalette);
     ZyraText.useTestFontStubs = true;
+    ZyraAccountState.resetForTesting();
+    ZyraAppGoldStyle.instance.restore(false);
+    ZyraInteractionStyle.restoreHapticLevel(null);
+    ZyraDeveloperAccess.setAuthorizedForTesting(true);
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(SystemChannels.platform, (_) async => null);
   });
   tearDown(() {
+    ZyraAppGoldStyle.instance.restore(false);
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    ZyraColors.selectDevPalette(ZyraColors.currentDefaultPalette);
     ZyraText.useTestFontStubs = false;
-  });
-
-  testWidgets('developer dropdown uses shared app surfaces', (tester) async {
-    await tester.pumpWidget(
-      _host([
-        const ZyraDevPageOption(
-          id: 'one',
-          label: 'First state',
-          group: 'Status',
-        ),
-      ]),
-    );
-    final trigger = tester.widget<DecoratedBox>(
-      find.descendant(of: _dropdown, matching: find.byType(DecoratedBox)).first,
-    );
-    final triggerDecoration = trigger.decoration as BoxDecoration;
-    expect(triggerDecoration.color, ZyraColors.surfaceEmphasisFill);
-    expect(
-      (triggerDecoration.border! as Border).top.color,
-      ZyraColors.surfaceEmphasisBorder,
-    );
-    await _open(tester);
-    final menu = tester.widget<DecoratedBox>(
-      find.byKey(const ValueKey('dev_page_options_inline_menu')),
-    );
-    final menuDecoration = menu.decoration as BoxDecoration;
-    expect(menuDecoration.color, ZyraColors.modalSheetSurface);
-    expect(
-      (menuDecoration.border! as Border).top.color,
-      ZyraColors.surfaceBorder,
-    );
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(SystemChannels.platform, null);
   });
 
   testWidgets(
-    'current state replaces the last choice after an external change',
+    'retained member choices use shared app surfaces without developer menus',
     (tester) async {
-      String selected = 'first';
-      Widget host() => _host([
-        ZyraDevPageOption(
-          id: 'first',
-          label: 'First state',
-          group: 'Status',
-          selected: selected == 'first',
-          onSelected: () {
-            selected = 'first';
-          },
-        ),
-        ZyraDevPageOption(
-          id: 'second',
-          label: 'Second state',
-          group: 'Status',
-          selected: selected == 'second',
-          onSelected: () {
-            selected = 'second';
-          },
-        ),
-      ]);
-      await tester.pumpWidget(host());
+      await _mount(tester);
       await _open(tester);
-      await tester.tap(find.text('Second state').last);
-      await tester.pumpAndSettle();
-      await tester.pumpWidget(host());
-      expect(find.text('Second state'), findsOneWidget);
-      selected = 'first';
-      await tester.pumpWidget(host());
-      expect(find.text('First state'), findsOneWidget);
+      expect(
+        tester.widget<BottomSheet>(find.byType(BottomSheet)).backgroundColor,
+        ZyraColors.sheetSurface,
+      );
+      final selected = find.byKey(
+        ValueKey('personalisation_choice_${ZyraHapticLevel.subtle}'),
+      );
+      final surface = find
+          .ancestor(of: selected, matching: find.byType(Material))
+          .first;
+      expect(tester.widget<Material>(surface).color, ZyraColors.accentBg);
+      _expectNoDeveloperMenu();
     },
   );
 
-  testWidgets('leaving a page and returning cannot revive its old menu', (
+  testWidgets(
+    'member current choices follow external owner presentation changes',
+    (tester) async {
+      final state = await _mount(tester);
+      await _open(tester);
+      _sheet(tester).onSelected(ZyraHapticLevel.strong);
+      await tester.pumpAndSettle();
+      expect(state.haptic, ZyraHapticLevel.strong);
+      state.change(() => state.haptic = ZyraHapticLevel.light);
+      await tester.pump();
+      await _open(tester);
+      expect(_sheet(tester).selected, ZyraHapticLevel.light);
+      expect(state.hapticCalls, 1);
+    },
+  );
+
+  testWidgets('route ABA cannot revive a retained member choice intent', (
     tester,
   ) async {
-    var calls = 0;
-    final options = [
-      ZyraDevPageOption(
-        id: 'one',
-        label: 'First state',
-        group: 'Status',
-        onSelected: () {
-          calls++;
-        },
+    final state = await _mount(tester);
+    final stale = tester.widget<Switch>(find.byKey(_gold)).onChanged!;
+    zyraNavigatorKey.currentState!.push<void>(
+      MaterialPageRoute(
+        builder: (_) => const Scaffold(body: Text('Member cover')),
       ),
-    ];
-    await tester.pumpWidget(_host(options));
-    await _open(tester);
-    await tester.pumpWidget(_host(options, contextKey: 'page-b'));
-    await tester.pumpWidget(_host(options));
-    expect(
-      find.byKey(const ValueKey('dev_page_options_inline_menu')),
-      findsNothing,
     );
-    expect(calls, 0);
-  });
-
-  testWidgets('losing and restoring authority cannot revive an old menu', (
-    tester,
-  ) async {
-    var calls = 0;
-    await tester.pumpWidget(
-      _host([
-        ZyraDevPageOption(
-          id: 'one',
-          label: 'First state',
-          group: 'Status',
-          onSelected: () {
-            calls++;
-          },
-        ),
-      ]),
-    );
-    await _open(tester);
-    ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    ZyraDeveloperAccess.setAuthorizedForTesting(true);
+    await tester.pumpAndSettle();
+    zyraNavigatorKey.currentState!.pop();
+    await tester.pumpAndSettle();
+    stale(true);
     await tester.pump();
-    expect(
-      find.byKey(const ValueKey('dev_page_options_inline_menu')),
-      findsNothing,
-    );
-    expect(calls, 0);
+    expect(state.goldCalls, 0);
+    expect(state.gold, isFalse);
+    _expectNoDeveloperMenu();
   });
 
   testWidgets(
-    'a fully restricted catalog can still explain its denied states',
+    'losing and restoring owner admission cannot revive a member intent',
     (tester) async {
-      await tester.pumpWidget(
-        _host([
-          const ZyraDevPageOption(
-            id: 'denied',
-            label: 'Journey details',
-            group: 'Role',
-            unavailableReason: 'Main Guardian only',
-          ),
-        ]),
-      );
-      await _open(tester);
-      expect(find.text('Main Guardian only'), findsOneWidget);
+      final state = await _mount(tester);
+      final stale = tester.widget<Switch>(find.byKey(_gold)).onChanged!;
+      state.change(() => state.allowed = false);
+      await tester.pump();
+      state.change(() => state.allowed = true);
+      await tester.pump();
+      stale(true);
+      await tester.pump();
+      expect(state.goldCalls, 0);
       expect(
-        tester.widget<InkWell>(find.byKey(const ValueKey('denied'))).onTap,
-        isNull,
-      );
-    },
-  );
-
-  testWidgets(
-    'separate category menus delegate only their own selected choice',
-    (tester) async {
-      var first = 0;
-      var second = 0;
-      await tester.pumpWidget(
-        _host([
-          ZyraDevPageOption(
-            id: 'one',
-            label: 'First state',
-            group: 'Status',
-            onSelected: () {
-              first++;
-            },
-          ),
-          ZyraDevPageOption(
-            id: 'two',
-            label: 'Second state',
-            group: 'Content',
-            onSelected: () {
-              second++;
-            },
-          ),
-        ]),
-      );
-      expect(find.byType(DropdownButton<String>), findsNothing);
-      expect(find.text('Page options'), findsOneWidget);
-      expect([first, second], [0, 0]);
-      await _open(tester, group: 'Content');
-      expect(find.text('Status'), findsOneWidget);
-      expect(find.text('Content'), findsOneWidget);
-      expect(find.text('First state'), findsNothing);
-      await tester.tap(find.text('Second state').last);
-      await tester.pumpAndSettle();
-      expect([first, second], [0, 1]);
-      expect(find.text('Second state'), findsOneWidget);
-      await _open(tester, group: 'Status');
-      expect(find.byKey(const ValueKey('two')), findsNothing);
-      await tester.tap(find.byKey(const ValueKey('one')));
-      await tester.pumpAndSettle();
-      expect([first, second], [1, 1]);
-      expect(find.text('First state'), findsOneWidget);
-      expect(find.text('Second state'), findsOneWidget);
-    },
-  );
-
-  testWidgets('unavailable entries retain a truthful reason and no callback', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      _host([
-        ZyraDevPageOption(
-          id: 'allowed',
-          label: 'Available',
-          group: 'Role',
-          onSelected: () {},
-        ),
-        const ZyraDevPageOption(
-          id: 'denied',
-          label: 'Journey details',
-          group: 'Role',
-          unavailableReason: 'Main Guardian only',
-        ),
-      ]),
-    );
-    await _open(tester);
-    expect(find.text('Main Guardian only'), findsOneWidget);
-    expect(
-      tester.widget<InkWell>(find.byKey(const ValueKey('denied'))).onTap,
-      isNull,
-    );
-    await tester.tap(find.text('Journey details').last);
-    await tester.pump();
-    expect(find.text('Choose a page option'), findsOneWidget);
-  });
-
-  testWidgets('non-contiguous categories merge without mixing their options', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      _host([
-        ZyraDevPageOption(
-          id: 'scene-one',
-          label: 'Standard',
-          group: 'Network scene',
-          onSelected: () {},
-        ),
-        ZyraDevPageOption(
-          id: 'design',
-          label: 'Cinematic',
-          group: 'Network design',
-          onSelected: () {},
-        ),
-        ZyraDevPageOption(
-          id: 'scene-reset',
-          label: 'Reset scene',
-          group: 'Network scene',
-          onSelected: () {},
-        ),
-      ]),
-    );
-    expect(
-      find.byKey(const ValueKey('dev_page_options_dropdown_Network scene')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const ValueKey('dev_page_options_dropdown_Network design')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const ValueKey('dev_page_options_dropdown')),
-      findsNothing,
-    );
-    await _open(tester, group: 'Network scene');
-    expect(find.byKey(const ValueKey('scene-one')), findsOneWidget);
-    expect(find.byKey(const ValueKey('scene-reset')), findsOneWidget);
-    expect(find.byKey(const ValueKey('design')), findsNothing);
-    await _open(tester, group: 'Network design');
-    expect(find.byKey(const ValueKey('scene-one')), findsNothing);
-    expect(find.byKey(const ValueKey('scene-reset')), findsNothing);
-    expect(find.byKey(const ValueKey('design')), findsOneWidget);
-    expect(
-      find.byKey(const ValueKey('dev_page_options_inline_menu')),
-      findsOneWidget,
-    );
-  });
-
-  testWidgets('each category displays its own current state simultaneously', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      _host([
-        ZyraDevPageOption(
-          id: 'state',
-          label: 'Recommendations loading',
-          group: 'Network scene',
-          selected: true,
-          onSelected: () {},
-        ),
-        ZyraDevPageOption(
-          id: 'design',
-          label: 'Cinematic overlay',
-          group: 'Network design',
-          selected: true,
-          onSelected: () {},
-        ),
-        ZyraDevPageOption(
-          id: 'count',
-          label: '3 profiles',
-          group: 'Profiles',
-          selected: true,
-          onSelected: () {},
-        ),
-      ]),
-    );
-    expect(find.text('Recommendations loading'), findsOneWidget);
-    expect(find.text('Cinematic overlay'), findsOneWidget);
-    expect(find.text('3 profiles'), findsOneWidget);
-    for (final group in ['Network scene', 'Network design', 'Profiles']) {
-      expect(
-        find.byKey(ValueKey('dev_page_options_group_$group')),
+        find.byKey(const ValueKey('personalisation-unavailable')),
         findsOneWidget,
       );
-    }
-    expect(tester.takeException(), isNull);
-  });
+    },
+  );
 
-  testWidgets('category change invalidates a captured old option callback', (
+  testWidgets(
+    'member unavailable states explain denial without a developer catalog',
+    (tester) async {
+      await _mountFrame(
+        tester,
+        const ZyraEmptyState(
+          icon: Icons.lock_outline,
+          title: 'Journey details',
+          message: 'Main Guardian only',
+        ),
+      );
+      expect(find.text('Main Guardian only'), findsOneWidget);
+      expect(find.byType(OutlinedButton), findsNothing);
+      _expectNoDeveloperMenu();
+    },
+  );
+
+  testWidgets('member haptic and Gold choices dispatch only their own values', (
     tester,
   ) async {
-    var calls = 0;
-    final option = ZyraDevPageOption(
-      id: 'same',
-      label: 'Shared label',
-      group: 'Old category',
-      onSelected: () => calls++,
-    );
-    await tester.pumpWidget(_host([option]));
+    final state = await _mount(tester);
     await _open(tester);
-    final staleTap = tester
-        .widget<InkWell>(find.byKey(const ValueKey('same')))
-        .onTap!;
-    await tester.pumpWidget(
-      _host([
-        ZyraDevPageOption(
-          id: 'same',
-          label: 'Shared label',
-          group: 'New category',
-          onSelected: () => calls++,
-        ),
-      ]),
-    );
-    staleTap();
+    _sheet(tester).onSelected(ZyraHapticLevel.strong);
     await tester.pumpAndSettle();
-    expect(calls, 0);
-    expect(
-      find.byKey(const ValueKey('dev_page_options_inline_menu')),
-      findsNothing,
-    );
-    expect(
-      find.byKey(const ValueKey('dev_page_options_group_Old category')),
-      findsNothing,
-    );
-  });
-
-  testWidgets('empty catalog is honest and busy catalog cannot act', (
-    tester,
-  ) async {
-    await tester.pumpWidget(_host([]));
-    expect(find.text('No page-specific options'), findsOneWidget);
-    expect(_dropdown, findsNothing);
-    expect(
-      find.byKey(const ValueKey('dev_page_options_inline_menu')),
-      findsNothing,
-    );
-    await tester.pumpWidget(
-      _host([
-        ZyraDevPageOption(
-          id: 'one',
-          label: 'First state',
-          group: 'Status',
-          onSelected: () {},
-        ),
-      ], busy: true),
-    );
-    expect(find.text('Applying…'), findsOneWidget);
-  });
-
-  testWidgets('ordinary accounts cannot see the dropdown', (tester) async {
-    ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    await tester.pumpWidget(
-      _host([
-        ZyraDevPageOption(
-          id: 'one',
-          label: 'First state',
-          group: 'Status',
-          onSelected: () {},
-        ),
-      ]),
-    );
-    expect(_dropdown, findsNothing);
-  });
-
-  testWidgets('authorization loss refuses an already-open selection', (
-    tester,
-  ) async {
-    var calls = 0;
-    await tester.pumpWidget(
-      _host([
-        ZyraDevPageOption(
-          id: 'one',
-          label: 'First state',
-          group: 'Status',
-          onSelected: () {
-            calls++;
-          },
-        ),
-      ]),
-    );
-    await _open(tester);
-    ZyraDeveloperAccess.setAuthorizedForTesting(false);
+    expect([state.hapticCalls, state.goldCalls], [1, 0]);
+    final toggle = find.byKey(_gold);
+    await _reveal(tester, toggle);
+    tester.widget<Switch>(toggle).onChanged!(true);
     await tester.pump();
-    expect(
-      find.byKey(const ValueKey('dev_page_options_inline_menu')),
-      findsNothing,
-    );
-    expect(calls, 0);
-    expect(_dropdown, findsNothing);
-  });
-
-  testWidgets('page change refuses a stale menu even with reused option IDs', (
-    tester,
-  ) async {
-    var first = 0;
-    var second = 0;
-    await tester.pumpWidget(
-      _host([
-        ZyraDevPageOption(
-          id: 'same',
-          label: 'First state',
-          group: 'Status',
-          onSelected: () {
-            first++;
-          },
-        ),
-      ]),
-    );
-    await _open(tester);
-    await tester.pumpWidget(
-      _host([
-        ZyraDevPageOption(
-          id: 'same',
-          label: 'Second state',
-          group: 'Status',
-          onSelected: () {
-            second++;
-          },
-        ),
-      ], contextKey: 'page-b'),
-    );
-    expect(
-      find.byKey(const ValueKey('dev_page_options_inline_menu')),
-      findsNothing,
-    );
-    expect([first, second], [0, 0]);
-  });
-
-  testWidgets('removing an option while open prevents its stale callback', (
-    tester,
-  ) async {
-    var calls = 0;
-    await tester.pumpWidget(
-      _host([
-        ZyraDevPageOption(
-          id: 'old',
-          label: 'Old state',
-          group: 'Status',
-          onSelected: () {
-            calls++;
-          },
-        ),
-      ]),
-    );
-    await _open(tester);
-    await tester.pumpWidget(
-      _host([
-        ZyraDevPageOption(
-          id: 'new',
-          label: 'New state',
-          group: 'Status',
-          onSelected: () {
-            calls++;
-          },
-        ),
-      ]),
-    );
-    expect(
-      find.byKey(const ValueKey('dev_page_options_inline_menu')),
-      findsNothing,
-    );
-    expect(calls, 0);
-  });
-
-  testWidgets('failed callback is visible and is not promoted to selected', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      _host([
-        ZyraDevPageOption(
-          id: 'failure',
-          label: 'Unavailable action',
-          group: 'Status',
-          onSelected: () {
-            throw StateError('fixture failure');
-          },
-        ),
-      ]),
-    );
-    await _open(tester);
-    await tester.tap(find.text('Unavailable action').last);
-    await tester.pumpAndSettle();
-    expect(find.byKey(const ValueKey('dev_page_option_error')), findsOneWidget);
-    expect(find.text('Choose a page option'), findsOneWidget);
-  });
-
-  testWidgets('late async completion cannot mark a different page selected', (
-    tester,
-  ) async {
-    final completion = Completer<void>();
-    await tester.pumpWidget(
-      _host([
-        ZyraDevPageOption(
-          id: 'old',
-          label: 'Old action',
-          group: 'Status',
-          onSelected: () => completion.future,
-        ),
-      ]),
-    );
-    await _open(tester);
-    await tester.tap(find.text('Old action').last);
-    await tester.pumpAndSettle();
-    expect(find.text('Applying…'), findsOneWidget);
-    await tester.pumpWidget(
-      _host([
-        ZyraDevPageOption(
-          id: 'new',
-          label: 'New state',
-          group: 'Status',
-          onSelected: () {},
-        ),
-      ], contextKey: 'page-b'),
-    );
-    completion.complete();
-    await tester.pumpAndSettle();
-    expect(find.text('Choose a page option'), findsOneWidget);
-    expect(find.byKey(const ValueKey('dev_page_option_error')), findsNothing);
+    expect([state.hapticCalls, state.goldCalls], [1, 1]);
+    expect(state.haptic, ZyraHapticLevel.strong);
+    expect(state.gold, isTrue);
+    expect(ZyraAppGoldStyle.instance.enabled, isFalse);
   });
 
   testWidgets(
-    'long names and disabled explanations fit a narrow large-text menu',
+    'unavailable member actions retain truthful reasons and refuse dispatch',
     (tester) async {
-      tester.view.physicalSize = const Size(320, 568);
-      tester.view.devicePixelRatio = 1;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
-      await tester.pumpWidget(
-        _host([
-          ZyraDevPageOption(
-            id: 'long',
-            label: 'A longer page option that wraps',
-            group: 'Available content',
-            selected: true,
-            onSelected: () {},
+      var calls = 0;
+      await _mountFrame(
+        tester,
+        ZyraEmptyState(
+          icon: Icons.lock_outline,
+          title: 'Journey details',
+          message: 'Main Guardian only',
+          ctaLabel: 'Continue',
+          onCta: () => calls++,
+          canAct: () => false,
+        ),
+      );
+      expect(find.text('Main Guardian only'), findsOneWidget);
+      await tester.tap(find.text('Continue'));
+      await tester.pump();
+      expect(calls, 0);
+      _expectNoDeveloperMenu();
+    },
+  );
+
+  testWidgets(
+    'interleaved member choice labels remain bound to their own values',
+    (tester) async {
+      final selections = <String>[];
+      await _mountFrame(
+        tester,
+        ZyraPersonalisationChoiceSheet<String>(
+          title: 'Member choices',
+          options: const ['scene-one', 'design', 'scene-reset'],
+          selected: 'scene-one',
+          labelFor: (value) =>
+              value == 'design' ? 'Appearance choice' : 'Shared label',
+          onSelected: selections.add,
+        ),
+      );
+      expect(find.text('Shared label'), findsNWidgets(2));
+      await tester.tap(
+        find.byKey(const ValueKey('personalisation_choice_design')),
+      );
+      await tester.pump();
+      expect(selections, ['design']);
+      expect(
+        find.byKey(const ValueKey('personalisation_choice_scene-one')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('personalisation_choice_scene-reset')),
+        findsOneWidget,
+      );
+    },
+  );
+
+  testWidgets('member preferences show their supplied states simultaneously', (
+    tester,
+  ) async {
+    final state = await _mount(tester);
+    state.change(() {
+      state.haptic = ZyraHapticLevel.strong;
+      state.gold = true;
+    });
+    await tester.pump();
+    expect(tester.widget<Switch>(find.byKey(_gold)).value, isTrue);
+    await _reveal(tester, find.byKey(_haptic));
+    expect(find.text('Strong'), findsOneWidget);
+    expect(find.text('Poppins'), findsOneWidget);
+    expect([state.hapticCalls, state.goldCalls], [0, 0]);
+    _expectNoDeveloperMenu();
+  });
+
+  testWidgets(
+    'member callback replacement invalidates captured previous intent',
+    (tester) async {
+      final state = await _mount(tester);
+      final stale = tester.widget<Switch>(find.byKey(_gold)).onChanged!;
+      state.change(() => state.alternate = true);
+      await tester.pump();
+      stale(true);
+      expect([state.goldCalls, state.alternateCalls], [0, 0]);
+      tester.widget<Switch>(find.byKey(_gold)).onChanged!(true);
+      await tester.pump();
+      expect([state.goldCalls, state.alternateCalls], [0, 1]);
+    },
+  );
+
+  testWidgets(
+    'member empty and disabled presentations never gain developer actions',
+    (tester) async {
+      await _mountFrame(
+        tester,
+        const ZyraEmptyState(
+          icon: Icons.inbox_outlined,
+          message: 'No items available',
+        ),
+      );
+      expect(find.text('No items available'), findsOneWidget);
+      expect(find.byType(OutlinedButton), findsNothing);
+      await _mountFrame(
+        tester,
+        const ZyraPersonalisationContent(
+          snapshot: ZyraPersonalisationSnapshot(
+            palette: ZyraDevPalette.ivory,
+            hapticLevel: ZyraHapticLevel.subtle,
+            goldEnabled: false,
           ),
-          const ZyraDevPageOption(
-            id: 'denied',
-            label: 'Unavailable role-aware content',
-            group: 'Restricted content',
-            unavailableReason: 'Requires a Main Guardian role',
+          onChooseHaptic: null,
+          onGoldChanged: null,
+        ),
+      );
+      final toggle = find.byKey(_gold);
+      await _reveal(tester, toggle);
+      expect(tester.widget<Switch>(toggle).onChanged, isNull);
+      _expectNoDeveloperMenu();
+    },
+  );
+
+  testWidgets(
+    'ordinary accounts retain member choices without developer dropdowns',
+    (tester) async {
+      ZyraDeveloperAccess.setAuthorizedForTesting(false);
+      await _mountFrame(tester, const PersonalisationScreen());
+      final toggle = find.byKey(_gold);
+      await _reveal(tester, toggle);
+      tester.widget<Switch>(toggle).onChanged!(true);
+      await tester.pump();
+      expect(ZyraAppGoldStyle.instance.enabled, isTrue);
+      _expectNoDeveloperMenu();
+    },
+  );
+
+  testWidgets('owner admission loss refuses an already-open member selection', (
+    tester,
+  ) async {
+    final state = await _mount(tester);
+    await _open(tester);
+    final sheet = _sheet(tester);
+    state.change(() => state.allowed = false);
+    await tester.pump();
+    sheet.onSelected(ZyraHapticLevel.strong);
+    await tester.pumpAndSettle();
+    expect(state.hapticCalls, 0);
+    expect(state.haptic, ZyraHapticLevel.subtle);
+  });
+
+  testWidgets(
+    'member page replacement refuses retained choices despite reused labels',
+    (tester) async {
+      final state = await _mount(tester);
+      await _open(tester);
+      final sheet = _sheet(tester);
+      state.change(() => state.page = 'replacement');
+      await tester.pump();
+      sheet.onSelected(ZyraHapticLevel.strong);
+      await tester.pump();
+      expect(state.hapticCalls, 0);
+      zyraNavigatorKey.currentState!.pop();
+      await tester.pumpAndSettle();
+      final toggle = find.byKey(_gold);
+      await _reveal(tester, toggle);
+      tester.widget<Switch>(toggle).onChanged!(true);
+      await tester.pump();
+      expect(state.goldCalls, 1);
+    },
+  );
+
+  testWidgets(
+    'removing member settings while a sheet is open leaves callbacks inert',
+    (tester) async {
+      final state = await _mount(tester);
+      await _open(tester);
+      final sheet = _sheet(tester);
+      state.change(() => state.visible = false);
+      await tester.pump();
+      sheet.onSelected(ZyraHapticLevel.strong);
+      await tester.pump();
+      expect(state.hapticCalls, 0);
+      zyraNavigatorKey.currentState!.pop();
+      await tester.pumpAndSettle();
+      expect(find.text('Member settings unavailable'), findsOneWidget);
+      _expectNoDeveloperMenu();
+    },
+  );
+
+  testWidgets(
+    'failed member callbacks surface errors without claiming a new selection',
+    (tester) async {
+      await _mountFrame(
+        tester,
+        ZyraPersonalisationChoiceSheet<String>(
+          title: 'Member choices',
+          options: const ['Current choice', 'Unavailable action'],
+          selected: 'Current choice',
+          labelFor: (value) => value,
+          onSelected: (_) => throw StateError('Fixture action unavailable'),
+        ),
+      );
+      await tester.tap(find.text('Unavailable action'));
+      await tester.pump();
+      expect(tester.takeException(), isA<StateError>());
+      expect(
+        tester
+            .widget<ZyraPersonalisationChoiceSheet<String>>(
+              find.byType(ZyraPersonalisationChoiceSheet<String>),
+            )
+            .selected,
+        'Current choice',
+      );
+      _expectNoDeveloperMenu();
+    },
+  );
+
+  testWidgets(
+    'late member sheet completion cannot overwrite a newer supplied choice',
+    (tester) async {
+      final state = await _mount(tester);
+      await _open(tester);
+      final sheet = _sheet(tester);
+      state.change(() => state.haptic = ZyraHapticLevel.light);
+      await tester.pump();
+      sheet.onSelected(ZyraHapticLevel.strong);
+      await tester.pumpAndSettle();
+      expect(state.haptic, ZyraHapticLevel.light);
+      expect(state.hapticCalls, 0);
+    },
+  );
+
+  testWidgets(
+    'long member choice labels and denial reasons fit narrow large text',
+    (tester) async {
+      var calls = 0;
+      await _mountFrame(
+        tester,
+        ZyraTapFeedback(
+          level: () => ZyraHapticLevel.off,
+          canAct: () => false,
+          child: ZyraPersonalisationChoiceSheet<String>(
+            title: 'Member choices',
+            options: const [
+              'A longer member choice that wraps',
+              'Unavailable role-aware content',
+            ],
+            selected: 'A longer member choice that wraps',
+            labelFor: (value) => value,
+            detailFor: (_) => 'Requires a Main Guardian role',
+            onSelected: (_) => calls++,
           ),
-        ], textScale: 2),
+        ),
+        textScale: 2,
       );
       expect(tester.takeException(), isNull);
-      await _open(tester);
+      await tester.tap(find.text('A longer member choice that wraps'));
+      await tester.pump();
+      expect(calls, 0);
+      final second = find.byKey(
+        const ValueKey('personalisation_choice_Unavailable role-aware content'),
+      );
+      await tester.scrollUntilVisible(second, 120);
+      await tester.pumpAndSettle();
+      expect(
+        find.descendant(
+          of: second,
+          matching: find.text('Requires a Main Guardian role'),
+        ),
+        findsOneWidget,
+      );
       expect(tester.takeException(), isNull);
+      _expectNoDeveloperMenu();
     },
   );
 }

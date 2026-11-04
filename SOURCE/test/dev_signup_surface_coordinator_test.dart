@@ -1,350 +1,318 @@
+// Queue44: the retired coordinator is replaced by real member route ownership.
+// Every retained action below is created and guarded by PersonalisationScreen.
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_dev_scenario.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
+import 'package:zyra/screens/settings/personalisation_screen.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
-import 'package:zyra/widgets/zyra_onboarding_study.dart';
+import 'package:zyra/theme/zyra_colors.dart';
+import 'package:zyra/theme/zyra_interaction_style.dart';
+import 'package:zyra/theme/zyra_text.dart';
+import 'package:zyra/widgets/zyra_personalisation_content.dart';
 
-// HomeShell/WaliHomeShell attach their State owner on mount and detach it on
-// dispose. Exercise that exact registration lifecycle without backend clients.
-void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
-  final coordinator = ZyraDevSurfaceCoordinator.instance;
+class _Routes {
+  final navigator = GlobalKey<NavigatorState>();
+  final observer = ZyraPreviewRouteObserver();
+  final changes = <String>[];
+  final contexts = <String, BuildContext>{};
 
-  setUp(coordinator.resetForTesting);
-  tearDown(coordinator.resetForTesting);
-
-  test('onboarding restart targets only the latest attached owner', () {
-    ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    addTearDown(ZyraDeveloperAccess.resetAuthorizationForTesting);
-    final original = Object();
-    final nested = Object();
-    final events = <String>[];
-    coordinator.attachOnboarding(
-      original,
-      (d) => events.add('original:${d.name}'),
-    );
-    coordinator.attachOnboarding(nested, (d) => events.add('nested:${d.name}'));
-    expect(coordinator.restartOnboarding(ZyraOnboardingDirection.luma), isTrue);
-    coordinator.detachOnboarding(nested);
-    expect(coordinator.restartOnboarding(ZyraOnboardingDirection.luma), isTrue);
-    coordinator.detachOnboarding(original);
-    expect(
-      coordinator.restartOnboarding(ZyraOnboardingDirection.luma),
-      isFalse,
-    );
-    expect(events, ['nested:luma', 'original:luma']);
-  });
-
-  test('revoked onboarding restart and removed owners cannot be reused', () {
-    ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    addTearDown(ZyraDeveloperAccess.resetAuthorizationForTesting);
-    final owner = Object();
-    var calls = 0;
-    coordinator.attachOnboarding(owner, (_) => calls++);
-    ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    expect(
-      coordinator.restartOnboarding(ZyraOnboardingDirection.luma),
-      isFalse,
-    );
-    coordinator.detachOnboarding(owner);
-    ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    expect(
-      coordinator.restartOnboarding(ZyraOnboardingDirection.luma),
-      isFalse,
-    );
-    expect(calls, 0);
-  });
-
-  test('Home Exit closes only the current top onboarding owner', () {
-    ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    addTearDown(ZyraDeveloperAccess.resetAuthorizationForTesting);
-    final original = Object();
-    final nested = Object();
-    final events = <String>[];
-    coordinator.attachOnboarding(
-      original,
-      (_) {},
-      onClose: () => events.add('original'),
-      isCurrent: () => true,
-    );
-    coordinator.attachOnboarding(
-      nested,
-      (_) {},
-      onClose: () => events.add('nested'),
-      isCurrent: () => true,
-    );
-    expect(coordinator.canCloseOnboarding, isTrue);
-    expect(coordinator.closeOnboarding(), isTrue);
-    expect(events, ['nested']);
-    coordinator.detachOnboarding(nested);
-    expect(coordinator.closeOnboarding(), isTrue);
-    expect(events, ['nested', 'original']);
-    coordinator.detachOnboarding(original);
-    expect(coordinator.canCloseOnboarding, isFalse);
-    expect(coordinator.closeOnboarding(), isFalse);
-  });
-
-  test('Home Exit never falls through a covered or non-closable top owner', () {
-    ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    addTearDown(ZyraDeveloperAccess.resetAuthorizationForTesting);
-    final original = Object();
-    final top = Object();
-    var calls = 0;
-    var current = false;
-    coordinator.attachOnboarding(
-      original,
-      (_) {},
-      onClose: () => calls++,
-      isCurrent: () => true,
-    );
-    coordinator.attachOnboarding(
-      top,
-      (_) {},
-      onClose: () => calls++,
-      isCurrent: () => current,
-    );
-    expect(coordinator.canCloseOnboarding, isFalse);
-    expect(coordinator.closeOnboarding(), isFalse);
-    expect(calls, 0);
-    current = true;
-    expect(coordinator.closeOnboarding(), isTrue);
-    expect(calls, 1);
-    coordinator.attachOnboarding(top, (_) {});
-    expect(coordinator.canCloseOnboarding, isFalse);
-    expect(coordinator.closeOnboarding(), isFalse);
-    expect(calls, 1);
-  });
-
-  test('revocation and detached onboarding owners deny Home Exit', () {
-    ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    addTearDown(ZyraDeveloperAccess.resetAuthorizationForTesting);
-    final owner = Object();
-    var calls = 0;
-    coordinator.attachOnboarding(
-      owner,
-      (_) {},
-      onClose: () => calls++,
-      isCurrent: () => true,
-    );
-    final retained = coordinator.closeOnboarding;
-    expect(coordinator.canCloseOnboarding, isTrue);
-    ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    expect(coordinator.canCloseOnboarding, isFalse);
-    expect(retained(), isFalse);
-    coordinator.detachOnboarding(owner);
-    ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    expect(coordinator.canCloseOnboarding, isFalse);
-    expect(retained(), isFalse);
-    expect(calls, 0);
-  });
-
-  test('a bound Home Exit cannot close a replacement or reattached owner', () {
-    ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    addTearDown(ZyraDeveloperAccess.resetAuthorizationForTesting);
-    final original = Object();
-    final replacement = Object();
-    var originalCalls = 0;
-    var replacementCalls = 0;
-    coordinator.attachOnboarding(
-      original,
-      (_) {},
-      onClose: () => originalCalls++,
-      isCurrent: () => true,
-    );
-    final oldExit = coordinator.onboardingExit!;
-    coordinator.attachOnboarding(
-      replacement,
-      (_) {},
-      onClose: () => replacementCalls++,
-      isCurrent: () => true,
-    );
-    expect(oldExit(), isFalse);
-    expect([originalCalls, replacementCalls], [0, 0]);
-    final newExit = coordinator.onboardingExit!;
-    ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    expect(newExit(), isFalse);
-    ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    coordinator.attachOnboarding(
-      replacement,
-      (_) {},
-      onClose: () => replacementCalls++,
-      isCurrent: () => true,
-    );
-    expect(newExit(), isFalse);
-    expect(oldExit(), isFalse);
-    expect([originalCalls, replacementCalls], [0, 0]);
-    expect(coordinator.onboardingExit!(), isTrue);
-    expect(replacementCalls, 1);
-  });
-
-  test('nested Seeker shell restores every invoking shell callback', () {
-    final original = Object();
-    final preview = Object();
-    final events = <String>[];
-    coordinator.attachSeeker(
-      original,
-      (page) => events.add('original:$page'),
-      onOpenConnectionsSection: (section) => events.add('original:$section'),
-      onOpenIntroductions: () => events.add('original:introductions'),
-    );
-    coordinator.beginEntryFlow('Sign up');
-    coordinator.attachSeeker(
-      preview,
-      (page) => events.add('preview:$page'),
-      onOpenConnectionsSection: (section) => events.add('preview:$section'),
-      onOpenIntroductions: () => events.add('preview:introductions'),
-    );
-    expect(coordinator.surface, ZyraDevSurface.entry);
-    expect(coordinator.entryLabel, 'Sign up');
-    coordinator.openSeeker(DevPage.profile);
-    coordinator.openSeekerConnectionsSection(1);
-    coordinator.openSeekerIntroductions();
-    expect(events, [
-      'preview:${DevPage.profile}',
-      'preview:1',
-      'preview:introductions',
-    ]);
-    events.clear();
-    coordinator.detachSeeker(preview);
-    expect(coordinator.surface, ZyraDevSurface.entry);
-    coordinator.endEntryFlow();
-    expect(coordinator.surface, ZyraDevSurface.seeker);
-    coordinator.openSeeker(DevPage.guardian);
-    coordinator.openSeekerConnectionsSection(2);
-    coordinator.openSeekerIntroductions();
-    expect(events, [
-      'original:${DevPage.guardian}',
-      'original:2',
-      'original:introductions',
-    ]);
-  });
-
-  test('nested Guardian shell restores the invoking Guardian callback', () {
-    final original = Object();
-    final preview = Object();
-    final events = <String>[];
-    coordinator.attachGuardian(
-      original,
-      (page) => events.add('original:$page'),
-    );
-    coordinator.beginEntryFlow('Sign up');
-    coordinator.attachGuardian(preview, (page) => events.add('preview:$page'));
-    expect(coordinator.surface, ZyraDevSurface.entry);
-    coordinator.openGuardian(WaliPage.network);
-    expect(events, ['preview:${WaliPage.network}']);
-    events.clear();
-    coordinator.detachGuardian(preview);
-    coordinator.endEntryFlow();
-    expect(coordinator.surface, ZyraDevSurface.guardian);
-    coordinator.openGuardian(WaliPage.seekers);
-    expect(events, ['original:${WaliPage.seekers}']);
-  });
-
-  test('a Seeker disposed while covered is never resurrected after signup', () {
-    final original = Object();
-    final preview = Object();
-    var originalCalls = 0;
-    var previewCalls = 0;
-    coordinator.attachSeeker(
-      original,
-      (_) => originalCalls++,
-      onOpenConnectionsSection: (_) => originalCalls++,
-      onOpenIntroductions: () => originalCalls++,
-    );
-    coordinator.beginEntryFlow('Sign up');
-    coordinator.attachSeeker(preview, (_) => previewCalls++);
-    coordinator.detachSeeker(original);
-    coordinator.openSeeker(DevPage.profile);
-    expect(previewCalls, 1);
-    coordinator.detachSeeker(preview);
-    coordinator.endEntryFlow();
-    coordinator.openSeeker(DevPage.profile);
-    coordinator.openSeekerConnectionsSection(1);
-    coordinator.openSeekerIntroductions();
-    expect(originalCalls, 0);
-    expect(previewCalls, 1);
-    expect(coordinator.surface, ZyraDevSurface.entry);
-  });
-
-  test(
-    'a Guardian disposed while covered is never resurrected after signup',
-    () {
-      final original = Object();
-      final preview = Object();
-      var originalCalls = 0;
-      var previewCalls = 0;
-      coordinator.attachGuardian(original, (_) => originalCalls++);
-      coordinator.beginEntryFlow('Sign up');
-      coordinator.attachGuardian(preview, (_) => previewCalls++);
-      coordinator.detachGuardian(original);
-      coordinator.openGuardian(WaliPage.profile);
-      expect(previewCalls, 1);
-      coordinator.detachGuardian(preview);
-      coordinator.endEntryFlow();
-      coordinator.openGuardian(WaliPage.profile);
-      expect(originalCalls, 0);
-      expect(previewCalls, 1);
-      expect(coordinator.surface, ZyraDevSurface.entry);
-    },
-  );
-
-  test('out-of-order disposal restores the latest still-mounted Seeker', () {
-    final original = Object();
-    final middle = Object();
-    final newest = Object();
-    final events = <String>[];
-    coordinator.attachSeeker(original, (_) => events.add('original'));
-    coordinator.attachSeeker(middle, (_) => events.add('middle'));
-    coordinator.attachSeeker(newest, (_) => events.add('newest'));
-    coordinator.detachSeeker(middle);
-    coordinator.openSeeker(DevPage.dashboard);
-    coordinator.detachSeeker(newest);
-    coordinator.openSeeker(DevPage.dashboard);
-    expect(events, ['newest', 'original']);
-    coordinator.detachSeeker(original);
-    expect(coordinator.surface, ZyraDevSurface.entry);
-  });
-
-  test(
-    'reattaching an owner updates recency without duplicate registrations',
-    () {
-      final original = Object();
-      final preview = Object();
-      final events = <String>[];
-      coordinator.attachGuardian(original, (_) => events.add('original-old'));
-      coordinator.attachGuardian(preview, (_) => events.add('preview'));
-      coordinator.attachGuardian(original, (_) => events.add('original-new'));
-      coordinator.openGuardian(WaliPage.dashboard);
-      coordinator.detachGuardian(original);
-      coordinator.openGuardian(WaliPage.dashboard);
-      coordinator.detachGuardian(preview);
-      coordinator.openGuardian(WaliPage.dashboard);
-      expect(events, ['original-new', 'preview']);
-      expect(coordinator.surface, ZyraDevSurface.entry);
-    },
-  );
-
-  test(
-    'signup entry override and existing cross-role precedence stay intact',
-    () {
-      final originalGuardian = Object();
-      final previewSeeker = Object();
-      final events = <String>[];
-      coordinator.attachGuardian(
-        originalGuardian,
-        (_) => events.add('guardian'),
+  Route<void> page(String name) => MaterialPageRoute<void>(
+    settings: RouteSettings(name: name),
+    builder: (context) {
+      contexts[name] = context;
+      return PersonalisationScreen.preview(
+        key: ValueKey(name),
+        // This is the caller's admission input. Route/lifecycle/revision and
+        // disposal rejection remain entirely inside the production screen.
+        canAct: () => ZyraDeveloperAccess.canUseDeveloperTools,
+        palette: ZyraDevPalette.ivory,
+        hapticLevel: ZyraHapticLevel.medium,
+        goldEnabled: true,
+        onHapticChanged: (_) {},
+        onGoldChanged: (_) => changes.add(name),
+        embedded: false,
       );
-      coordinator.beginEntryFlow('Sign up');
-      coordinator.attachSeeker(previewSeeker, (_) => events.add('seeker'));
-      expect(coordinator.surface, ZyraDevSurface.entry);
-      expect(coordinator.entryLabel, 'Sign up');
-      coordinator.endEntryFlow();
-      expect(coordinator.surface, ZyraDevSurface.guardian);
-      coordinator.detachSeeker(previewSeeker);
-      coordinator.openGuardian(WaliPage.dashboard);
-      expect(events, ['guardian']);
-      coordinator.detachGuardian(originalGuardian);
-      expect(coordinator.surface, ZyraDevSurface.entry);
+    },
+  );
+
+  Future<void> mount(WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        navigatorKey: navigator,
+        navigatorObservers: [observer],
+        onGenerateInitialRoutes: (_) => [page('host')],
+        onGenerateRoute: (_) => page('host'),
+      ),
+    );
+    await tester.pumpAndSettle();
+  }
+
+  ValueChanged<bool> action(WidgetTester tester, String name) => tester
+      .widget<ZyraPersonalisationContent>(
+        find.descendant(
+          of: find.byKey(ValueKey(name), skipOffstage: false),
+          matching: find.byType(
+            ZyraPersonalisationContent,
+            skipOffstage: false,
+          ),
+        ),
+      )
+      .onGoldChanged!;
+
+  Future<Route<void>> push(WidgetTester tester, String name) async {
+    final route = page(name);
+    navigator.currentState!.push(route);
+    await tester.pumpAndSettle();
+    return route;
+  }
+
+  void noDeveloperControls() {
+    for (final key in const [
+      'dev_controls_close',
+      'dev_controls_hold_surface',
+      'dev_home_navigation',
+      'dev_signup_close',
+    ]) {
+      expect(find.byKey(ValueKey(key), skipOffstage: false), findsNothing);
+    }
+  }
+}
+
+void main() {
+  setUp(() {
+    ZyraText.useTestFontStubs = true;
+    ZyraDeveloperAccess.setAuthorizedForTesting(true);
+  });
+  tearDown(() {
+    ZyraDeveloperAccess.setAuthorizedForTesting(false);
+    ZyraText.useTestFontStubs = false;
+  });
+
+  testWidgets(
+    'only the latest pushed member route can dispatch its owned action',
+    (tester) async {
+      final f = _Routes();
+      await f.mount(tester);
+      await f.push(tester, 'first');
+      final first = f.action(tester, 'first');
+      final epoch = f.observer.revision;
+      await f.push(tester, 'second');
+      first(false);
+      f.action(tester, 'second')(false);
+      expect(f.changes, ['second']);
+      expect(f.observer.revision, greaterThan(epoch));
+      f.noDeveloperControls();
+    },
+  );
+
+  testWidgets('removed member routes cannot reuse their owned callbacks', (
+    tester,
+  ) async {
+    final f = _Routes();
+    await f.mount(tester);
+    final route = await f.push(tester, 'removed');
+    final stale = f.action(tester, 'removed');
+    final epoch = f.observer.revision;
+    f.navigator.currentState!.removeRoute(route);
+    await tester.pumpAndSettle();
+    stale(false);
+    f.action(tester, 'host')(false);
+    expect(f.changes, ['host']);
+    expect(f.observer.revision, greaterThan(epoch));
+    f.noDeveloperControls();
+  });
+
+  testWidgets(
+    'pop disposes the top member action and restores fresh parent action',
+    (tester) async {
+      final f = _Routes();
+      await f.mount(tester);
+      await f.push(tester, 'first');
+      final first = f.action(tester, 'first');
+      await f.push(tester, 'second');
+      final second = f.action(tester, 'second');
+      f.navigator.currentState!.pop();
+      await tester.pumpAndSettle();
+      first(false);
+      second(false);
+      expect(f.changes, isEmpty);
+      f.action(tester, 'first')(false);
+      expect(f.changes, ['first']);
+      f.noDeveloperControls();
+    },
+  );
+
+  testWidgets(
+    'a covered member callback cannot dispatch or regain revoked admission',
+    (tester) async {
+      final f = _Routes();
+      await f.mount(tester);
+      await f.push(tester, 'member');
+      final stale = f.action(tester, 'member');
+      await f.push(tester, 'cover');
+      stale(false);
+      ZyraDeveloperAccess.setAuthorizedForTesting(false);
+      f.navigator.currentState!.pop();
+      await tester.pumpAndSettle();
+      stale(false);
+      expect(f.changes, isEmpty);
+      expect(
+        find.byKey(const ValueKey('personalisation-unavailable')),
+        findsOneWidget,
+      );
+      f.noDeveloperControls();
+    },
+  );
+
+  testWidgets(
+    'disposed member ownership stays denied after another route opens',
+    (tester) async {
+      final f = _Routes();
+      await f.mount(tester);
+      await f.push(tester, 'old');
+      final stale = f.action(tester, 'old');
+      final old = f.contexts['old']!;
+      f.navigator.currentState!.pop();
+      await tester.pumpAndSettle();
+      await f.push(tester, 'fresh');
+      stale(false);
+      f.action(tester, 'fresh')(false);
+      expect(old.mounted, isFalse);
+      expect(f.changes, ['fresh']);
+      f.noDeveloperControls();
+    },
+  );
+
+  testWidgets(
+    'replacement invalidates the prior member callback and route epoch',
+    (tester) async {
+      final f = _Routes();
+      await f.mount(tester);
+      await f.push(tester, 'old');
+      final stale = f.action(tester, 'old');
+      final epoch = f.observer.revision;
+      f.navigator.currentState!.pushReplacement(f.page('fresh'));
+      await tester.pumpAndSettle();
+      stale(false);
+      f.action(tester, 'fresh')(false);
+      expect(f.changes, ['fresh']);
+      expect(f.observer.revision, greaterThan(epoch));
+      f.noDeveloperControls();
+    },
+  );
+
+  for (final role in ['Seeker', 'Guardian']) {
+    testWidgets(
+      'nested $role member presentation restores its page with fresh owned actions',
+      (tester) async {
+        final f = _Routes();
+        await f.mount(tester);
+        await f.push(tester, role);
+        final original = tester.state(find.byKey(ValueKey(role)));
+        final stale = f.action(tester, role);
+        await f.push(tester, 'nested');
+        stale(false);
+        f.navigator.currentState!.pop();
+        await tester.pumpAndSettle();
+        stale(false);
+        expect(f.changes, isEmpty);
+        expect(tester.state(find.byKey(ValueKey(role))), same(original));
+        f.action(tester, role)(false);
+        expect(f.changes, [role]);
+        f.noDeveloperControls();
+      },
+    );
+  }
+
+  for (final role in ['Seeker', 'Guardian']) {
+    testWidgets(
+      'a $role member removed while covered cannot resurrect its action',
+      (tester) async {
+        final f = _Routes();
+        await f.mount(tester);
+        final member = await f.push(tester, role);
+        final stale = f.action(tester, role);
+        await f.push(tester, 'nested');
+        f.navigator.currentState!.removeRoute(member);
+        await tester.pumpAndSettle();
+        f.navigator.currentState!.pop();
+        await tester.pumpAndSettle();
+        stale(false);
+        expect(find.byKey(ValueKey(role), skipOffstage: false), findsNothing);
+        expect(f.changes, isEmpty);
+        f.action(tester, 'host')(false);
+        expect(f.changes, ['host']);
+        f.noDeveloperControls();
+      },
+    );
+  }
+
+  testWidgets(
+    'out-of-order member removal preserves only the live parent action',
+    (tester) async {
+      final f = _Routes();
+      await f.mount(tester);
+      await f.push(tester, 'first');
+      final first = f.action(tester, 'first');
+      final middle = await f.push(tester, 'middle');
+      final stale = f.action(tester, 'middle');
+      await f.push(tester, 'last');
+      f.navigator.currentState!.removeRoute(middle);
+      await tester.pumpAndSettle();
+      f.navigator.currentState!.pop();
+      await tester.pumpAndSettle();
+      first(false);
+      stale(false);
+      expect(f.changes, isEmpty);
+      f.action(tester, 'first')(false);
+      expect(f.changes, ['first']);
+      f.noDeveloperControls();
+    },
+  );
+
+  testWidgets(
+    'replacing one member owner records one epoch and rejects its old action',
+    (tester) async {
+      final f = _Routes();
+      await f.mount(tester);
+      await f.push(tester, 'same');
+      final stale = f.action(tester, 'same');
+      final before = f.observer.revision;
+      f.navigator.currentState!.pushReplacement(f.page('replacement'));
+      await tester.pumpAndSettle();
+      stale(false);
+      f.action(tester, 'replacement')(false);
+      expect(f.observer.revision, before + 1);
+      expect(f.changes, ['replacement']);
+      f.noDeveloperControls();
+    },
+  );
+
+  testWidgets(
+    'nested member routes preserve cross-role order without reviving covered actions',
+    (tester) async {
+      final f = _Routes();
+      await f.mount(tester);
+      await f.push(tester, 'Seeker');
+      final seeker = f.action(tester, 'Seeker');
+      await f.push(tester, 'Guardian');
+      final guardian = f.action(tester, 'Guardian');
+      await f.push(tester, 'nested');
+      seeker(false);
+      guardian(false);
+      expect(f.changes, isEmpty);
+      f.navigator.currentState!.pop();
+      await tester.pumpAndSettle();
+      guardian(false);
+      expect(f.changes, isEmpty);
+      f.action(tester, 'Guardian')(false);
+      f.navigator.currentState!.pop();
+      await tester.pumpAndSettle();
+      seeker(false);
+      expect(f.changes, ['Guardian']);
+      f.action(tester, 'Seeker')(false);
+      expect(f.changes, ['Guardian', 'Seeker']);
+      f.noDeveloperControls();
     },
   );
 }

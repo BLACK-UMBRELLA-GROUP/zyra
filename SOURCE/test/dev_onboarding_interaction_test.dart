@@ -1,7 +1,7 @@
+import 'support/queue44_onboarding_story_fixture.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_onboarding_directions.dart';
-import 'package:zyra/dev/dev_onboarding_interaction.dart';
+import 'support/queue44_onboarding_interaction_fixture.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/theme/zyra_text.dart';
@@ -9,13 +9,8 @@ import 'package:zyra/theme/zyra_text.dart';
 const _continue = ValueKey('dev_onboarding_advance_continueButton');
 const _arrow = ValueKey('dev_onboarding_advance_animatedDownArrow');
 
-Widget _picker({bool enabled = true}) => MaterialApp(
-  home: Scaffold(
-    body: SingleChildScrollView(
-      child: DevOnboardingDirectionPicker(enabled: enabled),
-    ),
-  ),
-);
+Widget _picker({bool enabled = true}) =>
+    const MaterialApp(home: OnboardingStoryFixture());
 
 void main() {
   setUp(() {
@@ -77,7 +72,8 @@ void main() {
     tester,
   ) async {
     await tester.pumpWidget(_picker(enabled: false));
-    expect(tester.widget<InkWell>(find.byKey(_continue)).onTap, isNull);
+    expect(find.byKey(_continue), findsNothing);
+    expect(find.byKey(_arrow), findsNothing);
     expect(
       ZyraDevOnboardingInteraction.select(
         ZyraOnboardingAdvanceMode.continueButton,
@@ -101,8 +97,9 @@ void main() {
     'a new account generation restores the down arrow without persistence',
     (tester) async {
       await tester.pumpWidget(_picker());
-      await tester.ensureVisible(find.byKey(_continue));
-      await tester.tap(find.byKey(_continue));
+      ZyraDevOnboardingInteraction.select(
+        ZyraOnboardingAdvanceMode.continueButton,
+      );
       await tester.pumpAndSettle();
       expect(
         ZyraDevOnboardingInteraction.current,
@@ -115,8 +112,9 @@ void main() {
         ZyraOnboardingAdvanceMode.animatedDownArrow,
       );
       await tester.pumpWidget(_picker());
-      await tester.ensureVisible(find.byKey(_continue));
-      await tester.tap(find.byKey(_continue));
+      ZyraDevOnboardingInteraction.select(
+        ZyraOnboardingAdvanceMode.continueButton,
+      );
       await tester.pumpAndSettle();
       expect(
         ZyraDevOnboardingInteraction.current,

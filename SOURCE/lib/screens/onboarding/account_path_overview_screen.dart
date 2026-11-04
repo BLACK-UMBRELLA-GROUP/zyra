@@ -681,7 +681,6 @@ class _SeekerOnboardingOverviewScreenState
       devPreview: widget.devPreview,
       allowPreviewScrolling: true,
       onContinue: _openQuestions,
-      onDevSkip: widget.devPreview ? _openQuestions : null,
     );
   }
 }
@@ -1004,27 +1003,6 @@ class _AccountPathOverview extends StatelessWidget {
                           ),
                         ),
                       ),
-                    if (devPreview) ...[
-                      const SizedBox(height: 4),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          key: const ValueKey('onboarding_dev_skip'),
-                          onPressed:
-                              ZyraDeveloperAccess.canUseDeveloperTools &&
-                                  ZyraInternalPreviewClient.isActive
-                              ? onContinue
-                              : null,
-                          child: Text(
-                            'Skip · DEV',
-                            style: ZyraText.button(
-                              size: 12,
-                              color: ZyraColors.goldText,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
                     if (showAccountExit &&
                         accountExitExpectedUserId != null) ...[
                       const SizedBox(height: 4),

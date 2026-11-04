@@ -1,6 +1,7 @@
 // Memory-only presentation data. Never an authorization, persistence or
 // member-data adapter; every resumed UI still needs fresh owner admission.
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'zyra_browse_filter.dart';
 import 'zyra_subscription_wallet_draft.dart' show ZyraWalletReadiness;
@@ -211,4 +212,64 @@ class ZyraPreviewPositionBucket extends PageStorageBucket {
     _positions[key] = data;
     onChanged();
   }
+}
+
+/// Presentation route epochs cancel stale member actions when a route is covered
+/// or returns. They grant no admission, disclosure, or navigation capability.
+class ZyraPreviewRouteObserver extends NavigatorObserver with ChangeNotifier {
+  int _revision = 0;
+  static int _navigationRevision = 0;
+  static final _navigationChanges = ValueNotifier(0);
+  static bool _notificationScheduled = false;
+  bool _disposed = false;
+
+  int get revision => _revision;
+  static int get navigationRevision => _navigationRevision;
+  static Listenable get navigationChanges => _navigationChanges;
+
+  void _changed() {
+    if (_disposed) return;
+    _revision++;
+    _navigationRevision++;
+    // Epochs change synchronously for dispatch denial, but a nested Navigator
+    // may attach during build. Never rebuild an ancestor during that layout.
+    if (SchedulerBinding.instance.schedulerPhase ==
+        SchedulerPhase.persistentCallbacks) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!_disposed) notifyListeners();
+      });
+      if (!_notificationScheduled) {
+        _notificationScheduled = true;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _notificationScheduled = false;
+          _navigationChanges.value = _navigationRevision;
+        });
+      }
+    } else {
+      notifyListeners();
+      _navigationChanges.value = _navigationRevision;
+    }
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
+  }
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) =>
+      _changed();
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) =>
+      _changed();
+
+  @override
+  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) =>
+      _changed();
+
+  @override
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) =>
+      _changed();
 }

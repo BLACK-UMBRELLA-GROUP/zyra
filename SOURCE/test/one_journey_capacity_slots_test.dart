@@ -1,3 +1,4 @@
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 // Capacity slots are presentation only: they never create a Journey or grant
 // another place. The same model and owner guards remain authoritative.
 import 'dart:async';
@@ -8,8 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_app_gold_preview.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
@@ -68,7 +67,7 @@ class _Owner {
       MaterialApp(
         key: UniqueKey(),
         navigatorKey: navigator,
-        navigatorObservers: [ZyraDevControlsRouteObserver()],
+        navigatorObservers: [ZyraPreviewRouteObserver()],
         theme: ThemeData.dark(),
         builder: (context, child) => MediaQuery(
           data: MediaQuery.of(context).copyWith(
@@ -82,6 +81,7 @@ class _Owner {
         home: RepaintBoundary(
           key: _boundary,
           child: ZyraOneJourneyConceptShell(
+            fixture: ZyraShellTestFixture().fixture,
             key: UniqueKey(),
             canAct: () => allowed,
             onExit: () => fail('Capacity slots never leave their owner.'),
@@ -139,6 +139,7 @@ void _expectModelUnchanged(
 }
 
 Future<void> _press(WidgetTester tester, String key) async {
+  if (await pressZyraDevControlKey(tester, key)) return;
   final target = _key(key);
   expect(target, findsOneWidget);
   await tester.ensureVisible(target);
@@ -201,10 +202,10 @@ void main() {
     AppState.instance.resetForAccountChange();
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    ZyraDevAppGold.instance.select(
+    ZyraAppGoldStyle.instance.select(
       false,
       expectedGeneration: ZyraAccountState.generation,
-      expectedRevision: ZyraDevAppGold.instance.revision,
+      expectedRevision: ZyraAppGoldStyle.instance.revision,
     );
     previousHaptics = ZyraInteractionStyle.hapticLevel;
     ZyraInteractionStyle.selectHapticLevel(ZyraHapticLevel.off);

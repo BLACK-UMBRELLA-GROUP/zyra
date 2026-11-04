@@ -349,24 +349,6 @@ class _ProfileReadyScreenState extends State<ProfileReadyScreen> {
                     ],
                   ),
                 ),
-                if (_devPreview)
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 16),
-                      child: TextButton(
-                        key: const ValueKey('profile_ready_dev_skip'),
-                        onPressed: _openHome,
-                        child: Text(
-                          'Skip · DEV',
-                          style: ZyraText.button(
-                            size: 13,
-                            color: ZyraColors.goldText,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                 Expanded(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.fromLTRB(24, 22, 24, 20),

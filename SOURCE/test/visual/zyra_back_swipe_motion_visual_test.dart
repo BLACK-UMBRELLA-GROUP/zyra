@@ -1,3 +1,5 @@
+import '../support/zyra_hidden_dev_controls_driver.dart';
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 // Real-font motion evidence from the existing protected synthetic shell.
 // During the gesture the revealed area is the app canvas, not cached or live
 // parent pixels. The real parent is asserted only after the bound return.
@@ -11,7 +13,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zyra/dev/dev_settings_design_state.dart';
 import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
@@ -163,6 +164,7 @@ Future<void> _mountSecurity(
         child: RepaintBoundary(key: _boundary, child: child!),
       ),
       home: ZyraOneJourneyConceptShell(
+        fixture: ZyraShellTestFixture().fixture,
         canAct: () => ZyraDeveloperAccess.canUseDeveloperTools,
         onExit: () => fail('Nested motion must not exit the protected shell.'),
       ),
@@ -256,7 +258,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late HttpOverrides? previousNetwork;
   late _NoNetwork network;
-  late ZyraSettingsDesign previousSettings;
+
   late bool previousStubs;
   late String? previousReading;
   late List<Object?> memberBefore;
@@ -300,10 +302,8 @@ void main() {
     ZyraColors.restoreAppPalette(null);
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    previousSettings = ZyraDevSettingsDesign.current;
-    ZyraDevSettingsDesign.select(ZyraSettingsDesign.current);
-    final gold = ZyraDevAppGold.instance;
-    gold.resetForTesting();
+    final gold = ZyraAppGoldStyle.instance;
+    ZyraAppGoldRenderer.instance.resetForTesting();
     expect(
       gold.select(
         false,
@@ -327,8 +327,7 @@ void main() {
     final prefs = await SharedPreferences.getInstance();
     expect(prefs.getString('ordinary-member-preference'), 'keep');
     HttpOverrides.global = previousNetwork;
-    ZyraDevSettingsDesign.select(previousSettings);
-    ZyraDevAppGold.instance.resetForTesting();
+    ZyraAppGoldRenderer.instance.resetForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraText.useTestFontStubs = previousStubs;

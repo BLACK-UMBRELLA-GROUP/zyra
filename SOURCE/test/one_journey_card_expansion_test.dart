@@ -1,3 +1,4 @@
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -7,7 +8,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
-import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/dev/zyra_draft_browse_utility_presentation.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
@@ -85,6 +85,7 @@ Future<void> _mount(
         child: RepaintBoundary(key: _boundary, child: child!),
       ),
       home: ViewRequestDraftScreen(
+        fixture: ZyraShellTestFixture().fixture,
         ownerGeneration: ZyraAccountState.generation,
         ownerId: ZyraAccountState.userId,
       ),
@@ -124,6 +125,7 @@ VoidCallback _action(WidgetTester tester, Finder target) {
 }
 
 Future<void> _press(WidgetTester tester, Finder target) async {
+  if (await pressZyraFixtureFinder(tester, target)) return;
   if (target.evaluate().isEmpty) {
     expect(find.byType(Scrollable), findsWidgets);
     await tester.scrollUntilVisible(
@@ -184,7 +186,7 @@ Future<void> _nav(WidgetTester tester, int index) async {
     find.byType(ZyraShellNavigation).evaluate().isEmpty && depth < 8;
     depth++
   ) {
-    if (find.byKey(const ValueKey('dev_controls_page')).evaluate().isNotEmpty) {
+    if (zyraShellFixtureFor(tester).setupScopeOpen) {
       await closeZyraDevControls(tester);
       continue;
     }
@@ -213,24 +215,15 @@ Future<void> _nav(WidgetTester tester, int index) async {
 }
 
 Future<void> _controls(WidgetTester tester) async {
-  for (
-    var depth = 0;
-    _key('concept_page_options_context').evaluate().isEmpty && depth < 8;
-    depth++
-  ) {
-    await toggleZyraDevControls(tester);
-  }
-  expect(find.text('Page options'), findsOneWidget);
-  expect(_key('concept_page_options_context'), findsOneWidget);
+  await openZyraDevControls(tester);
+  expect(find.text('Page options'), findsNothing);
+  expect(_key('concept_page_options_context'), findsNothing);
 }
 
 Future<void> _seed(WidgetTester tester) async {
   await _nav(tester, 1);
   await _controls(tester);
-  expect(
-    tester.widget<Text>(_key('concept_page_options_context')).data,
-    'Journey',
-  );
+  expect(_key('concept_page_options_context'), findsNothing);
   await _press(tester, _key('concept_journey_preview_3'));
   _expectOverview(tester);
 }
@@ -405,7 +398,7 @@ void main() {
     ZyraAccountState.clearImagesForTesting = () async {};
     // Disable only the unrelated continuously-running background decoration.
     // The card/page animations remain governed by each real MediaQuery case.
-    final gold = ZyraDevAppGold.instance;
+    final gold = ZyraAppGoldStyle.instance;
     gold.select(
       false,
       expectedGeneration: ZyraAccountState.generation,

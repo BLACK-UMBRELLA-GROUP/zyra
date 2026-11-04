@@ -8,6 +8,9 @@ import 'package:zyra/main.dart';
 import 'package:zyra/services/zyra_journey_service.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_colors.dart';
+import 'package:zyra/theme/zyra_text.dart';
+import 'package:zyra/screens/welcome_screen.dart';
+import 'support/queue44_removed_controls_fixture.dart';
 
 void main() {
   test(
@@ -370,26 +373,20 @@ void main() {
     expect(source, contains('ZyraBrowseSwipePolicy.cueEdge'));
   });
 
-  test('developer page options use the approved shared grouped dropdown', () {
-    final source = File(
-      'lib/dev/dev_scenario_panel_v2.dart',
-    ).readAsStringSync();
-    final shared = File(
-      'lib/dev/zyra_dev_page_options.dart',
-    ).readAsStringSync();
-    expect(source, contains('ZyraDevPageOptions('));
-    expect(source, isNot(contains('class _ToolDropdownState<T>')));
-    expect(source, isNot(contains('DropdownButton')));
-    expect(source, isNot(contains('DropdownMenuItem')));
-    expect(shared, contains('class ZyraDevPageOptions extends StatefulWidget'));
-    expect(shared, isNot(contains('DropdownButton<String>(')));
-    expect(shared, isNot(contains('DropdownMenuItem<String>(')));
-    expect(shared, contains("'Page options'"));
-    expect(shared, contains(r'dev_page_options_dropdown_$group'));
-    expect(shared, contains(r'dev_page_options_group_${entry.key}'));
-    expect(shared, contains('dev_page_options_inline_menu'));
-    expect(shared, isNot(contains("ValueKey('dev_page_options_dropdown')")));
-    expect(shared, isNot(contains('previousGroup != option.group')));
+  testWidgets('member entry has no developer page options or rail', (
+    tester,
+  ) async {
+    final previous = ZyraText.useTestFontStubs;
+    ZyraText.useTestFontStubs = true;
+    addTearDown(() => ZyraText.useTestFontStubs = previous);
+    await tester.pumpWidget(const Queue44MemberFrame(child: WelcomeScreen()));
+    await tester.pumpAndSettle();
+    expect(find.byType(WelcomeScreen), findsOneWidget);
+    expect(find.byKey(const ValueKey('welcome_google')), findsOneWidget);
+    expect(find.byKey(const ValueKey('welcome_apple')), findsOneWidget);
+    expectQueue44ControlsAbsent();
+    expect(File('lib/dev/dev_scenario_panel_v2.dart').existsSync(), isFalse);
+    expect(File('lib/dev/zyra_dev_page_options.dart').existsSync(), isFalse);
   });
 
   test('Seeker pages and nav items keep the Founder-approved order', () {

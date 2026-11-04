@@ -4,15 +4,15 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_scenario_panel_v2.dart';
-import 'package:zyra/dev/wali_dev_scenario_panel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zyra/screens/settings/personalisation_screen.dart';
+import 'package:zyra/services/zyra_local_prefs.dart';
+import 'package:zyra/theme/zyra_colors.dart';
+import 'package:zyra/theme/zyra_interaction_style.dart';
+import 'package:zyra/widgets/zyra_personalisation_content.dart';
 import 'package:zyra/dev/zyra_app_gold_preview.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
-import 'package:zyra/dev/zyra_global_dev_overlay.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
-import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/theme/zyra_app_gold_style.dart';
 
@@ -22,10 +22,10 @@ const _gradient = LinearGradient(
   colors: [Color(0xFF30203F), Color(0xFF160E20)],
 );
 
-bool _select(bool enabled) => ZyraDevAppGold.instance.select(
+bool _select(bool enabled) => ZyraAppGoldStyle.instance.select(
   enabled,
   expectedGeneration: ZyraAccountState.generation,
-  expectedRevision: ZyraDevAppGold.instance.revision,
+  expectedRevision: ZyraAppGoldStyle.instance.revision,
 );
 
 Future<Uint8List> _pixels(
@@ -90,47 +90,52 @@ Future<Uint8List> _widgetPixels(WidgetTester tester, Key key) async {
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  setUp(() {
+  setUp(() async {
     ZyraAccountState.resetForTesting();
+    ZyraAccountState.clearImagesForTesting = () async {};
+    SharedPreferences.setMockInitialValues({});
+    await ZyraLocalPrefs.init();
+    await ZyraAccountState.synchronize(null);
     ZyraAppGoldStyle.instance.restore(false);
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    ZyraDevAppGold.instance.resetForTesting();
+    ZyraAppGoldRenderer.instance.resetForTesting();
     ZyraText.useTestFontStubs = true;
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
   });
 
   tearDown(() {
     ZyraAppGoldStyle.instance.restore(false);
-    ZyraDevAppGold.instance.resetForTesting();
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
+    ZyraAppGoldRenderer.instance.resetForTesting();
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(null);
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraText.useTestFontStubs = false;
+    ZyraAccountState.resetForTesting();
+    ZyraAccountState.clearImagesForTesting = null;
   });
 
-  test('app gold defaults Off and unauthorized accounts cannot enable it', () {
-    final selection = ZyraDevAppGold.instance;
-    expect(selection.enabled, isFalse);
+  test('app gold defaults Off and members need no developer authority', () {
+    final renderer = ZyraAppGoldRenderer.instance;
+    expect(renderer.renderingEnabled, isFalse);
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    expect(_select(true), isFalse);
-    expect(selection.enabled, isFalse);
-  });
-
-  test('revocation and reauthorization do not revive a previous On choice', () {
-    final selection = ZyraDevAppGold.instance;
     expect(_select(true), isTrue);
-    expect(selection.enabled, isTrue);
-    final previousRevision = selection.revision;
+    expect(renderer.renderingEnabled, isTrue);
+  });
+
+  test('developer revocation cannot change a previous member On choice', () {
+    final member = ZyraAppGoldStyle.instance;
+    expect(_select(true), isTrue);
+    final previousRevision = member.revision;
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    expect(selection.enabled, isFalse);
-    expect(selection.revision, greaterThan(previousRevision));
+    expect(member.enabled, isTrue);
+    expect(member.revision, previousRevision);
+    expect(ZyraAppGoldRenderer.instance.renderingEnabled, isTrue);
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    expect(selection.enabled, isFalse);
+    expect(member.enabled, isTrue);
+    expect(ZyraAppGoldRenderer.instance.renderingEnabled, isTrue);
   });
 
   test('stale generation and revision selections are refused', () {
-    final selection = ZyraDevAppGold.instance;
+    final selection = ZyraAppGoldStyle.instance;
     final generation = ZyraAccountState.generation;
     final revision = selection.revision;
     expect(_select(true), isTrue);
@@ -159,26 +164,28 @@ void main() {
     expect(selection.enabled, isTrue);
   });
 
-  test('account presentation reset clears On and notifies mounted painters', () {
-    final selection = ZyraDevAppGold.instance;
-    expect(_select(true), isTrue);
-    final revision = selection.revision;
-    var repaints = 0;
-    final painter = const ZyraAppGoldDecoration(
-      gradient: _gradient,
-    ).createBoxPainter(() => repaints++);
-    ZyraAccountState.resetForTesting();
-    // The real account synchronizer updates the generation before resetting
-    // AppState. Reproduce that synchronous sequence without disk/backend work.
-    AppState.instance.resetForAccountChange();
-    expect(selection.enabled, isFalse);
-    expect(selection.revision, greaterThan(revision));
-    expect(repaints, 1);
-    expect(_select(true), isTrue);
-    expect(selection.enabled, isTrue);
-    expect(repaints, 2);
-    painter.dispose();
-  });
+  test(
+    'account presentation reset clears On and notifies mounted painters',
+    () async {
+      final selection = ZyraAppGoldStyle.instance;
+      expect(_select(true), isTrue);
+      final revision = selection.revision;
+      var repaints = 0;
+      final painter = const ZyraAppGoldDecoration(
+        gradient: _gradient,
+      ).createBoxPainter(() => repaints++);
+      await ZyraAccountState.synchronize(
+        '11111111-1111-4111-8111-111111111111',
+      );
+      expect(selection.enabled, isFalse);
+      expect(selection.revision, greaterThan(revision));
+      expect(repaints, 1);
+      expect(_select(true), isTrue);
+      expect(selection.enabled, isTrue);
+      expect(repaints, 2);
+      painter.dispose();
+    },
+  );
 
   test('Off decoration paints exactly the existing background', () async {
     const ordinary = BoxDecoration(
@@ -197,7 +204,7 @@ void main() {
   });
 
   test(
-    'On changes visible pixels; revocation restores identical Off pixels',
+    'On changes visible pixels; member Off restores identical original pixels',
     () async {
       const decorated = ZyraAppGoldDecoration(gradient: _gradient);
       final off = await _pixels(decorated);
@@ -205,8 +212,8 @@ void main() {
       final on = await _pixels(decorated);
       expect(on, isNot(orderedEquals(off)));
       ZyraDeveloperAccess.setAuthorizedForTesting(false);
-      expect(await _pixels(decorated), orderedEquals(off));
-      ZyraDeveloperAccess.setAuthorizedForTesting(true);
+      expect(await _pixels(decorated), orderedEquals(on));
+      expect(_select(false), isTrue);
       expect(await _pixels(decorated), orderedEquals(off));
     },
   );
@@ -283,7 +290,7 @@ void main() {
   );
 
   test('disposing the painter detaches selection and animation listeners', () {
-    final selection = ZyraDevAppGold.instance;
+    final selection = ZyraAppGoldRenderer.instance;
     final before = selection.debugPainterCount;
     var repaints = 0;
     final painter = const ZyraAppGoldDecoration(
@@ -333,7 +340,7 @@ void main() {
   ) async {
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     final member = ZyraAppGoldStyle.instance;
-    final clock = ZyraDevAppGold.instance;
+    final clock = ZyraAppGoldRenderer.instance;
     await tester.pumpWidget(
       _app(
         const DecoratedBox(
@@ -403,14 +410,14 @@ void main() {
     expect(taps, 1);
     expect(tester.takeException(), isNull);
     await tester.pumpWidget(const SizedBox.shrink());
-    expect(ZyraDevAppGold.instance.debugPainterCount, 0);
+    expect(ZyraAppGoldRenderer.instance.debugPainterCount, 0);
   });
 
   testWidgets(
-    'picker updates immediately, refuses stale callbacks and hides on revocation',
+    'member picker updates immediately and refuses stale account callbacks',
     (tester) async {
-      await tester.pumpWidget(_app(const DevAppGoldPicker()));
-      final toggle = find.byKey(const ValueKey('dev_app_gold_toggle'));
+      await tester.pumpWidget(_app(const PersonalisationScreen()));
+      final toggle = find.byKey(const ValueKey('personalisation_gold_toggle'));
       final oldCallback = tester.widget<Switch>(toggle).onChanged!;
       oldCallback(true);
       await tester.pump();
@@ -419,168 +426,148 @@ void main() {
       oldCallback(true);
       await tester.pump();
       expect(tester.widget<Switch>(toggle).value, isFalse);
+      ZyraDeveloperAccess.setAuthorizedForTesting(false);
+      await tester.pump();
+      expect(toggle, findsOneWidget);
       final accountCallback = tester.widget<Switch>(toggle).onChanged!;
       ZyraAccountState.resetForTesting();
       accountCallback(true);
       await tester.pump();
-      expect(ZyraDevAppGold.instance.enabled, isFalse);
-      ZyraDeveloperAccess.setAuthorizedForTesting(false);
-      await tester.pump();
-      expect(toggle, findsNothing);
+      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
+      expect(tester.widget<Switch>(toggle).value, isFalse);
       oldCallback(true);
-      expect(ZyraDevAppGold.instance.enabled, isFalse);
+      expect(ZyraAppGoldStyle.instance.enabled, isFalse);
       expect(tester.takeException(), isNull);
       await tester.pumpWidget(const SizedBox.shrink());
     },
   );
 
-  testWidgets('busy picker is disabled; compact layout remains scrollable', (
-    tester,
-  ) async {
-    tester.view.physicalSize = const Size(320, 568);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: MediaQuery(
-            data: const MediaQueryData(textScaler: TextScaler.linear(2)),
-            child: const SingleChildScrollView(
-              padding: EdgeInsets.all(16),
-              child: DevAppGoldPicker(enabled: false),
+  testWidgets(
+    'disabled member gold control remains scrollable at compact 200% text',
+    (tester) async {
+      tester.view.physicalSize = const Size(320, 568);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: MediaQuery(
+              data: const MediaQueryData(textScaler: TextScaler.linear(2)),
+              child: const ZyraPersonalisationContent(
+                snapshot: ZyraPersonalisationSnapshot(
+                  palette: ZyraDevPalette.ivory,
+                  hapticLevel: ZyraHapticLevel.subtle,
+                  goldEnabled: false,
+                ),
+                onChooseHaptic: null,
+                onGoldChanged: null,
+              ),
             ),
           ),
         ),
-      ),
-    );
-    final toggle = find.byKey(const ValueKey('dev_app_gold_toggle'));
-    await tester.ensureVisible(toggle);
-    expect(tester.widget<Switch>(toggle).onChanged, isNull);
-    expect(ZyraDevAppGold.instance.enabled, isFalse);
-    expect(tester.takeException(), isNull);
-    await tester.pumpWidget(const SizedBox.shrink());
-  });
+      );
+      final toggle = find.byKey(const ValueKey('personalisation_gold_toggle'));
+      await tester.scrollUntilVisible(toggle, 160);
+      await tester.pumpAndSettle();
+      expect(tester.widget<Switch>(toggle).onChanged, isNull);
+      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox.shrink());
+    },
+  );
 
-  for (final (label, panel) in <(String, Widget Function(ValueNotifier<int>))>[
-    (
-      'Entry',
-      (requests) =>
-          ZyraEntryDevPanel(pageLabel: 'Auth fixture', openRequests: requests),
-    ),
-    (
-      'Seeker',
-      (requests) =>
-          DevScenarioPanelV2(onOpenPage: (_) {}, openRequests: requests),
-    ),
-    (
-      'Guardian',
-      (requests) =>
-          WaliDevScenarioPanel(onOpenPage: (_) {}, openRequests: requests),
-    ),
+  for (final (label, role) in <(String, String?)>[
+    ('Entry', null),
+    ('Seeker', 'seeker'),
+    ('Guardian', 'wali'),
   ]) {
     testWidgets(
-      '$label shared Home omits gold without changing member choice',
+      '$label member Personalisation preserves gold without developer controls',
       (tester) async {
-        ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
+        ZyraLocalPrefs.setCachedRole(role);
         final member = ZyraAppGoldStyle.instance;
-        member.select(
-          true,
-          expectedGeneration: ZyraAccountState.generation,
-          expectedRevision: member.revision,
-        );
+        expect(_select(true), isTrue);
         final semantics = tester.ensureSemantics();
-        final openRequests = ValueNotifier<int>(0);
-        await tester.pumpWidget(
-          _app(Stack(fit: StackFit.expand, children: [panel(openRequests)])),
+        await tester.pumpWidget(_app(const PersonalisationScreen()));
+        await tester.pump();
+        final toggle = find.byKey(
+          const ValueKey('personalisation_gold_toggle'),
         );
-        await tester.pump();
-        openRequests.value++;
-        // The saved member gold choice deliberately keeps its clock alive.
-        // Flush the real open request and finite panel transition, not all
-        // future frames from the unrelated decorative animation.
-        await tester.pump();
-        await tester.pump(const Duration(milliseconds: 400));
-        final home = find
-            .byKey(const ValueKey('dev_controls_tab_home'))
-            .hitTestable();
-        expect(home, findsOneWidget);
-        await tester.tap(home);
-        await tester.pump();
-        await tester.pump(const Duration(milliseconds: 400));
-        final section = find.byKey(const ValueKey('dev_home_section_app_gold'));
-        final toggle = find.byKey(const ValueKey('dev_app_gold_toggle'));
-        expect(section, findsNothing);
-        expect(find.text('App gold accents'), findsNothing);
-        expect(find.byType(DevAppGoldPicker), findsNothing);
-        expect(toggle, findsNothing);
-        expect(find.bySemanticsLabel('App gold accents'), findsNothing);
+        await tester.ensureVisible(toggle);
+        expect(toggle, findsOneWidget);
+        expect(tester.widget<Switch>(toggle).value, isTrue);
         expect(
-          find.byKey(const ValueKey('dev_home_section_account')),
-          findsOneWidget,
+          find.byKey(const ValueKey('dev_controls_tab_home')),
+          findsNothing,
         );
+        expect(find.byKey(const ValueKey('dev_app_gold_toggle')), findsNothing);
+        expect(find.text('App gold accents'), findsNothing);
+        expect(tester.getSemantics(toggle).label, contains('Gold accents'));
         expect(member.enabled, isTrue);
-        expect(ZyraDevAppGold.instance.enabled, isFalse);
+        expect(ZyraAppGoldRenderer.instance.renderingEnabled, isTrue);
         expect(tester.takeException(), isNull);
         await tester.pumpWidget(const SizedBox.shrink());
-        openRequests.dispose();
         semantics.dispose();
       },
     );
 
     testWidgets(
-      '$label developer Home and gold toggle are absent for ordinary accounts',
+      '$label ordinary member gold remains available without developer Home',
       (tester) async {
+        ZyraLocalPrefs.setCachedRole(role);
         ZyraDeveloperAccess.setAuthorizedForTesting(false);
-        final openRequests = ValueNotifier<int>(0);
-        await tester.pumpWidget(
-          _app(Stack(fit: StackFit.expand, children: [panel(openRequests)])),
+        await tester.pumpWidget(_app(const PersonalisationScreen()));
+        await tester.pump();
+        final toggle = find.byKey(
+          const ValueKey('personalisation_gold_toggle'),
         );
-        await tester.pumpAndSettle();
+        await tester.ensureVisible(toggle);
         expect(
           find.byKey(const ValueKey('dev_controls_tab_home')),
           findsNothing,
         );
-        expect(find.byType(DevAppGoldPicker), findsNothing);
         expect(find.byKey(const ValueKey('dev_app_gold_toggle')), findsNothing);
-        expect(_select(true), isFalse);
-        expect(ZyraDevAppGold.instance.enabled, isFalse);
+        tester.widget<Switch>(toggle).onChanged!(true);
+        await tester.pump();
+        expect(ZyraAppGoldStyle.instance.enabled, isTrue);
+        expect(ZyraAppGoldRenderer.instance.renderingEnabled, isTrue);
         expect(tester.takeException(), isNull);
         await tester.pumpWidget(const SizedBox.shrink());
-        openRequests.dispose();
       },
     );
   }
 
   for (final guardian in [false, true]) {
     testWidgets(
-      'busy ${guardian ? 'Guardian' : 'Seeker'} shared Home has no gold toggle',
+      'disabled ${guardian ? 'Guardian' : 'Seeker'} member Personalisation has no developer gold toggle',
       (tester) async {
+        ZyraLocalPrefs.setCachedRole(guardian ? 'wali' : 'seeker');
         await tester.pumpWidget(
           _app(
-            SingleChildScrollView(
-              child: ZyraDevHomeTools(
-                busy: true,
-                guardian: guardian,
-                onHome: () {},
-                onRestart: () {},
-                onReset: null,
-                onAccounts: () {},
-                onSeekerSignUp: () {},
-                onGuardianSignUp: () {},
+            const ZyraPersonalisationContent(
+              snapshot: ZyraPersonalisationSnapshot(
+                palette: ZyraDevPalette.ivory,
+                hapticLevel: ZyraHapticLevel.subtle,
+                goldEnabled: false,
               ),
+              onChooseHaptic: null,
+              onGoldChanged: null,
             ),
           ),
         );
-        final toggle = find.byKey(const ValueKey('dev_app_gold_toggle'));
         await tester.pumpAndSettle();
-        expect(toggle, findsNothing);
-        expect(find.byType(DevAppGoldPicker), findsNothing);
+        final toggle = find.byKey(
+          const ValueKey('personalisation_gold_toggle'),
+        );
+        await tester.ensureVisible(toggle);
+        expect(tester.widget<Switch>(toggle).onChanged, isNull);
+        expect(find.byKey(const ValueKey('dev_app_gold_toggle')), findsNothing);
         expect(
           find.byKey(const ValueKey('dev_home_section_app_gold')),
           findsNothing,
         );
-        expect(ZyraDevAppGold.instance.enabled, isFalse);
+        expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
         expect(tester.takeException(), isNull);
         await tester.pumpWidget(const SizedBox.shrink());
       },
@@ -591,7 +578,7 @@ void main() {
     testWidgets(
       'reduced-motion mode stays static (${accessible ? 'accessible navigation' : 'disable animations'})',
       (tester) async {
-        final selection = ZyraDevAppGold.instance;
+        final selection = ZyraAppGoldRenderer.instance;
         expect(_select(true), isTrue);
         await tester.pumpWidget(
           _app(
@@ -617,7 +604,7 @@ void main() {
   testWidgets(
     'one clock animates multiple canvases without rebuilding content and stops Off',
     (tester) async {
-      final selection = ZyraDevAppGold.instance;
+      final selection = ZyraAppGoldRenderer.instance;
       var contentBuilds = 0;
       await tester.pumpWidget(
         _app(
@@ -664,7 +651,7 @@ void main() {
   testWidgets(
     'live clock pauses in the background and while TickerMode is disabled',
     (tester) async {
-      final selection = ZyraDevAppGold.instance;
+      final selection = ZyraAppGoldRenderer.instance;
       const content = DecoratedBox(
         decoration: ZyraAppGoldDecoration(gradient: _gradient),
         child: SizedBox.expand(),

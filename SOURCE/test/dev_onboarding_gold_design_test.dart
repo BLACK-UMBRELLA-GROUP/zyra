@@ -2,13 +2,11 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_onboarding_directions.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
-import 'package:zyra/dev/dev_onboarding_lab.dart';
-import 'package:zyra/dev/dev_onboarding_welcome_motion.dart';
+import 'support/queue44_gold_fixture.dart';
+import 'support/queue44_onboarding_story_fixture.dart';
+import 'support/queue44_welcome_motion_fixture.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
-import 'package:zyra/screens/welcome_screen.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 
@@ -247,12 +245,12 @@ void main() {
     'selected gold stays on the protected login preview during live motion',
     (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(home: WelcomeScreen(devPreview: true)),
+        const MaterialApp(home: Queue44WelcomeFixture(devPreview: true)),
       );
       ZyraOnboardingGoldPainter painter() =>
           tester
                   .widget<CustomPaint>(
-                    find.byKey(const ValueKey('dev_onboarding_gold_backdrop')),
+                    find.byKey(const ValueKey('onboarding_gold_backdrop')),
                   )
                   .painter!
               as ZyraOnboardingGoldPainter;
@@ -267,9 +265,9 @@ void main() {
       expect(painter().design, ZyraOnboardingGoldDesign.diagonalDust);
       expect(find.text('Continue with Google'), findsOneWidget);
 
-      await tester.pumpWidget(const MaterialApp(home: WelcomeScreen()));
+      await tester.pumpWidget(const MaterialApp(home: Queue44WelcomeFixture()));
       expect(
-        find.byKey(const ValueKey('dev_onboarding_gold_backdrop')),
+        find.byKey(const ValueKey('onboarding_gold_backdrop')),
         findsNothing,
       );
       expect(tester.takeException(), isNull);
@@ -281,12 +279,12 @@ void main() {
   ) async {
     ZyraDevOnboardingGoldMotion.select(ZyraOnboardingGoldMotion.pageEntrance);
     await tester.pumpWidget(
-      const MaterialApp(home: WelcomeScreen(devPreview: true)),
+      const MaterialApp(home: Queue44WelcomeFixture(devPreview: true)),
     );
     ZyraOnboardingGoldPainter painter() =>
         tester
                 .widget<CustomPaint>(
-                  find.byKey(const ValueKey('dev_onboarding_gold_backdrop')),
+                  find.byKey(const ValueKey('onboarding_gold_backdrop')),
                 )
                 .painter!
             as ZyraOnboardingGoldPainter;
@@ -322,7 +320,7 @@ void main() {
       const MaterialApp(
         home: MediaQuery(
           data: MediaQueryData(disableAnimations: true),
-          child: WelcomeScreen(devPreview: true),
+          child: Queue44WelcomeFixture(devPreview: true),
         ),
       ),
     );
@@ -331,7 +329,7 @@ void main() {
     final painter =
         tester
                 .widget<CustomPaint>(
-                  find.byKey(const ValueKey('dev_onboarding_gold_backdrop')),
+                  find.byKey(const ValueKey('onboarding_gold_backdrop')),
                 )
                 .painter!
             as ZyraOnboardingGoldPainter;
@@ -351,7 +349,7 @@ void main() {
       const MaterialApp(
         home: MediaQuery(
           data: MediaQueryData(disableAnimations: true),
-          child: DevOnboardingIntroduction(
+          child: OnboardingIntroductionFixture(
             direction: ZyraOnboardingDirection.luma,
             onContinue: _noOp,
           ),
@@ -396,60 +394,57 @@ void main() {
   });
 
   testWidgets(
-    'the protected toggle retains selected dust and both motions without a pulse control',
+    'code-selected dust and motion render without developer pickers',
     (tester) async {
+      ZyraDevOnboardingGoldDesign.select(ZyraOnboardingGoldDesign.diagonalDust);
+      ZyraDevOnboardingGoldMotion.select(ZyraOnboardingGoldMotion.liveDrift);
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: SingleChildScrollView(child: DevOnboardingTransitionPicker()),
+        MaterialApp(
+          home: OnboardingIntroductionFixture(
+            direction: ZyraOnboardingDirection.luma,
+            onContinue: () {},
           ),
         ),
       );
+      await tester.pump();
+      expect(
+        ZyraDevOnboardingGoldDesign.current,
+        ZyraOnboardingGoldDesign.diagonalDust,
+      );
+      expect(
+        ZyraDevOnboardingGoldMotion.current,
+        ZyraOnboardingGoldMotion.liveDrift,
+      );
+      expect(
+        find.byKey(const ValueKey('onboarding_gold_backdrop')),
+        findsOneWidget,
+      );
+      for (final design in ZyraOnboardingGoldDesign.values) {
+        expect(
+          find.byKey(ValueKey('dev_onboarding_gold_design_${design.name}')),
+          findsNothing,
+        );
+      }
+      for (final motion in ZyraOnboardingGoldMotion.values) {
+        expect(
+          find.byKey(ValueKey('dev_onboarding_gold_motion_${motion.name}')),
+          findsNothing,
+        );
+      }
       for (final design in ZyraWelcomePulseDesign.values) {
         expect(
           find.byKey(ValueKey('dev_welcome_pulse_design_${design.name}')),
           findsNothing,
         );
       }
-      for (final design in ZyraOnboardingGoldDesign.values) {
-        expect(
-          find.byKey(ValueKey('dev_onboarding_gold_design_${design.name}')),
-          findsOneWidget,
-        );
-      }
-      for (final motion in ZyraOnboardingGoldMotion.values) {
-        expect(
-          find.byKey(ValueKey('dev_onboarding_gold_motion_${motion.name}')),
-          findsOneWidget,
-        );
-      }
-
-      final backdrop = find.byKey(
-        const ValueKey('dev_onboarding_gold_design_diagonalDust'),
-      );
-      await tester.ensureVisible(backdrop);
-      await tester.tap(backdrop);
-      await tester.pump();
-      expect(
-        ZyraDevOnboardingGoldDesign.current,
-        ZyraOnboardingGoldDesign.diagonalDust,
-      );
-
-      final live = find.byKey(
-        const ValueKey('dev_onboarding_gold_motion_liveDrift'),
-      );
-      await tester.ensureVisible(live);
-      await tester.tap(live);
-      await tester.pump();
-      expect(
-        ZyraDevOnboardingGoldMotion.current,
-        ZyraOnboardingGoldMotion.liveDrift,
-      );
-
       ZyraDeveloperAccess.setAuthorizedForTesting(false);
       await tester.pump();
-      expect(backdrop, findsNothing);
-      expect(live, findsNothing);
+      expect(
+        ZyraDevOnboardingGoldMotion.select(
+          ZyraOnboardingGoldMotion.pageEntrance,
+        ),
+        isFalse,
+      );
       expect(tester.takeException(), isNull);
     },
   );
@@ -462,7 +457,7 @@ void main() {
         const MaterialApp(
           home: MediaQuery(
             data: MediaQueryData(disableAnimations: true),
-            child: DevOnboardingIntroduction(
+            child: OnboardingIntroductionFixture(
               direction: ZyraOnboardingDirection.luma,
               onContinue: _noOp,
             ),
@@ -477,7 +472,7 @@ void main() {
       ZyraOnboardingGoldPainter painter() =>
           tester
                   .widget<CustomPaint>(
-                    find.byKey(const ValueKey('dev_onboarding_gold_backdrop')),
+                    find.byKey(const ValueKey('onboarding_gold_backdrop')),
                   )
                   .painter!
               as ZyraOnboardingGoldPainter;

@@ -83,10 +83,13 @@ void main() {
   );
 
   test('live dashboard consumers have no retired selector or import', () {
+    expect(
+      File('lib/dev/zyra_dashboard_lab_controls.dart').existsSync(),
+      isFalse,
+    );
     for (final path in [
       'lib/screens/home/seeker_dashboard_screen.dart',
       'lib/dev/zyra_supportive_dashboard_preview.dart',
-      'lib/dev/zyra_dashboard_lab_controls.dart',
     ]) {
       final source = File(path).readAsStringSync();
       for (final retired in [

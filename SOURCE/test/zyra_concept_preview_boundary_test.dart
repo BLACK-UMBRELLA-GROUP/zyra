@@ -1,18 +1,14 @@
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_scenario_panel_v2.dart';
-import 'package:zyra/dev/wali_dev_scenario_panel.dart';
 import 'package:zyra/dev/zyra_concept_preview_boundary.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
-import 'package:zyra/dev/zyra_global_dev_overlay.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/theme/zyra_text.dart';
-
-import 'support/zyra_hidden_dev_controls_driver.dart';
+import 'package:zyra/services/zyra_local_prefs.dart';
+import 'package:zyra/widgets/zyra_account_session_host.dart';
 
 Finder _door(String name) => find.byKey(ValueKey('dev_rail_$name'));
 
@@ -20,7 +16,6 @@ void _expectNoRail() {
   for (final name in ['home', 'preview', 'actions']) {
     expect(_door(name), findsNothing);
   }
-  expect(find.byType(ZyraDevControlRail), findsNothing);
 }
 
 void _expectControlsClosed() {
@@ -53,7 +48,6 @@ void main() {
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
     ZyraText.useTestFontStubs = true;
   });
 
@@ -64,7 +58,6 @@ void main() {
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(null);
     ZyraDeveloperAccess.resetAuthorizationForTesting();
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
     ZyraText.useTestFontStubs = false;
   });
 
@@ -142,55 +135,40 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  for (final surface in ZyraDevSurface.values) {
+  for (final (surface, role) in <(String, String?)>[
+    ('entry', null),
+    ('seeker', 'seeker'),
+    ('guardian', 'wali'),
+  ]) {
     testWidgets(
-      '$surface ordinary controls hide and restore without rerouting',
+      '$surface isolation retains member route ownership without restoring developer controls',
       (tester) async {
-        final coordinator = ZyraDevSurfaceCoordinator.instance;
-        final registration = Object();
-        var realDestinationCalls = 0;
-        switch (surface) {
-          case ZyraDevSurface.entry:
-            break;
-          case ZyraDevSurface.seeker:
-            coordinator.attachSeeker(
-              registration,
-              (_) => realDestinationCalls++,
-            );
-            addTearDown(() => coordinator.detachSeeker(registration));
-          case ZyraDevSurface.guardian:
-            coordinator.attachGuardian(
-              registration,
-              (_) => realDestinationCalls++,
-            );
-            addTearDown(() => coordinator.detachGuardian(registration));
-        }
+        ZyraLocalPrefs.setCachedRole(role);
+        final generation = ZyraAccountState.generation;
         final navigatorKey = GlobalKey<NavigatorState>();
-        final routeObserver = ZyraDevControlsRouteObserver();
+        final routeObserver = ZyraPreviewRouteObserver();
         addTearDown(routeObserver.dispose);
         await tester.pumpWidget(
           MaterialApp(
             navigatorKey: navigatorKey,
             navigatorObservers: [routeObserver],
-            builder: (context, child) => ZyraGlobalDevOverlayHost(
+            builder: (context, child) => ZyraAccountSessionHost(
               navigatorKey: navigatorKey,
-              routeObserver: routeObserver,
-              child: child ?? const SizedBox.shrink(),
+              child: child!,
             ),
             home: const Scaffold(body: Text('Current ZYRA')),
           ),
         );
         await tester.pumpAndSettle();
-        _expectControlsClosed();
-        final underlyingRoute = ModalRoute.of(
+        final underlying = ModalRoute.of(
           tester.element(find.text('Current ZYRA')),
         );
-        expect(underlyingRoute, isNotNull);
-        await openZyraDevControls(tester);
-        _expectNoRail();
-        expect(navigatorKey.currentState!.canPop(), isFalse);
-        expect(realDestinationCalls, 0);
-
+        final firstHold = await tester.startGesture(
+          tester.getCenter(find.text('Current ZYRA')),
+        );
+        await tester.pump(const Duration(seconds: 3));
+        await firstHold.up();
+        _expectControlsClosed();
         navigatorKey.currentState!.push<void>(
           MaterialPageRoute(
             builder: (_) => const ZyraConceptPreviewBoundary(
@@ -199,48 +177,32 @@ void main() {
           ),
         );
         await tester.pumpAndSettle();
-        expect(find.text('One Journey synthetic shell'), findsOneWidget);
-        _expectControlsClosed();
-        expect(find.byType(DevScenarioPanelV2), findsNothing);
-        expect(find.byType(WaliDevScenarioPanel), findsNothing);
-        expect(find.byType(ZyraEntryDevPanel), findsNothing);
         expect(ZyraConceptPreviewIsolation.active, isTrue);
-        expect(realDestinationCalls, 0);
-        final isolatedHold = await tester.startGesture(
+        final hold = await tester.startGesture(
           tester.getCenter(find.text('One Journey synthetic shell')),
         );
         await tester.pump(const Duration(seconds: 3));
-        await isolatedHold.up();
+        await hold.up();
         await tester.pump();
-        await tester.pump(const Duration(milliseconds: 300));
         _expectControlsClosed();
         expect(find.text('One Journey synthetic shell'), findsOneWidget);
-        expect(realDestinationCalls, 0);
-
+        expect(ZyraAccountState.generation, generation);
         navigatorKey.currentState!.pop();
         await tester.pumpAndSettle();
-        expect(find.text('Current ZYRA'), findsOneWidget);
-        expect(navigatorKey.currentState!.canPop(), isFalse);
         expect(ZyraConceptPreviewIsolation.active, isFalse);
-        expect(coordinator.surface, surface);
-        _expectControlsClosed();
         expect(
           ModalRoute.of(tester.element(find.text('Current ZYRA'))),
-          same(underlyingRoute),
-        );
-        // Release restores eligibility, not a permanently visible control or
-        // the old open panel. A new real hold owns the next presentation.
-        await openZyraDevControls(tester);
-        _expectNoRail();
-        await closeZyraDevControls(tester);
-        expect(find.text('Current ZYRA'), findsOneWidget);
-        expect(
-          ModalRoute.of(tester.element(find.text('Current ZYRA'))),
-          same(underlyingRoute),
+          same(underlying),
         );
         expect(navigatorKey.currentState!.canPop(), isFalse);
+        final freshHold = await tester.startGesture(
+          tester.getCenter(find.text('Current ZYRA')),
+        );
+        await tester.pump(const Duration(seconds: 3));
+        await freshHold.up();
+        await tester.pump();
         _expectControlsClosed();
-        expect(realDestinationCalls, 0);
+        expect(ZyraAccountState.generation, generation);
         expect(tester.takeException(), isNull);
         await tester.pumpWidget(const SizedBox.shrink());
         await tester.pumpAndSettle();
@@ -252,27 +214,21 @@ void main() {
     tester,
   ) async {
     final navigatorKey = GlobalKey<NavigatorState>();
-    final routeObserver = ZyraDevControlsRouteObserver();
+    final routeObserver = ZyraPreviewRouteObserver();
     addTearDown(routeObserver.dispose);
     await tester.pumpWidget(
       MaterialApp(
         navigatorKey: navigatorKey,
         navigatorObservers: [routeObserver],
-        builder: (context, child) => ZyraGlobalDevOverlayHost(
-          navigatorKey: navigatorKey,
-          routeObserver: routeObserver,
-          child: child ?? const SizedBox.shrink(),
-        ),
+        builder: (context, child) =>
+            ZyraAccountSessionHost(navigatorKey: navigatorKey, child: child!),
         home: const Scaffold(body: Text('Current ZYRA')),
       ),
     );
     await tester.pumpAndSettle();
-    _expectControlsClosed();
-    await openZyraDevControls(tester);
-    _expectNoRail();
     final lease = ZyraConceptPreviewIsolation.acquire();
     addTearDown(lease.release);
-    await tester.pumpAndSettle();
+    await tester.pump();
     _expectControlsClosed();
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     lease.release();
@@ -280,14 +236,12 @@ void main() {
     expect(ZyraConceptPreviewIsolation.active, isFalse);
     expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);
     _expectControlsClosed();
-    expect(find.text('Current ZYRA'), findsOneWidget);
-    final deniedHold = await tester.startGesture(
+    final denied = await tester.startGesture(
       tester.getCenter(find.text('Current ZYRA')),
     );
     await tester.pump(const Duration(seconds: 3));
-    await deniedHold.up();
+    await denied.up();
     await tester.pump();
-    await tester.pump(const Duration(milliseconds: 300));
     _expectControlsClosed();
     expect(find.text('Current ZYRA'), findsOneWidget);
     expect(navigatorKey.currentState!.canPop(), isFalse);

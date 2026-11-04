@@ -1,343 +1,210 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' show AuthState;
-import 'package:zyra/dev/dev_onboarding_directions.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
-import 'package:zyra/dev/dev_onboarding_lab.dart';
-import 'package:zyra/dev/dev_onboarding_transition.dart';
-import 'package:zyra/dev/dev_onboarding_welcome_motion.dart';
-import 'package:zyra/dev/dev_signup_process.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
-import 'package:zyra/dev/zyra_dev_page_options.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
-import 'package:zyra/dev/zyra_dev_tool_section.dart';
-import 'package:zyra/dev/zyra_global_dev_overlay.dart';
+import 'package:zyra/screens/auth/role_selection_screen.dart';
+import 'package:zyra/screens/onboarding/onboarding_flow.dart';
+import 'package:zyra/screens/wali/wali_onboarding_flow.dart';
+import 'package:zyra/screens/welcome_screen.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
-import 'package:zyra/screens/welcome_screen.dart';
-import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_text.dart';
+import 'support/queue44_removed_controls_fixture.dart';
+import 'support/queue44_signup_flow_fixture.dart';
+import 'support/queue44_gold_fixture.dart';
 
-const _host = ValueKey('signup-toggle-host');
-final _directRequests = ValueNotifier<int>(0);
-
-Finder _choice(ZyraOnboardingDirection direction) =>
-    find.byKey(ValueKey('dev_onboarding_${direction.name}'));
-
-class _RouteAudit extends NavigatorObserver {
+class _Audit extends NavigatorObserver {
   int pushes = 0;
-  int pops = 0;
-  int replacements = 0;
-  int removals = 0;
-
   @override
-  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) => pushes++;
-
-  @override
-  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) => pops++;
-
-  @override
-  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) =>
-      replacements++;
-
-  @override
-  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) =>
-      removals++;
-}
-
-Future<void> _openActions(WidgetTester tester) async {
-  if (find.byType(ZyraGlobalDevOverlayHost).evaluate().isNotEmpty) {
-    final hold = await tester.startGesture(tester.getCenter(find.byKey(_host)));
-    await tester.pump(const Duration(seconds: 3));
-    await hold.up();
-  } else {
-    _directRequests.value++;
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    pushes++;
   }
-  await tester.pumpAndSettle();
 }
-
-Widget _entry(String label, {double textScale = 1}) => MaterialApp(
-  builder: (context, child) => MediaQuery(
-    data: MediaQuery.of(
-      context,
-    ).copyWith(textScaler: TextScaler.linear(textScale)),
-    child: child!,
-  ),
-  home: Scaffold(
-    key: _host,
-    body: Stack(
-      fit: StackFit.expand,
-      children: [
-        const Text('Existing signup page'),
-        ZyraEntryDevPanel(pageLabel: label, openRequests: _directRequests),
-      ],
-    ),
-  ),
-);
 
 void main() {
-  late (String?, ZyraPlan, String?) originalProfile;
-
   setUp(() {
     ZyraText.useTestFontStubs = true;
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraDevOnboardingGoldMotion.select(ZyraOnboardingGoldMotion.pageEntrance);
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
-    ZyraInternalPreviewClient.finishSignOut();
-    final state = AppState.instance;
-    originalProfile = (state.name, state.plan, state.location);
-    state.name = 'Existing synthetic member';
-    state.plan = ZyraPlan.one;
-    state.location = 'Synthetic region';
+    ZyraInternalPreviewClient.beginPreview();
+    OnboardingFixtureController.instance.resetForTesting();
   });
-
   tearDown(() {
-    AppState.instance.name = originalProfile.$1;
-    AppState.instance.plan = originalProfile.$2;
-    AppState.instance.location = originalProfile.$3;
-    ZyraText.useTestFontStubs = false;
-    ZyraDeveloperAccess.resetAuthorizationForTesting();
-    ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(null);
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
+    OnboardingFixtureController.instance.resetForTesting();
     ZyraInternalPreviewClient.finishSignOut();
+    ZyraDeveloperAccess.resetAuthorizationForTesting();
+    ZyraText.useTestFontStubs = false;
   });
-
-  for (final label in ['Onboarding', 'Seeker sign-up', 'Guardian sign-up']) {
-    testWidgets('$label Actions separate styles and offer one Onboarding', (
-      tester,
-    ) async {
-      await tester.pumpWidget(_entry(label));
-      await _openActions(tester);
-      final section = find.byKey(
-        const ValueKey('dev_entry_section_onboarding'),
-      );
-      final transitions = find.byKey(
-        const ValueKey('dev_entry_section_onboarding_transitions'),
-      );
-      expect(tester.widget(section), isA<ZyraDevToolSection>());
-      expect(tester.widget(transitions), isA<ZyraDevToolSection>());
-      expect(find.text('Onboarding directions'), findsOneWidget);
-      for (final direction in ZyraOnboardingDirection.values) {
-        expect(
-          find.descendant(of: section, matching: _choice(direction)),
-          findsOneWidget,
-        );
-      }
-      for (final transition in ZyraOnboardingPageTransition.values) {
-        expect(
-          find.descendant(
-            of: transitions,
-            matching: find.byKey(
-              ValueKey('dev_onboarding_transition_${transition.name}'),
-            ),
-          ),
-          findsOneWidget,
-        );
-      }
-      final descentMotions = ZyraWelcomeTextMotion.values.where(
-        (motion) => motion.family == ZyraWelcomeTextMotionFamily.descent,
-      );
-      expect(descentMotions, hasLength(5));
-      for (final motion in descentMotions) {
-        expect(
-          find.descendant(
-            of: transitions,
-            matching: find.byKey(
-              ValueKey('dev_welcome_text_motion_${motion.name}'),
-            ),
-          ),
-          findsOneWidget,
-        );
-      }
+  testWidgets(
+    'member entry keeps providers while developer Onboarding categories are absent',
+    (tester) async {
+      await tester.pumpWidget(const Queue44MemberFrame(child: WelcomeScreen()));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('welcome_google')), findsOneWidget);
+      expect(find.byKey(const ValueKey('welcome_apple')), findsOneWidget);
       expect(
-        find.byKey(const ValueKey('dev_welcome_text_motion_quietTypewriter')),
+        find.byKey(const ValueKey('dev_home_section_onboarding')),
         findsNothing,
       );
-      final options = tester.widget<ZyraDevPageOptions>(
-        find.byType(ZyraDevPageOptions),
-      );
-      final signup = options.options.where(
-        (option) => option.group == 'Onboarding',
-      );
-      expect(signup, hasLength(1));
-      expect(signup.single.id, 'dev_entry_signup');
-      expect(signup.single.label, 'Onboarding');
-      expect(signup.single.onSelected, isNotNull);
       expect(
-        options.options.map((option) => option.id),
-        isNot(contains('dev_entry_seeker_signup')),
+        find.byKey(const ValueKey('dev_entry_section_onboarding')),
+        findsNothing,
       );
-      expect(
-        options.options.map((option) => option.id),
-        isNot(contains('dev_entry_guardian_signup')),
-      );
-      expect(
-        options.options.where((option) => option.group == 'Entry'),
-        hasLength(1),
-      );
-      expect(
-        tester.getTopLeft(transitions).dy,
-        greaterThan(tester.getBottomLeft(section).dy),
-      );
-      expect(
-        tester.getTopLeft(find.byType(ZyraDevPageOptions)).dy,
-        greaterThan(tester.getBottomLeft(transitions).dy),
-      );
-      expect(tester.takeException(), isNull);
-      await tester.pumpWidget(const SizedBox.shrink());
-    });
-  }
-
-  testWidgets('entry Home retains the separate onboarding category', (
-    tester,
-  ) async {
-    await tester.pumpWidget(_entry('Onboarding'));
-    await _openActions(tester);
-    await tester.tap(
-      find.byKey(const ValueKey('dev_controls_tab_home')).hitTestable(),
-    );
-    await tester.pumpAndSettle();
-    expect(
-      find.byKey(const ValueKey('dev_home_section_onboarding')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const ValueKey('dev_home_section_onboarding_transitions')),
-      findsNothing,
-    );
-    for (final direction in ZyraOnboardingDirection.values) {
-      expect(_choice(direction), findsOneWidget);
-    }
-    expect(
-      find.byKey(const ValueKey('dev_entry_section_onboarding')),
-      findsNothing,
-    );
-    expect(tester.takeException(), isNull);
-  });
-
+      await holdQueue44MemberPage(tester);
+    },
+  );
   testWidgets(
-    'the selected entry style restarts the existing onboarding without a root route',
+    'code-selected entry state restarts its nested Navigator without a root route',
     (tester) async {
-      final coordinator = ZyraDevSurfaceCoordinator.instance;
-      coordinator.beginEntryFlow('Onboarding');
-      final rootNavigator = GlobalKey<NavigatorState>();
-      final rootRouteObserver = ZyraDevControlsRouteObserver();
-      final nestedNavigator = GlobalKey<NavigatorState>();
-      final rootAudit = _RouteAudit();
-      final nestedAudit = _RouteAudit();
+      final navigator = GlobalKey<NavigatorState>();
+      final audit = _Audit();
       await tester.pumpWidget(
         MaterialApp(
-          navigatorKey: rootNavigator,
-          navigatorObservers: [rootAudit, rootRouteObserver],
-          builder: (context, child) => ZyraGlobalDevOverlayHost(
-            navigatorKey: rootNavigator,
-            routeObserver: rootRouteObserver,
-            authStateChangesOverride: const Stream<AuthState>.empty(),
-            child: child!,
-          ),
-          home: Navigator(
-            key: nestedNavigator,
-            observers: [nestedAudit],
-            onGenerateRoute: (_) => MaterialPageRoute(
-              builder: (_) =>
-                  const Scaffold(key: _host, body: DevSignUpProcessScreen()),
-            ),
-          ),
+          navigatorKey: navigator,
+          navigatorObservers: [audit],
+          home: const WelcomeScreen(),
         ),
       );
       await tester.pumpAndSettle();
-      for (final direction in ZyraOnboardingDirection.values) {
-        await _openActions(tester);
-        await tester.ensureVisible(_choice(direction));
-        await tester.pumpAndSettle();
-        await tester.tap(_choice(direction));
-        await tester.pumpAndSettle();
-        expect(find.byType(WelcomeScreen), findsOneWidget);
-        expect(find.byType(DevSignUpProcessScreen), findsOneWidget);
-        expect(find.byType(DevOnboardingIntroduction), findsNothing);
-        expect(find.byType(DevOnboardingDirectionsScreen), findsNothing);
-        expect(find.text('Sign-up preview · no account changes'), findsNothing);
-        expect(find.byKey(const ValueKey('dev_signup_close')), findsNothing);
-        expect(coordinator.canCloseOnboarding, isTrue);
-        expect(rootNavigator.currentState!.canPop(), isFalse);
-        expect(nestedNavigator.currentState!.canPop(), isFalse);
-        expect(find.byKey(_host), findsOneWidget);
-        expect(coordinator.entryLabel, 'Onboarding');
-        expect(coordinator.surface, ZyraDevSurface.entry);
-        expect(find.byType(ZyraDevControlRail), findsNothing);
-        expect(find.byKey(const ValueKey('dev_controls_close')), findsNothing);
-        expect(ZyraInternalPreviewClient.isActive, isTrue);
-        expect(tester.takeException(), isNull);
-      }
-      expect(rootAudit.pushes, 1);
-      expect(rootAudit.pops, 0);
-      expect([rootAudit.replacements, rootAudit.removals], [0, 0]);
-      expect(
-        [
-          nestedAudit.pushes,
-          nestedAudit.pops,
-          nestedAudit.replacements,
-          nestedAudit.removals,
-        ],
-        [1, 0, 0, 0],
+      OnboardingFixtureLauncher.start(
+        tester.element(find.byType(WelcomeScreen)),
       );
-      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pumpAndSettle();
+      final rootPushes = audit.pushes;
+      final before = Navigator.of(tester.element(find.byType(WelcomeScreen)));
+      expect(
+        OnboardingFixtureController.instance.restartOnboarding(
+          ZyraOnboardingDirection.luma,
+        ),
+        isTrue,
+      );
+      await tester.pumpAndSettle();
+      final after = Navigator.of(tester.element(find.byType(WelcomeScreen)));
+      expect(after, isNot(same(before)));
+      expect(audit.pushes, rootPushes);
+      expect(
+        find.byType(SignupFlowFixture, skipOffstage: false),
+        findsOneWidget,
+      );
+      OnboardingFixtureController.instance.closeOnboarding();
+      await tester.pumpAndSettle();
+      expect(navigator.currentState!.canPop(), isFalse);
     },
   );
-
-  testWidgets('revoked stale entry preview tap does not navigate', (
-    tester,
-  ) async {
-    await tester.pumpWidget(_entry('Onboarding'));
-    await _openActions(tester);
-    final choice = _choice(ZyraOnboardingDirection.luma);
-    await tester.ensureVisible(choice);
-    await tester.pumpAndSettle();
-    ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    await tester.tap(choice);
-    await tester.pumpAndSettle();
-    expect(find.byType(DevOnboardingDirectionsScreen), findsNothing);
-    expect(find.byType(DevSignUpProcessScreen), findsNothing);
-    expect(find.byKey(_host), findsOneWidget);
-    expect(AppState.instance.name, 'Existing synthetic member');
-    expect(tester.takeException(), isNull);
-  });
-
-  testWidgets('unauthorized entry page exposes no developer choices', (
-    tester,
-  ) async {
-    ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    await tester.pumpWidget(_entry('Onboarding'));
-    expect(find.byType(DevOnboardingDirectionPicker), findsNothing);
-    expect(find.byType(ZyraDevPageOptions), findsNothing);
-    expect(find.byType(ZyraDevControlRail), findsNothing);
-  });
-
-  testWidgets('signup Actions category scrolls cleanly at320px and2xtext', (
-    tester,
-  ) async {
-    tester.view.physicalSize = const Size(320, 568);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
-    await tester.pumpWidget(_entry('Onboarding', textScale: 2));
-    await _openActions(tester);
-    for (final direction in ZyraOnboardingDirection.values) {
-      await tester.ensureVisible(_choice(direction));
-      await tester.pumpAndSettle();
-      expect(_choice(direction).hitTestable(), findsOneWidget);
-      expect(tester.takeException(), isNull);
-    }
-    final signup = find.byKey(
-      const ValueKey('dev_page_options_dropdown_Onboarding'),
+  for (final role in const ['Seeker', 'Guardian', 'Onboarding']) {
+    testWidgets(
+      '$role signup preserves its member action without developer style options',
+      (tester) async {
+        final Widget page = switch (role) {
+          'Seeker' => const OnboardingFlow(devPreview: true),
+          'Guardian' => const WaliOnboardingFlow(devPreview: true),
+          _ => const WelcomeScreen(),
+        };
+        await tester.pumpWidget(Queue44MemberFrame(child: page));
+        await tester.pumpAndSettle();
+        if (role == 'Seeker') {
+          expect(
+            find.byKey(const ValueKey('onboarding_stage_continue')),
+            findsOneWidget,
+          );
+          await tester.tap(
+            find.byKey(const ValueKey('onboarding_stage_continue')),
+          );
+          await tester.pumpAndSettle();
+          expect(
+            find.byKey(const ValueKey('onboarding_first_name')),
+            findsOneWidget,
+          );
+        } else if (role == 'Guardian') {
+          expect(
+            find.byKey(const ValueKey('onboarding_first_name')),
+            findsOneWidget,
+          );
+          expect(
+            find.byKey(const ValueKey('wali_onboarding_continue')),
+            findsOneWidget,
+          );
+        } else {
+          expect(find.byKey(const ValueKey('welcome_google')), findsOneWidget);
+        }
+        for (final key in const [
+          'dev_page_options_dropdown_Onboarding',
+          'dev_entry_signup',
+          'dev_entry_seeker_signup',
+          'dev_entry_guardian_signup',
+        ]) {
+          expect(find.byKey(ValueKey(key)), findsNothing);
+        }
+        expectQueue44ControlsAbsent();
+        expect(tester.takeException(), isNull);
+      },
     );
-    await tester.ensureVisible(signup);
-    await tester.pumpAndSettle();
-    expect(signup.hitTestable(), findsOneWidget);
-    expect(tester.takeException(), isNull);
-  });
+  }
+  testWidgets(
+    'revoked retained provider preview callback cannot navigate or call OAuth',
+    (tester) async {
+      var oauthCalls = 0;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: WelcomeScreen(
+            devPreview: true,
+            googleSignIn: () async {
+              oauthCalls++;
+              throw StateError('OAuth must remain uncalled.');
+            },
+          ),
+        ),
+      );
+      await tester.pump();
+      final dynamic provider = tester.widget<Widget>(
+        find.byKey(const ValueKey('welcome_google')),
+      );
+      final VoidCallback stale = provider.onTap;
+      ZyraDeveloperAccess.setAuthorizedForTesting(false);
+      await tester.pump();
+      stale();
+      await tester.pump();
+      expect(oauthCalls, 0);
+      expect(find.byType(RoleSelectionScreen), findsNothing);
+      expect(find.byKey(const ValueKey('welcome_dev_skip')), findsNothing);
+    },
+  );
+  testWidgets(
+    'member role choices remain reachable at320px and2xtext without Actions menu',
+    (tester) async {
+      tester.view.physicalSize = const Size(320, 568);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(
+        const Queue44MemberFrame(
+          scale: 2,
+          child: RoleSelectionScreen(devPreview: true),
+        ),
+      );
+      await tester.pumpAndSettle();
+      for (final key in const ['role-select-seeker', 'role-select-guardian']) {
+        final action = find.byKey(ValueKey(key));
+        await tester.ensureVisible(action);
+        await tester.pumpAndSettle();
+        expect(action.hitTestable(), findsOneWidget);
+      }
+      expectQueue44ControlsAbsent();
+      expect(tester.takeException(), isNull);
+    },
+  );
+  testWidgets(
+    'unauthorized entry retains member recovery without developer choices',
+    (tester) async {
+      ZyraDeveloperAccess.setAuthorizedForTesting(false);
+      await tester.pumpWidget(const Queue44MemberFrame(child: WelcomeScreen()));
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const ValueKey('welcome_recovery_email')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const ValueKey('welcome_google')), findsOneWidget);
+      expectQueue44ControlsAbsent();
+    },
+  );
 }

@@ -78,14 +78,7 @@ void main() {
         );
 
         final pending = Completer<void>();
-        await h.mount(
-          _style(
-            InitialIdentityCheckScreen(
-              devPreview: true,
-              onDevSkip: (_) => pending.future,
-            ),
-          ),
-        );
+        await h.mount(_style(InitialIdentityCheckScreen(devPreview: true)));
         await h.tap('identity_dev_skip');
         expect(
           tester

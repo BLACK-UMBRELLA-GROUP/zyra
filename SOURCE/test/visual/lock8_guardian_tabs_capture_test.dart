@@ -269,6 +269,7 @@ void main() {
       final h = _h(t, 'fresh');
       await h.mountPresentation(
         child: ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           canAct: () => true,
           onExit: () {},
           initialGuardianRole: true,
@@ -341,6 +342,7 @@ void main() {
       );
       await h.mountPresentation(
         child: ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           canAct: () => true,
           onExit: () {},
           initialGuardianRole: true,
@@ -458,6 +460,7 @@ void main() {
               context,
             ).copyWith(textScaler: const TextScaler.linear(2)),
             child: ZyraOneJourneyConceptShell(
+              fixture: ZyraShellTestFixture().fixture,
               canAct: () => true,
               onExit: () {},
               initialGuardianRole: true,

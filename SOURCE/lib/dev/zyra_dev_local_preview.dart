@@ -22,7 +22,6 @@ import '../services/zyra_promotion_engine.dart';
 import '../models/zyra_signup_membership_choice.dart';
 import '../state/app_state.dart';
 import 'zyra_dev_scenario.dart';
-import 'zyra_dev_surface_coordinator.dart';
 import 'zyra_founder_launch_screen.dart';
 
 /// A pending local entry, not a cached screen or an authorization grant.
@@ -258,7 +257,6 @@ class ZyraLocalPreviewPresentation {
 class ZyraDevLocalPreview {
   ZyraDevLocalPreview._();
 
-  static final ValueNotifier<String> genderSelection = ValueNotifier('male');
   static ZyraLocalPreviewPreparation? _preparing;
   static bool _seekerPremium = true;
   static bool _guardianPremium = true;
@@ -301,28 +299,6 @@ class ZyraDevLocalPreview {
     return true;
   }
 
-  static Future<void> selectGender(BuildContext context, String gender) async {
-    if ((gender != 'male' && gender != 'female') ||
-        !ZyraDeveloperAccess.isMainAppPreview) {
-      return;
-    }
-    final surface = ZyraDevSurfaceCoordinator.instance.surface;
-    if (surface == ZyraDevSurface.entry ||
-        ZyraDevSurfaceCoordinator.instance.developerLandingVisible) {
-      // Selecting the next sample is not editing the signed-in account.
-      genderSelection.value = gender;
-      return;
-    }
-    await open(
-      context,
-      isWali: surface == ZyraDevSurface.guardian,
-      premium: surface == ZyraDevSurface.guardian
-          ? _guardianPremium
-          : _seekerPremium,
-      gender: gender,
-    );
-  }
-
   /// Performs the existing fresh authorization and owned preference work,
   /// but does not publish a persona, scenario, isolation lease or destination.
   /// Startup can do this work beneath its existing splash. Ordinary developer
@@ -341,7 +317,7 @@ class ZyraDevLocalPreview {
     if (_preparing != null || ZyraAccountState.isSigningOut) {
       return null;
     }
-    final selectedGender = gender ?? genderSelection.value;
+    final selectedGender = gender ?? 'male';
     if (selectedGender != 'male' && selectedGender != 'female') return null;
     final preparation = ZyraLocalPreviewPreparation._(current, route: route);
     if (preparation._disposed) return null;
@@ -436,7 +412,6 @@ class ZyraDevLocalPreview {
       _seekerPremium = premium;
     }
     ZyraInternalPreviewClient.beginPreview();
-    genderSelection.value = preparation._gender;
     AppState.instance.applyDevPreset(
       name: preparation._name,
       gender: preparation._gender,
@@ -461,7 +436,6 @@ class ZyraDevLocalPreview {
     scenario.setUseLiveGuardianData(false);
     scenario.setMainGuardian(true);
     scenario.setWaliLinkedSeekers(2);
-    ZyraDevSurfaceCoordinator.instance.endEntryFlow();
   }
 
   static Future<bool> open(
@@ -513,7 +487,7 @@ class ZyraDevLocalPreview {
       context,
       isWali: toGuardian,
       premium: toGuardian ? _guardianPremium : _seekerPremium,
-      gender: state.gender ?? genderSelection.value,
+      gender: state.gender ?? 'male',
       identityName: identityName,
       identityDob: state.dob,
       identityLocation: state.location,

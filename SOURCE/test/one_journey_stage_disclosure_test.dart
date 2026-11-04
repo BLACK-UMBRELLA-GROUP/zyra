@@ -1,3 +1,4 @@
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 // Actual protected local shell, detached fictional state and bundled photos.
 // No member-data adapter, backend client or disclosure authority is injected.
 import 'dart:async';
@@ -8,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_presentation.dart';
 import 'package:zyra/dev/zyra_draft_journey_bio_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
@@ -133,6 +133,7 @@ class _Owner {
           child: RepaintBoundary(key: _captureKey, child: child!),
         ),
         home: ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           key: UniqueKey(),
           canAct: () => allowed,
           onExit: () =>
@@ -274,7 +275,7 @@ void main() {
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     AppState.instance.resetForAccountChange();
     ZyraAccountState.clearImagesForTesting = () async {};
-    final gold = ZyraDevAppGold.instance;
+    final gold = ZyraAppGoldStyle.instance;
     gold.select(
       false,
       expectedGeneration: ZyraAccountState.generation,

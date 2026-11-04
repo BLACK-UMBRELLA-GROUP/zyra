@@ -4,11 +4,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_splash_directions.dart';
 import 'package:zyra/screens/splash_screen.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_splash_artwork.dart'
-    show ZyraSplashArtworkFrame, zyraPrimarySplashDirection;
+    show
+        ZyraSplashArtworkFrame,
+        zyraPrimarySplashDirection,
+        ZyraSplashDirection,
+        ZyraSplashStudy;
 
 const capture = bool.fromEnvironment('ZYRA_SPLASH_CAPTURE_CANDIDATES');
 const root = ValueKey('splash-study-candidate');

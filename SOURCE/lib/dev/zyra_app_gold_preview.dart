@@ -1,80 +1,19 @@
-// Shared app-canvas renderer. The member choice is saved by ZyraAppGoldStyle;
-// the authorized developer override is temporary. Never a foreground overlay.
+// Shared app-canvas renderer for the member Gold preference.
 import 'package:flutter/material.dart';
 
-import '../services/zyra_account_state.dart';
-import '../services/zyra_developer_access.dart';
-import '../state/app_state.dart';
 import '../theme/zyra_app_gold_style.dart';
-import '../theme/zyra_colors.dart';
-import '../theme/zyra_text.dart';
 import 'dev_onboarding_gold_design.dart';
 
-class ZyraDevAppGold extends ChangeNotifier {
-  ZyraDevAppGold._() {
-    ZyraDeveloperAccess.authorizationChanges.addListener(_authorityChanged);
-    AppState.instance.addListener(_accountChanged);
-    ZyraAppGoldStyle.instance.addListener(_memberChanged);
+class ZyraAppGoldRenderer extends ChangeNotifier {
+  ZyraAppGoldRenderer._() {
+    ZyraAppGoldStyle.instance.addListener(notifyListeners);
   }
-
-  static final instance = ZyraDevAppGold._();
-  bool _selected = false;
-  bool _hasOverride = false;
-  int _generation = ZyraAccountState.generation;
-  int _revision = 0;
+  static final instance = ZyraAppGoldRenderer._();
   bool _reducedMotion = false;
   final ValueNotifier<double> frame = ValueNotifier(1);
   int _painterCount = 0;
-
-  bool get enabled =>
-      _selected &&
-      _generation == ZyraAccountState.generation &&
-      !ZyraAccountState.isSigningOut &&
-      ZyraDeveloperAccess.canUseDeveloperTools;
-  int get revision => _revision;
   bool get reducedMotion => _reducedMotion;
-  bool get renderingEnabled =>
-      _hasOverride &&
-          _generation == ZyraAccountState.generation &&
-          !ZyraAccountState.isSigningOut &&
-          ZyraDeveloperAccess.canUseDeveloperTools
-      ? enabled
-      : ZyraAppGoldStyle.instance.enabled;
-
-  bool select(
-    bool value, {
-    required int expectedGeneration,
-    required int expectedRevision,
-  }) {
-    if (!ZyraDeveloperAccess.canUseDeveloperTools ||
-        ZyraAccountState.isSigningOut ||
-        expectedGeneration != ZyraAccountState.generation ||
-        expectedRevision != _revision) {
-      return false;
-    }
-    _generation = ZyraAccountState.generation;
-    if (_hasOverride && _selected == value) return true;
-    _hasOverride = true;
-    _selected = value;
-    _revision++;
-    notifyListeners();
-    return true;
-  }
-
-  void _authorityChanged() => _resetSelection();
-  void _memberChanged() => _resetSelection();
-
-  void _accountChanged() {
-    if (_generation != ZyraAccountState.generation) _resetSelection();
-  }
-
-  void _resetSelection() {
-    _selected = false;
-    _hasOverride = false;
-    _generation = ZyraAccountState.generation;
-    _revision++;
-    notifyListeners();
-  }
+  bool get renderingEnabled => ZyraAppGoldStyle.instance.enabled;
 
   void _setReducedMotion(bool value) {
     if (_reducedMotion == value) return;
@@ -88,7 +27,6 @@ class ZyraDevAppGold extends ChangeNotifier {
   @visibleForTesting
   void resetForTesting() {
     assert(() {
-      _resetSelection();
       _reducedMotion = false;
       frame.value = 1;
       return true;
@@ -112,7 +50,7 @@ class _ZyraAppGoldPreviewHostState extends State<ZyraAppGoldPreviewHost>
   bool _foreground = true;
   bool _reduce = false;
   bool _tickerEnabled = true;
-  final _selection = ZyraDevAppGold.instance;
+  final _selection = ZyraAppGoldRenderer.instance;
 
   @override
   void initState() {
@@ -232,7 +170,7 @@ class _AppGoldPainter extends BoxPainter {
   }
   final BoxPainter _base;
   final ZyraAppGoldDecoration _decoration;
-  final _selection = ZyraDevAppGold.instance;
+  final _selection = ZyraAppGoldRenderer.instance;
   bool _listening = false;
 
   void _repaint() => onChanged?.call();
@@ -270,63 +208,4 @@ class _AppGoldPainter extends BoxPainter {
     _base.dispose();
     super.dispose();
   }
-}
-
-class DevAppGoldPicker extends StatelessWidget {
-  const DevAppGoldPicker({super.key, this.enabled = true});
-  final bool enabled;
-
-  @override
-  Widget build(BuildContext context) => ListenableBuilder(
-    listenable: ZyraDevAppGold.instance,
-    builder: (context, _) {
-      if (!ZyraDeveloperAccess.canUseDeveloperTools) {
-        return const SizedBox.shrink();
-      }
-      final selection = ZyraDevAppGold.instance;
-      final generation = ZyraAccountState.generation;
-      final revision = selection.revision;
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text('App gold accents', style: ZyraText.body(size: 13)),
-          const SizedBox(height: 6),
-          Text(
-            'The live diagonal gold dust on app backgrounds. Onboarding stays unchanged.',
-            style: ZyraText.subtext(size: 11.5),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              const ZyraOnboardingGoldSwatch(
-                ZyraOnboardingGoldDesign.diagonalDust,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  selection.renderingEnabled ? 'On' : 'Off',
-                  style: ZyraText.body(size: 13),
-                ),
-              ),
-              Semantics(
-                label: 'App gold accents',
-                child: Switch.adaptive(
-                  key: const ValueKey('dev_app_gold_toggle'),
-                  value: selection.renderingEnabled,
-                  activeTrackColor: ZyraColors.journeyGold,
-                  onChanged: enabled
-                      ? (value) => selection.select(
-                          value,
-                          expectedGeneration: generation,
-                          expectedRevision: revision,
-                        )
-                      : null,
-                ),
-              ),
-            ],
-          ),
-        ],
-      );
-    },
-  );
 }

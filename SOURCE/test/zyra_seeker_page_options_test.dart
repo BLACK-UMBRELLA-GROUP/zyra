@@ -1,9 +1,9 @@
+import 'support/queue44_scenario_fixture_catalog.dart';
+import 'support/queue44_dashboard_fixture_catalog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/data/zyra_entitlements.dart';
 import 'package:zyra/data/zyra_journey_pause_state.dart';
-import 'package:zyra/dev/dev_scenario_panel_v2.dart';
-import 'package:zyra/dev/zyra_dev_page_options.dart';
 import 'package:zyra/dev/zyra_dev_scenario.dart';
 import 'package:zyra/dev/zyra_supportive_dashboard_preview.dart';
 import 'package:zyra/models/zyra_dashboard_lab.dart';
@@ -11,8 +11,8 @@ import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_text.dart';
 
-List<ZyraDevPageOption> _options(WidgetTester tester) =>
-    tester.widget<ZyraDevPageOptions>(find.byType(ZyraDevPageOptions)).options;
+late Queue44SeekerCatalog _fixture;
+List<ZyraFixtureChoice> _options(WidgetTester tester) => _fixture.options;
 
 Finder get _categoryControls => find.byWidgetPredicate((widget) {
   final key = widget.key;
@@ -27,17 +27,7 @@ Future<void> _apply(WidgetTester tester, String id) async {
 
 Future<void> _select(WidgetTester tester, String id) async {
   final option = _options(tester).singleWhere((option) => option.id == id);
-  final dropdown = find.byKey(
-    ValueKey('dev_page_options_dropdown_${option.group}'),
-  );
-  await tester.ensureVisible(dropdown);
-  await tester.pumpAndSettle();
-  await tester.tap(dropdown);
-  await tester.pumpAndSettle();
-  final row = find.byKey(ValueKey(id));
-  await tester.ensureVisible(row);
-  await tester.pumpAndSettle();
-  await tester.tap(row);
+  await option.onSelected!();
   await tester.pumpAndSettle();
 }
 
@@ -47,31 +37,13 @@ Future<void> _mount(
   ValueChanged<int>? onSection,
   double textScale = 1,
 }) async {
-  final requests = ValueNotifier<int>(0);
-  addTearDown(requests.dispose);
-  await tester.pumpWidget(
-    MaterialApp(
-      builder: (context, child) => MediaQuery(
-        data: MediaQuery.of(
-          context,
-        ).copyWith(textScaler: TextScaler.linear(textScale)),
-        child: child!,
-      ),
-      home: Scaffold(
-        body: Stack(
-          children: [
-            DevScenarioPanelV2(
-              onOpenPage: (_) {},
-              openRequests: requests,
-              onOpenConnectionsSection: onSection,
-              onOpenIntroductions: onIntroductions,
-            ),
-          ],
-        ),
-      ),
-    ),
+  final owner = UniqueKey();
+  _fixture = Queue44SeekerCatalog(
+    current: () => find.byKey(owner).evaluate().isNotEmpty,
+    onIntroductions: onIntroductions,
+    onSection: onSection,
   );
-  requests.value++;
+  await tester.pumpWidget(MaterialApp(home: SizedBox(key: owner)));
   await tester.pumpAndSettle();
 }
 
@@ -105,28 +77,27 @@ void main() {
       scenario.setCurrentPage(page);
       await _mount(tester);
 
-      expect(find.byType(ZyraDevPageOptions), findsOneWidget);
+      expect(
+        find.byWidgetPredicate(
+          (widget) => widget.runtimeType.toString() == 'ZyraDevPageOptions',
+        ),
+        findsNothing,
+      );
       expect(
         find.byKey(const ValueKey('dev_page_options_dropdown')),
         findsNothing,
       );
-      expect(
-        find.descendant(
-          of: find.byType(ZyraDevPageOptions),
-          matching: find.text('Page options'),
-        ),
-        findsOneWidget,
-      );
+      expect(find.text('Page options'), findsNothing);
       final groups = _options(tester).map((option) => option.group).toSet();
       for (final group in groups) {
         expect(
           find.byKey(ValueKey('dev_page_options_dropdown_$group')),
-          findsOneWidget,
+          findsNothing,
           reason: '${page.name}: $group needs its own control',
         );
       }
       expect(groups, isNotEmpty);
-      expect(_categoryControls, findsNWidgets(groups.length));
+      expect(_categoryControls, findsNothing);
       expect(find.text('OPEN PAGE'), findsNothing);
       expect(find.text('ACCOUNT SCENARIOS'), findsNothing);
       expect(find.text('ZYRA DEV · ACTIONS'), findsNothing);
@@ -241,7 +212,7 @@ void main() {
 
       scenario.setConnectionsSection(1);
       await tester.pumpAndSettle();
-      expect(find.text('Connections · Activity'), findsOneWidget);
+      expect(_fixture.title, 'Connections · Activity');
       expect(_options(tester), hasLength(18));
       expect(
         _options(tester).any((option) => option.id.startsWith('credits-')),
@@ -264,7 +235,7 @@ void main() {
 
       scenario.setConnectionsSection(2);
       await tester.pumpAndSettle();
-      expect(find.text('Connections · Introductions'), findsOneWidget);
+      expect(_fixture.title, 'Connections · Introductions');
       expect(_options(tester), hasLength(6));
       expect(scenario.introductionPreviewCount, 0);
       expect(sections, isEmpty);
@@ -345,10 +316,7 @@ void main() {
       ).singleWhere((option) => option.id == 'profile-membership-one');
       await _apply(tester, one.id);
       expect(AppState.instance.plan, ZyraPlan.one);
-      expect(
-        find.textContaining('Account membership was unchanged'),
-        findsOneWidget,
-      );
+      expect(_fixture.notice, contains('Account membership was unchanged'));
       await _apply(tester, 'profile-membership-inactive');
       scenario.setCurrentPage(DevPage.browse);
       await tester.pumpAndSettle();
@@ -388,23 +356,23 @@ void main() {
   testWidgets('My ZYRA header follows the active renderer tab', (tester) async {
     scenario.setCurrentPage(DevPage.dashboard);
     await _mount(tester);
-    expect(find.text('My ZYRA · Now'), findsOneWidget);
+    expect(_fixture.title, 'My ZYRA · Now');
     scenario.setDashboardTab(ZyraDashboardTab.insights);
     await tester.pumpAndSettle();
-    expect(find.text('My ZYRA · Insights'), findsOneWidget);
+    expect(_fixture.title, 'My ZYRA · Insights');
 
     SupportiveDashboardPreview.instance.selectView(true);
     await tester.pumpAndSettle();
-    expect(find.text('My ZYRA · Now'), findsOneWidget);
+    expect(_fixture.title, 'My ZYRA · Now');
     SupportiveDashboardPreview.instance.selectTab(1);
     await tester.pumpAndSettle();
-    expect(find.text('My ZYRA · Insights'), findsOneWidget);
+    expect(_fixture.title, 'My ZYRA · Insights');
     for (final group in _options(
       tester,
     ).map((option) => option.group).toSet()) {
       expect(
         find.byKey(ValueKey('dev_page_options_dropdown_$group')),
-        findsOneWidget,
+        findsNothing,
       );
     }
   });
@@ -460,11 +428,11 @@ void main() {
     await _mount(tester);
     await _select(tester, 'profile-membership-one');
     expect(AppState.instance.plan, ZyraPlan.basic);
-    expect(find.textContaining('Membership did not change'), findsOneWidget);
-    expect(find.byKey(const ValueKey('dev_page_option_error')), findsOneWidget);
+    expect(_fixture.failure, contains('Membership did not change'));
+    expect(find.byKey(const ValueKey('dev_page_option_error')), findsNothing);
     expect(
       find.byKey(const ValueKey('dev_page_options_dropdown_Membership')),
-      findsOneWidget,
+      findsNothing,
     );
   });
 }

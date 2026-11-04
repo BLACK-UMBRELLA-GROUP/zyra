@@ -1,3 +1,4 @@
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 // Actual admitted local shell/Circle wiring; no live chat, account or writes.
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -53,6 +54,7 @@ class _NoNetwork extends HttpOverrides {
 
 Widget _app(Widget screen, {double scale = 1, bool reduce = true}) =>
     MaterialApp(
+      navigatorObservers: [ZyraPreviewRouteObserver()],
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: ZyraColors.isLightPalette
@@ -97,6 +99,7 @@ Future<void> _mountShell(
   await _mount(
     tester,
     ViewRequestDraftScreen(
+      fixture: ZyraShellTestFixture().fixture,
       ownerGeneration: ZyraAccountState.generation,
       ownerId: ZyraAccountState.userId,
       initialGuardianRole: guardian,
@@ -128,6 +131,7 @@ Future<void> _mountShell(
 }
 
 Future<void> _press(WidgetTester tester, Finder target) async {
+  if (await pressZyraFixtureFinder(tester, target)) return;
   expect(target, findsOneWidget);
   if (find
       .ancestor(of: target, matching: find.byType(Scrollable))
@@ -230,11 +234,9 @@ VoidCallback _dismiss(WidgetTester tester) => tester
 
 Future<void> _openOptions(WidgetTester tester) async {
   await toggleZyraDevControls(tester);
-  expect(find.text('Page options'), findsOneWidget);
-  expect(
-    tester.widget<Text>(_key('concept_page_options_context')).data,
-    'Guardian Circle',
-  );
+  expect(find.text('Page options'), findsNothing);
+  expect(_key('concept_page_options_context'), findsNothing);
+  expect(_circle, findsOneWidget);
 }
 
 void _expectTopics(WidgetTester tester) {
@@ -509,6 +511,20 @@ void main() {
           _expectNoLegacyControl();
           await toggleZyraDevControls(tester);
           expect(find.text('Page options'), findsNothing);
+          // Cover this actual Circle route, then return to its retained state.
+          // The production Topics lease observes the owned route departure.
+          final navigator = Navigator.of(tester.element(_circle));
+          navigator.push<void>(
+            MaterialPageRoute(
+              builder: (_) => const Scaffold(body: Text('Member Circle cover')),
+            ),
+          );
+          await tester.pumpAndSettle();
+          stale();
+          await tester.pump();
+          expect(find.text('Member Circle cover'), findsOneWidget);
+          navigator.pop();
+          await tester.pumpAndSettle();
           _expectTopics(tester);
           final ignoredPull = await _holdPull(tester, distance: 240);
           _expectNoLegacyHint();
@@ -533,7 +549,7 @@ void main() {
             'circle-${role.toLowerCase()}-topics-controls-$round-retained',
           );
         }
-        // Reopening controls invalidates an already-issued Topics action.
+        // The real route departure invalidates an already-issued Topics action.
         stale();
         await tester.pumpAndSettle();
         expect(_key('circle_topics_done'), findsNothing);

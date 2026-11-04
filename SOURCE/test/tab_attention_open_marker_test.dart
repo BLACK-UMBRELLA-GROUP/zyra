@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
@@ -71,7 +70,7 @@ class _Owner {
     final theme = ThemeData.dark();
     await tester.pumpWidget(
       MaterialApp(
-        navigatorObservers: [ZyraDevControlsRouteObserver()],
+        navigatorObservers: [ZyraPreviewRouteObserver()],
         theme: theme.copyWith(
           textTheme: theme.textTheme.apply(fontFamily: _font),
         ),
@@ -84,6 +83,7 @@ class _Owner {
           child: child!,
         ),
         home: ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           key: UniqueKey(),
           canAct: () => allowed,
           onExit: () => exits++,
@@ -157,6 +157,7 @@ Future<void> _nav(WidgetTester tester, String label) async {
 }
 
 Future<void> _tapControl(WidgetTester tester, String key) async {
+  if (await pressZyraDevControlKey(tester, key)) return;
   final target = _key(key);
   if (target.evaluate().isEmpty) {
     final scrollable = find.descendant(
@@ -327,7 +328,7 @@ void main() {
 
       await openZyraDevControls(tester);
       await _tapControl(tester, 'draft_reset');
-      if (_key('dev_controls_page').evaluate().isNotEmpty) {
+      if (zyraShellFixtureFor(tester).setupScopeOpen) {
         await closeZyraDevControls(tester);
       }
       expect(_navigation(tester).currentIndex, 0);
@@ -508,7 +509,7 @@ void main() {
     final whileCovered = owner.latest;
     retained(2);
     await tester.pump();
-    expect(_key('dev_controls_page'), findsOneWidget);
+    expect(_key('dev_controls_page'), findsNothing);
     expect(owner.latest, same(whileCovered));
     expect(owner.latest.myZyraLastOpenedRevision, 0);
     await closeZyraDevControls(tester);

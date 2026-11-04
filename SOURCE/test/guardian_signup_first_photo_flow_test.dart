@@ -35,6 +35,7 @@ import 'package:zyra/widgets/zyra_signup_first_photo_card.dart';
 import 'package:zyra/widgets/zyra_state_widgets.dart';
 
 import 'initial_signup_draft_test.dart' show FakeSignupStore;
+import 'support/queue44_signup_flow_driver.dart';
 
 const _ownerId = 'guardian-signup-photo-owner';
 const _firstUrl =
@@ -201,7 +202,7 @@ Future<void> _openDevPhoto(
     scale: scale,
   );
   for (var question = 0; question < 4; question++) {
-    await _tap(tester, const ValueKey('onboarding_dev_skip'));
+    await advanceSignupQuestionFromCode(tester, installPhotoFixture: false);
   }
   expect(find.byKey(_question), findsOneWidget);
 }

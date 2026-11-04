@@ -53,7 +53,7 @@ import 'package:flutter/material.dart';
 import '../../dev/zyra_app_gold_preview.dart';
 
 import '../../dev/zyra_compatibility_demo.dart';
-import '../../dev/zyra_dev_surface_coordinator.dart';
+import '../../dev/zyra_preview_navigation_checkpoint.dart';
 import '../../models/seeker_profile.dart';
 import '../../models/zyra_gender.dart';
 import '../../services/zyra_discovery_service.dart';
@@ -78,8 +78,45 @@ const _compatibilityCategoryNames = <String>[
   'Deen',
 ];
 
+/// Code-only fixture access to a mounted local sample. Binding and mutation
+/// exist only inside assertions; release app routes cannot attach this owner.
+@visibleForTesting
+class ZyraCompatibilityFixture {
+  _ProfileUnlockScreenState? _owner;
+
+  void _attach(_ProfileUnlockScreenState owner) => _owner = owner;
+
+  String? get profileId => _owner?._profileAtOpen;
+  bool isCurrent() => _owner?._fixtureCurrent == true;
+  int balance(bool plus) => plus ? (_owner?._previewPlus ?? 0) : 0;
+
+  void setBalance(bool plus, int count) {
+    assert(() {
+      _owner?._setFixtureBalance(plus, count);
+      return true;
+    }());
+  }
+
+  Future<void> Function() captureBalance(bool plus, int count) {
+    final owner = _owner;
+    final navigation = ZyraPreviewRouteObserver.navigationRevision;
+    return () async {
+      assert(() {
+        if (identical(owner, _owner) &&
+            navigation == ZyraPreviewRouteObserver.navigationRevision) {
+          owner?._setFixtureBalance(plus, count);
+        }
+        return true;
+      }());
+    };
+  }
+}
+
 class ProfileUnlockScreen extends StatefulWidget {
   final SeekerProfile profile;
+
+  @visibleForTesting
+  final ZyraCompatibilityFixture? fixture;
 
   /// THE JOURNEY DOOR — 2026-08-13 (Founder: Paused/Ended cards read
   /// "View Compatibility", never "Compatibility Unlock", "because they
@@ -103,6 +140,7 @@ class ProfileUnlockScreen extends StatefulWidget {
     super.key,
     required this.profile,
     this.journeyRevealed = false,
+    this.fixture,
   });
 
   @override
@@ -126,7 +164,6 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
   late final bool _sampleMode;
   bool _previewAuthorizedAtOpen = false;
   ModalRoute<dynamic>? _route;
-  ZyraCompatibilityDevControls? _devControls;
   int _previewPlus = 1;
   // This is presentation state owned by this route, never profile_unlocks
   // or the service's unlock cache. It cannot authorize real Guardian reads.
@@ -166,6 +203,10 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
     _sampleMode = ZyraUnlockService.isSampleProfile(widget.profile.id);
     _previewAuthorizedAtOpen =
         _sampleMode && ZyraDeveloperAccess.canUseDeveloperTools;
+    assert(() {
+      widget.fixture?._attach(this);
+      return true;
+    }());
     ZyraDeveloperAccess.authorizationChanges.addListener(_onAuthorityChanged);
     AppState.instance.addListener(_onAccountChanged);
     try {
@@ -196,6 +237,17 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
       _ownerAtOpen == _currentOwner() &&
       _profileAtOpen == widget.profile.id;
 
+  bool get _fixtureCurrent =>
+      _lifetimeCurrent && _isDeveloperPreview && (_route?.isCurrent ?? false);
+
+  void _setFixtureBalance(bool plus, int count) {
+    if (!_fixtureCurrent || !plus || !const [0, 1, 5].contains(count)) return;
+    setState(() {
+      _previewPlus = count;
+      _balance = {ZyraUnlockService.currentTier: _previewPlus};
+    });
+  }
+
   void _onAccountChanged() {
     if (!mounted || _accountExpired || _lifetimeCurrent) return;
     _expireAccount();
@@ -216,7 +268,6 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
     _guardianRequest++;
     _unlockRequest++;
     _accessRequest++;
-    ZyraDevSurfaceCoordinator.instance.detachCompatibility(this);
   }
 
   @override
@@ -229,25 +280,6 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _route = ModalRoute.of(context);
-    if (!_lifetimeCurrent || !_isDeveloperPreview) return;
-    _devControls ??= ZyraCompatibilityDevControls(
-      profileId: widget.profile.id,
-      isCurrent: () =>
-          _lifetimeCurrent &&
-          _isDeveloperPreview &&
-          (_route?.isCurrent ?? false),
-      balance: (plus) => plus ? _previewPlus : 0,
-      setBalance: _setPreviewBalance,
-    );
-    // Route-current notifications occur during build. Notify the global
-    // controls only once that frame is complete, including cover/uncover.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!_lifetimeCurrent || !_isDeveloperPreview) return;
-      ZyraDevSurfaceCoordinator.instance.attachCompatibility(
-        this,
-        _devControls!,
-      );
-    });
   }
 
   void _onAuthorityChanged() {
@@ -256,32 +288,8 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
       _previewPlusUnlocked = false;
       _realScore = null;
       _loadingScore = false;
-      ZyraDevSurfaceCoordinator.instance.detachCompatibility(this);
-    } else if (_devControls != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted || !_isDeveloperPreview) return;
-        ZyraDevSurfaceCoordinator.instance.attachCompatibility(
-          this,
-          _devControls!,
-        );
-      });
     }
     setState(() {});
-  }
-
-  void _setPreviewBalance(bool plus, int count) {
-    if (!_lifetimeCurrent ||
-        !_isDeveloperPreview ||
-        !(_route?.isCurrent ?? false) ||
-        !plus ||
-        !const [0, 1, 5].contains(count)) {
-      return;
-    }
-    setState(() {
-      _previewPlus = count;
-      _balance = {ZyraUnlockService.currentTier: _previewPlus};
-    });
-    ZyraDevSurfaceCoordinator.instance.compatibilityChanged(this);
   }
 
   @override
@@ -291,7 +299,6 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
     ZyraDeveloperAccess.authorizationChanges.removeListener(
       _onAuthorityChanged,
     );
-    ZyraDevSurfaceCoordinator.instance.detachCompatibility(this);
     super.dispose();
   }
 
@@ -481,7 +488,6 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
         if (_isDeveloperPreview) {
           setState(() {});
           _loadBalance();
-          ZyraDevSurfaceCoordinator.instance.compatibilityChanged(this);
         }
         return;
       case UnlockOutcome.insufficientCredits:
@@ -577,7 +583,6 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
       _balance = {ZyraUnlockService.currentTier: _previewPlus};
     });
     _loadRealScore();
-    ZyraDevSurfaceCoordinator.instance.compatibilityChanged(this);
   }
 
   @override

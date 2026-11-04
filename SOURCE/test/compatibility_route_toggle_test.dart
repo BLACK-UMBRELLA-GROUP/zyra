@@ -1,14 +1,9 @@
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:zyra/dev/dev_scenario_panel_v2.dart';
-import 'package:zyra/dev/zyra_dev_page_options.dart';
-import 'package:zyra/dev/zyra_dev_scenario.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
-import 'package:zyra/dev/zyra_global_dev_overlay.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
 import 'package:zyra/models/seeker_profile.dart';
 import 'package:zyra/screens/subscription/profile_unlock_screen.dart';
 import 'package:zyra/screens/subscription/upgrade_screen.dart';
@@ -20,6 +15,7 @@ import 'package:zyra/services/zyra_unlock_service.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_gold_action_pill.dart';
+import 'package:zyra/widgets/zyra_account_session_host.dart';
 
 const _profile = SeekerProfile(
   id: 'dev-compatibility-route-noor',
@@ -51,8 +47,6 @@ const _realProfile = SeekerProfile(
 const _browserKey = ValueKey('compatibility-browser-host');
 const _openKey = ValueKey('compatibility-browser-open');
 const _coverKey = ValueKey('compatibility-covered-route');
-const _standard = 'Compatibility Unlock';
-const _plus = 'Compatibility Unlock';
 const _plusActionKey = ValueKey('compatibility-unlock-Unlock Compatibility');
 const _categories = [
   'Lifestyle',
@@ -63,13 +57,40 @@ const _categories = [
   'Deen',
 ];
 
-ZyraDevSurfaceCoordinator get _coordinator =>
-    ZyraDevSurfaceCoordinator.instance;
+final _fixtures = <ZyraCompatibilityFixture>[];
+ZyraCompatibilityFixture? get _activeFixture {
+  for (final fixture in _fixtures.reversed) {
+    if (fixture.isCurrent()) return fixture;
+  }
+  return null;
+}
+
+ProfileUnlockScreen _sample(SeekerProfile profile) {
+  final fixture = ZyraCompatibilityFixture();
+  _fixtures.add(fixture);
+  return ProfileUnlockScreen(profile: profile, fixture: fixture);
+}
 
 class _Harness {
   _Harness(this.navigator, this.openedPages);
   final GlobalKey<NavigatorState> navigator;
-  final List<DevPage> openedPages;
+  final List<String> openedPages;
+}
+
+void _expectNoCreditControls() {
+  expect(
+    find.byWidgetPredicate(
+      (widget) =>
+          widget.key is ValueKey<String> &&
+          ((widget.key! as ValueKey<String>).value.startsWith(
+                'dev_controls_',
+              ) ||
+              (widget.key! as ValueKey<String>).value.startsWith(
+                'dev_page_options_',
+              )),
+    ),
+    findsNothing,
+  );
 }
 
 Future<_Harness> _mountBrowser(
@@ -82,13 +103,8 @@ Future<_Harness> _mountBrowser(
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
   final navigator = GlobalKey<NavigatorState>();
-  final controlsRouteObserver = ZyraDevControlsRouteObserver();
-  final owner = Object();
-  final openedPages = <DevPage>[];
-  _coordinator.attachSeeker(owner, (page) {
-    openedPages.add(page);
-    ZyraDevScenario.instance.setCurrentPage(page);
-  });
+  final routes = ZyraPreviewRouteObserver();
+  final openedPages = <String>[];
   addTearDown(() async {
     final state = navigator.currentState;
     if (state != null && state.mounted) {
@@ -99,12 +115,11 @@ Future<_Harness> _mountBrowser(
     }
     await tester.pumpWidget(const SizedBox.shrink());
     await tester.pumpAndSettle();
-    _coordinator.detachSeeker(owner);
   });
   await tester.pumpWidget(
     MaterialApp(
       navigatorKey: navigator,
-      navigatorObservers: [controlsRouteObserver],
+      navigatorObservers: [routes],
       theme: ThemeData.dark(),
       builder: (context, child) => MediaQuery(
         data: MediaQuery.of(context).copyWith(
@@ -112,9 +127,8 @@ Future<_Harness> _mountBrowser(
           padding: const EdgeInsets.only(top: 24, bottom: 24),
           viewPadding: const EdgeInsets.only(top: 24, bottom: 24),
         ),
-        child: ZyraGlobalDevOverlayHost(
+        child: ZyraAccountSessionHost(
           navigatorKey: navigator,
-          routeObserver: controlsRouteObserver,
           authStateChangesOverride: const Stream<AuthState>.empty(),
           authorityLossDestinationBuilder: (_) =>
               const Scaffold(body: Text('Denied operator route')),
@@ -130,12 +144,22 @@ Future<_Harness> _mountBrowser(
               TextButton(
                 key: _openKey,
                 onPressed: () => Navigator.of(context).push<void>(
-                  MaterialPageRoute(
-                    builder: (_) =>
-                        const ProfileUnlockScreen(profile: _profile),
-                  ),
+                  MaterialPageRoute(builder: (_) => _sample(_profile)),
                 ),
                 child: const Text('Open this profile’s Compatibility'),
+              ),
+              TextButton(
+                key: const ValueKey('member-profile-open'),
+                onPressed: () {
+                  openedPages.add('profile');
+                  Navigator.of(context).push<void>(
+                    MaterialPageRoute(
+                      builder: (_) =>
+                          const Scaffold(body: Text('Member Profile')),
+                    ),
+                  );
+                },
+                child: const Text('Open member Profile'),
               ),
             ],
           ),
@@ -147,22 +171,20 @@ Future<_Harness> _mountBrowser(
   return _Harness(navigator, openedPages);
 }
 
-Future<ZyraCompatibilityDevControls> _openCompatibility(
-  WidgetTester tester,
-) async {
+Future<ZyraCompatibilityFixture> _openCompatibility(WidgetTester tester) async {
   await tester.tap(find.byKey(_openKey));
   await tester.pumpAndSettle();
-  final controls = _coordinator.activeCompatibilityControls;
-  expect(controls, isNotNull);
-  expect(controls!.profileId, _profile.id);
-  expect(controls.isCurrent(), isTrue);
-  expect(controls.balance(false), 0);
-  expect(controls.balance(true), 1);
+  final fixture = _activeFixture;
+  expect(fixture, isNotNull);
+  expect(fixture!.profileId, _profile.id);
+  expect(fixture.isCurrent(), isTrue);
+  expect(fixture.balance(false), 0);
+  expect(fixture.balance(true), 1);
   expect(find.text('1 left'), findsOneWidget);
-  return controls;
+  return fixture;
 }
 
-Future<void> _showControls(WidgetTester tester) async {
+Future<void> _holdWithoutControls(WidgetTester tester) async {
   final hold = await tester.startGesture(
     Offset(
       tester.view.physicalSize.width - 8,
@@ -172,54 +194,29 @@ Future<void> _showControls(WidgetTester tester) async {
   await tester.pump(const Duration(seconds: 3));
   await hold.up();
   await tester.pumpAndSettle();
-  expect(find.byKey(const ValueKey('dev_controls_close')), findsOneWidget);
+  _expectNoCreditControls();
 }
 
-Future<void> _openActions(WidgetTester tester) async {
-  await _showControls(tester);
-  expect(
-    find
-        .descendant(
-          of: find.byType(DevScenarioPanelV2),
-          matching: find.text('Compatibility'),
-        )
-        .hitTestable(),
-    findsOneWidget,
-  );
+Future<void> _assertFixtureAvailable(WidgetTester tester) async {
+  expect(_activeFixture, isNotNull);
+  _expectNoCreditControls();
 }
-
-ZyraDevPageOptions _pageOptions(WidgetTester tester) =>
-    tester.widget<ZyraDevPageOptions>(
-      find.byKey(const ValueKey('seeker_page_options')),
-    );
 
 Future<void> _chooseBalance(
   WidgetTester tester, {
   required bool plus,
   required int count,
 }) async {
-  final group = plus ? _plus : _standard;
-  final dropdown = find.byKey(ValueKey('dev_page_options_dropdown_$group'));
-  await tester.ensureVisible(dropdown);
+  final fixture = _activeFixture;
+  expect(fixture, isNotNull);
+  await fixture!.captureBalance(plus, count)();
   await tester.pumpAndSettle();
-  expect(dropdown.hitTestable(), findsOneWidget);
-  await tester.tap(dropdown);
-  await tester.pumpAndSettle();
-  final option = find.byKey(
-    ValueKey('compatibility-${plus ? 'plus' : 'standard'}-$count'),
-  );
-  await tester.ensureVisible(option);
-  await tester.pumpAndSettle();
-  expect(option.hitTestable(), findsOneWidget);
-  await tester.tap(option);
-  await tester.pumpAndSettle();
+  _expectNoCreditControls();
 }
 
-Future<void> _closeActions(WidgetTester tester) async {
-  await tester.tap(
-    find.byKey(const ValueKey('dev_controls_close')).hitTestable(),
-  );
+Future<void> _settleFixtureSelection(WidgetTester tester) async {
   await tester.pumpAndSettle();
+  _expectNoCreditControls();
 }
 
 Future<void> _expectDemoResult(WidgetTester tester) async {
@@ -300,15 +297,13 @@ void main() {
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
     ZyraInternalPreviewClient.finishSignOut();
-    _coordinator.resetForTesting();
+    _fixtures.clear();
     ZyraUnlockService.clearForSignOut();
-    ZyraDevScenario.instance.reset();
-    ZyraDevScenario.instance.setCurrentPage(DevPage.browse);
     ZyraProductTelemetry.instance.resetForTest();
     ZyraText.useTestFontStubs = true;
   });
   tearDown(() {
-    _coordinator.resetForTesting();
+    _fixtures.clear();
     ZyraUnlockService.clearForSignOut();
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     ZyraDeveloperAccess.resetAuthorizationForTesting();
@@ -322,49 +317,28 @@ void main() {
     (size: Size(320, 568), scale: 1.3),
   ]) {
     testWidgets(
-      'real route toggle has one reachable credit group at ${viewport.size.width}/${viewport.scale}',
+      'code-only sample balances render without developer selectors at ${viewport.size.width}/${viewport.scale}',
       (tester) async {
         await _mountBrowser(
           tester,
           viewport: viewport.size,
           textScale: viewport.scale,
         );
-        await _openCompatibility(tester);
-        await _openActions(tester);
-        final options = _pageOptions(tester).options;
-        expect(options.map((option) => option.id).toSet(), {
-          'compatibility-plus-0',
-          'compatibility-plus-1',
-          'compatibility-plus-5',
-        });
-        expect(options.map((option) => option.group).toSet(), {_plus});
-        expect(
-          options
-              .singleWhere((option) => option.id == 'compatibility-plus-5')
-              .label,
-          '5 Compatibility Unlocks',
-        );
-        for (final plus in const [true]) {
-          final dropdown = find.byKey(
-            ValueKey('dev_page_options_dropdown_${plus ? _plus : _standard}'),
+        final controls = await _openCompatibility(tester);
+        for (final count in [0, 1, 5]) {
+          await _chooseBalance(tester, plus: true, count: count);
+          expect(controls.balance(true), count);
+          expect(controls.balance(false), 0);
+          final action = find.byKey(_plusActionKey);
+          await tester.ensureVisible(action);
+          await tester.pumpAndSettle();
+          expect(action.hitTestable(), findsOneWidget);
+          expect(
+            tester.widget<ZyraGoldActionPill>(action).onPressed,
+            count == 0 ? isNull : isNotNull,
           );
-          await tester.ensureVisible(dropdown);
-          await tester.pumpAndSettle();
-          await tester.tap(dropdown);
-          await tester.pumpAndSettle();
-          for (final count in const [0, 1, 5]) {
-            final choice = find.byKey(
-              ValueKey('compatibility-${plus ? 'plus' : 'standard'}-$count'),
-            );
-            await tester.ensureVisible(choice);
-            await tester.pumpAndSettle();
-            expect(choice.hitTestable(), findsOneWidget);
-            expect(tester.getSize(choice).height, greaterThanOrEqualTo(48));
-          }
-          await tester.ensureVisible(dropdown);
-          await tester.pumpAndSettle();
-          await tester.tap(dropdown);
-          await tester.pumpAndSettle();
+          expect(tester.getSize(action).height, greaterThanOrEqualTo(44));
+          _expectNoCreditControls();
         }
         _expectNoBackend();
         expect(tester.takeException(), isNull);
@@ -379,7 +353,7 @@ void main() {
       final initialGender = AppState.instance.gender;
       await _mountBrowser(tester);
       final controls = await _openCompatibility(tester);
-      await _openActions(tester);
+      await _assertFixtureAvailable(tester);
       expect(controls.balance(false), 0);
       await _chooseBalance(tester, plus: true, count: 5);
       expect(controls.balance(false), 0);
@@ -389,13 +363,7 @@ void main() {
       }
       expect(controls.balance(false), 0);
       expect(controls.balance(true), 5);
-      expect(
-        _pageOptions(tester).options
-            .where((option) => option.selected)
-            .map((option) => option.id)
-            .toSet(),
-        {'compatibility-plus-5'},
-      );
+      expect(find.text('5 left'), findsOneWidget);
       expect(AppState.instance.plan, initialPlan);
       expect(AppState.instance.gender, initialGender);
       expect(find.byType(UpgradeScreen), findsNothing);
@@ -409,7 +377,7 @@ void main() {
   ) async {
     await _mountBrowser(tester);
     final controls = await _openCompatibility(tester);
-    await _openActions(tester);
+    await _assertFixtureAvailable(tester);
     for (final plus in const [true]) {
       final other = controls.balance(!plus);
       for (final count in const [0, 1, 5]) {
@@ -436,9 +404,9 @@ void main() {
   ) async {
     await _mountBrowser(tester);
     final controls = await _openCompatibility(tester);
-    await _openActions(tester);
+    await _assertFixtureAvailable(tester);
     await _chooseBalance(tester, plus: true, count: 5);
-    await _closeActions(tester);
+    await _settleFixtureSelection(tester);
     final action = find.byKey(
       const ValueKey('compatibility-unlock-Unlock Compatibility'),
     );
@@ -469,11 +437,11 @@ void main() {
   ) async {
     await _mountBrowser(tester);
     final controls = await _openCompatibility(tester);
-    await _openActions(tester);
+    await _assertFixtureAvailable(tester);
     await _chooseBalance(tester, plus: true, count: 5);
     expect(controls.balance(false), 0);
     expect(controls.balance(true), 5);
-    await _closeActions(tester);
+    await _settleFixtureSelection(tester);
     expect(ZyraUnlockService.categoryBreakdownAvailable, isFalse);
     expect(ZyraUnlockService.isTierAvailable(UnlockTier.plus), isFalse);
     expect(
@@ -553,9 +521,9 @@ void main() {
     (tester) async {
       await _mountBrowser(tester);
       final controls = await _openCompatibility(tester);
-      await _openActions(tester);
+      await _assertFixtureAvailable(tester);
       await _chooseBalance(tester, plus: true, count: 5);
-      await _closeActions(tester);
+      await _settleFixtureSelection(tester);
       final action = find.byKey(_plusActionKey);
       await tester.ensureVisible(action);
       await tester.pumpAndSettle();
@@ -592,9 +560,9 @@ void main() {
       final stalePlus = tester
           .widget<ZyraGoldActionPill>(find.byKey(_plusActionKey))
           .onPressed!;
-      await _openActions(tester);
+      await _assertFixtureAvailable(tester);
       await _chooseBalance(tester, plus: true, count: 0);
-      await _closeActions(tester);
+      await _settleFixtureSelection(tester);
       expect(
         tester.widget<ZyraGoldActionPill>(find.byKey(_plusActionKey)).onPressed,
         isNull,
@@ -665,11 +633,9 @@ void main() {
   testWidgets('authority revocation clears an already revealed full demo', (
     tester,
   ) async {
-    await tester.pumpWidget(
-      const MaterialApp(home: ProfileUnlockScreen(profile: _profile)),
-    );
+    await tester.pumpWidget(MaterialApp(home: _sample(_profile)));
     await tester.pumpAndSettle();
-    final controls = _coordinator.activeCompatibilityControls!;
+    final controls = _activeFixture!;
     final action = find.byKey(_plusActionKey);
     await tester.ensureVisible(action);
     await tester.pumpAndSettle();
@@ -719,10 +685,8 @@ void main() {
   ) async {
     final harness = await _mountBrowser(tester);
     final first = await _openCompatibility(tester);
-    await _openActions(tester);
-    final oldOption = _pageOptions(tester).options
-        .singleWhere((option) => option.id == 'compatibility-plus-5')
-        .onSelected!;
+    await _assertFixtureAvailable(tester);
+    final oldOption = _activeFixture!.captureBalance(true, 5);
     final stalePlus = tester
         .widget<ZyraGoldActionPill>(find.byKey(_plusActionKey))
         .onPressed!;
@@ -733,7 +697,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(_coordinator.activeCompatibilityControls, isNull);
+    expect(_activeFixture, isNull);
     expect(first.isCurrent(), isFalse);
     first.setBalance(false, 5);
     first.setBalance(true, 5);
@@ -744,7 +708,7 @@ void main() {
     expect(first.balance(true), 1);
     harness.navigator.currentState!.pop();
     await tester.pumpAndSettle();
-    expect(_coordinator.activeCompatibilityControls, same(first));
+    expect(_activeFixture, same(first));
     expect(first.isCurrent(), isTrue);
     expect(find.text('__%'), findsOneWidget);
     expect(find.textContaining(RegExp(r'\d+\s*%')), findsNothing);
@@ -758,20 +722,16 @@ void main() {
   ) async {
     final harness = await _mountBrowser(tester);
     final first = await _openCompatibility(tester);
-    await _openActions(tester);
-    final oldOption = _pageOptions(tester).options
-        .singleWhere((option) => option.id == 'compatibility-plus-5')
-        .onSelected!;
+    await _assertFixtureAvailable(tester);
+    final oldOption = _activeFixture!.captureBalance(true, 5);
     final stalePlus = tester
         .widget<ZyraGoldActionPill>(find.byKey(_plusActionKey))
         .onPressed!;
     harness.navigator.currentState!.push<void>(
-      MaterialPageRoute(
-        builder: (_) => const ProfileUnlockScreen(profile: _otherProfile),
-      ),
+      MaterialPageRoute(builder: (_) => _sample(_otherProfile)),
     );
     await tester.pumpAndSettle();
-    final second = _coordinator.activeCompatibilityControls!;
+    final second = _activeFixture!;
     expect(second.profileId, _otherProfile.id);
     expect(second.balance(false), 0);
     expect(second.balance(true), 1);
@@ -789,7 +749,7 @@ void main() {
     expect(find.textContaining(RegExp(r'\d+\s*%')), findsNothing);
     harness.navigator.currentState!.pop();
     await tester.pumpAndSettle();
-    expect(_coordinator.activeCompatibilityControls, same(first));
+    expect(_activeFixture, same(first));
     _expectNoBackend();
     expect(tester.takeException(), isNull);
   });
@@ -799,20 +759,18 @@ void main() {
   ) async {
     final harness = await _mountBrowser(tester);
     final controls = await _openCompatibility(tester);
-    await _openActions(tester);
+    await _assertFixtureAvailable(tester);
     await _chooseBalance(tester, plus: true, count: 5);
-    final oldOption = _pageOptions(tester).options
-        .singleWhere((option) => option.id == 'compatibility-plus-5')
-        .onSelected!;
+    final oldOption = _activeFixture!.captureBalance(true, 5);
     final stalePlus = tester
         .widget<ZyraGoldActionPill>(find.byKey(_plusActionKey))
         .onPressed!;
-    await _closeActions(tester);
+    await _settleFixtureSelection(tester);
     await tester.tap(find.byTooltip('Back').hitTestable());
     await tester.pumpAndSettle();
     expect(find.byKey(_browserKey), findsOneWidget);
     expect(harness.navigator.currentState!.canPop(), isFalse);
-    expect(_coordinator.activeCompatibilityControls, isNull);
+    expect(_activeFixture, isNull);
     controls.setBalance(false, 0);
     controls.setBalance(true, 5);
     await oldOption();
@@ -820,16 +778,12 @@ void main() {
     await tester.pumpAndSettle();
     expect(controls.balance(false), 0);
     expect(controls.balance(true), 5);
-    await _showControls(tester);
-    expect(find.text('Profiles').hitTestable(), findsOneWidget);
-    expect(
-      _pageOptions(
-        tester,
-      ).options.any((option) => option.id.startsWith('compatibility-')),
-      isFalse,
-    );
-    _coordinator.openSeeker(DevPage.profile);
-    expect(harness.openedPages, [DevPage.profile]);
+    await _holdWithoutControls(tester);
+    expect(find.text('Browse root'), findsOneWidget);
+    _expectNoCreditControls();
+    await tester.tap(find.byKey(const ValueKey('member-profile-open')));
+    await tester.pumpAndSettle();
+    expect(harness.openedPages, ['profile']);
     _expectNoBackend();
     expect(tester.takeException(), isNull);
   });
@@ -857,11 +811,9 @@ void main() {
   testWidgets('revoked raw sample denies without a live balance fallback', (
     tester,
   ) async {
-    await tester.pumpWidget(
-      const MaterialApp(home: ProfileUnlockScreen(profile: _profile)),
-    );
+    await tester.pumpWidget(MaterialApp(home: _sample(_profile)));
     await tester.pumpAndSettle();
-    final controls = _coordinator.activeCompatibilityControls!;
+    final controls = _activeFixture!;
     final staleUnlock = tester
         .widget<ZyraGoldActionPill>(
           find.byKey(
@@ -879,7 +831,7 @@ void main() {
       find.byKey(const ValueKey('compatibility-preview-denied')),
       findsOneWidget,
     );
-    expect(_coordinator.activeCompatibilityControls, isNull);
+    expect(_activeFixture, isNull);
     controls.setBalance(false, 5);
     controls.setBalance(true, 5);
     staleUnlock();
@@ -903,22 +855,20 @@ void main() {
     'unauthorized sample cannot gain preview mode after construction',
     (tester) async {
       ZyraDeveloperAccess.setAuthorizedForTesting(false);
-      await tester.pumpWidget(
-        const MaterialApp(home: ProfileUnlockScreen(profile: _profile)),
-      );
+      await tester.pumpWidget(MaterialApp(home: _sample(_profile)));
       await tester.pumpAndSettle();
       expect(
         find.byKey(const ValueKey('compatibility-preview-denied')),
         findsOneWidget,
       );
-      expect(_coordinator.activeCompatibilityControls, isNull);
+      expect(_activeFixture, isNull);
       ZyraDeveloperAccess.setAuthorizedForTesting(true);
       await tester.pumpAndSettle();
       expect(
         find.byKey(const ValueKey('compatibility-preview-denied')),
         findsOneWidget,
       );
-      expect(_coordinator.activeCompatibilityControls, isNull);
+      expect(_activeFixture, isNull);
       expect(find.text('1 left'), findsNothing);
       _expectNoBackend();
       expect(tester.takeException(), isNull);
@@ -931,26 +881,19 @@ void main() {
     final harness = await _mountBrowser(tester);
     final first = await _openCompatibility(tester);
     harness.navigator.currentState!.push<void>(
-      MaterialPageRoute(
-        builder: (_) => const ProfileUnlockScreen(profile: _realProfile),
-      ),
+      MaterialPageRoute(builder: (_) => _sample(_realProfile)),
     );
     await tester.pumpAndSettle();
     expect(ZyraUnlockService.isSampleProfile(_realProfile.id), isFalse);
     expect(ZyraUnlockService.developerPreviewScore(_realProfile.id), isNull);
-    expect(_coordinator.activeCompatibilityControls, isNull);
+    expect(_activeFixture, isNull);
     first.setBalance(false, 5);
     expect(first.balance(false), 0);
     expect(find.text('1 left'), findsNothing);
     expect(find.byKey(_plusActionKey), findsNothing);
     expect(find.text('Developer demo'), findsNothing);
-    await _showControls(tester);
-    expect(
-      _pageOptions(
-        tester,
-      ).options.any((option) => option.id.startsWith('compatibility-')),
-      isFalse,
-    );
+    await _holdWithoutControls(tester);
+    _expectNoCreditControls();
     _expectNoBackend();
     expect(tester.takeException(), isNull);
   });
@@ -986,17 +929,15 @@ void main() {
       );
       expect(tester.widget<Semantics>(selected).properties.selected, isTrue);
       harness.navigator.currentState!.push<void>(
-        MaterialPageRoute(
-          builder: (_) => const ProfileUnlockScreen(profile: _profile),
-        ),
+        MaterialPageRoute(builder: (_) => _sample(_profile)),
       );
       await tester.pumpAndSettle();
-      final controls = _coordinator.activeCompatibilityControls!;
-      await _openActions(tester);
+      final controls = _activeFixture!;
+      await _assertFixtureAvailable(tester);
       await _chooseBalance(tester, plus: true, count: 5);
       expect(controls.balance(false), 0);
       expect(controls.balance(true), 5);
-      await _closeActions(tester);
+      await _settleFixtureSelection(tester);
       await tester.tap(find.byTooltip('Back').hitTestable());
       await tester.pumpAndSettle();
       expect(find.byType(CompatibilityUnlockStoreScreen), findsOneWidget);

@@ -78,6 +78,7 @@ class _Owner {
           child: child!,
         ),
         home: ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           key: UniqueKey(),
           canAct: () => allowed,
           onExit: () => fail('LOCK 2 actions must stay in their sample owner.'),
@@ -120,6 +121,7 @@ class _Owner {
 }
 
 Future<void> _tap(WidgetTester tester, Finder target) async {
+  if (await pressZyraFixtureFinder(tester, target)) return;
   expect(target, findsOneWidget);
   final scrolls = find.ancestor(of: target, matching: find.byType(Scrollable));
   if (scrolls.evaluate().isNotEmpty) {
@@ -310,7 +312,7 @@ void main() {
       final owner = _Owner();
       await owner.mount(tester, requestsTab: 2);
       await openZyraDevControls(tester);
-      expect(_key('concept_requests_controls_2'), findsOneWidget);
+      expect(_key('concept_requests_controls_2'), findsNothing);
       expect(owner.latest.requestsTab, 2);
       await closeZyraDevControls(tester);
       expect(_requests(tester).selectedIndex, 2);

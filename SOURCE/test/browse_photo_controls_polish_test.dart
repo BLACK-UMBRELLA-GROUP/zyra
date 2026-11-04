@@ -1,3 +1,4 @@
+import 'support/zyra_hidden_dev_controls_driver.dart';
 // Scoped Current Browse presentation tests. Invented public records and an
 // injected paint-only renderer: no member, network or entitlement authority.
 import 'dart:io';
@@ -208,6 +209,7 @@ void _expectFooter(WidgetTester tester, {bool wrappedRequest = false}) {
 }
 
 Future<void> _press(WidgetTester tester, String key) async {
+  if (await pressZyraDevControlKey(tester, key)) return;
   final target = _key(key);
   await Scrollable.ensureVisible(tester.element(target), alignment: .5);
   await tester.pumpAndSettle();

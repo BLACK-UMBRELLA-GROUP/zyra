@@ -172,11 +172,11 @@ class ZyraCompactRecoverySurface extends StatelessWidget {
     required this.title,
     required this.message,
     required this.primaryLabel,
-    required this.secondaryLabel,
+    this.secondaryLabel,
     required this.primaryKey,
-    required this.secondaryKey,
+    this.secondaryKey,
     required this.onPrimary,
-    required this.onSecondary,
+    this.onSecondary,
     this.referenceCode,
   });
 
@@ -184,9 +184,9 @@ class ZyraCompactRecoverySurface extends StatelessWidget {
   final String title;
   final String message;
   final String primaryLabel;
-  final String secondaryLabel;
+  final String? secondaryLabel;
   final Key primaryKey;
-  final Key secondaryKey;
+  final Key? secondaryKey;
   final VoidCallback? onPrimary;
   final VoidCallback? onSecondary;
   final String? referenceCode;
@@ -268,28 +268,30 @@ class ZyraCompactRecoverySurface extends StatelessWidget {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        TextButton(
-                          key: secondaryKey,
-                          onPressed: ZyraTapFeedback.onTap(
-                            context,
-                            onSecondary,
-                          ),
-                          style: TextButton.styleFrom(
-                            minimumSize: const Size(48, 48),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 12,
+                        if (secondaryLabel != null) ...[
+                          const SizedBox(height: 4),
+                          TextButton(
+                            key: secondaryKey,
+                            onPressed: ZyraTapFeedback.onTap(
+                              context,
+                              onSecondary,
                             ),
-                            foregroundColor: ZyraColors.ink(0.86),
-                            disabledForegroundColor: ZyraColors.ink(0.42),
-                            textStyle: ZyraText.button(size: 14),
+                            style: TextButton.styleFrom(
+                              minimumSize: const Size(48, 48),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 12,
+                              ),
+                              foregroundColor: ZyraColors.ink(0.86),
+                              disabledForegroundColor: ZyraColors.ink(0.42),
+                              textStyle: ZyraText.button(size: 14),
+                            ),
+                            child: Text(
+                              secondaryLabel!,
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                          child: Text(
-                            secondaryLabel,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                        ],
                         if (referenceCode case final reference?) ...[
                           const SizedBox(height: 6),
                           Text(

@@ -1,3 +1,4 @@
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 // Compact developer controls inside the actual guarded, offline preview route.
 // This suite does not initialize Auth, connect to a service or alter a member.
 import 'dart:io';
@@ -73,6 +74,7 @@ class _NoNetwork extends HttpOverrides {
 Finder _key(String value) => find.byKey(ValueKey(value));
 
 Widget _app(Widget home, {double scale = 1, double top = 59}) => MaterialApp(
+  navigatorObservers: [ZyraPreviewRouteObserver()],
   debugShowCheckedModeBanner: false,
   theme: ThemeData.dark(),
   builder: (context, child) => MediaQuery(
@@ -102,6 +104,7 @@ Future<void> _mount(
     _app(
       home ??
           ViewRequestDraftScreen(
+            fixture: ZyraShellTestFixture().fixture,
             ownerGeneration: ZyraAccountState.generation,
             ownerId: ZyraAccountState.userId,
           ),
@@ -114,6 +117,7 @@ Future<void> _mount(
 }
 
 VoidCallback? _action(WidgetTester tester, String id) {
+  if (isZyraFixtureCommandKey(id)) return captureZyraFixtureCommand(tester, id);
   final widget = tester.widget<Widget>(_key(id));
   if (widget is ButtonStyleButton) return widget.onPressed;
   if (widget is InkWell) return widget.onTap;
@@ -181,16 +185,8 @@ Future<void> _controls(WidgetTester tester, {String? page}) async {
     await _returnToMain(tester);
     await _nav(tester, page);
   }
-  for (
-    var depth = 0;
-    find.text('Page options').evaluate().isEmpty && depth < 8;
-    depth++
-  ) {
-    await _press(tester, 'draft_back');
-  }
-  expect(find.text('Page options'), findsOneWidget);
-  if (page != null) expect(find.text(page), findsOneWidget);
-  expect(_key('draft_rules'), findsNothing);
+  await openZyraDevControls(tester);
+  expect(find.text('Page options'), findsNothing);
   expect(ZyraConceptPreviewIsolation.active, isTrue);
 }
 
@@ -206,80 +202,9 @@ Future<void> _chooseMotion(
   WidgetTester tester,
   ZyraBrowseNextMotion motion,
 ) async {
-  expect(_motionDropdown, findsOneWidget);
-  await tester.ensureVisible(_motionDropdown);
+  expect(zyraShellFixtureFor(tester).selectBrowseMotion(motion), isTrue);
   await tester.pumpAndSettle();
-  final selected = tester
-      .widget<DropdownButtonFormField<ZyraBrowseNextMotion>>(_motionDropdown)
-      .initialValue!;
-  await tester.tap(_motionDropdown);
-  await tester.pumpAndSettle();
-  // The button's IndexedStack also retains keyed items. Select only inside
-  // the actual popup route, whose ListView builds lower choices lazily.
-  final popup = find.byWidgetPredicate(
-    (widget) =>
-        widget is Semantics && widget.properties.role == ui.SemanticsRole.menu,
-    description: 'Next animation popup menu',
-  );
-  expect(popup, findsOneWidget);
-  final popupScrollable = find.descendant(
-    of: popup,
-    matching: find.byType(Scrollable),
-  );
-  expect(popupScrollable, findsOneWidget);
-  final option = find.descendant(
-    of: popup,
-    matching: _key('concept_browse_next_motion_${motion.name}'),
-  );
-  await tester.scrollUntilVisible(
-    option,
-    motion.index < selected.index ? -80 : 80,
-    scrollable: popupScrollable,
-    maxScrolls: 24,
-  );
-  await tester.pumpAndSettle();
-  expect(option, findsOneWidget);
-  // DropdownMenuItem is aligned content, not the popup's pointer receiver.
-  // Its blank centre need not hit its descendants; the native enabled InkWell
-  // wrapping this exact keyed choice owns the real selection action.
-  final receiver = find
-      .ancestor(
-        of: option,
-        matching: find.byWidgetPredicate(
-          (widget) => widget is InkWell && widget.onTap != null,
-        ),
-      )
-      .first;
-  expect(receiver, findsOneWidget);
-  await Scrollable.ensureVisible(tester.element(receiver), alignment: 0.5);
-  await tester.pumpAndSettle();
-  final rect = tester.getRect(receiver);
-  final logicalSize = tester.view.physicalSize / tester.view.devicePixelRatio;
-  final visible = rect
-      .intersect(tester.getRect(popupScrollable))
-      .intersect(Offset.zero & logicalSize);
-  expect(visible.width, greaterThan(0));
-  expect(visible.height, greaterThan(0));
-  final point = Alignment(
-    2 * (visible.center.dx - rect.left) / rect.width - 1,
-    2 * (visible.center.dy - rect.top) / rect.height - 1,
-  );
-  expect(
-    receiver.hitTestable(at: point),
-    findsOneWidget,
-    reason:
-        'Native popup receiver for ${motion.name}: '
-        'rect=$rect, visible=$visible, tap=${visible.center}.',
-  );
-  await tester.tapAt(visible.center);
-  await tester.pumpAndSettle();
-  expect(popup, findsNothing);
-  expect(
-    tester
-        .widget<DropdownButtonFormField<ZyraBrowseNextMotion>>(_motionDropdown)
-        .initialValue,
-    motion,
-  );
+  expect(_motionDropdown, findsNothing);
 }
 
 void _expectButton(
@@ -288,117 +213,39 @@ void _expectButton(
   bool large = false,
   bool centered = false,
 }) {
-  final root = _key(id);
-  final button = tester.widget<OutlinedButton>(root);
-  final states = <WidgetState>{};
-  expect(button.style!.minimumSize!.resolve(states), const Size(44, 44));
   expect(
-    button.style!.padding!.resolve(states),
-    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    _key(id),
+    findsNothing,
+    reason: '$id is available only as a code fixture.',
   );
-  expect(button.style!.tapTargetSize, MaterialTapTargetSize.shrinkWrap);
-  final shape = button.style!.shape!.resolve(states)!;
-  expect(shape, isA<RoundedRectangleBorder>());
-  expect(
-    (shape as RoundedRectangleBorder).borderRadius,
-    BorderRadius.circular(9),
-  );
-  final texts = tester
-      .widgetList<Text>(find.descendant(of: root, matching: find.byType(Text)))
-      .toList();
-  expect(texts, hasLength(1));
-  expect(texts.single.style!.fontSize, 12.5);
-  expect(texts.single.style!.fontFamily, _font);
-  expect(texts.single.textAlign, centered ? TextAlign.center : TextAlign.start);
-  for (final icon in tester.widgetList<Icon>(
-    find.descendant(of: root, matching: find.byType(Icon)),
-  )) {
-    expect(icon.size, 17);
-  }
-  final height = tester.getSize(root).height;
-  expect(height, greaterThanOrEqualTo(44));
-  if (!large) expect(height, lessThanOrEqualTo(48));
 }
 
 void _expectInventory(WidgetTester tester, {bool large = false}) {
-  expect(find.text('Page options'), findsOneWidget);
-  expect(find.text('Profiles'), findsOneWidget);
-  for (final id in _actions) {
+  expect(find.text('Page options'), findsNothing);
+  for (final id in [
+    ..._actions,
+    for (final count in [0, 1, 5]) 'draft_compatibility_unlock_$count',
+  ]) {
     _expectButton(tester, id, large: large);
   }
-  for (final count in [0, 1, 5]) {
-    _expectButton(
-      tester,
-      'draft_compatibility_unlock_$count',
-      large: large,
-      centered: true,
-    );
-  }
-  for (final id in [
-    'concept_journey_preview_1',
-    'concept_journey_preview_2',
-    'concept_journey_preview_3',
-    'draft_membership_seeker_basic',
-    'draft_membership_seeker_one',
-    'draft_history',
-    'draft_fill',
-  ]) {
-    expect(_key(id), findsNothing, reason: '$id is not a Browse control.');
-  }
+  expect(_motionDropdown, findsNothing);
   _expectNoBrowseChooser();
-  expect(_motionDropdown, findsOneWidget);
-  final dropdown = tester.widget<DropdownButton<ZyraBrowseNextMotion>>(
-    find.descendant(
-      of: _motionDropdown,
-      matching: find.byType(DropdownButton<ZyraBrowseNextMotion>),
-    ),
-  );
-  expect(dropdown.isExpanded, isTrue);
-  expect(dropdown.menuMaxHeight, 320);
-  expect(
-    dropdown.items!.map((item) => item.value),
-    ZyraBrowseNextMotion.values,
-  );
-  for (final item in dropdown.items!) {
-    final text = item.child as Text;
-    expect(text.data, item.value!.label);
-    expect(text.style!.fontFamily, _font);
-    expect(text.style!.fontSize, 13);
-  }
+  expect(find.byType(ZyraOneJourneyBrowseDesigns), findsOneWidget);
   expect(find.text('Explore the idea.'), findsNothing);
   expect(find.text('Browse without swiping.'), findsNothing);
   expect(find.textContaining('This temporary draft'), findsNothing);
 }
 
 void _expectJourneyCounts(WidgetTester tester, {bool large = false}) {
-  expect(find.text('Page options'), findsOneWidget);
+  expect(find.text('Page options'), findsNothing);
   expect(find.text('Journey'), findsOneWidget);
   expect(_motionDropdown, findsNothing);
-  expect(_key('draft_compatibility_unlock_1'), findsNothing);
-  final first = tester.getRect(_key('concept_journey_preview_1'));
-  final second = tester.getRect(_key('concept_journey_preview_2'));
-  final third = tester.getRect(_key('concept_journey_preview_3'));
-  expect(first.top, second.top);
-  expect(second.top, third.top);
-  expect(second.left - first.right, 8);
-  expect(third.left - second.right, 8);
   for (final count in [1, 2, 3]) {
     _expectButton(
       tester,
       'concept_journey_preview_$count',
-      centered: true,
       large: large,
-    );
-    final text = tester.widget<Text>(
-      find.descendant(
-        of: _key('concept_journey_preview_$count'),
-        matching: find.byType(Text),
-      ),
-    );
-    expect(text.data, '$count');
-    expect(
-      text.semanticsLabel,
-      'Show $count sample ${count == 1 ? 'Journey' : 'Journeys'}',
+      centered: true,
     );
   }
 }
@@ -529,13 +376,8 @@ void main() {
       await _controls(tester);
       _expectInventory(tester);
       await _snapshot(tester, '${viewport.suffix}_initial');
-      await Scrollable.ensureVisible(
-        tester.element(_key('draft_role_seeker')),
-        alignment: 1,
-      );
-      await tester.pumpAndSettle();
+      expect(_key('draft_role_seeker'), findsNothing);
       await _snapshot(tester, '${viewport.suffix}_lower');
-      expect(_key('draft_role_seeker').hitTestable(), findsOneWidget);
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getKeys(), {'ordinary-setting'});
       expect(prefs.getString('ordinary-setting'), 'unchanged');
@@ -766,11 +608,7 @@ void main() {
       await _controls(tester, page: 'Profiles');
       final role = _action(tester, 'draft_role_guardian')!;
       final reset = _action(tester, 'draft_reset')!;
-      final staleMotion = tester
-          .widget<DropdownButtonFormField<ZyraBrowseNextMotion>>(
-            _motionDropdown,
-          )
-          .onChanged!;
+      final staleMotion = captureZyraBrowseMotionAction(tester);
       await _chooseMotion(tester, ZyraBrowseNextMotion.cardRock);
       // Retained UI-revision delegates must not borrow the current controls.
       count();
@@ -778,13 +616,13 @@ void main() {
       reset();
       staleMotion(ZyraBrowseNextMotion.cardRise);
       await tester.pumpAndSettle();
-      expect(find.text('Page options'), findsOneWidget);
+      expect(find.text('Page options'), findsNothing);
       expect(
         tester
-            .widget<DropdownButtonFormField<ZyraBrowseNextMotion>>(
-              _motionDropdown,
+            .widget<ZyraOneJourneyBrowseDesigns>(
+              find.byType(ZyraOneJourneyBrowseDesigns),
             )
-            .initialValue,
+            .nextProfileMotion,
         ZyraBrowseNextMotion.cardRock,
       );
       _expectNoBrowseChooser();
@@ -805,11 +643,7 @@ void main() {
       (tester) async {
         await _mount(tester);
         await _controls(tester);
-        final staleMotion = tester
-            .widget<DropdownButtonFormField<ZyraBrowseNextMotion>>(
-              _motionDropdown,
-            )
-            .onChanged!;
+        final staleMotion = captureZyraBrowseMotionAction(tester);
         final delegates = <VoidCallback>[
           for (final id in _actions) _action(tester, id)!,
           for (final count in [0, 1, 5])
@@ -851,6 +685,7 @@ void main() {
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute<void>(
                   builder: (_) => ViewRequestDraftScreen(
+                    fixture: ZyraShellTestFixture().fixture,
                     ownerGeneration: ZyraAccountState.generation,
                     ownerId: ZyraAccountState.userId,
                   ),
@@ -873,26 +708,52 @@ void main() {
   testWidgets(
     'compact launcher retains guarded entry without stale Saved copy',
     (tester) async {
+      await _mount(tester);
+      final shell = tester.widget<ZyraOneJourneyConceptShell>(
+        find.byType(ZyraOneJourneyConceptShell),
+      );
+      expect(shell.canAct(), isTrue);
+      expect(find.textContaining('Saved'), findsNothing);
+      expect(_key('dev_discovery_view_request'), findsNothing);
+      final navigation = tester.widget<ZyraShellNavigation>(
+        find.byType(ZyraShellNavigation),
+      );
+      final savedNavigation = navigation.onTap;
+      final originalTab = navigation.currentIndex;
+      ZyraDeveloperAccess.setAuthorizedForTesting(false);
+      savedNavigation((originalTab + 1) % navigation.items.length);
+      await tester.pumpAndSettle();
+      expect(shell.canAct(), isFalse);
+      final remaining = find.byType(ZyraShellNavigation);
+      if (remaining.evaluate().isNotEmpty) {
+        expect(
+          tester.widget<ZyraShellNavigation>(remaining).currentIndex,
+          originalTab,
+        );
+      }
+      expect(_key('dev_discovery_view_request'), findsNothing);
+      ZyraDeveloperAccess.setAuthorizedForTesting(true);
       await _mount(
         tester,
-        home: const Scaffold(
-          body: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: DevDiscoveryDirectionPicker(),
-            ),
-          ),
+        home: ViewRequestDraftScreen(
+          key: UniqueKey(),
+          ownerId: ZyraAccountState.userId,
+          ownerGeneration: ZyraAccountState.generation,
+          fixture: ZyraShellTestFixture().fixture,
         ),
       );
-      expect(find.text('Open app preview'), findsOneWidget);
-      expect(find.textContaining('Saved'), findsNothing);
-      _expectButton(tester, 'dev_discovery_view_request', centered: true);
-      await _press(tester, 'dev_discovery_view_request');
       expect(find.byType(ZyraOneJourneyConceptShell), findsOneWidget);
-      await _controls(tester);
-      await _press(tester, 'draft_close');
-      expect(find.byType(DevDiscoveryDirectionPicker), findsOneWidget);
-      expect(ZyraConceptPreviewIsolation.active, isFalse);
+      expect(
+        tester
+            .widget<ZyraOneJourneyConceptShell>(
+              find.byType(ZyraOneJourneyConceptShell),
+            )
+            .canAct(),
+        isTrue,
+      );
+      expect(shell.canAct(), isFalse);
+      expect(find.textContaining('Saved'), findsNothing);
+      expect(_key('dev_discovery_view_request'), findsNothing);
     },
   );
 }

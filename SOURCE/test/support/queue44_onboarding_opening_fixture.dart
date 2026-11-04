@@ -1,25 +1,28 @@
+// Test-only navigation of the shared production onboarding rendering.
+// Direct constructor/state fixtures replace app-reachable developer routes.
 // Purpose-led, read-only opening rehearsal. This owns presentation only;
 // the protected parent still owns provider, role and real signup navigation.
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-import '../services/zyra_developer_access.dart';
-import '../theme/zyra_colors.dart';
-import '../theme/zyra_text.dart';
-import '../widgets/zyra_onboarding_continue_action.dart';
-import '../widgets/zyra_onboarding_edge_swipe.dart';
-import '../widgets/zyra_onboarding_study.dart';
-import 'dev_onboarding_gold_design.dart';
-import 'dev_onboarding_interaction.dart';
-import 'dev_onboarding_welcome_motion.dart';
+import 'package:zyra/services/zyra_developer_access.dart';
+import 'package:zyra/theme/zyra_colors.dart';
+import 'package:zyra/theme/zyra_text.dart';
+import 'package:zyra/widgets/zyra_onboarding_continue_action.dart';
+import 'package:zyra/widgets/zyra_onboarding_edge_swipe.dart';
+import 'package:zyra/widgets/zyra_onboarding_study.dart';
+import 'queue44_gold_fixture.dart';
+import 'queue44_onboarding_interaction_fixture.dart';
+import 'queue44_welcome_motion_fixture.dart';
 
 // Welcome is separate; verification and the three existing themes share one
 // four-slide section. Content identities/keys stay independent of progress.
 enum _OpeningPage { welcome, verification, photos, compatibility, guardians }
 
-class DevOnboardingOpening extends StatefulWidget {
-  const DevOnboardingOpening({
+class OnboardingOpeningFixture extends StatefulWidget {
+  const OnboardingOpeningFixture({
     super.key,
     required this.direction,
     required this.welcomeName,
@@ -33,10 +36,11 @@ class DevOnboardingOpening extends StatefulWidget {
   final VoidCallback? onBackToProvider;
 
   @override
-  State<DevOnboardingOpening> createState() => _DevOnboardingOpeningState();
+  State<OnboardingOpeningFixture> createState() =>
+      _OnboardingOpeningFixtureState();
 }
 
-class _DevOnboardingOpeningState extends State<DevOnboardingOpening>
+class _OnboardingOpeningFixtureState extends State<OnboardingOpeningFixture>
     with SingleTickerProviderStateMixin {
   static const _readingDelay = Duration(seconds: 3);
   static const _storyCount = 4;
@@ -82,6 +86,11 @@ class _DevOnboardingOpeningState extends State<DevOnboardingOpening>
 
   bool get _allowed =>
       mounted && !_revoked && ZyraDeveloperAccess.canUseDeveloperTools;
+  void _setQuoteFixture(bool expanded) {
+    if (!_allowed || _moving) return;
+    setState(() => _quoteExpanded = expanded);
+  }
+
   bool get _reduceMotion =>
       MediaQuery.disableAnimationsOf(context) ||
       MediaQuery.accessibleNavigationOf(context);
@@ -289,11 +298,8 @@ class _DevOnboardingOpeningState extends State<DevOnboardingOpening>
     child: Column(
       children: [
         InkWell(
-          key: const ValueKey('dev_opening_quote_toggle'),
           borderRadius: BorderRadius.circular(20),
-          onTap: _moving
-              ? null
-              : () => setState(() => _quoteExpanded = !_quoteExpanded),
+
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             child: Row(
@@ -560,19 +566,6 @@ class _DevOnboardingOpeningState extends State<DevOnboardingOpening>
                   icon: const Icon(Icons.chevron_right_rounded),
                   color: ZyraColors.journeyGold,
                 ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    key: const ValueKey('dev_onboarding_skip'),
-                    onPressed: _moving ? null : () => _next(skip: true),
-                    child: Text(
-                      'Skip · DEV',
-                      style: ZyraText.subtext(size: 11),
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),
@@ -594,7 +587,7 @@ class _DevOnboardingOpeningState extends State<DevOnboardingOpening>
         child: Stack(
           fit: StackFit.expand,
           children: [
-            if (_allowed) const ZyraOnboardingGoldBackdrop(),
+            if (_allowed) const OnboardingGoldBackdropFixture(),
             if (_allowed)
               SafeArea(
                 child: Column(
@@ -710,4 +703,18 @@ class _DevOnboardingOpeningState extends State<DevOnboardingOpening>
       ),
     ),
   );
+}
+
+VoidCallback? openingFixtureSkipCallback(WidgetTester tester) {
+  final finder = find.byType(OnboardingOpeningFixture);
+  if (finder.evaluate().isEmpty) return null;
+  final state = tester.state<_OnboardingOpeningFixtureState>(finder);
+  return state._moving ? null : () => state._next(skip: true);
+}
+
+void setOpeningQuoteFixtureFromCode(WidgetTester tester, bool expanded) {
+  final state = tester.state<_OnboardingOpeningFixtureState>(
+    find.byType(OnboardingOpeningFixture),
+  );
+  state._setQuoteFixture(expanded);
 }

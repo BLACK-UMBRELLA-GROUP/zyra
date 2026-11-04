@@ -1,53 +1,61 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' show AuthState;
-import 'package:zyra/dev/dev_scenario_panel_v2.dart';
-import 'package:zyra/dev/wali_dev_scenario_panel.dart';
 import 'package:zyra/dev/zyra_concept_preview_boundary.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
-import 'package:zyra/dev/zyra_dev_hold_to_open.dart';
-import 'package:zyra/dev/zyra_dev_scenario.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
-import 'package:zyra/dev/zyra_global_dev_overlay.dart';
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
+import 'package:zyra/main.dart' show ZyraApp, zyraNavigatorKey;
 import 'package:zyra/services/zyra_developer_access.dart';
+import 'package:zyra/services/zyra_local_prefs.dart';
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
 
 const _underlying = ValueKey('hidden-controls-underlying');
-const _close = ValueKey('dev_controls_close');
+
+void _expectNoDeveloperControls() {
+  expect(
+    find.byWidgetPredicate(
+      (widget) =>
+          widget.key is ValueKey<String> &&
+          ((widget.key! as ValueKey<String>).value.startsWith(
+                'dev_controls_',
+              ) ||
+              (widget.key! as ValueKey<String>).value.startsWith('dev_rail_')),
+    ),
+    findsNothing,
+  );
+}
 
 Future<void> _mount(
   WidgetTester tester, {
-  required GlobalKey<NavigatorState> navigatorKey,
-  required ZyraDevControlsRouteObserver? routeObserver,
+  ZyraPreviewRouteObserver? routeObserver,
   TextEditingController? draft,
 }) async {
   await tester.pumpWidget(
-    MaterialApp(
-      navigatorKey: navigatorKey,
-      navigatorObservers: [?routeObserver],
-      builder: (context, child) => ZyraGlobalDevOverlayHost(
-        navigatorKey: navigatorKey,
-        routeObserver: routeObserver,
-        authStateChangesOverride: const Stream<AuthState>.empty(),
-        child: child!,
-      ),
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text('Unchanged member page', key: _underlying),
-              if (draft != null)
-                TextField(
-                  key: const ValueKey('member_draft'),
-                  controller: draft,
-                ),
-            ],
+    Builder(
+      builder: (context) {
+        final rebuild = const ZyraApp().build(context) as ListenableBuilder;
+        final app = rebuild.builder(context, null) as MaterialApp;
+        return MaterialApp(
+          navigatorKey: app.navigatorKey,
+          navigatorObservers: [...?app.navigatorObservers, ?routeObserver],
+          theme: app.theme,
+          builder: app.builder,
+          home: Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('Unchanged member page', key: _underlying),
+                  if (draft != null)
+                    TextField(
+                      key: const ValueKey('member_draft'),
+                      controller: draft,
+                    ),
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     ),
   );
   await tester.pumpAndSettle();
@@ -56,14 +64,14 @@ Future<void> _mount(
 Future<TestGesture> _beginHold(WidgetTester tester) =>
     tester.startGesture(tester.getCenter(find.byKey(_underlying)));
 
-Future<void> _holdToOpen(WidgetTester tester) async {
+Future<void> _holdWithoutControls(WidgetTester tester) async {
   final hold = await _beginHold(tester);
   await tester.pump(const Duration(milliseconds: 2999));
-  expect(find.byKey(_close), findsNothing);
+  _expectNoDeveloperControls();
   await tester.pump(const Duration(milliseconds: 1));
   await hold.up();
   await tester.pumpAndSettle();
-  expect(find.byKey(_close), findsOneWidget);
+  _expectNoDeveloperControls();
 }
 
 void main() {
@@ -72,11 +80,9 @@ void main() {
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
   });
 
   tearDown(() {
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(null);
     ZyraText.useTestFontStubs = false;
@@ -85,102 +91,40 @@ void main() {
   testWidgets('public configuration mounts no developer hold detector', (
     tester,
   ) async {
-    final navigatorKey = GlobalKey<NavigatorState>();
     final draft = TextEditingController(text: 'unchanged member draft');
     addTearDown(draft.dispose);
-    await _mount(
-      tester,
-      navigatorKey: navigatorKey,
-      routeObserver: null,
-      draft: draft,
-    );
-    expect(find.byType(ZyraGlobalDevOverlayHost), findsOneWidget);
-    expect(find.byType(ZyraDevHoldToOpen), findsNothing);
-    expect(
-      find.byKey(const ValueKey('dev_controls_hold_surface')),
-      findsNothing,
-    );
+    await _mount(tester, draft: draft);
+    _expectNoDeveloperControls();
     final hold = await _beginHold(tester);
     await tester.pump(const Duration(seconds: 4));
     await hold.up();
     await tester.pumpAndSettle();
-    expect(find.byKey(_close), findsNothing);
+    _expectNoDeveloperControls();
     expect(find.byKey(_underlying), findsOneWidget);
     expect(draft.text, 'unchanged member draft');
-    expect(navigatorKey.currentState!.canPop(), isFalse);
+    expect(zyraNavigatorKey.currentState!.canPop(), isFalse);
     expect(tester.takeException(), isNull);
   });
 
-  for (final surface in ZyraDevSurface.values) {
+  for (final (surface, role) in <(String, String?)>[
+    ('entry', null),
+    ('seeker', 'seeker'),
+    ('guardian', 'wali'),
+  ]) {
     testWidgets(
-      '$surface opens hidden page options and X restores member page',
+      '$surface holds retain member drafts without hidden page options',
       (tester) async {
-        final coordinator = ZyraDevSurfaceCoordinator.instance;
-        final owner = Object();
-        if (surface == ZyraDevSurface.seeker) {
-          coordinator.attachSeeker(owner, (DevPage _) {});
-        } else if (surface == ZyraDevSurface.guardian) {
-          coordinator.attachGuardian(owner, (WaliPage _) {});
-        } else {
-          coordinator.beginEntryFlow('Onboarding');
-        }
-        addTearDown(() {
-          coordinator.detachSeeker(owner);
-          coordinator.detachGuardian(owner);
-          coordinator.endEntryFlow();
-        });
-
-        final navigatorKey = GlobalKey<NavigatorState>();
-        final routeObserver = ZyraDevControlsRouteObserver();
+        ZyraLocalPrefs.setCachedRole(role);
+        final routes = ZyraPreviewRouteObserver();
         final draft = TextEditingController(text: 'unsent local draft');
         addTearDown(draft.dispose);
-        await _mount(
-          tester,
-          navigatorKey: navigatorKey,
-          routeObserver: routeObserver,
-          draft: draft,
-        );
-        expect(find.byType(ZyraDevControlRail), findsNothing);
-        expect(find.byKey(_close), findsNothing);
-        final originalRevision = routeObserver.revision;
-
-        await _holdToOpen(tester);
-        expect(
-          find.byKey(const ValueKey('dev_controls_tab_actions')),
-          findsOneWidget,
-        );
-        expect(
-          find.byKey(const ValueKey('dev_controls_tab_preview')),
-          findsOneWidget,
-        );
-        expect(
-          find.byKey(const ValueKey('dev_controls_tab_home')),
-          findsOneWidget,
-        );
-        expect(find.byType(ZyraDevControlRail), findsNothing);
-        expect(
-          find.byType(switch (surface) {
-            ZyraDevSurface.entry => ZyraEntryDevPanel,
-            ZyraDevSurface.seeker => DevScenarioPanelV2,
-            ZyraDevSurface.guardian => WaliDevScenarioPanel,
-          }),
-          findsOneWidget,
-        );
-
-        await tester.tap(find.byKey(const ValueKey('dev_controls_tab_home')));
-        await tester.pumpAndSettle();
-        expect(find.text('Home'), findsWidgets);
-        await tester.tap(
-          find.byKey(const ValueKey('dev_controls_tab_preview')),
-        );
-        await tester.pumpAndSettle();
-        await tester.tap(find.byKey(_close));
-        await tester.pumpAndSettle();
-        expect(find.byKey(_close), findsNothing);
+        await _mount(tester, routeObserver: routes, draft: draft);
+        final before = routes.revision;
+        await _holdWithoutControls(tester);
         expect(find.byKey(_underlying), findsOneWidget);
         expect(draft.text, 'unsent local draft');
-        expect(routeObserver.revision, originalRevision);
-        expect(navigatorKey.currentState!.canPop(), isFalse);
+        expect(routes.revision, before);
+        expect(zyraNavigatorKey.currentState!.canPop(), isFalse);
         expect(tester.takeException(), isNull);
       },
     );
@@ -189,79 +133,61 @@ void main() {
   testWidgets('route ABA during hold cannot open controls after return', (
     tester,
   ) async {
-    final navigatorKey = GlobalKey<NavigatorState>();
-    final routeObserver = ZyraDevControlsRouteObserver();
-    await _mount(
-      tester,
-      navigatorKey: navigatorKey,
-      routeObserver: routeObserver,
-    );
+    final routes = ZyraPreviewRouteObserver();
+    await _mount(tester, routeObserver: routes);
+    final before = routes.revision;
     final hold = await _beginHold(tester);
     await tester.pump(const Duration(seconds: 1));
-    navigatorKey.currentState!.push<void>(
+    zyraNavigatorKey.currentState!.push<void>(
       MaterialPageRoute(
         builder: (_) => const Scaffold(body: Text('Covered route')),
       ),
     );
     await tester.pumpAndSettle();
-    navigatorKey.currentState!.pop();
+    zyraNavigatorKey.currentState!.pop();
     await tester.pumpAndSettle();
+    expect(routes.revision, greaterThan(before));
     await tester.pump(const Duration(seconds: 3));
     await hold.up();
-    await tester.pumpAndSettle();
-    expect(find.byKey(_close), findsNothing);
-    await _holdToOpen(tester);
+    _expectNoDeveloperControls();
+    await _holdWithoutControls(tester);
+    expect(find.byKey(_underlying), findsOneWidget);
   });
 
   testWidgets('revocation and concept isolation suppress the hidden trigger', (
     tester,
   ) async {
-    final navigatorKey = GlobalKey<NavigatorState>();
-    final routeObserver = ZyraDevControlsRouteObserver();
-    await _mount(
-      tester,
-      navigatorKey: navigatorKey,
-      routeObserver: routeObserver,
-    );
+    await _mount(tester);
     final hold = await _beginHold(tester);
     await tester.pump(const Duration(seconds: 1));
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    await tester.pump();
     await tester.pump(const Duration(seconds: 3));
     await hold.up();
-    expect(find.byKey(_close), findsNothing);
-    expect(find.byType(ZyraDevControlRail), findsNothing);
-
+    _expectNoDeveloperControls();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    await tester.pumpAndSettle();
     final isolation = ZyraConceptPreviewIsolation.acquire();
     addTearDown(isolation.release);
-    await tester.pumpAndSettle();
-    final isolatedHold = await _beginHold(tester);
-    await tester.pump(const Duration(seconds: 4));
-    await isolatedHold.up();
-    expect(find.byKey(_close), findsNothing);
+    await _holdWithoutControls(tester);
+    expect(find.byKey(_underlying), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('same-frame context ABA cannot complete a pending hold', (
+  testWidgets('same-frame presentation ABA cannot expose hidden controls', (
     tester,
   ) async {
-    final navigatorKey = GlobalKey<NavigatorState>();
-    final routes = ZyraDevControlsRouteObserver();
-    await _mount(tester, navigatorKey: navigatorKey, routeObserver: routes);
-    final coordinator = ZyraDevSurfaceCoordinator.instance;
-    final label = coordinator.entryLabel;
+    await _mount(tester);
+    final member = ZyraAppGoldStyle.instance;
+    final initialGold = member.enabled;
     final hold = await _beginHold(tester);
     await tester.pump(const Duration(seconds: 2));
-    coordinator.beginEntryFlow('Temporary context');
-    coordinator.endEntryFlow();
-    expect(coordinator.entryLabel, label);
-    // The timer fires before a deferred frame could replace the callbacks.
+    member.restore(!initialGold);
+    member.restore(initialGold);
     await tester.pump(const Duration(seconds: 1));
     await hold.up();
     await tester.pumpAndSettle();
-    expect(find.byKey(_close), findsNothing);
-    await _holdToOpen(tester);
+    _expectNoDeveloperControls();
+    expect(member.enabled, initialGold);
+    await _holdWithoutControls(tester);
+    expect(find.byKey(_underlying), findsOneWidget);
   });
 }

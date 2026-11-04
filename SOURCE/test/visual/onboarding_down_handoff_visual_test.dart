@@ -1,5 +1,6 @@
+import '../support/queue44_signup_flow_fixture.dart';
 // Founder-review candidates only; these captures are not approved baselines.
-// The real protected DevSignUpProcessScreen is mounted with synthetic local
+// The real protected SignupFlowFixture is mounted with synthetic local
 // authority, and no provider sign-in, account write, or network request runs.
 // Capture only with --update-goldens and
 // --dart-define=ZYRA_ONBOARDING_DOWN_HANDOFF_CAPTURE_CANDIDATES=true.
@@ -8,18 +9,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_onboarding_interaction.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
-import 'package:zyra/dev/dev_onboarding_lab.dart';
-import 'package:zyra/dev/dev_signup_process.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
+import '../support/queue44_onboarding_interaction_fixture.dart';
+import '../support/queue44_gold_fixture.dart';
+import '../support/queue44_onboarding_story_fixture.dart';
 import 'package:zyra/screens/auth/role_selection_screen.dart';
 import 'package:zyra/screens/welcome_screen.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
-import 'package:zyra/widgets/zyra_onboarding_study.dart';
 
 const _capture = bool.fromEnvironment(
   'ZYRA_ONBOARDING_DOWN_HANDOFF_CAPTURE_CANDIDATES',
@@ -102,7 +100,7 @@ void main() {
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
     ZyraInternalPreviewClient.finishSignOut();
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
+    OnboardingFixtureController.instance.resetForTesting();
     ZyraDevOnboardingGoldMotion.select(ZyraOnboardingGoldMotion.pageEntrance);
     ZyraDevOnboardingInteraction.resetForTesting();
     ZyraDevOnboardingStoryNavigation.resetForTesting();
@@ -117,7 +115,7 @@ void main() {
 
   tearDown(() {
     ZyraInternalPreviewClient.finishSignOut();
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
+    OnboardingFixtureController.instance.resetForTesting();
     ZyraDevOnboardingInteraction.resetForTesting();
     ZyraDevOnboardingStoryNavigation.resetForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
@@ -148,7 +146,7 @@ void main() {
           ),
           child: RepaintBoundary(key: _captureRoot, child: child!),
         ),
-        home: const DevSignUpProcessScreen(
+        home: const SignupFlowFixture(
           initialDirection: ZyraOnboardingDirection.luma,
         ),
       ),
@@ -170,7 +168,7 @@ void main() {
       find.byKey(const ValueKey('dev_onboarding_welcome_continue')),
     );
     await tester.pumpAndSettle();
-    expect(find.byType(DevOnboardingIntroduction), findsOneWidget);
+    expect(find.byType(OnboardingIntroductionFixture), findsOneWidget);
 
     for (var page = 0; page < ZyraOnboardingDirection.storyPageCount; page++) {
       await _readStoryPage(tester, page);
@@ -191,7 +189,7 @@ void main() {
     );
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 120));
-    expect(find.byType(DevOnboardingIntroduction), findsOneWidget);
+    expect(find.byType(OnboardingIntroductionFixture), findsOneWidget);
     expect(find.byType(RoleSelectionScreen), findsNothing);
     final outgoing = tester.widget<Opacity>(
       find.byKey(const ValueKey('dev_opening_foreground_opacity')),
@@ -205,7 +203,7 @@ void main() {
     await tester.pump();
     expect(find.byType(RoleSelectionScreen), findsOneWidget);
     final boundaryEntry = tester.widget<Opacity>(
-      find.byKey(const ValueKey('dev_onboarding_downward_entry')),
+      find.byKey(const ValueKey('onboarding_downward_entry')),
     );
     expect(boundaryEntry.opacity, greaterThan(0));
     expect(boundaryEntry.opacity, lessThan(1));
@@ -213,7 +211,7 @@ void main() {
 
     await tester.pump(const Duration(milliseconds: 260));
     final incoming = tester.widget<Opacity>(
-      find.byKey(const ValueKey('dev_onboarding_downward_entry')),
+      find.byKey(const ValueKey('onboarding_downward_entry')),
     );
     expect(incoming.opacity, greaterThan(0));
     expect(incoming.opacity, lessThan(1));
@@ -221,7 +219,7 @@ void main() {
 
     await tester.pumpAndSettle();
     expect(find.byType(RoleSelectionScreen), findsOneWidget);
-    expect(find.byType(DevOnboardingIntroduction), findsNothing);
+    expect(find.byType(OnboardingIntroductionFixture), findsNothing);
     await _candidate(tester, '05_role_selection_settled');
     expect(tester.takeException(), isNull);
   });

@@ -1,3 +1,4 @@
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 // Real-shell, offline coverage of the selected Portrait split Journey cards.
 // No duplicate card, replacement image builder, live member or backend adapter.
 import 'dart:async';
@@ -8,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_card_content.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
@@ -105,6 +105,7 @@ class _Owner {
           child: RepaintBoundary(key: _boundary, child: child!),
         ),
         home: ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           key: UniqueKey(),
           canAct: () => allowed,
           onExit: () => fail('Layout choice testing must not exit the app.'),
@@ -678,7 +679,7 @@ void main() {
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     AppState.instance.resetForAccountChange();
-    final gold = ZyraDevAppGold.instance;
+    final gold = ZyraAppGoldStyle.instance;
     gold.select(
       false,
       expectedGeneration: ZyraAccountState.generation,
@@ -1055,13 +1056,11 @@ void main() {
             guardian: guardian,
             checkpoint: _seed(guardian: guardian, tab: tab),
           );
-          await _controls(tester);
+          await openZyraDevControls(tester);
+          expect(find.text('Page options'), findsNothing);
           _expectRetiredChoices();
           for (final count in [1, 2, 3]) {
-            expect(
-              _key('concept_journey_preview_$count'),
-              !guardian && tab == 1 ? findsOneWidget : findsNothing,
-            );
+            expect(_key('concept_journey_preview_$count'), findsNothing);
           }
         }
       }
@@ -1070,7 +1069,8 @@ void main() {
         tester,
         checkpoint: _seed(tab: 2, pages: const ['requests']),
       );
-      await _controls(tester);
+      await openZyraDevControls(tester);
+      expect(find.text('Page options'), findsNothing);
       _expectRetiredChoices();
     },
   );

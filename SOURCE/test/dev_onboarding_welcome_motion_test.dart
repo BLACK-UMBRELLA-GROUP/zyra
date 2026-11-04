@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_onboarding_directions.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
-import 'package:zyra/dev/dev_onboarding_lab.dart';
-import 'package:zyra/dev/dev_onboarding_welcome_motion.dart';
+import 'support/queue44_gold_fixture.dart';
+import 'support/queue44_onboarding_story_fixture.dart';
+import 'support/queue44_welcome_motion_fixture.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/theme/zyra_text.dart';
@@ -68,52 +67,40 @@ void main() {
   });
 
   testWidgets(
-    'toggle shows five whole-page motion choices without typing or a dead pulse slider',
+    'code-selected welcome motion renders without developer choices',
     (tester) async {
+      ZyraDevWelcomeTextMotion.select(ZyraWelcomeTextMotion.lighterDescent);
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: SingleChildScrollView(child: DevOnboardingTransitionPicker()),
+        MaterialApp(
+          home: OnboardingIntroductionFixture(
+            direction: ZyraOnboardingDirection.luma,
+            onContinue: () {},
           ),
         ),
       );
-      for (final motion in ZyraWelcomeTextMotion.values) {
-        expect(
-          find.byKey(ValueKey('dev_welcome_text_motion_${motion.name}')),
-          motion.typesText ? findsNothing : findsOneWidget,
-        );
-      }
-      expect(find.text('Descent + typewriter blends'), findsNothing);
-      expect(find.text('Typewriter'), findsNothing);
-      expect(find.text('Gold pulse intensity'), findsNothing);
-      expect(
-        find.byKey(const ValueKey('dev_welcome_pulse_intensity_slider')),
-        findsNothing,
-      );
-      final choice = find.byKey(
-        const ValueKey('dev_welcome_text_motion_lighterDescent'),
-      );
-      await tester.ensureVisible(choice);
-      await tester.tap(choice);
       await tester.pump();
       expect(
         ZyraDevWelcomeTextMotion.current,
         ZyraWelcomeTextMotion.lighterDescent,
       );
-
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: SingleChildScrollView(
-              child: DevOnboardingTransitionPicker(enabled: false),
-            ),
-          ),
-        ),
+      for (final motion in ZyraWelcomeTextMotion.values) {
+        expect(
+          find.byKey(ValueKey('dev_welcome_text_motion_${motion.name}')),
+          findsNothing,
+        );
+      }
+      expect(find.text('Descent + typewriter blends'), findsNothing);
+      expect(find.text('Typewriter'), findsNothing);
+      expect(
+        find.byKey(const ValueKey('dev_welcome_pulse_intensity_slider')),
+        findsNothing,
       );
-      expect(tester.widget<InkWell>(choice).onTap, isNull);
       ZyraDeveloperAccess.setAuthorizedForTesting(false);
       await tester.pump();
-      expect(choice, findsNothing);
+      expect(
+        ZyraDevWelcomeTextMotion.select(ZyraWelcomeTextMotion.softLanding),
+        isFalse,
+      );
       expect(tester.takeException(), isNull);
     },
   );
@@ -218,7 +205,7 @@ void main() {
       );
       await tester.pumpWidget(
         const MaterialApp(
-          home: DevOnboardingIntroduction(
+          home: OnboardingIntroductionFixture(
             direction: ZyraOnboardingDirection.luma,
             onContinue: _noOp,
           ),
@@ -260,7 +247,7 @@ void main() {
         const MaterialApp(
           home: MediaQuery(
             data: MediaQueryData(disableAnimations: true),
-            child: DevOnboardingIntroduction(
+            child: OnboardingIntroductionFixture(
               direction: ZyraOnboardingDirection.luma,
               onContinue: _noOp,
             ),
@@ -300,7 +287,7 @@ void main() {
           const MaterialApp(
             home: MediaQuery(
               data: MediaQueryData(disableAnimations: true),
-              child: DevOnboardingIntroduction(
+              child: OnboardingIntroductionFixture(
                 direction: ZyraOnboardingDirection.luma,
                 onContinue: _noOp,
               ),
@@ -342,7 +329,7 @@ void main() {
         const MaterialApp(
           home: MediaQuery(
             data: MediaQueryData(disableAnimations: true),
-            child: DevOnboardingIntroduction(
+            child: OnboardingIntroductionFixture(
               direction: ZyraOnboardingDirection.luma,
               onContinue: _noOp,
             ),

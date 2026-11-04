@@ -7,10 +7,8 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_dev_local_preview.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
-import 'package:zyra/dev/zyra_global_dev_overlay.dart';
-import 'package:zyra/screens/dev/developer_access_screen.dart';
+import 'package:zyra/widgets/zyra_account_session_host.dart';
+import 'package:zyra/screens/welcome_screen.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/theme/zyra_colors.dart';
@@ -55,8 +53,6 @@ void main() {
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
-    ZyraDevLocalPreview.genderSelection.value = 'male';
     ZyraInternalPreviewClient.beginPreview();
     ZyraColors.restoreAppPalette(null);
     ZyraColors.restoreAppSurfaceStyle(null);
@@ -66,7 +62,6 @@ void main() {
     ZyraInternalPreviewClient.finishSignOut();
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     ZyraDeveloperAccess.resetAuthorizationForTesting();
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
   });
 
   tearDownAll(() {
@@ -76,10 +71,8 @@ void main() {
     if (_capture && captured.isNotEmpty) {
       final sourcePaths = [
         'lib/screens/dev/developer_access_screen.dart',
-        'lib/dev/zyra_dev_local_preview.dart',
         'lib/dev/zyra_dev_signup.dart',
         'lib/dev/dev_signup_process.dart',
-        'lib/dev/zyra_dev_surface_coordinator.dart',
         'lib/dev/zyra_global_dev_overlay.dart',
         'test/visual/zyra_developer_access_visual_test.dart',
       ];
@@ -143,21 +136,23 @@ void main() {
             ),
             child: RepaintBoundary(
               key: _root,
-              child: ZyraGlobalDevOverlayHost(
+              child: ZyraAccountSessionHost(
                 navigatorKey: navigatorKey,
                 authStateChangesOverride: const Stream.empty(),
                 child: child!,
               ),
             ),
           ),
-          home: const DeveloperAccessScreen(),
+          home: const WelcomeScreen(),
         ),
       );
       await tester.pumpAndSettle();
 
       expect(
         find.descendant(
-          of: find.byType(DeveloperAccessScreen),
+          of: find.byWidgetPredicate(
+            (w) => w.runtimeType.toString() == 'DeveloperAccessScreen',
+          ),
           matching: find.text('Developer Access'),
         ),
         findsOneWidget,

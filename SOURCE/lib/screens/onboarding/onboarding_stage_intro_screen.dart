@@ -113,13 +113,11 @@ class AccountEssentialsIntroScreen extends StatelessWidget {
     required this.onContinue,
     this.accountExit,
     this.devPreview = false,
-    this.onDevSkip,
   });
 
   final FutureOr<void> Function() onContinue;
   final Widget? accountExit;
   final bool devPreview;
-  final VoidCallback? onDevSkip;
 
   @override
   Widget build(BuildContext context) => OnboardingStageIntroScreen(
@@ -129,7 +127,6 @@ class AccountEssentialsIntroScreen extends StatelessWidget {
     onContinue: onContinue,
     accountExit: accountExit,
     devPreview: devPreview,
-    onDevSkip: onDevSkip,
   );
 }
 
@@ -139,7 +136,6 @@ class OnboardingStageIntroScreen extends StatefulWidget {
   final String? welcomeName;
   final Widget? accountExit;
   final bool devPreview;
-  final VoidCallback? onDevSkip;
   final bool includeOverview;
   final OnboardingStageContent? contentOverride;
 
@@ -154,7 +150,6 @@ class OnboardingStageIntroScreen extends StatefulWidget {
     this.welcomeName,
     this.accountExit,
     this.devPreview = false,
-    this.onDevSkip,
     this.includeOverview = true,
     this.contentOverride,
     this.allowPreviewScrolling = false,
@@ -319,23 +314,6 @@ class _OnboardingStageIntroScreenState
     final stage = widget.contentOverride ?? seekerOnboardingStages[stageIndex];
     final previewStyle = OnboardingPreviewStyle.effectiveStyleOf(context);
     final arrowMode = _arrowMode;
-    final skipButton = widget.devPreview && widget.onDevSkip != null
-        ? TextButton(
-            key: const ValueKey('onboarding_stage_dev_skip'),
-            onPressed: () {
-              if (ZyraDeveloperAccess.canUseDeveloperTools) {
-                widget.onDevSkip?.call();
-              }
-            },
-            child: Text(
-              'Skip · DEV',
-              style: ZyraText.button(
-                size: 11,
-                color: arrowMode ? ZyraColors.goldText : ZyraColors.goldText,
-              ),
-            ),
-          )
-        : null;
 
     final pages = _includesWelcome
         ? PageView(
@@ -418,13 +396,6 @@ class _OnboardingStageIntroScreenState
             child: pages,
           )
         : pages;
-    final pageArea = Stack(
-      children: [
-        stageOnlyPages,
-        if (!arrowMode && skipButton != null)
-          Positioned(top: 2, right: 16, child: skipButton),
-      ],
-    );
 
     return Scaffold(
       body: Container(
@@ -433,26 +404,7 @@ class _OnboardingStageIntroScreenState
           gradient:
               previewStyle?.backgroundGradient ?? ZyraColors.brandGradient,
         ),
-        child: SafeArea(
-          child: arrowMode && skipButton != null
-              ? Column(
-                  children: [
-                    Expanded(child: pageArea),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 48,
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 16),
-                          child: skipButton,
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              : pageArea,
-        ),
+        child: SafeArea(child: stageOnlyPages),
       ),
     );
   }

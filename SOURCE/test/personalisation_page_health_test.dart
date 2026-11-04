@@ -1,3 +1,4 @@
+import 'package:zyra/dev/dev_discovery_directions.dart';
 // OA304: real Personalisation UI, protected controls, and honest contrast
 // evidence. Local preview intentions are never member preference writes.
 import 'dart:async';
@@ -58,6 +59,7 @@ class _NoNetwork extends HttpOverrides {
 }
 
 Widget _app(Widget child, {bool compact = false}) => MaterialApp(
+  navigatorObservers: [ZyraPreviewRouteObserver()],
   theme: ThemeData.light(),
   builder: (context, child) => MediaQuery(
     data: MediaQuery.of(context).copyWith(
@@ -117,6 +119,7 @@ Future<void> _reveal(WidgetTester tester, Finder target) async {
 }
 
 Future<void> _tap(WidgetTester tester, Finder target) async {
+  if (await pressZyraFixtureFinder(tester, target)) return;
   await _reveal(tester, target);
   await tester.tap(target);
   await tester.pumpAndSettle();
@@ -278,28 +281,53 @@ Future<void> _nav(WidgetTester tester, String label) async {
 class _ShellOwner {
   final checkpoints = <ZyraPreviewNavigationCheckpoint>[];
 
-  Future<void> mount(WidgetTester tester, {bool guardian = false}) async {
+  Future<void> mount(
+    WidgetTester tester, {
+    bool guardian = false,
+    bool guardedRouteOwner = false,
+  }) async {
     _size(tester);
     final ready = Completer<void>();
     await tester.pumpWidget(
       _app(
-        ZyraOneJourneyConceptShell(
-          key: UniqueKey(),
-          canAct: () => true,
-          onExit: () =>
-              fail('Personalisation stays inside its admitted owner.'),
-          initialGuardianRole: guardian,
-          initialCheckpoint: ZyraPreviewNavigationCheckpoint(
-            guardian: guardian,
-            model: ViewRequestDraftModel(capacity: 3).snapshot(),
-            tab: 4,
-            pages: const [],
-          ),
-          onCheckpoint: checkpoints.add,
-          onPresentationReady: () {
-            if (!ready.isCompleted) ready.complete();
-          },
-        ),
+        guardedRouteOwner
+            ? ViewRequestDraftScreen(
+                fixture: ZyraShellTestFixture().fixture,
+                key: UniqueKey(),
+                ownerGeneration: ZyraAccountState.generation,
+                ownerId: ZyraAccountState.userId,
+                onExit: () =>
+                    fail('Personalisation stays inside its admitted owner.'),
+                initialGuardianRole: guardian,
+                initialCheckpoint: ZyraPreviewNavigationCheckpoint(
+                  guardian: guardian,
+                  model: ViewRequestDraftModel(capacity: 3).snapshot(),
+                  tab: 4,
+                  pages: const [],
+                ),
+                onCheckpoint: checkpoints.add,
+                onPresentationReady: () {
+                  if (!ready.isCompleted) ready.complete();
+                },
+              )
+            : ZyraOneJourneyConceptShell(
+                fixture: ZyraShellTestFixture().fixture,
+                key: UniqueKey(),
+                canAct: () => true,
+                onExit: () =>
+                    fail('Personalisation stays inside its admitted owner.'),
+                initialGuardianRole: guardian,
+                initialCheckpoint: ZyraPreviewNavigationCheckpoint(
+                  guardian: guardian,
+                  model: ViewRequestDraftModel(capacity: 3).snapshot(),
+                  tab: 4,
+                  pages: const [],
+                ),
+                onCheckpoint: checkpoints.add,
+                onPresentationReady: () {
+                  if (!ready.isCompleted) ready.complete();
+                },
+              ),
       ),
     );
     for (var frame = 0; frame < 100 && !ready.isCompleted; frame++) {
@@ -421,7 +449,7 @@ void main() {
     ZyraInteractionStyle.hapticLevel,
     ZyraText.appFont,
     ZyraAppGoldStyle.instance.enabled,
-    ZyraDevAppGold.instance.renderingEnabled,
+    ZyraAppGoldRenderer.instance.renderingEnabled,
   ];
 
   setUpAll(() async {
@@ -465,7 +493,7 @@ void main() {
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraAppGoldStyle.instance.restore(false);
-    ZyraDevAppGold.instance.resetForTesting();
+    ZyraAppGoldRenderer.instance.resetForTesting();
     ZyraColors.restoreAppPalette(null);
     ZyraInteractionStyle.restoreHapticLevel(null);
     ZyraText.restoreAppFont(null);
@@ -718,7 +746,7 @@ void main() {
       'appearance and Back callbacks without killing the retained page',
       (tester) async {
         final owner = _ShellOwner();
-        await owner.mount(tester, guardian: guardian);
+        await owner.mount(tester, guardian: guardian, guardedRouteOwner: true);
         await owner.openPersonalisation(tester);
         final saved = tester.widget<PersonalisationScreen>(
           find.byType(PersonalisationScreen),
@@ -728,7 +756,17 @@ void main() {
             .onBack;
         final before = _snapshot(tester);
         final pageState = tester.state(find.byType(PersonalisationScreen));
-        await openZyraDevControls(tester);
+        // A real member route covers the retained page. No developer overlay exists.
+        final navigator = tester.state<NavigatorState>(
+          find.byType(Navigator).first,
+        );
+        navigator.push<void>(
+          MaterialPageRoute(
+            builder: (_) => const Scaffold(body: Text('Member route cover')),
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(_key('dev_controls_page'), findsNothing);
         final checkpoint = owner.checkpoints.last;
         expect(
           find.byKey(const ValueKey('personalisation_haptic')),
@@ -739,7 +777,9 @@ void main() {
         savedBack();
         await tester.pump();
         expect(owner.checkpoints.last, checkpoint);
-        await closeZyraDevControls(tester);
+        expect(find.text('Member route cover'), findsOneWidget);
+        navigator.pop();
+        await tester.pumpAndSettle();
         expect(
           tester.state(find.byType(PersonalisationScreen)),
           same(pageState),
@@ -791,7 +831,7 @@ void main() {
         tester.widget<CustomPaint>(_goldCanvas()).painter,
         isA<ZyraOnboardingGoldPainter>(),
       );
-      expect(ZyraDevAppGold.instance.renderingEnabled, isFalse);
+      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
       await openZyraDevControls(tester);
       await _tap(tester, _key('draft_reset'));
       expect(_key('dev_controls_page'), findsNothing);
@@ -812,7 +852,7 @@ void main() {
       expect(_snapshot(tester).goldEnabled, isTrue);
       expect(_goldCanvas(), findsOneWidget);
       expect(ZyraAppGoldStyle.instance.enabled, isFalse);
-      expect(ZyraDevAppGold.instance.renderingEnabled, isFalse);
+      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
     },
   );
 }

@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_dev_page_options.dart';
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
+import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'baseline_capture_support.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
@@ -28,6 +30,9 @@ void main() {
     )..addFont(rootBundle.load('fonts/MaterialIcons-Regular.otf'))).load();
     ZyraText.useTestFontStubs = true;
     ZyraText.testReadingFontFamily = 'PoppinsAudit';
+    await baselineSetUp(
+      evidenceRoot: '.buildlog/queue44_20261103/network-sections',
+    );
   });
   setUp(() {
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
@@ -37,110 +42,62 @@ void main() {
   tearDownAll(() {
     ZyraText.useTestFontStubs = false;
     ZyraText.testReadingFontFamily = null;
+    baselineTearDown();
   });
 
   for (final expanded in [false, true]) {
-    testWidgets('Network categories ${expanded ? 'expanded' : 'closed'}', (
-      tester,
-    ) async {
-      tester.view.physicalSize = const Size(390, 844);
-      tester.view.devicePixelRatio = 1;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
-      final options = <ZyraDevPageOption>[
-        for (final label in [
-          'Standard recommendations',
-          'Request limit reached',
-          'No recommendations',
-          'Recommendations loading',
-          'Recommendations unavailable',
-        ])
-          ZyraDevPageOption(
-            id: 'scene-$label',
-            label: label,
-            group: 'Network scene',
-            selected: label == 'Standard recommendations',
-            onSelected: () {},
+    testWidgets(
+      'member Network ${expanded ? 'sent' : 'recommended'} has no developer categories',
+      (tester) async {
+        tester.view.physicalSize = const Size(390, 844);
+        tester.view.devicePixelRatio = 1;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+        final h = BaselineHarness(
+          tester,
+          group: 'network-categories',
+          outputRoot: '.buildlog/queue44_20261103/network-sections',
+          evidenceRoot: '.buildlog/queue44_20261103/network-sections',
+        );
+        await h.mount(
+          guardian: true,
+          tab: 0,
+          checkpoint: ZyraPreviewNavigationCheckpoint(
+            guardian: true,
+            model: ViewRequestDraftModel().snapshot(),
+            tab: 0,
+            pages: const [],
+            networkTab: expanded ? 1 : 0,
           ),
-        for (final label in [
-          '1 · Open canvas',
-          '2 · Cinematic overlay',
-          '3 · Editorial profile',
-          '4 · Portrait focus',
-          '5 · Minimal action rail',
-        ])
-          ZyraDevPageOption(
-            id: 'design-$label',
-            label: label,
-            group: 'Network card design',
-            selected: label == '2 · Cinematic overlay',
-            onSelected: () {},
-          ),
-        for (final group in ['Profiles', 'Sent requests', 'Received requests'])
-          for (var count = 1; count <= 3; count++)
-            ZyraDevPageOption(
-              id: '$group-$count',
-              label: '$count ${count == 1 ? 'profile' : 'profiles'}',
-              group: group,
-              selected: count == 1,
-              onSelected: () {},
+        );
+        expect(h.latest.networkTab, expanded ? 1 : 0);
+        expect(find.text('Network'), findsWidgets);
+        for (final group in [
+          'Network scene',
+          'Network card design',
+          'Profiles',
+          'Sent requests',
+          'Received requests',
+        ]) {
+          expect(
+            find.byKey(ValueKey('dev_page_options_group_$group')),
+            findsNothing,
+          );
+          expect(
+            find.byKey(ValueKey('dev_page_options_dropdown_$group')),
+            findsNothing,
+          );
+        }
+        expect(tester.takeException(), isNull);
+        if (capture) {
+          await expectLater(
+            find.byType(MaterialApp),
+            matchesGoldenFile(
+              'candidates/toggle_sections_2026_09_27/network_${expanded ? 'expanded' : 'closed'}.png',
             ),
-      ];
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: ThemeData.dark(),
-          home: Scaffold(
-            body: RepaintBoundary(
-              key: root,
-              child: DecoratedBox(
-                decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
-                child: SafeArea(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text('Network', style: ZyraText.heading(size: 24)),
-                        const SizedBox(height: 20),
-                        ZyraDevPageOptions(
-                          options: options,
-                          contextKey: 'network',
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-      if (expanded) {
-        await tester.tap(
-          find.byKey(
-            const ValueKey('dev_page_options_dropdown_Network card design'),
-          ),
-        );
-        await tester.pumpAndSettle();
-        expect(
-          find.byKey(const ValueKey('scene-No recommendations')),
-          findsNothing,
-        );
-        expect(
-          find.byKey(const ValueKey('design-1 · Open canvas')),
-          findsOneWidget,
-        );
-      }
-      expect(tester.takeException(), isNull);
-      if (capture) {
-        await expectLater(
-          find.byKey(root),
-          matchesGoldenFile(
-            'candidates/toggle_sections_2026_09_27/network_${expanded ? 'expanded' : 'closed'}.png',
-          ),
-        );
-      }
-    });
+          );
+        }
+      },
+    );
   }
 }

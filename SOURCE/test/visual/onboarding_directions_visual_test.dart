@@ -6,13 +6,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_onboarding_interaction.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
-import 'package:zyra/dev/dev_onboarding_lab.dart';
+import '../support/queue44_onboarding_interaction_fixture.dart';
+import '../support/queue44_gold_fixture.dart';
+import '../support/queue44_onboarding_story_fixture.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
-import 'package:zyra/widgets/zyra_onboarding_study.dart';
 
 const _capture = bool.fromEnvironment('ZYRA_ONBOARDING_CAPTURE_CANDIDATES');
 const _root = ValueKey('onboarding-study-candidate');
@@ -36,7 +35,7 @@ Future<void> _pumpLab(
       ),
       home: RepaintBoundary(
         key: _root,
-        child: DevOnboardingDirectionsScreen(initialDirection: direction),
+        child: OnboardingStoryFixture(initialDirection: direction),
       ),
     ),
   );
@@ -172,11 +171,17 @@ void main() {
             for (final key in const [
               'dev_onboarding_continue',
               'dev_onboarding_close',
-              'dev_onboarding_previous_direction',
-              'dev_onboarding_next_direction',
             ]) {
               _expectReachable(tester, key, viewport.size, reason: reason);
             }
+            expect(
+              find.byKey(const ValueKey('dev_onboarding_previous_direction')),
+              findsNothing,
+            );
+            expect(
+              find.byKey(const ValueKey('dev_onboarding_next_direction')),
+              findsNothing,
+            );
             expect(
               find.text('${page + 1} / 4'),
               findsOneWidget,

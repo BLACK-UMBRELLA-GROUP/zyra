@@ -60,6 +60,7 @@ Future<void> _mount(
         child: child!,
       ),
       home: ZyraOneJourneyConceptShell(
+        fixture: ZyraShellTestFixture().fixture,
         canAct: () => true,
         onExit: () => fail('A nested return must not exit the shell.'),
         initialGuardianRole: guardian,
@@ -94,6 +95,7 @@ Future<void> _mount(
 }
 
 Future<void> _tapFinder(WidgetTester tester, Finder target) async {
+  if (await pressZyraFixtureFinder(tester, target)) return;
   if (target.evaluate().isEmpty) {
     final owners = [
       'concept-current-profile-scroll',
@@ -116,8 +118,10 @@ Future<void> _tapFinder(WidgetTester tester, Finder target) async {
   expect(tester.takeException(), isNull);
 }
 
-Future<void> _tap(WidgetTester tester, String key) =>
-    _tapFinder(tester, _key(key));
+Future<void> _tap(WidgetTester tester, String key) async {
+  if (await pressZyraDevControlKey(tester, key)) return;
+  await _tapFinder(tester, _key(key));
+}
 
 Future<void> _tapNav(WidgetTester tester, String label) async {
   await expandZyraPreviewTabBarIfIdle(tester);
@@ -202,11 +206,8 @@ Future<void> _openOneJourney(WidgetTester tester) async {
   // Explicit local scenario selection, never used as a return shortcut.
   await _tapNav(tester, 'Journey');
   await openZyraDevControls(tester);
-  expect(find.text('Page options'), findsOneWidget);
-  expect(
-    tester.widget<Text>(_key('concept_page_options_context')).data,
-    'Journey',
-  );
+  expect(find.text('Page options'), findsNothing);
+  expect(_key('concept_page_options_context'), findsNothing);
   await _tap(tester, 'concept_journey_preview_1');
   await _tap(tester, 'draft_journey_$_sara');
   expect(find.byType(ZyraConceptJourneyPresentation), findsOneWidget);

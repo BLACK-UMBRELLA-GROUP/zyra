@@ -70,6 +70,7 @@ Future<void> _mount(WidgetTester tester, {bool enlarged = false}) async {
         child: RepaintBoundary(key: _boundary, child: child!),
       ),
       home: ViewRequestDraftScreen(
+        fixture: ZyraShellTestFixture().fixture,
         ownerGeneration: ZyraAccountState.generation,
         ownerId: ZyraAccountState.userId,
       ),
@@ -172,7 +173,7 @@ Future<void> _nav(WidgetTester tester, int index) async {
     find.byType(ZyraShellNavigation).evaluate().isEmpty && depth < 8;
     depth++
   ) {
-    if (find.byKey(const ValueKey('dev_controls_page')).evaluate().isNotEmpty) {
+    if (zyraShellFixtureFor(tester).setupScopeOpen) {
       await closeZyraDevControls(tester);
       continue;
     }
@@ -203,18 +204,9 @@ Future<void> _nav(WidgetTester tester, int index) async {
 }
 
 Future<void> _openControls(WidgetTester tester) async {
-  if (_key('concept_journey_preview_1').evaluate().isEmpty) {
-    // The retained tests exercise Journey counts, not Browse's distinct
-    // motion/credit controls. Go to the actual Journey context first.
-    await _nav(tester, 1);
-    await _press(tester, 'draft_back');
-  }
-  expect(
-    tester.widget<Text>(_key('concept_page_options_context')).data,
-    'Journey',
-  );
-  expect(_key('concept_journey_preview_1'), findsOneWidget);
-  expect(_key('draft_rules'), findsNothing);
+  await _nav(tester, 1);
+  await openZyraDevControls(tester);
+  expect(_key('concept_journey_preview_1'), findsNothing);
 }
 
 Future<void> _seed(WidgetTester tester) async {

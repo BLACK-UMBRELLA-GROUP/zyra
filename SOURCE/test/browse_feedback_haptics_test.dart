@@ -1,3 +1,4 @@
+import 'support/zyra_hidden_dev_controls_driver.dart';
 // Local guarded shell with synthetic public profiles and offline images.
 // Native feedback acknowledges valid gestures, never authorizes an action.
 import 'dart:io';
@@ -67,6 +68,7 @@ Future<void> _mount(WidgetTester tester, {bool Function()? canAct}) async {
         child: child!,
       ),
       home: ZyraOneJourneyConceptShell(
+        fixture: ZyraShellTestFixture().fixture,
         canAct: canAct ?? () => true,
         onExit: () {},
       ),
@@ -98,6 +100,7 @@ Future<void> _mount(WidgetTester tester, {bool Function()? canAct}) async {
 }
 
 Future<void> _tap(WidgetTester tester, String key) async {
+  if (await pressZyraDevControlKey(tester, key)) return;
   final target = _key(key);
   expect(target, findsOneWidget);
   await tester.ensureVisible(target);

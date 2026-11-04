@@ -2,26 +2,21 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_signup_process.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
-import 'package:zyra/dev/zyra_dev_page_options.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
-import 'package:zyra/dev/zyra_global_dev_overlay.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
+import 'package:zyra/dev/zyra_draft_compatibility_access_store.dart';
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
+import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/models/seeker_profile.dart';
-import 'package:zyra/screens/dev/developer_access_screen.dart';
 import 'package:zyra/screens/subscription/profile_unlock_screen.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/services/zyra_unlock_service.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_text.dart';
+import 'support/queue44_gold_fixture.dart';
+import 'support/queue44_signup_flow_fixture.dart';
 
 const _host = ValueKey('entry-compatibility-invoking-host');
-const _launch = ValueKey('entry-compatibility-launch-signup');
 const _cover = ValueKey('entry-compatibility-cover');
-const _standard = 'Compatibility Unlock';
-const _plus = 'Compatibility Unlock';
 const _first = SeekerProfile(
   id: 'dev-signup-entry-compatibility-noor',
   firstName: 'Noor',
@@ -47,25 +42,15 @@ const _real = SeekerProfile(
   gender: 'female',
 );
 
-ZyraDevSurfaceCoordinator get _coordinator =>
-    ZyraDevSurfaceCoordinator.instance;
-
 class _RootRouteAudit extends NavigatorObserver {
   int pushes = 0;
-  int pops = 0;
   int replacements = 0;
   int removals = 0;
-
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) => pushes++;
-
-  @override
-  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) => pops++;
-
   @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) =>
       replacements++;
-
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) =>
       removals++;
@@ -73,7 +58,6 @@ class _RootRouteAudit extends NavigatorObserver {
 
 class _Harness {
   const _Harness(this.root, this.flow, this.audit);
-
   final GlobalKey<NavigatorState> root;
   final GlobalKey<NavigatorState> flow;
   final _RootRouteAudit audit;
@@ -90,11 +74,10 @@ Future<_Harness> _mountSignup(
   addTearDown(tester.view.resetDevicePixelRatio);
   final root = GlobalKey<NavigatorState>();
   final audit = _RootRouteAudit();
-  final controlsRouteObserver = ZyraDevControlsRouteObserver();
   await tester.pumpWidget(
     MaterialApp(
       navigatorKey: root,
-      navigatorObservers: [audit, controlsRouteObserver],
+      navigatorObservers: [audit, ZyraPreviewRouteObserver()],
       theme: ThemeData.dark(),
       builder: (context, child) => MediaQuery(
         data: MediaQuery.of(context).copyWith(
@@ -102,148 +85,88 @@ Future<_Harness> _mountSignup(
           padding: const EdgeInsets.only(top: 24, bottom: 24),
           viewPadding: const EdgeInsets.only(top: 24, bottom: 24),
         ),
-        child: ZyraGlobalDevOverlayHost(
-          navigatorKey: root,
-          routeObserver: controlsRouteObserver,
-          authStateChangesOverride: const Stream.empty(),
-          child: child!,
-        ),
+        child: child!,
       ),
-      home: Scaffold(
-        key: _host,
-        body: Builder(
-          builder: (context) => TextButton(
-            key: _launch,
-            onPressed: () {
-              _coordinator.beginEntryFlow('Onboarding');
-              unawaited(
-                Navigator.of(context)
-                    .push<void>(
-                      MaterialPageRoute(
-                        allowSnapshotting: false,
-                        builder: (_) => const DevSignUpProcessScreen(),
-                      ),
-                    )
-                    .whenComplete(_coordinator.endEntryFlow),
-              );
-            },
-            child: const Text('Open bounded first-use flow'),
-          ),
-        ),
-      ),
+      home: const Scaffold(key: _host, body: Text('Invoking member route')),
     ),
   );
   await tester.pumpAndSettle();
-  await tester.tap(find.byKey(_launch));
+  unawaited(
+    root.currentState!.push<void>(
+      MaterialPageRoute(
+        allowSnapshotting: false,
+        builder: (_) => const SignupFlowFixture(),
+      ),
+    ),
+  );
   await tester.pumpAndSettle();
   final flow =
       tester
               .widget<Navigator>(
                 find.descendant(
-                  of: find.byType(DevSignUpProcessScreen),
+                  of: find.byType(SignupFlowFixture),
                   matching: find.byType(Navigator),
                 ),
               )
               .key
           as GlobalKey<NavigatorState>;
   addTearDown(() async {
-    final nested = flow.currentState;
-    if (nested != null && nested.mounted) {
-      while (nested.canPop()) {
-        nested.pop();
-      }
-      await tester.pumpAndSettle();
-    }
-    final outer = root.currentState;
-    if (outer != null && outer.mounted) {
-      while (outer.canPop()) {
-        outer.pop();
-      }
-      await tester.pumpAndSettle();
-    }
     await tester.pumpWidget(const SizedBox.shrink());
     await tester.pumpAndSettle();
-    _coordinator.endEntryFlow();
   });
-  expect(_coordinator.surface, ZyraDevSurface.entry);
-  expect(_coordinator.entryLabel, 'Onboarding');
+  expect(OnboardingFixtureController.instance.entryLabel, 'Onboarding');
   expect(ZyraInternalPreviewClient.isActive, isTrue);
   return _Harness(root, flow, audit);
 }
 
-Future<ZyraCompatibilityDevControls> _openCompatibility(
+Future<ZyraCompatibilityFixture> _openCompatibility(
   WidgetTester tester,
   _Harness harness, {
   SeekerProfile profile = _first,
 }) async {
+  final fixture = ZyraCompatibilityFixture();
   unawaited(
     harness.flow.currentState!.push<void>(
       MaterialPageRoute(
         allowSnapshotting: false,
-        builder: (_) => ProfileUnlockScreen(profile: profile),
+        builder: (_) => ProfileUnlockScreen(profile: profile, fixture: fixture),
       ),
     ),
   );
   await tester.pumpAndSettle();
-  final controls = _coordinator.activeCompatibilityControls;
-  expect(controls, isNotNull);
-  expect(controls!.profileId, profile.id);
-  expect(controls.isCurrent(), isTrue);
-  expect(find.byType(ZyraEntryDevPanel), findsOneWidget);
-  return controls;
+  expect(fixture.profileId, profile.id);
+  expect(fixture.isCurrent(), profile.id != _real.id);
+  _expectNoOptions();
+  return fixture;
 }
 
-Future<void> _openActions(WidgetTester tester) async {
-  final hold = await tester.startGesture(
-    Offset(
-      tester.view.physicalSize.width - 8,
-      tester.view.physicalSize.height / 2,
+void _expectNoOptions() {
+  expect(
+    find.byWidgetPredicate(
+      (w) => const {
+        'ZyraGlobalDevOverlayHost',
+        'ZyraDevPageOptions',
+        'ZyraEntryDevPanel',
+        'DeveloperAccessScreen',
+      }.contains(w.runtimeType.toString()),
     ),
+    findsNothing,
   );
-  await tester.pump(const Duration(seconds: 3));
-  await hold.up();
-  await tester.pumpAndSettle();
-  expect(find.byKey(const ValueKey('dev_controls_close')), findsOneWidget);
-}
-
-ZyraDevPageOptions _options(WidgetTester tester) =>
-    tester.widget<ZyraDevPageOptions>(find.byType(ZyraDevPageOptions));
-
-Future<void> _choose(
-  WidgetTester tester, {
-  required bool plus,
-  required int count,
-}) async {
-  final group = plus ? _plus : _standard;
-  final trigger = find.byKey(ValueKey('dev_page_options_dropdown_$group'));
-  await tester.ensureVisible(trigger);
-  await tester.pumpAndSettle();
-  await tester.tap(trigger.hitTestable());
-  await tester.pumpAndSettle();
-  final option = find.byKey(
-    ValueKey('compatibility-${plus ? 'plus' : 'standard'}-$count'),
-  );
-  await tester.ensureVisible(option);
-  await tester.pumpAndSettle();
-  expect(option.hitTestable(), findsOneWidget);
-  await tester.tap(option);
-  await tester.pumpAndSettle();
+  expect(find.byKey(const ValueKey('dev_controls_close')), findsNothing);
 }
 
 void _expectBounded(_Harness harness) {
-  expect(_coordinator.surface, ZyraDevSurface.entry);
-  expect(_coordinator.entryLabel, 'Onboarding');
+  expect(OnboardingFixtureController.instance.entryLabel, 'Onboarding');
   expect(ZyraInternalPreviewClient.isActive, isTrue);
   expect(harness.root.currentState!.canPop(), isTrue);
   expect(harness.audit.pushes, 2);
   expect(harness.audit.replacements, 0);
   expect(harness.audit.removals, 0);
-  expect(find.byKey(const ValueKey('dev_signup_close')), findsNothing);
+  _expectNoOptions();
 }
 
 void main() {
   late (String?, ZyraPlan, String?) original;
-
   setUp(() {
     ZyraText.useTestFontStubs = true;
     ZyraDeveloperAccess.resetAuthorizationForTesting();
@@ -251,7 +174,7 @@ void main() {
     ZyraDevOnboardingGoldMotion.select(ZyraOnboardingGoldMotion.pageEntrance);
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
     ZyraInternalPreviewClient.finishSignOut();
-    _coordinator.resetForTesting();
+    OnboardingFixtureController.instance.resetForTesting();
     ZyraUnlockService.clearForSignOut();
     final state = AppState.instance;
     original = (state.name, state.plan, state.location);
@@ -259,114 +182,98 @@ void main() {
     state.plan = ZyraPlan.one;
     state.location = 'Unchanged sample region';
   });
-
   tearDown(() {
     ZyraUnlockService.clearForSignOut();
     ZyraInternalPreviewClient.finishSignOut();
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(null);
-    _coordinator.resetForTesting();
+    OnboardingFixtureController.instance.resetForTesting();
     AppState.instance.name = original.$1;
     AppState.instance.plan = original.$2;
     AppState.instance.location = original.$3;
     ZyraText.useTestFontStubs = false;
   });
 
-  testWidgets('ordinary signup entry retains its two existing option groups', (
-    tester,
-  ) async {
-    final harness = await _mountSignup(tester);
-    await _openActions(tester);
-    expect(_options(tester).options.map((option) => option.id).toSet(), {
-      'dev_entry_accounts',
-      'dev_entry_signup',
-    });
-    expect(_options(tester).options.map((option) => option.group).toSet(), {
-      'Entry',
-      'Onboarding',
-    });
-    _expectBounded(harness);
-    expect(tester.takeException(), isNull);
-  });
+  testWidgets(
+    'ordinary signup entry has no developer option groups and retains its nested route',
+    (tester) async {
+      final harness = await _mountSignup(tester);
+      _expectBounded(harness);
+      expect(find.byKey(const ValueKey('welcome_google')), findsOneWidget);
+      expect(find.byKey(const ValueKey('welcome_apple')), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   for (final viewport in const [
     (size: Size(390, 844), scale: 1.0),
     (size: Size(320, 568), scale: 1.3),
   ]) {
     testWidgets(
-      'nested Compatibility has one reachable group at ${viewport.size.width}/${viewport.scale}',
+      'nested Compatibility member action stays reachable without credit menus at ${viewport.size.width}/${viewport.scale}',
       (tester) async {
         final harness = await _mountSignup(
           tester,
           size: viewport.size,
           textScale: viewport.scale,
         );
-        final controls = await _openCompatibility(tester, harness);
-        await _openActions(tester);
-        expect(_options(tester).options.map((option) => option.id).toSet(), {
-          'compatibility-plus-0',
-          'compatibility-plus-1',
-          'compatibility-plus-5',
-          'dev_entry_accounts',
-          'dev_entry_signup',
-        });
-        expect(_options(tester).contextKey, startsWith('entry:compatibility-'));
-        expect(controls.balance(false), 0);
-        expect(controls.balance(true), 1);
-        await _choose(tester, plus: true, count: 5);
-        expect(controls.balance(false), 0);
-        expect(controls.balance(true), 5);
+        final fixture = await _openCompatibility(tester, harness);
+        expect(fixture.balance(false), 0);
+        expect(fixture.balance(true), 1);
+        fixture.setBalance(true, 5);
+        await tester.pumpAndSettle();
+        final unlock = find.text('Unlock Compatibility');
+        await tester.ensureVisible(unlock);
+        await tester.pumpAndSettle();
+        expect(unlock.hitTestable(), findsOneWidget);
+        expect(fixture.balance(true), 5);
         _expectBounded(harness);
         expect(tester.takeException(), isNull);
       },
     );
   }
 
-  testWidgets('entry choices assign exact repeatable unified credits', (
-    tester,
-  ) async {
-    final harness = await _mountSignup(tester);
-    final controls = await _openCompatibility(tester, harness);
-    await _openActions(tester);
-    for (final plus in const [true]) {
-      final other = controls.balance(!plus);
+  testWidgets(
+    'code credit fixtures assign exact repeatable unified balances without member mutation',
+    (tester) async {
+      final harness = await _mountSignup(tester);
+      final fixture = await _openCompatibility(tester, harness);
+      final store = ZyraDraftCompatibilityAccessStore(
+        canAct: fixture.isCurrent,
+      );
+      addTearDown(store.close);
       for (final count in const [0, 1, 5, 5]) {
-        await _choose(tester, plus: plus, count: count);
-        expect(controls.balance(plus), count);
-        expect(controls.balance(!plus), other);
+        fixture.setBalance(true, count);
+        expect(store.setBalance(count: count), isTrue);
+        expect(fixture.balance(true), count);
+        expect(fixture.balance(false), 0);
+        expect(store.balance, count);
       }
-    }
-    expect(
-      _options(tester).options
-          .where((option) => option.selected)
-          .map((option) => option.id)
-          .toSet(),
-      {'compatibility-plus-5'},
-    );
-    controls.setBalance(false, 5);
-    expect(controls.balance(false), 0);
-    expect(controls.balance(true), 5);
-    expect(
-      (
-        AppState.instance.name,
-        AppState.instance.plan,
-        AppState.instance.location,
-      ),
-      ('Unchanged sample owner', ZyraPlan.one, 'Unchanged sample region'),
-    );
-    _expectBounded(harness);
-    expect(tester.takeException(), isNull);
-  });
+      fixture.setBalance(false, 5);
+      expect(fixture.balance(false), 0);
+      expect(fixture.balance(true), 5);
+      expect(store.setBalance(count: 2), isFalse);
+      expect(store.unlock(draftProfiles.first.id), isTrue);
+      expect(store.balance, 4);
+      expect(
+        (
+          AppState.instance.name,
+          AppState.instance.plan,
+          AppState.instance.location,
+        ),
+        ('Unchanged sample owner', ZyraPlan.one, 'Unchanged sample region'),
+      );
+      _expectBounded(harness);
+      expect(tester.takeException(), isNull);
+    },
+  );
 
-  testWidgets('covered nested route refuses retained entry choices', (
+  testWidgets('covered nested route refuses retained code credit mutation', (
     tester,
   ) async {
     final harness = await _mountSignup(tester);
-    final controls = await _openCompatibility(tester, harness);
-    await _openActions(tester);
-    final stale = _options(tester).options
-        .singleWhere((option) => option.id == 'compatibility-plus-5')
-        .onSelected!;
+    final fixture = await _openCompatibility(tester, harness);
+    final stale = fixture.captureBalance(true, 5);
     unawaited(
       harness.flow.currentState!.push<void>(
         MaterialPageRoute(
@@ -375,132 +282,101 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(_coordinator.activeCompatibilityControls, isNull);
-    expect(_options(tester).contextKey, 'entry:Onboarding');
-    expect(
-      _options(
-        tester,
-      ).options.any((option) => option.id.startsWith('compatibility-')),
-      isFalse,
-    );
+    expect(fixture.isCurrent(), isFalse);
     await stale();
-    expect(controls.balance(true), 1);
+    expect(fixture.balance(true), 1);
     harness.flow.currentState!.pop();
     await tester.pumpAndSettle();
-    expect(_coordinator.activeCompatibilityControls, same(controls));
-    await _choose(tester, plus: true, count: 5);
-    expect(controls.balance(true), 5);
-    _expectBounded(harness);
-    expect(tester.takeException(), isNull);
-  });
-
-  testWidgets('a new nested sample owner invalidates the old choice', (
-    tester,
-  ) async {
-    final harness = await _mountSignup(tester);
-    final first = await _openCompatibility(tester, harness);
-    await _openActions(tester);
-    final firstContext = _options(tester).contextKey;
-    final stale = _options(tester).options
-        .singleWhere((option) => option.id == 'compatibility-plus-5')
-        .onSelected!;
-    final second = await _openCompatibility(tester, harness, profile: _second);
-    expect(_options(tester).contextKey, isNot(firstContext));
+    expect(fixture.isCurrent(), isTrue);
     await stale();
-    expect(first.balance(false), 0);
-    expect(second.balance(false), 0);
-    expect(second.balance(true), 1);
-    await _choose(tester, plus: true, count: 5);
-    expect(second.balance(true), 5);
-    expect(first.balance(true), 1);
-    _expectBounded(harness);
-    expect(tester.takeException(), isNull);
-  });
-
-  testWidgets('revocation hides entry choices and refuses an old callback', (
-    tester,
-  ) async {
-    final harness = await _mountSignup(tester);
-    final controls = await _openCompatibility(tester, harness);
-    await _openActions(tester);
-    final stale = _options(tester).options
-        .singleWhere((option) => option.id == 'compatibility-plus-5')
-        .onSelected!;
-    ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    await tester.pumpAndSettle();
-    expect(find.byType(ZyraDevPageOptions), findsNothing);
-    expect(_coordinator.activeCompatibilityControls, isNull);
-    expect(find.byKey(const ValueKey('dev_signup_denied')), findsOneWidget);
-    await stale();
-    expect(controls.balance(false), 0);
-    expect(controls.balance(true), 1);
+    expect(fixture.balance(true), 1);
+    fixture.setBalance(true, 5);
+    expect(fixture.balance(true), 5);
     _expectBounded(harness);
     expect(tester.takeException(), isNull);
   });
 
   testWidgets(
-    'Home opens Developer Access, retains first root and rejects disposed choices',
+    'a new nested sample owner rejects the first owner code mutation',
     (tester) async {
       final harness = await _mountSignup(tester);
-      final controls = await _openCompatibility(tester, harness);
-      await _openActions(tester);
-      final stale = _options(tester).options
-          .singleWhere((option) => option.id == 'compatibility-plus-5')
-          .onSelected!;
-      await tester.tap(
-        find.byKey(const ValueKey('dev_controls_tab_home')).hitTestable(),
+      final first = await _openCompatibility(tester, harness);
+      final stale = first.captureBalance(true, 5);
+      final second = await _openCompatibility(
+        tester,
+        harness,
+        profile: _second,
       );
-      await tester.pumpAndSettle();
-      final exit = find.byKey(const ValueKey('dev_home_navigation'));
-      await tester.ensureVisible(exit);
-      await tester.pumpAndSettle();
-      expect(exit.hitTestable(), findsOneWidget);
-      await tester.tap(exit);
-      await tester.pumpAndSettle();
-      expect(find.byKey(_host), findsNothing);
-      expect(find.byKey(_host, skipOffstage: false), findsOneWidget);
-      expect(find.byType(DeveloperAccessScreen), findsOneWidget);
-      for (final key in const [
-        'dev_access_seeker',
-        'dev_access_guardian',
-        'dev_access_signup',
-      ]) {
-        expect(find.byKey(ValueKey(key)).hitTestable(), findsOneWidget);
-      }
-      expect(find.byType(DevSignUpProcessScreen), findsNothing);
-      expect(harness.root.currentState!.canPop(), isTrue);
-      expect(_coordinator.entryLabel, 'Developer Access');
-      expect(_coordinator.activeCompatibilityControls, isNull);
-      expect(_coordinator.canCloseOnboarding, isFalse);
-      expect(ZyraInternalPreviewClient.isActive, isTrue);
+      expect(first.isCurrent(), isFalse);
       await stale();
-      expect(controls.balance(true), 1);
-      expect(harness.audit.replacements, 0);
-      expect(harness.audit.removals, 1);
-      expect(harness.audit.pushes, 3);
+      expect(first.balance(false), 0);
+      expect(second.balance(false), 0);
+      expect(second.balance(true), 1);
+      second.setBalance(true, 5);
+      expect(second.balance(true), 5);
+      expect(first.balance(true), 1);
+      _expectBounded(harness);
       expect(tester.takeException(), isNull);
     },
   );
 
-  testWidgets('real UUIDs never acquire the sample credit groups in Entry', (
-    tester,
-  ) async {
-    final harness = await _mountSignup(tester);
-    unawaited(
-      harness.flow.currentState!.push<void>(
-        MaterialPageRoute(
-          builder: (_) => const ProfileUnlockScreen(profile: _real),
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
-    await _openActions(tester);
-    expect(_coordinator.activeCompatibilityControls, isNull);
-    expect(_options(tester).options.map((option) => option.id).toSet(), {
-      'dev_entry_accounts',
-      'dev_entry_signup',
-    });
-    _expectBounded(harness);
-    expect(tester.takeException(), isNull);
-  });
+  testWidgets(
+    'revocation keeps credit menus absent and refuses a captured fixture callback',
+    (tester) async {
+      final harness = await _mountSignup(tester);
+      final fixture = await _openCompatibility(tester, harness);
+      final stale = fixture.captureBalance(true, 5);
+      ZyraDeveloperAccess.setAuthorizedForTesting(false);
+      await tester.pumpAndSettle();
+      expect(fixture.isCurrent(), isFalse);
+      expect(find.byKey(const ValueKey('dev_signup_denied')), findsOneWidget);
+      await stale();
+      expect(fixture.balance(false), 0);
+      expect(fixture.balance(true), 1);
+      _expectBounded(harness);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'code close retains the invoking root and rejects disposed credit callbacks',
+    (tester) async {
+      final harness = await _mountSignup(tester);
+      final fixture = await _openCompatibility(tester, harness);
+      final stale = fixture.captureBalance(true, 5);
+      expect(OnboardingFixtureController.instance.closeOnboarding(), isTrue);
+      await tester.pumpAndSettle();
+      expect(find.byKey(_host), findsOneWidget);
+      expect(find.byType(SignupFlowFixture), findsNothing);
+      expect(harness.root.currentState!.canPop(), isFalse);
+      expect(OnboardingFixtureController.instance.canCloseOnboarding, isFalse);
+      expect(fixture.isCurrent(), isFalse);
+      await stale();
+      expect(fixture.balance(true), 1);
+      expect(harness.audit.replacements, 0);
+      expect(harness.audit.removals, 0);
+      expect(harness.audit.pushes, 2);
+      _expectNoOptions();
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'real UUIDs never acquire code credit capability or sample menus',
+    (tester) async {
+      final harness = await _mountSignup(tester);
+      final fixture = await _openCompatibility(tester, harness, profile: _real);
+      final store = ZyraDraftCompatibilityAccessStore(
+        canAct: fixture.isCurrent,
+      );
+      addTearDown(store.close);
+      fixture.setBalance(true, 5);
+      expect(fixture.isCurrent(), isFalse);
+      expect(store.current, isFalse);
+      expect(store.unlock(_real.id), isFalse);
+      expect(store.resultFor(_real.id), isNull);
+      _expectBounded(harness);
+      expect(tester.takeException(), isNull);
+    },
+  );
 }

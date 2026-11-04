@@ -2,6 +2,25 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_dev_scenario.dart';
+import 'package:zyra/services/zyra_developer_access.dart';
+import 'support/queue44_scenario_fixture_catalog.dart';
+import 'support/queue44_dashboard_fixture_catalog.dart';
+
+List<ZyraFixtureChoice> _guardianChoices() {
+  final state = ZyraDevScenario.instance;
+  final page = state.currentPage;
+  final live = state.useLiveGuardianData;
+  ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(false);
+  try {
+    state.setCurrentPage(DevPage.guardian);
+    state.setUseLiveGuardianData(false);
+    return Queue44SeekerCatalog(current: () => true).options;
+  } finally {
+    state.setCurrentPage(page);
+    state.setUseLiveGuardianData(live);
+    ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(null);
+  }
+}
 
 void main() {
   test('Guardian preview includes zero through three active Journeys', () {
@@ -15,46 +34,49 @@ void main() {
       expect(scenario.guardianPreviewActiveJourneyCount, 0);
       scenario.setGuardianPreviewActiveJourneyCount(4);
       expect(scenario.guardianPreviewActiveJourneyCount, 3);
-      final panel = File(
-        'lib/dev/dev_scenario_panel_v2.dart',
-      ).readAsStringSync();
-      expect(panel, contains('for (final count in const [0, 1, 2, 3])'));
+      final choices = _guardianChoices().where(
+        (choice) => choice.id.startsWith('guardian-active-journeys-'),
+      );
+      expect(choices.map((choice) => choice.id), [
+        for (final count in [0, 1, 2, 3]) 'guardian-active-journeys-$count',
+      ]);
+      expect(File('lib/dev/dev_scenario_panel_v2.dart').existsSync(), isFalse);
     } finally {
       scenario.setGuardianPreviewActiveJourneyCount(1);
     }
   });
   test('Quiet sections is canonical and has no comparison toggle', () {
-    final panel = File('lib/dev/dev_scenario_panel_v2.dart').readAsStringSync();
-    final guardianStart = panel.indexOf(
-      'List<ZyraDevPageOption> _guardianOptions()',
-    );
-    expect(guardianStart, greaterThanOrEqualTo(0));
-    final guardianEnd = panel.indexOf(
-      'List<ZyraDevPageOption> _profileOptions()',
-      guardianStart,
-    );
-    expect(guardianEnd, greaterThan(guardianStart));
-    final guardianTools = panel.substring(guardianStart, guardianEnd);
-    final dashboardTools = File(
-      'lib/dev/zyra_dashboard_lab_controls.dart',
-    ).readAsStringSync();
-
-    expect(guardianTools, isNot(contains("group: 'Guardian Page Design'")));
-    expect(guardianTools, isNot(contains('guardian-design-')));
-    expect(guardianTools, contains('if (!_localOnly)'));
-    expect(guardianTools, contains('_scenario.setUseLiveGuardianData(live)'));
-    expect(guardianTools, contains('_scenario.setMainGuardian(linked)'));
-    expect(guardianTools, contains('_scenario.setAdditionalGuardians'));
-    expect(guardianTools, isNot(contains('pending-invitation states below')));
-    expect(guardianTools, isNot(contains('Received invitations')));
-    expect(guardianTools, isNot(contains('Pending invitations')));
+    final choices = _guardianChoices();
     expect(
-      dashboardTools,
-      isNot(contains('Guardian invitations remain owned')),
+      choices.map((choice) => choice.group),
+      isNot(contains('Guardian Page Design')),
     );
     expect(
-      dashboardTools,
-      isNot(contains('by Dashboard, not the Guardian page')),
+      choices.any((choice) => choice.id.startsWith('guardian-design-')),
+      isFalse,
+    );
+    expect(
+      choices.map((choice) => choice.id),
+      containsAll([
+        'guardian-source-live',
+        'guardian-source-preview',
+        'main-guardian-linked',
+        'main-guardian-none',
+        'additional-guardians-0',
+      ]),
+    );
+    expect(
+      choices.map((choice) => choice.group),
+      isNot(contains('Received invitations')),
+    );
+    expect(
+      choices.map((choice) => choice.group),
+      isNot(contains('Pending invitations')),
+    );
+    expect(File('lib/dev/dev_scenario_panel_v2.dart').existsSync(), isFalse);
+    expect(
+      File('lib/dev/zyra_dashboard_lab_controls.dart').existsSync(),
+      isFalse,
     );
 
     final tab = File(

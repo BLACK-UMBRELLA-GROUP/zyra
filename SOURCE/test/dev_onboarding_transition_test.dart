@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/dev_onboarding_directions.dart';
-import 'package:zyra/dev/dev_onboarding_gold_design.dart';
-import 'package:zyra/dev/dev_onboarding_interaction.dart';
-import 'package:zyra/dev/dev_onboarding_lab.dart';
-import 'package:zyra/dev/dev_onboarding_transition.dart';
+import 'support/queue44_gold_fixture.dart';
+import 'support/queue44_onboarding_interaction_fixture.dart';
+import 'support/queue44_onboarding_story_fixture.dart';
+import 'support/queue44_onboarding_transition_fixture.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/theme/zyra_text.dart';
@@ -55,7 +54,7 @@ Future<GlobalKey<NavigatorState>> _openStory(
   );
   navigator.currentState!.push(
     MaterialPageRoute(
-      builder: (_) => const DevOnboardingDirectionsScreen(
+      builder: (_) => const OnboardingStoryFixture(
         initialDirection: ZyraOnboardingDirection.luma,
       ),
     ),
@@ -120,58 +119,48 @@ void main() {
     },
   );
 
-  testWidgets('developer toggle offers six choices and honours busy/access', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: Scaffold(
-          body: SingleChildScrollView(child: DevOnboardingTransitionPicker()),
-        ),
-      ),
-    );
-    for (final option in ZyraOnboardingPageTransition.values) {
+  testWidgets(
+    'code-selected transition has no developer picker and honours access',
+    (tester) async {
+      expect(ZyraOnboardingPageTransition.values, hasLength(6));
       expect(
-        find.byKey(ValueKey('dev_onboarding_transition_${option.name}')),
+        ZyraDevOnboardingTransition.select(
+          ZyraOnboardingPageTransition.quietFade,
+        ),
+        isTrue,
+      );
+      await tester.pumpWidget(
+        const MaterialApp(home: OnboardingStoryFixture()),
+      );
+      for (final option in ZyraOnboardingPageTransition.values) {
+        expect(
+          find.byKey(ValueKey('dev_onboarding_transition_${option.name}')),
+          findsNothing,
+        );
+      }
+      expect(
+        ZyraDevOnboardingTransition.current,
+        ZyraOnboardingPageTransition.quietFade,
+      );
+      ZyraDeveloperAccess.setAuthorizedForTesting(false);
+      await tester.pump();
+      expect(
+        ZyraDevOnboardingTransition.select(
+          ZyraOnboardingPageTransition.cardTilt,
+        ),
+        isFalse,
+      );
+      expect(
+        ZyraDevOnboardingTransition.current,
+        ZyraOnboardingPageTransition.quietFade,
+      );
+      expect(
+        find.byKey(const ValueKey('dev_onboarding_directions_denied')),
         findsOneWidget,
       );
-    }
-    const fade = ValueKey('dev_onboarding_transition_quietFade');
-    await tester.ensureVisible(find.byKey(fade));
-    await tester.tap(find.byKey(fade));
-    await tester.pump();
-    expect(
-      ZyraDevOnboardingTransition.current,
-      ZyraOnboardingPageTransition.quietFade,
-    );
-
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: Scaffold(
-          body: SingleChildScrollView(
-            child: DevOnboardingTransitionPicker(enabled: false),
-          ),
-        ),
-      ),
-    );
-    expect(
-      tester
-          .widget<InkWell>(
-            find.byKey(const ValueKey('dev_onboarding_transition_cardTilt')),
-          )
-          .onTap,
-      isNull,
-    );
-    ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    await tester.pump();
-    expect(find.byType(DevOnboardingTransitionPicker), findsOneWidget);
-    expect(find.byKey(fade), findsNothing);
-    expect(
-      ZyraDevOnboardingTransition.current,
-      ZyraOnboardingPageTransition.quietFade,
-    );
-    expect(tester.takeException(), isNull);
-  });
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets('the five in-between frames have different motion signatures', (
     tester,
@@ -461,9 +450,7 @@ void main() {
     final navigator = await _openStory(tester);
     await _revealCard(tester, 0);
     final advance = tester.widget<FilledButton>(find.byKey(_arrow)).onPressed!;
-    final skip = tester
-        .widget<TextButton>(find.byKey(const ValueKey('dev_onboarding_skip')))
-        .onPressed!;
+    final skip = storyFixtureSkipCallback(tester)!;
     final tap = tester
         .widget<GestureDetector>(
           find
@@ -489,12 +476,7 @@ void main() {
       isNull,
     );
     expect(tester.widget<FilledButton>(find.byKey(_arrow)).onPressed, isNull);
-    expect(
-      tester
-          .widget<TextButton>(find.byKey(const ValueKey('dev_onboarding_skip')))
-          .onPressed,
-      isNull,
-    );
+    expect(storyFixtureSkipCallback(tester), isNull);
     advance();
     skip();
     tap();
@@ -534,9 +516,7 @@ void main() {
       final staleFinish = tester
           .widget<ZyraOnboardingArrowAction>(find.byKey(_arrow))
           .onPressed!;
-      final staleSkip = tester
-          .widget<TextButton>(find.byKey(const ValueKey('dev_onboarding_skip')))
-          .onPressed!;
+      final staleSkip = storyFixtureSkipCallback(tester)!;
       await _swipeCard(tester, 3, -500);
       await tester.drag(_story(2), const Offset(500, 0));
       await tester.pump();
@@ -561,7 +541,7 @@ void main() {
       finish();
       finish();
       await tester.pumpAndSettle();
-      expect(find.byType(DevOnboardingDirectionsScreen), findsNothing);
+      expect(find.byType(OnboardingStoryFixture), findsNothing);
       expect(find.byKey(_host), findsOneWidget);
       expect(navigator.currentState!.canPop(), isFalse);
       expect(tester.takeException(), isNull);
@@ -575,7 +555,7 @@ void main() {
     tester.view.devicePixelRatio = 1;
     await tester.pumpWidget(
       const MaterialApp(
-        home: DevOnboardingIntroduction(
+        home: OnboardingIntroductionFixture(
           direction: ZyraOnboardingDirection.luma,
           onContinue: _noOp,
         ),

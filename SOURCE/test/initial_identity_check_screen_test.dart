@@ -1,3 +1,4 @@
+import 'support/queue44_signup_flow_driver.dart';
 import 'dart:async';
 import 'dart:convert';
 
@@ -237,108 +238,106 @@ void main() {
     ZyraIdentityVerificationResult.pending,
     ZyraIdentityVerificationResult.cancelled,
   ]) {
-    testWidgets(
-      'protected identity DEV skip from ${startingResult?.name ?? 'consent'} '
-      'uses only the preview callback',
-      (tester) async {
-        var skipped = 0;
-        var finalized = 0;
-        var continued = 0;
-        await tester.pumpWidget(
-          MaterialApp(
-            home: InitialIdentityCheckScreen(
-              devPreview: true,
-              initialState: startingResult == null
-                  ? null
-                  : _state(startingResult),
-              finalizeOnboarding: () async {
-                finalized++;
-                return null;
-              },
-              onContinue: (_) async => continued++,
-              onDevSkip: (_) async => skipped++,
-            ),
+    testWidgets('code identity state from ${startingResult?.name ?? 'consent'} '
+        'requires verified ordinary Continue', (tester) async {
+      var finalized = 0;
+      var continued = 0;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: InitialIdentityCheckScreen(
+            devPreview: true,
+            initialState: startingResult == null
+                ? null
+                : _state(startingResult),
+            finalizeOnboarding: () async {
+              finalized++;
+              return null;
+            },
+            onContinue: (_) async => continued++,
           ),
-        );
-        final action = find.byKey(const ValueKey('identity_dev_skip'));
-        expect(action, findsOneWidget);
-        await tester.tap(action);
-        await tester.pumpAndSettle();
-        expect(skipped, 1);
-        expect(finalized, 0);
-        expect(continued, 0);
-        expect(_requestPaths, isEmpty);
-      },
-    );
+        ),
+      );
+      final action = find.byKey(const ValueKey('identity_dev_skip'));
+      expect(action, findsNothing);
+      expect(find.byKey(const ValueKey('identity-continue')), findsNothing);
+      expect(finalized, 0);
+      expect(continued, 0);
+      await verifyIdentityFromCode(tester);
+      await tester.tap(find.byKey(const ValueKey('identity-continue')));
+      await tester.pumpAndSettle();
+      expect(finalized, 1);
+      expect(continued, 1);
+      expect(_requestPaths, isEmpty);
+    });
   }
 
-  testWidgets('identity DEV skip is absent live and inert after revocation', (
-    tester,
-  ) async {
-    var skipped = 0;
-    await tester.pumpWidget(
-      MaterialApp(
-        home: InitialIdentityCheckScreen(onDevSkip: (_) async => skipped++),
-      ),
-    );
-    expect(find.byKey(const ValueKey('identity_dev_skip')), findsNothing);
-    await tester.pumpWidget(
-      MaterialApp(
-        home: InitialIdentityCheckScreen(
-          key: const ValueKey('fresh-admitted-identity-preview'),
-          devPreview: true,
-          onDevSkip: (_) async => skipped++,
+  testWidgets(
+    'identity skip stays absent and verified Continue rejects revocation',
+    (tester) async {
+      var continued = 0;
+      await tester.pumpWidget(
+        const MaterialApp(home: InitialIdentityCheckScreen()),
+      );
+      expect(find.byKey(const ValueKey('identity_dev_skip')), findsNothing);
+      await tester.pumpWidget(
+        MaterialApp(
+          home: InitialIdentityCheckScreen(
+            key: const ValueKey('fresh-admitted-identity-preview'),
+            devPreview: true,
+            initialState: _state(ZyraIdentityVerificationResult.verified),
+            onContinue: (_) async => continued++,
+          ),
         ),
-      ),
-    );
-    final stale = tester
-        .widget<TextButton>(find.byKey(const ValueKey('identity_dev_skip')))
-        .onPressed!;
-    ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    await tester.pumpAndSettle();
-    stale();
-    await tester.pumpAndSettle();
-    expect(skipped, 0);
-    expect(
-      find.byKey(const ValueKey('identity_preview_denied')),
-      findsOneWidget,
-    );
-    expect(_requestPaths, isEmpty);
-  });
+      );
+      final dynamic continueButton = tester.widget<Widget>(
+        find.byKey(const ValueKey('identity-continue')),
+      );
+      final VoidCallback stale = continueButton.onPressed;
+      ZyraDeveloperAccess.setAuthorizedForTesting(false);
+      await tester.pumpAndSettle();
+      stale();
+      await tester.pumpAndSettle();
+      expect(continued, 0);
+      expect(
+        find.byKey(const ValueKey('identity_preview_denied')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const ValueKey('identity_dev_skip')), findsNothing);
+      expect(_requestPaths, isEmpty);
+    },
+  );
 
-  testWidgets('developer preview runs consent and all coarse states locally', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      const MaterialApp(home: InitialIdentityCheckScreen(devPreview: true)),
-    );
+  testWidgets(
+    'code fixture runs consent and verified state without developer controls',
+    (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(home: InitialIdentityCheckScreen(devPreview: true)),
+      );
 
-    expect(find.text('Verify your identity'), findsOneWidget);
-    expect(find.text('I agree — verify me'), findsOneWidget);
-    expect(find.text("I don't consent"), findsOneWidget);
-    expect(find.text('Continue to ZYRA'), findsNothing);
-    expect(
-      find.byKey(const ValueKey('identity-use-different-account')),
-      findsNothing,
-    );
+      expect(find.text('Verify your identity'), findsOneWidget);
+      expect(find.text('I agree — verify me'), findsOneWidget);
+      expect(find.text("I don't consent"), findsOneWidget);
+      expect(find.text('Continue to ZYRA'), findsNothing);
+      expect(
+        find.byKey(const ValueKey('identity-use-different-account')),
+        findsNothing,
+      );
 
-    await tester.tap(find.byKey(const ValueKey('identity-consent-agree')));
-    await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const ValueKey('identity-consent-agree')));
+      await tester.pumpAndSettle();
 
-    expect(find.text('Verification is unavailable.'), findsOneWidget);
-    expect(find.text('Your check is in progress.'), findsNothing);
-    expect(find.text('Try again'), findsOneWidget);
-    expect(find.text('DEVELOPER STATE · LOCAL ONLY'), findsOneWidget);
+      expect(find.text('Verification is unavailable.'), findsOneWidget);
+      expect(find.text('Your check is in progress.'), findsNothing);
+      expect(find.text('Try again'), findsOneWidget);
+      expect(find.text('DEVELOPER STATE · LOCAL ONLY'), findsNothing);
 
-    await tester.ensureVisible(
-      find.byKey(const ValueKey('identity-dev-verified')),
-    );
-    await tester.tap(find.byKey(const ValueKey('identity-dev-verified')));
-    await tester.pump();
+      await verifyIdentityFromCode(tester);
+      await tester.pump();
 
-    expect(find.text('Identity verified.'), findsOneWidget);
-    expect(find.byKey(const ValueKey('identity-continue')), findsOneWidget);
-  });
+      expect(find.text('Identity verified.'), findsOneWidget);
+      expect(find.byKey(const ValueKey('identity-continue')), findsOneWidget);
+    },
+  );
 
   testWidgets('production entry is consent-first with no limited-mode bypass', (
     tester,

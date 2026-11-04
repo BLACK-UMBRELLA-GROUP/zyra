@@ -2,8 +2,6 @@
 // the reading area scrollable and its continuation consistently reachable.
 
 import 'package:flutter/material.dart';
-import '../../services/zyra_developer_access.dart';
-import '../../services/zyra_internal_preview_client.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_onboarding_direction_style.dart';
@@ -17,7 +15,6 @@ class TransitionScreen extends StatelessWidget {
   final String buttonLabel;
   final VoidCallback onContinue;
   final bool devPreview;
-  final VoidCallback? onDevSkip;
 
   const TransitionScreen({
     super.key,
@@ -26,7 +23,6 @@ class TransitionScreen extends StatelessWidget {
     required this.buttonLabel,
     required this.onContinue,
     this.devPreview = false,
-    this.onDevSkip,
     this.background = ZyraBackgroundVariant.neutral,
     this.citation,
   });
@@ -34,13 +30,8 @@ class TransitionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final previewStyle = OnboardingPreviewStyle.effectiveStyleOf(context);
-    final showDevSkip =
-        devPreview &&
-        ZyraDeveloperAccess.canUseDeveloperTools &&
-        ZyraInternalPreviewClient.isActive &&
-        onDevSkip != null;
     if (previewStyle != null) {
-      return _styledTransition(context, previewStyle, showDevSkip);
+      return _styledTransition(context, previewStyle);
     }
     return Scaffold(
       // `constraints` added 2026-08-03 alongside the same fix on the
@@ -78,27 +69,6 @@ class TransitionScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(height: 20),
-                    if (showDevSkip) ...[
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton.icon(
-                          key: const ValueKey('onboarding_dev_skip'),
-                          onPressed: () {
-                            if (!ZyraDeveloperAccess.canUseDeveloperTools ||
-                                !ZyraInternalPreviewClient.isActive) {
-                              return;
-                            }
-                            onDevSkip?.call();
-                          },
-                          icon: const Icon(Icons.skip_next_rounded, size: 17),
-                          label: Text(
-                            'Skip · DEV',
-                            style: ZyraText.subtext(size: 11.5),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                    ],
                     if (previewStyle != null) ...[
                       OnboardingPreviewAccent(
                         style: previewStyle,
@@ -154,7 +124,6 @@ class TransitionScreen extends StatelessWidget {
   Widget _styledTransition(
     BuildContext context,
     OnboardingPreviewStyle style,
-    bool showDevSkip,
   ) => Scaffold(
     body: Container(
       constraints: const BoxConstraints.expand(),
@@ -181,23 +150,6 @@ class TransitionScreen extends StatelessWidget {
                       ? CrossAxisAlignment.center
                       : CrossAxisAlignment.start,
                   children: [
-                    if (showDevSkip) ...[
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton.icon(
-                          key: const ValueKey('onboarding_dev_skip'),
-                          onPressed: () {
-                            if (ZyraDeveloperAccess.canUseDeveloperTools &&
-                                ZyraInternalPreviewClient.isActive) {
-                              onDevSkip?.call();
-                            }
-                          },
-                          icon: const Icon(Icons.skip_next_rounded, size: 17),
-                          label: const Text('Skip · DEV'),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                    ],
                     OnboardingPreviewAccent(
                       style: style,
                       size: 64,

@@ -1,3 +1,4 @@
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 // Exercise the real protected shell with caller-owned, fictional access.
 // These fixtures never read member data, private answers or a live ledger.
 import 'dart:async';
@@ -6,7 +7,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_access_store.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_presentation.dart';
 import 'package:zyra/dev/zyra_draft_journey_bio_presentation.dart';
@@ -81,6 +81,7 @@ class _Owner {
           child: child!,
         ),
         home: ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           key: UniqueKey(),
           canAct: () => allowed && epoch.current,
           onExit: () => fail('Access fixtures stay inside their local shell.'),
@@ -132,6 +133,7 @@ ZyraPreviewNavigationCheckpoint _seed({
 );
 
 Future<void> _press(WidgetTester tester, String id) async {
+  if (await pressZyraDevControlKey(tester, id)) return;
   final target = _key(id);
   expect(target, findsOneWidget, reason: 'Actual action $id exists');
   if (find
@@ -243,7 +245,7 @@ void main() {
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     AppState.instance.resetForAccountChange();
     ZyraAccountState.clearImagesForTesting = () async {};
-    final gold = ZyraDevAppGold.instance;
+    final gold = ZyraAppGoldStyle.instance;
     gold.select(
       false,
       expectedGeneration: ZyraAccountState.generation,
@@ -499,7 +501,7 @@ void main() {
     await _press(tester, 'draft_reset');
     expect(current.access.balance, 1);
     expect(current.access.resultFor(_sara), isNull);
-    if (_key('dev_controls_page').evaluate().isNotEmpty) {
+    if (zyraShellFixtureFor(tester).setupScopeOpen) {
       await closeZyraDevControls(tester);
     }
     await _openBrowseCompatibility(tester);

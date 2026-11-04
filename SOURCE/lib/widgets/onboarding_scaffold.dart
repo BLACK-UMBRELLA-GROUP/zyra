@@ -5,7 +5,6 @@
 // account-specific flow still owns validation, persistence and navigation.
 
 import 'package:flutter/material.dart';
-import '../services/zyra_developer_access.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import 'onboarding_top_bar.dart';
@@ -32,8 +31,6 @@ class OnboardingScaffold extends StatelessWidget {
   final bool fabActive;
   final VoidCallback? onContinue;
   final bool devPreview;
-  final VoidCallback? onDevSkip;
-  final String devSkipLabel;
   final bool showAccountExit;
   final String? accountExitExpectedUserId;
   final Key continueActionKey;
@@ -70,8 +67,6 @@ class OnboardingScaffold extends StatelessWidget {
     this.privacyOverrideText,
     this.onSwipeBack,
     this.devPreview = false,
-    this.onDevSkip,
-    this.devSkipLabel = 'Skip question',
     this.showAccountExit = false,
     this.accountExitExpectedUserId,
     this.continueActionKey = const ValueKey('onboarding_continue'),
@@ -180,18 +175,6 @@ class OnboardingScaffold extends StatelessWidget {
                 ),
               ),
               SizedBox(height: compactPreview ? 7 : 14),
-            ],
-            if (ZyraDeveloperAccess.canUseDeveloperTools &&
-                devPreview &&
-                onDevSkip != null) ...[
-              Align(
-                alignment: Alignment.centerRight,
-                child: _DevSkipButton(
-                  label: devSkipLabel,
-                  onPressed: onDevSkip!,
-                ),
-              ),
-              SizedBox(height: compactPreview ? 4 : 10),
             ],
             if (previewStyle != null) ...[
               Align(
@@ -321,41 +304,6 @@ class OnboardingScaffold extends StatelessWidget {
                     ),
                   ],
                 ),
-        ),
-      ),
-    );
-  }
-}
-
-class _DevSkipButton extends StatelessWidget {
-  final String label;
-  final VoidCallback onPressed;
-
-  const _DevSkipButton({required this.label, required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      button: true,
-      label: '$label, developer only',
-      child: TextButton.icon(
-        key: const ValueKey('onboarding_dev_skip'),
-        onPressed: onPressed,
-        icon: Icon(
-          Icons.skip_next_rounded,
-          size: 17,
-          color: ZyraColors.unlockText,
-        ),
-        label: Text(
-          '$label · DEV',
-          style: ZyraText.subtext(size: 11.5, color: ZyraColors.goldText),
-        ),
-        style: TextButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-          side: BorderSide(color: ZyraColors.unlockDot.withValues(alpha: 0.45)),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(999),
-          ),
         ),
       ),
     );

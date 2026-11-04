@@ -2,52 +2,61 @@ import 'dart:ui' show Tristate;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_dev_control_system.dart';
+import 'package:zyra/main.dart' show ZyraApp, zyraNavigatorKey;
+import 'package:zyra/screens/settings/personalisation_screen.dart';
+import 'package:zyra/services/zyra_account_state.dart';
+import 'package:zyra/services/zyra_local_prefs.dart';
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 import 'package:zyra/theme/zyra_colors.dart';
+import 'package:zyra/theme/zyra_text.dart';
+import 'package:zyra/theme/zyra_interaction_style.dart';
+import 'package:zyra/widgets/zyra_personalisation_content.dart';
 
-const _twoDoors = [ZyraDevControlSection.home, ZyraDevControlSection.actions];
+// Test-only identity tokens let the pre-existing failing assertion remain
+// executable after its production rail and enum have been retired.
+enum _RetiredDoor { home, preview, actions }
+
+const _twoDoors = [_RetiredDoor.home, _RetiredDoor.actions];
 
 Future<void> _mount(
   WidgetTester tester, {
-  List<ZyraDevControlSection>? sections,
+  List<_RetiredDoor>? sections,
   bool open = false,
-  ZyraDevControlSection selected = ZyraDevControlSection.home,
-  ValueChanged<ZyraDevControlSection>? onSelected,
-  Map<ZyraDevControlSection, Key> buttonKeys = const {},
-  Map<ZyraDevControlSection, String> labels = const {},
+  _RetiredDoor selected = _RetiredDoor.home,
   Size size = const Size(393, 852),
   double textScale = 1,
+  Widget child = const PersonalisationScreen(),
 }) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
   await tester.pumpWidget(
-    MaterialApp(
-      theme: ThemeData.dark(),
-      builder: (context, child) => MediaQuery(
-        data: MediaQuery.of(context).copyWith(
-          padding: const EdgeInsets.only(top: 59, bottom: 34),
-          textScaler: TextScaler.linear(textScale),
-        ),
-        child: child!,
-      ),
-      home: Scaffold(
-        body: Align(
-          alignment: Alignment.centerRight,
-          child: SizedBox(
-            width: ZyraDevControlRail.width,
-            child: ZyraDevControlRail(
-              open: open,
-              selected: selected,
-              onSelected: onSelected ?? (_) {},
-              buttonKeys: buttonKeys,
-              labels: labels,
-              visibleSections: sections ?? ZyraDevControlSection.values,
+    Builder(
+      builder: (context) {
+        final rebuild = const ZyraApp().build(context) as ListenableBuilder;
+        final app = rebuild.builder(context, null) as MaterialApp;
+        return MaterialApp(
+          navigatorKey: app.navigatorKey,
+          navigatorObservers:
+              app.navigatorObservers ?? const <NavigatorObserver>[],
+          theme: app.theme,
+          routes: app.routes ?? const <String, WidgetBuilder>{},
+          onGenerateRoute: app.onGenerateRoute,
+          onUnknownRoute: app.onUnknownRoute,
+          builder: (context, content) => app.builder!(
+            context,
+            MediaQuery(
+              data: MediaQuery.of(context).copyWith(
+                padding: const EdgeInsets.only(top: 59, bottom: 34),
+                textScaler: TextScaler.linear(textScale),
+              ),
+              child: content!,
             ),
           ),
-        ),
-      ),
+          home: child,
+        );
+      },
     ),
   );
   await tester.pumpAndSettle();
@@ -55,110 +64,114 @@ Future<void> _mount(
 }
 
 Finder _door(String name) => find.byKey(ValueKey('dev_rail_$name'));
-Finder _withinRail(Finder matching) =>
-    find.descendant(of: find.byType(ZyraDevControlRail), matching: matching);
+Finder _withinRail(Finder matching) => find.descendant(
+  of: find.byKey(const ValueKey('dev_control_rail')),
+  matching: matching,
+);
+
+void _expectNoDoors() {
+  for (final door in _RetiredDoor.values) {
+    expect(_door(door.name), findsNothing);
+  }
+  expect(
+    find.bySemanticsLabel(RegExp('Sample preview controls|Developer actions')),
+    findsNothing,
+  );
+}
 
 void main() {
-  test('legacy constructor retains the three-door default', () {
-    final rail = ZyraDevControlRail(
-      open: false,
-      selected: ZyraDevControlSection.home,
-      onSelected: (_) {},
-    );
-    expect(rail.visibleSections, ZyraDevControlSection.values);
+  setUp(() {
+    ZyraText.useTestFontStubs = true;
+    ZyraAccountState.resetForTesting();
+    ZyraAppGoldStyle.instance.restore(false);
+  });
+  tearDown(() {
+    ZyraAppGoldStyle.instance.restore(false);
+    ZyraText.useTestFontStubs = false;
   });
 
-  testWidgets('legacy default keeps icons, order and touch geometry', (
+  testWidgets('production routes reject every retired developer door', (
     tester,
   ) async {
-    final selections = <ZyraDevControlSection>[];
-    await _mount(tester, onSelected: selections.add);
-    for (final section in ZyraDevControlSection.values) {
-      final target = _door(section.name);
-      expect(target, findsOneWidget);
-      expect(target.hitTestable(), findsOneWidget);
-      expect(tester.getSize(target), const Size(36, 48));
-      expect(find.byIcon(section.icon), findsOneWidget);
-      await tester.tap(target);
+    await _mount(tester);
+    for (final route in ['/dev/home', '/dev/preview', '/dev/actions']) {
+      expect(
+        () => zyraNavigatorKey.currentState!.pushNamed<void>(route),
+        throwsFlutterError,
+      );
     }
-    expect(selections, ZyraDevControlSection.values);
-    expect(
-      tester.getRect(_door('home')).bottom,
-      tester.getRect(_door('preview')).top,
-    );
-    expect(
-      tester.getRect(_door('preview')).bottom,
-      tester.getRect(_door('actions')).top,
-    );
+    _expectNoDoors();
+    expect(find.text('Personalisation'), findsOneWidget);
   });
 
-  testWidgets('two doors omit the eye, its hit target and semantics', (
+  testWidgets('member Gold touch geometry and actions survive rail removal', (
+    tester,
+  ) async {
+    await _mount(tester);
+    final toggle = find.byKey(const ValueKey('personalisation_gold_toggle'));
+    await tester.scrollUntilVisible(toggle, 160);
+    await tester.pumpAndSettle();
+    expect(tester.getSize(toggle).height, greaterThanOrEqualTo(44));
+    expect(toggle.hitTestable(), findsOneWidget);
+    await tester.tap(toggle);
+    await tester.pump();
+    expect(ZyraAppGoldStyle.instance.enabled, isTrue);
+    await tester.tap(toggle);
+    await tester.pump();
+    expect(ZyraAppGoldStyle.instance.enabled, isFalse);
+    _expectNoDoors();
+  });
+
+  testWidgets('removed doors leave no eye hit target or developer semantics', (
     tester,
   ) async {
     final semantics = tester.ensureSemantics();
     try {
-      final selections = <ZyraDevControlSection>[];
-      await _mount(tester, sections: _twoDoors, onSelected: selections.add);
-      expect(_door('home'), findsOneWidget);
-      expect(_door('actions'), findsOneWidget);
-      expect(_door('preview'), findsNothing);
+      await _mount(tester);
+      _expectNoDoors();
       expect(find.byIcon(Icons.visibility_outlined), findsNothing);
-      expect(_withinRail(find.byType(InkWell)), findsNWidgets(2));
-      expect(_withinRail(find.byType(Tooltip)), findsNWidgets(2));
-      expect(
-        find.bySemanticsLabel(RegExp('Preview|Sample preview controls')),
-        findsNothing,
-      );
-      for (final section in _twoDoors) {
-        final target = _door(section.name);
-        expect(tester.getSize(target), const Size(36, 48));
-        expect(tester.getSemantics(target).flagsCollection.isButton, isTrue);
-        await tester.tap(target);
-      }
-      expect(selections, _twoDoors);
-      expect(
-        tester.getRect(_door('home')).bottom,
-        tester.getRect(_door('actions')).top,
-      );
+      final toggle = find.byKey(const ValueKey('personalisation_gold_toggle'));
+      await tester.scrollUntilVisible(toggle, 160);
+      await tester.pumpAndSettle();
+      expect(tester.getSemantics(toggle).label, contains('Gold accents'));
+      expect(tester.widget<Switch>(toggle).onChanged, isNotNull);
     } finally {
       semantics.dispose();
     }
   });
 
-  testWidgets('custom keys and labels survive without the hidden custom eye', (
-    tester,
-  ) async {
-    final semantics = tester.ensureSemantics();
-    try {
-      final selections = <ZyraDevControlSection>[];
+  testWidgets(
+    'member content retains caller scroll keys without custom developer doors',
+    (tester) async {
+      var gold = false;
+      const scroll = ValueKey('member-custom-scroll');
       await _mount(
         tester,
-        sections: _twoDoors,
-        onSelected: selections.add,
-        buttonKeys: const {
-          ZyraDevControlSection.home: ValueKey('draft_close'),
-          ZyraDevControlSection.preview: ValueKey('draft_rules'),
-          ZyraDevControlSection.actions: ValueKey('draft_back'),
-        },
-        labels: const {
-          ZyraDevControlSection.home: 'Home',
-          ZyraDevControlSection.preview: 'Sample preview controls',
-          ZyraDevControlSection.actions: 'Actions',
-        },
+        child: Scaffold(
+          body: ZyraPersonalisationContent(
+            scrollKey: scroll,
+            snapshot: const ZyraPersonalisationSnapshot(
+              palette: ZyraDevPalette.ivory,
+              hapticLevel: ZyraHapticLevel.subtle,
+              goldEnabled: false,
+            ),
+            onChooseHaptic: null,
+            onGoldChanged: (value) => gold = value,
+          ),
+        ),
       );
+      expect(find.byKey(scroll), findsOneWidget);
+      final toggle = find.byKey(const ValueKey('personalisation_gold_toggle'));
+      await tester.scrollUntilVisible(toggle, 160);
+      await tester.pumpAndSettle();
+      await tester.tap(toggle);
+      await tester.pump();
+      expect(gold, isTrue);
       expect(find.byKey(const ValueKey('draft_rules')), findsNothing);
-      expect(_door('home'), findsNothing);
-      expect(_door('actions'), findsNothing);
-      expect(find.bySemanticsLabel(RegExp('Sample preview')), findsNothing);
-      await tester.tap(find.byKey(const ValueKey('draft_close')));
-      await tester.tap(find.byKey(const ValueKey('draft_back')));
-      expect(selections, _twoDoors);
-      expect(find.byTooltip('Home'), findsOneWidget);
-      expect(find.byTooltip('Actions'), findsOneWidget);
-    } finally {
-      semantics.dispose();
-    }
-  });
+      expect(find.byKey(const ValueKey('draft_close')), findsNothing);
+      _expectNoDoors();
+    },
+  );
 
   testWidgets('Actions selection keeps the existing gold icon and marker', (
     tester,
@@ -169,7 +182,7 @@ void main() {
         tester,
         sections: _twoDoors,
         open: true,
-        selected: ZyraDevControlSection.actions,
+        selected: _RetiredDoor.actions,
       );
       expect(
         tester.widget<Icon>(find.byIcon(Icons.tune)).color,
@@ -193,71 +206,80 @@ void main() {
     }
   });
 
-  testWidgets('an omitted selected door never produces a marker or eye', (
-    tester,
-  ) async {
-    await _mount(
-      tester,
-      sections: _twoDoors,
-      open: true,
-      selected: ZyraDevControlSection.preview,
-    );
-    expect(_withinRail(find.byType(Positioned)), findsNothing);
-    expect(find.byIcon(Icons.visibility_outlined), findsNothing);
-    expect(
-      tester.widgetList<Icon>(find.byType(Icon)).map((icon) => icon.color),
-      everyElement(Colors.white54),
-    );
-  });
+  testWidgets(
+    'member Gold selection cannot produce a retired rail marker or eye',
+    (tester) async {
+      await _mount(tester);
+      final member = ZyraAppGoldStyle.instance;
+      expect(
+        member.select(
+          true,
+          expectedGeneration: ZyraAccountState.generation,
+          expectedRevision: member.revision,
+        ),
+        isTrue,
+      );
+      await tester.pump();
+      final toggle = find.byKey(const ValueKey('personalisation_gold_toggle'));
+      await tester.scrollUntilVisible(toggle, 160);
+      await tester.pump();
+      expect(tester.widget<Switch>(toggle).value, isTrue);
+      _expectNoDoors();
+      expect(_withinRail(find.byType(Positioned)), findsNothing);
+      expect(find.byIcon(Icons.visibility_outlined), findsNothing);
+    },
+  );
 
-  testWidgets('caller order is honoured rather than restored to enum order', (
-    tester,
-  ) async {
-    await _mount(
-      tester,
-      sections: const [
-        ZyraDevControlSection.actions,
-        ZyraDevControlSection.home,
-      ],
-    );
-    expect(
-      tester.getRect(_door('actions')).bottom,
-      tester.getRect(_door('home')).top,
-    );
-  });
+  testWidgets(
+    'member choice sheets retain caller order and dispatch their own values',
+    (tester) async {
+      final selected = <String>[];
+      await _mount(
+        tester,
+        child: Scaffold(
+          body: ZyraPersonalisationChoiceSheet<String>(
+            title: 'Member choices',
+            options: const ['Second choice', 'First choice'],
+            selected: 'First choice',
+            labelFor: (value) => value,
+            onSelected: selected.add,
+          ),
+        ),
+      );
+      expect(
+        tester.getTopLeft(find.text('Second choice')).dy,
+        lessThan(tester.getTopLeft(find.text('First choice')).dy),
+      );
+      await tester.tap(find.text('Second choice'));
+      await tester.pump();
+      expect(selected, ['Second choice']);
+      _expectNoDoors();
+    },
+  );
 
   for (final role in const ['Seeker', 'Guardian']) {
     for (final size in const [Size(320, 568), Size(393, 852)]) {
-      testWidgets('$role two doors stay compact at $size and 200% text', (
-        tester,
-      ) async {
-        final selections = <ZyraDevControlSection>[];
-        await _mount(
-          tester,
-          sections: _twoDoors,
-          size: size,
-          textScale: 2,
-          labels: {
-            ZyraDevControlSection.home: '$role Home',
-            ZyraDevControlSection.actions: '$role Actions',
-          },
-          onSelected: selections.add,
-        );
-        expect(find.byIcon(Icons.visibility_outlined), findsNothing);
-        for (final section in _twoDoors) {
-          final target = _door(section.name);
-          final rect = tester.getRect(target);
-          expect(rect.width, 36);
-          expect(rect.height, 48);
-          expect(rect.right, size.width);
+      testWidgets(
+        '$role member Gold remains reachable at $size and 200% text without developer doors',
+        (tester) async {
+          ZyraLocalPrefs.setCachedRole(role == 'Seeker' ? 'seeker' : 'wali');
+          await _mount(tester, size: size, textScale: 2);
+          final toggle = find.byKey(
+            const ValueKey('personalisation_gold_toggle'),
+          );
+          await tester.scrollUntilVisible(toggle, 160);
+          await tester.pumpAndSettle();
+          final rect = tester.getRect(toggle);
           expect(rect.top, greaterThanOrEqualTo(59));
           expect(rect.bottom, lessThanOrEqualTo(size.height - 34));
-          expect(target.hitTestable(), findsOneWidget);
-          await tester.tap(target);
-        }
-        expect(selections, _twoDoors);
-        expect(tester.takeException(), isNull);
-      });
+          expect(toggle.hitTestable(), findsOneWidget);
+          await tester.tap(toggle);
+          await tester.pump();
+          expect(ZyraAppGoldStyle.instance.enabled, isTrue);
+          _expectNoDoors();
+          expect(tester.takeException(), isNull);
+        },
+      );
     }
   }
 }

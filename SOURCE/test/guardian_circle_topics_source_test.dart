@@ -303,14 +303,24 @@ void main() {
         'A source draft must remain behind its controls',
       );
       final send = _retainedSend(tester);
-      await h.controls();
+      // The retired panel is absent. A real owned Circle route supplies cover.
+      final navigator = Navigator.of(tester.element(_circle));
+      navigator.push<void>(
+        MaterialPageRoute(
+          builder: (_) => const Scaffold(body: Text('Member Circle cover')),
+        ),
+      );
+      await h.flush();
+      expect(_key('dev_controls_page'), findsNothing);
       final coveredHaptics = haptics;
       for (final callback in send) {
         callback();
       }
       await h.flush();
       expect(haptics, coveredHaptics);
-      await h.closeControls();
+      expect(find.text('Member Circle cover'), findsOneWidget);
+      navigator.pop();
+      await h.flush();
       final returnedHaptics = haptics;
       for (final callback in send) {
         callback();

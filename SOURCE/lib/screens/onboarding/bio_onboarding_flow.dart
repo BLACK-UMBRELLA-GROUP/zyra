@@ -280,7 +280,6 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
           return OnboardingStageIntroScreen(
             stage: SeekerOnboardingStage.compatibility,
             devPreview: devPreview,
-            onDevSkip: devPreview ? openCompatibility : null,
             onContinue: openCompatibility,
           );
         },
@@ -459,8 +458,6 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
       fabActive: !_saving,
       onContinue: _next,
       devPreview: _devPreview,
-      onDevSkip: _next,
-      devSkipLabel: 'Skip page',
       onSwipeBack: _step > 0 ? _back : null,
       onFinishLater: _finishLater,
       content: IgnorePointer(

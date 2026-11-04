@@ -6,7 +6,6 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_dev_surface_coordinator.dart';
 import 'package:zyra/models/seeker_profile.dart';
 import 'package:zyra/screens/subscription/profile_unlock_screen.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
@@ -49,14 +48,12 @@ void main() {
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraUnlockService.clearForSignOut();
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
     ZyraColors.restoreAppPalette(null);
   });
   tearDown(() {
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraUnlockService.clearForSignOut();
-    ZyraDevSurfaceCoordinator.instance.resetForTesting();
   });
   tearDownAll(() {
     ZyraText.useTestFontStubs = false;

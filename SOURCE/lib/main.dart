@@ -16,8 +16,8 @@ import 'config/supabase_config.dart';
 import 'config/zyra_app_variant.dart';
 import 'config/zyra_native_identity_policy.dart';
 import 'config/zyra_internal_founder_policy.dart';
-import 'dev/zyra_dev_control_system.dart' show ZyraDevControlsRouteObserver;
-import 'dev/zyra_global_dev_overlay.dart';
+import 'dev/zyra_preview_navigation_checkpoint.dart'
+    show ZyraPreviewRouteObserver;
 import 'dev/zyra_app_gold_preview.dart';
 import 'models/zyra_error_state.dart';
 import 'screens/auth_gate.dart';
@@ -39,16 +39,13 @@ import 'widgets/zyra_app_lock_gate.dart';
 import 'widgets/zyra_full_screen_error.dart';
 import 'widgets/zyra_loading.dart';
 import 'widgets/zyra_keyboard_dismiss_scope.dart';
+import 'widgets/zyra_account_session_host.dart';
 
-/// Global navigator access for controls that sit above the whole app rather
-/// than inside any one screen — today that is DevScenarioPanel's Home
-/// button (dev_scenario_panel.dart, _goHome), which clears the entire stack
-/// without having a BuildContext inside it. (DevNavOverlay, the original
-/// holder of this key, was deleted 2026-08-12 — see the note at `builder:`.)
+/// App navigation shared by recovery and member routes.
 final GlobalKey<NavigatorState> zyraNavigatorKey = GlobalKey<NavigatorState>();
 final NavigatorObserver zyraKeyboardDismissNavigatorObserver =
     ZyraKeyboardDismissNavigatorObserver();
-final zyraDevControlsRouteObserver = ZyraDevControlsRouteObserver();
+final zyraPreviewRouteObserver = ZyraPreviewRouteObserver();
 
 void main() async {
   installZyraReleaseDiagnostics();
@@ -307,7 +304,7 @@ class ZyraApp extends StatelessWidget {
         navigatorKey: zyraNavigatorKey,
         navigatorObservers: [
           zyraKeyboardDismissNavigatorObserver,
-          if (ZyraInternalFounderPolicy.enabled) zyraDevControlsRouteObserver,
+          if (ZyraInternalFounderPolicy.enabled) zyraPreviewRouteObserver,
         ],
         theme: ThemeData(
           brightness: ZyraColors.isLightPalette
@@ -498,13 +495,6 @@ class ZyraApp extends StatelessWidget {
           // forward-only and won't have this gesture, matching how iOS
           // itself behaves in similar forward-only flows.
         ),
-        // DevNavOverlay DELETED 2026-08-12 (dev-panel redesign, drift pass).
-        // It began 2026-07-19 as floating Back/Home buttons wrapped here via
-        // `builder:`; the buttons moved into DevScenarioPanel on 2026-08-03
-        // and the wrapper had passed its child through untouched ever since —
-        // kept only as "the natural place for the next always-on debug
-        // affordance", which five weeks did not produce. If one is ever
-        // needed, wrap it here exactly as the old file did.
         // 2026-07-25, DR-ZYRA-101 audit item 1: app-wide gradient default,
         // wrapping every screen below the ThemeData Color fallback above.
         // Neutral brandGradient, not gender-matched — this layer is
@@ -560,11 +550,8 @@ class ZyraApp extends StatelessWidget {
                       AppState.instance.gender,
                     ),
                   ),
-                  child: ZyraGlobalDevOverlayHost(
+                  child: ZyraAccountSessionHost(
                     navigatorKey: zyraNavigatorKey,
-                    routeObserver: ZyraInternalFounderPolicy.enabled
-                        ? zyraDevControlsRouteObserver
-                        : null,
                     child: child ?? const SizedBox.shrink(),
                   ),
                 ),

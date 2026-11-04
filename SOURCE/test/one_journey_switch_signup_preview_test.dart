@@ -70,6 +70,7 @@ void _size(WidgetTester tester, {bool compact = false}) {
 }
 
 Future<void> _tap(WidgetTester tester, String key) async {
+  if (await pressZyraDevControlKey(tester, key)) return;
   final target = _key(key);
   if (target.evaluate().isEmpty) {
     final owner = _key('dev_controls_scroll');
@@ -132,6 +133,7 @@ class _Owner {
     await tester.pumpWidget(
       _app(
         ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
           key: UniqueKey(),
           canAct: () => allowed,
           onExit: () => fail('Switch setup must stay inside its app owner.'),
@@ -182,7 +184,7 @@ Object _modelFacts(ZyraPreviewNavigationCheckpoint value) => [
 
 Future<void> _missing(WidgetTester tester) async {
   await openZyraDevControls(tester);
-  expect(find.text('Switch account'), findsOneWidget);
+  expect(_key('dev_controls_page'), findsNothing);
   await _tap(tester, 'concept_switch_needs_signup');
   await closeZyraDevControls(tester);
 }

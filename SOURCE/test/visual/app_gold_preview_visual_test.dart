@@ -1,3 +1,4 @@
+import 'package:zyra/theme/zyra_app_gold_style.dart';
 // Fresh app-background comparison candidates only; never approved baselines.
 // Actual Settings and Dashboard widgets use injectable local read fixtures.
 // No Supabase initialization, network, account mutation, persistence or IDV.
@@ -10,7 +11,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:zyra/dev/dev_settings_design_state.dart';
 import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/dev/zyra_dev_scenario.dart';
 import 'package:zyra/dev/zyra_supportive_dashboard_preview.dart';
@@ -29,6 +29,8 @@ import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/floating_nav_bar.dart';
+import 'package:zyra/widgets/zyra_personalisation_content.dart';
+import 'package:zyra/theme/zyra_interaction_style.dart';
 
 const _capture = bool.fromEnvironment('ZYRA_APP_GOLD_CAPTURE');
 const _boundary = ValueKey('app-gold-candidate');
@@ -40,11 +42,12 @@ const _person = WaliLinkedPerson(
   isMain: true,
 );
 
-bool _select(bool value) => ZyraDevAppGold.instance.select(
-  value,
-  expectedGeneration: ZyraAccountState.generation,
-  expectedRevision: ZyraDevAppGold.instance.revision,
-);
+bool _select(bool value) {
+  // Code-only visual fixture input; the actual saved member setting has its
+  // own persistence contract suite.
+  ZyraAppGoldStyle.instance.restore(value);
+  return true;
+}
 
 const _seekerSnapshot = DashboardSnapshot(
   role: DashboardRole.seeker,
@@ -161,20 +164,16 @@ Widget _subject(String name) => switch (name) {
     body: DecoratedBox(
       decoration: ZyraAppGoldDecoration(gradient: ZyraColors.brandGradient),
       child: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'Background comparison',
-                  style: ZyraText.heading(size: 24),
-                ),
-                const SizedBox(height: 24),
-                const DevAppGoldPicker(),
-              ],
+        child: ListenableBuilder(
+          listenable: ZyraAppGoldStyle.instance,
+          builder: (context, _) => ZyraPersonalisationContent(
+            snapshot: ZyraPersonalisationSnapshot(
+              palette: ZyraColors.currentDefaultPalette,
+              hapticLevel: ZyraHapticLevel.off,
+              goldEnabled: ZyraAppGoldStyle.instance.enabled,
             ),
+            onChooseHaptic: null,
+            onGoldChanged: _select,
           ),
         ),
       ),
@@ -259,7 +258,7 @@ void main() {
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
     ZyraInternalPreviewClient.beginPreview();
-    ZyraDevAppGold.instance.resetForTesting();
+    ZyraAppGoldRenderer.instance.resetForTesting();
     ZyraDevScenario.instance.reset();
     ZyraDevScenario.instance.setDashboardLabEnabled(false);
     ZyraDevScenario.instance.setUseLiveGuardianData(true);
@@ -273,7 +272,6 @@ void main() {
     SupportiveDashboardPreview.instance.reset();
     SupportiveDashboardPreview.instance.selectView(true);
     SupportiveDashboardPreview.instance.selectSources(true);
-    ZyraDevSettingsDesign.select(ZyraSettingsDesign.current);
     ZyraColors.restoreAppPalette(null);
     ZyraColors.restoreAppSurfaceStyle(null);
     ZyraText.restoreAppFont(null);
@@ -284,7 +282,7 @@ void main() {
   });
 
   tearDown(() {
-    ZyraDevAppGold.instance.resetForTesting();
+    ZyraAppGoldRenderer.instance.resetForTesting();
     ZyraInternalPreviewClient.finishSignOut();
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDevScenario.instance.reset();
@@ -346,6 +344,14 @@ void main() {
           ),
         );
         await tester.pumpAndSettle();
+        if (name == 'picker') {
+          await tester.scrollUntilVisible(
+            find.byKey(const ValueKey('personalisation_gold_toggle')),
+            160,
+            scrollable: find.byType(Scrollable).last,
+          );
+          await tester.pumpAndSettle();
+        }
         if (name == 'seeker_dashboard') {
           expect(find.text('No Guardian connected yet'), findsOneWidget);
         } else if (name == 'guardian_dashboard') {
@@ -359,18 +365,22 @@ void main() {
           );
         }
         expect(tester.takeException(), isNull);
-        expect(ZyraDevAppGold.instance.enabled, isFalse);
+        expect(ZyraAppGoldStyle.instance.enabled, isFalse);
         final off = await _pixels(tester);
         await _candidate(tester, '${name}_${layout.name}_off', off);
         final originalElement = find.byKey(_boundary).evaluate().single;
         if (name == 'picker') {
-          await tester.tap(find.byKey(const ValueKey('dev_app_gold_toggle')));
+          final toggle = find.byKey(
+            const ValueKey('personalisation_gold_toggle'),
+          );
+          await tester.ensureVisible(toggle);
+          await tester.tap(toggle);
         } else {
           expect(_select(true), isTrue);
         }
         await tester.pumpAndSettle();
-        expect(ZyraDevAppGold.instance.enabled, isTrue);
-        expect(ZyraDevAppGold.instance.reducedMotion, isTrue);
+        expect(ZyraAppGoldStyle.instance.enabled, isTrue);
+        expect(ZyraAppGoldRenderer.instance.reducedMotion, isTrue);
         expect(find.byKey(_boundary).evaluate().single, same(originalElement));
         expect(tester.takeException(), isNull);
         final on = await _pixels(tester);
@@ -382,19 +392,23 @@ void main() {
         await _candidate(tester, '${name}_${layout.name}_on', on);
         if (name == 'picker') {
           expect(find.text('On'), findsOneWidget);
-          await tester.tap(find.byKey(const ValueKey('dev_app_gold_toggle')));
+          final toggle = find.byKey(
+            const ValueKey('personalisation_gold_toggle'),
+          );
+          await tester.ensureVisible(toggle);
+          await tester.tap(toggle);
         } else {
           expect(_select(false), isTrue);
         }
         await tester.pumpAndSettle();
-        expect(ZyraDevAppGold.instance.enabled, isFalse);
+        expect(ZyraAppGoldStyle.instance.enabled, isFalse);
         expect(tester.takeException(), isNull);
         // Screens remain mounted; no fixture reload or Navigator replacement.
         // Picker changes its label, but returns exactly to its initial Off view.
         expect(await _pixels(tester), orderedEquals(off));
         await tester.pumpWidget(const SizedBox.shrink());
         await tester.pumpAndSettle();
-        expect(ZyraDevAppGold.instance.debugPainterCount, 0);
+        expect(ZyraAppGoldRenderer.instance.debugPainterCount, 0);
       });
     }
   }

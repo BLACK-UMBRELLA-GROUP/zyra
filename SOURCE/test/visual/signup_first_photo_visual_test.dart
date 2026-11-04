@@ -14,6 +14,7 @@ import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_onboarding_continue_action.dart';
 import 'package:zyra/widgets/zyra_onboarding_direction_style.dart';
+import '../support/queue44_signup_flow_driver.dart';
 
 const _capture = bool.fromEnvironment('ZYRA_SIGNUP_FIRST_PHOTO_CAPTURE');
 const _boundary = ValueKey('signup-first-photo-candidate');
@@ -143,7 +144,7 @@ void main() {
       }
       await _tap(tester, 'onboarding_stage_continue');
       for (var index = 0; index < 3; index++) {
-        await _tap(tester, 'onboarding_dev_skip');
+        await advanceSignupQuestionFromCode(tester, installPhotoFixture: false);
       }
       expect(
         find.byKey(const ValueKey('signup_first_photo_question')),

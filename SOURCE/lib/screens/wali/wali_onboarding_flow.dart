@@ -221,33 +221,6 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
     }
   }
 
-  void _devSkipCurrentQuestion() {
-    if (!_devPreview || !_canProceed || _saving || _photoBusy) return;
-    final now = DateTime.now();
-    setState(() {
-      if (_step == 0) {
-        if (_nameController.text.trim().isEmpty) {
-          _nameController.text = 'Dev Guardian';
-        }
-        if (_lastNameController.text.trim().isEmpty) {
-          _lastNameController.text = 'Preview';
-        }
-      } else if (_step == 1) {
-        _dob ??= DateTime(now.year - 45, 1, 1);
-        _dobError = null;
-      } else if (_step == 2) {
-        _gender ??= 'male';
-      } else if (_step == 3) {
-        _relationship ??= _relationships.first;
-      } else if (_step == 4) {
-        // Local fixture only: preview cannot upload or create a photo record.
-        _firstPhotoUrl ??=
-            'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';
-      }
-    });
-    _next();
-  }
-
   Future<void> _next() async {
     if (!_canProceed || _saving || _photoBusy || !_fabActive) return;
     final draft = _draft(step: _step + 1);
@@ -606,7 +579,6 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
               buttonLabel: 'Continue',
               onContinue: openCode,
               devPreview: _devPreview,
-              onDevSkip: _devPreview ? openCode : null,
             );
           },
         ),
@@ -625,7 +597,6 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
         return ZyraInitialSignupDraftService.finalize(_signupUserId!, draft);
       },
       onContinue: continueAfterIdentity,
-      onDevSkip: _devPreview ? continueAfterIdentity : null,
     );
   }
 
@@ -673,17 +644,6 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
         saving: _saving,
         error: _saveError,
         devPreview: _devPreview,
-        onDevSkip: _devPreview
-            ? () {
-                if (!_canProceed || _saving) return;
-                setState(
-                  () => _membershipChoice ??= const ZyraSignupMembershipChoice(
-                    kind: ZyraSignupMembershipKind.basic,
-                  ),
-                );
-                _continueAfterMembership();
-              }
-            : null,
         expectedUserId: _signupUserId,
       );
     }
@@ -697,7 +657,6 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
           fabActive: _fabActive,
           onContinue: _next,
           devPreview: _devPreview,
-          onDevSkip: _devSkipCurrentQuestion,
           onSwipeBack: null,
           accountExitExpectedUserId: _signupUserId,
           frameContent: false,
@@ -727,7 +686,6 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
           fabActive: _fabActive,
           onContinue: _next,
           devPreview: _devPreview,
-          onDevSkip: _devSkipCurrentQuestion,
           onSwipeBack: _back,
           accountExitExpectedUserId: _signupUserId,
           content: Column(
@@ -749,7 +707,6 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
           fabActive: _fabActive,
           onContinue: _next,
           devPreview: _devPreview,
-          onDevSkip: _devSkipCurrentQuestion,
           onSwipeBack: _back,
           accountExitExpectedUserId: _signupUserId,
           content: ZyraOnboardingChoiceEntrance(
@@ -789,7 +746,6 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
           fabActive: _fabActive,
           onContinue: _next,
           devPreview: _devPreview,
-          onDevSkip: _devSkipCurrentQuestion,
           onSwipeBack: _back,
           accountExitExpectedUserId: _signupUserId,
           content: ZyraOnboardingChoiceEntrance(
@@ -832,8 +788,6 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
     onContinue: _next,
     onSwipeBack: _back,
     devPreview: _devPreview,
-    onDevSkip: _devSkipCurrentQuestion,
-    devSkipLabel: 'Skip',
     showAccountExit: true,
     accountExitExpectedUserId: _signupUserId,
     continueActionKey: const ValueKey('wali_onboarding_continue'),
@@ -936,7 +890,6 @@ class _WaliQuestionScaffold extends StatelessWidget {
   final VoidCallback onContinue;
   final VoidCallback? onSwipeBack;
   final bool devPreview;
-  final VoidCallback? onDevSkip;
   final String? accountExitExpectedUserId;
 
   const _WaliQuestionScaffold({
@@ -949,7 +902,6 @@ class _WaliQuestionScaffold extends StatelessWidget {
     this.subtext,
     this.onSwipeBack,
     this.devPreview = false,
-    this.onDevSkip,
     this.accountExitExpectedUserId,
   });
 
@@ -977,8 +929,6 @@ class _WaliQuestionScaffold extends StatelessWidget {
       onContinue: onContinue,
       onSwipeBack: onSwipeBack,
       devPreview: devPreview,
-      onDevSkip: onDevSkip,
-      devSkipLabel: 'Skip',
       showAccountExit: true,
       accountExitExpectedUserId: accountExitExpectedUserId,
       continueActionKey: const ValueKey('wali_onboarding_continue'),
