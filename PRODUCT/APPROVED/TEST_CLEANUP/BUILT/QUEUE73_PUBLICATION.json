@@ -13,5 +13,24 @@
     "path": "/Users/shakeelahmad/Documents/Codex/2026-11-04/zyra-73-2026-11-04/work/queue73/source_gitleaks.json",
     "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
   },
-  "evidence_publication": "Pending its own exact commit-delta scan and push; recorded in private task note/index"
+  "evidence_publication": {
+    "acceptance_content_commit": "bb2fe543da4df448f35c2c916ca5a93d15d1ae3b",
+    "origin_verified": true,
+    "scan": {
+      "path": "/Users/shakeelahmad/Documents/Codex/2026-11-04/zyra-73-2026-11-04/work/queue73/evidence_gitleaks.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "scanner": "trusted-default gitleaks8.30.1",
+    "range": "origin/main..HEAD",
+    "findings": 0,
+    "public_checks": {
+      "A": "zero exact-delta findings before push",
+      "B": "approved questions/queue and test evidence only; no private material or large file",
+      "C": "Roadmap and issue open with358 failures",
+      "D": "No release/version change",
+      "E": "Neutral community wording",
+      "F": "No app behavior/run-instruction change; README unchanged"
+    },
+    "publication_marker": "This record documents the independently verified acceptance-content push; its own commit is available from git and the private task note."
+  }
 }
