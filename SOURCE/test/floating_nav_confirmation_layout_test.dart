@@ -118,25 +118,17 @@ void main() {
         final browseScroll = find.byKey(
           const ValueKey('concept_browse_design_scroll'),
         );
-        final outerScrollView = tester.widget<SingleChildScrollView>(
-          browseScroll,
+        // LOCK14 V2 floating surfaces nest a physical scroll view beneath
+        // ZyraShadowScrollView. Select the footer's own vertical scroll owner,
+        // not the separate details-page scroller (master c01_profiles.png).
+        final footer = find.byKey(const ValueKey('concept_browse_footer'));
+        expect(
+          find.ancestor(of: footer, matching: browseScroll),
+          findsOneWidget,
         );
-        final scrollable = find.descendant(
-          of: browseScroll,
-          matching: find.byElementPredicate(
-            (element) =>
-                element.widget is Scrollable &&
-                (element.widget as Scrollable).axisDirection ==
-                    AxisDirection.down &&
-                identical(
-                  element
-                      .findAncestorWidgetOfExactType<SingleChildScrollView>(),
-                  outerScrollView,
-                ),
-          ),
-        );
-        expect(scrollable, findsOneWidget);
-        final position = tester.state<ScrollableState>(scrollable).position;
+        final scrolling = Scrollable.of(tester.element(footer));
+        expect(scrolling.widget.axisDirection, AxisDirection.down);
+        final position = scrolling.position;
         // An overlaid confirmation button can intercept a center drag. This
         // geometry check measures the footer after its actual final offset.
         position.jumpTo(position.maxScrollExtent);

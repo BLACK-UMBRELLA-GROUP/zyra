@@ -48,7 +48,7 @@ class ZyraShellTestFixture extends ChangeNotifier {
       onAttached: (isCurrent) => _isCurrent = isCurrent,
       onCaptureGuardAttached: (capture) => _captureGuard = capture,
       onModelAttached: (model) => _model = model,
-      onCheckpoint: (checkpoint) => latest = checkpoint,
+      onCheckpoint: _recordCheckpoint,
       compatibilityAccess: compatibilityAccess,
       onCompatibilityAccessAttached: (access) => _compatibilityAccess = access,
       onStateAttached: (state) {
@@ -211,6 +211,22 @@ class ZyraShellTestFixture extends ChangeNotifier {
         replaceActivity: true,
       ),
     );
+  }
+
+  void _recordCheckpoint(ZyraPreviewNavigationCheckpoint checkpoint) {
+    final previous = latest;
+    if (previous != null &&
+        previous.pages.contains('timeline') &&
+        (previous.personId != checkpoint.personId ||
+            !checkpoint.pages.contains('timeline'))) {
+      // DEV_TOGGLES brief step 5: these are caller-owned test examples.
+      // Closing their addressed page ends the transient example, while the
+      // model and the cached Timeline's actual history stay untouched.
+      _timelines[previous.personId]?.selectScenario(
+        ZyraDraftTimelineScenario.current,
+      );
+    }
+    latest = checkpoint;
   }
 
   ZyraDraftTimelinePreview timelineFor(String id) =>

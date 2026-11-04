@@ -26,7 +26,7 @@ void main() {
   });
 
   test(
-    'retirement preserves member destinations and Founder attention white',
+    'retirement preserves member destinations and locked Ivory return cue',
     () {
       final router = File(
         'lib/services/zyra_session_router.dart',
@@ -44,8 +44,11 @@ void main() {
       final shell = File(
         'lib/dev/zyra_one_journey_concept_shell.dart',
       ).readAsStringSync();
+      // LOCK 14 V5 gold accent; APP_COLOURS/MASTERS/c05_profile_tab.png.
       expect(
-        RegExp(r'founderWhite\s*\? Colors.white\s*:\s*null').hasMatch(shell),
+        RegExp(
+          r'founderWhite\s*\? ZyraFounderLaunchPageStyle.darkGoldInk\s*:\s*null',
+        ).hasMatch(shell),
         isTrue,
       );
       expect(shell, contains('_accountSession.palette.gradient'));

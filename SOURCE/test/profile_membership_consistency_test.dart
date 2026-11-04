@@ -176,17 +176,32 @@ void main() {
       find.byKey(const ValueKey('draft_compatibility_store_use_unlocks')),
       findsNothing,
     );
+    // LOCK 22 V1, UNITY_PASS/MASTERS/x02–x03 replaces the info sheet
+    // with the eight-page illustrated preview on the store itself.
+    final previewPosition = find.byKey(
+      const ValueKey('draft_compatibility_store_preview_position'),
+    );
+    expect(tester.widget<Text>(previewPosition).data, '1 / 8');
+    final nextPreview = find.byKey(
+      const ValueKey('draft_compatibility_store_preview_next'),
+    );
+    await tester.ensureVisible(nextPreview);
+    await tester.pumpAndSettle();
+    await tester.tap(nextPreview);
+    await tester.pumpAndSettle();
+    expect(tester.widget<Text>(previewPosition).data, '2 / 8');
+    expect(
+      find.byKey(const ValueKey('draft_compatibility_store_example_1')),
+      findsOneWidget,
+    );
     await tester.tap(
-      find.byKey(const ValueKey('draft_compatibility_store_included')),
+      find.byKey(const ValueKey('draft_compatibility_store_preview_previous')),
     );
     await tester.pumpAndSettle();
-    expect(find.text('See your overall match score'), findsOneWidget);
-    await tester.tap(
-      find.byKey(const ValueKey('draft_compatibility_store_info_close')),
-    );
-    await tester.pumpAndSettle();
+    expect(tester.widget<Text>(previewPosition).data, '1 / 8');
     expect(find.text('Current membership'), findsNothing);
-    expect(find.text('3 unlocks'), findsOneWidget);
+    // LOCK 22 V1, UNITY_PASS/MASTERS/x02: the default pack stays 3 Unlocks.
+    expect(find.text('3 Unlocks'), findsOneWidget);
     expect(
       find.byKey(const ValueKey('draft_compatibility_store_unlock_single')),
       findsOneWidget,

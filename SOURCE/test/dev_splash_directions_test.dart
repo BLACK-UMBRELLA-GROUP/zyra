@@ -1,3 +1,5 @@
+// LOCK 14 V5: APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md;
+// masters APP_COLOURS/MASTERS/c11_app_icon_1024.png and c12_splash.png.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/config/zyra_app_variant.dart';
@@ -16,7 +18,7 @@ void main() {
   });
 
   for (final direction in ZyraSplashDirection.values) {
-    testWidgets('${direction.name} uses the app-wide dark purple gradient', (
+    testWidgets('${direction.name} uses the locked Ivory gradient', (
       tester,
     ) async {
       await tester.pumpWidget(
@@ -35,8 +37,8 @@ void main() {
         isTrue,
       );
       expect(ZyraColors.brandGradient.colors, const [
-        Color(0xFF30203F),
-        Color(0xFF160E20),
+        Color(0xFFFBF7F0),
+        Color(0xFFEEE6D8),
       ]);
       await tester.pump(const Duration(milliseconds: 3051));
       expect(tester.takeException(), isNull);

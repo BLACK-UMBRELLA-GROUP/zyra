@@ -182,8 +182,9 @@ void main() {
         30,
       );
       expect(
+        // LOCK22 V3 shared ring; UNITY_PASS/MASTERS/e01_introductions__empty.png.
         find.descendant(of: empty, matching: find.byType(Container)),
-        findsNothing,
+        findsOneWidget,
       );
       expect(find.text('Add a Guardian').hitTestable(), findsOneWidget);
       final add = find.byKey(const ValueKey('guardian-add-top'));
@@ -224,14 +225,16 @@ void main() {
         final empty = find.byKey(const ValueKey('guardian-seekers-empty'));
         expect(tester.widget(empty), isA<ZyraEmptyState>());
         expect(
+          // LOCK22 V3 §3b; UNITY_PASS/MASTERS/e01_introductions__empty.png:
+          // the shared empty state now has one 96-point gold ring.
           find.descendant(of: empty, matching: find.byType(Container)),
-          findsNothing,
+          findsOneWidget,
         );
         final icon = tester.widget<Icon>(
           find.descendant(of: empty, matching: find.byType(Icon)),
         );
-        expect(icon.color, ZyraColors.ink(.35));
-        expect(icon.size, 30);
+        expect(icon.color, ZyraColors.journeyGold);
+        expect(icon.size, 34);
         expect(find.text('Add a Seeker').hitTestable(), findsOneWidget);
         final add = find.byKey(const ValueKey('guardian-seeker-add-top'));
         expect(tester.getSize(add), const Size(48, 48));

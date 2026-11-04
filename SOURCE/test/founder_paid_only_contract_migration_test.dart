@@ -3,19 +3,32 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final sql = File(
-    'supabase/migrations/'
-    '20260924100231_founder_paid_only_returns_guardian_circle_contract.sql',
-  ).readAsStringSync();
+  // SERVER_0_BRIEF_2026-10-30_V2.md §3 split the absent 24 Sep
+  // monolith into these current, independent fixtures. No SQL invented.
+  final sql =
+      [
+            '20261030151034_server0_paid_role_authority_basic_one_place.sql',
+            '20261030151052_server0_ended_restart_preparation.sql',
+            '20261030151053_server0_guardian_chat_permissions_safe_messages.sql',
+            '20261030151055_server0_circle_paid_participant_authority.sql',
+            '20261030151057_server0_account_safety_retention.sql',
+            '20260925202027_restore_safety_case_status_rpc.sql',
+          ]
+          .map((name) => File('supabase/migrations/$name').readAsStringSync())
+          .join('\n');
 
-  test('paid access has no Basic fallback and Active cap is three', () {
+  test('paid role authority is separate from Basic one-place capacity', () {
     expect(
       sql,
       contains('create or replace function public.zyra_has_paid_role'),
     );
     expect(sql, contains("p_role in ('seeker', 'guardian')"));
-    expect(sql, contains("then 3 else 0 end"));
-    expect(sql, isNot(contains("then 3 else 1 end")));
+    expect(
+      sql,
+      contains("when public.zyra_has_paid_role(p_user, 'seeker') then 3"),
+    );
+    expect(sql, contains("s.plan_type = 'seeker_basic'"));
+    expect(sql, contains(") then 1\n    else 0 end"));
   });
 
   test('Family seats are role specific, bounded and protected', () {
@@ -123,10 +136,13 @@ void main() {
     expect(sql, contains('can_chat boolean not null default true'));
     expect(sql, contains('guardian_journey_chat_requires_view'));
     expect(sql, contains('case when v_is_main then true'));
+    expect(sql, contains('coalesce(permission.can_view, true)'));
+    expect(sql, contains('and coalesce(permission.can_chat, true)'));
     expect(
       sql,
-      contains('participant.role = \'guardian\' and participant.can_chat'),
+      contains("public.zyra_has_paid_role((select auth.uid()), 'guardian')"),
     );
+    expect(sql, contains("r.role = 'guardian'"));
   });
 
   test('Circle requires each participant to hold their paid role', () {
@@ -156,7 +172,7 @@ void main() {
       sql,
       contains('create or replace function public.zyra_my_safety_cases()'),
     );
-    expect(sql, contains("where report.reporter_id = (select auth.uid())"));
+    expect(sql, contains("where report.reporter_id = v_me"));
     expect(
       sql,
       contains('grant execute on function public.zyra_my_safety_cases()'),

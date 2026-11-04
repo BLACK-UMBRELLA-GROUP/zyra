@@ -15,7 +15,7 @@ import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_journey_icon.dart';
-import 'package:zyra/widgets/zyra_quiet_dashboard.dart';
+import 'package:zyra/widgets/zyra_focus_dashboard.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
 import 'support/zyra_hidden_dev_controls_driver.dart';
@@ -188,21 +188,25 @@ void _expectPendingUnacknowledged(ZyraPreviewNavigationCheckpoint checkpoint) {
   expect(checkpoint.model.progress, isEmpty);
 }
 
+// LOCK 5 attention semantics remain under LOCK 15 V3 §§1, 2, 4 and 5.
+// Masters: MY_ZYRA/MASTERS/m01_needs_you_1_of_2.png and
+// TAB_ATTENTION/MASTERS/tab_bar__my_zyra_seen_plain.png.
+// The Focus item and quick-access tile replace the old New activity cards.
 void _expectItemAttention(WidgetTester tester) {
-  final dashboard = tester.widget<ZyraQuietDashboard>(
-    find.byType(ZyraQuietDashboard),
+  final dashboard = tester.widget<ZyraFocusDashboard>(
+    find.byType(ZyraFocusDashboard),
   );
-  expect(dashboard.permanentNavigation, isTrue);
-  for (final id in [_leadId, _groupId]) {
-    expect(
-      dashboard.fixtureCards
-          .singleWhere((card) => card.id == id)
-          .hasNewActivity,
-      isTrue,
-    );
-  }
-  expect(_key('my-zyra-new-activity-heading'), findsOneWidget);
-  expect(_key('my-zyra-route-$_leadId'), findsOneWidget);
+  final request = dashboard.items.singleWhere(
+    (item) => item.id.startsWith('received:$_requestId:'),
+  );
+  expect(request.title, 'Journey request from Amira');
+  expect(request.detail, 'Amira would like to begin a Journey with you.');
+  expect(request.actionLabel, 'View request');
+  expect(request.actionKey, _leadId);
+  final tile = dashboard.tiles.singleWhere((tile) => tile.id == _groupId);
+  expect(tile.isNew, isTrue);
+  expect(tile.status, '1 new');
+  expect(_key(_groupId), findsOneWidget);
 }
 
 void main() {

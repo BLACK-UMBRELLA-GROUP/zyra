@@ -335,7 +335,8 @@ void main() {
     await gesture.up();
     await tester.pumpAndSettle();
     expect(calls, [1]);
-    expect(selectionTicks(), 1);
+    // HAPTICS brief 30 Oct §2: swiping gives no haptic.
+    expect(selectionTicks(), 0);
     expect(tester.takeException(), isNull);
   });
 
@@ -369,9 +370,11 @@ void main() {
             glyph.color,
             unread
                 ? ZyraColors.journeyGold
-                : ZyraColors.foreground.withValues(
-                    alpha: selected == 1 ? .58 : .28,
-                  ),
+                : // LOCK14 V5 muted ink; APP_COLOURS/MASTERS/c01_profiles.png.
+                  (selected == 1
+                          ? ZyraColors.foreground
+                          : ZyraColors.foregroundMuted)
+                      .withValues(alpha: selected == 1 ? .58 : .28),
           );
           final cell = find.byKey(const ValueKey('floating-nav-item-1'));
           expect(

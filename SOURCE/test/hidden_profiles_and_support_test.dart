@@ -433,14 +433,16 @@ void main() {
         );
         expect(tester.widget(empty), isA<ZyraEmptyState>());
         expect(
+          // LOCK22 V3 §3b; UNITY_PASS/MASTERS/e01_introductions__empty.png:
+          // the shared empty state now has one 96-point gold ring.
           find.descendant(of: empty, matching: find.byType(Container)),
-          findsNothing,
+          findsOneWidget,
         );
         final icon = tester.widget<Icon>(
           find.descendant(of: empty, matching: find.byType(Icon)),
         );
-        expect(icon.size, 30);
-        expect(icon.color, ZyraColors.ink(.35));
+        expect(icon.size, 34);
+        expect(icon.color, ZyraColors.journeyGold);
         final scrolling = tester
             .state<ScrollableState>(
               find.descendant(of: viewport, matching: find.byType(Scrollable)),

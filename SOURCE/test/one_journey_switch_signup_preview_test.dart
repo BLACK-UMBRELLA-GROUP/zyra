@@ -141,7 +141,9 @@ class _Owner {
           initialCheckpoint: ZyraPreviewNavigationCheckpoint(
             guardian: guardian,
             model: ViewRequestDraftModel(capacity: 3).snapshot(),
-            tab: guardian ? 3 : 4,
+            // LOCK 8 V9 (GUARDIAN_TABS/MASTERS/g13), LOCK 21 p04:
+            // both five-tab apps place Profile at zero-based index 4.
+            tab: 4,
             pages: const [],
           ),
           onRoleChanged: roleChanges.add,

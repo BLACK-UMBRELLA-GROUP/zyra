@@ -1229,7 +1229,16 @@ void main() {
     expect(opened, isEmpty);
     expect(genericOpens, 0);
 
-    await tester.tap(find.byKey(const ValueKey('seeker-profile-close')));
+    // Fixture: current SeekerProfileScreen hides its X when swipeDownToDismiss
+    // is enabled. Exercise the actual shared left-edge return gesture.
+    final edge = tester.getRect(
+      find.byKey(const ValueKey('zyra_back_swipe_edge')),
+    );
+    await tester.timedDragFrom(
+      Offset(edge.left + 8, edge.center.dy),
+      const Offset(240, 0),
+      const Duration(milliseconds: 450),
+    );
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(navigation.segmentKeys[0]));
     await tester.pumpAndSettle();

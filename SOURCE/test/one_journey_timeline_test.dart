@@ -503,7 +503,7 @@ void main() {
 
   for (final enlarged in [false, true]) {
     testWidgets(
-      'standalone ready empty Timeline centers its plain state at ${enlarged ? 'compact200' : 'normal'} size',
+      'standalone ready empty Timeline centers its LOCK 22 gold-ring state at ${enlarged ? 'compact200' : 'normal'} size',
       (tester) async {
         await _mount(
           tester,
@@ -516,10 +516,13 @@ void main() {
         );
         final empty = find.byKey(const ValueKey('draft_timeline_empty'));
         expect(tester.widget(empty), isA<ZyraEmptyState>());
-        expect(
+        // LOCK 22 V3, UNITY_PASS/MASTERS/e01–e02: shared 96 pt gold ring.
+        final ring = tester.widget<Container>(
           find.descendant(of: empty, matching: find.byType(Container)),
-          findsNothing,
         );
+        expect(ring.constraints?.maxWidth, 96);
+        expect(ring.constraints?.maxHeight, 96);
+        expect((ring.decoration! as BoxDecoration).shape, BoxShape.circle);
         final group = find.descendant(of: empty, matching: find.byType(Column));
         final scroll = tester
             .state<ScrollableState>(
@@ -539,8 +542,8 @@ void main() {
         final icon = tester.widget<Icon>(
           find.descendant(of: empty, matching: find.byType(Icon)),
         );
-        expect(icon.size, 30);
-        expect(icon.color, ZyraColors.ink(.35));
+        expect(icon.size, 34);
+        expect(icon.color, ZyraColors.journeyGold);
         await tester.ensureVisible(find.text('Your story starts here.'));
         await tester.pumpAndSettle();
         expect(

@@ -549,6 +549,27 @@ Future<void> _waitForLocalPhotoReadiness(WidgetTester tester) async {
   );
 }
 
+// This wait is used only after a test explicitly releases its photo gate
+// and expects the blocked recovery/continuity surface to leave. canAct() is
+// deliberately false behind that surface, so the generic fresh-shell wait
+// cannot observe its pending decode. Keep the final semantic assertions.
+Future<void> _waitForReleasedPhotoSurface(
+  WidgetTester tester,
+  String surfaceKey,
+) async {
+  expect(_heldBrowsePhotoGate?.isCompleted, isTrue);
+  for (
+    var turn = 0;
+    turn < 200 && _key(surfaceKey).evaluate().isNotEmpty;
+    turn++
+  ) {
+    await tester.pump(const Duration(milliseconds: 16));
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 25)),
+    );
+  }
+}
+
 Future<void> _writePreference(
   WidgetTester tester,
   Future<void> Function() write,
@@ -624,24 +645,31 @@ Future<void> _press(WidgetTester tester, String id) async {
 }
 
 Future<void> _dispose(WidgetTester tester) async {
-  await tester.pumpWidget(const SizedBox.shrink());
-  await _settle(tester);
-  // Queue the next preference tail in the real zone, then drain the old fake
-  // zone while it still exists. A later widget test cannot flush this zone.
-  await tester.runAsync(() async {
-    unawaited(ZyraLocalPrefs.bindAccount(null));
-  });
-  var drained = false;
-  ZyraLocalPrefs.bindAccount(null).then((_) {
-    drained = true;
-  });
-  for (var frame = 0; frame < 20 && !drained; frame++) {
-    await tester.pump();
-    await tester.runAsync(() => Future<void>.delayed(Duration.zero));
+  try {
+    await tester.pumpWidget(const SizedBox.shrink());
+    await _settle(tester);
+  } finally {
+    // Queue the next preference tail in the real zone, then drain the old fake
+    // zone while it still exists. A later widget test cannot flush this zone.
+    await tester.runAsync(() async {
+      unawaited(ZyraLocalPrefs.bindAccount(null));
+    });
+    var drained = false;
+    ZyraLocalPrefs.bindAccount(null).then((_) {
+      drained = true;
+    });
+    for (var frame = 0; frame < 20 && !drained; frame++) {
+      await tester.pump();
+      await tester.runAsync(() => Future<void>.delayed(Duration.zero));
+    }
+    expect(
+      drained,
+      isTrue,
+      reason: 'Preference tail leaves its FakeAsync zone',
+    );
+    expect(ZyraConceptPreviewIsolation.active, isFalse);
+    expect(tester.takeException(), isNull);
   }
-  expect(drained, isTrue, reason: 'Preference tail leaves its FakeAsync zone');
-  expect(ZyraConceptPreviewIsolation.active, isFalse);
-  expect(tester.takeException(), isNull);
 }
 
 void _enableLockscreenCleanupFrames(WidgetTester tester) {
@@ -4109,60 +4137,66 @@ void main() {
       final old = tester.widget<ZyraOneJourneyConceptShell>(
         find.byType(ZyraOneJourneyConceptShell),
       );
-      await _withHeldBrowsePhotos(tester, (photos) async {
-        _resume(tester);
-        await _settle(tester);
-        expect(_key('founder_resume_status'), findsOneWidget);
-        expect(find.text('Updating…'), findsOneWidget);
-        final status = tester.getRect(_key('founder_resume_status'));
-        expect(status.left, greaterThanOrEqualTo(0));
-        expect(status.right, lessThanOrEqualTo(320));
-        expect(status.top, greaterThanOrEqualTo(0));
-        expect(status.bottom, lessThanOrEqualTo(568));
-        expect(_key('zyra_loading_golden_thread'), findsNothing);
-        expect(tester.takeException(), isNull);
-        await _captureQuiet(tester, 'quiet_refresh_updating_compact200');
-        await tester.pump(const Duration(seconds: 10));
-        expect(_key('founder_resume_recovery'), findsOneWidget);
-        expect(_key('founder_resume_continuity'), findsNothing);
-        expect(find.byType(ZyraLoading), findsNothing);
-        await _captureQuiet(tester, 'quiet_refresh_recovery_compact200_top');
-        await _captureQuiet(
-          tester,
-          'quiet_access_waiting_compact200_top',
-          directory: _accessCaptureDirectory,
-        );
-        for (final action in ['founder_resume_retry']) {
-          await tester.ensureVisible(_key(action));
-          await tester.pump();
-          expect(_key(action).hitTestable(), findsOneWidget);
-          expect(
-            tester.widget<ButtonStyleButton>(_key(action)).onPressed,
-            isNotNull,
+      // Always drain this fixture's preference queue, including when a
+      // readiness assertion fails, before the next FakeAsync test starts.
+      try {
+        await _withHeldBrowsePhotos(tester, (photos) async {
+          _resume(tester);
+          await _settle(tester);
+          expect(_key('founder_resume_status'), findsOneWidget);
+          expect(find.text('Updating…'), findsOneWidget);
+          final status = tester.getRect(_key('founder_resume_status'));
+          expect(status.left, greaterThanOrEqualTo(0));
+          expect(status.right, lessThanOrEqualTo(320));
+          expect(status.top, greaterThanOrEqualTo(0));
+          expect(status.bottom, lessThanOrEqualTo(568));
+          expect(_key('zyra_loading_golden_thread'), findsNothing);
+          expect(tester.takeException(), isNull);
+          await _captureQuiet(tester, 'quiet_refresh_updating_compact200');
+          await tester.pump(const Duration(seconds: 10));
+          expect(_key('founder_resume_recovery'), findsOneWidget);
+          expect(_key('founder_resume_continuity'), findsNothing);
+          expect(find.byType(ZyraLoading), findsNothing);
+          await _captureQuiet(tester, 'quiet_refresh_recovery_compact200_top');
+          await _captureQuiet(
+            tester,
+            'quiet_access_waiting_compact200_top',
+            directory: _accessCaptureDirectory,
           );
-          final rect = tester.getRect(_key(action));
-          expect(rect.left, greaterThanOrEqualTo(0));
-          expect(rect.right, lessThanOrEqualTo(320));
-          expect(rect.top, greaterThanOrEqualTo(0));
-          expect(rect.bottom, lessThanOrEqualTo(568));
-        }
-        expect(old.canAct(), isFalse);
-        expect(forwarded, 0);
-        expect(tester.takeException(), isNull);
-        await _captureQuiet(tester, 'quiet_refresh_recovery_compact200');
-        await _captureQuiet(
-          tester,
-          'quiet_access_waiting_compact200_actions',
-          directory: _accessCaptureDirectory,
-        );
-        photos.complete();
-        await _settle(tester);
-        expect(_key('founder_resume_recovery'), findsNothing);
-        expect(_key('founder_resume_status'), findsNothing);
-        expect(old.canAct(), isFalse);
-        expect(forwarded, 0);
-      });
-      await _dispose(tester);
+          for (final action in ['founder_resume_retry']) {
+            await tester.ensureVisible(_key(action));
+            await tester.pump();
+            expect(_key(action).hitTestable(), findsOneWidget);
+            expect(
+              tester.widget<ButtonStyleButton>(_key(action)).onPressed,
+              isNotNull,
+            );
+            final rect = tester.getRect(_key(action));
+            expect(rect.left, greaterThanOrEqualTo(0));
+            expect(rect.right, lessThanOrEqualTo(320));
+            expect(rect.top, greaterThanOrEqualTo(0));
+            expect(rect.bottom, lessThanOrEqualTo(568));
+          }
+          expect(old.canAct(), isFalse);
+          expect(forwarded, 0);
+          expect(tester.takeException(), isNull);
+          await _captureQuiet(tester, 'quiet_refresh_recovery_compact200');
+          await _captureQuiet(
+            tester,
+            'quiet_access_waiting_compact200_actions',
+            directory: _accessCaptureDirectory,
+          );
+          photos.complete();
+          await _settle(tester);
+          await _waitForReleasedPhotoSurface(tester, 'founder_resume_recovery');
+          expect(_key('founder_resume_recovery'), findsNothing);
+          expect(_key('founder_resume_status'), findsNothing);
+          expect(old.canAct(), isFalse);
+          expect(forwarded, 0);
+        });
+      } finally {
+        await _dispose(tester);
+      }
     },
   );
 
@@ -4213,6 +4247,7 @@ void main() {
       expect(find.byType(ZyraLoading), findsNothing);
       photos.complete();
       await _settle(tester);
+      await _waitForReleasedPhotoSurface(tester, 'founder_resume_continuity');
       expect(_key('founder_resume_continuity'), findsNothing);
       expect(find.byType(ZyraOneJourneyConceptShell), findsOneWidget);
       expect(old.canAct(), isFalse);
@@ -4223,9 +4258,12 @@ void main() {
       messenger.setMockMessageHandler('flutter/assets', null);
       try {
         await _settle(tester);
-        await _dispose(tester);
       } finally {
-        _heldBrowsePhotoGate = previousGate;
+        try {
+          await _dispose(tester);
+        } finally {
+          _heldBrowsePhotoGate = previousGate;
+        }
       }
     }
   });

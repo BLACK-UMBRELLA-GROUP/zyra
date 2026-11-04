@@ -1,3 +1,5 @@
+// LOCK 14 V5: APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md.
+// Masters: APP_COLOURS/MASTERS/c11_app_icon_1024.png and c12_splash.png.
 // REPLACED 2026-08-01.
 //
 // This file was still the stock `flutter create` counter template. It
@@ -42,29 +44,32 @@ void main() {
       }
     });
 
-    test('the unified gradient uses the current Midnight Plum endpoints', () {
+    test('the unified gradient uses the locked Ivory endpoints', () {
       final gradient = ZyraColors.brandGradient;
-      expect(ZyraColors.currentDefaultPalette, ZyraDevPalette.midnightPlum);
-      expect(gradient.colors.first, const Color(0xFF30203F));
-      expect(gradient.colors.last, const Color(0xFF160E20));
-      expect(gradient.begin, Alignment.topLeft);
-      expect(gradient.end, Alignment.bottomRight);
+      expect(ZyraColors.currentDefaultPalette, ZyraDevPalette.ivory);
+      expect(gradient.colors.first, const Color(0xFFFBF7F0));
+      expect(gradient.colors.last, const Color(0xFFEEE6D8));
+      expect(gradient.begin, const Alignment(-0.173648, -0.984808));
+      expect(gradient.end, const Alignment(0.173648, 0.984808));
     });
 
-    test('persisted Midnight Plum receives the darker theme without reset', () {
-      ZyraColors.restoreAppPalette('midnightPlum');
-      expect(ZyraColors.brandGradient.colors, [
-        ZyraColors.royalPurple,
-        ZyraColors.luxuryDarkPurple,
-      ]);
-      // Unrelated member choices remain opt-in, not silently erased.
-      ZyraColors.restoreAppPalette('deepEmerald');
-      expect(ZyraColors.devPalette, ZyraDevPalette.deepEmerald);
-      ZyraColors.restoreAppPalette(null);
-    });
+    test(
+      'retired palette values resolve to Ivory without deleting member choices',
+      () {
+        ZyraColors.restoreAppPalette('midnightPlum');
+        expect(ZyraColors.brandGradient.colors, [
+          ZyraColors.ivoryTop,
+          ZyraColors.ivoryBottom,
+        ]);
+        // Unrelated member choices remain opt-in, not silently erased.
+        ZyraColors.restoreAppPalette('deepEmerald');
+        expect(ZyraColors.devPalette, ZyraDevPalette.ivory);
+        ZyraColors.restoreAppPalette(null);
+      },
+    );
 
-    test('every bottom sheet and dark popup shares the new plum surface', () {
-      expect(ZyraColors.modalSheetSurface, const Color(0xFF241A2F));
+    test('every bottom sheet and popup shares the locked Ivory surface', () {
+      expect(ZyraColors.modalSheetSurface, const Color(0xFFF1EBDF));
       expect(ZyraColors.sheetSurface, ZyraColors.modalSheetSurface);
       expect(ZyraColors.waliSheetBg, ZyraColors.modalSheetSurface);
       expect(ZyraColors.sheetGradient.colors, [
@@ -91,12 +96,13 @@ void main() {
           ZyraColors.foreground,
           ZyraColors.foregroundBody,
           ZyraColors.foregroundSecondary,
-          ZyraColors.journeyGold,
+          ZyraColors.goldText,
           ZyraColors.destructive,
         ]) {
           expect(
             contrast(Color.alphaBlend(ink, canvas), canvas),
             greaterThanOrEqualTo(4.5),
+            reason: '$ink on $canvas must retain text contrast',
           );
         }
       }
@@ -106,11 +112,11 @@ void main() {
       );
     });
 
-    test('native launch and adaptive icon use the dark canvas endpoint', () {
+    test('native launch and adaptive icon use the locked Ivory endpoint', () {
       final config = File('pubspec.yaml').readAsStringSync();
-      expect(config, contains('adaptive_icon_background: "#160E20"'));
-      expect(config, contains('flutter_native_splash:\n  color: "#160E20"'));
-      expect(config, contains('android_12:\n    color: "#160E20"'));
+      expect(config, contains('adaptive_icon_background: "#FBF7F0"'));
+      expect(config, contains('flutter_native_splash:\n  color: "#FBF7F0"'));
+      expect(config, contains('android_12:\n    color: "#FBF7F0"'));
     });
   });
 }

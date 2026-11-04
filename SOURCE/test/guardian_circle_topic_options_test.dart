@@ -296,6 +296,9 @@ Future<void> _mount(
 }
 
 Future<void> _press(WidgetTester tester, Finder target) async {
+  // Developer-toggle removal brief §5: setup keys configure the code-only
+  // fixture; member Circle controls below still use real physical gestures.
+  if (await pressZyraFixtureFinder(tester, target)) return;
   expect(target, findsOneWidget);
   if (find
       .ancestor(of: target, matching: find.byType(Scrollable))
@@ -2107,7 +2110,8 @@ void main() {
     'actual Guardian shell shares the bubble-design dropdown and the one admitted Circle',
     (tester) async {
       await _mountShell(tester, guardian: true);
-      await _nav(tester, 2);
+      // LOCK8 V9, g10 Seekers: Network/Journeys/My ZYRA/Seekers/Profile.
+      await _nav(tester, 3);
       await _press(tester, _key('seeker-family-chat-draft-self'));
       final owner = tester.widget<ZyraGuardianCircleScreen>(
         find.byType(ZyraGuardianCircleScreen),
@@ -2138,7 +2142,8 @@ void main() {
 
   for (final guardian in [false, true]) {
     final role = guardian ? 'Guardian' : 'Seeker';
-    final parentTab = guardian ? 2 : 3;
+    // LOCK8 V9 g10 (Guardian) and LOCK19 k01 (Seeker) both use slot 3.
+    const parentTab = 3;
     final parentTitle = guardian ? 'Seekers' : 'Guardian';
     final circleEntry = guardian
         ? 'seeker-family-chat-draft-self'

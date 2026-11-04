@@ -1,3 +1,5 @@
+// LOCK 14 V5: APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md;
+// masters APP_COLOURS/MASTERS/c11_app_icon_1024.png and c12_splash.png.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/models/zyra_error_state.dart';
@@ -32,8 +34,8 @@ void main() {
     test('$branch wordmark defaults to the approved splash gold', () {
       ZyraText.useTestFontStubs = stubFonts;
 
-      expect(ZyraColors.splashWordmark, const Color(0xFFE5CE8E));
-      expect(ZyraColors.splashWordmark, isNot(ZyraColors.journeyGold));
+      expect(ZyraColors.splashWordmark, const Color(0xFFA9792E));
+      expect(ZyraColors.splashWordmark, ZyraColors.journeyGold);
       for (final size in [24.0, 26.0, 29.0, 30.0, 34.0]) {
         final style = ZyraText.wordmark(size: size);
         expect(style.color, ZyraColors.splashWordmark);

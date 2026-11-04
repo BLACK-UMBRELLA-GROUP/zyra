@@ -388,7 +388,7 @@ void main() {
   for (final owned in [false, true]) {
     for (final enlarged in [false, true]) {
       testWidgets(
-        'admitted empty Bio is unboxed beneath its profile in ${owned ? 'owned' : 'embedded'} ${enlarged ? 'compact200' : 'normal'} reading',
+        'admitted empty Bio uses the LOCK 22 gold-ring state beneath its profile in ${owned ? 'owned' : 'embedded'} ${enlarged ? 'compact200' : 'normal'} reading',
         (tester) async {
           await _mount(
             tester,
@@ -399,15 +399,18 @@ void main() {
           );
           final empty = _key('draft_journey_bio_empty');
           expect(tester.widget(empty), isA<ZyraEmptyState>());
-          expect(
+          // LOCK 22 V3, UNITY_PASS/MASTERS/e01–e02: shared 96 pt gold ring.
+          final ring = tester.widget<Container>(
             find.descendant(of: empty, matching: find.byType(Container)),
-            findsNothing,
           );
+          expect(ring.constraints?.maxWidth, 96);
+          expect(ring.constraints?.maxHeight, 96);
+          expect((ring.decoration! as BoxDecoration).shape, BoxShape.circle);
           final icon = tester.widget<Icon>(
             find.descendant(of: empty, matching: find.byType(Icon)),
           );
-          expect(icon.size, 30);
-          expect(icon.color, ZyraColors.ink(.35));
+          expect(icon.size, 34);
+          expect(icon.color, ZyraColors.journeyGold);
           expect(_key('draft_journey_bio_name'), findsOneWidget);
           expect(find.text('Sara'), findsOneWidget);
           expect(_key('draft_journey_bio_title'), findsOneWidget);
@@ -415,7 +418,7 @@ void main() {
           await tester.ensureVisible(message);
           await tester.pumpAndSettle();
           expect(message.hitTestable(), findsOneWidget);
-          expect(tester.widget<Text>(message).style!.fontSize, 15);
+          expect(tester.widget<Text>(message).style!.fontSize, 21);
           expect(
             find.descendant(of: empty, matching: find.byType(FittedBox)),
             findsNothing,

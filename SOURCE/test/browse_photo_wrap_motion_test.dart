@@ -129,8 +129,9 @@ void _selected(WidgetTester tester, int index) {
   final dot = tester.widget<AnimatedContainer>(
     _key('concept_browse_photo_dot_${_id}_$index'),
   );
-  expect(dot.constraints!.maxWidth, 20);
-  expect(dot.constraints!.maxHeight, 5);
+  // LOCK18 V2, PAGE_DOTS/MASTERS/d01_profiles.png: active 30 × 6 pill.
+  expect(dot.constraints!.maxWidth, 30);
+  expect(dot.constraints!.maxHeight, 6);
   expect((dot.decoration! as BoxDecoration).color, ZyraColors.journeyGold);
   expect(tester.widget<PageView>(_pager).controller!.page, closeTo(index, .01));
   expect(tester.state<_PhotoHostState>(find.byType(_PhotoHost)).decisions, 0);
@@ -148,8 +149,10 @@ void _details(WidgetTester tester) {
   final details = _key('concept_browse_details_$_id');
   expect(details, findsOneWidget);
   expect(
+    // LOCK4: the first photo belongs inside the details gold ring
+    // (PROFILES_DETAILS_CARD/MASTERS/profiles_tab__details_card_photo.png).
     find.descendant(of: details, matching: find.byType(RawImage)),
-    findsNothing,
+    findsOneWidget,
   );
   expect(
     find.descendant(of: details, matching: find.byType(ZyraProfileNameBlock)),

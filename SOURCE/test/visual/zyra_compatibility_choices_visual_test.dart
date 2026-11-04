@@ -196,13 +196,18 @@ void main() {
     await _mount(tester, balance: 0, personName: 'Aisha');
     expect(
       tester
-          .widget<OutlinedButton>(
+          // LOCK 22 V6 §3, master UNITY_PASS/MASTERS/x01: the gold
+          // Unlock compatibility action is filled; zero balance still disables it.
+          .widget<FilledButton>(
             find.byKey(const ValueKey('draft_compatibility_reveal')),
           )
           .onPressed,
       isNull,
     );
-    expect(find.text('0 unlocks left'), findsOneWidget);
+    expect(
+      find.textContaining('0 Unlocks left', findRichText: true),
+      findsOneWidget,
+    );
     expect(find.text('You and Aisha'), findsOneWidget);
     expect(find.textContaining('%'), findsNothing);
     await _frame(tester, 'locked_halo_zero_credits');

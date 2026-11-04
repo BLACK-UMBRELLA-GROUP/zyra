@@ -320,8 +320,9 @@ void main() {
               final activeDot = tester.widget<AnimatedContainer>(
                 _key('concept_browse_photo_dot_${profile.id}_1'),
               );
-              expect(activeDot.constraints?.maxWidth, 20);
-              expect(activeDot.constraints?.maxHeight, 5);
+              // LOCK 18 V2, PAGE_DOTS/MASTERS/d01: active page pill 30 × 6.
+              expect(activeDot.constraints?.maxWidth, 30);
+              expect(activeDot.constraints?.maxHeight, 6);
               expect(
                 (activeDot.decoration! as BoxDecoration).color,
                 ZyraColors.journeyGold,
@@ -1249,7 +1250,8 @@ void main() {
             if (!guardian) 'Hidden Profiles',
             'NOTIFICATIONS',
             'Notifications & emails',
-            'MEMBERSHIP',
+            // LOCK 22 V4, UNITY_PASS/MASTERS/s01–s02: membership
+            // stays in the summary; the duplicate section was removed.
             'SUPPORT',
             'Help & support',
             'Send feedback',

@@ -1,3 +1,5 @@
+// LOCK 14 V5: APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md;
+// masters APP_COLOURS/MASTERS/c11_app_icon_1024.png and c12_splash.png.
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -12,29 +14,26 @@ void main() {
     ZyraColors.selectDevPalette(ZyraColors.currentDefaultPalette);
   });
 
-  test(
-    'dark selected cards and legacy aliases use quiet fill and gold edge',
-    () {
-      for (final palette in ZyraDevPalette.values.where((p) => !p.isLight)) {
-        ZyraColors.selectDevPalette(palette);
-        for (final style in ZyraAppSurfaceStyle.values) {
-          ZyraColors.selectAppSurfaceStyle(style);
-          expect(ZyraColors.surfaceEmphasisFill, ZyraColors.surfaceFill);
-          expect(ZyraColors.frostSelectedFill, ZyraColors.surfaceFill);
-          expect(ZyraColors.accentBg, ZyraColors.surfaceFill);
-          expect(ZyraColors.glassFill, ZyraColors.surfaceFill);
-          expect(ZyraColors.surfaceFill, const Color(0x12FFFFFF));
-          final edge = ZyraColors.journeyGold.withValues(alpha: .70);
-          expect(ZyraColors.surfaceEmphasisBorder, edge);
-          expect(ZyraColors.frostSelectedBorder, edge);
-          expect(ZyraColors.accentBorder, edge);
-          expect(ZyraColors.glassBorder, edge);
-          expect(ZyraColors.brandGradient, palette.gradient);
-          expect(ZyraColors.destructive, const Color(0xFFE08080));
-        }
+  test('retired dark selections resolve to Ivory quiet fill and gold edge', () {
+    for (final palette in ZyraDevPalette.values.where((p) => !p.isLight)) {
+      ZyraColors.selectDevPalette(palette);
+      for (final style in ZyraAppSurfaceStyle.values) {
+        ZyraColors.selectAppSurfaceStyle(style);
+        expect(ZyraColors.surfaceEmphasisFill, ZyraColors.surfaceFill);
+        expect(ZyraColors.frostSelectedFill, ZyraColors.surfaceFill);
+        expect(ZyraColors.accentBg, ZyraColors.surfaceFill);
+        expect(ZyraColors.glassFill, ZyraColors.surfaceFill);
+        expect(ZyraColors.surfaceFill, const Color(0xD9FAF5EC));
+        final edge = ZyraColors.journeyGold.withValues(alpha: .70);
+        expect(ZyraColors.surfaceEmphasisBorder, edge);
+        expect(ZyraColors.frostSelectedBorder, edge);
+        expect(ZyraColors.accentBorder, edge);
+        expect(ZyraColors.glassBorder, edge);
+        expect(ZyraColors.brandGradient, ZyraDevPalette.ivory.gradient);
+        expect(ZyraColors.destructive, const Color(0xFFB84A42));
       }
-    },
-  );
+    }
+  });
 
   for (final scale in [1.0, 2.0]) {
     testWidgets('Moment CTA uses dark halo and keeps its action at $scale', (

@@ -319,10 +319,12 @@ void main() {
       'toggle ON all history',
       'toggle OFF immediate revert',
       'Main reassignment consent auto-reset',
-      'former Main loses all access',
+      // DR-ZYRA-233 / Guardian blueprint V4 §Past Journey summaries:
+      // grants belong to each Guardian, not the current Main assignment.
+      'former Main retains own granted summary scope',
       'removed-relinked Main stale consent',
       'activation did not set both periods',
-      'same-active-link repromotion reused old consent',
+      'same-active-link repromotion epoch/period/consent failed',
       'unrelated current-Main update changed epoch/period/consent',
       'removal did not clear period/epoch or rewrote created_at',
       'reactivation did not refresh active_since while preserving created_at',

@@ -22,12 +22,13 @@ import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_request_activity_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_journey_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_options.dart';
+import 'package:zyra/dev/zyra_one_journey_tab.dart';
+import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'package:zyra/dev/zyra_one_journey_options_page.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/data/zyra_journey_stages.dart';
 import 'package:zyra/models/seeker_profile.dart';
-import 'package:zyra/models/zyra_dashboard_resolution.dart';
-import 'package:zyra/models/zyra_supportive_dashboard.dart';
 import 'package:zyra/screens/wali/seeker_guardian_designs.dart';
 import 'package:zyra/screens/wali/family_messaging_screens.dart';
 import 'package:zyra/screens/wali/link_guardian_panel.dart';
@@ -45,14 +46,12 @@ import 'package:zyra/widgets/floating_nav_bar.dart';
 import 'package:zyra/widgets/zyra_browse_designs.dart';
 import 'package:zyra/widgets/zyra_guardian_dashboard_profile_card.dart';
 import 'package:zyra/widgets/zyra_journey_icon.dart';
-import 'package:zyra/widgets/zyra_one_profile_avatar.dart';
-import 'package:zyra/widgets/zyra_profile_membership_row.dart';
 import 'package:zyra/widgets/zyra_profile_name_block.dart';
 import 'package:zyra/widgets/zyra_segmented_toggle.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 import 'package:zyra/widgets/zyra_browse_next_photo_motion.dart';
 import 'package:zyra/widgets/zyra_profile_image.dart';
-import 'package:zyra/widgets/zyra_quiet_dashboard.dart';
+import 'package:zyra/widgets/zyra_focus_dashboard.dart';
 
 import 'support/zyra_hidden_dev_controls_driver.dart';
 
@@ -307,6 +306,40 @@ Future<void> _mount(
 }
 
 Future<void> _press(WidgetTester tester, String id) async {
+  // LOCK 13 V3 (JOURNEY_TAB/MASTERS/j01–j07,j10–j12): one
+  // visible place, a real Continue pill and a pushed options page.
+  final rootJourney = RegExp(r'^draft_journey_(draft-[a-z]+)$').firstMatch(id);
+  final optionsJourney = RegExp(
+    r'^draft_journey_options_(draft-[a-z]+)$',
+  ).firstMatch(id);
+  if (optionsJourney != null &&
+      find.byType(ZyraOneJourneyOptionsPage).evaluate().isNotEmpty) {
+    final page = tester.widget<ZyraOneJourneyOptionsPage>(
+      find.byType(ZyraOneJourneyOptionsPage),
+    );
+    if (page.id == optionsJourney.group(1)) {
+      await swipeZyraBack(tester);
+      return;
+    }
+  }
+  if ((rootJourney != null || optionsJourney != null) &&
+      find.byType(ZyraOneJourneyTab).evaluate().isNotEmpty) {
+    final subject = (rootJourney ?? optionsJourney)!.group(1)!;
+    final reader = tester.widget<ZyraOneJourneyTab>(
+      find.byType(ZyraOneJourneyTab),
+    );
+    final place = reader.journeys.indexWhere(
+      (journey) => journey.id == subject,
+    );
+    expect(
+      place,
+      greaterThanOrEqualTo(0),
+      reason: 'Only an occupied current place may open $subject',
+    );
+    await _press(tester, 'journey_tab_dot_target_$place');
+    if (rootJourney != null) id = 'journey_tab_continue';
+  }
+
   if (id == 'draft_rules') {
     await openZyraDevControls(tester);
     expect(find.text('Page options'), findsNothing);
@@ -327,6 +360,12 @@ Future<void> _press(WidgetTester tester, String id) async {
     return;
   }
   if (await pressZyraDevControlKey(tester, id)) return;
+  // Code-only fixture setup must not impersonate a member route. Once an
+  // actual member target is used, subsequent Back returns that actual page.
+  if (zyraShellFixtureFor(tester).setupScopeOpen && id != 'draft_back') {
+    await closeZyraDevControls(tester);
+  }
+
   final contextualTab = id.startsWith('concept_journey_preview_')
       ? 1
       : id == 'draft_history'
@@ -438,8 +477,9 @@ Future<void> _press(WidgetTester tester, String id) async {
     await tester.pumpAndSettle();
   }
   if (target.evaluate().isEmpty) {
-    final scrollKey = id.startsWith('my-zyra-route-')
-        ? 'my-zyra-quiet-scroll-0'
+    final scrollKey =
+        id.startsWith('my-zyra-route-') || id.startsWith('concept-my-')
+        ? 'my-zyra-focus-scroll'
         : id.startsWith('concept_settings_')
         ? 'concept-current-settings-scroll'
         : 'concept-current-profile-scroll';
@@ -756,7 +796,7 @@ Future<void> _sendRequest(WidgetTester tester) async {
 
 Future<void> _openRequests(WidgetTester tester, {bool sent = false}) async {
   await _nav(tester, 2);
-  await _press(tester, 'my-zyra-route-concept-my-requests');
+  await _press(tester, 'concept-my-requests');
   await _press(tester, 'draft_requests_${sent ? 1 : 0}');
 }
 
@@ -780,7 +820,7 @@ Future<void> _returnPage(WidgetTester tester, {Finder? from}) async {
 
 Future<void> _openEnded(WidgetTester tester) async {
   await _nav(tester, 2);
-  await _press(tester, 'my-zyra-route-concept-my-ended');
+  await _press(tester, 'concept-my-ended');
 }
 
 Future<void> _selectBrowseDesign(
@@ -843,9 +883,15 @@ Future<void> _seedJourneyCards(WidgetTester tester, int count) async {
   await _nav(tester, 1);
   await _press(tester, 'draft_rules');
   await _press(tester, 'concept_journey_preview_$count');
+  // LOCK 13 V3: all occupied places remain in the projection, with only
+  // the selected full-height photo card mounted at a time.
+  final reader = tester.widget<ZyraOneJourneyTab>(
+    find.byType(ZyraOneJourneyTab),
+  );
+  expect(reader.journeys, hasLength(count));
   expect(
-    find.byType(ZyraOneJourneyConnectionsActiveCard),
-    findsNWidgets(count),
+    reader.journeys.map((card) => card.id),
+    draftProfiles.skip(1).take(count).map((profile) => profile.id),
   );
 }
 
@@ -853,9 +899,15 @@ Future<void> _cancelJourneyOptions(WidgetTester tester) async {
   final options = tester.widget<ZyraConceptJourneyOptions>(
     find.byType(ZyraConceptJourneyOptions),
   );
+  if (options.lockedPage) {
+    await swipeZyraBack(tester);
+    expect(find.byType(ZyraConceptJourneyOptions), findsNothing);
+    expect(tester.takeException(), isNull);
+    return;
+  }
   if (options.inline) {
     expect(find.byType(BottomSheet), findsNothing);
-    await _press(tester, 'draft_journey_options_${options.id}');
+    await swipeZyraBack(tester);
     expect(find.byType(ZyraConceptJourneyOptions), findsNothing);
     expect(tester.takeException(), isNull);
     return;
@@ -886,7 +938,15 @@ Future<void> _completeBioStep(WidgetTester tester) async {
   expect(_key('draft_journey_bio_about'), findsNothing);
   expect(_key('draft_bio_continue_$_fixture'), findsNothing);
   await _press(tester, 'draft_rules');
-  expect(_action(tester, 'draft_peer_bio_ready_$_fixture'), isNull);
+  // Removed controls expose no disabled-widget contract. Exercise the
+  // fixture's invalid early readiness and prove it cannot advance the model.
+  final beforeEarlyReady = zyraShellFixtureFor(tester).model.snapshot();
+  await _press(tester, 'draft_peer_bio_ready_$_fixture');
+  await tester.pumpAndSettle();
+  expect(
+    zyraShellFixtureFor(tester).model.snapshot().progress,
+    beforeEarlyReady.progress,
+  );
   await _press(tester, 'draft_peer_bio_reveal_$_fixture');
   await _press(tester, 'draft_back');
   expect(_key('draft_journey_bio_step_$_fixture'), findsOneWidget);
@@ -955,11 +1015,12 @@ void _expectRequestTabs(
 }
 
 void _expectSingleMyZyra(WidgetTester tester) {
-  final dashboard = tester.widget<ZyraQuietDashboard>(
-    find.byType(ZyraQuietDashboard),
+  final dashboard = tester.widget<ZyraFocusDashboard>(
+    find.byType(ZyraFocusDashboard),
   );
-  expect(dashboard.singlePage, isTrue);
-  expect(dashboard.permanentNavigation, isTrue);
+  // LOCK 15 V3, MY_ZYRA/MASTERS/m01–m06: one Focus item at a
+  // time with four permanent route tiles, separate from Journey cards.
+  expect(dashboard.tiles, hasLength(4));
   // The lazy list may keep Quick access below the reading viewport. Confirm
   // the permanent destination contract without moving its preserved scroll.
   for (final id in [
@@ -967,9 +1028,10 @@ void _expectSingleMyZyra(WidgetTester tester) {
     'concept-my-introductions',
     'concept-my-ended',
   ]) {
-    expect(dashboard.fixtureCards.where((card) => card.id == id), hasLength(1));
+    expect(dashboard.tiles.where((card) => card.id == id), hasLength(1));
   }
-  expect(dashboard.onTabChanged, isNull);
+  expect(dashboard.previewControls, isNull);
+  expect(_key('focus-area'), findsOneWidget);
   expect(find.text('My ZYRA'), findsOneWidget);
   expect(find.byType(ZyraSegmentedToggle), findsNothing);
   expect(find.byType(PageView), findsNothing);
@@ -1283,58 +1345,42 @@ void main() {
     (size: Size(320, 568), scale: 2.0),
   ]) {
     testWidgets(
-      'Journey title and three empty slots remain nav-safe ${viewport.scale}',
+      'Journey title and locked empty state remain nav-safe ${viewport.scale}',
       (tester) async {
         await _mount(tester, size: viewport.size, scale: viewport.scale);
         await _nav(tester, 1);
-        final title = tester.widget<Text>(_key('concept_connections_title'));
+        final titleFinder = find.text('Journey');
+        final title = tester.widget<Text>(titleFinder);
         expect(title.style?.fontSize, 26);
-        expect(title.textAlign, TextAlign.left);
-        final titleRect = tester.getRect(_key('concept_connections_title'));
+        final titleRect = tester.getRect(titleFinder);
         expect(titleRect.left, closeTo(20, .1));
         expect(titleRect.top, lessThan(85));
-        final list = find.byKey(
-          const PageStorageKey('concept_connections_page_0'),
+        final reader = tester.widget<ZyraOneJourneyTab>(
+          find.byType(ZyraOneJourneyTab),
         );
-        final viewportRect = tester.getRect(list);
-        expect(viewportRect.top, greaterThan(titleRect.bottom));
-        final position = tester
-            .state<ScrollableState>(
-              find.descendant(of: list, matching: find.byType(Scrollable)),
-            )
-            .position;
-        expect(position.pixels, position.minScrollExtent);
+        expect(reader.capacity, 3);
+        expect(reader.journeys, isEmpty);
+        expect(_key('journey_tab_card'), findsNothing);
+        expect(_key('journey_tab_dot_target_0'), findsNothing);
+        expect(find.text('No Journey yet'), findsOneWidget);
+        final copy = find.textContaining('You have 3 places.');
+        await tester.ensureVisible(copy);
+        await tester.pumpAndSettle();
+        final paragraph = tester.renderObject<RenderParagraph>(copy);
+        expect(paragraph.didExceedMaxLines, isFalse);
         expect(
-          position.maxScrollExtent,
-          viewport.scale == 1 ? closeTo(0, .01) : greaterThan(0),
+          tester.widget<Text>(copy).overflow,
+          isNot(TextOverflow.ellipsis),
         );
-        final navigationTop = tester.getRect(find.byType(FloatingNavBar)).top;
-        expect(find.text('Awaiting a Journey'), findsNWidgets(3));
-        for (var index = 0; index < 3; index++) {
-          final slot = _key('concept_journey_capacity_slot_$index');
-          expect(slot, findsOneWidget);
-          await tester.ensureVisible(slot);
-          await tester.pumpAndSettle();
-          final copy = find.descendant(of: slot, matching: find.byType(Text));
-          final copyWidget = tester.widget<Text>(copy);
-          expect(copyWidget.style?.fontSize, 14);
-          expect(copyWidget.overflow, isNot(TextOverflow.ellipsis));
-          expect(
-            tester.renderObject<RenderParagraph>(copy).didExceedMaxLines,
-            isFalse,
-          );
-          expect(
-            find.descendant(of: slot, matching: find.byType(FittedBox)),
-            findsNothing,
-          );
-          final bounds = tester.getRect(copy);
-          expect(bounds.left, greaterThanOrEqualTo(viewportRect.left - .01));
-          expect(bounds.right, lessThanOrEqualTo(viewportRect.right + .01));
-          expect(bounds.top, greaterThanOrEqualTo(viewportRect.top - .01));
-          expect(bounds.bottom, lessThanOrEqualTo(navigationTop + .01));
-          expect(copy.hitTestable(), findsOneWidget);
-        }
-        expect(find.text('No Journey yet.'), findsNothing);
+        expect(copy.hitTestable(), findsOneWidget);
+        final browse = _key('journey_tab_browse');
+        await tester.ensureVisible(browse);
+        await tester.pumpAndSettle();
+        expect(browse.hitTestable(), findsOneWidget);
+        expect(
+          tester.getRect(browse).bottom,
+          lessThan(tester.getRect(find.byType(FloatingNavBar)).top),
+        );
         expect(tester.takeException(), isNull);
       },
     );
@@ -1513,14 +1559,14 @@ void main() {
         );
         if (sent) await _sendRequest(tester);
         await _nav(tester, 2);
-        final before = tester.widget<ZyraQuietDashboard>(
-          find.byType(ZyraQuietDashboard),
+        final before = tester.widget<ZyraFocusDashboard>(
+          find.byType(ZyraFocusDashboard),
         );
         expect(
-          before.fixtureCards
+          before.tiles
               .firstWhere((card) => card.id == 'concept-my-requests')
-              .detail,
-          sent ? '1 received · 1 sent' : '1 received · 0 sent',
+              .status,
+          '1 new',
         );
         expect(
           tester
@@ -1532,9 +1578,9 @@ void main() {
           isFalse,
         );
         expect(
-          before.fixtureCards
+          before.tiles
               .singleWhere((card) => card.id == 'concept-my-requests')
-              .hasNewActivity,
+              .isNew,
           isTrue,
         );
         await _nav(tester, 0);
@@ -1547,14 +1593,14 @@ void main() {
         await _press(tester, 'draft_safety_block');
         await _nav(tester, 2);
         expect(find.textContaining(person.firstName), findsNothing);
-        final after = tester.widget<ZyraQuietDashboard>(
-          find.byType(ZyraQuietDashboard),
+        final after = tester.widget<ZyraFocusDashboard>(
+          find.byType(ZyraFocusDashboard),
         );
         expect(
-          after.fixtureCards
+          after.tiles
               .firstWhere((card) => card.id == 'concept-my-requests')
-              .detail,
-          sent ? '1 received · 0 sent' : '0 received · 0 sent',
+              .status,
+          sent ? '1 new' : 'None',
         );
         expect(
           tester
@@ -1564,32 +1610,18 @@ void main() {
           isFalse,
         );
         expect(
-          after.fixtureCards
+          after.tiles
               .singleWhere((card) => card.id == 'concept-my-requests')
-              .hasNewActivity,
+              .isNew,
           sent,
         );
-        // A current dispatcher cannot address the hidden blocked invitation,
-        // even though its underlying fictional record has not been deleted.
-        after.onNavigate!(
-          SupportiveCard(
-            id: 'concept-request-$id',
-            section: SupportiveSection.stand,
-            title: 'Blocked request probe',
-            target: ZyraDashboardTarget.connectionsActivity,
-          ),
-        );
+        // LOCK 15 V3: Focus exposes only bound actions, not a generic
+        // caller-supplied route card. A blocked invitation has no action.
+        expect(after.items.where((item) => item.id.contains(id)), isEmpty);
         await tester.pumpAndSettle();
         expect(_key('concept_activity_requests'), findsNothing);
-        expect(find.byType(ZyraQuietDashboard), findsOneWidget);
-        after.onNavigate!(
-          const SupportiveCard(
-            id: 'blocked-request-notifications-probe',
-            section: SupportiveSection.stand,
-            title: 'Updates',
-            target: ZyraDashboardTarget.notifications,
-          ),
-        );
+        expect(find.byType(ZyraFocusDashboard), findsOneWidget);
+        await _press(tester, 'focus-notifications');
         await tester.pumpAndSettle();
         expect(
           find.text(
@@ -1636,14 +1668,14 @@ void main() {
         isTrue,
       );
       await _nav(tester, 2);
-      final dashboard = tester.widget<ZyraQuietDashboard>(
-        find.byType(ZyraQuietDashboard),
+      final dashboard = tester.widget<ZyraFocusDashboard>(
+        find.byType(ZyraFocusDashboard),
       );
       expect(
-        dashboard.fixtureCards
+        dashboard.tiles
             .firstWhere((card) => card.id == 'concept-my-requests')
-            .detail,
-        '1 received · 0 sent',
+            .status,
+        '1 new',
       );
       expect(
         tester
@@ -1653,19 +1685,12 @@ void main() {
         isFalse,
       );
       expect(
-        dashboard.fixtureCards
+        dashboard.tiles
             .singleWhere((card) => card.id == 'concept-my-requests')
-            .hasNewActivity,
+            .isNew,
         isTrue,
       );
-      dashboard.onNavigate!(
-        const SupportiveCard(
-          id: 'hidden-request-notifications-probe',
-          section: SupportiveSection.stand,
-          title: 'Updates',
-          target: ZyraDashboardTarget.notifications,
-        ),
-      );
+      await _press(tester, 'focus-notifications');
       await tester.pumpAndSettle();
       expect(
         find.text('A Journey invitation is waiting in My ZYRA.'),
@@ -1857,8 +1882,10 @@ void main() {
       await _nav(tester, 2);
       _expectSingleMyZyra(tester);
       final staleDashboardRoute = tester
-          .widget<ZyraQuietDashboard>(find.byType(ZyraQuietDashboard))
-          .onNavigate!;
+          .widget<ZyraFocusDashboard>(find.byType(ZyraFocusDashboard))
+          .tiles
+          .singleWhere((tile) => tile.id == 'concept-my-requests')
+          .onTap;
       await _openRequests(tester);
       final staleSegment = _retainedRequestTabs(tester);
       await _nav(tester, 0);
@@ -1867,14 +1894,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(_selector(tester, _requestLabels).selectedIndex, 0);
       await _nav(tester, 2);
-      staleDashboardRoute(
-        const SupportiveCard(
-          id: 'concept-my-requests',
-          section: SupportiveSection.stand,
-          title: 'Journey requests',
-          target: ZyraDashboardTarget.connectionsActivity,
-        ),
-      );
+      staleDashboardRoute();
       await tester.pumpAndSettle();
       _expectSingleMyZyra(tester);
       expect(_key('concept_activity_requests'), findsNothing);
@@ -1935,7 +1955,7 @@ void main() {
               expect(_key('concept_activity_back'), findsNothing);
               expect(_key('concept_pull_down_back_scope'), findsOneWidget);
               expect(find.byType(ZyraShellNavigation), findsNothing);
-              expect(find.byType(ZyraQuietDashboard), findsNothing);
+              expect(find.byType(ZyraFocusDashboard), findsNothing);
             }
 
             void expectIntroductions() {
@@ -2035,7 +2055,7 @@ void main() {
             final staleSegments = _retainedRequestTabs(tester);
             await backToMyZyra();
             for (final index in [0, 1]) {
-              await _press(tester, 'my-zyra-route-concept-my-requests');
+              await _press(tester, 'concept-my-requests');
               if (index != 0) await _press(tester, 'draft_requests_$index');
               expectRequestPage(index);
               await backToMyZyra();
@@ -2045,7 +2065,7 @@ void main() {
               'my_zyra_requests_introductions_$captureSuffix',
               requests: true,
             );
-            await _press(tester, 'my-zyra-route-concept-my-introductions');
+            await _press(tester, 'concept-my-introductions');
             expectIntroductions();
             staleSource(1);
             staleSegments(0);
@@ -2066,7 +2086,7 @@ void main() {
             await backToMyZyra();
 
             // Same-name route ABA cannot revive the former delegates.
-            await _press(tester, 'my-zyra-route-concept-my-requests');
+            await _press(tester, 'concept-my-requests');
             expectRequestPage(0);
             staleSource(1);
             staleSegments(1);
@@ -2117,7 +2137,7 @@ void main() {
           await tester.pumpAndSettle();
           expect(_key('concept_activity_requests'), findsOneWidget);
           expect(_selector(tester, _requestLabels).selectedIndex, 0);
-          expect(find.byType(ZyraQuietDashboard), findsNothing);
+          expect(find.byType(ZyraFocusDashboard), findsNothing);
           expect(position().pixels, lessThan(belowTop));
           for (
             var attempt = 0;
@@ -2173,7 +2193,7 @@ void main() {
             1,
           );
           expect(_key('concept_request_${_fixture}_header'), findsOneWidget);
-          expect(find.byType(ZyraQuietDashboard), findsNothing);
+          expect(find.byType(ZyraFocusDashboard), findsNothing);
           expect(find.byType(ZyraShellNavigation), findsNothing);
           staleSource(0);
           staleLeafBack();
@@ -2182,7 +2202,7 @@ void main() {
           expect(_selector(tester, _requestLabels).selectedIndex, 1);
           await _returnPage(tester, from: _key('concept_connections_title'));
           _expectSingleMyZyra(tester);
-          await _press(tester, 'my-zyra-route-concept-my-requests');
+          await _press(tester, 'concept-my-requests');
           await _press(tester, 'draft_requests_1');
           expect(_key('concept_request_${_fixture}_header'), findsOneWidget);
           expect(_key('draft_confirm_request'), findsNothing);
@@ -2204,7 +2224,7 @@ void main() {
             await _mount(tester);
             await _openRequests(tester);
             await _returnPage(tester);
-            await _press(tester, 'my-zyra-route-concept-my-introductions');
+            await _press(tester, 'concept-my-introductions');
             expect(_key('concept_activity_introductions'), findsOneWidget);
             expect(find.text('No introductions yet'), findsOneWidget);
             expect(_key('concept_activity_back'), findsNothing);
@@ -2248,7 +2268,7 @@ void main() {
             _expectSingleMyZyra(tester);
             expect(find.byType(ZyraShellNavigation), findsOneWidget);
             expect(find.byType(ZyraOneJourneyConceptShell), findsOneWidget);
-            await _press(tester, 'my-zyra-route-concept-my-requests');
+            await _press(tester, 'concept-my-requests');
             retainedDismiss();
             await tester.pumpAndSettle();
             expect(_key('concept_activity_requests'), findsOneWidget);
@@ -2354,19 +2374,8 @@ void main() {
         await _mount(tester);
         Future<void> openDispatcher() async {
           await _nav(tester, 2);
-          final dashboard = tester.widget<ZyraQuietDashboard>(
-            find.byType(ZyraQuietDashboard),
-          );
-          // Exercise the real local dispatch seam. The current fixture list does
-          // not expose a notifications entry; this is not a button-visibility claim.
-          dashboard.onNavigate!(
-            const SupportiveCard(
-              id: 'local-notifications-probe',
-              section: SupportiveSection.stand,
-              title: 'Updates',
-              target: ZyraDashboardTarget.notifications,
-            ),
-          );
+          // LOCK 15 V3 m01–m06: use the actual permanent member tile.
+          await _press(tester, 'focus-notifications');
           await tester.pumpAndSettle();
         }
 
@@ -2405,36 +2414,28 @@ void main() {
           await _mount(tester, size: viewport.size, scale: viewport.scale);
           await _nav(tester, 2);
           _expectSingleMyZyra(tester);
-          final dashboard = tester.widget<ZyraQuietDashboard>(
-            find.byType(ZyraQuietDashboard),
+          final dashboard = tester.widget<ZyraFocusDashboard>(
+            find.byType(ZyraFocusDashboard),
           );
-          expect(dashboard.fixtureCards.map((card) => card.id), [
-            'concept-request-draft-amira',
+          expect(dashboard.tiles.map((card) => card.id), [
             'concept-my-requests',
             'concept-my-introductions',
             'concept-my-ended',
+            'focus-notifications',
           ]);
-          expect(dashboard.onInsightsUpgrade, isNull);
-          final navigate = dashboard.onNavigate!;
-          // Removed destinations are not merely hidden. A stale/forged old
-          // dashboard ID cannot fall through to requests or reveal history.
+          // LOCK 15 V3 Focus tiles exclude Saved/Paused; server Save/Pause
+          // history remains until OA-ZYRA-317. Typed bound tile actions
+          // replace the obsolete generic SupportiveCard dispatcher.
           for (final id in ['concept-saved', 'concept-my-paused']) {
-            navigate(
-              SupportiveCard(
-                id: id,
-                section: SupportiveSection.stand,
-                title: 'Retired preview option',
-                target: ZyraDashboardTarget.connectionsActivity,
-              ),
-            );
-            await tester.pumpAndSettle();
+            expect(dashboard.tiles.where((tile) => tile.id == id), isEmpty);
+            expect(dashboard.items.where((item) => item.id == id), isEmpty);
             _expectSingleMyZyra(tester);
             for (final retired in ['saved', 'paused', 'requests']) {
               expect(_key('concept_activity_$retired'), findsNothing);
             }
           }
           await tester.drag(
-            _key('my-zyra-quiet-scroll-0'),
+            find.byKey(const PageStorageKey('my-zyra-focus-scroll')),
             const Offset(-200, 0),
           );
           await tester.pumpAndSettle();
@@ -2475,8 +2476,10 @@ void main() {
           );
           await _nav(tester, 1);
           expect(
-            find.byType(ZyraOneJourneyConnectionsActiveCard),
-            findsNWidgets(2),
+            tester
+                .widget<ZyraOneJourneyTab>(find.byType(ZyraOneJourneyTab))
+                .journeys,
+            hasLength(2),
           );
           expect(app.saved, ordinarySaved);
           expect(app.activeJourneys, ordinaryJourneys);
@@ -2496,8 +2499,10 @@ void main() {
         await _mount(tester);
         await _nav(tester, 2);
         final stale = tester
-            .widget<ZyraQuietDashboard>(find.byType(ZyraQuietDashboard))
-            .onNavigate!;
+            .widget<ZyraFocusDashboard>(find.byType(ZyraFocusDashboard))
+            .tiles
+            .singleWhere((tile) => tile.id == 'concept-my-requests')
+            .onTap;
         if (change == 'account generation') {
           ZyraAccountState.resetForTesting();
           AppState.instance.resetForAccountChange();
@@ -2511,19 +2516,12 @@ void main() {
           await _nav(tester, 0);
           await _nav(tester, 2);
         }
-        stale(
-          const SupportiveCard(
-            id: 'concept-my-requests',
-            section: SupportiveSection.stand,
-            title: 'Journey requests',
-            target: ZyraDashboardTarget.connectionsActivity,
-          ),
-        );
+        stale();
         await tester.pumpAndSettle();
         expect(_key('concept_activity_requests'), findsNothing);
         if (change == 'account generation') {
           expect(find.text('Preview closed'), findsOneWidget);
-          expect(find.byType(ZyraQuietDashboard), findsNothing);
+          expect(find.byType(ZyraFocusDashboard), findsNothing);
         } else {
           _expectSingleMyZyra(tester);
           await _openRequests(tester);
@@ -2563,10 +2561,7 @@ void main() {
             expect(options.firstName, person.name);
             expect(options.inline, isTrue);
             expect(find.byType(BottomSheet), findsNothing);
-            expect(
-              _key('concept_expanded_journey_${person.id}'),
-              findsOneWidget,
-            );
+            expect(_key('journey_options_card_${person.id}'), findsOneWidget);
             expect(find.text('Compatibility score'), findsOneWidget);
             expect(find.text('Check compatibility score'), findsNothing);
             expect(find.text('Guardians'), findsOneWidget);
@@ -2628,7 +2623,15 @@ void main() {
             );
             expect(_compatibilityResult(person.id), findsNothing);
             await returnZyraPreviewPage(tester);
-            await _press(tester, 'draft_journey_options_${person.id}');
+            // LOCK 13 V3: Back retains the addressed pushed options page.
+            expect(
+              tester
+                  .widget<ZyraOneJourneyOptionsPage>(
+                    find.byType(ZyraOneJourneyOptionsPage),
+                  )
+                  .id,
+              person.id,
+            );
             await _press(tester, 'draft_options_guardians_${person.id}');
             expect(
               _key('draft_journey_guardians_${person.id}'),
@@ -2693,8 +2696,19 @@ void main() {
             );
             await returnZyraPreviewPage(tester);
             expect(
-              find.byType(ZyraOneJourneyConnectionsActiveCard),
-              findsNWidgets(2),
+              tester
+                  .widget<ZyraOneJourneyOptionsPage>(
+                    find.byType(ZyraOneJourneyOptionsPage),
+                  )
+                  .id,
+              person.id,
+            );
+            await swipeZyraBack(tester);
+            expect(
+              tester
+                  .widget<ZyraOneJourneyTab>(find.byType(ZyraOneJourneyTab))
+                  .journeys,
+              hasLength(2),
             );
             expect(_key('draft_journey_options_${person.id}'), findsOneWidget);
           }
@@ -3437,7 +3451,7 @@ void main() {
       await _nav(tester, 2);
       stale(tapDetails);
       await tester.pumpAndSettle();
-      expect(find.byType(ZyraQuietDashboard), findsOneWidget);
+      expect(find.byType(ZyraFocusDashboard), findsOneWidget);
       expect(find.byType(ZyraOneJourneyBrowseDesigns), findsNothing);
       expect(tester.takeException(), isNull);
     },
@@ -3752,17 +3766,17 @@ void main() {
       expect(find.text('Saved'), findsNothing);
       expect(find.text('Paused'), findsNothing);
       expect(find.text('Ended'), findsNothing);
-      expect(find.text('No Journey yet.'), findsNothing);
-      expect(find.text('Awaiting a Journey'), findsNWidgets(3));
-      for (var index = 0; index < 3; index++) {
-        expect(_key('concept_journey_capacity_slot_$index'), findsOneWidget);
-      }
+      // LOCK 13 V3 j01: no fabricated cards or dots before a Journey.
+      expect(find.text('No Journey yet'), findsOneWidget);
+      expect(_key('journey_tab_card'), findsNothing);
+      expect(_key('journey_tab_dot_target_0'), findsNothing);
       expect(_key('draft_accept_draft-amira'), findsNothing);
       expect(
-        find.byType(ZyraOneJourneyConnectionsPresentation),
-        findsOneWidget,
+        tester
+            .widget<ZyraOneJourneyTab>(find.byType(ZyraOneJourneyTab))
+            .journeys,
+        isEmpty,
       );
-      expect(find.byType(ZyraOneJourneyConnectionsActiveCard), findsNothing);
       expect(find.byType(ZyraRequestActivityPresentation), findsNothing);
       expect(find.byType(PageView), findsNothing);
       await _openRequests(tester);
@@ -3800,23 +3814,19 @@ void main() {
     (tester) async {
       await _mount(tester);
       await _nav(tester, 4);
-      expect(find.byType(ZyraOneProfileAvatar), findsOneWidget);
+      // LOCK 21, PROFILE_TAB/MASTERS/p01,p04: 104 pt account head.
       expect(
-        tester.getSize(_key('profile-membership-avatar')),
-        const Size(68, 68),
+        tester.getSize(_key('concept_profile_avatar')),
+        const Size(104, 104),
       );
-      expect(find.byType(ZyraProfileMembershipRow), findsOneWidget);
-      expect(
-        tester
-            .widget<ZyraProfileMembershipRow>(
-              find.byType(ZyraProfileMembershipRow),
-            )
-            .isOne,
-        isTrue,
+      final profile = tester.widget<ZyraConceptProfilePresentation>(
+        find.byType(ZyraConceptProfilePresentation),
       );
+      expect(profile.data.membership, 'Seeker One');
+      expect(profile.data.guardian, isFalse);
       await _nav(tester, 2);
       _expectSingleMyZyra(tester);
-      await _press(tester, 'my-zyra-route-concept-my-requests');
+      await _press(tester, 'concept-my-requests');
       expect(find.text('Journey requests'), findsOneWidget);
       expect(_selector(tester, _requestLabels).selectedIndex, 0);
       expect(_key('concept_request_draft-amira_header'), findsOneWidget);
@@ -3824,10 +3834,11 @@ void main() {
       await _press(tester, 'draft_role_guardian');
       await _nav(tester, 0);
       expect(find.byType(ZyraGuardianTabsPresentation), findsOneWidget);
-      expect(find.text('Family Review for\nAdam and Sara'), findsOneWidget);
+      expect(find.textContaining('Family Review for'), findsOneWidget);
       await _nav(tester, 3);
       expect(find.text('Hassan Rahman'), findsOneWidget);
-      expect(find.text('Linked Seekers'), findsOneWidget);
+      // LOCK 21 p04: the relationship moves into Your Seekers.
+      expect(find.text('Your Seekers'), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
   );

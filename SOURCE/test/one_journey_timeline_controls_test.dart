@@ -13,7 +13,6 @@ import 'package:zyra/data/zyra_timeline_milestones.dart';
 import 'package:zyra/dev/zyra_draft_timeline_presentation.dart';
 import 'package:zyra/dev/zyra_draft_timeline_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
-import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/services/zyra_account_state.dart';
@@ -208,6 +207,14 @@ Future<void> _pullBack(WidgetTester tester) async {
 }
 
 Future<void> _openSubject(WidgetTester tester, String subject) async {
+  // LOCK 13 V3, JOURNEY_TAB/MASTERS/j02–j05, j10–j12: one
+  // card at a time; options is a pushed page, returned through the real edge.
+  if (_key('journey_tab_card').evaluate().isEmpty) {
+    await _pullBack(tester);
+  }
+  final place = ['draft-sara', 'draft-aisha', 'draft-maryam'].indexOf(subject);
+  expect(place, greaterThanOrEqualTo(0));
+  await _tap(tester, _key('journey_tab_dot_target_$place'));
   await _tap(tester, _key('draft_journey_options_$subject'));
   await _tap(tester, _key('draft_options_timeline_$subject'));
   expect(_shown(tester).subjectId, subject);
@@ -303,7 +310,9 @@ void main() {
       await _closeControls(tester);
       expect(
         _shown(tester).view.entries.map((entry) => entry.type),
-        ZyraTimelineMilestones.supportedTypes,
+        // LOCK 13 V3, JOURNEY_TAB/MASTERS/j10–j12: planned Journey
+        // actions contain no Pause. Canonical member history remains below.
+        ZyraDraftTimelinePreview.supportedEvents,
       );
       await _controls(tester);
       expect(
@@ -313,7 +322,7 @@ void main() {
         ZyraDraftTimelineScenario.allEvents,
       );
       await _closeControls(tester);
-      expect(_shown(tester).view.entries, hasLength(17));
+      expect(_shown(tester).view.entries, hasLength(15));
       expect(owner.latest.model.states, initial.states);
       expect(owner.latest.model.progress, initial.progress);
       expect(owner.latest.model.guardianAccess, initial.guardianAccess);
@@ -321,13 +330,29 @@ void main() {
   );
 
   testWidgets(
-    'all 17 event choices and eight stage positions reach the current Timeline presenter',
+    'all 15 planned-preview events and eight stages render while canonical history retains 17 types',
     (tester) async {
       final owner = _Owner();
       await owner.mount(tester, checkpoint: _seed());
       final initial = owner.latest.model;
       expect(ZyraTimelineMilestones.supportedTypes, hasLength(17));
-      for (final type in ZyraTimelineMilestones.supportedTypes) {
+      // LOCK 13 V3, JOURNEY_TAB/MASTERS/j10–j12: planned preview
+      // omits retired Pause/Continue actions; server history keeps both until
+      // OA-ZYRA-317 and is still asserted as the canonical 17-type catalogue.
+      expect(
+        ZyraTimelineMilestones.supportedTypes,
+        containsAll(['journey_paused', 'journey_continued']),
+      );
+      expect(ZyraDraftTimelinePreview.supportedEvents, hasLength(15));
+      expect(
+        ZyraDraftTimelinePreview.supportedEvents,
+        isNot(contains('journey_paused')),
+      );
+      expect(
+        ZyraDraftTimelinePreview.supportedEvents,
+        isNot(contains('journey_continued')),
+      );
+      for (final type in ZyraDraftTimelinePreview.supportedEvents) {
         await _controls(tester);
         zyraShellFixtureFor(
           tester,
@@ -468,10 +493,12 @@ void main() {
       await _closeControls(tester);
       await _pullBack(tester);
       expect(_timeline, findsNothing);
-      expect(
-        find.byType(ZyraOneJourneyConnectionsActiveCard),
-        findsNWidgets(3),
-      );
+      // LOCK 13 V3, JOURNEY_TAB/MASTERS/j02–j05: three places,
+      // one visible card; no obsolete simultaneous-card presenter.
+      expect(_key('journey_tab_person_draft-sara'), findsOneWidget);
+      for (var place = 0; place < 3; place++) {
+        expect(_key('journey_tab_dot_target_$place'), findsOneWidget);
+      }
       final closedCount = owner.checkpoints.length;
       oldChanged(ZyraDraftTimelineScenario.empty);
       oldAction('meeting');

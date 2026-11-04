@@ -108,7 +108,7 @@ void main() {
   });
 
   test(
-    'current single-page and ordinary member dashboards share one renderer',
+    'LOCK15 Focus and ordinary member dashboards retain their current renderers',
     () {
       final shell = File(
         'lib/dev/zyra_one_journey_concept_shell.dart',
@@ -116,8 +116,9 @@ void main() {
       final ordinary = File(
         'lib/screens/home/seeker_dashboard_screen.dart',
       ).readAsStringSync();
-      expect(shell, contains('return ZyraQuietDashboard('));
-      expect(shell, contains('singlePage: true'));
+      // LOCK 15 V3 §§1,5; MY_ZYRA/MASTERS/m01_needs_you_1_of_2.png.
+      expect(shell, contains('return ZyraFocusDashboard('));
+      expect(shell, isNot(contains('return ZyraQuietDashboard(')));
       expect(ordinary, contains('child: ZyraQuietDashboard('));
       for (final path in [
         'lib/widgets/zyra_quiet_dashboard.dart',

@@ -1,3 +1,5 @@
+// LOCK 14 V5: APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md;
+// masters APP_COLOURS/MASTERS/c11_app_icon_1024.png and c12_splash.png.
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -107,8 +109,8 @@ void main() {
       );
       expect(zyraPrimarySplashDirection, ZyraSplashDirection.dawnHorizon);
       expect(ZyraColors.brandGradient.colors, const [
-        Color(0xFF30203F),
-        Color(0xFF160E20),
+        Color(0xFFFBF7F0),
+        Color(0xFFEEE6D8),
       ]);
     },
   );

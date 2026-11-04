@@ -1,3 +1,5 @@
+// LOCK 14 V5: APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md;
+// masters APP_COLOURS/MASTERS/c11_app_icon_1024.png and c12_splash.png.
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,7 +9,6 @@ import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/services/zyra_wali_link_service.dart';
 import 'package:zyra/state/app_state.dart';
-import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
 
@@ -191,7 +192,7 @@ void main() {
     expect(find.text('Copied'), findsOneWidget);
     expect(
       tester.widget<Text>(find.text('Copied')).style?.color,
-      ZyraColors.surfaceSignal,
+      const Color(0xFF845F24),
     );
     expect(find.text('ZYRA Code copied.'), findsNothing);
     expect(find.byType(SnackBar), findsNothing);
@@ -205,7 +206,7 @@ void main() {
     await tester.pump();
     expect(
       tester.widget<Text>(find.text('Share')).style?.color,
-      ZyraColors.surfaceSignal,
+      const Color(0xFF845F24),
     );
 
     expect(
@@ -221,7 +222,7 @@ void main() {
     expect(find.text('Copy'), findsNothing);
     expect(
       tester.widget<Text>(find.text('Copied')).style?.color,
-      ZyraColors.surfaceSignal,
+      const Color(0xFF845F24),
     );
   });
 

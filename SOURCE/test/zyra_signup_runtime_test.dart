@@ -1,3 +1,4 @@
+// HAPTICS/BRIEFS/HAPTICS_BRIEF_2026-10-30.md §3; no visual master required.
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -1002,12 +1003,9 @@ void main() {
         find.byKey(const ValueKey('onboarding_account_exit')),
       );
       await tester.pumpAndSettle();
-      final dynamic exitAction = tester
-          .widget<TextButton>(
-            find.byKey(const ValueKey('onboarding_account_exit')),
-          )
-          .onPressed!;
-      final Future<void> exitFlight = exitAction() as Future<void>;
+      // Standard haptic wrappers expose a void tap, not an async flight.
+      // Observe the real handoff and preserve every account/draft assertion.
+      await tester.tap(find.byKey(const ValueKey('onboarding_account_exit')));
       await tester.pumpAndSettle();
       await tester.tap(
         find.byKey(const ValueKey('onboarding_account_exit_confirm')),
@@ -1015,29 +1013,19 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 400));
       expect(find.text('Signing out…'), findsOneWidget);
-      var exitSettled = false;
-      Object? exitFailure;
-      StackTrace? exitFailureStack;
-      exitFlight.then(
-        (_) => exitSettled = true,
-        onError: (Object error, StackTrace stack) {
-          exitFailure = error;
-          exitFailureStack = stack;
-          exitSettled = true;
-        },
-      );
-      for (var frame = 0; frame < 80 && !exitSettled; frame++) {
+      for (
+        var frame = 0;
+        frame < 80 && find.byType(WelcomeScreen).evaluate().isEmpty;
+        frame++
+      ) {
         await tester.pump(const Duration(milliseconds: 20));
         await tester.runAsync(() => Future<void>.delayed(Duration.zero));
       }
       expect(
-        exitSettled,
-        isTrue,
-        reason: 'Public exit callback cleanup and handoff completed',
+        find.byType(WelcomeScreen),
+        findsOneWidget,
+        reason: 'Public exit cleanup and handoff completed',
       );
-      if (exitFailure != null) {
-        Error.throwWithStackTrace(exitFailure!, exitFailureStack!);
-      }
       await tester.pumpAndSettle();
 
       expect(authLogoutScopes, ['local']);

@@ -1,3 +1,4 @@
+// HAPTICS/BRIEFS/HAPTICS_BRIEF_2026-10-30.md §3; no visual master required.
 // Logout may clear only the account lifetime which owned its initiating
 // control. Native Google cleanup and all Auth transport are synthetic here.
 import 'dart:async';
@@ -281,16 +282,24 @@ void main() {
     },
   );
 
-  final exitFlights = <Future<void>>[];
+  // Queue 22 standard haptics: the public button is a VoidCallback wrapper.
+  // Drive that callback and await observable completion; it returns no Future.
+  // Authority: PRODUCT/APPROVED/HAPTICS (member tap feedback), unchanged exit rules.
+  Future<void> settleExit(WidgetTester tester) async {
+    await tester.pump();
+    for (var frame = 0; frame < 80; frame++) {
+      await _flush(tester);
+      if (find.text('Signing out…').evaluate().isEmpty) return;
+    }
+    fail('The public exit control did not settle.');
+  }
+
   void startExit(WidgetTester tester) {
-    final dynamic action = tester
+    tester
         .widget<TextButton>(
           find.byKey(const ValueKey('onboarding_account_exit')),
         )
-        .onPressed!;
-    // A native button discards its async callback's result. Keep that exact
-    // public callback flight here so teardown cannot abandon a pending logout.
-    exitFlights.add(action() as Future<void>);
+        .onPressed!();
   }
 
   void exitTest(String name, Future<void> Function(WidgetTester) body) {
@@ -320,18 +329,7 @@ void main() {
             navigator.currentState!.pop(false);
             await _flush(tester);
           }
-          var flightsDrained = exitFlights.isEmpty;
-          Future.wait(exitFlights).then((_) => flightsDrained = true);
-          for (var frame = 0; frame < 30 && !flightsDrained; frame++) {
-            await tester.pump(const Duration(milliseconds: 20));
-            await tester.runAsync(() => Future<void>.delayed(Duration.zero));
-          }
-          expect(
-            flightsDrained,
-            isTrue,
-            reason: 'Public exit callback flights drained',
-          );
-          exitFlights.clear();
+          await settleExit(tester);
           await tester.pumpWidget(const SizedBox.shrink());
           await _flush(tester);
           var preferencesDrained = false;
@@ -385,8 +383,8 @@ void main() {
           find.byKey(const ValueKey('onboarding_account_exit')),
         )
         .onPressed!;
-    exitFlights.add(action() as Future<void>);
-    exitFlights.add(action() as Future<void>);
+    action();
+    action();
     await tester.pumpAndSettle();
     expect(find.byType(FilledButton, skipOffstage: false), findsOneWidget);
   });
@@ -397,10 +395,7 @@ void main() {
     await tester.tap(
       find.byKey(const ValueKey('onboarding_account_exit_confirm')),
     );
-    await _accountTransition(
-      tester,
-      () => Future.wait(exitFlights).then((_) {}),
-    );
+    await settleExit(tester);
     await _flush(tester);
   }
 
@@ -450,7 +445,7 @@ void main() {
             await supabase.auth.setInitialSession(jsonEncode(_sessionData(_a)));
           }
         });
-        exitFlights.add(retained() as Future<void>);
+        retained();
         await _flush(tester);
         expect(store.deletes, 1);
         expect(find.byType(FilledButton), findsNothing);
@@ -480,10 +475,7 @@ void main() {
       await tester.tap(
         find.byKey(const ValueKey('onboarding_account_exit_confirm')),
       );
-      await _accountTransition(
-        tester,
-        () => Future.wait(exitFlights).then((_) {}),
-      );
+      await settleExit(tester);
       expect(requests, isNot(contains('/auth/v1/logout')));
       expect(ZyraAuth.currentUser?.id, _a);
     },
@@ -500,10 +492,7 @@ void main() {
       await tester.tap(
         find.byKey(const ValueKey('onboarding_account_exit_confirm')),
       );
-      await _accountTransition(
-        tester,
-        () => Future.wait(exitFlights).then((_) {}),
-      );
+      await settleExit(tester);
       await _flush(tester);
       expect(ZyraAuth.currentUser, isNull);
       expect(find.byType(WelcomeScreen), findsOneWidget);
@@ -537,10 +526,7 @@ void main() {
             }
           });
           release.complete();
-          await _accountTransition(
-            tester,
-            () => Future.wait(exitFlights).then((_) {}),
-          );
+          await settleExit(tester);
           await _flush(tester);
           expect(
             find.text('Your account changed. Close and reopen ZYRA.'),

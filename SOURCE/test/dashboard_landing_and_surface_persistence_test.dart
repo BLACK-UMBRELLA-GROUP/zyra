@@ -1,3 +1,5 @@
+// LOCK 14 V5: APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md;
+// masters APP_COLOURS/MASTERS/c11_app_icon_1024.png and c12_splash.png.
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -70,7 +72,7 @@ void main() {
   });
 
   test(
-    'member Personalisation keeps colour and haptic; old font choice cannot restore',
+    'member Personalisation ignores retired colour choice and keeps haptics',
     () async {
       ZyraColors.selectAppPalette(ZyraDevPalette.deepEmerald);
       await ZyraLocalPrefs.setCachedAppFontName('manrope');
@@ -79,7 +81,7 @@ void main() {
       );
       await Future<void>.delayed(Duration.zero);
 
-      expect(ZyraLocalPrefs.cachedAppPaletteName, 'deepEmerald');
+      expect(ZyraLocalPrefs.cachedAppPaletteName, isNull);
       expect(ZyraLocalPrefs.cachedAppFontName, 'manrope');
       expect(ZyraLocalPrefs.cachedHapticLevelName, 'medium');
 
@@ -88,7 +90,7 @@ void main() {
       ZyraInteractionStyle.restoreHapticLevel(
         ZyraLocalPrefs.cachedHapticLevelName,
       );
-      expect(ZyraColors.devPalette, ZyraDevPalette.deepEmerald);
+      expect(ZyraColors.devPalette, ZyraDevPalette.ivory);
       expect(ZyraText.appFont, ZyraAppFont.poppins);
       expect(ZyraInteractionStyle.hapticLevel, ZyraHapticLevel.medium);
 

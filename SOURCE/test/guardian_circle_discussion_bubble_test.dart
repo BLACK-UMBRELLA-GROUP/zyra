@@ -788,7 +788,8 @@ void main() {
       expect(find.text('Keep this unfinished Circle draft'), findsOneWidget);
       expect(controller.text, isEmpty);
       final text = tester.widget<Text>(find.text('Discussing'));
-      expect(text.style!.color, ZyraColors.journeyGold);
+      // LOCK14 V5 small gold text; APP_COLOURS/MASTERS/c01_profiles.png.
+      expect(text.style!.color, ZyraColors.goldText);
       await _capture(tester, 'discussion-current-marker');
     },
   );
@@ -1781,7 +1782,8 @@ void main() {
     );
     expect(
       tester.widget<Text>(find.text('Past Journey')).style!.color,
-      ZyraColors.journeyGold,
+      // LOCK14 V5 small gold text; APP_COLOURS/MASTERS/c01_profiles.png.
+      ZyraColors.goldText,
     );
     await _capture(tester, 'archive-rebuilt-child');
     await _press(tester, _key('circle_discussion_archive_close'));

@@ -665,7 +665,8 @@ void main() {
         contains(_aisha),
       );
       await _tapBar(tester, 'My ZYRA');
-      await _press(tester, 'my-zyra-route-concept-my-requests');
+      // LOCK15 V3 Quick access tiles; MY_ZYRA/MASTERS/m01_needs_you_1_of_2.png.
+      await _press(tester, 'concept-my-requests');
       await _press(tester, 'draft_requests_1');
       expect(_key('concept_request_${_sara}_header'), findsOneWidget);
     },
@@ -706,12 +707,14 @@ void main() {
       await _openMenu(tester);
       await _tapBar(tester, 'Filters');
       expect(find.text('Filters'), findsOneWidget);
-      await _press(tester, 'concept_nationality');
+      // LOCK10 V7: Age → Location → Nationality cards; master f06_nationality__popular.png.
+      await _press(tester, 'filter_next');
+      await _press(tester, 'filter_next');
       final field = find.byType(TextField);
       expect(field, findsOneWidget);
       await tester.enterText(field, 'Pakistani');
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Pakistani (PK)').last);
+      await _press(tester, 'filter_add_2_PK');
       await tester.pumpAndSettle();
       await _press(tester, 'concept_apply_filter');
       final body = _browse(tester);
@@ -734,12 +737,12 @@ void main() {
       await _openMenu(tester);
       await _tapBar(tester, 'Compatibility score');
       expect(find.text('Compatibility score'), findsOneWidget);
-      // The approved locked Halo identifies the pair inside the card, not
-      // as a subtitle beneath the page title.
+      // LOCK22 V1: pair identity now sits in the Monogram head above
+      // the information card; UNITY_PASS/MASTERS/x01_compatibility__locked.png.
       expect(find.text('You and Sara'), findsOneWidget);
       expect(
         find.descendant(
-          of: _key('draft_compatibility_card'),
+          of: _key('draft_compatibility_presentation'),
           matching: find.text('You and Sara'),
         ),
         findsOneWidget,
@@ -756,7 +759,8 @@ void main() {
       expect(before.balance, 1);
       expect(before.revealed, isFalse);
       final retainedReveal = tester
-          .widget<OutlinedButton>(_key('draft_compatibility_reveal'))
+          // LOCK22 V1 gold action; UNITY_PASS/MASTERS/x01_compatibility__locked.png.
+          .widget<FilledButton>(_key('draft_compatibility_reveal'))
           .onPressed;
       expect(retainedReveal, isNotNull);
 

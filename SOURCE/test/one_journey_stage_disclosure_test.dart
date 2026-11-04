@@ -318,7 +318,9 @@ void main() {
         await _tap(tester, 'draft_options_${option}_$_sara');
         final page = option == 'bio' ? 'bio' : 'journey_compatibility';
         expect(_key('draft_${page}_locked_$_sara'), findsOneWidget);
-        expect(owner.latest.pages, ['${page}_locked']);
+        // LOCK 13 V3, JOURNEY_TAB/MASTERS/j10–j12: options is now
+        // a page retained beneath each disclosure, profile and safety page.
+        expect(owner.latest.pages, ['journey_options', '${page}_locked']);
         expect(
           find.text(
             option == 'bio'
@@ -668,7 +670,9 @@ void main() {
         );
         await _tap(tester, 'draft_options_${option}_$_sara');
         expect(owner.latest.personId, _sara);
+        // LOCK 13 V3, JOURNEY_TAB/MASTERS/j10–j12.
         expect(owner.latest.pages, [
+          'journey_options',
           option == 'profile' ? 'profile' : 'safety',
         ]);
         if (option == 'profile') {

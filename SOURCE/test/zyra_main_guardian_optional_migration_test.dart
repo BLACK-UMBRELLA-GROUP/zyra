@@ -1,10 +1,12 @@
+// SERVER/BRIEFS/SERVER_0_BRIEF_2026-10-30_V2.md R2 replaces the old hold.
+// This is a current local SQL fixture check; no database action or UI master.
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
 const _migrationPath =
     'supabase/migrations/'
-    '20260918140508_oa294_main_guardian_optional_journey_hold.sql';
+    '20261030151033_server0_main_guardian_hold_without_pause.sql';
 
 void main() {
   late String sql;
@@ -54,20 +56,25 @@ void main() {
     expect(sql, isNot(contains('relationship_label')));
   });
 
-  test('ordinary active writes are held while pause and end stay possible', () {
-    expect(sql, contains("v_match_status is distinct from 'active'"));
-    expect(
-      sql,
-      contains("raise exception 'main_guardian_required_for_journey'"),
-    );
-    expect(
-      sql,
-      contains('old.journey_stage is distinct from new.journey_stage'),
-    );
-    expect(sql, contains("new.pause_state = 'none'"));
-    expect(sql, isNot(contains("new.status = 'ended' and")));
-    expect(sql, isNot(contains("new.pause_state = 'paused' and")));
-  });
+  test(
+    'ordinary active writes are held and End bypasses the non-Pause replacement',
+    () {
+      expect(sql, contains("v_match_status is distinct from 'active'"));
+      expect(
+        sql,
+        contains("raise exception 'main_guardian_required_for_journey'"),
+      );
+      expect(sql, contains('v_match_status := new.status'));
+      expect(
+        sql,
+        contains('old.journey_stage is distinct from new.journey_stage'),
+      );
+      expect(sql, isNot(contains('new.pause_state')));
+      expect(sql, isNot(contains('old.pause_state')));
+      expect(sql, isNot(contains("new.status = 'ended' and")));
+      expect(sql, isNot(contains("new.pause_state = 'paused' and")));
+    },
+  );
 
   test('message writes resolve their governed conversation attempt', () {
     expect(sql, contains("if tg_table_name = 'messages' then"));

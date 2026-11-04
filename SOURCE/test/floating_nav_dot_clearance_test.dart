@@ -410,7 +410,8 @@ void main() {
             if (!released) await finger.cancel();
           }
           expect(fixture.selections, selected == 0 ? [2] : [3, 2]);
-          expect(_selectionTicks(), selected == 0 ? 1 : 2);
+          // HAPTICS brief 30 Oct §2: scrub/swipe selection is silent.
+          expect(_selectionTicks(), 0);
           expect(
             tester.widget<Semantics>(_cell(2)).properties.selected,
             isTrue,
@@ -595,7 +596,8 @@ void main() {
           if (!released) await finger.cancel();
         }
         expect(fixture.selections, [index, neighbor, index]);
-        expect(_selectionTicks(), 3);
+        // Only the earlier discrete tap ticks; swiping is silent (HAPTICS §2).
+        expect(_selectionTicks(), 1);
 
         fixture.activity.value = (index: index, dot: false, badge: 0);
         await tester.pumpAndSettle();
@@ -609,7 +611,8 @@ void main() {
           isTrue,
         );
         expect(fixture.selections, [index, neighbor, index]);
-        expect(_selectionTicks(), 3);
+        // Only the earlier discrete tap ticks; swiping is silent (HAPTICS §2).
+        expect(_selectionTicks(), 1);
       });
     }
   }

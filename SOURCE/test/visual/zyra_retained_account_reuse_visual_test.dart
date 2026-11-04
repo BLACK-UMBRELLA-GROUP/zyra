@@ -15,6 +15,7 @@ import 'package:zyra/screens/profile/edit_profile_screen.dart';
 import 'package:zyra/screens/settings/personalisation_screen.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_colors.dart';
+import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_personalisation_content.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
@@ -272,18 +273,23 @@ void main() {
           }
           await _capture(tester, '${pageName}_$name');
           if (pageName == 'personalisation') {
-            final localPaletteBefore = tester
-                .widget<PersonalisationScreen>(
-                  find.byType(PersonalisationScreen),
+            // LOCK 14 V5 §4, APP_COLOURS masters c01–c10: Ivory is
+            // fixed and the Background picker is removed. Haptic feel and
+            // Gold accents remain member controls; preserve local isolation.
+            final before = tester
+                .widget<ZyraPersonalisationContent>(
+                  find.byType(ZyraPersonalisationContent),
                 )
-                .palette!;
-            expect(localPaletteBefore, isNot(ZyraDevPalette.deepEmerald));
-            expect(_localBackground(tester), localPaletteBefore.gradient);
-            await _tap(tester, 'personalisation_background');
-            await _capture(tester, 'background_choices_$name');
+                .snapshot;
+            final globalHapticBefore = ZyraInteractionStyle.hapticLevel;
+            expect(before.palette, ZyraDevPalette.ivory);
+            expect(_key('personalisation_background'), findsNothing);
+            expect(_localBackground(tester), ZyraDevPalette.ivory.gradient);
+            await _tap(tester, 'personalisation_haptic');
+            await _capture(tester, 'haptic_choices_$name');
             final sheet = find.byWidgetPredicate(
               (widget) =>
-                  widget is ZyraPersonalisationChoiceSheet<ZyraDevPalette>,
+                  widget is ZyraPersonalisationChoiceSheet<ZyraHapticLevel>,
             );
             expect(sheet, findsOneWidget);
             final sheetScrollable = find.descendant(
@@ -291,9 +297,10 @@ void main() {
               matching: find.byType(Scrollable),
             );
             expect(sheetScrollable, findsOneWidget);
-            final choice = _key(
-              'personalisation_choice_${ZyraDevPalette.deepEmerald}',
-            );
+            final chosen = before.hapticLevel == ZyraHapticLevel.strong
+                ? ZyraHapticLevel.light
+                : ZyraHapticLevel.strong;
+            final choice = _key('personalisation_choice_$chosen');
             await tester.scrollUntilVisible(
               choice,
               100,
@@ -313,30 +320,14 @@ void main() {
             await tester.tap(choice);
             await tester.pumpAndSettle();
             expect(sheet, findsNothing);
-            expect(
-              tester
-                  .widget<PersonalisationScreen>(
-                    find.byType(PersonalisationScreen),
-                  )
-                  .palette,
-              ZyraDevPalette.deepEmerald,
-            );
             final content = tester.widget<ZyraPersonalisationContent>(
               find.byType(ZyraPersonalisationContent),
             );
-            expect(content.snapshot.palette, ZyraDevPalette.deepEmerald);
-            expect(
-              content.previewGradient,
-              ZyraDevPalette.deepEmerald.gradient,
-            );
-            expect(
-              _localBackground(tester),
-              ZyraDevPalette.deepEmerald.gradient,
-            );
-            expect(
-              _localBackground(tester),
-              isNot(localPaletteBefore.gradient),
-            );
+            expect(content.snapshot.hapticLevel, chosen);
+            expect(content.snapshot.palette, ZyraDevPalette.ivory);
+            expect(content.snapshot.goldEnabled, before.goldEnabled);
+            expect(_localBackground(tester), ZyraDevPalette.ivory.gradient);
+            expect(ZyraInteractionStyle.hapticLevel, globalHapticBefore);
             expect(ZyraColors.devPalette, globalPaletteBefore);
             expect(tester.takeException(), isNull);
           }

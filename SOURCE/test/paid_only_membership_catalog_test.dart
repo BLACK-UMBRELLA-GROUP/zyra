@@ -302,7 +302,8 @@ void main() {
         );
         expect(find.text('See your overall match score'), findsNothing);
         expect(
-          find.byKey(const ValueKey('draft_compatibility_store_info')),
+          // LOCK 22 V1, UNITY_PASS/MASTERS/x02–x03: inline eight-page preview.
+          find.byKey(const ValueKey('draft_compatibility_store_preview')),
           findsOneWidget,
         );
         expect(

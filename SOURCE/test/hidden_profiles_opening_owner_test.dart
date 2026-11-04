@@ -1,3 +1,5 @@
+// LOCK22 V3 shared action pill (UNITY_PASS/MASTERS/e01_introductions__empty.png)
+// uses OutlinedButton; retained-owner denial must still disable its action.
 // OA304: a rendered Hidden Profiles action belongs to its opening principal.
 // Synthetic SDK sessions, injected data/ACKs and intercepted HTTP only.
 import 'dart:async';
@@ -282,8 +284,8 @@ void main() {
       expect(unhideCalls, 0);
       expect(
         tester
-            .widget<FilledButton>(
-              find.widgetWithText(FilledButton, 'Try again'),
+            .widget<OutlinedButton>(
+              find.widgetWithText(OutlinedButton, 'Try again'),
             )
             .onPressed,
         isNull,
@@ -335,8 +337,8 @@ void main() {
       expect(unhideCalls, 0);
       expect(
         tester
-            .widget<FilledButton>(
-              find.widgetWithText(FilledButton, 'Try again'),
+            .widget<OutlinedButton>(
+              find.widgetWithText(OutlinedButton, 'Try again'),
             )
             .onPressed,
         isNull,
@@ -371,8 +373,8 @@ void main() {
       expect(unhideCalls, 0);
       expect(
         tester
-            .widget<FilledButton>(
-              find.widgetWithText(FilledButton, 'Try again'),
+            .widget<OutlinedButton>(
+              find.widgetWithText(OutlinedButton, 'Try again'),
             )
             .onPressed,
         isNull,

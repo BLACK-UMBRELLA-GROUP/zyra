@@ -22,6 +22,20 @@ void main() {
     'howWeFeel',
     'atoms',
   ]) {
+    // Removal brief §3: old comparison directions are absent; retain active
+    // ordinary/Luma artwork and require retired variants to fail closed.
+    if (direction != null && direction != 'luma') {
+      test('retired account artwork direction $direction fails closed', () {
+        expect(
+          () => OnboardingPreviewStyle(
+            directionName: direction,
+            child: const SizedBox(),
+          ),
+          throwsAssertionError,
+        );
+      });
+      continue;
+    }
     testWidgets('account artwork is local in ${direction ?? 'ordinary'}', (
       tester,
     ) async {

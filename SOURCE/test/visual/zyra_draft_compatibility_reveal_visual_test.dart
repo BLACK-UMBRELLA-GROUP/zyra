@@ -152,8 +152,10 @@ void _expectNormalFit(WidgetTester tester, Size size) {
   expect(position.maxScrollExtent, closeTo(0, .01));
   expect(position.pixels, 0);
   final card = tester.getRect(find.byKey(_card));
-  expect(card.left, closeTo(20, .01));
-  expect(card.right, closeTo(size.width - 20, .01));
+  // LOCK 22 V6 §§2–3, master UNITY_PASS/MASTERS/x01: the Monogram
+  // head is above the floating information card; actions sit below both.
+  expect(card.left, greaterThanOrEqualTo(20));
+  expect(card.right, lessThanOrEqualTo(size.width - 20));
   for (final key in [_reveal, _more]) {
     if (find.byKey(key).evaluate().isEmpty) continue;
     final rect = tester.getRect(find.byKey(key));
@@ -163,18 +165,30 @@ void _expectNormalFit(WidgetTester tester, Size size) {
     expect(rect.right, lessThanOrEqualTo(size.width - 20));
     expect(find.byKey(key).hitTestable(), findsOneWidget);
   }
+  final head = tester.getRect(
+    find.byKey(const ValueKey('draft_compatibility_locked_halo')),
+  );
+  expect(head.size, const Size(96, 96));
+  expect(head.bottom, lessThanOrEqualTo(card.top));
+  final actions = tester.getRect(
+    find.byKey(const ValueKey('draft_compatibility_actions')),
+  );
+  expect(actions.top, greaterThanOrEqualTo(card.bottom));
   for (final key in [
     const ValueKey('draft_compatibility_locked_halo'),
+    _card,
     const ValueKey('draft_compatibility_actions'),
   ]) {
     final rect = tester.getRect(find.byKey(key));
-    expect(rect.left, greaterThanOrEqualTo(card.left));
-    expect(rect.right, lessThanOrEqualTo(card.right));
-    expect(rect.top, greaterThanOrEqualTo(card.top));
-    expect(rect.bottom, lessThanOrEqualTo(card.bottom));
+    expect(rect.left, greaterThanOrEqualTo(20));
+    expect(rect.right, lessThanOrEqualTo(size.width - 20));
+    expect(rect.top, greaterThanOrEqualTo(75));
+    expect(rect.bottom, lessThanOrEqualTo(size.height - 50));
   }
   expect(find.text('You and Sara'), findsOneWidget);
-  expect(find.text('Overall'), findsOneWidget);
+  expect(find.text('READY TO REVEAL'), findsOneWidget);
+  expect(find.text('Your overall score and six areas'), findsOneWidget);
+  expect(find.text('Uses 1 Unlock'), findsOneWidget);
   expect(find.text('OVERALL'), findsNothing);
   expect(find.text('DETAILS'), findsNothing);
   expect(find.textContaining('%'), findsNothing);
@@ -292,7 +306,7 @@ void main() {
       final fixture = await _mount(tester, size: size);
       _expectNormalFit(tester, size);
       final retainedReveal = tester
-          .widget<OutlinedButton>(find.byKey(_reveal))
+          .widget<FilledButton>(find.byKey(_reveal))
           .onPressed!;
       await _frame(tester, '393x852-locked');
       await _startReveal(tester);

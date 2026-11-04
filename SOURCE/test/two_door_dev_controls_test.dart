@@ -1,5 +1,3 @@
-import 'dart:ui' show Tristate;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/main.dart' show ZyraApp, zyraNavigatorKey;
@@ -173,38 +171,22 @@ void main() {
     },
   );
 
-  testWidgets('Actions selection keeps the existing gold icon and marker', (
-    tester,
-  ) async {
-    final semantics = tester.ensureSemantics();
-    try {
+  // DEV_TOGGLES removal brief §§3,6 retires Actions, icon and marker.
+  testWidgets(
+    'retired Actions selection exposes no icon, marker or semantics',
+    (tester) async {
       await _mount(
         tester,
         sections: _twoDoors,
         open: true,
         selected: _RetiredDoor.actions,
       );
-      expect(
-        tester.widget<Icon>(find.byIcon(Icons.tune)).color,
-        ZyraColors.unlockText,
-      );
-      expect(
-        tester.widget<Icon>(find.byIcon(Icons.home_outlined)).color,
-        Colors.white54,
-      );
-      expect(
-        tester.getSemantics(_door('actions')).flagsCollection.isSelected,
-        Tristate.isTrue,
-      );
-      expect(
-        tester.getSemantics(_door('home')).flagsCollection.isSelected,
-        Tristate.isFalse,
-      );
-      expect(_withinRail(find.byType(Positioned)), findsOneWidget);
-    } finally {
-      semantics.dispose();
-    }
-  });
+      _expectNoDoors();
+      expect(_withinRail(find.byType(Positioned)), findsNothing);
+      expect(find.byKey(const ValueKey('dev_control_rail')), findsNothing);
+      expect(find.text('Personalisation'), findsOneWidget);
+    },
+  );
 
   testWidgets(
     'member Gold selection cannot produce a retired rail marker or eye',

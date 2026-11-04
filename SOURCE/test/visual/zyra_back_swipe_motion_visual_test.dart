@@ -194,6 +194,10 @@ Future<void> _mountSecurity(
     await tester.pumpWidget(const SizedBox.shrink());
     await tester.pumpAndSettle();
   });
+  // LOCK 6 V2, master seeker_tab_bar__idle_small.png: expand the idle
+  // 60-percent bar before pressing the real Profile slot. LOCK 21 p01 keeps
+  // Settings on that Profile; the edge-motion assertions below are unchanged.
+  await expandZyraPreviewTabBarIfIdle(tester);
   final navigation = find.byType(ZyraShellNavigation);
   final profile = tester
       .widget<ZyraShellNavigation>(navigation)

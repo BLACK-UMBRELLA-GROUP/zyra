@@ -10,10 +10,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_request_activity_presentation.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
-import 'package:zyra/screens/wali/seeker_guardian_designs.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/state/app_state.dart';
@@ -26,10 +26,8 @@ const _font = 'PoppinsRequestsGuardiansLock2';
 const _hassan = 'draft-guardian-hassan';
 const _yusuf = 'draft-guardian-yusuf';
 Finder _key(String value) => find.byKey(ValueKey(value));
-Finder _guardian(String id, String key) => find.descendant(
-  of: _key('guardian-quiet-sections-$id'),
-  matching: _key(key),
-);
+Finder _guardian(String id, String key) =>
+    find.descendant(of: _key('guardian-card-$id'), matching: _key(key));
 
 class _NoNetwork extends HttpOverrides {
   int attempts = 0;
@@ -162,8 +160,8 @@ Future<void> _nav(WidgetTester tester, int index) async {
 
 ZyraRequestActivityPresentation _requests(WidgetTester tester) =>
     tester.widget(_key('concept_activity_requests'));
-SeekerGuardianPage _guardians(WidgetTester tester) =>
-    tester.widget(find.byType(SeekerGuardianPage));
+ZyraOneJourneyGuardianCards _guardians(WidgetTester tester) =>
+    tester.widget(find.byType(ZyraOneJourneyGuardianCards));
 
 VoidCallback _buttonAction(WidgetTester tester, String key) {
   final widget = tester.widget(_key(key));
@@ -186,10 +184,14 @@ Future<void> _makeMain(WidgetTester tester, String id) async {
 }
 
 Future<void> _nextGuardian(WidgetTester tester, String id) async {
-  final pager = _key('guardian-page-view');
-  await tester.drag(pager, const Offset(-340, 0));
-  await tester.pumpAndSettle();
-  expect(tester.widget<PageView>(pager).controller!.page, closeTo(1, .01));
+  // LOCK 19, GUARDIAN_CARD_SPEC_CURRENT_VERSION_V3 §§2–4, masters k05–k06:
+  // the next pill selects the Additional Guardian; its centre opens access.
+  // LOCK 2 §2.4 and guardian_main__first_main_message.png still govern notice
+  // semantics after the retained Make Main confirmation flow.
+  await _tap(tester, _key('guardian-card-next'));
+  expect(_key('guardian-card-$id'), findsOneWidget);
+  await _tap(tester, _key('guardian-card-center'));
+  expect(find.text('JOURNEY ACCESS'), findsOneWidget);
   final action = _guardian(id, 'guardian-make-main');
   await Scrollable.ensureVisible(tester.element(action), alignment: .4);
   await tester.pumpAndSettle();
@@ -513,8 +515,8 @@ void main() {
       final owner = _Owner();
       await owner.mount(tester, tab: 3, pages: const []);
       expect(_key('concept_main_guardian_notice'), findsNothing);
-      final alreadyMain = _guardians(tester).makeMainGuardian!;
-      await alreadyMain(_hassan);
+      final alreadyMain = _guardians(tester).makeMain;
+      expect(await alreadyMain(_hassan), isFalse);
       await tester.pumpAndSettle();
       expect(_key('concept_main_guardian_notice'), findsNothing);
       expect(owner.latest.pendingMainGuardianNoticeId, isNull);
@@ -574,7 +576,7 @@ void main() {
         final owner = _Owner();
         await owner.mount(tester, tab: 3, pages: const []);
         await _nextGuardian(tester, _yusuf);
-        final retained = _guardians(tester).makeMainGuardian!;
+        final retained = _guardians(tester).makeMain;
         if (revoked) {
           owner.allowed = false;
         } else {

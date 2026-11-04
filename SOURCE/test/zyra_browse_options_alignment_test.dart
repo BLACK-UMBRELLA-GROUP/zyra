@@ -95,7 +95,8 @@ Future<void> _mount(
       home: RepaintBoundary(
         key: _boundary,
         child: Scaffold(
-          backgroundColor: const Color(0xff1e112a),
+          // LOCK14 V5 Ivory; APP_COLOURS/MASTERS/c01_profiles.png.
+          backgroundColor: ZyraColors.ivoryTop,
           body: Padding(
             padding: const EdgeInsets.fromLTRB(20, 70, 20, 20),
             child: Column(
@@ -229,8 +230,19 @@ void main() {
       _expectGeometry(tester, width);
       final held = _pixel(await _pixels(tester), outside);
       expect(held[3], 255);
-      expect(held[0] - idle[0], greaterThan(10));
-      expect(held[1] - idle[1], greaterThan(10));
+      // LOCK14 V5 gold overlay on Ivory can darken the canvas. Verify
+      // actual 10% compositing rather than a Plum-era brightening threshold.
+      final gold = ZyraColors.journeyGold;
+      final components = [gold.r, gold.g, gold.b];
+      for (var channel = 0; channel < 3; channel++) {
+        expect(
+          held[channel],
+          closeTo(
+            (components[channel] * 255 * .1 + idle[channel] * .9).round(),
+            1,
+          ),
+        );
+      }
       await _capture(tester, 'held_${width.toInt()}');
       await press.cancel();
       await tester.pump();

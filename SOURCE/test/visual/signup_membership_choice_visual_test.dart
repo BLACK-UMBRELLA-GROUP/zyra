@@ -14,6 +14,22 @@ import 'package:zyra/widgets/zyra_onboarding_direction_style.dart';
 const capture = bool.fromEnvironment('ZYRA_SIGNUP_MEMBERSHIP_CAPTURE');
 const boundaryKey = ValueKey('signup-membership-candidate');
 
+Future<void> _reach(WidgetTester tester, Finder target) async {
+  // BASELINE/SIGNUP_CAPTURE_BRIEF_2026-10-29.md §2 keeps both roles'
+  // membership screens. At 200 percent the scaffold lazily builds lower
+  // content, so reach it through the actual scroll instead of an absent element.
+  if (target.evaluate().isEmpty) {
+    await tester.scrollUntilVisible(
+      target,
+      160,
+      scrollable: find.byType(Scrollable).first,
+      maxScrolls: 30,
+    );
+  }
+  await tester.ensureVisible(target);
+  await tester.pumpAndSettle();
+}
+
 void main() {
   setUpAll(() async {
     final reading = FontLoader('PoppinsMembershipAudit');
@@ -146,15 +162,20 @@ void main() {
         if (capture) {
           await _candidate(tester, '${role.name}_${layout.name}_one');
         }
-        await tester.ensureVisible(
-          find.byKey(const ValueKey('signup_membership_family')),
+        // At 200 percent this card is taller than the free viewport. Its
+        // centre can lie behind Continue; press its visible title instead.
+        final familyTitle = find.descendant(
+          of: find.byKey(const ValueKey('signup_membership_family')),
+          matching: find.text('ZYRA Family'),
         );
-        await tester.tap(
-          find.byKey(const ValueKey('signup_membership_family')),
-        );
+        await _reach(tester, familyTitle);
+        expect(familyTitle.hitTestable(), findsOneWidget);
+        await tester.tap(familyTitle);
         await tester.pumpAndSettle();
+        expect(choice?.kind, ZyraSignupMembershipKind.family);
         expect(choice?.isValidFor(role), isTrue);
-        await tester.ensureVisible(
+        await _reach(
+          tester,
           find.byKey(const ValueKey('signup_membership_family_estimate')),
         );
         await tester.pumpAndSettle();

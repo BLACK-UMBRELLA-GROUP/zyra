@@ -43,8 +43,9 @@ void _expectSelectedDot(WidgetTester tester, String id, int index) {
   final dot = tester.widget<AnimatedContainer>(
     _key('concept_browse_photo_dot_${id}_$index'),
   );
-  expect(dot.constraints!.maxWidth, 20);
-  expect(dot.constraints!.maxHeight, 5);
+  // LOCK18 V2, PAGE_DOTS/MASTERS/d01_profiles.png: active 30 × 6 pill.
+  expect(dot.constraints!.maxWidth, 30);
+  expect(dot.constraints!.maxHeight, 6);
   expect((dot.decoration! as BoxDecoration).color, ZyraColors.journeyGold);
 }
 

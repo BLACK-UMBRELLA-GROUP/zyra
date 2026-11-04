@@ -1,4 +1,4 @@
-// Real-font review candidates for the shared developer Home action.
+// Real-font member signup entry regression retained from the retired Home tests.
 // Fixture callbacks only: no account, backend, provider or native actions.
 // Capture with --update-goldens and
 // --dart-define=ZYRA_DEV_HOME_CAPTURE_CANDIDATES=true.
@@ -39,6 +39,8 @@ Future<void> _mount(
           textScaler: TextScaler.linear(scale),
           padding: const EdgeInsets.only(top: 24, bottom: 24),
           viewPadding: const EdgeInsets.only(top: 24, bottom: 24),
+          disableAnimations: true,
+          accessibleNavigation: true,
         ),
         child: RepaintBoundary(key: _root, child: child!),
       ),
@@ -73,13 +75,6 @@ Future<void> _candidate(WidgetTester tester, String name) async {
     image.dispose();
   }
 }
-
-// The retired Home fixture now mounts the real member entry. The two existing
-// baseline-failing Home assertions below remain as historical failures.
-Widget _homeToolsFixture({
-  required VoidCallback onHome,
-  required VoidCallback otherAction,
-}) => const WelcomeScreen();
 
 void main() {
   setUpAll(() async {
@@ -141,96 +136,12 @@ void main() {
     (size: Size(390, 844), scale: 1.0, name: 'standard'),
     (size: Size(320, 568), scale: 1.4, name: 'compact_140'),
   ]) {
-    testWidgets('shared Home and destination real-font ${viewport.name}', (
+    testWidgets('member signup entry real-font ${viewport.name}', (
       tester,
     ) async {
-      var homes = 0;
-      var otherActions = 0;
-      await _mount(
-        tester,
-        _homeToolsFixture(
-          onHome: () => homes++,
-          otherAction: () => otherActions++,
-        ),
-        size: viewport.size,
-        scale: viewport.scale,
-      );
-      final label = find.text('Home');
-      expect(label, findsOneWidget);
-      final home = find
-          .ancestor(of: label, matching: find.byType(InkWell))
-          .first;
-      expect(home.hitTestable(), findsOneWidget);
-      final rect = tester.getRect(home);
-      expect(rect.top, greaterThanOrEqualTo(24));
-      expect(rect.bottom, lessThanOrEqualTo(viewport.size.height - 24));
-      expect(rect.size.shortestSide, greaterThanOrEqualTo(48));
-      final labelRect = tester.getRect(label);
-      expect(labelRect.left, greaterThanOrEqualTo(rect.left));
-      expect(labelRect.right, lessThanOrEqualTo(rect.right));
-      expect(labelRect.bottom, lessThanOrEqualTo(rect.bottom));
-      final section = find.ancestor(
-        of: label,
-        matching: find.byWidgetPredicate(
-          (w) => w.runtimeType.toString() == 'ZyraDevToolSection',
-        ),
-      );
-      expect(section, findsOneWidget);
-      expect(
-        find.descendant(of: section, matching: find.text('Restart at login')),
-        findsNothing,
-      );
-      expect(
-        find.descendant(
-          of: section,
-          matching: find.text('Onboarding directions'),
-        ),
-        findsNothing,
-      );
-      final decoration =
-          tester
-                  .widget<DecoratedBox>(
-                    find
-                        .descendant(
-                          of: section,
-                          matching: find.byType(DecoratedBox),
-                        )
-                        .first,
-                  )
-                  .decoration
-              as BoxDecoration;
-      expect(decoration.color, ZyraColors.surfaceFill);
-      expect(find.text('Exit onboarding'), findsNothing);
-      expect(tester.takeException(), isNull);
-      await _candidate(tester, 'home_panel__${viewport.name}');
-      await tester.tap(home);
-      await tester.pumpAndSettle();
-      expect([homes, otherActions], [1, 0]);
-      expect(
-        find.byWidgetPredicate(
-          (w) => w.runtimeType.toString() == 'DeveloperAccessScreen',
-        ),
-        findsOneWidget,
-      );
-      for (final entry in const [
-        ('dev_access_seeker', 'Seeker'),
-        ('dev_access_guardian', 'Guardian'),
-        ('dev_access_signup', 'Onboarding'),
-      ]) {
-        final action = find.byKey(ValueKey(entry.$1));
-        expect(
-          find.descendant(of: action, matching: find.text(entry.$2)),
-          findsOneWidget,
-        );
-        expect(action.hitTestable(), findsOneWidget);
-      }
-      expect(find.text('Exit onboarding'), findsNothing);
-      expect(tester.takeException(), isNull);
-      await _candidate(tester, 'developer_access__${viewport.name}');
-      // Shared Home navigation must not reintroduce normal onboarding chrome.
-      // A different home argument alone does not replace a retained Navigator.
-      await tester.pumpWidget(const SizedBox.shrink());
-      await tester.pumpAndSettle();
+      // Queue 44 removed developer Home and its Developer Access destination.
+      // DEV_TOGGLES_REMOVAL_BRIEF_2026-10-30.md steps 3–6 retire those
+      // assertions; preserve the same case's real member-entry checks below.
       await _mount(
         tester,
         const SignupFlowFixture(),
@@ -246,6 +157,7 @@ void main() {
       );
       expect(find.text('Sign-up preview · no account changes'), findsNothing);
       expect(tester.takeException(), isNull);
+      await _candidate(tester, 'member_signup_entry__${viewport.name}');
       await tester.pumpWidget(const SizedBox.shrink());
       await tester.pumpAndSettle();
     });

@@ -1,3 +1,5 @@
+// LOCK 8/21 Profile is index 4 for both roles; retain launch/privacy checks.
+// GUARDIAN_TABS/MASTERS/g13 and PROFILE_TAB/MASTERS/p01 reference the route.
 // OA304/305: explicit internal launch attention is not a global theme,
 // approval, document publication, permission grant or member-facing control.
 import 'dart:async';
@@ -229,7 +231,7 @@ class _Owner {
           initialCheckpoint: ZyraPreviewNavigationCheckpoint(
             guardian: guardian,
             model: ViewRequestDraftModel(capacity: 3).snapshot(),
-            tab: guardian ? 3 : 4,
+            tab: 4,
             pages: const [],
           ),
           onCheckpoint: checkpoints.add,

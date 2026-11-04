@@ -39,7 +39,17 @@ void main() {
     'zyra_create_profile request completed',
   ]) {
     test('$operation diagnostics exclude RPC responses', () {
-      final call = _diagnostic(_source('zyra_profile_service'), operation);
+      final source = _source('zyra_profile_service');
+      if (operation == 'zyra_reset_profile returned an unknown status') {
+        // Reset is currently a fail-closed client hold. A removed diagnostic
+        // must stay absent, rather than be reintroduced just to satisfy a test.
+        final calls = RegExp(r'debugPrint\([\s\S]*?\);')
+            .allMatches(source)
+            .where((call) => call.group(0)!.contains(operation));
+        expect(calls, isEmpty);
+        return;
+      }
+      final call = _diagnostic(source, operation);
       expect(_interpolations(call), isEmpty);
       expect(call, isNot(contains('toString(')));
     });

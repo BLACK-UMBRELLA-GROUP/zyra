@@ -1,3 +1,4 @@
+// LOCK 8/21: Profile is index 4 for both roles (g13 / p01 masters).
 import 'package:zyra/dev/dev_discovery_directions.dart';
 // OA304: Settings must lead to subject-specific, truthful local destinations.
 // No member setting, device security, legal acceptance or submission is faked.
@@ -343,7 +344,7 @@ class _ShellOwner {
                 initialCheckpoint: ZyraPreviewNavigationCheckpoint(
                   guardian: guardian,
                   model: ViewRequestDraftModel(capacity: 3).snapshot(),
-                  tab: guardian ? 3 : 4,
+                  tab: 4,
                   pages: const [],
                 ),
                 onCheckpoint: checkpoints.add,
@@ -361,7 +362,7 @@ class _ShellOwner {
                 initialCheckpoint: ZyraPreviewNavigationCheckpoint(
                   guardian: guardian,
                   model: ViewRequestDraftModel(capacity: 3).snapshot(),
-                  tab: guardian ? 3 : 4,
+                  tab: 4,
                   pages: const [],
                 ),
                 onCheckpoint: checkpoints.add,

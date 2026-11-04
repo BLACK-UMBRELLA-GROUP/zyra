@@ -1,3 +1,5 @@
+// LOCK 14 V5: APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md;
+// masters APP_COLOURS/MASTERS/c11_app_icon_1024.png and c12_splash.png.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/screens/splash_screen.dart';
@@ -85,7 +87,7 @@ void main() {
     final wordmark = tester.widget<Text>(
       find.byKey(const ValueKey('splash_study_wordmark')),
     );
-    expect(wordmark.style!.color, const Color(0xFFE5CE8E));
+    expect(wordmark.style!.color, const Color(0xFFA9792E));
     expect(find.text('Z'), findsNothing);
     expect(find.text('Y'), findsNothing);
     expect(find.text('R'), findsNothing);

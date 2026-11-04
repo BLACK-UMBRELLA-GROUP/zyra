@@ -337,8 +337,13 @@ void main() {
   ) async {
     final h = await mount(t);
     await h.tap('guardian_ended');
+    // LOCK 8 V9's V8 empty-state change, master g23_ended_journeys__empty:
+    // the held page uses the Monogram copy and still grants no summaries.
+    expect(find.text('No ended Journeys to show.'), findsOneWidget);
     expect(
-      find.textContaining('Past summaries are not shared.'),
+      find.text(
+        "You see Adam's past Journeys only if he shares their summaries with you.",
+      ),
       findsOneWidget,
     );
     expect(h.latest.pages, ['held_action']);

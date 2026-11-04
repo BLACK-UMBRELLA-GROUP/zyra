@@ -1,3 +1,5 @@
+// HAPTICS brief 2026-10-30 §2: every enabled tap ticks immediately;
+// photo swipes are silent. No visual master changes under that brief.
 // Current Browse photo navigation only. Invented public profiles and an
 // injected paint-only renderer; no service, member record or image provider.
 import 'dart:io';
@@ -295,7 +297,8 @@ void main() {
     await tester.drag(_pager(), const Offset(300, 0));
     await tester.pumpAndSettle();
     _expectPhoto(tester, 1);
-    expectTicks(3);
+    // HAPTICS brief 30 Oct §2: the tap ticks; the two photo swipes do not.
+    expectTicks(1);
     actions.expectNoDecisions();
     expect(tester.takeException(), isNull);
   });
@@ -394,7 +397,7 @@ void main() {
           tester.widget<SlideTransition>(_wrap()).position.value.dx,
           inExclusiveRange(-1, -.5),
         );
-        expectTicks(1);
+        expectTicks(3);
         expect(visited, [0]);
         await tester.pump(const Duration(milliseconds: 200));
         expect(
@@ -402,12 +405,12 @@ void main() {
           closeTo(-1, .001),
         );
         _expectPhoto(tester, 0);
-        expectTicks(1);
+        expectTicks(3);
         expect(visited, [0]);
         await tester.pump(const Duration(milliseconds: 16));
         expect(_wrap(), findsNothing);
         _expectPhoto(tester, 0);
-        expectTicks(1);
+        expectTicks(3);
         expect(visited, [0]);
         expect(_key('concept_browse_details_${person.id}'), findsOneWidget);
         expect(find.byType(ZyraProfileNameBlock), findsNothing);
@@ -456,11 +459,11 @@ void main() {
       await finger.up();
       await tester.pumpAndSettle();
       _expectPhoto(tester, 1);
-      expectTicks(2);
+      expectTicks(1);
       await tester.pump(const Duration(milliseconds: 500));
       _expectPhoto(tester, 1);
       expect(_wrap(), findsNothing);
-      expectTicks(2);
+      expectTicks(1);
       actions.expectNoDecisions();
       expect(tester.takeException(), isNull);
     },
@@ -539,7 +542,7 @@ void main() {
       tester.widget<PageView>(_pager()).controller!.page,
       inExclusiveRange(0, .5),
     );
-    expectTicks(0);
+    expectTicks(1);
     await tester.pumpWidget(
       _app(
         _presenter(
@@ -563,7 +566,7 @@ void main() {
     );
     await tester.pump(const Duration(milliseconds: 500));
     _expectPhoto(tester, 0);
-    expectTicks(0);
+    expectTicks(1);
     actions.expectNoDecisions();
     expect(tester.takeException(), isNull);
   });
@@ -581,7 +584,7 @@ void main() {
           tester.widget<PageView>(_pager()).controller!.page,
           inExclusiveRange(0, .5),
         );
-        expectTicks(0);
+        expectTicks(1);
         await tester.pumpWidget(
           _app(
             _presenter(actions),
@@ -853,7 +856,7 @@ void main() {
     tester.widget<GestureDetector>(_tapTarget()).onTapUp!(tapDetails);
     await tester.pumpAndSettle();
     _expectPhoto(tester, 1);
-    expectTicks(1);
+    expectTicks(3);
     actions.expectNoDecisions();
     expect(tester.takeException(), isNull);
   });

@@ -841,7 +841,8 @@ void main() {
                 )
                 .decoration!
             as BoxDecoration;
-    expect(clearDecoration.color, Colors.white.withValues(alpha: 0.025));
+    // LOCK14 V2 floating surfaces, APP_COLOURS/MASTERS/c04_guardian_tab.png.
+    expect(clearDecoration.color, ZyraColors.surfaceFill);
     expect((clearDecoration.border! as Border).top.color, ZyraColors.ink(0.16));
 
     final remove = find.byKey(const ValueKey('guardian-remove'));

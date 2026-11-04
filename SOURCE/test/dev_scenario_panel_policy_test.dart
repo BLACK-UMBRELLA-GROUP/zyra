@@ -1,3 +1,5 @@
+// LOCK 14 V5: APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md;
+// masters APP_COLOURS/MASTERS/c11_app_icon_1024.png and c12_splash.png.
 import 'support/queue44_scenario_fixture_catalog.dart';
 import 'support/queue44_dashboard_fixture_catalog.dart';
 import 'package:flutter/material.dart';
@@ -428,16 +430,16 @@ void main() {
     expect(ZyraText.heading().fontFamily, 'Poppins');
   });
 
-  test('palette lab is live and restores the current default background', () {
+  test('retired palette selections keep the locked Ivory background', () {
     final defaultColors = ZyraColors.brandGradient.colors;
 
     ZyraColors.selectDevPalette(ZyraDevPalette.deepEmerald);
-    expect(ZyraColors.devPalette, ZyraDevPalette.deepEmerald);
-    expect(ZyraColors.brandGradient.colors, isNot(defaultColors));
+    expect(ZyraColors.devPalette, ZyraDevPalette.ivory);
+    expect(ZyraColors.brandGradient.colors, defaultColors);
 
     ZyraColors.selectDevPalette(ZyraColors.currentDefaultPalette);
-    expect(ZyraColors.isLightPalette, isFalse);
-    expect(ZyraText.heading().color, Colors.white);
+    expect(ZyraColors.isLightPalette, isTrue);
+    expect(ZyraText.heading().color, const Color(0xFF2B2420));
     expect(ZyraColors.brandGradient.colors, defaultColors);
   });
 

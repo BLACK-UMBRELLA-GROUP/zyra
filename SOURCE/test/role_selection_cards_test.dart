@@ -116,26 +116,15 @@ void main() {
   });
 
   testWidgets(
-    'both role choices stay legible and tappable in all visual directions',
+    'both role choices stay legible and tappable in the retained direction',
     (tester) async {
       tester.view.physicalSize = const Size(320, 568);
       tester.view.devicePixelRatio = 1;
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
 
-      for (final direction in const [
-        'current',
-        'structured',
-        'luma',
-        'revolut',
-        'headspace',
-        'mozi',
-        'wise',
-        'uber',
-        'ahead',
-        'howWeFeel',
-        'atoms',
-      ]) {
+      // DEV_TOGGLES removal brief §3: Luma is the only retained direction.
+      for (final direction in const ['luma']) {
         await tester.pumpWidget(
           MaterialApp(
             theme: ThemeData.dark(),
