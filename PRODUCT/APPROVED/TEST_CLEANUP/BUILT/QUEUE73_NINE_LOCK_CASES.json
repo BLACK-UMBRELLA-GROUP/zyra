@@ -1,0 +1,62 @@
+{
+  "required_case_count": 9,
+  "passed": 9,
+  "new_skips": 0,
+  "cases": [
+    {
+      "path": "SOURCE/test/requests_guardians_lock2_shell_test.dart",
+      "name": "Main notice appears once for each effective H to Y to H change",
+      "outcome": "pass",
+      "skipped": false
+    },
+    {
+      "path": "SOURCE/test/requests_guardians_lock2_shell_test.dart",
+      "name": "a pending Main notice resumes for its exact subject then stays consumed",
+      "outcome": "pass",
+      "skipped": false
+    },
+    {
+      "path": "SOURCE/test/requests_guardians_lock2_shell_test.dart",
+      "name": "a stale Make Main callback cannot create a notice",
+      "outcome": "pass",
+      "skipped": false
+    },
+    {
+      "path": "SOURCE/test/requests_guardians_lock2_shell_test.dart",
+      "name": "a revoked Make Main callback cannot create a notice",
+      "outcome": "pass",
+      "skipped": false
+    },
+    {
+      "path": "SOURCE/test/tab_attention_open_marker_test.dart",
+      "name": "opening My ZYRA clears only tab attention and preserves pending New activity",
+      "outcome": "pass",
+      "skipped": false
+    },
+    {
+      "path": "SOURCE/test/tab_attention_open_marker_test.dart",
+      "name": "a newer arrival from the same peer restores gold tab attention",
+      "outcome": "pass",
+      "skipped": false
+    },
+    {
+      "path": "SOURCE/test/tab_attention_open_marker_test.dart",
+      "name": "a fresh shell restores the consumed marker without reading items",
+      "outcome": "pass",
+      "skipped": false
+    },
+    {
+      "path": "SOURCE/test/tab_attention_open_marker_test.dart",
+      "name": "resuming directly on My ZYRA consumes tab attention alone",
+      "outcome": "pass",
+      "skipped": false
+    },
+    {
+      "path": "SOURCE/test/tab_attention_open_marker_test.dart",
+      "name": "long absence opens My ZYRA and clears the marker without item ack",
+      "outcome": "pass",
+      "skipped": false
+    }
+  ],
+  "authority": "QUESTION12 optionB and TEST_CLEANUP brief step0"
+}

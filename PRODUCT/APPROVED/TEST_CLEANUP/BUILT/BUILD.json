@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "commit_sha": "df8cfbe3b2642a2a4a1ed3ecd8fb7e2fa12100f8",
+  "flutter_version": "3.44.2 (existing toolchain, no upgrade)",
+  "build_mode": "Flutter widget and unit tests; no native app build",
+  "timestamp_utc": "2026-11-04T10:52:07.670986+00:00",
+  "queue_line": 73,
+  "gate": "PASS under approved documented-failure route",
+  "suite_green": false,
+  "full_suite": {
+    "completed_reporter_entries": 8250,
+    "failed_or_error": 358,
+    "affected_files": 36,
+    "unchanged_skips": 119
+  },
+  "source_snapshot": "QUEUE73_SOURCE_SNAPSHOT.json",
+  "acceptance": "QUEUE73_QA.json",
+  "handover": "QUEUE73_AS_BUILT.json",
+  "classified_failures": "QUEUE73_CLASSIFICATION.json",
+  "questions": "PRODUCT/APPROVED/QUESTIONS.md rows13\u201355",
+  "screenshots": "Tests-only change; current LOCK/master references in comments and case authorities, no screenshot/master pair generated",
+  "goldens_regenerated": 0,
+  "roadmap_issue": "Open while358 failures remain"
+}

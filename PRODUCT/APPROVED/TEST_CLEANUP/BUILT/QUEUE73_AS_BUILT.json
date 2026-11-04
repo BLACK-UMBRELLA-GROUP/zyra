@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "task": "ZYRA queue73 test and fixture cleanup",
+  "status": "BUILT under approved classified-failure gate; suite not green",
+  "date": "2026-11-04",
+  "parent_commit": "e565a2a02eda86c615dd680bddc6031a5c6b1b78",
+  "source_commit": "df8cfbe3b2642a2a4a1ed3ecd8fb7e2fa12100f8",
+  "built_from": [
+    "PRODUCT/APPROVED/TEST_CLEANUP/BRIEFS/TEST_CLEANUP_BRIEF_2026-11-02.md",
+    "PRODUCT/APPROVED/DEV_TOGGLES/BRIEFS/DEV_TOGGLES_REMOVAL_BRIEF_2026-10-30.md",
+    "PRODUCT/APPROVED/QUESTIONS.md row12 optionB"
+  ],
+  "what_changed": "Nine LOCK2/5 harnesses first; current reader/Focus/Guardian routes, dimensions, Ivory text and surface expectations; offline void haptic callback harnesses; current split migration fixtures; transient Timeline test-scenario reset. No app behavior change.",
+  "live_files_and_purpose": "QUEUE73_SOURCE_SNAPSHOT.json lists all64 current changed Dart paths; QUEUE73_CLASSIFICATION.json gives every one of644 original failures with current authorities, reasons and per-file counts; QUEUE73_MOVES.json preserves three original files and exact retired identities. Two whole test files removed from compilation; four active cases retained from the mixed Guardian file.",
+  "state_ownership": "Only test fixtures own role/state injection, callback leases and temporary Timeline scenarios. Real canonical model/history kept; server Pause/Save coverage retained pending OA-ZYRA-317. No new runtime developer controls.",
+  "data_flow": "Existing offline fixtures feed real widgets and inspect model/checkpoint/callback effects. Static SQL tests read current replacements; no SQL invented or executed by this task.",
+  "visual_verification": "Tests only; no new app screen, screenshots or master/build pair. Current LOCK and master references live in changed test comments and case authorities.112 retained historical visual cases require exact current master plus designer BUILT lineage before any golden promotion.",
+  "limitations": "358 failed/error occurrences remain in36 files, each with a reason and Questions13\u201355. Includes14 active empty-Guardian intrinsic failures across groups, retained Tier3 geometry/ownership/receipt equivalence, Espresso attention canvas, small danger-text contrast, heart symbols, historical fixture lineage and112 visual baselines/runtime cases. No app correction is implied by an obsolete finder alone.",
+  "migrations": "None; only references to existing SERVER0 split fixtures updated.",
+  "checks": "QUEUE73_QA.json and QUEUE73_NINE_LOCK_CASES.json; full suite completed8250/8250;277 prior failures pass;9 failing developer cases retired;119 skips unchanged; zero prior-pass regressions or unreviewed missing identities. Analysis/format pass.",
+  "trace": "OA-ZYRA-325; Questions13\u201355; complete case/file matrix in QUEUE73_CLASSIFICATION.json; queue44+73 roadmap remains open because358 failures remain.",
+  "next_owner": "ZYRA designer supplies exact contract/master answers and Founder-authorized app fixes where required; current assertions retained.",
+  "scope": "Tests, test fixtures and handover evidence only. No app/source behavior, backend/auth service, migrations, server, dependency, SDK, native app build, phone install, design or new queue line."
+}

@@ -1,0 +1,40 @@
+{
+  "before": {
+    "app": {
+      "files": 318,
+      "lines": 162586,
+      "bytes": 5805614
+    },
+    "tests": {
+      "files": 554,
+      "lines": 231030,
+      "bytes": 8108663
+    },
+    "fixtures": {
+      "files": 20,
+      "lines": 5004,
+      "bytes": 172300
+    }
+  },
+  "after": {
+    "app": {
+      "files": 318,
+      "lines": 162586,
+      "bytes": 5805614
+    },
+    "tests": {
+      "files": 552,
+      "lines": 230829,
+      "bytes": 8108760
+    },
+    "fixtures": {
+      "files": 20,
+      "lines": 5020,
+      "bytes": 172927
+    }
+  },
+  "approved_goldens_before_and_after": {
+    "files": 148,
+    "bytes": 8694474
+  }
+}

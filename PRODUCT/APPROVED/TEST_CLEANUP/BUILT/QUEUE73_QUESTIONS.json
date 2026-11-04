@@ -1,0 +1,790 @@
+[
+  {
+    "number": 13,
+    "key": "UI_BROWSE_ACCESSIBLE_HAPTIC",
+    "question": "How should accessible Next page get the single haptic required by the approved HAPTICS brief?",
+    "options": "A: Record the missing accessible Next-page feedback defect for a separately scoped app fix and retain the current test.; B: Provide an existing approved accessibility-specific haptic exception, if any.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 1,
+    "case_ids": [
+      "Q73-C0027"
+    ]
+  },
+  {
+    "number": 14,
+    "key": "UI_BROWSE_HELD_ACTION",
+    "question": "Which current locked action should each retained held-release or Filters gesture invoke when the physical cue disappears without navigation?",
+    "options": "A: Record the current member-action routing defect, keeping the eight pointer-based cases as verification for its separately scoped app fix.; B: Provide an existing approved change that intentionally alters these held/release semantics, if one exists.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 8,
+    "case_ids": [
+      "Q73-C0011",
+      "Q73-C0012",
+      "Q73-C0013",
+      "Q73-C0014",
+      "Q73-C0015",
+      "Q73-C0016",
+      "Q73-C0020",
+      "Q73-C0021"
+    ]
+  },
+  {
+    "number": 15,
+    "key": "UI_BROWSE_IGNORED_HAPTIC",
+    "question": "Are authority-rejected, stale or scrolling-rejected photo taps disabled for the HAPTICS feedback rule?",
+    "options": "A: Clarify that an authority-rejected/stale or scrolling-rejected photo tap is disabled for feedback; retain the failures for a later app guard fix.; B: Clarify that only state/navigation is refused and an otherwise installed tap recognizer still gives one tick; migrate only the exact feedback assertions while preserving all navigation/ownership checks.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 3,
+    "case_ids": [
+      "Q73-C0024",
+      "Q73-C0025",
+      "Q73-C0026"
+    ]
+  },
+  {
+    "number": 16,
+    "key": "UI_CIRCLE_MIXED_LEGACY",
+    "question": "Which current bound Circle action and callback lifetime replace the retired dropdown lease for the listed context and ABA cases?",
+    "options": "A: Name an existing current interaction/callback and its approved requirement that should replace the removed style-setting action, then migrate the preserved draft/ABA assertions under the already-approved cleanup.; B: Confirm that no replacement interaction exists; use case-level removed-feature evidence to retire only that obsolete setting contract while retaining active chat/privacy tests.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 9,
+    "case_ids": [
+      "Q73-C0111",
+      "Q73-C0112",
+      "Q73-C0113",
+      "Q73-C0114",
+      "Q73-C0115",
+      "Q73-C0116",
+      "Q73-C0117",
+      "Q73-C0118",
+      "Q73-C0119"
+    ]
+  },
+  {
+    "number": 17,
+    "key": "UI_EMPTY_LAYOUT",
+    "question": "What separately approved app correction should resolve the active empty-Guardian intrinsic layout failure so the listed cases can reach their required assertions?",
+    "options": "A: Record the production layout defect for the separately scoped app fix, retaining these five tests as the verification.; B: If an already-approved app fix exists, provide its task/evidence so these cases can be rerun after that implementation.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 14,
+    "case_ids": [
+      "Q73-C0158",
+      "Q73-C0159",
+      "Q73-C0162",
+      "Q73-C0368",
+      "Q73-C0369",
+      "Q73-C0500",
+      "Q73-C0501",
+      "Q73-C0502",
+      "Q73-C0503",
+      "Q73-C0625",
+      "Q73-C0626",
+      "Q73-C0627",
+      "Q73-C0640",
+      "Q73-C0641"
+    ]
+  },
+  {
+    "number": 18,
+    "key": "UI_GUARDIAN_LEGACY_GEOMETRY",
+    "question": "Which current approved dimensions and master still govern the retained Tier3 Guardian Manage and permission-header layout?",
+    "options": "A: Identify the current approved master/numeric bounds that still govern the retained Tier3 SeekerGuardianPage, so its geometry can be repaired or migrated under this authorized cleanup.; B: Confirm that the old composition has no current layout requirement, while naming which existing active access/privacy cases must carry its semantics when obsolete geometry is retired case by case.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 32,
+    "case_ids": [
+      "Q73-C0125",
+      "Q73-C0126",
+      "Q73-C0127",
+      "Q73-C0128",
+      "Q73-C0129",
+      "Q73-C0130",
+      "Q73-C0131",
+      "Q73-C0132",
+      "Q73-C0133",
+      "Q73-C0134",
+      "Q73-C0135",
+      "Q73-C0136",
+      "Q73-C0137",
+      "Q73-C0138",
+      "Q73-C0139",
+      "Q73-C0141",
+      "Q73-C0142",
+      "Q73-C0143",
+      "Q73-C0144",
+      "Q73-C0145",
+      "Q73-C0146",
+      "Q73-C0147",
+      "Q73-C0148",
+      "Q73-C0149",
+      "Q73-C0150",
+      "Q73-C0151",
+      "Q73-C0152",
+      "Q73-C0153",
+      "Q73-C0154",
+      "Q73-C0155",
+      "Q73-C0156",
+      "Q73-C0157"
+    ]
+  },
+  {
+    "number": 19,
+    "key": "UI_JOURNEY_MIXED_LEGACY",
+    "question": "Which current pushed-options callback and return-parent contract replaces old inline-collapse delegates in the retained Journey cases?",
+    "options": "A: Identify the approved current pushed-options lifetime/return contract that replaces inline collapse/reopen; migrate the active Continue/return/owner-denial assertions under existing cleanup authorization.; B: Confirm there is no direct replacement for the obsolete inline interaction and preserve its active semantics through specifically named current cases before case-level retirement.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 11,
+    "case_ids": [
+      "Q73-C0170",
+      "Q73-C0171",
+      "Q73-C0172",
+      "Q73-C0173",
+      "Q73-C0174",
+      "Q73-C0175",
+      "Q73-C0176",
+      "Q73-C0177",
+      "Q73-C0178",
+      "Q73-C0179",
+      "Q73-C0180"
+    ]
+  },
+  {
+    "number": 20,
+    "key": "attention_canvas",
+    "question": "The internal launch-attention canvas uses Espresso foreground as its background; what exact current LOCK14 attention-state background should its retained privacy and recovery tests assert?",
+    "options": "A: Confirm the current Ivory background/state master and separately approve the app correction; B: Supply an explicit attention-state exception/master. Keep the failing tests pending that mapping.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 28,
+    "case_ids": [
+      "Q73-C0077",
+      "Q73-C0078",
+      "Q73-C0079",
+      "Q73-C0080",
+      "Q73-C0081",
+      "Q73-C0082",
+      "Q73-C0083",
+      "Q73-C0084",
+      "Q73-C0085",
+      "Q73-C0086",
+      "Q73-C0087",
+      "Q73-C0088",
+      "Q73-C0089",
+      "Q73-C0090",
+      "Q73-C0091",
+      "Q73-C0092",
+      "Q73-C0093",
+      "Q73-C0094",
+      "Q73-C0095",
+      "Q73-C0096",
+      "Q73-C0097",
+      "Q73-C0098",
+      "Q73-C0099",
+      "Q73-C0100",
+      "Q73-C0102",
+      "Q73-C0103",
+      "Q73-C0104",
+      "Q73-C0105"
+    ]
+  },
+  {
+    "number": 21,
+    "key": "contrast_mapping",
+    "question": "The retained text contrast test measures danger ink #B84A42 on Ivory #EEE6D8 at 4.136887:1; which current small-danger-text token or text-versus-decoration contract governs this use?",
+    "options": "A: Supply the approved readable small-text mapping and separately approve any app correction; B: Confirm which uses are decorative and provide the exact test scope. Retain the 4.5 text threshold pending evidence.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 1,
+    "case_ids": [
+      "Q73-C0597"
+    ]
+  },
+  {
+    "number": 22,
+    "key": "heart_symbols",
+    "question": "Two active safety presentations use Icons.health_and_safety, which the no-heart rule rejects; which approved neutral symbol should replace the heart-bearing icon?",
+    "options": "A: Supply an approved replacement and separately authorize the app fix; B: Keep this design finding open. Preserve the scanner.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 1,
+    "case_ids": [
+      "Q73-C0185"
+    ]
+  },
+  {
+    "number": 23,
+    "key": "historical_fixture",
+    "question": "How should the byte-pinned 207-file historical OA198 frontier be reproduced portably after SERVER0 intentionally moved older migrations out of the active directory?",
+    "options": "A: Supply a reviewed historical fixture/manifest contract preserving the signed body proof; B: Supply a current replacement proof with explicit supersession. Do not reduce a signed count or recreate old SQL without authority.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 4,
+    "case_ids": [
+      "Q73-C0183",
+      "Q73-C0622",
+      "Q73-C0623",
+      "Q73-C0624"
+    ]
+  },
+  {
+    "number": 24,
+    "key": "journey:test/one_journey_back_button_preview_test.dart",
+    "question": "The cases capture Back delegates from old Circle discussion/archive and own-profile editors; LOCK20 Topics and LOCK21 Profile changed their ownership graph, while LOCK13 options is a separate page. Should those old retained delegates be replaced by a delegate captured per current pushed page, and which exact parent must each archive/topic/editor Back restore?",
+    "options": "A: Specify the current per-page parent and stale-return contract; B: Retain a separate adapter host for the previous delegate contract",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 7,
+    "case_ids": [
+      "Q73-C0188",
+      "Q73-C0189",
+      "Q73-C0190",
+      "Q73-C0191",
+      "Q73-C0192",
+      "Q73-C0193",
+      "Q73-C0194"
+    ]
+  },
+  {
+    "number": 25,
+    "key": "journey:test/one_journey_bottom_close_cue_test.dart",
+    "question": "LOCK13 retains a pushed options page below disclosures; LOCK20 replaces the old Circle discussion/archive launcher. The old cue tests require one particular parent and a full-page-versus-inline dismissal distinction. Which exact current Topics/archive and options parent must each old captured dismissal restore?",
+    "options": "A: Specify current per-page parents and preserve edge/accessible dismissal denial independently; B: Keep an isolated legacy adapter parent contract until explicitly superseded",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 7,
+    "case_ids": [
+      "Q73-C0196",
+      "Q73-C0197",
+      "Q73-C0198",
+      "Q73-C0199",
+      "Q73-C0200",
+      "Q73-C0201",
+      "Q73-C0202"
+    ]
+  },
+  {
+    "number": 26,
+    "key": "journey:test/one_journey_compact_controls_test.dart",
+    "question": "The compiled compact controls and simultaneous cards were removed/replaced; the retained old controls supplied disabled callbacks for Basic capacity and role-specific navigation assertions. Which current code-only fixture/selected-place action must carry those disabled/stale callback guarantees, while compact accessibility is exercised only through current member targets?",
+    "options": "A: Specify code-only fixture refusal plus selected-place/member-target assertions; B: Keep a separate adapter disabled-callback contract until mapped",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 7,
+    "case_ids": [
+      "Q73-C0238",
+      "Q73-C0239",
+      "Q73-C0240",
+      "Q73-C0241",
+      "Q73-C0242",
+      "Q73-C0243",
+      "Q73-C0244"
+    ]
+  },
+  {
+    "number": 27,
+    "key": "journey:test/one_journey_ended_card_test.dart",
+    "question": "The retained Ended callbacks were captured from a pre-Focus/archive host with old four-tab Guardian ownership. LOCK15 routes Ended through Focus and LOCK8 has five tabs. Which current Ended read-window/compatibility callback lease replaces the older route delegate while preserving previously unlocked access and role-withdrawal denial?",
+    "options": "A: Define current archive-bound read-window delegates as the equivalent; B: Preserve the older adapter delegate as separate supported coverage",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 3,
+    "case_ids": [
+      "Q73-C0250",
+      "Q73-C0251",
+      "Q73-C0252"
+    ]
+  },
+  {
+    "number": 28,
+    "key": "journey:test/one_journey_guardian_details_polish_test.dart",
+    "question": "LOCK19 k01–k06 replaces the old quiet-sections/PageView consent controls with front/access cards and bound void callbacks. The failed cases require retained async loader receipts and history confirmation/information sheets which the current card API does not expose. What current read/write receipt or UI confirmation is the required equivalent for each retained-consent, loader-disclosure and per-Guardian lifetime assertion?",
+    "options": "A: Specify bound-card action plus unchanged-model/read-projection proof as the receipt equivalent; B: Retain the old adapter-level receipts as separate coverage and define its supported host",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 16,
+    "case_ids": [
+      "Q73-C0253",
+      "Q73-C0254",
+      "Q73-C0255",
+      "Q73-C0256",
+      "Q73-C0257",
+      "Q73-C0258",
+      "Q73-C0259",
+      "Q73-C0260",
+      "Q73-C0261",
+      "Q73-C0262",
+      "Q73-C0263",
+      "Q73-C0264",
+      "Q73-C0265",
+      "Q73-C0266",
+      "Q73-C0267",
+      "Q73-C0268"
+    ]
+  },
+  {
+    "number": 29,
+    "key": "journey:test/one_journey_monthly_capacity_widget_test.dart",
+    "question": "LOCK13 j01–j07 explicitly replaces simultaneous three-slot rectangles with a single place reader. This file mixes numeric old-rectangle geometry with per-person callbacks captured simultaneously and retained model/privacy checks. What is the required equivalent for simultaneous outgoing-card delegates once only one place owns mounted actions, without silently weakening cross-person or revocation assertions?",
+    "options": "A: Require sequential capture after physical place selection, with earlier captures denied after selection; B: Keep simultaneous delegate lifetime checks at an isolated supported adapter boundary",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 32,
+    "case_ids": [
+      "Q73-C0269",
+      "Q73-C0270",
+      "Q73-C0271",
+      "Q73-C0272",
+      "Q73-C0273",
+      "Q73-C0274",
+      "Q73-C0275",
+      "Q73-C0276",
+      "Q73-C0277",
+      "Q73-C0278",
+      "Q73-C0279",
+      "Q73-C0280",
+      "Q73-C0281",
+      "Q73-C0282",
+      "Q73-C0283",
+      "Q73-C0284",
+      "Q73-C0285",
+      "Q73-C0286",
+      "Q73-C0287",
+      "Q73-C0288",
+      "Q73-C0289",
+      "Q73-C0290",
+      "Q73-C0291",
+      "Q73-C0292",
+      "Q73-C0293",
+      "Q73-C0294",
+      "Q73-C0295",
+      "Q73-C0296",
+      "Q73-C0297",
+      "Q73-C0298",
+      "Q73-C0299",
+      "Q73-C0300"
+    ]
+  },
+  {
+    "number": 30,
+    "key": "journey:test/one_journey_prior_compatibility_access_test.dart",
+    "question": "The test must prove an earlier profile unlock survives a request and later addressed Journey without buying consent. LOCK15 and LOCK13 replaced both source hosts; the existing raw compatibility callback is tied to the old multi-card epoch. Should the preserved unlock be tested through the current selected-place options lease or a separate entitlement adapter, and what prior lease is required to remain valid?",
+    "options": "A: Use actual current profile unlock followed by current request/place/options navigation; only entitlement persists; B: Keep an explicit adapter lease test alongside current navigation",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 2,
+    "case_ids": [
+      "Q73-C0305",
+      "Q73-C0306"
+    ]
+  },
+  {
+    "number": 31,
+    "key": "journey:test/one_journey_pull_down_routes_test.dart",
+    "question": "The old tests open confirmation from the simultaneous-card host and require one Back parent. LOCK13 now retains options beneath Journey destinations; its Continue destination is expressly unchanged. Which exact stack should vertical Journey reading and modal Cancel return to: the pushed options page or the root place reader?",
+    "options": "A: Retain pushed options beneath the unchanged Journey and return one actual page at a time; B: Specify a root-return exception for this existing Continue/confirmation context",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 3,
+    "case_ids": [
+      "Q73-C0307",
+      "Q73-C0308",
+      "Q73-C0309"
+    ]
+  },
+  {
+    "number": 32,
+    "key": "journey:test/one_journey_theme_actions_test.dart",
+    "question": "The old three-card overview provides one live callback per person simultaneously; LOCK13 mounts one selected place and pushes options. Which current callback scope must stand in for the old cross-card End/options delegates, especially after another place is selected, without losing exactly-once and stale-owner assertions?",
+    "options": "A: Sequentially capture current selected-place delegates and require older selection delegates to be inert; B: Specify a separate adapter contract for simultaneous per-person delegates",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 16,
+    "case_ids": [
+      "Q73-C0315",
+      "Q73-C0316",
+      "Q73-C0317",
+      "Q73-C0318",
+      "Q73-C0319",
+      "Q73-C0320",
+      "Q73-C0321",
+      "Q73-C0322",
+      "Q73-C0323",
+      "Q73-C0324",
+      "Q73-C0325",
+      "Q73-C0326",
+      "Q73-C0327",
+      "Q73-C0328",
+      "Q73-C0329",
+      "Q73-C0330"
+    ]
+  },
+  {
+    "number": 33,
+    "key": "journey:test/request_page_options_context_test.dart",
+    "question": "Developer page-options/dropdown widgets are absent by the removal brief, but old cases also retain callbacks from those widgets to prove context isolation. Which code-only fixture delegate is the required equivalent for a removed dropdown/action lease, particularly Guardian role context and request/Ended selectors, without turning the test into a synthetic widget?",
+    "options": "A: Use an epoch-bound code-only fixture delegate plus actual member target navigation; B: Specify separate adapter-level tests for removed control callback lifetimes",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 9,
+    "case_ids": [
+      "Q73-C0343",
+      "Q73-C0344",
+      "Q73-C0345",
+      "Q73-C0346",
+      "Q73-C0347",
+      "Q73-C0348",
+      "Q73-C0349",
+      "Q73-C0350",
+      "Q73-C0351"
+    ]
+  },
+  {
+    "number": 34,
+    "key": "journey:test/request_shell_titles_circle_test.dart",
+    "question": "The old Circle host requires a legacy send-button callback, three fixed participants and a shared title widget; LOCK20 gc08/gc13 changes Basic participants/writing by the viewing role, while LOCK19 owns a new title/header. Which current role-bound callback/participant projection must replace each old cross-role callback capture so its stale-send security assertion remains equivalent?",
+    "options": "A: Use current viewing-role Circle actions and sequential current captures, explicitly preserving revocation/ABA denial; B: Keep the legacy callback-receipt checks as separate isolated adapter coverage until an equivalent is specified",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 11,
+    "case_ids": [
+      "Q73-C0352",
+      "Q73-C0353",
+      "Q73-C0354",
+      "Q73-C0355",
+      "Q73-C0356",
+      "Q73-C0357",
+      "Q73-C0358",
+      "Q73-C0359",
+      "Q73-C0360",
+      "Q73-C0361",
+      "Q73-C0362"
+    ]
+  },
+  {
+    "number": 35,
+    "key": "journey:test/view_request_draft_widget_test.dart:contract1",
+    "question": "What current receipt and availability contract replaces the removed Guardian async-loader receipts while preserving disclosure, forged-write and stale-owner assertions?",
+    "options": "A: Provide the exact current LOCK/state or callback-equivalence contract; B: Identify an app mismatch for a separately approved correction. Preserve the retained assertions.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 11,
+    "case_ids": [
+      "Q73-C0379",
+      "Q73-C0380",
+      "Q73-C0389",
+      "Q73-C0390",
+      "Q73-C0422",
+      "Q73-C0423",
+      "Q73-C0424",
+      "Q73-C0438",
+      "Q73-C0447",
+      "Q73-C0448",
+      "Q73-C0449"
+    ]
+  },
+  {
+    "number": 36,
+    "key": "journey:test/view_request_draft_widget_test.dart:contract2",
+    "question": "Which current Journey detail Report action is required at Salam, and how should the old draft_safety return parent map to it?",
+    "options": "A: Provide the exact current LOCK/state or callback-equivalence contract; B: Identify an app mismatch for a separately approved correction. Preserve the retained assertions.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 1,
+    "case_ids": [
+      "Q73-C0411"
+    ]
+  },
+  {
+    "number": 37,
+    "key": "journey:test/view_request_draft_widget_test.dart:contract3",
+    "question": "Which current locked Compatibility destination should a prior local reveal open from Journey detail?",
+    "options": "A: Provide the exact current LOCK/state or callback-equivalence contract; B: Identify an app mismatch for a separately approved correction. Preserve the retained assertions.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 1,
+    "case_ids": [
+      "Q73-C0430"
+    ]
+  },
+  {
+    "number": 38,
+    "key": "journey:test/view_request_draft_widget_test.dart:contract4",
+    "question": "Which current LOCK defines disabled Browse arrow opacity when actual alpha .28 differs from the retained .34 expectation?",
+    "options": "A: Provide the exact current LOCK/state or callback-equivalence contract; B: Identify an app mismatch for a separately approved correction. Preserve the retained assertions.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 1,
+    "case_ids": [
+      "Q73-C0377"
+    ]
+  },
+  {
+    "number": 39,
+    "key": "journey:test/view_request_draft_widget_test.dart:contract5",
+    "question": "Should leaving Journey detail options return to its still-mounted detail parent or close to the root place reader?",
+    "options": "A: Provide the exact current LOCK/state or callback-equivalence contract; B: Identify an app mismatch for a separately approved correction. Preserve the retained assertions.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 1,
+    "case_ids": [
+      "Q73-C0436"
+    ]
+  },
+  {
+    "number": 40,
+    "key": "journey:test/view_request_draft_widget_test.dart:contract6",
+    "question": "Does the Guardian Code contract expose Add a Seeker for existing-account fixtures or only during signup as LOCK9 V2 says?",
+    "options": "A: Provide the exact current LOCK/state or callback-equivalence contract; B: Identify an app mismatch for a separately approved correction. Preserve the retained assertions.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 1,
+    "case_ids": [
+      "Q73-C0391"
+    ]
+  },
+  {
+    "number": 41,
+    "key": "test/compatibility_route_toggle_test.dart",
+    "question": "Which current locked savings-label contract replaces the retained catalogue test’s old 22 percent expectation while keeping purchase refusal and catalogue selection coverage?",
+    "options": "A: Provide the current locked catalogue/master mapping; B: Identify an app mismatch for a separately approved fix. Preserve the transaction/refusal assertions.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 1,
+    "case_ids": [
+      "Q73-C0043"
+    ]
+  },
+  {
+    "number": 42,
+    "key": "test/membership_wallet_visual_test.dart",
+    "question": "Which current Profile and wallet host contract replaces the missing legacy Profile presentation in the two retained membership wallet cases?",
+    "options": "A: Supply the exact current member/planned host and route-parent mapping; B: Keep the old host equivalence gap open. Preserve wallet/account assertions.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 2,
+    "case_ids": [
+      "Q73-C0181",
+      "Q73-C0182"
+    ]
+  },
+  {
+    "number": 43,
+    "key": "test/onboarding_checkpoint_persistence_test.dart",
+    "question": "Which approved current full-screen busy-feedback contract governs the two retained save/retry cases when the quiet loader ignores the old call-site Saving your progress label?",
+    "options": "A: Point to the current loading master/spec and its observable busy state; B: Identify a genuine loading mismatch for separate correction. Preserve duplicate-save, retry, draft and IDV guards.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 2,
+    "case_ids": [
+      "Q73-C0186",
+      "Q73-C0187"
+    ]
+  },
+  {
+    "number": 44,
+    "key": "test/zyra_dev_app_icon_test.dart",
+    "question": "Does LOCK14 Ivory govern all ten installed alternate native icons and their old preview assets, or only the primary icon, and which exact masters govern retained parity tests?",
+    "options": "A: Supply the current per-asset master/scope mapping; B: Separately authorize a native asset correction after that mapping. No native or bitmap changes were made.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 3,
+    "case_ids": [
+      "Q73-C0610",
+      "Q73-C0611",
+      "Q73-C0612"
+    ]
+  },
+  {
+    "number": 45,
+    "key": "test/zyra_wordmark_colour_test.dart",
+    "question": "Which current approved compact preview-access recovery master governs the retained test that expects a full-screen ZYRA wordmark?",
+    "options": "A: Supply the compact recovery master and exact wordmark/action contract; B: Identify a product mismatch for separate correction. Keep all recovery action assertions.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 1,
+    "case_ids": [
+      "Q73-C0642"
+    ]
+  },
+  {
+    "number": 46,
+    "key": "visual_guardian_my_zyra_baseline_lineage",
+    "question": "For guardian my zyra visual cases listed individually in QUEUE73_CLASSIFICATION.json, which current LOCK masters and designer BUILT checks govern each retained member fixture/state/viewport? The current render differs from sealed historical active approved pixels.",
+    "options": "A: A: Supply exact current master/build mapping, then approve fixture/golden migration only after match is verified.; B: B: Identify a current app mismatch for a separately approved app fix; retain the failing tests.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 15,
+    "case_ids": [
+      "Q73-C0475",
+      "Q73-C0476",
+      "Q73-C0477",
+      "Q73-C0478",
+      "Q73-C0483",
+      "Q73-C0487",
+      "Q73-C0488",
+      "Q73-C0489",
+      "Q73-C0490",
+      "Q73-C0492",
+      "Q73-C0493",
+      "Q73-C0494",
+      "Q73-C0496",
+      "Q73-C0497",
+      "Q73-C0498"
+    ]
+  },
+  {
+    "number": 47,
+    "key": "visual_guardian_my_zyra_runtime",
+    "question": "For guardian my zyra visual cases listed individually in QUEUE73_CLASSIFICATION.json, which current LOCK masters and designer BUILT checks govern each retained member fixture/state/viewport? The listed cases also have runtime/layout/finder failures; determine the approved fixture repair or record product mismatch without app edits.",
+    "options": "A: A: Supply exact current master/build mapping, then approve fixture/golden migration only after match is verified.; B: B: Identify a current app mismatch for a separately approved app fix; retain the failing tests.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 13,
+    "case_ids": [
+      "Q73-C0472",
+      "Q73-C0473",
+      "Q73-C0474",
+      "Q73-C0479",
+      "Q73-C0480",
+      "Q73-C0481",
+      "Q73-C0482",
+      "Q73-C0484",
+      "Q73-C0485",
+      "Q73-C0486",
+      "Q73-C0491",
+      "Q73-C0495",
+      "Q73-C0499"
+    ]
+  },
+  {
+    "number": 48,
+    "key": "visual_guardian_seeker_workspace_baseline_lineage",
+    "question": "For guardian seeker workspace visual cases listed individually in QUEUE73_CLASSIFICATION.json, which current LOCK masters and designer BUILT checks govern each retained member fixture/state/viewport? The current render differs from sealed historical active approved pixels.",
+    "options": "A: A: Supply exact current master/build mapping, then approve fixture/golden migration only after match is verified.; B: B: Identify a current app mismatch for a separately approved app fix; retain the failing tests.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 6,
+    "case_ids": [
+      "Q73-C0536",
+      "Q73-C0537",
+      "Q73-C0540",
+      "Q73-C0541",
+      "Q73-C0547",
+      "Q73-C0551"
+    ]
+  },
+  {
+    "number": 49,
+    "key": "visual_guardian_seeker_workspace_runtime",
+    "question": "For guardian seeker workspace visual cases listed individually in QUEUE73_CLASSIFICATION.json, which current LOCK masters and designer BUILT checks govern each retained member fixture/state/viewport? The listed cases also have runtime/layout/finder failures; determine the approved fixture repair or record product mismatch without app edits.",
+    "options": "A: A: Supply exact current master/build mapping, then approve fixture/golden migration only after match is verified.; B: B: Identify a current app mismatch for a separately approved app fix; retain the failing tests.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 10,
+    "case_ids": [
+      "Q73-C0538",
+      "Q73-C0539",
+      "Q73-C0542",
+      "Q73-C0543",
+      "Q73-C0544",
+      "Q73-C0545",
+      "Q73-C0546",
+      "Q73-C0548",
+      "Q73-C0549",
+      "Q73-C0550"
+    ]
+  },
+  {
+    "number": 50,
+    "key": "visual_guardian_seekers_baseline_lineage",
+    "question": "For guardian seekers visual cases listed individually in QUEUE73_CLASSIFICATION.json, which current LOCK masters and designer BUILT checks govern each retained member fixture/state/viewport? The current render differs from sealed historical active approved pixels.",
+    "options": "A: A: Supply exact current master/build mapping, then approve fixture/golden migration only after match is verified.; B: B: Identify a current app mismatch for a separately approved app fix; retain the failing tests.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 9,
+    "case_ids": [
+      "Q73-C0519",
+      "Q73-C0520",
+      "Q73-C0521",
+      "Q73-C0522",
+      "Q73-C0527",
+      "Q73-C0528",
+      "Q73-C0529",
+      "Q73-C0532",
+      "Q73-C0533"
+    ]
+  },
+  {
+    "number": 51,
+    "key": "visual_guardian_seekers_runtime",
+    "question": "For guardian seekers visual cases listed individually in QUEUE73_CLASSIFICATION.json, which current LOCK masters and designer BUILT checks govern each retained member fixture/state/viewport? The listed cases also have runtime/layout/finder failures; determine the approved fixture repair or record product mismatch without app edits.",
+    "options": "A: A: Supply exact current master/build mapping, then approve fixture/golden migration only after match is verified.; B: B: Identify a current app mismatch for a separately approved app fix; retain the failing tests.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 11,
+    "case_ids": [
+      "Q73-C0516",
+      "Q73-C0517",
+      "Q73-C0518",
+      "Q73-C0523",
+      "Q73-C0524",
+      "Q73-C0525",
+      "Q73-C0526",
+      "Q73-C0530",
+      "Q73-C0531",
+      "Q73-C0534",
+      "Q73-C0535"
+    ]
+  },
+  {
+    "number": 52,
+    "key": "visual_seeker_guardian_manager_baseline_lineage",
+    "question": "For seeker guardian manager visual cases listed individually in QUEUE73_CLASSIFICATION.json, which current LOCK masters and designer BUILT checks govern each retained member fixture/state/viewport? The current render differs from sealed historical active approved pixels.",
+    "options": "A: A: Supply exact current master/build mapping, then approve fixture/golden migration only after match is verified.; B: B: Identify a current app mismatch for a separately approved app fix; retain the failing tests.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 10,
+    "case_ids": [
+      "Q73-C0504",
+      "Q73-C0505",
+      "Q73-C0506",
+      "Q73-C0508",
+      "Q73-C0509",
+      "Q73-C0510",
+      "Q73-C0511",
+      "Q73-C0512",
+      "Q73-C0513",
+      "Q73-C0514"
+    ]
+  },
+  {
+    "number": 53,
+    "key": "visual_seeker_guardian_manager_runtime",
+    "question": "For seeker guardian manager visual cases listed individually in QUEUE73_CLASSIFICATION.json, which current LOCK masters and designer BUILT checks govern each retained member fixture/state/viewport? The listed cases also have runtime/layout/finder failures; determine the approved fixture repair or record product mismatch without app edits.",
+    "options": "A: A: Supply exact current master/build mapping, then approve fixture/golden migration only after match is verified.; B: B: Identify a current app mismatch for a separately approved app fix; retain the failing tests.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 2,
+    "case_ids": [
+      "Q73-C0507",
+      "Q73-C0515"
+    ]
+  },
+  {
+    "number": 54,
+    "key": "visual_seeker_my_zyra_baseline_lineage",
+    "question": "For seeker my zyra visual cases listed individually in QUEUE73_CLASSIFICATION.json, which current LOCK masters and designer BUILT checks govern each retained member fixture/state/viewport? The current render differs from sealed historical active approved pixels.",
+    "options": "A: A: Supply exact current master/build mapping, then approve fixture/golden migration only after match is verified.; B: B: Identify a current app mismatch for a separately approved app fix; retain the failing tests.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 20,
+    "case_ids": [
+      "Q73-C0552",
+      "Q73-C0553",
+      "Q73-C0554",
+      "Q73-C0556",
+      "Q73-C0557",
+      "Q73-C0560",
+      "Q73-C0561",
+      "Q73-C0567",
+      "Q73-C0568",
+      "Q73-C0569",
+      "Q73-C0572",
+      "Q73-C0573",
+      "Q73-C0574",
+      "Q73-C0575",
+      "Q73-C0576",
+      "Q73-C0577",
+      "Q73-C0578",
+      "Q73-C0580",
+      "Q73-C0581",
+      "Q73-C0582"
+    ]
+  },
+  {
+    "number": 55,
+    "key": "visual_seeker_my_zyra_runtime",
+    "question": "For seeker my zyra visual cases listed individually in QUEUE73_CLASSIFICATION.json, which current LOCK masters and designer BUILT checks govern each retained member fixture/state/viewport? The listed cases also have runtime/layout/finder failures; determine the approved fixture repair or record product mismatch without app edits.",
+    "options": "A: A: Supply exact current master/build mapping, then approve fixture/golden migration only after match is verified.; B: B: Identify a current app mismatch for a separately approved app fix; retain the failing tests.",
+    "default": "Retain the failed cases and their assertions; no app change, skip, golden promotion or invented old fixture.",
+    "case_count": 12,
+    "case_ids": [
+      "Q73-C0555",
+      "Q73-C0558",
+      "Q73-C0559",
+      "Q73-C0562",
+      "Q73-C0563",
+      "Q73-C0564",
+      "Q73-C0565",
+      "Q73-C0566",
+      "Q73-C0570",
+      "Q73-C0571",
+      "Q73-C0579",
+      "Q73-C0583"
+    ]
+  }
+]

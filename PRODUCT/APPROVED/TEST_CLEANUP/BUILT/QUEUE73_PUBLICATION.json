@@ -1,0 +1,17 @@
+{
+  "source_commit": "df8cfbe3b2642a2a4a1ed3ecd8fb7e2fa12100f8",
+  "source_origin_verified": true,
+  "source_public_checks": {
+    "A": "Trusted-default gitleaks8.30.1 exact origin/main..HEAD before push; zero findings",
+    "B": "66 test Dart paths only; no private material or oversized file",
+    "C": "Roadmap/issue remain open;358 failures",
+    "D": "No version change or release",
+    "E": "Neutral community wording",
+    "F": "No app behavior/run-instruction change; README unchanged"
+  },
+  "source_scan": {
+    "path": "/Users/shakeelahmad/Documents/Codex/2026-11-04/zyra-73-2026-11-04/work/queue73/source_gitleaks.json",
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "evidence_publication": "Pending its own exact commit-delta scan and push; recorded in private task note/index"
+}

@@ -1,0 +1,401 @@
+{
+  "baseline44_completed": 8246,
+  "final_completed": 8250,
+  "baseline44_failed_or_error": 644,
+  "final_failed_or_error": 358,
+  "baseline44_skips": 119,
+  "final_skips": 119,
+  "reviewed_name_migrations": [
+    {
+      "path": "test/account_essentials_artwork_test.dart",
+      "before": "account artwork is local in ahead",
+      "after": "retired account artwork direction ahead fails closed"
+    },
+    {
+      "path": "test/account_essentials_artwork_test.dart",
+      "before": "account artwork is local in atoms",
+      "after": "retired account artwork direction atoms fails closed"
+    },
+    {
+      "path": "test/account_essentials_artwork_test.dart",
+      "before": "account artwork is local in current",
+      "after": "retired account artwork direction current fails closed"
+    },
+    {
+      "path": "test/account_essentials_artwork_test.dart",
+      "before": "account artwork is local in headspace",
+      "after": "retired account artwork direction headspace fails closed"
+    },
+    {
+      "path": "test/account_essentials_artwork_test.dart",
+      "before": "account artwork is local in howWeFeel",
+      "after": "retired account artwork direction howWeFeel fails closed"
+    },
+    {
+      "path": "test/account_essentials_artwork_test.dart",
+      "before": "account artwork is local in mozi",
+      "after": "retired account artwork direction mozi fails closed"
+    },
+    {
+      "path": "test/account_essentials_artwork_test.dart",
+      "before": "account artwork is local in revolut",
+      "after": "retired account artwork direction revolut fails closed"
+    },
+    {
+      "path": "test/account_essentials_artwork_test.dart",
+      "before": "account artwork is local in structured",
+      "after": "retired account artwork direction structured fails closed"
+    },
+    {
+      "path": "test/account_essentials_artwork_test.dart",
+      "before": "account artwork is local in uber",
+      "after": "retired account artwork direction uber fails closed"
+    },
+    {
+      "path": "test/account_essentials_artwork_test.dart",
+      "before": "account artwork is local in wise",
+      "after": "retired account artwork direction wise fails closed"
+    },
+    {
+      "path": "test/dashboard_landing_and_surface_persistence_test.dart",
+      "before": "member Personalisation keeps colour and haptic; old font choice cannot restore",
+      "after": "member Personalisation ignores retired colour choice and keeps haptics"
+    },
+    {
+      "path": "test/dev_scenario_panel_policy_test.dart",
+      "before": "palette lab is live and restores the current default background",
+      "after": "retired palette selections keep the locked Ivory background"
+    },
+    {
+      "path": "test/dev_splash_directions_test.dart",
+      "before": "dawnHorizon uses the app-wide dark purple gradient",
+      "after": "dawnHorizon uses the locked Ivory gradient"
+    },
+    {
+      "path": "test/global_app_surface_test.dart",
+      "before": "dark selected cards and legacy aliases use quiet fill and gold edge",
+      "after": "retired dark selections resolve to Ivory quiet fill and gold edge"
+    },
+    {
+      "path": "test/my_zyra_retirement_test.dart",
+      "before": "current single-page and ordinary member dashboards share one renderer",
+      "after": "LOCK15 Focus and ordinary member dashboards retain their current renderers"
+    },
+    {
+      "path": "test/one_journey_capacity_slots_test.dart",
+      "before": "Basic locked slots open Membership without granting places",
+      "after": "Basic upsell opens Membership without granting places"
+    },
+    {
+      "path": "test/one_journey_capacity_slots_test.dart",
+      "before": "Basic one-Journey compact 200-percent slots remain readable",
+      "after": "Basic one-Journey compact 200-percent places remain readable"
+    },
+    {
+      "path": "test/one_journey_capacity_slots_test.dart",
+      "before": "Basic zero-Journey compact 200-percent slots remain readable",
+      "after": "Basic zero-Journey compact 200-percent places remain readable"
+    },
+    {
+      "path": "test/one_journey_capacity_slots_test.dart",
+      "before": "One one-Journey compact 200-percent slots remain readable",
+      "after": "One one-Journey compact 200-percent places remain readable"
+    },
+    {
+      "path": "test/one_journey_capacity_slots_test.dart",
+      "before": "One zero-Journey compact 200-percent slots remain readable",
+      "after": "One zero-Journey compact 200-percent places remain readable"
+    },
+    {
+      "path": "test/one_journey_capacity_slots_test.dart",
+      "before": "expanded Journey options replace slots without losing return",
+      "after": "pushed Journey options replace the reader without losing return"
+    },
+    {
+      "path": "test/one_journey_capacity_slots_test.dart",
+      "before": "one, two and three Journeys keep the same three compact slots",
+      "after": "one, two and three Journeys keep identical full-height place cards"
+    },
+    {
+      "path": "test/one_journey_capacity_slots_test.dart",
+      "before": "zero Basic Journeys keeps one awaiting and two guarded upgrades",
+      "after": "zero Basic Journeys keeps one place and its guarded One upsell"
+    },
+    {
+      "path": "test/one_journey_capacity_slots_test.dart",
+      "before": "zero One Journeys shows three inert awaiting slots",
+      "after": "zero One Journeys has an honest empty state and Browse creates no Journey"
+    },
+    {
+      "path": "test/one_journey_card_expansion_test.dart",
+      "before": "200% inline options remain readable and reachable at Size(320.0, 568.0)",
+      "after": "200% pushed options remain readable and reachable at Size(320.0, 568.0)"
+    },
+    {
+      "path": "test/one_journey_card_expansion_test.dart",
+      "before": "200% inline options remain readable and reachable at Size(393.0, 852.0)",
+      "after": "200% pushed options remain readable and reachable at Size(393.0, 852.0)"
+    },
+    {
+      "path": "test/one_journey_card_expansion_test.dart",
+      "before": "Journey cards expand and collapse in accessible navigation mode",
+      "after": "Journey cards push options and return by edge in accessible navigation mode"
+    },
+    {
+      "path": "test/one_journey_card_expansion_test.dart",
+      "before": "Journey cards expand and collapse in disable animations mode",
+      "after": "Journey cards push options and return by edge in disable animations mode"
+    },
+    {
+      "path": "test/one_journey_card_expansion_test.dart",
+      "before": "Journey cards expand and collapse in ordinary mode",
+      "after": "Journey cards push options and return by edge in ordinary mode"
+    },
+    {
+      "path": "test/one_journey_card_expansion_test.dart",
+      "before": "inline options refuse retained callbacks after collapse",
+      "after": "pushed options refuse retained callbacks after collapse"
+    },
+    {
+      "path": "test/one_journey_card_expansion_test.dart",
+      "before": "inline options refuse retained callbacks after reset",
+      "after": "pushed options refuse retained callbacks after reset"
+    },
+    {
+      "path": "test/one_journey_card_expansion_test.dart",
+      "before": "inline options refuse retained callbacks after role",
+      "after": "pushed options refuse retained callbacks after role"
+    },
+    {
+      "path": "test/one_journey_card_expansion_test.dart",
+      "before": "inline options refuse retained callbacks after tab",
+      "after": "pushed options refuse retained callbacks after tab"
+    },
+    {
+      "path": "test/one_journey_card_expansion_test.dart",
+      "before": "inline options refuse stale owner after ABA",
+      "after": "pushed options refuse stale owner after ABA"
+    },
+    {
+      "path": "test/one_journey_card_expansion_test.dart",
+      "before": "inline options refuse stale owner after account generation",
+      "after": "pushed options refuse stale owner after account generation"
+    },
+    {
+      "path": "test/one_journey_card_expansion_test.dart",
+      "before": "inline options refuse stale owner after revocation",
+      "after": "pushed options refuse stale owner after revocation"
+    },
+    {
+      "path": "test/one_journey_card_expansion_test.dart",
+      "before": "inline options refuse stale owner after unmount",
+      "after": "pushed options refuse stale owner after unmount"
+    },
+    {
+      "path": "test/one_journey_card_expansion_test.dart",
+      "before": "inline options reuse addressed destinations and End confirmation",
+      "after": "pushed options reuse addressed destinations and End confirmation"
+    },
+    {
+      "path": "test/one_journey_card_expansion_test.dart",
+      "before": "re-expansion cannot revive another card’s retained options",
+      "after": "reopening options cannot revive another card’s retained actions"
+    },
+    {
+      "path": "test/one_journey_timeline_controls_test.dart",
+      "before": "all 17 event choices and eight stage positions reach the current Timeline presenter",
+      "after": "all 15 planned-preview events and eight stages render while canonical history retains 17 types"
+    },
+    {
+      "path": "test/one_journey_timeline_test.dart",
+      "before": "standalone ready empty Timeline centers its plain state at compact200 size",
+      "after": "standalone ready empty Timeline centers its LOCK 22 gold-ring state at compact200 size"
+    },
+    {
+      "path": "test/one_journey_timeline_test.dart",
+      "before": "standalone ready empty Timeline centers its plain state at normal size",
+      "after": "standalone ready empty Timeline centers its LOCK 22 gold-ring state at normal size"
+    },
+    {
+      "path": "test/option_retirement_test.dart",
+      "before": "retirement preserves member destinations and Founder attention white",
+      "after": "retirement preserves member destinations and locked Ivory return cue"
+    },
+    {
+      "path": "test/role_selection_cards_test.dart",
+      "before": "both role choices stay legible and tappable in all visual directions",
+      "after": "both role choices stay legible and tappable in the retained direction"
+    },
+    {
+      "path": "test/two_door_dev_controls_test.dart",
+      "before": "Actions selection keeps the existing gold icon and marker",
+      "after": "retired Actions selection exposes no icon, marker or semantics"
+    },
+    {
+      "path": "test/view_request_draft_widget_test.dart",
+      "before": "Journey title and three empty slots remain nav-safe 1.0",
+      "after": "Journey title and locked empty state remain nav-safe 1.0"
+    },
+    {
+      "path": "test/view_request_draft_widget_test.dart",
+      "before": "Journey title and three empty slots remain nav-safe 1.4",
+      "after": "Journey title and locked empty state remain nav-safe 1.4"
+    },
+    {
+      "path": "test/view_request_draft_widget_test.dart",
+      "before": "Journey title and three empty slots remain nav-safe 2.0",
+      "after": "Journey title and locked empty state remain nav-safe 2.0"
+    },
+    {
+      "path": "test/visual/dev_home_navigation_visual_test.dart",
+      "before": "shared Home and destination real-font compact_140",
+      "after": "member signup entry real-font compact_140"
+    },
+    {
+      "path": "test/visual/dev_home_navigation_visual_test.dart",
+      "before": "shared Home and destination real-font standard",
+      "after": "member signup entry real-font standard"
+    },
+    {
+      "path": "test/whole_app_theme_adoption_test.dart",
+      "before": "explicit Midnight blue survives a same-owner cold restoration",
+      "after": "retired Midnight blue cannot replace Ivory or overwrite saved member values"
+    },
+    {
+      "path": "test/whole_app_theme_adoption_test.dart",
+      "before": "later explicit personalisation is not reset on every launch",
+      "after": "retired personalisation cannot override Ivory on later launches"
+    },
+    {
+      "path": "test/whole_app_theme_adoption_test.dart",
+      "before": "startup adopts Hulu across the app from saved deepEmerald",
+      "after": "startup adopts locked Ivory across the app from saved deepEmerald"
+    },
+    {
+      "path": "test/whole_app_theme_adoption_test.dart",
+      "before": "startup adopts Hulu across the app from saved midnightPlum",
+      "after": "startup adopts locked Ivory across the app from saved midnightPlum"
+    },
+    {
+      "path": "test/whole_app_theme_adoption_test.dart",
+      "before": "startup adopts Hulu across the app from saved null",
+      "after": "startup adopts locked Ivory across the app from saved null"
+    },
+    {
+      "path": "test/whole_app_theme_adoption_test.dart",
+      "before": "startup adopts Hulu across the app from saved paperWhite",
+      "after": "startup adopts locked Ivory across the app from saved paperWhite"
+    },
+    {
+      "path": "test/whole_app_theme_adoption_test.dart",
+      "before": "startup adopts Hulu across the app from saved royalBlue",
+      "after": "startup adopts locked Ivory across the app from saved royalBlue"
+    },
+    {
+      "path": "test/whole_app_theme_adoption_test.dart",
+      "before": "startup adopts Hulu across the app from saved unknown",
+      "after": "startup adopts locked Ivory across the app from saved unknown"
+    },
+    {
+      "path": "test/whole_app_theme_adoption_test.dart",
+      "before": "startup adopts Hulu across the app from saved zyraPurple",
+      "after": "startup adopts locked Ivory across the app from saved zyraPurple"
+    },
+    {
+      "path": "test/widget_test.dart",
+      "before": "ZyraColors unified background every bottom sheet and dark popup shares the new plum surface",
+      "after": "ZyraColors unified background every bottom sheet and popup shares the locked Ivory surface"
+    },
+    {
+      "path": "test/widget_test.dart",
+      "before": "ZyraColors unified background native launch and adaptive icon use the dark canvas endpoint",
+      "after": "ZyraColors unified background native launch and adaptive icon use the locked Ivory endpoint"
+    },
+    {
+      "path": "test/widget_test.dart",
+      "before": "ZyraColors unified background persisted Midnight Plum receives the darker theme without reset",
+      "after": "ZyraColors unified background retired palette values resolve to Ivory without deleting member choices"
+    },
+    {
+      "path": "test/widget_test.dart",
+      "before": "ZyraColors unified background the unified gradient uses the current Midnight Plum endpoints",
+      "after": "ZyraColors unified background the unified gradient uses the locked Ivory endpoints"
+    },
+    {
+      "path": "test/zyra_compatibility_design_choices_test.dart",
+      "before": "center paging and first-page overscroll do not close; the 44px edge returns once",
+      "after": "center paging loops at the ends without closing; the 44px edge returns once"
+    },
+    {
+      "path": "test/zyra_draft_journey_bio_presentation_test.dart",
+      "before": "admitted empty Bio is unboxed beneath its profile in embedded compact200 reading",
+      "after": "admitted empty Bio uses the LOCK 22 gold-ring state beneath its profile in embedded compact200 reading"
+    },
+    {
+      "path": "test/zyra_draft_journey_bio_presentation_test.dart",
+      "before": "admitted empty Bio is unboxed beneath its profile in embedded normal reading",
+      "after": "admitted empty Bio uses the LOCK 22 gold-ring state beneath its profile in embedded normal reading"
+    },
+    {
+      "path": "test/zyra_draft_journey_bio_presentation_test.dart",
+      "before": "admitted empty Bio is unboxed beneath its profile in owned compact200 reading",
+      "after": "admitted empty Bio uses the LOCK 22 gold-ring state beneath its profile in owned compact200 reading"
+    },
+    {
+      "path": "test/zyra_draft_journey_bio_presentation_test.dart",
+      "before": "admitted empty Bio is unboxed beneath its profile in owned normal reading",
+      "after": "admitted empty Bio uses the LOCK 22 gold-ring state beneath its profile in owned normal reading"
+    }
+  ],
+  "retired_case_identities": [
+    {
+      "path": "test/dev_onboarding_interaction_test.dart",
+      "name": "a new account generation restores the down arrow without persistence"
+    },
+    {
+      "path": "test/dev_onboarding_interaction_test.dart",
+      "name": "disabled control and revoked access cannot change selection"
+    },
+    {
+      "path": "test/dev_onboarding_interaction_test.dart",
+      "name": "two-mode control is independent of all eleven directions"
+    },
+    {
+      "path": "test/guardian_onboarding_dev_skip_test.dart",
+      "name": "Guardian basic completed rehearsal chooses only local capability"
+    },
+    {
+      "path": "test/guardian_onboarding_dev_skip_test.dart",
+      "name": "Guardian family completed rehearsal chooses only local capability"
+    },
+    {
+      "path": "test/guardian_onboarding_dev_skip_test.dart",
+      "name": "Guardian one completed rehearsal chooses only local capability"
+    },
+    {
+      "path": "test/guardian_onboarding_dev_skip_test.dart",
+      "name": "final Guardian Skip lands in a fresh zero-linked dashboard"
+    },
+    {
+      "path": "test/visual/zyra_developer_access_visual_test.dart",
+      "name": "large landing renders without overflow"
+    },
+    {
+      "path": "test/visual/zyra_developer_access_visual_test.dart",
+      "name": "small landing renders without overflow"
+    },
+    {
+      "path": "test/visual/zyra_developer_access_visual_test.dart",
+      "name": "standard landing renders without overflow"
+    },
+    {
+      "path": "test/visual/zyra_developer_access_visual_test.dart",
+      "name": "standard__text-130 landing renders without overflow"
+    }
+  ],
+  "missing_unreviewed_identities": [],
+  "prior_pass_regressions": [],
+  "new_skips": [],
+  "unclassified_final_failures": [],
+  "unmatched_initial_cases": []
+}

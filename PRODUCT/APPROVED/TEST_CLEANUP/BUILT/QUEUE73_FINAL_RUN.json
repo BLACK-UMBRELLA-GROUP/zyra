@@ -1,0 +1,21 @@
+{
+  "log": "/Users/shakeelahmad/Documents/Codex/2026-11-04/zyra-73-2026-11-04/work/queue73/final_full.jsonl",
+  "done": {
+    "success": false,
+    "type": "done",
+    "time": 457193
+  },
+  "starts": 8250,
+  "completed": 8250,
+  "uncompleted": [],
+  "non_json_lines": 0,
+  "results": {
+    "success": 7892,
+    "error": 349,
+    "failure": 9
+  },
+  "failed_or_error": 358,
+  "affected_files": 36,
+  "skipped": 119,
+  "visible_cases": 7193
+}

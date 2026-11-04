@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "authority": "TEST_CLEANUP brief \u00a72; DEV_TOGGLES removal \u00a7\u00a73,5; inherited Founder GO",
+  "original_files_moved": 3,
+  "retired_cases": 11,
+  "failed_before_retirement": 9,
+  "passing_before_retirement": 2,
+  "deleted_files": 0,
+  "moves": [
+    {
+      "path": "SOURCE/test/dev_onboarding_interaction_test.dart",
+      "archive_path": "/Users/shakeelahmad/_to_delete/ZYRA_TESTS_RETIRED_2026-11-04/test/dev_onboarding_interaction_test.dart",
+      "bytes": 4018,
+      "sha256": "08411e41f1ad25dc5406f8cc292374b4051c18b7adb042508750b1ccbb98b0cb",
+      "verified_after_move": true,
+      "authority": "DEV_TOGGLES_REMOVAL_BRIEF_2026-10-30.md definition and \u00a7\u00a73,5; only Luma remains in OnboardingPreviewStyle",
+      "operation": "Original test file moved; retired feature absent",
+      "retired_cases": [
+        {
+          "name": "two-mode control is independent of all eleven directions",
+          "reason": "Exercises only retired dev onboarding style/advance picker"
+        },
+        {
+          "name": "disabled control and revoked access cannot change selection",
+          "reason": "Exercises only code-only retired picker fixture authorization"
+        },
+        {
+          "name": "a new account generation restores the down arrow without persistence",
+          "reason": "Exercises only retired developer comparison selection reset"
+        }
+      ],
+      "retained_active_cases_in_current_file": 0
+    },
+    {
+      "path": "SOURCE/test/guardian_onboarding_dev_skip_test.dart",
+      "archive_path": "/Users/shakeelahmad/_to_delete/ZYRA_TESTS_RETIRED_2026-11-04/test/guardian_onboarding_dev_skip_test.dart",
+      "bytes": 10250,
+      "sha256": "7f17bc9d55b1e73474c86547536518672e3acf1c9e9e97579ed2839bb37bb678",
+      "verified_after_move": true,
+      "authority": "DEV_TOGGLES_REMOVAL_BRIEF_2026-10-30.md \u00a7\u00a73,5; removed developer Skip is absent from ZyraCodeScreen; ordinary onboarding has no sample-landing shortcut",
+      "operation": "Original mixed file moved; current file retains only four active member/release-safety cases",
+      "retired_cases": [
+        {
+          "name": "final Guardian Skip lands in a fresh zero-linked dashboard",
+          "reason": "Exercises removed developer Skip into a sample Guardian landing, not ordinary member onboarding; active Continue/deny/copy protection cases retained"
+        },
+        {
+          "name": "Guardian basic completed rehearsal chooses only local capability",
+          "reason": "Exercises removed developer Skip into a sample Guardian landing, not ordinary member onboarding; active Continue/deny/copy protection cases retained"
+        },
+        {
+          "name": "Guardian one completed rehearsal chooses only local capability",
+          "reason": "Exercises removed developer Skip into a sample Guardian landing, not ordinary member onboarding; active Continue/deny/copy protection cases retained"
+        },
+        {
+          "name": "Guardian family completed rehearsal chooses only local capability",
+          "reason": "Exercises removed developer Skip into a sample Guardian landing, not ordinary member onboarding; active Continue/deny/copy protection cases retained"
+        }
+      ],
+      "retained_active_cases_in_current_file": 4
+    },
+    {
+      "path": "SOURCE/test/visual/zyra_developer_access_visual_test.dart",
+      "archive_path": "/Users/shakeelahmad/_to_delete/ZYRA_TESTS_RETIRED_2026-11-04/test/visual/zyra_developer_access_visual_test.dart",
+      "bytes": 7892,
+      "sha256": "ba4d1b9159386d19ba62e4e171269a1de9816eab1d037f726b7a51d50c53cf9c",
+      "verified_after_move": true,
+      "authority": "PRODUCT/APPROVED/DEV_TOGGLES/BRIEFS/DEV_TOGGLES_REMOVAL_BRIEF_2026-10-30.md \u2014 What developer toggle means, steps 2\u20135",
+      "operation": "Original test file moved; only retired developer landing/doors",
+      "retired_cases": [
+        {
+          "name": "small landing renders without overflow",
+          "reason": "All four viewport variants mount WelcomeScreen solely to expect DeveloperAccessScreen and its developer-only Seeker/Guardian/Sign up preview doors. The Founder explicitly removed these landing controls; no member sign-in, account, privacy or navigation behavior is asserted by these cases."
+        },
+        {
+          "name": "standard landing renders without overflow",
+          "reason": "All four viewport variants mount WelcomeScreen solely to expect DeveloperAccessScreen and its developer-only Seeker/Guardian/Sign up preview doors. The Founder explicitly removed these landing controls; no member sign-in, account, privacy or navigation behavior is asserted by these cases."
+        },
+        {
+          "name": "large landing renders without overflow",
+          "reason": "All four viewport variants mount WelcomeScreen solely to expect DeveloperAccessScreen and its developer-only Seeker/Guardian/Sign up preview doors. The Founder explicitly removed these landing controls; no member sign-in, account, privacy or navigation behavior is asserted by these cases."
+        },
+        {
+          "name": "standard__text-130 landing renders without overflow",
+          "reason": "All four viewport variants mount WelcomeScreen solely to expect DeveloperAccessScreen and its developer-only Seeker/Guardian/Sign up preview doors. The Founder explicitly removed these landing controls; no member sign-in, account, privacy or navigation behavior is asserted by these cases."
+        }
+      ],
+      "retained_active_cases_in_current_file": 0
+    }
+  ]
+}

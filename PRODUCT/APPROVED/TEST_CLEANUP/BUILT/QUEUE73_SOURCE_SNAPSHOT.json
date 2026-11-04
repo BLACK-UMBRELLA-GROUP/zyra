@@ -1,0 +1,324 @@
+{
+  "files": [
+    {
+      "path": "SOURCE/test/account_essentials_artwork_test.dart",
+      "bytes": 4058,
+      "sha256": "b77abff202f23d5cc4f2e0b6c97b7509afcae6556bb21738222b9f3e50631416"
+    },
+    {
+      "path": "SOURCE/test/browse_options_menu_test.dart",
+      "bytes": 48147,
+      "sha256": "fe81bfa636dae8d4c3f3211301610f79c3ffc28073b87aa6ee649b155e0cfd15"
+    },
+    {
+      "path": "SOURCE/test/browse_photo_tap_navigation_test.dart",
+      "bytes": 31827,
+      "sha256": "570f8661d61310773863d9416ab46e92929f9361511a0f014ba154fcc6a1ea83"
+    },
+    {
+      "path": "SOURCE/test/browse_photo_wrap_motion_test.dart",
+      "bytes": 20033,
+      "sha256": "f652761cff0ebd355a3ba7269ca6ff062d85133a9c45e62194d8e57817ea886d"
+    },
+    {
+      "path": "SOURCE/test/dashboard_landing_and_surface_persistence_test.dart",
+      "bytes": 4374,
+      "sha256": "80416f46e2ade6a01630e818144890c10158797ad9d636cb566e4d72f93668f5"
+    },
+    {
+      "path": "SOURCE/test/dev_onboarding_directions_test.dart",
+      "bytes": 17903,
+      "sha256": "6514c761b08af477d5ce639d9459facc70c32eb265eccf344cfbd009811a8285"
+    },
+    {
+      "path": "SOURCE/test/dev_scenario_panel_policy_test.dart",
+      "bytes": 25566,
+      "sha256": "1799119e1a6424a6ec46b1eebeb6c3cf729da575f51a86a0cdc1ccc2d306833e"
+    },
+    {
+      "path": "SOURCE/test/dev_splash_directions_test.dart",
+      "bytes": 7883,
+      "sha256": "a44aecd2612ea8bf37469966f9935f9c1b984bdc7e69c7833e7e7a337d0e7669"
+    },
+    {
+      "path": "SOURCE/test/floating_nav_confirmation_layout_test.dart",
+      "bytes": 6289,
+      "sha256": "dd2e69108cff29e6bf22710362539c19d618b79e8ae9be4a9d31aff3b0569e40"
+    },
+    {
+      "path": "SOURCE/test/floating_nav_dot_clearance_test.dart",
+      "bytes": 25006,
+      "sha256": "cbcd4c3bb2576847959d8530a9fc080c52eb0a2e202e78025c07286c82347edf"
+    },
+    {
+      "path": "SOURCE/test/founder_launch_review_test.dart",
+      "bytes": 31883,
+      "sha256": "1f260b80a492913d271247ecc2a58e056c3665f1e86fff8dee4d7a9f323b0151"
+    },
+    {
+      "path": "SOURCE/test/founder_launch_style_test.dart",
+      "bytes": 185899,
+      "sha256": "0c9d0fbb3e53d81e66681f9382c2c973293825a7e89071168178f228f486a150"
+    },
+    {
+      "path": "SOURCE/test/founder_paid_only_contract_migration_test.dart",
+      "bytes": 7079,
+      "sha256": "c88c7d70b9d9e6dbb4157661858591bce4ce32b2677a2547cc8f501353683d1a"
+    },
+    {
+      "path": "SOURCE/test/global_app_surface_test.dart",
+      "bytes": 6832,
+      "sha256": "86d4381598a0f3203f29d6b7902866717fe0de4fe71c8574c2f6b293ee169ab2"
+    },
+    {
+      "path": "SOURCE/test/guardian_circle_discussion_bubble_test.dart",
+      "bytes": 84248,
+      "sha256": "57ddb214be87d88e69a108cbda1431431628a4dfd0adde1c6936ad191ed634eb"
+    },
+    {
+      "path": "SOURCE/test/guardian_circle_topic_options_test.dart",
+      "bytes": 89363,
+      "sha256": "83e72b9f618117ee6bce86ffc8de0e01c6dc2c396cd2bdd6899587a76805712d"
+    },
+    {
+      "path": "SOURCE/test/guardian_dashboard_greeting_test.dart",
+      "bytes": 55934,
+      "sha256": "24506a284aed8906dbdeb1169221116f7531b006621d0baa25ca2b95e047d2cc"
+    },
+    {
+      "path": "SOURCE/test/guardian_onboarding_dev_skip_test.dart",
+      "bytes": 6939,
+      "sha256": "0f122f88f115a27e3be703cd29ab0d2e953bfbb78f31e367c728bf7e4c388c84"
+    },
+    {
+      "path": "SOURCE/test/guardian_one_page_designs_test.dart",
+      "bytes": 43546,
+      "sha256": "28d8d5ff60f526b2aa9db718694eb456a1328f04ddb7ab160a2578e464dfe7ba"
+    },
+    {
+      "path": "SOURCE/test/guardianship_manager_phase1_test.dart",
+      "bytes": 11204,
+      "sha256": "02aa46f3aabac059777d6213705e498c600110cea811b0ee7603fb818eb20290"
+    },
+    {
+      "path": "SOURCE/test/hidden_profiles_and_support_test.dart",
+      "bytes": 17093,
+      "sha256": "615c0ba64d80b32ec5668aece2d106d197deb09f950b7ae476b7333589f665b0"
+    },
+    {
+      "path": "SOURCE/test/hidden_profiles_opening_owner_test.dart",
+      "bytes": 17046,
+      "sha256": "0217be5fbea37625b71c716d270137c622649fa9a322b9cbb25ff6c908159cc6"
+    },
+    {
+      "path": "SOURCE/test/my_zyra_retirement_test.dart",
+      "bytes": 7708,
+      "sha256": "fae6fd8b18fceeb7004a0738f44754fb393ac8e6c38c653133e75d2eb9b5fedd"
+    },
+    {
+      "path": "SOURCE/test/one_journey_basic_joining_history_test.dart",
+      "bytes": 26792,
+      "sha256": "f847b252d383c9b6c1bb81f602cb45850de6a8a79715a226794fc7a0411f8a3a"
+    },
+    {
+      "path": "SOURCE/test/one_journey_capacity_slots_test.dart",
+      "bytes": 20307,
+      "sha256": "04887704bd58f0a6688fa409319f920c051b4acb961290710d595bea1b406b39"
+    },
+    {
+      "path": "SOURCE/test/one_journey_card_expansion_test.dart",
+      "bytes": 31140,
+      "sha256": "2d3a6e05d244eb32dbdfd35c1f29f85fa8908b74c989ca525811eaa34f4619de"
+    },
+    {
+      "path": "SOURCE/test/one_journey_current_presentation_test.dart",
+      "bytes": 55997,
+      "sha256": "d6ec034e66fb985a9c0c40bce777137f8c05ebde5bbd287807e5a65442dc3e01"
+    },
+    {
+      "path": "SOURCE/test/one_journey_portrait_card_layout_test.dart",
+      "bytes": 18231,
+      "sha256": "17f06e9ef6c73eb72ca08662c87a47f12f0600ade3e20823a426770782a3afe7"
+    },
+    {
+      "path": "SOURCE/test/one_journey_stage_disclosure_test.dart",
+      "bytes": 26820,
+      "sha256": "c47ef69323b40df365d9ccf55bb6e21bde4a6e752798c78e3c2632c34e2ff8cc"
+    },
+    {
+      "path": "SOURCE/test/one_journey_switch_signup_preview_test.dart",
+      "bytes": 23438,
+      "sha256": "9cda8561ffce6b02843b079975bfaaef2ec9764f7e53d88576dac97382a2faed"
+    },
+    {
+      "path": "SOURCE/test/one_journey_timeline_controls_test.dart",
+      "bytes": 21349,
+      "sha256": "b616ad51a1e4c7ec83c6b60c91fc556f07af83895643408975f9b69da0306758"
+    },
+    {
+      "path": "SOURCE/test/one_journey_timeline_test.dart",
+      "bytes": 27778,
+      "sha256": "d4c818ef619e17c3d79e4400da7aa422fae0c6b309ba2c0ff82cfc1c02608e0f"
+    },
+    {
+      "path": "SOURCE/test/option_retirement_test.dart",
+      "bytes": 2036,
+      "sha256": "4345806421a0716059b5260573e93e75b72fabb1140da72accfac908208b1ab4"
+    },
+    {
+      "path": "SOURCE/test/paid_only_membership_catalog_test.dart",
+      "bytes": 14874,
+      "sha256": "18f91140639f0f1bbdae0ccae799b3584a3efffb7d486b27363d49439c24e65a"
+    },
+    {
+      "path": "SOURCE/test/privacy_log_redaction_source_test.dart",
+      "bytes": 2641,
+      "sha256": "42578e40a5a404db3abd7bcb90d6317990c46009a37c8263de172d50ac7ab3c7"
+    },
+    {
+      "path": "SOURCE/test/profile_membership_consistency_test.dart",
+      "bytes": 30647,
+      "sha256": "428452c275fd42b0d94f412d196734ce7f11818df232d4936a871db77c2d3ade"
+    },
+    {
+      "path": "SOURCE/test/requests_guardians_lock2_shell_test.dart",
+      "bytes": 27441,
+      "sha256": "cd0aa0e81a8584ebd395ac770f61ae466c52a1f40893d2f4c39a15a4026596d0"
+    },
+    {
+      "path": "SOURCE/test/role_selection_cards_test.dart",
+      "bytes": 22470,
+      "sha256": "3509a9fdfb1f36714e40d26847ebe51fadb112cec8221f877bba862bb4f520cb"
+    },
+    {
+      "path": "SOURCE/test/splash_motion_test.dart",
+      "bytes": 10030,
+      "sha256": "8e98e98913a669646e8e24de83aca6fdadd1067f691fddafff8ca16b78070a8b"
+    },
+    {
+      "path": "SOURCE/test/support/zyra_hidden_dev_controls_driver.dart",
+      "bytes": 27060,
+      "sha256": "63fdbd961f6f200d1dc6da27e52def9c405d753d1887c084e2b1ac7957268ee3"
+    },
+    {
+      "path": "SOURCE/test/tab_attention_open_marker_test.dart",
+      "bytes": 19364,
+      "sha256": "6401ca1cfba4eb5582e40ff4850cda648f06acad9a086750961278b4c767b85a"
+    },
+    {
+      "path": "SOURCE/test/two_door_dev_controls_test.dart",
+      "bytes": 9115,
+      "sha256": "0f9323ae97c5b5437f2b64a07e9d22e2e4c5ae97374eb6318207f617be2bee8e"
+    },
+    {
+      "path": "SOURCE/test/view_request_draft_widget_test.dart",
+      "bytes": 195410,
+      "sha256": "710ba5dd7dfe207655ae4dd25c37e1ea0270b9f81eceab292c49158c6946bc7b"
+    },
+    {
+      "path": "SOURCE/test/visual/dev_home_navigation_visual_test.dart",
+      "bytes": 5491,
+      "sha256": "e54dff2e73535fd90554ce2238400b3a1a60b0f04d3d616cfecb0708863b0508"
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_v5_guardian_journeys_test.dart",
+      "bytes": 15818,
+      "sha256": "662b9dd8eaca5cf9ddd5a2f64d11a92b43b8a124764820c9a53710c2e7de84ed"
+    },
+    {
+      "path": "SOURCE/test/visual/signup_membership_choice_visual_test.dart",
+      "bytes": 8205,
+      "sha256": "1f6e7efc524388f0592385c60c1e1b289be8e73c6fcad4e83409998ca5353513"
+    },
+    {
+      "path": "SOURCE/test/visual/zyra_back_swipe_motion_visual_test.dart",
+      "bytes": 15581,
+      "sha256": "bce64c62bf8eaedeb07dfd3f3e9e607104300c89c363fa958525d959211a82aa"
+    },
+    {
+      "path": "SOURCE/test/visual/zyra_compatibility_choices_visual_test.dart",
+      "bytes": 11101,
+      "sha256": "9d76a6f69712d3986df280f8353cd384eaaee952090db5b0662636ec19499955"
+    },
+    {
+      "path": "SOURCE/test/visual/zyra_draft_compatibility_reveal_visual_test.dart",
+      "bytes": 15764,
+      "sha256": "5064cd4278b15d05de423930ecf24ace4271bd0bb8f79f91e438dd3245b31c03"
+    },
+    {
+      "path": "SOURCE/test/visual/zyra_retained_account_reuse_visual_test.dart",
+      "bytes": 13495,
+      "sha256": "29e8f6aca000a50230d8bbe4b71dade41949c4917204d346b494117174555218"
+    },
+    {
+      "path": "SOURCE/test/whole_app_settings_destinations_test.dart",
+      "bytes": 33662,
+      "sha256": "cf6b240d0e390340c029256b85fdb4be48858174869970dd09cce7f7fa963ec8"
+    },
+    {
+      "path": "SOURCE/test/whole_app_theme_adoption_test.dart",
+      "bytes": 6681,
+      "sha256": "396aef06810d840350203a4adee8b9541cbcfcd006c6c81ab2b3f3daff2c2e58"
+    },
+    {
+      "path": "SOURCE/test/widget_test.dart",
+      "bytes": 5013,
+      "sha256": "a8a180333e927941901ce70a0b27b01ab56d1c8e2dc494c0ec7bdda2d0aaf273"
+    },
+    {
+      "path": "SOURCE/test/zyra_browse_gallery_design_test.dart",
+      "bytes": 18543,
+      "sha256": "f991b8999059d5415ec97df9e5e42b2d3e44718618d685f0d452316dcdbf2755"
+    },
+    {
+      "path": "SOURCE/test/zyra_browse_options_alignment_test.dart",
+      "bytes": 15623,
+      "sha256": "beae0224fe02bf23c7cbd5e3d3fb12569d33196dee1373c8bdf32a8f109ff446"
+    },
+    {
+      "path": "SOURCE/test/zyra_compatibility_design_choices_test.dart",
+      "bytes": 18079,
+      "sha256": "3f431f0e40a96151d3f30b4faeec220d32e54a6b1759b611ef9f8745a72893e1"
+    },
+    {
+      "path": "SOURCE/test/zyra_dev_personal_code_fixtures_test.dart",
+      "bytes": 13092,
+      "sha256": "06425fe4acebd57701b354e3c8e7c2af0375f05bad3adaf4eb46a376e405e709"
+    },
+    {
+      "path": "SOURCE/test/zyra_draft_journey_bio_presentation_test.dart",
+      "bytes": 19806,
+      "sha256": "52a8ef87a85b68361d9b1beed500109e0ca7b46c88928eea2594a9973cf86662"
+    },
+    {
+      "path": "SOURCE/test/zyra_guardian_server_truth_migration_test.dart",
+      "bytes": 12438,
+      "sha256": "6de880c8a80d6c774f5e6a5234300b2d7ac6ac3b8b203ba84a6375b857c49a8a"
+    },
+    {
+      "path": "SOURCE/test/zyra_journey_navigation_icon_test.dart",
+      "bytes": 13705,
+      "sha256": "a7de29ccdf13f8a47f626a3a6e3f9274d56dff0cc87d7ac1a0d8cda2b26ce8fc"
+    },
+    {
+      "path": "SOURCE/test/zyra_main_guardian_optional_migration_test.dart",
+      "bytes": 3861,
+      "sha256": "cb6d921dc9399540dc826e72f584d5052d4b5dce5b2f8e8b6e63b42f303f11fb"
+    },
+    {
+      "path": "SOURCE/test/zyra_signout_intent_test.dart",
+      "bytes": 18928,
+      "sha256": "bea624308b0f97641762d39497c67cf74f8fb8e243104caf52c8bb8218f83ebd"
+    },
+    {
+      "path": "SOURCE/test/zyra_signup_runtime_test.dart",
+      "bytes": 36201,
+      "sha256": "3be4a96e91b61d6445e9b722d2fe2efc3a5f71d63a2443cebe00c11c0a14ac58"
+    },
+    {
+      "path": "SOURCE/test/zyra_wordmark_colour_test.dart",
+      "bytes": 5286,
+      "sha256": "2af6e4c24aa39950218148f3dc4193ac106652e1b550dbfed233d12e5dfda3a0"
+    }
+  ]
+}
