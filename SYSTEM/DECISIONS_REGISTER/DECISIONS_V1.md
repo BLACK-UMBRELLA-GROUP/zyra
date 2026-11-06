@@ -18300,9 +18300,42 @@ Related:     QUESTIONS.md row 2, OA-ZYRA-323, OA-AIOS-420.
 
 ------------------------------------------------------------
 
-TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-339,
+DR-ZYRA-340
+Title:       Developer-toggle removal goes ahead with a no-new-failures test gate; old failing tests cleaned after
+Date:        2026-11-02
+Status:      APPROVED - Founder direct (clickable "A · Remove now, clean tests after (Recommended)")
+Authority:   Founder, 2 Nov 2026 12:41-12:50 UK, ZYRA chat - REPORTS/DAILY/2026-11/2026-11-02_ZYRA_CHAT_NOTE.md;
+             answers ZYRA QUESTIONS.md row 10; filed by Fable 3 Nov.
+Decision:    Queue line 44 (remove the developer toggles) is built now. Its test gate is "no new failures" compared
+             with the 649 failed/error results already present before the change (QUEUE44_BASELINE_QA.json); the
+             remaining failures are disclosed, not repaired in line 44. A separate Founder-named line 73
+             (TEST_CLEANUP_BRIEF_2026-11-02.md: update, retire, fix fixtures or report - tests only, no app
+             behaviour change) runs after 44.
+Consequence: ROADMAP row "Test baseline and final interface pass" is ticked only when 44 and 73 are both BUILT
+             (charters V7 rule 12). Line 44 is now blocked by Codex folder access (QUESTIONS row 11, OA-ZYRA-343).
+Related:     OA-ZYRA-325, OA-ZYRA-343, QUESTIONS.md rows 10-11, queue lines 44 and 73, AD-AIOS-121.
+
+------------------------------------------------------------
+
+DR-ZYRA-341
+Title:       Line 44 test gate: the nine old LOCK 2/LOCK 5 failures are excepted and repaired first in line 73
+Date:        2026-11-04
+Status:      APPROVED - Founder direct (clickable "Yes, skip them, 73 fixes (Recommended)")
+Authority:   Founder, 4 Nov 2026, BLACK UMBRELLA GROUP chat; recorded in ZYRA PRODUCT/APPROVED/QUESTIONS.md row 12
+             (answer B, ZYRA chat 4 Nov 09:26-09:40 UK, Founder confirmation added by Fable). Filed by Fable 5 Nov.
+Decision:    For queue line 44 the nine named LOCK 2/LOCK 5 cases that already failed before the change
+             (QUEUE44_NINE_LOCK_GATE_CONFLICTS.json) are excepted from "every LOCK test passes"; the five
+             developer-screen assertion changes are accepted. The rest of the gate stands. Line 73 repairs the nine
+             first (its new step 0).
+Consequence: Line 44 BUILT 4 Nov (ff49601, e565a2a); line 73 BUILT 4 Nov (df8cfbe, bb2fe54, 05243a8), nine repaired,
+             358 failures left with QUESTIONS rows 13-55. ROADMAP row stays open until failures reach zero.
+Related:     DR-ZYRA-340, OA-ZYRA-325, QUESTIONS.md rows 12-55, queue lines 44 and 73.
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-341,
   Historical Identifiers, permanent
-NEXT IDENTIFIER: DR-ZYRA-340 (Enterprise format, active
+NEXT IDENTIFIER: DR-ZYRA-342 (Enterprise format, active
   2026-07-12 — continues this sequence, does not reset;
   sequential identifiers are global and never reset per AIOS
   Package Specification Standard Part 5. See BLACK UMBRELLA

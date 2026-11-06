@@ -82,7 +82,7 @@ re-run the tool.
 
 _Stop here unless you need to look up another ID._
 
-## Documents (347 live)
+## Documents (348 live)
 
 ### APP: AUTHENTICATION
 
@@ -386,10 +386,10 @@ _Stop here unless you need to look up another ID._
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
 | DOC-ZYRA-0300 | `REPORTS/CURRENT/ZYRA_CHAT_HANDOVER_2026-10-27_V1.md` | REPORT | Handover from Fable to the new ZYRA chat (lead designer) - who you are, how Shakeel works, what ZYRA is… | AD-AIOS-115, DOC-BUG-0009, DOC-ZYRA-0278, DOC-ZYRA-0291, OA-ZYRA-320, OA-ZYRA-321 | 9 |
-| DOC-ZYRA-0302 | `PRODUCT/APPROVED/BUILD_QUEUE.md` | REGISTER | Build queue - every ZYRA instruction for Codex (LOCKed builds and Founder-named tasks) waits here; Codex… | AD-AIOS-115 | 30 |
-| DOC-ZYRA-0335 | `PRODUCT/APPROVED/QUESTIONS.md` | REGISTER | Codex's questions for the ZYRA chat - Codex never asks Shakeel in chat; he files the question here, marks… | AD-AIOS-116 | 12 |
+| DOC-ZYRA-0302 | `PRODUCT/APPROVED/BUILD_QUEUE.md` | REGISTER | Build queue - every ZYRA instruction for Codex (LOCKed builds and Founder-named tasks) waits here; Codex… | AD-AIOS-115 | 31 |
+| DOC-ZYRA-0335 | `PRODUCT/APPROVED/QUESTIONS.md` | REGISTER | Codex's questions for the ZYRA chat - Codex never asks Shakeel in chat; he files the question here, marks… | AD-AIOS-116 | 45 |
 | INDEX-DECISIONS_V1 | `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1_INDEX.md` | INDEX | Generated one-line index of DECISIONS_V1.md; find the ID here, then search the register for it |  | 44 |
-| INDEX-OUTSTANDING_ACTIONS_V2 | `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2_INDEX.md` | INDEX | Generated one-line index of OUTSTANDING_ACTIONS_V2.md; find the ID here, then search the register for it |  | 15 |
+| INDEX-OUTSTANDING_ACTIONS_V2 | `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2_INDEX.md` | INDEX | Generated one-line index of OUTSTANDING_ACTIONS_V2.md; find the ID here, then search the register for it |  | 16 |
 
 ### GUARDIAN NETWORK
 
@@ -568,7 +568,7 @@ _Stop here unless you need to look up another ID._
 | DOC-ZYRA-0343 | `PRODUCT/APPROVED/CODE_PAGE/RECORD/CODE_PAGE_SPEC_CURRENT_VERSION_V2.md` | SPEC | Spec for LOCK 9 - ZYRA Code page (V2 - what Check code leads to on Add a Guardian / Add a Seeker) | DOC-ZYRA-0282, DR-ZYRA-231, AD-AIOS-115 | 3 |
 | DOC-ZYRA-0344 | `PRODUCT/APPROVED/CODE_PAGE/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 9 - the ZYRA Code page (find or link someone by code), used on Scan, Add a Guardian and… | AD-AIOS-115 | 1 |
 | DOC-ZYRA-0345 | `PRODUCT/APPROVED/COMPATIBILITY_LOOP/BRIEFS/COMPATIBILITY_LOOP_BRIEF_2026-10-30.md` | PLAN | Codex task - the Compatibility score reader's 7 pages loop instead of stopping at the ends | DR-ZYRA-288, OA-ZYRA-286 | 1 |
-| DOC-ZYRA-0346 | `PRODUCT/APPROVED/DEV_TOGGLES/BRIEFS/DEV_TOGGLES_REMOVAL_BRIEF_2026-10-30.md` | PLAN | Codex brief - remove every developer toggle and developer control from the ZYRA app, completely | OA-ZYRA-325 | 3 |
+| DOC-ZYRA-0346 | `PRODUCT/APPROVED/DEV_TOGGLES/BRIEFS/DEV_TOGGLES_REMOVAL_BRIEF_2026-10-30.md` | PLAN | Codex brief - remove every developer toggle and developer control from the ZYRA app, completely | OA-ZYRA-325 | 4 |
 | DOC-ZYRA-0355 | `PRODUCT/APPROVED/FILTERS/BRIEFS/BUILD_BRIEF_2026-10-30_V4.md` | PLAN | Codex build brief for LOCK 10 V4 - Filters as swipe cards | AD-AIOS-115 | 2 |
 | DOC-ZYRA-0356 | `PRODUCT/APPROVED/FILTERS/RECORD/FILTERS_SPEC_CURRENT_VERSION_V7.md` | SPEC | Spec for LOCK 10 - Filters page (V4 - swipe cards, one filter per card; Where; searchable Nationality and… | DOC-ZYRA-0284, DOC-ZYRA-0329, AD-AIOS-115 | 7 |
 | DOC-ZYRA-0357 | `PRODUCT/APPROVED/FILTERS/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 10 - Filters page redesign (cards, sliders, city search, no counts) | AD-AIOS-115 | 3 |
@@ -628,6 +628,7 @@ _Stop here unless you need to look up another ID._
 | DOC-ZYRA-0436 | `PRODUCT/APPROVED/UNREAD_BADGE/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 17 - unread-count bubble (gold) | AD-AIOS-115 | 1 |
 | DOC-ZYRA-0437 | `PRODUCT/APPROVED/UNREAD_BADGE/RECORD/UNREAD_BADGE_SPEC_CURRENT_VERSION_V1.md` | SPEC | Spec for LOCK 17 - unread-count bubble on conversation icons (gold) | AD-AIOS-115 | 1 |
 | OA-ZYRA-316-BASELINE-2026-10-29 | `PRODUCT/APPROVED/BASELINE/SCREENSHOTS/INDEX.md` | INDEX | Generated capture artifact for DOC-ZYRA-0301; every available planned-app page and local preview state | DOC-ZYRA-0301, DOC-ZYRA-0278, DOC-ZYRA-0286, OA-ZYRA-316 | 405 |
+| TBC (Fable assigns) | `PRODUCT/APPROVED/TEST_CLEANUP/BRIEFS/TEST_CLEANUP_BRIEF_2026-11-02.md` | PLAN | Founder-named task - clean up the app tests that already failed before line 44 (649 at app source 60b1ab9),… | AD-AIOS-116 | 2 |
 
 ### RELEASE
 

@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**337 decisions; 4 marked superseded/retired.**
+**339 decisions; 4 marked superseded/retired.**
 
 | ID | Date | Title | Status |
 |---|---|---|---|
@@ -353,3 +353,5 @@ Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_
 | DR-ZYRA-337 | 2026-10-31 | LOCK 22 V5/V6 - real Safety & advice pages for Seekers and Guardians | APPROVED - Founder direct (clickable "D… |
 | DR-ZYRA-338 | 2026-10-31 | LOCK 2 V2 - accepting a Journey when places are full | APPROVED - Founder direct (rule propose… |
 | DR-ZYRA-339 | 2026-10-31 | One-time iPhone install with the old PROFILE installer | APPROVED - Founder direct (clickable "Y… |
+| DR-ZYRA-340 | 2026-11-02 | Developer-toggle removal goes ahead with a no-new-failures test gate; old failing tests c… | APPROVED - Founder direct (clickable "A… |
+| DR-ZYRA-341 | 2026-11-04 | Line 44 test gate: the nine old LOCK 2/LOCK 5 failures are excepted and repaired first in… | APPROVED - Founder direct (clickable "Y… |

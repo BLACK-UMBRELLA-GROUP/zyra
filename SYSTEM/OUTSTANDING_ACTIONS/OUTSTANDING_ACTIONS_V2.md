@@ -26476,6 +26476,9 @@ Chat on - replaced by the approved wording (A1-A4) at the Membership LOCK; the t
 Update 30 Oct 05:36: member terms DRAFT written - ZYRA/REPORTS/CURRENT/ZYRA_MEMBER_TERMS_DRAFT_2026-10-30_V1.md
 (DOC-ZYRA-0330), A4 verbatim, B1/B4 used, B2/B3 withdrawn per DR-ZYRA-299. [DECISION NEEDED] items listed for the
 Founder; then solicitor review.
+Update 3 Nov (Fable, own action): clause 3.8 Phone access and location added to the draft terms
+(BLACK UMBRELLA GROUP/LEGAL/ZYRA/, DOC-ZYRA-0330) from LOCK 12 V2 (DOC-ZYRA-0375); matches DPIA risk R14;
+solicitor item 8. Still waiting: company details (OA-AIOS-386), ICO (OA-AIOS-381), solicitor, Founder approval.
 ------------------------------------------------------------
 
 
@@ -26511,6 +26514,9 @@ distance filtering (DR-ZYRA-319, 320, 321), stored only after the DPIA; (3) GeoN
 attribution in the app's licences page) if used.
 DONE 31 Oct (Fable, own action): DPIA draft DOC-ZYRA-0331 gains R13 (first name of a shared past Journey) and R14
 (location) with measures; solicitor question added for R13.
+DONE 4 Nov (Fable, own action): safety response DOC-ZYRA-0332 checked against all six DOC-ZYRA-0297 §6 items - adds §5a member
+removal process (10 steps), notices A-D, §12 rows 8-10; finding: no server function to suspend/disable/remove a member
+(for OA-ZYRA-317 / OA-AIOS-413). Founder to decide: re-joining after removal permanent or a set period.
 ------------------------------------------------------------
 
 OA-ZYRA-322
@@ -26602,6 +26608,9 @@ Acceptance:  Each item fixed in the preview and checked by the ZYRA chat against
 
 UPDATE 31 Oct (Fable): the Guardian Dashboard title and Insights are gone from the preview (queue line 29, 30 Oct);
 remaining items wait for the ZYRA chat's build checks (OA-ZYRA-328).
+UPDATE 5 Nov (Fable): Codex used this ID for queue lines 44 (developer controls removed, ff49601/e565a2a) and 73
+(test cleanup, df8cfbe/bb2fe54/05243a8), both BUILT 4 Nov under DR-ZYRA-341; item 5 (developer text) should be gone with
+line 44 - ZYRA chat to confirm in its build check. Remaining test failures: OA-ZYRA-348.
 ------------------------------------------------------------
 
 OA-ZYRA-326
@@ -26750,7 +26759,8 @@ Title:       Build checks missing for the 31 Oct builds 43, 46, 48 and 68 (and t
 Category:    Design loop / charters rule 8
 Priority:    MEDIUM
 Date:        2026-11-01
-Status:      UPDATED 2 Nov (Fable): the 1 Nov 05:41 check covered 48 (MATCH, two small differences -> OA-ZYRA-341,
+Status:      CLOSED 3 Nov (Fable): the ZYRA chat's 2 Nov 05:42 check covered 43, 46, 51, 56, 58, 60, 61, 62, 63
+             and 67 (all MATCH on content; differences (a)-(e) filed as OA-ZYRA-343 to 347). Was: UPDATED 2 Nov (Fable): the 1 Nov 05:41 check covered 48 (MATCH, two small differences -> OA-ZYRA-341,
              342), 68 (MATCH) and 72 (delivered). Still missing: 43 and 46, plus the eight 1 Nov builds 51, 56, 58,
              60, 61, 62, 63, 67 (due at the 2 Nov 05:36 check). Was: OPEN - the ZYRA chat's 31 Oct note has build checks for lines 42, 52, 53, 55, 57, 59, 64-66 and 69-71,
              but none for 43 (My ZYRA Focus V2), 46 (unread badge), 48 (Guardian cards V2) or 68 (page dots V2); line
@@ -26864,9 +26874,108 @@ Next:        ZYRA chat: decide at the next Guardian card change.
 Acceptance:  Build and masters agree.
 ------------------------------------------------------------
 
+OA-ZYRA-343
+Title:       Shared floating shadow is a hard grey slab, masters show a soft shadow on ivory
+Category:    Build fidelity / charters rule 8
+Priority:    MEDIUM - app-wide
+Date:        2026-11-03
+Status:      OPEN - ZYRA chat 2 Nov 05:42 build check (2026-11-02_ZYRA_CHAT_NOTE.md), item (a): under the Guardian Journeys and Ended Journeys cards, the "for Adam" pill, the tab bar,
+             the Seeker-page cards and the Sent/Received switch the app draws a solid grey offset band about 10 pt
+             deep; LOCK 14 V5 masters show a soft "floating look". Comes from the shared widget (Codex QA recorded it
+             as shared styling it was not allowed to change).
+Owner:       ZYRA chat (fix line from the LOCK, or record the build as right) · Codex builds
+Next:        ZYRA chat: queue one fix line for the shared shadow from LOCK 14 V5.
+Acceptance:  Built shadow matches the LOCK 14 V5 masters app-wide.
+------------------------------------------------------------
+
+OA-ZYRA-344
+Title:       Icons drawn filled in the app; masters use outline icons
+Category:    Build fidelity / charters rule 8
+Priority:    MEDIUM - app-wide
+Date:        2026-11-03
+Status:      OPEN - ZYRA chat 2 Nov 05:42 build check (2026-11-02_ZYRA_CHAT_NOTE.md), item (b): tab bar (Network, Journey, My ZYRA, Guardian, Profile), empty-state icons and the Ended
+             Journeys clock are filled; masters are outline.
+Owner:       ZYRA chat (fix line from the LOCK, or record the build as right) · Codex builds · Founder if a choice
+Next:        ZYRA chat: same fix line as OA-ZYRA-343, or ask Shakeel which style stays.
+Acceptance:  Icons match the masters.
+------------------------------------------------------------
+
+OA-ZYRA-345
+Title:       Settings cards grey-beige and footer letter-spaced (line 62)
+Category:    Build fidelity / charters rule 8
+Priority:    LOW
+Date:        2026-11-03
+Status:      OPEN - ZYRA chat 2 Nov 05:42 build check (2026-11-02_ZYRA_CHAT_NOTE.md), item (c): s01/s02 cards are a flat grey-beige fill, masters ivory cards with a soft shadow;
+             footer reads "Z Y R A", master "ZYRA".
+Owner:       ZYRA chat (fix line from the LOCK, or record the build as right) · Codex builds
+Next:        ZYRA chat: include in the OA-ZYRA-343 fix line.
+Acceptance:  Settings matches LOCK 22 V4 masters.
+------------------------------------------------------------
+
+OA-ZYRA-346
+Title:       Guardian Journeys photo card about 24 pt shorter than the g09 masters (line 56)
+Category:    Build fidelity / charters rule 8
+Priority:    LOW
+Date:        2026-11-03
+Status:      OPEN - ZYRA chat 2 Nov 05:42 build check (2026-11-02_ZYRA_CHAT_NOTE.md), item (d): the Ended Journeys card therefore sits higher.
+Owner:       ZYRA chat (fix line from the LOCK, or record the build as right) · Codex builds
+Next:        ZYRA chat: decide at the next Guardian tabs change.
+Acceptance:  Card height matches g09 masters.
+------------------------------------------------------------
+
+OA-ZYRA-347
+Title:       Network first-card back arrow looks disabled (line 63)
+Category:    Build fidelity / charters rule 8
+Priority:    LOW
+Date:        2026-11-03
+Status:      OPEN - ZYRA chat 2 Nov 05:42 build check (2026-11-02_ZYRA_CHAT_NOTE.md), item (e): the ‹ arrow at the first card is transparent in the build; master shows a light round button.
+Owner:       ZYRA chat (fix line from the LOCK, or record the build as right) · Codex builds
+Next:        ZYRA chat: decide at the next Network change.
+Acceptance:  Arrow matches the g06 master.
+------------------------------------------------------------
+
+OA-ZYRA-348
+Title:       358 app tests still fail after lines 44 and 73 - 43 OPEN questions (rows 13-55) need sorting
+Category:    Quality / Tests
+Priority:    MEDIUM - the "Test baseline and final interface pass" ROADMAP row and its GitHub issue stay open until 0
+Date:        2026-11-05
+Status:      OPEN - Codex 4 Nov (line 73, bb2fe54): 649 -> 644 (line 44) -> 358 failures in 36 files; every case has a
+             reason in TEST_CLEANUP/BUILT/QUEUE73_CLASSIFICATION.json and an OPEN row in PRODUCT/APPROVED/QUESTIONS.md
+             (13-55): current app defects, Tier 3 contract gaps, old fixture lineage, and 112 visual cases waiting for
+             exact current masters and designer build checks.
+Owner:       ZYRA chat answers each row from LOCKs / specs (or marks it for the Founder) · Founder decides any app fix
+             while ZYRA design is paused (AD-AIOS-123) · Codex builds · Fable files
+Next:        ZYRA chat: sort rows 13-55 into "answer from a LOCK", "app fix (needs Founder GO after the pause)" and
+             "retire"; one bundled question to Shakeel, not 43.
+Acceptance:  Rows 13-55 ANSWERED or WITHDRAWN; failures at 0 or each remaining one tied to an approved fix line.
+------------------------------------------------------------
+
+OA-ZYRA-349
+Title:       Line 44 build check: Guardian Settings has no LOCK master (paired with the Seeker Settings master)
+Category:    Build fidelity / charters rule 8
+Priority:    LOW
+Date:        2026-11-05
+Status:      OPEN - ZYRA chat 5 Nov 13:28 build check (2026-11-05_ZYRA_CHAT_NOTE.md), item (a): DEV_TOGGLES/BUILT/
+             MASTER_BUILD_PAIRS guardian_settings was compared with Seeker master s01.
+Owner:       ZYRA chat (add a Guardian Settings master, or record that LOCK 22 V4 covers both roles)
+Next:        ZYRA chat, when ZYRA design restarts (AD-AIOS-123).
+Acceptance:  Guardian Settings has its own master or a written note that s01 covers it.
+------------------------------------------------------------
+
+OA-ZYRA-350
+Title:       Line 44 build check: seeker_one_browse pair compares two different states
+Category:    Build fidelity / charters rule 8
+Priority:    LOW
+Date:        2026-11-05
+Status:      OPEN - ZYRA chat 5 Nov build check, item (b): master shows "Request sent", capture shows "Request a Journey".
+Owner:       Codex (recapture in the master's state) · ZYRA chat checks
+Next:        With the next ZYRA fix line allowed after the pause.
+Acceptance:  Pair shows the same state and the ZYRA chat records MATCH or the differences.
+------------------------------------------------------------
+
 TOTAL REGISTERED (this file): 309 (OA-001 through OA-ZYRA-309,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-343 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-351 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_
