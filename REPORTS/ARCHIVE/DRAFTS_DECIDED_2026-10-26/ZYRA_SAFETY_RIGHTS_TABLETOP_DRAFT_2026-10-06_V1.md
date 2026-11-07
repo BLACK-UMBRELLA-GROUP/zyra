@@ -172,9 +172,9 @@ Primary sources were fetched on 6 October. ICO guidance determines the cited UK
 complaint/breach principles, not ZYRA's final jurisdiction or legal outcome.
 Clock arithmetic is a synthetic calculation, not a started real incident clock.
 
-Local source: `BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_SAFETY_RESPONSE_DRAFT_2026-10-06_V1.md`
+Local source: `ZYRA_SAFETY_RESPONSE_DRAFT_2026-10-06_V1.md` — moved to the private group folder (7 Nov 2026)
 §§4–9, SHA-256 `4c121cfc1f7e7c1a08ee9413c964844da39ccd463599dee5d0ee47645369dcf2`;
-privacy dependency `ZYRA_PRIVACY_DPIA_DRAFT_2026-10-06_V1.md` §10, SHA-256
+privacy dependency `ZYRA_PRIVACY_DPIA_DRAFT_2026-10-06_V1.md` — moved to the private group folder (7 Nov 2026) §10, SHA-256
 `50ed99eda5954c99dcad6d20086498e62657a413afd5fb7cbe08cc311f5f4263`.
 
 Only this new draft file is created. No policy is promoted to CURRENT_VERSION.

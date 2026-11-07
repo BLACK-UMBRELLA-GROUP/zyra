@@ -72,7 +72,7 @@ Family primary artifacts remain in ZYRA `SYSTEM/RESOURCES/REVIEWS/ZYRA_INDEPENDE
 
 Marketing outputs remain in Group `SYSTEM/RESOURCES/REPORTS/`:
 
-- `ZYRA_MARKETING_PLATFORM_VARIANTS_DRAFT_2026-10-07_V1.md`: 33,941 bytes; SHA-256 `0b28de6e8e66b4c58ce3502f508f6dac6381ce9a217c16edb81cdbe0b341c2ae`.
+- `ZYRA_MARKETING_PLATFORM_VARIANTS_DRAFT_2026-10-07_V1.md` — moved to the private group folder (7 Nov 2026): 33,941 bytes; SHA-256 `0b28de6e8e66b4c58ce3502f508f6dac6381ce9a217c16edb81cdbe0b341c2ae`.
 - `ZYRA_MARKETING_APPROVAL_LIBRARY_DRAFT_2026-10-07_V1.json`: 17,393 bytes; SHA-256 `2e86d4c2385f32c0f33f6fc5bbe63a5869a6a043d68501fe36225c894d7c765b`.
 
 The companion dated JSON records exact named paths, hashes, static reconstruction, case counts and register proof. These hashes are file-integrity anchors, not credentials.

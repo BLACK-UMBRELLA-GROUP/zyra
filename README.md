@@ -59,7 +59,7 @@ node tooling/no_git_driver.mjs flutter test --no-pub --reporter json
 
 ## How work is done
 
-The Founder designs with an AI design assistant and locks each design (pictures at real phone size, a spec with numbers, a lock record in his words). An AI coding assistant then builds only from those locked files: every change is a line in `PRODUCT/APPROVED/BUILD_QUEUE.md` pointing at its brief, and each build ends with checks and an as-built record showing the built screen beside the master. Sample profiles and pictures are made up (free stock photos), never real members.
+The Founder designs with an AI design assistant and locks each design (pictures at real phone size, a spec with numbers, a lock record in his words). An AI coding assistant then builds only from those locked files: every change is a line in `PRODUCT/APPROVED/BUILD_QUEUE.md` pointing at its brief, and each build ends with checks and an as-built record showing the built screen beside the master. Sample profiles are fictional. The sample profile pictures are simple placeholder images made for this project; they show no real people. Earlier versions in the Git history used photos whose source was not recorded. The placeholders use this repository’s existing Apache-2.0 licence; see `LICENSE`.
 
 ## Licence
 

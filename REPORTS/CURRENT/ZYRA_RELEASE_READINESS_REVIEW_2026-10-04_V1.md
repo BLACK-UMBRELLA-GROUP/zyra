@@ -57,7 +57,7 @@ The authority is [Pricing V6](</Users/shakeelahmad/Developer/DEVELOPMENT/SUB BUS
 - Protected £4.99 first-month Seeker and £4.99-per-person Family comparisons are **design previews**. Their ordinary trial/introductory eligibility, dual-role treatment and store operation remain unresolved. They must not be advertised as live offers.
 - Intended phase-one markets are **UK, US, Canada, Australia, New Zealand and UAE**. Intent is not store availability, legal clearance or a decision to launch all six simultaneously. Saudi Arabia is not in this approved list.
 
-Basic ad support is also a local rehearsal, not an approved live ad provider. The earlier no-Basic/paid-only server contract must be reconciled before activation. Retention discounts remain approved design requiring commercial/store feasibility and separate implementation approval; they are **not a launch prerequisite**. See [retention feasibility package](</Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_RETENTION_COMMERCIAL_AND_STORE_FEASIBILITY_2026-09-27_V1.md>). **Tracking: OA-ZYRA-253/293/303; OA-AIOS-392.**
+Basic ad support is also a local rehearsal, not an approved live ad provider. The earlier no-Basic/paid-only server contract must be reconciled before activation. Retention discounts remain approved design requiring commercial/store feasibility and separate implementation approval; they are **not a launch prerequisite**. See retention feasibility package — moved to the private group folder (7 Nov 2026). **Tracking: OA-ZYRA-253/293/303; OA-AIOS-392.**
 
 ## 3. Release blockers and the proof required to close them
 

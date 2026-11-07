@@ -1139,7 +1139,7 @@ messages, signing/security change, TestFlight/upload or release occurred.
 Production policy settlement, real admission/commerce/concurrency, native
 accessibility and Founder phone/UI acceptance remain open as before.
 
-## 18. Current UI/copy restore and original stock portraits — 2026-10-09
+## 18. Current UI/copy restore and earlier sample portraits (historical record) — 2026-10-09
 
 The Founder rejected §17's appearance as still unlike the current app and
 directly requested a full review: take the existing style and pretexts, adapt
@@ -1169,7 +1169,7 @@ chapter simulation controls are explicitly separate. Account/security editors,
 real messaging, credits, phase sealing, Family approval and checkout are held
 locally, never fabricated real outcomes. The concept entry/model are unchanged.
 
-Sixteen 1400×1400 JPEG derivatives restore the existing local stock portrait
+Sixteen 1400×1400 JPEG derivatives restore the earlier local portrait
 fixtures in SOURCE/supabase/dev_test_photos: eight female gallery groups plus
 two male account avatars. Historical stock/test provenance is recorded in
 ZYRA_GIT_REMOTE_DECISION_2026-08-09.md lines 9–12. Originals were not edited;
@@ -1231,7 +1231,7 @@ The Founder directly requested the protected toggle's Connections become
 Journey only, requests/Saved/history move to My ZYRA, Browse keep Request
 Journey and Save, and five alternative Browse layouts exclude full-screen
 photographs. This supersedes only §18's full-photo root Browse and three-way
-Connections arrangement; its restored current UI, stock portraits, evidence
+Connections arrangement; its restored UI, historical portraits, evidence
 and ordinary-app defaults remain preserved. OA-ZYRA-151/OA-ZYRA-286 own the
 local repairs. OA-ZYRA-257 and Founder visual/native acceptance remain open.
 No shared register, production navigation contract or live policy was changed.
@@ -1273,7 +1273,7 @@ the existing lib files; the five-design presenter is new. Replacing those
 three files with their backups and excluding the new presenter reproduces the
 exact292-file PRE lib aggregate:
 3b7c5c8fb969e98c24d085dd5e5867638e0b42782a03b794c4adf6a3eda64fcb.
-All48 assets, original stock-photo source, approved images, prior v3
+All48 assets, historical source imagery, approved images, prior v3
 candidates, model, package locks and native/signing inputs remain unchanged.
 The pure presenter adds a title parameter and suppresses a segment bar only
 for a single-page local surface; its prior defaults are retained.
@@ -10652,5 +10652,4 @@ bjV1Jf in packet4oS3WH, not this new build. No sign-out/Google test, backend,
 provider, signing registration, trust, upload or public-release action occurred.
 Real chosen-photo acceptance on the iPhone and Founder acceptance are pending.
 
-
-
+The sample profile pictures are simple placeholder images made for this project; they show no real people. Earlier versions in the Git history used photos whose source was not recorded.

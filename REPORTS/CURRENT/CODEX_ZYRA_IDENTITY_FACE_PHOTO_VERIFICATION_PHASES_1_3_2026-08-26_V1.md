@@ -157,7 +157,7 @@ Current governed documents already describe more than the code provides:
 - OA-ZYRA-131 is marked actioned because its wording was merged into the image standard, not because engineering exists.
 - `APP/Onboarding/PROFILE COMPLETION/Summary.md` says nothing is permanent and personal information remains editable, conflicting with the approved identity freeze and any future verified identity.
 - `WALI_ARCHITECTURE_CURRENT_VERSION_V6.md` refers to verified email/mobile and a Verified Guardian badge, while ZYRA has no phone verification or Guardian ID verification.
-- `ZYRA_LEGAL_RESEARCH_CURRENT_VERSION_V1.md` honestly records that identity/photo verification is absent and that processor, transfer, retention and disclaimer coverage is needed.
+- `ZYRA_LEGAL_RESEARCH_CURRENT_VERSION_V1.md` — moved to the private group folder (7 Nov 2026) honestly records that identity/photo verification is absent and that processor, transfer, retention and disclaimer coverage is needed.
 
 These documents must be reconciled only after the Founder approves the provider/architecture decision.
 

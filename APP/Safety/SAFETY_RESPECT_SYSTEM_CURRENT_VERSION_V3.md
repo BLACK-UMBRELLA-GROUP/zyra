@@ -56,7 +56,7 @@ These are objective safety behaviours that every responsible platform moderates.
 
 ---
 
-## Level 2 — Islamic Conduct Signals
+## Level 2 — Community Conduct Signals
 
 These are behavioural patterns inconsistent with ZYRA's purpose. Detection at this level is pattern-based — a single occurrence may produce a nudge, repeated occurrence escalates.
 

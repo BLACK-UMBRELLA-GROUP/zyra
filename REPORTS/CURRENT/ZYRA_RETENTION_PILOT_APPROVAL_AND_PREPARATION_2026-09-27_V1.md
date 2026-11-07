@@ -148,6 +148,6 @@ Approved policy:
 
 Explicitly not approved: production implementation, store-product creation, database migrations, cancellation-flow changes, final contribution threshold, record-retention duration, final Apple/Google configuration and production rollout. Do not treat earlier testing approval as permission to create products or change the app now. Sandbox/runtime evidence requiring those changes remains a future separately approved step.
 
-Prepared artifact: `ZYRA_RETENTION_COMMERCIAL_AND_STORE_FEASIBILITY_2026-09-27_V1.md` in this reports directory. It is an initial documented assessment, not a completed account audit or verified commercial GO. Findings belong to existing OA-ZYRA-253; central register not edited in this turn. No duplicated OA created.
+Prepared artifact: `ZYRA_RETENTION_COMMERCIAL_AND_STORE_FEASIBILITY_2026-09-27_V1.md` — moved to the private group folder (7 Nov 2026) in this reports directory. It is an initial documented assessment, not a completed account audit or verified commercial GO. Findings belong to existing OA-ZYRA-253; central register not edited in this turn. No duplicated OA created.
 
 Pre-edit SHA-256 of this brief: 97aefa452550dddead00c640595189d9c36cf70022f5a895b74f1da268d79965. Earlier §8 proposals to track beneficiaries for discount eligibility or lock at qualification rather than acceptance do not override this final payer-only/acceptance-based approval.
