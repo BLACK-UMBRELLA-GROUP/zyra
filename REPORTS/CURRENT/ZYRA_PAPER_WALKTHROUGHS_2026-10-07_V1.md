@@ -120,10 +120,10 @@ All four inputs are unchanged dated drafts in this report directory. Whole-file 
 
 | Input | Bytes | SHA-256 |
 | --- | ---: | --- |
-| ZYRA_SAFETY_RESPONSE_DRAFT_2026-10-06_V1.md | 37,227 | 4c121cfc1f7e7c1a08ee9413c964844da39ccd463599dee5d0ee47645369dcf2 |
-| ZYRA_PRIVACY_DPIA_DRAFT_2026-10-06_V1.md | 52,823 | 50ed99eda5954c99dcad6d20086498e62657a413afd5fb7cbe08cc311f5f4263 |
+| ZYRA_SAFETY_RESPONSE_DRAFT_2026-10-06_V1.md — moved to the private group folder (7 Nov 2026) | 37,227 | 4c121cfc1f7e7c1a08ee9413c964844da39ccd463599dee5d0ee47645369dcf2 |
+| ZYRA_PRIVACY_DPIA_DRAFT_2026-10-06_V1.md — moved to the private group folder (7 Nov 2026) | 52,823 | 50ed99eda5954c99dcad6d20086498e62657a413afd5fb7cbe08cc311f5f4263 |
 | ZYRA_SAFETY_RIGHTS_TABLETOP_DRAFT_2026-10-06_V1.md | 10,666 | f555208c7670a0b34fc15c73d9736ad220c0ff904dc665b0aeb26034026e943f |
-| ZYRA_OPERATOR_LAUNCH_DECISION_PACKET_2026-10-06_V1.md | 18,538 | 5f908740e9d0250301570607ac429866619118b382cea1411219019b60b2028e |
+| ZYRA_OPERATOR_LAUNCH_DECISION_PACKET_2026-10-06_V1.md — moved to the private group folder (7 Nov 2026) | 18,538 | 5f908740e9d0250301570607ac429866619118b382cea1411219019b60b2028e |
 
 Completed here: eight documentary paper traces, first-stop identification, five consolidated questions and fictional clock arithmetic. A separate read-only Codex check verifies this report against the pinned drafts; that is internal verification, not independent legal review, operational acceptance or Founder approval. Final output and additive filing pins are recorded separately, not self-embedded.
 

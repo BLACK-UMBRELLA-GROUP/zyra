@@ -6,7 +6,7 @@
 REVIEW:        partial (6/7 turns)
 CODE CHANGED:  none (by design — this run writes documents only)
 API COST:      $0.8641 (~£0.68 est.)  ceiling $6.00
-FINAL DOC:     07_FINAL_REVIEW.md
+FINAL DOC:     07_FINAL_REVIEW.md — moved to the private group folder (7 Nov 2026)
 FOUNDER:       ratification required before any implementation
 ```
 

@@ -13974,7 +13974,7 @@ Description: The app accepts reports and can block profiles, but a
              ZYRA_APP_GATE_REPAIRS_LOCAL_DELIVERY_2026-10-05_VERIFICATION.json
              SHA-256: e3b71795024bed9b0981606d9b918572c8bab046111fc72ebdd4e68e0e8ff81d
              Group SYSTEM/RESOURCES/REPORTS/
-             ZYRA_SAFETY_RESPONSE_DRAFT_2026-10-06_V1.md
+             ZYRA_SAFETY_RESPONSE_DRAFT_2026-10-06_V1.md — moved to the private group folder (7 Nov 2026)
              SHA-256: 4c121cfc1f7e7c1a08ee9413c964844da39ccd463599dee5d0ee47645369dcf2
              ZYRA_SAFETY_RIGHTS_TABLETOP_DRAFT_2026-10-06_V1.md
              SHA-256: f555208c7670a0b34fc15c73d9736ad220c0ff904dc665b0aeb26034026e943f
@@ -17023,7 +17023,7 @@ REPORT
 ════════════════════════════════════════════════════════════════════
 Report:      ZYRA Subscription Architecture Final Review
 Location:    SUB BUSINESS/ZYRA/SYSTEM/RESOURCES/
-             SUBSCRIPTION_REVIEW_2026-08-26/08_FINAL_VERIFIED_REVIEW.md
+             SUBSCRIPTION_REVIEW_2026-08-26/08_FINAL_VERIFIED_REVIEW.md — moved to the private group folder (7 Nov 2026)
 Date:        2026-08-26
 Run IDs:     subrev-20260826T000000Z (pass 1),
              subrev-recovery-20260826 (pass 2),
@@ -23968,7 +23968,7 @@ MARKETING CLAIMS / MEDIA PROGRESS — 2026-10-06
              acceptance is asserted. OA-AIOS-392 REC-009 records the coordinated
              readiness progress; this existing specialist OA retains ownership.
              Original Group evidence under SYSTEM/RESOURCES/REPORTS/:
-             ZYRA_MARKETING_CLAIMS_DRAFT_2026-10-06_V1.md
+             ZYRA_MARKETING_CLAIMS_DRAFT_2026-10-06_V1.md — moved to the private group folder (7 Nov 2026)
              SHA-256: 0055efc0a2fd80c24e3bbd05b1acda8154cde554dba448fdb9167bb268f710f3
              ZYRA_MARKETING_MEDIA_RIGHTS_MANIFEST_DRAFT_2026-10-06_V1.md
              SHA-256: f8ff00bd993cb5eb8d59c5a2641b8cdd1ae7ed641fa5351a1177f76a17961db8
@@ -24004,7 +24004,7 @@ ACTION 6 CHANNEL-PURPOSE PREPARATION — 2026-10-06
              OA-AIOS-392 REC-009 records coordinated progress only; this existing
              specialist OA and Action 6 retain ownership.
              Exact Group evidence under SYSTEM/RESOURCES/REPORTS/:
-             ZYRA_MARKETING_CHANNEL_PURPOSE_DRAFT_2026-10-06_V1.md
+             ZYRA_MARKETING_CHANNEL_PURPOSE_DRAFT_2026-10-06_V1.md — moved to the private group folder (7 Nov 2026)
              SHA-256: 576d34efe5217ce41c0021cb941b7f73f5afe0cd5fa895bf99d1ea75981fea06
 
 ADMIN ACTION6 CONTENT-PREPARATION RECONCILIATION — 2026-10-07
@@ -24026,7 +24026,7 @@ ADMIN ACTION6 CONTENT-PREPARATION RECONCILIATION — 2026-10-07
              OA-AIOS-392 REC009 is coordination only. No app/website/AIOS engine,
              account/security/provider/calendar/publication/spend action.
              Group SYSTEM/RESOURCES/REPORTS/
-             ZYRA_MARKETING_CONTENT_BRIEF_PACK_DRAFT_2026-10-06_V1.md — 21,975B
+             ZYRA_MARKETING_CONTENT_BRIEF_PACK_DRAFT_2026-10-06_V1.md — moved to the private group folder (7 Nov 2026) — 21,975B
              SHA-256: 30a4689d011ccce49bae9e548048faab170c8184f2b069cd5d792516b822ae3c
              Root dated internal receipt:
              release-resume-marketing-verified-2026-10-06-2346.json — 5,261B
@@ -24067,7 +24067,7 @@ ADMIN ACTION6 PRIVATE PLATFORM VARIANTS COMPLETED — 2026-10-07
              native-job/calendar/public/spend change, new ID/status/owner/
              closure/score or Founder acceptance.
              Group SYSTEM/RESOURCES/REPORTS/:
-             ZYRA_MARKETING_PLATFORM_VARIANTS_DRAFT_2026-10-07_V1.md —33,941B
+             ZYRA_MARKETING_PLATFORM_VARIANTS_DRAFT_2026-10-07_V1.md — moved to the private group folder (7 Nov 2026) —33,941B
              SHA-256: 0b28de6e8e66b4c58ce3502f508f6dac6381ce9a217c16edb81cdbe0b341c2ae
              ZYRA_MARKETING_APPROVAL_LIBRARY_DRAFT_2026-10-07_V1.json —17,393B
              SHA-256: 2e86d4c2385f32c0f33f6fc5bbe63a5869a6a043d68501fe36225c894d7c765b
