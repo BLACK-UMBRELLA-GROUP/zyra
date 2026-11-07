@@ -26407,6 +26407,10 @@ approximate current area optional, distance in real km, Location = near / countr
 (DR-ZYRA-319, 320); (3) Connect with Guardian: accepted = private Guardian chat, Seekers with only a Guardian Basic
 not on Network (DR-ZYRA-322; after SERVER 6, DR-ZYRA-312 Q6). SERVER 0 V2 is READY for the isolated catch-up only
 (line 33; DR-ZYRA-313); live apply needs a confirmed backup and his words "apply SERVER 0 to live".
+Update:      6 Nov - Fable (own action): draft list of the ten safety server functions the AIOS review page needs
+             (review, warn, suspend, remove, restore on appeal, duplicate check, retention, block pattern) with
+             shared audit and key rules: DOC-BUG-0043, BLACK UMBRELLA GROUP/REPORTS/CURRENT/
+             ZYRA_SAFETY_SERVER_FUNCTIONS_DRAFT_2026-11-06_V1.md. Three Founder choices inside. Not a build line.
 ------------------------------------------------------------
 
 OA-ZYRA-318
