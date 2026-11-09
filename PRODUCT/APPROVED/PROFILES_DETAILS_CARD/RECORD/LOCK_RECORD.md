@@ -13,3 +13,5 @@ owner: ZYRA chat
 | Date | Founder's words | What it locks |
 |---|---|---|
 | 2026-10-29 18:33 | "next the profiles. the info card should the little picture above name be profile picture icon. ensure codex does that" | `RECORD/PROFILES_DETAILS_CARD_SPEC_CURRENT_VERSION_V1.md` and `MASTERS/` (prototype V15) |
+
+Pictures showing sample photos moved to the private group folder 9 Nov 2026 (OA-AIOS-430); recaptured with placeholders when ZYRA restarts.

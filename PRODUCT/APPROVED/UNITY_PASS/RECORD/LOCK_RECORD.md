@@ -20,3 +20,5 @@ owner: ZYRA chat
 | 2026-10-31 ~11:30 | Section 8 of 9 (Floating cards) → clickable **"After A · Tidy (Recommended)"** | **LOCK 22 V4**: Settings header + no duplicate Membership; Edit profile title + cards; masters s01–s03. Queue line 62 |
 | 2026-10-31 ~11:55 | Open finding (Safety & advice had no advice) → clickable **"Design a real advice page (Recommended)"** → **"A · One page, LOCK (Recommended)"** (wording approved as shown) | **LOCK 22 V5**: Safety & advice page; master x07. Queue line 64 |
 | 2026-10-31 ~14:10 | Guardian row "Safety & advice" showed "not redrawn" → V134 options → "show me what im meant to be lookign at" → labelled pictures → clickable **"After A · Guardian advice (Recommended)"** (option text: "Guardian tips, same look as the Seeker page — LOCK it") | **LOCK 22 V6**: Guardian Safety & advice page; masters x08 (Guardian One), x09 (Guardian Basic). Queue line 66 |
+
+Pictures showing sample photos moved to the private group folder 9 Nov 2026 (OA-AIOS-430); recaptured with placeholders when ZYRA restarts.

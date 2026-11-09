@@ -16,3 +16,5 @@ owner: ZYRA chat
 | 2026-10-31 ~07:50 | Asked about the conflict with today's rule ("Hiding does not block them or end a Journey") → clickable **"Hide ends the Journey (Recommended)"** | Rule decided |
 | 2026-10-31 ~07:55 | Clickable **"LOCK it (Recommended)"** | **LOCK** of `RECORD/JOURNEY_BLOCK_HIDE_SPEC_CURRENT_VERSION_V1.md` and the 3 `MASTERS/` (prototype V98). Queue line 45 |
 | 2026-10-31 ~09:10 | Codex line 45 stopped (report can't be sent today) → clickable **"Keep draft as today (Recommended)"** | **LOCK 16 V2** (`RECORD/JOURNEY_BLOCK_HIDE_SPEC_CURRENT_VERSION_V2.md`): reporting unchanged; Hidden Profiles texts only where they exist; same 3 masters. Queue line 50 replaces 45 |
+
+Pictures showing sample photos moved to the private group folder 9 Nov 2026 (OA-AIOS-430); recaptured with placeholders when ZYRA restarts.

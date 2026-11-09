@@ -80,7 +80,7 @@ re-run the tool.
 
 _Stop here unless you need to look up another ID._
 
-## Documents (336 live)
+## Documents (338 live)
 
 ### APP: AUTHENTICATION
 
@@ -333,6 +333,12 @@ _Stop here unless you need to look up another ID._
 | DOC-ZYRA-0294 | `REPORTS/CURRENT/ZYRA_LIVE_DATABASE_CHECK_2026-10-26_V1.md` | REPORT | Read-only check of the live ZYRA database on 26 Oct 2026 - which migrations are applied, the live message… | OA-ZYRA-312, OA-ZYRA-319, OA-ZYRA-317, DOC-ZYRA-0280, DOC-ZYRA-0293 | 5 |
 | SERVER0-LIVE-2026-10-30 | `REPORTS/CURRENT/ZYRA_LIVE_DATABASE_CHECK_2026-10-30_V1.md` | REPORT | Production read-only SERVER 0 check of migration drift, Basic capacity, synthetic flags, filter fields,… | DOC-ZYRA-0329, DOC-ZYRA-0294, OA-ZYRA-317, OA-ZYRA-319, OA-ZYRA-324 | 7 |
 
+### DEV_TOGGLES
+
+| ID | File | Type | Purpose | Links | KB |
+|---|---|---|---|---|---|
+| DOC-ZYRA-9017 | `PRODUCT/APPROVED/DEV_TOGGLES/INDEX.md` | INDEX | Feature evidence index | OA-AIOS-430 | 1 |
+
 ### FILTERS
 
 | ID | File | Type | Purpose | Links | KB |
@@ -494,6 +500,12 @@ _Stop here unless you need to look up another ID._
 |---|---|---|---|---|---|
 | ASBUILT-ZYRA-QUEUE40 | `REPORTS/CURRENT/ZYRA_PHONE_ACCESS_AS_BUILT_CURRENT_VERSION_V1.md` | HANDOVER | LOCK12 V2 Phone access implementation, boundaries, evidence and remaining native proof | AD-AIOS-115, OA-ZYRA-286, OA-ZYRA-317, OA-ZYRA-323 | 7 |
 
+### PHONE_INSTALL
+
+| ID | File | Type | Purpose | Links | KB |
+|---|---|---|---|---|---|
+| DOC-ZYRA-9018 | `PRODUCT/APPROVED/PHONE_INSTALL/INDEX.md` | INDEX | Feature evidence index | OA-AIOS-430 | 1 |
+
 ### PRICING AND MEMBERSHIP
 
 | ID | File | Type | Purpose | KB |
@@ -553,7 +565,7 @@ _Stop here unless you need to look up another ID._
 | DOC-ZYRA-0322 | `PRODUCT/APPROVED/REQUEST_ROW/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 7 - the Profiles request row - one pill holding Previous, Request a Journey and Next… | AD-AIOS-115, DR-ZYRA-276 | 1 |
 | DOC-ZYRA-0323 | `PRODUCT/APPROVED/REQUEST_ROW/RECORD/REQUEST_ROW_SPEC_CURRENT_VERSION_V2.md` | SPEC | Spec for LOCK 7 - the Profiles request row (one pill with Previous, Request a Journey, Next) | DR-ZYRA-276, DOC-ZYRA-0282 | 2 |
 | DOC-ZYRA-0324 | `PRODUCT/APPROVED/REQUEST_ROW/BRIEFS/BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 7 - Profiles request row as one pill | AD-AIOS-115 | 1 |
-| DOC-ZYRA-0325 | `PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 8 - the Guardian app's five tabs (Network, Journeys, My ZYRA, Seekers, Profile) and… | AD-AIOS-115, DR-ZYRA-280, DR-ZYRA-292, DR-ZYRA-233, DOC-ZYRA-0278 | 3 |
+| DOC-ZYRA-0325 | `PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 8 - the Guardian app's five tabs (Network, Journeys, My ZYRA, Seekers, Profile) and… | AD-AIOS-115, DR-ZYRA-280, DR-ZYRA-292, DR-ZYRA-233, DOC-ZYRA-0278 | 4 |
 | DOC-ZYRA-0337 | `PRODUCT/APPROVED/APP_COLOURS/BRIEFS/BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 14 - app colours Ivory (planned app, icon, launch, splash) | AD-AIOS-115 | 2 |
 | DOC-ZYRA-0338 | `PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md` | SPEC | Spec for LOCK 14 - ZYRA app colours: Ivory, gold and warm neutrals, no purple; matching app icon and splash;… | DR-ZYRA-276, AD-AIOS-115 | 7 |
 | DOC-ZYRA-0339 | `PRODUCT/APPROVED/APP_COLOURS/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 14 - ZYRA app colours (Ivory, gold, warm neutrals; matching icon and splash; no member… | AD-AIOS-115 | 3 |

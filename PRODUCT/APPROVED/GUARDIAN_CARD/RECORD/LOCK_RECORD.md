@@ -18,3 +18,5 @@ owner: ZYRA chat
 | 2026-10-31 ~08:47 | Clickable **"LOCK it in 19 (Recommended)"** | **LOCK** of `RECORD/GUARDIAN_CARD_SPEC_CURRENT_VERSION_V1.md` and the 19 `MASTERS/` (k01–k19) |
 | 2026-10-31 ~09:10 | With **"LOCK Topics (Recommended)"** (LOCK 20) and **"Read only"** for Guardian Basic in the Circle | **LOCK 19 V2**: sheet row 1 "…and read your Guardian Circle"; k09, k11, k12 re-rendered |
 | 2026-10-31 ~14:40 | "continue" (UP NEXT: Ibrahim's accept/decline Family place screen) → V136 options with pictures → clickable **"After A · Full page (Recommended)"** (option text: "Own page like Introduce / Connect — LOCK it") | **LOCK 19 V3**: spec V3 §6.4 and masters k20–k22. Queue line 67 |
+
+Pictures showing sample photos moved to the private group folder 9 Nov 2026 (OA-AIOS-430); recaptured with placeholders when ZYRA restarts.

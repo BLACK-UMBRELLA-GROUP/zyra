@@ -20,3 +20,5 @@ owner: ZYRA chat
 | 2026-10-30 14:11 | **"lets lock in journey design 2"** | **LOCK** of `RECORD/JOURNEY_TAB_SPEC_CURRENT_VERSION_V1.md` and the 7 `MASTERS/` (prototype V73) |
 | 2026-10-30 14:20 | Comment on the Journey options page: **"why odes this page have 3 dots in it. maybe its old but its not needed also ensure for this page all buttons work here for me to test. if you need codex do it but ensure this prototype is exact replica of the app"** | **LOCK V2**: Journey options page added (j08, prototype V76) — today's expanded card as its own page, inner ••• removed, all rows work, fills the height. V1 spec in `ARCHIVE/` |
 | 2026-10-31 ~10:55 | Unity review 5 of 9 (Flat lists) → clickable **"After B · Monogram + cards (Recommended)"** | **LOCK 13 V3**: Journey options page — Monogram head + three floating cards filling the height; masters j10–j12 (j08 archived). Queue line 57 |
+
+Pictures showing sample photos moved to the private group folder 9 Nov 2026 (OA-AIOS-430); recaptured with placeholders when ZYRA restarts.

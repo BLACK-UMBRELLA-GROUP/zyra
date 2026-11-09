@@ -19,3 +19,5 @@ owner: ZYRA chat
 
 Replaces today's three separate pills (‹ · Request a Journey · ›) under the Profiles card.
 | 2026-10-30 06:2x | Codex's preflight: "Request a Journey" does not fit at very large text. Question → **"Pill grows taller (Recommended)"** | Spec **V2** (Larger Text row). Masters unchanged |
+
+Pictures showing sample photos moved to the private group folder 9 Nov 2026 (OA-AIOS-430); recaptured with placeholders when ZYRA restarts.

@@ -19,3 +19,5 @@ owner: ZYRA chat
 
 Replaces the Floating Glass bar's gold selection ring (DR-ZYRA-276 kept Floating Glass as the chosen style; this changes how
 the current tab is shown and adds the small idle state).
+
+Pictures showing sample photos moved to the private group folder 9 Nov 2026 (OA-AIOS-430); recaptured with placeholders when ZYRA restarts.

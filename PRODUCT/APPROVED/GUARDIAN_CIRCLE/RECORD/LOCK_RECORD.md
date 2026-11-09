@@ -18,3 +18,5 @@ owner: ZYRA chat
 | 2026-10-31 09:08 | Prototype comment: "if thats the case i dont think we need a permenat notificaton here tho" | Basic notice moved into ••• (V109) |
 | 2026-10-31 ~09:10 | Clickable **"LOCK Topics (Recommended)"** | **LOCK** of `RECORD/GUARDIAN_CIRCLE_SPEC_CURRENT_VERSION_V1.md` and the 13 `MASTERS/` (gc01–gc13); LOCK 19 → V2 (sheet line) |
 | 2026-10-31 09:11 | Prototype comment on the Everyone tab: "do you think this apge is needed or not…" → clickable **"Keep, rename \"All\" (Recommended)"** | **LOCK 20 V2**: tab renamed All; new-family empty state; masters gc01–gc14 |
+
+Pictures showing sample photos moved to the private group folder 9 Nov 2026 (OA-AIOS-430); recaptured with placeholders when ZYRA restarts.

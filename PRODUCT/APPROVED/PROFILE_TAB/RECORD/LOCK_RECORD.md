@@ -15,3 +15,5 @@ owner: ZYRA chat
 | 2026-10-31 09:43 | Prototype comment: "does this whole page need improvment - check if where everything is is in right place ect and show me some design options also" | Audit + 5 designs (V111) |
 | 2026-10-31 09:50 | "so with your options what best suits our current culture" → ZYRA chat advised Monogram | — |
 | 2026-10-31 ~09:51 | Clickable **"LOCK Monogram (Recommended)"** | **LOCK** of `RECORD/PROFILE_TAB_SPEC_CURRENT_VERSION_V1.md` and the 6 `MASTERS/` (p01–p06), Seeker and Guardian (universal design rule) |
+
+Pictures showing sample photos moved to the private group folder 9 Nov 2026 (OA-AIOS-430); recaptured with placeholders when ZYRA restarts.

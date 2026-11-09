@@ -24,3 +24,5 @@ owner: ZYRA chat
 | 2026-10-30 18:16 | Comment on the Age card: **"the slider in real app is way to close to the 2 pills above it fix that please"** | **V5**: 26 pt under the Age pills, 22 pt under the Where pills, 18 pt under the origin line; f01–f05 re-rendered (V83). V4 in `ARCHIVE/` |
 | 2026-10-30 18:16 | Comment on the "Where" title: **"lets change this to location"** | **V6**: card titled "Location"; f03–f05 re-rendered (V84). V5 in `ARCHIVE/` |
 | 2026-10-31 ~10:10 | Unity review 1 of 9 (Swipe cards): Before · Today / After A · Monogram / After B · One page → clickable **"After A · Monogram (Recommended)"** | **LOCK 10 V7**: Monogram card head with current-choice line; Age/Location centred; f01–f10 re-rendered (V6 in `ARCHIVE/MASTERS_V6/`). Queue line 53 |
+
+Pictures showing sample photos moved to the private group folder 9 Nov 2026 (OA-AIOS-430); recaptured with placeholders when ZYRA restarts.

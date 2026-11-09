@@ -29,3 +29,5 @@ Guardian Basic differences are **not** part of this LOCK (drawn from rules; wait
 | 2026-10-31 ~11:10 | Unity review 6 of 9 (Action pages): Scan / Add a Guardian left as LOCK 9 → Connect with Guardian + Introduce to Adam clickable **"After A · Monogram + card (Recommended)"** | **LOCK 8 V7**: g07, g08. Queue line 60 |
 | 2026-10-31 ~11:20 | Unity review 7 of 9 (Empty pages) → clickable **"After A · Monogram + action (Recommended)"** | **LOCK 8 V8**: Guardian empty states follow LOCK 22 V3; masters g05, g16, g20, g23. Built by queue line 61 |
 | 2026-10-31 ~11:40 | Unity review 9 of 9 (Monogram) → clickable **"After A · Gold ring (Recommended)"** | **LOCK 8 V9**: Network card gold-ring monogram; master g06. Queue line 63 |
+
+Pictures showing sample photos moved to the private group folder 9 Nov 2026 (OA-AIOS-430); recaptured with placeholders when ZYRA restarts.

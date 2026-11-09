@@ -13,3 +13,5 @@ owner: ZYRA chat
 | Date | Founder's words (comment on the prototype's tab bar) | What it locks |
 |---|---|---|
 | 2026-10-29 18:36 | "ensure when the icon is gold it means u got a notification but when icon is clciked the gold colour goes" | `RECORD/TAB_ATTENTION_SPEC_CURRENT_VERSION_V1.md` and `MASTERS/` |
+
+Pictures showing sample photos moved to the private group folder 9 Nov 2026 (OA-AIOS-430); recaptured with placeholders when ZYRA restarts.
