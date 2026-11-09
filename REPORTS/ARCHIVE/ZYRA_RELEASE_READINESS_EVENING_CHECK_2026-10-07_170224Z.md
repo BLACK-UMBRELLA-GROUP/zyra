@@ -178,7 +178,7 @@ Support moderation and recovery ████░░░░░░░░░░░░
 ## Evidence provenance and verification
 
 - Morning comparison: SYSTEM/RESOURCES/REPORTS/ZYRA_RELEASE_READINESS_MORNING_CHECK_2026-10-07_080048Z.md, 22032 bytes, SHA256 c9786fd8ccdd3b6cc15958d3978fbf513bfe90149fcbee0f90582be716e75926.
-- Dated starting review: SYSTEM/RESOURCES/REPORTS/ZYRA_RELEASE_READINESS_REVIEW_2026-10-04_V1.md, 50234 bytes, SHA256 3782f8325176ecfbc54c95deb8db86af4a575a44bf5dc77fca8635bd11e0730f.
+- Dated starting review: moved to the private group folder (9 Nov 2026), 50234 bytes, SHA256 3782f8325176ecfbc54c95deb8db86af4a575a44bf5dc77fca8635bd11e0730f.
 - Preserved original snapshot: release-readiness-snapshot-2026-10-05.json, 5977 bytes, SHA256 96316f65005e3544f4cba95857ab6404f407143c075dcc05bc9ab0b5971c627f.
 - Latest saved coordination ledger inspected before the evening visual refresh: release-away-coordination-2026-10-07.json, 16089 bytes, SHA256 1e1f81e0cc23f90cd02d57754099f405acb1d1f6556a05a847dec0ead0146b31, saved 13:11:34 UTC. Its scores agree with the baseline; later local evidence is not Founder acceptance.
 - Release-owner verification of midday ADMIN reconciliation: release-admin-ratings-website-verified-2026-10-07.json, 6213 bytes, SHA256 35ab1b3fd6b8bcd8cdc07f0164adb7b499d891ff960ad2be903edc5b092df274, verified 13:10:02 UTC. Source report: SYSTEM/RESOURCES/REPORTS/ZYRA_ADMIN_RATINGS_AND_WEBSITE_RECONCILIATION_2026-10-07_V1.md.

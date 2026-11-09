@@ -176,7 +176,7 @@ Support moderation and recovery ████░░░░░░░░░░░░
 
 ## Evidence references
 
-- Baseline: SYSTEM/RESOURCES/REPORTS/ZYRA_RELEASE_READINESS_REVIEW_2026-10-04_V1.md, 50234 bytes, SHA256 3782f8325176ecfbc54c95deb8db86af4a575a44bf5dc77fca8635bd11e0730f.
+- Baseline: moved to the private group folder (9 Nov 2026), 50234 bytes, SHA256 3782f8325176ecfbc54c95deb8db86af4a575a44bf5dc77fca8635bd11e0730f.
 - ADMIN finite filing: SYSTEM/RESOURCES/REPORTS/ZYRA_ADMIN_FINITE_FOLLOW_THROUGH_2026-10-07_V1.json, 8085 bytes, SHA256 a89887e9ce29f7e17b20ac3f68d263408ae59f59d60af1ba36de245fc637692d.
 - Paper walkthroughs: SYSTEM/RESOURCES/REPORTS/ZYRA_PAPER_WALKTHROUGHS_2026-10-07_V1.md, 13467 bytes, SHA256 27621c90b871be75fa4cd1f5469defa4699c474b48b6eca57b3602a34cb3efed.
 - Release workstream completion: release-resume-admin-verified-2026-10-07.json, 10934 bytes, SHA256 437bb2fa3358e72cf3bee870913e48d0122d5e931f004b87c62eac39dccc19e3.

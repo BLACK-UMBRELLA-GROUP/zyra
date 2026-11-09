@@ -1171,8 +1171,7 @@ locally, never fabricated real outcomes. The concept entry/model are unchanged.
 
 Sixteen 1400×1400 JPEG derivatives restore the earlier local portrait
 fixtures in SOURCE/supabase/dev_test_photos: eight female gallery groups plus
-two male account avatars. Historical stock/test provenance is recorded in
-ZYRA_GIT_REMOTE_DECISION_2026-08-09.md lines 9–12. Originals were not edited;
+two male account avatars. The sample profile pictures are simple placeholder images made for this project; they show no real people. Earlier versions in the Git history used photos whose source was not recorded. Originals were not edited;
 their recorded before/after hashes agree. Bundled AssetBundle/data URLs replace
 the illustrated initials, with no HTTP/cache/member-photo access. All sixteen
 embedded app files match source hashes. These are fictional preview identities,

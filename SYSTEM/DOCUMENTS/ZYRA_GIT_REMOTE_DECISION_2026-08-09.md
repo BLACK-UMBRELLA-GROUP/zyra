@@ -18,8 +18,7 @@ owner: ZYRA chat
 
 **Your repository is 380MB, and 377MB of it is test photos.**
 
-`SOURCE/supabase/dev_test_photos/` — 101 PNGs, 5–8MB each, of stock
-portraits used to seed test profiles.
+The sample profile pictures are simple placeholder images made for this project; they show no real people. Earlier versions in the Git history used photos whose source was not recorded.
 
 They are **already in git history**, committed on or before 26 July. All
 101 are in `HEAD`. Your `.git` folder is 377.86 MiB and those photos are

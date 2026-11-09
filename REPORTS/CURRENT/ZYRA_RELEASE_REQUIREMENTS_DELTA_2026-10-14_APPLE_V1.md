@@ -48,7 +48,7 @@ Conditional applicability is not evidence that an option is disabled or that
 ZYRA has opted out; enabled/disabled status remains unknown. No option was changed.
 
 The five existing Founder inputs remain unresolved as recorded in the
-[8 October minimum-release sheet](</Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/RESOURCES/REPORTS/ZYRA_MINIMUM_RELEASE_DECISIONS_2026-10-08_112421Z_V1.md>).
+8 October minimum-release sheet, moved to the private group folder (9 Nov 2026).
 Operator/controller, legal identity, launch countries/cohort and age-access
 facts are not silently selected. The 12 October Ofcom draft's ICU C15/C16 and
 PCU C11/C12 applicability remains **four UNKNOWNs**, with its **2 November
