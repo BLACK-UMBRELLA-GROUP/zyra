@@ -46,7 +46,17 @@ class AuthGate extends StatefulWidget {
   /// performance.
   final bool playSplash;
 
-  const AuthGate({super.key, this.playSplash = true});
+  final (String, int)? _failedPreviewOwner;
+
+  const AuthGate({super.key, this.playSplash = true})
+    : _failedPreviewOwner = null;
+
+  const AuthGate.afterPreviewFailure({
+    super.key,
+    required String ownerId,
+    required int ownerGeneration,
+  }) : playSplash = false,
+       _failedPreviewOwner = (ownerId, ownerGeneration);
 
   @override
   State<AuthGate> createState() => _AuthGateState();
@@ -54,6 +64,7 @@ class AuthGate extends StatefulWidget {
 
 class _AuthGateState extends State<AuthGate> with WidgetsBindingObserver {
   late Future<Widget> _resolved;
+  int? _recoveryRetryRequest;
   bool _didRetry = false;
   bool _exiting = false;
   bool _authRecoveryPending = false;
@@ -76,6 +87,8 @@ class _AuthGateState extends State<AuthGate> with WidgetsBindingObserver {
   bool _coldArrivalInterrupted = false;
   bool _startupWasForeground = false;
   bool _startupSuspended = false;
+  int? _suspendedErrorRequest;
+  Object? _presentedError;
 
   /// When [AuthGate.playSplash], the splash ALWAYS plays in full —
   /// Founder, 2026-08-07: "every time I open the app I want to start with
@@ -100,7 +113,16 @@ class _AuthGateState extends State<AuthGate> with WidgetsBindingObserver {
     if (_animationDone) _splashFinished.complete();
     WidgetsBinding.instance.addObserver(this);
     ZyraAppLock.instance.addListener(_foregroundChanged);
-    _resolved = _resolve()..ignore();
+    if (widget._failedPreviewOwner case (final owner, final generation)) {
+      _routeOwner = owner;
+      _routeGeneration = generation;
+      _routeSession = Supabase.instance.client.auth.currentSession;
+      const error = ZyraPreviewAuthorizationException();
+      _presentedError = error;
+      _resolved = Future<Widget>.error(error)..ignore();
+    } else {
+      _resolved = _resolve()..ignore();
+    }
     _authSubscription = ZyraAuth.authStateChanges.listen(
       _refreshForSessionChange,
       onError: (Object error, StackTrace stack) {
@@ -314,13 +336,26 @@ class _AuthGateState extends State<AuthGate> with WidgetsBindingObserver {
     if (!foreground) {
       if (_startupSuspended) return;
       _startupSuspended = true;
+      final retrying = _recoveryRetryRequest == _request;
+      _recoveryRetryRequest = null;
       _request++;
       _discardPreparation();
+      if (_presentedError case final error?) {
+        _suspendedErrorRequest = _request;
+        // If Help covers an active retry, withdraw the request and keep the
+        // same failure. Returning from Help does not initiate recovery.
+        if (retrying) {
+          _resolved = Future<Widget>.error(error)..ignore();
+        }
+      }
       return;
     }
     if (!_startupSuspended) return;
     setState(() {
       _startupSuspended = false;
+      final keepError = _suspendedErrorRequest == _request;
+      _suspendedErrorRequest = null;
+      if (keepError) return;
       _request++;
       _resolved = _resolve()..ignore();
     });
@@ -347,21 +382,18 @@ class _AuthGateState extends State<AuthGate> with WidgetsBindingObserver {
       ZyraAuth.currentUser?.id == owner &&
       ZyraAccountState.generation == generation;
 
-  void _retry(String? owner, int generation, int request) {
+  Future<void> _retry(String? owner, int generation, int request) async {
     if (!_callbackCurrent(owner, generation, request)) return;
+    final nextRequest = request + 1;
     setState(() {
       _discardPreparation();
-      _request++;
+      _request = nextRequest;
       _authRecoveryPending = false;
       _didRetry = true;
+      _recoveryRetryRequest = nextRequest;
       _resolved = _resolve()..ignore();
     });
-  }
-
-  void _returnToWelcome(String? owner, int generation, int request) {
-    if (!_callbackCurrent(owner, generation, request)) return;
-    _request++;
-    _showWelcome();
+    await _resolved.then<void>((_) {}, onError: (Object _, StackTrace _) {});
   }
 
   void _showWelcome() {
@@ -425,17 +457,12 @@ class _AuthGateState extends State<AuthGate> with WidgetsBindingObserver {
       debugPrint('ZYRA route failed [$reference] (${error.runtimeType}).');
     }
     return ZyraFullScreenError(
-      key: ValueKey('route_error_${kind.name}'),
+      key: ValueKey(('route_error', owner, generation)),
       kind: kind,
       referenceCode: reference,
-      onPrimary: kind == ZyraErrorKind.sessionExpired
+      onPrimary: kind.needsSignIn
           ? () => _signInAgain(owner, generation, request)
           : () => _retry(owner, generation, request),
-      onSecondary:
-          kind == ZyraErrorKind.sessionExpired ||
-              kind == ZyraErrorKind.previewAccess
-          ? () => _signInAgain(owner, generation, request)
-          : () => _returnToWelcome(owner, generation, request),
     );
   }
 
@@ -478,6 +505,18 @@ class _AuthGateState extends State<AuthGate> with WidgetsBindingObserver {
     return FutureBuilder<Widget>(
       future: _resolved,
       builder: (context, snapshot) {
+        final current = _callbackCurrent(
+          _routeOwner,
+          _routeGeneration,
+          _request,
+        );
+        final done = snapshot.connectionState == ConnectionState.done;
+        final retrying = _recoveryRetryRequest == _request;
+        final error = _animationDone && current && (done || retrying)
+            ? snapshot.error
+            : null;
+        if (done && retrying) _recoveryRetryRequest = null;
+        _presentedError = error;
         // SPLASH, NOT A SPINNER — 2026-08-07. This branch was a bare
         // CircularProgressIndicator on a gradient: real waiting, presented
         // as a loading indicator.
@@ -545,8 +584,10 @@ class _AuthGateState extends State<AuthGate> with WidgetsBindingObserver {
                     }
                   },
                 )
-              : !_callbackCurrent(_routeOwner, _routeGeneration, _request)
+              : !current
               ? _loading()
+              : error != null
+              ? _errorScreen(error)
               : snapshot.connectionState != ConnectionState.done
               ? _coldArrival &&
                         !_didRetry &&
@@ -557,8 +598,6 @@ class _AuthGateState extends State<AuthGate> with WidgetsBindingObserver {
                         onFinished: () {},
                       )
                     : _loading()
-              : snapshot.hasError
-              ? _errorScreen(snapshot.error!)
               : snapshot.hasData
               ? _destination(snapshot.data!)
               : _loading(),

@@ -13,7 +13,6 @@ import 'package:zyra/config/zyra_app_variant.dart';
 import 'package:zyra/config/zyra_internal_founder_policy.dart';
 import 'package:zyra/dev/zyra_founder_launch_screen.dart';
 import 'package:zyra/dev/zyra_concept_preview_boundary.dart';
-import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/models/seeker_profile.dart';
 import 'package:zyra/main.dart';
 import 'package:zyra/models/zyra_error_state.dart';
@@ -94,7 +93,6 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   final requests = <String>[];
   Future<void> Function(String path)? beforeResponse;
-  Completer<void>? refreshGate;
   var refreshFails = false;
   var profileFails = false;
 
@@ -169,7 +167,6 @@ void main() {
     await ZyraAccountState.synchronize(_a);
     requests.clear();
     beforeResponse = null;
-    refreshGate = null;
     refreshFails = false;
     profileFails = false;
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
@@ -177,7 +174,6 @@ void main() {
       variant: ZyraAppVariant.production,
       currentUser: () => supabase.auth.currentUser,
       refreshSession: () async {
-        await refreshGate?.future;
         if (refreshFails) throw StateError('synthetic refresh unavailable');
         return supabase.auth.currentUser;
       },
@@ -387,76 +383,37 @@ void main() {
     },
   );
 
-  testWidgets('denied preview offers access retry without member traffic', (
-    tester,
-  ) async {
-    await tester.runAsync(() async {
-      ZyraAccountState.resetForTesting();
-      await _session(_founder, founder: true);
-      await ZyraAccountState.synchronize(_founder);
-    });
-    ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
-    refreshFails = true;
-    await tester.pumpWidget(
-      const MaterialApp(home: AuthGate(playSplash: false)),
-    );
-    await _settlePreview(tester);
-    expect(find.text('Preview access needs checking.'), findsNothing);
-    expect(find.text('Couldn’t open this page.'), findsOneWidget);
-    expect(
-      find.byKey(const ValueKey('zyra_error_compact_notice')),
-      findsOneWidget,
-    );
-    expect(find.text('Sign out'), findsOneWidget);
-    expect(requests, isEmpty);
-    expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);
-    expect(AppState.instance.hydrated, isFalse);
-    refreshFails = false;
-    final pending = Completer<void>();
-    refreshGate = pending;
-    await tester.tap(find.byKey(const ValueKey('zyra_error_primary')));
-    // Observe 0/16/100/799/800ms and 3s, not only the settled destination.
-    // The replaced FutureBuilder future must not paint its old error while
-    // a fresh proof operation is still pending.
-    for (final elapsed in [
-      Duration.zero,
-      const Duration(milliseconds: 16),
-      const Duration(milliseconds: 84),
-      const Duration(milliseconds: 699),
-      const Duration(milliseconds: 1),
-      const Duration(milliseconds: 2200),
-    ]) {
-      await tester.pump(elapsed);
-      expect(find.byType(ZyraFullScreenError), findsNothing);
-      expect(find.text('Preview access needs checking.'), findsNothing);
-      expect(find.text('Couldn’t open this page.'), findsNothing);
-      expect(find.text('ZYRA'), findsNothing);
-      expect(find.byType(HomeShell), findsNothing);
-      expect(find.byType(ZyraOneJourneyConceptShell), findsNothing);
+  testWidgets(
+    'denied preview opens one error without a card or member traffic',
+    (tester) async {
+      await tester.runAsync(() async {
+        ZyraAccountState.resetForTesting();
+        await _session(_founder, founder: true);
+        await ZyraAccountState.synchronize(_founder);
+      });
+      ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
+      refreshFails = true;
+      await tester.pumpWidget(
+        const MaterialApp(home: AuthGate(playSplash: false)),
+      );
+      await _settlePreview(tester);
+      expect(find.byType(ZyraFullScreenError), findsOneWidget);
+      expect(find.text('Please sign in again.'), findsOneWidget);
+      expect(find.text('Sign in again'), findsOneWidget);
+      expect(find.textContaining('Trying again'), findsNothing);
+      expect(requests, isEmpty);
       expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);
       expect(AppState.instance.hydrated, isFalse);
+      await tester.pump(const Duration(seconds: 16));
+      expect(find.byType(ZyraFullScreenError), findsOneWidget);
+      expect(find.byType(ZyraFounderReviewSurface), findsNothing);
+      expect(find.byType(HomeShell), findsNothing);
       expect(requests, isEmpty);
       expect(tester.takeException(), isNull);
-    }
-    pending.complete();
-    refreshGate = null;
-    await _settlePreview(tester);
-    expect(find.byType(ZyraFounderReviewSurface), findsOneWidget);
-    expect(find.byType(ZyraOneJourneyConceptShell), findsOneWidget);
-    expect(
-      find.byWidgetPredicate(
-        (w) => w.runtimeType.toString() == 'DeveloperAccessScreen',
-      ),
-      findsNothing,
-    );
-    expect(find.byType(HomeShell), findsNothing);
-    expect(ZyraInternalPreviewClient.isActive, isTrue);
-    expect(ZyraConceptPreviewIsolation.active, isTrue);
-    expect(requests, isEmpty);
-    expect(tester.takeException(), isNull);
-    await _disposePreviewAndDrain(tester);
-    debugDefaultTargetPlatformOverride = null;
-  });
+      await _disposePreviewAndDrain(tester);
+      debugDefaultTargetPlatformOverride = null;
+    },
+  );
 
   testWidgets(
     'ordinary service recovery Retry and reopening restore the same member shell',

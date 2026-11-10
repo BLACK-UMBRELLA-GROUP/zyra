@@ -77,7 +77,7 @@ void main() {
   });
 
   for (final kind in ZyraErrorKind.values) {
-    testWidgets('${kind.name} recovery uses gold for the wordmark only', (
+    testWidgets('${kind.name} recovery retains the gold wordmark', (
       tester,
     ) async {
       tester.view.physicalSize = const Size(390, 844);
@@ -89,8 +89,7 @@ void main() {
         MaterialApp(
           home: ZyraFullScreenError(
             kind: kind,
-            onPrimary: () {},
-            onSecondary: () {},
+            onPrimary: () async {},
             referenceCode: 'ZY-TEST',
           ),
         ),
@@ -99,7 +98,7 @@ void main() {
       final wordmark = tester.widget<Text>(find.text('ZYRA'));
       expect(wordmark.style?.color, ZyraColors.splashWordmark);
       expect(wordmark.style?.fontFamily, 'Syne');
-      expect(wordmark.style?.fontSize, 29);
+      expect(wordmark.style?.fontSize, 23);
       expect(wordmark.style?.fontWeight, FontWeight.w600);
       expect(
         tester.widget<Text>(find.text(kind.content.title)).style?.color,
@@ -115,6 +114,7 @@ void main() {
         findsOneWidget,
       );
       expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox.shrink());
     });
   }
 

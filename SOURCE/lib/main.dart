@@ -23,6 +23,7 @@ import 'models/zyra_error_state.dart';
 import 'screens/auth_gate.dart';
 import 'services/zyra_app_lock.dart';
 import 'services/zyra_account_state.dart';
+import 'services/zyra_auth.dart';
 import 'services/zyra_internal_preview_client.dart';
 import 'services/zyra_image_cache.dart';
 import 'services/zyra_local_prefs.dart';
@@ -37,7 +38,6 @@ import 'theme/zyra_interaction_style.dart';
 import 'theme/zyra_text.dart';
 import 'widgets/zyra_app_lock_gate.dart';
 import 'widgets/zyra_full_screen_error.dart';
-import 'widgets/zyra_loading.dart';
 import 'widgets/zyra_keyboard_dismiss_scope.dart';
 import 'widgets/zyra_account_session_host.dart';
 
@@ -142,8 +142,7 @@ void main() async {
       return ZyraFullScreenError(
         kind: ZyraErrorKind.page,
         referenceCode: reference,
-        onPrimary: () => _restartAfterFatalError(playSplash: false),
-        onSecondary: () => _restartAfterFatalError(playSplash: true),
+        onPrimary: () async => _restartAfterFatalError(),
       );
     };
   }
@@ -173,6 +172,14 @@ void _installReliabilityHooks() {
     if (kReleaseMode) return true;
     return previousPlatformHandler?.call(error, stack) ?? false;
   };
+}
+
+Future<void> _initializeStartupClient() async {
+  await Supabase.initialize(
+    url: SupabaseConfig.url,
+    httpClient: ZyraInternalPreviewClient.create(),
+    publishableKey: SupabaseConfig.publishableKey,
+  ).timeout(const Duration(seconds: 10));
 }
 
 /// Whether Supabase.initialize() actually completed. `SupabaseConfig
@@ -567,22 +574,29 @@ class ZyraApp extends StatelessWidget {
         // present in the config file, which was still true when initialize()
         // had just failed. AuthGate would then call Supabase.instance and
         // throw inside build(), turning a recoverable backend outage into a
-        // dead app. The startup gate now presents the approved retryable
-        // connection/service page and keeps Welcome as its safe exit.
-        home: const _ZyraStartupGate(),
+        // dead app. The startup gate presents the approved error page.
+        home: ZyraStartupGate(
+          startupError: _startupError,
+          backendConfigured: SupabaseConfig.isConfigured,
+        ),
       ),
     );
   }
 }
 
-void _restartAfterFatalError({required bool playSplash}) {
+void _restartAfterFatalError() {
+  // Flutter's global fallback has exception details, but no route builder.
+  // Keep its existing last-resort restart; route owners retry their own work.
   final navigator = zyraNavigatorKey.currentState;
   if (navigator == null) return;
   navigator.pushAndRemoveUntil(
     MaterialPageRoute(
       builder: (_) => supabaseReady
-          ? AuthGate(playSplash: playSplash)
-          : const _ZyraStartupGate(),
+          ? const AuthGate(playSplash: false)
+          : ZyraStartupGate(
+              startupError: _startupError,
+              backendConfigured: SupabaseConfig.isConfigured,
+            ),
     ),
     (route) => false,
   );
@@ -591,57 +605,100 @@ void _restartAfterFatalError({required bool playSplash}) {
 /// Owns the only retryable failure that occurs before normal routing exists.
 /// No navigation or Journey state is cleared: once Supabase is available,
 /// AuthGate reads the same persisted session and resumes normally.
-class _ZyraStartupGate extends StatefulWidget {
-  const _ZyraStartupGate();
+class ZyraStartupGate extends StatefulWidget {
+  const ZyraStartupGate({
+    super.key,
+    required this.startupError,
+    required this.backendConfigured,
+    this.initializeClient = _initializeStartupClient,
+  });
+
+  final Object? startupError;
+  final bool backendConfigured;
+  final Future<void> Function() initializeClient;
 
   @override
-  State<_ZyraStartupGate> createState() => _ZyraStartupGateState();
+  State<ZyraStartupGate> createState() => _ZyraStartupGateState();
 }
 
-class _ZyraStartupGateState extends State<_ZyraStartupGate> {
+class _ZyraStartupGateState extends State<ZyraStartupGate> {
   bool _retrying = false;
-  bool _showWelcome = false;
+  bool _needsSignIn = false;
+  late Object? _error = widget.startupError;
 
   Future<void> _retry() async {
-    if (_retrying || !_nativeIdentityAccepted || !SupabaseConfig.isConfigured) {
+    if (_retrying || !_nativeIdentityAccepted || !widget.backendConfigured) {
       return;
     }
-    setState(() {
-      _retrying = true;
-      _showWelcome = false;
-    });
+    _retrying = true;
     try {
-      await Supabase.initialize(
-        url: SupabaseConfig.url,
-        httpClient: ZyraInternalPreviewClient.create(),
-        publishableKey: SupabaseConfig.publishableKey,
-      ).timeout(const Duration(seconds: 10));
+      await widget.initializeClient();
       _supabaseReady = true;
       await _restoreAccountPresentation();
-      _startupError = null;
+      _error = _startupError = null;
     } catch (error, stack) {
-      _startupError = error;
+      _error = _startupError = error;
       debugPrint('ZYRA startup retry failed.\n$error\n$stack');
     }
     if (mounted) setState(() => _retrying = false);
   }
 
+  Future<void> _signInAgain() async {
+    var initialized = false;
+    try {
+      initialized = Supabase.instance.isInitialized;
+    } on AssertionError {
+      // Debug Flutter throws here before the SDK has initialized.
+    }
+    if (!initialized) {
+      try {
+        await widget.initializeClient();
+      } catch (error) {
+        if (mounted) setState(() => _error = _startupError = error);
+        return;
+      }
+    }
+    try {
+      if (!mounted) return;
+      final owner = ZyraAuth.currentUser?.id;
+      if (owner != null) {
+        await ZyraAuth.signOut(
+          expectedUserId: owner,
+          expectedGeneration: ZyraAccountState.generation,
+        );
+        if (ZyraAuth.currentUser != null || ZyraAccountState.isSigningOut) {
+          return;
+        }
+      }
+    } catch (error) {
+      debugPrint(
+        'ZYRA startup sign-in recovery failed (${error.runtimeType}).',
+      );
+      return;
+    }
+    if (mounted) {
+      setState(() {
+        _needsSignIn = true;
+        _supabaseReady = true;
+        _startupError = null;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (_retrying) {
-      return const ZyraLoading.fullScreen(label: 'Trying again…');
-    }
     if (!_nativeIdentityAccepted) {
       return const _NativeIdentityBlocked();
     }
+    if (_needsSignIn) return const WelcomeScreen();
     if (supabaseReady) return const AuthGate();
-    final error = _startupError;
-    if (!_showWelcome && SupabaseConfig.isConfigured && error != null) {
+    final error = _error;
+    if (widget.backendConfigured && error != null) {
+      final kind = zyraErrorKindFor(error);
       return ZyraFullScreenError(
-        kind: zyraErrorKindFor(error),
+        kind: kind,
         referenceCode: zyraErrorReference(error),
-        onPrimary: _retry,
-        onSecondary: () => setState(() => _showWelcome = true),
+        onPrimary: kind.needsSignIn ? _signInAgain : _retry,
       );
     }
     return const WelcomeScreen();

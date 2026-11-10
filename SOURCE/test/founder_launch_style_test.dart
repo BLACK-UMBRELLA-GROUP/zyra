@@ -29,6 +29,7 @@ import 'package:zyra/dev/zyra_dev_local_preview.dart';
 import 'package:zyra/dev/zyra_founder_launch_screen.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
 import 'package:zyra/widgets/zyra_account_session_host.dart';
+import 'package:zyra/widgets/zyra_full_screen_error.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_sample_photos.dart';
 import 'package:zyra/dev/zyra_preview_resume_transition.dart';
@@ -4395,7 +4396,7 @@ void main() {
 
   for (final failure in ['denied', 'failed refresh']) {
     testWidgets(
-      'quiet first-open $failure preserves the truthful retry without member fallback',
+      'quiet first-open $failure shows one sign-in page without member fallback',
       (tester) async {
         ZyraDeveloperAccess.clearRefreshedClaims();
         final preferencesBefore = await preferenceSnapshot(tester);
@@ -4419,9 +4420,12 @@ void main() {
           );
         }
         await _settle(tester);
-        expect(find.text('Couldn’t open this page.'), findsOneWidget);
-        expect(find.text('Try again'), findsOneWidget);
-        expect(_key('founder_launch_retry'), findsOneWidget);
+        expect(find.text('Please sign in again.'), findsOneWidget);
+        expect(find.text('Sign in again'), findsOneWidget);
+        expect(find.byType(ZyraFullScreenError), findsOneWidget);
+        expect(_key('founder_launch_recovery'), findsNothing);
+        await tester.pump(const Duration(seconds: 16));
+        expect(find.byType(ZyraFullScreenError), findsOneWidget);
         expect(find.byType(ZyraFounderReviewSurface), findsNothing);
         expect(find.byType(ZyraOneJourneyConceptShell), findsNothing);
         expect(find.byType(HomeShell), findsNothing);
@@ -4432,14 +4436,6 @@ void main() {
         expect(await preferenceSnapshot(tester), preferencesBefore);
         expect(forwarded, 0);
 
-        refresh = () async => supabase.auth.currentUser;
-        await _press(tester, 'founder_launch_retry');
-        expect(find.byType(ZyraFounderReviewSurface), findsOneWidget);
-        expect(find.byType(ZyraOneJourneyConceptShell), findsOneWidget);
-        expect(find.byType(HomeShell), findsNothing);
-        expect(ZyraDeveloperAccess.canUseDeveloperTools, isTrue);
-        expect(ZyraInternalPreviewClient.isActive, isTrue);
-        expect(forwarded, 0);
         await _dispose(tester);
       },
     );
@@ -4738,7 +4734,7 @@ void main() {
         ),
       );
 
-      expect(find.text('Couldn’t open this page.'), findsOneWidget);
+      expect(find.text('Please sign in again.'), findsOneWidget);
       expect(find.byType(HomeShell), findsNothing);
       expect(find.byType(WaliHomeShell), findsNothing);
       expect(find.byType(ZyraOneJourneyConceptShell), findsNothing);

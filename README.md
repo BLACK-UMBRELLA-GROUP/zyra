@@ -12,6 +12,10 @@ The app has no developer rail, Home/Preview/Actions panel, comparison picker, ro
 
 See [ROADMAP.md](ROADMAP.md) for the next work, including bringing the full test suite back to green. Queue 44 removes developer controls; the roadmap row remains open until queue 73 also completes.
 
+When the app or a screen cannot open, ZYRA shows one error page with help for
+that failure. Connection and page errors retry every 15 seconds while the page
+is open. Contact support opens Help & Support with the error reference.
+
 ## Built with
 
 - Flutter and Dart. The current checked toolchain is Flutter 3.44.2; `SOURCE/pubspec.yaml` requires Dart `^3.12.2`.

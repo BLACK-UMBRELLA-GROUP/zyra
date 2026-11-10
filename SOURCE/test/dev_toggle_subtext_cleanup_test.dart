@@ -548,8 +548,7 @@ void main() {
       MaterialPageRoute(
         builder: (_) => ZyraFullScreenError(
           kind: ZyraErrorKind.offline,
-          onPrimary: () => navigator.pop(),
-          onSecondary: () => navigator.pop(),
+          onPrimary: () async => navigator.pop(),
           referenceCode: 'offline-fixture',
         ),
       ),
@@ -559,7 +558,7 @@ void main() {
     expect(find.text(ZyraErrorKind.offline.content.message), findsOneWidget);
     expect(_key('zyra_error_primary'), findsOneWidget);
     expect(_key('zyra_error_secondary'), findsOneWidget);
-    await _press(tester, _key('zyra_error_secondary'));
+    await _press(tester, _key('zyra_error_primary'));
     expect(find.byType(ZyraFullScreenError), findsNothing);
     expect(_key('member-route'), findsOneWidget);
     _expectMemberUnchanged();

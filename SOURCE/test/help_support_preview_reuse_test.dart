@@ -435,6 +435,7 @@ void main() {
   test('original Help constructor and live tools retain their contract', () {
     const original = HelpSupportScreen();
     expect(original.initialQuery, '');
+    expect(original.errorReference, isNull);
     expect(original.telemetrySurface, ZyraTelemetrySurface.seeker);
     expect(HelpSupportScreen.supportEmail, 'support@zyraconnect.app');
     expect(
@@ -445,11 +446,11 @@ void main() {
       'lib/screens/settings/help_support_screen.dart',
     ).readAsStringSync();
     expect(source, contains('builder: (_) => const SafetyCaseStatusScreen()'));
+    expect(source, contains('showAccount: reference == null'));
     expect(
       source,
-      contains('_ContactCard(telemetrySurface: widget.telemetrySurface)'),
+      contains('showAccount ? ZyraAuth.currentUser?.email : null'),
     );
-    expect(source, contains('final email = ZyraAuth.currentUser?.email;'));
     expect(source, contains('LaunchMode.externalApplication'));
     expect(source, contains('ZyraTelemetryAction.supportAnswer'));
     expect(source, contains('ZyraTelemetryAction.supportEmail'));

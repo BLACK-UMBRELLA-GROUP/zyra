@@ -1251,8 +1251,7 @@ List<_Fixture> _fixtures() => [
     largeText: true,
     build: () => ZyraFullScreenError(
       kind: ZyraErrorKind.offline,
-      onPrimary: () {},
-      onSecondary: () {},
+      onPrimary: null,
       referenceCode: 'ZY-AUDIT',
     ),
   ),

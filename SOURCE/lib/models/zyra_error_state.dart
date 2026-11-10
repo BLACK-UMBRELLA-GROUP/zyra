@@ -29,55 +29,54 @@ class ZyraPreviewAuthorizationException implements Exception {
 class ZyraErrorContent {
   final String title;
   final String message;
-  final String primaryLabel;
-  final String secondaryLabel;
 
-  const ZyraErrorContent({
-    required this.title,
-    required this.message,
-    required this.primaryLabel,
-    required this.secondaryLabel,
-  });
+  const ZyraErrorContent(this.title, this.message);
 }
 
 extension ZyraErrorKindContent on ZyraErrorKind {
+  bool get needsSignIn =>
+      this == ZyraErrorKind.sessionExpired ||
+      this == ZyraErrorKind.previewAccess;
+
   ZyraErrorContent get content => switch (this) {
     ZyraErrorKind.page => const ZyraErrorContent(
-      title: 'We couldn’t open this page.',
-      message: 'Something didn’t load correctly. Please try again.',
-      primaryLabel: 'Try again',
-      secondaryLabel: 'Return home',
+      'We couldn’t open this page.',
+      'Something didn’t load correctly.',
     ),
     ZyraErrorKind.offline => const ZyraErrorContent(
-      title: 'We couldn’t connect to ZYRA.',
-      message: 'Check your connection, or try again shortly.',
-      primaryLabel: 'Try again',
-      secondaryLabel: 'Return to welcome',
+      'You’re offline.',
+      'ZYRA needs an internet connection to open.',
     ),
     ZyraErrorKind.serviceUnavailable => const ZyraErrorContent(
-      title: 'ZYRA is taking a moment.',
-      message: 'We’re temporarily unavailable. Please try again shortly.',
-      primaryLabel: 'Try again',
-      secondaryLabel: 'Return home',
+      'ZYRA is taking a moment.',
+      'This is on our side, not yours. Your account is safe.',
     ),
-    ZyraErrorKind.sessionExpired => const ZyraErrorContent(
-      title: 'Your session has ended.',
-      message: 'For your security, please sign in again.',
-      primaryLabel: 'Sign in again',
-      secondaryLabel: 'Return to welcome',
-    ),
+    ZyraErrorKind.sessionExpired ||
     ZyraErrorKind.previewAccess => const ZyraErrorContent(
-      title: 'Couldn’t open this page.',
-      message: 'Please try again, or sign out to return to the welcome page.',
-      primaryLabel: 'Try again',
-      secondaryLabel: 'Sign out',
+      'Please sign in again.',
+      'For your security, your session has ended.',
     ),
   };
 }
 
-/// Maps an internal failure to one of the four user-facing states without
-/// ever putting the raw exception on screen.
-ZyraErrorKind zyraErrorKindFor(Object error) {
+/// Welcome's inline errors keep their established wording and classification.
+String zyraInlineErrorMessageFor(Object error) => switch (_classify(
+  error,
+  inline: true,
+)) {
+  ZyraErrorKind.page => 'Something didn’t load correctly. Please try again.',
+  ZyraErrorKind.offline => 'Check your connection, or try again shortly.',
+  ZyraErrorKind.serviceUnavailable =>
+    'We’re temporarily unavailable. Please try again shortly.',
+  ZyraErrorKind.sessionExpired => 'For your security, please sign in again.',
+  ZyraErrorKind.previewAccess =>
+    'Please try again, or sign out to return to the welcome page.',
+};
+
+/// Maps internal failures without putting raw exceptions on screen.
+ZyraErrorKind zyraErrorKindFor(Object error) => _classify(error);
+
+ZyraErrorKind _classify(Object error, {bool inline = false}) {
   if (error is ZyraPreviewAuthorizationException) {
     return ZyraErrorKind.previewAccess;
   }
@@ -125,17 +124,28 @@ ZyraErrorKind zyraErrorKindFor(Object error) {
   ])) {
     return ZyraErrorKind.serviceUnavailable;
   }
+  if (text.contains('network is unreachable') ||
+      (!inline &&
+          _containsAny(text, const [
+            'not connected to the internet',
+            'internet connection appears to be offline',
+            'network is down',
+          ]))) {
+    return ZyraErrorKind.offline;
+  }
   if (_containsAny(text, const [
     'socketexception',
     'failed host lookup',
-    'network is unreachable',
     'network request failed',
     'connection refused',
     'connection reset',
     'connection closed',
     'no address associated',
   ])) {
-    return ZyraErrorKind.offline;
+    return inline ? ZyraErrorKind.offline : ZyraErrorKind.serviceUnavailable;
+  }
+  if (!inline && text.contains('handshakeexception')) {
+    return ZyraErrorKind.serviceUnavailable;
   }
   return ZyraErrorKind.page;
 }

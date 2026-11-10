@@ -5,6 +5,7 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
+import '../widgets/zyra_info_row.dart';
 
 class ZyraDraftSafetyAdvicePresentation extends StatelessWidget {
   const ZyraDraftSafetyAdvicePresentation({
@@ -131,11 +132,11 @@ class ZyraDraftSafetyAdvicePresentation extends StatelessWidget {
               _card([
                 for (final (icon, title, copy)
                     in (guardian ? _guardianTips : _tips))
-                  _AdviceRow(icon: icon, title: title, copy: copy),
+                  ZyraInfoRow(icon: icon, title: title, copy: copy),
               ]),
               SizedBox(height: compact ? 8 : 16),
               _card([
-                _AdviceRow(
+                ZyraInfoRow(
                   key: const ValueKey('draft_safety_advice_report'),
                   icon: Icons.outlined_flag,
                   title: 'Report a profile',
@@ -146,7 +147,7 @@ class ZyraDraftSafetyAdvicePresentation extends StatelessWidget {
                     canAct: canAct,
                   ),
                 ),
-                _AdviceRow(
+                ZyraInfoRow(
                   key: const ValueKey('draft_safety_advice_help'),
                   icon: Icons.help_outline,
                   title: 'Help & support',
@@ -189,71 +190,4 @@ class ZyraDraftSafetyAdvicePresentation extends StatelessWidget {
       ),
     ),
   );
-}
-
-class _AdviceRow extends StatelessWidget {
-  const _AdviceRow({
-    super.key,
-    required this.icon,
-    required this.title,
-    this.copy,
-    this.onTap,
-  });
-  final IconData icon;
-  final String title;
-  final String? copy;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final row = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        crossAxisAlignment: copy == null
-            ? CrossAxisAlignment.center
-            : CrossAxisAlignment.start,
-        children: [
-          ExcludeSemantics(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 2),
-              child: Icon(icon, size: 20, color: ZyraColors.journeyGold),
-            ),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: ZyraText.body(size: 14)),
-                if (copy != null) ...[
-                  const SizedBox(height: 3),
-                  Text(
-                    copy!,
-                    style: ZyraText.subtext(size: 12).copyWith(height: 1.4),
-                  ),
-                ],
-              ],
-            ),
-          ),
-          if (onTap != null) ...[
-            const SizedBox(width: 8),
-            Icon(
-              Icons.chevron_right_rounded,
-              size: 18,
-              color: ZyraColors.ink(.28),
-            ),
-          ],
-        ],
-      ),
-    );
-    return MergeSemantics(
-      child: onTap == null
-          ? row
-          : InkWell(
-              onTap: onTap,
-              borderRadius: BorderRadius.circular(20),
-              child: row,
-            ),
-    );
-  }
 }

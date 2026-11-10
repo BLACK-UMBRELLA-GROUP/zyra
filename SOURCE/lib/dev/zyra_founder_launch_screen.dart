@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 
+import '../models/zyra_error_state.dart';
+import '../screens/auth_gate.dart';
 import '../services/zyra_account_state.dart';
 import '../services/zyra_app_lock.dart';
 import '../services/zyra_developer_access.dart';
@@ -15,6 +17,7 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_full_screen_error.dart';
 import '../widgets/zyra_loading.dart';
+import '../widgets/zyra_tap_feedback.dart';
 import 'dev_discovery_directions.dart';
 import 'zyra_concept_preview_boundary.dart';
 import 'zyra_dev_local_preview.dart';
@@ -41,17 +44,19 @@ class ZyraFounderLaunchScreen extends StatefulWidget {
 }
 
 class _ZyraFounderLaunchScreenState extends State<ZyraFounderLaunchScreen> {
-  bool _opening = false;
-  bool _failed = false;
+  bool _failedWithCurrentOwner = false;
+  String? _errorReference;
   bool _revoked = false;
   late final String _ownerId = widget.ownerId;
   late final int _ownerGeneration = widget.ownerGeneration;
   ZyraLocalPreviewPreparation? _preparation;
 
+  bool get _ownsAccount =>
+      !_revoked && ZyraAccountState.isCurrent(_ownerId, _ownerGeneration);
+
   bool get _current =>
       mounted &&
-      !_revoked &&
-      ZyraAccountState.isCurrent(_ownerId, _ownerGeneration) &&
+      _ownsAccount &&
       ZyraLocalPreviewPreparation.foreground &&
       (ModalRoute.of(context)?.isCurrent ?? false);
 
@@ -62,11 +67,7 @@ class _ZyraFounderLaunchScreenState extends State<ZyraFounderLaunchScreen> {
   }
 
   Future<void> _open() async {
-    if (!_current || _opening) return;
-    setState(() {
-      _opening = true;
-      _failed = false;
-    });
+    if (!_current) return;
     // Standalone/recovery entry retains a real fresh check. AuthGate prepares
     // this same policy beneath splash; neither path can reuse cached proof.
     final preparation = await ZyraDevLocalPreview.prepare(
@@ -89,8 +90,10 @@ class _ZyraFounderLaunchScreenState extends State<ZyraFounderLaunchScreen> {
       return;
     }
     setState(() {
-      _opening = false;
-      _failed = true;
+      _failedWithCurrentOwner = _ownsAccount;
+      _errorReference = zyraErrorReference(
+        const ZyraPreviewAuthorizationException(),
+      );
     });
   }
 
@@ -107,8 +110,9 @@ class _ZyraFounderLaunchScreenState extends State<ZyraFounderLaunchScreen> {
         widget.ownerGeneration != _ownerGeneration) {
       _revoked = true;
       _preparation?.dispose();
-      _opening = false;
-      _failed = true;
+      _errorReference = zyraErrorReference(
+        const ZyraPreviewAuthorizationException(),
+      );
     }
   }
 
@@ -120,19 +124,18 @@ class _ZyraFounderLaunchScreenState extends State<ZyraFounderLaunchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_failed) {
-      return const ZyraQuietLoading();
+    final reference = _errorReference;
+    if (reference == null) return const ZyraQuietLoading();
+    if (!_revoked && _failedWithCurrentOwner) {
+      return AuthGate.afterPreviewFailure(
+        ownerId: _ownerId,
+        ownerGeneration: _ownerGeneration,
+      );
     }
-    return Scaffold(
-      backgroundColor: ZyraColors.luxuryDarkPurple,
-      body: ZyraCompactRecoverySurface(
-        noticeKey: const ValueKey('founder_launch_recovery'),
-        title: 'Couldn’t open this page.',
-        message: 'Please try again.',
-        primaryLabel: 'Try again',
-        primaryKey: const ValueKey('founder_launch_retry'),
-        onPrimary: _open,
-      ),
+    return ZyraFullScreenError(
+      kind: ZyraErrorKind.previewAccess,
+      referenceCode: reference,
+      onPrimary: null,
     );
   }
 }
@@ -952,20 +955,114 @@ class _ZyraFounderReviewSurfaceState extends State<ZyraFounderReviewSurface>
     final revision = _waitRevision;
     final canRecover = _canRecover(epoch, revision);
     return BlockSemantics(
-      child: ZyraCompactRecoverySurface(
-        noticeKey: const ValueKey('founder_resume_recovery'),
-        title: 'Taking a little longer',
+      child: _FounderResumeNotice(
         message: canRecover
             ? 'Your page is still being prepared. You can try again without losing your Journey.'
             : 'Your page isn’t ready yet. Please wait a little longer.',
-        primaryLabel: 'Try again',
-        primaryKey: const ValueKey('founder_resume_retry'),
-        onPrimary: canRecover
-            ? () => _retryPresentation(epoch, revision)
-            : null,
+        onRetry: canRecover ? () => _retryPresentation(epoch, revision) : null,
       ),
     );
   }
+}
+
+/// The bounded preparation notice is a loading state, independent of app errors.
+class _FounderResumeNotice extends StatelessWidget {
+  const _FounderResumeNotice({required this.message, required this.onRetry});
+
+  final String message;
+  final VoidCallback? onRetry;
+
+  Color get _accent => ZyraColors.isLightPalette
+      ? const Color(0xFF76531F)
+      : ZyraColors.journeyGold;
+
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+    decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
+    child: SafeArea(
+      child: LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: (constraints.maxHeight - 40).clamp(0, double.infinity),
+            ),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 440),
+                child: Material(
+                  key: const ValueKey('founder_resume_recovery'),
+                  color: ZyraColors.modalSheetSurface,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                    side: BorderSide(color: ZyraColors.ink(0.18)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Semantics(
+                          liveRegion: true,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Taking a little longer',
+                                style: ZyraText.heading(size: 20),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                message,
+                                style: ZyraText.body(
+                                  size: 14,
+                                  color: ZyraColors.ink(0.86),
+                                ).copyWith(height: 1.45),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 18),
+                        OutlinedButton(
+                          key: const ValueKey('founder_resume_retry'),
+                          onPressed: ZyraTapFeedback.onTap(context, onRetry),
+                          style: OutlinedButton.styleFrom(
+                            minimumSize: const Size(48, 48),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 18,
+                              vertical: 12,
+                            ),
+                            foregroundColor: _accent,
+                            disabledForegroundColor: ZyraColors.ink(0.42),
+                            side: BorderSide(
+                              color: _accent.withValues(alpha: 0.72),
+                            ),
+                            shape: const StadiumBorder(),
+                            textStyle: ZyraText.button(size: 14),
+                          ),
+                          child: Text(
+                            'Try again',
+                            style: TextStyle(
+                              color: onRetry == null
+                                  ? ZyraColors.ink(0.42)
+                                  : ZyraColors.goldText,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 /// Compact delayed progress, never a replacement loading page or access grant.

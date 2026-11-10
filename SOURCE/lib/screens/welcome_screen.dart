@@ -130,7 +130,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       if (!mounted) return;
       setState(() {
         _loadingProvider = null;
-        _error = zyraErrorKindFor(error).content.message;
+        _error = zyraInlineErrorMessageFor(error);
       });
     }
   }

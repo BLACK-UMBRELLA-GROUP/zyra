@@ -1,308 +1,264 @@
-// Branded full-screen failure state.
-//
-// Use this only when the whole route cannot open. Smaller failures stay next
-// to the action that failed through ZyraErrorBanner; an honest empty result
-// stays a ZyraEmptyState. Keeping those three meanings visually distinct is
-// the core of DR-ZYRA-080.
+import 'dart:async';
 
-import 'zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../models/zyra_error_state.dart';
+import '../screens/settings/help_support_screen.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
+import 'zyra_floating_surface.dart';
+import 'zyra_info_row.dart';
+import 'zyra_tap_feedback.dart';
 
-class ZyraFullScreenError extends StatelessWidget {
+/// App-stopping failures use this page. Inline errors and empty states keep
+/// their own presentation.
+class ZyraFullScreenError extends StatefulWidget {
   final ZyraErrorKind kind;
-  final VoidCallback onPrimary;
-  final VoidCallback onSecondary;
+  final Future<void> Function()? onPrimary;
   final String referenceCode;
 
   const ZyraFullScreenError({
     super.key,
     required this.kind,
     required this.onPrimary,
-    required this.onSecondary,
     required this.referenceCode,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final content = kind.content;
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: ZyraColors.isLightPalette
-          ? SystemUiOverlayStyle.dark
-          : SystemUiOverlayStyle.light,
-      child: Scaffold(
-        key: ValueKey('zyra_error_screen_${kind.name}'),
-        body: kind == ZyraErrorKind.previewAccess
-            ? ZyraCompactRecoverySurface(
-                noticeKey: const ValueKey('zyra_error_compact_notice'),
-                title: content.title,
-                message: content.message,
-                primaryLabel: content.primaryLabel,
-                secondaryLabel: content.secondaryLabel,
-                primaryKey: const ValueKey('zyra_error_primary'),
-                secondaryKey: const ValueKey('zyra_error_secondary'),
-                onPrimary: onPrimary,
-                onSecondary: onSecondary,
-                referenceCode: referenceCode,
-              )
-            : DecoratedBox(
-                decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
-                child: SafeArea(
-                  child: LayoutBuilder(
-                    builder: (context, constraints) => SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(30, 28, 30, 24),
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minHeight: constraints.maxHeight - 52,
-                        ),
-                        child: IntrinsicHeight(
-                          child: Column(
-                            children: [
-                              Text('ZYRA', style: ZyraText.wordmark(size: 29)),
-                              Expanded(
-                                child: Semantics(
-                                  liveRegion: true,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const _InterruptedConnectionMark(),
-                                      const SizedBox(height: 30),
-                                      Text(
-                                        content.title,
-                                        textAlign: TextAlign.center,
-                                        style: ZyraText.heading(size: 29),
-                                      ),
-                                      const SizedBox(height: 16),
-                                      ConstrainedBox(
-                                        constraints: const BoxConstraints(
-                                          maxWidth: 310,
-                                        ),
-                                        child: Text(
-                                          content.message,
-                                          textAlign: TextAlign.center,
-                                          style: ZyraText.subtext(size: 14),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: double.infinity,
-                                height: 54,
-                                child: OutlinedButton.icon(
-                                  key: const ValueKey('zyra_error_primary'),
-                                  onPressed: ZyraTapFeedback.onTap(
-                                    context,
-                                    onPrimary,
-                                  ),
-                                  icon: Icon(
-                                    kind == ZyraErrorKind.sessionExpired
-                                        ? Icons.login_rounded
-                                        : Icons.refresh_rounded,
-                                    size: 19,
-                                  ),
-                                  label: Text(
-                                    content.primaryLabel,
-                                    style: const TextStyle(
-                                      color: ZyraColors.goldText,
-                                    ),
-                                  ),
-                                  style: OutlinedButton.styleFrom(
-                                    foregroundColor: ZyraColors.journeyGold,
-                                    backgroundColor: ZyraColors.journeyGold
-                                        .withValues(alpha: 0.10),
-                                    side: BorderSide(
-                                      color: ZyraColors.journeyGold.withValues(
-                                        alpha: 0.88,
-                                      ),
-                                    ),
-                                    shape: const StadiumBorder(),
-                                    textStyle: ZyraText.button(size: 14),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 5),
-                              TextButton(
-                                key: const ValueKey('zyra_error_secondary'),
-                                onPressed: ZyraTapFeedback.onTap(
-                                  context,
-                                  onSecondary,
-                                ),
-                                child: Text(
-                                  content.secondaryLabel,
-                                  style: ZyraText.subtext(
-                                    size: 13,
-                                    color: ZyraColors.ink(0.72),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              Text(
-                                'REFERENCE: $referenceCode',
-                                style: ZyraText.chapterLabel(
-                                  color: ZyraColors.ink(0.34),
-                                ).copyWith(letterSpacing: 1.2),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+  State<ZyraFullScreenError> createState() => _ZyraFullScreenErrorState();
+}
+
+class _ZyraFullScreenErrorState extends State<ZyraFullScreenError>
+    with WidgetsBindingObserver {
+  static const _retrySeconds = 15;
+  Timer? _timer;
+  int _seconds = _retrySeconds;
+  bool _working = false;
+
+  bool get _visible =>
+      (ModalRoute.isCurrentOf(context) ?? true) &&
+      (WidgetsBinding.instance.lifecycleState ?? AppLifecycleState.resumed) ==
+          AppLifecycleState.resumed;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _resetCountdown();
+  }
+
+  @override
+  void didUpdateWidget(ZyraFullScreenError oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.kind != widget.kind ||
+        (oldWidget.onPrimary == null) != (widget.onPrimary == null)) {
+      _resetCountdown();
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    setState(_resetCountdown);
+  }
+
+  void _resetCountdown() {
+    _timer?.cancel();
+    _seconds = _retrySeconds;
+    if (!_visible ||
+        _working ||
+        widget.kind.needsSignIn ||
+        widget.onPrimary == null) {
+      return;
+    }
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      final remaining = _retrySeconds - timer.tick;
+      if (remaining <= 0) {
+        unawaited(_runPrimary());
+      } else {
+        setState(() => _seconds = remaining);
+      }
+    });
+  }
+
+  Future<void> _runPrimary() async {
+    final action = widget.onPrimary;
+    if (_working || !_visible || action == null) return;
+    _timer?.cancel();
+    setState(() => _working = true);
+    try {
+      await action();
+    } finally {
+      if (mounted) {
+        setState(() {
+          _working = false;
+          _resetCountdown();
+        });
+      }
+    }
+  }
+
+  void _openSupport() {
+    if (!_visible) return;
+    final reference = widget.referenceCode;
+    Navigator.of(context).push<void>(
+      MaterialPageRoute(
+        builder: (_) => HelpSupportScreen(errorReference: reference),
       ),
     );
   }
-}
-
-/// Quiet, compact recovery instead of a technical full-page interruption.
-/// This is presentation only: the caller still owns every permission check,
-/// recovery deadline, disabled state and guarded action. It never retains a
-/// private page behind an unsuccessful check or grants access itself.
-class ZyraCompactRecoverySurface extends StatelessWidget {
-  const ZyraCompactRecoverySurface({
-    super.key,
-    required this.noticeKey,
-    required this.title,
-    required this.message,
-    required this.primaryLabel,
-    this.secondaryLabel,
-    required this.primaryKey,
-    this.secondaryKey,
-    required this.onPrimary,
-    this.onSecondary,
-    this.referenceCode,
-  });
-
-  final Key noticeKey;
-  final String title;
-  final String message;
-  final String primaryLabel;
-  final String? secondaryLabel;
-  final Key primaryKey;
-  final Key? secondaryKey;
-  final VoidCallback? onPrimary;
-  final VoidCallback? onSecondary;
-  final String? referenceCode;
-
-  Color get _accent => ZyraColors.isLightPalette
-      ? const Color(0xFF76531F)
-      : ZyraColors.journeyGold;
 
   @override
-  Widget build(BuildContext context) => DecoratedBox(
-    decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
-    child: SafeArea(
-      child: LayoutBuilder(
-        builder: (context, constraints) => SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: (constraints.maxHeight - 40).clamp(0, double.infinity),
-            ),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 440),
-                child: Material(
-                  key: noticeKey,
-                  color: ZyraColors.modalSheetSurface,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24),
-                    side: BorderSide(color: ZyraColors.ink(0.18)),
+  void dispose() {
+    _timer?.cancel();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final kind = widget.kind;
+    final content = kind.content;
+    final signIn = kind.needsSignIn;
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.dark,
+      child: Scaffold(
+        key: ValueKey('zyra_error_screen_${kind.name}'),
+        body: DecoratedBox(
+          decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
+          child: SafeArea(
+            child: LayoutBuilder(
+              builder: (context, constraints) => SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(20, 5, 20, 32),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: (constraints.maxHeight - 37).clamp(
+                      0,
+                      double.infinity,
+                    ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
+                  child: IntrinsicHeight(
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        Text(
+                          'ZYRA',
+                          textAlign: TextAlign.center,
+                          style: ZyraText.wordmark(
+                            size: 23,
+                          ).copyWith(letterSpacing: 6),
+                        ),
+                        const SizedBox(height: 20),
+                        const Spacer(),
                         Semantics(
                           liveRegion: true,
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(title, style: ZyraText.heading(size: 20)),
-                              const SizedBox(height: 10),
+                              const _InterruptedConnectionMark(),
                               Text(
-                                message,
-                                style: ZyraText.body(
-                                  size: 14,
-                                  color: ZyraColors.ink(0.86),
-                                ).copyWith(height: 1.45),
+                                content.title,
+                                textAlign: TextAlign.center,
+                                style: ZyraText.heading(size: 26),
+                              ),
+                              const SizedBox(height: 9),
+                              Text(
+                                content.message,
+                                textAlign: TextAlign.center,
+                                style: ZyraText.subtext(size: 14),
                               ),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 18),
-                        OutlinedButton(
-                          key: primaryKey,
-                          onPressed: ZyraTapFeedback.onTap(context, onPrimary),
-                          style: OutlinedButton.styleFrom(
-                            minimumSize: const Size(48, 48),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 18,
-                              vertical: 12,
+                        const SizedBox(height: 17),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 3),
+                          child: Text(
+                            'WHAT YOU CAN TRY',
+                            style: ZyraText.chapterLabel(
+                              color: ZyraColors.goldText,
+                            ).copyWith(fontSize: 10, letterSpacing: 1.2),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        _ErrorHelpCard(kind: kind),
+                        const SizedBox(height: 42),
+                        const Spacer(),
+                        const SizedBox(height: 20),
+                        if (!signIn)
+                          Text(
+                            _working
+                                ? 'Trying again…'
+                                : 'Trying again in $_seconds s',
+                            textAlign: TextAlign.center,
+                            style: ZyraText.subtext(size: 12),
+                          ),
+                        const SizedBox(height: 4),
+                        ZyraFloatingSurface(
+                          radius: 999,
+                          child: OutlinedButton(
+                            key: const ValueKey('zyra_error_primary'),
+                            onPressed: ZyraTapFeedback.onTap(
+                              context,
+                              _working || widget.onPrimary == null
+                                  ? null
+                                  : _runPrimary,
                             ),
-                            foregroundColor: _accent,
-                            disabledForegroundColor: ZyraColors.ink(0.42),
-                            side: BorderSide(
-                              color: _accent.withValues(alpha: 0.72),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: ZyraColors.goldText,
+                              backgroundColor: ZyraColors.lowerSurface,
+                              disabledForegroundColor: signIn
+                                  ? ZyraColors.quietText
+                                  : ZyraColors.goldText,
+                              disabledBackgroundColor: ZyraColors.lowerSurface,
+                              minimumSize: const Size(48, 48),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 10,
+                              ),
+                              side: const BorderSide(color: ZyraColors.divider),
+                              shape: const StadiumBorder(),
+                              textStyle: ZyraText.button(size: 13),
                             ),
-                            shape: const StadiumBorder(),
-                            textStyle: ZyraText.button(size: 14),
+                            child: Text(
+                              signIn
+                                  ? 'Sign in again'
+                                  : _working
+                                  ? 'Connecting…'
+                                  : 'Try again',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        TextButton(
+                          key: const ValueKey('zyra_error_secondary'),
+                          onPressed: ZyraTapFeedback.onTap(
+                            context,
+                            _openSupport,
                           ),
                           child: Text(
-                            primaryLabel,
-                            style: TextStyle(
-                              color: onPrimary == null
-                                  ? ZyraColors.ink(0.42)
-                                  : ZyraColors.goldText,
+                            'Contact support',
+                            style: ZyraText.button(
+                              size: 13,
+                              color: ZyraColors.foreground,
                             ),
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        if (secondaryLabel != null) ...[
-                          const SizedBox(height: 4),
-                          TextButton(
-                            key: secondaryKey,
-                            onPressed: ZyraTapFeedback.onTap(
-                              context,
-                              onSecondary,
-                            ),
-                            style: TextButton.styleFrom(
-                              minimumSize: const Size(48, 48),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 12,
-                              ),
-                              foregroundColor: ZyraColors.ink(0.86),
-                              disabledForegroundColor: ZyraColors.ink(0.42),
-                              textStyle: ZyraText.button(size: 14),
-                            ),
-                            child: Text(
-                              secondaryLabel!,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                        if (referenceCode case final reference?) ...[
-                          const SizedBox(height: 6),
-                          Text(
-                            'REFERENCE: $reference',
-                            textAlign: TextAlign.center,
-                            style: ZyraText.subtext(
-                              size: 11,
-                              color: ZyraColors.ink(0.72),
-                            ),
-                          ),
-                        ],
+                        const SizedBox(height: 5),
+                        Text(
+                          'REFERENCE: ${widget.referenceCode}',
+                          textAlign: TextAlign.center,
+                          style: ZyraText.chapterLabel(
+                            color: ZyraColors.foregroundMuted,
+                          ).copyWith(fontSize: 10, letterSpacing: 1.2),
+                        ),
+                        const SizedBox(height: 3),
                       ],
                     ),
                   ),
@@ -312,8 +268,96 @@ class ZyraCompactRecoverySurface extends StatelessWidget {
           ),
         ),
       ),
-    ),
+    );
+  }
+}
+
+class _ErrorHelpCard extends StatelessWidget {
+  const _ErrorHelpCard({required this.kind});
+
+  final ZyraErrorKind kind;
+
+  static const _retry = ZyraInfoRow(
+    iconGap: 9,
+    copySize: 11.5,
+    icon: Icons.refresh_rounded,
+    title: 'We keep trying',
+    copy: 'ZYRA tries again on its own while this page is open.',
   );
+  static const _support = ZyraInfoRow(
+    iconGap: 9,
+    copySize: 11.5,
+    icon: Icons.help_outline_rounded,
+    title: 'Still stuck?',
+    copy: 'Contact support and quote the reference below.',
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    final rows = switch (kind) {
+      ZyraErrorKind.offline => const [
+        ZyraInfoRow(
+          iconGap: 9,
+          copySize: 11.5,
+          icon: Icons.wifi_rounded,
+          title: 'Check Wi-Fi or mobile data',
+          copy: 'Turn it off and on again, or move closer to your router.',
+        ),
+        _retry,
+        _support,
+      ],
+      ZyraErrorKind.serviceUnavailable => const [
+        _retry,
+        ZyraInfoRow(
+          iconGap: 9,
+          copySize: 12,
+          icon: Icons.lock_outline_rounded,
+          title: 'Nothing changes while we’re away',
+          copy: 'Your profile, Journeys and messages stay as they were.',
+        ),
+        _support,
+      ],
+      ZyraErrorKind.sessionExpired || ZyraErrorKind.previewAccess => const [
+        ZyraInfoRow(
+          iconGap: 9,
+          copySize: 11.5,
+          icon: Icons.lock_outline_rounded,
+          title: 'Why this happens',
+          copy: 'Sessions end after a long time away or a password change.',
+        ),
+        ZyraInfoRow(
+          iconGap: 9,
+          copySize: 11.5,
+          icon: Icons.help_outline_rounded,
+          title: 'Can’t sign in?',
+          copy: 'Contact support and quote the reference below.',
+        ),
+      ],
+      ZyraErrorKind.page => const [_retry, _support],
+    };
+    return ZyraFloatingSurface(
+      radius: 20,
+      child: Container(
+        decoration: BoxDecoration(
+          color: ZyraColors.surfaceFill,
+          border: Border.all(color: ZyraColors.surfaceBorder),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          children: [
+            for (var i = 0; i < rows.length; i++) ...[
+              if (i > 0)
+                const Padding(
+                  padding: EdgeInsets.only(left: 54, right: 16),
+                  child: Divider(height: 1, color: ZyraColors.divider),
+                ),
+              rows[i],
+            ],
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class _InterruptedConnectionMark extends StatelessWidget {

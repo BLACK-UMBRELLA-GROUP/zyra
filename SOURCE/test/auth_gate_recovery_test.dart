@@ -17,6 +17,7 @@ import 'package:zyra/main.dart';
 import 'package:zyra/models/zyra_error_state.dart';
 import 'package:zyra/screens/auth_gate.dart';
 import 'package:zyra/screens/home/home_shell.dart';
+import 'package:zyra/screens/settings/help_support_screen.dart';
 import 'package:zyra/screens/welcome_screen.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
@@ -244,9 +245,9 @@ void main() {
       final recovery = tester.widget<ZyraFullScreenError>(
         find.byType(ZyraFullScreenError),
       );
-      expect(recovery.kind, ZyraErrorKind.offline);
-      expect(find.text('We couldn’t connect to ZYRA.'), findsOneWidget);
-      expect(find.text('Return to welcome'), findsOneWidget);
+      expect(recovery.kind, ZyraErrorKind.serviceUnavailable);
+      expect(find.text('ZYRA is taking a moment.'), findsOneWidget);
+      expect(find.text('Contact support'), findsOneWidget);
       expect(find.textContaining('private-diagnostic-marker'), findsNothing);
 
       _emit(event);
@@ -260,14 +261,62 @@ void main() {
       expect(AppState.instance.name, 'Member A');
       // A retained error-screen action cannot start another request after
       // recovery has advanced the rendered route/request lifetime.
-      recovery.onPrimary();
-      recovery.onSecondary();
+      await recovery.onPrimary!();
       await _settle(tester);
       expect(refreshes, initialRefreshes + 1);
       expect(find.byType(WelcomeScreen), findsNothing);
       await _dispose(tester);
     });
   }
+
+  testWidgets('fast retry failure changes words on the same AuthGate page', (
+    tester,
+  ) async {
+    await _mount(tester);
+    _streamError();
+    await _settle(tester);
+    final errorPage = find.byType(ZyraFullScreenError);
+    final initialState = tester.state(errorPage);
+    expect(find.text('ZYRA is taking a moment.'), findsOneWidget);
+    profileReplyError = true;
+    await tester.tap(find.text('Try again'));
+    for (var frame = 0; frame < 20; frame++) {
+      await tester.pump(const Duration(milliseconds: 16));
+      expect(errorPage, findsOneWidget);
+      expect(tester.state(errorPage), same(initialState));
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 1)),
+      );
+    }
+    expect(find.text('Please sign in again.'), findsOneWidget);
+    expect(find.textContaining('Trying again'), findsNothing);
+    await _dispose(tester);
+  });
+
+  testWidgets('Help returns to the same AuthGate error without retrying', (
+    tester,
+  ) async {
+    await _mount(tester);
+    final initialRefreshes = refreshes;
+    _streamError();
+    await _settle(tester);
+    final error = tester.widget<ZyraFullScreenError>(
+      find.byType(ZyraFullScreenError),
+    );
+    await tester.tap(find.text('Contact support'));
+    await tester.pumpAndSettle();
+    expect(find.byType(HelpSupportScreen), findsOneWidget);
+    expect(find.text('REFERENCE: ${error.referenceCode}'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 30));
+    expect(refreshes, initialRefreshes);
+    tester.state<NavigatorState>(find.byType(Navigator)).pop();
+    await tester.pumpAndSettle();
+    expect(find.byType(ZyraFullScreenError), findsOneWidget);
+    expect(find.text('REFERENCE: ${error.referenceCode}'), findsOneWidget);
+    expect(find.text('Trying again in 15 s'), findsOneWidget);
+    expect(refreshes, initialRefreshes);
+    await _dispose(tester);
+  });
 
   testWidgets('non-success and wrong-session events keep recovery held', (
     tester,
@@ -305,8 +354,7 @@ void main() {
     expect(supabase.auth.currentUser?.id, _b);
     expect(AppState.instance.name, 'Member B');
     final replacementRefreshes = refreshes;
-    oldRecovery.onPrimary();
-    oldRecovery.onSecondary();
+    await oldRecovery.onPrimary!();
     _emit(AuthChangeEvent.tokenRefreshed);
     await _settle(tester);
     expect(refreshes, replacementRefreshes);
@@ -328,8 +376,7 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
     await _settle(tester);
     final initialRefreshes = refreshes;
-    oldRecovery.onPrimary();
-    oldRecovery.onSecondary();
+    await oldRecovery.onPrimary!();
     _emit(AuthChangeEvent.tokenRefreshed);
     await _settle(tester);
     expect(refreshes, initialRefreshes);
@@ -380,7 +427,7 @@ void main() {
         await tester.pump(elapsed);
         expect(find.byType(ZyraFullScreenError), findsNothing);
         expect(find.text('Preview access needs checking.'), findsNothing);
-        expect(find.text('Couldn’t open this page.'), findsNothing);
+        expect(find.text('Please sign in again.'), findsNothing);
         expect(find.text('ZYRA'), findsNothing);
         expect(find.byType(HomeShell), findsNothing);
         expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);
@@ -389,8 +436,7 @@ void main() {
       }
       // A callback retained from the old failure cannot retry or sign out the
       // owner while this newer proof request is pending.
-      oldRecovery.onPrimary();
-      oldRecovery.onSecondary();
+      await oldRecovery.onPrimary!();
       await tester.pump();
       expect(refreshes, initialRefreshes + 1);
       expect(supabase.auth.currentUser?.id, _founder);
@@ -401,11 +447,11 @@ void main() {
         find.byType(ZyraFullScreenError),
       );
       expect(recovery.kind, ZyraErrorKind.previewAccess);
-      expect(find.text('Couldn’t open this page.'), findsOneWidget);
-      expect(find.text('Sign out'), findsOneWidget);
+      expect(find.text('Please sign in again.'), findsOneWidget);
+      expect(find.text('Sign in again'), findsOneWidget);
       expect(
         find.byKey(const ValueKey('zyra_error_compact_notice')),
-        findsOneWidget,
+        findsNothing,
       );
       expect(refreshes, initialRefreshes + 1);
       expect(requests, initialRequests);

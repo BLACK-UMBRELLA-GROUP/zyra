@@ -39,6 +39,7 @@ import 'safety_case_status_screen.dart';
 class HelpSupportScreen extends StatefulWidget {
   final ZyraTelemetrySurface telemetrySurface;
   final String initialQuery;
+  final String? errorReference;
   final bool _preview;
   final bool Function()? _previewCanAct;
   final List<ZyraHelpCategory>? _previewCategories;
@@ -48,6 +49,7 @@ class HelpSupportScreen extends StatefulWidget {
     super.key,
     this.telemetrySurface = ZyraTelemetrySurface.seeker,
     this.initialQuery = '',
+    this.errorReference,
   }) : _preview = false,
        _previewCanAct = null,
        _previewCategories = null,
@@ -62,7 +64,8 @@ class HelpSupportScreen extends StatefulWidget {
     required List<ZyraHelpCategory> categories,
     this.initialQuery = '',
     this.embedded = true,
-  }) : _preview = true,
+  }) : errorReference = null,
+       _preview = true,
        _previewCanAct = canAct,
        _previewCategories = categories,
        telemetrySurface = ZyraTelemetrySurface.seeker;
@@ -250,6 +253,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
     // the widget in place, either. Its owner must mount a distinct route.
     if (widget._preview) return const SizedBox.shrink();
     final results = _filtered;
+    final reference = widget.errorReference;
     // SafeArea's top inset covers the status bar only, not the toolbar —
     // so with the body extended behind the AppBar, content needs both.
     final topInset = MediaQuery.of(context).padding.top + kToolbarHeight;
@@ -263,39 +267,48 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
         iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
       ),
       body: Container(
-        // Only ever reached from inside a signed-in profile, so gender is
-        // known — gender-matched gradient like every other profile-context
-        // screen (DR-ZYRA-094 / OA-ZYRA-123).
         decoration: ZyraAppGoldDecoration(
           gradient: ZyraColors.genderGradient(AppState.instance.gender),
         ),
         child: ListView(
           padding: EdgeInsets.fromLTRB(20, topInset + 8, 20, 40),
           children: [
+            if (reference != null) ...[
+              Text(
+                'REFERENCE: $reference',
+                textAlign: TextAlign.center,
+                style: ZyraText.chapterLabel(color: ZyraColors.foregroundMuted),
+              ),
+              const SizedBox(height: 12),
+            ],
             _SearchField(controller: _search, onChanged: _changeQuery),
             const SizedBox(height: 12),
-            OutlinedButton.icon(
-              key: const ValueKey('support-safety-case-status'),
-              onPressed: ZyraTapFeedback.onTap(
-                context,
-                () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const SafetyCaseStatusScreen(),
+            if (reference == null)
+              OutlinedButton.icon(
+                key: const ValueKey('support-safety-case-status'),
+                onPressed: ZyraTapFeedback.onTap(
+                  context,
+                  () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const SafetyCaseStatusScreen(),
+                    ),
                   ),
                 ),
+                icon: const Icon(Icons.verified_user_outlined, size: 18),
+                label: Text(
+                  'Your safety reports',
+                  style: ZyraText.button(size: 12.5),
+                ),
               ),
-              icon: const Icon(Icons.verified_user_outlined, size: 18),
-              label: Text(
-                'Your safety reports',
-                style: ZyraText.button(size: 12.5),
-              ),
-            ),
             SizedBox(height: 22),
 
             ..._faqContent(results),
 
             SizedBox(height: 4),
-            _ContactCard(telemetrySurface: widget.telemetrySurface),
+            _ContactCard(
+              telemetrySurface: widget.telemetrySurface,
+              showAccount: reference == null,
+            ),
           ],
         ),
       ),
@@ -470,7 +483,12 @@ class _NoResults extends StatelessWidget {
 class _ContactCard extends StatelessWidget {
   final ZyraTelemetrySurface telemetrySurface;
 
-  const _ContactCard({required this.telemetrySurface});
+  final bool showAccount;
+
+  const _ContactCard({
+    required this.telemetrySurface,
+    required this.showAccount,
+  });
 
   Future<void> _emailSupport(BuildContext context) async {
     ZyraProductTelemetry.instance.record(
@@ -512,7 +530,7 @@ class _ContactCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final email = ZyraAuth.currentUser?.email;
+    final email = showAccount ? ZyraAuth.currentUser?.email : null;
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(

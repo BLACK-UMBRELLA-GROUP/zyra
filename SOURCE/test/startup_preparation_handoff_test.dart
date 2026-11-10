@@ -1272,7 +1272,7 @@ void main() {
         await _zeroFrames(tester);
         expect(find.byType(ZyraFounderReviewSurface), findsNothing);
         expect(AppState.instance.name, isNull);
-        expect(find.text('Couldn’t open this page.'), findsOneWidget);
+        expect(find.text('Please sign in again.'), findsOneWidget);
         expect(forwarded, isEmpty);
       } finally {
         await close(tester);
