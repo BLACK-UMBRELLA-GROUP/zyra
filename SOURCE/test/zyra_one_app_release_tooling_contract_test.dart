@@ -151,6 +151,17 @@ void main() {
     final source = File('lib/main.dart').readAsStringSync();
     expect(source, contains('if (kReleaseMode)'));
     expect(source, contains('ErrorWidget.builder'));
+    // Q59: the release builder must opt into the manual-restart fallback.
+    expect(
+      source,
+      matches(
+        RegExp(
+          r'if \(kReleaseMode\) \{\s+ErrorWidget\.builder = \(details\) \{'
+          r'[\s\S]*?return ZyraFullScreenError\.frameworkFallback\('
+          r'[\s\S]*?onRestart: \(\) async => _restartAfterFatalError\(\)',
+        ),
+      ),
+    );
   });
 
   test('Guardian shell removes its developer listener after claim loss', () {

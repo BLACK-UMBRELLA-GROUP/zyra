@@ -139,10 +139,9 @@ void main() async {
         'ZYRA page build failed [$reference]\n'
         '${details.exception}\n${details.stack}',
       );
-      return ZyraFullScreenError(
-        kind: ZyraErrorKind.page,
+      return ZyraFullScreenError.frameworkFallback(
         referenceCode: reference,
-        onPrimary: () async => _restartAfterFatalError(),
+        onRestart: () async => _restartAfterFatalError(),
       );
     };
   }

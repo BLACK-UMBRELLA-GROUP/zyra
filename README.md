@@ -13,8 +13,9 @@ The app has no developer rail, Home/Preview/Actions panel, comparison picker, ro
 See [ROADMAP.md](ROADMAP.md) for the next work, including bringing the full test suite back to green. The baseline and final interface milestone stays open until queues 44, 73 and 75 are built and the full suite passes.
 
 When the app or a screen cannot open, ZYRA shows one error page with help for
-that failure. Connection and page errors retry every 15 seconds while the page
-is open. Contact support opens Help & Support with the error reference.
+that failure. Connection and route errors can retry every 15 seconds while the
+page is open. On the release framework fallback, Try again restarts the app
+when pressed. Contact support opens Help & Support with the error reference.
 
 The empty Guardian tab offers Add a Guardian. Browse gives one haptic tick for
 an accepted photo action, including the accessible Next page control.

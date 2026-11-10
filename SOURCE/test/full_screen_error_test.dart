@@ -154,10 +154,48 @@ void main() {
       } else {
         expect(find.text('Trying again in 15 s'), findsOneWidget);
         expect(find.text('Try again'), findsOneWidget);
+        if (entry.key == ZyraErrorKind.page) {
+          // Q59 preserves the timer on ordinary, route-owned page errors.
+          await tester.pump(const Duration(seconds: 15));
+          expect(calls, 1);
+        }
       }
       await tester.pumpWidget(const SizedBox.shrink());
     });
   }
+
+  // Q59 / LOCK 23: the release fallback uses page copy and manual restart.
+  testWidgets('framework fallback never restarts without Try again', (
+    tester,
+  ) async {
+    var restarts = 0;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ZyraFullScreenError.frameworkFallback(
+          referenceCode: 'ZY-TEST',
+          onRestart: () async => restarts++,
+        ),
+      ),
+    );
+
+    expect(find.text('We couldn’t open this page.'), findsOneWidget);
+    expect(find.text('Something didn’t load correctly.'), findsOneWidget);
+    expect(find.text('Still stuck?'), findsOneWidget);
+    expect(find.text('Contact support'), findsOneWidget);
+    expect(find.text('We keep trying'), findsNothing);
+    expect(find.textContaining('Trying again'), findsNothing);
+    expect(find.text('Try again'), findsOneWidget);
+
+    await tester.pump(const Duration(minutes: 1));
+    expect(restarts, 0);
+    expect(find.text('Try again'), findsOneWidget);
+    await tester.tap(_primary);
+    await tester.pump();
+    expect(restarts, 1);
+    await tester.pump(const Duration(minutes: 1));
+    expect(restarts, 1);
+    expect(find.textContaining('Trying again'), findsNothing);
+  });
 
   testWidgets(
     'retry starts at 15 s, disables overlap, and restarts on failure',

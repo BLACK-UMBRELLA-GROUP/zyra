@@ -17,13 +17,23 @@ class ZyraFullScreenError extends StatefulWidget {
   final ZyraErrorKind kind;
   final Future<void> Function()? onPrimary;
   final String referenceCode;
+  final bool _allowAutoRetry;
 
   const ZyraFullScreenError({
     super.key,
     required this.kind,
     required this.onPrimary,
     required this.referenceCode,
-  });
+  }) : _allowAutoRetry = true;
+
+  /// Q59 / LOCK 23: a framework build error can only restart on request.
+  const ZyraFullScreenError.frameworkFallback({
+    super.key,
+    required Future<void> Function() onRestart,
+    required this.referenceCode,
+  }) : kind = ZyraErrorKind.page,
+       onPrimary = onRestart,
+       _allowAutoRetry = false;
 
   @override
   State<ZyraFullScreenError> createState() => _ZyraFullScreenErrorState();
@@ -57,6 +67,7 @@ class _ZyraFullScreenErrorState extends State<ZyraFullScreenError>
   void didUpdateWidget(ZyraFullScreenError oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.kind != widget.kind ||
+        oldWidget._allowAutoRetry != widget._allowAutoRetry ||
         (oldWidget.onPrimary == null) != (widget.onPrimary == null)) {
       _resetCountdown();
     }
@@ -72,6 +83,7 @@ class _ZyraFullScreenErrorState extends State<ZyraFullScreenError>
     _seconds = _retrySeconds;
     if (!_visible ||
         _working ||
+        !widget._allowAutoRetry ||
         widget.kind.needsSignIn ||
         widget.onPrimary == null) {
       return;
@@ -185,11 +197,14 @@ class _ZyraFullScreenErrorState extends State<ZyraFullScreenError>
                           ),
                         ),
                         const SizedBox(height: 8),
-                        _ErrorHelpCard(kind: kind),
+                        _ErrorHelpCard(
+                          kind: kind,
+                          allowPageRetry: widget._allowAutoRetry,
+                        ),
                         const SizedBox(height: 42),
                         const Spacer(),
                         const SizedBox(height: 20),
-                        if (!signIn)
+                        if (!signIn && widget._allowAutoRetry)
                           Text(
                             _working
                                 ? 'Trying again…'
@@ -273,9 +288,10 @@ class _ZyraFullScreenErrorState extends State<ZyraFullScreenError>
 }
 
 class _ErrorHelpCard extends StatelessWidget {
-  const _ErrorHelpCard({required this.kind});
+  const _ErrorHelpCard({required this.kind, required this.allowPageRetry});
 
   final ZyraErrorKind kind;
+  final bool allowPageRetry;
 
   static const _retry = ZyraInfoRow(
     iconGap: 9,
@@ -333,7 +349,7 @@ class _ErrorHelpCard extends StatelessWidget {
           copy: 'Contact support and quote the reference below.',
         ),
       ],
-      ZyraErrorKind.page => const [_retry, _support],
+      ZyraErrorKind.page => [if (allowPageRetry) _retry, _support],
     };
     return ZyraFloatingSurface(
       radius: 20,
