@@ -1,0 +1,579 @@
+{
+  "failures": [
+    {
+      "file": "SOURCE/test/zyra_subscription_wallet_preview_test.dart",
+      "test": "confirmed zero Family places is a plain empty state at normal size",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0641"
+      ],
+      "finding": "empty-family-wallet",
+      "reason": "The Family wallet SliverFillRemaining requests intrinsic height from a child LayoutBuilder. This is separate from the Guardian tab and still throws at both tested sizes.",
+      "failed_at_post74": true,
+      "question": 62
+    },
+    {
+      "file": "SOURCE/test/zyra_subscription_wallet_preview_test.dart",
+      "test": "confirmed zero Family places is a plain empty state at compact200 size",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0640"
+      ],
+      "finding": "empty-family-wallet",
+      "reason": "The Family wallet SliverFillRemaining requests intrinsic height from a child LayoutBuilder. This is separate from the Guardian tab and still throws at both tested sizes.",
+      "failed_at_post74": true,
+      "question": 62
+    },
+    {
+      "file": "SOURCE/test/one_journey_back_button_preview_test.dart",
+      "test": "Circle edge returns from Journey through the same Topics draft",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0194"
+      ],
+      "finding": "circle-parent",
+      "reason": "The route returns to Topics but replaces the Circle state and draft controller after View Journey. R1 requires the immediate parent to stay mounted.",
+      "failed_at_post74": false,
+      "question": 64
+    },
+    {
+      "file": "SOURCE/test/one_journey_back_button_preview_test.dart",
+      "test": "Compact 2x Circle and Settings retain edge return without Back chrome or clipped controls",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0190"
+      ],
+      "finding": "circle-keyboard",
+      "reason": "The current Topics composer Column overflows by 65–80 px with a long draft at the compact Larger Text keyboard viewport. Send cannot be reached.",
+      "failed_at_post74": true,
+      "question": 63
+    },
+    {
+      "file": "SOURCE/test/one_journey_pull_down_routes_test.dart",
+      "test": "Journey body retains vertical stage traversal; Back returns one route fromOptions=true",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0307"
+      ],
+      "finding": "options-parent",
+      "reason": "The route returns to Options but recreates the parent Element after the Journey reader or End confirmation was opened from it.",
+      "failed_at_post74": false,
+      "question": 65
+    },
+    {
+      "file": "SOURCE/test/one_journey_pull_down_routes_test.dart",
+      "test": "end confirmation pull is inert and Keep this Journey still works",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0308"
+      ],
+      "finding": "options-parent",
+      "reason": "The route returns to Options but recreates the parent Element after the Journey reader or End confirmation was opened from it.",
+      "failed_at_post74": true,
+      "question": 65
+    },
+    {
+      "file": "SOURCE/test/view_request_draft_widget_test.dart",
+      "test": "preview exposes no Pause; End stays deliberate, retains history and reset is draft-only",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0436"
+      ],
+      "finding": "detail-cancel",
+      "reason": "Tapping the hit-testable Cancel button leaves the Journey detail options sheet mounted and prevents the R1 detail-return assertion from completing.",
+      "failed_at_post74": true,
+      "question": 67
+    },
+    {
+      "file": "SOURCE/test/view_request_draft_widget_test.dart",
+      "test": "stale Guardian grants refuse after stage progress",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0449"
+      ],
+      "finding": "access-card-wrap",
+      "reason": "The Additional Guardian access side overflows by 8.3 px at 320×568 and 2× text and by 3.3 px at 390×844 after a Journey advances.",
+      "failed_at_post74": true,
+      "question": 66
+    },
+    {
+      "file": "SOURCE/test/view_request_draft_widget_test.dart",
+      "test": "fresh whole-app real-font candidates are not approval_compact200_final",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0423"
+      ],
+      "finding": "access-card-wrap",
+      "reason": "The Additional Guardian access side overflows by 8.3 px at 320×568 and 2× text and by 3.3 px at 390×844 after a Journey advances.",
+      "failed_at_post74": true,
+      "question": 66
+    },
+    {
+      "file": "SOURCE/test/one_journey_bottom_close_cue_test.dart",
+      "test": "Circle Journey child returns once by edge and accessible Back",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0197"
+      ],
+      "finding": "circle-parent",
+      "reason": "The route returns to Topics but replaces the Circle state and draft controller after View Journey. R1 requires the immediate parent to stay mounted.",
+      "failed_at_post74": false,
+      "question": 64
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "overview_advanced Seeker normal is an internal-only non-executing specification hold",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0105"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "overview_advanced Seeker compact200 is an internal-only non-executing specification hold",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0104"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "detail_resetProfile Seeker normal is an internal-only non-executing specification hold",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0100"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "detail_resetProfile Seeker compact200 is an internal-only non-executing specification hold",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0099"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "detail_deleteAccount Seeker normal is an internal-only non-executing specification hold",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0096"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "detail_deleteAccount Seeker compact200 is an internal-only non-executing specification hold",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0095"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "overview_advanced Guardian normal is an internal-only non-executing specification hold",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0103"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "overview_advanced Guardian compact200 is an internal-only non-executing specification hold",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0102"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "detail_resetProfile Guardian normal is an internal-only non-executing specification hold",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0098"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "detail_resetProfile Guardian compact200 is an internal-only non-executing specification hold",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0097"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "detail_deleteAccount Guardian normal is an internal-only non-executing specification hold",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0094"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "detail_deleteAccount Guardian compact200 is an internal-only non-executing specification hold",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0093"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "Seeker overview_privacyData 393pxnormal is white readable and accessible",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0092"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "Seeker overview_privacyData 320px200% is white readable and accessible",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0091"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "Seeker detail_privacyPolicy 393pxnormal is white readable and accessible",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0087"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "Seeker detail_privacyPolicy 320px200% is white readable and accessible",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0086"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "Seeker detail_terms 393pxnormal is white readable and accessible",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0089"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "Seeker detail_terms 320px200% is white readable and accessible",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0088"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "Guardian overview_privacyData 393pxnormal is white readable and accessible",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0084"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "Guardian overview_privacyData 320px200% is white readable and accessible",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0083"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "Guardian detail_privacyPolicy 393pxnormal is white readable and accessible",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0079"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "Guardian detail_privacyPolicy 320px200% is white readable and accessible",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0078"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "Guardian detail_terms 393pxnormal is white readable and accessible",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0081"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "Guardian detail_terms 320px200% is white readable and accessible",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0080"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "Seeker button actual shell white canvas status return and theme restoration",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0085"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "Seeker edge actual shell white canvas status return and theme restoration",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0090"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "Guardian button actual shell white canvas status return and theme restoration",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0077"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/founder_launch_review_test.dart",
+      "test": "Guardian edge actual shell white canvas status return and theme restoration",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0082"
+      ],
+      "finding": "ivory-attention",
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "failed_at_post74": true,
+      "question": 61
+    },
+    {
+      "file": "SOURCE/test/guardian_circle_topic_options_test.dart",
+      "test": "embedded discuss control current supports compact keyboard and long draft",
+      "result": "error",
+      "mapped_ids": [
+        "Q73-C0119"
+      ],
+      "finding": "circle-keyboard",
+      "reason": "The current Topics composer Column overflows by 65–80 px with a long draft at the compact Larger Text keyboard viewport. Send cannot be reached.",
+      "failed_at_post74": true,
+      "question": 63
+    }
+  ],
+  "open_findings": [
+    {
+      "question": 61,
+      "reason": "LOCK 14 V5 requires the Ivory page background; the current launch-attention scaffold and page surfaces use Espresso.",
+      "related_case_ids": [
+        "Q73-C0077",
+        "Q73-C0078",
+        "Q73-C0079",
+        "Q73-C0080",
+        "Q73-C0081",
+        "Q73-C0082",
+        "Q73-C0083",
+        "Q73-C0084",
+        "Q73-C0085",
+        "Q73-C0086",
+        "Q73-C0087",
+        "Q73-C0088",
+        "Q73-C0089",
+        "Q73-C0090",
+        "Q73-C0091",
+        "Q73-C0092",
+        "Q73-C0093",
+        "Q73-C0094",
+        "Q73-C0095",
+        "Q73-C0096",
+        "Q73-C0097",
+        "Q73-C0098",
+        "Q73-C0099",
+        "Q73-C0100",
+        "Q73-C0102",
+        "Q73-C0103",
+        "Q73-C0104",
+        "Q73-C0105"
+      ]
+    },
+    {
+      "question": 62,
+      "reason": "The Family wallet SliverFillRemaining requests intrinsic height from a child LayoutBuilder. This is separate from the Guardian tab and still throws at both tested sizes.",
+      "related_case_ids": [
+        "Q73-C0640",
+        "Q73-C0641"
+      ]
+    },
+    {
+      "question": 63,
+      "reason": "The current Topics composer Column overflows by 65–80 px with a long draft at the compact Larger Text keyboard viewport. Send cannot be reached.",
+      "related_case_ids": [
+        "Q73-C0119",
+        "Q73-C0190"
+      ]
+    },
+    {
+      "question": 64,
+      "reason": "The route returns to Topics but replaces the Circle state and draft controller after View Journey. R1 requires the immediate parent to stay mounted.",
+      "related_case_ids": [
+        "Q73-C0194",
+        "Q73-C0197"
+      ]
+    },
+    {
+      "question": 65,
+      "reason": "The route returns to Options but recreates the parent Element after the Journey reader or End confirmation was opened from it.",
+      "related_case_ids": [
+        "Q73-C0307",
+        "Q73-C0308"
+      ]
+    },
+    {
+      "question": 66,
+      "reason": "The Additional Guardian access side overflows by 8.3 px at 320×568 and 2× text and by 3.3 px at 390×844 after a Journey advances.",
+      "related_case_ids": [
+        "Q73-C0423",
+        "Q73-C0449"
+      ]
+    },
+    {
+      "question": 67,
+      "reason": "Tapping the hit-testable Cancel button leaves the Journey detail options sheet mounted and prevents the R1 detail-return assertion from completing.",
+      "related_case_ids": [
+        "Q73-C0436"
+      ]
+    },
+    {
+      "question": 68,
+      "reason": "The g10 master uses Espresso and the live role-bearing Seekers tab uses Ivory. The four live role and disclosure checks remain active while the eight old pixel comparisons are held.",
+      "related_case_ids": [
+        "Q73-C0516",
+        "Q73-C0517",
+        "Q73-C0518",
+        "Q73-C0519",
+        "Q73-C0528",
+        "Q73-C0529",
+        "Q73-C0530",
+        "Q73-C0531"
+      ]
+    },
+    {
+      "question": 69,
+      "reason": "The x02 unit-price value agrees today, but the application stores fixed unit strings next to the catalogue prices. Q41 was implemented in the test and the brief limits app fixes to the named controls.",
+      "related_case_ids": []
+    },
+    {
+      "question": 70,
+      "reason": "The brief specifies one reduction for the affected label without giving a fixed size. The live check proves full words at 390 pt. The current fallback reduces the label once to the measured available width and leaves other labels unchanged.",
+      "related_case_ids": []
+    }
+  ]
+}

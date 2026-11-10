@@ -1,0 +1,158 @@
+{
+  "queue_line": 75,
+  "commitSha": "f32dd475cdc7ca2047b8d9e087ca45f0008b3a48",
+  "flutterVersion": "3.44.2",
+  "flutterRevision": "c9a6c484230f8b5e408ec57be1ef71dee1e77020",
+  "dartSdkVersion": "3.12.2",
+  "buildMode": "Flutter debug widget tests and focused golden captures",
+  "timestamp": "2026-11-10T15:23:59+00:00",
+  "source_snapshot_sha256": "7b3650f28d6d1ba6520511aebe6c10a753485cd7eada7f3aa8ebe758c90920d3",
+  "startup_pack_bytes": 26649,
+  "approval": {
+    "round2": "Founder 10 November GO for queue 75",
+    "scope_source": "TEST_CLEANUP/BRIEFS/TEST_CLEANUP_BRIEF_2026-11-10_R2.md",
+    "small_danger_text": "Deeper red #AC453E (Recommended)",
+    "contrast_minimum": 4.5
+  },
+  "authorities": [
+    {
+      "path": "PRODUCT/APPROVED/TEST_CLEANUP/BRIEFS/TEST_CLEANUP_BRIEF_2026-11-10_R2.md",
+      "bytes": 4440,
+      "sha256": "3ed1ea5b7901dea7e07936c09c043accd1f26a831be2ea4429f82b18175b3487"
+    },
+    {
+      "path": "PRODUCT/APPROVED/TEST_CLEANUP/BUILT/QUEUE73_CLASSIFICATION.json",
+      "bytes": 2071355,
+      "sha256": "87404c4aa6229819aaa97d6b579abf0fbb5c8727dd266aa03930407d0b3325d1"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_ERROR/BUILT/V1/BUILD.json",
+      "bytes": 6892,
+      "sha256": "e8461b5988fde1b14d9cfc2ce5f182b00e8e597a86768a66afd52dafdcce2323"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V6.md",
+      "bytes": 8151,
+      "sha256": "2a9c7942278f43bd0b842ee65704de11132375bd91729461b9ce43fd5220f3e9"
+    },
+    {
+      "path": "PRODUCT/APPROVED/HAPTICS/BRIEFS/HAPTICS_BRIEF_2026-10-30.md",
+      "bytes": 2234,
+      "sha256": "6cfe3e2417e5bc2e53b197d65dbad7506a3f3cfca343e80a2742b21bfcef9bd4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_CARD/MASTERS/k08_card__add_a_guardian.png",
+      "bytes": 455228,
+      "sha256": "53de56a8e7ed373aa9d1bd6f9f93744a3af8302b83404ac0cf6034a74d5fdeb6"
+    },
+    {
+      "path": "PRODUCT/APPROVED/UNITY_PASS/MASTERS/x02_unlocks__seeker_one.png",
+      "bytes": 770340,
+      "sha256": "16ad653362a1d8d2c17becc71a5cc43aaad4bc70d98da4a39c19b8ad6ef698e8"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/MASTERS/c11_app_icon_1024.png",
+      "bytes": 576333,
+      "sha256": "3a6582507d7d7b822a646e5ab0e584107883e271622263dbfd7e3a71efbce8f8"
+    }
+  ],
+  "questions_verified": [
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55
+  ],
+  "historical_line73": {
+    "failure_or_error": 358,
+    "affected_files": 36
+  },
+  "post74_baseline": {
+    "source_sha": "704f16b9f487410868269b00fdd01a109b3b63e8",
+    "evidence_sha": "4b445d42f05aeeeb3fb1c8c3ddd419d1feedbd9a",
+    "source_tree_verified": true,
+    "affected_files": 35,
+    "counts": {
+      "pass": 6735,
+      "error": 348,
+      "failure": 9,
+      "skip": 124
+    },
+    "full_log": {
+      "suites": 531,
+      "duration_ms": 429367,
+      "sha256": "d76ab2e3e261d9ff5fd79aea99c12cadb4cbe2c850640dcc0b0a47d546409c57"
+    },
+    "help_contract_recheck": {
+      "suites": 1,
+      "duration_ms": 2997,
+      "sha256": "4033285933f1dbccb5f12d1ff84a8e59aea8c48c5f4a1e10a517d67fc1366306"
+    },
+    "help_note": "The final nine Help test results replace just that file in the archived full candidate log. Q45 passed in the full candidate."
+  },
+  "final_run": {
+    "command": "flutter test --no-pub --reporter json",
+    "analyzer": "flutter analyze --no-pub: No issues found",
+    "counts": {
+      "pass": 6971,
+      "error": 39,
+      "skip": 124
+    },
+    "suites": 530,
+    "duration_ms": 405542,
+    "sha256": "38120fc6c5553e04eaf9c5fb8619207613d7f9e669a59c035f914ed1a3cb93eb",
+    "remaining_failures": 39,
+    "previously_passing_cases_preserved": 6735,
+    "new_skips": 0,
+    "renamed_baseline_failure_cases": 3,
+    "findings_file": "FINAL_FAILURES.json"
+  },
+  "visual": {
+    "approved_replacements": 9,
+    "held_g10_historical_comparisons": 8,
+    "focused_checks_passed": 109,
+    "historical_cases": 112,
+    "reference": "SOURCE/test/visual/approved/manifest.json",
+    "note": "Selectively regenerated using current locked cases. Current scope and master hashes are in the active manifest. Shadows, tab treatments and fixture-specific badges may differ from prototype framing."
+  },
+  "phone_installation": "Outside this line",
+  "roadmap": "Open. Only Fable edits the roadmap."
+}

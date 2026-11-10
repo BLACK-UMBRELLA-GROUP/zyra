@@ -1,0 +1,1290 @@
+{
+  "units": "bytes",
+  "tested_files": [
+    {
+      "path": "README.md",
+      "before_bytes": 5436,
+      "after_bytes": 5607,
+      "sha256": "13c7ee3c9382043815b3d9785e5a5ae20065a223704cbfbbf785dbc94388181f",
+      "round2_counts": {},
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "before_bytes": 23038,
+      "after_bytes": 23037,
+      "sha256": "50db657efaf1c11c72864152a12e166c66745414215d2a084059254d15cbc4ee",
+      "round2_counts": {
+        "App fix": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_journey_block_hide_sheet.dart",
+      "before_bytes": 5770,
+      "after_bytes": 5766,
+      "sha256": "6f5d4716e826008ba59334d3e13ffab924085a198efc62da0df61a92aed0d9ae",
+      "round2_counts": {
+        "App fix": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_journey_end_presentation.dart",
+      "before_bytes": 8141,
+      "after_bytes": 8140,
+      "sha256": "075968361694853b7cfc1c1ffab5c49feae53e8be235292865e5977857e50968",
+      "round2_counts": {
+        "App fix": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "before_bytes": 305224,
+      "after_bytes": 305343,
+      "sha256": "84de725026393a0dbf448ceb2a11e984531297017dab54598d7cbcd8fa50522c",
+      "round2_counts": {
+        "App fix": 2
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_discovery_presentation.dart",
+      "before_bytes": 43844,
+      "after_bytes": 44024,
+      "sha256": "8b48599f0f68e4609ca85962069beff6ccfee925d5595a76f6d571003b77ebcc",
+      "round2_counts": {
+        "App fix": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_action.dart",
+      "before_bytes": 8422,
+      "after_bytes": 8564,
+      "sha256": "0ce58f7b3a6ed638b5caecd4769a1d5ec095d8402a704c78d64219ac791a7efb",
+      "round2_counts": {
+        "App fix": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "before_bytes": 34301,
+      "after_bytes": 32169,
+      "sha256": "e789011055043f55fed9047ece588a157dbe02a9b257ff1fe502dd4441be6b9b",
+      "round2_counts": {
+        "App fix": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "before_bytes": 60314,
+      "after_bytes": 61846,
+      "sha256": "58cae8b078d89d9a1a682703b0f230666d7007a60b76a30a717c72422d10448b",
+      "round2_counts": {
+        "App fix": 2
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_journey_presentation.dart",
+      "before_bytes": 66648,
+      "after_bytes": 66647,
+      "sha256": "7cead81305cd0654d7c6baf3a67e932a704549a9585360ff506bad19d1425682",
+      "round2_counts": {
+        "App fix": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_options.dart",
+      "before_bytes": 16492,
+      "after_bytes": 16600,
+      "sha256": "6a13943513550b0f736197c094124a38f721e31c312d28d23539b6728c791140",
+      "round2_counts": {
+        "App fix": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_tab.dart",
+      "before_bytes": 21696,
+      "after_bytes": 21695,
+      "sha256": "0e52aa642e7cef53aaa83a3b29966a50303bfdeebc8ea282ecbd3f9f47e69f3b",
+      "round2_counts": {
+        "App fix": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/connections_screen.dart",
+      "before_bytes": 220222,
+      "after_bytes": 220245,
+      "sha256": "283a88a0882abe580a098e19fd78fc2a57b5af5bd7cacd22a8361625e26d7faf",
+      "round2_counts": {
+        "App fix": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/screens/journey/journey_flow_screen.dart",
+      "before_bytes": 318534,
+      "after_bytes": 318481,
+      "sha256": "2f495aef00443e02174d6ca10fb30f1f47fee6096a0196d1af7c2043af404c9d",
+      "round2_counts": {
+        "App fix": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/seeker_guardian_designs.dart",
+      "before_bytes": 98335,
+      "after_bytes": 99168,
+      "sha256": "2908b29e03e634f0a78d979d3a4cde95b0d388b189c3cfd245764846b7c79b7e",
+      "round2_counts": {
+        "App fix": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/theme/zyra_colors.dart",
+      "before_bytes": 18956,
+      "after_bytes": 19039,
+      "sha256": "468b8415a067a2e3c8e24d5b8cb9867fea23096183625dc170a0cfc496a7331d",
+      "round2_counts": {
+        "App fix": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/widgets/floating_nav_bar.dart",
+      "before_bytes": 70368,
+      "after_bytes": 73707,
+      "sha256": "26ea664d6af9202e971790438f6b5f89f6f084bd736c89ef764afe8f4854b13f",
+      "round2_counts": {
+        "App fix": 2
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/widgets/report_profile_sheet.dart",
+      "before_bytes": 35111,
+      "after_bytes": 35196,
+      "sha256": "09591d9a720debf3c85708cbd793cdea715291511cb93a7fae37137f1c07a350",
+      "round2_counts": {
+        "App fix": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_browse_designs.dart",
+      "before_bytes": 36854,
+      "after_bytes": 36460,
+      "sha256": "4b4b577397e2f0fc48030adacc451a8fc341133289d3677a64ccb95a6e997bcf",
+      "round2_counts": {
+        "App fix": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_guardian_add_card.dart",
+      "before_bytes": 0,
+      "after_bytes": 3279,
+      "sha256": "4a23ba40c49f856f31b2a0c9ae5c5a3de83f8eb3aea472e7c14b73cfeb3a5e37",
+      "round2_counts": {
+        "App fix": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/test/browse_edge_alignment_test.dart",
+      "before_bytes": 18799,
+      "after_bytes": 18871,
+      "sha256": "bf72486a4d54446b92a6b4d177ca7c8a92adff83a16d5b8752cd0329ca1438a5",
+      "round2_counts": {
+        "App fix": 6
+      },
+      "post74_results": {
+        "error": 6,
+        "pass": 1
+      },
+      "final_results": {
+        "pass": 7
+      }
+    },
+    {
+      "path": "SOURCE/test/browse_more_actions_haptics_test.dart",
+      "before_bytes": 6229,
+      "after_bytes": 6297,
+      "sha256": "a17ef5ef848b1350909ba655e85761bf92c4606dde7ca231de97370f18ede618",
+      "round2_counts": {
+        "Update": 1
+      },
+      "post74_results": {
+        "pass": 5
+      },
+      "final_results": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "SOURCE/test/browse_options_menu_test.dart",
+      "before_bytes": 48147,
+      "after_bytes": 48581,
+      "sha256": "03b1468683ab7a203ecf73401d913bd2dfedf4a639176c33a96c759fcaa33723",
+      "round2_counts": {
+        "App fix": 2
+      },
+      "post74_results": {
+        "pass": 28,
+        "error": 2
+      },
+      "final_results": {
+        "pass": 30
+      }
+    },
+    {
+      "path": "SOURCE/test/browse_photo_tap_navigation_test.dart",
+      "before_bytes": 31827,
+      "after_bytes": 32236,
+      "sha256": "faa515cd499f41a5eff4a1520d0872a270b42963a70d07bd1406498817fac94d",
+      "round2_counts": {
+        "App fix": 4
+      },
+      "post74_results": {
+        "pass": 25,
+        "error": 4
+      },
+      "final_results": {
+        "pass": 29
+      }
+    },
+    {
+      "path": "SOURCE/test/compatibility_route_toggle_test.dart",
+      "before_bytes": 33896,
+      "after_bytes": 34447,
+      "sha256": "0fcca953ef9091965a9da825ea09c24c69b3e29ade248349d5dfdc9433345180",
+      "round2_counts": {
+        "Update": 1
+      },
+      "post74_results": {
+        "pass": 18,
+        "error": 1
+      },
+      "final_results": {
+        "pass": 19
+      }
+    },
+    {
+      "path": "SOURCE/test/draft_journey_end_presentation_test.dart",
+      "before_bytes": 9854,
+      "after_bytes": 9927,
+      "sha256": "fcbc7f1ddfb75bc794c89f14d0caceb845b9f18d49057b2db5319e0adc4a4d7e",
+      "round2_counts": {
+        "Update": 1
+      },
+      "post74_results": {
+        "pass": 8
+      },
+      "final_results": {
+        "pass": 8
+      }
+    },
+    {
+      "path": "SOURCE/test/founder_launch_review_test.dart",
+      "before_bytes": 31883,
+      "after_bytes": 31963,
+      "sha256": "8cb6a193f40dfd8e8e16d7adff1cc0b60a6d002b3447e63972e120872bef112f",
+      "round2_counts": {
+        "Finding": 28
+      },
+      "post74_results": {
+        "pass": 7,
+        "error": 28
+      },
+      "final_results": {
+        "pass": 7,
+        "error": 28
+      }
+    },
+    {
+      "path": "SOURCE/test/guardian_card_interaction_test.dart",
+      "before_bytes": 28363,
+      "after_bytes": 28508,
+      "sha256": "b8f36112004007bcdb7aa987f1a86eee81403679acf36ea6d88b75768439eadc",
+      "round2_counts": {
+        "Update": 1
+      },
+      "post74_results": {
+        "pass": 28
+      },
+      "final_results": {
+        "pass": 28
+      }
+    },
+    {
+      "path": "SOURCE/test/guardian_circle_topic_options_test.dart",
+      "before_bytes": 89363,
+      "after_bytes": 83930,
+      "sha256": "624e2b1a185195755fc1cc3d71b9c8df2b63453734cf6a55df0b443719b74f13",
+      "round2_counts": {
+        "Update": 8,
+        "Finding": 1
+      },
+      "post74_results": {
+        "pass": 55,
+        "error": 9
+      },
+      "final_results": {
+        "pass": 63,
+        "error": 1
+      }
+    },
+    {
+      "path": "SOURCE/test/guardian_one_page_designs_test.dart",
+      "before_bytes": 43546,
+      "after_bytes": 41136,
+      "sha256": "339631aec6cf9c7d50dc33c9918f86049a11a33973f5b06425b128dd48317110",
+      "round2_counts": {
+        "Update": 29
+      },
+      "post74_results": {
+        "error": 29,
+        "pass": 16
+      },
+      "final_results": {
+        "pass": 45
+      }
+    },
+    {
+      "path": "SOURCE/test/guardian_section_labels_test.dart",
+      "before_bytes": 26843,
+      "after_bytes": 25833,
+      "sha256": "d04db2a9f143070dba89af97c33b21c60d0a4324b18f54c99dee03b37f4bba77",
+      "round2_counts": {
+        "Update": 3
+      },
+      "post74_results": {
+        "pass": 16,
+        "error": 3
+      },
+      "final_results": {
+        "pass": 19
+      }
+    },
+    {
+      "path": "SOURCE/test/guardianship_manager_phase1_test.dart",
+      "before_bytes": 11204,
+      "after_bytes": 11602,
+      "sha256": "e0539590adf83cefbe226a121d2a7149b050b877e8bbd389c41328e7bbc53ab4",
+      "round2_counts": {
+        "App fix": 3
+      },
+      "post74_results": {
+        "error": 3,
+        "pass": 5
+      },
+      "final_results": {
+        "pass": 8
+      }
+    },
+    {
+      "path": "SOURCE/test/journey_card_layout_choices_test.dart",
+      "before_bytes": 41994,
+      "after_bytes": 17039,
+      "sha256": "aaa76027cc552f596b38d4d4cc8e9641fffb0df21333cdced5bbccc3a85a3b2f",
+      "round2_counts": {
+        "Update": 11
+      },
+      "post74_results": {
+        "pass": 2,
+        "error": 11
+      },
+      "final_results": {
+        "pass": 13
+      }
+    },
+    {
+      "path": "SOURCE/test/journey_options_v3_layout_test.dart",
+      "before_bytes": 13368,
+      "after_bytes": 13649,
+      "sha256": "1d7ba591b53c6f62b4d1fec661cc7685249b41e5e1a9fa5aaf76a597d16213b6",
+      "round2_counts": {
+        "Update": 1
+      },
+      "post74_results": {
+        "pass": 9
+      },
+      "final_results": {
+        "pass": 9
+      }
+    },
+    {
+      "path": "SOURCE/test/membership_wallet_visual_test.dart",
+      "before_bytes": 34831,
+      "after_bytes": 35199,
+      "sha256": "3e23ae9f65407c0d789ddd2228f94e39b1ddf1a45d23381cea38de17d64b84eb",
+      "round2_counts": {
+        "Fixture": 2
+      },
+      "post74_results": {
+        "pass": 16,
+        "error": 2
+      },
+      "final_results": {
+        "pass": 18
+      }
+    },
+    {
+      "path": "SOURCE/test/migration_inventory_test.dart",
+      "before_bytes": 810,
+      "after_bytes": 0,
+      "sha256": null,
+      "round2_counts": {
+        "Retire": 1
+      },
+      "post74_results": {
+        "failure": 1
+      },
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/test/no_heart_icons_test.dart",
+      "before_bytes": 1393,
+      "after_bytes": 1574,
+      "sha256": "7ad56bfa681bfca389ea2659718f61ddcc6fbdc16a440c2a8d892b9f2a262498",
+      "round2_counts": {
+        "Update": 1
+      },
+      "post74_results": {
+        "failure": 1
+      },
+      "final_results": {
+        "pass": 1
+      }
+    },
+    {
+      "path": "SOURCE/test/onboarding_checkpoint_persistence_test.dart",
+      "before_bytes": 15460,
+      "after_bytes": 15824,
+      "sha256": "dddb437871f45e47fdd61ad2eb19907bb878bf4fe5e25ba21aa5a3e99a75032b",
+      "round2_counts": {
+        "Update": 2
+      },
+      "post74_results": {
+        "pass": 9,
+        "error": 2
+      },
+      "final_results": {
+        "pass": 11
+      }
+    },
+    {
+      "path": "SOURCE/test/one_journey_back_button_preview_test.dart",
+      "before_bytes": 38765,
+      "after_bytes": 38325,
+      "sha256": "3b1dbd5fa4d5049660d780ece518daffd40d02f1a5ddb25c448a81add686ec97",
+      "round2_counts": {
+        "Update": 5,
+        "Finding": 2
+      },
+      "post74_results": {
+        "pass": 7,
+        "error": 7
+      },
+      "final_results": {
+        "pass": 12,
+        "error": 2
+      }
+    },
+    {
+      "path": "SOURCE/test/one_journey_bottom_close_cue_test.dart",
+      "before_bytes": 35272,
+      "after_bytes": 35847,
+      "sha256": "d210b4140fb7162152689e97504f8ea2289a7089ed3e056b025c8c07504bc5b6",
+      "round2_counts": {
+        "Update": 5,
+        "Finding": 1,
+        "Retire": 1
+      },
+      "post74_results": {
+        "pass": 15,
+        "error": 7
+      },
+      "final_results": {
+        "pass": 21,
+        "error": 1
+      }
+    },
+    {
+      "path": "SOURCE/test/one_journey_compact_controls_test.dart",
+      "before_bytes": 27035,
+      "after_bytes": 28282,
+      "sha256": "29f976be259174f43e9cdde441600e201c4c4e1e489df396ac2f4bbc13798c96",
+      "round2_counts": {
+        "Fixture": 7
+      },
+      "post74_results": {
+        "pass": 9,
+        "error": 7
+      },
+      "final_results": {
+        "pass": 16
+      }
+    },
+    {
+      "path": "SOURCE/test/one_journey_ended_card_test.dart",
+      "before_bytes": 42320,
+      "after_bytes": 42535,
+      "sha256": "24fc1be17e0e0c3185281bd85d292a48c5f30cbfcbd450da2b461c5a6cdf7fce",
+      "round2_counts": {
+        "Fixture": 3
+      },
+      "post74_results": {
+        "pass": 29,
+        "error": 3
+      },
+      "final_results": {
+        "pass": 32
+      }
+    },
+    {
+      "path": "SOURCE/test/one_journey_guardian_details_polish_test.dart",
+      "before_bytes": 38011,
+      "after_bytes": 25420,
+      "sha256": "8651e7efc3ed9f18727901273bc8ac7205e6a30c9fff9921aeba91d8a03c8af9",
+      "round2_counts": {
+        "Update": 13,
+        "Retire": 3
+      },
+      "post74_results": {
+        "error": 16,
+        "pass": 2
+      },
+      "final_results": {
+        "pass": 16
+      }
+    },
+    {
+      "path": "SOURCE/test/one_journey_inline_options_test.dart",
+      "before_bytes": 22728,
+      "after_bytes": 22803,
+      "sha256": "4afb73ce0269fa5cc0a23c870e2364bc6ed67c8dcc360ebc0e756cf6feab4145",
+      "round2_counts": {
+        "Update": 1
+      },
+      "post74_results": {
+        "pass": 16
+      },
+      "final_results": {
+        "pass": 16
+      }
+    },
+    {
+      "path": "SOURCE/test/one_journey_monthly_capacity_widget_test.dart",
+      "before_bytes": 63575,
+      "after_bytes": 42801,
+      "sha256": "c2e0285b36be33f1ba8f53bc33bfeed7805abeda609fc4dfe10fe2eec1c8281e",
+      "round2_counts": {
+        "Retire": 12,
+        "Update": 20
+      },
+      "post74_results": {
+        "error": 32
+      },
+      "final_results": {
+        "pass": 21
+      }
+    },
+    {
+      "path": "SOURCE/test/one_journey_prior_compatibility_access_test.dart",
+      "before_bytes": 19218,
+      "after_bytes": 19408,
+      "sha256": "6ee567601333bdaada12671134c0871e058aa5664d1077e124e8411d956f2687",
+      "round2_counts": {
+        "Fixture": 2
+      },
+      "post74_results": {
+        "error": 2,
+        "pass": 8
+      },
+      "final_results": {
+        "pass": 10
+      }
+    },
+    {
+      "path": "SOURCE/test/one_journey_pull_down_routes_test.dart",
+      "before_bytes": 21003,
+      "after_bytes": 24065,
+      "sha256": "6ca0e1de4e6bf16601521d5aba2cad81f8cdc7f1bdae0a420ef6ab03cb44b33d",
+      "round2_counts": {
+        "Finding": 2,
+        "Update": 1
+      },
+      "post74_results": {
+        "pass": 6,
+        "error": 3
+      },
+      "final_results": {
+        "pass": 8,
+        "error": 2
+      }
+    },
+    {
+      "path": "SOURCE/test/one_journey_theme_actions_test.dart",
+      "before_bytes": 39107,
+      "after_bytes": 34817,
+      "sha256": "a5887adf0662067416d0dd21a064b3fa5c5cbb5464f510c01c5038cff1531632",
+      "round2_counts": {
+        "Update": 16
+      },
+      "post74_results": {
+        "error": 16
+      },
+      "final_results": {
+        "pass": 16
+      }
+    },
+    {
+      "path": "SOURCE/test/request_page_options_context_test.dart",
+      "before_bytes": 36049,
+      "after_bytes": 35869,
+      "sha256": "455eab2a8e5232085d1f4d8f49d7ccf296a7c280899a713e62a08fa0dcf0f3c1",
+      "round2_counts": {
+        "Fixture": 9
+      },
+      "post74_results": {
+        "pass": 15,
+        "error": 9
+      },
+      "final_results": {
+        "pass": 24
+      }
+    },
+    {
+      "path": "SOURCE/test/request_shell_titles_circle_test.dart",
+      "before_bytes": 23053,
+      "after_bytes": 23797,
+      "sha256": "8aef96c7731d9890a3209858e3a3ab1d68c43b0bede0015fe02785f5338aa6cb",
+      "round2_counts": {
+        "Update": 11
+      },
+      "post74_results": {
+        "error": 11,
+        "pass": 4
+      },
+      "final_results": {
+        "pass": 17
+      }
+    },
+    {
+      "path": "SOURCE/test/seeker_wali_tab_truth_test.dart",
+      "before_bytes": 19040,
+      "after_bytes": 19118,
+      "sha256": "9797080f00f506bf805ee8681d3f8222a44de182e3acd460cb0bd353648fe0c3",
+      "round2_counts": {
+        "App fix": 2
+      },
+      "post74_results": {
+        "error": 2,
+        "pass": 9
+      },
+      "final_results": {
+        "pass": 11
+      }
+    },
+    {
+      "path": "SOURCE/test/support/oa198_historical_inventory.dart",
+      "before_bytes": 465,
+      "after_bytes": 0,
+      "sha256": null,
+      "round2_counts": {},
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/test/view_request_draft_widget_test.dart",
+      "before_bytes": 195410,
+      "after_bytes": 195171,
+      "sha256": "e39fb1831b9c216f757bec96e6adcb8133f937592d36da78fd650b268898fdd2",
+      "round2_counts": {
+        "Update": 1,
+        "Fixture": 12,
+        "Finding": 3
+      },
+      "post74_results": {
+        "pass": 91,
+        "error": 16
+      },
+      "final_results": {
+        "pass": 104,
+        "error": 3
+      }
+    },
+    {
+      "path": "SOURCE/test/visual/approved/manifest.json",
+      "before_bytes": 160610,
+      "after_bytes": 185551,
+      "sha256": "a714bd4c7287b8de1a7b6023a0dbd5d807c60a184b501bc9c5debb07feda1cc4",
+      "round2_counts": {
+        "Fixture": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g11_seeker__adam_main.png",
+      "before_bytes": 0,
+      "after_bytes": 94681,
+      "sha256": "1c99382ee6a231a14f9ea58c75a3d89775abd271d7fa906f96369bd262ebffdc",
+      "round2_counts": {
+        "Fixture": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/g12_seeker__yusuf_additional.png",
+      "before_bytes": 0,
+      "after_bytes": 94426,
+      "sha256": "4e2786bddd74ab284b355b11dc1b6533813a23675a850235b18a48f4e0769e83",
+      "round2_counts": {
+        "Fixture": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/gm01_family_review.png",
+      "before_bytes": 0,
+      "after_bytes": 153092,
+      "sha256": "028f4d954d0d63eccb0a154efdead3f27a460a85689be22c5aafe6033ca8e769",
+      "round2_counts": {
+        "Fixture": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/gm04_all_caught_up.png",
+      "before_bytes": 0,
+      "after_bytes": 123577,
+      "sha256": "b7d7343184225a662ae81c5271947f3d28e5654b99dbb7bba4642e0475839b0f",
+      "round2_counts": {
+        "Fixture": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/k07_card__omar_invited.png",
+      "before_bytes": 0,
+      "after_bytes": 76824,
+      "sha256": "a350575ab805c4b8c6cc7f9fe7daa3c7d233f13c173466420887d7525d1b56c2",
+      "round2_counts": {
+        "Fixture": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/k08_card__add_a_guardian.png",
+      "before_bytes": 0,
+      "after_bytes": 78623,
+      "sha256": "d85634c0e7492fc376ebf8de6b910c7b1c757d4c3abe198e0e9c4fc9746ffe75",
+      "round2_counts": {
+        "Fixture": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/k17_basic__card_front_hassan.png",
+      "before_bytes": 0,
+      "after_bytes": 80960,
+      "sha256": "b8c66f8eda983ddda180eb2065cc3960a979e6568b194661f0604494644b4a60",
+      "round2_counts": {
+        "Fixture": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/m05_new_member.png",
+      "before_bytes": 0,
+      "after_bytes": 122584,
+      "sha256": "84ac36029b5074fc5c9b67f498f1522404609313f64026b86b07cc0fd938fbc8",
+      "round2_counts": {
+        "Fixture": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/test/visual/approved/queue75/m06_seeker_basic.png",
+      "before_bytes": 0,
+      "after_bytes": 130047,
+      "sha256": "baa9f69617f8c1943e72124ff61d91e7e6549e49ad9affdc7b97537beba9e3fd",
+      "round2_counts": {
+        "Fixture": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/test/visual/zyra_visual_regression_test.dart",
+      "before_bytes": 66046,
+      "after_bytes": 52668,
+      "sha256": "17b8c48775c8635f4a78e572b3dee56f59b94fbd5814118c0600abe25c555e41",
+      "round2_counts": {
+        "Retire": 68,
+        "Fixture": 36,
+        "Finding": 8
+      },
+      "post74_results": {
+        "pass": 63,
+        "error": 112
+      },
+      "final_results": {
+        "pass": 109
+      }
+    },
+    {
+      "path": "SOURCE/test/widget_test.dart",
+      "before_bytes": 5013,
+      "after_bytes": 5203,
+      "sha256": "39f903e468c5c568868b6b8645a5970098b3af0b0b387710005ea5e847c63974",
+      "round2_counts": {
+        "App fix": 1
+      },
+      "post74_results": {
+        "pass": 6,
+        "failure": 1
+      },
+      "final_results": {
+        "pass": 7
+      }
+    },
+    {
+      "path": "SOURCE/test/zyra_dev_app_icon_test.dart",
+      "before_bytes": 8880,
+      "after_bytes": 6774,
+      "sha256": "249b8c0d3924a99756b37a59c36d67c23f8767347b823801bc848eeb9d0841f9",
+      "round2_counts": {
+        "Update": 1,
+        "Retire": 2
+      },
+      "post74_results": {
+        "pass": 4,
+        "failure": 3
+      },
+      "final_results": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "SOURCE/test/zyra_oa198_probe_score_replay_bridge_artifact_test.dart",
+      "before_bytes": 9182,
+      "after_bytes": 6291,
+      "sha256": "24878b74a3908971fd0a8838731aede9a9f5b35a3465a312acc4affd005f6f88",
+      "round2_counts": {
+        "Retire": 1
+      },
+      "post74_results": {
+        "failure": 1,
+        "pass": 3
+      },
+      "final_results": {
+        "pass": 3
+      }
+    },
+    {
+      "path": "SOURCE/test/zyra_oa198_replay_bridge_artifact_test.dart",
+      "before_bytes": 20545,
+      "after_bytes": 17963,
+      "sha256": "d9a122678676cd72cc11e7f28e5a291eb381d89e39337f5bc871214db1da5abe",
+      "round2_counts": {
+        "Retire": 1
+      },
+      "post74_results": {
+        "failure": 1,
+        "pass": 5
+      },
+      "final_results": {
+        "pass": 5
+      }
+    },
+    {
+      "path": "SOURCE/test/zyra_oa198_replay_bridge_v2_artifact_test.dart",
+      "before_bytes": 11011,
+      "after_bytes": 6412,
+      "sha256": "632b0e6e62bd951d5a637acd02efcd4547f02aaea67aebfc6be72a1242a17a94",
+      "round2_counts": {
+        "Retire": 1
+      },
+      "post74_results": {
+        "pass": 3,
+        "failure": 1
+      },
+      "final_results": {
+        "pass": 3
+      }
+    },
+    {
+      "path": "SYSTEM/tools/ui_gate/BASELINES/manifest.json",
+      "before_bytes": 160639,
+      "after_bytes": 185580,
+      "sha256": "9ce9a681959e1006d0fc5eeb0e69c9bd7914b56417d40b22b3afbf714105b0e9",
+      "round2_counts": {
+        "Fixture": 1
+      },
+      "post74_results": {},
+      "final_results": {}
+    },
+    {
+      "path": "SOURCE/test/zyra_request_page_titles_test.dart",
+      "before_bytes": 8587,
+      "after_bytes": 8587,
+      "sha256": "537aa29452daa253cd9572ed2a6390023ca31a41a1fec408814dca3b81c10d15",
+      "changed": false,
+      "round2_counts": {
+        "App fix": 3
+      },
+      "post74_results": {
+        "pass": 12,
+        "error": 3
+      },
+      "final_results": {
+        "pass": 15
+      }
+    },
+    {
+      "path": "SOURCE/test/zyra_subscription_wallet_preview_test.dart",
+      "before_bytes": 45436,
+      "after_bytes": 45436,
+      "sha256": "0bc02d4cb7590c98bfbbb78d708b73a21c47c90eb6ef83012fdd8b97b4d71c10",
+      "changed": false,
+      "round2_counts": {
+        "Finding": 2
+      },
+      "post74_results": {
+        "pass": 34,
+        "error": 2
+      },
+      "final_results": {
+        "pass": 34,
+        "error": 2
+      }
+    },
+    {
+      "path": "SOURCE/test/zyra_wordmark_colour_test.dart",
+      "before_bytes": 5310,
+      "after_bytes": 5310,
+      "sha256": "00707126e40aa464de7d13f4d1beb37e46e154a2be19828dbfe19ff6de288348",
+      "changed": false,
+      "round2_counts": {
+        "Resolved by line 74": 1
+      },
+      "post74_results": {
+        "pass": 13
+      },
+      "final_results": {
+        "pass": 13
+      }
+    }
+  ],
+  "retired_moves": [
+    {
+      "source": "SOURCE/test/migration_inventory_test.dart",
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/owner/migration_inventory_test.dart",
+      "bytes": 810,
+      "sha256": "54b6d1648f3f20dddd0011c538c67e38e391a4bc67bd4c931dffd00d5b134b39"
+    },
+    {
+      "source": "SOURCE/test/zyra_oa198_probe_score_replay_bridge_artifact_test.dart",
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/owner/zyra_oa198_probe_score_replay_bridge_artifact_test__Q23.dart",
+      "bytes": 1543,
+      "sha256": "e8f890d3c397571cf5eebfe88f68ee6bb15749b88a62ea7475e18fe4b5e88992"
+    },
+    {
+      "source": "SOURCE/test/zyra_oa198_replay_bridge_artifact_test.dart",
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/owner/zyra_oa198_replay_bridge_artifact_test__Q23.dart",
+      "bytes": 1937,
+      "sha256": "3f53b240313595297b86fd76f91c0d66cfdb4171763986e8fe1b3c6534200b8e"
+    },
+    {
+      "source": "SOURCE/test/zyra_oa198_replay_bridge_v2_artifact_test.dart",
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/owner/zyra_oa198_replay_bridge_v2_artifact_test__Q23.dart",
+      "bytes": 2464,
+      "sha256": "95ec87de28d1b20d417c9f38985801c75c0d97b2df597ea67b1286c25c787e2e"
+    },
+    {
+      "source": "SOURCE/test/zyra_dev_app_icon_test.dart",
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/owner/zyra_dev_app_icon_test__Q44_old_parity.dart",
+      "bytes": 1264,
+      "sha256": "0567422d735f8cdb3fe5d91777e9b375130062c780c74a3922bb92af56669c62"
+    },
+    {
+      "source": "SOURCE/test/zyra_dev_app_icon_test.dart",
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/owner/zyra_dev_app_icon_test__Q44_old_splash_ink.dart",
+      "bytes": 849,
+      "sha256": "39dc9ef6170fea6d3092a30502b7e9f72d7f24f7fcd85db83265d987987998c1"
+    },
+    {
+      "source": "SOURCE/test/zyra_dev_app_icon_test.dart",
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/owner/zyra_dev_app_icon_test__Q44_old_endpoints.dart",
+      "bytes": 1444,
+      "sha256": "0c399200308b0fa040981471c75aa69435eec2892e1ab61cd6dcd23865fc7950"
+    },
+    {
+      "source": "SOURCE/test/membership_wallet_visual_test.dart",
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/owner/membership_wallet_visual_test__Q42_old_Profile.dart",
+      "bytes": 2626,
+      "sha256": "593304a3b7feddbb925a93010efea5ec085f6a1b9b413e8fbf09c69b1f558d0c"
+    },
+    {
+      "source": "SOURCE/test/zyra_oa198_probe_score_replay_bridge_artifact_test.dart",
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/owner/zyra_oa198_probe_score_replay_bridge_artifact_test__Q23_helpers.dart",
+      "bytes": 1001,
+      "sha256": "c39ece92d91e65419071615ccc321413eac710a9a0154847b064361166cd349d"
+    },
+    {
+      "source": "SOURCE/test/zyra_oa198_replay_bridge_artifact_test.dart",
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/owner/zyra_oa198_replay_bridge_artifact_test__Q23_helpers.dart",
+      "bytes": 551,
+      "sha256": "ae67fcfb99f67f8ad944ef13753dc6d540ba745b6cf2e52395e535f53598d27e"
+    },
+    {
+      "source": "SOURCE/test/zyra_oa198_replay_bridge_v2_artifact_test.dart",
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/owner/zyra_oa198_replay_bridge_v2_artifact_test__Q23_helpers.dart",
+      "bytes": 691,
+      "sha256": "adf3b580921e302f90b69e0c47a8f59b3ebcc632930dec47954f0ebb231e9538"
+    },
+    {
+      "source": "SOURCE/test/support/oa198_historical_inventory.dart",
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/owner/oa198_historical_inventory.dart",
+      "bytes": 465,
+      "sha256": "2cdef4326230ddd70e07a7cbc2c33ba1e8f17b88fdd3a78dd4116fbc7a110457"
+    },
+    {
+      "source": "SOURCE/test/zyra_oa198_probe_score_replay_bridge_artifact_test.dart",
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/owner/zyra_oa198_probe_score_replay_bridge_artifact_test__Q23_remaining_helpers.dart",
+      "bytes": 347,
+      "sha256": "dc15d401ca474516d37544060569f2162a3337d4f1d5b3c75a3677d2f3c75bad"
+    },
+    {
+      "source": "SOURCE/test/zyra_oa198_replay_bridge_artifact_test.dart",
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/owner/zyra_oa198_replay_bridge_artifact_test__Q23_remaining_helpers.dart",
+      "bytes": 94,
+      "sha256": "5122239486b8b4f6ff57d42adf7ee13669707c39a22a7470cef743aa1934b8dc"
+    },
+    {
+      "source": "SOURCE/test/zyra_oa198_replay_bridge_v2_artifact_test.dart",
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/owner/zyra_oa198_replay_bridge_v2_artifact_test__Q23_remaining_helpers.dart",
+      "bytes": 1444,
+      "sha256": "73be3468c1cc86707554cb1aad5a6bf7f605c60b48db98669262fadc1c5255f1"
+    },
+    {
+      "question": 19,
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/Q19_journey_card_layout_choices_test.dart",
+      "bytes": 41994,
+      "sha256": "c2a6b2ad5c5944b6d82c906095f6b4171ba784504cf1d684a7c5ad89332f0ff1",
+      "description": "original obsolete inline-host file, retained non-host contracts copied into active replacement"
+    },
+    {
+      "question": 24,
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/Q24_retired_cases.dart.txt",
+      "bytes": 7552,
+      "sha256": "1849d6f58f762ad1d4abc37bd86e66df08ecb81f146a8be4ee0737afdc9ec0c3",
+      "description": "exact obsolete case and branch source extracted to task scratch then moved"
+    },
+    {
+      "question": 25,
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/Q25_retired_cases.dart.txt",
+      "bytes": 2841,
+      "sha256": "b637364dc99c32a9b2fb7ef11f4cd3219836c5705b6b601b71102fd780440fa1",
+      "description": "exact obsolete case source extracted to task scratch then moved"
+    },
+    {
+      "question": 26,
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/Q26_retired_cases.dart.txt",
+      "bytes": 6937,
+      "sha256": "4709bb45ff0ec714bd6fb24bd218dc235b62be9ccf6487b8ad30863a8a0cac31",
+      "description": "exact obsolete case source extracted to task scratch then moved"
+    },
+    {
+      "question": 29,
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/Q29_one_journey_monthly_capacity_widget_test.dart",
+      "bytes": 63575,
+      "sha256": "074dcc1a3486fd8316cb1c5bd567dc565906cc884243e179f5a85b659613efc4",
+      "description": "original simultaneous-card host file, active protections migrated"
+    },
+    {
+      "question": 32,
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/Q32_one_journey_theme_actions_test.dart",
+      "bytes": 39107,
+      "sha256": "844209c34ff0dde7bdc727c2a02ebc9785c9fa72b177b0e8ced1d3ae21d27d39",
+      "description": "original inline-options host file, active protections migrated"
+    },
+    {
+      "source": "SOURCE/test/guardian_circle_topic_options_test.dart",
+      "questions": "Q16",
+      "bytes": 13881,
+      "sha256": "d346abb6daef80c04b310c80da6c7e9e85f994844436e01ebd46966327c75dc2",
+      "verified": true,
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/guardian-request-r2/guardian_circle_topic_options_test.dart.retired.txt"
+    },
+    {
+      "source": "SOURCE/test/guardian_one_page_designs_test.dart",
+      "questions": "Q18",
+      "bytes": 3139,
+      "sha256": "769bb6d7e4c08ae33d4585587139c6a09c58a5f72b36be11e170bf090b240521",
+      "verified": true,
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/guardian-request-r2/guardian_one_page_designs_test.dart.retired.txt"
+    },
+    {
+      "source": "SOURCE/test/guardian_section_labels_test.dart",
+      "questions": "Q18",
+      "bytes": 1565,
+      "sha256": "625a5f2615804130610dcf708cf98b425463512421c94c489262fd282fa35046",
+      "verified": true,
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/guardian-request-r2/guardian_section_labels_test.dart.retired.txt"
+    },
+    {
+      "source": "SOURCE/test/one_journey_guardian_details_polish_test.dart",
+      "questions": "Q28",
+      "bytes": 23275,
+      "sha256": "3460426169154f9d5dafbf1a84f78fc5f5ec63c4e4b83767e6f7bef7df43b215",
+      "verified": true,
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/guardian-request-r2/one_journey_guardian_details_polish_test.dart.retired.txt"
+    },
+    {
+      "source": "SOURCE/test/request_page_options_context_test.dart",
+      "questions": "Q33",
+      "bytes": 6068,
+      "sha256": "64c576651bcdf4aa2114be84eea6f680fd855f24f22911ed8b81620cb9764b13",
+      "verified": true,
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/guardian-request-r2/request_page_options_context_test.dart.retired.txt"
+    },
+    {
+      "source": "SOURCE/test/request_shell_titles_circle_test.dart",
+      "questions": "Q34",
+      "bytes": 6236,
+      "sha256": "a7375ec19e6cb36d0077d778e7ae40e1d399268118b3db055caccc4dce14cdd2",
+      "verified": true,
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/guardian-request-r2/request_shell_titles_circle_test.dart.retired.txt"
+    },
+    {
+      "source": "SOURCE/test/view_request_draft_widget_test.dart",
+      "questions": "Q35–40",
+      "bytes": 11769,
+      "sha256": "dd7fefe9c8a3cfab13763a80e11a00656976134df6b336d5c4e61b650aacd0ed",
+      "verified": true,
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/guardian-request-r2/view_request_draft_widget_test.dart.retired.txt"
+    },
+    {
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/visual/fixture_builders.dart.txt",
+      "bytes": 18798,
+      "sha256": "939900e87beae1ae61556a92703593335b714e61aadc4869b938d2eb93af51aa"
+    },
+    {
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/visual/fixture_legacy_drives.dart.txt",
+      "bytes": 2288,
+      "sha256": "184458799f969d93211cb624be93f8ed952b7216a681e4c837cff22a9a151f07"
+    },
+    {
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/visual/fixture_registrations.dart.txt",
+      "bytes": 9011,
+      "sha256": "68a825985599ae79f67827dc45cba39edb23e9866c8c995caba1719d988c1ef4"
+    },
+    {
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/visual/pre-review-candidates/g10_seekers__list.png",
+      "bytes": 80790,
+      "sha256": "9896450482445379a43b3311a81bdb83919bd1e565895ea1569e63a34d8a9ef5"
+    },
+    {
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/visual/pre-review-candidates/g11_seeker__adam_main.png",
+      "bytes": 77871,
+      "sha256": "8bc73e99a47484248fe1b97cc21804018c08ea33bdedc2a58f8aba90ea7521ce"
+    },
+    {
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/visual/pre-review-candidates/g12_seeker__yusuf_additional.png",
+      "bytes": 78048,
+      "sha256": "acad677f69e37c5b02ab930b43fb62136a6ea9f2c82b4f8868152e185d18f719"
+    },
+    {
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/visual/pre-review-candidates/gm01_family_review.png",
+      "bytes": 122184,
+      "sha256": "cf541fc4935117429278d437b7239f6d44fc2c34f4007d4632e73d2cc532c574"
+    },
+    {
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/visual/pre-review-candidates/gm04_all_caught_up.png",
+      "bytes": 99165,
+      "sha256": "179a6397fe443a6767365e28e6cef7ef23162258edaff1ce9f73aad57d9107a7"
+    },
+    {
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/visual/pre-review-candidates/guardian-manager-empty__large.png",
+      "bytes": 48597,
+      "sha256": "b0e86c2432c0acf495d7f53b5bdc7a23c065dcbebb60b24952809558362aa4c0"
+    },
+    {
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/visual/pre-review-candidates/guardian-manager-empty__small.png",
+      "bytes": 38974,
+      "sha256": "a515cab7128575145ef5b537627c6efa73e24017bc0e4900b4716fad7e08201a"
+    },
+    {
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/visual/pre-review-candidates/guardian-manager-empty__standard.png",
+      "bytes": 45923,
+      "sha256": "3177d5379f5b2333561f122af17a202abb1755d29de99e2dd138616cebf46d48"
+    },
+    {
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/visual/pre-review-candidates/guardian-manager-empty__standard__text-130.png",
+      "bytes": 51740,
+      "sha256": "9e4d93a32547e72e3618e8f9451c2be3e1649f776a8e8a49c79634e883896a89"
+    },
+    {
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/visual/pre-review-candidates/k07_card__omar_invited.png",
+      "bytes": 57917,
+      "sha256": "e46453707bc31f07715bb008acbda4d2ddd3739ca124f64f666b8569274ea155"
+    },
+    {
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/visual/pre-review-candidates/k08_card__add_a_guardian.png",
+      "bytes": 58069,
+      "sha256": "f2895632332e759667a7939b2866380f3be0204b97aab5bb0016e21ecaf6933d"
+    },
+    {
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/visual/pre-review-candidates/k17_basic__card_front_hassan.png",
+      "bytes": 62187,
+      "sha256": "2266a132e635bcfa542619fcfc9a69e1f41fda88e947dee01069f86c407fa495"
+    },
+    {
+      "path": "ZYRA_TESTS_RETIRED_2026-11-10/visual/pre-review-candidates/m06_seeker_basic.png",
+      "bytes": 102343,
+      "sha256": "15f0c904692eb9c3f0bf18673c8edf6049983c81905e22a425468cc88621b157"
+    }
+  ],
+  "retired_total_bytes": 1199374
+}
