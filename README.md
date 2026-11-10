@@ -58,6 +58,8 @@ node tooling/no_git_driver.mjs flutter analyze --no-pub
 node tooling/no_git_driver.mjs flutter test --no-pub --reporter json
 ```
 
+The protected iPhone delivery route uses `SOURCE/tooling/verified_host_profile.mjs` with the exact reviewed `HOST_PROFILE_PLAN.json`. Run `inspect` to check the pinned native host and `build` to produce the PROFILE candidate. Delivery requires the Founder’s GO, a paired and unlocked iPhone connected by USB, and the observed SHA-256 of the successful build receipt. The `phone-check` command checks device readiness, and `deliver` verifies the candidate, installation and launch.
+
 ## Repository layout
 
 - `SOURCE/`: Flutter app, native platform projects, tests and Supabase migrations.

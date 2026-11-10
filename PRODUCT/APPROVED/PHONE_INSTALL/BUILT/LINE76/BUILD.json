@@ -1,0 +1,81 @@
+{
+  "queueLine": 76,
+  "brief": "DOC-ZYRA-0438",
+  "question": 58,
+  "status": "BUILD_VERIFIED_DELIVERY_PENDING",
+  "sourceCommit": "b052b267ecf6c981a03adf0198f44318c00b9543",
+  "sourceEvidenceCommit": "f4b70c9cfb871b8241a9096d9c4dd2926cc1519c",
+  "nativeHostLineageSource": "0c20752102731f362bf7dc859259f178b332466a",
+  "flutterVersion": "3.44.2",
+  "mode": "profile",
+  "flavor": "production",
+  "architecture": "ios-arm64",
+  "version": "1.0.0",
+  "buildNumber": "5",
+  "buildStartedAt": "2026-11-10T18:21:19.180Z",
+  "buildFinishedAt": "2026-11-10T18:21:57.199Z",
+  "layout": "LOCK 23 single error page and Q59 manual restart for the framework fallback.",
+  "nativeHost": {
+    "fileCount": 177,
+    "sha256": "416b47b24d2f0d18892407450792ff88088f20ec7134f60fe970654fa68b16b6",
+    "provisioningProfileSha256": "1af45878575c7449b427169878ace2caae4d39be5425fe54e1906fe6415b96d7",
+    "normalizedProfileEngineSha256": "eb7bfa2968b9005682fcf7506f5ddcbcea9d35c5551d7f55542f10d95022832a",
+    "nativeInputInventorySha256": "393cbfa300894ad517a9107aa254d7622647ff6ca65acd590a5dd28d1824e0a4",
+    "strictSignature": true,
+    "profileValid": true,
+    "nativeEntitlementsPreserved": true,
+    "oldHostRemoval": "Unconfirmed. The old pin lived under ignored review evidence. The recorded 27 October cleanup moved package copies from that folder and did not list the missing host.",
+    "nativeXcodeRoute": "Held at SwiftPM nested sandbox. The retained-host path builds the Dart payload without invoking SwiftPM."
+  },
+  "checks": {
+    "noGit": {
+      "execDenial": true,
+      "nestedExecDenial": true,
+      "policySha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d"
+    },
+    "analyzer": "No issues found",
+    "routeTests": {
+      "pass": 20,
+      "fail": 0
+    },
+    "exactLine75OutcomeMatch": {
+      "analyzeSha256": "57ac77116aa51eea92fe5ae9322f6e5ae4a037a8c8ac85f342b6f59ea192d340",
+      "testsSha256": "9961040917a37024ce1c33cfe40a93f317f48d4a60888ec6fdbc54cea31d2e0b",
+      "failureBaselineSha256": "2256874afd0aeb8795a077ee5f1871c6c9e6e4ff816d6ed5363870984bd1e1a6",
+      "passes": 6972,
+      "failures": 39,
+      "skips": 124,
+      "suites": 530,
+      "sameFailures": true,
+      "sameSkips": true
+    },
+    "trackedApplicationInputFiles": 1082,
+    "trackedApplicationInputSha256": "605233a4a6d5b60cbc1897c05b69c65b2a92739d606ed91ea420d274feb3e9d4",
+    "compilerInputs": {
+      "files": 3582,
+      "sha256": "be676377e09310422a2c100c6f147dedd0c2683649aa6c0b2901533ba0bb95e5"
+    },
+    "checkedAbsentWildcardMarkers": 1,
+    "syntheticPhoneGuards": {
+      "deliveryPasses": 26,
+      "preflightPasses": 4,
+      "realDeviceCalls": 0,
+      "fixtureSha256": "849b414cac63a4c608b4f2ed8dccc4c635f253c69101f9290647dcda2b784a47"
+    }
+  },
+  "sha256": {
+    "plan": "8dd27401732d64f68f50cd78e8a25428ce52d83966cc1814b508ec4c72456040",
+    "sourceSeal": "bc291104ae7d9795e6abdcb94a8c546a89a0ae8d009591c33a209477ee667926",
+    "buildReceipt": "eaf2b110c82dfe16f75e298910f3a9d9c4bf049aa374fb36bfd6848d1181b8e6",
+    "candidateFileInventory": "69b3670ee75adb917cb3ded93a041a11336a4d01cb94936522789e3e42f7546d"
+  },
+  "candidateFileCount": 177,
+  "delivery": {
+    "pairedCableUnlockedPreflight": "No wired connection to the provisioned iPhone.",
+    "installAttempted": false,
+    "launchAttempted": false,
+    "firstFrame": "Pending",
+    "approvedPhoneKnownAndPaired": true
+  },
+  "queueStatus": "WAITING"
+}

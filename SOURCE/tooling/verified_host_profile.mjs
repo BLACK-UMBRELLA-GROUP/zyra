@@ -1,21 +1,23 @@
 // Contained Dart-only PROFILE payload build using an exact measured native host.
-// This is NOT a native source rebuild or a repair of the held Xcode route.
-// No install/launch, Git, SDK wrapper, provisioning, trust or validation bypass.
+// Uses the existing protected signing flow and the cached profile SDK.
+// The native Xcode route is independent of this Dart-only build.
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import {spawn} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {createReviewWorkspace, readCommitSha, writeBuildEvidence} from './review_workspace.mjs';
+import {assertReviewWorkspace, createReviewWorkspace, writeBuildEvidence} from './review_workspace.mjs';
+import {checkVerifiedPhone, deliverVerifiedPhone} from './verified_phone_delivery.mjs';
 
 const tooling = path.dirname(fileURLToPath(import.meta.url));
 const source = path.dirname(tooling);
 const reviews = path.resolve(source, '../REPORTS/EVIDENCE');
 const sdk = '/opt/homebrew/share/flutter';
-const oldPacket = path.join(reviews, 'OA151_CIRCLE_DISCUSSION_BUBBLE_2026_10_13.QnUZDh');
-const oldReceipt = path.join(oldPacket, 'BUILT.json');
-const host = path.join(reviews, 'OA305_NO_GIT_OPTION2_DELIVERY_2026_10_13.yqJ0ef/PRE/Runner.app');
-const hostHash = '8f9041a5dd1d124cfa3aa0c2d334f4ce840c5c4baa1e00093dbf5a313773130a';
+const host = path.join(source, 'build/ios/Profile-production-iphoneos/Runner.app');
+const hostHash = '416b47b24d2f0d18892407450792ff88088f20ec7134f60fe970654fa68b16b6';
+const hostFileCount = 177;
+const nativeInputHash = '393cbfa300894ad517a9107aa254d7622647ff6ca65acd590a5dd28d1824e0a4';
+const hostEntitlementsHash = '86dd1b7c3804b6b7a625757c78766f600e5a8fe854d74f2a139674239c9e9ec7';
 const identity = 'Apple Development: Shakeel Ahmad (C5LDDW3Z2Z)';
 const team = '9Y7Z8F36SJ';
 const profileHash = '1af45878575c7449b427169878ace2caae4d39be5425fe54e1906fe6415b96d7';
@@ -31,9 +33,14 @@ const sdkPins = {
   'packages/flutter_tools/lib/src/build_system/targets/assets.dart': '6b882d4ef892fe53f658fa46735a18943cb4430d48c605f26dd5366ae836defc',
 };
 const policyText = '(version 1)\n(allow default)\n; Inherited by the entire Dart / Flutter / Xcode subprocess tree.\n; No fake Git, metadata forging, package-signature or signing bypass.\n(deny process-exec\n  (regex #"/[Gg][Ii][Tt]([^/]*)?$")\n  (literal "/opt/homebrew/share/flutter/bin/flutter")\n  (literal "/opt/homebrew/share/flutter/bin/dart"))\n';
-const checkNames = ['ANALYZE_FROZEN.json', 'BASE_REGRESSION_FROZEN.json', 'DISCUSSION_FROZEN.json'];
 const minFreeBytes = 2 * 1024 ** 3;
-const nodeRuntime = '/Users/shakeelahmad/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node';
+const checkedSourceCommit = 'b052b267ecf6c981a03adf0198f44318c00b9543';
+const checkedEvidenceCommit = 'f4b70c9cfb871b8241a9096d9c4dd2926cc1519c';
+const checkedSourceHash = '605233a4a6d5b60cbc1897c05b69c65b2a92739d606ed91ea420d274feb3e9d4';
+const localApplicationInputHash = '5825d1f59bf2aa8600c3e408210ef4bbf30bd6f78f1127d4bb283d29dee8423f';
+const analyzerRunHash = '57ac77116aa51eea92fe5ae9322f6e5ae4a037a8c8ac85f342b6f59ea192d340';
+const fullTestRunHash = '9961040917a37024ce1c33cfe40a93f317f48d4a60888ec6fdbc54cea31d2e0b';
+const failureBaselineHash = '2256874afd0aeb8795a077ee5f1871c6c9e6e4ff816d6ed5363870984bd1e1a6';
 const dartCache = '/Users/shakeelahmad/.pub-cache/hosted/pub.dev';
 
 // Explicit public requirements, not a recursive scan of SOURCE or private data.
@@ -57,6 +64,7 @@ export const requiredNativeInputs = [
 ];
 const sha = buffer => crypto.createHash('sha256').update(buffer).digest('hex');
 const readJson = file => JSON.parse(fs.readFileSync(file, 'utf8'));
+const sortedJson = object => JSON.stringify(Object.fromEntries(Object.entries(object).sort(([a], [b]) => a.localeCompare(b))));
 const exactKeys = (value, allowed) => {
   if (!value || Array.isArray(value) || typeof value !== 'object' ||
       Object.keys(value).some(key => !allowed.includes(key))) throw Error('Unknown plan fields');
@@ -88,7 +96,7 @@ function verifyFiles(files) {
     if (sha(fs.readFileSync(file)) !== hash) throw Error('Checked input drift: ' + relative);
   }
 }
-function publicInventory(relativeRoot) {
+function publicInventory(relativeRoot, include = () => true) {
   const entries = {};
   const actualSource = fs.realpathSync(source);
   function scan(relative) {
@@ -98,7 +106,9 @@ function publicInventory(relativeRoot) {
       if (entry.name === '.git' || entry.name === 'PRIVATE — API KEYS — DO NOT SYNC') continue;
       const child = path.join(relative, entry.name);
       if (entry.isDirectory()) scan(child);
-      else if (entry.isFile()) entries[child] = sha(fs.readFileSync(sourceFile(child)));
+      else if (entry.isFile()) {
+        if (include(child)) entries[child] = sha(fs.readFileSync(sourceFile(child)));
+      }
       else throw Error('Public source link refused: ' + child);
     }
   }
@@ -111,12 +121,23 @@ export function publicNativeInventory() {
   return entries;
 }
 function exactPublicInventory(sealFiles) {
+  const localFiles = {};
   for (const root of ['lib', 'test', 'assets', 'tooling']) {
-    const current = publicInventory(root);
     const expected = Object.fromEntries(Object.entries(sealFiles).filter(([relative]) => relative.startsWith(root + '/')));
-    const sorted = object => JSON.stringify(Object.fromEntries(Object.entries(object).sort(([a], [b]) => a.localeCompare(b))));
-    if (sorted(current) !== sorted(expected)) throw Error('Checked public input inventory/content drift: ' + root);
+    // The checkout retains ignored visual output in test/. It is not test code.
+    const current = publicInventory(root, relative => Object.hasOwn(expected, relative) ||
+      !/^test\/visual\/(?:candidates\/.+\.(?:png|json)|failures\/.+\.png)$/.test(relative));
+    if (root === 'lib') {
+      for (const relative of Object.keys(current)) {
+        if (Object.hasOwn(expected, relative)) continue;
+        localFiles[relative] = current[relative];
+        delete current[relative];
+      }
+    }
+    if (sortedJson(current) !== sortedJson(expected)) throw Error('Checked public input inventory/content drift: ' + root);
   }
+  if (sha(Buffer.from(sortedJson(localFiles))) !== localApplicationInputHash) throw Error('Local application input drift');
+  return localFiles;
 }
 function artifactEntries(root) {
   const entries = {};
@@ -245,17 +266,17 @@ function verifySdkAndHost() {
   }
   const version = readJson(path.join(sdk, 'bin/cache/flutter.version.json'));
   if (version.frameworkVersion !== '3.44.2' || version.channel !== 'stable') throw Error('Unsupported SDK');
-  const built = readJson(plainFile(oldReceipt));
-  const entries = artifactEntries(host);
-  if (Object.keys(entries).length !== 177 || sha(Buffer.from(JSON.stringify(entries))) !== hostHash ||
-      built.artifact.sha256 !== hostHash || JSON.stringify(entries) !== JSON.stringify(built.artifact.entries) ||
-      !readJson(path.join(oldPacket, 'BUILD_PROFILE.json')).success ||
-      !readJson(path.join(oldPacket, 'NATIVE_IDENTITY.json')).success) throw Error('Measured native-host lineage drift');
-  if (sha(fs.readFileSync(path.join(host, 'embedded.mobileprovision'))) !== profileHash) throw Error('Profile drift');
-  for (const relative of ['pubspec.yaml', 'pubspec.lock', 'ios/Runner.xcodeproj/project.pbxproj',
-    'ios/Runner/Info.plist', 'ios/Runner/Runner.entitlements']) {
-    if (sha(fs.readFileSync(plainFile(path.join(source, relative)))) !== built.files[relative]) throw Error('New native requirement: ' + relative);
+  for (let directory = host; directory !== source; directory = path.dirname(directory)) {
+    if (!fs.lstatSync(directory).isDirectory() || fs.realpathSync(directory) !== directory) {
+      throw Error('Pinned native host is not in the protected build directory');
+    }
   }
+  const entries = artifactEntries(host);
+  if (Object.keys(entries).length !== hostFileCount || sha(Buffer.from(JSON.stringify(entries))) !== hostHash) {
+    throw Error('Measured native host file list/content drift');
+  }
+  if (entries['embedded.mobileprovision']?.sha256 !== profileHash) throw Error('Profile drift');
+  if (sha(Buffer.from(sortedJson(publicNativeInventory()))) !== nativeInputHash) throw Error('New native requirement');
   const engineBytes = fs.readFileSync(path.join(sdk, engine));
   const hostEngine = fs.readFileSync(path.join(host, 'Frameworks/Flutter.framework/Flutter'));
   const a = machoPayload(engineBytes), b = machoPayload(hostEngine);
@@ -263,84 +284,103 @@ function verifySdkAndHost() {
       a.signatureOffset !== b.signatureOffset || a.signatureSize !== b.signatureSize || !sameNativePayload(engineBytes, hostEngine)) {
     throw Error('Genuine profile engine is incompatible with host');
   }
-  return {entries, built, engine: a, runtimePins: {[engine]: sha(engineBytes),
+  return {entries, runtimePins: {[engine]: sha(engineBytes),
     'bin/cache/artifacts/engine/ios-profile/gen_snapshot_arm64': sha(fs.readFileSync(path.join(sdk, 'bin/cache/artifacts/engine/ios-profile/gen_snapshot_arm64')))}};
 }
 function loadPlan(file) {
   const packet = path.dirname(file);
-  if (path.dirname(packet) !== reviews || !/^OA151_CIRCLE_DISCUSSION_ACTIONS_2026_10_13\.[A-Za-z0-9]+$/.test(path.basename(packet)) ||
-      path.basename(file) !== 'HOST_PROFILE_PLAN.json') throw Error('Wrong owned delivery plan');
-  const plan = readJson(plainFile(file));
-  exactKeys(plan, ['schema', 'source', 'sourceSeal', 'nativeInputs', 'checks', 'checkHashes', 'scope']);
-  if (plan.schema !== 1 || plan.source !== source || plan.sourceSeal !== 'CHECKED_PREBUILD.json' ||
-      plan.scope !== 'current-dart-only-payload-retain-measured-native-host' ||
-      JSON.stringify(plan.checks) !== JSON.stringify(checkNames)) throw Error('Unknown build scope/flags');
-  const seal = readJson(plainFile(path.join(packet, plan.sourceSeal)));
-  if (seal.source !== source || !seal.files?.['lib/main.dart']) throw Error('Wrong source seal');
-  verifyFiles(seal.files);
-  exactPublicInventory(seal.files);
-  if (requiredNativeInputs.some(relative => !Object.hasOwn(plan.nativeInputs ?? {}, relative)) ||
-      Object.keys(plan.nativeInputs ?? {}).some(relative => !requiredNativeInputs.includes(relative) &&
-        !/^ios\/Runner\/Assets\.xcassets\//.test(relative))) throw Error('Incomplete/unknown native requirement pins');
-  verifyFiles(plan.nativeInputs);
-  const assets = publicInventory('ios/Runner/Assets.xcassets');
-  const plannedAssets = Object.fromEntries(Object.entries(plan.nativeInputs).filter(([relative]) => relative.startsWith('ios/Runner/Assets.xcassets/')));
-  const sorted = object => JSON.stringify(Object.fromEntries(Object.entries(object).sort(([a], [b]) => a.localeCompare(b))));
-  if (sorted(assets) !== sorted(plannedAssets)) throw Error('Native public asset inventory/content drift');
-  const expectedCheckFiles = plan.checks.flatMap(name => [name, name.replace(/\.json$/, '.log')]);
-  if (!plan.checkHashes || Object.keys(plan.checkHashes).sort().join('\n') !== expectedCheckFiles.sort().join('\n')) throw Error('Missing exact check receipt/log bindings');
-  for (const name of plan.checks) {
-    const receiptFile = plainFile(path.join(packet, name)), logName = name.replace(/\.json$/, '.log');
-    const logFile = plainFile(path.join(packet, logName));
-    if (sha(fs.readFileSync(receiptFile)) !== plan.checkHashes[name] || sha(fs.readFileSync(logFile)) !== plan.checkHashes[logName]) throw Error('Positive check content drift');
-    const receipt = readJson(receiptFile), log = fs.readFileSync(logFile, 'utf8');
-    const analysis = name === 'ANALYZE_FROZEN.json';
-    const started = Date.parse(receipt.started), finished = Date.parse(receipt.finished), frozen = Date.parse(seal.at);
-    if (!receipt.success || receipt.status !== 0 || receipt.signal || receipt.error ||
-        !Number.isFinite(frozen) || !Number.isFinite(started) || !Number.isFinite(finished) || frozen > started || started > finished ||
-        !Array.isArray(receipt.args) || receipt.args[0] !== nodeRuntime || receipt.args[1] !== 'tooling/no_git_driver.mjs' ||
-        receipt.args[2] !== 'flutter' || receipt.args[3] !== (analysis ? 'analyze' : 'test') ||
-        (analysis ? !log.includes('No issues found!') :
-          !log.includes('All tests passed!') || !Number.isInteger(receipt.passes) || receipt.passes < 1 ||
-          receipt.failures !== 0 || receipt.skips !== 0)) throw Error('Missing positive local check: ' + name);
+  if (path.dirname(packet) !== reviews || !/^ZYRA_LINE76_[A-Za-z0-9_]+$/.test(path.basename(packet)) ||
+      path.basename(file) !== 'HOST_PROFILE_PLAN.json' || fs.realpathSync(packet) !== packet) {
+    throw Error('Wrong owned delivery plan');
   }
-  return {packet, plan, seal, planHash: sha(fs.readFileSync(file)), sealHash: sha(fs.readFileSync(path.join(packet, plan.sourceSeal)))};
+  const plan = readJson(plainFile(file));
+  exactKeys(plan, ['schema', 'source', 'sourceSeal', 'sourceCommit', 'evidenceCommit', 'nativeInputs', 'checks']);
+  if (plan.schema !== 2 || plan.source !== source || plan.sourceSeal !== 'CHECKED_PREBUILD.json' ||
+      plan.sourceCommit !== checkedSourceCommit || plan.evidenceCommit !== checkedEvidenceCommit) throw Error('Unchecked application source commit');
+  const seal = readJson(plainFile(path.join(packet, plan.sourceSeal)));
+  exactKeys(seal, ['source', 'sourceCommit', 'files']);
+  if (seal.source !== source || seal.sourceCommit !== checkedSourceCommit || !seal.files?.['lib/main.dart']) {
+    throw Error('Wrong source seal');
+  }
+  const appFiles = Object.fromEntries(Object.entries(seal.files).filter(([relative]) => /^(?:lib|test|assets)\//.test(relative)));
+  if (sha(Buffer.from(sortedJson(appFiles))) !== checkedSourceHash) throw Error('Application input digest does not match the reviewed commit');
+  verifyFiles(seal.files);
+  const localFiles = exactPublicInventory(seal.files);
+  if (sortedJson(plan.nativeInputs) !== sortedJson(publicNativeInventory()) ||
+      sha(Buffer.from(sortedJson(plan.nativeInputs))) !== nativeInputHash) throw Error('Native requirements drift');
+  const checks = plan.checks;
+  exactKeys(checks, ['analyzeSha256', 'testsSha256', 'failureBaselineSha256', 'passes', 'failures', 'skips', 'suites',
+    'sameFailures', 'sameSkips']);
+  if (checks.analyzeSha256 !== analyzerRunHash || checks.testsSha256 !== fullTestRunHash ||
+      checks.failureBaselineSha256 !== failureBaselineHash || checks.passes !== 6972 || checks.failures !== 39 ||
+      checks.skips !== 124 || checks.suites !== 530 || checks.sameFailures !== true || checks.sameSkips !== true) {
+    throw Error('Missing exact line 75 regression check');
+  }
+  return {packet, plan, seal, localFiles, planHash: sha(fs.readFileSync(file)), sealHash: sha(fs.readFileSync(path.join(packet, plan.sourceSeal)))};
 }
 const freeBytes = () => {
   const stat = fs.statfsSync(source);
   return Number(stat.bavail) * Number(stat.bsize);
 };
-async function command(executable, args, log, env = {}) {
-  const allowed = ['/usr/bin/codesign', '/usr/bin/xcrun', '/usr/libexec/PlistBuddy', path.join(sdk, 'bin/cache/dart-sdk/bin/dart')];
+async function command(executable, args, input) {
+  const allowed = ['/usr/bin/codesign', '/usr/bin/xcrun', '/usr/bin/security', '/usr/bin/plutil', '/usr/libexec/PlistBuddy', path.join(sdk, 'bin/cache/dart-sdk/bin/dart')];
   if (!allowed.includes(executable)) throw Error('Unknown executable');
-  const environment = {...process.env, ...env, FLUTTER_ROOT: sdk, ZYRA_NO_GIT_ACTIVE: 'pinned-v1'};
+  const environment = {...process.env, FLUTTER_ROOT: sdk, ZYRA_NO_GIT_ACTIVE: 'pinned-v1'};
   delete environment.ZYRA_FOUNDER_MANUAL_SDK;
   const chunks = [];
   const started = new Date().toISOString();
+  const sandbox = executable === path.join(sdk, 'bin/cache/dart-sdk/bin/dart')
+    ? ['-p', policyText + '\n(deny network-outbound)']
+    : ['-f', path.join(tooling, 'no_git.sb')];
   const status = await new Promise((resolve, reject) => {
-    const child = spawn('/usr/bin/sandbox-exec', ['-f', path.join(tooling, 'no_git.sb'), executable, ...args],
-      {cwd: source, env: environment, stdio: ['ignore', 'pipe', 'pipe']});
+    const child = spawn('/usr/bin/sandbox-exec', [...sandbox, executable, ...args],
+      {cwd: source, env: environment, stdio: [input === undefined ? 'ignore' : 'pipe', 'pipe', 'pipe']});
     for (const stream of ['stdout', 'stderr']) child[stream].on('data', bytes => {
-      const text = bytes.toString(); chunks.push({stream, text}); if (log) fs.writeSync(log, text);
+      chunks.push({stream, text: bytes.toString()});
     });
+    if (input !== undefined) {
+      child.stdin.on('error', reject);
+      child.stdin.end(input);
+    }
     child.on('error', reject);
     child.on('close', (code, signal) => resolve({code, signal}));
   });
-  const result = {command: [executable, ...args], started, finished: new Date().toISOString(), ...status,
+  const result = {started, finished: new Date().toISOString(), ...status,
     stdout: chunks.filter(c => c.stream === 'stdout').map(c => c.text).join(''),
     stderr: chunks.filter(c => c.stream === 'stderr').map(c => c.text).join('')};
   if (status.code !== 0 || status.signal) throw Error('Protected command failed: ' + executable + ' (' + status.code + ')');
   return result;
 }
-async function checkIdentity(app, log) {
-  await command('/usr/bin/codesign', ['--verify', '--deep', '--strict', app], log);
-  const detail = await command('/usr/bin/codesign', ['-d', '--verbose=4', app], log);
-  if (!detail.stderr.includes('Authority=' + identity) || !detail.stderr.includes('TeamIdentifier=' + team)) throw Error('Existing Development identity mismatch');
+async function checkIdentity(app) {
+  await command('/usr/bin/codesign', ['--verify', '--deep', '--strict', app]);
+  const detail = await command('/usr/bin/codesign', ['-d', '--verbose=4', app]);
+  const signatureFields = detail.stderr.split('\n');
+  if (!signatureFields.includes('Authority=' + identity) || !signatureFields.includes('TeamIdentifier=' + team)) throw Error('Existing Development identity mismatch');
   const plist = await command('/usr/libexec/PlistBuddy', ['-c', 'Print :CFBundleIdentifier', '-c', 'Print :CFBundleDisplayName',
-    '-c', 'Print :CFBundleShortVersionString', '-c', 'Print :CFBundleVersion', '-c', 'Print :MinimumOSVersion', path.join(app, 'Info.plist')], log);
+    '-c', 'Print :CFBundleShortVersionString', '-c', 'Print :CFBundleVersion', '-c', 'Print :MinimumOSVersion', path.join(app, 'Info.plist')]);
   if (plist.stdout.trim() !== 'app.zyraconnect.zyra\nZYRA\n1.0.0\n5\n15.0') throw Error('Main identity/version/OS mismatch');
-  const entitlements = await command('/usr/bin/codesign', ['-d', '--entitlements', ':-', app], log);
+  const entitlements = await command('/usr/bin/codesign', ['-d', '--entitlements', ':-', app]);
+  if (sha(Buffer.from(entitlements.stdout)) !== hostEntitlementsHash) throw Error('Native entitlements drift');
   return entitlements.stdout;
+}
+async function checkProvision(app) {
+  const provision = path.join(app, 'embedded.mobileprovision');
+  if (sha(fs.readFileSync(plainFile(provision))) !== profileHash) throw Error('Embedded profile changed');
+  const profile = (await command('/usr/bin/security', ['cms', '-D', '-i', provision])).stdout;
+  const extract = async (key, format) => (await command('/usr/bin/plutil', ['-extract', key, format, '-o', '-', '-'], profile)).stdout.trim();
+  const created = Date.parse(await extract('CreationDate', 'raw'));
+  const expires = Date.parse(await extract('ExpirationDate', 'raw'));
+  let devices;
+  try {
+    devices = JSON.parse(await extract('ProvisionedDevices', 'json'));
+  } catch {
+    throw Error('Cannot read pinned profile device membership');
+  }
+  if (!(created <= Date.now() && Date.now() < expires) || !Array.isArray(devices) || devices.length !== 1 ||
+      devices.some(device => typeof device !== 'string' || !/^[a-f0-9-]+$/i.test(device))) {
+    throw Error('Provisioning profile expired or has no checked devices');
+  }
+  return devices;
 }
 function verifyRuntimePins(pins) {
   for (const [relative, hash] of Object.entries(pins)) if (sha(fs.readFileSync(path.join(sdk, relative))) !== hash) throw Error('Runtime input drift');
@@ -394,11 +434,11 @@ function verifyCompilationInputs(root, context, markerRecords) {
     if (classifyCompilerDependency(input, markerRecords)) continue;
     const relative = path.relative(source, absolute);
     if (!relative.startsWith('..' + path.sep) && !path.isAbsolute(relative)) {
-      const expected = context.seal.files[relative] ?? context.plan.nativeInputs[relative];
+      const expected = context.seal.files[relative] ?? context.plan.nativeInputs[relative] ?? context.localFiles[relative];
       if (!expected && !/^\.dart_tool\/(?:flutter_build|hooks_runner|native_assets_builder)\//.test(relative)) {
-        throw Error('Unsealed compiler input: ' + relative);
+        throw Error('Unsealed compiler input');
       }
-      if (expected && sha(fs.readFileSync(plainFile(absolute))) !== expected) throw Error('Compiler input drift: ' + relative);
+      if (expected && sha(fs.readFileSync(plainFile(absolute))) !== expected) throw Error('Compiler input drift');
     } else if (!absolute.startsWith(sdk + path.sep) && !absolute.startsWith(dartCache + path.sep) &&
         !absolute.startsWith(root + path.sep)) {
       throw Error('Compiler input outside declared public roots');
@@ -420,6 +460,9 @@ export function flutterAssembleArgs(products, root, sdkRoot) {
     '-dCodesignIdentity=' + identity, '--DartDefines=' + encodedDefines, 'profile_ios_bundle_flutter_assets'];
 }
 function assertHostDelta(original, candidate) {
+  if (!fs.lstatSync(candidate).isDirectory() || fs.realpathSync(candidate) !== candidate) {
+    throw Error('Delivery candidate must be a direct build directory');
+  }
   const entries = artifactEntries(candidate);
   for (const [relative, record] of Object.entries(original)) {
     if (relative.startsWith('Frameworks/App.framework/') || relative === '_CodeSignature/CodeResources') continue;
@@ -430,40 +473,113 @@ function assertHostDelta(original, candidate) {
   for (const relative of Object.keys(entries)) if (!Object.hasOwn(original, relative) && !relative.startsWith('Frameworks/App.framework/')) throw Error('New native artifact path: ' + relative);
   return {entries, sha256: sha(Buffer.from(JSON.stringify(entries)))};
 }
+async function deliver(file, context, measured, originalEntitlements, expectedBuildReceiptHash) {
+  const root = assertReviewWorkspace(source, context.packet, 'HOST_PROFILE',
+    path.join(source, 'build/review-work', path.basename(context.packet), 'HOST_PROFILE'));
+  const candidate = path.join(root, 'Runner.app');
+  const bytes = fs.readFileSync(plainFile(path.join(root, 'BUILD.json')));
+  const receipt = JSON.parse(bytes);
+  const published = readJson(plainFile(path.join(context.packet, 'BUILD.json')));
+  if (sha(bytes) !== expectedBuildReceiptHash || receipt.schema !== 2 || receipt.success !== true || receipt.root !== root || receipt.candidate !== candidate ||
+      receipt.commitSha !== context.plan.sourceCommit || published.commitSha !== receipt.commitSha ||
+      receipt.planSha256 !== context.planHash || receipt.sourceSealSha256 !== context.sealHash ||
+      receipt.reusedHostSha256 !== hostHash || published.success !== true ||
+      published.buildReceipt !== path.join(root, 'BUILD.json') || published.buildReceiptSha256 !== sha(bytes)) throw Error('No exact successful build receipt');
+  const recheckArtifact = async () => {
+    recheckPlan(file, context);
+    verifySdkAndHost();
+    if (sortedJson(receipt.runtimePins) !== sortedJson(measured.runtimePins)) throw Error('Build runtime pins drift');
+    verifyRuntimePins(receipt.runtimePins);
+    verifyWildcardRerunRecords(receipt.compilerDependencyMarkers);
+    const compilerInputs = verifyCompilationInputs(root, context, []);
+    if (Object.keys(compilerInputs).length !== receipt.compilerInputs?.files ||
+        sha(Buffer.from(sortedJson(compilerInputs))) !== receipt.compilerInputs.sha256) throw Error('Build compiler inputs drift');
+    const checked = assertHostDelta(measured.entries, candidate);
+    if (checked.sha256 !== receipt.artifact?.sha256) throw Error('Delivery artifact drift');
+    if (await checkIdentity(candidate) !== originalEntitlements) throw Error('Delivery entitlements drift');
+    await checkProvision(candidate);
+    return true;
+  };
+  await recheckArtifact();
+  const profileDevices = await checkProvision(candidate);
+  const phone = await checkVerifiedPhone(profileDevices);
+  if (!phone.ready) {
+    console.log(JSON.stringify(phone));
+    process.exitCode = 1;
+    return;
+  }
+  const attempts = path.join(root, 'PHONE');
+  if (!fs.existsSync(attempts)) fs.mkdirSync(attempts, {mode: 0o700});
+  if (!fs.lstatSync(attempts).isDirectory() || fs.realpathSync(attempts) !== attempts) {
+    throw Error('Phone attempt directory must stay inside the protected build workspace');
+  }
+  const priorAttempts = fs.readdirSync(attempts);
+  for (const attempt of priorAttempts) {
+    if (!/^attempt-[A-Za-z0-9]+$/.test(attempt)) throw Error('Unknown prior delivery state');
+    const directory = path.join(attempts, attempt);
+    if (fs.realpathSync(directory) !== directory) throw Error('Linked prior delivery state');
+    const prior = readJson(plainFile(path.join(directory, 'DELIVERY.json')));
+    if (prior.buildReceiptSha256 !== expectedBuildReceiptHash || prior.installAttempted !== false) {
+      throw Error('An install was attempted for this candidate. Check its recorded state before any further action.');
+    }
+  }
+  // mkdir with an exclusive sequence prevents two calls from starting the same attempt.
+  const work = path.join(attempts, 'attempt-' + (priorAttempts.length + 1));
+  fs.mkdirSync(work, {mode: 0o700});
+  const delivery = await deliverVerifiedPhone({candidate, bundleIdentifier: 'app.zyraconnect.zyra', profileDevices, work, recheckArtifact});
+  const {captureFile, ...safeDelivery} = delivery;
+  const summary = {...safeDelivery, commitSha: receipt.commitSha, artifactSha256: receipt.artifact.sha256,
+    planSha256: context.planHash, buildReceiptSha256: sha(bytes), sourceSealSha256: context.sealHash};
+  fs.writeFileSync(path.join(work, 'DELIVERY.json'), JSON.stringify(summary, null, 2) + '\n', {flag: 'wx', mode: 0o600});
+  console.log(JSON.stringify(summary));
+  if (!summary.postVerified) process.exitCode = 1;
+}
 async function main() {
-  const [mode, input, ...unknown] = process.argv.slice(2);
-  if (!['inspect', 'build'].includes(mode) || !input || unknown.length) throw Error('Use inspect/build with the exact HOST_PROFILE_PLAN.json; unknown arguments refused');
-  const file = path.resolve(input), context = loadPlan(file), measured = verifySdkAndHost();
+  const [mode, input, expectedBuildReceiptHash, ...unknown] = process.argv.slice(2);
+  if (!['inspect', 'build', 'phone-check', 'deliver'].includes(mode) || !input || unknown.length ||
+      (mode === 'deliver' ? !/^[a-f0-9]{64}$/.test(expectedBuildReceiptHash ?? '') : expectedBuildReceiptHash !== undefined)) {
+    throw Error('Use inspect/build/phone-check with the exact HOST_PROFILE_PLAN.json, or deliver with the observed build receipt SHA-256');
+  }
+  const file = path.resolve(input), measured = verifySdkAndHost(), context = loadPlan(file);
+  const originalEntitlements = await checkIdentity(host);
+  const profileDevices = await checkProvision(host);
+  if (mode === 'phone-check') {
+    const phone = await checkVerifiedPhone(profileDevices);
+    console.log(JSON.stringify(phone));
+    return;
+  }
+  if (mode === 'deliver') {
+    await deliver(file, context, measured, originalEntitlements, expectedBuildReceiptHash);
+    return;
+  }
   const space = freeBytes();
   if (mode === 'inspect') {
-    console.log(JSON.stringify({scope: context.plan.scope, sourceChecked: true, hostFiles: 177, hostHash,
+    console.log(JSON.stringify({sourceChecked: true, sourceCommit: context.plan.sourceCommit, hostFiles: hostFileCount, hostHash,
       genuineEngineCompatible: true, freeBytes: space, requiredFreeBytes: minFreeBytes,
-      buildSpaceReady: space >= minFreeBytes, fullXcodeBuild: 'HELD', installs: 'NOT SUPPORTED'}, null, 2));
+      buildSpaceReady: space >= minFreeBytes, nativeXcodeRoute: 'HELD'}, null, 2));
     return;
   }
   if (space < minFreeBytes) throw Error('Native payload build held: less than 2 GiB free; no cache deletion performed');
-  const commitSha = readCommitSha(path.dirname(source));
+  const commitSha = context.plan.sourceCommit;
   const flutterVersion = readJson(path.join(sdk, 'bin/cache/flutter.version.json')).frameworkVersion;
   const root = createReviewWorkspace(source, context.packet, 'HOST_PROFILE');
   const products = path.join(root, 'products'), candidate = path.join(root, 'Runner.app');
   fs.mkdirSync(products);
-  const fd = fs.openSync(path.join(root, 'BUILD.log'), 'wx');
-  const receipt = {schema: 1, started: new Date().toISOString(), scope: context.plan.scope, root, candidate,
+  const receipt = {schema: 2, started: new Date().toISOString(), commitSha, root, candidate,
     planSha256: context.planHash, sourceSealSha256: context.sealHash, reusedHostSha256: hostHash,
-    fullXcodeBuild: false, installExecuted: false, commands: [], success: false};
+    fullXcodeBuild: false, installExecuted: false, success: false};
   try {
-    const originalEntitlements = await checkIdentity(host, fd);
-    const sdkResult = await command('/usr/bin/xcrun', ['--sdk', 'iphoneos', '--show-sdk-path'], fd);
-    receipt.commands.push(sdkResult);
+    const sdkResult = await command('/usr/bin/xcrun', ['--sdk', 'iphoneos', '--show-sdk-path']);
     const sdkRoot = sdkResult.stdout.trim();
     if (!/^\/Applications\/Xcode\.app\/Contents\/Developer\/Platforms\/iPhoneOS\.platform\/Developer\/SDKs\/iPhoneOS[^/]*\.sdk$/.test(sdkRoot)) throw Error('Unexpected iPhone SDK');
     const dart = path.join(sdk, 'bin/cache/dart-sdk/bin/dart');
     // Configuration is intentionally absent: an explicit Flavor already gives
     // the same production Dart flavor, without asking Xcode for package info.
-    receipt.commands.push(await command(dart, flutterAssembleArgs(products, root, sdkRoot), fd));
+    await command(dart, flutterAssembleArgs(products, root, sdkRoot));
     recheckPlan(file, context); verifySdkAndHost(); verifyRuntimePins(measured.runtimePins);
     receipt.compilerDependencyMarkers = [];
-    receipt.compilerInputs = verifyCompilationInputs(root, context, receipt.compilerDependencyMarkers);
+    const compilerInputs = verifyCompilationInputs(root, context, receipt.compilerDependencyMarkers);
+    receipt.compilerInputs = {files: Object.keys(compilerInputs).length, sha256: sha(Buffer.from(sortedJson(compilerInputs)))};
     const appFramework = path.join(products, 'App.framework');
     const payload = fs.readFileSync(plainFile(path.join(appFramework, 'App')));
     validateAotFrameworkPayload(payload);
@@ -489,20 +605,22 @@ async function main() {
     verifyWildcardRerunRecords(receipt.compilerDependencyMarkers);
     fs.cpSync(host, candidate, {recursive: true, filter: from => from !== oldAppFramework && !from.startsWith(oldAppFramework + path.sep)});
     fs.cpSync(appFramework, path.join(candidate, 'Frameworks/App.framework'), {recursive: true});
-    await command('/usr/bin/codesign', ['--verify', '--strict', path.join(candidate, 'Frameworks/App.framework')], fd);
-    receipt.commands.push(await command('/usr/bin/codesign', ['--force', '--sign', identity, '--timestamp=none',
-      '--preserve-metadata=identifier,entitlements,requirements,flags,runtime', candidate], fd));
-    if (await checkIdentity(candidate, fd) !== originalEntitlements) throw Error('Native entitlements changed');
-    if (sha(fs.readFileSync(path.join(candidate, 'embedded.mobileprovision'))) !== profileHash) throw Error('Embedded profile changed');
+    await command('/usr/bin/codesign', ['--verify', '--strict', path.join(candidate, 'Frameworks/App.framework')]);
+    await command('/usr/bin/codesign', ['--force', '--sign', identity, '--timestamp=none',
+      '--preserve-metadata=identifier,entitlements,requirements,flags,runtime', candidate]);
+    if (await checkIdentity(candidate) !== originalEntitlements) throw Error('Native entitlements changed');
+    await checkProvision(candidate);
     receipt.artifact = assertHostDelta(measured.entries, candidate);
     recheckPlan(file, context); verifySdkAndHost(); verifyRuntimePins(measured.runtimePins);
     verifyWildcardRerunRecords(receipt.compilerDependencyMarkers);
+    if (sortedJson(verifyCompilationInputs(root, context, [])) !== sortedJson(compilerInputs)) {
+      throw Error('Compiler dependencies changed during packaging');
+    }
     receipt.runtimePins = measured.runtimePins;
     receipt.success = true;
   } catch (error) {
     receipt.failure = String(error);
   } finally {
-    fs.closeSync(fd);
     receipt.finished = new Date().toISOString();
     fs.writeFileSync(path.join(root, 'BUILD.json'), JSON.stringify(receipt, null, 2) + '\n', {flag: 'wx'});
     writeBuildEvidence(context.packet, receipt, {commitSha, flutterVersion, buildMode: 'profile',
