@@ -11,9 +11,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
-import 'package:zyra/dev/zyra_circle_discussion_archive.dart';
+import 'package:zyra/dev/zyra_circle_topics_presentation.dart';
 import 'package:zyra/dev/zyra_journey_peer_guardians_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
+import 'package:zyra/dev/zyra_one_journey_options_page.dart';
+import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/screens/profile/edit_photos_screen.dart';
 import 'package:zyra/screens/profile/my_profile_preview_screen.dart';
 import 'package:zyra/screens/profile/seeker_profile_screen.dart';
@@ -52,6 +55,7 @@ Future<void> _mount(
   bool guardian = false,
   bool protectedHost = false,
   bool prepareOwnPhotos = false,
+  bool seedGuardianJourney = false,
   Size size = const Size(393, 852),
   double textScale = 1,
   bool Function()? canAct,
@@ -60,6 +64,16 @@ Future<void> _mount(
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
+  final checkpoint = seedGuardianJourney
+      ? ZyraPreviewNavigationCheckpoint(
+          guardian: true,
+          model: (ViewRequestDraftModel(
+            capacity: 3,
+          )..seedJourneys(1)).snapshot(),
+          tab: 3,
+          pages: const ['guardian_seeker'],
+        )
+      : null;
   final theme = ThemeData.dark();
   await tester.pumpWidget(
     MaterialApp(
@@ -82,6 +96,7 @@ Future<void> _mount(
               ownerGeneration: ZyraAccountState.generation,
               ownerId: ZyraAccountState.userId,
               initialGuardianRole: guardian,
+              initialCheckpoint: checkpoint,
               onExit: () => fail('An in-app Back must not exit its owner.'),
             )
           : ZyraOneJourneyConceptShell(
@@ -89,6 +104,7 @@ Future<void> _mount(
               canAct: canAct ?? () => true,
               onExit: () => fail('An in-app Back must not exit the preview.'),
               initialGuardianRole: guardian,
+              initialCheckpoint: checkpoint,
             ),
     ),
   );
@@ -182,6 +198,15 @@ Future<void> _nav(WidgetTester tester, String label) async {
   await tester.tapAt(tester.getCenter(icon));
   await tester.pumpAndSettle();
   expect(tester.takeException(), isNull);
+}
+
+Future<void> _openGuardianCircle(WidgetTester tester) async {
+  if (_key('guardian_circle').evaluate().isEmpty) {
+    await _nav(tester, 'Seekers');
+    await _tap(tester, 'guardian_seeker_0');
+  }
+  await _tap(tester, 'guardian_circle');
+  expect(find.byType(ZyraCircleTopicsPresentation), findsOneWidget);
 }
 
 Future<void> _openOptions(WidgetTester tester) async {
@@ -494,57 +519,56 @@ void main() {
     );
   }
 
-  testWidgets(
-    'default Circle edge swipe returns from archive then the same conversation with draft intact',
-    (tester) async {
-      await _mount(tester, guardian: true, protectedHost: true);
-      await _nav(tester, 'Seekers');
-      await _tap(tester, 'seeker-family-chat-draft-self');
-      final circle = find.byType(ZyraGuardianCircleScreen);
-      final state = tester.state(circle);
-      final composer = find.descendant(
-        of: _key('guardian-circle-composer'),
-        matching: find.byType(TextField),
-      );
-      final controller = tester.widget<TextField>(composer).controller!;
-      await _tap(tester, 'circle_discuss_floatingButton');
-      await _tap(tester, 'circle_topic_tab_1');
-      await _tap(tester, 'circle_topic_draft-circle-past-0');
-      expect(
-        _key('circle_pending_discussion_topic_draft-circle-past-0'),
-        findsOneWidget,
-      );
-      expect(
-        _key('circle_discussion_bubble_draft-circle-past-0'),
-        findsNothing,
-      );
-      const sentBody = 'A sent discussion before viewing the Journey';
-      await tester.enterText(composer, sentBody);
-      await _press(tester, find.byTooltip('Send message'));
-      expect(_key('circle_pending_discussion_topic'), findsNothing);
-      expect(
-        _key('circle_discussion_bubble_draft-circle-past-0'),
-        findsOneWidget,
-      );
-      expect(find.text(sentBody), findsOneWidget);
-      await tester.enterText(
-        composer,
-        'Keep this unsent while viewing the Journey',
-      );
-      await tester.pumpAndSettle();
-      await _press(tester, find.text('View Journey'));
-      expect(find.byType(ZyraCircleDiscussionArchiveView), findsOneWidget);
-      await _swipeBack(tester);
-      expect(find.byType(ZyraCircleDiscussionArchiveView), findsNothing);
-      expect(tester.state(circle), same(state));
-      expect(tester.widget<TextField>(composer).controller, same(controller));
-      expect(controller.text, 'Keep this unsent while viewing the Journey');
-      await _swipeBack(tester);
-      expect(circle, findsNothing);
-      _noBackButton();
-      expect(_key('seeker-family-chat-draft-self'), findsOneWidget);
-    },
-  );
+  // QUESTIONS Q24: the current LOCK 20 Journey child returns to the live
+  // Topics view, whose own Back returns to the selected Seeker page.
+  testWidgets('Circle edge returns from Journey through the same Topics draft', (
+    tester,
+  ) async {
+    await _mount(
+      tester,
+      guardian: true,
+      protectedHost: true,
+      seedGuardianJourney: true,
+    );
+    await _openGuardianCircle(tester);
+    final circle = find.byType(ZyraGuardianCircleScreen);
+    final state = tester.state(circle);
+    final composer = _key('circle_topics_composer');
+    await _tap(tester, 'circle_topics_topic_draft-sara');
+    final controller = tester.widget<TextField>(composer).controller!;
+    const sentBody = 'A sent discussion before viewing the Journey';
+    await tester.enterText(composer, sentBody);
+    await _tap(tester, 'circle_topics_send');
+    expect(find.text(sentBody), findsOneWidget);
+    await tester.enterText(
+      composer,
+      'Keep this unsent while viewing the Journey',
+    );
+    await tester.pumpAndSettle();
+    await _tap(tester, 'circle_topics_view_journey');
+    expect(circle, findsNothing);
+    final stale = captureZyraAccessibleBack(tester);
+    await _swipeBack(tester);
+    expect(circle, findsOneWidget);
+    final returned = tester.state(circle);
+    final returnedController = tester.widget<TextField>(composer).controller;
+    final returnedText = returnedController!.text;
+    stale();
+    await tester.pumpAndSettle();
+    expect(tester.state(circle), same(returned));
+    await _swipeBack(tester);
+    expect(circle, findsNothing);
+    stale();
+    await tester.pumpAndSettle();
+    expect(_key('guardian_circle'), findsOneWidget);
+    expect(
+      (returned, returnedController, returnedText),
+      (state, controller, 'Keep this unsent while viewing the Journey'),
+      reason:
+          'QUESTIONS Q24 requires the original Topics owner and draft to survive the child',
+    );
+    _noBackButton();
+  });
 
   testWidgets(
     'holding unsupported Settings preserves the actual scroll state',
@@ -608,6 +632,7 @@ void main() {
     );
   });
 
+  // QUESTIONS Q24: current LOCK 21 editors return to the Profile tab.
   testWidgets(
     'Seeker own photo and retained editors use the same button; role changes preserve mode',
     (tester) async {
@@ -667,6 +692,7 @@ void main() {
       await _back(tester);
       expect(find.byType(MyProfilePreviewScreen), findsNothing);
       await _tap(tester, 'concept_edit_profile');
+      final staleEditorBack = captureZyraAccessibleBack(tester);
       expect(find.byKey(_backKey), findsNothing);
       await _capture(tester, '03-seeker-edit-profile-back');
       await _tap(tester, 'compatibility-editor-aboutYou');
@@ -675,6 +701,10 @@ void main() {
       expect(_key('compatibility-editor-aboutYou'), findsOneWidget);
       await _back(tester);
       expect(find.byKey(_scopeKey), findsNothing);
+      expect(_key('concept_edit_profile'), findsOneWidget);
+      staleEditorBack();
+      await tester.pumpAndSettle();
+      expect(_key('concept_edit_profile'), findsOneWidget);
       await _openOptions(tester);
       await _tap(tester, 'draft_role_guardian');
       _noBackButton();
@@ -682,32 +712,31 @@ void main() {
 
       expect(find.text('Back navigation'), findsNothing);
       await _back(tester);
-      await _tap(tester, 'guardian-dashboard-view-profile-draft-self');
-      expect(find.byKey(_backKey), findsNothing);
-      await _capture(tester, '04-guardian-full-photo-back');
-      await _back(tester);
-      expect(
-        _key('guardian-dashboard-view-profile-draft-self'),
-        findsOneWidget,
-      );
+      await _nav(tester, 'Profile');
+      await _tap(tester, 'concept_settings');
+      _noBackButton();
+      final guardianBack = captureZyraAccessibleBack(tester);
+      staleEditorBack();
+      await tester.pumpAndSettle();
+      expect(_key('concept_settings_signInSecurity'), findsOneWidget);
+      guardianBack();
+      await tester.pumpAndSettle();
+      expect(_key('concept_settings'), findsOneWidget);
+      _noBackButton();
     },
   );
 
+  // QUESTIONS Q24: current Topics keeps its composer through local setup.
   testWidgets(
     'Circle preserves unsent composer text through controls and Back closes options first',
     (tester) async {
       await _mount(tester, guardian: true, protectedHost: true);
       await _openOptions(tester);
       await _back(tester);
-      await _nav(tester, 'Seekers');
-      await _tap(tester, 'seeker-family-chat-draft-self');
+      await _openGuardianCircle(tester);
       expect(find.byType(ZyraGuardianCircleScreen), findsOneWidget);
       expect(find.byKey(_backKey), findsNothing);
-      await _capture(tester, '05-guardian-circle-back');
-      final composer = find.descendant(
-        of: _key('guardian-circle-composer'),
-        matching: find.byType(TextField),
-      );
+      final composer = _key('circle_topics_composer');
       expect(composer, findsOneWidget);
       await tester.enterText(composer, 'Unsent local draft');
       await tester.pumpAndSettle();
@@ -729,62 +758,43 @@ void main() {
     },
   );
 
-  testWidgets(
-    'Circle Back returns from its nested archive then from the same conversation',
-    (tester) async {
-      await _mount(tester, guardian: true, protectedHost: true);
-      await _openOptions(tester);
-      await _back(tester);
-      await _nav(tester, 'Seekers');
-      await _tap(tester, 'seeker-family-chat-draft-self');
-      final circle = find.byType(ZyraGuardianCircleScreen);
-      final state = tester.state(circle);
-      final composer = find.descendant(
-        of: _key('guardian-circle-composer'),
-        matching: find.byType(TextField),
-      );
-      final controller = tester.widget<TextField>(composer).controller!;
-      await _tap(tester, 'circle_discuss_floatingButton');
-      await _tap(tester, 'circle_topic_tab_1');
-      await _tap(tester, 'circle_topic_draft-circle-past-0');
-      expect(
-        _key('circle_pending_discussion_topic_draft-circle-past-0'),
-        findsOneWidget,
-      );
-      expect(
-        _key('circle_discussion_bubble_draft-circle-past-0'),
-        findsNothing,
-      );
-      const sentBody = 'A sent discussion before opening the archive';
-      await tester.enterText(composer, sentBody);
-      await _press(tester, find.byTooltip('Send message'));
-      expect(_key('circle_pending_discussion_topic'), findsNothing);
-      expect(
-        _key('circle_discussion_bubble_draft-circle-past-0'),
-        findsOneWidget,
-      );
-      expect(find.text(sentBody), findsOneWidget);
-      await tester.enterText(composer, 'Retain this draft through the archive');
-      await tester.pumpAndSettle();
-      await _press(tester, find.text('View Journey'));
-      expect(find.byType(ZyraCircleDiscussionArchiveView), findsOneWidget);
-      expect(find.byKey(_backKey), findsNothing);
-      final retained = captureZyraAccessibleBack(tester);
-      await _swipeBack(tester);
-      retained(); // A repeat before the parent rebind must not close Circle.
-      await tester.pumpAndSettle();
-      expect(find.byType(ZyraCircleDiscussionArchiveView), findsNothing);
-      expect(tester.state(circle), same(state));
-      expect(tester.widget<TextField>(composer).controller, same(controller));
-      expect(controller.text, 'Retain this draft through the archive');
-      retained(); // The old child's action also stays inert after rebinding.
-      await tester.pumpAndSettle();
-      expect(tester.state(circle), same(state));
-      await _back(tester);
-      expect(circle, findsNothing);
-      _noBackButton();
-    },
-  );
+  // QUESTIONS Q24: use the in-page LOCK 20 Past return on the same owner.
+  testWidgets('Past discussion returns to its mounted Circle Topics list', (
+    tester,
+  ) async {
+    await _mount(tester, protectedHost: true);
+    await _nav(tester, 'Guardian');
+    await _tap(tester, 'guardian-family-messages-top');
+    final circle = find.byType(ZyraGuardianCircleScreen);
+    final state = tester.state(circle);
+    await _tap(tester, 'circle_topics_past');
+    final topics = tester.widget<ZyraCircleTopicsPresentation>(
+      find.byType(ZyraCircleTopicsPresentation),
+    );
+    expect(topics.past, isNotEmpty);
+    final id = topics.past.last.id;
+    await _tap(tester, 'circle_topics_past_$id');
+    final selected = tester.widget<ZyraCircleTopicsPresentation>(
+      find.byType(ZyraCircleTopicsPresentation),
+    );
+    expect(selected.selected?.id, id);
+    final stale = tester
+        .widget<Semantics>(_key('circle_topics_all_past'))
+        .properties
+        .onTap!;
+    await _tap(tester, 'circle_topics_all_past');
+    expect(_key('circle_topics_past_$id'), findsOneWidget);
+    expect(tester.state(circle), same(state));
+    await _tap(tester, 'circle_topics_past_$id');
+    stale();
+    await tester.pumpAndSettle();
+    expect(_key('circle_topics_all_past'), findsOneWidget);
+    expect(tester.state(circle), same(state));
+    await _tap(tester, 'circle_topics_all_past');
+    await _swipeBack(tester);
+    expect(circle, findsNothing);
+    expect(_key('guardian-family-messages-top'), findsOneWidget);
+  });
 
   testWidgets(
     'Default Back preserves Manage Photos center paging to its virtual Add page and edge returns only the editor',
@@ -837,81 +847,62 @@ void main() {
     },
   );
 
+  // QUESTIONS Q24: current LOCK 19 Guardian cards keep selection and roster.
   testWidgets(
-    'Own Guardian root retains both center swipe directions without a faux Back and Circle edge returns to the same roster',
+    'Guardian cards swipe both ways and Circle returns to the same roster',
     (tester) async {
       await _mount(tester, protectedHost: true);
       await _nav(tester, 'Guardian');
-      final root = find.byType(SeekerGuardianPage);
-      final pager = _key('guardian-page-view');
-      List<Object?> roster() => tester
-          .widget<SeekerGuardianPage>(root)
-          .people
-          .map(
-            (person) => (
+      final root = find.byType(ZyraOneJourneyGuardianCards);
+      List<Object?> roster() =>
+          tester.widget<ZyraOneJourneyGuardianCards>(root).people.map((entry) {
+            final person = entry.person;
+            return (
               person.id,
               person.firstName,
               person.relationship,
               person.isMain,
-            ),
-          )
-          .toList();
+            );
+          }).toList();
       final before = roster();
       expect(before, hasLength(2));
-      final people = tester.widget<SeekerGuardianPage>(root).people;
-      final names = [
-        ...people.where((person) => person.isMain),
-        ...people.where((person) => !person.isMain),
-      ].map((person) => person.firstName).toList();
-      Finder identityBand(int index) => find
-          .descendant(of: pager, matching: find.text(names[index]))
-          .hitTestable();
+      final people = tester.widget<ZyraOneJourneyGuardianCards>(root).people;
+      final main = people.singleWhere((entry) => entry.person.isMain).person.id;
+      final additional = people
+          .singleWhere((entry) => !entry.person.isMain)
+          .person
+          .id;
+      final mainCard = _key('guardian-card-$main');
+      final additionalCard = _key('guardian-card-$additional');
       _noBackButton();
       expect(_key('zyra_back_swipe_edge'), findsNothing);
-      // Swipe the measured identity row, not a View/Chat switch whose bounds
-      // can move when the permission header becomes more readable.
-      await _swipePager(
-        tester,
-        pager,
-        forward: true,
-        gestureBand: identityBand(0),
-      );
-      _expectPagerPage(tester, pager, 1);
-      await _swipePager(
-        tester,
-        pager,
-        forward: false,
-        gestureBand: identityBand(1),
-      );
-      _expectPagerPage(tester, pager, 0);
-      await _swipePager(
-        tester,
-        pager,
-        forward: true,
-        gestureBand: identityBand(0),
-      );
-      final rect = tester.getRect(pager);
+      await _swipePager(tester, mainCard, forward: true);
+      expect(additionalCard, findsOneWidget);
+      await _swipePager(tester, additionalCard, forward: false);
+      expect(mainCard, findsOneWidget);
+      await _swipePager(tester, mainCard, forward: true);
+      expect(additionalCard, findsOneWidget);
+      final bounds = tester.getRect(additionalCard);
       await tester.timedDragFrom(
-        Offset(8, rect.center.dy),
+        Offset(8, bounds.center.dy),
         const Offset(220, 0),
         const Duration(milliseconds: 450),
       );
       await tester.pumpAndSettle();
-      expect(root, findsOneWidget);
-      _noBackButton();
+      expect(additionalCard, findsOneWidget);
       expect(_key('zyra_back_swipe_edge'), findsNothing);
-      expect(roster(), before);
       await _tap(tester, 'guardian-family-messages-top');
-      expect(find.byType(ZyraGuardianCircleScreen), findsOneWidget);
+      expect(find.byType(ZyraCircleTopicsPresentation), findsOneWidget);
       await _swipeBack(tester);
-      expect(find.byType(ZyraGuardianCircleScreen), findsNothing);
-      expect(root, findsOneWidget);
+      expect(find.byType(ZyraCircleTopicsPresentation), findsNothing);
+      expect(additionalCard, findsOneWidget);
       expect(roster(), before);
       _noBackButton();
       expect(_key('zyra_back_swipe_edge'), findsNothing);
     },
   );
 
+  // QUESTIONS Q24: the read-only peer roster returns to its pushed Options.
   testWidgets(
     'Journey peer Guardian pager keeps center swipes and edge returns only to the selected Journey without changing its read-only roster',
     (tester) async {
@@ -919,6 +910,7 @@ void main() {
       await _nav(tester, 'Journey');
       await _openOptions(tester);
       await _tap(tester, 'concept_journey_preview_3');
+      await closeZyraDevControls(tester);
       await _tap(tester, 'draft_journey_options_draft-sara');
       await _tap(tester, 'draft_options_guardians_draft-sara');
       final peer = find.byType(ZyraJourneyPeerGuardiansPresentation);
@@ -942,10 +934,9 @@ void main() {
       expect(roster(), before);
       await _swipeBack(tester);
       expect(peer, findsNothing);
-      expect(_key('draft_journey_options_draft-sara'), findsOneWidget);
+      expect(find.byType(ZyraOneJourneyOptionsPage), findsOneWidget);
       _noBackButton();
-      expect(_key('zyra_back_swipe_edge'), findsNothing);
-      await _tap(tester, 'draft_journey_options_draft-sara');
+      expect(_key('zyra_back_swipe_edge'), findsOneWidget);
       await _tap(tester, 'draft_options_guardians_draft-sara');
       expect(roster(), before);
       _expectPagerPage(tester, pager, 0);
@@ -953,6 +944,7 @@ void main() {
     },
   );
 
+  // QUESTIONS Q24: use actual LOCK 20 Topics controls in Larger Text.
   testWidgets(
     'Compact 2x Circle and Settings retain edge return without Back chrome or clipped controls',
     (tester) async {
@@ -966,14 +958,9 @@ void main() {
       await _openOptions(tester);
       await _capture(tester, '10-hidden-page-options-compact');
       await _back(tester);
-      await _nav(tester, 'Seekers');
-      await _tap(tester, 'seeker-family-chat-draft-self');
+      await _openGuardianCircle(tester);
       expect(find.byKey(_backKey), findsNothing);
-      await _capture(tester, '06-guardian-circle-compact-back');
-      final composer = find.descendant(
-        of: _key('guardian-circle-composer'),
-        matching: find.byType(TextField),
-      );
+      final composer = _key('circle_topics_composer');
       expect(composer, findsOneWidget);
       await tester.showKeyboard(composer);
       tester.view.viewInsets = const FakeViewPadding(bottom: 200);
@@ -985,15 +972,8 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(find.byKey(_backKey), findsNothing);
-      final send = find.descendant(
-        of: _key('guardian-circle-composer'),
-        matching: find.byTooltip('Send message'),
-      );
-      expect(send.hitTestable(), findsOneWidget);
-      expect(
-        _key('circle_discuss_floatingButton').hitTestable(),
-        findsOneWidget,
-      );
+      expect(_key('circle_topics_send').hitTestable(), findsOneWidget);
+      expect(_key('circle_topics_menu').hitTestable(), findsOneWidget);
       expect(_key('circle_back_compact_discuss'), findsNothing);
       expect(_key('circle_topic_bar'), findsNothing);
       final editable = tester
@@ -1005,9 +985,10 @@ void main() {
         editable.size.height,
         greaterThanOrEqualTo(editable.preferredLineHeight),
       );
-      await _capture(tester, '08-guardian-circle-compact-keyboard-back');
       tester.view.resetViewInsets();
       await tester.pumpAndSettle();
+      await _back(tester);
+      expect(_key('guardian_circle'), findsOneWidget);
       await _back(tester);
       await _nav(tester, 'Profile');
       await _tap(tester, 'concept_settings');

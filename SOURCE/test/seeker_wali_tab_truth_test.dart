@@ -134,9 +134,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(const ValueKey('guardian-add-top')));
+    await tester.tap(find.byKey(const ValueKey('guardian-empty-add')));
     await tester.pumpAndSettle();
 
+    // Q17 / LOCK 19 k08: the centre action opens the existing LOCK 9 page.
     expect(find.text('Add a Guardian'), findsOneWidget);
     expect(find.text('Scan code'), findsOneWidget);
     expect(find.text('Enter code'), findsOneWidget);

@@ -495,7 +495,10 @@ class _ConfirmationPill extends StatelessWidget {
                   child: Text(
                     label,
                     textAlign: TextAlign.center,
-                    style: _confirmationLabelStyle(context, color: tint),
+                    style: _confirmationLabelStyle(
+                      context,
+                      color: destructive ? ZyraColors.dangerText : tint,
+                    ),
                   ),
                 ),
               ],
@@ -521,6 +524,9 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
   // highlight falls back to the eased, animated position for
   // widget.currentIndex (tap or programmatic change).
   double? _touchX;
+  bool _horizontalDragActive = false;
+  int? _pressedCell;
+  bool _leftPressedCell = false;
   int _semanticsEpoch = 0;
   bool? _lastQuietMotion;
 
@@ -533,6 +539,8 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
       // motion. An interrupted pointer preview must not remain latched to it.
       _touchX = null;
       _lastIndex = null;
+      _pressedCell = null;
+      _horizontalDragActive = false;
       _semanticsEpoch++;
     }
     _lastQuietMotion = quietMotion;
@@ -544,9 +552,12 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
     // A retained accessibility callback must not invoke a destination/action
     // from the previous bar after its caller, selection or contents change.
     _semanticsEpoch++;
-    if (oldWidget.interactionEnabled != widget.interactionEnabled) {
+    if (oldWidget.interactionEnabled != widget.interactionEnabled ||
+        oldWidget.commitOnRelease != widget.commitOnRelease) {
       _touchX = null;
       _lastIndex = null;
+      _pressedCell = null;
+      _horizontalDragActive = false;
     }
   }
 
@@ -562,6 +573,8 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
       setState(() => _touchX = null);
     }
     _lastIndex = null;
+    _pressedCell = null;
+    _horizontalDragActive = false;
     ZyraInteractionStyle.emitSelectionHaptic(level: widget.hapticLevel);
     if (!changed && !widget.commitOnRelease) return;
     dismissZyraKeyboardAfterNavigation();
@@ -581,6 +594,8 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
     // keyboard can otherwise remain painted over the destination tab.
     dismissZyraKeyboardAfterNavigation();
     _lastIndex = widget.currentIndex;
+    _pressedCell = _indexForX(x, barWidth);
+    _leftPressedCell = false;
     setState(() => _touchX = x.clamp(0, barWidth));
   }
 
@@ -606,6 +621,8 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
   void _endTouch({bool commit = false}) {
     final x = _touchX;
     final index = _lastIndex;
+    _horizontalDragActive = false;
+    _pressedCell = null;
     setState(() => _touchX = null);
     _lastIndex = null;
     if (!widget.interactionEnabled ||
@@ -799,7 +816,37 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
                           ? _indexForX(_touchX!, barWidth)
                           : widget.currentIndex;
 
+                      Offset currentBarPosition(Offset globalPosition) =>
+                          (context.findRenderObject()! as RenderBox)
+                              .globalToLocal(globalPosition);
+                      bool isInBar(Offset point) => Rect.fromLTWH(
+                        0,
+                        0,
+                        barWidth,
+                        innerHeight,
+                      ).contains(point);
+                      bool isInPressedCell(Offset point) =>
+                          isInBar(point) &&
+                          _indexForX(point.dx, barWidth) == _pressedCell;
+
                       return Listener(
+                        onPointerMove: (event) {
+                          if (widget.commitOnRelease &&
+                              _pressedCell != null &&
+                              !isInPressedCell(
+                                currentBarPosition(event.position),
+                              )) {
+                            _leftPressedCell = true;
+                          }
+                        },
+                        onPointerUp: (event) {
+                          // DragEndDetails carries the last move location.
+                          // Reject an up outside the current action bar first.
+                          if (widget.commitOnRelease &&
+                              !isInBar(currentBarPosition(event.position))) {
+                            _endTouch();
+                          }
+                        },
                         // Flutter can report an accepted drag's cancellation as
                         // drag-end. Clear the raw pointer state before that end
                         // callback so an OS interruption can never commit it.
@@ -815,19 +862,45 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
                             if (!widget.interactionEnabled || _touchX == null) {
                               return;
                             }
+                            final point = widget.commitOnRelease
+                                ? currentBarPosition(d.globalPosition)
+                                : d.localPosition;
+                            if (widget.commitOnRelease &&
+                                (_leftPressedCell || !isInPressedCell(point))) {
+                              _endTouch();
+                              return;
+                            }
                             ZyraInteractionStyle.emitSelectionHaptic(
                               level: widget.hapticLevel,
                             );
-                            _handleTouchAt(d.localPosition.dx, barWidth);
+                            _handleTouchAt(point.dx, barWidth);
                             _endTouch(commit: true);
                           },
                           onTapCancel: _endTouch,
-                          onHorizontalDragStart: (d) =>
-                              _handleTouchAt(d.localPosition.dx, barWidth),
-                          onHorizontalDragUpdate: (d) =>
-                              _handleTouchAt(d.localPosition.dx, barWidth),
-                          onHorizontalDragEnd: (_) => _endTouch(commit: true),
-                          onHorizontalDragCancel: _endTouch,
+                          onHorizontalDragStart: (d) {
+                            _horizontalDragActive = true;
+                            _handleTouchAt(d.localPosition.dx, barWidth);
+                          },
+                          onHorizontalDragUpdate: (d) {
+                            if (_horizontalDragActive) {
+                              _handleTouchAt(d.localPosition.dx, barWidth);
+                            }
+                          },
+                          onHorizontalDragEnd: (details) => _endTouch(
+                            commit:
+                                _horizontalDragActive &&
+                                (!widget.commitOnRelease ||
+                                    isInBar(
+                                      currentBarPosition(
+                                        details.globalPosition,
+                                      ),
+                                    )),
+                          ),
+                          onHorizontalDragCancel: () {
+                            // Q14: the losing drag recognizer may cancel
+                            // before the winning held tap delivers its up.
+                            if (_horizontalDragActive) _endTouch();
+                          },
                           child: Stack(
                             // FIXED 2026-07-26 (root cause identified in
                             // CHATGPT_REPLY_NAVBAR_PHOTO_MENU_2026-07-26.md §1

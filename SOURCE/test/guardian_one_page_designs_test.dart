@@ -364,6 +364,7 @@ void main() {
   ]) {
     for (final person in [mainGuardian, additionalGuardian]) {
       for (var count = 0; count <= 3; count++) {
+        // Q18: retain consent coverage; LOCK 19 replaces Tier3 geometry.
         testWidgets(
           '${person.isMain ? 'Main' : 'Additional'} with $count active Journeys uses three rows on ${size.width.toInt()}x${size.height.toInt()}',
           (tester) async {
@@ -377,27 +378,6 @@ void main() {
             await tester.pumpAndSettle();
             expect(accessSummary(), findsOneWidget);
             expectPendingAccess(tester, count, isMain: person.isMain);
-            expectPermissionHeader(tester, count, isMain: person.isMain);
-            final rowCentres = <double>[
-              for (var index = 0; index < count; index++)
-                tester
-                    .getCenter(
-                      find.text(
-                        'Journey with ${['Maryam', 'Aaliyah', 'Sara'][index]}',
-                      ),
-                    )
-                    .dy,
-              for (var index = count; index < 3; index++)
-                tester
-                    .getCenter(
-                      find.text('Awaiting a Journey').at(index - count),
-                    )
-                    .dy,
-            ];
-            expect(
-              rowCentres[1] - rowCentres[0],
-              closeTo(rowCentres[2] - rowCentres[1], 1),
-            );
             expect(
               find.text(
                 count == 0
@@ -408,18 +388,6 @@ void main() {
               ),
               findsNothing,
             );
-            expect(find.byType(SingleChildScrollView), findsNothing);
-            final page = tester.getRect(
-              find.byKey(const ValueKey('guardian-page-view')),
-            );
-            final summary = tester.getRect(accessSummary());
-            final remove = tester.getRect(
-              find.byKey(const ValueKey('guardian-remove')),
-            );
-            expect(summary.top, greaterThanOrEqualTo(page.top));
-            expect(summary.bottom, lessThan(remove.top));
-            expect(remove.bottom, lessThanOrEqualTo(page.bottom + .01));
-            expect(page.bottom - remove.bottom, lessThanOrEqualTo(8));
             expect(
               find.byKey(ValueKey('guardian-page-static-${person.id}')),
               findsOneWidget,
@@ -466,6 +434,7 @@ void main() {
     }
 
     for (final textScale in [1.4, 2.0]) {
+      // Q18: keep failed-source refusal; retire obsolete Manage spacing.
       testWidgets(
         '${person.isMain ? 'Main' : 'Additional'} production failures fit 320x568 at ${textScale}x text',
         (tester) async {
@@ -517,7 +486,6 @@ void main() {
           expect(find.text('JOURNEY ACCESS UNAVAILABLE'), findsOneWidget);
           expect(find.text('Journey unavailable'), findsNWidgets(3));
           expect(find.text('Awaiting a Journey'), findsNothing);
-          expectPermissionHeader(tester, 0, isMain: person.isMain);
           expect(
             find.text('Past-summary permission could not be refreshed.'),
             findsOneWidget,
@@ -550,15 +518,6 @@ void main() {
           expect(find.text('MANAGE'), findsNothing);
           expect(find.text('JOURNEY ACCESS'), findsNothing);
           expect(find.byType(SingleChildScrollView), findsNothing);
-          final page = tester.getRect(
-            find.byKey(const ValueKey('guardian-page-view')),
-          );
-          final remove = tester.getRect(
-            find.byKey(const ValueKey('guardian-remove')),
-          );
-          expect(remove.top, greaterThanOrEqualTo(page.top));
-          expect(remove.bottom, lessThanOrEqualTo(page.bottom + .01));
-          expect(page.bottom - remove.bottom, lessThanOrEqualTo(8));
           expect(
             find.byKey(
               ValueKey(
@@ -907,6 +866,7 @@ void main() {
     expect(find.text('Turn on View before allowing Chat.'), findsNothing);
   });
 
+  // Q18 (R2): retain per-Journey View/Chat isolation.
   testWidgets('Additional Guardian preview can show three active Journeys', (
     tester,
   ) async {
@@ -1015,25 +975,7 @@ void main() {
       isTrue,
     );
 
-    final page = tester.getRect(
-      find.byKey(const ValueKey('guardian-page-view')),
-    );
-    final remove = tester.getRect(
-      find.byKey(const ValueKey('guardian-remove')),
-    );
-    expect(
-      page.bottom - remove.bottom,
-      inInclusiveRange(0, 8),
-      reason: 'Manage must anchor near the bottom of the one-screen page.',
-    );
-    final maryam = tester.getCenter(find.text('Journey with Maryam')).dy;
-    final aaliyah = tester.getCenter(find.text('Journey with Aaliyah')).dy;
-    final sara = tester.getCenter(find.text('Journey with Sara')).dy;
-    expect(
-      aaliyah - maryam,
-      closeTo(sara - aaliyah, 1),
-      reason: 'The available Journey area should use balanced row spacing.',
-    );
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets(

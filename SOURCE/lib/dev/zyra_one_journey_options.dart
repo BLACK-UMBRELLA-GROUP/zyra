@@ -392,8 +392,10 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
                         title,
                         style: ZyraText.button(
                           size: lockedPage ? 15 : 13,
-                          color: option == ZyraConceptJourneyOption.end
-                              ? ZyraColors.destructive
+                          color:
+                              option == ZyraConceptJourneyOption.end ||
+                                  option == ZyraConceptJourneyOption.report
+                              ? ZyraColors.dangerText
                               : locked
                               ? ZyraColors.ink(.5)
                               : ZyraColors.foreground,

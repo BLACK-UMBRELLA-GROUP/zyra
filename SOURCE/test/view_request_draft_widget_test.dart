@@ -17,6 +17,7 @@ import 'package:zyra/dev/dev_discovery_directions.dart';
 import 'package:zyra/dev/zyra_concept_preview_boundary.dart';
 import 'package:zyra/dev/zyra_draft_timeline_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_request_activity_presentation.dart';
@@ -103,9 +104,11 @@ const _cardLockinCandidateDirectory =
 const _simplifiedCandidateDirectory =
     'visual/candidates/my_zyra_simplified_2026_10_09';
 const _fixture = 'draft-sara';
-const _guardianView = 'guardian-journey-access-toggle-draft-attempt-$_fixture';
-const _guardianChat = 'guardian-journey-chat-toggle-draft-attempt-$_fixture';
-const _guardianHistory = 'guardian-history-consent-toggle';
+const _hassan = 'draft-guardian-hassan';
+const _yusuf = 'draft-guardian-yusuf';
+const _guardianView = 'guardian-card-view-$_yusuf-$_fixture';
+const _guardianChat = 'guardian-card-chat-$_yusuf-$_fixture';
+const _guardianHistory = 'guardian-card-history-$_yusuf';
 const _requestLabels = ['Received', 'Sent', 'Past'];
 
 Finder _key(String value) => find.byKey(ValueKey(value));
@@ -397,9 +400,6 @@ Future<void> _press(WidgetTester tester, String id) async {
     await _press(tester, 'concept_browse_menu');
     await _nav(tester, 4);
     return;
-  }
-  if (id == _guardianHistory && target.evaluate().isEmpty) {
-    await _press(tester, 'guardian-history-consent-details-toggle');
   }
   // Current production Connections cards deliberately reveal actions inline.
   // Use their genuine headers rather than injecting an expanded state.
@@ -703,13 +703,22 @@ Future<void> _openBrowseSafety(WidgetTester tester, String id) async {
   await _press(tester, 'draft_safety');
 }
 
+ZyraOneJourneyGuardianCards _guardianCards(WidgetTester tester) =>
+    tester.widget(find.byType(ZyraOneJourneyGuardianCards));
+
+ZyraGuardianCardJourney _guardianJourney(
+  WidgetTester tester,
+  String guardian,
+) => _guardianCards(
+  tester,
+).journeysFor(guardian).singleWhere((journey) => journey.id == _fixture);
+
 Future<void> _openAdditionalGuardian(WidgetTester tester) async {
-  await tester.drag(
-    _key('guardian-page-view'),
-    Offset(-tester.view.physicalSize.width * .8, 0),
-  );
-  await tester.pumpAndSettle();
-  expect(_key('guardian-page-static-draft-guardian-yusuf'), findsOneWidget);
+  if (_key(_guardianView).evaluate().isNotEmpty) return;
+  if (_key(_guardianHistory).evaluate().isEmpty) {
+    await _press(tester, 'guardian-card-next');
+  }
+  await _press(tester, 'guardian-card-center');
 }
 
 Future<void> _filterPage(WidgetTester tester, int target) async {
@@ -843,6 +852,7 @@ Future<void> _confirmGuardianMain(
   required bool remove,
 }) async {
   final base = remove ? 'guardian-clear-main' : 'guardian-make-main';
+  await _press(tester, 'guardian-card-center');
   await _press(tester, base);
   final confirm = find.descendant(
     of: _key('$base-confirmation'),
@@ -860,15 +870,8 @@ Future<void> _confirmGuardianMain(
     expect(_key('concept_main_guardian_notice'), findsOneWidget);
     await _press(tester, 'concept_main_guardian_continue');
   }
-  final people = tester
-      .widget<SeekerGuardianPage>(find.byType(SeekerGuardianPage))
-      .people;
-  expect(
-    people.where((person) => person.isMain).length,
-    remove ? 0 : 1,
-    reason:
-        'The actual current confirmation must update the local Main Guardian before threshold checks. Pager=${tester.widget<PageView>(_key("guardian-page-view")).controller?.page}; text=${tester.widgetList<Text>(find.byType(Text)).map((text) => text.data).whereType<String>().toList()}',
-  );
+  final people = _guardianCards(tester).people;
+  expect(people.where((card) => card.person.isMain).length, remove ? 0 : 1);
 }
 
 Future<void> _fillJourney(WidgetTester tester) async {
@@ -1386,72 +1389,70 @@ void main() {
     );
   }
 
-  for (final guardian in ['draft-guardian-hassan', 'draft-guardian-yusuf']) {
+  for (final guardian in [_hassan, _yusuf]) {
+    // Q35 (R2): check the live LOCK 19 card and its guarded permission action.
     testWidgets(
       'Basic $guardian has view but no chat including forged local writes',
       (tester) async {
         await _mount(tester);
         await _fillJourney(tester);
         await _nav(tester, 3);
-        if (guardian.endsWith('yusuf')) await _openAdditionalGuardian(tester);
-        final stale = tester
-            .widget<SeekerGuardianPage>(find.byType(SeekerGuardianPage))
-            .journeyAccessLoader!;
+        if (guardian == _yusuf) {
+          await _openAdditionalGuardian(tester);
+        } else {
+          await _press(tester, 'guardian-card-center');
+        }
+        final stale = _guardianCards(tester).onPermission;
         await _press(tester, 'draft_rules');
         await _press(tester, 'concept_guardian_plan_${guardian}_0');
         await _press(tester, 'draft_back');
-        if (guardian.endsWith('yusuf') &&
-            _key(
-              'guardian-page-static-draft-guardian-yusuf',
-            ).evaluate().isEmpty) {
-          await _openAdditionalGuardian(tester);
+        final view = _key('guardian-card-view-$guardian-$_fixture');
+        if (view.evaluate().isEmpty) {
+          if (_key('guardian-card-history-$guardian').evaluate().isEmpty) {
+            await _press(tester, 'guardian-card-next');
+          }
+          await _press(tester, 'guardian-card-center');
         }
-        final page = tester.widget<SeekerGuardianPage>(
-          find.byType(SeekerGuardianPage),
-        );
-        final read = await page.journeyAccessLoader!(guardianId: guardian);
-        expect(read.isAvailable, isTrue);
-        final state = read.valueOrNull!.first;
-        expect(state.included, isTrue);
-        expect(state.chatAvailable, isFalse);
-        expect(state.chatEnabled, isFalse);
-        final denied = await page.journeyAccessLoader!(
-          guardianId: guardian,
-          attemptId: 'draft-attempt-$_fixture',
-          chatEnabled: true,
-        );
-        expect(denied.isUnavailable, isTrue);
-        final oldDenied = await stale(
-          guardianId: guardian,
-          attemptId: 'draft-attempt-$_fixture',
-          chatEnabled: true,
-        );
-        expect(oldDenied.isUnavailable, isTrue);
-        expect(_key(_guardianChat), findsNothing);
+        expect(view, findsOneWidget);
         expect(
-          find.descendant(
-            of: find.byType(SeekerGuardianPage),
-            matching: find.text('Chat'),
-          ),
-          findsNothing,
+          _permissionCircle(
+            tester,
+            'guardian-card-chat-$guardian-$_fixture',
+          ).properties.toggled,
+          isNull,
         );
+        final basic = _guardianJourney(tester, guardian);
+        expect((basic.view, basic.chat), (true, false));
+        final forged = _guardianCards(tester).onPermission;
+        forged(guardian, _fixture, chat: true);
+        stale(guardian, _fixture, chat: true);
+        await tester.pumpAndSettle();
+        expect(_guardianJourney(tester, guardian).chat, isFalse);
+        final card = _guardianCards(
+          tester,
+        ).people.singleWhere((card) => card.person.id == guardian);
+        expect(card.basic, isTrue);
+        expect(_key('guardian_chat'), findsNothing);
         await _press(tester, 'draft_rules');
         await _press(tester, 'concept_guardian_plan_${guardian}_1');
         await _press(tester, 'draft_back');
-        final updated = tester.widget<SeekerGuardianPage>(
-          find.byType(SeekerGuardianPage),
+        expect(
+          _guardianCards(
+            tester,
+          ).people.singleWhere((card) => card.person.id == guardian).basic,
+          isFalse,
         );
-        final one = await updated.journeyAccessLoader!(guardianId: guardian);
-        expect(one.valueOrNull!.first.chatAvailable, isTrue);
-        expect(one.valueOrNull!.first.chatEnabled, guardian.endsWith('hassan'));
-        if (guardian.endsWith('yusuf')) {
-          final allowed = await updated.journeyAccessLoader!(
-            guardianId: guardian,
-            attemptId: 'draft-attempt-$_fixture',
-            chatEnabled: true,
-          );
-          expect(allowed.isAvailable, isTrue);
-          expect(allowed.valueOrNull!.first.chatEnabled, isTrue);
+        expect(_guardianJourney(tester, guardian).chat, guardian == _hassan);
+        if (guardian == _yusuf) {
+          // Reopen from another tab to capture a new, live access lease.
+          await _nav(tester, 2);
+          await _nav(tester, 3);
+          await _openAdditionalGuardian(tester);
+          final chat = _permissionCircle(tester, _guardianChat).properties;
+          expect(chat.onTap, isNotNull);
+          chat.onTap!();
+          await tester.pumpAndSettle();
+          expect(_guardianJourney(tester, guardian).chat, isTrue);
         }
         expect(tester.takeException(), isNull);
       },
@@ -1702,6 +1703,7 @@ void main() {
     },
   );
 
+  // Q36: Report profile (LOCK 22 V2 x05) belongs to the pushed LOCK 13 V3 options.
   testWidgets(
     'blocked active Journey retains capacity but has redacted safe End action',
     (tester) async {
@@ -1709,25 +1711,37 @@ void main() {
       await _press(tester, 'draft_rules');
       await _press(tester, 'draft_membership_seeker_basic');
       await _press(tester, 'draft_back');
-      await _fillJourney(tester);
-      await _press(tester, 'concept_journey_menu');
-      tester
-          .widget<ZyraConceptJourneyOptions>(
-            find.byType(ZyraConceptJourneyOptions),
-          )
-          .onSelected(ZyraConceptJourneyOption.profile);
+      await _seedJourneyCards(tester, 1);
+      await _press(tester, 'draft_journey_options_$_fixture');
+      await _press(tester, 'draft_options_report_$_fixture');
+      expect(find.text('Report profile'), findsOneWidget);
+      await returnZyraPreviewPage(tester);
+      expect(
+        tester
+            .widget<ZyraOneJourneyOptionsPage>(
+              find.byType(ZyraOneJourneyOptionsPage),
+            )
+            .id,
+        _fixture,
+      );
+      await returnZyraPreviewPage(tester);
+
+      // A block already present when Journey loads differs from the current
+      // Report confirmation, which ends an active Journey as it blocks.
+      final fixture = zyraShellFixtureFor(tester);
+      fixture.changeModel(() => fixture.model.block(_fixture));
       await tester.pumpAndSettle();
-      await _press(tester, 'draft_safety');
-      await _press(tester, 'draft_safety_block');
-      expect(find.text('Your Journey has your focus.'), findsOneWidget);
-      await _nav(tester, 1);
-      expect(_key('concept_blocked_journey_$_fixture'), findsOneWidget);
+      final reader = tester.widget<ZyraOneJourneyTab>(
+        find.byType(ZyraOneJourneyTab),
+      );
+      expect(reader.journeys.single.unavailable, isTrue);
+      expect(find.text('User not found'), findsOneWidget);
       expect(find.textContaining('Sara'), findsNothing);
       expect(find.byType(ZyraProfileImage), findsNothing);
       await _nav(tester, 2);
       expect(find.textContaining('Sara'), findsNothing);
       await _nav(tester, 1);
-      await _press(tester, 'draft_end_$_fixture');
+      await _press(tester, 'journey_tab_end_unavailable');
       expect(find.text('End this Journey?'), findsOneWidget);
       expect(find.textContaining('Sara'), findsNothing);
       await _press(tester, 'draft_confirm_end_$_fixture');
@@ -2722,6 +2736,7 @@ void main() {
     );
   }
 
+  // Q37: the revealed LOCK 22 V1 screen is reached through LOCK 13 options.
   testWidgets(
     'locked card compatibility follows both reveal choices without computing a score',
     (tester) async {
@@ -2733,78 +2748,38 @@ void main() {
         await _press(tester, 'draft_peer_salam_$_fixture');
         await _advanceStage(tester);
         await _press(tester, 'draft_reveal_$_fixture');
-        await _press(tester, 'concept_journey_menu');
-        await _press(tester, 'draft_options_compatibility_$_fixture');
+        final model = zyraShellFixtureFor(tester).model;
+        expect(model.hasChosenCompatibilityReveal(_fixture), isTrue);
+        expect(model.compatibilityRevealed(_fixture), isFalse);
+        await _nav(tester, 1);
+        await _press(tester, 'draft_journey_options_$_fixture');
         expect(
-          _key('draft_journey_compatibility_locked_$_fixture'),
-          findsOneWidget,
+          tester
+              .widget<ZyraConceptJourneyOptions>(
+                find.byType(ZyraConceptJourneyOptions),
+              )
+              .canViewCompatibility,
+          isFalse,
         );
+        await _press(tester, 'draft_options_compatibility_$_fixture');
         expect(_compatibilityResult(_fixture), findsNothing);
         expect(find.text('Your result stays private'), findsOneWidget);
-        expect(find.text('Your shared result'), findsNothing);
-        expect(
-          find.text(
-            'Complete Compatibility Reveal together to view your result.',
-          ),
-          findsOneWidget,
-        );
         expect(find.textContaining('%'), findsNothing);
-        await _captureCandidate(
-          tester,
-          'addressed_reveal_one_choice_standard',
-          cardLockin: true,
-        );
-        await _press(tester, 'draft_disclosure_continue_$_fixture');
+        await returnZyraPreviewPage(tester);
+        await _press(tester, 'draft_journey_$_fixture');
         await _press(tester, 'draft_peer_reveal_$_fixture');
-        expect(find.text('You both chose to reveal.'), findsOneWidget);
-        await _press(tester, 'concept_journey_menu');
-        await _press(tester, 'draft_options_compatibility_$_fixture');
-        expect(
-          _key('draft_journey_compatibility_locked_$_fixture'),
-          findsOneWidget,
-        );
-        expect(_compatibilityResult(_fixture), findsNothing);
-        expect(find.text('Your shared result'), findsNothing);
-        expect(find.text('Your result stays private'), findsOneWidget);
-        expect(
-          find.text(
-            'Complete Compatibility Reveal together to view your result.',
-          ),
-          findsOneWidget,
-        );
-        expect(find.textContaining('%'), findsNothing);
-        expect(find.text('—'), findsNothing);
-        expect(_key('draft_reveal_$_fixture'), findsNothing);
-        expect(_key('draft_peer_reveal_$_fixture'), findsNothing);
-        await _captureCandidate(
-          tester,
-          'addressed_reveal_mutual_standard',
-          cardLockin: true,
-        );
-        await _press(tester, 'draft_disclosure_continue_$_fixture');
-        await _press(tester, 'concept_journey_arrival_continue');
-        expect(find.text('You both chose to reveal.'), findsOneWidget);
+        expect(model.compatibilityRevealed(_fixture), isTrue);
         await _advanceStage(tester);
         await _completeBioStep(tester);
-        expect(find.textContaining('Guardian Gate'), findsWidgets);
-        await _press(tester, 'concept_journey_menu');
+        await _nav(tester, 1);
+        await _press(tester, 'draft_journey_options_$_fixture');
         final completedMenu = tester.widget<ZyraConceptJourneyOptions>(
           find.byType(ZyraConceptJourneyOptions),
         );
         expect(completedMenu.canViewCompatibility, isTrue);
         expect(completedMenu.canViewBio, isTrue);
-        expect(
-          _key('draft_options_compatibility_locked_$_fixture'),
-          findsNothing,
-        );
         await _press(tester, 'draft_options_compatibility_$_fixture');
         expect(find.text('Compatibility score'), findsOneWidget);
-        expect(find.text('You and Sara'), findsNothing);
-        expect(_compatibilityResult(_fixture), findsNothing);
-        expect(
-          _key('draft_journey_compatibility_locked_$_fixture'),
-          findsNothing,
-        );
         expect(find.text('Your result'), findsOneWidget);
         expect(
           find.text(
@@ -2812,6 +2787,7 @@ void main() {
           ),
           findsOneWidget,
         );
+        expect(_compatibilityResult(_fixture), findsNothing);
         expect(find.textContaining('%'), findsNothing);
         expect(_key('draft_reveal_$_fixture'), findsNothing);
         expect(_key('draft_peer_reveal_$_fixture'), findsNothing);
@@ -3649,7 +3625,8 @@ void main() {
         matching: find.byIcon(Icons.chevron_left),
       ),
     );
-    expect(disabledIcon.color, ZyraColors.ink(.34));
+    // Q38: LOCK 7/14 use the built .28 opacity for the disabled arrow.
+    expect(disabledIcon.color!.a, closeTo(.28, .001));
     await _press(tester, 'concept_previous_profile');
     expect(currentId(), retained.first);
     for (final id in retained.skip(1)) {
@@ -3977,6 +3954,7 @@ void main() {
     expect(find.textContaining('Guardian Gate'), findsWidgets);
   });
 
+  // Q35: manage Main on the actual LOCK 19 Journey access side.
   testWidgets('Guardian gate and all eight stages remain meaningful', (
     tester,
   ) async {
@@ -4044,6 +4022,8 @@ void main() {
       expect(_key('draft_pause_$_fixture'), findsNothing);
       expect(_key('draft_agree_pause_$_fixture'), findsNothing);
       expect(_key('draft_resume_$_fixture'), findsNothing);
+      final detail = _key('concept_journey_$_fixture');
+      final parent = tester.element(detail);
       await _press(tester, 'concept_journey_menu');
       expect(_key('draft_options_pause_$_fixture'), findsNothing);
       expect(find.text('Request Pause'), findsNothing);
@@ -4051,14 +4031,21 @@ void main() {
         tester,
         'simplified_journey_options_no_pause_standard',
       );
-      if (find.byType(ZyraConceptJourneyOptions).evaluate().isNotEmpty) {
-        await _cancelJourneyOptions(tester);
-      }
+      // Q39 (R1): dismiss the menu, then cancel End on its mounted detail.
+      final cancelMenu = find.widgetWithText(TextButton, 'Cancel');
+      expect(cancelMenu, findsOneWidget);
+      await Scrollable.ensureVisible(tester.element(cancelMenu), alignment: .5);
+      await tester.pumpAndSettle();
+      expect(cancelMenu.hitTestable(), findsOneWidget);
+      await tester.tap(cancelMenu);
+      await tester.pumpAndSettle();
+      expect(find.byType(ZyraConceptJourneyOptions), findsNothing);
+      expect(tester.element(detail), same(parent));
       await _press(tester, 'draft_end_$_fixture');
+      final retainedDuringEnd = parent.mounted;
       await _press(tester, 'draft_cancel_end_$_fixture');
-      await _press(tester, 'concept_journey_arrival_continue');
+      final returnedToSameParent = identical(tester.element(detail), parent);
       expect(_key('draft_pause_$_fixture'), findsNothing);
-      expect(_key('draft_end_$_fixture'), findsOneWidget);
       await _press(tester, 'draft_end_$_fixture');
       await _press(tester, 'draft_confirm_end_$_fixture');
       expect(_key('draft_resume_$_fixture'), findsNothing);
@@ -4074,6 +4061,7 @@ void main() {
       await _press(tester, 'draft_reset');
       await _nav(tester, 0);
       expect(_key('draft_profile_$_fixture'), findsOneWidget);
+      expect(retainedDuringEnd && returnedToSameParent, isTrue);
     },
   );
 
@@ -4197,6 +4185,7 @@ void main() {
     },
   );
 
+  // Q40: an existing Guardian account does not get sign-up Add a Seeker.
   testWidgets(
     'Guardian plus reuses the Code page while Guardian-role invitations stay held and Circle stays working',
     (tester) async {
@@ -4216,14 +4205,13 @@ void main() {
         expect(code.signupPreview, isFalse);
         expect(code.localPreview, isNotNull);
         expect(find.text('Add a Guardian'), findsOneWidget);
-        expect(find.text('Scan code'), findsOneWidget);
-        expect(find.text('Enter code'), findsOneWidget);
+        expect(find.text('Add a Seeker'), findsNothing);
         expect(_key('concept_held_action'), findsNothing);
         expect(_key('signup_code_preview'), findsNothing);
         expect(find.text('PREVIEW ONLY'), findsNothing);
         await returnZyraPreviewPage(tester);
         expect(find.byType(LinkGuardianScreen), findsNothing);
-        expect(find.byType(SeekerGuardianPage), findsOneWidget);
+        expect(find.byType(ZyraOneJourneyGuardianCards), findsOneWidget);
         for (final route in const [
           (key: 'guardian-family-messages-top', title: 'Guardian Circle'),
         ]) {
@@ -4235,6 +4223,7 @@ void main() {
             circle ? findsNothing : findsOneWidget,
           );
           expect(find.text(title), findsOneWidget);
+          expect(find.text('Add a Seeker'), findsNothing);
           expect(
             find.byType(ZyraGuardianCircleScreen),
             circle ? findsOneWidget : findsNothing,
@@ -4244,11 +4233,12 @@ void main() {
           expect(_key('concept_held_back'), findsNothing);
           await _returnPage(tester, from: find.text(title));
           expect(_key('concept_held_action'), findsNothing);
-          expect(find.byType(SeekerGuardianPage), findsOneWidget);
+          expect(find.byType(ZyraOneJourneyGuardianCards), findsOneWidget);
         }
         await _press(tester, 'draft_rules');
         await _press(tester, 'draft_role_guardian');
         await _tapRootNav(tester, 'Seekers');
+        expect(find.text('Add a Seeker'), findsNothing);
         for (final route in const [
           (key: 'guardian_invite', title: 'Invite your Seeker'),
           (key: 'guardian_circle', title: 'Guardian Circle'),
@@ -4264,6 +4254,7 @@ void main() {
             circle ? findsNothing : findsOneWidget,
           );
           expect(find.text(title), findsOneWidget);
+          expect(find.text('Add a Seeker'), findsNothing);
           expect(
             find.byType(ZyraGuardianCircleScreen),
             circle ? findsOneWidget : findsNothing,
@@ -4432,6 +4423,8 @@ void main() {
     expect(_key('draft_profile_$_fixture'), findsOneWidget);
   });
 
+  // Q35 (R2): retain the LOCK 19 write delegates before removal, then
+  // check the new card projection and the unlinked Guardian-role screens.
   testWidgets(
     'removing the actual Main Guardian revokes all local linked context and stale loaders',
     (tester) async {
@@ -4440,11 +4433,11 @@ void main() {
         await _mount(tester);
         await _fillJourney(tester);
         await _nav(tester, 3);
-        final before = tester.widget<SeekerGuardianPage>(
-          find.byType(SeekerGuardianPage),
-        );
-        final oldJourneyAccess = before.journeyAccessLoader!;
-        final oldHistoryConsent = before.historyConsentLoader!;
+        await _press(tester, 'guardian-card-center');
+        final before = _guardianCards(tester);
+        final fixture = zyraShellFixtureFor(tester);
+        final model = fixture.model;
+        final access = Map.of(model.snapshot().guardianAccess);
         await _press(tester, 'guardian-remove');
         final confirmation = find.descendant(
           of: _key('guardian-remove-confirmation'),
@@ -4453,42 +4446,44 @@ void main() {
         expect(confirmation.hitTestable(), findsOneWidget);
         await tester.tap(confirmation);
         await tester.pumpAndSettle();
-        final people = tester
-            .widget<SeekerGuardianPage>(find.byType(SeekerGuardianPage))
-            .people;
         expect(
-          people.any((person) => person.id == 'draft-guardian-hassan'),
-          isFalse,
+          _guardianCards(tester).people.map((card) => card.person.id),
+          isNot(contains(_hassan)),
         );
-        final staleJourney = await oldJourneyAccess(
-          guardianId: 'draft-guardian-hassan',
-          attemptId: 'draft-attempt-$_fixture',
-          enabled: false,
+        final after = Map.of(model.snapshot().guardianAccess);
+        final checkpoint = fixture.latest;
+        before.onPermission(_hassan, _fixture, view: false);
+        before.onHistory(_hassan, true);
+        await tester.pumpAndSettle();
+        expect(model.snapshot().guardianAccess, after);
+        expect(fixture.latest!.guardianHistory, checkpoint!.guardianHistory);
+        expect(
+          model.snapshot().guardianAccess['$_yusuf|$_fixture'],
+          access['$_yusuf|$_fixture'],
         );
-        final staleHistory = await oldHistoryConsent(
-          guardianId: 'draft-guardian-hassan',
-          guardianIsMain: true,
-          enabled: true,
-        );
-        expect(staleJourney.isUnavailable, isTrue);
-        expect(staleHistory.isUnavailable, isTrue);
-        await _nav(tester, 4);
-        await _press(tester, 'draft_role_guardian');
-        await _nav(tester, 3);
+        // Establish the unlinked role as test data, then use its real tabs.
+        expect(fixture.selectRole(true), isTrue);
+        await tester.pumpAndSettle();
+        await _tapRootNav(tester, 'Seekers');
         final account = tester.widget<ZyraGuardianTabsPresentation>(
           find.byType(ZyraGuardianTabsPresentation),
         );
         expect(account.linked, isFalse);
-        for (final index in [0, 1, 2]) {
-          await _nav(tester, index);
+        expect(_key('guardian_seeker_0'), findsNothing);
+        for (final tab in ['Journeys', 'My ZYRA', 'Seekers']) {
+          await _tapRootNav(tester, tab);
           expect(find.byType(GuardianDashboardProfileCard), findsNothing);
           expect(find.byType(ZyraProfileImage), findsNothing);
           expect(find.text('Adam'), findsNothing);
+          expect(
+            tester
+                .widget<ZyraGuardianTabsPresentation>(
+                  find.byType(ZyraGuardianTabsPresentation),
+                )
+                .linked,
+            isFalse,
+          );
         }
-        final roster = tester.widget<ZyraGuardianTabsPresentation>(
-          find.byType(ZyraGuardianTabsPresentation),
-        );
-        expect(roster.linked, isFalse);
         expect(tester.takeException(), isNull);
       }, network);
       expect(network.attempts, 0);
@@ -4525,6 +4520,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  // Q35 (R2): the live access side enforces the View → Chat dependency.
   testWidgets('Guardian permission choices stay linked and chat needs view', (
     tester,
   ) async {
@@ -4532,47 +4528,38 @@ void main() {
     await _fillJourney(tester);
     await _nav(tester, 3);
     await _openAdditionalGuardian(tester);
-    expect(_permissionCircle(tester, _guardianChat).properties.toggled, isTrue);
+    await _press(tester, _guardianChat);
+    expect(_guardianJourney(tester, _yusuf).chat, isTrue);
     await _press(tester, _guardianView);
     final chat = _permissionCircle(tester, _guardianChat).properties;
     expect(chat.toggled, isFalse);
     expect(chat.enabled, isFalse);
     expect(chat.onTap, isNull);
-    await _press(tester, _guardianHistory);
-    expect(tester.widget<Switch>(_key(_guardianHistory)).value, isTrue);
     await _press(tester, _guardianView);
-    expect(
-      _permissionCircle(tester, _guardianChat).properties.toggled,
-      isFalse,
-    );
+    expect(_guardianJourney(tester, _yusuf).chat, isFalse);
     await _press(tester, _guardianChat);
-    expect(_permissionCircle(tester, _guardianChat).properties.toggled, isTrue);
+    expect(_guardianJourney(tester, _yusuf).chat, isTrue);
+    await _press(tester, 'guardian-card-center');
+    await _press(tester, _guardianHistory);
+    expect(
+      _guardianCards(
+        tester,
+      ).people.singleWhere((card) => card.person.id == _yusuf).history,
+      isTrue,
+    );
   });
 
   for (final change in ['navigation', 'stage progress', 'end']) {
+    // Q35 (R2): a captured card action cannot write after the owner leaves.
     testWidgets('stale Guardian grants refuse after $change', (tester) async {
       await _mount(tester);
       await _fillJourney(tester);
       await _nav(tester, 3);
       await _openAdditionalGuardian(tester);
-      await _press(tester, 'guardian-history-consent-details-toggle');
-      // This now-working information sheet is a real covering route, not
-      // an inline expansion. Dismiss it before retaining current page grants.
-      expect(_key('guardian-history-consent-explanation'), findsOneWidget);
-      await tester.tapAt(const Offset(10, 70));
-      await tester.pumpAndSettle();
-      expect(_key('guardian-history-consent-explanation'), findsNothing);
-      expect(
-        _permissionCircle(tester, _guardianView).properties.toggled,
-        isTrue,
-      );
-      expect(
-        _permissionCircle(tester, _guardianChat).properties.toggled,
-        isTrue,
-      );
+      final card = _guardianCards(tester);
       final view = _permissionCircle(tester, _guardianView).properties.onTap!;
       final chat = _permissionCircle(tester, _guardianChat).properties.onTap!;
-      final history = tester.widget<Switch>(_key(_guardianHistory)).onChanged!;
+      final prior = _guardianJourney(tester, _yusuf);
       await _nav(tester, 1);
       await _press(tester, 'draft_journey_$_fixture');
       if (change == 'stage progress') {
@@ -4583,33 +4570,28 @@ void main() {
         await _press(tester, 'draft_end_$_fixture');
         await _press(tester, 'draft_confirm_end_$_fixture');
       }
+      final model = zyraShellFixtureFor(tester).model;
+      final permissions = Map.of(model.snapshot().guardianAccess);
       view();
       chat();
-      history(true);
+      card.onPermission(_yusuf, _fixture, view: !prior.view, chat: !prior.chat);
+      card.onHistory(_yusuf, true);
       await tester.pumpAndSettle();
-      expect(tester.takeException(), isNull);
-      if (change == 'end') {
-        await _press(tester, 'draft_rules');
-        await _press(tester, 'draft_reset');
-        await _fillJourney(tester);
-      }
+      expect(model.snapshot().guardianAccess, permissions);
       await _nav(tester, 3);
-      // The actual production Guardian pager is restored on section entry.
       await _openAdditionalGuardian(tester);
-      await _press(tester, 'guardian-history-consent-details-toggle');
-      expect(_key('guardian-history-consent-explanation'), findsOneWidget);
-      await tester.tapAt(const Offset(10, 70));
-      await tester.pumpAndSettle();
-      expect(_key('guardian-history-consent-explanation'), findsNothing);
       expect(
-        _permissionCircle(tester, _guardianView).properties.toggled,
-        isTrue,
+        _guardianCards(
+          tester,
+        ).people.singleWhere((person) => person.person.id == _yusuf).history,
+        isFalse,
       );
-      expect(
-        _permissionCircle(tester, _guardianChat).properties.toggled,
-        isTrue,
-      );
-      expect(tester.widget<Switch>(_key(_guardianHistory)).value, isFalse);
+      if (change == 'end') {
+        expect(_guardianCards(tester).journeysFor(_yusuf), isEmpty);
+      } else {
+        final after = _guardianJourney(tester, _yusuf);
+        expect((after.view, after.chat), (prior.view, prior.chat));
+      }
       expect(tester.takeException(), isNull);
     });
   }
@@ -4811,6 +4793,7 @@ void main() {
     (size: Size(320, 568), scale: 2.0, suffix: '_compact200_final'),
   ]) {
     testWidgets(
+      // Q35: the Guardian capture opens the actual LOCK 19 access side.
       'fresh whole-app real-font candidates are not approval${viewport.suffix}',
       (tester) async {
         final noNetwork = _NoNetwork();

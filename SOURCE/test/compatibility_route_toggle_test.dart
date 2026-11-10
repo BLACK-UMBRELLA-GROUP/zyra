@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:zyra/data/zyra_membership_catalog.dart';
 import 'package:zyra/models/seeker_profile.dart';
 import 'package:zyra/screens/subscription/profile_unlock_screen.dart';
 import 'package:zyra/screens/subscription/upgrade_screen.dart';
@@ -947,10 +948,26 @@ void main() {
         find.byKey(const ValueKey('draft_compatibility_store_continue')),
       );
       expect(continueButton.onPressed, isNull);
-      expect(find.textContaining('£6.99'), findsWidgets);
-      expect(find.textContaining('22%'), findsWidgets);
+      // Q41 / LOCK 22 V1 x02: the selected pack shows its unit price.
+      const price = ZyraMembershipCatalog.compatibilityThreePence;
+      expect(
+        find.textContaining(ZyraMembershipCatalog.pounds(price)),
+        findsWidgets,
+      );
+      final unitPrice = ZyraMembershipCatalog.pounds((price / 3).round());
+      expect(
+        find.descendant(of: selected, matching: find.text('$unitPrice each')),
+        findsOneWidget,
+      );
       expect(find.text('Purchase terms'), findsOneWidget);
-      expect(find.text('Purchasing isn’t available yet.'), findsOneWidget);
+      final unavailable = find.byKey(
+        const ValueKey('draft_compatibility_store_unavailable'),
+      );
+      expect(
+        tester.widget<Text>(unavailable).data,
+        contains('Purchasing isn’t available yet'),
+      );
+
       expect(AppState.instance.plan, initialPlan);
       _expectNoBackend();
       expect(tester.takeException(), isNull);

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:zyra/widgets/zyra_guardian_add_card.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -903,18 +904,22 @@ void main() {
       await mount(tester);
       await next(tester);
       await next(tester);
-      final invited = find
-          .descendant(
-            of: _card('preview-invited-omar'),
-            matching: find.byType(CustomPaint),
-          )
-          .first;
-      expect(tester.widget<CustomPaint>(invited).foregroundPainter, isNull);
+      // Q17 / LOCK 19 k07 and k08: check the actual dashed border, including
+      // its absence on the invitation card.
+      final dashed = find.byWidgetPredicate(
+        (widget) =>
+            widget is CustomPaint &&
+            widget.foregroundPainter is ZyraGuardianDashedBorder,
+      );
+      expect(
+        find.descendant(of: _card('preview-invited-omar'), matching: dashed),
+        findsNothing,
+      );
       await next(tester);
-      final add = find
-          .descendant(of: _card('add'), matching: find.byType(CustomPaint))
-          .first;
-      expect(tester.widget<CustomPaint>(add).foregroundPainter, isNotNull);
+      expect(
+        find.descendant(of: _card('add'), matching: dashed),
+        findsOneWidget,
+      );
     },
   );
 }

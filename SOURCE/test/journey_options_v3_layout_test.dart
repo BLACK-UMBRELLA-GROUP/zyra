@@ -252,8 +252,17 @@ void main() {
         findsNothing,
       );
       final end = _row(ZyraConceptJourneyOption.end);
+      // Q21 / LOCK 14 V6: the small label and icon keep separate tokens.
       expect(
         tester.widget<Text>(find.text('End Journey')).style!.color,
+        const Color(0xFFAC453E),
+      );
+      expect(
+        tester
+            .widget<Icon>(
+              find.descendant(of: end, matching: find.byType(Icon)).first,
+            )
+            .color,
         const Color(0xFFB84A42),
       );
       expect(

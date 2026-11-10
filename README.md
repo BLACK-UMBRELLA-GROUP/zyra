@@ -10,11 +10,14 @@ Pre-launch, built solo since June 2026. Version 1.0.0 (build 5) runs on the Foun
 
 The app has no developer rail, Home/Preview/Actions panel, comparison picker, role/plan/wallet selector, reset or onboarding skip shortcut. The protected Founder entry starts with sample Adam on Seeker One. Member settings and controls drawn in current LOCK masters remain, including the Profile Switch flow and the locked local request Demo actions.
 
-See [ROADMAP.md](ROADMAP.md) for the next work, including bringing the full test suite back to green. Queue 44 removes developer controls; the roadmap row remains open until queue 73 also completes.
+See [ROADMAP.md](ROADMAP.md) for the next work, including bringing the full test suite back to green. The baseline and final interface milestone stays open until queues 44, 73 and 75 are built and the full suite passes.
 
 When the app or a screen cannot open, ZYRA shows one error page with help for
 that failure. Connection and page errors retry every 15 seconds while the page
 is open. Contact support opens Help & Support with the error reference.
+
+The empty Guardian tab offers Add a Guardian. Browse gives one haptic tick for
+an accepted photo action, including the accessible Next page control.
 
 ## Built with
 

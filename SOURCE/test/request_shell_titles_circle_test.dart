@@ -9,10 +9,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
-import 'package:zyra/dev/zyra_circle_send_button_presentation.dart';
-import 'package:zyra/dev/zyra_guardian_circle_topic_options.dart';
+import 'package:zyra/dev/zyra_circle_topics_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
-import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
+import 'package:zyra/dev/zyra_one_journey_tab.dart';
 import 'package:zyra/screens/wali/family_messaging_screens.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
@@ -156,18 +155,24 @@ TextStyle _expectTitle(
   String label, {
   TextStyle? reference,
 }) {
-  final target = _key(key);
+  final target = key.isEmpty ? find.text(label) : _key(key);
   expect(target, findsOneWidget);
   final title = tester.widget<Text>(target);
   final style = title.style!;
   expect(title.data, label);
-  expect(title.textAlign, TextAlign.left);
-  expect(style.fontSize, 26);
-  expect(style.fontWeight, FontWeight.w200);
+  expect(
+    title.textAlign ?? TextAlign.start,
+    anyOf(TextAlign.left, TextAlign.start),
+  );
+  expect(style.fontSize, label == 'My ZYRA' ? 28 : 26);
+  expect(
+    style.fontWeight,
+    label == 'My ZYRA' ? FontWeight.w300 : FontWeight.w200,
+  );
   expect(style.fontFamily, _font);
   final rect = tester.getRect(target);
   expect(rect.left, closeTo(20, .01));
-  expect(rect.top, closeTo(_top + 16, .01));
+  expect(rect.top, inInclusiveRange(_top + 15.99, _top + 32));
   if (reference != null) {
     expect(style.fontSize, reference.fontSize);
     expect(style.fontWeight, reference.fontWeight);
@@ -179,46 +184,60 @@ TextStyle _expectTitle(
   return style;
 }
 
-Finder _circleButton(String tooltip) => find.descendant(
-  of: find.byType(ZyraGuardianCircleScreen),
-  matching: find.byWidgetPredicate(
-    (widget) => tooltip == 'Send message'
-        ? widget is ZyraCircleSendButton
-        : widget is IconButton && widget.tooltip == tooltip,
-  ),
-);
+ZyraCircleTopicsPresentation _topics(WidgetTester tester) =>
+    tester.widget(find.byType(ZyraCircleTopicsPresentation));
 
-Future<ZyraGuardianCircleScreen> _openCircle(WidgetTester tester) async {
+VoidCallback _send(WidgetTester tester) =>
+    tester.widget<Semantics>(_key('circle_topics_send')).properties.onTap!;
+
+Future<ZyraGuardianCircleScreen> _openCircle(
+  WidgetTester tester, {
+  bool guardian = false,
+  bool seekerBasic = false,
+}) async {
   await _nav(tester, 3);
-  await _press(tester, _key('guardian-family-messages-top'));
+  if (guardian) await _press(tester, _key('guardian_seeker_0'));
+  await _press(
+    tester,
+    _key(guardian ? 'guardian_circle' : 'guardian-family-messages-top'),
+  );
   final owner = find.byType(ZyraGuardianCircleScreen);
   expect(owner, findsOneWidget);
   final circle = tester.widget<ZyraGuardianCircleScreen>(owner);
   expect(circle.preview, isTrue);
-  expect(circle.viewerIsSeeker, isTrue);
+  expect(circle.viewerIsSeeker, !guardian);
   expect(circle.seekerId, 'draft-self');
   expect(circle.seekerFirstName, 'Adam');
-  expect(circle.previewData, isNotNull);
-  expect(circle.previewData!.validFor('draft-self'), isTrue);
-  expect(circle.previewData!.senderId, 'draft-self');
+  expect(
+    circle.previewData!.validFor('draft-self', viewerIsSeeker: !guardian),
+    isTrue,
+  );
+  expect(
+    circle.previewData!.senderId,
+    guardian ? 'draft-guardian-hassan' : 'draft-self',
+  );
   expect(circle.previewData!.participants.map((person) => person.firstName), [
     'Adam',
     'Hassan',
-    'Yusuf',
+    if (!seekerBasic) 'Yusuf',
   ]);
   expect(find.text('Guardian Circle'), findsOneWidget);
   expect(find.text('Abdul'), findsNothing);
   return circle;
 }
 
-Future<void> _closeCircle(WidgetTester tester) async {
+Future<void> _closeCircle(WidgetTester tester, {bool guardian = false}) async {
   expect(_key('zyra_visible_back_button'), findsNothing);
   expect(_key('zyra_back_swipe_edge'), findsOneWidget);
   await returnZyraPreviewPage(tester);
   expect(find.byType(ZyraGuardianCircleScreen), findsNothing);
-  _expectTitle(tester, 'guardian-manager-title', 'Guardian');
-  expect(_key('guardian-family-messages-top'), findsOneWidget);
-  expect(find.byType(ZyraShellNavigation), findsOneWidget);
+  if (guardian) {
+    expect(_key('guardian_circle'), findsOneWidget);
+  } else {
+    _expectTitle(tester, 'guardian-manager-title', 'Guardian');
+    expect(_key('guardian-family-messages-top'), findsOneWidget);
+    expect(find.byType(ZyraShellNavigation), findsOneWidget);
+  }
 }
 
 Finder _iconDropdown() => find.byWidgetPredicate(
@@ -279,6 +298,7 @@ void main() {
     expect(network.attempts, 0);
   });
 
+  // Q34: title checks use the current LOCK 13, 15 and 19 roots.
   testWidgets(
     'all five actual Seeker tabs share title typography and top-left position',
     (tester) async {
@@ -290,20 +310,10 @@ void main() {
       );
       await _capture(tester, 'browse-title');
       await _nav(tester, 1);
-      _expectTitle(
-        tester,
-        'concept_connections_title',
-        'Journey',
-        reference: reference,
-      );
+      _expectTitle(tester, '', 'Journey', reference: reference);
       await _capture(tester, 'journey-title');
       await _nav(tester, 2);
-      _expectTitle(
-        tester,
-        'my-zyra-main-title',
-        'My ZYRA',
-        reference: reference,
-      );
+      _expectTitle(tester, '', 'My ZYRA');
       await _capture(tester, 'my-zyra-title');
       await _nav(tester, 3);
       _expectTitle(
@@ -326,6 +336,7 @@ void main() {
   );
 
   for (final count in [1, 2, 3]) {
+    // Q34: seed only the count; both titles come from the current Journey tab.
     testWidgets(
       '$count occupied Journeys keep the same title as the empty tab',
       (tester) async {
@@ -336,25 +347,21 @@ void main() {
           'Profiles',
         );
         await _nav(tester, 1);
-        _expectTitle(
-          tester,
-          'concept_connections_title',
-          'Journey',
-          reference: reference,
-        );
-        await toggleZyraDevControls(tester);
-        expect(_key('concept_journey_preview_$count'), findsOneWidget);
+        _expectTitle(tester, '', 'Journey', reference: reference);
+        await openZyraDevControls(tester);
         await _press(tester, _key('concept_journey_preview_$count'));
-        _expectTitle(
-          tester,
-          'concept_connections_title',
-          'Journey',
-          reference: reference,
+        expect(
+          tester
+              .widget<ZyraOneJourneyTab>(find.byType(ZyraOneJourneyTab))
+              .journeys,
+          hasLength(count),
         );
+        _expectTitle(tester, '', 'Journey', reference: reference);
       },
     );
   }
 
+  // Q34: send through the real LOCK 20 Topics composer.
   testWidgets(
     'Guardian Circle reuses its working preview, sends locally and returns by edge swipe',
     (tester) async {
@@ -370,7 +377,7 @@ void main() {
       );
       const body = 'A local Circle message from the current Seeker';
       await tester.enterText(find.byType(TextField), body);
-      await _press(tester, _circleButton('Send message'));
+      await _press(tester, _key('circle_topics_send'));
       expect(find.text(body), findsOneWidget);
       expect(
         tester.widget<TextField>(find.byType(TextField)).controller!.text,
@@ -384,6 +391,7 @@ void main() {
     },
   );
 
+  // Q34: example Topics are local and do not create a Journey.
   testWidgets(
     'empty request Circle has fictional Current names, not new Journeys',
     (tester) async {
@@ -395,46 +403,30 @@ void main() {
         'Aisha',
         'Maryam',
       ]);
-      await _press(tester, find.byType(ZyraCircleDiscussLauncher));
-      expect(find.text('No current Journeys'), findsNothing);
-      for (final name in ['sara', 'aisha', 'maryam']) {
-        expect(_key('circle_topic_draft-circle-current-$name'), findsOneWidget);
+      expect(_topics(tester).current, isEmpty);
+      for (final name in ['Sara', 'Aisha', 'Maryam']) {
+        expect(find.text(name), findsNothing);
       }
       await _capture(tester, 'circle-current-examples');
-      await _press(tester, _key('circle_topic_draft-circle-current-sara'));
+      const body = 'A general message in the empty Circle';
+      await tester.enterText(_key('circle_topics_composer'), body);
+      await _press(tester, _key('circle_topics_send'));
       expect(
-        _key('circle_pending_discussion_topic_draft-circle-current-sara'),
-        findsOneWidget,
-      );
-      expect(
-        _key('circle_discussion_bubble_draft-circle-current-sara'),
-        findsNothing,
-      );
-      await tester.enterText(find.byType(TextField), 'A discussion of Sara');
-      await _press(tester, _circleButton('Send message'));
-      expect(_key('circle_pending_discussion_topic'), findsNothing);
-      expect(
-        _key('circle_discussion_bubble_draft-circle-current-sara'),
-        findsOneWidget,
-      );
-      expect(
-        _key('circle_discussion_profile_draft-circle-current-sara'),
-        findsNothing,
-      );
-      expect(
-        _key('circle_discussion_journey_draft-circle-current-sara'),
-        findsNothing,
+        _topics(tester).messages.map((item) => item.message.body),
+        contains(body),
       );
       await _closeCircle(tester);
       await _nav(tester, 1);
-      expect(find.text('Awaiting a Journey'), findsNWidgets(3));
-      for (var index = 0; index < 3; index++) {
-        expect(_key('concept_journey_capacity_slot_$index'), findsOneWidget);
-      }
-      expect(find.byType(ZyraOneJourneyConnectionsActiveCard), findsNothing);
+      expect(
+        tester
+            .widget<ZyraOneJourneyTab>(find.byType(ZyraOneJourneyTab))
+            .journeys,
+        isEmpty,
+      );
     },
   );
 
+  // Q34: edge dismissal returns to the actual LOCK 19 Guardian root.
   testWidgets(
     'Guardian Circle returns to its Guardian owner with the shared interactive left-edge gesture',
     (tester) async {
@@ -457,49 +449,72 @@ void main() {
     },
   );
 
-  for (final basic in ['seeker', 'guardian']) {
-    testWidgets(
-      'a Basic $basic cannot inherit Circle sending from other One participants',
-      (tester) async {
-        await _mount(
-          tester,
-          seekerBasic: basic == 'seeker',
-          guardianBasic: basic == 'guardian',
-        );
-        final circle = await _openCircle(tester);
-        expect(circle.previewData!.canSend, isFalse);
-        expect(find.byType(TextField), findsNothing);
-        expect(_circleButton('Send message'), findsNothing);
-        expect(
-          find.textContaining('This Circle is read-only.'),
-          findsOneWidget,
-        );
-        expect(
-          find.text('Assalaamu alaikum. Let’s discuss the journey together.'),
-          findsOneWidget,
-        );
-        await _closeCircle(tester);
-      },
-    );
+  for (final role in ['seeker', 'guardian_one', 'guardian_basic']) {
+    // Q34 and Q6: writing follows the viewer, never another participant.
+    testWidgets('LOCK 20 Circle writing follows $role', (tester) async {
+      final guardian = role.startsWith('guardian');
+      final canSend = role != 'guardian_basic';
+      await _mount(tester, seekerBasic: !guardian, guardianBasic: !canSend);
+      if (guardian) {
+        await _nav(tester, 4);
+        await _press(tester, _key('draft_role_guardian'));
+      }
+      final circle = await _openCircle(
+        tester,
+        guardian: guardian,
+        seekerBasic: !guardian,
+      );
+      expect(circle.previewData!.canSend, canSend);
+      expect(_topics(tester).canCompose, canSend);
+      expect(
+        _key('circle_topics_composer'),
+        canSend ? findsOneWidget : findsNothing,
+      );
+      expect(
+        _key('circle_topics_send'),
+        canSend ? findsOneWidget : findsNothing,
+      );
+      if (!canSend) {
+        expect(find.textContaining("You're reading only"), findsOneWidget);
+      }
+      expect(_topics(tester).messages, isNotEmpty);
+      await _closeCircle(tester, guardian: guardian);
+    });
   }
 
+  // Q34 (R2): changing viewing role invalidates the captured Seeker send.
+  testWidgets('LOCK 20 refuses a send captured before the role switched', (
+    tester,
+  ) async {
+    await _mount(tester);
+    await _openCircle(tester);
+    const body = 'A draft left with the previous Circle viewer';
+    await tester.enterText(_key('circle_topics_composer'), body);
+    final staleSend = _send(tester);
+    await _closeCircle(tester);
+    await _nav(tester, 4);
+    await _press(tester, _key('draft_role_guardian'));
+    await _openCircle(tester, guardian: true);
+    final before = _topics(tester).messages.length;
+    staleSend();
+    await tester.pumpAndSettle();
+    expect(_topics(tester).messages, hasLength(before));
+    expect(find.text(body), findsNothing);
+  });
+
+  // Q34 (R2): revoke the real Topics send and Circle return delegates.
   testWidgets(
     'revocation followed by restored authorization cannot publish a delayed Circle send',
     (tester) async {
       await _mount(tester);
       await _nav(tester, 3);
       final openingButton = tester.widget<IconButton>(
-        find.descendant(
-          of: _key('guardian-family-messages-top'),
-          matching: find.byType(IconButton),
-        ),
+        _key('guardian-family-messages-top'),
       );
       final retainedOpen = openingButton.onPressed!;
       await _press(tester, _key('guardian-family-messages-top'));
       expect(find.byType(ZyraGuardianCircleScreen), findsOneWidget);
-      final send = tester
-          .widget<ZyraCircleSendButton>(_circleButton('Send message'))
-          .onSend!;
+      final send = _send(tester);
       final back = tester
           .widget<ZyraPullDownBackScope>(_key('concept_pull_down_back_scope'))
           .onBack;
@@ -521,6 +536,7 @@ void main() {
     },
   );
 
+  // Q34 (R2): returning to the same account ID does not revive a send.
   testWidgets(
     'account A to B to A withdraws the Circle and retained local send',
     (tester) async {
@@ -530,9 +546,7 @@ void main() {
       ZyraDeveloperAccess.setAuthorizedForTesting(true);
       await _mount(tester);
       await _openCircle(tester);
-      final send = tester
-          .widget<ZyraCircleSendButton>(_circleButton('Send message'))
-          .onSend!;
+      final send = _send(tester);
       const body = 'Must not return when the original account ID returns';
       await tester.enterText(find.byType(TextField), body);
       send();

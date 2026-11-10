@@ -10,13 +10,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/data/zyra_journey_stages.dart';
-import 'package:zyra/dev/zyra_circle_discussion_archive.dart';
-import 'package:zyra/dev/zyra_guardian_circle_topic_options.dart';
+import 'package:zyra/dev/zyra_circle_topics_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
-import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_request_activity_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_journey_presentation.dart';
-import 'package:zyra/dev/zyra_one_journey_options.dart';
+import 'package:zyra/dev/zyra_one_journey_options_page.dart';
+import 'package:zyra/dev/zyra_one_journey_tab.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/screens/profile/seeker_profile_screen.dart';
@@ -230,20 +229,6 @@ Future<void> _returnHeader(WidgetTester tester) async {
   await swipeZyraBack(tester);
 }
 
-Future<void> _selectCircleTopic(
-  WidgetTester tester,
-  String id, {
-  bool past = false,
-}) async {
-  await _pressFinder(tester, _key('circle_discuss_floatingButton'));
-  expect(find.byType(ZyraCircleTopicPicker), findsOneWidget);
-  await _press(tester, 'circle_topic_tab_${past ? 1 : 0}');
-  await _press(tester, 'circle_topic_$id');
-  expect(find.byType(ZyraCircleTopicPicker), findsNothing);
-  expect(_key('circle_pending_discussion_topic_$id'), findsOneWidget);
-  expect(_key('circle_discussion_bubble_$id'), findsNothing);
-}
-
 Future<void> _capture(WidgetTester tester, String name) async {
   if (_captureDirectory.isEmpty) return;
   final boundary = tester.renderObject<RenderRepaintBoundary>(
@@ -409,21 +394,28 @@ void main() {
     );
   }
 
-  testWidgets('expanded inline Journey options do not claim full-page close', (
-    tester,
-  ) async {
-    final owner = _Owner();
-    await owner.mount(tester, tab: 1);
-    await _press(tester, 'draft_journey_options_$_sara');
-    expect(find.byType(ZyraConceptJourneyOptions), findsOneWidget);
-    expect(_key('concept_expanded_journey_$_sara'), findsOneWidget);
-    expect(find.byType(ZyraShellNavigation), findsOneWidget);
-    expect(find.byType(ZyraPullDownBackScope), findsOneWidget);
-    expect(_back, findsNothing);
-    await _press(tester, 'draft_journey_options_$_sara');
-    expect(find.byType(ZyraConceptJourneyOptions), findsNothing);
-    expect(_back, findsNothing);
-  });
+  // QUESTIONS Q25: dismissed Options returns to the selected Journey reader.
+  testWidgets(
+    'pushed Journey Options has one edge return to the selected place',
+    (tester) async {
+      final owner = _Owner();
+      await owner.mount(tester, tab: 1);
+      await _press(tester, 'journey_tab_next');
+      await _press(tester, 'draft_journey_options_draft-aisha');
+      expect(find.byType(ZyraOneJourneyOptionsPage), findsOneWidget);
+      expect(owner.latest.pages, ['journey_options']);
+      _oneBack(tester);
+      final stale = captureZyraAccessibleBack(tester);
+      await _returnHeader(tester);
+      stale();
+      await tester.pumpAndSettle();
+      expect(owner.latest.pages, isEmpty);
+      expect(owner.latest.journeyPlaceIndex, 1);
+      expect(_key('draft_journey_options_draft-aisha'), findsOneWidget);
+      expect(find.byType(ZyraOneJourneyOptionsPage), findsNothing);
+      expect(_back, findsNothing);
+    },
+  );
 
   for (final route in [
     (page: 'settings', tab: 4),
@@ -454,6 +446,7 @@ void main() {
     });
   }
 
+  // QUESTIONS Q25: disclosure Back returns to the Options that opened it.
   for (final option in ['bio', 'compatibility']) {
     testWidgets(
       'locked $option explanation inherits one edge return without disclosure',
@@ -464,11 +457,14 @@ void main() {
         await _press(tester, 'draft_options_${option}_$_sara');
         final page = option == 'bio' ? 'bio' : 'journey_compatibility';
         expect(_key('draft_${page}_locked_$_sara'), findsOneWidget);
-        expect(owner.latest.pages, ['${page}_locked']);
+        expect(owner.latest.pages, ['journey_options', '${page}_locked']);
         expect(_key('draft_journey_bio_about'), findsNothing);
         expect(_key('draft_journey_compatibility_$_sara'), findsNothing);
         _oneBack(tester);
         if (option == 'bio') await _capture(tester, 'locked_bio');
+        await _returnHeader(tester);
+        expect(owner.latest.pages, ['journey_options']);
+        expect(find.byType(ZyraOneJourneyOptionsPage), findsOneWidget);
         await _returnHeader(tester);
         expect(owner.latest.pages, isEmpty);
         expect(_back, findsNothing);
@@ -476,6 +472,7 @@ void main() {
     );
   }
 
+  // QUESTIONS Q25: Keep this Journey returns to the pushed Options page.
   testWidgets(
     'sensitive End Journey confirmation has no Back return or pull grant',
     (tester) async {
@@ -496,65 +493,75 @@ void main() {
       expect(_back, findsNothing);
       await _press(tester, 'draft_cancel_end_$_sara');
       expect(_key('draft_journey_action_$_sara'), findsNothing);
-      expect(
-        find.byType(ZyraOneJourneyConnectionsActiveCard),
-        findsNWidgets(3),
-      );
+      expect(find.byType(ZyraOneJourneyOptionsPage), findsOneWidget);
+      expect(owner.latest.pages, ['journey_options']);
+      _oneBack(tester);
+      await _returnHeader(tester);
+      expect(find.byType(ZyraOneJourneyTab), findsOneWidget);
+      expect(owner.latest.pages, isEmpty);
       expect(_back, findsNothing);
     },
   );
 
-  for (final past in [false, true]) {
-    testWidgets(
-      'Circle ${past ? 'archive' : 'profile'} child keeps one edge return with an accessible bridge',
-      (tester) async {
-        final owner = _Owner();
-        await owner.mount(tester, tab: 3, pages: ['guardian_circle']);
-        expect(find.byType(ZyraGuardianCircleScreen), findsOneWidget);
-        final circle = tester.state(find.byType(ZyraGuardianCircleScreen));
-        _oneBack(tester);
-        if (!past) await _capture(tester, 'circle_composer');
-        final topic = past ? 'draft-circle-past-0' : _sara;
-        await _selectCircleTopic(tester, topic, past: past);
-        final composer = find.descendant(
-          of: _key('guardian-circle-composer'),
-          matching: find.byType(TextField),
-        );
-        final sentBody =
-            'A sent discussion before viewing the ${past ? 'archive' : 'profile'}';
-        await tester.enterText(composer, sentBody);
-        await _pressFinder(tester, find.byTooltip('Send message'));
-        expect(_key('circle_pending_discussion_topic'), findsNothing);
-        expect(_key('circle_discussion_bubble_$topic'), findsOneWidget);
-        expect(find.text(sentBody), findsOneWidget);
-        _oneBack(tester);
-        await _press(
-          tester,
-          'circle_discussion_${past ? 'journey' : 'profile'}_$topic',
-        );
-        expect(
-          past
-              ? find.byType(ZyraCircleDiscussionArchiveView)
-              : find.byType(SeekerProfileScreen),
-          findsOneWidget,
-        );
-        _oneBack(tester);
-        await _capture(tester, past ? 'circle_archive' : 'circle_profile');
-        await _returnHeader(tester);
-        expect(find.byType(ZyraCircleDiscussionArchiveView), findsNothing);
-        expect(find.byType(SeekerProfileScreen), findsNothing);
-        expect(
-          tester.state(find.byType(ZyraGuardianCircleScreen)),
-          same(circle),
-        );
-        expect(owner.latest.pages, ['guardian_circle']);
-        _oneBack(tester);
-        await _returnHeader(tester);
-        expect(owner.latest.pages, isEmpty);
-        expect(_back, findsNothing);
-      },
+  // QUESTIONS Q25: LOCK 20 archive selection returns to the same Topics view.
+  testWidgets('Past discussion returns to the mounted Topics list', (
+    tester,
+  ) async {
+    final owner = _Owner();
+    await owner.mount(tester, tab: 3, pages: ['guardian_circle']);
+    final circle = find.byType(ZyraGuardianCircleScreen);
+    final state = tester.state(circle);
+    await _press(tester, 'circle_topics_past');
+    final topics = tester.widget<ZyraCircleTopicsPresentation>(
+      find.byType(ZyraCircleTopicsPresentation),
     );
-  }
+    expect(topics.past, isNotEmpty);
+    final id = topics.past.last.id;
+    await _press(tester, 'circle_topics_past_$id');
+    expect(_key('circle_topics_all_past'), findsOneWidget);
+    expect(find.byType(SeekerProfileScreen), findsNothing);
+    expect(owner.latest.pages, ['guardian_circle']);
+    await _press(tester, 'circle_topics_all_past');
+    expect(_key('circle_topics_past_$id'), findsOneWidget);
+    expect(tester.state(circle), same(state));
+    _oneBack(tester);
+  });
+
+  // QUESTIONS Q25: a pushed current Journey owns one return to Circle Topics.
+  testWidgets('Circle Journey child returns once by edge and accessible Back', (
+    tester,
+  ) async {
+    final owner = _Owner();
+    await owner.mount(tester, tab: 3, pages: ['guardian_circle']);
+    final circle = find.byType(ZyraGuardianCircleScreen);
+    final state = tester.state(circle);
+    await _press(tester, 'circle_topics_topic_$_sara');
+    await _press(tester, 'circle_topics_view_journey');
+    expect(find.byType(ZyraConceptJourneyPresentation), findsOneWidget);
+    _oneBack(tester);
+    final firstBack = captureZyraAccessibleBack(tester);
+    await _returnHeader(tester);
+    final returned = tester.state(circle);
+    expect(owner.latest.pages, ['guardian_circle']);
+    firstBack();
+    await tester.pumpAndSettle();
+    expect(owner.latest.pages, ['guardian_circle']);
+    await _press(tester, 'circle_topics_topic_$_sara');
+    await _press(tester, 'circle_topics_view_journey');
+    final secondBack = captureZyraAccessibleBack(tester);
+    firstBack();
+    await tester.pumpAndSettle();
+    expect(owner.latest.pages, ['guardian_circle', 'journey']);
+    secondBack();
+    await tester.pumpAndSettle();
+    expect(owner.latest.pages, ['guardian_circle']);
+    expect(
+      returned,
+      same(state),
+      reason:
+          'QUESTIONS Q25 requires the original Topics owner to survive the child',
+    );
+  });
 
   testWidgets(
     'compact double-text standalone Introductions has no Back strip and keeps its title readable',
@@ -601,6 +608,7 @@ void main() {
     },
   );
 
+  // QUESTIONS Q25: the locked Bio remains the immediate parent of Salam.
   testWidgets(
     'compact double-text locked Bio continues to the real Salam arrival without overflow',
     (tester) async {
@@ -613,7 +621,7 @@ void main() {
       expect(_key('draft_journey_bio_about'), findsNothing);
       _oneBack(tester);
       await _press(tester, 'draft_disclosure_continue_$_sara');
-      expect(owner.latest.pages, ['bio_locked', 'journey']);
+      expect(owner.latest.pages, ['journey_options', 'bio_locked', 'journey']);
       expect(_key('draft_bio_locked_$_sara'), findsNothing);
       final journey = tester.widget<ZyraConceptJourneyPresentation>(
         find.byType(ZyraConceptJourneyPresentation),
@@ -676,7 +684,7 @@ void main() {
       );
       await tester.pumpAndSettle();
       _expectNoException(tester);
-      expect(owner.latest.pages, ['bio_locked', 'journey']);
+      expect(owner.latest.pages, ['journey_options', 'bio_locked', 'journey']);
       expect(
         ViewRequestDraftModel.fromSnapshot(
           owner.latest.model,
@@ -693,7 +701,7 @@ void main() {
       expect(scrollable.position.pixels, lessThanOrEqualTo(startingOffset));
       _oneBack(tester);
       await _returnHeader(tester);
-      expect(owner.latest.pages, ['bio_locked']);
+      expect(owner.latest.pages, ['journey_options', 'bio_locked']);
       expect(_key('draft_bio_locked_$_sara'), findsOneWidget);
       _oneBack(tester);
     },

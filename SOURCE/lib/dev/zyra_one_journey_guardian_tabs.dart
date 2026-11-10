@@ -354,53 +354,90 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
           : ZyraColors.foreground,
     ).copyWith(height: 1.45),
   );
-  Widget _title(String text, {double size = 28}) => Text(
+  Text _title(String text, {double size = 28}) => Text(
     text,
     style: ZyraText.heading(
       size: size,
     ).copyWith(fontWeight: FontWeight.w300, height: 1.2),
   );
+  // R2 Larger Text: fit the longest word only when it cannot fit on one
+  // line. Text still handles ordinary word wrapping and explicit line breaks.
+  Widget _networkLabel(Text label) => LayoutBuilder(
+    builder: (context, constraints) {
+      final scaler = MediaQuery.textScalerOf(context);
+      final fontSize = label.style!.fontSize!;
+      if (scaler.scale(fontSize) <= fontSize) return label;
+      var widest = 0.0;
+      final painter = TextPainter(
+        textDirection: Directionality.of(context),
+        textScaler: scaler,
+        locale: Localizations.maybeLocaleOf(context),
+      );
+      final style = DefaultTextStyle.of(context).style.merge(label.style);
+      for (final word in label.data!.split(RegExp(r'\s+'))) {
+        painter.text = TextSpan(text: word, style: style);
+        painter.layout();
+        if (painter.width > widest) widest = painter.width;
+      }
+      painter.dispose();
+      if (widest <= constraints.maxWidth) return label;
+      return Text(
+        label.data!,
+        style: label.style,
+        textAlign: label.textAlign,
+        textScaler: TextScaler.linear(
+          scaler.scale(fontSize) /
+              fontSize *
+              constraints.maxWidth /
+              widest *
+              .995,
+        ),
+      );
+    },
+  );
+
   Widget _button(
     String label,
     String action, {
     bool gold = false,
     bool network = false,
   }) => Builder(
-    builder: (context) => ConstrainedBox(
-      constraints: BoxConstraints(minHeight: network ? 52 : 46),
-      child: ZyraFloatingSurface(
-        radius: 28,
-        child: TextButton(
-          key: ValueKey('guardian_$action'),
-          onPressed: ZyraTapFeedback.onTap(context, () => onAction(action)),
-          style: TextButton.styleFrom(
-            padding: EdgeInsets.symmetric(
-              horizontal: network ? 10 : 14,
-              vertical: network ? 8 : 11,
-            ),
-            backgroundColor: ZyraColors.surfaceFill,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(28),
-              side: BorderSide(
-                color: gold
-                    ? ZyraColors.journeyGold.withValues(alpha: .75)
-                    : ZyraColors.surfaceBorder,
+    builder: (context) {
+      final text = Text(
+        label,
+        textAlign: TextAlign.center,
+        style: ZyraText.body(
+          size: 13,
+          color: gold && !network ? ZyraColors.goldText : ZyraColors.foreground,
+        ).copyWith(height: network ? 1.35 : 1.45),
+      );
+      return ConstrainedBox(
+        constraints: BoxConstraints(minHeight: network ? 52 : 46),
+        child: ZyraFloatingSurface(
+          radius: 28,
+          child: TextButton(
+            key: ValueKey('guardian_$action'),
+            onPressed: ZyraTapFeedback.onTap(context, () => onAction(action)),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.symmetric(
+                horizontal: network ? 10 : 14,
+                vertical: network ? 8 : 11,
+              ),
+              backgroundColor: ZyraColors.surfaceFill,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(28),
+                side: BorderSide(
+                  color: gold
+                      ? ZyraColors.journeyGold.withValues(alpha: .75)
+                      : ZyraColors.surfaceBorder,
+                ),
               ),
             ),
-          ),
-          child: Text(
-            label,
-            textAlign: TextAlign.center,
-            style: ZyraText.body(
-              size: 13,
-              color: gold && !network
-                  ? ZyraColors.goldText
-                  : ZyraColors.foreground,
-            ).copyWith(height: network ? 1.35 : 1.45),
+            child: network ? _networkLabel(text) : text,
           ),
         ),
-      ),
-    ),
+      );
+    },
   );
   Widget _box(
     Widget child, {
@@ -476,7 +513,11 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     padding: const EdgeInsets.only(bottom: 20),
     child: Row(
       children: [
-        Expanded(child: _title(title)),
+        Expanded(
+          child: title == 'Network'
+              ? _networkLabel(_title(title))
+              : _title(title),
+        ),
         ?trailing,
       ],
     ),
@@ -1630,7 +1671,10 @@ class ZyraGuardianChatOptions extends StatelessWidget {
               contentPadding: EdgeInsets.zero,
               minTileHeight: 48,
               dense: true,
-              title: Text('Report a message', style: ZyraText.body(size: 15)),
+              title: Text(
+                'Report a message',
+                style: ZyraText.body(size: 15, color: ZyraColors.dangerText),
+              ),
               trailing: const Icon(Icons.chevron_right, size: 14),
               onTap: ZyraTapFeedback.onTap(context, onReport),
             ),
@@ -1642,7 +1686,7 @@ class ZyraGuardianChatOptions extends StatelessWidget {
               dense: true,
               title: Text(
                 'Block Noor’s Main Guardian',
-                style: ZyraText.body(size: 15, color: ZyraColors.destructive),
+                style: ZyraText.body(size: 15, color: ZyraColors.dangerText),
               ),
               trailing: const Icon(Icons.chevron_right, size: 14),
               onTap: ZyraTapFeedback.onTap(context, onBlock),

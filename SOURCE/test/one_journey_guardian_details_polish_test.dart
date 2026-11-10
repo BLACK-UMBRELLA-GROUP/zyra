@@ -10,7 +10,7 @@ import 'package:zyra/dev/dev_discovery_directions.dart';
 import 'package:zyra/dev/zyra_dev_scenario.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
-import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/screens/wali/seeker_guardian_designs.dart';
 import 'package:zyra/screens/wali/seeker_wali_tab.dart';
@@ -34,8 +34,6 @@ const _captureDirectory = String.fromEnvironment(
 
 Finder _key(String value) => find.byKey(ValueKey(value));
 Finder _body(String id) => _key('guardian-quiet-sections-$id');
-Finder _within(String id, String key) =>
-    find.descendant(of: _body(id), matching: _key(key));
 SeekerGuardianPage _page(WidgetTester tester) =>
     tester.widget<SeekerGuardianPage>(find.byType(SeekerGuardianPage));
 
@@ -55,7 +53,6 @@ Future<void> _mount(
   double scale = 1,
   Size size = const Size(393, 852),
   Widget? home,
-  ValueChanged<ZyraPreviewNavigationCheckpoint>? onCheckpoint,
 }) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
@@ -80,7 +77,6 @@ Future<void> _mount(
             fixture: ZyraShellTestFixture().fixture,
             ownerGeneration: ZyraAccountState.generation,
             ownerId: ZyraAccountState.userId,
-            onCheckpoint: onCheckpoint,
           ),
     ),
   );
@@ -197,60 +193,30 @@ Future<void> _swipe(WidgetTester tester, {required bool next}) async {
   expect(tester.takeException(), isNull);
 }
 
-void _expectIdentity(WidgetTester tester, String id, {required bool main}) {
-  final person = _page(tester).people.singleWhere((person) => person.id == id);
-  final isHassan = id == _hassan;
-  expect(person.relationship, isHassan ? 'father' : 'uncle');
-  expect(person.relationshipLabel, isHassan ? 'Father' : 'Paternal Uncle');
-  expect(
-    (person.linkedAt!.year, person.linkedAt!.month, person.linkedAt!.day),
-    (2026, 9, isHassan ? 20 : 23),
-  );
-  expect(person.isMain, main);
-  final role = main ? 'Main Guardian' : 'Additional Guardian';
-  expect(
-    find.descendant(
-      of: _body(id),
-      matching: find.text('${person.relationshipLabel} · $role'),
-    ),
-    findsOneWidget,
-  );
-  final details = _within(id, 'guardian-details-strip');
-  expect(
-    find.descendant(of: details, matching: find.text(person.linkedDateLabel!)),
-    findsOneWidget,
-  );
-  expect(
-    find.descendant(
-      of: _body(id),
-      matching: find.text(person.linkedDateLabel!),
-    ),
-    findsOneWidget,
-    reason:
-        'Keep one date in the existing Linked row, not a duplicate identity line.',
-  );
-  expect(
-    find.descendant(
-      of: _body(id),
-      matching: find.textContaining('Relationship not recorded'),
-    ),
-    findsNothing,
-  );
-  expect(
-    find.text('View access is required for every active Journey.'),
-    findsNothing,
-  );
-  expect(find.text('Choose access separately for each Journey.'), findsNothing);
-}
+ZyraOneJourneyGuardianCards _cards(WidgetTester tester) =>
+    tester.widget(find.byType(ZyraOneJourneyGuardianCards));
 
-Future<void> _makeMain(WidgetTester tester, String id) async {
-  await _press(tester, _within(id, 'guardian-make-main'));
-  final confirm = find.descendant(
-    of: _within(id, 'guardian-make-main-confirmation'),
-    matching: find.text('Confirm'),
+ZyraGuardianCardPerson _person(WidgetTester tester, String id) =>
+    _cards(tester).people.singleWhere((card) => card.person.id == id);
+
+SemanticsProperties _action(WidgetTester tester, String key) =>
+    tester.widget<Semantics>(_key(key)).properties;
+
+Future<void> _selectYusuf(WidgetTester tester) =>
+    _press(tester, _key('guardian-card-next'));
+
+Future<void> _flip(WidgetTester tester) =>
+    _press(tester, _key('guardian-card-center'));
+
+Future<void> _makeMain(WidgetTester tester) async {
+  await _press(tester, _key('guardian-make-main'));
+  await _press(
+    tester,
+    find.descendant(
+      of: _key('guardian-make-main-confirmation'),
+      matching: find.text('Confirm'),
+    ),
   );
-  await _press(tester, confirm);
-  expect(_key('concept_main_guardian_notice'), findsOneWidget);
   await _press(tester, _key('concept_main_guardian_continue'));
 }
 
@@ -348,347 +314,105 @@ void main() {
   });
 
   for (final guardianId in [_hassan, _yusuf]) {
-    testWidgets(
-      'history on/off stays confirmed without rebuilding $guardianId controls',
-      (tester) async {
-        final checkpoints = <ZyraPreviewNavigationCheckpoint>[];
-        await _mount(tester, onCheckpoint: checkpoints.add);
-        await _seed(tester);
-        if (guardianId == _yusuf) await _swipe(tester, next: true);
-        final toggle = _within(guardianId, 'guardian-history-consent-toggle');
-        expect(toggle.hitTestable(), findsOneWidget);
-        expect(tester.widget<Switch>(toggle).value, isFalse);
-        final page = _page(tester);
-        final historyLoader = page.historyConsentLoader;
-        final journeyLoader = page.journeyAccessLoader;
-        final pageElement = tester.element(find.byType(SeekerGuardianPage));
-        final historyOwner = _within(
-          guardianId,
-          'guardian-history-consent-$guardianId',
-        );
-        final historyElement = tester.element(historyOwner);
-        final historyState = tester.state(historyOwner);
-        final switchElement = tester.element(toggle);
-        final switchRender = tester.renderObject(toggle);
-        final switchRect = tester.getRect(toggle);
-        final journeySummary = _within(
-          guardianId,
-          'guardian-journey-access-summary',
-        );
-        final summaryElement = tester.element(journeySummary);
-        final summaryRender = tester.renderObject(journeySummary);
-        final pager = _key('guardian-page-view');
-        final pagerElement = tester.element(pager);
-        final pagerController = tester.widget<PageView>(pager).controller!;
-        final position = pagerController.position;
-        final pixels = position.pixels;
-        final selectedPage = pagerController.page;
-        expect(selectedPage, closeTo(guardianId == _hassan ? 0 : 1, .001));
-
-        void expectStable(bool enabled) {
-          expect(_page(tester), same(page));
-          expect(
-            tester.element(find.byType(SeekerGuardianPage)),
-            same(pageElement),
-          );
-          expect(_page(tester).historyConsentLoader, same(historyLoader));
-          expect(_page(tester).journeyAccessLoader, same(journeyLoader));
-          expect(historyOwner, findsOneWidget);
-          expect(tester.element(historyOwner), same(historyElement));
-          expect(tester.state(historyOwner), same(historyState));
-          expect(toggle, findsOneWidget);
-          expect(tester.element(toggle), same(switchElement));
-          expect(tester.renderObject(toggle), same(switchRender));
-          expect(tester.getRect(toggle), switchRect);
-          expect(tester.widget<Switch>(toggle).value, enabled);
-          expect(tester.widget<Switch>(toggle).onChanged, isNotNull);
-          expect(tester.element(journeySummary), same(summaryElement));
-          expect(tester.renderObject(journeySummary), same(summaryRender));
-          expect(tester.element(pager), same(pagerElement));
-          expect(
-            tester.widget<PageView>(pager).controller,
-            same(pagerController),
-          );
-          expect(pagerController.position, same(position));
-          expect(position.pixels, closeTo(pixels, .001));
-          expect(pagerController.page, closeTo(selectedPage!, .001));
-          for (final loading in [
-            'Loading…',
-            'Loading Journey…',
-            'LOADING JOURNEY ACCESS',
-          ]) {
-            expect(
-              find.descendant(
-                of: _body(guardianId),
-                matching: find.text(loading),
-              ),
-              findsNothing,
-            );
-          }
-          expect(tester.takeException(), isNull);
-        }
-
-        for (final enabled in [true, false, true]) {
-          // Keep the first painted frames observable: pumpAndSettle alone
-          // could hide a transient loader replacement/confirmed-value reset.
-          await tester.tapAt(tester.getCenter(toggle));
-          for (final elapsed in [
-            Duration.zero,
-            const Duration(milliseconds: 1),
-            const Duration(milliseconds: 16),
-            const Duration(milliseconds: 100),
-          ]) {
-            await tester.pump(elapsed);
-            expectStable(enabled);
-          }
-          await tester.pumpAndSettle();
-          expectStable(enabled);
-          expect(checkpoints.last.guardianHistory[guardianId], enabled);
-          final other = guardianId == _hassan ? _yusuf : _hassan;
-          expect(checkpoints.last.guardianHistory[other], isNot(true));
-          expect(
-            (await historyLoader!(
-              guardianId: guardianId,
-              guardianIsMain: guardianId == _hassan,
-            )).valueOrNull!.enabled,
-            enabled,
-          );
-        }
-
-        // An actual navigation may replace loaders, but not lose the value
-        // published into the shell's existing detached checkpoint model.
-        await _nav(tester, 2);
-        await _nav(tester, 3);
-        if (guardianId == _yusuf) await _swipe(tester, next: true);
-        expect(tester.widget<Switch>(toggle).value, isTrue);
-        expect(checkpoints.last.guardianHistory[guardianId], isTrue);
-      },
-    );
-
-    testWidgets(
-      'history information remains open for $guardianId without changing consent',
-      (tester) async {
-        await _mount(tester);
-        await _seed(tester);
-        if (guardianId == _yusuf) await _swipe(tester, next: true);
-        final toggle = _within(guardianId, 'guardian-history-consent-toggle');
-        expect(tester.widget<Switch>(toggle).value, isFalse);
-        final historyFrame = find
-            .ancestor(
-              of: toggle,
-              matching: find.byWidgetPredicate(
-                (widget) =>
-                    widget is SizedBox &&
-                    widget.width == 48 &&
-                    widget.height == 32,
-              ),
-            )
-            .first;
-        expect(tester.getSize(historyFrame), const Size(48, 32));
-        final loader = _page(tester).historyConsentLoader!;
-        final info = _within(
-          guardianId,
-          'guardian-history-consent-details-toggle',
-        );
-        final retainedInfo = tester.widget<IconButton>(info).onPressed!;
-        await _press(tester, info);
-        final explanation = _key('guardian-history-consent-explanation');
-        expect(explanation, findsOneWidget);
-        expect(find.text('Past Journey summaries'), findsOneWidget);
-        await tester.pump(const Duration(seconds: 1));
-        expect(explanation, findsOneWidget);
-        tester
-            .element(find.byType(ZyraOneJourneyConceptShell))
-            .markNeedsBuild();
-        await tester.pumpAndSettle();
-        expect(explanation, findsOneWidget);
-        expect(identical(_page(tester).historyConsentLoader, loader), isTrue);
-        retainedInfo();
-        await tester.pumpAndSettle();
-        expect(find.byType(BottomSheet), findsOneWidget);
-        expect(
-          (await loader(
-            guardianId: guardianId,
-            guardianIsMain: guardianId == _hassan,
-            enabled: true,
-          )).isUnavailable,
-          isTrue,
-        );
-        final name = guardianId == _hassan ? 'Hassan' : 'Yusuf';
-        expect(
-          find.textContaining('Right now $name only sees Journeys'),
-          findsOneWidget,
-        );
-        expect(
-          find.textContaining(
-            'Never names, messages, answers, reasons, notes or safety information.',
-          ),
-          findsOneWidget,
-        );
-        await _capture(
-          tester,
-          'history_info_${guardianId == _hassan ? 'main' : 'additional'}',
-        );
-        await tester.tapAt(const Offset(10, 70));
-        await tester.pumpAndSettle();
-        expect(explanation, findsNothing);
-        expect(tester.widget<Switch>(toggle).value, isFalse);
-        await _press(tester, info);
-        expect(explanation, findsOneWidget);
-        await tester.tapAt(const Offset(10, 70));
-        await tester.pumpAndSettle();
-        expect(tester.widget<Switch>(toggle).value, isFalse);
-        await _press(tester, toggle);
-        expect(tester.widget<Switch>(toggle).value, isTrue);
-        expect(tester.takeException(), isNull);
-      },
-    );
+    // Q28: the LOCK 19 front retains one independent history consent bit.
+    testWidgets('current history toggle changes only $guardianId consent', (
+      tester,
+    ) async {
+      await _mount(tester);
+      await _seed(tester);
+      if (guardianId == _yusuf) await _selectYusuf(tester);
+      final other = guardianId == _hassan ? _yusuf : _hassan;
+      final history = 'guardian-card-history-$guardianId';
+      expect(_action(tester, history).toggled, isFalse);
+      expect(_person(tester, other).history, isFalse);
+      await _press(tester, _key(history));
+      expect(_action(tester, history).toggled, isTrue);
+      expect(_person(tester, other).history, isFalse);
+      await _press(tester, _key(history));
+      expect(_action(tester, history).toggled, isFalse);
+      expect(_person(tester, other).history, isFalse);
+    });
   }
 
-  testWidgets(
-    'compact double-text history information scrolls to the privacy explanation',
-    (tester) async {
-      await _mount(tester, size: const Size(320, 568), scale: 2);
-      await _seed(tester);
-      await _press(
-        tester,
-        _within(_hassan, 'guardian-history-consent-details-toggle'),
-      );
-      expect(_key('guardian-history-consent-explanation'), findsOneWidget);
-      await _capture(tester, 'history_info_compact_top');
-      final privacy = find.textContaining(
-        'Never names, messages, answers, reasons, notes or safety information.',
-      );
-      await tester.ensureVisible(privacy);
-      await tester.pumpAndSettle();
-      expect(privacy.hitTestable(), findsOneWidget);
-      final rect = tester.getRect(privacy);
-      expect(rect.left, greaterThanOrEqualTo(0));
-      expect(rect.right, lessThanOrEqualTo(320));
-      expect(rect.top, greaterThanOrEqualTo(44));
-      expect(rect.bottom, lessThanOrEqualTo(568 - 34));
-      expect(tester.takeException(), isNull);
-      await _capture(tester, 'history_info_compact_privacy');
-    },
-  );
-
+  // Q28: LOCK 19 front and access remain bound to the selected Guardian.
   testWidgets(
     'fixture relationship and linked date survive Main reassignment with clear dots',
     (tester) async {
       await _mount(tester);
       await _seed(tester);
-      for (final fixture in draftGuardians) {
-        final person = _page(
-          tester,
-        ).people.singleWhere((person) => person.id == fixture.id);
-        expect(person.relationship, fixture.relationshipCode);
-        expect(person.linkedAt, fixture.linkedAt);
+      void verifyMetadata() {
+        for (final fixture in draftGuardians) {
+          final person = _person(tester, fixture.id).person;
+          expect(person.relationship, fixture.relationshipCode);
+          expect(person.linkedAt, fixture.linkedAt);
+        }
       }
-      _expectIdentity(tester, _hassan, main: true);
-      final navTop = tester.getRect(find.byType(FloatingNavBar)).top;
-      expect(
-        navTop - tester.getRect(_key('guardian-page-dot-0')).bottom,
-        greaterThanOrEqualTo(20),
-      );
-      final dot = tester.widget<AnimatedContainer>(_key('guardian-page-dot-0'));
-      expect(dot.constraints!.minWidth, 20);
-      await _swipe(tester, next: true);
-      _expectIdentity(tester, _yusuf, main: false);
-      await _makeMain(tester, _yusuf);
-      _expectIdentity(tester, _yusuf, main: true);
-      expect(
-        _page(
-          tester,
-        ).people.singleWhere((person) => person.id == _hassan).relationship,
-        'father',
-      );
-      await _swipe(tester, next: true);
-      _expectIdentity(tester, _hassan, main: false);
-      await _swipe(tester, next: false);
-      _expectIdentity(tester, _yusuf, main: true);
+
+      verifyMetadata();
+      expect(_person(tester, _hassan).person.isMain, isTrue);
+      expect(_key('guardian-card-dot-0'), findsOneWidget);
+      await _selectYusuf(tester);
+      expect(_person(tester, _yusuf).person.isMain, isFalse);
+      expect(find.text('Paternal Uncle'), findsOneWidget);
+      await _flip(tester);
+      await _makeMain(tester);
+      verifyMetadata();
+      expect(_person(tester, _yusuf).person.isMain, isTrue);
+      expect(_person(tester, _hassan).person.isMain, isFalse);
+      expect(_key('guardian-card-dot-0'), findsOneWidget);
     },
   );
 
+  // Q18 and Q28 (R2): use real View/Chat controls and compare all three
+  // attempts before and after switching a single Guardian's permission.
   testWidgets(
     'three exact attempts and per-Guardian consent remain independent',
     (tester) async {
       await _mount(tester);
       await _seed(tester);
-      final mainStates = await _page(tester).journeyAccessLoader!(
-        guardianId: _hassan,
-      );
-      expect(mainStates.valueOrNull!.map((state) => state.attemptId), [
-        for (final id in _attempts) 'draft-attempt-$id',
-      ]);
+      List<(String, int?, bool, bool)> access(String id) => [
+        for (final row in _cards(tester).journeysFor(id))
+          (row.id, row.attempt, row.view, row.chat),
+      ];
+      final main = access(_hassan);
+      final additional = access(_yusuf);
+      expect(main.map((row) => row.$1), _attempts);
       expect(
-        mainStates.valueOrNull!.every(
-          (state) => state.included && !state.canChange,
-        ),
+        additional.map((row) => (row.$1, row.$2)),
+        main.map((row) => (row.$1, row.$2)),
+      );
+      expect(
+        _cards(
+          tester,
+        ).journeysFor(_hassan).every((row) => row.view && !row.canChange),
         isTrue,
       );
-      await _press(tester, _within(_hassan, 'guardian-history-consent-toggle'));
-      final historyMain = await _page(tester).historyConsentLoader!(
-        guardianId: _hassan,
-        guardianIsMain: true,
-      );
-      expect(
-        historyMain.valueOrNull!.activeGuardianLinkId,
-        'draft-link-$_hassan',
-      );
-      expect(historyMain.valueOrNull!.enabled, isTrue);
-      await _swipe(tester, next: true);
-      final viewSara = _within(
-        _yusuf,
-        'guardian-journey-access-toggle-draft-attempt-draft-sara',
-      );
-      await _press(tester, viewSara);
-      final states = await _page(tester).journeyAccessLoader!(
-        guardianId: _yusuf,
-      );
-      expect(states.valueOrNull!.map((state) => state.attemptId), [
-        for (final id in _attempts) 'draft-attempt-$id',
-      ]);
-      expect(states.valueOrNull!.first.included, isFalse);
-      expect(states.valueOrNull!.first.chatEnabled, isFalse);
-      expect(
-        states.valueOrNull!
-            .skip(1)
-            .every((state) => state.included && state.chatEnabled),
-        isTrue,
-      );
-      final historyAdditional = await _page(tester).historyConsentLoader!(
-        guardianId: _yusuf,
-        guardianIsMain: false,
-      );
-      expect(historyAdditional.valueOrNull!.guardianId, _yusuf);
-      expect(historyAdditional.valueOrNull!.enabled, isFalse);
-      await _press(tester, _within(_yusuf, 'guardian-history-consent-toggle'));
-      expect(
-        (await _page(tester).historyConsentLoader!(
-          guardianId: _yusuf,
-          guardianIsMain: false,
-        )).valueOrNull!.enabled,
-        isTrue,
-      );
-      expect(
-        (await _page(tester).journeyAccessLoader!(
-          guardianId: _yusuf,
-          attemptId: 'unknown-attempt',
-          enabled: true,
-        )).isUnavailable,
-        isTrue,
-      );
-      await _swipe(tester, next: false);
-      expect(
-        tester
-            .widget<Switch>(_within(_hassan, 'guardian-history-consent-toggle'))
-            .value,
-        isTrue,
-      );
+      await _press(tester, _key('guardian-card-history-$_hassan'));
+      await _selectYusuf(tester);
+      await _flip(tester);
+      final view = 'guardian-card-view-$_yusuf-draft-sara';
+      await _press(tester, _key(view));
+      final after = access(_yusuf);
+      expect((after.first.$3, after.first.$4), (false, false));
+      expect(after.skip(1), additional.skip(1));
+      expect(access(_hassan), main);
+      final forged = _cards(tester).onPermission;
+      forged(_yusuf, 'unknown-attempt', view: true);
+      forged(_hassan, 'draft-sara', view: false);
+      await tester.pumpAndSettle();
+      expect(access(_yusuf), after);
+      expect(access(_hassan), main);
+      expect(_person(tester, _hassan).history, isTrue);
+      expect(_person(tester, _yusuf).history, isFalse);
+      await _flip(tester);
+      await _press(tester, _key('guardian-card-history-$_yusuf'));
+      expect(_person(tester, _hassan).history, isTrue);
+      expect(_person(tester, _yusuf).history, isTrue);
     },
   );
 
   for (final id in [_hassan, _yusuf]) {
+    // Q28: a Basic card never acquires a Chat grant, even when made Main.
     testWidgets(
       'Basic chat remains denied for $id including a Main promotion',
       (tester) async {
@@ -697,232 +421,148 @@ void main() {
         await _controls(tester, tab: 3);
         await _press(tester, _key('concept_guardian_plan_${id}_0'));
         await _nav(tester, 3);
-        if (id == _yusuf) await _swipe(tester, next: true);
-        var states = (await _page(tester).journeyAccessLoader!(
-          guardianId: id,
-        )).valueOrNull!;
-        expect(states, hasLength(3));
-        expect(
-          states.every((state) => !state.chatAvailable && !state.chatEnabled),
-          isTrue,
-        );
-        expect(_page(tester).viewOnlyGuardianIds, contains(id));
-        final header = _within(id, 'guardian-journey-permission-header');
-        expect(header, findsOneWidget);
-        expect(
-          find.descendant(of: header, matching: find.text('View')),
-          findsOneWidget,
-        );
-        expect(
-          find.descendant(of: header, matching: find.text('Chat')),
-          findsNothing,
-        );
-        for (final attempt in _attempts) {
+        if (id == _yusuf) await _selectYusuf(tester);
+        await _flip(tester);
+        final rows = _cards(tester).journeysFor(id);
+        expect(rows.map((row) => row.id), _attempts);
+        expect(rows.every((row) => !row.chat), isTrue);
+        expect(_person(tester, id).basic, isTrue);
+        for (final journey in _attempts) {
+          expect(_key('guardian-card-view-$id-$journey'), findsOneWidget);
           expect(
-            _within(id, 'guardian-journey-chat-toggle-draft-attempt-$attempt'),
-            findsNothing,
+            _action(tester, 'guardian-card-chat-$id-$journey').toggled,
+            isNull,
           );
-          expect(
-            _within(
-              id,
-              'guardian-journey-chat-required-draft-attempt-$attempt',
-            ),
-            findsNothing,
-          );
-          final view = _within(
-            id,
-            id == _hassan
-                ? 'guardian-journey-view-required-draft-attempt-$attempt'
-                : 'guardian-journey-access-toggle-draft-attempt-$attempt',
-          );
-          expect(view, findsOneWidget);
-          if (id == _yusuf) {
-            final properties = tester.widget<Semantics>(view).properties;
-            expect(properties.enabled, isTrue);
-            expect(properties.onTap, isNotNull);
-          }
         }
+        _cards(tester).onPermission(id, 'draft-sara', chat: true);
+        await tester.pumpAndSettle();
         expect(
-          (await _page(tester).journeyAccessLoader!(
-            guardianId: id,
-            attemptId: 'draft-attempt-draft-sara',
-            chatEnabled: true,
-          )).isUnavailable,
+          _cards(tester).journeysFor(id).every((row) => !row.chat),
           isTrue,
         );
         if (id == _yusuf) {
-          await _makeMain(tester, id);
-          states = (await _page(tester).journeyAccessLoader!(
-            guardianId: id,
-          )).valueOrNull!;
+          await _makeMain(tester);
+          expect(_person(tester, id).person.isMain, isTrue);
+          expect(_person(tester, id).basic, isTrue);
           expect(
-            states.every(
-              (state) =>
-                  state.included &&
-                  !state.canChange &&
-                  !state.chatAvailable &&
-                  !state.chatEnabled,
-            ),
+            _cards(tester)
+                .journeysFor(id)
+                .every((row) => row.view && !row.chat && !row.canChange),
             isTrue,
           );
-          _expectIdentity(tester, id, main: true);
-          expect(_page(tester).viewOnlyGuardianIds, contains(id));
-          expect(
-            find.descendant(
-              of: _within(id, 'guardian-journey-permission-header'),
-              matching: find.text('Chat'),
-            ),
-            findsNothing,
-          );
-          for (final attempt in _attempts) {
-            expect(
-              _within(
-                id,
-                'guardian-journey-chat-toggle-draft-attempt-$attempt',
-              ),
-              findsNothing,
-            );
-            expect(
-              _within(
-                id,
-                'guardian-journey-chat-required-draft-attempt-$attempt',
-              ),
-              findsNothing,
-            );
-            expect(
-              _within(
-                id,
-                'guardian-journey-view-required-draft-attempt-$attempt',
-              ),
-              findsOneWidget,
-            );
-            expect(
-              _within(
-                id,
-                'guardian-journey-access-toggle-draft-attempt-$attempt',
-              ),
-              findsNothing,
-            );
-          }
         }
       },
     );
   }
 
   for (final scale in [1.0, 2.0]) {
+    // Q28: reach the actual card controls at the configured reading scale.
     testWidgets(
       'Guardian details and real controls stay reachable at ${scale}x text',
       (tester) async {
         await _mount(tester, scale: scale);
         await _seed(tester);
-        _expectIdentity(tester, _hassan, main: true);
         await _capture(tester, 'main_${scale}x');
-        await _press(
-          tester,
-          _within(_hassan, 'guardian-history-consent-toggle'),
-        );
-        await _swipe(tester, next: true);
-        _expectIdentity(tester, _yusuf, main: false);
+        await _press(tester, _key('guardian-card-history-$_hassan'));
+        await _selectYusuf(tester);
         await _capture(tester, 'additional_${scale}x');
-        await _press(
-          tester,
-          _within(
-            _yusuf,
-            'guardian-journey-chat-toggle-draft-attempt-draft-aisha',
-          ),
-        );
-        await _makeMain(tester, _yusuf);
-        _expectIdentity(tester, _yusuf, main: true);
+        await _flip(tester);
+        await _press(tester, _key('guardian-card-chat-$_yusuf-draft-aisha'));
+        await _makeMain(tester);
+        expect(_person(tester, _yusuf).person.isMain, isTrue);
         expect(tester.takeException(), isNull);
-        // The bounded polish retains the pre-existing FittedBox strategy. This
-        // test proves taps/labels, not absence of scaling or native acceptance.
       },
     );
   }
 
   for (final change in ['tab', 'revocation', 'ABA', 'account generation']) {
-    testWidgets(
-      'retained Guardian loaders refuse $change before disclosure or writes',
-      (tester) async {
-        await _mount(tester);
-        await _seed(tester);
-        await _swipe(tester, next: true);
-        final old = _page(tester);
-        final viewControl = _within(
-          _yusuf,
-          'guardian-journey-access-toggle-draft-attempt-draft-sara',
-        );
-        final staleView = tester
-            .widget<InkWell>(
-              find.descendant(of: viewControl, matching: find.byType(InkWell)),
-            )
-            .onTap!;
-        final staleHistory = tester
-            .widget<Switch>(_within(_yusuf, 'guardian-history-consent-toggle'))
-            .onChanged!;
-        if (change == 'tab') {
-          await _nav(tester, 2);
-        } else if (change == 'account generation') {
-          ZyraAccountState.resetForTesting();
-          AppState.instance.resetForAccountChange();
-        } else {
-          ZyraDeveloperAccess.setAuthorizedForTesting(false);
-          if (change == 'ABA') {
-            ZyraDeveloperAccess.setAuthorizedForTesting(true);
-          }
-        }
-        staleView();
-        staleHistory(true);
-        expect(
-          (await old.journeyAccessLoader!(
-            guardianId: _yusuf,
-            attemptId: 'draft-attempt-draft-sara',
-            enabled: false,
-          )).isUnavailable,
-          isTrue,
-        );
-        expect(
-          (await old.historyConsentLoader!(
-            guardianId: _yusuf,
-            guardianIsMain: false,
-            enabled: true,
-          )).isUnavailable,
-          isTrue,
-        );
-        expect(await old.makeMainGuardian!(_yusuf), isFalse);
-        await tester.pumpAndSettle();
-        if (change == 'tab') {
-          await _nav(tester, 3);
-          await _swipe(tester, next: true);
-          expect(
-            tester
-                .widget<Switch>(
-                  _within(_yusuf, 'guardian-history-consent-toggle'),
-                )
-                .value,
-            isFalse,
-          );
-          expect(
-            tester
-                .widget<Semantics>(
-                  _within(
-                    _yusuf,
-                    'guardian-journey-access-toggle-draft-attempt-draft-sara',
-                  ),
-                )
-                .properties
-                .toggled,
-            isTrue,
-          );
-        } else {
-          expect(find.text('Preview closed'), findsOneWidget);
-          expect(find.byType(ZyraOneJourneyConceptShell), findsNothing);
-        }
-        expect(tester.takeException(), isNull);
-      },
-    );
+    // Q28 (R2): capture the actual card's actions before the lease expires.
+    testWidgets('retained Guardian card actions refuse $change before writes', (
+      tester,
+    ) async {
+      await _mount(tester);
+      await _seed(tester);
+      await _selectYusuf(tester);
+      final history = _action(tester, 'guardian-card-history-$_yusuf').onTap!;
+      await _flip(tester);
+      final card = _cards(tester);
+      final view = _action(
+        tester,
+        'guardian-card-view-$_yusuf-draft-sara',
+      ).onTap!;
+      final fixture = zyraShellFixtureFor(tester);
+      final model = fixture.model;
+      final before = Map.of(model.snapshot().guardianAccess);
+      if (change == 'tab') {
+        await _nav(tester, 2);
+      } else if (change == 'account generation') {
+        ZyraAccountState.resetForTesting();
+        AppState.instance.resetForAccountChange();
+      } else {
+        ZyraDeveloperAccess.setAuthorizedForTesting(false);
+        if (change == 'ABA') ZyraDeveloperAccess.setAuthorizedForTesting(true);
+      }
+      await tester.pumpAndSettle();
+      final checkpoint = fixture.latest!;
+      view();
+      history();
+      card.onPermission(_yusuf, 'draft-sara', view: false);
+      card.onHistory(_yusuf, true);
+      expect(await card.makeMain(_yusuf), isFalse);
+      await tester.pumpAndSettle();
+      expect(model.snapshot().guardianAccess, before);
+      expect(fixture.latest!.guardianHistory, checkpoint.guardianHistory);
+      if (change == 'tab') {
+        await _nav(tester, 3);
+        expect(_person(tester, _yusuf).history, isFalse);
+        expect(_person(tester, _hassan).person.isMain, isTrue);
+      } else {
+        expect(find.text('Preview closed'), findsOneWidget);
+        expect(find.byType(ZyraOneJourneyConceptShell), findsNothing);
+      }
+      expect(tester.takeException(), isNull);
+    });
   }
 
+  // Q28: removing a Guardian invalidates the access delegate for that card.
+  testWidgets('removed Guardian cannot receive a retained card write', (
+    tester,
+  ) async {
+    await _mount(tester);
+    await _seed(tester);
+    await _selectYusuf(tester);
+    await _flip(tester);
+    final old = _cards(tester);
+    final view = _action(
+      tester,
+      'guardian-card-view-$_yusuf-draft-sara',
+    ).onTap!;
+    await _press(tester, _key('guardian-remove'));
+    await _press(
+      tester,
+      find.descendant(
+        of: _key('guardian-remove-confirmation'),
+        matching: find.text('Confirm'),
+      ),
+    );
+    expect(
+      _cards(tester).people.map((card) => card.person.id),
+      isNot(contains(_yusuf)),
+    );
+    final fixture = zyraShellFixtureFor(tester);
+    final model = fixture.model;
+    final before = Map.of(model.snapshot().guardianAccess);
+    final checkpoint = fixture.latest!;
+    view();
+    old.onPermission(_yusuf, 'draft-sara', view: false);
+    old.onHistory(_yusuf, true);
+    await tester.pumpAndSettle();
+    expect(model.snapshot().guardianAccess, before);
+    expect(fixture.latest!.guardianHistory, checkpoint.guardianHistory);
+    expect(_person(tester, _hassan).history, isFalse);
+  });
+
+  // Q28: preview consent and promotion leave the ordinary account untouched.
   testWidgets(
     'protected Guardian polish never changes ordinary account state',
     (tester) async {
@@ -940,9 +580,10 @@ void main() {
       final generation = ZyraAccountState.generation;
       await _mount(tester);
       await _seed(tester);
-      await _swipe(tester, next: true);
-      await _press(tester, _within(_yusuf, 'guardian-history-consent-toggle'));
-      await _makeMain(tester, _yusuf);
+      await _selectYusuf(tester);
+      await _press(tester, _key('guardian-card-history-$_yusuf'));
+      await _flip(tester);
+      await _makeMain(tester);
       expect(app.name, 'Preserved member');
       expect(app.surnameLine, 'Surname');
       expect(app.photos, ['unchanged-photo']);

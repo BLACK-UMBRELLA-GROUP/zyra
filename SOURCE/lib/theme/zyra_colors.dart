@@ -290,7 +290,10 @@ class ZyraColors {
   /// Text/icon colour ON [primaryAction]. Always this, never white.
   static const Color onPrimaryAction = espresso;
 
-  /// Destructive text/accents (End Journey coral).
+  /// LOCK 14 V6 small danger text.
+  static const Color dangerText = Color(0xFFAC453E);
+
+  /// Danger icons, outlines and large text.
   static const Color destructive = Color(0xFFB84A42);
   static const Color destructiveBorder = Color(0x66B84A42); // coral 0.4
 

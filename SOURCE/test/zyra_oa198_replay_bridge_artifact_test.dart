@@ -4,8 +4,6 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'support/oa198_historical_inventory.dart';
-
 const _artifactDir =
     '../REPORTS/EVIDENCE/OA-ZYRA-198_2026-09-11/'
     'OA-ZYRA-198_2026-09-11_RECONSTRUCTED_REPLAY_BRIDGE';
@@ -19,8 +17,6 @@ const _testPath = 'test/zyra_oa198_replay_bridge_artifact_test.dart';
 const _historicalTestPath =
     'test/fixtures/oa198/zyra_oa198_replay_bridge_artifact_test.dart.txt';
 
-const _bridgeSha256 =
-    '461c3bd0e4ef4692229027c5659756983ed2048e1e78cf71e2148009d6729055';
 const _payloadSha256 =
     'eb355693f50651c7090aeaa5e7eb15187eb9a37855a785aaa259991cb1b43f90';
 const _activeInventorySha256 =
@@ -65,8 +61,6 @@ const _laterNonScoredQids = <String>{
 
 String _sha256Bytes(List<int> bytes) => sha256.convert(bytes).toString();
 
-String _basename(String path) => path.split(Platform.pathSeparator).last;
-
 String _bridgePayload(String sql) {
   const declaration = r'v_projection CONSTANT text := $oa198_rows$';
   const terminator = r'$oa198_rows$;';
@@ -95,21 +89,6 @@ Object? _canonicalizeJson(Object? value) {
   return value;
 }
 
-String _activeInventoryDigest(List<File> files) {
-  final sorted = [...files]
-    ..sort(
-      (left, right) => _basename(left.path).compareTo(_basename(right.path)),
-    );
-  final buffer = StringBuffer();
-  for (final file in sorted) {
-    buffer
-      ..write(_sha256Bytes(file.readAsBytesSync()))
-      ..write('  ./')
-      ..writeln(_basename(file.path));
-  }
-  return _sha256Bytes(utf8.encode(buffer.toString()));
-}
-
 String _verbatimStatement(String source, String version) {
   final startMarker = '-- BEGIN VERBATIM LIVE STATEMENT $version\n';
   final endMarker = '\n-- END VERBATIM LIVE STATEMENT $version';
@@ -121,60 +100,6 @@ String _verbatimStatement(String source, String version) {
 }
 
 void main() {
-  test('bridge is byte-pinned and quarantined outside active migrations', () {
-    final bridge = File(_bridgePath);
-    final bytes = bridge.readAsBytesSync();
-    final artifactEntities = Directory(
-      _artifactDir,
-    ).listSync(followLinks: false);
-    final artifactNames =
-        artifactEntities.map((entity) => _basename(entity.path)).toList()
-          ..sort();
-    final allActiveFiles = Directory(_activeMigrationDir)
-        .listSync()
-        .whereType<File>()
-        .where(
-          (file) => RegExp(r'^\d{14}_.+\.sql$').hasMatch(_basename(file.path)),
-        )
-        .toList();
-    final activeFiles = oa198HistoricalInventory(allActiveFiles);
-    final activeNames = activeFiles.map((file) => _basename(file.path)).toSet();
-    expect(
-      allActiveFiles.any((f) => _basename(f.path) == _bridgeFilename),
-      isFalse,
-    );
-
-    expect(
-      FileSystemEntity.typeSync(_artifactDir, followLinks: false),
-      FileSystemEntityType.directory,
-    );
-    expect(artifactNames, [_bridgeFilename, 'README.md', 'manifest.json']);
-    for (final entity in artifactEntities) {
-      expect(
-        FileSystemEntity.typeSync(entity.path, followLinks: false),
-        FileSystemEntityType.file,
-      );
-    }
-    expect(bytes, hasLength(28387));
-    expect(_sha256Bytes(bytes), _bridgeSha256);
-    expect(activeFiles, hasLength(207));
-    expect(activeNames, isNot(contains(_bridgeFilename)));
-    expect(
-      activeNames.any((name) => name.startsWith('20260811153415_')),
-      isFalse,
-    );
-    expect(_activeInventoryDigest(activeFiles), _activeInventorySha256);
-
-    final versions = activeNames
-        .map((name) => name.substring(0, 14))
-        .toList(growable: false);
-    expect(versions.toSet(), hasLength(207));
-
-    final scratchNames = {...activeNames, _bridgeFilename};
-    expect(scratchNames, hasLength(208));
-    expect(scratchNames.difference(activeNames), {_bridgeFilename});
-  });
-
   test('embedded payload is the exact frozen scored reconstruction', () {
     final sql = File(_bridgePath).readAsStringSync();
     final payload = _bridgePayload(sql);

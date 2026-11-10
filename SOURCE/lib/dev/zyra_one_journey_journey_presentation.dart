@@ -1799,7 +1799,7 @@ class _DecisionAction extends StatelessWidget {
                   style: ZyraText.body(
                     size: 13,
                     color: destructive
-                        ? ZyraColors.destructive
+                        ? ZyraColors.dangerText
                         : ZyraColors.foreground,
                   ),
                 ),

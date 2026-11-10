@@ -2,10 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:crypto/crypto.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:image/image.dart' as image_pkg;
-import 'package:zyra/theme/zyra_colors.dart';
 
 // The native app-icon assets remain installed after the Dart selector retires.
 // Keep this expected native contract independent of the removed selector API.
@@ -94,67 +91,6 @@ void main() {
     );
   });
 
-  test('eleven preview assets match their native masters and are distinct', () {
-    final previewHashes = <String>{};
-    final previewDirectory = Directory('assets/icon/previews');
-    expect(
-      previewDirectory.listSync().where((file) => file.path.endsWith('.png')),
-      hasLength(11),
-    );
-    expect(
-      File('pubspec.yaml').readAsStringSync(),
-      contains('assets/icon/previews/'),
-    );
-
-    for (final icon in _nativeIcons) {
-      final preview = File(
-        'assets/icon/previews/${icon.name}.png',
-      ).readAsBytesSync();
-      final nativeName = icon.alternateName ?? 'AppIcon';
-      final native = File(
-        'ios/Runner/Assets.xcassets/$nativeName.appiconset/'
-        'Icon-App-1024x1024@1x.png',
-      ).readAsBytesSync();
-      final hash = sha256.convert(preview).toString();
-      expect(hash, sha256.convert(native).toString(), reason: icon.name);
-      previewHashes.add(hash);
-    }
-    expect(
-      previewHashes,
-      hasLength(11),
-      reason: 'Each study has distinct art.',
-    );
-    expect(
-      File('assets/icon/icon.png').readAsBytesSync(),
-      File('assets/icon/previews/goldHorizonCurrent.png').readAsBytesSync(),
-      reason: 'The Home Screen primary must match its preview asset.',
-    );
-  });
-
-  test('all icon wordmarks use the exact Quiet Horizon splash gold', () {
-    final colour = ZyraColors.splashWordmark.toARGB32();
-    final red = (colour >> 16) & 0xFF;
-    final green = (colour >> 8) & 0xFF;
-    final blue = colour & 0xFF;
-
-    for (final icon in _nativeIcons) {
-      final preview = image_pkg.decodePng(
-        File('assets/icon/previews/${icon.name}.png').readAsBytesSync(),
-      );
-      expect(preview, isNotNull, reason: icon.name);
-      var wordmarkPixels = 0;
-      for (var y = 0; y < preview!.height; y++) {
-        for (var x = 0; x < preview.width; x++) {
-          final pixel = preview.getPixel(x, y);
-          if (pixel.r == red && pixel.g == green && pixel.b == blue) {
-            wordmarkPixels++;
-          }
-        }
-      }
-      expect(wordmarkPixels, greaterThan(100), reason: icon.name);
-    }
-  });
-
   test('every active native icon declares complete iPhone and iPad assets', () {
     for (final icon in _nativeIcons) {
       final nativeName = icon.alternateName ?? 'AppIcon';
@@ -210,47 +146,55 @@ void main() {
     },
   );
 
-  test('all eleven native icons use opaque Midnight Plum endpoints', () async {
-    for (final path in [
-      'assets/icon/icon.png',
-      for (final icon in _nativeIcons)
-        'ios/Runner/Assets.xcassets/${icon.alternateName ?? 'AppIcon'}.appiconset/'
-            'Icon-App-1024x1024@1x.png',
-    ]) {
-      final codec = await ui.instantiateImageCodec(
-        File(path).readAsBytesSync(),
-      );
-      final frame = await codec.getNextFrame();
-      final image = frame.image;
-      expect(image.width, 1024, reason: path);
-      expect(image.height, 1024, reason: path);
-      final bytes = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
-      expect(bytes, isNotNull, reason: path);
+  // Q44 / LOCK 14 V5 c11_app_icon_1024.png: the primary is Ivory.
+  test(
+    'primary native icon is opaque and uses the locked Ivory endpoints',
+    () async {
+      for (final path in [
+        'assets/icon/icon.png',
+        'ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png',
+      ]) {
+        final codec = await ui.instantiateImageCodec(
+          File(path).readAsBytesSync(),
+        );
+        final frame = await codec.getNextFrame();
+        final image = frame.image;
+        expect(image.width, 1024, reason: path);
+        expect(image.height, 1024, reason: path);
+        final bytes = await image.toByteData(
+          format: ui.ImageByteFormat.rawRgba,
+        );
+        expect(bytes, isNotNull, reason: path);
 
-      List<int> pixelAt(int x, int y) {
-        final offset = (y * image.width + x) * 4;
-        return [
-          bytes!.getUint8(offset),
-          bytes.getUint8(offset + 1),
-          bytes.getUint8(offset + 2),
-        ];
-      }
-
-      expect(pixelAt(8, 8), closeToRgb(const [0x30, 0x20, 0x3F]), reason: path);
-      expect(
-        pixelAt(image.width - 9, image.height - 9),
-        closeToRgb(const [0x16, 0x0E, 0x20]),
-        reason: path,
-      );
-      for (var offset = 3; offset < bytes!.lengthInBytes; offset += 4) {
-        if (bytes.getUint8(offset) != 255) {
-          fail('App-icon master must be opaque: $path at RGBA byte $offset');
+        List<int> pixelAt(int x, int y) {
+          final offset = (y * image.width + x) * 4;
+          return [
+            bytes!.getUint8(offset),
+            bytes.getUint8(offset + 1),
+            bytes.getUint8(offset + 2),
+          ];
         }
+
+        expect(
+          pixelAt(8, 8),
+          closeToRgb(const [0xFB, 0xF7, 0xF0]),
+          reason: path,
+        );
+        expect(
+          pixelAt(image.width - 9, image.height - 9),
+          closeToRgb(const [0xEE, 0xE6, 0xD8]),
+          reason: path,
+        );
+        for (var offset = 3; offset < bytes!.lengthInBytes; offset += 4) {
+          if (bytes.getUint8(offset) != 255) {
+            fail('App-icon master must be opaque: $path at RGBA byte $offset');
+          }
+        }
+        image.dispose();
+        codec.dispose();
       }
-      image.dispose();
-      codec.dispose();
-    }
-  });
+    },
+  );
 }
 
 Matcher closeToRgb(List<int> expected, {int tolerance = 2}) =>

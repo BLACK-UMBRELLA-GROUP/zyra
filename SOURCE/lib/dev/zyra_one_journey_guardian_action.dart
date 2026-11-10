@@ -201,13 +201,15 @@ class ZyraGuardianActionPage extends StatelessWidget {
           minimumSize: const Size(0, 38),
           padding: const EdgeInsets.symmetric(vertical: 8),
         ),
-        child: _text(
-          familyInvite != null
-              ? 'Decline'
-              : introduction
-              ? 'Not now'
-              : 'Not yet',
-        ),
+        child: familyInvite != null
+            ? Text(
+                'Decline',
+                style: ZyraText.body(
+                  size: 14,
+                  color: ZyraColors.dangerText,
+                ).copyWith(height: 1.45),
+              )
+            : _text(introduction ? 'Not now' : 'Not yet'),
       ),
     ],
   );

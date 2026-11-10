@@ -1,4 +1,5 @@
 import '../../widgets/zyra_floating_surface.dart';
+import '../../widgets/zyra_guardian_add_card.dart';
 import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
@@ -155,11 +156,38 @@ class GuardianshipManagerView extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
             sliver: SliverToBoxAdapter(child: invitationLifecycle()),
           ),
+          // Q17 / LOCK 19 k08: this card supports intrinsic measurement,
+          // so the sliver can centre its content and scroll on short screens.
           SliverFillRemaining(
             hasScrollBody: false,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 72),
-              child: Center(child: const _ManagerEmpty()),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Expanded(
+                    child: ZyraGuardianAddCard(
+                      key: ValueKey('guardianship-manager-empty'),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  ZyraFloatingSurface(
+                    radius: 28,
+                    child: TextButton(
+                      key: const ValueKey('guardian-empty-add'),
+                      onPressed: ZyraTapFeedback.onTap(context, onAdd),
+                      style: TextButton.styleFrom(
+                        minimumSize: const Size(48, 52),
+                        foregroundColor: ZyraColors.goldText,
+                        backgroundColor: ZyraColors.ivoryTop,
+                        side: BorderSide(color: ZyraColors.surfaceBorder),
+                        shape: const StadiumBorder(),
+                      ),
+                      child: const Text('Add a Guardian'),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -364,24 +392,6 @@ class _ManagerSectionLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       Text(label, style: ZyraText.chapterLabel(color: ZyraColors.ink(0.56)));
-}
-
-class _ManagerEmpty extends StatelessWidget {
-  const _ManagerEmpty();
-
-  @override
-  Widget build(BuildContext context) => ZyraEmptyState(
-    key: const ValueKey('guardianship-manager-empty'),
-    icon: Icons.shield_outlined,
-    iconWidget: Icon(
-      Icons.shield_outlined,
-      key: const ValueKey('guardian-empty-shield'),
-      color: ZyraColors.ink(.35),
-      size: 30,
-    ),
-    title: 'Add a Guardian',
-    message: '',
-  );
 }
 
 class _ManagerGuardianCard extends StatelessWidget {
@@ -1317,7 +1327,7 @@ class _ManageActionButton extends StatelessWidget {
                 style: ZyraText.body(
                   size: 13,
                   color: destructive
-                      ? const Color(0xFFB84A42)
+                      ? ZyraColors.dangerText
                       : ZyraColors.foreground,
                 ),
               ),
@@ -1367,7 +1377,7 @@ class _ManageActionButton extends StatelessWidget {
                       style: ZyraText.body(
                         size: 13,
                         color: destructive
-                            ? ZyraColors.destructive
+                            ? ZyraColors.dangerText
                             : ZyraColors.foreground,
                       ),
                     ),

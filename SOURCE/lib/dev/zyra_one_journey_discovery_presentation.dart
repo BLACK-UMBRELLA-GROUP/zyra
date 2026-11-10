@@ -684,6 +684,7 @@ class ZyraOneJourneyConnectionsAction {
     required this.onTap,
     this.key,
     this.fitLabel = false,
+    this.dangerLabel = false,
   });
 
   final String label;
@@ -691,6 +692,7 @@ class ZyraOneJourneyConnectionsAction {
   final VoidCallback? onTap;
   final Key? key;
   final bool fitLabel;
+  final bool dangerLabel;
 }
 
 /// The live Compact Chips action, with caller-owned draft callbacks.
@@ -715,6 +717,9 @@ class ZyraOneJourneyConnectionsActionButton extends StatelessWidget {
         : primary
         ? ZyraColors.foreground
         : ZyraColors.ink(.80);
+    final textTint = action.onTap != null && action.dangerLabel
+        ? ZyraColors.dangerText
+        : tint;
     final button = ZyraFloatingSurface(
       radius: 999,
       circle: false,
@@ -759,7 +764,7 @@ class ZyraOneJourneyConnectionsActionButton extends StatelessWidget {
                               softWrap: false,
                               style: ZyraText.button(
                                 size: primary ? 12.5 : 10.5,
-                                color: tint,
+                                color: textTint,
                               ),
                             ),
                           )
@@ -771,7 +776,7 @@ class ZyraOneJourneyConnectionsActionButton extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: ZyraText.button(
                               size: primary ? 12.5 : 10.5,
-                              color: tint,
+                              color: textTint,
                             ),
                           )
                         : Text(
@@ -780,7 +785,7 @@ class ZyraOneJourneyConnectionsActionButton extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: ZyraText.button(
                               size: primary ? 12.5 : 10.5,
-                              color: tint,
+                              color: textTint,
                             ),
                           ),
                   ),

@@ -276,6 +276,7 @@ void main() {
         .setMockMethodCallHandler(SystemChannels.platform, null);
   });
 
+  // QUESTIONS Q30: use the actual LOCK 15 Focus and LOCK 13 Options routes.
   testWidgets(
     'actual Profiles unlock survives request, mutual preparation and Journey menu without buying consent',
     (tester) async {
@@ -291,7 +292,7 @@ void main() {
       await returnZyraPreviewPage(tester);
       await _press(tester, 'draft_profile_$_sara');
       await _nav(tester, 2);
-      await _press(tester, 'my-zyra-route-concept-my-requests');
+      await _press(tester, 'concept-my-requests');
       await _press(tester, 'draft_requests_1');
       await _press(tester, 'concept_request_${_sara}_header');
       await _press(tester, 'draft_recipient_$_sara');
@@ -347,6 +348,7 @@ void main() {
     _expectNoConsent(current.model);
   });
 
+  // QUESTIONS Q30: move to Aisha’s selected place before opening her options.
   testWidgets('used access for Sara never opens Aisha or spends again', (
     tester,
   ) async {
@@ -355,6 +357,7 @@ void main() {
     final current = owner(balance: 5);
     expect(current.access.unlock(_sara), isTrue);
     await current.mount(tester, checkpoint: _seed());
+    await _press(tester, 'journey_tab_next');
     await _press(tester, 'draft_journey_options_$_aisha');
     final menu = tester.widget<ZyraConceptJourneyOptions>(
       find.byType(ZyraConceptJourneyOptions),

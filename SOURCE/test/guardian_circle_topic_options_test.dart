@@ -11,6 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
 import 'package:zyra/dev/zyra_guardian_circle_preview.dart';
+import 'package:zyra/dev/zyra_circle_topics_presentation.dart';
 import 'package:zyra/dev/zyra_guardian_circle_topic_options.dart';
 import 'package:zyra/dev/zyra_circle_send_button_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
@@ -481,64 +482,26 @@ Future<void> _nav(WidgetTester tester, int index) async {
   expect(tester.takeException(), isNull);
 }
 
-Future<void> _chooseShellDesign(
-  WidgetTester tester,
-  ZyraCircleBubbleDesign style, {
-  String pageTitle = 'Guardian Circle',
-  bool returnsToCircle = true,
-  String? menuCapture,
+Future<ZyraGuardianCircleScreen> _openShellTopics(
+  WidgetTester tester, {
+  required bool guardian,
 }) async {
-  await toggleZyraDevControls(tester);
-  expect(find.text('Page options'), findsOneWidget);
-  expect(_key('concept_page_options_context'), findsOneWidget);
-  final contextTitle = tester.widget<Text>(
-    _key('concept_page_options_context'),
-  );
-  expect(contextTitle.data, contains(pageTitle));
-  final dropdown = find.byType(DropdownButtonFormField<ZyraCircleBubbleDesign>);
-  expect(dropdown, findsOneWidget);
-  expect(find.text('Journey picker style'), findsNothing);
-  expect(find.text('Floating bubble action'), findsOneWidget);
-  expect(_key('concept_circle_send_design'), findsNothing);
-  expect(find.text('Send button'), findsNothing);
-  final choices = tester.widget<DropdownButton<ZyraCircleBubbleDesign>>(
-    find.descendant(
-      of: dropdown,
-      matching: find.byType(DropdownButton<ZyraCircleBubbleDesign>),
-    ),
-  );
-  expect(
-    choices.items!.map((item) => item.value),
-    ZyraCircleBubbleDesign.values,
-  );
-  if (menuCapture != null) await _capture(tester, menuCapture);
-  await _press(tester, dropdown);
-  final popup = find.byElementPredicate(
-    (element) =>
-        element.widget is Scrollable &&
-        (ModalRoute.of(element)?.isCurrent ?? false),
-  );
-  expect(popup, findsOneWidget);
-  final target = find.descendant(
-    of: popup,
-    matching: _key('concept_circle_bubble_design_${style.name}'),
-  );
-  if (target.evaluate().isEmpty) {
-    await tester.scrollUntilVisible(target, 48, scrollable: popup);
-  }
-  expect(target, findsOneWidget);
+  await _nav(tester, 3);
+  if (guardian) await _press(tester, _key('guardian_seeker_0'));
   await _press(
     tester,
-    find.ancestor(of: target, matching: find.byType(InkWell)).first,
+    _key(guardian ? 'guardian_circle' : 'guardian-family-messages-top'),
   );
-  expect(find.text('Page options'), findsOneWidget);
-  await toggleZyraDevControls(tester);
-  expect(find.text('Page options'), findsNothing);
-  expect(
-    find.byType(ZyraGuardianCircleScreen),
-    returnsToCircle ? findsOneWidget : findsNothing,
-  );
+  return tester.widget(find.byType(ZyraGuardianCircleScreen));
 }
+
+ZyraCircleTopicsPresentation _shellTopics(WidgetTester tester) =>
+    tester.widget(find.byType(ZyraCircleTopicsPresentation));
+
+VoidCallback _shellTopicAction(WidgetTester tester, String key) =>
+    tester.widget<Semantics>(_key(key)).properties.onTap!;
+
+Finder get _shellComposer => _key('circle_topics_composer');
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -984,45 +947,27 @@ void main() {
       },
     );
 
+    // Q16: compact keyboard and long drafts belong to the locked Topics UI.
     testWidgets(
       'embedded discuss control ${style.name} supports compact keyboard and long draft',
       (tester) async {
         await _mountShell(tester, size: const Size(320, 568), scale: 2);
-        await _nav(tester, 1);
-        await toggleZyraDevControls(tester);
-        await _press(tester, _key('concept_journey_preview_3'));
-        await _nav(tester, 3);
-        await _press(tester, _key('guardian-family-messages-top'));
-        await _chooseShellDesign(tester, style);
-        expect(
-          tester
-              .widget<ZyraGuardianCircleScreen>(
-                find.byType(ZyraGuardianCircleScreen),
-              )
-              .previewBubbleDesign!
-              .value,
-          style,
-        );
-        final launcher = _key('circle_discuss_floatingButton');
-        await _capture(tester, 'embedded_control_${style.name}_initial');
-        expect(launcher.hitTestable(), findsOneWidget);
-        await tester.showKeyboard(_composer);
+        await _openShellTopics(tester, guardian: false);
+        expect(_key('circle_discuss_floatingButton'), findsNothing);
+        expect(_shellComposer.hitTestable(), findsOneWidget);
+        await tester.showKeyboard(_shellComposer);
         tester.view.viewInsets = const FakeViewPadding(bottom: 200);
         addTearDown(tester.view.resetViewInsets);
         await tester.pumpAndSettle();
-        expect(tester.takeException(), isNull);
-        await tester.enterText(
-          _composer,
-          List.filled(20, 'An unsent multi-line Circle message.').join('\n'),
-        );
+        final text = List.filled(
+          20,
+          'An unsent multi-line Circle message.',
+        ).join('\n');
+        await tester.enterText(_shellComposer, text);
         await tester.pumpAndSettle();
-        expect(tester.takeException(), isNull);
-        expect(launcher.hitTestable(), findsOneWidget);
-        expect(_circleButton('Send message').hitTestable(), findsOneWidget);
-        _expectDockedTranscript(tester);
-        {
-          expect(tester.getRect(launcher).right, lessThan(280));
-        }
+        final composer = tester.widget<TextField>(_shellComposer);
+        expect(composer.controller!.text, text);
+        expect(_key('circle_topics_send').hitTestable(), findsOneWidget);
         final editable = tester
             .state<EditableTextState>(find.byType(EditableText))
             .renderEditable;
@@ -1030,13 +975,6 @@ void main() {
           editable.size.height,
           greaterThanOrEqualTo(editable.preferredLineHeight),
         );
-        await _capture(tester, 'embedded_control_${style.name}_keyboard');
-        tester.view.resetViewInsets();
-        await tester.pumpAndSettle();
-        expect(tester.takeException(), isNull);
-        await _openPicker(tester);
-        await _dismissAndRemovePending(tester);
-        expect(_composer, findsOneWidget);
         expect(tester.takeException(), isNull);
       },
     );
@@ -2033,110 +1971,84 @@ void main() {
     );
   }
 
+  // Q16: the real Topics page owns its draft and one shared transcript.
   testWidgets(
     'actual protected shell offers the Current Circle interior and preserves the mounted shared chat',
     (tester) async {
       await _mountShell(tester);
       await _nav(tester, 1);
-      await toggleZyraDevControls(tester);
+      await openZyraDevControls(tester);
       await _press(tester, _key('concept_journey_preview_3'));
-      await _nav(tester, 3);
-      await _press(tester, _key('guardian-family-messages-top'));
-      final owner = tester.widget<ZyraGuardianCircleScreen>(
-        find.byType(ZyraGuardianCircleScreen),
-      );
+      await closeZyraDevControls(tester);
+      final owner = await _openShellTopics(tester, guardian: false);
       final state = tester.state(find.byType(ZyraGuardianCircleScreen));
       expect(owner.preview, isTrue);
       expect(
         owner.previewData!.validFor('draft-self', viewerIsSeeker: true),
         isTrue,
       );
-      expect(owner.previewPastTopics.length, 12);
+      expect(owner.previewPastTopics, hasLength(12));
+      expect(_shellTopics(tester).current.map((tile) => tile.id), [
+        'draft-sara',
+        'draft-aisha',
+        'draft-maryam',
+      ]);
+      const sent = 'The shared transcript survives the Topics menu';
+      await tester.enterText(_shellComposer, sent);
+      await _press(tester, _key('circle_topics_send'));
       expect(
-        owner.previewData!.contexts.every(
-          (topic) => topic.kind == ZyraFamilyMessageContextKind.active,
-        ),
-        isTrue,
+        _shellTopics(tester).messages
+            .map((item) => item.message.body)
+            .where((body) => body == sent),
+        hasLength(1),
       );
-      await _send(tester, 'Shell Circle history must survive Page options');
-      await tester.enterText(
-        _composer,
-        'Shell Circle draft must survive Page options',
-      );
-      final controller = tester.widget<TextField>(_composer).controller!;
-      for (final style in ZyraCircleBubbleDesign.values) {
-        await _chooseShellDesign(tester, style);
-        expect(
-          tester.state(find.byType(ZyraGuardianCircleScreen)),
-          same(state),
-        );
-        expect(
-          tester
-              .widget<ZyraGuardianCircleScreen>(
-                find.byType(ZyraGuardianCircleScreen),
-              )
-              .previewData,
-          same(owner.previewData),
-        );
-        expect(controller.text, 'Shell Circle draft must survive Page options');
-        expect(_key('circle_topic_entry'), findsNothing);
-        expect(_key('circle_topic_bar'), findsNothing);
-        expect(_key('circle_discuss_floatingButton'), findsOneWidget);
-        expect(
-          find.text('Shell Circle history must survive Page options'),
-          findsOneWidget,
-        );
-        expect(
-          tester.widget<TextField>(_composer).controller,
-          same(controller),
-        );
-      }
-      await _select(tester, 'draft-circle-past-0', past: true);
-      await _press(tester, _circleButton('Send message'));
-      expect(_key('circle_topic_tag_draft-circle-past-0'), findsOneWidget);
+      const draft = 'The same Circle retains this unsent draft';
+      await tester.enterText(_shellComposer, draft);
+      final controller = tester.widget<TextField>(_shellComposer).controller!;
+      await _press(tester, _key('circle_topics_menu'));
+      await _press(tester, _key('circle_topics_done'));
+      expect(tester.state(find.byType(ZyraGuardianCircleScreen)), same(state));
       expect(
-        find.text('Shell Circle draft must survive Page options'),
-        findsOneWidget,
+        tester.widget<TextField>(_shellComposer).controller,
+        same(controller),
       );
-      await _capture(tester, 'protected-shell-in-chat');
+      expect(controller.text, draft);
+      expect(
+        _shellTopics(tester).messages.map((item) => item.message.body),
+        contains(sent),
+      );
+      expect(_key('circle_discuss_floatingButton'), findsNothing);
       await _closeShellCircle(tester);
       expect(find.byType(ZyraGuardianCircleScreen), findsNothing);
       expect(_key('guardian-family-messages-top'), findsOneWidget);
-      expect(find.byType(FloatingNavBar), findsOneWidget);
     },
   );
 
+  // Q16: Guardian Topics bind to the actual linked seeker and viewing role.
   testWidgets(
-    'actual Guardian shell shares the bubble-design dropdown and the one admitted Circle',
+    'actual Guardian shell admits one linked Circle without past consent',
     (tester) async {
       await _mountShell(tester, guardian: true);
-      // LOCK8 V9, g10 Seekers: Network/Journeys/My ZYRA/Seekers/Profile.
-      await _nav(tester, 3);
-      await _press(tester, _key('seeker-family-chat-draft-self'));
-      final owner = tester.widget<ZyraGuardianCircleScreen>(
-        find.byType(ZyraGuardianCircleScreen),
-      );
-      final state = tester.state(find.byType(ZyraGuardianCircleScreen));
+      final owner = await _openShellTopics(tester, guardian: true);
       expect(owner.viewerIsSeeker, isFalse);
       expect(
         owner.previewData!.validFor('draft-self', viewerIsSeeker: false),
         isTrue,
       );
       expect(owner.previewData!.senderId, 'draft-guardian-hassan');
-      expect(owner.previewPastTopics, isEmpty);
-      await _chooseShellDesign(tester, ZyraCircleBubbleDesign.current);
-      expect(tester.state(find.byType(ZyraGuardianCircleScreen)), same(state));
-      await _select(tester, 'draft-circle-current-sara');
-      await _send(tester, 'Guardian shell local topic conversation');
-      expect(_messageTag('draft-circle-current-sara'), findsOneWidget);
-      expect(
-        _key('open-message-context-draft-circle-current-sara'),
-        findsNothing,
-      );
-      await _capture(tester, 'protected-guardian-shell-both');
+      expect(_shellTopics(tester).showPast, isFalse);
+      expect(_key('circle_topics_past'), findsNothing);
+      const body = 'Guardian shell local topic conversation';
+      await tester.enterText(_shellComposer, body);
+      await _press(tester, _key('circle_topics_send'));
+      final matching = _shellTopics(
+        tester,
+      ).messages.where((item) => item.message.body == body).toList();
+      expect(matching, hasLength(1));
+      expect(matching.single.message.senderId, 'draft-guardian-hassan');
       await _closeShellCircle(tester);
       expect(find.byType(ZyraGuardianCircleScreen), findsNothing);
-      expect(_key('seeker-family-chat-draft-self'), findsOneWidget);
+      expect(_key('guardian_circle'), findsOneWidget);
     },
   );
 
@@ -2144,7 +2056,6 @@ void main() {
     final role = guardian ? 'Guardian' : 'Seeker';
     // LOCK8 V9 g10 (Guardian) and LOCK19 k01 (Seeker) both use slot 3.
     const parentTab = 3;
-    final parentTitle = guardian ? 'Seekers' : 'Guardian';
     final circleEntry = guardian
         ? 'seeker-family-chat-draft-self'
         : 'guardian-family-messages-top';
@@ -2152,80 +2063,26 @@ void main() {
       DropdownButtonFormField<ZyraCircleBubbleDesign>,
     );
 
+    // Q16: the locked Topics entry has no inherited developer style lease.
     testWidgets(
-      '$role parent toggle selects Current plus five bubble interiors with the same fixed floating entry',
+      '$role parent owns the admitted Topics view and its Back destination',
       (tester) async {
         await _mountShell(tester, guardian: guardian);
-        await _nav(tester, parentTab);
-        ValueListenable<ZyraCircleBubbleDesign>? sharedStyle;
-        for (final style in ZyraCircleBubbleDesign.values) {
-          await _chooseShellDesign(
-            tester,
-            style,
-            pageTitle: parentTitle,
-            returnsToCircle: false,
-            menuCapture: style == ZyraCircleBubbleDesign.current
-                ? '${role.toLowerCase()}-parent-discussion-options'
-                : null,
-          );
-          await _press(tester, _key(circleEntry));
-          final circle = tester.widget<ZyraGuardianCircleScreen>(
-            find.byType(ZyraGuardianCircleScreen),
-          );
-          expect(circle.preview, isTrue);
-          expect(circle.viewerIsSeeker, !guardian);
-          expect(
-            circle.previewData!.validFor(
-              'draft-self',
-              viewerIsSeeker: !guardian,
-            ),
-            isTrue,
-          );
-          expect(
-            circle.previewData!.senderId,
-            guardian ? 'draft-guardian-hassan' : 'draft-self',
-          );
-          expect(circle.previewBubbleDesign, isNotNull);
-          expect(circle.previewBubbleDesign!.value, style);
-          if (sharedStyle == null) {
-            sharedStyle = circle.previewBubbleDesign;
-          } else {
-            expect(circle.previewBubbleDesign, same(sharedStyle));
-          }
-          expect(_key('circle_topic_entry'), findsNothing);
-          if (style == ZyraCircleBubbleDesign.current) {
-            await _capture(
-              tester,
-              '${role.toLowerCase()}-parent-discussion-entry',
-            );
-          }
-          await _openPicker(tester);
-          expect(_key('circle_topic_general'), findsNothing);
-          expect(find.text('General conversation'), findsNothing);
-          expect(_key('circle_topic_tab_0'), findsOneWidget);
-          expect(_key('circle_topic_tab_1'), findsOneWidget);
-          await _press(tester, _key('circle_topic_tab_1'));
-          expect(_key('circle_topic_general'), findsNothing);
-          expect(find.text('General conversation'), findsNothing);
-          expect(_key('circle_topic_search'), findsOneWidget);
-          expect(
-            _key('circle_topic_draft-circle-past-0'),
-            guardian ? findsNothing : findsOneWidget,
-          );
-          expect(
-            find.text('10 Oct 2026'),
-            guardian ? findsNothing : findsOneWidget,
-          );
-          expect(find.text('Potential'), findsNothing);
-          expect(find.text('Paused'), findsNothing);
-          await _dismissAndRemovePending(tester);
-          expect(_composer, findsOneWidget);
-          expect(_key('circle_topic_bar'), findsNothing);
-          expect(find.byType(ZyraCircleDiscussLauncher), findsOneWidget);
-          await _closeShellCircle(tester);
-          expect(find.byType(ZyraGuardianCircleScreen), findsNothing);
-          expect(_key(circleEntry), findsOneWidget);
-        }
+        final circle = await _openShellTopics(tester, guardian: guardian);
+        expect(
+          circle.previewData!.validFor('draft-self', viewerIsSeeker: !guardian),
+          isTrue,
+        );
+        expect(_shellTopics(tester).viewerIsSeeker, !guardian);
+        expect(_shellTopics(tester).showPast, !guardian);
+        expect(_key('circle_topics_all'), findsOneWidget);
+        expect(_key('circle_discuss_floatingButton'), findsNothing);
+        expect(dropdown, findsNothing);
+        await _closeShellCircle(tester);
+        expect(
+          _key(guardian ? 'guardian_circle' : circleEntry),
+          findsOneWidget,
+        );
       },
     );
 
@@ -2248,80 +2105,77 @@ void main() {
       },
     );
 
-    for (final withdrawal in ['tab ABA', 'role ABA', 'authorization ABA']) {
+    testWidgets(
+      '$role parent authorization ABA refuses the retained topic-design callback',
+      (tester) async {
+        await _mountShell(tester, guardian: guardian);
+        await _nav(tester, parentTab);
+        final nav = tester.widget<FloatingNavBar>(find.byType(FloatingNavBar));
+        expect(
+          nav.items[nav.currentIndex].label,
+          contains(guardian ? 'Seekers' : 'Guardian'),
+        );
+        final fixture = zyraShellFixtureFor(tester);
+        fixture.selectCircleBubble(ZyraCircleBubbleDesign.current);
+        await tester.pumpAndSettle();
+        expect(dropdown, findsNothing);
+        await toggleZyraDevControls(tester);
+        final stale = captureZyraFixtureChange<ZyraCircleBubbleDesign>(
+          tester,
+          (fixture, style) => fixture.selectCircleBubble(style),
+        );
+        ZyraDeveloperAccess.setAuthorizedForTesting(false);
+        ZyraDeveloperAccess.setAuthorizedForTesting(true);
+        await tester.pumpAndSettle();
+        stale(ZyraCircleBubbleDesign.current);
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+        expect(dropdown, findsNothing);
+        expect(find.byType(ZyraGuardianCircleScreen), findsNothing);
+      },
+    );
+
+    for (final withdrawal in ['tab ABA', 'role ABA']) {
+      // Q16 (R2): invoke captured Topics menu and send after the owner changes.
       testWidgets(
-        '$role parent $withdrawal refuses the retained topic-design callback',
+        '$role parent $withdrawal refuses the retained Topics actions',
         (tester) async {
           await _mountShell(tester, guardian: guardian);
-          await _nav(tester, parentTab);
-          // Keep the original parent-context contract on real member navigation.
-          final navigation = tester.widget<FloatingNavBar>(
-            find.byType(FloatingNavBar),
-          );
-          expect(
-            navigation.items[navigation.currentIndex].label,
-            contains(parentTitle),
-          );
-          final fixture = zyraShellFixtureFor(tester);
-          fixture.selectCircleBubble(ZyraCircleBubbleDesign.current);
-          await tester.pumpAndSettle();
-          expect(dropdown, findsNothing);
-          await toggleZyraDevControls(tester);
-          final stale = captureZyraFixtureChange<ZyraCircleBubbleDesign>(
-            tester,
-            (fixture, style) => fixture.selectCircleBubble(style),
-          );
+          await _openShellTopics(tester, guardian: guardian);
+          final draft = 'A stale draft after $role $withdrawal';
+          await tester.enterText(_shellComposer, draft);
+          final staleMenu = _shellTopicAction(tester, 'circle_topics_menu');
+          final staleSend = _shellTopicAction(tester, 'circle_topics_send');
+          await _closeShellCircle(tester);
+          if (guardian) {
+            // Circle Back returns to the selected Seeker. Back again returns
+            // to the five-tab Guardian root for the actual tab/role change.
+            await returnZyraPreviewPage(tester);
+            expect(find.byType(FloatingNavBar), findsOneWidget);
+          }
           if (withdrawal == 'tab ABA') {
-            await toggleZyraDevControls(tester);
             await _nav(tester, 0);
-            await _nav(tester, parentTab);
-            await toggleZyraDevControls(tester);
-          } else if (withdrawal == 'role ABA') {
+          } else {
+            await _nav(tester, 4);
             await _press(
               tester,
               _key(guardian ? 'draft_role_seeker' : 'draft_role_guardian'),
             );
-            await toggleZyraDevControls(tester);
+            await _nav(tester, 4);
             await _press(
               tester,
               _key(guardian ? 'draft_role_guardian' : 'draft_role_seeker'),
             );
-            await _nav(tester, parentTab);
-            await toggleZyraDevControls(tester);
-          } else {
-            ZyraDeveloperAccess.setAuthorizedForTesting(false);
-            ZyraDeveloperAccess.setAuthorizedForTesting(true);
-            await tester.pumpAndSettle();
           }
-          stale(ZyraCircleBubbleDesign.current);
+          await _openShellTopics(tester, guardian: guardian);
+          final transcript = _shellTopics(tester).messages.toList();
+          staleMenu();
+          staleSend();
           await tester.pumpAndSettle();
+          expect(_shellTopics(tester).messages, transcript);
+          expect(_key('circle_topics_done'), findsNothing);
+          expect(find.text(draft), findsNothing);
           expect(tester.takeException(), isNull);
-          if (withdrawal == 'authorization ABA') {
-            expect(dropdown, findsNothing);
-            expect(find.byType(ZyraGuardianCircleScreen), findsNothing);
-          } else {
-            expect(dropdown, findsOneWidget);
-            expect(
-              tester
-                  .widget<DropdownButtonFormField<ZyraCircleBubbleDesign>>(
-                    dropdown,
-                  )
-                  .initialValue,
-              ZyraCircleBubbleDesign.current,
-            );
-            await toggleZyraDevControls(tester);
-            await _press(tester, _key(circleEntry));
-            final circle = tester.widget<ZyraGuardianCircleScreen>(
-              find.byType(ZyraGuardianCircleScreen),
-            );
-            expect(circle.viewerIsSeeker, !guardian);
-            expect(
-              circle.previewBubbleDesign!.value,
-              ZyraCircleBubbleDesign.current,
-            );
-            expect(_key('circle_topic_entry'), findsNothing);
-            expect(_key('circle_discuss_floatingButton'), findsOneWidget);
-          }
         },
       );
     }

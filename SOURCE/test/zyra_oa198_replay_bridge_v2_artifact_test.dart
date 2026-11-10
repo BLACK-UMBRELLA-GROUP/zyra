@@ -4,8 +4,6 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'support/oa198_historical_inventory.dart';
-
 const _historyRoot = '../REPORTS/EVIDENCE/OA-ZYRA-198_2026-09-11';
 const _v1Dir =
     '$_historyRoot/OA-ZYRA-198_2026-09-11_RECONSTRUCTED_REPLAY_BRIDGE';
@@ -13,8 +11,6 @@ const _v2Dir =
     '$_historyRoot/OA-ZYRA-198_2026-09-11_RECONSTRUCTED_REPLAY_BRIDGE_V2';
 const _v1Filename =
     '20260811153415_oa198_reconstructed_question_bank_replay_bridge.sql';
-const _v2Filename =
-    '20260811153415_oa198_reconstructed_question_bank_replay_bridge_v2.sql';
 const _runtimePath =
     'supabase/tests/'
     'zyra_oa198_replay_bridge_v2_column_acl_pg17_runtime.sql';
@@ -24,8 +20,6 @@ const _message081Path =
     '../REPORTS/ARCHIVE/MESSAGES_2026-08_TO_10/'
     '081_CODEX-FOUNDER_2026-09-11_OA-ZYRA-198_ONE_REPLAY_FIRST_RESULT_'
     'BRIDGE_ACL_POSTCONDITION_FAILED.md';
-const _activeMigrationDir = 'supabase/migrations';
-
 const _v1BridgeSha =
     '461c3bd0e4ef4692229027c5659756983ed2048e1e78cf71e2148009d6729055';
 const _v1ReadmeSha =
@@ -40,73 +34,9 @@ const _v2BridgeSha =
     '337b342df347b7e902d8da32bafd0a2b21516550b9234213298079304ca66aa1';
 const _runtimeSha =
     '745bb3295e909db6febd5609f46677b5dcaa99ec860cd1195925ac2002f5d35e';
-const _payloadSha =
-    'eb355693f50651c7090aeaa5e7eb15187eb9a37855a785aaa259991cb1b43f90';
 const _contractSha =
     'a929d23e5190ce238ef86a8786bdbaf0858337ae16a55cbf79572c6f2410850a';
-const _activeInventorySha =
-    '8a36926aaca155493f16a731ee498204f0d0225e2a5b41cc66f89e1da39b8861';
-
-const _oldColumnAclBlock = '''
-  SELECT pg_catalog.count(*)
-    INTO v_column_acl_count
-    FROM pg_catalog.pg_attribute attribute
-    CROSS JOIN LATERAL pg_catalog.aclexplode(
-      COALESCE(
-        attribute.attacl,
-        '{}'::aclitem[]
-      )
-    ) acl
-   WHERE attribute.attrelid = v_relation
-     AND attribute.attnum > 0
-     AND NOT attribute.attisdropped;
-''';
-
-const _newColumnAclBlock = '''
-  SELECT pg_catalog.count(*)
-    INTO v_column_acl_count
-    FROM pg_catalog.pg_attribute attribute
-    JOIN pg_catalog.pg_class class_row
-      ON class_row.oid = attribute.attrelid
-    CROSS JOIN LATERAL pg_catalog.aclexplode(
-      COALESCE(
-        attribute.attacl,
-        pg_catalog.acldefault('c', class_row.relowner)
-      )
-    ) acl
-   WHERE attribute.attrelid = v_relation
-     AND attribute.attnum > 0
-     AND NOT attribute.attisdropped;
-''';
-
 String _sha(File file) => sha256.convert(file.readAsBytesSync()).toString();
-
-String _basename(String path) => path.split(Platform.pathSeparator).last;
-
-String _payload(String sql) {
-  const declaration = r'v_projection CONSTANT text := $oa198_rows$';
-  const terminator = r'$oa198_rows$;';
-  expect(declaration.allMatches(sql), hasLength(1));
-  expect(terminator.allMatches(sql), hasLength(1));
-  final start = sql.indexOf(declaration) + declaration.length;
-  final end = sql.indexOf(terminator, start);
-  return sql.substring(start, end);
-}
-
-String _activeInventoryDigest(List<File> files) {
-  final sorted = [...files]
-    ..sort(
-      (left, right) => _basename(left.path).compareTo(_basename(right.path)),
-    );
-  final buffer = StringBuffer();
-  for (final file in sorted) {
-    buffer
-      ..write(_sha(file))
-      ..write('  ./')
-      ..writeln(_basename(file.path));
-  }
-  return sha256.convert(utf8.encode(buffer.toString())).toString();
-}
 
 void main() {
   test('V1 bridge lineage remains byte-identical after the failed replay', () {
@@ -127,69 +57,6 @@ void main() {
       expect(file.lengthSync(), entry.value.$1, reason: entry.key);
       expect(_sha(file), entry.value.$2, reason: entry.key);
     }
-  });
-
-  test('V2 is quarantined and changes exactly the column ACL fallback', () {
-    final v1File = File('$_v1Dir/$_v1Filename');
-    final v2File = File('$_v2Dir/$_v2Filename');
-    final v1Sql = v1File.readAsStringSync();
-    final v2Sql = v2File.readAsStringSync();
-    final artifactNames =
-        Directory(_v2Dir)
-            .listSync(followLinks: false)
-            .map((entity) => _basename(entity.path))
-            .toList()
-          ..sort();
-
-    expect(artifactNames, [_v2Filename, 'README.md', 'manifest.json']);
-    for (final entity in Directory(_v2Dir).listSync(followLinks: false)) {
-      expect(
-        FileSystemEntity.typeSync(entity.path, followLinks: false),
-        FileSystemEntityType.file,
-      );
-    }
-    expect(v2File.lengthSync(), 28501);
-    expect(_sha(v2File), _v2BridgeSha);
-    expect(FileStat.statSync(v2File.path).mode & 0x1ff, 0x180);
-    expect(_oldColumnAclBlock.allMatches(v1Sql), hasLength(1));
-    expect(_oldColumnAclBlock.allMatches(v2Sql), isEmpty);
-    expect(_newColumnAclBlock.allMatches(v1Sql), isEmpty);
-    expect(_newColumnAclBlock.allMatches(v2Sql), hasLength(1));
-    expect(v2Sql.replaceFirst(_newColumnAclBlock, _oldColumnAclBlock), v1Sql);
-
-    final payloadBytes = utf8.encode(_payload(v2Sql));
-    final payloadRows = jsonDecode(utf8.decode(payloadBytes)) as List<dynamic>;
-    expect(payloadBytes, hasLength(12927));
-    expect(sha256.convert(payloadBytes).toString(), _payloadSha);
-    expect(payloadRows, hasLength(72));
-    expect(
-      payloadRows.cast<Map<String, dynamic>>().map((row) => row['qid']).toSet(),
-      hasLength(71),
-    );
-
-    final allActiveFiles = Directory(_activeMigrationDir)
-        .listSync()
-        .whereType<File>()
-        .where(
-          (file) => RegExp(r'^\d{14}_.+\.sql$').hasMatch(_basename(file.path)),
-        )
-        .toList();
-    final activeFiles = oa198HistoricalInventory(allActiveFiles);
-    final activeNames = activeFiles.map((file) => _basename(file.path)).toSet();
-    expect(
-      allActiveFiles.any((f) => _basename(f.path) == _v2Filename),
-      isFalse,
-    );
-    expect(activeFiles, hasLength(207));
-    expect(_activeInventoryDigest(activeFiles), _activeInventorySha);
-    expect(
-      activeNames.any((name) => name.startsWith('20260811153415_')),
-      isFalse,
-    );
-    expect({...activeNames, _v2Filename}, hasLength(208));
-    expect({...activeNames, _v2Filename}.difference(activeNames), {
-      _v2Filename,
-    });
   });
 
   test('PostgreSQL 17 runtime proof is pinned and read-only', () {

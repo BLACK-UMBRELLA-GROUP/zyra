@@ -3,30 +3,25 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:zyra/dev/zyra_dev_scenario.dart';
-import 'package:zyra/models/zyra_dashboard_resolution.dart';
 import 'package:zyra/models/zyra_error_state.dart';
-import 'package:zyra/models/seeker_profile.dart';
-import 'package:zyra/data/zyra_journey_pause_state.dart';
-import 'package:zyra/screens/home/seeker_dashboard_screen.dart';
 import 'package:zyra/screens/onboarding/onboarding_stage_intro_screen.dart';
 import 'package:zyra/screens/subscription/upgrade_screen.dart';
 import 'package:zyra/screens/wali/seeker_guardian_designs.dart';
 import 'package:zyra/screens/wali/wali_gn_shared.dart';
-import 'package:zyra/screens/wali/wali_dashboard_screen.dart';
 import 'package:zyra/screens/wali/wali_network_screen.dart';
-import 'package:zyra/screens/wali/wali_seeker_workspace_screen.dart';
-import 'package:zyra/screens/wali/wali_seekers_screen.dart';
 import 'package:zyra/screens/welcome_screen.dart';
-import 'package:zyra/services/zyra_developer_access.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_seeker.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
+import 'package:zyra/dev/zyra_one_journey_phone_access.dart';
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
+import 'package:zyra/dev/zyra_subscription_wallet_draft.dart';
+import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/services/zyra_wali_link_service.dart';
-import 'package:zyra/services/zyra_dashboard_updates_service.dart';
-import 'package:zyra/services/zyra_guardian_seeker_roster_resolver.dart';
-import 'package:zyra/services/zyra_wali_journey_service.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
@@ -34,8 +29,11 @@ import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/floating_nav_bar.dart';
 import 'package:zyra/widgets/zyra_full_screen_error.dart';
 import 'package:zyra/widgets/zyra_loading.dart';
-import 'package:zyra/widgets/zyra_quiet_dashboard.dart';
 import 'package:zyra/widgets/zyra_state_widgets.dart';
+
+import '../support/zyra_hidden_dev_controls_driver.dart';
+import 'baseline_capture_support.dart';
+import 'lock15_focus_capture_test.dart' show circleToken, fillPreferences, one;
 
 /// Candidate screenshots are deliberately separate from approved baselines.
 ///
@@ -184,601 +182,15 @@ Widget _guardianSlider() {
   );
 }
 
-DashboardSnapshot _calmDashboardSnapshot() => const DashboardSnapshot(
-  role: DashboardRole.seeker,
-  onboarding: DashboardSource.available(<DashboardSignal>[]),
-  journeys: DashboardSource.available(
-    DashboardJourneyState(
-      summary: DashboardJourneySummary(
-        id: 'visual-searching',
-        kind: DashboardJourneyKind.searching,
-        title: 'Ready for introductions',
-        detail: 'New introductions will appear when they are available.',
-      ),
-    ),
-  ),
-  updates: DashboardSource.available(<DashboardSignal>[]),
-  guardianInvitations: DashboardSource.available(<DashboardSignal>[]),
-  insights: DashboardSource.available(<DashboardSignal>[]),
-  advisories: DashboardSource.available(<DashboardAdvisory>[]),
-  stableState: DashboardStableState(
-    orientationItems: DashboardSource.available(<DashboardOrientationItem>[
-      DashboardOrientationItem(
-        id: 'visual-guardian-orientation',
-        kind: DashboardOrientationKind.guardian,
-        title: 'Guardian',
-        valueLabel: 'Not connected',
-        target: ZyraDashboardTarget.guardian,
-      ),
-      DashboardOrientationItem(
-        id: 'visual-unread-orientation',
-        kind: DashboardOrientationKind.unread,
-        title: 'New activity',
-        valueLabel: '12',
-        target: ZyraDashboardTarget.notifications,
-      ),
-    ]),
-    family: DashboardSource.available(
-      DashboardFamilyStatus(
-        kind: DashboardFamilyKind.notConnected,
-        title: 'No Guardian connected',
-        detail: 'Add a Guardian when you are ready.',
-        actionLabel: 'Add Guardian',
-      ),
-    ),
-  ),
-);
-
-DashboardSnapshot _resolvedDashboardSnapshot() => DashboardSnapshot(
-  role: DashboardRole.seeker,
-  onboarding: const DashboardSource.available(<DashboardSignal>[]),
-  journeys: DashboardSource.available(
-    DashboardJourneyState(
-      summary: DashboardJourneySummary(
-        id: 'visual-active',
-        kind: DashboardJourneyKind.active,
-        title: 'You & Adam',
-        detail: 'Faith & Values · Stage 4 of 8',
-        progress: 0.5,
-        latestCompletedStage: 'Latest: Compatibility Reveal completed',
-        nextMilestone: 'Next: Faith & Values',
-        momentum: 'Your Journey moved forward this week.',
-      ),
-      signals: <DashboardSignal>[
-        DashboardSignal(
-          id: 'visual-stage-decision',
-          kind: DashboardSignalKind.deadlineDecision,
-          title: 'Your Journey needs a decision',
-          detail: 'Review the current stage before the decision window closes.',
-          actionLabel: 'Review decision',
-          target: ZyraDashboardTarget.connectionsJourneys,
-          dueAt: _visualDecisionDue,
-        ),
-        DashboardSignal(
-          id: 'visual-next-step',
-          kind: DashboardSignalKind.ownJourneyMove,
-          title: 'Your next Journey step is ready',
-          detail: 'Continue when you have had time to reflect.',
-          actionLabel: 'Open Journey',
-          target: ZyraDashboardTarget.connectionsJourneys,
-          eventAt: _visualEventAt,
-        ),
-      ],
-    ),
-  ),
-  updates: DashboardSource.available(<DashboardSignal>[
-    DashboardSignal(
-      id: 'visual-notification',
-      kind: DashboardSignalKind.meaningfulMovement,
-      title: 'A Guardian update is ready',
-      detail: 'Open Notifications to review the recorded update.',
-      actionLabel: 'Review update',
-      target: ZyraDashboardTarget.notifications,
-      eventAt: _visualEventAt,
-    ),
-    DashboardSignal(
-      id: 'visual-guardian-activity',
-      kind: DashboardSignalKind.meaningfulMovement,
-      title: 'Family Review completed',
-      detail: 'Today',
-      actionLabel: 'Open Guardian',
-      target: ZyraDashboardTarget.guardian,
-      eventAt: _visualEarlierEventAt,
-    ),
-  ]),
-  guardianInvitations: const DashboardSource.available(<DashboardSignal>[]),
-  insights: const DashboardSource.available(<DashboardSignal>[
-    DashboardSignal(
-      id: 'visual-insight',
-      kind: DashboardSignalKind.governedInsight,
-      title: 'Faith & Values remains a strong area',
-      detail: 'This is a test-only governed insight state.',
-      target: ZyraDashboardTarget.preferences,
-    ),
-  ]),
-  stableState: const DashboardStableState(
-    orientationItems: DashboardSource.available(<DashboardOrientationItem>[
-      DashboardOrientationItem(
-        id: 'visual-potentials-orientation',
-        kind: DashboardOrientationKind.potentials,
-        title: 'Potential Journeys',
-        valueLabel: '2',
-        target: ZyraDashboardTarget.connectionsJourneys,
-      ),
-      DashboardOrientationItem(
-        id: 'visual-guardian-orientation',
-        kind: DashboardOrientationKind.guardian,
-        title: 'Guardian',
-        valueLabel: 'Connected',
-        detail: 'Father · Guardian connected',
-        target: ZyraDashboardTarget.guardian,
-      ),
-      DashboardOrientationItem(
-        id: 'visual-unread-orientation',
-        kind: DashboardOrientationKind.unread,
-        title: 'New activity',
-        valueLabel: '7',
-        target: ZyraDashboardTarget.notifications,
-      ),
-    ]),
-    family: DashboardSource.available(
-      DashboardFamilyStatus(
-        kind: DashboardFamilyKind.connected,
-        title: 'Father · Guardian connected',
-        linkedCount: 1,
-      ),
-    ),
-  ),
-);
-
-final _visualDecisionDue = DateTime.utc(2026, 9, 1, 12);
-final _visualEventAt = DateTime.utc(2026, 8, 28, 10);
-final _visualEarlierEventAt = DateTime.utc(2026, 8, 27, 10);
-final _visualComparisonNow = DateTime.utc(2026, 8, 30, 18);
-
-DashboardSnapshot _seekerFamilySnapshot(
-  DashboardSource<DashboardFamilyStatus> family,
-) {
-  final base = _calmDashboardSnapshot();
-  return DashboardSnapshot(
-    role: base.role,
-    onboarding: base.onboarding,
-    journeys: base.journeys,
-    updates: base.updates,
-    guardianInvitations: base.guardianInvitations,
-    insights: base.insights,
-    advisories: base.advisories,
-    stableState: DashboardStableState(
-      orientationItems: base.stableState.orientationItems,
-      family: family,
-    ),
-  );
-}
-
-DashboardSnapshot _pendingGuardianDashboardSnapshot() => _seekerFamilySnapshot(
-  DashboardSource.available(
-    DashboardFamilyStatus(
-      kind: DashboardFamilyKind.invitationPending,
-      title: '2 Guardian invitations pending',
-      detail: 'Earliest invitation expires in 2 days.',
-      pendingInvitationCount: 2,
-      expiresAt: _visualComparisonNow.add(const Duration(days: 2)),
-    ),
-  ),
-);
-
-DashboardSnapshot _unavailableGuardianDashboardSnapshot() =>
-    _seekerFamilySnapshot(
-      const DashboardSource.unavailable(
-        DashboardFailure(code: 'guardian_status_unavailable'),
-      ),
-    );
-
-Widget _productionDashboardFixture(
-  DashboardSnapshot snapshot, {
-  required int selectedTab,
-}) => ZyraQuietDashboard(
-  resolution: const DashboardResolver().resolve(snapshot),
-  firstName: 'Maryam',
-  comparisonClock: _visualComparisonNow,
-  onNavigate: (_) {},
-  onRetry: () {},
-  selectedTabIndex: selectedTab == 2 ? 1 : 0,
-);
-
-Widget _seekerLastKnownUpdatesFixture() {
-  const resolver = DashboardResolver();
-  final previous = resolver.resolve(_resolvedDashboardSnapshot());
-  final base = _calmDashboardSnapshot();
-  final failed = resolver
-      .resolve(
-        DashboardSnapshot(
-          role: base.role,
-          onboarding: base.onboarding,
-          journeys: base.journeys,
-          updates: const DashboardSource.unavailable(
-            DashboardFailure(code: 'updates_unavailable'),
-          ),
-          guardianInvitations: base.guardianInvitations,
-          insights: base.insights,
-          advisories: base.advisories,
-          stableState: base.stableState,
-        ),
-      )
-      .retainUpdatesFrom(previous);
-  return ZyraQuietDashboard(
-    resolution: failed,
-    firstName: 'Maryam',
-    comparisonClock: _visualComparisonNow,
-    onNavigate: (_) {},
-    onRetry: () {},
-    selectedTabIndex: 0,
-  );
-}
-
-const _visualGuardianJourney = WaliJourneyView(
-  matchId: 'visual-guardian-match',
-  linkedSeekerId: 'visual-seeker',
-  linkedSeekerName: 'Maryam',
-  partner: SeekerProfile(
-    id: 'visual-partner',
-    firstName: 'Adam',
-    age: 31,
-    city: '—',
-    photos: [],
-    gender: 'male',
-  ),
-  counterpartGuardianName: null,
-  counterpartGuardianSurname: null,
-  status: 'ended',
-  journeyStage: 'phase_2',
-);
-
-ZyraDashboardUpdate _visualGuardianUpdate({
-  String sourceId = 'visual-domain-update',
-  bool? isUnread,
-  bool notification = false,
-}) => ZyraDashboardUpdate(
-  occurredAt: DateTime.utc(2026, 8, 30, notification ? 11 : 10),
-  classKey: notification ? 'notification' : 'journey_timeline_milestone',
-  sourceId: sourceId,
-  titleKey: notification
-      ? 'dashboard_updates.notification.new_message.title'
-      : 'dashboard_updates.journey.timeline_milestone.title',
-  detailKey: notification
-      ? 'dashboard_updates.notification.new_message.detail'
-      : 'dashboard_updates.journey.timeline_milestone.journey_continued.detail',
-  destinationKey: notification ? 'notifications' : 'connections.journeys',
-  relatedMatchId: notification ? null : _visualGuardianJourney.matchId,
-  isUnread: isUnread,
-);
-
-Widget _guardianUpdatesFixture({
-  required List<ZyraDashboardUpdate> rows,
-  bool failAfterFirstRead = false,
-}) {
-  ZyraDeveloperAccess.setAuthorizedForTesting(false);
-  ZyraDevScenario.instance
-    ..resetDashboardLab()
-    ..setDashboardLabEnabled(false)
-    ..setWaliLinkedSeekers(1);
-  AppState.instance.setWaliRealLinkedSeekers(const [
-    WaliLinkedPerson(id: 'visual-seeker', firstName: 'Maryam', isMain: true),
-  ]);
-  var reads = 0;
-  return WaliDashboardScreen(
-    onNotificationsChanged: () {},
-    comparisonNow: _visualComparisonNow,
-    loadJourneys: () async => const [_visualGuardianJourney],
-    loadOpenReviews: (_) async => const ZyraSourceResult.available(<String>{}),
-    loadUpdates: () async {
-      reads++;
-      if (failAfterFirstRead && reads > 1) return null;
-      return ZyraDashboardUpdatesPage(rows: rows, nextCursor: null);
-    },
-  );
-}
-
-const _guardianTodayPeople = <WaliLinkedPerson>[
-  WaliLinkedPerson(id: 'visual-main-maryam', firstName: 'Maryam', isMain: true),
-  WaliLinkedPerson(id: 'visual-additional-aisha', firstName: 'Aisha'),
-  WaliLinkedPerson(id: 'visual-main-zaynab', firstName: 'Zaynab', isMain: true),
-];
-
-WaliJourneyView _guardianTodayJourney(
-  WaliLinkedPerson person, {
-  required String suffix,
-  String stage = 'wali_gate',
-}) => WaliJourneyView(
-  matchId: 'visual-dashboard-$suffix',
-  linkedSeekerId: person.id,
-  linkedSeekerName: person.firstName,
-  partner: SeekerProfile(
-    id: 'visual-dashboard-partner-$suffix',
-    firstName: suffix == 'additional-hidden' ? 'Hidden Person' : 'Adam',
-    age: 30,
-    city: '—',
-    photos: const [],
-    gender: '',
-  ),
-  counterpartGuardianName: null,
-  counterpartGuardianSurname: null,
-  status: 'active',
-  journeyStage: stage,
-  isMock: true,
-);
-
-Widget _guardianTodayFixture({
-  required List<WaliLinkedPerson> people,
-  required List<WaliJourneyView>? journeys,
-}) {
-  ZyraDeveloperAccess.setAuthorizedForTesting(false);
-  final scenario = ZyraDevScenario.instance
-    ..resetDashboardLab()
-    ..setDashboardLabEnabled(false)
-    ..setWaliRole(WaliRole.main)
-    ..setWaliLinkedSeekers(people.length)
-    ..setWaliActiveJourneys(journeys?.length ?? 0)
-    ..setWaliPausedJourneys(0)
-    ..setWaliEndedJourneys(0)
-    ..setWaliReviewWaiting(false)
-    ..setWaliSentInvites(0);
-  // Keep the reference alive through construction; its setters establish the
-  // deterministic debug/profile composition used by this production widget.
-  assert(scenario.waliLinkedSeekers == people.length);
-  AppState.instance.setWaliRealLinkedSeekers(people);
-  return WaliDashboardScreen(
-    onOpenSeekers: () {},
-    comparisonNow: _visualComparisonNow,
-    loadJourneys: () async => journeys,
-    loadOpenReviews: (_) async => const ZyraSourceResult.available(<String>{}),
-    loadUpdates: () async =>
-        ZyraDashboardUpdatesPage(rows: const [], nextCursor: null),
-  );
-}
-
-final _managerPeople = <WaliLinkedPerson>[
-  WaliLinkedPerson(
-    id: 'visual-main-guardian',
-    firstName: 'Abdul',
-    relationship: 'father',
-    isMain: true,
-    linkedAt: DateTime.utc(2026, 4, 12),
-  ),
-  WaliLinkedPerson(
-    id: 'visual-additional-guardian',
-    firstName: 'Hassan',
-    relationship: 'brother',
-    linkedAt: DateTime.utc(2026, 5, 8),
-  ),
-  WaliLinkedPerson(
-    id: 'visual-additional-guardian-2',
-    firstName: 'Ibrahim',
-    relationship: 'uncle',
-    linkedAt: DateTime.utc(2026, 6, 21),
-  ),
-];
-
-Widget _managerFixture({
-  required List<WaliLinkedPerson> people,
-  bool linksAvailable = true,
-  List<PendingInvite> pending = const [],
-}) => _gradientBody(
+Widget _emptyGuardianManager() => _gradientBody(
   GuardianshipManagerView(
-    people: people,
-    linksAvailable: linksAvailable,
+    people: const [],
+    linksAvailable: true,
     onRetryLinks: () {},
     onOpenGuardian: (_) {},
     onAdd: () {},
-    pendingInvitesLoader: () async => ZyraSourceResult.available(pending),
-    comparisonNow: _visualComparisonNow,
+    pendingInvitesLoader: () async => const ZyraSourceResult.available([]),
   ),
-);
-
-const _guardianRosterResolver = ZyraGuardianSeekerRosterResolver();
-
-final _guardianRosterMainPeople = <WaliLinkedPerson>[
-  WaliLinkedPerson(
-    id: 'visual-roster-review-old',
-    firstName: 'Zaynab',
-    isMain: true,
-    relationship: 'father',
-    linkedAt: DateTime.utc(2026, 2, 10),
-  ),
-  WaliLinkedPerson(
-    id: 'visual-roster-review-new',
-    firstName: 'Aaliyah',
-    isMain: true,
-    relationship: 'uncle',
-    linkedAt: DateTime.utc(2026, 3, 12),
-  ),
-  WaliLinkedPerson(
-    id: 'visual-roster-active',
-    firstName: 'Bilal',
-    isMain: true,
-    relationship: 'brother',
-    linkedAt: DateTime.utc(2026, 4, 14),
-  ),
-  WaliLinkedPerson(
-    id: 'visual-roster-paused',
-    firstName: 'Hana',
-    isMain: true,
-    relationship: 'legal_guardian',
-    linkedAt: DateTime.utc(2026, 5, 16),
-  ),
-  WaliLinkedPerson(
-    id: 'visual-roster-other',
-    firstName: 'Maryam',
-    isMain: true,
-    relationship: 'father',
-    linkedAt: DateTime.utc(2026, 6, 18),
-  ),
-];
-
-final _guardianRosterAdditionalPeople = <WaliLinkedPerson>[
-  WaliLinkedPerson(
-    id: 'visual-additional-zara',
-    firstName: 'Zara',
-    relationship: 'aunt',
-    linkedAt: DateTime.utc(2026, 7, 2),
-  ),
-  WaliLinkedPerson(
-    id: 'visual-additional-aisha',
-    firstName: 'Aisha',
-    relationship: 'sister',
-    linkedAt: DateTime.utc(2026, 7, 9),
-  ),
-  WaliLinkedPerson(
-    id: 'visual-additional-umar',
-    firstName: 'Umar',
-    relationship: 'uncle',
-    linkedAt: DateTime.utc(2026, 7, 16),
-  ),
-];
-
-WaliJourneyView _guardianRosterJourney(
-  WaliLinkedPerson person, {
-  required String suffix,
-  required String stage,
-  ZyraJourneyPauseState pause = ZyraJourneyPauseState.active,
-}) => WaliJourneyView(
-  attemptId: 'visual-attempt-$suffix',
-  matchId: 'visual-match-$suffix',
-  linkedSeekerId: person.id,
-  linkedSeekerName: person.firstName,
-  partner: SeekerProfile(
-    id: 'visual-partner-$suffix',
-    firstName: suffix == 'old-review' ? 'Idris' : 'Adam',
-    age: 30,
-    city: '—',
-    photos: const [],
-    gender: '',
-  ),
-  counterpartGuardianName: null,
-  counterpartGuardianSurname: null,
-  status: 'active',
-  journeyStage: stage,
-  pause: pause,
-);
-
-GuardianSeekerRosterResolution _guardianRosterPriorityResolution() {
-  final oldReview = _guardianRosterJourney(
-    _guardianRosterMainPeople[0],
-    suffix: 'old-review',
-    stage: 'phase_1',
-  );
-  final newReview = _guardianRosterJourney(
-    _guardianRosterMainPeople[1],
-    suffix: 'new-review',
-    stage: 'phase_2',
-  );
-  final active = _guardianRosterJourney(
-    _guardianRosterMainPeople[2],
-    suffix: 'active',
-    stage: 'phase_2',
-  );
-  return _guardianRosterResolver.resolve(
-    linkedPeople: _guardianRosterMainPeople.take(3).toList(),
-    context: GuardianSeekerRosterContext(
-      journeys: [oldReview, newReview, active],
-      openReviewMatchIds: {oldReview.matchId, newReview.matchId},
-      waitingSinceByMatchId: {
-        oldReview.matchId: _visualComparisonNow.subtract(
-          const Duration(days: 2),
-        ),
-        newReview.matchId: _visualComparisonNow.subtract(
-          const Duration(hours: 4),
-        ),
-      },
-    ),
-  );
-}
-
-GuardianSeekerRosterResolution _guardianRosterLowerResolution() {
-  final paused = _guardianRosterJourney(
-    _guardianRosterMainPeople[3],
-    suffix: 'paused',
-    stage: 'phase_2',
-    pause: const ZyraJourneyPauseState(
-      phase: ZyraPausePhase.paused,
-      initiatedBy: 'visual-seeker',
-    ),
-  );
-  return _guardianRosterResolver.resolve(
-    linkedPeople: _guardianRosterMainPeople.sublist(3),
-    context: GuardianSeekerRosterContext(journeys: [paused]),
-  );
-}
-
-GuardianSeekerRosterResolution _guardianAdditionalResolution() =>
-    _guardianRosterResolver.resolve(
-      linkedPeople: _guardianRosterAdditionalPeople,
-      // Deliberately malicious underlying context: the authority-first
-      // resolver must produce the same neutral alphabetical section.
-      context: GuardianSeekerRosterContext(
-        journeys: [
-          _guardianRosterJourney(
-            _guardianRosterAdditionalPeople[0],
-            suffix: 'hidden-gate',
-            stage: 'wali_gate',
-          ),
-          _guardianRosterJourney(
-            _guardianRosterAdditionalPeople[1],
-            suffix: 'hidden-paused',
-            stage: 'phase_3',
-            pause: const ZyraJourneyPauseState(phase: ZyraPausePhase.paused),
-          ),
-        ],
-        openReviewMatchIds: const {'visual-match-hidden-gate'},
-      ),
-    );
-
-Widget _guardianRosterFixture(GuardianSeekerRosterResolution resolution) =>
-    GuardianSeekerRosterView(
-      resolution: resolution,
-      onRetry: () {},
-      onInvite: () {},
-      onOpenSeeker: (_) {},
-    );
-
-GuardianSeekerRosterEntry _guardianWorkspaceMainEntry() {
-  final person = _guardianRosterMainPeople[2];
-  final journey = _guardianRosterJourney(
-    person,
-    suffix: 'workspace-current',
-    stage: 'phase_2',
-  );
-  return GuardianSeekerRosterEntry(
-    person: person,
-    currentJourney: journey,
-    group: GuardianSeekerRosterGroup.inAJourney,
-    needsAttention: false,
-    waitingSince: null,
-    contextLine: 'Journey with Adam · Building a Life',
-  );
-}
-
-GuardianSeekerRosterEntry _guardianWorkspaceAdditionalEntry() =>
-    GuardianSeekerRosterEntry(
-      person: _guardianRosterAdditionalPeople[1],
-      currentJourney: null,
-      group: null,
-      needsAttention: false,
-      waitingSince: null,
-      contextLine: 'Additional Guardian',
-    );
-
-Widget _guardianWorkspaceFixture({
-  required GuardianSeekerRosterEntry entry,
-  List<GuardianAttemptSummary> summaries = const [],
-  bool unavailable = false,
-}) => GuardianSeekerWorkspaceView(
-  entry: entry,
-  summaries: summaries,
-  summaryUnavailable: unavailable,
-  onRetrySummary: () {},
-  onOpenJourney: (_) {},
-  onOpenNetwork: () {},
 );
 
 Widget _styleShowcase(ZyraNavStyle nav) {
@@ -881,330 +293,14 @@ List<_Fixture> _fixtures() => [
       onContinue: () {},
     ),
   ),
-  _Fixture(
-    id: 'seeker-dashboard-thinned-no-guardian',
-    role: 'female-seeker',
-    plan: 'basic',
-    state: 'normal',
-    largeText: true,
-    build: () => SeekerDashboardScreen(
-      unreadCount: 12,
-      onOpenConnections: () {},
-      onOpenGuardian: () {},
-      onNotificationsChanged: () {},
-      loadDashboard: () async => _calmDashboardSnapshot(),
-    ),
-  ),
-  _Fixture(
-    id: 'seeker-dashboard-thinned-connected',
-    role: 'female-seeker',
-    plan: 'basic',
-    state: 'expanded',
-    largeText: true,
-    build: () => SeekerDashboardScreen(
-      unreadCount: 7,
-      onOpenConnections: () {},
-      onOpenGuardian: () {},
-      onNotificationsChanged: () {},
-      loadDashboard: () async => _resolvedDashboardSnapshot(),
-    ),
-  ),
-  _Fixture(
-    id: 'seeker-dashboard-thinned-pending-invitation',
-    role: 'female-seeker',
-    plan: 'basic',
-    state: 'expanded-lower-levels',
-    largeText: true,
-    build: () => SeekerDashboardScreen(
-      unreadCount: 7,
-      onOpenConnections: () {},
-      onOpenGuardian: () {},
-      onNotificationsChanged: () {},
-      loadDashboard: () async => _pendingGuardianDashboardSnapshot(),
-    ),
-  ),
-  _Fixture(
-    id: 'seeker-dashboard-thinned-unavailable',
-    role: 'female-seeker',
-    plan: 'basic',
-    state: 'guardian-status-unavailable',
-    largeText: true,
-    build: () => SeekerDashboardScreen(
-      unreadCount: 0,
-      onOpenConnections: () {},
-      onOpenGuardian: () {},
-      onNotificationsChanged: () {},
-      loadDashboard: () async => _unavailableGuardianDashboardSnapshot(),
-    ),
-  ),
-  _Fixture(
-    id: 'seeker-dashboard-updates-populated',
-    role: 'female-seeker',
-    plan: 'basic',
-    state: 'updates-populated',
-    largeText: true,
-    build: () => _productionDashboardFixture(
-      _resolvedDashboardSnapshot(),
-      selectedTab: 1,
-    ),
-  ),
-  _Fixture(
-    id: 'seeker-dashboard-updates-empty',
-    role: 'female-seeker',
-    plan: 'basic',
-    state: 'updates-honest-empty',
-    largeText: true,
-    build: () =>
-        _productionDashboardFixture(_calmDashboardSnapshot(), selectedTab: 1),
-  ),
-  _Fixture(
-    id: 'seeker-dashboard-updates-last-known',
-    role: 'female-seeker',
-    plan: 'basic',
-    state: 'updates-last-known',
-    largeText: true,
-    build: _seekerLastKnownUpdatesFixture,
-  ),
-  _Fixture(
-    id: 'seeker-dashboard-insights-empty',
-    role: 'female-seeker',
-    plan: 'basic',
-    state: 'insights-honest-empty',
-    largeText: true,
-    build: () =>
-        _productionDashboardFixture(_calmDashboardSnapshot(), selectedTab: 2),
-  ),
+  // Q17. Keep all four member sizes exercising the real empty manager.
   _Fixture(
     id: 'guardian-manager-empty',
     role: 'female-seeker',
     plan: 'basic',
     state: 'honest-empty',
     largeText: true,
-    build: () => _managerFixture(people: const []),
-  ),
-  _Fixture(
-    id: 'guardian-manager-main',
-    role: 'female-seeker',
-    plan: 'basic',
-    state: 'main-only',
-    largeText: true,
-    build: () => _managerFixture(people: [_managerPeople.first]),
-  ),
-  _Fixture(
-    id: 'guardian-manager-loaded-pending',
-    role: 'female-seeker',
-    plan: 'basic',
-    state: 'main-additional-pending',
-    largeText: true,
-    build: () => _managerFixture(
-      people: _managerPeople,
-      pending: [
-        PendingInvite(
-          token: 'ZYRA2608',
-          label: 'Uncle Yusuf',
-          createdAt: DateTime.utc(2026, 8, 29, 12),
-          expiresAt: DateTime.utc(2026, 9, 2, 12),
-        ),
-      ],
-    ),
-  ),
-  _Fixture(
-    id: 'guardian-manager-unavailable',
-    role: 'female-seeker',
-    plan: 'basic',
-    state: 'links-unavailable',
-    largeText: true,
-    build: () => _managerFixture(people: const [], linksAvailable: false),
-  ),
-  _Fixture(
-    id: 'guardian-seeker-roster-empty',
-    role: 'guardian',
-    plan: 'basic',
-    state: 'honest-empty',
-    largeText: true,
-    build: () => _guardianRosterFixture(
-      const GuardianSeekerRosterResolution(
-        mainSections: [],
-        additionalGuardianships: [],
-      ),
-    ),
-  ),
-  _Fixture(
-    id: 'guardian-seeker-roster-main-priority',
-    role: 'guardian',
-    plan: 'basic',
-    state: 'needs-you-oldest-first-and-active',
-    largeText: true,
-    build: () => _guardianRosterFixture(_guardianRosterPriorityResolution()),
-  ),
-  _Fixture(
-    id: 'guardian-seeker-roster-main-lower-groups',
-    role: 'guardian',
-    plan: 'basic',
-    state: 'paused-waiting-other-and-invite',
-    largeText: true,
-    build: () => _guardianRosterFixture(_guardianRosterLowerResolution()),
-  ),
-  _Fixture(
-    id: 'guardian-seeker-roster-additional-neutral',
-    role: 'guardian',
-    plan: 'basic',
-    state: 'additional-neutral-no-journey-leakage',
-    largeText: true,
-    build: () => _guardianRosterFixture(_guardianAdditionalResolution()),
-  ),
-  _Fixture(
-    id: 'guardian-seeker-roster-unavailable',
-    role: 'guardian',
-    plan: 'basic',
-    state: 'source-unavailable',
-    largeText: true,
-    build: () =>
-        _gradientBody(ZyraUnknownErrorState(onRetry: () {}), title: 'Seekers'),
-  ),
-  _Fixture(
-    id: 'guardian-seeker-workspace-main-loaded',
-    role: 'guardian',
-    plan: 'basic',
-    state: 'current-ended-and-null-ended-date',
-    largeText: true,
-    build: () => _guardianWorkspaceFixture(
-      entry: _guardianWorkspaceMainEntry(),
-      summaries: [
-        GuardianAttemptSummary(
-          attemptId: 'visual-attempt-workspace-current',
-          startedAt: _visualComparisonNow.subtract(const Duration(days: 18)),
-          endedAt: null,
-          ended: false,
-        ),
-        GuardianAttemptSummary(
-          attemptId: 'visual-attempt-ended-recorded',
-          startedAt: DateTime.utc(2026, 5, 3),
-          endedAt: DateTime.utc(2026, 6, 21),
-          ended: true,
-        ),
-        GuardianAttemptSummary(
-          attemptId: 'visual-attempt-ended-null',
-          startedAt: DateTime.utc(2026, 3, 14),
-          endedAt: null,
-          ended: true,
-        ),
-      ],
-    ),
-  ),
-  _Fixture(
-    id: 'guardian-seeker-workspace-main-empty',
-    role: 'guardian',
-    plan: 'basic',
-    state: 'summary-honest-empty',
-    largeText: true,
-    build: () =>
-        _guardianWorkspaceFixture(entry: _guardianWorkspaceMainEntry()),
-  ),
-  _Fixture(
-    id: 'guardian-seeker-workspace-main-unavailable',
-    role: 'guardian',
-    plan: 'basic',
-    state: 'summary-unavailable',
-    largeText: true,
-    build: () => _guardianWorkspaceFixture(
-      entry: _guardianWorkspaceMainEntry(),
-      unavailable: true,
-    ),
-  ),
-  _Fixture(
-    id: 'guardian-seeker-workspace-additional',
-    role: 'guardian',
-    plan: 'basic',
-    state: 'role-and-network-only',
-    largeText: true,
-    build: () =>
-        _guardianWorkspaceFixture(entry: _guardianWorkspaceAdditionalEntry()),
-  ),
-  _Fixture(
-    id: 'guardian-dashboard-thinned-main-priority',
-    role: 'guardian',
-    plan: 'basic',
-    state: 'one-priority-mixed-role',
-    largeText: true,
-    build: () => _guardianTodayFixture(
-      people: _guardianTodayPeople,
-      journeys: [
-        _guardianTodayJourney(_guardianTodayPeople[0], suffix: 'main-priority'),
-        _guardianTodayJourney(
-          _guardianTodayPeople[1],
-          suffix: 'additional-hidden',
-        ),
-      ],
-    ),
-  ),
-  _Fixture(
-    id: 'guardian-dashboard-thinned-additional-neutral',
-    role: 'guardian',
-    plan: 'basic',
-    state: 'additional-journey-hidden',
-    largeText: true,
-    build: () => _guardianTodayFixture(
-      people: _guardianTodayPeople.take(2).toList(),
-      journeys: [
-        _guardianTodayJourney(
-          _guardianTodayPeople[1],
-          suffix: 'additional-hidden',
-        ),
-      ],
-    ),
-  ),
-  _Fixture(
-    id: 'guardian-dashboard-thinned-empty',
-    role: 'guardian',
-    plan: 'basic',
-    state: 'honest-empty',
-    largeText: true,
-    build: () => _guardianTodayFixture(people: const [], journeys: const []),
-  ),
-  _Fixture(
-    id: 'guardian-dashboard-thinned-unavailable',
-    role: 'guardian',
-    plan: 'basic',
-    state: 'journey-source-unavailable',
-    largeText: true,
-    build: () => _guardianTodayFixture(people: const [], journeys: null),
-  ),
-  _Fixture(
-    id: 'guardian-dashboard-updates-populated',
-    role: 'guardian',
-    plan: 'basic',
-    state: 'updates-populated',
-    largeText: true,
-    build: () => _guardianUpdatesFixture(
-      rows: [
-        _visualGuardianUpdate(
-          sourceId: 'visual-unread-notification',
-          isUnread: true,
-          notification: true,
-        ),
-        _visualGuardianUpdate(),
-      ],
-    ),
-  ),
-  _Fixture(
-    id: 'guardian-dashboard-updates-empty',
-    role: 'guardian',
-    plan: 'basic',
-    state: 'updates-honest-empty',
-    largeText: true,
-    build: () => _guardianUpdatesFixture(rows: const []),
-  ),
-  _Fixture(
-    id: 'guardian-dashboard-updates-last-known',
-    role: 'guardian',
-    plan: 'basic',
-    state: 'updates-last-known',
-    largeText: true,
-    build: () => _guardianUpdatesFixture(
-      rows: [_visualGuardianUpdate()],
-      failAfterFirstRead: true,
-    ),
+    build: _emptyGuardianManager,
   ),
   _Fixture(
     id: 'subscription-upgrade',
@@ -1290,9 +386,9 @@ List<_Fixture> _fixtures() => [
     ),
 ];
 
-Map<String, Map<String, dynamic>> _approvedBaselines() {
+Map<String, Map<String, dynamic>> _baselines(String field) {
   final decoded = _readManifest('test/visual/approved/manifest.json');
-  final rows = (decoded['baselines'] as List<dynamic>? ?? const []);
+  final rows = (decoded[field] as List<dynamic>? ?? const []);
   return {
     for (final raw in rows)
       if (raw is Map<String, dynamic> && raw['id'] is String)
@@ -1377,8 +473,386 @@ Widget _testApp(Widget child, {required double textScale}) => MaterialApp(
   home: child,
 );
 
+const _founderFrame = ValueKey('zyra-founder-baseline-boundary');
+
+Finder _key(String value) => find.byKey(ValueKey(value));
+
+BaselineHarness _round2Harness(WidgetTester tester, {double textScale = 1}) {
+  addTearDown(tester.view.resetPhysicalSize);
+  addTearDown(tester.view.resetDevicePixelRatio);
+  return BaselineHarness(tester, group: 'queue75', textScale: textScale);
+}
+
+Future<void> _resizeRound2(BaselineHarness h, Size size) async {
+  h.tester.view.devicePixelRatio = 1;
+  h.tester.view.physicalSize = size;
+  await h.flush();
+}
+
+void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
+  final cases =
+      <
+        ({
+          String id,
+          String lock,
+          String master,
+          List<int> questions,
+          Future<void> Function(BaselineHarness) drive,
+        })
+      >[
+        (
+          // Q46/Q47: current Family Review replaces the old Guardian priority card.
+          id: 'gm01_family_review',
+          lock: 'LOCK 15 V3 / LOCK 18 V2',
+          master: 'MY_ZYRA/MASTERS/gm01_family_review.png',
+          questions: [46, 47],
+          drive: (h) async {
+            await h.mount(guardian: true, tab: 2);
+            expect(
+              find.text('Family Review for\nAdam and Sara'),
+              findsOneWidget,
+            );
+            expect(find.text('Continue'), findsOneWidget);
+            expect(find.text('Pause'), findsOneWidget);
+          },
+        ),
+        (
+          // Q46/Q47: the no-priority case uses the approved gm04 Focus state.
+          id: 'gm04_all_caught_up',
+          lock: 'LOCK 15 V3 / LOCK 18 V2',
+          master: 'MY_ZYRA/MASTERS/gm04_all_caught_up.png',
+          questions: [46, 47],
+          drive: (h) async {
+            await h.mount(
+              guardian: true,
+              checkpoint: ZyraPreviewNavigationCheckpoint(
+                guardian: true,
+                model: (ViewRequestDraftModel(
+                  capacity: 3,
+                )..seedJourneys(1)).snapshot(),
+                tab: 2,
+                pages: const [],
+                guardianTabs: const ZyraGuardianTabsSnapshot(
+                  review: ZyraGuardianReview.continued,
+                  connection: ZyraGuardianConnection.dismissed,
+                ),
+              ),
+            );
+            expect(find.text('Nothing needs you right now.'), findsOneWidget);
+            expect(find.text('Continue'), findsNothing);
+            expect(find.text('Pause'), findsNothing);
+          },
+        ),
+        (
+          // Q48/Q49: the Main Seeker page carries the current disclosure contract.
+          id: 'g11_seeker__adam_main',
+          lock: 'LOCK 8 V6',
+          master: 'GUARDIAN_TABS/MASTERS/g11_seeker__adam_main.png',
+          questions: [49],
+          drive: (h) async {
+            final model = ViewRequestDraftModel(capacity: 3)..seedJourneys(1);
+            await h.mount(guardian: true, tab: 3, model: model);
+            await h.tap('guardian_seeker_0');
+            h.assertPage('guardian_seeker');
+            expect(find.text('Current Journey'), findsOneWidget);
+            expect(find.text('View and Chat'), findsOneWidget);
+            expect(find.text('You see them'), findsOneWidget);
+            expect(find.text('Not shared'), findsOneWidget);
+          },
+        ),
+        (
+          // Q48/Q49: Additional access stays distinct after selecting the other Seeker.
+          id: 'g12_seeker__yusuf_additional',
+          lock: 'LOCK 8 V6',
+          master: 'GUARDIAN_TABS/MASTERS/g12_seeker__yusuf_additional.png',
+          questions: [48, 49],
+          drive: (h) async {
+            final model = ViewRequestDraftModel(capacity: 3)..seedJourneys(1);
+            await h.mount(guardian: true, tab: 3, model: model);
+            await h.tap('guardian_seeker_0');
+            final staleJourney = h.tester
+                .widget<ZyraGuardianSeekerPage>(
+                  find.byType(ZyraGuardianSeekerPage),
+                )
+                .onJourney;
+            expect(staleJourney, isNotNull);
+            await returnZyraPreviewPage(h.tester);
+            await h.flush();
+            await h.tap('guardian_seeker_1');
+            staleJourney!();
+            await h.flush();
+            h.assertPage('guardian_seeker');
+            expect(find.text('Main Guardian only'), findsOneWidget);
+            expect(find.text('View and Chat'), findsNothing);
+            expect(find.text('You see them'), findsNothing);
+            expect(find.text('Current Journey'), findsNothing);
+            expect(find.text('Continue'), findsNothing);
+            expect(find.text('Pause'), findsNothing);
+          },
+        ),
+        (
+          // Q17: no linked Guardians, so k08 is the only card.
+          id: 'k08_card__add_a_guardian',
+          lock: 'LOCK 19 V3',
+          master: 'GUARDIAN_CARD/MASTERS/k08_card__add_a_guardian.png',
+          questions: [17],
+          drive: (h) async {
+            await h.mount(
+              checkpoint: ZyraPreviewNavigationCheckpoint(
+                guardian: false,
+                model: ViewRequestDraftModel(capacity: 3).snapshot(),
+                tab: 3,
+                pages: const [],
+                removedGuardians: draftGuardians.map((person) => person.id),
+              ),
+            );
+            expect(_key('guardian-card-add'), findsOneWidget);
+            expect(find.text('Omar'), findsNothing);
+            final next = _key('guardian-card-next');
+            if (next.evaluate().isNotEmpty) {
+              await h.tester.tap(next, warnIfMissed: false);
+              await h.flush();
+              expect(_key('guardian-card-add'), findsOneWidget);
+            }
+          },
+        ),
+        (
+          // Q52: Basic's Main Guardian card uses the exact k17 role and capacity.
+          id: 'k17_basic__card_front_hassan',
+          lock: 'LOCK 19 V3',
+          master: 'GUARDIAN_CARD/MASTERS/k17_basic__card_front_hassan.png',
+          questions: [52],
+          drive: (h) async {
+            await h.mount(
+              tab: 3,
+              initialSeekerBasic: true,
+              seekerMembership: 'Seeker Basic',
+            );
+            expect(_key('guardian-card-draft-guardian-hassan'), findsOneWidget);
+          },
+        ),
+        (
+          // Q52/Q53: physically select the invited card, which replaced the old
+          // simultaneously displayed pending invitation.
+          id: 'k07_card__omar_invited',
+          lock: 'LOCK 19 V3',
+          master: 'GUARDIAN_CARD/MASTERS/k07_card__omar_invited.png',
+          questions: [52, 53],
+          drive: (h) async {
+            await h.mount(tab: 3);
+            await h.tap('guardian-card-next');
+            await h.tap('guardian-card-next');
+            expect(_key('guardian-card-preview-invited-omar'), findsOneWidget);
+            expect(find.text('Waiting for Omar'), findsOneWidget);
+            expect(find.text('Send invitation again'), findsOneWidget);
+          },
+        ),
+        (
+          // Q54/Q55: preserve the no-Guardian status in the approved new-member
+          // Focus fixture, including the unfinished setup and phone permissions.
+          id: 'm05_new_member',
+          lock: 'LOCK 15 V3 / LOCK 18 V2',
+          master: 'MY_ZYRA/MASTERS/m05_new_member.png',
+          questions: [54, 55],
+          drive: (h) async {
+            final model = one();
+            model.acknowledgeReceivedRequests(['draft-amira']);
+            expect(model.request('draft-noor'), isTrue);
+            final messenger = TestDefaultBinaryMessengerBinding
+                .instance
+                .defaultBinaryMessenger;
+            messenger.setMockMethodCallHandler(zyraPhoneAccessChannel, (
+              call,
+            ) async {
+              if (call.method != 'status') return null;
+              return {
+                'notifications': 'denied',
+                'location': 'allowed',
+                'photos': 'limited',
+                'camera': 'notDetermined',
+                'faceID': 'notDetermined',
+              };
+            });
+            addTearDown(
+              () => messenger.setMockMethodCallHandler(
+                zyraPhoneAccessChannel,
+                null,
+              ),
+            );
+            await h.mount(
+              checkpoint: ZyraPreviewNavigationCheckpoint(
+                guardian: false,
+                model: model.snapshot(),
+                tab: 2,
+                pages: const [],
+                seekerReadiness: ZyraWalletReadiness.unfinished,
+                removedGuardians: draftGuardians.map((person) => person.id),
+                myZyraConsumedFocusTokens: const [circleToken],
+              ),
+            );
+            await fillPreferences(h);
+            expect(find.text('Finish setup'), findsOneWidget);
+            expect(find.text('No Guardian yet'), findsOneWidget);
+            expect(find.text('Notifications off'), findsOneWidget);
+          },
+        ),
+        (
+          // Q54/Q55: the connected Basic member's selected Journey capacity on Focus.
+          id: 'm06_seeker_basic',
+          lock: 'LOCK 15 V3 / LOCK 18 V2',
+          master: 'MY_ZYRA/MASTERS/m06_seeker_basic.png',
+          questions: [54, 55],
+          drive: (h) async {
+            final model = ViewRequestDraftModel(capacity: 1)..seedJourneys(1);
+            await h.mount(
+              tab: 2,
+              model: model,
+              seekerMembership: 'Seeker Basic',
+            );
+            expect(find.text('1 of 1 place in use'), findsOneWidget);
+            expect(find.textContaining('Insights'), findsNothing);
+          },
+        ),
+      ];
+
+  // Q50/Q51: LOCK 8 g10 has historical Espresso pixels. Preserve the
+  // current Ivory roster and its role isolation while the golden is held.
+  for (final device in _devices) {
+    for (final scale in device.id == 'standard' ? [1.0, 1.3] : [1.0]) {
+      testWidgets(
+        'LOCK 8 g10 Seekers role isolation ${device.id} text scale $scale',
+        (tester) async {
+          final h = _round2Harness(tester, textScale: scale);
+          final model = ViewRequestDraftModel(capacity: 3)..seedJourneys(1);
+          await h.mount(guardian: true, tab: 3, model: model);
+          await _resizeRound2(h, device.size);
+          expect(_key('guardian_seeker_0'), findsOneWidget);
+          final additional = _key('guardian_seeker_1');
+          expect(additional, findsOneWidget);
+          expect(
+            find.descendant(
+              of: additional,
+              matching: find.textContaining('Additional Guardian'),
+            ),
+            findsOneWidget,
+          );
+          expect(
+            find.descendant(
+              of: additional,
+              matching: find.textContaining('Journey with Sara'),
+            ),
+            findsNothing,
+          );
+          await h.tap('guardian_seeker_1');
+          h.assertPage('guardian_seeker');
+          expect(find.text('Main Guardian only'), findsOneWidget);
+          expect(find.text('You see them'), findsNothing);
+          expect(find.text('View and Chat'), findsNothing);
+          expect(_key('guardian_journey'), findsNothing);
+        },
+        variant: TargetPlatformVariant.only(TargetPlatform.iOS),
+      );
+    }
+  }
+
+  // Brief step 6 / LOCK 8 V9 g06: Larger Text at 390 pt may wrap between
+  // words. A word must remain on a single painted line.
+  testWidgets(
+    'Guardian Network Larger Text keeps words whole at 390 pt',
+    (tester) async {
+      final h = _round2Harness(tester, textScale: 1.3);
+      await h.mount(guardian: true, tab: 0);
+      tester.view.devicePixelRatio = 1;
+      tester.view.physicalSize = const Size(390, 844);
+      await h.flush();
+      for (final text in [
+        'Network',
+        'Introduce to\nAdam',
+        'Connect with\nGuardian',
+      ]) {
+        final finder = find.text(text);
+        expect(finder, findsOneWidget);
+        final paragraph = tester.renderObject<RenderParagraph>(finder);
+        for (final word in RegExp(r'\S+').allMatches(text)) {
+          final boxes = paragraph.getBoxesForSelection(
+            TextSelection(baseOffset: word.start, extentOffset: word.end),
+          );
+          expect(
+            boxes,
+            hasLength(1),
+            reason: 'Keep ${word.group(0)} on one line',
+          );
+        }
+      }
+    },
+    variant: TargetPlatformVariant.only(TargetPlatform.iOS),
+  );
+
+  group('Round 2 LOCK master', () {
+    test('all active comparisons have an exact current master', () {
+      expect(approved.keys.toSet(), cases.map((entry) => entry.id).toSet());
+      for (final entry in cases) {
+        expect(
+          approved[entry.id]?['governing_reference'],
+          '${entry.lock} ${entry.master}',
+        );
+        expect(approved[entry.id]?['questions_rows'], entry.questions);
+        expect(
+          File('../PRODUCT/APPROVED/${entry.master}').existsSync(),
+          isTrue,
+        );
+      }
+    });
+    for (final entry in cases) {
+      for (final (device, scale) in [
+        (_devices[0], 1.0),
+        (_devices[1], 1.0),
+        (_devices[1], 1.3),
+      ]) {
+        testWidgets(
+          '${entry.id} layout ${device.id} text scale $scale',
+          (tester) async {
+            final h = _round2Harness(tester, textScale: scale);
+            await entry.drive(h);
+            await _resizeRound2(h, device.size);
+            expect(find.byKey(_founderFrame), findsOneWidget);
+          },
+          variant: TargetPlatformVariant.only(TargetPlatform.iOS),
+        );
+      }
+      testWidgets(entry.id, (tester) async {
+        final h = _round2Harness(tester);
+        await entry.drive(h);
+        expect(tester.takeException(), isNull);
+        final path = _captureCandidates
+            ? '${_healthCapture ? 'health_candidates' : _candidateDirectory}/${entry.id}.png'
+            : approved[entry.id]!['path'] as String;
+        final priorShadows = debugDisableShadows;
+        debugDisableShadows = false;
+        try {
+          void repaint(RenderObject object) {
+            object.markNeedsPaint();
+            object.visitChildren(repaint);
+          }
+
+          repaint(tester.renderObject(find.byKey(_founderFrame)));
+          await tester.pump();
+          await expectLater(find.byKey(_founderFrame), matchesGoldenFile(path));
+        } finally {
+          debugDisableShadows = priorShadows;
+        }
+      }, variant: TargetPlatformVariant.only(TargetPlatform.iOS));
+    }
+  });
+}
+
 void main() {
-  final approved = _approvedBaselines();
+  final approved = _baselines('baselines');
+  final historical = _baselines('round2_superseded_baselines');
+  final historicalFixtures = historical.keys
+      .map((id) => id.split('__').first)
+      .toSet();
+  _round2MasterTests(approved);
   final retired = _retiredBaselines();
 
   setUpAll(() async {
@@ -1397,11 +871,15 @@ void main() {
     final wordmarkFont = FontLoader('SyneAudit')
       ..addFont(_fontBytes('assets/fonts/Syne-SemiBold.ttf'));
     await Future.wait([readingFont.load(), wordmarkFont.load()]);
-    if (_captureCandidates) {
-      final materialIcons = FontLoader('MaterialIcons')
-        ..addFont(rootBundle.load('fonts/MaterialIcons-Regular.otf'));
-      await materialIcons.load();
+    final materialIcons = FontLoader('MaterialIcons')
+      ..addFont(rootBundle.load('fonts/MaterialIcons-Regular.otf'));
+    final fonts = [materialIcons.load()];
+    if (Platform.isMacOS) {
+      final symbols = FontLoader('ZYRABaselineSystemSymbols')
+        ..addFont(_fontBytes('/System/Library/Fonts/SFNS.ttf'));
+      fonts.add(symbols.load());
     }
+    await Future.wait(fonts);
     ZyraText.useTestFontStubs = true;
     ZyraText.testReadingFontFamily = 'PoppinsAudit';
     ZyraText.testWordmarkFontFamily = 'SyneAudit';
@@ -1420,10 +898,10 @@ void main() {
     );
     expect(runtime['automatic_updates_allowed'], isFalse);
     expect(governed['automatic_updates_allowed'], isFalse);
-    expect(runtime['active_baseline_count'], 112);
+    expect(runtime['active_baseline_count'], approved.length);
     expect(runtime['archived_baseline_count'], 36);
-    expect(runtime['active_version'], 'OA-ZYRA-282-phase1-v2');
-    expect(runtime['active_versions'], [
+    expect(runtime['active_version'], 'ZYRA-QUEUE75-R2');
+    expect(runtime['historical_active_versions'], [
       'OA-ZYRA-281-v1',
       'OA-ZYRA-282-phase2-v1',
       'OA-ZYRA-282-phase3-v1',
@@ -1443,13 +921,37 @@ void main() {
       jsonEncode(runtime['retired_unapproved_captures']),
       jsonEncode(governed['retired_unapproved_captures']),
     );
-    expect(approved, hasLength(112));
     expect(
-      approved.values.map((entry) => entry['path']).toSet(),
+      jsonEncode(runtime['round2_superseded_baselines']),
+      jsonEncode(governed['round2_superseded_baselines']),
+    );
+    expect(historical, hasLength(112));
+    expect(
+      historical.values.map((entry) => entry['path']).toSet(),
       hasLength(112),
     );
+    expect(
+      historical.keys.toSet().intersection(approved.keys.toSet()),
+      isEmpty,
+    );
+    for (final entry in historical.values) {
+      expect(entry['questions_row'], inInclusiveRange(17, 55));
+      expect(entry['line_73_case_id'], matches(RegExp(r'^Q73-C[0-9]{4}$')));
+      final replacement = entry['round2_replacement'];
+      switch (entry['round2_disposition']) {
+        case 'superseded':
+          expect(approved, contains(replacement));
+        case 'retired':
+          expect(replacement, isNull);
+        case 'finding':
+          expect(replacement, isNull);
+          expect(entry['round2_reason'], isNotEmpty);
+        default:
+          fail('Missing Round 2 disposition for ${entry['id']}');
+      }
+    }
     final versions = <String, int>{};
-    for (final entry in approved.values) {
+    for (final entry in {...historical, ...approved}.values) {
       for (final key in const [
         'id',
         'path',
@@ -1486,14 +988,18 @@ void main() {
       'OA-ZYRA-282-phase2-v1': 36,
       'OA-ZYRA-282-phase3-v1': 32,
       'OA-ZYRA-282-phase1-v2': 16,
+      if (approved.isNotEmpty) 'ZYRA-QUEUE75-R2': approved.length,
     });
   });
 
   test('Tier 1 retired screens have no active fixtures or baselines', () {
-    final fixtureIds = _fixtures().map((fixture) => fixture.id).toSet();
+    final fixtureIds = {
+      ..._fixtures().map((fixture) => fixture.id),
+      ...historicalFixtures,
+    };
     expect(fixtureIds.intersection(_tier1RetiredFixtures), isEmpty);
     expect(retired, hasLength(12));
-    expect(retired.keys.toSet().intersection(approved.keys.toSet()), isEmpty);
+    expect(retired.keys.toSet().intersection(historical.keys.toSet()), isEmpty);
     for (final entry in retired.values) {
       final fixture = (entry['id'] as String).split('__').first;
       expect(_tier1RetiredFixtures, contains(fixture));
@@ -1529,10 +1035,13 @@ void main() {
       archived
           .map((entry) => entry['id'])
           .toSet()
-          .intersection(approved.keys.toSet()),
+          .intersection(historical.keys.toSet()),
       isEmpty,
     );
-    final currentFixtureIds = _fixtures().map((fixture) => fixture.id).toSet();
+    final currentFixtureIds = {
+      ..._fixtures().map((fixture) => fixture.id),
+      ...historicalFixtures,
+    };
     const variants = ['small', 'standard', 'large', 'standard__text-130'];
 
     for (final replacement in _presentationSupersededFixtures.entries) {
@@ -1548,7 +1057,7 @@ void main() {
       );
       for (final variant in variants) {
         final id = '${replacement.key}__$variant';
-        expect(approved[id], isNull, reason: '$id must not remain active');
+        expect(historical[id], isNull, reason: '$id must not remain active');
         final baseline = archived.singleWhere((entry) => entry['id'] == id);
         expect(baseline['archive_status'], 'superseded_byte_preserved');
         expect(baseline['archived_date'], '2026-08-31');
@@ -1558,7 +1067,7 @@ void main() {
           contains('066_FABLE-CODEX_2026-08-31'),
         );
         expect(baseline['superseded_by'], '${replacement.value}__$variant');
-        expect(approved, contains('${replacement.value}__$variant'));
+        expect(historical, contains('${replacement.value}__$variant'));
         final path = baseline['path'] as String;
         expect(baseline['byte_preserved_at'], path);
         final file = File('test/visual/$path');
@@ -1579,7 +1088,10 @@ void main() {
   });
 
   test('all OA-ZYRA-282 candidate manifests record governed promotion', () {
-    final registeredFixtures = _fixtures().map((fixture) => fixture.id).toSet();
+    final registeredFixtures = {
+      ..._fixtures().map((fixture) => fixture.id),
+      ...historicalFixtures,
+    };
     final runtime = _readManifest('test/visual/approved/manifest.json');
     final archived = (runtime['archived_baselines'] as List)
         .cast<Map<String, dynamic>>();
@@ -1658,7 +1170,7 @@ void main() {
         expect(screenshot['version'], phase.version);
         if (retired.containsKey(id)) {
           _expectTier1Retirement(screenshot);
-          expect(approved[id], isNull);
+          expect(historical[id], isNull);
           continue;
         }
         final sourcePath =
@@ -1696,10 +1208,10 @@ void main() {
           );
           expect(archivedRow['version'], phase.version);
           expect(archivedRow['sha256'], screenshot['sha256']);
-          expect(approved[id], isNull);
+          expect(historical[id], isNull);
         } else {
-          expect(approved[id]?['version'], phase.version);
-          expect(approved[id]?['sha256'], screenshot['sha256']);
+          expect(historical[id]?['version'], phase.version);
+          expect(historical[id]?['sha256'], screenshot['sha256']);
         }
       }
     }
@@ -1729,7 +1241,10 @@ void main() {
     expect(manifest['approved_by'], 'Founder (Shakeel)');
     expect(manifest['approval_reference'], contains('072_FABLE-CODEX'));
 
-    final registeredFixtures = _fixtures().map((fixture) => fixture.id).toSet();
+    final registeredFixtures = {
+      ..._fixtures().map((fixture) => fixture.id),
+      ...historicalFixtures,
+    };
     final replacementRows = (manifest['superseded_approved_fixtures'] as List)
         .cast<Map<String, dynamic>>();
     expect(replacementRows, hasLength(6));
@@ -1758,7 +1273,7 @@ void main() {
       expect(screenshot['governing_reference'], contains('072_FABLE-CODEX'));
       if (retired.containsKey(screenshot['id'])) {
         _expectTier1Retirement(screenshot);
-        expect(approved[screenshot['id']], isNull);
+        expect(historical[screenshot['id']], isNull);
         continue;
       }
       final path = screenshot['path'] as String;
@@ -1779,7 +1294,7 @@ void main() {
         reason: 'missing promoted copy $approvedPath',
       );
       expect(approvedFile.readAsBytesSync(), bytes);
-      final active = approved[screenshot['id']];
+      final active = historical[screenshot['id']];
       expect(active, isNotNull);
       expect(active?['path'], approvedPath.replaceFirst('test/visual/', ''));
       expect(active?['version'], 'OA-ZYRA-282-phase1-v2');
@@ -1789,14 +1304,14 @@ void main() {
     final runtime = _readManifest('test/visual/approved/manifest.json');
     final archived = (runtime['archived_baselines'] as List)
         .cast<Map<String, dynamic>>();
-    expect(runtime['active_baseline_count'], 112);
+    expect(runtime['active_baseline_count'], approved.length);
     expect(runtime['archived_baseline_count'], 36);
     final staged = (manifest['staged_supersession_rows'] as List)
         .cast<Map<String, dynamic>>();
     expect(staged, hasLength(24));
     for (final row in staged) {
       final id = row['id'] as String;
-      expect(approved[id], isNull, reason: '$id must not remain active');
+      expect(historical[id], isNull, reason: '$id must not remain active');
       expect(row['archive_status'], 'superseded_byte_preserved');
       expect(row['archived_date'], '2026-09-01');
       expect(row['archived_by'], 'Founder (Shakeel)');
@@ -1804,7 +1319,7 @@ void main() {
       expect(row['archive_reason'], contains('Founder-accepted'));
       expect(row['byte_preserved_at'], row['path']);
       expect(
-        approved[row['superseded_by']] ?? retired[row['superseded_by']],
+        historical[row['superseded_by']] ?? retired[row['superseded_by']],
         isNotNull,
       );
       final ledgerRow = archived.singleWhere((entry) => entry['id'] == id);
@@ -1820,7 +1335,7 @@ void main() {
       );
     }
 
-    final continuing = approved.values
+    final continuing = historical.values
         .where((row) => row['version'] == 'OA-ZYRA-282-phase1-v1')
         .map((row) => row['id'] as String)
         .toList();
@@ -1859,60 +1374,14 @@ void main() {
           _testApp(fixture.build(), textScale: variant.scale),
         );
         await tester.pump(const Duration(milliseconds: 80));
-        if (fixture.id.startsWith('guardian-dashboard-updates-')) {
-          await tester.pumpAndSettle();
-          await tester.drag(
-            find.byKey(
-              const PageStorageKey('guardian-dashboard-visual-seeker'),
-            ),
-            const Offset(0, -700),
-          );
-          await tester.pumpAndSettle();
-          if (fixture.id == 'guardian-dashboard-updates-last-known') {
-            final refresh = tester
-                .state<RefreshIndicatorState>(find.byType(RefreshIndicator))
-                .show();
-            await tester.pumpAndSettle();
-            await refresh;
-          }
-        }
-        if (fixture.id == 'seeker-dashboard-thinned-connected' ||
-            fixture.id == 'seeker-dashboard-thinned-pending-invitation') {
-          // Quiet Index replaced permanent Family summary sections. Keep
-          // exercising the real page rather than seeking a retired widget.
+        if (fixture.id == 'guardian-manager-empty') {
+          // Q17, LOCK 19 k08: the only member card is Add a Guardian.
+          final card = _key('guardianship-manager-empty');
+          expect(card, findsOneWidget);
           expect(
-            find.byKey(const ValueKey('my-zyra-quiet-dashboard')),
+            find.descendant(of: card, matching: find.text('Add a Guardian')),
             findsOneWidget,
           );
-          await tester.drag(
-            find.byKey(const ValueKey('my-zyra-quiet-scroll-0')),
-            const Offset(0, -220),
-          );
-          await tester.pump(const Duration(milliseconds: 80));
-        }
-        if (fixture.id == 'guardian-manager-loaded-pending') {
-          await tester.drag(
-            find.byKey(const PageStorageKey('guardianship-manager')),
-            const Offset(0, -520),
-          );
-          await tester.pumpAndSettle();
-        }
-        if (fixture.id == 'guardian-seeker-roster-main-lower-groups') {
-          // Seekers now uses one horizontal page per person, rather than
-          // the superseded vertically grouped roster. Exercise that actual
-          // surface without replacing any approved historical pixels.
-          await tester.drag(
-            find.byKey(const ValueKey('guardian-seeker-page-view')),
-            const Offset(-300, 0),
-          );
-          await tester.pumpAndSettle();
-        }
-        if (fixture.id == 'guardian-seeker-workspace-main-loaded') {
-          await tester.drag(
-            find.byKey(const PageStorageKey('guardian-seeker-workspace')),
-            const Offset(0, -320),
-          );
-          await tester.pumpAndSettle();
         }
         expect(find.byKey(_visualRoot), findsOneWidget);
 

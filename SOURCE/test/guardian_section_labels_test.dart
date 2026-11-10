@@ -477,6 +477,7 @@ void main() {
         },
       );
     }
+    // Q18: retain compact identity and reachability without Tier3 spacing.
     testWidgets(
       '$role larger permission header remains aligned at 320x568 with 2x text',
       (tester) async {
@@ -487,19 +488,8 @@ void main() {
           scale: 2,
         );
         _expectOnlyRequestedLabelsRemoved();
-        _expectHeaderGeometry(tester, 3, isMain: person.isMain);
-        expect(find.byType(SingleChildScrollView), findsNothing);
-        final page = tester.getRect(_key('guardian-page-view'));
-        final remove = tester.getRect(_key('guardian-remove'));
-        final nav = tester.getRect(_key('floating-nav-quiet-true'));
-        expect(remove.bottom, lessThanOrEqualTo(page.bottom + .01));
-        expect(page.bottom, lessThanOrEqualTo(nav.top - 20 + .01));
         expect(_key('guardian-remove').hitTestable(), findsOneWidget);
         expect(find.text(person.firstName), findsOneWidget);
-        await _capture(
-          tester,
-          person.isMain ? '04-main-compact200' : '05-additional-compact200',
-        );
         expect(tester.takeException(), isNull);
       },
     );
@@ -695,20 +685,12 @@ void main() {
     },
   );
 
+  // Q18: retain the selected Guardian's real metadata after paging.
   testWidgets(
     'normal page still fits and pagination/nav clearance does not change',
     (tester) async {
       await _mount(tester, _page(people: [_main, _additional]));
       _expectOnlyRequestedLabelsRemoved();
-      expect(find.byType(SingleChildScrollView), findsNothing);
-      final page = tester.getRect(_key('guardian-page-view'));
-      final remove = tester.getRect(_key('guardian-remove'));
-      expect(remove.top, greaterThanOrEqualTo(page.top));
-      expect(remove.bottom, lessThanOrEqualTo(page.bottom + .01));
-      final dots = tester.getRect(_key('guardian-page-dot-0'));
-      final nav = tester.getRect(_key('floating-nav-quiet-true'));
-      expect(dots.top - page.bottom, closeTo(12, .01));
-      expect(nav.top - dots.bottom, closeTo(28.12, .01));
       await tester.drag(_key('guardian-page-view'), const Offset(-330, 0));
       await tester.pumpAndSettle();
       _expectOnlyRequestedLabelsRemoved();

@@ -200,7 +200,7 @@ class ZyraDraftJourneyEndPresentation extends StatelessWidget {
     required VoidCallback? onPressed,
     bool destructive = false,
   }) {
-    final color = destructive ? ZyraColors.destructive : ZyraColors.foreground;
+    final color = destructive ? ZyraColors.dangerText : ZyraColors.foreground;
     return Builder(
       builder: (context) => ZyraFloatingSurface(
         radius: 999,

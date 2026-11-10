@@ -2558,9 +2558,7 @@ class _JourneyOpenDecisionAction extends StatelessWidget {
                     label,
                     style: ZyraText.body(
                       size: 13,
-                      color: destructive
-                          ? ZyraColors.destructive
-                          : Colors.white,
+                      color: destructive ? ZyraColors.dangerText : Colors.white,
                     ),
                   ),
                 ),

@@ -553,6 +553,7 @@ void main() {
   });
 
   for (final quiet in [false, true]) {
+    // Q14: dismiss the cue on touch and run Filters on accepted release.
     testWidgets('first held bar touch removes cue before breathing $quiet', (
       tester,
     ) async {
@@ -593,7 +594,15 @@ void main() {
         closeTo(before.width, .01),
         reason: 'Aligned Browse keeps its content edges fixed while held.',
       );
+      await finger.moveBy(const Offset(0, -85));
       await finger.up();
+      await tester.pumpAndSettle();
+      expect(find.text('Filters'), findsNothing);
+
+      final accepted = await tester.startGesture(tester.getCenter(filters));
+      await tester.pump(const Duration(milliseconds: 120));
+      await tester.pump(const Duration(milliseconds: 240));
+      await accepted.up();
       await tester.pumpAndSettle();
       expect(find.text('Filters'), findsOneWidget);
       expect(_key('concept_browse_options_cue'), findsNothing);

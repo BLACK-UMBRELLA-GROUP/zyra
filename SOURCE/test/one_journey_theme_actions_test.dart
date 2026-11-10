@@ -1,9 +1,6 @@
-import 'dart:async';
 import 'dart:io';
-import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,6 +12,8 @@ import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_journey_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_options.dart';
+import 'package:zyra/dev/zyra_one_journey_options_page.dart';
+import 'package:zyra/dev/zyra_one_journey_tab.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/state/app_state.dart';
@@ -27,19 +26,6 @@ import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
 import 'support/zyra_hidden_dev_controls_driver.dart';
 
-const _simplifiedCapture = bool.fromEnvironment(
-  'ZYRA_MY_ZYRA_SIMPLIFIED_CAPTURE',
-);
-const _capture =
-    bool.fromEnvironment('ZYRA_CARD_LOCKIN_CAPTURE') || _simplifiedCapture;
-const _boundary = ValueKey('one-journey-theme-actions-candidate');
-const _captureRun = String.fromEnvironment(
-  'ZYRA_CARD_LOCKIN_RUN',
-  defaultValue: 'final',
-);
-const _candidates = _simplifiedCapture
-    ? 'visual/candidates/my_zyra_simplified_2026_10_09/actions'
-    : 'visual/candidates/journey_card_locked_2026_10_09/actions_$_captureRun';
 const _people = [
   (id: 'draft-sara', name: 'Sara'),
   (id: 'draft-aisha', name: 'Aisha'),
@@ -67,7 +53,7 @@ Future<void> _mount(WidgetTester tester, {bool enlarged = false}) async {
           viewPadding: EdgeInsets.only(top: top, bottom: 34),
           disableAnimations: true,
         ),
-        child: RepaintBoundary(key: _boundary, child: child!),
+        child: child!,
       ),
       home: ViewRequestDraftScreen(
         fixture: ZyraShellTestFixture().fixture,
@@ -168,19 +154,12 @@ Future<void> _press(WidgetTester tester, String id) async {
 }
 
 Future<void> _nav(WidgetTester tester, int index) async {
-  for (
-    var depth = 0;
-    find.byType(ZyraShellNavigation).evaluate().isEmpty && depth < 8;
-    depth++
-  ) {
-    if (zyraShellFixtureFor(tester).setupScopeOpen) {
-      await closeZyraDevControls(tester);
-      continue;
-    }
-    // A real Back return, never a vertical reading gesture or a controls
-    // toggle. The shared helper requires the current visible return owner.
+  final owner = zyraShellFixtureFor(tester);
+  if (owner.setupScopeOpen) await closeZyraDevControls(tester);
+  for (var depth = 0; owner.latest!.pages.isNotEmpty && depth < 8; depth++) {
     await returnZyraPreviewPage(tester);
   }
+  expect(owner.latest!.pages, isEmpty);
   expect(find.byType(ZyraShellNavigation), findsOneWidget);
   final navigation = find.byType(FloatingNavBar);
   await expandZyraPreviewTabBarIfIdle(tester);
@@ -212,31 +191,36 @@ Future<void> _openControls(WidgetTester tester) async {
 Future<void> _seed(WidgetTester tester) async {
   await _openControls(tester);
   await _press(tester, 'concept_journey_preview_3');
+  await closeZyraDevControls(tester);
 }
 
-List<ZyraOneJourneyConnectionsActiveCard> _cards(WidgetTester tester) => tester
-    .widget<ZyraOneJourneyConnectionsPresentation>(
-      find.byType(ZyraOneJourneyConnectionsPresentation),
-    )
-    .pages
-    .single
-    .whereType<ZyraOneJourneyConnectionsActiveCard>()
-    .toList();
+ZyraOneJourneyTab _places(WidgetTester tester) =>
+    tester.widget(find.byType(ZyraOneJourneyTab));
 
-void _expectStates(WidgetTester tester, Map<String, String> expected) {
-  final cards = _cards(tester);
-  expect(cards.map((card) => card.profile.id), expected.keys);
+Future<void> _selectPlace(WidgetTester tester, String id) async {
+  final places = _places(tester);
+  final index = places.journeys.indexWhere((person) => person.id == id);
+  expect(index, greaterThanOrEqualTo(0));
+  final start = places.index;
+  for (var step = 0; step < (start - index).abs(); step++) {
+    await _press(
+      tester,
+      start < index ? 'journey_tab_next' : 'journey_tab_previous',
+    );
+  }
+  expect(_places(tester).index, index);
+  expect(_places(tester).journeys[index].id, id);
+}
+
+void _expectStates(WidgetTester tester, List<String> ids) {
+  final cards = _places(tester).journeys;
+  expect(cards.map((card) => card.id), unorderedEquals(ids));
   for (final card in cards) {
-    expect(card.stateLabel, expected[card.profile.id]);
     expect(card.stageLabel, 'Salam Exchange');
   }
 }
 
-const _allActive = {
-  'draft-sara': 'Active Journey',
-  'draft-aisha': 'Active Journey',
-  'draft-maryam': 'Active Journey',
-};
+const _allActive = ['draft-sara', 'draft-aisha', 'draft-maryam'];
 
 void _expectLockedCompatibility(String id, String name) {
   expect(_key('draft_journey_compatibility_locked_$id'), findsOneWidget);
@@ -256,18 +240,21 @@ void _expectLockedCompatibility(String id, String name) {
 }
 
 Future<void> _options(WidgetTester tester, String id) async {
+  if (find.byType(ZyraOneJourneyOptionsPage).evaluate().isNotEmpty) {
+    if (tester
+            .widget<ZyraConceptJourneyOptions>(
+              find.byType(ZyraConceptJourneyOptions),
+            )
+            .id ==
+        id) {
+      return;
+    }
+    await _dismissOptions(tester);
+  }
+  await _selectPlace(tester, id);
   await _press(tester, 'draft_journey_options_$id');
   expect(find.byType(BottomSheet), findsNothing);
-  expect(_key('concept_expanded_journey_$id'), findsOneWidget);
-  expect(
-    tester
-        .widgetList<ZyraOneJourneyConnectionsActiveCard>(
-          find.byType(ZyraOneJourneyConnectionsActiveCard),
-        )
-        .map((card) => card.profile.id),
-    [id],
-    reason: 'Only the selected card renders while its options are expanded',
-  );
+  expect(find.byType(ZyraOneJourneyOptionsPage), findsOneWidget);
   expect(_key('draft_options_pause_$id'), findsNothing);
   expect(find.text('Request Pause'), findsNothing);
   for (final action in [
@@ -287,28 +274,13 @@ Future<void> _options(WidgetTester tester, String id) async {
   final owner = find.byType(ZyraConceptJourneyOptions);
   final options = tester.widget<ZyraConceptJourneyOptions>(owner);
   expect(options.id, id);
-  expect(options.inline, isTrue);
-  final fill = tester.widget<Material>(
-    find.descendant(of: owner, matching: find.byType(Material)).first,
-  );
-  expect(fill.type, MaterialType.transparency);
+  expect(options.lockedPage, isTrue);
 }
 
-Future<void> _dismissSheet(WidgetTester tester) async {
-  final options = tester.widget<ZyraConceptJourneyOptions>(
-    find.byType(ZyraConceptJourneyOptions),
-  );
-  if (options.inline) {
-    // The same genuine card control collapses the list expansion.
-    await _press(tester, 'draft_journey_options_${options.id}');
-  } else {
-    // Detail contexts retain their genuine modal barrier dismissal.
-    await tester.tapAt(const Offset(8, 68));
-  }
-  await tester.pumpAndSettle();
-  expect(find.byType(BottomSheet), findsNothing);
-  expect(find.byType(ZyraConceptJourneyOptions), findsNothing);
-  expect(tester.takeException(), isNull);
+Future<void> _dismissOptions(WidgetTester tester) async {
+  await returnZyraPreviewPage(tester);
+  expect(find.byType(ZyraOneJourneyOptionsPage), findsNothing);
+  expect(find.byType(ZyraOneJourneyTab), findsOneWidget);
 }
 
 Future<void> _local(WidgetTester tester, String id) async {
@@ -337,95 +309,15 @@ class _NoNetwork extends HttpOverrides {
   }
 }
 
-Future<void> _capturePage(WidgetTester tester, String name) async {
-  if (!_capture) return;
-  expect(autoUpdateGoldenFiles, isTrue);
-  await tester.pump(const Duration(seconds: 3));
-  for (final widget in tester.widgetList<Image>(find.byType(Image)).toList()) {
-    expect(widget.image, isA<MemoryImage>());
-    final context = tester.element(find.byWidget(widget));
-    await tester.runAsync(() async {
-      final stream = widget.image.resolve(
-        createLocalImageConfiguration(context),
-      );
-      final ready = Completer<void>();
-      final listener = ImageStreamListener(
-        (info, _) {
-          info.dispose();
-          if (!ready.isCompleted) ready.complete();
-        },
-        onError: (error, stack) {
-          if (!ready.isCompleted) ready.completeError(error, stack);
-        },
-      );
-      stream.addListener(listener);
-      try {
-        await ready.future.timeout(const Duration(seconds: 10));
-      } finally {
-        stream.removeListener(listener);
-      }
-    });
-  }
-  await tester.pumpAndSettle();
-  final boundary = tester.renderObject<RenderRepaintBoundary>(
-    _key(_boundary.value),
-  );
-  await tester.runAsync(() async {
-    final image = await boundary.toImage(pixelRatio: 1);
-    try {
-      final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
-      await expectLater(
-        bytes!.buffer.asUint8List(),
-        matchesGoldenFile('$_candidates/theme_actions_$name.png'),
-      );
-    } finally {
-      image.dispose();
-    }
-  });
-}
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   final previousFatal = WidgetController.hitTestWarningShouldBeFatal;
-  setUpAll(() async {
-    WidgetController.hitTestWarningShouldBeFatal = true;
-    if (!_capture) return;
-    final reading = FontLoader('PoppinsThemeReview');
-    for (final weight in [
-      'ExtraLight',
-      'Light',
-      'Regular',
-      'Medium',
-      'SemiBold',
-      'Bold',
-    ]) {
-      reading.addFont(
-        Future.value(
-          ByteData.sublistView(
-            File('assets/fonts/Poppins-$weight.ttf').readAsBytesSync(),
-          ),
-        ),
-      );
-    }
-    final wordmark = FontLoader('SyneThemeReview')
-      ..addFont(
-        Future.value(
-          ByteData.sublistView(
-            File('assets/fonts/Syne-SemiBold.ttf').readAsBytesSync(),
-          ),
-        ),
-      );
-    final icons = FontLoader('MaterialIcons')
-      ..addFont(rootBundle.load('fonts/MaterialIcons-Regular.otf'));
-    await Future.wait([reading.load(), wordmark.load(), icons.load()]);
-  });
+  setUpAll(() => WidgetController.hitTestWarningShouldBeFatal = true);
   tearDownAll(
     () => WidgetController.hitTestWarningShouldBeFatal = previousFatal,
   );
   setUp(() {
     ZyraText.useTestFontStubs = true;
-    ZyraText.testReadingFontFamily = _capture ? 'PoppinsThemeReview' : null;
-    ZyraText.testWordmarkFontFamily = _capture ? 'SyneThemeReview' : null;
     ZyraAccountState.resetForTesting();
     ZyraDeveloperAccess.resetAuthorizationForTesting();
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
@@ -445,8 +337,9 @@ void main() {
         .setMockMethodCallHandler(SystemChannels.platform, null);
   });
 
+  // QUESTIONS Q32: the LOCK 13 place reader mounts only the selected person.
   testWidgets(
-    'locked overview enlarges photos and keeps the addressed Continue Journey label',
+    'selected place keeps the actual portrait and addressed Continue action',
     (tester) async {
       final network = _NoNetwork();
       await HttpOverrides.runWithHttpOverrides(() async {
@@ -454,83 +347,54 @@ void main() {
         await _seed(tester);
         _expectStates(tester, _allActive);
         for (final person in _people) {
-          final card = find.byWidget(
-            _cards(tester).firstWhere((card) => card.profile.id == person.id),
-          );
-          expect(
-            find.descendant(of: card, matching: find.text('Active Journey')),
-            findsNothing,
-          );
-          expect(
-            find.descendant(of: card, matching: find.text('Salam Exchange')),
-            findsNothing,
-          );
-          final photo = find.descendant(of: card, matching: find.byType(Image));
-          expect(photo, findsOneWidget);
-          final portrait = tester.getRect(photo);
-          expect(portrait.width * portrait.height, greaterThan(104 * 104));
-          final cardBounds = tester.getRect(card);
-          expect(portrait.left, greaterThanOrEqualTo(cardBounds.left));
-          expect(portrait.right, lessThanOrEqualTo(cardBounds.right));
-          expect(portrait.top, greaterThanOrEqualTo(cardBounds.top));
-          expect(portrait.bottom, lessThanOrEqualTo(cardBounds.bottom));
-          final action = _key('draft_journey_${person.id}');
-          expect(
-            find.descendant(
-              of: action,
-              matching: find.text('Continue Journey'),
-            ),
-            findsOneWidget,
-          );
-          expect(
-            find.descendant(of: action, matching: find.byType(Icon)),
-            findsNothing,
-          );
+          await _selectPlace(tester, person.id);
+          final selected = _places(tester);
+          final card = selected.journeys[selected.index];
+          expect(card.photo, isNotNull);
+          expect(find.text(person.name), findsOneWidget);
+          expect(_key('journey_tab_card'), findsOneWidget);
+          expect(_key('journey_tab_continue').hitTestable(), findsOneWidget);
+          expect(find.text('Continue Journey'), findsOneWidget);
         }
-        expect(find.text('View Journey'), findsNothing);
-        await _capturePage(tester, 'locked_overview');
-        await _press(tester, 'draft_journey_draft-sara');
+        await _selectPlace(tester, 'draft-sara');
+        await _press(tester, 'journey_tab_continue');
+        final journey = tester.widget<ZyraConceptJourneyPresentation>(
+          find.byType(ZyraConceptJourneyPresentation),
+        );
+        expect(journey.firstName, 'Sara');
         await _press(tester, 'concept_journey_arrival_continue');
         await _local(tester, 'draft_salam_draft-sara');
         await _nav(tester, 1);
-        expect(
-          find.descendant(
-            of: _key('draft_journey_draft-sara'),
-            matching: find.text('Continue Journey'),
-          ),
-          findsOneWidget,
-        );
-        for (final id in ['draft-aisha', 'draft-maryam']) {
-          expect(
-            find.descendant(
-              of: _key('draft_journey_$id'),
-              matching: find.text('Continue Journey'),
-            ),
-            findsOneWidget,
-          );
-        }
         _expectStates(tester, _allActive);
-        await _capturePage(tester, 'started_overview');
+        expect(_places(tester).journeys[0].nextStep, 'Waiting for Sara');
+        expect(_places(tester).journeys[1].nextStep, 'Your turn: send Salam');
+        expect(_places(tester).journeys[2].nextStep, 'Your turn: send Salam');
       }, network);
       expect(network.attempts, 0);
     },
   );
 
+  // QUESTIONS Q32: repeated callbacks can open only one current route.
   testWidgets(
-    'Inline Options single flight and repeated compatibility selection keep one owner',
+    'Pushed Options single flight and repeated compatibility selection keep one owner',
     (tester) async {
       await _mount(tester);
       await _seed(tester);
-      final open = _action(tester, 'draft_journey_options_draft-aisha');
+      await _selectPlace(tester, 'draft-aisha');
+      final open = _places(tester).onOptions;
       open();
       open();
       await tester.pumpAndSettle();
       expect(find.byType(BottomSheet), findsNothing);
-      expect(_key('concept_expanded_journey_draft-aisha'), findsOneWidget);
+      expect(find.byType(ZyraOneJourneyOptionsPage), findsOneWidget);
       expect(find.byType(ZyraConceptJourneyOptions), findsOneWidget);
-      final select = _action(tester, 'draft_options_compatibility_draft-aisha');
-      select();
-      select();
+      final select = tester
+          .widget<ZyraConceptJourneyOptions>(
+            find.byType(ZyraConceptJourneyOptions),
+          )
+          .onSelected;
+      select(ZyraConceptJourneyOption.compatibility);
+      select(ZyraConceptJourneyOption.compatibility);
       await tester.pumpAndSettle();
       expect(find.byType(BottomSheet), findsNothing);
       _expectLockedCompatibility('draft-aisha', 'Aisha');
@@ -538,7 +402,16 @@ void main() {
         tester,
         'draft_disclosure_continue_draft-aisha',
       );
-      await _nav(tester, 1);
+      expect(zyraShellFixtureFor(tester).latest!.pages, [
+        'journey_options',
+        'journey_compatibility_locked',
+      ]);
+      await returnZyraPreviewPage(tester);
+      expect(find.byType(ZyraOneJourneyOptionsPage), findsOneWidget);
+      expect(zyraShellFixtureFor(tester).latest!.pages, ['journey_options']);
+      await _dismissOptions(tester);
+      expect(_places(tester).journeys[_places(tester).index].id, 'draft-aisha');
+      expect(zyraShellFixtureFor(tester).latest!.pages, isEmpty);
       staleContinue();
       await tester.pumpAndSettle();
       expect(find.byType(ZyraConceptJourneyPresentation), findsNothing);
@@ -551,37 +424,16 @@ void main() {
     },
   );
 
+  // QUESTIONS Q32: each Options route belongs to one selected place.
   testWidgets(
-    'locked card Options route the actual person and cancel without mutation',
+    'pushed Options route the actual person and cancel without mutation',
     (tester) async {
       final network = _NoNetwork();
       await HttpOverrides.runWithHttpOverrides(() async {
         await _mount(tester);
         await _seed(tester);
         for (final person in _people) {
-          final action = tester.getRect(_key('draft_journey_${person.id}'));
-          final options = tester.getRect(
-            _key('draft_journey_options_${person.id}'),
-          );
-          final card = tester.getRect(
-            find.byWidget(
-              _cards(tester).firstWhere((card) => card.profile.id == person.id),
-            ),
-          );
-          expect(options.height, closeTo(37.2, .01));
-          expect(options.width, closeTo(37.2, .01));
-          expect(options.top, closeTo(card.top + 12, .01));
-          expect(options.right, closeTo(card.right - 12, .01));
-          expect(options.bottom, lessThan(action.top));
-          expect(options.intersect(card), options);
-          expect(
-            options.bottom,
-            lessThan(tester.getRect(find.byType(FloatingNavBar)).top),
-          );
           await _options(tester, person.id);
-          if (person.id == 'draft-aisha') {
-            await _capturePage(tester, 'options');
-          }
           await _press(tester, 'draft_options_profile_${person.id}');
           expect(find.byType(BottomSheet), findsNothing);
           expect(
@@ -603,9 +455,6 @@ void main() {
           await _press(tester, 'draft_options_compatibility_${person.id}');
           _expectLockedCompatibility(person.id, person.name);
           expect(find.byType(BottomSheet), findsNothing);
-          if (person.id == 'draft-aisha') {
-            await _capturePage(tester, 'compatibility_hold');
-          }
           await _press(tester, 'draft_disclosure_continue_${person.id}');
           expect(
             tester
@@ -628,9 +477,6 @@ void main() {
             findsWidgets,
           );
           expect(find.byType(BottomSheet), findsNothing);
-          if (person.id == 'draft-aisha') {
-            await _capturePage(tester, 'guardians_context');
-          }
           await _nav(tester, 1);
           _expectStates(tester, _allActive);
           for (final intent in ['end']) {
@@ -639,12 +485,11 @@ void main() {
             expect(_key('draft_journey_action_${person.id}'), findsOneWidget);
             expect(find.text('End with ${person.name}?'), findsOneWidget);
             expect(find.byType(BottomSheet), findsNothing);
-            if (person.id == 'draft-aisha') {
-              await _capturePage(tester, '${intent}_confirmation');
-            }
-            await _press(tester, 'draft_cancel_journey_action_${person.id}');
-            _expectStates(tester, _allActive);
+            await _press(tester, 'draft_cancel_end_${person.id}');
             expect(_key('draft_journey_action_${person.id}'), findsNothing);
+            expect(find.byType(ZyraOneJourneyOptionsPage), findsOneWidget);
+            await _dismissOptions(tester);
+            _expectStates(tester, _allActive);
           }
         }
         expect(tester.takeException(), isNull);
@@ -653,6 +498,7 @@ void main() {
     },
   );
 
+  // QUESTIONS Q32: repeated End uses one current confirmation lease.
   testWidgets(
     'two immediate End callbacks end the addressed Journey only once',
     (tester) async {
@@ -661,26 +507,30 @@ void main() {
       await _options(tester, 'draft-maryam');
       await _press(tester, 'draft_options_end_draft-maryam');
       final confirm = _action(tester, 'draft_confirm_end_draft-maryam');
+      final owner = zyraShellFixtureFor(tester);
+      final before = owner.latest!.model;
       confirm();
       confirm();
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
       expect(_key('draft_journey_action_draft-maryam'), findsNothing);
+      final after = owner.latest!.model;
+      expect(after.endedAttempts, hasLength(before.endedAttempts.length + 1));
+      expect(after.endedAttempts.last.profileId, 'draft-maryam');
+      expect(after.states['draft-sara'], before.states['draft-sara']);
+      expect(after.states['draft-aisha'], before.states['draft-aisha']);
       await _nav(tester, 1);
-      _expectStates(tester, {
-        'draft-sara': 'Active Journey',
-        'draft-aisha': 'Active Journey',
-      });
+      _expectStates(tester, ['draft-sara', 'draft-aisha']);
       confirm();
       await tester.pumpAndSettle();
-      _expectStates(tester, {
-        'draft-sara': 'Active Journey',
-        'draft-aisha': 'Active Journey',
-      });
+      expect(owner.latest!.model.endedAttempts, after.endedAttempts);
+      expect(owner.latest!.model.states, after.states);
+      _expectStates(tester, ['draft-sara', 'draft-aisha']);
       expect(tester.takeException(), isNull);
     },
   );
 
+  // QUESTIONS Q32: the addressed End leaves other places active.
   testWidgets('locked card confirmed End affects only its addressed Journey', (
     tester,
   ) async {
@@ -694,18 +544,12 @@ void main() {
       final staleEnd = _action(tester, 'draft_confirm_end_draft-maryam');
       await _press(tester, 'draft_confirm_end_draft-maryam');
       await _nav(tester, 1);
-      _expectStates(tester, {
-        'draft-sara': 'Active Journey',
-        'draft-aisha': 'Active Journey',
-      });
+      _expectStates(tester, ['draft-sara', 'draft-aisha']);
       staleEnd();
       await tester.pumpAndSettle();
-      _expectStates(tester, {
-        'draft-sara': 'Active Journey',
-        'draft-aisha': 'Active Journey',
-      });
+      _expectStates(tester, ['draft-sara', 'draft-aisha']);
       await _nav(tester, 2);
-      await _press(tester, 'my-zyra-route-concept-my-ended');
+      await _press(tester, 'concept-my-ended');
       expect(find.textContaining('Ended Journey'), findsWidgets);
       expect(find.textContaining('Maryam'), findsWidgets);
       await _press(tester, 'draft_journey_options_draft-maryam');
@@ -735,12 +579,14 @@ void main() {
     expect(network.attempts, 0);
   });
 
+  // QUESTIONS Q32: inspect current Journey and Focus routes for removed actions.
   testWidgets('simplified active Journey has no Pause action or Paused route', (
     tester,
   ) async {
     await _mount(tester);
     await _seed(tester);
-    await _press(tester, 'draft_journey_draft-aisha');
+    await _selectPlace(tester, 'draft-aisha');
+    await _press(tester, 'journey_tab_continue');
     await _press(tester, 'concept_journey_arrival_continue');
     await _local(tester, 'draft_salam_draft-aisha');
     for (final control in [
@@ -756,15 +602,14 @@ void main() {
     expect(_key('draft_resume_draft-aisha'), findsNothing);
     expect(_key('draft_keep_paused_draft-aisha'), findsNothing);
     expect(find.textContaining('Continue, pause'), findsNothing);
-    await _capturePage(tester, 'active_controls_no_pause');
     await _nav(tester, 1);
     expect(
-      _cards(tester).map((card) => card.stateLabel),
-      everyElement('Active Journey'),
+      _places(tester).journeys.map((card) => card.id),
+      unorderedEquals(_allActive),
     );
     await _options(tester, 'draft-aisha');
     expect(_key('draft_options_pause_draft-aisha'), findsNothing);
-    await _dismissSheet(tester);
+    await _dismissOptions(tester);
     await _nav(tester, 2);
     expect(_key('my-zyra-route-concept-my-paused'), findsNothing);
     expect(_key('my-zyra-route-concept-saved'), findsNothing);
@@ -778,84 +623,75 @@ void main() {
       findsNothing,
       reason: 'There is no My ZYRA page slider in the simplified preview',
     );
-    await _capturePage(tester, 'single_my_zyra');
   });
 
-  testWidgets(
-    'locked enlarged cards keep Options and confirmations reachable',
-    (tester) async {
-      final network = _NoNetwork();
-      await HttpOverrides.runWithHttpOverrides(() async {
-        await _mount(tester, enlarged: true);
-        await _seed(tester);
-        for (final person in _people) {
-          await _options(tester, person.id);
-          await _press(tester, 'draft_options_compatibility_${person.id}');
-          _expectLockedCompatibility(person.id, person.name);
-          await _press(tester, 'draft_disclosure_continue_${person.id}');
-          expect(
-            tester
-                .widget<ZyraConceptJourneyPresentation>(
-                  find.byType(ZyraConceptJourneyPresentation),
-                )
-                .firstName,
-            person.name,
-          );
-          await _nav(tester, 1);
-          await _options(tester, person.id);
-          await _press(tester, 'draft_options_guardians_${person.id}');
-          expect(_key('draft_journey_guardians_${person.id}'), findsOneWidget);
-          expect(
-            find.descendant(
-              of: _key('draft_journey_guardians_${person.id}'),
-              matching: find.text('Journey with ${person.name}'),
-            ),
-            findsWidgets,
-          );
-          await _nav(tester, 1);
-          await _options(tester, person.id);
-          for (final intent in ['end']) {
-            if (find.byType(ZyraConceptJourneyOptions).evaluate().isEmpty) {
-              await _options(tester, person.id);
-            }
-            if (person.id == 'draft-maryam') {
-              await _capturePage(tester, 'options_${intent}_compact200');
-            }
-            await _press(tester, 'draft_options_${intent}_${person.id}');
-            expect(
-              _key('draft_confirm_${intent}_${person.id}'),
-              findsOneWidget,
-            );
-            if (person.id == 'draft-maryam') {
-              await _capturePage(tester, '${intent}_compact200');
-            }
-            await _press(tester, 'draft_cancel_journey_action_${person.id}');
-            _expectStates(tester, _allActive);
+  // QUESTIONS Q32: keep current Options actions reachable with Larger Text.
+  testWidgets('selected places keep Options and confirmations reachable', (
+    tester,
+  ) async {
+    final network = _NoNetwork();
+    await HttpOverrides.runWithHttpOverrides(() async {
+      await _mount(tester, enlarged: true);
+      await _seed(tester);
+      for (final person in _people) {
+        await _options(tester, person.id);
+        await _press(tester, 'draft_options_compatibility_${person.id}');
+        _expectLockedCompatibility(person.id, person.name);
+        await _press(tester, 'draft_disclosure_continue_${person.id}');
+        expect(
+          tester
+              .widget<ZyraConceptJourneyPresentation>(
+                find.byType(ZyraConceptJourneyPresentation),
+              )
+              .firstName,
+          person.name,
+        );
+        await _nav(tester, 1);
+        await _options(tester, person.id);
+        await _press(tester, 'draft_options_guardians_${person.id}');
+        expect(_key('draft_journey_guardians_${person.id}'), findsOneWidget);
+        expect(
+          find.descendant(
+            of: _key('draft_journey_guardians_${person.id}'),
+            matching: find.text('Journey with ${person.name}'),
+          ),
+          findsWidgets,
+        );
+        await _nav(tester, 1);
+        await _options(tester, person.id);
+        for (final intent in ['end']) {
+          if (find.byType(ZyraConceptJourneyOptions).evaluate().isEmpty) {
+            await _options(tester, person.id);
           }
-          await _press(tester, 'draft_journey_${person.id}');
-          expect(
-            tester
-                .widget<ZyraConceptJourneyPresentation>(
-                  find.byType(ZyraConceptJourneyPresentation),
-                )
-                .firstName,
-            person.name,
-          );
-          await _nav(tester, 1);
+          await _press(tester, 'draft_options_${intent}_${person.id}');
+          expect(_key('draft_confirm_${intent}_${person.id}'), findsOneWidget);
+          await _press(tester, 'draft_cancel_end_${person.id}');
+          expect(find.byType(ZyraOneJourneyOptionsPage), findsOneWidget);
         }
-      }, network);
-      expect(network.attempts, 0);
-    },
-  );
+        await _press(tester, 'draft_journey_${person.id}');
+        expect(
+          tester
+              .widget<ZyraConceptJourneyPresentation>(
+                find.byType(ZyraConceptJourneyPresentation),
+              )
+              .firstName,
+          person.name,
+        );
+        await _nav(tester, 1);
+      }
+    }, network);
+    expect(network.attempts, 0);
+  });
 
+  // QUESTIONS Q32: captured actions expire when moving to a different place.
   testWidgets(
-    'cancelled sheet and confirmation delegates cannot act on another person',
+    'dismissed Options and confirmation delegates cannot act on another person',
     (tester) async {
       await _mount(tester);
       await _seed(tester);
       await _options(tester, 'draft-aisha');
       final staleSheetEnd = _action(tester, 'draft_options_end_draft-aisha');
-      await _dismissSheet(tester);
+      await _dismissOptions(tester);
       await _options(tester, 'draft-maryam');
       staleSheetEnd();
       await tester.pumpAndSettle();
@@ -863,18 +699,20 @@ void main() {
       expect(_key('draft_journey_action_draft-aisha'), findsNothing);
       await _press(tester, 'draft_options_end_draft-maryam');
       final staleMaryamEnd = _action(tester, 'draft_confirm_end_draft-maryam');
-      await _press(tester, 'draft_cancel_journey_action_draft-maryam');
+      await _press(tester, 'draft_cancel_end_draft-maryam');
       await _options(tester, 'draft-aisha');
       await _press(tester, 'draft_options_end_draft-aisha');
       staleMaryamEnd();
       await tester.pumpAndSettle();
       expect(_key('draft_journey_action_draft-aisha'), findsOneWidget);
-      await _press(tester, 'draft_cancel_journey_action_draft-aisha');
+      await _press(tester, 'draft_cancel_end_draft-aisha');
+      await _dismissOptions(tester);
       _expectStates(tester, _allActive);
     },
   );
 
-  for (final surface in ['inline options', 'confirmation']) {
+  // QUESTIONS Q32: current Options and confirmation reject the old owner.
+  for (final surface in ['pushed options', 'confirmation']) {
     for (final change in ['revocation', 'ABA', 'account generation']) {
       testWidgets('$surface refuses stale actions after $change', (
         tester,
@@ -885,7 +723,7 @@ void main() {
         if (surface == 'confirmation') {
           await _press(tester, 'draft_options_end_draft-aisha');
         }
-        final stale = surface == 'inline options'
+        final stale = surface == 'pushed options'
             ? [
                     'end',
                     'profile',
@@ -902,8 +740,10 @@ void main() {
                   .toList()
             : [
                 _action(tester, 'draft_confirm_end_draft-aisha'),
-                _action(tester, 'draft_cancel_journey_action_draft-aisha'),
+                _action(tester, 'draft_cancel_end_draft-aisha'),
               ];
+        final owner = zyraShellFixtureFor(tester);
+        final before = owner.latest!.model;
         if (change == 'account generation') {
           ZyraAccountState.resetForTesting();
           AppState.instance.resetForAccountChange();
@@ -917,6 +757,9 @@ void main() {
           callback();
         }
         await tester.pumpAndSettle();
+        expect(owner.latest!.model.endedAttempts, before.endedAttempts);
+        expect(owner.latest!.model.states, before.states);
+        expect(owner.latest!.model.progress, before.progress);
         expect(find.text('Preview closed'), findsOneWidget);
         expect(find.byType(ZyraOneJourneyConceptShell), findsNothing);
         expect(find.byType(BottomSheet), findsNothing);
@@ -926,31 +769,32 @@ void main() {
     }
   }
 
-  testWidgets(
-    'authorized role change invalidates previously collapsed inline actions',
-    (tester) async {
-      await _mount(tester);
-      await _seed(tester);
-      await _options(tester, 'draft-aisha');
-      final staleEnd = _action(tester, 'draft_options_end_draft-aisha');
-      await _dismissSheet(tester);
-      await _openControls(tester);
-      await _press(tester, 'draft_role_guardian');
-      staleEnd();
-      await tester.pumpAndSettle();
-      expect(find.byType(BottomSheet), findsNothing);
-      expect(_key('draft_journey_action_draft-aisha'), findsNothing);
-      expect(
-        tester
-            .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
-            .items
-            .map((item) => item.label),
-        ['Dashboard', 'Network', 'Seekers', 'Profile'],
-      );
-      expect(tester.takeException(), isNull);
-    },
-  );
+  // QUESTIONS Q32: a current Options callback cannot cross roles.
+  testWidgets('authorized role change invalidates a dismissed Options action', (
+    tester,
+  ) async {
+    await _mount(tester);
+    await _seed(tester);
+    await _options(tester, 'draft-aisha');
+    final staleEnd = _action(tester, 'draft_options_end_draft-aisha');
+    await _dismissOptions(tester);
+    await _openControls(tester);
+    await _press(tester, 'draft_role_guardian');
+    staleEnd();
+    await tester.pumpAndSettle();
+    expect(find.byType(BottomSheet), findsNothing);
+    expect(_key('draft_journey_action_draft-aisha'), findsNothing);
+    expect(
+      tester
+          .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
+          .items
+          .map((item) => item.label),
+      ['Network', 'Journeys', 'My ZYRA', 'Seekers', 'Profile'],
+    );
+    expect(tester.takeException(), isNull);
+  });
 
+  // QUESTIONS Q32: exercised routes remain local to the preview account.
   testWidgets(
     'theme and local Journey choices never change member authority or preferences',
     (tester) async {
@@ -1005,7 +849,6 @@ void main() {
           ),
           findsNothing,
         );
-        await _capturePage(tester, 'compact_controls');
         expect(snapshot(), previous);
         expect(app.name, 'Unchanged member');
         expect(app.surnameLine, 'Unchanged surname');

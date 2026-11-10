@@ -9,6 +9,7 @@ import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_wali_link_service.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
+import 'package:zyra/widgets/zyra_guardian_add_card.dart';
 import 'package:zyra/widgets/zyra_state_widgets.dart';
 
 void main() {
@@ -122,6 +123,10 @@ void main() {
 
     await tester.tap(find.byKey(const ValueKey('guardian-add-top')));
     expect(addCalls, 1);
+    final centreAdd = find.byKey(const ValueKey('guardian-empty-add'));
+    await tester.ensureVisible(centreAdd);
+    await tester.tap(centreAdd);
+    expect(addCalls, 2);
     semantics.dispose();
   });
 
@@ -143,18 +148,23 @@ void main() {
     final titleRect = tester.getRect(
       find.byKey(const ValueKey('guardian-manager-title')),
     );
-    final shield = tester.widget<Icon>(
-      find.byKey(const ValueKey('guardian-empty-shield')),
+    // Q17 / LOCK 19 k08: the empty Guardian tab shows the single Add card.
+    expect(
+      find.descendant(
+        of: find.byType(ZyraGuardianAddCard),
+        matching: find.byIcon(Icons.add),
+      ),
+      findsOneWidget,
     );
+    expect(find.byType(ZyraGuardianAddCard), findsOneWidget);
     final groupCentre = prompt.center.dy;
 
     expect(groupCentre, closeTo(page.center.dy, 50));
     expect(title.style?.fontSize, ZyraText.pageTitleSize);
     expect(titleRect.top - page.top, closeTo(16, 0.1));
-    expect(shield.color, ZyraColors.ink(.35));
     expect(
       tester.widget(find.byKey(const ValueKey('guardianship-manager-empty'))),
-      isA<ZyraEmptyState>(),
+      isA<ZyraGuardianAddCard>(),
     );
     expect(find.byKey(const ValueKey('guardian-add-top')), findsOneWidget);
     expect(find.byKey(const ValueKey('guardian-manager-add')), findsNothing);
@@ -174,19 +184,18 @@ void main() {
       );
       await tester.pumpAndSettle();
       final empty = find.byKey(const ValueKey('guardianship-manager-empty'));
-      expect(tester.widget(empty), isA<ZyraEmptyState>());
-      expect(
-        MediaQuery.textScalerOf(
-          tester.element(find.text('Add a Guardian')),
-        ).scale(15),
-        30,
+      // Q17 / LOCK 19 k08: compact Larger Text retains the same card.
+      expect(tester.widget(empty), isA<ZyraGuardianAddCard>());
+      final title = find.descendant(
+        of: empty,
+        matching: find.text('Add a Guardian'),
       );
+      expect(MediaQuery.textScalerOf(tester.element(title)).scale(15), 30);
       expect(
-        // LOCK22 V3 shared ring; UNITY_PASS/MASTERS/e01_introductions__empty.png.
-        find.descendant(of: empty, matching: find.byType(Container)),
+        find.descendant(of: empty, matching: find.byIcon(Icons.add)),
         findsOneWidget,
       );
-      expect(find.text('Add a Guardian').hitTestable(), findsOneWidget);
+      expect(title.hitTestable(), findsOneWidget);
       final add = find.byKey(const ValueKey('guardian-add-top'));
       expect(tester.getSize(add), const Size(48, 48));
       await tester.tap(add);

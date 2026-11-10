@@ -256,7 +256,8 @@ void main() {
         _key('draft_confirm_end_$_subject'),
       );
       expect(end.onPressed, isNull);
-      expect(end.style!.foregroundColor!.resolve({}), ZyraColors.destructive);
+      // Q21 / LOCK 14 V6: keep the old outline and update the label ink.
+      expect(end.style!.foregroundColor!.resolve({}), ZyraColors.dangerText);
       expect(end.style!.side!.resolve({})!.color, ZyraColors.destructiveBorder);
       await tester.tap(_key('draft_confirm_end_$_subject'));
       await tester.pumpAndSettle();

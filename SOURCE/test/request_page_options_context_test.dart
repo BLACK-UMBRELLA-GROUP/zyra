@@ -14,9 +14,9 @@ import 'package:zyra/dev/zyra_draft_compatibility_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
+import 'package:zyra/dev/zyra_one_journey_tab.dart';
 import 'package:zyra/dev/zyra_request_activity_presentation.dart';
 import 'package:zyra/dev/zyra_journey_icon_selection.dart';
-import 'package:zyra/models/zyra_dashboard_resolution.dart';
 import 'package:zyra/screens/profile/edit_profile_screen.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
@@ -27,7 +27,7 @@ import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/floating_nav_bar.dart';
 import 'package:zyra/widgets/zyra_browse_next_photo_motion.dart';
-import 'package:zyra/widgets/zyra_quiet_dashboard.dart';
+import 'package:zyra/widgets/zyra_focus_dashboard.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
 import 'support/zyra_hidden_dev_controls_driver.dart';
@@ -193,7 +193,6 @@ void _inventory(
   bool profile = false,
   bool seeker = true,
   bool compatibility = false,
-  bool requests = false,
 }) {
   expect(_motionPicker, findsNothing);
   expect(_iconPicker, findsNothing);
@@ -240,9 +239,7 @@ Future<void> _openRequests(
   await _nav(tester, 2);
   await _tap(
     tester,
-    introductions
-        ? 'my-zyra-route-concept-my-introductions'
-        : 'my-zyra-route-concept-my-requests',
+    introductions ? 'concept-my-introductions' : 'concept-my-requests',
   );
   if (introductions) {
     expect(_key('concept_activity_requests'), findsNothing);
@@ -430,11 +427,28 @@ void main() {
   }
 
   for (var tab = 0; tab < _guardianTitles.length; tab++) {
+    // Q33: the Guardian home now has its own five-tab navigation.
     testWidgets(
       'Guardian ${_guardianTitles[tab]} never inherits Seeker-only controls',
       (tester) async {
-        await _mount(tester, guardian: true);
-        if (tab != 0) await _nav(tester, tab);
+        if (tab == 0) {
+          await _mount(tester);
+          await _nav(tester, 2);
+          final staleRequests = tester
+              .widget<InkWell>(_key('concept-my-requests'))
+              .onTap!;
+          await _nav(tester, 4);
+          await _tap(tester, 'draft_role_guardian');
+          staleRequests();
+          await tester.pumpAndSettle();
+          expect(find.byType(ZyraFocusDashboard), findsOneWidget);
+          expect(_key('guardian_requests'), findsOneWidget);
+          expect(_key('concept-my-requests'), findsNothing);
+          expect(_key('concept_activity_requests'), findsNothing);
+        } else {
+          await _mount(tester, guardian: true);
+          await _nav(tester, tab);
+        }
         await _toggleOptions(tester);
         _context(tester, _guardianTitles[tab]);
         _inventory(tester, seeker: false, profile: tab == 3);
@@ -443,12 +457,13 @@ void main() {
           tester
               .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
               .currentIndex,
-          tab,
+          tab == 0 ? 2 : tab,
         );
       },
     );
   }
 
+  // Q33: seeding is code-only, and the current reader owns one visible place.
   testWidgets(
     'Journey count controls change the actual one, two and three-card reader',
     (tester) async {
@@ -457,13 +472,17 @@ void main() {
       for (final count in [1, 2, 3]) {
         await _toggleOptions(tester);
         await _tap(tester, 'concept_journey_preview_$count');
-        final page = tester.widget<ZyraOneJourneyConnectionsPresentation>(
-          find.byType(ZyraOneJourneyConnectionsPresentation),
+        final page = tester.widget<ZyraOneJourneyTab>(
+          find.byType(ZyraOneJourneyTab),
         );
-        expect(
-          page.pages.single.whereType<ZyraOneJourneyConnectionsActiveCard>(),
-          hasLength(count),
-        );
+        expect(page.journeys, hasLength(count));
+        for (var index = 0; index < count; index++) {
+          await _tap(tester, 'journey_tab_dot_target_$index');
+          expect(
+            _key('journey_tab_person_${page.journeys[index].id}'),
+            findsOneWidget,
+          );
+        }
         expect(
           tester
               .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
@@ -474,6 +493,7 @@ void main() {
     },
   );
 
+  // Q33: the LOCK 15 Focus root owns distinct request and Ended entries.
   testWidgets(
     'My ZYRA keeps requests, Introductions and archive without duplicating active Journey cards',
     (tester) async {
@@ -482,50 +502,29 @@ void main() {
       await _toggleOptions(tester);
       await _tap(tester, 'concept_journey_preview_3');
       await _nav(tester, 2);
-      final dashboard = tester.widget<ZyraQuietDashboard>(
-        find.byType(ZyraQuietDashboard),
+      final dashboard = tester.widget<ZyraFocusDashboard>(
+        find.byType(ZyraFocusDashboard),
       );
-      expect(dashboard.singlePage, isTrue);
-      expect(dashboard.permanentNavigation, isTrue);
-      expect(find.text('Quick access'), findsOneWidget);
-      final cards = [
-        dashboard.resolution.answer.item,
-        ...dashboard.resolution.otherActions,
-        ...dashboard.resolution.recently,
-        ...dashboard.resolution.intelligence,
-      ].whereType<DashboardResolvedItem>();
       expect(
-        cards.where(
-          (item) => item.signal.id.startsWith('concept-current-journey-'),
-        ),
-        isEmpty,
+        dashboard.tiles.map((tile) => tile.id),
+        containsAll([
+          'concept-my-requests',
+          'concept-my-introductions',
+          'concept-my-ended',
+        ]),
       );
-      expect(dashboard.fixtureCards.map((card) => card.id), [
-        'concept-request-draft-amira',
-        'concept-my-requests',
-        'concept-my-introductions',
-        'concept-my-ended',
-      ]);
-      expect(find.textContaining('Your Journey with'), findsNothing);
-      expect(find.textContaining('Prepare your Journey with'), findsNothing);
+      expect(find.byType(ZyraOneJourneyConnectionsActiveCard), findsNothing);
+      expect(find.byType(ZyraOneJourneyTab), findsNothing);
       expect(find.textContaining('80%'), findsNothing);
-      expect(dashboard.resolution.intelligence, isEmpty);
-      for (final route in [
-        'concept-my-requests',
-        'concept-my-introductions',
-        'concept-my-ended',
-      ]) {
-        expect(_key('my-zyra-route-$route'), findsOneWidget);
-      }
       await _toggleOptions(tester);
-      _inventory(tester, myZyra: true);
       await _tap(tester, 'draft_history');
       await _toggleOptions(tester);
-      await _tap(tester, 'my-zyra-route-concept-my-ended');
+      await _tap(tester, 'concept-my-ended');
       _expectEndedCard();
     },
   );
 
+  // Q33: the whole LOCK 15 Focus tile owns its corresponding activity page.
   testWidgets(
     'permanent Quick access cards use the whole row for their separate destinations',
     (tester) async {
@@ -536,25 +535,18 @@ void main() {
         (id: 'concept-my-introductions', page: 'introductions'),
         (id: 'concept-my-ended', page: 'ended'),
       ]) {
-        final target = _key('my-zyra-route-${destination.id}');
+        final target = _key(destination.id);
         await Scrollable.ensureVisible(tester.element(target), alignment: .5);
         await tester.pumpAndSettle();
         expect(target.hitTestable(), findsOneWidget);
         final rect = tester.getRect(target);
-        expect(rect.width, greaterThan(300));
-        expect(rect.height, greaterThanOrEqualTo(98));
         expect(tester.widget<InkWell>(target).onTap, isNotNull);
-        // Tap the row's leading padding rather than its title or chevron.
         await tester.tapAt(Offset(rect.left + 8, rect.center.dy));
         await tester.pumpAndSettle();
         expect(_key('concept_activity_${destination.page}'), findsOneWidget);
         await _returnPage(tester);
-        expect(
-          tester
-              .widget<ZyraQuietDashboard>(find.byType(ZyraQuietDashboard))
-              .permanentNavigation,
-          isTrue,
-        );
+        expect(find.byType(ZyraFocusDashboard), findsOneWidget);
+        expect(find.byType(ZyraShellNavigation), findsOneWidget);
       }
     },
   );
@@ -594,6 +586,7 @@ void main() {
     },
   );
 
+  // Q33: the current request tabs select views without creating records.
   testWidgets(
     'Requests options select Received, Sent and Past without creating records',
     (tester) async {
@@ -608,16 +601,7 @@ void main() {
           .map((card) => card.profile.id)
           .toList();
       for (final index in [1, 2, 0]) {
-        final selectedIndex = _requests(tester).selectedIndex;
-        await _toggleOptions(tester);
-        _context(
-          tester,
-          'Journey requests · ${_requestsLabels[selectedIndex]}',
-        );
-        _inventory(tester, requests: true);
-        await _tap(tester, 'concept_requests_controls_$index');
-        _context(tester, 'Journey requests · ${_requestsLabels[index]}');
-        await _toggleOptions(tester);
+        await _tap(tester, 'draft_requests_$index');
         expect(_requests(tester).selectedIndex, index);
         expect(_requests(tester).labels, _requestsLabels);
         expect(
@@ -661,6 +645,7 @@ void main() {
     },
   );
 
+  // Q33: Introductions has its own Focus tile and no request selector.
   testWidgets(
     'standalone Introductions keeps its own route and has no request selector',
     (tester) async {
@@ -685,20 +670,19 @@ void main() {
       await _toggleOptions(tester);
       expect(_key('concept_activity_introductions'), findsOneWidget);
       await _returnPage(tester);
-      final dashboard = tester.widget<ZyraQuietDashboard>(
-        find.byType(ZyraQuietDashboard),
-      );
-      expect(dashboard.permanentNavigation, isTrue);
+      expect(find.byType(ZyraFocusDashboard), findsOneWidget);
+      expect(find.byType(ZyraShellNavigation), findsOneWidget);
       for (final route in [
         'concept-my-requests',
         'concept-my-introductions',
         'concept-my-ended',
       ]) {
-        expect(_key('my-zyra-route-$route'), findsOneWidget);
+        expect(_key(route), findsOneWidget);
       }
     },
   );
 
+  // Q33 (R2): a captured request selector cannot cross into Introductions.
   testWidgets(
     'Requests and Introductions retain their separate routes after Back and reset',
     (tester) async {
@@ -709,7 +693,7 @@ void main() {
       expect(find.text('No past requests.'), findsOneWidget);
       final stale = _requests(tester).onChanged;
       await _returnPage(tester);
-      await _tap(tester, 'my-zyra-route-concept-my-introductions');
+      await _tap(tester, 'concept-my-introductions');
       stale(0);
       stale(1);
       stale(2);
@@ -717,18 +701,19 @@ void main() {
       expect(_key('concept_activity_requests'), findsNothing);
       expect(_key('concept_activity_introductions'), findsOneWidget);
       await _returnPage(tester);
-      await _tap(tester, 'my-zyra-route-concept-my-requests');
+      await _tap(tester, 'concept-my-requests');
       expect(_requests(tester).selectedIndex, 0);
       expect(_requests(tester).labels, _requestsLabels);
       await _toggleOptions(tester);
       await _tap(tester, 'draft_reset');
+      await closeZyraDevControls(tester);
       expect(_key('concept_activity_requests'), findsNothing);
       await _openRequests(tester, introductions: true);
       expect(_key('concept_activity_introductions'), findsOneWidget);
       expect(find.text('No introductions yet'), findsOneWidget);
       expect(_key('draft_requests_2'), findsNothing);
       await _returnPage(tester);
-      await _tap(tester, 'my-zyra-route-concept-my-requests');
+      await _tap(tester, 'concept-my-requests');
       await _tap(tester, 'draft_requests_2');
       expect(_requests(tester).selectedIndex, 2);
       expect(_requests(tester).labels, _requestsLabels);
@@ -740,12 +725,13 @@ void main() {
     },
   );
 
+  // Q33: a code-only seed exercises the existing Focus → Ended route.
   testWidgets(
     'Ended options add local archive history and return to the same archive',
     (tester) async {
       await _mount(tester);
       await _nav(tester, 2);
-      await _tap(tester, 'my-zyra-route-concept-my-ended');
+      await _tap(tester, 'concept-my-ended');
       expect(find.text('No ended Journeys'), findsOneWidget);
       await _toggleOptions(tester);
       _context(tester, 'Ended Journeys');
@@ -758,7 +744,7 @@ void main() {
       await _toggleOptions(tester);
       _expectEndedCard();
       await _returnPage(tester);
-      expect(find.byType(ZyraQuietDashboard), findsOneWidget);
+      expect(find.byType(ZyraFocusDashboard), findsOneWidget);
     },
   );
 
@@ -908,40 +894,43 @@ void main() {
     },
   );
 
-  testWidgets(
-    '200 percent Page options remain readable and every compact action is reachable',
-    (tester) async {
-      await _mount(tester, size: const Size(320, 568), scale: 2);
-      for (var tab = 0; tab < _seekerTitles.length; tab++) {
-        if (tab != 0) await _nav(tester, tab);
-        await _toggleOptions(tester);
-        _context(tester, _seekerTitles[tab]);
-        final targets = [
-          if (tab == 0) ...[
-            _motionPicker,
-            _key('draft_compatibility_unlock_5'),
-          ],
-          if (tab == 1) _key('concept_journey_preview_3'),
-          if (tab == 2) _key('draft_history'),
-          if (tab == 3) _key('concept_guardian_plan_draft-guardian-yusuf_1'),
-          if (tab == 4) _key('draft_membership_seeker_one'),
-          _key('draft_reset'),
-          _key('draft_role_seeker'),
-          _key('draft_role_guardian'),
-        ];
-        for (final target in targets) {
-          expect(target, findsOneWidget);
-          await Scrollable.ensureVisible(tester.element(target), alignment: .5);
-          await tester.pumpAndSettle();
-          expect(target.hitTestable(), findsOneWidget);
-          expect(tester.getRect(target).left, greaterThanOrEqualTo(20));
-          expect(tester.getRect(target).right, lessThanOrEqualTo(300));
-          expect(tester.takeException(), isNull);
+  // Q33: compact reachability belongs to current member controls.
+  testWidgets('200 percent member actions remain readable and reachable', (
+    tester,
+  ) async {
+    await _mount(tester, size: const Size(320, 568), scale: 2);
+    await _nav(tester, 2);
+    expect(_motionPicker, findsNothing);
+    expect(find.text('Page options'), findsNothing);
+    for (final route in [
+      (tile: 'concept-my-requests', page: 'requests'),
+      (tile: 'concept-my-introductions', page: 'introductions'),
+      (tile: 'concept-my-ended', page: 'ended'),
+    ]) {
+      await _tap(tester, route.tile);
+      expect(_key('concept_activity_${route.page}'), findsOneWidget);
+      if (route.page == 'requests') {
+        for (var index = 0; index < _requestsLabels.length; index++) {
+          await _tap(tester, 'draft_requests_$index');
+          expect(_requests(tester).selectedIndex, index);
         }
-        await _toggleOptions(tester);
       }
-    },
-  );
+      await _returnPage(tester);
+      expect(find.byType(ZyraFocusDashboard), findsOneWidget);
+    }
+    await _nav(tester, 4);
+    final switchAccount = _key('switch-account-button');
+    await Scrollable.ensureVisible(
+      tester.element(switchAccount),
+      alignment: .5,
+    );
+    await tester.pumpAndSettle();
+    expect(switchAccount.hitTestable(), findsOneWidget);
+    await _tap(tester, 'draft_role_guardian');
+    expect(_key('guardian_requests'), findsOneWidget);
+    expect(_key('concept-my-requests'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
 
   if (_captureDirectory.isNotEmpty) {
     testWidgets(

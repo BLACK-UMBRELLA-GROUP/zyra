@@ -376,7 +376,7 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
               label: 'End Journey',
               action: widget.onEndUnavailable!,
               current: current,
-              color: ZyraColors.destructive,
+              color: ZyraColors.dangerText,
             ),
           ],
         ],

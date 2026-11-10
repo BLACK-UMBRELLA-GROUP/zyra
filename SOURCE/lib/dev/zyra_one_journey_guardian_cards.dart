@@ -9,6 +9,7 @@ import '../screens/wali/seeker_guardian_designs.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_floating_surface.dart';
+import '../widgets/zyra_guardian_add_card.dart';
 import 'zyra_one_journey_monogram_presentation.dart';
 import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_tap_feedback.dart';
@@ -125,10 +126,12 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     return widget.basic ? all.take(1).toList() : all;
   }
 
-  int get _length => _people.length + (widget.basic ? 1 : 2);
+  bool get _canShowInvitation => !widget.basic && _people.isNotEmpty;
+  bool get _needsUpgrade => widget.basic && _people.isNotEmpty;
+  int get _length => _people.length + (_canShowInvitation ? 2 : 1);
   ZyraGuardianCardPerson? get _person =>
       _index < _people.length ? _people[_index] : null;
-  bool get _invitedCard => !widget.basic && _index == _people.length;
+  bool get _invitedCard => _canShowInvitation && _index == _people.length;
   String get _target =>
       _person?.person.id ?? (_invitedCard ? 'preview-invited-omar' : 'add');
 
@@ -415,37 +418,29 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
                           }
                           _drag = 0;
                         },
-                        child: ZyraFloatingSurface(
-                          radius: 22,
-                          child: CustomPaint(
-                            foregroundPainter: !linked && !_invitedCard
-                                ? _DashedBorder(
-                                    22,
-                                    ZyraColors.journeyGold.withValues(
-                                      alpha: .6,
+                        child: !linked && !_invitedCard
+                            ? ZyraGuardianAddCard(needsUpgrade: _needsUpgrade)
+                            : ZyraFloatingSurface(
+                                radius: 22,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFF3EDE3),
+                                    borderRadius: BorderRadius.circular(22),
+                                    border: Border.all(
+                                      color: person?.person.isMain == true
+                                          ? const Color(
+                                              0xFFE8C98A,
+                                            ).withValues(alpha: .6)
+                                          : ZyraColors.surfaceBorder,
                                     ),
-                                  )
-                                : null,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFF3EDE3),
-                                borderRadius: BorderRadius.circular(22),
-                                border: linked || _invitedCard
-                                    ? Border.all(
-                                        color: person?.person.isMain == true
-                                            ? const Color(
-                                                0xFFE8C98A,
-                                              ).withValues(alpha: .6)
-                                            : ZyraColors.surfaceBorder,
-                                      )
-                                    : null,
+                                  ),
+                                  child: linked
+                                      ? (_access
+                                            ? _back(person)
+                                            : _front(person))
+                                      : _invited(),
+                                ),
                               ),
-                              child: linked
-                                  ? (_access ? _back(person) : _front(person))
-                                  : (_invitedCard ? _invited() : _add()),
-                            ),
-                          ),
-                        ),
                       ),
                     ),
                   );
@@ -458,7 +453,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
                   ? (_access ? 'Details' : 'Journey access')
                   : (_invitedCard
                         ? 'Send invitation again'
-                        : widget.basic
+                        : _needsUpgrade
                         ? 'View Seeker One'
                         : 'Add a Guardian'),
             ),
@@ -657,7 +652,10 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
               child: i < rows.length
                   ? _journey(person, rows[i])
                   : CustomPaint(
-                      foregroundPainter: _DashedBorder(16, ZyraColors.ink(.08)),
+                      foregroundPainter: ZyraGuardianDashedBorder(
+                        16,
+                        ZyraColors.ink(.08),
+                      ),
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(18),
@@ -805,7 +803,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
           onTap: action ?? () {},
           child: CustomPaint(
             foregroundPainter: locked
-                ? _DashedBorder(20, ZyraColors.ink(.12))
+                ? ZyraGuardianDashedBorder(20, ZyraColors.ink(.12))
                 : null,
             child: Container(
               constraints: const BoxConstraints(minHeight: 34),
@@ -890,46 +888,6 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
       ],
     ),
   );
-  Widget _add() => Padding(
-    padding: EdgeInsets.all(
-      MediaQuery.sizeOf(context).width < 360 &&
-              MediaQuery.textScalerOf(context).scale(1) > 1.3
-          ? 18
-          : 34,
-    ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: 66,
-          height: 66,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: ZyraColors.ink(.08),
-          ),
-          child: Icon(
-            widget.basic ? Icons.lock_outline : Icons.add,
-            color: ZyraColors.journeyGold,
-            size: 28,
-          ),
-        ),
-        const SizedBox(height: 18),
-        Text(
-          widget.basic ? 'Add more Guardians' : 'Add a Guardian',
-          textAlign: TextAlign.center,
-          style: ZyraText.heading(size: 24),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          widget.basic
-              ? 'Seeker Basic includes 1 Guardian. Seeker One lets you add up to 10.'
-              : 'Share your ZYRA Code, or scan theirs. You choose who joins.',
-          textAlign: TextAlign.center,
-          style: ZyraText.body(size: 13, color: ZyraColors.ink(.55)),
-        ),
-      ],
-    ),
-  );
   Widget _pager(String label) => ZyraFloatingSurface(
     radius: 28,
     child: Material(
@@ -984,33 +942,4 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
       ),
     );
   }
-}
-
-class _DashedBorder extends CustomPainter {
-  _DashedBorder(this.radius, this.color);
-  final double radius;
-  final Color color;
-  @override
-  void paint(Canvas canvas, Size size) {
-    final path = Path()
-      ..addRRect(
-        RRect.fromRectAndRadius(Offset.zero & size, Radius.circular(radius)),
-      );
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1;
-    for (final metric in path.computeMetrics()) {
-      for (double distance = 0; distance < metric.length; distance += 5) {
-        canvas.drawPath(
-          metric.extractPath(distance, math.min(distance + 2.5, metric.length)),
-          paint,
-        );
-      }
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _DashedBorder oldDelegate) =>
-      oldDelegate.radius != radius || oldDelegate.color != color;
 }

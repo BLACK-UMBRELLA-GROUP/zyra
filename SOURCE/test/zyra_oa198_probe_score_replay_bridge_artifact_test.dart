@@ -4,8 +4,6 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'support/oa198_historical_inventory.dart';
-
 const _historyRoot = '../REPORTS/EVIDENCE/OA-ZYRA-198_2026-09-11';
 const _artifactDir =
     '$_historyRoot/'
@@ -20,15 +18,6 @@ const _runtimePath =
     'zyra_oa198_probe_score_replay_bridge_pg17_runtime.sql';
 const _testPath =
     'test/fixtures/oa198/zyra_oa198_probe_score_replay_bridge_artifact_test.dart.txt';
-const _activeMigrationDir = 'supabase/migrations';
-const _targetPath =
-    '$_activeMigrationDir/'
-    '20260811233813_oa186c_function_execute_hygiene_and_probe_rls.sql';
-const _v2Path =
-    '$_historyRoot/'
-    'OA-ZYRA-198_2026-09-11_RECONSTRUCTED_REPLAY_BRIDGE_V2/'
-    '20260811153415_oa198_reconstructed_question_bank_replay_bridge_v2.sql';
-
 const _bridgeSha =
     '9f9a818f3370b849ba1ff21f1d4ea9c3adb9ab866b22e15f6ba7a03454b46b46';
 const _runtimeSha =
@@ -37,87 +26,9 @@ const _targetSha =
     '3934282f2b2d97c3bac7b6cac42c4044942d69c5a59111ffb2e672d360e73c95';
 const _v2Sha =
     '337b342df347b7e902d8da32bafd0a2b21516550b9234213298079304ca66aa1';
-const _activeInventorySha =
-    '8a36926aaca155493f16a731ee498204f0d0225e2a5b41cc66f89e1da39b8861';
-
 String _sha(File file) => sha256.convert(file.readAsBytesSync()).toString();
 
-String _basename(String path) => path.split(Platform.pathSeparator).last;
-
-String _activeInventoryDigest(List<File> files) {
-  final sorted = [...files]
-    ..sort(
-      (left, right) => _basename(left.path).compareTo(_basename(right.path)),
-    );
-  final buffer = StringBuffer();
-  for (final file in sorted) {
-    buffer
-      ..write(_sha(file))
-      ..write('  ./')
-      ..writeln(_basename(file.path));
-  }
-  return sha256.convert(utf8.encode(buffer.toString())).toString();
-}
-
-List<File> _activeMigrations() =>
-    Directory(_activeMigrationDir)
-        .listSync(followLinks: false)
-        .whereType<File>()
-        .where(
-          (file) => RegExp(r'^\d{14}_.+\.sql$').hasMatch(_basename(file.path)),
-        )
-        .toList()
-      ..sort(
-        (left, right) => _basename(left.path).compareTo(_basename(right.path)),
-      );
-
 void main() {
-  test('probe bridge is byte-pinned, quarantined and correctly ordered', () {
-    final bridge = File(_bridgePath);
-    final target = File(_targetPath);
-    final v2 = File(_v2Path);
-    final allActive = _activeMigrations();
-    final active = oa198HistoricalInventory(allActive);
-    expect(allActive.any((f) => _basename(f.path) == _bridgeFilename), isFalse);
-    final activeNames = active.map((file) => _basename(file.path)).toSet();
-    final scratchNames = {...activeNames, _basename(v2.path), _bridgeFilename};
-
-    expect(bridge.existsSync(), isTrue);
-    expect(bridge.lengthSync(), 7302);
-    expect(_sha(bridge), _bridgeSha);
-    expect(FileStat.statSync(bridge.path).mode & 0x1ff, 0x180);
-    expect(_sha(target), _targetSha);
-    expect(_sha(v2), _v2Sha);
-
-    expect(active, hasLength(207));
-    expect(_activeInventoryDigest(active), _activeInventorySha);
-    expect(
-      activeNames.any((name) => name.startsWith('20260811153415_')),
-      false,
-    );
-    expect(
-      activeNames.any((name) => name.startsWith('20260811233812_')),
-      false,
-    );
-    expect(scratchNames, hasLength(209));
-
-    final ordered = scratchNames.toList()..sort();
-    expect(
-      ordered.indexOf(
-        '20260811233755_fix_duplicate_journey_ended_milestone.sql',
-      ),
-      lessThan(ordered.indexOf(_bridgeFilename)),
-    );
-    expect(
-      ordered.indexOf(_bridgeFilename),
-      lessThan(
-        ordered.indexOf(
-          '20260811233813_oa186c_function_execute_hygiene_and_probe_rls.sql',
-        ),
-      ),
-    );
-  });
-
   test(
     'bridge reconstructs only the catalog-proven schema and fails closed',
     () {

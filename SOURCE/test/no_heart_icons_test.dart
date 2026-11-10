@@ -4,8 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('production Flutter UI contains no heart icon symbols or glyphs', () {
+    // Q22 / LOCK 22 V5–V6 x07–x09: Icons.health_and_safety is a shield
+    // with a cross and is allowed. Keep matching every prohibited symbol.
     final heartIcon = RegExp(
-      r'\b(?:Icons|CupertinoIcons|FontAwesomeIcons)\.'
+      r'\b(?!Icons\.health_and_safety\b)(?:Icons|CupertinoIcons|FontAwesomeIcons)\.'
       r'(?:favorite|heart|volunteer_activism|health_and_safety|'
       r'monitor_heart|cardiology|healing)[A-Za-z0-9_]*\b',
     );

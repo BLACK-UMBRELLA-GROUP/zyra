@@ -353,6 +353,7 @@ void main() {
         if (visited.isEmpty || visited.last != index) visited.add(index);
       }
 
+      // Q15: extra taps rejected during the wrap stay silent.
       controller.addListener(observe);
       platformCalls.clear();
       try {
@@ -397,7 +398,7 @@ void main() {
           tester.widget<SlideTransition>(_wrap()).position.value.dx,
           inExclusiveRange(-1, -.5),
         );
-        expectTicks(3);
+        expectTicks(1);
         expect(visited, [0]);
         await tester.pump(const Duration(milliseconds: 200));
         expect(
@@ -405,12 +406,12 @@ void main() {
           closeTo(-1, .001),
         );
         _expectPhoto(tester, 0);
-        expectTicks(3);
+        expectTicks(1);
         expect(visited, [0]);
         await tester.pump(const Duration(milliseconds: 16));
         expect(_wrap(), findsNothing);
         _expectPhoto(tester, 0);
-        expectTicks(3);
+        expectTicks(1);
         expect(visited, [0]);
         expect(_key('concept_browse_details_${person.id}'), findsOneWidget);
         expect(find.byType(ZyraProfileNameBlock), findsNothing);
@@ -795,6 +796,7 @@ void main() {
     );
   }
 
+  // Q15: stale and revoked captures may neither navigate nor tick.
   for (final change in ['person', 'photos', 'photo count', 'disposed']) {
     testWidgets('a captured tap cannot act after $change changes', (
       tester,
@@ -856,11 +858,13 @@ void main() {
     tester.widget<GestureDetector>(_tapTarget()).onTapUp!(tapDetails);
     await tester.pumpAndSettle();
     _expectPhoto(tester, 1);
-    expectTicks(3);
+    // Q15: only the accepted tap gives feedback.
+    expectTicks(1);
     actions.expectNoDecisions();
     expect(tester.takeException(), isNull);
   });
 
+  // Q15: the finger swipe owns the gallery until it settles.
   testWidgets('a tap cannot interrupt an in-progress finger swipe', (
     tester,
   ) async {
@@ -936,13 +940,14 @@ void main() {
     );
   }
 
+  // Q13 / HAPTICS rule 2: each enabled accessible action ticks once.
   testWidgets('accessible tap and Next page advance details and photos', (
     tester,
   ) async {
     final actions = _Actions();
     final semanticsHandle = tester.ensureSemantics();
     try {
-      await _mount(tester, _presenter(actions));
+      await _mount(tester, _presenter(actions), accessibleNavigation: true);
       final semantics = _photoSemantics(tester, 0);
       expect(
         semantics.properties.hint,
@@ -966,6 +971,7 @@ void main() {
           .entries
           .singleWhere((entry) => entry.key.label == 'Next page');
       next.value();
+      next.value(); // Q15: replay before a rebuild must be silent.
       await tester.pumpAndSettle();
       _expectPhoto(tester, 2);
       expectTicks(2);

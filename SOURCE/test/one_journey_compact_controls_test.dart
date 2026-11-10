@@ -15,6 +15,8 @@ import 'package:zyra/dev/zyra_concept_preview_boundary.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
+import 'package:zyra/dev/zyra_one_journey_options_page.dart';
+import 'package:zyra/dev/zyra_one_journey_tab.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/state/app_state.dart';
@@ -238,7 +240,7 @@ void _expectInventory(WidgetTester tester, {bool large = false}) {
 
 void _expectJourneyCounts(WidgetTester tester, {bool large = false}) {
   expect(find.text('Page options'), findsNothing);
-  expect(find.text('Journey'), findsOneWidget);
+  expect(find.byType(ZyraOneJourneyTab), findsOneWidget);
   expect(_motionDropdown, findsNothing);
   for (final count in [1, 2, 3]) {
     _expectButton(
@@ -257,6 +259,7 @@ List<String> _destinations(WidgetTester tester) => tester
     .toList();
 
 Future<void> _nav(WidgetTester tester, String label) async {
+  await expandZyraPreviewTabBarIfIdle(tester);
   final navigation = tester.widget<ZyraShellNavigation>(
     find.byType(ZyraShellNavigation),
   );
@@ -419,6 +422,7 @@ void main() {
     },
   );
 
+  // QUESTIONS Q26: a local fixture seeds the actual selected-place reader.
   for (final count in [1, 2, 3]) {
     testWidgets('compact count $count seeds only the intended Journey page', (
       tester,
@@ -427,11 +431,12 @@ void main() {
       await _controls(tester, page: 'Journey');
       _expectJourneyCounts(tester);
       await _press(tester, 'concept_journey_preview_$count');
-      expect(find.text('Journey'), findsOneWidget);
-      expect(
-        find.byType(ZyraOneJourneyConnectionsActiveCard),
-        findsNWidgets(count),
+      final places = tester.widget<ZyraOneJourneyTab>(
+        find.byType(ZyraOneJourneyTab),
       );
+      expect(places.journeys, hasLength(count));
+      expect(places.capacity, 3);
+      expect(_key('journey_tab_continue').hitTestable(), findsOneWidget);
       expect(find.text('Page options'), findsNothing);
       expect(AppState.instance.activeJourneys, isEmpty);
       await _controls(tester);
@@ -444,6 +449,7 @@ void main() {
     });
   }
 
+  // QUESTIONS Q26: Basic disables adjacent places and rejects over-capacity seeds.
   testWidgets(
     'compact membership preserves Basic/Monthly capacity and disabled gates',
     (tester) async {
@@ -455,35 +461,35 @@ void main() {
       expect(_action(tester, 'concept_journey_preview_2'), isNull);
       expect(_action(tester, 'concept_journey_preview_3'), isNull);
       await _press(tester, 'concept_journey_preview_1');
-      expect(find.byType(ZyraOneJourneyConnectionsActiveCard), findsOneWidget);
+      final tab = find.byType(ZyraOneJourneyTab);
+      expect(tester.widget<ZyraOneJourneyTab>(tab).journeys, hasLength(1));
+      expect(tester.widget<ZyraOneJourneyTab>(tab).capacity, 1);
+      expect(_action(tester, 'journey_tab_next'), isNull);
+      expect(_action(tester, 'journey_tab_previous'), isNull);
       await _controls(tester, page: 'Profile');
       await _press(tester, 'draft_membership_seeker_one');
       await _controls(tester, page: 'Journey');
       expect(_action(tester, 'concept_journey_preview_3'), isNotNull);
       await _press(tester, 'concept_journey_preview_3');
+      expect(tester.widget<ZyraOneJourneyTab>(tab).journeys, hasLength(3));
+      expect(_action(tester, 'journey_tab_next'), isNotNull);
+      final before = zyraShellFixtureFor(tester).latest!.model;
+      expect(zyraShellFixtureFor(tester).setSeekerBasic(true), isFalse);
+      await tester.pumpAndSettle();
+      expect(tester.widget<ZyraOneJourneyTab>(tab).capacity, 3);
+      expect(zyraShellFixtureFor(tester).latest!.model.states, before.states);
       expect(
-        find.byType(ZyraOneJourneyConnectionsActiveCard),
-        findsNWidgets(3),
-      );
-      await _controls(tester, page: 'Profile');
-      await _press(tester, 'draft_membership_seeker_basic');
-      // Rejection feedback stays readable above controls, then survives the
-      // real X return to the unchanged member page.
-      expect(
-        find.textContaining('Existing sample Journeys have not been removed.'),
-        findsOneWidget,
+        zyraShellFixtureFor(tester).latest!.model.progress,
+        before.progress,
       );
       await closeZyraDevControls(tester);
-      expect(
-        find.textContaining('Existing sample Journeys have not been removed.'),
-        findsOneWidget,
-      );
       await _controls(tester, page: 'Journey');
       expect(_action(tester, 'concept_journey_preview_3'), isNotNull);
       expect(AppState.instance.activeJourneys, isEmpty);
     },
   );
 
+  // QUESTIONS Q26: use the selected place and LOCK 15 Focus archive.
   testWidgets(
     'compact Active/Ended/reset actions preserve current and ordinary state',
     (tester) async {
@@ -491,20 +497,24 @@ void main() {
       await _controls(tester, page: 'Journey');
       expect(_key('draft_fill'), findsNothing);
       await _press(tester, 'concept_journey_preview_1');
-      expect(find.byType(ZyraOneJourneyConnectionsActiveCard), findsOneWidget);
+      final tab = find.byType(ZyraOneJourneyTab);
+      expect(
+        tester.widget<ZyraOneJourneyTab>(tab).journeys.single.id,
+        'draft-sara',
+      );
       await _controls(tester, page: 'My ZYRA');
       await _press(tester, 'draft_history');
       await returnZyraPreviewPage(tester);
-      expect(find.byType(ZyraOneJourneyConnectionsActiveCard), findsNothing);
+      expect(tab, findsNothing);
       expect(
         _key('my-zyra-route-concept-current-journey-draft-sara'),
         findsNothing,
       );
       await _nav(tester, 'My ZYRA');
-      expect(_key('my-zyra-route-concept-my-ended'), findsOneWidget);
+      expect(_key('concept-my-ended'), findsOneWidget);
       expect(find.text('1 ended'), findsOneWidget);
       expect(find.text('Paused Journeys'), findsNothing);
-      await _press(tester, 'my-zyra-route-concept-my-ended');
+      await _press(tester, 'concept-my-ended');
       expect(find.text('Ended Journeys'), findsOneWidget);
       expect(_key('draft_journey_draft-noor_header'), findsOneWidget);
       expect(
@@ -519,12 +529,12 @@ void main() {
       await _controls(tester);
       await _press(tester, 'draft_reset');
       expect(find.byType(ZyraOneJourneyBrowseDesigns), findsOneWidget);
+      await closeZyraDevControls(tester);
       await _nav(tester, 'Journey');
-      expect(find.byType(ZyraOneJourneyConnectionsActiveCard), findsNothing);
+      expect(tester.widget<ZyraOneJourneyTab>(tab).journeys, isEmpty);
       await _nav(tester, 'My ZYRA');
-      expect(_key('my-zyra-route-concept-my-ended'), findsOneWidget);
-      expect(find.text('0 ended'), findsOneWidget);
-      await _press(tester, 'my-zyra-route-concept-my-ended');
+      expect(_key('concept-my-ended'), findsOneWidget);
+      await _press(tester, 'concept-my-ended');
       expect(find.text('No ended Journeys'), findsOneWidget);
       await _controls(tester, page: 'Journey');
       expect(_action(tester, 'concept_journey_preview_3'), isNotNull);
@@ -532,6 +542,7 @@ void main() {
     },
   );
 
+  // QUESTIONS Q26: inspect the current role targets and keep ordinary state.
   testWidgets(
     'compact Guardian/Seeker account controls keep role-specific routes',
     (tester) async {
@@ -544,13 +555,16 @@ void main() {
       await _controls(tester);
       await _press(tester, 'draft_role_guardian');
       expect(_destinations(tester), [
-        'Dashboard',
         'Network',
+        'Journeys',
+        'My ZYRA',
         'Seekers',
         'Profile',
       ]);
       await _controls(tester);
-      expect(_key('draft_role_seeker'), findsOneWidget);
+      expect(_key('draft_role_seeker'), findsNothing);
+      expect(find.byType(ZyraOneJourneyTab), findsNothing);
+      expect(_action(tester, 'draft_role_seeker'), isNotNull);
       await _press(tester, 'draft_role_seeker');
       expect(_destinations(tester), [
         'Profiles',
@@ -568,13 +582,13 @@ void main() {
     },
   );
 
+  // QUESTIONS Q26: exercise current member targets at Larger Text.
   testWidgets('compact 200% controls wrap and remain genuinely reachable', (
     tester,
   ) async {
     await _mount(tester, size: const Size(320, 568), scale: 2, top: 44);
     await _controls(tester);
     _expectInventory(tester, large: true);
-    await _snapshot(tester, 'compact_200_initial');
     await _chooseMotion(tester, ZyraBrowseNextMotion.elasticCard);
     await _controls(tester, page: 'Profile');
     await _press(tester, 'draft_membership_seeker_basic');
@@ -585,17 +599,24 @@ void main() {
     await _press(tester, 'draft_membership_seeker_one');
     await _controls(tester, page: 'Journey');
     await _press(tester, 'concept_journey_preview_3');
-    expect(find.byType(ZyraOneJourneyConnectionsActiveCard), findsNWidgets(3));
+    expect(
+      tester.widget<ZyraOneJourneyTab>(find.byType(ZyraOneJourneyTab)).journeys,
+      hasLength(3),
+    );
+    await closeZyraDevControls(tester);
+    await _press(tester, 'journey_tab_next');
+    await _press(tester, 'draft_journey_options_draft-aisha');
+    expect(find.byType(ZyraOneJourneyOptionsPage), findsOneWidget);
+    final end = _key('draft_options_end_draft-aisha');
+    await Scrollable.ensureVisible(tester.element(end), alignment: .5);
+    await tester.pumpAndSettle();
+    expect(end.hitTestable(), findsOneWidget);
+    await returnZyraPreviewPage(tester);
     await _controls(tester);
     await _press(tester, 'draft_reset');
     await _controls(tester);
-    await Scrollable.ensureVisible(
-      tester.element(_key('draft_role_seeker')),
-      alignment: 1,
-    );
-    await tester.pumpAndSettle();
-    await _snapshot(tester, 'compact_200_lower');
-    expect(_key('draft_role_seeker').hitTestable(), findsOneWidget);
+    expect(_key('draft_role_seeker'), findsNothing);
+    expect(_action(tester, 'draft_role_seeker'), isNotNull);
     expect(tester.takeException(), isNull);
   });
 

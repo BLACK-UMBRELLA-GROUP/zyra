@@ -432,7 +432,7 @@ class _ZyraDraftReportPresentationState
                           ),
                           style: _quietActionStyle.copyWith(
                             foregroundColor: const WidgetStatePropertyAll(
-                              ZyraColors.negativeRed,
+                              ZyraColors.dangerText,
                             ),
                           ),
                           child: const Text('Block profile'),

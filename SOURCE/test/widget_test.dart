@@ -81,7 +81,10 @@ void main() {
       expect(ZyraColors.modalSheetSurface.a, 1);
     });
 
+    // Q21 / LOCK 14 V6: only the small-text ink must pass 4.5:1.
     test('foreground, gold and action text retain readable dark contrast', () {
+      expect(ZyraColors.dangerText, const Color(0xFFAC453E));
+      expect(ZyraColors.destructive, const Color(0xFFB84A42));
       double contrast(Color a, Color b) {
         final x = a.computeLuminance();
         final y = b.computeLuminance();
@@ -97,7 +100,7 @@ void main() {
           ZyraColors.foregroundBody,
           ZyraColors.foregroundSecondary,
           ZyraColors.goldText,
-          ZyraColors.destructive,
+          ZyraColors.dangerText,
         ]) {
           expect(
             contrast(Color.alphaBlend(ink, canvas), canvas),

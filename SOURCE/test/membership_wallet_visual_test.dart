@@ -10,11 +10,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/data/zyra_membership_catalog.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_store_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
+import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
+import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_draft.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_preview.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_membership_choices.dart';
+
+import 'support/zyra_hidden_dev_controls_driver.dart';
 
 const _captureDirectory = String.fromEnvironment(
   'ZYRA_MEMBERSHIP_WALLET_CAPTURE_DIR',
@@ -358,78 +363,79 @@ void main() {
   }
 
   for (final compact in [false, true]) {
+    // Q42 / LOCK 21 Profile: use the shell that owns both real destinations.
     testWidgets('component: Profile row targets and arrows compact=$compact', (
       tester,
     ) async {
-      final actions = <ZyraConceptAccountAction>[];
+      var ready = false;
       await _mount(
         tester,
-        ZyraConceptProfilePresentation(
-          data: const ZyraConceptAccountData(
+        ZyraOneJourneyConceptShell(
+          fixture: ZyraShellTestFixture().fixture,
+          canAct: () => true,
+          onExit: () => fail('Profile actions must stay in the shell'),
+          initialCheckpoint: ZyraPreviewNavigationCheckpoint(
             guardian: false,
-            name: 'Adam Khan',
-            age: '30',
-            gender: 'Male',
-            location: 'London',
-            membership: 'Seeker One',
-            isOne: true,
-            relationship: 'Father',
-            linkedSeekers: '1',
-            guardianCount: '2',
-            signedInWith: 'Apple',
-            backgroundLabel: 'Midnight Plum',
-            hapticLabel: 'Subtle',
-            gold: false,
-            plusUnlocks: 1,
+            model: ViewRequestDraftModel(capacity: 3).snapshot(),
+            tab: 4,
+            pages: const [],
           ),
-          onAction: actions.add,
-          onSwitchRole: () {},
+          onPresentationReady: () => ready = true,
         ),
         compact: compact,
       );
+      for (var frame = 0; frame < 150 && !ready; frame++) {
+        await tester.pump(const Duration(milliseconds: 20));
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 5)),
+        );
+      }
+      expect(ready, isTrue);
+      await tester.pumpAndSettle();
+      final profile = find.byType(ZyraConceptProfilePresentation);
+      expect(profile, findsOneWidget);
+
       Future<Icon> arrow(String key) async {
-        await tester.scrollUntilVisible(_key(key), 120);
+        final row = _key(key);
+        expect(row, findsOneWidget);
+        await Scrollable.ensureVisible(tester.element(row), alignment: .5);
         await tester.pumpAndSettle();
+        expect(row.hitTestable(), findsOneWidget);
         return tester.widget<Icon>(
           find.descendant(
-            of: _key(key),
+            of: row,
             matching: find.byIcon(Icons.chevron_right_rounded),
           ),
         );
       }
 
-      final membership = await arrow('membership-manage');
-      final subscriptions = await arrow('concept_subscriptions');
+      final membership = await arrow('concept_membership');
       final unlocks = await arrow('concept_compatibility_buy_more');
-      expect(membership.color, subscriptions.color);
       expect(membership.color, unlocks.color);
-      expect(membership.size, subscriptions.size);
       expect(membership.size, unlocks.size);
-      final title = find.text('Compatibility unlocks');
-      if (compact) {
-        await Scrollable.ensureVisible(tester.element(title), alignment: .3);
-        await tester.pumpAndSettle();
-      }
+      final title = find.text('Compatibility Unlocks');
       expect(title.hitTestable(), findsOneWidget);
       expect(
         tester.renderObject<RenderParagraph>(title).didExceedMaxLines,
         isFalse,
       );
-      await _capture(
-        tester,
-        compact
-            ? '14-profile-row-320-200-component'
-            : '13-profile-row-component',
-      );
-      await tester.tap(title);
-      await tester.pumpAndSettle();
-      expect(actions, [ZyraConceptAccountAction.compatibilityStore]);
+
+      await _tap(tester, 'concept_membership');
+      expect(find.byType(ZyraConceptMembershipPresentation), findsOneWidget);
+      await returnZyraPreviewPage(tester);
+      expect(profile, findsOneWidget);
+
       await _tap(tester, 'concept_compatibility_buy_more');
-      expect(actions, [
-        ZyraConceptAccountAction.compatibilityStore,
-        ZyraConceptAccountAction.compatibilityStore,
-      ]);
-      expect(find.text('1  Unlocks', findRichText: true), findsOneWidget);
+      expect(
+        find.byType(ZyraDraftCompatibilityStorePresentation),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('draft_compatibility_store_continue')),
+        findsOneWidget,
+      );
+      await returnZyraPreviewPage(tester);
+      expect(profile, findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   }

@@ -166,9 +166,10 @@ void main() {
         tester.getSize(cancel).width + tester.getSize(confirm).width,
         greaterThan(700),
       );
+      // Q21 / LOCK 14 V6: small danger labels use the readable red.
       expect(
         tester.widget<Text>(find.text('Hide profile')).style?.color,
-        ZyraColors.destructive,
+        ZyraColors.dangerText,
       );
 
       await tester.tap(cancel);

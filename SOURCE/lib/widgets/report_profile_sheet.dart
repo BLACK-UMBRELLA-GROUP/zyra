@@ -869,7 +869,10 @@ class _BlockOnlyRow extends StatelessWidget {
                 children: [
                   Text(
                     'Block $firstName',
-                    style: ZyraText.body(size: 14.5, color: Colors.white),
+                    style: ZyraText.body(
+                      size: 14.5,
+                      color: ZyraColors.dangerText,
+                    ),
                   ),
                   SizedBox(height: 2),
                   Text(
@@ -919,7 +922,7 @@ class _HideConfirmation extends StatelessWidget {
         children: [
           Text(
             'Block $firstName?',
-            style: ZyraText.body(size: 14.5, color: Colors.white),
+            style: ZyraText.body(size: 14.5, color: ZyraColors.dangerText),
           ),
           const SizedBox(height: 6),
           Text(

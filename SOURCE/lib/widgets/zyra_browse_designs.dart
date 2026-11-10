@@ -855,18 +855,17 @@ class _BrowsePhotoPagerState extends State<_BrowsePhotoPager>
     super.dispose();
   }
 
-  void _showPhoto(int index, int revision, {int? cyclicDirection}) {
-    if (!mounted ||
-        revision != _revision ||
-        widget.photoCount < 2 ||
-        index < 0 ||
-        index >= widget.photoCount ||
-        !_controller.hasClients ||
-        (widget.tapToAdvance &&
-            (_controller.position.isScrollingNotifier.value ||
-                _wrapPhoto != null))) {
-      return;
-    }
+  bool _canShowPhoto(int revision, int selected) =>
+      mounted &&
+      revision == _revision &&
+      widget.photoCount > 1 &&
+      _controller.hasClients &&
+      _controller.page?.round() == selected &&
+      (!widget.tapToAdvance ||
+          (!_controller.position.isScrollingNotifier.value &&
+              _wrapPhoto == null));
+
+  void _showPhoto(int index, {required int cyclicDirection}) {
     // The bounded pager rebases once at a wrap. Both prepared photos slide
     // across that boundary at the ordinary tap speed, never dissolve or travel
     // through intermediate photos. Identity, markers and actions stay fixed.
@@ -886,7 +885,7 @@ class _BrowsePhotoPagerState extends State<_BrowsePhotoPager>
       setState(() {
         _tapTargetIndex = index;
         _wrapPhoto = widget.photo(visible);
-        _configureWrapMotion(cyclicDirection!);
+        _configureWrapMotion(cyclicDirection);
       });
       _controller.jumpToPage(index);
       _wrapMotion.forward(from: 0);
@@ -917,9 +916,21 @@ class _BrowsePhotoPagerState extends State<_BrowsePhotoPager>
     final revision = _revision;
     final selected = widget.selectedIndex;
     final count = widget.photoCount;
-    final advance = widget.tapToAdvance && count > 1
-        ? () => _showPhoto((selected + 1) % count, revision, cyclicDirection: 1)
-        : null;
+    // Q13/Q15: the physical and accessible actions share the pager's
+    // authority and motion guard before the feedback wrapper emits a tick.
+    final hapticLevel = widget.hapticLevel;
+    final select = ZyraTapFeedback.onChanged<int>(
+      context,
+      count < 2
+          ? null
+          : (direction) => _showPhoto(
+              (selected + direction) % count,
+              cyclicDirection: direction,
+            ),
+      canAct: () => _canShowPhoto(revision, selected),
+      level: hapticLevel == null ? null : () => hapticLevel,
+    );
+    final advance = select == null ? null : () => select(1);
     Widget pager = PageView.builder(
       key: ValueKey('concept_browse_photo_swipe_${widget.profileId}'),
       controller: _controller,
@@ -948,31 +959,17 @@ class _BrowsePhotoPagerState extends State<_BrowsePhotoPager>
         key: ValueKey('concept_browse_photo_tap_${widget.profileId}'),
         behavior: HitTestBehavior.opaque,
         excludeFromSemantics: true,
-        onTapUp: ZyraTapFeedback.onChanged(
-          context,
-          advance == null
-              ? null
-              : (details) {
-                  if (!mounted ||
-                      revision != _revision ||
-                      !_controller.hasClients) {
-                    return;
-                  }
-                  final width = _controller.position.viewportDimension;
-                  final x = details.localPosition.dx;
-                  if (!width.isFinite || width <= 0 || !x.isFinite) return;
-                  // Physical halves, not reading direction. Details keeps its
-                  // tap-to-photos entry; a photo's left half goes back one page.
-                  final isDetailsPage = selected == 0;
-                  final direction = !isDetailsPage && x < width / 2 ? -1 : 1;
-                  _showPhoto(
-                    (selected + direction) % count,
-                    revision,
-                    cyclicDirection: direction,
-                  );
-                },
-          level: widget.hapticLevel == null ? null : () => widget.hapticLevel!,
-        ),
+        onTapUp: select == null
+            ? null
+            : (details) {
+                if (!_canShowPhoto(revision, selected)) return;
+                final width = _controller.position.viewportDimension;
+                final x = details.localPosition.dx;
+                if (!width.isFinite || width <= 0 || !x.isFinite) return;
+                // Physical halves, not reading direction. Details keeps its
+                // tap-to-photos entry; a photo's left half goes back one page.
+                select(selected != 0 && x < width / 2 ? -1 : 1);
+              },
         child: pager,
       );
     }
@@ -982,30 +979,18 @@ class _BrowsePhotoPagerState extends State<_BrowsePhotoPager>
           : widget.photoSources.isEmpty
           ? 'No photos available'
           : 'Photo ${widget.selectedIndex} of ${widget.photoSources.length}',
-      button: advance != null,
-      onTap: ZyraTapFeedback.onTap(
-        context,
-        advance,
-        level: widget.hapticLevel == null ? null : () => widget.hapticLevel!,
-      ),
+      button: widget.tapToAdvance && advance != null,
+      onTap: widget.tapToAdvance ? advance : null,
       hint: widget.photoCount > 1
           ? widget.tapToAdvance
                 ? 'Tap or swipe to view details and photos'
                 : 'Swipe to view details and photos'
           : null,
-      customSemanticsActions: widget.photoCount < 2
+      customSemanticsActions: select == null
           ? null
           : {
-              CustomSemanticsAction(label: 'Previous page'): () => _showPhoto(
-                (selected - 1) % count,
-                revision,
-                cyclicDirection: -1,
-              ),
-              CustomSemanticsAction(label: 'Next page'): () => _showPhoto(
-                (selected + 1) % count,
-                revision,
-                cyclicDirection: 1,
-              ),
+              CustomSemanticsAction(label: 'Previous page'): () => select(-1),
+              CustomSemanticsAction(label: 'Next page'): () => select(1),
             },
       child: SizedBox(
         height: widget.height,

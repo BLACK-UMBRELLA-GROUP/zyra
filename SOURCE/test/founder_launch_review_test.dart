@@ -259,6 +259,7 @@ class _Owner {
   }
 }
 
+// Q20 / LOCK 14 V5: launch-attention uses the Ivory page background.
 void _shellCanvas(WidgetTester tester, {required bool white}) {
   final shell = find.byType(ZyraOneJourneyConceptShell);
   final scaffold = find
@@ -266,7 +267,7 @@ void _shellCanvas(WidgetTester tester, {required bool white}) {
       .first;
   expect(
     tester.widget<Scaffold>(scaffold).backgroundColor,
-    white ? Colors.white : ZyraColors.luxuryDarkPurple,
+    ZyraColors.ivoryTop,
   );
   final region = find
       .descendant(
@@ -296,7 +297,8 @@ void _shellCanvas(WidgetTester tester, {required bool white}) {
             (widget) =>
                 widget is DecoratedBox &&
                 widget.decoration is BoxDecoration &&
-                (widget.decoration as BoxDecoration).color == Colors.white &&
+                (widget.decoration as BoxDecoration).color ==
+                    ZyraColors.ivoryTop &&
                 (widget.decoration as BoxDecoration).gradient == null,
           ),
         )
@@ -588,7 +590,7 @@ void main() {
             await tester.pumpAndSettle();
             expect(
               tester.widget<Material>(_key('concept_settings_$id')).color,
-              Colors.white,
+              ZyraColors.ivoryTop,
             );
             expect(
               find.text('Founder input needed before launch'),
@@ -645,7 +647,7 @@ void main() {
               await tester.pumpAndSettle();
               expect(
                 tester.widget<Material>(_key('concept_settings_$id')).color,
-                Colors.white,
+                ZyraColors.ivoryTop,
               );
               final title = tester.widget<Text>(
                 _key('concept_settings_title_$id'),

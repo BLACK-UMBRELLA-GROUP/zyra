@@ -4714,9 +4714,9 @@ class _ActiveJourneyOptionRow extends StatelessWidget {
                   children: [
                     Text(
                       label,
-                      style: ZyraText.body(
-                        size: 13,
-                      ).copyWith(color: foreground),
+                      style: ZyraText.body(size: 13).copyWith(
+                        color: danger ? ZyraColors.dangerText : foreground,
+                      ),
                     ),
                     SizedBox(height: 3),
                     Text(
@@ -4724,7 +4724,7 @@ class _ActiveJourneyOptionRow extends StatelessWidget {
                       style: ZyraText.subtext(
                         size: 10.5,
                         color: danger
-                            ? _takeoverCoral.withValues(alpha: 0.70)
+                            ? ZyraColors.dangerText
                             : ZyraColors.ink(0.38),
                       ),
                     ),
@@ -4934,7 +4934,7 @@ Widget _takeoverChoiceCard({
               title,
               textAlign: TextAlign.center,
               style: ZyraText.button(size: 12.5).copyWith(
-                color: danger ? _takeoverCoral : ZyraColors.foreground,
+                color: danger ? ZyraColors.dangerText : ZyraColors.foreground,
               ),
             ),
             SizedBox(height: 4),

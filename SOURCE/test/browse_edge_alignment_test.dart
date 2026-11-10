@@ -429,6 +429,7 @@ void main() {
             tester,
             '${size.width.toInt()}_${quiet ? 'quiet' : 'motion'}_menu',
           );
+          // Q14: holding must preserve the same action as a short tap.
           final hide = await _holdBar(tester, _barIcon(tester, 'Hide profile'));
           _edges(tester.getRect(_glass()), size.width, 20);
           expect(

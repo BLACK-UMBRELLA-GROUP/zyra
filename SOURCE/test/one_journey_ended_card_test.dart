@@ -563,6 +563,7 @@ void main() {
     }
   });
 
+  // QUESTIONS Q27: open the archive through LOCK 15 Focus → Ended Journeys.
   testWidgets('ordinary compatibility spends once and grants no ended Bio', (
     tester,
   ) async {
@@ -587,7 +588,7 @@ void main() {
     expect(current.access.balance, 0);
     expect(saved.profileId, _sara);
     await _nav(tester, 2);
-    await _press(tester, _key('my-zyra-route-concept-my-ended'));
+    await _press(tester, _key('concept-my-ended'));
     await _openOptions(tester);
     await _press(tester, _option(ZyraConceptJourneyOption.compatibility));
     final result = tester.widget<ZyraDraftCompatibilityPresentation>(
@@ -612,6 +613,7 @@ void main() {
     _expectSameModel(current, before);
   });
 
+  // QUESTIONS Q27: keep the existing grant after a real End and Focus return.
   testWidgets('a real prior profile unlock survives the physical End flow', (
     tester,
   ) async {
@@ -638,7 +640,7 @@ void main() {
     await _press(tester, _key('draft_confirm_end_$_sara'));
     expect(current.model.stateFor(_sara), DraftJourneyState.ended);
     await _nav(tester, 2);
-    await _press(tester, _key('my-zyra-route-concept-my-ended'));
+    await _press(tester, _key('concept-my-ended'));
     final before = current.latest.model;
     await _openOptions(tester);
     await _press(tester, _option(ZyraConceptJourneyOption.compatibility));
@@ -1031,12 +1033,13 @@ void main() {
       expect(find.byType(ZyraDraftReportPresentation), findsNothing);
       _expectNoJourneyWrites();
       if (change == 'role') {
+        // QUESTIONS Q27: the current LOCK 8 Guardian shell has five tabs.
         expect(
           tester
               .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
               .items
               .map((item) => item.label),
-          ['Dashboard', 'Network', 'Seekers', 'Profile'],
+          ['Network', 'Journeys', 'My ZYRA', 'Seekers', 'Profile'],
         );
       }
     });

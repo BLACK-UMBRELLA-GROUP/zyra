@@ -9,6 +9,10 @@ import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_journey_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_options.dart';
+import 'package:zyra/dev/zyra_one_journey_options_page.dart';
+import 'package:zyra/dev/zyra_one_journey_tab.dart';
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
+import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/screens/profile/my_profile_preview_screen.dart';
 import 'package:zyra/screens/profile/seeker_profile_screen.dart';
@@ -43,6 +47,7 @@ Future<void> _mount(
   bool guardian = false,
   bool reduce = true,
   bool prepareOwnPhotos = false,
+  bool seedJourney = false,
 }) async {
   tester.view.physicalSize = const Size(393, 852);
   tester.view.devicePixelRatio = 1;
@@ -64,6 +69,16 @@ Future<void> _mount(
         canAct: () => true,
         onExit: () => fail('A nested return must not exit the shell.'),
         initialGuardianRole: guardian,
+        initialCheckpoint: seedJourney
+            ? ZyraPreviewNavigationCheckpoint(
+                guardian: false,
+                model: (ViewRequestDraftModel(
+                  capacity: 3,
+                )..seedJourneys(1)).snapshot(),
+                tab: 1,
+                pages: const [],
+              )
+            : null,
       ),
     ),
   );
@@ -202,14 +217,18 @@ void _rootProfile(WidgetTester tester, {bool guardian = false}) {
   expect(navigation.currentIndex, guardian ? 3 : 4);
 }
 
-Future<void> _openOneJourney(WidgetTester tester) async {
-  // Explicit local scenario selection, never used as a return shortcut.
-  await _tapNav(tester, 'Journey');
-  await openZyraDevControls(tester);
-  expect(find.text('Page options'), findsNothing);
-  expect(_key('concept_page_options_context'), findsNothing);
-  await _tap(tester, 'concept_journey_preview_1');
-  await _tap(tester, 'draft_journey_$_sara');
+Future<void> _openOneJourney(
+  WidgetTester tester, {
+  required bool fromOptions,
+}) async {
+  if (fromOptions &&
+      find.byType(ZyraOneJourneyOptionsPage).evaluate().isEmpty) {
+    await _tap(tester, 'draft_journey_options_$_sara');
+  }
+  await _tap(
+    tester,
+    fromOptions ? 'draft_journey_$_sara' : 'journey_tab_continue',
+  );
   expect(find.byType(ZyraConceptJourneyPresentation), findsOneWidget);
   expect(
     tester
@@ -440,57 +459,91 @@ void main() {
     expect(browse().profiles.map((p) => p.id), ids);
   });
 
-  _case(
-    'Journey body retains vertical stage traversal; Back returns one route',
-    (tester) async {
-      await _mount(tester, reduce: false);
-      await _openOneJourney(tester);
-      _oneMemberBack();
-      final pages = _key('concept_current_journey_pages');
-      await tester.timedDrag(
-        pages,
-        Offset(0, -tester.getSize(pages).height * .8),
-        const Duration(milliseconds: 650),
-      );
-      await tester.pumpAndSettle();
-      expect(tester.widget<PageView>(pages).controller!.page, closeTo(1, .01));
-      await tester.timedDrag(
-        pages,
-        Offset(0, tester.getSize(pages).height * .75),
-        const Duration(milliseconds: 650),
-      );
-      await tester.pumpAndSettle();
-      expect(find.byType(ZyraConceptJourneyPresentation), findsOneWidget);
-      expect(tester.widget<PageView>(pages).controller!.page, closeTo(0, .01));
-      expect(
-        tester
-            .widget<ZyraConceptJourneyPresentation>(
-              find.byType(ZyraConceptJourneyPresentation),
-            )
-            .stage
-            .value,
-        'salam_exchange',
-      );
-      await _returnHeader(tester);
-      expect(find.byType(ZyraConceptJourneyPresentation), findsNothing);
-      expect(find.byKey(_scope), findsNothing);
-      expect(_key('draft_journey_$_sara'), findsOneWidget);
-      expect(find.text('Continue Journey'), findsOneWidget);
-      expect(
-        tester
-            .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
-            .currentIndex,
-        1,
-      );
-    },
-  );
+  // QUESTIONS Q31: Back restores the immediate selected place or Options.
+  for (final fromOptions in [false, true]) {
+    _case(
+      'Journey body retains vertical stage traversal; Back returns one route fromOptions=$fromOptions',
+      (tester) async {
+        await _mount(tester, reduce: false, seedJourney: true);
+        final shell = find.byType(ZyraOneJourneyConceptShell);
+        final owner = tester.state(shell);
+        final fixture = zyraShellFixtureFor(tester);
+        final before = fixture.latest!.model;
+        if (fromOptions) await _tap(tester, 'draft_journey_options_$_sara');
+        final options = find.byType(ZyraOneJourneyOptionsPage);
+        final originalOptions = fromOptions ? tester.element(options) : null;
+        await _openOneJourney(tester, fromOptions: fromOptions);
+        _oneMemberBack();
+        final pages = _key('concept_current_journey_pages');
+        await tester.timedDrag(
+          pages,
+          Offset(0, -tester.getSize(pages).height * .8),
+          const Duration(milliseconds: 650),
+        );
+        await tester.pumpAndSettle();
+        expect(
+          tester.widget<PageView>(pages).controller!.page,
+          closeTo(1, .01),
+        );
+        await tester.timedDrag(
+          pages,
+          Offset(0, tester.getSize(pages).height * .75),
+          const Duration(milliseconds: 650),
+        );
+        await tester.pumpAndSettle();
+        expect(find.byType(ZyraConceptJourneyPresentation), findsOneWidget);
+        expect(
+          tester.widget<PageView>(pages).controller!.page,
+          closeTo(0, .01),
+        );
+        expect(
+          tester
+              .widget<ZyraConceptJourneyPresentation>(
+                find.byType(ZyraConceptJourneyPresentation),
+              )
+              .stage
+              .value,
+          'salam_exchange',
+        );
+        await _returnHeader(tester);
+        expect(find.byType(ZyraConceptJourneyPresentation), findsNothing);
+        if (fromOptions) {
+          expect(find.byType(ZyraOneJourneyOptionsPage), findsOneWidget);
+          expect(_key('draft_journey_$_sara'), findsOneWidget);
+          final restoredOptions = tester.element(options);
+          await _returnHeader(tester);
+          expect(
+            restoredOptions,
+            same(originalOptions),
+            reason: 'QUESTIONS Q31 requires the Options parent to stay mounted',
+          );
+        }
+        expect(find.byKey(_scope), findsNothing);
+        expect(tester.state(shell), same(owner));
+        expect(fixture.latest!.model.progress, before.progress);
+        expect(find.byType(ZyraOneJourneyTab), findsOneWidget);
+        expect(_key('journey_tab_continue'), findsOneWidget);
+        expect(find.text('Continue Journey'), findsOneWidget);
+        expect(
+          tester
+              .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
+              .currentIndex,
+          1,
+        );
+      },
+    );
+  }
 
+  // QUESTIONS Q31: the real Journey menu Cancel restores its live parent.
   _case('modal rebuild and Cancel retain a fresh one-route Back return', (
     tester,
   ) async {
-    await _mount(tester);
-    await _openOneJourney(tester);
+    await _mount(tester, seedJourney: true);
+    await _openOneJourney(tester, fromOptions: true);
+    final reader = find.byType(ZyraConceptJourneyPresentation);
+    final parent = tester.state(reader);
     await _tap(tester, 'concept_journey_menu');
+    expect(tester.state(reader), same(parent));
     expect(find.byType(ZyraConceptJourneyOptions), findsOneWidget);
     final scopeBeforeResize = tester.widget(
       find.byKey(_scope, skipOffstage: false),
@@ -514,10 +567,13 @@ void main() {
     );
     await _tapFinder(tester, cancel);
     expect(find.byType(ZyraConceptJourneyOptions), findsNothing);
-    expect(find.byType(ZyraConceptJourneyPresentation), findsOneWidget);
+    expect(tester.state(reader), same(parent));
     await _returnHeader(tester);
     expect(find.byType(ZyraConceptJourneyPresentation), findsNothing);
+    expect(find.byType(ZyraOneJourneyOptionsPage), findsOneWidget);
+    await _returnHeader(tester);
     expect(find.byKey(_scope), findsNothing);
+    expect(find.byType(ZyraOneJourneyTab), findsOneWidget);
     expect(find.text('Continue Journey'), findsOneWidget);
     expect(
       tester
@@ -527,12 +583,18 @@ void main() {
     );
   });
 
+  // QUESTIONS Q31: Keep this Journey returns to the Options that opened End.
   _case('end confirmation pull is inert and Keep this Journey still works', (
     tester,
   ) async {
-    await _mount(tester);
-    await _openOneJourney(tester);
-    await _tap(tester, 'concept_journey_menu');
+    await _mount(tester, seedJourney: true);
+    final shell = find.byType(ZyraOneJourneyConceptShell);
+    final owner = tester.state(shell);
+    final fixture = zyraShellFixtureFor(tester);
+    final before = fixture.latest!.model;
+    await _tap(tester, 'draft_journey_options_$_sara');
+    final options = find.byType(ZyraOneJourneyOptionsPage);
+    final originalOptions = tester.element(options);
     await _tap(tester, 'draft_options_end_$_sara');
     expect(_key('draft_journey_action_$_sara'), findsOneWidget);
     expect(_key('draft_confirm_end_$_sara'), findsOneWidget);
@@ -543,17 +605,24 @@ void main() {
     expect(_key('draft_cancel_end_$_sara'), findsOneWidget);
     await _tap(tester, 'draft_cancel_end_$_sara');
     expect(_key('draft_journey_action_$_sara'), findsNothing);
-    expect(find.byType(ZyraConceptJourneyPresentation), findsOneWidget);
+    expect(tester.state(shell), same(owner));
+    expect(fixture.latest!.model.progress, before.progress);
     expect(
-      tester
-          .widget<ZyraConceptJourneyPresentation>(
-            find.byType(ZyraConceptJourneyPresentation),
-          )
-          .stage
-          .value,
+      ViewRequestDraftModel.fromSnapshot(
+        fixture.latest!.model,
+      ).stageFor(_sara)?.value,
       'salam_exchange',
     );
+    expect(find.byType(ZyraOneJourneyOptionsPage), findsOneWidget);
+    expect(_key('draft_journey_$_sara'), findsOneWidget);
+    final restoredOptions = tester.element(options);
     await _returnHeader(tester);
-    expect(find.text('Continue Journey'), findsOneWidget);
+    expect(find.byType(ZyraOneJourneyTab), findsOneWidget);
+    expect(_key('journey_tab_continue'), findsOneWidget);
+    expect(
+      restoredOptions,
+      same(originalOptions),
+      reason: 'QUESTIONS Q31 requires the Options parent to stay mounted',
+    );
   });
 }

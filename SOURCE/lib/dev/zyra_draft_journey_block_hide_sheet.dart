@@ -152,7 +152,7 @@ class ZyraDraftJourneyBlockHideSheet extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
         backgroundColor: ZyraColors.surfaceEmphasisFill,
         foregroundColor: destructive
-            ? const Color(0xFFB84A42)
+            ? ZyraColors.dangerText
             : ZyraColors.foreground,
         side: BorderSide(
           color: destructive
@@ -166,7 +166,7 @@ class ZyraDraftJourneyBlockHideSheet extends StatelessWidget {
         textAlign: TextAlign.center,
         style: ZyraText.button(
           size: 14,
-          color: destructive ? const Color(0xFFB84A42) : ZyraColors.foreground,
+          color: destructive ? ZyraColors.dangerText : ZyraColors.foreground,
         ),
       ),
     ),

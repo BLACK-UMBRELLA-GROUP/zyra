@@ -389,10 +389,11 @@ void main() {
       findsNWidgets(7),
     );
     expect(find.byIcon(Icons.flag_outlined), findsOneWidget);
+    // Q21 / LOCK 14 V6: update label ink while keeping the existing icons.
     final endLabel = tester.widget<Text>(find.text('End Journey'));
-    expect(endLabel.style!.color, ZyraColors.destructive);
+    expect(endLabel.style!.color, ZyraColors.dangerText);
     final reportLabel = tester.widget<Text>(find.text('Report'));
-    expect(reportLabel.style!.color, ZyraColors.foreground);
+    expect(reportLabel.style!.color, ZyraColors.dangerText);
   });
 
   for (final width in [320.0, 393.0]) {

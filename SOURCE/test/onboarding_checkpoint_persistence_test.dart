@@ -345,7 +345,12 @@ void main() {
       callback();
       await tester.pump();
       expect(_writes, 1);
-      expect(find.text('Saving your progress…'), findsOneWidget);
+      // Q43: the in-flight save uses the quiet full-screen loader.
+      expect(
+        find.byKey(const ValueKey('zyra_full_screen_quiet_canvas')),
+        findsOneWidget,
+      );
+      expect(find.text('Saving your progress…'), findsNothing);
       _writeWait!.complete();
       await tester.pumpAndSettle();
       expect(find.text(first.prompt), findsWidgets);
@@ -413,7 +418,12 @@ void main() {
       callback();
       await tester.pump();
       expect(_writes, 1);
-      expect(find.text('Saving your progress…'), findsOneWidget);
+      // Q43: the in-flight save uses the quiet full-screen loader.
+      expect(
+        find.byKey(const ValueKey('zyra_full_screen_quiet_canvas')),
+        findsOneWidget,
+      );
+      expect(find.text('Saving your progress…'), findsNothing);
       _writeWait!.complete();
       await tester.pumpAndSettle();
       expect(find.text(first.prompt), findsWidgets);

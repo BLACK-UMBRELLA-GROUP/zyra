@@ -2888,11 +2888,13 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
     IconData? icon,
     VoidCallback? action, {
     bool fitLabel = false,
+    bool dangerLabel = false,
   }) => ZyraOneJourneyConnectionsAction(
     key: ValueKey(key),
     label: label,
     icon: icon,
     fitLabel: fitLabel,
+    dangerLabel: dangerLabel,
     onTap: action == null ? null : _bound(action),
   );
 
@@ -3105,6 +3107,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                       p,
                       () => _act(() => _result(_model.declineReceived(p.id))),
                     ),
+                    dangerLabel: true,
                   ),
                 ]
               : [
@@ -3422,7 +3425,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
                         request.incoming
                             ? 'End & accept request'
                             : 'End & begin with ${target.firstName}',
-                        style: ZyraText.button(color: ZyraColors.destructive),
+                        style: ZyraText.button(color: ZyraColors.dangerText),
                       ),
                     ),
                   ),
@@ -5927,7 +5930,7 @@ class _ZyraOneJourneyConceptShellState extends State<ZyraOneJourneyConceptShell>
       },
       onAdd: () {
         if (!currentAction()) return;
-        if (_seekerMembership.contains('Basic')) {
+        if (_seekerMembership.contains('Basic') && people.isNotEmpty) {
           _accountDispatch(ZyraConceptAccountAction.membership);
         } else {
           _open('guardian_invite');
