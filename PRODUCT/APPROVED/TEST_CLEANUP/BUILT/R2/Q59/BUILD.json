@@ -1,0 +1,113 @@
+{
+  "before": {
+    "counts": {
+      "pass": 6971,
+      "error": 39,
+      "skip": 124
+    },
+    "suites": 530,
+    "duration_ms": 405542,
+    "sha256": "38120fc6c5553e04eaf9c5fb8619207613d7f9e669a59c035f914ed1a3cb93eb"
+  },
+  "after": {
+    "counts": {
+      "pass": 6972,
+      "error": 39,
+      "skip": 124
+    },
+    "suites": 530,
+    "duration_ms": 467184,
+    "sha256": "484104e4416e95ddcc6c0d8aa3371def9a1aa110adb90a94d1c1bf780a63e346"
+  },
+  "focused": {
+    "counts": {
+      "pass": 50,
+      "skip": 5
+    },
+    "suites": 5,
+    "duration_ms": 8862,
+    "sha256": "58b6e8bba8162e4e8d1abab14a02cab685a19e36c02012043551068ff65838c0"
+  },
+  "previous_passes_preserved": 6971,
+  "unchanged_failures": 39,
+  "new_skips": 0,
+  "new_pass": [
+    "test/full_screen_error_test.dart",
+    "framework fallback never restarts without Try again"
+  ],
+  "queue_line": 75,
+  "question": 59,
+  "brief_step": 10,
+  "lock": 23,
+  "status": "BUILT",
+  "commitSha": "b052b267ecf6c981a03adf0198f44318c00b9543",
+  "timestamp": "2026-11-10T15:36:01+00:00",
+  "buildMode": "Flutter debug widget tests with a source assertion on the release-only builder",
+  "flutterVersion": "3.44.2",
+  "flutterRevision": "c9a6c484230f8b5e408ec57be1ef71dee1e77020",
+  "previous_evidence_sha": "32fd6661c8b0a7e37e82b1d88fc1f72e62d3de79",
+  "command": "flutter test --no-pub --reporter json",
+  "analyzer": "flutter analyze --no-pub: No issues found",
+  "policy": "The release framework fallback uses the LOCK 23 page wording and support row. It has no automatic retry, countdown or retry help row. Try again invokes the existing restart. Ordinary route failures keep their retry.",
+  "live_approval_inputs": [
+    {
+      "path": "PRODUCT/APPROVED/TEST_CLEANUP/BRIEFS/TEST_CLEANUP_BRIEF_2026-11-10_R2.md",
+      "bytes": 4440,
+      "sha256": "3ed1ea5b7901dea7e07936c09c043accd1f26a831be2ea4429f82b18175b3487"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V6.md",
+      "bytes": 8151,
+      "sha256": "2a9c7942278f43bd0b842ee65704de11132375bd91729461b9ce43fd5220f3e9"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_ERROR/RECORD/APP_ERROR_SPEC_CURRENT_VERSION_V1.md",
+      "bytes": 4869,
+      "sha256": "c66530468fb1b64d8c52f5302e9d36177020ade7777539f4f715c590c00b810d"
+    }
+  ],
+  "answered_row59_sha256_without_newline": "9ab407edefec201f66ac1e0fcbfeb69b6dd2ec0bc0fce302ad6017f8496cb4c6",
+  "tested_source_snapshot_sha256": "5403f57995f25e9dd40aeadf29b2b4a9ffb5360eb51803ff9313cffd611aea6e",
+  "tested_files": [
+    {
+      "path": "README.md",
+      "before_bytes": 5607,
+      "after_bytes": 5688,
+      "sha256": "b9d4a1724e1451146780c48e7c05b6d66d6f9b6f983d7e435b6feef9af47338e"
+    },
+    {
+      "path": "SOURCE/lib/main.dart",
+      "before_bytes": 34331,
+      "after_bytes": 34315,
+      "sha256": "f3c0efa04e1eb05f19499b214ea86d20fc55e2c07daed2fd1dec5b1d36ff80f7"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_full_screen_error.dart",
+      "before_bytes": 14110,
+      "after_bytes": 14796,
+      "sha256": "84936419358453bccc5b3310d379dd66147d8ad0d8ba608e0d8edc8c3b8bf6b9"
+    },
+    {
+      "path": "SOURCE/test/full_screen_error_test.dart",
+      "before_bytes": 10575,
+      "after_bytes": 11985,
+      "sha256": "769997c9bf81b738f39e16bc764439ca4d08526eee332a6fc12624bd65350ed6"
+    },
+    {
+      "path": "SOURCE/test/zyra_one_app_release_tooling_contract_test.dart",
+      "before_bytes": 9388,
+      "after_bytes": 9767,
+      "sha256": "a27709cf1f07fa2c928154ebfc15c6564a9e8337bb47a8c3de1305394da96bf8"
+    }
+  ],
+  "historical_trace_repairs": {
+    "Q45": 1,
+    "visual_fixture_cases": 36,
+    "held_g10_cases": 8
+  },
+  "remaining_failure_map": {
+    "path": "../FINAL_FAILURES.json",
+    "sha256": "2256874afd0aeb8795a077ee5f1871c6c9e6e4ff816d6ed5363870984bd1e1a6",
+    "questions": "Q61–67"
+  }
+}

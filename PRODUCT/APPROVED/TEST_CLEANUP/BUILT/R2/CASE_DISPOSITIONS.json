@@ -4544,7 +4544,15 @@
     ],
     "disposition": "Fixture",
     "reason": "Preserve the no-pending-attention assertion in the locked Focus state. The old no-linked-seeker dashboard canvas is retired.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master gm04_all_caught_up (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      }
+    ],
     "replacement": "gm04_all_caught_up",
     "visual_fixture": "guardian-dashboard-thinned-empty__large",
     "historical_png_sha256": "0b9f76510cc761195ab8578042bd74d4efb80c57fbac2db76276aca07c6b1a97"
@@ -4559,7 +4567,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Preserve the no-pending-attention assertion in the locked Focus state. The old no-linked-seeker dashboard canvas is retired.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master gm04_all_caught_up (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master gm04_all_caught_up layout small text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "gm04_all_caught_up",
     "visual_fixture": "guardian-dashboard-thinned-empty__small",
     "historical_png_sha256": "478f7c4d08209b91ab0347132905c8f6eb449694550f23c6fec3de261ecbac90"
@@ -4574,7 +4597,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Preserve the no-pending-attention assertion in the locked Focus state. The old no-linked-seeker dashboard canvas is retired.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master gm04_all_caught_up (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master gm04_all_caught_up layout standard text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "gm04_all_caught_up",
     "visual_fixture": "guardian-dashboard-thinned-empty__standard",
     "historical_png_sha256": "a4fdc8e37da53c1e499f18f46d230e3d9a1a6777530da7ecfc9c408ee7ccfee4"
@@ -4589,7 +4627,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Preserve the no-pending-attention assertion in the locked Focus state. The old no-linked-seeker dashboard canvas is retired.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master gm04_all_caught_up (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master gm04_all_caught_up layout standard text scale 1.3 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "gm04_all_caught_up",
     "visual_fixture": "guardian-dashboard-thinned-empty__standard__text-130",
     "historical_png_sha256": "8953ab0281eeb54e0a894733c1ff65a7e4e9a9cfdcf2b5c46b3166b3f68a1fec"
@@ -4604,7 +4657,15 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved gm01_family_review in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master gm01_family_review (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      }
+    ],
     "replacement": "gm01_family_review",
     "visual_fixture": "guardian-dashboard-thinned-main-priority__large",
     "historical_png_sha256": "aa5d368ac3bb86c631d1cc7741afd44e86d49b2aeabea245de034d396afd7d2c"
@@ -4619,7 +4680,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved gm01_family_review in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master gm01_family_review (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master gm01_family_review layout small text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "gm01_family_review",
     "visual_fixture": "guardian-dashboard-thinned-main-priority__small",
     "historical_png_sha256": "21b212b8e542011ea9048ac81940a00170181ca876127abc2018d68f7c6aac46"
@@ -4634,7 +4710,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved gm01_family_review in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master gm01_family_review (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master gm01_family_review layout standard text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "gm01_family_review",
     "visual_fixture": "guardian-dashboard-thinned-main-priority__standard",
     "historical_png_sha256": "ae107844de0bc33c2888e57f25cf333398a78a2b431cc8ab319e5739d3727e02"
@@ -4649,7 +4740,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved gm01_family_review in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master gm01_family_review (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master gm01_family_review layout standard text scale 1.3 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "gm01_family_review",
     "visual_fixture": "guardian-dashboard-thinned-main-priority__standard__text-130",
     "historical_png_sha256": "38e4b42ea2149a40f9cb3ca89fa7e1c0d09eec7a6d6abbbed91aab46322d88a9"
@@ -4888,7 +4994,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved k08_card__add_a_guardian in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master k08_card__add_a_guardian (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "guardian-manager-empty__large renders without overflow or exceptions",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Current member confirmed-empty layout"
+      }
+    ],
     "replacement": "k08_card__add_a_guardian",
     "visual_fixture": "guardian-manager-empty__large",
     "historical_png_sha256": "80938d5554b89e6ca686100146479daec1465b4b5b4c804793e620b448163bea"
@@ -4903,7 +5024,29 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved k08_card__add_a_guardian in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master k08_card__add_a_guardian (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master k08_card__add_a_guardian layout small text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      },
+      {
+        "name": "guardian-manager-empty__small renders without overflow or exceptions",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Current member confirmed-empty layout"
+      }
+    ],
     "replacement": "k08_card__add_a_guardian",
     "visual_fixture": "guardian-manager-empty__small",
     "historical_png_sha256": "cde428f2a8fde7cf173ee74b5276841c938535cc9efb1256cef17a3657806f12"
@@ -4918,7 +5061,29 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved k08_card__add_a_guardian in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master k08_card__add_a_guardian (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master k08_card__add_a_guardian layout standard text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      },
+      {
+        "name": "guardian-manager-empty__standard renders without overflow or exceptions",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Current member confirmed-empty layout"
+      }
+    ],
     "replacement": "k08_card__add_a_guardian",
     "visual_fixture": "guardian-manager-empty__standard",
     "historical_png_sha256": "e06859c113b720164d8a637fd7627a31d72ceacc8d33843f50f08584a787e61b"
@@ -4933,7 +5098,29 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved k08_card__add_a_guardian in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master k08_card__add_a_guardian (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master k08_card__add_a_guardian layout standard text scale 1.3 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      },
+      {
+        "name": "guardian-manager-empty__standard__text-130 renders without overflow or exceptions",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Current member confirmed-empty layout"
+      }
+    ],
     "replacement": "k08_card__add_a_guardian",
     "visual_fixture": "guardian-manager-empty__standard__text-130",
     "historical_png_sha256": "3e90c791d3fafc92cff0a84c146bc5587c989bd737d1f7306506446b0bb45c79"
@@ -4948,7 +5135,15 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved k07_card__omar_invited in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master k07_card__omar_invited (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      }
+    ],
     "replacement": "k07_card__omar_invited",
     "visual_fixture": "guardian-manager-loaded-pending__large",
     "historical_png_sha256": "b05b1c9267fe50437304f04a22d1c13f054489009d91b479063a77e74ebba8c0"
@@ -4963,7 +5158,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved k07_card__omar_invited in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master k07_card__omar_invited (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master k07_card__omar_invited layout small text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "k07_card__omar_invited",
     "visual_fixture": "guardian-manager-loaded-pending__small",
     "historical_png_sha256": "5071a5a9dc94b31a751f4d68349de7619d06f9dd3be630b421c99c379e0bcde0"
@@ -4978,7 +5188,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved k07_card__omar_invited in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master k07_card__omar_invited (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master k07_card__omar_invited layout standard text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "k07_card__omar_invited",
     "visual_fixture": "guardian-manager-loaded-pending__standard",
     "historical_png_sha256": "b15beb3faaa0b3577c6adff726fff611757948beac761873c31d7a96ac253574"
@@ -4993,7 +5218,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved k07_card__omar_invited in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master k07_card__omar_invited (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master k07_card__omar_invited layout standard text scale 1.3 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "k07_card__omar_invited",
     "visual_fixture": "guardian-manager-loaded-pending__standard__text-130",
     "historical_png_sha256": "652628a1b746ba102d0355cac0c27fd18f1a2aaf838ee8055f2027b7ff39c1a1"
@@ -5008,7 +5248,15 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved k17_basic__card_front_hassan in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master k17_basic__card_front_hassan (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      }
+    ],
     "replacement": "k17_basic__card_front_hassan",
     "visual_fixture": "guardian-manager-main__large",
     "historical_png_sha256": "a3d6f817c0ed6523d5b322cae638e5a2fb680913f03441a94d37c9642f4bfd6d"
@@ -5023,7 +5271,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved k17_basic__card_front_hassan in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master k17_basic__card_front_hassan (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master k17_basic__card_front_hassan layout small text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "k17_basic__card_front_hassan",
     "visual_fixture": "guardian-manager-main__small",
     "historical_png_sha256": "20b300a723f12c9bd13366857bd1202f85f7576aee81192168b62f468a4cc130"
@@ -5038,7 +5301,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved k17_basic__card_front_hassan in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master k17_basic__card_front_hassan (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master k17_basic__card_front_hassan layout standard text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "k17_basic__card_front_hassan",
     "visual_fixture": "guardian-manager-main__standard",
     "historical_png_sha256": "a4ef6089ff41b6deac94d2f6887f65864f99e3944d4fde64f6dfe352560d7bc9"
@@ -5053,7 +5331,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved k17_basic__card_front_hassan in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master k17_basic__card_front_hassan (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master k17_basic__card_front_hassan layout standard text scale 1.3 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "k17_basic__card_front_hassan",
     "visual_fixture": "guardian-manager-main__standard__text-130",
     "historical_png_sha256": "c8772615a35706b8e07ac278ad7a3b8721a634caf160a75eef31cce765c59597"
@@ -5420,7 +5713,15 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved g12_seeker__yusuf_additional in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master g12_seeker__yusuf_additional (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      }
+    ],
     "replacement": "g12_seeker__yusuf_additional",
     "visual_fixture": "guardian-seeker-workspace-additional__large",
     "historical_png_sha256": "43500442c99f05580b3c6b6c6a9ac6ae9aef81c660974de32639c28287c10248"
@@ -5435,7 +5736,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved g12_seeker__yusuf_additional in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master g12_seeker__yusuf_additional (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master g12_seeker__yusuf_additional layout small text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "g12_seeker__yusuf_additional",
     "visual_fixture": "guardian-seeker-workspace-additional__small",
     "historical_png_sha256": "3a95e1802f20164d3018c03b5b3716c3cd027a650927008b035dc52401cb917e"
@@ -5450,7 +5766,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved g12_seeker__yusuf_additional in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master g12_seeker__yusuf_additional (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master g12_seeker__yusuf_additional layout standard text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "g12_seeker__yusuf_additional",
     "visual_fixture": "guardian-seeker-workspace-additional__standard",
     "historical_png_sha256": "06caa9d3102dc74964eb2963766194c9ba8911d7a293d2328db1f9f1b9caa449"
@@ -5465,7 +5796,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved g12_seeker__yusuf_additional in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master g12_seeker__yusuf_additional (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master g12_seeker__yusuf_additional layout standard text scale 1.3 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "g12_seeker__yusuf_additional",
     "visual_fixture": "guardian-seeker-workspace-additional__standard__text-130",
     "historical_png_sha256": "aec4caca5ae25d713ce9e848d971044b6239fbc50674e1d7796516cd6d2a65b6"
@@ -5536,7 +5882,15 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved g11_seeker__adam_main in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master g11_seeker__adam_main (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      }
+    ],
     "replacement": "g11_seeker__adam_main",
     "visual_fixture": "guardian-seeker-workspace-main-loaded__large",
     "historical_png_sha256": "7106a8afae8e6f3be52de94527241906ead0fad68f38aae90e0ba40d9ba2a4ca"
@@ -5551,7 +5905,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved g11_seeker__adam_main in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master g11_seeker__adam_main (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master g11_seeker__adam_main layout small text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "g11_seeker__adam_main",
     "visual_fixture": "guardian-seeker-workspace-main-loaded__small",
     "historical_png_sha256": "fee8b15281ccff15425b03d3f8e0422886f4af77d5b7c73f492510547e37bc9d"
@@ -5566,7 +5935,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved g11_seeker__adam_main in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master g11_seeker__adam_main (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master g11_seeker__adam_main layout standard text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "g11_seeker__adam_main",
     "visual_fixture": "guardian-seeker-workspace-main-loaded__standard",
     "historical_png_sha256": "df2358d8161edb625e9a693d6d07c41d9522f54ae1b2e89c91c7ed4dca2ff5e4"
@@ -5581,7 +5965,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved g11_seeker__adam_main in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master g11_seeker__adam_main (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master g11_seeker__adam_main layout standard text scale 1.3 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "g11_seeker__adam_main",
     "visual_fixture": "guardian-seeker-workspace-main-loaded__standard__text-130",
     "historical_png_sha256": "968d255f30237447d2e3980ae590fbca807ce48557cfcc2bf501e8ab55c0307f"
@@ -5708,7 +6107,15 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved m06_seeker_basic in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master m06_seeker_basic (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      }
+    ],
     "replacement": "m06_seeker_basic",
     "visual_fixture": "seeker-dashboard-thinned-connected__large",
     "historical_png_sha256": "3a3356264ae2573f2943c708287499e3f42ac812be33c0e9096b74931c33db78"
@@ -5723,7 +6130,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved m06_seeker_basic in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master m06_seeker_basic (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master m06_seeker_basic layout small text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "m06_seeker_basic",
     "visual_fixture": "seeker-dashboard-thinned-connected__small",
     "historical_png_sha256": "2681c12448f19f11852db6531523951b8dd569cfbbee145eb298f5bd401c9590"
@@ -5738,7 +6160,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved m06_seeker_basic in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master m06_seeker_basic (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master m06_seeker_basic layout standard text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "m06_seeker_basic",
     "visual_fixture": "seeker-dashboard-thinned-connected__standard",
     "historical_png_sha256": "49347d4ae4184326a36fa09ee956f95781670a3008a1b4e983287ff5678db367"
@@ -5753,7 +6190,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Migrate to the approved m06_seeker_basic in the current production presentation. Retain compact, standard and Larger Text runtime coverage.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master m06_seeker_basic (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master m06_seeker_basic layout standard text scale 1.3 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "m06_seeker_basic",
     "visual_fixture": "seeker-dashboard-thinned-connected__standard__text-130",
     "historical_png_sha256": "936bbeea8caf1a3a2c30dbee78cc3f65b325e0660f5a5cf3c3b86fd9d5b476bf"
@@ -5768,7 +6220,15 @@
     ],
     "disposition": "Fixture",
     "reason": "Preserve the no-Guardian state in the locked Focus fixture with unfinished setup and notifications off. The old Basic dashboard composition is retired.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master m05_new_member (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      }
+    ],
     "replacement": "m05_new_member",
     "visual_fixture": "seeker-dashboard-thinned-no-guardian__large",
     "historical_png_sha256": "6ad087cb9a315c162eb1245ac8eb2c48e46c801b726e7e69fc29aeba053595a1"
@@ -5783,7 +6243,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Preserve the no-Guardian state in the locked Focus fixture with unfinished setup and notifications off. The old Basic dashboard composition is retired.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master m05_new_member (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master m05_new_member layout small text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "m05_new_member",
     "visual_fixture": "seeker-dashboard-thinned-no-guardian__small",
     "historical_png_sha256": "caed3ff46eb08240132d8ca61e9406d5269aa34854c72bf909a74d782173a7b3"
@@ -5798,7 +6273,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Preserve the no-Guardian state in the locked Focus fixture with unfinished setup and notifications off. The old Basic dashboard composition is retired.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master m05_new_member (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master m05_new_member layout standard text scale 1.0 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "m05_new_member",
     "visual_fixture": "seeker-dashboard-thinned-no-guardian__standard",
     "historical_png_sha256": "74625d0238ebb5d04388f540b5753f227ea7e3244425e8632c72134d31f06ca1"
@@ -5813,7 +6303,22 @@
     ],
     "disposition": "Fixture",
     "reason": "Preserve the no-Guardian state in the locked Focus fixture with unfinished setup and notifications off. The old Basic dashboard composition is retired.",
-    "candidate_tests": [],
+    "candidate_tests": [
+      {
+        "name": "Round 2 LOCK master m05_new_member (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "430 pt approved golden"
+      },
+      {
+        "name": "Round 2 LOCK master m05_new_member layout standard text scale 1.3 (variant: TargetPlatform.iOS)",
+        "results": [
+          "pass"
+        ],
+        "coverage": "Original width or text-scale runtime fixture"
+      }
+    ],
     "replacement": "m05_new_member",
     "visual_fixture": "seeker-dashboard-thinned-no-guardian__standard__text-130",
     "historical_png_sha256": "f0be61db5343b7671bc91b9e11f7cfb54253f131355da8b6fbd1895e59970d8c"
@@ -6305,9 +6810,18 @@
     "reason": "The verified LOCK 23 e03 test passed in the post-line-74 baseline.",
     "candidate_tests": [
       {
-        "name": "previewAccess recovery uses gold for the wordmark only",
-        "results": []
+        "name": "previewAccess recovery retains the gold wordmark",
+        "results": [
+          "pass"
+        ]
       }
-    ]
+    ],
+    "post74_replacement": {
+      "name": "previewAccess recovery retains the gold wordmark",
+      "results": [
+        "pass"
+      ],
+      "authority": "LOCK 23 e03"
+    }
   }
 ]
