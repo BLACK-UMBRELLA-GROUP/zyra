@@ -1,0 +1,158 @@
+{
+  "lock": 23,
+  "queue_line": 74,
+  "commitSha": "704f16b9f487410868269b00fdd01a109b3b63e8",
+  "flutterVersion": "3.44.2",
+  "flutterRevision": "c9a6c484230f8b5e408ec57be1ef71dee1e77020",
+  "dartSdkVersion": "3.12.2",
+  "appVersion": "1.0.0+5",
+  "buildMode": "Flutter debug widget capture in the production iOS theme",
+  "timestamp": "2026-11-10T14:41:09+00:00",
+  "captureStartedAt": "2026-11-10T14:40:42Z",
+  "captureCompletedAt": "2026-11-10T14:40:54Z",
+  "spec": "PRODUCT/APPROVED/APP_ERROR/RECORD/APP_ERROR_SPEC_CURRENT_VERSION_V1.md",
+  "spec_sha256": "f3e2a523c51ed01f8bf79439eb7a95b2b9ad7a2f3999349115c5a64f56d116aa",
+  "lock_record": "PRODUCT/APPROVED/APP_ERROR/RECORD/LOCK_RECORD.md",
+  "capture_test": "SOURCE/test/visual/lock23_app_error_capture_test.dart",
+  "capture_environment": {
+    "logical_size": [
+      430,
+      932
+    ],
+    "device_pixel_ratio": 3,
+    "png_size": [
+      1290,
+      2796
+    ],
+    "ios_status_bar": false,
+    "target_platform": "iOS",
+    "theme": "actual ZyraApp MaterialApp.theme + documented glyph fallback",
+    "scroll_behavior": "actual ZyraApp MaterialApp.scrollBehavior",
+    "primary_reading_font": "bundled Poppins",
+    "wordmark": "bundled Syne",
+    "missing_glyph_fallback": {
+      "family": "ZYRABaselineSystemSymbols",
+      "source": "/System/Library/Fonts/SFNS.ttf",
+      "bytes": 7872432,
+      "sha256": "44890958f3e0b997028121ed7c7a789f3f5cce227c7a93ce8f86ec0db26da571",
+      "purpose": "San Francisco platform fallback for U+2713; primary fonts unchanged; font not copied"
+    }
+  },
+  "reference_codes": "Synthetic values matching the masters",
+  "e04": "Production retry action pending on a controlled Future",
+  "e05": "Guardian-tagged fixture for the same role-independent server error widget",
+  "pair_layout": "Unaltered master left, raw build right, 1290 × 2796 px each",
+  "visual_notes": "The raw capture shows the rectangular Flutter viewport with production Syne, Material icons and shared shadows. The master has a rounded prototype frame.",
+  "qa": {
+    "command": "flutter test --no-pub --reporter json",
+    "baseline_sha": "3d0d53233efa559d5a55c426984ef9d769dc06d2",
+    "baseline": {
+      "suites": 530,
+      "passed": 6727,
+      "failed": 358,
+      "skipped": 119,
+      "json_log_sha256": "ac9e92e29f8b4f9f80666b64abc784375c5914e4db5137359a80e2af797b0a7e",
+      "duration_ms": 441730
+    },
+    "candidate": {
+      "suites": 531,
+      "passed": 6735,
+      "failed": 357,
+      "skipped": 124
+    },
+    "full_candidate": {
+      "suites": 531,
+      "passed": 6734,
+      "failed": 358,
+      "skipped": 124,
+      "json_log_sha256": "d76ab2e3e261d9ff5fd79aea99c12cadb4cbe2c850640dcc0b0a47d546409c57",
+      "duration_ms": 429367
+    },
+    "test_only_recheck": {
+      "file": "test/help_support_preview_reuse_test.dart",
+      "method": "Replaced only this suite’s case results after updating the two source-text assertions for the Help account guard. Runtime sources and every other suite’s inputs matched the full run.",
+      "suites": 1,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "json_log_sha256": "4033285933f1dbccb5f12d1ff84a8e59aea8c48c5f4a1e10a517d67fc1366306",
+      "duration_ms": 2997
+    },
+    "focused_passed": 14,
+    "focused_guard_passed": 12,
+    "focused_log_sha256": "2592d7741488f5794246f17924d54b7a8a9bf2d29fa23877ea45146247f2c485",
+    "new_failure_identities": 0,
+    "resolved_failure_identities": 1,
+    "resolved": [
+      [
+        "test/zyra_wordmark_colour_test.dart",
+        "previewAccess recovery uses gold for the wordmark only"
+      ]
+    ],
+    "analyzer": "flutter analyze --no-pub: No issues found"
+  },
+  "phone": {
+    "status": "BLOCKED_BEFORE_COMPILATION",
+    "question": 58,
+    "protected_driver": "SOURCE/tooling/no_git_driver.mjs ios-profile",
+    "exit_code": 1,
+    "missingRetainedHost": "REPORTS/EVIDENCE/OA305_NO_GIT_OPTION2_DELIVERY_2026_10_13.yqJ0ef/PRE/Runner.app",
+    "reason": "Protected native driver held because SwiftPM nested manifest sandbox was refused. The retained-host route pins a signed app that is absent and has no install command."
+  },
+  "routing_limits": [
+    "Q59. The release Flutter framework fallback keeps its existing app restart because it has no route-owned reload callback.",
+    "Q60. Preview proof denial uses the session wording when the auth layer does not surface its underlying transport cause."
+  ],
+  "pairs": [
+    {
+      "id": "e01",
+      "state": "offline",
+      "master": "PRODUCT/APPROVED/APP_ERROR/MASTERS/e01_app_error__offline.png",
+      "master_sha256": "67013c30ebe1654bb269d84a13c6c419dc16de7511aacb49f966639a42a735d0",
+      "build": "e01__build.png",
+      "build_sha256": "a1eaa7e4bfb6cd36149ab956332f6207ec6dda5307f08ca6f655915194e49998",
+      "pair": "e01__master_beside_build.png",
+      "pair_sha256": "c627893602742956e4353f7ac985fb02e0aecc1657f4af41b5fc3415e4afa6bb"
+    },
+    {
+      "id": "e02",
+      "state": "server",
+      "master": "PRODUCT/APPROVED/APP_ERROR/MASTERS/e02_app_error__server.png",
+      "master_sha256": "14b02a4c329171455ebbb74b8545796573b85f01de61d2afc048694c2d9c9539",
+      "build": "e02__build.png",
+      "build_sha256": "ca33344760a61ef671b1c066015c99c3e015264f893259eb29269c5368384473",
+      "pair": "e02__master_beside_build.png",
+      "pair_sha256": "0b638438e8a23d8c2ec432fed57b874d769d72720acba5e4e081d343796cdc87"
+    },
+    {
+      "id": "e03",
+      "state": "session",
+      "master": "PRODUCT/APPROVED/APP_ERROR/MASTERS/e03_app_error__session.png",
+      "master_sha256": "de06baf5fd76426d1e6172b58710278e358f6ecd2a271398033d0be5fda59e99",
+      "build": "e03__build.png",
+      "build_sha256": "0270da49ff9d4b5c53e5fdc5b359e06f1cbda460be2658566d0b2d9dbeb98bcc",
+      "pair": "e03__master_beside_build.png",
+      "pair_sha256": "60fc62dacc52c24e6be053d46a3c8d5a1bdd5492f906ee04458f2e2d6a8590ec"
+    },
+    {
+      "id": "e04",
+      "state": "trying",
+      "master": "PRODUCT/APPROVED/APP_ERROR/MASTERS/e04_app_error__trying.png",
+      "master_sha256": "f75ee8bc97df03ef84ed6c14a70288d29f4b164f651857c6ad4135ec06ce0a63",
+      "build": "e04__build.png",
+      "build_sha256": "bcf1e1a31b69fd464c0e7081ddef20c4d13a5e092e5e92de0d3693e182cf07c1",
+      "pair": "e04__master_beside_build.png",
+      "pair_sha256": "446a8fdf5f57ca220035387f52989a9ced12bb7e19eae64a2d6ab7645dd8677b"
+    },
+    {
+      "id": "e05",
+      "state": "guardian_server",
+      "master": "PRODUCT/APPROVED/APP_ERROR/MASTERS/e05_app_error__guardian_server.png",
+      "master_sha256": "e2cc96e63a0041a05ee59b348a6463f0fe226ed558a16630cc933a4df1bd9340",
+      "build": "e05__build.png",
+      "build_sha256": "ca33344760a61ef671b1c066015c99c3e015264f893259eb29269c5368384473",
+      "pair": "e05__master_beside_build.png",
+      "pair_sha256": "0b638438e8a23d8c2ec432fed57b874d769d72720acba5e4e081d343796cdc87"
+    }
+  ]
+}
