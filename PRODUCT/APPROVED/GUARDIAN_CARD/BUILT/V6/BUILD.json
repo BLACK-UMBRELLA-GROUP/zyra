@@ -1,0 +1,308 @@
+{
+  "schema": 1,
+  "queueLine": 78,
+  "commitSha": "7210bc186aaca8f9cde49e24438abd512864e32e",
+  "flutterVersion": "3.44.2",
+  "appVersion": "1.0.0+5",
+  "buildMode": "Flutter widget tests and off-device render",
+  "timestamp": "2026-11-11T18:05:11+00:00",
+  "authority": {
+    "founderGo": "GO in pinned ZYRA, 11 November 2026",
+    "founderChoices": [
+      "1 · Quiet list + •••",
+      "Partner preferences (Recommended)"
+    ],
+    "sourceBase": "3f22b71d392c688b3bc69f6b6ebdab707b03e8db",
+    "line77ApplicationCommit": "6a5623d3ece525fe7308646c7aa63fa4d3af87e3",
+    "startPackBytes": 29640,
+    "initialBriefBytes": 4253,
+    "amendedBriefBytes": 6500,
+    "references": [
+      {
+        "path": "PRODUCT/APPROVED/GUARDIAN_CARD/BRIEFS/BUILD_BRIEF_2026-11-11_V6.md",
+        "authority": "Queue 78 including approved steps 6b and 6c",
+        "bytes": 6500,
+        "sha256": "61bc06110ba5ae5a4eeb7d1cb591a8d5c0fdd1947a904d9730a2959198e8908d"
+      },
+      {
+        "path": "PRODUCT/APPROVED/GUARDIAN_CARD/RECORD/GUARDIAN_CARD_SPEC_CURRENT_VERSION_V6.md",
+        "authority": "LOCK 19 V6 §6.0",
+        "bytes": 17129,
+        "sha256": "809bfe26517781dfed347aa7fc042feb3f847487d021ac6935839e6ea5ff8a55"
+      },
+      {
+        "path": "PRODUCT/APPROVED/GUARDIAN_CARD/RECORD/LOCK_RECORD.md",
+        "authority": "LOCK 19 V6 Founder choice",
+        "bytes": 3734,
+        "sha256": "349e103548a5dad72dd22e0f369f79ce028cff059ce3d84a8d3ebba15b6a2d9b"
+      },
+      {
+        "path": "PRODUCT/APPROVED/APP_SPACING/RECORD/APP_SPACING_SPEC_CURRENT_VERSION_V2.md",
+        "authority": "LOCK 24 V2",
+        "bytes": 3762,
+        "sha256": "7ed09d26f1c89ec34b5ac987f1435e748148907bcd1b42037f9b553af84a013f"
+      },
+      {
+        "path": "PRODUCT/APPROVED/APP_SPACING/RECORD/LOCK_RECORD.md",
+        "authority": "LOCK 24",
+        "bytes": 1200,
+        "sha256": "565daf55520ac4fe94455125f63f5b75dea4f997168eb607566068c4fcdeef54"
+      },
+      {
+        "path": "PRODUCT/APPROVED/PROFILE_TAB/RECORD/PROFILE_TAB_SPEC_CURRENT_VERSION_V2.md",
+        "authority": "LOCK 21 V2 §5",
+        "bytes": 5493,
+        "sha256": "0361f5e45e96effc46a7e854b5abc7c9ba9fc658e35af65adabe47093f318905"
+      },
+      {
+        "path": "PRODUCT/APPROVED/MY_ZYRA/RECORD/MY_ZYRA_SPEC_CURRENT_VERSION_V6.md",
+        "authority": "LOCK 15 V6 §§3–4b",
+        "bytes": 12016,
+        "sha256": "261fc12f1ff91c19e02d09cd93b1992231372dc52ee452e2d00269c9309a4ebc"
+      },
+      {
+        "path": "PRODUCT/APPROVED/UNITY_PASS/RECORD/UNITY_PASS_SPEC_CURRENT_VERSION_V7.md",
+        "authority": "LOCK 22 V7",
+        "bytes": 11291,
+        "sha256": "bc3e4389019527b4c853d5681518024e46d06ad9fe99a8d34ae224a193cc0783"
+      },
+      {
+        "path": "PRODUCT/APPROVED/UNITY_PASS/RECORD/LOCK_RECORD.md",
+        "authority": "LOCK 22 V7 Founder choice",
+        "bytes": 2703,
+        "sha256": "fba6b1aa4b10e5a815671727fcd44ac85522493c4ce017f504aba00c22a08554"
+      }
+    ],
+    "questions": {
+      "71": "a8259e8a7c009d42d37ea94653685b1d6ebfb5ec3261899a1378e171d9014f8c",
+      "72": "0c32622506e4ae659b323984ccabb2676e1072212f0976794750f2be0c857d29",
+      "73": "d353d178d45985261f834f81888328fb978b88592f9d8c9f101c3e5ddc86e901",
+      "74": "e9575def3b086fcc8d06504633e0cdd9ef266a78a91495edc3c1eb0160e1051a",
+      "76": "439e7a53457ee3fcc33ee1500b81150c6e065f9c3b9fe41ec95d379407c1896d",
+      "78": "d2de3e20f0b41492b499dfb5b8b6cfd567327af1554c6c626bd71b390a2ce297",
+      "79": "21d80559cafe97a20ab8c8725a51fd7e58f2608ba4fc1fd943f0f2b9e53aa9b9",
+      "80": "cc0c49839cefd7de374b3952de09ac9003b91d78636196620d2bf753649d525f"
+    }
+  },
+  "quality": {
+    "analyze": {
+      "clean": true,
+      "bytes": 96,
+      "sha256": "a97ec9df34432830b3b2b5cc4cac15eba4392a8f40b14481241fdf0fea52b0ae"
+    },
+    "fullRegression": {
+      "baseline": {
+        "passes": 6941,
+        "failures": 39,
+        "skips": 122,
+        "suites": 530,
+        "completed": true,
+        "nonJsonLines": 0,
+        "sha256": "168a61d84e2e31b6f4ee64a73d126ad50504e87d67b625c8acf2121e14c5ed4b"
+      },
+      "candidate": {
+        "passes": 6956,
+        "failures": 38,
+        "skips": 122,
+        "suites": 530,
+        "completed": true,
+        "nonJsonLines": 0,
+        "sha256": "e63d69e58a4d6d53da67112edb45c39f90b210d40dd09b8c859fbd48ee0765dc"
+      },
+      "failureIdentitiesSha256": "2514ec56905cc651e4bfc9d7c3613a480528c736536ed42ae47902dc090f8a69",
+      "skipIdentitiesSha256": "24a4e53e411313cc1ac927745684217461c411171cd03331ec2e682e4372140f",
+      "sameFailureIdentities": false,
+      "sameSkipIdentities": true,
+      "resolvedBaselineFailures": [
+        {
+          "file": "SOURCE/test/view_request_draft_widget_test.dart",
+          "test": "stale Guardian grants refuse after stage progress",
+          "count": 1
+        }
+      ],
+      "sameSuiteIdentities": true,
+      "newFailures": 0,
+      "newSkips": 0,
+      "comparison": {
+        "bytes": 8005,
+        "sha256": "bd47088f1f00c9c4e28bbb4950431fa7aac6f0ac456843f6f483342837b98f85"
+      },
+      "identityReconciliation": {
+        "replacedPassingIdentities": [
+          {
+            "file": "SOURCE/test/guardian_card_interaction_test.dart",
+            "before": "A parent page reset after removing the second Guardian opens first Details",
+            "after": [
+              "A parent page reset after removing the second Guardian opens the first card"
+            ]
+          },
+          {
+            "file": "SOURCE/test/guardian_card_interaction_test.dart",
+            "before": "Guardian frame stays static at 1.0x text",
+            "after": [
+              "Guardian allocates 1 equal Journey rows at 375.0 pt",
+              "Guardian allocates 2 equal Journey rows at 375.0 pt",
+              "Guardian allocates 3 equal Journey rows at 375.0 pt",
+              "Guardian allocates 1 equal Journey rows at 430.0 pt",
+              "Guardian allocates 2 equal Journey rows at 430.0 pt",
+              "Guardian allocates 3 equal Journey rows at 430.0 pt"
+            ]
+          },
+          {
+            "file": "SOURCE/test/guardian_card_interaction_test.dart",
+            "before": "Guardian frame stays static at 2.0x text",
+            "after": [
+              "Guardian frame stays fixed when content overflows at 320.0 pt",
+              "Guardian frame stays fixed when content overflows at 375.0 pt"
+            ]
+          },
+          {
+            "file": "SOURCE/test/guardian_card_interaction_test.dart",
+            "before": "Guardian selection returns to Details after roster reorder",
+            "after": [
+              "Guardian card follows the selected roster entry after removal"
+            ]
+          },
+          {
+            "file": "SOURCE/test/guardian_card_interaction_test.dart",
+            "before": "History physical and semantic taps change one existing bit without flip",
+            "after": [
+              "History physical and semantic taps each change one bit on the same card"
+            ]
+          },
+          {
+            "file": "SOURCE/test/guardian_card_interaction_test.dart",
+            "before": "LOCK14V5 small gold and queue71 normal-ink pager contrast are preserved",
+            "after": [
+              "LOCK19 uses small gold for role, access and enabled chips"
+            ]
+          },
+          {
+            "file": "SOURCE/test/guardian_card_interaction_test.dart",
+            "before": "Physical swipe opens next Details and card tap has no action",
+            "after": [
+              "Physical swipe selects the next complete card"
+            ]
+          },
+          {
+            "file": "SOURCE/test/guardian_card_interaction_test.dart",
+            "before": "View switch and management buttons do not flip the card",
+            "after": [
+              "View and management actions keep the selected Guardian"
+            ]
+          },
+          {
+            "file": "SOURCE/test/guardian_card_shell_test.dart",
+            "before": "actual shell saves one Past summary bit without flipping and opens unchanged code route",
+            "after": [
+              "actual shell saves one Past summary bit on the card and opens the invitation code route"
+            ]
+          },
+          {
+            "file": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+            "before": "LOCK19 k01-k04 Main front, two/three/no Journey access (variant: TargetPlatform.iOS)",
+            "after": [
+              "LOCK19 V6 Main card with two, three and zero active Journeys (variant: TargetPlatform.iOS)"
+            ]
+          },
+          {
+            "file": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+            "before": "LOCK19 k05-k08 Additional Basic, invited sample and add last (variant: TargetPlatform.iOS)",
+            "after": [
+              "LOCK19 V6 Additional Basic, invited sample and Add last (variant: TargetPlatform.iOS)"
+            ]
+          },
+          {
+            "file": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart",
+            "before": "LOCK19 k17-k19 Seeker Basic one Guardian and locked add (variant: TargetPlatform.iOS)",
+            "after": [
+              "LOCK19 V6 Seeker Basic one Guardian and locked Add (variant: TargetPlatform.iOS)"
+            ]
+          }
+        ],
+        "addedPassingIdentities": [
+          {
+            "file": "SOURCE/test/dashboard_landing_and_surface_persistence_test.dart",
+            "test": "fresh preferences start on Light and saved haptic levels are restored"
+          },
+          {
+            "file": "SOURCE/test/guardian_card_interaction_test.dart",
+            "test": "26 pt card edges select once and stop at the ends"
+          },
+          {
+            "file": "SOURCE/test/guardian_card_interaction_test.dart",
+            "test": "A retained menu barrier cannot dismiss a reopened menu"
+          },
+          {
+            "file": "SOURCE/test/guardian_card_interaction_test.dart",
+            "test": "All eight stage labels fit three occupied places at 375 pt"
+          },
+          {
+            "file": "SOURCE/test/guardian_card_interaction_test.dart",
+            "test": "Main and Remove confirmations are cancellable and exact once"
+          },
+          {
+            "file": "SOURCE/test/lock15_quick_access_and_swipe_test.dart",
+            "test": "Guardian Basic Notifications opens read-only Guardian requests"
+          },
+          {
+            "file": "SOURCE/test/lock15_quick_access_and_swipe_test.dart",
+            "test": "Guardian One Notifications opens read-only Guardian requests"
+          },
+          {
+            "file": "SOURCE/test/lock15_quick_access_and_swipe_test.dart",
+            "test": "My ZYRA Preferences and Edit Profile open the same Partner preferences hub"
+          },
+          {
+            "file": "SOURCE/test/view_request_draft_widget_test.dart",
+            "test": "stale Guardian grants refuse after stage progress"
+          }
+        ],
+        "resolvedBaselineFailures": [
+          {
+            "file": "SOURCE/test/view_request_draft_widget_test.dart",
+            "test": "stale Guardian grants refuse after stage progress",
+            "count": 1,
+            "explanation": "Line 77 hit a 9 pt RenderFlex overflow when opening the old Journey access side. The same stale grant assertions now execute and pass on the V6 card."
+          }
+        ],
+        "unexplainedMissingPasses": 0
+      }
+    },
+    "independentReview": "Independent review checked Guardian authority and stale modal callbacks, edge bounds and Add navigation, Q71 saved values, Q80 role routing and Back, both Partner preferences entry points, and painted spacing. The final focused run verified long stage labels at 375 pt, fixed-card overflow, and the 320 pt Larger Text tile endpoint after the reviewer’s findings were addressed. Q82 tracks ten literal title-to-dot differences where the approved greeting or stacked selector remains."
+  },
+  "spacing": {
+    "audit": "PRODUCT/APPROVED/APP_SPACING/BUILT/SPACING_AUDIT.md",
+    "bytes": 85859,
+    "sha256": "49fc9840a4e839f722ea1d9d90d416ae42d4901f295b471f12a2663ae180b463",
+    "matrix": {
+      "combinations": 16,
+      "geometryChecks": 296,
+      "visibleTabBars": 240,
+      "layoutExceptions": 0,
+      "finalGeometrySha256": "83434411fe0e59ecdd402b19e6f2180d9cc4fd4b535b339aeaeaa5301af27533",
+      "focusedPasses": 169,
+      "focusedLogSha256": "0e8b5e8ecf4a753564322b17ea76068f78171881d0d146381dc15cf746672e13",
+      "baselineGeometrySha256": {
+        "primary": "5fdd9e44fe1ce6c06fed7eba179eb0e4f05307ee269a01525dfae270a0e4699c",
+        "focusAndSettings": "4f0d0d04a2e5324678ca3e6a2de2a27eccdbcb61c92b3e39950e8b384b261e01",
+        "populatedLists": "c451419fcb47e4db198044eb8a4c03fb7eed8e88e177819db74fb57dee39155d",
+        "partnerPreferencesAndFreePlace": "c3ae27876f12280f94753f4b00334d5f3e781c43bedc49ba9a3f5372177b859b"
+      },
+      "partnerPreferencesAndFreePlaceCandidateSha256": "29451758f9aef625720680666fc9147d11b2c5fc4a93b9cbe6e217ba37e74b32"
+    },
+    "openQuestion": 82
+  },
+  "renders": {
+    "privateOnly": true,
+    "pngs": 29,
+    "bytes": 10290012,
+    "manifestSha256": "b64932461afc248a6bd877f12dcdb9e45c4c51468691c911587e456f69639aed",
+    "generatedWith": "LOCK 19 V6 private capture harness on final app source"
+  },
+  "device": {
+    "status": "Separate protected Profile delivery gate",
+    "installExecutedInThisVerification": false,
+    "line77DeliveryCommit": "3f22b71d392c688b3bc69f6b6ebdab707b03e8db"
+  }
+}

@@ -495,3 +495,112 @@ Painted dots use the six-point dot render box. Slot means its 24 pt gesture and 
 - Journey options was reached by tapping the real Journey options control. Seeker One can browse with all three places full. Seeker Basic has a separate stop state.
 - The planned app is the Founder preview under ZYRA AGENTS.md and DR-ZYRA-274. Legacy HomeShell and WaliHomeShell instantiate shared floating navigation for the ordinary live member app. The local fixtures do not authorize a live role account. The legacy own-profile preview paints an inert copy of the bar under IgnorePointer, ExcludeSemantics and ExcludeFocus. The Browse safety action bar replaces the tab destinations while its action menu is open.
 - The LOCK 24 spec names V146 and its LOCK record names V145 for the same Founder selection. There are no dedicated spacing masters. The audit uses the current locked rule and the existing screen masters.
+
+## Line 78 · LOCK 24 V2
+
+Before is the line 77 app. After is the line 78 candidate. Each four-value row uses the original order, 430 × 932 default, 430 × 932 at 200% text, 375 × 667 default, and 375 × 667 at 200% text. All distances are logical points. A dash marks an absent pair.
+
+The actual Founder shell supplied the production theme, font assets, tab bar, and fictional role fixtures. The line 77 matrix and the two supplemental baseline runs passed 16 cases each. Supplementary captures measured populated My ZYRA, Settings, and the lists opened through the real quick-access tiles before those surfaces changed. One final-source run passed all 16 matrix combinations and recorded 296 surface or route checks, including 240 visible tab bars, with zero captured layout exceptions. At narrow Larger Text, the Settings check scrolled to mount the Privacy card and then measured its painted edge. The same section widget supplies the gap for the other Settings groups.
+
+The title gap ends at the 24 pt dot target under Q72. The painted dot starts 9 pt into that target. For Guardian Journeys with a stacked Seeker selector and for Guardian My ZYRA with its greeting, the title block ends below that associated content. The literal text edge is also reported for comparison. QUESTIONS row 82 records the ten measured cases where an intervening greeting or stacked Seeker selector separates the literal title text from the dot slot. The existing placement follows the current designs while that question is open. The default My ZYRA state has no dots. Its populated comparison used two independent focus items for each Seeker and for Guardian One. Guardian Basic kept the fixture’s one item. The j04 master depicts the Journey free place. The live line 77 free-place card already sat 12 pt above its Browse profiles pill, as verified with the pinned line 77 tab widget in the app theme. The line 78 shell retained 12 pt. The separate Journey Options title-to-identity gap is 22 pt in both builds.
+
+For populated lists, the card comparisons use the painted outer boxes. At Larger Text a lazy list may have to scroll to mount its last card, so both card edges were measured in the same content coordinates. Received had a 16 pt card margin plus a 14 pt spacer on line 77. Ended Journeys had 14 pt within the card wrapper plus a 10 pt spacer. The candidate uses one 12 pt gap between adjacent cards and leaves 16 pt above the bar at a genuine scroll end. Short quick-access lists retain their flow. Guardian Basic still opens Membership through the locked Connect and Introductions tiles.
+
+The linked and invited Guardian cards end 16 pt above the bar. The Add card retains its separate pill and 12 pt gap, with the pill 16 pt above the bar. At default text on both approved sizes the linked and invited cards had zero inner scroll extent. The matrix also verified the fixed outer card and clamped inner overflow at Larger Text. Empty Journey and filtered Profiles keep their centered placement. The unlinked Network and Seekers layouts keep their approved short flow.
+
+| Screen | Role | Measured pair | Before | After |
+|---|---|---|---|---|
+| Profiles | Seeker One and Basic | side margins | 20/20 each | 20/20 each |
+| Profiles | Seeker One and Basic | title text to dot slot | 11 / 4 / 11 / 4 | 12 each |
+| Profiles | Seeker One and Basic | title text to painted dot | 20 / 13 / 20 / 13 | 21 each |
+| Profiles | Seeker One and Basic | painted dot to card | 12 each | 12 each |
+| Profiles | Seeker One and Basic | card to pill | 16 each | 12 each |
+| Journey | Seeker One and Basic | side margins | 20/20 each | 20/20 each |
+| Journey | Seeker One and Basic | title text to dot slot | 5.5 / 2 / 5.5 / 2 | 12 each |
+| Journey | Seeker One and Basic | title text to painted dot | 14.5 / 11 / 14.5 / 11 | 21 each |
+| Journey | Seeker One and Basic | painted dot to card | 12 each | 12 each |
+| Journey | Seeker One and Basic | card to pill | 12 each | 12 each |
+| Journey · j04 free place | Seeker One | free-place card to Browse profiles pill | 12 each | 12 each |
+| My ZYRA | All roles | side margins | 20/20 each | 20/20 each |
+| My ZYRA | All roles | card gaps | 8/8/8 each | 12/12/12 each |
+| Guardian | Seeker One and Basic | side margins | 20/20 each | 20/20 each |
+| Guardian | Seeker One and Basic | title text to dot slot | 0.5 / 0 / 0.5 / 46 | 12 each |
+| Guardian | Seeker One and Basic | title text to painted dot | 9.5 / 9 / 9.5 / 55 | 21 each |
+| Guardian | Seeker One and Basic | title block to dot slot | 0 each | 12 each |
+| Guardian | Seeker One and Basic | painted dot to card | 12 each | 12 each |
+| Guardian | Seeker One and Basic | Journey access label to row | — each | 8 each |
+| Guardian | Seeker One and Basic | card to pill | 12 each | — each |
+| Guardian | Seeker One and Basic | card bottom to tab bar | 80 / 120 / 80 / 120 | 16 each |
+| Profile | All roles | side margins | 22/22 each | 20/20 each |
+| Profile | All roles | card gaps | 16/16/16 each | 12/12/12 each |
+| Settings | All roles | side margins | 20/20 each | 20/20 each |
+| Settings | All roles | ACCOUNT label to card | 10 each | 8 each |
+| Settings | All roles | PRIVACY label to card | 10 each | 8 each |
+| Journey options | Seeker One and Basic | side margins | 20/20 each | 20/20 each |
+| Journey options | Seeker One and Basic | title to identity | 22 each | 22 each |
+| Journey options | Seeker One and Basic | card gaps | 14/14 each | 12/12 each |
+| Guardian — populated | Seeker One and Basic | side margins | 20/20 each | 20/20 each |
+| Guardian — populated | Seeker One and Basic | title text to dot slot | 0.5 / 0 / 0.5 / 46 | 12 each |
+| Guardian — populated | Seeker One and Basic | title text to painted dot | 9.5 / 9 / 9.5 / 55 | 21 each |
+| Guardian — populated | Seeker One and Basic | title block to dot slot | 0 each | 12 each |
+| Guardian — populated | Seeker One and Basic | painted dot to card | 12 each | 12 each |
+| Guardian — populated | Seeker One and Basic | Journey access label to row | 12 each | 8 each |
+| Guardian — populated | Seeker One and Basic | card to pill | 12 each | — each |
+| Guardian — populated | Seeker One and Basic | card bottom to tab bar | 80 / 120 / 80 / 120 | 16 each |
+| Guardian — invited | Seeker One | side margins | 20/20 each | 20/20 each |
+| Guardian — invited | Seeker One | title text to dot slot | 0.5 / 0 / 0.5 / 46 | 12 each |
+| Guardian — invited | Seeker One | title text to painted dot | 9.5 / 9 / 9.5 / 55 | 21 each |
+| Guardian — invited | Seeker One | title block to dot slot | 0 each | 12 each |
+| Guardian — invited | Seeker One | painted dot to card | 12 each | 12 each |
+| Guardian — invited | Seeker One | card to pill | 12 each | — each |
+| Guardian — invited | Seeker One | card bottom to tab bar | 80 each | 16 each |
+| Guardian — Add card | Seeker One and Basic | side margins | 20/20 each | 20/20 each |
+| Guardian — Add card | Seeker One and Basic | title text to dot slot | 0.5 / 0 / 0.5 / 46 | 12 each |
+| Guardian — Add card | Seeker One and Basic | title text to painted dot | 9.5 / 9 / 9.5 / 55 | 21 each |
+| Guardian — Add card | Seeker One and Basic | title block to dot slot | 0 each | 12 each |
+| Guardian — Add card | Seeker One and Basic | painted dot to card | 12 each | 12 each |
+| Guardian — Add card | Seeker One and Basic | card to pill | 12 each | 12 each |
+| Guardian — Add card | Seeker One and Basic | card bottom to tab bar | 80 each | 80 each |
+| My ZYRA — activity | All roles | side margins | 20/20 each | 20/20 each |
+| My ZYRA — activity | All roles | card gaps | 8/8/8 each | 12/12/12 each |
+| My ZYRA — activity | Seeker One and Basic | title text to dot slot | 12 each | 12 each |
+| My ZYRA — activity | Guardian One | title text to dot slot | 44 / 98 / 62 / 134 | 44 / 98 / 62 / 134 |
+| My ZYRA — activity | Seeker One and Basic | title text to painted dot | 21 each | 21 each |
+| My ZYRA — activity | Guardian One | title text to painted dot | 53 / 107 / 71 / 143 | 53 / 107 / 71 / 143 |
+| My ZYRA — activity | Seeker One, Seeker Basic, Guardian One | title block to dot slot | 12 each | 12 each |
+| Seeker Requests — Received | Seeker One and Basic | card gap | 30 each | 12 each |
+| Seeker Requests — Received | Seeker One and Basic | last card to bar | 382 / 46 / 176 / 46 | 400 / 16 / 194 / 16 |
+| Seeker Requests — Past | Seeker One and Basic | card gap | 16 each | 12 each |
+| Seeker Requests — Past | Seeker One and Basic | last card to bar | 396 / 32 / 190 / 32 | 400 / 16 / 194 / 16 |
+| Seeker Ended Journeys — populated | Seeker One and Basic | card gap | 24 each | 12 each |
+| Seeker Ended Journeys — populated | Seeker One and Basic | last card to bar | 260 / 40 / 44 / 40 | 272 / 16 / 56 / 16 |
+| Journey — empty | Seeker Basic | empty state to plans card | 14 each | 12 each |
+| Network | Guardian One and Basic | side margins | 20/20 each | 20/20 each |
+| Network | Guardian One and Basic | card to pill | 14 each | 12 each |
+| Network | Guardian One and Basic | card to Introduce pill | 14 / 15.5 / 23 / 14 | 12 each |
+| Journeys | Guardian One and Basic | side margins | 20/20 each | 20/20 each |
+| Journeys | Guardian One and Basic | title text to dot slot | 6 / 69 / 51 / 69 | 12 / 75 / 57 / 75 |
+| Journeys | Guardian One and Basic | title text to painted dot | 15 / 78 / 60 / 78 | 21 / 84 / 66 / 84 |
+| Journeys | Guardian One and Basic | title block to dot slot | 6 each | 12 each |
+| Journeys | Guardian One and Basic | painted dot to card | 12 each | 12 each |
+| Journeys | Guardian One and Basic | card to Ended Journeys card | 10 each | 12 each |
+| Seekers | Guardian One and Basic | side margins | 20/20 each | 20/20 each |
+| Seekers | Guardian One and Basic | card gaps | 10 each | 12 each |
+| Seekers | Guardian One and Basic | roster card to footer | 10 each | 10 each |
+| Guardian Journey requests — populated | Guardian One and Basic | side margins | 20/20 each | 20/20 each |
+| Guardian Journey requests — populated | Guardian One and Basic | card gaps | 10 each | 12 each |
+| Guardian Connect — populated | Guardian One | card gap | 10 each | 12 each |
+| Guardian Connect — populated | Guardian One | last card to bar | 455 / 77 / 249 / 26 | 453 / 75 / 247 / 16 |
+| Guardian Introductions — populated | Guardian One | card gap | 10 each | 12 each |
+| Guardian Introductions — populated | Guardian One | last card to bar | 555 / 375 / 315 / 32 | 553 / 373 / 313 / 30 |
+
+### Partner preferences category page
+
+The late LOCK 22 V7 and LOCK 15 V6 scope added the retained Partner preferences category page. The supplemental capture opened it through the actual My ZYRA Preferences chip and through Edit profile for Seeker One and Basic, at both approved sizes and both text settings. It measured the painted legend and category cards at the top and the last two category cards at the true list end. All 16 route and layout combinations matched. The fixed Save changes action remained reachable. The last card finished 45 pt above that separate footer action in both captures.
+
+| Screen | Role | Measured pair | Before | After |
+|---|---|---|---|---|
+| Partner preferences, both entries | Seeker One and Basic | page side margins | 20/20 each | 20/20 each |
+| Partner preferences, both entries | Seeker One and Basic | legend card to first category card | 14 each | 12 each |
+| Partner preferences, both entries | Seeker One and Basic | first to second category card | 11 each | 12 each |
+| Partner preferences, both entries | Seeker One and Basic | penultimate to last category card | 11 each | 12 each |
