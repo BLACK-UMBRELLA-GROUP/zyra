@@ -20,19 +20,21 @@ class ZyraSeekerPlanLimits {
   });
 
   static const oneSavedProfiles = 50;
+  static const maxLinkedGuardians = 10;
+  static const basicGuardianPlaces = 1;
   static const basic = ZyraSeekerPlanLimits(
     savedProfiles: ZyraSeekerBasicPolicy.totalSaveLimit,
     activeConsiders: ZyraSeekerBasicPolicy.totalConsiderLimit,
     dailyConsiders: ZyraSeekerBasicPolicy.dailyConsiderLimit,
     recentDeclinedProfiles: 0,
-    linkedGuardians: 1,
+    linkedGuardians: maxLinkedGuardians,
   );
   static const one = ZyraSeekerPlanLimits(
     savedProfiles: oneSavedProfiles,
     activeConsiders: null,
     dailyConsiders: null,
     recentDeclinedProfiles: 10,
-    linkedGuardians: 10,
+    linkedGuardians: maxLinkedGuardians,
   );
 
   static ZyraSeekerPlanLimits of(ZyraPlan plan) =>
@@ -48,14 +50,6 @@ class ZyraSeekerPlanLimits {
       alreadyConsidered ||
       (currentCount >= 0 &&
           (activeConsiders == null || currentCount < activeConsiders!));
-
-  /// Main counts as one of the accepted links. Pending requests are not links.
-  static bool canAddGuardian({
-    required ZyraPlan plan,
-    required int linkedGuardianCount,
-  }) =>
-      linkedGuardianCount >= 0 &&
-      linkedGuardianCount < of(plan).linkedGuardians;
 
   /// AppState.declined is the profile decision/Passed list, not declined
   /// Journey requests. Hydration and local Pass both keep newest first.

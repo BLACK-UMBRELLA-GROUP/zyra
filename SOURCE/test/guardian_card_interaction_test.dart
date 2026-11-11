@@ -121,6 +121,7 @@ class _HarnessState extends State<_Harness> {
   var revision = 0;
   var identity = 'seeker-a';
   var adds = 0;
+  var upgrades = 0;
   var circles = 0;
   bool Function()? authority;
   void replaceAuthority(bool Function() next) =>
@@ -246,6 +247,7 @@ class _HarnessState extends State<_Harness> {
         return null;
       },
       onAdd: () => adds++,
+      onUpgrade: () => upgrades++,
       onCircle: () => circles++,
     ),
   );
@@ -1015,7 +1017,7 @@ void main() {
   });
 
   testWidgets(
-    'Seeker Basic keeps one Guardian and locked Add without paid Chat',
+    'Seeker Basic keeps linked Guardians and opens independent Add and upgrade actions',
     (tester) async {
       await mount(tester, people: _people(mainBasic: true), basic: true);
       expect(find.text('Hassan'), findsOneWidget);
@@ -1030,8 +1032,23 @@ void main() {
       );
       expect(state().grants[_hassanId]!.chat, isFalse);
       await next(tester);
-      expect(find.text('Add more Guardians'), findsOneWidget);
-      expect(find.text('View Seeker One'), findsOneWidget);
+      expect(find.text('Ibrahim'), findsOneWidget);
+      await next(tester);
+      expect(find.text('Add a Guardian'), findsNWidgets(2));
+      expect(find.text('Used'), findsOneWidget);
+      expect(find.text('Guardian Basic place'), findsOneWidget);
+      expect(find.text('Guardian One places'), findsOneWidget);
+      expect(find.text('8'), findsOneWidget);
+      expect(
+        find.text(
+          'Your Guardian Basic place is used, so new Guardians need Guardian One.',
+        ),
+        findsOneWidget,
+      );
+      await tester.tap(find.text('Seeker One: any 10 Guardians ›'));
+      await tester.pump();
+      expect(state().upgrades, 1);
+      expect(state().adds, 0);
       expect(find.text('Omar'), findsNothing);
       expect(find.text('Ibrahim'), findsNothing);
       expect(_key('guardian-card-next'), findsNothing);

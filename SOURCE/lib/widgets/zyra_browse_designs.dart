@@ -332,6 +332,9 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
     bool tapToAdvance = false,
   }) {
     final revision = _layoutRevision;
+    final avatarPhotoSize = ZyraProfileDetailsPage.photoSizeFor(
+      profile.seekerPlan,
+    );
     return _BrowsePhotoPager(
       key: ValueKey('concept_browse_pager_${profile.id}_detailsFirst'),
       profileId: profile.id,
@@ -350,8 +353,8 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
                   : widget.photoBuilder(
                       context,
                       profile.photos.first,
-                      width: 50,
-                      height: 50,
+                      width: avatarPhotoSize,
+                      height: avatarPhotoSize,
                       alignment: Alignment.center,
                     ),
             )

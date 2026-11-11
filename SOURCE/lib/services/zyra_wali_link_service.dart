@@ -657,55 +657,42 @@ class ZyraWaliLinkService {
     String code, {
     String? relationship,
     required ZyraPlan? currentSeekerPlan,
-  }) async {
-    final userId = ZyraAuth.currentUser?.id;
-    if (userId == null) return 'You are not signed in.';
-    final generation = ZyraAccountState.generation;
-    const staleMessage =
-        'Your account changed. Please check your Guardian requests before continuing.';
-    bool isCurrentAccount() =>
-        ZyraAuth.currentUser?.id == userId &&
-        ZyraAccountState.isCurrent(userId, generation);
-
-    if (!isCurrentAccount()) return staleMessage;
-    if (currentSeekerPlan != null) {
-      final capacity = await guardianCapacityForCurrentSeeker(
-        plan: currentSeekerPlan,
-      );
-      if (!isCurrentAccount()) return staleMessage;
-      if (!capacity.canAdd) return capacity.message;
-    }
-    try {
-      if (!isCurrentAccount()) return staleMessage;
-      final requestId = await supabase.rpc(
-        'zyra_request_guardian_link',
-        params: {'p_code': code, 'p_relationship': relationship},
-      );
-      if (!isCurrentAccount()) return staleMessage;
-      if (requestId is! String || requestId.isEmpty) {
-        return 'That code is not available.';
+    required bool Function() isActionCurrent,
+  }) => _withGuardianLinkAction(
+    currentSeekerPlan: currentSeekerPlan,
+    isActionCurrent: isActionCurrent,
+    action: (isCurrentAccount) async {
+      try {
+        final requestId = await supabase.rpc(
+          'zyra_request_guardian_link',
+          params: {'p_code': code, 'p_relationship': relationship},
+        );
+        if (!isCurrentAccount()) return _staleLinkAction;
+        if (requestId is! String || requestId.isEmpty) {
+          return 'That code is not available.';
+        }
+        _markInvitationsChanged();
+        return null;
+      } catch (e) {
+        if (!isCurrentAccount()) return _staleLinkAction;
+        final message = e.toString();
+        if (message.contains('request_already_pending')) {
+          return 'You already have a request waiting with this person.';
+        }
+        if (message.contains('relationship_required')) {
+          return 'Choose how you are related before sending the request.';
+        }
+        if (message.contains('already_linked')) {
+          return 'You are already linked.';
+        }
+        if (message.contains('code_unavailable')) {
+          return 'That code is not available.';
+        }
+        debugPrint('ZYRA: requestGuardianLink failed — $e');
+        return "That request didn't go through. Please try again.";
       }
-      _markInvitationsChanged();
-      return null;
-    } catch (e) {
-      if (!isCurrentAccount()) return staleMessage;
-      final message = e.toString();
-      if (message.contains('request_already_pending')) {
-        return 'You already have a request waiting with this person.';
-      }
-      if (message.contains('relationship_required')) {
-        return 'Choose how you are related before sending the request.';
-      }
-      if (message.contains('already_linked')) {
-        return 'You are already linked.';
-      }
-      if (message.contains('code_unavailable')) {
-        return 'That code is not available.';
-      }
-      debugPrint('ZYRA: requestGuardianLink failed — $e');
-      return "That request didn't go through. Please try again.";
-    }
-  }
+    },
+  );
 
   static Future<ZyraSourceResult<List<ZyraGuardianLinkRequest>>>
   guardianLinkRequests() async {
@@ -752,50 +739,37 @@ class ZyraWaliLinkService {
     String requestId, {
     String? relationship,
     required ZyraPlan? currentSeekerPlan,
-  }) async {
-    final userId = ZyraAuth.currentUser?.id;
-    if (userId == null) return 'You are not signed in.';
-    final generation = ZyraAccountState.generation;
-    const staleMessage =
-        'Your account changed. Please check your Guardian requests before continuing.';
-    bool isCurrentAccount() =>
-        ZyraAuth.currentUser?.id == userId &&
-        ZyraAccountState.isCurrent(userId, generation);
-
-    if (!isCurrentAccount()) return staleMessage;
-    if (currentSeekerPlan != null) {
-      final capacity = await guardianCapacityForCurrentSeeker(
-        plan: currentSeekerPlan,
-      );
-      if (!isCurrentAccount()) return staleMessage;
-      if (!capacity.canAdd) return capacity.message;
-    }
-    try {
-      if (!isCurrentAccount()) return staleMessage;
-      await supabase.rpc(
-        'zyra_accept_guardian_request',
-        params: {'p_request_id': requestId, 'p_relationship': relationship},
-      );
-      if (!isCurrentAccount()) return staleMessage;
-      _markLinksChanged();
-      _markInvitationsChanged();
-      return null;
-    } catch (e) {
-      if (!isCurrentAccount()) return staleMessage;
-      final message = e.toString();
-      if (message.contains('relationship_required')) {
-        return 'Choose how you are related before accepting.';
+    required bool Function() isActionCurrent,
+  }) => _withGuardianLinkAction(
+    currentSeekerPlan: currentSeekerPlan,
+    isActionCurrent: isActionCurrent,
+    action: (isCurrentAccount) async {
+      try {
+        await supabase.rpc(
+          'zyra_accept_guardian_request',
+          params: {'p_request_id': requestId, 'p_relationship': relationship},
+        );
+        if (!isCurrentAccount()) return _staleLinkAction;
+        _markLinksChanged();
+        _markInvitationsChanged();
+        return null;
+      } catch (e) {
+        if (!isCurrentAccount()) return _staleLinkAction;
+        final message = e.toString();
+        if (message.contains('relationship_required')) {
+          return 'Choose how you are related before accepting.';
+        }
+        if (message.contains('request_expired')) {
+          return 'This request has expired.';
+        }
+        if (message.contains('request_not_pending')) {
+          return 'This request has already been answered.';
+        }
+        debugPrint('ZYRA: acceptGuardianLinkRequest failed — $e');
+        return "That didn't go through. Please try again.";
       }
-      if (message.contains('request_expired')) {
-        return 'This request has expired.';
-      }
-      if (message.contains('request_not_pending')) {
-        return 'This request has already been answered.';
-      }
-      debugPrint('ZYRA: acceptGuardianLinkRequest failed — $e');
-      return "That didn't go through. Please try again.";
-    }
-  }
+    },
+  );
 
   static Future<bool> declineGuardianLinkRequest(String requestId) async {
     try {
@@ -1520,42 +1494,80 @@ class ZyraWaliLinkService {
     String token, {
     String? relationship,
     required ZyraPlan? currentSeekerPlan,
+    required bool Function() isActionCurrent,
+  }) => _withGuardianLinkAction(
+    currentSeekerPlan: currentSeekerPlan,
+    isActionCurrent: isActionCurrent,
+    action: (isCurrentAccount) async {
+      try {
+        await supabase.rpc(
+          'accept_wali_invite',
+          params: {
+            'p_token': token.trim().toUpperCase(),
+            'p_relationship': relationship,
+          },
+        );
+        if (!isCurrentAccount()) return _staleLinkAction;
+        _markLinksChanged();
+        _markInvitationsChanged();
+        return null;
+      } catch (e) {
+        if (!isCurrentAccount()) return _staleLinkAction;
+        final message = e.toString();
+        if (message.contains('Cannot accept your own invite')) {
+          return "That's your own invite code.";
+        }
+        if (message.contains('Invite not found or already used')) {
+          return 'That code is invalid or already used.';
+        }
+        if (message.contains('This invite is for a Guardian account')) {
+          return 'That code is for a Guardian to accept, not a Seeker.';
+        }
+        if (message.contains('This invite is for a Seeker account')) {
+          return 'That code is for a Seeker to accept, not a Guardian.';
+        }
+        if (message.contains('This invite code has expired')) {
+          return 'This code has expired — ask them to generate a new one.';
+        }
+        return "That didn't work. Check the code and try again.";
+      }
+    },
+  );
+
+  static const _staleLinkAction =
+      'Your account changed. Please check your Guardian requests before continuing.';
+  static final _seekerLinkActions = <(String, int)>{};
+
+  /// Serialize this client's Seeker-side preflight and mutation across both
+  /// code routes. The server still owns concurrency across clients.
+  static Future<String?> _withGuardianLinkAction({
+    required ZyraPlan? currentSeekerPlan,
+    required bool Function() isActionCurrent,
+    required Future<String?> Function(bool Function()) action,
   }) async {
-    if (currentSeekerPlan != null) {
+    final userId = ZyraAuth.currentUser?.id;
+    if (userId == null) return 'You are not signed in.';
+    final generation = ZyraAccountState.generation;
+    bool isCurrentAccount() =>
+        ZyraAuth.currentUser?.id == userId &&
+        ZyraAccountState.isCurrent(userId, generation);
+
+    if (!isCurrentAccount() || !isActionCurrent()) return _staleLinkAction;
+    if (currentSeekerPlan == null) return action(isCurrentAccount);
+
+    final owner = (userId, generation);
+    if (!_seekerLinkActions.add(owner)) {
+      return ZyraGuardianCapacity.unavailableMessage;
+    }
+    try {
       final capacity = await guardianCapacityForCurrentSeeker(
         plan: currentSeekerPlan,
       );
+      if (!isCurrentAccount() || !isActionCurrent()) return _staleLinkAction;
       if (!capacity.canAdd) return capacity.message;
-    }
-    try {
-      await supabase.rpc(
-        'accept_wali_invite',
-        params: {
-          'p_token': token.trim().toUpperCase(),
-          'p_relationship': relationship,
-        },
-      );
-      _markLinksChanged();
-      _markInvitationsChanged();
-      return null;
-    } catch (e) {
-      final message = e.toString();
-      if (message.contains('Cannot accept your own invite')) {
-        return "That's your own invite code.";
-      }
-      if (message.contains('Invite not found or already used')) {
-        return 'That code is invalid or already used.';
-      }
-      if (message.contains('This invite is for a Guardian account')) {
-        return 'That code is for a Guardian to accept, not a Seeker.';
-      }
-      if (message.contains('This invite is for a Seeker account')) {
-        return 'That code is for a Seeker to accept, not a Guardian.';
-      }
-      if (message.contains('This invite code has expired')) {
-        return 'This code has expired — ask them to generate a new one.';
-      }
-      return "That didn't work. Check the code and try again.";
+      return await action(isCurrentAccount);
+    } finally {
+      _seekerLinkActions.remove(owner);
     }
   }
 

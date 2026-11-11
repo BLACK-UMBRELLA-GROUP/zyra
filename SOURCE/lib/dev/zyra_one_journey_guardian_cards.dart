@@ -1,7 +1,9 @@
 // LOCK 19 V6: Founder preview Guardian cards.
 import 'package:flutter/gestures.dart' show kTouchSlop;
 import 'package:flutter/material.dart';
+import '../data/zyra_guardian_capacity.dart';
 import '../services/zyra_account_state.dart';
+import '../state/app_state.dart' show ZyraPlan;
 import '../services/zyra_wali_link_service.dart' show WaliLinkedPerson;
 import '../screens/wali/seeker_guardian_designs.dart';
 import '../theme/zyra_colors.dart';
@@ -77,6 +79,7 @@ class ZyraOneJourneyGuardianCards extends StatefulWidget {
     required this.clearMain,
     required this.remove,
     required this.onAdd,
+    this.onUpgrade,
     required this.onCircle,
     required this.unread,
     this.onResume,
@@ -100,7 +103,7 @@ class ZyraOneJourneyGuardianCards extends StatefulWidget {
   final GuardianClearMainAction clearMain;
   final GuardianRemoveAction remove;
   final VoidCallback onAdd, onCircle;
-  final VoidCallback? onResume;
+  final VoidCallback? onResume, onUpgrade;
   final ZyraGuardianFamilyState familyState;
   final bool Function(String)? familyInvited;
   final ValueChanged<String>? onFamilyInvite, onFamilyCancel;
@@ -125,18 +128,19 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
   List<ZyraGuardianCardPerson> _orderedPeople(
     ZyraOneJourneyGuardianCards source,
   ) {
-    final all = List<ZyraGuardianCardPerson>.of(source.people);
+    final all = <String, ZyraGuardianCardPerson>{
+      for (final person in source.people) person.person.id: person,
+    }.values.toList();
     all.sort((a, b) {
       if (a.person.isMain != b.person.isMain) return a.person.isMain ? -1 : 1;
       return (a.person.linkedAt ?? DateTime(2100)).compareTo(
         b.person.linkedAt ?? DateTime(2100),
       );
     });
-    return source.basic ? all.take(1).toList() : all;
+    return all;
   }
 
   bool get _canShowInvitation => !widget.basic && _people.isNotEmpty;
-  bool get _needsUpgrade => widget.basic && _people.isNotEmpty;
   int get _guardianCount => _people.length + (_canShowInvitation ? 1 : 0);
   int get _length => _guardianCount + 1;
   ZyraGuardianCardPerson? get _person =>
@@ -397,6 +401,16 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     final target = _target;
     final faceLease = _lease();
     final people = _people;
+    final basicCapacity = widget.basic
+        ? ZyraGuardianCapacity.fromCount(
+            plan: ZyraPlan.basic,
+            linkedGuardianCount: people.length,
+            linkedBasicGuardianCount: people
+                .where((person) => person.basic)
+                .length,
+          )
+        : null;
+    final upgrade = widget.onUpgrade;
     final bottom = ZyraNavBarMetrics.contentBottomClearance(context);
     final move = ZyraTapFeedback.onChanged<int>(
       context,
@@ -509,7 +523,10 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
                   children: [
                     if (add)
                       ZyraGuardianAddCard(
-                        needsUpgrade: _needsUpgrade,
+                        basicCapacity: basicCapacity,
+                        onUpgrade: widget.basic && upgrade != null
+                            ? _action(upgrade)
+                            : null,
                         allowContentScroll: largerText,
                       )
                     else
@@ -531,11 +548,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
             ),
             if (add) ...[
               const SizedBox(height: ZyraPreviewSpacing.cardToPill),
-              _pill(
-                _needsUpgrade ? 'View Seeker One' : 'Add a Guardian',
-                'guardian-card-center',
-                widget.onAdd,
-              ),
+              _pill('Add a Guardian', 'guardian-card-center', widget.onAdd),
             ],
           ],
         ),

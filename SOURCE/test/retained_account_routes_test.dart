@@ -586,6 +586,10 @@ void main() {
           expect(preview, findsOneWidget);
           expect(identical(tester.state(preview), state), isTrue);
           expect(find.text('Adam'), findsOneWidget);
+          expect(
+            tester.getSemantics(_key('concept_browse_details_avatar_draft-self')),
+            matchesSemantics(label: 'Profile photo, Seeker One', isImage: true),
+          );
           expect(_key('my-profile-preview-unavailable'), findsNothing);
           await _returnPage(tester);
           expect(preview, findsNothing);

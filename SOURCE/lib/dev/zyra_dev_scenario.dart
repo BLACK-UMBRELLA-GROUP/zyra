@@ -52,7 +52,6 @@ import '../services/zyra_auth.dart';
 import '../services/zyra_developer_access.dart';
 import '../services/zyra_wali_journey_service.dart';
 import '../services/zyra_wali_link_service.dart';
-import '../state/app_state.dart' show ZyraPlan;
 import '../theme/zyra_colors.dart';
 
 /// Which Seeker plan a control makes sense for.

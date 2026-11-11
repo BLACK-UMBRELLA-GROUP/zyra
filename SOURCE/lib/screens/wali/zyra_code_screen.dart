@@ -714,12 +714,19 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
         _busyRequest = request.id;
         _error = null;
       });
+      final seekerPlan = request.otherRole == 'seeker'
+          ? null
+          : AppState.instance.verifiedSeekerPlan ?? ZyraPlan.basic;
       final error = await ZyraWaliLinkService.acceptGuardianLinkRequest(
         request.id,
         relationship: relationship,
-        currentSeekerPlan: request.otherRole == 'seeker'
-            ? null
-            : AppState.instance.plan,
+        currentSeekerPlan: seekerPlan,
+        isActionCurrent: () =>
+            _isCurrentRequestAction(owner.ownerId, owner.generation) &&
+            (seekerPlan == null ||
+                (AppState.instance.verifiedSeekerPlan ?? ZyraPlan.basic) ==
+                    seekerPlan) &&
+            _requests.any((row) => row.id == request.id && row.isPending),
       );
       if (!mounted ||
           !_isCurrentRequestAction(owner.ownerId, owner.generation)) {
@@ -1370,6 +1377,7 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
   late final TextEditingController _controller;
   late final FocusNode _focusNode;
   ZyraPersonalCodePreview? _preview;
+  ({String code, String? userId, int generation})? _checkedTarget;
   String? _relationship;
   String? _error;
   bool _busy = false;
@@ -1559,7 +1567,24 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
       await _checkLocal();
       return;
     }
-    if (_controller.text.trim().isEmpty) return;
+    if (!mounted || _busy || _controller.text.trim().isEmpty) return;
+    final target = (
+      code: _controller.text,
+      userId: ZyraAccountState.userId,
+      generation: ZyraAccountState.generation,
+    );
+    final asGuardian = widget.asGuardian;
+    bool current() =>
+        mounted &&
+        !_localRequested &&
+        !ZyraAccountState.isSigningOut &&
+        widget.asGuardian == asGuardian &&
+        _controller.text == target.code &&
+        ZyraAccountState.userId == target.userId &&
+        ZyraAccountState.generation == target.generation &&
+        (ModalRoute.of(context)?.isCurrent ?? false);
+
+    if (!current()) return;
     _recordCodeEvent(
       ZyraTelemetryEventName.started,
       ZyraTelemetryAction.zyraCodeCheck,
@@ -1568,15 +1593,20 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
       _busy = true;
       _error = null;
       _preview = null;
+      _checkedTarget = null;
       _legacyPossible = false;
       _lastInvalidCode = null;
     });
     if (widget.developerPreview) {
       await Future<void>.delayed(const Duration(milliseconds: 260));
-      if (!mounted || _localRequested) return;
+      if (!mounted) return;
+      if (!current()) {
+        setState(() => _busy = false);
+        return;
+      }
       final preview = ZyraDevPersonalCodeFixtures.previewEntryCode(
-        _controller.text,
-        asGuardian: widget.asGuardian,
+        target.code,
+        asGuardian: asGuardian,
       );
       if (preview == null) {
         _showInvalidCode(legacyPossible: false);
@@ -1584,6 +1614,7 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
         setState(() {
           _busy = false;
           _preview = preview;
+          _checkedTarget = target;
         });
       }
       _recordCodeEvent(
@@ -1596,10 +1627,12 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
       widget.onNeedsReveal();
       return;
     }
-    final result = await ZyraWaliLinkService.previewPersonalCode(
-      _controller.text,
-    );
-    if (!mounted || _localRequested) return;
+    final result = await ZyraWaliLinkService.previewPersonalCode(target.code);
+    if (!mounted) return;
+    if (!current()) {
+      setState(() => _busy = false);
+      return;
+    }
     if (result.isAvailable && result.valueOrNull == null) {
       _showInvalidCode(legacyPossible: true);
     } else {
@@ -1609,6 +1642,7 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
           _error = "The code couldn't be checked. Please try again.";
         } else {
           _preview = result.valueOrNull;
+          _checkedTarget = target;
         }
       });
     }
@@ -1637,7 +1671,30 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
       return;
     }
     final preview = _preview;
-    if (preview == null) return;
+    if (!mounted || _busy || _sent || preview == null) return;
+    final target = _checkedTarget;
+    if (target == null) return;
+    final code = target.code;
+    final asGuardian = widget.asGuardian;
+    final developerPreview = widget.developerPreview;
+    final account = (target.userId, target.generation);
+    final plan = asGuardian
+        ? null
+        : AppState.instance.verifiedSeekerPlan ?? ZyraPlan.basic;
+    bool current() =>
+        mounted &&
+        !_localRequested &&
+        !ZyraAccountState.isSigningOut &&
+        account == (ZyraAccountState.userId, ZyraAccountState.generation) &&
+        widget.asGuardian == asGuardian &&
+        widget.developerPreview == developerPreview &&
+        identical(_preview, preview) &&
+        _controller.text == code &&
+        (ModalRoute.of(context)?.isCurrent ?? false);
+
+    if (!current() || preview.role != (asGuardian ? 'seeker' : 'wali')) {
+      return;
+    }
     if (preview.role == 'seeker' && _relationship == null) {
       setState(() => _error = 'Choose how you are related first.');
       return;
@@ -1666,7 +1723,11 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
         }
       }
       await ZyraInteractionStyle.emitSelectionHaptic();
-      if (!mounted || _localRequested) return;
+      if (!mounted) return;
+      if (!current()) {
+        setState(() => _busy = false);
+        return;
+      }
       setState(() {
         _busy = false;
         _sent = true;
@@ -1678,13 +1739,22 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
       return;
     }
     final error = await ZyraWaliLinkService.requestGuardianLink(
-      _controller.text,
+      code,
       relationship: preview.role == 'seeker' ? _relationship : null,
-      currentSeekerPlan: widget.asGuardian ? null : AppState.instance.plan,
+      currentSeekerPlan: plan,
+      isActionCurrent: () =>
+          current() &&
+          (plan == null ||
+              (AppState.instance.verifiedSeekerPlan ?? ZyraPlan.basic) == plan),
     );
-    if (!mounted || _localRequested) return;
+    if (!mounted) return;
+    if (!current()) {
+      setState(() => _busy = false);
+      return;
+    }
     setState(() {
       _busy = false;
+      _sent = error == null;
       _error = error;
     });
     showZyraGuardianCapacityNotice(context, error);

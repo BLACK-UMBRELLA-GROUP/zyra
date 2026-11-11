@@ -108,7 +108,7 @@ class ZyraRequestAccountSession extends ChangeNotifier {
     return true;
   }
 
-  SeekerProfile ownProfile(bool guardian) => SeekerProfile(
+  SeekerProfile ownProfile(bool guardian, {ZyraPlan? seekerPlan}) => SeekerProfile(
     id: guardian ? 'draft-own-guardian' : 'draft-self',
     firstName: guardian ? 'Hassan' : 'Adam',
     surnameLine: guardian ? 'Rahman' : 'Khan',
@@ -120,6 +120,7 @@ class ZyraRequestAccountSession extends ChangeNotifier {
     // Never read private compatibility answers or real member identity here.
     publicNationality: 'British',
     publicEthnicity: 'Pakistani',
+    seekerPlan: seekerPlan,
   );
 
   static bool _localPhotos(List<String> value) =>

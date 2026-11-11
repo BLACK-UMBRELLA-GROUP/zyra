@@ -2,6 +2,7 @@
 // private answers, photo lookup or URL construction.
 import 'package:flutter/material.dart';
 
+import '../data/zyra_membership_catalog.dart';
 import '../models/seeker_profile.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
@@ -23,6 +24,14 @@ class ZyraProfileDetailsPage extends StatelessWidget {
   /// never admits an image or initiates a lookup in this presenter.
   final Widget? firstPhoto;
 
+  static const double _avatarSize = 56;
+  static const double _ringWidth = 1;
+  static const double _photoGap = 2;
+
+  static double photoSizeFor(ZyraPlan? plan) => plan == ZyraPlan.basic
+      ? _avatarSize
+      : _avatarSize - 2 * (_ringWidth + _photoGap);
+
   static const _personIcon = Icon(
     Icons.person_outline,
     size: 29,
@@ -36,8 +45,8 @@ class ZyraProfileDetailsPage extends StatelessWidget {
       return Image(
         key: rendered.key,
         image: rendered.image,
-        width: 50,
-        height: 50,
+        width: photoSizeFor(profile.seekerPlan),
+        height: photoSizeFor(profile.seekerPlan),
         fit: BoxFit.cover,
         alignment: Alignment.center,
         color: rendered.color,
@@ -57,6 +66,10 @@ class ZyraProfileDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Preserve the existing ring when the caller has no verified plan, but
+    // only a known Seeker One plan can be announced as such.
+    final plan = profile.seekerPlan;
+    final showRing = plan != ZyraPlan.basic;
     final surname = profile.surnameLine?.trim();
     final nationality = profile.publicNationality?.trim();
     final ethnicity = profile.publicEthnicity?.trim();
@@ -67,45 +80,57 @@ class ZyraProfileDetailsPage extends StatelessWidget {
       if (nationality?.isNotEmpty ?? false) ('Nationality', nationality!),
       if (ethnicity?.isNotEmpty ?? false) ('Ethnicity', ethnicity!),
     ];
-    return ZyraProfilesDetailsContent(
-      surfaceKey: ValueKey('concept_browse_details_${profile.id}'),
-      scrollKey: ValueKey('concept_browse_details_scroll_${profile.id}'),
-      children: [
-        ExcludeSemantics(
-          child: Container(
-            key: ValueKey('concept_browse_details_avatar_${profile.id}'),
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
+    final avatar = Container(
+      key: ValueKey('concept_browse_details_avatar_${profile.id}'),
+      width: _avatarSize,
+      height: _avatarSize,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: showRing
+            ? Border.all(
+                width: _ringWidth,
                 color: ZyraColors.journeyGold.withValues(alpha: .65),
-              ),
-              boxShadow: [
+              )
+            : null,
+        boxShadow: showRing
+            ? [
                 BoxShadow(
                   color: ZyraColors.journeyGold.withValues(alpha: .07),
                   blurRadius: 24,
                 ),
-              ],
+              ]
+            : null,
+      ),
+      child: firstPhoto == null
+          ? _personIcon
+          : Padding(
+              // Container includes its one-point ring before this inner gap.
+              padding: EdgeInsets.all(showRing ? _photoGap : 0),
+              child: ClipOval(
+                key: ValueKey('concept_browse_details_avatar_photo_${profile.id}'),
+                child: KeyedSubtree(
+                  key: ValueKey((profile.id, profile.photos.firstOrNull)),
+                  child: _photo(firstPhoto!),
+                ),
+              ),
             ),
-            child: firstPhoto == null
-                ? _personIcon
-                : Padding(
-                    // Container includes its one-point ring
-                    // before this two-point clear inner gap.
-                    padding: const EdgeInsets.all(2),
-                    child: ClipOval(
-                      key: ValueKey(
-                        'concept_browse_details_avatar_photo_${profile.id}',
-                      ),
-                      child: KeyedSubtree(
-                        key: ValueKey((profile.id, profile.photos.firstOrNull)),
-                        child: _photo(firstPhoto!),
-                      ),
-                    ),
-                  ),
+    );
+    return ZyraProfilesDetailsContent(
+      surfaceKey: ValueKey('concept_browse_details_${profile.id}'),
+      scrollKey: ValueKey('concept_browse_details_scroll_${profile.id}'),
+      children: [
+        if (plan == null)
+          ExcludeSemantics(child: avatar)
+        else
+          Semantics(
+            container: true,
+            image: true,
+            excludeSemantics: true,
+            label: plan == ZyraPlan.one
+                ? 'Profile photo, ${ZyraMembershipCatalog.seekerOneTitle}'
+                : 'Profile photo',
+            child: avatar,
           ),
-        ),
         const SizedBox(height: 18),
         Text(
           profile.firstName,

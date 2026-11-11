@@ -5,7 +5,6 @@ import 'package:zyra/data/zyra_guardian_capacity.dart';
 import 'package:zyra/dev/zyra_dev_personal_code_fixtures.dart';
 import 'package:zyra/dev/zyra_dev_scenario.dart';
 import 'package:zyra/screens/wali/zyra_code_screen.dart';
-import 'package:zyra/screens/subscription/upgrade_screen.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/services/zyra_wali_link_service.dart';
@@ -32,7 +31,7 @@ void main() {
   });
 
   test(
-    'Main counts toward Basic one and One ten; downgrades remove nothing',
+    'Main counts toward ten for both plans; downgrades remove nothing',
     () async {
       final people = List.generate(
         10,
@@ -54,9 +53,7 @@ void main() {
         loadLinks: links,
       );
       expect(one.canAdd, isFalse);
-      expect(one.canUpgrade, isFalse);
       expect(basic.canAdd, isFalse);
-      expect(basic.canUpgrade, isTrue);
       expect(people, orderedEquals(before));
       expect(basic.linkedGuardianCount, 10);
       expect(
@@ -90,6 +87,56 @@ void main() {
     },
   );
 
+  test('verified plan mix applies only below the shared total limit', () {
+    for (final plan in ZyraPlan.values) {
+      for (final candidate in ZyraPlan.values) {
+        ZyraGuardianCapacity capacity(int total, int basic) =>
+            ZyraGuardianCapacity.fromCount(
+              plan: plan,
+              linkedGuardianCount: total,
+              linkedBasicGuardianCount: basic,
+              incomingGuardianPlan: candidate,
+            );
+
+        expect(capacity(9, 0).canAdd, isTrue);
+        expect(
+          capacity(9, 1).canAdd,
+          plan == ZyraPlan.one || candidate == ZyraPlan.one,
+        );
+        for (final total in [10, 11]) {
+          final result = capacity(total, 1);
+          expect(result.canAdd, isFalse);
+          expect(result.guardianOnePlaces, 0);
+          expect(result.message, ZyraGuardianCapacity.totalLimitMessage);
+        }
+      }
+    }
+  });
+
+  test('unknown plan facts cannot spend a possibly used Basic place', () {
+    final unknown = ZyraGuardianCapacity.fromCount(
+      plan: ZyraPlan.basic,
+      linkedGuardianCount: 1,
+    );
+    expect(unknown.basicPlaceUsed, isNull);
+    expect(unknown.status, ZyraGuardianCapacityStatus.unavailable);
+    final free = ZyraGuardianCapacity.fromCount(
+      plan: ZyraPlan.basic,
+      linkedGuardianCount: 9,
+      linkedBasicGuardianCount: 0,
+    );
+    expect(free.basicPlaceUsed, isFalse);
+    expect(free.canAdd, isTrue);
+    final used = ZyraGuardianCapacity.fromCount(
+      plan: ZyraPlan.basic,
+      linkedGuardianCount: 1,
+      linkedBasicGuardianCount: 1,
+      incomingGuardianPlan: ZyraPlan.basic,
+    );
+    expect(used.basicPlaceUsed, isTrue);
+    expect(used.message, ZyraGuardianCapacity.basicLimitMessage);
+  });
+
   test('unavailable/throwing count stays unavailable, never empty', () async {
     for (final loader
         in <Future<ZyraSourceResult<List<WaliLinkedPerson>>> Function()>[
@@ -105,7 +152,6 @@ void main() {
       expect(result.status, ZyraGuardianCapacityStatus.unavailable);
       expect(result.linkedGuardianCount, isNull);
       expect(result.canAdd, isFalse);
-      expect(result.canUpgrade, isFalse);
     }
   });
 
@@ -169,29 +215,27 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('Basic at cap retains code and QR but send offers Upgrade', (
-    tester,
-  ) async {
-    await openDemoCode(tester, plan: ZyraPlan.basic, count: 1);
-    expect(find.text('ZYRA-DEMO-SEEKER-ADAM'), findsOneWidget);
-    expect(find.text('Copy'), findsOneWidget);
-    expect(find.text('Share'), findsOneWidget);
-    await tester.tap(find.text('QR'));
-    await tester.pumpAndSettle();
-    expect(find.byKey(const ValueKey('zyra_code_qr_preview')), findsOneWidget);
-    await confirmDemoGuardian(tester);
-    expect(find.text('Upgrade'), findsOneWidget);
-    expect(
-      find.textContaining('Your current access allows 1 linked Guardian'),
-      findsWidgets,
-    );
-    expect(find.text('Request sent'), findsNothing);
-    expect(ZyraDevScenario.instance.guardianCount, 1);
-    await tester.tap(find.text('Upgrade'));
-    await tester.pumpAndSettle();
-    expect(find.byType(UpgradeScreen), findsOneWidget);
-    expect(tester.takeException(), isNull);
-  });
+  testWidgets(
+    'Basic unknown mix retains code and QR and refuses an unverified second request',
+    (tester) async {
+      await openDemoCode(tester, plan: ZyraPlan.basic, count: 1);
+      expect(find.text('ZYRA-DEMO-SEEKER-ADAM'), findsOneWidget);
+      expect(find.text('Copy'), findsOneWidget);
+      expect(find.text('Share'), findsOneWidget);
+      await tester.tap(find.text('QR'));
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const ValueKey('zyra_code_qr_preview')),
+        findsOneWidget,
+      );
+      await confirmDemoGuardian(tester);
+      expect(find.text('Upgrade'), findsNothing);
+      expect(find.text(ZyraGuardianCapacity.unavailableMessage), findsWidgets);
+      expect(find.text('Request sent'), findsNothing);
+      expect(ZyraDevScenario.instance.guardianCount, 1);
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets(
     'Basic zero and One nine permit a request without adding a link',
@@ -215,10 +259,7 @@ void main() {
       await openDemoCode(tester, plan: ZyraPlan.one, count: 10);
       await confirmDemoGuardian(tester);
       expect(find.text('Upgrade'), findsNothing);
-      expect(
-        find.textContaining('Seeker One includes up to 10 linked Guardians'),
-        findsWidgets,
-      );
+      expect(find.text(ZyraGuardianCapacity.totalLimitMessage), findsWidgets);
       expect(ZyraDevScenario.instance.guardianCount, 10);
       expect(tester.takeException(), isNull);
     },

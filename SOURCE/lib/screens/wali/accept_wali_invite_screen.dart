@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 import '../../dev/zyra_app_gold_preview.dart';
 import '../../data/zyra_reference_data.dart';
+import '../../services/zyra_account_state.dart';
 import '../../services/zyra_wali_link_service.dart';
 import '../../services/zyra_promotion_engine.dart';
 import '../../state/app_state.dart';
@@ -33,6 +34,7 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
   bool _declining = false;
   String? _error;
   Map<String, String>? _preview;
+  ({String code, String? userId, int generation})? _checkedTarget;
 
   /// The stored CODE, never the label. Null until the preview resolves.
   ///
@@ -60,16 +62,22 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
 
   Future<void> _checkCode() async {
     final code = _controller.text.trim();
-    if (code.isEmpty) return;
+    if (code.isEmpty || _checking || _accepting || _declining) return;
+    final account = (ZyraAccountState.userId, ZyraAccountState.generation);
     setState(() {
+      _checkedTarget = null;
       _checking = true;
       _error = null;
       _preview = null;
     });
     final preview = await ZyraWaliLinkService.previewInvite(code);
     if (!mounted) return;
+    setState(() => _checking = false);
+    if (account != (ZyraAccountState.userId, ZyraAccountState.generation) ||
+        _controller.text.trim() != code) {
+      return;
+    }
     setState(() {
-      _checking = false;
       if (preview == null) {
         _error = "That code wasn't found. Check it and try again.";
       } else if (preview['status'] == 'expired') {
@@ -78,6 +86,11 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
         _error = 'That code has already been used.';
       } else {
         _preview = preview;
+        _checkedTarget = (
+          code: code,
+          userId: account.$1,
+          generation: account.$2,
+        );
         // Pre-fill from the answer already given at Guardian onboarding.
         // AppState holds a LABEL; the database takes a code, so it is
         // converted here. An unrecognised label yields null rather than
@@ -91,23 +104,53 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
   }
 
   Future<void> _accept() async {
+    if (!mounted || _accepting || _declining || !_canAccept) return;
+    final preview = _preview;
+    final target = _checkedTarget;
+    if (preview == null || target == null) return;
+    final code = target.code;
+    final account = (target.userId, target.generation);
+    final asGuardian = _needsRelationship;
+    final plan = asGuardian
+        ? null
+        : AppState.instance.verifiedSeekerPlan ?? ZyraPlan.basic;
+    bool current() =>
+        mounted &&
+        account == (ZyraAccountState.userId, ZyraAccountState.generation) &&
+        !ZyraAccountState.isSigningOut &&
+        identical(_preview, preview) &&
+        code == _controller.text.trim() &&
+        (ModalRoute.of(context)?.isCurrent ?? false);
+
+    if (!current()) return;
+    final navigator = Navigator.of(context);
     setState(() {
       _accepting = true;
       _error = null;
     });
     final error = await ZyraWaliLinkService.acceptInvite(
-      _controller.text.trim(),
-      relationship: _needsRelationship ? _relationshipCode : null,
-      currentSeekerPlan: _needsRelationship ? null : AppState.instance.plan,
+      code,
+      relationship: asGuardian ? _relationshipCode : null,
+      currentSeekerPlan: plan,
+      isActionCurrent: () =>
+          current() &&
+          (plan == null ||
+              (AppState.instance.verifiedSeekerPlan ?? ZyraPlan.basic) == plan),
     );
     if (!mounted) return;
-    setState(() => _accepting = false);
+    if (!current()) {
+      setState(() => _accepting = false);
+      return;
+    }
     if (error != null) {
-      setState(() => _error = error);
+      setState(() {
+        _accepting = false;
+        _error = error;
+      });
       showZyraGuardianCapacityNotice(context, error);
       return;
     }
-    if (_needsRelationship) {
+    if (asGuardian) {
       // The signed-in member is the Guardian accepting their first/new
       // Seeker link. Mark eligibility after the server write, never inside
       // the acceptance decision itself.
@@ -122,9 +165,12 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
         feature: ZyraPromotionFeature.guardianNetwork,
         trigger: ZyraPromotionTrigger.firstSeekerLink,
       );
-      if (!mounted) return;
+      if (!current()) {
+        if (mounted) setState(() => _accepting = false);
+        return;
+      }
     }
-    Navigator.of(context).pop(true);
+    navigator.pop(true);
   }
 
   Future<void> _decline() async {

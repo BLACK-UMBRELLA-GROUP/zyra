@@ -213,7 +213,6 @@ class ZyraSessionRouter {
             surnameLine: row['surname_line'] as String?,
             gender: row['gender'] as String?,
             location: row['location_text'] as String?,
-            plan: ZyraPlan.basic,
           );
           return MembershipRequiredScreen(guardian: role == 'wali');
         }
@@ -471,6 +470,7 @@ class ZyraSessionRouter {
   ) async {
     int? age;
     ZyraPlan? plan;
+    ({ZyraPlan plan, DateTime? expiresAt})? verifiedSeekerPlan;
 
     // PARALLEL, not sequential — 2026-08-01 (Founder: "when the app loads
     // it still switches from purple to pink on the user for about a
@@ -514,23 +514,33 @@ class ZyraSessionRouter {
           // 'active', so there is at most one row to find.
           final sub = await supabase
               .from('subscriptions')
-              .select('plan_type')
+              .select('plan_type, expires_at')
               .eq('user_id', userId)
               .eq('status', 'active')
               .maybeSingle()
               .timeout(_effectiveReadTimeout);
           _requireMember(userId, generation);
-          final planType = sub?['plan_type'] as String?;
-          // Only seeker_premium maps to ZYRA One. wali_premium is the
-          // Guardian's own entitlement, resolved separately by
-          // ZyraEntitlementService.hasWaliOne(), not through AppState.plan.
-          //
-          // 2026-08-12: compares against the canonical db value from
-          // constants/zyra_plan_names.dart instead of a raw literal — that
-          // file existed precisely for this and had zero importers.
-          plan = planType == ZyraSubscriptionPlanType.seekerPremium.dbValue
-              ? ZyraPlan.one
-              : ZyraPlan.basic;
+          final planType = ZyraSubscriptionPlanType.fromDbValue(
+            sub?['plan_type'] as String?,
+          );
+          // The legacy UI can still default to Basic. A missing row or a
+          // Guardian subscription does not identify this member's Seeker plan.
+          final seekerPlan = switch (planType) {
+            ZyraSubscriptionPlanType.seekerPremium => ZyraPlan.one,
+            ZyraSubscriptionPlanType.seekerBasic => ZyraPlan.basic,
+            _ => null,
+          };
+          plan = seekerPlan;
+          // Active rows can be expired. Use only the existing owner-scoped
+          // direct subscription's explicit expiry. This read does not resolve
+          // effective access through grace, cancellation coverage or Family.
+          if (seekerPlan != null && sub != null && sub.containsKey('expires_at')) {
+            final value = sub['expires_at'];
+            final expiry = value is String ? DateTime.tryParse(value) : null;
+            if (value == null || expiry != null) {
+              verifiedSeekerPlan = (plan: seekerPlan, expiresAt: expiry);
+            }
+          }
         } catch (e) {
           _requireMember(userId, generation);
           debugPrint('ZYRA plan fetch failed (${e.runtimeType}).');
@@ -547,6 +557,7 @@ class ZyraSessionRouter {
       location: row['location_text'] as String?,
       age: age,
       plan: plan,
+      verifiedSeekerPlan: verifiedSeekerPlan,
     );
 
     // DECISION HYDRATION — ADDED 2026-08-01.

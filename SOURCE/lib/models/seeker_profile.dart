@@ -10,6 +10,8 @@
 // its Browse card supports tap-left/right photo cycling with a side dot
 // indicator, which needs more than one photo per candidate to matter.
 
+enum ZyraPlan { basic, one }
+
 class SeekerProfile {
   final String id;
   final String firstName;
@@ -49,6 +51,10 @@ class SeekerProfile {
   final String? publicNationality;
   final String? publicEthnicity;
 
+  /// Known Seeker plan for this displayed profile. Null means the caller has
+  /// no plan to disclose. This display value does not grant access.
+  final ZyraPlan? seekerPlan;
+
   /// 2026-07-27 (Founder: "zyra one account users can upload a video...
   /// maybe for on account show how the video will look and on the left
   /// side dots area... for a video its a play button"). Mock/UI-demo
@@ -79,6 +85,7 @@ class SeekerProfile {
     this.surnameLine,
     this.publicNationality,
     this.publicEthnicity,
+    this.seekerPlan,
     this.videoPhotoIndex,
     this.alreadyLikedYou = false,
   });

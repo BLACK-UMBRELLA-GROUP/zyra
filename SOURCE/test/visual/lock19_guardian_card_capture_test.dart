@@ -69,6 +69,7 @@ Future<void> _fixture(
   bool basic = false,
   bool additional = false,
   bool guardianBasic = false,
+  bool mainBasic = false,
   ZyraGuardianFamilyState family = ZyraGuardianFamilyState.noFamily,
   bool accepted = false,
 }) async {
@@ -109,7 +110,7 @@ Future<void> _fixture(
                         linkedAt: DateTime(2026, 9, 20),
                         isMain: true,
                       ),
-                      membership: 'Guardian One',
+                      membership: mainBasic ? 'Guardian Basic' : 'Guardian One',
                       history: history,
                     ),
                     if (!basic)
@@ -161,6 +162,7 @@ Future<void> _fixture(
                   clearMain: (_) async => false,
                   remove: (_) async => null,
                   onAdd: () {},
+                  onUpgrade: () {},
                   onCircle: () {},
                 ),
               ),
@@ -298,7 +300,7 @@ void main() {
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );
   testWidgets(
-    'LOCK19 V6 Seeker Basic one Guardian and locked Add',
+    'LOCK19 V7 Seeker Basic Guardian and Add card',
     (t) async {
       final h = _h(t);
       await _fixture(h, count: 1, basic: true);
@@ -307,8 +309,14 @@ void main() {
       await _cap(h, 'seeker_basic_guardian_card');
       await swipeGuardianCard(t);
       await h.flush();
-      expect(find.text('View Seeker One'), findsOneWidget);
-      await _cap(h, 'seeker_basic_locked_add');
+      expect(find.text('Guardian Basic place'), findsOneWidget);
+      expect(find.text('Free'), findsOneWidget);
+      await _cap(h, 'seeker_basic_add_free');
+      await _fixture(h, count: 1, basic: true, mainBasic: true);
+      await swipeGuardianCard(t);
+      await h.flush();
+      expect(find.text('Used'), findsOneWidget);
+      await _cap(h, 'seeker_basic_add_used');
     },
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );

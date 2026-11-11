@@ -5851,15 +5851,12 @@ class _ZyraOneJourneyConceptShellState
         ModalRoute.of(context)?.isCurrent == true;
     WaliLinkedPerson? target(String id) {
       if (!currentAction()) return null;
-      final visible = _seekerMembership.contains('Basic')
-          ? people.take(1).toList()
-          : people;
-      if (_guardianPage >= visible.length ||
+      if (_guardianPage >= people.length ||
           _guardianPage < 0 ||
-          visible[_guardianPage].id != id) {
+          people[_guardianPage].id != id) {
         return null;
       }
-      return visible[_guardianPage];
+      return people[_guardianPage];
     }
 
     return ZyraOneJourneyGuardianCards(
@@ -5960,11 +5957,11 @@ class _ZyraOneJourneyConceptShellState
         if (current() && ModalRoute.of(context)?.isCurrent == true) _act(() {});
       },
       onAdd: () {
-        if (!currentAction()) return;
-        if (_seekerMembership.contains('Basic') && people.isNotEmpty) {
+        if (currentAction()) _open('guardian_invite');
+      },
+      onUpgrade: () {
+        if (currentAction()) {
           _accountDispatch(ZyraConceptAccountAction.membership);
-        } else {
-          _open('guardian_invite');
         }
       },
       onHistory: (id, enabled) {
@@ -6935,10 +6932,15 @@ class _ZyraOneJourneyConceptShellState
       return _ownProfilePreviewView!;
     }
     final fresh = _accountFreshGuard();
+    final seekerPlan = switch (_membership) {
+      'Seeker Basic' => ZyraPlan.basic,
+      'Seeker One' => ZyraPlan.one,
+      _ => null,
+    };
     _ownProfilePreviewRevision = _uiRevision;
     return _ownProfilePreviewView = MyProfilePreviewScreen.preview(
       key: ValueKey(('retained-own-profile', _uiRevision, _guardianRole)),
-      profile: _accountSession.ownProfile(_guardianRole),
+      profile: _accountSession.ownProfile(_guardianRole, seekerPlan: seekerPlan),
       hapticLevel: _accountSession.hapticLevel,
       canAct: fresh,
       onBack: () {

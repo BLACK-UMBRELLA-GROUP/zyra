@@ -112,7 +112,7 @@ void main() {
         basic.recentDeclinedProfiles,
         basic.linkedGuardians,
       ],
-      [5, 25, 5, 0, 1],
+      [5, 25, 5, 0, 10],
     );
     expect(
       [

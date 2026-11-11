@@ -217,7 +217,7 @@ void main() {
     },
   );
   testWidgets(
-    'actual Basic displays one Guardian and routes locked Add to membership',
+    'actual Basic keeps its roster and routes Add and upgrade separately',
     (t) async {
       final h = harness(t);
       await h.mount(
@@ -228,10 +228,21 @@ void main() {
       expect(_page(t).basic, isTrue);
       await swipeGuardianCard(t);
       await h.flush();
-      expect(find.text('Add more Guardians'), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('guardian-card-$_additional')),
+        findsOneWidget,
+      );
+      await swipeGuardianCard(t);
+      await h.flush();
+      expect(find.text('Add a Guardian'), findsNWidgets(2));
+      expect(find.text('Free'), findsOneWidget);
       expect(find.text('Omar'), findsNothing);
-      await h.tap('guardian-card-center');
+      await h.tapText('Seeker One: any 10 Guardians ›');
       h.assertPage('membership');
+      await t.binding.handlePopRoute();
+      await h.flush();
+      await h.tap('guardian-card-center');
+      h.assertPage('guardian_invite');
     },
   );
   testWidgets(

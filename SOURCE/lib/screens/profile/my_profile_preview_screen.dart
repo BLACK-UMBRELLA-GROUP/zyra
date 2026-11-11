@@ -62,6 +62,7 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
   late final bool Function()? _ownerGuard;
   late final VoidCallback? _onBack;
   late final (String?, int) _ordinaryOwner;
+  ZyraPlan? _ordinaryPlan;
   late final (bool, String?) _sdkOwner;
   String? _initialAccessToken;
   StreamSubscription<AuthState>? _authSubscription;
@@ -155,6 +156,7 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
             photos: List<String>.unmodifiable(p.photos),
             publicNationality: p.publicNationality,
             publicEthnicity: p.publicEthnicity,
+            seekerPlan: p.seekerPlan,
           );
     if (_previewMode) {
       _photos = _previewProfile!.photos;
@@ -175,6 +177,7 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
       return;
     }
     _photos = List<String>.of(AppState.instance.photos);
+    _ordinaryPlan = AppState.instance.verifiedSeekerPlan;
     AppState.instance.addListener(_ordinaryAccountChanged);
     _watchSdkOwner();
     if (_photos.isEmpty &&
@@ -194,7 +197,12 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
   }
 
   void _ordinaryAccountChanged() {
-    if (!_ordinaryOwnerCurrent) _withdrawOrdinaryOwner();
+    if (!_ordinaryOwnerCurrent) {
+      _withdrawOrdinaryOwner();
+      return;
+    }
+    final plan = AppState.instance.verifiedSeekerPlan;
+    if (plan != _ordinaryPlan) setState(() => _ordinaryPlan = plan);
   }
 
   void _withdrawPreviewOwner() {
@@ -434,6 +442,7 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
       city: state.location?.trim() ?? '',
       photos: List<String>.unmodifiable(_photos),
       gender: state.gender ?? '',
+      seekerPlan: state.verifiedSeekerPlan,
     );
 
     return _browsePreview(profile);

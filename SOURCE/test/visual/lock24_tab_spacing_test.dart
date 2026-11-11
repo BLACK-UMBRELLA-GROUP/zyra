@@ -1130,12 +1130,9 @@ void main() {
                 basic: basic,
                 tab: 3,
                 active: false,
-                guardianPage: basic ? 1 : cardWidget.people.length + 1,
+                guardianPage: cardWidget.people.length + (basic ? 0 : 1),
               );
-              expect(
-                find.text(basic ? 'View Seeker One' : 'Add a Guardian'),
-                findsWidgets,
-              );
+              expect(find.text('Add a Guardian'), findsWidgets);
               await measure('Guardian — Add card');
             } else {
               await mount(

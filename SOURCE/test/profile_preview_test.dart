@@ -288,6 +288,46 @@ void main() {
     },
   );
 
+  testWidgets('ordinary own preview only uses the hydrated Seeker plan', (
+    tester,
+  ) async {
+    ZyraInternalPreviewClient.finishSignOut();
+    await _bindProfileOwner(tester, 'profile-owner');
+    final state = AppState.instance;
+    state.hydrateFrom(
+      name: 'Adam',
+      plan: ZyraPlan.basic,
+      verifiedSeekerPlan: (plan: ZyraPlan.basic, expiresAt: null),
+    );
+    await tester.pumpWidget(const MaterialApp(home: MyProfilePreviewScreen()));
+    await tester.pumpAndSettle();
+
+    const avatarKey = ValueKey(
+      'concept_browse_details_avatar_my-profile-preview',
+    );
+    final avatar = find.byKey(avatarKey);
+    expect(_ownCard(tester).profiles.single.seekerPlan, ZyraPlan.basic);
+    expect(
+      (tester.widget<Container>(avatar).decoration! as BoxDecoration).border,
+      isNull,
+    );
+    state.setPlan(ZyraPlan.one);
+    await tester.pump();
+    expect(_ownCard(tester).profiles.single.seekerPlan, ZyraPlan.basic);
+
+    state.hydrateFrom(
+      name: 'Adam',
+      plan: ZyraPlan.one,
+      verifiedSeekerPlan: (plan: ZyraPlan.one, expiresAt: null),
+    );
+    await tester.pumpAndSettle();
+    expect(_ownCard(tester).profiles.single.seekerPlan, ZyraPlan.one);
+    expect(
+      tester.getSemantics(avatar),
+      matchesSemantics(label: 'Profile photo, Seeker One', isImage: true),
+    );
+  });
+
   testWidgets(
     'ordinary own preview withdraws loaded photos on owner change',
     (tester) async {

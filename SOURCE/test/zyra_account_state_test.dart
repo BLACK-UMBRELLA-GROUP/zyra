@@ -268,4 +268,37 @@ void main() {
     expect(AppState.instance.age, isNull);
     expect(AppState.instance.plan, ZyraPlan.basic);
   });
+
+  test('verified Seeker plan follows hydration and account ownership', () async {
+    await ZyraAccountState.synchronize(member);
+    final state = AppState.instance;
+    state.hydrateFrom(
+      plan: ZyraPlan.one,
+      verifiedSeekerPlan: (plan: ZyraPlan.one, expiresAt: DateTime(2000)),
+    );
+    expect(state.plan, ZyraPlan.one);
+    expect(state.verifiedSeekerPlan, isNull);
+
+    state.hydrateFrom(
+      plan: ZyraPlan.one,
+      verifiedSeekerPlan: (plan: ZyraPlan.one, expiresAt: null),
+    );
+    expect(state.verifiedSeekerPlan, ZyraPlan.one);
+
+    state.setPlan(ZyraPlan.basic);
+    expect(state.plan, ZyraPlan.basic);
+    expect(state.verifiedSeekerPlan, ZyraPlan.one);
+
+    state.hydrateFrom();
+    expect(state.verifiedSeekerPlan, isNull);
+    state.hydrateFrom(
+      plan: ZyraPlan.basic,
+      verifiedSeekerPlan: (plan: ZyraPlan.basic, expiresAt: null),
+    );
+    expect(state.verifiedSeekerPlan, ZyraPlan.basic);
+
+    await ZyraAccountState.synchronize(other);
+    expect(state.verifiedSeekerPlan, isNull);
+    expect(state.plan, ZyraPlan.basic);
+  });
 }

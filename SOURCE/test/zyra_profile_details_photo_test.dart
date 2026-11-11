@@ -13,7 +13,7 @@ import 'package:zyra/widgets/zyra_loading.dart';
 import 'package:zyra/widgets/zyra_profile_details_page.dart';
 import 'package:zyra/widgets/zyra_profile_image.dart';
 
-const _person = SeekerProfile(
+SeekerProfile _person(ZyraPlan? seekerPlan) => SeekerProfile(
   id: 'details-avatar-person',
   firstName: 'Sara',
   surnameLine: 'Ahmed',
@@ -22,7 +22,8 @@ const _person = SeekerProfile(
   publicNationality: 'British',
   publicEthnicity: 'South Asian',
   gender: 'female',
-  photos: ['caller-admitted-first', 'caller-admitted-second'],
+  photos: const ['caller-admitted-first', 'caller-admitted-second'],
+  seekerPlan: seekerPlan,
 );
 
 class _NoNetwork extends HttpOverrides {
@@ -70,7 +71,11 @@ Future<ui.Image> _pixels(WidgetTester tester, Color color) async {
   return pixels;
 }
 
-Future<void> _mount(WidgetTester tester, {Widget? firstPhoto}) async {
+Future<void> _mount(
+  WidgetTester tester, {
+  Widget? firstPhoto,
+  ZyraPlan? seekerPlan,
+}) async {
   tester.view.physicalSize = const Size(430, 932);
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.resetPhysicalSize);
@@ -84,7 +89,7 @@ Future<void> _mount(WidgetTester tester, {Widget? firstPhoto}) async {
             width: 350,
             height: 700,
             child: ZyraProfileDetailsPage(
-              profile: _person,
+              profile: _person(seekerPlan),
               firstPhoto: firstPhoto,
             ),
           ),
@@ -151,7 +156,7 @@ void main() {
   testWidgets('missing caller photo keeps the existing gold-ring person icon', (
     tester,
   ) async {
-    await _mount(tester);
+    await _mount(tester, seekerPlan: ZyraPlan.one);
     _expectFallback(tester);
     expect(tester.getSize(_avatar()), const Size(56, 56));
     expect(_photo(), findsNothing);
@@ -167,6 +172,10 @@ void main() {
     expect(
       decoration.boxShadow!.single.color,
       ZyraColors.journeyGold.withValues(alpha: .07),
+    );
+    expect(
+      tester.getSemantics(_avatar()),
+      matchesSemantics(label: 'Profile photo, Seeker One', isImage: true),
     );
   });
 
@@ -204,9 +213,59 @@ void main() {
       expect(image.alignment, Alignment.center);
       expect(tester.widget<RawImage>(find.byType(RawImage)).image, isNotNull);
       expect(find.byIcon(Icons.person_outline), findsNothing);
+      expect(find.bySemanticsLabel('Profile photo'), findsNothing);
       expect(_identityGeometry(tester), before);
+
+      await _mount(
+        tester,
+        seekerPlan: ZyraPlan.one,
+        firstPhoto: Image(image: stream.provider),
+      );
+      expect(tester.getRect(_avatar()), outer);
+      expect(tester.getRect(_photo()), photo);
+      expect(
+        tester.getSemantics(_avatar()),
+        matchesSemantics(label: 'Profile photo, Seeker One', isImage: true),
+      );
     },
   );
+
+  testWidgets('Seeker Basic has a full circle with or without a photo', (
+    tester,
+  ) async {
+    await _mount(tester, seekerPlan: ZyraPlan.basic);
+    _expectFallback(tester);
+    expect(_photo(), findsNothing);
+    final placeholderDecoration =
+        tester.widget<Container>(_avatar()).decoration! as BoxDecoration;
+    expect(placeholderDecoration.border, isNull);
+    expect(placeholderDecoration.boxShadow, isNull);
+    final before = _identityGeometry(tester);
+    final stream = _pending(5);
+    final pixels = await _pixels(tester, Colors.teal);
+    stream.frame.complete(ImageInfo(image: pixels.clone()));
+    await _mount(
+      tester,
+      seekerPlan: ZyraPlan.basic,
+      firstPhoto: Image(image: stream.provider),
+    );
+    await tester.pump();
+
+    expect(tester.getSize(_avatar()), const Size(56, 56));
+    expect(tester.getRect(_photo()), tester.getRect(_avatar()));
+    final decoration =
+        tester.widget<Container>(_avatar()).decoration! as BoxDecoration;
+    expect(decoration.shape, BoxShape.circle);
+    expect(decoration.border, isNull);
+    expect(decoration.boxShadow, isNull);
+    expect(tester.widget<RawImage>(find.byType(RawImage)).image, isNotNull);
+    expect(find.byIcon(Icons.person_outline), findsNothing);
+    expect(
+      tester.getSemantics(_avatar()),
+      matchesSemantics(label: 'Profile photo', isImage: true),
+    );
+    expect(_identityGeometry(tester), before);
+  });
 
   testWidgets(
     'pending and failed real Image frames use the icon without a loader',

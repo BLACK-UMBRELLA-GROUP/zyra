@@ -14,7 +14,7 @@ import '../services/zyra_local_prefs.dart';
 import '../services/zyra_internal_preview_client.dart';
 import '../services/zyra_wali_link_service.dart';
 
-enum ZyraPlan { basic, one }
+export '../models/seeker_profile.dart' show ZyraPlan;
 
 class AppState extends ChangeNotifier {
   AppState._();
@@ -57,6 +57,18 @@ class AppState extends ChangeNotifier {
   String? sect;
   ZyraPlan plan = ZyraPlan.basic;
 
+  /// The signed-in Seeker's resolved plan, separate from the legacy UI's
+  /// fallback and local mock plan. Null means no current plan was verified.
+  ZyraPlan? get verifiedSeekerPlan {
+    final verified = _verifiedSeekerPlan;
+    final expiry = verified?.expiresAt;
+    return expiry == null || expiry.isAfter(DateTime.now())
+        ? verified?.plan
+        : null;
+  }
+
+  ({ZyraPlan plan, DateTime? expiresAt})? _verifiedSeekerPlan;
+
   /// Optional, Journey-only biography assembled during Seeker onboarding.
   /// It is intentionally separate from the scored Chapter 3/4 answers.
   JourneyBio journeyBio = const JourneyBio();
@@ -90,6 +102,7 @@ class AppState extends ChangeNotifier {
     location = null;
     sect = null;
     plan = ZyraPlan.basic;
+    _verifiedSeekerPlan = null;
     journeyBio = const JourneyBio();
     age = null;
     hydrated = false;
@@ -122,6 +135,7 @@ class AppState extends ChangeNotifier {
     String? location,
     int? age,
     ZyraPlan? plan,
+    ({ZyraPlan plan, DateTime? expiresAt})? verifiedSeekerPlan,
   }) {
     this.name = name;
     // Replace missing fields too: a missing row value never means that a
@@ -137,6 +151,7 @@ class AppState extends ChangeNotifier {
     this.location = location;
     this.age = age;
     this.plan = plan ?? ZyraPlan.basic;
+    _verifiedSeekerPlan = verifiedSeekerPlan;
     avatarAlignmentX = ZyraLocalPrefs.cachedAvatarAlignmentX;
     avatarAlignmentY = ZyraLocalPrefs.cachedAvatarAlignmentY;
     hydrated = true;
@@ -507,6 +522,7 @@ class AppState extends ChangeNotifier {
     }
     this.dob = dob;
     this.plan = plan;
+    _verifiedSeekerPlan = null;
     this.location = location;
     photos = [];
     avatarAlignmentX = 0;

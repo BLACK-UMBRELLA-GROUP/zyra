@@ -533,9 +533,9 @@ const _lockedMasterReplacements = <String, _LockedMasterReplacement>{
   'k17_basic__card_front_hassan': (
     tab: 3,
     bottom: 'guardian-card-draft-guardian-hassan',
-    lock: 'LOCK 19 V6',
+    lock: 'LOCK 19 V7',
     guardian: false,
-    guardianDots: 1,
+    guardianDots: 2,
     selectedDot: 0,
   ),
   'k07_card__omar_invited': (
@@ -779,7 +779,7 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
           },
         ),
         (
-          // Q52: keep k17 provenance and check Basic's role and capacity in V6.
+          // Q52: keep k17 provenance and check both linked cards under V7.
           id: 'k17_basic__card_front_hassan',
           lock: 'LOCK 19 V3',
           master: 'GUARDIAN_CARD/MASTERS/k17_basic__card_front_hassan.png',
@@ -790,6 +790,12 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
               initialSeekerBasic: true,
               seekerMembership: 'Seeker Basic',
             );
+            expect(_key('guardian-card-draft-guardian-hassan'), findsOneWidget);
+            await swipeGuardianCard(h.tester);
+            await h.flush();
+            expect(_key('guardian-card-draft-guardian-yusuf'), findsOneWidget);
+            await swipeGuardianCard(h.tester, next: false);
+            await h.flush();
             expect(_key('guardian-card-draft-guardian-hassan'), findsOneWidget);
           },
         ),
