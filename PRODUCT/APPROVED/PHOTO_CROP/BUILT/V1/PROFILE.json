@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "queueLine": 86,
+  "sourceCommit": "526c26732e71389e590ed05c938f5a0e1082bef2",
+  "verificationCommit": "ad79511883e90a3ddc1d996ced54789fe26484d9",
+  "protectedRoutePinsCommit": "ce93564a4d15e08f3e8b4730b337b629629468f4",
+  "flutterVersion": "3.44.2",
+  "buildMode": "profile",
+  "flavor": "production",
+  "architecture": "ios-arm64",
+  "version": "1.0.0",
+  "buildNumber": 5,
+  "buildStartedAt": "2026-11-11T23:18:07.219Z",
+  "buildFinishedAt": "2026-11-11T23:18:39.947Z",
+  "layout": "3:4 profile photo apertures, widest initial crop, and ivory photo recovery feedback",
+  "buildReceiptSha256": "d427719ac917e2e0112acf00ffedbc6676316f87cc335b6bcda865ae050a7da8",
+  "artifactSha256": "f78aa930c262d397dbb21fb1f7638786a06204a3fdceecdc79efd7ec9e50d86b",
+  "sourceSealSha256": "97f94bdd7f98f00948de70e4383aeb457357c18994eda5d90d7854c54f0ef325",
+  "planSha256": "116e4ff3882d7ae17a99d200456f53a8b10344b93c1cffa3394954c452bc280e",
+  "routeSha256": "ab67f047f3a5c3c375fb027c0ffae26caaeb37d5a4f0bca5cd7ebc9c4bffb3cd",
+  "sealedInputs": 1599,
+  "routeTests": {
+    "pass": 16,
+    "fail": 0,
+    "logSha256": "ce3d627e0f4690c65e3bbe09dbee226f0950a255ff77e5b25979d2cb53af5570"
+  },
+  "delivery": {
+    "status": "awaiting_line_86_device_go",
+    "installExecuted": false,
+    "installed": false,
+    "opened": false
+  }
+}
