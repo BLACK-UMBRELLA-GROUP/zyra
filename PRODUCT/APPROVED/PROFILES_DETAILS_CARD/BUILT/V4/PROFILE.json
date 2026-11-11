@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "queueLine": 81,
+  "sourceCommit": "0aff82cc5fdf248d74a25b1ebbd8aa6005170df5",
+  "verificationCommit": "55fe90e2b6551c7e38b0bd7c0e01519405c5eb28",
+  "protectedRoutePinsCommit": "2dffbab4ef5d40d66632e9fc970793d0bdae1775",
+  "flutterVersion": "3.44.2",
+  "buildMode": "profile",
+  "flavor": "production",
+  "architecture": "ios-arm64",
+  "version": "1.0.0",
+  "buildNumber": 5,
+  "buildStartedAt": "2026-11-11T21:16:40.638Z",
+  "buildFinishedAt": "2026-11-11T21:17:15.786Z",
+  "layout": "Profiles V4 equal tiles and first-page request, Seeker Basic back upgrade sheet, shared track on Profiles, Guardian, Journey, Filters and My ZYRA, Guardian Circle Main and Past, Guardian invitation waiting, expired fallback and free-place fixture, Basic compatibility topics and Seeker One filter cards",
+  "buildReceiptSha256": "b5dc40bd48a2b44acb32cde784df8e803272459db5a2d5c8b1c51bfac35288ff",
+  "artifactSha256": "b0e3e46a05be485935d4a9a90730d993e828e48bd4b85ec6825e2d90dd782852",
+  "sourceSealSha256": "b237ee73bec6e65630bcd4fcb312948121c26742bda8aa14893933ecec971437",
+  "planSha256": "f12bdf4ab95e0b115aef4fbcc97f06b7befe51317a159e5cf5d10175f9d0c9f5",
+  "routeSha256": "c7beb707b189c4838d08a33572793d151b0a0237edfdb1ee5b186e5bc17e132f",
+  "sealedInputs": 1595,
+  "routeTests": {
+    "pass": 16,
+    "fail": 0,
+    "logSha256": "ab2bf5c082e9c4b428b744106edd271c04c27091b3f2f260d9a0a8a767cc57f1"
+  },
+  "delivery": {
+    "status": "awaiting_line_81_device_go",
+    "installExecuted": false,
+    "installed": false,
+    "opened": false
+  }
+}
