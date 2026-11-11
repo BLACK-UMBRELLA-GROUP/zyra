@@ -75,6 +75,10 @@ Fable holds an active seat. Any line elsewhere saying "Fable/Claude is
 retired" or "no Claude/Fable bootstrap is active" is superseded.
 <!-- BLACK-UMBRELLA-CORE-RULES v4 END -->
 
+## Backend readiness (AD-AIOS-142)
+
+Read `BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/BACKEND_READINESS_STANDARD_CURRENT_VERSION_V1.md` (DOC-BUG-0057) when your trigger in its §2 may be met. ZYRA's Supabase project is ZYRA's only: no other business may use its server, keys or data. One server per business, never shared. AIs write plans only; every account, cost, key and live connection waits for the Founder's own yes.
+
 ## Public repository (AD-AIOS-121, Founder 2 Nov 2026)
 
 This repository is public on GitHub under Apache 2.0. Every push is visible to anyone. Before and after each push:

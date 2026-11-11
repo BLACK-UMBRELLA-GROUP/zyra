@@ -80,7 +80,7 @@ re-run the tool.
 
 _Stop here unless you need to look up another ID._
 
-## Documents (338 live)
+## Documents (344 live)
 
 ### APP: AUTHENTICATION
 
@@ -389,8 +389,8 @@ _Stop here unless you need to look up another ID._
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
 | DOC-ZYRA-0300 | `REPORTS/CURRENT/ZYRA_CHAT_HANDOVER_2026-10-27_V1.md` | REPORT | Handover from Fable to the new ZYRA chat (lead designer) - who you are, how Shakeel works, what ZYRA is… | AD-AIOS-115, DOC-BUG-0009, DOC-ZYRA-0278, DOC-ZYRA-0291, OA-ZYRA-320, OA-ZYRA-321 | 9 |
-| DOC-ZYRA-0302 | `PRODUCT/APPROVED/BUILD_QUEUE.md` | REGISTER | Build queue - every ZYRA instruction for Codex (LOCKed builds and Founder-named tasks) waits here; Codex… | AD-AIOS-115 | 31 |
-| DOC-ZYRA-0335 | `PRODUCT/APPROVED/QUESTIONS.md` | REGISTER | Codex's questions for the ZYRA chat - Codex never asks Shakeel in chat; he files the question here, marks… | AD-AIOS-116 | 45 |
+| DOC-ZYRA-0302 | `PRODUCT/APPROVED/BUILD_QUEUE.md` | REGISTER | Build queue - every ZYRA instruction for Codex (LOCKed builds and Founder-named tasks) waits here; Codex… | AD-AIOS-115 | 33 |
+| DOC-ZYRA-0335 | `PRODUCT/APPROVED/QUESTIONS.md` | REGISTER | Codex's questions for the ZYRA chat - Codex never asks Shakeel in chat; he files the question here, marks… | AD-AIOS-116 | 67 |
 | INDEX-DECISIONS_V1 | `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1_INDEX.md` | INDEX | Generated one-line index of DECISIONS_V1.md; find the ID here, then search the register for it |  | 44 |
 | INDEX-OUTSTANDING_ACTIONS_V2 | `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2_INDEX.md` | INDEX | Generated one-line index of OUTSTANDING_ACTIONS_V2.md; find the ID here, then search the register for it |  | 16 |
 
@@ -504,6 +504,7 @@ _Stop here unless you need to look up another ID._
 
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
+| DOC-ZYRA-0438 | `PRODUCT/APPROVED/PHONE_INSTALL/BRIEFS/ROUTE_REPAIR_BRIEF_2026-11-10.md` | PLAN | Founder-named task - repair ZYRA's protected iPhone install route (QUESTIONS row 58) so the newest BUILT… | DOC-ZYRA-0416, AD-AIOS-116, OA-AIOS-420 | 5 |
 | DOC-ZYRA-9018 | `PRODUCT/APPROVED/PHONE_INSTALL/INDEX.md` | INDEX | Feature evidence index | OA-AIOS-430 | 1 |
 
 ### PRICING AND MEMBERSHIP
@@ -567,7 +568,7 @@ _Stop here unless you need to look up another ID._
 | DOC-ZYRA-0324 | `PRODUCT/APPROVED/REQUEST_ROW/BRIEFS/BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 7 - Profiles request row as one pill | AD-AIOS-115 | 1 |
 | DOC-ZYRA-0325 | `PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 8 - the Guardian app's five tabs (Network, Journeys, My ZYRA, Seekers, Profile) and… | AD-AIOS-115, DR-ZYRA-280, DR-ZYRA-292, DR-ZYRA-233, DOC-ZYRA-0278 | 4 |
 | DOC-ZYRA-0337 | `PRODUCT/APPROVED/APP_COLOURS/BRIEFS/BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 14 - app colours Ivory (planned app, icon, launch, splash) | AD-AIOS-115 | 2 |
-| DOC-ZYRA-0338 | `PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md` | SPEC | Spec for LOCK 14 - ZYRA app colours: Ivory, gold and warm neutrals, no purple; matching app icon and splash;… | DR-ZYRA-276, AD-AIOS-115 | 7 |
+| DOC-ZYRA-0338 | `PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V6.md` | SPEC | Spec for LOCK 14 - ZYRA app colours: Ivory, gold and warm neutrals, no purple; matching app icon and splash;… | DR-ZYRA-276, AD-AIOS-115 | 7 |
 | DOC-ZYRA-0339 | `PRODUCT/APPROVED/APP_COLOURS/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 14 - ZYRA app colours (Ivory, gold, warm neutrals; matching icon and splash; no member… | AD-AIOS-115 | 3 |
 | DOC-ZYRA-0342 | `PRODUCT/APPROVED/CODE_PAGE/BRIEFS/BUILD_BRIEF_2026-10-30_V2.md` | PLAN | Codex build brief for LOCK 9 - ZYRA Code page, second attempt after queue line 24 stopped | AD-AIOS-115, DR-ZYRA-231 | 1 |
 | DOC-ZYRA-0343 | `PRODUCT/APPROVED/CODE_PAGE/RECORD/CODE_PAGE_SPEC_CURRENT_VERSION_V2.md` | SPEC | Spec for LOCK 9 - ZYRA Code page (V2 - what Check code leads to on Add a Guardian / Add a Seeker) | DOC-ZYRA-0282, DR-ZYRA-231, AD-AIOS-115 | 3 |
@@ -632,8 +633,13 @@ _Stop here unless you need to look up another ID._
 | DOC-ZYRA-0435 | `PRODUCT/APPROVED/UNREAD_BADGE/BRIEFS/BUILD_BRIEF_2026-10-31.md` | PLAN | Codex build brief for LOCK 17 - unread-count bubble | AD-AIOS-115 | 1 |
 | DOC-ZYRA-0436 | `PRODUCT/APPROVED/UNREAD_BADGE/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 17 - unread-count bubble (gold) | AD-AIOS-115 | 1 |
 | DOC-ZYRA-0437 | `PRODUCT/APPROVED/UNREAD_BADGE/RECORD/UNREAD_BADGE_SPEC_CURRENT_VERSION_V1.md` | SPEC | Spec for LOCK 17 - unread-count bubble on conversation icons (gold) | AD-AIOS-115 | 1 |
+| DOC-ZYRA-0439 | `PRODUCT/APPROVED/APP_ERROR/BRIEFS/BUILD_BRIEF_2026-11-10.md` | PLAN | Codex build brief for LOCK 23 - one app-error page with help, then install the build on the Founder's iPhone | AD-AIOS-115 | 2 |
+| DOC-ZYRA-0440 | `PRODUCT/APPROVED/APP_ERROR/INDEX.md` | INDEX | LOCK 23 app-error page build evidence | AD-AIOS-115 | 1 |
+| DOC-ZYRA-0441 | `PRODUCT/APPROVED/APP_ERROR/RECORD/APP_ERROR_SPEC_CURRENT_VERSION_V1.md` | SPEC | Spec for LOCK 23 - one app-error page (cannot connect / server down / session ended) with help, replacing… | AD-AIOS-115 | 4 |
+| DOC-ZYRA-0442 | `PRODUCT/APPROVED/APP_ERROR/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 23 - one app-error page with help | AD-AIOS-115 | 1 |
+| DOC-ZYRA-0443 | `PRODUCT/APPROVED/TEST_CLEANUP/BRIEFS/TEST_CLEANUP_BRIEF_2026-11-02.md` | PLAN | Founder-named task - clean up the app tests that already failed before line 44 (649 at app source 60b1ab9),… | AD-AIOS-116 | 2 |
+| DOC-ZYRA-0444 | `PRODUCT/APPROVED/TEST_CLEANUP/BRIEFS/TEST_CLEANUP_BRIEF_2026-11-10_R2.md` | PLAN | Test clean-up round 2 — apply the ZYRA chat's answers to QUESTIONS rows 13–55 (line 73) and make the small… | AD-AIOS-116 | 4 |
 | OA-ZYRA-316-BASELINE-2026-10-29 | `PRODUCT/APPROVED/BASELINE/SCREENSHOTS/INDEX.md` | INDEX | Generated capture artifact for DOC-ZYRA-0301; every available planned-app page and local preview state | DOC-ZYRA-0301, DOC-ZYRA-0278, DOC-ZYRA-0286, OA-ZYRA-316 | 405 |
-| TBC (Fable assigns) | `PRODUCT/APPROVED/TEST_CLEANUP/BRIEFS/TEST_CLEANUP_BRIEF_2026-11-02.md` | PLAN | Founder-named task - clean up the app tests that already failed before line 44 (649 at app source 60b1ab9),… | AD-AIOS-116 | 2 |
 
 ### RELEASE
 

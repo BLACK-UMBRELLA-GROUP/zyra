@@ -23,3 +23,4 @@ owner: ZYRA chat
 | 2026-10-31 ~15:35 | Line 42 build shows the ‹ · label · › bottom pill gold-filled on the Journey tab and Filters; masters show it ivory → clickable **"Light, as the masters (Recommended)"** | Confirms the LOCK 14 V5 masters: the bottom pill is ivory on every page, never gold-filled. Fix is queue line 71 |
 
 Pictures showing sample photos moved to the private group folder 9 Nov 2026 (OA-AIOS-430); recaptured with placeholders when ZYRA restarts.
+| 2026-11-10 ~15:15 | Codex QUESTIONS row 21 (line 73): small danger text `#B84A42` measures 4.14 : 1 (< 4.5) → prototype switch "Small red text (Q21)" (V143) → clickable **"Deeper red #AC453E (Recommended)"** | **LOCK V6**: small danger text `#AC453E` (4.6 : 1); `#B84A42` stays for icons, outlines, dots and large text. Spec `APP_COLOURS_SPEC_CURRENT_VERSION_V6.md`; built by queue line 75 step 7 |
