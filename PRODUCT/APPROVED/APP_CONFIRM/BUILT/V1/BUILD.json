@@ -1,0 +1,294 @@
+{
+  "schema": 1,
+  "queueLine": 83,
+  "commitSha": "55ea51daef1f62cae0e5621ce94105ca99d96aaf",
+  "recordedAt": "2026-11-11T22:53:41+00:00",
+  "flutterVersion": "3.44.2",
+  "buildMode": "widget tests",
+  "target": "Offline Founder routes and ordinary member route regressions",
+  "locks": [
+    "LOCK 28 V1",
+    "APP COLOURS V8",
+    "LOCK 21 V3"
+  ],
+  "approvedInputs": {
+    "APP_CONFIRM/BRIEFS/BUILD_BRIEF_2026-11-11.md": {
+      "bytes": 2991,
+      "sha256": "30ca56fb38bc8d5d6938b189dd54244b532b5aa78a601a58213b3ac7462b3fc6"
+    },
+    "APP_CONFIRM/RECORD/APP_CONFIRM_SPEC_CURRENT_VERSION_V1.md": {
+      "bytes": 3001,
+      "sha256": "4138241ad43deee5a8101eb30d1f621ce7d1c17f8d9eb17c716f9dca4b5736c3"
+    },
+    "APP_CONFIRM/RECORD/LOCK_RECORD.md": {
+      "bytes": 679,
+      "sha256": "7d2f228eee290b5e276410f64b0dc2db48634b46609bdbf3ab82287b64022cd6"
+    },
+    "APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V8.md": {
+      "bytes": 9484,
+      "sha256": "5f872b5c976128e3faca643870b2550c310de66b62f8ecc846ba8c855c65dca2"
+    },
+    "PROFILE_TAB/RECORD/PROFILE_TAB_SPEC_CURRENT_VERSION_V3.md": {
+      "bytes": 6512,
+      "sha256": "10c5cb3993f22980fee82afcc8ac813c4af16f12a6ba861eff331083a50581ca"
+    },
+    "PROTOTYPE/ZYRA_PROTOTYPE_CURRENT_VERSION_V187.html": {
+      "bytes": 518942,
+      "sha256": "3d5f9ada9ba422a661cc5117cdb153967815eb0c2f32452cdb76806e6fd8058f"
+    }
+  },
+  "analyzer": {
+    "issues": 0,
+    "sha256": "a91ef85af5fa88c59d9d8e98a8eec5f135c6506be30215697a163fa0e36a5e5e"
+  },
+  "focused": {
+    "pass": 275,
+    "failure": 0,
+    "skip": 0,
+    "sha256": "f5e63b2dc2bd95be0e9c8a3886e9ab972fd0432188fcd7e5a2eab95f78999e51"
+  },
+  "regression": {
+    "baselineJsonlSha256": "2e5396340e51ac28f2c8dc6269de63c22f739f77140f78eb1ebd4142755263e2",
+    "candidateJsonlSha256": "accf8e7b056098c6542f7f212ee174c4c0456ad3520680ee5c532b43882d03c3",
+    "baseline": {
+      "pass": 6996,
+      "failure": 38,
+      "skip": 122,
+      "suites": 534
+    },
+    "candidate": {
+      "pass": 7009,
+      "failure": 37,
+      "skip": 122,
+      "suites": 534
+    },
+    "failureBaselineSha256": "5881612557e5ffc9d807871953ef32ba7022008a3c7e9bc851f97ff0cd600d0d",
+    "candidateFailureSetSha256": "df17c4cf9465f0ee1b1942011fe67d42774f15deb67922bdf63b3b946621240d",
+    "retainedSkipSetSha256": "515ba0de8caed46b2ec74ff3bbe63967beb4293636a9bbc6b72c5e7de69f544a",
+    "lostBaselinePasses": [],
+    "newFailures": [],
+    "resolvedBaselineFailures": [
+      [
+        "test/one_journey_pull_down_routes_test.dart",
+        "end confirmation pull is inert and Keep this Journey still works"
+      ]
+    ],
+    "newSkips": [],
+    "missingSkips": [],
+    "missingSuites": [],
+    "addedSuites": [],
+    "retainedFailures": [
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian button actual shell white canvas status return and theme restoration"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian detail_privacyPolicy 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian detail_privacyPolicy 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian detail_terms 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian detail_terms 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian edge actual shell white canvas status return and theme restoration"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian overview_privacyData 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian overview_privacyData 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker button actual shell white canvas status return and theme restoration"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker detail_privacyPolicy 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker detail_privacyPolicy 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker detail_terms 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker detail_terms 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker edge actual shell white canvas status return and theme restoration"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker overview_privacyData 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker overview_privacyData 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_deleteAccount Guardian compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_deleteAccount Guardian normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_deleteAccount Seeker compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_deleteAccount Seeker normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_resetProfile Guardian compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_resetProfile Guardian normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_resetProfile Seeker compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_resetProfile Seeker normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "overview_advanced Guardian compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "overview_advanced Guardian normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "overview_advanced Seeker compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "overview_advanced Seeker normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/guardian_circle_topic_options_test.dart",
+        "embedded discuss control current supports compact keyboard and long draft"
+      ],
+      [
+        "test/one_journey_back_button_preview_test.dart",
+        "Circle edge returns from Journey through the same Topics draft"
+      ],
+      [
+        "test/one_journey_back_button_preview_test.dart",
+        "Compact 2x Circle and Settings retain edge return without Back chrome or clipped controls"
+      ],
+      [
+        "test/one_journey_bottom_close_cue_test.dart",
+        "Circle Journey child returns once by edge and accessible Back"
+      ],
+      [
+        "test/one_journey_pull_down_routes_test.dart",
+        "Journey body retains vertical stage traversal; Back returns one route fromOptions=true"
+      ],
+      [
+        "test/view_request_draft_widget_test.dart",
+        "fresh whole-app real-font candidates are not approval_compact200_final"
+      ],
+      [
+        "test/view_request_draft_widget_test.dart",
+        "preview exposes no Pause; End stays deliberate, retains history and reset is draft-only"
+      ],
+      [
+        "test/zyra_subscription_wallet_preview_test.dart",
+        "confirmed zero Family places is a plain empty state at compact200 size"
+      ],
+      [
+        "test/zyra_subscription_wallet_preview_test.dart",
+        "confirmed zero Family places is a plain empty state at normal size"
+      ]
+    ]
+  },
+  "comparisonJsonSha256": "b21fa56fc80aafc395695a0fcf7f7d28a940117531b600d288592a4c9d524546",
+  "independentReview": "Shared confirm route and Guardian ownership reviewed before commit. Protected host and compact dismissal checks passed.",
+  "visual": {
+    "logicalViewports": [
+      [
+        430,
+        932
+      ],
+      [
+        375,
+        667
+      ]
+    ],
+    "routes": [
+      "Omar cancellation",
+      "Guardian removal",
+      "Profiles Hide",
+      "Settings",
+      "Filters",
+      "Profile Preview"
+    ],
+    "comparisonSha256": "1ec0368c7b38c491b7354519ea3502947d7747bce9c6f6e2eafe5d00f5391b21",
+    "remainingDifferences": [
+      "V187 mock handset has a one-point outline and rounded device corners. Flutter uses actual viewport bounds.",
+      "Confirm height is up to 8.31 points taller in Flutter at 430 × 932 because of device bottom safe area. At 375 × 667 the difference is at most 0.31 points.",
+      "Native tab bar is 11 points higher at 430 × 932 and nine points lower at 375 × 667. Preview retains a 16-point card-to-tab gap.",
+      "V187 missing local prototype portrait images paint initials. Flutter detached fixtures have synthetic portrait silhouettes.",
+      "Guardian and Profiles layouts beneath the scrim use existing native fixtures, including an extra seeded Guardian Journey and different pagination dot styling.",
+      "Settings uses translucent ivory panels with floating shadows in Flutter. Minor heading and row spacing and seeded labels differ from the prototype.",
+      "Filters Flutter is lighter across the card, with a stronger selected-segment shadow and more upright inactive segment text. Profiles CTA footer uses native gold-ink treatment.",
+      "Both compact Preview Details captures crop the lower request at rest. Flutter permits vertical scroll inside the shared card to expose the whole button and show the toast.",
+      "Preview Flutter makes the selected Profile tab underline and seeded My ZYRA notification visible using the app tab bar. V187 paints no notification dot in this scenario.",
+      "V187 paints only the Details page in its own-preview renderer. Flutter supports the LOCK21 V3 tap-through photo pages."
+    ],
+    "captureSha256": {
+      "compare-375x667.png": "e146dc555df51d243a40b43c8669c3bd6e648a5a276dadb8930e27e2467d814e",
+      "compare-430x932.png": "68bf482361b0aeae09f4a0246b63dfd91c5e70de92549b5a8adb9048049e352a",
+      "flutter/filters_375x667.png": "26390c1963fae824adb6377fe592edd9e41ae0224d379121539183f3bae07285",
+      "flutter/filters_430x932.png": "4793dd93f2364c5ce674346d37961322157cabab74f31818ef3dde8dc1036e23",
+      "flutter/guardian-remove_375x667.png": "c8bebea5d6f1ceeb76f2fc9fa37ac8ca0486d32650e5fe43ca5b604747851ea1",
+      "flutter/guardian-remove_430x932.png": "c1433dc8975f732ce9bee51a0e1989e0f9aef7b42c0ee1a8d1cc925f3ef3a74c",
+      "flutter/omar-cancel_375x667.png": "b289a68c2042df9a2ea59c079bf3356156e9f40dbf8d79d80490f58abf241b4c",
+      "flutter/omar-cancel_430x932.png": "58246bf7e1dc54cd278cb53fb120bf72dbf1a432574a80685d02081394f3d218",
+      "flutter/profile-preview_375x667.png": "fd75ae30a35b349475167ea316f4e64519476d45fec6ca6107e895bcce2266bb",
+      "flutter/profile-preview_430x932.png": "95e32f002e6b5717655102488039e2777bf732749f0cc33f3213fe049c072171",
+      "flutter/profiles-hide_375x667.png": "59bf8e5f084547aa60e878e808d07715713e419f790635ad2292d779f77e2ad0",
+      "flutter/profiles-hide_430x932.png": "c87a827145822a9fb47bb6265b459c4d3ea08ad0e26d9006089b9798ed01095d",
+      "flutter/settings_375x667.png": "aee38b45f8ad35e661894749a31fb0ebcc4699c4d667e793f1a4139a9592e24e",
+      "flutter/settings_430x932.png": "b51d1c8234eb6e78e89b08bc0bf747f28420d12e2f3757dfa4a891a137811449",
+      "v187/filters_375x667.png": "1bb45e66e62be801b47c3d116eb076e745f62a04bd7cfef4ae95e1fcb54075b1",
+      "v187/filters_430x932.png": "783661a6cbdf927e8fcbc7a936c2f0d95eb178c7c7363ab623a44189d6679267",
+      "v187/guardian-remove_375x667.png": "9918428c9edbdcc4f63743a4159d777f9265c6dfd4cd99ed016f5389dbadbb4e",
+      "v187/guardian-remove_430x932.png": "1b7450aa09a52040b2e035077bd42cc96c220a5767d3ca83ab7733eb8c2ad6df",
+      "v187/omar-cancel_375x667.png": "3f15de9ec5e8078d391ada71b6529eb79f6a0a56d11d39f7e50846371dc7bfdb",
+      "v187/omar-cancel_430x932.png": "d231f624a70102bf871e0b7bc0eab8adaf1dc2078440679dc6ac2bd0944c3a8d",
+      "v187/profile-preview_375x667.png": "6ffd93301853e49436220771f6eac97780817d07ea4520fe1acbc4ffb9580c85",
+      "v187/profile-preview_430x932.png": "8beefaa5cc93fcd8601f56364937806faed8b00224475dd66f12a2faef5ac3d0",
+      "v187/profiles-hide_375x667.png": "84eb6bcb8976bb7a79685fb319fc8c76c050a7778a458d4ccee7f2c885b68fd1",
+      "v187/profiles-hide_430x932.png": "5b7eced26c8b0d4b5676d9c4ba2263efc159eea54276e326df112157d2715744",
+      "v187/settings_375x667.png": "852eee40d83e210b6edecb17d666d0a2bf2542a5dbbc5aad46d6c9bb0118abc7",
+      "v187/settings_430x932.png": "f3010d29961c1a1d29b013b54cf48d8772d3169da6e39802b93800b8256ab9b8"
+    }
+  }
+}
