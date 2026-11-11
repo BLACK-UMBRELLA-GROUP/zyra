@@ -2,7 +2,7 @@
   "queueLine": 76,
   "brief": "DOC-ZYRA-0438",
   "question": 58,
-  "status": "BUILD_VERIFIED_DELIVERY_PENDING",
+  "status": "BUILT",
   "sourceCommit": "b052b267ecf6c981a03adf0198f44318c00b9543",
   "sourceEvidenceCommit": "f4b70c9cfb871b8241a9096d9c4dd2926cc1519c",
   "nativeHostLineageSource": "0c20752102731f362bf7dc859259f178b332466a",
@@ -71,11 +71,30 @@
   },
   "candidateFileCount": 177,
   "delivery": {
-    "pairedCableUnlockedPreflight": "No wired connection to the provisioned iPhone.",
-    "installAttempted": false,
-    "launchAttempted": false,
-    "firstFrame": "Pending",
-    "approvedPhoneKnownAndPaired": true
+    "recordedAt": "2026-11-11T05:31:56.361224+00:00",
+    "authorization": "Founder GO on 11 November, after announcement of exact build and layout.",
+    "pairedProvisionedPhone": true,
+    "transport": "USB",
+    "unlockedBeforeInstallAndLaunch": true,
+    "installAttempted": true,
+    "installSucceeded": true,
+    "launchAttempted": true,
+    "launchSucceeded": true,
+    "installedAppAndRunningProcessVerified": true,
+    "developerServicesVerified": true,
+    "deliveryReceiptSha256": "bcb5648580d9e65dbc8c7edb0640c927156fb97ccab72b591f64f3a1c71a1a39",
+    "firstFrame": {
+      "capturedAt": "2026-11-11T05:31:55.162158+00:00",
+      "description": "First observed screen during launch, cropped to the ZYRA splash.",
+      "file": "PHONE_FIRST_OBSERVED_FRAME.png",
+      "sha256": "0a9d4c83553fd5fcfe12ced1843245fe272ffecc14f2516c9c10459d54a9ce8f",
+      "dimensions": [
+        1000,
+        2100
+      ],
+      "privacy": "Visually reviewed. Crop excludes adjacent app and device chrome. Text and EXIF metadata removed.",
+      "storage": "Mac-only, Git-ignored delivery evidence."
+    }
   },
-  "queueStatus": "WAITING"
+  "queueStatus": "BUILT"
 }
