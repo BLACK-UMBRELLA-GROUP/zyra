@@ -21,17 +21,21 @@ import 'package:zyra/dev/zyra_one_journey_phone_access.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_draft.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import '../support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_wali_link_service.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/floating_nav_bar.dart';
+import 'package:zyra/widgets/zyra_focus_dashboard.dart';
 import 'package:zyra/widgets/zyra_full_screen_error.dart';
+import 'package:zyra/widgets/zyra_profiles_components.dart';
 import 'package:zyra/widgets/zyra_loading.dart';
 import 'package:zyra/widgets/zyra_state_widgets.dart';
 
 import '../support/zyra_hidden_dev_controls_driver.dart';
+import '../support/guardian_card_driver.dart';
 import 'baseline_capture_support.dart';
 import 'lock15_focus_capture_test.dart' show circleToken, fillPreferences, one;
 
@@ -489,6 +493,150 @@ Future<void> _resizeRound2(BaselineHarness h, Size size) async {
   await h.flush();
 }
 
+// Keep the seven exact Queue 75 masters and their manifest provenance.
+// Their changed layouts are checked against the current LOCKs here
+// and across the four roles in lock24_tab_spacing_test.dart / SPACING_AUDIT.md.
+typedef _Line77MasterReplacement = ({
+  int tab,
+  String bottom,
+  String lock,
+  bool guardian,
+  int? guardianDots,
+  int? selectedDot,
+});
+
+const _line77MasterReplacements = <String, _Line77MasterReplacement>{
+  'gm01_family_review': (
+    tab: 2,
+    bottom: 'guardian_notifications',
+    lock: 'LOCK 15 V5',
+    guardian: true,
+    guardianDots: null,
+    selectedDot: null,
+  ),
+  'gm04_all_caught_up': (
+    tab: 2,
+    bottom: 'guardian_notifications',
+    lock: 'LOCK 15 V5',
+    guardian: true,
+    guardianDots: null,
+    selectedDot: null,
+  ),
+  'k08_card__add_a_guardian': (
+    tab: 3,
+    bottom: 'guardian-card-center',
+    lock: 'LOCK 19 V5',
+    guardian: false,
+    guardianDots: 0,
+    selectedDot: null,
+  ),
+  'k17_basic__card_front_hassan': (
+    tab: 3,
+    bottom: 'guardian-card-access',
+    lock: 'LOCK 19 V5',
+    guardian: false,
+    guardianDots: 1,
+    selectedDot: 0,
+  ),
+  'k07_card__omar_invited': (
+    tab: 3,
+    bottom: 'guardian-card-center',
+    lock: 'LOCK 19 V5',
+    guardian: false,
+    guardianDots: 3,
+    selectedDot: 2,
+  ),
+  'm05_new_member': (
+    tab: 2,
+    bottom: 'focus-notifications',
+    lock: 'LOCK 15 V5',
+    guardian: false,
+    guardianDots: null,
+    selectedDot: null,
+  ),
+  'm06_seeker_basic': (
+    tab: 2,
+    bottom: 'focus-notifications',
+    lock: 'LOCK 15 V5',
+    guardian: false,
+    guardianDots: null,
+    selectedDot: null,
+  ),
+};
+
+Future<void> _assertLine77MasterReplacement(
+  BaselineHarness h,
+  _Line77MasterReplacement replacement,
+) async {
+  final tester = h.tester;
+  final bar = _key('compact-nav-surface');
+  final item = _key(replacement.bottom);
+  expect(bar, findsOneWidget);
+  expect(item, findsOneWidget, reason: replacement.lock);
+  expect(h.latest.tab, replacement.tab);
+  expect(h.latest.guardian, replacement.guardian);
+  if (replacement.tab == 2) {
+    final focus = tester.widget<ZyraFocusDashboard>(
+      find.byType(ZyraFocusDashboard),
+    );
+    expect(
+      focus.tiles.map((tile) => tile.id),
+      replacement.guardian
+          ? [
+              'guardian_requests',
+              'guardian_connect',
+              'guardian_introductions',
+              'guardian_notifications',
+            ]
+          : [
+              'concept-my-requests',
+              'concept-my-introductions',
+              'concept-my-ended',
+              'focus-notifications',
+            ],
+    );
+    final outer = find.byKey(const PageStorageKey('my-zyra-focus-scroll'));
+    final scroll = find
+        .descendant(of: outer, matching: find.byType(Scrollable))
+        .first;
+    final position = tester.state<ScrollableState>(scroll).position;
+    position.jumpTo(position.maxScrollExtent);
+    await h.flush();
+  } else {
+    expect(_key('guardian-card-previous'), findsNothing);
+    expect(_key('guardian-card-next'), findsNothing);
+    final dots = find.byType(ZyraProfilesDots);
+    if (replacement.guardianDots == 0) {
+      expect(dots, findsNothing);
+    } else {
+      expect(dots, findsOneWidget);
+      final pager = tester.widget<ZyraProfilesDots>(dots);
+      expect(pager.count, replacement.guardianDots);
+      expect(pager.index, replacement.selectedDot);
+    }
+    expect(tester.getSize(item).height, 52);
+    if (replacement.bottom == 'guardian-card-access') {
+      expect(h.latest.seekerMembership, 'Seeker Basic');
+      expect(_key('guardian-card-center'), findsNothing);
+      final details = tester.getRect(_key('guardian-card-details'));
+      final access = tester.getRect(item);
+      expect(details.height, 52);
+      expect(access.left - details.right, 8);
+    } else {
+      expect(_key('guardian-card-details'), findsNothing);
+      expect(_key('guardian-card-access'), findsNothing);
+      expect(tester.getSize(item).width, 390);
+    }
+  }
+  expect(tester.getSize(bar), const Size(390, 58), reason: 'LOCK 6 V4');
+  expect(
+    tester.getRect(bar).top - tester.getRect(item).bottom,
+    closeTo(16, 1),
+    reason: 'LOCK 24',
+  );
+  expect(tester.takeException(), isNull);
+}
+
 void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
   final cases =
       <
@@ -527,7 +675,7 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
               guardian: true,
               checkpoint: ZyraPreviewNavigationCheckpoint(
                 guardian: true,
-                model: (ViewRequestDraftModel(
+                model: (ReceivedRequestFixture(
                   capacity: 3,
                 )..seedJourneys(1)).snapshot(),
                 tab: 2,
@@ -550,7 +698,7 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
           master: 'GUARDIAN_TABS/MASTERS/g11_seeker__adam_main.png',
           questions: [49],
           drive: (h) async {
-            final model = ViewRequestDraftModel(capacity: 3)..seedJourneys(1);
+            final model = ReceivedRequestFixture(capacity: 3)..seedJourneys(1);
             await h.mount(guardian: true, tab: 3, model: model);
             await h.tap('guardian_seeker_0');
             h.assertPage('guardian_seeker');
@@ -567,7 +715,7 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
           master: 'GUARDIAN_TABS/MASTERS/g12_seeker__yusuf_additional.png',
           questions: [48, 49],
           drive: (h) async {
-            final model = ViewRequestDraftModel(capacity: 3)..seedJourneys(1);
+            final model = ReceivedRequestFixture(capacity: 3)..seedJourneys(1);
             await h.mount(guardian: true, tab: 3, model: model);
             await h.tap('guardian_seeker_0');
             final staleJourney = h.tester
@@ -600,7 +748,7 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
             await h.mount(
               checkpoint: ZyraPreviewNavigationCheckpoint(
                 guardian: false,
-                model: ViewRequestDraftModel(capacity: 3).snapshot(),
+                model: ReceivedRequestFixture(capacity: 3).snapshot(),
                 tab: 3,
                 pages: const [],
                 removedGuardians: draftGuardians.map((person) => person.id),
@@ -608,12 +756,9 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
             );
             expect(_key('guardian-card-add'), findsOneWidget);
             expect(find.text('Omar'), findsNothing);
-            final next = _key('guardian-card-next');
-            if (next.evaluate().isNotEmpty) {
-              await h.tester.tap(next, warnIfMissed: false);
-              await h.flush();
-              expect(_key('guardian-card-add'), findsOneWidget);
-            }
+            await swipeGuardianCard(h.tester);
+            await h.flush();
+            expect(_key('guardian-card-add'), findsOneWidget);
           },
         ),
         (
@@ -640,8 +785,8 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
           questions: [52, 53],
           drive: (h) async {
             await h.mount(tab: 3);
-            await h.tap('guardian-card-next');
-            await h.tap('guardian-card-next');
+            await swipeGuardianCard(h.tester);
+            await swipeGuardianCard(h.tester);
             expect(_key('guardian-card-preview-invited-omar'), findsOneWidget);
             expect(find.text('Waiting for Omar'), findsOneWidget);
             expect(find.text('Send invitation again'), findsOneWidget);
@@ -703,7 +848,7 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
           master: 'MY_ZYRA/MASTERS/m06_seeker_basic.png',
           questions: [54, 55],
           drive: (h) async {
-            final model = ViewRequestDraftModel(capacity: 1)..seedJourneys(1);
+            final model = ReceivedRequestFixture(capacity: 1)..seedJourneys(1);
             await h.mount(
               tab: 2,
               model: model,
@@ -723,7 +868,7 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
         'LOCK 8 g10 Seekers role isolation ${device.id} text scale $scale',
         (tester) async {
           final h = _round2Harness(tester, textScale: scale);
-          final model = ViewRequestDraftModel(capacity: 3)..seedJourneys(1);
+          final model = ReceivedRequestFixture(capacity: 3)..seedJourneys(1);
           await h.mount(guardian: true, tab: 3, model: model);
           await _resizeRound2(h, device.size);
           expect(_key('guardian_seeker_0'), findsOneWidget);
@@ -791,6 +936,7 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
   group('Round 2 LOCK master', () {
     test('all active comparisons have an exact current master', () {
       expect(approved.keys.toSet(), cases.map((entry) => entry.id).toSet());
+      expect(approved.keys, containsAll(_line77MasterReplacements.keys));
       for (final entry in cases) {
         expect(
           approved[entry.id]?['governing_reference'],
@@ -824,6 +970,11 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
         final h = _round2Harness(tester);
         await entry.drive(h);
         expect(tester.takeException(), isNull);
+        final replacement = _line77MasterReplacements[entry.id];
+        if (replacement != null && !_captureCandidates) {
+          await _assertLine77MasterReplacement(h, replacement);
+          return;
+        }
         final path = _captureCandidates
             ? '${_healthCapture ? 'health_candidates' : _candidateDirectory}/${entry.id}.png'
             : approved[entry.id]!['path'] as String;

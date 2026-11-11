@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/data/zyra_journey_stages.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 
 void main() {
   late ViewRequestDraftModel model;
@@ -21,7 +22,7 @@ void main() {
     );
   }
 
-  setUp(() => model = ViewRequestDraftModel());
+  setUp(() => model = ReceivedRequestFixture());
 
   test(
     'Ended read window uses exact clamped calendar months, not ninety days',
@@ -89,7 +90,7 @@ void main() {
     'a terminal Journey records one immutable dated attempt and progress',
     () {
       var now = DateTime.utc(2026, 7, 31, 15, 42);
-      model = ViewRequestDraftModel(clock: () => now);
+      model = ReceivedRequestFixture(clock: () => now);
       start(first);
       final startTime = now;
       expect(model.sendSalam(first), isTrue);
@@ -133,7 +134,7 @@ void main() {
     'capacity replacement preserves the ended attempt before fresh preparation',
     () {
       var now = DateTime.utc(2026, 8, 1);
-      model = ViewRequestDraftModel(capacity: 3, clock: () => now);
+      model = ReceivedRequestFixture(capacity: 3, clock: () => now);
       start(first);
       start(second);
       start(third);
@@ -160,7 +161,7 @@ void main() {
 
   test('legacy seeded Ended history never invents a fresh end timestamp', () {
     final now = DateTime.utc(2026, 10, 22);
-    model = ViewRequestDraftModel(clock: () => now);
+    model = ReceivedRequestFixture(clock: () => now);
     model.seedHistory();
     final id = draftProfiles[5].id;
     final attempt = model.currentEndedAttemptFor(id)!;
@@ -248,7 +249,7 @@ void main() {
   test(
     'ended-only fixture does not create another attempt or rewrite existing state',
     () {
-      model = ViewRequestDraftModel(capacity: 3);
+      model = ReceivedRequestFixture(capacity: 3);
       start(first);
       final currentStage = model.stageFor(first);
       model.seedHistory();
@@ -314,7 +315,7 @@ void main() {
   });
 
   test('counterpart Main absence holds Sara without holding Aisha', () {
-    model = ViewRequestDraftModel(capacity: 3);
+    model = ReceivedRequestFixture(capacity: 3);
     start(first);
     start(second);
     expect(model.setPeerMainGuardianPresent(false, id: first), isTrue);
@@ -326,7 +327,7 @@ void main() {
   });
 
   test('invalid counterpart Main overrides fail closed without mutation', () {
-    model = ViewRequestDraftModel(capacity: 3);
+    model = ReceivedRequestFixture(capacity: 3);
     start(first);
     expect(model.setPeerMainGuardianPresent(false, id: first), isTrue);
     final before = snapshot();
@@ -339,7 +340,7 @@ void main() {
   });
 
   test('legacy all-fixture Main control stays uniform and own Main shared', () {
-    model = ViewRequestDraftModel(capacity: 3);
+    model = ReceivedRequestFixture(capacity: 3);
     start(first);
     start(second);
     expect(model.setPeerMainGuardianPresent(false, id: first), isTrue);
@@ -367,7 +368,7 @@ void main() {
   });
 
   test('Guardian Gate choices recheck per-counterpart Main independently', () {
-    model = ViewRequestDraftModel(capacity: 3);
+    model = ReceivedRequestFixture(capacity: 3);
     for (final id in [first, second]) {
       start(id);
       nextStage(id);
@@ -397,7 +398,7 @@ void main() {
     'reset and valid Journey seeds clear every counterpart Main override',
     () {
       for (final count in [0, 1, 2, 3]) {
-        model = ViewRequestDraftModel(capacity: 3);
+        model = ReceivedRequestFixture(capacity: 3);
         expect(model.setPeerMainGuardianPresent(false), isTrue);
         expect(model.setPeerMainGuardianPresent(true, id: first), isTrue);
         if (count == 0) {
@@ -421,7 +422,7 @@ void main() {
     expect(model.capacity, 1);
     expect(model.occupiedCount, 0);
     for (final capacity in [1, 2, 3]) {
-      final local = ViewRequestDraftModel(capacity: capacity);
+      final local = ReceivedRequestFixture(capacity: capacity);
       expect(local.capacity, capacity);
       expect(local.occupiedCount, 0);
       expect(local.states, {received: DraftJourneyState.received});
@@ -430,14 +431,14 @@ void main() {
 
   test('invalid constructor capacity refuses rather than clamps', () {
     for (final capacity in [-100, -1, 0, 4, 100]) {
-      expect(() => ViewRequestDraftModel(capacity: capacity), throwsRangeError);
+      expect(() => ReceivedRequestFixture(capacity: capacity), throwsRangeError);
     }
     expect(model.capacity, 1);
     expect(model.states, {received: DraftJourneyState.received});
   });
 
   test('monthly pending requests cost no place before mutual acceptance', () {
-    model = ViewRequestDraftModel(capacity: 3);
+    model = ReceivedRequestFixture(capacity: 3);
     for (final profile in model.discoverableProfiles.skip(1)) {
       expect(model.request(profile.id), isTrue);
     }
@@ -488,7 +489,7 @@ void main() {
   );
 
   test('three places count preparation and Active together', () {
-    model = ViewRequestDraftModel(capacity: 3);
+    model = ReceivedRequestFixture(capacity: 3);
     expect(model.request(third), isTrue);
     expect(model.acceptReceived(received), isTrue);
     start(first);
@@ -527,7 +528,7 @@ void main() {
   });
 
   test('three simultaneous Journeys have independent mutual progress', () {
-    model = ViewRequestDraftModel(capacity: 3);
+    model = ReceivedRequestFixture(capacity: 3);
     start(first);
     start(second);
     start(third);
@@ -558,7 +559,7 @@ void main() {
   });
 
   test('capacity reduction cannot truncate any occupied-state combination', () {
-    model = ViewRequestDraftModel(capacity: 3);
+    model = ReceivedRequestFixture(capacity: 3);
     expect(model.acceptReceived(received), isTrue);
     start(first);
     start(second);
@@ -582,7 +583,7 @@ void main() {
   test(
     'pending requests and ended history do not obstruct a safe reduction',
     () {
-      model = ViewRequestDraftModel(capacity: 3);
+      model = ReceivedRequestFixture(capacity: 3);
       start(first);
       start(second);
       expect(model.request(third), isTrue);
@@ -604,7 +605,7 @@ void main() {
 
   for (final count in [1, 2, 3]) {
     test('explicit $count-Journey seed resets only the fictional scenario', () {
-      model = ViewRequestDraftModel(capacity: 3);
+      model = ReceivedRequestFixture(capacity: 3);
       start(first);
       nextStage(first);
       expect(model.chooseCompatibilityReveal(first), isTrue);
@@ -644,7 +645,7 @@ void main() {
   test(
     'invalid seed counts leave requests history progress and holds intact',
     () {
-      model = ViewRequestDraftModel(capacity: 2);
+      model = ReceivedRequestFixture(capacity: 2);
       start(first);
       nextStage(first);
       expect(model.chooseCompatibilityReveal(first), isTrue);
@@ -675,7 +676,7 @@ void main() {
 
   for (final capacity in [1, 2, 3]) {
     test('fillCapacity fills all $capacity configured local places', () {
-      model = ViewRequestDraftModel(capacity: capacity);
+      model = ReceivedRequestFixture(capacity: capacity);
       model.fillCapacity();
       expect(model.capacity, capacity);
       expect(model.activeCount, capacity);

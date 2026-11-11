@@ -45,6 +45,7 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
     this.canRequest,
     this.requestRowLabels,
     this.bottomPadding = 100,
+    this.fixedTabFooter = false,
     this.photoBuilder,
     this.alignHeaderActions = false,
     this.nextProfileMotion = ZyraBrowseNextMotion.current,
@@ -73,6 +74,7 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
   final bool Function(SeekerProfile)? canRequest;
   final List<String>? requestRowLabels;
   final double bottomPadding;
+  final bool fixedTabFooter;
 
   /// Optional owner-prepared offline renderer. The existing sample-only
   /// default remains unchanged for existing callers and fixtures.
@@ -128,6 +130,7 @@ class _ZyraOneJourneyBrowseDesignsState
     canRequest: widget.canRequest,
     requestRowLabels: widget.requestRowLabels,
     bottomPadding: widget.bottomPadding,
+    fixedTabFooter: widget.fixedTabFooter,
     alignHeaderActions: widget.alignHeaderActions,
     nextProfileMotion: widget.nextProfileMotion,
     nextProfileMotionEpoch: widget.nextProfileMotionEpoch,

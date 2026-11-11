@@ -1,3 +1,4 @@
+import '../widgets/floating_nav_bar.dart';
 import '../widgets/zyra_floating_surface.dart';
 // LOCK 8 V3 / LOCK 15 V2: fictional Guardian presentation only. No service, RPC or member
 // authority. The admitted shell owns changes and the lifetime of callbacks.
@@ -15,19 +16,20 @@ import 'zyra_one_journey_guardian_seeker.dart';
 import 'zyra_one_journey_guardian_action.dart';
 import 'zyra_one_journey_monogram_presentation.dart';
 import 'zyra_guardian_family_preview.dart';
+import 'zyra_view_request_draft_model.dart' show DraftProfile;
 import '../screens/wali/family_messaging_screens.dart'
     show ZyraFamilyMessageComposer;
 
 enum ZyraGuardianReview { open, paused, continued }
 
-enum ZyraGuardianConnection { pending, accepted, dismissed, blocked }
+enum ZyraGuardianConnection { pending, accepted, dismissed, blocked, none }
 
 class ZyraGuardianTabsSnapshot {
   const ZyraGuardianTabsSnapshot({
     this.review = ZyraGuardianReview.open,
     this.hours = 41,
     this.reviewRevision = 0,
-    this.connection = ZyraGuardianConnection.pending,
+    this.connection = ZyraGuardianConnection.none,
     this.seeker = 0,
     this.requestSeeker = 0,
     this.requestsSent = false,
@@ -39,6 +41,10 @@ class ZyraGuardianTabsSnapshot {
     this.focusIndex = 0,
     this.consumedFocus = const {},
   });
+  // The existing fictional Family Review is already seen at startup.
+  const ZyraGuardianTabsSnapshot.quiet()
+    : this(consumedFocus: const {'review-open-0'});
+
   final ZyraGuardianReview review;
   final ZyraGuardianConnection connection;
   final int hours, seeker, requestSeeker, networkIndex, reviewRevision;
@@ -49,7 +55,7 @@ class ZyraGuardianTabsSnapshot {
 
 class ZyraGuardianTabsState {
   ZyraGuardianTabsState([
-    ZyraGuardianTabsSnapshot saved = const ZyraGuardianTabsSnapshot(),
+    ZyraGuardianTabsSnapshot saved = const ZyraGuardianTabsSnapshot.quiet(),
   ]) {
     review = saved.review;
     hours = saved.hours.clamp(0, 48);
@@ -98,9 +104,13 @@ class ZyraGuardianTabsState {
   bool get main => seeker == 0;
   bool get canPrevious => networkIndex > 0;
   bool get canNext => networkIndex < network.length - 1;
-  bool get needsYou =>
-      review != ZyraGuardianReview.continued ||
-      connection == ZyraGuardianConnection.pending;
+  bool get hasUnseenReview =>
+      review != ZyraGuardianReview.continued &&
+      !consumedFocus.contains(reviewFocusId);
+  bool get hasUnseenConnection =>
+      connection == ZyraGuardianConnection.pending &&
+      !consumedFocus.contains('connect-pending');
+  bool get needsYou => hasUnseenReview || hasUnseenConnection;
   int get receivedCount =>
       connection == ZyraGuardianConnection.pending ||
           connection == ZyraGuardianConnection.accepted
@@ -220,6 +230,8 @@ class _GuardianJourneyPagerState extends State<ZyraGuardianJourneyPager> {
             ),
           ),
         ),
+        // The centered dot slot contributes the first 11 of the locked 12 pt.
+        const SizedBox(height: 1),
         Expanded(
           child: GestureDetector(
             key: const ValueKey('guardian_journey_card'),
@@ -319,6 +331,11 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     this.adamMain = true,
     this.focusItems,
     this.notificationCount = 0,
+    this.newJourneyRequestCount = 0,
+    this.receivedJourneyRequests = const [],
+    this.sentJourneyRequests = const [],
+    this.tabClearance = false,
+    this.canInteract,
     this.journeys = const [],
     this.journeyIndex = 0,
     this.journeyIdentity,
@@ -332,7 +349,10 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   final String? Function(String) photoFor;
   final bool linked, paid, adamMain;
   final List<ZyraFocusItem>? focusItems;
-  final int notificationCount;
+  final int notificationCount, newJourneyRequestCount;
+  final List<DraftProfile> receivedJourneyRequests, sentJourneyRequests;
+  final bool tabClearance;
+  final bool Function()? canInteract;
   final List<ZyraGuardianJourneyCard> journeys;
   final int journeyIndex;
   final Object? journeyIdentity;
@@ -401,6 +421,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     String action, {
     bool gold = false,
     bool network = false,
+    bool requestSent = false,
   }) => Builder(
     builder: (context) {
       final text = Text(
@@ -408,7 +429,9 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
         textAlign: TextAlign.center,
         style: ZyraText.body(
           size: 13,
-          color: gold && !network ? ZyraColors.goldText : ZyraColors.foreground,
+          color: requestSent || (gold && !network)
+              ? ZyraColors.goldText
+              : ZyraColors.foreground,
         ).copyWith(height: network ? 1.35 : 1.45),
       );
       return ConstrainedBox(
@@ -462,53 +485,54 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
       child: child,
     ),
   );
-  Widget _tile(String title, String detail, IconData icon, String action) =>
-      Padding(
-        padding: const EdgeInsets.only(bottom: 10),
-        child: Builder(
-          builder: (context) => InkWell(
-            key: ValueKey('guardian_$action'),
-            onTap: ZyraTapFeedback.onTap(context, () => onAction(action)),
-            borderRadius: BorderRadius.circular(20),
-            child: _box(
-              Row(
-                children: [
-                  ZyraFloatingSurface(
-                    radius: 12,
-                    circle: false,
-                    gold: false,
-                    child: Container(
-                      width: 38,
-                      height: 38,
-                      decoration: BoxDecoration(
-                        color: ZyraColors.surfaceFill,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Icon(
-                        icon,
-                        color: ZyraColors.journeyGold,
-                        size: 20,
-                      ),
-                    ),
+  Widget _tile(
+    String title,
+    String detail,
+    IconData icon,
+    String action, {
+    double bottomGap = 10,
+  }) => Padding(
+    padding: EdgeInsets.only(bottom: bottomGap),
+    child: Builder(
+      builder: (context) => InkWell(
+        key: ValueKey('guardian_$action'),
+        onTap: ZyraTapFeedback.onTap(context, () => onAction(action)),
+        borderRadius: BorderRadius.circular(20),
+        child: _box(
+          Row(
+            children: [
+              ZyraFloatingSurface(
+                radius: 12,
+                circle: false,
+                gold: false,
+                child: Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: ZyraColors.surfaceFill,
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _text(title, size: 15),
-                        _text(detail, size: 12, muted: true),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  _text('›', muted: true),
-                ],
+                  child: Icon(icon, color: ZyraColors.journeyGold, size: 20),
+                ),
               ),
-            ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _text(title, size: 15),
+                    _text(detail, size: 12, muted: true),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 10),
+              _text('›', muted: true),
+            ],
           ),
         ),
-      );
+      ),
+    ),
+  );
   Widget _header(String title, {Widget? trailing}) => Padding(
     padding: const EdgeInsets.only(bottom: 20),
     child: Row(
@@ -622,43 +646,69 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     ),
   );
   Widget _viewport(Widget child, {bool scroll = true, double bottom = 104}) =>
-      SafeArea(
-        bottom: false,
-        child: scroll
-            ? ZyraShadowScrollView(
-                key: PageStorageKey('guardian_tabs_$page'),
-                padding: EdgeInsets.fromLTRB(20, 16, 20, bottom),
-                child: child,
-              )
-            : Padding(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-                child: child,
-              ),
+      Builder(
+        builder: (context) {
+          final clearance = tabClearance
+              ? ZyraNavBarMetrics.contentBottomClearance(context)
+              : bottom;
+          return SafeArea(
+            bottom: false,
+            child: scroll
+                ? ZyraShadowScrollView(
+                    key: PageStorageKey('guardian_tabs_$page'),
+                    padding: EdgeInsets.fromLTRB(20, 16, 20, clearance),
+                    child: child,
+                  )
+                : Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      20,
+                      16,
+                      20,
+                      tabClearance ? clearance : 0,
+                    ),
+                    child: child,
+                  ),
+          );
+        },
       );
   Widget _quiet(
     String title,
     String detail,
     IconData icon, {
     bool network = false,
-  }) => Expanded(
-    child: Builder(
-      builder: (context) => Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.textScalerOf(context).scale(12.5) <= 12.5
-              ? 240
-              : 0,
-        ),
-        child: ZyraEmptyState(
-          icon: icon,
-          title: title,
-          message: detail,
-          ctaLabel: network ? 'Open Network' : null,
-          ctaKey: network ? const ValueKey('guardian_empty_network') : null,
-          onCta: network ? () => onAction('network') : null,
-        ),
-      ),
-    ),
-  );
+  }) {
+    final empty = ZyraEmptyState(
+      icon: icon,
+      title: title,
+      message: detail,
+      ctaLabel: network ? 'Open Network' : null,
+      ctaKey: network ? const ValueKey('guardian_empty_network') : null,
+      onCta: network ? () => onAction('network') : null,
+    );
+    return Expanded(
+      child: tabClearance
+          ? LayoutBuilder(
+              builder: (context, bounds) => ZyraShadowScrollView(
+                key: ValueKey('guardian_quick_empty_$page'),
+                physics: const ClampingScrollPhysics(),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: bounds.maxHeight),
+                  child: empty,
+                ),
+              ),
+            )
+          : Builder(
+              builder: (context) => Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.textScalerOf(context).scale(12.5) <= 12.5
+                      ? 240
+                      : 0,
+                ),
+                child: empty,
+              ),
+            ),
+    );
+  }
 
   List<ZyraFocusItem> get _homeFocusItems {
     final review = state.review;
@@ -724,16 +774,13 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   }
 
   Widget _home() {
-    final hasRequest = linked && adamMain;
-    final hasConnect =
-        linked &&
-        paid &&
-        adamMain &&
-        state.connection == ZyraGuardianConnection.pending;
+    final hasRequest = linked && adamMain && newJourneyRequestCount > 0;
+    final hasConnect = linked && paid && adamMain && state.hasUnseenConnection;
     final items = (focusItems ?? _homeFocusItems)
         .where((item) => !state.consumedFocus.contains(item.id))
         .toList(growable: false);
     return ZyraFocusDashboard(
+      canInteract: canInteract,
       greeting: linked
           ? 'Assalamu alaikum, Hassan. You support Adam and Yusuf.'
           : 'Assalamu alaikum, Hassan.',
@@ -760,10 +807,10 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
         ZyraFocusTile(
           id: 'guardian_requests',
           label: 'Journey\nrequests',
-          status: hasRequest ? '1 new' : 'None',
+          status: hasRequest ? '$newJourneyRequestCount new' : 'None',
           icon: Icons.inbox_outlined,
           isNew: hasRequest,
-          onTap: () => onAction('requests'),
+          onTap: () => onAction('quick_requests'),
         ),
         ZyraFocusTile(
           id: 'guardian_connect',
@@ -776,7 +823,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
           icon: Icons.forum_outlined,
           isNew: hasConnect,
           locked: !paid,
-          onTap: () => onAction(paid ? 'connect' : 'membership'),
+          onTap: () => onAction(paid ? 'quick_connect' : 'membership'),
         ),
         ZyraFocusTile(
           id: 'guardian_introductions',
@@ -784,7 +831,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
           status: paid ? '${state.introduced.length} made' : 'Guardian One',
           icon: Icons.groups_outlined,
           locked: !paid,
-          onTap: () => onAction(paid ? 'introductions' : 'membership'),
+          onTap: () => onAction(paid ? 'quick_introductions' : 'membership'),
         ),
         ZyraFocusTile(
           id: 'guardian_notifications',
@@ -794,7 +841,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
               : 'Nothing new',
           icon: Icons.notifications_none,
           isNew: notificationCount > 0,
-          onTap: () => onAction('notifications'),
+          onTap: () => onAction('quick_notifications'),
         ),
       ],
     );
@@ -817,45 +864,59 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
           'requests_tab_',
         ),
         if (linked && adamMain && state.requestSeeker != 2) ...[
-          _box(
-            Row(
-              children: [
-                _photo(state.requestsSent ? 'sara' : 'amira'),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _text(
-                        state.requestsSent ? 'Sara Ahmed' : 'Amira Rahman',
-                        size: 18,
-                      ),
-                      _text(
-                        state.requestsSent
-                            ? '27 · Birmingham'
-                            : '28 · Manchester',
-                        size: 12,
-                        muted: true,
-                      ),
-                      _text(
-                        state.requestsSent
-                            ? 'Adam is waiting for a response'
-                            : 'Journey request to Adam',
-                        size: 12,
-                        gold: true,
-                      ),
-                    ],
+          for (final person
+              in state.requestsSent
+                  ? sentJourneyRequests
+                  : receivedJourneyRequests) ...[
+            _box(
+              Row(
+                children: [
+                  _photo(person.id.replaceFirst('draft-', '')),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _text(
+                          '${person.firstName} ${person.surname}',
+                          size: 18,
+                        ),
+                        _text(
+                          '${person.age} · ${person.city}',
+                          size: 12,
+                          muted: true,
+                        ),
+                        _text(
+                          state.requestsSent
+                              ? 'Adam is waiting for a response'
+                              : 'Journey request to Adam',
+                          size: 12,
+                          gold: true,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          _text(
-            'You see these as their Main Guardian. Each Seeker decides on their own requests.',
-            size: 12,
-            muted: true,
-          ),
+            const SizedBox(height: 10),
+          ],
+          if ((state.requestsSent
+                  ? sentJourneyRequests
+                  : receivedJourneyRequests)
+              .isEmpty)
+            _text(
+              state.requestsSent
+                  ? 'No sent requests yet.'
+                  : 'No received requests yet.',
+              muted: true,
+            )
+          else
+            _text(
+              'You see these as their Main Guardian. Each Seeker decides on their own requests.',
+              size: 12,
+              muted: true,
+            ),
         ] else
           _text('Main Guardian only', muted: true),
       ],
@@ -1024,6 +1085,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   );
 
   Widget _network(BuildContext context) {
+    final bottom = ZyraNavBarMetrics.contentBottomClearance(context);
     if (!linked) {
       return _viewport(
         Column(
@@ -1034,15 +1096,16 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
               'Support someone on their journey.',
               Icons.add,
               'invite',
+              bottomGap: 0,
             ),
           ],
         ),
+        bottom: bottom,
       );
     }
-    final scroll =
-        MediaQuery.sizeOf(context).height < 900 ||
-        MediaQuery.textScalerOf(context).scale(14) > 14;
+    final largerText = MediaQuery.textScalerOf(context).scale(14) > 14;
     final person = ZyraGuardianTabsState.network[state.networkIndex];
+    final requestSent = state.sent.contains(person.id);
     return _viewport(
       Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1051,34 +1114,49 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
             'Network',
             trailing: _switcher('for ${state.seekerName}', 'seeker'),
           ),
-          Flexible(
-            flex: scroll ? 0 : 1,
+          Expanded(
             child: SizedBox(
-              height: scroll
-                  ? 652 * (MediaQuery.textScalerOf(context).scale(14) / 14)
-                  : null,
+              key: const ValueKey('guardian-network-card'),
               child: _box(
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ZyraGoldRingMonogram(
-                          key: const ValueKey('guardian_network_monogram'),
-                          name: person.name[0],
-                          size: 110,
-                          fontSize: 52,
-                          textScaler: TextScaler.noScaling,
+                LayoutBuilder(
+                  builder: (context, constraints) => SingleChildScrollView(
+                    key: const ValueKey('guardian-network-card-scroll'),
+                    physics: largerText
+                        ? const ClampingScrollPhysics()
+                        : const NeverScrollableScrollPhysics(),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ZyraGoldRingMonogram(
+                                key: const ValueKey(
+                                  'guardian_network_monogram',
+                                ),
+                                name: person.name[0],
+                                size: 110,
+                                fontSize: 52,
+                                textScaler: TextScaler.noScaling,
+                              ),
+                              const SizedBox(height: 20),
+                              _title(
+                                '${person.name[0]}., ${person.age}',
+                                size: 34,
+                              ),
+                              _text(person.city, size: 20),
+                              const SizedBox(height: 18),
+                              _info('Main Guardian', 'Father · ✓ Verified'),
+                              _info('Nationality', 'British'),
+                              _info('Ethnicity', 'Mixed'),
+                            ],
+                          ),
                         ),
-                        const SizedBox(height: 20),
-                        _title('${person.name[0]}., ${person.age}', size: 34),
-                        _text(person.city, size: 20),
-                        const SizedBox(height: 18),
-                        _info('Main Guardian', 'Father · ✓ Verified'),
-                        _info('Nationality', 'British'),
-                        _info('Ethnicity', 'Mixed'),
-                      ],
+                      ),
                     ),
                   ),
                 ),
@@ -1103,22 +1181,21 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(
                 child: _button(
-                  state.sent.contains(person.id)
-                      ? 'Request sent'
-                      : 'Connect with\nGuardian',
+                  requestSent ? 'Request sent' : 'Connect with\nGuardian',
                   'connect_confirm',
                   gold: true,
                   network: true,
+                  requestSent: requestSent,
                 ),
               ),
               const SizedBox(width: 10),
               _networkArrow(true),
             ],
           ),
-          const SizedBox(height: 95),
+          SizedBox(height: bottom),
         ],
       ),
-      scroll: scroll,
+      scroll: false,
     );
   }
 
@@ -1163,9 +1240,11 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     );
   }
 
-  Widget _journeys() => _viewport(
+  Widget _journeys(BuildContext context) => _viewport(
     Padding(
-      padding: const EdgeInsets.only(bottom: 98),
+      padding: EdgeInsets.only(
+        bottom: ZyraNavBarMetrics.contentBottomClearance(context),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -1217,13 +1296,14 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
               'Only what ${state.seekerName} shares with you',
               Icons.history,
               'ended',
+              bottomGap: 0,
             ),
         ],
       ),
     ),
     scroll: false,
   );
-  Widget _seekers() => _viewport(
+  Widget _seekers(BuildContext context) => _viewport(
     Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -1307,6 +1387,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
         _text('You can support up to 10 Seekers.', size: 12, muted: true),
       ],
     ),
+    bottom: ZyraNavBarMetrics.contentBottomClearance(context),
   );
   Widget _seeker() => ZyraGuardianSeekerPage(
     name: state.seekerName,
@@ -1344,8 +1425,8 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
               canAct: familyCanAct,
               onAction: onAction,
             ),
-    'journeys' => _journeys(),
-    'seekers' => _seekers(),
+    'journeys' => _journeys(context),
+    'seekers' => _seekers(context),
     'seeker' => _seeker(),
     _ => const SizedBox.shrink(),
   };

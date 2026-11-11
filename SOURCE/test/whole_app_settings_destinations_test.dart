@@ -688,6 +688,7 @@ void main() {
       await owner.settings(tester);
       final actions = _roleOverviews(guardian);
       final expectedRows = {
+        'concept_settings_haptics',
         for (final action in [
           ...actions,
           ZyraConceptAccountAction.phoneAccess,
@@ -697,7 +698,11 @@ void main() {
       };
       final actualRows = await _actualSettingsRows(tester);
       expect(actualRows, expectedRows);
-      expect(actualRows.length, 10);
+      expect(actualRows.length, 11);
+      await _tap(tester, _key('concept_settings_haptics'));
+      expect(_key('zyra-haptic-strength-slider'), findsOneWidget);
+      await _tap(tester, _key('concept_settings_haptics'));
+      expect(_key('zyra-haptic-strength-slider'), findsNothing);
       if (!guardian) await _capture(tester, '01-settings');
       for (final action in actions) {
         await owner.overview(tester, action);

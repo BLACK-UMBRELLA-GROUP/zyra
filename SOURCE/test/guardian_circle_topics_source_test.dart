@@ -52,12 +52,27 @@ Future<BaselineHarness> _mount(
   bool seekerBasic = false,
   bool guardianBasic = false,
   bool openCircle = true,
+  bool deliverCircleMessage = false,
   ViewRequestDraftModel? model,
 }) async {
   final harness = BaselineHarness(
     tester,
     group: 'lock20_source_tests',
     evidenceRoot: _evidence,
+    circleArrivalsFor: deliverCircleMessage
+        ? (seeker, viewer) => seeker == 'draft-self' && viewer == 'draft-self'
+              ? [
+                  ZyraFamilyMessage(
+                    id: 'source-test-circle-arrival',
+                    senderId: 'draft-guardian-hassan',
+                    senderFirstName: 'Hassan',
+                    body: 'A newly delivered Circle test message.',
+                    createdAt: DateTime.utc(2026, 10, 12, 0, 15),
+                    unreadForMe: true,
+                  ),
+                ]
+              : []
+        : null,
     outputRoot:
         '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/GUARDIAN_CIRCLE/BUILT/V2',
     flatOutput: true,
@@ -273,7 +288,11 @@ void main() {
   testWidgets(
     'source Circle entry clears its real unread facts across return',
     (tester) async {
-      final h = await _mount(tester, openCircle: false);
+      final h = await _mount(
+        tester,
+        openCircle: false,
+        deliverCircleMessage: true,
+      );
       expect(h.latest.circleReadMessageKeys, isEmpty);
       await h.tap('guardian-family-messages-top');
       expect(_circle, findsOneWidget);

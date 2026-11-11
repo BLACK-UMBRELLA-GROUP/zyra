@@ -1,3 +1,4 @@
+import '../widgets/floating_nav_bar.dart';
 import '../widgets/zyra_floating_surface.dart';
 // LOCK13 presentation only. The shell retains every destination and gate.
 import 'package:flutter/material.dart';
@@ -112,7 +113,12 @@ class ZyraOneJourneyOptionsPage extends StatelessWidget {
   Widget build(BuildContext context) => SafeArea(
     bottom: false,
     child: Padding(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 98),
+      padding: EdgeInsets.fromLTRB(
+        20,
+        16,
+        20,
+        ZyraNavBarMetrics.contentBottomClearance(context),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -129,7 +135,9 @@ class ZyraOneJourneyOptionsPage extends StatelessWidget {
                   final reading =
                       MediaQuery.textScalerOf(context).scale(1) > 1 ||
                       MediaQuery.boldTextOf(context) ||
-                      bounds.maxHeight < 700 ||
+                      // The full V4 tab bar leaves 696 pt in the locked
+                      // 430 × 932 default-text fixed layout.
+                      bounds.maxHeight < 690 ||
                       bounds.maxWidth < 350;
                   final header = [
                     _identity(),
@@ -140,6 +148,7 @@ class ZyraOneJourneyOptionsPage extends StatelessWidget {
                   return reading
                       ? ZyraShadowScrollView(
                           key: ValueKey('journey_options_scroll_$id'),
+                          physics: const ClampingScrollPhysics(),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [...header, options],

@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_request_activity_presentation.dart';
 import 'package:zyra/dev/zyra_request_capacity_choice.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/widgets/zyra_focus_dashboard.dart';
@@ -25,7 +26,7 @@ ViewRequestDraftModel _fixture({
   bool sent = false,
 }) {
   var now = DateTime.utc(2026, 10, 28, 12);
-  final model = ViewRequestDraftModel(capacity: 3, clock: () => now);
+  final model = ReceivedRequestFixture(capacity: 3, clock: () => now);
   if (full) model.fillCapacity();
   now = DateTime.utc(2026, 10, 29, 12);
   if (sent) {
@@ -322,7 +323,7 @@ void main() {
     'Basic full holds its sole ending and confirms into one preparing place',
     (tester) async {
       final h = _h(tester);
-      final m = ViewRequestDraftModel(capacity: 1)..fillCapacity();
+      final m = ReceivedRequestFixture(capacity: 1)..fillCapacity();
       expect(m.seedReceived(_hana), isTrue);
       expect(m.setPeerOccupied(_hana, true), isTrue);
       await h.mount(

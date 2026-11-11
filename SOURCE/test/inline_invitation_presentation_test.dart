@@ -19,6 +19,8 @@ import 'package:zyra/widgets/zyra_browse_designs.dart';
 import 'package:zyra/widgets/zyra_invitation_label.dart';
 import 'package:zyra/widgets/zyra_profile_image.dart';
 
+import 'support/pump_invitation_feedback.dart';
+
 const _capture = bool.fromEnvironment('ZYRA_INLINE_INVITATION_CAPTURE');
 const _font = 'PoppinsInlineInvitation';
 const _boundary = ValueKey('inline-invitation-candidate');
@@ -214,7 +216,7 @@ Future<void> _tap(
       .evaluate()
       .isNotEmpty) {
     await Scrollable.ensureVisible(tester.element(target), alignment: .45);
-    await tester.pumpAndSettle();
+    await pumpInvitationFeedback(tester);
   }
   final screen =
       Offset.zero & (tester.view.physicalSize / tester.view.devicePixelRatio);
@@ -238,7 +240,7 @@ Future<void> _tap(
   );
   await tester.tapAt(visible.center);
   await tester.pump();
-  if (settle) await tester.pumpAndSettle();
+  if (settle) await pumpInvitationFeedback(tester);
   expect(tester.takeException(), isNull);
 }
 
@@ -274,7 +276,7 @@ void _expectCardOutline(WidgetTester tester, String id, {required bool sent}) {
   );
   expect(
     (decoration.decoration as BoxDecoration).border!.top.color,
-    ZyraColors.journeyGold.withValues(alpha: sent ? .65 : 0),
+    ZyraColors.journeyGold.withValues(alpha: sent ? 1 : 0),
   );
 }
 
@@ -576,7 +578,7 @@ void main() {
             ),
             findsOneWidget,
           );
-          await tester.pumpAndSettle();
+          await pumpInvitationFeedback(tester);
           await _tap(tester, target);
           expect(tester.getSemantics(target).label, 'Request a Journey');
           expect(actions.sent, isEmpty);
@@ -627,7 +629,7 @@ void main() {
         expect(tester.getRect(_key('concept_browse_footer')), footerBounds);
         expect(find.byType(ZyraBrowseDesigns), findsOneWidget);
         expect(find.byType(ZyraOneJourneyBrowsePresentation), findsNothing);
-        await tester.pumpAndSettle();
+        await pumpInvitationFeedback(tester);
         _expectFooterSafe(tester);
         await _tap(tester, _request, settle: false);
         await tester.pump(const Duration(milliseconds: 90));

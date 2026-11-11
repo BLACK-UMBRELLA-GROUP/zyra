@@ -149,7 +149,9 @@ void main() {
     expect(fade.top, 0);
     expect(
       fade.bottom,
-      ZyraNavBarMetrics.restingHeight + ZyraNavBarMetrics.bottomInset + 10,
+      ZyraNavBarMetrics.legacyRestingHeight +
+          ZyraNavBarMetrics.bottomInset +
+          10,
     );
     expect(
       find.descendant(of: fadeFinder, matching: find.byType(ListView)),

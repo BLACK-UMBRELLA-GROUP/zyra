@@ -51,7 +51,7 @@ void main() {
   });
 
   test(
-    'ordinary members can choose gold without developer authorization',
+    'retired Gold selections are refused for ordinary members',
     () async {
       await ZyraAccountState.synchronize(_member);
       expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);
@@ -59,48 +59,43 @@ void main() {
       expect(ZyraAppGoldStyle.instance.enabled, isFalse);
       expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
 
-      expect(_chooseMember(true), isTrue);
-      expect(ZyraAppGoldStyle.instance.enabled, isTrue);
-      expect(ZyraLocalPrefs.cachedAppGoldEnabled, isTrue);
-      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isTrue);
+      expect(_chooseMember(true), isFalse);
+      expect(ZyraAppGoldStyle.instance.enabled, isFalse);
+      expect(ZyraLocalPrefs.cachedAppGoldEnabled, isFalse);
+      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
       ZyraDeveloperAccess.setAuthorizedForTesting(true);
-      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isTrue);
+      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
       ZyraDeveloperAccess.setAuthorizedForTesting(false);
-      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isTrue);
+      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
 
-      expect(_chooseMember(false), isTrue);
+      expect(_chooseMember(false), isFalse);
       expect(ZyraLocalPrefs.cachedAppGoldEnabled, isFalse);
       expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
     },
   );
 
   test(
-    'same-owner cold restart restores the saved gold choice only after binding',
+    'same-owner cold restart ignores the saved Gold choice without rewriting it',
     () async {
-      await ZyraAccountState.synchronize(_member);
-      expect(_chooseMember(true), isTrue);
-      await ZyraLocalPrefs.init();
-      ZyraAppGoldStyle.instance.restore(false);
-      expect(ZyraLocalPrefs.cachedAppGoldEnabled, isFalse);
+      await _coldRestore({
+        'zyra.cached_account_owner': _member,
+        _goldKey: true,
+      });
       expect(ZyraAppGoldStyle.instance.enabled, isFalse);
-
-      ZyraAccountState.resetForTesting();
-      await ZyraAccountState.synchronize(_member);
-      ZyraAppGoldStyle.instance.restoreCurrent();
-      expect(ZyraLocalPrefs.cachedAppGoldEnabled, isTrue);
-      expect(ZyraAppGoldStyle.instance.enabled, isTrue);
-      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isTrue);
+      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
+      expect(_chooseMember(false), isFalse);
+      expect(_chooseMember(true), isFalse);
       final stored = await SharedPreferences.getInstance();
       expect(stored.getBool(_goldKey), isTrue);
     },
   );
 
   test(
-    'pre-auth previews remain ephemeral and are not adopted by a member',
+    'pre-auth Gold selection cannot be written or adopted by a member',
     () async {
       expect(ZyraLocalPrefs.accountOwner, isNull);
-      expect(_chooseMember(true), isTrue);
-      expect(ZyraAppGoldStyle.instance.enabled, isTrue);
+      expect(_chooseMember(true), isFalse);
+      expect(ZyraAppGoldStyle.instance.enabled, isFalse);
       final stored = await SharedPreferences.getInstance();
       expect(stored.containsKey(_goldKey), isFalse);
 
@@ -112,7 +107,7 @@ void main() {
   );
 
   test(
-    'unchanged restoration keeps a retained member callback valid',
+    'unchanged restoration leaves a retained Gold callback inert',
     () async {
       await ZyraAccountState.synchronize(_member);
       final selection = ZyraAppGoldStyle.instance;
@@ -126,10 +121,10 @@ void main() {
           expectedGeneration: generation,
           expectedRevision: revision,
         ),
-        isTrue,
+        isFalse,
       );
-      expect(selection.enabled, isTrue);
-      expect(ZyraLocalPrefs.cachedAppGoldEnabled, isTrue);
+      expect(selection.enabled, isFalse);
+      expect(ZyraLocalPrefs.cachedAppGoldEnabled, isFalse);
     },
   );
 
@@ -178,7 +173,7 @@ void main() {
       final member = ZyraAppGoldStyle.instance;
       final generation = ZyraAccountState.generation;
       final revision = member.revision;
-      expect(_chooseMember(true), isTrue);
+      expect(_chooseMember(true), isFalse);
       expect(
         member.select(
           false,
@@ -187,8 +182,8 @@ void main() {
         ),
         isFalse,
       );
-      expect(member.enabled, isTrue);
-      expect(ZyraLocalPrefs.cachedAppGoldEnabled, isTrue);
+      expect(member.enabled, isFalse);
+      expect(ZyraLocalPrefs.cachedAppGoldEnabled, isFalse);
 
       final switching = ZyraAccountState.synchronize(_other);
       expect(
@@ -214,11 +209,11 @@ void main() {
     'rapid account switches cannot attribute an old gold write to a new owner',
     () async {
       await ZyraAccountState.synchronize(_member);
-      expect(_chooseMember(true), isTrue);
+      expect(_chooseMember(true), isFalse);
       final leaving = ZyraAccountState.synchronize(null);
       final entering = ZyraAccountState.synchronize(_other);
       expect(ZyraAppGoldStyle.instance.enabled, isFalse);
-      expect(_chooseMember(false), isTrue);
+      expect(_chooseMember(false), isFalse);
       await Future.wait([leaving, entering]);
       await ZyraLocalPrefs.init();
       ZyraAccountState.resetForTesting();
@@ -231,10 +226,10 @@ void main() {
   );
 
   test(
-    'sign-out clears member gold synchronously and rejects an in-flight choice',
+    'sign-out continues to reject a retained Gold choice',
     () async {
       await ZyraAccountState.synchronize(_member);
-      expect(_chooseMember(true), isTrue);
+      expect(_chooseMember(true), isFalse);
       final leaving = ZyraAccountState.beginSignOut();
       expect(ZyraAppGoldStyle.instance.enabled, isFalse);
       expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
@@ -248,35 +243,29 @@ void main() {
   test(
     'developer authorization cannot override a saved member preference',
     () async {
-      await ZyraAccountState.synchronize(_member);
-      ZyraDeveloperAccess.setAuthorizedForTesting(true);
-      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
-      expect(ZyraAppGoldStyle.instance.enabled, isFalse);
-      expect(ZyraLocalPrefs.cachedAppGoldEnabled, isFalse);
-      ZyraDeveloperAccess.setAuthorizedForTesting(false);
-      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
-
-      expect(_chooseMember(true), isTrue);
-      ZyraDeveloperAccess.setAuthorizedForTesting(true);
-      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isTrue);
-      expect(ZyraAppGoldStyle.instance.enabled, isTrue);
-      expect(ZyraLocalPrefs.cachedAppGoldEnabled, isTrue);
-      ZyraDeveloperAccess.setAuthorizedForTesting(false);
-      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isTrue);
-      expect(ZyraAppGoldStyle.instance.enabled, isTrue);
+      await _coldRestore({
+        'zyra.cached_account_owner': _member,
+        _goldKey: true,
+      });
+      for (final authorized in [false, true, false]) {
+        ZyraDeveloperAccess.setAuthorizedForTesting(authorized);
+        expect(_chooseMember(true), isFalse);
+        expect(ZyraAppGoldStyle.instance.enabled, isFalse);
+        expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
+      }
       final stored = await SharedPreferences.getInstance();
       expect(stored.getBool(_goldKey), isTrue);
     },
   );
 
   test(
-    'repeated member selections reject stale callbacks and remain authoritative',
+    'repeated member Gold selections never acquire authority',
     () async {
       await ZyraAccountState.synchronize(_member);
       final member = ZyraAppGoldStyle.instance;
       final generation = ZyraAccountState.generation;
       final offRevision = member.revision;
-      expect(_chooseMember(false), isTrue);
+      expect(_chooseMember(false), isFalse);
       expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
       expect(ZyraLocalPrefs.cachedAppGoldEnabled, isFalse);
       expect(
@@ -288,9 +277,9 @@ void main() {
         isFalse,
       );
 
-      expect(_chooseMember(true), isTrue);
+      expect(_chooseMember(true), isFalse);
       final onRevision = member.revision;
-      expect(_chooseMember(true), isTrue);
+      expect(_chooseMember(true), isFalse);
       expect(
         member.select(
           false,
@@ -299,9 +288,9 @@ void main() {
         ),
         isFalse,
       );
-      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isTrue);
-      expect(member.enabled, isTrue);
-      expect(ZyraLocalPrefs.cachedAppGoldEnabled, isTrue);
+      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
+      expect(member.enabled, isFalse);
+      expect(ZyraLocalPrefs.cachedAppGoldEnabled, isFalse);
     },
   );
 }

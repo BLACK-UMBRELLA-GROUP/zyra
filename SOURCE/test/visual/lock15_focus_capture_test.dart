@@ -12,6 +12,8 @@ import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_draft.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import '../support/received_request_fixture.dart';
+import '../support/visual_circle_arrival_fixture.dart';
 import 'package:zyra/data/chapter3_categories.dart';
 import 'package:zyra/models/onboarding_question.dart';
 import 'package:zyra/screens/profile/compatibility_editors.dart';
@@ -22,8 +24,12 @@ const root = '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA';
 const evidence = '$root/REPORTS/EVIDENCE/LOCK15_FOCUS_V2_2026-10-31';
 const capture = bool.fromEnvironment('ZYRA_LOCK15_CAPTURE');
 Finder k(String value) => find.byKey(ValueKey(value));
-const circleToken = 'circle:response:draft-guardian-hassan';
-BaselineHarness harness(WidgetTester t, {double scale = 1}) {
+const circleToken = VisualCircleArrivalFixture.focusToken;
+BaselineHarness harness(
+  WidgetTester t, {
+  double scale = 1,
+  VisualCircleArrivalFixture? arrivals,
+}) {
   addTearDown(t.view.resetPhysicalSize);
   addTearDown(t.view.resetDevicePixelRatio);
   return BaselineHarness(
@@ -33,11 +39,12 @@ BaselineHarness harness(WidgetTester t, {double scale = 1}) {
     outputRoot: '$root/PRODUCT/APPROVED/MY_ZYRA/BUILT',
     evidenceRoot: evidence,
     textScale: scale,
+    circleArrivalsFor: arrivals?.forScope,
   );
 }
 
 ViewRequestDraftModel one({int capacity = 3}) {
-  final m = ViewRequestDraftModel(
+  final m = ReceivedRequestFixture(
     capacity: capacity,
     clock: () => DateTime.utc(2026, 10, 31, 12),
   );
@@ -122,8 +129,13 @@ void main() {
   testWidgets(
     'LOCK15 m01 m02: exact targets, paging and separate request attention',
     (t) async {
-      final h = harness(t);
+      final arrivals = VisualCircleArrivalFixture();
+      final h = harness(t, arrivals: arrivals);
       await h.mount(tab: 2, model: one());
+      expect(find.text('New message in\nGuardian Circle'), findsNothing);
+      arrivals.deliver();
+      h.shellFixture.circleArrivalsChanged();
+      await h.flush();
       expect(find.text('NEEDS YOU · 1 OF 2'), findsOneWidget);
       await cap(h, 'm01_needs_you_1_of_2');
       expect(k('focus-next'), findsNothing);
@@ -170,6 +182,7 @@ void main() {
           tab: 2,
           pages: [],
           myZyraConsumedFocusTokens: saved.myZyraConsumedFocusTokens,
+          circleReadMessageKeys: saved.circleReadMessageKeys,
         ),
       );
       expect(find.text('Journey request from Noor'), findsOneWidget);
@@ -181,7 +194,7 @@ void main() {
     'LOCK15 m03: grouped requests newest event order, no private row acknowledgement',
     (t) async {
       final h = harness(t);
-      final m = ViewRequestDraftModel(
+      final m = ReceivedRequestFixture(
         capacity: 3,
         clock: () => DateTime.utc(2026, 10, 31, 12, 0, 3),
       );
@@ -361,7 +374,7 @@ void main() {
       for (final example in ZyraMyZyraActivityExample.values.where(
         (e) => e != ZyraMyZyraActivityExample.quiet,
       )) {
-        final m = ViewRequestDraftModel(capacity: 3);
+        final m = ReceivedRequestFixture(capacity: 3);
         m.seedJourneys(3);
         await h.mount(tab: 2, model: m);
         await h.controls();
@@ -455,7 +468,7 @@ void main() {
           k(guardian ? 'guardian_notifications' : 'focus-notifications'),
         );
         expect(tile.top, greaterThanOrEqualTo(59));
-        expect(tile.bottom, lessThanOrEqualTo(nav.top - 8));
+        expect(nav.top - tile.bottom, closeTo(16, 1));
         final labelRects = <Rect>[];
         if (guardian) {
           expect(find.text('Guardian One'), findsNWidgets(2));
@@ -464,7 +477,7 @@ void main() {
               find.byElementPredicate((e) => identical(e, label)),
             );
             expect(rect.top, greaterThanOrEqualTo(59));
-            expect(rect.bottom, lessThanOrEqualTo(nav.top - 8));
+            expect(rect.bottom, lessThanOrEqualTo(nav.top - 16));
             labelRects.add(rect);
           }
         }

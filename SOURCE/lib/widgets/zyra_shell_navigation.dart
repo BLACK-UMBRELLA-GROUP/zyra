@@ -14,9 +14,7 @@ class ZyraShellNavigation extends StatelessWidget {
     this.commitOnRelease = false,
     this.contentEdgeInset,
     this.hapticLevel,
-    this.compactWhenIdle = false,
-    this.compactV2 = false,
-    this.collapseRevision = 0,
+    this.lockedTabBar = false,
     this.interactionEnabled = true,
   }) : assert(
          contentEdgeInset == null ||
@@ -28,11 +26,8 @@ class ZyraShellNavigation extends StatelessWidget {
   final ValueChanged<int> onTap;
   final bool commitOnRelease;
 
-  /// The locked Founder root treatment; action and member bars retain their
-  /// existing behavior unless their owner explicitly opts in.
-  final bool compactWhenIdle;
-  final bool compactV2;
-  final int collapseRevision;
+  /// The fixed LOCK 6 V4 treatment for planned tabs.
+  final bool lockedTabBar;
   final bool interactionEnabled;
 
   /// Null preserves the floating bar's existing edge inset.
@@ -49,9 +44,7 @@ class ZyraShellNavigation extends StatelessWidget {
     commitOnRelease: commitOnRelease,
     contentEdgeInset: contentEdgeInset,
     hapticLevel: hapticLevel,
-    compactWhenIdle: compactWhenIdle,
-    compactV2: compactV2,
-    collapseRevision: collapseRevision,
+    lockedTabBar: lockedTabBar,
     interactionEnabled: interactionEnabled,
   );
 }

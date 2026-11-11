@@ -19,6 +19,7 @@ import 'package:zyra/widgets/floating_nav_bar.dart';
 import 'package:zyra/widgets/zyra_invitation_outline.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
+import 'support/pump_invitation_feedback.dart';
 import 'support/zyra_hidden_dev_controls_driver.dart';
 
 const _sara = 'draft-sara';
@@ -118,7 +119,7 @@ Future<void> _tap(WidgetTester tester, String id) async {
   final target = _key(id);
   expect(target, findsOneWidget, reason: 'Required public action $id');
   await tester.ensureVisible(target);
-  await tester.pumpAndSettle();
+  await pumpInvitationFeedback(tester);
   final screen = Offset.zero & tester.view.physicalSize;
   var visible = tester.getRect(target).intersect(screen);
   final scroll = find.ancestor(of: target, matching: find.byType(Scrollable));
@@ -135,7 +136,7 @@ Future<void> _tap(WidgetTester tester, String id) async {
   );
   expect(target.hitTestable(at: alignment), findsOneWidget);
   await tester.tapAt(visible.center);
-  await tester.pumpAndSettle();
+  await pumpInvitationFeedback(tester);
   expect(tester.takeException(), isNull);
   expect(_frames, findsNothing);
 }
@@ -200,10 +201,10 @@ void _expectPhotoOutline(WidgetTester tester, String id, {required bool sent}) {
   final decoration = _decoration(tester, _photoOutline(id));
   final border = decoration.border! as Border;
   for (final side in [border.top, border.right, border.bottom, border.left]) {
-    expect(side.width, 5);
+    expect(side.width, 1.5);
     expect(
       side.color,
-      ZyraColors.journeyGold.withValues(alpha: sent ? .65 : 0),
+      ZyraColors.journeyGold.withValues(alpha: sent ? 1 : 0),
     );
   }
   final ignores = tester.widgetList<IgnorePointer>(
@@ -337,7 +338,7 @@ void main() {
   });
 
   testWidgets(
-    'sent invitation keeps only the non-interactive five-pixel photo outline',
+    'sent invitation keeps only the non-interactive thin photo outline',
     (tester) async {
       await _mount(tester);
       expect(_selectedId(tester), _sara);
@@ -524,9 +525,7 @@ void main() {
       expect(
         find.descendant(
           of: _photoOutline(_sara),
-          matching: find.byWidgetPredicate(
-            (widget) => widget is TweenAnimationBuilder<double>,
-          ),
+          matching: find.byType(CustomPaint),
         ),
         findsNothing,
       );
@@ -539,6 +538,7 @@ void main() {
   testWidgets('ordinary animation never grants a stale profile action', (
     tester,
   ) async {
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
     await _mount(tester, quiet: false);
     final request = _key('draft_profile_$_sara');
     await tester.tap(request);
@@ -547,12 +547,12 @@ void main() {
     expect(_photoOutline(_sara), findsOneWidget);
     final oldCancel = _requestCallback(tester, _sara);
     final decoration = _decoration(tester, _photoOutline(_sara));
-    expect((decoration.border! as Border).top.width, 5);
+    expect((decoration.border! as Border).top.width, 1.5);
     await tester.pump(const Duration(milliseconds: 130));
     final midBorder =
         _decoration(tester, _photoOutline(_sara)).border! as Border;
     expect(midBorder.top.color.a, greaterThan(0));
-    expect(midBorder.top.color.a, lessThan(.65));
+    expect(midBorder.top.color.a, lessThan(1));
     expect(_frames, findsNothing);
     await _tap(tester, 'concept_next_profile');
     expect(_selectedId(tester), 'draft-aisha');

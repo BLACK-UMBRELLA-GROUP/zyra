@@ -381,11 +381,8 @@ void main() {
         final before = _barGlassRect(tester);
         final fullWidth = viewport.size.width - 40;
         expect(_key('compact-nav-surface'), findsOneWidget);
-        expect(
-          before.width,
-          closeTo(viewport.scale > 1 ? fullWidth : fullWidth * .6, .001),
-        );
-        expect(before.height, closeTo(viewport.scale > 1 ? 58 : 50, .001));
+        expect(before.width, closeTo(fullWidth, .001));
+        expect(before.height, ZyraNavBarMetrics.height);
         final bodyBefore = tester.getRect(
           find.byType(ZyraOneJourneyBrowseDesigns),
         );
@@ -396,7 +393,10 @@ void main() {
         expect(after.left, closeTo(20, .01));
         expect(after.right, closeTo(viewport.size.width - 20, .01));
         expect(after.width, closeTo(fullWidth, .01));
-        expect(after.height, closeTo(ZyraNavBarMetrics.restingHeight, .01));
+        expect(
+          after.height,
+          closeTo(ZyraNavBarMetrics.legacyRestingHeight, .01),
+        );
         expect(after.bottom, closeTo(before.bottom, .01));
         expect(
           tester.getRect(find.byType(ZyraOneJourneyBrowseDesigns)),
@@ -445,13 +445,16 @@ void main() {
     await _mount(tester, reduce: false);
     final ids = _browse(tester).profiles.map((profile) => profile.id).toList();
     final rootBar = _barGlassRect(tester);
-    expect(rootBar.width, closeTo(211.8, .01));
-    expect(rootBar.height, closeTo(50, .01));
+    expect(rootBar.width, closeTo(353, .01));
+    expect(rootBar.height, ZyraNavBarMetrics.height);
     await _openPulse(tester);
     final actionBar = _barGlassRect(tester);
     expect(actionBar.left, closeTo(20, .01));
     expect(actionBar.width, closeTo(353, .01));
-    expect(actionBar.height, closeTo(ZyraNavBarMetrics.restingHeight, .01));
+    expect(
+      actionBar.height,
+      closeTo(ZyraNavBarMetrics.legacyRestingHeight, .01),
+    );
     expect(actionBar.bottom, closeTo(rootBar.bottom, .01));
     final cue = _key('concept_browse_options_cue');
     expect(tester.getRect(cue), actionBar);

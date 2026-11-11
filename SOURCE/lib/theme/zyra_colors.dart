@@ -4,8 +4,6 @@
 
 import 'package:flutter/material.dart';
 
-import '../services/zyra_local_prefs.dart';
-
 /// Legacy comparison values remain until queue44. Every app coordinator uses
 /// Ivory; these values never restore or write a member background choice.
 enum ZyraDevPalette {
@@ -416,11 +414,9 @@ class ZyraColors {
     }
   }
 
-  /// Restores the locked production surface and removes any retired stored
-  /// comparison from builds that previously exposed the three-way picker.
+  /// Restores the locked production surface and ignores the retired choice.
   static void restoreAppSurfaceStyle(String? _) {
     appSurfaceStyleSelection.value = currentDefaultSurfaceStyle;
-    ZyraLocalPrefs.setCachedAppSurfaceStyleName(null);
   }
 
   /// V4 separates text-bearing gold fills from decorative accent gold.

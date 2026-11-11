@@ -6,6 +6,7 @@ import 'package:zyra/dev/zyra_one_journey_phone_access.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/screens/wali/family_messaging_screens.dart';
+import '../support/visual_circle_arrival_fixture.dart';
 import '../support/zyra_hidden_dev_controls_driver.dart';
 import 'baseline_capture_support.dart';
 
@@ -14,7 +15,11 @@ const _output = '$_root/PRODUCT/APPROVED/UNREAD_BADGE/BUILT';
 const _evidence = '$_root/REPORTS/EVIDENCE/LOCK17_UNREAD_BADGE_2026-10-31';
 const _capture = bool.fromEnvironment('ZYRA_LOCK17_CAPTURE');
 
-BaselineHarness _harness(WidgetTester tester, {double textScale = 1}) {
+BaselineHarness _harness(
+  WidgetTester tester, {
+  double textScale = 1,
+  VisualCircleArrivalFixture? arrivals,
+}) {
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
   return BaselineHarness(
@@ -24,6 +29,7 @@ BaselineHarness _harness(WidgetTester tester, {double textScale = 1}) {
     outputRoot: _output,
     evidenceRoot: _evidence,
     textScale: textScale,
+    circleArrivalsFor: arrivals?.forScope,
   );
 }
 
@@ -93,8 +99,13 @@ void main() {
   testWidgets(
     'LOCK17 u01 u02: existing Circle unread clears only when opened',
     (tester) async {
-      final h = _harness(tester);
+      final arrivals = VisualCircleArrivalFixture();
+      final h = _harness(tester, arrivals: arrivals);
       await h.mount(tab: 3);
+      _expectUnread(tester, 0);
+      arrivals.deliver();
+      h.shellFixture.circleArrivalsChanged();
+      await h.flush();
       _expectUnread(tester, 1);
       await _cap(h, 'u01_guardian_tab_circle_unread');
       await h.tap('guardian-family-messages-top');
@@ -103,7 +114,10 @@ void main() {
         find.byType(ZyraGuardianCircleScreen),
       );
       expect(circle.previewData, isNotNull);
-      expect(circle.previewData!.messages, isNotEmpty);
+      expect(
+        circle.previewData!.messages.map((message) => message.id),
+        contains(VisualCircleArrivalFixture.messageId),
+      );
       expect(
         circle.previewData!.messages.every((message) => !message.unreadForMe),
         isTrue,
@@ -111,6 +125,10 @@ void main() {
       await returnZyraPreviewPage(tester);
       await h.flush();
       _expectUnread(tester, 0);
+      expect(
+        h.latest.circleReadMessageKeys,
+        contains(VisualCircleArrivalFixture.readKey),
+      );
       await _cap(h, 'u02_guardian_tab_circle_read');
     },
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
@@ -149,8 +167,13 @@ void main() {
   testWidgets(
     'LOCK17 u05: actual Guardian tab at 430 and text scale 1.3',
     (tester) async {
-      final h = _harness(tester, textScale: 1.3);
+      final arrivals = VisualCircleArrivalFixture();
+      final h = _harness(tester, textScale: 1.3, arrivals: arrivals);
       await h.mount(tab: 3);
+      _expectUnread(tester, 0);
+      arrivals.deliver();
+      h.shellFixture.circleArrivalsChanged();
+      await h.flush();
       _expectUnread(tester, 1);
       await _cap(h, 'u05_guardian_tab_text_scale_1_3');
     },

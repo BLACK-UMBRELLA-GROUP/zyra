@@ -10,10 +10,10 @@ import 'package:zyra/dev/zyra_one_journey_options.dart';
 import 'package:zyra/dev/zyra_one_journey_tab.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import '../support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/dev/zyra_one_journey_options_page.dart';
-import 'package:zyra/screens/settings/personalisation_screen.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/widgets/zyra_profiles_components.dart';
@@ -29,7 +29,7 @@ const aisha = 'draft-aisha';
 const maryam = 'draft-maryam';
 
 ViewRequestDraftModel fixture(int count, {bool basic = false}) {
-  final m = ViewRequestDraftModel(
+  final m = ReceivedRequestFixture(
     capacity: basic ? 1 : 3,
     clock: () => DateTime.utc(2026, 10, 30, 14),
   );
@@ -382,7 +382,7 @@ void main() {
     'LOCK13 actual actions order Journeys and never invent a review timer',
     (t) async {
       var now = DateTime.utc(2026, 10, 30, 10);
-      final m = ViewRequestDraftModel(capacity: 3, clock: () => now)
+      final m = ReceivedRequestFixture(capacity: 3, clock: () => now)
         ..seedJourneys(3);
       now = now.add(const Duration(minutes: 1));
       expect(m.sendSalam(aisha), isTrue);
@@ -592,12 +592,16 @@ void main() {
           .widget<ZyraConceptProfilePresentation>(
             find.byType(ZyraConceptProfilePresentation),
           )
-          .onAction(ZyraConceptAccountAction.personalisation);
+          .onAction(ZyraConceptAccountAction.settings);
       await h.flush();
-      t
-          .widget<PersonalisationScreen>(find.byType(PersonalisationScreen))
-          .onHapticChanged!(ZyraHapticLevel.off);
+      await h.tap('concept_settings_haptics');
+      final slider = k('zyra-haptic-strength-slider');
+      await t.ensureVisible(slider);
       await h.flush();
+      final track = t.getRect(slider);
+      await t.tapAt(Offset(track.left + 18, track.center.dy));
+      await h.flush();
+      expect(t.widget<Slider>(slider).value, ZyraHapticLevel.off.index);
       await t.binding.handlePopRoute();
       await h.flush();
       t.widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation)).onTap(1);

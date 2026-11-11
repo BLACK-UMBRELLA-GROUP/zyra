@@ -17,7 +17,12 @@ Future<ZyraFocusDashboard> _mount(
       home: Scaffold(
         body: ZyraGuardianTabsPresentation(
           seekerGender: 'male',
-          state: state ?? ZyraGuardianTabsState(),
+          state: state ??
+              ZyraGuardianTabsState(
+                const ZyraGuardianTabsSnapshot(
+                  connection: ZyraGuardianConnection.pending,
+                ),
+              ),
           page: 'my_zyra',
           paid: paid,
           linked: linked,
@@ -33,6 +38,16 @@ Future<ZyraFocusDashboard> _mount(
 }
 
 void main() {
+  test('fresh Guardian history creates no Needs you or Connect activity', () {
+    final state = ZyraGuardianTabsState();
+    expect(state.stage, 'Family Review');
+    expect(state.needsYou, isFalse);
+    expect(state.receivedCount, 0);
+    final restored = ZyraGuardianTabsState(state.snapshot);
+    expect(restored.needsYou, isFalse);
+    expect(restored.receivedCount, 0);
+  });
+
   testWidgets('Guardian Focus keeps review and Connect actions distinct', (
     tester,
   ) async {
@@ -66,10 +81,10 @@ void main() {
       'received',
       'focus_adam',
       'focus_yusuf',
-      'requests',
-      'connect',
-      'introductions',
-      'notifications',
+      'quick_requests',
+      'quick_connect',
+      'quick_introductions',
+      'quick_notifications',
     ]);
     expect(dashboard.tiles.map((tile) => tile.id), [
       'guardian_requests',
@@ -144,6 +159,7 @@ void main() {
       final state = ZyraGuardianTabsState(
         const ZyraGuardianTabsSnapshot(
           focusIndex: 1,
+          connection: ZyraGuardianConnection.pending,
           consumedFocus: {'connect-pending'},
         ),
       );

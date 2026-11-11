@@ -5,6 +5,7 @@ import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import '../support/received_request_fixture.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/screens/wali/family_messaging_screens.dart';
@@ -35,10 +36,12 @@ Future<void> _mount(
   BaselineHarness h, {
   int tab = 2,
   List<String> pages = const [],
-  ZyraGuardianTabsSnapshot state = const ZyraGuardianTabsSnapshot(),
+  ZyraGuardianTabsSnapshot state = const ZyraGuardianTabsSnapshot(
+    connection: ZyraGuardianConnection.pending,
+  ),
   int activeJourneys = 0,
 }) async {
-  final model = ViewRequestDraftModel(capacity: 3);
+  final model = ReceivedRequestFixture(capacity: 3);
   if (activeJourneys > 0) expect(model.seedJourneys(activeJourneys), isTrue);
   await h.mount(
     guardian: true,
@@ -71,8 +74,7 @@ Future<void> _tab(BaselineHarness h, int index) async {
   final finder = _key('floating-nav-item-$index');
   await h.tester.tapAt(h.tester.getCenter(finder));
   await h.flush();
-  await h.tester.tapAt(h.tester.getCenter(finder));
-  await h.flush();
+  expect(h.latest.tab, index);
 }
 
 Future<void> _back(BaselineHarness h) async {
@@ -96,7 +98,7 @@ void main() {
             .map((i) => i.label),
         ['Network', 'Journeys', 'My ZYRA', 'Seekers', 'Profile'],
       );
-      expect(t.getSize(_key('compact-nav-surface')), const Size(234, 50));
+      expect(t.getSize(_key('compact-nav-surface')), const Size(390, 58));
       expect(find.text('Guardian Dashboard'), findsNothing);
       expect(find.textContaining('Insights'), findsNothing);
       expect(find.text('1 new'), findsWidgets);
@@ -207,7 +209,10 @@ void main() {
       await _mount(
         h,
         pages: ['guardian_connect'],
-        state: const ZyraGuardianTabsSnapshot(connectReceived: true),
+        state: const ZyraGuardianTabsSnapshot(
+          connectReceived: true,
+          connection: ZyraGuardianConnection.pending,
+        ),
       );
       await h.tap('guardian_dismiss');
       await _cap(h, 'g20_connect_with_guardian', 'received_empty');
@@ -276,7 +281,7 @@ void main() {
         ),
         checkpoint: ZyraPreviewNavigationCheckpoint(
           guardian: true,
-          model: ViewRequestDraftModel().snapshot(),
+          model: ReceivedRequestFixture().snapshot(),
           tab: 2,
           pages: const [],
         ),
@@ -289,7 +294,7 @@ void main() {
     'LOCK8 Additional authority and revoked connection fail closed',
     (t) async {
       final h = _h(t, 'authority');
-      final model = ViewRequestDraftModel(capacity: 3);
+      final model = ReceivedRequestFixture(capacity: 3);
       final saved = ZyraPreviewNavigationCheckpoint(
         guardian: true,
         model: model.snapshot(),
@@ -330,7 +335,7 @@ void main() {
       final h = _h(t, 'longreturn');
       final saved = ZyraPreviewNavigationCheckpoint(
         guardian: true,
-        model: ViewRequestDraftModel(capacity: 3).snapshot(),
+        model: ReceivedRequestFixture(capacity: 3).snapshot(),
         tab: 0,
         pages: const ['guardian_connect'],
         guardianTabs: const ZyraGuardianTabsSnapshot(
@@ -394,7 +399,10 @@ void main() {
       await _mount(
         h,
         pages: const ['guardian_connect'],
-        state: const ZyraGuardianTabsSnapshot(connectReceived: true),
+        state: const ZyraGuardianTabsSnapshot(
+          connectReceived: true,
+          connection: ZyraGuardianConnection.pending,
+        ),
       );
       await h.tap('guardian_accept');
       await h.tap('guardian_chat');
@@ -449,7 +457,7 @@ void main() {
       final h = _h(t, 'accessibility');
       final saved = ZyraPreviewNavigationCheckpoint(
         guardian: true,
-        model: ViewRequestDraftModel(capacity: 3).snapshot(),
+        model: ReceivedRequestFixture(capacity: 3).snapshot(),
         tab: 2,
         pages: const [],
       );

@@ -332,10 +332,14 @@ class ZyraCodeCapture extends StatefulWidget {
     required this.canCapture,
     required this.onCode,
     required this.onManualEntry,
+    this.framed = false,
+    this.onRunningChanged,
     this.unavailableMessage = 'Camera unavailable. Enter the code instead.',
   });
 
   final String unavailableMessage;
+  final bool framed;
+  final ValueChanged<bool>? onRunningChanged;
   final bool Function() canCapture;
   final ValueChanged<String> onCode;
   final VoidCallback onManualEntry;
@@ -354,6 +358,7 @@ class _ZyraCodeCaptureState extends State<ZyraCodeCapture>
   AppLifecycleState? _lifecycleState;
   bool _handled = false;
   bool _cameraFailed = false;
+  bool? _reportedRunning;
   bool _disposed = false;
   bool _admissionRevoked = false;
 
@@ -410,16 +415,27 @@ class _ZyraCodeCaptureState extends State<ZyraCodeCapture>
   Future<void> _syncCamera() async {
     if (_disposed || !mounted) return;
     try {
+      if (_cameraFailed && widget.framed) {
+        // Retrying mounts a new controller. Finish releasing this session
+        // before the frame admits another tap.
+        await _releaseController();
+        if (!_disposed && mounted) _reportRunning(false);
+        return;
+      }
       if (!_canAccept || _cameraFailed) {
+        _reportRunning(false);
         await _controller.stop();
         return;
       }
       await _controller.start();
       if (_disposed || !mounted) return;
       if (!_canAccept) {
+        _reportRunning(false);
         await _controller.stop();
       } else if (_controller.value.error != null) {
         _showCameraFailure();
+      } else {
+        _reportRunning(_controller.value.isRunning);
       }
     } catch (_) {
       if (_canAccept) _showCameraFailure();
@@ -430,6 +446,12 @@ class _ZyraCodeCaptureState extends State<ZyraCodeCapture>
     if (!mounted || _disposed || _cameraFailed) return;
     setState(() => _cameraFailed = true);
     _queueCameraSync();
+  }
+
+  void _reportRunning(bool running) {
+    if (!widget.framed || _reportedRunning == running) return;
+    _reportedRunning = running;
+    widget.onRunningChanged?.call(running);
   }
 
   void _onDetect(BarcodeCapture capture) {
@@ -457,6 +479,7 @@ class _ZyraCodeCaptureState extends State<ZyraCodeCapture>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (widget.framed) _reportedRunning = null;
     _lifecycleState = state;
     _queueCameraSync();
   }
@@ -467,6 +490,10 @@ class _ZyraCodeCaptureState extends State<ZyraCodeCapture>
     } catch (_) {
       // Disposal still releases the controller if queued camera work failed.
     }
+    await _releaseController();
+  }
+
+  Future<void> _releaseController() async {
     try {
       await _controller.stop();
     } catch (_) {
@@ -487,30 +514,32 @@ class _ZyraCodeCaptureState extends State<ZyraCodeCapture>
     super.dispose();
   }
 
-  Widget _cameraFallback() => ColoredBox(
-    color: Colors.black,
-    child: Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.qr_code_scanner_rounded,
-              color: ZyraColors.surfaceSignal,
-              size: 30,
+  Widget _cameraFallback() => widget.framed
+      ? const SizedBox.shrink()
+      : ColoredBox(
+          color: Colors.black,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.qr_code_scanner_rounded,
+                    color: ZyraColors.surfaceSignal,
+                    size: 30,
+                  ),
+                  const SizedBox(height: 14),
+                  Text(
+                    widget.unavailableMessage,
+                    textAlign: TextAlign.center,
+                    style: ZyraText.subtext(size: 12.5),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 14),
-            Text(
-              widget.unavailableMessage,
-              textAlign: TextAlign.center,
-              style: ZyraText.subtext(size: 12.5),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
+          ),
+        );
 
   @override
   Widget build(BuildContext context) => Stack(
@@ -528,20 +557,21 @@ class _ZyraCodeCaptureState extends State<ZyraCodeCapture>
           },
           errorBuilder: (_, _) => _cameraFallback(),
         ),
-      Positioned(
-        left: 24,
-        right: 24,
-        bottom: 24,
-        child: SafeArea(
-          top: false,
-          child: ZyraKnownPersonCodePill(
-            key: const ValueKey('known-person-camera-manual-entry'),
-            icon: Icons.keyboard_outlined,
-            label: 'Enter code instead',
-            onTap: _canAccept ? _onManualEntry : null,
+      if (!widget.framed)
+        Positioned(
+          left: 24,
+          right: 24,
+          bottom: 24,
+          child: SafeArea(
+            top: false,
+            child: ZyraKnownPersonCodePill(
+              key: const ValueKey('known-person-camera-manual-entry'),
+              icon: Icons.keyboard_outlined,
+              label: 'Enter code instead',
+              onTap: _canAccept ? _onManualEntry : null,
+            ),
           ),
         ),
-      ),
     ],
   );
 }

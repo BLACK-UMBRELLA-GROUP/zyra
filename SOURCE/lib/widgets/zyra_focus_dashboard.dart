@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
+import 'floating_nav_bar.dart';
 import 'zyra_floating_surface.dart';
 import 'zyra_tap_feedback.dart';
 import 'zyra_profiles_components.dart';
@@ -66,6 +67,7 @@ class ZyraFocusDashboard extends StatefulWidget {
     required this.tiles,
     this.initialIndex = 0,
     this.onIndexChanged,
+    this.canInteract,
     this.previewControls,
   });
   final String title;
@@ -75,6 +77,7 @@ class ZyraFocusDashboard extends StatefulWidget {
   final List<ZyraFocusTile> tiles;
   final int initialIndex;
   final ValueChanged<int>? onIndexChanged;
+  final bool Function()? canInteract;
   final Widget? previewControls;
   @override
   State<ZyraFocusDashboard> createState() => _ZyraFocusDashboardState();
@@ -83,6 +86,14 @@ class ZyraFocusDashboard extends StatefulWidget {
 class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
   late int _index = widget.initialIndex;
   int _render = 0;
+  Offset? _dragOrigin, _dragPosition;
+  int? _dragRender;
+
+  void _clearDrag() {
+    _dragOrigin = _dragPosition = null;
+    _dragRender = null;
+  }
+
   int get index =>
       widget.items.isEmpty ? 0 : _index.clamp(0, widget.items.length - 1);
   @override
@@ -95,7 +106,11 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
   }
 
   void select(int next, int render) {
-    if (!mounted || render != _render) return;
+    if (!mounted ||
+        render != _render ||
+        !(widget.canInteract?.call() ?? true)) {
+      return;
+    }
     if (widget.items.length < 2) return;
     next = next.clamp(0, widget.items.length - 1);
     if (next == index) return;
@@ -288,7 +303,7 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
     ),
   );
 
-  Widget tile(ZyraFocusTile tile) => Builder(
+  Widget tile(ZyraFocusTile tile, {required double verticalPadding}) => Builder(
     builder: (context) => ZyraFloatingSurface(
       radius: 26,
       child: Material(
@@ -304,7 +319,10 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
           ),
           onTap: ZyraTapFeedback.onTap(context, tile.onTap),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 14),
+            padding: EdgeInsets.symmetric(
+              horizontal: 5,
+              vertical: verticalPadding,
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -384,19 +402,56 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
     return result.ceilToDouble() + 1;
   }
 
+  Widget _tiles(BuildContext context, BoxConstraints bounds, double bottom) {
+    final width =
+        (bounds.maxWidth - 40 - (widget.tiles.length - 1) * 8) /
+        widget.tiles.length;
+    final naturalHeight = tileHeight(context, width);
+    // The older 320 pt viewport can fit a large-text tile at the scroll end
+    // by spending up to eight points less on its vertical padding.
+    final compact =
+        bounds.maxWidth <= 320 &&
+        MediaQuery.textScalerOf(context).scale(14) > 14;
+    final recovered = compact
+        ? (naturalHeight - (bounds.maxHeight - bottom))
+              .clamp(0.0, 8.0)
+              .toDouble()
+        : 0.0;
+    return SizedBox(
+      height: naturalHeight - recovered,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          for (var i = 0; i < widget.tiles.length; i++) ...[
+            if (i > 0) const SizedBox(width: 8),
+            Expanded(
+              child: tile(widget.tiles[i], verticalPadding: 14 - recovered / 2),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final render = ++_render;
-    bool current() => mounted && render == _render;
-    return SafeArea(
+    final bottom = ZyraNavBarMetrics.contentBottomClearance(context);
+    const top = 16.0;
+    bool current() =>
+        mounted && render == _render && (widget.canInteract?.call() ?? true);
+    final content = SafeArea(
       bottom: false,
       child: LayoutBuilder(
         builder: (context, bounds) => ZyraShadowScrollView(
           key: const PageStorageKey('my-zyra-focus-scroll'),
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
+          padding: EdgeInsets.fromLTRB(20, top, 20, bottom),
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minHeight: (bounds.maxHeight - 116).clamp(0, double.infinity),
+              minHeight: (bounds.maxHeight - top - bottom).clamp(
+                0,
+                double.infinity,
+              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -434,22 +489,10 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
                     if (widget.previewControls != null) widget.previewControls!,
                   ],
                 ),
-                GestureDetector(
+                Padding(
                   key: const ValueKey('focus-area'),
-                  behavior: HitTestBehavior.opaque,
-                  onHorizontalDragEnd: (details) {
-                    final velocity = details.primaryVelocity ?? 0;
-                    if (velocity.abs() < 100) return;
-                    ZyraTapFeedback.onTap(
-                      context,
-                      () => select(index + (velocity < 0 ? 1 : -1), render),
-                      canAct: current,
-                    )?.call();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 24),
-                    child: focus(),
-                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: focus(),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -463,22 +506,7 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
                       ),
                       const SizedBox(height: 14),
                     ],
-                    SizedBox(
-                      height: tileHeight(
-                        context,
-                        (bounds.maxWidth - 40 - (widget.tiles.length - 1) * 8) /
-                            widget.tiles.length,
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          for (var i = 0; i < widget.tiles.length; i++) ...[
-                            if (i > 0) const SizedBox(width: 8),
-                            Expanded(child: tile(widget.tiles[i])),
-                          ],
-                        ],
-                      ),
-                    ),
+                    _tiles(context, bounds, bottom),
                   ],
                 ),
               ],
@@ -486,6 +514,44 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
           ),
         ),
       ),
+    );
+    return GestureDetector(
+      key: const ValueKey('my-zyra-whole-page-swipe'),
+      behavior: HitTestBehavior.opaque,
+      onHorizontalDragDown: (details) {
+        _clearDrag();
+        if (!current()) return;
+        final box = context.findRenderObject();
+        if (box is! RenderBox || !box.hasSize) return;
+        final position = box.globalToLocal(details.globalPosition);
+        final barTop = box.size.height - bottom + ZyraNavBarMetrics.contentGap;
+        if (position.dy >= barTop) return;
+        _dragOrigin = _dragPosition = details.globalPosition;
+        _dragRender = render;
+      },
+      onHorizontalDragUpdate: (details) {
+        if (_dragRender == render && current()) {
+          _dragPosition = details.globalPosition;
+        }
+      },
+      onHorizontalDragEnd: (_) {
+        final start = _dragOrigin;
+        final end = _dragPosition;
+        final admitted = _dragRender == render && current();
+        _clearDrag();
+        if (!admitted || start == null || end == null) return;
+        final travel = end - start;
+        if (travel.dx.abs() < 50 || travel.dx.abs() <= travel.dy.abs()) return;
+        final next = index + (travel.dx < 0 ? 1 : -1);
+        if (next < 0 || next >= widget.items.length) return;
+        ZyraTapFeedback.onTap(
+          context,
+          () => select(next, render),
+          canAct: current,
+        )?.call();
+      },
+      onHorizontalDragCancel: _clearDrag,
+      child: content,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 
 const _amira = 'draft-amira';
 const _sara = 'draft-sara';
@@ -9,7 +10,7 @@ void main() {
   test(
     'initial arrival has a positive token without acknowledging its item',
     () {
-      final model = ViewRequestDraftModel();
+      final model = ReceivedRequestFixture();
       expect(model.receivedActivityRevision, greaterThan(0));
       expect(
         model.receivedRequestRevision(_amira),
@@ -25,7 +26,7 @@ void main() {
   test(
     'each new arrival advances the sequence without changing current items',
     () {
-      final model = ViewRequestDraftModel();
+      final model = ReceivedRequestFixture();
       final initial = model.receivedRequestRevision(_amira)!;
       expect(model.acknowledgeReceivedRequests([_amira]), isTrue);
       expect(model.seedReceived(_sara), isTrue);
@@ -48,7 +49,7 @@ void main() {
   test(
     'invalid and duplicate arrivals cannot overwrite requests or Journeys',
     () {
-      final model = ViewRequestDraftModel(capacity: 3);
+      final model = ReceivedRequestFixture(capacity: 3);
       expect(model.request(_sara), isTrue);
       expect(model.simulateRecipientAccept(_sara), isTrue);
       expect(model.stateFor(_sara), DraftJourneyState.preparing);
@@ -69,7 +70,7 @@ void main() {
   );
 
   test('item acknowledgements and visibility never manufacture an arrival', () {
-    final model = ViewRequestDraftModel();
+    final model = ReceivedRequestFixture();
     final revision = model.receivedActivityRevision;
     expect(model.acknowledgeReceivedRequests([_amira]), isTrue);
     expect(model.acknowledgeReceivedRequests([_amira]), isFalse);
@@ -83,7 +84,7 @@ void main() {
   test(
     'a later request from a declined peer gets a newer unacknowledged token',
     () {
-      final model = ViewRequestDraftModel();
+      final model = ReceivedRequestFixture();
       final old = model.receivedRequestRevision(_amira)!;
       expect(model.acknowledgeReceivedRequests([_amira]), isTrue);
       expect(model.declineReceived(_amira), isTrue);
@@ -102,7 +103,7 @@ void main() {
   test(
     'outgoing request and cancellation do not advance received activity',
     () {
-      final model = ViewRequestDraftModel();
+      final model = ReceivedRequestFixture();
       final before = model.receivedActivityRevision;
       expect(model.request(_sara), isTrue);
       expect(model.receivedRequestRevision(_sara), isNull);
@@ -118,7 +119,7 @@ void main() {
   test(
     'reset and Journey scenario reseeding stay newer than the old marker',
     () {
-      final model = ViewRequestDraftModel(capacity: 3);
+      final model = ReceivedRequestFixture(capacity: 3);
       expect(model.seedReceived(_aisha), isTrue);
       var marker = model.receivedActivityRevision;
       expect(model.acknowledgeReceivedRequests([_amira, _aisha]), isTrue);
@@ -148,7 +149,7 @@ void main() {
   test(
     'accepting or replacing removes the current token without a new arrival',
     () {
-      final model = ViewRequestDraftModel(capacity: 3);
+      final model = ReceivedRequestFixture(capacity: 3);
       final first = model.receivedActivityRevision;
       expect(model.acceptReceived(_amira), isTrue);
       expect(model.receivedRequestRevision(_amira), isNull);
@@ -169,7 +170,7 @@ void main() {
   test(
     'snapshot preserves tokens and acknowledgements without implicit arrival',
     () {
-      final original = ViewRequestDraftModel(capacity: 3);
+      final original = ReceivedRequestFixture(capacity: 3);
       expect(original.seedReceived(_sara), isTrue);
       expect(original.acknowledgeReceivedRequests([_amira]), isTrue);
       final snapshot = original.snapshot();

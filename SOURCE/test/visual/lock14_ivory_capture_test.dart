@@ -6,6 +6,7 @@ import 'package:zyra/dev/zyra_draft_local_code_aliases.dart';
 import 'package:zyra/dev/zyra_one_journey_phone_access.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import '../support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/screens/splash_screen.dart';
@@ -23,7 +24,7 @@ void advance(ViewRequestDraftModel m, String id) {
 }
 
 ViewRequestDraftModel faith() {
-  final m = ViewRequestDraftModel(
+  final m = ReceivedRequestFixture(
     capacity: 3,
     clock: () => DateTime.utc(2026, 10, 30, 14),
   );
@@ -271,7 +272,7 @@ void main() {
     final h = harness(t);
     final cp = ZyraPreviewNavigationCheckpoint(
       guardian: false,
-      model: ViewRequestDraftModel(capacity: 3).snapshot(),
+      model: ReceivedRequestFixture(capacity: 3).snapshot(),
       tab: 0,
       pages: const [],
     );
@@ -358,16 +359,25 @@ void main() {
         '150% Larger Text and Increase Contrast; actual Add a Guardian found state, actions reached by scrolling.',
       );
       await h.mount(tab: 4);
-      await h.tap('concept_personalisation');
-      expect(k('personalisation_background'), findsNothing);
-      expect(k('personalisation_gold_toggle'), findsOneWidget);
-      await h.tap('personalisation_haptic');
-      await h.tapText('Strong');
-      expect(find.text('Strong'), findsOneWidget);
+      expect(find.text('Appearance & haptics'), findsNothing);
+      await h.tap('concept_settings');
+      await h.tap('concept_settings_haptics');
+      final slider = k('zyra-haptic-strength-slider');
+      await t.ensureVisible(slider);
+      final track = t.getRect(slider);
+      await t.tapAt(Offset(track.right - 24, track.center.dy));
+      await h.flush();
+      expect(
+        find.descendant(
+          of: k('concept_settings_haptics'),
+          matching: find.text('Strong'),
+        ),
+        findsOneWidget,
+      );
       await cap(
         h,
-        'a11y_appearance',
-        'Background absent; real Haptic choice and Gold accents remain.',
+        'a11y_haptics',
+        'Settings Haptics reaches all five stops; the retired Appearance route is absent.',
       );
       await h.mount(tab: 4, pages: ['settings']);
       await h.tap('concept_settings_phoneAccess');

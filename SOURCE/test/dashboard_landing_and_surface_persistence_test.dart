@@ -68,7 +68,7 @@ void main() {
     await Future<void>.delayed(Duration.zero);
 
     expect(ZyraColors.appSurfaceStyle, ZyraAppSurfaceStyle.glassSignals);
-    expect(ZyraLocalPrefs.cachedAppSurfaceStyleName, isNull);
+    expect(ZyraLocalPrefs.cachedAppSurfaceStyleName, 'classicGlass');
   });
 
   test(
@@ -76,9 +76,7 @@ void main() {
     () async {
       ZyraColors.selectAppPalette(ZyraDevPalette.deepEmerald);
       await ZyraLocalPrefs.setCachedAppFontName('manrope');
-      ZyraInteractionStyle.selectPersonalisationHapticLevel(
-        ZyraHapticLevel.medium,
-      );
+      ZyraInteractionStyle.saveHapticLevel(ZyraHapticLevel.medium);
       await Future<void>.delayed(Duration.zero);
 
       expect(ZyraLocalPrefs.cachedAppPaletteName, isNull);

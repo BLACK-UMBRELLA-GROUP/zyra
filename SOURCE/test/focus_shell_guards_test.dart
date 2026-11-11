@@ -5,6 +5,7 @@ import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_one_journey_phone_access.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/widgets/zyra_focus_dashboard.dart';
@@ -76,7 +77,7 @@ void main() {
     'dated local endings appear once; undated history creates no event',
     (tester) async {
       final harness = _harness(tester);
-      final model = ViewRequestDraftModel(
+      final model = ReceivedRequestFixture(
         capacity: 3,
         clock: () => DateTime.utc(2026, 10, 29, 11),
       );
@@ -129,7 +130,7 @@ void main() {
     'equal-time event kinds keep a stable order after restore',
     (tester) async {
       final harness = _harness(tester);
-      final model = ViewRequestDraftModel(
+      final model = ReceivedRequestFixture(
         capacity: 3,
         clock: () => DateTime.utc(2026, 10, 31, 12),
       );

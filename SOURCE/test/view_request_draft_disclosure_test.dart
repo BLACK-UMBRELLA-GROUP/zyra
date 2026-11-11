@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/data/zyra_journey_stages.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 
 const _sara = 'draft-sara';
 const _aisha = 'draft-aisha';
@@ -35,7 +36,7 @@ void _readyBio(ViewRequestDraftModel model, [String id = _sara]) {
 }
 
 ViewRequestDraftModel _active() =>
-    ViewRequestDraftModel(capacity: 3)..seedJourneys(3);
+    ReceivedRequestFixture(capacity: 3)..seedJourneys(3);
 
 void _expectNoDisclosure(ViewRequestDraftModel model, String id) {
   expect(model.canViewJourneyCompatibility(id), isFalse);
@@ -71,7 +72,7 @@ void main() {
   test(
     'request, preparation, unknown and Salam states cannot disclose or open Bio',
     () {
-      final model = ViewRequestDraftModel(capacity: 3);
+      final model = ReceivedRequestFixture(capacity: 3);
       expect(model.request(_sara), isTrue);
       for (final id in ['unknown', 'draft-amira', _sara, _aisha]) {
         _expectNoDisclosure(model, id);

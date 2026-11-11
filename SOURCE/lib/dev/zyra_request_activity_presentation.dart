@@ -13,6 +13,7 @@ import '../theme/zyra_text.dart';
 import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_segmented_toggle.dart';
 import '../widgets/zyra_state_widgets.dart';
+import '../widgets/floating_nav_bar.dart';
 import 'zyra_one_journey_discovery_presentation.dart'
     show ZyraOneJourneyConnectionsAction;
 
@@ -96,6 +97,7 @@ class ZyraRequestActivityPresentation extends StatefulWidget {
     this.canInteract,
     this.segmentKeys = const [],
     this.title = 'Journey requests',
+    this.tabClearance = false,
   }) : assert(labels.length == pages.length),
        assert(labels.length > 0),
        assert(selectedIndex >= 0 && selectedIndex < labels.length);
@@ -107,6 +109,7 @@ class ZyraRequestActivityPresentation extends StatefulWidget {
   final bool Function()? canInteract;
   final List<Key> segmentKeys;
   final String title;
+  final bool tabClearance;
 
   @override
   State<ZyraRequestActivityPresentation> createState() =>
@@ -222,6 +225,9 @@ class _ZyraRequestActivityPresentationState
 
   Widget _list(int index) {
     final content = widget.pages[index];
+    final bottom = widget.tabClearance
+        ? ZyraNavBarMetrics.contentBottomClearance(context)
+        : 110.0;
     if (content.length == 1 && content.single is ZyraRequestActivityEmpty) {
       // Like the Journey empty page: centre in the available body, with
       // natural scrolling only when enlarged text needs more reading space.
@@ -232,7 +238,11 @@ class _ZyraRequestActivityPresentationState
           20,
           0,
           20,
-          MediaQuery.textScalerOf(context).scale(12.5) <= 12.5 ? 250 : 110,
+          widget.tabClearance
+              ? bottom
+              : MediaQuery.textScalerOf(context).scale(12.5) <= 12.5
+              ? 250
+              : 110,
         ),
         child: LayoutBuilder(
           key: ValueKey('request_activity_empty_viewport_$index'),
@@ -248,7 +258,7 @@ class _ZyraRequestActivityPresentationState
     }
     return ListView(
       key: PageStorageKey('concept_connections_page_$index'),
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 110),
+      padding: EdgeInsets.fromLTRB(20, 0, 20, bottom),
       children: content,
     );
   }

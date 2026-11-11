@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/config/zyra_internal_founder_policy.dart';
 import 'support/queue44_gold_fixture.dart';
+import 'support/zyra_settings_haptics_test_driver.dart';
 import 'support/queue44_onboarding_interaction_fixture.dart';
 import 'support/queue44_onboarding_story_fixture.dart';
 import 'support/queue44_onboarding_transition_fixture.dart';
@@ -28,9 +29,6 @@ import 'package:zyra/screens/wali/wali_invite_seeker_screen.dart';
 import 'package:zyra/screens/wali/wali_onboarding_flow.dart';
 import 'package:zyra/screens/wali/zyra_code_screen.dart';
 import 'package:zyra/screens/welcome_screen.dart';
-import 'package:zyra/screens/settings/personalisation_screen.dart';
-import 'package:zyra/widgets/zyra_personalisation_content.dart';
-import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/services/zyra_auth.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_initial_signup_draft_service.dart';
@@ -1524,29 +1522,21 @@ void main() {
   );
 
   testWidgets(
-    'retained Personalisation action rejects revocation and owner disposal',
+    'retained Settings haptic action rejects revocation and owner disposal',
     (tester) async {
       final navigator = await _mountHost(tester);
       var changes = 0;
       navigator.currentState!.push<void>(
         MaterialPageRoute(
-          builder: (_) => PersonalisationScreen.preview(
+          builder: (_) => settingsHapticsTestPage(
             canAct: () => ZyraDeveloperAccess.canUseDeveloperTools,
-            palette: ZyraDevPalette.ivory,
-            hapticLevel: ZyraHapticLevel.subtle,
-            goldEnabled: false,
-            onHapticChanged: (_) {},
-            onGoldChanged: (_) => changes++,
-            embedded: false,
+            onChanged: (_) => changes++,
           ),
         ),
       );
       await tester.pumpAndSettle();
-      final stale = tester
-          .widget<ZyraPersonalisationContent>(
-            find.byType(ZyraPersonalisationContent),
-          )
-          .onGoldChanged!;
+      await openSettingsHapticsForTest(tester);
+      final stale = retainSettingsHapticAction(tester);
       ZyraDeveloperAccess.setAuthorizedForTesting(false);
       stale(true);
       await tester.pumpAndSettle();
@@ -1566,32 +1556,24 @@ void main() {
   );
 
   testWidgets(
-    'an old Personalisation action cannot mutate the next mounted owner',
+    'an old Settings haptic action cannot mutate the next mounted owner',
     (tester) async {
       final navigator = await _mountHost(tester);
       var oldChanges = 0, nextChanges = 0;
-      Widget page(ValueChanged<bool> changed) => PersonalisationScreen.preview(
+      Widget page(VoidCallback changed) => settingsHapticsTestPage(
         canAct: () => ZyraDeveloperAccess.canUseDeveloperTools,
-        palette: ZyraDevPalette.ivory,
-        hapticLevel: ZyraHapticLevel.subtle,
-        goldEnabled: false,
-        onHapticChanged: (_) {},
-        onGoldChanged: changed,
-        embedded: false,
+        onChanged: (_) => changed(),
       );
       navigator.currentState!.push<void>(
-        MaterialPageRoute(builder: (_) => page((_) => oldChanges++)),
+        MaterialPageRoute(builder: (_) => page(() => oldChanges++)),
       );
       await tester.pumpAndSettle();
-      final stale = tester
-          .widget<ZyraPersonalisationContent>(
-            find.byType(ZyraPersonalisationContent),
-          )
-          .onGoldChanged!;
+      await openSettingsHapticsForTest(tester);
+      final stale = retainSettingsHapticAction(tester);
       navigator.currentState!.pop();
       await tester.pumpAndSettle();
       navigator.currentState!.push<void>(
-        MaterialPageRoute(builder: (_) => page((_) => nextChanges++)),
+        MaterialPageRoute(builder: (_) => page(() => nextChanges++)),
       );
       await tester.pumpAndSettle();
       stale(true);
@@ -1600,11 +1582,8 @@ void main() {
       expect(oldChanges, 0);
       expect(nextChanges, 0);
       expect(navigator.currentState!.canPop(), isTrue);
-      final current = tester
-          .widget<ZyraPersonalisationContent>(
-            find.byType(ZyraPersonalisationContent),
-          )
-          .onGoldChanged!;
+      await openSettingsHapticsForTest(tester);
+      final current = retainSettingsHapticAction(tester);
       current(true);
       expect(nextChanges, 1);
       navigator.currentState!.pop();

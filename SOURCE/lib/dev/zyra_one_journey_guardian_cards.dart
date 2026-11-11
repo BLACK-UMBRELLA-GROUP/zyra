@@ -1,5 +1,6 @@
 // LOCK19 V2: Founder-only Guardian cards. No live transport or entitlement grant.
 import 'dart:math' as math;
+import 'dart:ui' show SemanticsRole;
 import 'package:flutter/material.dart';
 import '../widgets/zyra_profiles_components.dart';
 import 'package:flutter/gestures.dart' show kTouchSlop;
@@ -8,6 +9,7 @@ import '../services/zyra_wali_link_service.dart' show WaliLinkedPerson;
 import '../screens/wali/seeker_guardian_designs.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
+import '../widgets/floating_nav_bar.dart';
 import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_guardian_add_card.dart';
 import 'zyra_one_journey_monogram_presentation.dart';
@@ -110,25 +112,31 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
   int _index = 0, _render = 0;
   bool _access = false;
   double _drag = 0;
+  bool Function()? _dragLease;
   final _invites = <String>{};
   Object? _sheetLease;
   ModalRoute<dynamic>? _sheetRoute;
   final _owner = (ZyraAccountState.userId, ZyraAccountState.generation);
 
-  List<ZyraGuardianCardPerson> get _people {
-    final all = List<ZyraGuardianCardPerson>.of(widget.people);
+  List<ZyraGuardianCardPerson> get _people => _orderedPeople(widget);
+
+  List<ZyraGuardianCardPerson> _orderedPeople(
+    ZyraOneJourneyGuardianCards source,
+  ) {
+    final all = List<ZyraGuardianCardPerson>.of(source.people);
     all.sort((a, b) {
       if (a.person.isMain != b.person.isMain) return a.person.isMain ? -1 : 1;
       return (a.person.linkedAt ?? DateTime(2100)).compareTo(
         b.person.linkedAt ?? DateTime(2100),
       );
     });
-    return widget.basic ? all.take(1).toList() : all;
+    return source.basic ? all.take(1).toList() : all;
   }
 
   bool get _canShowInvitation => !widget.basic && _people.isNotEmpty;
   bool get _needsUpgrade => widget.basic && _people.isNotEmpty;
-  int get _length => _people.length + (_canShowInvitation ? 2 : 1);
+  int get _guardianCount => _people.length + (_canShowInvitation ? 1 : 0);
+  int get _length => _guardianCount + 1;
   ZyraGuardianCardPerson? get _person =>
       _index < _people.length ? _people[_index] : null;
   bool get _invitedCard => _canShowInvitation && _index == _people.length;
@@ -144,6 +152,8 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
   @override
   void didUpdateWidget(covariant ZyraOneJourneyGuardianCards oldWidget) {
     super.didUpdateWidget(oldWidget);
+    final oldPeople = _orderedPeople(oldWidget);
+    final oldPerson = _index < oldPeople.length ? oldPeople[_index] : null;
     if (oldWidget.renderIdentity != widget.renderIdentity) {
       _render++;
       if (_sheetLease != null) {
@@ -159,7 +169,18 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
       _dismissOwnedSheet();
       _render++;
     }
+    if (oldWidget.initialPage != widget.initialPage) {
+      _index = widget.initialPage;
+    }
     _index = _index.clamp(0, _length - 1);
+    if (oldPerson?.person.id != _person?.person.id ||
+        oldPerson?.person.isMain != _person?.person.isMain ||
+        oldWidget.basic != widget.basic ||
+        oldWidget.capacity != widget.capacity) {
+      _access = false;
+      _clearDrag();
+      _render++;
+    }
   }
 
   void _dismissOwnedSheet() {
@@ -215,17 +236,31 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     setState(() {
       _index = next;
       _access = false;
+      _clearDrag();
       _render++;
     });
     widget.onPage(next);
   }
 
-  void _flip() {
-    if (_person == null) return;
+  void _clearDrag() {
+    _drag = 0;
+    _dragLease = null;
+  }
+
+  void _showAccess(bool access) {
+    if (_person == null || access == _access) return;
     setState(() {
-      _access = !_access;
+      _access = access;
       _render++;
     });
+  }
+
+  void _selectGuardian(int index) {
+    if (index == _index) {
+      _showAccess(false);
+    } else {
+      _move(index);
+    }
   }
 
   Future<void> _family(ZyraGuardianCardPerson person) async {
@@ -305,7 +340,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
           _render++;
         });
         // No permission is replayed after the owned route has closed.
-        if (baseEpoch == widget.interactionEpoch()) _drag = 0;
+        if (baseEpoch == widget.interactionEpoch()) _clearDrag();
         widget.onResume?.call();
       }
     }
@@ -315,13 +350,22 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
   Widget build(BuildContext context) {
     final person = _person;
     final linked = person != null;
-    final scale = MediaQuery.textScalerOf(context).scale(1);
-    final render = _render, epoch = widget.interactionEpoch(), target = _target;
+    final textScaler = MediaQuery.textScalerOf(context);
+    final scale = textScaler.scale(1);
+    final largerText = textScaler.scale(14) > 14;
+    final target = _target;
     final faceLease = _lease();
+    final people = _people;
+    final bottom = ZyraNavBarMetrics.contentBottomClearance(context);
+    final move = ZyraTapFeedback.onChanged<int>(
+      context,
+      _move,
+      canAct: faceLease,
+    )!;
     return SafeArea(
       bottom: false,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 16, 20, 86),
+        padding: EdgeInsets.fromLTRB(20, 16, 20, bottom),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -366,102 +410,143 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
                 );
               },
             ),
-            ZyraProfilesDots(
-              count: linked ? 2 : 1,
-              index: linked && _access ? 1 : 0,
-              dotKey: (i) => ValueKey('guardian-card-dot-$i'),
-              targetKey: (i) => ValueKey('guardian-card-dot-target-$i'),
-              itemLabel: (i) => i == 0 ? 'Guardian details' : 'Journey access',
-              canAct: faceLease,
-              onSelected: linked
-                  ? (i) {
-                      if (faceLease() && (i == 1) != _access) _flip();
-                    }
-                  : null,
-            ),
-            const SizedBox(height: 8),
+            if (_guardianCount > 0) ...[
+              ZyraProfilesDots(
+                count: _guardianCount,
+                index: _index < _guardianCount ? _index : -1,
+                dotKey: (i) => ValueKey('guardian-card-dot-$i'),
+                targetKey: (i) => ValueKey('guardian-card-dot-target-$i'),
+                itemLabel: (i) =>
+                    i < people.length ? people[i].person.firstName : 'Omar',
+                canAct: faceLease,
+                onSelected: _selectGuardian,
+                exposeSemanticAction: true,
+              ),
+              // The visible dot ends 9 pt before its 24 pt tap area.
+              const SizedBox(height: 3),
+            ] else
+              const SizedBox(height: 8),
             Expanded(
-              child: LayoutBuilder(
-                builder: (context, box) {
-                  final minimum = linked && _access
-                      ? 98 +
-                            widget.capacity *
-                                (scale > 1.3
-                                    ? (box.maxWidth < 340 ? 360.0 : 260.0)
-                                    : 142.0) *
-                                math.max(1, scale / 1.6)
-                      : (box.maxWidth < 340 && scale > 1.3 ? 650 : 520) *
-                            math.max(1, scale / 1.3);
-                  return SingleChildScrollView(
-                    key: const ValueKey('guardian-card-scroll'),
-                    child: SizedBox(
-                      height: math.max(box.maxHeight, minimum).toDouble(),
-                      width: box.maxWidth,
-                      child: GestureDetector(
-                        key: ValueKey('guardian-card-$target'),
-                        behavior: HitTestBehavior.opaque,
-                        onTap: linked ? _action(_flip) : null,
-                        onHorizontalDragStart: (_) {
-                          if (_current(render, epoch, target)) _drag = 0;
-                        },
-                        onHorizontalDragUpdate: (d) {
-                          if (_current(render, epoch, target)) {
-                            _drag += d.delta.dx;
-                          }
-                        },
-                        onHorizontalDragEnd: (_) {
-                          if (!_current(render, epoch, target)) return;
-                          if (_drag.abs() >= kTouchSlop) {
-                            _action(
-                              () => _move(_index + (_drag < 0 ? 1 : -1)),
-                            )();
-                          }
-                          _drag = 0;
-                        },
-                        child: !linked && !_invitedCard
-                            ? ZyraGuardianAddCard(needsUpgrade: _needsUpgrade)
-                            : ZyraFloatingSurface(
-                                radius: 22,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFF3EDE3),
-                                    borderRadius: BorderRadius.circular(22),
-                                    border: Border.all(
-                                      color: person?.person.isMain == true
-                                          ? const Color(
-                                              0xFFE8C98A,
-                                            ).withValues(alpha: .6)
-                                          : ZyraColors.surfaceBorder,
-                                    ),
-                                  ),
-                                  child: linked
-                                      ? (_access
-                                            ? _back(person)
-                                            : _front(person))
-                                      : _invited(),
-                                ),
-                              ),
-                      ),
-                    ),
-                  );
+              child: GestureDetector(
+                key: ValueKey('guardian-card-$target'),
+                behavior: HitTestBehavior.opaque,
+                onHorizontalDragDown: (_) {
+                  if (!faceLease()) return;
+                  _drag = 0;
+                  _dragLease = faceLease;
                 },
+                onHorizontalDragUpdate: (event) {
+                  if (faceLease() && _dragLease?.call() == true) {
+                    _drag += event.delta.dx;
+                  }
+                },
+                onHorizontalDragCancel: () {
+                  if (faceLease()) _clearDrag();
+                },
+                onHorizontalDragEnd: (_) {
+                  final current = _dragLease?.call() == true;
+                  final drag = _drag;
+                  if (!faceLease()) return;
+                  _clearDrag();
+                  if (!current) return;
+                  if (drag.abs() < kTouchSlop) return;
+                  final next = _index + (drag < 0 ? 1 : -1);
+                  if (next >= 0 && next < _length) move(next);
+                },
+                child: !linked && !_invitedCard
+                    ? ZyraGuardianAddCard(
+                        needsUpgrade: _needsUpgrade,
+                        allowContentScroll: largerText,
+                      )
+                    : _card(person, largerText: largerText),
               ),
             ),
             const SizedBox(height: 12),
-            _pager(
-              linked
-                  ? (_access ? 'Details' : 'Journey access')
-                  : (_invitedCard
-                        ? 'Send invitation again'
-                        : _needsUpgrade
-                        ? 'View Seeker One'
-                        : 'Add a Guardian'),
-            ),
+            if (linked)
+              Semantics(
+                role: SemanticsRole.tabBar,
+                child: IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: _pill(
+                          'Details',
+                          'guardian-card-details',
+                          () => _showAccess(false),
+                          selected: !_access,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: _pill(
+                          'Journey access',
+                          'guardian-card-access',
+                          () => _showAccess(true),
+                          selected: _access,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            else
+              _pill(
+                _invitedCard
+                    ? 'Send invitation again'
+                    : _needsUpgrade
+                    ? 'View Seeker One'
+                    : 'Add a Guardian',
+                'guardian-card-center',
+                widget.onAdd,
+                invitation: _invitedCard,
+              ),
           ],
         ),
       ),
     );
   }
+
+  Widget _card(ZyraGuardianCardPerson? person, {required bool largerText}) =>
+      ZyraFloatingSurface(
+        radius: 22,
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFF3EDE3),
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(
+              color: person?.person.isMain == true
+                  ? const Color(0xFFE8C98A).withValues(alpha: .6)
+                  : ZyraColors.surfaceBorder,
+            ),
+          ),
+          child: LayoutBuilder(
+            builder: (context, box) {
+              final access = person != null && _access;
+              final content = person == null
+                  ? _invited()
+                  : access
+                  ? _back(person, box, largerText: largerText)
+                  : _front(person);
+              final legacyCompact =
+                  MediaQuery.sizeOf(context).width < 375 && box.maxHeight < 390;
+              if (!largerText && !legacyCompact) return content;
+              // Preserve reading and action reachability on the older compact
+              // viewport, where the existing default-size card does not fit.
+              // The frame and bottom controls stay still at every text size.
+              return SingleChildScrollView(
+                key: ValueKey('guardian-card-content-$_target-$_access'),
+                primary: false,
+                physics: const ClampingScrollPhysics(),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: box.maxHeight),
+                  child: access ? IntrinsicHeight(child: content) : content,
+                ),
+              );
+            },
+          ),
+        ),
+      );
 
   Widget _round(String key, IconData icon, VoidCallback callback) =>
       ZyraFloatingSurface(
@@ -626,7 +711,13 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     ),
   );
 
-  Widget _back(ZyraGuardianCardPerson person) {
+  Widget _back(
+    ZyraGuardianCardPerson person,
+    BoxConstraints box, {
+    required bool largerText,
+  }) {
+    final width = box.maxWidth - 36;
+    final compact = !largerText && box.maxHeight < 460;
     final rows = widget
         .journeysFor(person.person.id)
         .take(widget.capacity)
@@ -634,7 +725,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     final target = _target;
     final current = _lease();
     return Padding(
-      padding: const EdgeInsets.fromLTRB(18, 20, 18, 16),
+      padding: EdgeInsets.fromLTRB(18, compact ? 12 : 20, 18, compact ? 8 : 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -650,7 +741,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
             if (i > 0) const SizedBox(height: 8),
             Expanded(
               child: i < rows.length
-                  ? _journey(person, rows[i])
+                  ? _journey(person, rows[i], width - 2, compact: compact)
                   : CustomPaint(
                       foregroundPainter: ZyraGuardianDashedBorder(
                         16,
@@ -675,6 +766,8 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
           const SizedBox(height: 12),
           zyraGuardianCardManageActions(
             person: person.person,
+            stackActions:
+                width < 320 && MediaQuery.textScalerOf(context).scale(1) > 1.3,
             otherGuardians: widget.people
                 .map((p) => p.person)
                 .where((p) => p.id != target)
@@ -692,73 +785,81 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
   Widget _journey(
     ZyraGuardianCardPerson person,
     ZyraGuardianCardJourney journey,
-  ) => ClipRRect(
-    borderRadius: BorderRadius.circular(16),
-    child: Container(
-      key: ValueKey('guardian-card-tile-${journey.id}'),
-      decoration: BoxDecoration(
-        color: const Color(0xFFEAE4DA),
-        border: Border.all(color: ZyraColors.ink(.06)),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: LayoutBuilder(
-        builder: (context, box) => Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+    double width, {
+    required bool compact,
+  }) {
+    final photoWidth = math.min(150.0, width * .34);
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        key: ValueKey('guardian-card-tile-${journey.id}'),
+        decoration: BoxDecoration(
+          color: const Color(0xFFEAE4DA),
+          border: Border.all(color: ZyraColors.ink(.06)),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Stack(
+          fit: StackFit.passthrough,
           children: [
-            SizedBox(
-              width: math.min(150, box.maxWidth * .34),
-              child: journey.photo == null
-                  ? const SizedBox()
-                  : ZyraProfileImage(journey.photo!, fit: BoxFit.cover),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(journey.name, style: ZyraText.body(size: 16)),
-                    const SizedBox(height: 2),
-                    Text(
-                      journey.stage,
-                      style: ZyraText.body(
-                        size: 12,
-                        color: ZyraColors.ink(.55),
-                      ),
+            if (journey.photo != null)
+              Positioned(
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: photoWidth,
+                child: ZyraProfileImage(journey.photo!, fit: BoxFit.cover),
+              ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(
+                photoWidth + 12,
+                // A 98 pt compact tile still fits the wrapped stage, name and
+                // original permission targets when the spare inset is removed.
+                compact ? 0 : 12,
+                12,
+                compact ? 0 : 12,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(journey.name, style: ZyraText.body(size: 16)),
+                  const SizedBox(height: 2),
+                  Text(
+                    journey.stage,
+                    style: ZyraText.body(size: 12, color: ZyraColors.ink(.55)),
+                  ),
+                  SizedBox(height: compact ? 2 : 10),
+                  if (width < 300 &&
+                      MediaQuery.textScalerOf(context).scale(1) > 1.3)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _permission(person, journey, chat: false),
+                        const SizedBox(height: 6),
+                        _permission(person, journey, chat: true),
+                      ],
+                    )
+                  else
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _permission(person, journey, chat: false),
+                        ),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: _permission(person, journey, chat: true),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 10),
-                    if (box.maxWidth < 300 &&
-                        MediaQuery.textScalerOf(context).scale(1) > 1.3)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          _permission(person, journey, chat: false),
-                          const SizedBox(height: 6),
-                          _permission(person, journey, chat: true),
-                        ],
-                      )
-                    else
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _permission(person, journey, chat: false),
-                          ),
-                          const SizedBox(width: 6),
-                          Expanded(
-                            child: _permission(person, journey, chat: true),
-                          ),
-                        ],
-                      ),
-                  ],
-                ),
+                ],
               ),
             ),
           ],
         ),
       ),
-    ),
-  );
+    );
+  }
+
   Widget _permission(
     ZyraGuardianCardPerson person,
     ZyraGuardianCardJourney journey, {
@@ -888,58 +989,60 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
       ],
     ),
   );
-  Widget _pager(String label) => ZyraFloatingSurface(
-    radius: 28,
-    child: Material(
-      color: const Color(0xFFFBF7F0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(28),
-        side: BorderSide(color: ZyraColors.surfaceBorder),
-      ),
-      child: Row(
-        children: [
-          _arrow(false),
-          Container(width: 1, height: 22, color: ZyraColors.ink(.06)),
-          Expanded(
-            child: InkWell(
-              key: const ValueKey('guardian-card-center'),
-              onTap: _action(_person != null ? _flip : widget.onAdd),
-              child: Container(
-                constraints: const BoxConstraints(minHeight: 52),
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 8,
-                ),
-                child: Text(
-                  label,
-                  textAlign: TextAlign.center,
-                  style: ZyraText.body(size: 14, color: ZyraColors.espresso),
-                ),
-              ),
+  Widget _pill(
+    String label,
+    String key,
+    VoidCallback onTap, {
+    bool? selected,
+    bool invitation = false,
+  }) {
+    final action = _action(onTap);
+    final gold = selected == true || invitation;
+    const radius = BorderRadius.all(Radius.circular(26));
+    final pill = Semantics(
+      key: ValueKey(key),
+      role: selected == null ? null : SemanticsRole.tab,
+      button: selected == null ? true : null,
+      selected: selected,
+      label: label,
+      onTap: action,
+      excludeSemantics: true,
+      child: Material(
+        color: const Color(0xFFFBF7F0),
+        shape: RoundedRectangleBorder(
+          borderRadius: radius,
+          side: BorderSide(
+            color: gold
+                ? ZyraColors.journeyGold.withValues(alpha: .6)
+                : ZyraColors.surfaceBorder,
+          ),
+        ),
+        child: InkWell(
+          onTap: action,
+          excludeFromSemantics: true,
+          borderRadius: radius,
+          child: Container(
+            constraints: const BoxConstraints(minHeight: 52),
+            alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              style: ZyraText.body(
+                size: 14,
+                color: gold
+                    ? ZyraColors.goldText
+                    : selected == null
+                    ? ZyraColors.espresso
+                    : ZyraColors.ink(.55),
+              ).copyWith(fontWeight: gold ? FontWeight.w500 : null),
             ),
           ),
-          Container(width: 1, height: 22, color: ZyraColors.ink(.06)),
-          _arrow(true),
-        ],
-      ),
-    ),
-  );
-  Widget _arrow(bool next) {
-    final enabled = next ? _index < _length - 1 : _index > 0;
-    return Opacity(
-      opacity: enabled ? 1 : .35,
-      child: IconButton(
-        key: ValueKey('guardian-card-${next ? 'next' : 'previous'}'),
-        onPressed: enabled
-            ? _action(() => _move(_index + (next ? 1 : -1)))
-            : null,
-        icon: Icon(
-          next ? Icons.chevron_right : Icons.chevron_left,
-          size: 20,
-          color: ZyraColors.journeyGold,
         ),
       ),
     );
+    return gold || selected == null
+        ? ZyraFloatingSurface(radius: 26, child: pill)
+        : pill;
   }
 }

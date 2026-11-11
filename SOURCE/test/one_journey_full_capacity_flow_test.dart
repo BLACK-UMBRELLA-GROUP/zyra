@@ -65,7 +65,7 @@ Future<void> _mount(
         child: RepaintBoundary(key: _boundary, child: child!),
       ),
       home: ViewRequestDraftScreen(
-        fixture: ZyraShellTestFixture().fixture,
+        fixture: ZyraShellTestFixture(receivedRequest: true).fixture,
         ownerGeneration: ZyraAccountState.generation,
         ownerId: ZyraAccountState.userId,
       ),

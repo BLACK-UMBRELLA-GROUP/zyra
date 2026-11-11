@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_wali_link_service.dart';
 
 const _main = 'draft-guardian-hassan';
@@ -40,7 +41,7 @@ void main() {
   test(
     'no agreement means no Begin, grant or readiness convenience mutation',
     () {
-      final model = ViewRequestDraftModel();
+      final model = ReceivedRequestFixture();
       _prepare(model);
       final before = model.snapshot();
       expect(model.completePreparation(_sara), isFalse);
@@ -66,7 +67,7 @@ void main() {
   test(
     'exact agreement atomically begins only that pair with fixed access',
     () {
-      final model = ViewRequestDraftModel(capacity: 3);
+      final model = ReceivedRequestFixture(capacity: 3);
       _ready(model);
       _ready(model, _aisha);
       final callerAgreement = {_additional};
@@ -109,7 +110,7 @@ void main() {
   test(
     'unknown, extra, Main, missing-link and stale-plan consent fail closed',
     () {
-      final model = ViewRequestDraftModel();
+      final model = ReceivedRequestFixture();
       _ready(model);
       final before = model.snapshot();
       for (final consent in [
@@ -190,7 +191,7 @@ void main() {
   test(
     'current role rather than fixture Main label defines agreed Additional',
     () {
-      final model = ViewRequestDraftModel();
+      final model = ReceivedRequestFixture();
       _ready(model);
       expect(
         model.beginPreparedJourney(
@@ -208,7 +209,7 @@ void main() {
   test(
     'missing Main and upgrade after a Basic preparation require a fresh decision',
     () {
-      final model = ViewRequestDraftModel();
+      final model = ReceivedRequestFixture();
       model.setSampleGuardianMembership(
         _additional,
         DraftGuardianMembership.basic,
@@ -245,7 +246,7 @@ void main() {
   test(
     'linked Main alone needs no Additional agreement; Basic Main remains View',
     () {
-      final model = ViewRequestDraftModel();
+      final model = ReceivedRequestFixture();
       model.setSampleGuardianMembership(_main, DraftGuardianMembership.basic);
       _ready(model);
       expect(
@@ -266,7 +267,7 @@ void main() {
   test(
     'legacy seeded grants stay optional and upgrade never shares old chat',
     () {
-      final model = ViewRequestDraftModel()..fillCapacity();
+      final model = ReceivedRequestFixture()..fillCapacity();
       expect(model.hasRequiredPaidGuardianAccess(_additional, _sara), isFalse);
       expect(
         model.setSampleGuardianJourneyAccess(
@@ -293,7 +294,7 @@ void main() {
   );
 
   test('downgrade and unlink withdraw stored Chat and agreement evidence', () {
-    final model = ViewRequestDraftModel(capacity: 3);
+    final model = ReceivedRequestFixture(capacity: 3);
     _begin(model);
     model.setSampleGuardianMembership(
       _additional,
@@ -318,7 +319,7 @@ void main() {
   test(
     'end, blocked eligibility, replacement and reset never leak required pairs',
     () {
-      final model = ViewRequestDraftModel(capacity: 3);
+      final model = ReceivedRequestFixture(capacity: 3);
       _begin(model);
       _begin(model, _aisha);
       expect(model.block(_aisha), isTrue);
@@ -352,7 +353,7 @@ void main() {
   test(
     'required evidence is detached, immutable, restored and eligibility-checked',
     () {
-      final model = ViewRequestDraftModel();
+      final model = ReceivedRequestFixture();
       _begin(model);
       final snapshot = model.snapshot();
       expect(snapshot.requiredPaidGuardianAccess, {'$_additional|$_sara'});

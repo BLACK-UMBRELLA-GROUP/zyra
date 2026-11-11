@@ -1,14 +1,11 @@
 // Queue44: the retired coordinator is replaced by real member route ownership.
-// Every retained action below is created and guarded by PersonalisationScreen.
+// The test owns route admission and exercises the shared Settings slider.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
-import 'package:zyra/screens/settings/personalisation_screen.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
-import 'package:zyra/theme/zyra_colors.dart';
-import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
-import 'package:zyra/widgets/zyra_personalisation_content.dart';
+import 'support/zyra_settings_haptics_test_driver.dart';
 
 class _Routes {
   final navigator = GlobalKey<NavigatorState>();
@@ -20,17 +17,20 @@ class _Routes {
     settings: RouteSettings(name: name),
     builder: (context) {
       contexts[name] = context;
-      return PersonalisationScreen.preview(
-        key: ValueKey(name),
-        // This is the caller's admission input. Route/lifecycle/revision and
-        // disposal rejection remain entirely inside the production screen.
-        canAct: () => ZyraDeveloperAccess.canUseDeveloperTools,
-        palette: ZyraDevPalette.ivory,
-        hapticLevel: ZyraHapticLevel.medium,
-        goldEnabled: true,
-        onHapticChanged: (_) {},
-        onGoldChanged: (_) => changes.add(name),
-        embedded: false,
+      return ListenableBuilder(
+        listenable: observer,
+        builder: (context, _) {
+          final epoch = observer.revision;
+          final route = ModalRoute.of(context);
+          return settingsHapticsTestPage(
+            key: ValueKey(name),
+            canAct: () =>
+                ZyraDeveloperAccess.canUseDeveloperTools &&
+                route?.isCurrent == true &&
+                observer.revision == epoch,
+            onChanged: (_) => changes.add(name),
+          );
+        },
       );
     },
   );
@@ -45,24 +45,23 @@ class _Routes {
       ),
     );
     await tester.pumpAndSettle();
+    await openSettingsHapticsForTest(tester);
   }
 
-  ValueChanged<bool> action(WidgetTester tester, String name) => tester
-      .widget<ZyraPersonalisationContent>(
-        find.descendant(
+  ValueChanged<bool> action(WidgetTester tester, String name) =>
+      retainSettingsHapticAction(
+        tester,
+        slider: find.descendant(
           of: find.byKey(ValueKey(name), skipOffstage: false),
-          matching: find.byType(
-            ZyraPersonalisationContent,
-            skipOffstage: false,
-          ),
+          matching: find.byType(Slider, skipOffstage: false),
         ),
-      )
-      .onGoldChanged!;
+      );
 
   Future<Route<void>> push(WidgetTester tester, String name) async {
     final route = page(name);
     navigator.currentState!.push(route);
     await tester.pumpAndSettle();
+    await openSettingsHapticsForTest(tester);
     return route;
   }
 
@@ -156,10 +155,7 @@ void main() {
       await tester.pumpAndSettle();
       stale(false);
       expect(f.changes, isEmpty);
-      expect(
-        find.byKey(const ValueKey('personalisation-unavailable')),
-        findsOneWidget,
-      );
+      expect(find.byKey(const ValueKey('member')), findsOneWidget);
       f.noDeveloperControls();
     },
   );
@@ -193,6 +189,7 @@ void main() {
       final epoch = f.observer.revision;
       f.navigator.currentState!.pushReplacement(f.page('fresh'));
       await tester.pumpAndSettle();
+      await openSettingsHapticsForTest(tester);
       stale(false);
       f.action(tester, 'fresh')(false);
       expect(f.changes, ['fresh']);
@@ -280,6 +277,7 @@ void main() {
       final before = f.observer.revision;
       f.navigator.currentState!.pushReplacement(f.page('replacement'));
       await tester.pumpAndSettle();
+      await openSettingsHapticsForTest(tester);
       stale(false);
       f.action(tester, 'replacement')(false);
       expect(f.observer.revision, before + 1);

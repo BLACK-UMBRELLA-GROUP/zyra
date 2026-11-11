@@ -15,6 +15,7 @@ import 'package:zyra/dev/zyra_draft_timeline_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/state/app_state.dart';
@@ -54,7 +55,7 @@ ZyraPreviewNavigationCheckpoint _seed({
   String subject = 'draft-sara',
   List<String> pages = const ['timeline'],
 }) {
-  final model = ViewRequestDraftModel(capacity: 3);
+  final model = ReceivedRequestFixture(capacity: 3);
   if (preparing) {
     expect(model.acceptReceived('draft-amira'), isTrue);
   } else {
@@ -446,7 +447,7 @@ void main() {
     'blocked, unknown and request-only checkpoint subjects disclose no Timeline or its selectors',
     (tester) async {
       for (final invalid in ['blocked', 'unknown', 'request-only']) {
-        final model = ViewRequestDraftModel(capacity: 3);
+        final model = ReceivedRequestFixture(capacity: 3);
         late final String subject;
         if (invalid == 'request-only') {
           subject = 'draft-amira';

@@ -381,7 +381,10 @@ void main() {
             if (reduced) {
               expect(height, closeTo(ZyraNavBarMetrics.height, .001));
             } else {
-              expect(height, greaterThan(ZyraNavBarMetrics.restingHeight));
+              expect(
+                height,
+                greaterThan(ZyraNavBarMetrics.legacyRestingHeight),
+              );
               expect(height, lessThan(ZyraNavBarMetrics.height));
             }
             if (width == 393 && selected == 0 && !reduced) {
@@ -570,7 +573,7 @@ void main() {
           } else {
             expect(
               tester.getSize(_barClip).height,
-              greaterThan(ZyraNavBarMetrics.restingHeight),
+              greaterThan(ZyraNavBarMetrics.legacyRestingHeight),
             );
             expect(
               tester.getSize(_barClip).height,

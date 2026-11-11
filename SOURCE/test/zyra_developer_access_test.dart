@@ -20,12 +20,11 @@ import 'package:zyra/screens/welcome_screen.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/services/zyra_account_state.dart';
+import 'package:zyra/services/zyra_wali_link_service.dart';
 import 'package:zyra/screens/home/home_shell.dart';
 import 'package:zyra/screens/wali/wali_home_shell.dart';
-import 'package:zyra/screens/settings/personalisation_screen.dart';
+import 'package:zyra/screens/settings/settings_screen.dart';
 import 'package:zyra/state/app_state.dart';
-import 'package:zyra/theme/zyra_colors.dart';
-import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_account_session_host.dart';
 import 'package:zyra/widgets/zyra_onboarding_study.dart';
@@ -270,7 +269,7 @@ void main() {
 
     for (final guardian in [false, true]) {
       testWidgets(
-        '${guardian ? 'Guardian' : 'Seeker'} member Appearance route returns without signout or reset',
+        '${guardian ? 'Guardian' : 'Seeker'} member Settings route returns without signout or reset',
         (tester) async {
           final navigator = GlobalKey<NavigatorState>();
           final recipe = await _prepare(guardian: guardian);
@@ -287,21 +286,14 @@ void main() {
           );
           navigator.currentState!.push(
             MaterialPageRoute<void>(
-              builder: (_) => PersonalisationScreen.preview(
-                canAct: () =>
-                    ZyraDeveloperAccess.canUseDeveloperTools &&
-                    recipe.generation == ZyraAccountState.generation,
-                palette: ZyraDevPalette.ivory,
-                hapticLevel: ZyraHapticLevel.medium,
-                goldEnabled: true,
-                onHapticChanged: (_) {},
-                onGoldChanged: (_) {},
-                embedded: false,
+              builder: (_) => SettingsScreen(
+                guardian: guardian,
+                loadLinkedPeople: (_) async => const ZyraSourceResult.available([]),
               ),
             ),
           );
           await tester.pumpAndSettle();
-          expect(find.byType(PersonalisationScreen), findsOneWidget);
+          expect(find.byType(SettingsScreen), findsOneWidget);
           _noRetiredEntry();
           navigator.currentState!.pop();
           await tester.pumpAndSettle();

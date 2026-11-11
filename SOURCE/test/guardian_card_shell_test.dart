@@ -1,8 +1,10 @@
 // Actual admitted Founder shell ownership, permission and confirm regression.
+import 'package:flutter/foundation.dart' show ValueKey;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
+import 'support/guardian_card_driver.dart';
 import 'visual/baseline_capture_support.dart';
 
 const _hassan = 'draft-guardian-hassan',
@@ -87,10 +89,12 @@ void main() {
       await h.tap('guardian-card-history-$_hassan');
       expect(h.latest.guardianHistory[_hassan], isTrue);
       expect(find.text('MAIN GUARDIAN'), findsOneWidget);
-      await h.tap('guardian-card-center');
+      await h.tap('guardian-card-access');
       expect(find.text('JOURNEY ACCESS'), findsOneWidget);
-      await h.tap('guardian-card-next');
-      await h.tap('guardian-card-next');
+      await swipeGuardianCard(t);
+      await h.flush();
+      await swipeGuardianCard(t);
+      await h.flush();
       expect(find.text('Waiting for Omar'), findsOneWidget);
       await h.tap('guardian-card-center');
       h.assertPage('guardian_invite');
@@ -107,8 +111,9 @@ void main() {
           clock: () => DateTime.utc(2026, 10, 29, 12),
         )..seedJourneys(2),
       );
-      await h.tap('guardian-card-next');
-      await h.tap('guardian-card-center');
+      await swipeGuardianCard(t);
+      await h.flush();
+      await h.tap('guardian-card-access');
       final old = _page(t);
       expect(find.text('JOURNEY ACCESS'), findsOneWidget);
       expect(old.journeysFor(_additional), isNotEmpty);
@@ -122,7 +127,8 @@ void main() {
         view: false,
         chat: false,
       ));
-      await h.tap('guardian-card-next');
+      await swipeGuardianCard(t);
+      await h.flush();
       old.onPermission(_additional, _sara, view: true, chat: true);
       old.onHistory(_additional, true);
       await h.flush();
@@ -148,8 +154,9 @@ void main() {
             );
       final h = harness(t);
       await h.mount(tab: 3, model: model);
-      await h.tap('guardian-card-next');
-      await h.tap('guardian-card-center');
+      await swipeGuardianCard(t);
+      await h.flush();
+      await h.tap('guardian-card-access');
       final old = _page(t);
       await h.tap('guardian-card-chat-$_additional-$_sara');
       expect(find.text('Yusuf can view, but not chat'), findsOneWidget);
@@ -186,7 +193,7 @@ void main() {
         )..seedJourneys(2),
       );
       final states = h.latest.model.states;
-      await h.tap('guardian-card-center');
+      await h.tap('guardian-card-access');
       await h.tap('guardian-clear-main');
       expect(h.latest.model.ownMainGuardianPresent, isTrue);
       await h.tapText('Cancel');
@@ -195,6 +202,11 @@ void main() {
       await h.tapText('Confirm');
       expect(h.latest.model.ownMainGuardianPresent, isFalse);
       expect(h.latest.model.states, states);
+      expect(
+        find.byKey(const ValueKey('guardian-card-$_hassan')),
+        findsOneWidget,
+      );
+      await h.tap('guardian-card-access');
       await h.tap('guardian-remove');
       await h.tapText('Confirm');
       expect(h.latest.removedGuardians, contains(_hassan));
@@ -212,7 +224,8 @@ void main() {
         seekerMembership: 'Seeker Basic',
       );
       expect(_page(t).basic, isTrue);
-      await h.tap('guardian-card-next');
+      await swipeGuardianCard(t);
+      await h.flush();
       expect(find.text('Add more Guardians'), findsOneWidget);
       expect(find.text('Omar'), findsNothing);
       await h.tap('guardian-card-center');
@@ -250,8 +263,9 @@ void main() {
         model: ViewRequestDraftModel(capacity: 3)..seedJourneys(2),
       );
       final states = h.latest.model.states;
-      await h.tap('guardian-card-next');
-      await h.tap('guardian-card-center');
+      await swipeGuardianCard(t);
+      await h.flush();
+      await h.tap('guardian-card-access');
       await h.tap('guardian-make-main');
       expect(h.latest.mainGuardianId, _hassan);
       await h.tapText('Confirm');

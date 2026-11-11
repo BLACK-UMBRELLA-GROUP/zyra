@@ -12,12 +12,11 @@ import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/screens/profile/edit_photos_screen.dart';
 import 'package:zyra/screens/profile/edit_profile_screen.dart';
-import 'package:zyra/screens/settings/personalisation_screen.dart';
+import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
-import 'package:zyra/widgets/zyra_personalisation_content.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
 const _output = String.fromEnvironment('ZYRA_ACCOUNT_REUSE_VISUAL_OUTPUT');
@@ -40,7 +39,7 @@ LinearGradient _localBackground(WidgetTester tester) {
   // nearest actual gradient, rather than requiring one wrapper in the tree.
   final background = find
       .ancestor(
-        of: find.byType(PersonalisationScreen),
+        of: find.byType(ZyraConceptSettingsPresentation),
         matching: find.byWidgetPredicate(
           (widget) =>
               widget is DecoratedBox &&
@@ -60,7 +59,7 @@ Future<void> _tap(WidgetTester tester, String key) async {
   if (finder.evaluate().isEmpty) {
     final owner = [
       'concept-current-profile-scroll',
-      'personalisation-scroll',
+      'concept-current-settings-scroll',
     ].map(_key).firstWhere((f) => f.evaluate().isNotEmpty);
     await tester.scrollUntilVisible(
       finder,
@@ -198,7 +197,7 @@ void main() {
     for (final (destination, pageName, pageType) in [
       ('concept_edit_profile', 'profile_answers', EditProfileScreen),
       ('concept_manage_photos', 'photos', EditPhotosScreen),
-      ('concept_personalisation', 'personalisation', PersonalisationScreen),
+      ('concept_settings', 'settings', ZyraConceptSettingsPresentation),
     ]) {
       testWidgets('$pageName $name retains theme and has no overflow', (
         tester,
@@ -272,60 +271,42 @@ void main() {
             await _waitForDisplayedPhoto(tester);
           }
           await _capture(tester, '${pageName}_$name');
-          if (pageName == 'personalisation') {
-            // LOCK 14 V5 §4, APP_COLOURS masters c01–c10: Ivory is
-            // fixed and the Background picker is removed. Haptic feel and
-            // Gold accents remain member controls; preserve local isolation.
+          if (pageName == 'settings') {
+            final settings = find.byType(ZyraConceptSettingsPresentation);
             final before = tester
-                .widget<ZyraPersonalisationContent>(
-                  find.byType(ZyraPersonalisationContent),
-                )
-                .snapshot;
+                .widget<ZyraConceptSettingsPresentation>(settings)
+                .hapticLevel;
             final globalHapticBefore = ZyraInteractionStyle.hapticLevel;
-            expect(before.palette, ZyraDevPalette.ivory);
-            expect(_key('personalisation_background'), findsNothing);
+            expect(find.text('Appearance & haptics'), findsNothing);
+            expect(find.text('Gold accents'), findsNothing);
             expect(_localBackground(tester), ZyraDevPalette.ivory.gradient);
-            await _tap(tester, 'personalisation_haptic');
-            await _capture(tester, 'haptic_choices_$name');
-            final sheet = find.byWidgetPredicate(
-              (widget) =>
-                  widget is ZyraPersonalisationChoiceSheet<ZyraHapticLevel>,
-            );
-            expect(sheet, findsOneWidget);
-            final sheetScrollable = find.descendant(
-              of: sheet,
-              matching: find.byType(Scrollable),
-            );
-            expect(sheetScrollable, findsOneWidget);
-            final chosen = before.hapticLevel == ZyraHapticLevel.strong
-                ? ZyraHapticLevel.light
-                : ZyraHapticLevel.strong;
-            final choice = _key('personalisation_choice_$chosen');
-            await tester.scrollUntilVisible(
-              choice,
-              100,
-              scrollable: sheetScrollable,
-              maxScrolls: 12,
-            );
-            await tester.ensureVisible(choice);
+            await _tap(tester, 'concept_settings_haptics');
+            final slider = _key('zyra-haptic-strength-slider');
+            expect(slider, findsOneWidget);
+            await tester.ensureVisible(slider);
             await tester.pumpAndSettle();
-            expect(choice.hitTestable(), findsOneWidget);
+            expect(slider.hitTestable(), findsOneWidget);
+            await _capture(tester, 'haptic_choices_$name');
+            final chosen = before == ZyraHapticLevel.strong
+                ? ZyraHapticLevel.off
+                : ZyraHapticLevel.strong;
+            final rect = tester.getRect(slider);
+            await tester.tapAt(
+              Offset(
+                chosen == ZyraHapticLevel.off
+                    ? rect.left + 18
+                    : rect.right - 18,
+                rect.center.dy,
+              ),
+            );
+            await tester.pumpAndSettle();
+            expect(tester.widget<Slider>(slider).value, chosen.index);
             expect(
               tester
-                  .getRect(sheetScrollable)
-                  .contains(tester.getCenter(choice)),
-              isTrue,
-              reason: 'The actual choice must be reachable inside its sheet.',
+                  .widget<ZyraConceptSettingsPresentation>(settings)
+                  .hapticLevel,
+              chosen,
             );
-            await tester.tap(choice);
-            await tester.pumpAndSettle();
-            expect(sheet, findsNothing);
-            final content = tester.widget<ZyraPersonalisationContent>(
-              find.byType(ZyraPersonalisationContent),
-            );
-            expect(content.snapshot.hapticLevel, chosen);
-            expect(content.snapshot.palette, ZyraDevPalette.ivory);
-            expect(content.snapshot.goldEnabled, before.goldEnabled);
             expect(_localBackground(tester), ZyraDevPalette.ivory.gradient);
             expect(ZyraInteractionStyle.hapticLevel, globalHapticBefore);
             expect(ZyraColors.devPalette, globalPaletteBefore);

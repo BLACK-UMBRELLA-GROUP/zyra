@@ -13,7 +13,6 @@ import 'package:zyra/services/zyra_local_prefs.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_browse_designs.dart';
-import 'package:zyra/widgets/zyra_personalisation_content.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
 import 'support/zyra_hidden_dev_controls_driver.dart';
@@ -94,9 +93,11 @@ Future<void> _tap(WidgetTester tester, String key) async {
     );
   }
   await tester.ensureVisible(target);
-  await tester.pumpAndSettle();
+  await tester.pump(const Duration(milliseconds: 400));
+  await tester.pump();
   await tester.tap(target);
-  await tester.pumpAndSettle();
+  await tester.pump(const Duration(milliseconds: 400));
+  await tester.pump();
   expect(tester.takeException(), isNull);
 }
 
@@ -118,16 +119,10 @@ Future<void> _chooseLocalHaptic(
   List<MethodCall> calls,
 ) async {
   await _tapNavigation(tester, 'Profile');
-  await _tap(tester, 'concept_personalisation');
-  await _tap(tester, 'personalisation_haptic');
+  await _tap(tester, 'concept_settings');
+  await _tap(tester, 'concept_settings_haptics');
   calls.clear();
-  await tester.tap(
-    find.descendant(
-      of: find.byType(ZyraPersonalisationChoiceSheet<ZyraHapticLevel>),
-      matching: find.text(level.label),
-    ),
-  );
-  await tester.pumpAndSettle();
+  await _slideHaptic(tester, level);
   expect(
     _vibrations(calls),
     switch (level) {
@@ -140,7 +135,7 @@ Future<void> _chooseLocalHaptic(
   );
   expect(
     find.descendant(
-      of: _key('personalisation_haptic'),
+      of: _key('concept_settings_haptics'),
       matching: find.text(level.label),
     ),
     findsOneWidget,
@@ -155,6 +150,15 @@ List<Object?> _vibrations(List<MethodCall> calls) => calls
     .where((call) => call.method == 'HapticFeedback.vibrate')
     .map((call) => call.arguments)
     .toList();
+
+Future<void> _slideHaptic(WidgetTester tester, ZyraHapticLevel level) async {
+  final slider = _key('zyra-haptic-strength-slider');
+  await tester.ensureVisible(slider);
+  final box = tester.getRect(slider);
+  final x = box.left + 24 + (box.width - 48) * level.index / 4;
+  await tester.tapAt(Offset(x, box.center.dy));
+  await tester.pumpAndSettle();
+}
 
 void main() {
   final calls = <MethodCall>[];

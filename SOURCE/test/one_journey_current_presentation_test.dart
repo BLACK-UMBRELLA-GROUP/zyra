@@ -22,10 +22,8 @@ import 'package:zyra/services/zyra_guardian_seeker_roster_resolver.dart';
 import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/theme/zyra_card_metrics.dart';
 import 'package:zyra/theme/zyra_colors.dart';
-import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_membership_choices.dart';
-import 'package:zyra/widgets/zyra_personalisation_content.dart';
 import 'package:zyra/widgets/zyra_profile_image.dart';
 import 'package:zyra/widgets/zyra_profile_name_block.dart';
 import 'package:zyra/widgets/zyra_segmented_toggle.dart';
@@ -837,7 +835,6 @@ void main() {
           'Profiles & Family places',
           'Safety & advice',
           'Invite someone to ZYRA',
-          'Appearance & haptics',
           'Settings',
           'Sign out',
         ]);
@@ -848,6 +845,7 @@ void main() {
         ]) {
           expect(find.text(hint), findsNothing);
         }
+        expect(find.text('Appearance & haptics'), findsNothing);
         expect(find.text('Journey Bio'), findsNothing);
         expect(
           find.textContaining('Your answers remain private; no fake score'),
@@ -880,7 +878,6 @@ void main() {
             'concept_your_seekers': ZyraConceptAccountAction.yourSeekers,
           'concept_safety_advice': ZyraConceptAccountAction.safetyAdvice,
           'concept_invite': ZyraConceptAccountAction.invite,
-          'concept_personalisation': ZyraConceptAccountAction.personalisation,
           'concept_settings': ZyraConceptAccountAction.settings,
           'concept_sign_out': ZyraConceptAccountAction.signOut,
         };
@@ -1248,8 +1245,9 @@ void main() {
             'PRIVACY',
             'Pause My Profile',
             if (!guardian) 'Hidden Profiles',
-            'NOTIFICATIONS',
+            'NOTIFICATIONS & HAPTICS',
             'Notifications & emails',
+            'Haptics',
             // LOCK 22 V4, UNITY_PASS/MASTERS/s01–s02: membership
             // stays in the summary; the duplicate section was removed.
             'SUPPORT',
@@ -1276,82 +1274,6 @@ void main() {
       },
     );
   }
-
-  testWidgets('Personalisation keeps exact current pretexts, Poppins and Syne', (
-    tester,
-  ) async {
-    final actions = <ZyraConceptAccountAction>[];
-    final goldChanges = <bool>[];
-    const snapshot = ZyraPersonalisationSnapshot(
-      palette: ZyraDevPalette.ivory,
-      hapticLevel: ZyraHapticLevel.subtle,
-      goldEnabled: false,
-    );
-    await _mount(
-      tester,
-      ZyraPersonalisationContent(
-        snapshot: snapshot,
-        onChooseHaptic: () => actions.add(ZyraConceptAccountAction.haptics),
-        onGoldChanged: goldChanges.add,
-      ),
-    );
-    await _expectCopy(tester, 'personalisation-scroll', [
-      'MAKE IT YOURS',
-      'Choose how ZYRA looks and responds.',
-      'Your choices apply across the app on this device. They never change your profile or account.',
-      'LIVE PREVIEW',
-      'ZYRA',
-      'Connecting Through Trust',
-      'Your background changes appear immediately.',
-      'YOUR EXPERIENCE',
-      'Gold accents',
-      'Subtle gold details; motion follows your device settings.',
-      'App text',
-      'Poppins',
-      'ZYRA uses a separate wordmark font.',
-      'Haptic feel',
-      'Subtle',
-      'Choose how taps feel on this device.',
-    ]);
-    expect(tester.widget<Text>(find.text('ZYRA')).style!.fontFamily, 'Syne');
-    expect(
-      tester
-          .widget<Text>(find.text('Connecting Through Trust'))
-          .style!
-          .fontFamily,
-      'Poppins',
-    );
-    expect(
-      tester
-          .widget<Text>(find.text('Choose how ZYRA looks and responds.'))
-          .style,
-      ZyraText.heading(size: 23),
-    );
-    expect(find.text('LIVE PREVIEW · CONCEPT'), findsNothing);
-    expect(
-      find.text('Your current app’s saved choices are untouched.'),
-      findsNothing,
-    );
-    for (final key in [
-      'personalisation_haptic',
-      'personalisation_gold_toggle',
-    ]) {
-      await tester.ensureVisible(_key(key));
-      await tester.pumpAndSettle();
-      await tester.tap(_key(key));
-      await tester.pumpAndSettle();
-    }
-    expect(_key('personalisation_background'), findsNothing);
-    expect(find.text('Background'), findsNothing);
-    expect(actions, [ZyraConceptAccountAction.haptics]);
-    expect(goldChanges, [true]);
-    expect(
-      snapshot.goldEnabled,
-      isFalse,
-      reason: 'Callbacks never mutate their supplied snapshot.',
-    );
-    expect(tester.takeException(), isNull);
-  });
 
   testWidgets(
     'Membership has Current controls, inline Unlocks and separate Peek plan sections',

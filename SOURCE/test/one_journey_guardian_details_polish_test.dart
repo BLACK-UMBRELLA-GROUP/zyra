@@ -203,10 +203,10 @@ SemanticsProperties _action(WidgetTester tester, String key) =>
     tester.widget<Semantics>(_key(key)).properties;
 
 Future<void> _selectYusuf(WidgetTester tester) =>
-    _press(tester, _key('guardian-card-next'));
+    _press(tester, _key('guardian-card-dot-target-1'));
 
-Future<void> _flip(WidgetTester tester) =>
-    _press(tester, _key('guardian-card-center'));
+Future<void> _showAccess(WidgetTester tester) =>
+    _press(tester, _key('guardian-card-access'));
 
 Future<void> _makeMain(WidgetTester tester) async {
   await _press(tester, _key('guardian-make-main'));
@@ -354,7 +354,7 @@ void main() {
       await _selectYusuf(tester);
       expect(_person(tester, _yusuf).person.isMain, isFalse);
       expect(find.text('Paternal Uncle'), findsOneWidget);
-      await _flip(tester);
+      await _showAccess(tester);
       await _makeMain(tester);
       verifyMetadata();
       expect(_person(tester, _yusuf).person.isMain, isTrue);
@@ -389,7 +389,7 @@ void main() {
       );
       await _press(tester, _key('guardian-card-history-$_hassan'));
       await _selectYusuf(tester);
-      await _flip(tester);
+      await _showAccess(tester);
       final view = 'guardian-card-view-$_yusuf-draft-sara';
       await _press(tester, _key(view));
       final after = access(_yusuf);
@@ -404,7 +404,7 @@ void main() {
       expect(access(_hassan), main);
       expect(_person(tester, _hassan).history, isTrue);
       expect(_person(tester, _yusuf).history, isFalse);
-      await _flip(tester);
+      await _press(tester, _key('guardian-card-details'));
       await _press(tester, _key('guardian-card-history-$_yusuf'));
       expect(_person(tester, _hassan).history, isTrue);
       expect(_person(tester, _yusuf).history, isTrue);
@@ -422,7 +422,7 @@ void main() {
         await _press(tester, _key('concept_guardian_plan_${id}_0'));
         await _nav(tester, 3);
         if (id == _yusuf) await _selectYusuf(tester);
-        await _flip(tester);
+        await _showAccess(tester);
         final rows = _cards(tester).journeysFor(id);
         expect(rows.map((row) => row.id), _attempts);
         expect(rows.every((row) => !row.chat), isTrue);
@@ -466,7 +466,7 @@ void main() {
         await _press(tester, _key('guardian-card-history-$_hassan'));
         await _selectYusuf(tester);
         await _capture(tester, 'additional_${scale}x');
-        await _flip(tester);
+        await _showAccess(tester);
         await _press(tester, _key('guardian-card-chat-$_yusuf-draft-aisha'));
         await _makeMain(tester);
         expect(_person(tester, _yusuf).person.isMain, isTrue);
@@ -484,7 +484,7 @@ void main() {
       await _seed(tester);
       await _selectYusuf(tester);
       final history = _action(tester, 'guardian-card-history-$_yusuf').onTap!;
-      await _flip(tester);
+      await _showAccess(tester);
       final card = _cards(tester);
       final view = _action(
         tester,
@@ -531,7 +531,7 @@ void main() {
     await _mount(tester);
     await _seed(tester);
     await _selectYusuf(tester);
-    await _flip(tester);
+    await _showAccess(tester);
     final old = _cards(tester);
     final view = _action(
       tester,
@@ -582,7 +582,7 @@ void main() {
       await _seed(tester);
       await _selectYusuf(tester);
       await _press(tester, _key('guardian-card-history-$_yusuf'));
-      await _flip(tester);
+      await _showAccess(tester);
       await _makeMain(tester);
       expect(app.name, 'Preserved member');
       expect(app.surnameLine, 'Surname');

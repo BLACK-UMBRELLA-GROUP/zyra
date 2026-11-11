@@ -10,6 +10,7 @@ import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/screens/wali/family_messaging_screens.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
+import 'package:zyra/services/zyra_family_messaging_service.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
 import 'support/zyra_hidden_dev_controls_driver.dart';
@@ -18,16 +19,33 @@ import 'visual/baseline_capture_support.dart';
 const _evidence =
     '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/REPORTS/EVIDENCE/'
     'LOCK17_UNREAD_BADGE_2026-10-31';
-const _readKey =
-    'draft-self:draft-self:draft-circle-response:draft-guardian-hassan';
+const _readKey = 'draft-self:draft-self:delivered-1:draft-guardian-hassan';
 const _otherReadKey =
     'draft-linked-yusuf:draft-guardian-hassan:other:other-sender';
-const _circleFocus = 'circle:response:draft-guardian-hassan';
+const _circleFocus = 'circle:$_readKey';
 
-BaselineHarness _h(WidgetTester t) {
+ZyraFamilyMessage _delivered() => ZyraFamilyMessage(
+  id: 'delivered-1',
+  senderId: 'draft-guardian-hassan',
+  senderFirstName: 'Hassan',
+  body: 'A newly delivered test message.',
+  createdAt: DateTime.utc(2026, 10, 12, 0, 12),
+  unreadForMe: true,
+);
+
+BaselineHarness _h(WidgetTester t, {bool withArrival = true}) {
   addTearDown(t.view.resetPhysicalSize);
   addTearDown(t.view.resetDevicePixelRatio);
-  return BaselineHarness(t, group: 'lock17', evidenceRoot: _evidence);
+  return BaselineHarness(
+    t,
+    group: 'lock17',
+    evidenceRoot: _evidence,
+    circleArrivalsFor: withArrival
+        ? (seeker, viewer) => seeker == 'draft-self' && viewer == 'draft-self'
+              ? [_delivered()]
+              : []
+        : null,
+  );
 }
 
 ZyraOneJourneyGuardianCards _page(WidgetTester t) =>
@@ -134,7 +152,7 @@ void main() {
       final reader = t.widget<ZyraGuardianCircleScreen>(
         find.byType(ZyraGuardianCircleScreen),
       );
-      expect(reader.previewData!.messages, hasLength(2));
+      expect(reader.previewData!.messages, hasLength(3));
       expect(reader.previewData!.messages.every((m) => !m.unreadForMe), isTrue);
       expect(h.latest.circleReadMessageKeys, {_readKey, _otherReadKey});
       expect(h.latest.model.acknowledgedReceivedRequestIds, requestsBefore);
@@ -217,7 +235,7 @@ void main() {
           tab: 3,
           pages: [],
           circleReadMessageKeys: const [
-            'draft-self:draft-self:draft-circle-response:unrelated-guardian',
+            'draft-self:draft-self:delivered-1:unrelated-guardian',
           ],
         ),
       );
@@ -273,12 +291,15 @@ void main() {
           before.myZyraConsumedFocusTokens,
         );
         if (scenario != 'account') {
-          expect(_count(t), 1);
+          expect(_count(t), scenario == 'link' ? 0 : 1);
           // A newly issued callback remains usable.
           _page(t).onCircle();
           await h.flush();
           h.assertPage('guardian_circle');
-          expect(h.latest.circleReadMessageKeys, hasLength(1));
+          expect(
+            h.latest.circleReadMessageKeys,
+            hasLength(scenario == 'link' ? 0 : 1),
+          );
         }
       },
       variant: TargetPlatformVariant.only(TargetPlatform.iOS),
@@ -292,12 +313,47 @@ void main() {
       await h.mount(pages: ['guardian_circle'], tab: 3);
       h.assertPage('guardian_circle');
       expect(h.latest.circleReadMessageKeys, {_readKey});
-      // Fresh owner/checkpoint starts from the actual unread fixture again.
+      // The previous member's receipt cannot mark another owner's arrival.
       await t.runAsync(() => ZyraAccountState.synchronize('lock17-owner-b'));
       ZyraDeveloperAccess.setAuthorizedForTesting(true);
       await h.mount(tab: 3);
       expect(_count(t), 1);
       expect(h.latest.circleReadMessageKeys, isEmpty);
+    },
+    variant: TargetPlatformVariant.only(TargetPlatform.iOS),
+  );
+
+  testWidgets(
+    'fresh preview starts at zero; only a delivered arrival survives until read',
+    (t) async {
+      final arrivals = <ZyraFamilyMessage>[];
+      final h = BaselineHarness(
+        t,
+        group: 'lock17',
+        evidenceRoot: _evidence,
+        circleArrivalsFor: (seeker, viewer) =>
+            seeker == 'draft-self' && viewer == 'draft-self' ? arrivals : [],
+      );
+      await h.mount(tab: 3);
+      expect(_count(t), 0);
+      arrivals.add(_delivered());
+      h.shellFixture.circleArrivalsChanged();
+      await h.flush();
+      expect(_count(t), 1);
+      await h.tap('guardian-family-messages-top');
+      h.assertPage('guardian_circle');
+      expect(h.latest.circleReadMessageKeys, {_readKey});
+      await _back(h);
+      await h.mount(checkpoint: h.latest);
+      expect(_count(t), 0);
+      final fresh = _h(t, withArrival: false);
+      await fresh.mount(tab: 3);
+      expect(_count(t), 0);
+      await _tab(fresh, 2);
+      expect(
+        find.byKey(const ValueKey('focus-open-guardian_circle')),
+        findsNothing,
+      );
     },
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );

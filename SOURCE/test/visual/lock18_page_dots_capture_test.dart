@@ -5,11 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_one_journey_phone_access.dart';
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/widgets/zyra_profiles_components.dart';
 import 'package:zyra/widgets/zyra_tap_feedback.dart';
+import '../support/visual_circle_arrival_fixture.dart';
 import 'baseline_capture_support.dart';
 
 const _root = '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA';
@@ -167,19 +171,26 @@ void main() {
         (t) async {
           addTearDown(t.view.resetPhysicalSize);
           addTearDown(t.view.resetDevicePixelRatio);
-          final h = BaselineHarness(
-            t,
-            group: 'lock18_${scale}_$narrow',
-            outputRoot: _out,
-            evidenceRoot: _evidence,
-            textScale: scale,
-          );
           for (final entry in cases) {
+            final arrivals = entry.name == 'd04_my_zyra'
+                ? VisualCircleArrivalFixture()
+                : null;
+            final h = BaselineHarness(
+              t,
+              group: 'lock18_${scale}_$narrow',
+              outputRoot: _out,
+              evidenceRoot: _evidence,
+              textScale: scale,
+              circleArrivalsFor: arrivals?.forScope,
+            );
             final model = ViewRequestDraftModel(
               capacity: 3,
               clock: () => DateTime.utc(2026, 10, 31, 12),
             );
             if (entry.name != 'd01_profiles') model.seedJourneys(1);
+            if (arrivals != null) {
+              expect(model.seedReceived('draft-amira'), isTrue);
+            }
             await h.mount(
               guardian: entry.guardian,
               tab: entry.tab,
@@ -189,7 +200,24 @@ void main() {
                   ? entry.page
                   : const [],
               model: model,
+              checkpoint: entry.name == 'e05_guardian_my_zyra'
+                  ? ZyraPreviewNavigationCheckpoint(
+                      guardian: true,
+                      model: model.snapshot(),
+                      tab: entry.tab,
+                      pages: entry.page,
+                      guardianTabs: const ZyraGuardianTabsSnapshot(
+                        review: ZyraGuardianReview.open,
+                        connection: ZyraGuardianConnection.pending,
+                      ),
+                    )
+                  : null,
             );
+            if (arrivals != null) {
+              arrivals.deliver();
+              h.shellFixture.circleArrivalsChanged();
+              await h.flush();
+            }
             final open = switch (entry.name) {
               'e07_subscriptions' => 'concept_subscriptions',
               'e09_guardian_info' => 'concept_guardian_info',
@@ -254,10 +282,11 @@ void main() {
             await h.flush();
             expect(_pager(t).index, next, reason: '${entry.name}: tap');
             if (narrow && entry.name == 'd03_guardian_tab') {
+              await h.tap('guardian-card-access');
               await _cap(h, 'd03_guardian_tab_narrow_large_text_access');
               final reader = find
                   .descendant(
-                    of: _k('guardian-card-scroll'),
+                    of: find.byType(ZyraOneJourneyGuardianCards),
                     matching: find.byType(Scrollable),
                   )
                   .first;
@@ -273,8 +302,8 @@ void main() {
               next,
               reason: '${entry.name}: retained prior render',
             );
-            // The card manager's horizontal swipe selects a different Guardian;
-            // its top dots retain the locked Details/Journey access meaning.
+            // Swiping the Guardian card and tapping a dot both select a person.
+            // The access pill changes sides within the selected Guardian.
             if (entry.name == 'd03_guardian_tab') {
               await t.tap(_target(0));
               await h.flush();
@@ -379,6 +408,13 @@ void main() {
             }
           }
           if (scale == 1) {
+            final h = BaselineHarness(
+              t,
+              group: 'lock18_${scale}_$narrow',
+              outputRoot: _out,
+              evidenceRoot: _evidence,
+              textScale: scale,
+            );
             await h.mount(tab: 0, pages: const ['profile']);
             expect(_dots, findsNothing);
             expect(_k('concept_browse_photo_dot_0'), findsOneWidget);

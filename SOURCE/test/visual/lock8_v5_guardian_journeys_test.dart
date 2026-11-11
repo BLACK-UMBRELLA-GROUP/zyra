@@ -5,6 +5,7 @@ import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_one_journey_tab.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import '../support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
@@ -22,7 +23,7 @@ const hassan = 'draft-guardian-hassan', yusuf = 'draft-guardian-yusuf';
 Finder key(String id) => find.byKey(ValueKey(id));
 
 ViewRequestDraftModel fixture([int count = 1]) {
-  final m = ViewRequestDraftModel(
+  final m = ReceivedRequestFixture(
     capacity: 3,
     clock: () => DateTime.utc(2026, 11, 1, 12),
   );
@@ -249,7 +250,7 @@ void main() {
     'V5 activity order, dots/swipe and Open Journey follow each actual person',
     (t) async {
       var now = DateTime.utc(2026, 11, 1, 12);
-      final m = ViewRequestDraftModel(capacity: 3, clock: () => now)
+      final m = ReceivedRequestFixture(capacity: 3, clock: () => now)
         ..seedJourneys(2);
       now = now.add(const Duration(minutes: 1));
       expect(m.sendSalam(aisha), isTrue);

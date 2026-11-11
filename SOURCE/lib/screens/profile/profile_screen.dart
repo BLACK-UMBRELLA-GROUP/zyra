@@ -29,7 +29,7 @@ import '../../theme/zyra_text.dart';
 // through SettingsScreen now. Profile knows about Settings and nothing else.
 import '../settings/settings_screen.dart';
 import '../settings/help_support_screen.dart';
-import '../settings/personalisation_screen.dart';
+import '../../widgets/zyra_tap_feedback.dart';
 import '../subscription/upgrade_screen.dart';
 import '../welcome_screen.dart';
 import '../onboarding/account_path_overview_screen.dart';
@@ -556,20 +556,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             //
             // Profile is a profile again.
             SizedBox(height: 8),
-            Text(
-              'PERSONALISATION',
-              style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
-            ),
-            SizedBox(height: 6),
-            _SettingsRow(
-              label: 'Appearance & haptics',
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const PersonalisationScreen(),
-                ),
-              ),
-            ),
-            SizedBox(height: 14),
             _SettingsRow(
               label: 'Settings',
               onTap: () => Navigator.of(
@@ -601,7 +587,7 @@ class _ProfileActionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: ZyraTapFeedback.onTap(context, onTap),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: Row(
@@ -776,7 +762,7 @@ class _SettingsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: ZyraTapFeedback.onTap(context, onTap),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(

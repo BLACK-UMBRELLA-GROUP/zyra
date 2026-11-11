@@ -262,7 +262,7 @@ void main() {
         previewClock: () => sent,
       );
       final before = h.latest.model;
-      await h.tap('guardian-card-center');
+      await h.tap('guardian-card-access');
       final cards = t.widget<ZyraOneJourneyGuardianCards>(
         find.byType(ZyraOneJourneyGuardianCards),
       );
@@ -293,7 +293,7 @@ void main() {
       await h.flush();
       await nav(h, 3);
       expect(find.text('Guardian One · Family place'), findsOneWidget);
-      await h.tap('guardian-card-center');
+      await h.tap('guardian-card-access');
       final accepted = t.widget<ZyraOneJourneyGuardianCards>(
         find.byType(ZyraOneJourneyGuardianCards),
       );

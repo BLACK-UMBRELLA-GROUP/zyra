@@ -3,6 +3,10 @@ import 'zyra_guardian_circle_topic_options.dart';
 import 'zyra_circle_topics_presentation.dart';
 import '../services/zyra_family_messaging_service.dart';
 
+/// Widget-test input for a delivered message; the app supplies no fixture.
+typedef ZyraCirclePreviewArrivals =
+    Iterable<ZyraFamilyMessage> Function(String seekerId, String viewerId);
+
 /// Immutable caller-owned examples for the retained Circle presentation.
 /// These values are never a link, membership, identity or server grant.
 class ZyraGuardianCirclePreviewData {

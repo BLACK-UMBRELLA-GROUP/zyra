@@ -14,6 +14,7 @@ import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_request_activity_presentation.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/state/app_state.dart';
@@ -87,7 +88,7 @@ class _Owner {
                 guardian: false,
                 model:
                     (model ??
-                            ViewRequestDraftModel(
+                            ReceivedRequestFixture(
                               capacity: 3,
                               clock: () => now,
                             ))
@@ -188,9 +189,9 @@ Future<void> _nextGuardian(WidgetTester tester, String id) async {
   // the next pill selects the Additional Guardian; its centre opens access.
   // LOCK 2 §2.4 and guardian_main__first_main_message.png still govern notice
   // semantics after the retained Make Main confirmation flow.
-  await _tap(tester, _key('guardian-card-next'));
+  await _tap(tester, _key('guardian-card-dot-target-1'));
   expect(_key('guardian-card-$id'), findsOneWidget);
-  await _tap(tester, _key('guardian-card-center'));
+  await _tap(tester, _key('guardian-card-access'));
   expect(find.text('JOURNEY ACCESS'), findsOneWidget);
   final action = _guardian(id, 'guardian-make-main');
   await Scrollable.ensureVisible(tester.element(action), alignment: .4);
@@ -327,7 +328,7 @@ void main() {
     'Past shows full names original dates and newest moves first for years',
     (tester) async {
       final owner = _Owner();
-      final model = ViewRequestDraftModel(capacity: 3, clock: () => owner.now);
+      final model = ReceivedRequestFixture(capacity: 3, clock: () => owner.now);
       expect(
         model.seedPastRequest(
           profileId: 'draft-sara',
@@ -399,7 +400,7 @@ void main() {
     'actual decline and cancellation move only those requests to Past',
     (tester) async {
       final owner = _Owner();
-      final model = ViewRequestDraftModel(capacity: 3, clock: () => owner.now);
+      final model = ReceivedRequestFixture(capacity: 3, clock: () => owner.now);
       expect(model.request('draft-sara'), isTrue);
       await owner.mount(tester, model: model);
       final requested = owner.latest.model.pendingRequestedAt;
@@ -434,7 +435,7 @@ void main() {
     'Keep my Journeys returns to Received without declining the request',
     (tester) async {
       final owner = _Owner();
-      final model = ViewRequestDraftModel(capacity: 3, clock: () => owner.now)
+      final model = ReceivedRequestFixture(capacity: 3, clock: () => owner.now)
         ..seedJourneys(3);
       await owner.mount(tester, model: model);
       final before = owner.latest.model;
@@ -601,7 +602,7 @@ void main() {
         tester,
         checkpoint: ZyraPreviewNavigationCheckpoint(
           guardian: false,
-          model: ViewRequestDraftModel(
+          model: ReceivedRequestFixture(
             capacity: 3,
             clock: () => owner.now,
           ).snapshot(),
@@ -623,7 +624,7 @@ void main() {
     'Past keeps full identity and natural type at compact 200 percent',
     (tester) async {
       final owner = _Owner();
-      final model = ViewRequestDraftModel(capacity: 3, clock: () => owner.now);
+      final model = ReceivedRequestFixture(capacity: 3, clock: () => owner.now);
       expect(
         model.seedPastRequest(
           profileId: 'draft-aisha',
@@ -672,7 +673,7 @@ void main() {
     'Main message remains readable with Continue at compact 200 percent',
     (tester) async {
       final owner = _Owner();
-      final model = ViewRequestDraftModel(capacity: 3, clock: () => owner.now);
+      final model = ReceivedRequestFixture(capacity: 3, clock: () => owner.now);
       await owner.mount(
         tester,
         size: const Size(320, 568),
@@ -706,7 +707,7 @@ void main() {
       tester,
       checkpoint: ZyraPreviewNavigationCheckpoint(
         guardian: true,
-        model: ViewRequestDraftModel(
+        model: ReceivedRequestFixture(
           capacity: 3,
           clock: () => owner.now,
         ).snapshot(),

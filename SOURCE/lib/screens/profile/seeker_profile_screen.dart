@@ -46,6 +46,7 @@
 // renders what it was handed; it is not a gate and must never become one.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show SystemUiOverlayStyle;
 import '../../models/seeker_profile.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_profile_name_block.dart';
@@ -225,7 +226,7 @@ class _SeekerProfileScreenState extends State<SeekerProfileScreen> {
     final safeIndex = _photoIndex < photos.length ? _photoIndex : 0;
     final epoch = _backEpoch;
 
-    final page = Scaffold(
+    final body = Scaffold(
       // Black, not the gender gradient. Every other surface in the app is
       // gradient-backed; here the photo IS the content, and a gradient behind
       // a full-bleed image is a gradient nobody sees, tinting the edges of
@@ -460,6 +461,12 @@ class _SeekerProfileScreenState extends State<SeekerProfileScreen> {
               : surface;
         },
       ),
+    );
+    final page = AnnotatedRegion<SystemUiOverlayStyle>(
+      value: photos.isEmpty && widget.emptyPhoto != null
+          ? SystemUiOverlayStyle.dark
+          : SystemUiOverlayStyle.light,
+      child: body,
     );
     if (!_callerOwned) return page;
     return ZyraPullDownBackScope(

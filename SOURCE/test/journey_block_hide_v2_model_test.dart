@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 
 const _received = 'draft-amira';
 const _target = 'draft-sara';
@@ -79,7 +80,7 @@ void main() {
         test('$action ends exact ${active ? 'active' : 'preparing'} '
             'attempt at capacity $capacity and retains Timeline', () {
           final now = DateTime.utc(2026, 10, 31, 16);
-          final model = ViewRequestDraftModel(
+          final model = ReceivedRequestFixture(
             capacity: capacity,
             clock: () => now,
           );
@@ -129,7 +130,7 @@ void main() {
       test(
         '$action without a Journey leaves $state relationship untouched',
         () {
-          final model = ViewRequestDraftModel();
+          final model = ReceivedRequestFixture();
           final id = state == 'received' ? _received : _target;
           if (state == 'sent') expect(model.request(id), isTrue);
           if (state == 'ended') {
@@ -156,7 +157,7 @@ void main() {
     for (final held in [false, true]) {
       test('$action of accepted Waiting ${held ? 'with' : 'without'} held '
           'ending preserves every current Journey', () {
-        final model = ViewRequestDraftModel(capacity: 3);
+        final model = ReceivedRequestFixture(capacity: 3);
         expect(model.setPeerOccupied(_received, true), isTrue);
         if (held) {
           _start(model, _target);
@@ -193,7 +194,7 @@ void main() {
     test(
       '$action rejects stale reset and replacement attempt with no mutation',
       () {
-        final model = ViewRequestDraftModel();
+        final model = ReceivedRequestFixture();
         _start(model, _target);
         final old = _capture(model, _target);
         model.reset();
@@ -206,7 +207,7 @@ void main() {
     );
 
     test('$action rejects absent-attempt reset ABA with no mutation', () {
-      final model = ViewRequestDraftModel();
+      final model = ReceivedRequestFixture();
       final old = _capture(model, _target);
       model.reset();
       final before = _values(model);
@@ -215,7 +216,7 @@ void main() {
     });
 
     test('$action rejects occupancy changes before ending or flagging', () {
-      final model = ViewRequestDraftModel();
+      final model = ReceivedRequestFixture();
       expect(model.request(_target), isTrue);
       final beforeAcceptance = _capture(model, _target);
       expect(model.simulateRecipientAccept(_target), isTrue);
@@ -232,7 +233,7 @@ void main() {
     test(
       '$action rejects wrong target attempt and unknown person atomically',
       () {
-        final model = ViewRequestDraftModel(capacity: 3);
+        final model = ReceivedRequestFixture(capacity: 3);
         _start(model, _target);
         _start(model, _other);
         final wrongTarget = _capture(model, _target);
@@ -247,7 +248,7 @@ void main() {
     );
 
     test('$action refuses a fresh duplicate as well as a replay', () {
-      final model = ViewRequestDraftModel();
+      final model = ReceivedRequestFixture();
       expect(
         _apply(model, _target, _capture(model, _target), hide: hide),
         isTrue,
@@ -262,7 +263,7 @@ void main() {
   }
 
   test('unhide cannot revive an old hide confirmation', () {
-    final model = ViewRequestDraftModel();
+    final model = ReceivedRequestFixture();
     final old = _capture(model, _target);
     expect(_apply(model, _target, old, hide: true), isTrue);
     expect(model.unhide(_target), isTrue);
@@ -272,7 +273,7 @@ void main() {
   });
 
   test('already hidden current person can be ended and blocked explicitly', () {
-    final model = ViewRequestDraftModel();
+    final model = ReceivedRequestFixture();
     _start(model, _target);
     expect(model.hide(_target), isTrue);
     expect(
@@ -285,7 +286,7 @@ void main() {
   });
 
   test('ordinary hide and block retain visibility-only public behavior', () {
-    final model = ViewRequestDraftModel();
+    final model = ReceivedRequestFixture();
     _start(model, _target);
     final before = model.snapshot();
     expect(model.hide(_target), isTrue);

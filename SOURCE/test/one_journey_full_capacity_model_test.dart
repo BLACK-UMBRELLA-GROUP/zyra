@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/data/zyra_journey_stages.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 
 // Pure fictional-model evidence only. No UI, account, entitlement, storage or
 // relationship service is instantiated by these tests.
@@ -85,7 +86,7 @@ void main() {
   }
 
   void full({DraftJourneyState endingState = DraftJourneyState.active}) {
-    model = ViewRequestDraftModel(capacity: 3);
+    model = ReceivedRequestFixture(capacity: 3);
     prepare(first);
     if (endingState != DraftJourneyState.preparing) {
       expect(
@@ -139,7 +140,7 @@ void main() {
     );
   }
 
-  setUp(() => model = ViewRequestDraftModel(capacity: 3));
+  setUp(() => model = ReceivedRequestFixture(capacity: 3));
 
   test(
     'full monthly browsing and request cancellation do not reserve a fourth place',
@@ -170,7 +171,7 @@ void main() {
     test(
       'full capacity $capacity preserves Browse gate while explicit choice can accept',
       () {
-        model = ViewRequestDraftModel(capacity: capacity);
+        model = ReceivedRequestFixture(capacity: capacity);
         model.fillCapacity();
         expect(model.canBrowse, isFalse);
         expect(model.discoverable, isFalse);

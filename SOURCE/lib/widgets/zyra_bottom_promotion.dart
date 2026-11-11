@@ -148,7 +148,7 @@ class _ZyraBottomPromotionState extends State<ZyraBottomPromotion>
     return Positioned(
       left: 18,
       right: 18,
-      bottom: safeBottom + ZyraNavBarMetrics.restingHeight + 12,
+      bottom: safeBottom + ZyraNavBarMetrics.legacyRestingHeight + 12,
       child: Semantics(
         container: true,
         label: '${offer.title}. ${offer.message}',

@@ -104,9 +104,15 @@ void main() {
           matching: find.byType(Text),
         );
         final fill = tester.widget<Material>(surface).color!;
-        final ink = tester.widget<Text>(label).style!.color!;
+        final paintedLabel = tester.widget<Text>(label);
+        final ink = paintedLabel.style!.color!;
         expect(fill, ZyraColors.surfaceFill);
-        expect(ink, ZyraColors.espresso);
+        expect(
+          ink,
+          paintedLabel.data == 'Request sent'
+              ? ZyraColors.goldText
+              : ZyraColors.espresso,
+        );
         final contrasts = [
           for (final bg in [ZyraColors.ivoryTop, ZyraColors.ivoryBottom])
             (Color.alphaBlend(fill, bg).computeLuminance() + .05) /
@@ -117,7 +123,7 @@ void main() {
           'frame': file,
           'text_scale': h.textScale,
           'pill': _rect(tester.getRect(surface)),
-          'label': tester.widget<Text>(label).data,
+          'label': paintedLabel.data,
           'fill_argb': fill.toARGB32(),
           'ink_argb': ink.toARGB32(),
           'contrast_on_ivory_endpoints': contrasts,
@@ -159,7 +165,7 @@ void main() {
             file,
             file,
             'Actual sample Founder shell; headless, bundled fonts, network blocked. '
-                'Queue71 explicit normal-ink instruction supersedes gold prototype labels.',
+                'Request sent uses locked gold text. The other labels keep Queue71 ink.',
             fileName: '$file.png',
           );
         } finally {

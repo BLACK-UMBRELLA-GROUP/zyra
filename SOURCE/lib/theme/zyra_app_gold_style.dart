@@ -1,55 +1,21 @@
-import 'dart:async' show unawaited;
-
 import 'package:flutter/foundation.dart';
 
-import '../services/zyra_account_state.dart';
-import '../services/zyra_local_prefs.dart';
-
-/// Member-owned presentation preference, independent of developer authority.
-/// Stored only for the bound account on this device; missing values stay Off.
+/// LOCK 21 V2: the retired member Gold preference never affects the canvas.
 class ZyraAppGoldStyle extends ChangeNotifier {
   ZyraAppGoldStyle._();
 
   static final instance = ZyraAppGoldStyle._();
-  bool _selected = false;
-  int _generation = ZyraAccountState.generation;
-  int _revision = 0;
+  bool get enabled => false;
+  int get revision => 0;
 
-  bool get enabled =>
-      _selected &&
-      _generation == ZyraAccountState.generation &&
-      !ZyraAccountState.isSigningOut;
-  int get revision => _revision;
-
+  // The old action has no effect, including when retained by an older view.
   bool select(
     bool value, {
     required int expectedGeneration,
     required int expectedRevision,
-  }) {
-    if (ZyraAccountState.isSigningOut ||
-        expectedGeneration != ZyraAccountState.generation ||
-        expectedRevision != _revision) {
-      return false;
-    }
-    _selected = value;
-    _generation = expectedGeneration;
-    _revision++;
-    unawaited(ZyraLocalPrefs.setCachedAppGoldEnabled(value));
-    // Even a repeated choice clears a temporary developer preview.
-    notifyListeners();
-    return true;
-  }
+  }) => false;
 
-  /// Hydration/reset never writes a preference or changes account authority.
-  void restore(bool value) {
-    final changed =
-        _selected != value || _generation != ZyraAccountState.generation;
-    if (!changed) return;
-    _selected = value;
-    _generation = ZyraAccountState.generation;
-    _revision++;
-    notifyListeners();
-  }
-
-  void restoreCurrent() => restore(ZyraLocalPrefs.cachedAppGoldEnabled);
+  // Legacy persisted values are intentionally left intact and ignored.
+  void restore(bool _) {}
+  void restoreCurrent() {}
 }

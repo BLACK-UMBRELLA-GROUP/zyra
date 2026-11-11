@@ -8,8 +8,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
+import 'package:zyra/dev/zyra_conversation_unread_badge.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/state/app_state.dart';
@@ -44,7 +46,7 @@ ZyraPreviewNavigationCheckpoint _seed({
   int lastOpened = 0,
 }) => ZyraPreviewNavigationCheckpoint(
   guardian: guardian,
-  model: (model ?? ViewRequestDraftModel(capacity: 3)).snapshot(),
+  model: (model ?? ReceivedRequestFixture(capacity: 3)).snapshot(),
   tab: tab,
   pages: const [],
   myZyraLastOpenedRevision: lastOpened,
@@ -54,12 +56,15 @@ class _Owner {
   bool allowed = true;
   int exits = 0;
   final checkpoints = <ZyraPreviewNavigationCheckpoint>[];
+  final fixture = ZyraShellTestFixture();
 
   ZyraPreviewNavigationCheckpoint get latest => checkpoints.last;
 
   Future<void> mount(
     WidgetTester tester, {
-    required ZyraPreviewNavigationCheckpoint checkpoint,
+    ZyraPreviewNavigationCheckpoint? checkpoint,
+    bool guardian = false,
+    bool basic = false,
     bool restoreLocation = true,
   }) async {
     final ready = Completer<void>();
@@ -83,11 +88,13 @@ class _Owner {
           child: child!,
         ),
         home: ZyraOneJourneyConceptShell(
-          fixture: ZyraShellTestFixture().fixture,
+          fixture: fixture.fixture,
           key: UniqueKey(),
           canAct: () => allowed,
           onExit: () => exits++,
-          initialGuardianRole: checkpoint.guardian,
+          initialGuardianRole: checkpoint?.guardian ?? guardian,
+          initialSeekerBasic: basic && !guardian,
+          initialGuardianBasic: basic && guardian,
           initialCheckpoint: checkpoint,
           restoreLocation: restoreLocation,
           onCheckpoint: checkpoints.add,
@@ -285,6 +292,102 @@ void main() {
         .setMockMethodCallHandler(SystemChannels.platform, null);
   });
 
+  for (final guardian in [false, true]) {
+    for (final basic in [false, true]) {
+      testWidgets(
+        'fresh ${guardian ? 'Guardian' : 'Seeker'} ${basic ? 'Basic' : 'One'} has no planted attention',
+        (tester) async {
+          final owner = _Owner();
+          await owner.mount(tester, guardian: guardian, basic: basic);
+          expect(owner.latest.model.states, isEmpty);
+          expect(owner.latest.model.receivedActivityRevision, 0);
+          expect(_hasTabAttention(tester), isFalse);
+          if (_navigation(tester).currentIndex != 2) {
+            await _nav(tester, 'My ZYRA');
+          }
+          final dashboard = tester.widget<ZyraFocusDashboard>(
+            find.byType(ZyraFocusDashboard),
+          );
+          expect(dashboard.items, isEmpty);
+          expect(dashboard.tiles.every((tile) => !tile.isNew), isTrue);
+          expect(
+            find.byWidgetPredicate(
+              (widget) =>
+                  widget is ZyraConversationUnreadBadge &&
+                  widget.unreadCount > 0,
+            ),
+            findsNothing,
+          );
+          if (guardian) {
+            expect(dashboard.tiles.first.status, 'None');
+            expect(dashboard.tiles.last.status, 'Nothing new');
+          }
+        },
+      );
+    }
+  }
+
+  for (final guardian in [false, true]) {
+    testWidgets(
+      '${guardian ? 'Guardian' : 'Seeker'} request attention begins on arrival and stays cleared after restore',
+      (tester) async {
+        final owner = _Owner();
+        await owner.mount(tester, guardian: guardian);
+        if (guardian) await _nav(tester, 'Seekers');
+        expect(_hasTabAttention(tester), isFalse);
+        expect(owner.fixture.model.seedReceived(_requestId), isTrue);
+        expect(owner.fixture.refresh(), isTrue);
+        await tester.pumpAndSettle();
+        expect(_hasTabAttention(tester), isTrue);
+        await _nav(tester, 'My ZYRA');
+        expect(_hasTabAttention(tester), isFalse);
+        final dashboard = tester.widget<ZyraFocusDashboard>(
+          find.byType(ZyraFocusDashboard),
+        );
+        final requestTile = dashboard.tiles.singleWhere(
+          (tile) => tile.id == (guardian ? 'guardian_requests' : _groupId),
+        );
+        expect(requestTile.status, '1 new');
+        if (guardian) {
+          await _tapControl(tester, 'guardian_requests');
+          expect(find.text('Amira Rahman'), findsOneWidget);
+          expect(owner.latest.model.acknowledgedReceivedRequestIds, isEmpty);
+          expect(
+            owner.latest.guardianTabs.consumedFocus.any(
+              (token) => token.startsWith('guardian-received:$_requestId:'),
+            ),
+            isTrue,
+          );
+        } else {
+          await _tapControl(tester, _leadId);
+          expect(owner.latest.model.acknowledgedReceivedRequestIds, isEmpty);
+          await _tapControl(tester, 'concept_request_${_requestId}_header');
+          await _tapControl(tester, 'concept_request_profile_$_requestId');
+          expect(owner.latest.model.acknowledgedReceivedRequestIds, {_requestId});
+        }
+        final restored = _Owner();
+        await restored.mount(
+          tester,
+          guardian: guardian,
+          checkpoint: owner.latest,
+          restoreLocation: false,
+        );
+        expect(_hasTabAttention(tester), isFalse);
+        final home = tester.widget<ZyraFocusDashboard>(
+          find.byType(ZyraFocusDashboard),
+        );
+        expect(
+          home.tiles.singleWhere((tile) => tile.id == requestTile.id).isNew,
+          isFalse,
+        );
+        expect(
+          restored.latest.model.states[_requestId],
+          DraftJourneyState.received,
+        );
+      },
+    );
+  }
+
   testWidgets(
     'opening My ZYRA clears only tab attention and preserves pending New activity',
     (tester) async {
@@ -330,11 +433,14 @@ void main() {
       expect(_hasTabAttention(tester), isFalse);
       _expectItemAttention(tester);
 
-      await openZyraDevControls(tester);
-      await _tapControl(tester, 'draft_reset');
-      if (zyraShellFixtureFor(tester).setupScopeOpen) {
-        await closeZyraDevControls(tester);
-      }
+      await _nav(tester, 'Profiles');
+      expect(owner.fixture.model.declineReceived(_requestId), isTrue);
+      expect(owner.fixture.refresh(), isTrue);
+      await tester.pumpAndSettle();
+      expect(_hasTabAttention(tester), isFalse);
+      expect(owner.fixture.model.seedReceived(_requestId), isTrue);
+      expect(owner.fixture.refresh(), isTrue);
+      await tester.pumpAndSettle();
       expect(_navigation(tester).currentIndex, 0);
       expect(owner.latest.model.receivedActivityRevision, greaterThan(opened));
       expect(
@@ -406,7 +512,7 @@ void main() {
   testWidgets(
     'long absence opens My ZYRA and clears the marker without item ack',
     (tester) async {
-      final model = ViewRequestDraftModel(capacity: 3);
+      final model = ReceivedRequestFixture(capacity: 3);
       final earlierArrival = model.receivedActivityRevision;
       expect(model.declineReceived(_requestId), isTrue);
       expect(model.seedReceived(_requestId), isTrue);
@@ -447,7 +553,7 @@ void main() {
   testWidgets(
     'an old arrival counter without a current received item stays plain',
     (tester) async {
-      final model = ViewRequestDraftModel(capacity: 3);
+      final model = ReceivedRequestFixture(capacity: 3);
       expect(model.receivedActivityRevision, greaterThan(0));
       expect(model.declineReceived(_requestId), isTrue);
       final owner = _Owner();

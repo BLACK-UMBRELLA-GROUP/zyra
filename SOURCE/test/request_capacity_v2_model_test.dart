@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 
 const _received = 'draft-amira';
 const _ending = 'draft-sara';
@@ -68,7 +69,7 @@ void main() {
 
   setUp(() {
     now = DateTime.utc(2026, 10, 31, 14);
-    model = ViewRequestDraftModel(capacity: 3, clock: () => now);
+    model = ReceivedRequestFixture(capacity: 3, clock: () => now);
   });
 
   test('V2 both free accept prepares with no readiness or private access', () {
@@ -437,7 +438,7 @@ void main() {
         test(
           'V2 capacity $capacity localFull=$localFull peerFull=$peerFull obeys four cases',
           () {
-            model = ViewRequestDraftModel(capacity: capacity, clock: () => now);
+            model = ReceivedRequestFixture(capacity: capacity, clock: () => now);
             if (localFull) model.fillCapacity();
             expect(model.setPeerOccupied(_received, peerFull), isTrue);
             final occupied = model.occupiedCount;
@@ -490,7 +491,7 @@ void main() {
     test(
       'V2 capacity $capacity outgoing waiting snapshot preserves event before choice',
       () {
-        model = ViewRequestDraftModel(capacity: capacity, clock: () => now);
+        model = ReceivedRequestFixture(capacity: capacity, clock: () => now);
         expect(model.request(_sent), isTrue);
         for (final id in [_ending, _other, _third].take(capacity)) {
           start(id);
@@ -523,7 +524,7 @@ void main() {
     test(
       'V2 capacity $capacity outgoing waiting uses an independently freed place',
       () {
-        model = ViewRequestDraftModel(capacity: capacity, clock: () => now);
+        model = ReceivedRequestFixture(capacity: capacity, clock: () => now);
         expect(model.request(_sent), isTrue);
         for (final id in [_ending, _other, _third].take(capacity)) {
           start(id);

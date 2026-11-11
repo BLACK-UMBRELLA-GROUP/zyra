@@ -14,14 +14,12 @@ import 'package:zyra/screens/profile/compatibility_editors.dart';
 import 'package:zyra/screens/profile/edit_photos_screen.dart';
 import 'package:zyra/screens/profile/edit_profile_screen.dart';
 import 'package:zyra/screens/profile/my_profile_preview_screen.dart';
-import 'package:zyra/screens/settings/personalisation_screen.dart';
 import 'package:zyra/services/zyra_local_prefs.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
-import 'package:zyra/widgets/zyra_personalisation_content.dart';
 import 'package:zyra/widgets/zyra_loading.dart';
 
 import 'support/zyra_hidden_dev_controls_driver.dart';
@@ -154,6 +152,15 @@ Future<void> _tapTab(WidgetTester tester, String label) async {
 }
 
 Future<void> _returnPage(WidgetTester tester) => returnZyraPreviewPage(tester);
+
+Future<void> _slideHaptic(WidgetTester tester, ZyraHapticLevel level) async {
+  final slider = _key('zyra-haptic-strength-slider');
+  await tester.ensureVisible(slider);
+  final box = tester.getRect(slider);
+  final x = box.left + 24 + (box.width - 48) * level.index / 4;
+  await tester.tapAt(Offset(x, box.center.dy));
+  await tester.pumpAndSettle();
+}
 
 void main() {
   setUp(() {
@@ -423,7 +430,7 @@ void main() {
   }
 
   testWidgets(
-    'local Personalisation applies and survives reopening without global writes',
+    'local Settings Haptics applies and survives reopening without global writes',
     (tester) async {
       final palette = ZyraColors.devPalette;
       final haptics = ZyraInteractionStyle.hapticLevel;
@@ -431,34 +438,14 @@ void main() {
       await HttpOverrides.runWithHttpOverrides(() async {
         await _mount(tester);
         await _profile(tester);
-        await _tap(tester, 'concept_personalisation');
-        expect(find.byType(PersonalisationScreen), findsOneWidget);
-        expect(_key('personalisation_background'), findsNothing);
-        expect(
-          tester
-              .widget<ZyraPersonalisationContent>(
-                find.byType(ZyraPersonalisationContent),
-              )
-              .snapshot
-              .palette,
-          ZyraDevPalette.ivory,
-        );
-        await _tap(tester, 'personalisation_gold_toggle');
-        expect(
-          tester.widget<Switch>(_key('personalisation_gold_toggle')).value,
-          isTrue,
-        );
-        await _tap(tester, 'personalisation_haptic');
-        await tester.tap(find.text('Strong'));
-        await tester.pumpAndSettle();
-        expect(find.text('Strong'), findsOneWidget);
+        expect(find.text('Appearance & haptics'), findsNothing);
+        await _tap(tester, 'concept_settings');
+        await _tap(tester, 'concept_settings_haptics');
+        await _slideHaptic(tester, ZyraHapticLevel.strong);
         await _returnPage(tester);
-        await _tap(tester, 'concept_personalisation');
-        expect(_key('personalisation_background'), findsNothing);
-        expect(
-          tester.widget<Switch>(_key('personalisation_gold_toggle')).value,
-          isTrue,
-        );
+        await _tap(tester, 'concept_settings');
+        await tester.ensureVisible(_key('concept_settings_haptics'));
+        await tester.pumpAndSettle();
         expect(find.text('Strong'), findsOneWidget);
         await _returnPage(tester);
         await _tap(tester, 'concept_preview_profile');
@@ -504,18 +491,12 @@ void main() {
         await HttpOverrides.runWithHttpOverrides(() async {
           await _mount(tester);
           await _tapTab(tester, 'Profile');
-          await _tap(tester, 'concept_personalisation');
-          await _tap(tester, 'personalisation_haptic');
-          await tester.tap(
-            find.descendant(
-              of: find.byType(ZyraPersonalisationChoiceSheet<ZyraHapticLevel>),
-              matching: find.text(level.label),
-            ),
-          );
-          await tester.pumpAndSettle();
+          await _tap(tester, 'concept_settings');
+          await _tap(tester, 'concept_settings_haptics');
+          await _slideHaptic(tester, level);
           expect(
             find.descendant(
-              of: _key('personalisation_haptic'),
+              of: _key('concept_settings_haptics'),
               matching: find.text(level.label),
             ),
             findsOneWidget,
@@ -528,7 +509,10 @@ void main() {
           final person = browse.profiles[browse.selectedIndex];
           expect(browse.requestLabel!(person), 'Request a Journey');
           calls.clear();
-          await _tap(tester, 'draft_profile_${person.id}');
+          await tester.tap(_key('draft_profile_${person.id}'));
+          for (var frame = 0; frame < 12; frame++) {
+            await tester.pump(const Duration(milliseconds: 40));
+          }
           final requested = tester.widget<ZyraOneJourneyBrowseDesigns>(
             find.byType(ZyraOneJourneyBrowseDesigns),
           );

@@ -5,11 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zyra/screens/settings/personalisation_screen.dart';
 import 'package:zyra/services/zyra_local_prefs.dart';
-import 'package:zyra/theme/zyra_colors.dart';
-import 'package:zyra/theme/zyra_interaction_style.dart';
-import 'package:zyra/widgets/zyra_personalisation_content.dart';
 import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
@@ -113,32 +109,32 @@ void main() {
     ZyraAccountState.clearImagesForTesting = null;
   });
 
-  test('app gold defaults Off and members need no developer authority', () {
+  test('app Gold stays Off without developer authority', () {
     final renderer = ZyraAppGoldRenderer.instance;
     expect(renderer.renderingEnabled, isFalse);
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    expect(_select(true), isTrue);
-    expect(renderer.renderingEnabled, isTrue);
+    expect(_select(true), isFalse);
+    expect(renderer.renderingEnabled, isFalse);
   });
 
-  test('developer revocation cannot change a previous member On choice', () {
+  test('developer admission cannot revive the retired Gold choice', () {
     final member = ZyraAppGoldStyle.instance;
-    expect(_select(true), isTrue);
+    expect(_select(true), isFalse);
     final previousRevision = member.revision;
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    expect(member.enabled, isTrue);
+    expect(member.enabled, isFalse);
     expect(member.revision, previousRevision);
-    expect(ZyraAppGoldRenderer.instance.renderingEnabled, isTrue);
+    expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    expect(member.enabled, isTrue);
-    expect(ZyraAppGoldRenderer.instance.renderingEnabled, isTrue);
+    expect(member.enabled, isFalse);
+    expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
   });
 
   test('stale generation and revision selections are refused', () {
     final selection = ZyraAppGoldStyle.instance;
     final generation = ZyraAccountState.generation;
     final revision = selection.revision;
-    expect(_select(true), isTrue);
+    expect(_select(true), isFalse);
     expect(
       selection.select(
         false,
@@ -147,7 +143,7 @@ void main() {
       ),
       isFalse,
     );
-    expect(selection.enabled, isTrue);
+    expect(selection.enabled, isFalse);
     ZyraAccountState.resetForTesting();
     expect(selection.enabled, isFalse);
     expect(
@@ -159,16 +155,16 @@ void main() {
       isFalse,
     );
     expect(selection.enabled, isFalse);
-    expect(_select(false), isTrue);
-    expect(_select(true), isTrue);
-    expect(selection.enabled, isTrue);
+    expect(_select(false), isFalse);
+    expect(_select(true), isFalse);
+    expect(selection.enabled, isFalse);
   });
 
   test(
-    'account presentation reset clears On and notifies mounted painters',
+    'account presentation reset cannot enable Gold or notify dormant painters',
     () async {
       final selection = ZyraAppGoldStyle.instance;
-      expect(_select(true), isTrue);
+      expect(_select(true), isFalse);
       final revision = selection.revision;
       var repaints = 0;
       final painter = const ZyraAppGoldDecoration(
@@ -178,11 +174,11 @@ void main() {
         '11111111-1111-4111-8111-111111111111',
       );
       expect(selection.enabled, isFalse);
-      expect(selection.revision, greaterThan(revision));
-      expect(repaints, 1);
-      expect(_select(true), isTrue);
-      expect(selection.enabled, isTrue);
-      expect(repaints, 2);
+      expect(selection.revision, revision);
+      expect(repaints, 0);
+      expect(_select(true), isFalse);
+      expect(selection.enabled, isFalse);
+      expect(repaints, 0);
       painter.dispose();
     },
   );
@@ -204,54 +200,22 @@ void main() {
   });
 
   test(
-    'On changes visible pixels; member Off restores identical original pixels',
+    'retired Gold callbacks leave the existing canvas pixels unchanged',
     () async {
       const decorated = ZyraAppGoldDecoration(gradient: _gradient);
       final off = await _pixels(decorated);
-      expect(_select(true), isTrue);
+      expect(_select(true), isFalse);
       final on = await _pixels(decorated);
-      expect(on, isNot(orderedEquals(off)));
+      expect(on, orderedEquals(off));
       ZyraDeveloperAccess.setAuthorizedForTesting(false);
       expect(await _pixels(decorated), orderedEquals(on));
-      expect(_select(false), isTrue);
+      expect(_select(false), isFalse);
       expect(await _pixels(decorated), orderedEquals(off));
     },
   );
 
-  test(
-    'particles translate with their canvas and cannot spill outside it',
-    () async {
-      expect(_select(true), isTrue);
-      // Isolate particle alpha from the background gradient. That checks
-      // geometry without shader/compositing channel rounding differences.
-      const decorated = ZyraAppGoldDecoration();
-      const size = Size(200, 300);
-      const offset = Offset(17, 23);
-      const bounds = Size(240, 350);
-      final local = await _pixels(decorated, size: size);
-      final positioned = await _pixels(
-        decorated,
-        size: size,
-        offset: offset,
-        canvasSize: bounds,
-      );
-      for (var y = 0; y < bounds.height.toInt(); y++) {
-        for (var x = 0; x < bounds.width.toInt(); x++) {
-          final index = (y * bounds.width.toInt() + x) * 4;
-          final inside = x >= 17 && x < 217 && y >= 23 && y < 323;
-          if (!inside) {
-            expect(positioned[index + 3], 0, reason: 'Outside ($x, $y)');
-            continue;
-          }
-          final localIndex = ((y - 23) * size.width.toInt() + x - 17) * 4;
-          expect(positioned[index + 3], closeTo(local[localIndex + 3], 1));
-        }
-      }
-    },
-  );
-
-  test('rounded clipping keeps the gold inside the background shape', () async {
-    expect(_select(true), isTrue);
+  test('rounded clipping keeps the background inside its shape', () async {
+    expect(_select(true), isFalse);
     const decorated = ZyraAppGoldDecoration(
       gradient: _gradient,
       borderRadius: BorderRadius.all(Radius.circular(100)),
@@ -297,77 +261,14 @@ void main() {
       gradient: _gradient,
     ).createBoxPainter(() => repaints++);
     expect(selection.debugPainterCount, before + 1);
-    expect(_select(true), isTrue);
+    expect(_select(true), isFalse);
     selection.frame.value = .25;
-    expect(repaints, 2);
+    expect(repaints, 1);
     painter.dispose();
     expect(selection.debugPainterCount, before);
-    expect(_select(false), isTrue);
+    expect(_select(false), isFalse);
     selection.frame.value = .75;
-    expect(repaints, 2);
-  });
-
-  test(
-    'ordinary member choice paints gold and Off restores original pixels',
-    () async {
-      ZyraDeveloperAccess.setAuthorizedForTesting(false);
-      const decoration = ZyraAppGoldDecoration(gradient: _gradient);
-      final off = await _pixels(decoration);
-      final member = ZyraAppGoldStyle.instance;
-      expect(
-        member.select(
-          true,
-          expectedGeneration: ZyraAccountState.generation,
-          expectedRevision: member.revision,
-        ),
-        isTrue,
-      );
-      expect(await _pixels(decoration), isNot(orderedEquals(off)));
-      expect(
-        member.select(
-          false,
-          expectedGeneration: ZyraAccountState.generation,
-          expectedRevision: member.revision,
-        ),
-        isTrue,
-      );
-      expect(await _pixels(decoration), orderedEquals(off));
-    },
-  );
-
-  testWidgets('ordinary member choice starts and stops the shared live clock', (
-    tester,
-  ) async {
-    ZyraDeveloperAccess.setAuthorizedForTesting(false);
-    final member = ZyraAppGoldStyle.instance;
-    final clock = ZyraAppGoldRenderer.instance;
-    await tester.pumpWidget(
-      _app(
-        const DecoratedBox(
-          decoration: ZyraAppGoldDecoration(gradient: _gradient),
-          child: SizedBox.expand(),
-        ),
-      ),
-    );
-    member.select(
-      true,
-      expectedGeneration: ZyraAccountState.generation,
-      expectedRevision: member.revision,
-    );
-    await tester.pump();
-    final initial = clock.frame.value;
-    await tester.pump(const Duration(milliseconds: 600));
-    expect(clock.frame.value, isNot(initial));
-    member.select(
-      false,
-      expectedGeneration: ZyraAccountState.generation,
-      expectedRevision: member.revision,
-    );
-    final stopped = clock.frame.value;
-    await tester.pump(const Duration(seconds: 2));
-    expect(clock.frame.value, stopped);
-    await tester.pumpWidget(const SizedBox.shrink());
-    expect(clock.debugPainterCount, 0);
+    expect(repaints, 1);
   });
 
   testWidgets('opaque children stay unchanged and buttons still receive taps', (
@@ -401,7 +302,7 @@ void main() {
       ),
     );
     final off = await tester.runAsync(() => _widgetPixels(tester, boundaryKey));
-    expect(_select(true), isTrue);
+    expect(_select(true), isFalse);
     await tester.pump();
     final on = await tester.runAsync(() => _widgetPixels(tester, boundaryKey));
     expect(on, orderedEquals(off!));
@@ -413,173 +314,12 @@ void main() {
     expect(ZyraAppGoldRenderer.instance.debugPainterCount, 0);
   });
 
-  testWidgets(
-    'member picker updates immediately and refuses stale account callbacks',
-    (tester) async {
-      await tester.pumpWidget(_app(const PersonalisationScreen()));
-      final toggle = find.byKey(const ValueKey('personalisation_gold_toggle'));
-      final oldCallback = tester.widget<Switch>(toggle).onChanged!;
-      oldCallback(true);
-      await tester.pump();
-      expect(tester.widget<Switch>(toggle).value, isTrue);
-      expect(_select(false), isTrue);
-      oldCallback(true);
-      await tester.pump();
-      expect(tester.widget<Switch>(toggle).value, isFalse);
-      ZyraDeveloperAccess.setAuthorizedForTesting(false);
-      await tester.pump();
-      expect(toggle, findsOneWidget);
-      final accountCallback = tester.widget<Switch>(toggle).onChanged!;
-      ZyraAccountState.resetForTesting();
-      accountCallback(true);
-      await tester.pump();
-      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
-      expect(tester.widget<Switch>(toggle).value, isFalse);
-      oldCallback(true);
-      expect(ZyraAppGoldStyle.instance.enabled, isFalse);
-      expect(tester.takeException(), isNull);
-      await tester.pumpWidget(const SizedBox.shrink());
-    },
-  );
-
-  testWidgets(
-    'disabled member gold control remains scrollable at compact 200% text',
-    (tester) async {
-      tester.view.physicalSize = const Size(320, 568);
-      tester.view.devicePixelRatio = 1;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: MediaQuery(
-              data: const MediaQueryData(textScaler: TextScaler.linear(2)),
-              child: const ZyraPersonalisationContent(
-                snapshot: ZyraPersonalisationSnapshot(
-                  palette: ZyraDevPalette.ivory,
-                  hapticLevel: ZyraHapticLevel.subtle,
-                  goldEnabled: false,
-                ),
-                onChooseHaptic: null,
-                onGoldChanged: null,
-              ),
-            ),
-          ),
-        ),
-      );
-      final toggle = find.byKey(const ValueKey('personalisation_gold_toggle'));
-      await tester.scrollUntilVisible(toggle, 160);
-      await tester.pumpAndSettle();
-      expect(tester.widget<Switch>(toggle).onChanged, isNull);
-      expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
-      expect(tester.takeException(), isNull);
-      await tester.pumpWidget(const SizedBox.shrink());
-    },
-  );
-
-  for (final (label, role) in <(String, String?)>[
-    ('Entry', null),
-    ('Seeker', 'seeker'),
-    ('Guardian', 'wali'),
-  ]) {
-    testWidgets(
-      '$label member Personalisation preserves gold without developer controls',
-      (tester) async {
-        ZyraLocalPrefs.setCachedRole(role);
-        final member = ZyraAppGoldStyle.instance;
-        expect(_select(true), isTrue);
-        final semantics = tester.ensureSemantics();
-        await tester.pumpWidget(_app(const PersonalisationScreen()));
-        await tester.pump();
-        final toggle = find.byKey(
-          const ValueKey('personalisation_gold_toggle'),
-        );
-        await tester.ensureVisible(toggle);
-        expect(toggle, findsOneWidget);
-        expect(tester.widget<Switch>(toggle).value, isTrue);
-        expect(
-          find.byKey(const ValueKey('dev_controls_tab_home')),
-          findsNothing,
-        );
-        expect(find.byKey(const ValueKey('dev_app_gold_toggle')), findsNothing);
-        expect(find.text('App gold accents'), findsNothing);
-        expect(tester.getSemantics(toggle).label, contains('Gold accents'));
-        expect(member.enabled, isTrue);
-        expect(ZyraAppGoldRenderer.instance.renderingEnabled, isTrue);
-        expect(tester.takeException(), isNull);
-        await tester.pumpWidget(const SizedBox.shrink());
-        semantics.dispose();
-      },
-    );
-
-    testWidgets(
-      '$label ordinary member gold remains available without developer Home',
-      (tester) async {
-        ZyraLocalPrefs.setCachedRole(role);
-        ZyraDeveloperAccess.setAuthorizedForTesting(false);
-        await tester.pumpWidget(_app(const PersonalisationScreen()));
-        await tester.pump();
-        final toggle = find.byKey(
-          const ValueKey('personalisation_gold_toggle'),
-        );
-        await tester.ensureVisible(toggle);
-        expect(
-          find.byKey(const ValueKey('dev_controls_tab_home')),
-          findsNothing,
-        );
-        expect(find.byKey(const ValueKey('dev_app_gold_toggle')), findsNothing);
-        tester.widget<Switch>(toggle).onChanged!(true);
-        await tester.pump();
-        expect(ZyraAppGoldStyle.instance.enabled, isTrue);
-        expect(ZyraAppGoldRenderer.instance.renderingEnabled, isTrue);
-        expect(tester.takeException(), isNull);
-        await tester.pumpWidget(const SizedBox.shrink());
-      },
-    );
-  }
-
-  for (final guardian in [false, true]) {
-    testWidgets(
-      'disabled ${guardian ? 'Guardian' : 'Seeker'} member Personalisation has no developer gold toggle',
-      (tester) async {
-        ZyraLocalPrefs.setCachedRole(guardian ? 'wali' : 'seeker');
-        await tester.pumpWidget(
-          _app(
-            const ZyraPersonalisationContent(
-              snapshot: ZyraPersonalisationSnapshot(
-                palette: ZyraDevPalette.ivory,
-                hapticLevel: ZyraHapticLevel.subtle,
-                goldEnabled: false,
-              ),
-              onChooseHaptic: null,
-              onGoldChanged: null,
-            ),
-          ),
-        );
-        await tester.pumpAndSettle();
-        final toggle = find.byKey(
-          const ValueKey('personalisation_gold_toggle'),
-        );
-        await tester.ensureVisible(toggle);
-        expect(tester.widget<Switch>(toggle).onChanged, isNull);
-        expect(find.byKey(const ValueKey('dev_app_gold_toggle')), findsNothing);
-        expect(
-          find.byKey(const ValueKey('dev_home_section_app_gold')),
-          findsNothing,
-        );
-        expect(ZyraAppGoldRenderer.instance.renderingEnabled, isFalse);
-        expect(tester.takeException(), isNull);
-        await tester.pumpWidget(const SizedBox.shrink());
-      },
-    );
-  }
-
   for (final accessible in [false, true]) {
     testWidgets(
       'reduced-motion mode stays static (${accessible ? 'accessible navigation' : 'disable animations'})',
       (tester) async {
         final selection = ZyraAppGoldRenderer.instance;
-        expect(_select(true), isTrue);
+        expect(_select(true), isFalse);
         await tester.pumpWidget(
           _app(
             const DecoratedBox(
@@ -601,82 +341,4 @@ void main() {
     );
   }
 
-  testWidgets(
-    'one clock animates multiple canvases without rebuilding content and stops Off',
-    (tester) async {
-      final selection = ZyraAppGoldRenderer.instance;
-      var contentBuilds = 0;
-      await tester.pumpWidget(
-        _app(
-          Column(
-            children: [
-              Expanded(
-                child: DecoratedBox(
-                  decoration: const ZyraAppGoldDecoration(gradient: _gradient),
-                  child: Builder(
-                    builder: (_) {
-                      contentBuilds++;
-                      return const SizedBox.expand();
-                    },
-                  ),
-                ),
-              ),
-              const Expanded(
-                child: DecoratedBox(
-                  decoration: ZyraAppGoldDecoration(gradient: _gradient),
-                  child: SizedBox.expand(),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-      expect(selection.debugPainterCount, 2);
-      expect(contentBuilds, 1);
-      expect(_select(true), isTrue);
-      await tester.pump();
-      final initial = selection.frame.value;
-      await tester.pump(const Duration(milliseconds: 600));
-      expect(selection.frame.value, isNot(initial));
-      expect(contentBuilds, 1);
-      expect(_select(false), isTrue);
-      final stopped = selection.frame.value;
-      await tester.pump(const Duration(seconds: 2));
-      expect(selection.frame.value, stopped);
-      await tester.pumpWidget(const SizedBox.shrink());
-      expect(selection.debugPainterCount, 0);
-    },
-  );
-
-  testWidgets(
-    'live clock pauses in the background and while TickerMode is disabled',
-    (tester) async {
-      final selection = ZyraAppGoldRenderer.instance;
-      const content = DecoratedBox(
-        decoration: ZyraAppGoldDecoration(gradient: _gradient),
-        child: SizedBox.expand(),
-      );
-      expect(_select(true), isTrue);
-      await tester.pumpWidget(_app(content));
-      await tester.pump(const Duration(milliseconds: 600));
-      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
-      final paused = selection.frame.value;
-      await tester.pump(const Duration(seconds: 2));
-      expect(selection.frame.value, paused);
-      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 600));
-      expect(selection.frame.value, isNot(paused));
-      await tester.pumpWidget(_app(content, ticker: false));
-      final hidden = selection.frame.value;
-      await tester.pump(const Duration(seconds: 2));
-      expect(selection.frame.value, hidden);
-      await tester.pumpWidget(_app(content));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 600));
-      expect(selection.frame.value, isNot(hidden));
-      await tester.pumpWidget(const SizedBox.shrink());
-      expect(selection.debugPainterCount, 0);
-    },
-  );
 }

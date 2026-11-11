@@ -7,11 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:zyra/dev/zyra_draft_code_entry.dart';
+import 'package:zyra/dev/zyra_draft_local_code_aliases.dart';
+import 'package:zyra/dev/zyra_draft_local_code_page.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_known_person_code_content.dart';
 
 const _manualKey = ValueKey('known-person-camera-manual-entry');
 const _nativeViewKey = ValueKey('fake-native-code-camera');
+const _frameKey = ValueKey('local-code-camera');
+const _captionKey = ValueKey('local-code-camera-caption');
+const _scanLineKey = ValueKey('local-code-scan-line');
+const _checkKey = ValueKey('local-code-check');
 const _viewAttributes = MobileScannerViewAttributes(
   cameraDirection: CameraFacing.back,
   currentTorchMode: TorchState.unavailable,
@@ -183,6 +190,127 @@ void main() {
     ZyraText.useTestFontStubs = priorStubs;
     WidgetController.hitTestWarningShouldBeFatal = priorFatal;
   });
+
+  Future<void> mountFramed(
+    WidgetTester tester,
+    ZyraLocalCodeContext mode,
+  ) async {
+    tester.view.physicalSize = const Size(430, 932);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpWidget(
+      _app(
+        mode == ZyraLocalCodeContext.scan
+            ? ZyraDraftCodeEntry(
+                canAct: () => true,
+                lookupCode: (_) async => null,
+                onViewProfile: (_) {},
+              )
+            : ZyraLocalCodePage(
+                mode: mode,
+                ownerKey: mode,
+                canAct: () => true,
+                lookupCode: (_) async => null,
+                captureBuilder: (_, guard, onCode, manual, onRunningChanged) =>
+                    ZyraCodeCapture(
+                      canCapture: guard,
+                      onCode: onCode,
+                      onManualEntry: manual,
+                      framed: true,
+                      onRunningChanged: onRunningChanged,
+                    ),
+              ),
+      ),
+    );
+    await _flush(tester);
+    expect(find.text('Camera is off — enter the code below'), findsOneWidget);
+    expect(find.byKey(_captionKey), findsNothing);
+    await tester.ensureVisible(find.byKey(_frameKey));
+    await _flush(tester);
+    await tester.tap(find.byKey(_frameKey));
+    await _flush(tester);
+  }
+
+  for (final mode in ZyraLocalCodeContext.values) {
+    testWidgets(
+      'live ${mode.name} camera keeps its caption outside the frame',
+      (tester) async {
+        await mountFramed(tester, mode);
+        final frame = find.byKey(_frameKey);
+        final caption = find.byKey(_captionKey);
+        final side = mode == ZyraLocalCodeContext.scan ? 250.0 : 190.0;
+        expect(platform.running, isTrue);
+        expect(tester.getSize(frame), Size.square(side));
+        expect(
+          find.descendant(of: frame, matching: find.byKey(_nativeViewKey)),
+          findsOneWidget,
+        );
+        expect(
+          find.descendant(of: frame, matching: find.byType(Text)),
+          findsNothing,
+        );
+        expect(find.byKey(_manualKey), findsNothing);
+        expect(find.byKey(_scanLineKey), findsOneWidget);
+        expect(tester.widget<Text>(caption).data, 'Point at their ZYRA Code');
+        expect(tester.widget<Text>(caption).style!.fontSize, 12.5);
+        expect(
+          tester.getTopLeft(caption).dy - tester.getBottomLeft(frame).dy,
+          10,
+        );
+        expect(find.byType(EditableText), findsOneWidget);
+        expect(find.byKey(_checkKey), findsOneWidget);
+      },
+    );
+  }
+
+  testWidgets(
+    'refused framed camera keeps code entry and a new tap can start a fresh session',
+    (tester) async {
+      platform.startError = const MobileScannerException(
+        errorCode: MobileScannerErrorCode.permissionDenied,
+      );
+      await mountFramed(tester, ZyraLocalCodeContext.scan);
+      expect(platform.running, isFalse);
+      expect(
+        find.descendant(
+          of: find.byKey(_frameKey),
+          matching: find.text('Camera is off — enter the code below'),
+        ),
+        findsOneWidget,
+      );
+      expect(find.byKey(_captionKey), findsNothing);
+      expect(find.byKey(_manualKey), findsNothing);
+      expect(find.byType(EditableText), findsOneWidget);
+      expect(find.byKey(_checkKey), findsOneWidget);
+      expect(platform.disposals, 1);
+      platform.startError = null;
+      await tester.tap(find.byKey(_frameKey));
+      await _flush(tester);
+      expect(platform.startOptions, hasLength(2));
+      expect(platform.running, isTrue);
+      expect(find.byKey(_captionKey), findsOneWidget);
+      expect(find.text('Camera is off — enter the code below'), findsNothing);
+    },
+  );
+
+  testWidgets(
+    'inactive framed camera clears live chrome until native resumes',
+    (tester) async {
+      await mountFramed(tester, ZyraLocalCodeContext.scan);
+      expect(find.byKey(_captionKey), findsOneWidget);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      await _flush(tester);
+      expect(platform.running, isFalse);
+      expect(find.byKey(_captionKey), findsNothing);
+      expect(find.text('Camera is off — enter the code below'), findsOneWidget);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await _flush(tester);
+      expect(platform.running, isTrue);
+      expect(find.byKey(_captionKey), findsOneWidget);
+      expect(find.text('Camera is off — enter the code below'), findsNothing);
+    },
+  );
 
   testWidgets('real capture starts native bridge and disposes its session', (
     tester,

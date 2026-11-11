@@ -92,7 +92,7 @@ Future<void> _mount(
       ),
       home: ViewRequestDraftScreen(
         key: UniqueKey(),
-        fixture: ZyraShellTestFixture().fixture,
+        fixture: ZyraShellTestFixture(receivedRequest: true).fixture,
         ownerGeneration: ZyraAccountState.generation,
         ownerId: ZyraAccountState.userId,
       ),
@@ -151,7 +151,7 @@ Future<void> _press(WidgetTester tester, String id) async {
       tester.getRect(target).bottom >
           tester.view.physicalSize.height -
               34 -
-              ZyraNavBarMetrics.restingHeight -
+              ZyraNavBarMetrics.legacyRestingHeight -
               ZyraNavBarMetrics.bottomInset) {
     await Scrollable.ensureVisible(tester.element(target), alignment: .5);
     await tester.pumpAndSettle();
@@ -787,8 +787,8 @@ void main() {
         );
         expect(grants.map((item) => item.attempt).toSet(), hasLength(3));
         expect(grants.every((item) => item.view && !item.canChange), isTrue);
-        await _press(tester, 'guardian-card-next');
         await _press(tester, 'guardian-card-dot-target-1');
+        await _press(tester, 'guardian-card-access');
         String view(String id) => 'guardian-card-view-$yusuf-$id';
         String chat(String id) => 'guardian-card-chat-$yusuf-$id';
         SemanticsProperties state(String key) =>

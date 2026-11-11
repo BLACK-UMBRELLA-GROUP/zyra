@@ -8,9 +8,12 @@ import 'package:flutter/material.dart';
 import '../data/zyra_membership_catalog.dart';
 import '../theme/zyra_card_metrics.dart';
 import '../theme/zyra_colors.dart';
+import '../theme/zyra_interaction_style.dart';
+import '../widgets/zyra_haptics_setting.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_membership_choices.dart';
 import '../widgets/zyra_profile_image.dart';
+import '../widgets/floating_nav_bar.dart';
 
 enum ZyraConceptAccountAction {
   yourSeekers,
@@ -22,7 +25,6 @@ enum ZyraConceptAccountAction {
   guardianInfo,
   safetyAdvice,
   invite,
-  personalisation,
   settings,
   signOut,
   signInSecurity,
@@ -140,8 +142,8 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
     onTap: () => onAction(action),
   );
 
-  Widget _card(List<Widget> rows) => Padding(
-    padding: const EdgeInsets.only(bottom: 16),
+  Widget _card(List<Widget> rows, {bool last = false}) => Padding(
+    padding: EdgeInsets.only(bottom: last ? 0 : 16),
     child: ZyraFloatingSurface(
       radius: 20,
       child: Container(
@@ -263,6 +265,7 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
   Widget build(BuildContext context) => Material(
     color: Colors.transparent,
     child: SafeArea(
+      bottom: false,
       child: Column(
         children: [
           Padding(
@@ -280,7 +283,12 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
               key: const ValueKey('concept-current-profile-scroll'),
-              padding: const EdgeInsets.fromLTRB(22, 14, 22, 100),
+              padding: EdgeInsets.fromLTRB(
+                22,
+                14,
+                22,
+                ZyraNavBarMetrics.contentBottomClearance(context),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -413,13 +421,7 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
                       'Settings',
                       Icons.settings,
                       ZyraConceptAccountAction.settings,
-                      detail: 'Account, privacy, notifications',
-                    ),
-                    _row(
-                      'personalisation',
-                      'Appearance & haptics',
-                      Icons.tune,
-                      ZyraConceptAccountAction.personalisation,
+                      detail: 'Account, privacy, notifications, haptics',
                     ),
                     _row(
                       'sign_out',
@@ -428,7 +430,7 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
                       ZyraConceptAccountAction.signOut,
                       destructive: true,
                     ),
-                  ]),
+                  ], last: true),
                 ],
               ),
             ),
@@ -509,8 +511,18 @@ class ZyraConceptSettingsPresentation extends StatelessWidget {
     required this.onAction,
     required this.onBack,
     this.showBackButton = true,
+    this.hapticLevel = ZyraInteractionStyle.currentDefaultHapticLevel,
+    this.canChangeHaptics,
+    this.onHapticChanged,
+    this.hapticOwner,
+    this.readHapticLevel,
   });
 
+  final ZyraHapticLevel hapticLevel;
+  final bool Function()? canChangeHaptics;
+  final bool Function(ZyraHapticLevel)? onHapticChanged;
+  final Object? hapticOwner;
+  final ZyraHapticLevel Function()? readHapticLevel;
   final ZyraConceptAccountData data;
   final ZyraConceptAccountActionCallback onAction;
   final VoidCallback onBack;
@@ -629,12 +641,27 @@ class ZyraConceptSettingsPresentation extends StatelessWidget {
                     ],
                   ),
                   _SettingsSection(
-                    title: 'NOTIFICATIONS',
+                    title: 'NOTIFICATIONS & HAPTICS',
                     smooth: smooth,
                     children: [
                       row(
                         'Notifications & emails',
                         ZyraConceptAccountAction.notificationSettings,
+                      ),
+                      ZyraHapticsSetting(
+                        level: hapticLevel,
+                        ownerIdentity: hapticOwner,
+                        readLevel: readHapticLevel,
+                        canAct: canChangeHaptics ?? () => false,
+                        onChanged: onHapticChanged ?? (_) => false,
+                        row: (expanded, onTap) => _SettingsRow(
+                          key: const ValueKey('concept_settings_haptics'),
+                          label: 'Haptics',
+                          value: hapticLevel.label,
+                          expanded: expanded,
+                          smooth: smooth,
+                          onTap: onTap,
+                        ),
                       ),
                     ],
                   ),
@@ -922,7 +949,9 @@ class _SettingsRow extends StatelessWidget {
     required this.smooth,
     this.value,
     this.isNew = false,
+    this.expanded = false,
   });
+  final bool expanded;
   final bool isNew;
   final String label;
   final String? value;
@@ -936,6 +965,7 @@ class _SettingsRow extends StatelessWidget {
     'Hidden Profiles' => Icons.person_off_outlined,
     'Phone access' => Icons.phonelink_lock_outlined,
     'Notifications & emails' => Icons.notifications_outlined,
+    'Haptics' => Icons.vibration,
     'Help & support' => Icons.help_outline_rounded,
     'Send feedback' => Icons.chat_bubble_outline_rounded,
     'Privacy & data' => Icons.shield_outlined,
@@ -1014,7 +1044,7 @@ class _SettingsRow extends StatelessWidget {
               const SizedBox(width: 8),
             ],
             Icon(
-              Icons.chevron_right,
+              expanded ? Icons.expand_more : Icons.chevron_right,
               size: 18,
               color: ZyraColors.foreground.withValues(alpha: 0.3),
             ),

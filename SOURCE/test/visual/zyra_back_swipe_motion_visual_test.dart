@@ -314,8 +314,9 @@ void main() {
         expectedGeneration: ZyraAccountState.generation,
         expectedRevision: gold.revision,
       ),
-      isTrue,
+      isFalse,
     );
+    expect(gold.enabled, isFalse);
     memberBefore = snapshot();
     memberChanges = 0;
     memberListener = () => memberChanges++;

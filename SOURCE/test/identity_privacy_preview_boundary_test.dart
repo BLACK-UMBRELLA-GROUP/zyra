@@ -24,6 +24,13 @@ const _captureDir = String.fromEnvironment('ZYRA_HEALTH_CAPTURE_DIR');
 const _captureKey = ValueKey('identity-privacy-health-capture');
 Finder _key(String id) => find.byKey(ValueKey(id));
 
+SystemUiOverlayStyle? _status(WidgetTester tester) => tester
+    .binding
+    .renderViews
+    .single
+    .debugLayer
+    ?.find<SystemUiOverlayStyle>(const Offset(120, 10));
+
 class _NoNetwork extends HttpOverrides {
   int attempts = 0;
   @override
@@ -39,7 +46,11 @@ Widget _app(
   bool compact = false,
 }) => MaterialApp(
   navigatorKey: navigator,
-  theme: ThemeData.dark(),
+  theme: ThemeData.dark().copyWith(
+    appBarTheme: const AppBarTheme(
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
+    ),
+  ),
   builder: (context, child) => MediaQuery(
     data: MediaQuery.of(context).copyWith(
       padding: const EdgeInsets.only(top: 59, bottom: 34),
@@ -210,6 +221,8 @@ void main() {
           _key('founder_launch_note_detail_privacyPolicy'),
           findsOneWidget,
         );
+        expect(_status(tester)?.statusBarIconBrightness, Brightness.dark);
+        expect(_status(tester)?.statusBarBrightness, Brightness.light);
         _noOrdinary();
         // A healthy same-owner publication must not replace the route's
         // captured caller merely because its builder runs again.
@@ -222,6 +235,8 @@ void main() {
         if (!compact) await _capture(tester, 'identity-preview-policy');
         await _tap(tester, _key('concept_settings_help_detail_privacyPolicy'));
         expect(_key('help-support-preview-title'), findsOneWidget);
+        expect(_status(tester)?.statusBarIconBrightness, Brightness.light);
+        expect(_status(tester)?.statusBarBrightness, Brightness.dark);
         _noOrdinary();
         AppState.instance.setNotificationPreference();
         await tester.pumpAndSettle();

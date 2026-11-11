@@ -55,8 +55,9 @@ class ZyraPreviewNavigationCheckpoint {
     required Iterable<String> pages,
     this.personId,
     this.requestsTab = 0,
+    this.myZyraQuickAccessPage,
     int journeyPlaceIndex = 0,
-    this.guardianTabs = const ZyraGuardianTabsSnapshot(),
+    this.guardianTabs = const ZyraGuardianTabsSnapshot.quiet(),
     this.myZyraLastOpenedRevision = 0,
     this.seekerReadiness = ZyraWalletReadiness.ready,
     Iterable<String> myZyraConsumedFocusTokens = const [],
@@ -118,6 +119,8 @@ class ZyraPreviewNavigationCheckpoint {
   final int journeyPlaceIndex;
   // Tab attention is independent of individual received-request reads.
   final int myZyraLastOpenedRevision;
+  // Presentation origin only. Never permission to restore a page.
+  final String? myZyraQuickAccessPage;
   // Focus consumption is independent of unread requests and tab attention.
   final Set<String> myZyraConsumedFocusTokens;
   // Fixed-fixture read facts only, isolated by Circle and viewer. This is

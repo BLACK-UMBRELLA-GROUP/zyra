@@ -93,9 +93,9 @@ class ZyraInteractionStyle {
   /// Member-facing haptic choice. Selection remains a native semantic rather
   /// than a fabricated amplitude; persistence only remembers which semantic
   /// the member chose.
-  static bool selectPersonalisationHapticLevel(ZyraHapticLevel level) {
+  static bool saveHapticLevel(ZyraHapticLevel level) {
     final changed = selectHapticLevel(level);
-    ZyraLocalPrefs.setCachedHapticLevelName(level.name);
+    if (changed) unawaited(ZyraLocalPrefs.setCachedHapticLevelName(level.name));
     return changed;
   }
 

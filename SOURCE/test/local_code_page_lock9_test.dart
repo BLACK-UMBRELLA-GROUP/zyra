@@ -64,6 +64,7 @@ void main() {
     ZyraLocalCaptureBuilder? capture,
     GlobalKey<NavigatorState>? navigator,
     double scale = 1,
+    bool disableAnimations = false,
     Size size = const Size(430, 932),
   }) async {
     t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
@@ -76,9 +77,10 @@ void main() {
         navigatorKey: navigator,
         theme: ThemeData.dark(),
         builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(
-            context,
-          ).copyWith(textScaler: TextScaler.linear(scale)),
+          data: MediaQuery.of(context).copyWith(
+            textScaler: TextScaler.linear(scale),
+            disableAnimations: disableAnimations,
+          ),
           child: child!,
         ),
         home: Scaffold(
@@ -417,7 +419,7 @@ void main() {
       int calls = 0;
       await mount(
         t,
-        capture: (context, guard, code, manual) {
+        capture: (context, guard, code, manual, onRunningChanged) {
           canCapture = guard;
           detected = code;
           return const Center(child: Text('fake guarded camera'));
@@ -463,7 +465,7 @@ void main() {
     late ValueChanged<String> detected;
     await mount(
       t,
-      capture: (context, canCapture, onCode, manual) {
+      capture: (context, canCapture, onCode, manual, onRunningChanged) {
         guard = canCapture;
         detected = onCode;
         return const Text('permission camera');
@@ -494,27 +496,34 @@ void main() {
   testWidgets('scan line moves slowly and reduced motion holds its position', (
     t,
   ) async {
-    await mount(t);
+    late ValueChanged<bool> running;
+    Widget capture(
+      BuildContext context,
+      bool Function() guard,
+      ValueChanged<String> code,
+      VoidCallback manual,
+      ValueChanged<bool> notify,
+    ) {
+      running = notify;
+      return const ColoredBox(color: Colors.black);
+    }
+
+    Future<void> start() async {
+      await t.tap(key('local-code-camera'));
+      await t.pump();
+      running(true);
+      await t.pump();
+    }
+
+    await mount(t, capture: capture);
+    await start();
     double top() => t.widget<Positioned>(key('local-code-scan-line')).top!;
     final first = top();
     await t.pump(const Duration(seconds: 1));
     expect(top(), greaterThan(first));
-    await t.pumpWidget(
-      MaterialApp(
-        home: MediaQuery(
-          data: const MediaQueryData(disableAnimations: true),
-          child: Scaffold(
-            body: ZyraLocalCodePage(
-              mode: ZyraLocalCodeContext.scan,
-              ownerKey: 'quiet',
-              canAct: () => true,
-              lookupCode: (_) async => null,
-            ),
-          ),
-        ),
-      ),
-    );
-    await t.pumpAndSettle();
+    await t.pumpWidget(const SizedBox.shrink());
+    await mount(t, owner: 'quiet', capture: capture, disableAnimations: true);
+    await start();
     final quiet = top();
     await t.pump(const Duration(seconds: 1));
     expect(top(), quiet);

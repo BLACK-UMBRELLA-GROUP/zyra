@@ -22,6 +22,7 @@ import 'package:zyra/services/zyra_notification_prefs_service.dart';
 import 'package:zyra/services/zyra_product_telemetry.dart';
 import 'package:zyra/services/zyra_wali_link_service.dart';
 import 'package:zyra/state/app_state.dart';
+import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
 
 const _a = '00000000-0000-4000-8000-000000003411';
@@ -276,6 +277,60 @@ void main() {
     display.dispose();
   });
   tearDownAll(() => Supabase.instance.dispose());
+
+  testWidgets(
+    'actual Settings keeps saved strength and rejects a stale slider after a newer choice or account switch',
+    (tester) async {
+      final original = ZyraInteractionStyle.hapticLevel;
+      addTearDown(() => ZyraInteractionStyle.selectHapticLevel(original));
+      Future<void> remember(ZyraHapticLevel level) async {
+        await _operation(
+          tester,
+          () => ZyraLocalPrefs.setCachedHapticLevelName(level.name),
+          'Save synthetic local haptics',
+        );
+        ZyraInteractionStyle.restoreHapticLevel(
+          ZyraLocalPrefs.cachedHapticLevelName,
+        );
+      }
+
+      await remember(ZyraHapticLevel.strong);
+      await mount(tester, guardian: true);
+      expect(find.text('Strong'), findsOneWidget);
+      await tester.tap(find.text('Haptics'));
+      await _settle(tester);
+      final slider = find.byKey(const ValueKey('zyra-haptic-strength-slider'));
+      final beforeChoice = tester.widget<Slider>(slider);
+      expect(beforeChoice.value, ZyraHapticLevel.strong.index.toDouble());
+      beforeChoice.onChangeStart!(beforeChoice.value);
+      await remember(ZyraHapticLevel.medium);
+      beforeChoice.onChanged!(ZyraHapticLevel.light.index.toDouble());
+      beforeChoice.onChangeEnd!(ZyraHapticLevel.light.index.toDouble());
+      expect(ZyraInteractionStyle.hapticLevel, ZyraHapticLevel.medium);
+      expect(ZyraLocalPrefs.cachedHapticLevelName, 'medium');
+
+      await _settle(tester);
+      final beforeSwitch = tester.widget<Slider>(slider);
+      beforeSwitch.onChangeStart!(beforeSwitch.value);
+      await _operation(tester, () => _session(_b), 'Switch to account B');
+      await remember(ZyraHapticLevel.off);
+      beforeSwitch.onChanged!(ZyraHapticLevel.strong.index.toDouble());
+      beforeSwitch.onChangeEnd!(ZyraHapticLevel.strong.index.toDouble());
+      expect(ZyraInteractionStyle.hapticLevel, ZyraHapticLevel.off);
+      expect(ZyraLocalPrefs.cachedHapticLevelName, 'off');
+      await _operation(tester, () => _session(_a), 'Return to account A');
+      await _flush(tester);
+      final returned = ZyraInteractionStyle.hapticLevel;
+      final stored = ZyraLocalPrefs.cachedHapticLevelName;
+      beforeSwitch.onChangeStart!(beforeSwitch.value);
+      beforeSwitch.onChanged!(ZyraHapticLevel.strong.index.toDouble());
+      beforeSwitch.onChangeEnd!(ZyraHapticLevel.strong.index.toDouble());
+      expect(ZyraInteractionStyle.hapticLevel, returned);
+      expect(ZyraLocalPrefs.cachedHapticLevelName, stored);
+      expect(tester.takeException(), isNull);
+    },
+    timeout: const Timeout(Duration(seconds: 25)),
+  );
 
   for (final guardian in [false, true]) {
     final role = guardian ? 'Guardian' : 'Seeker';

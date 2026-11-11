@@ -649,7 +649,9 @@ class _ZyraQuietDashboardState extends State<ZyraQuietDashboard> {
         'dashboard-nav-scroll-fade-${tab == 0 ? 'now' : 'insights'}',
       ),
       bottom:
-          ZyraNavBarMetrics.restingHeight + ZyraNavBarMetrics.bottomInset + 10,
+          ZyraNavBarMetrics.legacyRestingHeight +
+          ZyraNavBarMetrics.bottomInset +
+          10,
       child: child,
     );
   }

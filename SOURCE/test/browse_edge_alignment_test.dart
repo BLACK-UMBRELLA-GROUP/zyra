@@ -93,35 +93,21 @@ void _target(WidgetTester tester, Finder finder) {
   expect(finder.hitTestable(), findsOneWidget);
 }
 
-void _expectRootBarGeometry(
-  WidgetTester tester,
-  Size size, {
-  required bool expanded,
-}) {
+void _expectRootBarGeometry(WidgetTester tester, Size size) {
   final nav = tester.getRect(_glass());
-  if (expanded) {
-    _edges(nav, size.width, 20);
-    expect(nav.height, closeTo(58, .01));
-  } else {
-    expect(nav.width, closeTo((size.width - 40) * .6, .01));
-    expect(nav.center.dx, closeTo(size.width / 2, .01));
-    expect(nav.height, closeTo(50, .01));
-  }
+  _edges(nav, size.width, 20);
+  expect(nav.height, ZyraNavBarMetrics.height);
   expect(nav.bottom, lessThanOrEqualTo(size.height - 14));
   _target(tester, _touchOwner());
-  if (expanded) {
+  for (var index = 0; index < _navigation(tester).items.length; index++) {
     expect(
-      tester.getRect(_touchOwner()).width / _navigation(tester).items.length,
-      greaterThanOrEqualTo(44),
+      tester.getSize(_key('floating-nav-item-$index')),
+      const Size(44, 44),
     );
   }
 }
 
-void _expectBrowseGeometry(
-  WidgetTester tester,
-  Size size, {
-  required bool expanded,
-}) {
+void _expectBrowseGeometry(WidgetTester tester, Size size) {
   final header = tester.getRect(_key('concept_browse_header'));
   final title = tester.getRect(_key('concept_browse_title'));
   final menu = tester.getRect(_key('concept_browse_menu'));
@@ -171,8 +157,8 @@ void _expectBrowseGeometry(
       .first;
   expect(tester.state<ScrollableState>(position).position.maxScrollExtent, 0);
   final nav = tester.getRect(_glass());
-  _expectRootBarGeometry(tester, size, expanded: expanded);
-  expect(nav.top, greaterThanOrEqualTo(footer.bottom + 8));
+  _expectRootBarGeometry(tester, size);
+  expect(nav.top - footer.bottom, closeTo(16, 1));
   expect(tester.takeException(), isNull);
 }
 
@@ -384,7 +370,7 @@ void main() {
         (tester) async {
           await _mount(tester, size, quiet);
           expect(_person(tester).id, _sara);
-          _expectBrowseGeometry(tester, size, expanded: false);
+          _expectBrowseGeometry(tester, size);
           final card = tester.getRect(_key('concept_browse_portrait_card'));
           final initial = tester.getRect(_glass());
           await _snapshot(
@@ -393,29 +379,29 @@ void main() {
           );
 
           await expandZyraPreviewTabBarIfIdle(tester);
-          _expectBrowseGeometry(tester, size, expanded: true);
+          _expectBrowseGeometry(tester, size);
           expect(_person(tester).id, _sara);
           final held = await _holdBar(tester, _barIcon(tester, 'Profiles'));
-          _expectRootBarGeometry(tester, size, expanded: true);
-          expect(tester.getRect(_glass()).height, greaterThan(initial.height));
+          _expectRootBarGeometry(tester, size);
+          expect(tester.getRect(_glass()), initial);
           expect(_person(tester).id, _sara);
           await held.up();
           await tester.pumpAndSettle();
-          _expectBrowseGeometry(tester, size, expanded: true);
+          _expectBrowseGeometry(tester, size);
           await tester.pump(const Duration(seconds: 3));
           await tester.pumpAndSettle();
-          _expectBrowseGeometry(tester, size, expanded: false);
+          _expectBrowseGeometry(tester, size);
           expect(tester.getRect(_key('concept_browse_portrait_card')), card);
 
           await _press(tester, 'draft_profile_$_sara');
           expect(_browse(tester).invitationSent!(_person(tester)), isTrue);
           await expandZyraPreviewTabBarIfIdle(tester);
-          _expectBrowseGeometry(tester, size, expanded: true);
+          _expectBrowseGeometry(tester, size);
           expect(tester.getRect(_key('concept_browse_portrait_card')), card);
           await _press(tester, 'concept_next_profile');
           expect(_person(tester).id, _aisha);
           await expandZyraPreviewTabBarIfIdle(tester);
-          _expectBrowseGeometry(tester, size, expanded: true);
+          _expectBrowseGeometry(tester, size);
           await _press(tester, 'concept_previous_profile');
           expect(_person(tester).id, _sara);
           expect(_browse(tester).invitationSent!(_person(tester)), isTrue);
@@ -423,6 +409,10 @@ void main() {
           await _press(tester, 'concept_browse_menu');
           expect(_navigation(tester).items.map((item) => item.label), _actions);
           _edges(tester.getRect(_glass()), size.width, 20);
+          expect(
+            tester.getSize(_glass()).height,
+            closeTo(ZyraNavBarMetrics.legacyRestingHeight, .01),
+          );
           expect(tester.getRect(_key('concept_browse_portrait_card')), card);
           expect(_person(tester).id, _sara);
           await _snapshot(

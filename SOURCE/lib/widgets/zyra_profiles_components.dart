@@ -295,7 +295,6 @@ class ZyraProfilesRequestRow extends StatelessWidget {
                         child: ZyraInvitationLabel(
                           label: label,
                           sent: sent,
-                          sentColor: ZyraColors.espresso,
                           style: zyraProfilesActionStyle(
                             color: ZyraColors.espresso,
                           ),
@@ -357,6 +356,7 @@ class ZyraProfilesDots extends StatelessWidget {
     this.canAct,
     this.itemLabel,
     this.targetKey,
+    this.exposeSemanticAction = false,
   });
   final int count, index;
   final Key Function(int) dotKey;
@@ -365,6 +365,7 @@ class ZyraProfilesDots extends StatelessWidget {
   final bool Function()? canAct;
   final String Function(int)? itemLabel;
   final Key Function(int)? targetKey;
+  final bool exposeSemanticAction;
   @override
   Widget build(BuildContext context) {
     final select = onSelected;
@@ -384,51 +385,50 @@ class ZyraProfilesDots extends StatelessWidget {
       return true;
     }
 
-    final dots = Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        for (var i = 0; i < count; i++)
-          Semantics(
-            button: select != null,
-            selected: i == index,
-            label: itemLabel?.call(i) ?? 'Page ${i + 1} of $count',
-            excludeSemantics: true,
-            child: GestureDetector(
-              key: targetKey?.call(i),
-              behavior: HitTestBehavior.opaque,
-              onTap: select == null
-                  ? null
-                  : ZyraTapFeedback.onTap(
-                      context,
-                      () => select(i),
-                      canAct: current,
-                    ),
-              child: Container(
-                height: 24,
-                padding: const EdgeInsets.symmetric(horizontal: 3),
-                child: Center(
-                  child: Transform.translate(
-                    offset: Offset(0, lift),
-                    child: AnimatedContainer(
-                      key: dotKey(i),
-                      duration: MediaQuery.disableAnimationsOf(context)
-                          ? Duration.zero
-                          : const Duration(milliseconds: 180),
-                      width: i == index ? activeWidth : size,
-                      height: size,
-                      decoration: BoxDecoration(
-                        color: i == index
-                            ? ZyraColors.journeyGold
-                            : ZyraColors.ink(.35),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
+    Widget dot(int i) {
+      final action = select == null
+          ? null
+          : ZyraTapFeedback.onTap(context, () => select(i), canAct: current);
+      return Semantics(
+        button: select != null,
+        selected: i == index,
+        label: itemLabel?.call(i) ?? 'Page ${i + 1} of $count',
+        excludeSemantics: true,
+        onTap: exposeSemanticAction ? action : null,
+        child: GestureDetector(
+          key: targetKey?.call(i),
+          behavior: HitTestBehavior.opaque,
+          onTap: action,
+          child: Container(
+            height: 24,
+            padding: const EdgeInsets.symmetric(horizontal: 3),
+            child: Center(
+              child: Transform.translate(
+                offset: Offset(0, lift),
+                child: AnimatedContainer(
+                  key: dotKey(i),
+                  duration: MediaQuery.disableAnimationsOf(context)
+                      ? Duration.zero
+                      : const Duration(milliseconds: 180),
+                  width: i == index ? activeWidth : size,
+                  height: size,
+                  decoration: BoxDecoration(
+                    color: i == index
+                        ? ZyraColors.journeyGold
+                        : ZyraColors.ink(.35),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                 ),
               ),
             ),
           ),
-      ],
+        ),
+      );
+    }
+
+    final dots = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [for (var i = 0; i < count; i++) dot(i)],
     );
     return select == null
         ? IgnorePointer(child: ExcludeSemantics(child: dots))

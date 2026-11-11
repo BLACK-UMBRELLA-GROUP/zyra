@@ -24,6 +24,7 @@ typedef ZyraLocalCaptureBuilder =
       bool Function() canCapture,
       ValueChanged<String> onCode,
       VoidCallback onManualEntry,
+      ValueChanged<bool> onRunningChanged,
     );
 
 /// LOCK 9's shared local presentation. It owns no service, invitation, link,
@@ -60,6 +61,8 @@ class ZyraLocalCodePage extends StatefulWidget {
   State<ZyraLocalCodePage> createState() => _ZyraLocalCodePageState();
 }
 
+enum _CameraMode { off, starting, live, refused }
+
 class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
     with WidgetsBindingObserver {
   final _controller = TextEditingController();
@@ -67,7 +70,9 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
   final _resultKey = GlobalKey();
   ZyraLocalCodeIdentity? _person;
   String? _error;
-  bool _busy = false, _sent = false, _closed = false, _camera = false;
+  bool _busy = false, _sent = false, _closed = false;
+  _CameraMode _camera = _CameraMode.off;
+  bool get _cameraLive => _camera == _CameraMode.live;
   int _revision = 0, _cameraRevision = 0;
   Object? _seenEpoch;
   AppLifecycleState? _lifecycle;
@@ -110,7 +115,8 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
     ++_revision;
     ++_cameraRevision;
     _person = null;
-    _busy = _sent = _camera = false;
+    _busy = _sent = false;
+    _camera = _CameraMode.off;
     _error = null;
   }
 
@@ -152,6 +158,7 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
         // session, while retiring any lookup/result callbacks from before it.
         setState(() {
           ++_revision;
+          if (_cameraLive) _camera = _CameraMode.starting;
           _person = null;
           _busy = _sent = false;
           _error = null;
@@ -259,11 +266,16 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
   }
 
   Widget? _capture() {
-    if (!_camera || widget.captureBuilder == null) return null;
+    if (_camera == _CameraMode.off || widget.captureBuilder == null) {
+      return null;
+    }
     final revision = _cameraRevision;
     final epoch = _epoch();
-    bool current() => _current(epoch) && _camera && revision == _cameraRevision;
-    return widget.captureBuilder!(
+    bool current() =>
+        _current(epoch) &&
+        _camera != _CameraMode.off &&
+        revision == _cameraRevision;
+    final capture = widget.captureBuilder!(
       context,
       current,
       (raw) {
@@ -271,7 +283,7 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
         final entry = ZyraLocalCodeAliases.entry(widget.mode, raw);
         setState(() {
           ++_cameraRevision;
-          _camera = false;
+          _camera = _CameraMode.off;
           _controller.text = entry ?? '';
           _invalidate();
         });
@@ -285,11 +297,17 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
         if (!current()) return;
         setState(() {
           ++_cameraRevision;
-          _camera = false;
+          _camera = _CameraMode.off;
         });
         _focus.requestFocus();
       },
+      (running) {
+        final mode = running ? _CameraMode.live : _CameraMode.refused;
+        if (!current() || mode == _camera) return;
+        setState(() => _camera = mode);
+      },
     );
+    return KeyedSubtree(key: ValueKey(revision), child: capture);
   }
 
   VoidCallback _bound(VoidCallback action) {
@@ -426,17 +444,30 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
                     constraints.maxWidth,
                   ),
                   capture: _capture(),
-                  onTap: widget.captureBuilder == null
+                  live: _cameraLive,
+                  onTap:
+                      widget.captureBuilder == null ||
+                          (_camera != _CameraMode.off &&
+                              _camera != _CameraMode.refused)
                       ? null
                       : _bound(
                           () => setState(() {
                             ++_cameraRevision;
-                            _camera = true;
+                            _camera = _CameraMode.starting;
                           }),
                         ),
                 ),
               ),
             ),
+            if (_cameraLive) ...[
+              const SizedBox(height: 10),
+              Text(
+                'Point at their ZYRA Code',
+                key: const ValueKey('local-code-camera-caption'),
+                textAlign: TextAlign.center,
+                style: ZyraText.subtext(size: 12.5),
+              ),
+            ],
             SizedBox(height: scan ? 17 : 14),
             _CodeDivider(scan ? 'OR ENTER THEIR CODE' : 'OR ENTER IT'),
             const SizedBox(height: 9),
@@ -797,11 +828,13 @@ class _CodeCameraFrame extends StatefulWidget {
   const _CodeCameraFrame({
     required this.side,
     required this.onTap,
+    required this.live,
     this.capture,
   });
   final double side;
   final VoidCallback? onTap;
   final Widget? capture;
+  final bool live;
   @override
   State<_CodeCameraFrame> createState() => _CodeCameraFrameState();
 }
@@ -823,6 +856,7 @@ class _CodeCameraFrameState extends State<_CodeCameraFrame> {
     }
     _timer = Timer.periodic(const Duration(milliseconds: 80), (_) {
       if (!mounted ||
+          !widget.live ||
           !(ModalRoute.of(context)?.isCurrent ?? true) ||
           WidgetsBinding.instance.lifecycleState != AppLifecycleState.resumed) {
         return;
@@ -853,14 +887,19 @@ class _CodeCameraFrameState extends State<_CodeCameraFrame> {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                if (widget.capture != null)
-                  widget.capture!
-                else
-                  Center(
-                    child: Text(
-                      'Point at their ZYRA Code',
-                      textAlign: TextAlign.center,
-                      style: ZyraText.body(size: 12),
+                if (widget.capture != null) widget.capture!,
+                if (!widget.live)
+                  ColoredBox(
+                    color: ZyraColors.avatarWarmSand,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 18),
+                        child: Text(
+                          'Camera is off — enter the code below',
+                          textAlign: TextAlign.center,
+                          style: ZyraText.body(size: 12.5),
+                        ),
+                      ),
                     ),
                   ),
                 IgnorePointer(
@@ -868,7 +907,7 @@ class _CodeCameraFrameState extends State<_CodeCameraFrame> {
                     painter: _CodeCorners(ZyraColors.journeyGold),
                   ),
                 ),
-                if (widget.capture == null)
+                if (widget.live)
                   Positioned(
                     key: const ValueKey('local-code-scan-line'),
                     top:

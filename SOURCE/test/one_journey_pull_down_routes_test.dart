@@ -16,7 +16,6 @@ import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/screens/profile/my_profile_preview_screen.dart';
 import 'package:zyra/screens/profile/seeker_profile_screen.dart';
-import 'package:zyra/screens/settings/personalisation_screen.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_journey_icon.dart';
 import 'package:zyra/widgets/zyra_pull_down_back_scope.dart';
@@ -351,30 +350,30 @@ void main() {
     _rootProfile(tester);
   });
 
-  _case(
-    'Personalisation Back returns to Profile without changing preferences',
-    (tester) async {
-      await _mount(tester);
-      await _tapNav(tester, 'Profile');
-      await _tap(tester, 'concept_personalisation');
-      final page = tester.widget<PersonalisationScreen>(
-        find.byType(PersonalisationScreen),
-      );
-      final gold = page.goldEnabled;
-      final haptic = page.hapticLevel;
-      _oneMemberBack();
-      await _returnHeader(tester);
-      _rootProfile(tester);
-      await _tap(tester, 'concept_personalisation');
-      final reopened = tester.widget<PersonalisationScreen>(
-        find.byType(PersonalisationScreen),
-      );
-      expect(reopened.goldEnabled, gold);
-      expect(reopened.hapticLevel, haptic);
-      await _returnHeader(tester);
-      _rootProfile(tester);
-    },
-  );
+  _case('Settings Back returns to Profile without changing haptic strength', (
+    tester,
+  ) async {
+    await _mount(tester);
+    await _tapNav(tester, 'Profile');
+    await _tap(tester, 'concept_settings');
+    final settings = find.byType(ZyraConceptSettingsPresentation);
+    final haptic = tester
+        .widget<ZyraConceptSettingsPresentation>(settings)
+        .hapticLevel;
+    await _tap(tester, 'concept_settings_haptics');
+    expect(_key('zyra-haptic-strength-slider'), findsOneWidget);
+    _oneMemberBack();
+    await _returnHeader(tester);
+    _rootProfile(tester);
+    await _tap(tester, 'concept_settings');
+    expect(
+      tester.widget<ZyraConceptSettingsPresentation>(settings).hapticLevel,
+      haptic,
+    );
+    expect(_key('zyra-haptic-strength-slider'), findsNothing);
+    await _returnHeader(tester);
+    _rootProfile(tester);
+  });
 
   _case('Review then Membership Back restores both real local parents', (
     tester,

@@ -37,6 +37,9 @@ import 'dart:async';
 import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import '../../theme/zyra_interaction_style.dart';
+import '../../widgets/zyra_haptics_setting.dart';
+import '../../widgets/zyra_tap_feedback.dart';
 import 'package:supabase_flutter/supabase_flutter.dart'
     show AuthChangeEvent, AuthState, Supabase;
 import '../../data/zyra_membership_catalog.dart';
@@ -419,7 +422,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildSettings(BuildContext context) {
     final state = AppState.instance;
 
-    return Scaffold(
+    final page = Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
       appBar: AppBar(
@@ -535,7 +538,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
 
               _Section(
-                title: 'NOTIFICATIONS',
+                title: 'NOTIFICATIONS & HAPTICS',
                 children: [
                   _Row(
                     label: 'Notifications & emails',
@@ -546,6 +549,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             : ZyraPromotionRole.seeker,
                         loadPreferences: widget.loadNotificationPreferences,
                         savePreference: widget.saveNotificationPreference,
+                      ),
+                    ),
+                  ),
+                  ValueListenableBuilder<ZyraHapticLevel>(
+                    valueListenable: ZyraInteractionStyle.hapticLevelSelection,
+                    builder: (_, level, _) => ZyraHapticsSetting(
+                      level: level,
+                      readLevel: () => ZyraInteractionStyle.hapticLevel,
+                      canAct: () => _canNavigate,
+                      onChanged: (next) =>
+                          _canNavigate &&
+                          ZyraInteractionStyle.saveHapticLevel(next),
+                      row: (expanded, onTap) => _Row(
+                        label: 'Haptics',
+                        value: level.label,
+                        expanded: expanded,
+                        onTap: onTap,
                       ),
                     ),
                   ),
@@ -627,6 +647,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       ),
     );
+    return ZyraTapFeedback(
+      level: () => ZyraInteractionStyle.hapticLevel,
+      canAct: () => _canNavigate,
+      child: page,
+    );
   }
 }
 
@@ -668,19 +693,32 @@ class _SummaryCard extends StatelessWidget {
     );
   }
 
-  Widget _line(String k, String v) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 7),
-    child: Row(
-      children: [
-        Expanded(
-          child: Text(
-            k,
-            style: ZyraText.subtext(size: 13, color: ZyraColors.ink(0.54)),
-          ),
+  Widget _line(String k, String v) => Builder(
+    builder: (context) {
+      final label = Text(
+        k,
+        style: ZyraText.subtext(size: 13, color: ZyraColors.ink(0.54)),
+      );
+      final value = Text(
+        v,
+        textAlign: TextAlign.end,
+        style: ZyraText.body(size: 14, color: Colors.white),
+      );
+      final larger = MediaQuery.textScalerOf(context).scale(14) > 14;
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 7),
+        child: Row(
+          children: [
+            Expanded(child: label),
+            if (larger) ...[
+              const SizedBox(width: 8),
+              Flexible(child: value),
+            ] else
+              value,
+          ],
         ),
-        Text(v, style: ZyraText.body(size: 14, color: Colors.white)),
-      ],
-    ),
+      );
+    },
   );
 
   Widget _divider() => Container(
@@ -803,15 +841,21 @@ class _Row extends StatelessWidget {
   final String label;
   final String? value;
   final VoidCallback onTap;
+  final bool expanded;
 
-  const _Row({required this.label, required this.onTap, this.value});
+  const _Row({
+    required this.label,
+    required this.onTap,
+    this.value,
+    this.expanded = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: onTap,
+        onTap: ZyraTapFeedback.onTap(context, onTap),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 15),
           child: Row(
@@ -837,7 +881,7 @@ class _Row extends StatelessWidget {
                 SizedBox(width: 8),
               ],
               Icon(
-                Icons.chevron_right,
+                expanded ? Icons.expand_more : Icons.chevron_right,
                 size: 18,
                 color: ZyraColors.foreground.withValues(alpha: 0.3),
               ),

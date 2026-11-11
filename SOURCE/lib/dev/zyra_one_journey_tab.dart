@@ -1,3 +1,4 @@
+import '../widgets/floating_nav_bar.dart';
 import '../widgets/zyra_state_widgets.dart';
 import '../widgets/zyra_floating_surface.dart';
 import 'dart:math' as math;
@@ -10,6 +11,11 @@ import '../theme/zyra_text.dart';
 import '../widgets/zyra_journey_icon.dart';
 import '../widgets/zyra_profiles_components.dart';
 import '../widgets/zyra_tap_feedback.dart';
+
+ScrollPhysics _fixedCardPhysics(BuildContext context) =>
+    MediaQuery.textScalerOf(context).scale(14) > 14
+    ? const ClampingScrollPhysics()
+    : const NeverScrollableScrollPhysics();
 
 /// LOCK 13 V2 display facts. Ordering, stage and timer authority stay with the
 /// local Journey owner; this widget never reads or changes a relationship.
@@ -94,6 +100,7 @@ class ZyraJourneyPhotoCard extends StatelessWidget {
             ),
             ZyraShadowScrollView(
               key: scrollKey,
+              physics: _fixedCardPhysics(context),
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: Padding(
@@ -206,50 +213,58 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
     ),
   );
 
-  Widget _upsell(bool Function() current) => _DashedJourneySurface(
-    key: const ValueKey('journey_tab_upsell'),
-    child: ZyraShadowScrollView(
-      key: const ValueKey('journey_tab_upsell_scroll'),
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(
-            Icons.lock_outline,
-            size: 20,
-            color: ZyraColors.journeyGold,
+  Widget _upsell(BuildContext context, bool Function() current) =>
+      _DashedJourneySurface(
+        key: const ValueKey('journey_tab_upsell'),
+        child: ZyraShadowScrollView(
+          key: const ValueKey('journey_tab_upsell_scroll'),
+          physics: _fixedCardPhysics(context),
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.lock_outline,
+                size: 20,
+                color: ZyraColors.journeyGold,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'More Journeys come with Seeker One',
+                textAlign: TextAlign.center,
+                style: ZyraText.body(size: 14),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Up to 3 at once.',
+                textAlign: TextAlign.center,
+                style: ZyraText.subtext(size: 12, color: ZyraColors.ink(.65)),
+              ),
+              const SizedBox(height: 8),
+              _button(
+                key: 'journey_tab_plans',
+                label: 'See Seeker One ›',
+                action: widget.onPlans,
+                current: current,
+              ),
+            ],
           ),
-          const SizedBox(height: 12),
-          Text(
-            'More Journeys come with Seeker One',
-            textAlign: TextAlign.center,
-            style: ZyraText.body(size: 14),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'Up to 3 at once.',
-            textAlign: TextAlign.center,
-            style: ZyraText.subtext(size: 12, color: ZyraColors.ink(.65)),
-          ),
-          const SizedBox(height: 8),
-          _button(
-            key: 'journey_tab_plans',
-            label: 'See Seeker One ›',
-            action: widget.onPlans,
-            current: current,
-          ),
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 
   Widget _empty(bool Function() current) => LayoutBuilder(
     builder: (context, constraints) => ZyraShadowScrollView(
       key: const ValueKey('journey_tab_empty_scroll'),
+      physics: _fixedCardPhysics(context),
       child: ConstrainedBox(
         constraints: BoxConstraints(minHeight: constraints.maxHeight),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          // Symmetric padding has no visible effect while the group is
+          // centered. When Larger Text really overflows, the last item
+          // must reach the viewport end without another trailing gap.
+          padding: MediaQuery.textScalerOf(context).scale(14) > 14
+              ? EdgeInsets.zero
+              : const EdgeInsets.symmetric(vertical: 16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -271,7 +286,7 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
               ),
               if (widget.capacity == 1) ...[
                 const SizedBox(height: 14),
-                _upsell(current),
+                _upsell(context, current),
               ],
             ],
           ),
@@ -284,6 +299,7 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
     child: LayoutBuilder(
       builder: (context, constraints) => ZyraShadowScrollView(
         key: const ValueKey('journey_tab_free_scroll'),
+        physics: _fixedCardPhysics(context),
         child: ConstrainedBox(
           constraints: BoxConstraints(minHeight: constraints.maxHeight),
           child: Padding(
@@ -438,7 +454,12 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
         builder: (context) => SafeArea(
           bottom: false,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 98),
+            padding: EdgeInsets.fromLTRB(
+              20,
+              16,
+              20,
+              ZyraNavBarMetrics.contentBottomClearance(context),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -488,6 +509,9 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
                       ),
                     ),
                   ),
+                  // The centered 6 pt dot leaves 9 pt inside its touch slot.
+                  // The centered slot above already contributes 2 pt.
+                  const SizedBox(height: 1),
                   Expanded(
                     child: GestureDetector(
                       key: const ValueKey('journey_tab_card'),
@@ -544,15 +568,16 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
                   ),
                   if (widget.capacity == 1) ...[
                     const SizedBox(height: 12),
-                    LayoutBuilder(
-                      builder: (context, constraints) => SizedBox(
+                    if (MediaQuery.textScalerOf(context).scale(14) > 14)
+                      SizedBox(
                         height: math.min(
                           144.0,
                           MediaQuery.sizeOf(context).height * .2,
                         ),
-                        child: _upsell(current),
-                      ),
-                    ),
+                        child: _upsell(context, current),
+                      )
+                    else
+                      _upsell(context, current),
                   ],
                 ],
               ],

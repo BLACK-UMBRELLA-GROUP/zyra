@@ -9,7 +9,8 @@ import 'dart:ui' show PlatformDispatcher;
 import 'package:flutter/foundation.dart'
     show TargetPlatform, defaultTargetPlatform, kIsWeb, kReleaseMode;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
+import 'package:flutter/services.dart'
+    show DeviceOrientation, SystemChrome, SystemUiOverlayStyle;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'config/supabase_config.dart';
@@ -205,12 +206,8 @@ Future<void> _restoreAccountPresentation() async {
     await ZyraImageCache.init();
     if (!stillCurrent()) continue;
     ZyraColors.restoreCurrentAppPalette();
-    // Member font choices are retired: ordinary app text stays Poppins.
-    // Discard any account-bound legacy choice instead of reviving it later.
+    // Member font choices are retired. Leave stored values untouched.
     ZyraText.restoreAppFont(null);
-    if (ZyraLocalPrefs.cachedAppFontName != null) {
-      await ZyraLocalPrefs.setCachedAppFontName(null);
-    }
     ZyraInteractionStyle.restoreHapticLevel(
       ZyraLocalPrefs.cachedHapticLevelName,
     );
@@ -337,6 +334,7 @@ class ZyraApp extends StatelessWidget {
           // BOTH are required. Zeroing the elevation alone leaves the tint
           // colour applied, and setting the colour alone leaves the shadow.
           appBarTheme: AppBarTheme(
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
             backgroundColor: Colors.transparent,
             surfaceTintColor: Colors.transparent,
             scrolledUnderElevation: 0,
@@ -543,22 +541,25 @@ class ZyraApp extends StatelessWidget {
         //      behind a lock would disclose whose account it is before anyone
         //      authenticated — a small thing that defeats a real part of the
         //      point.
-        builder: (context, child) => ZyraKeyboardDismissScope(
-          child: ZyraAppLockGate(
-            child: ZyraAppGoldPreviewHost(
-              child: ListenableBuilder(
-                listenable: AppState.instance,
-                builder: (context, _) => AnimatedContainer(
-                  duration: const Duration(milliseconds: 260),
-                  curve: Curves.easeOut,
-                  decoration: ZyraAppGoldDecoration(
-                    gradient: ZyraColors.genderGradient(
-                      AppState.instance.gender,
+        builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.dark,
+          child: ZyraKeyboardDismissScope(
+            child: ZyraAppLockGate(
+              child: ZyraAppGoldPreviewHost(
+                child: ListenableBuilder(
+                  listenable: AppState.instance,
+                  builder: (context, _) => AnimatedContainer(
+                    duration: const Duration(milliseconds: 260),
+                    curve: Curves.easeOut,
+                    decoration: ZyraAppGoldDecoration(
+                      gradient: ZyraColors.genderGradient(
+                        AppState.instance.gender,
+                      ),
                     ),
-                  ),
-                  child: ZyraAccountSessionHost(
-                    navigatorKey: zyraNavigatorKey,
-                    child: child ?? const SizedBox.shrink(),
+                    child: ZyraAccountSessionHost(
+                      navigatorKey: zyraNavigatorKey,
+                      child: child ?? const SizedBox.shrink(),
+                    ),
                   ),
                 ),
               ),

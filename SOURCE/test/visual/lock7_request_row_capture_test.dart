@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import '../support/received_request_fixture.dart';
 
 import 'baseline_capture_support.dart';
 
@@ -50,7 +51,7 @@ void main() {
           evidenceRoot: _evidence,
           flatOutput: true,
         );
-        final model = ViewRequestDraftModel(capacity: 3, clock: _clock);
+        final model = ReceivedRequestFixture(capacity: 3, clock: _clock);
         if (state == 'first_profile') {
           // Real local decline leaves Amira discoverable, with no active request.
           expect(model.declineReceived(id), isTrue);

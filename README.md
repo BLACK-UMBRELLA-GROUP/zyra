@@ -20,6 +20,12 @@ when pressed. Contact support opens Help & Support with the error reference.
 The empty Guardian tab offers Add a Guardian. Browse gives one haptic tick for
 an accepted photo action, including the accessible Next page control.
 
+In the Founder preview, swipe the Guardian card to change people and use
+Details or Journey access to switch sides. The full tab bar stays visible on
+My ZYRA quick access pages; a sideways swipe on My ZYRA changes the Needs you
+item. New activity badges reflect arrivals. Haptics is in Settings for both
+roles.
+
 ## Built with
 
 - Flutter and Dart. The current checked toolchain is Flutter 3.44.2; `SOURCE/pubspec.yaml` requires Dart `^3.12.2`.

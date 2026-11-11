@@ -2,6 +2,7 @@
 // panel or replacement test UI is built. Member navigation remains physical.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zyra/dev/zyra_guardian_circle_preview.dart';
 import 'package:zyra/data/zyra_membership_catalog.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_access_store.dart';
 import 'package:zyra/dev/zyra_draft_timeline_preview.dart';
@@ -17,20 +18,27 @@ import 'package:zyra/widgets/floating_nav_bar.dart';
 import 'package:zyra/widgets/zyra_browse_next_photo_motion.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
+import 'received_request_fixture.dart';
+
 /// Each mounted shell receives its own fixture through its constructor.
 /// Commands are accepted only while that exact shell owns the current route.
 class ZyraShellTestFixture extends ChangeNotifier {
   ZyraShellTestFixture({
     ViewRequestDraftModel? model,
     DateTime Function()? clock,
+    bool receivedRequest = false,
+    ZyraGuardianTabsSnapshot? guardianTabs,
     ZyraSubscriptionWalletDraft? wallet,
     ZyraDraftCompatibilityAccessStore? compatibilityAccess,
     ZyraMyZyraActivityExample? activityExample,
+    ZyraCirclePreviewArrivals? circleArrivalsFor,
     ZyraMembershipPaymentHistory membershipPaymentHistory =
         ZyraMembershipPaymentHistory.paidBefore,
   }) : _model =
            model ??
-           (clock == null
+           (receivedRequest
+               ? ReceivedRequestFixture(capacity: 3, clock: clock)
+               : clock == null
                ? null
                : ViewRequestDraftModel(capacity: 3, clock: clock)),
        _compatibilityAccess = compatibilityAccess,
@@ -44,6 +52,8 @@ class ZyraShellTestFixture extends ChangeNotifier {
       membershipPaymentHistory: membershipPaymentHistory,
       activityExample: activityExample,
       timeline: timelineFor,
+      circleArrivalsFor: circleArrivalsFor,
+      guardianTabs: guardianTabs,
       readState: _consumeState,
       onAttached: (isCurrent) => _isCurrent = isCurrent,
       onCaptureGuardAttached: (capture) => _captureGuard = capture,
@@ -61,6 +71,8 @@ class ZyraShellTestFixture extends ChangeNotifier {
       },
     );
   }
+
+  void circleArrivalsChanged() => notifyListeners();
 
   ViewRequestDraftModel? _model;
   ViewRequestDraftModel get model => _model!;
@@ -334,10 +346,8 @@ ZyraShellTestFixture zyraShellFixtureFor(WidgetTester tester) {
   return fixture.changes! as ZyraShellTestFixture;
 }
 
-/// Physical root-tab navigation is two deliberate taps when LOCK 6 is idle.
-/// Expand through the real bar before callers measure their destination; the
-/// moving small icons are not destination-sized touch targets. Legacy/action
-/// bars have no compact surface and are deliberately left alone.
+/// Existing physical-nav test callers share this readiness check. LOCK 6 V4
+/// already shows full-size targets, so the driver sends no preparatory tap.
 Future<void> expandZyraPreviewTabBarIfIdle(WidgetTester tester) async {
   final surface = find.byKey(const ValueKey('compact-nav-surface'));
   if (surface.evaluate().isEmpty) return;
@@ -351,23 +361,11 @@ Future<void> expandZyraPreviewTabBarIfIdle(WidgetTester tester) async {
       surface.hitTestable().evaluate().isEmpty) {
     return;
   }
-  final viewport = MediaQuery.sizeOf(context).width;
-  final fullWidth =
-      viewport -
+  final width =
+      MediaQuery.sizeOf(context).width -
       2 * (navigation.contentEdgeInset ?? ZyraNavBarMetrics.sideInset);
-  if (tester.getSize(surface).width >
-          fullWidth * (navigation.compactV2 ? .6 : .4) + .01 &&
-      tester.getSize(surface).width < fullWidth - .01) {
-    await tester.pump(const Duration(milliseconds: 300));
-  }
-  if (tester.getSize(surface).width >= fullWidth - .01) return;
-  final selected = navigation.currentIndex;
-  await tester.tapAt(tester.getCenter(surface));
-  await tester.pump();
-  await tester.pump(const Duration(milliseconds: 300));
-  expect(tester.takeException(), isNull);
-  expect(tester.getSize(surface).width, closeTo(fullWidth, .01));
-  expect(tester.widget<ZyraShellNavigation>(root).currentIndex, selected);
+  expect(tester.getSize(surface).width, closeTo(width, .01));
+  expect(tester.getSize(surface).height, ZyraNavBarMetrics.height);
 }
 
 /// Finder-based legacy helpers can configure removed choices without creating

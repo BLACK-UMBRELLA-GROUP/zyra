@@ -23,7 +23,7 @@ import '../../widgets/zyra_one_profile_avatar.dart';
 import '../../widgets/zyra_profile_membership_row.dart';
 import '../onboarding/account_path_overview_screen.dart';
 import '../settings/help_support_screen.dart';
-import '../settings/personalisation_screen.dart';
+import '../../widgets/zyra_tap_feedback.dart';
 import '../settings/settings_screen.dart';
 import '../subscription/upgrade_screen.dart';
 import '../welcome_screen.dart';
@@ -391,20 +391,6 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
               ),
             ),
             const SizedBox(height: 24),
-            Text(
-              'PERSONALISATION',
-              style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
-            ),
-            const SizedBox(height: 6),
-            _SettingsRow(
-              label: 'Appearance & haptics',
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const PersonalisationScreen(),
-                ),
-              ),
-            ),
-            const SizedBox(height: 14),
             _SettingsRow(
               label: 'Settings',
               onTap: () => Navigator.of(context).push(
@@ -467,7 +453,7 @@ class _SettingsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: ZyraTapFeedback.onTap(context, onTap),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(

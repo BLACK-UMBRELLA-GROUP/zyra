@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import '../support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
@@ -24,13 +25,13 @@ const _yusuf = 'draft-guardian-yusuf';
 
 DateTime _clock() => DateTime.utc(2026, 10, 29, 12);
 ViewRequestDraftModel _seeker({bool active = false}) {
-  final model = ViewRequestDraftModel(capacity: 1, clock: _clock);
+  final model = ReceivedRequestFixture(capacity: 1, clock: _clock);
   if (active) expect(model.seedJourneys(1), isTrue);
   return model;
 }
 
 ViewRequestDraftModel _guardian({bool active = true}) {
-  final model = ViewRequestDraftModel(capacity: 3, clock: _clock);
+  final model = ReceivedRequestFixture(capacity: 3, clock: _clock);
   if (active) expect(model.seedJourneys(1), isTrue);
   expect(
     model.setSampleGuardianMembership(_hassan, DraftGuardianMembership.basic),

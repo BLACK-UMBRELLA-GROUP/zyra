@@ -212,6 +212,7 @@ Widget _app({
   bool reduce = true,
   VoidCallback? onBeforeOpen,
   int? generation,
+  bool guardianReviewFixture = false,
 }) => MaterialApp(
   navigatorObservers: [ZyraPreviewRouteObserver()],
   debugShowCheckedModeBanner: false,
@@ -228,7 +229,12 @@ Widget _app({
   home: launcher
       ? const Scaffold(body: SizedBox(key: ValueKey('code-fixture-root')))
       : ViewRequestDraftScreen(
-          fixture: ZyraShellTestFixture().fixture,
+          fixture: ZyraShellTestFixture(
+            receivedRequest: true,
+            guardianTabs: guardianReviewFixture
+                ? const ZyraGuardianTabsSnapshot()
+                : null,
+          ).fixture,
           ownerGeneration: generation ?? ZyraAccountState.generation,
           ownerId: ZyraAccountState.userId,
         ),
@@ -247,7 +253,7 @@ Future<void> _openCodeFixture(
       builder: (_) => ViewRequestDraftScreen(
         ownerGeneration: generation,
         ownerId: userId,
-        fixture: ZyraShellTestFixture().fixture,
+        fixture: ZyraShellTestFixture(receivedRequest: true).fixture,
       ),
     ),
   );
@@ -264,6 +270,7 @@ Future<void> _mount(
   VoidCallback? onBeforeOpen,
   int? generation,
   Size size = const Size(390, 844),
+  bool guardianReviewFixture = false,
 }) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
@@ -277,6 +284,7 @@ Future<void> _mount(
       reduce: reduce,
       onBeforeOpen: onBeforeOpen,
       generation: generation,
+      guardianReviewFixture: guardianReviewFixture,
     ),
   );
   await tester.pumpAndSettle();
@@ -518,9 +526,17 @@ Future<void> _press(WidgetTester tester, String id) async {
       tester.getRect(target).bottom >
           tester.view.physicalSize.height / tester.view.devicePixelRatio -
               34 -
-              ZyraNavBarMetrics.restingHeight -
+              ZyraNavBarMetrics.legacyRestingHeight -
               ZyraNavBarMetrics.bottomInset) {
     await Scrollable.ensureVisible(tester.element(target), alignment: .5);
+    await tester.pumpAndSettle();
+  }
+  final requestControl =
+      id.startsWith('concept_request_') && id.endsWith('_header') ||
+      id.startsWith('draft_recipient_');
+  final bar = find.byType(FloatingNavBar);
+  if (requestControl && bar.evaluate().length == 1) {
+    await Scrollable.ensureVisible(tester.element(target), alignment: .12);
     await tester.pumpAndSettle();
   }
   // At large text a legitimate button can be taller than the scroll viewport.
@@ -536,6 +552,20 @@ Future<void> _press(WidgetTester tester, String id) async {
       .evaluate()
       .isNotEmpty) {
     visible = visible.intersect(tester.getRect(_key('draft_scroll')));
+  }
+  if (requestControl && bar.evaluate().length == 1) {
+    final size = tester.view.physicalSize / tester.view.devicePixelRatio;
+    visible = visible.intersect(
+      Rect.fromLTRB(0, 0, size.width, tester.getRect(bar).top),
+    );
+    for (final viewport
+        in find
+            .ancestor(of: target, matching: find.byType(Scrollable))
+            .evaluate()) {
+      visible = visible.intersect(
+        tester.getRect(find.byWidget(viewport.widget)),
+      );
+    }
   }
   expect(visible.width, greaterThan(0));
   expect(visible.height, greaterThan(0));
@@ -641,6 +671,35 @@ Future<void> _nav(WidgetTester tester, int index) async {
   expect(failure, isNull, reason: 'Root navigation destination $index');
 }
 
+Future<void> _openHaptics(WidgetTester tester) async {
+  expect(_key('concept_personalisation'), findsNothing);
+  await _press(tester, 'concept_settings');
+  await _press(tester, 'concept_settings_haptics');
+  expect(_key('zyra-haptic-strength-slider'), findsOneWidget);
+}
+
+Future<void> _changeLocalHaptics(WidgetTester tester) async {
+  await _openHaptics(tester);
+  final slider = _key('zyra-haptic-strength-slider');
+  final control = tester.widget<Slider>(slider);
+  final next = control.value == 4 ? 1.0 : 4.0;
+  control.onChangeStart!(control.value);
+  control.onChanged!(next);
+  control.onChangeEnd!(next);
+  await tester.pumpAndSettle();
+  expect(tester.widget<Slider>(slider).value, next);
+}
+
+Offset _visibleTabBodyPoint(WidgetTester tester, Finder target) {
+  final body = tester.getRect(target);
+  final bar = tester.getRect(_key('compact-nav-surface'));
+  final screenWidth =
+      tester.view.physicalSize.width / tester.view.devicePixelRatio;
+  final visible = body.intersect(Rect.fromLTRB(0, 0, screenWidth, bar.top));
+  expect(visible.isEmpty, isFalse, reason: 'The reading area is above tabs.');
+  return visible.center;
+}
+
 Future<void> _tapRootNav(WidgetTester tester, String label) async {
   await expandZyraPreviewTabBarIfIdle(tester);
   final navigation = tester.widget<ZyraShellNavigation>(
@@ -716,9 +775,9 @@ ZyraGuardianCardJourney _guardianJourney(
 Future<void> _openAdditionalGuardian(WidgetTester tester) async {
   if (_key(_guardianView).evaluate().isNotEmpty) return;
   if (_key(_guardianHistory).evaluate().isEmpty) {
-    await _press(tester, 'guardian-card-next');
+    await _press(tester, 'guardian-card-dot-target-1');
   }
-  await _press(tester, 'guardian-card-center');
+  await _press(tester, 'guardian-card-access');
 }
 
 Future<void> _filterPage(WidgetTester tester, int target) async {
@@ -852,7 +911,7 @@ Future<void> _confirmGuardianMain(
   required bool remove,
 }) async {
   final base = remove ? 'guardian-clear-main' : 'guardian-make-main';
-  await _press(tester, 'guardian-card-center');
+  await _press(tester, 'guardian-card-access');
   await _press(tester, base);
   final confirm = find.descendant(
     of: _key('$base-confirmation'),
@@ -1159,7 +1218,6 @@ void main() {
 
   setUpAll(() async {
     WidgetController.hitTestWarningShouldBeFatal = true;
-    if (!_useRealFonts) return;
     final reading = FontLoader('PoppinsViewRequestDraftAudit');
     for (final weight in [
       'ExtraLight',
@@ -1177,6 +1235,8 @@ void main() {
         ),
       );
     }
+    await reading.load();
+    if (!_useRealFonts) return;
     final wordmark = FontLoader('SyneViewRequestDraftAudit')
       ..addFont(
         Future.value(
@@ -1187,7 +1247,7 @@ void main() {
       );
     final icons = FontLoader('MaterialIcons')
       ..addFont(rootBundle.load('fonts/MaterialIcons-Regular.otf'));
-    await Future.wait([reading.load(), wordmark.load(), icons.load()]);
+    await Future.wait([wordmark.load(), icons.load()]);
   });
 
   tearDownAll(() {
@@ -1400,7 +1460,7 @@ void main() {
         if (guardian == _yusuf) {
           await _openAdditionalGuardian(tester);
         } else {
-          await _press(tester, 'guardian-card-center');
+          await _press(tester, 'guardian-card-access');
         }
         final stale = _guardianCards(tester).onPermission;
         await _press(tester, 'draft_rules');
@@ -1409,9 +1469,9 @@ void main() {
         final view = _key('guardian-card-view-$guardian-$_fixture');
         if (view.evaluate().isEmpty) {
           if (_key('guardian-card-history-$guardian').evaluate().isEmpty) {
-            await _press(tester, 'guardian-card-next');
+            await _press(tester, 'guardian-card-dot-target-1');
           }
-          await _press(tester, 'guardian-card-center');
+          await _press(tester, 'guardian-card-access');
         }
         expect(view, findsOneWidget);
         expect(
@@ -1947,6 +2007,13 @@ void main() {
                   _key('concept_activity_requests'),
                 );
 
+            void expectQuickTabBar() {
+              final nav = find.byType(ZyraShellNavigation);
+              expect(nav, findsOneWidget);
+              expect(tester.widget<ZyraShellNavigation>(nav).currentIndex, 2);
+              expect(tester.getSize(_key('compact-nav-surface')).height, 58);
+            }
+
             void expectRequestPage(int index) {
               expect(pager, findsOneWidget);
               final page = tester.widget<PageView>(pager);
@@ -1968,7 +2035,7 @@ void main() {
               expect(_key('concept_activity_introductions'), findsNothing);
               expect(_key('concept_activity_back'), findsNothing);
               expect(_key('concept_pull_down_back_scope'), findsOneWidget);
-              expect(find.byType(ZyraShellNavigation), findsNothing);
+              expectQuickTabBar();
               expect(find.byType(ZyraFocusDashboard), findsNothing);
             }
 
@@ -1996,6 +2063,7 @@ void main() {
                 findsOneWidget,
               );
               expect(_key('concept_pull_down_back_scope'), findsOneWidget);
+              expectQuickTabBar();
             }
 
             Future<void> backToMyZyra() async {
@@ -2031,8 +2099,8 @@ void main() {
             // Actual body swipes page Received/Sent in both directions.
             for (final index in [1, 0]) {
               final current = tester.widget<PageView>(pager).controller!.page!;
-              await tester.drag(
-                pager,
+              await tester.dragFrom(
+                _visibleTabBodyPoint(tester, pager),
                 Offset(
                   (index > current ? -1.0 : 1.0) *
                       tester.getSize(pager).width *
@@ -2045,8 +2113,8 @@ void main() {
             }
             // Past follows Sent; Introductions remains its own separate destination.
             await _press(tester, 'draft_requests_1');
-            await tester.drag(
-              pager,
+            await tester.dragFrom(
+              _visibleTabBodyPoint(tester, pager),
               Offset(-tester.getSize(pager).width * .8, 0),
             );
             await tester.pumpAndSettle();
@@ -2091,8 +2159,11 @@ void main() {
               'requests_introductions_$captureSuffix',
               requests: true,
             );
-            await tester.drag(
-              find.byKey(const PageStorageKey('concept_connections_page_0')),
+            await tester.dragFrom(
+              _visibleTabBodyPoint(
+                tester,
+                find.byKey(const PageStorageKey('concept_connections_page_0')),
+              ),
               const Offset(-200, 0),
             );
             await tester.pumpAndSettle();
@@ -2140,14 +2211,20 @@ void main() {
           ScrollPosition position() =>
               tester.state<ScrollableState>(scrollable).position;
           expect(position().maxScrollExtent, greaterThan(0));
-          await tester.drag(list, const Offset(0, -260));
+          await tester.dragFrom(
+            _visibleTabBodyPoint(tester, list),
+            const Offset(0, -260),
+          );
           await tester.pumpAndSettle();
           expect(position().pixels, greaterThan(0));
           // This gesture begins below the top. Even a deliberate downward pull
           // must read/scroll the card, not turn an in-flight return to the top
           // into dismissal of the entire Requests page.
           final belowTop = position().pixels;
-          await tester.drag(list, const Offset(0, 180));
+          await tester.dragFrom(
+            _visibleTabBodyPoint(tester, list),
+            const Offset(0, 180),
+          );
           await tester.pumpAndSettle();
           expect(_key('concept_activity_requests'), findsOneWidget);
           expect(_selector(tester, _requestLabels).selectedIndex, 0);
@@ -2158,7 +2235,10 @@ void main() {
             position().pixels > .5 && attempt < 8;
             attempt++
           ) {
-            await tester.drag(list, const Offset(0, 220));
+            await tester.dragFrom(
+              _visibleTabBodyPoint(tester, list),
+              const Offset(0, 220),
+            );
             await tester.pumpAndSettle();
             expect(_key('concept_activity_requests'), findsOneWidget);
           }
@@ -2189,6 +2269,7 @@ void main() {
           await _press(tester, 'concept_request_${_fixture}_header');
           await _press(tester, 'concept_request_profile_$_fixture');
           expect(find.byType(ZyraOneJourneyBrowsePresentation), findsOneWidget);
+          expect(find.byType(ZyraShellNavigation), findsNothing);
           expect(_key('concept_activity_requests'), findsNothing);
           final staleLeafBack = tester
               .widget<Semantics>(_returnSemantics())
@@ -2208,7 +2289,10 @@ void main() {
           );
           expect(_key('concept_request_${_fixture}_header'), findsOneWidget);
           expect(find.byType(ZyraFocusDashboard), findsNothing);
-          expect(find.byType(ZyraShellNavigation), findsNothing);
+          final nav = find.byType(ZyraShellNavigation);
+          expect(nav, findsOneWidget);
+          expect(tester.widget<ZyraShellNavigation>(nav).currentIndex, 2);
+          expect(tester.getSize(_key('compact-nav-surface')).height, 58);
           staleSource(0);
           staleLeafBack();
           await tester.pumpAndSettle();
@@ -3789,7 +3873,7 @@ void main() {
   testWidgets(
     'shared account widgets and My ZYRA keep sample destinations local',
     (tester) async {
-      await _mount(tester);
+      await _mount(tester, guardianReviewFixture: true);
       await _nav(tester, 4);
       // LOCK 21, PROFILE_TAB/MASTERS/p01,p04: 104 pt account head.
       expect(
@@ -4133,9 +4217,7 @@ void main() {
         await _press(tester, 'concept_settings_notificationSettings');
         expect(find.text('Notifications & emails'), findsWidgets);
         await _nav(tester, 4);
-        await _press(tester, 'concept_personalisation');
-        expect(find.textContaining('Personalisation'), findsWidgets);
-        await _press(tester, 'personalisation_gold_toggle');
+        await _changeLocalHaptics(tester);
         await _nav(tester, 4);
         await _press(tester, 'concept_membership');
         expect(find.text('Membership'), findsWidgets);
@@ -4159,8 +4241,7 @@ void main() {
           await _nav(tester, index);
           expect(find.byType(ZyraShellNavigation), findsOneWidget);
         }
-        await _press(tester, 'concept_personalisation');
-        await _press(tester, 'personalisation_gold_toggle');
+        await _changeLocalHaptics(tester);
         await tester.runAsync(
           () => ZyraLocalPrefs.bindAccount('synthetic-member-owner'),
         );
@@ -4433,7 +4514,7 @@ void main() {
         await _mount(tester);
         await _fillJourney(tester);
         await _nav(tester, 3);
-        await _press(tester, 'guardian-card-center');
+        await _press(tester, 'guardian-card-access');
         final before = _guardianCards(tester);
         final fixture = zyraShellFixtureFor(tester);
         final model = fixture.model;
@@ -4490,35 +4571,32 @@ void main() {
     },
   );
 
-  testWidgets('Guardian Seekers gold uses only the local shell canvas', (
-    tester,
-  ) async {
-    final memberGold = ZyraAppGoldStyle.instance.enabled;
-    await _mount(tester);
-    await _nav(tester, 4);
-    await _press(tester, 'concept_personalisation');
-    final before = tester
-        .widget<Switch>(_key('personalisation_gold_toggle'))
-        .value;
-    await _press(tester, 'personalisation_gold_toggle');
-    await _nav(tester, 4);
-    await _press(tester, 'draft_role_guardian');
-    await _nav(tester, 2);
-    final roster = tester.widget<ZyraGuardianTabsPresentation>(
-      find.byType(ZyraGuardianTabsPresentation),
-    );
-    expect(roster.page, 'seekers');
-    final localPaint = tester
-        .widgetList<CustomPaint>(find.byType(CustomPaint))
-        .where(
-          (paint) =>
-              paint.painter.runtimeType.toString() ==
-              'ZyraOnboardingGoldPainter',
-        );
-    expect(localPaint.length, before ? 0 : 1);
-    expect(ZyraAppGoldStyle.instance.enabled, memberGold);
-    expect(tester.takeException(), isNull);
-  });
+  testWidgets(
+    'Guardian Seekers ignores optional Gold and keeps the local roster',
+    (tester) async {
+      final memberGold = ZyraAppGoldStyle.instance.enabled;
+      await _mount(tester);
+      await _nav(tester, 4);
+      expect(_key('concept_personalisation'), findsNothing);
+      expect(ZyraAppGoldStyle.instance.enabled, isFalse);
+      await _press(tester, 'draft_role_guardian');
+      await _nav(tester, 2);
+      final roster = tester.widget<ZyraGuardianTabsPresentation>(
+        find.byType(ZyraGuardianTabsPresentation),
+      );
+      expect(roster.page, 'seekers');
+      final localPaint = tester
+          .widgetList<CustomPaint>(find.byType(CustomPaint))
+          .where(
+            (paint) =>
+                paint.painter.runtimeType.toString() ==
+                'ZyraOnboardingGoldPainter',
+          );
+      expect(localPaint, isEmpty);
+      expect(ZyraAppGoldStyle.instance.enabled, memberGold);
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   // Q35 (R2): the live access side enforces the View → Chat dependency.
   testWidgets('Guardian permission choices stay linked and chat needs view', (
@@ -4539,7 +4617,7 @@ void main() {
     expect(_guardianJourney(tester, _yusuf).chat, isFalse);
     await _press(tester, _guardianChat);
     expect(_guardianJourney(tester, _yusuf).chat, isTrue);
-    await _press(tester, 'guardian-card-center');
+    await _press(tester, 'guardian-card-details');
     await _press(tester, _guardianHistory);
     expect(
       _guardianCards(
@@ -4600,6 +4678,8 @@ void main() {
     testWidgets('compact 320×568 at scale $scale stays scroll reachable', (
       tester,
     ) async {
+      // Check the actual glyph widths on the tightest device.
+      ZyraText.testReadingFontFamily = 'PoppinsViewRequestDraftAudit';
       await _mount(
         tester,
         scale: scale,
@@ -4617,20 +4697,8 @@ void main() {
       for (final index in [0, 2, 3, 4]) {
         await _nav(tester, index);
       }
-      await _press(tester, 'concept_personalisation');
-      final gold = _key('personalisation_gold_toggle');
-      await tester.scrollUntilVisible(
-        gold,
-        180,
-        scrollable: find
-            .descendant(
-              of: _key('personalisation-scroll'),
-              matching: find.byType(Scrollable),
-            )
-            .first,
-      );
-      await tester.pumpAndSettle();
-      expect(_key('personalisation_gold_toggle'), findsOneWidget);
+      await _openHaptics(tester);
+      expect(find.byType(Slider), findsOneWidget);
       final failure = tester.takeException();
       if (failure != null) {
         for (final element in find.byType(Row).evaluate()) {
@@ -4838,8 +4906,8 @@ void main() {
           await _press(tester, 'concept_settings');
           await capture('settings');
           await _nav(tester, 4);
-          await _press(tester, 'concept_personalisation');
-          await capture('personalisation');
+          await _openHaptics(tester);
+          await capture('settings_haptics');
           await _nav(tester, 4);
           await _press(tester, 'concept_membership');
           await capture('membership');

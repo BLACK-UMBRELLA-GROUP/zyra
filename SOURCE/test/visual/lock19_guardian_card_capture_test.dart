@@ -13,6 +13,7 @@ import 'package:zyra/services/zyra_wali_link_service.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 import 'package:zyra/widgets/floating_nav_bar.dart';
+import '../support/guardian_card_driver.dart';
 import 'baseline_capture_support.dart';
 
 const _base = '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA';
@@ -208,8 +209,7 @@ Future<void> _fixture(
                 ],
                 currentIndex: 3,
                 onTap: _noop,
-                compactWhenIdle: true,
-                compactV2: true,
+                lockedTabBar: true,
                 contentEdgeInset: 20,
               ),
             ],
@@ -243,13 +243,13 @@ void main() {
       final h = _h(t);
       await _fixture(h);
       await _cap(h, 'k01_card_front__hassan_main');
-      await h.tap('guardian-card-center');
+      await h.tap('guardian-card-access');
       await _cap(h, 'k02_access__hassan_2_journeys');
       await _fixture(h, count: 3);
-      await h.tap('guardian-card-center');
+      await h.tap('guardian-card-access');
       await _cap(h, 'k03_access__hassan_3_journeys');
       await _fixture(h, count: 0);
-      await h.tap('guardian-card-center');
+      await h.tap('guardian-card-access');
       await _cap(h, 'k04_access__hassan_no_journeys');
     },
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
@@ -260,11 +260,13 @@ void main() {
       final h = _h(t);
       await _fixture(h, additional: true, guardianBasic: true);
       await _cap(h, 'k05_card_front__ibrahim_basic');
-      await h.tap('guardian-card-center');
+      await h.tap('guardian-card-access');
       await _cap(h, 'k06_access__ibrahim_chat_locked');
-      await h.tap('guardian-card-next');
+      await swipeGuardianCard(t);
+      await h.flush();
       await _cap(h, 'k07_card__omar_invited');
-      await h.tap('guardian-card-next');
+      await swipeGuardianCard(t);
+      await h.flush();
       await _cap(h, 'k08_card__add_a_guardian');
     },
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
@@ -274,7 +276,7 @@ void main() {
     (t) async {
       final h = _h(t);
       await _fixture(h, additional: true, guardianBasic: true);
-      await h.tap('guardian-card-center');
+      await h.tap('guardian-card-access');
       await h.tap('guardian-card-chat-$_ibrahim-draft-sara');
       await _cap(h, 'k09_sheet__basic_no_family');
       await h.tap('guardian-family-introduction-primary');
@@ -290,7 +292,7 @@ void main() {
         guardianBasic: true,
         family: ZyraGuardianFamilyState.freePlace,
       );
-      await h.tap('guardian-card-center');
+      await h.tap('guardian-card-access');
       await h.tap('guardian-card-chat-$_ibrahim-draft-sara');
       await _cap(h, 'k11_sheet__basic_free_place');
       await h.tap('guardian-family-introduction-secondary');
@@ -300,7 +302,7 @@ void main() {
         guardianBasic: true,
         family: ZyraGuardianFamilyState.full,
       );
-      await h.tap('guardian-card-center');
+      await h.tap('guardian-card-access');
       await h.tap('guardian-card-chat-$_ibrahim-draft-sara');
       await _cap(h, 'k12_sheet__basic_family_full');
       await h.tap('guardian-family-introduction-primary');
@@ -309,7 +311,7 @@ void main() {
       await h.tap('guardian-family-price-secondary');
       await h.tap('guardian-family-introduction-secondary');
       await _fixture(h, additional: true, accepted: true);
-      await h.tap('guardian-card-center');
+      await h.tap('guardian-card-access');
       await _cap(h, 'k16_access__ibrahim_accepted_chat_off');
     },
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
@@ -320,9 +322,10 @@ void main() {
       final h = _h(t);
       await _fixture(h, count: 1, basic: true);
       await _cap(h, 'k17_basic__card_front_hassan');
-      await h.tap('guardian-card-center');
+      await h.tap('guardian-card-access');
       await _cap(h, 'k18_basic__access_1_journey');
-      await h.tap('guardian-card-next');
+      await swipeGuardianCard(t);
+      await h.flush();
       await _cap(h, 'k19_basic__add_more_locked');
     },
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
@@ -332,7 +335,7 @@ void main() {
     (t) async {
       final h = _h(t, scale: 2);
       await _fixture(h, additional: true, guardianBasic: true, count: 3);
-      await h.tap('guardian-card-center');
+      await h.tap('guardian-card-access');
       await _cap(h, 'large_200_access_top');
       await t.ensureVisible(_key('guardian-remove'));
       await h.flush();
@@ -360,7 +363,7 @@ void main() {
       await h.flush();
       _oneLine(t, _key('guardian-manager-title'));
       _oneLine(t, find.text('Ibrahim'));
-      await h.tap('guardian-card-center');
+      await h.tap('guardian-card-access');
       _oneLine(
         t,
         find.descendant(
@@ -402,8 +405,9 @@ void main() {
         ..setSampleGuardianMembership(_ibrahim, DraftGuardianMembership.basic);
       await h.mount(tab: 3, model: model);
       await _cap(h, 'shell_actual_samples_front');
-      await h.tap('guardian-card-next');
-      await h.tap('guardian-card-center');
+      await swipeGuardianCard(t);
+      await h.flush();
+      await h.tap('guardian-card-access');
       await h.tap('guardian-card-chat-$_ibrahim-draft-sara');
       await _cap(h, 'shell_actual_samples_basic_sheet');
     },

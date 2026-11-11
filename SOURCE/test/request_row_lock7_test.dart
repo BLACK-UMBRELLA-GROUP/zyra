@@ -190,7 +190,7 @@ void main() {
         'Request sent. Tap to cancel request',
       );
       final text = tester.widget<Text>(find.text('Request sent'));
-      expect(text.style!.color, ZyraColors.espresso);
+      expect(text.style!.color, ZyraColors.goldText);
       final ink = tester.widget<Container>(
         find.descendant(of: _surface, matching: find.byType(Container)).first,
       );
@@ -221,7 +221,10 @@ void main() {
         final fill = tester.widget<Material>(_surface).color!;
         expect(fill, ZyraColors.surfaceFill, reason: '$label / $enabled');
         final foreground = tester.widget<Text>(find.text(label)).style!.color!;
-        expect(foreground, ZyraColors.espresso);
+        expect(
+          foreground,
+          label == 'Request sent' ? ZyraColors.goldText : ZyraColors.espresso,
+        );
         for (final background in [
           ZyraColors.ivoryTop,
           ZyraColors.ivoryBottom,

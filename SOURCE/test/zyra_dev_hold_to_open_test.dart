@@ -8,10 +8,7 @@ import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_local_prefs.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_tap_feedback.dart';
-import 'package:zyra/screens/settings/personalisation_screen.dart';
-import 'package:zyra/widgets/zyra_personalisation_content.dart';
-import 'package:zyra/theme/zyra_colors.dart';
-import 'package:zyra/theme/zyra_interaction_style.dart';
+import 'support/zyra_settings_haptics_test_driver.dart';
 
 const _memberSurface = ValueKey('member-gesture-surface');
 Finder get _surface => find.byKey(_memberSurface);
@@ -338,35 +335,31 @@ void main() {
         addTearDown(version.dispose);
         var oldCalls = 0, newCalls = 0;
         var allowed = true;
-        bool admission() => allowed;
-        bool replacementAdmission() => allowed;
-        void oldAction(bool value) => oldCalls++;
-        void newAction(bool value) => newCalls++;
-        void hapticAction(ZyraHapticLevel value) {}
         await _mount(
           tester,
           child: ValueListenableBuilder<int>(
             valueListenable: version,
-            builder: (context, revision, _) => PersonalisationScreen.preview(
-              key: ValueKey(change == 'identity' ? revision : 0),
-              canAct: change == 'admission callback' && revision > 0
-                  ? replacementAdmission
-                  : admission,
-              palette: ZyraDevPalette.ivory,
-              hapticLevel: ZyraHapticLevel.subtle,
-              goldEnabled: false,
-              onHapticChanged: hapticAction,
-              onGoldChanged: change == 'open callback' && revision > 0
-                  ? newAction
-                  : oldAction,
-            ),
+            builder: (context, revision, _) {
+              var revoked = false;
+              return settingsHapticsTestPage(
+                key: ValueKey(change == 'identity' ? revision : 0),
+                canAct: () {
+                  revoked = revoked || !allowed;
+                  return !revoked && version.value == revision;
+                },
+                onChanged: (_) {
+                  if (change == 'open callback' && revision > 0) {
+                    newCalls++;
+                  } else {
+                    oldCalls++;
+                  }
+                },
+              );
+            },
           ),
         );
-        final stale = tester
-            .widget<ZyraPersonalisationContent>(
-              find.byType(ZyraPersonalisationContent),
-            )
-            .onGoldChanged!;
+        await openSettingsHapticsForTest(tester);
+        final stale = retainSettingsHapticAction(tester);
         final finger = await tester.startGesture(const Offset(10, 10));
         await tester.pump(const Duration(seconds: 2));
         if (change == 'disabled') allowed = false;
@@ -378,23 +371,17 @@ void main() {
         await finger.up();
         _expectNoDeveloperEntry();
         if (change == 'disabled') {
-          expect(find.byType(ZyraPersonalisationContent), findsNothing);
-          expect(
-            find.byKey(const ValueKey('personalisation-unavailable')),
-            findsOneWidget,
-          );
+          final denied = retainSettingsHapticAction(tester);
+          denied(true);
           allowed = true;
           version.value++;
           await tester.pump();
           stale(true);
+          denied(true);
           expect(oldCalls + newCalls, 0);
-          expect(find.byType(ZyraPersonalisationContent), findsNothing);
         } else {
-          final current = tester
-              .widget<ZyraPersonalisationContent>(
-                find.byType(ZyraPersonalisationContent),
-              )
-              .onGoldChanged!;
+          await openSettingsHapticsForTest(tester);
+          final current = retainSettingsHapticAction(tester);
           if (change == 'admission callback') {
             allowed = false;
             current(true);

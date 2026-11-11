@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 
 const _amira = 'draft-amira';
 const _sara = 'draft-sara';
@@ -13,7 +14,7 @@ void main() {
 
   setUp(() {
     now = DateTime.utc(2026, 10, 1, 12);
-    model = ViewRequestDraftModel(capacity: 3, clock: () => now);
+    model = ReceivedRequestFixture(capacity: 3, clock: () => now);
   });
 
   test(

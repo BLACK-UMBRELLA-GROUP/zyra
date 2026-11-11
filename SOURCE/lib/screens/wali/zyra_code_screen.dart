@@ -2110,6 +2110,7 @@ class _ScanZyraCodeScreenState extends State<_ScanZyraCodeScreen> {
       appBar: AppBar(
         title: Text('Scan ZYRA Code', style: ZyraText.heading(size: 17)),
         backgroundColor: Colors.black,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: MobileScanner(
         onDetect: (capture) {

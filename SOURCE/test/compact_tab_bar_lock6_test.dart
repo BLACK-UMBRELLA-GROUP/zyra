@@ -1,7 +1,6 @@
 // LOCK 6: actual floating navigation geometry and owned pointer lifetimes.
 // Fixtures have no account, service, subscription, or notification authority.
 import 'dart:io';
-import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -51,18 +50,17 @@ class _Offline extends HttpOverrides {
 }
 
 class _Fixture extends ChangeNotifier {
-  _Fixture({this.guardian = false, this.compact = true});
+  _Fixture({this.guardian = false, this.locked = true});
 
   ZyraHapticLevel haptic = ZyraHapticLevel.off;
   bool guardian;
-  bool compact;
+  bool locked;
   bool enabled = true;
   bool commitOnRelease = false;
   bool reducedMotion = true;
   bool? accessibleNavigation;
   double textScale = 1;
   int selected = 0;
-  int collapseRevision = 0;
   bool newActivity = true;
   final selections = <int>[];
 
@@ -122,9 +120,7 @@ Future<void> _mount(WidgetTester tester, _Fixture fixture) async {
                   contentEdgeInset: 20,
                   hapticLevel: fixture.haptic,
                   commitOnRelease: fixture.commitOnRelease,
-                  compactWhenIdle: fixture.compact,
-                  compactV2: true,
-                  collapseRevision: fixture.collapseRevision,
+                  lockedTabBar: fixture.locked,
                   interactionEnabled: fixture.enabled,
                 ),
               ],
@@ -144,15 +140,6 @@ void _expectSize(WidgetTester tester, Size expected) {
   expect(size.width, closeTo(expected.width, .001));
   expect(size.height, closeTo(expected.height, .001));
   expect(tester.getCenter(_surface).dx, closeTo(215, .001));
-}
-
-Future<void> _expand(WidgetTester tester) async {
-  final finger = await tester.startGesture(tester.getCenter(_surface));
-  await tester.pump();
-  await tester.pump(const Duration(milliseconds: 350));
-  _expectSize(tester, const Size(390, 58));
-  await finger.up();
-  await tester.pump();
 }
 
 Widget _icon(WidgetTester tester, int index) => tester.widget(
@@ -221,7 +208,7 @@ void main() {
   });
 
   for (final level in [ZyraHapticLevel.subtle, ZyraHapticLevel.off]) {
-    testWidgets('compact expansion and each accepted tap use ${level.label}', (
+    testWidgets('first and subsequent tab taps use ${level.label} once', (
       tester,
     ) async {
       final fixture = _Fixture()..haptic = level;
@@ -229,15 +216,14 @@ void main() {
       final expected = level == ZyraHapticLevel.off
           ? <Object?>[]
           : <Object?>['HapticFeedbackType.selectionClick'];
-      await _expand(tester);
-      expect(pulses, expected);
-      pulses.clear();
       await tester.tapAt(tester.getCenter(_cell(1)));
       await tester.pump();
+      expect(fixture.selections, [1]);
       expect(pulses, expected);
       pulses.clear();
-      await tester.tapAt(tester.getCenter(_cell(1)));
+      await tester.tapAt(tester.getCenter(_cell(3)));
       await tester.pump();
+      expect(fixture.selections, [1, 3]);
       expect(pulses, expected);
       pulses.clear();
       await tester.drag(_surface, const Offset(90, 0));
@@ -245,7 +231,7 @@ void main() {
       expect(pulses, isEmpty);
       fixture.change(() => fixture.enabled = false);
       await tester.pump();
-      await tester.tapAt(tester.getCenter(_surface));
+      await tester.tapAt(tester.getCenter(_cell(2)));
       await tester.pump();
       expect(pulses, isEmpty);
     });
@@ -253,421 +239,98 @@ void main() {
 
   for (final guardian in [false, true]) {
     testWidgets(
-      '${guardian ? 'Guardian' : 'Seeker'} has locked idle/full geometry',
+      guardian
+          ? 'Guardian uses the fixed V4 geometry'
+          : 'Seeker uses the fixed V4 geometry',
       (tester) async {
-        final fixture = _Fixture(guardian: guardian);
+        final fixture = _Fixture(guardian: guardian)..reducedMotion = false;
         await _mount(tester, fixture);
-        _expectSize(tester, const Size(234, 50));
+        final frame = tester.getRect(_surface);
+        final decoration = tester.widget<Container>(_surface).decoration;
+        expect(frame, const Rect.fromLTWH(20, 840, 390, 58));
         expect(fixture.items.length, 5);
-        expect(tester.getSize(_underline).width, closeTo(28, .001));
-        _expectSelection(tester, 0);
-        for (var index = 0; index < fixture.items.length; index++) {
-          expect(_iconSize(tester, index), 18);
-          expect(tester.getSize(_cell(index)).width, 38);
-          expect(
-            tester.getCenter(_cell(index)).dx,
-            closeTo(127 + 44.0 * index, .001),
-          );
-        }
-        await _expand(tester);
-        expect(fixture.selections, isEmpty);
-        expect(tester.getSize(_underline).width, closeTo(24, .001));
+        expect(tester.getSize(_underline).width, 24);
         _expectSelection(tester, 0);
         for (var index = 0; index < fixture.items.length; index++) {
           expect(_iconSize(tester, index), 21);
-          expect(tester.getSize(_cell(index)).width, greaterThanOrEqualTo(44));
-          expect(tester.getSize(_cell(index)).height, greaterThanOrEqualTo(44));
+          expect(tester.getSize(_cell(index)), const Size(44, 44));
         }
         expect(_iconColor(tester, 0), ZyraColors.foreground);
         final last = fixture.items.length - 1;
-        await tester.tapAt(tester.getCenter(_cell(last)));
+        final finger = await tester.startGesture(tester.getCenter(_cell(last)));
+        await tester.pump(const Duration(milliseconds: 350));
+        expect(fixture.selections, isEmpty);
+        expect(tester.getRect(_surface), frame);
+        expect(tester.widget<Container>(_surface).decoration, decoration);
+        await finger.up();
         await tester.pump();
         expect(fixture.selections, [last]);
         _expectSelection(tester, last);
-        await tester.pump(const Duration(seconds: 3));
-        _expectSize(tester, const Size(234, 50));
-        _expectSelection(tester, last);
-        expect(tester.takeException(), isNull);
+        expect(tester.getRect(_surface), frame);
+        expect(tester.widget<Container>(_surface).decoration, decoration);
+        await tester.pump(const Duration(seconds: 4));
+        expect(tester.getRect(_surface), frame);
       },
     );
   }
 
   testWidgets(
-    'a narrow phone retains the 60 percent idle bar without overflow',
+    'larger text, accessible navigation and idle leave the same bar',
     (tester) async {
       final fixture = _Fixture();
       await _mount(tester, fixture);
-      tester.view.physicalSize = const Size(320, 568);
-      await tester.pumpAndSettle();
-      expect(tester.getSize(_surface), const Size(168, 50));
-      expect(tester.getCenter(_surface).dx, 160);
-      for (var i = 0; i < fixture.items.length; i++) {
-        final cell = tester.getRect(_cell(i));
-        expect(cell.left, greaterThanOrEqualTo(tester.getRect(_surface).left));
-        expect(cell.right, lessThanOrEqualTo(tester.getRect(_surface).right));
-      }
-      await tester.tapAt(tester.getCenter(_surface));
-      await tester.pumpAndSettle();
-      expect(tester.getSize(_surface), const Size(280, 58));
-      expect(fixture.selections, isEmpty);
-      expect(tester.takeException(), isNull);
-    },
-  );
-
-  testWidgets(
-    'the complete first idle gesture expands without choosing any tab',
-    (tester) async {
-      final fixture = _Fixture();
-      await _mount(tester, fixture);
-      final idle = tester.getRect(_surface);
-      final finger = await tester.startGesture(
-        Offset(idle.right - 8, idle.center.dy),
-      );
-      await tester.pump(const Duration(milliseconds: 350));
-      _expectSize(tester, const Size(390, 58));
-      await finger.moveTo(tester.getCenter(_cell(1)));
-      await tester.pump();
-      await finger.moveTo(tester.getCenter(_cell(4)));
-      await tester.pump();
-      expect(fixture.selections, isEmpty);
-      _expectSelection(tester, 0);
-      await finger.up();
-      await tester.pump();
-      expect(fixture.selections, isEmpty);
-      await tester.tapAt(tester.getCenter(_cell(3)));
-      await tester.pump();
-      expect(fixture.selections, [3]);
-    },
-  );
-
-  testWidgets(
-    'cancelling the expand-only gesture never selects a destination',
-    (tester) async {
-      final fixture = _Fixture();
-      await _mount(tester, fixture);
-      final finger = await tester.startGesture(tester.getCenter(_surface));
-      await tester.pump(const Duration(milliseconds: 350));
-      await finger.moveTo(tester.getCenter(_cell(3)));
-      await tester.pump();
-      await finger.cancel();
-      await tester.pump();
-      expect(fixture.selections, isEmpty);
-      _expectSelection(tester, 0);
-      await tester.pump(const Duration(seconds: 3));
-      _expectSize(tester, const Size(234, 50));
-    },
-  );
-
-  testWidgets('a full-bar tap dispatches its exact destination once', (
-    tester,
-  ) async {
-    final fixture = _Fixture();
-    await _mount(tester, fixture);
-    await _expand(tester);
-    await tester.tapAt(tester.getCenter(_cell(1)));
-    await tester.pump();
-    expect(fixture.selections, [1]);
-    _expectSelection(tester, 1);
-    await tester.tapAt(tester.getCenter(_cell(1)));
-    await tester.pump();
-    expect(fixture.selections, [1]);
-    await tester.tapAt(tester.getCenter(_cell(4)));
-    await tester.pump();
-    expect(fixture.selections, [1, 4]);
-  });
-
-  testWidgets('idle deadline is exactly three seconds after release', (
-    tester,
-  ) async {
-    final fixture = _Fixture();
-    await _mount(tester, fixture);
-    await _expand(tester);
-    await tester.pump(const Duration(milliseconds: 2999));
-    _expectSize(tester, const Size(390, 58));
-    await tester.pump(const Duration(milliseconds: 1));
-    _expectSize(tester, const Size(234, 50));
-    expect(fixture.selections, isEmpty);
-  });
-
-  testWidgets(
-    'holding the bar suppresses idle and release starts a fresh deadline',
-    (tester) async {
-      final fixture = _Fixture();
-      await _mount(tester, fixture);
-      final finger = await tester.startGesture(tester.getCenter(_surface));
-      await tester.pump(const Duration(milliseconds: 350));
-      await tester.pump(const Duration(seconds: 5));
-      _expectSize(tester, const Size(390, 58));
-      expect(fixture.selections, isEmpty);
-      await finger.up();
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 2999));
-      _expectSize(tester, const Size(390, 58));
-      await tester.pump(const Duration(milliseconds: 1));
-      _expectSize(tester, const Size(234, 50));
-    },
-  );
-
-  testWidgets('a new touch cancels the previous idle deadline', (tester) async {
-    final fixture = _Fixture();
-    await _mount(tester, fixture);
-    await _expand(tester);
-    await tester.pump(const Duration(milliseconds: 2500));
-    final finger = await tester.startGesture(tester.getCenter(_cell(0)));
-    await tester.pump(const Duration(milliseconds: 600));
-    _expectSize(tester, const Size(390, 58));
-    await finger.up();
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 2999));
-    _expectSize(tester, const Size(390, 58));
-    await tester.pump(const Duration(milliseconds: 1));
-    _expectSize(tester, const Size(234, 50));
-    expect(fixture.selections, isEmpty);
-  });
-
-  testWidgets(
-    'scroll-collapse revision collapses without consuming a destination',
-    (tester) async {
-      final fixture = _Fixture();
-      await _mount(tester, fixture);
-      await _expand(tester);
-      fixture.change(() => fixture.collapseRevision++);
-      await tester.pump();
-      _expectSize(tester, const Size(234, 50));
-      expect(fixture.selections, isEmpty);
-      await _expand(tester);
-      // An ordinary owner rebuild does not impersonate another scroll event.
-      fixture.change(() {});
-      await tester.pump();
-      _expectSize(tester, const Size(390, 58));
-    },
-  );
-
-  testWidgets(
-    'normal motion finishes in 250ms without overshooting full width',
-    (tester) async {
-      final fixture = _Fixture()..reducedMotion = false;
-      await _mount(tester, fixture);
-      _expectSize(tester, const Size(234, 50));
-      final finger = await tester.startGesture(tester.getCenter(_surface));
-      await tester.pump(const Duration(milliseconds: 120));
-      await tester.pump(const Duration(milliseconds: 125));
-      expect(tester.getSize(_surface).width, greaterThan(234));
-      expect(tester.getSize(_surface).width, lessThanOrEqualTo(390));
-      await tester.pump(const Duration(milliseconds: 125));
-      _expectSize(tester, const Size(390, 58));
-      await finger.up();
-      await tester.pump();
-      fixture.change(() => fixture.collapseRevision++);
-      await tester.pump();
-      for (var frame = 0; frame < 16; frame++) {
-        await tester.pump(const Duration(milliseconds: 16));
-        final width = tester.getSize(_surface).width;
-        expect(width, inInclusiveRange(234, 390));
-      }
-      _expectSize(tester, const Size(234, 50));
-      expect(fixture.selections, isEmpty);
-    },
-  );
-
-  testWidgets('Reduce Motion changes size immediately in both directions', (
-    tester,
-  ) async {
-    final fixture = _Fixture();
-    await _mount(tester, fixture);
-    final finger = await tester.startGesture(tester.getCenter(_surface));
-    await tester.pump(const Duration(milliseconds: 120));
-    _expectSize(tester, const Size(390, 58));
-    await finger.up();
-    await tester.pump();
-    fixture.change(() => fixture.collapseRevision++);
-    await tester.pump();
-    _expectSize(tester, const Size(234, 50));
-    expect(fixture.selections, isEmpty);
-  });
-
-  testWidgets(
-    'native Reduce Motion is honored even without MediaQuery disableAnimations',
-    (tester) async {
-      tester.platformDispatcher.accessibilityFeaturesTestValue =
-          const FakeAccessibilityFeatures(reduceMotion: true);
-      addTearDown(
-        tester.platformDispatcher.clearAccessibilityFeaturesTestValue,
-      );
-      final fixture = _Fixture()..reducedMotion = false;
-      await _mount(tester, fixture);
-      final finger = await tester.startGesture(tester.getCenter(_surface));
-      await tester.pump(const Duration(milliseconds: 120));
-      _expectSize(tester, const Size(390, 58));
-      await finger.up();
-      await tester.pump();
-      fixture.change(() => fixture.collapseRevision++);
-      await tester.pump();
-      _expectSize(tester, const Size(234, 50));
-    },
-  );
-
-  for (final native in [false, true]) {
-    final setting = native
-        ? 'native Reduce Motion'
-        : 'MediaQuery Reduce Motion';
-    testWidgets('$setting settles mid-expansion and retains the held pointer', (
-      tester,
-    ) async {
-      if (native) {
-        tester.platformDispatcher.accessibilityFeaturesTestValue =
-            const FakeAccessibilityFeatures();
-        addTearDown(
-          tester.platformDispatcher.clearAccessibilityFeaturesTestValue,
-        );
-      }
-      final fixture = _Fixture()..reducedMotion = false;
-      await _mount(tester, fixture);
-      final finger = await tester.startGesture(tester.getCenter(_surface));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 100));
-      final movingWidth = tester.getSize(_surface).width;
-      expect(movingWidth, greaterThan(234));
-      expect(movingWidth, lessThan(390));
-      if (native) {
-        tester.platformDispatcher.accessibilityFeaturesTestValue =
-            const FakeAccessibilityFeatures(reduceMotion: true);
-      } else {
-        fixture.change(() => fixture.reducedMotion = true);
-      }
-      await tester.pump();
-      _expectSize(tester, const Size(390, 58));
-      await tester.pump(const Duration(seconds: 4));
-      _expectSize(tester, const Size(390, 58));
-      expect(fixture.selections, isEmpty);
-      await finger.up();
-      await tester.pump();
-      expect(fixture.selections, isEmpty);
-      await tester.pump(const Duration(milliseconds: 2999));
-      _expectSize(tester, const Size(390, 58));
-      await tester.pump(const Duration(milliseconds: 1));
-      _expectSize(tester, const Size(234, 50));
-      expect(tester.takeException(), isNull);
-    });
-
-    testWidgets('$setting settles mid-collapse and accepts the next touch', (
-      tester,
-    ) async {
-      if (native) {
-        tester.platformDispatcher.accessibilityFeaturesTestValue =
-            const FakeAccessibilityFeatures();
-        addTearDown(
-          tester.platformDispatcher.clearAccessibilityFeaturesTestValue,
-        );
-      }
-      final fixture = _Fixture()..reducedMotion = false;
-      await _mount(tester, fixture);
-      await _expand(tester);
-      fixture.change(() => fixture.collapseRevision++);
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 100));
-      final movingWidth = tester.getSize(_surface).width;
-      expect(movingWidth, greaterThan(234));
-      expect(movingWidth, lessThan(390));
-      if (native) {
-        tester.platformDispatcher.accessibilityFeaturesTestValue =
-            const FakeAccessibilityFeatures(reduceMotion: true);
-      } else {
-        fixture.change(() => fixture.reducedMotion = true);
-      }
-      await tester.pump();
-      _expectSize(tester, const Size(234, 50));
-      final finger = await tester.startGesture(tester.getCenter(_surface));
-      await tester.pump();
-      _expectSize(tester, const Size(390, 58));
-      await finger.up();
-      await tester.pump();
-      expect(fixture.selections, isEmpty);
-      await tester.pump(const Duration(seconds: 3));
-      _expectSize(tester, const Size(234, 50));
-      expect(tester.takeException(), isNull);
-    });
-  }
-
-  for (final mode in ['VoiceOver or Switch Control', 'Larger Text']) {
-    testWidgets('$mode keeps all named tab targets full size', (tester) async {
-      final fixture = _Fixture();
-      if (mode == 'Larger Text') {
-        fixture.textScale = 1.1;
-      } else {
+      final frame = tester.getRect(_surface);
+      fixture.change(() {
+        fixture.textScale = 2;
         fixture.accessibleNavigation = true;
-      }
-      await _mount(tester, fixture);
-      _expectSize(tester, const Size(390, 58));
-      final semantics = tester.ensureSemantics();
-      try {
-        for (var index = 0; index < fixture.items.length; index++) {
-          final data = tester.getSemantics(_cell(index)).getSemanticsData();
-          expect(data.label, fixture.items[index].label);
-          expect(data.flagsCollection.isButton, isTrue);
-          expect(data.hasAction(ui.SemanticsAction.tap), isTrue);
-          expect(tester.getSize(_cell(index)).width, greaterThanOrEqualTo(44));
-          expect(tester.getSize(_cell(index)).height, greaterThanOrEqualTo(44));
-        }
-        await tester.tapAt(tester.getCenter(_cell(3)));
-        await tester.pump();
-        expect(fixture.selections, [3]);
-        await tester.pump(const Duration(seconds: 10));
-        fixture.change(() => fixture.collapseRevision++);
-        await tester.pump();
-        _expectSize(tester, const Size(390, 58));
-      } finally {
-        semantics.dispose();
-      }
-    });
-  }
-
-  testWidgets(
-    'enabling accessibility settles an already shrinking bar at full size',
-    (tester) async {
-      final fixture = _Fixture()..reducedMotion = false;
-      await _mount(tester, fixture);
-      await _expand(tester);
-      fixture.change(() => fixture.collapseRevision++);
+      });
+      await tester.pump(const Duration(seconds: 4));
+      expect(tester.getRect(_surface), frame);
+      expect(tester.getSize(_cell(2)), const Size(44, 44));
+      await tester.tapAt(tester.getCenter(_cell(2)));
       await tester.pump();
-      await tester.pump(const Duration(milliseconds: 100));
-      expect(tester.getSize(_surface).width, lessThan(390));
-      fixture.change(() => fixture.accessibleNavigation = true);
-      await tester.pump(const Duration(milliseconds: 300));
-      _expectSize(tester, const Size(390, 58));
-      await tester.pump(const Duration(seconds: 5));
-      _expectSize(tester, const Size(390, 58));
+      expect(fixture.selections, [2]);
+      _expectSelection(tester, 2);
     },
   );
 
-  testWidgets(
-    'changing Reduce Motion preserves the current expansion and idle deadline',
-    (tester) async {
-      final fixture = _Fixture();
-      await _mount(tester, fixture);
-      await _expand(tester);
-      await tester.pump(const Duration(seconds: 1));
-      fixture.change(() => fixture.reducedMotion = false);
-      await tester.pump();
-      _expectSize(tester, const Size(390, 58));
-      fixture.change(() => fixture.reducedMotion = true);
-      await tester.pump();
-      _expectSize(tester, const Size(390, 58));
-      await tester.pump(const Duration(milliseconds: 1999));
-      _expectSize(tester, const Size(390, 58));
-      await tester.pump(const Duration(milliseconds: 1));
-      _expectSize(tester, const Size(234, 50));
-    },
-  );
+  testWidgets('cancelled or covered pointer cannot select a tab', (
+    tester,
+  ) async {
+    final fixture = _Fixture();
+    await _mount(tester, fixture);
+    final finger = await tester.startGesture(tester.getCenter(_cell(1)));
+    fixture.change(() => fixture.enabled = false);
+    await tester.pump();
+    fixture.change(() => fixture.enabled = true);
+    await tester.pump();
+    await finger.up();
+    await tester.pump();
+    expect(fixture.selections, isEmpty);
+    final previousRole = await tester.startGesture(tester.getCenter(_cell(1)));
+    fixture.change(() => fixture.guardian = true);
+    await tester.pump();
+    await previousRole.up();
+    await tester.pump();
+    expect(fixture.selections, isEmpty);
+    final cancelled = await tester.startGesture(tester.getCenter(_cell(1)));
+    await cancelled.cancel();
+    await tester.pump();
+    expect(fixture.selections, isEmpty);
+    await tester.tapAt(tester.getCenter(_cell(1)));
+    await tester.pump();
+    expect(fixture.selections, [1]);
+  });
 
   testWidgets(
-    'gold activity survives expansion and clears only after the owner opens its tab',
+    'gold activity survives other tab taps and clears only when opened',
     (tester) async {
       final fixture = _Fixture();
       await _mount(tester, fixture);
       expect(_iconColor(tester, 2), ZyraColors.journeyGold);
-      await _expand(tester);
-      expect(fixture.selections, isEmpty);
+      await tester.tapAt(tester.getCenter(_cell(1)));
+      await tester.pump();
+      expect(fixture.selections, [1]);
       expect(fixture.newActivity, isTrue);
       expect(_iconColor(tester, 2), ZyraColors.journeyGold);
       expect(
@@ -676,17 +339,17 @@ void main() {
       );
       await tester.tapAt(tester.getCenter(_cell(2)));
       await tester.pump();
-      expect(fixture.selections, [2]);
+      expect(fixture.selections, [1, 2]);
       expect(fixture.newActivity, isFalse);
       expect(_iconColor(tester, 2), ZyraColors.foreground);
       _expectSelection(tester, 2);
       await tester.pump(const Duration(seconds: 3));
-      _expectSize(tester, const Size(234, 50));
+      _expectSize(tester, const Size(390, 58));
       expect(_iconColor(tester, 2), ZyraColors.foreground);
       fixture.change(() => fixture.newActivity = true);
       await tester.pump();
       expect(_iconColor(tester, 2), ZyraColors.journeyGold);
-      _expectSize(tester, const Size(234, 50));
+      _expectSize(tester, const Size(390, 58));
     },
   );
 
@@ -752,7 +415,7 @@ void main() {
   testWidgets(
     'ordinary callers retain the existing Floating Glass navigation',
     (tester) async {
-      final fixture = _Fixture(compact: false);
+      final fixture = _Fixture(locked: false);
       await _mount(tester, fixture);
       expect(_surface, findsNothing);
       expect(_underline, findsNothing);
@@ -790,7 +453,7 @@ void main() {
     'other developer navigation styles keep their existing renderer',
     (tester) async {
       ZyraInteractionStyle.selectNavStyle(ZyraNavStyle.goldUnderline);
-      final fixture = _Fixture();
+      final fixture = _Fixture(locked: false);
       await _mount(tester, fixture);
       expect(_surface, findsNothing);
       expect(_underline, findsNothing);

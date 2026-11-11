@@ -21,6 +21,7 @@ import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_options.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/state/app_state.dart';
@@ -165,7 +166,7 @@ ViewRequestDraftModel _ended({
   bool completedBio = true,
   DateTime? endedAt,
 }) {
-  final model = ViewRequestDraftModel(
+  final model = ReceivedRequestFixture(
     capacity: 3,
     clock: endedAt == null ? null : () => endedAt,
   )..seedJourneys(1);
@@ -620,7 +621,7 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     final current = owner();
-    final model = ViewRequestDraftModel(capacity: 3)..seedJourneys(1);
+    final model = ReceivedRequestFixture(capacity: 3)..seedJourneys(1);
     await current.mount(
       tester,
       checkpoint: ZyraPreviewNavigationCheckpoint(

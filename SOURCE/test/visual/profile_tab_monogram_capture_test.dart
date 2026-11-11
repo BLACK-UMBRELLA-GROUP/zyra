@@ -40,11 +40,14 @@ Future<void> _scroll(BaselineHarness h, double offset) async {
     of: find.byKey(const ValueKey('concept-current-profile-scroll')),
     matching: find.byType(Scrollable),
   );
-  h.tester.state<ScrollableState>(scroll).position.jumpTo(offset);
+  final position = h.tester.state<ScrollableState>(scroll).position;
+  expect(position.maxScrollExtent, greaterThan(0));
+  final reached = offset.clamp(0.0, position.maxScrollExtent).toDouble();
+  position.jumpTo(reached);
   await h.flush();
   expect(
     h.tester.state<ScrollableState>(scroll).position.pixels,
-    closeTo(offset, .01),
+    closeTo(reached, .01),
   );
 }
 

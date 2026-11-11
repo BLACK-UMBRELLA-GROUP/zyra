@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/data/zyra_journey_stages.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 
 const _sara = 'draft-sara';
 const _aisha = 'draft-aisha';
@@ -55,7 +56,7 @@ void _sameValues(ViewRequestDraftSnapshot a, ViewRequestDraftSnapshot b) {
 
 void main() {
   test('default seed round-trips as a distinct mutable fictional model', () {
-    final original = ViewRequestDraftModel(capacity: 3);
+    final original = ReceivedRequestFixture(capacity: 3);
     final snapshot = original.snapshot();
     final restored = ViewRequestDraftModel.fromSnapshot(snapshot);
     expect(identical(original, restored), isFalse);
@@ -66,7 +67,7 @@ void main() {
   });
 
   test('every collection is copied and unmodifiable', () {
-    final original = ViewRequestDraftModel(capacity: 3)..fillCapacity();
+    final original = ReceivedRequestFixture(capacity: 3)..fillCapacity();
     original.hide(_aisha);
     original.block(_maryam);
     original.setPeerMainGuardianPresent(false, id: _sara);
@@ -103,7 +104,7 @@ void main() {
   });
 
   test('full three-Journey capacity survives without a fourth-place grant', () {
-    final model = ViewRequestDraftModel(capacity: 3)..fillCapacity();
+    final model = ReceivedRequestFixture(capacity: 3)..fillCapacity();
     final restored = ViewRequestDraftModel.fromSnapshot(model.snapshot());
     expect(restored.capacity, 3);
     expect(restored.activeCount, 3);
@@ -121,7 +122,7 @@ void main() {
   });
 
   test('one-sided preparation readiness is not upgraded by restoration', () {
-    final model = ViewRequestDraftModel(capacity: 3);
+    final model = ReceivedRequestFixture(capacity: 3);
     expect(model.request(_sara), isTrue);
     expect(model.simulateRecipientAccept(_sara), isTrue);
     expect(model.markReady(_sara), isTrue);
@@ -152,7 +153,7 @@ void main() {
   test(
     'progress, one-sided reveal and continuation remain detached values',
     () {
-      final model = ViewRequestDraftModel(capacity: 3);
+      final model = ReceivedRequestFixture(capacity: 3);
       _start(model, _sara);
       _advance(model, _sara);
       expect(model.stageFor(_sara)!.value, 'compatibility_reveal');
@@ -181,7 +182,7 @@ void main() {
   test(
     'every valid stage including destination survives without advancing',
     () {
-      final model = ViewRequestDraftModel(capacity: 3);
+      final model = ReceivedRequestFixture(capacity: 3);
       _start(model, _sara);
       for (var index = 0; index < ZyraJourneyStages.all.length; index++) {
         final restored = ViewRequestDraftModel.fromSnapshot(model.snapshot());
@@ -198,7 +199,7 @@ void main() {
   test(
     'blocked, hidden, busy and ended fixtures retain their restrictions',
     () {
-      final model = ViewRequestDraftModel(capacity: 3);
+      final model = ReceivedRequestFixture(capacity: 3);
       _start(model, _sara);
       expect(model.end(_sara), isTrue);
       expect(model.hide(_aisha), isTrue);
@@ -225,7 +226,7 @@ void main() {
   );
 
   test('missing own or addressed peer Main is never silently repaired', () {
-    final model = ViewRequestDraftModel(capacity: 3)..fillCapacity();
+    final model = ReceivedRequestFixture(capacity: 3)..fillCapacity();
     expect(model.setPeerMainGuardianPresent(false, id: _sara), isTrue);
     var restored = ViewRequestDraftModel.fromSnapshot(model.snapshot());
     expect(restored.peerMainGuardianPresentFor(_sara), isFalse);
@@ -244,7 +245,7 @@ void main() {
   test(
     'Basic Guardian chat denial and revoked grants survive independently',
     () {
-      final model = ViewRequestDraftModel(capacity: 3)..fillCapacity();
+      final model = ReceivedRequestFixture(capacity: 3)..fillCapacity();
       expect(
         model.setSampleGuardianMembership(
           _hassan,
@@ -292,7 +293,7 @@ void main() {
   );
 
   test('two restores do not share progress, sets or Guardian grants', () {
-    final model = ViewRequestDraftModel(capacity: 3)..fillCapacity();
+    final model = ReceivedRequestFixture(capacity: 3)..fillCapacity();
     final snapshot = model.snapshot();
     final first = ViewRequestDraftModel.fromSnapshot(snapshot);
     final second = ViewRequestDraftModel.fromSnapshot(snapshot);
@@ -316,7 +317,7 @@ void main() {
     'dated attempt metadata round-trips without replacing time with now',
     () {
       var clock = DateTime.utc(2026, 1, 31, 10);
-      final model = ViewRequestDraftModel(capacity: 3, clock: () => clock);
+      final model = ReceivedRequestFixture(capacity: 3, clock: () => clock);
       _start(model, _sara);
       final startedAt = clock;
       _advance(model, _sara);
@@ -349,7 +350,7 @@ void main() {
     'three prior attempts remain ordered and never grant fresh-attempt consent',
     () {
       DraftEndedJourneyAttempt ended(DateTime date, {bool shared = false}) {
-        final previous = ViewRequestDraftModel(capacity: 3, clock: () => date)
+        final previous = ReceivedRequestFixture(capacity: 3, clock: () => date)
           ..seedJourneys(1);
         if (shared) {
           _advance(previous, _sara);
@@ -363,7 +364,7 @@ void main() {
       final first = ended(DateTime.utc(2026, 1, 31), shared: true);
       final second = ended(DateTime.utc(2026, 4, 30));
       final third = ended(DateTime.utc(2026, 8, 31));
-      final fresh = ViewRequestDraftModel(capacity: 3)..seedJourneys(1);
+      final fresh = ReceivedRequestFixture(capacity: 3)..seedJourneys(1);
       final model = ViewRequestDraftModel.fromSnapshot(
         fresh.snapshot(),
         earlierAttempts: [third, first, second],
@@ -390,7 +391,7 @@ void main() {
         throwsArgumentError,
       );
 
-      final terminal = ViewRequestDraftModel(
+      final terminal = ReceivedRequestFixture(
         capacity: 3,
         clock: () => DateTime.utc(2026, 10, 22),
       )..seedJourneys(1);
@@ -408,7 +409,7 @@ void main() {
   );
 
   test('undated legacy attempt remains unknown after snapshot restoration', () {
-    final model = ViewRequestDraftModel()..seedHistory();
+    final model = ReceivedRequestFixture()..seedHistory();
     final id = draftProfiles[5].id;
     final attempt = model.currentEndedAttemptFor(id)!;
     final restored = ViewRequestDraftModel.fromSnapshot(

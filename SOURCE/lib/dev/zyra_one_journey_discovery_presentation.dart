@@ -9,6 +9,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show SystemUiOverlayStyle;
 
 import '../models/seeker_profile.dart';
 import '../screens/connections/connections_section_controller.dart';
@@ -172,7 +173,7 @@ class _ZyraOneJourneyBrowsePresentationState
       dismiss();
     }
 
-    return LayoutBuilder(
+    final body = LayoutBuilder(
       builder: (context, constraints) {
         final surface = GestureDetector(
           key: const ValueKey('concept_browse_photo_gallery'),
@@ -338,6 +339,10 @@ class _ZyraOneJourneyBrowsePresentationState
               )
             : surface;
       },
+    );
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: body,
     );
   }
 }

@@ -13,7 +13,6 @@ import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_preview.dart';
 import 'package:zyra/models/zyra_membership_draft.dart';
-import 'package:zyra/screens/settings/personalisation_screen.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
@@ -77,7 +76,6 @@ Map<String, ZyraConceptAccountAction> _rows(bool guardian) => {
   'concept_safety_advice': ZyraConceptAccountAction.safetyAdvice,
   'concept_invite': ZyraConceptAccountAction.invite,
   'concept_settings': ZyraConceptAccountAction.settings,
-  'concept_personalisation': ZyraConceptAccountAction.personalisation,
   'concept_sign_out': ZyraConceptAccountAction.signOut,
 };
 
@@ -407,9 +405,7 @@ void main() {
         await start();
         await _tap(tester, 'concept_settings');
         expect(find.byType(ZyraConceptSettingsPresentation), findsOneWidget);
-        await start();
-        await _tap(tester, 'concept_personalisation');
-        expect(find.byType(PersonalisationScreen), findsOneWidget);
+        expect(find.text('Appearance & haptics'), findsNothing);
         await start();
         await _tap(tester, 'concept_safety_advice');
         expect(

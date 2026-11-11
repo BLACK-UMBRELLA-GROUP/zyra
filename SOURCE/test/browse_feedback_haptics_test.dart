@@ -1,3 +1,4 @@
+import 'support/pump_invitation_feedback.dart';
 import 'support/zyra_hidden_dev_controls_driver.dart';
 // Local guarded shell with synthetic public profiles and offline images.
 // Native feedback acknowledges valid gestures, never authorizes an action.
@@ -68,7 +69,7 @@ Future<void> _mount(WidgetTester tester, {bool Function()? canAct}) async {
         child: child!,
       ),
       home: ZyraOneJourneyConceptShell(
-        fixture: ZyraShellTestFixture().fixture,
+        fixture: ZyraShellTestFixture(receivedRequest: true).fixture,
         canAct: canAct ?? () => true,
         onExit: () {},
       ),
@@ -104,7 +105,7 @@ Future<void> _tap(WidgetTester tester, String key) async {
   final target = _key(key);
   expect(target, findsOneWidget);
   await tester.ensureVisible(target);
-  await tester.pumpAndSettle();
+  await pumpInvitationFeedback(tester);
   final screen = Offset.zero & tester.view.physicalSize;
   final nav = find.byType(FloatingNavBar);
   final reading = nav.evaluate().isEmpty
@@ -125,7 +126,7 @@ Future<void> _tap(WidgetTester tester, String key) async {
     findsOneWidget,
   );
   await tester.tapAt(visible.center);
-  await tester.pumpAndSettle();
+  await pumpInvitationFeedback(tester);
   expect(tester.takeException(), isNull);
 }
 

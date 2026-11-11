@@ -419,7 +419,6 @@ void main() {
 
   for (final route in [
     (page: 'settings', tab: 4),
-    (page: 'personalisation', tab: 4),
     (page: 'own_profile_preview', tab: 4),
     (page: 'requests', tab: 2),
     (page: 'timeline', tab: 1),

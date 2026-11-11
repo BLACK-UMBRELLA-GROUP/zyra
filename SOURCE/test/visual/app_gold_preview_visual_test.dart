@@ -29,8 +29,6 @@ import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/floating_nav_bar.dart';
-import 'package:zyra/widgets/zyra_personalisation_content.dart';
-import 'package:zyra/theme/zyra_interaction_style.dart';
 
 const _capture = bool.fromEnvironment('ZYRA_APP_GOLD_CAPTURE');
 const _boundary = ValueKey('app-gold-candidate');
@@ -42,12 +40,11 @@ const _person = WaliLinkedPerson(
   isMain: true,
 );
 
-bool _select(bool value) {
-  // Code-only visual fixture input; the actual saved member setting has its
-  // own persistence contract suite.
-  ZyraAppGoldStyle.instance.restore(value);
-  return true;
-}
+bool _select(bool value) => ZyraAppGoldStyle.instance.select(
+  value,
+  expectedGeneration: ZyraAccountState.generation,
+  expectedRevision: ZyraAppGoldStyle.instance.revision,
+);
 
 const _seekerSnapshot = DashboardSnapshot(
   role: DashboardRole.seeker,
@@ -160,25 +157,6 @@ Widget _subject(String name) => switch (name) {
   ),
   'seeker_dashboard' ||
   'guardian_dashboard' => _dashboard(guardian: name == 'guardian_dashboard'),
-  'picker' => Scaffold(
-    body: DecoratedBox(
-      decoration: ZyraAppGoldDecoration(gradient: ZyraColors.brandGradient),
-      child: SafeArea(
-        child: ListenableBuilder(
-          listenable: ZyraAppGoldStyle.instance,
-          builder: (context, _) => ZyraPersonalisationContent(
-            snapshot: ZyraPersonalisationSnapshot(
-              palette: ZyraColors.currentDefaultPalette,
-              hapticLevel: ZyraHapticLevel.off,
-              goldEnabled: ZyraAppGoldStyle.instance.enabled,
-            ),
-            onChooseHaptic: null,
-            onGoldChanged: _select,
-          ),
-        ),
-      ),
-    ),
-  ),
   _ => throw ArgumentError.value(name),
 };
 
@@ -308,9 +286,8 @@ void main() {
       'guardian_settings',
       'seeker_dashboard',
       'guardian_dashboard',
-      'picker',
     ]) {
-      testWidgets('$name Off/On real fonts ${layout.name}', (tester) async {
+      testWidgets('$name ignores retired Gold selection with real fonts ${layout.name}', (tester) async {
         tester.view.physicalSize = layout.size;
         tester.view.devicePixelRatio = 1;
         addTearDown(tester.view.resetPhysicalSize);
@@ -344,14 +321,6 @@ void main() {
           ),
         );
         await tester.pumpAndSettle();
-        if (name == 'picker') {
-          await tester.scrollUntilVisible(
-            find.byKey(const ValueKey('personalisation_gold_toggle')),
-            160,
-            scrollable: find.byType(Scrollable).last,
-          );
-          await tester.pumpAndSettle();
-        }
         if (name == 'seeker_dashboard') {
           expect(find.text('No Guardian connected yet'), findsOneWidget);
         } else if (name == 'guardian_dashboard') {
@@ -369,42 +338,15 @@ void main() {
         final off = await _pixels(tester);
         await _candidate(tester, '${name}_${layout.name}_off', off);
         final originalElement = find.byKey(_boundary).evaluate().single;
-        if (name == 'picker') {
-          final toggle = find.byKey(
-            const ValueKey('personalisation_gold_toggle'),
-          );
-          await tester.ensureVisible(toggle);
-          await tester.tap(toggle);
-        } else {
-          expect(_select(true), isTrue);
-        }
+        expect(_select(true), isFalse);
         await tester.pumpAndSettle();
-        expect(ZyraAppGoldStyle.instance.enabled, isTrue);
+        expect(ZyraAppGoldStyle.instance.enabled, isFalse);
         expect(ZyraAppGoldRenderer.instance.reducedMotion, isTrue);
         expect(find.byKey(_boundary).evaluate().single, same(originalElement));
         expect(tester.takeException(), isNull);
-        final on = await _pixels(tester);
-        expect(
-          on,
-          isNot(orderedEquals(off)),
-          reason: 'On visibly changes $name',
-        );
-        await _candidate(tester, '${name}_${layout.name}_on', on);
-        if (name == 'picker') {
-          expect(find.text('On'), findsOneWidget);
-          final toggle = find.byKey(
-            const ValueKey('personalisation_gold_toggle'),
-          );
-          await tester.ensureVisible(toggle);
-          await tester.tap(toggle);
-        } else {
-          expect(_select(false), isTrue);
-        }
+        expect(await _pixels(tester), orderedEquals(off));
+        expect(_select(false), isFalse);
         await tester.pumpAndSettle();
-        expect(ZyraAppGoldStyle.instance.enabled, isFalse);
-        expect(tester.takeException(), isNull);
-        // Screens remain mounted; no fixture reload or Navigator replacement.
-        // Picker changes its label, but returns exactly to its initial Off view.
         expect(await _pixels(tester), orderedEquals(off));
         await tester.pumpWidget(const SizedBox.shrink());
         await tester.pumpAndSettle();

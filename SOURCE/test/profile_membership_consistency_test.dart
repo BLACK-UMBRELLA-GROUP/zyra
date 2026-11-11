@@ -702,16 +702,16 @@ void main() {
             'MEMBERSHIP',
             'ABOUT ME',
             'SAFETY & SHARING',
-            'PERSONALISATION',
           }.contains(label),
         ),
         orderedEquals(const [
           'MEMBERSHIP',
           'ABOUT ME',
           'SAFETY & SHARING',
-          'PERSONALISATION',
         ]),
       );
+      expect(sectionLabels, isNot(contains('PERSONALISATION')));
+      expect(find.text('Appearance & haptics'), findsNothing);
 
       await tester.scrollUntilVisible(find.text('Settings'), 240);
       await tester.tap(find.text('Settings'));

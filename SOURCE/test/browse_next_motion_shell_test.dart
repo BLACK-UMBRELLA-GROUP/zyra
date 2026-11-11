@@ -18,6 +18,7 @@ import 'package:zyra/widgets/zyra_browse_next_photo_motion.dart';
 import 'package:zyra/widgets/zyra_invitation_outline.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
+import 'support/pump_invitation_feedback.dart';
 import 'support/zyra_hidden_dev_controls_driver.dart';
 
 const _sara = 'draft-sara';
@@ -409,7 +410,7 @@ Future<void> _tap(WidgetTester tester, String id, {bool settle = true}) async {
   final target = _key(id);
   expect(target, findsOneWidget);
   await tester.ensureVisible(target);
-  await tester.pumpAndSettle();
+  await pumpInvitationFeedback(tester);
   var visible = tester
       .getRect(target)
       .intersect(Offset.zero & tester.view.physicalSize);
@@ -432,7 +433,7 @@ Future<void> _tap(WidgetTester tester, String id, {bool settle = true}) async {
   );
   await tester.tapAt(visible.center);
   if (settle) {
-    await tester.pumpAndSettle();
+    await pumpInvitationFeedback(tester);
   } else {
     await tester.pump();
   }

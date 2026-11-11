@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_presentation.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import '../support/received_request_fixture.dart';
 import 'package:zyra/dev/zyra_guardian_circle_topic_options.dart';
 import 'package:zyra/dev/zyra_my_zyra_activity_preview.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
@@ -16,7 +17,7 @@ const _enabled = bool.fromEnvironment('ZYRA_BASELINE_CAPTURE');
 const _sara = 'draft-sara';
 DateTime _clock() => DateTime.utc(2026, 10, 29, 12);
 ViewRequestDraftModel _active([int count = 3]) =>
-    ViewRequestDraftModel(capacity: 3, clock: _clock)..seedJourneys(count);
+    ReceivedRequestFixture(capacity: 3, clock: _clock)..seedJourneys(count);
 void _next(ViewRequestDraftModel model) {
   final stage = model.stageFor(_sara)!.value;
   if (stage == 'salam_exchange') {
@@ -167,7 +168,7 @@ void main() {
         );
       }
       for (final capacity in [1, 3]) {
-        final m = ViewRequestDraftModel(capacity: capacity, clock: _clock);
+        final m = ReceivedRequestFixture(capacity: capacity, clock: _clock);
         await h.mount(
           tab: 1,
           model: m,
@@ -180,7 +181,7 @@ void main() {
           'Public empty local model, membership matching capacity',
         );
       }
-      final m = ViewRequestDraftModel(capacity: 3, clock: _clock);
+      final m = ReceivedRequestFixture(capacity: 3, clock: _clock);
       await _safe(h, 'browse_and_requests', 'profile', 'normal', m, tab: 0);
       await _safe(
         h,
@@ -236,7 +237,7 @@ void main() {
           'ended_journeys',
           page,
           'empty',
-          ViewRequestDraftModel(capacity: 3, clock: _clock),
+          ReceivedRequestFixture(capacity: 3, clock: _clock),
           tab: 2,
         );
       }
@@ -263,7 +264,7 @@ void main() {
           tab: 2,
         );
       }
-      final legacy = ViewRequestDraftModel(capacity: 3, clock: _clock)
+      final legacy = ReceivedRequestFixture(capacity: 3, clock: _clock)
         ..seedHistory();
       await h.mount(tab: 2, pages: ['ended'], model: legacy);
       h.assertPage('ended');
@@ -288,7 +289,7 @@ void main() {
         final stage = m.stageFor(_sara)!.value;
         await _safe(h, 'journey', 'journey', 'stage_$stage', m);
       }
-      final p = ViewRequestDraftModel(capacity: 3, clock: _clock);
+      final p = ReceivedRequestFixture(capacity: 3, clock: _clock);
       p.request(_sara);
       p.simulateRecipientAccept(_sara);
       await _safe(h, 'journey', 'journey', 'preparing', p);
@@ -487,7 +488,7 @@ void main() {
         'normal',
         'Guardian tab → actual Add Guardian',
       );
-      final preparing = ViewRequestDraftModel(capacity: 3, clock: _clock)
+      final preparing = ReceivedRequestFixture(capacity: 3, clock: _clock)
         ..request(_sara)
         ..simulateRecipientAccept(_sara)
         ..markReady(_sara)

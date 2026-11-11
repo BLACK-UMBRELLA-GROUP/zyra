@@ -13,6 +13,7 @@ import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/state/app_state.dart';
@@ -36,7 +37,7 @@ class _NoNetwork extends HttpOverrides {
 }
 
 ViewRequestDraftModel _preparing({bool basic = false}) {
-  final model = ViewRequestDraftModel(capacity: 3)..seedJourneys(1);
+  final model = ReceivedRequestFixture(capacity: 3)..seedJourneys(1);
   expect(
     model.setSampleGuardianJourneyAccess(
       _yusuf,

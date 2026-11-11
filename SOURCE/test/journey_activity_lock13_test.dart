@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 
 // LOCK 13 sorting uses actual local actions, never Timeline example dates.
 // These tests instantiate no account, service, timer or member data adapter.
@@ -27,7 +28,7 @@ void main() {
 
   setUp(() {
     now = DateTime.utc(2026, 10, 30, 10);
-    model = ViewRequestDraftModel(capacity: 3, clock: () => now);
+    model = ReceivedRequestFixture(capacity: 3, clock: () => now);
   });
 
   test(

@@ -20,6 +20,7 @@ import 'package:zyra/dev/zyra_one_journey_settings_details.dart';
 import 'package:zyra/dev/zyra_one_journey_sample_photos.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 import 'package:zyra/screens/settings/help_support_screen.dart';
 import 'package:zyra/screens/settings/hidden_profiles_screen.dart';
 import 'package:zyra/services/zyra_account_state.dart';
@@ -84,7 +85,7 @@ ZyraPreviewNavigationCheckpoint _seed({
   ViewRequestDraftModel? model,
   bool hiddenPage = false,
 }) {
-  final value = model ?? ViewRequestDraftModel(capacity: 3);
+  final value = model ?? ReceivedRequestFixture(capacity: 3);
   return ZyraPreviewNavigationCheckpoint(
     guardian: false,
     model: value.snapshot(),
@@ -461,7 +462,7 @@ void main() {
   });
 
   test('unhide removes only a known hidden fixture flag', () {
-    final model = ViewRequestDraftModel(capacity: 3)..seedHistory();
+    final model = ReceivedRequestFixture(capacity: 3)..seedHistory();
     expect(model.request(_sara), isTrue);
     expect(model.hide(_sara), isTrue);
     expect(model.hide(_aisha), isTrue);
@@ -482,7 +483,7 @@ void main() {
   });
 
   test('unhide never removes a block or revives a blocked discovery row', () {
-    final model = ViewRequestDraftModel(capacity: 3);
+    final model = ReceivedRequestFixture(capacity: 3);
     expect(model.hide(_sara), isTrue);
     expect(model.block(_sara), isTrue);
     final before = model.snapshot();
@@ -499,7 +500,7 @@ void main() {
   test(
     'hidden list is detached in checkpoints and explicit reset clears it',
     () {
-      final model = ViewRequestDraftModel(capacity: 3);
+      final model = ReceivedRequestFixture(capacity: 3);
       expect(model.hide(_sara), isTrue);
       final saved = model.snapshot();
       final restored = ViewRequestDraftModel.fromSnapshot(saved);
@@ -517,7 +518,7 @@ void main() {
   testWidgets(
     'Profiles hide appears in Settings and restore keeps request and unlock',
     (tester) async {
-      final model = ViewRequestDraftModel(capacity: 3);
+      final model = ReceivedRequestFixture(capacity: 3);
       expect(model.request(_sara), isTrue);
       final owner = _Owner();
       expect(owner.access.unlock(_sara), isTrue);
@@ -554,7 +555,7 @@ void main() {
   testWidgets('cancel restoration keeps the same profile hidden', (
     tester,
   ) async {
-    final model = ViewRequestDraftModel(capacity: 3)..hide(_sara);
+    final model = ReceivedRequestFixture(capacity: 3)..hide(_sara);
     final owner = _Owner();
     await owner.mount(
       tester,
@@ -599,7 +600,7 @@ void main() {
   testWidgets(
     'Compact halo uses its admitted fixture photo and one action card',
     (tester) async {
-      final model = ViewRequestDraftModel(capacity: 3)..hide(_sara);
+      final model = ReceivedRequestFixture(capacity: 3)..hide(_sara);
       final owner = _Owner();
       await owner.mount(
         tester,
@@ -671,7 +672,7 @@ void main() {
   testWidgets(
     'Compact halo list scrolls at 200 percent while Help stays fixed',
     (tester) async {
-      final model = ViewRequestDraftModel(capacity: 3);
+      final model = ReceivedRequestFixture(capacity: 3);
       for (final person in draftProfiles) {
         expect(model.hide(person.id), isTrue);
       }
@@ -798,7 +799,7 @@ void main() {
   testWidgets('View profile inspects without unhiding or changing requests', (
     tester,
   ) async {
-    final model = ViewRequestDraftModel(capacity: 3);
+    final model = ReceivedRequestFixture(capacity: 3);
     expect(model.request(_sara), isTrue);
     expect(model.hide(_sara), isTrue);
     final owner = _Owner();
@@ -882,7 +883,7 @@ void main() {
   testWidgets('current hidden card Unhide changes only hide and returns once', (
     tester,
   ) async {
-    final model = ViewRequestDraftModel(capacity: 3)
+    final model = ReceivedRequestFixture(capacity: 3)
       ..request(_sara)
       ..hide(_sara);
     final owner = _Owner();
@@ -914,7 +915,7 @@ void main() {
     tester,
   ) async {
     final owner = _Owner();
-    final model = ViewRequestDraftModel(capacity: 3)..hide(_sara);
+    final model = ReceivedRequestFixture(capacity: 3)..hide(_sara);
     await owner.mount(
       tester,
       checkpoint: _seed(model: model, hiddenPage: true),
@@ -947,7 +948,7 @@ void main() {
   testWidgets('confirmed hidden-card Block does not unhide or restore a pair', (
     tester,
   ) async {
-    final model = ViewRequestDraftModel(capacity: 3)
+    final model = ReceivedRequestFixture(capacity: 3)
       ..request(_sara)
       ..hide(_sara);
     final owner = _Owner();
@@ -997,7 +998,7 @@ void main() {
         tester,
       ) async {
         final owner = _Owner();
-        final model = ViewRequestDraftModel(capacity: 3)..hide(_sara);
+        final model = ReceivedRequestFixture(capacity: 3)..hide(_sara);
         await owner.mount(
           tester,
           checkpoint: _seed(model: model, hiddenPage: true),
@@ -1070,7 +1071,7 @@ void main() {
     'compact enlarged hidden inspection keeps both actions readable',
     (tester) async {
       final owner = _Owner();
-      final model = ViewRequestDraftModel(capacity: 3)..hide(_sara);
+      final model = ReceivedRequestFixture(capacity: 3)..hide(_sara);
       await owner.mount(
         tester,
         checkpoint: _seed(model: model, hiddenPage: true),
@@ -1093,7 +1094,7 @@ void main() {
   testWidgets('a blocked hidden row cannot open View or remove its block', (
     tester,
   ) async {
-    final model = ViewRequestDraftModel(capacity: 3)
+    final model = ReceivedRequestFixture(capacity: 3)
       ..hide(_sara)
       ..block(_sara);
     final owner = _Owner();
@@ -1131,7 +1132,7 @@ void main() {
   testWidgets('Hidden profiles Help opens searchable preview and returns', (
     tester,
   ) async {
-    final model = ViewRequestDraftModel(capacity: 3)..hide(_sara);
+    final model = ReceivedRequestFixture(capacity: 3)..hide(_sara);
     final owner = _Owner();
     await owner.mount(
       tester,
@@ -1178,7 +1179,7 @@ void main() {
     testWidgets('a retained View choice refuses after $departure', (
       tester,
     ) async {
-      final model = ViewRequestDraftModel(capacity: 3)..hide(_sara);
+      final model = ReceivedRequestFixture(capacity: 3)..hide(_sara);
       final owner = _Owner();
       await owner.mount(
         tester,
@@ -1235,7 +1236,7 @@ void main() {
   testWidgets('covered-and-returned View cannot regain its old menu lease', (
     tester,
   ) async {
-    final model = ViewRequestDraftModel(capacity: 3)..hide(_sara);
+    final model = ReceivedRequestFixture(capacity: 3)..hide(_sara);
     final owner = _Owner();
     await owner.mount(
       tester,
@@ -1271,7 +1272,7 @@ void main() {
   testWidgets(
     'unknown row IDs and a retained control-epoch row cannot restore',
     (tester) async {
-      final model = ViewRequestDraftModel(capacity: 3)..hide(_sara);
+      final model = ReceivedRequestFixture(capacity: 3)..hide(_sara);
       final owner = _Owner();
       await owner.mount(
         tester,
@@ -1298,7 +1299,7 @@ void main() {
   testWidgets('a confirmation retained after leaving Settings cannot restore', (
     tester,
   ) async {
-    final model = ViewRequestDraftModel(capacity: 3)..hide(_sara);
+    final model = ReceivedRequestFixture(capacity: 3)..hide(_sara);
     final owner = _Owner();
     await owner.mount(
       tester,
@@ -1318,7 +1319,7 @@ void main() {
   testWidgets('covered-and-returned confirmation cannot regain authority', (
     tester,
   ) async {
-    final model = ViewRequestDraftModel(capacity: 3)..hide(_sara);
+    final model = ReceivedRequestFixture(capacity: 3)..hide(_sara);
     final owner = _Owner();
     await owner.mount(
       tester,
@@ -1348,7 +1349,7 @@ void main() {
   testWidgets('revoked shell admission rejects a retained restoration', (
     tester,
   ) async {
-    final model = ViewRequestDraftModel(capacity: 3)..hide(_sara);
+    final model = ReceivedRequestFixture(capacity: 3)..hide(_sara);
     final owner = _Owner();
     await owner.mount(
       tester,
@@ -1367,7 +1368,7 @@ void main() {
   testWidgets(
     'same-role checkpoint restores the list but not its confirmation',
     (tester) async {
-      final model = ViewRequestDraftModel(capacity: 3)..hide(_sara);
+      final model = ReceivedRequestFixture(capacity: 3)..hide(_sara);
       final owner = _Owner();
       await owner.mount(
         tester,
@@ -1391,7 +1392,7 @@ void main() {
   testWidgets(
     'hidden list and three actions remain readable at 320px and 200 percent',
     (tester) async {
-      final model = ViewRequestDraftModel(capacity: 3)..hide(_sara);
+      final model = ReceivedRequestFixture(capacity: 3)..hide(_sara);
       final owner = _Owner();
       await owner.mount(
         tester,

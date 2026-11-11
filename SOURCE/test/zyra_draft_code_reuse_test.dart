@@ -73,7 +73,7 @@ void main() {
                 lookup ??
                 (code) async => ZyraDraftKnownPersonCodes.resolve(code),
             onViewProfile: viewed ?? (_) {},
-            captureBuilder: (context, guard, code, manual) =>
+            captureBuilder: (context, guard, code, manual, onRunningChanged) =>
                 const Text('fake camera'),
           ),
         ),

@@ -1896,7 +1896,6 @@ class ViewRequestDraftModel {
     _hiddenPeers.clear();
     _blockedPeers.clear();
     _acknowledgedReceivedRequestIds.clear();
-    seedReceived(draftProfiles.first.id);
     _progress.clear();
     _journeyStartedAt.clear();
     _journeyLastActivityAt.clear();

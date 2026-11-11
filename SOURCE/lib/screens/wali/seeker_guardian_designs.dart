@@ -1017,6 +1017,7 @@ class _GuardianDetailsStrip extends StatelessWidget {
 // LOCK19 reuses the existing inline Cancel/Confirm flow and action delegates.
 Widget zyraGuardianCardManageActions({
   required WaliLinkedPerson person,
+  required bool stackActions,
   required List<WaliLinkedPerson> otherGuardians,
   required bool Function() canAct,
   required GuardianMakeMainAction makeMainGuardian,
@@ -1033,6 +1034,7 @@ Widget zyraGuardianCardManageActions({
   onChanged: null,
   compact: true,
   cardLayout: true,
+  stackCardActions: stackActions,
   canAct: canAct,
 );
 
@@ -1045,7 +1047,7 @@ class _GuardianManageActions extends StatefulWidget {
   final GuardianRemoveAction? removeGuardian;
   final VoidCallback? onChanged;
   final bool compact;
-  final bool cardLayout;
+  final bool cardLayout, stackCardActions;
   final bool Function()? canAct;
 
   const _GuardianManageActions({
@@ -1059,6 +1061,7 @@ class _GuardianManageActions extends StatefulWidget {
     required this.onChanged,
     this.compact = false,
     this.cardLayout = false,
+    this.stackCardActions = false,
     this.canAct,
   });
 
@@ -1203,24 +1206,19 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
       ),
     ];
     if (!widget.cardLayout) return Column(children: actions);
-    return LayoutBuilder(
-      builder: (context, box) {
-        if (box.maxWidth < 320 &&
-            MediaQuery.textScalerOf(context).scale(1) > 1.3) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [actions.first, const SizedBox(height: 8), actions.last],
-          );
-        }
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(child: actions.first),
-            const SizedBox(width: 8),
-            Expanded(child: actions.last),
-          ],
-        );
-      },
+    if (widget.stackCardActions) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [actions.first, const SizedBox(height: 8), actions.last],
+      );
+    }
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(child: actions.first),
+        const SizedBox(width: 8),
+        Expanded(child: actions.last),
+      ],
     );
   }
 

@@ -16,6 +16,7 @@ import 'package:zyra/dev/zyra_one_journey_options.dart';
 import 'package:zyra/dev/zyra_one_journey_options_page.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/state/app_state.dart';
@@ -245,7 +246,7 @@ void main() {
     (tester) async {
       double? referenceHeight;
       for (final count in [3, 1, 2]) {
-        final model = ViewRequestDraftModel(capacity: 3);
+        final model = ReceivedRequestFixture(capacity: 3);
         expect(model.seedJourneys(count), isTrue);
         final before = model.snapshot();
         final owner = _Owner();
@@ -282,7 +283,7 @@ void main() {
   testWidgets(
     'zero One Journeys has an honest empty state and Browse creates no Journey',
     (tester) async {
-      final model = ViewRequestDraftModel(capacity: 3);
+      final model = ReceivedRequestFixture(capacity: 3);
       final before = model.snapshot();
       final owner = _Owner();
       await owner.mount(tester, model: model);
@@ -307,7 +308,7 @@ void main() {
   testWidgets(
     'zero Basic Journeys keeps one place and its guarded One upsell',
     (tester) async {
-      final model = ViewRequestDraftModel(capacity: 1);
+      final model = ReceivedRequestFixture(capacity: 1);
       final owner = _Owner();
       await owner.mount(tester, model: model, basic: true);
       final before = owner.latest.model;
@@ -336,7 +337,7 @@ void main() {
   testWidgets('Basic upsell opens Membership without granting places', (
     tester,
   ) async {
-    final model = ViewRequestDraftModel(capacity: 1);
+    final model = ReceivedRequestFixture(capacity: 1);
     expect(model.seedJourneys(1), isTrue);
     final owner = _Owner();
     await owner.mount(tester, model: model, basic: true);
@@ -363,7 +364,7 @@ void main() {
     testWidgets(
       '${preparing ? 'preparing' : 'active'} places remain occupied cards',
       (tester) async {
-        final model = ViewRequestDraftModel(capacity: 3);
+        final model = ReceivedRequestFixture(capacity: 3);
         final id = preparing ? draftProfiles.first.id : _sara;
         if (preparing) {
           expect(model.acceptReceived(id), isTrue);
@@ -390,7 +391,7 @@ void main() {
         '${basic ? 'Basic' : 'One'} ${empty ? 'zero-Journey' : 'one-Journey'} '
         'compact 200-percent places remain readable',
         (tester) async {
-          final model = ViewRequestDraftModel(capacity: basic ? 1 : 3);
+          final model = ReceivedRequestFixture(capacity: basic ? 1 : 3);
           if (!empty) expect(model.seedJourneys(1), isTrue);
           final before = model.snapshot();
           final owner = _Owner();
@@ -435,7 +436,7 @@ void main() {
   testWidgets(
     'pushed Journey options replace the reader without losing return',
     (tester) async {
-      final model = ViewRequestDraftModel(capacity: 3);
+      final model = ReceivedRequestFixture(capacity: 3);
       expect(model.seedJourneys(1), isTrue);
       final before = model.snapshot();
       final owner = _Owner();
@@ -464,7 +465,7 @@ void main() {
   for (final empty in [false, true]) {
     testWidgets('retained Basic ${empty ? 'zero-Journey' : 'one-Journey'} '
         'upgrade is inert after route withdrawal', (tester) async {
-      final model = ViewRequestDraftModel(capacity: 1);
+      final model = ReceivedRequestFixture(capacity: 1);
       if (!empty) expect(model.seedJourneys(1), isTrue);
       final owner = _Owner();
       await owner.mount(tester, model: model, basic: true);
@@ -485,7 +486,7 @@ void main() {
       'covered, denied and disposed Basic ${empty ? 'zero-Journey' : 'one-Journey'} '
       'upgrade callbacks are inert',
       (tester) async {
-        final model = ViewRequestDraftModel(capacity: 1);
+        final model = ReceivedRequestFixture(capacity: 1);
         if (!empty) expect(model.seedJourneys(1), isTrue);
         final owner = _Owner();
         await owner.mount(tester, model: model, basic: true);

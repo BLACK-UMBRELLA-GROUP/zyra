@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import '../support/received_request_fixture.dart';
 
 import 'baseline_capture_support.dart';
 
@@ -18,7 +19,7 @@ const _yusuf = 'draft-guardian-yusuf';
 
 DateTime _clock() => DateTime.utc(2026, 10, 29, 12);
 ViewRequestDraftModel _model() =>
-    ViewRequestDraftModel(capacity: 3, clock: _clock);
+    ReceivedRequestFixture(capacity: 3, clock: _clock);
 
 BaselineHarness _harness(WidgetTester tester, String group) {
   addTearDown(tester.view.resetPhysicalSize);

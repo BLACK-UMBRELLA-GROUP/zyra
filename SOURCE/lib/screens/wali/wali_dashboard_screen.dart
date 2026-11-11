@@ -688,7 +688,9 @@ class _WaliDashboardScreenState extends State<WaliDashboardScreen> {
   }) => ZyraFadeEdges.bottomOnly(
     key: ValueKey('guardian-dashboard-fade-$pageKey'),
     bottom:
-        ZyraNavBarMetrics.restingHeight + ZyraNavBarMetrics.bottomInset + 10,
+        ZyraNavBarMetrics.legacyRestingHeight +
+        ZyraNavBarMetrics.bottomInset +
+        10,
     child: RefreshIndicator(
       color: ZyraColors.accentOnCanvas,
       backgroundColor: ZyraColors.surfaceFill,

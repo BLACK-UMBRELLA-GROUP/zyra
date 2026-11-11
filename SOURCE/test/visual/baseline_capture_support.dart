@@ -9,7 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zyra/dev/zyra_guardian_circle_preview.dart';
 import 'package:zyra/main.dart' show ZyraApp;
 import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
@@ -17,6 +19,7 @@ import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import '../support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/state/app_state.dart';
@@ -52,7 +55,10 @@ class _NoNetwork extends HttpOverrides {
   }
 }
 
-Future<void> baselineSetUp({String evidenceRoot = baselineEvidence}) async {
+Future<void> baselineSetUp({
+  String? evidenceRoot = baselineEvidence,
+  bool useSystemSymbolFont = true,
+}) async {
   TestWidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.setMockInitialValues({});
   final reading = FontLoader(_font);
@@ -70,16 +76,20 @@ Future<void> baselineSetUp({String evidenceRoot = baselineEvidence}) async {
     ..addFont(rootBundle.load('fonts/MaterialIcons-Regular.otf'));
   final wordmark = FontLoader(_wordmark)
     ..addFont(rootBundle.load('assets/fonts/Syne-SemiBold.ttf'));
-  final symbolBytes = await File(_symbolPath).readAsBytes();
-  final symbols = FontLoader(_symbolFont)
-    ..addFont(Future.value(ByteData.sublistView(symbolBytes)));
+  final symbolBytes = useSystemSymbolFont
+      ? await File(_symbolPath).readAsBytes()
+      : null;
+  final symbols = symbolBytes == null
+      ? null
+      : (FontLoader(_symbolFont)
+          ..addFont(Future.value(ByteData.sublistView(symbolBytes))));
   await Future.wait([
     reading.load(),
     icons.load(),
     wordmark.load(),
-    symbols.load(),
+    if (symbols != null) symbols.load(),
   ]);
-  if (!_compareOnly) {
+  if (!_compareOnly && evidenceRoot != null && symbolBytes != null) {
     final environment = File('$evidenceRoot/capture_environment.json');
     await environment.parent.create(recursive: true);
     await environment.writeAsString(
@@ -198,6 +208,7 @@ class BaselineHarness {
     this.flatOutput = false,
     this.textScale = 1,
     this.highContrast = false,
+    this.circleArrivalsFor,
   });
   final WidgetTester tester;
   final String group;
@@ -205,6 +216,8 @@ class BaselineHarness {
   final bool flatOutput;
   final double textScale;
   final bool highContrast;
+  final ZyraCirclePreviewArrivals? circleArrivalsFor;
+  late ZyraShellTestFixture shellFixture;
   bool guardian = false;
   List<Map<String, Object?>> get rows => _rowsByGroup.putIfAbsent(group, () {
     final file = File('$evidenceRoot/rows_$group.json');
@@ -255,6 +268,7 @@ class BaselineHarness {
     String? personId = 'draft-sara',
     ViewRequestDraftModel? model,
     ZyraPreviewNavigationCheckpoint? checkpoint,
+    bool receivedRequest = true,
     int requestsTab = 0,
     String seekerMembership = 'Seeker One',
     String guardianMembership = 'Guardian One',
@@ -271,12 +285,17 @@ class BaselineHarness {
     tester.view.physicalSize = const Size(1290, 2796);
     tester.view.devicePixelRatio = 3;
     final ready = Completer<void>();
+    shellFixture = ZyraShellTestFixture(circleArrivalsFor: circleArrivalsFor);
+    final capacity = initialSeekerBasic ? 1 : 3;
+    final defaultModel = receivedRequest
+        ? ReceivedRequestFixture(capacity: capacity)
+        : ViewRequestDraftModel(capacity: capacity);
     await tester.pumpWidget(
       _ProductionPreviewFrame(
         textScale: textScale,
         highContrast: highContrast,
         child: ZyraOneJourneyConceptShell(
-          fixture: ZyraShellTestFixture().fixture,
+          fixture: shellFixture.fixture,
           key: UniqueKey(),
           canAct: () => true,
           onExit: () => fail('Capture must stay in the local Founder preview.'),
@@ -287,12 +306,12 @@ class BaselineHarness {
               checkpoint ??
               ZyraPreviewNavigationCheckpoint(
                 guardian: guardian,
-                model:
-                    (model ??
-                            ViewRequestDraftModel(
-                              capacity: initialSeekerBasic ? 1 : 3,
-                            ))
-                        .snapshot(),
+                model: (model ?? defaultModel).snapshot(),
+                guardianTabs: guardian && receivedRequest && model == null
+                    ? const ZyraGuardianTabsSnapshot(
+                        connection: ZyraGuardianConnection.pending,
+                      )
+                    : const ZyraGuardianTabsSnapshot.quiet(),
                 tab: tab,
                 pages: pages,
                 personId: personId,

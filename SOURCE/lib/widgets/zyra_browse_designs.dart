@@ -72,6 +72,7 @@ class ZyraBrowseDesigns extends StatefulWidget {
     this.canRequest,
     this.requestRowLabels,
     this.bottomPadding = 100,
+    this.fixedTabFooter = false,
     this.alignHeaderActions = false,
     this.nextProfileMotion = ZyraBrowseNextMotion.current,
     this.nextProfileMotionEpoch = 0,
@@ -110,6 +111,7 @@ class ZyraBrowseDesigns extends StatefulWidget {
   /// Null retains the shared presenter's existing three-pill layout.
   final List<String>? requestRowLabels;
   final double bottomPadding;
+  final bool fixedTabFooter;
   final bool alignHeaderActions;
   // Optional presentation-only preview. Callers own selection and actions;
   // unchanged default and token zero preserve all existing shared callers.
@@ -605,8 +607,17 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
     bottom: false,
     child: LayoutBuilder(
       builder: (context, constraints) {
-        final bottom = widget.showFeedChrome ? _footerReserve(context) : 0.0;
-        final available = math.max(0.0, constraints.maxHeight - 24 - bottom);
+        final bottom = !widget.showFeedChrome
+            ? 0.0
+            : widget.fixedTabFooter
+            ? widget.bottomPadding
+            : _footerReserve(context);
+        // The painted dot ends 9 pt before the bottom of its 24 pt target.
+        final afterDots = widget.fixedTabFooter ? 3.0 : 0.0;
+        final available = math.max(
+          0.0,
+          constraints.maxHeight - 24 - afterDots - bottom,
+        );
         final contentWidth = math.max(1.0, constraints.maxWidth - 40);
         // Ink's one-pixel borders contribute two pixels to each pill/card.
         // Do not measure hidden feed labels: their delegates are outside an
@@ -633,26 +644,29 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
                   contentWidth - 48,
                 ),
               );
-        final photoHeight = math.max(
-          profile == null
-              ? 240.0
-              : math.max(
-                  240.0,
-                  _identityMinimumHeight(profile, contentWidth - 64),
-                ),
-          math.min(
-            620.0,
+        final fittedHeight =
             available -
-                headerHeight -
-                (widget.showFeedChrome ? 32 : 16) -
-                footerHeight -
-                2 * ZyraCardMetrics.padding -
-                2,
-          ),
-        );
+            headerHeight -
+            (widget.showFeedChrome ? 32 : 16) -
+            footerHeight -
+            2 * ZyraCardMetrics.padding -
+            2;
+        final photoHeight = widget.fixedTabFooter
+            ? math.max(0.0, fittedHeight)
+            : math.max(
+                profile == null
+                    ? 240.0
+                    : math.max(
+                        240.0,
+                        _identityMinimumHeight(profile, contentWidth - 64),
+                      ),
+                math.min(620.0, fittedHeight),
+              );
         return ZyraShadowScrollView(
           key: const ValueKey('concept_browse_design_scroll'),
-          physics: const ClampingScrollPhysics(),
+          physics: widget.fixedTabFooter
+              ? const NeverScrollableScrollPhysics()
+              : const ClampingScrollPhysics(),
           padding: EdgeInsets.fromLTRB(20, 16, 20, bottom),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -660,6 +674,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
               if (widget.showFeedChrome && !widget.readOnlyPreview)
                 SizedBox(height: headerHeight, child: _header()),
               _photoPagination(profile),
+              if (afterDots > 0) SizedBox(height: afterDots),
               profile == null
                   ? Text(
                       'No profiles to view right now.',

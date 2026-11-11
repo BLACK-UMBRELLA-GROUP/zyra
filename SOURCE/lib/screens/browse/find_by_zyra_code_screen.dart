@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show SystemUiOverlayStyle;
 import '../../dev/zyra_app_gold_preview.dart';
 
 import '../../dev/zyra_dev_personal_code_fixtures.dart';
@@ -321,6 +322,7 @@ class _KnownPersonCodeScannerState extends State<_KnownPersonCodeScanner> {
     appBar: AppBar(
       title: Text('Scan ZYRA Code', style: ZyraText.heading(size: 17)),
       backgroundColor: Colors.black,
+      systemOverlayStyle: SystemUiOverlayStyle.light,
     ),
     body: ZyraCodeCapture(
       canCapture: () => _canCapture,

@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 
 const _amira = 'draft-amira';
 const _sara = 'draft-sara';
@@ -8,7 +9,7 @@ const _noor = 'draft-noor';
 void main() {
   test('only accepting our sent request records outgoing provenance', () {
     final now = DateTime.utc(2026, 10, 31, 9);
-    final model = ViewRequestDraftModel(capacity: 3, clock: () => now);
+    final model = ReceivedRequestFixture(capacity: 3, clock: () => now);
     expect(model.acceptReceived(_amira), isTrue);
     expect(model.stateFor(_amira), DraftJourneyState.preparing);
     expect(model.outgoingRequestAcceptedAt(_amira), isNull);
@@ -26,7 +27,7 @@ void main() {
 
   test('refused acceptance does not record or refresh an event', () {
     var now = DateTime.utc(2026, 10, 31, 9);
-    final model = ViewRequestDraftModel(clock: () => now);
+    final model = ReceivedRequestFixture(clock: () => now);
     expect(model.simulateRecipientAccept(_amira), isFalse);
     expect(model.simulateRecipientAccept('not-a-fixture'), isFalse);
     expect(model.outgoingAcceptedActivityRevision, 0);
@@ -41,7 +42,7 @@ void main() {
 
   test('later readiness and ending retain the immutable acceptance time', () {
     var now = DateTime.utc(2026, 10, 31, 9);
-    final model = ViewRequestDraftModel(clock: () => now);
+    final model = ReceivedRequestFixture(clock: () => now);
     expect(model.request(_sara), isTrue);
     expect(model.simulateRecipientAccept(_sara), isTrue);
     final accepted = model.outgoingRequestAcceptedAt(_sara);
@@ -60,7 +61,7 @@ void main() {
 
   test('same-time accepted requests retain distinct stable event ordering', () {
     final now = DateTime.utc(2026, 10, 31, 9);
-    final model = ViewRequestDraftModel(capacity: 3, clock: () => now);
+    final model = ReceivedRequestFixture(capacity: 3, clock: () => now);
     for (final id in [_sara, _noor]) {
       expect(model.request(id), isTrue);
       expect(model.simulateRecipientAccept(id), isTrue);
@@ -77,7 +78,7 @@ void main() {
     'outgoing acceptance precedes capacity replacement; incoming has no event',
     () {
       final now = DateTime.utc(2026, 10, 31, 9);
-      final outgoing = ViewRequestDraftModel(capacity: 3, clock: () => now)
+      final outgoing = ReceivedRequestFixture(capacity: 3, clock: () => now)
         ..fillCapacity();
       expect(outgoing.request(_noor), isTrue);
       expect(outgoing.simulateRecipientAccept(_noor), isTrue);
@@ -90,7 +91,7 @@ void main() {
       expect(outgoing.outgoingRequestAcceptedAt(_noor), now);
       expect(outgoing.outgoingRequestAcceptedRevision(_noor), 1);
 
-      final incoming = ViewRequestDraftModel(capacity: 3, clock: () => now)
+      final incoming = ReceivedRequestFixture(capacity: 3, clock: () => now)
         ..fillCapacity();
       expect(
         incoming.replaceJourneyForRequest(_amira, _sara, incoming: true),
@@ -103,7 +104,7 @@ void main() {
 
   test('snapshot restores detached UTC event times and owner sequence', () {
     final localTime = DateTime(2026, 10, 31, 9);
-    final original = ViewRequestDraftModel(capacity: 3, clock: () => localTime);
+    final original = ReceivedRequestFixture(capacity: 3, clock: () => localTime);
     expect(original.request(_sara), isTrue);
     expect(original.simulateRecipientAccept(_sara), isTrue);
     final snapshot = original.snapshot();
@@ -137,7 +138,7 @@ void main() {
     'reset and seeded Journeys clear provenance without inferring events',
     () {
       final now = DateTime.utc(2026, 10, 31, 9);
-      final model = ViewRequestDraftModel(capacity: 3, clock: () => now);
+      final model = ReceivedRequestFixture(capacity: 3, clock: () => now);
       expect(model.request(_sara), isTrue);
       expect(model.simulateRecipientAccept(_sara), isTrue);
       model.reset();

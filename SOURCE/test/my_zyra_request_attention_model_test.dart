@@ -1,12 +1,27 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'support/received_request_fixture.dart';
 
 const _received = 'draft-amira';
 const _notReceived = 'draft-sara';
 
 void main() {
-  test('only a current known received request has unseen attention', () {
+  test('fresh and reset draft state never manufactures received activity', () {
     final model = ViewRequestDraftModel(capacity: 3);
+    expect(model.states, isEmpty);
+    expect(model.receivedActivityRevision, 0);
+    expect(model.hasUnseenReceivedRequest(_received), isFalse);
+    expect(model.seedReceived(_received), isTrue);
+    expect(model.hasUnseenReceivedRequest(_received), isTrue);
+    model.reset();
+    expect(model.states, isEmpty);
+    expect(model.hasUnseenReceivedRequest(_received), isFalse);
+    expect(model.seedJourneys(1), isTrue);
+    expect(model.hasUnseenReceivedRequest(_received), isFalse);
+  });
+
+  test('only a current known received request has unseen attention', () {
+    final model = ReceivedRequestFixture(capacity: 3);
     final before = model.snapshot();
 
     expect(model.hasUnseenReceivedRequest(_received), isTrue);
@@ -40,7 +55,7 @@ void main() {
   });
 
   test('Browse hiding does not suppress received-request attention', () {
-    final model = ViewRequestDraftModel();
+    final model = ReceivedRequestFixture();
     expect(model.hide(_received), isTrue);
     expect(model.hasUnseenReceivedRequest(_received), isTrue);
     expect(model.acknowledgeReceivedRequests([_received]), isTrue);
@@ -50,7 +65,7 @@ void main() {
   });
 
   test('blocked requests cannot be acknowledged or shown as unseen', () {
-    final model = ViewRequestDraftModel();
+    final model = ReceivedRequestFixture();
     expect(model.block(_received), isTrue);
     expect(model.hasUnseenReceivedRequest(_received), isFalse);
     expect(model.acknowledgeReceivedRequests([_received]), isFalse);
@@ -59,7 +74,7 @@ void main() {
   });
 
   test('snapshot owns immutable detached attention and restores it', () {
-    final model = ViewRequestDraftModel();
+    final model = ReceivedRequestFixture();
     final before = model.snapshot();
     expect(before.acknowledgedReceivedRequestIds, isEmpty);
     expect(model.acknowledgeReceivedRequests([_received]), isTrue);
@@ -82,7 +97,7 @@ void main() {
   });
 
   test('reset and valid reseed make the new sample request unseen again', () {
-    final model = ViewRequestDraftModel(capacity: 3);
+    final model = ReceivedRequestFixture(capacity: 3);
     expect(model.acknowledgeReceivedRequests([_received]), isTrue);
     expect(model.seedJourneys(4), isFalse);
     expect(model.hasUnseenReceivedRequest(_received), isFalse);
@@ -97,7 +112,7 @@ void main() {
   });
 
   test('a terminal request is not falsely reintroduced by old attention', () {
-    final model = ViewRequestDraftModel();
+    final model = ReceivedRequestFixture();
     expect(model.acknowledgeReceivedRequests([_received]), isTrue);
     expect(model.declineReceived(_received), isTrue);
     expect(model.hasUnseenReceivedRequest(_received), isFalse);

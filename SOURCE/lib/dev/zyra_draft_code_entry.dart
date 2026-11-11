@@ -56,11 +56,13 @@ class ZyraDraftCodeEntry extends StatelessWidget {
     },
     captureBuilder:
         captureBuilder ??
-        (context, canCapture, onCode, onManualEntry) => ZyraCodeCapture(
-          canCapture: canCapture,
-          onCode: onCode,
-          onManualEntry: onManualEntry,
-          unavailableMessage: 'Camera is off — enter the code below',
-        ),
+        (context, canCapture, onCode, onManualEntry, onRunningChanged) =>
+            ZyraCodeCapture(
+              canCapture: canCapture,
+              onCode: onCode,
+              onManualEntry: onManualEntry,
+              framed: true,
+              onRunningChanged: onRunningChanged,
+            ),
   );
 }

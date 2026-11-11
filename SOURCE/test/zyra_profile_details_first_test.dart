@@ -305,10 +305,10 @@ void _expectSharedOutline(WidgetTester tester, {required bool sent}) {
               )
               .decoration
           as BoxDecoration;
-  expect(decoration.border!.top.width, 5);
+  expect(decoration.border!.top.width, 1.5);
   expect(
     decoration.border!.top.color,
-    ZyraColors.journeyGold.withValues(alpha: sent ? .65 : 0),
+    ZyraColors.journeyGold.withValues(alpha: sent ? 1 : 0),
   );
   expect(
     tester.getRect(outline),

@@ -236,7 +236,9 @@ void main() {
       await h.tap('guardian_connect_confirm');
       await h.tap('guardian_connect_send');
       expect(view(t).state.sent, {'aisha'});
-      expect(find.text('Request sent'), findsOneWidget);
+      final sentLabel = find.text('Request sent');
+      expect(sentLabel, findsOneWidget);
+      expect(t.widget<Text>(sentLabel).style!.color, ZyraColors.goldText);
       await h.tap('guardian_next');
       expect(find.text('N., 25'), findsOneWidget);
       expect(find.text('Introduced'), findsNothing);

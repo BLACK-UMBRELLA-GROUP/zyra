@@ -1197,6 +1197,9 @@ class _IdentityPrivacyPreviewDestinationState
           backgroundColor: white ? Colors.white : ZyraColors.luxuryDarkPurple,
           appBar: AppBar(
             backgroundColor: white ? Colors.white : ZyraColors.luxuryDarkPurple,
+            systemOverlayStyle: white
+                ? SystemUiOverlayStyle.dark
+                : SystemUiOverlayStyle.light,
             leading: IconButton(
               key: const ValueKey('identity_preview_privacy_back'),
               tooltip: 'Back',
