@@ -1,0 +1,437 @@
+{
+  "schema": 1,
+  "queueLine": 81,
+  "commitSha": "0aff82cc5fdf248d74a25b1ebbd8aa6005170df5",
+  "sourceReviewedAt": "2026-11-11T21:16:09Z",
+  "recordedAt": "2026-11-11T21:16:09+00:00",
+  "flutterVersion": "3.44.2",
+  "buildMode": "widget tests",
+  "target": "Offline Founder preview routes",
+  "locks": {
+    "profilesDetails": "LOCK 4 V4",
+    "profilesRequest": "LOCK 7 V4",
+    "guardianCarousel": "LOCK 19 V9",
+    "guardianInvitation": "LOCK 19 V10–V11",
+    "compatibilityTopics": "LOCK 27 V1",
+    "seekerFilters": "LOCK 10 V8",
+    "upgradeComparisons": "LOCK 25 V2",
+    "guardianCircle": "LOCK 20 V3",
+    "swipe": "LOCK 26"
+  },
+  "analyzer": {
+    "issues": 0,
+    "sha256": "dd85fe87567e0629ebee58b70caf2a3b9e33efcd5f7f1e71801918f74170eb7d"
+  },
+  "focused": {
+    "passCount": 205,
+    "failCount": 0,
+    "skipCount": 0,
+    "sha256": "f4a7e57cacb7957e882201ffe4975a2831c0fe26f44cd869d60c36a383df53d1"
+  },
+  "regression": {
+    "baselineJsonlSha256": "816c86c92466650172a46fb24e80cdca66944160927020a7163990e94ef4bafa",
+    "candidateJsonlSha256": "70429a0d8a6e33a76c0e7eb426ac026174cd56c47cf9785e034164f70a7a0edb",
+    "baseline": {
+      "pass": 6977,
+      "failure": 38,
+      "skip": 122,
+      "suites": 531
+    },
+    "candidate": {
+      "pass": 6984,
+      "failure": 38,
+      "skip": 122,
+      "suites": 533
+    },
+    "failureBaselineSha256": "5881612557e5ffc9d807871953ef32ba7022008a3c7e9bc851f97ff0cd600d0d",
+    "candidateFailureSetSha256": "5881612557e5ffc9d807871953ef32ba7022008a3c7e9bc851f97ff0cd600d0d",
+    "retainedSkipSetSha256": "515ba0de8caed46b2ec74ff3bbe63967beb4293636a9bbc6b72c5e7de69f544a",
+    "newFailures": [],
+    "resolvedBaselineFailures": [],
+    "newSkips": [],
+    "missingSkips": [],
+    "missingSuites": [],
+    "addedSuites": [
+      "test/visual/line81_compatibility_topics_test.dart",
+      "test/visual/line81_profiles_swipe_test.dart"
+    ],
+    "retainedFailures": [
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian button actual shell white canvas status return and theme restoration"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian detail_privacyPolicy 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian detail_privacyPolicy 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian detail_terms 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian detail_terms 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian edge actual shell white canvas status return and theme restoration"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian overview_privacyData 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian overview_privacyData 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker button actual shell white canvas status return and theme restoration"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker detail_privacyPolicy 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker detail_privacyPolicy 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker detail_terms 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker detail_terms 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker edge actual shell white canvas status return and theme restoration"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker overview_privacyData 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker overview_privacyData 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_deleteAccount Guardian compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_deleteAccount Guardian normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_deleteAccount Seeker compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_deleteAccount Seeker normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_resetProfile Guardian compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_resetProfile Guardian normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_resetProfile Seeker compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_resetProfile Seeker normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "overview_advanced Guardian compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "overview_advanced Guardian normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "overview_advanced Seeker compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "overview_advanced Seeker normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/guardian_circle_topic_options_test.dart",
+        "embedded discuss control current supports compact keyboard and long draft"
+      ],
+      [
+        "test/one_journey_back_button_preview_test.dart",
+        "Circle edge returns from Journey through the same Topics draft"
+      ],
+      [
+        "test/one_journey_back_button_preview_test.dart",
+        "Compact 2x Circle and Settings retain edge return without Back chrome or clipped controls"
+      ],
+      [
+        "test/one_journey_bottom_close_cue_test.dart",
+        "Circle Journey child returns once by edge and accessible Back"
+      ],
+      [
+        "test/one_journey_pull_down_routes_test.dart",
+        "Journey body retains vertical stage traversal; Back returns one route fromOptions=true"
+      ],
+      [
+        "test/one_journey_pull_down_routes_test.dart",
+        "end confirmation pull is inert and Keep this Journey still works"
+      ],
+      [
+        "test/view_request_draft_widget_test.dart",
+        "fresh whole-app real-font candidates are not approval_compact200_final"
+      ],
+      [
+        "test/view_request_draft_widget_test.dart",
+        "preview exposes no Pause; End stays deliberate, retains history and reset is draft-only"
+      ],
+      [
+        "test/zyra_subscription_wallet_preview_test.dart",
+        "confirmed zero Family places is a plain empty state at compact200 size"
+      ],
+      [
+        "test/zyra_subscription_wallet_preview_test.dart",
+        "confirmed zero Family places is a plain empty state at normal size"
+      ]
+    ]
+  },
+  "originalV179Scope": {
+    "candidate": {
+      "pass": 6974,
+      "failure": 38,
+      "skip": 122,
+      "suites": 532
+    },
+    "candidateJsonlSha256": "f072d39361cf5f33e63397e62874b6c88c4f2bc8ac3160258a1bd3feab1eea9e",
+    "failureSetSha256": "5881612557e5ffc9d807871953ef32ba7022008a3c7e9bc851f97ff0cd600d0d",
+    "skipSetSha256": "515ba0de8caed46b2ec74ff3bbe63967beb4293636a9bbc6b72c5e7de69f544a"
+  },
+  "comparisonJsonSha256": "d2bff1c30747095dfd81ee79979b7d5196fd451adb34689f4b86528e2242a0f8",
+  "independentReview": {
+    "sharedSwipeAndGuardian": "Passed after pointer-down and rendered-target lease checks",
+    "profiles": "Passed after exact first-page request and Basic checkpoint/filter guard checks",
+    "filters": "Actual route cover and reopen revokes pending swipe"
+  },
+  "visual": {
+    "reference": "PRODUCT/APPROVED/PROTOTYPE/ZYRA_PROTOTYPE_CURRENT_VERSION_V183.html",
+    "referenceAtReview": "PRODUCT/APPROVED/PROTOTYPE/ZYRA_PROTOTYPE_CURRENT_VERSION_V183.html",
+    "referenceBytes": 512270,
+    "referenceSha256": "f31699a587b50a5b4d7c88ddb9743257713612809c6b5a3fda924dfa9d676a4c",
+    "prototypeFrames": 50,
+    "briefBytes": 7218,
+    "briefSha256": "ce9b852cf12f0a3c040064f66877969af8059ed9d358b04e327d75e0bd6f766d",
+    "viewports": [
+      [
+        430,
+        932
+      ],
+      [
+        375,
+        667
+      ]
+    ],
+    "routes": [
+      "Profiles",
+      "Guardian",
+      "Guardian Circle",
+      "Journey",
+      "Filters",
+      "My ZYRA (Seeker)",
+      "My ZYRA (Guardian)",
+      "Guardian invitation fixture",
+      "Seeker Basic compatibility",
+      "Basic Filters"
+    ],
+    "geometry": [
+      "Equal tile rows, at least 88 pt, with 12 pt gaps. The grid uses 40 percent of the card with a 196 pt floor, and grows for text.",
+      "Profile avatar 124 pt at normal text. Tile value 18 pt with 1.2 line height. Details request 52 pt, 12 pt below tiles. Outer card ends 16 pt above nav.",
+      "Shared neighbouring cards follow drag with 24 pt gap, 240 ms settle, and 30 percent edge drag."
+    ],
+    "differences": [
+      "V183 uses its own status and navigation shell and sample states. Companion photo assets are absent from the prototype copy. App captures use bundled synthetic samples.",
+      "The reference computes its grid against the padded content area (122.2 pt rows at 430 and 92 pt rows at 375). The app follows the written full-card percentage and lets text grow.",
+      "At 375 × 667 the reference clips the lower request button. The app reaches the full button by scrolling inside the fixed frame. Birmingham can split at this width while retaining the 18 pt font and tile padding.",
+      "The prototype shows expired Send again. The app uses the brief’s text-only fallback pending an existing-invitation service. The locally captured waiting state uses the actual cancellation control.",
+      "The invitation fixture shows the locked page with both actions visible at the two sizes. Its surrounding My ZYRA content uses an unlinked recipient fixture. The app uses its shared Back gesture and assistive Back.",
+      "The native compatibility reader retains its frame, glyphs and safe area. The locked ring, Unlock, balance and upgrade link are visible at both sizes. The compact locked Filters card keeps the entire heading visible.",
+      "The Seeker One app comparison retains existing Continue and the unavailable offer state while showing the delivered preview rows."
+    ],
+    "screenshotsLocalOnlySha256": {
+      "visual/prototype": {
+        "375x667-basic-back.png": "6c4fcdd867c726f82e1a6ec1ca28d6d7859297c52013cb2b4260d6910b601604",
+        "375x667-circle-main.png": "470748f89f4db57bf7cef6d513002438ce5bdd674077787b254ba2f8616ee657",
+        "375x667-circle-past-chat.png": "74aa79435bac526254dc9b31e84b7dcda8a74ce83f48991602195bb233413afa",
+        "375x667-circle-past.png": "0a7d6f40011c60764ba179ae00b69022bc69ae22e79f5cfbdb88de6a9fa5f128",
+        "375x667-filters.png": "1a16d27f0d295a0f89abfb204866e6a252f42f544ed6bf70b1500a43b41aa4cf",
+        "375x667-guardian-drag.png": "f9cf4518269e1931a390b2ef8940690176a25833818267d16344e6f4df295a14",
+        "375x667-guardian.png": "082c5797e4b53baecbae876555778538cebf7c1733de23038072ca77ec951200",
+        "375x667-invited-expired.png": "9bc2802309066221d18b3be8137e2739f454374b00b1cade69db31c7ee285731",
+        "375x667-invited-waiting.png": "1808a46e871702407e783af3625ff06a81d8bf571b15e591db554f165f56c85f",
+        "375x667-journey.png": "0bb0775b39c23fce1e728e3b96e043ca6714719ed27c1308d942a9f31ec497c8",
+        "375x667-my-zyra-guardian.png": "f35c0a0d367919f1fb50e8526383b2b5bfb4abc59d115aeb7870ad5c6708b8bc",
+        "375x667-my-zyra-seeker.png": "97c863da6952ddcf382f8382a29272deda82508a28a4749fe390da0364edd082",
+        "375x667-profile-photo.png": "28112ef2fabe577a58477b043ab8bea3fb213d344024351f5859f97ba42211ca",
+        "375x667-profiles.png": "587654f9756352952e3b3bd35f0cc036efe3d9de120b05a90dfcfef7bce47d5e",
+        "430x932-basic-back.png": "6762213e3d3fdcce5b510b8ffe4dbe9dafa6c27a018ee5aeccb7a09671c99577",
+        "430x932-circle-main.png": "60fadd1ae98dd37684c590bcb919e7c2f0b1c45a11cf9cc0493f11845bf3357a",
+        "430x932-circle-past-chat.png": "1e1e74c6f689d73446798ad96a54e6bbf64405cb0059f34733771a5d7c90f936",
+        "430x932-circle-past.png": "571e4ba9e8c775e66fa7ce85cd9b775026fedaf9fc18f1e403b293b0ee62d2e8",
+        "430x932-filters.png": "8d646498af4b3bd0385ee922ab2a6c409246bf9e26bf12f6b4ba1cc1fa906eff",
+        "430x932-guardian-drag.png": "397bdfecfc23328902da09a5e09ef12cd69f2aa2d4f577a3aa70531f1d0d80b9",
+        "430x932-guardian.png": "9e81760d2cd66c4e5748eae792445b51ad454f5e970b66c77c1f2477b5d235ca",
+        "430x932-invited-expired.png": "92509987904e9a7ced1f2d40ce180fb80a36b340d808940c802df552c225d4fe",
+        "430x932-invited-waiting.png": "ac50f08fa41a4fbad29857ff8a295392295967cbea4e43ae11f6199bf829a7d9",
+        "430x932-journey.png": "0a1c9543111b05c7dda5fc190f6c0262b0a5ee714a8c92b5bcd511a9299a8444",
+        "430x932-my-zyra-guardian.png": "3f978a3ac50b5fd5d10f5963b77166a1cafc64e1673692e0f07881ba5165606f",
+        "430x932-my-zyra-seeker.png": "cbd36051af31eb58f0df1a4d93b0edc7e535d7d61c3a740cf5c7074b032c56c5",
+        "430x932-profile-photo.png": "2c87ee6eabe5e9194a4e118155cbfe1b401df0cfa0bc084ac082a10a36087c06",
+        "430x932-profiles.png": "675acd1d7d03ef52a020e60ddf49f0e38303158db5529da8cfd62aa3117d16d9"
+      },
+      "visual/prototype-v183": {
+        "375x667-basic-back.png": "6c4fcdd867c726f82e1a6ec1ca28d6d7859297c52013cb2b4260d6910b601604",
+        "375x667-circle-main.png": "470748f89f4db57bf7cef6d513002438ce5bdd674077787b254ba2f8616ee657",
+        "375x667-circle-past-chat.png": "74aa79435bac526254dc9b31e84b7dcda8a74ce83f48991602195bb233413afa",
+        "375x667-circle-past.png": "0a7d6f40011c60764ba179ae00b69022bc69ae22e79f5cfbdb88de6a9fa5f128",
+        "375x667-compatibility-basic-overall.png": "1916562fc08b018003f2a96bcaf8747c62e406babc1487876711e42d4475b5d2",
+        "375x667-compatibility-basic-topic.png": "9e538fbf45c196539a09c0658c0a4d9fdba30cb1a275a11af410c5342aaef874",
+        "375x667-compatibility-topic-unlocked.png": "7f77e950abe154ff6508eff0a97a801ef0147264f9446f4643da7ea76c66bb52",
+        "375x667-filters-basic-age.png": "1a16d27f0d295a0f89abfb204866e6a252f42f544ed6bf70b1500a43b41aa4cf",
+        "375x667-filters-basic-ethnicity.png": "992c2f2d9f5318cf3c4ae443da99e5a780eec13e78ce1f8015ec95ae121fb4b9",
+        "375x667-filters-basic-location.png": "58849c441adba80e5ce2aeddaf0c53c041e7e9a199684325abe229cffd46bd74",
+        "375x667-filters-basic-nationality.png": "fcf3de0578ea9c5dd25abe6acf35db866eb00ccfaf597b772d3d930563ad9683",
+        "375x667-filters-seeker-one-table.png": "6158f354225d55f53a8fe4498eaaad02faae7fa496fba2fedc7670c7a450a94a",
+        "375x667-filters.png": "1a16d27f0d295a0f89abfb204866e6a252f42f544ed6bf70b1500a43b41aa4cf",
+        "375x667-guardian-drag.png": "f9cf4518269e1931a390b2ef8940690176a25833818267d16344e6f4df295a14",
+        "375x667-guardian-free-place-focus.png": "bc8b6acb54ee69438456148fda9150ecd0a176bc4ad3a4cc9dbeed7d4d9c7605",
+        "375x667-guardian-free-place-page.png": "a685f3c4007948b597209607c03946576d6ec7f58c18863d03edad41e7ace62a",
+        "375x667-guardian-free-place-upgrade.png": "da9708b18c4fc2d688e19e77f2467913afdd6a72fa40face0241caf167746053",
+        "375x667-guardian.png": "082c5797e4b53baecbae876555778538cebf7c1733de23038072ca77ec951200",
+        "375x667-invited-expired.png": "9bc2802309066221d18b3be8137e2739f454374b00b1cade69db31c7ee285731",
+        "375x667-invited-waiting.png": "1808a46e871702407e783af3625ff06a81d8bf571b15e591db554f165f56c85f",
+        "375x667-journey.png": "0bb0775b39c23fce1e728e3b96e043ca6714719ed27c1308d942a9f31ec497c8",
+        "375x667-my-zyra-guardian.png": "f35c0a0d367919f1fb50e8526383b2b5bfb4abc59d115aeb7870ad5c6708b8bc",
+        "375x667-my-zyra-seeker.png": "97c863da6952ddcf382f8382a29272deda82508a28a4749fe390da0364edd082",
+        "375x667-profile-photo.png": "28112ef2fabe577a58477b043ab8bea3fb213d344024351f5859f97ba42211ca",
+        "375x667-profiles.png": "bf4e925a94acb04c6a54a7150db0d6a415d8ecf99c554b9769d46451983823e5",
+        "430x932-basic-back.png": "6762213e3d3fdcce5b510b8ffe4dbe9dafa6c27a018ee5aeccb7a09671c99577",
+        "430x932-circle-main.png": "60fadd1ae98dd37684c590bcb919e7c2f0b1c45a11cf9cc0493f11845bf3357a",
+        "430x932-circle-past-chat.png": "1e1e74c6f689d73446798ad96a54e6bbf64405cb0059f34733771a5d7c90f936",
+        "430x932-circle-past.png": "571e4ba9e8c775e66fa7ce85cd9b775026fedaf9fc18f1e403b293b0ee62d2e8",
+        "430x932-compatibility-basic-overall.png": "3fb06faebdfdee8169d41fa26078c7f98d25927f3fc30a705b13edb24a7d5c39",
+        "430x932-compatibility-basic-topic.png": "2c1d42360bf5f2fd36ff2b62fb61b6f83f9863f92d933c723a3781ca7eea5f25",
+        "430x932-compatibility-topic-unlocked.png": "fd29e2a097a7acf7223408417f56242ee1e978f149d03fcaa88f4e5722d9e9d1",
+        "430x932-filters-basic-age.png": "8d646498af4b3bd0385ee922ab2a6c409246bf9e26bf12f6b4ba1cc1fa906eff",
+        "430x932-filters-basic-ethnicity.png": "9431d23ed5c8f9506228780ec2b94d5a8d8ccf3187f3d200dabb736a23473e5e",
+        "430x932-filters-basic-location.png": "877facf68d8717838ccf0c1f45605963f0686669658c36286960d5b41ac9f70d",
+        "430x932-filters-basic-nationality.png": "a3d7174acdcae0de99b9d65f26b8b8d8ee346627bbd44780bcfd758bd182a9d2",
+        "430x932-filters-seeker-one-table.png": "c751916350d8744129175f7afe32633136b6c6ed7525609a037a5e6bda49dbdd",
+        "430x932-filters.png": "8d646498af4b3bd0385ee922ab2a6c409246bf9e26bf12f6b4ba1cc1fa906eff",
+        "430x932-guardian-drag.png": "397bdfecfc23328902da09a5e09ef12cd69f2aa2d4f577a3aa70531f1d0d80b9",
+        "430x932-guardian-free-place-focus.png": "890f7bfb99cc19b19aed31d015bd1e88f979f15ca8609a8f7b3bb4519ab55591",
+        "430x932-guardian-free-place-page.png": "0f8de9ae65218033a86043624c4ebae7e5b3a52ac3d433706434ca73872a2d4a",
+        "430x932-guardian-free-place-upgrade.png": "b86b2684c3518fc736b9fba61153f465c485fe65b60bc89c730daf616750a2bb",
+        "430x932-guardian.png": "9e81760d2cd66c4e5748eae792445b51ad454f5e970b66c77c1f2477b5d235ca",
+        "430x932-invited-expired.png": "92509987904e9a7ced1f2d40ce180fb80a36b340d808940c802df552c225d4fe",
+        "430x932-invited-waiting.png": "ac50f08fa41a4fbad29857ff8a295392295967cbea4e43ae11f6199bf829a7d9",
+        "430x932-journey.png": "0a1c9543111b05c7dda5fc190f6c0262b0a5ee714a8c92b5bcd511a9299a8444",
+        "430x932-my-zyra-guardian.png": "3f978a3ac50b5fd5d10f5963b77166a1cafc64e1673692e0f07881ba5165606f",
+        "430x932-my-zyra-seeker.png": "cbd36051af31eb58f0df1a4d93b0edc7e535d7d61c3a740cf5c7074b032c56c5",
+        "430x932-profile-photo.png": "2c87ee6eabe5e9194a4e118155cbfe1b401df0cfa0bc084ac082a10a36087c06",
+        "430x932-profiles.png": "0fbabb9a86ffbae7b9d8df6175adaa797ddc5ae4b9eee74264ecf4949442632c"
+      },
+      "visual/app": {
+        "375x667-circle-main.png": "f64e6d62da98fd3a43afe58ae2ad3962ee2044a00b3c8722c174b487e49fa5ea",
+        "375x667-circle-past-chat.png": "2afa1954a45403a8cb41671a3d44180563598028b83dbbb2e60c744e11da636e",
+        "375x667-circle-past.png": "cac65b2660039500948554bc6906c70c8ba45b942da3b1b5a821ece8f40e46c2",
+        "375x667-filters-drag.png": "3e8e658cdd08665aa23b7e9bfd1152c7d2fb3c78936b62ab9068494623481247",
+        "375x667-filters.png": "3aa30834645370173fc390b24ce851971d99dc13d9bb74fd7371f36940392f3d",
+        "375x667-guardian-drag.png": "1519106d16114de7574c051e593e5789fe2a5f2c50bb56f372a5a43970f83bea",
+        "375x667-guardian.png": "2a444d4b4fe0830f58874395906bda49219613eb18d2ffb07b54340d0647970e",
+        "375x667-invited-expired.png": "79a3127db41232dd9ff12aa14c306d546750a1158f9a61fbe581f4e79049a1e1",
+        "375x667-invited-waiting.png": "a1c41175452f09ea765a8acd0bb895c8e77d6a1d61b68ae3ad957dbad2172f34",
+        "375x667-journey-drag.png": "be80a17be80e67ca08f8c3f87575c70664efacff31b2491e7a786b55ece349f4",
+        "375x667-journey.png": "0de40701f2b3e38cca3d9c78036fa94b3402d288a6296596de240bde463c58dc",
+        "375x667-my-zyra-guardian-drag.png": "2071c55a57140ec1e8754ebde26290561054d1b3550a65273d27eb60f0c821aa",
+        "375x667-my-zyra-guardian.png": "2071c55a57140ec1e8754ebde26290561054d1b3550a65273d27eb60f0c821aa",
+        "375x667-my-zyra-seeker-drag.png": "a58d6a7f07a3db923e9b4400cb64ef91d9a718d86e9b50e1b83612ad6a52ad44",
+        "375x667-my-zyra-seeker.png": "01c00354427e47bce124f16f3de1608b17954c69dc9a31032e44ad2e55d0d9f8",
+        "430x932-circle-main.png": "b0077e659e3269b491fcc09ef9b37cee7fcc443dc83e01583480f11e53180631",
+        "430x932-circle-past-chat.png": "b2563924d96a7f7ecf0e369127472b87016e2e526f7d40568272358975fd2526",
+        "430x932-circle-past.png": "c364cfc807329a592bfe4b33862904887bf1948fec7466b38b6928c348f64924",
+        "430x932-filters-drag.png": "882a34d1ed69ced42e5a490fa1647e54cef0743fd455d9a1916f5fb529a09df0",
+        "430x932-filters.png": "d1f85139e8c99a55c8683e1b3dfeb3f74810cdb070bf0fd2289b38e93eccf754",
+        "430x932-guardian-drag.png": "a9665a47443b7d562599a4ded37a423046ebab7f00691f91db3b0bf7abe108a8",
+        "430x932-guardian.png": "efdb828fe52c5771773ddbd85af96a4d41359a918e91669bf63f9c0453777408",
+        "430x932-invited-expired.png": "da1763805b1e7143284f700a4c93dd824d202b2bd1a84f48c9b281ca79ac595b",
+        "430x932-invited-waiting.png": "a1ab6aeb29877e58b2b2ba15af22170b5f158b5136de1b1099f8485d2085b9a5",
+        "430x932-journey-drag.png": "a57c58c434f56d750f627581cfc97d59da1759da321877c722cfbd277b80d841",
+        "430x932-journey.png": "001732124d1b3bfc5ab0f1fbe7579da2527ee262f7d6390c6543008953a49b99",
+        "430x932-my-zyra-guardian-drag.png": "d454a6d0189b32972729fb88561f40099ffb79ae6b2f2109cbf955ee5296abe6",
+        "430x932-my-zyra-guardian.png": "709350dc0cf9dd3180c0bef6a8f9d750352cdcb62bc4b8b6f59ea85b228851b0",
+        "430x932-my-zyra-seeker-drag.png": "5eebca08421b9270f8f1c0f8ca41bdc3c3d05c745fbd374168eac04cdf6cdec8",
+        "430x932-my-zyra-seeker.png": "b25b61c2ab4dc19daf6c42953630b3f75ad264e032febd71e92a1f9b310b9b00"
+      },
+      "visual/app-v183": {
+        "375x667-filters-basic-age.png": "3aa30834645370173fc390b24ce851971d99dc13d9bb74fd7371f36940392f3d",
+        "375x667-filters-basic-ethnicity.png": "2973bdcb8aaa4652e57000b60708d2d24834c679448974d28e86899e207f3018",
+        "375x667-filters-basic-location.png": "e2cc780d2c47b43420d128769fccedce2798a161be807ff3c9750a57ce3ddf5f",
+        "375x667-filters-basic-nationality.png": "a0213c59bb73cb3f75837eddd6cc24daccfa461a535b46c5259d4cb6940bbe50",
+        "375x667-filters-seeker-one-table.png": "cc94372cf8fa015882064c37379e4f0a7f554c8cc47f9ec554facee948fc08fd",
+        "430x932-filters-basic-age.png": "d1f85139e8c99a55c8683e1b3dfeb3f74810cdb070bf0fd2289b38e93eccf754",
+        "430x932-filters-basic-ethnicity.png": "b07c90af38bd02688c471e0a8b7c341bb1b082765af0baa06c55ad4ee10938ee",
+        "430x932-filters-basic-location.png": "8ca17b82b4246e5071feca1dba47be3c12d15e532acbde18014058c88018a501",
+        "430x932-filters-basic-nationality.png": "6b57437141027201e71492f3764d950a34acfa882d3871f512229963a9f309e0",
+        "430x932-filters-seeker-one-table.png": "f8d506b31bf00854c993ecc4f0b5efbc1170f3c97b35069634e98a791cac8e58"
+      },
+      "profiles-renders": {
+        "profiles__basic_back_sheet_430x932.png": "2e01b70a214457b3f3f3724f2cb63c3e7563575a01d1aa3ec352ce5643a81d5e",
+        "profiles__first_page_375x667.png": "007846a4d98b275eb6c6442d0c89616bc969659e391c10624a71fb660194200c",
+        "profiles__first_page_430x932.png": "def768ff216142c1a42745e3f8aa9e96a2117ec3157e1ef0256f03629a86adb4",
+        "profiles__first_page_scrolled_375x667.png": "a19179c720ec6c63303d1ebad6fc10251fe131cd4ab090f062b59aab5b2d523f",
+        "profiles__photo_page_375x667.png": "84d2496ce7e4956435d3fe4424ca464f1668e4e03cfc6d5f432c76bf5fb0e5ee",
+        "profiles__photo_page_430x932.png": "d6c94d7ba9bf237764a3c2673168a760f793e44625494a6c4bbd0eea48218e80",
+        "profiles__sent_page_430x932.png": "2c331f23455668c3dd4755f4ca2ee945e208c3e848d04bc5d10019a31ec72028"
+      },
+      "guardian-free-place": {
+        "guardian_free_place__invitation_375x667.png": "86e324fa60bd3ef694a3ce4294c47052f4925e1ec8e8dfa0178bef85501a37db",
+        "guardian_free_place__invitation_430x932.png": "db3c32271a9adfa7bed009dbaedc63788dcba4c1383258bca863cbec618fd109",
+        "guardian_free_place__needs_you_375x667.png": "fb240e9f6658720b9c7b24a48ab4e8c1a53bd382a7a477a03836d1cc80f86deb",
+        "guardian_free_place__needs_you_430x932.png": "3c83e92018a494cf09758de94d9666070a01813d1bc5fee69eeac9a16e0936e1"
+      },
+      "compatibility-renders": {
+        "compatibility_topics__seeker_basic_375x667.png": "69bc98a02c22514ce1624233828e25d22710e3b65029267185cde5b88e239c4f",
+        "compatibility_topics__seeker_basic_430x932.png": "92faa07144f22748f4a481275a9f89abe014d5e97cda01b6b307b5aa2362349d"
+      }
+    }
+  },
+  "openQuestions": [
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94
+  ],
+  "capabilityBoundaries": [
+    "The free-place-used invitation is reachable from the explicit detached test fixture. The phone entry has no authorized provider of that condition. The live invitation contract does not expose the status or paid acceptance.",
+    "Compatibility topics use admitted sample data in the Basic Seeker preview. Existing One result availability follows the unchanged written rule, including the existing missing-result state. The checked-in live result returns overall only. Guardian Basic locked rendering awaits a locked Guardian entry. Archive reading does not spend a credit.",
+    "Basic paid filter choices remain stored but are omitted from effective discovery. The shipped preview has the honest upgrade rows; live server plan enforcement is tracked separately."
+  ],
+  "retiredOracle": "Legacy Founder Profiles alternative Next-motion assertions were replaced with shared-track assertions. Direct generic legacy motion tests remain."
+}
