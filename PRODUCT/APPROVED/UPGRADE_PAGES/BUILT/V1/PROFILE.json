@@ -25,7 +25,27 @@
     "logSha256": "2d71ac2ecb3d8a35431c4f560e69fb8695585004fdfc1051e0d520bddd8ee1ff"
   },
   "delivery": {
-    "status": "Ready, pending line 80 device GO",
-    "installExecuted": false
+    "status": "verified",
+    "announcedExactCandidate": true,
+    "authorization": "Founder gave explicit GO for the exact line 80 Wi-Fi installation.",
+    "transport": "localNetwork",
+    "preflightPolls": 48,
+    "connectedButLockedObserved": true,
+    "lastCheckedAt": "2026-11-11T19:57:06.391283+00:00",
+    "installExecuted": true,
+    "installed": true,
+    "opened": true,
+    "postVerified": true,
+    "installationAttempts": 1,
+    "adapterSha256": "f1ad8f34275bae35f90dd2e6cb3fd855d4e06d601001ce5cbf4deb94c66be9d6",
+    "wifiPhoneHelperSha256": "e77eee2294a0a2a7d1ce41f20fd7a366dd6c1bb547b211f1886705375ca7e3de",
+    "offlineVerificationSha256": "dbbee3828b3e61da7934ef650f040678943c1adb8bd8f98bd90b508bc07eff9d",
+    "independentReviewPassed": true,
+    "focusedRouteTestsPassed": 16,
+    "originalPlanSourceSealAndBuildReceiptMatch": true,
+    "lastProtectedStage": "complete",
+    "deliveryReceiptSha256": "1c2da820051bd3e1aaf7267f15cb90ebb9856358a9e6831f578a07d0df6f9c1c",
+    "verifiedAt": "2026-11-11T19:57:23.891083+00:00",
+    "firstFrameStatus": "needs-visual-confirmation"
   }
 }
