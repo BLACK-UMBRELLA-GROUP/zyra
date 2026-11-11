@@ -1,0 +1,351 @@
+{
+  "schema": 1,
+  "queueLine": 80,
+  "commitSha": "7f83b07c53b0e74676401d9aace8c095d40b366b",
+  "flutterVersion": "3.44.2",
+  "appVersion": "1.0.0+5",
+  "buildMode": "Flutter widget tests and off-device renders",
+  "timestamp": "2026-11-11T19:29:59.085756+00:00",
+  "authority": {
+    "basis": "Founder 11 November GO for ZYRA queue line 80",
+    "approvals": [
+      "LOCK both + ring (Recommended)",
+      "Guardian options and swipe directions at 18:49",
+      "option 2 please"
+    ],
+    "writtenReferences": {
+      "UPGRADE_PAGES/BRIEFS/BUILD_BRIEF_2026-11-11.md": {
+        "bytes": 3935,
+        "sha256": "39c03992c6c4eb6e860352523eebf7d17d1cd25fb0c4d3d2f68be0fa0ba2a861"
+      },
+      "UPGRADE_PAGES/RECORD/LOCK_RECORD.md": {
+        "bytes": 999,
+        "sha256": "8c269191f739968175287ac09191cfb346eb38967394b1aedf49c237a17f4cbb"
+      },
+      "UPGRADE_PAGES/RECORD/UPGRADE_PAGES_SPEC_CURRENT_VERSION_V1.md": {
+        "bytes": 4547,
+        "sha256": "f4fab5574148875b232610af3d24cee2e461c08554e722c01e777c1289b83e0c"
+      },
+      "GUARDIAN_CARD/RECORD/GUARDIAN_CARD_SPEC_CURRENT_VERSION_V8.md": {
+        "bytes": 19861,
+        "sha256": "e9425e79ea338c8b10ebf07833b77d9834f4d52033ba92ec1a83a3cb4b2618f8"
+      },
+      "PROFILES_DETAILS_CARD/RECORD/LOCK_RECORD.md": {
+        "bytes": 1225,
+        "sha256": "47e0513694fe57b1adb3aa65638a70ef5fc49ff53c2c8e0008a47b2c98e571b3"
+      },
+      "PROFILES_DETAILS_CARD/RECORD/PROFILES_DETAILS_CARD_SPEC_CURRENT_VERSION_V3.md": {
+        "bytes": 3616,
+        "sha256": "f5f0653ba99aaadaa13e014157f1812f2d0f6745d9d2cc858a9bf5b83acf16f9"
+      }
+    },
+    "prototypeReferences": [
+      "V167",
+      "V168",
+      "V169",
+      "V171"
+    ],
+    "comparisonBasis": "Written LOCKs and widget geometry. Prototype artifacts were unavailable."
+  },
+  "quality": {
+    "analyze": {
+      "clean": true,
+      "bytes": 96,
+      "sha256": "3938edd828919dbf957fa6501dab6b9a582f21e43ef15c0dfc5e257fd23d425b"
+    },
+    "focused": {
+      "focused-final.log": {
+        "passes": 195,
+        "bytes": 37035,
+        "sha256": "4abc9dd8aeb68581fa1bf28947eb78574ae9fc2b775ebc47bcae587fe73029a0"
+      },
+      "focused-compact-membership.log": {
+        "passes": 20,
+        "bytes": 3772,
+        "sha256": "4d714dc2d882d37e3cdd77f7c1ed2a327726e04aceb518ec2852acc8043826c5"
+      },
+      "guardian-focus.log": {
+        "passes": 83,
+        "bytes": 17549,
+        "sha256": "bae0b4008490577d29eca460379133db4587d3250a9b88cb9349f7ce0d88f113"
+      },
+      "finalTargeted": {
+        "passes": 491,
+        "knownFailures": 5,
+        "bytes": 305558,
+        "sha256": "0f8e37a3b6be694bd7900a14a3d514b71eaa6084bcd12998c75641ec8422a349"
+      }
+    },
+    "fullRegression": {
+      "addedPassingIdentities": [
+        {
+          "count": 1,
+          "file": "SOURCE/test/guardian_card_interaction_test.dart",
+          "test": "Covering Guardian actions dismisses only its stale sheet"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/guardian_card_interaction_test.dart",
+          "test": "Guardian follows a chip drag and springs back below 60 pt"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/guardian_card_interaction_test.dart",
+          "test": "Guardian resists at the end and animates edge and dot taps"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/guardian_card_interaction_test.dart",
+          "test": "Guardian slides out then in from a Chat chip swipe"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/guardian_card_interaction_test.dart",
+          "test": "Reduce Motion changes Guardian immediately without dragging artwork"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/profile_membership_consistency_test.dart",
+          "test": "verified Seeker Basic Profile opens Seeker One comparison"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/view_request_draft_widget_test.dart",
+          "test": "Basic upgrade notice dismisses over the admitted preview"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/zyra_one_upgrade_page_test.dart",
+          "test": "Guardian Basic Profile opens the exact honest comparison and returns"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/zyra_one_upgrade_page_test.dart",
+          "test": "Guardian One Profile keeps membership management"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/zyra_one_upgrade_page_test.dart",
+          "test": "Guardian monogram only draws and announces the verified One ring"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/zyra_one_upgrade_page_test.dart",
+          "test": "Seeker Basic Profile opens the exact honest comparison and returns"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/zyra_one_upgrade_page_test.dart",
+          "test": "Seeker One Profile keeps membership management"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/zyra_one_upgrade_page_test.dart",
+          "test": "actual Profiles card uses Design 2 and still advances to photo one"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/zyra_one_upgrade_page_test.dart",
+          "test": "both locked Guardian tiles open Guardian One"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/zyra_one_upgrade_page_test.dart",
+          "test": "larger text scrolls the comparison and keeps actions on screen"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/zyra_one_upgrade_page_test.dart",
+          "test": "ordinary upgrades use the same page for both roles"
+        }
+      ],
+      "baseline": {
+        "completed": true,
+        "failures": 38,
+        "nonJsonLines": 0,
+        "passes": 6961,
+        "sha256": "ed041e1b5995a3a24163f5bdc9820cfcdcdf3d84016811c5295835ef18622a1b",
+        "skips": 122,
+        "suites": 530
+      },
+      "candidate": {
+        "completed": true,
+        "failures": 38,
+        "nonJsonLines": 0,
+        "passes": 6977,
+        "sha256": "816c86c92466650172a46fb24e80cdca66944160927020a7163990e94ef4bafa",
+        "skips": 122,
+        "suites": 531
+      },
+      "expectedSuiteIdentities": true,
+      "failureIdentitiesSha256": "2514ec56905cc651e4bfc9d7c3613a480528c736536ed42ae47902dc090f8a69",
+      "missingSkips": [],
+      "missingSuites": {},
+      "newFailures": [],
+      "newSkips": [],
+      "newSuites": {
+        "SOURCE/test/zyra_one_upgrade_page_test.dart": 1
+      },
+      "replacedPassingIdentities": [
+        {
+          "after": "Guardian menu dims the whole screen and has owned dismissal",
+          "before": "A retained menu barrier cannot dismiss a reopened menu",
+          "file": "SOURCE/test/guardian_card_interaction_test.dart"
+        },
+        {
+          "after": "Circle uses plain initials when Guardian membership is unverified",
+          "before": "Circle member initials and own identity use quiet gold halos without pale fills",
+          "file": "SOURCE/test/guardian_circle_topic_options_test.dart"
+        },
+        {
+          "after": "Design 2 fits the four public tiles and first-photo avatar",
+          "before": "first page keeps all public fields with the first-photo avatar",
+          "file": "SOURCE/test/zyra_profile_details_first_test.dart"
+        },
+        {
+          "after": "missing caller photo shows the warm-sand initial inside the One ring",
+          "before": "missing caller photo keeps the existing gold-ring person icon",
+          "file": "SOURCE/test/zyra_profile_details_photo_test.dart"
+        },
+        {
+          "after": "loaded photo fits the Design 2 ring and leaves identity fixed",
+          "before": "loaded photo fits the unchanged ring and leaves identity fixed",
+          "file": "SOURCE/test/zyra_profile_details_photo_test.dart"
+        },
+        {
+          "after": "pending and failed real Image frames use the initial without a loader",
+          "before": "pending and failed real Image frames use the icon without a loader",
+          "file": "SOURCE/test/zyra_profile_details_photo_test.dart"
+        }
+      ],
+      "resolvedBaselineFailures": [],
+      "sameFailureIdentities": true,
+      "sameSkipIdentities": true,
+      "sameSuiteIdentities": false,
+      "skipIdentitiesSha256": "24a4e53e411313cc1ac927745684217461c411171cd03331ec2e682e4372140f",
+      "unexplainedMissingPasses": []
+    }
+  },
+  "comparison": {
+    "seekerHiddenRows": [
+      "Requests waiting at once",
+      "Compatibility score",
+      "Compatibility Unlocks",
+      "Filters",
+      "Restart an ended Journey",
+      "Gold ring on your profile"
+    ],
+    "guardianHiddenRows": [
+      "Guardian Circle",
+      "Network: other families' Seekers",
+      "Introductions",
+      "Connect with Guardian",
+      "Your Seeker shows in Network",
+      "Compatibility score",
+      "Gold ring on your profile"
+    ],
+    "futureRow": "Chaperoned video calls · Coming later",
+    "store": "No verified purchasable store offer or app checkout for either One plan in this build."
+  },
+  "renders": {
+    "REPORTS/EVIDENCE/ZYRA_LINE80_WIDGET_2026_11_11/seeker-one.png": {
+      "bytes": 330670,
+      "sha256": "47eb97a748cd1b7f3532705a718ee3a94dca0ebfcd10a41fa1c7fa1d162e56ed",
+      "physicalPixels": [
+        1290,
+        2796
+      ],
+      "reviewScope": "Local AI review"
+    },
+    "REPORTS/EVIDENCE/ZYRA_LINE80_WIDGET_2026_11_11/guardian-one.png": {
+      "bytes": 321598,
+      "sha256": "bcc87ee23840f3239f0718e48671af0315a7c956c74875f7eeef4e123b900008",
+      "physicalPixels": [
+        1290,
+        2796
+      ],
+      "reviewScope": "Local AI review"
+    },
+    "REPORTS/EVIDENCE/ZYRA_LINE80_WIDGET_2026_11_11/seeker-unavailable.png": {
+      "bytes": 205445,
+      "sha256": "7c848870f9175972e85e7b7a64145897e86fac119e4fa241e6580c0a22a900e0",
+      "physicalPixels": [
+        1290,
+        2796
+      ],
+      "reviewScope": "Local AI review"
+    },
+    "REPORTS/EVIDENCE/ZYRA_LINE80_WIDGET_2026_11_11/guardian-unavailable.png": {
+      "bytes": 205885,
+      "sha256": "e1658634ed436528b32827884ad6d4e17ed2db08280895a04aeebeeddd629658",
+      "physicalPixels": [
+        1290,
+        2796
+      ],
+      "reviewScope": "Local AI review"
+    },
+    "REPORTS/EVIDENCE/ZYRA_LINE80_WIDGET_2026_11_11/profiles-details-design-2.png": {
+      "bytes": 387885,
+      "sha256": "fcbd083ef98c2efd03b71cf3ce542ecb868394c119b2c524629d92dc24cbd965",
+      "physicalPixels": [
+        1290,
+        2796
+      ],
+      "reviewScope": "Local AI review"
+    },
+    "REPORTS/EVIDENCE/ZYRA_LINE80_WIDGET_2026_11_11/additional_guardian_menu.png": {
+      "bytes": 344080,
+      "sha256": "6543a88bfcc54a898dbcf8b400dc2518abd3cffe9fca9dbd0db04b0cf58c0391",
+      "physicalPixels": [
+        1290,
+        2796
+      ],
+      "reviewScope": "Local AI review"
+    },
+    "REPORTS/EVIDENCE/ZYRA_LINE80_WIDGET_2026_11_11/additional_guardian_card_mid_drag.png": {
+      "bytes": 380117,
+      "sha256": "0326245e3619d3c0597d7c24228f88ce3cf2eb4173853d5bd4d270e247029659",
+      "physicalPixels": [
+        1290,
+        2796
+      ],
+      "reviewScope": "Local AI review"
+    },
+    "REPORTS/EVIDENCE/ZYRA_LINE80_WIDGET_2026_11_11/additional_basic_card.png": {
+      "bytes": 400300,
+      "sha256": "78a83984198c2fa725bcad323f0060871a83491ddfbc3eeeb327a0c2e447c9ab",
+      "physicalPixels": [
+        1290,
+        2796
+      ],
+      "reviewScope": "Local AI review"
+    },
+    "REPORTS/EVIDENCE/ZYRA_LINE80_WIDGET_2026_11_11/main_card_2_active_journeys.png": {
+      "bytes": 400991,
+      "sha256": "71369b967429af5ff6142afba2233788e543818cb6fff6dd52789ab910767456",
+      "physicalPixels": [
+        1290,
+        2796
+      ],
+      "reviewScope": "Local AI review"
+    },
+    "REPORTS/EVIDENCE/ZYRA_LINE80_WIDGET_2026_11_11/additional_guardian_family_accepted.png": {
+      "bytes": 408202,
+      "sha256": "2f9eba64c750f7d95faa18d761547937b7a6208bd2b582f72c78152d0909ee87",
+      "physicalPixels": [
+        1290,
+        2796
+      ],
+      "reviewScope": "Local AI review"
+    },
+    "REPORTS/EVIDENCE/ZYRA_LINE80_WIDGET_2026_11_11/narrow_320_200_management_menu.png": {
+      "bytes": 190193,
+      "sha256": "4ea521937f7e4b2001e8a875c2eb913b985e34b0509f403ade7b8f457b5e1408",
+      "physicalPixels": [
+        960,
+        1920
+      ],
+      "reviewScope": "Local AI review"
+    }
+  }
+}
