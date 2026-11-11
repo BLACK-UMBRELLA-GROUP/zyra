@@ -1,0 +1,141 @@
+{
+  "schema": 1,
+  "queueLine": 86,
+  "commitSha": "526c26732e71389e590ed05c938f5a0e1082bef2",
+  "recordedAt": "2026-11-11T23:17:45+00:00",
+  "flutterVersion": "3.44.2",
+  "buildMode": "widget tests",
+  "version": "1.0.0+5",
+  "approvedInputs": {
+    "PHOTO_CROP/BRIEFS/FIX_BRIEF_2026-11-11.md": {
+      "bytes": 3875,
+      "sha256": "06bc3b4eccf66113860c7d618a3e7c1ac0df95fed5e3d3360f850ec059abf0d0"
+    },
+    "APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V8.md": {
+      "bytes": 9484,
+      "sha256": "5f872b5c976128e3faca643870b2550c310de66b62f8ecc846ba8c855c65dca2"
+    }
+  },
+  "analyzer": {
+    "issues": 0,
+    "sha256": "23fe10c7fda3cc737158bd741531e0830fc73257a765adea4cca14ebd5182d30"
+  },
+  "focused": {
+    "cropGalleryStorageAndDisplay": {
+      "passes": 187,
+      "sha256": "f228de32a854c1ed3a3a51a734ce3dec5af9ccc2bc8fdf55dd2e49f619bb4292"
+    },
+    "founderLocalImportAuthorization": {
+      "passes": 2,
+      "sha256": "afd56ee596e5912b4473908d965b3a00a5febea03fc69c0d9a1910905f7ae220"
+    }
+  },
+  "exactBaseline": {
+    "queueLine": 83,
+    "originMain": "9d6a216d8efa4227d834975b1af956a111359bf8",
+    "passes": 7009,
+    "failures": 37,
+    "skips": 122,
+    "suites": 534
+  },
+  "fullSuite": {
+    "analyzeSha256": "23fe10c7fda3cc737158bd741531e0830fc73257a765adea4cca14ebd5182d30",
+    "testsSha256": "338abe3d893d63946c4cf9014de83c2d9acd8ac30b2d6f70757dfa9c066b1914",
+    "failureBaselineSha256": "accf8e7b056098c6542f7f212ee174c4c0456ad3520680ee5c532b43882d03c3",
+    "comparisonSha256": "a58145f3b225ad40ff2eecce5f9bf4c3774e282f9641edfd3619c621f67df6d4",
+    "candidateFailureSetSha256": "df17c4cf9465f0ee1b1942011fe67d42774f15deb67922bdf63b3b946621240d",
+    "retainedSkipSetSha256": "515ba0de8caed46b2ec74ff3bbe63967beb4293636a9bbc6b72c5e7de69f544a",
+    "passes": 7020,
+    "failures": 37,
+    "skips": 122,
+    "suites": 535,
+    "newFailures": 0,
+    "resolvedBaselineFailures": 0,
+    "newSkips": 0,
+    "sameRetainedSkips": true
+  },
+  "aperturesLogicalPoints": {
+    "430x932": {
+      "crop": [
+        394,
+        525.3
+      ],
+      "profiles": [
+        390,
+        520
+      ],
+      "ordinaryProfiles": [
+        430,
+        573.3
+      ],
+      "profilePreview": [
+        390,
+        520
+      ],
+      "journeyBio": [
+        81,
+        108
+      ],
+      "managePhotos": [
+        409.4,
+        545.9
+      ],
+      "photosGrid": [
+        154.3,
+        205.7
+      ]
+    },
+    "375x667": {
+      "crop": [
+        315.8,
+        421
+      ],
+      "profiles": [
+        335,
+        446.7
+      ],
+      "ordinaryProfiles": [
+        375,
+        500
+      ],
+      "profilePreview": [
+        332.3,
+        443
+      ],
+      "journeyBio": [
+        81,
+        108
+      ],
+      "managePhotos": [
+        355.5,
+        474
+      ],
+      "photosGrid": [
+        106.3,
+        141.7
+      ]
+    }
+  },
+  "sourceAndOutputLongestEdgePixels": [
+    3000,
+    1440
+  ],
+  "checkedCases": [
+    "Widest crop preserves opposite source edges in portrait and landscape.",
+    "Legacy landscape paints all four edges in ordinary Profiles.",
+    "Manage Photos keeps the existing tile hit targets.",
+    "A 3600px synthetic source is bounded for crop review before 1440px JPEG finalisation.",
+    "Orientation is baked and EXIF, text and ICC are removed.",
+    "A one-pixel panorama edge stays positive.",
+    "Unpublished batch cleanup checks exact backend paths, current owner and Storage acknowledgement.",
+    "A synthetic 240x320 HEIC decodes via the Mac image tools. The pinned Dart decoder requires the native fallback."
+  ],
+  "openItems": {
+    "Q95": "Owner-only original, crop framing and safe removal of published objects require a server contract. Adjust uses the saved crop.",
+    "Q96": "The protected iPhone picker exposes no cloud-specific retrieval progress to Dart. The reported ZY-PH-04 cause needs the original iPhone reproduction.",
+    "deviceReproduction": "Pending separate line 86 device GO and a Founder-selected example.",
+    "nativeSwiftOrDependencyChanges": false,
+    "liveStorageWritesDuringVerification": false
+  },
+  "independentReview": "Display geometry, gesture ownership, crop pipeline and privacy-safe diagnostics reviewed before commit."
+}
