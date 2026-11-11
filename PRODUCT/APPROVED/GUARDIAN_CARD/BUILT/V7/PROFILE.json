@@ -26,9 +26,21 @@
   "delivery": {
     "status": "pending",
     "announcedExactCandidate": true,
+    "authorization": "Founder answered GO to the exact line 79 Wi-Fi installation offer.",
+    "transport": "localNetwork",
+    "preflightPolls": 51,
+    "connectedButLockedObserved": true,
+    "lastCheckedAt": "2026-11-11T18:59:17.830462+00:00",
     "installed": false,
     "opened": false,
-    "phoneReadyAtProtectedUsbCheck": false,
-    "authorization": "Pending fresh line 79 Founder GO and the protected physical gate."
+    "postVerified": false,
+    "installationAttempts": 0,
+    "adapterSha256": "ba272d8a61688a27ccc705c9734506687dca29e96f8a0f953619510a07d13248",
+    "wifiPhoneHelperSha256": "e77eee2294a0a2a7d1ce41f20fd7a366dd6c1bb547b211f1886705375ca7e3de",
+    "offlineVerificationSha256": "3d2e7df8f96c06c1b96fdb197f8aecf014be093c8b6f09101b77b4c6c9fb437e",
+    "independentReviewPassed": true,
+    "focusedRouteTestsPassed": 16,
+    "originalPlanSourceSealAndBuildReceiptMatch": true,
+    "blocker": "The provisioned Wi-Fi iPhone was locked at the last protected check."
   }
 }
