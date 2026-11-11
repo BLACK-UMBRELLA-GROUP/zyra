@@ -1,0 +1,179 @@
+{
+  "schema": 1,
+  "queueLine": 79,
+  "commitSha": "3f4089e9a9c6059b404f35559dd9579f7ae5a489",
+  "flutterVersion": "3.44.2",
+  "appVersion": "1.0.0+5",
+  "buildMode": "Flutter widget tests and off-device render",
+  "timestamp": "2026-11-11T18:48:21.921517+00:00",
+  "authority": {
+    "basis": "Founder 11 November GO for queue line 79",
+    "approvals": [
+      "LOCK rule + card (Recommended)",
+      "yes gold and basic get no ring just profiel photo"
+    ],
+    "writtenReferences": {
+      "GUARDIAN_CARD/BRIEFS/BUILD_BRIEF_2026-11-11_V7.md": {
+        "bytes": 3179,
+        "sha256": "8de5ef980991ee8b7d47bcf351e332a90191244a4369f6c7e9887c794dd2218e"
+      },
+      "GUARDIAN_CARD/RECORD/GUARDIAN_CARD_SPEC_CURRENT_VERSION_V7.md": {
+        "bytes": 18866,
+        "sha256": "1cbed917e82a0ea01048e02ff2070dc2d364f458cb0241fe345a975fd8ad3c8b"
+      },
+      "PROFILES_DETAILS_CARD/RECORD/PROFILES_DETAILS_CARD_SPEC_CURRENT_VERSION_V2.md": {
+        "bytes": 2138,
+        "sha256": "1eeb7efa0c8695d536775ddbebb20934cc6b6d22fbcbd77fe7a916a21443ecd8"
+      }
+    },
+    "prototypeReference": "V165 named by the brief. Review renders checked against the recorded sections and existing shared layout."
+  },
+  "quality": {
+    "analyze": {
+      "clean": true,
+      "bytes": 96,
+      "sha256": "ae21c9acad6f4b2ec9a04aee7f8dbd00fd94227f1ba75c3f0d732c82b75d4221"
+    },
+    "focused": {
+      "passes": 140,
+      "failures": 0,
+      "featureRun": {
+        "passes": 136,
+        "bytes": 25466,
+        "sha256": "ae606f9e8d756a977911a9ff8baa5af5e0e2e18009c6d22ba9a7963093ab4352"
+      },
+      "k17UpdatedRosterRun": {
+        "passes": 4,
+        "bytes": 636,
+        "sha256": "5da9edb71b7bdd82011c5e31990bc3f153cd433b4a47c6be0c4cd5a7caea2eec"
+      }
+    },
+    "fullRegression": {
+      "addedPassingIdentities": [
+        {
+          "count": 1,
+          "file": "SOURCE/test/profile_preview_test.dart",
+          "test": "ordinary own preview only uses the hydrated Seeker plan"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/zyra_account_state_test.dart",
+          "test": "verified Seeker plan follows hydration and account ownership"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/zyra_guardian_capacity_test.dart",
+          "test": "unknown plan facts cannot spend a possibly used Basic place"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/zyra_guardian_capacity_test.dart",
+          "test": "verified plan mix applies only below the shared total limit"
+        },
+        {
+          "count": 1,
+          "file": "SOURCE/test/zyra_profile_details_photo_test.dart",
+          "test": "Seeker Basic has a full circle with or without a photo"
+        }
+      ],
+      "baseline": {
+        "completed": true,
+        "failures": 38,
+        "nonJsonLines": 0,
+        "passes": 6956,
+        "sha256": "e63d69e58a4d6d53da67112edb45c39f90b210d40dd09b8c859fbd48ee0765dc",
+        "skips": 122,
+        "suites": 530
+      },
+      "candidate": {
+        "completed": true,
+        "failures": 38,
+        "nonJsonLines": 0,
+        "passes": 6961,
+        "sha256": "ed041e1b5995a3a24163f5bdc9820cfcdcdf3d84016811c5295835ef18622a1b",
+        "skips": 122,
+        "suites": 530
+      },
+      "failureIdentitiesSha256": "2514ec56905cc651e4bfc9d7c3613a480528c736536ed42ae47902dc090f8a69",
+      "missingSkips": [],
+      "missingSuites": {},
+      "newFailures": [],
+      "newSkips": [],
+      "newSuites": {},
+      "replacedPassingIdentities": [
+        {
+          "after": "Seeker Basic keeps linked Guardians and opens independent Add and upgrade actions",
+          "before": "Seeker Basic keeps one Guardian and locked Add without paid Chat",
+          "file": "SOURCE/test/guardian_card_interaction_test.dart"
+        },
+        {
+          "after": "actual Basic keeps its roster and routes Add and upgrade separately",
+          "before": "actual Basic displays one Guardian and routes locked Add to membership",
+          "file": "SOURCE/test/guardian_card_shell_test.dart"
+        },
+        {
+          "after": "Main counts toward ten for both plans; downgrades remove nothing",
+          "before": "Main counts toward Basic one and One ten; downgrades remove nothing",
+          "file": "SOURCE/test/zyra_guardian_capacity_test.dart"
+        },
+        {
+          "after": "Basic unknown mix retains code and QR and refuses an unverified second request",
+          "before": "Basic at cap retains code and QR but send offers Upgrade",
+          "file": "SOURCE/test/zyra_guardian_capacity_test.dart"
+        },
+        {
+          "after": "LOCK19 V7 Seeker Basic Guardian and Add card (variant: TargetPlatform.iOS)",
+          "before": "LOCK19 V6 Seeker Basic one Guardian and locked Add (variant: TargetPlatform.iOS)",
+          "file": "SOURCE/test/visual/lock19_guardian_card_capture_test.dart"
+        }
+      ],
+      "resolvedBaselineFailures": [],
+      "sameFailureIdentities": true,
+      "sameSkipIdentities": true,
+      "sameSuiteIdentities": true,
+      "skipIdentitiesSha256": "24a4e53e411313cc1ac927745684217461c411171cd03331ec2e682e4372140f",
+      "unexplainedMissingPasses": [],
+      "comparison": {
+        "bytes": 3090,
+        "sha256": "8212fe9cb2f7ffe6b3e678f8257015d1b1aceafd771ebcff3e39171c0bcfcf53"
+      }
+    },
+    "k17Reconciliation": "The historical master and test identity remain pinned. The updated assertion selects both active Basic-roster cards and returns to Main before checking V7 pager dots and the existing role, history and layout protections.",
+    "independentReview": "The reviewer checked the active-link count, unknown and verified tiers, account and route freshness, and both Guardian-side paths. Legacy invitation confirmation binds its preview to the checked account generation."
+  },
+  "verification": {
+    "guardianCapacity": "Main included in unique active-link count. At nine, a permitted tenth link fits. At ten or more, the client refuses further links. Pending requests do not count. Existing links remain.",
+    "guardianBasic": "A known Guardian One fits below ten. A second known Guardian Basic is refused for a Seeker Basic. Live link reads carry no other-member plan, so a Basic mix that cannot be verified retains the existing refusal. Q83.",
+    "guardianSide": [
+      "ZyraCodeScreen asGuardian, permanent code send and incoming request acceptance",
+      "AcceptWaliInviteScreen, legacy Seeker invitation acceptance",
+      "Founder Add a Seeker local confirmation"
+    ],
+    "addCard": "Planned Guardian tab retains every active roster entry and keeps Add a Guardian and Seeker One navigation separate. The older confirmed-empty ordinary member Add card keeps its existing generic presentation.",
+    "profileRing": "Verified Seeker One shows the existing 56 pt gold ring and Seeker One semantics. Verified Basic uses a plain 56 pt photo or fallback. Other-member plan unavailable keeps the existing decorative ring and semantics. Q84.",
+    "layout": "Seeker Basic free and used states rendered at 430 by 932 pt with actual tab bar. The shared spacing tests include 375 and 430 pt at default and Larger Text."
+  },
+  "renders": {
+    "storage": "Owner-only local review workspace. No screenshots are published in the repository.",
+    "files": [
+      {
+        "file": "seeker_basic_add_free.png",
+        "pixelWidth": 1290,
+        "pixelHeight": 2796,
+        "bytes": 373965,
+        "sha256": "44ca6c9eb0c76bf3152fa505bb725fc022c332ad9ac052534314703df54d150f"
+      },
+      {
+        "file": "seeker_basic_add_used.png",
+        "pixelWidth": 1290,
+        "pixelHeight": 2796,
+        "bytes": 370688,
+        "sha256": "ca390e44f046b7f2fc9c6d52b910755ef4c3f3ddadc842a0ea968033696f737d"
+      }
+    ]
+  },
+  "device": {
+    "status": "Separate protected Profile delivery stage",
+    "installExecutedInThisVerification": false
+  }
+}
