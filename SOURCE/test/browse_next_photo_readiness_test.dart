@@ -144,8 +144,8 @@ Future<void> _expectPixel(
     final image = await boundary.toImage(pixelRatio: 1);
     try {
       final bytes = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
-      final sample =
-          sampleAt ?? Offset(photoRect.center.dx, photoRect.top + 30);
+      // The square fixtures paint across the center of the 3:4 aperture.
+      final sample = sampleAt ?? photoRect.center;
       final x = (sample.dx - boundaryRect.left).round();
       final y = (sample.dy - boundaryRect.top).round();
       final offset = (y * image.width + x) * 4;
@@ -302,21 +302,24 @@ Future<void> _advancePhoto(
     );
     final viewport = tester.getRect(pager);
     final incoming = _key('concept_browse_photo_${id}_$photoIndex');
-    final exposed = tester.getRect(incoming).intersect(viewport);
-    expect(exposed.width, greaterThan(1));
-    final images = tester
-        .widgetList<RawImage>(
-          find.descendant(of: incoming, matching: find.byType(RawImage)),
-        )
-        .toList();
-    expect(images, isNotEmpty);
-    expect(images.every((image) => image.image != null), isTrue);
-    await _expectPixel(
-      tester,
-      id,
-      expected,
-      sampleAt: Offset(exposed.center.dx, viewport.top + 30),
+    final raw = find.descendant(of: incoming, matching: find.byType(RawImage));
+    expect(raw, findsOneWidget);
+    final render = tester.widget<RawImage>(raw);
+    final decoded = render.image;
+    expect(decoded, isNotNull);
+    final frame = tester.getRect(raw);
+    final fitted = applyBoxFit(
+      render.fit!,
+      Size(decoded!.width.toDouble(), decoded.height.toDouble()),
+      frame.size,
     );
+    final painted = render.alignment
+        .resolve(Directionality.of(tester.element(raw)))
+        .inscribe(fitted.destination, frame);
+    final exposed = painted.intersect(viewport);
+    expect(exposed.width, greaterThan(1));
+    expect(exposed.height, greaterThan(1));
+    await _expectPixel(tester, id, expected, sampleAt: exposed.center);
   } else {
     await _expectPixel(tester, id, expected);
   }

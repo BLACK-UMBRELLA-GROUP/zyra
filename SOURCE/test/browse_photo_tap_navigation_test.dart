@@ -682,9 +682,13 @@ void main() {
         await tester.pump();
         final page = tester.widget<PageView>(_pager()).controller!.page!;
         expect(page, inExclusiveRange(1.25, 1.75));
-        final seam = tester
-            .getRect(_key('concept_browse_photo_${_person.id}_1'))
-            .left;
+        final aperture = tester.getRect(
+          find.descendant(
+            of: _key('concept_browse_photo_${_person.id}_1'),
+            matching: find.byType(AspectRatio),
+          ),
+        );
+        final seam = aperture.left;
         final boundary = tester.renderObject<RenderRepaintBoundary>(
           find.byKey(_paintBoundary),
         );
@@ -718,7 +722,7 @@ void main() {
         // Radius 10 corners exclude several pixels at these first/last rows,
         // so ±3 still detects the original triangular notch. The scrim is uniform
         // per row and the control must fail this same tight channel tolerance.
-        for (final y in [pagerRect.top + 1, pagerRect.bottom - 1]) {
+        for (final y in [aperture.top + 1, aperture.bottom - 1]) {
           final reference = pixelAt(seam - 20, y);
           var controlNotchDetected = false;
           for (final x in [seam - 3, seam + 3, seam + 20]) {

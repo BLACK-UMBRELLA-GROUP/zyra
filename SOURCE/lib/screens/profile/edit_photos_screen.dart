@@ -26,6 +26,7 @@ import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_confirm_sheet.dart';
 import '../../widgets/zyra_loading.dart';
 import '../../widgets/zyra_profile_image.dart';
+import '../../widgets/zyra_profile_photo_frame.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import 'avatar_adjust_screen.dart';
 import 'photo_crop_review_screen.dart';
@@ -96,6 +97,8 @@ class EditPhotosScreen extends StatefulWidget {
   State<EditPhotosScreen> createState() => _EditPhotosScreenState();
 }
 
+const _gettingPhotosLabel = 'Getting your photos…';
+
 class _EditPhotosScreenState extends State<EditPhotosScreen> {
   final _feedbackContextKey = GlobalKey();
   BuildContext get _feedbackContext =>
@@ -112,7 +115,20 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
   final List<String> _photos = [];
   bool _loading = true;
   bool _working = false;
-  String? _error;
+  String? _errorMessage;
+  String? _errorReference;
+
+  String? get _error => _errorMessage;
+  set _error(String? message) {
+    _errorMessage = message;
+    _errorReference = null;
+  }
+
+  void _setPhotoFailure(ZyraPhotoFailureKind kind, String message) {
+    _errorMessage = message;
+    _errorReference = kind.referenceCode;
+  }
+
   String? _progressLabel;
   late final PageController _pageController = PageController(
     viewportFraction: 0.98,
@@ -524,7 +540,9 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
     setState(() {
       _working = true;
       _error = null;
-      _progressLabel = null;
+      _progressLabel = widget.photoBatchRunner == null
+          ? _gettingPhotosLabel
+          : null;
     });
     void updateProgress(String? value) {
       if (_ownerCanAct) setState(() => _progressLabel = value);
@@ -571,7 +589,7 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
     setState(() {
       _working = true;
       _error = null;
-      _progressLabel = null;
+      _progressLabel = _gettingPhotosLabel;
       if (!sameGallery) _apply(request.startingPhotos);
       _alignmentX = request.alignmentX;
       _alignmentY = request.alignmentY;
@@ -655,7 +673,7 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
           return;
         }
         final committed = await _commit([..._photos, ...result.urls]);
-        if (committed && mounted) {
+        if (committed && _canUse) {
           setState(() => _compactView = false);
           _goToPage(firstNewIndex);
         }
@@ -663,7 +681,10 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
         return;
       case ZyraPhotoBatchOutcome.error:
         setState(() {
-          _error = result.memberErrorMessage;
+          _setPhotoFailure(
+            result.failureKind ?? ZyraPhotoFailureKind.unknown,
+            result.failureMessage,
+          );
         });
     }
   }
@@ -712,13 +733,11 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
       _hideRevokedPreview();
       return;
     }
-    final removed = gallery[index];
     final next = gallery..removeAt(index);
+    // Gallery writes replace rows in separate requests. A client-side
+    // Storage delete can race another editor or break an existing reference.
     final committed = await _commit(next);
-    if (committed && !_localPreview && _ownerCanAct) {
-      await ZyraPhotoService.discardNewUploads([removed]);
-    }
-    if (committed && mounted) {
+    if (committed && _canUse) {
       if (index == 0) _saveAvatar(Offset.zero);
       if (next.isNotEmpty) _goToPage(index.clamp(0, next.length - 1));
     }
@@ -805,19 +824,17 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
       if (saved.outcome != ZyraPhotoOutcome.uploaded || saved.url == null) {
         final kind = saved.failureKind ?? ZyraPhotoFailureKind.unknown;
         setState(() {
-          _error = '${kind.memberMessage} Reference: ${kind.referenceCode}.';
+          _setPhotoFailure(
+            kind,
+            saved.preparationFailure?.memberMessage ?? kind.memberMessage,
+          );
         });
         return;
       }
 
       final next = List<String>.of(_photos)..[index] = saved.url!;
       final committed = await _commit(next);
-      if (!committed && !_localPreview && _ownerCanAct) {
-        await ZyraPhotoService.discardNewUploads([saved.url!]);
-      } else if (committed && !_localPreview && _ownerCanAct) {
-        await ZyraPhotoService.discardNewUploads([original]);
-      }
-      if (committed && mounted) {
+      if (committed && _canUse) {
         if (index == 0) {
           _saveAvatar(Offset.zero);
         }
@@ -832,7 +849,7 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
       setState(() {
         _working = false;
         _progressLabel = null;
-        _error = '${kind.memberMessage} Reference: ${kind.referenceCode}.';
+        _setPhotoFailure(kind, kind.memberMessage);
       });
     }
   }
@@ -989,6 +1006,7 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
                   padding: const EdgeInsets.fromLTRB(20, 4, 20, 10),
                   child: ZyraErrorBanner(
                     message: _error!,
+                    referenceCode: _errorReference,
                     onDismiss: () {
                       if (_canUse) {
                         setState(() => _error = null);
@@ -1109,11 +1127,11 @@ Widget _retainedPhotoImage(String photo, {bool showLoader = false}) =>
     photo.startsWith('assets/')
     ? Image.asset(
         photo,
-        fit: BoxFit.cover,
+        fit: BoxFit.contain,
         errorBuilder: (_, _, _) =>
             const ColoredBox(color: ZyraColors.luxuryDarkPurple),
       )
-    : ZyraProfileImage(photo, showLoader: showLoader);
+    : ZyraProfileImage(photo, fit: BoxFit.contain, showLoader: showLoader);
 
 class _PhotoGallery extends StatelessWidget {
   const _PhotoGallery({
@@ -1352,7 +1370,12 @@ class _LargePhotoCardState extends State<_LargePhotoCard> {
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
-                        _retainedPhotoImage(widget.photo, showLoader: true),
+                        ZyraProfilePhotoFrame(
+                          child: _retainedPhotoImage(
+                            widget.photo,
+                            showLoader: true,
+                          ),
+                        ),
                         const DecoratedBox(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
@@ -1634,7 +1657,7 @@ class _CompactPhotoTile extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            _retainedPhotoImage(photo),
+            ZyraProfilePhotoFrame(child: _retainedPhotoImage(photo)),
             if (selected)
               Positioned(
                 right: 7,
@@ -1810,14 +1833,22 @@ class _WorkingPill extends StatelessWidget {
             ? const EdgeInsets.symmetric(horizontal: 16, vertical: 10)
             : const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: ZyraColors.luxuryDarkPurple.withValues(alpha: 0.86),
+          color: ZyraColors.surfaceFill,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(color: ZyraColors.surfaceBorder),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(width: 16, height: 16, child: ZyraLoading()),
+            SizedBox(
+              width: 16,
+              height: 16,
+              child: ZyraLoading(
+                key: label == _gettingPhotosLabel
+                    ? const ValueKey('photos-picker-working')
+                    : null,
+              ),
+            ),
             if (hasLabel) ...[
               const SizedBox(width: 10),
               Text(label, style: ZyraText.subtext(size: 12.5)),

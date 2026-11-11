@@ -408,7 +408,8 @@ void main() {
       expect(_add.hitTestable(), findsOneWidget);
       expect(tester.widget<InkWell>(_add).onTap, isNotNull);
       if (result.outcome == ZyraPhotoBatchOutcome.error) {
-        expect(find.text(result.memberErrorMessage), findsOneWidget);
+        expect(find.text(result.failureMessage), findsOneWidget);
+        expect(find.text('Reference: ZY-PH-06'), findsOneWidget);
       }
       expect(tester.takeException(), isNull);
     });

@@ -35,12 +35,14 @@ class ZyraFieldError extends StatelessWidget {
 /// appears near the action that triggered it rather than as a takeover.
 class ZyraErrorBanner extends StatelessWidget {
   final String message;
+  final String? referenceCode;
   final VoidCallback? onRetry;
   final VoidCallback? onDismiss;
 
   const ZyraErrorBanner({
     super.key,
     required this.message,
+    this.referenceCode,
     this.onRetry,
     this.onDismiss,
   });
@@ -54,7 +56,9 @@ class ZyraErrorBanner extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.fromLTRB(14, 12, 10, 12),
           decoration: BoxDecoration(
-            color: ZyraColors.destructive.withValues(alpha: 0.16),
+            color: referenceCode == null
+                ? ZyraColors.destructive.withValues(alpha: 0.16)
+                : ZyraColors.surfaceFill,
             borderRadius: BorderRadius.circular(14),
             border: Border.all(color: ZyraColors.ink(0.22), width: 1),
           ),
@@ -64,7 +68,20 @@ class ZyraErrorBanner extends StatelessWidget {
               SizedBox(width: 10),
               Expanded(
                 flex: 3,
-                child: Text(message, style: ZyraText.body(size: 13)),
+                child: referenceCode == null
+                    ? Text(message, style: ZyraText.body(size: 13))
+                    : Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(message, style: ZyraText.body(size: 13)),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Reference: $referenceCode',
+                            style: ZyraText.subtext(size: 11),
+                          ),
+                        ],
+                      ),
               ),
               if (onRetry != null)
                 Flexible(

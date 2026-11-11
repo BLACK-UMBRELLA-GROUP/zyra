@@ -73,6 +73,8 @@ class _PhotoTransport {
   };
   final calls = <_Call>[];
   final unexpected = <String>[];
+  final removedStorage = <String>[];
+  bool acknowledgeStorageRemoval = true;
   bool failDelete = false;
   bool failInsert = false;
   bool loseInsertAcknowledgement = false;
@@ -108,6 +110,22 @@ class _PhotoTransport {
       );
 
   Future<http.Response> send(http.Request request) async {
+    if (request.url.origin == _origin &&
+        request.url.path == '/storage/v1/object/profile-photos' &&
+        request.method == 'DELETE') {
+      final actor = _actor(request);
+      final prefixes = (jsonDecode(request.body)['prefixes'] as List)
+          .cast<String>();
+      if (prefixes.length != 1 || !prefixes.single.startsWith('$actor/')) {
+        unexpected.add('Storage delete owner mismatch');
+        throw StateError('Synthetic Storage delete must bind its owner.');
+      }
+      if (!acknowledgeStorageRemoval) return _reply(request, [], 200);
+      removedStorage.add(prefixes.single);
+      return _reply(request, [
+        {'name': prefixes.single},
+      ], 200);
+    }
     if (request.url.origin != _origin ||
         request.url.path != '/rest/v1/profile_photos' ||
         (request.method != 'DELETE' && request.method != 'POST')) {
@@ -190,6 +208,49 @@ void main() {
     ZyraAccountState.endSignOutAttempt();
   });
   tearDownAll(() => Supabase.instance.dispose());
+
+  test('batch rollback deletes exactly its own unpublished crops', () async {
+    final path = '$_actorA/unpublished.jpg';
+    expect(
+      await ZyraPhotoService.discardNewUploads([
+        _signed(path),
+      ], canProceed: () => true),
+      isTrue,
+    );
+    expect(transport.removedStorage, [path]);
+    expect(transport.calls, isEmpty);
+  });
+
+  test(
+    'batch rollback rejects foreign references and missing acknowledgements',
+    () async {
+      final own = _signed('$_actorA/unpublished.jpg');
+      for (final url in [
+        _signed('$_actorB/unrelated.jpg'),
+        own.replaceFirst(_origin, 'https://other.invalid'),
+      ]) {
+        expect(
+          await ZyraPhotoService.discardNewUploads([
+            own,
+            url,
+          ], canProceed: () => true),
+          isFalse,
+        );
+      }
+      expect(
+        await ZyraPhotoService.discardNewUploads([
+          own,
+        ], canProceed: () => false),
+        isFalse,
+      );
+      transport.acknowledgeStorageRemoval = false;
+      expect(
+        await ZyraPhotoService.discardNewUploads([own], canProceed: () => true),
+        isFalse,
+      );
+      expect(transport.removedStorage, isEmpty);
+    },
+  );
 
   Future<void> interruptedDelete(
     String name,

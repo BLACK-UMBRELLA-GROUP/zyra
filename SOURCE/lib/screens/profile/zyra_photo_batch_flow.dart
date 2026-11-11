@@ -8,7 +8,12 @@ import 'photo_crop_review_screen.dart';
 enum ZyraPhotoBatchOutcome { added, cancelled, error }
 
 class ZyraPhotoBatchResult {
-  const ZyraPhotoBatchResult._(this.outcome, this.urls, this.failureKind);
+  const ZyraPhotoBatchResult._(
+    this.outcome,
+    this.urls,
+    this.failureKind, [
+    this.preparationFailure,
+  ]);
 
   const ZyraPhotoBatchResult.added(List<String> urls)
     : this._(ZyraPhotoBatchOutcome.added, urls, null);
@@ -16,15 +21,21 @@ class ZyraPhotoBatchResult {
     : this._(ZyraPhotoBatchOutcome.cancelled, const [], null);
   const ZyraPhotoBatchResult.error([
     ZyraPhotoFailureKind kind = ZyraPhotoFailureKind.unknown,
-  ]) : this._(ZyraPhotoBatchOutcome.error, const [], kind);
+    ZyraPhotoPreparationFailure? preparationFailure,
+  ]) : this._(ZyraPhotoBatchOutcome.error, const [], kind, preparationFailure);
 
   final ZyraPhotoBatchOutcome outcome;
   final List<String> urls;
   final ZyraPhotoFailureKind? failureKind;
+  final ZyraPhotoPreparationFailure? preparationFailure;
+
+  String get failureMessage =>
+      preparationFailure?.memberMessage ??
+      (failureKind ?? ZyraPhotoFailureKind.unknown).memberMessage;
 
   String get memberErrorMessage {
     final kind = failureKind ?? ZyraPhotoFailureKind.unknown;
-    return '${kind.memberMessage} Reference: ${kind.referenceCode}.';
+    return '$failureMessage Reference: ${kind.referenceCode}.';
   }
 }
 
@@ -74,7 +85,13 @@ Future<ZyraPhotoBatchResult> runZyraPhotoBatchFlow(
       await ZyraPhotoService.pickManyForReview(
         limit: remaining,
         onProgress: (prepared, total) {
-          if (current()) onProgress('Preparing $prepared of $total');
+          if (current()) {
+            onProgress(
+              prepared == 0
+                  ? 'Preparing photos…'
+                  : 'Preparing $prepared of $total',
+            );
+          }
         },
       );
   if (selection.photos.length > remaining ||
@@ -88,7 +105,10 @@ Future<ZyraPhotoBatchResult> runZyraPhotoBatchFlow(
       return const ZyraPhotoBatchResult.cancelled();
     case ZyraPhotoSelectionOutcome.error:
       if (current()) onProgress(null);
-      return const ZyraPhotoBatchResult.error(ZyraPhotoFailureKind.processing);
+      return ZyraPhotoBatchResult.error(
+        ZyraPhotoFailureKind.processing,
+        selection.failure,
+      );
     case ZyraPhotoSelectionOutcome.selected:
       break;
   }
@@ -131,10 +151,13 @@ Future<ZyraPhotoBatchResult> runZyraPhotoBatchFlow(
     );
     if (!current()) return const ZyraPhotoBatchResult.cancelled();
     if (result.outcome != ZyraPhotoOutcome.uploaded || result.url == null) {
-      if (!localPreview) await ZyraPhotoService.discardNewUploads(saved);
+      if (!localPreview) {
+        await ZyraPhotoService.discardNewUploads(saved, canProceed: current);
+      }
       onProgress(null);
       return ZyraPhotoBatchResult.error(
         result.failureKind ?? ZyraPhotoFailureKind.unknown,
+        result.preparationFailure,
       );
     }
     saved.add(result.url!);

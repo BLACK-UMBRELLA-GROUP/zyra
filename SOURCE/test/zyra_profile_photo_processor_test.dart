@@ -62,6 +62,36 @@ void main() {
       expect(decoded.exif.isEmpty, isTrue);
     });
 
+    test(
+      'review keeps a larger clean source until the crop is finalised',
+      () async {
+        final source = _jpegWithSensitiveExif(width: 3600, height: 2700);
+        final prepared = await ZyraProfilePhotoProcessor.processForReview(
+          source,
+        );
+        final review = img.decodeJpg(prepared)!;
+        expect((review.width, review.height), (3000, 2250));
+        expect(img.decodeJpgExif(prepared), isNull);
+
+        final crop = img.copyCrop(
+          review,
+          x: 100,
+          y: 100,
+          width: 1500,
+          height: 2000,
+        );
+        final saved = await ZyraPhotoService.saveReviewedPhoto(
+          img.encodeJpg(crop),
+          localPreview: true,
+        );
+        expect(saved.outcome, ZyraPhotoOutcome.uploaded);
+        final output = Uri.parse(saved.url!).data!.contentAsBytes();
+        final decoded = img.decodeJpg(output)!;
+        expect((decoded.width, decoded.height), (1080, 1440));
+        expect(img.decodeJpgExif(output), isNull);
+      },
+    );
+
     test('does not enlarge an image already inside the bound', () {
       final source = _jpegWithSensitiveExif(width: 320, height: 480);
 
@@ -90,6 +120,22 @@ void main() {
         expect(img.decodeJpgExif(output), isNull);
       },
     );
+
+    test('removes source ICC and clamps a very thin panorama to one pixel', () {
+      final source = img.Image(width: 4000, height: 1)
+        ..iccProfile = img.IccProfile(
+          'Synthetic descriptive metadata',
+          img.IccProfileCompression.none,
+          Uint8List.fromList([1, 2, 3, 4]),
+        );
+      final original = img.encodeJpg(source);
+      expect(img.decodeJpg(original)!.iccProfile, isNotNull);
+      final decoded = img.decodeJpg(
+        ZyraProfilePhotoProcessor.processSynchronously(original),
+      )!;
+      expect((decoded.width, decoded.height), (1440, 1));
+      expect(decoded.iccProfile, isNull);
+    });
 
     test('always emits JPEG, including for a transparent PNG source', () {
       final source = img.Image(width: 20, height: 20, numChannels: 4);
@@ -164,6 +210,64 @@ void main() {
           PlatformException(code: 'photo_decode_failed'),
         ),
         ZyraPhotoFailureKind.processing,
+      );
+    });
+
+    test('only known picker and native reasons enter diagnostics', () {
+      for (final (code, reason) in [
+        ('photo_access_denied', ZyraPhotoPreparationFailure.libraryAccess),
+        ('invalid_image', ZyraPhotoPreparationFailure.pickerRead),
+        ('invalid_source', ZyraPhotoPreparationFailure.pickerUnsupported),
+        ('multiple_request', ZyraPhotoPreparationFailure.pickerUnavailable),
+        ('photo_bad_arguments', ZyraPhotoPreparationFailure.nativeArguments),
+        ('photo_decode_failed', ZyraPhotoPreparationFailure.nativeDecode),
+        ('photo_encode_failed', ZyraPhotoPreparationFailure.nativeEncode),
+        ('private-path', ZyraPhotoPreparationFailure.unknown),
+      ]) {
+        expect(
+          ZyraPhotoService.preparationFailureFor(
+            PlatformException(
+              code: code,
+              message: 'private-path',
+              details: 'GPS',
+            ),
+          ),
+          reason,
+        );
+      }
+      for (final (message, reason) in [
+        ('empty source', ZyraPhotoPreparationFailure.emptySource),
+        (
+          'unsupported or unreadable source',
+          ZyraPhotoPreparationFailure.unreadableSource,
+        ),
+        (
+          'sanitised output verification failed',
+          ZyraPhotoPreparationFailure.verificationFailed,
+        ),
+        ('private-path', ZyraPhotoPreparationFailure.unknown),
+      ]) {
+        expect(
+          ZyraPhotoService.preparationFailureFor(
+            ZyraProfilePhotoProcessingException(message),
+          ),
+          reason,
+        );
+      }
+      for (final reason in ZyraPhotoPreparationFailure.values) {
+        expect(reason.memberMessage, isNot(contains('private-path')));
+        expect(
+          reason.memberMessage,
+          anyOf(contains('try'), contains('Try'), contains('reselect')),
+        );
+      }
+      expect(
+        ZyraPhotoPreparationFailure.pickerRead.memberMessage,
+        contains('save it to your phone first'),
+      );
+      expect(
+        ZyraPhotoPreparationFailure.libraryAccess.memberMessage,
+        contains('Settings'),
       );
     });
 

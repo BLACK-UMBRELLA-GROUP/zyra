@@ -176,7 +176,8 @@ Future<_FramePixels> _readPixels(WidgetTester tester) async {
         final x =
             (viewport.left + viewport.width * fraction - boundaryRect.left)
                 .round();
-        final y = (viewport.top + 30 - boundaryRect.top).round();
+        // Both square photo fixtures and the details page paint on this row.
+        final y = (viewport.center.dy - boundaryRect.top).round();
         final offset = (y * image.width + x) * 4;
         return [for (var c = 0; c < 4; c++) bytes!.getUint8(offset + c)];
       }

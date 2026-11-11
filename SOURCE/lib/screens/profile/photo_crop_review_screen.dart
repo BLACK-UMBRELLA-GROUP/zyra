@@ -6,6 +6,7 @@ import 'package:crop_your_image/crop_your_image.dart';
 import 'package:flutter/material.dart';
 import '../../dev/zyra_app_gold_preview.dart';
 
+import '../../models/zyra_profile_photo_geometry.dart';
 import '../../services/zyra_profile_photo_processor.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
@@ -38,8 +39,6 @@ class PhotoCropReviewScreen extends StatefulWidget {
 }
 
 class _PhotoCropReviewScreenState extends State<PhotoCropReviewScreen> {
-  static const double _profileRatio = 3 / 4;
-
   final List<Uint8List> _approved = [];
   late Uint8List _current;
   late CropController _cropController;
@@ -262,7 +261,7 @@ class _PhotoCropReviewScreenState extends State<PhotoCropReviewScreen> {
     child: Center(
       child: AspectRatio(
         key: const ValueKey('photo-crop-canvas'),
-        aspectRatio: _profileRatio,
+        aspectRatio: zyraProfilePhotoAspectRatio,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(24),
           child: Crop(
@@ -270,13 +269,12 @@ class _PhotoCropReviewScreenState extends State<PhotoCropReviewScreen> {
             image: _current,
             controller: _cropController,
             onCropped: _onCropped,
-            aspectRatio: _profileRatio,
-            // The canvas itself is the final 3:4 crop. Keeping a smaller crop
-            // rect inside a second dark frame made a fully zoomed-out photo
-            // look as though it sat inside an unrelated larger box.
-            initialRectBuilder: InitialRectBuilder.withSizeAndRatio(
-              size: 1,
-              aspectRatio: _profileRatio,
+            aspectRatio: zyraProfilePhotoAspectRatio,
+            // Set the crop to the entire viewport before the editor scales
+            // the image to cover it. A crop sized to the initially contained
+            // image would stay smaller and crop the image a second time.
+            initialRectBuilder: InitialRectBuilder.withBuilder(
+              (viewport, _) => viewport,
             ),
             interactive: true,
             fixCropRect: true,

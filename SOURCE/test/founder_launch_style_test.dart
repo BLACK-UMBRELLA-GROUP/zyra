@@ -524,7 +524,10 @@ bool _hasUnheldFreshPreparation() {
               matching: find.byType(ZyraLoading),
             )
             .evaluate()
-            .isNotEmpty ||
+            .any(
+              (loader) =>
+                  loader.widget.key != const ValueKey('photos-picker-working'),
+            ) ||
         _key('founder_resume_continuity').evaluate().isNotEmpty ||
         _key('founder_resume_quiet_background').evaluate().isNotEmpty) {
       return true;
@@ -2926,6 +2929,7 @@ void main() {
           expect(old.shell.canAct(), isFalse);
           if (!selectionBeforeProof) {
             expect(find.byType(PhotoCropReviewScreen), findsNothing);
+            expect(_key('photos-picker-working'), findsOneWidget);
             picker.releaseSelection();
           }
           await _waitForLocalImport(

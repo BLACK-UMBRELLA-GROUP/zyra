@@ -22,8 +22,9 @@
 import 'dart:convert';
 import 'dart:io' show Platform, SocketException;
 import 'dart:typed_data';
-import 'package:flutter/foundation.dart' show debugPrint;
-import 'package:flutter/services.dart' show MethodChannel, PlatformException;
+import 'package:flutter/foundation.dart' show debugPrint, visibleForTesting;
+import 'package:flutter/services.dart'
+    show MethodChannel, MissingPluginException, PlatformException;
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart'
@@ -70,7 +71,7 @@ extension ZyraPhotoFailureCopy on ZyraPhotoFailureKind {
     ZyraPhotoFailureKind.connection =>
       'Check your connection, then try adding the photos again.',
     ZyraPhotoFailureKind.processing =>
-      "One photo couldn't be prepared safely. Try a different photo.",
+      "This photo couldn't be added. Try another photo, or save it to your phone first.",
     ZyraPhotoFailureKind.storage =>
       'Photo storage is temporarily unavailable. Please try again shortly.',
     ZyraPhotoFailureKind.unknown =>
@@ -78,11 +79,48 @@ extension ZyraPhotoFailureCopy on ZyraPhotoFailureKind {
   };
 }
 
+/// Allowlisted diagnostics. Raw platform messages, details, paths and
+/// arbitrary exception reasons must never reach the console or the UI.
+enum ZyraPhotoPreparationFailure {
+  libraryAccess,
+  pickerRead,
+  pickerUnsupported,
+  pickerUnavailable,
+  sourceRead,
+  emptySource,
+  unreadableSource,
+  verificationFailed,
+  nativeArguments,
+  nativeDecode,
+  nativeEncode,
+  nativeUnavailable,
+  nativeEmpty,
+  unknown;
+
+  String get memberMessage => switch (this) {
+    libraryAccess =>
+      'Allow access to photos in Settings, then try adding the photo again.',
+    pickerUnavailable =>
+      'Open your photo library again and reselect the photo.',
+    nativeArguments || nativeUnavailable || verificationFailed =>
+      "This photo couldn't be added. Try again or choose another photo.",
+    _ => ZyraPhotoFailureKind.processing.memberMessage,
+  };
+}
+
+enum _PhotoPreparationStage { picker, read, decode, native, verify, finalise }
+
 class ZyraPhotoResult {
   final ZyraPhotoOutcome outcome;
   final String? url;
   final ZyraPhotoFailureKind? failureKind;
-  const ZyraPhotoResult._(this.outcome, this.url, this.failureKind);
+  final ZyraPhotoPreparationFailure? preparationFailure;
+  const ZyraPhotoResult._(
+    this.outcome,
+    this.url,
+    this.failureKind, [
+    this.preparationFailure,
+  ]);
 
   const ZyraPhotoResult.uploaded(String url)
     : this._(ZyraPhotoOutcome.uploaded, url, null);
@@ -90,23 +128,26 @@ class ZyraPhotoResult {
     : this._(ZyraPhotoOutcome.cancelled, null, null);
   const ZyraPhotoResult.error([
     ZyraPhotoFailureKind kind = ZyraPhotoFailureKind.unknown,
-  ]) : this._(ZyraPhotoOutcome.error, null, kind);
+    ZyraPhotoPreparationFailure? preparationFailure,
+  ]) : this._(ZyraPhotoOutcome.error, null, kind, preparationFailure);
 }
 
 enum ZyraPhotoSelectionOutcome { selected, cancelled, error }
 
 class ZyraPhotoSelectionResult {
-  const ZyraPhotoSelectionResult._(this.outcome, this.photos);
+  const ZyraPhotoSelectionResult._(this.outcome, this.photos, [this.failure]);
 
   const ZyraPhotoSelectionResult.selected(List<Uint8List> photos)
     : this._(ZyraPhotoSelectionOutcome.selected, photos);
   const ZyraPhotoSelectionResult.cancelled()
     : this._(ZyraPhotoSelectionOutcome.cancelled, const []);
-  const ZyraPhotoSelectionResult.error()
-    : this._(ZyraPhotoSelectionOutcome.error, const []);
+  const ZyraPhotoSelectionResult.error([
+    ZyraPhotoPreparationFailure failure = ZyraPhotoPreparationFailure.unknown,
+  ]) : this._(ZyraPhotoSelectionOutcome.error, const [], failure);
 
   final ZyraPhotoSelectionOutcome outcome;
   final List<Uint8List> photos;
+  final ZyraPhotoPreparationFailure? failure;
 }
 
 class ZyraPhotoService {
@@ -132,44 +173,122 @@ class ZyraPhotoService {
     requestFullMetadata: false,
   );
 
-  static Future<Uint8List> _readAndProcess(XFile picked) async {
+  @visibleForTesting
+  static ZyraPhotoPreparationFailure preparationFailureFor(Object error) =>
+      switch (error) {
+        ZyraProfilePhotoProcessingException(:final reason) => switch (reason) {
+          'empty source' => ZyraPhotoPreparationFailure.emptySource,
+          'unsupported or unreadable source' =>
+            ZyraPhotoPreparationFailure.unreadableSource,
+          'sanitised output verification failed' =>
+            ZyraPhotoPreparationFailure.verificationFailed,
+          _ => ZyraPhotoPreparationFailure.unknown,
+        },
+        PlatformException(:final code) => switch (code) {
+          'photo_access_denied' || 'photo_access_restricted' =>
+            ZyraPhotoPreparationFailure.libraryAccess,
+          'invalid_image' ||
+          'create_error' => ZyraPhotoPreparationFailure.pickerRead,
+          'invalid_source' => ZyraPhotoPreparationFailure.pickerUnsupported,
+          'multiple_request' => ZyraPhotoPreparationFailure.pickerUnavailable,
+          'photo_bad_arguments' => ZyraPhotoPreparationFailure.nativeArguments,
+          'photo_decode_failed' => ZyraPhotoPreparationFailure.nativeDecode,
+          'photo_encode_failed' => ZyraPhotoPreparationFailure.nativeEncode,
+          _ => ZyraPhotoPreparationFailure.unknown,
+        },
+        MissingPluginException() =>
+          ZyraPhotoPreparationFailure.nativeUnavailable,
+        _ => ZyraPhotoPreparationFailure.unknown,
+      };
+
+  static void _logPreparationFailure(
+    _PhotoPreparationStage stage,
+    ZyraPhotoPreparationFailure failure,
+  ) => debugPrint(
+    'ZYRA: profile photo [ZY-PH-04; stage=${stage.name}; reason=${failure.name}].',
+  );
+
+  static void _logNativeFallback(
+    _PhotoPreparationStage stage,
+    ZyraPhotoPreparationFailure failure,
+  ) => debugPrint(
+    'ZYRA: profile photo trying iOS normalisation '
+    '[stage=${stage.name}; reason=${failure.name}].',
+  );
+
+  static Never _preparationFailed(
+    _PhotoPreparationStage stage,
+    ZyraPhotoPreparationFailure failure,
+  ) {
+    _logPreparationFailure(stage, failure);
+    throw failure;
+  }
+
+  static Future<Uint8List> _readAndProcess(
+    XFile picked, {
+    bool forReview = false,
+  }) async {
+    final process = forReview
+        ? ZyraProfilePhotoProcessor.processForReview
+        : ZyraProfilePhotoProcessor.process;
     Uint8List? sourceBytes;
     try {
       sourceBytes = await picked.readAsBytes();
-      // The picker normally returns a bounded JPEG/PNG. Process that directly
-      // so supported iPhone photos do not depend on a second platform hop.
-      // This is still fail-closed: only the newly encoded, verified JPEG can
-      // leave this method; the picked bytes are never uploadable as-is.
-      return await ZyraProfilePhotoProcessor.process(sourceBytes);
-    } on ZyraProfilePhotoProcessingException {
-      if (!Platform.isIOS) rethrow;
-      // HEIC/HEIF is expected on iPhone and is deliberately handled below by
-      // UIKit, which can decode it while Dart's image package cannot.
     } catch (_) {
-      if (!Platform.isIOS) rethrow;
+      const failure = ZyraPhotoPreparationFailure.sourceRead;
+      if (!Platform.isIOS) {
+        _preparationFailed(_PhotoPreparationStage.read, failure);
+      }
+      _logNativeFallback(_PhotoPreparationStage.read, failure);
     }
 
-    // Pass the bytes rather than asking native code to reopen PHPicker's
-    // temporary path. iOS may retire that sandboxed file after picker return,
-    // which made valid photos fail with ZY-PH-04 on a real device. UIKit
-    // applies orientation, redraws into a fresh bitmap and emits a clean JPEG;
-    // the Dart privacy processor then verifies the result once more.
-    final arguments = <String, Object>{
-      'path': picked.path,
-      'maxDimension': ZyraProfilePhotoProcessor.maxDimension,
-      'quality': ZyraProfilePhotoProcessor.jpegQuality,
-      'data': ?sourceBytes,
-    };
-    final normalised = await _iosPhotoChannel.invokeMethod<Uint8List>(
-      'normaliseProfilePhoto',
-      arguments,
-    );
-    if (normalised == null || normalised.isEmpty) {
-      throw const ZyraProfilePhotoProcessingException(
-        'native iOS normalisation failed',
+    if (sourceBytes != null) {
+      try {
+        return await process(sourceBytes);
+      } catch (error) {
+        final failure = preparationFailureFor(error);
+        if (!Platform.isIOS ||
+            failure == ZyraPhotoPreparationFailure.emptySource) {
+          _preparationFailed(_PhotoPreparationStage.decode, failure);
+        }
+        _logNativeFallback(_PhotoPreparationStage.decode, failure);
+      }
+    }
+
+    // UIKit can decode HEIF and other representations Dart cannot. Supply the
+    // bytes if the picker's temporary file was readable. The verified JPEG
+    // from the privacy processor is the only result that leaves this method.
+    final Uint8List? normalised;
+    try {
+      normalised = await _iosPhotoChannel
+          .invokeMethod<Uint8List>('normaliseProfilePhoto', {
+            'path': picked.path,
+            'maxDimension': forReview
+                ? ZyraProfilePhotoProcessor.reviewMaxDimension
+                : ZyraProfilePhotoProcessor.maxDimension,
+            'quality': ZyraProfilePhotoProcessor.jpegQuality,
+            'data': ?sourceBytes,
+          });
+    } catch (error) {
+      _preparationFailed(
+        _PhotoPreparationStage.native,
+        preparationFailureFor(error),
       );
     }
-    return ZyraProfilePhotoProcessor.process(normalised);
+    if (normalised == null || normalised.isEmpty) {
+      _preparationFailed(
+        _PhotoPreparationStage.native,
+        ZyraPhotoPreparationFailure.nativeEmpty,
+      );
+    }
+    try {
+      return await process(normalised);
+    } catch (error) {
+      _preparationFailed(
+        _PhotoPreparationStage.verify,
+        preparationFailureFor(error),
+      );
+    }
   }
 
   /// Selects up to [limit] photos in one native picker pass and normalises
@@ -181,31 +300,34 @@ class ZyraPhotoService {
     void Function(int prepared, int total)? onProgress,
   }) async {
     if (limit < 1) return const ZyraPhotoSelectionResult.cancelled();
+    final List<XFile> picked;
     try {
-      final picked = await ImagePicker().pickMultiImage(
-        maxWidth: ZyraProfilePhotoProcessor.maxDimension.toDouble(),
-        maxHeight: ZyraProfilePhotoProcessor.maxDimension.toDouble(),
+      picked = await ImagePicker().pickMultiImage(
+        maxWidth: ZyraProfilePhotoProcessor.reviewMaxDimension.toDouble(),
+        maxHeight: ZyraProfilePhotoProcessor.reviewMaxDimension.toDouble(),
         imageQuality: ZyraProfilePhotoProcessor.jpegQuality,
         limit: limit,
         requestFullMetadata: false,
       );
-      if (picked.isEmpty) return const ZyraPhotoSelectionResult.cancelled();
+    } catch (error) {
+      final failure = preparationFailureFor(error);
+      _logPreparationFailure(_PhotoPreparationStage.picker, failure);
+      return ZyraPhotoSelectionResult.error(failure);
+    }
+    if (picked.isEmpty) return const ZyraPhotoSelectionResult.cancelled();
 
-      final bounded = picked.take(limit).toList(growable: false);
-      final prepared = <Uint8List>[];
+    final bounded = picked.take(limit).toList(growable: false);
+    final prepared = <Uint8List>[];
+    try {
+      onProgress?.call(0, bounded.length);
       for (var i = 0; i < bounded.length; i++) {
-        prepared.add(await _readAndProcess(bounded[i]));
+        prepared.add(await _readAndProcess(bounded[i], forReview: true));
         onProgress?.call(i + 1, bounded.length);
       }
-      return ZyraPhotoSelectionResult.selected(prepared);
-    } catch (error) {
-      const kind = ZyraPhotoFailureKind.processing;
-      debugPrint(
-        'ZYRA: profile photo selection/preparation failed '
-        '[${kind.referenceCode}; ${error.runtimeType}]. Nothing was retained.',
-      );
-      return const ZyraPhotoSelectionResult.error();
+    } on ZyraPhotoPreparationFailure catch (failure) {
+      return ZyraPhotoSelectionResult.error(failure);
     }
+    return ZyraPhotoSelectionResult.selected(prepared);
   }
 
   /// Selects a real device photo for Developer Preview without crossing the
@@ -219,13 +341,12 @@ class ZyraPhotoService {
       return ZyraPhotoResult.uploaded(
         'data:image/jpeg;base64,${base64Encode(bytes)}',
       );
+    } on ZyraPhotoPreparationFailure catch (failure) {
+      return ZyraPhotoResult.error(ZyraPhotoFailureKind.processing, failure);
     } catch (error) {
-      const kind = ZyraPhotoFailureKind.processing;
-      debugPrint(
-        'ZYRA: local preview photo processing failed '
-        '[${kind.referenceCode}; ${error.runtimeType}]. Nothing was retained.',
-      );
-      return const ZyraPhotoResult.error(kind);
+      final failure = preparationFailureFor(error);
+      _logPreparationFailure(_PhotoPreparationStage.picker, failure);
+      return ZyraPhotoResult.error(ZyraPhotoFailureKind.processing, failure);
     }
   }
 
@@ -249,12 +370,9 @@ class ZyraPhotoService {
       }
       return _uploadProcessed(bytes, canProceed: canProceed);
     } catch (error) {
-      const kind = ZyraPhotoFailureKind.processing;
-      debugPrint(
-        'ZYRA: reviewed profile photo could not be finalised '
-        '[${kind.referenceCode}; ${error.runtimeType}]. Nothing was retained.',
-      );
-      return const ZyraPhotoResult.error(kind);
+      final failure = preparationFailureFor(error);
+      _logPreparationFailure(_PhotoPreparationStage.finalise, failure);
+      return ZyraPhotoResult.error(ZyraPhotoFailureKind.processing, failure);
     }
   }
 
@@ -525,29 +643,46 @@ class ZyraPhotoService {
     return ZyraProfilePhotoProcessor.process(sourceBytes);
   }
 
-  /// Best-effort rollback for a reviewed batch that only partly uploaded.
-  /// Existing profile rows and existing photos are never included here.
-  static Future<void> discardNewUploads(List<String> displayUrls) async {
+  /// Rolls back only this batch's uploads before any gallery write. After a
+  /// gallery write is attempted, an ambiguous acknowledgement can still mean
+  /// the crop is live and its object must be retained.
+  static Future<bool> discardNewUploads(
+    List<String> displayUrls, {
+    required bool Function() canProceed,
+  }) async {
+    if (displayUrls.isEmpty) return true;
     _synchronizeOwner();
-    final user = ZyraAuth.currentUser;
-    if (user == null || displayUrls.isEmpty) return;
-    final ownPrefix = '${user.id}/';
-    final paths = displayUrls
-        .map(_storagePathFromUrl)
-        .where((path) => path.startsWith(ownPrefix))
-        .toList(growable: false);
-    if (paths.isEmpty) return;
+    final owner = _owner;
+    final epoch = _epoch;
+    if (owner == null || !canProceed()) return false;
+
     try {
-      await supabase.storage.from(_bucket).remove(paths);
-      for (final path in paths) {
-        _urlMemo.remove(path);
+      final paths = <String>{};
+      for (final url in displayUrls) {
+        final path = signupStoragePathFor(url, expectedUserId: owner);
+        if (path == null) return false;
+        paths.add(path);
       }
-    } catch (error) {
-      debugPrint(
-        'ZYRA: incomplete photo batch cleanup failed '
-        '(${error.runtimeType}).',
-      );
+      final session = supabase.auth.currentSession;
+      if (session?.user.id != owner ||
+          !_isCurrent(owner, epoch) ||
+          !canProceed()) {
+        return false;
+      }
+      final removed = await supabase.storage
+          .from(_bucket)
+          .setHeader('Authorization', 'Bearer ${session!.accessToken}')
+          .remove(paths.toList(growable: false));
+      if (!_isCurrent(owner, epoch) || !canProceed()) return false;
+      for (final object in removed) {
+        if (paths.remove(object.name)) _urlMemo.remove(object.name);
+      }
+      if (paths.isEmpty) return true;
+      debugPrint('ZYRA: incomplete photo batch cleanup was not acknowledged.');
+    } catch (_) {
+      debugPrint('ZYRA: incomplete photo batch cleanup failed.');
     }
+    return false;
   }
 
   // ── SESSION URL MEMO — DR-ZYRA-169 Phase 2, 2026-08-15 ──────────────
@@ -775,23 +910,24 @@ class ZyraPhotoService {
     }
     final epoch = _epoch;
 
-    final picked = await _pickProfilePhoto();
-    if (!_isCurrent(user.id, epoch)) return const ZyraPhotoResult.cancelled();
-    if (picked == null) return const ZyraPhotoResult.cancelled();
+    final XFile? picked;
+    try {
+      picked = await _pickProfilePhoto();
+    } catch (error) {
+      final failure = preparationFailureFor(error);
+      _logPreparationFailure(_PhotoPreparationStage.picker, failure);
+      return ZyraPhotoResult.error(ZyraPhotoFailureKind.processing, failure);
+    }
+    if (!_isCurrent(user.id, epoch) || picked == null) {
+      return const ZyraPhotoResult.cancelled();
+    }
 
     try {
       final bytes = await _readAndProcess(picked);
       if (!_isCurrent(user.id, epoch)) return const ZyraPhotoResult.cancelled();
       return _uploadProcessed(bytes);
-    } catch (error) {
-      // Fail closed: processing errors never fall back to the picker bytes.
-      // Log only the error type, never a path, filename or photo metadata.
-      final kind = classifyFailure(error);
-      debugPrint(
-        'ZYRA: profile photo processing/upload failed '
-        '[${kind.referenceCode}; ${error.runtimeType}]. Nothing was uploaded.',
-      );
-      return ZyraPhotoResult.error(kind);
+    } on ZyraPhotoPreparationFailure catch (failure) {
+      return ZyraPhotoResult.error(ZyraPhotoFailureKind.processing, failure);
     }
   }
 
@@ -879,7 +1015,10 @@ class ZyraPhotoService {
       // Best-effort — AppState's in-memory photos list (used everywhere
       // else in the app today) already has the URLs regardless of
       // whether this sync succeeds.
-      debugPrint('ZYRA: ordered profile photos could not be saved — $e');
+      debugPrint(
+        'ZYRA: ordered profile photos could not be saved '
+        '[${classifyFailure(e).referenceCode}].',
+      );
       return false;
     }
   }

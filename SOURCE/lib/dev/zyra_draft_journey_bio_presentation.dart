@@ -5,6 +5,7 @@ import '../data/zyra_journey_life_snapshot.dart';
 import '../models/journey_bio.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
+import '../widgets/zyra_profile_photo_frame.dart';
 import '../widgets/zyra_state_widgets.dart';
 import 'zyra_view_request_draft_model.dart' show draftProfiles;
 
@@ -241,35 +242,38 @@ class _ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final name = firstName.trim();
+    final portraitSurface = ZyraFloatingSurface(
+      radius: 18,
+      child: Container(
+        key: ValueKey('draft_journey_bio_portrait_$subjectId'),
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          color: ZyraColors.surfaceFill,
+          borderRadius: BorderRadius.circular(18),
+        ),
+        child:
+            portrait ??
+            Center(
+              child: Text(
+                name.isEmpty ? '—' : name.characters.first.toUpperCase(),
+                style: ZyraText.heading(
+                  size: 32,
+                  color: ZyraColors.journeyGold,
+                ),
+              ),
+            ),
+      ),
+    );
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ExcludeSemantics(
-          child: ZyraFloatingSurface(
-            radius: 18,
-            circle: false,
-            gold: false,
-            child: Container(
-              key: ValueKey('draft_journey_bio_portrait_$subjectId'),
-              width: 88,
-              height: 108,
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                color: ZyraColors.surfaceFill,
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child:
-                  portrait ??
-                  Center(
-                    child: Text(
-                      name.isEmpty ? '—' : name.characters.first.toUpperCase(),
-                      style: ZyraText.heading(
-                        size: 32,
-                        color: ZyraColors.journeyGold,
-                      ),
-                    ),
-                  ),
-            ),
+          child: SizedBox(
+            width: 88,
+            height: 108,
+            child: portrait == null
+                ? portraitSurface
+                : ZyraProfilePhotoFrame(child: portraitSurface),
           ),
         ),
         const SizedBox(width: 18),

@@ -87,6 +87,7 @@
 
 import 'dart:async';
 import '../../widgets/zyra_profile_image.dart';
+import '../../widgets/zyra_profile_photo_frame.dart';
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, TargetPlatform;
 import 'package:flutter/material.dart';
@@ -1625,6 +1626,10 @@ class _BrowseScreenState extends State<BrowseScreen> {
       );
     }
     final profile = _current;
+    final photos = profile?.photos ?? const <String>[];
+    final photo = photos.isEmpty
+        ? ''
+        : photos[_photoIndex < photos.length ? _photoIndex : 0];
     final swipeFeedbackStyle =
         ZyraDevScenario.instance.browseSwipeFeedbackStyle;
     // 2026-07-25, DR-ZYRA-101 audit item 1 (Founder decision: "switch
@@ -1639,7 +1644,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          // Full-bleed photo, edge to edge — no outer padding, no rounding.
+          // The card and its gestures use the full available viewport.
           if (profile == null && _gated)
             const SizedBox.shrink()
           else if (profile == null)
@@ -1794,15 +1799,16 @@ class _BrowseScreenState extends State<BrowseScreen> {
                           // The policy fix addresses the cause of (1); this
                           // addresses the consequence of both, permanently. A
                           // missing photo is a placeholder, never a blank screen.
-                          ZyraProfileImage(
-                            profile.photos.isEmpty
-                                ? ''
-                                : profile.photos[_photoIndex <
-                                          profile.photos.length
-                                      ? _photoIndex
-                                      : 0],
-                            showLoader: true,
-                          ),
+                          if (photo.isEmpty)
+                            const ZyraProfileImage('', showLoader: true)
+                          else
+                            ZyraProfilePhotoFrame(
+                              child: ZyraProfileImage(
+                                photo,
+                                fit: BoxFit.contain,
+                                showLoader: true,
+                              ),
+                            ),
                           // Top gradient — status bar / glass button legibility.
                           Container(
                             alignment: Alignment.topCenter,

@@ -62,6 +62,90 @@ void main() {
     expect(find.textContaining('Pinch to zoom'), findsNothing);
   });
 
+  for (final (viewport, portrait) in [
+    (const Size(430, 932), true),
+    (const Size(375, 667), false),
+  ]) {
+    testWidgets('uses the widest full crop at $viewport', (tester) async {
+      tester.view.physicalSize = viewport;
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final source = img.Image(
+        width: portrait ? 240 : 480,
+        height: portrait ? 480 : 240,
+      );
+      img.fill(source, color: img.ColorRgb8(20, 20, 20));
+      // Paint opposite source edges on the axis that must stay fully visible.
+      for (final (start, end, color) in [
+        (0, 10, img.ColorRgb8(240, 20, 20)),
+        (229, 239, img.ColorRgb8(20, 240, 20)),
+      ]) {
+        img.fillRect(
+          source,
+          x1: portrait ? start : 0,
+          y1: portrait ? 0 : start,
+          x2: portrait ? end : source.width - 1,
+          y2: portrait ? source.height - 1 : end,
+          color: color,
+        );
+      }
+      final photo = img.encodePng(source);
+      List<Uint8List>? result;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              return Scaffold(
+                body: TextButton(
+                  onPressed: () async {
+                    result = await Navigator.of(context).push<List<Uint8List>>(
+                      MaterialPageRoute(
+                        builder: (_) => PhotoCropReviewScreen(photos: [photo]),
+                      ),
+                    );
+                  },
+                  child: const Text('Open crop'),
+                ),
+              );
+            },
+          ),
+        ),
+      );
+      await tester.tap(find.text('Open crop'));
+      final confirm = find.byKey(const ValueKey('photo-crop-confirm'));
+      await tester.runAsync(() async {
+        for (var attempt = 0; attempt < 80; attempt++) {
+          await tester.pump(const Duration(milliseconds: 20));
+          if (confirm.evaluate().isNotEmpty &&
+              tester.widget<FilledButton>(confirm).onPressed != null) {
+            break;
+          }
+          await Future<void>.delayed(const Duration(milliseconds: 20));
+        }
+        expect(tester.widget<FilledButton>(confirm).onPressed, isNotNull);
+        await tester.tap(confirm);
+        for (var attempt = 0; attempt < 80 && result == null; attempt++) {
+          await tester.pump(const Duration(milliseconds: 20));
+          await Future<void>.delayed(const Duration(milliseconds: 20));
+        }
+      });
+      final crop = img.decodeImage(result!.single)!;
+      expect(crop.width, closeTo(portrait ? 240 : 180, 1));
+      expect(crop.height, closeTo(portrait ? 320 : 240, 1));
+      final first = crop.getPixel(
+        portrait ? 2 : crop.width ~/ 2,
+        portrait ? crop.height ~/ 2 : 2,
+      );
+      final last = crop.getPixel(
+        portrait ? crop.width - 3 : crop.width ~/ 2,
+        portrait ? crop.height ~/ 2 : crop.height - 3,
+      );
+      expect(first.r, greaterThan(200));
+      expect(last.g, greaterThan(200));
+    });
+  }
+
   testWidgets('a photo batch uses Continue and reserves Finish for the last', (
     tester,
   ) async {

@@ -87,6 +87,8 @@ Widget and capture tests select other sample roles, plans and states from code. 
 
 Confirmations share a compact bottom sheet. Profile Preview uses the Profiles card with the member’s own public details and photos. Its request button shows an explanation.
 
+Profile photo review starts at the widest framing that fills the 3:4 crop. Profiles, Profile Preview, Journey Bio and Manage Photos display that crop without cutting it again. The review source is bounded at 3000 px on its longest edge and the saved JPEG at 1440 px. Photo preparation errors show recovery advice and a support reference.
+
 Use the protected local driver with the installed pinned SDK for checks, without resolving dependencies again:
 
 ```sh

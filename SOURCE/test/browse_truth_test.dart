@@ -1,27 +1,65 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'dart:ui' as ui;
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
+import 'package:image/image.dart' as img;
 import 'package:shared_preferences/shared_preferences.dart';
+// The pinned cache manager's database factory is stubbed for this widget test.
+// ignore: depend_on_referenced_packages
+import 'package:sqflite/sqflite.dart' as sqflite;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/models/seeker_profile.dart';
 import 'package:zyra/screens/browse/browse_screen.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_discovery_service.dart';
+import 'package:zyra/services/zyra_image_cache.dart';
 import 'package:zyra/services/zyra_local_prefs.dart';
 import 'package:zyra/services/zyra_photo_service.dart';
 import 'package:zyra/services/zyra_wali_link_service.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_text.dart';
+import 'package:zyra/widgets/zyra_profile_image.dart';
+import 'package:zyra/widgets/zyra_profile_photo_frame.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   var mode = 'empty';
+  sqflite.DatabaseFactory? previousDatabaseFactory;
+  final messenger =
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+  const pathProvider = MethodChannel('plugins.flutter.io/path_provider');
+  const cacheDatabase = MethodChannel('com.tekartik.sqflite');
   setUpAll(() async {
+    final scratch = await Directory.systemTemp.createTemp('zyra-browse-paint-');
+    messenger.setMockMethodCallHandler(pathProvider, (_) async => scratch.path);
+    messenger.setMockMethodCallHandler(
+      cacheDatabase,
+      (call) async => switch (call.method) {
+        'openDatabase' => 1,
+        'query' =>
+          (call.arguments as Map?)?['sql'] == 'PRAGMA user_version'
+              ? <Map<String, Object?>>[
+                  {'user_version': 3},
+                ]
+              : <Map<String, Object?>>[],
+        'getDatabasesPath' => scratch.path,
+        'databaseExists' => false,
+        _ => null,
+      },
+    );
+    previousDatabaseFactory = sqflite.databaseFactoryOrNull;
+    sqflite.databaseFactory = sqflite.databaseFactorySqflitePlugin;
+    await ZyraImageCache.manager.getFileFromCache('synthetic-not-present');
     SharedPreferences.setMockInitialValues({});
     await ZyraLocalPrefs.init();
     await Supabase.initialize(
@@ -69,7 +107,16 @@ void main() {
       }),
     );
   });
-  tearDownAll(() => Supabase.instance.dispose());
+  tearDownAll(() async {
+    try {
+      await Supabase.instance.dispose();
+      await ZyraImageCache.manager.dispose();
+    } finally {
+      messenger.setMockMethodCallHandler(pathProvider, null);
+      messenger.setMockMethodCallHandler(cacheDatabase, null);
+      sqflite.databaseFactory = previousDatabaseFactory;
+    }
+  });
   setUp(() {
     ZyraText.useTestFontStubs = true;
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
@@ -229,6 +276,164 @@ void main() {
     expect(find.text("You're all caught up"), findsNothing);
     expect(tester.takeException(), isNull);
   });
+
+  for (final viewport in [const Size(430, 932), const Size(375, 667)]) {
+    browseTest('ordinary Profiles paints all legacy photo edges at $viewport', (
+      tester,
+    ) async {
+      tester.view.physicalSize = viewport;
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      const urls = [
+        'https://fixture.invalid/legacy-wide-first.jpg',
+        'https://fixture.invalid/legacy-wide-second.jpg',
+      ];
+      final source = img.Image(width: 120, height: 80);
+      img.fillRect(
+        source,
+        x1: 0,
+        y1: 0,
+        x2: 119,
+        y2: 9,
+        color: img.ColorRgb8(255, 0, 0),
+      );
+      img.fillRect(
+        source,
+        x1: 0,
+        y1: 70,
+        x2: 119,
+        y2: 79,
+        color: img.ColorRgb8(0, 0, 255),
+      );
+      img.fillRect(
+        source,
+        x1: 0,
+        y1: 10,
+        x2: 9,
+        y2: 69,
+        color: img.ColorRgb8(0, 255, 0),
+      );
+      img.fillRect(
+        source,
+        x1: 110,
+        y1: 10,
+        x2: 119,
+        y2: 69,
+        color: img.ColorRgb8(255, 255, 255),
+      );
+
+      // Ordinary Browse precaches and paints via the same cached provider.
+      // Seed those exact keys with synthetic bytes and avoid network/disk.
+      await tester.runAsync(() async {
+        final codec = await ui.instantiateImageCodec(img.encodePng(source));
+        final image = (await codec.getNextFrame()).image;
+        for (final url in urls) {
+          final provider = CachedNetworkImageProvider(url);
+          PaintingBinding.instance.imageCache.putIfAbsent(
+            provider,
+            () => OneFrameImageStreamCompleter(
+              SynchronousFuture(ImageInfo(image: image.clone())),
+            ),
+          );
+          addTearDown(
+            () => PaintingBinding.instance.imageCache.evict(provider),
+          );
+        }
+        image.dispose();
+        codec.dispose();
+      });
+      const boundaryKey = ValueKey('ordinary-browse-photo-paint');
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: RepaintBoundary(
+              key: boundaryKey,
+              child: BrowseScreen(
+                loadHiddenIds: () async => const [],
+                loadCandidates: () async => const ZyraSourceResult.available([
+                  SeekerProfile(
+                    id: 'synthetic-legacy-photo',
+                    firstName: 'Aaliyah',
+                    age: 27,
+                    city: 'London',
+                    gender: 'female',
+                    photos: urls,
+                  ),
+                ]),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      final photo = find.byType(ZyraProfilePhotoFrame);
+      final raw = find.descendant(of: photo, matching: find.byType(RawImage));
+      final aperture = tester.getRect(raw);
+      expect(aperture.size.aspectRatio, closeTo(3 / 4, .000001));
+      expect(tester.widget<RawImage>(raw).fit, BoxFit.contain);
+      final paintedSize = applyBoxFit(
+        BoxFit.contain,
+        const Size(120, 80),
+        aperture.size,
+      ).destination;
+      final painted = Rect.fromCenter(
+        center: aperture.center,
+        width: paintedSize.width,
+        height: paintedSize.height,
+      );
+      final boundaryFinder = find.byKey(boundaryKey);
+      final origin = tester.getTopLeft(boundaryFinder);
+      final boundary = tester.renderObject<RenderRepaintBoundary>(
+        boundaryFinder,
+      );
+      final edges = await tester.runAsync(() async {
+        final frame = await boundary.toImage();
+        try {
+          final bytes = (await frame.toByteData(
+            format: ui.ImageByteFormat.rawRgba,
+          ))!;
+          List<int> at(Offset point) {
+            final local = point - origin;
+            final offset =
+                (local.dy.round() * frame.width + local.dx.round()) * 4;
+            return [
+              for (var channel = 0; channel < 3; channel++)
+                bytes.getUint8(offset + channel),
+            ];
+          }
+
+          return (
+            top: at(Offset(painted.center.dx, painted.top + 5)),
+            bottom: at(Offset(painted.center.dx, painted.bottom - 5)),
+            left: at(Offset(painted.left + 5, painted.center.dy)),
+            right: at(Offset(painted.right - 5, painted.center.dy)),
+            center: at(painted.center),
+          );
+        } finally {
+          frame.dispose();
+        }
+      });
+      // Browse paints its original gradients over the photo.
+      expect(edges!.top[0], greaterThan(edges.top[2] + 100));
+      expect(edges.bottom[2], greaterThan(edges.bottom[0] + 100));
+      expect(edges.left[1], greaterThan(edges.left[0] + 100));
+      expect(edges.right[0], greaterThan(edges.center[0] + 100));
+      expect(edges.right[1], greaterThan(edges.center[1] + 100));
+      expect(edges.right[2], greaterThan(edges.center[2] + 100));
+
+      final profileImage = find.descendant(
+        of: photo,
+        matching: find.byType(ZyraProfileImage),
+      );
+      expect(tester.widget<ZyraProfileImage>(profileImage).photo, urls[0]);
+      await tester.tapAt(Offset(aperture.width * .75, aperture.top - 12));
+      await tester.pumpAndSettle();
+      expect(tester.widget<ZyraProfileImage>(profileImage).photo, urls[1]);
+      expect(tester.takeException(), isNull);
+      debugPrint('Ordinary Profiles aperture at $viewport: ${aperture.size}');
+    });
+  }
 
   browseTest('an older in-flight deck cannot overwrite a newer refresh', (
     tester,
