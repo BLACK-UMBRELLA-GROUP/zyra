@@ -946,9 +946,7 @@ class _AccountPathOverview extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.all(14),
                           decoration: BoxDecoration(
-                            color: ZyraColors.foreground.withValues(
-                              alpha: 0.05,
-                            ),
+                            color: ZyraColors.surfaceFill,
                             border: Border(
                               left: BorderSide(
                                 color: ZyraColors.unlockDot,
@@ -1063,7 +1061,7 @@ class _OverviewRow extends StatelessWidget {
             selected: item.active || item.complete,
           ) ??
           BoxDecoration(
-            color: ZyraColors.frostFill,
+            color: ZyraColors.surfaceFill,
             borderRadius: BorderRadius.circular(15),
             border: Border.all(color: ZyraColors.frostBorder, width: 0.5),
           ),

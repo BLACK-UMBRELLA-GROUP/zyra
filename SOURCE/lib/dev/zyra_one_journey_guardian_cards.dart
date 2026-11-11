@@ -127,8 +127,6 @@ class ZyraOneJourneyGuardianCards extends StatefulWidget {
   State<ZyraOneJourneyGuardianCards> createState() => _GuardianCardsState();
 }
 
-enum _GuardianCardManagement { makeMain, clearMain, remove }
-
 class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
   int _index = 0, _render = 0;
   final _swipe = ZyraSwipeController();
@@ -136,6 +134,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
   final _invites = <String>{};
   Object? _sheetLease;
   ModalRoute<dynamic>? _sheetRoute;
+  ModalRoute<bool>? _confirmRoute;
   bool Function()? _menuEpochCurrent;
   final _owner = (ZyraAccountState.userId, ZyraAccountState.generation);
 
@@ -223,6 +222,15 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
   @override
   void dispose() {
     _dismissOwnedSheet();
+    final confirmRoute = _confirmRoute;
+    _confirmRoute = null;
+    if (confirmRoute != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (confirmRoute.isActive) {
+          confirmRoute.navigator?.removeRoute(confirmRoute, false);
+        }
+      });
+    }
     super.dispose();
   }
 
@@ -288,7 +296,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     final epoch = widget.interactionEpoch;
     Object? sheetEpoch, confirmedEpoch;
     var confirmed = false;
-    late final ModalBottomSheetRoute<_GuardianCardManagement> menuRoute;
+    late final ModalBottomSheetRoute<ZyraGuardianManagementAction> menuRoute;
     _resetMotion();
     setState(() {
       _sheetLease = lease;
@@ -324,7 +332,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
         sheetEpoch == widget.interactionEpoch();
 
     final localizations = MaterialLocalizations.of(context);
-    menuRoute = ModalBottomSheetRoute<_GuardianCardManagement>(
+    menuRoute = ModalBottomSheetRoute<ZyraGuardianManagementAction>(
       capturedThemes: InheritedTheme.capture(
         from: context,
         to: navigator.context,
@@ -341,7 +349,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
       backgroundColor: Colors.transparent,
       elevation: 0,
       builder: (sheetContext) {
-        bool choose(_GuardianCardManagement action) {
+        bool choose(ZyraGuardianManagementAction action) {
           if (!current() || confirmedEpoch != null) return false;
           Navigator.of(sheetContext).pop(action);
           confirmedEpoch = epoch();
@@ -401,14 +409,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
                           .where((p) => p.id != person.id)
                           .toList(),
                       canAct: current,
-                      makeMainGuardian: (_) async =>
-                          choose(_GuardianCardManagement.makeMain),
-                      clearMainGuardian: (_) async =>
-                          choose(_GuardianCardManagement.clearMain),
-                      removeGuardian: (_) async =>
-                          choose(_GuardianCardManagement.remove)
-                          ? null
-                          : 'This is no longer available. Nothing changed.',
+                      onSelect: choose,
                       closeMenu: () {
                         if (current()) Navigator.of(sheetContext).pop();
                       },
@@ -431,7 +432,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
       },
     );
     _sheetRoute = menuRoute;
-    _GuardianCardManagement? selected;
+    ZyraGuardianManagementAction? selected;
     try {
       onMenuRouteChanged?.call(menuRoute, open: true);
       final result = navigator.push(menuRoute);
@@ -462,22 +463,65 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
       // The shell binds its actions to its route epoch. After this menu's
       // confirmed pop, allow its requested rebuild to bind the new handlers.
       await WidgetsBinding.instance.endOfFrame;
-      if (!sameGuardian() ||
+      if (!mounted ||
+          !sameGuardian() ||
           !widget.canAct() ||
           route?.isCurrent != true ||
           resumeEpoch != widget.interactionEpoch()) {
         return;
       }
+      ModalRoute<bool>? confirmRoute;
+      var confirmEpoch = widget.interactionEpoch();
+      final confirmRender = widget.renderIdentity;
+      try {
+        final pending = showZyraGuardianManagementConfirm(
+          context: context,
+          action: selected,
+          person: person,
+          onOpening: (opened) {
+            _confirmRoute = confirmRoute = opened;
+            onMenuRouteChanged?.call(opened, open: true);
+          },
+          canConfirm: () =>
+              sameGuardian() &&
+              confirmRender == widget.renderIdentity &&
+              confirmEpoch == widget.interactionEpoch() &&
+              (widget.canActInOwnedMenu ?? widget.canAct)(),
+          onConfirmedPop: () => confirmEpoch = widget.interactionEpoch(),
+        );
+        confirmEpoch = widget.interactionEpoch();
+        if (await pending != true) return;
+      } finally {
+        if (confirmRoute case final opened?) {
+          if (identical(_confirmRoute, opened)) _confirmRoute = null;
+          onMenuRouteChanged?.call(opened, open: false);
+        }
+      }
+      if (!sameGuardian() ||
+          confirmRender != widget.renderIdentity ||
+          route?.isCurrent != true ||
+          confirmEpoch != widget.interactionEpoch()) {
+        return;
+      }
+      widget.onResume?.call();
+      confirmEpoch = widget.interactionEpoch();
+      await WidgetsBinding.instance.endOfFrame;
+      if (!sameGuardian() ||
+          !widget.canAct() ||
+          route?.isCurrent != true ||
+          confirmEpoch != widget.interactionEpoch()) {
+        return;
+      }
       final error = switch (selected) {
-        _GuardianCardManagement.makeMain =>
+        ZyraGuardianManagementAction.makeMain =>
           await widget.makeMain(person.id)
               ? null
               : "That didn't go through. Please try again.",
-        _GuardianCardManagement.clearMain =>
+        ZyraGuardianManagementAction.clearMain =>
           await widget.clearMain(person.id)
               ? null
               : "That didn't go through. Please try again.",
-        _GuardianCardManagement.remove => await widget.remove(person.id),
+        ZyraGuardianManagementAction.remove => await widget.remove(person.id),
       };
       if (error != null &&
           mounted &&
@@ -752,7 +796,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
         radius: 22,
         child: Container(
           decoration: BoxDecoration(
-            color: const Color(0xFFF3EDE3),
+            color: ZyraColors.ivoryTop,
             borderRadius: BorderRadius.circular(22),
             border: Border.all(
               color: person?.person.isMain == true

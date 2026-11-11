@@ -893,7 +893,7 @@ class _WaliJourneyDetailScreenState extends State<WaliJourneyDetailScreen> {
                     Container(
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: ZyraColors.foreground.withValues(alpha: 0.04),
+                        color: ZyraColors.surfaceFill,
                         border: Border.all(
                           color: ZyraColors.ink(0.24),
                           width: 0.5,
@@ -1141,9 +1141,7 @@ class _WaliJourneyDetailScreenState extends State<WaliJourneyDetailScreen> {
                             style: TextStyle(color: Colors.white),
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: ZyraColors.foreground.withValues(
-                                alpha: 0.06,
-                              ),
+                              fillColor: ZyraColors.ivoryTop,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide.none,

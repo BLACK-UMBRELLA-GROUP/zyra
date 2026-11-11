@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_draft_browse_utility_presentation.dart';
-import 'package:zyra/dev/zyra_draft_journey_block_hide_sheet.dart';
+import 'package:zyra/widgets/zyra_confirm_sheet.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
@@ -394,7 +394,7 @@ void main() {
         await h.tap('guardian_chat_options_$action');
         expect(vibrations(), ['HapticFeedbackType.selectionClick']);
         expect(find.byType(ZyraGuardianChatOptions), findsNothing);
-        expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+        expect(find.byType(ZyraConfirmSheet), findsNothing);
         expect(_modelFacts(h.latest.model), before);
         if (action == 'report') {
           final report = tester.widget<ZyraDraftReportPresentation>(
@@ -434,7 +434,7 @@ void main() {
         expect(vibrations(), isEmpty);
         expect(_facts(h.latest), committed);
         expect(find.byType(ZyraGuardianChatOptions), findsNothing);
-        expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+        expect(find.byType(ZyraConfirmSheet), findsNothing);
       },
     );
   }
@@ -479,7 +479,7 @@ void main() {
           );
           expect(h.latest.pages, ['guardian_connect']);
           expect(_modelFacts(h.latest.model), before);
-          expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+          expect(find.byType(ZyraConfirmSheet), findsNothing);
           report.onBlock!();
           await h.flush();
           expect(_modelFacts(h.latest.model), before);
@@ -662,7 +662,7 @@ void main() {
           reportBefore,
           reason: entry.key,
         );
-        expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+        expect(find.byType(ZyraConfirmSheet), findsNothing);
       }
     });
   }
@@ -697,7 +697,7 @@ void main() {
       expect(controller.text, _draft);
       expect(find.byType(ZyraGuardianChatOptions), findsNothing);
       expect(find.byType(ZyraDraftReportPresentation), findsNothing);
-      expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+      expect(find.byType(ZyraConfirmSheet), findsNothing);
       expect(find.text('A private chat'), findsOneWidget);
     },
   );
@@ -738,7 +738,7 @@ void main() {
         expect(controller.text, _draft);
         expect(find.byType(ZyraGuardianChatOptions), findsOneWidget);
         expect(find.byType(ZyraDraftReportPresentation), findsNothing);
-        expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+        expect(find.byType(ZyraConfirmSheet), findsNothing);
       }
     },
   );
@@ -764,7 +764,7 @@ void main() {
         expect(_facts(h.latest), before);
         expect(find.byType(ZyraGuardianChatOptions), findsOneWidget);
         expect(find.byType(ZyraDraftReportPresentation), findsNothing);
-        expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+        expect(find.byType(ZyraConfirmSheet), findsNothing);
       });
     }
   }
@@ -807,7 +807,7 @@ void main() {
           reason: entry.key,
         );
         expect(find.byType(ZyraDraftReportPresentation), findsNothing);
-        expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+        expect(find.byType(ZyraConfirmSheet), findsNothing);
       }
     });
   }
@@ -841,7 +841,7 @@ void main() {
       expect(find.byType(ZyraGuardianChatOptions), findsNothing);
       expect(find.byType(TextField), findsNothing);
       expect(find.byType(ZyraDraftReportPresentation), findsNothing);
-      expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+      expect(find.byType(ZyraConfirmSheet), findsNothing);
     });
   }
 }

@@ -397,12 +397,9 @@ void main() {
     await tester.ensureVisible(action);
     await tester.tap(action);
     await tester.pumpAndSettle();
-    final confirm = find.descendant(
-      of: _key('$actionKey-confirmation'),
-      matching: find.widgetWithText(InkWell, 'Confirm'),
-    );
+    final confirm = _key('$actionKey-confirmation-approve');
     expect(confirm, findsOneWidget);
-    return tester.widget<InkWell>(confirm).onTap!;
+    return tester.widget<TextButton>(confirm).onPressed!;
   }
 
   test('Model starts Main Chat on and Additional Chat off', () {
@@ -1091,10 +1088,7 @@ void main() {
     final clear = await confirmation(tester, actionKey: 'guardian-clear-main');
     expect(haptics() - initial, 2);
     await tester.tap(
-      find.descendant(
-        of: _key('guardian-clear-main-confirmation'),
-        matching: find.text('Cancel'),
-      ),
+      find.byKey(ValueKey('guardian-clear-main-confirmation-keep')),
     );
     await tester.pumpAndSettle();
     clear();
@@ -1104,11 +1098,11 @@ void main() {
       tester,
       actionKey: 'guardian-remove',
     );
-    expect(haptics() - initial, 4);
+    expect(haptics() - initial, 5);
     removeConfirmation();
     removeConfirmation();
     await tester.pumpAndSettle();
-    expect(haptics() - initial, 5);
+    expect(haptics() - initial, 6);
     expect(state().management, ['remove:$_hassanId']);
     expect(_menuSheet, findsNothing);
     expect(state().pages, isEmpty);
@@ -1176,7 +1170,14 @@ void main() {
     tester,
   ) async {
     await mount(tester, initialPage: 1);
-    final confirm = await confirmation(tester);
+    await tester.tap(_menu);
+    await tester.pumpAndSettle();
+    final action = _key('guardian-make-main');
+    final staleAction = tester
+        .widget<InkWell>(
+          find.descendant(of: action, matching: find.byType(InkWell)),
+        )
+        .onTap!;
     final sheetContext = tester.element(_menuSheet);
     final sheet = ModalRoute.of(sheetContext)!;
     final navigator = Navigator.of(sheetContext);
@@ -1194,7 +1195,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(_menuSheet, findsNothing);
     final before = haptics();
-    confirm();
+    staleAction();
     expect(state().management, isEmpty);
     expect(haptics(), before);
 

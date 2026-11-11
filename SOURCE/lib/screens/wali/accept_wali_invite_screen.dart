@@ -16,7 +16,7 @@ import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import '../../widgets/zyra_guardian_capacity_notice.dart';
-import '../../widgets/zyra_glass_dialog.dart';
+import '../../widgets/zyra_confirm_sheet.dart';
 
 class AcceptWaliInviteScreen extends StatefulWidget {
   final String? initialCode;
@@ -32,6 +32,7 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
   bool _checking = false;
   bool _accepting = false;
   bool _declining = false;
+  bool _confirmingDecline = false;
   String? _error;
   Map<String, String>? _preview;
   ({String code, String? userId, int generation})? _checkedTarget;
@@ -174,32 +175,65 @@ class _AcceptWaliInviteScreenState extends State<AcceptWaliInviteScreen> {
   }
 
   Future<void> _decline() async {
-    final inviter = _preview?['inviterFirstName'] ?? 'them';
-    final confirmed = await showZyraGlassChoice(
-      context: context,
-      icon: Icons.person_remove_outlined,
-      title: 'Decline invitation?',
-      body:
-          '$inviter will be told that you declined. You can still link later '
-          'with a new invitation.',
-      primaryLabel: 'Decline',
-      secondaryLabel: 'Keep it',
-      destructivePrimary: true,
-    );
-    if (confirmed != true || !mounted) return;
-
-    setState(() {
-      _declining = true;
-      _error = null;
-    });
-    final error = await ZyraWaliLinkService.declineInvite(_controller.text);
-    if (!mounted) return;
-    setState(() => _declining = false);
-    if (error != null) {
-      setState(() => _error = error);
+    final preview = _preview;
+    final target = _checkedTarget;
+    final route = ModalRoute.of(context);
+    final navigator = Navigator.of(context);
+    if (preview == null ||
+        target == null ||
+        _declining ||
+        _accepting ||
+        _confirmingDecline ||
+        route?.isCurrent != true) {
       return;
     }
-    Navigator.of(context).pop(false);
+    bool sameTarget() =>
+        mounted &&
+        !ZyraAccountState.isSigningOut &&
+        !_checking &&
+        !_accepting &&
+        identical(_preview, preview) &&
+        _checkedTarget == target &&
+        target.userId == ZyraAccountState.userId &&
+        target.generation == ZyraAccountState.generation &&
+        _controller.text.trim() == target.code;
+    if (!sameTarget()) return;
+    final inviter = preview['inviterFirstName'];
+    _confirmingDecline = true;
+    try {
+      final confirmed = await showZyraConfirm(
+        context: context,
+        icon: Icons.person_remove_outlined,
+        personName: inviter,
+        title: inviter == null
+            ? 'Decline invitation?'
+            : 'Decline $inviter’s invitation?',
+        body:
+            '${inviter ?? 'The sender'} will be told that you declined. '
+            'You can still link later with a new invitation.',
+        primaryLabel: 'Decline',
+        secondaryLabel: 'Keep it',
+        canConfirm: sameTarget,
+      );
+      if (confirmed != true || !sameTarget() || route?.isCurrent != true) {
+        return;
+      }
+      setState(() {
+        _declining = true;
+        _error = null;
+      });
+      final error = await ZyraWaliLinkService.declineInvite(target.code);
+      if (!mounted) return;
+      setState(() => _declining = false);
+      if (!sameTarget() || route?.isCurrent != true) return;
+      if (error != null) {
+        setState(() => _error = error);
+        return;
+      }
+      navigator.pop(false);
+    } finally {
+      _confirmingDecline = false;
+    }
   }
 
   @override

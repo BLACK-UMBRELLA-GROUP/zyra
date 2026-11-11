@@ -7,6 +7,7 @@ import '../data/zyra_membership_catalog.dart';
 import '../models/seeker_profile.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
+import 'zyra_floating_surface.dart';
 import 'zyra_profile_image.dart';
 
 /// LOCK 4 V4, design 2. Only the caller's public profile fields and admitted
@@ -17,11 +18,16 @@ class ZyraProfileDetailsPage extends StatelessWidget {
     required this.profile,
     this.firstPhoto,
     this.requestAction,
+    this.showUnverifiedRing = true,
   });
 
   final SeekerProfile profile;
   final Widget? firstPhoto;
   final Widget? requestAction;
+
+  /// Other-member cards retain the decorative ring while their authorized
+  /// projection lacks a plan (Q84). Own Preview has a verified-plan source.
+  final bool showUnverifiedRing;
 
   static const double _avatarSize = 124;
   static const double _smallerAvatarSize = 96;
@@ -31,11 +37,15 @@ class ZyraProfileDetailsPage extends StatelessWidget {
   static const double _horizontalInset = 22;
   static const photoAlignment = Alignment(0, -.7);
 
-  static double photoSizeFor(ZyraPlan? plan) =>
-      _avatarSize - _photoInset(plan) * 2;
+  static double photoSizeFor(
+    ZyraPlan? plan, {
+    bool showUnverifiedRing = true,
+  }) =>
+      _avatarSize -
+      (_hasRing(plan, showUnverifiedRing) ? 2 * (_ringWidth + _photoGap) : 0);
 
-  static double _photoInset(ZyraPlan? plan) =>
-      plan == ZyraPlan.basic ? 0 : _ringWidth + _photoGap;
+  static bool _hasRing(ZyraPlan? plan, bool showUnverifiedRing) =>
+      plan == ZyraPlan.one || (plan == null && showUnverifiedRing);
 
   Widget _photo(Widget rendered, Widget fallback) {
     if (rendered is Image) {
@@ -60,12 +70,11 @@ class ZyraProfileDetailsPage extends StatelessWidget {
   }
 
   Widget _avatar(double size) {
-    // The unavailable plan still keeps the pre-existing decorative ring.
-    // Only a verified Seeker One plan gets the accompanying announcement.
     final plan = profile.seekerPlan;
-    final showRing = plan != ZyraPlan.basic;
+    final showRing = _hasRing(plan, showUnverifiedRing);
+    final basic = plan == ZyraPlan.basic;
     final fallback = ColoredBox(
-      color: ZyraColors.avatarSand,
+      color: basic ? ZyraColors.ivoryTop : ZyraColors.avatarSand,
       child: Center(
         child: Text(
           profile.firstName.trim().characters.firstOrNull?.toUpperCase() ?? '?',
@@ -109,7 +118,9 @@ class ZyraProfileDetailsPage extends StatelessWidget {
       label: plan == ZyraPlan.one
           ? 'Profile photo, ${ZyraMembershipCatalog.seekerOneTitle}'
           : 'Profile photo',
-      child: avatar,
+      child: basic && firstPhoto == null
+          ? ZyraFloatingSurface(circle: true, child: avatar)
+          : avatar,
     );
   }
 

@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_draft_journey_end_presentation.dart';
+import 'package:zyra/widgets/zyra_confirm_sheet.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
-import 'package:zyra/widgets/zyra_pull_down_back_scope.dart';
 
 const _capture = String.fromEnvironment('ZYRA_END_JOURNEY_CAPTURE_DIR');
 const _boundary = ValueKey('end-journey-capture');
@@ -45,7 +44,6 @@ Future<void> _captureFrame(WidgetTester tester, String name) async {
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  late Uint8List photo;
   late bool oldStub;
   late String? oldFont;
   late HttpOverrides? oldNetwork;
@@ -66,9 +64,6 @@ void main() {
     final icons = FontLoader('MaterialIcons')
       ..addFont(rootBundle.load('fonts/MaterialIcons-Regular.otf'));
     await Future.wait([font.load(), icons.load()]);
-    photo = (await rootBundle.load(
-      'assets/dev/one_journey_photos/zyra1a.jpg',
-    )).buffer.asUint8List();
   });
   setUp(() {
     oldStub = ZyraText.useTestFontStubs;
@@ -120,21 +115,19 @@ void main() {
             decoration: BoxDecoration(
               gradient: ZyraDevPalette.midnightPlum.gradient,
             ),
-            child: ZyraPullDownBackScope(
-              routeIdentity: 'end-test',
-              enabled: false,
-              onBack: () => fail('Confirmation cannot swipe close'),
-              child: ZyraDraftJourneyEndPresentation(
-                subjectId: _subject,
-                title: blocked ? 'End this Journey?' : 'End with Sara?',
-                name: blocked ? null : name,
-                portrait: blocked
-                    ? null
-                    : Image.memory(
-                        photo,
-                        fit: BoxFit.cover,
-                        alignment: Alignment.topCenter,
-                      ),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: ZyraConfirmSheet(
+                surfaceKey: const ValueKey('draft_journey_action_$_subject'),
+                title: blocked ? 'End this Journey?' : 'End with $name?',
+                body:
+                    'This Journey ends for both of you and cannot be reopened. Your Timeline stays.',
+                primaryLabel: 'End Journey',
+                secondaryLabel: 'Keep this Journey',
+                personName: blocked ? null : name,
+                icon: Icons.route_outlined,
+                primaryKey: const ValueKey('draft_confirm_end_$_subject'),
+                secondaryKey: const ValueKey('draft_cancel_end_$_subject'),
                 onConfirm: disabled ? null : (confirm ?? _noop),
                 onKeep: keep ?? _noop,
               ),
@@ -144,17 +137,6 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    if (!blocked) {
-      final image = find.byType(Image);
-      await tester.runAsync(
-        () => precacheImage(
-          tester.widget<Image>(image).image,
-          tester.element(image),
-        ),
-      );
-      await tester.pumpAndSettle();
-      expect(tester.widget<RawImage>(find.byType(RawImage)).image, isNotNull);
-    }
     expect(tester.takeException(), isNull);
   }
 
@@ -167,16 +149,17 @@ void main() {
       tester,
     ) async {
       await mount(tester, size: size);
-      final title = _key('draft_end_title_$_subject');
-      expect(tester.widget<Text>(title).style, ZyraText.pageTitle());
+      final title = find.text('End with Sara Ahmed?');
+      expect(tester.widget<Text>(title).style!.fontSize, 21);
       expect(tester.getRect(title).left, 20);
-      expect(find.text('Sara Ahmed'), findsOneWidget);
-      expect(find.text('Your conversation closes'), findsOneWidget);
+      expect(find.text('S'), findsOneWidget);
       expect(
-        find.text('This Journey ends for both of you and cannot be reopened.'),
+        find.textContaining(
+          'This Journey ends for both of you and cannot be reopened.',
+        ),
         findsOneWidget,
       );
-      expect(find.text('Your Timeline stays'), findsOneWidget);
+      expect(find.textContaining('Your Timeline stays.'), findsOneWidget);
       final keep = _key('draft_cancel_end_$_subject');
       final end = _key('draft_confirm_end_$_subject');
       for (final target in [keep, end]) {
@@ -185,8 +168,8 @@ void main() {
         expect(tester.getRect(target).left, 20);
         expect(tester.getRect(target).right, size.width - 20);
       }
-      expect(tester.getRect(keep).bottom, lessThan(tester.getRect(end).top));
-      expect(tester.getRect(end).bottom, lessThanOrEqualTo(size.height - 34));
+      expect(tester.getRect(end).bottom, lessThan(tester.getRect(keep).top));
+      expect(tester.getRect(keep).bottom, lessThanOrEqualTo(size.height - 34));
       final reader = tester.state<ScrollableState>(
         find.byType(Scrollable).last,
       );
@@ -208,9 +191,9 @@ void main() {
         confirm: () => confirmed++,
         keep: () => kept++,
       );
-      final name = _key('draft_end_identity_$_subject');
+      final name = find.text('End with Abdul Rahman Ahmed?');
       expect(tester.getSize(name).width, 280);
-      expect(tester.widget<Text>(name).style!.fontSize, 24);
+      expect(tester.widget<Text>(name).style!.fontSize, 21);
       await _captureFrame(tester, 'compact_top');
       for (final id in [
         'draft_cancel_end_$_subject',
@@ -252,16 +235,15 @@ void main() {
     'disabled confirmation stays disabled and has destructive styling',
     (tester) async {
       await mount(tester, disabled: true);
-      final end = tester.widget<OutlinedButton>(
+      final end = tester.widget<TextButton>(
         _key('draft_confirm_end_$_subject'),
       );
       expect(end.onPressed, isNull);
       // Q21 / LOCK 14 V6: keep the old outline and update the label ink.
       expect(end.style!.foregroundColor!.resolve({}), ZyraColors.dangerText);
-      expect(end.style!.side!.resolve({})!.color, ZyraColors.destructiveBorder);
       await tester.tap(_key('draft_confirm_end_$_subject'));
       await tester.pumpAndSettle();
-      expect(find.text('End with Sara?'), findsOneWidget);
+      expect(find.text('End with Sara Ahmed?'), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
   );

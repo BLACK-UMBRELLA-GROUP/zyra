@@ -210,10 +210,7 @@ Future<void> _makeMain(WidgetTester tester) async {
   await _press(tester, _key('guardian-make-main'));
   await _press(
     tester,
-    find.descendant(
-      of: _key('guardian-make-main-confirmation'),
-      matching: find.text('Confirm'),
-    ),
+    find.byKey(ValueKey('guardian-make-main-confirmation-approve')),
   );
   await _press(tester, _key('concept_main_guardian_continue'));
 }
@@ -532,10 +529,7 @@ void main() {
     await _press(tester, _key('guardian-remove'));
     await _press(
       tester,
-      find.descendant(
-        of: _key('guardian-remove-confirmation'),
-        matching: find.text('Confirm'),
-      ),
+      find.byKey(ValueKey('guardian-remove-confirmation-approve')),
     );
     expect(
       _cards(tester).people.map((card) => card.person.id),

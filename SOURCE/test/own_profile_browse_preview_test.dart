@@ -22,6 +22,7 @@ import 'package:zyra/widgets/floating_nav_bar.dart';
 import 'package:zyra/widgets/zyra_browse_designs.dart';
 import 'package:zyra/widgets/zyra_invitation_outline.dart';
 import 'package:zyra/widgets/zyra_profile_image.dart';
+import 'package:zyra/widgets/zyra_profile_details_page.dart';
 import 'package:zyra/widgets/zyra_pull_down_back_scope.dart';
 
 import 'support/zyra_hidden_dev_controls_driver.dart';
@@ -127,6 +128,11 @@ Future<void> _mount(
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
   final theme = ThemeData.dark();
+  final safePadding = switch (size.height) {
+    932 => const EdgeInsets.only(top: 59, bottom: 34),
+    667 => const EdgeInsets.only(top: 20),
+    _ => const EdgeInsets.only(top: 44, bottom: 34),
+  };
   await tester.pumpWidget(
     MaterialApp(
       theme: theme.copyWith(
@@ -134,8 +140,8 @@ Future<void> _mount(
       ),
       builder: (context, body) => MediaQuery(
         data: MediaQuery.of(context).copyWith(
-          padding: const EdgeInsets.only(top: 44, bottom: 34),
-          viewPadding: const EdgeInsets.only(top: 44, bottom: 34),
+          padding: safePadding,
+          viewPadding: safePadding,
           textScaler: TextScaler.linear(textScale),
           disableAnimations: true,
         ),
@@ -182,36 +188,22 @@ ZyraBrowseDesigns _card(WidgetTester tester) {
   expect(rendered.readOnlyPreview, isTrue);
   expect(rendered.design, ZyraOneJourneyBrowseDesign.portraitCard);
   expect(rendered.profiles, hasLength(1));
-  _inertBrowseControls(tester, rendered.profiles.single.id);
+  for (final key in [
+    'concept_browse_footer',
+    'concept_previous_profile',
+    'concept_next_profile',
+    'concept_profile_swipe_track',
+    'concept_browse_photo_pagination',
+    'concept_browse_menu',
+    'concept_filters',
+  ]) {
+    expect(_key(key), findsNothing);
+  }
+  expect(find.text('Preview'), findsOneWidget);
+  expect(find.text('This is how others see your profile.'), findsOneWidget);
+  expect(find.byType(SeekerProfileScreen), findsNothing);
   return rendered;
 }
-
-Map<String, Rect> _browseGeometry(WidgetTester tester) {
-  final profile = tester
-      .widget<ZyraBrowseDesigns>(find.byType(ZyraBrowseDesigns))
-      .profiles
-      .single;
-  return {
-    for (final key in [
-      'concept_browse_portrait_card',
-      'concept_browse_footer',
-      'concept_previous_profile',
-      'concept_next_profile',
-    ])
-      key: tester.getRect(_key(key)),
-    'request': tester.getRect(_key('draft_profile_${profile.id}')),
-    'navigation': tester.getRect(find.byType(FloatingNavBar)),
-  };
-}
-
-List<Color?> _footerIconColours(WidgetTester tester) => [
-  for (final key in ['concept_previous_profile', 'concept_next_profile'])
-    tester
-        .widget<Icon>(
-          find.descendant(of: _key(key), matching: find.byType(Icon)),
-        )
-        .color,
-];
 
 Widget _liveReference(SeekerProfile profile, FloatingNavBar navigation) =>
     Scaffold(
@@ -228,7 +220,12 @@ Widget _liveReference(SeekerProfile profile, FloatingNavBar navigation) =>
               selectedIndex: 0,
               design: ZyraOneJourneyBrowseDesign.portraitCard,
               photoBuilder: _renderPhoto,
-              onNext: () {},
+              profileSwipe: (
+                previousIndex: null,
+                nextIndex: null,
+                onBlockedPrevious: null,
+                canAct: () => true,
+              ),
               onBrowseMenu: (_) {},
               onRequest: (_) {},
               requestLabel: (_) => 'Request a Journey',
@@ -240,6 +237,7 @@ Widget _liveReference(SeekerProfile profile, FloatingNavBar navigation) =>
               items: navigation.items,
               currentIndex: navigation.currentIndex,
               contentEdgeInset: navigation.contentEdgeInset,
+              lockedTabBar: true,
               hapticLevel: ZyraHapticLevel.off,
               onTap: (_) {},
             ),
@@ -248,7 +246,11 @@ Widget _liveReference(SeekerProfile profile, FloatingNavBar navigation) =>
       ),
     );
 
-Future<void> _centerSwipe(WidgetTester tester, String id) async {
+Future<void> _centerSwipe(
+  WidgetTester tester,
+  String id, {
+  int expectedPage = 1,
+}) async {
   final pager = _key('concept_browse_photo_swipe_$id');
   final rect = tester.getRect(pager);
   await tester.timedDragFrom(
@@ -257,8 +259,19 @@ Future<void> _centerSwipe(WidgetTester tester, String id) async {
     const Duration(milliseconds: 450),
   );
   await tester.pumpAndSettle();
-  expect(tester.widget<PageView>(pager).controller!.page, closeTo(1, .01));
+  expect(
+    tester.widget<PageView>(pager).controller!.page,
+    closeTo(expectedPage, .01),
+  );
   expect(tester.takeException(), isNull);
+}
+
+Future<void> _tapPhoto(WidgetTester tester, String id) async {
+  final rect = tester.getRect(_key('concept_browse_photo_tap_$id'));
+  await tester.tapAt(Offset(rect.right - 40, rect.top + 20));
+  await tester.pumpAndSettle();
+  final pager = tester.widget<PageView>(_key('concept_browse_photo_swipe_$id'));
+  expect(pager.controller!.page, closeTo(1, .01));
 }
 
 Future<void> _edgeBack(WidgetTester tester) async {
@@ -451,7 +464,7 @@ void main() {
           ),
         ),
       );
-      _card(tester);
+      _inertBrowseControls(tester, person.id);
       expect(calls, isEmpty);
       expect(find.text('Forbidden self invitation'), findsNothing);
       expect(
@@ -467,14 +480,14 @@ void main() {
       await tester.pumpAndSettle();
       expect(photoChanges, containsAllInOrder([1, 2]));
       expect(calls, isEmpty);
-      _card(tester);
+      _inertBrowseControls(tester, person.id);
       expect(tester.takeException(), isNull);
     },
   );
 
   for (final variant in [
-    (name: 'standard', size: const Size(393, 852), scale: 1.0),
-    (name: 'narrow', size: const Size(320, 568), scale: 1.0),
+    (name: 'standard', size: const Size(430, 932), scale: 1.0),
+    (name: 'narrow', size: const Size(375, 667), scale: 1.0),
     (name: 'large-text', size: const Size(393, 852), scale: 2.0),
     (name: 'compact200', size: const Size(320, 568), scale: 2.0),
   ]) {
@@ -512,21 +525,40 @@ void main() {
           find.descendant(of: details, matching: find.byType(Image)),
           findsOneWidget,
         );
-        final geometry = _browseGeometry(tester);
-        expect(geometry['concept_browse_portrait_card']!.left, 20);
+        final card = tester.getRect(_key('concept_browse_portrait_card'));
+        expect(card.left, 20);
+        expect(card.width, variant.size.width - 40);
+        final request = find.descendant(
+          of: details,
+          matching: _key('draft_profile_${owner.profile.id}'),
+        );
+        expect(request, findsOneWidget);
         final requestStyle = tester
             .widget<Text>(find.text('Request a Journey'))
             .style;
-        final iconColours = _footerIconColours(tester);
         final navigation = tester.widget<FloatingNavBar>(
           find.byType(FloatingNavBar),
         );
         expect(navigation.items, hasLength(5));
         expect(navigation.items.first.label, 'Profiles');
-        expect(navigation.currentIndex, 0);
+        expect(navigation.currentIndex, 4);
+        expect(navigation.lockedTabBar, isTrue);
         expect(navigation.contentEdgeInset, 20);
         expect(navigation.hapticLevel, ZyraHapticLevel.off);
+        final tabBar = tester.getRect(_key('compact-nav-surface'));
+        expect(tabBar.top - card.bottom, closeTo(16, .01));
+        expect(find.byType(ZyraProfileDetailsPage), findsOneWidget);
         await _capture(tester, 'own-browse-parity-${variant.name}');
+        await tester.ensureVisible(request);
+        await tester.pumpAndSettle();
+        expect(request.hitTestable(), findsOneWidget);
+        await tester.tap(request);
+        await tester.pump();
+        expect(
+          find.text('Others tap here to request a Journey with you.'),
+          findsOneWidget,
+        );
+        await tester.pump(const Duration(seconds: 3));
 
         await _mount(
           tester,
@@ -535,48 +567,14 @@ void main() {
           textScale: variant.scale,
         );
         expect(find.text('Profiles'), findsOneWidget);
-        expect(find.text('Back'), findsNothing);
-        final reference = _browseGeometry(tester);
-        for (final entry in geometry.entries) {
-          final actual = reference[entry.key]!;
-          expect(
-            actual.left,
-            closeTo(entry.value.left, .01),
-            reason: entry.key,
-          );
-          // The preview no longer reserves the live Profiles title row. Its
-          // card uses that space; footer and navigation styling stay shared.
-          expect(
-            entry.value.top,
-            lessThanOrEqualTo(actual.top + .01),
-            reason: entry.key,
-          );
-          expect(
-            actual.width,
-            closeTo(entry.value.width, .01),
-            reason: entry.key,
-          );
-          if (entry.key == 'concept_browse_portrait_card') {
-            expect(
-              entry.value.height,
-              greaterThanOrEqualTo(actual.height - .01),
-            );
-          } else {
-            expect(
-              actual.height,
-              closeTo(entry.value.height, .01),
-              reason: entry.key,
-            );
-          }
-        }
+        expect(find.byType(ZyraProfileDetailsPage), findsOneWidget);
         expect(
           tester.widget<Text>(find.text('Request a Journey')).style,
           requestStyle,
         );
-        expect(_footerIconColours(tester), iconColours);
         await _capture(tester, 'profiles-details-${variant.name}');
         if (variant.scale == 1) {
-          await _centerSwipe(tester, owner.profile.id);
+          await _tapPhoto(tester, owner.profile.id);
           await _capture(tester, 'profiles-photo-${variant.name}');
         }
         expect(owner.returns, 0);
@@ -624,21 +622,20 @@ void main() {
         for (final item in navigation.items) {
           expect(find.bySemanticsLabel(item.label), findsNothing);
         }
-        for (final key in [
-          'concept_previous_profile',
-          'concept_next_profile',
-          'draft_profile_${rendered.profiles.single.id}',
-        ]) {
-          final target = _key(key);
-          expect(
-            tester
-                .getSemantics(target)
-                .getSemanticsData()
-                .hasAction(ui.SemanticsAction.tap),
-            isFalse,
-          );
-          await tester.tapAt(tester.getCenter(target));
-        }
+        final request = _key('draft_profile_${rendered.profiles.single.id}');
+        expect(
+          tester
+              .getSemantics(request)
+              .getSemanticsData()
+              .hasAction(ui.SemanticsAction.tap),
+          isTrue,
+        );
+        await tester.tap(request);
+        await tester.pump();
+        const requestInfo = 'Others tap here to request a Journey with you.';
+        expect(find.text(requestInfo), findsOneWidget);
+        await tester.pump(const Duration(seconds: 3));
+        expect(find.text(requestInfo), findsNothing);
         final first = tester.getCenter(_key('floating-nav-item-1'));
         final last = tester.getCenter(_key('floating-nav-item-3'));
         await tester.tapAt(first);
@@ -649,7 +646,7 @@ void main() {
         );
         await tester.pumpAndSettle();
         expect(tester.element(navFinder), same(navElement));
-        expect(tester.widget<FloatingNavBar>(navFinder).currentIndex, 0);
+        expect(tester.widget<FloatingNavBar>(navFinder).currentIndex, 4);
         expect(owner.returns, 0);
         expect(nativeHaptics, isEmpty);
         expect(
@@ -692,14 +689,23 @@ void main() {
       await _mount(tester, _owned(owner));
       final id = owner.profile.id;
       expect(_key('concept_browse_details_$id'), findsOneWidget);
-      await _centerSwipe(tester, id);
+      final staleRequest = tester
+          .widget<InkWell>(_key('draft_profile_$id'))
+          .onTap!;
+      await _centerSwipe(tester, id, expectedPage: 0);
+      await _tapPhoto(tester, id);
       expect(_key('concept_browse_identity_$id'), findsNothing);
-      _inertBrowseControls(tester, id);
+      _card(tester);
       expect(owner.returns, 0);
       final oldPager = tester.widget<PageView>(
         _key('concept_browse_photo_swipe_$id'),
       );
       owner.allowed = false;
+      staleRequest();
+      expect(
+        find.text('Others tap here to request a Journey with you.'),
+        findsNothing,
+      );
       owner.rebuild();
       await tester.pumpAndSettle();
       oldPager.onPageChanged!(0);
@@ -724,7 +730,7 @@ void main() {
         expect(find.byKey(_backKey), findsNothing);
         expect(find.byKey(_edgeKey), findsOneWidget);
         final staleBack = captureZyraAccessibleBack(tester);
-        await _centerSwipe(tester, owner.profile.id);
+        await _tapPhoto(tester, owner.profile.id);
         expect(owner.returns, 0);
         await _capture(
           tester,
@@ -757,7 +763,7 @@ void main() {
         addTearDown(owner.dispose);
         await _mount(tester, _owned(owner));
         _card(tester);
-        await _centerSwipe(tester, owner.profile.id);
+        await _tapPhoto(tester, owner.profile.id);
         await _capture(
           tester,
           'own-browse-before-${throwing ? 'throw' : 'denial'}',

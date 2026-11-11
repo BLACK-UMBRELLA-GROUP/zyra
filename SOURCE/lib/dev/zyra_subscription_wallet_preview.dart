@@ -1,3 +1,6 @@
+import '../widgets/zyra_confirm_sheet.dart';
+import '../services/zyra_account_state.dart';
+import 'zyra_preview_navigation_checkpoint.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_profiles_components.dart';
 import 'package:flutter/material.dart';
@@ -396,21 +399,10 @@ class ZyraSubscriptionSwitchPreview extends StatelessWidget {
   );
 }
 
-class _WalletIntent {
-  const _WalletIntent({
-    required this.placeId,
-    required this.forSelf,
-    required this.anchorId,
-  });
-  final String placeId;
-  final bool forSelf;
-  final String anchorId;
-}
-
 class _ZyraSubscriptionWalletPreviewState
     extends State<ZyraSubscriptionWalletPreview> {
   int _renderEpoch = 0;
-  _WalletIntent? _intent;
+  ModalRoute<bool>? _confirmationRoute;
   bool _family = false;
   int _profilePage = 0;
   int _familyPage = 0;
@@ -423,7 +415,7 @@ class _ZyraSubscriptionWalletPreviewState
     if (!identical(widget.draft, oldWidget.draft) ||
         widget.currentRole != oldWidget.currentRole ||
         widget.switchOnly != oldWidget.switchOnly) {
-      _intent = null;
+      _discardConfirmation();
     }
     if (widget.draft.ownerId != oldWidget.draft.ownerId ||
         widget.switchOnly != oldWidget.switchOnly) {
@@ -433,6 +425,12 @@ class _ZyraSubscriptionWalletPreviewState
     }
     if (_familyPage >= widget.draft.places.length) _familyPage = 0;
     _renderEpoch++;
+  }
+
+  @override
+  void dispose() {
+    _discardConfirmation();
+    super.dispose();
   }
 
   bool Function() _fresh(int epoch) {
@@ -519,8 +517,13 @@ class _ZyraSubscriptionWalletPreviewState
           _family == family &&
           (family ? _familyPage : _profilePage) == page;
 
-  void _clearIntent() {
-    if (_intent != null) setState(() => _intent = null);
+  void _discardConfirmation() {
+    final route = _confirmationRoute;
+    if (route == null) return;
+    _confirmationRoute = null;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (route.isActive) route.navigator?.removeRoute(route, false);
+    });
   }
 
   Widget _haloWallet(bool Function() fresh) => SafeArea(
@@ -635,11 +638,11 @@ class _ZyraSubscriptionWalletPreviewState
                 initialPage: current,
                 navigationHeight: navigationHeight,
                 canAct: pagerFresh,
-                onInteraction: _guard(pagerFresh, _clearIntent),
+                onInteraction: _guard(pagerFresh, _discardConfirmation),
                 onChanged: (page) {
                   if (!pagerFresh() || page < 0 || page >= count) return;
                   setState(() {
-                    _intent = null;
+                    _discardConfirmation();
                     if (family) {
                       _familyPage = page;
                     } else {
@@ -878,7 +881,7 @@ class _ZyraSubscriptionWalletPreviewState
           _guard(fresh, () {
             if (_family == (index == 1)) return;
             setState(() {
-              _intent = null;
+              _discardConfirmation();
               _family = index == 1;
             });
           }),
@@ -1110,19 +1113,16 @@ class _ZyraSubscriptionWalletPreviewState
           const SizedBox(height: 12),
           _body(_roleDetail(role, next), size: 12),
           const SizedBox(height: 18),
-          if (_intent?.anchorId == 'role_${role.name}')
-            _confirmation(fresh)
-          else
-            _action(
-              id: 'wallet_primary_${role.name}',
-              label: _primaryLabel(role),
-              onPressed:
-                  (role == widget.currentRole &&
-                          next == ZyraWalletNextStep.switchProfile) ||
-                      next == ZyraWalletNextStep.unavailable
-                  ? null
-                  : _guard(fresh, () => _handlePrimary(role, next)),
-            ),
+          _action(
+            id: 'wallet_primary_${role.name}',
+            label: _primaryLabel(role),
+            onPressed:
+                (role == widget.currentRole &&
+                        next == ZyraWalletNextStep.switchProfile) ||
+                    next == ZyraWalletNextStep.unavailable
+                ? null
+                : _guard(fresh, () => _handlePrimary(role, next)),
+          ),
         ],
       ),
     );
@@ -1162,10 +1162,7 @@ class _ZyraSubscriptionWalletPreviewState
           const SizedBox(height: 12),
           _body('Not available to reassign', size: 11.5),
         ],
-        if (_intent?.anchorId == 'place_${place.id}') ...[
-          const SizedBox(height: 18),
-          _confirmation(fresh),
-        ] else if (place.state == ZyraWalletPlaceState.available) ...[
+        if (place.state == ZyraWalletPlaceState.available) ...[
           const SizedBox(height: 18),
           if (_canUsePlace(place)) ...[
             _action(
@@ -1173,13 +1170,7 @@ class _ZyraSubscriptionWalletPreviewState
               label: 'Use for me',
               onPressed: _guard(
                 fresh,
-                () => setState(
-                  () => _intent = _WalletIntent(
-                    placeId: place.id,
-                    forSelf: true,
-                    anchorId: 'place_${place.id}',
-                  ),
-                ),
+                () => _confirmPlace(place, forSelf: true),
               ),
             ),
             const SizedBox(height: 8),
@@ -1189,13 +1180,7 @@ class _ZyraSubscriptionWalletPreviewState
             label: 'Assign to someone',
             onPressed: _guard(
               fresh,
-              () => setState(
-                () => _intent = _WalletIntent(
-                  placeId: place.id,
-                  forSelf: false,
-                  anchorId: 'place_${place.id}',
-                ),
-              ),
+              () => _confirmPlace(place, forSelf: false),
             ),
           ),
         ],
@@ -1227,9 +1212,7 @@ class _ZyraSubscriptionWalletPreviewState
       scaler,
       direction,
     );
-    final action = _intent?.anchorId == 'role_${role.name}'
-        ? _confirmationHeight(inner, scaler, direction)
-        : _actionHeight(_primaryLabel(role), inner, scaler, direction);
+    final action = _actionHeight(_primaryLabel(role), inner, scaler, direction);
     return 38 +
         hero +
         16 +
@@ -1283,9 +1266,7 @@ class _ZyraSubscriptionWalletPreviewState
     if (place.state == ZyraWalletPlaceState.fundedUntilRenewal) {
       height += 12 + text('Not available to reassign', _walletBodyStyle(11.5));
     }
-    if (_intent?.anchorId == 'place_${place.id}') {
-      height += 18 + _confirmationHeight(inner, scaler, direction);
-    } else if (place.state == ZyraWalletPlaceState.available) {
+    if (place.state == ZyraWalletPlaceState.available) {
       height +=
           18 + _actionHeight('Assign to someone', inner, scaler, direction);
       if (_canUsePlace(place)) {
@@ -1293,50 +1274,6 @@ class _ZyraSubscriptionWalletPreviewState
       }
     }
     return height;
-  }
-
-  double _confirmationHeight(
-    double width,
-    TextScaler scaler,
-    TextDirection direction,
-  ) {
-    final intent = _intent!;
-    final place = widget.draft.places.singleWhere(
-      (place) => place.id == intent.placeId,
-    );
-    final inner = width - 38;
-    final recipient = place.role == ZyraWalletRole.seeker ? 'Amina' : 'Omar';
-    final heading = intent.forSelf
-        ? 'Use this ${place.role.label} place?'
-        : 'Assign this ${place.role.label} place?';
-    final detail = intent.forSelf
-        ? 'Profile setup stays separate. No real subscription changes are made here.'
-        : 'Preview an invitation for $recipient. It will stay pending until agreement; no invitation is sent and no access or Guardian link is granted.';
-    return 38 +
-        _walletTextSize(
-          heading,
-          _walletHeading(20),
-          scaler,
-          direction,
-          inner,
-        ).height +
-        12 +
-        _walletTextSize(
-          detail,
-          _walletBodyStyle(13),
-          scaler,
-          direction,
-          inner,
-        ).height +
-        16 +
-        _actionHeight(
-          intent.forSelf ? 'Use this place' : 'Preview invitation',
-          inner,
-          scaler,
-          direction,
-        ) +
-        8 +
-        _actionHeight('Cancel', inner, scaler, direction);
   }
 
   Widget _roleCard(ZyraWalletRole role, bool Function() fresh) {
@@ -1392,16 +1329,13 @@ class _ZyraSubscriptionWalletPreviewState
           const SizedBox(height: 16),
           _body(_roleDetail(role, next), size: 12),
           const SizedBox(height: 16),
-          if (_intent?.anchorId == 'role_${role.name}')
-            _confirmation(fresh)
-          else
-            _action(
-              id: 'wallet_primary_${role.name}',
-              label: label,
-              onPressed: readyCurrent || next == ZyraWalletNextStep.unavailable
-                  ? null
-                  : _guard(fresh, () => _handlePrimary(role, next)),
-            ),
+          _action(
+            id: 'wallet_primary_${role.name}',
+            label: label,
+            onPressed: readyCurrent || next == ZyraWalletNextStep.unavailable
+                ? null
+                : _guard(fresh, () => _handlePrimary(role, next)),
+          ),
         ],
       ),
     );
@@ -1440,77 +1374,76 @@ class _ZyraSubscriptionWalletPreviewState
       case ZyraWalletNextStep.usePlace:
         final available = widget.draft.availableFor(role);
         if (available.isEmpty) return;
-        setState(() {
-          _intent = _WalletIntent(
-            placeId: available.first.id,
-            forSelf: true,
-            anchorId: 'role_${role.name}',
-          );
-        });
+        _confirmPlace(available.first, forSelf: true);
       case ZyraWalletNextStep.unavailable:
         return;
     }
   }
 
-  Widget _confirmation(bool Function() fresh) {
-    final intent = _intent!;
-    final matches = widget.draft.places.where(
-      (place) => place.id == intent.placeId,
-    );
-    if (matches.isEmpty) return const SizedBox.shrink();
-    final place = matches.single;
+  Future<void> _confirmPlace(
+    ZyraWalletPlace place, {
+    required bool forSelf,
+  }) async {
+    if (_confirmationRoute != null ||
+        ModalRoute.of(context)?.isCurrent != true ||
+        !(widget.canAct?.call() ?? true)) {
+      return;
+    }
+    final account = (ZyraAccountState.userId, ZyraAccountState.generation);
+    final draft = widget.draft;
+    final role = widget.currentRole;
+    final switchOnly = widget.switchOnly;
+    final page = (_family, _familyPage, _profilePage);
+    final origin = ModalRoute.of(context);
+    var stamp = ZyraPreviewRouteObserver.navigationRevision;
+    late ModalRoute<bool> route;
+    bool samePlace() =>
+        mounted &&
+        !ZyraAccountState.isSigningOut &&
+        account == (ZyraAccountState.userId, ZyraAccountState.generation) &&
+        identical(widget.draft, draft) &&
+        role == widget.currentRole &&
+        switchOnly == widget.switchOnly &&
+        page == (_family, _familyPage, _profilePage) &&
+        identical(_confirmationRoute, route) &&
+        stamp == ZyraPreviewRouteObserver.navigationRevision;
     final recipient = place.role == ZyraWalletRole.seeker ? 'Amina' : 'Omar';
-    return Semantics(
-      liveRegion: true,
-      child: _card(
-        id: 'wallet_confirmation',
-        emphasized: true,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              intent.forSelf
-                  ? 'Use this ${place.role.label} place?'
-                  : 'Assign this ${place.role.label} place?',
-              style: widget.switchOnly
-                  ? ZyraText.heading(size: 20)
-                  : _walletHeading(20),
-            ),
-            const SizedBox(height: 12),
-            _body(
-              intent.forSelf
-                  ? 'Profile setup stays separate. No real subscription changes are made here.'
-                  : 'Preview an invitation for $recipient. It will stay pending until agreement; no invitation is sent and no access or Guardian link is granted.',
-            ),
-            const SizedBox(height: 16),
-            _action(
-              id: 'wallet_confirm',
-              label: intent.forSelf ? 'Use this place' : 'Preview invitation',
-              onPressed: _guard(fresh, () {
-                if (!identical(_intent, intent)) return;
-                final next = intent.forSelf
-                    ? widget.draft.useAvailablePlace(
-                        place.role,
-                        placeId: place.id,
-                      )
-                    : widget.draft.assignFictionalRecipient(place.id);
-                if (identical(next, widget.draft)) return;
-                setState(() => _intent = null);
-                widget.onChanged(next);
-              }),
-            ),
-            const SizedBox(height: 8),
-            _action(
-              id: 'wallet_cancel',
-              label: 'Cancel',
-              onPressed: _guard(fresh, () {
-                if (identical(_intent, intent)) setState(() => _intent = null);
-              }),
-            ),
-          ],
-        ),
-      ),
-    );
+    try {
+      final pending = showZyraConfirm(
+        context: context,
+        title: forSelf
+            ? 'Use this ${place.role.label} place?'
+            : 'Assign this ${place.role.label} place?',
+        body: forSelf
+            ? 'Profile setup stays separate. This preview makes no subscription changes.'
+            : 'Preview an invitation for $recipient. It stays pending until agreement and grants no access or Guardian link.',
+        primaryLabel: forSelf ? 'Use this place' : 'Preview invitation',
+        secondaryLabel: 'Cancel',
+        personName: forSelf ? null : recipient,
+        icon: Icons.card_membership_outlined,
+        sheetKey: const ValueKey('wallet_confirmation'),
+        primaryKey: const ValueKey('wallet_confirm'),
+        secondaryKey: const ValueKey('wallet_cancel'),
+        onOpening: (opened) => _confirmationRoute = route = opened,
+        canConfirm: samePlace,
+        onConfirmedPop: () =>
+            stamp = ZyraPreviewRouteObserver.navigationRevision,
+      );
+      stamp = ZyraPreviewRouteObserver.navigationRevision;
+      if (await pending != true) return;
+      await WidgetsBinding.instance.endOfFrame;
+      if (!samePlace() ||
+          origin?.isCurrent != true ||
+          !(widget.canAct?.call() ?? true)) {
+        return;
+      }
+      final next = forSelf
+          ? draft.useAvailablePlace(place.role, placeId: place.id)
+          : draft.assignFictionalRecipient(place.id);
+      if (!identical(next, draft)) widget.onChanged(next);
+    } finally {
+      if (identical(_confirmationRoute, route)) _confirmationRoute = null;
+    }
   }
 
   Widget _body(String value, {double size = 13}) => Text(

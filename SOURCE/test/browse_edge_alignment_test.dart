@@ -425,7 +425,7 @@ void main() {
           expect(cancel.left, closeTo(20, .01));
           expect(confirm.right, closeTo(size.width - 20, .01));
           expect(cancel.width, closeTo(confirm.width, .01));
-          expect(confirm.left - cancel.right, greaterThanOrEqualTo(6));
+          expect(cancel.top - confirm.bottom, greaterThanOrEqualTo(8));
           for (final key in ['browse-hide-cancel', 'browse-hide-confirm']) {
             final target = find
                 .descendant(of: _key(key), matching: find.byType(InkWell))

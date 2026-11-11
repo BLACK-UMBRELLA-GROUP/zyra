@@ -369,9 +369,7 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
                     width: 38,
                     height: 38,
                     decoration: BoxDecoration(
-                      color: option == ZyraConceptJourneyOption.end
-                          ? ZyraColors.destructive.withValues(alpha: .09)
-                          : ZyraColors.ink(.09),
+                      color: ZyraColors.ivoryTop,
                       shape: BoxShape.circle,
                     ),
                     child: Icon(

@@ -51,6 +51,7 @@ typedef _Actions = ({
   VoidCallback report,
   VoidCallback hide,
   String hideWarning,
+  String firstName,
   VoidCallback compatibility,
 });
 

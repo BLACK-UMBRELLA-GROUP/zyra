@@ -895,7 +895,7 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                     width: double.infinity,
                     padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
                     decoration: BoxDecoration(
-                      color: ZyraColors.frostFill,
+                      color: ZyraColors.surfaceFill,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
                         color: ZyraColors.frostBorder,

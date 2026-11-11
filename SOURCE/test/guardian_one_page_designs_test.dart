@@ -1075,11 +1075,11 @@ void main() {
       find.byKey(const ValueKey('guardian-clear-main-confirmation')),
       findsOneWidget,
     );
-    expect(find.text('Cancel'), findsOneWidget);
-    expect(find.text('Confirm'), findsOneWidget);
+    expect(find.byKey(const ValueKey('guardian-clear-main-confirmation-keep')), findsOneWidget);
+    expect(find.byKey(const ValueKey('guardian-clear-main-confirmation-approve')), findsOneWidget);
     expect(find.byType(AlertDialog), findsNothing);
 
-    await tester.tap(find.text('Cancel'));
+    await tester.tap(find.byKey(const ValueKey('guardian-clear-main-confirmation-keep')));
     await tester.pumpAndSettle();
     expect(find.text('Remove as Main Guardian'), findsOneWidget);
   });
@@ -1125,7 +1125,7 @@ void main() {
       findsOneWidget,
     );
     expect(find.byType(AlertDialog), findsNothing);
-    await tester.tap(find.text('Confirm'));
+    await tester.tap(find.byKey(const ValueKey('guardian-make-main-confirmation-approve')));
     await tester.pumpAndSettle();
     expect(madeMain, isTrue);
     expect(changed, 1);
@@ -1140,7 +1140,7 @@ void main() {
       findsOneWidget,
     );
     expect(find.byType(AlertDialog), findsNothing);
-    await tester.tap(find.text('Confirm'));
+    await tester.tap(find.byKey(const ValueKey('guardian-remove-confirmation-approve')));
     await tester.pumpAndSettle();
     expect(removed, isTrue);
     expect(changed, 2);

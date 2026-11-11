@@ -97,7 +97,10 @@ class _AppLockScreenState extends State<AppLockScreen> {
                     Expanded(
                       child: Text(
                         'Require Face ID, Touch ID or your passcode',
-                        style: ZyraText.body(size: 15, color: Colors.white),
+                        style: ZyraText.body(
+                          size: 15,
+                          color: ZyraColors.espresso,
+                        ),
                       ),
                     ),
                     if (_busy)

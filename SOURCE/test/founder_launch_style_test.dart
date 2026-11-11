@@ -2727,6 +2727,85 @@ void main() {
     );
   }
 
+  testWidgets('protected Founder host keeps or cancels Omar’s invitation', (
+    tester,
+  ) async {
+    final destination = await tester.runAsync(ZyraSessionRouter.resolveHome);
+    expect(destination, isA<ZyraFounderLaunchScreen>());
+    await mount(tester, destination!, disableAnimations: false);
+    tester.widget<FloatingNavBar>(find.byType(FloatingNavBar)).onTap(3);
+    await _settle(tester);
+    await tester.tap(_key('guardian-card-dot-target-2'));
+    await _settle(tester);
+    final invitation = _key('guardian-card-cancel-invitation');
+    await tester.ensureVisible(invitation);
+    await tester.tap(invitation);
+    await _settle(tester);
+    expect(find.text('Keep invitation'), findsOneWidget);
+    final navigator = Navigator.of(
+      tester.element(find.text('Keep invitation')),
+    );
+    navigator.push<void>(
+      MaterialPageRoute(builder: (_) => const Scaffold(body: Text('Cover'))),
+    );
+    await _settle(tester);
+    navigator.pop();
+    await _settle(tester);
+    await tester.tap(find.text('Keep invitation'));
+    await _settle(tester);
+    expect(find.text('Keep invitation'), findsNothing);
+    expect(find.text('Waiting for Omar to accept'), findsOneWidget);
+    await tester.tap(invitation);
+    await _settle(tester);
+    await tester.tap(_key('guardian-card-confirm-cancel-invitation'));
+    await _settle(tester);
+    expect(find.text('Keep invitation'), findsNothing);
+    expect(find.text('Waiting for Omar to accept'), findsNothing);
+    expect(_key('guardian-card-add'), findsOneWidget);
+    expect(forwarded, 0);
+    await _dispose(tester);
+  });
+
+  testWidgets(
+    'protected Founder Guardian management changes only its confirmed target',
+    (tester) async {
+      final destination = await tester.runAsync(ZyraSessionRouter.resolveHome);
+      await mount(tester, destination!, disableAnimations: false);
+      tester.widget<FloatingNavBar>(find.byType(FloatingNavBar)).onTap(3);
+      await _settle(tester);
+
+      Future<void> press(String key) async {
+        final target = _key(key);
+        expect(target, findsOneWidget);
+        await tester.ensureVisible(target);
+        await tester.tap(target);
+        await _settle(tester);
+      }
+
+      await press('guardian-card-menu');
+      await press('guardian-remove');
+      expect(find.text('Remove Hassan?'), findsOneWidget);
+      await press('guardian-remove-confirmation-keep');
+      expect(find.text('Hassan'), findsOneWidget);
+      await press('guardian-card-menu');
+      await press('guardian-clear-main');
+      expect(find.text('Remove Hassan as Main Guardian?'), findsOneWidget);
+      await press('guardian-clear-main-confirmation-approve');
+      await press('guardian-card-menu');
+      expect(_key('guardian-make-main'), findsOneWidget);
+      await press('guardian-make-main');
+      await press('guardian-make-main-confirmation-approve');
+      await press('concept_main_guardian_continue');
+      await press('guardian-card-menu');
+      await press('guardian-remove');
+      await press('guardian-remove-confirmation-approve');
+      expect(find.text('Hassan'), findsNothing);
+      expect(find.text('Yusuf'), findsOneWidget);
+      expect(forwarded, 0);
+      await _dispose(tester);
+    },
+  );
+
   testWidgets(
     'Photos stays at the same location after inactive-only fresh proof',
     (tester) async {

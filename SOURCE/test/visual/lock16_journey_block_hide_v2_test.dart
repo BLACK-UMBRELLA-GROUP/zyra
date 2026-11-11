@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_draft_browse_utility_presentation.dart';
-import 'package:zyra/dev/zyra_draft_journey_block_hide_sheet.dart';
+import 'package:zyra/widgets/zyra_confirm_sheet.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
@@ -124,10 +124,16 @@ void main() {
             await h.tap('draft_report_reason_fakeProfile');
             final before = h.latest.model;
             await _open(h, hide: hide);
-            expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsOneWidget);
+            expect(find.byType(ZyraConfirmSheet), findsOneWidget);
             expect(
               find.text(
-                "You're in a Journey with Sara. ${hide ? 'Hiding' : 'Blocking'} ends it first.",
+                '${hide ? 'Hide' : 'Block'} Sara and end your Journey?',
+              ),
+              findsOneWidget,
+            );
+            expect(
+              find.textContaining(
+                "${hide ? 'Hiding' : 'Blocking'} ends this Journey permanently first. Your Timeline stays.",
               ),
               findsOneWidget,
             );
@@ -177,7 +183,7 @@ void main() {
         );
         final before = h.latest.model;
         await _open(h, hide: hide);
-        expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+        expect(find.byType(ZyraConfirmSheet), findsNothing);
         expect(_model(h).isHidden(_sara), hide);
         expect(_model(h).isBlocked(_sara), !hide);
         expect(h.latest.model.states, before.states);
@@ -205,7 +211,7 @@ void main() {
           model: m,
         );
         await _open(h, hide: hide);
-        expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+        expect(find.byType(ZyraConfirmSheet), findsNothing);
         expect(_model(h).stateFor(_sara), DraftJourneyState.active);
         expect(
           _model(h).stateFor('draft-hana'),
@@ -228,7 +234,7 @@ void main() {
       await _open(h, hide: false);
       await t.tapAt(const Offset(12, 100));
       await h.flush();
-      expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+      expect(find.byType(ZyraConfirmSheet), findsNothing);
       expect(h.latest.model.states, before.states);
       expect(h.latest.model.hiddenPeers, before.hiddenPeers);
       expect(h.latest.model.blockedPeers, before.blockedPeers);
@@ -280,10 +286,10 @@ void main() {
         expect(find.byType(ZyraDraftReportPresentation), findsOneWidget);
         await _open(h, hide: true);
         if (route == 'browse') {
-          expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+          expect(find.byType(ZyraConfirmSheet), findsNothing);
           expect(_model(h).isHidden(browseTarget!), isTrue);
         } else {
-          expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsOneWidget);
+          expect(find.byType(ZyraConfirmSheet), findsOneWidget);
           await h.tap('journey_person_safety_keep');
         }
         expect(_model(h).stateFor(_sara), DraftJourneyState.active);
@@ -313,7 +319,8 @@ void main() {
       await h.flush();
       expect(button.profile!.id, isNot(_sara));
       await _nav(h, 'Hide profile');
-      expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+      expect(find.byType(ZyraConfirmSheet), findsOneWidget);
+      expect(find.text('Keep profile'), findsOneWidget);
       await h.tap('browse-hide-confirm');
       expect(_model(h).isHidden(button.profile!.id), isTrue);
       expect(_model(h).stateFor(_sara), DraftJourneyState.active);
@@ -335,7 +342,7 @@ void main() {
       );
       await h.mount(checkpoint: c);
       await h.tap('concept_hidden_inspection_block');
-      expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsOneWidget);
+      expect(find.byType(ZyraConfirmSheet), findsOneWidget);
       await h.tap('journey_person_safety_confirm');
       expect(_model(h).stateFor(_sara), DraftJourneyState.ended);
       expect(_model(h).isBlocked(_sara), isTrue);

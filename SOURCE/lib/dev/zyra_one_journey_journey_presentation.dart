@@ -103,7 +103,7 @@ class ZyraConceptJourneyThresholdBody extends StatelessWidget {
                   child: photo != null && photo.startsWith('data:image/')
                       ? ZyraProfileImage(photo, width: 60, height: 60)
                       : ColoredBox(
-                          color: ZyraColors.foreground.withValues(alpha: 0.1),
+                          color: ZyraColors.surfaceFill,
                           child: Center(
                             child: Text(
                               you
@@ -245,7 +245,7 @@ class ZyraConceptJourneyFirstQuestion extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
             decoration: BoxDecoration(
-              color: ZyraColors.foreground.withValues(alpha: 0.045),
+              color: ZyraColors.surfaceFill,
               border: const Border(
                 left: BorderSide(color: ZyraColors.journeyGold, width: 2),
               ),
@@ -283,7 +283,7 @@ class ZyraConceptJourneyFirstQuestion extends StatelessWidget {
             style: TextStyle(color: ZyraColors.foreground),
             decoration: InputDecoration(
               filled: true,
-              fillColor: ZyraColors.foreground.withValues(alpha: 0.06),
+              fillColor: ZyraColors.ivoryTop,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide.none,
@@ -358,7 +358,7 @@ class _LocalRoundAction extends StatelessWidget {
                         height: 58,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: ZyraColors.foreground.withValues(alpha: 0.1),
+                          color: ZyraColors.surfaceFill,
                           border: Border.all(
                             color: ZyraColors.foreground.withValues(
                               alpha: 0.28,

@@ -386,7 +386,13 @@ void main() {
     action();
     action();
     await tester.pumpAndSettle();
-    expect(find.byType(FilledButton, skipOffstage: false), findsOneWidget);
+    expect(
+      find.byKey(
+        const ValueKey('onboarding_account_exit_confirm'),
+        skipOffstage: false,
+      ),
+      findsOneWidget,
+    );
   });
 
   Future<void> failOwnedExit(WidgetTester tester) async {

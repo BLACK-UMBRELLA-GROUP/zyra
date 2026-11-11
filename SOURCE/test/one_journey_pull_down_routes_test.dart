@@ -597,12 +597,12 @@ void main() {
     await _tap(tester, 'draft_options_end_$_sara');
     expect(_key('draft_journey_action_$_sara'), findsOneWidget);
     expect(_key('draft_confirm_end_$_sara'), findsOneWidget);
-    expect(_key('draft_cancel_end_$_sara'), findsOneWidget);
+    expect(_key('draft_cancel_journey_action_$_sara'), findsOneWidget);
     await _returnHeader(tester);
     expect(_key('draft_journey_action_$_sara'), findsOneWidget);
     expect(_key('draft_confirm_end_$_sara'), findsOneWidget);
-    expect(_key('draft_cancel_end_$_sara'), findsOneWidget);
-    await _tap(tester, 'draft_cancel_end_$_sara');
+    expect(_key('draft_cancel_journey_action_$_sara'), findsOneWidget);
+    await _tap(tester, 'draft_cancel_journey_action_$_sara');
     expect(_key('draft_journey_action_$_sara'), findsNothing);
     expect(tester.state(shell), same(owner));
     expect(fixture.latest!.model.progress, before.progress);

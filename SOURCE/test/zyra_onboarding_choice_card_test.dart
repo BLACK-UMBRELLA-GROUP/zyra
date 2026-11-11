@@ -90,7 +90,7 @@ void main() {
     var decoration = container.decoration! as BoxDecoration;
     expect(container.duration, const Duration(milliseconds: 480));
     expect(container.curve, Curves.easeInOutCubic);
-    expect(decoration.color, ZyraColors.frostFill);
+    expect(decoration.color, ZyraColors.surfaceFill);
     expect(decoration.borderRadius, BorderRadius.circular(20));
     expect((decoration.border! as Border).top.color, ZyraColors.frostBorder);
     final initialHeight = tester.getSize(find.byKey(_first)).height;

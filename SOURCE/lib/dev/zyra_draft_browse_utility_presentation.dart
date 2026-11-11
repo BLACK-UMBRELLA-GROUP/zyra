@@ -54,7 +54,7 @@ class ZyraDraftScanPresentation extends StatelessWidget {
                       painter: _ScanCorners(ZyraColors.journeyGold),
                       child: DecoratedBox(
                         decoration: BoxDecoration(
-                          color: ZyraColors.warmOverlay.withValues(alpha: .035),
+                          color: ZyraColors.surfaceFill,
                           borderRadius: BorderRadius.circular(24),
                         ),
                         child: Column(
@@ -525,7 +525,7 @@ class _UnavailableAction extends StatelessWidget {
             : ZyraColors.journeyGold.withValues(alpha: .06),
         side: BorderSide(
           color: report
-              ? ZyraColors.warmOverlay.withValues(alpha: .06)
+              ? ZyraColors.surfaceFill
               : ZyraColors.journeyGold.withValues(alpha: .25),
         ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),

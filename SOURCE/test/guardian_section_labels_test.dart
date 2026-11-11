@@ -309,8 +309,7 @@ Future<void> _press(WidgetTester tester, Finder target) async {
   expect(tester.takeException(), isNull);
 }
 
-Finder _confirmationChoice(String id, String text) =>
-    find.descendant(of: _key(id), matching: find.text(text));
+Finder _confirmationChoice(String id, String suffix) => _key('$id-$suffix');
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -547,11 +546,11 @@ void main() {
         final confirmation = '$roleKey-confirmation';
         await _press(tester, _key(roleKey));
         expect(called, isEmpty);
-        await _press(tester, _confirmationChoice(confirmation, 'Cancel'));
+        await _press(tester, _confirmationChoice(confirmation, 'keep'));
         expect(called, isEmpty);
         expect(changed, 0);
         await _press(tester, _key(roleKey));
-        await _press(tester, _confirmationChoice(confirmation, 'Confirm'));
+        await _press(tester, _confirmationChoice(confirmation, 'approve'));
         expect(called, ['role:${person.id}']);
         expect(changed, 1);
         // Confirmation notifies the owner; it must not fabricate a new DTO role.
@@ -559,13 +558,13 @@ void main() {
         await _press(tester, _key('guardian-remove'));
         await _press(
           tester,
-          _confirmationChoice('guardian-remove-confirmation', 'Cancel'),
+          _confirmationChoice('guardian-remove-confirmation', 'keep'),
         );
         expect(called, ['role:${person.id}']);
         await _press(tester, _key('guardian-remove'));
         await _press(
           tester,
-          _confirmationChoice('guardian-remove-confirmation', 'Confirm'),
+          _confirmationChoice('guardian-remove-confirmation', 'approve'),
         );
         expect(called, ['role:${person.id}', 'remove:${person.id}']);
         expect(changed, 2);

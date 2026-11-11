@@ -832,13 +832,7 @@ void main() {
       expect(_key('wallet_identity_guardian_stacked'), findsOneWidget);
       _expectWholeIdentityWord(tester, 'Guardian One', 'Guardian');
       await _tap(tester, 'wallet_assign_sample-spare-guardian');
-      expect(
-        find.descendant(
-          of: _key('wallet_place_sample-spare-guardian'),
-          matching: _key('wallet_confirmation'),
-        ),
-        findsOneWidget,
-      );
+      expect(_key('wallet_confirmation'), findsOneWidget);
       await Scrollable.ensureVisible(
         tester.element(_key('wallet_confirmation')),
         alignment: 0,

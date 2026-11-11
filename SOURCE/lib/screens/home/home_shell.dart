@@ -1,3 +1,4 @@
+import '../../widgets/zyra_confirm_sheet.dart';
 // Home shell — bottom navigation across Browse / Connections / Dashboard /
 // Guardian / Profile.
 //
@@ -143,12 +144,12 @@ class _HomeShellState extends State<HomeShell> {
     VoidCallback report,
     VoidCallback hide,
     String hideWarning,
+    String firstName,
     VoidCallback compatibility,
   })?
   _cardActions;
   bool get _actionMode => _cardActions != null;
-  bool _hideConfirmation = false;
-  bool get _hideConfirmationMode => _actionMode && _hideConfirmation;
+  bool _askingHide = false;
 
   /// Which action the bar is sitting on while in action mode.
   ///
@@ -199,7 +200,7 @@ class _HomeShellState extends State<HomeShell> {
   /// Two things changed. Report is now LAST, furthest from the thumb.
   /// And — checked before adopting this, not assumed — NONE of the four
   /// actions fires irreversibly on its own: Report opens a sheet that
-  /// requires a reason, Hide enters the dedicated Cancel / Confirm nav,
+  /// requires a reason, Hide opens the shared confirmation,
   /// Help and
   /// Compatibility push a screen you can leave. Every one of them has a
   /// next step, so an accidental tap costs a dismissal.
@@ -208,16 +209,12 @@ class _HomeShellState extends State<HomeShell> {
     final actions = _cardActions;
     if (actions == null) return;
     if (act == _CardAct.hide) {
-      setState(() {
-        _actionIndex = index;
-        _hideConfirmation = true;
-      });
+      unawaited(_confirmHide());
       return;
     }
     setState(() {
       _actionIndex = index;
       _cardActions = null;
-      _hideConfirmation = false;
     });
     switch (act) {
       case _CardAct.compatibility:
@@ -246,15 +243,36 @@ class _HomeShellState extends State<HomeShell> {
   void _closeCardActions() {
     setState(() {
       _cardActions = null;
-      _hideConfirmation = false;
     });
   }
 
-  void _confirmHide() {
-    final hide = _cardActions?.hide;
-    if (hide == null) return;
-    _closeCardActions();
-    hide();
+  Future<void> _confirmHide() async {
+    final actions = _cardActions;
+    if (actions == null || _askingHide || !_currentAccount) return;
+    final route = ModalRoute.of(context);
+    _askingHide = true;
+    bool sameSelection() =>
+        mounted && _currentAccount && _tab == 0 && _cardActions == actions;
+    try {
+      final approved = await showZyraConfirm(
+        context: context,
+        title: 'Hide ${actions.firstName}?',
+        body: actions.hideWarning,
+        personName: actions.firstName,
+        primaryLabel: 'Hide profile',
+        secondaryLabel: 'Keep profile',
+        primaryKey: const ValueKey('browse-hide-confirm'),
+        secondaryKey: const ValueKey('browse-hide-cancel'),
+        canConfirm: sameSelection,
+      );
+      if (approved != true || !sameSelection() || route?.isCurrent == false) {
+        return;
+      }
+      _closeCardActions();
+      actions.hide();
+    } finally {
+      _askingHide = false;
+    }
   }
 
   @override
@@ -436,7 +454,6 @@ class _HomeShellState extends State<HomeShell> {
         },
         onOpenActions: (actions) => setState(() {
           _cardActions = actions;
-          _hideConfirmation = false;
           // Always opens on Compatibility. Leaving the highlight where
           // the last visit left it would mean the bar sometimes opened
           // sitting on Report.
@@ -572,56 +589,48 @@ class _HomeShellState extends State<HomeShell> {
           // not because four decisions in a row got the numbers to
           // agree.
           if (!_chromeHidden)
-            if (_hideConfirmationMode)
-              FloatingNavConfirmationBar(
-                onCancel: _closeCardActions,
-                onConfirm: _confirmHide,
-              )
-            else
-              ZyraShellNavigation(
-                currentIndex: _actionMode ? _actionIndex : _tab,
-                onTap: _actionMode ? _runAction : _goToTab,
-                // ACTIONS WAIT FOR THE FINGER TO LIFT — DR-ZYRA-161. Tabs
-                // keep firing live as you scrub, which is what makes the
-                // nav bar feel scrubable; running Report or Hide as a
-                // finger passes over them is a different thing entirely.
-                commitOnRelease: _actionMode,
-                // My ZYRA carries the unread badge because it is the
-                // notification centre.
-                items: _actionMode
-                    ? [
-                        for (final o in _actionOptions)
-                          FloatingNavItem(icon: o.icon, label: o.label),
-                      ]
-                    : [
-                        FloatingNavItem(icon: Icons.search, label: 'Profiles'),
-                        FloatingNavItem(
-                          icon: Icons.bookmark_border,
-                          label: 'Connections',
-                          dot: _sectionDots.contains(
-                            ZyraNavSection.connections,
-                          ),
-                        ),
-                        FloatingNavItem(
-                          icon: Icons.dashboard_outlined,
-                          label: 'My ZYRA',
-                          badge: _unread,
-                        ),
-                        // 2026-07-26: swapped from verified_user_outlined —
-                        // Founder reported the active highlight badge looks
-                        // vertically unbalanced specifically on this tab. The
-                        // plainer gpp_good shield sits symmetrically in its box.
-                        FloatingNavItem(
-                          icon: Icons.gpp_good_outlined,
-                          label: 'Guardian',
-                          dot: _sectionDots.contains(ZyraNavSection.guardian),
-                        ),
-                        FloatingNavItem(
-                          icon: Icons.person_outline,
-                          label: 'Profile',
-                        ),
-                      ],
-              ),
+            ZyraShellNavigation(
+              currentIndex: _actionMode ? _actionIndex : _tab,
+              onTap: _actionMode ? _runAction : _goToTab,
+              // ACTIONS WAIT FOR THE FINGER TO LIFT — DR-ZYRA-161. Tabs
+              // keep firing live as you scrub, which is what makes the
+              // nav bar feel scrubable; running Report or Hide as a
+              // finger passes over them is a different thing entirely.
+              commitOnRelease: _actionMode,
+              // My ZYRA carries the unread badge because it is the
+              // notification centre.
+              items: _actionMode
+                  ? [
+                      for (final o in _actionOptions)
+                        FloatingNavItem(icon: o.icon, label: o.label),
+                    ]
+                  : [
+                      FloatingNavItem(icon: Icons.search, label: 'Profiles'),
+                      FloatingNavItem(
+                        icon: Icons.bookmark_border,
+                        label: 'Connections',
+                        dot: _sectionDots.contains(ZyraNavSection.connections),
+                      ),
+                      FloatingNavItem(
+                        icon: Icons.dashboard_outlined,
+                        label: 'My ZYRA',
+                        badge: _unread,
+                      ),
+                      // 2026-07-26: swapped from verified_user_outlined —
+                      // Founder reported the active highlight badge looks
+                      // vertically unbalanced specifically on this tab. The
+                      // plainer gpp_good shield sits symmetrically in its box.
+                      FloatingNavItem(
+                        icon: Icons.gpp_good_outlined,
+                        label: 'Guardian',
+                        dot: _sectionDots.contains(ZyraNavSection.guardian),
+                      ),
+                      FloatingNavItem(
+                        icon: Icons.person_outline,
+                        label: 'Profile',
+                      ),
+                    ],
+            ),
           if (!_chromeHidden)
             ZyraBottomPromotion(
               role: ZyraPromotionRole.seeker,

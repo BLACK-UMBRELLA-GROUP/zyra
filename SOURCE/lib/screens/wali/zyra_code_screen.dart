@@ -28,7 +28,7 @@ import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_loading.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import '../../widgets/zyra_guardian_capacity_notice.dart';
-import '../../widgets/zyra_glass_dialog.dart';
+import '../../widgets/zyra_confirm_sheet.dart';
 import '../../widgets/zyra_onboarding_direction_style.dart';
 import '../../widgets/zyra_pull_down_back_scope.dart';
 import 'accept_wali_invite_screen.dart';
@@ -121,6 +121,7 @@ class ZyraCodeScreen extends StatefulWidget {
 class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     with WidgetsBindingObserver {
   ZyraPersonalCode? _code;
+  (String?, int, bool)? _codeReadScope;
   List<ZyraGuardianLinkRequest> _requests = const [];
   bool _loading = true;
   bool _available = true;
@@ -280,6 +281,7 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     ++_readRevision;
     _entryRevealTimer?.cancel();
     _code = null;
+    _codeReadScope = null;
     _requests = const [];
     _showQr = false;
     _showEnterCode = false;
@@ -387,6 +389,7 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     } else {
       setState(() {
         _code = null;
+        _codeReadScope = null;
         _requests = const [];
         _showQr = false;
         _signupPreviewNotice = null;
@@ -404,6 +407,7 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
       if (!_localOwnerAllows()) return;
       setState(() {
         _code = _localPreview!.personalCode;
+        _codeReadScope = null;
         _requests = const [];
         _loading = false;
         _available = true;
@@ -427,6 +431,7 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
           _copyPulseActive = false;
         }
         _code = nextCode;
+        _codeReadScope = null;
         _requests = const [];
         _loading = false;
         _available = true;
@@ -436,15 +441,17 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     }
     final ownerId = _currentMemberId();
     final generation = ZyraAccountState.generation;
+    final asGuardian = widget.asGuardian;
     final results = await Future.wait<Object>([
       (widget.loadPersonalCode ?? ZyraWaliLinkService.personalCode)(
-        roleContext: widget.asGuardian ? 'wali' : 'seeker',
+        roleContext: asGuardian ? 'wali' : 'seeker',
       ),
       (widget.loadGuardianRequests ??
           ZyraWaliLinkService.guardianLinkRequests)(),
     ]);
     if (readRevision != _readRevision ||
         _isFounderDemoPreview ||
+        asGuardian != widget.asGuardian ||
         !_isCurrentAccount(ownerId, generation)) {
       return;
     }
@@ -461,6 +468,7 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
           _copyPulseActive = false;
         }
         _code = value;
+        _codeReadScope = (ownerId, generation, asGuardian);
       }
       if (requestResult.valueOrNull case final value?) {
         _requests = value;
@@ -586,6 +594,8 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     );
   }
 
+  bool _rotating = false;
+
   Future<void> _rotate() async {
     if (_localRequested) {
       _localInformation(
@@ -597,33 +607,56 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
       _signupInformation('Preview only. No personal code was changed.');
       return;
     }
-    final confirmed = await showZyraGlassChoice(
-      context: context,
-      icon: Icons.refresh_rounded,
-      title: 'Change your ZYRA Code?',
-      body:
-          'Your current code will stop working and will never be issued again. '
-          'Requests already sent will stay visible.',
-      primaryLabel: 'Change code',
-      secondaryLabel: 'Keep code',
-    );
-    if (confirmed != true || !mounted || _localRequested) return;
-    final result = await ZyraWaliLinkService.rotatePersonalCode(
-      roleContext: widget.asGuardian ? 'wali' : 'seeker',
-    );
-    if (!mounted) return;
-    setState(() {
-      if (result.valueOrNull case final code?) {
-        _copyPulseTimer?.cancel();
-        _code = code;
-        _showQr = false;
-        _copied = false;
-        _copyPulseActive = false;
-        _error = null;
-      } else {
-        _error = "Your code couldn't be changed. Please try again.";
+    final origin = ModalRoute.of(context);
+    if (_rotating || origin?.isCurrent != true) return;
+    final owner = _currentMemberId();
+    final generation = ZyraAccountState.generation;
+    final asGuardian = widget.asGuardian;
+    final code = _code;
+    bool sameCode() =>
+        owner != null &&
+        _codeReadScope == (owner, generation, asGuardian) &&
+        _isCurrentAccount(owner, generation) &&
+        !_localRequested &&
+        !widget.signupPreview &&
+        widget.asGuardian == asGuardian &&
+        _code == code;
+    if (!sameCode() || code == null) return;
+    _rotating = true;
+    try {
+      final confirmed = await showZyraConfirm(
+        context: context,
+        icon: Icons.refresh_rounded,
+        title: 'Change your ZYRA Code?',
+        body:
+            'Your current code will stop working and will never be issued again. '
+            'Requests already sent will stay visible.',
+        primaryLabel: 'Change code',
+        secondaryLabel: 'Keep code',
+        canConfirm: sameCode,
+      );
+      if (confirmed != true || !sameCode() || origin?.isCurrent != true) {
+        return;
       }
-    });
+      final result = await ZyraWaliLinkService.rotatePersonalCode(
+        roleContext: asGuardian ? 'wali' : 'seeker',
+      );
+      if (!sameCode()) return;
+      setState(() {
+        if (result.valueOrNull case final code?) {
+          _copyPulseTimer?.cancel();
+          _code = code;
+          _showQr = false;
+          _copied = false;
+          _copyPulseActive = false;
+          _error = null;
+        } else {
+          _error = "Your code couldn't be changed. Please try again.";
+        }
+      });
+    } finally {
+      _rotating = false;
+    }
   }
 
   void _enterCode([String? initialCode]) {
@@ -1819,7 +1852,7 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
       height: dimension,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: guardian ? ZyraColors.ink(.055) : ZyraColors.accentBg,
+        color: guardian ? ZyraColors.ivoryTop : ZyraColors.accentBg,
         border: guardian ? null : Border.all(color: ZyraColors.accentBorder),
       ),
       child: Center(child: Text(initial, style: style)),
@@ -2389,10 +2422,8 @@ class _SmallAction extends StatelessWidget {
           curve: Curves.easeOutCubic,
           height: height,
           decoration: BoxDecoration(
-            color: pulse
-                ? ZyraColors.surfaceSignal.withValues(alpha: 0.22)
-                : selected
-                ? ZyraColors.accentBg
+            color: pulse || selected
+                ? ZyraColors.ivoryTop
                 : ZyraColors.iconButtonBg,
             border: Border.all(
               color: pulse

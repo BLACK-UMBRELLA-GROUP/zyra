@@ -69,7 +69,7 @@ void main() {
     );
 
     test('every bottom sheet and popup shares the locked Ivory surface', () {
-      expect(ZyraColors.modalSheetSurface, const Color(0xFFF1EBDF));
+      expect(ZyraColors.modalSheetSurface, ZyraColors.ivoryTop);
       expect(ZyraColors.sheetSurface, ZyraColors.modalSheetSurface);
       expect(ZyraColors.waliSheetBg, ZyraColors.modalSheetSurface);
       expect(ZyraColors.sheetGradient.colors, [

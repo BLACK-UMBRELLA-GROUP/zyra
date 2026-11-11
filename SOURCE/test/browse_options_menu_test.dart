@@ -1,3 +1,4 @@
+import 'support/confirm_sheet_test_entry.dart';
 import 'support/profile_swipe_driver.dart';
 // Actual protected local shell, with synthetic records and offline photos.
 // These checks prove action routing and retained-delegate denial, not real
@@ -1063,18 +1064,12 @@ void main() {
       await _openMenu(tester);
       await _tapBar(tester, 'Hide profile');
       expect(_key('browse-hide-outer-surface'), findsNothing);
-      final confirmation = tester.widget<FloatingNavConfirmationBar>(
-        _key('concept_browse_hide_confirmation'),
-      );
-      expect(confirmation.showOuterSurface, isFalse);
       expect(_key('browse-hide-cancel').hitTestable(), findsOneWidget);
       expect(_key('browse-hide-confirm').hitTestable(), findsOneWidget);
       await _snapshot(tester, 'hide_profile_confirmation');
       final retained = tester
-          .widget<FloatingNavConfirmationBar>(
-            _key('concept_browse_hide_confirmation'),
-          )
-          .onConfirm;
+          .widget<TextButton>(_key('browse-hide-confirm'))
+          .onPressed!;
       expect(_browse(tester).profiles.map((profile) => profile.id), ids);
       await _press(tester, 'browse-hide-cancel');
       expect(_key('concept_browse_hide_confirmation'), findsNothing);
@@ -1109,52 +1104,34 @@ void main() {
     await _openMenu(tester);
     await _tapBar(tester, 'Hide profile');
     final retained = tester
-        .widget<FloatingNavConfirmationBar>(
-          _key('concept_browse_hide_confirmation'),
-        )
-        .onConfirm;
+        .widget<TextButton>(_key('browse-hide-confirm'))
+        .onPressed!;
     allowed = false;
     retained();
     await tester.pumpAndSettle();
     expect(_browse(tester).profiles.map((profile) => profile.id), ids);
     allowed = true;
-    await _press(tester, 'browse-hide-cancel');
+    expect(_key('concept_browse_hide_confirmation'), findsNothing);
     expect(_browse(tester).profiles.map((profile) => profile.id), ids);
-    await _dismissMenu(tester);
     expect(tester.takeException(), isNull);
   });
 
   testWidgets('ordinary Hide confirmation keeps its existing outer surface', (
     tester,
   ) async {
-    var cancelled = 0;
-    var hidden = 0;
+    final choices = <bool?>[];
     await _mount(
       tester,
-      body: Scaffold(
-        body: Stack(
-          children: [
-            FloatingNavConfirmationBar(
-              onCancel: () => cancelled++,
-              onConfirm: () => hidden++,
-            ),
-          ],
-        ),
-      ),
+      body: Scaffold(body: ConfirmSheetTestEntry(onDecision: choices.add)),
     );
-    expect(_key('browse-hide-outer-surface'), findsOneWidget);
-    expect(
-      tester.getSize(_key('browse-hide-cancel')).height,
-      greaterThanOrEqualTo(44),
-    );
-    expect(
-      tester.getSize(_key('browse-hide-confirm')).height,
-      greaterThanOrEqualTo(44),
-    );
-    await _press(tester, 'browse-hide-cancel');
-    await _press(tester, 'browse-hide-confirm');
-    expect(cancelled, 1);
-    expect(hidden, 1);
+    for (final key in ['browse-hide-cancel', 'browse-hide-confirm']) {
+      await tester.tap(find.text('Open confirmation'));
+      await tester.pumpAndSettle();
+      expect(_key('zyra-confirm-sheet'), findsOneWidget);
+      expect(tester.getSize(_key(key)).height, greaterThanOrEqualTo(52));
+      await _press(tester, key);
+    }
+    expect(choices, [false, true]);
   });
 
   testWidgets('canAct revocation denies a pending menu mutation', (

@@ -1,3 +1,4 @@
+import '../../widgets/zyra_confirm_sheet.dart';
 // The historical route name remains compatible with callers. This page is
 // the truthful membership control centre: it shows current access, explains
 // available plans, and hands store-owned changes to the App Store / Play
@@ -388,52 +389,16 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
 
   Future<void> _confirmCancellation() async {
     if (!_membershipCanAct) return;
-    final proceed = await showModalBottomSheet<bool>(
+    final proceed = await showZyraConfirm(
       context: context,
-      backgroundColor: Colors.transparent,
-      builder: (sheetContext) => SafeArea(
-        top: false,
-        child: Container(
-          margin: const EdgeInsets.all(12),
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-          decoration: BoxDecoration(
-            color: ZyraColors.waliSheetBg,
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: ZyraColors.surfaceBorder),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Cancel membership', style: ZyraText.heading(size: 20)),
-              const SizedBox(height: 10),
-              Text(
-                '$_storeName securely manages this change. It will show the effective date and ask you to confirm before anything changes. ZYRA never removes your saved account data or Guardian links because a membership changes.',
-                style: ZyraText.subtext(size: 12.5),
-              ),
-              const SizedBox(height: 18),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () => Navigator.of(sheetContext).pop(false),
-                      child: Text('Not now', style: ZyraText.button(size: 13)),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: FilledButton(
-                      key: const ValueKey('membership-store-continue'),
-                      onPressed: () => Navigator.of(sheetContext).pop(true),
-                      child: Text('Continue', style: ZyraText.button(size: 13)),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+      icon: Icons.card_membership_outlined,
+      title: 'Cancel membership?',
+      body:
+          '$_storeName securely manages this change and will ask you to confirm the effective date. '
+          'Your saved data and Guardian links stay.',
+      primaryLabel: 'Continue',
+      secondaryLabel: 'Not now',
+      primaryKey: const ValueKey('membership-store-continue'),
     );
     if (proceed == true && _membershipCanAct) await _openStoreManagement();
   }

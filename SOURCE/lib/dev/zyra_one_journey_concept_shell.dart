@@ -41,7 +41,7 @@ import '../widgets/zyra_browse_next_photo_motion.dart';
 import '../widgets/zyra_guardian_dashboard_profile_card.dart';
 import '../widgets/zyra_loading.dart';
 import '../widgets/zyra_tap_feedback.dart';
-import '../widgets/zyra_glass_dialog.dart';
+import '../widgets/zyra_confirm_sheet.dart';
 import '../widgets/zyra_shell_navigation.dart';
 import '../widgets/zyra_segmented_toggle.dart';
 import '../widgets/zyra_focus_dashboard.dart';
@@ -65,8 +65,6 @@ import 'zyra_draft_compatibility_score_designs.dart';
 import 'zyra_draft_compatibility_store_presentation.dart';
 import 'zyra_draft_browse_utility_presentation.dart';
 import 'zyra_draft_safety_advice_presentation.dart';
-import 'zyra_draft_journey_end_presentation.dart';
-import 'zyra_draft_journey_block_hide_sheet.dart';
 import 'zyra_draft_code_entry.dart';
 import 'zyra_request_help_content.dart';
 import 'zyra_request_account_session.dart';
@@ -261,7 +259,6 @@ class _ZyraOneJourneyConceptShellState
   bool _browseBackSheetOpen = false;
   int _uiRevision = 0;
   bool _browseOptionsOpen = false;
-  bool _browseHideConfirmation = false;
   String? _browseOptionsPersonId;
   int _guardianPage = 0;
   bool _guardianInvitationCancelled = false;
@@ -269,15 +266,14 @@ class _ZyraOneJourneyConceptShellState
       ? _previewNow
       : ZyraOneJourneyGuardianCards.previewInvitationSent;
   ModalRoute<dynamic>? _guardianOptionsRoute;
+  ModalRoute<bool>? _ownedConfirmRoute;
   int _networkTab = 0;
   late ZyraGuardianTabsState _guardianTabs = ZyraGuardianTabsState(
     widget.fixture?.guardianTabs ?? const ZyraGuardianTabsSnapshot.quiet(),
   );
   String? _personId;
   String? _guardianJourneyId;
-  String? _confirmation;
   ({String id, int revision, int navigatorStamp})? _hiddenProfileRestore;
-  ({String id, int revision, int navigatorStamp})? _hiddenProfileBlock;
   bool _journeyOptionsOpen = false;
   String? _expandedJourneyOptionsId;
   ({String id, bool incoming})? _capacityRequest;
@@ -728,7 +724,8 @@ class _ZyraOneJourneyConceptShellState
     _accountSession = ZyraRequestAccountSession(
       canAct: () =>
           _allowed ||
-          (_guardianOptionsRoute?.isCurrent == true &&
+          ((_guardianOptionsRoute?.isCurrent == true ||
+                  _ownedConfirmRoute?.isCurrent == true) &&
               (widget.canActInOwnedDialog?.call() ?? false)),
       palette: ZyraColors.devPalette,
       hapticLevel: ZyraInteractionStyle.hapticLevel,
@@ -1011,7 +1008,9 @@ class _ZyraOneJourneyConceptShellState
       }
       if (_guardianRole && guardianPages.contains(page)) {
         if (page == 'guardian_free_place_invite' &&
-            (_tab != 2 || _pages.isNotEmpty || _pendingGuardianFreePlace == null)) {
+            (_tab != 2 ||
+                _pages.isNotEmpty ||
+                _pendingGuardianFreePlace == null)) {
           break;
         }
         if (page.startsWith('guardian_family_') &&
@@ -1282,10 +1281,8 @@ class _ZyraOneJourneyConceptShellState
     _cancelEndedReadDeadline();
     setState(() {
       _browseOptionsOpen = false;
-      _browseHideConfirmation = false;
       _browseOptionsPersonId = null;
       _hiddenProfileRestore = null;
-      _hiddenProfileBlock = null;
       change();
       if (_tab != 2 ||
           _pages.firstOrNull != _myZyraQuickAccessPage ||
@@ -1316,7 +1313,6 @@ class _ZyraOneJourneyConceptShellState
 
   void _move(VoidCallback change, {bool preserveCircle = false}) {
     _act(() {
-      _confirmation = null;
       _notice = null;
       _expandedJourneyOptionsId = null;
       _capacityRequest = null;
@@ -1470,18 +1466,6 @@ class _ZyraOneJourneyConceptShellState
       return;
     }
     if (_browseOptionsOpen) {
-      if (_browseHideConfirmation) {
-        _openBrowseOptions(_browseOptionsPersonId);
-        return;
-      }
-      _act(() {});
-      return;
-    }
-    final hiddenBlock = _hiddenProfileBlock;
-    if (hiddenBlock != null &&
-        _isCurrentHiddenInspection(hiddenBlock.id) &&
-        hiddenBlock.revision == _uiRevision &&
-        hiddenBlock.navigatorStamp == _routeStamp) {
       _act(() {});
       return;
     }
@@ -1520,6 +1504,46 @@ class _ZyraOneJourneyConceptShellState
     );
   }
 
+  Future<void> _confirmBrowseHide(DraftProfile person) async {
+    final revision = _uiRevision;
+    final safetyRevision = _model.personSafetyRevision;
+    final attempt = _model.attemptRevisionFor(person.id);
+    final name = person.firstName;
+    bool samePerson() =>
+        _browseOptionsPersonId == person.id &&
+        revision == _uiRevision &&
+        _model.canBrowse &&
+        _model.canApplyPersonSafety(
+          person.id,
+          hide: true,
+          expectedAttemptRevision: attempt,
+          expectedSafetyRevision: safetyRevision,
+          endCurrentJourney: false,
+        );
+    if (_ownedConfirmRoute != null || !samePerson()) return;
+    setState(() => _browseOptionsOpen = false);
+    if (await _confirmConceptAction(
+      title: 'Hide $name?',
+      body:
+          '$name won’t appear in your Profiles again. You can show her again from Settings → Hidden Profiles.',
+      primaryLabel: 'Hide profile',
+      secondaryLabel: 'Keep profile',
+      personName: name,
+      sheetKey: const ValueKey('concept_browse_hide_confirmation'),
+      primaryKey: const ValueKey('browse-hide-confirm'),
+      secondaryKey: const ValueKey('browse-hide-cancel'),
+      canCommit: samePerson,
+    )) {
+      _move(() {
+        if (!_model.hide(person.id)) return;
+        _pages.clear();
+        _personId = null;
+      });
+    } else if (_allowed && samePerson()) {
+      setState(() => _browseOptionsOpen = true);
+    }
+  }
+
   Widget _browseOptionsNavigation() {
     final revision = _uiRevision;
     final page = _page;
@@ -1530,31 +1554,6 @@ class _ZyraOneJourneyConceptShellState
         page == _page &&
         id == _browseOptionsPersonId &&
         _canOpenBrowseOptions(id);
-    if (_browseHideConfirmation) {
-      return FloatingNavConfirmationBar(
-        key: const ValueKey('concept_browse_hide_confirmation'),
-        showOuterSurface: false,
-        contentEdgeInset: 20,
-        hapticLevel: _accountSession.hapticLevel,
-        onCancel: () {
-          // The confirmation pill owns this press's single feedback tick.
-          if (current()) _openBrowseOptions(id);
-        },
-        onConfirm: () {
-          if (!current() || id == null) return;
-          final person = draftProfiles.where((p) => p.id == id).firstOrNull;
-          if (person == null ||
-              _warnBeforePersonSafety(person, hide: true, canAct: current)) {
-            return;
-          }
-          _move(() {
-            if (!_model.hide(id)) return;
-            _pages.clear();
-            _personId = null;
-          });
-        },
-      );
-    }
     final navigation = ZyraShellNavigation(
       key: const ValueKey('concept_browse_options_navigation'),
       commitOnRelease: true,
@@ -1594,11 +1593,7 @@ class _ZyraOneJourneyConceptShellState
             if (_warnBeforePersonSafety(person!, hide: true, canAct: current)) {
               return;
             }
-            _act(() {
-              _browseOptionsOpen = true;
-              _browseOptionsPersonId = person.id;
-              _browseHideConfirmation = true;
-            });
+            unawaited(_confirmBrowseHide(person));
           case ZyraBrowseAction.filters:
             _open('filters');
           case ZyraBrowseAction.report:
@@ -1684,6 +1679,15 @@ class _ZyraOneJourneyConceptShellState
 
   @override
   void dispose() {
+    final confirmRoute = _ownedConfirmRoute;
+    _ownedConfirmRoute = null;
+    if (confirmRoute != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (confirmRoute.isActive) {
+          confirmRoute.navigator?.removeRoute(confirmRoute, false);
+        }
+      });
+    }
     _fixtureOwner?.changes?.removeListener(_fixtureChanged);
     _guardianFamilyDeadline?.cancel();
     ZyraPreviewRouteObserver.navigationChanges.removeListener(_routeChanged);
@@ -1752,7 +1756,6 @@ class _ZyraOneJourneyConceptShellState
           'subscriptions',
           'journey',
           'journey_options',
-          'journey_action',
           'bio',
           'bio_locked',
           'journey_compatibility',
@@ -1897,14 +1900,14 @@ class _ZyraOneJourneyConceptShellState
                               enabled:
                                   _allowed &&
                                   !_browseOptionsOpen &&
-                                  _confirmation == null,
+                                  _ownedConfirmRoute == null,
                               onBack: _bound(() {
                                 // A sheet can open before the parent rebuilds. Recheck
                                 // current decision ownership at dispatch, not just build.
                                 if (!_browseOptionsOpen &&
                                     !_journeyOptionsOpen &&
                                     !_capacityConfirmOpen &&
-                                    _confirmation == null) {
+                                    _ownedConfirmRoute == null) {
                                   _back();
                                 }
                               }),
@@ -2007,7 +2010,6 @@ class _ZyraOneJourneyConceptShellState
     'profile' => _profileView(),
     'journey' => _journeyView(),
     'journey_options' => _journeyOptionsPage(),
-    'journey_action' => _journeyActionConfirmation(),
     'request_capacity' => _requestCapacityView(),
     'journey_compatibility' => _journeyCompatibility(),
     'journey_compatibility_locked' => _journeyDisclosureLocked(bio: false),
@@ -2487,22 +2489,8 @@ class _ZyraOneJourneyConceptShellState
       onGalleryIndexChanged: _rememberGallery,
       alignHeaderActions: true,
       hapticLevel: _accountSession.hapticLevel,
-      bottomPadding: _browseOptionsOpen && _browseHideConfirmation
-          ? (FloatingNavConfirmationBar.layoutHeight(
-                      context,
-                      viewportWidth: MediaQuery.sizeOf(context).width,
-                      showOuterSurface: false,
-                      contentEdgeInset: 20,
-                    ) +
-                    MediaQuery.paddingOf(context).bottom.clamp(
-                      ZyraNavBarMetrics.bottomInset,
-                      double.infinity,
-                    ) +
-                    12)
-                .clamp(100, double.infinity)
-                .toDouble()
-          : ZyraNavBarMetrics.contentBottomClearance(context),
-      fixedTabFooter: !(_browseOptionsOpen && _browseHideConfirmation),
+      bottomPadding: ZyraNavBarMetrics.contentBottomClearance(context),
+      fixedTabFooter: true,
       onFilters: _bound(() {
         _open('filters');
       }),
@@ -2585,8 +2573,8 @@ class _ZyraOneJourneyConceptShellState
     return _photoSurface(p);
   }
 
-  bool _isCurrentHiddenInspection(String id) =>
-      _allowed &&
+  bool _isCurrentHiddenInspection(String id, {bool ownedModal = false}) =>
+      (ownedModal || _allowed) &&
       !_guardianRole &&
       _tab == 4 &&
       _page == 'profile' &&
@@ -2601,67 +2589,51 @@ class _ZyraOneJourneyConceptShellState
   Widget _hiddenProfileInspection(DraftProfile person) {
     final fresh = _accountFreshGuard();
     bool current() => fresh() && _isCurrentHiddenInspection(person.id);
-    final pending = _hiddenProfileBlock;
-    bool confirming() =>
-        current() &&
-        pending != null &&
-        _hiddenProfileBlock == pending &&
-        pending.id == person.id &&
-        pending.revision == _uiRevision &&
-        pending.navigatorStamp == _routeStamp;
-    void finish(bool block) {
-      if (!current() || (block && !confirming())) return;
-      if (block &&
-          _warnBeforePersonSafety(person, hide: false, canAct: confirming)) {
-        return;
-      }
-      _move(() {
-        final changed = block
-            ? _model.block(person.id)
-            : _model.unhide(person.id);
-        if (changed) _pages.removeLast();
-      });
-    }
-
-    final isConfirming = confirming();
     final first = _button(
-      isConfirming
-          ? 'concept_hidden_inspection_cancel'
-          : 'concept_hidden_inspection_unhide',
-      isConfirming ? 'Cancel' : 'Unhide profile',
+      'concept_hidden_inspection_unhide',
+      'Unhide profile',
       () {
         if (!current()) return;
-        if (isConfirming) {
-          if (confirming()) _act(() {});
-        } else {
-          finish(false);
-        }
+        _move(() {
+          if (_model.unhide(person.id)) _pages.removeLast();
+        });
       },
-      primary: !isConfirming,
+      primary: true,
     );
     final second = _button(
-      isConfirming
-          ? 'concept_hidden_inspection_confirm_block'
-          : 'concept_hidden_inspection_block',
+      'concept_hidden_inspection_block',
       'Block profile',
-      () {
-        if (!current()) return;
-        if (_warnBeforePersonSafety(person, hide: false, canAct: current)) {
+      () async {
+        if (!current() ||
+            _warnBeforePersonSafety(person, hide: false, canAct: current)) {
           return;
         }
-        if (isConfirming) {
-          finish(true);
-        } else {
-          _act(() {
-            _hiddenProfileBlock = (
-              id: person.id,
-              revision: _uiRevision + 1,
-              navigatorStamp: _routeStamp,
-            );
+        final safetyRevision = _model.personSafetyRevision;
+        final attempt = _model.attemptRevisionFor(person.id);
+        if (await _confirmConceptAction(
+          title: 'Block ${person.firstName}?',
+          body: 'You won’t see each other again. They won’t be told.',
+          personName: person.firstName,
+          primaryLabel: 'Block profile',
+          secondaryLabel: 'Keep profile',
+          sheetKey: const ValueKey('concept_hidden_inspection_block_prompt'),
+          primaryKey: const ValueKey('concept_hidden_inspection_confirm_block'),
+          secondaryKey: const ValueKey('concept_hidden_inspection_cancel'),
+          canCommit: () =>
+              _isCurrentHiddenInspection(person.id, ownedModal: true) &&
+              _model.canApplyPersonSafety(
+                person.id,
+                hide: false,
+                expectedAttemptRevision: attempt,
+                expectedSafetyRevision: safetyRevision,
+                endCurrentJourney: false,
+              ),
+        )) {
+          _move(() {
+            if (_model.block(person.id)) _pages.removeLast();
           });
         }
       },
-      primary: isConfirming,
     );
     return SafeArea(
       key: ValueKey('concept_hidden_inspection_${person.id}'),
@@ -2699,17 +2671,6 @@ class _ZyraOneJourneyConceptShellState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                if (isConfirming) ...[
-                  Text(
-                    'Block ${person.firstName}?',
-                    key: const ValueKey(
-                      'concept_hidden_inspection_block_prompt',
-                    ),
-                    textAlign: TextAlign.center,
-                    style: ZyraText.body(size: 15),
-                  ),
-                  const SizedBox(height: 10),
-                ],
                 if (MediaQuery.textScalerOf(context).scale(1) > 1.3) ...[
                   first,
                   const SizedBox(height: 10),
@@ -2863,7 +2824,7 @@ class _ZyraOneJourneyConceptShellState
       }),
       onEndUnavailable: () => dispatch(() {
         if (person != null && _model.isBlocked(person.id)) {
-          _showJourneyAction(person, 'end');
+          _confirmJourneyEnd(person);
         }
       }),
       onBrowse: () => dispatch(() => _tabTo(0)),
@@ -3373,9 +3334,10 @@ class _ZyraOneJourneyConceptShellState
 
   bool _currentCapacityRequest(
     ({String id, bool incoming}) request,
-    int revision,
-  ) =>
-      _allowed &&
+    int revision, {
+    bool ownedModal = false,
+  }) =>
+      (ownedModal || _allowed) &&
       !_guardianRole &&
       _tab == 2 &&
       _page == 'request_capacity' &&
@@ -3487,18 +3449,11 @@ class _ZyraOneJourneyConceptShellState
   ) async {
     final revision = _uiRevision;
     final endingState = _model.stateFor(ending.id);
-    var expectedStamp = _routeStamp;
-    final fresh = _accountFreshGuard(
-      expectedNavigatorStamp: () => expectedStamp,
-    );
     final endingAttempt = _model.snapshot().attemptRevisions[ending.id];
-    int? dialogStamp;
-    var consumed = false;
     final intent = _model.acceptanceIntentRevision(request.id);
-    bool current() =>
-        fresh() &&
+    bool sameSelection() =>
         _model.acceptanceIntentRevision(request.id) == intent &&
-        _currentCapacityRequest(request, revision) &&
+        _currentCapacityRequest(request, revision, ownedModal: true) &&
         _capacityEndingId == ending.id &&
         _model.stateFor(ending.id) == endingState &&
         _model.snapshot().attemptRevisions[ending.id] == endingAttempt &&
@@ -3507,7 +3462,7 @@ class _ZyraOneJourneyConceptShellState
           ending.id,
           incoming: request.incoming,
         );
-    if (_capacityConfirmOpen || !current()) return;
+    if (!_allowed || _capacityConfirmOpen || !sameSelection()) return;
     final target = _person!;
     final endingName = _model.isBlocked(ending.id)
         ? 'the unavailable Journey'
@@ -3515,86 +3470,23 @@ class _ZyraOneJourneyConceptShellState
     _capacityConfirmOpen = true;
 
     try {
-      final confirmed = await showZyraGlassDialog<bool>(
-        context: _tapContext,
-        builder: (dialogContext) {
-          dialogStamp ??= _routeStamp;
-          void choose(bool value) {
-            if (!consumed &&
-                dialogContext.mounted &&
-                ModalRoute.of(dialogContext)?.isCurrent == true) {
-              consumed = true;
-              final unchanged =
-                  dialogStamp == _routeStamp &&
-                  (widget.canActInOwnedDialog?.call() ?? _allowed);
-              Navigator.of(dialogContext).pop(value && unchanged);
-              // Admit only this exact dialog's own pop. Extra route changes
-              // while it was open refuse confirmation above and below.
-              expectedStamp = _routeStamp;
-            }
-          }
-
-          return ZyraTapFeedback(
-            level: () => _accountSession.hapticLevel,
-            canAct: () =>
-                dialogContext.mounted &&
-                !consumed &&
-                ModalRoute.of(dialogContext)?.isCurrent == true,
-            child: Builder(
-              builder: (actionContext) => Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'End Journey & accept request?',
-                    style: ZyraText.heading(size: 20),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    'This permanently ends $endingName. Your history stays. '
-                    'You and ${target.firstName} can then prepare to begin together.',
-                    style: ZyraText.subtext(),
-                  ),
-                  const SizedBox(height: 20),
-                  ZyraFloatingSurface(
-                    radius: 999,
-                    circle: false,
-                    gold: false,
-                    child: OutlinedButton(
-                      key: const ValueKey('request_capacity_confirm'),
-                      style: OutlinedButton.styleFrom(
-                        minimumSize: const Size(0, 48),
-                        side: BorderSide(color: ZyraColors.destructive),
-                      ),
-                      onPressed: ZyraTapFeedback.onTap(
-                        actionContext,
-                        () => choose(true),
-                        level: () => _accountSession.hapticLevel,
-                      ),
-                      child: Text(
-                        request.incoming
-                            ? 'End & accept request'
-                            : 'End & begin with ${target.firstName}',
-                        style: ZyraText.button(color: ZyraColors.dangerText),
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    key: const ValueKey('request_capacity_keep'),
-                    onPressed: ZyraTapFeedback.onTap(
-                      actionContext,
-                      () => choose(false),
-                      level: () => _accountSession.hapticLevel,
-                    ),
-                    child: Text('Keep my Journeys', style: ZyraText.button()),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-      if (confirmed != true || !current()) return;
+      if (!await _confirmConceptAction(
+        title: 'End Journey & accept request?',
+        body:
+            'This permanently ends $endingName. Your history stays. '
+            'You and ${target.firstName} can then prepare to begin together.',
+        personName: _model.isBlocked(ending.id) ? null : ending.firstName,
+        icon: Icons.route_outlined,
+        primaryLabel: request.incoming
+            ? 'End & accept request'
+            : 'End & begin with ${target.firstName}',
+        secondaryLabel: 'Keep my Journeys',
+        primaryKey: const ValueKey('request_capacity_confirm'),
+        secondaryKey: const ValueKey('request_capacity_keep'),
+        canCommit: sameSelection,
+      )) {
+        return;
+      }
       _act(() {
         final replaced = _model.replaceJourneyForRequest(
           request.id,
@@ -3643,7 +3535,7 @@ class _ZyraOneJourneyConceptShellState
         _button(
           'draft_end_${p.id}',
           'End Journey',
-          () => _showJourneyAction(p, 'end'),
+          () => _confirmJourneyEnd(p),
         ),
       ]);
     }
@@ -3788,7 +3680,7 @@ class _ZyraOneJourneyConceptShellState
       case ZyraConceptJourneyOption.report:
         _open('safety', person: person.id);
       case ZyraConceptJourneyOption.end:
-        if (!ended) _showJourneyAction(person, 'end');
+        if (!ended) _confirmJourneyEnd(person);
     }
   }
 
@@ -3848,12 +3740,38 @@ class _ZyraOneJourneyConceptShellState
     }
   }
 
-  void _showJourneyAction(DraftProfile person, String action) {
-    if (action != 'end') return;
-    _move(() {
-      _personId = person.id;
-      _confirmation = action;
-      _pages.add('journey_action');
+  Future<void> _confirmJourneyEnd(DraftProfile person) async {
+    final id = person.id;
+    final state = _model.stateFor(id);
+    final attempt = _model.attemptRevisionFor(id);
+    final blocked = _model.isBlocked(id);
+    bool sameJourney() =>
+        !_guardianRole &&
+        state != null &&
+        state != DraftJourneyState.ended &&
+        _model.stateFor(id) == state &&
+        _model.attemptRevisionFor(id) == attempt &&
+        _model.isBlocked(id) == blocked;
+    if (!await _confirmConceptAction(
+      title: blocked ? 'End this Journey?' : 'End with ${person.firstName}?',
+      body:
+          'This Journey ends for both of you and cannot be reopened. '
+          'Your Timeline stays.',
+      personName: blocked ? null : person.firstName,
+      icon: Icons.route_outlined,
+      primaryLabel: 'End Journey',
+      secondaryLabel: 'Keep this Journey',
+      sheetKey: ValueKey('draft_journey_action_$id'),
+      primaryKey: ValueKey('draft_confirm_end_$id'),
+      secondaryKey: ValueKey('draft_cancel_journey_action_$id'),
+      canCommit: sameJourney,
+    )) {
+      return;
+    }
+    _act(() {
+      final ok = _model.end(id);
+      _result(ok);
+      if (ok) _message.clear();
     });
   }
 
@@ -4056,49 +3974,6 @@ class _ZyraOneJourneyConceptShellState
             isMain: guardian.isMain,
           ),
       ],
-    );
-  }
-
-  Widget _journeyActionConfirmation() {
-    final person = _person;
-    if (person == null || _confirmation != 'end') {
-      return _unavailable();
-    }
-    final id = person.id;
-    final state = _model.stateFor(id);
-    final allowed = state != null && state != DraftJourneyState.ended;
-    final blocked = _model.isBlocked(id);
-    final profile = blocked ? null : _displayProfile(person);
-    return KeyedSubtree(
-      key: ValueKey('draft_journey_action_$id'),
-      child: ZyraDraftJourneyEndPresentation(
-        subjectId: id,
-        title: blocked ? 'End this Journey?' : 'End with ${person.firstName}?',
-        name: blocked ? null : '${person.firstName} ${person.surname}',
-        portrait: profile == null || profile.photos.isEmpty
-            ? null
-            : _browsePhotoRenderer.build(
-                context,
-                profile.photos.first,
-                width: 104,
-                height: 128,
-                alignment: Alignment.topCenter,
-              ),
-        onConfirm: !allowed
-            ? null
-            : _bound(
-                () => _act(() {
-                  final ok = _model.end(id);
-                  _result(ok);
-                  if (ok) {
-                    _confirmation = null;
-                    _message.clear();
-                    _pages.removeLast();
-                  }
-                }),
-              ),
-        onKeep: _bound(_back),
-      ),
     );
   }
 
@@ -4414,11 +4289,7 @@ class _ZyraOneJourneyConceptShellState
         if (state == DraftJourneyState.preparing ||
             state == DraftJourneyState.active) ...[
           const SizedBox(height: 10),
-          _button(
-            'draft_end_$id',
-            'End Journey',
-            () => _showJourneyAction(p, 'end'),
-          ),
+          _button('draft_end_$id', 'End Journey', () => _confirmJourneyEnd(p)),
         ],
       ],
     );
@@ -4617,7 +4488,7 @@ class _ZyraOneJourneyConceptShellState
                 style: TextStyle(color: ZyraColors.foreground),
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: ZyraColors.foreground.withValues(alpha: 0.06),
+                  fillColor: ZyraColors.ivoryTop,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide.none,
@@ -6087,82 +5958,22 @@ class _ZyraOneJourneyConceptShellState
         setState(() {});
         return;
       }
-      final origin = ModalRoute.of(context);
-      final navigator = Navigator.of(context, rootNavigator: true);
-      var modalStamp = _routeStamp;
-      int? confirmedStamp;
-      late final DialogRoute<bool> dialog;
-      bool dialogCurrent() =>
-          dialog.isCurrent &&
-          modalStamp == _routeStamp &&
-          identical(_guardianOptionsRoute, dialog) &&
-          current(ownedMenu: true);
-      dialog = DialogRoute<bool>(
-        context: _tapContext,
-        barrierColor: Colors.black.withValues(alpha: .55),
-        builder: (_) => ZyraTapFeedback(
-          level: () => session.hapticLevel,
-          canAct: dialogCurrent,
-          child: ZyraGlassCard(
-            child: Builder(
-              builder: (actionContext) => Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Cancel this invitation?',
-                    textAlign: TextAlign.center,
-                    style: ZyraText.heading(size: 18),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Omar will no longer be able to accept it.',
-                    textAlign: TextAlign.center,
-                    style: ZyraText.subtext(),
-                  ),
-                  const SizedBox(height: 20),
-                  FilledButton(
-                    key: const ValueKey(
-                      'guardian-card-confirm-cancel-invitation',
-                    ),
-                    onPressed: ZyraTapFeedback.onTap(actionContext, () {
-                      final waiting = invitationWaiting();
-                      navigator.pop(waiting);
-                      if (waiting) confirmedStamp = _routeStamp;
-                    }),
-                    child: const Text('Cancel invitation'),
-                  ),
-                  TextButton(
-                    onPressed: ZyraTapFeedback.onTap(
-                      actionContext,
-                      () => navigator.pop(false),
-                    ),
-                    child: const Text('Keep invitation'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+      final confirmed = await _confirmConceptAction(
+        title: 'Cancel Omar’s invitation?',
+        body:
+            'Omar won’t be able to accept it. You can invite him again at any time.',
+        primaryLabel: 'Cancel invitation',
+        secondaryLabel: 'Keep invitation',
+        personName: 'Omar',
+        primaryKey: const ValueKey('guardian-card-confirm-cancel-invitation'),
+        canCommit: () => current(ownedMenu: true) && invitationWaiting(),
       );
-      _guardianOptionsRoute = dialog;
-      bool? confirmed;
-      try {
-        final result = navigator.push(dialog);
-        modalStamp = _routeStamp;
-        confirmed = await result;
-      } finally {
-        if (identical(_guardianOptionsRoute, dialog)) {
-          _guardianOptionsRoute = null;
-        }
-      }
-      if (!current() || origin?.isCurrent != true) return;
-      if (confirmed == true &&
-          confirmedStamp == _routeStamp &&
-          invitationWaiting()) {
-        _act(() => _guardianInvitationCancelled = true);
-      } else {
-        // Rebind the card actions to the returned route's current epoch.
+      if (confirmed) {
+        _act(() {
+          _guardianInvitationCancelled = true;
+          _notice = 'Invitation cancelled.';
+        });
+      } else if (current()) {
         setState(() {});
       }
     }
@@ -7317,6 +7128,10 @@ class _ZyraOneJourneyConceptShellState
       onBack: () {
         if (fresh()) _back();
       },
+      onSelectTab: (index) {
+        if (fresh()) _tabTo(index);
+      },
+      showMyZyraActivity: _hasNewMyZyraTabActivity,
     );
   }
 
@@ -7352,6 +7167,63 @@ class _ZyraOneJourneyConceptShellState
     smoothSettings: false,
     membershipPaymentHistory: _membershipPaymentHistory,
   );
+
+  Future<bool> _confirmConceptAction({
+    required String title,
+    required String body,
+    required String primaryLabel,
+    required String secondaryLabel,
+    required bool Function() canCommit,
+    String? personName,
+    IconData icon = Icons.info_outline,
+    Key? sheetKey,
+    Key? primaryKey,
+    Key? secondaryKey,
+  }) async {
+    if (!_allowed || _ownedConfirmRoute != null || !canCommit()) return false;
+    var expectedStamp = _routeStamp;
+    final fresh = _accountFreshGuard(
+      expectedNavigatorStamp: () => expectedStamp,
+    );
+    final account = (ZyraAccountState.userId, ZyraAccountState.generation);
+    final revision = _uiRevision;
+    final page = _page;
+    final tab = _tab;
+    final guardian = _guardianRole;
+    late ModalRoute<bool> route;
+    try {
+      final pending = showZyraConfirm(
+        context: _tapContext,
+        title: title,
+        body: body,
+        primaryLabel: primaryLabel,
+        secondaryLabel: secondaryLabel,
+        personName: personName,
+        icon: icon,
+        sheetKey: sheetKey,
+        primaryKey: primaryKey,
+        secondaryKey: secondaryKey,
+        hapticLevel: () => _accountSession.hapticLevel,
+        onOpening: (opened) => _ownedConfirmRoute = route = opened,
+        canConfirm: () =>
+            mounted &&
+            identical(_ownedConfirmRoute, route) &&
+            (widget.canActInOwnedDialog?.call() ?? _allowed) &&
+            account == (ZyraAccountState.userId, ZyraAccountState.generation) &&
+            revision == _uiRevision &&
+            page == _page &&
+            tab == _tab &&
+            guardian == _guardianRole &&
+            expectedStamp == _routeStamp &&
+            canCommit(),
+        onConfirmedPop: () => expectedStamp = _routeStamp,
+      );
+      expectedStamp = _routeStamp;
+      return await pending == true && fresh() && canCommit();
+    } finally {
+      _ownedConfirmRoute = null;
+    }
+  }
 
   bool Function() _accountFreshGuard({int Function()? expectedNavigatorStamp}) {
     final account = (ZyraAccountState.userId, ZyraAccountState.generation);
@@ -8582,20 +8454,10 @@ class _ZyraOneJourneyConceptShellState
     required bool hide,
     required bool Function() canAct,
   }) async {
-    var expectedStamp = _routeStamp;
-    final fresh = _accountFreshGuard(
-      expectedNavigatorStamp: () => expectedStamp,
-    );
     final attempt = _model.attemptRevisionFor(person.id);
     final safetyRevision = _model.personSafetyRevision;
     final sourcePersonId = _personId;
-    final sourceAccount = (
-      ZyraAccountState.userId,
-      ZyraAccountState.generation,
-    );
-    final sourceRevision = _uiRevision;
-    bool current() =>
-        fresh() &&
+    bool samePerson() =>
         _personId == sourcePersonId &&
         !_guardianRole &&
         _model.canApplyPersonSafety(
@@ -8605,70 +8467,24 @@ class _ZyraOneJourneyConceptShellState
           expectedSafetyRevision: safetyRevision,
           endCurrentJourney: true,
         );
-    if (!canAct() || !current() || _personSafetyConfirmationOpen) return;
+    if (!canAct() || !samePerson() || _personSafetyConfirmationOpen) return;
     _personSafetyConfirmationOpen = true;
-    int? sheetStamp;
-    var consumed = false;
+    final name = person.firstName;
     try {
-      final pending = showModalBottomSheet<bool>(
-        context: _tapContext,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        barrierColor: Colors.black38,
-        builder: (sheetContext) {
-          bool modalCurrent() =>
-              sheetContext.mounted &&
-              !consumed &&
-              ModalRoute.of(sheetContext)?.isCurrent == true &&
-              sheetStamp == _routeStamp &&
-              (widget.canActInOwnedDialog?.call() ?? _allowed) &&
-              sourceAccount ==
-                  (ZyraAccountState.userId, ZyraAccountState.generation) &&
-              sourceRevision == _uiRevision &&
-              !_guardianRole &&
-              _personId == sourcePersonId &&
-              _model.canApplyPersonSafety(
-                person.id,
-                hide: hide,
-                expectedAttemptRevision: attempt,
-                expectedSafetyRevision: safetyRevision,
-                endCurrentJourney: true,
-              );
-          void choose(bool value) {
-            if (consumed ||
-                !sheetContext.mounted ||
-                ModalRoute.of(sheetContext)?.isCurrent != true) {
-              return;
-            }
-            final unchanged = modalCurrent();
-            consumed = true;
-            Navigator.of(sheetContext).pop(value && unchanged);
-            // Only this sheet's own pop may advance the captured route stamp.
-            expectedStamp = _routeStamp;
-          }
-
-          return ZyraTapFeedback(
-            level: () => _accountSession.hapticLevel,
-            canAct: modalCurrent,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.sizeOf(sheetContext).height * .90,
-              ),
-              child: ZyraDraftJourneyBlockHideSheet(
-                firstName: person.firstName,
-                hide: hide,
-                onKeep: () => choose(false),
-                onConfirm: () => choose(true),
-              ),
-            ),
-          );
-        },
-      );
-      // Capture synchronously after our push, before any unrelated navigation
-      // can be mistaken for this owned modal's first presentation.
-      sheetStamp = _routeStamp;
-      final confirmed = await pending;
-      if (confirmed != true || !current()) return;
+      if (!await _confirmConceptAction(
+        title: '${hide ? 'Hide' : 'Block'} $name and end your Journey?',
+        body: hide
+            ? 'Hiding ends this Journey permanently first. Your Timeline stays. $name won’t appear again. You can undo this in Settings → Hidden Profiles.'
+            : 'Blocking ends this Journey permanently first. Your Timeline stays. $name can’t see or contact you and won’t be told you blocked them.',
+        primaryLabel: hide ? 'End Journey and hide' : 'End Journey and block',
+        secondaryLabel: 'Keep this Journey',
+        personName: name,
+        primaryKey: const ValueKey('journey_person_safety_confirm'),
+        secondaryKey: const ValueKey('journey_person_safety_keep'),
+        canCommit: samePerson,
+      )) {
+        return;
+      }
       // The model validates the complete transaction again before either
       // mutation. No asynchronous work separates ending from hide/block.
       _move(() {

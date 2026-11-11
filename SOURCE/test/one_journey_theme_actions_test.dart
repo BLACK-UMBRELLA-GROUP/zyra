@@ -484,8 +484,8 @@ void main() {
             await _press(tester, 'draft_options_${intent}_${person.id}');
             expect(_key('draft_journey_action_${person.id}'), findsOneWidget);
             expect(find.text('End with ${person.name}?'), findsOneWidget);
-            expect(find.byType(BottomSheet), findsNothing);
-            await _press(tester, 'draft_cancel_end_${person.id}');
+            expect(find.byType(BottomSheet), findsOneWidget);
+            await _press(tester, 'draft_cancel_journey_action_${person.id}');
             expect(_key('draft_journey_action_${person.id}'), findsNothing);
             expect(find.byType(ZyraOneJourneyOptionsPage), findsOneWidget);
             await _dismissOptions(tester);
@@ -665,7 +665,7 @@ void main() {
           }
           await _press(tester, 'draft_options_${intent}_${person.id}');
           expect(_key('draft_confirm_${intent}_${person.id}'), findsOneWidget);
-          await _press(tester, 'draft_cancel_end_${person.id}');
+          await _press(tester, 'draft_cancel_journey_action_${person.id}');
           expect(find.byType(ZyraOneJourneyOptionsPage), findsOneWidget);
         }
         await _press(tester, 'draft_journey_${person.id}');
@@ -699,13 +699,13 @@ void main() {
       expect(_key('draft_journey_action_draft-aisha'), findsNothing);
       await _press(tester, 'draft_options_end_draft-maryam');
       final staleMaryamEnd = _action(tester, 'draft_confirm_end_draft-maryam');
-      await _press(tester, 'draft_cancel_end_draft-maryam');
+      await _press(tester, 'draft_cancel_journey_action_draft-maryam');
       await _options(tester, 'draft-aisha');
       await _press(tester, 'draft_options_end_draft-aisha');
       staleMaryamEnd();
       await tester.pumpAndSettle();
       expect(_key('draft_journey_action_draft-aisha'), findsOneWidget);
-      await _press(tester, 'draft_cancel_end_draft-aisha');
+      await _press(tester, 'draft_cancel_journey_action_draft-aisha');
       await _dismissOptions(tester);
       _expectStates(tester, _allActive);
     },
@@ -740,7 +740,7 @@ void main() {
                   .toList()
             : [
                 _action(tester, 'draft_confirm_end_draft-aisha'),
-                _action(tester, 'draft_cancel_end_draft-aisha'),
+                _action(tester, 'draft_cancel_journey_action_draft-aisha'),
               ];
         final owner = zyraShellFixtureFor(tester);
         final before = owner.latest!.model;
@@ -752,6 +752,10 @@ void main() {
           if (change == 'ABA') {
             ZyraDeveloperAccess.setAuthorizedForTesting(true);
           }
+        }
+        if (surface == 'confirmation') {
+          await tester.pumpAndSettle();
+          expect(find.byType(BottomSheet), findsNothing);
         }
         for (final callback in stale) {
           callback();

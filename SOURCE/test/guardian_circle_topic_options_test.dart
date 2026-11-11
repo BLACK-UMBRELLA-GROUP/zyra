@@ -887,7 +887,7 @@ void main() {
       );
       expect(plain, hasLength(2));
       expect(
-        plain.every((decoration) => decoration.color == ZyraColors.ink(.055)),
+        plain.every((decoration) => decoration.color == ZyraColors.ivoryTop),
         isTrue,
       );
       final seeker = decorations.singleWhere(

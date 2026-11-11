@@ -1,3 +1,4 @@
+import '../../widgets/zyra_confirm_sheet.dart';
 // Connections tab — per APP/Navigation/SEEKER NAVIGATION/Summary.md's
 // CONNECTIONS section: "Relationship Journey = Save → Consider → Match
 // → Conversation → Family Stage." Matches is NOT a conversation inbox
@@ -1101,18 +1102,30 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     final cap = ZyraEntitlements.of(AppState.instance.plan).active;
 
     if (blocking.length < cap) {
-      // THE LAST POPUP IN THE BEGIN FLOW, GONE — 2026-08-13 (Founder:
-      // "I still get a popup. We agreed we were moving away from
-      // popups"). What he was hitting was exactly this branch: on ZYRA
-      // One a single Active Journey sits UNDER the cap of 3, so the
-      // takeover rightly never fired — and this confirm, a glass dialog
-      // since its 2026-08-12 restyle, did. Now the confirm extends the
-      // person's card inline like everything else in this flow: same
-      // person-as-photo, same one-line body ("one person at a time" —
-      // the seriousness principle, never a quota), same Guardian
-      // disclosure at the exact moment RLS opens to both Guardians.
-      // See _InlineBeginConfirm at the bottom of this file.
-      setState(() => _beginMatchId = j.matchId);
+      final name = j.profile.firstName;
+      if (await _confirmConnectionsDecision(
+        j,
+        title: 'Begin with $name?',
+        body:
+            'Your Journey begins with Compatibility Reveal. From the first message, '
+            'each Main Guardian and any Additional Guardians included in this Journey '
+            'can read the conversation.',
+        primary: 'Begin with $name',
+        keep: 'Not yet',
+        canCommit: () =>
+            AppState.instance.potentialJourneys.any(
+              (current) => _sameJourneyDecision(j, current),
+            ) &&
+            AppState.instance.activeJourneys
+                    .where(
+                      (active) =>
+                          active.matchId != j.matchId && !active.isSuspended,
+                    )
+                    .length <
+                ZyraEntitlements.of(AppState.instance.plan).active,
+      )) {
+        await _confirmBegin(j);
+      }
       return;
     }
 
@@ -1138,31 +1151,10 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   /// itself leaves the list — a stale id simply matches nothing.
   String? _takeoverMatchId;
 
-  /// The potential row whose card is currently extended with the inline
-  /// BEGIN confirm (below the cap — 2026-08-13, the flow's last popup
-  /// retired). Same lifecycle as [_takeoverMatchId]; the two are never
-  /// set together, because one tap picks exactly one branch.
-  String? _beginMatchId;
-
-  /// The one extension a potential card can carry: the begin confirm if
-  /// this row is mid-confirm, else the takeover if it is mid-takeover,
-  /// else nothing.
-  Widget? _inlinePotentialFor(JourneyMatch j) {
-    if (_beginMatchId == j.matchId) {
-      return _InlineBeginConfirm(
-        next: j,
-        onDismiss: () => setState(() => _beginMatchId = null),
-        onBegin: () => _confirmBegin(j),
-      );
-    }
-    return _inlineTakeoverFor(j);
-  }
-
-  /// The begin, confirmed inline. Mirrors what the dialog's "Begin with
+  /// The confirmed begin. Mirrors what the dialog's "Begin with
   /// X" did — a staged potential "begins" in the scenario's numbers (no
   /// row exists for the real promote to act on); a real one promotes.
   Future<void> _confirmBegin(JourneyMatch j) async {
-    setState(() => _beginMatchId = null);
     if (j.isMock) {
       final dev = ZyraDevScenario.instance;
       dev.setQueuedJourneys((dev.queuedJourneys - 1).clamp(0, 99));
@@ -1415,33 +1407,57 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     await _openPauseFlow(j);
   }
 
-  /// Ends a paused Journey — CONFIRMED FIRST since 2026-08-12, because
-  /// its only entry point is now the "End Journey" pill on the person's
-  /// card (the old three-button paused dialog, which WAS the
-  /// confirmation, died with the Option A row-tap model). Short and
-  /// in the takeover popups' language: what it costs, what is kept.
-  /// INLINE since 2026-08-13, round four (Founder: "we are agreeing
-  /// popups now in connections page no longer exist and is all
-  /// expanded") — the tap swaps the paused card's rows for the confirm,
-  /// under the ✕ header. _doEndSuspended finishes the job.
-  Future<void> _endSuspended(JourneyMatch j) async {
-    setState(() => _endConfirmMatchId = j.matchId);
+  bool _connectionConfirmationOpen = false;
+
+  bool _sameJourneyDecision(JourneyMatch expected, JourneyMatch live) =>
+      expected.matchId == live.matchId &&
+      expected.profile.id == live.profile.id &&
+      expected.status == live.status &&
+      expected.pause.version == live.pause.version;
+
+  Future<bool> _confirmConnectionsDecision(
+    JourneyMatch journey, {
+    required String title,
+    required String body,
+    required String primary,
+    required String keep,
+    required bool Function() canCommit,
+  }) async {
+    final origin = ModalRoute.of(context);
+    bool current() => mounted && _accountCurrent && canCommit();
+    if (_connectionConfirmationOpen ||
+        origin?.isCurrent != true ||
+        !current()) {
+      return false;
+    }
+    _connectionConfirmationOpen = true;
+    try {
+      final approved = await showZyraConfirm(
+        context: context,
+        title: title,
+        body: body,
+        primaryLabel: primary,
+        secondaryLabel: keep,
+        personName: journey.profile.firstName,
+        canConfirm: current,
+      );
+      return approved == true && current() && origin?.isCurrent == true;
+    } finally {
+      _connectionConfirmationOpen = false;
+    }
   }
 
-  /// The paused row whose card currently shows the inline End confirm.
-  String? _endConfirmMatchId;
-
-  Widget? _inlineEndConfirmFor(JourneyMatch j) {
-    if (_endConfirmMatchId != j.matchId) return null;
-    return _InlineConfirmBlock(
+  Future<void> _endSuspended(JourneyMatch j) async {
+    if (await _confirmConnectionsDecision(
+      j,
       title: 'End with ${j.profile.firstName}?',
-      body: 'Permanent. Your Timeline together is kept.',
-      actionLabel: 'End Journey',
-      danger: true,
-      onConfirm: () => _doEndSuspended(j),
-      dismissLabel: 'Keep it',
-      onDismiss: _clearInlineDecisions,
-    );
+      body: 'This Journey ends permanently. Your Timeline together stays.',
+      primary: 'End Journey',
+      keep: 'Keep it',
+      canCommit: () => _suspended.any((live) => _sameJourneyDecision(j, live)),
+    )) {
+      await _doEndSuspended(j);
+    }
   }
 
   Future<void> _doEndSuspended(JourneyMatch j) async {
@@ -1503,24 +1519,14 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   /// Every inline decision, cleared at once. Only one is ever open —
   /// one tap opens one moment — so this is exact, and it lets a single
   /// ✕ handler serve every card.
-  void _clearInlineDecisions() => setState(() {
-    _beginMatchId = null;
-    _takeoverMatchId = null;
-    _restartMatchId = null;
-    _endConfirmMatchId = null;
-    _activeConfirm = null;
-  });
-
-  /// Which Active Journey card is mid-confirm, and which confirm.
-  /// The record beats two string fields: one card, one open moment.
-  ({String matchId, bool end})? _activeConfirm;
+  void _clearInlineDecisions() => setState(() => _takeoverMatchId = null);
 
   /// Founder-selected Connections Option 4 — 2026-08-20.
   ///
   /// The Active card keeps one clear primary action and one compact rail:
   /// View Profile · Timeline · Options. Options groups the two management
   /// actions without weakening their safeguards: choosing Pause or End here
-  /// only closes the sheet and opens the existing inline confirmation. No
+  /// closes the options and opens the shared confirmation. No
   /// service write happens from this sheet.
   Future<void> _showActiveJourneyOptions(JourneyMatch j) async {
     final choice = await showModalBottomSheet<_ActiveJourneyOption>(
@@ -1542,47 +1548,36 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     }
   }
 
-  /// Pause the ACTIVE Journey — the Journey screen's ⋮ verb, relocated
-  /// 2026-08-13, and INLINE the same day, round four (Founder: "now
-  /// pause journey for active journey is a popup… popups now in
-  /// connections page no longer exist"): the tap extends the card with
-  /// the confirm; _doPauseActive finishes.
   Future<void> _pauseActive(JourneyMatch j) async {
-    setState(() => _activeConfirm = (matchId: j.matchId, end: false));
-  }
-
-  /// End the ACTIVE Journey — same relocation, same inline round.
-  Future<void> _endActive(JourneyMatch j) async {
-    setState(() => _activeConfirm = (matchId: j.matchId, end: true));
-  }
-
-  /// The Active card's inline confirm, or null when this card isn't
-  /// mid-confirm. Same words the glass dialogs carried.
-  Widget? _activeInlineConfirmFor(JourneyMatch j) {
-    final c = _activeConfirm;
-    if (c == null || c.matchId != j.matchId) return null;
-    if (c.end) {
-      return _InlineConfirmBlock(
-        title: 'End with ${j.profile.firstName}?',
-        body: 'Permanent. Your Timeline together is kept.',
-        actionLabel: 'End Journey',
-        danger: true,
-        onConfirm: () => _doEndActive(j),
-        dismissLabel: 'Keep it',
-        onDismiss: _clearInlineDecisions,
-      );
-    }
-    return _InlineConfirmBlock(
+    if (await _confirmConnectionsDecision(
+      j,
       title: 'Request a pause with ${j.profile.firstName}?',
       body:
           '${_keepsPlaceLine(j.profile)} '
           '${j.profile.firstName} will choose whether to pause or continue.',
-      actionLabel: 'Request Pause',
-      danger: false,
-      onConfirm: () => _doPauseActive(j),
-      dismissLabel: 'Not now',
-      onDismiss: _clearInlineDecisions,
-    );
+      primary: 'Request Pause',
+      keep: 'Not now',
+      canCommit: () => AppState.instance.activeJourneys.any(
+        (live) => _sameJourneyDecision(j, live),
+      ),
+    )) {
+      await _doPauseActive(j);
+    }
+  }
+
+  Future<void> _endActive(JourneyMatch j) async {
+    if (await _confirmConnectionsDecision(
+      j,
+      title: 'End with ${j.profile.firstName}?',
+      body: 'This Journey ends permanently. Your Timeline together stays.',
+      primary: 'End Journey',
+      keep: 'Keep it',
+      canCommit: () => AppState.instance.activeJourneys.any(
+        (live) => _sameJourneyDecision(j, live),
+      ),
+    )) {
+      await _doEndActive(j);
+    }
   }
 
   Future<void> _doPauseActive(JourneyMatch j) async {
@@ -2047,7 +2042,6 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
         onEnd: () => _endSuspended(journey),
         onReport: () => _reportPerson(journey),
         compatibilityRevealed: true,
-        inlineExtension: _inlineEndConfirmFor(journey),
         onDismissExtension: _clearInlineDecisions,
       );
     }
@@ -2172,8 +2166,6 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
             },
             // Round four: the confirms extend this card in place —
             // no popups on this page.
-            inlineConfirm: _activeInlineConfirmFor(j),
-            onDismissConfirm: _clearInlineDecisions,
             // NOT the stage label — that came out on Founder instruction,
             // 2026-08-10. This is the one Journey state that is waiting on
             // the member's FAMILY rather than on them, and it holds the
@@ -2255,7 +2247,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
             // B3: when this row is the one mid-decision — begin
             // confirm below the cap, takeover at it — its card
             // extends with that moment (null for everyone else).
-            inlineExtension: _inlinePotentialFor(j),
+            inlineExtension: _inlineTakeoverFor(j),
             onDismissExtension: _clearInlineDecisions,
           ),
         ),
@@ -3611,7 +3603,7 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
                               height: 26,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: ZyraColors.ink(0.10),
+                                color: ZyraColors.ivoryTop,
                                 border: Border.all(color: ZyraColors.ink(0.25)),
                               ),
                               child: Icon(
@@ -4330,8 +4322,6 @@ class _ActiveJourneyCard extends StatelessWidget {
   /// place; a ✕ appears by the photo (which shrinks to 56pt — this
   /// card's portrait is small and part of who the card is, so it stays,
   /// unlike the expanding cards').
-  final Widget? inlineConfirm;
-  final VoidCallback? onDismissConfirm;
 
   /// The current Journey stage, from the canonical map. Rendered on the Enter
   /// pill, not as a status line — Timeline spec §12 option C, Founder
@@ -4351,8 +4341,6 @@ class _ActiveJourneyCard extends StatelessWidget {
     required this.reviewOpen,
     required this.decisionPending,
     required this.hasBegun,
-    this.inlineConfirm,
-    this.onDismissConfirm,
   });
 
   @override
@@ -4381,30 +4369,6 @@ class _ActiveJourneyCard extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Mid-confirm: the ✕ leads, the photo makes room.
-                    if (inlineConfirm != null) ...[
-                      InkWell(
-                        borderRadius: BorderRadius.circular(999),
-                        onTap: onDismissConfirm,
-                        child: Container(
-                          width: 26,
-                          height: 26,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: ZyraColors.iconButtonBg,
-                            border: Border.all(
-                              color: ZyraColors.iconButtonBorder,
-                            ),
-                          ),
-                          child: Icon(
-                            Icons.close,
-                            size: 14,
-                            color: ZyraColors.ink(0.70),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                    ],
                     // PLAIN PHOTO. The expand glyph that briefly sat in this
                     // corner was rejected by the Founder on 2026-08-10 — a
                     // small icon on someone's face, doing something the icon
@@ -4419,8 +4383,8 @@ class _ActiveJourneyCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(14),
                       child: ZyraProfileImage(
                         profile.photoUrl,
-                        width: inlineConfirm != null ? 56 : 96,
-                        height: inlineConfirm != null ? 56 : 96,
+                        width: 96,
+                        height: 96,
                       ),
                     ),
                     SizedBox(width: 16),
@@ -4539,47 +4503,34 @@ class _ActiveJourneyCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 16),
-                // MID-CONFIRM the bands step aside and the confirm
-                // holds the card (round four — no popups on this page).
-                if (inlineConfirm != null) ...[
-                  Container(height: 1, color: ZyraColors.ink(0.14)),
-                  SizedBox(height: 12),
-                  inlineConfirm!,
-                ] else ...[
-                  // CONNECTIONS OPTION 4 — Founder, 2026-08-20. One primary
-                  // Journey action, then a compact open rail for the three
-                  // secondary destinations. Report remains the flag above;
-                  // Pause and End sit behind Options and still open their
-                  // existing inline confirmation before any write.
-                  _ConnectionsActionDeck(
-                    primary: _ConnectionsActionItem(
-                      icon: Icons.route_outlined,
-                      label: decisionPending
-                          ? 'Open decision'
-                          : hasBegun
-                          ? 'Continue Journey'
-                          : 'Begin Journey',
-                      onTap: onEnter,
-                    ),
-                    actions: [
-                      _ConnectionsActionItem(
-                        icon: Icons.person_outline,
-                        label: 'View Profile',
-                        onTap: onViewProfile,
-                      ),
-                      _ConnectionsActionItem(
-                        icon: Icons.timeline_outlined,
-                        label: 'Timeline',
-                        onTap: onTimeline,
-                      ),
-                      _ConnectionsActionItem(
-                        icon: Icons.more_horiz,
-                        label: decisionPending ? 'Decision' : 'Options',
-                        onTap: onOptions,
-                      ),
-                    ],
+                _ConnectionsActionDeck(
+                  primary: _ConnectionsActionItem(
+                    icon: Icons.route_outlined,
+                    label: decisionPending
+                        ? 'Open decision'
+                        : hasBegun
+                        ? 'Continue Journey'
+                        : 'Begin Journey',
+                    onTap: onEnter,
                   ),
-                ],
+                  actions: [
+                    _ConnectionsActionItem(
+                      icon: Icons.person_outline,
+                      label: 'View Profile',
+                      onTap: onViewProfile,
+                    ),
+                    _ConnectionsActionItem(
+                      icon: Icons.timeline_outlined,
+                      label: 'Timeline',
+                      onTap: onTimeline,
+                    ),
+                    _ConnectionsActionItem(
+                      icon: Icons.more_horiz,
+                      label: decisionPending ? 'Decision' : 'Options',
+                      onTap: onOptions,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -5297,140 +5248,6 @@ class _InlineRestartAsk extends StatelessWidget {
         TextButton(
           onPressed: onDismiss,
           child: Text('Not now', style: ZyraText.subtext()),
-        ),
-      ],
-    );
-  }
-}
-
-/// The begin confirm, inline — the flow's LAST popup, retired 2026-08-13
-/// (Founder: "we agreed we were moving away from popups"). The dialog's
-/// exact parts in the card's extension language: the person as a circular
-/// photo over 'Ready', the one-line seriousness body, Begin as the frost
-/// primary, 'Not yet', and the Guardian disclosure — stated, as always,
-/// at the exact moment a Begin would open RLS to both Guardians.
-class _InlineBeginConfirm extends StatelessWidget {
-  final JourneyMatch next;
-  final VoidCallback onDismiss;
-  final Future<void> Function() onBegin;
-  const _InlineBeginConfirm({
-    required this.next,
-    required this.onDismiss,
-    required this.onBegin,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final name = next.profile.firstName;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _takeoverPerson(next.profile, 'Ready', waiting: false),
-        SizedBox(height: 12),
-        Text(
-          'Begin with $name?',
-          style: ZyraText.heading(size: 18),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(height: 8),
-        Text(
-          'One person at a time, with both families present — it '
-          'begins with Compatibility Reveal.',
-          style: ZyraText.subtext(),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(height: 14),
-        SizedBox(
-          width: double.infinity,
-          child: _CardPill(
-            label: 'Begin with $name',
-            onTap: () => onBegin(),
-            primary: true,
-          ),
-        ),
-        TextButton(
-          onPressed: onDismiss,
-          child: Text('Not yet', style: ZyraText.subtext()),
-        ),
-        SizedBox(height: 2),
-        _takeoverDisclosure(),
-      ],
-    );
-  }
-}
-
-/// One confirm, inline — the shape every stay-or-go confirm on this page
-/// now takes (round four, 2026-08-13: Pause and End on the Active card,
-/// End on a paused card). Title, one honest body line, the action as the
-/// app's pill (frost for reversible, the dark-coral End pill for
-/// permanent), and the written dismissal underneath. The ✕ in the card's
-/// header is the other way out; both do the same nothing.
-class _InlineConfirmBlock extends StatelessWidget {
-  final String title;
-  final String body;
-  final String actionLabel;
-  final bool danger;
-  final Future<void> Function() onConfirm;
-  final String dismissLabel;
-  final VoidCallback onDismiss;
-  const _InlineConfirmBlock({
-    required this.title,
-    required this.body,
-    required this.actionLabel,
-    required this.danger,
-    required this.onConfirm,
-    required this.dismissLabel,
-    required this.onDismiss,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          title,
-          style: ZyraText.heading(size: 16),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(height: 8),
-        Text(body, style: ZyraText.subtext(), textAlign: TextAlign.center),
-        SizedBox(height: 14),
-        SizedBox(
-          width: double.infinity,
-          child: danger
-              ? Material(
-                  color: const Color(0x48140C1A),
-                  shape: StadiumBorder(
-                    side: BorderSide(
-                      color: _takeoverCoral.withValues(alpha: 0.75),
-                    ),
-                  ),
-                  child: InkWell(
-                    customBorder: const StadiumBorder(),
-                    onTap: () => onConfirm(),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: Center(
-                        child: Text(
-                          actionLabel,
-                          style: ZyraText.button(
-                            size: 13,
-                          ).copyWith(color: const Color(0xFFF0A2A0)),
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              : _CardPill(
-                  label: actionLabel,
-                  onTap: () => onConfirm(),
-                  primary: true,
-                ),
-        ),
-        TextButton(
-          onPressed: onDismiss,
-          child: Text(dismissLabel, style: ZyraText.subtext()),
         ),
       ],
     );

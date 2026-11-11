@@ -163,7 +163,7 @@ class _AcceptGuardianInviteScreenState
                       Container(
                         padding: const EdgeInsets.all(15),
                         decoration: BoxDecoration(
-                          color: ZyraColors.foreground.withValues(alpha: 0.05),
+                          color: ZyraColors.surfaceFill,
                           borderRadius: BorderRadius.circular(
                             ZyraCardMetrics.cardRadius,
                           ),

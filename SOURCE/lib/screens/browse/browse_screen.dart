@@ -235,6 +235,7 @@ class BrowseScreen extends StatefulWidget {
       VoidCallback report,
       VoidCallback hide,
       String hideWarning,
+      String firstName,
       VoidCallback compatibility,
     })
     actions,
@@ -2202,6 +2203,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                       hide: () {
                         if (menuCurrent()) unawaited(_hideProfile(profile));
                       },
+                      firstName: profile.firstName,
                       hideWarning:
                           '${profile.firstName} will be hidden from your '
                           'Profiles view. This does not block them, change '

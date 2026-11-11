@@ -382,7 +382,7 @@ void main() {
     expect(_state(tester).changes, 0);
     expect(find.text('Use this Guardian place?'), findsOneWidget);
     final staleConfirm = tester
-        .widget<OutlinedButton>(_key('wallet_confirm'))
+        .widget<TextButton>(_key('wallet_confirm'))
         .onPressed!;
     await _tap(tester, 'wallet_confirm');
     expect(_state(tester).changes, 1);
@@ -528,13 +528,7 @@ void main() {
         final rect = tester.getRect(heading);
         expect(rect.top, greaterThanOrEqualTo(0));
         expect(rect.bottom, lessThanOrEqualTo(700));
-        expect(
-          find.descendant(
-            of: _key('wallet_place_sample-spare-guardian'),
-            matching: _key('wallet_confirmation'),
-          ),
-          findsOneWidget,
-        );
+        expect(_key('wallet_confirmation'), findsOneWidget);
         expect(_state(tester).changes, 0);
       }
     },
@@ -549,14 +543,8 @@ void main() {
     );
     await tester.pumpWidget(_app(_Harness(draft: draft)));
     await _tap(tester, 'wallet_primary_guardian');
-    expect(
-      find.descendant(
-        of: _key('wallet_role_guardian'),
-        matching: _key('wallet_confirmation'),
-      ),
-      findsOneWidget,
-    );
-    expect(_key('wallet_primary_guardian'), findsNothing);
+    expect(_key('wallet_confirmation'), findsOneWidget);
+    expect(_key('wallet_primary_guardian').hitTestable(), findsNothing);
     await _tap(tester, 'wallet_cancel');
     expect(_key('wallet_primary_guardian'), findsOneWidget);
   });
@@ -621,9 +609,7 @@ void main() {
     );
     await _familyPage(tester, 2);
     await _tap(tester, 'wallet_assign_sample-spare-guardian');
-    final old = tester
-        .widget<OutlinedButton>(_key('wallet_confirm'))
-        .onPressed!;
+    final old = tester.widget<TextButton>(_key('wallet_confirm')).onPressed!;
     _state(
       tester,
     ).replace(_state(tester).draft.copyWith(inventoryAvailable: false));
@@ -765,12 +751,10 @@ void main() {
           expect(place.color, ZyraColors.surfaceFill);
           expect((place.border! as Border).top.color, ZyraColors.surfaceBorder);
           await _tap(tester, 'wallet_assign_sample-spare-guardian');
-          final confirmation = _cardDecoration(tester, 'wallet_confirmation');
-          expect(confirmation.color, ZyraColors.surfaceFill);
-          expect(
-            (confirmation.border! as Border).top.color,
-            ZyraColors.journeyGold.withValues(alpha: .5),
+          final confirmation = tester.widget<Material>(
+            _key('wallet_confirmation'),
           );
+          expect(confirmation.color, const Color(0xFFF7F2EA));
           expect(find.text('Assign this Guardian place?'), findsOneWidget);
           expect(state.changes, 0);
           expect(state.draft, same(draft));
@@ -836,8 +820,9 @@ void main() {
         await _familyPage(tester, 2);
         await _tap(tester, 'wallet_assign_sample-spare-guardian');
         final retained = tester
-            .widget<OutlinedButton>(_key('wallet_confirm'))
+            .widget<TextButton>(_key('wallet_confirm'))
             .onPressed!;
+        await _tap(tester, 'wallet_cancel');
         await _tap(
           tester,
           changeSection ? 'wallet_group_profiles' : 'wallet_family_next',
@@ -876,13 +861,7 @@ void main() {
         expect(_key('wallet_confirmation'), findsOneWidget);
         await tester.ensureVisible(_key('wallet_confirm'));
         await tester.pumpAndSettle();
-        expect(
-          find.descendant(
-            of: _key('wallet_place_sample-spare-guardian'),
-            matching: _key('wallet_confirmation'),
-          ),
-          findsOneWidget,
-        );
+        expect(_key('wallet_confirmation'), findsOneWidget);
         expect(_key('wallet_confirm').hitTestable(), findsOneWidget);
         expect(_key('wallet_cancel'), findsOneWidget);
         expect(

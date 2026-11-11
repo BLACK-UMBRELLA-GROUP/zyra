@@ -118,7 +118,7 @@ VoidCallback _rowAction(WidgetTester tester) => tester
     .onPressed!;
 
 VoidCallback _confirmationAction(WidgetTester tester) => tester
-    .widget<FilledButton>(find.widgetWithText(FilledButton, 'Unhide'))
+    .widget<TextButton>(find.byKey(const ValueKey('unhide-profile-approve')))
     .onPressed!;
 
 void main() {
@@ -250,7 +250,7 @@ void main() {
       await tester.tap(find.text('Unhide'));
       await tester.pumpAndSettle();
       expect(find.text('Unhide profile?'), findsOneWidget);
-      await tester.tap(find.widgetWithText(FilledButton, 'Unhide'));
+      await tester.tap(find.byKey(const ValueKey('unhide-profile-approve')));
       await _until(
         tester,
         () => find.text('No hidden profiles').evaluate().isNotEmpty,
@@ -401,7 +401,7 @@ void main() {
       await tester.tap(find.text('Unhide'));
       await tester.pumpAndSettle();
       expect(find.text('Unhide profile?'), findsOneWidget);
-      await tester.tap(find.widgetWithText(FilledButton, 'Unhide'));
+      await tester.tap(find.byKey(const ValueKey('unhide-profile-approve')));
       await _until(
         tester,
         () => find.text('No hidden profiles').evaluate().isNotEmpty,
@@ -467,7 +467,7 @@ void main() {
         final navigator = await mount(tester);
         await tester.tap(find.text('Unhide'));
         await tester.pumpAndSettle();
-        await tester.tap(find.widgetWithText(FilledButton, 'Unhide'));
+        await tester.tap(find.byKey(const ValueKey('unhide-profile-approve')));
         await _until(tester, () => unhideCalls == 1, 'Owned unhide dispatch');
         if (cover) {
           unawaited(

@@ -599,7 +599,7 @@ class _ReviewStatus extends StatelessWidget {
     decoration:
         style?.cardDecoration() ??
         BoxDecoration(
-          color: ZyraColors.frostFill,
+          color: ZyraColors.surfaceFill,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(color: ZyraColors.frostBorder),
         ),

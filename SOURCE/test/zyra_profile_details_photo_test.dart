@@ -9,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/models/seeker_profile.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
+import 'package:zyra/widgets/zyra_floating_surface.dart';
 import 'package:zyra/widgets/zyra_loading.dart';
 import 'package:zyra/widgets/zyra_profile_details_page.dart';
 import 'package:zyra/widgets/zyra_profile_image.dart';
@@ -101,7 +102,10 @@ Future<void> _mount(
   expect(tester.takeException(), isNull);
 }
 
-void _expectFallback(WidgetTester tester) {
+void _expectFallback(
+  WidgetTester tester, {
+  Color color = ZyraColors.avatarSand,
+}) {
   final initial = find.descendant(of: _avatar(), matching: find.text('S'));
   expect(initial, findsOneWidget);
   expect(tester.widget<Text>(initial).textScaler, TextScaler.noScaling);
@@ -109,8 +113,7 @@ void _expectFallback(WidgetTester tester) {
     find.descendant(
       of: _avatar(),
       matching: find.byWidgetPredicate(
-        (widget) =>
-            widget is ColoredBox && widget.color == ZyraColors.avatarSand,
+        (widget) => widget is ColoredBox && widget.color == color,
       ),
     ),
     findsOneWidget,
@@ -239,12 +242,16 @@ void main() {
     tester,
   ) async {
     await _mount(tester, seekerPlan: ZyraPlan.basic);
-    _expectFallback(tester);
+    _expectFallback(tester, color: ZyraColors.ivoryTop);
     expect(_photo(), findsNothing);
     final placeholderDecoration =
         tester.widget<Container>(_avatar()).decoration! as BoxDecoration;
     expect(placeholderDecoration.border, isNull);
     expect(placeholderDecoration.boxShadow, isNull);
+    expect(
+      find.ancestor(of: _avatar(), matching: find.byType(ZyraFloatingSurface)),
+      findsOneWidget,
+    );
     final before = _identityGeometry(tester);
     final stream = _pending(5);
     final pixels = await _pixels(tester, Colors.teal);

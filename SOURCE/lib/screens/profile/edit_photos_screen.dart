@@ -5,6 +5,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/scheduler.dart';
 import '../../dev/zyra_app_gold_preview.dart';
 import '../../dev/zyra_local_photo_import.dart';
@@ -22,7 +23,7 @@ import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_interaction_style.dart';
 import '../../theme/zyra_text.dart';
-import '../../widgets/zyra_glass_dialog.dart';
+import '../../widgets/zyra_confirm_sheet.dart';
 import '../../widgets/zyra_loading.dart';
 import '../../widgets/zyra_profile_image.dart';
 import '../../widgets/zyra_state_widgets.dart';
@@ -667,6 +668,8 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
     }
   }
 
+  bool _confirmingRemoval = false;
+
   Future<void> _removePhoto(int index) async {
     if (!_canUse || _working || index < 0 || index >= _photos.length) {
       _hideRevokedPreview();
@@ -678,22 +681,39 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
       });
       return;
     }
-    final confirmed = await showZyraGlassChoice(
-      context: _feedbackContext,
-      icon: Icons.delete_outline,
-      title: 'Remove this photo?',
-      body: index == 0
-          ? 'The next photo will become your main profile photo.'
-          : 'This photo will no longer appear on your profile.',
-      primaryLabel: 'Remove photo',
-      secondaryLabel: 'Keep photo',
-    );
-    if (confirmed != true || !_canUse) {
+    if (_confirmingRemoval) return;
+    final gallery = List<String>.of(_photos);
+    final account = (ZyraAccountState.userId, ZyraAccountState.generation);
+    bool sameGallery() =>
+        mounted &&
+        !ZyraAccountState.isSigningOut &&
+        !_previewRevoked &&
+        !_working &&
+        account == (ZyraAccountState.userId, ZyraAccountState.generation) &&
+        listEquals(gallery, _photos);
+    _confirmingRemoval = true;
+    bool? confirmed;
+    try {
+      confirmed = await showZyraConfirm(
+        context: _feedbackContext,
+        icon: Icons.delete_outline,
+        title: 'Remove this photo?',
+        body: index == 0
+            ? 'The next photo will become your main profile photo.'
+            : 'This photo will no longer appear on your profile.',
+        primaryLabel: 'Remove photo',
+        secondaryLabel: 'Keep photo',
+        canConfirm: sameGallery,
+      );
+    } finally {
+      _confirmingRemoval = false;
+    }
+    if (confirmed != true || !sameGallery() || !_canUse) {
       _hideRevokedPreview();
       return;
     }
-    final removed = _photos[index];
-    final next = List<String>.of(_photos)..removeAt(index);
+    final removed = gallery[index];
+    final next = gallery..removeAt(index);
     final committed = await _commit(next);
     if (committed && !_localPreview && _ownerCanAct) {
       await ZyraPhotoService.discardNewUploads([removed]);

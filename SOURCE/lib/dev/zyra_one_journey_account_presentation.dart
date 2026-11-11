@@ -846,54 +846,56 @@ class _SettingsSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final smooth = data.smoothSettings;
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: smooth ? 20 : 18,
-        vertical: smooth ? 22 : 18,
-      ),
-      decoration: BoxDecoration(
-        color: ZyraColors.foreground.withValues(alpha: smooth ? .11 : .09),
-        borderRadius: BorderRadius.circular(
-          smooth ? 24 : ZyraCardMetrics.cardRadius,
+    final radius = smooth ? 24.0 : ZyraCardMetrics.cardRadius;
+    return ZyraFloatingSurface(
+      radius: radius,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: smooth ? 20 : 18,
+          vertical: smooth ? 22 : 18,
         ),
-        border: Border.all(
-          color: smooth
-              ? ZyraColors.unlockText.withValues(alpha: .28)
-              : ZyraColors.foreground.withValues(alpha: .14),
-          width: 0.5,
-        ),
-      ),
-      child: Column(
-        children: [
-          if (smooth) ...[
-            Row(
-              children: [
-                Icon(
-                  Icons.tune_rounded,
-                  color: ZyraColors.unlockText,
-                  size: 20,
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    'Your account',
-                    maxLines: 2,
-                    style: ZyraText.body(size: 16),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-          ],
-          line('Membership', data.membership),
-          divider(),
-          line(
-            data.guardian ? 'Linked Seekers' : 'Guardians',
-            data.guardian ? data.linkedSeekers : data.guardianCount,
+        decoration: BoxDecoration(
+          color: ZyraColors.surfaceFill,
+          borderRadius: BorderRadius.circular(radius),
+          border: Border.all(
+            color: smooth
+                ? ZyraColors.unlockText.withValues(alpha: .28)
+                : ZyraColors.surfaceBorder,
+            width: 0.5,
           ),
-          divider(),
-          line('Signed in with', data.signedInWith),
-        ],
+        ),
+        child: Column(
+          children: [
+            if (smooth) ...[
+              Row(
+                children: [
+                  Icon(
+                    Icons.tune_rounded,
+                    color: ZyraColors.unlockText,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      'Your account',
+                      maxLines: 2,
+                      style: ZyraText.body(size: 16),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+            ],
+            line('Membership', data.membership),
+            divider(),
+            line(
+              data.guardian ? 'Linked Seekers' : 'Guardians',
+              data.guardian ? data.linkedSeekers : data.guardianCount,
+            ),
+            divider(),
+            line('Signed in with', data.signedInWith),
+          ],
+        ),
       ),
     );
   }
@@ -918,24 +920,20 @@ class _SettingsSection extends StatelessWidget {
         children: [
           _SectionLabel(title),
           SizedBox(height: smooth ? 12 : ZyraPreviewSpacing.labelToCard),
-          Container(
-            key: ValueKey('concept-settings-section-$title'),
-            decoration: BoxDecoration(
-              color: ZyraColors.foreground.withValues(
-                alpha: smooth ? .085 : .05,
-              ),
-              borderRadius: BorderRadius.circular(
-                smooth ? 23 : ZyraCardMetrics.cardRadius,
-              ),
-              border: Border.all(
-                color: ZyraColors.foreground.withValues(
-                  alpha: smooth ? .16 : .10,
+          ZyraFloatingSurface(
+            radius: smooth ? 23 : ZyraCardMetrics.cardRadius,
+            child: Container(
+              key: ValueKey('concept-settings-section-$title'),
+              decoration: BoxDecoration(
+                color: ZyraColors.surfaceFill,
+                borderRadius: BorderRadius.circular(
+                  smooth ? 23 : ZyraCardMetrics.cardRadius,
                 ),
-                width: 0.5,
+                border: Border.all(color: ZyraColors.surfaceBorder, width: 0.5),
               ),
+              clipBehavior: smooth ? Clip.antiAlias : Clip.none,
+              child: Column(children: children),
             ),
-            clipBehavior: smooth ? Clip.antiAlias : Clip.none,
-            child: Column(children: children),
           ),
         ],
       ),
@@ -990,7 +988,7 @@ class _SettingsRow extends StatelessWidget {
                 width: 38,
                 height: 38,
                 decoration: BoxDecoration(
-                  color: ZyraColors.unlockText.withValues(alpha: .11),
+                  color: ZyraColors.ivoryTop,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, size: 18, color: ZyraColors.unlockText),

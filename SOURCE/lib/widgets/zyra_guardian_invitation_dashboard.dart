@@ -17,11 +17,12 @@ import 'package:flutter/material.dart';
 import '../data/zyra_reference_data.dart';
 import '../dev/zyra_dev_scenario.dart';
 import '../screens/wali/accept_guardian_invite_screen.dart';
+import '../services/zyra_account_state.dart';
 import '../services/zyra_developer_access.dart';
 import '../services/zyra_wali_link_service.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
-import 'zyra_glass_dialog.dart';
+import 'zyra_confirm_sheet.dart';
 import 'zyra_state_widgets.dart';
 
 enum ZyraGuardianInvitationAudience { seeker, guardian }
@@ -62,6 +63,13 @@ class _ZyraGuardianInvitationDashboardState
     extends State<ZyraGuardianInvitationDashboard> {
   List<PendingInvite> _livePending = const [];
   bool _pendingAvailable = true;
+  bool _confirmingInvitation = false;
+  final _owner = (ZyraAccountState.userId, ZyraAccountState.generation);
+
+  bool get _currentOwner =>
+      mounted &&
+      !ZyraAccountState.isSigningOut &&
+      _owner == (ZyraAccountState.userId, ZyraAccountState.generation);
   String? _error;
   String? _busyToken;
   PendingInvite? _failedCancel;
@@ -169,31 +177,36 @@ class _ZyraGuardianInvitationDashboardState
   Future<void> _declineReceived(
     ({String from, String relationship, int daysAgo}) invite,
   ) async {
-    final confirmed = await showZyraGlassChoice(
-      context: context,
-      icon: Icons.person_remove_outlined,
-      title: 'Decline ${invite.from}’s invitation?',
+    final name = invite.from;
+    if (await _confirmInvitation(
+      title: 'Decline $name’s invitation?',
       body:
-          'This closes the preview invitation. You can still link later '
-          'through a new invite code.',
-      primaryLabel: 'Decline invitation',
-      secondaryLabel: 'Keep invitation',
-    );
-    if (confirmed == true) _scenario.consumeReceivedInvite();
+          'This closes the preview invitation. You can link later with a new code.',
+      personName: name,
+      icon: Icons.person_remove_outlined,
+      action: 'Decline invitation',
+      current: () => _received.contains(invite),
+    )) {
+      _scenario.consumeReceivedInvite();
+    }
   }
 
+  bool _pendingCurrent(PendingInvite invite) =>
+      _pending.any((pending) => pending.token == invite.token) &&
+      (invite.expiresAt == null ||
+          (widget.comparisonNow ?? DateTime.now()).isBefore(invite.expiresAt!));
+
   Future<void> _cancelPending(PendingInvite invite) async {
-    final confirmed = await showZyraGlassChoice(
-      context: context,
-      icon: Icons.link_off_outlined,
+    if (!await _confirmInvitation(
       title: 'Cancel this invitation?',
       body:
-          'Its code will stop working. A new invitation can be created '
-          'whenever you are ready.',
-      primaryLabel: 'Cancel invitation',
-      secondaryLabel: 'Keep invitation',
-    );
-    if (confirmed != true || !mounted) return;
+          'Its code will stop working. You can create a new invitation later.',
+      icon: Icons.link_off_outlined,
+      action: 'Cancel invitation',
+      current: () => _pendingCurrent(invite) && _busyToken == null,
+    )) {
+      return;
+    }
 
     final synthetic = invite.token.startsWith('DEV');
     if (synthetic) {
@@ -208,15 +221,50 @@ class _ZyraGuardianInvitationDashboardState
     await _revokePending(invite);
   }
 
+  Future<bool> _confirmInvitation({
+    required String title,
+    required String body,
+    required IconData icon,
+    required String action,
+    required bool Function() current,
+    String? personName,
+  }) async {
+    final origin = ModalRoute.of(context);
+    final audience = widget.audience;
+    bool sameInvite() =>
+        _currentOwner && widget.audience == audience && current();
+    if (_confirmingInvitation || origin?.isCurrent != true || !sameInvite()) {
+      return false;
+    }
+    _confirmingInvitation = true;
+    try {
+      final result = await showZyraConfirm(
+        context: context,
+        title: title,
+        body: body,
+        icon: icon,
+        personName: personName,
+        primaryLabel: action,
+        secondaryLabel: 'Keep invitation',
+        canConfirm: sameInvite,
+      );
+      return result == true && sameInvite() && origin?.isCurrent == true;
+    } finally {
+      _confirmingInvitation = false;
+    }
+  }
+
   Future<void> _revokePending(PendingInvite invite) async {
-    if (!mounted) return;
+    if (!_currentOwner || !_pendingCurrent(invite) || _busyToken != null) {
+      return;
+    }
     setState(() {
       _busyToken = invite.token;
       _failedCancel = null;
       _error = null;
     });
     final cancelled = await ZyraWaliLinkService.revokeInvite(invite.token);
-    if (!mounted) return;
+    if (!_currentOwner) return;
     if (!cancelled) {
       setState(() {
         _busyToken = null;

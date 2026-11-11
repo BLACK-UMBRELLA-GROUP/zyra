@@ -244,7 +244,7 @@ class _CapacityRow extends StatelessWidget {
                         child:
                             item.portrait ??
                             ColoredBox(
-                              color: ZyraColors.ink(.08),
+                              color: ZyraColors.ivoryTop,
                               child: Icon(
                                 Icons.person_outline,
                                 size: 24,

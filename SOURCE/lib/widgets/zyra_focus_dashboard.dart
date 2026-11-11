@@ -228,7 +228,7 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
           width: 64,
           height: 64,
           decoration: BoxDecoration(
-            color: ZyraColors.frostFill.withValues(alpha: .08),
+            color: ZyraColors.surfaceFill,
             shape: BoxShape.circle,
           ),
           child: Icon(item.icon, size: 26, color: ZyraColors.journeyGold),
@@ -337,7 +337,7 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
                   width: 38,
                   height: 38,
                   decoration: BoxDecoration(
-                    color: ZyraColors.frostFill.withValues(alpha: .08),
+                    color: ZyraColors.surfaceFill,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(

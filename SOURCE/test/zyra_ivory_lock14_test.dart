@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,6 +16,24 @@ double contrast(Color a, Color b) {
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  test('LOCK14 V8 retires the darker fill without changing ink or tracks', () {
+    const retiredFill = 'frostFill';
+    final callers = Directory('lib')
+        .listSync(recursive: true)
+        .whereType<File>()
+        .where((file) => file.path.endsWith('.dart'))
+        .where(
+          (file) => file.readAsStringSync().contains('ZyraColors.$retiredFill'),
+        );
+    expect(callers, isEmpty);
+    expect(ZyraColors.cardSurface, ZyraColors.ivoryTop);
+    expect(ZyraColors.lowerSurface, ZyraColors.ivoryTop);
+    expect(ZyraColors.modalSheetSurface, ZyraColors.ivoryTop);
+    expect(ZyraColors.frostSelectedFill, ZyraColors.ivoryTop);
+    expect(ZyraColors.ink(.18), ZyraColors.warmOverlay.withValues(alpha: .18));
+    expect(ZyraColors.divider, const Color(0x1A3E2E1E));
+    expect(ZyraColors.progressTrack, isNot(ZyraColors.surfaceFill));
+  });
   test('LOCK14 opaque reading roles and gold text fills meet 4.5:1', () {
     expect(
       contrast(ZyraColors.espresso, ZyraColors.goldTextFill),

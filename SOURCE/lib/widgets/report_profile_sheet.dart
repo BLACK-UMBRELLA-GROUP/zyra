@@ -1,3 +1,4 @@
+import 'zyra_confirm_sheet.dart';
 // Report / block a specific person — 2026-08-01 (Founder request).
 //
 // Replaces the old "Report a Problem" row, which opened the generic Help
@@ -158,7 +159,7 @@ class _ReportProfileSheetState extends State<_ReportProfileSheet> {
   bool _submitting = false;
   bool _reportSent = false;
   bool _reportStored = false;
-  bool _confirmingHide = false;
+  bool _askingBlock = false;
   String? _error;
 
   bool get _canPresent => mounted && widget.owner.current;
@@ -208,6 +209,37 @@ class _ReportProfileSheetState extends State<_ReportProfileSheet> {
     if (profile != null) await ZyraHiddenProfileStore.remember(profile);
     if (!_canPresent) return;
     AppState.instance.removeHiddenProfileFromSession(widget.profileId);
+  }
+
+  Future<void> _confirmBlockOnly() async {
+    if (!_canAct || _submitting || _askingBlock) return;
+    final route = ModalRoute.of(context);
+    final name = widget.firstName;
+    setState(() {
+      _selected = null;
+      _askingBlock = true;
+    });
+    try {
+      final approved = await showZyraConfirm(
+        context: context,
+        title: 'Block $name?',
+        body:
+            'You won’t see each other and any live Journey will end. '
+            'They won’t be told. Your action is a block only.',
+        personName: name,
+        primaryLabel: 'Block $name',
+        secondaryLabel: 'Keep profile',
+        sheetKey: const ValueKey('report-hide-confirmation'),
+        primaryKey: const ValueKey('report-hide-confirm'),
+        secondaryKey: const ValueKey('report-hide-cancel'),
+        canConfirm: () => _canPresent && _askingBlock,
+      );
+      if (approved == true && _canPresent && route?.isCurrent == true) {
+        await _blockOnly();
+      }
+    } finally {
+      if (mounted) setState(() => _askingBlock = false);
+    }
   }
 
   Future<void> _blockOnly() async {
@@ -479,7 +511,6 @@ class _ReportProfileSheetState extends State<_ReportProfileSheet> {
                               if (!_canAct || _submitting) return;
                               setState(() {
                                 _selected = _selected == reason ? null : reason;
-                                _confirmingHide = false;
                               });
                             },
                           ),
@@ -502,35 +533,8 @@ class _ReportProfileSheetState extends State<_ReportProfileSheet> {
                           _BlockOnlyRow(
                             firstName: widget.firstName,
                             enabled: !_submitting,
-                            expanded: _confirmingHide,
-                            onTap: () {
-                              if (!_canAct || _submitting) return;
-                              setState(() {
-                                _selected = null;
-                                _confirmingHide = !_confirmingHide;
-                              });
-                            },
-                          ),
-                          AnimatedSize(
-                            duration: const Duration(milliseconds: 180),
-                            curve: Curves.easeOutCubic,
-                            child: _confirmingHide
-                                ? Padding(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    child: _HideConfirmation(
-                                      firstName: widget.firstName,
-                                      enabled: !_submitting,
-                                      onCancel: () {
-                                        if (_canAct && !_submitting) {
-                                          setState(
-                                            () => _confirmingHide = false,
-                                          );
-                                        }
-                                      },
-                                      onConfirm: _blockOnly,
-                                    ),
-                                  )
-                                : const SizedBox.shrink(),
+                            expanded: false,
+                            onTap: _confirmBlockOnly,
                           ),
                         ],
                       ],
@@ -889,74 +893,6 @@ class _BlockOnlyRow extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _HideConfirmation extends StatelessWidget {
-  final String firstName;
-  final bool enabled;
-  final VoidCallback onCancel;
-  final VoidCallback onConfirm;
-
-  const _HideConfirmation({
-    required this.firstName,
-    required this.enabled,
-    required this.onCancel,
-    required this.onConfirm,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      key: const ValueKey('report-hide-confirmation'),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: ZyraColors.surfaceEmphasisFill,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: ZyraColors.surfaceEmphasisBorder),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Block $firstName?',
-            style: ZyraText.body(size: 14.5, color: ZyraColors.dangerText),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            "You won't see each other. Any live Journey between you will "
-            'end. Nothing is reported and they will not be told.',
-            style: ZyraText.subtext(size: 11.5),
-          ),
-          const SizedBox(height: 14),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  key: const ValueKey('report-hide-cancel'),
-                  onPressed: ZyraTapFeedback.onTap(
-                    context,
-                    enabled ? onCancel : null,
-                  ),
-                  child: const Text('Cancel'),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: FilledButton(
-                  key: const ValueKey('report-hide-confirm'),
-                  onPressed: ZyraTapFeedback.onTap(
-                    context,
-                    enabled ? onConfirm : null,
-                  ),
-                  child: const Text('Confirm'),
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

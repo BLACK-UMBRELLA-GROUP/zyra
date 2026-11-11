@@ -704,7 +704,7 @@ class _RoleCard extends StatelessWidget {
   BoxDecoration _decoration(BorderRadius radius) => BoxDecoration(
     color: selected
         ? ZyraColors.journeyGold.withValues(alpha: .13)
-        : ZyraColors.frostFill,
+        : ZyraColors.surfaceFill,
     border: Border.all(
       color: selected
           ? ZyraColors.journeyGold.withValues(alpha: .85)

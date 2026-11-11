@@ -743,7 +743,7 @@ class _AttemptSummaryCard extends StatelessWidget {
         : 'Not ended';
     return Material(
       key: ValueKey('guardian-attempt-summary-${summary.attemptId}'),
-      color: ZyraColors.foreground.withValues(alpha: 0.045),
+      color: ZyraColors.surfaceFill,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),

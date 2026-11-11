@@ -15,7 +15,7 @@ import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_loading.dart';
 import '../../widgets/zyra_state_widgets.dart';
-import '../../widgets/zyra_glass_dialog.dart';
+import '../../widgets/zyra_confirm_sheet.dart';
 
 class HiddenProfilesScreen extends StatefulWidget {
   final Future<List<String>?> Function()? loadServerIds;
@@ -270,7 +270,7 @@ class _HiddenProfilesScreenState extends State<HiddenProfilesScreen> {
     }
     final owner = _owner;
     final generation = _generation;
-    final confirmed = await showZyraGlassChoice(
+    final confirmed = await showZyraConfirm(
       context: context,
       icon: Icons.visibility_outlined,
       title: profile.isDemo
@@ -280,6 +280,8 @@ class _HiddenProfilesScreenState extends State<HiddenProfilesScreen> {
           'This profile may appear for you in Profiles again. '
           'This does not change blocks or bring back an ended Journey.',
       primaryLabel: 'Unhide',
+      primaryKey: const ValueKey('unhide-profile-approve'),
+      personName: profile.isDemo ? profile.firstName : null,
       secondaryLabel: 'Cancel',
     );
     if (!mounted) return;
@@ -421,7 +423,7 @@ class _HiddenProfileRow extends StatelessWidget {
                     localFixture ? profile.displayName : 'Hidden profile',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: ZyraText.body(size: 14, color: Colors.white),
+                    style: ZyraText.body(size: 14, color: ZyraColors.espresso),
                   ),
                   if (localFixture) ...[
                     const SizedBox(height: 2),

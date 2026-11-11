@@ -615,12 +615,8 @@ void main() {
       await tester.tap(_key('guardian-remove'));
       await tester.pumpAndSettle();
       expect(_key('guardian-remove-confirmation'), findsOneWidget);
-      await tester.tap(
-        find.descendant(
-          of: _key('guardian-remove-confirmation'),
-          matching: find.text('Cancel'),
-        ),
-      );
+      await tester.ensureVisible(_key('guardian-remove-confirmation-keep'));
+      await tester.tap(_key('guardian-remove-confirmation-keep'));
       await tester.pumpAndSettle();
       expect(_key('guardian-remove'), findsOneWidget);
       await _nextGuardian(tester);
@@ -628,12 +624,8 @@ void main() {
       await tester.tap(_key('guardian-make-main'));
       await tester.pumpAndSettle();
       expect(_key('guardian-make-main-confirmation'), findsOneWidget);
-      await tester.tap(
-        find.descendant(
-          of: _key('guardian-make-main-confirmation'),
-          matching: find.text('Cancel'),
-        ),
-      );
+      await tester.ensureVisible(_key('guardian-make-main-confirmation-keep'));
+      await tester.tap(_key('guardian-make-main-confirmation-keep'));
       await tester.pumpAndSettle();
       expect(_key('guardian-make-main'), findsOneWidget);
       expect(tester.takeException(), isNull);

@@ -1,3 +1,4 @@
+import '../../widgets/zyra_confirm_sheet.dart';
 import '../../widgets/zyra_floating_surface.dart';
 import '../../widgets/zyra_guardian_add_card.dart';
 import '../../widgets/zyra_tap_feedback.dart';
@@ -990,24 +991,23 @@ class _GuardianDetailsStrip extends StatelessWidget {
   );
 }
 
-// LOCK19 reuses the existing inline Cancel/Confirm flow and action delegates.
+// Guardian card actions return an intent so the card can close its menu first.
 Widget zyraGuardianCardManageActions({
   required WaliLinkedPerson person,
   required List<WaliLinkedPerson> otherGuardians,
   required bool Function() canAct,
-  required GuardianMakeMainAction makeMainGuardian,
-  required GuardianClearMainAction clearMainGuardian,
-  required GuardianRemoveAction removeGuardian,
+  required ValueChanged<ZyraGuardianManagementAction> onSelect,
   required VoidCallback closeMenu,
 }) => _GuardianManageActions(
   key: ValueKey(('guardian-card-actions', person.id, person.isMain)),
   person: person,
   otherGuardians: otherGuardians,
   preview: true,
-  makeMainGuardian: makeMainGuardian,
-  clearMainGuardian: clearMainGuardian,
-  removeGuardian: removeGuardian,
-  onChanged: closeMenu,
+  makeMainGuardian: null,
+  clearMainGuardian: null,
+  removeGuardian: null,
+  onChanged: null,
+  onSelect: onSelect,
   compact: true,
   closeCardMenu: closeMenu,
   canAct: canAct,
@@ -1023,6 +1023,7 @@ class _GuardianManageActions extends StatefulWidget {
   final VoidCallback? onChanged;
   final bool compact;
   final VoidCallback? closeCardMenu;
+  final ValueChanged<ZyraGuardianManagementAction>? onSelect;
   bool get cardLayout => closeCardMenu != null;
   final bool Function()? canAct;
 
@@ -1037,6 +1038,7 @@ class _GuardianManageActions extends StatefulWidget {
     required this.onChanged,
     this.compact = false,
     this.closeCardMenu,
+    this.onSelect,
     this.canAct,
   });
 
@@ -1044,11 +1046,59 @@ class _GuardianManageActions extends StatefulWidget {
   State<_GuardianManageActions> createState() => _GuardianManageActionsState();
 }
 
-enum _GuardianManageIntent { makeMain, clearMain, removeGuardian }
+enum ZyraGuardianManagementAction { makeMain, clearMain, remove }
+
+Future<bool?> showZyraGuardianManagementConfirm({
+  required BuildContext context,
+  required ZyraGuardianManagementAction action,
+  required WaliLinkedPerson person,
+  bool Function()? canConfirm,
+  void Function(ModalRoute<bool> route)? onOpening,
+  VoidCallback? onConfirmedPop,
+}) {
+  final name = person.firstName;
+  final (title, body, confirm, keep, key) = switch (action) {
+    ZyraGuardianManagementAction.makeMain => (
+      'Make $name your Main Guardian?',
+      '$name will become your Main Guardian for your Journeys.',
+      'Make Main Guardian',
+      'Keep current Guardian',
+      'guardian-make-main-confirmation',
+    ),
+    ZyraGuardianManagementAction.clearMain => (
+      'Remove $name as Main Guardian?',
+      'Without a Main Guardian no Journey can move on. You can choose a new Main Guardian at any time.',
+      'Remove as Main Guardian',
+      'Keep as Main Guardian',
+      'guardian-clear-main-confirmation',
+    ),
+    ZyraGuardianManagementAction.remove => (
+      'Remove $name?',
+      '$name loses all access to your Journeys and the Guardian Circle. You can invite $name again later.',
+      'Remove $name',
+      'Keep $name',
+      'guardian-remove-confirmation',
+    ),
+  };
+  return showZyraConfirm(
+    context: context,
+    title: title,
+    body: body,
+    primaryLabel: confirm,
+    secondaryLabel: keep,
+    personName: name,
+    sheetKey: ValueKey(key),
+    primaryKey: ValueKey('$key-approve'),
+    secondaryKey: ValueKey('$key-keep'),
+    canConfirm: canConfirm,
+    onOpening: onOpening,
+    onConfirmedPop: onConfirmedPop,
+  );
+}
 
 class _GuardianManageActionsState extends State<_GuardianManageActions> {
   bool _busy = false;
-  _GuardianManageIntent? _confirming;
+  bool _asking = false;
   int _interactionRevision = 0;
 
   @override
@@ -1056,7 +1106,7 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.canAct != widget.canAct && widget.cardLayout) {
       _interactionRevision++;
-      _confirming = null;
+      _asking = false;
       _busy = false;
     }
   }
@@ -1067,20 +1117,34 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
     context,
   ).showSnackBar(SnackBar(content: Text(message)));
 
-  void _ask(_GuardianManageIntent intent) {
-    if (_busy || !_current) return;
-    setState(() {
-      _interactionRevision++;
-      _confirming = intent;
-    });
-  }
-
-  void _cancel() {
-    if (_busy || !_current) return;
-    setState(() {
-      _interactionRevision++;
-      _confirming = null;
-    });
+  Future<void> _ask(
+    ZyraGuardianManagementAction action,
+    Future<void> Function() apply,
+  ) async {
+    if (_busy || _asking || !_current) return;
+    if (widget.onSelect case final select?) {
+      select(action);
+      return;
+    }
+    final person = widget.person;
+    setState(() => _asking = true);
+    final revision = ++_interactionRevision;
+    bool sameGuardian() =>
+        mounted &&
+        revision == _interactionRevision &&
+        widget.person.id == person.id &&
+        widget.person.isMain == person.isMain;
+    try {
+      final confirmed = await showZyraGuardianManagementConfirm(
+        context: context,
+        action: action,
+        person: person,
+        canConfirm: sameGuardian,
+      );
+      if (confirmed == true && sameGuardian() && _current) await apply();
+    } finally {
+      if (mounted && _asking) setState(() => _asking = false);
+    }
   }
 
   Future<void> _makeMain() async {
@@ -1097,7 +1161,6 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
     if (!_current) return;
     setState(() {
       _busy = false;
-      _confirming = changed ? null : _GuardianManageIntent.makeMain;
     });
     if (!changed) return _failure("That didn't go through. Please try again.");
     widget.onChanged?.call();
@@ -1117,7 +1180,6 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
     if (!_current) return;
     setState(() {
       _busy = false;
-      _confirming = changed ? null : _GuardianManageIntent.clearMain;
     });
     if (!changed) return _failure("That didn't go through. Please try again.");
     widget.onChanged?.call();
@@ -1137,7 +1199,6 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
     if (!_current) return;
     setState(() {
       _busy = false;
-      _confirming = error == null ? null : _GuardianManageIntent.removeGuardian;
     });
     if (error != null) return _failure(error);
     widget.onChanged?.call();
@@ -1147,10 +1208,9 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
   Widget build(BuildContext context) {
     final actions = <Widget>[
       if (widget.person.isMain) ...[
-        _actionOrConfirmation(
-          intent: _GuardianManageIntent.clearMain,
+        _managementAction(
+          intent: ZyraGuardianManagementAction.clearMain,
           actionKey: const ValueKey('guardian-clear-main'),
-          confirmationKey: const ValueKey('guardian-clear-main-confirmation'),
           icon: Icons.shield_outlined,
           label: 'Remove as Main Guardian',
           onConfirm: _clearMain,
@@ -1158,20 +1218,18 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
         if (!widget.cardLayout) SizedBox(height: widget.compact ? 6 : 9),
       ],
       if (!widget.person.isMain) ...[
-        _actionOrConfirmation(
-          intent: _GuardianManageIntent.makeMain,
+        _managementAction(
+          intent: ZyraGuardianManagementAction.makeMain,
           actionKey: const ValueKey('guardian-make-main'),
-          confirmationKey: const ValueKey('guardian-make-main-confirmation'),
           icon: Icons.shield_outlined,
           label: 'Make Main Guardian',
           onConfirm: _makeMain,
         ),
         if (!widget.cardLayout) SizedBox(height: widget.compact ? 6 : 9),
       ],
-      _actionOrConfirmation(
-        intent: _GuardianManageIntent.removeGuardian,
+      _managementAction(
+        intent: ZyraGuardianManagementAction.remove,
         actionKey: const ValueKey('guardian-remove'),
-        confirmationKey: const ValueKey('guardian-remove-confirmation'),
         icon: Icons.person_remove_outlined,
         label: widget.cardLayout
             ? 'Remove ${widget.person.firstName}'
@@ -1181,22 +1239,20 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
       ),
     ];
     if (widget.closeCardMenu case final close?) {
-      if (_confirming == null) {
-        final revision = _interactionRevision;
-        actions.add(
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: _ManageActionButton(
-              key: const ValueKey('guardian-card-menu-cancel'),
-              canAct: () => _current && revision == _interactionRevision,
-              cardLayout: true,
-              pill: true,
-              label: 'Cancel',
-              onTap: _busy ? null : close,
-            ),
+      final revision = _interactionRevision;
+      actions.add(
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: _ManageActionButton(
+            key: const ValueKey('guardian-card-menu-cancel'),
+            canAct: () => _current && revision == _interactionRevision,
+            cardLayout: true,
+            pill: true,
+            label: 'Cancel',
+            onTap: _busy || _asking ? null : close,
           ),
-        );
-      }
+        ),
+      );
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: actions,
@@ -1205,60 +1261,24 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
     return Column(children: actions);
   }
 
-  Widget _actionOrConfirmation({
-    required _GuardianManageIntent intent,
+  Widget _managementAction({
+    required ZyraGuardianManagementAction intent,
     required Key actionKey,
-    required Key confirmationKey,
     required IconData icon,
     required String label,
     required Future<void> Function() onConfirm,
     bool destructive = false,
   }) {
     final revision = _interactionRevision;
-    bool current() => _current && revision == _interactionRevision;
-    final confirming = _confirming == intent;
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 140),
-      switchInCurve: Curves.easeOut,
-      switchOutCurve: Curves.easeIn,
-      transitionBuilder: (child, animation) =>
-          FadeTransition(opacity: animation, child: child),
-      child: confirming
-          ? Row(
-              key: confirmationKey,
-              children: [
-                Expanded(
-                  child: _ManageActionButton(
-                    canAct: current,
-                    cardLayout: widget.cardLayout,
-                    label: 'Cancel',
-                    compact: widget.compact,
-                    onTap: _busy ? null : _cancel,
-                  ),
-                ),
-                const SizedBox(width: 9),
-                Expanded(
-                  child: _ManageActionButton(
-                    canAct: current,
-                    cardLayout: widget.cardLayout,
-                    label: 'Confirm',
-                    destructive: destructive,
-                    compact: widget.compact,
-                    onTap: _busy ? null : onConfirm,
-                  ),
-                ),
-              ],
-            )
-          : _ManageActionButton(
-              canAct: current,
-              cardLayout: widget.cardLayout,
-              key: actionKey,
-              icon: icon,
-              label: label,
-              destructive: destructive,
-              compact: widget.compact,
-              onTap: _busy ? null : () => _ask(intent),
-            ),
+    return _ManageActionButton(
+      canAct: () => _current && revision == _interactionRevision,
+      cardLayout: widget.cardLayout,
+      key: actionKey,
+      icon: icon,
+      label: label,
+      destructive: destructive,
+      compact: widget.compact,
+      onTap: _busy || _asking ? null : () => _ask(intent, onConfirm),
     );
   }
 }

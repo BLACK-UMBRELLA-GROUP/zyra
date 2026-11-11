@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
-import 'package:zyra/widgets/zyra_glass_dialog.dart';
+import 'package:zyra/widgets/zyra_confirm_sheet.dart';
 
 const _capture = bool.fromEnvironment('ZYRA_APP_REVIEW_MODAL_CAPTURE');
 const _boundary = ValueKey('app-review-modal-candidate');
@@ -80,7 +80,7 @@ void main() {
                 decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
                 alignment: Alignment.center,
                 child: TextButton(
-                  onPressed: () => showZyraGlassChoice(
+                  onPressed: () => showZyraConfirm(
                     context: context,
                     icon: Icons.visibility_outlined,
                     title: 'Unhide this profile?',
@@ -115,7 +115,7 @@ void main() {
       await _candidate(tester, '${name}_action');
       await tester.tap(find.byKey(const ValueKey('review_modal_primary')));
       await tester.pumpAndSettle();
-      expect(find.byKey(const ValueKey('zyra_modal_surface')), findsNothing);
+      expect(find.byKey(const ValueKey('zyra-confirm-sheet')), findsNothing);
     });
   }
 }

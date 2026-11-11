@@ -173,7 +173,9 @@ Future<void> _press(WidgetTester tester, Finder target) async {
     );
   }
   final nav = find.byType(FloatingNavBar);
-  if (nav.evaluate().isNotEmpty) {
+  if (nav.evaluate().isNotEmpty &&
+      ModalRoute.of(tester.element(nav)) ==
+          ModalRoute.of(tester.element(target))) {
     visible = visible.intersect(
       Rect.fromLTRB(
         0,
@@ -532,10 +534,13 @@ void main() {
         await _press(tester, _dots(id));
         _expectExpanded(tester, id);
         await _press(tester, _option(option, id));
-        // Every destination, including the confirmation, replaces the
-        // options content while retaining its addressed Journey authority.
-        expect(_expanded(id), findsNothing);
-        expect(find.byType(BottomSheet), findsNothing);
+        if (option == 'end') {
+          expect(find.byType(BottomSheet), findsOneWidget);
+          expect(_expanded(id).hitTestable(), findsNothing);
+        } else {
+          expect(_expanded(id), findsNothing);
+          expect(find.byType(BottomSheet), findsNothing);
+        }
         switch (option) {
           case 'profile':
             expect(

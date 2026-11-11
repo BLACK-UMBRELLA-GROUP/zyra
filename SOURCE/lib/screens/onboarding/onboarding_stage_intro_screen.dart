@@ -595,7 +595,7 @@ class _WelcomePageState extends State<_WelcomePage>
                     height: emblemSize,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: ZyraColors.frostFill,
+                      color: ZyraColors.surfaceFill,
                       border: Border.all(
                         color: ZyraColors.unlockDot.withValues(alpha: 0.62),
                         width: 0.8,
@@ -978,7 +978,7 @@ class _StagePage extends StatelessWidget {
                       height: 70,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: ZyraColors.frostFill,
+                        color: ZyraColors.surfaceFill,
                         border: Border.all(
                           color: ZyraColors.unlockDot.withValues(alpha: 0.62),
                           width: 0.8,
@@ -1150,7 +1150,7 @@ class _JourneyContinueButton extends StatelessWidget {
       height: 51,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: ZyraColors.frostFill,
+          color: ZyraColors.surfaceFill,
           border: Border.all(color: ZyraColors.glassBorder, width: 0.7),
           borderRadius: BorderRadius.circular(50),
         ),

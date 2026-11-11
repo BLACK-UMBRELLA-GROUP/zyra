@@ -143,7 +143,7 @@ class _ZyraScrollableSeekerSelectorState
         filter: ImageFilter.blur(sigmaX: 22, sigmaY: 22),
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: ZyraColors.frostFill,
+            color: ZyraColors.surfaceFill,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: ZyraColors.frostBorder),
           ),

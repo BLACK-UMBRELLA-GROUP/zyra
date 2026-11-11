@@ -1,3 +1,4 @@
+import 'support/confirm_sheet_test_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -5,7 +6,6 @@ import 'package:zyra/screens/browse/browse_screen.dart';
 import 'package:zyra/screens/home/home_shell.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
-import 'package:zyra/widgets/floating_nav_bar.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -133,87 +133,64 @@ void main() {
   testWidgets(
     'Hide confirmation fills the nav with Cancel then red Hide profile',
     (tester) async {
-      var cancels = 0;
-      var confirms = 0;
+      final choices = <bool?>[];
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: Stack(
-              children: [
-                FloatingNavConfirmationBar(
-                  onCancel: () => cancels++,
-                  onConfirm: () => confirms++,
-                ),
-              ],
-            ),
-          ),
+          home: Scaffold(body: ConfirmSheetTestEntry(onDecision: choices.add)),
         ),
       );
-
       final cancel = find.byKey(const ValueKey('browse-hide-cancel'));
       final confirm = find.byKey(const ValueKey('browse-hide-confirm'));
-      expect(cancel, findsOneWidget);
-      expect(confirm, findsOneWidget);
+      Future<void> open() async {
+        await tester.tap(find.text('Open confirmation'));
+        await tester.pumpAndSettle();
+      }
+
+      await open();
       expect(
-        tester.getRect(cancel).left,
-        lessThan(tester.getRect(confirm).left),
+        tester.getRect(confirm).bottom,
+        lessThan(tester.getRect(cancel).top),
       );
       expect(
         tester.getSize(cancel).width,
-        closeTo(tester.getSize(confirm).width, 0.01),
+        closeTo(tester.getSize(confirm).width, .01),
       );
-      expect(
-        tester.getSize(cancel).width + tester.getSize(confirm).width,
-        greaterThan(700),
-      );
-      // Q21 / LOCK 14 V6: small danger labels use the readable red.
       expect(
         tester.widget<Text>(find.text('Hide profile')).style?.color,
         ZyraColors.dangerText,
       );
-
       await tester.tap(cancel);
+      await tester.pumpAndSettle();
+      await open();
       await tester.tap(confirm);
-      await tester.pump();
-      expect(cancels, 1);
-      expect(confirms, 1);
+      await tester.pumpAndSettle();
+      expect(choices, [false, true]);
     },
   );
 
   testWidgets('hide confirmation has no popup and page tap restores nav', (
     tester,
   ) async {
-    var confirming = true;
+    final choices = <bool?>[];
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: StatefulBuilder(
-            builder: (context, setState) => Stack(
-              children: [
-                if (!confirming)
-                  const Center(child: Text('Original navigation')),
-                if (confirming)
-                  Positioned.fill(
-                    child: ZyraBrowseActionModeDismissLayer(
-                      onDismiss: () => setState(() => confirming = false),
-                    ),
-                  ),
-                if (confirming)
-                  FloatingNavConfirmationBar(
-                    onCancel: () => setState(() => confirming = false),
-                    onConfirm: () {},
-                  ),
-              ],
-            ),
+          body: Column(
+            children: [
+              const Text('Original navigation'),
+              ConfirmSheetTestEntry(onDecision: choices.add),
+            ],
           ),
         ),
       ),
     );
-
-    expect(find.text('Hide this profile?'), findsNothing);
-    await tester.tapAt(const Offset(400, 200));
-    await tester.pump();
-    expect(find.text('Original navigation'), findsOneWidget);
-    expect(find.byType(FloatingNavConfirmationBar), findsNothing);
+    await tester.tap(find.text('Open confirmation'));
+    await tester.pumpAndSettle();
+    expect(find.text('Hide Sara?'), findsOneWidget);
+    await tester.tapAt(const Offset(400, 100));
+    await tester.pumpAndSettle();
+    expect(find.text('Original navigation').hitTestable(), findsOneWidget);
+    expect(find.text('Hide Sara?'), findsNothing);
+    expect(choices, [null]);
   });
 }

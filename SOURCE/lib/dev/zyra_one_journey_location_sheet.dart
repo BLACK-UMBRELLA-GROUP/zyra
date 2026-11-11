@@ -54,7 +54,7 @@ class ZyraOneJourneyLocationSheet extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: ZyraColors.ink(.07),
+            color: ZyraColors.surfaceFill,
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
               color: selected
@@ -140,11 +140,7 @@ class ZyraOneJourneyLocationSheet extends StatelessWidget {
                   maxHeight: MediaQuery.sizeOf(context).height * .9,
                 ),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [ZyraColors.cardSurface, ZyraColors.lowerSurface],
-                  ),
+                  color: ZyraColors.sheetIvory,
                   border: Border.all(color: ZyraColors.ink(.12)),
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(34),

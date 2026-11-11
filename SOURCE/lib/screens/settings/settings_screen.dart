@@ -36,6 +36,8 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:flutter/material.dart';
+
+import '../../widgets/zyra_floating_surface.dart';
 import 'package:flutter/scheduler.dart';
 import '../../theme/zyra_interaction_style.dart';
 import '../../widgets/zyra_haptics_setting.dart';
@@ -671,24 +673,24 @@ class _SummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 18),
-      decoration: BoxDecoration(
-        color: ZyraColors.foreground.withValues(alpha: .09),
-        borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-        border: Border.all(
-          color: ZyraColors.foreground.withValues(alpha: .14),
-          width: 0.5,
+    return ZyraFloatingSurface(
+      radius: ZyraCardMetrics.cardRadius,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+        decoration: BoxDecoration(
+          color: ZyraColors.surfaceFill,
+          borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
+          border: Border.all(color: ZyraColors.surfaceBorder, width: 0.5),
         ),
-      ),
-      child: Column(
-        children: [
-          _line('Membership', membership),
-          _divider(),
-          _line(relationshipLabel, relationshipValue),
-          _divider(),
-          _line('Signed in with', signedInWith),
-        ],
+        child: Column(
+          children: [
+            _line('Membership', membership),
+            _divider(),
+            _line(relationshipLabel, relationshipValue),
+            _divider(),
+            _line('Signed in with', signedInWith),
+          ],
+        ),
       ),
     );
   }
@@ -702,7 +704,7 @@ class _SummaryCard extends StatelessWidget {
       final value = Text(
         v,
         textAlign: TextAlign.end,
-        style: ZyraText.body(size: 14, color: Colors.white),
+        style: ZyraText.body(size: 14, color: ZyraColors.espresso),
       );
       final larger = MediaQuery.textScalerOf(context).scale(14) > 14;
       return Padding(
@@ -811,17 +813,17 @@ class _Section extends StatelessWidget {
             style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
           ),
           SizedBox(height: 10),
-          Container(
-            decoration: BoxDecoration(
-              color: ZyraColors.foreground.withValues(alpha: .05),
-              borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-              border: Border.all(
-                color: ZyraColors.foreground.withValues(alpha: .10),
-                width: 0.5,
+          ZyraFloatingSurface(
+            radius: ZyraCardMetrics.cardRadius,
+            child: Container(
+              decoration: BoxDecoration(
+                color: ZyraColors.surfaceFill,
+                borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
+                border: Border.all(color: ZyraColors.surfaceBorder, width: 0.5),
               ),
+              clipBehavior: Clip.none,
+              child: Column(children: children),
             ),
-            clipBehavior: Clip.none,
-            child: Column(children: children),
           ),
         ],
       ),
@@ -863,7 +865,7 @@ class _Row extends StatelessWidget {
               Expanded(
                 child: Text(
                   label,
-                  style: ZyraText.body(size: 15, color: Colors.white),
+                  style: ZyraText.body(size: 15, color: ZyraColors.espresso),
                 ),
               ),
               if (value != null && value!.isNotEmpty) ...[

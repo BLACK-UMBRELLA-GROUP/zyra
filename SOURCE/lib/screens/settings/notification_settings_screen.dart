@@ -364,7 +364,7 @@ class _DeviceNotificationStatus extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: ZyraColors.foreground.withValues(alpha: 0.05),
+        color: ZyraColors.surfaceFill,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: ZyraColors.ink(0.12), width: 0.6),
       ),
@@ -388,7 +388,10 @@ class _DeviceNotificationStatus extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'Device notifications',
-                        style: ZyraText.body(size: 14, color: Colors.white),
+                        style: ZyraText.body(
+                          size: 14,
+                          color: ZyraColors.foreground,
+                        ),
                       ),
                     ),
                     Text(
@@ -434,7 +437,7 @@ class _EssentialNotificationRow extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.all(14),
     decoration: BoxDecoration(
-      color: ZyraColors.foreground.withValues(alpha: 0.04),
+      color: ZyraColors.surfaceFill,
       borderRadius: BorderRadius.circular(12),
       border: Border.all(color: ZyraColors.ink(0.10), width: 0.5),
     ),
@@ -449,7 +452,7 @@ class _EssentialNotificationRow extends StatelessWidget {
             children: [
               Text(
                 'Essential account notices',
-                style: ZyraText.body(size: 13.5, color: Colors.white),
+                style: ZyraText.body(size: 13.5, color: ZyraColors.foreground),
               ),
               SizedBox(height: 3),
               Text(
@@ -494,7 +497,7 @@ class _ToggleRow extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: ZyraText.body(size: 15, color: Colors.white),
+                  style: ZyraText.body(size: 15, color: ZyraColors.foreground),
                 ),
                 SizedBox(height: 2),
                 Text(

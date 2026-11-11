@@ -891,7 +891,7 @@ class _IconMark extends StatelessWidget {
       height: 58,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: ZyraColors.frostFill,
+        color: ZyraColors.surfaceFill,
         border: Border.all(color: ZyraColors.unlockDot.withValues(alpha: 0.72)),
       ),
       child: Icon(icon, color: ZyraColors.unlockText, size: 25),

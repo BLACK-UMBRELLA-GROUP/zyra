@@ -41,7 +41,7 @@ class ZyraGoldRingMonogram extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: plainGuardian ? ZyraColors.ink(.055) : null,
+        color: plainGuardian ? ZyraColors.ivoryTop : null,
         border: plainGuardian
             ? null
             : Border.all(
@@ -69,6 +69,8 @@ class ZyraGoldRingMonogram extends StatelessWidget {
             excludeSemantics: true,
             child: monogram,
           )
+        : plainGuardian
+        ? ZyraFloatingSurface(circle: true, child: monogram)
         : monogram;
   }
 }

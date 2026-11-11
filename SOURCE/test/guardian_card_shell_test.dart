@@ -104,7 +104,7 @@ void main() {
       expect(find.text('Send invitation again'), findsNothing);
       expect(find.text('Send again'), findsNothing);
       await h.tap('guardian-card-cancel-invitation');
-      expect(find.text('Cancel this invitation?'), findsOneWidget);
+      expect(find.text('Cancel Omar’s invitation?'), findsOneWidget);
       await t.tap(find.text('Keep invitation'));
       await h.flush();
       expect(find.text('Waiting for Omar to accept'), findsOneWidget);
@@ -171,7 +171,7 @@ void main() {
       await swipeGuardianCard(t);
       await h.flush();
       await h.tap('guardian-card-cancel-invitation');
-      expect(find.text('Cancel this invitation?'), findsOneWidget);
+      expect(find.text('Cancel Omar’s invitation?'), findsOneWidget);
       now = DateTime.utc(2026, 11, 9);
       await h.tap('guardian-card-confirm-cancel-invitation');
       expect(find.text('The invitation has expired'), findsOneWidget);
@@ -372,14 +372,12 @@ void main() {
       await h.tap('guardian-clear-main');
       expect(h.latest.model.ownMainGuardianPresent, isTrue);
       await h.tapFinder(
-        find.descendant(
-          of: find.byKey(const ValueKey('guardian-clear-main-confirmation')),
-          matching: find.text('Cancel'),
-        ),
+        find.byKey(ValueKey('guardian-clear-main-confirmation-keep')),
       );
       expect(h.latest.model.ownMainGuardianPresent, isTrue);
+      await h.tap('guardian-card-menu');
       await h.tap('guardian-clear-main');
-      await h.tapText('Confirm');
+      await h.tap('guardian-clear-main-confirmation-approve');
       expect(h.latest.model.ownMainGuardianPresent, isFalse);
       expect(h.latest.model.states, states);
       expect(
@@ -388,7 +386,7 @@ void main() {
       );
       await h.tap('guardian-card-menu');
       await h.tap('guardian-remove');
-      await h.tapText('Confirm');
+      await h.tap('guardian-remove-confirmation-approve');
       expect(h.latest.removedGuardians, contains(_hassan));
       expect(h.latest.removedGuardians, isNot(contains(_additional)));
       expect(h.latest.model.states, states);
@@ -461,7 +459,7 @@ void main() {
       await h.tap('guardian-card-menu');
       await h.tap('guardian-make-main');
       expect(h.latest.mainGuardianId, _hassan);
-      await h.tapText('Confirm');
+      await h.tap('guardian-make-main-confirmation-approve');
       h.assertPage('guardian_main_notice');
       expect(h.latest.mainGuardianId, _additional);
       expect(h.latest.model.states, states);

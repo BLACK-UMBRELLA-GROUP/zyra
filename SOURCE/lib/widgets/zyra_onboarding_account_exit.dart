@@ -10,7 +10,7 @@ import '../services/zyra_account_state.dart';
 import '../services/zyra_auth.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
-import 'zyra_glass_dialog.dart';
+import 'zyra_confirm_sheet.dart';
 
 /// A safe escape from first-time setup when the wrong account was used.
 ///
@@ -134,7 +134,7 @@ class _ZyraOnboardingAccountExitState extends State<ZyraOnboardingAccountExit> {
       _error = null;
     });
     try {
-      final confirmed = await showZyraGlassChoice(
+      final confirmed = await showZyraConfirm(
         context: context,
         icon: Icons.switch_account_outlined,
         title: 'Use a different account?',

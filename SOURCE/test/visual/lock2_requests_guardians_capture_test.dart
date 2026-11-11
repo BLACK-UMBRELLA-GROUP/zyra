@@ -311,10 +311,7 @@ void main() {
       );
       await h.tapFinder(_guardianAction('guardian-make-main'));
       await h.tapFinder(
-        find.descendant(
-          of: _guardianAction('guardian-make-main-confirmation'),
-          matching: find.text('Confirm'),
-        ),
+        find.byKey(ValueKey('guardian-make-main-confirmation-approve')),
       );
       h.assertPage('guardian_main_notice');
       expect(h.latest.mainGuardianId, _yusuf);

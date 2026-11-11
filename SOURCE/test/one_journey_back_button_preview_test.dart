@@ -648,15 +648,12 @@ void main() {
       );
       expect(card.readOnlyPreview, isTrue);
       expect(card.profiles.single.id, 'draft-self');
-      expect(_key('concept_browse_footer'), findsOneWidget);
-      for (final key in [
-        'concept_previous_profile',
-        'concept_next_profile',
-        'draft_profile_draft-self',
-      ]) {
-        expect(tester.widget<InkWell>(_key(key)).onTap, isNull);
+      expect(_key('concept_browse_footer'), findsNothing);
+      for (final key in ['concept_previous_profile', 'concept_next_profile']) {
+        expect(_key(key), findsNothing);
       }
       expect(find.text('Request a Journey'), findsOneWidget);
+      expect(find.text('Preview'), findsOneWidget);
       for (final title in ['My profile', 'Browse', 'Profiles']) {
         expect(find.text(title), findsNothing);
       }
@@ -674,20 +671,27 @@ void main() {
           findsOneWidget,
         );
       }
-      expect(
-        tester
-            .widget<IgnorePointer>(_key('own-profile-preview-inert-navigation'))
-            .ignoring,
-        isTrue,
-      );
+      expect(_key('own-profile-preview-inert-navigation'), findsNothing);
       expect(find.byKey(_backKey), findsNothing);
+      await _tap(tester, 'floating-nav-item-4');
+      expect(find.byType(MyProfilePreviewScreen), findsNothing);
+      await _tap(tester, 'concept_preview_profile');
+      final request = _key('draft_profile_draft-self');
+      await tester.ensureVisible(request);
+      await tester.tap(request);
+      await tester.pump();
+      expect(
+        find.text('Others tap here to request a Journey with you.'),
+        findsOneWidget,
+      );
       // The capture keeps exercising an actual own photograph, now reached
       // after the public details page rather than mounted on first paint.
-      await tester.drag(
-        _key('concept_browse_photo_swipe_draft-self'),
-        const Offset(-240, 0),
+      final cardTap = tester.getRect(
+        _key('concept_browse_photo_tap_draft-self'),
       );
+      await tester.tapAt(Offset(cardTap.right - 40, cardTap.top + 20));
       await tester.pumpAndSettle();
+      expect(_key('concept_browse_photo_draft-self_0'), findsOneWidget);
       await _capture(tester, '02-seeker-browse-preview-back');
       await _back(tester);
       expect(find.byType(MyProfilePreviewScreen), findsNothing);

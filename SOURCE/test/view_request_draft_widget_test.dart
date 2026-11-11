@@ -924,10 +924,7 @@ Future<void> _confirmGuardianMain(
   final base = remove ? 'guardian-clear-main' : 'guardian-make-main';
   await _press(tester, 'guardian-card-menu');
   await _press(tester, base);
-  final confirm = find.descendant(
-    of: _key('$base-confirmation'),
-    matching: find.text('Confirm'),
-  );
+  final confirm = find.byKey(ValueKey('$base-confirmation-approve'));
   expect(confirm, findsOneWidget);
   if (confirm.hitTestable().evaluate().isEmpty) {
     await tester.ensureVisible(confirm);
@@ -4158,7 +4155,7 @@ void main() {
       expect(tester.element(detail), same(parent));
       await _press(tester, 'draft_end_$_fixture');
       final retainedDuringEnd = parent.mounted;
-      await _press(tester, 'draft_cancel_end_$_fixture');
+      await _press(tester, 'draft_cancel_journey_action_$_fixture');
       final returnedToSameParent = identical(tester.element(detail), parent);
       expect(_key('draft_pause_$_fixture'), findsNothing);
       await _press(tester, 'draft_end_$_fixture');
@@ -4308,7 +4305,7 @@ void main() {
     await _press(tester, 'guardian-card-dot-target-$invitationIndex');
     expect(find.text('Waiting for Omar to accept'), findsOneWidget);
     await _press(tester, 'guardian-card-cancel-invitation');
-    expect(find.text('Cancel this invitation?'), findsOneWidget);
+    expect(find.text('Cancel Omar’s invitation?'), findsOneWidget);
     await _press(tester, 'guardian-card-confirm-cancel-invitation');
     expect(find.text('Omar'), findsNothing);
     expect(_key('guardian-card-add'), findsOneWidget);
@@ -4575,10 +4572,7 @@ void main() {
         final access = Map.of(model.snapshot().guardianAccess);
         await _press(tester, 'guardian-card-menu');
         await _press(tester, 'guardian-remove');
-        final confirmation = find.descendant(
-          of: _key('guardian-remove-confirmation'),
-          matching: find.text('Confirm'),
-        );
+        final confirmation = find.byKey(ValueKey('guardian-remove-confirmation-approve'));
         expect(confirmation.hitTestable(), findsOneWidget);
         await tester.tap(confirmation);
         await tester.pumpAndSettle();

@@ -31,7 +31,7 @@ class ZyraGuardianAddCard extends StatelessWidget {
       ),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: const Color(0xFFF3EDE3),
+          color: ZyraColors.ivoryTop,
           borderRadius: BorderRadius.circular(22),
         ),
         child: _content(context),
@@ -57,7 +57,7 @@ class ZyraGuardianAddCard extends StatelessWidget {
             height: 66,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: ZyraColors.ink(.08),
+              color: ZyraColors.surfaceFill,
             ),
             child: Icon(Icons.add, color: ZyraColors.journeyGold, size: 28),
           ),

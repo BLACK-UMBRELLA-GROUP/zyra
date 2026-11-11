@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_draft_browse_utility_presentation.dart';
-import 'package:zyra/dev/zyra_draft_journey_block_hide_sheet.dart';
+import 'package:zyra/widgets/zyra_confirm_sheet.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
@@ -160,13 +160,11 @@ class _GuardHarness {
 
   Future<VoidCallback> show({required bool hide}) async {
     await tap(hide ? 'draft_safety_hide' : 'draft_safety_block');
-    expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsOneWidget);
+    expect(find.byType(ZyraConfirmSheet), findsOneWidget);
     expect(routeCurrent, isFalse, reason: 'The actual modal covers its owner.');
     return tester
-        .widget<ZyraDraftJourneyBlockHideSheet>(
-          find.byType(ZyraDraftJourneyBlockHideSheet),
-        )
-        .onConfirm;
+        .widget<ZyraConfirmSheet>(find.byType(ZyraConfirmSheet))
+        .onConfirm!;
   }
 
   VoidCallback reportAction(bool hide) {
@@ -242,7 +240,7 @@ void main() {
         } else {
           await h.tap('journey_person_safety_keep');
         }
-        expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+        expect(find.byType(ZyraConfirmSheet), findsNothing);
         confirm();
         confirm();
         await h.flush();
@@ -285,7 +283,7 @@ void main() {
           confirm();
           await h.flush();
           expect(find.text('Unrelated page'), findsOneWidget);
-          h.navigator.currentState!.pop();
+          expect(find.byType(ZyraConfirmSheet), findsNothing);
           await h.flush();
         }
         confirm();
@@ -293,7 +291,7 @@ void main() {
         await h.flush();
         expect(_facts(h.latest.model), before);
         expect(h.latest.pages.last, 'safety');
-        expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+        expect(find.byType(ZyraConfirmSheet), findsNothing);
         h.ownerAdmitted = true;
         confirm();
         await h.flush();
@@ -319,7 +317,7 @@ void main() {
         retained();
         await h.flush();
         expect(_facts(h.latest.model), before);
-        expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+        expect(find.byType(ZyraConfirmSheet), findsNothing);
         expect(h.model.isHidden(_sara), isFalse);
         expect(h.model.isBlocked(_sara), isFalse);
         if (stale == 'role') expect(h.latest.guardian, isTrue);
@@ -387,7 +385,7 @@ void main() {
           expect(h.model.stateFor(_sara), DraftJourneyState.active);
           expect(h.model.isHidden(_sara), isFalse);
           expect(h.model.isBlocked(_sara), isFalse);
-          h.navigator.currentState!.pop();
+          expect(find.byType(ZyraConfirmSheet), findsNothing);
           await h.flush();
         },
       );
@@ -504,9 +502,7 @@ void main() {
       final beforeGuardian = h.latest.guardian;
       final beforeReason = selectedReason();
       final sheets = tester
-          .widgetList<ZyraDraftJourneyBlockHideSheet>(
-            find.byType(ZyraDraftJourneyBlockHideSheet),
-          )
+          .widgetList<ZyraConfirmSheet>(find.byType(ZyraConfirmSheet))
           .toList();
       expect(sheets, hasLength(stale == 'owned modal covering report' ? 1 : 0));
       calls.clear();
@@ -522,9 +518,7 @@ void main() {
         expect(h.latest.guardian, beforeGuardian, reason: reason);
         expect(selectedReason(), beforeReason, reason: reason);
         expect(
-          tester.widgetList<ZyraDraftJourneyBlockHideSheet>(
-            find.byType(ZyraDraftJourneyBlockHideSheet),
-          ),
+          tester.widgetList<ZyraConfirmSheet>(find.byType(ZyraConfirmSheet)),
           sheets,
           reason: reason,
         );

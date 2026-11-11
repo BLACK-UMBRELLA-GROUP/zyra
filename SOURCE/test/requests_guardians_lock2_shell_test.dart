@@ -177,10 +177,7 @@ Future<void> _makeMain(WidgetTester tester) async {
   await _tap(tester, _guardianMenuAction('guardian-make-main'));
   await _tap(
     tester,
-    find.descendant(
-      of: _guardianMenuAction('guardian-make-main-confirmation'),
-      matching: find.text('Confirm'),
-    ),
+    find.byKey(ValueKey('guardian-make-main-confirmation-approve')),
   );
 }
 

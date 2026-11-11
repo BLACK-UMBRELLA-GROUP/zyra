@@ -1,3 +1,4 @@
+import '../../widgets/zyra_confirm_sheet.dart';
 // Pre-Journey Ritual host screen — APP/Journey/PRE-JOURNEY RITUAL/
 // Summary.md. Routes an Active Journey through its real stages
 // (matches.journey_stage): Salam Exchange -> Compatibility Reveal ->
@@ -658,31 +659,29 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
     });
   }
 
+  bool Function() _journeyActionReturnGuard() {
+    final matchId = widget.matchId;
+    final profileId = widget.profile.id;
+    final owner = (ZyraAccountState.userId, ZyraAccountState.generation);
+    final origin = ModalRoute.of(context);
+    return () =>
+        mounted &&
+        widget.matchId == matchId &&
+        widget.profile.id == profileId &&
+        !ZyraAccountState.isSigningOut &&
+        owner == (ZyraAccountState.userId, ZyraAccountState.generation) &&
+        origin?.isCurrent == true;
+  }
+
   Future<void> _pauseStageDecision() async {
-    if (_stageDecision == null || _stageDecisionBusy) return;
+    final decision = _stageDecision;
+    if (decision == null || _stageDecisionBusy) return;
+    final canReturn = _journeyActionReturnGuard();
+    bool sameDecision() => identical(_stageDecision, decision);
     setState(() => _stageDecisionBusy = true);
-    final requested = await Navigator.of(context).push<bool>(
-      MaterialPageRoute(
-        builder: (_) => _JourneyLifecycleConfirmScreen(
-          action: _JourneyLifecycleAction.pause,
-          profile: widget.profile,
-          onConfirm: () async {
-            try {
-              await ZyraJourneyService.transitionPause(
-                matchId: widget.matchId,
-                action: ZyraPauseAction.requestPause,
-                expectedVersion: _pauseState.version,
-              );
-              return null;
-            } catch (_) {
-              return _JourneyLifecycleFailure.failed;
-            }
-          },
-        ),
-      ),
-    );
+    final requested = await _confirmJourneyPause(canConfirm: sameDecision);
     if (!mounted) return;
-    if (requested != true) {
+    if (requested != true || !canReturn() || !sameDecision()) {
       setState(() => _stageDecisionBusy = false);
       return;
     }
@@ -697,30 +696,37 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
 
   Future<void> _pauseForMissingMainGuardian() async {
     if (_pauseActionBusy || _pauseState.isLocked) return;
+    final canReturn = _journeyActionReturnGuard();
     setState(() => _pauseActionBusy = true);
-    final requested = await Navigator.of(context).push<bool>(
-      MaterialPageRoute(
-        builder: (_) => _JourneyLifecycleConfirmScreen(
-          action: _JourneyLifecycleAction.pause,
-          profile: widget.profile,
-          onConfirm: () async {
-            try {
-              await ZyraJourneyService.transitionPause(
-                matchId: widget.matchId,
-                action: ZyraPauseAction.requestPause,
-                expectedVersion: _pauseState.version,
-              );
-              return null;
-            } catch (_) {
-              return _JourneyLifecycleFailure.failed;
-            }
-          },
-        ),
-      ),
-    );
+    final requested = await _confirmJourneyPause();
     if (!mounted) return;
     setState(() => _pauseActionBusy = false);
-    if (requested == true) await _refresh(showSpinner: false);
+    if (requested == true && canReturn()) await _refresh(showSpinner: false);
+  }
+
+  Future<bool?> _confirmJourneyPause({bool Function()? canConfirm}) {
+    final version = _pauseState.version;
+    final matchId = widget.matchId;
+    final profileId = widget.profile.id;
+    return _showJourneyLifecycleConfirmation(
+      context: context,
+      action: _JourneyLifecycleAction.pause,
+      profile: widget.profile,
+      canConfirm: () =>
+          mounted &&
+          widget.matchId == matchId &&
+          widget.profile.id == profileId &&
+          _pauseState.version == version &&
+          (canConfirm?.call() ?? true),
+      write: () async {
+        await ZyraJourneyService.transitionPause(
+          matchId: matchId,
+          action: ZyraPauseAction.requestPause,
+          expectedVersion: version,
+        );
+        return true;
+      },
+    );
   }
 
   void _openGuardianFromJourneyHold() {
@@ -855,31 +861,39 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
     _ => "That didn't go through. Please try again.",
   };
 
-  /// End is confirmed on its own full screen. The write happens while that
-  /// confirmation remains visible, so a failure leaves the member on the
-  /// decision they were making instead of dismissing it into a snackbar.
-  Future<void> _endJourney() async {
-    final ended = await Navigator.of(context).push<bool>(
-      MaterialPageRoute(
-        builder: (_) => _JourneyLifecycleConfirmScreen(
-          action: _JourneyLifecycleAction.end,
-          profile: widget.profile,
-          onConfirm: () async {
-            final ok = await ZyraJourneyService.endJourney(widget.matchId);
-            return ok ? null : _JourneyLifecycleFailure.failed;
-          },
-        ),
-      ),
-    );
-    if (ended != true || !mounted) return;
+  bool _endConfirmationOpen = false;
 
-    await Navigator.of(context).push<void>(
+  Future<void> _endJourney() async {
+    if (_endConfirmationOpen) return;
+    _endConfirmationOpen = true;
+    final matchId = widget.matchId;
+    final profileId = widget.profile.id;
+    final navigator = Navigator.of(context);
+    final current = _journeyActionReturnGuard();
+    bool? ended;
+    try {
+      ended = await _showJourneyLifecycleConfirmation(
+        context: context,
+        action: _JourneyLifecycleAction.end,
+        profile: widget.profile,
+        canConfirm: () =>
+            mounted &&
+            widget.matchId == matchId &&
+            widget.profile.id == profileId,
+        write: () => ZyraJourneyService.endJourney(matchId),
+      );
+    } finally {
+      _endConfirmationOpen = false;
+    }
+    if (ended != true || !current()) return;
+
+    await navigator.push<void>(
       MaterialPageRoute(
         builder: (_) =>
             _JourneyLifecycleCompleteScreen(profile: widget.profile),
       ),
     );
-    if (mounted) Navigator.of(context).pop();
+    if (current()) navigator.pop();
   }
 
   Future<void> _openLifeSnapshot() async {
@@ -2580,30 +2594,87 @@ class _JourneyOpenDecisionAction extends StatelessWidget {
 
 enum _JourneyLifecycleAction { pause, end }
 
-enum _JourneyLifecycleFailure { failed }
+({
+  String title,
+  String body,
+  String primary,
+  String keep,
+  String busy,
+  String error,
+})
+_journeyLifecycleCopy(
+  _JourneyLifecycleAction action,
+  String name,
+) => switch (action) {
+  _JourneyLifecycleAction.pause => (
+    title: 'Request a pause?',
+    body:
+        'Your Journey stays Active and locked until $name responds. '
+        'They can agree to pause, request to continue, or end the Journey.',
+    primary: 'Request Pause',
+    keep: 'Keep Journey active',
+    busy: 'Requesting…',
+    error:
+        "Pause request didn't go through. Check your connection and try again.",
+  ),
+  _JourneyLifecycleAction.end => (
+    title: 'End with $name?',
+    body:
+        'Your Journey closes for both of you. Your Timeline stays. '
+        '${ZyraReleaseGates.requestNewJourneyEnabled ? 'Either of you can request a new Journey within 60 days.' : ZyraReleaseGates.requestNewJourneyUnavailable}',
+    primary: 'End Journey',
+    keep: 'Keep Journey',
+    busy: 'Ending…',
+    error: "End didn't go through. Check your connection and try again.",
+  ),
+};
 
-/// Exact production Pause-confirm surface with an injectable write, used to
-/// force the unknown-failure branch without a live backend outage.
-@visibleForTesting
-Widget buildZyraPauseFailureTestSurface({
-  required Future<void> Function() write,
+Future<bool?> _showJourneyLifecycleConfirmation({
+  required BuildContext context,
+  required _JourneyLifecycleAction action,
+  required SeekerProfile profile,
+  required Future<bool> Function() write,
+  bool Function()? canConfirm,
 }) {
-  return _JourneyLifecycleConfirmScreen(
-    action: _JourneyLifecycleAction.pause,
-    profile: const SeekerProfile(
-      id: 'truthful-failure-test-profile',
-      firstName: 'Adam',
-      age: 30,
-      city: 'London',
-      photos: <String>[],
-      gender: 'male',
-    ),
-    onConfirm: () async {
-      await write();
-      return null;
+  final scope = (ZyraAccountState.userId, ZyraAccountState.generation);
+  final copy = _journeyLifecycleCopy(action, profile.firstName);
+  return showZyraConfirm(
+    context: context,
+    title: copy.title,
+    body: copy.body,
+    primaryLabel: copy.primary,
+    secondaryLabel: copy.keep,
+    personName: profile.firstName,
+    busyLabel: copy.busy,
+    canConfirm: () =>
+        !ZyraAccountState.isSigningOut &&
+        scope == (ZyraAccountState.userId, ZyraAccountState.generation) &&
+        (canConfirm?.call() ?? true),
+    onCommit: () async {
+      try {
+        if (await write()) return null;
+      } catch (_) {
+        // The same choice stays available when the service cannot confirm it.
+      }
+      return copy.error;
     },
   );
 }
+
+/// Forces the unknown-failure branch without a live backend outage.
+@visibleForTesting
+Future<bool?> showZyraPauseFailureTestSurface(
+  BuildContext context, {
+  required Future<void> Function() write,
+}) => _showJourneyLifecycleConfirmation(
+  context: context,
+  action: _JourneyLifecycleAction.pause,
+  profile: _requestNewJourneyHoldTestProfile,
+  write: () async {
+    await write();
+    return true;
+  },
+);
 
 const _requestNewJourneyHoldTestProfile = SeekerProfile(
   id: 'request-new-journey-hold-test-profile',
@@ -2615,11 +2686,27 @@ const _requestNewJourneyHoldTestProfile = SeekerProfile(
 );
 
 @visibleForTesting
-Widget buildZyraEndConfirmationTestSurface() => _JourneyLifecycleConfirmScreen(
-  action: _JourneyLifecycleAction.end,
-  profile: _requestNewJourneyHoldTestProfile,
-  onConfirm: () async => null,
-);
+Widget buildZyraEndConfirmationTestSurface() {
+  final copy = _journeyLifecycleCopy(
+    _JourneyLifecycleAction.end,
+    _requestNewJourneyHoldTestProfile.firstName,
+  );
+  return Scaffold(
+    body: Align(
+      alignment: Alignment.bottomCenter,
+      child: ZyraConfirmSheet(
+        title: copy.title,
+        body: copy.body,
+        primaryLabel: copy.primary,
+        secondaryLabel: copy.keep,
+        icon: Icons.route_outlined,
+        personName: _requestNewJourneyHoldTestProfile.firstName,
+        onConfirm: null,
+        onKeep: null,
+      ),
+    ),
+  );
+}
 
 @visibleForTesting
 Widget buildZyraJourneyEndedCompleteTestSurface() =>
@@ -2630,197 +2717,6 @@ Widget buildZyraJourneyEndedCompleteTestSurface() =>
 @visibleForTesting
 Widget buildZyraEndedJourneyTestSurface() =>
     const _EndedView(profile: _requestNewJourneyHoldTestProfile);
-
-class _JourneyLifecycleConfirmScreen extends StatefulWidget {
-  final _JourneyLifecycleAction action;
-  final SeekerProfile profile;
-  final Future<_JourneyLifecycleFailure?> Function() onConfirm;
-
-  const _JourneyLifecycleConfirmScreen({
-    required this.action,
-    required this.profile,
-    required this.onConfirm,
-  });
-
-  @override
-  State<_JourneyLifecycleConfirmScreen> createState() =>
-      _JourneyLifecycleConfirmScreenState();
-}
-
-class _JourneyLifecycleConfirmScreenState
-    extends State<_JourneyLifecycleConfirmScreen> {
-  bool _busy = false;
-  String? _error;
-
-  bool get _pausing => widget.action == _JourneyLifecycleAction.pause;
-
-  Future<void> _confirm() async {
-    if (_busy) return;
-    setState(() {
-      _busy = true;
-      _error = null;
-    });
-
-    _JourneyLifecycleFailure? failure;
-    try {
-      failure = await widget.onConfirm();
-    } catch (_) {
-      failure = _JourneyLifecycleFailure.failed;
-    }
-    if (!mounted) return;
-    if (failure == null) {
-      Navigator.of(context).pop(true);
-      return;
-    }
-
-    setState(() {
-      _busy = false;
-      _error = switch (failure) {
-        _JourneyLifecycleFailure.failed =>
-          _pausing
-              ? "Pause request didn't go through. Check your connection and try again."
-              : "End didn't go through. Check your connection and try again.",
-        null => null,
-      };
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final accent = _pausing ? const Color(0xFFDFBD62) : const Color(0xFFDF7D82);
-    final actionTitle = _pausing ? 'Request Pause' : 'End Journey';
-    final body = _pausing
-        ? 'This asks for space without deciding the Journey for either of '
-              'you. Nothing in your Journey is lost.'
-        : 'Ending closes this Journey for both of you. It cannot resume from '
-              'this point.';
-    final detail = _pausing
-        ? '${widget.profile.firstName} can agree to pause, request to '
-              'continue, or end the Journey. Until then, it stays Active but '
-              'locked for both of you.'
-        : ZyraReleaseGates.requestNewJourneyEnabled
-        ? 'For 60 days after ending, one of you may request a new Journey '
-              'and the other must accept. After that, you would need to find '
-              'each other again in Profiles. Your Timeline is kept.'
-        : '${ZyraReleaseGates.requestNewJourneyUnavailable} '
-              'Your Timeline is kept.';
-
-    return Scaffold(
-      body: Container(
-        decoration: ZyraAppGoldDecoration(gradient: ZyraColors.brandGradient),
-        child: SafeArea(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 8, 16, 4),
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: _busy
-                          ? null
-                          : () => Navigator.of(context).pop(false),
-                      icon: Icon(
-                        Icons.arrow_back_ios_new,
-                        color: ZyraColors.ink(0.70),
-                        size: 18,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        actionTitle,
-                        style: ZyraText.subtext(
-                          size: 13,
-                          color: ZyraColors.ink(0.70),
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(width: 48),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(32, 44, 32, 32),
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 350),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 18,
-                            height: 18,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: accent,
-                            ),
-                          ),
-                          SizedBox(height: 22),
-                          Text(
-                            _pausing ? 'Request a pause?' : 'End this Journey?',
-                            style: ZyraText.heading(size: 25),
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(height: 12),
-                          Text(
-                            body,
-                            style: ZyraText.body(size: 14),
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(height: 20),
-                          Container(width: 54, height: 1, color: accent),
-                          SizedBox(height: 20),
-                          Text(
-                            detail,
-                            style: ZyraText.subtext(size: 13),
-                            textAlign: TextAlign.center,
-                          ),
-                          if (_error != null) ...[
-                            SizedBox(height: 18),
-                            Text(
-                              _error!,
-                              style: ZyraText.subtext(
-                                size: 12.5,
-                                color: ZyraColors.destructive,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                          SizedBox(height: 30),
-                          _JourneySolidAction(
-                            label: _busy
-                                ? (_pausing ? 'Requesting…' : 'Ending…')
-                                : (_pausing ? 'Request Pause' : 'End Journey'),
-                            accent: accent,
-                            destructive: !_pausing,
-                            onTap: _busy ? null : _confirm,
-                          ),
-                          SizedBox(height: 10),
-                          TextButton(
-                            onPressed: _busy
-                                ? null
-                                : () => Navigator.of(context).pop(false),
-                            child: Text(
-                              _pausing ? 'Keep Journey active' : 'Keep Journey',
-                              style: ZyraText.subtext(
-                                size: 12.5,
-                                color: ZyraColors.ink(0.70),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class _JourneyLifecycleCompleteScreen extends StatelessWidget {
   final SeekerProfile profile;
@@ -2903,14 +2799,12 @@ class _JourneyLifecycleCompleteScreen extends StatelessWidget {
 class _JourneySolidAction extends StatelessWidget {
   final String label;
   final Color accent;
-  final bool destructive;
   final VoidCallback? onTap;
 
   const _JourneySolidAction({
     required this.label,
     required this.accent,
     required this.onTap,
-    this.destructive = false,
   });
 
   @override
@@ -2921,9 +2815,7 @@ class _JourneySolidAction extends StatelessWidget {
       child: Opacity(
         opacity: onTap == null ? 0.5 : 1,
         child: Material(
-          color: destructive
-              ? const Color(0xFF56313B)
-              : ZyraColors.sheetSurface,
+          color: ZyraColors.surfaceFill,
           shape: StadiumBorder(side: BorderSide(color: accent, width: 1)),
           child: InkWell(
             customBorder: const StadiumBorder(),
@@ -2933,7 +2825,7 @@ class _JourneySolidAction extends StatelessWidget {
                 label,
                 style: ZyraText.button(
                   size: 13.5,
-                  color: destructive ? accent : Colors.white,
+                  color: ZyraColors.foreground,
                 ),
               ),
             ),
@@ -3065,7 +2957,7 @@ class _JourneyRoundActionState extends State<_JourneyRoundAction>
                       height: 58,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: ZyraColors.foreground.withValues(alpha: 0.1),
+                        color: ZyraColors.ivoryTop,
                         border: Border.all(
                           color: ZyraColors.foreground.withValues(alpha: 0.28),
                         ),
@@ -4596,10 +4488,10 @@ class _PauseDecisionView extends StatelessWidget {
                     vertical: 5,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF34283F),
+                    color: ZyraColors.surfaceFill,
                     borderRadius: BorderRadius.circular(999),
                     border: Border.all(
-                      color: const Color(0xFF5B4867),
+                      color: ZyraColors.surfaceBorder,
                       width: 0.5,
                     ),
                   ),
@@ -6569,7 +6461,7 @@ class _LifeSnapshotView extends StatelessWidget {
 }
 
 BoxDecoration _lifeSnapshotCardDecoration() => BoxDecoration(
-  color: ZyraColors.foreground.withValues(alpha: 0.065),
+  color: ZyraColors.surfaceFill,
   borderRadius: BorderRadius.circular(16),
   border: Border.all(
     color: ZyraColors.foreground.withValues(alpha: 0.13),
@@ -7188,9 +7080,7 @@ class _JourneyGuardianPortraitCard extends StatelessWidget {
       curve: Curves.easeOutCubic,
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 19),
       decoration: BoxDecoration(
-        color: ZyraColors.foreground.withValues(
-          alpha: revealed ? 0.085 : 0.065,
-        ),
+        color: ZyraColors.surfaceFill,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
           color: guardian.isMain && revealed
@@ -7258,7 +7148,7 @@ class _ProtectedGuardianPortrait extends StatelessWidget {
                   height: 82,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: ZyraColors.foreground.withValues(alpha: 0.055),
+                    color: ZyraColors.ivoryTop,
                     border: Border.all(
                       color: ZyraColors.foreground.withValues(alpha: 0.12),
                     ),
@@ -8055,7 +7945,7 @@ class _PhaseViewState extends State<_PhaseView> {
                   width: double.infinity,
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: ZyraColors.foreground.withValues(alpha: 0.06),
+                    color: ZyraColors.surfaceFill,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: ZyraColors.foreground.withValues(alpha: 0.10),
@@ -8134,7 +8024,7 @@ class _PhaseViewState extends State<_PhaseView> {
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
               decoration: BoxDecoration(
-                color: ZyraColors.foreground.withValues(alpha: 0.045),
+                color: ZyraColors.surfaceFill,
                 border: const Border(
                   left: BorderSide(color: ZyraColors.journeyGold, width: 2),
                 ),
@@ -8187,10 +8077,10 @@ class _PhaseViewState extends State<_PhaseView> {
                           : ZyraColors.ink(0.38),
                     ),
                   ),
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: ZyraColors.foreground),
             decoration: InputDecoration(
               filled: true,
-              fillColor: ZyraColors.foreground.withValues(alpha: 0.06),
+              fillColor: ZyraColors.ivoryTop,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide.none,
@@ -8781,10 +8671,10 @@ class _FamilyStageViewState extends State<_FamilyStageView> {
             TextField(
               controller: _controllers[q.id],
               maxLines: 3,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: ZyraColors.foreground),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: ZyraColors.foreground.withValues(alpha: 0.06),
+                fillColor: ZyraColors.ivoryTop,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide.none,
@@ -8885,7 +8775,7 @@ class _OpenConversationViewState extends State<_OpenConversationView> {
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: ZyraColors.foreground.withValues(alpha: 0.07),
+                color: ZyraColors.surfaceFill,
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
                   color: ZyraColors.foreground.withValues(alpha: 0.14),

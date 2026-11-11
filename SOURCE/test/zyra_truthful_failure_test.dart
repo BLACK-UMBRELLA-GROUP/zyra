@@ -208,11 +208,21 @@ void main() {
   ) async {
     await tester.pumpWidget(
       MaterialApp(
-        home: buildZyraPauseFailureTestSurface(
-          write: () async => throw StateError('forced network failure'),
+        home: Builder(
+          builder: (context) => Scaffold(
+            body: TextButton(
+              onPressed: () => showZyraPauseFailureTestSurface(
+                context,
+                write: () async => throw StateError('forced network failure'),
+              ),
+              child: const Text('Open'),
+            ),
+          ),
         ),
       ),
     );
+    await tester.tap(find.text('Open'));
+    await tester.pumpAndSettle();
 
     await tester.tap(find.text('Request Pause').last);
     await tester.pump();

@@ -20,7 +20,7 @@ void main() {
       for (final style in ZyraAppSurfaceStyle.values) {
         ZyraColors.selectAppSurfaceStyle(style);
         expect(ZyraColors.surfaceEmphasisFill, ZyraColors.surfaceFill);
-        expect(ZyraColors.frostSelectedFill, ZyraColors.surfaceFill);
+        expect(ZyraColors.frostSelectedFill, ZyraColors.ivoryTop);
         expect(ZyraColors.accentBg, ZyraColors.surfaceFill);
         expect(ZyraColors.glassFill, ZyraColors.surfaceFill);
         expect(ZyraColors.surfaceFill, const Color(0xD9FAF5EC));
@@ -139,7 +139,7 @@ void main() {
       expect(ZyraColors.appSurfaceStyle, ZyraAppSurfaceStyle.glassSignals);
       expect(ZyraColors.surfaceSignal, ZyraColors.journeyGold);
       expect(ZyraColors.surfaceEmphasisFill, ZyraColors.surfaceFill);
-      expect(ZyraColors.frostSelectedFill, ZyraColors.surfaceFill);
+      expect(ZyraColors.frostSelectedFill, ZyraColors.ivoryTop);
       expect(
         ZyraColors.surfaceEmphasisBorder,
         ZyraColors.journeyGold.withValues(alpha: .70),

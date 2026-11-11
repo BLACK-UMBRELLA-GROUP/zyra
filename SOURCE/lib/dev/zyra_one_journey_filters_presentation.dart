@@ -275,6 +275,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
           decoration: i == selected
               ? BoxDecoration(
                   color: ZyraColors.frostSelectedFill,
+                  boxShadow: ZyraFloatingSurface.standardShadows,
                   border: Border.all(
                     color: ZyraColors.journeyGold.withValues(alpha: .6),
                   ),
@@ -649,7 +650,10 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
             },
             decoration: InputDecoration(
               hintText: 'Search any $kind',
-              hintStyle: ZyraText.body(size: 13, color: ZyraColors.ink(.35)),
+              hintStyle: ZyraText.body(
+                size: 13,
+                color: ZyraColors.secondaryText,
+              ),
               prefixIcon: Icon(
                 Icons.search,
                 size: 18,

@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_glass_dialog.dart';
+import 'package:zyra/widgets/zyra_confirm_sheet.dart';
 
 void main() {
   setUp(() {
@@ -69,7 +72,7 @@ void main() {
             builder: (context) => Scaffold(
               body: TextButton(
                 onPressed: () async {
-                  result = await showZyraGlassChoice(
+                  result = await showZyraConfirm(
                     context: context,
                     icon: Icons.visibility_outlined,
                     title: 'Keep your choice',
@@ -93,7 +96,7 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(result, primary);
-      expect(find.byKey(const ValueKey('zyra_modal_surface')), findsNothing);
+      expect(find.byKey(const ValueKey('zyra-confirm-sheet')), findsNothing);
     });
   }
 
@@ -120,7 +123,7 @@ void main() {
             builder: (context) => Scaffold(
               body: TextButton(
                 onPressed: () async {
-                  result = await showZyraGlassChoice(
+                  result = await showZyraConfirm(
                     context: context,
                     icon: Icons.delete_outline,
                     title: 'A long confirmation title',
@@ -131,7 +134,6 @@ void main() {
                     ).join(' '),
                     primaryLabel: 'Confirm',
                     secondaryLabel: 'Keep current choice',
-                    destructivePrimary: true,
                     primaryKey: const ValueKey('modal_confirm'),
                     secondaryKey: const ValueKey('modal_cancel'),
                   );
@@ -146,7 +148,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
       final scroll = find.descendant(
-        of: find.byKey(const ValueKey('zyra_modal_surface')),
+        of: find.byKey(const ValueKey('zyra-confirm-sheet')),
         matching: find.byType(Scrollable),
       );
       await tester.scrollUntilVisible(
@@ -160,4 +162,203 @@ void main() {
       expect(tester.takeException(), isNull);
     });
   }
+
+  for (final dismissal in ['scrim', 'escape', 'swipe', 'slow async swipe']) {
+    testWidgets('LOCK 28 hugs its content and treats $dismissal as Keep', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(375, 667);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      var writes = 0;
+      final results = <bool?>[];
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) => Scaffold(
+              body: TextButton(
+                onPressed: () async {
+                  results.add(
+                    await showZyraConfirm(
+                      context: context,
+                      title: 'Cancel Omar’s invitation?',
+                      body:
+                          'Omar won’t be able to accept it. You can invite him again at any time.',
+                      primaryLabel: 'Cancel invitation',
+                      secondaryLabel: 'Keep invitation',
+                      personName: 'Omar',
+                      onCommit: dismissal == 'slow async swipe'
+                          ? () async {
+                              writes++;
+                              return null;
+                            }
+                          : null,
+                    ),
+                  );
+                },
+                child: const Text('Open'),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.tap(find.text('Open'));
+      await tester.pumpAndSettle();
+      final sheet = find.byKey(const ValueKey('zyra-confirm-sheet'));
+      expect(tester.getRect(sheet).bottom, 667);
+      expect(tester.getSize(sheet).height, inInclusiveRange(260, 450));
+      expect(
+        tester.getSize(find.byKey(const ValueKey('zyra-confirm-handle'))),
+        const Size(40, 4),
+      );
+      expect(
+        tester
+            .getSize(find.widgetWithText(TextButton, 'Cancel invitation'))
+            .height,
+        52,
+      );
+      expect(
+        tester
+            .getSize(find.widgetWithText(OutlinedButton, 'Keep invitation'))
+            .height,
+        52,
+      );
+      final barrier = tester.widget<AnimatedModalBarrier>(
+        find.byType(AnimatedModalBarrier),
+      );
+      expect(barrier.color.value, const Color(0x611E1610));
+      switch (dismissal) {
+        case 'scrim':
+          await tester.tapAt(const Offset(80, 70));
+        case 'escape':
+          await tester.sendKeyEvent(LogicalKeyboardKey.escape);
+        case 'swipe':
+        case 'slow async swipe':
+          final gesture = await tester.startGesture(
+            tester.getCenter(find.text('Cancel Omar’s invitation?')),
+          );
+          await gesture.moveBy(const Offset(0, 28));
+          await tester.pump(const Duration(milliseconds: 80));
+          await gesture.moveBy(Offset(0, dismissal == 'swipe' ? 220 : 100));
+          await tester.pump(const Duration(milliseconds: 200));
+          await gesture.up();
+      }
+      await tester.pumpAndSettle();
+      expect(sheet, findsNothing);
+      expect(results, hasLength(1));
+      expect(results.single, isNot(true));
+      expect(writes, 0);
+    });
+  }
+
+  for (final scale in [1.0, 2.0]) {
+    for (final hasWrite in [false, true]) {
+      testWidgets(
+        'LOCK 28 grab handle keeps at 320px ${scale}x text, write $hasWrite',
+        (tester) async {
+          tester.view.physicalSize = const Size(320, 480);
+          tester.view.devicePixelRatio = 1;
+          addTearDown(tester.view.resetPhysicalSize);
+          addTearDown(tester.view.resetDevicePixelRatio);
+          final results = <bool?>[];
+          var writes = 0;
+          await tester.pumpWidget(
+            MaterialApp(
+              builder: (context, child) => MediaQuery(
+                data: MediaQuery.of(context).copyWith(
+                  textScaler: TextScaler.linear(scale),
+                  disableAnimations: true,
+                ),
+                child: child!,
+              ),
+              home: Builder(
+                builder: (context) => Scaffold(
+                  body: TextButton(
+                    onPressed: () async => results.add(
+                      await showZyraConfirm(
+                        context: context,
+                        title: 'Cancel Omar’s invitation?',
+                        body:
+                            'Omar won’t be able to accept it. You can invite him again at any time.',
+                        primaryLabel: 'Cancel invitation',
+                        secondaryLabel: 'Keep invitation',
+                        personName: 'Omar',
+                        onCommit: hasWrite
+                            ? () async {
+                                writes++;
+                                return null;
+                              }
+                            : null,
+                      ),
+                    ),
+                    child: const Text('Open'),
+                  ),
+                ),
+              ),
+            ),
+          );
+          await tester.tap(find.text('Open'));
+          await tester.pumpAndSettle();
+          await tester.drag(
+            find.byKey(const ValueKey('zyra-confirm-handle')),
+            const Offset(0, 160),
+          );
+          await tester.pumpAndSettle();
+          expect(find.byType(ZyraConfirmSheet), findsNothing);
+          expect(results, [false]);
+          expect(writes, 0);
+          expect(tester.takeException(), isNull);
+        },
+      );
+    }
+  }
+
+  testWidgets(
+    'asynchronous confirmation stays open during a write and can retry',
+    (tester) async {
+      final firstWrite = Completer<String?>();
+      var writes = 0;
+      bool? result;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) => Scaffold(
+              body: TextButton(
+                onPressed: () async {
+                  result = await showZyraConfirm(
+                    context: context,
+                    title: 'End with Sara?',
+                    body: 'Your Timeline stays.',
+                    primaryLabel: 'End Journey',
+                    secondaryLabel: 'Keep Journey',
+                    busyLabel: 'Ending…',
+                    onCommit: () async =>
+                        ++writes == 1 ? firstWrite.future : null,
+                  );
+                },
+                child: const Text('Open'),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.tap(find.text('Open'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('End Journey'));
+      await tester.pumpAndSettle();
+      await tester.tapAt(const Offset(40, 40));
+      await tester.sendKeyEvent(LogicalKeyboardKey.escape);
+      await tester.pumpAndSettle();
+      expect(find.text('Ending…'), findsOneWidget);
+      expect(result, isNull);
+      firstWrite.complete('Try again.');
+      await tester.pumpAndSettle();
+      expect(find.text('Try again.'), findsOneWidget);
+      await tester.tap(find.text('End Journey'));
+      await tester.pumpAndSettle();
+      expect(writes, 2);
+      expect(result, isTrue);
+    },
+  );
 }

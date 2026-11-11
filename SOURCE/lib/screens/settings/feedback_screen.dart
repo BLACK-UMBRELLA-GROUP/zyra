@@ -208,7 +208,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             }),
             child: Text(
               'Done',
-              style: ZyraText.body(size: 15, color: Colors.white),
+              style: ZyraText.body(size: 15, color: ZyraColors.foreground),
             ),
           ),
         ],
@@ -251,8 +251,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 ),
                 decoration: BoxDecoration(
                   color: selected
-                      ? ZyraColors.accentBg
-                      : ZyraColors.foreground.withValues(alpha: 0.04),
+                      ? ZyraColors.ivoryTop
+                      : ZyraColors.surfaceFill,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
                     color: selected
@@ -264,7 +264,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   c.label,
                   style: ZyraText.body(
                     size: 14,
-                    color: selected ? Colors.white : ZyraColors.ink(0.54),
+                    color: selected
+                        ? ZyraColors.foreground
+                        : ZyraColors.secondaryText,
                   ),
                 ),
               ),
@@ -276,7 +278,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
       Container(
         decoration: BoxDecoration(
-          color: ZyraColors.foreground.withValues(alpha: 0.05),
+          color: ZyraColors.surfaceFill,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: ZyraColors.foreground.withValues(alpha: 0.11),
@@ -288,7 +290,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
           maxLines: 8,
           minLines: 5,
           maxLength: 4000,
-          style: ZyraText.body(size: 15, color: Colors.white),
+          style: ZyraText.body(size: 15, color: ZyraColors.foreground),
           cursorColor: ZyraColors.ink(0.70),
           decoration: InputDecoration(
             border: InputBorder.none,
@@ -329,7 +331,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 )
               : Text(
                   'Send',
-                  style: ZyraText.body(size: 15, color: Colors.white),
+                  style: ZyraText.body(size: 15, color: ZyraColors.foreground),
                 ),
         ),
       ),

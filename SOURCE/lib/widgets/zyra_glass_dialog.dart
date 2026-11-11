@@ -1,6 +1,5 @@
 import 'zyra_floating_surface.dart';
-// ZYRA's shared centred dialog. The historical Glass API names stay stable
-// so all existing notices and confirmations use the same current chrome.
+// ZYRA's centred chrome for information and blocked-state notices.
 // Founder full-app consistency review, 2026-10-03: opaque plum like the
 // approved sheets/toasts, a quiet gold edge, and scroll-safe large text.
 //
@@ -110,90 +109,7 @@ Future<T?> showZyraGlassDialog<T>({
   );
 }
 
-/// The common shape: icon, title, body, one primary action, one quiet
-/// decline. Returns true for the primary, false for the decline, null if
-/// dismissed by tapping outside.
-Future<bool?> showZyraGlassChoice({
-  required BuildContext context,
-  required IconData icon,
-  required String title,
-  required String body,
-  required String primaryLabel,
-  required String secondaryLabel,
-
-  /// Destructive choices keep the same modal chrome, but use the app's
-  /// restrained destructive colour for the committed action.
-  bool destructivePrimary = false,
-  TextAlign bodyTextAlign = TextAlign.center,
-  Key? primaryKey,
-  Key? secondaryKey,
-
-  /// Optional line between body and buttons — used by the Unlock+ prompt to
-  /// show both credit balances without turning the dialog into a shop.
-  Widget? detail,
-}) {
-  return showZyraGlassDialog<bool>(
-    context: context,
-    builder: (ctx) => Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, color: ZyraColors.foreground, size: 30),
-        const SizedBox(height: 14),
-        Text(
-          title,
-          style: ZyraText.heading(size: 18),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 8),
-        Text(body, style: ZyraText.subtext(), textAlign: bodyTextAlign),
-        if (detail != null) ...[const SizedBox(height: 14), detail],
-        const SizedBox(height: 20),
-        SizedBox(
-          width: double.infinity,
-          child: ZyraFloatingSurface(
-            radius: 999,
-            circle: false,
-            gold: false,
-            child: FilledButton(
-              key: primaryKey,
-              style: destructivePrimary
-                  ? FilledButton.styleFrom(
-                      backgroundColor: ZyraColors.destructive,
-                      foregroundColor: ZyraColors.onPrimaryAction,
-                    )
-                  : null,
-              onPressed: ZyraTapFeedback.onTap(
-                context,
-                () => Navigator.of(ctx).pop(true),
-              ),
-              child: Text(
-                primaryLabel,
-                textAlign: TextAlign.center,
-                style: ZyraText.button(
-                  color: destructivePrimary
-                      ? ZyraColors.onPrimaryAction
-                      : ZyraColors.foreground,
-                ),
-              ),
-            ),
-          ),
-        ),
-        TextButton(
-          key: secondaryKey,
-          onPressed: ZyraTapFeedback.onTap(
-            context,
-            () => Navigator.of(ctx).pop(false),
-          ),
-          child: Text(secondaryLabel, style: ZyraText.subtext()),
-        ),
-      ],
-    ),
-  );
-}
-
-/// The one-action counterpart to [showZyraGlassChoice]. Information and
-/// blocked-state messages use the same opaque plum chrome as confirmations,
-/// instead of falling back to an unrelated platform dialog.
+/// A one-action notice for information and blocked states.
 Future<void> showZyraGlassNotice({
   required BuildContext context,
   required IconData icon,

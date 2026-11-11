@@ -1,3 +1,4 @@
+import 'support/confirm_sheet_test_entry.dart';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -359,27 +360,24 @@ void main() {
     tester,
   ) async {
     ZyraInteractionStyle.selectHapticLevel(ZyraHapticLevel.strong);
-    final selected = <String>[];
+    final selected = <bool?>[];
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: Stack(
-            children: [
-              FloatingNavConfirmationBar(
-                hapticLevel: ZyraHapticLevel.off,
-                onCancel: () => selected.add('cancel'),
-                onConfirm: () => selected.add('confirm'),
-              ),
-            ],
+          body: ConfirmSheetTestEntry(
+            onDecision: selected.add,
+            hapticLevel: ZyraHapticLevel.off,
           ),
         ),
       ),
     );
-    await tester.tap(find.byKey(const ValueKey('browse-hide-cancel')));
-    await tester.pump();
-    await tester.tap(find.byKey(const ValueKey('browse-hide-confirm')));
-    await tester.pump();
-    expect(selected, ['cancel', 'confirm']);
+    for (final key in ['browse-hide-cancel', 'browse-hide-confirm']) {
+      await tester.tap(find.text('Open confirmation'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(ValueKey(key)));
+      await tester.pumpAndSettle();
+    }
+    expect(selected, [false, true]);
     expect(
       calls.where((call) => call.method == 'HapticFeedback.vibrate'),
       isEmpty,

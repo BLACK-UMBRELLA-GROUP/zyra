@@ -365,7 +365,7 @@ void main() {
         'journey_compatibility_locked',
         'journey_guardians',
         'safety',
-        'journey_action',
+        'journey_options',
       ];
       for (var i = 0; i < ZyraConceptJourneyOption.values.length; i++) {
         final h = await mount(t, 1);
@@ -377,8 +377,16 @@ void main() {
         expect(options.canViewCompatibility, isFalse);
         final choice = ZyraConceptJourneyOption.values[i];
         await h.tap('draft_options_${choice.name}_$sara');
-        h.assertPage(destinations[i]);
-        expect(h.latest.personId, sara);
+        if (choice == ZyraConceptJourneyOption.end) {
+          expect(k('draft_journey_action_$sara'), findsOneWidget);
+          await h.tap('draft_cancel_journey_action_$sara');
+          expect(k('draft_journey_action_$sara'), findsNothing);
+        } else {
+          h.assertPage(destinations[i]);
+        }
+        if (choice != ZyraConceptJourneyOption.end) {
+          expect(h.latest.personId, sara);
+        }
         if (i == 2 || i == 3) {
           expect(find.byIcon(Icons.lock_outline), findsWidgets);
         }
@@ -539,7 +547,9 @@ void main() {
       expect(find.text('Sara'), findsNothing);
       expect(k('draft_journey_options_$sara'), findsNothing);
       await h.tap('journey_tab_end_unavailable');
-      h.assertPage('journey_action');
+      expect(k('draft_journey_action_$sara'), findsOneWidget);
+      expect(find.text('End this Journey?'), findsOneWidget);
+      expect(find.textContaining('Sara'), findsNothing);
     },
   );
 

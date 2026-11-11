@@ -331,7 +331,7 @@ void main() {
               as BoxDecoration;
       expect((decoration(one).border as Border).top.width, 1);
       expect(decoration(basic).border, isNull);
-      expect(decoration(basic).color, ZyraColors.ink(.055));
+      expect(decoration(basic).color, ZyraColors.ivoryTop);
       expect(find.bySemanticsLabel('Hassan, Guardian One'), findsOneWidget);
       expect(find.bySemanticsLabel('Yusuf, Guardian One'), findsNothing);
       semantics.dispose();

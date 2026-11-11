@@ -145,9 +145,9 @@ class ZyraColors {
   /// LOCK14 V5: gold reading text below 24 regular / 18.66 bold.
   static const Color goldText = Color(0xFF845F24);
   static const Color goldTextFill = Color(0xFFC08A3A);
-  static const Color cardSurface = Color(0xFFF4EEE4);
-  static const Color lowerSurface = Color(0xFFF1EBDF);
-  static const Color sheetIvory = Color(0xFFF3EDE2);
+  static const Color cardSurface = ivoryTop;
+  static const Color lowerSurface = ivoryTop;
+  static const Color sheetIvory = ivoryTop;
   static const Color divider = Color(0x1A3E2E1E);
   static const Color avatarSand = Color(0xFF9C8A72);
   static const Color avatarDeepSand = Color(0xFF6B5B49);
@@ -156,7 +156,7 @@ class ZyraColors {
   // Compatibility aliases for retained callers. LOCK14 roles are authoritative.
   static const Color royalPurple = Color(0xFFFBF7F0);
   static const Color luxuryDarkPurple = Color(0xFF2B2420);
-  static const Color darkPlumSurface = Color(0xFFF1EBDF);
+  static const Color darkPlumSurface = sheetIvory;
 
   // The main Quiet Horizon splash is the colour authority for the brand
   // lockup on Welcome as well. Keep these separate from theme-dependent
@@ -207,8 +207,7 @@ class ZyraColors {
 
   static Color get surfaceBorder => const Color(0x0F3E2E1E);
 
-  /// Selected/expanded cards stay dark; the edge carries their emphasis.
-  /// Never layer the former white/gold wash over another app card.
+  /// Selected/expanded cards use the shared ivory fill and a gold edge.
   static Color get surfaceEmphasisFill => surfaceFill;
 
   static Color get surfaceEmphasisBorder => journeyGold.withValues(alpha: 0.70);
@@ -296,9 +295,8 @@ class ZyraColors {
   static const Color destructiveBorder = Color(0x66B84A42); // coral 0.4
 
   // Frost pills — sampled from the Connections segmented control.
-  static Color get frostFill => const Color(0x1A3E2E1E);
   static Color get frostBorder => const Color(0x2E3E2E1E);
-  static Color get frostSelectedFill => surfaceFill;
+  static Color get frostSelectedFill => ivoryTop;
 
   static Color get frostSelectedBorder => surfaceEmphasisBorder;
 

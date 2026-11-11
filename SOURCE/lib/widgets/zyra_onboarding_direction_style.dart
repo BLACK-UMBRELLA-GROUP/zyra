@@ -58,7 +58,7 @@ class OnboardingPreviewStyle extends InheritedWidget {
     return BoxDecoration(
       color: selected
           ? ZyraColors.journeyGold.withValues(alpha: .14)
-          : ZyraColors.frostFill,
+          : ZyraColors.surfaceFill,
       border: Border.all(
         color: selected
             ? ZyraColors.journeyGold.withValues(alpha: .68)

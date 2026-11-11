@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_draft_browse_utility_presentation.dart';
-import 'package:zyra/dev/zyra_draft_journey_block_hide_sheet.dart';
+import 'package:zyra/widgets/zyra_confirm_sheet.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 import '../support/zyra_hidden_dev_controls_driver.dart';
@@ -233,7 +233,7 @@ void main() {
             await h.tap(action);
             if (phase != 'none') {
               expect(
-                find.byType(ZyraDraftJourneyBlockHideSheet),
+                find.byType(ZyraConfirmSheet),
                 findsOneWidget,
               );
               await h.tap('journey_person_safety_keep');
@@ -242,7 +242,7 @@ void main() {
               await h.tap(action);
               await t.tapAt(const Offset(10, 120));
               await h.flush();
-              expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+              expect(find.byType(ZyraConfirmSheet), findsNothing);
               _selected(t, ZyraDraftReportReason.privacy);
               await h.tap(action);
               await h.tap('journey_person_safety_confirm');
@@ -256,7 +256,7 @@ void main() {
                 findsOneWidget,
               );
             } else {
-              expect(find.byType(ZyraDraftJourneyBlockHideSheet), findsNothing);
+              expect(find.byType(ZyraConfirmSheet), findsNothing);
               expect(h.latest.model.endedAttempts, before.endedAttempts);
             }
             final after = ViewRequestDraftModel.fromSnapshot(h.latest.model);

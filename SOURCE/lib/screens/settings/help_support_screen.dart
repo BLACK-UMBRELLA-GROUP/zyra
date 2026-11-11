@@ -330,7 +330,7 @@ class _SearchField extends StatelessWidget {
     return TextField(
       controller: controller,
       onChanged: onChanged,
-      style: ZyraText.body(size: 15, color: Colors.white),
+      style: ZyraText.body(size: 15, color: ZyraColors.foreground),
       decoration: InputDecoration(
         hintText: 'What do you need help with?',
         hintStyle: ZyraText.subtext(size: 14),
@@ -408,9 +408,7 @@ class _HelpTileState extends State<_HelpTile> {
             curve: Curves.easeOut,
             padding: const EdgeInsets.fromLTRB(16, 14, 14, 14),
             decoration: BoxDecoration(
-              color: ZyraColors.foreground.withValues(
-                alpha: _open ? 0.09 : 0.05,
-              ),
+              color: ZyraColors.surfaceFill,
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
                 color: ZyraColors.foreground.withValues(
@@ -428,7 +426,10 @@ class _HelpTileState extends State<_HelpTile> {
                     Expanded(
                       child: Text(
                         widget.entry.question,
-                        style: ZyraText.body(size: 14.5, color: Colors.white),
+                        style: ZyraText.body(
+                          size: 14.5,
+                          color: ZyraColors.foreground,
+                        ),
                       ),
                     ),
                     SizedBox(width: 10),
@@ -534,7 +535,7 @@ class _ContactCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: ZyraColors.foreground.withValues(alpha: 0.06),
+        color: ZyraColors.surfaceFill,
         border: Border.all(color: ZyraColors.ink(0.12), width: 0.5),
         borderRadius: BorderRadius.circular(16),
       ),
@@ -543,7 +544,7 @@ class _ContactCard extends StatelessWidget {
         children: [
           Text(
             'Still need us?',
-            style: ZyraText.body(size: 15, color: Colors.white),
+            style: ZyraText.body(size: 15, color: ZyraColors.foreground),
           ),
           SizedBox(height: 6),
           Text(
@@ -575,17 +576,14 @@ class _ContactCard extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: ZyraText.body(
                   size: 15.5,
-                  color: Colors.white,
+                  color: ZyraColors.foreground,
                 ).copyWith(fontWeight: FontWeight.w600),
               ),
             ),
           ),
           if (email != null) ...[
             SizedBox(height: 14),
-            Divider(
-              color: ZyraColors.foreground.withValues(alpha: 0.10),
-              height: 1,
-            ),
+            Divider(color: ZyraColors.divider, height: 1),
             SizedBox(height: 12),
             Text.rich(
               key: const ValueKey('help-support-signed-in-line'),
@@ -597,7 +595,10 @@ class _ContactCard extends StatelessWidget {
                   ),
                   TextSpan(
                     text: email,
-                    style: ZyraText.body(size: 12.5, color: Colors.white),
+                    style: ZyraText.body(
+                      size: 12.5,
+                      color: ZyraColors.foreground,
+                    ),
                   ),
                 ],
               ),

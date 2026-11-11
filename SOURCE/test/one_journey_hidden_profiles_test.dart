@@ -928,7 +928,7 @@ void main() {
     _expectNonHideStateUnchanged(before, owner.latest.model);
     expect(find.text('Block Sara?'), findsOneWidget);
     final staleConfirm = tester
-        .widget<OutlinedButton>(_key('concept_hidden_inspection_confirm_block'))
+        .widget<TextButton>(_key('concept_hidden_inspection_confirm_block'))
         .onPressed!;
     await _capture(tester, '17-hidden-current-block-confirm');
     await _press(tester, 'concept_hidden_inspection_cancel');
@@ -937,7 +937,8 @@ void main() {
     _expectNonHideStateUnchanged(before, owner.latest.model);
     expect(_key('concept_hidden_inspection_unhide'), findsOneWidget);
     await _press(tester, 'concept_hidden_inspection_block');
-    await _back(tester);
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
     expect(owner.latest.pages, ['settings', 'account_action', 'profile']);
     expect(_key('concept_hidden_inspection_unhide'), findsOneWidget);
     await _back(tester);
@@ -963,7 +964,7 @@ void main() {
     await _press(tester, _view);
     await _press(tester, 'concept_hidden_inspection_block');
     final confirm = tester
-        .widget<OutlinedButton>(_key('concept_hidden_inspection_confirm_block'))
+        .widget<TextButton>(_key('concept_hidden_inspection_confirm_block'))
         .onPressed!;
     await _press(tester, 'concept_hidden_inspection_confirm_block');
     expect(owner.latest.pages, ['settings', 'account_action']);
@@ -1009,11 +1010,18 @@ void main() {
           await _press(tester, 'concept_hidden_inspection_block');
         }
         final retained = tester
-            .widget<OutlinedButton>(_key('concept_hidden_inspection_$action'))
+            .widget<ButtonStyleButton>(
+              _key('concept_hidden_inspection_$action'),
+            )
             .onPressed!;
+        if (action == 'confirm_block' &&
+            ['Back', 'controls', 'role'].contains(departure)) {
+          await tester.binding.handlePopRoute();
+          await tester.pumpAndSettle();
+        }
         switch (departure) {
           case 'Back':
-            await _back(tester);
+            if (action != 'confirm_block') await _back(tester);
           case 'controls':
             await openZyraDevControls(tester);
             retained();

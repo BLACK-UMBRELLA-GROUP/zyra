@@ -13,19 +13,22 @@ import '../../services/zyra_photo_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_interaction_style.dart';
+import '../../theme/zyra_preview_spacing.dart';
+import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_browse_designs.dart';
 import '../../widgets/floating_nav_bar.dart';
 import '../../widgets/zyra_profile_image.dart';
 import '../../widgets/zyra_pull_down_back_scope.dart';
 
-/// Read-only owner preview using the current bounded Portrait Browse card.
-/// It never joins the feed or exposes a decision/action against oneself.
+/// Read-only owner view of the live Profiles card and its photo pages.
 class MyProfilePreviewScreen extends StatefulWidget {
   const MyProfilePreviewScreen({super.key})
     : _preview = false,
       _profile = null,
       _canAct = null,
       _onBack = null,
+      _onSelectTab = null,
+      _showMyZyraActivity = false,
       _hapticLevel = null;
 
   /// Public argument names intentionally initialize private preview fields.
@@ -34,6 +37,8 @@ class MyProfilePreviewScreen extends StatefulWidget {
     required SeekerProfile profile,
     required bool Function() canAct,
     required VoidCallback onBack,
+    ValueChanged<int>? onSelectTab,
+    bool showMyZyraActivity = false,
     ZyraHapticLevel? hapticLevel,
   }) : _preview = true,
        // ignore: prefer_initializing_formals
@@ -43,12 +48,18 @@ class MyProfilePreviewScreen extends StatefulWidget {
        // ignore: prefer_initializing_formals
        _onBack = onBack,
        // ignore: prefer_initializing_formals
+       _onSelectTab = onSelectTab,
+       // ignore: prefer_initializing_formals
+       _showMyZyraActivity = showMyZyraActivity,
+       // ignore: prefer_initializing_formals
        _hapticLevel = hapticLevel;
 
   final bool _preview;
   final SeekerProfile? _profile;
   final bool Function()? _canAct;
   final VoidCallback? _onBack;
+  final ValueChanged<int>? _onSelectTab;
+  final bool _showMyZyraActivity;
   final ZyraHapticLevel? _hapticLevel;
 
   @override
@@ -61,6 +72,7 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
   late final SeekerProfile? _previewProfile;
   late final bool Function()? _ownerGuard;
   late final VoidCallback? _onBack;
+  late final ValueChanged<int>? _onSelectTab;
   late final (String?, int) _ordinaryOwner;
   ZyraPlan? _ordinaryPlan;
   late final (bool, String?) _sdkOwner;
@@ -70,6 +82,8 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
   ModalRoute<dynamic>? _ordinaryRoute;
   int _photoRequest = 0;
   bool _revoked = false;
+  Timer? _requestInfoTimer;
+  bool _showRequestInfo = false;
   late final VoidCallback _returnAction = _returnToOwner;
 
   bool get _ordinaryOwnerCurrent =>
@@ -143,6 +157,7 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
     _ordinaryOwner = (ZyraAccountState.userId, ZyraAccountState.generation);
     _ownerGuard = widget._canAct;
     _onBack = widget._onBack;
+    _onSelectTab = widget._onSelectTab;
     final p = widget._profile;
     _previewProfile = p == null
         ? null
@@ -258,6 +273,21 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
     }
   }
 
+  bool _canInteract() => _canAct && (ModalRoute.of(context)?.isCurrent ?? true);
+
+  void _navigatePreviewTab(int index) {
+    if (_canInteract()) _onSelectTab?.call(index);
+  }
+
+  void _requestInfo() {
+    if (!_canInteract()) return;
+    _requestInfoTimer?.cancel();
+    setState(() => _showRequestInfo = true);
+    _requestInfoTimer = Timer(const Duration(seconds: 3), () {
+      if (mounted) setState(() => _showRequestInfo = false);
+    });
+  }
+
   Widget _photo(
     BuildContext context,
     String photo, {
@@ -300,6 +330,31 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
   }
 
   Widget _browsePreview(SeekerProfile profile) {
+    final navigation = FloatingNavBar(
+      items: [
+        const FloatingNavItem(icon: Icons.search, label: 'Profiles'),
+        const FloatingNavItem(
+          icon: Icons.route_outlined,
+          label: 'Journey',
+          useJourneyGlyph: true,
+        ),
+        FloatingNavItem(
+          icon: Icons.dashboard_outlined,
+          label: 'My ZYRA',
+          dot: widget._showMyZyraActivity,
+        ),
+        const FloatingNavItem(icon: Icons.gpp_good_outlined, label: 'Guardian'),
+        const FloatingNavItem(icon: Icons.person_outline, label: 'Profile'),
+      ],
+      currentIndex: 4,
+      lockedTabBar: true,
+      interactionEnabled: _onSelectTab != null,
+      contentEdgeInset: ZyraPreviewSpacing.pageMargin,
+      hapticLevel: _onSelectTab == null
+          ? ZyraHapticLevel.off
+          : widget._hapticLevel,
+      onTap: _navigatePreviewTab,
+    );
     final page = ZyraPullDownBackScope(
       key: const ValueKey('concept_pull_down_back_scope'),
       routeIdentity: (
@@ -312,57 +367,85 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
       onBack: _returnAction,
       child: Stack(
         children: [
-          ZyraBrowseDesigns(
-            key: const ValueKey('my-profile-browse-preview'),
-            profiles: [profile],
-            selectedIndex: 0,
-            design: ZyraOneJourneyBrowseDesign.portraitCard,
-            photoBuilder: _photo,
-            readOnlyPreview: true,
-            hapticLevel: widget._hapticLevel,
+          SafeArea(
+            bottom: false,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                ZyraPreviewSpacing.pageMargin,
+                16,
+                ZyraPreviewSpacing.pageMargin,
+                ZyraNavBarMetrics.contentBottomClearance(context),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    constraints: const BoxConstraints(minHeight: 44),
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text('Preview', style: ZyraText.pageTitle()),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'This is how others see your profile.',
+                    style: ZyraText.body(
+                      size: 12.5,
+                      color: ZyraColors.secondaryText,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Expanded(
+                    child: ZyraBrowseDesigns.ownProfile(
+                      key: const ValueKey('my-profile-browse-preview'),
+                      profile: profile,
+                      photoBuilder: _photo,
+                      canAct: _canInteract,
+                      showRequestInfo: _requestInfo,
+                      hapticLevel: widget._hapticLevel,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-          Positioned.fill(
-            child: IgnorePointer(
-              key: const ValueKey('own-profile-preview-inert-navigation'),
-              child: ExcludeSemantics(
-                child: ExcludeFocus(
-                  child: Stack(
-                    children: [
-                      FloatingNavBar(
-                        items: const [
-                          FloatingNavItem(
-                            icon: Icons.search,
-                            label: 'Profiles',
-                          ),
-                          FloatingNavItem(
-                            icon: Icons.route_outlined,
-                            label: 'Journey',
-                            useJourneyGlyph: true,
-                          ),
-                          FloatingNavItem(
-                            icon: Icons.dashboard_outlined,
-                            label: 'My ZYRA',
-                          ),
-                          FloatingNavItem(
-                            icon: Icons.gpp_good_outlined,
-                            label: 'Guardian',
-                          ),
-                          FloatingNavItem(
-                            icon: Icons.person_outline,
-                            label: 'Profile',
-                          ),
-                        ],
-                        currentIndex: 0,
-                        contentEdgeInset: 20,
-                        hapticLevel: ZyraHapticLevel.off,
-                        onTap: _ignorePreviewNavigation,
+          if (_onSelectTab != null)
+            navigation
+          else
+            Positioned.fill(
+              child: IgnorePointer(
+                key: const ValueKey('own-profile-preview-inert-navigation'),
+                child: ExcludeSemantics(
+                  child: ExcludeFocus(child: Stack(children: [navigation])),
+                ),
+              ),
+            ),
+          if (_showRequestInfo)
+            Positioned(
+              left: ZyraPreviewSpacing.pageMargin,
+              right: ZyraPreviewSpacing.pageMargin,
+              bottom: ZyraNavBarMetrics.contentBottomClearance(context),
+              child: IgnorePointer(
+                child: Semantics(
+                  liveRegion: true,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: ZyraColors.espresso.withValues(alpha: .94),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 10,
                       ),
-                    ],
+                      child: Text(
+                        'Others tap here to request a Journey with you.',
+                        textAlign: TextAlign.center,
+                        style: ZyraText.body(size: 12.5, color: Colors.white),
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );
@@ -377,6 +460,7 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
 
   @override
   void dispose() {
+    _requestInfoTimer?.cancel();
     _authSubscription?.cancel();
     if (!_previewMode) {
       AppState.instance.removeListener(_ordinaryAccountChanged);
@@ -391,7 +475,9 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
   void didUpdateWidget(covariant MyProfilePreviewScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (_previewMode &&
-        (!widget._preview || !identical(widget._onBack, _onBack))) {
+        (!widget._preview ||
+            !identical(widget._onBack, _onBack) ||
+            !identical(widget._onSelectTab, _onSelectTab))) {
       _revoked = true;
     } else if (!_previewMode && widget._preview) {
       _withdrawOrdinaryOwner();
@@ -448,9 +534,6 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
     return _browsePreview(profile);
   }
 }
-
-// Display-only navigation: no owner, tab, notification or destination action.
-void _ignorePreviewNavigation(int _) {}
 
 class _OwnProfileEmptyPhoto extends StatelessWidget {
   const _OwnProfileEmptyPhoto({required this.gender});

@@ -143,7 +143,9 @@ void main() {
       await tester.tap(find.text('Unhide'));
       await tester.pumpAndSettle();
       expect(find.text('Unhide profile?'), findsOneWidget);
-      await tester.tap(find.widgetWithText(FilledButton, 'Unhide'));
+      expect(find.text(_real.firstName), findsNothing);
+      expect(writes, 0);
+      await tester.tap(find.byKey(const ValueKey('unhide-profile-approve')));
       await _until(
         tester,
         () => acknowledged

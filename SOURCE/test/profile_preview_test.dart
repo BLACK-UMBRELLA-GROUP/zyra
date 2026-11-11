@@ -33,32 +33,24 @@ ZyraBrowseDesigns _ownCard(WidgetTester tester) {
     'concept_browse_footer',
     'concept_previous_profile',
     'concept_next_profile',
-    'draft_profile_my-profile-preview',
-  ]) {
-    expect(find.byKey(ValueKey(key)), findsOneWidget);
-  }
-  for (final key in [
+    'concept_profile_swipe_track',
+    'concept_browse_photo_pagination',
     'concept_browse_menu',
     'concept_filters',
     'concept_save_my-profile-preview',
   ]) {
     expect(find.byKey(ValueKey(key)), findsNothing);
   }
-  for (final key in [
-    'concept_previous_profile',
-    'concept_next_profile',
-    'draft_profile_my-profile-preview',
-  ]) {
-    expect(tester.widget<InkWell>(find.byKey(ValueKey(key))).onTap, isNull);
-  }
-  expect(find.text('Request a Journey'), findsOneWidget);
+  expect(find.text('Preview'), findsOneWidget);
+  expect(find.text('This is how others see your profile.'), findsOneWidget);
   for (final title in ['My profile', 'Browse', 'Profiles']) {
     expect(find.text(title), findsNothing);
   }
   final navigation = tester.widget<FloatingNavBar>(find.byType(FloatingNavBar));
   expect(navigation.items, hasLength(5));
   expect(navigation.items.first.label, 'Profiles');
-  expect(navigation.currentIndex, 0);
+  expect(navigation.currentIndex, 4);
+  expect(navigation.lockedTabBar, isTrue);
   expect(
     tester
         .widget<IgnorePointer>(
@@ -193,6 +185,14 @@ void main() {
         const ValueKey('concept_browse_details_my-profile-preview'),
       );
       expect(details, findsOneWidget);
+      final request = find.descendant(
+        of: details,
+        matching: find.byKey(
+          const ValueKey('draft_profile_my-profile-preview'),
+        ),
+      );
+      expect(request, findsOneWidget);
+      expect(tester.widget<InkWell>(request).onTap, isNotNull);
       expect(
         find.descendant(of: details, matching: find.text('AGE')),
         findsOneWidget,
@@ -250,11 +250,33 @@ void main() {
         find.byKey(const ValueKey('concept_browse_details_my-profile-preview')),
         findsOneWidget,
       );
+      final request = find.byKey(
+        const ValueKey('draft_profile_my-profile-preview'),
+      );
+      await tester.ensureVisible(request);
+      await tester.tap(request);
+      await tester.pump();
+      const toast = 'Others tap here to request a Journey with you.';
+      expect(find.text(toast), findsOneWidget);
+      expect(tester.widget<PageView>(pager).controller!.page, 0);
+      await tester.pump(const Duration(seconds: 3));
+      expect(find.text(toast), findsNothing);
       final rect = tester.getRect(pager);
       await tester.timedDragFrom(
         Offset(rect.left + rect.width * .8, rect.center.dy),
         Offset(-rect.width * .6, 0),
         const Duration(milliseconds: 450),
+      );
+      await tester.pumpAndSettle();
+      expect(tester.widget<PageView>(pager).controller!.page, 0);
+      final tapSurface = find.byKey(
+        const ValueKey('concept_browse_photo_tap_my-profile-preview'),
+      );
+      await tester.tapAt(
+        Offset(
+          tester.getRect(tapSurface).right - 40,
+          tester.getRect(tapSurface).top + 20,
+        ),
       );
       await tester.pumpAndSettle();
       expect(tester.widget<PageView>(pager).controller!.page, closeTo(1, .01));
@@ -325,6 +347,17 @@ void main() {
     expect(
       tester.getSemantics(avatar),
       matchesSemantics(label: 'Profile photo, Seeker One', isImage: true),
+    );
+    state.hydrateFrom(
+      name: 'Adam',
+      plan: ZyraPlan.one,
+      verifiedSeekerPlan: (plan: ZyraPlan.one, expiresAt: DateTime(2000)),
+    );
+    await tester.pumpAndSettle();
+    expect(_ownCard(tester).profiles.single.seekerPlan, isNull);
+    expect(
+      (tester.widget<Container>(avatar).decoration! as BoxDecoration).border,
+      isNull,
     );
   });
 

@@ -490,7 +490,7 @@ void main() {
       await _returnHeader(tester);
       expect(_key('draft_journey_action_$_sara'), findsOneWidget);
       expect(_back, findsNothing);
-      await _press(tester, 'draft_cancel_end_$_sara');
+      await _press(tester, 'draft_cancel_journey_action_$_sara');
       expect(_key('draft_journey_action_$_sara'), findsNothing);
       expect(find.byType(ZyraOneJourneyOptionsPage), findsOneWidget);
       expect(owner.latest.pages, ['journey_options']);
