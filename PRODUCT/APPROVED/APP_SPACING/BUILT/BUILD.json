@@ -1,0 +1,284 @@
+{
+  "schema": 1,
+  "queueLine": 77,
+  "commitSha": "6a5623d3ece525fe7308646c7aa63fa4d3af87e3",
+  "flutterVersion": "3.44.2",
+  "buildMode": "Flutter widget test and off-device render",
+  "timestamp": "2026-11-11T15:49:20+00:00",
+  "authority": {
+    "founderGo": "go",
+    "founderGoAt": "2026-11-11T14:35:51+00:00",
+    "initialBriefBytes": 8075,
+    "initialStartupOutputBytes": 33462,
+    "referenceOrigin": "694026d96e8b5ff0c47bdc68a3914d6aaa5f4370",
+    "publication": "New or amended design packs were read from approved local paths. The owner did not stage designer files.",
+    "references": [
+      {
+        "authority": "Brief",
+        "path": "PRODUCT/APPROVED/APP_SPACING/BRIEFS/BUILD_BRIEF_2026-11-11.md",
+        "bytes": 12685,
+        "sha256": "96c53d56a8a1b263d800e585514d4febc6ed9aa2f4334ffe4eb9f741da105444",
+        "matchesRecordedOrigin": false
+      },
+      {
+        "authority": "LOCK 24",
+        "path": "PRODUCT/APPROVED/APP_SPACING/RECORD/APP_SPACING_SPEC_CURRENT_VERSION_V1.md",
+        "bytes": 2852,
+        "sha256": "b69bb02666036a18a8b5d214c39f3f48a5570c54fc26082ddb91a6d6989fc871",
+        "matchesRecordedOrigin": false
+      },
+      {
+        "authority": "LOCK 24 record",
+        "path": "PRODUCT/APPROVED/APP_SPACING/RECORD/LOCK_RECORD.md",
+        "bytes": 821,
+        "sha256": "9e2c8124d188cb0cf17f005e7db56cd3870a9cdeb6cc8f8935d04e95b552eff9",
+        "matchesRecordedOrigin": false
+      },
+      {
+        "authority": "LOCK 19",
+        "path": "PRODUCT/APPROVED/GUARDIAN_CARD/RECORD/GUARDIAN_CARD_SPEC_CURRENT_VERSION_V5.md",
+        "bytes": 14006,
+        "sha256": "dfce664843180e70459a7d5e890a38a776099e033cf124b5aeb47c3e788270b5",
+        "matchesRecordedOrigin": false
+      },
+      {
+        "authority": "LOCK 19 record",
+        "path": "PRODUCT/APPROVED/GUARDIAN_CARD/RECORD/LOCK_RECORD.md",
+        "bytes": 3126,
+        "sha256": "a7dc369d500d3a0eb7f8afefee715b87fa37b03cf55649e36aab2e3b3247c3dd",
+        "matchesRecordedOrigin": false
+      },
+      {
+        "authority": "LOCK 7",
+        "path": "PRODUCT/APPROVED/REQUEST_ROW/RECORD/REQUEST_ROW_SPEC_CURRENT_VERSION_V3.md",
+        "bytes": 3412,
+        "sha256": "b14b13389e079d2f3fc6c1101b0c75c7490e870db6996f6d813644969cc3b028",
+        "matchesRecordedOrigin": false
+      },
+      {
+        "authority": "LOCK 7 record",
+        "path": "PRODUCT/APPROVED/REQUEST_ROW/RECORD/LOCK_RECORD.md",
+        "bytes": 2061,
+        "sha256": "eaf954fed660a4196acab398003d27d61af7349b75021fa7f4d376ae7a11132b",
+        "matchesRecordedOrigin": false
+      },
+      {
+        "authority": "LOCK 21",
+        "path": "PRODUCT/APPROVED/PROFILE_TAB/RECORD/PROFILE_TAB_SPEC_CURRENT_VERSION_V2.md",
+        "bytes": 5493,
+        "sha256": "0361f5e45e96effc46a7e854b5abc7c9ba9fc658e35af65adabe47093f318905",
+        "matchesRecordedOrigin": false
+      },
+      {
+        "authority": "LOCK 21 record",
+        "path": "PRODUCT/APPROVED/PROFILE_TAB/RECORD/LOCK_RECORD.md",
+        "bytes": 1596,
+        "sha256": "9a4efc414db48083433e2798e3b747a284e06163a944d783f49695317fcb9953",
+        "matchesRecordedOrigin": false
+      },
+      {
+        "authority": "LOCK 14",
+        "path": "PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V7.md",
+        "bytes": 8434,
+        "sha256": "8d9c271dc30356e00b40ffc892e067f797b627c861264f041051deb764b5b0ba",
+        "matchesRecordedOrigin": false
+      },
+      {
+        "authority": "LOCK 14 record",
+        "path": "PRODUCT/APPROVED/APP_COLOURS/RECORD/LOCK_RECORD.md",
+        "bytes": 4452,
+        "sha256": "b56fc7f8f7e05e2bfa52a90fef55c1d27125023c4a71388729a51457b6727baa",
+        "matchesRecordedOrigin": false
+      },
+      {
+        "authority": "LOCK 14 historical status-bar fix",
+        "path": "PRODUCT/APPROVED/APP_COLOURS/ARCHIVE/APP_COLOURS_SPEC_2026-11-11_V6.md",
+        "bytes": 8151,
+        "sha256": "2a9c7942278f43bd0b842ee65704de11132375bd91729461b9ce43fd5220f3e9",
+        "matchesRecordedOrigin": false
+      },
+      {
+        "authority": "LOCK 6",
+        "path": "PRODUCT/APPROVED/TAB_BAR/RECORD/TAB_BAR_SPEC_CURRENT_VERSION_V4.md",
+        "bytes": 2688,
+        "sha256": "3c5a082a23bcbd3cfa2da5728df1ff8c630b41cedbcabc973494356c6dcbd9e5",
+        "matchesRecordedOrigin": false
+      },
+      {
+        "authority": "LOCK 6 record",
+        "path": "PRODUCT/APPROVED/TAB_BAR/RECORD/LOCK_RECORD.md",
+        "bytes": 1967,
+        "sha256": "2404f7542da7996a7f78a8365e530183eefb45ce47d2e6182035ef696683aebd",
+        "matchesRecordedOrigin": false
+      },
+      {
+        "authority": "LOCK 15",
+        "path": "PRODUCT/APPROVED/MY_ZYRA/RECORD/MY_ZYRA_SPEC_CURRENT_VERSION_V5.md",
+        "bytes": 11869,
+        "sha256": "abcf20bb0179d5a772e458577237e1629bda1085f87eca5c3dfba65705e6cdba",
+        "matchesRecordedOrigin": false
+      },
+      {
+        "authority": "LOCK 15 record",
+        "path": "PRODUCT/APPROVED/MY_ZYRA/RECORD/LOCK_RECORD.md",
+        "bytes": 2912,
+        "sha256": "7c807ff5ba01d38c64097eeb95c28aa9c95b875003d2832ebc4ada7d22febe1a",
+        "matchesRecordedOrigin": false
+      },
+      {
+        "authority": "LOCK 17",
+        "path": "PRODUCT/APPROVED/UNREAD_BADGE/RECORD/UNREAD_BADGE_SPEC_CURRENT_VERSION_V1.md",
+        "bytes": 1264,
+        "sha256": "191ef71e77a601fb9fb0572cffd97907dd22cb40108b752018bbdb0f72b484cd",
+        "matchesRecordedOrigin": true
+      },
+      {
+        "authority": "LOCK 17 record",
+        "path": "PRODUCT/APPROVED/UNREAD_BADGE/RECORD/LOCK_RECORD.md",
+        "bytes": 640,
+        "sha256": "1c7a79d32586e5e632f976024558bf8bdbda63de1fe2d055db8d579ee52f8ce3",
+        "matchesRecordedOrigin": true
+      },
+      {
+        "authority": "LOCK 9",
+        "path": "PRODUCT/APPROVED/CODE_PAGE/RECORD/CODE_PAGE_SPEC_CURRENT_VERSION_V2.md",
+        "bytes": 3892,
+        "sha256": "24480b3acbbe60caf8dfe21125b0fa6c4e56d2c68cda4f86061eaff5937b06dd",
+        "matchesRecordedOrigin": true
+      },
+      {
+        "authority": "LOCK 9 record",
+        "path": "PRODUCT/APPROVED/CODE_PAGE/RECORD/LOCK_RECORD.md",
+        "bytes": 1633,
+        "sha256": "acadc64aeb3c20e5f2f436f37ab5bada2e385bac87da2dc6c0ebc7fb6124f0e6",
+        "matchesRecordedOrigin": true
+      },
+      {
+        "authority": "LOCK 5",
+        "path": "PRODUCT/APPROVED/TAB_ATTENTION/RECORD/TAB_ATTENTION_SPEC_CURRENT_VERSION_V1.md",
+        "bytes": 1428,
+        "sha256": "b3fb35ae66a7455c07436153c8fc014e29984ce104174ac88015de98cccb5ef3",
+        "matchesRecordedOrigin": true
+      },
+      {
+        "authority": "LOCK 5 record",
+        "path": "PRODUCT/APPROVED/TAB_ATTENTION/RECORD/LOCK_RECORD.md",
+        "bytes": 697,
+        "sha256": "3befedd72d68bee5e3fec208e5db9730bc57d9d739fd3a2fe080fcb0714ebf8c",
+        "matchesRecordedOrigin": true
+      }
+    ]
+  },
+  "application": {
+    "version": "1.0.0",
+    "buildNumber": 5,
+    "roleSurface": "Founder preview and shared profile/settings controls",
+    "targetPhoneStatus": "No phone install attempted under the implementation GO."
+  },
+  "quality": {
+    "analysis": {
+      "clean": true,
+      "sha256": "4b1b40f15988fd953e8a91b4c40edef01c0b3a9ac7754d395f95b20af2637747"
+    },
+    "testCandidate": {
+      "sha256": "168a61d84e2e31b6f4ee64a73d126ad50504e87d67b625c8acf2121e14c5ed4b",
+      "passes": 6941,
+      "failures": 39,
+      "skips": 122,
+      "suites": 530,
+      "completed": true,
+      "nonJsonLines": 0
+    },
+    "historicalBaseline": {
+      "sha256": "2256874afd0aeb8795a077ee5f1871c6c9e6e4ff816d6ed5363870984bd1e1a6",
+      "passes": 6972,
+      "failures": 39,
+      "skips": 124,
+      "suites": 530
+    },
+    "historicalBuildSha256": "88782f2cd2ea63b116053d8b7b2fa818c331762e844b016620b55f9214213c3f",
+    "newFailures": 0,
+    "matchedHistoricalFailures": 39,
+    "rawHistoricalLogAvailable": false,
+    "replay": {
+      "sha256": "2b650f8293e4fc0e1200dd6ca07db1a89178f9219528c7ddea565f4b8fffbc27",
+      "counts": {
+        "pass": 6960,
+        "fail": 51,
+        "skip": 124
+      },
+      "suites": 530,
+      "matchesHistoricalCounts": false,
+      "supplements": []
+    },
+    "replayExplanation": "The original raw Q59 archive was unavailable. Replay at the tracked Q59 source found the same 39 recorded failures plus 12 scratch-environment errors (eight OA198 evidence, three UI_GATE manifests, one repo context check). The committed Q59 map remains failure authority.",
+    "knownFailureIdentitySha256": "f1aec301aeff196495cd4a191ae4860921d15d6cd7222fe73cd6e1727f7bf6b6",
+    "noNewSkipIdentities": true,
+    "sameRetainedSkipIdentities": true,
+    "replayedSkipIdentitySha256": "e62c8e9c2316429d301113993df46de21502668582001fc9b73f0eeaae5271fa",
+    "retainedSkipIdentitySha256": "24a4e53e411313cc1ac927745684217461c411171cd03331ec2e682e4372140f",
+    "retiredSkipIdentitySha256": "4015625eab60f31eb7826a8d041360becd91015177f724a82fa097c021f19ab5",
+    "retiredSkipIdentities": [
+      {
+        "file": "SOURCE/test/visual/lock6_tab_bar_capture_test.dart",
+        "test": "LOCK6 actual guardian idle and touched root (variant: TargetPlatform.iOS)",
+        "count": 1
+      },
+      {
+        "file": "SOURCE/test/visual/lock6_tab_bar_capture_test.dart",
+        "test": "LOCK6 actual seeker idle and touched root (variant: TargetPlatform.iOS)",
+        "count": 1
+      }
+    ],
+    "comparisonSha256": "38c8bf1342e87c1fe9aed447e38adc5ccc4918b7f203a0b0277ca902995df103",
+    "identityComparisonSha256": "bde68edbb3254926e9e195e976741c258ba4a13fa566b9737b69b6dbb4f95ff3",
+    "testedOwnedPathsManifestSha256": "c8fdcd043d49bdd378112ed110c8134eae6374f5b6406a2aa4b5c964aa675db3"
+  },
+  "spacing": {
+    "audit": "SPACING_AUDIT.md",
+    "auditSha256": "1867267d9ecaf3028c43958dad5dd8dacb79330f3f63e9628b2b00b8c1584baa",
+    "preEditAuditSha256": "014d1cb64fbccb3d6adb0d9e60046f6eb13375c57cbc71b398fa5951535e3f3e",
+    "geometryManifestSha256": "312b373717b80723450b7538004c835fc444738967024d99d88873195e4ef0f5",
+    "strictMatrixPassed": 96,
+    "recordedRenderExceptions": 0,
+    "baselineCheckpoints": 156,
+    "finalCheckpoints": 220,
+    "privateAfterRenders": 65,
+    "fullTabBarHeightPt": 58,
+    "visibleTabBarChecks": 212,
+    "basicGateChecks": 8,
+    "clearanceTargetPt": 16,
+    "clearanceTolerancePt": 1,
+    "withinTolerance": 124,
+    "applicableEndpoints": 208,
+    "shortLayoutsPreserved": 84,
+    "viewportPt": [
+      [
+        430,
+        932
+      ],
+      [
+        375,
+        667
+      ]
+    ],
+    "bottomInsetsPt": [
+      34,
+      0
+    ],
+    "note": "Measured before implementation and after final spacing edits. Renders and raw test logs are held locally."
+  },
+  "questions": [
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81
+  ]
+}
