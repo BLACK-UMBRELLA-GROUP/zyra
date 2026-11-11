@@ -34,25 +34,23 @@ const sdkPins = {
 };
 const policyText = '(version 1)\n(allow default)\n; Inherited by the entire Dart / Flutter / Xcode subprocess tree.\n; No fake Git, metadata forging, package-signature or signing bypass.\n(deny process-exec\n  (regex #"/[Gg][Ii][Tt]([^/]*)?$")\n  (literal "/opt/homebrew/share/flutter/bin/flutter")\n  (literal "/opt/homebrew/share/flutter/bin/dart"))\n';
 const minFreeBytes = 2 * 1024 ** 3;
-const checkedSourceCommit = '6a5623d3ece525fe7308646c7aa63fa4d3af87e3';
-const checkedEvidenceCommit = 'a1e33eddda85dae4eab77eed69062cff3e6841e1';
-const checkedSourceHash = '848814e0c5d51c3f817425b2cea94f85ef0ab9fed0fa9cffb805cd821ae40a82';
+const checkedSourceCommit = '7210bc186aaca8f9cde49e24438abd512864e32e';
+const checkedEvidenceCommit = 'e579c3300c02ca1d70ebd1d55db05455e2bfa39e';
+const checkedSourceHash = 'bd9936d8668cb6501e72248d534eea721d542faf77f512cad886ec88ed6a7c73';
 const localApplicationInputHash = '5825d1f59bf2aa8600c3e408210ef4bbf30bd6f78f1127d4bb283d29dee8423f';
 const checkedRegression = Object.freeze({
-  analyzeSha256: "4b1b40f15988fd953e8a91b4c40edef01c0b3a9ac7754d395f95b20af2637747",
-  testsSha256: "168a61d84e2e31b6f4ee64a73d126ad50504e87d67b625c8acf2121e14c5ed4b",
-  failureBaselineSha256: "2256874afd0aeb8795a077ee5f1871c6c9e6e4ff816d6ed5363870984bd1e1a6",
-  historicalBuildSha256: "88782f2cd2ea63b116053d8b7b2fa818c331762e844b016620b55f9214213c3f",
-  baselineReplaySha256: "2b650f8293e4fc0e1200dd6ca07db1a89178f9219528c7ddea565f4b8fffbc27",
-  comparisonSha256: "bde68edbb3254926e9e195e976741c258ba4a13fa566b9737b69b6dbb4f95ff3",
-  candidateFailureSetSha256: "f1aec301aeff196495cd4a191ae4860921d15d6cd7222fe73cd6e1727f7bf6b6",
+  analyzeSha256: "a97ec9df34432830b3b2b5cc4cac15eba4392a8f40b14481241fdf0fea52b0ae",
+  testsSha256: "e63d69e58a4d6d53da67112edb45c39f90b210d40dd09b8c859fbd48ee0765dc",
+  failureBaselineSha256: "168a61d84e2e31b6f4ee64a73d126ad50504e87d67b625c8acf2121e14c5ed4b",
+  comparisonSha256: "bd47088f1f00c9c4e28bbb4950431fa7aac6f0ac456843f6f483342837b98f85",
+  candidateFailureSetSha256: "2514ec56905cc651e4bfc9d7c3613a480528c736536ed42ae47902dc090f8a69",
   retainedSkipSetSha256: "24a4e53e411313cc1ac927745684217461c411171cd03331ec2e682e4372140f",
-  retiredSkipSetSha256: "4015625eab60f31eb7826a8d041360becd91015177f724a82fa097c021f19ab5",
-  passes: 6941,
-  failures: 39,
+  passes: 6956,
+  failures: 38,
   skips: 122,
   suites: 530,
   newFailures: 0,
+  resolvedBaselineFailures: 1,
   newSkips: 0,
   sameRetainedSkips: true,
 });
@@ -304,7 +302,7 @@ function verifySdkAndHost() {
 }
 function loadPlan(file) {
   const packet = path.dirname(file);
-  if (path.dirname(packet) !== reviews || !/^ZYRA_LINE77_2026_11_11_[A-Z]$/.test(path.basename(packet)) ||
+  if (path.dirname(packet) !== reviews || !/^ZYRA_LINE78_2026_11_11_[A-Z]$/.test(path.basename(packet)) ||
       path.basename(file) !== 'HOST_PROFILE_PLAN.json' || fs.realpathSync(packet) !== packet) {
     throw Error('Wrong owned delivery plan');
   }
@@ -326,7 +324,7 @@ function loadPlan(file) {
   const checks = plan.checks;
   exactKeys(checks, Object.keys(checkedRegression));
   if (sortedJson(checks) !== sortedJson(checkedRegression)) {
-    throw Error('Missing exact line 77 regression check');
+    throw Error('Missing exact line 78 regression check');
   }
   return {packet, plan, seal, localFiles, planHash: sha(fs.readFileSync(file)), sealHash: sha(fs.readFileSync(path.join(packet, plan.sourceSeal)))};
 }
