@@ -34,13 +34,28 @@ const sdkPins = {
 };
 const policyText = '(version 1)\n(allow default)\n; Inherited by the entire Dart / Flutter / Xcode subprocess tree.\n; No fake Git, metadata forging, package-signature or signing bypass.\n(deny process-exec\n  (regex #"/[Gg][Ii][Tt]([^/]*)?$")\n  (literal "/opt/homebrew/share/flutter/bin/flutter")\n  (literal "/opt/homebrew/share/flutter/bin/dart"))\n';
 const minFreeBytes = 2 * 1024 ** 3;
-const checkedSourceCommit = 'b052b267ecf6c981a03adf0198f44318c00b9543';
-const checkedEvidenceCommit = 'f4b70c9cfb871b8241a9096d9c4dd2926cc1519c';
-const checkedSourceHash = '605233a4a6d5b60cbc1897c05b69c65b2a92739d606ed91ea420d274feb3e9d4';
+const checkedSourceCommit = '6a5623d3ece525fe7308646c7aa63fa4d3af87e3';
+const checkedEvidenceCommit = 'a1e33eddda85dae4eab77eed69062cff3e6841e1';
+const checkedSourceHash = '848814e0c5d51c3f817425b2cea94f85ef0ab9fed0fa9cffb805cd821ae40a82';
 const localApplicationInputHash = '5825d1f59bf2aa8600c3e408210ef4bbf30bd6f78f1127d4bb283d29dee8423f';
-const analyzerRunHash = '57ac77116aa51eea92fe5ae9322f6e5ae4a037a8c8ac85f342b6f59ea192d340';
-const fullTestRunHash = '9961040917a37024ce1c33cfe40a93f317f48d4a60888ec6fdbc54cea31d2e0b';
-const failureBaselineHash = '2256874afd0aeb8795a077ee5f1871c6c9e6e4ff816d6ed5363870984bd1e1a6';
+const checkedRegression = Object.freeze({
+  analyzeSha256: "4b1b40f15988fd953e8a91b4c40edef01c0b3a9ac7754d395f95b20af2637747",
+  testsSha256: "168a61d84e2e31b6f4ee64a73d126ad50504e87d67b625c8acf2121e14c5ed4b",
+  failureBaselineSha256: "2256874afd0aeb8795a077ee5f1871c6c9e6e4ff816d6ed5363870984bd1e1a6",
+  historicalBuildSha256: "88782f2cd2ea63b116053d8b7b2fa818c331762e844b016620b55f9214213c3f",
+  baselineReplaySha256: "2b650f8293e4fc0e1200dd6ca07db1a89178f9219528c7ddea565f4b8fffbc27",
+  comparisonSha256: "bde68edbb3254926e9e195e976741c258ba4a13fa566b9737b69b6dbb4f95ff3",
+  candidateFailureSetSha256: "f1aec301aeff196495cd4a191ae4860921d15d6cd7222fe73cd6e1727f7bf6b6",
+  retainedSkipSetSha256: "24a4e53e411313cc1ac927745684217461c411171cd03331ec2e682e4372140f",
+  retiredSkipSetSha256: "4015625eab60f31eb7826a8d041360becd91015177f724a82fa097c021f19ab5",
+  passes: 6941,
+  failures: 39,
+  skips: 122,
+  suites: 530,
+  newFailures: 0,
+  newSkips: 0,
+  sameRetainedSkips: true,
+});
 const dartCache = '/Users/shakeelahmad/.pub-cache/hosted/pub.dev';
 
 // Explicit public requirements, not a recursive scan of SOURCE or private data.
@@ -289,13 +304,13 @@ function verifySdkAndHost() {
 }
 function loadPlan(file) {
   const packet = path.dirname(file);
-  if (path.dirname(packet) !== reviews || !/^ZYRA_LINE76_[A-Za-z0-9_]+$/.test(path.basename(packet)) ||
+  if (path.dirname(packet) !== reviews || !/^ZYRA_LINE77_2026_11_11_[A-Z]$/.test(path.basename(packet)) ||
       path.basename(file) !== 'HOST_PROFILE_PLAN.json' || fs.realpathSync(packet) !== packet) {
     throw Error('Wrong owned delivery plan');
   }
   const plan = readJson(plainFile(file));
   exactKeys(plan, ['schema', 'source', 'sourceSeal', 'sourceCommit', 'evidenceCommit', 'nativeInputs', 'checks']);
-  if (plan.schema !== 2 || plan.source !== source || plan.sourceSeal !== 'CHECKED_PREBUILD.json' ||
+  if (plan.schema !== 3 || plan.source !== source || plan.sourceSeal !== 'CHECKED_PREBUILD.json' ||
       plan.sourceCommit !== checkedSourceCommit || plan.evidenceCommit !== checkedEvidenceCommit) throw Error('Unchecked application source commit');
   const seal = readJson(plainFile(path.join(packet, plan.sourceSeal)));
   exactKeys(seal, ['source', 'sourceCommit', 'files']);
@@ -309,12 +324,9 @@ function loadPlan(file) {
   if (sortedJson(plan.nativeInputs) !== sortedJson(publicNativeInventory()) ||
       sha(Buffer.from(sortedJson(plan.nativeInputs))) !== nativeInputHash) throw Error('Native requirements drift');
   const checks = plan.checks;
-  exactKeys(checks, ['analyzeSha256', 'testsSha256', 'failureBaselineSha256', 'passes', 'failures', 'skips', 'suites',
-    'sameFailures', 'sameSkips']);
-  if (checks.analyzeSha256 !== analyzerRunHash || checks.testsSha256 !== fullTestRunHash ||
-      checks.failureBaselineSha256 !== failureBaselineHash || checks.passes !== 6972 || checks.failures !== 39 ||
-      checks.skips !== 124 || checks.suites !== 530 || checks.sameFailures !== true || checks.sameSkips !== true) {
-    throw Error('Missing exact line 75 regression check');
+  exactKeys(checks, Object.keys(checkedRegression));
+  if (sortedJson(checks) !== sortedJson(checkedRegression)) {
+    throw Error('Missing exact line 77 regression check');
   }
   return {packet, plan, seal, localFiles, planHash: sha(fs.readFileSync(file)), sealHash: sha(fs.readFileSync(path.join(packet, plan.sourceSeal)))};
 }
