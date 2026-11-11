@@ -1,3 +1,4 @@
+import 'support/profile_swipe_driver.dart';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -135,6 +136,7 @@ VoidCallback? _action(WidgetTester tester, String id) {
 }
 
 Future<void> _press(WidgetTester tester, String id) async {
+  if (await swipeProfileForControlKey(tester, id)) return;
   if (await pressZyraDevControlKey(tester, id)) return;
   final target = _key(id);
   expect(target, findsOneWidget, reason: 'Current member target $id');
@@ -513,7 +515,7 @@ void main() {
               isNot(contains(person.id)),
             );
           }
-          expect(_key('concept_next_profile'), findsOneWidget);
+          expect(_key('concept_profile_swipe_track'), findsOneWidget);
           expect(find.text('Your Journey places are full.'), findsNothing);
           await _nav(tester, 1);
           _expectJourneys(tester, count);

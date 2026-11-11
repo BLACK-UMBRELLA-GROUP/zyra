@@ -25,6 +25,7 @@ import 'package:zyra/widgets/zyra_journey_icon.dart';
 import 'package:zyra/widgets/zyra_browse_next_photo_motion.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
+import 'support/profile_swipe_driver.dart';
 import 'support/zyra_hidden_dev_controls_driver.dart';
 
 // Retired control identities remain absence-only regression evidence.
@@ -198,15 +199,6 @@ void _expectNoBrowseChooser() {
   for (final name in _historicalBrowseControlNames) {
     expect(_key('concept_browse_design_$name'), findsNothing);
   }
-}
-
-Future<void> _chooseMotion(
-  WidgetTester tester,
-  ZyraBrowseNextMotion motion,
-) async {
-  expect(zyraShellFixtureFor(tester).selectBrowseMotion(motion), isTrue);
-  await tester.pumpAndSettle();
-  expect(_motionDropdown, findsNothing);
 }
 
 void _expectButton(
@@ -389,7 +381,7 @@ void main() {
   }
 
   testWidgets(
-    'compact Browse page options preserve fixed Portrait, data and local motion',
+    'compact Browse page options preserve fixed Portrait, data and profile swipe',
     (tester) async {
       await _mount(tester);
       final before = tester.widget<ZyraOneJourneyBrowseDesigns>(
@@ -399,7 +391,7 @@ void main() {
       final selectedId = before.profiles[before.selectedIndex].id;
       await _controls(tester);
       _expectNoBrowseChooser();
-      await _chooseMotion(tester, ZyraBrowseNextMotion.fanTurn);
+      expect(_motionDropdown, findsNothing);
       await _press(tester, 'draft_back');
       for (final destination in ['My ZYRA', 'Profile', 'Profiles']) {
         await _nav(tester, destination);
@@ -410,7 +402,16 @@ void main() {
       expect(after.design, ZyraOneJourneyBrowseDesign.portraitCard);
       expect(after.profiles.map((person) => person.id), ids);
       expect(after.profiles[after.selectedIndex].id, selectedId);
-      expect(after.nextProfileMotion, ZyraBrowseNextMotion.fanTurn);
+      expect(_key('concept_profile_swipe_track'), findsOneWidget);
+      expect(
+        await swipeProfileForControlKey(tester, 'concept_next_profile'),
+        isTrue,
+      );
+      final moved = tester.widget<ZyraOneJourneyBrowseDesigns>(
+        find.byType(ZyraOneJourneyBrowseDesigns),
+      );
+      expect(moved.profiles[moved.selectedIndex].id, isNot(selectedId));
+      expect(moved.profiles.map((person) => person.id), ids);
       expect(_destinations(tester), [
         'Profiles',
         'Journey',
@@ -589,7 +590,10 @@ void main() {
     await _mount(tester, size: const Size(320, 568), scale: 2, top: 44);
     await _controls(tester);
     _expectInventory(tester, large: true);
-    await _chooseMotion(tester, ZyraBrowseNextMotion.elasticCard);
+    expect(
+      await swipeProfileForControlKey(tester, 'concept_next_profile'),
+      isTrue,
+    );
     await _controls(tester, page: 'Profile');
     await _press(tester, 'draft_membership_seeker_basic');
     await _controls(tester, page: 'Journey');
@@ -629,30 +633,29 @@ void main() {
       await _controls(tester, page: 'Profiles');
       final role = _action(tester, 'draft_role_guardian')!;
       final reset = _action(tester, 'draft_reset')!;
-      final staleMotion = captureZyraBrowseMotionAction(tester);
-      await _chooseMotion(tester, ZyraBrowseNextMotion.cardRock);
+      ZyraOneJourneyBrowseDesigns browse() =>
+          tester.widget(find.byType(ZyraOneJourneyBrowseDesigns));
+      String selectedId() => browse().profiles[browse().selectedIndex].id;
+      final previous = selectedId();
+      final staleNext = browse().onNext!;
+      expect(
+        await swipeProfileForControlKey(tester, 'concept_next_profile'),
+        isTrue,
+      );
+      final next = selectedId();
+      expect(next, isNot(previous));
       // Retained UI-revision delegates must not borrow the current controls.
       count();
       role();
       reset();
-      staleMotion(ZyraBrowseNextMotion.cardRise);
+      staleNext();
       await tester.pumpAndSettle();
       expect(find.text('Page options'), findsNothing);
-      expect(
-        tester
-            .widget<ZyraOneJourneyBrowseDesigns>(
-              find.byType(ZyraOneJourneyBrowseDesigns),
-            )
-            .nextProfileMotion,
-        ZyraBrowseNextMotion.cardRock,
-      );
+      expect(selectedId(), next);
       _expectNoBrowseChooser();
       await _press(tester, 'draft_back');
-      final browse = tester.widget<ZyraOneJourneyBrowseDesigns>(
-        find.byType(ZyraOneJourneyBrowseDesigns),
-      );
-      expect(browse.design, ZyraOneJourneyBrowseDesign.portraitCard);
-      expect(browse.nextProfileMotion, ZyraBrowseNextMotion.cardRock);
+      expect(browse().design, ZyraOneJourneyBrowseDesign.portraitCard);
+      expect(selectedId(), next);
       expect(_destinations(tester).first, 'Profiles');
       expect(AppState.instance.activeJourneys, isEmpty);
     },

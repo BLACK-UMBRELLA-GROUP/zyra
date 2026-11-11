@@ -1,3 +1,4 @@
+import 'support/profile_swipe_driver.dart';
 // Actual protected local shell, with synthetic records and offline photos.
 // These checks prove action routing and retained-delegate denial, not real
 // member activation, receipt authority, private results or provider access.
@@ -122,6 +123,7 @@ Future<void> _mount(
 }
 
 Future<void> _press(WidgetTester tester, String key) async {
+  if (await swipeProfileForControlKey(tester, key)) return;
   if (await pressZyraDevControlKey(tester, key)) return;
   final target = _key(key);
   if (target.evaluate().isEmpty &&

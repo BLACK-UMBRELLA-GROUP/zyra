@@ -115,6 +115,7 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
     if (_topicsLaidOut || _loading) return;
     _topicsLaidOut = true;
     final epoch = _topicsEpoch, thread = _threadId;
+    final pastList = _topicsPast && _topicsSelection == null;
     void reveal(int remaining) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!_canActOnCircleRoute ||
@@ -123,10 +124,11 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
             !_topicMessageScroll.hasClients) {
           return;
         }
-        _topicMessageScroll.jumpTo(
-          _topicMessageScroll.position.maxScrollExtent,
+        final position = _topicMessageScroll.position;
+        position.jumpTo(
+          pastList ? position.minScrollExtent : position.maxScrollExtent,
         );
-        if (remaining > 0) reveal(remaining - 1);
+        if (!pastList && remaining > 0) reveal(remaining - 1);
       });
     }
 

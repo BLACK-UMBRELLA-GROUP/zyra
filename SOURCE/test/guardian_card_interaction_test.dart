@@ -376,17 +376,12 @@ void main() {
     String id,
     double fraction,
   ) async {
-    final detector = tester.widget<GestureDetector>(_card(id));
-    final width = tester.getSize(_card(id)).width;
-    detector.onHorizontalDragDown!(DragDownDetails());
-    detector.onHorizontalDragUpdate!(
-      DragUpdateDetails(
-        globalPosition: Offset.zero,
-        delta: Offset(width * fraction, 0),
-      ),
-    );
-    detector.onHorizontalDragEnd!(DragEndDetails());
-    await tester.pump();
+    final bounds = tester.getRect(_card(id));
+    final gesture = await tester.startGesture(bounds.center);
+    await gesture.moveBy(Offset(bounds.width * fraction, 0));
+    await tester.pump(const Duration(milliseconds: 120));
+    await gesture.up();
+    await tester.pumpAndSettle();
   }
 
   Future<VoidCallback> confirmation(
@@ -486,7 +481,8 @@ void main() {
     await next(tester);
     expect(find.text('Omar'), findsOneWidget);
     expect(find.text('Waiting for Omar'), findsOneWidget);
-    expect(find.text('Send invitation again'), findsOneWidget);
+    expect(find.text('Waiting for Omar to accept'), findsOneWidget);
+    expect(find.text('Send invitation again'), findsNothing);
     await next(tester);
     expect(_card('add'), findsOneWidget);
     expect(find.text('Add a Guardian'), findsNWidgets(2));
@@ -561,61 +557,86 @@ void main() {
     expect(state().pages, isEmpty);
   });
 
-  testWidgets('Guardian slides out then in from a Chat chip swipe', (
+  testWidgets('Guardian neighbour follows a chip swipe and stays inert', (
     tester,
   ) async {
     await mount(tester, initialPage: 1, disableAnimations: false);
     final chip = _chat(_ibrahimId);
-    final start = tester.getCenter(chip);
-    final gesture = await tester.startGesture(start);
-    await gesture.moveBy(const Offset(-110, 0));
+    final current = _card(_ibrahimId);
+    final neighbour = _card('preview-invited-omar');
+    final bounds = tester.getRect(current);
+    final gesture = await tester.startGesture(tester.getCenter(chip));
+    await gesture.moveBy(const Offset(-185, 0));
     await tester.pump();
-    expect(tester.getCenter(chip).dx, closeTo(start.dx - 110, 1));
+    expect(tester.getRect(current).left, closeTo(bounds.left - 185, 1));
+    expect(tester.getRect(neighbour).left, lessThan(bounds.right));
+    expect(
+      tester.getRect(neighbour).left - tester.getRect(current).right,
+      closeTo(24, 1),
+    );
+    expect(neighbour.hitTestable(), findsNothing);
+    final scope = find.ancestor(
+      of: neighbour,
+      matching: find.byType(ExcludeFocus),
+    );
+    expect(tester.widget<ExcludeFocus>(scope.first).excluding, isTrue);
+    expect(state().pages, isEmpty);
 
     await gesture.up();
     await tester.pump();
-    await tester.pump(const Duration(milliseconds: 90));
-    expect(tester.getCenter(chip).dx, lessThan(start.dx - 110));
+    await tester.pump(const Duration(milliseconds: 180));
+    expect(tester.getRect(neighbour).left, greaterThan(bounds.left));
     expect(state().pages, isEmpty);
-    await tester.pump(const Duration(milliseconds: 91));
-    await tester.pump();
-    final moving = find.byKey(const ValueKey('guardian-card-slide'));
-    expect(_card('preview-invited-omar'), findsOneWidget);
-    expect(
-      tester.widget<FractionalTranslation>(moving).translation.dx,
-      greaterThan(0),
-    );
     await tester.pumpAndSettle();
-    expect(tester.widget<FractionalTranslation>(moving).translation.dx, 0);
+    expect(tester.getRect(neighbour), bounds);
+    expect(current, findsNothing);
     expect(state().pages, [2]);
     expect(state().permissions, isEmpty);
+  });
+
+  testWidgets('A retained neighbour action stays inert after springback', (
+    tester,
+  ) async {
+    await mount(tester, disableAnimations: false);
+    final gesture = await tester.startGesture(
+      tester.getCenter(_card(_hassanId)),
+    );
+    await gesture.moveBy(const Offset(-44, 0));
+    await tester.pump();
+    final neighbourAction = tester
+        .widget<Semantics>(_view(_ibrahimId))
+        .properties
+        .onTap!;
+    await gesture.up();
+    await tester.pumpAndSettle();
+
+    final before = haptics();
+    neighbourAction();
+    await tester.pump();
+    expect(state().permissions, isEmpty);
+    expect(state().pages, isEmpty);
+    expect(haptics(), before);
   });
 
   testWidgets('Guardian resists at the end and animates edge and dot taps', (
     tester,
   ) async {
     await mount(tester, disableAnimations: false);
-    final moving = find.byKey(const ValueKey('guardian-card-slide'));
-    final start = tester.getCenter(_card(_hassanId));
+    final first = _card(_hassanId);
+    final second = _card(_ibrahimId);
+    final start = tester.getCenter(first);
     final gesture = await tester.startGesture(start);
     await gesture.moveBy(const Offset(120, 0));
     await tester.pump();
-    final resistant = tester
-        .widget<FractionalTranslation>(moving)
-        .translation
-        .dx;
-    expect(resistant, greaterThan(0));
-    expect(resistant, lessThan(120 / tester.getSize(_card(_hassanId)).width));
+    expect(tester.getCenter(first).dx - start.dx, closeTo(36, 1));
     await gesture.up();
     await tester.pumpAndSettle();
     expect(state().pages, isEmpty);
     await tester.tap(_edge('right'));
     await tester.pump();
-    expect(_card(_ibrahimId), findsOneWidget);
-    expect(
-      tester.widget<FractionalTranslation>(moving).translation.dx,
-      greaterThan(0),
-    );
+    await tester.pump(const Duration(milliseconds: 80));
+    expect(tester.getCenter(second).dx, greaterThan(start.dx));
+    expect(state().pages, isEmpty);
     final before = haptics();
     await tester.tap(_dotTarget(0), warnIfMissed: false);
     await tester.pumpAndSettle();
@@ -623,11 +644,8 @@ void main() {
     expect(haptics(), before);
     await tester.tap(_dotTarget(0));
     await tester.pump();
-    expect(_card(_hassanId), findsOneWidget);
-    expect(
-      tester.widget<FractionalTranslation>(moving).translation.dx,
-      lessThan(0),
-    );
+    await tester.pump(const Duration(milliseconds: 80));
+    expect(tester.getCenter(first).dx, lessThan(start.dx));
     await tester.pumpAndSettle();
     expect(state().pages, [1, 0]);
   });
@@ -642,14 +660,10 @@ void main() {
       await gesture.moveBy(const Offset(-110, 0));
       await tester.pump();
       expect(tester.getCenter(chip), start);
+      expect(_card('preview-invited-omar'), findsNothing);
       await gesture.up();
       await tester.pump();
       expect(_card('preview-invited-omar'), findsOneWidget);
-      final moving = find.byKey(const ValueKey('guardian-card-slide'));
-      expect(
-        tester.widget<FractionalTranslation>(moving).translation,
-        Offset.zero,
-      );
       expect(state().permissions, isEmpty);
       expect(state().pages, [2]);
     },
@@ -756,11 +770,8 @@ void main() {
         await tester.pump();
         expect(haptics() - semanticHaptics, 1);
         expect(_card('preview-invited-omar'), findsOneWidget);
-        final inviteHaptics = haptics();
-        await tester.tap(_center);
-        await tester.pump();
-        expect(state().adds, 1);
-        expect(haptics() - inviteHaptics, 1);
+        expect(_center, findsNothing);
+        expect(state().adds, 0);
       }
       await next(tester);
       expect(_card('add'), findsOneWidget);
@@ -813,25 +824,15 @@ void main() {
     tester,
   ) async {
     await mount(tester);
-    final original = tester.widget<GestureDetector>(_card(_hassanId));
-    original.onHorizontalDragDown!(DragDownDetails());
-    original.onHorizontalDragUpdate!(
-      DragUpdateDetails(
-        globalPosition: Offset.zero,
-        delta: const Offset(-40, 0),
-      ),
+    final gesture = await tester.startGesture(
+      tester.getCenter(_card(_hassanId)),
     );
+    await gesture.moveBy(const Offset(-40, 0));
     state().changeContext();
     await tester.pump();
-    final current = tester.widget<GestureDetector>(_card(_hassanId));
     final before = haptics();
-    current.onHorizontalDragUpdate!(
-      DragUpdateDetails(
-        globalPosition: Offset.zero,
-        delta: const Offset(-120, 0),
-      ),
-    );
-    current.onHorizontalDragEnd!(DragEndDetails());
+    await gesture.moveBy(const Offset(-120, 0));
+    await gesture.up();
     await tester.pump();
     expect(state().pages, isEmpty);
     expect(haptics(), before);
@@ -839,6 +840,24 @@ void main() {
     await next(tester);
     expect(state().pages, [1]);
     expect(find.text('JOURNEY ACCESS'), findsOneWidget);
+  });
+
+  testWidgets('A pointer down under the old owner cannot start a new drag', (
+    tester,
+  ) async {
+    await mount(tester);
+    final gesture = await tester.startGesture(
+      tester.getCenter(_card(_hassanId)),
+    );
+    state().changeContext();
+    await tester.pump();
+    await gesture.moveBy(const Offset(-120, 0));
+    await gesture.up();
+    await tester.pump();
+    expect(state().pages, isEmpty);
+    expect(_card(_hassanId), findsOneWidget);
+    await next(tester);
+    expect(state().pages, [1]);
   });
 
   for (final size in [const Size(430, 932), const Size(375, 667)]) {
@@ -1571,13 +1590,11 @@ void main() {
     expect(contrast, greaterThan(4.5));
   });
   testWidgets(
-    'Invited card has a solid surface; only Add uses a dashed outline',
+    'Invited card uses a dashed waiting panel without a resend pill',
     (tester) async {
       await mount(tester);
       await next(tester);
       await next(tester);
-      // Q17 / LOCK 19 k07 and k08: check the actual dashed border, including
-      // its absence on the invitation card.
       final dashed = find.byWidgetPredicate(
         (widget) =>
             widget is CustomPaint &&
@@ -1585,12 +1602,13 @@ void main() {
       );
       final invited = _card('preview-invited-omar');
       expect(_menu, findsNothing);
-      expect(find.descendant(of: invited, matching: _center), findsOneWidget);
+      expect(find.descendant(of: invited, matching: _center), findsNothing);
+      expect(find.text('Waiting for Omar to accept'), findsOneWidget);
       expect(
-        find.text('Access starts once Omar accepts the invitation.'),
+        find.textContaining('Access starts once they accept.'),
         findsOneWidget,
       );
-      expect(find.descendant(of: invited, matching: dashed), findsNothing);
+      expect(find.descendant(of: invited, matching: dashed), findsNWidgets(2));
       await next(tester);
       expect(
         find.descendant(of: _card('add'), matching: dashed),

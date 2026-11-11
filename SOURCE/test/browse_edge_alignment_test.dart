@@ -1,3 +1,4 @@
+import 'support/profile_swipe_driver.dart';
 // Actual protected shell and bundled offline photographs. This fixture checks
 // the visible content edges and real gesture owners, not member activation.
 import 'dart:io';
@@ -76,10 +77,6 @@ Finder _touchOwner() => find
     )
     .first;
 
-Rect _outerPill(WidgetTester tester, String key) => tester.getRect(
-  find.ancestor(of: _key(key), matching: find.byType(Material)).first,
-);
-
 void _edges(Rect rect, double width, double inset) {
   expect(rect.left, closeTo(inset, .01));
   expect(rect.right, closeTo(width - inset, .01));
@@ -112,10 +109,8 @@ void _expectBrowseGeometry(WidgetTester tester, Size size) {
   final title = tester.getRect(_key('concept_browse_title'));
   final menu = tester.getRect(_key('concept_browse_menu'));
   final photo = tester.getRect(_key('concept_browse_portrait_card'));
-  final footer = tester.getRect(_key('concept_browse_footer'));
   _edges(header, size.width, 20);
   _edges(photo, size.width, 20);
-  _edges(footer, size.width, 20);
   expect(title.left, closeTo(20, .01));
   expect(menu.right, closeTo(size.width - 20, .01));
   expect(title.top, greaterThanOrEqualTo(59 + 16));
@@ -126,7 +121,6 @@ void _expectBrowseGeometry(WidgetTester tester, Size size) {
   );
   expect(dotTarget.top - title.bottom, closeTo(12, .01));
   expect(photo.top - paintedDot.bottom, closeTo(12, .01));
-  expect(footer.top - photo.bottom, closeTo(12, .01));
 
   final glyph = find.descendant(
     of: _key('concept_browse_menu'),
@@ -137,22 +131,11 @@ void _expectBrowseGeometry(WidgetTester tester, Size size) {
   expect(glyphRect.right, closeTo(size.width - 20, .01));
   _target(tester, _key('concept_browse_menu'));
 
-  final previous = _outerPill(tester, 'concept_previous_profile');
-  final next = _outerPill(tester, 'concept_next_profile');
-  final request = _outerPill(tester, 'draft_profile_${_person(tester).id}');
-  expect(previous.left, closeTo(20, .01));
-  expect(next.right, closeTo(size.width - 20, .01));
-  expect(previous, request, reason: 'LOCK7 uses one shared request pill.');
-  expect(next, request);
-  expect(tester.getSize(_key('concept_previous_profile')).width, 68);
-  expect(tester.getSize(_key('concept_next_profile')).width, 68);
-  for (final key in [
-    'concept_previous_profile',
-    'concept_next_profile',
-    'draft_profile_${_person(tester).id}',
-  ]) {
-    _target(tester, _key(key));
-  }
+  expect(_key('concept_previous_profile'), findsNothing);
+  expect(_key('concept_next_profile'), findsNothing);
+  final request = _key('draft_profile_${_person(tester).id}');
+  _edges(tester.getRect(request), size.width, 42);
+  _target(tester, request);
 
   final scroll = tester.widget<SingleChildScrollView>(
     _key('concept_browse_design_scroll'),
@@ -163,7 +146,7 @@ void _expectBrowseGeometry(WidgetTester tester, Size size) {
   expect(tester.state<ScrollableState>(position).position.maxScrollExtent, 0);
   final nav = tester.getRect(_glass());
   _expectRootBarGeometry(tester, size);
-  expect(nav.top - footer.bottom, closeTo(16, 1));
+  expect(nav.top - photo.bottom, closeTo(16, 1));
   expect(tester.takeException(), isNull);
 }
 
@@ -245,6 +228,7 @@ Future<void> _mount(
 }
 
 Future<void> _press(WidgetTester tester, String key) async {
+  if (await swipeProfileForControlKey(tester, key)) return;
   if (await pressZyraDevControlKey(tester, key)) return;
   _target(tester, _key(key));
   await tester.tap(_key(key));

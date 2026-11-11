@@ -1,3 +1,4 @@
+import 'support/profile_swipe_driver.dart';
 import 'support/pump_invitation_feedback.dart';
 import 'support/zyra_hidden_dev_controls_driver.dart';
 // Local guarded shell with synthetic public profiles and offline images.
@@ -101,6 +102,7 @@ Future<void> _mount(WidgetTester tester, {bool Function()? canAct}) async {
 }
 
 Future<void> _tap(WidgetTester tester, String key) async {
+  if (await swipeProfileForControlKey(tester, key)) return;
   if (await pressZyraDevControlKey(tester, key)) return;
   final target = _key(key);
   expect(target, findsOneWidget);
@@ -132,12 +134,10 @@ Future<void> _tap(WidgetTester tester, String key) async {
 
 Future<void> _seedViewedHistory(WidgetTester tester) async {
   expect(_currentId(tester), _sara);
-  final profileCount = _browse(tester).profiles.length;
-  expect(profileCount, 7);
-  for (var visit = 0; visit < profileCount; visit++) {
-    await _tap(tester, 'concept_next_profile');
-  }
-  expect(_currentId(tester), _sara);
+  await _tap(tester, 'concept_next_profile');
+  await _tap(tester, 'concept_next_profile');
+  await _tap(tester, 'concept_previous_profile');
+  expect(_currentId(tester), 'draft-aisha');
   expect(_browse(tester).onPrevious, isNotNull);
 }
 
@@ -260,30 +260,32 @@ void main() {
     },
   );
 
-  testWidgets('photo swipes, same index and stale delegates are silent', (
-    tester,
-  ) async {
-    await _mount(tester);
-    final pager = _key('concept_browse_photo_swipe_$_sara');
-    calls.clear();
-    await tester.drag(pager, const Offset(-300, 0));
-    await tester.pumpAndSettle();
-    expect(tester.widget<PageView>(pager).controller!.page, closeTo(1, .01));
-    expect(haptics(), isEmpty);
-    final repeat = tester.widget<PageView>(pager).onPageChanged!;
-    calls.clear();
-    repeat(1);
-    await tester.pumpAndSettle();
-    expect(haptics(), isEmpty);
-    expect(tester.widget<PageView>(pager).controller!.page, closeTo(1, .01));
-    await _tap(tester, 'concept_next_profile');
-    expectOneTick();
-    calls.clear();
-    repeat(0);
-    await tester.pumpAndSettle();
-    expect(haptics(), isEmpty);
-    expect(_currentId(tester), 'draft-aisha');
-  });
+  testWidgets(
+    'short profile drags, same photo index and stale delegates are silent',
+    (tester) async {
+      await _mount(tester);
+      final pager = _key('concept_browse_photo_swipe_$_sara');
+      calls.clear();
+      await tester.drag(pager, const Offset(-35, 0));
+      await tester.pumpAndSettle();
+      expect(tester.widget<PageView>(pager).controller!.page, closeTo(0, .01));
+      expect(haptics(), isEmpty);
+      await _tap(tester, 'concept_browse_photo_tap_$_sara');
+      final repeat = tester.widget<PageView>(pager).onPageChanged!;
+      calls.clear();
+      repeat(1);
+      await tester.pumpAndSettle();
+      expect(haptics(), isEmpty);
+      expect(tester.widget<PageView>(pager).controller!.page, closeTo(1, .01));
+      await _tap(tester, 'concept_next_profile');
+      expectOneTick();
+      calls.clear();
+      repeat(0);
+      await tester.pumpAndSettle();
+      expect(haptics(), isEmpty);
+      expect(_currentId(tester), 'draft-aisha');
+    },
+  );
 
   testWidgets(
     'Off keeps valid Browse actions functional and completely silent',
@@ -298,11 +300,7 @@ void main() {
       expect(_currentId(tester), 'draft-aisha');
       await _tap(tester, 'concept_previous_profile');
       expect(_currentId(tester), _sara);
-      await tester.drag(
-        _key('concept_browse_photo_swipe_$_sara'),
-        const Offset(-300, 0),
-      );
-      await tester.pumpAndSettle();
+      await _tap(tester, 'concept_browse_photo_tap_$_sara');
       await _tap(tester, 'concept_browse_menu');
       await tester.tapAt(const Offset(150, 260));
       await tester.pumpAndSettle();
@@ -341,7 +339,7 @@ void main() {
       await _seedViewedHistory(tester);
       final stale = _browse(tester);
       final person = stale.profiles[stale.selectedIndex];
-      final request = _action(tester, 'draft_profile_$_sara')!;
+      final request = _action(tester, 'draft_profile_${person.id}')!;
       await _tap(tester, 'concept_next_profile');
       calls.clear();
       request();
@@ -353,7 +351,7 @@ void main() {
       stale.onBrowseMenu!(person);
       await tester.pumpAndSettle();
       expect(haptics(), isEmpty);
-      expect(_currentId(tester), 'draft-aisha');
+      expect(_currentId(tester), 'draft-maryam');
       expect(_key('concept_browse_options_navigation'), findsNothing);
       expect(find.byType(ZyraOneJourneyBrowsePresentation), findsNothing);
       expect(find.text('Request sent'), findsNothing);
@@ -378,7 +376,7 @@ void main() {
     stale.onBrowseMenu!(person);
     await tester.pumpAndSettle();
     expect(haptics(), isEmpty);
-    expect(_currentId(tester), _sara);
+    expect(_currentId(tester), 'draft-aisha');
     expect(find.text('Request sent'), findsNothing);
   });
 

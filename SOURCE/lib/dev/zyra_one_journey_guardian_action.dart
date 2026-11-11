@@ -259,3 +259,159 @@ class ZyraGuardianActionPage extends StatelessWidget {
     ),
   );
 }
+
+/// LOCK 19 V11 presentation for a detached Founder invitation fixture.
+class ZyraGuardianFreePlacePage extends StatelessWidget {
+  const ZyraGuardianFreePlacePage({
+    super.key,
+    required this.canAct,
+    required this.onJoin,
+    required this.onDismiss,
+  });
+
+  final bool Function() canAct;
+  final VoidCallback onJoin, onDismiss;
+
+  static const _rows = [
+    (
+      Icons.people_outline,
+      'Adam is on Seeker Basic',
+      'One of his Guardians can join on Guardian Basic. That place is already used.',
+    ),
+    (
+      Icons.workspace_premium_outlined,
+      'Join on Guardian One',
+      'Become Adam’s Guardian now. Chat in his Journeys when he turns it on, plus Connect with Guardian and Introductions.',
+    ),
+    (
+      Icons.history,
+      'Or wait for Adam',
+      'If Adam moves to Seeker One, his Guardians can join on any plan. Your invitation stays open for 7 days.',
+    ),
+  ];
+
+  Widget _infoRow(IconData icon, String title, String detail, double padding) =>
+      Padding(
+        padding: EdgeInsets.symmetric(vertical: padding),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(icon, size: 18, color: ZyraColors.journeyGold),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: ZyraText.body(size: 14)),
+                  const SizedBox(height: 2),
+                  Text(
+                    detail,
+                    style: ZyraText.subtext(size: 12).copyWith(height: 1.4),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+
+  @override
+  Widget build(BuildContext context) => SafeArea(
+    child: LayoutBuilder(
+      builder: (context, constraints) {
+        final compact = constraints.maxHeight < 680;
+        final gap = compact ? 12.0 : 20.0;
+        return ZyraShadowScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: IntrinsicHeight(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 14),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text('Invitation', style: ZyraText.pageTitle()),
+                    SizedBox(height: gap),
+                    const ZyraMonogramHead(
+                      name: 'Adam',
+                      title: 'Adam’s free place is taken',
+                      eyebrow: 'GUARDIAN INVITATION',
+                      monogramKey: ValueKey('guardian_free_place_monogram'),
+                    ),
+                    SizedBox(height: gap),
+                    Expanded(
+                      child: ZyraMonogramCard(
+                        key: const ValueKey('guardian_free_place_card'),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 10,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            for (final (index, (icon, title, detail))
+                                in _rows.indexed) ...[
+                              if (index > 0)
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 38),
+                                  child: Divider(
+                                    height: 1,
+                                    color: ZyraColors.surfaceBorder,
+                                  ),
+                                ),
+                              _infoRow(icon, title, detail, compact ? 10 : 12),
+                            ],
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    ZyraFloatingSurface(
+                      gold: true,
+                      radius: 28,
+                      child: TextButton(
+                        key: const ValueKey('guardian_free_place_join'),
+                        onPressed: ZyraTapFeedback.onTap(
+                          context,
+                          onJoin,
+                          canAct: canAct,
+                        ),
+                        style: TextButton.styleFrom(
+                          minimumSize: const Size.fromHeight(48),
+                          shape: const StadiumBorder(),
+                          backgroundColor: ZyraColors.primaryAction,
+                          foregroundColor: ZyraColors.foreground,
+                        ),
+                        child: Text(
+                          'Join with Guardian One',
+                          style: ZyraText.body(
+                            size: 14,
+                          ).copyWith(fontWeight: FontWeight.w500),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    TextButton(
+                      key: const ValueKey('guardian_free_place_dismiss'),
+                      onPressed: ZyraTapFeedback.onTap(
+                        context,
+                        onDismiss,
+                        canAct: canAct,
+                      ),
+                      style: TextButton.styleFrom(
+                        minimumSize: const Size.fromHeight(44),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                      ),
+                      child: Text('Not now', style: ZyraText.body(size: 13)),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    ),
+  );
+}

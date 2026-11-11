@@ -8,6 +8,26 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_compatibility_demo.dart';
 
+/// The admitted owner supplies only the actions available for a locked topic.
+class ZyraCompatibilityTopicGate {
+  const ZyraCompatibilityTopicGate({
+    required this.guardian,
+    this.canAct,
+    this.onUpgrade,
+    this.balance = 0,
+    this.onUnlock,
+    this.onBuyMore,
+  }) : assert(
+         canAct != null ||
+             (onUpgrade == null && onUnlock == null && onBuyMore == null),
+       );
+
+  final bool guardian;
+  final int balance;
+  final bool Function()? canAct;
+  final VoidCallback? onUpgrade, onUnlock, onBuyMore;
+}
+
 /// Presentation only, mounted by the protected caller after its local reveal.
 ///
 /// The supplied overall value and six existing demo tuples are display fixtures.
@@ -18,10 +38,12 @@ class ZyraCompatibilityScoreReader extends StatefulWidget {
     super.key,
     required this.personName,
     required this.overallScore,
+    this.topicGate,
   }) : assert(overallScore >= 0 && overallScore <= 100);
 
   final String personName;
   final int overallScore;
+  final ZyraCompatibilityTopicGate? topicGate;
 
   @override
   State<ZyraCompatibilityScoreReader> createState() =>
@@ -52,7 +74,8 @@ class _ZyraCompatibilityScoreReaderState
   void didUpdateWidget(covariant ZyraCompatibilityScoreReader oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.personName != widget.personName ||
-        oldWidget.overallScore != widget.overallScore) {
+        oldWidget.overallScore != widget.overallScore ||
+        (oldWidget.topicGate == null) != (widget.topicGate == null)) {
       final revision = ++_personRevision;
       _page = 0;
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -199,6 +222,10 @@ class _ZyraCompatibilityScoreReaderState
   }
 
   Widget _scorePage(int index) {
+    final gate = widget.topicGate;
+    if (index != 0 && gate != null) {
+      return _lockedTopic(index, gate);
+    }
     final largeText = MediaQuery.textScalerOf(context).scale(14) > 20;
     final category = index == 0
         ? null
@@ -224,6 +251,168 @@ class _ZyraCompatibilityScoreReaderState
           if (category == null) ...[const SizedBox(height: 24), _guardian()],
         ],
       ),
+    );
+  }
+
+  Widget _lockedTopic(
+    int index,
+    ZyraCompatibilityTopicGate gate,
+  ) => LayoutBuilder(
+    builder: (context, constraints) => SingleChildScrollView(
+      key: ValueKey('draft_compatibility_locked_topic_$index'),
+      primary: false,
+      padding: const EdgeInsets.fromLTRB(20, 22, 20, 0),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: math.max(0, constraints.maxHeight - 22),
+        ),
+        child: IntrinsicHeight(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                _name(index),
+                key: ValueKey('draft_compatibility_score_title_$index'),
+                style: ZyraText.heading(
+                  size: 25,
+                  color: _ink,
+                ).copyWith(height: 1.2, letterSpacing: 0),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox.square(
+                      dimension: math.min(
+                        248,
+                        math.max(0, constraints.maxWidth - 40),
+                      ),
+                      child: CustomPaint(
+                        painter: _DemoRings(
+                          values: const [],
+                          colors: const [],
+                          trackColor: ZyraColors.journeyGold.withValues(
+                            alpha: .16,
+                          ),
+                        ),
+                        child: const Icon(
+                          Icons.lock_outline,
+                          color: ZyraColors.journeyGold,
+                          size: 44,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+                    Text(
+                      'Every topic comes with ${gate.guardian ? 'Guardian' : 'Seeker'} One',
+                      textAlign: TextAlign.center,
+                      style: ZyraText.body(
+                        size: 17,
+                        color: _ink,
+                      ).copyWith(height: 1.2, letterSpacing: 0),
+                    ),
+                    if (!gate.guardian) ...[
+                      const SizedBox(height: 6),
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 290),
+                        child: Text(
+                          'Seeker Basic shows the overall score. Use 1 '
+                          'Unlock to see every topic for ${widget.personName}.',
+                          textAlign: TextAlign.center,
+                          style: ZyraText.subtext(
+                            size: 12.5,
+                          ).copyWith(height: 1.4, letterSpacing: 0),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              _lockedTopicActions(context, gate),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+
+  Widget _lockedTopicActions(
+    BuildContext context,
+    ZyraCompatibilityTopicGate gate,
+  ) {
+    final hasUnlock = gate.balance > 0;
+    final primary = gate.guardian
+        ? gate.onUpgrade
+        : hasUnlock
+        ? gate.onUnlock
+        : gate.onBuyMore;
+    if (primary == null && gate.onUpgrade == null) {
+      return const SizedBox.shrink();
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ZyraFloatingSurface(
+          radius: 999,
+          gold: true,
+          child: FilledButton(
+            key: const ValueKey('draft_compatibility_topic_action'),
+            onPressed: ZyraTapFeedback.onTap(
+              context,
+              primary,
+              canAct: gate.canAct,
+            ),
+            style: FilledButton.styleFrom(
+              minimumSize: const Size.fromHeight(48),
+              backgroundColor: ZyraColors.goldTextFill,
+              foregroundColor: ZyraColors.onPrimaryAction,
+              shape: const StadiumBorder(),
+            ),
+            child: Text(
+              gate.guardian
+                  ? 'See Guardian One'
+                  : hasUnlock
+                  ? 'See every topic for ${widget.personName}'
+                  : 'Get an Unlock for ${widget.personName}',
+              textAlign: TextAlign.center,
+              style: ZyraText.button(size: 14),
+            ),
+          ),
+        ),
+        if (!gate.guardian) ...[
+          const SizedBox(height: 7),
+          Text(
+            hasUnlock
+                ? 'Uses 1 Unlock · ${gate.balance} left'
+                : '0 Unlocks left',
+            textAlign: TextAlign.center,
+            style: ZyraText.subtext(
+              size: 11.5,
+            ).copyWith(height: 1.2, letterSpacing: 0),
+          ),
+          TextButton(
+            key: const ValueKey('draft_compatibility_topic_upgrade'),
+            onPressed: ZyraTapFeedback.onTap(
+              context,
+              gate.onUpgrade,
+              canAct: gate.canAct,
+            ),
+            style: TextButton.styleFrom(
+              minimumSize: const Size(44, 44),
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+            child: Text(
+              'Seeker One shows every topic in every Journey ›',
+              textAlign: TextAlign.center,
+              style: ZyraText.body(
+                size: 13,
+                color: ZyraColors.goldText,
+              ).copyWith(height: 1.35, letterSpacing: 0),
+            ),
+          ),
+        ],
+      ],
     );
   }
 
@@ -459,9 +648,14 @@ class _ZyraCompatibilityScoreReaderState
 
 /// Paints the supplied display percentages only; it computes no compatibility.
 class _DemoRings extends CustomPainter {
-  const _DemoRings({required this.values, required this.colors});
+  const _DemoRings({
+    required this.values,
+    required this.colors,
+    this.trackColor,
+  });
   final List<int> values;
   final List<Color> colors;
+  final Color? trackColor;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -472,7 +666,7 @@ class _DemoRings extends CustomPainter {
       ..strokeWidth = 13;
     final ringRadius = math.max(1.0, radius);
     final rect = Rect.fromCircle(center: center, radius: ringRadius);
-    paint.color = ZyraColors.warmOverlay.withValues(alpha: .075);
+    paint.color = trackColor ?? ZyraColors.warmOverlay.withValues(alpha: .075);
     canvas.drawCircle(center, ringRadius, paint);
     var start = -math.pi / 2;
     for (var value = 0; value < values.length; value++) {
@@ -485,6 +679,7 @@ class _DemoRings extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _DemoRings oldDelegate) =>
+      oldDelegate.trackColor != trackColor ||
       oldDelegate.values.length != values.length ||
       oldDelegate.values.indexed.any((entry) => entry.$2 != values[entry.$1]);
 }

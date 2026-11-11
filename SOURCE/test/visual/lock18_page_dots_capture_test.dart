@@ -315,15 +315,19 @@ void main() {
               );
               await h.flush();
               expect(h.latest.guardianPage, isNot(before));
+            } else if (entry.name == 'd01_profiles') {
+              final before = h.latest.browseId;
+              expect(before, 'draft-sara');
+              await t.fling(
+                _k('concept_profile_swipe_track'),
+                const Offset(-240, 0),
+                1000,
+              );
+              await h.flush();
+              expect(h.latest.browseId, 'draft-aisha');
+              expect(_pager(t).index, 0);
             } else {
               final swipe = switch (entry.name) {
-                'd01_profiles' => find.byWidgetPredicate(
-                  (w) =>
-                      w.key is ValueKey<String> &&
-                      (w.key as ValueKey<String>).value.startsWith(
-                        'concept_browse_photo_swipe_',
-                      ),
-                ),
                 'd02_journey_tab' => _k('journey_tab_card'),
                 'd04_my_zyra' || 'e05_guardian_my_zyra' => _k('focus-area'),
                 'e06_photos' => _k('photos-page-view'),

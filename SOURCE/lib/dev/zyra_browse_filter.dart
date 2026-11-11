@@ -188,6 +188,14 @@ class ZyraBrowseFilter {
       _copy(nationalities: values);
   ZyraBrowseFilter withEthnicities(Set<String> values) =>
       _copy(ethnicities: values);
+  ZyraBrowseFilter withoutHeritage() =>
+      nationalityCodes.isEmpty && ethnicityCodes.isEmpty
+      ? this
+      : _copy(nationalities: const {}, ethnicities: const {});
+  ZyraBrowseFilter withHeritageFrom(ZyraBrowseFilter saved) => _copy(
+    nationalities: saved.nationalityCodes,
+    ethnicities: saved.ethnicityCodes,
+  );
   ZyraBrowseFilter withRadius(double value, {ZyraBrowsePoint? from}) =>
       _copy(radius: value, from: from ?? origin, changeOrigin: true);
 }

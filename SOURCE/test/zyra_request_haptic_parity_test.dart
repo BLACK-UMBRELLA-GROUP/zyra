@@ -15,6 +15,7 @@ import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_browse_designs.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
+import 'support/profile_swipe_driver.dart';
 import 'support/zyra_hidden_dev_controls_driver.dart';
 
 class _NoNetwork extends HttpOverrides {
@@ -244,12 +245,33 @@ void main() {
           );
           expect(pager.controller!.page, 1);
 
-          // Photo swipes are silent; feedback belongs to discrete taps.
+          // A blocked edge swipe leaves the current photo alone and is silent.
           calls.clear();
           await tester.drag(photo, const Offset(260, 0));
           await tester.pumpAndSettle();
-          expect(pager.controller!.page, 0);
+          expect(pager.controller!.page, 1);
           expect(_vibrations(calls), isEmpty);
+
+          String selectedId() {
+            final view = tester.widget<ZyraOneJourneyBrowseDesigns>(
+              find.byType(ZyraOneJourneyBrowseDesigns),
+            );
+            return view.profiles[view.selectedIndex].id;
+          }
+
+          expect(
+            await swipeProfileForControlKey(tester, 'concept_next_profile'),
+            isTrue,
+          );
+          expect(selectedId(), isNot(person.id));
+          expect(_vibrations(calls), expected);
+          calls.clear();
+          expect(
+            await swipeProfileForControlKey(tester, 'concept_previous_profile'),
+            isTrue,
+          );
+          expect(selectedId(), person.id);
+          expect(_vibrations(calls), expected);
 
           calls.clear();
           await _tapNavigation(tester, 'My ZYRA');

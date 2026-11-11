@@ -34,6 +34,11 @@ class ZyraBrowseHistory {
     return currentId;
   }
 
+  /// Leaving the replay path keeps the viewed prefix and drops future visits.
+  void discardForwardReplay() {
+    if (hasForwardReplay) _ids.removeRange(_cursor + 1, _ids.length);
+  }
+
   /// Record a new visit only at the frontier. Repeated nonadjacent visits are
   /// meaningful and retained; an adjacent repeat is not a navigation event.
   ///

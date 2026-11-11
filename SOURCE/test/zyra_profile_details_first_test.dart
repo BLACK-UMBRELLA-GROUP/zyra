@@ -385,8 +385,8 @@ void main() {
       _key('profile-detail-tile-NATIONALITY'),
     );
     final ethnicityTile = tester.getRect(_key('profile-detail-tile-ETHNICITY'));
-    expect(locationTile.left - ageTile.right, 10);
-    expect(nationalityTile.top - ageTile.bottom, 10);
+    expect(locationTile.left - ageTile.right, 12);
+    expect(nationalityTile.top - ageTile.bottom, 12);
     expect(ageTile.top, locationTile.top);
     expect(nationalityTile.top, ethnicityTile.top);
     expect(ageTile.left, nationalityTile.left);

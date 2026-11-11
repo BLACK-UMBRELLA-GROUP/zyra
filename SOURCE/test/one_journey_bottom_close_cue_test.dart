@@ -516,13 +516,29 @@ void main() {
     );
     expect(topics.past, isNotEmpty);
     final id = topics.past.last.id;
-    await _press(tester, 'circle_topics_past_$id');
+    final topic = _key('circle_topics_past_$id');
+    final list = find.descendant(
+      of: circle,
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is Scrollable &&
+            axisDirectionToAxis(widget.axisDirection) == Axis.vertical,
+      ),
+    );
+    await tester.scrollUntilVisible(topic, 180, scrollable: list);
+    await _pressFinder(tester, topic);
     expect(_key('circle_topics_all_past'), findsOneWidget);
     expect(find.byType(SeekerProfileScreen), findsNothing);
     expect(owner.latest.pages, ['guardian_circle']);
     await _press(tester, 'circle_topics_all_past');
-    expect(_key('circle_topics_past_$id'), findsOneWidget);
+    final returned = tester.widget<ZyraCircleTopicsPresentation>(
+      find.byType(ZyraCircleTopicsPresentation),
+    );
+    expect(returned.pastSelected, isTrue);
+    expect(returned.selected, isNull);
     expect(tester.state(circle), same(state));
+    await tester.scrollUntilVisible(topic, 180, scrollable: list);
+    expect(topic.hitTestable(), findsOneWidget);
     _oneBack(tester);
   });
 

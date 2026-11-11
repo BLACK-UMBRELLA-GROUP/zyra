@@ -64,11 +64,14 @@ class ZyraPreviewNavigationCheckpoint {
     Iterable<String> circleReadMessageKeys = const [],
     int myZyraFocusIndex = 0,
     this.guardianPage = 0,
+    this.guardianInvitationCancelled = false,
+    this.guardianInvitationClockStart,
     this.networkTab = 0,
     this.guardianJourneyId,
     this.browseId,
     ZyraBrowseFilter browseFilter = const ZyraBrowseFilter(),
     Iterable<String> browseHistory = const [],
+    Iterable<String> seenBrowseProfiles = const [],
     this.browseCursor = -1,
     Map<String, int> photoIndices = const {},
     Map<String, int> galleryIndices = const {},
@@ -95,6 +98,7 @@ class ZyraPreviewNavigationCheckpoint {
        browseFilter = browseFilter.detached(),
        pages = List.unmodifiable(pages.take(8)),
        browseHistory = List.unmodifiable(browseHistory.take(11)),
+       seenBrowseProfiles = Set.unmodifiable(seenBrowseProfiles.take(64)),
        photoIndices = Map.unmodifiable(
          Map.fromEntries(photoIndices.entries.take(64)),
        ),
@@ -115,6 +119,9 @@ class ZyraPreviewNavigationCheckpoint {
   final ZyraGuardianTabsSnapshot guardianTabs;
   final ViewRequestDraftSnapshot model;
   final int tab, requestsTab, guardianPage, networkTab;
+  // The Founder sample's lifecycle, detached from member invitations.
+  final bool guardianInvitationCancelled;
+  final DateTime? guardianInvitationClockStart;
   // Detached place position only; never a Journey or route permission.
   final int journeyPlaceIndex;
   // Tab attention is independent of individual received-request reads.
@@ -128,6 +135,8 @@ class ZyraPreviewNavigationCheckpoint {
   final Set<String> circleReadMessageKeys;
   final int myZyraFocusIndex;
   final List<String> pages, browseHistory;
+  // Viewed synthetic IDs only; never an entitlement or source of profiles.
+  final Set<String> seenBrowseProfiles;
   final String? personId, guardianJourneyId, browseId;
   final ZyraBrowseFilter browseFilter;
   final int browseCursor;

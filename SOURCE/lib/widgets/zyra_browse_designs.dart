@@ -25,6 +25,7 @@ import 'zyra_browse_next_photo_motion.dart';
 import 'zyra_invitation_outline.dart';
 import 'zyra_profile_details_page.dart';
 import 'zyra_profiles_components.dart';
+import 'zyra_swipe_track.dart';
 
 /// Explicit rendering seam. The caller supplies already-authorised photo
 /// references and the renderer; a reference alone never initiates a fetch here.
@@ -37,6 +38,15 @@ typedef ZyraBrowsePhotoBuilder =
       required double height,
       required Alignment alignment,
     });
+
+/// The owner resolves neighbouring visits from current eligibility and history.
+/// Indices refer to the owner's supplied profile list.
+typedef ZyraProfileSwipe = ({
+  int? previousIndex,
+  int? nextIndex,
+  VoidCallback? onBlockedPrevious,
+  bool Function() canAct,
+});
 
 enum ZyraOneJourneyBrowseDesign {
   portraitCard(
@@ -72,6 +82,7 @@ class ZyraBrowseDesigns extends StatefulWidget {
     this.invitationSent,
     this.canRequest,
     this.requestRowLabels,
+    this.profileSwipe,
     this.bottomPadding = 100,
     this.fixedTabFooter = false,
     this.alignHeaderActions = false,
@@ -111,6 +122,7 @@ class ZyraBrowseDesigns extends StatefulWidget {
   /// LOCK 7 opt-in. The owning root supplies every label for stable row sizing.
   /// Null retains the shared presenter's existing three-pill layout.
   final List<String>? requestRowLabels;
+  final ZyraProfileSwipe? profileSwipe;
   final double bottomPadding;
   final bool fixedTabFooter;
   final bool alignHeaderActions;
@@ -147,6 +159,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
   static const _pillVerticalPadding = 8.0;
   final Map<String, int> _galleryIndices = <String, int>{};
   final Map<String, GlobalKey> _cardAnchors = <String, GlobalKey>{};
+  final _profileTrack = ZyraSwipeController();
   int _layoutRevision = 0;
 
   @override
@@ -207,6 +220,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
     if (!mounted ||
         revision != _layoutRevision ||
         !_isCurrent(profile) ||
+        widget.profileSwipe?.canAct() == false ||
         index < 0 ||
         index >= _galleryPageCount(profile) ||
         index == _galleryIndex(profile)) {
@@ -330,8 +344,10 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
     SeekerProfile profile,
     double height, {
     bool tapToAdvance = false,
+    bool neighbour = false,
   }) {
     final revision = _layoutRevision;
+    final swipe = widget.profileSwipe;
     final avatarPhotoSize = ZyraProfileDetailsPage.photoSizeFor(
       profile.seekerPlan,
     );
@@ -341,13 +357,16 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
       hapticLevel: widget.hapticLevel,
       photoSources: List<String>.unmodifiable(profile.photos),
       photoCount: _galleryPageCount(profile),
-      selectedIndex: _galleryIndex(profile),
+      selectedIndex: neighbour ? 0 : _galleryIndex(profile),
       height: height,
       // Only the outer Current viewport is rounded. Sliding photos retain
       // their existing full bounds and seam geometry.
       photo: (index) => index == 0
           ? ZyraProfileDetailsPage(
               profile: profile,
+              requestAction: widget.profileSwipe == null
+                  ? null
+                  : _inCardRequest(profile),
               firstPhoto: profile.photos.isEmpty || profile.photos.first.isEmpty
                   ? null
                   : widget.photoBuilder(
@@ -366,18 +385,185 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
             ),
       onPageChanged: (index) => _selectGalleryPage(profile, index, revision),
       tapToAdvance: tapToAdvance,
+      allowPhotoDrag: swipe == null,
+      canNavigate: swipe == null
+          ? null
+          : () =>
+                _isCurrent(profile) &&
+                !_profileTrack.isMoving &&
+                swipe.canAct(),
     );
   }
 
-  Widget _portraitCard(SeekerProfile profile, double photoHeight) => _surface(
+  Widget _portraitCard(
+    SeekerProfile profile,
+    double photoHeight, {
+    bool neighbour = false,
+  }) => _surface(
     profile: profile,
     edgeToEdge: true,
     child: _swipeGallery(
       profile,
       photoHeight + 2 * ZyraCardMetrics.padding + 2,
       tapToAdvance: true,
+      neighbour: neighbour,
     ),
   );
+
+  Widget _inCardRequest(SeekerProfile profile) {
+    final revision = _layoutRevision;
+    final request = widget.onRequest;
+    final label = widget.requestLabel?.call(profile) ?? 'Request a Journey';
+    final sent = widget.invitationSent?.call(profile) ?? false;
+    final allowed =
+        request != null && (widget.canRequest?.call(profile) ?? true);
+    final shape = StadiumBorder(
+      side: BorderSide(
+        color: ZyraColors.journeyGold.withValues(alpha: sent ? 1 : .6),
+      ),
+    );
+    final action = ZyraTapFeedback.onTap(
+      context,
+      allowed ? () => request(profile) : null,
+      canAct: () =>
+          revision == _layoutRevision &&
+          _isCurrent(profile) &&
+          _galleryIndex(profile) == 0 &&
+          !_profileTrack.isMoving &&
+          (widget.profileSwipe?.canAct() ?? false),
+      level: widget.hapticLevel == null ? null : () => widget.hapticLevel!,
+    );
+    return Semantics(
+      label: widget.requestSemanticLabel?.call(profile) ?? label,
+      button: true,
+      enabled: allowed,
+      onTap: action,
+      excludeSemantics: true,
+      child: GestureDetector(
+        // A disabled request occupies its own tap target. Touching it does
+        // not activate the gallery tap behind it.
+        excludeFromSemantics: true,
+        onTap: action == null ? () {} : null,
+        child: DecoratedBox(
+          decoration: const ShapeDecoration(
+            shape: StadiumBorder(),
+            shadows: [
+              BoxShadow(
+                color: Color(0x143E2E1E),
+                blurRadius: 16,
+                offset: Offset(0, 6),
+              ),
+            ],
+          ),
+          child: Material(
+            color: ZyraColors.ivoryTop,
+            shape: shape,
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              key: ValueKey('draft_profile_${profile.id}'),
+              onTap: action,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 52),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
+                  child: Center(
+                    child: Text(
+                      label,
+                      textAlign: TextAlign.center,
+                      style:
+                          ZyraText.button(
+                            size: 15,
+                            color: sent
+                                ? const Color(0xFF845F24)
+                                : ZyraColors.espresso,
+                          ).copyWith(
+                            fontWeight: sent
+                                ? FontWeight.w500
+                                : FontWeight.w400,
+                            letterSpacing: 0,
+                          ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _profileCarousel(
+    SeekerProfile profile,
+    double photoHeight,
+    ZyraProfileSwipe swipe,
+  ) {
+    final profiles = widget.profiles;
+    final previous = swipe.previousIndex;
+    final next = swipe.nextIndex;
+    final selected = widget.selectedIndex;
+    final slots = [previous, selected, next];
+    final revision = _layoutRevision;
+    bool current() => mounted && revision == _layoutRevision && swipe.canAct();
+    final hapticLevel = widget.hapticLevel;
+    final settle = ZyraTapFeedback.onChanged<int>(
+      context,
+      (slot) => (slot == 0 ? widget.onPrevious : widget.onNext)?.call(),
+      canAct: current,
+      level: hapticLevel == null ? null : () => hapticLevel,
+    );
+    final blocked = ZyraTapFeedback.onTap(
+      context,
+      swipe.onBlockedPrevious,
+      canAct: current,
+      level: hapticLevel == null ? null : () => hapticLevel,
+    );
+    return Semantics(
+      container: true,
+      customSemanticsActions: {
+        if (previous != null || blocked != null)
+          const CustomSemanticsAction(label: 'Previous profile'): () {
+            if (!current()) return;
+            if (previous != null) {
+              _profileTrack.animateTo(0);
+            } else {
+              blocked!();
+            }
+          },
+        if (next != null)
+          const CustomSemanticsAction(label: 'Next profile'): () {
+            if (current()) _profileTrack.animateTo(2);
+          },
+      },
+      child: ZyraSwipeTrack(
+        key: const ValueKey('concept_profile_swipe_track'),
+        controller: _profileTrack,
+        index: 1,
+        itemCount: slots.length,
+        motionIdentity: (
+          previous == null ? null : profiles[previous].id,
+          profile.id,
+          next == null ? null : profiles[next].id,
+        ),
+        canAct: current,
+        canMoveTo: (slot) => slots[slot] != null,
+        onBlockedPrevious: blocked,
+        onSettled: settle!,
+        itemBuilder: (_, slot) {
+          final index = slots[slot];
+          if (index == null) return const SizedBox.shrink();
+          final person = profiles[index];
+          return KeyedSubtree(
+            key: ValueKey(person.id),
+            child: _portraitCard(person, photoHeight, neighbour: slot != 1),
+          );
+        },
+      ),
+    );
+  }
 
   Widget _header({Widget? dots}) {
     const key = ValueKey('concept_browse_header');
@@ -613,7 +799,9 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
         mounted &&
         revision == _layoutRevision &&
         profile != null &&
-        _isCurrent(profile);
+        _isCurrent(profile) &&
+        (widget.profileSwipe?.canAct() ?? true) &&
+        !_profileTrack.isMoving;
     return SizedBox(
       height: 24,
       child: profile == null || _galleryPageCount(profile) < 2
@@ -647,14 +835,18 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
           constraints.maxWidth - 2 * ZyraPreviewSpacing.pageMargin,
         );
         final showHeader = widget.showFeedChrome && !widget.readOnlyPreview;
-        final lockedSpacing = showHeader && widget.requestRowLabels != null;
+        final profileSwipe = widget.profileSwipe;
+        final showFooter = widget.showFeedChrome && profileSwipe == null;
+        final lockedSpacing =
+            showHeader &&
+            (widget.requestRowLabels != null || profileSwipe != null);
         final headerHasDots =
             lockedSpacing && profile != null && _galleryPageCount(profile) >= 2;
         final cardToPill = lockedSpacing ? ZyraPreviewSpacing.cardToPill : 16.0;
         // Ink's one-pixel borders contribute two pixels to each pill/card.
         // Do not measure hidden feed labels: their delegates are outside an
         // inspection owner's authority, even when the result would not paint.
-        final footerHeight = widget.showFeedChrome
+        final footerHeight = showFooter
             ? widget.requestRowLabels != null && !widget.readOnlyPreview
                   ? ZyraProfilesRequestRow.heightFor(
                       context,
@@ -689,7 +881,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
             bottom -
             headerHeight -
             16 -
-            (widget.showFeedChrome ? cardToPill : 0) -
+            (showFooter ? cardToPill : 0) -
             footerHeight -
             2 * ZyraCardMetrics.padding -
             2;
@@ -738,19 +930,27 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
                       key: const ValueKey('concept_browse_portrait_card'),
                       child: SizedBox(
                         height: photoHeight + 2 * ZyraCardMetrics.padding + 2,
-                        child: ZyraFloatingSurface(
-                          radius: ZyraCardMetrics.cardRadius,
-                          child: ZyraBrowseNextPhotoMotion(
-                            key: const ValueKey('concept_browse_next_motion'),
-                            profileId: profile.id,
-                            epoch: widget.nextProfileMotionEpoch,
-                            style: widget.nextProfileMotion,
-                            child: _portraitCard(profile, photoHeight),
-                          ),
-                        ),
+                        child: profileSwipe != null
+                            ? _profileCarousel(
+                                profile,
+                                photoHeight,
+                                profileSwipe,
+                              )
+                            : ZyraFloatingSurface(
+                                radius: ZyraCardMetrics.cardRadius,
+                                child: ZyraBrowseNextPhotoMotion(
+                                  key: const ValueKey(
+                                    'concept_browse_next_motion',
+                                  ),
+                                  profileId: profile.id,
+                                  epoch: widget.nextProfileMotionEpoch,
+                                  style: widget.nextProfileMotion,
+                                  child: _portraitCard(profile, photoHeight),
+                                ),
+                              ),
                       ),
                     ),
-              if (widget.showFeedChrome) ...[
+              if (showFooter) ...[
                 SizedBox(height: cardToPill),
                 _compactFooter(profile),
               ],
@@ -785,6 +985,8 @@ class _BrowsePhotoPager extends StatefulWidget {
     required this.photo,
     required this.onPageChanged,
     this.tapToAdvance = false,
+    this.allowPhotoDrag = true,
+    this.canNavigate,
   });
 
   final String profileId;
@@ -796,6 +998,8 @@ class _BrowsePhotoPager extends StatefulWidget {
   final Widget Function(int) photo;
   final ValueChanged<int> onPageChanged;
   final bool tapToAdvance;
+  final bool allowPhotoDrag;
+  final bool Function()? canNavigate;
 
   @override
   State<_BrowsePhotoPager> createState() => _BrowsePhotoPagerState();
@@ -924,6 +1128,7 @@ class _BrowsePhotoPagerState extends State<_BrowsePhotoPager>
   bool _canShowPhoto(int revision, int selected) =>
       mounted &&
       revision == _revision &&
+      (widget.canNavigate?.call() ?? true) &&
       widget.photoCount > 1 &&
       _controller.hasClients &&
       _controller.page?.round() == selected &&
@@ -1001,6 +1206,9 @@ class _BrowsePhotoPagerState extends State<_BrowsePhotoPager>
       key: ValueKey('concept_browse_photo_swipe_${widget.profileId}'),
       controller: _controller,
       itemCount: widget.photoCount,
+      physics: widget.allowPhotoDrag
+          ? null
+          : const NeverScrollableScrollPhysics(),
       onPageChanged: onPageChanged,
       itemBuilder: (_, index) => widget.photo(index),
     );
@@ -1049,7 +1257,9 @@ class _BrowsePhotoPagerState extends State<_BrowsePhotoPager>
       onTap: widget.tapToAdvance ? advance : null,
       hint: widget.photoCount > 1
           ? widget.tapToAdvance
-                ? 'Tap or swipe to view details and photos'
+                ? widget.allowPhotoDrag
+                      ? 'Tap or swipe to view details and photos'
+                      : 'Tap to view details and photos'
                 : 'Swipe to view details and photos'
           : null,
       customSemanticsActions: select == null

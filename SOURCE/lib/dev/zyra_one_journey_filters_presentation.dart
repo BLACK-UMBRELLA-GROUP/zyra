@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import '../data/zyra_reference_data.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
+import '../widgets/zyra_guardian_add_card.dart' show ZyraGuardianDashedBorder;
 import '../widgets/zyra_profiles_components.dart';
 import '../widgets/zyra_tap_feedback.dart';
+import '../widgets/zyra_swipe_track.dart';
 import 'zyra_browse_filter.dart';
 
 // The master track uses the same padded width and 4 pt height throughout.
@@ -66,12 +68,22 @@ class ZyraOneJourneyFiltersPresentation extends StatefulWidget {
     required this.onCountry,
     required this.onOrigin,
     required this.onPreferences,
+    this.canPage,
+    this.allFilters = true,
+    this.initialIndex = 0,
+    this.onIndexChanged,
+    this.onUpgrade,
     this.currentArea = false,
     this.paintWhileCovered = false,
     this.homeTown = 'Manchester',
   });
   final ZyraBrowseFilter filter;
   final bool Function() canAct;
+  final bool Function()? canPage;
+  final bool allFilters;
+  final int initialIndex;
+  final ValueChanged<int>? onIndexChanged;
+  final VoidCallback? onUpgrade;
   final ValueChanged<ZyraBrowseFilter> onChanged;
   final VoidCallback onApply, onCountry, onOrigin, onPreferences;
 
@@ -86,7 +98,13 @@ class ZyraOneJourneyFiltersPresentation extends StatefulWidget {
 class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
   final _search = TextEditingController();
   final _focus = FocusNode();
-  int _index = 0;
+  final _track = ZyraSwipeController();
+  final _viewportKey = GlobalKey();
+  final _ageSliderKey = GlobalKey();
+  final _radiusSliderKey = GlobalKey();
+  final _nationalitySearchKey = GlobalKey();
+  final _ethnicitySearchKey = GlobalKey();
+  late int _index = widget.initialIndex.clamp(0, _names.length - 1);
   int _pageEpoch = 0;
   static const _names = ['Age', 'Location', 'Nationality', 'Ethnicity'];
   static const _icons = [
@@ -157,16 +175,38 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
     _focus.unfocus();
     _search.clear();
     setState(() => _index = value);
+    widget.onIndexChanged?.call(value);
   }
 
-  bool Function() _guard() {
+  bool Function() _guard([int? page]) {
     final epoch = _pageEpoch;
     final external = widget.canAct;
-    return () => mounted && epoch == _pageEpoch && external();
+    return () =>
+        mounted &&
+        epoch == _pageEpoch &&
+        (page == null || page == _index) &&
+        external();
   }
 
-  Widget _control(Widget child) =>
-      GestureDetector(onHorizontalDragStart: (_) {}, child: child);
+  bool _canStartSwipe(Offset position) {
+    final editorKey = switch (_index) {
+      0 => _ageSliderKey,
+      1 => _radiusSliderKey,
+      2 => _nationalitySearchKey,
+      _ => _ethnicitySearchKey,
+    };
+    final editor = editorKey.currentContext?.findRenderObject();
+    final viewport = _viewportKey.currentContext?.findRenderObject();
+    if (editor is! RenderBox ||
+        !editor.hasSize ||
+        viewport is! RenderBox ||
+        !viewport.hasSize) {
+      return true;
+    }
+    // Keep slider adjustments and text selection with their controls.
+    final local = editor.globalToLocal(viewport.localToGlobal(position));
+    return !(Offset.zero & editor.size).contains(local);
+  }
 
   Text _text(
     String value, {
@@ -183,29 +223,28 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
     String label,
     VoidCallback? callback, {
     double size = 13,
+    int? page,
   }) {
-    final guard = _guard();
-    return _control(
-      TextButton(
-        key: ValueKey(key),
-        onPressed: ZyraTapFeedback.onTap(
-          context,
-          callback == null
-              ? null
-              : () {
-                  if (guard()) callback();
-                },
-        ),
-        style: TextButton.styleFrom(
-          padding: EdgeInsets.zero,
-          minimumSize: const Size(44, 44),
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        ),
-        child: _text(
-          label,
-          size: size,
-          color: size < 24 ? ZyraColors.goldText : ZyraColors.journeyGold,
-        ),
+    final guard = _guard(page);
+    return TextButton(
+      key: ValueKey(key),
+      onPressed: ZyraTapFeedback.onTap(
+        context,
+        callback == null
+            ? null
+            : () {
+                if (guard()) callback();
+              },
+      ),
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.zero,
+        minimumSize: const Size(44, 44),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+      child: _text(
+        label,
+        size: size,
+        color: size < 24 ? ZyraColors.goldText : ZyraColors.journeyGold,
       ),
     );
   }
@@ -216,8 +255,9 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
     int selected,
     ValueChanged<int> onChanged,
     String prefix,
+    int page,
   ) {
-    final guard = _guard();
+    final guard = _guard(page);
     final large = MediaQuery.textScalerOf(context).scale(1) > 1.3;
     Widget item(int i) => Semantics(
       selected: i == selected,
@@ -250,65 +290,60 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
         ),
       ),
     );
-    return _control(
-      ZyraFloatingSurface(
-        radius: 28,
-        circle: false,
-        gold: false,
-        child: Container(
-          key: ValueKey('${prefix}_segments'),
-          padding: const EdgeInsets.all(3),
-          decoration: BoxDecoration(
-            color: ZyraColors.surfaceFill,
-            border: Border.all(color: ZyraColors.surfaceBorder),
-            borderRadius: BorderRadius.circular(28),
-          ),
-          child: large
-              ? Column(
-                  children: [for (var i = 0; i < labels.length; i++) item(i)],
-                )
-              : IntrinsicHeight(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      for (var i = 0; i < labels.length; i++)
-                        Expanded(child: item(i)),
-                    ],
-                  ),
-                ),
+    return ZyraFloatingSurface(
+      radius: 28,
+      circle: false,
+      gold: false,
+      child: Container(
+        key: ValueKey('${prefix}_segments'),
+        padding: const EdgeInsets.all(3),
+        decoration: BoxDecoration(
+          color: ZyraColors.surfaceFill,
+          border: Border.all(color: ZyraColors.surfaceBorder),
+          borderRadius: BorderRadius.circular(28),
         ),
+        child: large
+            ? Column(
+                children: [for (var i = 0; i < labels.length; i++) item(i)],
+              )
+            : IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    for (var i = 0; i < labels.length; i++)
+                      Expanded(child: item(i)),
+                  ],
+                ),
+              ),
       ),
     );
   }
 
-  Widget _slider(Widget child) => GestureDetector(
-    // A horizontal slider drag belongs to the control, never to card paging.
-    onHorizontalDragStart: (_) {},
-    child: SliderTheme(
-      data: SliderTheme.of(context).copyWith(
-        trackHeight: 4,
-        thumbShape: const RoundSliderThumbShape(
-          enabledThumbRadius: 11,
-          elevation: 0,
-          pressedElevation: 0,
-        ),
-        rangeThumbShape: const RoundRangeSliderThumbShape(
-          enabledThumbRadius: 11,
-          elevation: 0,
-          pressedElevation: 0,
-        ),
-        rangeTrackShape: const _FiltersRangeTrack(),
-        overlappingShapeStrokeColor: ZyraColors.journeyGold,
-        activeTrackColor: ZyraColors.journeyGold,
-        inactiveTrackColor: ZyraColors.surfaceBorder,
-        thumbColor: ZyraColors.journeyGold,
-        overlayColor: ZyraColors.journeyGold.withValues(alpha: .12),
-        activeTickMarkColor: Colors.transparent,
-        inactiveTickMarkColor: Colors.transparent,
-        showValueIndicator: ShowValueIndicator.never,
+  Widget _slider(GlobalKey key, Widget child) => SliderTheme(
+    key: key,
+    data: SliderTheme.of(context).copyWith(
+      trackHeight: 4,
+      thumbShape: const RoundSliderThumbShape(
+        enabledThumbRadius: 11,
+        elevation: 0,
+        pressedElevation: 0,
       ),
-      child: child,
+      rangeThumbShape: const RoundRangeSliderThumbShape(
+        enabledThumbRadius: 11,
+        elevation: 0,
+        pressedElevation: 0,
+      ),
+      rangeTrackShape: const _FiltersRangeTrack(),
+      overlappingShapeStrokeColor: ZyraColors.journeyGold,
+      activeTrackColor: ZyraColors.journeyGold,
+      inactiveTrackColor: ZyraColors.surfaceBorder,
+      thumbColor: ZyraColors.journeyGold,
+      overlayColor: ZyraColors.journeyGold.withValues(alpha: .12),
+      activeTickMarkColor: Colors.transparent,
+      inactiveTickMarkColor: Colors.transparent,
+      showValueIndicator: ShowValueIndicator.never,
     ),
+    child: child,
   );
   Widget _scale(String low, String value, String high) {
     final label = _text(
@@ -372,7 +407,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
 
   Widget _age() {
     final f = widget.filter;
-    final guard = _guard();
+    final guard = _guard(0);
     final changed = widget.onChanged;
     return Column(
       children: [
@@ -381,10 +416,12 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
           f.hasAgeRange ? 1 : 0,
           (i) => _change(f.withAge(i == 0 ? null : 18, i == 0 ? null : 70)),
           'concept_age',
+          0,
         ),
         if (f.hasAgeRange) ...[
           const SizedBox(height: 26),
           _slider(
+            _ageSliderKey,
             RangeSlider(
               key: const ValueKey('concept_age_range'),
               padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -413,7 +450,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
 
   Widget _where() {
     final f = widget.filter;
-    final guard = _guard();
+    final guard = _guard(1);
     final changed = widget.onChanged;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -423,6 +460,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
           f.where.index,
           (i) => _change(f.withWhere(ZyraBrowseWhere.values[i])),
           'concept_where',
+          1,
         ),
         const SizedBox(height: 22),
         if (f.where == ZyraBrowseWhere.country) ...[
@@ -433,6 +471,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
               'concept_country',
               'Change ›',
               _paintEnabled ? widget.onCountry : null,
+              page: 1,
             ),
             size: 14,
           ),
@@ -452,11 +491,13 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
                 'Change',
                 _paintEnabled ? widget.onOrigin : null,
                 size: 12,
+                page: 1,
               ),
             ),
           ),
           const SizedBox(height: 18),
           _slider(
+            _radiusSliderKey,
             Slider(
               key: const ValueKey('concept_radius'),
               padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -484,77 +525,73 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
     );
   }
 
-  Widget _chip(String code, String label, bool selected) {
-    final guard = _guard();
-    final nationality = _index == 2;
+  Widget _chip(int page, String code, String label, bool selected) {
+    final guard = _guard(page);
+    final nationality = page == 2;
     final filter = widget.filter;
     final changed = widget.onChanged;
-    return _control(
-      Semantics(
-        button: true,
-        label: '${selected ? 'Remove' : 'Add'} $label',
-        excludeSemantics: true,
-        child: InkWell(
-          key: ValueKey(
-            'filter_${selected ? 'remove' : 'add'}_${_index}_$code',
-          ),
-          onTap: ZyraTapFeedback.onTap(context, () {
-            if (!guard()) return;
-            final values = Set<String>.of(
-              nationality ? filter.nationalityCodes : filter.ethnicityCodes,
-            );
-            selected ? values.remove(code) : values.add(code);
-            changed(
-              nationality
-                  ? filter.withNationalities(values)
-                  : filter.withEthnicities(values),
-            );
-            if (!selected) {
-              _search.clear();
-              setState(() {});
-            }
-          }),
-          borderRadius: BorderRadius.circular(24),
-          child: ZyraFloatingSurface(
-            radius: 24,
-            circle: false,
-            gold: false,
-            child: Container(
-              constraints: const BoxConstraints(minHeight: 42),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              decoration: BoxDecoration(
-                color: ZyraColors.surfaceFill,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(
-                  color: selected
-                      ? ZyraColors.journeyGold.withValues(alpha: .7)
-                      : ZyraColors.surfaceBorder,
-                ),
+    return Semantics(
+      button: true,
+      label: '${selected ? 'Remove' : 'Add'} $label',
+      excludeSemantics: true,
+      child: InkWell(
+        key: ValueKey('filter_${selected ? 'remove' : 'add'}_${page}_$code'),
+        onTap: ZyraTapFeedback.onTap(context, () {
+          if (!guard()) return;
+          final values = Set<String>.of(
+            nationality ? filter.nationalityCodes : filter.ethnicityCodes,
+          );
+          selected ? values.remove(code) : values.add(code);
+          changed(
+            nationality
+                ? filter.withNationalities(values)
+                : filter.withEthnicities(values),
+          );
+          if (!selected) {
+            _search.clear();
+            setState(() {});
+          }
+        }),
+        borderRadius: BorderRadius.circular(24),
+        child: ZyraFloatingSurface(
+          radius: 24,
+          circle: false,
+          gold: false,
+          child: Container(
+            constraints: const BoxConstraints(minHeight: 42),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            decoration: BoxDecoration(
+              color: ZyraColors.surfaceFill,
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: selected
+                    ? ZyraColors.journeyGold.withValues(alpha: .7)
+                    : ZyraColors.surfaceBorder,
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (!selected) ...[
-                    const Icon(
-                      Icons.add,
-                      size: 14,
-                      color: ZyraColors.journeyGold,
-                    ),
-                    const SizedBox(width: 8),
-                  ],
-                  Flexible(
-                    child: _text(label, size: 13, color: ZyraColors.ink(.95)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (!selected) ...[
+                  const Icon(
+                    Icons.add,
+                    size: 14,
+                    color: ZyraColors.journeyGold,
                   ),
-                  if (selected) ...[
-                    const SizedBox(width: 8),
-                    const Icon(
-                      Icons.close,
-                      size: 14,
-                      color: ZyraColors.journeyGold,
-                    ),
-                  ],
+                  const SizedBox(width: 8),
                 ],
-              ),
+                Flexible(
+                  child: _text(label, size: 13, color: ZyraColors.ink(.95)),
+                ),
+                if (selected) ...[
+                  const SizedBox(width: 8),
+                  const Icon(
+                    Icons.close,
+                    size: 14,
+                    color: ZyraColors.journeyGold,
+                  ),
+                ],
+              ],
             ),
           ),
         ),
@@ -562,9 +599,10 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
     );
   }
 
-  Widget _heritage() {
-    final guard = _guard();
-    final nationality = _index == 2;
+  Widget _heritage(int page) {
+    final guard = _guard(page);
+    final active = page == _index;
+    final nationality = page == 2;
     final values = nationality
         ? widget.filter.nationalityCodes
         : widget.filter.ethnicityCodes;
@@ -576,7 +614,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
         for (final e in zyraEthnicities)
           if (e.code != 'prefer_not_to_say') e.code: e.name,
     };
-    final query = _search.text.trim();
+    final query = active ? _search.text.trim() : '';
     final suggestions =
         (query.isEmpty
                 ? (nationality ? _popularNationality : _popularEthnicity)
@@ -591,11 +629,12 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _control(
-          TextField(
+        KeyedSubtree(
+          key: nationality ? _nationalitySearchKey : _ethnicitySearchKey,
+          child: TextField(
             key: ValueKey('filter_search_$kind'),
-            controller: _search,
-            focusNode: _focus,
+            controller: active ? _search : null,
+            focusNode: active ? _focus : null,
             enabled: _paintEnabled,
             textInputAction: TextInputAction.done,
             style: ZyraText.body(size: 14),
@@ -643,7 +682,9 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: [for (final c in values) _chip(c, labels[c]!, true)],
+            children: [
+              for (final c in values) _chip(page, c, labels[c]!, true),
+            ],
           ),
         ],
         const SizedBox(height: 14),
@@ -660,16 +701,16 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
             spacing: 8,
             runSpacing: 8,
             children: [
-              for (final c in suggestions) _chip(c, labels[c]!, false),
+              for (final c in suggestions) _chip(page, c, labels[c]!, false),
             ],
           ),
       ],
     );
   }
 
-  String get _currentChoice {
+  String _currentChoice(int page) {
     final f = widget.filter;
-    return switch (_index) {
+    return switch (page) {
       0 =>
         f.hasAgeRange
             ? '${f.minAge ?? 18} – ${f.maxAge ?? 70}'
@@ -691,10 +732,90 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
     };
   }
 
-  Widget _cardContent() => LayoutBuilder(
+  Widget _lockedHeritage(int page) {
+    final guard = _guard(page);
+    final canPage = widget.canPage;
+    return CustomPaint(
+      foregroundPainter: ZyraGuardianDashedBorder(
+        18,
+        ZyraColors.journeyGold.withValues(alpha: .5),
+      ),
+      child: Container(
+        key: const ValueKey('filter-heritage-lock-panel'),
+        padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFBF7F0),
+          borderRadius: BorderRadius.circular(18),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Icon(
+              Icons.lock_outline,
+              color: ZyraColors.journeyGold,
+              size: 26,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Comes with Seeker One',
+              textAlign: TextAlign.center,
+              style: ZyraText.body(
+                size: 17,
+              ).copyWith(fontWeight: FontWeight.w300, height: 1.2),
+            ),
+            const SizedBox(height: 6),
+            Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 270),
+                child: Text(
+                  'Seeker Basic filters by age and location. Seeker One adds nationality and ethnicity.',
+                  textAlign: TextAlign.center,
+                  style: ZyraText.subtext(size: 12.5).copyWith(height: 1.3),
+                ),
+              ),
+            ),
+            const SizedBox(height: 14),
+            FilledButton(
+              key: const ValueKey('filter-see-seeker-one'),
+              onPressed: ZyraTapFeedback.onTap(
+                context,
+                widget.onUpgrade,
+                canAct: () =>
+                    guard() && !widget.allFilters && (canPage?.call() ?? true),
+              ),
+              style: FilledButton.styleFrom(
+                minimumSize: const Size(0, 46),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+                shape: const StadiumBorder(),
+                backgroundColor: ZyraColors.primaryAction,
+                foregroundColor: ZyraColors.onPrimaryAction,
+                textStyle: ZyraText.button(
+                  size: 14,
+                ).copyWith(fontWeight: FontWeight.w500),
+              ),
+              child: const Text('See Seeker One', textAlign: TextAlign.center),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _cardContent(int page) => LayoutBuilder(
     key: const ValueKey('filter_viewport'),
     builder: (context, bounds) {
-      final centered = _index < 2;
+      final locked = page >= 2 && !widget.allFilters;
+      final centered = page < 2 || locked;
+      final top = locked
+          ? 0.0
+          : centered
+          ? 18.0
+          : 36.0;
+      final bottom = locked ? 0.0 : 18.0;
       final content = Column(
         key: const ValueKey('filter_content'),
         mainAxisSize: MainAxisSize.min,
@@ -712,7 +833,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
                 ),
               ),
               child: Icon(
-                _icons[_index],
+                _icons[page],
                 size: 36,
                 color: ZyraColors.journeyGold,
               ),
@@ -720,16 +841,17 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
           ),
           const SizedBox(height: 12),
           Text(
-            _names[_index],
+            _names[page],
             key: const ValueKey('filter_title'),
             textAlign: TextAlign.center,
-            style: ZyraText.heading(
-              size: 28,
-            ).copyWith(fontWeight: FontWeight.w300),
+            style: ZyraText.heading(size: 28).copyWith(
+              fontWeight: FontWeight.w300,
+              height: locked ? 1.2 : null,
+            ),
           ),
           const SizedBox(height: 6),
           Text(
-            _currentChoice,
+            locked ? 'SEEKER ONE' : _currentChoice(page),
             key: const ValueKey('filter_current_choice'),
             textAlign: TextAlign.center,
             style: ZyraText.body(
@@ -738,23 +860,25 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
             ).copyWith(letterSpacing: 1.2),
           ),
           const SizedBox(height: 8),
-          _text(_subtitles[_index], align: TextAlign.center),
+          _text(_subtitles[page], align: TextAlign.center),
           const SizedBox(height: 20),
-          if (_index == 0)
+          if (page == 0)
             _age()
-          else if (_index == 1)
+          else if (page == 1)
             _where()
+          else if (locked)
+            _lockedHeritage(page)
           else
-            _heritage(),
+            _heritage(page),
         ],
       );
       return ZyraShadowScrollView(
-        key: ValueKey('filter_scroll_$_index'),
-        padding: EdgeInsets.fromLTRB(18, centered ? 18 : 36, 18, 18),
+        key: ValueKey('filter_scroll_$page'),
+        padding: EdgeInsets.fromLTRB(18, top, 18, bottom),
         child: centered
             ? ConstrainedBox(
                 constraints: BoxConstraints(
-                  minHeight: (bounds.maxHeight - 36).clamp(
+                  minHeight: (bounds.maxHeight - top - bottom).clamp(
                     0.0,
                     double.infinity,
                   ),
@@ -771,7 +895,12 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
     final keyboard =
         _focus.hasFocus || MediaQuery.viewInsetsOf(context).bottom > 0;
     final can = _paintEnabled;
+    final activeCount =
+        (widget.allFilters ? widget.filter : widget.filter.withoutHeritage())
+            .activeCount;
     final guard = _guard();
+    final pageOwner = widget.canPage;
+    bool canPage() => guard() && (pageOwner?.call() ?? true);
     final index = _index;
     return SafeArea(
       bottom: false,
@@ -787,9 +916,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
                 ),
                 _button(
                   'concept_reset_filter_draft',
-                  widget.filter.activeCount == 0
-                      ? 'Clear'
-                      : 'Clear (${widget.filter.activeCount})',
+                  activeCount == 0 ? 'Clear' : 'Clear ($activeCount)',
                   can
                       ? () {
                           _search.clear();
@@ -809,57 +936,65 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
                   activeWidth: 30,
                   size: 6,
                   lift: 0,
-                  canAct: guard,
+                  canAct: canPage,
                   onSelected: (value) {
-                    if (guard()) _page(value);
+                    if (canPage()) _track.animateTo(value);
                   },
                   targetKey: (i) => ValueKey('filter_dot_target_$i'),
                 ),
               ),
             ),
             Expanded(
-              child: Semantics(
-                label: '${_names[_index]}, filter ${_index + 1} of 4',
-                container: true,
-                explicitChildNodes: true,
-                child: GestureDetector(
+              child: KeyedSubtree(
+                key: _viewportKey,
+                child: ZyraSwipeTrack(
                   key: const ValueKey('filters_card'),
-                  behavior: HitTestBehavior.opaque,
-                  onHorizontalDragEnd: (d) {
-                    if (guard() && (d.primaryVelocity ?? 0).abs() > 100) {
-                      _page(index + (d.primaryVelocity! < 0 ? 1 : -1));
-                    }
-                  },
-                  onTap: () {
-                    if (guard()) _focus.unfocus();
-                  },
-                  child: ZyraFloatingSurface(
-                    radius: 22,
-                    circle: false,
-                    gold: false,
-                    child: Container(
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(22),
-                        border: Border.all(
-                          color: ZyraColors.journeyGold.withValues(alpha: .6),
-                        ),
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Color.alphaBlend(
-                              ZyraColors.surfaceFill,
-                              ZyraColors.ivoryTop,
+                  controller: _track,
+                  index: index,
+                  itemCount: _names.length,
+                  canAct: canPage,
+                  canStartAt: _canStartSwipe,
+                  onSettled: _page,
+                  itemBuilder: (context, page) => Semantics(
+                    label: '${_names[page]}, filter ${page + 1} of 4',
+                    container: true,
+                    explicitChildNodes: true,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        if (guard()) _focus.unfocus();
+                      },
+                      child: ZyraFloatingSurface(
+                        radius: 22,
+                        circle: false,
+                        gold: false,
+                        child: Container(
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(22),
+                            border: Border.all(
+                              color: ZyraColors.journeyGold.withValues(
+                                alpha: .6,
+                              ),
                             ),
-                            Color.alphaBlend(
-                              ZyraColors.surfaceFill,
-                              ZyraColors.ivoryBottom,
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Color.alphaBlend(
+                                  ZyraColors.surfaceFill,
+                                  ZyraColors.ivoryTop,
+                                ),
+                                Color.alphaBlend(
+                                  ZyraColors.surfaceFill,
+                                  ZyraColors.ivoryBottom,
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
+                          child: _cardContent(page),
                         ),
                       ),
-                      child: _cardContent(),
                     ),
                   ),
                 ),
@@ -886,12 +1021,12 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
                 nextLabel: 'Next filter',
                 onPrevious: can && index > 0
                     ? () {
-                        if (guard()) _page(index - 1);
+                        if (canPage()) _track.animateTo(index - 1);
                       }
                     : null,
                 onNext: can && index < 3
                     ? () {
-                        if (guard()) _page(index + 1);
+                        if (canPage()) _track.animateTo(index + 1);
                       }
                     : null,
                 onRequest: can ? widget.onApply : null,

@@ -773,7 +773,21 @@ void main() {
     );
     expect(topics.past, isNotEmpty);
     final id = topics.past.last.id;
-    await _tap(tester, 'circle_topics_past_$id');
+    final topic = _key('circle_topics_past_$id');
+    final list = find.descendant(
+      of: circle,
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is Scrollable &&
+            axisDirectionToAxis(widget.axisDirection) == Axis.vertical,
+      ),
+    );
+    Future<void> openPastTopic() async {
+      await tester.scrollUntilVisible(topic, 180, scrollable: list);
+      await _press(tester, topic);
+    }
+
+    await openPastTopic();
     final selected = tester.widget<ZyraCircleTopicsPresentation>(
       find.byType(ZyraCircleTopicsPresentation),
     );
@@ -783,9 +797,13 @@ void main() {
         .properties
         .onTap!;
     await _tap(tester, 'circle_topics_all_past');
-    expect(_key('circle_topics_past_$id'), findsOneWidget);
+    final returned = tester.widget<ZyraCircleTopicsPresentation>(
+      find.byType(ZyraCircleTopicsPresentation),
+    );
+    expect(returned.pastSelected, isTrue);
+    expect(returned.selected, isNull);
     expect(tester.state(circle), same(state));
-    await _tap(tester, 'circle_topics_past_$id');
+    await openPastTopic();
     stale();
     await tester.pumpAndSettle();
     expect(_key('circle_topics_all_past'), findsOneWidget);

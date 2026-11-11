@@ -7,6 +7,7 @@ import 'floating_nav_bar.dart';
 import 'zyra_floating_surface.dart';
 import 'zyra_tap_feedback.dart';
 import 'zyra_profiles_components.dart';
+import 'zyra_swipe_track.dart';
 
 class ZyraFocusItem {
   const ZyraFocusItem({
@@ -87,13 +88,7 @@ class ZyraFocusDashboard extends StatefulWidget {
 class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
   late int _index = widget.initialIndex;
   int _render = 0;
-  Offset? _dragOrigin, _dragPosition;
-  int? _dragRender;
-
-  void _clearDrag() {
-    _dragOrigin = _dragPosition = null;
-    _dragRender = null;
-  }
+  final _track = ZyraSwipeController();
 
   int get index =>
       widget.items.isEmpty ? 0 : _index.clamp(0, widget.items.length - 1);
@@ -144,13 +139,14 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
     VoidCallback callback,
     String? id, {
     bool gold = true,
+    required bool Function() canAct,
   }) => Builder(
     builder: (context) => ZyraFloatingSurface(
       radius: 28,
       gold: gold,
       child: TextButton(
         key: id == null ? null : ValueKey(id),
-        onPressed: ZyraTapFeedback.onTap(context, callback),
+        onPressed: ZyraTapFeedback.onTap(context, callback, canAct: canAct),
         style: TextButton.styleFrom(
           minimumSize: const Size(0, 44),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -212,18 +208,18 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
     },
   );
 
-  Widget focus() {
-    if (widget.items.isEmpty) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          text('ALL CAUGHT UP', 11, muted: true),
-          const SizedBox(height: 5),
-          text('Nothing needs you right now.', 21, weight: FontWeight.w300),
-        ],
-      );
-    }
-    final item = widget.items[index];
+  Widget _caughtUp() => Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      text('ALL CAUGHT UP', 11, muted: true),
+      const SizedBox(height: 5),
+      text('Nothing needs you right now.', 21, weight: FontWeight.w300),
+    ],
+  );
+
+  Widget _focusItem(int page, bool Function() current) {
+    final item = widget.items[page];
+    bool active() => current() && page == index;
     return Column(
       key: ValueKey('focus-item-${item.id}'),
       mainAxisSize: MainAxisSize.min,
@@ -241,7 +237,7 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
         Text(
           widget.items.length == 1
               ? 'NEEDS YOU'
-              : 'NEEDS YOU · ${index + 1} OF ${widget.items.length}',
+              : 'NEEDS YOU · ${page + 1} OF ${widget.items.length}',
           style: ZyraText.body(
             size: 11.5,
             color: ZyraColors.goldText,
@@ -261,13 +257,19 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
             spacing: 10,
             runSpacing: 10,
             children: [
-              button(item.actionLabel, item.onAction, item.actionKey),
+              button(
+                item.actionLabel,
+                item.onAction,
+                item.actionKey,
+                canAct: active,
+              ),
               if (item.secondaryLabel != null && item.onSecondaryAction != null)
                 button(
                   item.secondaryLabel!,
                   item.onSecondaryAction!,
                   item.secondaryKey,
                   gold: false,
+                  canAct: active,
                 ),
             ],
           ),
@@ -507,7 +509,9 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
                         itemLabel: (i) =>
                             'Item ${i + 1} of ${widget.items.length}',
                         canAct: current,
-                        onSelected: (i) => select(i, render),
+                        onSelected: (i) {
+                          if (current()) _track.animateTo(i);
+                        },
                       ),
                     ],
                     if (widget.previewControls != null) widget.previewControls!,
@@ -516,7 +520,23 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
                 Padding(
                   key: const ValueKey('focus-area'),
                   padding: const EdgeInsets.symmetric(vertical: 24),
-                  child: focus(),
+                  child: widget.items.isEmpty
+                      ? _caughtUp()
+                      : ZyraSwipeTrack(
+                          controller: _track,
+                          index: index,
+                          itemCount: widget.items.length,
+                          canAct: current,
+                          dragEnabled: false,
+                          onDragSettled: ZyraTapFeedback.onTap(
+                            context,
+                            () {},
+                            canAct: current,
+                          ),
+                          onSettled: (i) => select(i, render),
+                          itemBuilder: (context, page) =>
+                              _focusItem(page, current),
+                        ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -539,42 +559,15 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
         ),
       ),
     );
-    return GestureDetector(
+    return ZyraSwipeGesture(
       key: const ValueKey('my-zyra-whole-page-swipe'),
-      behavior: HitTestBehavior.opaque,
-      onHorizontalDragDown: (details) {
-        _clearDrag();
-        if (!current()) return;
+      controller: _track,
+      canStartAt: (position) {
         final box = context.findRenderObject();
-        if (box is! RenderBox || !box.hasSize) return;
-        final position = box.globalToLocal(details.globalPosition);
+        if (box is! RenderBox || !box.hasSize) return false;
         final barTop = box.size.height - bottom + ZyraNavBarMetrics.contentGap;
-        if (position.dy >= barTop) return;
-        _dragOrigin = _dragPosition = details.globalPosition;
-        _dragRender = render;
+        return position.dy < barTop;
       },
-      onHorizontalDragUpdate: (details) {
-        if (_dragRender == render && current()) {
-          _dragPosition = details.globalPosition;
-        }
-      },
-      onHorizontalDragEnd: (_) {
-        final start = _dragOrigin;
-        final end = _dragPosition;
-        final admitted = _dragRender == render && current();
-        _clearDrag();
-        if (!admitted || start == null || end == null) return;
-        final travel = end - start;
-        if (travel.dx.abs() < 50 || travel.dx.abs() <= travel.dy.abs()) return;
-        final next = index + (travel.dx < 0 ? 1 : -1);
-        if (next < 0 || next >= widget.items.length) return;
-        ZyraTapFeedback.onTap(
-          context,
-          () => select(next, render),
-          canAct: current,
-        )?.call();
-      },
-      onHorizontalDragCancel: _clearDrag,
       child: content,
     );
   }

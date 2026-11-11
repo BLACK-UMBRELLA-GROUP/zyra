@@ -98,6 +98,7 @@ Future<void> _fixture(
               Positioned.fill(
                 child: ZyraOneJourneyGuardianCards(
                   contextIdentity: 'master-fixture',
+                  onCancelPreviewInvitation: () {},
                   renderIdentity: revision,
                   canAct: () => true,
                   interactionEpoch: () => revision,
@@ -253,7 +254,8 @@ void main() {
       await _cap(h, 'additional_guardian_card_mid_drag');
       await swipe.up();
       await t.pumpAndSettle();
-      expect(find.text('Send invitation again'), findsOneWidget);
+      expect(find.text('Waiting for Omar to accept'), findsOneWidget);
+      expect(find.text('Cancel invitation'), findsOneWidget);
       expect(_key('guardian-card-menu'), findsNothing);
       await _cap(h, 'invited_guardian_card');
       await swipeGuardianCard(t);

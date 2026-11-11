@@ -57,6 +57,8 @@ void main() {
   const seekerVisible = [
     'Journey places',
     'Browse profiles',
+    'Compatibility score',
+    'Filters',
     'Guardians',
     'Look again at declined profiles',
     'Chaperoned video calls',
@@ -69,9 +71,7 @@ void main() {
   ];
   const seekerHidden = [
     'Requests waiting at once',
-    'Compatibility score',
     'Compatibility Unlocks',
-    'Filters',
     'Restart an ended Journey',
     'Gold ring on your profile',
   ];
@@ -122,6 +122,12 @@ void main() {
             find.descendant(of: card, matching: find.text(row)),
             findsNothing,
           );
+        }
+        if (!guardian) {
+          expect(find.text('Overall score'), findsOneWidget);
+          expect(find.text('Every topic'), findsOneWidget);
+          expect(find.text('Age and location'), findsOneWidget);
+          expect(find.text('All filters'), findsOneWidget);
         }
         expect(find.textContaining('days free'), findsNothing);
         expect(find.textContaining('£'), findsNothing);
@@ -180,8 +186,11 @@ void main() {
       tester.view.physicalSize = const Size(1125, 2001);
       await h.flush();
       expect(tester.getSize(avatar), const Size.square(124));
+      final ethnicity = _key('profile-detail-tile-ETHNICITY');
+      await tester.ensureVisible(ethnicity);
+      await h.flush();
       expect(
-        tester.getBottomRight(_key('profile-detail-tile-ETHNICITY')).dy,
+        tester.getBottomRight(ethnicity).dy,
         lessThanOrEqualTo(tester.getBottomRight(details).dy),
       );
       expect(tester.takeException(), isNull);
@@ -263,6 +272,8 @@ void main() {
         ),
       );
       final card = _key('one-upgrade-comparison');
+      expect(find.text('Compatibility score'), findsNothing);
+      expect(find.text('Filters'), findsNothing);
       final scrollable = find.descendant(
         of: card,
         matching: find.byType(Scrollable),

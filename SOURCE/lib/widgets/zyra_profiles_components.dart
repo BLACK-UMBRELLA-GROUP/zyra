@@ -354,6 +354,7 @@ class ZyraProfilesDots extends StatelessWidget {
     this.lift = 0,
     this.onSelected,
     this.canAct,
+    this.canSelect,
     this.itemLabel,
     this.targetKey,
     this.exposeSemanticAction = false,
@@ -363,6 +364,7 @@ class ZyraProfilesDots extends StatelessWidget {
   final double activeWidth, size, lift;
   final ValueChanged<int>? onSelected;
   final bool Function()? canAct;
+  final bool Function()? canSelect;
   final String Function(int)? itemLabel;
   final Key Function(int)? targetKey;
   final bool exposeSemanticAction;
@@ -386,19 +388,23 @@ class ZyraProfilesDots extends StatelessWidget {
     }
 
     Widget dot(int i) {
-      final action = select == null
+      final feedbackAction = select == null
           ? null
           : ZyraTapFeedback.onTap(context, () => select(i), canAct: current);
+      void action() {
+        if (canSelect?.call() ?? true) feedbackAction?.call();
+      }
+
       return Semantics(
         button: select != null,
         selected: i == index,
         label: itemLabel?.call(i) ?? 'Page ${i + 1} of $count',
         excludeSemantics: true,
-        onTap: exposeSemanticAction ? action : null,
+        onTap: exposeSemanticAction && feedbackAction != null ? action : null,
         child: GestureDetector(
           key: targetKey?.call(i),
           behavior: HitTestBehavior.opaque,
-          onTap: action,
+          onTap: feedbackAction != null ? action : null,
           child: Container(
             height: 24,
             padding: const EdgeInsets.symmetric(horizontal: 3),

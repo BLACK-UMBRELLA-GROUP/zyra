@@ -159,9 +159,15 @@ class _ProductionPreviewFrame extends StatelessWidget {
     required this.child,
     this.textScale = 1,
     this.highContrast = false,
+    this.safePadding = const EdgeInsets.only(top: 59, bottom: 34),
+    this.reduceMotion = false,
+    this.navigatorObservers = const [],
   });
   final double textScale;
   final bool highContrast;
+  final EdgeInsets safePadding;
+  final bool reduceMotion;
+  final List<NavigatorObserver> navigatorObservers;
   final Widget child;
 
   @override
@@ -174,6 +180,7 @@ class _ProductionPreviewFrame extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: app.debugShowCheckedModeBanner,
           scrollBehavior: app.scrollBehavior,
+          navigatorObservers: navigatorObservers,
           theme: app.theme!.copyWith(
             textTheme: app.theme!.textTheme.apply(
               fontFamilyFallback: const [_symbolFont],
@@ -181,11 +188,11 @@ class _ProductionPreviewFrame extends StatelessWidget {
           ),
           builder: (context, child) => MediaQuery(
             data: MediaQuery.of(context).copyWith(
-              padding: const EdgeInsets.only(top: 59, bottom: 34),
-              viewPadding: const EdgeInsets.only(top: 59, bottom: 34),
+              padding: safePadding,
+              viewPadding: safePadding,
               textScaler: TextScaler.linear(textScale),
               highContrast: highContrast,
-              disableAnimations: false,
+              disableAnimations: reduceMotion,
             ),
             child: DefaultTextStyle.merge(
               style: const TextStyle(fontFamilyFallback: [_symbolFont]),
@@ -208,6 +215,9 @@ class BaselineHarness {
     this.flatOutput = false,
     this.textScale = 1,
     this.highContrast = false,
+    this.logicalSize = const Size(430, 932),
+    this.safePadding = const EdgeInsets.only(top: 59, bottom: 34),
+    this.reduceMotion = false,
     this.circleArrivalsFor,
   });
   final WidgetTester tester;
@@ -216,6 +226,9 @@ class BaselineHarness {
   final bool flatOutput;
   final double textScale;
   final bool highContrast;
+  final Size logicalSize;
+  final EdgeInsets safePadding;
+  final bool reduceMotion;
   final ZyraCirclePreviewArrivals? circleArrivalsFor;
   late ZyraShellTestFixture shellFixture;
   bool guardian = false;
@@ -249,12 +262,14 @@ class BaselineHarness {
     checkpoints
       ..clear()
       ..add(checkpoint);
-    tester.view.physicalSize = const Size(1290, 2796);
+    tester.view.physicalSize = logicalSize * 3;
     tester.view.devicePixelRatio = 3;
     await tester.pumpWidget(
       _ProductionPreviewFrame(
         textScale: textScale,
         highContrast: highContrast,
+        safePadding: safePadding,
+        reduceMotion: reduceMotion,
         child: child,
       ),
     );
@@ -274,7 +289,9 @@ class BaselineHarness {
     String guardianMembership = 'Guardian One',
     bool initialSeekerBasic = false,
     bool initialGuardianBasic = false,
+    bool restoreLocation = true,
     DateTime Function()? previewClock,
+    List<NavigatorObserver> navigatorObservers = const [],
   }) async {
     this.guardian = guardian;
     ZyraColors.restoreAppPalette(null);
@@ -282,7 +299,7 @@ class BaselineHarness {
     ZyraInteractionStyle.restoreDefaults();
     ZyraText.restoreAppFont(null);
     checkpoints.clear();
-    tester.view.physicalSize = const Size(1290, 2796);
+    tester.view.physicalSize = logicalSize * 3;
     tester.view.devicePixelRatio = 3;
     final ready = Completer<void>();
     shellFixture = ZyraShellTestFixture(circleArrivalsFor: circleArrivalsFor);
@@ -294,6 +311,9 @@ class BaselineHarness {
       _ProductionPreviewFrame(
         textScale: textScale,
         highContrast: highContrast,
+        safePadding: safePadding,
+        reduceMotion: reduceMotion,
+        navigatorObservers: navigatorObservers,
         child: ZyraOneJourneyConceptShell(
           fixture: shellFixture.fixture,
           key: UniqueKey(),
@@ -302,6 +322,7 @@ class BaselineHarness {
           initialGuardianRole: guardian,
           initialSeekerBasic: initialSeekerBasic,
           initialGuardianBasic: initialGuardianBasic,
+          restoreLocation: restoreLocation,
           initialCheckpoint:
               checkpoint ??
               ZyraPreviewNavigationCheckpoint(
@@ -473,8 +494,8 @@ class BaselineHarness {
     await tester.runAsync(() async {
       final image = await boundary.toImage(pixelRatio: 3);
       try {
-        expect(image.width, 1290);
-        expect(image.height, 2796);
+        expect(image.width, (logicalSize.width * 3).round());
+        expect(image.height, (logicalSize.height * 3).round());
         final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
         final file = File('$outputRoot/$relative');
         if (_compareOnly) {
@@ -518,8 +539,8 @@ class BaselineHarness {
           'state': state,
           'reached': reached,
           'file': relative,
-          'width': 1290,
-          'height': 2796,
+          'width': image.width,
+          'height': image.height,
           'route': latest.pages,
           'tab': latest.tab,
         });

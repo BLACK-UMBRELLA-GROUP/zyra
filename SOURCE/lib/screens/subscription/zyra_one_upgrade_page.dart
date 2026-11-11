@@ -14,15 +14,21 @@ class ZyraOneUpgradePage extends StatelessWidget {
     required this.guardian,
     required this.canContinue,
     required this.onBack,
+    this.includesPreviewComparisons = false,
   });
 
   final bool guardian;
+  final bool includesPreviewComparisons;
   final bool Function() canContinue;
   final VoidCallback onBack;
 
-  static const _seekerRows = [
+  List<(String, String, String)> get _seekerRows => [
     ('Journey places', '1', '3'),
     ('Browse profiles', '25 every 4 hours', 'Unlimited'),
+    if (includesPreviewComparisons) ...[
+      ('Compatibility score', 'Overall score', 'Every topic'),
+      ('Filters', 'Age and location', 'All filters'),
+    ],
     ('Guardians', '1 on Guardian Basic', 'Any 10'),
     ('Look again at declined profiles', '—', 'Up to 10'),
     ('Chaperoned video calls', '—', 'Coming later'),

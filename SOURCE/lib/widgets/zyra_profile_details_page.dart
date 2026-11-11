@@ -1,4 +1,6 @@
 // Public identity and caller-rendered photo presentation only.
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../data/zyra_membership_catalog.dart';
@@ -7,22 +9,26 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_profile_image.dart';
 
-/// LOCK 4 V3, design 2. Only the caller's public profile fields and admitted
+/// LOCK 4 V4, design 2. Only the caller's public profile fields and admitted
 /// first photo reach this face. No private answers or photo lookup here.
 class ZyraProfileDetailsPage extends StatelessWidget {
   const ZyraProfileDetailsPage({
     super.key,
     required this.profile,
     this.firstPhoto,
+    this.requestAction,
   });
 
   final SeekerProfile profile;
   final Widget? firstPhoto;
+  final Widget? requestAction;
 
   static const double _avatarSize = 124;
   static const double _smallerAvatarSize = 96;
   static const double _ringWidth = 1.5;
   static const double _photoGap = 2;
+  static const double _tileGap = 12;
+  static const double _horizontalInset = 22;
   static const photoAlignment = Alignment(0, -.7);
 
   static double photoSizeFor(ZyraPlan? plan) =>
@@ -128,6 +134,15 @@ class ZyraProfileDetailsPage extends StatelessWidget {
               MediaQuery.textScalerOf(context).scale(16) > 16 &&
               constraints.maxHeight < 560;
           final avatarSize = compact ? _smallerAvatarSize : _avatarSize;
+          final tileWidth =
+              (constraints.maxWidth - 2 * _horizontalInset - _tileGap) / 2;
+          final rowHeight = facts.fold(
+            (math.max(196.0, constraints.maxHeight * .4) - _tileGap) / 2,
+            (height, fact) => math.max(
+              height,
+              _DetailTile.heightFor(context, fact, tileWidth),
+            ),
+          );
           return SingleChildScrollView(
             key: ValueKey('concept_browse_details_scroll_${profile.id}'),
             physics: const ClampingScrollPhysics(),
@@ -135,7 +150,12 @@ class ZyraProfileDetailsPage extends StatelessWidget {
               constraints: BoxConstraints(minHeight: constraints.maxHeight),
               child: IntrinsicHeight(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(22, 28, 22, 22),
+                  padding: const EdgeInsets.fromLTRB(
+                    _horizontalInset,
+                    28,
+                    _horizontalInset,
+                    22,
+                  ),
                   child: Column(
                     children: [
                       Expanded(
@@ -165,23 +185,29 @@ class ZyraProfileDetailsPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      if (facts.isNotEmpty) const SizedBox(height: 4),
                       for (int i = 0; i < facts.length; i += 2) ...[
-                        if (i != 0) const SizedBox(height: 10),
-                        IntrinsicHeight(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Expanded(child: _DetailTile(facts[i])),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: i + 1 < facts.length
-                                    ? _DetailTile(facts[i + 1])
-                                    : const SizedBox.shrink(),
-                              ),
-                            ],
+                        if (i != 0) const SizedBox(height: _tileGap),
+                        ConstrainedBox(
+                          constraints: BoxConstraints(minHeight: rowHeight),
+                          child: IntrinsicHeight(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Expanded(child: _DetailTile(facts[i])),
+                                const SizedBox(width: _tileGap),
+                                Expanded(
+                                  child: i + 1 < facts.length
+                                      ? _DetailTile(facts[i + 1])
+                                      : const SizedBox.shrink(),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
+                      ],
+                      if (requestAction case final action?) ...[
+                        const SizedBox(height: _tileGap),
+                        SizedBox(width: double.infinity, child: action),
                       ],
                     ],
                   ),
@@ -199,28 +225,66 @@ class _DetailTile extends StatelessWidget {
   const _DetailTile(this.fact);
 
   final (String, String) fact;
+  static const _padding = EdgeInsets.symmetric(horizontal: 16, vertical: 14);
+  static const _gap = 6.0;
+
+  static TextStyle get _labelStyle => ZyraText.body(
+    size: 11,
+    color: ZyraColors.secondaryText,
+  ).copyWith(letterSpacing: 1.1);
+  static TextStyle get _valueStyle => ZyraText.button(
+    size: 18,
+    color: ZyraColors.foregroundBody,
+  ).copyWith(letterSpacing: 0, height: 1.2);
+
+  static double heightFor(
+    BuildContext context,
+    (String, String) fact,
+    double tileWidth,
+  ) {
+    final inherited = DefaultTextStyle.of(context);
+    final bold = MediaQuery.boldTextOf(context);
+    TextStyle resolve(TextStyle style) {
+      final effective = inherited.style.merge(style);
+      return bold
+          ? effective.merge(const TextStyle(fontWeight: FontWeight.bold))
+          : effective;
+    }
+
+    final painter = TextPainter(
+      textDirection: Directionality.of(context),
+      textScaler: MediaQuery.textScalerOf(context),
+      textHeightBehavior: inherited.textHeightBehavior,
+      textWidthBasis: inherited.textWidthBasis,
+    );
+    final width = math.max(1.0, tileWidth - _padding.horizontal - 2);
+    painter.text = TextSpan(text: fact.$1, style: resolve(_labelStyle));
+    painter.layout(maxWidth: width);
+    final labelHeight = painter.height;
+    painter.text = TextSpan(text: fact.$2, style: resolve(_valueStyle));
+    painter.layout(maxWidth: width);
+    final valueHeight = painter.height;
+    painter.dispose();
+    return _padding.vertical + 2 + labelHeight + _gap + valueHeight;
+  }
 
   @override
   Widget build(BuildContext context) => MergeSemantics(
     child: Container(
       key: ValueKey('profile-detail-tile-${fact.$1}'),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: _padding,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        color: ZyraColors.ivoryTop,
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(color: ZyraColors.surfaceBorder),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            fact.$1,
-            style: ZyraText.body(
-              size: 10.5,
-              color: ZyraColors.secondaryText,
-            ).copyWith(letterSpacing: 1, height: 1.05),
-          ),
-          Text(fact.$2, style: ZyraText.body(size: 16).copyWith(height: 1.05)),
+          Text(fact.$1, style: _labelStyle),
+          const SizedBox(height: _gap),
+          Text(fact.$2, style: _valueStyle),
         ],
       ),
     ),

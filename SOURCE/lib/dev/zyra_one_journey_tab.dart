@@ -12,6 +12,7 @@ import '../theme/zyra_text.dart';
 import '../widgets/zyra_journey_icon.dart';
 import '../widgets/zyra_profiles_components.dart';
 import '../widgets/zyra_tap_feedback.dart';
+import '../widgets/zyra_swipe_track.dart';
 
 ScrollPhysics _fixedCardPhysics(BuildContext context) =>
     MediaQuery.textScalerOf(context).scale(14) > 14
@@ -152,7 +153,7 @@ class ZyraOneJourneyTab extends StatefulWidget {
 
 class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
   int _revision = 0;
-  double _dragDistance = 0;
+  final _track = ZyraSwipeController();
 
   void _page(int target, bool Function() current) {
     if (!current() || target < 0 || target >= widget.capacity) return;
@@ -509,7 +510,9 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
                         size: 6,
                         lift: 0,
                         canAct: current,
-                        onSelected: (value) => _page(value, current),
+                        onSelected: (value) {
+                          if (current()) _track.animateTo(value);
+                        },
                         targetKey: (i) => ValueKey('journey_tab_dot_target_$i'),
                       ),
                     ),
@@ -517,29 +520,22 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
                   // The 6 pt dot ends 9 pt before the end of its touch slot.
                   const SizedBox(height: 3),
                   Expanded(
-                    child: GestureDetector(
+                    child: ZyraSwipeTrack(
                       key: const ValueKey('journey_tab_card'),
-                      behavior: HitTestBehavior.opaque,
-                      onHorizontalDragStart: (_) => _dragDistance = 0,
-                      onHorizontalDragUpdate: (details) {
-                        if (current()) {
-                          _dragDistance += details.primaryDelta ?? 0;
-                        }
+                      controller: _track,
+                      index: index,
+                      itemCount: widget.capacity,
+                      motionIdentity: identity,
+                      canAct: () =>
+                          current() && (parentFeedback?.canAct() ?? true),
+                      onSettled: (value) => _page(value, current),
+                      itemBuilder: (context, page) {
+                        bool pageCurrent() => current() && page == index;
+                        final journey = widget.journeys.elementAtOrNull(page);
+                        return journey == null
+                            ? _freePlace(pageCurrent)
+                            : _journey(journey, page, pageCurrent);
                       },
-                      onHorizontalDragEnd: (details) {
-                        if (!current()) return;
-                        final velocity = details.primaryVelocity ?? 0;
-                        if (_dragDistance.abs() < 24 && velocity.abs() < 100) {
-                          return;
-                        }
-                        final direction = velocity.abs() >= 100
-                            ? velocity
-                            : _dragDistance;
-                        _page(index + (direction < 0 ? 1 : -1), current);
-                      },
-                      child: card == null
-                          ? _freePlace(current)
-                          : _journey(card, index, current),
                     ),
                   ),
                   const SizedBox(height: ZyraPreviewSpacing.cardToPill),
@@ -555,10 +551,14 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
                     previousLabel: 'Previous Journey place',
                     nextLabel: 'Next Journey place',
                     onPrevious: index > 0
-                        ? () => _page(index - 1, current)
+                        ? () {
+                            if (current()) _track.animateTo(index - 1);
+                          }
                         : null,
                     onNext: index < widget.capacity - 1
-                        ? () => _page(index + 1, current)
+                        ? () {
+                            if (current()) _track.animateTo(index + 1);
+                          }
                         : null,
                     onRequest: card?.unavailable == true
                         ? null

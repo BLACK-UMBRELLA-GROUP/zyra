@@ -20,10 +20,12 @@ when pressed. Contact support opens Help & Support with the error reference.
 The empty Guardian tab offers Add a Guardian. Browse gives one haptic tick for
 an accepted photo action, including the accessible Next page control.
 
-In the Founder preview, each Guardian card shows the Guardian’s details and
-Journey access together. The card follows a horizontal drag. Swipe, tap an
-edge or select a dot to change people. The three-dot menu opens a sheet above
-the entire screen for Main Guardian and removal actions.
+In the Founder preview, a sideways drag brings the neighbouring card into view
+on Profiles, Guardian, Journey, Filters and My ZYRA’s Needs you section. The
+selection updates when the cards settle. Each Guardian card shows details and
+Journey access together. The three-dot menu opens Main Guardian and removal
+actions. Guardian Circle opens on Main and keeps past Journey topics open
+for members who can write.
 The Seeker Basic Add card counts active Guardian links, shows the Basic place
 and remaining Guardian One places, and opens Add a Guardian and the Seeker One
 comparison separately. The client checks a maximum of 10 active links including Main.
@@ -34,6 +36,14 @@ Seeker One when the displayed profile's plan is verified as One. A verified
 Seeker Basic profile uses a plain circle. Profiles with an unavailable plan
 keep the existing ring. The Profiles details card shows the first photo
 above the name and the public age, location, nationality and ethnicity tiles.
+Request a Journey appears below the tiles on the details page. Seeker Basic
+shows the Seeker One comparison prompt on a backward profile swipe.
+In the Founder preview, Seeker Basic filters by age and location. The
+Nationality and Ethnicity cards link to the Seeker One comparison. In a
+mutually revealed Journey, Seeker Basic sees the overall compatibility score
+and can use a local Unlock to open the topics for that person.
+The Guardian Basic invitation example shows what happens when a Seeker’s
+free Guardian place is taken, keeping the current holder private.
 Basic profiles and explicit upgrade prompts open the Seeker One or Guardian
 One comparison. Current One members keep their membership controls.
 The comparison shows only supported differences and explains that checkout

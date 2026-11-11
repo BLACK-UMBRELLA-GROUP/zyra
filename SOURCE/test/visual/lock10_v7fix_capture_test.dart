@@ -175,8 +175,16 @@ void main() {
 
       final h = harness(1);
       await h.mount();
+      final request = _key('draft_profile_draft-sara');
       await h.tap('draft_profile_draft-sara');
-      await checkAndCapture(h, 'c01_profiles', 'draft_profile_draft-sara');
+      final material = tester.widget<Material>(
+        find.ancestor(of: request, matching: find.byType(Material)).first,
+      );
+      final label = tester.widget<Text>(
+        find.descendant(of: request, matching: find.text('Request sent')),
+      );
+      expect(material.color, const Color(0xFFFBF7F0));
+      expect(label.style!.color, const Color(0xFF845F24));
       await h.mount(tab: 1, model: _faith());
       await checkAndCapture(h, 'c02_journey_tab', 'journey_tab_continue');
       await _filters(h);

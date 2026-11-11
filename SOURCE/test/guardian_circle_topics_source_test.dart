@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_circle_topics_presentation.dart';
 import 'package:zyra/dev/zyra_guardian_circle_preview.dart';
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/screens/wali/family_messaging_screens.dart';
 import 'package:zyra/services/zyra_account_state.dart';
@@ -54,6 +55,8 @@ Future<BaselineHarness> _mount(
   bool openCircle = true,
   bool deliverCircleMessage = false,
   ViewRequestDraftModel? model,
+  ZyraPreviewNavigationCheckpoint? checkpoint,
+  DateTime Function()? previewClock,
 }) async {
   final harness = BaselineHarness(
     tester,
@@ -84,6 +87,8 @@ Future<BaselineHarness> _mount(
     tab: 3,
     pages: openCircle ? const ['guardian_circle'] : const [],
     model: model ?? _model(seekerBasic: seekerBasic),
+    checkpoint: checkpoint,
+    previewClock: previewClock,
     seekerMembership: seekerBasic ? 'Seeker Basic' : 'Seeker One',
     guardianMembership: guardianBasic ? 'Guardian Basic' : 'Guardian One',
     initialSeekerBasic: seekerBasic,
@@ -262,6 +267,41 @@ void main() {
       expect(find.text('Guardian One'), findsOneWidget);
       expect(find.text('Chat in a Journey'), findsOneWidget);
       expect(_composer, findsNothing);
+    },
+  );
+
+  testWidgets(
+    'source Guardian Basic can read a shared older Past topic without writing',
+    (tester) async {
+      final h = await _mount(
+        tester,
+        guardian: true,
+        guardianBasic: true,
+        previewClock: () => DateTime.utc(2026, 11, 11),
+        checkpoint: ZyraPreviewNavigationCheckpoint(
+          guardian: true,
+          model: _model().snapshot(),
+          tab: 3,
+          pages: const ['guardian_circle'],
+          guardianHistory: const {'draft-guardian-hassan': true},
+          guardianMembership: 'Guardian Basic',
+        ),
+      );
+      expect(find.text('Main'), findsOneWidget);
+      await h.tap('circle_topics_past');
+      await h.tap('circle_topics_past_draft-circle-past-0');
+      expect(
+        _presentation(tester).selected!.endedOn,
+        DateTime.utc(2026, 10, 10),
+      );
+      expect(find.text('All past'), findsOneWidget);
+      expect(find.textContaining('read only'), findsNothing);
+      expect(
+        find.text("You're reading only. Chat comes with Guardian One."),
+        findsOneWidget,
+      );
+      expect(_composer, findsNothing);
+      expect(_topicKey('send'), findsNothing);
     },
   );
 

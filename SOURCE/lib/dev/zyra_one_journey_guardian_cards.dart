@@ -1,5 +1,4 @@
-// LOCK 19 V8: Founder preview Guardian cards.
-import 'package:flutter/gestures.dart' show DragStartBehavior;
+// LOCK 19: Founder preview Guardian cards.
 import 'package:flutter/material.dart';
 import '../data/zyra_guardian_capacity.dart';
 import '../services/zyra_account_state.dart';
@@ -15,6 +14,7 @@ import 'zyra_one_journey_monogram_presentation.dart';
 import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_profiles_components.dart';
 import '../widgets/zyra_tap_feedback.dart';
+import '../widgets/zyra_swipe_track.dart';
 import 'zyra_conversation_unread_badge.dart';
 import 'zyra_one_journey_guardian_family_sheet.dart';
 import '../theme/zyra_preview_spacing.dart';
@@ -90,6 +90,9 @@ class ZyraOneJourneyGuardianCards extends StatefulWidget {
     this.familyInvited,
     this.onFamilyInvite,
     this.onFamilyCancel,
+    this.previewInvitationNow,
+    this.previewInvitationCancelled = false,
+    this.onCancelPreviewInvitation,
   });
   final List<ZyraGuardianCardPerson> people;
   final List<ZyraGuardianCardJourney> Function(String id) journeysFor;
@@ -112,6 +115,13 @@ class ZyraOneJourneyGuardianCards extends StatefulWidget {
   final ZyraGuardianFamilyState familyState;
   final bool Function(String)? familyInvited;
   final ValueChanged<String>? onFamilyInvite, onFamilyCancel;
+  static final previewInvitationSent = DateTime.utc(2026, 11, 2);
+  static final previewInvitationExpiry = previewInvitationSent.add(
+    const Duration(days: 7),
+  );
+  final DateTime? previewInvitationNow;
+  final bool previewInvitationCancelled;
+  final VoidCallback? onCancelPreviewInvitation;
 
   @override
   State<ZyraOneJourneyGuardianCards> createState() => _GuardianCardsState();
@@ -119,14 +129,10 @@ class ZyraOneJourneyGuardianCards extends StatefulWidget {
 
 enum _GuardianCardManagement { makeMain, clearMain, remove }
 
-class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
-    with SingleTickerProviderStateMixin {
+class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
   int _index = 0, _render = 0;
-  late final _slide = AnimationController.unbounded(vsync: this);
-  bool _moving = false;
+  final _swipe = ZyraSwipeController();
   bool _returningFromMenu = false;
-  double _drag = 0;
-  bool Function()? _dragLease;
   final _invites = <String>{};
   Object? _sheetLease;
   ModalRoute<dynamic>? _sheetRoute;
@@ -150,7 +156,8 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
     return all;
   }
 
-  bool get _canShowInvitation => !widget.basic && _people.isNotEmpty;
+  bool get _canShowInvitation =>
+      !widget.basic && _people.isNotEmpty && !widget.previewInvitationCancelled;
   int get _guardianCount => _people.length + (_canShowInvitation ? 1 : 0);
   int get _length => _guardianCount + 1;
   ZyraGuardianCardPerson? get _person =>
@@ -215,7 +222,6 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
 
   @override
   void dispose() {
-    _slide.dispose();
     _dismissOwnedSheet();
     super.dispose();
   }
@@ -231,10 +237,11 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
       !_returningFromMenu &&
       ModalRoute.of(context)?.isCurrent == true;
 
-  bool Function() _lease() {
-    final render = _render, epoch = widget.interactionEpoch(), target = _target;
+  bool Function() _lease([String? expectedTarget]) {
+    final render = _render, epoch = widget.interactionEpoch();
+    final target = expectedTarget ?? _target;
     final authority = widget.canAct;
-    var revoked = false;
+    var revoked = target != _target;
     return () {
       if (revoked) return false;
       if (!authority() || !_current(render, epoch, target)) {
@@ -245,12 +252,12 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
     };
   }
 
-  VoidCallback _action(VoidCallback action) {
-    final current = _lease();
+  VoidCallback _action(VoidCallback action, {String? expectedTarget}) {
+    final current = _lease(expectedTarget);
     return ZyraTapFeedback.onTap(
       context,
       action,
-      canAct: () => !_moving && current(),
+      canAct: () => !_swipe.isMoving && current(),
     )!;
   }
 
@@ -262,67 +269,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
     widget.onPage(next);
   }
 
-  Future<void> _move(int next, {bool fromDrag = false}) async {
-    if (_moving || next < 0 || next >= _length || next == _index) return;
-    final current = _lease();
-    _drag = 0;
-    _dragLease = null;
-    if (MediaQuery.disableAnimationsOf(context)) {
-      _select(next);
-      return;
-    }
-    final direction = next > _index ? 1.0 : -1.0;
-    _moving = true;
-    try {
-      if (fromDrag) {
-        await _slide
-            .animateTo(
-              -1.15 * direction,
-              duration: const Duration(milliseconds: 180),
-              curve: Curves.easeIn,
-            )
-            .orCancel;
-      }
-      if (!current() || next >= _length) return;
-      _slide.value = 1.15 * direction;
-      _select(next);
-      await _slide
-          .animateTo(
-            0,
-            duration: const Duration(milliseconds: 260),
-            curve: Curves.easeOut,
-          )
-          .orCancel;
-    } on TickerCanceled {
-      return; // The parent changed the roster, authority, or selected card.
-    } finally {
-      if (mounted) _resetMotion();
-    }
-  }
-
-  void _resetMotion() {
-    _drag = 0;
-    _dragLease = null;
-    _moving = false;
-    _slide.value = 0;
-  }
-
-  Future<void> _springBack() async {
-    _drag = 0;
-    _dragLease = null;
-    if (_slide.value == 0) return;
-    try {
-      await _slide
-          .animateTo(
-            0,
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeOutBack,
-          )
-          .orCancel;
-    } on TickerCanceled {
-      // A fresh drag or parent update can interrupt the return.
-    }
-  }
+  void _resetMotion() => _swipe.cancel();
 
   Future<void> _openMenu() async {
     final route = ModalRoute.of(context);
@@ -631,14 +578,11 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
 
   @override
   Widget build(BuildContext context) {
-    final person = _person;
-    final add = person == null && !_invitedCard;
+    final add = _index == _length - 1;
     final textScaler = MediaQuery.textScalerOf(context);
     final scale = textScaler.scale(1);
     final largerText = textScaler.scale(14) > 14;
-    final target = _target;
     final faceLease = _lease();
-    bool canMove() => !_moving && faceLease();
     final people = _people;
     final basicCapacity = widget.basic
         ? ZyraGuardianCapacity.fromCount(
@@ -651,12 +595,6 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
         : null;
     final upgrade = widget.onUpgrade;
     final bottom = ZyraNavBarMetrics.contentBottomClearance(context);
-    final move = ZyraTapFeedback.onChanged<({int index, bool swipe})>(
-      context,
-      (selection) => _move(selection.index, fromDrag: selection.swipe),
-      canAct: canMove,
-    )!;
-    void moveByTap(int next) => move((index: next, swipe: false));
     return SafeArea(
       bottom: false,
       child: Padding(
@@ -714,98 +652,73 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
             ),
             if (_guardianCount > 0) ...[
               const SizedBox(height: ZyraPreviewSpacing.titleToDots),
-              AnimatedBuilder(
-                animation: _slide,
-                builder: (context, child) =>
-                    IgnorePointer(ignoring: _moving, child: child),
-                child: ZyraProfilesDots(
-                  count: _guardianCount,
-                  index: _index < _guardianCount ? _index : -1,
-                  dotKey: (i) => ValueKey('guardian-card-dot-$i'),
-                  targetKey: (i) => ValueKey('guardian-card-dot-target-$i'),
-                  itemLabel: (i) =>
-                      i < people.length ? people[i].person.firstName : 'Omar',
-                  canAct: faceLease,
-                  onSelected: (index) {
-                    if (canMove() && index != _index) _move(index);
-                  },
-                  exposeSemanticAction: true,
-                ),
+              ZyraProfilesDots(
+                count: _guardianCount,
+                index: _index < _guardianCount ? _index : -1,
+                dotKey: (i) => ValueKey('guardian-card-dot-$i'),
+                targetKey: (i) => ValueKey('guardian-card-dot-target-$i'),
+                itemLabel: (i) =>
+                    i < people.length ? people[i].person.firstName : 'Omar',
+                canAct: faceLease,
+                canSelect: () => !_swipe.isMoving,
+                onSelected: _swipe.animateTo,
+                exposeSemanticAction: true,
               ),
               // The visible dot ends 9 pt before its 24 pt tap area.
               const SizedBox(height: 3),
             ] else
               const SizedBox(height: 8),
             Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) => GestureDetector(
-                  key: ValueKey('guardian-card-$target'),
-                  behavior: HitTestBehavior.opaque,
-                  dragStartBehavior: DragStartBehavior.down,
-                  onHorizontalDragDown: (_) {
-                    if (!canMove()) return;
-                    _resetMotion();
-                    _dragLease = faceLease;
-                  },
-                  onHorizontalDragUpdate: (event) {
-                    if (_moving || _dragLease?.call() != true) return;
-                    _drag += event.delta.dx;
-                    if (MediaQuery.disableAnimationsOf(context)) return;
-                    final atEnd = _drag > 0
-                        ? _index == 0
-                        : _index == _length - 1;
-                    final offset = atEnd ? _drag * .25 : _drag;
-                    _slide.value = (offset / constraints.maxWidth).clamp(
-                      -1.0,
-                      1.0,
-                    );
-                  },
-                  onHorizontalDragCancel: () {
-                    if (!_moving) _springBack();
-                  },
-                  onHorizontalDragEnd: (_) {
-                    final next = _index + (_drag < 0 ? 1 : -1);
-                    if (!_moving &&
-                        _dragLease?.call() == true &&
-                        _drag.abs() >= 60 &&
-                        next >= 0 &&
-                        next < _length) {
-                      move((index: next, swipe: true));
-                    } else if (!_moving) {
-                      _springBack();
-                    }
-                  },
-                  child: AnimatedBuilder(
-                    animation: _slide,
-                    builder: (context, child) => FractionalTranslation(
-                      key: const ValueKey('guardian-card-slide'),
-                      translation: Offset(_slide.value, 0),
-                      child: IgnorePointer(ignoring: _moving, child: child),
-                    ),
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        if (add)
-                          ZyraGuardianAddCard(
-                            basicCapacity: basicCapacity,
-                            onUpgrade: widget.basic && upgrade != null
-                                ? _action(upgrade)
-                                : null,
-                            allowContentScroll: largerText,
-                          )
-                        else
-                          _card(person),
-                        if (!add && _index > 0)
-                          _edge(left: true, onTap: () => moveByTap(_index - 1)),
-                        if (_index + 1 < _guardianCount)
-                          _edge(
-                            left: false,
-                            onTap: () => moveByTap(_index + 1),
-                          ),
-                      ],
-                    ),
-                  ),
+              child: ZyraSwipeTrack(
+                controller: _swipe,
+                index: _index,
+                itemCount: _length,
+                canAct: faceLease,
+                onSettled: _select,
+                onDragSettled: ZyraTapFeedback.onTap(
+                  context,
+                  () {},
+                  canAct: faceLease,
                 ),
+                itemBuilder: (context, index) {
+                  final person = index < people.length ? people[index] : null;
+                  final isAdd = index == _length - 1;
+                  final target =
+                      person?.person.id ??
+                      (isAdd ? 'add' : 'preview-invited-omar');
+                  return Stack(
+                    key: ValueKey('guardian-card-$target'),
+                    fit: StackFit.expand,
+                    children: [
+                      if (isAdd)
+                        ZyraGuardianAddCard(
+                          basicCapacity: basicCapacity,
+                          onUpgrade: widget.basic && upgrade != null
+                              ? _action(upgrade, expectedTarget: target)
+                              : null,
+                          allowContentScroll: largerText,
+                        )
+                      else
+                        _card(person, target),
+                      if (!isAdd && index > 0)
+                        _edge(
+                          left: true,
+                          onTap: _action(
+                            () => _swipe.animateTo(index - 1),
+                            expectedTarget: target,
+                          ),
+                        ),
+                      if (index + 1 < _guardianCount)
+                        _edge(
+                          left: false,
+                          onTap: _action(
+                            () => _swipe.animateTo(index + 1),
+                            expectedTarget: target,
+                          ),
+                        ),
+                    ],
+                  );
+                },
               ),
             ),
             if (add) ...[
@@ -834,40 +747,41 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
     ),
   );
 
-  Widget _card(ZyraGuardianCardPerson? person) => ZyraFloatingSurface(
-    radius: 22,
-    child: Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFF3EDE3),
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(
-          color: person?.person.isMain == true
-              ? const Color(0xFFE8C98A).withValues(alpha: .6)
-              : ZyraColors.surfaceBorder,
-        ),
-      ),
-      child: LayoutBuilder(
-        builder: (context, box) => SingleChildScrollView(
-          key: ValueKey('guardian-card-content-$_target'),
-          primary: false,
-          physics: const ClampingScrollPhysics(),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: box.maxHeight),
-            // Equal flex rows reserve the largest natural row height when
-            // space is tight. Clamping permits movement only on overflow.
-            child: IntrinsicHeight(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(29, 12, 29, 12),
-                child: person == null
-                    ? _invited()
-                    : _linked(person, box.maxWidth - 58),
+  Widget _card(ZyraGuardianCardPerson? person, String target) =>
+      ZyraFloatingSurface(
+        radius: 22,
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFF3EDE3),
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(
+              color: person?.person.isMain == true
+                  ? const Color(0xFFE8C98A).withValues(alpha: .6)
+                  : ZyraColors.surfaceBorder,
+            ),
+          ),
+          child: LayoutBuilder(
+            builder: (context, box) => SingleChildScrollView(
+              key: ValueKey('guardian-card-content-$target'),
+              primary: false,
+              physics: const ClampingScrollPhysics(),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: box.maxHeight),
+                // Equal flex rows reserve the largest natural row height when
+                // space is tight. Clamping permits movement only on overflow.
+                child: IntrinsicHeight(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(29, 12, 29, 12),
+                    child: person == null
+                        ? _invited()
+                        : _linked(person, box.maxWidth - 58),
+                  ),
+                ),
               ),
             ),
           ),
         ),
-      ),
-    ),
-  );
+      );
 
   Widget _round(String key, IconData icon, VoidCallback callback) =>
       ZyraFloatingSurface(
@@ -894,6 +808,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
     bool main = false,
     bool invited = false,
     required bool guardianOne,
+    String? guardianId,
   }) => Stack(
     children: [
       Padding(
@@ -944,7 +859,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
             key: const ValueKey('guardian-card-menu'),
             tooltip: 'Guardian actions',
             icon: const Icon(Icons.more_horiz, size: 22),
-            onPressed: _action(_openMenu),
+            onPressed: _action(_openMenu, expectedTarget: guardianId),
             constraints: const BoxConstraints.tightFor(width: 44, height: 44),
           ),
         ),
@@ -979,7 +894,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
     ),
   );
 
-  String _date(DateTime? date) {
+  String _date(DateTime? date, {bool short = false}) {
     if (date == null) return '';
     const months = [
       'Jan',
@@ -995,7 +910,9 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
       'Nov',
       'Dec',
     ];
-    return '${date.day.toString().padLeft(2, '0')} ${months[date.month - 1]} ${date.year}';
+    final day = date.day.toString();
+    final month = months[date.month - 1];
+    return short ? '$day $month' : '${day.padLeft(2, '0')} $month ${date.year}';
   }
 
   Widget _linked(ZyraGuardianCardPerson person, double width) {
@@ -1010,6 +927,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
           guardian.firstName,
           guardian.isMain ? 'MAIN GUARDIAN' : 'ADDITIONAL GUARDIAN',
           main: guardian.isMain,
+          guardianId: guardian.id,
           guardianOne:
               person.familyPlace || person.membership == 'Guardian One',
         ),
@@ -1045,7 +963,10 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
 
   Widget _history(ZyraGuardianCardPerson person) {
     final id = person.person.id;
-    final action = _action(() => widget.onHistory(id, !person.history));
+    final action = _action(
+      () => widget.onHistory(id, !person.history),
+      expectedTarget: id,
+    );
     return Container(
       key: const ValueKey('guardian-card-summary-row'),
       constraints: const BoxConstraints(minHeight: 42),
@@ -1250,6 +1171,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
                     view: chat ? null : !journey.view,
                     chat: chat ? !journey.chat : null,
                   ),
+            expectedTarget: person.person.id,
           )
         : null;
     return Semantics(
@@ -1315,38 +1237,116 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
     );
   }
 
-  Widget _invited() => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      _top('Omar', 'INVITATION SENT', invited: true, guardianOne: false),
-      const SizedBox(height: 12),
-      _detail('Relationship', 'Brother'),
-      _detail('Membership', 'Not joined yet'),
-      _detail('Status', 'Waiting for Omar'),
-      Expanded(
-        child: Center(
-          child: Text(
-            'Access starts once Omar accepts the invitation.',
-            textAlign: TextAlign.center,
-            style: ZyraText.body(size: 14, color: ZyraColors.ink(.55)),
+  Widget _invited() {
+    final sent = ZyraOneJourneyGuardianCards.previewInvitationSent;
+    final expiry = ZyraOneJourneyGuardianCards.previewInvitationExpiry;
+    final expired = !(widget.previewInvitationNow ?? sent).isBefore(expiry);
+    final sentOn = _date(sent, short: true);
+    final expiresOn = _date(expiry, short: true);
+    final cancel = widget.onCancelPreviewInvitation;
+    final muted = ZyraColors.foregroundMuted;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _top(
+          'Omar',
+          expired ? 'INVITATION EXPIRED' : 'INVITATION SENT',
+          invited: true,
+          guardianOne: false,
+        ),
+        const SizedBox(height: 12),
+        _detail('Relationship', 'Brother'),
+        _detail('Membership', 'Not joined yet'),
+        _detail('Status', expired ? 'Expired $expiresOn' : 'Waiting for Omar'),
+        const SizedBox(height: 12),
+        Expanded(
+          child: CustomPaint(
+            foregroundPainter: ZyraGuardianDashedBorder(
+              16,
+              ZyraColors.journeyGold.withValues(alpha: .3),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: expired ? 24 : 34,
+                    height: expired ? 24 : 34,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: expired
+                          ? Border.all(color: ZyraColors.surfaceBorder)
+                          : null,
+                    ),
+                    child: expired
+                        ? Center(
+                            child: Text(
+                              '!',
+                              style: ZyraText.body(size: 15, color: muted),
+                            ),
+                          )
+                        : CustomPaint(
+                            foregroundPainter: ZyraGuardianDashedBorder(
+                              17,
+                              ZyraColors.journeyGold.withValues(alpha: .55),
+                            ),
+                            child: Icon(
+                              Icons.mail_outline,
+                              size: 17,
+                              color: ZyraColors.goldText,
+                            ),
+                          ),
+                  ),
+                  const SizedBox(height: 9),
+                  Text(
+                    expired
+                        ? 'The invitation has expired'
+                        : 'Waiting for Omar to accept',
+                    textAlign: TextAlign.center,
+                    style: ZyraText.body(
+                      size: 14,
+                    ).copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 6),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 270),
+                    child: Text(
+                      expired
+                          ? "Omar didn't accept within 7 days (ended $expiresOn)."
+                          : 'Invitation sent $sentOn. Omar has until $expiresOn '
+                                'to accept in their app. Access starts once they accept.',
+                      textAlign: TextAlign.center,
+                      style: ZyraText.body(
+                        size: 12.5,
+                        color: muted,
+                      ).copyWith(height: 1.45),
+                    ),
+                  ),
+                  if (!expired && cancel != null) ...[
+                    const SizedBox(height: 10),
+                    TextButton(
+                      key: const ValueKey('guardian-card-cancel-invitation'),
+                      onPressed: _action(
+                        cancel,
+                        expectedTarget: 'preview-invited-omar',
+                      ),
+                      child: Text(
+                        'Cancel invitation',
+                        style: ZyraText.body(size: 13, color: muted),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
           ),
         ),
-      ),
-      _pill(
-        'Send invitation again',
-        'guardian-card-center',
-        widget.onAdd,
-        invitation: true,
-      ),
-    ],
-  );
+      ],
+    );
+  }
 
-  Widget _pill(
-    String label,
-    String key,
-    VoidCallback onTap, {
-    bool invitation = false,
-  }) {
+  Widget _pill(String label, String key, VoidCallback onTap) {
     final action = _action(onTap);
     const radius = BorderRadius.all(Radius.circular(26));
     final pill = Semantics(
@@ -1359,11 +1359,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
         color: const Color(0xFFFBF7F0),
         shape: RoundedRectangleBorder(
           borderRadius: radius,
-          side: BorderSide(
-            color: invitation
-                ? ZyraColors.journeyGold.withValues(alpha: .6)
-                : ZyraColors.surfaceBorder,
-          ),
+          side: BorderSide(color: ZyraColors.surfaceBorder),
         ),
         child: InkWell(
           onTap: action,
@@ -1376,10 +1372,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
             child: Text(
               label,
               textAlign: TextAlign.center,
-              style: ZyraText.body(
-                size: 14,
-                color: invitation ? ZyraColors.goldText : ZyraColors.espresso,
-              ).copyWith(fontWeight: invitation ? FontWeight.w500 : null),
+              style: ZyraText.body(size: 14, color: ZyraColors.espresso),
             ),
           ),
         ),

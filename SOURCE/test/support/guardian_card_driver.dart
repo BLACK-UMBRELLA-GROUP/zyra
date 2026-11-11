@@ -1,14 +1,11 @@
 // Drives the LOCK 19 Guardian card through its public gestures.
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
+import 'package:zyra/widgets/zyra_swipe_track.dart';
 
 Finder get visibleGuardianCard => find.descendant(
   of: find.byType(ZyraOneJourneyGuardianCards),
-  matching: find.byWidgetPredicate(
-    (widget) =>
-        widget is GestureDetector && widget.onHorizontalDragUpdate != null,
-  ),
+  matching: find.byType(ZyraSwipeTrack),
 );
 
 Future<void> swipeGuardianCard(WidgetTester tester, {bool next = true}) async {

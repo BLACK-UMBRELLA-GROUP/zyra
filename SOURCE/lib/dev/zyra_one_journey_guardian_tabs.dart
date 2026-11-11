@@ -41,6 +41,7 @@ class ZyraGuardianTabsSnapshot {
     this.attentionSeen = false,
     this.focusIndex = 0,
     this.consumedFocus = const {},
+    this.freePlaceInviteExpiresAt,
   });
   // The existing fictional Family Review is already seen at startup.
   const ZyraGuardianTabsSnapshot.quiet()
@@ -52,12 +53,13 @@ class ZyraGuardianTabsSnapshot {
   final bool requestsSent, connectReceived, attentionSeen;
   final Set<String> introduced, sent, consumedFocus;
   final int focusIndex;
+  final DateTime? freePlaceInviteExpiresAt;
 }
 
 class ZyraGuardianTabsState {
   ZyraGuardianTabsState([
     ZyraGuardianTabsSnapshot saved = const ZyraGuardianTabsSnapshot.quiet(),
-  ]) {
+  ]) : freePlaceInviteExpiresAt = saved.freePlaceInviteExpiresAt {
     review = saved.review;
     hours = saved.hours.clamp(0, 48);
     reviewRevision = saved.reviewRevision < 0 ? 0 : saved.reviewRevision;
@@ -99,6 +101,9 @@ class ZyraGuardianTabsState {
   late bool requestsSent, connectReceived, attentionSeen;
   final introduced = <String>{}, sent = <String>{}, consumedFocus = <String>{};
   late int focusIndex;
+  // Explicitly seeded Founder sample. Never inferred from linked Guardians.
+  final DateTime? freePlaceInviteExpiresAt;
+  static const freePlaceInviteFocus = 'free-place-invite';
   String get reviewFocusId =>
       'review-${review == ZyraGuardianReview.paused ? 'paused' : 'open'}-$reviewRevision';
   String get seekerName => seeker == 0 ? 'Adam' : 'Yusuf';
@@ -145,6 +150,7 @@ class ZyraGuardianTabsState {
     attentionSeen: attentionSeen,
     focusIndex: focusIndex,
     consumedFocus: Set.unmodifiable(consumedFocus),
+    freePlaceInviteExpiresAt: freePlaceInviteExpiresAt,
   );
 }
 
@@ -341,6 +347,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     this.journeyIndex = 0,
     this.journeyIdentity,
     this.familyOffer,
+    this.freePlaceInvite = false,
     this.familyCanAct,
   });
   final ZyraGuardianTabsState state;
@@ -358,6 +365,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   final int journeyIndex;
   final Object? journeyIdentity;
   final ZyraGuardianFamilyInvite? familyOffer;
+  final bool freePlaceInvite;
   final bool Function()? familyCanAct;
   Widget _text(
     String text, {
@@ -720,6 +728,17 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     final review = state.review;
     final hours = state.hours;
     return [
+      if (freePlaceInvite)
+        ZyraFocusItem(
+          id: ZyraGuardianTabsState.freePlaceInviteFocus,
+          icon: Icons.verified_user_outlined,
+          title: 'Adam asked you to be his Guardian',
+          detail:
+              'His free Guardian Basic place is already used. You can still join on Guardian One.',
+          actionLabel: 'View',
+          actionKey: 'guardian_free_place_view',
+          onAction: () => onAction('free_place_view'),
+        ),
       if (familyOffer case final offer?)
         ZyraFocusItem(
           id: 'family-offer-${offer.revision}',

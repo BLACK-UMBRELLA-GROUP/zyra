@@ -283,12 +283,11 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
   void _topicsChange(VoidCallback change) => setState(change);
   bool get _topicsEnabled => _authority.canPreview && _topics != null;
   DateTime get _topicsNow => _topics?.clock?.call() ?? DateTime.now();
-  bool get _topicsClosed {
+  bool get _selectedPastUnavailable {
     final selected = _topicsSelection;
-    if (selected == null || !selected.isPast) return false;
-    final archive = _topicsArchiveFor(selected);
-    return archive == null ||
-        _topicsNow.isAfter(archive.endedOn.add(const Duration(days: 30)));
+    return selected != null &&
+        selected.isPast &&
+        _topicsArchiveFor(selected) == null;
   }
 
   static const _previewContexts = <ZyraFamilyMessageContext>[
@@ -323,7 +322,8 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
       _confirmedCanSend &&
       _threadId != null &&
       _access == ZyraFamilyMessageAccess.ready &&
-      (!_topicsEnabled || (!_topics!.guardianBasic && !_topicsClosed));
+      (!_topicsEnabled ||
+          (!_topics!.guardianBasic && !_selectedPastUnavailable));
   bool get _canSend => _canInteract && _canPresentComposer;
 
   bool get _topicOptionsEnabled =>
@@ -1158,7 +1158,8 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
         ? _discussionTopic
         : null;
     if ((_topicsEnabled &&
-            (_topicsPast && discussionTopic == null || _topicsClosed)) ||
+            (_topicsPast && discussionTopic == null ||
+                _selectedPastUnavailable)) ||
         discussionTopic != null && !_includesDiscussionTopic(discussionTopic)) {
       return;
     }
@@ -1185,7 +1186,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
                     discussionTopic,
                     _topicsEnabled ? _topicsSelection : _discussionTopic,
                   ))) ||
-          (_topicsEnabled && _topicsClosed) ||
+          (_topicsEnabled && _selectedPastUnavailable) ||
           (discussionTopic != null &&
               !_includesDiscussionTopic(discussionTopic))) {
         _finishSending(request);

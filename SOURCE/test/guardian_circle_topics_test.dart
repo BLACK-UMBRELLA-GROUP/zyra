@@ -139,7 +139,7 @@ class _Fixture {
   late final ZyraCircleTopicsPreview topics;
   final design = ValueNotifier(ZyraCircleBubbleDesign.current);
   final visibility = ValueNotifier(true);
-  bool owner = true;
+  bool owner = true, archiveAvailable = true;
   int manages = 0, memberships = 0;
   final opened = <ZyraFamilyMessageContext>[];
   // Keep one exact authority closure for the fixture lifetime.
@@ -150,7 +150,8 @@ class _Fixture {
   late final ValueChanged<ZyraFamilyMessageContext> openContext = opened.add;
   late final ZyraCircleDiscussionArchive? Function(ZyraCircleDiscussionTopic)
   // ignore: prefer_function_declarations_over_variables
-  archiveFor = (topic) => past.any((known) => identical(known, topic))
+  archiveFor = (topic) =>
+      archiveAvailable && past.any((known) => identical(known, topic))
       ? ZyraCircleDiscussionArchive(
           topicId: topic.id,
           firstName: topic.firstName,
@@ -392,7 +393,7 @@ void main() {
   );
 
   testWidgets(
-    'empty family has All and meaningful empty state without invented Journeys',
+    'empty family has Main and meaningful empty state without invented Journeys',
     (tester) async {
       final fixture = _Fixture(
         contexts: const [],
@@ -401,6 +402,7 @@ void main() {
         guardian: true,
       );
       await _mount(tester, fixture);
+      expect(find.text('Main'), findsOneWidget);
       expect(find.text('Talk about your search'), findsOneWidget);
       expect(_view(tester).current, isEmpty);
       expect(_view(tester).past, isEmpty);
@@ -439,32 +441,29 @@ void main() {
     },
   );
 
-  for (final day in [30, 31]) {
+  for (final guardian in [false, true]) {
     testWidgets(
-      'past discussion day $day uses the actual end date and closes after day 30',
+      '${guardian ? 'Guardian' : 'Seeker'} past discussion remains open after day 30',
       (tester) async {
-        final fixture = _Fixture(now: _ended.add(Duration(days: day)));
+        final fixture = _Fixture(
+          guardian: guardian,
+          now: _ended.add(const Duration(days: 31)),
+        );
         await _mount(tester, fixture);
+        expect(find.text('Main'), findsOneWidget);
         await _press(tester, _key('past'));
+        expect(
+          find.textContaining('You can talk about a past Journey any time.'),
+          findsOneWidget,
+        );
         expect(_composer, findsNothing);
         await _press(tester, _key('past_draft-circle-past-elif'));
         expect(_view(tester).selected!.endedOn, _ended);
-        expect(
-          find.textContaining(day == 30 ? 'Open until 1 Nov' : 'Closed 1 Nov'),
-          findsOneWidget,
-        );
-        if (day == 30) {
-          expect(_composer, findsOneWidget);
-          await _send(tester, 'An exactly day thirty discussion');
-          expect(_view(tester).messages.last.about, 'Elif');
-        } else {
-          expect(_composer, findsNothing);
-          expect(_key('send'), findsNothing);
-          expect(
-            find.textContaining('This discussion closed 30 days'),
-            findsOneWidget,
-          );
-        }
+        expect(find.textContaining('days left'), findsNothing);
+        expect(find.textContaining('read only'), findsNothing);
+        expect(_composer, findsOneWidget);
+        await _send(tester, 'A discussion after day thirty');
+        expect(_view(tester).messages.last.about, 'Elif');
         await _press(tester, _key('all_past'));
         expect(_composer, findsNothing);
       },
@@ -839,22 +838,22 @@ void main() {
   );
   for (final semantics in [false, true]) {
     testWidgets(
-      'closed deadline denies retained ${semantics ? 'semantics' : 'physical'} send before feedback',
+      'unavailable archive denies retained ${semantics ? 'semantics' : 'physical'} send before feedback',
       (tester) async {
-        final fixture = _Fixture(now: _ended.add(const Duration(days: 30)));
+        final fixture = _Fixture(now: _ended.add(const Duration(days: 31)));
         await _mount(tester, fixture);
         await _press(tester, _key('past'));
         await _press(tester, _key('past_draft-circle-past-elif'));
-        await tester.enterText(_composer, 'The open window has now expired');
+        await tester.enterText(_composer, 'The archive is no longer available');
         final send = _retained(tester, 'send', semantics);
-        fixture.now = _ended.add(const Duration(days: 31));
+        fixture.archiveAvailable = false;
         final before = haptics;
         send();
         await tester.pumpAndSettle();
         expect(haptics, before);
         expect(
           _bodies(tester),
-          isNot(contains('The open window has now expired')),
+          isNot(contains('The archive is no longer available')),
         );
         await tester.pumpWidget(_app(fixture.screen()));
         await tester.pumpAndSettle();

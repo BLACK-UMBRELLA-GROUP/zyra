@@ -340,14 +340,29 @@ void main() {
           find.byType(ZyraFocusDashboard),
         );
         expect(before.items.length, greaterThanOrEqualTo(2));
+        final focusArea = _key('focus-area');
+        final neighbour = _key('focus-item-${before.items[1].id}');
+        expect(neighbour, findsNothing);
         final start = tester.getCenter(tile);
         final pointer = await tester.startGesture(start);
-        for (var dx = 10.0; dx <= 70; dx += 10) {
+        for (var dx = 10.0; dx <= 150; dx += 10) {
           await pointer.moveTo(start.translate(-dx, 0));
           await tester.pump(const Duration(milliseconds: 50));
         }
+        expect(
+          tester.getRect(neighbour).overlaps(tester.getRect(focusArea)),
+          isTrue,
+        );
+        expect(
+          guardian
+              ? h.latest.guardianTabs.focusIndex
+              : h.latest.myZyraFocusIndex,
+          0,
+        );
+        expect(h.latest.pages, isEmpty);
         await pointer.up();
         await h.flush();
+        await tester.pump();
         expect(h.latest.pages, isEmpty);
         expect(
           guardian

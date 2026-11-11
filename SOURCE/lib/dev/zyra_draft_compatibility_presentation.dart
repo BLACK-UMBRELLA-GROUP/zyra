@@ -18,6 +18,7 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
     required this.balance,
     required this.overallScore,
     required this.revealed,
+    this.topicGate,
     this.onUnlock,
     this.onBuyMore,
     this.canAct,
@@ -28,6 +29,7 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
   final int balance;
   final int overallScore;
   final bool revealed;
+  final ZyraCompatibilityTopicGate? topicGate;
   final VoidCallback? onUnlock;
   final VoidCallback? onBuyMore;
   final bool Function()? canAct;
@@ -265,8 +267,10 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
           ],
         );
         final reader = ZyraCompatibilityScoreReader(
+          key: ValueKey(topicGate != null),
           personName: personName,
           overallScore: overallScore,
+          topicGate: topicGate,
         );
         final headingHeight =
             16 +

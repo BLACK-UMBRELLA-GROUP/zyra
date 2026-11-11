@@ -4,6 +4,10 @@ import 'dart:io';
 // the headless renderer cannot provide an iPhone system keyboard.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zyra/dev/zyra_browse_filter.dart';
+import 'package:zyra/dev/zyra_one_journey_filters_presentation.dart';
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
+import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/screens/profile/compatibility_editors.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
@@ -31,7 +35,7 @@ void main() {
         evidenceRoot: evidence,
         flatOutput: true,
       );
-      await h.mount();
+      await h.mount(navigatorObservers: [ZyraPreviewRouteObserver()]);
       await h.tap('concept_browse_menu');
       await t.tapAt(
         t.getCenter(
@@ -93,9 +97,23 @@ void main() {
         const Rect.fromLTWH(21, 147, 388, 648),
       );
       await cap('f01_age__any');
-      await t.fling(key('concept_age_0'), const Offset(-230, 0), 800);
+      final neighbour = key('filter_scroll_1');
+      final viewport = t.getRect(key('filters_card'));
+      expect(neighbour, findsNothing);
+      final swipe = await t.startGesture(t.getCenter(key('concept_age_1')));
+      await swipe.moveBy(const Offset(-120, 0));
+      await t.pump();
+      expect(t.getRect(neighbour).overlaps(viewport), isTrue);
+      expect(find.bySemanticsLabel('Age, filter 1 of 4'), findsOneWidget);
+      expect(find.bySemanticsLabel('Location, filter 2 of 4'), findsNothing);
+      expect(key('concept_age_range'), findsNothing);
+      await swipe.up();
       await h.flush();
-      expect(key('concept_age_1'), findsOneWidget);
+      await t.pump();
+      expect(find.bySemanticsLabel('Location, filter 2 of 4'), findsOneWidget);
+      await h.tap('filter_previous');
+      await t.pump();
+      expect(key('concept_age_range'), findsNothing);
       await h.tap('concept_age_1');
       t.widget<RangeSlider>(key('concept_age_range')).onChanged!(
         const RangeValues(24, 32),
@@ -150,6 +168,22 @@ void main() {
       expect(find.bySemanticsLabel('Location, filter 2 of 4'), findsOneWidget);
       expect(find.text('Location'), findsOneWidget);
       expect(find.text('United Kingdom'), findsOneWidget);
+      final card = key('filters_card');
+      final interrupted = await t.startGesture(t.getCenter(card));
+      await interrupted.moveBy(const Offset(-120, 0));
+      await t.pump();
+      await interrupted.up();
+      final modalContext = t.element(card);
+      showDialog<void>(
+        context: modalContext,
+        builder: (_) => const AlertDialog(title: Text('Route interruption')),
+      );
+      await t.pump();
+      expect(find.text('Route interruption'), findsOneWidget);
+      await t.binding.handlePopRoute();
+      await h.flush();
+      await t.pump();
+      expect(find.bySemanticsLabel('Location, filter 2 of 4'), findsOneWidget);
       await cap('f03_where__country');
       await h.tap('concept_where_0');
       expect(t.widget<Slider>(key('concept_radius')).value, 4);
@@ -190,7 +224,12 @@ void main() {
       final oldSearch = t.widget<TextField>(key('filter_search_nationality'));
       await t.fling(key('filter_add_2_GB'), const Offset(-230, 0), 800);
       await h.flush();
-      expect(key('filter_search_nationality'), findsOneWidget);
+      await t.pump();
+      expect(key('filter_search_ethnicity'), findsOneWidget);
+      await h.tap('filter_previous');
+      await t.pump();
+      expect(key('filter_add_2_GB'), findsOneWidget);
+      expect(key('filter_remove_2_GB'), findsNothing);
       await t.fling(
         key('filter_search_nationality'),
         const Offset(-230, 0),
@@ -349,5 +388,125 @@ void main() {
     expect(editor.canAct!(), isFalse);
     expect(retained.canAct!(), isFalse);
     expect(await retained.onPersist(retained.initialDraft), isFalse);
+  });
+  testWidgets('LOCK10 V8 Basic keeps saved One filters and opens the upgrade', (
+    t,
+  ) async {
+    addTearDown(t.view.resetPhysicalSize);
+    addTearDown(t.view.resetDevicePixelRatio);
+    ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
+    ZyraInternalPreviewClient.beginPreview();
+    final h = BaselineHarness(t, group: 'lock10_v8_basic');
+    final model = ViewRequestDraftModel(capacity: 3);
+    const saved = ZyraBrowseFilter(
+      nationalityCodes: {'JP'},
+      ethnicityCodes: {'somali'},
+    );
+    await h.mount(
+      model: model,
+      checkpoint: ZyraPreviewNavigationCheckpoint(
+        guardian: false,
+        model: model.snapshot(),
+        tab: 0,
+        pages: const [],
+        browseFilter: saved,
+      ),
+    );
+    expect(find.text('No profiles in this view.'), findsOneWidget);
+    await h.tap('concept_edit_filters');
+    h.assertPage('filters');
+    final previousOwner = t.widget<ZyraOneJourneyFiltersPresentation>(
+      find.byType(ZyraOneJourneyFiltersPresentation),
+    );
+    expect(previousOwner.allFilters, isTrue);
+    expect(find.text('Clear (2)'), findsOneWidget);
+    expect(h.shellFixture.setSeekerBasic(true), isTrue);
+    await h.flush();
+    previousOwner.onChanged(const ZyraBrowseFilter());
+    await h.flush();
+    expect(find.text('Clear'), findsOneWidget);
+    await h.tap('concept_age_1');
+    expect(key('concept_age_range'), findsOneWidget);
+    await h.tap('filter_next');
+    await h.tap('concept_where_2');
+    expect(find.text('Members anywhere in the world.'), findsOneWidget);
+    await h.tap('filter_next');
+    expect(find.text('Nationality'), findsOneWidget);
+    expect(find.text('SEEKER ONE'), findsOneWidget);
+    expect(find.text('Comes with Seeker One'), findsOneWidget);
+    expect(key('filter_search_nationality'), findsNothing);
+    expect(key('filter_remove_2_JP'), findsNothing);
+    await h.tap('filter-see-seeker-one');
+    h.assertPage('one_upgrade');
+    expect(find.text('Age and location'), findsOneWidget);
+    expect(find.text('All filters'), findsOneWidget);
+    await h.tapText('Not now');
+    h.assertPage('filters');
+    expect(find.text('Nationality'), findsOneWidget);
+    await h.tap('filter_next');
+    expect(find.text('Ethnicity'), findsOneWidget);
+    expect(find.text('Comes with Seeker One'), findsOneWidget);
+    expect(key('filter_search_ethnicity'), findsNothing);
+    await h.tap('filter_previous');
+    await h.tap('filter_previous');
+    expect(find.text('Members anywhere in the world.'), findsOneWidget);
+    await h.tap('filter_previous');
+    expect(key('concept_age_range'), findsOneWidget);
+    await h.tap('concept_reset_filter_draft');
+    expect(find.text('Clear'), findsOneWidget);
+    await h.tap('concept_apply_filter');
+    expect(h.latest.pages, isEmpty);
+    expect(h.latest.browseFilter.nationalityCodes, saved.nationalityCodes);
+    expect(h.latest.browseFilter.ethnicityCodes, saved.ethnicityCodes);
+    expect(find.text('No profiles in this view.'), findsNothing);
+
+    expect(h.shellFixture.setSeekerBasic(false), isTrue);
+    await h.flush();
+    expect(find.text('No profiles in this view.'), findsOneWidget);
+    await h.tap('concept_edit_filters');
+    expect(find.text('Clear (2)'), findsOneWidget);
+    await h.tap('filter_next');
+    await h.tap('filter_next');
+    expect(key('filter_search_nationality'), findsOneWidget);
+    expect(key('filter_remove_2_JP'), findsOneWidget);
+    await h.tap('filter_next');
+    expect(key('filter_search_ethnicity'), findsOneWidget);
+    expect(key('filter_remove_3_somali'), findsOneWidget);
+  });
+
+  testWidgets('LOCK10 V8 paid choices survive a warm location reset', (
+    t,
+  ) async {
+    addTearDown(t.view.resetPhysicalSize);
+    addTearDown(t.view.resetDevicePixelRatio);
+    ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
+    ZyraInternalPreviewClient.beginPreview();
+    final h = BaselineHarness(t, group: 'lock10_v8_warm_reset');
+    final model = ViewRequestDraftModel(capacity: 1);
+    const saved = ZyraBrowseFilter(
+      minAge: 33,
+      maxAge: 35,
+      where: ZyraBrowseWhere.worldwide,
+      nationalityCodes: {'JP'},
+      ethnicityCodes: {'somali'},
+    );
+    await h.mount(
+      restoreLocation: false,
+      checkpoint: ZyraPreviewNavigationCheckpoint(
+        guardian: false,
+        model: model.snapshot(),
+        tab: 4,
+        pages: const ['settings'],
+        seekerMembership: 'Seeker Basic',
+        browseFilter: saved,
+      ),
+    );
+    expect(h.latest.tab, 2);
+    expect(h.latest.pages, isEmpty);
+    final restored = h.latest.browseFilter;
+    expect(restored.hasAgeRange, isFalse);
+    expect(restored.where, ZyraBrowseWhere.country);
+    expect(restored.nationalityCodes, saved.nationalityCodes);
+    expect(restored.ethnicityCodes, saved.ethnicityCodes);
   });
 }

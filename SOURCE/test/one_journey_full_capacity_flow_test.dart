@@ -1,3 +1,4 @@
+import 'support/profile_swipe_driver.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -104,6 +105,7 @@ VoidCallback? _action(WidgetTester tester, String id) {
 }
 
 Future<void> _press(WidgetTester tester, String id) async {
+  if (await swipeProfileForControlKey(tester, id)) return;
   if (await pressZyraDevControlKey(tester, id)) return;
   final target = _key(id);
   if (target.evaluate().isEmpty &&

@@ -543,6 +543,29 @@ void main() {
     },
   );
 
+  testWidgets('LOCK26 Journey shows the next place during the drag', (t) async {
+    final h = await mount(t, 2);
+    final viewport = k('journey_tab_card');
+    final next = k('journey_tab_person_$aisha');
+    expect(next, findsNothing);
+
+    final swipe = await t.startGesture(t.getCenter(viewport));
+    await swipe.moveBy(const Offset(-120, 0));
+    await t.pump();
+    expect(t.getRect(next).overlaps(t.getRect(viewport)), isTrue);
+    expect(h.latest.journeyPlaceIndex, 0);
+    expect(tab(t).index, 0);
+
+    await swipe.up();
+    await t.pump();
+    await t.pump(const Duration(milliseconds: 120));
+    expect(tab(t).index, 0);
+    await t.pumpAndSettle();
+    expect(h.latest.journeyPlaceIndex, 1);
+    expect(tab(t).index, 1);
+    expect(t.getRect(next), t.getRect(viewport));
+  });
+
   testWidgets(
     'LOCK13 retained callbacks refuse swipe, pushed-page and controls ABA',
     (t) async {

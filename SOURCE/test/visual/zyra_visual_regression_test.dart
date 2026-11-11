@@ -633,14 +633,14 @@ Future<void> _assertLockedMasterReplacement(
         );
       case 'guardian-card-preview-invited-omar':
         expect(_key('guardian-card-menu'), findsNothing);
-        final resend = _key('guardian-card-center');
-        expect(resend.hitTestable(), findsOneWidget);
+        final cancel = _key('guardian-card-cancel-invitation');
+        expect(cancel.hitTestable(), findsOneWidget);
         expect(
-          tester.getRect(item).contains(tester.getRect(resend).bottomCenter),
+          tester.getRect(item).contains(tester.getRect(cancel).bottomCenter),
           isTrue,
         );
         expect(
-          find.text('Access starts once Omar accepts the invitation.'),
+          find.textContaining('Access starts once they accept.'),
           findsOneWidget,
         );
     }
@@ -812,7 +812,7 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
             await swipeGuardianCard(h.tester);
             expect(_key('guardian-card-preview-invited-omar'), findsOneWidget);
             expect(find.text('Waiting for Omar'), findsOneWidget);
-            expect(find.text('Send invitation again'), findsOneWidget);
+            expect(find.text('Cancel invitation'), findsOneWidget);
           },
         ),
         (

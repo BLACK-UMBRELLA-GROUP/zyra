@@ -19,6 +19,7 @@ import 'package:zyra/widgets/floating_nav_bar.dart';
 import 'package:zyra/widgets/zyra_invitation_outline.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
+import 'support/profile_swipe_driver.dart';
 import 'support/pump_invitation_feedback.dart';
 import 'support/zyra_hidden_dev_controls_driver.dart';
 
@@ -115,6 +116,7 @@ Future<void> _mount(
 }
 
 Future<void> _tap(WidgetTester tester, String id) async {
+  if (await swipeProfileForControlKey(tester, id)) return;
   if (await pressZyraDevControlKey(tester, id)) return;
   final target = _key(id);
   expect(target, findsOneWidget, reason: 'Required public action $id');
@@ -202,10 +204,7 @@ void _expectPhotoOutline(WidgetTester tester, String id, {required bool sent}) {
   final border = decoration.border! as Border;
   for (final side in [border.top, border.right, border.bottom, border.left]) {
     expect(side.width, 1.5);
-    expect(
-      side.color,
-      ZyraColors.journeyGold.withValues(alpha: sent ? 1 : 0),
-    );
+    expect(side.color, ZyraColors.journeyGold.withValues(alpha: sent ? 1 : 0));
   }
   final ignores = tester.widgetList<IgnorePointer>(
     find.descendant(
@@ -365,6 +364,9 @@ void main() {
         (selectedDot.decoration! as BoxDecoration).color,
         ZyraColors.journeyGold,
       );
+      expect(_key('draft_profile_$_sara'), findsNothing);
+      _expectPhotoOutline(tester, _sara, sent: true);
+      await _tap(tester, 'concept_browse_dot_target_0');
       await _tap(tester, 'draft_profile_$_sara');
       _expectPhotoOutline(tester, _sara, sent: false);
       expect(_selectedId(tester), _sara);

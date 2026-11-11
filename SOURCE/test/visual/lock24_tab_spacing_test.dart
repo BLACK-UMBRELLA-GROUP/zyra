@@ -114,6 +114,7 @@ Future<void> mount(
           tab: tab,
           pages: pages,
           guardianPage: guardianPage,
+          guardianInvitationClockStart: _clock(),
           guardianTabs: guardian && populated
               ? const ZyraGuardianTabsSnapshot(
                   review: ZyraGuardianReview.open,
@@ -311,7 +312,7 @@ ScrollPosition? _outerPosition(WidgetTester t, String screen) {
 }
 
 Finder? _lastSurface(String screen, bool basic) => switch (screen) {
-  'Profiles' => _key('concept_request_row_surface'),
+  'Profiles' => _fixedCard(screen),
   'Journey' || 'Journey — free place' => _key(
     basic ? 'journey_tab_upsell' : 'concept_request_row_surface',
   ),
@@ -438,7 +439,23 @@ Map<String, double> _verifySpacing(
             .first,
         card: card,
       );
-      gap('card to pill', card, _key('concept_request_row_surface'), 12);
+      final request = find.descendant(
+        of: card,
+        matching: find.byWidgetPredicate(
+          (widget) =>
+              widget is InkWell &&
+              widget.key is ValueKey<String> &&
+              (widget.key! as ValueKey<String>).value.startsWith(
+                'draft_profile_',
+              ),
+        ),
+      );
+      gap(
+        'tiles to request',
+        _key('profile-detail-tile-ETHNICITY'),
+        request,
+        12,
+      );
     case 'Journey':
     case 'Journey — free place':
       final card = _key('journey_tab_card');
@@ -768,7 +785,8 @@ void main() {
               final overflow = contents
                   .where((s) => s.maxScrollExtent > .01)
                   .firstOrNull;
-              if (large && overflow != null) {
+              if ((large || (compact && screen == 'Profiles')) &&
+                  overflow != null) {
                 final initial = overflow.pixels;
                 final finger = await t.startGesture(frame.center);
                 await finger.moveBy(const Offset(0, -28));
@@ -778,8 +796,7 @@ void main() {
                 expect(
                   overflow.pixels,
                   greaterThan(initial),
-                  reason:
-                      '$screen lets larger overflowing content move upward.',
+                  reason: '$screen lets overflowing content move upward.',
                 );
                 expect(t.getRect(card), frame);
                 await finger.up();
@@ -1068,10 +1085,12 @@ void main() {
               );
               if (!basic) {
                 await t.tap(_key('journey_tab_dot_target_1'));
+                await t.pump();
                 await t.pump(const Duration(milliseconds: 500));
                 expect(find.text('Free place'), findsOneWidget);
                 await measure('Journey — free place');
                 await t.tap(_key('journey_tab_dot_target_0'));
+                await t.pump();
                 await t.pump(const Duration(milliseconds: 500));
               }
               final options = find.byKey(
@@ -1121,7 +1140,7 @@ void main() {
                   active: false,
                   guardianPage: cardWidget.people.length,
                 );
-                expect(find.text('Send invitation again'), findsOneWidget);
+                expect(find.text('Cancel invitation'), findsOneWidget);
                 await measure('Guardian — invited');
               }
               await mount(

@@ -125,24 +125,6 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
   bool get _pastList => pastSelected && selected == null;
   bool get _pastTopic => pastSelected && selected != null;
 
-  DateTime? _deadline(ZyraCircleTopicTile tile) =>
-      tile.endedOn?.add(const Duration(days: 30));
-
-  bool _closed(ZyraCircleTopicTile tile) {
-    final deadline = _deadline(tile);
-    return deadline != null && now.isAfter(deadline);
-  }
-
-  int _daysLeft(ZyraCircleTopicTile tile) {
-    final deadline = _deadline(tile);
-    if (deadline == null) return 0;
-    return (deadline.difference(now).inMilliseconds /
-            Duration.millisecondsPerDay)
-        .ceil()
-        .clamp(0, 30)
-        .toInt();
-  }
-
   String _shortDate(DateTime date) => '${date.day} ${_months[date.month - 1]}';
 
   String _pastName(ZyraCircleTopicTile tile) {
@@ -206,7 +188,7 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
             _pill(
               context,
               'all',
-              'All',
+              'Main',
               onAll,
               selected: !pastSelected && selected == null,
             ),
@@ -232,11 +214,6 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: _side),
           child: _headCard(context, selected!),
-        ),
-      if (!loading && available && _pastTopic)
-        Padding(
-          padding: const EdgeInsets.fromLTRB(_side, 8, _side, 4),
-          child: _pastStatus(selected!),
         ),
       Expanded(child: _body(context)),
       if (!loading && available && !_pastList) _footer(context),
@@ -314,65 +291,47 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
           child: _action(
             context,
             id: 'past_${tile.id}',
-            label:
-                '${_pastName(tile)}, ${_pastDates(tile)}, '
-                '${_closed(tile) ? 'Read only' : 'Open · ${_daysLeft(tile)} days left'}',
+            label: '${_pastName(tile)}, ${_pastDates(tile)}',
             onTap: () => onTopic(tile.id),
             child: Container(
               padding: const EdgeInsets.all(10),
               decoration: _surface(),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final compact =
-                      constraints.maxWidth < 300 ||
-                      MediaQuery.textScalerOf(context).scale(14) > 18;
-                  final status = Text(
-                    _closed(tile)
-                        ? 'Read only'
-                        : 'Open\n${_daysLeft(tile)} days left',
-                    textAlign: compact ? TextAlign.start : TextAlign.end,
-                    style: ZyraText.subtext(
-                      size: 12,
-                      color: _closed(tile)
-                          ? ZyraColors.foregroundMuted
-                          : ZyraColors.goldText,
-                    ),
-                  );
-                  return Row(
-                    children: [
-                      _topicImage(tile, size: 52, past: true),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              _pastName(tile),
-                              style: ZyraText.body(size: 16),
-                            ),
-                            Text(
-                              _pastDates(tile),
-                              style: ZyraText.subtext(size: 12),
-                            ),
-                            if (compact) ...[const SizedBox(height: 4), status],
-                          ],
+              child: Row(
+                children: [
+                  _topicImage(tile, size: 52, past: true),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(_pastName(tile), style: ZyraText.body(size: 15)),
+                        Text(
+                          _pastDates(tile),
+                          style: ZyraText.subtext(size: 11.5),
                         ),
-                      ),
-                      if (!compact) ...[const SizedBox(width: 8), status],
-                    ],
-                  );
-                },
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Icon(
+                    Icons.chevron_right,
+                    size: 18,
+                    color: ZyraColors.foregroundMuted,
+                  ),
+                ],
               ),
             ),
           ),
         ),
       const SizedBox(height: 2),
       Text(
-        'You can talk about a Journey for 30 days after it ends. '
-        'Then it becomes read only.'
+        'You can talk about a past Journey any time.'
         '${viewerIsSeeker ? '\nGuardians see these only if you share past Journey summaries with them.' : ''}',
         textAlign: TextAlign.center,
-        style: ZyraText.body(size: 13, color: ZyraColors.foregroundMuted),
+        style: ZyraText.body(
+          size: 11.5,
+          color: ZyraColors.foregroundMuted,
+        ).copyWith(height: 1.45),
       ),
     ],
   );
@@ -450,54 +409,13 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
               : Border.all(color: ZyraColors.surfaceBorder),
           borderRadius: BorderRadius.circular(past && size == 52 ? 12 : 0),
         ),
-        child: image != null
-            ? past && _closed(tile)
-                  ? ColorFiltered(
-                      colorFilter: const ColorFilter.matrix([
-                        .2126,
-                        .7152,
-                        .0722,
-                        0,
-                        0,
-                        .2126,
-                        .7152,
-                        .0722,
-                        0,
-                        0,
-                        .2126,
-                        .7152,
-                        .0722,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        1,
-                        0,
-                      ]),
-                      child: image,
-                    )
-                  : image
-            : Icon(
-                past ? Icons.forum_outlined : Icons.person_outline,
-                size: 18,
-                color: ZyraColors.journeyGold,
-              ),
-      ),
-    );
-  }
-
-  Widget _pastStatus(ZyraCircleTopicTile tile) {
-    final deadline = _deadline(tile);
-    if (deadline == null) return const SizedBox.shrink();
-    return Text(
-      _closed(tile)
-          ? 'Closed ${_shortDate(deadline)} · read only'
-          : 'Open until ${_shortDate(deadline)} · ${_daysLeft(tile)} days left',
-      textAlign: TextAlign.center,
-      style: ZyraText.subtext(
-        size: 12,
-        color: _closed(tile) ? ZyraColors.foregroundMuted : ZyraColors.goldText,
+        child:
+            image ??
+            Icon(
+              past ? Icons.forum_outlined : Icons.person_outline,
+              size: 18,
+              color: ZyraColors.journeyGold,
+            ),
       ),
     );
   }
@@ -653,16 +571,6 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
   );
 
   Widget _footer(BuildContext context) {
-    if (_pastTopic && _closed(selected!)) {
-      return _footerLine(
-        child: Text(
-          'This discussion closed 30 days after the Journey ended. '
-          'You can still read it.',
-          textAlign: TextAlign.center,
-          style: ZyraText.body(size: 13, color: ZyraColors.foregroundMuted),
-        ),
-      );
-    }
     if (guardianBasic) {
       return _footerLine(
         child: LayoutBuilder(

@@ -4,10 +4,13 @@
 import 'package:flutter/material.dart';
 
 import '../models/seeker_profile.dart';
+import '../theme/zyra_colors.dart';
 import '../theme/zyra_interaction_style.dart';
+import '../theme/zyra_text.dart';
 import '../widgets/zyra_browse_designs.dart';
 import '../widgets/zyra_browse_next_photo_motion.dart';
 import '../widgets/zyra_profile_image.dart';
+import '../widgets/zyra_tap_feedback.dart';
 
 export '../widgets/zyra_browse_designs.dart' show ZyraOneJourneyBrowseDesign;
 
@@ -44,6 +47,7 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
     this.invitationSent,
     this.canRequest,
     this.requestRowLabels,
+    this.profileSwipe,
     this.bottomPadding = 100,
     this.fixedTabFooter = false,
     this.photoBuilder,
@@ -73,6 +77,7 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
   final bool Function(SeekerProfile)? invitationSent;
   final bool Function(SeekerProfile)? canRequest;
   final List<String>? requestRowLabels;
+  final ZyraProfileSwipe? profileSwipe;
   final double bottomPadding;
   final bool fixedTabFooter;
 
@@ -129,6 +134,7 @@ class _ZyraOneJourneyBrowseDesignsState
     invitationSent: widget.invitationSent,
     canRequest: widget.canRequest,
     requestRowLabels: widget.requestRowLabels,
+    profileSwipe: widget.profileSwipe,
     bottomPadding: widget.bottomPadding,
     fixedTabFooter: widget.fixedTabFooter,
     alignHeaderActions: widget.alignHeaderActions,
@@ -139,5 +145,107 @@ class _ZyraOneJourneyBrowseDesignsState
     onPhotoIndexChanged: widget.onPhotoIndexChanged,
     initialGalleryIndices: widget.initialGalleryIndices,
     onGalleryIndexChanged: widget.onGalleryIndexChanged,
+  );
+}
+
+class ZyraBrowseBackUpgradeSheet extends StatelessWidget {
+  const ZyraBrowseBackUpgradeSheet({
+    super.key,
+    required this.onUpgrade,
+    required this.onDismiss,
+  });
+
+  final VoidCallback onUpgrade;
+  final VoidCallback onDismiss;
+
+  @override
+  Widget build(BuildContext context) => Material(
+    color: const Color(0xFFF7F2EA),
+    borderRadius: const BorderRadius.vertical(top: Radius.circular(26)),
+    clipBehavior: Clip.antiAlias,
+    child: SafeArea(
+      top: false,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 26),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: const Color(0x2E3E2E1E),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Center(
+              child: Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: ZyraColors.journeyGold.withValues(alpha: .6),
+                  ),
+                ),
+                child: const Icon(
+                  Icons.lock_outline,
+                  color: ZyraColors.journeyGold,
+                  size: 22,
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Going back comes with Seeker One',
+              textAlign: TextAlign.center,
+              style: ZyraText.heading(
+                size: 21,
+              ).copyWith(fontWeight: FontWeight.w300),
+            ),
+            const SizedBox(height: 8),
+            Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 300),
+                child: Text(
+                  'Seeker Basic shows each profile once. With Seeker One you '
+                  'can swipe back and look again at up to 10 profiles you passed.',
+                  textAlign: TextAlign.center,
+                  style: ZyraText.subtext(size: 13),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            FilledButton(
+              style: FilledButton.styleFrom(
+                minimumSize: const Size(0, 48),
+                backgroundColor: ZyraColors.journeyGold,
+                foregroundColor: ZyraColors.espresso,
+                textStyle: ZyraText.button(
+                  size: 14,
+                ).copyWith(fontWeight: FontWeight.w500),
+              ),
+              onPressed: ZyraTapFeedback.onTap(context, onUpgrade),
+              child: const Text('See Seeker One'),
+            ),
+            const SizedBox(height: 8),
+            TextButton(
+              style: TextButton.styleFrom(
+                minimumSize: const Size(0, 52),
+                backgroundColor: const Color(0x0F3E2E1E),
+                foregroundColor: ZyraColors.secondaryText,
+                textStyle: ZyraText.button(size: 15),
+              ),
+              onPressed: ZyraTapFeedback.onTap(context, onDismiss),
+              child: const Text('Not now'),
+            ),
+          ],
+        ),
+      ),
+    ),
   );
 }
