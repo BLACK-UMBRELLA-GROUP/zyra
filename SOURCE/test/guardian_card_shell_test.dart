@@ -76,7 +76,7 @@ void main() {
     );
   });
   testWidgets(
-    'actual shell saves one Past summary bit without flipping and opens unchanged code route',
+    'actual shell saves one Past summary bit on the card and opens the invitation code route',
     (t) async {
       final h = harness(t);
       await h.mount(
@@ -89,7 +89,6 @@ void main() {
       await h.tap('guardian-card-history-$_hassan');
       expect(h.latest.guardianHistory[_hassan], isTrue);
       expect(find.text('MAIN GUARDIAN'), findsOneWidget);
-      await h.tap('guardian-card-access');
       expect(find.text('JOURNEY ACCESS'), findsOneWidget);
       await swipeGuardianCard(t);
       await h.flush();
@@ -113,7 +112,6 @@ void main() {
       );
       await swipeGuardianCard(t);
       await h.flush();
-      await h.tap('guardian-card-access');
       final old = _page(t);
       expect(find.text('JOURNEY ACCESS'), findsOneWidget);
       expect(old.journeysFor(_additional), isNotEmpty);
@@ -156,7 +154,6 @@ void main() {
       await h.mount(tab: 3, model: model);
       await swipeGuardianCard(t);
       await h.flush();
-      await h.tap('guardian-card-access');
       final old = _page(t);
       await h.tap('guardian-card-chat-$_additional-$_sara');
       expect(find.text('Yusuf can view, but not chat'), findsOneWidget);
@@ -193,10 +190,15 @@ void main() {
         )..seedJourneys(2),
       );
       final states = h.latest.model.states;
-      await h.tap('guardian-card-access');
+      await h.tap('guardian-card-menu');
       await h.tap('guardian-clear-main');
       expect(h.latest.model.ownMainGuardianPresent, isTrue);
-      await h.tapText('Cancel');
+      await h.tapFinder(
+        find.descendant(
+          of: find.byKey(const ValueKey('guardian-clear-main-confirmation')),
+          matching: find.text('Cancel'),
+        ),
+      );
       expect(h.latest.model.ownMainGuardianPresent, isTrue);
       await h.tap('guardian-clear-main');
       await h.tapText('Confirm');
@@ -206,7 +208,7 @@ void main() {
         find.byKey(const ValueKey('guardian-card-$_hassan')),
         findsOneWidget,
       );
-      await h.tap('guardian-card-access');
+      await h.tap('guardian-card-menu');
       await h.tap('guardian-remove');
       await h.tapText('Confirm');
       expect(h.latest.removedGuardians, contains(_hassan));
@@ -265,7 +267,7 @@ void main() {
       final states = h.latest.model.states;
       await swipeGuardianCard(t);
       await h.flush();
-      await h.tap('guardian-card-access');
+      await h.tap('guardian-card-menu');
       await h.tap('guardian-make-main');
       expect(h.latest.mainGuardianId, _hassan);
       await h.tapText('Confirm');

@@ -469,9 +469,15 @@ class _ZyraOneJourneyConceptShellState
 
   bool get _quickAccessTabBar =>
       _tab == 2 &&
-      _pages.length == 1 &&
-      _page == _myZyraQuickAccessPage &&
-      _isMyZyraQuickPage(_page);
+      ((_pages.length == 1 &&
+              _page == _myZyraQuickAccessPage &&
+              _isMyZyraQuickPage(_page)) ||
+          // Q80: keep the My ZYRA bar on this read-only Notifications child.
+          (_guardianRole &&
+              _myZyraQuickAccessPage == 'notifications' &&
+              _pages.length == 2 &&
+              _pages.first == 'notifications' &&
+              _page == 'guardian_requests'));
 
   bool get _showRootTabBar =>
       _page == null || _page == 'journey_options' || _quickAccessTabBar;
@@ -3011,7 +3017,7 @@ class _ZyraOneJourneyConceptShellState
       ];
     }
     return [
-      for (final p in people) ...[
+      for (final p in people)
         ZyraRequestActivityCard(
           profile: _displayProfile(p),
           subtitle: _model.isAcceptedWaiting(p.id)
@@ -3119,8 +3125,6 @@ class _ZyraOneJourneyConceptShellState
                   ),
                 ],
         ),
-        const SizedBox(height: 14),
-      ],
     ];
   }
 
@@ -3525,6 +3529,7 @@ class _ZyraOneJourneyConceptShellState
         primaryAction: actions.primaryRow,
         inlineOptions: expandedOptions ? _inlineJourneyOptions(p) : null,
         inlineOptionsFillHeight: inlineOptionsFillHeight,
+        bottomGap: ended ? 0 : null,
       );
     }
     return _personRow(
@@ -3907,7 +3912,7 @@ class _ZyraOneJourneyConceptShellState
             ),
           ]
         : [
-            for (final p in people) ...[
+            for (final p in people)
               if (_model.isBlocked(p.id))
                 _card([
                   Text(
@@ -3934,8 +3939,6 @@ class _ZyraOneJourneyConceptShellState
                     inlineOptionsFillHeight: false,
                   ),
                 ),
-              const SizedBox(height: 10),
-            ],
           ];
   }
 
@@ -5881,6 +5884,7 @@ class _ZyraOneJourneyConceptShellState
             id: p.id,
             attempt: _model.attemptRevisionFor(p.id),
             name: p.firstName,
+            stageNumber: _model.stageFor(p.id)?.order ?? 1,
             stage:
                 'Stage ${_model.stageFor(p.id)?.order ?? 1} of 8 · ${_model.stageFor(p.id)?.label ?? 'Salam Exchange'}',
             photo: _photos?.forIndex(draftProfiles.indexOf(p)).firstOrNull,
@@ -7961,11 +7965,19 @@ class _ZyraOneJourneyConceptShellState
             : _currentJourneys.length > 1
             ? 'View your Journeys'
             : 'Open your Journey',
-        () => _focus == null
-            ? _activity('requests')
-            : _currentJourneys.length > 1
-            ? _tabTo(1)
-            : _journey(_focus!.id),
+        () {
+          if (_focus == null) {
+            if (_guardianRole) {
+              _guardianTabsAction('requests');
+            } else {
+              _activity('requests');
+            }
+          } else if (_currentJourneys.length > 1) {
+            _tabTo(1);
+          } else {
+            _journey(_focus!.id);
+          }
+        },
       ),
       _body(
         'No real notifications are fetched, marked read or sent.',

@@ -140,7 +140,7 @@ void main() {
       });
     });
     await pending;
-    expect(pulses, ['HapticFeedbackType.selectionClick']);
+    expect(pulses, ['HapticFeedbackType.lightImpact']);
     pulses.clear();
     ZyraInteractionStyle.performSelectionTap(() {
       ZyraInteractionStyle.cancelSelectionTap();

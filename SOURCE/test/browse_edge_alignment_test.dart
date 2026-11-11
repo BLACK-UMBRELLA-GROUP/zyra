@@ -120,8 +120,13 @@ void _expectBrowseGeometry(WidgetTester tester, Size size) {
   expect(menu.right, closeTo(size.width - 20, .01));
   expect(title.top, greaterThanOrEqualTo(59 + 16));
   expect(title.bottom, lessThanOrEqualTo(header.bottom + .01));
-  expect(photo.top, greaterThanOrEqualTo(header.bottom + 15.99));
-  expect(footer.top, greaterThanOrEqualTo(photo.bottom + 15.99));
+  final dotTarget = tester.getRect(_key('concept_browse_dot_target_0'));
+  final paintedDot = tester.getRect(
+    _key('concept_browse_photo_dot_${_person(tester).id}_0'),
+  );
+  expect(dotTarget.top - title.bottom, closeTo(12, .01));
+  expect(photo.top - paintedDot.bottom, closeTo(12, .01));
+  expect(footer.top - photo.bottom, closeTo(12, .01));
 
   final glyph = find.descendant(
     of: _key('concept_browse_menu'),

@@ -5,6 +5,7 @@ import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
+import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
 
 enum ZyraConceptJourneyOption {
@@ -175,7 +176,8 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
         ];
         final stretch =
             bounds.hasBoundedHeight &&
-            bounds.maxHeight >= _entries.length * 46 + 28;
+            bounds.maxHeight >=
+                _entries.length * 46 + 2 * ZyraPreviewSpacing.cardToCard;
         Widget card(int index) => ZyraFloatingSurface(
           radius: 20,
           circle: false,
@@ -222,7 +224,7 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             for (var i = 0; i < groups.length; i++) ...[
-              if (i > 0) const SizedBox(height: 14),
+              if (i > 0) const SizedBox(height: ZyraPreviewSpacing.cardToCard),
               if (stretch)
                 Expanded(flex: groups[i].length, child: card(i))
               else

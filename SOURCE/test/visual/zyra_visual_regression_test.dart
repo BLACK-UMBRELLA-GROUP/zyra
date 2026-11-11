@@ -496,7 +496,7 @@ Future<void> _resizeRound2(BaselineHarness h, Size size) async {
 // Keep the seven exact Queue 75 masters and their manifest provenance.
 // Their changed layouts are checked against the current LOCKs here
 // and across the four roles in lock24_tab_spacing_test.dart / SPACING_AUDIT.md.
-typedef _Line77MasterReplacement = ({
+typedef _LockedMasterReplacement = ({
   int tab,
   String bottom,
   String lock,
@@ -505,7 +505,7 @@ typedef _Line77MasterReplacement = ({
   int? selectedDot,
 });
 
-const _line77MasterReplacements = <String, _Line77MasterReplacement>{
+const _lockedMasterReplacements = <String, _LockedMasterReplacement>{
   'gm01_family_review': (
     tab: 2,
     bottom: 'guardian_notifications',
@@ -532,16 +532,16 @@ const _line77MasterReplacements = <String, _Line77MasterReplacement>{
   ),
   'k17_basic__card_front_hassan': (
     tab: 3,
-    bottom: 'guardian-card-access',
-    lock: 'LOCK 19 V5',
+    bottom: 'guardian-card-draft-guardian-hassan',
+    lock: 'LOCK 19 V6',
     guardian: false,
     guardianDots: 1,
     selectedDot: 0,
   ),
   'k07_card__omar_invited': (
     tab: 3,
-    bottom: 'guardian-card-center',
-    lock: 'LOCK 19 V5',
+    bottom: 'guardian-card-preview-invited-omar',
+    lock: 'LOCK 19 V6',
     guardian: false,
     guardianDots: 3,
     selectedDot: 2,
@@ -564,9 +564,9 @@ const _line77MasterReplacements = <String, _Line77MasterReplacement>{
   ),
 };
 
-Future<void> _assertLine77MasterReplacement(
+Future<void> _assertLockedMasterReplacement(
   BaselineHarness h,
-  _Line77MasterReplacement replacement,
+  _LockedMasterReplacement replacement,
 ) async {
   final tester = h.tester;
   final bar = _key('compact-nav-surface');
@@ -614,18 +614,35 @@ Future<void> _assertLine77MasterReplacement(
       expect(pager.count, replacement.guardianDots);
       expect(pager.index, replacement.selectedDot);
     }
-    expect(tester.getSize(item).height, 52);
-    if (replacement.bottom == 'guardian-card-access') {
-      expect(h.latest.seekerMembership, 'Seeker Basic');
-      expect(_key('guardian-card-center'), findsNothing);
-      final details = tester.getRect(_key('guardian-card-details'));
-      final access = tester.getRect(item);
-      expect(details.height, 52);
-      expect(access.left - details.right, 8);
-    } else {
-      expect(_key('guardian-card-details'), findsNothing);
-      expect(_key('guardian-card-access'), findsNothing);
-      expect(tester.getSize(item).width, 390);
+    expect(_key('guardian-card-details'), findsNothing);
+    expect(_key('guardian-card-access'), findsNothing);
+    expect(tester.getSize(item).width, 390);
+    switch (replacement.bottom) {
+      case 'guardian-card-center':
+        expect(tester.getSize(item).height, 52);
+        final add = tester.getRect(_key('guardian-card-add'));
+        expect(tester.getRect(item).top - add.bottom, closeTo(12, 0.1));
+      case 'guardian-card-draft-guardian-hassan':
+        expect(h.latest.seekerMembership, 'Seeker Basic');
+        expect(_key('guardian-card-center'), findsNothing);
+        expect(_key('guardian-card-menu').hitTestable(), findsOneWidget);
+        expect(find.text('JOURNEY ACCESS'), findsOneWidget);
+        expect(
+          _key('guardian-card-history-draft-guardian-hassan').hitTestable(),
+          findsOneWidget,
+        );
+      case 'guardian-card-preview-invited-omar':
+        expect(_key('guardian-card-menu'), findsNothing);
+        final resend = _key('guardian-card-center');
+        expect(resend.hitTestable(), findsOneWidget);
+        expect(
+          tester.getRect(item).contains(tester.getRect(resend).bottomCenter),
+          isTrue,
+        );
+        expect(
+          find.text('Access starts once Omar accepts the invitation.'),
+          findsOneWidget,
+        );
     }
   }
   expect(tester.getSize(bar), const Size(390, 58), reason: 'LOCK 6 V4');
@@ -762,7 +779,7 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
           },
         ),
         (
-          // Q52: Basic's Main Guardian card uses the exact k17 role and capacity.
+          // Q52: keep k17 provenance and check Basic's role and capacity in V6.
           id: 'k17_basic__card_front_hassan',
           lock: 'LOCK 19 V3',
           master: 'GUARDIAN_CARD/MASTERS/k17_basic__card_front_hassan.png',
@@ -936,7 +953,7 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
   group('Round 2 LOCK master', () {
     test('all active comparisons have an exact current master', () {
       expect(approved.keys.toSet(), cases.map((entry) => entry.id).toSet());
-      expect(approved.keys, containsAll(_line77MasterReplacements.keys));
+      expect(approved.keys, containsAll(_lockedMasterReplacements.keys));
       for (final entry in cases) {
         expect(
           approved[entry.id]?['governing_reference'],
@@ -970,9 +987,9 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
         final h = _round2Harness(tester);
         await entry.drive(h);
         expect(tester.takeException(), isNull);
-        final replacement = _line77MasterReplacements[entry.id];
+        final replacement = _lockedMasterReplacements[entry.id];
         if (replacement != null && !_captureCandidates) {
-          await _assertLine77MasterReplacement(h, replacement);
+          await _assertLockedMasterReplacement(h, replacement);
           return;
         }
         final path = _captureCandidates

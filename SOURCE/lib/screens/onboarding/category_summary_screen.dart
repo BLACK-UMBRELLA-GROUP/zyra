@@ -1,5 +1,5 @@
 // Combined compatibility category summary. Every card keeps the Seeker's own
-// answer visible; scored questions can expand to show the traffic lights set
+// answer visible; scored questions can expand to show the preferences set
 // immediately after that answer. Only one card expands at a time.
 
 import 'package:flutter/material.dart';
@@ -87,7 +87,7 @@ class _CategorySummaryScreenState extends State<CategorySummaryScreen> {
                       child: Text(
                         widget.preferences == null
                             ? 'Review your About You answers before continuing.'
-                            : 'Review your answers. Open a scored question to check its traffic lights.',
+                            : 'Review your answers. Open a scored question to check its preferences.',
                         style: ZyraText.subtext(
                           size: 11.5,
                           color: ZyraColors.ink(0.54),

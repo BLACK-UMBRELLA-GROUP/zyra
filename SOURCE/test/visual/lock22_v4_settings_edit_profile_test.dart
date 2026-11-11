@@ -169,11 +169,12 @@ void main() {
       expect(find.text('COMPATIBILITY'), findsNothing);
       expect(find.text('FIXED'), findsNothing);
       expect(find.textContaining('Your answers stay private.'), findsOneWidget);
+      expect(find.text('Partner preferences'), findsOneWidget);
       for (final count in [
         '0 of 20 answered',
         '0 of 46 answered',
         '0 of 38 answered',
-        '0 of 325 preferences set',
+        '0 of 325 set',
         '0 introduction-blocking answers',
       ]) {
         expect(find.text(count), findsOneWidget);

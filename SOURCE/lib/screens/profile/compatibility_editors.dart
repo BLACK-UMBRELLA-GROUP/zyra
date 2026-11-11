@@ -10,6 +10,7 @@ import '../../models/journey_bio.dart';
 import '../../services/zyra_onboarding_answers_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
+import '../../theme/zyra_preview_spacing.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_pull_down_back_scope.dart';
 import '../onboarding/generic_select_question_screen.dart';
@@ -28,7 +29,7 @@ extension CompatibilityEditorKindUi on CompatibilityEditorKind {
     CompatibilityEditorKind.aboutYou => 'About you',
     CompatibilityEditorKind.lifestyle => 'Lifestyle',
     CompatibilityEditorKind.marriagePreferences => 'Marriage preferences',
-    CompatibilityEditorKind.trafficLights => 'Green / Yellow / Red',
+    CompatibilityEditorKind.trafficLights => 'Partner preferences',
     CompatibilityEditorKind.hardRequirements => 'Hard requirements',
   };
 
@@ -575,6 +576,7 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
               CompatibilityEditorKind.trafficLights => _PreferenceGroups(
                 draft: _draft,
                 owner: _owner,
+                plannedSpacing: _previewMode,
                 onChanged: () {
                   if (mounted && _editorCurrent(context, _owner)) {
                     setState(() {});
@@ -816,24 +818,33 @@ class _PreferenceGroups extends StatelessWidget {
   const _PreferenceGroups({
     required this.draft,
     required this.onChanged,
+    required this.plannedSpacing,
     this.owner,
   });
 
   final ZyraCompatibilityDraft draft;
   final VoidCallback onChanged;
+  final bool plannedSpacing;
   final _CompatibilityPreviewOwner? owner;
 
   @override
-  Widget build(BuildContext context) => ListView(
-    physics: const BouncingScrollPhysics(),
-    padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
-    children: [
-      _MeaningCard(),
-      const SizedBox(height: 14),
-      for (final category in chapter3Categories)
-        if (draft.preferenceQuestions(category).isNotEmpty)
+  Widget build(BuildContext context) {
+    final categories = chapter3Categories
+        .where((category) => draft.preferenceQuestions(category).isNotEmpty)
+        .toList();
+    return ListView(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
+      children: [
+        _MeaningCard(),
+        if (!plannedSpacing || categories.isNotEmpty)
+          SizedBox(height: plannedSpacing ? ZyraPreviewSpacing.cardToCard : 14),
+        for (final (index, category) in categories.indexed)
           _CategoryDoor(
             key: ValueKey('edit-preferences-${category.id}'),
+            bottomGap: plannedSpacing && index < categories.length - 1
+                ? ZyraPreviewSpacing.cardToCard
+                : 11,
             label: category.name,
             status: _preferenceCategoryStatus(draft, category),
             onTap: () async {
@@ -852,8 +863,9 @@ class _PreferenceGroups extends StatelessWidget {
               }
             },
           ),
-    ],
-  );
+      ],
+    );
+  }
 }
 
 class _PreferenceCategoryEditor extends StatefulWidget {
@@ -1055,7 +1067,7 @@ class _HardRequirementsEditor extends StatelessWidget {
               Text('No hard requirements', style: ZyraText.heading(size: 18)),
               const SizedBox(height: 8),
               Text(
-                'First mark an answer red in Green / Yellow / Red. You can then decide here whether it must block an introduction.',
+                'First mark an answer Not for me in Partner preferences. You can then decide here whether it must block an introduction.',
                 textAlign: TextAlign.center,
                 style: ZyraText.subtext(size: 12.5),
               ),
@@ -1236,15 +1248,17 @@ class _CategoryDoor extends StatelessWidget {
     required this.label,
     required this.status,
     required this.onTap,
+    this.bottomGap = 11,
   });
 
   final String label;
   final String status;
   final VoidCallback onTap;
+  final double bottomGap;
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(bottom: 11),
+    padding: EdgeInsets.only(bottom: bottomGap),
     child: ZyraFloatingSurface(
       radius: 16,
       child: Material(

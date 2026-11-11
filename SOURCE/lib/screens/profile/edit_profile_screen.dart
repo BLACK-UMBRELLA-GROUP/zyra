@@ -6,7 +6,7 @@ import '../../widgets/zyra_floating_surface.dart';
 // profile part."
 //
 // It was. Settings had a COMPATIBILITY section — About you, Lifestyle,
-// Marriage preferences, Green/Yellow/Red, Hard requirements — and Profile
+// Marriage preferences, Partner preferences, Hard requirements — and Profile
 // had an "Edit Profile" button pointing at nothing. Two routes to the same
 // intention, one of which did not exist yet.
 //
@@ -772,7 +772,7 @@ String _statusFor(CompatibilityEditorKind kind, ZyraCompatibilityDraft draft) =>
       }(),
       CompatibilityEditorKind.trafficLights =>
         '${draft.preferenceAnswerCount} of '
-            '${draft.preferenceOptionCount} preferences set',
+            '${draft.preferenceOptionCount} set',
       CompatibilityEditorKind.hardRequirements =>
         draft.hardRequirementCount == 1
             ? '1 introduction-blocking answer'

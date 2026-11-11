@@ -185,13 +185,12 @@ Future<void> _makeMain(WidgetTester tester, String id) async {
 }
 
 Future<void> _nextGuardian(WidgetTester tester, String id) async {
-  // LOCK 19, GUARDIAN_CARD_SPEC_CURRENT_VERSION_V3 §§2–4, masters k05–k06:
-  // the next pill selects the Additional Guardian; its centre opens access.
+  // LOCK 19 V6 puts the management menu on the selected Guardian card.
   // LOCK 2 §2.4 and guardian_main__first_main_message.png still govern notice
   // semantics after the retained Make Main confirmation flow.
   await _tap(tester, _key('guardian-card-dot-target-1'));
   expect(_key('guardian-card-$id'), findsOneWidget);
-  await _tap(tester, _key('guardian-card-access'));
+  await _tap(tester, _key('guardian-card-menu'));
   expect(find.text('JOURNEY ACCESS'), findsOneWidget);
   final action = _guardian(id, 'guardian-make-main');
   await Scrollable.ensureVisible(tester.element(action), alignment: .4);

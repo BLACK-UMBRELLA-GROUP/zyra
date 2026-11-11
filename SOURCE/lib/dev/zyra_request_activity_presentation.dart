@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import '../models/seeker_profile.dart';
 import '../screens/connections/connections_section_controller.dart';
 import '../theme/zyra_colors.dart';
+import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_segmented_toggle.dart';
@@ -256,10 +257,18 @@ class _ZyraRequestActivityPresentationState
         ),
       );
     }
-    return ListView(
+    return ListView.separated(
       key: PageStorageKey('concept_connections_page_$index'),
-      padding: EdgeInsets.fromLTRB(20, 0, 20, bottom),
-      children: content,
+      padding: EdgeInsets.fromLTRB(
+        ZyraPreviewSpacing.pageMargin,
+        0,
+        ZyraPreviewSpacing.pageMargin,
+        bottom,
+      ),
+      itemCount: content.length,
+      itemBuilder: (context, i) => content[i],
+      separatorBuilder: (context, i) =>
+          const SizedBox(height: ZyraPreviewSpacing.cardToCard),
     );
   }
 
@@ -628,7 +637,6 @@ class ZyraRequestActivityCard extends StatelessWidget {
         gold: false,
         child: Container(
           key: ValueKey('request_activity_card_$cardId'),
-          margin: const EdgeInsets.only(bottom: 16),
           decoration: BoxDecoration(
             color: open
                 ? ZyraColors.surfaceEmphasisFill
@@ -711,7 +719,6 @@ class ZyraPastRequestActivityCard extends StatelessWidget {
     gold: false,
     child: Container(
       key: ValueKey('past_request_activity_card_$cardId'),
-      margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: ZyraColors.surfaceFill,

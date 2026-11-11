@@ -1017,12 +1017,12 @@ class _GuardianDetailsStrip extends StatelessWidget {
 // LOCK19 reuses the existing inline Cancel/Confirm flow and action delegates.
 Widget zyraGuardianCardManageActions({
   required WaliLinkedPerson person,
-  required bool stackActions,
   required List<WaliLinkedPerson> otherGuardians,
   required bool Function() canAct,
   required GuardianMakeMainAction makeMainGuardian,
   required GuardianClearMainAction clearMainGuardian,
   required GuardianRemoveAction removeGuardian,
+  required VoidCallback closeMenu,
 }) => _GuardianManageActions(
   key: ValueKey(('guardian-card-actions', person.id, person.isMain)),
   person: person,
@@ -1031,10 +1031,9 @@ Widget zyraGuardianCardManageActions({
   makeMainGuardian: makeMainGuardian,
   clearMainGuardian: clearMainGuardian,
   removeGuardian: removeGuardian,
-  onChanged: null,
+  onChanged: closeMenu,
   compact: true,
-  cardLayout: true,
-  stackCardActions: stackActions,
+  closeCardMenu: closeMenu,
   canAct: canAct,
 );
 
@@ -1047,7 +1046,8 @@ class _GuardianManageActions extends StatefulWidget {
   final GuardianRemoveAction? removeGuardian;
   final VoidCallback? onChanged;
   final bool compact;
-  final bool cardLayout, stackCardActions;
+  final VoidCallback? closeCardMenu;
+  bool get cardLayout => closeCardMenu != null;
   final bool Function()? canAct;
 
   const _GuardianManageActions({
@@ -1060,8 +1060,7 @@ class _GuardianManageActions extends StatefulWidget {
     required this.removeGuardian,
     required this.onChanged,
     this.compact = false,
-    this.cardLayout = false,
-    this.stackCardActions = false,
+    this.closeCardMenu,
     this.canAct,
   });
 
@@ -1177,9 +1176,7 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
           actionKey: const ValueKey('guardian-clear-main'),
           confirmationKey: const ValueKey('guardian-clear-main-confirmation'),
           icon: Icons.shield_outlined,
-          label: widget.cardLayout
-              ? 'Remove as Main'
-              : 'Remove as Main Guardian',
+          label: 'Remove as Main Guardian',
           onConfirm: _clearMain,
         ),
         if (!widget.cardLayout) SizedBox(height: widget.compact ? 6 : 9),
@@ -1190,7 +1187,7 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
           actionKey: const ValueKey('guardian-make-main'),
           confirmationKey: const ValueKey('guardian-make-main-confirmation'),
           icon: Icons.shield_outlined,
-          label: widget.cardLayout ? 'Make Main' : 'Make Main Guardian',
+          label: 'Make Main Guardian',
           onConfirm: _makeMain,
         ),
         if (!widget.cardLayout) SizedBox(height: widget.compact ? 6 : 9),
@@ -1200,26 +1197,32 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
         actionKey: const ValueKey('guardian-remove'),
         confirmationKey: const ValueKey('guardian-remove-confirmation'),
         icon: Icons.person_remove_outlined,
-        label: widget.cardLayout ? 'Remove' : 'Remove Guardian',
+        label: widget.cardLayout
+            ? 'Remove ${widget.person.firstName}'
+            : 'Remove Guardian',
         destructive: true,
         onConfirm: _remove,
       ),
     ];
-    if (!widget.cardLayout) return Column(children: actions);
-    if (widget.stackCardActions) {
+    if (widget.closeCardMenu case final close?) {
+      if (_confirming == null) {
+        final revision = _interactionRevision;
+        actions.add(
+          _ManageActionButton(
+            key: const ValueKey('guardian-card-menu-cancel'),
+            canAct: () => _current && revision == _interactionRevision,
+            cardLayout: true,
+            label: 'Cancel',
+            onTap: _busy ? null : close,
+          ),
+        );
+      }
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [actions.first, const SizedBox(height: 8), actions.last],
+        children: actions,
       );
     }
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(child: actions.first),
-        const SizedBox(width: 8),
-        Expanded(child: actions.last),
-      ],
-    );
+    return Column(children: actions);
   }
 
   Widget _actionOrConfirmation({
@@ -1304,31 +1307,23 @@ class _ManageActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final signal = destructive ? ZyraColors.destructive : ZyraColors.ink(0.68);
     if (cardLayout) {
-      return DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: ZyraFloatingSurface.standardShadows,
-        ),
-        child: Material(
-          color: const Color(0xFFFBF7F0),
-          borderRadius: BorderRadius.circular(24),
-          child: InkWell(
-            onTap: ZyraTapFeedback.onTap(context, onTap, canAct: canAct),
-            borderRadius: BorderRadius.circular(24),
-            child: Container(
-              constraints: const BoxConstraints(minHeight: 42),
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
-              alignment: Alignment.center,
-              child: Text(
-                label,
-                textAlign: TextAlign.center,
-                style: ZyraText.body(
-                  size: 13,
-                  color: destructive
-                      ? ZyraColors.dangerText
-                      : ZyraColors.foreground,
-                ),
-              ),
+      return InkWell(
+        onTap: ZyraTapFeedback.onTap(context, onTap, canAct: canAct),
+        child: Container(
+          constraints: const BoxConstraints(minHeight: 42),
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: ZyraColors.ink(.10))),
+          ),
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: ZyraText.body(
+              size: 13,
+              color: destructive
+                  ? const Color(0xFFAC453E)
+                  : ZyraColors.foreground,
             ),
           ),
         ),

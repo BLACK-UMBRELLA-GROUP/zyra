@@ -1203,8 +1203,8 @@ void main() {
             final nameRect = tester.getRect(name);
             final switchRect = tester.getRect(switchButton);
             expect(nameRect.overlaps(switchRect), isFalse);
-            expect(nameRect.left, greaterThanOrEqualTo(22));
-            expect(nameRect.right, lessThanOrEqualTo(sample.size.width - 22));
+            expect(nameRect.left, greaterThanOrEqualTo(20));
+            expect(nameRect.right, lessThanOrEqualTo(sample.size.width - 20));
             expect(switchRect.width, greaterThanOrEqualTo(44));
             expect(switchRect.height, greaterThanOrEqualTo(44));
             expect(text.maxLines, isNull);

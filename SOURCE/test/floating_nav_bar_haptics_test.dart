@@ -14,6 +14,7 @@ void main() {
   setUp(() {
     calls.clear();
     ZyraInteractionStyle.restoreDefaults();
+    ZyraInteractionStyle.restoreHapticLevel(ZyraHapticLevel.subtle.name);
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(SystemChannels.platform, (call) async {
           calls.add(call);

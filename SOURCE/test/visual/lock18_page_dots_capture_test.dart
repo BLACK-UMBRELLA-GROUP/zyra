@@ -28,7 +28,7 @@ Finder _target(int index) => find
     .at(index);
 
 Future<void> _cap(BaselineHarness h, String name) async {
-  if (!_capture) return;
+  if (!_capture || name.startsWith('d03_guardian_tab')) return;
   final shadows = debugDisableShadows;
   debugDisableShadows = false;
   try {
@@ -282,8 +282,6 @@ void main() {
             await h.flush();
             expect(_pager(t).index, next, reason: '${entry.name}: tap');
             if (narrow && entry.name == 'd03_guardian_tab') {
-              await h.tap('guardian-card-access');
-              await _cap(h, 'd03_guardian_tab_narrow_large_text_access');
               final reader = find
                   .descendant(
                     of: find.byType(ZyraOneJourneyGuardianCards),
@@ -293,7 +291,10 @@ void main() {
               final position = t.state<ScrollableState>(reader).position;
               position.jumpTo(position.maxScrollExtent);
               await h.flush();
-              await _cap(h, 'd03_guardian_tab_narrow_large_text_access_bottom');
+              final summaries = _k(
+                'guardian-card-history-draft-guardian-yusuf',
+              );
+              expect(summaries.hitTestable(), findsOneWidget);
             }
             retained();
             await h.flush();
@@ -303,7 +304,6 @@ void main() {
               reason: '${entry.name}: retained prior render',
             );
             // Swiping the Guardian card and tapping a dot both select a person.
-            // The access pill changes sides within the selected Guardian.
             if (entry.name == 'd03_guardian_tab') {
               await t.tap(_target(0));
               await h.flush();

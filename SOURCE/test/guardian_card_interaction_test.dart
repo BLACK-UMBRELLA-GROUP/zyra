@@ -1,14 +1,15 @@
 import 'dart:io';
 import 'dart:ui' as ui;
-import 'dart:ui' show SemanticsRole;
 
 import 'package:flutter/material.dart';
 import 'package:zyra/widgets/zyra_guardian_add_card.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zyra/data/zyra_journey_stages.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_family_sheet.dart';
+import 'package:zyra/dev/zyra_one_journey_monogram_presentation.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_wali_link_service.dart';
@@ -24,8 +25,12 @@ const _geometryFont = 'Line77GuardianGeometryPoppins';
 const _wrappedStage = 'Stage 1 of 8 · Salam Exchange';
 Finder _key(String id) => find.byKey(ValueKey(id));
 Finder _card(String id) => _key('guardian-card-$id');
-Finder get _access => _key('guardian-card-access');
-Finder get _details => _key('guardian-card-details');
+Finder get _menu => _key('guardian-card-menu');
+Finder get _menuSheet => _key('guardian-card-menu-sheet');
+Finder get _menuCancel => _key('guardian-card-menu-cancel');
+Finder _edge(String side) => _key('guardian-card-edge-$side');
+Finder _free(int index) => _key('guardian-card-free-place-$index');
+Finder _tile(String id) => _key('guardian-card-tile-$id');
 Finder _dotTarget(int index) => _key('guardian-card-dot-target-$index');
 Finder get _dots => find.byType(ZyraProfilesDots);
 Finder get _center => _key('guardian-card-center');
@@ -85,13 +90,16 @@ class _Harness extends StatefulWidget {
     this.basic = false,
     this.initialPage = 0,
     this.journeys = 1,
+    this.capacity,
     this.stage = 'Stage 4 of 8 · Faith & Values',
+    this.stageNumber,
     this.familyState = ZyraGuardianFamilyState.noFamily,
   });
 
   final List<ZyraGuardianCardPerson> people;
   final bool basic;
   final int initialPage, journeys;
+  final int? capacity, stageNumber;
   final String stage;
   final ZyraGuardianFamilyState familyState;
 
@@ -139,6 +147,8 @@ class _HarnessState extends State<_Harness> {
 
   void changeRevision() => setState(() => revision++);
 
+  void selectFromParent(int page) => setState(() => initialPage = page);
+
   void removeGuardian(String id, {bool resetPage = false}) => setState(() {
     people = people.where((p) => p.person.id != id).toList();
     if (resetPage) initialPage = 0;
@@ -185,6 +195,8 @@ class _HarnessState extends State<_Harness> {
               id: i == 0 ? _journeyId : '$_journeyId-$i',
               attempt: 7 + i,
               name: 'Sara',
+              stageNumber:
+                  widget.stageNumber ?? (widget.stage == _wrappedStage ? 1 : 4),
               stage: widget.stage,
               view: access.view,
               chat: access.chat,
@@ -192,7 +204,7 @@ class _HarnessState extends State<_Harness> {
             ),
         ];
       },
-      capacity: widget.basic ? 1 : 3,
+      capacity: widget.capacity ?? (widget.basic ? 1 : 3),
       basic: widget.basic,
       canAct: authority ?? () => allowed,
       interactionEpoch: () => epoch,
@@ -285,16 +297,22 @@ void main() {
     bool basic = false,
     int initialPage = 0,
     int journeys = 1,
+    int? capacity,
     String stage = 'Stage 4 of 8 · Faith & Values',
+    int? stageNumber,
     Size size = const Size(430, 932),
     double topInset = 0,
+    double bottomInset = 0,
     double scale = 1,
     ZyraGuardianFamilyState familyState = ZyraGuardianFamilyState.noFamily,
   }) async {
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = size;
-    tester.view.padding = FakeViewPadding(top: topInset);
-    tester.view.viewPadding = FakeViewPadding(top: topInset);
+    tester.view.padding = FakeViewPadding(top: topInset, bottom: bottomInset);
+    tester.view.viewPadding = FakeViewPadding(
+      top: topInset,
+      bottom: bottomInset,
+    );
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     addTearDown(tester.view.resetPadding);
@@ -313,7 +331,9 @@ void main() {
           basic: basic,
           initialPage: initialPage,
           journeys: journeys,
+          capacity: capacity,
           stage: stage,
+          stageNumber: stageNumber,
           familyState: familyState,
         ),
       ),
@@ -345,11 +365,6 @@ void main() {
 
   Future<void> next(WidgetTester tester) => swipeGuardianCard(tester);
 
-  Future<void> showAccess(WidgetTester tester) async {
-    await tester.tap(_access);
-    await tester.pump();
-  }
-
   Future<void> dragAmount(
     WidgetTester tester,
     String id,
@@ -370,13 +385,21 @@ void main() {
 
   Future<VoidCallback> confirmation(
     WidgetTester tester, {
-    String label = 'Make Main',
+    String actionKey = 'guardian-make-main',
   }) async {
-    final action = find.text(label);
+    if (_menuSheet.evaluate().isEmpty) {
+      await tester.ensureVisible(_menu);
+      await tester.tap(_menu);
+      await tester.pumpAndSettle();
+    }
+    final action = _key(actionKey);
     await tester.ensureVisible(action);
     await tester.tap(action);
     await tester.pumpAndSettle();
-    final confirm = find.widgetWithText(InkWell, 'Confirm');
+    final confirm = find.descendant(
+      of: _key('$actionKey-confirmation'),
+      matching: find.widgetWithText(InkWell, 'Confirm'),
+    );
     expect(confirm, findsOneWidget);
     return tester.widget<InkWell>(confirm).onTap!;
   }
@@ -498,31 +521,76 @@ void main() {
     },
   );
 
-  testWidgets('Physical swipe opens next Details and card tap has no action', (
+  testWidgets('Physical swipe selects the next complete card', (tester) async {
+    await mount(tester);
+    expect(find.text('JOURNEY ACCESS'), findsOneWidget);
+    expect(_history(_hassanId), findsOneWidget);
+    await next(tester);
+    expect(find.text('Ibrahim'), findsOneWidget);
+    expect(find.text('JOURNEY ACCESS'), findsOneWidget);
+    expect(_history(_ibrahimId), findsOneWidget);
+    expect(find.byKey(const ValueKey('guardian-card-details')), findsNothing);
+    expect(find.byKey(const ValueKey('guardian-card-access')), findsNothing);
+    final before = haptics();
+    await tester.tapAt(tester.getRect(_card(_ibrahimId)).center);
+    await tester.pump();
+    expect(state().pages, [1]);
+    expect(haptics(), before);
+  });
+
+  testWidgets('26 pt card edges select once and stop at the ends', (
     tester,
   ) async {
     await mount(tester);
-    await showAccess(tester);
-    expect(find.text('JOURNEY ACCESS'), findsOneWidget);
-    await next(tester);
-    expect(find.text('Ibrahim'), findsOneWidget);
-    await tester.tapAt(
-      tester.getTopLeft(_card(_ibrahimId)) + const Offset(12, 12),
-    );
-    await tester.pump();
-    expect(find.text('JOURNEY ACCESS'), findsNothing);
-    expect(tester.widget<Semantics>(_details).properties.selected, isTrue);
+    final main = tester.getRect(_card(_hassanId));
+    expect(_edge('left'), findsNothing);
+    final right = tester.getRect(_edge('right'));
     expect(
-      tester.widget<Semantics>(_access).properties.role,
-      SemanticsRole.tab,
+      right,
+      Rect.fromLTRB(main.right - 26, main.top, main.right, main.bottom),
     );
-    await showAccess(tester);
-    expect(find.text('JOURNEY ACCESS'), findsOneWidget);
     final before = haptics();
-    semanticAction(tester, _details)();
+    await tester.tap(_edge('right'));
     await tester.pump();
+    expect(state().pages, [1]);
     expect(haptics() - before, 1);
-    expect(find.text('Ibrahim'), findsOneWidget);
+    final additional = tester.getRect(_card(_ibrahimId));
+    final left = tester.getRect(_edge('left'));
+    expect(
+      left,
+      Rect.fromLTRB(
+        additional.left,
+        additional.top,
+        additional.left + 26,
+        additional.bottom,
+      ),
+    );
+    await tester.tap(_edge('left'));
+    await tester.pump();
+    expect(state().pages, [1, 0]);
+    expect(haptics() - before, 2);
+    await tester.tapAt(main.centerLeft + const Offset(12, 0));
+    await tester.pump();
+    expect(state().pages, [1, 0]);
+    expect(haptics() - before, 2);
+    for (var i = 0; i < 2; i++) {
+      await tester.tap(_edge('right'));
+      await tester.pump();
+    }
+    final invited = _card('preview-invited-omar');
+    expect(invited, findsOneWidget);
+    expect(_edge('right'), findsNothing);
+    await tester.tapAt(
+      tester.getRect(invited).centerRight - const Offset(12, 0),
+    );
+    await tester.pump();
+    expect(state().pages, [1, 0, 1, 2]);
+    expect(haptics() - before, 4);
+    await next(tester);
+    expect(_card('add'), findsOneWidget);
+    expect(_edge('left'), findsNothing);
+    expect(_edge('right'), findsNothing);
+    expect(state().pages, [1, 0, 1, 2, 3]);
   });
 
   for (final count in [1, 2, 3, 4]) {
@@ -553,14 +621,13 @@ void main() {
           .properties;
       expect(firstDot.label, 'Hassan');
       expect(firstDot.selected, isTrue);
-      await showAccess(tester);
       expect(tester.widget<ZyraProfilesDots>(_dots).count, count);
       expect(tester.widget<ZyraProfilesDots>(_dots).index, 0);
       final physicalHaptics = haptics();
       await tester.tap(_dotTarget(0));
       await tester.pump();
       expect(haptics() - physicalHaptics, 1);
-      expect(find.text('JOURNEY ACCESS'), findsNothing);
+      expect(find.text('JOURNEY ACCESS'), findsOneWidget);
       if (count > 1) {
         final lastDot = tester
             .element(_dotTarget(count - 1))
@@ -602,28 +669,26 @@ void main() {
     expect(haptics() - before, 1);
   });
 
-  testWidgets('Guardian selection returns to Details after roster reorder', (
+  testWidgets('Guardian card follows the selected roster entry after removal', (
     tester,
   ) async {
     await mount(tester);
-    await showAccess(tester);
     state().removeGuardian(_hassanId);
     await tester.pump();
     expect(_card(_ibrahimId), findsOneWidget);
-    expect(find.text('JOURNEY ACCESS'), findsNothing);
+    expect(find.text('JOURNEY ACCESS'), findsOneWidget);
   });
 
   testWidgets(
-    'A parent page reset after removing the second Guardian opens first Details',
+    'A parent page reset after removing the second Guardian opens the first card',
     (tester) async {
       await mount(tester, initialPage: 1);
-      await showAccess(tester);
       expect(_card(_ibrahimId), findsOneWidget);
       state().removeGuardian(_ibrahimId, resetPage: true);
       await tester.pump();
       expect(_card(_hassanId), findsOneWidget);
       expect(tester.widget<ZyraProfilesDots>(_dots).index, 0);
-      expect(find.text('JOURNEY ACCESS'), findsNothing);
+      expect(find.text('JOURNEY ACCESS'), findsOneWidget);
     },
   );
 
@@ -631,7 +696,6 @@ void main() {
     tester,
   ) async {
     await mount(tester);
-    await showAccess(tester);
     final original = tester.widget<GestureDetector>(_card(_hassanId));
     original.onHorizontalDragDown!(DragDownDetails());
     original.onHorizontalDragUpdate!(
@@ -657,109 +721,205 @@ void main() {
     expect(find.text('JOURNEY ACCESS'), findsOneWidget);
     await next(tester);
     expect(state().pages, [1]);
-    expect(find.text('JOURNEY ACCESS'), findsNothing);
+    expect(find.text('JOURNEY ACCESS'), findsOneWidget);
   });
 
-  for (final scale in [1.0, 2.0]) {
-    testWidgets('Guardian frame stays static at ${scale}x text', (
-      tester,
-    ) async {
-      ZyraText.testReadingFontFamily = _geometryFont;
-      addTearDown(() => ZyraText.testReadingFontFamily = null);
+  for (final size in [const Size(430, 932), const Size(375, 667)]) {
+    for (final places in [1, 2, 3]) {
+      testWidgets(
+        'Guardian allocates $places equal Journey rows at ${size.width} pt',
+        (tester) async {
+          ZyraText.testReadingFontFamily = _geometryFont;
+          addTearDown(() => ZyraText.testReadingFontFamily = null);
+          await mount(
+            tester,
+            size: size,
+            topInset: size.width == 430 ? 59 : 20,
+            bottomInset: size.width == 430 ? 34 : 0,
+            journeys: 1,
+            capacity: places,
+            stage: _wrappedStage,
+          );
+          final card = tester.getRect(_card(_hassanId));
+          final tile = _tile(_journeyId);
+          final first = tester.getRect(tile);
+          final label = tester.getRect(find.text('JOURNEY ACCESS'));
+          final stage = find.descendant(
+            of: tile,
+            matching: find.text(_wrappedStage),
+          );
+          expect(tester.widget<Text>(stage).style!.fontSize, 11);
+          final photo = find.descendant(
+            of: tile,
+            matching: find.byType(ZyraGoldRingMonogram),
+          );
+          expect(tester.getSize(photo), const Size.square(42));
+          final progress = find.descendant(
+            of: tile,
+            matching: find.byType(LinearProgressIndicator),
+          );
+          expect(tester.widget<LinearProgressIndicator>(progress).value, 1 / 8);
+          expect(tester.getSize(progress).height, 3);
+          expect(first.top - label.bottom, closeTo(8, 0.1));
+          for (final item in [
+            stage,
+            progress,
+            _view(_hassanId),
+            _chat(_hassanId),
+          ]) {
+            final rect = tester.getRect(item);
+            expect(rect.left, greaterThanOrEqualTo(first.left));
+            expect(rect.top, greaterThanOrEqualTo(first.top));
+            expect(rect.right, lessThanOrEqualTo(first.right));
+            expect(rect.bottom, lessThanOrEqualTo(first.bottom));
+          }
+          var last = first;
+          for (var i = 1; i < places; i++) {
+            final row = tester.getRect(_free(i));
+            expect(row.height, closeTo(first.height, 0.1));
+            expect(row.top - last.bottom, closeTo(0, 0.1));
+            last = row;
+          }
+          final summary = tester.getRect(_key('guardian-card-summary-row'));
+          expect(summary.top - last.bottom, closeTo(0, 0.1));
+          expect(card.bottom - summary.bottom, inInclusiveRange(0, 20));
+          final reader = find.descendant(
+            of: _card(_hassanId),
+            matching: find.byType(Scrollable),
+          );
+          if (reader.evaluate().isNotEmpty) {
+            expect(
+              tester.state<ScrollableState>(reader).position.maxScrollExtent,
+              0,
+            );
+          }
+          await tester.dragFrom(first.center, const Offset(0, -100));
+          await tester.pumpAndSettle();
+          expect(tester.getRect(_card(_hassanId)), card);
+          expect(tester.getRect(tile), first);
+          expect(tester.takeException(), isNull);
+        },
+      );
+    }
+  }
+
+  testWidgets('All eight stage labels fit three occupied places at 375 pt', (
+    tester,
+  ) async {
+    ZyraText.testReadingFontFamily = _geometryFont;
+    addTearDown(() => ZyraText.testReadingFontFamily = null);
+    for (final stage in ZyraJourneyStages.all) {
+      final label = 'Stage ${stage.order} of 8 · ${stage.label}';
       await mount(
         tester,
         size: const Size(375, 667),
         topInset: 20,
-        scale: scale,
         journeys: 3,
-        stage: _wrappedStage,
+        stage: label,
+        stageNumber: stage.order,
       );
-      final rect = tester.getRect(_card(_hassanId));
-      final name = tester.getRect(find.text('Hassan'));
-      await tester.dragFrom(
-        Offset(rect.center.dx, rect.bottom - 45),
-        const Offset(0, -100),
-      );
-      await tester.pumpAndSettle();
-      expect(tester.getRect(_card(_hassanId)), rect);
-      if (scale == 1) expect(tester.getRect(find.text('Hassan')), name);
-      final pillHaptics = haptics();
-      await showAccess(tester);
-      expect(haptics() - pillHaptics, 1);
-      expect(tester.getRect(_card(_hassanId)), rect);
-      final scrollable = find.descendant(
-        of: _card(_hassanId),
+      final card = _card(_hassanId);
+      final reader = find.descendant(
+        of: card,
         matching: find.byType(Scrollable),
       );
-      if (scale == 1) {
-        expect(scrollable, findsNothing);
-        final tile = _key('guardian-card-tile-$_journeyId');
-        final tileRect = tester.getRect(tile);
-        final stage = find.descendant(
-          of: tile,
-          matching: find.text(_wrappedStage),
+      expect(
+        tester.state<ScrollableState>(reader).position.maxScrollExtent,
+        0,
+        reason: label,
+      );
+      final rows = [
+        _tile(_journeyId),
+        for (var i = 1; i < 3; i++) _tile('$_journeyId-$i'),
+      ];
+      final height = tester.getSize(rows.first).height;
+      for (final row in rows) {
+        expect(tester.getSize(row).height, closeTo(height, .1), reason: label);
+        final tile = tester.getRect(row);
+        final stageText = tester.getRect(
+          find.descendant(of: row, matching: find.text(label)),
         );
-        final stageRect = tester.getRect(stage);
-        expect(tileRect.height, closeTo(98, 1));
-        expect(tester.widget<Text>(stage).style!.fontSize, 12);
+        expect(tile.intersect(stageText), stageText, reason: label);
+        final progress = find.descendant(
+          of: row,
+          matching: find.byType(LinearProgressIndicator),
+        );
         expect(
-          stageRect.height,
-          greaterThan(25),
-          reason: 'Stage wraps in the measured tile',
+          tester.widget<LinearProgressIndicator>(progress).value,
+          stage.order / 8,
         );
-        for (final control in [_view(_hassanId), _chat(_hassanId)]) {
-          final controlRect = tester.getRect(control);
-          expect(controlRect.height, 34);
-          expect(controlRect.top, greaterThan(stageRect.bottom));
-          expect(controlRect.bottom, lessThanOrEqualTo(tileRect.bottom - 1));
-        }
+      }
+      expect(tester.takeException(), isNull);
+    }
+  });
+
+  for (final viewport in [
+    (size: const Size(375, 667), scale: 2.0),
+    (size: const Size(320, 568), scale: 2.0),
+  ]) {
+    testWidgets(
+      'Guardian frame stays fixed when content overflows at ${viewport.size.width} pt',
+      (tester) async {
+        ZyraText.testReadingFontFamily = _geometryFont;
+        addTearDown(() => ZyraText.testReadingFontFamily = null);
+        await mount(
+          tester,
+          size: viewport.size,
+          topInset: 20,
+          scale: viewport.scale,
+          journeys: 3,
+          stage: _wrappedStage,
+        );
+        final frame = tester.getRect(_card(_hassanId));
+        final reader = find.descendant(
+          of: _card(_hassanId),
+          matching: find.byType(Scrollable),
+        );
+        final position = tester.state<ScrollableState>(reader).position;
+        expect(position.maxScrollExtent, greaterThan(0));
+        expect(position.physics, isA<ClampingScrollPhysics>());
         await tester.dragFrom(
-          Offset(rect.center.dx, rect.bottom - 45),
+          Offset(frame.center.dx, frame.bottom - 45),
           const Offset(0, -100),
         );
         await tester.pumpAndSettle();
-        expect(tester.getRect(_card(_hassanId)), rect);
-        expect(tester.getRect(tile), tileRect);
-        expect(tester.getRect(stage), stageRect);
+        expect(position.pixels, greaterThan(0));
+        expect(tester.getRect(_card(_hassanId)), frame);
+        await tester.ensureVisible(_history(_hassanId));
+        expect(_history(_hassanId).hitTestable(), findsOneWidget);
         expect(tester.takeException(), isNull);
-        return;
-      }
-      final position = tester.state<ScrollableState>(scrollable).position;
-      expect(position.maxScrollExtent, greaterThan(0));
-      expect(position.physics, isA<ClampingScrollPhysics>());
-      await tester.dragFrom(
-        Offset(rect.center.dx, rect.bottom - 45),
-        const Offset(0, -100),
-      );
-      await tester.pumpAndSettle();
-      expect(position.pixels, greaterThan(0));
-      expect(tester.getRect(_card(_hassanId)), rect);
-    });
+      },
+    );
   }
 
   testWidgets(
-    'History physical and semantic taps change one existing bit without flip',
+    'History physical and semantic taps each change one bit on the same card',
     (tester) async {
       await mount(tester);
+      final before = haptics();
       await tester.tap(_history(_hassanId));
       await tester.pump();
       expect(state().histories, [(guardian: _hassanId, enabled: true)]);
+      expect(haptics() - before, 1);
       expect(find.text('Hassan'), findsOneWidget);
-      expect(find.text('JOURNEY ACCESS'), findsNothing);
+      expect(find.text('JOURNEY ACCESS'), findsOneWidget);
       semanticAction(tester, _history(_hassanId))();
       await tester.pump();
       expect(state().histories.last, (guardian: _hassanId, enabled: false));
-      expect(find.text('Journey access'), findsOneWidget);
+      expect(haptics() - before, 2);
+      expect(state().pages, isEmpty);
+      expect(find.text('JOURNEY ACCESS'), findsOneWidget);
     },
   );
 
-  testWidgets('View switch and management buttons do not flip the card', (
+  testWidgets('View and management actions keep the selected Guardian', (
     tester,
   ) async {
     await mount(tester, initialPage: 1);
-    await showAccess(tester);
+    final before = haptics();
     await tester.tap(_view(_ibrahimId));
     await tester.pump();
+    expect(haptics() - before, 1);
     expect(state().permissions.single, (
       guardian: _ibrahimId,
       journey: _journeyId,
@@ -768,11 +928,90 @@ void main() {
     ));
     expect(find.text('JOURNEY ACCESS'), findsOneWidget);
     final confirm = await confirmation(tester);
-    expect(find.text('JOURNEY ACCESS'), findsOneWidget);
+    expect(haptics() - before, 3);
+    expect(state().pages, isEmpty);
+    confirm();
     confirm();
     await tester.pumpAndSettle();
+    expect(haptics() - before, 4);
     expect(state().management, ['main:$_ibrahimId']);
+    expect(state().pages, isEmpty);
+    expect(_menuSheet, findsNothing);
     expect(find.text('JOURNEY ACCESS'), findsOneWidget);
+  });
+
+  testWidgets('Main and Remove confirmations are cancellable and exact once', (
+    tester,
+  ) async {
+    await mount(tester);
+    final initial = haptics();
+    await tester.tap(_menu);
+    await tester.pumpAndSettle();
+    expect(haptics() - initial, 1);
+    expect(find.text('Remove as Main Guardian'), findsOneWidget);
+    final remove = tester.widget<Text>(find.text('Remove Hassan'));
+    expect(remove.style!.color, const Color(0xFFAC453E));
+    expect(find.text('Make Main Guardian'), findsNothing);
+    final clear = await confirmation(tester, actionKey: 'guardian-clear-main');
+    expect(haptics() - initial, 2);
+    await tester.tap(
+      find.descendant(
+        of: _key('guardian-clear-main-confirmation'),
+        matching: find.text('Cancel'),
+      ),
+    );
+    await tester.pumpAndSettle();
+    clear();
+    expect(haptics() - initial, 3);
+    expect(state().management, isEmpty);
+    final removeConfirmation = await confirmation(
+      tester,
+      actionKey: 'guardian-remove',
+    );
+    expect(haptics() - initial, 4);
+    removeConfirmation();
+    removeConfirmation();
+    await tester.pumpAndSettle();
+    expect(haptics() - initial, 5);
+    expect(state().management, ['remove:$_hassanId']);
+    expect(_menuSheet, findsNothing);
+    expect(state().pages, isEmpty);
+  });
+
+  testWidgets('A retained menu barrier cannot dismiss a reopened menu', (
+    tester,
+  ) async {
+    await mount(tester);
+    Future<void> open() async {
+      await tester.tap(_menu);
+      await tester.pumpAndSettle();
+      expect(_menuSheet, findsOneWidget);
+    }
+
+    VoidCallback dismiss() => tester
+        .widget<ModalBarrier>(
+          find.descendant(
+            of: _card(_hassanId),
+            matching: find.byType(ModalBarrier),
+          ),
+        )
+        .onDismiss!;
+
+    await open();
+    final stale = dismiss();
+    await tester.tap(_menuCancel);
+    await tester.pumpAndSettle();
+    expect(_menuSheet, findsNothing);
+    await open();
+    final count = haptics();
+    stale();
+    await tester.pumpAndSettle();
+    expect(_menuSheet, findsOneWidget);
+    expect(state().management, isEmpty);
+    expect(haptics(), count);
+    dismiss()();
+    await tester.pumpAndSettle();
+    expect(_menuSheet, findsNothing);
   });
 
   testWidgets(
@@ -780,7 +1019,6 @@ void main() {
     (tester) async {
       await mount(tester, people: _people(mainBasic: true), basic: true);
       expect(find.text('Hassan'), findsOneWidget);
-      await showAccess(tester);
       expect(_view(_hassanId), findsOneWidget);
       expect(
         tester.widget<Semantics>(_chat(_hassanId)).properties.button,
@@ -869,19 +1107,27 @@ void main() {
     tester,
   ) async {
     await mount(tester, initialPage: 1);
-    await showAccess(tester);
     final view = physicalPermission(tester, _view(_ibrahimId));
     final semanticView = semanticAction(tester, _view(_ibrahimId));
-    final confirm = await confirmation(tester);
+    final beforeView = haptics();
     await next(tester);
-    final count = haptics();
     view();
     semanticView();
-    confirm();
     await tester.pump();
     expect(state().permissions, isEmpty);
+    expect(haptics() - beforeView, 1);
+
+    await tester.tap(_dotTarget(1));
+    await tester.pump();
+    final confirm = await confirmation(tester);
+    final beforeConfirm = haptics();
+    state().selectFromParent(2);
+    await tester.pumpAndSettle();
+    expect(_menuSheet, findsNothing);
+    confirm();
+    await tester.pump();
     expect(state().management, isEmpty);
-    expect(haptics(), count);
+    expect(haptics(), beforeConfirm);
     expect(find.text('Omar'), findsOneWidget);
   });
 
@@ -895,7 +1141,6 @@ void main() {
       tester,
     ) async {
       await mount(tester, initialPage: 1);
-      await showAccess(tester);
       final view = physicalPermission(tester, _view(_ibrahimId));
       final semanticView = semanticAction(tester, _view(_ibrahimId));
       final confirm = await confirmation(tester);
@@ -932,7 +1177,6 @@ void main() {
       final semantics = tester.ensureSemantics();
 
       await mount(tester, initialPage: 1);
-      await showAccess(tester);
       final target = _view(_ibrahimId);
       final node = tester.getSemantics(target);
       final owner = tester.element(target).renderObject!.owner!.semanticsOwner!;
@@ -951,7 +1195,6 @@ void main() {
     tester,
   ) async {
     await mount(tester, initialPage: 1);
-    await showAccess(tester);
     final view = physicalPermission(tester, _view(_ibrahimId));
     final oldPage = pageAction(tester);
     final confirm = await confirmation(tester);
@@ -1009,7 +1252,6 @@ void main() {
         initialPage: 1,
         familyState: ZyraGuardianFamilyState.freePlace,
       );
-      await showAccess(tester);
       await tester.tap(_chat(_ibrahimId));
       await tester.pumpAndSettle();
       expect(find.text('Give Ibrahim the place'), findsOneWidget);
@@ -1054,7 +1296,6 @@ void main() {
       initialPage: 1,
       familyState: ZyraGuardianFamilyState.freePlace,
     );
-    await showAccess(tester);
     await tester.tap(_chat(_ibrahimId));
     await tester.pumpAndSettle();
     await tester.tap(_key('guardian-family-introduction-primary'));
@@ -1125,38 +1366,23 @@ void main() {
       expect(state().pages, [1]);
     },
   );
-  testWidgets(
-    'LOCK14V5 small gold and queue71 normal-ink pager contrast are preserved',
-    (tester) async {
-      await mount(tester);
-      expect(
-        tester.widget<Text>(find.text('MAIN GUARDIAN')).style!.color,
-        ZyraColors.goldText,
-      );
-      final label = tester.widget<Text>(find.text('Details'));
-      expect(label.style!.color, ZyraColors.goldText);
-      expect(label.style!.fontWeight, FontWeight.w500);
-      final surface = tester
-          .element(find.text('Journey access'))
-          .findAncestorWidgetOfExactType<Material>()!;
-      expect(surface.color, const Color(0xFFFBF7F0));
-      final contrast =
-          (surface.color!.computeLuminance() + .05) /
-          (label.style!.color!.computeLuminance() + .05);
-      expect(contrast, greaterThan(4.5));
-      await showAccess(tester);
-      expect(
-        tester.widget<Text>(find.text('JOURNEY ACCESS')).style!.color,
-        ZyraColors.goldText,
-      );
-      expect(
-        tester.widget<Text>(find.text('Journey access')).style!.color,
-        ZyraColors.goldText,
-      );
-      final views = tester.widgetList<Text>(find.text('View'));
-      expect(views.single.style!.color, ZyraColors.goldText);
-    },
-  );
+  testWidgets('LOCK19 uses small gold for role, access and enabled chips', (
+    tester,
+  ) async {
+    await mount(tester);
+    final role = tester.widget<Text>(find.text('MAIN GUARDIAN'));
+    final heading = tester.widget<Text>(find.text('JOURNEY ACCESS'));
+    final view = tester.widget<Text>(find.text('View'));
+    expect(role.style!.fontSize, 11);
+    expect(role.style!.letterSpacing, 1.2);
+    expect(role.style!.color, ZyraColors.goldText);
+    expect(heading.style!.color, ZyraColors.goldText);
+    expect(view.style!.color, const Color(0xFF845F24));
+    final contrast =
+        (const Color(0xFFF3EDE3).computeLuminance() + .05) /
+        (view.style!.color!.computeLuminance() + .05);
+    expect(contrast, greaterThan(4.5));
+  });
   testWidgets(
     'Invited card has a solid surface; only Add uses a dashed outline',
     (tester) async {
@@ -1170,10 +1396,14 @@ void main() {
             widget is CustomPaint &&
             widget.foregroundPainter is ZyraGuardianDashedBorder,
       );
+      final invited = _card('preview-invited-omar');
+      expect(_menu, findsNothing);
+      expect(find.descendant(of: invited, matching: _center), findsOneWidget);
       expect(
-        find.descendant(of: _card('preview-invited-omar'), matching: dashed),
-        findsNothing,
+        find.text('Access starts once Omar accepts the invitation.'),
+        findsOneWidget,
       );
+      expect(find.descendant(of: invited, matching: dashed), findsNothing);
       await next(tester);
       expect(
         find.descendant(of: _card('add'), matching: dashed),

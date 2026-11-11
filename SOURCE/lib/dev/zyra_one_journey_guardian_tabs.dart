@@ -4,6 +4,7 @@ import '../widgets/zyra_floating_surface.dart';
 // authority. The admitted shell owns changes and the lifetime of callbacks.
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
+import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
 import '../theme/zyra_interaction_style.dart';
 import '../widgets/zyra_tap_feedback.dart';
@@ -218,7 +219,7 @@ class _GuardianJourneyPagerState extends State<ZyraGuardianJourneyPager> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         SizedBox(
-          height: 28,
+          height: 24,
           child: Center(
             child: ZyraProfilesDots(
               count: widget.cards.length,
@@ -230,8 +231,8 @@ class _GuardianJourneyPagerState extends State<ZyraGuardianJourneyPager> {
             ),
           ),
         ),
-        // The centered dot slot contributes the first 11 of the locked 12 pt.
-        const SizedBox(height: 1),
+        // The 6 pt dot ends 9 pt before the end of its touch slot.
+        const SizedBox(height: 3),
         Expanded(
           child: GestureDetector(
             key: const ValueKey('guardian_journey_card'),
@@ -656,14 +657,19 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
             child: scroll
                 ? ZyraShadowScrollView(
                     key: PageStorageKey('guardian_tabs_$page'),
-                    padding: EdgeInsets.fromLTRB(20, 16, 20, clearance),
+                    padding: EdgeInsets.fromLTRB(
+                      ZyraPreviewSpacing.pageMargin,
+                      16,
+                      ZyraPreviewSpacing.pageMargin,
+                      clearance,
+                    ),
                     child: child,
                   )
                 : Padding(
                     padding: EdgeInsets.fromLTRB(
-                      20,
+                      ZyraPreviewSpacing.pageMargin,
                       16,
-                      20,
+                      ZyraPreviewSpacing.pageMargin,
                       tabClearance ? clearance : 0,
                     ),
                     child: child,
@@ -847,81 +853,87 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     );
   }
 
-  Widget _requests() => _viewport(
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _header(
-          'Journey requests',
-          trailing: _switcher(
-            const ['All Seekers', 'for Adam', 'for Yusuf'][state.requestSeeker],
-            'request_seeker',
+  Widget _requests() {
+    final requests = state.requestsSent
+        ? sentJourneyRequests
+        : receivedJourneyRequests;
+    return _viewport(
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _header(
+            'Journey requests',
+            trailing: _switcher(
+              const [
+                'All Seekers',
+                'for Adam',
+                'for Yusuf',
+              ][state.requestSeeker],
+              'request_seeker',
+            ),
           ),
-        ),
-        _segments(
-          const ['Received', 'Sent'],
-          state.requestsSent ? 1 : 0,
-          'requests_tab_',
-        ),
-        if (linked && adamMain && state.requestSeeker != 2) ...[
-          for (final person
-              in state.requestsSent
-                  ? sentJourneyRequests
-                  : receivedJourneyRequests) ...[
-            _box(
-              Row(
-                children: [
-                  _photo(person.id.replaceFirst('draft-', '')),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _text(
-                          '${person.firstName} ${person.surname}',
-                          size: 18,
-                        ),
-                        _text(
-                          '${person.age} · ${person.city}',
-                          size: 12,
-                          muted: true,
-                        ),
-                        _text(
-                          state.requestsSent
-                              ? 'Adam is waiting for a response'
-                              : 'Journey request to Adam',
-                          size: 12,
-                          gold: true,
-                        ),
-                      ],
+          _segments(
+            const ['Received', 'Sent'],
+            state.requestsSent ? 1 : 0,
+            'requests_tab_',
+          ),
+          if (linked && adamMain && state.requestSeeker != 2) ...[
+            for (final (i, person) in requests.indexed) ...[
+              if (i > 0) const SizedBox(height: ZyraPreviewSpacing.cardToCard),
+              _box(
+                Row(
+                  children: [
+                    _photo(person.id.replaceFirst('draft-', '')),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _text(
+                            '${person.firstName} ${person.surname}',
+                            size: 18,
+                          ),
+                          _text(
+                            '${person.age} · ${person.city}',
+                            size: 12,
+                            muted: true,
+                          ),
+                          _text(
+                            state.requestsSent
+                                ? 'Adam is waiting for a response'
+                                : 'Journey request to Adam',
+                            size: 12,
+                            gold: true,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-          ],
-          if ((state.requestsSent
-                  ? sentJourneyRequests
-                  : receivedJourneyRequests)
-              .isEmpty)
-            _text(
-              state.requestsSent
-                  ? 'No sent requests yet.'
-                  : 'No received requests yet.',
-              muted: true,
-            )
-          else
-            _text(
-              'You see these as their Main Guardian. Each Seeker decides on their own requests.',
-              size: 12,
-              muted: true,
-            ),
-        ] else
-          _text('Main Guardian only', muted: true),
-      ],
-    ),
-  );
+            ],
+            if (requests.isEmpty)
+              _text(
+                state.requestsSent
+                    ? 'No sent requests yet.'
+                    : 'No received requests yet.',
+                muted: true,
+              )
+            else ...[
+              const SizedBox(height: 10),
+              _text(
+                'You see these as their Main Guardian. Each Seeker decides on their own requests.',
+                size: 12,
+                muted: true,
+              ),
+            ],
+          ] else
+            _text('Main Guardian only', muted: true),
+        ],
+      ),
+    );
+  }
+
   Widget _connect() {
     final received = state.connectReceived;
     final empty = received
@@ -953,9 +965,10 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
                 accepted: state.connection == ZyraGuardianConnection.accepted,
               )
             else
-              for (final id in state.sent) ...[
+              for (final (i, id) in state.sent.indexed) ...[
+                if (i > 0)
+                  const SizedBox(height: ZyraPreviewSpacing.cardToCard),
                 _connectionCard(id),
-                const SizedBox(height: 10),
               ],
             if (received &&
                 state.connection == ZyraGuardianConnection.pending) ...[
@@ -1045,15 +1058,23 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
           Column(
             children: [
               _header("Introductions you've made"),
-              for (final entry in state.introduced.where(
-                (id) => id.startsWith('${state.seekerName.toLowerCase()}:'),
-              ))
+              for (final (i, entry)
+                  in state.introduced
+                      .where(
+                        (id) =>
+                            id.startsWith('${state.seekerName.toLowerCase()}:'),
+                      )
+                      .indexed) ...[
+                if (i > 0)
+                  const SizedBox(height: ZyraPreviewSpacing.cardToCard),
                 _tile(
                   entry.split(':').last == 'aisha' ? 'Aisha' : 'Noor',
                   'Suggested to ${state.seekerName}',
                   Icons.groups_outlined,
                   'network',
+                  bottomGap: 0,
                 ),
+              ],
             ],
           ),
         );
@@ -1163,8 +1184,9 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: ZyraPreviewSpacing.cardToPill),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _networkArrow(false),
               const SizedBox(width: 10),
@@ -1249,8 +1271,13 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 4),
+            padding: EdgeInsets.only(
+              bottom: linked && journeys.isNotEmpty
+                  ? ZyraPreviewSpacing.titleToDots
+                  : 4,
+            ),
             child: LayoutBuilder(
+              key: const ValueKey('guardian_journeys_title_block'),
               builder: (context, constraints) {
                 final switcher = _switcher('for ${state.seekerName}', 'seeker');
                 if (MediaQuery.textScalerOf(context).scale(28) > 36 ||
@@ -1289,7 +1316,11 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
                 message: 'No current Journey',
               ),
             ),
-          const SizedBox(height: 10),
+          SizedBox(
+            height: linked && journeys.isNotEmpty
+                ? ZyraPreviewSpacing.cardToCard
+                : 10,
+          ),
           if (linked)
             _tile(
               'Ended Journeys',
@@ -1337,7 +1368,9 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
         if (linked)
           for (var i = 0; i < 2; i++)
             Padding(
-              padding: const EdgeInsets.only(bottom: 10),
+              padding: EdgeInsets.only(
+                bottom: i == 0 ? ZyraPreviewSpacing.cardToCard : 10,
+              ),
               child: Builder(
                 builder: (context) => InkWell(
                   key: ValueKey('guardian_seeker_$i'),

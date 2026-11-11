@@ -70,7 +70,7 @@ class ZyraInteractionStyle {
 
   static const ZyraNavStyle currentDefaultNavStyle = ZyraNavStyle.floatingGlass;
   static const ZyraHapticLevel currentDefaultHapticLevel =
-      ZyraHapticLevel.subtle;
+      ZyraHapticLevel.light;
 
   static final ValueNotifier<ZyraNavStyle> navStyleSelection =
       ValueNotifier<ZyraNavStyle>(currentDefaultNavStyle);
@@ -99,14 +99,14 @@ class ZyraInteractionStyle {
     return changed;
   }
 
-  /// Hydrates before the first frame. Unknown values resolve to Subtle.
+  /// Hydrates before the first frame. A missing choice starts on Light.
   static void restoreHapticLevel(String? storedName) {
-    final restored = ZyraHapticLevel.values.where(
-      (level) => level.name == storedName,
-    );
-    hapticLevelSelection.value = restored.isEmpty
+    final restored = ZyraHapticLevel.values
+        .where((level) => level.name == storedName)
+        .firstOrNull;
+    hapticLevelSelection.value = storedName == null
         ? currentDefaultHapticLevel
-        : restored.first;
+        : restored ?? ZyraHapticLevel.subtle;
   }
 
   static Future<void> emitSelectionHaptic({ZyraHapticLevel? level}) async {

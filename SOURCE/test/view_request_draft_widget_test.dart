@@ -777,7 +777,6 @@ Future<void> _openAdditionalGuardian(WidgetTester tester) async {
   if (_key(_guardianHistory).evaluate().isEmpty) {
     await _press(tester, 'guardian-card-dot-target-1');
   }
-  await _press(tester, 'guardian-card-access');
 }
 
 Future<void> _filterPage(WidgetTester tester, int target) async {
@@ -911,7 +910,7 @@ Future<void> _confirmGuardianMain(
   required bool remove,
 }) async {
   final base = remove ? 'guardian-clear-main' : 'guardian-make-main';
-  await _press(tester, 'guardian-card-access');
+  await _press(tester, 'guardian-card-menu');
   await _press(tester, base);
   final confirm = find.descendant(
     of: _key('$base-confirmation'),
@@ -1459,19 +1458,14 @@ void main() {
         await _nav(tester, 3);
         if (guardian == _yusuf) {
           await _openAdditionalGuardian(tester);
-        } else {
-          await _press(tester, 'guardian-card-access');
         }
         final stale = _guardianCards(tester).onPermission;
         await _press(tester, 'draft_rules');
         await _press(tester, 'concept_guardian_plan_${guardian}_0');
         await _press(tester, 'draft_back');
         final view = _key('guardian-card-view-$guardian-$_fixture');
-        if (view.evaluate().isEmpty) {
-          if (_key('guardian-card-history-$guardian').evaluate().isEmpty) {
-            await _press(tester, 'guardian-card-dot-target-1');
-          }
-          await _press(tester, 'guardian-card-access');
+        if (_key('guardian-card-history-$guardian').evaluate().isEmpty) {
+          await _press(tester, 'guardian-card-dot-target-1');
         }
         expect(view, findsOneWidget);
         expect(
@@ -4038,7 +4032,7 @@ void main() {
     expect(find.textContaining('Guardian Gate'), findsWidgets);
   });
 
-  // Q35: manage Main on the actual LOCK 19 Journey access side.
+  // Q35: manage Main from the LOCK 19 Guardian card menu.
   testWidgets('Guardian gate and all eight stages remain meaningful', (
     tester,
   ) async {
@@ -4514,11 +4508,11 @@ void main() {
         await _mount(tester);
         await _fillJourney(tester);
         await _nav(tester, 3);
-        await _press(tester, 'guardian-card-access');
         final before = _guardianCards(tester);
         final fixture = zyraShellFixtureFor(tester);
         final model = fixture.model;
         final access = Map.of(model.snapshot().guardianAccess);
+        await _press(tester, 'guardian-card-menu');
         await _press(tester, 'guardian-remove');
         final confirmation = find.descendant(
           of: _key('guardian-remove-confirmation'),
@@ -4598,7 +4592,7 @@ void main() {
     },
   );
 
-  // Q35 (R2): the live access side enforces the View → Chat dependency.
+  // Q35 (R2): the Guardian card enforces the View → Chat dependency.
   testWidgets('Guardian permission choices stay linked and chat needs view', (
     tester,
   ) async {
@@ -4617,7 +4611,6 @@ void main() {
     expect(_guardianJourney(tester, _yusuf).chat, isFalse);
     await _press(tester, _guardianChat);
     expect(_guardianJourney(tester, _yusuf).chat, isTrue);
-    await _press(tester, 'guardian-card-details');
     await _press(tester, _guardianHistory);
     expect(
       _guardianCards(
@@ -4861,7 +4854,7 @@ void main() {
     (size: Size(320, 568), scale: 2.0, suffix: '_compact200_final'),
   ]) {
     testWidgets(
-      // Q35: the Guardian capture opens the actual LOCK 19 access side.
+      // Q35: the Guardian capture selects the actual LOCK 19 card.
       'fresh whole-app real-font candidates are not approval${viewport.suffix}',
       (tester) async {
         final noNetwork = _NoNetwork();

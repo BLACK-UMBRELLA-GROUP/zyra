@@ -1,6 +1,7 @@
 // LOCK15 V2 Focus presentation. Callers own sources, navigation and authority.
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
+import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
 import 'floating_nav_bar.dart';
 import 'zyra_floating_surface.dart';
@@ -303,7 +304,11 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
     ),
   );
 
-  Widget tile(ZyraFocusTile tile, {required double verticalPadding}) => Builder(
+  Widget tile(
+    ZyraFocusTile tile, {
+    required double horizontalPadding,
+    required double verticalPadding,
+  }) => Builder(
     builder: (context) => ZyraFloatingSurface(
       radius: 26,
       child: Material(
@@ -320,7 +325,7 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
           onTap: ZyraTapFeedback.onTap(context, tile.onTap),
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: 5,
+              horizontal: horizontalPadding,
               vertical: verticalPadding,
             ),
             child: Column(
@@ -371,7 +376,11 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
     ),
   );
 
-  double tileHeight(BuildContext context, double width) {
+  double tileHeight(
+    BuildContext context,
+    double width,
+    double horizontalPadding,
+  ) {
     double height(
       String value,
       double size,
@@ -391,12 +400,13 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
       return painter.height;
     }
 
+    final textWidth = width - 2 * horizontalPadding;
     var result = 0.0;
     for (final tile in widget.tiles) {
       final value =
           84 +
-          height(tile.label, 11.5, width - 10, 1.25) +
-          height(tile.status, 10.5, width - 10 - (tile.locked ? 17 : 0), 1.45);
+          height(tile.label, 11.5, textWidth, 1.25) +
+          height(tile.status, 10.5, textWidth - (tile.locked ? 17 : 0), 1.45);
       if (value > result) result = value;
     }
     return result.ceilToDouble() + 1;
@@ -404,14 +414,19 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
 
   Widget _tiles(BuildContext context, BoxConstraints bounds, double bottom) {
     final width =
-        (bounds.maxWidth - 40 - (widget.tiles.length - 1) * 8) /
+        (bounds.maxWidth -
+            2 * ZyraPreviewSpacing.pageMargin -
+            (widget.tiles.length - 1) * ZyraPreviewSpacing.cardToCard) /
         widget.tiles.length;
-    final naturalHeight = tileHeight(context, width);
     // The older 320 pt viewport can fit a large-text tile at the scroll end
     // by spending up to eight points less on its vertical padding.
     final compact =
         bounds.maxWidth <= 320 &&
         MediaQuery.textScalerOf(context).scale(14) > 14;
+    // At 320 pt the 12 pt gaps take 3 pt from each of the four tiles.
+    // Keep the original Larger Text content width inside the tile.
+    final horizontalPadding = compact ? 3.5 : 5.0;
+    final naturalHeight = tileHeight(context, width, horizontalPadding);
     final recovered = compact
         ? (naturalHeight - (bounds.maxHeight - bottom))
               .clamp(0.0, 8.0)
@@ -423,9 +438,13 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           for (var i = 0; i < widget.tiles.length; i++) ...[
-            if (i > 0) const SizedBox(width: 8),
+            if (i > 0) const SizedBox(width: ZyraPreviewSpacing.cardToCard),
             Expanded(
-              child: tile(widget.tiles[i], verticalPadding: 14 - recovered / 2),
+              child: tile(
+                widget.tiles[i],
+                horizontalPadding: horizontalPadding,
+                verticalPadding: 14 - recovered / 2,
+              ),
             ),
           ],
         ],
@@ -445,7 +464,12 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
       child: LayoutBuilder(
         builder: (context, bounds) => ZyraShadowScrollView(
           key: const PageStorageKey('my-zyra-focus-scroll'),
-          padding: EdgeInsets.fromLTRB(20, top, 20, bottom),
+          padding: EdgeInsets.fromLTRB(
+            ZyraPreviewSpacing.pageMargin,
+            top,
+            ZyraPreviewSpacing.pageMargin,
+            bottom,
+          ),
           child: ConstrainedBox(
             constraints: BoxConstraints(
               minHeight: (bounds.maxHeight - top - bottom).clamp(
@@ -474,7 +498,7 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
                       ),
                     ],
                     if (widget.items.length > 1) ...[
-                      const SizedBox(height: 12),
+                      const SizedBox(height: ZyraPreviewSpacing.titleToDots),
                       ZyraProfilesDots(
                         count: widget.items.length,
                         index: index,

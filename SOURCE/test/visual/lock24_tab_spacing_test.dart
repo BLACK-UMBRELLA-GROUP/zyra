@@ -7,13 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
+import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_browse_filter.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
+import 'package:zyra/dev/zyra_request_activity_presentation.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/main.dart' show ZyraApp;
 import 'package:zyra/widgets/zyra_floating_surface.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
+import 'package:zyra/widgets/zyra_state_widgets.dart';
 import '../support/zyra_hidden_dev_controls_driver.dart';
 import 'baseline_capture_support.dart';
 
@@ -55,6 +59,7 @@ Future<void> mount(
   int? count,
   int guardianPage = 0,
   bool linked = true,
+  bool populated = false,
   bool noMatches = false,
   List<String> pages = const [],
 }) async {
@@ -64,6 +69,25 @@ Future<void> mount(
     clock: _clock,
   );
   if (active || count != null) expect(model.seedJourneys(count ?? 1), isTrue);
+  if (populated) {
+    expect(model.seedReceived('draft-amira'), isTrue);
+    expect(model.seedReceived('draft-aisha'), isTrue);
+    if (!guardian) {
+      expect(model.end('draft-sara'), isTrue);
+      model.seedHistory();
+      for (final id in ['draft-maryam', 'draft-hana']) {
+        expect(
+          model.seedPastRequest(
+            profileId: id,
+            outcome: DraftPastRequestOutcome.cancelled,
+            requestedAt: _clock().subtract(const Duration(days: 3)),
+            movedAt: _clock().subtract(const Duration(days: 1)),
+          ),
+          isTrue,
+        );
+      }
+    }
+  }
   if (guardian && basic) {
     expect(
       model.setSampleGuardianMembership(
@@ -90,6 +114,14 @@ Future<void> mount(
           tab: tab,
           pages: pages,
           guardianPage: guardianPage,
+          guardianTabs: guardian && populated
+              ? const ZyraGuardianTabsSnapshot(
+                  review: ZyraGuardianReview.open,
+                  connection: ZyraGuardianConnection.pending,
+                  sent: {'aisha', 'noor'},
+                  introduced: {'adam:aisha', 'adam:noor'},
+                )
+              : const ZyraGuardianTabsSnapshot.quiet(),
           removedGuardians: linked ? const [] : const ['draft-guardian-hassan'],
           browseFilter: noMatches
               ? const ZyraBrowseFilter(minAge: 69, maxAge: 70)
@@ -226,7 +258,9 @@ Finder? _outerViewport(String screen) => switch (screen) {
   'Profiles — no matches' => _key('concept_profiles_empty_viewport'),
   'Journey — empty' => _key('journey_tab_empty_scroll'),
   'Journey options' => _key('journey_options_scroll_draft-sara'),
-  'My ZYRA' => find.byKey(const PageStorageKey('my-zyra-focus-scroll')),
+  'My ZYRA' || 'My ZYRA — activity' => find.byKey(
+    const PageStorageKey('my-zyra-focus-scroll'),
+  ),
   'Network' || 'Network — unlinked' => find.byKey(
     const PageStorageKey('guardian_tabs_network'),
   ),
@@ -241,7 +275,8 @@ Finder? _outerViewport(String screen) => switch (screen) {
   ),
   'Quick · Seeker Notifications' ||
   'Quick · Guardian Notifications' => _key('draft_scroll'),
-  'Quick · Guardian Journey requests' => find.byKey(
+  'Quick · Guardian Journey requests' ||
+  'Guardian Journey requests — populated' => find.byKey(
     const PageStorageKey('guardian_tabs_requests'),
   ),
   'Quick · Guardian Connect with Guardian' => _key(
@@ -277,16 +312,18 @@ ScrollPosition? _outerPosition(WidgetTester t, String screen) {
 
 Finder? _lastSurface(String screen, bool basic) => switch (screen) {
   'Profiles' => _key('concept_request_row_surface'),
-  'Journey' => _key(
+  'Journey' || 'Journey — free place' => _key(
     basic ? 'journey_tab_upsell' : 'concept_request_row_surface',
   ),
   'Journey options' => _key('journey_options_actions_card_draft-sara'),
-  'My ZYRA' =>
+  'My ZYRA' || 'My ZYRA — activity' =>
     _key('focus-notifications').evaluate().isNotEmpty
         ? _key('focus-notifications')
         : _key('guardian_notifications'),
-  'Guardian' || 'Guardian — Journey access' => _key('guardian-card-access'),
-  'Guardian — invited' || 'Guardian — Add card' => _key('guardian-card-center'),
+  'Guardian' ||
+  'Guardian — populated' ||
+  'Guardian — invited' => _fixedCard(screen),
+  'Guardian — Add card' => _key('guardian-card-center'),
   'Network' => _key('guardian_connect_confirm'),
   'Journeys' || 'Journeys — empty' => _key('guardian_ended'),
   'Profile' =>
@@ -313,6 +350,9 @@ Finder? _quickLastSurface(String screen) => switch (screen) {
   'Quick · Seeker Notifications' ||
   'Quick · Guardian Notifications' => _key('concept_notifications_end_card'),
   'Quick · Guardian Journey requests' => find.text('No received requests yet.'),
+  'Guardian Journey requests — populated' => find.text(
+    'You see these as their Main Guardian. Each Seeker decides on their own requests.',
+  ),
   'Quick · Guardian Connect with Guardian' ||
   'Quick · Guardian Introductions' => _key('guardian_empty_network'),
   _ => null,
@@ -320,15 +360,239 @@ Finder? _quickLastSurface(String screen) => switch (screen) {
 
 Finder? _fixedCard(String screen) => switch (screen) {
   'Profiles' => _key('concept_browse_portrait_card'),
-  'Journey' => _key('journey_tab_card'),
+  'Journey' || 'Journey — free place' => _key('journey_tab_card'),
   'Guardian' ||
-  'Guardian — Journey access' => _key('guardian-card-draft-guardian-hassan'),
+  'Guardian — populated' => _key('guardian-card-draft-guardian-hassan'),
   'Guardian — invited' => _key('guardian-card-preview-invited-omar'),
   'Guardian — Add card' => _key('guardian-card-add'),
   'Network' => _key('guardian-network-card'),
   'Journeys' => _key('guardian_journey_card'),
   _ => null,
 };
+
+Map<String, double> _verifySpacing(
+  WidgetTester t,
+  String screen, {
+  required bool guardian,
+  required bool basic,
+}) {
+  final results = <String, double>{};
+  Rect box(Finder finder) {
+    expect(finder, findsOneWidget, reason: screen);
+    return t.getRect(finder);
+  }
+
+  void check(String name, double actual, double expected) {
+    results[name] = actual;
+    expect(actual, closeTo(expected, .02), reason: '$screen · $name');
+  }
+
+  void margins(Finder surface) {
+    final rect = box(surface);
+    final width = MediaQuery.sizeOf(
+      t.element(find.byType(ZyraOneJourneyConceptShell)),
+    ).width;
+    check('left page margin', rect.left, 20);
+    check('right page margin', width - rect.right, 20);
+  }
+
+  void gap(String name, Finder upper, Finder lower, double expected) {
+    check(name, box(lower).top - box(upper).bottom, expected);
+  }
+
+  void titleToDots(
+    Finder title,
+    Finder dotTarget,
+    Finder dot, {
+    Finder? titleBlock,
+    Finder? card,
+  }) {
+    gap('title block to dot slot', titleBlock ?? title, dotTarget, 12);
+    results['title text to dot slot'] = box(dotTarget).top - box(title).bottom;
+    results['title text to painted dot'] = box(dot).top - box(title).bottom;
+    if (card != null) gap('painted dot to card', dot, card, 12);
+  }
+
+  Finder surfaceFor(Finder child) => find
+      .ancestor(of: child, matching: find.byType(ZyraFloatingSurface))
+      .first;
+
+  void cardGaps(List<Finder> cards) {
+    for (var i = 1; i < cards.length; i++) {
+      gap('card gap $i', cards[i - 1], cards[i], 12);
+    }
+  }
+
+  switch (screen) {
+    case 'Profiles':
+      final card = _key('concept_browse_portrait_card');
+      margins(card);
+      titleToDots(
+        _key('concept_browse_title'),
+        _key('concept_browse_dot_target_0'),
+        find
+            .descendant(
+              of: _key('concept_browse_dot_target_0'),
+              matching: find.byType(AnimatedContainer),
+            )
+            .first,
+        card: card,
+      );
+      gap('card to pill', card, _key('concept_request_row_surface'), 12);
+    case 'Journey':
+    case 'Journey — free place':
+      final card = _key('journey_tab_card');
+      margins(card);
+      titleToDots(
+        find.text('Journey'),
+        _key('journey_tab_dot_target_0'),
+        _key('journey_tab_dot_0'),
+        card: card,
+      );
+      gap('card to pill', card, _key('concept_request_row_surface'), 12);
+    case 'Journey options':
+      final cards = [
+        for (final group in ['main', 'guardians', 'actions'])
+          _key('journey_options_${group}_card_draft-sara'),
+      ];
+      margins(cards.first);
+      gap(
+        'title to identity',
+        find.text('Journey'),
+        _key('journey_options_photo_draft-sara'),
+        22,
+      );
+      cardGaps(cards);
+    case 'Journey — empty':
+      if (basic) {
+        gap(
+          'empty state to plans card',
+          find.byType(ZyraEmptyState),
+          _key('journey_tab_upsell'),
+          12,
+        );
+      }
+    case 'Network':
+      final card = _key('guardian-network-card');
+      margins(card);
+      gap('card to pill', card, _key('guardian_connect_confirm'), 12);
+      gap(
+        'card to Introduce pill',
+        card,
+        _key('guardian_introduce_confirm'),
+        12,
+      );
+    case 'Journeys':
+      final card = _key('guardian_journey_card');
+      margins(card);
+      titleToDots(
+        find.text('Journeys'),
+        _key('guardian_journey_dot_target_0'),
+        _key('guardian_journey_dot_0'),
+        titleBlock: _key('guardian_journeys_title_block'),
+        card: card,
+      );
+      gap('card to Ended Journeys card', card, _key('guardian_ended'), 12);
+    case 'Seekers':
+      final first = _key('guardian_seeker_0');
+      final last = _key('guardian_seeker_1');
+      margins(first);
+      cardGaps([first, last]);
+      gap(
+        'roster card to footer',
+        last,
+        find.text('You can support up to 10 Seekers.'),
+        10,
+      );
+    case 'Profile':
+      final cards = [
+        for (final row in [
+          guardian ? 'your_seekers' : 'manage_photos',
+          'membership',
+          guardian ? 'safety_advice' : 'guardian_info',
+          'sign_out',
+        ])
+          surfaceFor(_key('concept_$row')),
+      ];
+      margins(cards.first);
+      cardGaps(cards);
+    case 'My ZYRA':
+    case 'My ZYRA — activity':
+      final tiles = [
+        for (final key
+            in guardian
+                ? const [
+                    'guardian_requests',
+                    'guardian_connect',
+                    'guardian_introductions',
+                    'guardian_notifications',
+                  ]
+                : const [
+                    'concept-my-requests',
+                    'concept-my-introductions',
+                    'concept-my-ended',
+                    'focus-notifications',
+                  ])
+          _key(key),
+      ];
+      final width = MediaQuery.sizeOf(
+        t.element(find.byType(ZyraOneJourneyConceptShell)),
+      ).width;
+      check('left page margin', box(tiles.first).left, 20);
+      check('right page margin', width - box(tiles.last).right, 20);
+      for (var i = 1; i < tiles.length; i++) {
+        check('card gap $i', box(tiles[i]).left - box(tiles[i - 1]).right, 12);
+      }
+      if (screen.endsWith('activity') && (!guardian || !basic)) {
+        titleToDots(
+          find.text('My ZYRA'),
+          _key('focus-dot-target-0'),
+          _key('focus-dot-0'),
+          titleBlock: guardian
+              ? find.text(
+                  'Assalamu alaikum, Hassan. You support Adam and Yusuf.',
+                )
+              : null,
+        );
+      } else {
+        expect(_key('focus-dot-target-0'), findsNothing);
+      }
+    case 'Guardian Journey requests — populated':
+      final requestLabels = find.text('Journey request to Adam');
+      expect(requestLabels, findsNWidgets(2));
+      final cards = [
+        for (var i = 0; i < 2; i++) surfaceFor(requestLabels.at(i)),
+      ];
+      margins(cards.first);
+      cardGaps(cards);
+    case 'Guardian':
+    case 'Guardian — populated':
+    case 'Guardian — invited':
+    case 'Guardian — Add card':
+      final card = _fixedCard(screen)!;
+      margins(card);
+      titleToDots(
+        _key('guardian-manager-title'),
+        _key('guardian-card-dot-target-0'),
+        _key('guardian-card-dot-0'),
+        titleBlock: _key('guardian-manager-title-block'),
+        card: card,
+      );
+      if (screen == 'Guardian — Add card') {
+        gap('card to pill', card, _key('guardian-card-center'), 12);
+      } else if (screen == 'Guardian' || screen == 'Guardian — populated') {
+        gap(
+          'Journey access label to row',
+          _key('guardian-card-journey-label'),
+          screen == 'Guardian'
+              ? _key('guardian-card-free-place-0')
+              : _key('guardian-card-tile-draft-sara'),
+          8,
+        );
+      }
+  }
+  return results;
+}
 
 Future<void> _capture(WidgetTester t, String sample, String screen) async {
   final boundary = t.renderObject<RenderRepaintBoundary>(find.byKey(_frameKey));
@@ -395,6 +659,12 @@ void main() {
                 media.size,
                 compact ? const Size(375, 667) : const Size(430, 932),
               );
+              final ruleB = _verifySpacing(
+                t,
+                screen,
+                guardian: guardian,
+                basic: basic,
+              );
               final capture = _captureRoot.isNotEmpty;
               final start = capture ? inspectTree(t) : null;
               final max = capture
@@ -441,6 +711,7 @@ void main() {
                   'endNav': rect(endNav),
                   'max': max,
                   'outerMax': outerMax,
+                  'ruleB': ruleB,
                   if (quickLast != null)
                     'quickLast': rect(t.getRect(quickLast)),
                   'start': start,
@@ -470,7 +741,7 @@ void main() {
                     (screen == names[0] ||
                         screen == 'Journey' ||
                         screen == 'Guardian' ||
-                        (screen == 'Guardian — Journey access' &&
+                        (screen == 'Guardian — populated' &&
                             compact &&
                             !large) ||
                         screen == 'Network' ||
@@ -565,6 +836,165 @@ void main() {
               expect(gestureException, isNull, reason: '$screen during drags');
             }
 
+            Future<void> measurePopulatedLists() async {
+              Future<void> open(String tileId) async {
+                await mount(
+                  t,
+                  guardian: guardian,
+                  basic: basic,
+                  tab: 2,
+                  active: true,
+                  populated: true,
+                );
+                final tile = _key(tileId);
+                await Scrollable.ensureVisible(t.element(tile), alignment: .5);
+                await t.pump(const Duration(milliseconds: 500));
+                expect(tile.hitTestable(), findsOneWidget);
+                await t.tap(tile);
+                await t.pump(const Duration(milliseconds: 650));
+              }
+
+              Future<void> inspectList(
+                String name,
+                Finder firstCard,
+                Finder lastCard,
+              ) async {
+                expect(firstCard, findsOneWidget, reason: name);
+                final viewport = find.ancestor(
+                  of: firstCard,
+                  matching: find.byType(Scrollable),
+                );
+                final position = t
+                    .stateList<ScrollableState>(viewport)
+                    .singleWhere((s) => s.position.axis == Axis.vertical)
+                    .position;
+                final first = t.getRect(firstCard);
+                final firstBottom = first.bottom + position.pixels;
+                // At Larger Text the last sliver child can be outside the
+                // cache at the top. Measure it in the same content coordinates
+                // at the genuine end, after the lazy extent has settled.
+                for (var frame = 0; frame < 3; frame++) {
+                  if ((position.maxScrollExtent - position.pixels).abs() <
+                      .02) {
+                    break;
+                  }
+                  position.jumpTo(position.maxScrollExtent);
+                  await t.pump(const Duration(milliseconds: 650));
+                }
+                expect(position.pixels, closeTo(position.maxScrollExtent, .02));
+                expect(lastCard, findsOneWidget, reason: name);
+                final endLast = t.getRect(lastCard);
+                final nav = t.getRect(find.byKey(_nav));
+                final exception = t.takeException();
+                expect(exception, isNull, reason: name);
+                final values = {
+                  'left page margin': first.left,
+                  'right page margin': (compact ? 375.0 : 430.0) - first.right,
+                  'card gap': endLast.top + position.pixels - firstBottom,
+                  'last card to bar': nav.top - endLast.bottom,
+                  'scroll extent': position.maxScrollExtent,
+                };
+                expect(values['left page margin'], closeTo(20, .02));
+                expect(values['right page margin'], closeTo(20, .02));
+                expect(values['card gap'], closeTo(12, .02), reason: name);
+                if (position.maxScrollExtent > 0) {
+                  expect(
+                    values['last card to bar'],
+                    closeTo(16, .02),
+                    reason: name,
+                  );
+                }
+                if (_captureRoot.isNotEmpty) {
+                  report[name] = {
+                    'listGeometry': values,
+                    'exception': exception?.toString(),
+                  };
+                }
+              }
+
+              Finder surfaceFor(Finder child) => find
+                  .ancestor(
+                    of: child,
+                    matching: find.byType(ZyraFloatingSurface),
+                  )
+                  .first;
+              Finder paintIn(Finder child) => find
+                  .descendant(of: child, matching: find.byType(DecoratedBox))
+                  .first;
+              Finder requestPaint(Finder card, String keyPrefix) => paintIn(
+                find.descendant(
+                  of: card,
+                  matching: find.byWidgetPredicate((widget) {
+                    final key = widget.key;
+                    return widget is Container &&
+                        key is ValueKey<String> &&
+                        key.value.startsWith(keyPrefix);
+                  }),
+                ),
+              );
+              Finder received(String id) => requestPaint(
+                find.byWidgetPredicate(
+                  (w) => w is ZyraRequestActivityCard && w.profile.id == id,
+                ),
+                'request_activity_card_',
+              );
+              Finder past(String id) => requestPaint(
+                find.byWidgetPredicate(
+                  (w) => w is ZyraPastRequestActivityCard && w.profile.id == id,
+                ),
+                'past_request_activity_card_',
+              );
+              Finder ended(String id) => paintIn(
+                find.byWidgetPredicate(
+                  (w) =>
+                      w is ZyraOneJourneyConnectionsActiveCard &&
+                      w.profile.id == id,
+                ),
+              );
+
+              if (guardian) {
+                if (basic) return;
+                await open('guardian_connect');
+                await inspectList(
+                  'Guardian Connect — populated',
+                  surfaceFor(find.text("Aisha's Main Guardian")),
+                  surfaceFor(find.text("Noor's Main Guardian")),
+                );
+                await open('guardian_introductions');
+                final introductions = find.text('Suggested to Adam');
+                expect(introductions, findsNWidgets(2));
+                await inspectList(
+                  'Guardian Introductions — populated',
+                  surfaceFor(introductions.first),
+                  surfaceFor(introductions.last),
+                );
+              } else {
+                await open('concept-my-requests');
+                await inspectList(
+                  'Seeker Requests — Received',
+                  received('draft-amira'),
+                  received('draft-aisha'),
+                );
+                final pastTab = _key('draft_requests_2');
+                expect(pastTab.hitTestable(), findsOneWidget);
+                await t.tap(pastTab);
+                await t.pump();
+                await t.pump(const Duration(milliseconds: 650));
+                await t.pump();
+                await inspectList(
+                  'Seeker Requests — Past',
+                  past('draft-hana'),
+                  past('draft-maryam'),
+                );
+                await open('concept-my-ended');
+                await inspectList(
+                  'Seeker Ended Journeys — populated',
+                  ended('draft-sara'),
+                  ended('draft-noor'),
+                );
+              }
+            }
+
             for (var tab = 0; tab < names.length; tab++) {
               final screen = names[tab];
               await mount(
@@ -575,6 +1005,41 @@ void main() {
                 active: guardian || tab == 1,
               );
               await measure(screen);
+            }
+            final settings = _key('concept_settings');
+            expect(settings.hitTestable(), findsOneWidget);
+            await t.tap(settings);
+            await t.pump(const Duration(milliseconds: 650));
+            final settingsSpacing = <String, double>{};
+            for (final label in ['ACCOUNT', 'PRIVACY']) {
+              final card = _key('concept-settings-section-$label');
+              if (card.evaluate().isEmpty) {
+                await t.scrollUntilVisible(
+                  card,
+                  120,
+                  scrollable: find.descendant(
+                    of: _key('concept-current-settings-scroll'),
+                    matching: find.byType(Scrollable),
+                  ),
+                );
+              }
+              final surface = t.getRect(card);
+              final width = compact ? 375.0 : 430.0;
+              final gap = surface.top - t.getRect(find.text(label)).bottom;
+              expect(surface.left, closeTo(20, .02));
+              expect(width - surface.right, closeTo(20, .02));
+              expect(gap, closeTo(8, .02), reason: label);
+              settingsSpacing['left page margin'] = surface.left;
+              settingsSpacing['right page margin'] = width - surface.right;
+              settingsSpacing['$label label to card'] = gap;
+            }
+            final settingsException = t.takeException();
+            expect(settingsException, isNull, reason: 'Settings');
+            if (_captureRoot.isNotEmpty) {
+              report['Settings'] = {
+                'ruleB': settingsSpacing,
+                'exception': settingsException?.toString(),
+              };
             }
             if (!guardian) {
               await mount(
@@ -601,6 +1066,14 @@ void main() {
                 tab: 1,
                 active: true,
               );
+              if (!basic) {
+                await t.tap(_key('journey_tab_dot_target_1'));
+                await t.pump(const Duration(milliseconds: 500));
+                expect(find.text('Free place'), findsOneWidget);
+                await measure('Journey — free place');
+                await t.tap(_key('journey_tab_dot_target_0'));
+                await t.pump(const Duration(milliseconds: 500));
+              }
               final options = find.byKey(
                 const ValueKey('draft_journey_options_draft-sara'),
               );
@@ -636,12 +1109,9 @@ void main() {
               final cardWidget = t.widget<ZyraOneJourneyGuardianCards>(
                 find.byType(ZyraOneJourneyGuardianCards),
               );
-              final access = find.text('Journey access');
-              expect(access, findsOneWidget);
-              await t.tap(access);
-              await t.pump(const Duration(milliseconds: 600));
-              expect(find.text('Details'), findsOneWidget);
-              await measure('Guardian — Journey access');
+              expect(find.text('Journey access'), findsNothing);
+              expect(find.text('Details'), findsNothing);
+              await measure('Guardian — populated');
               if (!basic) {
                 await mount(
                   t,
@@ -700,6 +1170,24 @@ void main() {
               );
               await measure('Seekers — unlinked');
             }
+            await mount(
+              t,
+              guardian: guardian,
+              basic: basic,
+              tab: 2,
+              active: true,
+              populated: true,
+            );
+            await measure('My ZYRA — activity');
+            if (guardian) {
+              final tile = _key('guardian_requests');
+              await Scrollable.ensureVisible(t.element(tile), alignment: .5);
+              await t.pump(const Duration(milliseconds: 500));
+              await t.tap(tile);
+              await t.pump(const Duration(milliseconds: 500));
+              await measure('Guardian Journey requests — populated');
+            }
+            await measurePopulatedLists();
             final quickRoutes = guardian
                 ? const [
                     ('guardian_requests', 'Guardian Journey requests'),

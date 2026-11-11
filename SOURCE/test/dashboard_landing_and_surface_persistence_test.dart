@@ -29,6 +29,22 @@ void main() {
     ZyraColors.restoreAppSurfaceStyle(null);
   });
 
+  test(
+    'fresh preferences start on Light and saved haptic levels are restored',
+    () {
+      expect(ZyraLocalPrefs.cachedHapticLevelName, isNull);
+      ZyraInteractionStyle.restoreHapticLevel(
+        ZyraLocalPrefs.cachedHapticLevelName,
+      );
+      expect(ZyraInteractionStyle.hapticLevel, ZyraHapticLevel.light);
+      expect(ZyraLocalPrefs.cachedHapticLevelName, isNull);
+      for (final level in ZyraHapticLevel.values) {
+        ZyraInteractionStyle.restoreHapticLevel(level.name);
+        expect(ZyraInteractionStyle.hapticLevel, level);
+      }
+    },
+  );
+
   test('normal Seeker and Guardian shells default to Dashboard', () {
     expect(const HomeShell().initialTab, 2);
 
@@ -97,10 +113,7 @@ void main() {
       ZyraInteractionStyle.restoreHapticLevel('future-haptic');
       expect(ZyraColors.devPalette, ZyraColors.currentDefaultPalette);
       expect(ZyraText.appFont, ZyraText.currentDefaultFont);
-      expect(
-        ZyraInteractionStyle.hapticLevel,
-        ZyraInteractionStyle.currentDefaultHapticLevel,
-      );
+      expect(ZyraInteractionStyle.hapticLevel, ZyraHapticLevel.subtle);
 
       await ZyraLocalPrefs.setCachedAppFontName(null);
       expect(ZyraLocalPrefs.cachedAppFontName, isNull);

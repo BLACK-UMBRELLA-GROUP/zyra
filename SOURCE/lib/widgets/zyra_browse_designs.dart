@@ -17,6 +17,7 @@ import '../models/seeker_profile.dart';
 import '../theme/zyra_card_metrics.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_interaction_style.dart';
+import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
 import 'floating_nav_bar.dart';
 import 'zyra_browse_options_button.dart';
@@ -375,40 +376,64 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
     ),
   );
 
-  Widget _header() => Row(
-    key: const ValueKey('concept_browse_header'),
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Expanded(
-        child: Text(
-          'Profiles',
-          key: const ValueKey('concept_browse_title'),
-          textAlign: TextAlign.left,
-          style: ZyraText.pageTitle(),
+  Widget _header({Widget? dots}) {
+    const key = ValueKey('concept_browse_header');
+    final title = Text(
+      'Profiles',
+      key: const ValueKey('concept_browse_title'),
+      textAlign: TextAlign.left,
+      style: ZyraText.pageTitle(),
+    );
+    final action = widget.onBrowseMenu != null
+        ? ZyraBrowseOptionsButton(
+            alignToContentEdge: widget.alignHeaderActions,
+            profile: widget.profiles.isEmpty
+                ? null
+                : widget.profiles[widget.selectedIndex.clamp(
+                    0,
+                    widget.profiles.length - 1,
+                  )],
+            onOpen: widget.onBrowseMenu!,
+          )
+        : widget.onFilters != null
+        ? IconButton(
+            key: const ValueKey('concept_filters'),
+            tooltip: 'Profile filters',
+            onPressed: ZyraTapFeedback.onTap(context, widget.onFilters),
+            color: ZyraColors.journeyGold,
+            constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+            icon: const Icon(Icons.tune, size: 20),
+          )
+        : null;
+    if (dots == null) {
+      return Row(
+        key: key,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(child: title),
+          ?action,
+        ],
+      );
+    }
+    return Stack(
+      key: key,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: EdgeInsetsDirectional.only(end: action == null ? 0 : 48),
+              child: title,
+            ),
+            const SizedBox(height: ZyraPreviewSpacing.titleToDots),
+            dots,
+          ],
         ),
-      ),
-      if (!widget.readOnlyPreview && widget.onBrowseMenu != null)
-        ZyraBrowseOptionsButton(
-          alignToContentEdge: widget.alignHeaderActions,
-          profile: widget.profiles.isEmpty
-              ? null
-              : widget.profiles[widget.selectedIndex.clamp(
-                  0,
-                  widget.profiles.length - 1,
-                )],
-          onOpen: widget.onBrowseMenu!,
-        )
-      else if (!widget.readOnlyPreview && widget.onFilters != null)
-        IconButton(
-          key: const ValueKey('concept_filters'),
-          tooltip: 'Profile filters',
-          onPressed: ZyraTapFeedback.onTap(context, widget.onFilters),
-          color: ZyraColors.journeyGold,
-          constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-          icon: const Icon(Icons.tune, size: 20),
-        ),
-    ],
-  );
+        if (action != null)
+          PositionedDirectional(end: 0, top: 0, child: action),
+      ],
+    );
+  }
 
   Widget _compactFooter(SeekerProfile? profile) {
     // Read-only controls retain the public unsent paint but never evaluate
@@ -614,11 +639,15 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
             : _footerReserve(context);
         // The painted dot ends 9 pt before the bottom of its 24 pt target.
         final afterDots = widget.fixedTabFooter ? 3.0 : 0.0;
-        final available = math.max(
-          0.0,
-          constraints.maxHeight - 24 - afterDots - bottom,
+        final contentWidth = math.max(
+          1.0,
+          constraints.maxWidth - 2 * ZyraPreviewSpacing.pageMargin,
         );
-        final contentWidth = math.max(1.0, constraints.maxWidth - 40);
+        final showHeader = widget.showFeedChrome && !widget.readOnlyPreview;
+        final lockedSpacing = showHeader && widget.requestRowLabels != null;
+        final headerHasDots =
+            lockedSpacing && profile != null && _galleryPageCount(profile) >= 2;
+        final cardToPill = lockedSpacing ? ZyraPreviewSpacing.cardToPill : 16.0;
         // Ink's one-pixel borders contribute two pixels to each pill/card.
         // Do not measure hidden feed labels: their delegates are outside an
         // inspection owner's authority, even when the result would not paint.
@@ -632,22 +661,32 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
                   : _requestPillHeight(profile, contentWidth) +
                         _pillBorderExtent
             : 0.0;
-        final headerHeight = widget.readOnlyPreview || !widget.showFeedChrome
+        final actionWidth =
+            widget.onFilters == null && widget.onBrowseMenu == null
             ? 0.0
-            : math.max(
-                widget.onFilters == null && widget.onBrowseMenu == null
-                    ? 0.0
-                    : 48.0,
-                _textHeight(
-                  'Profiles',
-                  ZyraText.pageTitle(),
-                  contentWidth - 48,
-                ),
-              );
+            : 48.0;
+        final titleHeight = showHeader
+            ? _textHeight(
+                'Profiles',
+                headerHasDots
+                    ? DefaultTextStyle.of(
+                        context,
+                      ).style.merge(ZyraText.pageTitle())
+                    : ZyraText.pageTitle(),
+                contentWidth - (headerHasDots ? actionWidth : 48),
+              )
+            : 0.0;
+        final headerHeight = headerHasDots
+            ? titleHeight + ZyraPreviewSpacing.titleToDots
+            : math.max(showHeader ? actionWidth : 0.0, titleHeight);
         final fittedHeight =
-            available -
+            constraints.maxHeight -
+            24 -
+            afterDots -
+            bottom -
             headerHeight -
-            (widget.showFeedChrome ? 32 : 16) -
+            16 -
+            (widget.showFeedChrome ? cardToPill : 0) -
             footerHeight -
             2 * ZyraCardMetrics.padding -
             2;
@@ -667,13 +706,22 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
           physics: widget.fixedTabFooter
               ? const NeverScrollableScrollPhysics()
               : const ClampingScrollPhysics(),
-          padding: EdgeInsets.fromLTRB(20, 16, 20, bottom),
+          padding: EdgeInsets.fromLTRB(
+            ZyraPreviewSpacing.pageMargin,
+            16,
+            ZyraPreviewSpacing.pageMargin,
+            bottom,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (widget.showFeedChrome && !widget.readOnlyPreview)
-                SizedBox(height: headerHeight, child: _header()),
-              _photoPagination(profile),
+              if (headerHasDots)
+                _header(dots: _photoPagination(profile))
+              else ...[
+                if (showHeader)
+                  SizedBox(height: headerHeight, child: _header()),
+                _photoPagination(profile),
+              ],
               if (afterDots > 0) SizedBox(height: afterDots),
               profile == null
                   ? Text(
@@ -700,7 +748,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
                       ),
                     ),
               if (widget.showFeedChrome) ...[
-                const SizedBox(height: 16),
+                SizedBox(height: cardToPill),
                 _compactFooter(profile),
               ],
             ],

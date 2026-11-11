@@ -20,11 +20,14 @@ when pressed. Contact support opens Help & Support with the error reference.
 The empty Guardian tab offers Add a Guardian. Browse gives one haptic tick for
 an accepted photo action, including the accessible Next page control.
 
-In the Founder preview, swipe the Guardian card to change people and use
-Details or Journey access to switch sides. The full tab bar stays visible on
-My ZYRA quick access pages; a sideways swipe on My ZYRA changes the Needs you
-item. New activity badges reflect arrivals. Haptics is in Settings for both
-roles.
+In the Founder preview, each Guardian card shows the Guardian’s details and
+Journey access together. Swipe the card, tap an edge, or select a dot to change
+people. The three-dot menu holds the Main Guardian and removal actions.
+The full tab bar stays visible on My ZYRA quick access pages, including the
+read-only Journey requests opened from Guardian Notifications. A sideways swipe
+on My ZYRA changes the Needs you item. New activity badges reflect arrivals.
+The My ZYRA Preferences chip and Edit profile open the same Partner preferences
+page. Haptics starts on Light for members who have never saved a level.
 
 ## Built with
 

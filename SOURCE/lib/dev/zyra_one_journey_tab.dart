@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_interaction_style.dart';
+import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_journey_icon.dart';
 import '../widgets/zyra_profiles_components.dart';
@@ -285,7 +286,7 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
                 canAct: current,
               ),
               if (widget.capacity == 1) ...[
-                const SizedBox(height: 14),
+                const SizedBox(height: ZyraPreviewSpacing.cardToCard),
                 _upsell(context, current),
               ],
             ],
@@ -455,9 +456,9 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
           bottom: false,
           child: Padding(
             padding: EdgeInsets.fromLTRB(
-              20,
+              ZyraPreviewSpacing.pageMargin,
               16,
-              20,
+              ZyraPreviewSpacing.pageMargin,
               ZyraNavBarMetrics.contentBottomClearance(context),
             ),
             child: Column(
@@ -466,6 +467,9 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
                 ConstrainedBox(
                   constraints: const BoxConstraints(minHeight: 44),
                   child: Row(
+                    crossAxisAlignment: widget.journeys.isEmpty
+                        ? CrossAxisAlignment.center
+                        : CrossAxisAlignment.end,
                     children: [
                       Expanded(
                         child: Text('Journey', style: ZyraText.pageTitle()),
@@ -493,8 +497,9 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
                 if (widget.journeys.isEmpty)
                   Expanded(child: _empty(current))
                 else ...[
+                  const SizedBox(height: ZyraPreviewSpacing.titleToDots),
                   SizedBox(
-                    height: 28,
+                    height: 24,
                     child: Center(
                       child: ZyraProfilesDots(
                         count: widget.capacity,
@@ -509,9 +514,8 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
                       ),
                     ),
                   ),
-                  // The centered 6 pt dot leaves 9 pt inside its touch slot.
-                  // The centered slot above already contributes 2 pt.
-                  const SizedBox(height: 1),
+                  // The 6 pt dot ends 9 pt before the end of its touch slot.
+                  const SizedBox(height: 3),
                   Expanded(
                     child: GestureDetector(
                       key: const ValueKey('journey_tab_card'),
@@ -538,7 +542,7 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
                           : _journey(card, index, current),
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: ZyraPreviewSpacing.cardToPill),
                   ZyraProfilesRequestRow(
                     actionKey: const ValueKey('journey_tab_continue'),
                     label: card == null

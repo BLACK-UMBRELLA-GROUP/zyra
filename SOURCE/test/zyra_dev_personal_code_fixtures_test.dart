@@ -213,7 +213,7 @@ void main() {
       platformCalls.where(
         (call) =>
             call.method == 'HapticFeedback.vibrate' &&
-            call.arguments == 'HapticFeedbackType.selectionClick',
+            call.arguments == 'HapticFeedbackType.lightImpact',
       ),
       hasLength(3),
     );

@@ -491,7 +491,7 @@ void main() {
             haptics.where(
               (call) =>
                   call.method == 'HapticFeedback.vibrate' &&
-                  call.arguments == 'HapticFeedbackType.selectionClick',
+                  call.arguments == 'HapticFeedbackType.lightImpact',
             ),
             hasLength(1),
           );

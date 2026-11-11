@@ -117,6 +117,21 @@ void main() {
   ZyraOneJourneyTab tab(WidgetTester t) =>
       t.widget(find.byType(ZyraOneJourneyTab));
 
+  void expectFullHeightCard(WidgetTester t) {
+    final dot = t.getRect(k('journey_tab_dot_0'));
+    final card = t.getRect(k('journey_tab_card'));
+    final pill = t.getRect(k('journey_tab_continue'));
+    final bar = t.getRect(k('compact-nav-surface'));
+    expect(card.top - dot.bottom, closeTo(12, .1));
+    expect(pill.top - card.bottom, closeTo(12, .1));
+    final upsell = k('journey_tab_upsell');
+    final lowest = upsell.evaluate().isEmpty ? pill : t.getRect(upsell);
+    if (lowest != pill) {
+      expect(lowest.top - pill.bottom, closeTo(12, .1));
+    }
+    expect(bar.top - lowest.bottom, closeTo(16, .1));
+  }
+
   testWidgets(
     'LOCK13 eight master states, actual stages and full height geometry',
     (t) async {
@@ -133,11 +148,7 @@ void main() {
       expect(find.text('Stage 4 of 8 · Faith & Values'), findsOneWidget);
       expect(find.text('Your turn: answer Faith & Values'), findsOneWidget);
       expect(find.textContaining('41 hours'), findsNothing);
-      expect(t.getRect(k('journey_tab_card')).height, greaterThan(600));
-      expect(
-        t.getRect(k('journey_tab_card')).bottom + 12,
-        t.getRect(k('journey_tab_continue')).top,
-      );
+      expectFullHeightCard(t);
       expect(
         t.widget<ZyraProfilesDots>(find.byType(ZyraProfilesDots)).count,
         3,
@@ -150,6 +161,7 @@ void main() {
       expect(find.text('Free place'), findsOneWidget);
       expect(t.getSize(k('journey_tab_browse')).height, lessThan(50));
       expect(k('draft_journey_options_$aisha'), findsNothing);
+      expectFullHeightCard(t);
       await cap(h, 'j04_one__free_place');
       final three = fixture(3);
       faith(three, sara);
@@ -173,7 +185,7 @@ void main() {
         t.widget<ZyraProfilesDots>(find.byType(ZyraProfilesDots)).count,
         1,
       );
-      expect(t.getRect(k('journey_tab_card')).height, greaterThan(400));
+      expectFullHeightCard(t);
       await cap(h, 'j07_basic__journey_sara');
       h = await mount(t, 1);
       await h.tap('draft_journey_options_$sara');

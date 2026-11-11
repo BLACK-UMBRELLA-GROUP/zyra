@@ -703,8 +703,6 @@ void main() {
     (tester) async {
       await _mountShell(tester);
       await _nav(tester, 3);
-      await tester.tap(_key('guardian-card-access'));
-      await tester.pumpAndSettle();
       final heading = find.text('JOURNEY ACCESS');
       final icon = _key('guardian-journey-access-icon');
       final label = heading;

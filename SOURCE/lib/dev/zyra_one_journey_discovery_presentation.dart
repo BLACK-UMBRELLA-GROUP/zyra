@@ -1104,6 +1104,7 @@ class ZyraOneJourneyConnectionsActiveCard extends StatelessWidget {
     this.stageLabel,
     this.inlineOptions,
     this.inlineOptionsFillHeight = true,
+    this.bottomGap,
   });
 
   final SeekerProfile profile;
@@ -1118,6 +1119,7 @@ class ZyraOneJourneyConnectionsActiveCard extends StatelessWidget {
   final String? stageLabel;
   final Widget? inlineOptions;
   final bool inlineOptionsFillHeight;
+  final double? bottomGap;
 
   double _originalSingleInteriorHeight(BuildContext context, double width) {
     // Measure the existing single-card text, including its real inherited
@@ -1248,7 +1250,7 @@ class ZyraOneJourneyConnectionsActiveCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.only(bottom: compact ? 0 : 14),
+    padding: EdgeInsets.only(bottom: bottomGap ?? (compact ? 0 : 14)),
     child: DecoratedBox(
       decoration: BoxDecoration(
         color: ZyraColors.surfaceFill,

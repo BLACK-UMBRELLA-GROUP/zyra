@@ -10,6 +10,7 @@ import '../theme/zyra_card_metrics.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_interaction_style.dart';
 import '../widgets/zyra_haptics_setting.dart';
+import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_membership_choices.dart';
 import '../widgets/zyra_profile_image.dart';
@@ -143,7 +144,7 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
   );
 
   Widget _card(List<Widget> rows, {bool last = false}) => Padding(
-    padding: EdgeInsets.only(bottom: last ? 0 : 16),
+    padding: EdgeInsets.only(bottom: last ? 0 : ZyraPreviewSpacing.cardToCard),
     child: ZyraFloatingSurface(
       radius: 20,
       child: Container(
@@ -284,9 +285,9 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
             child: SingleChildScrollView(
               key: const ValueKey('concept-current-profile-scroll'),
               padding: EdgeInsets.fromLTRB(
-                22,
+                ZyraPreviewSpacing.pageMargin,
                 14,
-                22,
+                ZyraPreviewSpacing.pageMargin,
                 ZyraNavBarMetrics.contentBottomClearance(context),
               ),
               child: Column(
@@ -916,8 +917,9 @@ class _SettingsSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _SectionLabel(title),
-          SizedBox(height: smooth ? 12 : 10),
+          SizedBox(height: smooth ? 12 : ZyraPreviewSpacing.labelToCard),
           Container(
+            key: ValueKey('concept-settings-section-$title'),
             decoration: BoxDecoration(
               color: ZyraColors.foreground.withValues(
                 alpha: smooth ? .085 : .05,

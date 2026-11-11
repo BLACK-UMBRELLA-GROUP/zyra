@@ -788,7 +788,6 @@ void main() {
         expect(grants.map((item) => item.attempt).toSet(), hasLength(3));
         expect(grants.every((item) => item.view && !item.canChange), isTrue);
         await _press(tester, 'guardian-card-dot-target-1');
-        await _press(tester, 'guardian-card-access');
         String view(String id) => 'guardian-card-view-$yusuf-$id';
         String chat(String id) => 'guardian-card-chat-$yusuf-$id';
         SemanticsProperties state(String key) =>

@@ -3,6 +3,7 @@ import '../widgets/zyra_floating_surface.dart';
 // LOCK13 presentation only. The shell retains every destination and gate.
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
+import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_tap_feedback.dart';
@@ -114,9 +115,9 @@ class ZyraOneJourneyOptionsPage extends StatelessWidget {
     bottom: false,
     child: Padding(
       padding: EdgeInsets.fromLTRB(
-        20,
+        ZyraPreviewSpacing.pageMargin,
         16,
-        20,
+        ZyraPreviewSpacing.pageMargin,
         ZyraNavBarMetrics.contentBottomClearance(context),
       ),
       child: Column(
