@@ -1,0 +1,288 @@
+{
+  "schema": 1,
+  "queueLine": 82,
+  "commitSha": "48fe8e4e93298752da28dbb57cd77b37934b9a8b",
+  "recordedAt": "2026-11-11T22:13:59+00:00",
+  "flutterVersion": "3.44.2",
+  "buildMode": "widget tests",
+  "target": "Offline Founder preview routes",
+  "lock": "LOCK 26 V2",
+  "approvedInputs": {
+    "dispatchedV185Brief": {
+      "bytes": 2438,
+      "sha256": "da9c74bd4f7298f342493c90193ba53ba160ecf56363070cc139dcb2f53364e0"
+    },
+    "specV2Sha256": "8551e5f77dfb1d137debf78d6afeb0cd3773309c12c02d4f8bc76e11a99ab76e",
+    "lockRecordSha256": "ef11b49c02e2ba8ff539c1dde8cefc8dd21cfb07f8deaf137afeee5bafeb15ac",
+    "prototypeV185": {
+      "bytes": 514133,
+      "sha256": "57f81cd15997ac0622ce4fa1ffc2651802b16754455a253716ad1adc11ee2298"
+    }
+  },
+  "analyzer": {
+    "issues": 0,
+    "sha256": "2238242caab69cbd9d80ef8a8927d8094e87509293c67f21b410ff3088c1b2e9"
+  },
+  "focused": {
+    "pass": 75,
+    "failure": 0,
+    "skip": 0,
+    "sha256": "2fb1c14b855ce51cddf1a4c52e2f4c8f144133ce701439638e42f2410fb133ed"
+  },
+  "regression": {
+    "baselineJsonlSha256": "70429a0d8a6e33a76c0e7eb426ac026174cd56c47cf9785e034164f70a7a0edb",
+    "candidateJsonlSha256": "2e5396340e51ac28f2c8dc6269de63c22f739f77140f78eb1ebd4142755263e2",
+    "baseline": {
+      "pass": 6984,
+      "failure": 38,
+      "skip": 122,
+      "suites": 533
+    },
+    "candidate": {
+      "pass": 6996,
+      "failure": 38,
+      "skip": 122,
+      "suites": 534
+    },
+    "failureBaselineSha256": "5881612557e5ffc9d807871953ef32ba7022008a3c7e9bc851f97ff0cd600d0d",
+    "candidateFailureSetSha256": "5881612557e5ffc9d807871953ef32ba7022008a3c7e9bc851f97ff0cd600d0d",
+    "retainedSkipSetSha256": "515ba0de8caed46b2ec74ff3bbe63967beb4293636a9bbc6b72c5e7de69f544a",
+    "lostBaselinePasses": [],
+    "newFailures": [],
+    "resolvedBaselineFailures": [],
+    "newSkips": [],
+    "missingSkips": [],
+    "missingSuites": [],
+    "addedSuites": [
+      "test/visual/line82_swipe_edges_test.dart"
+    ],
+    "retainedFailures": [
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian button actual shell white canvas status return and theme restoration"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian detail_privacyPolicy 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian detail_privacyPolicy 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian detail_terms 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian detail_terms 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian edge actual shell white canvas status return and theme restoration"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian overview_privacyData 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Guardian overview_privacyData 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker button actual shell white canvas status return and theme restoration"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker detail_privacyPolicy 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker detail_privacyPolicy 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker detail_terms 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker detail_terms 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker edge actual shell white canvas status return and theme restoration"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker overview_privacyData 320px200% is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "Seeker overview_privacyData 393pxnormal is white readable and accessible"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_deleteAccount Guardian compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_deleteAccount Guardian normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_deleteAccount Seeker compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_deleteAccount Seeker normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_resetProfile Guardian compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_resetProfile Guardian normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_resetProfile Seeker compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "detail_resetProfile Seeker normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "overview_advanced Guardian compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "overview_advanced Guardian normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "overview_advanced Seeker compact200 is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/founder_launch_review_test.dart",
+        "overview_advanced Seeker normal is an internal-only non-executing specification hold"
+      ],
+      [
+        "test/guardian_circle_topic_options_test.dart",
+        "embedded discuss control current supports compact keyboard and long draft"
+      ],
+      [
+        "test/one_journey_back_button_preview_test.dart",
+        "Circle edge returns from Journey through the same Topics draft"
+      ],
+      [
+        "test/one_journey_back_button_preview_test.dart",
+        "Compact 2x Circle and Settings retain edge return without Back chrome or clipped controls"
+      ],
+      [
+        "test/one_journey_bottom_close_cue_test.dart",
+        "Circle Journey child returns once by edge and accessible Back"
+      ],
+      [
+        "test/one_journey_pull_down_routes_test.dart",
+        "Journey body retains vertical stage traversal; Back returns one route fromOptions=true"
+      ],
+      [
+        "test/one_journey_pull_down_routes_test.dart",
+        "end confirmation pull is inert and Keep this Journey still works"
+      ],
+      [
+        "test/view_request_draft_widget_test.dart",
+        "fresh whole-app real-font candidates are not approval_compact200_final"
+      ],
+      [
+        "test/view_request_draft_widget_test.dart",
+        "preview exposes no Pause; End stays deliberate, retains history and reset is draft-only"
+      ],
+      [
+        "test/zyra_subscription_wallet_preview_test.dart",
+        "confirmed zero Family places is a plain empty state at compact200 size"
+      ],
+      [
+        "test/zyra_subscription_wallet_preview_test.dart",
+        "confirmed zero Family places is a plain empty state at normal size"
+      ]
+    ]
+  },
+  "comparisonJsonSha256": "28054ddb827f1b720d901721b68a91d58144843fc27179c9f694b490d2baac64",
+  "independentReview": "Source and held-drag visual comparison passed",
+  "visual": {
+    "logicalViewports": [
+      [
+        430,
+        932
+      ],
+      [
+        375,
+        667
+      ]
+    ],
+    "routes": [
+      "Profiles",
+      "Guardian",
+      "Journey",
+      "Filters",
+      "My ZYRA (Seeker)",
+      "My ZYRA (Guardian)"
+    ],
+    "result": "Matched the specified swipe edges. The clip reaches both screen edges. Vertical paint extends beyond the whole visible screen. The admitted neighbour remains visible and hit-test inert. The gap is 24 pt and the header and tab bar stay fixed.",
+    "restGeometry": "20 pt side margins at tab roots, with 16 pt to the tab bar at the end of page content. Filters retains its existing 21 pt card inset and its own footer.",
+    "remainingDifferences": [
+      "V185 has a 1 px mock handset frame. Its 20 px inner inset is 21 px from the outer mock device edge.",
+      "Profiles has monograms and Request sent in V185 and local silhouettes and Request a Journey in Flutter. Guardian switches to Ibrahim in V185 and Yusuf in the Flutter fixture. V185 Journey shows an occupied place followed by a free place. The Flutter fixture has two occupied places.",
+      "Three relative V185 portrait files are absent from the approved local prototype. The geometry and shadows remain visible.",
+      "Filters and both My ZYRA roles keep the existing Flutter card sizing, vertical placement and component styling."
+    ],
+    "flutterRasterSha256": {
+      "filters_375x667__drag.png": "97dca2e1bea7687d39b4ea53fa4980d2db8edccafe308965a48e72ab494f036a",
+      "filters_375x667__rest.png": "69305dc9617a4ba7c968876f8c26c6b9a38710d76f7afd39f0924ed39c18576d",
+      "filters_430x932__drag.png": "37b85008876508fd2449834fad6acac4532cb550b6a139e3f83bb6f570e04d4c",
+      "filters_430x932__rest.png": "c040a371db59902e0e7d6b299d97fd8b29603b2f0c1aad140e1cb19b626aac65",
+      "guardianMyZyra_375x667__drag.png": "b05704d4370c85a8b25960674707f654ad7be5938c8b514c70755fbe742f841b",
+      "guardianMyZyra_375x667__rest.png": "d5fd7b8bd82afd3afcb4cf3f3242d730167b61dd73b646c88d1b6482cc5212c9",
+      "guardianMyZyra_430x932__drag.png": "b928836e697163bfdd002c50e6ae69b217368b343df9be2590e99009c7e1a780",
+      "guardianMyZyra_430x932__rest.png": "46f9e943c33d8c799d5e3edec3aa194b01e24189169916b6f15b79ee806b3eea",
+      "guardian_375x667__drag.png": "df941c1318cda4e638581af4c76b853d8b40e799a7e646e83afc8787ad195633",
+      "guardian_375x667__rest.png": "6f6b78fc8aa097b348189287e04aa9db3679a9557cbfdbd4bbb09bee868052c9",
+      "guardian_430x932__drag.png": "547ffcacffa0258ccc516fad0f754bbb2b8c4ee7da1fcdc1b69bb072835a43fc",
+      "guardian_430x932__rest.png": "93229c34ae74681d76f5558e0dcd2e662189f9e4964e1f7b5af0e1b6ddc5a6cd",
+      "journey_375x667__drag.png": "491bf14f5fc7f9589cf59dbd8490c3ac36186f683f7e0025cdaec354c39df248",
+      "journey_375x667__rest.png": "1d4557bec2058064a7112bd3bf150a49cbd3da82349e18116ac565d536ae0d93",
+      "journey_430x932__drag.png": "c8c1c14002388a626652335605bea779e8f2ff5d34d49b25107c6b37ef0b3911",
+      "journey_430x932__rest.png": "893d9ea95f72bcef934f355ff92d74bcc7b4b07868af1ae0ba230aa796924e27",
+      "profiles_375x667__drag.png": "a762de23a362c1c0272c3d09a2dc1a0c26dfdff53adf5fcbf37151de7e39b106",
+      "profiles_375x667__rest.png": "121c11aa1987d75209568578576205d7903e7c2d7388af0923ff4592324519b1",
+      "profiles_430x932__drag.png": "33b77453fdbd86e760cb8072b7c970848365c0ccfae967f44e285c9e37819af6",
+      "profiles_430x932__rest.png": "512a1115615371e60a5d1a0bbaf58d0a4be7a6e27aee1440bfb3a252c688eccf",
+      "seekerMyZyra_375x667__drag.png": "b7e21c3ae1108ae9d46b7adf85d989e9c3776fee9c993f78a2e0f6ba99c34f8d",
+      "seekerMyZyra_375x667__rest.png": "86ca9b20c58a93cd4a6862be8a3e8d7f6921642ce0740fd9299486d74e74419d",
+      "seekerMyZyra_430x932__drag.png": "4b7dea204669e98fe300f9d17d5dd7c2da567de3aaf0fcf4ca3cfea7c4de8ab3",
+      "seekerMyZyra_430x932__rest.png": "45f5ea0b31093730a5636c426d795954934e42a83e95cccd82eba8e4c2c30f53"
+    },
+    "prototypeRasterSha256": {
+      "375x667-filters-mid.png": "0ea934ea5891d21ada01a5b189ca0942dd9a0f14193db0e3e66c8e2cab8d4291",
+      "375x667-guardian-mid.png": "794a573e6063cd03a243b63ff63dc41c2f2d30688085858f942fe04dd0de6d57",
+      "375x667-journey-mid.png": "fbfe65c99f89061523952ac8719f38c9d3d4105a9dcc964f44e60790328e6375",
+      "375x667-my-zyra-guardian-mid.png": "fb488ebdfee8d3370ad30ce074e7358c93c056022a9250ad2b2277442603a7f8",
+      "375x667-my-zyra-seeker-mid.png": "b88d7d8893a959668f24d4e4f008f3a0af9ba4eebe02bc9e44ba8a5a86dfd09a",
+      "375x667-profiles-mid.png": "7ec3e93fc26a8be412648526ba96857ec7b510406aa08d6ed666d8d9e80ddac3",
+      "430x932-filters-mid.png": "f04751480f6892be42167db645e9f5fec9fd72714ee51ec4787677c28db3d8c8",
+      "430x932-guardian-mid.png": "7555c13e2ae0e8ddb4a9450f521beb4ce9f659a5a1824409869b11532796712a",
+      "430x932-journey-mid.png": "66f0f9d314f713e6e9a92e4ecd4612722679e7e84878386a762d369135f3fb6e",
+      "430x932-my-zyra-guardian-mid.png": "348db6f419b83cf16818e9ec6e1ed5f867ce464c7355e6d86849ee6a36141957",
+      "430x932-my-zyra-seeker-mid.png": "f27638d56bb7fccc4270381f434709923d2b66129ee42eb4f80ff264528ac726",
+      "430x932-profiles-mid.png": "636e7ad70fd4582fba44151dd43c2585994f3293401f35b51416b766882c8b51"
+    },
+    "comparisonRasterSha256": {
+      "compare-soft-375x667.png": "b881db2c4d685effc9e8d92dce7899567623cb7f2f99c942811127f701de176a",
+      "compare-soft-430x932.png": "b9e56d4d6504f62237e638759d405f59a7929e41c00eb42969e8dcdbb72efb1a"
+    }
+  }
+}
