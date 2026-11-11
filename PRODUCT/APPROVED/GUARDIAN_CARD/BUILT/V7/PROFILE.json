@@ -24,23 +24,26 @@
     "failed": 0
   },
   "delivery": {
-    "status": "pending",
+    "status": "verified",
     "announcedExactCandidate": true,
-    "authorization": "Founder answered GO to the exact line 79 Wi-Fi installation offer.",
+    "authorization": "Founder gave GO for the exact line 79 Wi-Fi install and again after the unlock request.",
     "transport": "localNetwork",
-    "preflightPolls": 51,
+    "preflightPolls": 52,
     "connectedButLockedObserved": true,
-    "lastCheckedAt": "2026-11-11T18:59:17.830462+00:00",
-    "installed": false,
-    "opened": false,
-    "postVerified": false,
-    "installationAttempts": 0,
+    "lastCheckedAt": "2026-11-11T19:00:07.878719+00:00",
+    "installed": true,
+    "opened": true,
+    "postVerified": true,
+    "installationAttempts": 1,
     "adapterSha256": "ba272d8a61688a27ccc705c9734506687dca29e96f8a0f953619510a07d13248",
     "wifiPhoneHelperSha256": "e77eee2294a0a2a7d1ce41f20fd7a366dd6c1bb547b211f1886705375ca7e3de",
     "offlineVerificationSha256": "3d2e7df8f96c06c1b96fdb197f8aecf014be093c8b6f09101b77b4c6c9fb437e",
     "independentReviewPassed": true,
     "focusedRouteTestsPassed": 16,
     "originalPlanSourceSealAndBuildReceiptMatch": true,
-    "blocker": "The provisioned Wi-Fi iPhone was locked at the last protected check."
+    "lastProtectedStage": "complete",
+    "deliveryReceiptSha256": "969b5f9dffd1aed904c3b18cc78d8d7ea24a07bffc7866a5aa22119d9113e067",
+    "verifiedAt": "2026-11-11T19:00:25.545850+00:00",
+    "firstFrameStatus": "needs-visual-confirmation"
   }
 }
