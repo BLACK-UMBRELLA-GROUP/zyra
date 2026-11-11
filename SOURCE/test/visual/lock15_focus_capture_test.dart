@@ -362,7 +362,9 @@ void main() {
       );
       await cap(h, 'gm05_guardian_basic');
       await h.tap('guardian_connect');
-      h.assertPage('membership');
+      h.assertPage('one_upgrade');
+      expect(find.text('Guardian One'), findsOneWidget);
+      expect(find.text('Chat in a Journey'), findsOneWidget);
     },
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );

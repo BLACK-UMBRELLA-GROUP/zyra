@@ -21,17 +21,23 @@ The empty Guardian tab offers Add a Guardian. Browse gives one haptic tick for
 an accepted photo action, including the accessible Next page control.
 
 In the Founder preview, each Guardian card shows the Guardian’s details and
-Journey access together. Swipe the card, tap an edge, or select a dot to change
-people. The three-dot menu holds the Main Guardian and removal actions.
+Journey access together. The card follows a horizontal drag. Swipe, tap an
+edge or select a dot to change people. The three-dot menu opens a sheet above
+the entire screen for Main Guardian and removal actions.
 The Seeker Basic Add card counts active Guardian links, shows the Basic place
-and remaining Guardian One places, and opens Add a Guardian and the membership
-page separately. The client checks a maximum of 10 active links including Main.
+and remaining Guardian One places, and opens Add a Guardian and the Seeker One
+comparison separately. The client checks a maximum of 10 active links including Main.
 For a Seeker Basic roster, at most one Guardian can be on Guardian Basic.
 Live link responses need verified Guardian plans before the client can admit
 a second link for Seeker Basic. Profile details show the gold ring and announce
 Seeker One when the displayed profile's plan is verified as One. A verified
 Seeker Basic profile uses a plain circle. Profiles with an unavailable plan
-keep the existing ring.
+keep the existing ring. The Profiles details card shows the first photo
+above the name and the public age, location, nationality and ethnicity tiles.
+Basic profiles and explicit upgrade prompts open the Seeker One or Guardian
+One comparison. Current One members keep their membership controls.
+The comparison shows only supported differences and explains that checkout
+is unavailable in this build.
 The full tab bar stays visible on My ZYRA quick access pages, including the
 read-only Journey requests opened from Guardian Notifications. A sideways swipe
 on My ZYRA changes the Needs you item. New activity badges reflect arrivals.

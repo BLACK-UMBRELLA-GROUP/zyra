@@ -747,11 +747,7 @@ void main() {
       await _tap(tester, _key('draft_membership_seeker_basic'));
       await closeZyraDevControls(tester);
       await _tap(tester, _key('concept_membership'));
-      expect(_shownData(tester).isOne, isFalse);
-      expect(
-        _shownData(tester).membershipPaymentHistory,
-        ZyraMembershipPaymentHistory.neverPaid,
-      );
+      expect(find.text('Journey places'), findsOneWidget);
       await returnZyraPreviewPage(tester);
       await _tap(tester, _key('switch-account-button'));
       await _tap(tester, _key('wallet_primary_guardian'));

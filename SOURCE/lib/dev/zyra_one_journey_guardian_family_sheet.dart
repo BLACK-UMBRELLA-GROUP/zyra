@@ -5,6 +5,7 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
+import 'zyra_one_journey_monogram_presentation.dart';
 
 enum ZyraGuardianFamilyState { noFamily, freePlace, full }
 
@@ -159,22 +160,11 @@ class _ZyraGuardianFamilySheetState extends State<ZyraGuardianFamilySheet> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 44,
-                    height: 44,
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [Color(0xFF75816E), Color(0xFF433B2E)],
-                      ),
-                    ),
-                    child: Text(
-                      name.isEmpty ? '' : name.characters.first.toUpperCase(),
-                      style: ZyraText.body(size: 18),
-                    ),
+                  ZyraGoldRingMonogram(
+                    name: name,
+                    guardianOne: false,
+                    size: 44,
+                    fontSize: 18,
                   ),
                   const SizedBox(width: 12),
                   Expanded(

@@ -89,8 +89,8 @@ void main() {
       );
       expect(avatar, findsOneWidget);
       expect(clip, findsOneWidget);
-      expect(tester.getSize(avatar), const Size(56, 56));
-      expect(tester.getSize(clip), const Size(50, 50));
+      expect(tester.getSize(avatar), const Size(124, 124));
+      expect(tester.getSize(clip), const Size(117, 117));
       final avatarRect = tester.getRect(avatar);
       final clipRect = tester.getRect(clip);
       final iconRect = tester.getRect(_icon(tester, 'My ZYRA'));

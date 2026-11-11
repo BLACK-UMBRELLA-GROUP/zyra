@@ -258,7 +258,9 @@ void main() {
       expect(_composer, findsNothing);
       expect(_topicKey('send'), findsNothing);
       await h.tap('circle_topics_membership');
-      h.assertPage('membership');
+      h.assertPage('one_upgrade');
+      expect(find.text('Guardian One'), findsOneWidget);
+      expect(find.text('Chat in a Journey'), findsOneWidget);
       expect(_composer, findsNothing);
     },
   );

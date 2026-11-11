@@ -212,20 +212,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
   /// `profiles.created_at` exists and IS selectable by the owner; AppState
   /// simply never loads it. One field plus one line in the session router,
   /// alongside `bio` and `surname_line`, and all three arrive together.
-  Widget _membershipRow(BuildContext context, AppState state) =>
-      ZyraProfileMembershipRow(
-        key: const ValueKey('seeker-profile-membership'),
-        value: state.plan == ZyraPlan.one
-            ? ZyraMembershipCatalog.seekerOneTitle
-            : (ZyraDevLocalPreview.basicMembershipPreviewLabel(
-                    guardian: false,
-                  ) ??
-                  'No active membership'),
-        isOne: state.plan == ZyraPlan.one,
-        onTap: () => Navigator.of(
-          context,
-        ).push(MaterialPageRoute(builder: (_) => const UpgradeScreen())),
-      );
+  Widget _membershipRow(BuildContext context, AppState state) {
+    final isOne = state.plan == ZyraPlan.one;
+    final basic = state.verifiedSeekerPlan == ZyraPlan.basic;
+    final previewBasic = ZyraDevLocalPreview.basicMembershipPreviewLabel(
+      guardian: false,
+    );
+    final canCompare = !isOne && (basic || previewBasic != null);
+    return ZyraProfileMembershipRow(
+      key: const ValueKey('seeker-profile-membership'),
+      value: isOne
+          ? ZyraMembershipCatalog.seekerOneTitle
+          : basic
+          ? ZyraMembershipCatalog.title(ZyraMembershipProduct.seekerBasic)
+          : previewBasic ?? 'No active membership',
+      isOne: isOne,
+      upgradeTo: canCompare ? ZyraMembershipCatalog.seekerOneTitle : null,
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => canCompare
+              ? const UpgradeScreen.compare()
+              : const UpgradeScreen(),
+        ),
+      ),
+    );
+  }
+
   Future<void> _signOut(BuildContext context) async {
     // Real sign-out (OA-102) — only meaningful once Supabase is
     // configured; no-ops harmlessly via ZyraAuth otherwise since

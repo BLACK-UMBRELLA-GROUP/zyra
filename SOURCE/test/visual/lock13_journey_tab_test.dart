@@ -349,7 +349,8 @@ void main() {
       for (final count in [0, 1]) {
         h = await mount(t, count, basic: true);
         await h.tap('journey_tab_plans');
-        h.assertPage('membership');
+        h.assertPage('one_upgrade');
+        expect(find.text('Journey places'), findsOneWidget);
       }
     },
   );

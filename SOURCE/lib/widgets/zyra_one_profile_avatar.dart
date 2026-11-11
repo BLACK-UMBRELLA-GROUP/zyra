@@ -31,7 +31,10 @@ class ZyraOneProfileAvatar extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: isOne
-            ? Border.all(color: ZyraColors.journeyGold, width: 1.5)
+            ? Border.all(
+                color: ZyraColors.journeyGold,
+                width: guardian ? 1 : 1.5,
+              )
             : null,
         boxShadow: isOne
             ? [

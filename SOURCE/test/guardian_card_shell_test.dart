@@ -191,6 +191,7 @@ void main() {
       );
       final states = h.latest.model.states;
       await h.tap('guardian-card-menu');
+      expect(find.byType(ZyraShellNavigation).hitTestable(), findsNothing);
       await h.tap('guardian-clear-main');
       expect(h.latest.model.ownMainGuardianPresent, isTrue);
       await h.tapFinder(
@@ -238,7 +239,9 @@ void main() {
       expect(find.text('Free'), findsOneWidget);
       expect(find.text('Omar'), findsNothing);
       await h.tapText('Seeker One: any 10 Guardians ›');
-      h.assertPage('membership');
+      h.assertPage('one_upgrade');
+      expect(find.text('Journey places'), findsOneWidget);
+      expect(find.text('Not now'), findsOneWidget);
       await t.binding.handlePopRoute();
       await h.flush();
       await h.tap('guardian-card-center');

@@ -102,6 +102,7 @@ import '../screens/connections/connections_section_controller.dart';
 import 'zyra_dev_personal_code_fixtures.dart';
 import '../theme/zyra_interaction_style.dart';
 import '../data/zyra_membership_catalog.dart';
+import '../screens/subscription/zyra_one_upgrade_page.dart';
 
 /// Code-only sample inputs for captures and widget tests. The app supplies no
 /// fixture and exposes no action for changing these values.
@@ -263,6 +264,7 @@ class _ZyraOneJourneyConceptShellState
   bool _browseHideConfirmation = false;
   String? _browseOptionsPersonId;
   int _guardianPage = 0;
+  ModalRoute<dynamic>? _guardianOptionsRoute;
   int _networkTab = 0;
   late ZyraGuardianTabsState _guardianTabs = ZyraGuardianTabsState(
     widget.fixture?.guardianTabs ?? const ZyraGuardianTabsSnapshot.quiet(),
@@ -707,7 +709,10 @@ class _ZyraOneJourneyConceptShellState
           : const {},
     );
     _accountSession = ZyraRequestAccountSession(
-      canAct: () => _allowed,
+      canAct: () =>
+          _allowed ||
+          (_guardianOptionsRoute?.isCurrent == true &&
+              (widget.canActInOwnedDialog?.call() ?? false)),
       palette: ZyraColors.devPalette,
       hapticLevel: ZyraInteractionStyle.hapticLevel,
       goldEnabled: false,
@@ -1687,6 +1692,7 @@ class _ZyraOneJourneyConceptShellState
           'edit_profile',
           'manage_photos',
           'membership',
+          'one_upgrade',
           'membership_review',
           'subscriptions',
           'journey',
@@ -1987,6 +1993,11 @@ class _ZyraOneJourneyConceptShellState
     'manage_photos' ||
     'filter_preferences' => _retainedAccountLeaf(),
     'membership' => _membershipView(),
+    'one_upgrade' => ZyraOneUpgradePage(
+      guardian: _guardianRole,
+      canContinue: _accountFreshGuard(),
+      onBack: _bound(_back),
+    ),
     'membership_review' => _membershipReviewView(),
     'subscriptions' => _subscriptionsView(),
     'bio' => _bio(),
@@ -5218,7 +5229,10 @@ class _ZyraOneJourneyConceptShellState
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Center(
-                  child: zyraGuardianManagerMonogram(name: name, main: true),
+                  child: zyraGuardianManagerMonogram(
+                    name: name,
+                    guardianOne: _model.canUseSampleGuardianChat(guardian.id),
+                  ),
                 ),
                 const SizedBox(height: 18),
                 Text(
@@ -5710,6 +5724,15 @@ class _ZyraOneJourneyConceptShellState
                         DraftGuardianMembership.basic))
             participant.userId,
       ],
+      oneParticipantIds: [
+        for (final participant in data.participants)
+          if (participant.memberRole == 'guardian' &&
+              (guardian && participant.userId == senderId
+                  ? _guardianMembership == 'Guardian One'
+                  : _model.sampleGuardianMembershipFor(participant.userId) ==
+                        DraftGuardianMembership.one))
+            participant.userId,
+      ],
       tiles: [
         for (final context in contexts)
           for (final person in _guardianJourneys)
@@ -5740,10 +5763,7 @@ class _ZyraOneJourneyConceptShellState
       },
       onMembership: () {
         if (current() && foreground() && guardian) {
-          _membershipDraft = _membershipDraft.copyWith(
-            section: ZyraMembershipSection.guardian,
-          );
-          _open('membership');
+          _accountDispatch(ZyraConceptAccountAction.membership);
         }
       },
     );
@@ -5834,9 +5854,11 @@ class _ZyraOneJourneyConceptShellState
       ],
     ].join('|');
     final stamp = permissionStamp();
-    bool current() =>
+    bool current({bool ownedMenu = false}) =>
         mounted &&
-        _allowed &&
+        (ownedMenu
+            ? (widget.canActInOwnedDialog?.call() ?? _allowed)
+            : _allowed) &&
         session.current &&
         identical(session, _accountSession) &&
         account == (ZyraAccountState.userId, ZyraAccountState.generation) &&
@@ -5937,6 +5959,14 @@ class _ZyraOneJourneyConceptShellState
         _publishCheckpoint();
       },
       canAct: current,
+      canActInOwnedMenu: () => current(ownedMenu: true),
+      onMenuRouteChanged: (route, {required open}) {
+        if (open) {
+          _guardianOptionsRoute = route;
+        } else if (identical(_guardianOptionsRoute, route)) {
+          _guardianOptionsRoute = null;
+        }
+      },
       interactionEpoch: () => (_uiRevision, _routeStamp),
       contextIdentity: (
         account,
@@ -6940,7 +6970,10 @@ class _ZyraOneJourneyConceptShellState
     _ownProfilePreviewRevision = _uiRevision;
     return _ownProfilePreviewView = MyProfilePreviewScreen.preview(
       key: ValueKey(('retained-own-profile', _uiRevision, _guardianRole)),
-      profile: _accountSession.ownProfile(_guardianRole, seekerPlan: seekerPlan),
+      profile: _accountSession.ownProfile(
+        _guardianRole,
+        seekerPlan: seekerPlan,
+      ),
       hapticLevel: _accountSession.hapticLevel,
       canAct: fresh,
       onBack: () {
@@ -7016,14 +7049,14 @@ class _ZyraOneJourneyConceptShellState
       case ZyraConceptAccountAction.settings:
         _open('settings');
       case ZyraConceptAccountAction.membership:
-        _membershipDraft = _membershipDraft.copyWith(
-          section: _membership.contains('Basic')
-              ? (_guardianRole
-                    ? ZyraMembershipSection.guardian
-                    : ZyraMembershipSection.seeker)
-              : ZyraMembershipSection.current,
-        );
-        _open('membership');
+        if (_membership.contains('Basic')) {
+          _open('one_upgrade');
+        } else {
+          _membershipDraft = _membershipDraft.copyWith(
+            section: ZyraMembershipSection.current,
+          );
+          _open('membership');
+        }
       case ZyraConceptAccountAction.subscriptions:
         _open('subscriptions');
       case ZyraConceptAccountAction.compatibilityStore:

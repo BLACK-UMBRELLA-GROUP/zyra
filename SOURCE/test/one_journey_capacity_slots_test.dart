@@ -322,14 +322,16 @@ void main() {
       final retained = _upgrade(tester);
       await _capture(tester, 'basic-empty-journey-upsell');
       await _press(tester, 'journey_tab_plans');
-      expect(owner.latest.pages, ['membership']);
+      expect(owner.latest.pages, ['one_upgrade']);
+      expect(find.text('Seeker One'), findsOneWidget);
+      expect(find.text('Journey places'), findsOneWidget);
       expect(owner.latest.tab, 1);
       _expectModelUnchanged(before, owner.latest.model);
       expect(owner.latest.model.capacity, 1);
       expect(model.occupiedCount, 0);
       retained();
       await tester.pumpAndSettle();
-      expect(owner.latest.pages, ['membership']);
+      expect(owner.latest.pages, ['one_upgrade']);
       _expectModelUnchanged(before, owner.latest.model);
     },
   );
@@ -351,12 +353,14 @@ void main() {
     final retained = _upgrade(tester);
     await _capture(tester, 'basic-one-journey-upsell');
     await _press(tester, 'journey_tab_plans');
-    expect(owner.latest.pages, ['membership']);
+    expect(owner.latest.pages, ['one_upgrade']);
+    expect(find.text('Seeker One'), findsOneWidget);
+    expect(find.text('Journey places'), findsOneWidget);
     expect(owner.latest.tab, 1);
     _expectModelUnchanged(before, owner.latest.model);
     retained();
     await tester.pumpAndSettle();
-    expect(owner.latest.pages, ['membership']);
+    expect(owner.latest.pages, ['one_upgrade']);
     _expectModelUnchanged(before, owner.latest.model);
   });
 

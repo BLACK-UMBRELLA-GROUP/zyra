@@ -355,7 +355,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
                       profile.photos.first,
                       width: avatarPhotoSize,
                       height: avatarPhotoSize,
-                      alignment: Alignment.center,
+                      alignment: ZyraProfileDetailsPage.photoAlignment,
                     ),
             )
           : Stack(

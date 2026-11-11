@@ -11,6 +11,7 @@ class ZyraGoldRingMonogram extends StatelessWidget {
     required this.size,
     required this.fontSize,
     this.ringColor,
+    this.guardianOne,
     this.weight = FontWeight.w200,
     this.textScaler,
     this.child,
@@ -18,33 +19,58 @@ class ZyraGoldRingMonogram extends StatelessWidget {
   final String name;
   final double size, fontSize;
   final Color? ringColor;
+
+  /// A Guardian earns the ring only from a known One entitlement. Null
+  /// keeps the shared decorative treatment for other kinds of artwork.
+  final bool? guardianOne;
   final FontWeight weight;
   final TextScaler? textScaler;
 
   /// Optional outline artwork within the same shared ring geometry.
   final Widget? child;
   @override
-  Widget build(BuildContext context) => Container(
-    width: size,
-    height: size,
-    alignment: Alignment.center,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      border: Border.all(
-        color: ringColor ?? const Color(0xFFA9792E).withValues(alpha: .7),
+  Widget build(BuildContext context) {
+    final hasGuardianRing = guardianOne == true;
+    final plainGuardian = guardianOne == false;
+    final initial = guardianOne == null
+        ? name.characters.firstOrNull ?? ''
+        : name.trim().characters.firstOrNull?.toUpperCase() ?? '?';
+    final monogram = Container(
+      width: size,
+      height: size,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: plainGuardian ? ZyraColors.ink(.055) : null,
+        border: plainGuardian
+            ? null
+            : Border.all(
+                color:
+                    ringColor ?? const Color(0xFFA9792E).withValues(alpha: .7),
+              ),
       ),
-    ),
-    child:
-        child ??
-        Text(
-          name.characters.firstOrNull ?? '',
-          textScaler: textScaler,
-          style: ZyraText.heading(
-            size: fontSize,
-            color: ZyraColors.journeyGold,
-          ).copyWith(fontWeight: weight),
-        ),
-  );
+      child:
+          child ??
+          Text(
+            initial,
+            textScaler: textScaler,
+            style: ZyraText.heading(
+              size: fontSize,
+              color: plainGuardian
+                  ? ZyraColors.secondaryText
+                  : ZyraColors.journeyGold,
+            ).copyWith(fontWeight: weight),
+          ),
+    );
+    return hasGuardianRing
+        ? Semantics(
+            label: '$name, Guardian One',
+            image: true,
+            excludeSemantics: true,
+            child: monogram,
+          )
+        : monogram;
+  }
 }
 
 class ZyraMonogramHead extends StatelessWidget {

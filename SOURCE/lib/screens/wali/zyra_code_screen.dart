@@ -1801,9 +1801,13 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
     });
   }
 
-  Widget _buildPersonInitial(String firstName) {
-    final initial = firstName.substring(0, 1).toUpperCase();
-    final style = ZyraText.heading(size: 20, color: ZyraColors.goldText);
+  Widget _buildPersonInitial(ZyraPersonalCodePreview person) {
+    final guardian = person.role == 'wali';
+    final initial = person.firstName.substring(0, 1).toUpperCase();
+    final style = ZyraText.heading(
+      size: 20,
+      color: guardian ? ZyraColors.secondaryText : ZyraColors.goldText,
+    );
     final text = _codeTextSize(context, initial, style);
     final textExtent = text.height > text.width ? text.height : text.width;
     final dimension = _localRequested && textExtent + 18 > 48
@@ -1815,8 +1819,8 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
       height: dimension,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: ZyraColors.accentBg,
-        border: Border.all(color: ZyraColors.accentBorder),
+        color: guardian ? ZyraColors.ink(.055) : ZyraColors.accentBg,
+        border: guardian ? null : Border.all(color: ZyraColors.accentBorder),
       ),
       child: Center(child: Text(initial, style: style)),
     );
@@ -2013,7 +2017,7 @@ class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
             ),
             child: Row(
               children: [
-                _buildPersonInitial(preview.firstName),
+                _buildPersonInitial(preview),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(

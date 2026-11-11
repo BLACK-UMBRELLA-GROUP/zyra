@@ -857,7 +857,7 @@ void main() {
   }
 
   testWidgets(
-    'Circle member initials and own identity use quiet gold halos without pale fills',
+    'Circle uses plain initials when Guardian membership is unverified',
     (tester) async {
       final fixture = _Fixture();
       await _mount(tester, fixture);
@@ -878,14 +878,26 @@ void main() {
         ),
       );
       expect(avatars, findsNWidgets(3));
-      for (final avatar in tester.widgetList<Container>(avatars)) {
-        final decoration = avatar.decoration! as BoxDecoration;
-        expect(decoration.color, ZyraColors.surfaceFill);
-        expect(
-          (decoration.border! as Border).top.color,
-          ZyraColors.surfaceEmphasisBorder,
-        );
-      }
+      final decorations = tester
+          .widgetList<Container>(avatars)
+          .map((avatar) => avatar.decoration! as BoxDecoration)
+          .toList();
+      final plain = decorations.where(
+        (decoration) => decoration.border == null,
+      );
+      expect(plain, hasLength(2));
+      expect(
+        plain.every((decoration) => decoration.color == ZyraColors.ink(.055)),
+        isTrue,
+      );
+      final seeker = decorations.singleWhere(
+        (decoration) => decoration.border != null,
+      );
+      expect(seeker.color, ZyraColors.surfaceFill);
+      expect(
+        (seeker.border! as Border).top.color,
+        ZyraColors.surfaceEmphasisBorder,
+      );
       final ownIdentity =
           tester
                   .widget<Container>(

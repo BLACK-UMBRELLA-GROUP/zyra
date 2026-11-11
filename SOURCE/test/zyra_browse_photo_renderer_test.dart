@@ -162,8 +162,8 @@ void main() {
         expect(renderer.calls, isNotEmpty);
         for (final call in renderer.calls) {
           expect(call.photo, _member.photos.first);
-          expect((call.width, call.height), (50, 50));
-          expect(call.alignment, Alignment.center);
+          expect((call.width, call.height), (117, 117));
+          expect(call.alignment, ZyraProfileDetailsPage.photoAlignment);
         }
         await _press(tester, 'concept_browse_photo_tap_${_member.id}');
         _expectSelectedDot(tester, 1);
@@ -178,9 +178,9 @@ void main() {
           // Current's photo now occupies the former 26px card inset too;
           // its bounded outer card and footer budget have not grown.
           expect(call.height, inInclusiveRange(48, 646));
-          if (call.width == 50 && call.height == 50) {
+          if (call.width == 117 && call.height == 117) {
             expect(call.photo, _member.photos.first);
-            expect(call.alignment, Alignment.center);
+            expect(call.alignment, ZyraProfileDetailsPage.photoAlignment);
           } else {
             expect(call.alignment, Alignment.topCenter);
           }

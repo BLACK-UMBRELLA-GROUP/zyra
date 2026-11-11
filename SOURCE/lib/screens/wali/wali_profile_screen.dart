@@ -170,10 +170,18 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
     });
   }
 
+  bool get _canCompareMembership =>
+      _membershipLabel.startsWith('Guardian Basic');
+
   void _openMembership(BuildContext context) => Navigator.of(context).push(
     MaterialPageRoute(
-      builder: (_) =>
-          const UpgradeScreen(telemetrySurface: ZyraTelemetrySurface.guardian),
+      builder: (_) => _canCompareMembership
+          ? const UpgradeScreen.compare(
+              telemetrySurface: ZyraTelemetrySurface.guardian,
+            )
+          : const UpgradeScreen(
+              telemetrySurface: ZyraTelemetrySurface.guardian,
+            ),
     ),
   );
 
@@ -357,6 +365,7 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
               key: const ValueKey('guardian-profile-membership'),
               value: _membershipLabel,
               isOne: _hasWaliOne,
+              upgradeTo: _canCompareMembership ? 'Guardian One' : null,
               onTap: () => _openMembership(context),
             ),
             const SizedBox(height: 24),

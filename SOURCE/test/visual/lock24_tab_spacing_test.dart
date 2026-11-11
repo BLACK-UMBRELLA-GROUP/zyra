@@ -1218,11 +1218,12 @@ void main() {
                   (keyId == 'guardian_connect' ||
                       keyId == 'guardian_introductions')) {
                 expect(find.byKey(_nav), findsNothing);
-                expect(find.text('Membership'), findsWidgets);
+                expect(find.text('Guardian One'), findsOneWidget);
+                expect(find.text('Chat in a Journey'), findsOneWidget);
                 final gateException = t.takeException();
                 if (_captureRoot.isNotEmpty) {
                   report[name] = {
-                    'absent': 'Guardian Basic opens Membership',
+                    'absent': 'Guardian Basic opens Guardian One comparison',
                     'exception': gateException?.toString(),
                   };
                 }

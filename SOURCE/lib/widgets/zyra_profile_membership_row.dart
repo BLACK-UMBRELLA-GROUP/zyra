@@ -14,11 +14,13 @@ class ZyraProfileMembershipRow extends StatelessWidget {
     super.key,
     required this.value,
     required this.isOne,
+    this.upgradeTo,
     this.onTap,
   });
 
   final String value;
   final bool isOne;
+  final String? upgradeTo;
   final VoidCallback? onTap;
 
   @override
@@ -28,7 +30,11 @@ class ZyraProfileMembershipRow extends StatelessWidget {
       child: Semantics(
         button: onTap != null,
         label:
-            'Membership, $value, ${isOne ? 'manage membership' : 'view membership options'}',
+            'Membership, $value, ${isOne
+                ? 'manage membership'
+                : upgradeTo == null
+                ? 'view membership options'
+                : 'see $upgradeTo'}',
         child: InkWell(
           key: ValueKey(isOne ? 'membership-manage' : 'membership-upgrade'),
           onTap: ZyraTapFeedback.onTap(context, onTap),
@@ -61,7 +67,11 @@ class ZyraProfileMembershipRow extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        isOne ? 'Manage membership' : 'View your options',
+                        isOne
+                            ? 'Manage membership'
+                            : upgradeTo == null
+                            ? 'View your options'
+                            : 'See $upgradeTo',
                         style: ZyraText.subtext(
                           size: 11.5,
                           color: isOne

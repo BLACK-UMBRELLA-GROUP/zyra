@@ -12,9 +12,11 @@ void showZyraGuardianCapacityNotice(BuildContext context, String? message) {
       action: message == ZyraGuardianCapacity.basicLimitMessage
           ? SnackBarAction(
               label: 'Upgrade',
-              onPressed: () => Navigator.of(
-                context,
-              ).push(MaterialPageRoute(builder: (_) => const UpgradeScreen())),
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const UpgradeScreen.compare(),
+                ),
+              ),
             )
           : null,
     ),

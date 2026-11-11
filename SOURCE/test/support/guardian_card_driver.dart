@@ -17,5 +17,5 @@ Future<void> swipeGuardianCard(WidgetTester tester, {bool next = true}) async {
     Offset(next ? card.right - 30 : card.left + 30, card.top + 25),
     Offset(card.width * (next ? -.6 : .6), 0),
   );
-  await tester.pump();
+  await tester.pumpAndSettle();
 }

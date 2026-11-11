@@ -7,7 +7,15 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
     final data = _previewData, topics = _topics;
     if (data == null || topics == null || !widget.preview) return false;
     final ids = data.participants.map((p) => p.userId).toSet();
-    return topics.readOnlyParticipantIds.every(ids.contains) &&
+    final guardianIds = {
+      for (final participant in data.participants)
+        if (participant.memberRole == 'guardian') participant.userId,
+    };
+    return topics.oneParticipantIds.every(guardianIds.contains) &&
+        topics.oneParticipantIds
+            .intersection(topics.readOnlyParticipantIds)
+            .isEmpty &&
+        topics.readOnlyParticipantIds.every(ids.contains) &&
         !topics.readOnlyParticipantIds.contains(data.seekerId) &&
         topics.guardianBasic ==
             (!widget.viewerIsSeeker &&
@@ -290,6 +298,7 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
                 return _CircleTopicsMenu(
                   participants: _previewData!.participants,
                   readOnly: _topics!.readOnlyParticipantIds,
+                  oneParticipantIds: _topics.oneParticipantIds,
                   viewerIsSeeker: widget.viewerIsSeeker,
                   muted: _topicsMuted,
                   bind: bind,
@@ -388,6 +397,7 @@ class _CircleTopicsMenu extends StatelessWidget {
   const _CircleTopicsMenu({
     required this.participants,
     required this.readOnly,
+    required this.oneParticipantIds,
     required this.viewerIsSeeker,
     required this.muted,
     required this.bind,
@@ -398,7 +408,7 @@ class _CircleTopicsMenu extends StatelessWidget {
     required this.onBasic,
   });
   final List<ZyraFamilyCircleParticipant> participants;
-  final Set<String> readOnly;
+  final Set<String> readOnly, oneParticipantIds;
   final bool viewerIsSeeker, muted;
   final VoidCallback Function(BuildContext, VoidCallback) bind;
   final VoidCallback onDone, onMute, onReport, onManage;
@@ -461,35 +471,29 @@ class _CircleTopicsMenu extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
                 child: Row(
                   children: [
-                    Container(
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: p.memberRole == 'seeker'
-                              ? [
-                                  const Color(0xFFAC7C2E),
-                                  const Color(0xFF4C3A20),
-                                ]
-                              : [
-                                  const Color(0xFF77796A),
-                                  const Color(0xFF3D3A30),
-                                ],
+                    if (p.memberRole == 'guardian')
+                      ZyraGoldRingMonogram(
+                        name: p.firstName,
+                        guardianOne: oneParticipantIds.contains(p.userId),
+                        size: 36,
+                        fontSize: 14,
+                      )
+                    else
+                      Container(
+                        width: 36,
+                        height: 36,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: [Color(0xFFAC7C2E), Color(0xFF4C3A20)],
+                          ),
                         ),
-                        border: p.isMainGuardian
-                            ? Border.all(
-                                color: ZyraColors.journeyGold,
-                                width: 2,
-                              )
-                            : null,
+                        alignment: Alignment.center,
+                        child: Text(
+                          p.firstName.characters.first,
+                          style: ZyraText.body(size: 14),
+                        ),
                       ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        p.firstName.characters.first,
-                        style: ZyraText.body(size: 14),
-                      ),
-                    ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(

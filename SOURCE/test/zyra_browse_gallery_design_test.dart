@@ -330,13 +330,13 @@ void main() {
       for (final text in [
         'Sara',
         'Ahmed',
-        'Age',
+        'AGE',
         '27',
-        'Location',
+        'LOCATION',
         'Birmingham',
-        'Nationality',
+        'NATIONALITY',
         'British',
-        'Ethnicity',
+        'ETHNICITY',
         'South Asian',
       ]) {
         expect(
@@ -454,8 +454,8 @@ void main() {
     await tester.pumpAndSettle();
     _expectSelectedDot(tester, _other.id, 0);
     expect(_key('concept_browse_details_${_other.id}'), findsOneWidget);
-    expect(find.text('Nationality'), findsNothing);
-    expect(find.text('Ethnicity'), findsNothing);
+    expect(find.text('NATIONALITY'), findsNothing);
+    expect(find.text('ETHNICITY'), findsNothing);
     await tester.pumpWidget(_app(_presenter()));
     await tester.pumpAndSettle();
     _expectSelectedDot(tester, _person.id, 0);

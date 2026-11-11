@@ -271,7 +271,8 @@ void main() {
             );
             expect(avatar.photo, profile.photos.first);
             expect(avatar.photo, startsWith('data:image/'));
-            expect((avatar.width, avatar.height), (50, 50));
+            expect((avatar.width, avatar.height), (117, 117));
+            expect(avatar.alignment, const Alignment(0, -.7));
             expect(find.byType(ZyraProfileNameBlock), findsNothing);
             expect(find.text('Pass'), findsNothing);
             expect(find.text('Dislike'), findsNothing);

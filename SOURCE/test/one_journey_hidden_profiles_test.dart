@@ -828,8 +828,8 @@ void main() {
     expect(_key('concept_hidden_inspection_block'), findsOneWidget);
     expect(find.text('Unhide profile'), findsOneWidget);
     expect(find.text('Block profile'), findsOneWidget);
-    expect(find.text('Nationality'), findsOneWidget);
-    expect(find.text('Ethnicity'), findsOneWidget);
+    expect(find.text('NATIONALITY'), findsOneWidget);
+    expect(find.text('ETHNICITY'), findsOneWidget);
     expect(profile.publicNationality, isNotEmpty);
     expect(profile.publicEthnicity, isNotEmpty);
     expect(_key('concept_browse_footer'), findsNothing);
@@ -853,7 +853,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(owner.latest.galleryIndices[_sara], 1);
     expect(owner.latest.photoIndices[_sara], 0);
-    expect(find.text('Nationality'), findsNothing);
+    expect(find.text('NATIONALITY'), findsNothing);
     await tester.tapAt(Offset(bounds.right - 20, bounds.center.dy));
     await tester.pumpAndSettle();
     expect(owner.latest.photoIndices[_sara], 1);

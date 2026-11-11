@@ -28,7 +28,7 @@ class ZyraMembershipHistoryLock extends StatelessWidget {
         const SizedBox(height: 10),
         OutlinedButton(
           onPressed: () => Navigator.of(context).push<void>(
-            MaterialPageRoute(builder: (_) => const UpgradeScreen()),
+            MaterialPageRoute(builder: (_) => const UpgradeScreen.compare()),
           ),
           child: const Text('Upgrade'),
         ),

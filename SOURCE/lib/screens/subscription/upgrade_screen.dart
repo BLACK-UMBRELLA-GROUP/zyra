@@ -25,6 +25,7 @@ import '../../theme/zyra_card_metrics.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../settings/legal_document_screen.dart';
+import 'zyra_one_upgrade_page.dart';
 
 typedef MembershipStoreLauncher = Future<bool> Function(Uri uri);
 
@@ -34,6 +35,7 @@ class UpgradeScreen extends StatefulWidget {
   final TargetPlatform? storePlatform;
   final bool compatibilityOnly;
   final bool _embeddedStore;
+  final bool _showOneComparison;
 
   const UpgradeScreen({
     super.key,
@@ -41,7 +43,17 @@ class UpgradeScreen extends StatefulWidget {
     this.openStore,
     this.storePlatform,
   }) : compatibilityOnly = false,
-       _embeddedStore = false;
+       _embeddedStore = false,
+       _showOneComparison = false;
+
+  const UpgradeScreen.compare({
+    super.key,
+    this.telemetrySurface = ZyraTelemetrySurface.seeker,
+  }) : compatibilityOnly = false,
+       _embeddedStore = false,
+       _showOneComparison = true,
+       openStore = null,
+       storePlatform = null;
 
   const UpgradeScreen._compatibilityStore({
     this.telemetrySurface = ZyraTelemetrySurface.seeker,
@@ -49,7 +61,8 @@ class UpgradeScreen extends StatefulWidget {
   }) : openStore = null,
        storePlatform = null,
        compatibilityOnly = true,
-       _embeddedStore = embedded;
+       _embeddedStore = embedded,
+       _showOneComparison = false;
 
   static final appleSubscriptionsUri = Uri.parse(
     'https://apps.apple.com/account/subscriptions',
@@ -657,7 +670,17 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
               decoration: ZyraAppGoldDecoration(
                 gradient: ZyraColors.genderGradient(AppState.instance.gender),
               ),
-              child: SafeArea(child: _membershipPage()),
+              child: widget._showOneComparison && !_isOne && !_membershipExpired
+                  ? ZyraOneUpgradePage(
+                      guardian: _guardian,
+                      canContinue: _membershipFreshGuard(),
+                      onBack: () {
+                        if (ModalRoute.of(context)?.isCurrent ?? false) {
+                          Navigator.of(context).maybePop();
+                        }
+                      },
+                    )
+                  : SafeArea(child: _membershipPage()),
             ),
           ),
         );

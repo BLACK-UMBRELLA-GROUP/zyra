@@ -498,9 +498,9 @@ void main() {
         final details = _key('concept_browse_details_${owner.profile.id}');
         expect(details, findsOneWidget);
         for (final value in [
-          'Nationality',
+          'NATIONALITY',
           'British',
-          'Ethnicity',
+          'ETHNICITY',
           'South Asian',
         ]) {
           expect(
@@ -678,8 +678,8 @@ void main() {
     final rendered = _card(tester);
     expect(rendered.profiles.single.publicNationality, isNull);
     expect(rendered.profiles.single.publicEthnicity, isNull);
-    expect(find.text('Nationality'), findsNothing);
-    expect(find.text('Ethnicity'), findsNothing);
+    expect(find.text('NATIONALITY'), findsNothing);
+    expect(find.text('ETHNICITY'), findsNothing);
     expect(find.textContaining('Unknown'), findsNothing);
     expect(tester.takeException(), isNull);
   });

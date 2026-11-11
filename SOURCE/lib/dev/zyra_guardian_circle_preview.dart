@@ -102,16 +102,18 @@ class ZyraCircleTopicsPreview {
     required Iterable<ZyraCircleTopicTile> tiles,
     required Iterable<String> readOnlyParticipantIds,
     required this.guardianBasic,
+    Iterable<String> oneParticipantIds = const [],
     required this.onManageGuardians,
     required this.onMembership,
     this.clock,
     Map<String, ZyraCircleDiscussionTopic> messageTopics = const {},
   }) : tiles = List.unmodifiable(tiles),
        readOnlyParticipantIds = Set.unmodifiable(readOnlyParticipantIds),
+       oneParticipantIds = Set.unmodifiable(oneParticipantIds),
        messageTopics = Map.unmodifiable(messageTopics);
 
   final List<ZyraCircleTopicTile> tiles;
-  final Set<String> readOnlyParticipantIds;
+  final Set<String> readOnlyParticipantIds, oneParticipantIds;
   final bool guardianBasic;
   final VoidCallback onManageGuardians;
   final VoidCallback onMembership;

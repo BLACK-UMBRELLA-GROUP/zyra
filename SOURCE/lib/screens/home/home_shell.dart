@@ -635,9 +635,11 @@ class _HomeShellState extends State<HomeShell> {
               // auto-opens checkout. Actual payment availability is explained
               // on that user-initiated surface.
               upgradeOfferAvailable: true,
-              onOpenPlan: (_) => Navigator.of(
-                context,
-              ).push(MaterialPageRoute(builder: (_) => const UpgradeScreen())),
+              onOpenPlan: (_) => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const UpgradeScreen.compare(),
+                ),
+              ),
             ),
           // Developer controls are app-wide in MaterialApp.builder. This
           // shell only registers the real tab callback with that overlay,

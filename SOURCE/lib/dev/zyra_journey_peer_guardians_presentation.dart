@@ -5,6 +5,7 @@ import '../services/zyra_guardian_info_service.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_profiles_components.dart';
+import 'zyra_one_journey_monogram_presentation.dart';
 
 /// A read-only presentation of the Guardians disclosed for one other Seeker.
 ///
@@ -211,26 +212,16 @@ class _PeerGuardianContent extends StatelessWidget {
       _ => null,
     };
     final hasCity = city != null && city.isNotEmpty;
-    final initial = name.isEmpty ? 'G' : name.characters.first.toUpperCase();
     final accent = ZyraColors.journeyGold;
     final avatar = ExcludeSemantics(
-      child: Container(
+      child: ZyraGoldRingMonogram(
         key: ValueKey('peer_guardian_avatar_${subjectId}_$index'),
-        width: 64,
-        height: 64,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: ZyraColors.surfaceFill,
-          border: Border.all(color: ZyraColors.surfaceEmphasisBorder),
-        ),
-        child: Text(
-          initial,
-          // Decorative artwork stays in its fixed circle; the accessible
-          // name beside/below it retains full text scaling.
-          textScaler: TextScaler.noScaling,
-          style: ZyraText.heading(size: 24.32),
-        ),
+        name: name.isEmpty ? 'Guardian' : name,
+        guardianOne: false,
+        size: 64,
+        fontSize: 24.32,
+        // The adjacent name retains full text scaling.
+        textScaler: TextScaler.noScaling,
       ),
     );
     final identity = Column(

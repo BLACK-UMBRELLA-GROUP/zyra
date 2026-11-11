@@ -21,6 +21,7 @@ import 'package:zyra/widgets/zyra_tap_feedback.dart';
 
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'package:zyra/screens/subscription/zyra_one_upgrade_page.dart';
 
 const _roles = [
   (guardian: false, one: true, label: 'Seeker One'),
@@ -388,17 +389,20 @@ void main() {
         );
         await start();
         await _tap(tester, 'concept_membership');
-        final membership = tester.widget<ZyraConceptMembershipPresentation>(
-          find.byType(ZyraConceptMembershipPresentation),
-        );
-        expect(
-          membership.initialDraft?.section,
-          role.one
-              ? ZyraMembershipSection.current
-              : role.guardian
-              ? ZyraMembershipSection.guardian
-              : ZyraMembershipSection.seeker,
-        );
+        if (role.one) {
+          final membership = tester.widget<ZyraConceptMembershipPresentation>(
+            find.byType(ZyraConceptMembershipPresentation),
+          );
+          expect(
+            membership.initialDraft?.section,
+            ZyraMembershipSection.current,
+          );
+        } else {
+          final upgrade = tester.widget<ZyraOneUpgradePage>(
+            find.byType(ZyraOneUpgradePage),
+          );
+          expect(upgrade.guardian, role.guardian);
+        }
         await start();
         await _tap(tester, 'concept_subscriptions');
         expect(find.byType(ZyraSubscriptionWalletPreview), findsOneWidget);

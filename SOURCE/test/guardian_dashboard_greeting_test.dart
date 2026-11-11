@@ -1046,7 +1046,8 @@ void main() {
       await tester.tap(upgrade);
       await tester.pumpAndSettle();
       expect(find.byType(UpgradeScreen), findsOneWidget);
-      expect(find.text('Membership'), findsOneWidget);
+      expect(find.text('Guardian One'), findsOneWidget);
+      expect(find.text('Chat in a Journey'), findsOneWidget);
     },
   );
 

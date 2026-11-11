@@ -44,6 +44,8 @@ import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/floating_nav_bar.dart';
+import 'package:zyra/widgets/zyra_profile_details_page.dart';
+import 'package:zyra/data/zyra_membership_catalog.dart';
 import 'package:zyra/widgets/zyra_browse_designs.dart';
 import 'package:zyra/widgets/zyra_guardian_dashboard_profile_card.dart';
 import 'package:zyra/widgets/zyra_journey_icon.dart';
@@ -113,7 +115,10 @@ const _requestLabels = ['Received', 'Sent', 'Past'];
 
 Finder _key(String value) => find.byKey(ValueKey(value));
 
-SeekerProfile _currentBrowseDetailsProfile(WidgetTester tester) {
+SeekerProfile _currentBrowseDetailsProfile(
+  WidgetTester tester, {
+  double avatarSize = 124,
+}) {
   final browse = tester.widget<ZyraOneJourneyBrowseDesigns>(
     find.byType(ZyraOneJourneyBrowseDesigns),
   );
@@ -124,17 +129,17 @@ SeekerProfile _currentBrowseDetailsProfile(WidgetTester tester) {
     profile.firstName,
     if (profile.surnameLine?.trim().isNotEmpty ?? false)
       profile.surnameLine!.trim(),
-    if (profile.age > 0) ...['Age', '${profile.age}'],
+    if (profile.age > 0) ...['AGE', '${profile.age}'],
     if (profile.city.trim().isNotEmpty && profile.city.trim() != '—') ...[
-      'Location',
+      'LOCATION',
       profile.city.trim(),
     ],
     if (profile.publicNationality?.trim().isNotEmpty ?? false) ...[
-      'Nationality',
+      'NATIONALITY',
       profile.publicNationality!.trim(),
     ],
     if (profile.publicEthnicity?.trim().isNotEmpty ?? false) ...[
-      'Ethnicity',
+      'ETHNICITY',
       profile.publicEthnicity!.trim(),
     ],
   ];
@@ -144,11 +149,10 @@ SeekerProfile _currentBrowseDetailsProfile(WidgetTester tester) {
       findsNWidgets(expectedValues.where((item) => item == value).length),
     );
   }
-  // LOCK 4 retains the compact details card and shows this person's first
-  // photo inside its existing ring; it must never become a full-photo page.
+  // LOCK 4 V3 shows the first photo inside the Design 2 details face.
   final avatar = _key('concept_browse_details_avatar_${profile.id}');
   expect(avatar, findsOneWidget);
-  expect(tester.getSize(avatar), const Size(56, 56));
+  expect(tester.getSize(avatar), Size.square(avatarSize));
   final detailsImages = find.descendant(
     of: details,
     matching: find.byType(Image),
@@ -156,14 +160,20 @@ SeekerProfile _currentBrowseDetailsProfile(WidgetTester tester) {
   if (profile.photos.isEmpty) {
     expect(detailsImages, findsNothing);
     expect(
-      find.descendant(of: avatar, matching: find.byIcon(Icons.person_outline)),
+      find.descendant(
+        of: avatar,
+        matching: find.text(profile.firstName.characters.first.toUpperCase()),
+      ),
       findsOneWidget,
     );
   } else {
     final photo = _key('concept_browse_details_avatar_photo_${profile.id}');
     expect(detailsImages, findsOneWidget);
     expect(photo, findsOneWidget);
-    expect(tester.getSize(photo), const Size(50, 50));
+    expect(
+      tester.getSize(photo),
+      Size.square(avatarSize - (profile.seekerPlan == ZyraPlan.basic ? 0 : 7)),
+    );
     final image = tester.widget<Image>(detailsImages);
     expect(image.image, isA<MemoryImage>());
     expect(
@@ -171,7 +181,7 @@ SeekerProfile _currentBrowseDetailsProfile(WidgetTester tester) {
       base64Decode(profile.photos.first.split(',').last),
     );
     expect(image.fit, BoxFit.cover);
-    expect(image.alignment, Alignment.center);
+    expect(image.alignment, ZyraProfileDetailsPage.photoAlignment);
   }
   expect(
     tester
@@ -1756,6 +1766,26 @@ void main() {
       expect(tester.takeException(), isNull);
     },
   );
+
+  testWidgets('Basic upgrade notice dismisses over the admitted preview', (
+    tester,
+  ) async {
+    await _mount(tester);
+    await _press(tester, 'draft_rules');
+    await _press(tester, 'draft_membership_seeker_basic');
+    await _nav(tester, 4);
+    await _press(tester, 'concept_membership');
+    expect(find.text('Journey places'), findsOneWidget);
+    await _press(tester, 'one-upgrade-continue');
+    expect(find.text(ZyraMembershipCatalog.availability), findsOneWidget);
+    await tester.tap(find.text('OK'));
+    await tester.pumpAndSettle();
+    expect(find.text(ZyraMembershipCatalog.availability), findsNothing);
+    expect(find.text('Journey places'), findsOneWidget);
+    await tester.tap(find.text('Not now'));
+    await tester.pumpAndSettle();
+    expect(_key('concept_membership'), findsOneWidget);
+  });
 
   // Q36: Report profile (LOCK 22 V2 x05) belongs to the pushed LOCK 13 V3 options.
   testWidgets(
@@ -4398,14 +4428,17 @@ void main() {
             );
           }
           // LOCK 4 also uses the first admitted photo on the own-profile
-          // details card, inside the existing compact gold ring.
+          // Design 2 details card.
           final avatar = _key('concept_browse_details_avatar_${own.id}');
           final photo = _key('concept_browse_details_avatar_photo_${own.id}');
           expect(own.photos, isNotEmpty);
           expect(avatar, findsOneWidget);
           expect(photo, findsOneWidget);
-          expect(tester.getSize(avatar), const Size(56, 56));
-          expect(tester.getSize(photo), const Size(50, 50));
+          expect(tester.getSize(avatar), const Size(124, 124));
+          expect(
+            tester.getSize(photo),
+            Size.square(ZyraProfileDetailsPage.photoSizeFor(own.seekerPlan)),
+          );
           final detailsImages = find.descendant(
             of: details,
             matching: find.byType(Image),
@@ -4418,7 +4451,7 @@ void main() {
             base64Decode(own.photos.first.split(',').last),
           );
           expect(image.fit, BoxFit.cover);
-          expect(image.alignment, Alignment.center);
+          expect(image.alignment, ZyraProfileDetailsPage.photoAlignment);
           expect(
             tester
                 .widget<PageView>(_key('concept_browse_photo_swipe_${own.id}'))
@@ -4795,7 +4828,7 @@ void main() {
           }
         }
       }
-      _currentBrowseDetailsProfile(tester);
+      _currentBrowseDetailsProfile(tester, avatarSize: 96);
       final initial = find.descendant(
         of: identity,
         matching: find.text('Sara'),

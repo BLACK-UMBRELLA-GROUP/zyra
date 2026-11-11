@@ -2,6 +2,7 @@ import '../../widgets/zyra_floating_surface.dart';
 import '../../widgets/zyra_guardian_add_card.dart';
 import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
+import '../../dev/zyra_one_journey_monogram_presentation.dart';
 import 'dart:math' as math;
 
 import '../../services/zyra_wali_link_service.dart';
@@ -428,7 +429,7 @@ class _ManagerGuardianCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _ManagerMonogram(name: person.firstName, main: person.isMain),
+                zyraGuardianManagerMonogram(name: person.firstName),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(
@@ -474,38 +475,13 @@ class _ManagerGuardianCard extends StatelessWidget {
 /// The existing Guardian-tab monogram, shared with its informational notice.
 Widget zyraGuardianManagerMonogram({
   required String name,
-  required bool main,
-}) => _ManagerMonogram(name: name, main: main);
-
-class _ManagerMonogram extends StatelessWidget {
-  final String name;
-  final bool main;
-
-  const _ManagerMonogram({required this.name, required this.main});
-
-  @override
-  Widget build(BuildContext context) => ZyraFloatingSurface(
-    radius: 20,
-    child: Container(
-      width: 48,
-      height: 48,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: ZyraColors.surfaceFill,
-        border: Border.all(
-          color: main
-              ? ZyraColors.surfaceEmphasisBorder
-              : ZyraColors.surfaceBorder,
-        ),
-      ),
-      child: Text(
-        name.trim().isEmpty ? '?' : name.trim()[0].toUpperCase(),
-        style: ZyraText.heading(size: 19),
-      ),
-    ),
-  );
-}
+  bool guardianOne = false,
+}) => ZyraGoldRingMonogram(
+  name: name,
+  guardianOne: guardianOne,
+  size: 48,
+  fontSize: 19,
+);
 
 List<WaliLinkedPerson> _ordered(List<WaliLinkedPerson> people) {
   final ordered = <WaliLinkedPerson>[];
@@ -1208,12 +1184,16 @@ class _GuardianManageActionsState extends State<_GuardianManageActions> {
       if (_confirming == null) {
         final revision = _interactionRevision;
         actions.add(
-          _ManageActionButton(
-            key: const ValueKey('guardian-card-menu-cancel'),
-            canAct: () => _current && revision == _interactionRevision,
-            cardLayout: true,
-            label: 'Cancel',
-            onTap: _busy ? null : close,
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: _ManageActionButton(
+              key: const ValueKey('guardian-card-menu-cancel'),
+              canAct: () => _current && revision == _interactionRevision,
+              cardLayout: true,
+              pill: true,
+              label: 'Cancel',
+              onTap: _busy ? null : close,
+            ),
           ),
         );
       }
@@ -1289,7 +1269,7 @@ class _ManageActionButton extends StatelessWidget {
   final bool destructive;
   final VoidCallback? onTap;
   final bool compact;
-  final bool cardLayout;
+  final bool cardLayout, pill;
   final bool Function()? canAct;
 
   const _ManageActionButton({
@@ -1299,6 +1279,7 @@ class _ManageActionButton extends StatelessWidget {
     this.destructive = false,
     this.compact = false,
     this.cardLayout = false,
+    this.pill = false,
     this.canAct,
     required this.onTap,
   });
@@ -1307,14 +1288,19 @@ class _ManageActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final signal = destructive ? ZyraColors.destructive : ZyraColors.ink(0.68);
     if (cardLayout) {
+      final radius = pill ? BorderRadius.circular(30) : null;
       return InkWell(
+        borderRadius: radius,
         onTap: ZyraTapFeedback.onTap(context, onTap, canAct: canAct),
         child: Container(
           constraints: const BoxConstraints(minHeight: 42),
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: ZyraColors.ink(.10))),
+            borderRadius: radius,
+            border: pill
+                ? Border.all(color: ZyraColors.ink(.14))
+                : Border(bottom: BorderSide(color: ZyraColors.ink(.10))),
           ),
           child: Text(
             label,
@@ -2953,24 +2939,12 @@ class _GuardianMonogram extends StatelessWidget {
   const _GuardianMonogram({required this.person, required this.size});
 
   @override
-  Widget build(BuildContext context) => ZyraFloatingSurface(
-    radius: 20,
-    child: Container(
-      width: size,
-      height: size,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: ZyraColors.surfaceFill,
-        border: Border.all(color: ZyraColors.surfaceEmphasisBorder),
-      ),
-      child: Text(
-        person.firstName.trim().isEmpty
-            ? '?'
-            : person.firstName.trim()[0].toUpperCase(),
-        style: ZyraText.heading(size: size * 0.38),
-      ),
-    ),
+  Widget build(BuildContext context) => ZyraGoldRingMonogram(
+    name: person.firstName,
+    // Live link rows do not carry the displayed Guardian's plan.
+    guardianOne: false,
+    size: size,
+    fontSize: size * .38,
   );
 }
 

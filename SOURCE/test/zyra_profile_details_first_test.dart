@@ -363,46 +363,63 @@ void main() {
     ZyraText.testReadingFontFamily = oldReadingFont;
   });
 
-  testWidgets(
-    'first page keeps all public fields with the first-photo avatar',
-    (tester) async {
-      final painted = <String>[];
-      await _mount(tester, _presenter(painted: painted));
+  testWidgets('Design 2 fits the four public tiles and first-photo avatar', (
+    tester,
+  ) async {
+    final painted = <String>[];
+    await _mount(tester, _presenter(painted: painted));
 
-      expect(find.byType(ZyraProfileDetailsPage), findsOneWidget);
-      final detailsScroll = tester.state<ScrollableState>(
-        find.descendant(
-          of: _details(_person.id),
-          matching: find.byType(Scrollable),
-        ),
-      );
-      expect(detailsScroll.position.maxScrollExtent, 0);
-      _expectDetailsText(_person.id, [
-        _person.firstName,
-        _person.surnameLine!,
-        'Age',
-        '${_person.age}',
-        'Location',
-        _person.city,
-        'Nationality',
-        _person.publicNationality!,
-        'Ethnicity',
-        _person.publicEthnicity!,
-      ]);
-      expect(_controller(tester, _person.id).page, closeTo(0, .001));
-      expect(painted, [_person.photos.first]);
-      expect(find.byType(Image), findsNothing);
-      expect(find.byType(RawImage), findsNothing);
-      expect(
-        tester
-            .widget<PageView>(_pager(_person.id))
-            .childrenDelegate
-            .estimatedChildCount,
-        _person.photos.length + 1,
-      );
-      await _capture(tester, '01-details-first-public-details');
-    },
-  );
+    expect(find.byType(ZyraProfileDetailsPage), findsOneWidget);
+    final detailsScroll = tester.state<ScrollableState>(
+      find.descendant(
+        of: _details(_person.id),
+        matching: find.byType(Scrollable),
+      ),
+    );
+    expect(detailsScroll.position.maxScrollExtent, 0);
+    final avatar = _key('concept_browse_details_avatar_${_person.id}');
+    expect(tester.getSize(avatar), const Size.square(124));
+    final ageTile = tester.getRect(_key('profile-detail-tile-AGE'));
+    final locationTile = tester.getRect(_key('profile-detail-tile-LOCATION'));
+    final nationalityTile = tester.getRect(
+      _key('profile-detail-tile-NATIONALITY'),
+    );
+    final ethnicityTile = tester.getRect(_key('profile-detail-tile-ETHNICITY'));
+    expect(locationTile.left - ageTile.right, 10);
+    expect(nationalityTile.top - ageTile.bottom, 10);
+    expect(ageTile.top, locationTile.top);
+    expect(nationalityTile.top, ethnicityTile.top);
+    expect(ageTile.left, nationalityTile.left);
+    expect(locationTile.left, ethnicityTile.left);
+    expect(
+      tester.getRect(_details(_person.id)).bottom - ethnicityTile.bottom,
+      22,
+    );
+    _expectDetailsText(_person.id, [
+      _person.firstName,
+      _person.surnameLine!,
+      'AGE',
+      '${_person.age}',
+      'LOCATION',
+      _person.city,
+      'NATIONALITY',
+      _person.publicNationality!,
+      'ETHNICITY',
+      _person.publicEthnicity!,
+    ]);
+    expect(_controller(tester, _person.id).page, closeTo(0, .001));
+    expect(painted, [_person.photos.first]);
+    expect(find.byType(Image), findsNothing);
+    expect(find.byType(RawImage), findsNothing);
+    expect(
+      tester
+          .widget<PageView>(_pager(_person.id))
+          .childrenDelegate
+          .estimatedChildCount,
+      _person.photos.length + 1,
+    );
+    await _capture(tester, '01-details-first-public-details');
+  });
 
   testWidgets('details-first photo is clean with no identity copy or scrim', (
     tester,
@@ -621,13 +638,13 @@ void main() {
         _expectDetailsText(person.id, [
           'Sara',
           'Ahmed',
-          'Age',
+          'AGE',
           '27',
-          'Location',
+          'LOCATION',
           'Birmingham',
         ]);
-        expect(find.text('Nationality'), findsNothing);
-        expect(find.text('Ethnicity'), findsNothing);
+        expect(find.text('NATIONALITY'), findsNothing);
+        expect(find.text('ETHNICITY'), findsNothing);
         expect(find.text('Unknown'), findsNothing);
         expect(find.text('Not provided'), findsNothing);
       },
@@ -650,10 +667,10 @@ void main() {
 
     _expectDetailsText(person.id, ['Sara', 'Ahmed']);
     for (final value in [
-      'Age',
-      'Location',
-      'Nationality',
-      'Ethnicity',
+      'AGE',
+      'LOCATION',
+      'NATIONALITY',
+      'ETHNICITY',
       '0',
       '—',
       'Unknown',
@@ -1044,10 +1061,7 @@ void main() {
                     .decoration
                 as BoxDecoration;
         expect(halo.shape, BoxShape.circle);
-        expect(
-          halo.border!.top.color,
-          ZyraColors.journeyGold.withValues(alpha: .65),
-        );
+        expect(halo.border!.top.color, const Color.fromRGBO(169, 121, 46, .75));
         _expectSharedOutline(tester, sent: sent);
         final outline = tester.element(find.byType(ZyraInvitationOutline));
 

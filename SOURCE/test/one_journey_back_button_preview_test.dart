@@ -664,9 +664,9 @@ void main() {
       expect(card.profiles.single.publicEthnicity, isNotNull);
       final details = _key('concept_browse_details_draft-self');
       for (final value in [
-        'Nationality',
+        'NATIONALITY',
         card.profiles.single.publicNationality!,
-        'Ethnicity',
+        'ETHNICITY',
         card.profiles.single.publicEthnicity!,
       ]) {
         expect(

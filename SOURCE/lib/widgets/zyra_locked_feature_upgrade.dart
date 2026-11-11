@@ -40,8 +40,9 @@ void openSeekerLockedFeaturePlan(
   }
   Navigator.of(context).push(
     MaterialPageRoute<void>(
-      builder: (_) =>
-          const UpgradeScreen(telemetrySurface: ZyraTelemetrySurface.seeker),
+      builder: (_) => const UpgradeScreen.compare(
+        telemetrySurface: ZyraTelemetrySurface.seeker,
+      ),
     ),
   );
 }

@@ -1,5 +1,4 @@
-// Public identity and caller-rendered photo presentation only: no services,
-// private answers, photo lookup or URL construction.
+// Public identity and caller-rendered photo presentation only.
 import 'package:flutter/material.dart';
 
 import '../data/zyra_membership_catalog.dart';
@@ -7,10 +6,9 @@ import '../models/seeker_profile.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_profile_image.dart';
-import 'zyra_profiles_components.dart';
 
-/// The first page of the current Profiles gallery. Missing public labels stay
-/// missing; this widget never infers heritage from compatibility or identity.
+/// LOCK 4 V3, design 2. Only the caller's public profile fields and admitted
+/// first photo reach this face. No private answers or photo lookup here.
 class ZyraProfileDetailsPage extends StatelessWidget {
   const ZyraProfileDetailsPage({
     super.key,
@@ -19,36 +17,27 @@ class ZyraProfileDetailsPage extends StatelessWidget {
   });
 
   final SeekerProfile profile;
-
-  /// The caller's existing first-photo renderer. A source reference alone
-  /// never admits an image or initiates a lookup in this presenter.
   final Widget? firstPhoto;
 
-  static const double _avatarSize = 56;
-  static const double _ringWidth = 1;
+  static const double _avatarSize = 124;
+  static const double _smallerAvatarSize = 96;
+  static const double _ringWidth = 1.5;
   static const double _photoGap = 2;
+  static const photoAlignment = Alignment(0, -.7);
 
-  static double photoSizeFor(ZyraPlan? plan) => plan == ZyraPlan.basic
-      ? _avatarSize
-      : _avatarSize - 2 * (_ringWidth + _photoGap);
+  static double photoSizeFor(ZyraPlan? plan) =>
+      _avatarSize - _photoInset(plan) * 2;
 
-  static const _personIcon = Icon(
-    Icons.person_outline,
-    size: 29,
-    color: ZyraColors.journeyGold,
-  );
+  static double _photoInset(ZyraPlan? plan) =>
+      plan == ZyraPlan.basic ? 0 : _ringWidth + _photoGap;
 
-  Widget _photo(Widget rendered) {
+  Widget _photo(Widget rendered, Widget fallback) {
     if (rendered is Image) {
-      // Preserve the caller's admitted provider, but keep old frames and its
-      // gallery placeholder out of this person's small identity circle.
       return Image(
         key: rendered.key,
         image: rendered.image,
-        width: photoSizeFor(profile.seekerPlan),
-        height: photoSizeFor(profile.seekerPlan),
         fit: BoxFit.cover,
-        alignment: Alignment.center,
+        alignment: photoAlignment,
         color: rendered.color,
         opacity: rendered.opacity,
         colorBlendMode: rendered.colorBlendMode,
@@ -57,129 +46,183 @@ class ZyraProfileDetailsPage extends StatelessWidget {
         excludeFromSemantics: true,
         gaplessPlayback: false,
         frameBuilder: (_, child, frame, synchronous) =>
-            frame != null || synchronous ? child : _personIcon,
-        errorBuilder: (_, _, _) => _personIcon,
+            frame != null || synchronous ? child : fallback,
+        errorBuilder: (_, _, _) => fallback,
       );
     }
-    return ZyraProfileImageFallback(fallback: _personIcon, child: rendered);
+    return ZyraProfileImageFallback(fallback: fallback, child: rendered);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // Preserve the existing ring when the caller has no verified plan, but
-    // only a known Seeker One plan can be announced as such.
+  Widget _avatar(double size) {
+    // The unavailable plan still keeps the pre-existing decorative ring.
+    // Only a verified Seeker One plan gets the accompanying announcement.
     final plan = profile.seekerPlan;
     final showRing = plan != ZyraPlan.basic;
-    final surname = profile.surnameLine?.trim();
-    final nationality = profile.publicNationality?.trim();
-    final ethnicity = profile.publicEthnicity?.trim();
-    final city = profile.city.trim();
-    final facts = <(String, String)>[
-      if (profile.age > 0) ('Age', '${profile.age}'),
-      if (city.isNotEmpty && city != '—') ('Location', city),
-      if (nationality?.isNotEmpty ?? false) ('Nationality', nationality!),
-      if (ethnicity?.isNotEmpty ?? false) ('Ethnicity', ethnicity!),
-    ];
+    final fallback = ColoredBox(
+      color: ZyraColors.avatarSand,
+      child: Center(
+        child: Text(
+          profile.firstName.trim().characters.firstOrNull?.toUpperCase() ?? '?',
+          textScaler: TextScaler.noScaling,
+          style: ZyraText.heading(size: size * .38, color: ZyraColors.espresso),
+        ),
+      ),
+    );
     final avatar = Container(
       key: ValueKey('concept_browse_details_avatar_${profile.id}'),
-      width: _avatarSize,
-      height: _avatarSize,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
+        color: showRing ? ZyraColors.ivoryTop : null,
         shape: BoxShape.circle,
         border: showRing
             ? Border.all(
                 width: _ringWidth,
-                color: ZyraColors.journeyGold.withValues(alpha: .65),
+                color: const Color.fromRGBO(169, 121, 46, .75),
               )
             : null,
-        boxShadow: showRing
-            ? [
-                BoxShadow(
-                  color: ZyraColors.journeyGold.withValues(alpha: .07),
-                  blurRadius: 24,
-                ),
-              ]
-            : null,
       ),
+      padding: EdgeInsets.all(showRing ? _photoGap : 0),
       child: firstPhoto == null
-          ? _personIcon
-          : Padding(
-              // Container includes its one-point ring before this inner gap.
-              padding: EdgeInsets.all(showRing ? _photoGap : 0),
-              child: ClipOval(
-                key: ValueKey('concept_browse_details_avatar_photo_${profile.id}'),
-                child: KeyedSubtree(
-                  key: ValueKey((profile.id, profile.photos.firstOrNull)),
-                  child: _photo(firstPhoto!),
-                ),
+          ? ClipOval(child: fallback)
+          : ClipOval(
+              key: ValueKey(
+                'concept_browse_details_avatar_photo_${profile.id}',
+              ),
+              child: KeyedSubtree(
+                key: ValueKey((profile.id, profile.photos.firstOrNull)),
+                child: _photo(firstPhoto!, fallback),
               ),
             ),
     );
-    return ZyraProfilesDetailsContent(
-      surfaceKey: ValueKey('concept_browse_details_${profile.id}'),
-      scrollKey: ValueKey('concept_browse_details_scroll_${profile.id}'),
-      children: [
-        if (plan == null)
-          ExcludeSemantics(child: avatar)
-        else
-          Semantics(
-            container: true,
-            image: true,
-            excludeSemantics: true,
-            label: plan == ZyraPlan.one
-                ? 'Profile photo, ${ZyraMembershipCatalog.seekerOneTitle}'
-                : 'Profile photo',
-            child: avatar,
-          ),
-        const SizedBox(height: 18),
-        Text(
-          profile.firstName,
-          textAlign: TextAlign.center,
-          style: ZyraText.heading(size: 34),
-        ),
-        if (surname?.isNotEmpty ?? false) ...[
-          const SizedBox(height: 2),
-          Text(
-            surname!,
-            textAlign: TextAlign.center,
-            style: ZyraText.heading(size: 22),
-          ),
-        ],
-        const SizedBox(height: 24),
-        for (final (label, value) in facts)
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            decoration: BoxDecoration(
-              border: Border(top: BorderSide(color: ZyraColors.ink(.13))),
-            ),
-            child: MergeSemantics(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Text(
-                      label,
-                      style: ZyraText.body(
-                        size: 13,
-                        color: ZyraColors.ink(.75),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    flex: 3,
-                    child: Text(
-                      value,
-                      textAlign: TextAlign.right,
-                      style: ZyraText.body(size: 14),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-      ],
+    if (plan == null) return ExcludeSemantics(child: avatar);
+    return Semantics(
+      container: true,
+      image: true,
+      excludeSemantics: true,
+      label: plan == ZyraPlan.one
+          ? 'Profile photo, ${ZyraMembershipCatalog.seekerOneTitle}'
+          : 'Profile photo',
+      child: avatar,
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    final surname = profile.surnameLine?.trim();
+    final nationality = profile.publicNationality?.trim();
+    final ethnicity = profile.publicEthnicity?.trim();
+    final city = profile.city.trim();
+    final facts = [
+      if (profile.age > 0) ('AGE', '${profile.age}'),
+      if (city.isNotEmpty && city != '—') ('LOCATION', city),
+      if (nationality?.isNotEmpty ?? false) ('NATIONALITY', nationality!),
+      if (ethnicity?.isNotEmpty ?? false) ('ETHNICITY', ethnicity!),
+    ];
+    return DecoratedBox(
+      key: ValueKey('concept_browse_details_${profile.id}'),
+      decoration: BoxDecoration(color: ZyraColors.surfaceFill),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final compact =
+              MediaQuery.textScalerOf(context).scale(16) > 16 &&
+              constraints.maxHeight < 560;
+          final avatarSize = compact ? _smallerAvatarSize : _avatarSize;
+          return SingleChildScrollView(
+            key: ValueKey('concept_browse_details_scroll_${profile.id}'),
+            physics: const ClampingScrollPhysics(),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: IntrinsicHeight(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(22, 28, 22, 22),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              _avatar(avatarSize),
+                              const SizedBox(height: 16),
+                              Text(
+                                profile.firstName,
+                                textAlign: TextAlign.center,
+                                style: ZyraText.heading(
+                                  size: 34,
+                                ).copyWith(height: 1.05),
+                              ),
+                              if (surname?.isNotEmpty ?? false)
+                                Text(
+                                  surname!,
+                                  textAlign: TextAlign.center,
+                                  style: ZyraText.heading(
+                                    size: 22,
+                                    color: ZyraColors.secondaryText,
+                                  ).copyWith(height: 1.05),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      if (facts.isNotEmpty) const SizedBox(height: 4),
+                      for (int i = 0; i < facts.length; i += 2) ...[
+                        if (i != 0) const SizedBox(height: 10),
+                        IntrinsicHeight(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Expanded(child: _DetailTile(facts[i])),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: i + 1 < facts.length
+                                    ? _DetailTile(facts[i + 1])
+                                    : const SizedBox.shrink(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _DetailTile extends StatelessWidget {
+  const _DetailTile(this.fact);
+
+  final (String, String) fact;
+
+  @override
+  Widget build(BuildContext context) => MergeSemantics(
+    child: Container(
+      key: ValueKey('profile-detail-tile-${fact.$1}'),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: ZyraColors.surfaceBorder),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            fact.$1,
+            style: ZyraText.body(
+              size: 10.5,
+              color: ZyraColors.secondaryText,
+            ).copyWith(letterSpacing: 1, height: 1.05),
+          ),
+          Text(fact.$2, style: ZyraText.body(size: 16).copyWith(height: 1.05)),
+        ],
+      ),
+    ),
+  );
 }

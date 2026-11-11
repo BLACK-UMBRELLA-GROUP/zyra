@@ -42,14 +42,14 @@ Future<Map<String, Object?>> _geometry(
     const ValueKey('concept_browse_details_avatar_photo_$_sara'),
   );
   expect(outer, findsOneWidget);
-  expect(tester.getSize(outer), const Size(56, 56));
+  expect(tester.getSize(outer), const Size(124, 124));
   if (hasPhoto) {
     expect(clip, findsOneWidget);
-    expect(tester.getSize(clip), const Size(50, 50));
+    expect(tester.getSize(clip), const Size(117, 117));
   } else {
     expect(clip, findsNothing);
     expect(
-      find.descendant(of: outer, matching: find.byIcon(Icons.person_outline)),
+      find.descendant(of: outer, matching: find.text('S')),
       findsOneWidget,
     );
   }

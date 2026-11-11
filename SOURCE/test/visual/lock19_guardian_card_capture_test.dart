@@ -244,8 +244,15 @@ void main() {
       expect(find.text('Remove Ibrahim'), findsOneWidget);
       await _cap(h, 'additional_guardian_menu');
       await h.tap('guardian-card-menu-cancel');
-      await swipeGuardianCard(t);
-      await h.flush();
+      final chip = _key('guardian-card-view-$_ibrahim-draft-sara');
+      final origin = t.getCenter(chip);
+      final swipe = await t.startGesture(origin);
+      await swipe.moveBy(const Offset(-90, 0));
+      await t.pump();
+      expect(t.getCenter(chip).dx, closeTo(origin.dx - 90, 1));
+      await _cap(h, 'additional_guardian_card_mid_drag');
+      await swipe.up();
+      await t.pumpAndSettle();
       expect(find.text('Send invitation again'), findsOneWidget);
       expect(_key('guardian-card-menu'), findsNothing);
       await _cap(h, 'invited_guardian_card');

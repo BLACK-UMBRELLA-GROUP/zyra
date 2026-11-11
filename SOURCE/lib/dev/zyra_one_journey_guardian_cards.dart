@@ -1,5 +1,5 @@
-// LOCK 19 V6: Founder preview Guardian cards.
-import 'package:flutter/gestures.dart' show kTouchSlop;
+// LOCK 19 V8: Founder preview Guardian cards.
+import 'package:flutter/gestures.dart' show DragStartBehavior;
 import 'package:flutter/material.dart';
 import '../data/zyra_guardian_capacity.dart';
 import '../services/zyra_account_state.dart';
@@ -69,6 +69,8 @@ class ZyraOneJourneyGuardianCards extends StatefulWidget {
     required this.capacity,
     required this.basic,
     required this.canAct,
+    this.canActInOwnedMenu,
+    this.onMenuRouteChanged,
     required this.interactionEpoch,
     required this.contextIdentity,
     required this.renderIdentity,
@@ -94,6 +96,9 @@ class ZyraOneJourneyGuardianCards extends StatefulWidget {
   final int capacity, initialPage, unread;
   final bool basic;
   final bool Function() canAct;
+  final bool Function()? canActInOwnedMenu;
+  final void Function(ModalRoute<dynamic> route, {required bool open})?
+  onMenuRouteChanged;
   final Object Function() interactionEpoch;
   final Object contextIdentity, renderIdentity;
   final ValueChanged<int> onPage;
@@ -112,15 +117,20 @@ class ZyraOneJourneyGuardianCards extends StatefulWidget {
   State<ZyraOneJourneyGuardianCards> createState() => _GuardianCardsState();
 }
 
-class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
+enum _GuardianCardManagement { makeMain, clearMain, remove }
+
+class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards>
+    with SingleTickerProviderStateMixin {
   int _index = 0, _render = 0;
-  LocalHistoryEntry? _menuEntry;
-  bool Function()? _menuCurrent;
+  late final _slide = AnimationController.unbounded(vsync: this);
+  bool _moving = false;
+  bool _returningFromMenu = false;
   double _drag = 0;
   bool Function()? _dragLease;
   final _invites = <String>{};
   Object? _sheetLease;
   ModalRoute<dynamic>? _sheetRoute;
+  bool Function()? _menuEpochCurrent;
   final _owner = (ZyraAccountState.userId, ZyraAccountState.generation);
 
   List<ZyraGuardianCardPerson> get _people => _orderedPeople(widget);
@@ -160,37 +170,40 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     super.didUpdateWidget(oldWidget);
     final oldPeople = _orderedPeople(oldWidget);
     final oldPerson = _index < oldPeople.length ? oldPeople[_index] : null;
-    if (oldWidget.renderIdentity != widget.renderIdentity) {
-      _render++;
-      if (_sheetLease != null) {
-        _invites.clear();
-        _dismissOwnedSheet();
-      }
-    } else if (oldWidget.canAct != widget.canAct) {
-      _render++;
-    }
-    if (oldWidget.contextIdentity != widget.contextIdentity ||
-        !widget.canAct()) {
-      _invites.clear();
-      _dismissOwnedSheet();
-      _render++;
-    }
+    final changedRender = oldWidget.renderIdentity != widget.renderIdentity;
+    if (changedRender || oldWidget.canAct != widget.canAct) _render++;
+    final hasAuthority = _menuEpochCurrent == null
+        ? widget.canAct
+        : widget.canActInOwnedMenu ?? widget.canAct;
+    final changedContext =
+        oldWidget.contextIdentity != widget.contextIdentity || !hasAuthority();
+    final selectedHere =
+        oldWidget.initialPage != widget.initialPage &&
+        widget.initialPage == _index;
     if (oldWidget.initialPage != widget.initialPage) {
       _index = widget.initialPage;
     }
     _index = _index.clamp(0, _length - 1);
-    if (oldPerson?.person.id != _person?.person.id ||
+    final changedCard =
+        oldPerson?.person.id != _person?.person.id ||
         oldPerson?.person.isMain != _person?.person.isMain ||
         oldWidget.basic != widget.basic ||
-        oldWidget.capacity != widget.capacity) {
-      _clearDrag();
+        oldWidget.capacity != widget.capacity;
+    if (changedContext || changedCard || (changedRender && !selectedHere)) {
+      _resetMotion();
       _render++;
     }
-    if (_menuCurrent?.call() == false) _closeMenu();
+    final guardianChanged =
+        changedContext || changedCard || (changedRender && _sheetLease != null);
+    if (guardianChanged) _invites.clear();
+    if (guardianChanged || _menuEpochCurrent?.call() == false) {
+      _dismissOwnedSheet();
+    }
   }
 
   void _dismissOwnedSheet() {
     _sheetLease = null;
+    _menuEpochCurrent = null;
     final route = _sheetRoute;
     _sheetRoute = null;
     if (route != null) {
@@ -202,10 +215,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
 
   @override
   void dispose() {
-    final entry = _menuEntry;
-    _menuEntry = null;
-    _menuCurrent = null;
-    entry?.remove();
+    _slide.dispose();
     _dismissOwnedSheet();
     super.dispose();
   }
@@ -218,7 +228,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
       epoch == widget.interactionEpoch() &&
       _target == target &&
       _sheetLease == null &&
-      _menuEntry == null &&
+      !_returningFromMenu &&
       ModalRoute.of(context)?.isCurrent == true;
 
   bool Function() _lease() {
@@ -237,76 +247,304 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
 
   VoidCallback _action(VoidCallback action) {
     final current = _lease();
-    return ZyraTapFeedback.onTap(context, () {
-      if (current()) action();
-    }, canAct: current)!;
+    return ZyraTapFeedback.onTap(
+      context,
+      action,
+      canAct: () => !_moving && current(),
+    )!;
   }
 
-  void _move(int next) {
-    if (next < 0 || next >= _length || next == _index) return;
+  void _select(int next) {
     setState(() {
       _index = next;
-      _clearDrag();
       _render++;
     });
     widget.onPage(next);
   }
 
-  void _clearDrag() {
+  Future<void> _move(int next, {bool fromDrag = false}) async {
+    if (_moving || next < 0 || next >= _length || next == _index) return;
+    final current = _lease();
     _drag = 0;
     _dragLease = null;
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _select(next);
+      return;
+    }
+    final direction = next > _index ? 1.0 : -1.0;
+    _moving = true;
+    try {
+      if (fromDrag) {
+        await _slide
+            .animateTo(
+              -1.15 * direction,
+              duration: const Duration(milliseconds: 180),
+              curve: Curves.easeIn,
+            )
+            .orCancel;
+      }
+      if (!current() || next >= _length) return;
+      _slide.value = 1.15 * direction;
+      _select(next);
+      await _slide
+          .animateTo(
+            0,
+            duration: const Duration(milliseconds: 260),
+            curve: Curves.easeOut,
+          )
+          .orCancel;
+    } on TickerCanceled {
+      return; // The parent changed the roster, authority, or selected card.
+    } finally {
+      if (mounted) _resetMotion();
+    }
   }
 
-  void _openMenu() {
+  void _resetMotion() {
+    _drag = 0;
+    _dragLease = null;
+    _moving = false;
+    _slide.value = 0;
+  }
+
+  Future<void> _springBack() async {
+    _drag = 0;
+    _dragLease = null;
+    if (_slide.value == 0) return;
+    try {
+      await _slide
+          .animateTo(
+            0,
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOutBack,
+          )
+          .orCancel;
+    } on TickerCanceled {
+      // A fresh drag or parent update can interrupt the return.
+    }
+  }
+
+  Future<void> _openMenu() async {
     final route = ModalRoute.of(context);
-    if (route == null || !route.isCurrent || _menuEntry != null) return;
-    final authority = widget.canAct;
-    final target = _target;
-    final epoch = widget.interactionEpoch();
+    final person = _person?.person;
+    if (person == null || route?.isCurrent != true || _sheetLease != null) {
+      return;
+    }
+    final navigator = Navigator.of(context, rootNavigator: true);
+    final onMenuRouteChanged = widget.onMenuRouteChanged;
+    final lease = Object();
+    final authority = widget.canActInOwnedMenu ?? widget.canAct;
     final identity = widget.contextIdentity;
-    final renderIdentity = widget.renderIdentity;
-    final wasMain = _person?.person.isMain;
+    final originRender = widget.renderIdentity;
     final basic = widget.basic;
     final capacity = widget.capacity;
-    _render++;
-    _clearDrag();
-    late final LocalHistoryEntry entry;
-    var revoked = false;
-    _menuCurrent = () {
-      if (revoked) return false;
-      final current =
-          mounted &&
-          identical(_menuEntry, entry) &&
-          _owner == (ZyraAccountState.userId, ZyraAccountState.generation) &&
-          renderIdentity == widget.renderIdentity &&
-          wasMain == _person?.person.isMain &&
-          basic == widget.basic &&
-          capacity == widget.capacity &&
-          identity == widget.contextIdentity &&
-          epoch == widget.interactionEpoch() &&
-          _target == target &&
-          route.isCurrent &&
-          authority() &&
-          widget.canAct();
-      if (!current) revoked = true;
-      return current;
-    };
-    entry = LocalHistoryEntry(
-      impliesAppBarDismissal: false,
-      onRemove: () {
-        if (!identical(_menuEntry, entry)) return;
-        setState(() {
-          _menuEntry = null;
-          _menuCurrent = null;
-          _render++;
-        });
+    final epoch = widget.interactionEpoch;
+    Object? sheetEpoch, confirmedEpoch;
+    var confirmed = false;
+    late final ModalBottomSheetRoute<_GuardianCardManagement> menuRoute;
+    _resetMotion();
+    setState(() {
+      _sheetLease = lease;
+      _render++;
+    });
+
+    bool sameGuardian() =>
+        mounted &&
+        _owner == (ZyraAccountState.userId, ZyraAccountState.generation) &&
+        identity == widget.contextIdentity &&
+        _target == person.id &&
+        _person?.person.isMain == person.isMain &&
+        widget.basic == basic &&
+        widget.capacity == capacity;
+
+    bool ownsMenu() =>
+        identical(_sheetLease, lease) &&
+        sameGuardian() &&
+        originRender == widget.renderIdentity &&
+        authority() &&
+        (widget.canActInOwnedMenu ?? widget.canAct)();
+
+    bool current() =>
+        ownsMenu() &&
+        sheetEpoch == widget.interactionEpoch() &&
+        menuRoute.isCurrent;
+
+    // Ignore this route's own push and pop. A route pushed over this
+    // still-active sheet invalidates the actions and dismisses only this sheet.
+    _menuEpochCurrent = () =>
+        sheetEpoch == null ||
+        !menuRoute.isActive ||
+        sheetEpoch == widget.interactionEpoch();
+
+    final localizations = MaterialLocalizations.of(context);
+    menuRoute = ModalBottomSheetRoute<_GuardianCardManagement>(
+      capturedThemes: InheritedTheme.capture(
+        from: context,
+        to: navigator.context,
+      ),
+      isScrollControlled: true,
+      useSafeArea: true,
+      enableDrag: false,
+      showDragHandle: false,
+      barrierLabel: 'Dismiss Guardian actions',
+      barrierOnTapHint: localizations.scrimOnTapHint(
+        localizations.bottomSheetLabel,
+      ),
+      modalBarrierColor: const Color(0xFF1E1610).withValues(alpha: .38),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      builder: (sheetContext) {
+        bool choose(_GuardianCardManagement action) {
+          if (!current() || confirmedEpoch != null) return false;
+          Navigator.of(sheetContext).pop(action);
+          confirmedEpoch = epoch();
+          return true;
+        }
+
+        const corners = BorderRadius.vertical(top: Radius.circular(26));
+        final sheet = DecoratedBox(
+          decoration: const BoxDecoration(
+            borderRadius: corners,
+            boxShadow: [
+              BoxShadow(
+                color: Color(0x241E1610),
+                blurRadius: 24,
+                offset: Offset(0, -3),
+              ),
+            ],
+          ),
+          child: Material(
+            key: const ValueKey('guardian-card-menu-sheet'),
+            color: const Color(0xFFF7F2EA),
+            borderRadius: corners,
+            clipBehavior: Clip.antiAlias,
+            child: SafeArea(
+              top: false,
+              minimum: const EdgeInsets.only(bottom: 14),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(18, 11, 18, 0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Center(
+                      child: Container(
+                        width: 36,
+                        height: 4,
+                        decoration: BoxDecoration(
+                          color: ZyraColors.ink(.20),
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      '${person.firstName} · ${person.isMain ? 'Main Guardian' : 'Additional Guardian'}',
+                      textAlign: TextAlign.center,
+                      style: ZyraText.body(
+                        size: 12,
+                        color: ZyraColors.ink(.55),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    zyraGuardianCardManageActions(
+                      person: person,
+                      otherGuardians: widget.people
+                          .map((p) => p.person)
+                          .where((p) => p.id != person.id)
+                          .toList(),
+                      canAct: current,
+                      makeMainGuardian: (_) async =>
+                          choose(_GuardianCardManagement.makeMain),
+                      clearMainGuardian: (_) async =>
+                          choose(_GuardianCardManagement.clearMain),
+                      removeGuardian: (_) async =>
+                          choose(_GuardianCardManagement.remove)
+                          ? null
+                          : 'This is no longer available. Nothing changed.',
+                      closeMenu: () {
+                        if (current()) Navigator.of(sheetContext).pop();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+        final feedback = sheetContext
+            .dependOnInheritedWidgetOfExactType<ZyraTapFeedback>();
+        return feedback == null
+            ? sheet
+            : ZyraTapFeedback(
+                level: feedback.level,
+                canAct: current,
+                child: sheet,
+              );
       },
     );
-    setState(() => _menuEntry = entry);
-    route.addLocalHistoryEntry(entry);
-  }
+    _sheetRoute = menuRoute;
+    _GuardianCardManagement? selected;
+    try {
+      onMenuRouteChanged?.call(menuRoute, open: true);
+      final result = navigator.push(menuRoute);
+      sheetEpoch = epoch();
+      selected = await result;
+    } finally {
+      onMenuRouteChanged?.call(menuRoute, open: false);
+      if (mounted && identical(_sheetLease, lease)) {
+        confirmed =
+            selected != null &&
+            confirmedEpoch == widget.interactionEpoch() &&
+            route?.isCurrent == true &&
+            ownsMenu();
+        setState(() {
+          _returningFromMenu = confirmed;
+          _menuEpochCurrent = null;
+          _sheetLease = null;
+          _sheetRoute = null;
+          _render++;
+        });
+        widget.onResume?.call();
+      }
+    }
+    if (!confirmed || selected == null) return;
 
-  void _closeMenu() => _menuEntry?.remove();
+    final resumeEpoch = widget.interactionEpoch();
+    try {
+      // The shell binds its actions to its route epoch. After this menu's
+      // confirmed pop, allow its requested rebuild to bind the new handlers.
+      await WidgetsBinding.instance.endOfFrame;
+      if (!sameGuardian() ||
+          !widget.canAct() ||
+          route?.isCurrent != true ||
+          resumeEpoch != widget.interactionEpoch()) {
+        return;
+      }
+      final error = switch (selected) {
+        _GuardianCardManagement.makeMain =>
+          await widget.makeMain(person.id)
+              ? null
+              : "That didn't go through. Please try again.",
+        _GuardianCardManagement.clearMain =>
+          await widget.clearMain(person.id)
+              ? null
+              : "That didn't go through. Please try again.",
+        _GuardianCardManagement.remove => await widget.remove(person.id),
+      };
+      if (error != null &&
+          mounted &&
+          sameGuardian() &&
+          widget.canAct() &&
+          route?.isCurrent == true) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(error)));
+      }
+    } finally {
+      if (mounted) setState(() => _returningFromMenu = false);
+    }
+  }
 
   Future<void> _family(ZyraGuardianCardPerson person) async {
     if (!person.basic || _sheetLease != null) return;
@@ -385,7 +623,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
           _render++;
         });
         // No permission is replayed after the owned route has closed.
-        if (baseEpoch == widget.interactionEpoch()) _clearDrag();
+        if (baseEpoch == widget.interactionEpoch()) _resetMotion();
         widget.onResume?.call();
       }
     }
@@ -400,6 +638,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     final largerText = textScaler.scale(14) > 14;
     final target = _target;
     final faceLease = _lease();
+    bool canMove() => !_moving && faceLease();
     final people = _people;
     final basicCapacity = widget.basic
         ? ZyraGuardianCapacity.fromCount(
@@ -412,11 +651,12 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
         : null;
     final upgrade = widget.onUpgrade;
     final bottom = ZyraNavBarMetrics.contentBottomClearance(context);
-    final move = ZyraTapFeedback.onChanged<int>(
+    final move = ZyraTapFeedback.onChanged<({int index, bool swipe})>(
       context,
-      _move,
-      canAct: faceLease,
+      (selection) => _move(selection.index, fromDrag: selection.swipe),
+      canAct: canMove,
     )!;
+    void moveByTap(int next) => move((index: next, swipe: false));
     return SafeArea(
       bottom: false,
       child: Padding(
@@ -474,75 +714,97 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
             ),
             if (_guardianCount > 0) ...[
               const SizedBox(height: ZyraPreviewSpacing.titleToDots),
-              ZyraProfilesDots(
-                count: _guardianCount,
-                index: _index < _guardianCount ? _index : -1,
-                dotKey: (i) => ValueKey('guardian-card-dot-$i'),
-                targetKey: (i) => ValueKey('guardian-card-dot-target-$i'),
-                itemLabel: (i) =>
-                    i < people.length ? people[i].person.firstName : 'Omar',
-                canAct: faceLease,
-                onSelected: (index) {
-                  if (index != _index) _move(index);
-                },
-                exposeSemanticAction: true,
+              AnimatedBuilder(
+                animation: _slide,
+                builder: (context, child) =>
+                    IgnorePointer(ignoring: _moving, child: child),
+                child: ZyraProfilesDots(
+                  count: _guardianCount,
+                  index: _index < _guardianCount ? _index : -1,
+                  dotKey: (i) => ValueKey('guardian-card-dot-$i'),
+                  targetKey: (i) => ValueKey('guardian-card-dot-target-$i'),
+                  itemLabel: (i) =>
+                      i < people.length ? people[i].person.firstName : 'Omar',
+                  canAct: faceLease,
+                  onSelected: (index) {
+                    if (canMove() && index != _index) _move(index);
+                  },
+                  exposeSemanticAction: true,
+                ),
               ),
               // The visible dot ends 9 pt before its 24 pt tap area.
               const SizedBox(height: 3),
             ] else
               const SizedBox(height: 8),
             Expanded(
-              child: GestureDetector(
-                key: ValueKey('guardian-card-$target'),
-                behavior: HitTestBehavior.opaque,
-                onHorizontalDragDown: (_) {
-                  if (!faceLease()) return;
-                  _drag = 0;
-                  _dragLease = faceLease;
-                },
-                onHorizontalDragUpdate: (event) {
-                  if (faceLease() && _dragLease?.call() == true) {
+              child: LayoutBuilder(
+                builder: (context, constraints) => GestureDetector(
+                  key: ValueKey('guardian-card-$target'),
+                  behavior: HitTestBehavior.opaque,
+                  dragStartBehavior: DragStartBehavior.down,
+                  onHorizontalDragDown: (_) {
+                    if (!canMove()) return;
+                    _resetMotion();
+                    _dragLease = faceLease;
+                  },
+                  onHorizontalDragUpdate: (event) {
+                    if (_moving || _dragLease?.call() != true) return;
                     _drag += event.delta.dx;
-                  }
-                },
-                onHorizontalDragCancel: () {
-                  if (faceLease()) _clearDrag();
-                },
-                onHorizontalDragEnd: (_) {
-                  final current = _dragLease?.call() == true;
-                  final drag = _drag;
-                  if (!faceLease()) return;
-                  _clearDrag();
-                  if (!current) return;
-                  if (drag.abs() < kTouchSlop) return;
-                  final next = _index + (drag < 0 ? 1 : -1);
-                  if (next >= 0 && next < _length) move(next);
-                },
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    if (add)
-                      ZyraGuardianAddCard(
-                        basicCapacity: basicCapacity,
-                        onUpgrade: widget.basic && upgrade != null
-                            ? _action(upgrade)
-                            : null,
-                        allowContentScroll: largerText,
-                      )
-                    else
-                      ExcludeSemantics(
-                        excluding: _menuEntry != null,
-                        child: _card(person),
-                      ),
-                    if (!add && _index > 0)
-                      _edge(left: true, onTap: () => move(_index - 1)),
-                    if (_index + 1 < _guardianCount)
-                      _edge(left: false, onTap: () => move(_index + 1)),
-                    if (person != null && _menuCurrent != null)
-                      Positioned.fill(
-                        child: _menu(person, _menuEntry!, _menuCurrent!),
-                      ),
-                  ],
+                    if (MediaQuery.disableAnimationsOf(context)) return;
+                    final atEnd = _drag > 0
+                        ? _index == 0
+                        : _index == _length - 1;
+                    final offset = atEnd ? _drag * .25 : _drag;
+                    _slide.value = (offset / constraints.maxWidth).clamp(
+                      -1.0,
+                      1.0,
+                    );
+                  },
+                  onHorizontalDragCancel: () {
+                    if (!_moving) _springBack();
+                  },
+                  onHorizontalDragEnd: (_) {
+                    final next = _index + (_drag < 0 ? 1 : -1);
+                    if (!_moving &&
+                        _dragLease?.call() == true &&
+                        _drag.abs() >= 60 &&
+                        next >= 0 &&
+                        next < _length) {
+                      move((index: next, swipe: true));
+                    } else if (!_moving) {
+                      _springBack();
+                    }
+                  },
+                  child: AnimatedBuilder(
+                    animation: _slide,
+                    builder: (context, child) => FractionalTranslation(
+                      key: const ValueKey('guardian-card-slide'),
+                      translation: Offset(_slide.value, 0),
+                      child: IgnorePointer(ignoring: _moving, child: child),
+                    ),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        if (add)
+                          ZyraGuardianAddCard(
+                            basicCapacity: basicCapacity,
+                            onUpgrade: widget.basic && upgrade != null
+                                ? _action(upgrade)
+                                : null,
+                            allowContentScroll: largerText,
+                          )
+                        else
+                          _card(person),
+                        if (!add && _index > 0)
+                          _edge(left: true, onTap: () => moveByTap(_index - 1)),
+                        if (_index + 1 < _guardianCount)
+                          _edge(
+                            left: false,
+                            onTap: () => moveByTap(_index + 1),
+                          ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -571,52 +833,6 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
       onTap: onTap,
     ),
   );
-
-  Widget _menu(
-    ZyraGuardianCardPerson person,
-    LocalHistoryEntry entry,
-    bool Function() current,
-  ) {
-    void close() {
-      if (identical(_menuEntry, entry)) entry.remove();
-    }
-
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        ModalBarrier(
-          color: const Color(0x241E1610),
-          onDismiss: close,
-          semanticsLabel: 'Dismiss Guardian actions',
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Material(
-            key: const ValueKey('guardian-card-menu-sheet'),
-            color: const Color(0xFFF7F2EA),
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(22)),
-            child: SingleChildScrollView(
-              primary: false,
-              physics: const ClampingScrollPhysics(),
-              padding: const EdgeInsets.fromLTRB(30, 12, 30, 12),
-              child: zyraGuardianCardManageActions(
-                person: person.person,
-                otherGuardians: widget.people
-                    .map((p) => p.person)
-                    .where((p) => p.id != person.person.id)
-                    .toList(),
-                canAct: current,
-                makeMainGuardian: widget.makeMain,
-                clearMainGuardian: widget.clearMain,
-                removeGuardian: widget.remove,
-                closeMenu: close,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _card(ZyraGuardianCardPerson? person) => ZyraFloatingSurface(
     radius: 22,
@@ -677,6 +893,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     String role, {
     bool main = false,
     bool invited = false,
+    required bool guardianOne,
   }) => Stack(
     children: [
       Padding(
@@ -688,6 +905,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
               opacity: invited ? .55 : 1,
               child: ZyraGoldRingMonogram(
                 name: name,
+                guardianOne: guardianOne,
                 size: 60,
                 fontSize: 28,
                 textScaler: TextScaler.noScaling,
@@ -792,6 +1010,8 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
           guardian.firstName,
           guardian.isMain ? 'MAIN GUARDIAN' : 'ADDITIONAL GUARDIAN',
           main: guardian.isMain,
+          guardianOne:
+              person.familyPlace || person.membership == 'Guardian One',
         ),
         const SizedBox(height: 12),
         _detail('Relationship', guardian.relationshipLabel ?? 'Guardian'),
@@ -1098,7 +1318,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
   Widget _invited() => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
-      _top('Omar', 'INVITATION SENT', invited: true),
+      _top('Omar', 'INVITATION SENT', invited: true, guardianOne: false),
       const SizedBox(height: 12),
       _detail('Relationship', 'Brother'),
       _detail('Membership', 'Not joined yet'),

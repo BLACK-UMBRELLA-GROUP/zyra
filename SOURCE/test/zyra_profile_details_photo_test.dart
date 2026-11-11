@@ -102,13 +102,19 @@ Future<void> _mount(
 }
 
 void _expectFallback(WidgetTester tester) {
-  final icon = find.descendant(
-    of: _avatar(),
-    matching: find.byIcon(Icons.person_outline),
+  final initial = find.descendant(of: _avatar(), matching: find.text('S'));
+  expect(initial, findsOneWidget);
+  expect(tester.widget<Text>(initial).textScaler, TextScaler.noScaling);
+  expect(
+    find.descendant(
+      of: _avatar(),
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is ColoredBox && widget.color == ZyraColors.avatarSand,
+      ),
+    ),
+    findsOneWidget,
   );
-  expect(icon, findsOneWidget);
-  expect(tester.widget<Icon>(icon).size, 29);
-  expect(tester.widget<Icon>(icon).color, ZyraColors.journeyGold);
   expect(find.byType(CircularProgressIndicator), findsNothing);
   expect(find.byType(LinearProgressIndicator), findsNothing);
   expect(find.byType(ZyraLoading), findsNothing);
@@ -119,13 +125,13 @@ Map<String, Rect> _identityGeometry(WidgetTester tester) => {
   for (final value in [
     'Sara',
     'Ahmed',
-    'Age',
+    'AGE',
     '27',
-    'Location',
+    'LOCATION',
     'Birmingham',
-    'Nationality',
+    'NATIONALITY',
     'British',
-    'Ethnicity',
+    'ETHNICITY',
     'South Asian',
   ])
     value: tester.getRect(find.text(value)),
@@ -153,82 +159,81 @@ void main() {
     PaintingBinding.instance.imageCache.clearLiveImages();
   });
 
-  testWidgets('missing caller photo keeps the existing gold-ring person icon', (
-    tester,
-  ) async {
-    await _mount(tester, seekerPlan: ZyraPlan.one);
-    _expectFallback(tester);
-    expect(tester.getSize(_avatar()), const Size(56, 56));
-    expect(_photo(), findsNothing);
-    expect(find.byType(Image), findsNothing);
-    final decoration =
-        tester.widget<Container>(_avatar()).decoration! as BoxDecoration;
-    expect(decoration.shape, BoxShape.circle);
-    expect(
-      (decoration.border! as Border).top.color,
-      ZyraColors.journeyGold.withValues(alpha: .65),
-    );
-    expect(decoration.boxShadow!.single.blurRadius, 24);
-    expect(
-      decoration.boxShadow!.single.color,
-      ZyraColors.journeyGold.withValues(alpha: .07),
-    );
-    expect(
-      tester.getSemantics(_avatar()),
-      matchesSemantics(label: 'Profile photo, Seeker One', isImage: true),
-    );
-  });
-
   testWidgets(
-    'loaded photo fits the unchanged ring and leaves identity fixed',
+    'missing caller photo shows the warm-sand initial inside the One ring',
     (tester) async {
-      await _mount(tester);
-      final before = _identityGeometry(tester);
-      final stream = _pending(1);
-      final pixels = await _pixels(tester, Colors.teal);
-      stream.frame.complete(ImageInfo(image: pixels.clone()));
-      await _mount(
-        tester,
-        firstPhoto: Image(
-          image: stream.provider,
-          fit: BoxFit.fill,
-          alignment: Alignment.bottomRight,
-        ),
-      );
-      await tester.pump();
-      final outer = tester.getRect(_avatar());
-      final photo = tester.getRect(_photo());
+      await _mount(tester, seekerPlan: ZyraPlan.one);
+      _expectFallback(tester);
+      expect(tester.getSize(_avatar()), const Size(124, 124));
+      expect(_photo(), findsNothing);
+      expect(find.byType(Image), findsNothing);
       final decoration =
           tester.widget<Container>(_avatar()).decoration! as BoxDecoration;
-      final ring = (decoration.border! as Border).top.width;
-      expect(outer.size, const Size(56, 56));
-      expect(photo.size, const Size(50, 50));
-      expect(photo.left - outer.left - ring, 2);
-      expect(outer.right - photo.right - ring, 2);
-      expect(photo.top - outer.top - ring, 2);
-      expect(outer.bottom - photo.bottom - ring, 2);
-      final image = tester.widget<Image>(find.byType(Image));
-      expect(image.image, same(stream.provider));
-      expect(image.fit, BoxFit.cover);
-      expect(image.alignment, Alignment.center);
-      expect(tester.widget<RawImage>(find.byType(RawImage)).image, isNotNull);
-      expect(find.byIcon(Icons.person_outline), findsNothing);
-      expect(find.bySemanticsLabel('Profile photo'), findsNothing);
-      expect(_identityGeometry(tester), before);
-
-      await _mount(
-        tester,
-        seekerPlan: ZyraPlan.one,
-        firstPhoto: Image(image: stream.provider),
+      expect(decoration.shape, BoxShape.circle);
+      expect(
+        (decoration.border! as Border).top.color,
+        const Color.fromRGBO(169, 121, 46, .75),
       );
-      expect(tester.getRect(_avatar()), outer);
-      expect(tester.getRect(_photo()), photo);
+      expect((decoration.border! as Border).top.width, 1.5);
       expect(
         tester.getSemantics(_avatar()),
         matchesSemantics(label: 'Profile photo, Seeker One', isImage: true),
       );
     },
   );
+
+  testWidgets('loaded photo fits the Design 2 ring and leaves identity fixed', (
+    tester,
+  ) async {
+    await _mount(tester);
+    final before = _identityGeometry(tester);
+    final stream = _pending(1);
+    final pixels = await _pixels(tester, Colors.teal);
+    stream.frame.complete(ImageInfo(image: pixels.clone()));
+    await _mount(
+      tester,
+      firstPhoto: Image(
+        image: stream.provider,
+        fit: BoxFit.fill,
+        alignment: Alignment.bottomRight,
+      ),
+    );
+    await tester.pump();
+    final outer = tester.getRect(_avatar());
+    final photo = tester.getRect(_photo());
+    final decoration =
+        tester.widget<Container>(_avatar()).decoration! as BoxDecoration;
+    final ring = (decoration.border! as Border).top.width;
+    expect(outer.size, const Size(124, 124));
+    expect(photo.size, const Size(117, 117));
+    expect(photo.left - outer.left - ring, 2);
+    expect(outer.right - photo.right - ring, 2);
+    expect(photo.top - outer.top - ring, 2);
+    expect(outer.bottom - photo.bottom - ring, 2);
+    final image = tester.widget<Image>(find.byType(Image));
+    expect(image.image, same(stream.provider));
+    expect(image.fit, BoxFit.cover);
+    expect(image.alignment, const Alignment(0, -.7));
+    expect(tester.widget<RawImage>(find.byType(RawImage)).image, isNotNull);
+    expect(
+      find.descendant(of: _avatar(), matching: find.text('S')),
+      findsNothing,
+    );
+    expect(find.bySemanticsLabel('Profile photo'), findsNothing);
+    expect(_identityGeometry(tester), before);
+
+    await _mount(
+      tester,
+      seekerPlan: ZyraPlan.one,
+      firstPhoto: Image(image: stream.provider),
+    );
+    expect(tester.getRect(_avatar()), outer);
+    expect(tester.getRect(_photo()), photo);
+    expect(
+      tester.getSemantics(_avatar()),
+      matchesSemantics(label: 'Profile photo, Seeker One', isImage: true),
+    );
+  });
 
   testWidgets('Seeker Basic has a full circle with or without a photo', (
     tester,
@@ -251,7 +256,7 @@ void main() {
     );
     await tester.pump();
 
-    expect(tester.getSize(_avatar()), const Size(56, 56));
+    expect(tester.getSize(_avatar()), const Size(124, 124));
     expect(tester.getRect(_photo()), tester.getRect(_avatar()));
     final decoration =
         tester.widget<Container>(_avatar()).decoration! as BoxDecoration;
@@ -259,7 +264,10 @@ void main() {
     expect(decoration.border, isNull);
     expect(decoration.boxShadow, isNull);
     expect(tester.widget<RawImage>(find.byType(RawImage)).image, isNotNull);
-    expect(find.byIcon(Icons.person_outline), findsNothing);
+    expect(
+      find.descendant(of: _avatar(), matching: find.text('S')),
+      findsNothing,
+    );
     expect(
       tester.getSemantics(_avatar()),
       matchesSemantics(label: 'Profile photo', isImage: true),
@@ -268,7 +276,7 @@ void main() {
   });
 
   testWidgets(
-    'pending and failed real Image frames use the icon without a loader',
+    'pending and failed real Image frames use the initial without a loader',
     (tester) async {
       final stream = _pending(2);
       await _mount(tester, firstPhoto: Image(image: stream.provider));
@@ -281,7 +289,7 @@ void main() {
       await tester.pump();
       await tester.pump();
       _expectFallback(tester);
-      expect(tester.getSize(_avatar()), const Size(56, 56));
+      expect(tester.getSize(_avatar()), const Size(124, 124));
       expect(_identityGeometry(tester), before);
       expect(tester.takeException(), isNull);
     },
@@ -313,7 +321,10 @@ void main() {
       await tester.pump();
       await tester.pump();
       expect(find.byType(RawImage), findsOneWidget);
-      expect(find.byIcon(Icons.person_outline), findsNothing);
+      expect(
+        find.descendant(of: _avatar(), matching: find.text('S')),
+        findsNothing,
+      );
       expect(_identityGeometry(tester), before);
     },
   );
@@ -338,7 +349,10 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(find.byIcon(Icons.person_outline), findsNothing);
+      expect(
+        find.descendant(of: _avatar(), matching: find.text('S')),
+        findsNothing,
+      );
       expect(find.byType(ZyraProfileImageFallback), findsNothing);
       expect(
         tester

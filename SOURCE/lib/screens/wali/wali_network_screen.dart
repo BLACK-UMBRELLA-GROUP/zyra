@@ -193,7 +193,7 @@ class _WaliNetworkScreenState extends State<WaliNetworkScreen> {
                   ),
                   onMembership: () => Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (_) => const UpgradeScreen(
+                      builder: (_) => const UpgradeScreen.compare(
                         telemetrySurface: ZyraTelemetrySurface.guardian,
                       ),
                     ),

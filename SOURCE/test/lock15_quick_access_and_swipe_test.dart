@@ -65,9 +65,11 @@ void main() {
           final routes = guardian
               ? {
                   'guardian_requests': 'guardian_requests',
-                  'guardian_connect': basic ? 'membership' : 'guardian_connect',
+                  'guardian_connect': basic
+                      ? 'one_upgrade'
+                      : 'guardian_connect',
                   'guardian_introductions': basic
-                      ? 'membership'
+                      ? 'one_upgrade'
                       : 'guardian_introductions',
                   'guardian_notifications': 'notifications',
                 }
@@ -81,10 +83,11 @@ void main() {
             await h.tap(route.key);
             h.assertPage(route.value);
             final nav = find.byType(ZyraShellNavigation);
-            if (route.value == 'membership') {
+            if (route.value == 'one_upgrade') {
               expect(nav, findsNothing);
-              await returnZyraPreviewPage(tester);
-              await h.flush();
+              expect(find.text('Guardian One'), findsOneWidget);
+              expect(find.text('Chat in a Journey'), findsOneWidget);
+              await h.tapText('Not now');
             } else {
               expect(tester.widget<ZyraShellNavigation>(nav).currentIndex, 2);
               expect(tester.getSize(_key('compact-nav-surface')).height, 58);

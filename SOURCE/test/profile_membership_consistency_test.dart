@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/screens/profile/profile_screen.dart';
 import 'package:zyra/screens/subscription/upgrade_screen.dart';
+import 'package:zyra/screens/subscription/zyra_one_upgrade_page.dart';
 import 'package:zyra/screens/wali/wali_profile_screen.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
@@ -410,9 +411,33 @@ void main() {
           isImage: true,
         ),
       );
+      await tester.tap(find.byKey(const ValueKey('membership-upgrade')));
+      await tester.pumpAndSettle();
+      expect(find.byType(UpgradeScreen), findsOneWidget);
+      expect(find.byType(ZyraOneUpgradePage), findsNothing);
     } finally {
       semantics.dispose();
     }
+  });
+
+  testWidgets('verified Seeker Basic Profile opens Seeker One comparison', (
+    tester,
+  ) async {
+    await tester.runAsync(() async {
+      SharedPreferences.setMockInitialValues({});
+      await ZyraLocalPrefs.init();
+      AppState.instance.hydrateFrom(
+        plan: ZyraPlan.basic,
+        verifiedSeekerPlan: (plan: ZyraPlan.basic, expiresAt: null),
+      );
+    });
+    await pumpProfile(tester, const ProfileScreen());
+    expect(find.text('Seeker Basic'), findsOneWidget);
+    expect(find.text('See Seeker One'), findsOneWidget);
+    await tester.tap(find.text('See Seeker One'));
+    await tester.pumpAndSettle();
+    expect(find.byType(ZyraOneUpgradePage), findsOneWidget);
+    expect(find.text('Seeker One'), findsOneWidget);
   });
 
   for (final guardian in [false, true]) {
@@ -704,11 +729,7 @@ void main() {
             'SAFETY & SHARING',
           }.contains(label),
         ),
-        orderedEquals(const [
-          'MEMBERSHIP',
-          'ABOUT ME',
-          'SAFETY & SHARING',
-        ]),
+        orderedEquals(const ['MEMBERSHIP', 'ABOUT ME', 'SAFETY & SHARING']),
       );
       expect(sectionLabels, isNot(contains('PERSONALISATION')));
       expect(find.text('Appearance & haptics'), findsNothing);

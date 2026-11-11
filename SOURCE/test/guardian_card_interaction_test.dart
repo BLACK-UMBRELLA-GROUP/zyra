@@ -148,6 +148,8 @@ class _HarnessState extends State<_Harness> {
 
   void changeRevision() => setState(() => revision++);
 
+  void changeEpoch() => setState(() => epoch++);
+
   void selectFromParent(int page) => setState(() => initialPage = page);
 
   void removeGuardian(String id, {bool resetPage = false}) => setState(() {
@@ -307,6 +309,7 @@ void main() {
     double bottomInset = 0,
     double scale = 1,
     ZyraGuardianFamilyState familyState = ZyraGuardianFamilyState.noFamily,
+    bool disableAnimations = true,
   }) async {
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = size;
@@ -322,9 +325,10 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(
-            context,
-          ).copyWith(textScaler: TextScaler.linear(scale)),
+          data: MediaQuery.of(context).copyWith(
+            textScaler: TextScaler.linear(scale),
+            disableAnimations: disableAnimations,
+          ),
           child: child!,
         ),
         home: _Harness(
@@ -539,6 +543,117 @@ void main() {
     expect(state().pages, [1]);
     expect(haptics(), before);
   });
+
+  testWidgets('Guardian follows a chip drag and springs back below 60 pt', (
+    tester,
+  ) async {
+    await mount(tester, initialPage: 1, disableAnimations: false);
+    final chip = _view(_ibrahimId);
+    final start = tester.getCenter(chip);
+    final gesture = await tester.startGesture(start);
+    await gesture.moveBy(const Offset(-42, 0));
+    await tester.pump();
+    expect(tester.getCenter(chip).dx, closeTo(start.dx - 42, 1));
+    await gesture.up();
+    await tester.pumpAndSettle();
+    expect(tester.getCenter(chip), start);
+    expect(state().permissions, isEmpty);
+    expect(state().pages, isEmpty);
+  });
+
+  testWidgets('Guardian slides out then in from a Chat chip swipe', (
+    tester,
+  ) async {
+    await mount(tester, initialPage: 1, disableAnimations: false);
+    final chip = _chat(_ibrahimId);
+    final start = tester.getCenter(chip);
+    final gesture = await tester.startGesture(start);
+    await gesture.moveBy(const Offset(-110, 0));
+    await tester.pump();
+    expect(tester.getCenter(chip).dx, closeTo(start.dx - 110, 1));
+
+    await gesture.up();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 90));
+    expect(tester.getCenter(chip).dx, lessThan(start.dx - 110));
+    expect(state().pages, isEmpty);
+    await tester.pump(const Duration(milliseconds: 91));
+    await tester.pump();
+    final moving = find.byKey(const ValueKey('guardian-card-slide'));
+    expect(_card('preview-invited-omar'), findsOneWidget);
+    expect(
+      tester.widget<FractionalTranslation>(moving).translation.dx,
+      greaterThan(0),
+    );
+    await tester.pumpAndSettle();
+    expect(tester.widget<FractionalTranslation>(moving).translation.dx, 0);
+    expect(state().pages, [2]);
+    expect(state().permissions, isEmpty);
+  });
+
+  testWidgets('Guardian resists at the end and animates edge and dot taps', (
+    tester,
+  ) async {
+    await mount(tester, disableAnimations: false);
+    final moving = find.byKey(const ValueKey('guardian-card-slide'));
+    final start = tester.getCenter(_card(_hassanId));
+    final gesture = await tester.startGesture(start);
+    await gesture.moveBy(const Offset(120, 0));
+    await tester.pump();
+    final resistant = tester
+        .widget<FractionalTranslation>(moving)
+        .translation
+        .dx;
+    expect(resistant, greaterThan(0));
+    expect(resistant, lessThan(120 / tester.getSize(_card(_hassanId)).width));
+    await gesture.up();
+    await tester.pumpAndSettle();
+    expect(state().pages, isEmpty);
+    await tester.tap(_edge('right'));
+    await tester.pump();
+    expect(_card(_ibrahimId), findsOneWidget);
+    expect(
+      tester.widget<FractionalTranslation>(moving).translation.dx,
+      greaterThan(0),
+    );
+    final before = haptics();
+    await tester.tap(_dotTarget(0), warnIfMissed: false);
+    await tester.pumpAndSettle();
+    expect(state().pages, [1]);
+    expect(haptics(), before);
+    await tester.tap(_dotTarget(0));
+    await tester.pump();
+    expect(_card(_hassanId), findsOneWidget);
+    expect(
+      tester.widget<FractionalTranslation>(moving).translation.dx,
+      lessThan(0),
+    );
+    await tester.pumpAndSettle();
+    expect(state().pages, [1, 0]);
+  });
+
+  testWidgets(
+    'Reduce Motion changes Guardian immediately without dragging artwork',
+    (tester) async {
+      await mount(tester, initialPage: 1);
+      final chip = _view(_ibrahimId);
+      final start = tester.getCenter(chip);
+      final gesture = await tester.startGesture(start);
+      await gesture.moveBy(const Offset(-110, 0));
+      await tester.pump();
+      expect(tester.getCenter(chip), start);
+      await gesture.up();
+      await tester.pump();
+      expect(_card('preview-invited-omar'), findsOneWidget);
+      final moving = find.byKey(const ValueKey('guardian-card-slide'));
+      expect(
+        tester.widget<FractionalTranslation>(moving).translation,
+        Offset.zero,
+      );
+      expect(state().permissions, isEmpty);
+      expect(state().pages, [2]);
+    },
+  );
 
   testWidgets('26 pt card edges select once and stop at the ends', (
     tester,
@@ -980,7 +1095,7 @@ void main() {
     expect(state().pages, isEmpty);
   });
 
-  testWidgets('A retained menu barrier cannot dismiss a reopened menu', (
+  testWidgets('Guardian menu dims the whole screen and has owned dismissal', (
     tester,
   ) async {
     await mount(tester);
@@ -990,28 +1105,83 @@ void main() {
       expect(_menuSheet, findsOneWidget);
     }
 
-    VoidCallback dismiss() => tester
-        .widget<ModalBarrier>(
-          find.descendant(
-            of: _card(_hassanId),
-            matching: find.byType(ModalBarrier),
-          ),
-        )
-        .onDismiss!;
-
     await open();
-    final stale = dismiss();
+    expect(find.text('Hassan · Main Guardian'), findsOneWidget);
+    expect(
+      find.descendant(of: _card(_hassanId), matching: _menuSheet),
+      findsNothing,
+    );
+    final route =
+        ModalRoute.of(tester.element(_menuSheet))
+            as ModalBottomSheetRoute<dynamic>;
+    expect(
+      route.modalBarrierColor,
+      const Color(0xFF1E1610).withValues(alpha: .38),
+    );
+    final sheet = tester.widget<Material>(_menuSheet);
+    expect(sheet.color, const Color(0xFFF7F2EA));
+    expect(
+      sheet.borderRadius,
+      const BorderRadius.vertical(top: Radius.circular(26)),
+    );
+    final barrier = find.byWidgetPredicate(
+      (w) =>
+          w is AnimatedModalBarrier &&
+          w.semanticsLabel == 'Dismiss Guardian actions',
+    );
+    expect(tester.getRect(barrier), const Rect.fromLTWH(0, 0, 430, 932));
+    final staleCancel = tester
+        .widget<InkWell>(
+          find.descendant(of: _menuCancel, matching: find.byType(InkWell)),
+        )
+        .onTap!;
     await tester.tap(_menuCancel);
     await tester.pumpAndSettle();
     expect(_menuSheet, findsNothing);
+
     await open();
     final count = haptics();
-    stale();
+    staleCancel();
     await tester.pumpAndSettle();
     expect(_menuSheet, findsOneWidget);
     expect(state().management, isEmpty);
     expect(haptics(), count);
-    dismiss()();
+
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
+    expect(_menuSheet, findsNothing);
+    expect(state().management, isEmpty);
+  });
+
+  testWidgets('Covering Guardian actions dismisses only its stale sheet', (
+    tester,
+  ) async {
+    await mount(tester, initialPage: 1);
+    final confirm = await confirmation(tester);
+    final sheetContext = tester.element(_menuSheet);
+    final sheet = ModalRoute.of(sheetContext)!;
+    final navigator = Navigator.of(sheetContext);
+    final cover = MaterialPageRoute<void>(
+      builder: (_) => const Scaffold(body: Text('Other route')),
+    );
+
+    navigator.push(cover);
+    state().changeEpoch();
+    await tester.pumpAndSettle();
+    expect(cover.isCurrent, isTrue);
+    expect(sheet.isActive, isFalse);
+    navigator.pop();
+    state().changeEpoch();
+    await tester.pumpAndSettle();
+    expect(_menuSheet, findsNothing);
+    final before = haptics();
+    confirm();
+    expect(state().management, isEmpty);
+    expect(haptics(), before);
+
+    await tester.tap(_menu);
+    await tester.pumpAndSettle();
+    await tester.tap(_menuCancel);
     await tester.pumpAndSettle();
     expect(_menuSheet, findsNothing);
   });

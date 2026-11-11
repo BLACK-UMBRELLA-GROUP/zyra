@@ -61,15 +61,13 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(UpgradeScreen), findsOneWidget);
-    expect(find.text('Membership'), findsOneWidget);
+    expect(find.text('Seeker One'), findsOneWidget);
+    expect(find.text('Journey places'), findsOneWidget);
     expect(AppState.instance.plan, ZyraPlan.basic);
     expect(observer.pushed, hasLength(1));
     expect(observer.pushed.single, isA<MaterialPageRoute<void>>());
 
-    final back = find.ancestor(
-      of: find.text('Back'),
-      matching: find.byWidgetPredicate((widget) => widget is TextButton),
-    );
+    final back = find.byTooltip('Back');
     expect(back, findsOneWidget);
     await tester.ensureVisible(back);
     await tester.pumpAndSettle();

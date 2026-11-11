@@ -6,6 +6,7 @@ import '../../dev/zyra_app_gold_preview.dart';
 import '../../dev/zyra_guardian_circle_preview.dart';
 import '../../dev/zyra_circle_topics_presentation.dart';
 import '../../dev/zyra_one_journey_guardian_family_sheet.dart';
+import '../../dev/zyra_one_journey_monogram_presentation.dart';
 import '../../dev/zyra_guardian_circle_topic_options.dart';
 import '../../dev/zyra_circle_discussion_archive.dart';
 import '../../dev/zyra_circle_discussion_picker_presentation.dart';
@@ -2069,20 +2070,28 @@ class _CircleMemberRow extends StatelessWidget {
     ),
     child: Row(
       children: [
-        Container(
-          width: 42,
-          height: 42,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: ZyraColors.surfaceFill,
-            border: Border.all(color: ZyraColors.surfaceEmphasisBorder),
+        if (participant.memberRole == 'guardian')
+          ZyraGoldRingMonogram(
+            name: participant.firstName,
+            guardianOne: false,
+            size: 42,
+            fontSize: 15,
+          )
+        else
+          Container(
+            width: 42,
+            height: 42,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: ZyraColors.surfaceFill,
+              border: Border.all(color: ZyraColors.surfaceEmphasisBorder),
+            ),
+            child: Text(
+              participant.firstName.substring(0, 1).toUpperCase(),
+              style: ZyraText.body(size: 15, color: ZyraColors.goldText),
+            ),
           ),
-          child: Text(
-            participant.firstName.substring(0, 1).toUpperCase(),
-            style: ZyraText.body(size: 15, color: ZyraColors.goldText),
-          ),
-        ),
         const SizedBox(width: 11),
         Expanded(
           child: Column(

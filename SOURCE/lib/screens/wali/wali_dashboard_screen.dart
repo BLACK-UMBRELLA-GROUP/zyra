@@ -1037,7 +1037,7 @@ class _WaliDashboardScreenState extends State<WaliDashboardScreen> {
           premiumBoundary: true,
           onTap: () => Navigator.of(context).push<void>(
             MaterialPageRoute(
-              builder: (_) => const UpgradeScreen(
+              builder: (_) => const UpgradeScreen.compare(
                 telemetrySurface: ZyraTelemetrySurface.guardian,
               ),
             ),

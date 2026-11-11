@@ -164,8 +164,8 @@ void main() {
       // fields. Preview must not infer them from private answers or identity.
       expect(rendered.profiles.single.publicNationality, isNull);
       expect(rendered.profiles.single.publicEthnicity, isNull);
-      expect(find.text('Nationality'), findsNothing);
-      expect(find.text('Ethnicity'), findsNothing);
+      expect(find.text('NATIONALITY'), findsNothing);
+      expect(find.text('ETHNICITY'), findsNothing);
       final card = tester.getRect(
         find.byKey(const ValueKey('concept_browse_portrait_card')),
       );
@@ -194,11 +194,11 @@ void main() {
       );
       expect(details, findsOneWidget);
       expect(
-        find.descendant(of: details, matching: find.text('Age')),
+        find.descendant(of: details, matching: find.text('AGE')),
         findsOneWidget,
       );
       expect(
-        find.descendant(of: details, matching: find.text('Location')),
+        find.descendant(of: details, matching: find.text('LOCATION')),
         findsOneWidget,
       );
       expect(

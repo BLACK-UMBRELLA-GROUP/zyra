@@ -99,17 +99,17 @@ List<String> _detailsText(SeekerProfile person) => [
   person.firstName,
   if (person.surnameLine?.trim().isNotEmpty ?? false)
     person.surnameLine!.trim(),
-  if (person.age > 0) ...['Age', '${person.age}'],
+  if (person.age > 0) ...['AGE', '${person.age}'],
   if (person.city.trim().isNotEmpty && person.city.trim() != '—') ...[
-    'Location',
+    'LOCATION',
     person.city.trim(),
   ],
   if (person.publicNationality?.trim().isNotEmpty ?? false) ...[
-    'Nationality',
+    'NATIONALITY',
     person.publicNationality!.trim(),
   ],
   if (person.publicEthnicity?.trim().isNotEmpty ?? false) ...[
-    'Ethnicity',
+    'ETHNICITY',
     person.publicEthnicity!.trim(),
   ],
 ];

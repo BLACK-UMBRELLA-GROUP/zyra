@@ -27,8 +27,8 @@ const _font = 'PoppinsRequestsGuardiansLock2';
 const _hassan = 'draft-guardian-hassan';
 const _yusuf = 'draft-guardian-yusuf';
 Finder _key(String value) => find.byKey(ValueKey(value));
-Finder _guardian(String id, String key) =>
-    find.descendant(of: _key('guardian-card-$id'), matching: _key(key));
+Finder _guardianMenuAction(String key) =>
+    find.descendant(of: _key('guardian-card-menu-sheet'), matching: _key(key));
 
 class _NoNetwork extends HttpOverrides {
   int attempts = 0;
@@ -173,26 +173,26 @@ VoidCallback _buttonAction(WidgetTester tester, String key) {
   throw StateError('Unknown actual button ${widget.runtimeType}.');
 }
 
-Future<void> _makeMain(WidgetTester tester, String id) async {
-  await _tap(tester, _guardian(id, 'guardian-make-main'));
+Future<void> _makeMain(WidgetTester tester) async {
+  await _tap(tester, _guardianMenuAction('guardian-make-main'));
   await _tap(
     tester,
     find.descendant(
-      of: _guardian(id, 'guardian-make-main-confirmation'),
+      of: _guardianMenuAction('guardian-make-main-confirmation'),
       matching: find.text('Confirm'),
     ),
   );
 }
 
 Future<void> _nextGuardian(WidgetTester tester, String id) async {
-  // LOCK 19 V6 puts the management menu on the selected Guardian card.
+  // LOCK 19 V8 opens the selected Guardian's management sheet above the app.
   // LOCK 2 §2.4 and guardian_main__first_main_message.png still govern notice
   // semantics after the retained Make Main confirmation flow.
   await _tap(tester, _key('guardian-card-dot-target-1'));
   expect(_key('guardian-card-$id'), findsOneWidget);
   await _tap(tester, _key('guardian-card-menu'));
   expect(find.text('JOURNEY ACCESS'), findsOneWidget);
-  final action = _guardian(id, 'guardian-make-main');
+  final action = _guardianMenuAction('guardian-make-main');
   await Scrollable.ensureVisible(tester.element(action), alignment: .4);
   await tester.pumpAndSettle();
   expect(action.hitTestable(), findsOneWidget);
@@ -521,7 +521,7 @@ void main() {
       expect(_key('concept_main_guardian_notice'), findsNothing);
       expect(owner.latest.pendingMainGuardianNoticeId, isNull);
       await _nextGuardian(tester, _yusuf);
-      await _makeMain(tester, _yusuf);
+      await _makeMain(tester);
       _expectNotice(tester, owner, _yusuf, 'Yusuf');
       final retainedContinue = _buttonAction(
         tester,
@@ -531,7 +531,7 @@ void main() {
       expect(owner.latest.pendingMainGuardianNoticeId, isNull);
       expect(_key('concept_main_guardian_notice'), findsNothing);
       await _nextGuardian(tester, _hassan);
-      await _makeMain(tester, _hassan);
+      await _makeMain(tester);
       _expectNotice(tester, owner, _hassan, 'Hassan');
       final pending = owner.latest;
       retainedContinue();
@@ -553,7 +553,7 @@ void main() {
       final owner = _Owner();
       await owner.mount(tester, tab: 3, pages: const []);
       await _nextGuardian(tester, _yusuf);
-      await _makeMain(tester, _yusuf);
+      await _makeMain(tester);
       final pending = owner.latest;
       final resumed = _Owner();
       await resumed.mount(tester, checkpoint: pending);
@@ -580,6 +580,7 @@ void main() {
         if (revoked) {
           owner.allowed = false;
         } else {
+          await _tap(tester, _guardianMenuAction('guardian-card-menu-cancel'));
           await _nav(tester, 4);
         }
         final before = owner.latest;
