@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "queueLine": 80,
+  "sourceCommit": "7f83b07c53b0e74676401d9aace8c095d40b366b",
+  "verificationCommit": "be054de29d8757bdc1c8470706e2df2931ad74dd",
+  "protectedRoutePinsCommit": "4d2aab0ae52539f9d509342f40c83a653b13a53c",
+  "flutterVersion": "3.44.2",
+  "buildMode": "profile",
+  "flavor": "production",
+  "architecture": "ios-arm64",
+  "version": "1.0.0",
+  "buildNumber": 5,
+  "buildStartedAt": "2026-11-11T19:30:39.897Z",
+  "buildFinishedAt": "2026-11-11T19:31:12.241Z",
+  "layout": "LOCK 25 upgrade comparisons and Guardian ring, Guardian card LOCK 19 V8 options and swipe, Profiles details LOCK 4 V3 Design 2",
+  "buildReceiptSha256": "284091ac73baccc91c8f4c5f302fa66cbecb2145db4a00367f6a8bac2b07b083",
+  "artifactSha256": "03d98a16dc2b696e8ba011397a88851546dc164dbf4f08ea61398d5487992754",
+  "sourceSealSha256": "7137aba449adeca423827066c9c502c1635f81eb94a60d0d34e7cac8514cae3e",
+  "planSha256": "295e0af0ae74cdd7eb189713934dc0b4bd8ae13770142d393e734b8a3b74f971",
+  "routeSha256": "50d73ad60dfb15d8066a409c9753125228d1fb84849620b064b24c1910067216",
+  "sealedInputs": 1591,
+  "routeTests": {
+    "pass": 16,
+    "fail": 0,
+    "logSha256": "2d71ac2ecb3d8a35431c4f560e69fb8695585004fdfc1051e0d520bddd8ee1ff"
+  },
+  "delivery": {
+    "status": "Ready, pending line 80 device GO",
+    "installExecuted": false
+  }
+}
