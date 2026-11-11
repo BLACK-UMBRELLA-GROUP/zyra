@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "queueLine": 82,
+  "sourceCommit": "48fe8e4e93298752da28dbb57cd77b37934b9a8b",
+  "verificationCommit": "61acf4a460e5e831de2be086fe50303b24051cd2",
+  "protectedRoutePinsCommit": "05fb770d1103bb0f1a1a23162ed4e04b8bba8a02",
+  "flutterVersion": "3.44.2",
+  "buildMode": "profile",
+  "flavor": "production",
+  "architecture": "ios-arm64",
+  "version": "1.0.0",
+  "buildNumber": 5,
+  "buildStartedAt": "2026-11-11T22:14:17.481Z",
+  "buildFinishedAt": "2026-11-11T22:14:57.777Z",
+  "layout": "LOCK 26 V2 full-width swipe paint and full shadows on Profiles, Guardian, Journey, Filters and My ZYRA for both roles",
+  "buildReceiptSha256": "a8322a5dea1b6874d488f764ea6bfa8e268b9444b0e71a0749718bda680ad5dc",
+  "artifactSha256": "9b22e66533b96c260b2728b7e5d951bae653b5ff25d0b2c882929707d7fed937",
+  "sourceSealSha256": "8da007253e883b6eb4652ac6feb606f94d34daf0117b1f0e1d3dfe74e3b702cd",
+  "planSha256": "fc7aeed47c2641a56d685b3cd64efca8e5f76bdd6c332ba985c6a0f9f1244e73",
+  "routeSha256": "9d0025beb4f90bcbcf13ac51c7a6aae58721086b6c844ace4e43023050c08fe3",
+  "sealedInputs": 1596,
+  "routeTests": {
+    "pass": 16,
+    "fail": 0,
+    "logSha256": "a97409c9868ae27a4415d9e46a2baa37a9b6c6a14b877bcde4d9d9ea663a5f4e"
+  },
+  "delivery": {
+    "status": "awaiting_line_82_device_go",
+    "installExecuted": false,
+    "installed": false,
+    "opened": false
+  }
+}
