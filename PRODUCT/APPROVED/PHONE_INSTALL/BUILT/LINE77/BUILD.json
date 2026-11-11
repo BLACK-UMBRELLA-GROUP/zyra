@@ -1,0 +1,58 @@
+{
+  "queueLine": 77,
+  "status": "BUILT",
+  "sourceCommit": "6a5623d3ece525fe7308646c7aa63fa4d3af87e3",
+  "sourceEvidenceCommit": "a1e33eddda85dae4eab77eed69062cff3e6841e1",
+  "protectedProfileRouteCommit": "41ba19ffe5c6fe99e2a53f846015a329dd109894",
+  "flutterVersion": "3.44.2",
+  "mode": "profile",
+  "flavor": "production",
+  "architecture": "ios-arm64",
+  "version": "1.0.0",
+  "buildNumber": 5,
+  "buildStartedAt": "2026-11-11T15:50:26.349Z",
+  "buildFinishedAt": "2026-11-11T15:51:00.829Z",
+  "layout": "58 pt tab bar, revised Guardian card and measured 16 pt clearance where applicable.",
+  "buildReceiptSha256": "9a09b8f3f82aec2d31eac63bf92a4a5d25fde712ececda7e9631a5beb4e0ed9c",
+  "artifactSha256": "912b84d80c55e0e88fb49e61f8ac9b7aef7a6b2aab00ab4518b84e6e0cece5e4",
+  "sourceSealSha256": "8e09abae9e19be4016e6095cf3d0f2987d08dfdf01829e04a2f80a97c6b08ff1",
+  "planSha256": "646545d5a2fa080c6af77bd08bf5aea3184047ffee957dc42678fe4698feda2c",
+  "delivery": {
+    "authorization": "Founder GO on 11 November after announcement of the exact build and layout.",
+    "authorizationAt": "2026-11-11T17:00:56Z",
+    "recordedAt": "2026-11-11T17:06:30.842+00:00",
+    "transport": "Wi-Fi",
+    "coreDeviceTransport": "localNetwork",
+    "pairedProvisionedPhone": true,
+    "connectedTunnel": true,
+    "unlockedBeforeInstallAndLaunch": true,
+    "oneAttempt": true,
+    "installSucceeded": true,
+    "launchSucceeded": true,
+    "installedAppAndRunningProcessVerified": true,
+    "developerServicesVerified": true,
+    "deliveryReceiptSha256": "1ef17e2a3712110101496c8b7bbf6cff082df89da54add43bd6ed02930963297",
+    "firstFrame": {
+      "status": "verified",
+      "capturedAt": "2026-11-11T17:06:28.786+00:00",
+      "description": "First observed app screen was My ZYRA. The private crop shows its static header.",
+      "file": "PHONE_FIRST_OBSERVED_FRAME.png",
+      "sha256": "f9a358737b5a5a1c417943a0cdfb364fc930d79ba31b7ee45568c534edd0126e",
+      "dimensions": [
+        390,
+        124
+      ],
+      "privacy": "On-device chrome and dashboard content are outside the crop. Local OCR found only My ZYRA. Text and EXIF metadata removed.",
+      "storage": "Mac-only, Git-ignored evidence."
+    }
+  },
+  "routeVerification": {
+    "adapterSha256": "5820fd91beb7b858fc2145323bc66c10f22ef1a906e8323bcf684a6d7cdb9504",
+    "effectivePhoneHelperSha256": "e77eee2294a0a2a7d1ce41f20fd7a366dd6c1bb547b211f1886705375ca7e3de",
+    "offlineFixturesPassed": 16,
+    "offlineFixturesFailed": 0,
+    "fixtureSha256": "78260460e8e9c8b7e3088bc2813f728466e91e1016559f7a1d3126017dfad6aa",
+    "independentReview": true,
+    "originalBuildUnchanged": true
+  }
+}
