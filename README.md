@@ -38,6 +38,8 @@ keep the existing ring. The Profiles details card shows the first photo
 above the name and the public age, location, nationality and ethnicity tiles.
 Request a Journey appears below the tiles on the details page. Seeker Basic
 shows the Seeker One comparison prompt on a backward profile swipe.
+Profiles, Guardian, Journey, Filters and My ZYRA let cards slide to the screen
+edges with their shadows visible throughout the swipe.
 In the Founder preview, Seeker Basic filters by age and location. The
 Nationality and Ethnicity cards link to the Seeker One comparison. In a
 mutually revealed Journey, Seeker Basic sees the overall compatibility score

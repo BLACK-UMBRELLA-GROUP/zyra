@@ -3,6 +3,8 @@ import 'dart:math' as math;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../theme/zyra_preview_spacing.dart';
+
 /// The gesture and explicit page controls share the same track.
 class ZyraSwipeController {
   _ZyraSwipeTrackState? _track;
@@ -29,6 +31,7 @@ class ZyraSwipeTrack extends StatefulWidget {
     this.onBlockedPrevious,
     this.motionIdentity,
     this.dragEnabled = true,
+    this.viewportInset = ZyraPreviewSpacing.pageMargin,
   });
 
   final ZyraSwipeController? controller;
@@ -42,6 +45,8 @@ class ZyraSwipeTrack extends StatefulWidget {
   final VoidCallback? onBlockedPrevious;
   final Object? motionIdentity;
   final bool dragEnabled;
+  // The parent lays out the card inside this margin. Only paint may enter it.
+  final double viewportInset;
 
   @override
   State<ZyraSwipeTrack> createState() => _ZyraSwipeTrackState();
@@ -279,6 +284,10 @@ class _ZyraSwipeTrackState extends State<ZyraSwipeTrack>
         if (widget.itemCount == 0) return const SizedBox.shrink();
         final current = widget.index;
         final pages = <int, Widget>{};
+        final clipper = _SwipeViewportClip(
+          inset: widget.viewportInset,
+          screenHeight: MediaQuery.sizeOf(context).height,
+        );
         return AnimatedBuilder(
           animation: _offset,
           builder: (context, _) {
@@ -308,7 +317,9 @@ class _ZyraSwipeTrackState extends State<ZyraSwipeTrack>
 
             return ClipRect(
               clipBehavior: offset == 0 ? Clip.none : Clip.hardEdge,
+              clipper: clipper,
               child: Stack(
+                clipBehavior: Clip.none,
                 fit: constraints.hasBoundedHeight
                     ? StackFit.expand
                     : StackFit.passthrough,
@@ -342,4 +353,24 @@ class _ZyraSwipeTrackState extends State<ZyraSwipeTrack>
       child: track,
     );
   }
+}
+
+class _SwipeViewportClip extends CustomClipper<Rect> {
+  const _SwipeViewportClip({required this.inset, required this.screenHeight});
+
+  final double inset, screenHeight;
+
+  // Only the side edges can cross the visible screen. Vertical paint remains
+  // visible to the enclosing page, including shadows outside the card.
+  @override
+  Rect getClip(Size size) => Rect.fromLTRB(
+    -inset,
+    -screenHeight,
+    size.width + inset,
+    size.height + screenHeight,
+  );
+
+  @override
+  bool shouldReclip(_SwipeViewportClip oldClipper) =>
+      inset != oldClipper.inset || screenHeight != oldClipper.screenHeight;
 }

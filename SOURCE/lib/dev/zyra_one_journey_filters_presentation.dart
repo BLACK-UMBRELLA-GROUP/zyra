@@ -902,10 +902,16 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
     final pageOwner = widget.canPage;
     bool canPage() => guard() && (pageOwner?.call() ?? true);
     final index = _index;
+    const sideInset = 21.0;
     return SafeArea(
       bottom: false,
       child: Padding(
-        padding: EdgeInsets.fromLTRB(21, 16, 21, keyboard ? 10 : 31),
+        padding: EdgeInsets.fromLTRB(
+          sideInset,
+          16,
+          sideInset,
+          keyboard ? 10 : 31,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -949,6 +955,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
                 key: _viewportKey,
                 child: ZyraSwipeTrack(
                   key: const ValueKey('filters_card'),
+                  viewportInset: sideInset,
                   controller: _track,
                   index: index,
                   itemCount: _names.length,
