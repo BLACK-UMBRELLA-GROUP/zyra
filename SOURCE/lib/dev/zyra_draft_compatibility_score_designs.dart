@@ -1,16 +1,17 @@
-import '../widgets/zyra_floating_surface.dart';
-import '../widgets/zyra_tap_feedback.dart';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../models/zyra_compatibility_area.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
-import 'zyra_compatibility_demo.dart';
+import '../widgets/zyra_compatibility_area_row.dart';
+import '../widgets/zyra_floating_surface.dart';
+import '../widgets/zyra_tap_feedback.dart';
 
-/// The admitted owner supplies only the actions available for a locked topic.
-class ZyraCompatibilityTopicGate {
-  const ZyraCompatibilityTopicGate({
+/// The admitted owner supplies only the actions available for a locked area.
+class ZyraCompatibilityAreaGate {
+  const ZyraCompatibilityAreaGate({
     required this.guardian,
     this.canAct,
     this.onUpgrade,
@@ -30,7 +31,7 @@ class ZyraCompatibilityTopicGate {
 
 /// Presentation only, mounted by the protected caller after its local reveal.
 ///
-/// The supplied overall value and six existing demo tuples are display fixtures.
+/// The caller supplies the Overall value and any admitted area bands.
 /// This reader never scores answers, loads a person, spends an unlock, grants
 /// access, persists data or owns route navigation. Its only state is pagination.
 class ZyraCompatibilityScoreReader extends StatefulWidget {
@@ -38,15 +39,15 @@ class ZyraCompatibilityScoreReader extends StatefulWidget {
     super.key,
     required this.personName,
     required this.overallScore,
-    this.topicGate,
-    this.topicScores,
+    this.areaGate,
+    this.areaBands,
   }) : assert(overallScore >= 0 && overallScore <= 100),
-       assert(topicGate == null || topicScores == null);
+       assert(areaGate == null || areaBands == null);
 
   final String personName;
   final int overallScore;
-  final ZyraCompatibilityTopicGate? topicGate;
-  final List<ZyraCompatibilityDemoCategory>? topicScores;
+  final ZyraCompatibilityAreaGate? areaGate;
+  final Map<ZyraCompatibilityArea, ZyraCompatibilityBand>? areaBands;
 
   @override
   State<ZyraCompatibilityScoreReader> createState() =>
@@ -66,19 +67,16 @@ class _ZyraCompatibilityScoreReaderState
 
   static const _ink = ZyraColors.espresso;
   static const _muted = ZyraColors.secondaryText;
-  static const _discuss = ZyraColors.journeyGold;
-  static const _opposed = ZyraColors.mutedText;
-  static final _pageCount = 1 + ZyraCompatibilityDemo.topicNames.length;
+  static const _pageCount = 2;
 
-  String _name(int index) =>
-      index == 0 ? 'Overall' : ZyraCompatibilityDemo.topicNames[index - 1];
+  String _name(int index) => index == 0 ? 'Overall' : 'Every area';
 
   @override
   void didUpdateWidget(covariant ZyraCompatibilityScoreReader oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.personName != widget.personName ||
         oldWidget.overallScore != widget.overallScore ||
-        (oldWidget.topicGate == null) != (widget.topicGate == null)) {
+        (oldWidget.areaGate == null) != (widget.areaGate == null)) {
       final revision = ++_personRevision;
       _page = 0;
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -225,123 +223,93 @@ class _ZyraCompatibilityScoreReaderState
   }
 
   Widget _scorePage(int index) {
-    final gate = widget.topicGate;
-    if (index != 0 && gate != null) {
-      return _lockedTopic(index, gate);
-    }
+    if (index == 1) return _areasPage();
     final largeText = MediaQuery.textScalerOf(context).scale(14) > 20;
-    final category = index == 0
-        ? null
-        : (widget.topicScores ?? ZyraCompatibilityDemo.categories)[index - 1];
-    final score = category?.aligned ?? widget.overallScore;
     return ZyraShadowScrollView(
-      key: ValueKey('draft_compatibility_score_page_$index'),
+      key: const ValueKey('draft_compatibility_score_page_0'),
       primary: false,
       padding: const EdgeInsets.fromLTRB(20, 22, 20, 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            _name(index),
-            key: ValueKey('draft_compatibility_score_title_$index'),
+            'Overall',
+            key: const ValueKey('draft_compatibility_score_title_0'),
             style: ZyraText.heading(size: 25, color: _ink),
           ),
           SizedBox(height: largeText ? 16 : 24),
           KeyedSubtree(
-            key: ValueKey('draft_compatibility_score_artwork_halo_$index'),
-            child: _artwork(index, score, category),
+            key: const ValueKey('draft_compatibility_score_artwork_halo_0'),
+            child: _ring(widget.overallScore),
           ),
-          if (category == null) ...[const SizedBox(height: 24), _guardian()],
+          const SizedBox(height: 12),
+          Text(
+            'You and ${widget.personName}',
+            textAlign: TextAlign.center,
+            style: ZyraText.body(size: 14, color: _muted),
+          ),
+          const SizedBox(height: 24),
+          _guardian(),
         ],
       ),
     );
   }
 
-  Widget _lockedTopic(
-    int index,
-    ZyraCompatibilityTopicGate gate,
-  ) => LayoutBuilder(
-    builder: (context, constraints) => SingleChildScrollView(
-      key: ValueKey('draft_compatibility_locked_topic_$index'),
-      primary: false,
-      padding: const EdgeInsets.fromLTRB(20, 22, 20, 0),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          minHeight: math.max(0, constraints.maxHeight - 22),
-        ),
-        child: IntrinsicHeight(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                _name(index),
-                key: ValueKey('draft_compatibility_score_title_$index'),
-                style: ZyraText.heading(
-                  size: 25,
-                  color: _ink,
-                ).copyWith(height: 1.2, letterSpacing: 0),
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox.square(
-                      dimension: math.min(
-                        248,
-                        math.max(0, constraints.maxWidth - 40),
-                      ),
-                      child: CustomPaint(
-                        painter: _DemoRings(
-                          values: const [],
-                          colors: const [],
-                          trackColor: ZyraColors.journeyGold.withValues(
-                            alpha: .16,
-                          ),
-                        ),
-                        child: const Icon(
-                          Icons.lock_outline,
-                          color: ZyraColors.journeyGold,
-                          size: 44,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 18),
-                    Text(
-                      'Every topic comes with ${gate.guardian ? 'Guardian' : 'Seeker'} One',
-                      textAlign: TextAlign.center,
-                      style: ZyraText.body(
-                        size: 17,
-                        color: _ink,
-                      ).copyWith(height: 1.2, letterSpacing: 0),
-                    ),
-                    if (!gate.guardian) ...[
-                      const SizedBox(height: 6),
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 290),
-                        child: Text(
-                          'Seeker Basic shows the overall score. Use 1 '
-                          'Unlock to see every topic for ${widget.personName}.',
-                          textAlign: TextAlign.center,
-                          style: ZyraText.subtext(
-                            size: 12.5,
-                          ).copyWith(height: 1.4, letterSpacing: 0),
-                        ),
-                      ),
-                    ],
-                  ],
+  Widget _areasPage() => LayoutBuilder(
+    builder: (context, constraints) {
+      final gate = widget.areaGate;
+      // At compact heights, one wrapping label should grow only its own row.
+      final shareHeight = constraints.maxHeight >= 540;
+      final width = math.max(0.0, constraints.maxWidth - 40);
+      final rows = [
+        for (final area in ZyraCompatibilityArea.values)
+          ZyraCompatibilityAreaRow(
+            key: ValueKey(area),
+            area: area,
+            availableWidth: width,
+            band: gate == null
+                ? (widget.areaBands?[area] ??
+                      ZyraCompatibilityBand.notEnoughAnswers)
+                : null,
+          ),
+      ];
+      return SingleChildScrollView(
+        key: const ValueKey('draft_compatibility_areas'),
+        primary: false,
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: math.max(0, constraints.maxHeight - 20),
+          ),
+          child: IntrinsicHeight(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'Every area',
+                  key: const ValueKey('draft_compatibility_score_title_1'),
+                  style: ZyraText.heading(size: 26, color: _ink),
                 ),
-              ),
-              _lockedTopicActions(context, gate),
-            ],
+                const SizedBox(height: 4),
+                Text(
+                  'How you and ${widget.personName} line up, area by area.',
+                  style: ZyraText.subtext(size: 12, color: _muted),
+                ),
+                const SizedBox(height: 6),
+                for (final row in rows)
+                  if (shareHeight) Expanded(child: row) else row,
+                if (gate != null) _lockedAreaActions(context, gate),
+              ],
+            ),
           ),
         ),
-      ),
-    ),
+      );
+    },
   );
 
-  Widget _lockedTopicActions(
+  Widget _lockedAreaActions(
     BuildContext context,
-    ZyraCompatibilityTopicGate gate,
+    ZyraCompatibilityAreaGate gate,
   ) {
     final hasUnlock = gate.balance > 0;
     final primary = gate.guardian
@@ -355,11 +323,12 @@ class _ZyraCompatibilityScoreReaderState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        const SizedBox(height: 10),
         ZyraFloatingSurface(
           radius: 999,
           gold: true,
           child: FilledButton(
-            key: const ValueKey('draft_compatibility_topic_action'),
+            key: const ValueKey('draft_compatibility_area_action'),
             onPressed: ZyraTapFeedback.onTap(
               context,
               primary,
@@ -375,7 +344,7 @@ class _ZyraCompatibilityScoreReaderState
               gate.guardian
                   ? 'See Guardian One'
                   : hasUnlock
-                  ? 'See every topic for ${widget.personName}'
+                  ? 'See every area for ${widget.personName}'
                   : 'Get an Unlock for ${widget.personName}',
               textAlign: TextAlign.center,
               style: ZyraText.button(size: 14),
@@ -394,7 +363,7 @@ class _ZyraCompatibilityScoreReaderState
             ).copyWith(height: 1.2, letterSpacing: 0),
           ),
           TextButton(
-            key: const ValueKey('draft_compatibility_topic_upgrade'),
+            key: const ValueKey('draft_compatibility_area_upgrade'),
             onPressed: ZyraTapFeedback.onTap(
               context,
               gate.onUpgrade,
@@ -406,7 +375,7 @@ class _ZyraCompatibilityScoreReaderState
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
             child: Text(
-              'Seeker One shows every topic in every Journey ›',
+              'Seeker One shows every area in every Journey ›',
               textAlign: TextAlign.center,
               style: ZyraText.body(
                 size: 13,
@@ -419,24 +388,7 @@ class _ZyraCompatibilityScoreReaderState
     );
   }
 
-  Widget _artwork(
-    int index,
-    int score,
-    ZyraCompatibilityDemoCategory? category,
-  ) => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      _ring(index, score, category),
-      const SizedBox(height: 12),
-      Center(child: _aligned()),
-      if (category != null) ...[
-        const SizedBox(height: 24),
-        _metrics(index, category),
-      ],
-    ],
-  );
-
-  Widget _number(int index, int score) => LayoutBuilder(
+  Widget _number(int score) => LayoutBuilder(
     builder: (context, constraints) {
       const size = 60.0;
       var style = DefaultTextStyle.of(context).style
@@ -481,11 +433,9 @@ class _ZyraCompatibilityScoreReaderState
       }
       return Text(
         '$score%',
-        key: index == 0
-            ? const ValueKey('draft_compatibility_overall_score')
-            : ValueKey('draft_compatibility_category_score_$index'),
+        key: const ValueKey('draft_compatibility_overall_score'),
         semanticsLabel:
-            'Score preview: ${_name(index)} with ${widget.personName}, $score percent aligned. Not a real profile result.',
+            'Score preview: Overall with ${widget.personName}, $score percent aligned. Not a real profile result.',
         softWrap: false,
         textAlign: TextAlign.center,
         style: style.copyWith(fontSize: fitted),
@@ -493,64 +443,7 @@ class _ZyraCompatibilityScoreReaderState
     },
   );
 
-  Widget _aligned() =>
-      Text('Aligned', style: ZyraText.body(size: 14, color: _muted));
-
-  List<(String, int, Color)> _values(ZyraCompatibilityDemoCategory category) =>
-      [
-        ('Aligned', category.aligned, ZyraColors.journeyGold),
-        ('Discuss', category.discuss, _discuss),
-        ('Opposed', category.opposed, _opposed),
-      ];
-
-  Widget _metrics(int index, ZyraCompatibilityDemoCategory category) => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      for (final metric in _values(category)) ...[
-        _metric(index, metric.$1, metric.$2, metric.$3),
-        const SizedBox(height: 14),
-      ],
-    ],
-  );
-
-  Widget _metric(int index, String label, int value, Color color) => Semantics(
-    label: 'Score preview: $label $value percent. Not a real profile result.',
-    child: ExcludeSemantics(
-      child: Container(
-        key: ValueKey(
-          'draft_compatibility_metric_${index}_${label.toLowerCase()}',
-        ),
-        width: double.infinity,
-        padding: const EdgeInsets.only(left: 12),
-        decoration: BoxDecoration(
-          border: Border(left: BorderSide(color: color, width: 2)),
-        ),
-        child: Wrap(
-          alignment: WrapAlignment.spaceBetween,
-          spacing: 14,
-          runSpacing: 4,
-          children: [
-            Text(label, style: ZyraText.body(size: 15, color: _ink)),
-            Text(
-              '$value%',
-              style: ZyraText.body(
-                size: 15,
-                color: color == ZyraColors.journeyGold
-                    ? ZyraColors.goldText
-                    : color,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-
-  Widget _ring(
-    int index,
-    int score,
-    ZyraCompatibilityDemoCategory? category,
-  ) => LayoutBuilder(
+  Widget _ring(int score) => LayoutBuilder(
     builder: (context, constraints) {
       final diameter = math.min(248.0, constraints.maxWidth);
       final style = ZyraText.heading(
@@ -587,26 +480,11 @@ class _ZyraCompatibilityScoreReaderState
                 children: [
                   Positioned.fill(
                     child: ExcludeSemantics(
-                      child: CustomPaint(
-                        painter: _DemoRings(
-                          values: category == null
-                              ? [score]
-                              : [
-                                  category.aligned,
-                                  category.discuss,
-                                  category.opposed,
-                                ],
-                          colors: const [
-                            ZyraColors.journeyGold,
-                            _discuss,
-                            _opposed,
-                          ],
-                        ),
-                      ),
+                      child: CustomPaint(painter: _OverallRing(score)),
                     ),
                   ),
                   if (centered)
-                    SizedBox(width: diameter - 76, child: _number(index, score))
+                    SizedBox(width: diameter - 76, child: _number(score))
                   else
                     Icon(
                       Icons.balance_rounded,
@@ -617,7 +495,7 @@ class _ZyraCompatibilityScoreReaderState
               ),
             ),
           ),
-          if (!centered) ...[const SizedBox(height: 18), _number(index, score)],
+          if (!centered) ...[const SizedBox(height: 18), _number(score)],
         ],
       );
     },
@@ -649,40 +527,27 @@ class _ZyraCompatibilityScoreReaderState
   );
 }
 
-/// Paints the supplied display percentages only; it computes no compatibility.
-class _DemoRings extends CustomPainter {
-  const _DemoRings({
-    required this.values,
-    required this.colors,
-    this.trackColor,
-  });
-  final List<int> values;
-  final List<Color> colors;
-  final Color? trackColor;
+/// Paints only the supplied Overall result.
+class _OverallRing extends CustomPainter {
+  const _OverallRing(this.score);
+
+  final int score;
 
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-    final radius = math.min(size.width, size.height) / 2 - 16;
+    final radius = math.max(1.0, math.min(size.width, size.height) / 2 - 16);
+    final rect = Rect.fromCircle(center: center, radius: radius);
     final paint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 13;
-    final ringRadius = math.max(1.0, radius);
-    final rect = Rect.fromCircle(center: center, radius: ringRadius);
-    paint.color = trackColor ?? ZyraColors.warmOverlay.withValues(alpha: .075);
-    canvas.drawCircle(center, ringRadius, paint);
-    var start = -math.pi / 2;
-    for (var value = 0; value < values.length; value++) {
-      paint.color = colors[value];
-      final sweep = math.pi * 2 * values[value] / 100;
-      canvas.drawArc(rect, start, sweep, false, paint);
-      start += sweep;
-    }
+      ..strokeWidth = 13
+      ..color = ZyraColors.warmOverlay.withValues(alpha: .075);
+    canvas.drawCircle(center, radius, paint);
+    paint.color = ZyraColors.journeyGold;
+    canvas.drawArc(rect, -math.pi / 2, math.pi * 2 * score / 100, false, paint);
   }
 
   @override
-  bool shouldRepaint(covariant _DemoRings oldDelegate) =>
-      oldDelegate.trackColor != trackColor ||
-      oldDelegate.values.length != values.length ||
-      oldDelegate.values.indexed.any((entry) => entry.$2 != values[entry.$1]);
+  bool shouldRepaint(covariant _OverallRing oldDelegate) =>
+      oldDelegate.score != score;
 }

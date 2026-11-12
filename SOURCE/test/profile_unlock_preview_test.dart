@@ -61,7 +61,11 @@ void main() {
       ZyraUnlockService.isUnlocked(profile.id, ZyraUnlockService.currentTier),
       isFalse,
     );
-    expect(find.text('Sample category percentages'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('compatibility-demo-result')),
+      findsOneWidget,
+    );
+    expect(find.textContaining(RegExp(r'^\d+%$')), findsOneWidget);
     expect(find.text('Main Guardian · Fictional example'), findsOneWidget);
   });
 

@@ -2,11 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zyra/models/zyra_compatibility_area.dart';
 import 'package:zyra/screens/subscription/profile_unlock_screen.dart';
 import 'package:zyra/services/zyra_unlock_service.dart';
 
 void main() {
-  testWidgets('Exact Trio stays visible without invented percentages', (
+  testWidgets('real area rows show locked or unavailable without scores', (
     tester,
   ) async {
     final semantics = tester.ensureSemantics();
@@ -17,10 +18,12 @@ void main() {
             home: MediaQuery(
               data: const MediaQueryData(textScaler: TextScaler.linear(1.3)),
               child: Scaffold(
-                body: SizedBox(
-                  width: 320,
-                  child: buildZyraCompatibilityBreakdownTestSurface(
-                    unlocked: unlocked,
+                body: SingleChildScrollView(
+                  child: SizedBox(
+                    width: 320,
+                    child: buildZyraCompatibilityBreakdownTestSurface(
+                      unlocked: unlocked,
+                    ),
                   ),
                 ),
               ),
@@ -28,41 +31,42 @@ void main() {
           ),
         );
 
-        expect(find.text('Aligned'), findsOneWidget);
-        expect(find.text('Discuss'), findsOneWidget);
-        expect(find.text('Opposed'), findsOneWidget);
-        for (final category in const [
-          'Lifestyle',
-          'Work & Education',
-          'Family Values',
-          'Marriage Goals',
-          'Personality',
-          'Deen',
-        ]) {
-          expect(find.text(category), findsOneWidget);
-          expect(
-            find.bySemanticsLabel(
-              '$category, detailed compatibility not available',
-            ),
-            findsOneWidget,
-          );
-        }
         expect(
           find.byKey(const ValueKey('compatibility-detail-unavailable')),
           findsOneWidget,
         );
-        expect(find.text('—'), findsNWidgets(18));
+        final status = unlocked ? 'Not enough answers' : 'Locked';
+        final other = unlocked ? 'Locked' : 'Not enough answers';
+        double previousTop = -1;
+        for (final area in ZyraCompatibilityArea.values) {
+          final row = find.byKey(
+            ValueKey('compatibility-area-row-${area.name}'),
+          );
+          expect(row, findsOneWidget);
+          expect(tester.getTopLeft(row).dy, greaterThan(previousTop));
+          previousTop = tester.getTopLeft(row).dy;
+          expect(
+            find.descendant(of: row, matching: find.text(area.label)),
+            findsOneWidget,
+          );
+          expect(
+            find.descendant(of: row, matching: find.text(status)),
+            findsOneWidget,
+          );
+          expect(
+            find.descendant(of: row, matching: find.text(other)),
+            findsNothing,
+          );
+        }
         expect(find.textContaining('%'), findsNothing);
         expect(
-          find.byKey(const ValueKey('compatibility-rail-Lifestyle-aligned')),
+          find.bySemanticsLabel(RegExp(r'\d+\s*(?:%|percent)')),
           findsNothing,
         );
-
-        final deen = tester.widget<Container>(
-          find.byKey(const ValueKey('compatibility-exact-row-Deen')),
-        );
-        expect(deen.decoration, isNull);
-        expect(find.byType(Divider), findsOneWidget);
+        for (final band in const ['Strong', 'Good', 'Some differences']) {
+          expect(find.text(band), findsNothing);
+        }
+        expect(tester.takeException(), isNull);
       }
     } finally {
       semantics.dispose();

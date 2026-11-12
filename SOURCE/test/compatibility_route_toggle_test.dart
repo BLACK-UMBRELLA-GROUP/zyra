@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/data/zyra_membership_catalog.dart';
+import 'package:zyra/dev/zyra_compatibility_demo.dart';
 import 'package:zyra/models/seeker_profile.dart';
+import 'package:zyra/models/zyra_compatibility_area.dart';
 import 'package:zyra/screens/subscription/profile_unlock_screen.dart';
 import 'package:zyra/screens/subscription/upgrade_screen.dart';
 import 'package:zyra/services/zyra_account_state.dart';
@@ -49,14 +51,8 @@ const _browserKey = ValueKey('compatibility-browser-host');
 const _openKey = ValueKey('compatibility-browser-open');
 const _coverKey = ValueKey('compatibility-covered-route');
 const _plusActionKey = ValueKey('compatibility-unlock-Unlock Compatibility');
-const _categories = [
-  'Lifestyle',
-  'Work & Education',
-  'Family Values',
-  'Marriage Goals',
-  'Personality',
-  'Deen',
-];
+Finder _areaRow(ZyraCompatibilityArea area) =>
+    find.byKey(ValueKey('compatibility-area-row-${area.name}'));
 
 final _fixtures = <ZyraCompatibilityFixture>[];
 ZyraCompatibilityFixture? get _activeFixture {
@@ -247,28 +243,30 @@ Future<void> _expectDemoResult(WidgetTester tester) async {
     find.byKey(const ValueKey('compatibility-demo-result')),
     findsOneWidget,
   );
-  expect(find.text('Sample category percentages'), findsOneWidget);
   expect(find.text('__%'), findsNothing);
-  expect(find.textContaining(RegExp(r'^\d+%$')), findsNWidgets(19));
-  for (final category in _categories) {
-    final row = find.byKey(ValueKey('compatibility-exact-row-$category'));
+  expect(find.textContaining(RegExp(r'^\d+%$')), findsOneWidget);
+  final bands = ZyraCompatibilityDemo.bandsFor(_activeFixture!.profileId!);
+  for (final area in ZyraCompatibilityArea.values) {
+    final row = _areaRow(area);
     await tester.ensureVisible(row);
     await tester.pumpAndSettle();
     expect(row.hitTestable(), findsOneWidget);
-    final percentages = tester
-        .widgetList<Text>(find.descendant(of: row, matching: find.byType(Text)))
-        .map((text) => text.data ?? '')
-        .where((text) => RegExp(r'^\d+%$').hasMatch(text))
-        .map((text) => int.parse(text.substring(0, text.length - 1)))
-        .toList();
-    expect(percentages, hasLength(3), reason: category);
-    expect(percentages.every((value) => value >= 0 && value <= 100), isTrue);
     expect(
-      percentages.reduce((sum, value) => sum + value),
-      100,
-      reason: category,
+      find.descendant(of: row, matching: find.text(area.label)),
+      findsOneWidget,
     );
-    expect(find.descendant(of: row, matching: find.text('—')), findsNothing);
+    expect(
+      find.descendant(of: row, matching: find.text(bands[area]!.label)),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: row, matching: find.text('Locked')),
+      findsNothing,
+    );
+    expect(
+      find.descendant(of: row, matching: find.textContaining('%')),
+      findsNothing,
+    );
   }
   final guardian = find.byKey(const ValueKey('compatibility-demo-guardian'));
   await tester.ensureVisible(guardian);
@@ -460,62 +458,66 @@ void main() {
     // local full-reveal action may replace these locked placeholders.
     expect(find.text('__%'), findsOneWidget);
     expect(find.textContaining(RegExp(r'\d+\s*%')), findsNothing);
-    for (final category in _categories) {
-      final row = find.byKey(ValueKey('compatibility-exact-row-$category'));
+    for (final area in ZyraCompatibilityArea.values) {
+      final row = _areaRow(area);
       expect(row, findsOneWidget);
       expect(
-        find.descendant(of: row, matching: find.text('—')),
-        findsNWidgets(3),
+        find.descendant(of: row, matching: find.text('Locked')),
+        findsOneWidget,
       );
-      expect(
-        find.descendant(of: row, matching: find.textContaining(RegExp(r'\d'))),
-        findsNothing,
-      );
+      for (final band in ZyraCompatibilityBand.values) {
+        expect(
+          find.descendant(of: row, matching: find.text(band.label)),
+          findsNothing,
+        );
+      }
     }
     _expectNoBackend();
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets(
-    'default unified demo reveals clearly labelled coherent local results',
-    (tester) async {
-      final initialPlan = AppState.instance.plan;
-      await _mountBrowser(tester);
-      final controls = await _openCompatibility(tester);
-      final action = find.byKey(_plusActionKey);
-      await tester.ensureVisible(action);
-      await tester.pumpAndSettle();
-      expect(action.hitTestable(), findsOneWidget);
-      expect(tester.widget<ZyraGoldActionPill>(action).onPressed, isNotNull);
-      expect(
-        find.byKey(const ValueKey('compatibility-demo-notice')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey('compatibility-demo-result')),
-        findsNothing,
-      );
-      await tester.tap(action);
-      await tester.pumpAndSettle();
-      expect(controls.balance(false), 0);
-      expect(controls.balance(true), 0);
-      expect(find.byKey(_plusActionKey), findsNothing);
-      await _expectDemoResult(tester);
-      expect(ZyraUnlockService.categoryBreakdownAvailable, isFalse);
-      expect(
-        ZyraUnlockService.isUnlocked(_profile.id, UnlockTier.standard),
-        isFalse,
-      );
-      expect(
-        ZyraUnlockService.isUnlocked(_profile.id, UnlockTier.plus),
-        isFalse,
-      );
-      expect(AppState.instance.plan, initialPlan);
-      expect(find.byType(CompatibilityUnlockStoreScreen), findsNothing);
-      _expectNoBackend();
-      expect(tester.takeException(), isNull);
-    },
-  );
+  for (final viewport in const [Size(430, 932), Size(375, 667)]) {
+    testWidgets(
+      'local unlock reveals each area at ${viewport.width} × ${viewport.height}',
+      (tester) async {
+        final initialPlan = AppState.instance.plan;
+        await _mountBrowser(tester, viewport: viewport);
+        final controls = await _openCompatibility(tester);
+        final action = find.byKey(_plusActionKey);
+        await tester.ensureVisible(action);
+        await tester.pumpAndSettle();
+        expect(action.hitTestable(), findsOneWidget);
+        expect(tester.widget<ZyraGoldActionPill>(action).onPressed, isNotNull);
+        expect(
+          find.byKey(const ValueKey('compatibility-demo-notice')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const ValueKey('compatibility-demo-result')),
+          findsNothing,
+        );
+        await tester.tap(action);
+        await tester.pumpAndSettle();
+        expect(controls.balance(false), 0);
+        expect(controls.balance(true), 0);
+        expect(find.byKey(_plusActionKey), findsNothing);
+        await _expectDemoResult(tester);
+        expect(ZyraUnlockService.categoryBreakdownAvailable, isFalse);
+        expect(
+          ZyraUnlockService.isUnlocked(_profile.id, UnlockTier.standard),
+          isFalse,
+        );
+        expect(
+          ZyraUnlockService.isUnlocked(_profile.id, UnlockTier.plus),
+          isFalse,
+        );
+        expect(AppState.instance.plan, initialPlan);
+        expect(find.byType(CompatibilityUnlockStoreScreen), findsNothing);
+        _expectNoBackend();
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
 
   testWidgets(
     'five-credit demo double tap and saved callback spend one unified credit',

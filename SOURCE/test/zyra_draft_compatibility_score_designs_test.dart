@@ -6,27 +6,28 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_compatibility_demo.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_score_designs.dart';
+import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
+import 'package:zyra/widgets/zyra_compatibility_area_row.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 
 const _font = 'PoppinsCompatibilityReaderFixture';
-const _names = [
-  'Overall',
-  'Lifestyle',
-  'Work & Education',
-  'Family Values',
-  'Marriage Goals',
-  'Personality',
-  'Deen',
+const _names = ['Overall', 'Every area'];
+const _areas = [
+  'Deen & Islamic Practice',
+  'Marriage Intentions & Structure',
+  'Children & Parenting',
+  'Family & In-Laws',
+  'Finances & Provision',
+  'Education, Career & Work',
+  'Home Life & Household Roles',
+  'Communication & Conflict',
+  'Personality & Connection',
+  'Lifestyle, Health & Well-being',
+  'Digital Life, Privacy & Boundaries',
+  'Culture & Language',
 ];
-const _tuples = [
-  (80, 15, 5),
-  (70, 20, 10),
-  (85, 10, 5),
-  (90, 5, 5),
-  (60, 30, 10),
-  (65, 25, 10),
-];
+const _areaPage = ValueKey('draft_compatibility_areas');
 const _reader = ValueKey('draft_compatibility_score_reader');
 const _pager = ValueKey('draft_compatibility_score_pages');
 const _previous = ValueKey('draft_compatibility_score_previous');
@@ -47,6 +48,7 @@ Widget _app({
   int overallScore = 83,
   bool disableAnimations = true,
   bool accessibleNavigation = false,
+  bool synthetic = true,
 }) => MaterialApp(
   builder: (context, child) => MediaQuery(
     data: MediaQuery.of(context).copyWith(
@@ -61,6 +63,9 @@ Widget _app({
       child: ZyraCompatibilityScoreReader(
         personName: personName,
         overallScore: overallScore,
+        areaBands: synthetic
+            ? ZyraCompatibilityDemo.bandsFor('draft-sara')
+            : null,
       ),
     ),
   ),
@@ -87,14 +92,14 @@ void _expectPage(WidgetTester tester, int index) {
           find.byKey(const ValueKey('draft_compatibility_score_position')),
         )
         .data,
-    '${index + 1} / 7',
+    '${index + 1} / 2',
   );
   final title = find.byKey(ValueKey('draft_compatibility_score_title_$index'));
   expect(tester.widget<Text>(title).data, _names[index]);
   final counter = tester.widget<Text>(
     find.byKey(const ValueKey('draft_compatibility_score_position')),
   );
-  expect(counter.semanticsLabel, 'Page ${index + 1} of 7: ${_names[index]}');
+  expect(counter.semanticsLabel, 'Page ${index + 1} of 2: ${_names[index]}');
   for (final (key, label) in [
     (_previous, 'Previous page'),
     (_next, 'Next page'),
@@ -104,7 +109,11 @@ void _expectPage(WidgetTester tester, int index) {
     expect(arrow.tooltip, label);
   }
   expect(
-    find.byKey(ValueKey('draft_compatibility_score_page_$index')),
+    find.byKey(
+      index == 0
+          ? const ValueKey('draft_compatibility_score_page_0')
+          : _areaPage,
+    ),
     findsOneWidget,
   );
   expect(
@@ -129,19 +138,11 @@ void _expectValues(int index) {
     expect(find.text('Main Guardian · Fictional example'), findsNothing);
     return;
   }
-  final tuple = _tuples[index - 1];
-  final values = [tuple.$1, tuple.$2, tuple.$3];
-  for (var metric = 0; metric < 3; metric++) {
-    final label = ['aligned', 'discuss', 'opposed'][metric];
-    final group = find.byKey(
-      ValueKey('draft_compatibility_metric_${index}_$label'),
-    );
-    expect(group, findsOneWidget);
-    expect(
-      find.descendant(of: group, matching: find.text('${values[metric]}%')),
-      findsOneWidget,
-    );
-  }
+  final areas = find.byType(ZyraCompatibilityAreaRow);
+  expect(areas, findsNWidgets(12));
+  expect(find.textContaining('%'), findsNothing);
+  expect(find.text('Demo Guardian · Father'), findsNothing);
+  expect(find.text('Main Guardian'), findsNothing);
 }
 
 void main() {
@@ -172,81 +173,90 @@ void main() {
     ZyraText.testReadingFontFamily = null;
   });
 
-  test('Golden Halo uses the six original category tuples', () {
-    expect(
-      ZyraCompatibilityDemo.categories.map((category) => category.name),
-      _names.skip(1),
+  testWidgets('Overall and band-only areas use the locked presentation', (
+    tester,
+  ) async {
+    await _mount(tester);
+    _expectPage(tester, 0);
+    _expectValues(0);
+    final score = tester.widget<Text>(
+      find.byKey(const ValueKey('draft_compatibility_overall_score')),
     );
+    expect(score.data, '83%');
+    expect(score.semanticsLabel, contains('with Sara Noor,'));
+    expect(find.text('You and Sara Noor'), findsOneWidget);
+    await tester.tap(find.byKey(_next));
+    await tester.pumpAndSettle();
+    _expectPage(tester, 1);
+    _expectValues(1);
+    final rows = tester.widgetList<ZyraCompatibilityAreaRow>(
+      find.byType(ZyraCompatibilityAreaRow),
+    );
+    expect(rows.map((row) => row.area.label), _areas);
+    expect(rows.map((row) => row.band?.label), [
+      'Good',
+      'Strong',
+      'Good',
+      'Some differences',
+      'Strong',
+      'Good',
+      'Not enough answers',
+      'Good',
+      'Strong',
+      'Good',
+      'Strong',
+      'Some differences',
+    ]);
+    final unavailable = find.text('Not enough answers');
+    final style = tester.widget<Text>(unavailable).style;
+    expect(style?.color, ZyraColors.mutedText);
+    expect(style?.fontStyle, FontStyle.italic);
     expect(
-      ZyraCompatibilityDemo.categories.map(
-        (category) => (category.aligned, category.discuss, category.opposed),
+      find.ancestor(
+        of: unavailable,
+        matching: find.byWidgetPredicate(
+          (widget) =>
+              widget is Container &&
+              widget.decoration is BoxDecoration &&
+              (widget.decoration! as BoxDecoration).borderRadius != null,
+        ),
       ),
-      _tuples,
+      findsNothing,
     );
+    await tester.tap(find.byKey(_next));
+    await tester.pumpAndSettle();
+    _expectPage(tester, 0);
+    await tester.tap(find.byKey(_previous));
+    await tester.pumpAndSettle();
+    _expectPage(tester, 1);
   });
 
-  testWidgets(
-    'Golden Halo has seven ordered pages and unchanged fixture values',
-    (tester) async {
-      await _mount(tester);
-      for (var index = 0; index < 7; index++) {
-        _expectPage(tester, index);
-        _expectValues(index);
-        if (index == 0) {
-          expect(
-            tester
-                .widget<Text>(
-                  find.byKey(
-                    const ValueKey('draft_compatibility_overall_score'),
-                  ),
-                )
-                .data,
-            '83%',
-          );
-        }
-        expect(
-          find.byKey(ValueKey('draft_compatibility_score_artwork_halo_$index')),
-          findsOneWidget,
-        );
-        expect(
-          find.byWidgetPredicate(
-            (widget) =>
-                widget is Text && (widget.data?.contains('Sara Noor') ?? false),
-          ),
-          findsNothing,
-        );
-        final scoreKey = index == 0
-            ? const ValueKey('draft_compatibility_overall_score')
-            : ValueKey('draft_compatibility_category_score_$index');
-        expect(
-          tester.widget<Text>(find.byKey(scoreKey)).semanticsLabel,
-          contains('with Sara Noor,'),
-        );
-        expect(tester.takeException(), isNull);
-        if (index < 6) {
-          await tester.tap(find.byKey(_next));
-          await tester.pumpAndSettle();
-        }
-      }
-      await tester.tap(find.byKey(_next));
-      await tester.pumpAndSettle();
-      _expectPage(tester, 0);
-      await tester.tap(find.byKey(_previous));
-      await tester.pumpAndSettle();
-      _expectPage(tester, 6);
-    },
-  );
+  testWidgets('absent bands use a neutral state without a sample fallback', (
+    tester,
+  ) async {
+    await _mount(tester);
+    await tester.pumpWidget(_app(synthetic: false));
+    await tester.tap(find.byKey(_next));
+    await tester.pumpAndSettle();
+    _expectValues(1);
+    expect(find.text('Not enough answers'), findsNWidgets(12));
+    expect(find.text('Strong'), findsNothing);
+    expect(find.text('Good'), findsNothing);
+    expect(find.text('Some differences'), findsNothing);
+  });
 
   testWidgets(
     'Golden Halo remains vertically readable at 320x568 with 200 percent text',
     (tester) async {
       await _mount(tester, compact: true);
-      for (var index = 0; index < 7; index++) {
+      for (var index = 0; index < 2; index++) {
         _expectPage(tester, index);
         _expectValues(index);
         expect(find.byType(FittedBox), findsNothing);
         final page = find.byKey(
-          ValueKey('draft_compatibility_score_page_$index'),
+          index == 0
+              ? const ValueKey('draft_compatibility_score_page_0')
+              : _areaPage,
         );
         expect(
           tester.widget<SingleChildScrollView>(page).scrollDirection,
@@ -259,7 +269,7 @@ void main() {
           find.text('Fictional demo · not calculated from private answers.'),
           findsNothing,
         );
-        if (index < 6) {
+        if (index == 0) {
           await tester.tap(find.byKey(_next));
           await tester.pumpAndSettle();
         }
@@ -280,7 +290,7 @@ void main() {
     expect(find.byType(ZyraCompatibilityScoreReader), findsOneWidget);
   });
 
-  testWidgets('swipes repeatedly wrap both ends and retain the seven labels', (
+  testWidgets('swipes repeatedly wrap both ends and retain both page labels', (
     tester,
   ) async {
     final semantics = tester.ensureSemantics();
@@ -289,13 +299,16 @@ void main() {
       for (var turn = 0; turn < 3; turn++) {
         await tester.drag(find.byKey(_pager), const Offset(300, 0));
         await tester.pumpAndSettle();
-        _expectPage(tester, 6);
-        expect(find.bySemanticsLabel('Page 7 of 7: Deen'), findsOneWidget);
-        _expectValues(6);
+        _expectPage(tester, 1);
+        expect(
+          find.bySemanticsLabel('Page 2 of 2: Every area'),
+          findsOneWidget,
+        );
+        _expectValues(1);
         await tester.drag(find.byKey(_pager), const Offset(-300, 0));
         await tester.pumpAndSettle();
         _expectPage(tester, 0);
-        expect(find.bySemanticsLabel('Page 1 of 7: Overall'), findsOneWidget);
+        expect(find.bySemanticsLabel('Page 1 of 2: Overall'), findsOneWidget);
         _expectValues(0);
       }
       await tester.tap(find.byKey(_next));
@@ -306,25 +319,24 @@ void main() {
     }
   });
 
-  testWidgets(
-    'a second arrow during a wrap continues to the adjacent category',
-    (tester) async {
-      await _mount(tester);
-      await tester.pumpWidget(_app(disableAnimations: false));
+  testWidgets('a second arrow during a wrap continues to the adjacent page', (
+    tester,
+  ) async {
+    await _mount(tester);
+    await tester.pumpWidget(_app(disableAnimations: false));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(_previous));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.tap(find.byKey(_previous));
+    await tester.pumpAndSettle();
+    _expectPage(tester, 0);
+    for (final index in [1, 0, 1]) {
+      await tester.tap(find.byKey(_next));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(_previous));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 100));
-      await tester.tap(find.byKey(_previous));
-      await tester.pumpAndSettle();
-      _expectPage(tester, 5);
-      for (final index in [6, 0, 1]) {
-        await tester.tap(find.byKey(_next));
-        await tester.pumpAndSettle();
-        _expectPage(tester, index);
-      }
-    },
-  );
+      _expectPage(tester, index);
+    }
+  });
 
   testWidgets('animated wraps travel one adjacent page in either direction', (
     tester,
@@ -334,7 +346,7 @@ void main() {
     await tester.pumpAndSettle();
     final controller = tester.widget<PageView>(find.byKey(_pager)).controller!;
     for (final (arrow, direction, destination) in [
-      (_previous, -1, 6),
+      (_previous, -1, 1),
       (_next, 1, 0),
     ]) {
       final start = controller.page!;
@@ -358,7 +370,7 @@ void main() {
       );
       await tester.tap(find.byKey(_previous));
       await tester.pump();
-      _expectPage(tester, 6);
+      _expectPage(tester, 1);
       await tester.pumpWidget(_app(personName: 'Aisha'));
       await tester.pumpAndSettle();
       _expectPage(tester, 0);
@@ -385,7 +397,7 @@ void main() {
       await _mount(tester);
       await tester.tap(find.byKey(_previous));
       await tester.pumpAndSettle();
-      _expectPage(tester, 6);
+      _expectPage(tester, 1);
       expect(pulses, ['HapticFeedbackType.mediumImpact']);
       pulses.clear();
       await tester.tap(find.byKey(_next));
@@ -395,7 +407,7 @@ void main() {
       pulses.clear();
       await tester.drag(find.byKey(_pager), const Offset(300, 0));
       await tester.pumpAndSettle();
-      _expectPage(tester, 6);
+      _expectPage(tester, 1);
       expect(pulses, isEmpty);
       ZyraInteractionStyle.selectHapticLevel(ZyraHapticLevel.off);
       await tester.tap(find.byKey(_next));
@@ -405,20 +417,18 @@ void main() {
     },
   );
 
-  testWidgets('parent rebuilds preserve the currently selected category', (
+  testWidgets('parent rebuilds preserve the currently selected page', (
     tester,
   ) async {
     await _mount(tester);
-    for (var index = 0; index < 3; index++) {
-      await tester.tap(find.byKey(_next));
-      await tester.pumpAndSettle();
-    }
-    _expectPage(tester, 3);
+    await tester.tap(find.byKey(_next));
+    await tester.pumpAndSettle();
+    _expectPage(tester, 1);
     for (var rebuild = 0; rebuild < 3; rebuild++) {
       await tester.pumpWidget(_app());
       await tester.pumpAndSettle();
-      _expectPage(tester, 3);
-      _expectValues(3);
+      _expectPage(tester, 1);
+      _expectValues(1);
     }
   });
 

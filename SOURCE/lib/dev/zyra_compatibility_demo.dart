@@ -1,36 +1,31 @@
-/// Display fixtures, not a compatibility algorithm or server response.
-/// Used only by an authorized, non-persisted sample profile route.
+import '../models/zyra_compatibility_area.dart';
+
+/// Synthetic bands for callers that have already admitted a local sample.
 abstract final class ZyraCompatibilityDemo {
-  static const topicNames = [
-    'Lifestyle',
-    'Work & Education',
-    'Family Values',
-    'Marriage Goals',
-    'Personality',
-    'Deen',
+  static const _bands = [
+    ZyraCompatibilityBand.strong,
+    ZyraCompatibilityBand.good,
+    ZyraCompatibilityBand.strong,
+    ZyraCompatibilityBand.someDifferences,
+    ZyraCompatibilityBand.good,
+    ZyraCompatibilityBand.strong,
+    ZyraCompatibilityBand.good,
+    ZyraCompatibilityBand.someDifferences,
+    ZyraCompatibilityBand.strong,
+    ZyraCompatibilityBand.good,
+    ZyraCompatibilityBand.notEnoughAnswers,
+    ZyraCompatibilityBand.good,
   ];
 
-  static final categories = List<ZyraCompatibilityDemoCategory>.unmodifiable([
-    ZyraCompatibilityDemoCategory(topicNames[0], 80, 15, 5),
-    ZyraCompatibilityDemoCategory(topicNames[1], 70, 20, 10),
-    ZyraCompatibilityDemoCategory(topicNames[2], 85, 10, 5),
-    ZyraCompatibilityDemoCategory(topicNames[3], 90, 5, 5),
-    ZyraCompatibilityDemoCategory(topicNames[4], 60, 30, 10),
-    ZyraCompatibilityDemoCategory(topicNames[5], 65, 25, 10),
-  ]);
-}
-
-class ZyraCompatibilityDemoCategory {
-  final String name;
-  final int aligned;
-  final int discuss;
-  final int opposed;
-
-  const ZyraCompatibilityDemoCategory(
-    this.name,
-    this.aligned,
-    this.discuss,
-    this.opposed,
-  ) : assert(aligned + discuss + opposed == 100),
-      assert(aligned >= 0 && discuss >= 0 && opposed >= 0);
+  static Map<ZyraCompatibilityArea, ZyraCompatibilityBand> bandsFor(
+    String profileId,
+  ) {
+    final fixtureId = profileId.startsWith('draft-')
+        ? profileId.substring('draft-'.length)
+        : profileId;
+    return Map.unmodifiable({
+      for (final area in ZyraCompatibilityArea.values)
+        area: _bands[(area.index + fixtureId.length) % _bands.length],
+    });
+  }
 }

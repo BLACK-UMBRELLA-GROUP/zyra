@@ -258,7 +258,7 @@ void _expectFittedPage(WidgetTester tester, Size size) {
 
 void _expectHaloReader(WidgetTester tester, Size size) {
   expect(find.text('Compatibility score'), findsOneWidget);
-  expect(find.text('You and Sara'), findsNothing);
+  expect(find.text('You and Sara'), findsOneWidget);
   expect(_key('draft_compatibility_score_reader'), findsOneWidget);
   expect(_key('draft_compatibility_score_pages'), findsOneWidget);
   expect(_key('draft_compatibility_score_artwork_halo_0'), findsOneWidget);
@@ -276,7 +276,7 @@ void _expectHaloReader(WidgetTester tester, Size size) {
   expect(reader.bottom, lessThanOrEqualTo(size.height - 34 + .5));
   expect(
     tester.widget<Text>(_key('draft_compatibility_score_position')).data,
-    '1 / 7',
+    '1 / 2',
   );
   expect(tester.takeException(), isNull);
 }
@@ -375,8 +375,11 @@ void main() {
       await _open(tester);
       expect(_page(tester).balance, 5);
       final retained = _page(tester).onUnlock!;
+      expect(_page(tester).areaBands, isNull);
       await _reveal(tester);
       final usedScore = _page(tester).overallScore;
+      final usedBands = _page(tester).areaBands;
+      expect(usedBands, hasLength(12));
       expect(_page(tester).balance, 4);
       expect(_page(tester).revealed, isTrue);
       retained();
@@ -387,6 +390,7 @@ void main() {
       expect(_page(tester).balance, 4);
       expect(_page(tester).revealed, isTrue);
       expect(_page(tester).overallScore, usedScore);
+      expect(_page(tester).areaBands, same(usedBands));
       expect(_page(tester).onUnlock, isNull);
       await _press(tester, 'draft_back');
       await _press(tester, 'draft_back');
@@ -397,6 +401,7 @@ void main() {
       expect(_page(tester).balance, 1);
       expect(_page(tester).revealed, isTrue);
       expect(_page(tester).overallScore, usedScore);
+      expect(_page(tester).areaBands, same(usedBands));
       expect(_page(tester).onUnlock, isNull);
       // A count preset changes only unspent stock. It cannot erase used access
       // or permit the prior route's callback to charge this person again.
@@ -405,6 +410,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(_page(tester).balance, 1);
       expect(_page(tester).overallScore, usedScore);
+      expect(_page(tester).areaBands, same(usedBands));
     },
   );
 
@@ -459,10 +465,7 @@ void main() {
       _expectHaloReader(tester, const Size(393, 852));
       expect(find.text('Revealing'), findsNothing);
       expect(find.text('Revealed'), findsNothing);
-      expect(
-        _key('draft_compatibility_category_Work & Education_result-opacity'),
-        findsNothing,
-      );
+      expect(_key('draft_compatibility_areas'), findsNothing);
       await _snapshot(tester, 'halo_overall');
       retained();
       await tester.pumpAndSettle();
@@ -471,8 +474,9 @@ void main() {
       await tester.tap(_key('draft_compatibility_score_next'));
       await tester.pumpAndSettle();
       expect(_key('draft_compatibility_score_title_1'), findsOneWidget);
-      expect(_key('draft_compatibility_score_artwork_halo_1'), findsOneWidget);
-      await _snapshot(tester, 'halo_category');
+      expect(_key('draft_compatibility_areas'), findsOneWidget);
+      expect(find.textContaining('%'), findsNothing);
+      await _snapshot(tester, 'every_area');
       expect(_page(tester).balance, 0);
       expect(tester.takeException(), isNull);
     },
@@ -740,7 +744,7 @@ void main() {
     await tester.tap(_key('draft_compatibility_score_next'));
     await tester.pumpAndSettle();
     expect(_key('draft_compatibility_score_title_1'), findsOneWidget);
-    await _snapshot(tester, 'halo_category');
+    await _snapshot(tester, 'every_area');
   });
 
   for (final size in const [Size(375, 812), Size(393, 852), Size(430, 932)]) {

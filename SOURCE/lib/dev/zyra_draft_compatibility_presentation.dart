@@ -2,10 +2,10 @@ import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
+import '../models/zyra_compatibility_area.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_draft_compatibility_score_designs.dart';
-import 'zyra_compatibility_demo.dart';
 
 /// Display-only Compatibility for the protected, fictional member preview.
 ///
@@ -19,20 +19,21 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
     required this.balance,
     required this.overallScore,
     required this.revealed,
-    this.topicGate,
-    this.topicScores,
+    this.areaGate,
+    this.areaBands,
     this.onUnlock,
     this.onBuyMore,
     this.canAct,
   }) : assert(balance >= 0),
-       assert(overallScore >= 0 && overallScore <= 100);
+       assert(overallScore >= 0 && overallScore <= 100),
+       assert(areaGate == null || areaBands == null);
 
   final String personName;
   final int balance;
   final int overallScore;
   final bool revealed;
-  final ZyraCompatibilityTopicGate? topicGate;
-  final List<ZyraCompatibilityDemoCategory>? topicScores;
+  final ZyraCompatibilityAreaGate? areaGate;
+  final Map<ZyraCompatibilityArea, ZyraCompatibilityBand>? areaBands;
   final VoidCallback? onUnlock;
   final VoidCallback? onBuyMore;
   final bool Function()? canAct;
@@ -214,8 +215,8 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
                             children: [
                               _informationRow(
                                 Icons.insights_rounded,
-                                'Your overall score and six areas',
-                                'Faith & Values, Family, Lifestyle and more',
+                                'Your overall score and twelve areas',
+                                'Family, Lifestyle, Culture and more',
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
@@ -270,11 +271,11 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
           ],
         );
         final reader = ZyraCompatibilityScoreReader(
-          key: ValueKey(topicGate != null),
+          key: ValueKey(areaGate != null),
           personName: personName,
           overallScore: overallScore,
-          topicGate: topicGate,
-          topicScores: topicScores,
+          areaGate: areaGate,
+          areaBands: areaBands,
         );
         final headingHeight =
             16 +

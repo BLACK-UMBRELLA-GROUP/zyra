@@ -1,3 +1,5 @@
+import '../models/zyra_compatibility_area.dart';
+import 'zyra_compatibility_demo.dart';
 import 'zyra_draft_compatibility_preview.dart';
 import 'zyra_view_request_draft_model.dart';
 
@@ -9,10 +11,12 @@ class ZyraDraftCompatibilityResult {
   const ZyraDraftCompatibilityResult._({
     required this.profileId,
     required this.overallScore,
+    required this.areaBands,
   });
 
   final String profileId;
   final int overallScore;
+  final Map<ZyraCompatibilityArea, ZyraCompatibilityBand> areaBands;
 }
 
 /// Caller-owned access for the protected fictional request-flow review.
@@ -90,6 +94,7 @@ class ZyraDraftCompatibilityAccessStore {
     _results[profileId] = ZyraDraftCompatibilityResult._(
       profileId: profileId,
       overallScore: score,
+      areaBands: ZyraCompatibilityDemo.bandsFor(profileId),
     );
     return true;
   }

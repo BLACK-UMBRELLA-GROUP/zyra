@@ -41,14 +41,17 @@ shows the Seeker One comparison prompt on a backward profile swipe.
 Profiles, Guardian, Journey, Filters and My ZYRA let cards slide to the screen
 edges with their shadows visible throughout the swipe.
 In the Founder preview, Seeker Basic filters by age and location. The
-Nationality and Ethnicity cards link to the Seeker One comparison. In a
-mutually revealed Journey, Seeker Basic sees the overall compatibility score
-and can use a local Unlock to open the topics for that person.
-In the Founder preview, a Guardian with View can open Compatibility score
-after both Seekers reveal. Guardian Basic shows the overall score and six
-locked topics with a Guardian One comparison. Guardian One shows all seven
-pages. A shared Past summary with View on that attempt carries the read-only
+Nationality and Ethnicity cards link to the Seeker One comparison.
+The Founder preview's Compatibility reader has two pages, Overall and
+Every area. Seeker One and Guardian One see twelve areas with synthetic
+bands in admitted preview results. In a mutually revealed Journey,
+Seeker Basic can use a local Unlock to open the areas for that person.
+A Guardian with View can open the reader after both Seekers reveal.
+Guardian Basic sees the area names with locks and a Guardian One comparison.
+A shared Past summary with View on that attempt carries the read-only
 row until three calendar months after the Journey ends.
+Live Compatibility areas show locks or `Not enough answers` pending
+approved result wiring.
 The Guardian Basic invitation example shows what happens when a Seeker’s
 free Guardian place is taken, keeping the current holder private.
 Basic profiles and explicit upgrade prompts open the Seeker One or Guardian

@@ -5,8 +5,10 @@ import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'package:zyra/models/zyra_compatibility_area.dart';
 import 'package:zyra/screens/subscription/zyra_one_upgrade_page.dart';
 import 'package:zyra/services/zyra_account_state.dart';
+import 'package:zyra/widgets/zyra_compatibility_area_row.dart';
 
 import 'baseline_capture_support.dart';
 
@@ -16,19 +18,10 @@ const _hassan = 'draft-guardian-hassan';
 const _otherGuardian = 'draft-guardian-yusuf';
 const _activeRow = 'draft_guardian_compatibility_$_sara';
 const _next = 'draft_compatibility_score_next';
-const _cta = 'draft_compatibility_topic_action';
+const _cta = 'draft_compatibility_area_action';
 const _captures = String.fromEnvironment(
   'ZYRA_LINE88_COMPATIBILITY_CAPTURE_DIR',
 );
-const _topics = [
-  'Lifestyle',
-  'Work & Education',
-  'Family Values',
-  'Marriage Goals',
-  'Personality',
-  'Deen',
-];
-
 DateTime _endedAt() => DateTime.utc(2026, 10, 29, 12);
 
 ViewRequestDraftModel _model({int count = 1, DateTime? date}) {
@@ -141,6 +134,46 @@ Future<void> _capture(
   );
 }
 
+void _expectAreas(WidgetTester tester, {required bool locked}) {
+  expect(find.text('2 / 2'), findsOneWidget);
+  expect(find.text('Every area'), findsOneWidget);
+  final page = find.byKey(const ValueKey('draft_compatibility_areas'));
+  final rows = find.descendant(
+    of: page,
+    matching: find.byType(ZyraCompatibilityAreaRow),
+  );
+  expect(
+    tester.widgetList<ZyraCompatibilityAreaRow>(rows).map((row) => row.area),
+    ZyraCompatibilityArea.values,
+  );
+  expect(
+    find.descendant(of: page, matching: find.textContaining('%')),
+    findsNothing,
+  );
+  final reader = tester.widget<ZyraCompatibilityScoreReader>(_reader);
+  if (locked) {
+    expect(reader.areaBands, isNull);
+    expect(find.text('Locked'), findsNWidgets(12));
+    for (final band in ZyraCompatibilityBand.values) {
+      expect(find.text(band.label), findsNothing);
+    }
+    final gate = reader.areaGate;
+    expect(gate?.onUnlock, isNull);
+    expect(gate?.onBuyMore, isNull);
+    expect(gate?.balance, 0);
+    expect(find.text('See Guardian One'), findsOneWidget);
+    expect(find.textContaining('Unlock'), findsNothing);
+  } else {
+    expect(reader.areaGate, isNull);
+    expect(reader.areaBands?.keys, ZyraCompatibilityArea.values);
+    expect(find.text('Locked'), findsNothing);
+    expect(find.text('See Guardian One'), findsNothing);
+    for (final band in ZyraCompatibilityBand.values) {
+      expect(find.text(band.label), findsWidgets);
+    }
+  }
+}
+
 void main() {
   setUpAll(() => baselineSetUp(evidenceRoot: null));
   tearDownAll(baselineTearDown);
@@ -151,7 +184,7 @@ void main() {
   ]) {
     final (size, safePadding, workspace) = viewport;
     final dimensions = '${size.width.round()}x${size.height.round()}';
-    testWidgets('Guardian Basic locked topics through Journey at $dimensions', (
+    testWidgets('Guardian Basic locked areas through Journey at $dimensions', (
       tester,
     ) async {
       final harness = BaselineHarness(
@@ -190,11 +223,11 @@ void main() {
       );
       await harness.tap(_activeRow);
       expect(_reader, findsOneWidget);
-      expect(find.text('1 / 7'), findsOneWidget);
+      expect(find.text('1 / 2'), findsOneWidget);
       expect(harness.key('draft_compatibility_overall_score'), findsOneWidget);
       await _capture(
         harness,
-        'basic_overall_$dimensions',
+        'journey_basic_overall_$dimensions',
         'Guardian Basic Overall after both reveals',
       );
 
@@ -203,39 +236,14 @@ void main() {
         const Offset(-240, 0),
       );
       await harness.flush();
-      for (var topic = 1; topic <= _topics.length; topic++) {
-        expect(find.text('${topic + 1} / 7'), findsOneWidget);
-        expect(find.text(_topics[topic - 1]), findsOneWidget);
-        expect(
-          harness.key('draft_compatibility_locked_topic_$topic'),
-          findsOneWidget,
-        );
-        expect(
-          harness.key('draft_compatibility_category_score_$topic'),
-          findsNothing,
-        );
-        expect(
-          find.text('Every topic comes with Guardian One'),
-          findsOneWidget,
-        );
-        expect(find.text('See Guardian One'), findsOneWidget);
-        expect(find.textContaining('Unlock'), findsNothing);
-        final reader = tester.widget<ZyraCompatibilityScoreReader>(_reader);
-        expect(reader.topicScores, isNull);
-        final gate = reader.topicGate;
-        expect(gate?.onUnlock, isNull);
-        expect(gate?.onBuyMore, isNull);
-        expect(gate?.balance, 0);
-        if (topic == 1) {
-          await _capture(
-            harness,
-            'basic_locked_$dimensions',
-            'Guardian Basic locked Lifestyle page',
-          );
-        }
-        await harness.tap(_next);
-      }
-      expect(find.text('1 / 7'), findsOneWidget);
+      _expectAreas(tester, locked: true);
+      await _capture(
+        harness,
+        'journey_basic_locked_$dimensions',
+        'Guardian Basic Journey → Every area',
+      );
+      await harness.tap(_next);
+      expect(find.text('1 / 2'), findsOneWidget);
       await harness.tap(_next);
       final stale = tester.widget<FilledButton>(harness.key(_cta)).onPressed!;
       await harness.tap(_cta);
@@ -249,53 +257,85 @@ void main() {
       expect(access.balance, 0);
       expect(access.isUnlocked(_sara), isTrue);
     });
-  }
 
-  testWidgets('Guardian One reads all seven pages for the selected Journey', (
-    tester,
-  ) async {
-    final harness = BaselineHarness(
-      tester,
-      group: 'line88_guardian_one',
-      outputRoot: _captures,
-      evidenceRoot: _captures,
-      flatOutput: true,
-      reduceMotion: true,
-    );
-    final model = _model(count: 2);
-    _reveal(model, _sara);
-    await _mount(harness, _checkpoint(model, basic: false, subject: _sara));
-    await _openJourney(harness);
-    final oldRow = _rowTap(harness);
-    await harness.tap('concept_guardian_journey_$_aisha');
-    expect(find.text('Adam & Aisha'), findsOneWidget);
-    expect(find.text('Compatibility score'), findsNothing);
-    oldRow();
-    await harness.flush();
-    expect(_reader, findsNothing);
-    await harness.tap('concept_guardian_journey_$_sara');
-    await harness.tap(_activeRow);
-    expect(find.text('1 / 7'), findsOneWidget);
-    final result = tester.widget<ZyraCompatibilityScoreReader>(_reader);
-    expect(result.topicScores?.map((topic) => topic.name), _topics);
-    for (var topic = 1; topic <= _topics.length; topic++) {
-      await harness.tap(_next);
-      expect(find.text('${topic + 1} / 7'), findsOneWidget);
-      expect(find.text(_topics[topic - 1]), findsOneWidget);
-      expect(
-        harness.key('draft_compatibility_category_score_$topic'),
-        findsOneWidget,
-      );
-      expect(find.text('See Guardian One'), findsNothing);
-      if (topic == 1) {
+    testWidgets(
+      'Guardian One reads both pages for the selected Journey at $dimensions',
+      (tester) async {
+        final harness = BaselineHarness(
+          tester,
+          group: 'line91_guardian_one_$dimensions',
+          outputRoot: _captures,
+          evidenceRoot: _captures,
+          flatOutput: true,
+          logicalSize: size,
+          safePadding: safePadding,
+          reduceMotion: true,
+        );
+        final model = _model(count: 2);
+        _reveal(model, _sara);
+        await _mount(harness, _checkpoint(model, basic: false, subject: _sara));
+        await _openJourney(harness);
+        final oldRow = _rowTap(harness);
+        await harness.tap('concept_guardian_journey_$_aisha');
+        expect(find.text('Adam & Aisha'), findsOneWidget);
+        expect(find.text('Compatibility score'), findsNothing);
+        oldRow();
+        await harness.flush();
+        expect(_reader, findsNothing);
+        await harness.tap('concept_guardian_journey_$_sara');
+        await harness.tap(_activeRow);
+        expect(find.text('1 / 2'), findsOneWidget);
         await _capture(
           harness,
-          'one_lifestyle_430x932',
-          'Guardian One admitted Lifestyle score',
+          'journey_one_overall_$dimensions',
+          'Guardian One Journey → Compatibility score',
         );
-      }
+        await harness.tap(_next);
+        _expectAreas(tester, locked: false);
+        await _capture(
+          harness,
+          'journey_one_areas_$dimensions',
+          'Guardian One Journey → Every area',
+        );
+      },
+    );
+
+    for (final basic in [true, false]) {
+      final plan = basic ? 'basic' : 'one';
+      testWidgets('Guardian $plan Past reader at $dimensions', (tester) async {
+        final harness = BaselineHarness(
+          tester,
+          group: 'line91_guardian_past_${plan}_$dimensions',
+          outputRoot: _captures,
+          evidenceRoot: _captures,
+          flatOutput: true,
+          logicalSize: size,
+          safePadding: safePadding,
+          reduceMotion: true,
+        );
+        final model = _model();
+        _reveal(model, _sara);
+        expect(model.end(_sara, mainGuardianId: _hassan), isTrue);
+        final attempt = model.currentEndedAttemptFor(_sara)!;
+        await _mount(harness, _checkpoint(model, share: true, basic: basic));
+        await harness.tap('guardian_ended');
+        await harness.tap(_pastRow(attempt));
+        expect(find.text('1 / 2'), findsOneWidget);
+        await _capture(
+          harness,
+          'past_${plan}_overall_$dimensions',
+          'Guardian $plan Past → Compatibility score',
+        );
+        await harness.tap(_next);
+        _expectAreas(tester, locked: basic);
+        await _capture(
+          harness,
+          'past_${plan}_areas_$dimensions',
+          'Guardian $plan Past → Every area',
+        );
+      });
     }
-  });
+  }
 
   testWidgets('Additional Guardian View must be current and attempt scoped', (
     tester,
@@ -471,7 +511,7 @@ void main() {
     expect(find.text('Adam & Sara'), findsOneWidget);
     await harness.tap(_activeRow);
     expect(_reader, findsOneWidget);
-    expect(find.text('1 / 7'), findsOneWidget);
+    expect(find.text('1 / 2'), findsOneWidget);
   });
 
   for (final denied in [
@@ -587,13 +627,9 @@ void main() {
         VoidCallback? stale;
         if (openReader) {
           await harness.tap(rowKey);
-          expect(find.text('1 / 7'), findsOneWidget);
+          expect(find.text('1 / 2'), findsOneWidget);
           await harness.tap(_next);
-          expect(
-            find.text('Every topic comes with Guardian One'),
-            findsOneWidget,
-          );
-          expect(find.textContaining('Unlock'), findsNothing);
+          _expectAreas(tester, locked: true);
           stale = tester.widget<FilledButton>(harness.key(_cta)).onPressed!;
           await _capture(
             harness,

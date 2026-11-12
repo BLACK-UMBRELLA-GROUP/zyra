@@ -3851,6 +3851,12 @@ class _ZyraOneJourneyConceptShellState
       ]);
     }
     final attempt = _model.attemptRevisionFor(person.id);
+    final areaGate = _seekerCompatibilityAreaGate(
+      person,
+      canView: () =>
+          _model.attemptRevisionFor(person.id) == attempt &&
+          _canViewJourneyCompatibility(person.id),
+    );
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
@@ -3862,18 +3868,14 @@ class _ZyraOneJourneyConceptShellState
               result?.overallScore ??
               ZyraDraftCompatibilityPreview(person.id, balance: 0).overallScore,
           revealed: true,
-          topicGate: _seekerCompatibilityTopicGate(
-            person,
-            canView: () =>
-                _model.attemptRevisionFor(person.id) == attempt &&
-                _canViewJourneyCompatibility(person.id),
-          ),
+          areaGate: areaGate,
+          areaBands: areaGate == null ? result?.areaBands : null,
         ),
       ),
     );
   }
 
-  ZyraCompatibilityTopicGate? _seekerCompatibilityTopicGate(
+  ZyraCompatibilityAreaGate? _seekerCompatibilityAreaGate(
     DraftProfile person, {
     required bool Function() canView,
   }) {
@@ -3890,7 +3892,7 @@ class _ZyraOneJourneyConceptShellState
         canView() &&
         !_compatibilityAccess.isUnlocked(person.id);
     final balance = _compatibilityAccess.balance;
-    return ZyraCompatibilityTopicGate(
+    return ZyraCompatibilityAreaGate(
       guardian: false,
       balance: balance,
       canAct: current,
@@ -3898,7 +3900,7 @@ class _ZyraOneJourneyConceptShellState
         if (!current() || _compatibilityAccess.balance == 0) return;
         _act(() {
           if (_compatibilityAccess.unlock(person.id)) {
-            _notice = 'Every topic is now open for ${person.firstName}.';
+            _notice = 'Every area is now open for ${person.firstName}.';
           }
         });
       },
@@ -6348,9 +6350,9 @@ class _ZyraOneJourneyConceptShellState
           ).overallScore,
           balance: 0,
           revealed: true,
-          topicScores: basic ? null : ZyraCompatibilityDemo.categories,
-          topicGate: basic
-              ? ZyraCompatibilityTopicGate(
+          areaBands: basic ? null : ZyraCompatibilityDemo.bandsFor(person.id),
+          areaGate: basic
+              ? ZyraCompatibilityAreaGate(
                   guardian: true,
                   canAct: canSeeUpgrade,
                   onUpgrade: () => _open('guardian_compatibility_upgrade'),
@@ -8363,9 +8365,14 @@ class _ZyraOneJourneyConceptShellState
               used?.overallScore ??
               ZyraDraftCompatibilityPreview(person.id, balance: 0).overallScore,
           revealed: true,
-          topicGate: _seekerMembership == 'Seeker Basic' && used == null
-              ? const ZyraCompatibilityTopicGate(guardian: false)
+          areaGate: _seekerMembership == 'Seeker Basic' && used == null
+              ? const ZyraCompatibilityAreaGate(guardian: false)
               : null,
+          areaBands:
+              used?.areaBands ??
+              (_seekerMembership == 'Seeker Basic'
+                  ? null
+                  : ZyraCompatibilityDemo.bandsFor(person.id)),
         ),
       ),
     );
@@ -8406,6 +8413,7 @@ class _ZyraOneJourneyConceptShellState
       });
     }
 
+    final result = _compatibilityAccess.resultFor(person.id);
     return SafeArea(
       child: Padding(
         // No bottom navigation is shown on this temporary result page.
@@ -8417,9 +8425,10 @@ class _ZyraOneJourneyConceptShellState
           personName: person.firstName,
           balance: _compatibilityAccess.balance,
           overallScore:
-              _compatibilityAccess.resultFor(person.id)?.overallScore ??
+              result?.overallScore ??
               ZyraDraftCompatibilityPreview(person.id, balance: 0).overallScore,
-          revealed: _compatibilityAccess.isUnlocked(person.id),
+          revealed: result != null,
+          areaBands: result?.areaBands,
           onUnlock: unlock(),
           onBuyMore: _bound(() {
             if (current()) _open('compatibility_store');

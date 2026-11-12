@@ -1,51 +1,11 @@
-// Compatibility Unlock — ONE page, two sections.
-// CURRENT PRODUCT, 2026-10-11: one Compatibility Unlock includes the former
-// full-detail target. New attempts use the retained Plus entitlement and stay
-// held until trusted detail is available. Earlier overall-only access remains.
+// The legacy Compatibility Unlock keeps its single-page offer and the
+// separate Overall and Guardian disclosures. New full-detail spending is
+// held until the trusted Plus contract is available. Earlier grants stay
+// readable under their existing access checks.
 //
-// REBUILT 2026-08-03/04. Was two swipeable tabs (Unlock / Unlock+) with a
-// sliding toggle, matching the Journeys/Activity gesture.
-//
-// Founder: "the compatibility unlock pages... one page instead."
-//
-// Why the tabs were wrong, recorded so they don't come back: a swipe
-// between two tabs says "these are alternatives, pick one". They are not
-// alternatives — Plus is a superset of Unlock. The gesture was actively
-// teaching the wrong relationship, and it hid half the offer behind a
-// swipe the user had no reason to make.
-//
-// Stacked, the relationship states itself:
-//
-//   OVERALL      the headline number          Compatibility Unlock
-//   THE DETAIL   what's inside that number    Compatibility Unlock+
-//
-// FOUNDER DECISIONS BAKED IN HERE (2026-08-03, chosen from mockups):
-//
-//   • An available unlock balance is shown in PLAIN WORDS, top-right of its
-//     section header ("5 left" / "none left"). No balance card or subheading.
-//     The held Detail offer shows neither a balance nor a spend action.
-//   • Locked detail rows carry a PADLOCK EACH. The user sees the shape of
-//     what they'd get — six named categories — without any of the values.
-//   • The redundant padlock-open + "Unlocked" footer is removed once a
-//     result is visible; the visible result is already the state.
-//   • No BEST VALUE badge here. It belongs on the buy page, where there
-//     is something to compare it against.
-//   • "Buy more unlocks" is a quiet GLASS PILL at the foot, below the
-//     available unlock action.
-//
-//   • ALIGNED / DISCUSS / OPPOSED is the current member language for the
-//     three compatibility states. Compatibility Unlock remains the overall
-//     percentage; Compatibility Unlock+ adds the detailed presentation.
-//
-// CURRENT DATA BOUNDARY, 2026-09-10: the overall percentage is real and comes
-// from score_candidates(). That RPC still exposes no per-category totals
-// (OA-ZYRA-192/193(d)), so Exact Trio now renders an honest unavailable state:
-// the six category names and three-column structure remain visible, no sample
-// percentages appear for persisted profiles, and Unlock+ cannot spend a real credit.
-// Existing Plus unlocks still retain their real Guardian visibility.
-// FOUNDER TESTING EXCEPTION, 2026-09-28: authorized sample routes alone have
-// a Plus button and clearly labelled illustrative result. State/credits are
-// route-local; this never opens the production fuse or writes an unlock.
+// LOCK 27 V3 and DR-ZYRA-250 D3/D4 define the fixed areas and band-only
+// display. Real grants have no area data yet. Only the admitted local
+// sample can display synthetic bands, after using a route-local unlock.
 
 import 'dart:async';
 
@@ -55,6 +15,7 @@ import '../../dev/zyra_app_gold_preview.dart';
 import '../../dev/zyra_compatibility_demo.dart';
 import '../../dev/zyra_preview_navigation_checkpoint.dart';
 import '../../models/seeker_profile.dart';
+import '../../models/zyra_compatibility_area.dart';
 import '../../models/zyra_gender.dart';
 import '../../services/zyra_discovery_service.dart';
 import '../../services/zyra_developer_access.dart';
@@ -65,18 +26,8 @@ import '../../services/zyra_unlock_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
+import '../../widgets/zyra_compatibility_area_row.dart';
 import '../../widgets/zyra_gold_action_pill.dart';
-
-/// Exact Trio's ruled category order. Names are safe to show; values are not
-/// available until the server returns real per-category totals.
-const _compatibilityCategoryNames = <String>[
-  'Lifestyle',
-  'Work & Education',
-  'Family Values',
-  'Marriage Goals',
-  'Personality',
-  'Deen',
-];
 
 /// Code-only fixture access to a mounted local sample. Binding and mutation
 /// exist only inside assertions; release app routes cannot attach this owner.
@@ -128,7 +79,7 @@ class ProfileUnlockScreen extends StatefulWidget {
   ///
   /// True only when opened from a Journey surface for such a pair (the
   /// Paused/Ended cards, the Timeline's Compatibility entry). Affects
-  /// the OVERALL section alone; the Plus detail (categories, Guardians)
+  /// the OVERALL section alone; the Plus detail (areas, Guardians)
   /// stays gated exactly as before — the Journey never revealed those.
   /// This display flag is not numeric-read authority: the legacy score read
   /// additionally requires an existing owner/profile grant. A Journey without
@@ -617,7 +568,7 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
 
     // Plus is a SUPERSET of Unlock, so holding Plus unlocks the overall
     // number too. Not a convenience — the spec defines Plus as "everything
-    // in Compatibility Unlock, plus a category breakdown", and charging
+    // in Compatibility Unlock, plus area bands", and charging
     // again for the part they already bought would break the permanence
     // rule the unique index exists to enforce.
     final demoUnlocked = _isDeveloperPreview && _previewPlusUnlocked;
@@ -711,7 +662,7 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
                         thickness: 1,
                       ),
                       _Section(
-                        label: 'THE DETAIL',
+                        label: 'EVERY AREA',
                         left:
                             (_loadingBalance ||
                                 _balanceUnavailable ||
@@ -748,7 +699,11 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
                         child: _Detail(
                           unlocked: detailUnlocked,
                           developerPreview: _isDeveloperPreview,
-                          demoUnlocked: demoUnlocked,
+                          demoBands: demoUnlocked
+                              ? ZyraCompatibilityDemo.bandsFor(
+                                  widget.profile.id,
+                                )
+                              : null,
                           guardians: _guardians,
                           firstName: name,
                           gender: widget.profile.gender,
@@ -757,26 +712,6 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
                     ],
                   ),
                 ),
-
-                // REMOVED 2026-08-06, Founder: "the text at bottom an unlock
-                // never shows — remove that."
-                //
-                // It read: "An unlock never shows what either of you wrote,
-                // or which questions caused an Aligned, Discuss or Opposed
-                // result."
-                //
-                // The privacy promise it made is REAL and still holds — the
-                // screen shows percentages and tallies, never an answer. It
-                // is simply not this screen's job to keep saying so. Nothing
-                // above it claims otherwise, so the sentence was defending
-                // against a reading nobody was making, and it was the last
-                // thing on the page.
-                //
-                // NOTE FOR THE SOLICITOR REVIEW: this wording exists nowhere
-                // else in the product now. If the Privacy Policy or the
-                // Article 9 consent text relies on the user having been told
-                // this in-app, it needs a home — most likely the buy page,
-                // where the promise is part of what is being sold.
               ],
             ),
           ),
@@ -921,11 +856,7 @@ class _OverallLocked extends StatelessWidget {
   }
 }
 
-/// Unlocked overall — the percentage, and nothing else.
-///
-/// Aligned/Discuss/Opposed detail lives in Plus so that
-/// Plus has more to sell. Compatibility Unlock is now exactly one number,
-/// which is also the easiest thing in the app to explain.
+/// Shows the caller-owned overall result independently of area access.
 class _OverallResult extends StatelessWidget {
   /// THE REAL FIGURE, at last — OA-ZYRA-192, unblocked by OA-ZYRA-193 on
   /// 2026-08-11. This showed `_Sample.overall` — a constant 81% — to every
@@ -974,16 +905,13 @@ class _OverallResult extends StatelessWidget {
   }
 }
 
-/// The lower section, locked or not.
-///
-/// The ruled Exact Trio structure remains visible, but no category value is
-/// rendered for a persisted profile until real server totals exist. The
-/// explicitly marked developer sample is separate presentation state.
-/// `unlocked` governs only already-real Guardian disclosure below it.
+/// Area access and Guardian disclosure stay independent of the
+/// overall result. A real Plus grant admits the area list with no band data
+/// until the trusted result is wired. Demo bands come only from the caller.
 class _Detail extends StatelessWidget {
   final bool unlocked;
   final bool developerPreview;
-  final bool demoUnlocked;
+  final Map<ZyraCompatibilityArea, ZyraCompatibilityBand>? demoBands;
 
   /// Guardians of the profile being viewed, or null while locked/unknown.
   /// An empty list is a real answer — "No Guardian linked" — not a gap.
@@ -997,8 +925,8 @@ class _Detail extends StatelessWidget {
 
   const _Detail({
     required this.unlocked,
-    this.developerPreview = false,
-    this.demoUnlocked = false,
+    required this.developerPreview,
+    this.demoBands,
     required this.guardians,
     required this.firstName,
     required this.gender,
@@ -1006,6 +934,10 @@ class _Detail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final demoUnlocked = demoBands != null;
+    final unavailable = unlocked || demoUnlocked
+        ? ZyraCompatibilityBand.notEnoughAnswers
+        : null;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -1013,9 +945,28 @@ class _Detail extends StatelessWidget {
           const _DemoNotice(),
           const SizedBox(height: 14),
         ],
-        _ExactTrioBreakdown(
-          developerPreview: developerPreview,
-          demoUnlocked: demoUnlocked,
+        if (!demoUnlocked) ...[
+          Text(
+            developerPreview
+                ? 'Unlock Compatibility to reveal the sample result.'
+                : 'Detailed compatibility isn’t available yet.',
+            key: const ValueKey('compatibility-detail-unavailable'),
+            style: ZyraText.subtext(size: 12.5),
+          ),
+          const SizedBox(height: 14),
+        ],
+        Column(
+          key: demoUnlocked
+              ? const ValueKey('compatibility-demo-result')
+              : null,
+          children: [
+            for (final area in ZyraCompatibilityArea.values)
+              ZyraCompatibilityAreaRow(
+                key: ValueKey('compatibility-area-row-${area.name}'),
+                area: area,
+                band: demoBands?[area] ?? unavailable,
+              ),
+          ],
         ),
         if (demoUnlocked)
           const _DemoGuardian()
@@ -1031,150 +982,16 @@ class _Detail extends StatelessWidget {
   }
 }
 
-abstract final class _BreakdownPalette {
-  static const aligned = Color(0xFF6FBF8A);
-  static const discuss = Color(0xFFE0C070);
-  static const opposed = ZyraColors.destructive;
-}
-
-class _ExactTrioBreakdown extends StatelessWidget {
-  final bool developerPreview;
-  final bool demoUnlocked;
-  const _ExactTrioBreakdown({
-    this.developerPreview = false,
-    this.demoUnlocked = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    Widget value(Color colour, int? percentage) => SizedBox(
-      width: 51,
-      child: Text(
-        percentage == null ? '—' : '$percentage%',
-        textAlign: TextAlign.center,
-        style: ZyraText.body(
-          size: 11.5,
-          color: colour.withValues(alpha: percentage == null ? 0.55 : 1),
-        ),
-      ),
-    );
-    Widget heading(String label) => SizedBox(
-      width: 51,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 2),
-        child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(
-            label,
-            maxLines: 1,
-            softWrap: false,
-            textAlign: TextAlign.center,
-            style: ZyraText.subtext(size: 9.5),
-          ),
-        ),
-      ),
-    );
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (!demoUnlocked)
-          Text(
-            developerPreview
-                ? 'Unlock Compatibility to reveal the sample result.'
-                : 'Detailed compatibility isn’t available yet.',
-            key: const ValueKey('compatibility-detail-unavailable'),
-            style: ZyraText.subtext(size: 12.5),
-          )
-        else
-          Text(
-            'Sample category percentages',
-            key: const ValueKey('compatibility-demo-result'),
-            style: ZyraText.subtext(size: 12.5),
-          ),
-        const SizedBox(height: 14),
-        Row(
-          children: [
-            const Expanded(child: SizedBox.shrink()),
-            heading('Aligned'),
-            heading('Discuss'),
-            heading('Opposed'),
-          ],
-        ),
-        const SizedBox(height: 4),
-        for (var index = 0; index < _compatibilityCategoryNames.length; index++)
-          Semantics(
-            label: demoUnlocked
-                ? '${_compatibilityCategoryNames[index]}, developer demo: '
-                      '${ZyraCompatibilityDemo.categories[index].aligned}% aligned, '
-                      '${ZyraCompatibilityDemo.categories[index].discuss}% discuss, '
-                      '${ZyraCompatibilityDemo.categories[index].opposed}% opposed'
-                : '${_compatibilityCategoryNames[index]}, detailed compatibility not available',
-            excludeSemantics: true,
-            child: Container(
-              key: ValueKey<String>(
-                'compatibility-exact-row-${_compatibilityCategoryNames[index]}',
-              ),
-              constraints: const BoxConstraints(minHeight: 41),
-              decoration: index < _compatibilityCategoryNames.length - 1
-                  ? BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Colors.white.withValues(alpha: 0.10),
-                        ),
-                      ),
-                    )
-                  : null,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      _compatibilityCategoryNames[index],
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: ZyraText.body(size: 11.5),
-                    ),
-                  ),
-                  value(
-                    _BreakdownPalette.aligned,
-                    demoUnlocked
-                        ? ZyraCompatibilityDemo.categories[index].aligned
-                        : null,
-                  ),
-                  value(
-                    _BreakdownPalette.discuss,
-                    demoUnlocked
-                        ? ZyraCompatibilityDemo.categories[index].discuss
-                        : null,
-                  ),
-                  value(
-                    _BreakdownPalette.opposed,
-                    demoUnlocked
-                        ? ZyraCompatibilityDemo.categories[index].opposed
-                        : null,
-                  ),
-                ],
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-}
-
-/// Narrow seam for rendering the truthful Compatibility Unlock+ unavailable
-/// state in widget tests without loading credits, Supabase or a profile route.
+/// Render the locked and unavailable real area states without loading access.
 @visibleForTesting
-Widget buildZyraCompatibilityBreakdownTestSurface({
-  bool unlocked = true,
-  bool demoUnlocked = false,
-}) => _Detail(
-  unlocked: unlocked,
-  developerPreview: demoUnlocked,
-  demoUnlocked: demoUnlocked,
-  guardians: [],
-  firstName: 'Hana',
-  gender: 'female',
-);
+Widget buildZyraCompatibilityBreakdownTestSurface({bool unlocked = true}) =>
+    _Detail(
+      unlocked: unlocked,
+      developerPreview: false,
+      guardians: [],
+      firstName: 'Hana',
+      gender: 'female',
+    );
 
 class _DemoNotice extends StatelessWidget {
   const _DemoNotice();

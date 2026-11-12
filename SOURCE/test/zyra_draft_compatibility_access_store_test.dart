@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_access_store.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_preview.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'package:zyra/models/zyra_compatibility_area.dart';
 
 const _sara = 'draft-sara';
 const _aisha = 'draft-aisha';
@@ -76,6 +77,12 @@ void main() {
     final result = store.resultFor(_sara)!;
     expect(result.profileId, _sara);
     expect(result.overallScore, 76);
+    expect(result.areaBands.keys, ZyraCompatibilityArea.values);
+    expect(
+      () => result.areaBands[ZyraCompatibilityArea.deen] =
+          ZyraCompatibilityBand.strong,
+      throwsUnsupportedError,
+    );
     expect(store.balance, 0);
     for (var visit = 0; visit < 5; visit++) {
       expect(store.isUnlocked(_sara), isTrue);
@@ -225,30 +232,35 @@ void main() {
     expect(journey.canViewJourneyBio(_sara), isFalse);
   });
 
-  test('source has only fictional dependencies and no hydration authority', () {
-    final source = File(
-      'lib/dev/zyra_draft_compatibility_access_store.dart',
-    ).readAsStringSync();
-    final dependencies = source
-        .split('\n')
-        .map((line) => line.trim())
-        .where((line) => line.startsWith('import '))
-        .toList();
-    expect(dependencies, [
-      "import 'zyra_draft_compatibility_preview.dart';",
-      "import 'zyra_view_request_draft_model.dart';",
-    ]);
-    for (final forbidden in [
-      'fromSnapshot(',
-      'fromJson(',
-      'toJson(',
-      'SharedPreferences',
-      'ZyraAuth',
-      'ZyraUnlockService',
-      'supabase',
-      '.rpc(',
-    ]) {
-      expect(source.contains(forbidden), isFalse, reason: forbidden);
-    }
-  });
+  test(
+    'source has only fixture and band types with no hydration authority',
+    () {
+      final source = File(
+        'lib/dev/zyra_draft_compatibility_access_store.dart',
+      ).readAsStringSync();
+      final dependencies = source
+          .split('\n')
+          .map((line) => line.trim())
+          .where((line) => line.startsWith('import '))
+          .toList();
+      expect(dependencies, [
+        "import '../models/zyra_compatibility_area.dart';",
+        "import 'zyra_compatibility_demo.dart';",
+        "import 'zyra_draft_compatibility_preview.dart';",
+        "import 'zyra_view_request_draft_model.dart';",
+      ]);
+      for (final forbidden in [
+        'fromSnapshot(',
+        'fromJson(',
+        'toJson(',
+        'SharedPreferences',
+        'ZyraAuth',
+        'ZyraUnlockService',
+        'supabase',
+        '.rpc(',
+      ]) {
+        expect(source.contains(forbidden), isFalse, reason: forbidden);
+      }
+    },
+  );
 }

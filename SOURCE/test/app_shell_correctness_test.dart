@@ -154,7 +154,7 @@ void main() {
     );
   });
 
-  test('Compatibility detail is honest-empty and cannot spend Plus', () {
+  test('Compatibility areas show no live bands and cannot spend Plus', () {
     final source = File(
       'lib/screens/subscription/profile_unlock_screen.dart',
     ).readAsStringSync();
@@ -176,7 +176,14 @@ void main() {
     expect(unlockEnd, greaterThan(unlockStart));
     final unlock = source.substring(unlockStart, unlockEnd);
 
-    expect(source, contains('class _ExactTrioBreakdown'));
+    expect(source, contains('ZyraCompatibilityAreaRow('));
+    expect(source, contains('ZyraCompatibilityBand.notEnoughAnswers'));
+    expect(
+      source,
+      contains(
+        RegExp(r'demoBands: demoUnlocked\s*\? ZyraCompatibilityDemo\.bandsFor'),
+      ),
+    );
     expect(source, isNot(contains('class _ThreePartRailBreakdown')));
     expect(source, isNot(contains('class _Sample')));
     expect(source, contains("'Detailed compatibility isn’t available yet.'"));
@@ -193,9 +200,6 @@ void main() {
     expect(source, isNot(contains('aligned: 74')));
     expect(source, isNot(contains('discuss: 18')));
     expect(source, isNot(contains('opposed: 8')));
-    expect(source, contains("heading('Aligned')"));
-    expect(source, contains("heading('Discuss')"));
-    expect(source, contains("heading('Opposed')"));
     expect(source, isNot(contains("label: 'Green'")));
     expect(source, isNot(contains("label: 'Amber'")));
     expect(source, isNot(contains("label: 'Red'")));

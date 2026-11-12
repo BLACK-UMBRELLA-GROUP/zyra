@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_presentation.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_score_designs.dart';
+import 'package:zyra/models/zyra_compatibility_area.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 
@@ -98,10 +99,7 @@ Future<void> _mount(
   await tester.pumpAndSettle();
   expect(tester.takeException(), isNull);
   expect(find.text('Compatibility score'), findsOneWidget);
-  expect(
-    find.text('You and $personName'),
-    revealed ? findsNothing : findsOneWidget,
-  );
+  expect(find.text('You and $personName'), findsOneWidget);
   expect(
     find.byType(ZyraCompatibilityScoreReader),
     revealed ? findsOneWidget : findsNothing,
@@ -285,26 +283,26 @@ void main() {
                 ),
               )
               .data,
-          '2 / 7',
+          '2 / 2',
         );
         await tester.ensureVisible(
           find.byKey(const ValueKey('draft_compatibility_score_title_1')),
         );
         await tester.pumpAndSettle();
-        await _frame(tester, 'score_halo_compact200_category');
+        await _frame(tester, 'score_halo_compact200_areas');
         await tester.ensureVisible(next);
         await tester.pumpAndSettle();
-        await _frame(tester, 'score_halo_compact200_category_navigation');
+        await _frame(tester, 'score_halo_compact200_areas_navigation');
         await tester.ensureVisible(
-          find.byKey(const ValueKey('draft_compatibility_category_score_1')),
+          find.byKey(const ValueKey(ZyraCompatibilityArea.deen)),
         );
         await tester.pumpAndSettle();
-        await _frame(tester, 'score_halo_compact200_category_score');
+        await _frame(tester, 'score_halo_compact200_areas_first_row');
         await tester.ensureVisible(
-          find.byKey(const ValueKey('draft_compatibility_metric_1_opposed')),
+          find.byKey(const ValueKey(ZyraCompatibilityArea.culture)),
         );
         await tester.pumpAndSettle();
-        await _frame(tester, 'score_halo_compact200_category_details');
+        await _frame(tester, 'score_halo_compact200_areas_last_row');
       }
       if (!compact) {
         final pager = find.byKey(
@@ -312,7 +310,7 @@ void main() {
         );
         await tester.drag(pager, const Offset(-280, 0));
         await tester.pumpAndSettle();
-        await _frame(tester, 'score_halo_category');
+        await _frame(tester, 'score_halo_areas');
       }
     });
   }

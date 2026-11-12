@@ -1,19 +1,14 @@
-// Queue 23: actual local Profiles reveal, same production frame as its baseline.
+// Actual local Profiles reveal and both directions of the pager loop.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/widgets/zyra_browse_options_button.dart';
 
 import 'baseline_capture_support.dart';
 
-const _enabled = bool.fromEnvironment('ZYRA_COMPATIBILITY_LOOP_CAPTURE');
-const _before = bool.fromEnvironment('ZYRA_COMPATIBILITY_LOOP_BEFORE');
-const _evidence =
-    '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/REPORTS/EVIDENCE/COMPATIBILITY_LOOP_2026-10-30';
-const _built =
-    '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/PRODUCT/APPROVED/COMPATIBILITY_LOOP/BUILT';
+const _evidence = String.fromEnvironment('ZYRA_COMPATIBILITY_LOOP_CAPTURE_DIR');
 
 void main() {
-  setUpAll(() => baselineSetUp(evidenceRoot: _evidence));
+  setUpAll(() => baselineSetUp(evidenceRoot: null));
   tearDownAll(baselineTearDown);
   testWidgets('Compatibility actual reader pages after both wraps', (
     tester,
@@ -22,8 +17,8 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
     final h = BaselineHarness(
       tester,
-      group: _before ? 'loop_before' : 'loop_built',
-      outputRoot: _before ? '$_evidence/before' : _built,
+      group: 'compatibility_loop',
+      outputRoot: _evidence,
       evidenceRoot: _evidence,
       flatOutput: true,
     );
@@ -43,45 +38,30 @@ void main() {
     h.assertPage('compatibility');
     await h.tap('draft_compatibility_reveal');
     expect(h.key('draft_compatibility_overall_score'), findsOneWidget);
-    if (_before) {
-      await h.capture(
-        'compatibility',
-        'compatibility',
-        'page_1',
-        'Before queue 23; actual one-unlock reveal',
-      );
-      for (var page = 1; page < 7; page++) {
-        await h.tap('draft_compatibility_score_next');
-      }
-    } else {
-      await h.tap('draft_compatibility_score_previous');
-    }
-    expect(find.text('7 / 7'), findsOneWidget);
-    expect(find.text('Deen'), findsOneWidget);
+    await h.tap('draft_compatibility_score_previous');
+    expect(find.text('2 / 2'), findsOneWidget);
+    expect(find.text('Every area'), findsOneWidget);
+    expect(find.textContaining('%'), findsNothing);
     await h.capture(
       'compatibility',
       'compatibility',
-      'page_7',
-      _before
-          ? 'Before queue 23; six adjacent next taps'
-          : 'Actual previous arrow from page 1 wraps to page 7',
+      'page_2',
+      'Previous arrow from Overall wraps to Every area',
     );
-    if (!_before) {
-      await tester.drag(
-        h.key('draft_compatibility_score_pages'),
-        const Offset(-300, 0),
-      );
-      await tester.pumpAndSettle();
-      expect(find.text('1 / 7'), findsOneWidget);
-      expect(find.text('Overall'), findsOneWidget);
-      await h.capture(
-        'compatibility',
-        'compatibility',
-        'page_1',
-        'Actual left swipe from page 7 wraps to page 1',
-      );
-    }
+    await tester.drag(
+      h.key('draft_compatibility_score_pages'),
+      const Offset(-300, 0),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('1 / 2'), findsOneWidget);
+    expect(find.text('Overall'), findsOneWidget);
+    await h.capture(
+      'compatibility',
+      'compatibility',
+      'page_1',
+      'Left swipe from Every area wraps to Overall',
+    );
     await tester.pumpWidget(const SizedBox.shrink());
     await tester.pumpAndSettle();
-  }, skip: !_enabled);
+  }, skip: _evidence.isEmpty);
 }

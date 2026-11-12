@@ -48,7 +48,7 @@ void _expectRequestHeading() {
       of: page,
       matching: find.text('You and ${presentation.personName}'),
     ),
-    presentation.revealed ? findsNothing : findsOneWidget,
+    find.text('2 / 2').evaluate().isEmpty ? findsOneWidget : findsNothing,
   );
 }
 
@@ -183,7 +183,7 @@ Future<void> _controlsRoundTrip(WidgetTester tester) async {
   await _flush(tester);
 }
 
-// COMPATIBILITY_LOOP brief §2–4 (no new visual master): the seven
+// COMPATIBILITY_LOOP brief §2–4 (no new visual master): the two
 // logical pages wrap, while the physical pager has duplicate end pages.
 int _page(WidgetTester tester) =>
     (tester
@@ -192,7 +192,7 @@ int _page(WidgetTester tester) =>
             .page!
             .round() -
         1) %
-    7;
+    2;
 
 void _unchangedJourney(_Owner owner) {
   final model = ViewRequestDraftModel.fromSnapshot(owner.latest.model);
@@ -461,7 +461,7 @@ void main() {
       final pages = _key('draft_compatibility_score_pages');
       await tester.dragFrom(tester.getCenter(pages), const Offset(220, 0));
       await _flush(tester);
-      expect(_page(tester), 6);
+      expect(_page(tester), 1);
       expect(find.byType(ZyraDraftCompatibilityPresentation), findsOneWidget);
       await tester.dragFrom(tester.getCenter(pages), const Offset(-250, 0));
       await _flush(tester);

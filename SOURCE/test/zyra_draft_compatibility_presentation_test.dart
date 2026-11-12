@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_compatibility_demo.dart';
+import 'package:zyra/models/zyra_compatibility_area.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_presentation.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
@@ -89,12 +89,9 @@ Future<void> _tap(WidgetTester tester, Key key) async {
 void _expectLocked(WidgetTester tester, int balance) {
   expect(find.text('Compatibility score'), findsOneWidget);
   expect(find.text('You and Sara'), findsOneWidget);
-  expect(find.text('Your overall score and six areas'), findsOneWidget);
+  expect(find.text('Your overall score and twelve areas'), findsOneWidget);
   expect(find.text('READY TO REVEAL'), findsOneWidget);
-  expect(
-    find.text('Faith & Values, Family, Lifestyle and more'),
-    findsOneWidget,
-  );
+  expect(find.text('Family, Lifestyle, Culture and more'), findsOneWidget);
   expect(find.text('OVERALL'), findsNothing);
   expect(find.text('DETAILS'), findsNothing);
   expect(find.text('Your overall compatibility with Sara.'), findsNothing);
@@ -129,8 +126,8 @@ void _expectLocked(WidgetTester tester, int balance) {
     tester.widget<FilledButton>(find.byKey(_reveal)).onPressed == null,
     balance == 0,
   );
-  for (final category in ZyraCompatibilityDemo.categories) {
-    expect(find.text(category.name), findsNothing);
+  for (final area in ZyraCompatibilityArea.values) {
+    expect(find.text(area.label), findsNothing);
   }
   expect(
     find.descendant(
@@ -149,7 +146,7 @@ void _expectLocked(WidgetTester tester, int balance) {
 
 void _expectRevealed(WidgetTester tester, {String person = 'Sara'}) {
   expect(find.text('Compatibility score'), findsOneWidget);
-  expect(find.text('You and $person'), findsNothing);
+  expect(find.text('You and $person'), findsOneWidget);
   expect(find.byKey(_reader), findsOneWidget);
   expect(find.byKey(_pages), findsOneWidget);
   expect(find.byKey(_score), findsOneWidget);
@@ -175,7 +172,7 @@ void _expectRevealed(WidgetTester tester, {String person = 'Sara'}) {
           find.byKey(const ValueKey('draft_compatibility_score_position')),
         )
         .data,
-    '1 / 7',
+    '1 / 2',
   );
 }
 
@@ -328,7 +325,7 @@ void main() {
         expect(find.text('Main Guardian · Fictional example'), findsNothing);
         expect(find.text('Main Guardian'), findsOneWidget);
         expect(find.text('Demo Guardian · Father'), findsOneWidget);
-        expect(find.bySemanticsLabel('Page 1 of 7: Overall'), findsOneWidget);
+        expect(find.bySemanticsLabel('Page 1 of 2: Overall'), findsOneWidget);
         expect(
           tester
               .widget<IconButton>(
@@ -377,55 +374,22 @@ void main() {
   );
 
   testWidgets(
-    'reader navigates Overall plus six category pages by touch and swipe',
+    'reader navigates between Overall and Every area by touch and swipe',
     (tester) async {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
       await _mount(tester, revealed: true);
       expect(find.byKey(_pages), findsOneWidget);
-      for (
-        var index = 1;
-        index <= ZyraCompatibilityDemo.categories.length;
-        index++
-      ) {
-        await _tap(tester, const ValueKey('draft_compatibility_score_next'));
-        expect(
-          tester
-              .widget<Text>(
-                find.byKey(
-                  const ValueKey('draft_compatibility_score_position'),
-                ),
-              )
-              .data,
-          '${index + 1} / 7',
-        );
-        expect(
-          find.byKey(ValueKey('draft_compatibility_score_title_$index')),
-          findsOneWidget,
-        );
-        expect(
-          find.byKey(ValueKey('draft_compatibility_score_artwork_halo_$index')),
-          findsOneWidget,
-        );
+      await _tap(tester, const ValueKey('draft_compatibility_score_next'));
+      expect(find.text('2 / 2'), findsOneWidget);
+      expect(find.text('Every area'), findsOneWidget);
+      expect(find.textContaining('%'), findsNothing);
+      for (final area in ZyraCompatibilityArea.values) {
+        expect(find.text(area.label), findsOneWidget);
       }
-      expect(
-        tester
-            .widget<IconButton>(
-              find.byKey(const ValueKey('draft_compatibility_score_next')),
-            )
-            .onPressed,
-        isNotNull,
-      );
       await tester.drag(find.byKey(_pages), const Offset(260, 0));
       await tester.pumpAndSettle();
-      expect(
-        tester
-            .widget<Text>(
-              find.byKey(const ValueKey('draft_compatibility_score_position')),
-            )
-            .data,
-        '6 / 7',
-      );
+      _expectRevealed(tester);
       expect(tester.takeException(), isNull);
     },
   );
@@ -454,7 +418,7 @@ void main() {
               find.byKey(const ValueKey('draft_compatibility_score_position')),
             )
             .data,
-        '2 / 7',
+        '2 / 2',
       );
       expect(find.text('Revealing'), findsNothing);
     });

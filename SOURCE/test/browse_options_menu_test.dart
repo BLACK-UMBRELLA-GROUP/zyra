@@ -18,6 +18,7 @@ import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/models/seeker_profile.dart';
+import 'package:zyra/models/zyra_compatibility_area.dart';
 import 'package:zyra/screens/settings/help_support_screen.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/theme/zyra_colors.dart';
@@ -793,35 +794,15 @@ void main() {
       expect(find.text('Demo Guardian · Father'), findsOneWidget);
       expect(_key('draft_compatibility_score_reader'), findsOneWidget);
       expect(_key('draft_compatibility_guardian_result'), findsOneWidget);
-      for (final (offset, category) in const [
-        ('Lifestyle', 80, 15, 5),
-        ('Work & Education', 70, 20, 10),
-        ('Family Values', 85, 10, 5),
-        ('Marriage Goals', 90, 5, 5),
-        ('Personality', 60, 30, 10),
-        ('Deen', 65, 25, 10),
-      ].indexed) {
-        await _press(tester, 'draft_compatibility_score_next');
-        expect(find.text(category.$1), findsOneWidget);
-        final index = offset + 1;
-        for (final metric in [
-          ('aligned', category.$2),
-          ('discuss', category.$3),
-          ('opposed', category.$4),
-        ]) {
-          expect(
-            find.descendant(
-              of: _key('draft_compatibility_metric_${index}_${metric.$1}'),
-              matching: find.text('${metric.$2}%'),
-            ),
-            findsOneWidget,
-          );
-        }
-        expect(
-          _key('draft_compatibility_score_artwork_halo_$index'),
-          findsOneWidget,
-        );
-      }
+      await _press(tester, 'draft_compatibility_score_next');
+      expect(find.text('Every area'), findsOneWidget);
+      expect(find.text(ZyraCompatibilityArea.deen.label), findsOneWidget);
+      expect(find.text(ZyraCompatibilityArea.culture.label), findsOneWidget);
+      expect(find.text('Strong'), findsWidgets);
+      expect(find.text('Good'), findsWidgets);
+      expect(find.text('Some differences'), findsWidgets);
+      expect(find.text('Not enough answers'), findsOneWidget);
+      expect(find.textContaining('%'), findsNothing);
       final revealAgain = retainedReveal!;
       revealAgain();
       revealAgain();
@@ -831,7 +812,7 @@ void main() {
       );
       expect(repeated.balance, 0);
       expect(repeated.revealed, isTrue);
-      expect(find.text('7 / 7'), findsOneWidget);
+      expect(find.text('2 / 2'), findsOneWidget);
       expect(find.text('Your shared result'), findsNothing);
       expect(_key('draft_reveal_$_sara'), findsNothing);
       expect(_key('draft_peer_reveal_$_sara'), findsNothing);

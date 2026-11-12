@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/dev/zyra_compatibility_demo.dart';
+import 'package:zyra/models/zyra_compatibility_area.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_presentation.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
@@ -187,7 +187,7 @@ void _expectNormalFit(WidgetTester tester, Size size) {
   }
   expect(find.text('You and Sara'), findsOneWidget);
   expect(find.text('READY TO REVEAL'), findsOneWidget);
-  expect(find.text('Your overall score and six areas'), findsOneWidget);
+  expect(find.text('Your overall score and twelve areas'), findsOneWidget);
   expect(find.text('Uses 1 Unlock'), findsOneWidget);
   expect(find.text('OVERALL'), findsNothing);
   expect(find.text('DETAILS'), findsNothing);
@@ -219,10 +219,16 @@ void _expectReader(WidgetTester tester, {int page = 0}) {
   expect(find.byKey(_reveal), findsNothing);
   expect(find.byKey(_more), findsNothing);
   expect(find.text('Compatibility score'), findsOneWidget);
-  expect(find.text('You and Sara'), findsNothing);
-  expect(find.text('${page + 1} / 7'), findsOneWidget);
+  expect(find.text('You and Sara'), page == 0 ? findsOneWidget : findsNothing);
+  expect(find.text('${page + 1} / 2'), findsOneWidget);
   expect(
-    find.byKey(ValueKey('draft_compatibility_score_artwork_halo_$page')),
+    find.byKey(
+      ValueKey(
+        page == 0
+            ? 'draft_compatibility_score_artwork_halo_0'
+            : 'draft_compatibility_areas',
+      ),
+    ),
     findsOneWidget,
   );
   final target = find.byKey(_next);
@@ -241,26 +247,14 @@ void _expectReaderFit(WidgetTester tester, Size size) {
   expect(rect.bottom, lessThanOrEqualTo(size.height - bottomInset - 16 + .01));
 }
 
-Future<void> _nextPage(WidgetTester tester, int index) async {
+Future<void> _nextPage(WidgetTester tester) async {
   await tester.tap(find.byKey(_next));
   await tester.pumpAndSettle();
-  _expectReader(tester, page: index);
-  final category = ZyraCompatibilityDemo.categories[index - 1];
-  expect(find.text(category.name), findsOneWidget);
-  for (final metric in [
-    ('aligned', category.aligned),
-    ('discuss', category.discuss),
-    ('opposed', category.opposed),
-  ]) {
-    expect(
-      find.descendant(
-        of: find.byKey(
-          ValueKey('draft_compatibility_metric_${index}_${metric.$1}'),
-        ),
-        matching: find.text('${metric.$2}%'),
-      ),
-      findsOneWidget,
-    );
+  _expectReader(tester, page: 1);
+  expect(find.text('Every area'), findsOneWidget);
+  expect(find.textContaining('%'), findsNothing);
+  for (final area in ZyraCompatibilityArea.values) {
+    expect(find.text(area.label), findsOneWidget);
   }
 }
 
@@ -316,8 +310,8 @@ void main() {
       expect(find.text('76%'), findsOneWidget);
       expect(find.text('Demo Guardian · Father'), findsOneWidget);
       await _frame(tester, '393x852-golden-halo-overall');
-      await _nextPage(tester, 1);
-      await _frame(tester, '393x852-golden-halo-lifestyle');
+      await _nextPage(tester);
+      await _frame(tester, '393x852-golden-halo-areas');
       retainedReveal();
       retainedReveal();
       await tester.pumpAndSettle();
@@ -368,20 +362,11 @@ void main() {
     await _frame(tester, '393x852-text200-golden-halo-overall-top');
     expect(find.text('76%'), findsOneWidget);
     expect(find.text('Demo Guardian · Father'), findsOneWidget);
-    for (
-      var index = 1;
-      index <= ZyraCompatibilityDemo.categories.length;
-      index++
-    ) {
-      await _nextPage(tester, index);
-      final bottom = find.byKey(
-        ValueKey('draft_compatibility_metric_${index}_opposed'),
-      );
-      await tester.ensureVisible(bottom);
-      await tester.pumpAndSettle();
-      expect(bottom.hitTestable(), findsOneWidget);
-      expect(tester.takeException(), isNull);
-    }
+    await _nextPage(tester);
+    final bottom = find.byKey(const ValueKey(ZyraCompatibilityArea.culture));
+    await tester.ensureVisible(bottom);
+    await tester.pumpAndSettle();
+    expect(bottom.hitTestable(), findsOneWidget);
     expect(tester.takeException(), isNull);
     await tester.pumpWidget(const SizedBox.shrink());
     await tester.pumpAndSettle();
