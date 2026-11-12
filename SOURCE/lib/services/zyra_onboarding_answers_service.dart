@@ -257,60 +257,65 @@ class ZyraOnboardingAnswersService {
     }
   }
 
-  /// Upserts the full current answer state for the signed-in user.
-  /// The caller decides checkpoint frequency. Capture a detached JSON payload
-  /// before awaiting so edits and principal changes cannot mutate a request.
+  /// Upserts the supplied answer sections for the signed-in user.
+  /// Omitted sections remain untouched on an existing row and use the
+  /// schema defaults on a new row. An empty map explicitly clears a section.
   static Future<bool> syncAnswers({
-    required Map<String, dynamic> ch3Answers,
-    required Map<String, Map<String, TrafficLight>> ch4Preferences,
-    required Map<String, Set<String>> ch4HardRequirements,
+    Map<String, dynamic>? ch3Answers,
+    Map<String, Map<String, TrafficLight>>? ch4Preferences,
+    Map<String, Set<String>>? ch4HardRequirements,
     Set<ZyraPreferenceOption> canonicalAmberOptions = const {},
     String? expectedUserId,
   }) async {
+    if (ch3Answers == null &&
+        ch4Preferences == null &&
+        ch4HardRequirements == null) {
+      return false;
+    }
     try {
       final actor = _captureActor(expectedUserId);
-      // Journey Bio metadata shares this own-row-only JSON store, but is not
-      // a scored question. Always merge it back at a Values checkpoint so
-      // the Chapter 3 write cannot erase the preceding Bio chapter.
-      final completeCh3Answers = <String, dynamic>{
-        ...AppState.instance.journeyBio.toOnboardingAnswers(),
-        for (final entry in ch3Answers.entries)
-          persistedQuestionId(entry.key): entry.value,
-      };
       final payload = Map<String, dynamic>.from(
         jsonDecode(
           jsonEncode({
             'user_id': actor.$1,
-            'ch3_answers': completeCh3Answers,
-            'ch4_preferences': {
-              for (final entry in ch4Preferences.entries)
-                persistedQuestionId(entry.key): {
-                  for (final option in entry.value.entries)
-                    option.key:
-                        option.value == TrafficLight.yellow &&
-                            canonicalAmberOptions.contains((
-                              questionId: persistedQuestionId(entry.key),
-                              optionValue: option.key,
-                            ))
-                        ? 'amber'
-                        : option.value.name,
-                },
-            },
+            if (ch3Answers != null)
+              'ch3_answers': {
+                // Preserve the preceding Journey Bio at a Values checkpoint.
+                ...AppState.instance.journeyBio.toOnboardingAnswers(),
+                for (final entry in ch3Answers.entries)
+                  persistedQuestionId(entry.key): entry.value,
+              },
+            if (ch4Preferences != null)
+              'ch4_preferences': {
+                for (final entry in ch4Preferences.entries)
+                  persistedQuestionId(entry.key): {
+                    for (final option in entry.value.entries)
+                      option.key:
+                          option.value == TrafficLight.yellow &&
+                              canonicalAmberOptions.contains((
+                                questionId: persistedQuestionId(entry.key),
+                                optionValue: option.key,
+                              ))
+                          ? 'amber'
+                          : option.value.name,
+                  },
+              },
             // PER-OPTION SINCE 2026-08-10 —
             // {question_id: [option_label, ...]}. WAS {question_id: bool}.
             // Empty sets are dropped rather than written as `[]`.
-            'ch4_hard_requirements': {
-              for (final entry in ch4HardRequirements.entries)
-                if (entry.value.isNotEmpty)
-                  persistedQuestionId(entry.key): entry.value.toList(),
-            },
+            if (ch4HardRequirements != null)
+              'ch4_hard_requirements': {
+                for (final entry in ch4HardRequirements.entries)
+                  if (entry.value.isNotEmpty)
+                    persistedQuestionId(entry.key): entry.value.toList(),
+              },
           }),
         ),
       );
       _requireActor(actor);
       final saved = await supabase
           .from('onboarding_answers')
-          .upsert(payload)
+          .upsert(payload, defaultToNull: false)
           // A successful request is not enough proof under RLS: an UPDATE
           // can match zero rows without throwing. Returning the own row makes
           // Profile editing confirm that the write actually landed.
@@ -347,7 +352,7 @@ class ZyraOnboardingAnswersService {
       );
       final existing = await supabase
           .from('onboarding_answers')
-          .select('ch3_answers, ch4_preferences, ch4_hard_requirements')
+          .select('ch3_answers')
           .eq('user_id', actor.$1)
           .maybeSingle();
       _requireActor(actor);
@@ -363,13 +368,7 @@ class ZyraOnboardingAnswersService {
           .upsert({
             'user_id': actor.$1,
             'ch3_answers': existingCh3,
-            'ch4_preferences': Map<String, dynamic>.from(
-              (existing?['ch4_preferences'] as Map?) ?? const {},
-            ),
-            'ch4_hard_requirements': Map<String, dynamic>.from(
-              (existing?['ch4_hard_requirements'] as Map?) ?? const {},
-            ),
-          })
+          }, defaultToNull: false)
           .select('user_id')
           .single();
       _requireActor(actor);

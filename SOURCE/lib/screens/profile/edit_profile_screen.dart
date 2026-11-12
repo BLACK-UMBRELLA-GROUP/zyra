@@ -97,14 +97,26 @@ class _ServerCompatibilityEditorRepository
         throwOnError: true,
       );
   @override
-  Future<bool> save(String userId, ZyraCompatibilityDraft draft) =>
-      ZyraOnboardingAnswersService.syncAnswers(
-        expectedUserId: userId,
-        ch3Answers: draft.answers,
-        ch4Preferences: draft.preferences,
-        ch4HardRequirements: draft.hardRequirements,
-        canonicalAmberOptions: draft.canonicalAmberOptions,
-      );
+  Future<bool> save(
+    String userId,
+    ZyraCompatibilityDraft draft, {
+    CompatibilityEditorKind? kind,
+  }) {
+    final editsLights =
+        kind == null || kind == CompatibilityEditorKind.trafficLights;
+    final editsHardRequirements =
+        editsLights || kind == CompatibilityEditorKind.hardRequirements;
+    final editsAnswers = kind == null || !editsHardRequirements;
+    return ZyraOnboardingAnswersService.syncAnswers(
+      expectedUserId: userId,
+      ch3Answers: editsAnswers ? draft.answers : null,
+      ch4Preferences: editsLights ? draft.preferences : null,
+      ch4HardRequirements: editsHardRequirements
+          ? draft.hardRequirements
+          : null,
+      canonicalAmberOptions: draft.canonicalAmberOptions,
+    );
+  }
 
   @override
   Future<Set<ZyraPreferenceOption>> lightsNeedingReconfirmation(
@@ -473,12 +485,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
-  Future<bool> _persist(ZyraCompatibilityDraft candidate) async {
+  Future<bool> _persist(
+    CompatibilityEditorKind kind,
+    ZyraCompatibilityDraft candidate,
+  ) async {
     if (_localPreview || !_canUse) return false;
     try {
-      final saved = await _repository
-          .save(_owner!, candidate.copy())
-          .timeout(const Duration(seconds: 10));
+      final repository = _repository;
+      final draft = candidate.copy();
+      final write = repository is _ServerCompatibilityEditorRepository
+          ? repository.save(_owner!, draft, kind: kind)
+          : repository.save(_owner!, draft);
+      final saved = await write.timeout(const Duration(seconds: 10));
       return _canUse && saved;
     } catch (_) {
       return false;
@@ -496,7 +514,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       return;
     }
     bool canEdit() => _canUse;
-    final persist = _persist;
+    Future<bool> persist(ZyraCompatibilityDraft candidate) =>
+        _persist(kind, candidate);
     ZyraPreferenceQuickCheck? quickCheck;
     final repository = _repository;
     final userId = _owner;

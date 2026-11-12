@@ -7,6 +7,7 @@ import 'package:http/testing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/main.dart' show supabase;
+import 'package:zyra/models/journey_bio.dart';
 import 'package:zyra/models/onboarding_question.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_onboarding_answers_service.dart';
@@ -89,6 +90,81 @@ void main() {
     requests.clear();
     respond = (request) => throw StateError('Unexpected ${request.url.path}');
   });
+
+  test('scoped profile saves send only their owned answer section', () async {
+    respond = (request) => switch ((request.method, request.url.path)) {
+      ('POST', _answers) => _json({'user_id': _owner}, status: 201),
+      _ => throw StateError('Unexpected ${request.url.path}'),
+    };
+
+    expect(
+      await ZyraOnboardingAnswersService.syncAnswers(
+        expectedUserId: _owner,
+        ch3Answers: {'ch3_q1': 'Updated answer'},
+      ),
+      isTrue,
+    );
+    final answers = jsonDecode(requests.single.body) as Map;
+    expect(answers.keys, unorderedEquals(['user_id', 'ch3_answers']));
+    expect(answers['ch3_answers']['ch3_q1'], 'Updated answer');
+    expect(requests.single.headers['prefer'], contains('missing=default'));
+
+    expect(
+      await ZyraOnboardingAnswersService.syncAnswers(
+        expectedUserId: _owner,
+        ch4HardRequirements: {},
+      ),
+      isTrue,
+    );
+    expect(requests, hasLength(2));
+    expect(jsonDecode(requests.last.body), {
+      'user_id': _owner,
+      'ch4_hard_requirements': {},
+    });
+  });
+
+  for (final existingRow in [true, false]) {
+    test(
+      'Journey Bio preserves preference columns (row exists: $existingRow)',
+      () async {
+        respond = (request) => switch ((request.method, request.url.path)) {
+          ('GET', _answers) => _json([
+            if (existingRow)
+              {
+                'ch3_answers': {
+                  'ch3_q1': 'Previous answer',
+                  'bio_about_me': 'Previous bio',
+                },
+                'ch4_preferences': {
+                  _confirmed.questionId: {_confirmed.optionValue: 'yellow'},
+                },
+              },
+          ]),
+          ('POST', _answers) => _json({'user_id': _owner}, status: 201),
+          _ => throw StateError('Unexpected ${request.url.path}'),
+        };
+
+        const bio = JourneyBio(aboutMe: 'Updated bio', reviewed: true);
+        expect(
+          await ZyraOnboardingAnswersService.syncJourneyBio(
+            bio,
+            expectedUserId: _owner,
+          ),
+          isTrue,
+        );
+        expect(requests, hasLength(2));
+        expect(requests.first.url.queryParameters['select'], 'ch3_answers');
+        expect(requests.last.headers['prefer'], contains('missing=default'));
+        expect(jsonDecode(requests.last.body), {
+          'user_id': _owner,
+          'ch3_answers': {
+            if (existingRow) 'ch3_q1': 'Previous answer',
+            ...bio.toOnboardingAnswers(),
+          },
+        });
+      },
+    );
+  }
 
   test(
     'ordinary saves preserve both wire spellings without confirming',
