@@ -34,15 +34,15 @@ const sdkPins = {
 };
 const policyText = '(version 1)\n(allow default)\n; Inherited by the entire Dart / Flutter / Xcode subprocess tree.\n; No fake Git, metadata forging, package-signature or signing bypass.\n(deny process-exec\n  (regex #"/[Gg][Ii][Tt]([^/]*)?$")\n  (literal "/opt/homebrew/share/flutter/bin/flutter")\n  (literal "/opt/homebrew/share/flutter/bin/dart"))\n';
 const minFreeBytes = 2 * 1024 ** 3;
-const checkedSourceCommit = '526c26732e71389e590ed05c938f5a0e1082bef2';
-const checkedEvidenceCommit = 'ad79511883e90a3ddc1d996ced54789fe26484d9';
-const checkedSourceHash = '663a6a83b6ca6b60314a681bb0769b1c370b7386a2728e8674e27738efd26df7';
+const checkedSourceCommit = '5dccfedd1e9af143b7de6826a203eb7380224702';
+const checkedEvidenceCommit = 'c4c64ce8904300931529a33471e4e832e58b7987';
+const checkedSourceHash = 'b56cd1cee9c7a3ad26c271af432dff82a174b6031a591820a7ac78e6543340e7';
 const localApplicationInputHash = '5825d1f59bf2aa8600c3e408210ef4bbf30bd6f78f1127d4bb283d29dee8423f';
 const checkedRegression = Object.freeze({
-  analyzeSha256: "23fe10c7fda3cc737158bd741531e0830fc73257a765adea4cca14ebd5182d30",
-  testsSha256: "338abe3d893d63946c4cf9014de83c2d9acd8ac30b2d6f70757dfa9c066b1914",
-  failureBaselineSha256: "accf8e7b056098c6542f7f212ee174c4c0456ad3520680ee5c532b43882d03c3",
-  comparisonSha256: "a58145f3b225ad40ff2eecce5f9bf4c3774e282f9641edfd3619c621f67df6d4",
+  analyzeSha256: "70e11a1cea596ce7e77d6353cdec61fd9944ada28c99676aa812d02978ff0d9f",
+  testsSha256: "62571866f1836b08a6a40b7aef1a4c17e2bf4f20caa18275f1e59214de35a0f0",
+  failureBaselineSha256: "338abe3d893d63946c4cf9014de83c2d9acd8ac30b2d6f70757dfa9c066b1914",
+  comparisonSha256: "ad6d80ac13fdabf9903436be2ada8e48d44fd554c5a558b531761e20012efe59",
   candidateFailureSetSha256: "df17c4cf9465f0ee1b1942011fe67d42774f15deb67922bdf63b3b946621240d",
   retainedSkipSetSha256: "515ba0de8caed46b2ec74ff3bbe63967beb4293636a9bbc6b72c5e7de69f544a",
   passes: 7020,
@@ -302,7 +302,7 @@ function verifySdkAndHost() {
 }
 function loadPlan(file) {
   const packet = path.dirname(file);
-  if (path.dirname(packet) !== reviews || !/^ZYRA_LINE86_2026_11_11_[A-Z]$/.test(path.basename(packet)) ||
+  if (path.dirname(packet) !== reviews || !/^ZYRA_LINE87_2026_11_12_[A-Z]$/.test(path.basename(packet)) ||
       path.basename(file) !== 'HOST_PROFILE_PLAN.json' || fs.realpathSync(packet) !== packet) {
     throw Error('Wrong owned delivery plan');
   }
@@ -324,7 +324,7 @@ function loadPlan(file) {
   const checks = plan.checks;
   exactKeys(checks, Object.keys(checkedRegression));
   if (sortedJson(checks) !== sortedJson(checkedRegression)) {
-    throw Error('Missing exact line 86 regression check');
+    throw Error('Missing exact line 87 regression check');
   }
   return {packet, plan, seal, localFiles, planHash: sha(fs.readFileSync(file)), sealHash: sha(fs.readFileSync(path.join(packet, plan.sourceSeal)))};
 }
