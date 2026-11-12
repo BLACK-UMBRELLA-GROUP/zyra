@@ -1,3 +1,4 @@
+import '../widgets/zyra_swipe_track.dart';
 import '../widgets/zyra_confirm_sheet.dart';
 import '../services/zyra_account_state.dart';
 import 'zyra_preview_navigation_checkpoint.dart';
@@ -68,70 +69,22 @@ class _WalletHaloPager extends StatefulWidget {
 }
 
 class _WalletHaloPagerState extends State<_WalletHaloPager> {
-  late final _pages = PageController(
-    initialPage: widget.initialPage,
-    keepPage: false,
-  );
+  final _pages = ZyraSwipeController();
   late int _page = widget.initialPage;
   int _epoch = 0;
-  bool _rewindScheduled = false;
-  bool _rewinding = false;
-
-  @override
-  void dispose() {
-    _pages.dispose();
-    super.dispose();
-  }
 
   bool _fresh(int epoch) => mounted && epoch == _epoch && widget.canAct();
 
-  void _reconcilePosition() {
-    if (!mounted ||
-        !_pages.hasClients ||
-        _rewindScheduled ||
-        ((_pages.page ?? _page.toDouble()) - _page).abs() < .001) {
-      return;
-    }
-    _rewindScheduled = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _rewindScheduled = false;
-      if (!mounted ||
-          !_pages.hasClients ||
-          _pages.position.isScrollingNotifier.value ||
-          ((_pages.page ?? _page.toDouble()) - _page).abs() < .001) {
-        return;
-      }
-      // A denied in-flight swipe can finish physically without accepting a
-      // new page. Rewind only local presentation to the last accepted page;
-      // never call owner/draft callbacks while reconciling, even if canAct
-      // becomes true again before this bounded post-frame callback.
-      _rewinding = true;
-      try {
-        _pages.jumpToPage(_page);
-      } finally {
-        _rewinding = false;
-      }
-    });
-  }
-
   void _go(int page, int epoch) {
     if (!_fresh(epoch) ||
-        !_pages.hasClients ||
+        _pages.isMoving ||
+        page == _page ||
         page < 0 ||
         page >= widget.count) {
       return;
     }
     widget.onInteraction();
-    final media = MediaQuery.of(context);
-    if (media.disableAnimations || media.accessibleNavigation) {
-      _pages.jumpToPage(page);
-    } else {
-      _pages.animateToPage(
-        page,
-        duration: const Duration(milliseconds: 280),
-        curve: Curves.easeOutCubic,
-      );
-    }
+    _pages.animateTo(page);
   }
 
   @override
@@ -164,43 +117,18 @@ class _WalletHaloPagerState extends State<_WalletHaloPager> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-          child: NotificationListener<ScrollNotification>(
-            onNotification: (notification) {
-              if (notification.depth == 0 &&
-                  notification.metrics.axis == Axis.horizontal) {
-                if (notification is ScrollStartNotification &&
-                    // Accessibility/focus reveal can adjust an inset child's
-                    // horizontal offset without choosing another page. Keep
-                    // its adjacent confirmation; only a real swipe cancels.
-                    notification.dragDetails != null &&
-                    !_rewinding &&
-                    _fresh(epoch)) {
-                  widget.onInteraction();
-                }
-                if (notification is ScrollEndNotification && !_rewinding) {
-                  _reconcilePosition();
-                }
-              }
-              return false;
+          child: ZyraSwipeTrack(
+            key: ValueKey('wallet_${widget.group}_pages'),
+            controller: _pages,
+            index: _page,
+            itemCount: widget.count,
+            canAct: () => _fresh(epoch),
+            onDragStart: widget.onInteraction,
+            onSettled: (page) {
+              setState(() => _page = page);
+              widget.onChanged(page);
             },
-            child: PageView.builder(
-              key: ValueKey('wallet_${widget.group}_pages'),
-              controller: _pages,
-              physics: const ClampingScrollPhysics(),
-              itemCount: widget.count,
-              onPageChanged: (page) {
-                if (_rewinding ||
-                    page == _page ||
-                    !_fresh(epoch) ||
-                    page < 0 ||
-                    page >= widget.count) {
-                  return;
-                }
-                setState(() => _page = page);
-                widget.onChanged(page);
-              },
-              itemBuilder: widget.itemBuilder,
-            ),
+            itemBuilder: widget.itemBuilder,
           ),
         ),
         const SizedBox(height: 12),
@@ -461,7 +389,6 @@ class _ZyraSubscriptionWalletPreviewState
       child: SingleChildScrollView(
         key: const ValueKey('wallet_switch_scroll'),
         padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
-        physics: const ClampingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -776,7 +703,6 @@ class _ZyraSubscriptionWalletPreviewState
           if (!constraints.hasBoundedHeight) {
             return SingleChildScrollView(
               key: const ValueKey('wallet_scroll'),
-              physics: const ClampingScrollPhysics(),
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -787,7 +713,6 @@ class _ZyraSubscriptionWalletPreviewState
           }
           return CustomScrollView(
             key: const ValueKey('wallet_scroll'),
-            physics: const ClampingScrollPhysics(),
             slivers: [
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
@@ -810,7 +735,6 @@ class _ZyraSubscriptionWalletPreviewState
         }
         return SingleChildScrollView(
           key: const ValueKey('wallet_scroll'),
-          physics: const ClampingScrollPhysics(),
           child: SizedBox(
             height: fill ? constraints.maxHeight : null,
             child: Padding(

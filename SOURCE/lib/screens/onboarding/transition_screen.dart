@@ -143,7 +143,6 @@ class TransitionScreen extends StatelessWidget {
             ),
             Expanded(
               child: SingleChildScrollView(
-                physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.fromLTRB(24, 20, 24, 20),
                 child: Column(
                   crossAxisAlignment: style.centered

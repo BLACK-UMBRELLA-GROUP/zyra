@@ -154,7 +154,7 @@ double _page(WidgetTester tester) =>
 
 void _expectPages(WidgetTester tester, int actualCount) {
   final pager = tester.widget<PageView>(_pager);
-  expect(pager.physics, isA<ClampingScrollPhysics>());
+  expect(pager.physics, isNull); // Inherits the app scroll behavior.
   expect(
     pager.childrenDelegate.estimatedChildCount,
     actualCount + (actualCount < 5 ? 1 : 0),

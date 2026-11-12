@@ -2024,7 +2024,6 @@ class _ZyraOneJourneyConceptShellState
             child: ZyraShadowScrollView(
               key: const ValueKey('draft_scroll'),
               controller: _scroll,
-              physics: const BouncingScrollPhysics(),
               padding: EdgeInsets.fromLTRB(
                 20,
                 16,

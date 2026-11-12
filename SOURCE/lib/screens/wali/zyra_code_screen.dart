@@ -22,6 +22,7 @@ import '../../services/zyra_internal_preview_client.dart';
 import '../../services/zyra_product_telemetry.dart';
 import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
+import '../../theme/zyra_motion.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_interaction_style.dart';
 import '../../theme/zyra_text.dart';
@@ -683,11 +684,17 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     void reveal() {
       if (!mounted || _localRequested && !_localInteractive(epoch)) return;
       if (_screenScrollController.hasClients) {
-        _screenScrollController.animateTo(
-          _screenScrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 280),
-          curve: Curves.easeOutCubic,
-        );
+        final duration = ZyraMotion.scrollDuration(context);
+        final target = _screenScrollController.position.maxScrollExtent;
+        if (duration == Duration.zero) {
+          _screenScrollController.jumpTo(target);
+        } else {
+          _screenScrollController.animateTo(
+            target,
+            duration: duration,
+            curve: ZyraMotion.curve,
+          );
+        }
       }
       final entryContext =
           _entryActionRevealKey.currentContext ??
@@ -695,8 +702,8 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
       if (!mounted || entryContext == null) return;
       Scrollable.ensureVisible(
         entryContext,
-        duration: const Duration(milliseconds: 280),
-        curve: Curves.easeOutCubic,
+        duration: ZyraMotion.scrollDuration(context),
+        curve: ZyraMotion.curve,
         alignment: 0.84,
       );
     }
@@ -961,7 +968,6 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     return SingleChildScrollView(
       controller: _screenScrollController,
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 30),
-      physics: const BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

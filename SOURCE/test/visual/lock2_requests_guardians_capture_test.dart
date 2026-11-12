@@ -2,6 +2,7 @@
 // Profiles identity, LOCK 4 avatar and LOCK 5 attention remain current.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zyra/widgets/zyra_swipe_track.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import '../support/received_request_fixture.dart';
@@ -304,10 +305,11 @@ void main() {
       await tester.pumpAndSettle();
       expect(
         tester
-            .widget<PageView>(find.byKey(const ValueKey('guardian-page-view')))
-            .controller!
-            .page,
-        closeTo(1, .01),
+            .widget<ZyraSwipeTrack>(
+              find.byKey(const ValueKey('guardian-page-view')),
+            )
+            .index,
+        1,
       );
       await h.tapFinder(_guardianAction('guardian-make-main'));
       await h.tapFinder(

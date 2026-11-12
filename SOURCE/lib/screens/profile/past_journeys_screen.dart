@@ -173,7 +173,7 @@ class _PastJourneysScreenState extends State<PastJourneysScreen> {
 
   void _selectPage(int index) {
     if (!_ownerCurrent) return;
-    ZyraSegmentedMotion.animateToPage(_pageController, index);
+    ZyraSegmentedMotion.animateToPage(context, _pageController, index);
   }
 
   Future<void> _load() async {

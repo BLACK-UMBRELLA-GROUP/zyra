@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../theme/zyra_motion.dart';
 import '../theme/zyra_preview_spacing.dart';
 
 /// The gesture and explicit page controls share the same track.
@@ -27,6 +28,7 @@ class ZyraSwipeTrack extends StatefulWidget {
     this.canAct,
     this.canMoveTo,
     this.canStartAt,
+    this.onDragStart,
     this.onDragSettled,
     this.onBlockedPrevious,
     this.motionIdentity,
@@ -41,7 +43,7 @@ class ZyraSwipeTrack extends StatefulWidget {
   final bool Function()? canAct;
   final bool Function(int)? canMoveTo;
   final bool Function(Offset)? canStartAt;
-  final VoidCallback? onDragSettled;
+  final VoidCallback? onDragStart, onDragSettled;
   final VoidCallback? onBlockedPrevious;
   final Object? motionIdentity;
   final bool dragEnabled;
@@ -76,6 +78,10 @@ class ZyraSwipeGesture extends StatelessWidget {
             (drag) {
               drag.dragStartBehavior = DragStartBehavior.down;
               drag.onlyAcceptDragOnThreshold = true;
+              // Apply the LOCK's travel and speed thresholds in the track.
+              // The recognizer must deliver slower releases and short flicks.
+              drag.minFlingDistance = 0;
+              drag.minFlingVelocity = 0;
               drag.canStartAt = (position) =>
                   controller._track?._allowed() == true &&
                   (canStartAt?.call(position) ?? true);
@@ -119,7 +125,9 @@ class _SidewaysDragRecognizer extends HorizontalDragGestureRecognizer {
   bool hasSufficientGlobalDistanceToAccept(
     PointerDeviceKind kind,
     double? deviceTouchSlop,
-  ) => _travel.dx.abs() >= 8 && _travel.dx.abs() > _travel.dy.abs();
+  ) =>
+      _travel.dx.abs() >= ZyraMotion.dragSlop &&
+      _travel.dx.abs() > _travel.dy.abs();
 
   @override
   void didStopTrackingLastPointer(int pointer) {
@@ -131,8 +139,6 @@ class _SidewaysDragRecognizer extends HorizontalDragGestureRecognizer {
 class _ZyraSwipeTrackState extends State<ZyraSwipeTrack>
     with SingleTickerProviderStateMixin {
   static const _gap = 24.0;
-  static const _duration = Duration(milliseconds: 240);
-  static const _curve = Cubic(.2, .8, .2, 1);
 
   final _internalController = ZyraSwipeController();
   late final _offset = AnimationController.unbounded(vsync: this);
@@ -144,9 +150,6 @@ class _ZyraSwipeTrackState extends State<ZyraSwipeTrack>
       widget.controller ?? _internalController;
   bool get _isMoving => _settling || _dragLease != null;
   double get _stride => _width + _gap;
-  bool get _reduceMotion =>
-      MediaQuery.disableAnimationsOf(context) ||
-      MediaQuery.accessibleNavigationOf(context);
   bool _allowed() => widget.canAct?.call() ?? true;
   bool _canMoveTo(int index) =>
       index >= 0 &&
@@ -202,14 +205,17 @@ class _ZyraSwipeTrackState extends State<ZyraSwipeTrack>
     if (_settling || admission?.call() != true || !_allowed()) return;
     _dragLease = admission;
     _distance = 0;
+    widget.onDragStart?.call();
   }
 
   void _updateDrag(double dx) {
     if (_dragLease?.call() != true || !_allowed()) return;
     _distance += dx;
-    if (_reduceMotion) return;
+    if (ZyraMotion.reduceMotion(context)) return;
     final neighbour = widget.index + (_distance < 0 ? 1 : -1);
-    final displacement = _canMoveTo(neighbour) ? _distance : _distance * .30;
+    final displacement = _canMoveTo(neighbour)
+        ? _distance
+        : _distance * ZyraMotion.endResistance;
     _offset.value = displacement.clamp(-_stride, _stride);
   }
 
@@ -222,16 +228,34 @@ class _ZyraSwipeTrackState extends State<ZyraSwipeTrack>
     final previous = direction > 0;
     final next = widget.index + (previous ? -1 : 1);
     final current = !cancel && lease() && _allowed();
-    final quickFlick = velocity.abs() >= 450 && velocity.sign == direction.sign;
-    if (current && _canMoveTo(next) && (_distance.abs() >= 60 || quickFlick)) {
-      _settle(next, lease, fromDrag: true);
+    final canMove = _canMoveTo(next);
+    final quickFlick =
+        _distance.abs() >= ZyraMotion.flickDistance &&
+        velocity.abs() / 1000 > ZyraMotion.flickSpeed &&
+        velocity.sign == direction.sign;
+    final passedThreshold = _distance.abs() > _width * ZyraMotion.pageThreshold;
+    final atLimit =
+        _offset.value.abs() >= _stride && _offset.value.sign == velocity.sign;
+    final paintedVelocity = atLimit
+        ? 0.0
+        : velocity * (canMove ? 1 : ZyraMotion.endResistance);
+    if (current && canMove && (passedThreshold || quickFlick)) {
+      _settle(
+        next,
+        lease,
+        releaseSpeed: velocity,
+        velocity: paintedVelocity,
+        fromDrag: true,
+      );
       return;
     }
     final onBlockedPrevious = widget.onBlockedPrevious;
     _settle(
       widget.index,
       lease,
-      after: current && previous && _distance >= 18 && !_canMoveTo(next)
+      releaseSpeed: velocity,
+      velocity: paintedVelocity,
+      after: current && previous && _distance >= 18 && !canMove
           ? onBlockedPrevious
           : null,
     );
@@ -252,14 +276,26 @@ class _ZyraSwipeTrackState extends State<ZyraSwipeTrack>
     bool Function() lease, {
     VoidCallback? after,
     bool fromDrag = false,
+    double? releaseSpeed,
+    double velocity = 0,
   }) async {
     _settling = true;
     final initialIndex = widget.index;
     final destination = (initialIndex - next) * _stride;
     try {
-      if (!_reduceMotion && _offset.value != destination) {
+      final start = _offset.value;
+      if (!ZyraMotion.reduceMotion(context) && start != destination) {
+        final distance = destination - start;
+        final duration = releaseSpeed == null
+            ? ZyraMotion.duration
+            : ZyraMotion.settleDuration(distance.abs(), releaseSpeed);
+        final curve = releaseSpeed == null
+            ? ZyraMotion.curve
+            : _ReleaseCurve(
+                velocity * duration.inMicroseconds / 1000000 / distance,
+              );
         await _offset
-            .animateTo(destination, duration: _duration, curve: _curve)
+            .animateTo(destination, duration: duration, curve: curve)
             .orCancel;
       }
     } on TickerCanceled {
@@ -352,6 +388,34 @@ class _ZyraSwipeTrackState extends State<ZyraSwipeTrack>
       canStartAt: widget.canStartAt,
       child: track,
     );
+  }
+}
+
+// Match the painted release velocity at lift, then join the shared easing
+// curve with continuous position and velocity. The handoff spans about one
+// frame at the minimum settle time, and also lets a spring-back turn around.
+class _ReleaseCurve extends Curve {
+  const _ReleaseCurve(this.initialSlope);
+
+  final double initialSlope;
+  static const _handoff = 1 / 16;
+
+  @override
+  double transformInternal(double t) {
+    if (t >= _handoff) return ZyraMotion.curve.transform(t);
+    final end = ZyraMotion.curve.transform(_handoff);
+    const sample = .001;
+    final slope =
+        (ZyraMotion.curve.transform(_handoff + sample) -
+            ZyraMotion.curve.transform(_handoff - sample)) /
+        (2 * sample);
+    final x = t / _handoff;
+    final remaining = 1 - x;
+    final progress =
+        x * remaining * remaining * _handoff * initialSlope +
+        x * x * (3 - 2 * x) * end -
+        x * x * remaining * _handoff * slope;
+    return math.min(progress, end);
   }
 }
 

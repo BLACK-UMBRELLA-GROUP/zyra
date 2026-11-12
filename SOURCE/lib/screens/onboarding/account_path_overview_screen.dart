@@ -859,7 +859,6 @@ class _AccountPathOverview extends StatelessWidget {
             children: [
               Expanded(
                 child: SingleChildScrollView(
-                  physics: const ClampingScrollPhysics(),
                   padding: const EdgeInsets.fromLTRB(22, 18, 22, 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

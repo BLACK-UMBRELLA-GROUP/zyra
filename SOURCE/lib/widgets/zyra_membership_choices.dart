@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 
 import '../data/zyra_membership_catalog.dart';
 import '../models/zyra_membership_draft.dart';
+import '../theme/zyra_motion.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 
@@ -161,8 +162,8 @@ class _ZyraMembershipChoicesState extends State<ZyraMembershipChoices> {
     } else {
       controller.animateTo(
         target,
-        duration: const Duration(milliseconds: 260),
-        curve: Curves.easeInOutCubic,
+        duration: ZyraMotion.duration,
+        curve: ZyraMotion.curve,
       );
     }
   }
@@ -582,9 +583,9 @@ class _MembershipSectionSliderState extends State<_MembershipSectionSlider> {
         alignment: .5,
         duration:
             animate && !media.disableAnimations && !media.accessibleNavigation
-            ? const Duration(milliseconds: 220)
+            ? ZyraMotion.duration
             : Duration.zero,
-        curve: Curves.easeOutCubic,
+        curve: ZyraMotion.curve,
       );
     });
   }

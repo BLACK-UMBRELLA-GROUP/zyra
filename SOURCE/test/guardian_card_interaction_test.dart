@@ -510,11 +510,11 @@ void main() {
       await mount(tester);
       await dragAmount(tester, _hassanId, -.01);
       expect(find.text('Hassan'), findsOneWidget);
-      await dragAmount(tester, _hassanId, -.20);
+      await dragAmount(tester, _hassanId, -.24);
       expect(find.text('Ibrahim'), findsOneWidget);
       await dragAmount(tester, _ibrahimId, .01);
       expect(find.text('Ibrahim'), findsOneWidget);
-      await dragAmount(tester, _ibrahimId, .20);
+      await dragAmount(tester, _ibrahimId, .24);
       expect(find.text('Hassan'), findsOneWidget);
       expect(state().pages, [1, 0]);
     },
@@ -537,22 +537,23 @@ void main() {
     expect(haptics(), before);
   });
 
-  testWidgets('Guardian follows a chip drag and springs back below 60 pt', (
-    tester,
-  ) async {
-    await mount(tester, initialPage: 1, disableAnimations: false);
-    final chip = _view(_ibrahimId);
-    final start = tester.getCenter(chip);
-    final gesture = await tester.startGesture(start);
-    await gesture.moveBy(const Offset(-42, 0));
-    await tester.pump();
-    expect(tester.getCenter(chip).dx, closeTo(start.dx - 42, 1));
-    await gesture.up();
-    await tester.pumpAndSettle();
-    expect(tester.getCenter(chip), start);
-    expect(state().permissions, isEmpty);
-    expect(state().pages, isEmpty);
-  });
+  testWidgets(
+    'Guardian follows a chip drag and springs back below the page threshold',
+    (tester) async {
+      await mount(tester, initialPage: 1, disableAnimations: false);
+      final chip = _view(_ibrahimId);
+      final start = tester.getCenter(chip);
+      final gesture = await tester.startGesture(start);
+      await gesture.moveBy(const Offset(-42, 0));
+      await tester.pump();
+      expect(tester.getCenter(chip).dx, closeTo(start.dx - 42, 1));
+      await gesture.up();
+      await tester.pumpAndSettle();
+      expect(tester.getCenter(chip), start);
+      expect(state().permissions, isEmpty);
+      expect(state().pages, isEmpty);
+    },
+  );
 
   testWidgets('Guardian neighbour follows a chip swipe and stays inert', (
     tester,

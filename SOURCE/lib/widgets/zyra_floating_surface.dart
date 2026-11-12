@@ -114,22 +114,3 @@ class ZyraShadowScrollView extends SingleChildScrollView {
     },
   );
 }
-
-// Page content retains its exact box; only vertical shadow painting grows.
-// Horizontal page clipping remains owned by the original PageView.
-class ZyraVerticalShadowViewport extends StatelessWidget {
-  const ZyraVerticalShadowViewport({super.key, required this.builder});
-  final Widget Function(BuildContext, EdgeInsets) builder;
-  @override
-  Widget build(BuildContext context) => LayoutBuilder(
-    builder: (context, box) {
-      if (!box.hasBoundedHeight) return builder(context, EdgeInsets.zero);
-      return OverflowBox(
-        alignment: Alignment.center,
-        minHeight: box.maxHeight + 64,
-        maxHeight: box.maxHeight + 64,
-        child: builder(context, const EdgeInsets.symmetric(vertical: 32)),
-      );
-    },
-  );
-}

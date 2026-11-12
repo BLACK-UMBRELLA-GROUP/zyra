@@ -80,9 +80,6 @@ class _AppLockScreenState extends State<AppLockScreen> {
         ),
         child: SafeArea(
           child: ListView(
-            physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics(),
-            ),
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 90),
             children: [
               Container(

@@ -404,6 +404,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
       photo: (index, active) => index == 0
           ? ZyraProfileDetailsPage(
               profile: profile,
+              fixedCard: widget.fixedTabFooter,
               showUnverifiedRing: preview == null,
               requestAction: preview == null && swipe == null
                   ? null
@@ -960,7 +961,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
           key: const ValueKey('concept_browse_design_scroll'),
           physics: widget.fixedTabFooter
               ? const NeverScrollableScrollPhysics()
-              : const ClampingScrollPhysics(),
+              : null,
           padding: EdgeInsets.fromLTRB(
             ZyraPreviewSpacing.pageMargin,
             16,

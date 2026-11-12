@@ -841,7 +841,6 @@ class _SettingsPage extends StatelessWidget {
                 key: id.startsWith('overview_')
                     ? const ValueKey('concept_account_action_scroll')
                     : null,
-                physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.fromLTRB(20, 18, 20, 32),
                 children: [
                   if (ZyraFounderLaunchPageStyle.activeOf(context)) ...[

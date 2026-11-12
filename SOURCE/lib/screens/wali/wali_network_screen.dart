@@ -258,7 +258,7 @@ class _WaliNetworkScreenState extends State<WaliNetworkScreen> {
                     Key('gn-mode-received'),
                   ],
                   onChanged: (i) =>
-                      ZyraSegmentedMotion.animateToPage(_modePager, i),
+                      ZyraSegmentedMotion.animateToPage(context, _modePager, i),
                 ),
               ),
               // Keep a visible boundary even when the card list scrolls;

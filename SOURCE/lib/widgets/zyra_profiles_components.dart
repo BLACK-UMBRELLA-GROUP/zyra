@@ -14,18 +14,22 @@ class ZyraProfilesDetailsContent extends StatelessWidget {
     super.key,
     this.surfaceKey,
     this.scrollKey,
+    this.borderRadius,
     required this.children,
   });
   final Key? surfaceKey, scrollKey;
+  final BorderRadius? borderRadius;
   final List<Widget> children;
   @override
   Widget build(BuildContext context) => DecoratedBox(
     key: surfaceKey,
-    decoration: BoxDecoration(color: ZyraColors.surfaceFill),
+    decoration: BoxDecoration(
+      color: ZyraColors.surfaceFill,
+      borderRadius: borderRadius,
+    ),
     child: LayoutBuilder(
       builder: (context, constraints) => ZyraShadowScrollView(
         key: scrollKey,
-        physics: const ClampingScrollPhysics(),
         child: ConstrainedBox(
           constraints: BoxConstraints(minHeight: constraints.maxHeight),
           child: Center(
@@ -354,6 +358,7 @@ class ZyraProfilesDots extends StatelessWidget {
     this.inactiveColor,
     this.size = 6,
     this.lift = 0,
+    this.targetHeight = 24,
     this.onSelected,
     this.canAct,
     this.canSelect,
@@ -363,7 +368,7 @@ class ZyraProfilesDots extends StatelessWidget {
   });
   final int count, index;
   final Key Function(int) dotKey;
-  final double activeWidth, size, lift;
+  final double activeWidth, size, lift, targetHeight;
   final Color? activeColor, inactiveColor;
   final ValueChanged<int>? onSelected;
   final bool Function()? canAct;
@@ -409,7 +414,7 @@ class ZyraProfilesDots extends StatelessWidget {
           behavior: HitTestBehavior.opaque,
           onTap: feedbackAction != null ? action : null,
           child: Container(
-            height: 24,
+            height: targetHeight,
             padding: const EdgeInsets.symmetric(horizontal: 3),
             child: Center(
               child: Transform.translate(

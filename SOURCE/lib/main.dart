@@ -3,6 +3,7 @@
 // 2026-07-18, OA-AIOS-289). Routes: Welcome -> Sign Up/Sign In ->
 // Role Selection -> Onboarding -> Transition -> Home (Browse/Matches/Profile).
 
+import 'theme/zyra_motion.dart';
 import 'dart:async' show unawaited;
 import 'dart:ui' show PlatformDispatcher;
 
@@ -763,5 +764,5 @@ class _ZyraScrollBehavior extends MaterialScrollBehavior {
 
   @override
   ScrollPhysics getScrollPhysics(BuildContext context) =>
-      const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());
+      ZyraMotion.scrollPhysics;
 }

@@ -204,7 +204,7 @@ void main() {
           );
         }
         await gesture.up();
-        await harness.flush();
+        await tester.pumpAndSettle();
         expect(tester.widget<ClipRect>(clip).clipBehavior, Clip.none);
         expect(tester.getRect(clip).left, closeTo(inset, .01));
         expect(tester.getRect(clip).right, closeTo(size.width - inset, .01));

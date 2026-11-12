@@ -37,7 +37,6 @@ class ZyraSwitchSignupPreview extends StatelessWidget {
       key: ValueKey(
         setupOverview ? 'concept_switch_setup' : 'concept_switch_signup',
       ),
-      physics: const ClampingScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

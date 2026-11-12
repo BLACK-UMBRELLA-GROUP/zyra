@@ -703,7 +703,7 @@ void main() {
       _expectOnlyRequestedLabelsRemoved();
       expect(find.text('Yusuf'), findsOneWidget);
       final activeDot = tester.widget<AnimatedContainer>(
-        _key('guardian-page-dot-1'),
+        _key('guardian-page-dot-paint-1'),
       );
       expect(
         (activeDot.decoration! as BoxDecoration).color,

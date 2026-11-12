@@ -12,12 +12,16 @@ import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/widgets/zyra_profiles_components.dart';
+import 'package:zyra/widgets/zyra_swipe_track.dart';
 import 'package:zyra/widgets/zyra_tap_feedback.dart';
 import 'baseline_capture_support.dart';
 
 const root = '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA';
-const evidence = '$root/REPORTS/EVIDENCE/LOCK8_V5_GUARDIAN_JOURNEYS_2026-11-01';
-const capture = bool.fromEnvironment('ZYRA_LOCK8_V5_CAPTURE');
+const _line102 = String.fromEnvironment('ZYRA_LINE102_GUARDIAN_JOURNEYS_DIR');
+const evidence = _line102 == ''
+    ? '$root/REPORTS/EVIDENCE/LOCK8_V5_GUARDIAN_JOURNEYS_2026-11-01'
+    : _line102;
+const capture = bool.fromEnvironment('ZYRA_LOCK8_V5_CAPTURE') || _line102 != '';
 const sara = 'draft-sara', aisha = 'draft-aisha';
 const hassan = 'draft-guardian-hassan', yusuf = 'draft-guardian-yusuf';
 Finder key(String id) => find.byKey(ValueKey(id));
@@ -54,7 +58,9 @@ Future<BaselineHarness> mount(
   final h = BaselineHarness(
     t,
     group: 'lock8_v5',
-    outputRoot: '$root/PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V5',
+    outputRoot: _line102 == ''
+        ? '$root/PRODUCT/APPROVED/GUARDIAN_TABS/BUILT/V5'
+        : _line102,
     evidenceRoot: evidence,
     flatOutput: true,
     textScale: scale,
@@ -265,7 +271,17 @@ void main() {
         'Actual activity puts Aisha first; own model stage, no Sara review',
       );
       final old = t.widget<FilledButton>(key('guardian_journey')).onPressed!;
-      await t.drag(key('guardian_journey_card'), const Offset(-250, 0));
+      final pager = key('guardian_journey_card');
+      final start = t.getRect(pager);
+      final gesture = await t.startGesture(start.center);
+      await gesture.moveBy(const Offset(-124, 0));
+      await t.pump();
+      expect(t.widget<ZyraSwipeTrack>(pager).index, 0);
+      final incoming = key('guardian_journey_person_$sara');
+      expect(t.getRect(incoming).overlaps(start), isTrue);
+      expect(incoming.hitTestable(), findsNothing);
+      await cap(h, 'g09_multiple_mid.png', 'Guardian Journeys held swipe');
+      await gesture.up();
       await h.flush();
       expect(find.text('Adam & Sara'), findsOneWidget);
       expect(find.text('STAGE 4 OF 8 · PAUSED BY FAMILY'), findsOneWidget);

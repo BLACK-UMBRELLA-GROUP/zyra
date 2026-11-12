@@ -18,6 +18,8 @@ import '../../widgets/zyra_guardian_invitation_dashboard.dart';
 import '../../widgets/zyra_guardian_preview_lifetime.dart';
 import '../../widgets/floating_nav_bar.dart';
 import '../../widgets/zyra_profile_image.dart';
+import '../../widgets/zyra_profiles_components.dart';
+import '../../widgets/zyra_swipe_track.dart';
 
 // The roster may rebuild one frame after revocation. Its retained child
 // callbacks must independently deny stale preview and asynchronous results.
@@ -157,9 +159,6 @@ class GuardianshipManagerView extends StatelessWidget {
     if (linksAvailable && ordered.isEmpty) {
       return CustomScrollView(
         key: const PageStorageKey('guardianship-manager'),
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
         slivers: [
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(20, _managerPageTopInset, 20, 0),
@@ -202,9 +201,6 @@ class GuardianshipManagerView extends StatelessWidget {
 
     return ListView(
       key: const PageStorageKey('guardianship-manager'),
-      physics: const BouncingScrollPhysics(
-        parent: AlwaysScrollableScrollPhysics(),
-      ),
       padding: const EdgeInsets.fromLTRB(20, _managerPageTopInset, 20, 118),
       children: [
         _ManagerHeader(
@@ -519,7 +515,7 @@ typedef GuardianRemoveAction = Future<String?> Function(String guardianId);
 
 /// Canonical Seeker Guardian page selected by the Founder.
 ///
-/// Horizontal [PageView] movement is the sole Guardian-to-Guardian navigation.
+/// Horizontal card movement is the sole Guardian-to-Guardian navigation.
 /// Each Guardian page is a fixed one-screen layout: Journey access is always
 /// visible and vertical scrolling is deliberately not part of this surface.
 class SeekerGuardianPage extends StatelessWidget {
@@ -697,7 +693,7 @@ class _GuardianPager extends StatefulWidget {
 }
 
 class _GuardianPagerState extends State<_GuardianPager> {
-  late final PageController _controller = PageController();
+  final _controller = ZyraSwipeController();
   int _page = 0;
 
   int get _pageCount => widget.people.length + (widget.onAdd != null ? 1 : 0);
@@ -708,6 +704,8 @@ class _GuardianPagerState extends State<_GuardianPager> {
     final int nextPage;
     if (_page >= oldWidget.people.length) {
       nextPage = _pageCount - 1;
+    } else if (widget.people.isEmpty) {
+      nextPage = 0;
     } else {
       final currentGuardianId = oldWidget.people[_page].id;
       final sameGuardianPage = widget.people.indexWhere(
@@ -717,83 +715,79 @@ class _GuardianPagerState extends State<_GuardianPager> {
           ? sameGuardianPage
           : _page.clamp(0, widget.people.length - 1);
     }
-    if (nextPage == _page) return;
-    _page = nextPage;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_controller.hasClients) _controller.jumpToPage(_page);
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+    _page = nextPage < 0 ? 0 : nextPage;
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _GuardianPageDots(count: widget.people.length, selected: _page),
-        const SizedBox(height: 12),
+        Semantics(
+          label: _page < widget.people.length
+              ? 'Guardian ${_page + 1} of ${widget.people.length}'
+              : null,
+          child: ZyraProfilesDots(
+            count: widget.people.length,
+            index: _page,
+            activeWidth: 20,
+            size: 5,
+            lift: -6,
+            targetHeight: 17,
+            inactiveColor: ZyraColors.ink(.25),
+            dotKey: (index) => ValueKey('guardian-page-dot-paint-$index'),
+            targetKey: (index) => ValueKey('guardian-page-dot-$index'),
+            itemLabel: (index) => 'Show Guardian ${index + 1}',
+            onSelected: _controller.animateTo,
+            exposeSemanticAction: true,
+          ),
+        ),
         Expanded(
-          child: ZyraVerticalShadowViewport(
-            builder: (context, clearance) => PageView.builder(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: ZyraSwipeTrack(
               key: const ValueKey('guardian-page-view'),
               controller: _controller,
-              physics: const BouncingScrollPhysics(),
+              index: _page,
               itemCount: _pageCount,
-              onPageChanged: (value) => setState(() => _page = value),
+              motionIdentity: widget.people
+                  .map((person) => person.id)
+                  .join(','),
+              canAct: () =>
+                  mounted && (ModalRoute.of(context)?.isCurrent ?? true),
+              onSettled: (value) => setState(() => _page = value),
               itemBuilder: (context, index) {
                 if (index == widget.people.length) {
-                  return Padding(
-                    padding: clearance.add(
-                      const EdgeInsets.symmetric(horizontal: 20),
-                    ),
-                    child: ZyraGuardianAddCard(
-                      key: const ValueKey('guardian-pager-add'),
-                      basicCapacity: widget.basicCapacity,
-                      onAdd: ZyraTapFeedback.onTap(context, widget.onAdd),
-                      onUpgrade: ZyraTapFeedback.onTap(
-                        context,
-                        widget.onUpgrade,
-                      ),
-                      allowContentScroll: true,
-                    ),
+                  return ZyraGuardianAddCard(
+                    key: const ValueKey('guardian-pager-add'),
+                    basicCapacity: widget.basicCapacity,
+                    onAdd: ZyraTapFeedback.onTap(context, widget.onAdd),
+                    onUpgrade: ZyraTapFeedback.onTap(context, widget.onUpgrade),
+                    allowContentScroll: true,
                   );
                 }
                 final person = widget.people[index];
                 final activities = widget.activity[person.id] ?? const [];
-                return Padding(
-                  padding: clearance,
-                  child: Semantics(
-                    label:
-                        'Guardian ${index + 1} of ${widget.people.length}: '
-                        '${person.firstName}',
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: _GuardianPageContent(
-                        person: person,
-                        activities: activities,
-                        activityAvailable: widget.activityAvailable,
-                        onRetry: widget.onRetry,
-                        historyConsentLoader: widget.historyConsentLoader,
-                        journeyAccessLoader: widget.journeyAccessLoader,
-                        historyConsentPreview: widget.historyConsentPreview,
-                        previewActiveJourneyCount:
-                            widget.previewActiveJourneyCount,
-                        showChat: !widget.viewOnlyGuardianIds.contains(
-                          person.id,
-                        ),
-                        otherGuardians: widget.people
-                            .where((candidate) => candidate.id != person.id)
-                            .toList(growable: false),
-                        makeMainGuardian: widget.makeMainGuardian,
-                        clearMainGuardian: widget.clearMainGuardian,
-                        removeGuardian: widget.removeGuardian,
-                        onChanged: widget.onChanged,
-                      ),
-                    ),
+                return Semantics(
+                  label:
+                      'Guardian ${index + 1} of ${widget.people.length}: '
+                      '${person.firstName}',
+                  child: _GuardianPageContent(
+                    person: person,
+                    activities: activities,
+                    activityAvailable: widget.activityAvailable,
+                    onRetry: widget.onRetry,
+                    historyConsentLoader: widget.historyConsentLoader,
+                    journeyAccessLoader: widget.journeyAccessLoader,
+                    historyConsentPreview: widget.historyConsentPreview,
+                    previewActiveJourneyCount: widget.previewActiveJourneyCount,
+                    showChat: !widget.viewOnlyGuardianIds.contains(person.id),
+                    otherGuardians: widget.people
+                        .where((candidate) => candidate.id != person.id)
+                        .toList(growable: false),
+                    makeMainGuardian: widget.makeMainGuardian,
+                    clearMainGuardian: widget.clearMainGuardian,
+                    removeGuardian: widget.removeGuardian,
+                    onChanged: widget.onChanged,
                   ),
                 );
               },
@@ -2955,37 +2949,6 @@ class _GuardianMonogram extends StatelessWidget {
     guardianOne: false,
     size: size,
     fontSize: size * .38,
-  );
-}
-
-class _GuardianPageDots extends StatelessWidget {
-  final int count;
-  final int selected;
-
-  const _GuardianPageDots({required this.count, required this.selected});
-
-  @override
-  Widget build(BuildContext context) => Semantics(
-    label: selected < count ? 'Guardian ${selected + 1} of $count' : null,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        for (var index = 0; index < count; index++)
-          AnimatedContainer(
-            key: ValueKey('guardian-page-dot-$index'),
-            duration: const Duration(milliseconds: 180),
-            width: index == selected ? 20 : 5,
-            height: 5,
-            margin: const EdgeInsets.symmetric(horizontal: 3),
-            decoration: BoxDecoration(
-              color: index == selected
-                  ? ZyraColors.journeyGold
-                  : ZyraColors.ink(0.25),
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
-      ],
-    ),
   );
 }
 

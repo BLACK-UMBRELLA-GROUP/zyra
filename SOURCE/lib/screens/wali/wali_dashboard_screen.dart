@@ -677,7 +677,11 @@ class _WaliDashboardScreenState extends State<WaliDashboardScreen> {
           if (MediaQuery.disableAnimationsOf(context)) {
             _pager.jumpToPage(_pagerOrigin + index);
           } else {
-            ZyraSegmentedMotion.animateToPage(_pager, _pagerOrigin + index);
+            ZyraSegmentedMotion.animateToPage(
+              context,
+              _pager,
+              _pagerOrigin + index,
+            );
           }
         },
       );
@@ -697,9 +701,6 @@ class _WaliDashboardScreenState extends State<WaliDashboardScreen> {
       onRefresh: () async => _retry(),
       child: ListView(
         key: PageStorageKey('guardian-dashboard-$pageKey'),
-        physics: const AlwaysScrollableScrollPhysics(
-          parent: BouncingScrollPhysics(),
-        ),
         padding: const EdgeInsets.fromLTRB(20, 12, 20, 108),
         children: children,
       ),

@@ -28,6 +28,7 @@ import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/material.dart';
 
+import '../theme/zyra_motion.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 
@@ -38,16 +39,23 @@ import '../theme/zyra_text.dart';
 abstract final class ZyraSegmentedMotion {
   static const Duration selectionDuration = Duration(milliseconds: 260);
   static const Curve selectionCurve = Curves.easeOutCubic;
-  static const ScrollPhysics pagePhysics = PageScrollPhysics(
-    parent: BouncingScrollPhysics(),
-  );
+  static const ScrollPhysics pagePhysics = PageScrollPhysics();
 
-  static Future<void> animateToPage(PageController controller, int page) =>
-      controller.animateToPage(
-        page,
-        duration: selectionDuration,
-        curve: selectionCurve,
-      );
+  static Future<void> animateToPage(
+    BuildContext context,
+    PageController controller,
+    int page,
+  ) async {
+    if (ZyraMotion.reduceMotion(context)) {
+      controller.jumpToPage(page);
+      return;
+    }
+    await controller.animateToPage(
+      page,
+      duration: ZyraMotion.duration,
+      curve: ZyraMotion.curve,
+    );
+  }
 }
 
 class ZyraSegmentedToggle extends StatelessWidget {

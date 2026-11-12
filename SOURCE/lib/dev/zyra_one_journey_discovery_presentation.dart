@@ -13,6 +13,7 @@ import 'package:flutter/services.dart' show SystemUiOverlayStyle;
 
 import '../models/seeker_profile.dart';
 import '../screens/connections/connections_section_controller.dart';
+import '../theme/zyra_motion.dart';
 import '../theme/zyra_card_metrics.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
@@ -460,7 +461,7 @@ class _ZyraOneJourneyConnectionsPresentationState
         MediaQuery.accessibleNavigationOf(context)) {
       _pager.jumpToPage(index);
     } else {
-      unawaited(ZyraSegmentedMotion.animateToPage(_pager, index));
+      unawaited(ZyraSegmentedMotion.animateToPage(context, _pager, index));
     }
   }
 
@@ -508,7 +509,6 @@ class _ZyraOneJourneyConnectionsPresentationState
     );
     return ZyraShadowScrollView(
       key: const PageStorageKey('concept_connections_page_0'),
-      physics: const ClampingScrollPhysics(),
       padding: EdgeInsets.fromLTRB(20, widget.pageTopPadding, 20, bottom),
       child: ConstrainedBox(
         constraints: BoxConstraints(minHeight: minimum),
@@ -935,10 +935,8 @@ class _ZyraOneJourneyConnectionsPersonCardState
     unawaited(
       Scrollable.ensureVisible(
         target,
-        duration: MediaQuery.disableAnimationsOf(context)
-            ? Duration.zero
-            : const Duration(milliseconds: 320),
-        curve: Curves.easeOutCubic,
+        duration: ZyraMotion.scrollDuration(context),
+        curve: ZyraMotion.curve,
         alignment: 0,
       ),
     );

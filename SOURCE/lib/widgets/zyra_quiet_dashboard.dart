@@ -170,14 +170,13 @@ class _ZyraQuietDashboardState extends State<ZyraQuietDashboard> {
       final target = widget.selectedTabIndex!.clamp(0, 1);
       void move() {
         if (!mounted || !_pager.hasClients || target == _settledPage) return;
-        ZyraSegmentedMotion.animateToPage(_pager, target);
+        ZyraSegmentedMotion.animateToPage(context, _pager, target);
       }
 
-      if (_pager.hasClients) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted || widget.selectedTabIndex?.clamp(0, 1) != target) return;
         move();
-      } else {
-        WidgetsBinding.instance.addPostFrameCallback((_) => move());
-      }
+      });
     }
   }
 
@@ -207,7 +206,7 @@ class _ZyraQuietDashboardState extends State<ZyraQuietDashboard> {
 
   void _selectTab(int tab) {
     if (!_allowed || widget.singlePage) return;
-    ZyraSegmentedMotion.animateToPage(_pager, tab);
+    ZyraSegmentedMotion.animateToPage(context, _pager, tab);
   }
 
   @override
@@ -300,7 +299,6 @@ class _ZyraQuietDashboardState extends State<ZyraQuietDashboard> {
         ListView(
           key: ValueKey('my-zyra-quiet-scroll-$tab'),
           controller: scroll,
-          physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.fromLTRB(24, 28, 24, 130),
         ),
         current,
@@ -500,7 +498,6 @@ class _ZyraQuietDashboardState extends State<ZyraQuietDashboard> {
       ListView(
         key: ValueKey('my-zyra-quiet-scroll-$tab'),
         controller: scroll,
-        physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(24, 28, 24, 130),
         children: [
           if (_canPreviewActivities(widget) &&

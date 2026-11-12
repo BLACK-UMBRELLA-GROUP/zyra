@@ -471,7 +471,6 @@ class _UtilityViewport extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ZyraShadowScrollView(
     key: viewportKey,
-    physics: const ClampingScrollPhysics(),
     child: ConstrainedBox(
       constraints: BoxConstraints(minHeight: minHeight),
       child: child,

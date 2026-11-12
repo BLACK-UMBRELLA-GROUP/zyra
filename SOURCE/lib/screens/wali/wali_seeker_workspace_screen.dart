@@ -361,7 +361,6 @@ class GuardianSeekerWorkspaceView extends StatelessWidget {
   }) => LayoutBuilder(
     builder: (context, constraints) => SingleChildScrollView(
       key: PageStorageKey('guardian-seeker-page-scroll-${_person.id}'),
-      physics: const BouncingScrollPhysics(),
       child: ConstrainedBox(
         constraints: BoxConstraints(minHeight: constraints.maxHeight),
         child: Padding(

@@ -7,6 +7,7 @@ import '../data/zyra_membership_catalog.dart';
 import '../models/seeker_profile.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
+import '../theme/zyra_motion.dart';
 import 'zyra_floating_surface.dart';
 import 'zyra_profile_image.dart';
 
@@ -17,12 +18,14 @@ class ZyraProfileDetailsPage extends StatelessWidget {
     super.key,
     required this.profile,
     this.firstPhoto,
+    this.fixedCard = false,
     this.requestAction,
     this.showUnverifiedRing = true,
   });
 
   final SeekerProfile profile;
   final Widget? firstPhoto;
+  final bool fixedCard;
   final Widget? requestAction;
 
   /// Other-member cards retain the decorative ring while their authorized
@@ -156,7 +159,7 @@ class ZyraProfileDetailsPage extends StatelessWidget {
           );
           return SingleChildScrollView(
             key: ValueKey('concept_browse_details_scroll_${profile.id}'),
-            physics: const ClampingScrollPhysics(),
+            physics: fixedCard ? ZyraMotion.fixedCardScrollPhysics : null,
             child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: constraints.maxHeight),
               child: IntrinsicHeight(

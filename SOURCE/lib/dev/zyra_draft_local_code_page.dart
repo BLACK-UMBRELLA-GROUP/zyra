@@ -5,6 +5,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../theme/zyra_motion.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_interaction_style.dart';
 import '../theme/zyra_text.dart';
@@ -259,7 +260,8 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
       Scrollable.ensureVisible(
         target,
         alignment: 1,
-        duration: const Duration(milliseconds: 220),
+        duration: ZyraMotion.scrollDuration(context),
+        curve: ZyraMotion.curve,
       );
     }
   });

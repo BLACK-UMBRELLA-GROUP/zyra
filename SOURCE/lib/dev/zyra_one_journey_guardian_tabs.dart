@@ -3,6 +3,7 @@ import '../widgets/zyra_floating_surface.dart';
 // LOCK 8 V3 / LOCK 15 V2: fictional Guardian presentation only. No service, RPC or member
 // authority. The admitted shell owns changes and the lifetime of callbacks.
 import 'package:flutter/material.dart';
+import '../theme/zyra_motion.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
@@ -13,6 +14,7 @@ import '../widgets/zyra_state_widgets.dart';
 import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_focus_dashboard.dart';
 import '../widgets/zyra_profiles_components.dart';
+import '../widgets/zyra_swipe_track.dart';
 import 'zyra_one_journey_tab.dart' show ZyraJourneyPhotoCard;
 import 'zyra_one_journey_guardian_seeker.dart';
 import 'zyra_one_journey_guardian_action.dart';
@@ -187,14 +189,13 @@ class ZyraGuardianJourneyPager extends StatefulWidget {
 
 class _GuardianJourneyPagerState extends State<ZyraGuardianJourneyPager> {
   int _revision = 0;
-  double _drag = 0;
+  final _track = ZyraSwipeController();
 
   @override
   Widget build(BuildContext context) {
     final revision = ++_revision;
     final identity = widget.identity;
     final index = widget.index.clamp(0, widget.cards.length - 1);
-    final card = widget.cards[index];
     final expandedText = MediaQuery.textScalerOf(context).scale(13) > 16;
     final feedback = context
         .dependOnInheritedWidgetOfExactType<ZyraTapFeedback>();
@@ -234,89 +235,90 @@ class _GuardianJourneyPagerState extends State<ZyraGuardianJourneyPager> {
               dotKey: (i) => ValueKey('guardian_journey_dot_$i'),
               targetKey: (i) => ValueKey('guardian_journey_dot_target_$i'),
               canAct: current,
-              onSelected: select,
+              onSelected: (target) {
+                if (current()) _track.animateTo(target);
+              },
             ),
           ),
         ),
         // The 6 pt dot ends 9 pt before the end of its touch slot.
         const SizedBox(height: 3),
         Expanded(
-          child: GestureDetector(
+          child: ZyraSwipeTrack(
             key: const ValueKey('guardian_journey_card'),
-            behavior: HitTestBehavior.opaque,
-            onHorizontalDragStart: (_) => _drag = 0,
-            onHorizontalDragUpdate: (d) {
-              if (current()) _drag += d.primaryDelta ?? 0;
-            },
-            onHorizontalDragEnd: (d) {
-              if (!current()) return;
-              final velocity = d.primaryVelocity ?? 0;
-              if (_drag.abs() < 24 && velocity.abs() < 100) return;
-              final direction = velocity.abs() >= 100 ? velocity : _drag;
-              select(index + (direction < 0 ? 1 : -1));
-            },
-            child: Semantics(
-              container: true,
-              label:
-                  '${card.title}, ${card.stageLine}, ${index + 1} of ${widget.cards.length}',
-              child: ZyraJourneyPhotoCard(
-                surfaceKey: ValueKey('guardian_journey_person_${card.id}'),
-                scrollKey: ValueKey('guardian_journey_overlay_${card.id}'),
-                photo: card.photo,
-                fadeStart: expandedText ? 0 : .3,
-                fadeTop: expandedText
-                    ? const Color(0xA6000000)
-                    : Colors.transparent,
-                children: [
-                  Text(
-                    card.stageLine.toUpperCase(),
-                    key: const ValueKey('guardian_journey_stage'),
-                    style: ZyraText.body(
-                      size: 11,
-                      color: Colors.white,
-                    ).copyWith(letterSpacing: 1.1, height: 1.4),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    card.title,
-                    style: ZyraText.heading(
-                      size: 28,
-                      color: Colors.white,
-                    ).copyWith(fontWeight: FontWeight.w300, height: 1.2),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    card.details,
-                    style: ZyraText.body(
-                      size: 13,
-                      color: Colors.white.withValues(alpha: .78),
-                    ).copyWith(height: 1.4),
-                  ),
-                  const SizedBox(height: 16),
-                  FilledButton(
-                    key: const ValueKey('guardian_journey'),
-                    onPressed: ZyraTapFeedback.onTap(context, () {
-                      if (!current()) return;
-                      setState(() => _revision++);
-                      widget.onAction('journey_open_${card.id}');
-                    }, canAct: current),
-                    style: FilledButton.styleFrom(
-                      minimumSize: const Size(0, 42),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 10,
-                      ),
-                      backgroundColor: ZyraColors.goldTextFill,
-                      foregroundColor: ZyraColors.foreground,
-                      textStyle: ZyraText.body(size: 14),
-                      shape: const StadiumBorder(),
+            controller: _track,
+            index: index,
+            itemCount: widget.cards.length,
+            motionIdentity: widget.cards.map((card) => card.id).join(','),
+            canAct: current,
+            onSettled: select,
+            itemBuilder: (context, page) {
+              final card = widget.cards[page];
+              return Semantics(
+                container: true,
+                label:
+                    '${card.title}, ${card.stageLine}, ${page + 1} of ${widget.cards.length}',
+                child: ZyraJourneyPhotoCard(
+                  surfaceKey: ValueKey('guardian_journey_person_${card.id}'),
+                  scrollKey: ValueKey('guardian_journey_overlay_${card.id}'),
+                  photo: card.photo,
+                  fadeStart: expandedText ? 0 : .3,
+                  fadeTop: expandedText
+                      ? const Color(0xA6000000)
+                      : Colors.transparent,
+                  children: [
+                    Text(
+                      card.stageLine.toUpperCase(),
+                      key: const ValueKey('guardian_journey_stage'),
+                      style: ZyraText.body(
+                        size: 11,
+                        color: Colors.white,
+                      ).copyWith(letterSpacing: 1.1, height: 1.4),
                     ),
-                    child: const Text('Open Journey'),
-                  ),
-                ],
-              ),
-            ),
+                    const SizedBox(height: 12),
+                    Text(
+                      card.title,
+                      style: ZyraText.heading(
+                        size: 28,
+                        color: Colors.white,
+                      ).copyWith(fontWeight: FontWeight.w300, height: 1.2),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      card.details,
+                      style: ZyraText.body(
+                        size: 13,
+                        color: Colors.white.withValues(alpha: .78),
+                      ).copyWith(height: 1.4),
+                    ),
+                    const SizedBox(height: 16),
+                    FilledButton(
+                      key: const ValueKey('guardian_journey'),
+                      onPressed: ZyraTapFeedback.onTap(context, () {
+                        if (!current() || page != index || _track.isMoving) {
+                          return;
+                        }
+                        setState(() => _revision++);
+                        widget.onAction('journey_open_${card.id}');
+                      }, canAct: current),
+                      style: FilledButton.styleFrom(
+                        minimumSize: const Size(0, 42),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 10,
+                        ),
+                        backgroundColor: ZyraColors.goldTextFill,
+                        foregroundColor: ZyraColors.foreground,
+                        textStyle: ZyraText.body(size: 14),
+                        shape: const StadiumBorder(),
+                      ),
+                      child: const Text('Open Journey'),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ],
@@ -726,7 +728,6 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
           ? LayoutBuilder(
               builder: (context, bounds) => ZyraShadowScrollView(
                 key: ValueKey('guardian_quick_empty_$page'),
-                physics: const ClampingScrollPhysics(),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minHeight: bounds.maxHeight),
                   child: empty,
@@ -1185,7 +1186,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
                   builder: (context, constraints) => SingleChildScrollView(
                     key: const ValueKey('guardian-network-card-scroll'),
                     physics: largerText
-                        ? const ClampingScrollPhysics()
+                        ? ZyraMotion.fixedCardScrollPhysics
                         : const NeverScrollableScrollPhysics(),
                     child: ConstrainedBox(
                       constraints: BoxConstraints(

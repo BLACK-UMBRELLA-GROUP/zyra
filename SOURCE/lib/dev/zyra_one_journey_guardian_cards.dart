@@ -5,6 +5,7 @@ import '../services/zyra_account_state.dart';
 import '../state/app_state.dart' show ZyraPlan;
 import '../services/zyra_wali_link_service.dart' show WaliLinkedPerson;
 import '../screens/wali/seeker_guardian_designs.dart';
+import '../theme/zyra_motion.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/floating_nav_bar.dart';
@@ -827,7 +828,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
               return SingleChildScrollView(
                 key: ValueKey('guardian-card-content-$target'),
                 primary: false,
-                physics: const ClampingScrollPhysics(),
+                physics: ZyraMotion.fixedCardScrollPhysics,
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minHeight: box.maxHeight),
                   // At larger text the invitation uses the laid-out height,

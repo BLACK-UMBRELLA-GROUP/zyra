@@ -913,7 +913,6 @@ class _AnswerGroups extends StatelessWidget {
   Widget build(BuildContext context) {
     final categories = categoriesForKind(kind);
     return ListView(
-      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
       children: [
         for (final category in categories)
@@ -967,7 +966,6 @@ class _AnswerCategoryEditorState extends State<_AnswerCategoryEditor> {
       title: widget.category.name,
       owner: widget.owner,
       child: ListView.builder(
-        physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(20, 12, 20, 90),
         itemCount: questions.length,
         itemBuilder: (context, index) {
@@ -1035,7 +1033,6 @@ class _AnswerQuestionEditorState extends State<_AnswerQuestionEditor> {
       },
     ),
     child: ListView(
-      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 110),
       children: [
         Text(widget.question.prompt, style: ZyraText.heading(size: 21)),
@@ -1115,7 +1112,6 @@ class _PreferenceGroupsState extends State<_PreferenceGroups> {
         .toList();
     final gap = widget.plannedSpacing ? ZyraPreviewSpacing.cardToCard : 14.0;
     return ListView(
-      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
       children: [
         if (count > 0) ...[
@@ -1197,7 +1193,6 @@ class _PreferenceCategoryEditorState extends State<_PreferenceCategoryEditor> {
       title: widget.category.name,
       owner: widget.owner,
       child: ListView.builder(
-        physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(20, 12, 20, 90),
         itemCount: questions.length,
         itemBuilder: (context, index) {
@@ -1387,7 +1382,6 @@ class _PreferenceQuestionEditorState extends State<_PreferenceQuestionEditor> {
         },
       ),
       child: ListView(
-        physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 110),
         children: [
           Text(widget.question.prompt, style: ZyraText.heading(size: 21)),
@@ -1521,7 +1515,6 @@ class _HardRequirementsEditor extends StatelessWidget {
         ..add(const SizedBox(height: 12));
     }
     return ListView(
-      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
       children: children,
     );

@@ -1,3 +1,4 @@
+import 'package:zyra/widgets/zyra_swipe_track.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 // Detached developer-shell integration. All people and conversations are
 // bundled draft data; no provider, account, purchase or member route is used.
@@ -269,10 +270,15 @@ Future<void> _swipePager(
 }
 
 void _expectPagerPage(WidgetTester tester, Finder pager, int page) {
-  expect(
-    tester.widget<PageView>(pager).controller!.page,
-    closeTo(page.toDouble(), .01),
-  );
+  final widget = tester.widget(pager);
+  if (widget is ZyraSwipeTrack) {
+    expect(widget.index, page);
+  } else {
+    expect(
+      (widget as PageView).controller!.page,
+      closeTo(page.toDouble(), .01),
+    );
+  }
 }
 
 Future<void> _capture(WidgetTester tester, String name) async {

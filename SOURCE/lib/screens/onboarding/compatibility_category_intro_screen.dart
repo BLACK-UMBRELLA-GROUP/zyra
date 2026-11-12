@@ -40,7 +40,6 @@ class CompatibilityCategoryIntroScreen extends StatelessWidget {
           child: LayoutBuilder(
             builder: (context, constraints) => SingleChildScrollView(
               key: const ValueKey('compatibility_section_scrollable'),
-              physics: const BouncingScrollPhysics(),
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: IntrinsicHeight(

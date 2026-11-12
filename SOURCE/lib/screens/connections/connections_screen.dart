@@ -89,6 +89,7 @@ import '../../services/zyra_journey_service.dart';
 import '../../services/zyra_promotion_engine.dart';
 import '../../services/zyra_report_service.dart';
 import '../../services/zyra_seeker_basic_usage_store.dart';
+import '../../theme/zyra_motion.dart';
 import '../../theme/zyra_card_metrics.dart';
 import '../../services/zyra_unlock_service.dart';
 import '../../services/zyra_wali_link_service.dart';
@@ -558,8 +559,13 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     if (oldWidget.sectionController == widget.sectionController) return;
     oldWidget.sectionController?.removeListener(_onExternalSectionRequest);
     widget.sectionController?.addListener(_onExternalSectionRequest);
-    _collapseRevisionSeen = widget.sectionController?.collapseRevision ?? 0;
-    _onExternalSectionRequest();
+    final controller = widget.sectionController;
+    _collapseRevisionSeen = controller?.collapseRevision ?? 0;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && widget.sectionController == controller) {
+        _onExternalSectionRequest();
+      }
+    });
   }
 
   void _onExternalSectionRequest() {
@@ -574,7 +580,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       if (!mounted || !_pager.hasClients) return;
       final current = _pager.page?.round() ?? _pager.initialPage;
       if (current == target) return;
-      ZyraSegmentedMotion.animateToPage(_pager, target);
+      ZyraSegmentedMotion.animateToPage(context, _pager, target);
     }
 
     if (_pager.hasClients) {
@@ -1916,7 +1922,8 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                 labels: _kSegmentLabels,
                 position: _pagerPos,
                 badges: _segmentBadges,
-                onChanged: (i) => ZyraSegmentedMotion.animateToPage(_pager, i),
+                onChanged: (i) =>
+                    ZyraSegmentedMotion.animateToPage(context, _pager, i),
               ),
             ),
             // SWIPEABLE 2026-08-01 (Founder: "allow the UI when I swipe
@@ -2942,8 +2949,8 @@ class _ActivityCardState extends State<_ActivityCard> {
     if (ctx == null) return;
     Scrollable.ensureVisible(
       ctx,
-      duration: const Duration(milliseconds: 320),
-      curve: Curves.easeOutCubic,
+      duration: ZyraMotion.scrollDuration(context),
+      curve: ZyraMotion.curve,
       // 0.0 puts the card's top at the viewport's top, which is what
       // "show the whole thing" means for something taller than a
       // thumbnail. Centring would leave the head cropped.
@@ -3463,8 +3470,8 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
     if (ctx == null) return;
     Scrollable.ensureVisible(
       ctx,
-      duration: const Duration(milliseconds: 320),
-      curve: Curves.easeOutCubic,
+      duration: ZyraMotion.scrollDuration(context),
+      curve: ZyraMotion.curve,
       alignment: 0.0,
     );
   }

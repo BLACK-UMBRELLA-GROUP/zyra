@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import '../data/journey_questions.dart';
 import '../data/zyra_journey_scroll.dart';
 import '../data/zyra_journey_stages.dart';
+import '../theme/zyra_motion.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_profile_image.dart';
@@ -701,7 +702,7 @@ class _StagePagesState extends State<_StagePages> {
     }
   }
 
-  void showPage(int page, {int milliseconds = 480}) {
+  void showPage(int page) {
     if (!mounted || !_pages.hasClients) return;
     final reduce = MediaQuery.disableAnimationsOf(context);
     if (reduce) {
@@ -709,15 +710,15 @@ class _StagePagesState extends State<_StagePages> {
     } else {
       _pages.animateToPage(
         page,
-        duration: Duration(milliseconds: milliseconds),
-        curve: Curves.easeOutCubic,
+        duration: ZyraMotion.duration,
+        curve: ZyraMotion.curve,
       );
     }
   }
 
   void showCompleted(int order) {
     if (order > 0 && order < widget.stage.order) {
-      showPage(order - 1, milliseconds: 520);
+      showPage(order - 1);
     }
   }
 
@@ -730,8 +731,8 @@ class _StagePagesState extends State<_StagePages> {
       } else {
         await _pages.animateToPage(
           targetPage,
-          duration: const Duration(milliseconds: 480),
-          curve: Curves.easeOutCubic,
+          duration: ZyraMotion.duration,
+          curve: ZyraMotion.curve,
         );
       }
     } finally {
@@ -814,10 +815,13 @@ class _StagePagesState extends State<_StagePages> {
   }
 
   double? _pullPastStart(ScrollNotification notification) {
-    if (notification is OverscrollNotification && notification.overscroll < 0) {
+    if (notification is OverscrollNotification &&
+        notification.dragDetails != null &&
+        notification.overscroll < 0) {
       return -notification.overscroll;
     }
     if (notification is ScrollUpdateNotification &&
+        notification.dragDetails != null &&
         notification.metrics.pixels <= notification.metrics.minScrollExtent &&
         (notification.scrollDelta ?? 0) < 0) {
       return -(notification.scrollDelta ?? 0);
@@ -826,10 +830,13 @@ class _StagePagesState extends State<_StagePages> {
   }
 
   double? _pullPastEnd(ScrollNotification notification) {
-    if (notification is OverscrollNotification && notification.overscroll > 0) {
+    if (notification is OverscrollNotification &&
+        notification.dragDetails != null &&
+        notification.overscroll > 0) {
       return notification.overscroll;
     }
     if (notification is ScrollUpdateNotification &&
+        notification.dragDetails != null &&
         notification.metrics.pixels >= notification.metrics.maxScrollExtent &&
         (notification.scrollDelta ?? 0) > 0) {
       return notification.scrollDelta;
@@ -847,7 +854,6 @@ class _StagePagesState extends State<_StagePages> {
     scrollDirection: Axis.vertical,
     pageSnapping: true,
     allowImplicitScrolling: true,
-    physics: const PageScrollPhysics(parent: BouncingScrollPhysics()),
     itemCount: _arrival + 2 + (widget.decisionBody == null ? 0 : 1),
     onPageChanged: _handlePageChanged,
     itemBuilder: (context, index) {
@@ -1115,7 +1121,6 @@ class ZyraConceptJourneyArrival extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 34),
               child: ZyraShadowScrollView(
                 key: const ValueKey('concept_journey_arrival_body'),
-                physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.only(top: 16),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -1153,7 +1158,6 @@ class ZyraConceptJourneyArrival extends StatelessWidget {
                   constraints: BoxConstraints(maxHeight: maxBodyHeight),
                   child: ZyraShadowScrollView(
                     key: const ValueKey('concept_journey_arrival_body'),
-                    physics: const ClampingScrollPhysics(),
                     child: body,
                   ),
                 ),
@@ -1475,7 +1479,6 @@ class _CompletedStage extends StatelessWidget {
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) => ZyraShadowScrollView(
       key: ValueKey('concept_completed_stage_reader_${stage.value}'),
-      physics: const ClampingScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
       child: ConstrainedBox(
         constraints: BoxConstraints(

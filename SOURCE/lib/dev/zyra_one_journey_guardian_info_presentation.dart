@@ -5,6 +5,7 @@ import '../theme/zyra_card_metrics.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_profiles_components.dart';
+import '../widgets/zyra_swipe_track.dart';
 
 class ZyraGuardianInfoPresentation extends StatefulWidget {
   const ZyraGuardianInfoPresentation({
@@ -24,25 +25,10 @@ class ZyraGuardianInfoPresentation extends StatefulWidget {
 
 class _ZyraGuardianInfoPresentationState
     extends State<ZyraGuardianInfoPresentation> {
-  final _controller = PageController();
+  final _controller = ZyraSwipeController();
   int _index = 0;
   int _render = 0;
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _move(int next) {
-    if (!widget.canAct() || next < 0 || next > 3 || next == _index) return;
-    _controller.animateToPage(
-      next,
-      duration: MediaQuery.disableAnimationsOf(context)
-          ? Duration.zero
-          : const Duration(milliseconds: 180),
-      curve: Curves.easeOut,
-    );
-  }
+  void _move(int next) => _controller.animateTo(next);
 
   @override
   Widget build(BuildContext context) {
@@ -111,107 +97,107 @@ class _ZyraGuardianInfoPresentationState
               },
             ),
             Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-                child: PageView.builder(
-                  key: const ValueKey('guardian_info_cards'),
-                  controller: _controller,
-                  itemCount: 4,
-                  onPageChanged: (index) {
-                    if (!widget.canAct()) return;
-                    setState(() => _index = index);
-                    widget.onMove();
-                  },
-                  itemBuilder: (context, index) {
-                    final card = cards[index];
-                    return Semantics(
-                      label: '${card.title}, card ${index + 1} of 4',
-                      container: true,
-                      child: LayoutBuilder(
-                        builder: (context, constraints) => GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTapUp: ZyraTapFeedback.onChanged(
-                            context,
-                            (details) => _move(
-                              index +
-                                  (details.localPosition.dx >=
-                                          constraints.maxWidth / 2
-                                      ? 1
-                                      : -1),
-                            ),
-                          ),
-                          child: ZyraProfilesDetailsContent(
-                            scrollKey: ValueKey('guardian_info_scroll_$index'),
-                            children: [
-                              ExcludeSemantics(
-                                child: Container(
-                                  width: 56,
-                                  height: 56,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: ZyraColors.journeyGold.withValues(
-                                        alpha: .65,
-                                      ),
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: ZyraColors.journeyGold
-                                            .withValues(alpha: .07),
-                                        blurRadius: 24,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Icon(
-                                    card.icon,
-                                    size: 29,
-                                    color: ZyraColors.journeyGold,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 18),
-                              ExcludeSemantics(
-                                child: Text(
-                                  card.title,
-                                  textAlign: TextAlign.center,
-                                  style: ZyraText.heading(size: 34),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                card.subtitle,
-                                textAlign: TextAlign.center,
-                                style: ZyraText.body(
-                                  size: 14,
-                                  color: ZyraColors.goldText,
-                                ),
-                              ),
-                              const SizedBox(height: 24),
-                              for (final row in card.rows)
-                                Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 10,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      top: BorderSide(
-                                        color: ZyraColors.ink(.13),
-                                      ),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    row,
-                                    style: ZyraText.body(size: 14),
-                                  ),
-                                ),
-                            ],
+              child: ZyraSwipeTrack(
+                key: const ValueKey('guardian_info_cards'),
+                controller: _controller,
+                index: _index,
+                itemCount: cards.length,
+                canAct: current,
+                onSettled: (index) {
+                  setState(() => _index = index);
+                  widget.onMove();
+                },
+                itemBuilder: (context, index) {
+                  final card = cards[index];
+                  return Semantics(
+                    label: '${card.title}, card ${index + 1} of 4',
+                    container: true,
+                    child: LayoutBuilder(
+                      builder: (context, constraints) => GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTapUp: ZyraTapFeedback.onChanged(
+                          context,
+                          (details) => _move(
+                            index +
+                                (details.localPosition.dx >=
+                                        constraints.maxWidth / 2
+                                    ? 1
+                                    : -1),
                           ),
                         ),
+                        child: ZyraProfilesDetailsContent(
+                          borderRadius: BorderRadius.circular(
+                            ZyraCardMetrics.cardRadius,
+                          ),
+                          scrollKey: ValueKey('guardian_info_scroll_$index'),
+                          children: [
+                            ExcludeSemantics(
+                              child: Container(
+                                width: 56,
+                                height: 56,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: ZyraColors.journeyGold.withValues(
+                                      alpha: .65,
+                                    ),
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: ZyraColors.journeyGold.withValues(
+                                        alpha: .07,
+                                      ),
+                                      blurRadius: 24,
+                                    ),
+                                  ],
+                                ),
+                                child: Icon(
+                                  card.icon,
+                                  size: 29,
+                                  color: ZyraColors.journeyGold,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 18),
+                            ExcludeSemantics(
+                              child: Text(
+                                card.title,
+                                textAlign: TextAlign.center,
+                                style: ZyraText.heading(size: 34),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              card.subtitle,
+                              textAlign: TextAlign.center,
+                              style: ZyraText.body(
+                                size: 14,
+                                color: ZyraColors.goldText,
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                            for (final row in card.rows)
+                              Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 10,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    top: BorderSide(color: ZyraColors.ink(.13)),
+                                  ),
+                                ),
+                                child: Text(
+                                  row,
+                                  style: ZyraText.body(size: 14),
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ),
             const SizedBox(height: 16),
@@ -220,7 +206,11 @@ class _ZyraGuardianInfoPresentationState
                 key: const ValueKey('guardian_info_previous'),
                 label: 'Previous card',
                 icon: Icons.chevron_left,
-                onTap: _index == 0 ? null : () => _move(_index - 1),
+                onTap: _index == 0 || !current()
+                    ? null
+                    : () {
+                        if (current()) _move(_index - 1);
+                      },
               ),
               action: zyraProfilesPill(
                 key: const ValueKey('guardian_info_manage'),
@@ -235,7 +225,11 @@ class _ZyraGuardianInfoPresentationState
                 label: 'Next card',
                 icon: Icons.chevron_right,
                 iconSize: 24,
-                onTap: _index == 3 ? null : () => _move(_index + 1),
+                onTap: _index == 3 || !current()
+                    ? null
+                    : () {
+                        if (current()) _move(_index + 1);
+                      },
               ),
             ),
           ],

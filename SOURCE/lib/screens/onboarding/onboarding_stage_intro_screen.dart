@@ -325,7 +325,7 @@ class _OnboardingStageIntroScreenState
             // A light raw finger swipe from its edge changes the page.
             physics: arrowMode || _pageTransitioning || !_welcomeRoadmapComplete
                 ? const NeverScrollableScrollPhysics()
-                : const BouncingScrollPhysics(),
+                : null,
             children: [
               if (arrowMode)
                 ZyraOnboardingEdgeSwipe(
@@ -680,11 +680,6 @@ class _WelcomePageState extends State<_WelcomePage>
                       'onboarding_preview_welcome_scrollable',
                     ),
                     controller: widget.scrollController,
-                    physics: widget.arrowMode
-                        ? const ClampingScrollPhysics(
-                            parent: AlwaysScrollableScrollPhysics(),
-                          )
-                        : null,
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
                         minHeight: constraints.maxHeight,
@@ -934,11 +929,6 @@ class _StagePage extends StatelessWidget {
       builder: (context, constraints) => SingleChildScrollView(
         key: const ValueKey('onboarding_stage_scrollable'),
         controller: scrollController,
-        physics: arrowMode
-            ? const ClampingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics(),
-              )
-            : const ClampingScrollPhysics(),
         child: ConstrainedBox(
           constraints: BoxConstraints(minHeight: constraints.maxHeight),
           child: IntrinsicHeight(

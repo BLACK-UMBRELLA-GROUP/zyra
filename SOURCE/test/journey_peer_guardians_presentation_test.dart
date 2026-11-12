@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zyra/widgets/zyra_swipe_track.dart';
 import 'package:zyra/dev/zyra_journey_peer_guardians_presentation.dart';
 import 'package:zyra/services/zyra_guardian_info_service.dart';
 import 'package:zyra/theme/zyra_colors.dart';
@@ -64,8 +65,8 @@ void _expectNoException(WidgetTester tester) {
 Finder _pager([String subjectId = _subject]) =>
     _key('peer_guardians_pager_$subjectId');
 
-PageView _pageView(WidgetTester tester, [String subjectId = _subject]) =>
-    tester.widget<PageView>(_pager(subjectId));
+ZyraSwipeTrack _track(WidgetTester tester, [String subjectId = _subject]) =>
+    tester.widget<ZyraSwipeTrack>(_pager(subjectId));
 
 ScrollableState _reader(
   WidgetTester tester,
@@ -353,7 +354,7 @@ void main() {
     expect(find.text('Gender'), findsNothing);
     expect(_key('peer_guardians_position_$_subject'), findsNothing);
     expect(_key('peer_guardian_dot_${_subject}_0'), findsNothing);
-    expect(_pageView(tester).childrenDelegate.estimatedChildCount, 1);
+    expect(_track(tester).itemCount, 1);
     _expectReadOnly();
   });
 
@@ -366,7 +367,7 @@ void main() {
     expect(_key('peer_guardians_empty'), findsNothing);
     expect(find.text('No Guardians linked.'), findsNothing);
     expect(find.text('Ibrahim'), findsNothing);
-    expect(find.byType(PageView), findsNothing);
+    expect(find.byType(ZyraSwipeTrack), findsNothing);
     expect(_key('peer_guardians_position_$_subject'), findsNothing);
     await _capture(tester, 'unavailable');
   });
@@ -379,7 +380,7 @@ void main() {
     expect(find.text('No Guardians linked.'), findsOneWidget);
     expect(_key('peer_guardians_unavailable'), findsNothing);
     expect(find.text('Ibrahim'), findsNothing);
-    expect(find.byType(PageView), findsNothing);
+    expect(find.byType(ZyraSwipeTrack), findsNothing);
     expect(_key('peer_guardians_position_$_subject'), findsNothing);
     await _capture(tester, 'empty');
   });
@@ -390,8 +391,8 @@ void main() {
     await _mount(tester);
     await _swipe(tester);
     await _swipe(tester);
-    final oldController = _pageView(tester).controller!;
-    final stalePageChanged = _pageView(tester).onPageChanged!;
+    final oldController = _track(tester).controller!;
+    final stalePageChanged = _track(tester).onSettled;
     await _mount(
       tester,
       subjectId: 'peer-aisha',
@@ -405,13 +406,14 @@ void main() {
     expect(find.text('Journey with Sara'), findsNothing);
     expect(find.text('Amina'), findsOneWidget);
     expect(find.text('Ibrahim'), findsNothing);
-    final freshController = _pageView(tester, 'peer-aisha').controller!;
+    final fresh = _track(tester, 'peer-aisha');
+    final freshController = fresh.controller;
     expect(freshController, isNot(same(oldController)));
-    expect(freshController.page, closeTo(0, .01));
+    expect(_track(tester, 'peer-aisha').index, 0);
     stalePageChanged(2);
     await tester.pumpAndSettle();
     _expectNoException(tester);
-    expect(freshController.page, closeTo(0, .01));
+    expect(_track(tester, 'peer-aisha').index, 0);
   });
 
   testWidgets('one Guardian page fills the normal horizontal viewport', (
@@ -419,8 +421,6 @@ void main() {
   ) async {
     await _mount(tester);
     final viewport = tester.getRect(_pager());
-    expect(_pageView(tester).scrollDirection, Axis.horizontal);
-    expect(_pageView(tester).controller!.keepPage, isFalse);
     for (var index = 0; index < 3; index++) {
       final card = tester.getRect(_key('peer_guardian_${_subject}_$index'));
       expect(card.left, closeTo(20, .1));
@@ -512,8 +512,8 @@ void main() {
     (tester) async {
       await _mount(tester);
       await _swipe(tester);
-      final oldController = _pageView(tester).controller!;
-      expect(oldController.page, closeTo(1, .01));
+      final oldController = _track(tester).controller!;
+      expect(_track(tester).index, 1);
       await _mount(
         tester,
         guardians: [
@@ -528,15 +528,15 @@ void main() {
         ],
         settle: false,
       );
-      final retained = _pageView(tester).controller!;
+      final retained = _track(tester).controller!;
       expect(retained, same(oldController));
-      expect(retained.page, closeTo(1, .01));
+      expect(_track(tester).index, 1);
       expect(find.text('Maryam').hitTestable(), findsOneWidget);
       _expectDots(tester, 1);
       await tester.pumpAndSettle();
       _expectNoException(tester);
-      expect(_pageView(tester).controller, same(oldController));
-      expect(retained.page, closeTo(1, .01));
+      expect(_track(tester).controller, same(oldController));
+      expect(_track(tester).index, 1);
     },
   );
 
@@ -555,8 +555,8 @@ void main() {
         await _mount(tester);
         await _swipe(tester);
         await _swipe(tester);
-        final old = _pageView(tester);
-        expect(old.controller!.page, closeTo(2, .01));
+        final old = _track(tester);
+        expect(old.index, 2);
         final replacement = GuardianInfo(
           firstName: change == 'firstName' ? 'Ibraheem' : _ibrahim.firstName,
           relationship: change == 'relationship'
@@ -572,16 +572,15 @@ void main() {
             ? [_ibrahim]
             : [replacement, _maryam, _yusuf];
         await _mount(tester, guardians: next, settle: false);
-        final fresh = _pageView(tester);
+        final fresh = _track(tester);
         expect(fresh.controller, isNot(same(old.controller)));
-        expect(fresh.controller!.page, closeTo(0, .01));
-        expect(fresh.controller!.keepPage, isFalse);
+        expect(fresh.index, 0);
         expect(find.text(next.first.firstName).hitTestable(), findsOneWidget);
-        old.onPageChanged!(2);
+        old.onSettled(2);
         await tester.pumpAndSettle();
         _expectNoException(tester);
-        expect(_pageView(tester).controller, same(fresh.controller));
-        expect(fresh.controller!.page, closeTo(0, .01));
+        expect(_track(tester).controller, same(fresh.controller));
+        expect(fresh.index, 0);
         if (next.length > 1) {
           _expectDots(tester, 0);
         } else {
@@ -598,9 +597,9 @@ void main() {
       (tester) async {
         await _mount(tester);
         await _swipe(tester);
-        final old = _pageView(tester);
+        final old = _track(tester);
         await _mount(tester, guardians: revoked, settle: false);
-        expect(find.byType(PageView), findsNothing);
+        expect(find.byType(ZyraSwipeTrack), findsNothing);
         expect(_key('peer_guardians_position_$_subject'), findsNothing);
         expect(
           _key(
@@ -610,18 +609,18 @@ void main() {
           ),
           findsOneWidget,
         );
-        old.onPageChanged!(2);
+        old.onSettled(2);
         await tester.pumpAndSettle();
         _expectNoException(tester);
-        expect(find.byType(PageView), findsNothing);
+        expect(find.byType(ZyraSwipeTrack), findsNothing);
         await _mount(tester, settle: false);
-        final fresh = _pageView(tester);
+        final fresh = _track(tester);
         expect(fresh.controller, isNot(same(old.controller)));
-        expect(fresh.controller!.page, closeTo(0, .01));
-        old.onPageChanged!(1);
+        expect(fresh.index, 0);
+        old.onSettled(1);
         await tester.pumpAndSettle();
         _expectNoException(tester);
-        expect(fresh.controller!.page, closeTo(0, .01));
+        expect(fresh.index, 0);
         _expectDots(tester, 0);
       },
     );
@@ -631,26 +630,26 @@ void main() {
     tester,
   ) async {
     await _mount(tester);
-    final old = _pageView(tester);
+    final old = _track(tester);
     await tester.pumpWidget(const SizedBox.shrink());
-    old.onPageChanged!(2);
-    old.onPageChanged!(-1);
+    old.onSettled(2);
+    old.onSettled(-1);
     await tester.pumpAndSettle();
     _expectNoException(tester);
-    expect(find.byType(PageView), findsNothing);
+    expect(find.byType(ZyraSwipeTrack), findsNothing);
   });
 
   testWidgets(
     'out-of-range page callbacks cannot alter a current pager indicator',
     (tester) async {
       await _mount(tester);
-      final current = _pageView(tester);
-      current.onPageChanged!(-1);
-      current.onPageChanged!(3);
-      current.onPageChanged!(999);
+      final current = _track(tester);
+      current.onSettled(-1);
+      current.onSettled(3);
+      current.onSettled(999);
       await tester.pumpAndSettle();
       _expectNoException(tester);
-      expect(current.controller!.page, closeTo(0, .01));
+      expect(current.index, 0);
       _expectDots(tester, 0);
     },
   );
@@ -668,9 +667,8 @@ void main() {
         wrapPull: true,
         onBack: onBack,
       );
-      final pager = _pageView(tester).controller!;
       await _swipe(tester);
-      expect(pager.page, closeTo(1, .01));
+      expect(_track(tester).index, 1);
       expect(returns, 0);
       _expectDots(tester, 1);
       final back = _key('zyra_visible_back_button');
@@ -692,7 +690,7 @@ void main() {
       await tester.pumpAndSettle();
       _expectNoException(tester);
       expect(returns, 0);
-      expect(pager.page, closeTo(1, .01));
+      expect(_track(tester).index, 1);
       expect(reader.position.pixels, lessThan(100));
       final retainedBack = captureZyraAccessibleBack(tester);
       await swipeZyraBack(tester);
@@ -702,7 +700,7 @@ void main() {
       await tester.pumpAndSettle();
       _expectNoException(tester);
       expect(returns, 1);
-      expect(pager.page, closeTo(1, .01));
+      expect(_track(tester).index, 1);
       _expectReadOnly();
     },
   );

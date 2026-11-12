@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../data/zyra_membership_catalog.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
+import '../widgets/zyra_swipe_track.dart';
 import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
 
@@ -132,7 +133,6 @@ class _ZyraDraftCompatibilityStorePresentationState
       );
       return ZyraShadowScrollView(
         key: const ValueKey('draft_compatibility_store_viewport'),
-        physics: const ClampingScrollPhysics(),
         child: SizedBox(
           height: fits ? constraints.maxHeight : null,
           child: Column(
@@ -181,7 +181,6 @@ class _ZyraDraftCompatibilityStorePresentationState
       return ZyraShadowScrollView(
         key: const ValueKey('draft_compatibility_store_packs_rail'),
         scrollDirection: Axis.horizontal,
-        physics: const ClampingScrollPhysics(),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -342,7 +341,7 @@ class _ScorePreviewPager extends StatefulWidget {
 }
 
 class _ScorePreviewPagerState extends State<_ScorePreviewPager> {
-  final _pages = PageController(keepPage: false);
+  final _pages = ZyraSwipeController();
   int _page = 0;
   int _revision = 0;
   static final _pageCount = 1 + _fictionalScores.length;
@@ -353,32 +352,11 @@ class _ScorePreviewPagerState extends State<_ScorePreviewPager> {
     _revision++;
   }
 
-  @override
-  void dispose() {
-    _pages.dispose();
-    super.dispose();
-  }
-
   bool _current(int revision) =>
       mounted &&
       revision == _revision &&
       (ModalRoute.of(context)?.isCurrent ?? false) &&
       (widget.canAct?.call() ?? true);
-
-  void _goTo(int page) {
-    if (!_pages.hasClients || page < 0 || page >= _pageCount) return;
-    _revision++;
-    final media = MediaQuery.of(context);
-    if (media.disableAnimations || media.accessibleNavigation) {
-      _pages.jumpToPage(page);
-    } else {
-      _pages.animateToPage(
-        page,
-        duration: const Duration(milliseconds: 280),
-        curve: Curves.easeOutCubic,
-      );
-    }
-  }
 
   Widget _arrow({required bool previous}) {
     final revision = _revision;
@@ -399,7 +377,9 @@ class _ScorePreviewPagerState extends State<_ScorePreviewPager> {
       disabledColor: ZyraColors.goldText,
       onPressed: ZyraTapFeedback.onTap(
         context,
-        target >= 0 && target < _pageCount ? () => _goTo(target) : null,
+        target >= 0 && target < _pageCount
+            ? () => _pages.animateTo(target)
+            : null,
         canAct: () => _current(revision),
       ),
       icon: Icon(
@@ -435,26 +415,22 @@ class _ScorePreviewPagerState extends State<_ScorePreviewPager> {
         constraints.maxWidth,
         MediaQuery.textScalerOf(context),
       );
-      final pages = PageView.builder(
+      final revision = _revision;
+      final pages = ZyraSwipeTrack(
         key: const ValueKey('draft_compatibility_store_preview_pages'),
         controller: _pages,
-        physics: const ClampingScrollPhysics(),
+        index: _page,
         itemCount: _pageCount,
-        onPageChanged: (page) {
-          if (!mounted ||
-              !(ModalRoute.of(context)?.isCurrent ?? false) ||
-              !(widget.canAct?.call() ?? true)) {
-            return;
-          }
+        canAct: () => _current(revision),
+        onSettled: (page) {
           setState(() {
             _page = page;
             _revision++;
           });
           widget.onPageChanged(page);
         },
-        // PageView also lays out the adjacent example while its viewport still
-        // has the current row's height. Let that offscreen item take its own
-        // reading height; onPageChanged grows the visible card to that height.
+        // An adjacent example may need a taller row. It can take its own
+        // reading height until settlement updates the visible card height.
         itemBuilder: (context, page) => OverflowBox(
           minHeight: 0,
           maxHeight: double.infinity,

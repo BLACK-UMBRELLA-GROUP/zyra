@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zyra/widgets/zyra_swipe_track.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/models/seeker_profile.dart';
 import 'package:zyra/screens/wali/wali_seekers_screen.dart';
@@ -35,7 +36,7 @@ void main() {
       ]),
     );
     await tester.pumpAndSettle();
-    expect(_rosterPager(tester).page, 2);
+    expect(_rosterPage(tester), 2);
     expect(find.text('Zaynab').hitTestable(), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
@@ -52,7 +53,7 @@ void main() {
       _rosterSubject(people, requestedSeekerId: target.id, context: context),
     );
     await tester.pumpAndSettle();
-    expect(_rosterPager(tester).page, 2);
+    expect(_rosterPage(tester), 2);
     expect(_visibleOwner(target.id), findsOneWidget);
     expect(_visibleOwner(duplicate.id), findsNothing);
     expect(_visibleOwner(priority.id), findsNothing);
@@ -78,7 +79,7 @@ void main() {
       _rosterSubject(people, requestedSeekerId: 'c', selectionRequest: 2),
     );
     await tester.pumpAndSettle();
-    expect(_rosterPager(tester).page, 2);
+    expect(_rosterPage(tester), 2);
     expect(_visibleOwner('c'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
@@ -103,7 +104,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(_rosterPager(tester).page, 0);
+    expect(_rosterPage(tester), 0);
     expect(_visibleOwner('a'), findsOneWidget);
     expect(_visibleOwner('b'), findsNothing);
     expect(tester.takeException(), isNull);
@@ -134,7 +135,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(_rosterPager(tester).page, 2);
+    expect(_rosterPage(tester), 2);
     expect(_visibleOwner(target.id), findsOneWidget);
     expect(find.text(_missingSeekerNotice), findsNothing);
     expect(tester.takeException(), isNull);
@@ -187,7 +188,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(_rosterPager(tester).page, 1);
+    expect(_rosterPage(tester), 1);
     expect(_visibleOwner('b'), findsOneWidget);
     expect(_visibleOwner(target.id), findsNothing);
     expect(find.text(_missingSeekerNotice), findsNothing);
@@ -223,7 +224,7 @@ void main() {
         );
         tester.binding.buildOwner!.buildScope(tester.binding.rootElement!);
         await tester.pumpAndSettle();
-        expect(_rosterPager(tester).page, 0);
+        expect(_rosterPage(tester), 0);
         expect(_visibleOwner('a'), findsOneWidget);
         expect(_visibleOwner('b'), findsNothing);
         expect(
@@ -263,7 +264,7 @@ void main() {
     );
     tester.binding.buildOwner!.buildScope(tester.binding.rootElement!);
     await tester.pumpAndSettle();
-    expect(_rosterPager(tester).page, 0);
+    expect(_rosterPage(tester), 0);
     expect(_visibleOwner('a'), findsOneWidget);
     expect(_visibleOwner('b'), findsNothing);
     expect(_visibleOwner('c'), findsNothing);
@@ -285,7 +286,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(_rosterPager(tester).page, 1);
+    expect(_rosterPage(tester), 1);
     await tester.pumpWidget(
       _rosterSubject(
         [last, target, first],
@@ -295,13 +296,13 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(_rosterPager(tester).page, 0);
+    expect(_rosterPage(tester), 0);
     expect(_visibleOwner(target.id), findsOneWidget);
     await tester.pumpWidget(
       _rosterSubject([last], requestedSeekerId: target.id, selectionRequest: 1),
     );
     await tester.pumpAndSettle();
-    expect(_rosterPager(tester).page, 0);
+    expect(_rosterPage(tester), 0);
     expect(_visibleOwner(last.id), findsOneWidget);
     expect(find.text(_missingSeekerNotice), findsOneWidget);
     expect(tester.takeException(), isNull);
@@ -597,8 +598,8 @@ const _missingSeekerNotice =
     'This Seeker is not available in your linked roster.';
 final _rosterPages = find.byKey(const ValueKey('guardian-seeker-page-view'));
 
-PageController _rosterPager(WidgetTester tester) =>
-    tester.widget<PageView>(_rosterPages).controller!;
+int _rosterPage(WidgetTester tester) =>
+    tester.widget<ZyraSwipeTrack>(_rosterPages).index;
 
 Finder _visibleOwner(String id) =>
     find.byKey(ValueKey('requested-owner-$id')).hitTestable();

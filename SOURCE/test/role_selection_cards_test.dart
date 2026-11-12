@@ -381,7 +381,6 @@ void main() {
       final scroll = _roleScrollController(tester);
       final view = tester.widget<SingleChildScrollView>(_roleScrollView);
       expect(view.physics, isA<ClampingScrollPhysics>());
-      expect(view.physics!.parent, isA<AlwaysScrollableScrollPhysics>());
       scroll.jumpTo(scroll.position.maxScrollExtent);
       await tester.pump();
       final edge = scroll.position.maxScrollExtent;

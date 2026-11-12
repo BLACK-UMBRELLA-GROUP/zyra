@@ -23,6 +23,7 @@ import '../../services/zyra_photo_service.dart';
 import '../../services/zyra_profile_photo_processor.dart';
 import '../../services/zyra_profile_video_service.dart';
 import '../../state/app_state.dart';
+import '../../theme/zyra_motion.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_interaction_style.dart';
 import '../../theme/zyra_text.dart';
@@ -475,8 +476,8 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
       if (!_canUse || !_pageController.hasClients) return;
       _pageController.animateToPage(
         target,
-        duration: const Duration(milliseconds: 320),
-        curve: Curves.easeOutCubic,
+        duration: ZyraMotion.duration,
+        curve: ZyraMotion.curve,
       );
     });
   }
@@ -1025,8 +1026,8 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
                       } else {
                         _pageController.animateToPage(
                           i,
-                          duration: const Duration(milliseconds: 180),
-                          curve: Curves.easeOut,
+                          duration: ZyraMotion.duration,
+                          curve: ZyraMotion.curve,
                         );
                       }
                     },
@@ -1369,7 +1370,6 @@ class _PhotoGallery extends StatelessWidget {
         child: PageView.builder(
           key: const ValueKey('photos-page-view'),
           controller: controller,
-          physics: const ClampingScrollPhysics(),
           itemCount: photos.length + (canAdd ? 1 : 0),
           onPageChanged: onChanged,
           itemBuilder: (context, index) => index == photos.length
@@ -1431,7 +1431,6 @@ class _AddPhotoPage extends StatelessWidget {
                 child: LayoutBuilder(
                   builder: (context, constraints) => SingleChildScrollView(
                     primary: false,
-                    physics: const ClampingScrollPhysics(),
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
                         minHeight: constraints.maxHeight,

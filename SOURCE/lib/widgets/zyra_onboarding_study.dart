@@ -338,15 +338,6 @@ class ZyraOnboardingStudy extends StatelessWidget {
       return SingleChildScrollView(
         key: ValueKey('onboarding-study-scroll-${direction.name}-$page'),
         controller: scrollController,
-        physics: swipeNavigation
-            ? alignArtwork && contentPage == 2
-                  ? const ClampingScrollPhysics(
-                      parent: AlwaysScrollableScrollPhysics(),
-                    )
-                  : const BouncingScrollPhysics(
-                      parent: AlwaysScrollableScrollPhysics(),
-                    )
-            : null,
         child: ConstrainedBox(
           constraints: BoxConstraints(minHeight: constraints.maxHeight),
           child: Padding(
@@ -444,9 +435,6 @@ class _QuotePage extends StatelessWidget {
     return SingleChildScrollView(
       key: ValueKey('onboarding-study-scroll-${direction.name}-$page'),
       controller: scrollController,
-      physics: swipeNavigation
-          ? const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics())
-          : null,
       child: ConstrainedBox(
         constraints: BoxConstraints(minHeight: minHeight),
         child: Padding(

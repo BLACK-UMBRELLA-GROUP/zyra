@@ -23,6 +23,7 @@ import '../support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/state/app_state.dart';
+import 'package:zyra/theme/zyra_motion.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
@@ -254,7 +255,8 @@ class BaselineHarness {
 
   Future<void> flush() async {
     await tester.pump();
-    await tester.pump(const Duration(milliseconds: 400));
+    await tester.pump(ZyraMotion.duration + const Duration(milliseconds: 1));
+    await tester.pump();
     final error = tester.takeException();
     expect(error, isNull);
   }

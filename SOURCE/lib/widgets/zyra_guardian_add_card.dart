@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../data/zyra_guardian_capacity.dart';
 import '../data/zyra_seeker_plan_limits.dart';
+import '../theme/zyra_motion.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_floating_surface.dart';
@@ -125,7 +126,7 @@ class ZyraGuardianAddCard extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, box) => SingleChildScrollView(
         primary: false,
-        physics: const ClampingScrollPhysics(),
+        physics: ZyraMotion.fixedCardScrollPhysics,
         child: ConstrainedBox(
           constraints: BoxConstraints(minHeight: box.maxHeight),
           child: content,

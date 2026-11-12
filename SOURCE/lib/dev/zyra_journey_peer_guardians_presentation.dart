@@ -5,6 +5,7 @@ import '../services/zyra_guardian_info_service.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_profiles_components.dart';
+import '../widgets/zyra_swipe_track.dart';
 import 'zyra_one_journey_monogram_presentation.dart';
 
 /// A read-only presentation of the Guardians disclosed for one other Seeker.
@@ -114,15 +115,9 @@ class _PeerGuardianPager extends StatefulWidget {
 }
 
 class _PeerGuardianPagerState extends State<_PeerGuardianPager> {
-  final _controller = PageController(keepPage: false);
+  final _controller = ZyraSwipeController();
   int _page = 0;
   int _render = 0;
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,30 +140,20 @@ class _PeerGuardianPagerState extends State<_PeerGuardianPager> {
                   ValueKey('peer_guardian_dot_${widget.subjectId}_$i'),
               targetKey: (i) => ValueKey('peer_guardian_dot_target_$i'),
               canAct: current,
-              onSelected: (i) {
-                if (!current() || !_controller.hasClients) return;
-                if (MediaQuery.disableAnimationsOf(context)) {
-                  _controller.jumpToPage(i);
-                } else {
-                  _controller.animateToPage(
-                    i,
-                    duration: const Duration(milliseconds: 180),
-                    curve: Curves.easeOut,
-                  );
-                }
-              },
+              onSelected: _controller.animateTo,
             ),
           ),
           const SizedBox(height: 12),
         ],
         Expanded(
-          child: PageView.builder(
+          child: ZyraSwipeTrack(
             key: ValueKey('peer_guardians_pager_${widget.subjectId}'),
             controller: _controller,
-            physics: const BouncingScrollPhysics(),
+            index: _page,
             itemCount: widget.people.length,
-            onPageChanged: (value) {
-              if (mounted && value >= 0 && value < widget.people.length) {
+            canAct: current,
+            onSettled: (value) {
+              if (current() && value >= 0 && value < widget.people.length) {
                 setState(() => _page = value);
               }
             },
@@ -247,7 +232,6 @@ class _PeerGuardianContent extends StatelessWidget {
     return SingleChildScrollView(
       key: ValueKey('peer_guardian_reader_${subjectId}_$index'),
       primary: false,
-      physics: const ClampingScrollPhysics(),
       padding: const EdgeInsets.only(top: 4, bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

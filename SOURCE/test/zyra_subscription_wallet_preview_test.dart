@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zyra/widgets/zyra_swipe_track.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_draft.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_preview.dart';
 import 'package:zyra/theme/zyra_colors.dart';
@@ -865,7 +866,7 @@ void main() {
         expect(_key('wallet_confirm').hitTestable(), findsOneWidget);
         expect(_key('wallet_cancel'), findsOneWidget);
         expect(
-          tester.widget<PageView>(_key('wallet_family_pages')).controller!.page,
+          tester.widget<ZyraSwipeTrack>(_key('wallet_family_pages')).index,
           2,
         );
         expect(_state(tester).changes, 0);
@@ -1228,11 +1229,11 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(_key('wallet_profiles_next'));
       await tester.pump();
-      final controller = tester
-          .widget<PageView>(_key('wallet_profiles_pages'))
-          .controller!;
-      expect(controller.page, 1);
-      expect(controller.position.isScrollingNotifier.value, isFalse);
+      final track = tester.widget<ZyraSwipeTrack>(
+        _key('wallet_profiles_pages'),
+      );
+      expect(track.index, 1);
+      expect(track.controller!.isMoving, isFalse);
       await tester.pumpAndSettle();
       expect(_state(tester).changes, 0);
       expect(
@@ -1257,9 +1258,9 @@ void main() {
             reducedMotion: false,
           ),
         );
-        final controller = tester
-            .widget<PageView>(_key('wallet_profiles_pages'))
-            .controller!;
+        final pager = _key('wallet_profiles_pages');
+        ZyraSwipeTrack track() => tester.widget<ZyraSwipeTrack>(pager);
+        final controller = track().controller!;
         if (drag) {
           final gesture = await tester.startGesture(
             tester.getCenter(_key('wallet_profiles_pages')),
@@ -1268,7 +1269,8 @@ void main() {
           await tester.pump(const Duration(milliseconds: 16));
           allowed = false;
           await gesture.moveBy(const Offset(-500, 0));
-          expect(controller.page, greaterThan(.5));
+          expect(controller.isMoving, isTrue);
+          expect(track().index, 0);
           await gesture.up();
         } else {
           await tester.ensureVisible(_key('wallet_profiles_next'));
@@ -1279,10 +1281,11 @@ void main() {
           await tester.pump(const Duration(milliseconds: 24));
           allowed = false;
           await tester.pump(const Duration(milliseconds: 100));
-          expect(controller.page, greaterThan(.5));
+          expect(controller.isMoving, isTrue);
+          expect(track().index, 0);
         }
         await tester.pumpAndSettle();
-        expect(controller.page, 0);
+        expect(track().index, 0);
         expect(find.text('1 of 2 profiles'), findsOneWidget);
         expect(_state(tester).changes, 0);
         expect(_state(tester).switches, isEmpty);
@@ -1290,9 +1293,9 @@ void main() {
         expect(_state(tester).memberships, isEmpty);
         allowed = true;
         // Deliberately no rebuild on permission restoration.
-        expect(controller.page, 0);
+        expect(track().index, 0);
         await _tap(tester, 'wallet_profiles_next');
-        expect(controller.page, 1);
+        expect(track().index, 1);
         expect(find.text('2 of 2 profiles'), findsOneWidget);
         expect(
           tester

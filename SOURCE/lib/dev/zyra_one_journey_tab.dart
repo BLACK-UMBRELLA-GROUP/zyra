@@ -5,6 +5,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../theme/zyra_motion.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_interaction_style.dart';
 import '../theme/zyra_preview_spacing.dart';
@@ -17,7 +18,7 @@ import '../widgets/zyra_swipe_track.dart';
 
 ScrollPhysics _fixedCardPhysics(BuildContext context) =>
     MediaQuery.textScalerOf(context).scale(14) > 14
-    ? const ClampingScrollPhysics()
+    ? ZyraMotion.fixedCardScrollPhysics
     : const NeverScrollableScrollPhysics();
 
 /// LOCK 13 V2 display facts. Ordering, stage and timer authority stay with the

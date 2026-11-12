@@ -334,8 +334,8 @@ void main() {
         expect(remove.bottom, lessThanOrEqualTo(page.bottom + .01));
         final nav = _key('floating-nav-quiet-true');
         final navTop = tester.getRect(nav).top;
-        final dots = tester.getRect(_key('guardian-page-dot-0'));
-        expect(page.top - dots.bottom, closeTo(12, .01));
+        final dotPaint = tester.getRect(_key('guardian-page-dot-paint-0'));
+        expect(page.top - dotPaint.bottom, closeTo(12, .01));
         expect(navTop - page.bottom, closeTo(16, .01));
         for (var index = 0; index < count; index++) {
           expect(_key('guardian-page-dot-$index'), findsOneWidget);

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../models/seeker_profile.dart';
 import '../screens/connections/connections_section_controller.dart';
+import '../theme/zyra_motion.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
@@ -147,7 +148,7 @@ class _ZyraRequestActivityPresentationState
     if (_quietMotion(context)) {
       _pager.jumpToPage(index);
     } else {
-      unawaited(ZyraSegmentedMotion.animateToPage(_pager, index));
+      unawaited(ZyraSegmentedMotion.animateToPage(context, _pager, index));
     }
   }
 
@@ -468,8 +469,8 @@ class ZyraRequestActivityCard extends StatelessWidget {
                       alignment: 0,
                       duration: _quietMotion(context)
                           ? Duration.zero
-                          : const Duration(milliseconds: 240),
-                      curve: Curves.easeOutCubic,
+                          : ZyraMotion.duration,
+                      curve: ZyraMotion.curve,
                     ),
                   );
                 });
@@ -830,8 +831,8 @@ class ZyraPastRequestActivityCard extends StatelessWidget {
                             alignment: 0,
                             duration: _quietMotion(context)
                                 ? Duration.zero
-                                : const Duration(milliseconds: 240),
-                            curve: Curves.easeOutCubic,
+                                : ZyraMotion.duration,
+                            curve: ZyraMotion.curve,
                           ),
                         );
                       });

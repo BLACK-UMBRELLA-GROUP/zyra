@@ -6,6 +6,7 @@
 // in the active Journey. Main-only attention and decision states stay out of
 // the neutral Additional section.
 
+import '../../widgets/zyra_swipe_track.dart';
 import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart';
@@ -457,7 +458,6 @@ class _SeekerPager extends StatefulWidget {
 }
 
 class _SeekerPagerState extends State<_SeekerPager> {
-  late final PageController _controller;
   int _page = 0;
   late String _currentSeekerId;
   String? _pendingSeekerId;
@@ -472,7 +472,6 @@ class _SeekerPagerState extends State<_SeekerPager> {
       _page = requested;
       _pendingSeekerId = null;
     }
-    _controller = PageController(initialPage: _page);
     _currentSeekerId = widget.entries[_page].person.id;
   }
 
@@ -493,8 +492,6 @@ class _SeekerPagerState extends State<_SeekerPager> {
     }
     if (widget.selectionRequest != oldWidget.selectionRequest ||
         widget.requestedSeekerId != oldWidget.requestedSeekerId) {
-      // Invalidate queued jumps before any early return, including cancel or
-      // an unavailable replacement target. Keep actual selection until commit.
       _jumpRevision++;
       _pendingSeekerId = widget.requestedSeekerId;
     }
@@ -511,28 +508,24 @@ class _SeekerPagerState extends State<_SeekerPager> {
       _currentSeekerId = widget.entries[next].person.id;
       return;
     }
+    // Request changes can be replaced again before the frame is committed.
     final revision = ++_jumpRevision;
     final targetId = widget.entries[next].person.id;
+    // Keep the outgoing index valid for this layout if the roster shrank.
+    _page = _page.clamp(0, widget.entries.length - 1);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted &&
-          revision == _jumpRevision &&
-          _controller.hasClients &&
-          next < widget.entries.length &&
-          widget.entries[next].person.id == targetId) {
-        setState(() {
-          _page = next;
-          _currentSeekerId = targetId;
-          if (_pendingSeekerId == targetId) _pendingSeekerId = null;
-        });
-        _controller.jumpToPage(next);
+      if (!mounted ||
+          revision != _jumpRevision ||
+          next >= widget.entries.length ||
+          widget.entries[next].person.id != targetId) {
+        return;
       }
+      setState(() {
+        _page = next;
+        _currentSeekerId = targetId;
+        if (_pendingSeekerId == targetId) _pendingSeekerId = null;
+      });
     });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -554,32 +547,37 @@ class _SeekerPagerState extends State<_SeekerPager> {
               stops: [0, fadeStart, 1],
             ).createShader(bounds);
           },
-          child: PageView.builder(
-            key: const ValueKey('guardian-seeker-page-view'),
-            controller: _controller,
-            physics: const BouncingScrollPhysics(),
-            itemCount: widget.entries.length,
-            onPageChanged: (value) => setState(() {
-              _page = value;
-              _currentSeekerId = widget.entries[value].person.id;
-            }),
-            itemBuilder: (context, index) {
-              final entry = widget.entries[index];
-              return Semantics(
-                label:
-                    'Seeker ${index + 1} of ${widget.entries.length}: '
-                    '${entry.person.firstName}',
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: ZyraSwipeTrack(
+              key: const ValueKey('guardian-seeker-page-view'),
+              index: _page,
+              itemCount: widget.entries.length,
+              motionIdentity: (
+                widget.selectionRequest,
+                widget.entries.map((entry) => entry.person.id).join(','),
+              ),
+              canAct: () =>
+                  mounted && (ModalRoute.of(context)?.isCurrent ?? true),
+              onSettled: (value) => setState(() {
+                _page = value;
+                _currentSeekerId = widget.entries[value].person.id;
+              }),
+              itemBuilder: (context, index) {
+                final entry = widget.entries[index];
+                return Semantics(
+                  label:
+                      'Seeker ${index + 1} of ${widget.entries.length}: '
+                      '${entry.person.firstName}',
                   child:
                       widget.pageBuilder?.call(entry) ??
                       _SeekerQuietSummary(
                         entry: entry,
                         photoUrl: widget.photos[entry.person.id] ?? '',
                       ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -602,7 +600,6 @@ class _SeekerQuietSummary extends StatelessWidget {
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, constraints) => SingleChildScrollView(
       key: ValueKey('guardian-seeker-page-scroll-${entry.person.id}'),
-      physics: const BouncingScrollPhysics(),
       child: ConstrainedBox(
         constraints: BoxConstraints(minHeight: constraints.maxHeight),
         child: Padding(

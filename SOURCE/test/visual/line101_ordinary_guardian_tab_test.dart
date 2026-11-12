@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:zyra/widgets/zyra_swipe_track.dart';
 import 'package:zyra/main.dart';
 import 'package:zyra/models/journey_match.dart';
 import 'package:zyra/models/seeker_profile.dart';
@@ -75,6 +76,15 @@ void main() {
   final linkReads = <http.Request>[];
 
   setUpAll(() async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+      ..setMockMethodCallHandler(
+        const MethodChannel('com.llfbandit.app_links/messages'),
+        (_) async => null,
+      )
+      ..setMockMethodCallHandler(
+        const MethodChannel('com.llfbandit.app_links/events'),
+        (_) async => null,
+      );
     final reading = FontLoader(_font);
     for (final weight in ['ExtraLight', 'Light', 'Regular']) {
       reading.addFont(rootBundle.load('assets/fonts/Poppins-$weight.ttf'));
@@ -377,8 +387,8 @@ void main() {
       plan: ZyraPlan.basic,
       links: 10,
     );
-    final pager = tester.widget<PageView>(_key('guardian-page-view'));
-    expect(pager.childrenDelegate.estimatedChildCount, 10);
+    final pager = tester.widget<ZyraSwipeTrack>(_key('guardian-page-view'));
+    expect(pager.itemCount, 10);
     expect(_key('guardian-page-dot-9'), findsOneWidget);
     expect(_key('guardian-page-dot-10'), findsNothing);
     expect(_key('guardian-add-top'), findsOneWidget);

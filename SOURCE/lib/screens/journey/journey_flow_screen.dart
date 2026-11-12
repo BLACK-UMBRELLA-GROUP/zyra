@@ -46,6 +46,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show PostgrestException;
+import '../../theme/zyra_motion.dart';
 import '../../theme/zyra_interaction_style.dart';
 import '../../dev/zyra_app_gold_preview.dart';
 import '../../dev/zyra_draft_compatibility_presentation.dart';
@@ -3417,8 +3418,8 @@ class _JourneyStageScrollShellState extends State<_JourneyStageScrollShell> {
         } else {
           _pageController.animateToPage(
             page,
-            duration: const Duration(milliseconds: 480),
-            curve: Curves.easeOutCubic,
+            duration: ZyraMotion.duration,
+            curve: ZyraMotion.curve,
           );
         }
       });
@@ -3439,8 +3440,8 @@ class _JourneyStageScrollShellState extends State<_JourneyStageScrollShell> {
     }
     _pageController.animateToPage(
       order - 1,
-      duration: const Duration(milliseconds: 520),
-      curve: Curves.easeOutCubic,
+      duration: ZyraMotion.duration,
+      curve: ZyraMotion.curve,
     );
   }
 
@@ -3455,8 +3456,8 @@ class _JourneyStageScrollShellState extends State<_JourneyStageScrollShell> {
     }
     _pageController.animateToPage(
       page,
-      duration: const Duration(milliseconds: 480),
-      curve: Curves.easeOutCubic,
+      duration: ZyraMotion.duration,
+      curve: ZyraMotion.curve,
     );
   }
 
@@ -3470,8 +3471,8 @@ class _JourneyStageScrollShellState extends State<_JourneyStageScrollShell> {
     }
     _pageController.animateToPage(
       page,
-      duration: const Duration(milliseconds: 480),
-      curve: Curves.easeOutCubic,
+      duration: ZyraMotion.duration,
+      curve: ZyraMotion.curve,
     );
   }
 
@@ -3486,8 +3487,8 @@ class _JourneyStageScrollShellState extends State<_JourneyStageScrollShell> {
       } else {
         await _pageController.animateToPage(
           targetPage,
-          duration: const Duration(milliseconds: 480),
-          curve: Curves.easeOutCubic,
+          duration: ZyraMotion.duration,
+          curve: ZyraMotion.curve,
         );
       }
     } finally {
@@ -3590,8 +3591,8 @@ class _JourneyStageScrollShellState extends State<_JourneyStageScrollShell> {
       } else {
         _pageController.animateToPage(
           target,
-          duration: const Duration(milliseconds: 420),
-          curve: Curves.easeOutCubic,
+          duration: ZyraMotion.duration,
+          curve: ZyraMotion.curve,
         );
       }
     });
@@ -3642,10 +3643,13 @@ class _JourneyStageScrollShellState extends State<_JourneyStageScrollShell> {
   }
 
   double? _pullPastStart(ScrollNotification notification) {
-    if (notification is OverscrollNotification && notification.overscroll < 0) {
+    if (notification is OverscrollNotification &&
+        notification.dragDetails != null &&
+        notification.overscroll < 0) {
       return -notification.overscroll;
     }
     if (notification is ScrollUpdateNotification &&
+        notification.dragDetails != null &&
         notification.metrics.pixels <= notification.metrics.minScrollExtent &&
         (notification.scrollDelta ?? 0) < 0) {
       return -(notification.scrollDelta ?? 0);
@@ -3654,10 +3658,13 @@ class _JourneyStageScrollShellState extends State<_JourneyStageScrollShell> {
   }
 
   double? _pullPastEnd(ScrollNotification notification) {
-    if (notification is OverscrollNotification && notification.overscroll > 0) {
+    if (notification is OverscrollNotification &&
+        notification.dragDetails != null &&
+        notification.overscroll > 0) {
       return notification.overscroll;
     }
     if (notification is ScrollUpdateNotification &&
+        notification.dragDetails != null &&
         notification.metrics.pixels >= notification.metrics.maxScrollExtent &&
         (notification.scrollDelta ?? 0) > 0) {
       return notification.scrollDelta;
@@ -3698,7 +3705,6 @@ class _JourneyStageScrollShellState extends State<_JourneyStageScrollShell> {
             // start that read while the arrival is being read, without mounting
             // future stages or changing the page-by-page gesture.
             allowImplicitScrolling: true,
-            physics: const PageScrollPhysics(parent: BouncingScrollPhysics()),
             itemCount:
                 history.length + 2 + (widget.decisionChild == null ? 0 : 1),
             itemBuilder: (context, index) {
@@ -6505,7 +6511,6 @@ class _LifeSnapshotView extends StatelessWidget {
     final hasAnything = showBio || visibleFields.isNotEmpty;
 
     return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(28, 28, 28, 38),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -6876,8 +6881,8 @@ class _WaliGateViewState extends State<_WaliGateView> {
       } else {
         await _guardianPager.animateToPage(
           next,
-          duration: const Duration(milliseconds: 420),
-          curve: Curves.easeOutCubic,
+          duration: ZyraMotion.duration,
+          curve: ZyraMotion.curve,
         );
       }
     }
@@ -6981,7 +6986,7 @@ class _WaliGateViewState extends State<_WaliGateView> {
             child: PageView.builder(
               controller: _guardianPager,
               physics: guardians.length > 1
-                  ? const BouncingScrollPhysics()
+                  ? null
                   : const NeverScrollableScrollPhysics(),
               itemCount: guardians.length,
               onPageChanged: (page) {
@@ -7635,7 +7640,7 @@ class _JourneyGuardianHistoryViewState
               child: PageView.builder(
                 controller: _pager,
                 physics: guardians.length > 1
-                    ? const BouncingScrollPhysics()
+                    ? null
                     : const NeverScrollableScrollPhysics(),
                 itemCount: guardians.length,
                 onPageChanged: (page) => setState(() => _page = page),

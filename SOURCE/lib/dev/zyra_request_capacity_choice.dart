@@ -56,7 +56,6 @@ class ZyraRequestCapacityChoice extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) => SingleChildScrollView(
         key: const ValueKey('request_capacity_choice'),
-        physics: const ClampingScrollPhysics(),
         child: ConstrainedBox(
           constraints: BoxConstraints(
             minHeight: constraints.maxHeight.isFinite

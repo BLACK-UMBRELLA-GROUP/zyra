@@ -5,9 +5,9 @@ import 'dart:ui' show ImageFilter;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../theme/zyra_motion.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
-import 'zyra_segmented_toggle.dart';
 
 /// A continuous name strip within the app's fixed segmented capsule.
 ///
@@ -108,8 +108,8 @@ class _ZyraScrollableSeekerSelectorState
         await _motion
             .animateTo(
               target.toDouble(),
-              duration: ZyraSegmentedMotion.selectionDuration,
-              curve: ZyraSegmentedMotion.selectionCurve,
+              duration: ZyraMotion.duration,
+              curve: ZyraMotion.curve,
             )
             .orCancel;
       }

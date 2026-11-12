@@ -367,8 +367,7 @@ void main() {
         );
         expect(h.latest.pages, isEmpty);
         await pointer.up();
-        await h.flush();
-        await tester.pump();
+        await tester.pumpAndSettle();
         expect(h.latest.pages, isEmpty);
         expect(
           guardian

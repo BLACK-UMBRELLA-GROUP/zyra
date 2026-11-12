@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../models/zyra_compatibility_area.dart';
+import '../theme/zyra_motion.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_compatibility_area_row.dart';
@@ -110,8 +111,8 @@ class _ZyraCompatibilityScoreReaderState
     } else {
       _pages.animateToPage(
         target,
-        duration: const Duration(milliseconds: 280),
-        curve: Curves.easeOutCubic,
+        duration: ZyraMotion.duration,
+        curve: ZyraMotion.curve,
       );
     }
   }
@@ -169,7 +170,6 @@ class _ZyraCompatibilityScoreReaderState
                       key: const ValueKey('draft_compatibility_score_pages'),
                       controller: _pages,
                       itemCount: _pageCount + 2,
-                      physics: const ClampingScrollPhysics(),
                       onPageChanged: (index) =>
                           setState(() => _page = (index - 1) % _pageCount),
                       itemBuilder: (context, index) =>

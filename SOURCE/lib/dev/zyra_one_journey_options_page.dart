@@ -149,7 +149,6 @@ class ZyraOneJourneyOptionsPage extends StatelessWidget {
                   return reading
                       ? ZyraShadowScrollView(
                           key: ValueKey('journey_options_scroll_$id'),
-                          physics: const ClampingScrollPhysics(),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [...header, options],

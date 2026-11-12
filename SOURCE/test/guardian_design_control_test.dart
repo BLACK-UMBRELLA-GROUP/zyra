@@ -96,7 +96,7 @@ void main() {
     expect(manager, isNot(contains('class _SnapshotFirst')));
     expect(manager, isNot(contains('class _SwipeStack')));
     expect(manager, isNot(contains('class _JourneyFocus')));
-    expect(manager, contains('PageView.builder'));
+    expect(manager, contains('ZyraSwipeTrack('));
     expect(manager, contains("'Share past Journey summaries'"));
     expect(manager, isNot(contains('Swipe to view')));
     expect(manager, isNot(contains('RELATIONSHIP HISTORY')));

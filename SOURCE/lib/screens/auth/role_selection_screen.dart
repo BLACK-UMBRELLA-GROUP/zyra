@@ -13,6 +13,7 @@ import '../../services/zyra_auth.dart';
 import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_initial_signup_draft_service.dart';
 import '../../models/zyra_initial_signup_draft.dart';
+import '../../theme/zyra_motion.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_onboarding_direction_style.dart';
@@ -244,9 +245,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen>
               builder: (context, viewport) {
                 final content = SingleChildScrollView(
                   controller: _scrollController,
-                  physics: const ClampingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics(),
-                  ),
+                  physics: ZyraMotion.fixedCardScrollPhysics,
                   padding: const EdgeInsets.fromLTRB(26, 28, 26, 18),
                   child: ConstrainedBox(
                     constraints: BoxConstraints(

@@ -20,6 +20,7 @@ import '../../services/zyra_family_messaging_service.dart';
 import '../../services/zyra_journey_service.dart';
 import '../../services/zyra_wali_journey_service.dart';
 import '../../state/app_state.dart';
+import '../../theme/zyra_motion.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_loading.dart';
@@ -580,8 +581,8 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
           _topicMessageScroll
               .animateTo(
                 position.maxScrollExtent,
-                duration: const Duration(milliseconds: 180),
-                curve: Curves.easeOutCubic,
+                duration: ZyraMotion.duration,
+                curve: ZyraMotion.curve,
               )
               .then((_) => afterScroll());
         }
