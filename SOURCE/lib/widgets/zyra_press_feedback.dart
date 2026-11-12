@@ -8,10 +8,12 @@ class ZyraPressFeedback extends StatefulWidget {
     super.key,
     required this.child,
     this.enabled = true,
+    this.pressedScale = .985,
   });
 
   final Widget child;
   final bool enabled;
+  final double pressedScale;
 
   @override
   State<ZyraPressFeedback> createState() => _ZyraPressFeedbackState();
@@ -68,7 +70,7 @@ class _ZyraPressFeedbackState extends State<ZyraPressFeedback> {
       // only the visual controller when quiet mode changes; the keyed child
       // retains its own gesture/state/semantics through that replacement.
       key: ValueKey(_canAnimate),
-      scale: _pressed ? .985 : 1,
+      scale: _pressed ? widget.pressedScale : 1,
       duration: !_canAnimate
           ? Duration.zero
           : _pressed

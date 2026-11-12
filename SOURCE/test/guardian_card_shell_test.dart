@@ -129,7 +129,7 @@ void main() {
     expect(find.text('The invitation has expired'), findsOneWidget);
     expect(find.text('Send again'), findsNothing);
     expect(find.text('Cancel invitation'), findsNothing);
-    expect(find.byKey(const ValueKey('guardian-card-center')), findsNothing);
+    expect(h.key('guardian-card-add-button').hitTestable(), findsNothing);
     expect(h.latest.pages, isEmpty);
   });
   testWidgets(
@@ -410,7 +410,7 @@ void main() {
       );
       await swipeGuardianCard(t);
       await h.flush();
-      expect(find.text('Add a Guardian'), findsNWidgets(2));
+      expect(find.text('Add a Guardian'), findsOneWidget);
       expect(find.text('Free'), findsOneWidget);
       expect(find.text('Omar'), findsNothing);
       await h.tapText('Seeker One: any 10 Guardians ›');
@@ -419,7 +419,7 @@ void main() {
       expect(find.text('Not now'), findsOneWidget);
       await t.binding.handlePopRoute();
       await h.flush();
-      await h.tap('guardian-card-center');
+      await h.tap('guardian-card-add-button');
       h.assertPage('guardian_invite');
     },
   );

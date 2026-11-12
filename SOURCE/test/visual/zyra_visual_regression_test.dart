@@ -524,8 +524,8 @@ const _lockedMasterReplacements = <String, _LockedMasterReplacement>{
   ),
   'k08_card__add_a_guardian': (
     tab: 3,
-    bottom: 'guardian-card-center',
-    lock: 'LOCK 19 V5',
+    bottom: 'guardian-card-add',
+    lock: 'LOCK 19 V13',
     guardian: false,
     guardianDots: 0,
     selectedDot: null,
@@ -618,13 +618,14 @@ Future<void> _assertLockedMasterReplacement(
     expect(_key('guardian-card-access'), findsNothing);
     expect(tester.getSize(item).width, 390);
     switch (replacement.bottom) {
-      case 'guardian-card-center':
-        expect(tester.getSize(item).height, 52);
-        final add = tester.getRect(_key('guardian-card-add'));
-        expect(tester.getRect(item).top - add.bottom, closeTo(12, 0.1));
+      case 'guardian-card-add':
+        final button = _key('guardian-card-add-button');
+        expect(_key('guardian-card-center'), findsNothing);
+        expect(tester.getSize(button), const Size.square(104));
+        expect(tester.getRect(item).contains(tester.getCenter(button)), isTrue);
       case 'guardian-card-draft-guardian-hassan':
         expect(h.latest.seekerMembership, 'Seeker Basic');
-        expect(_key('guardian-card-center'), findsNothing);
+        expect(_key('guardian-card-add-button').hitTestable(), findsNothing);
         expect(_key('guardian-card-menu').hitTestable(), findsOneWidget);
         expect(find.text('JOURNEY ACCESS'), findsOneWidget);
         expect(

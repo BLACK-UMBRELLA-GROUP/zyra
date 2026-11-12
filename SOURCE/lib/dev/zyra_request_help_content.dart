@@ -58,5 +58,6 @@ const _retainedQuestions = {
   'Can I change my date of birth?',
   'Who can see my photos?',
   'What is Compatibility Unlock?',
+  zyraPastJourneySummariesQuestion,
   'Can someone find out I blocked them?',
 };

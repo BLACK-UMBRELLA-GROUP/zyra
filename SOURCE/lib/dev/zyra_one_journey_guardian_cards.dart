@@ -624,7 +624,6 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
 
   @override
   Widget build(BuildContext context) {
-    final add = _index == _length - 1;
     final textScaler = MediaQuery.textScalerOf(context);
     final scale = textScaler.scale(1);
     final largerText = textScaler.scale(14) > 14;
@@ -738,6 +737,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
                       if (isAdd)
                         ZyraGuardianAddCard(
                           basicCapacity: basicCapacity,
+                          onAdd: _action(widget.onAdd, expectedTarget: target),
                           onUpgrade: widget.basic && upgrade != null
                               ? _action(upgrade, expectedTarget: target)
                               : null,
@@ -766,10 +766,6 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
                 },
               ),
             ),
-            if (add) ...[
-              const SizedBox(height: ZyraPreviewSpacing.cardToPill),
-              _pill('Add a Guardian', 'guardian-card-center', widget.onAdd),
-            ],
           ],
         ),
       ),
@@ -810,11 +806,22 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
               final useNaturalHeight =
                   person == null &&
                   MediaQuery.textScalerOf(context).scale(1) > 1.3;
+              // At compact widths the wider photo gap still leaves enough
+              // room for the full stage labels without scrolling the card.
+              final compact = box.maxWidth < 360;
+              final horizontalInset = person != null && compact ? 25.0 : 29.0;
               final content = Padding(
-                padding: const EdgeInsets.fromLTRB(29, 12, 29, 12),
+                padding: EdgeInsets.symmetric(
+                  horizontal: horizontalInset,
+                  vertical: 12,
+                ),
                 child: person == null
                     ? _invited(expandDetails: !useNaturalHeight)
-                    : _linked(person, box.maxWidth - 58),
+                    : _linked(
+                        person,
+                        box.maxWidth - 2 * horizontalInset,
+                        compact: compact,
+                      ),
               );
               return SingleChildScrollView(
                 key: ValueKey('guardian-card-content-$target'),
@@ -966,7 +973,11 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     return short ? '$day $month' : '${day.padLeft(2, '0')} $month ${date.year}';
   }
 
-  Widget _linked(ZyraGuardianCardPerson person, double width) {
+  Widget _linked(
+    ZyraGuardianCardPerson person,
+    double width, {
+    required bool compact,
+  }) {
     final guardian = person.person;
     final rows = widget.journeysFor(guardian.id).take(widget.capacity).toList();
     final textScaler = MediaQuery.textScalerOf(context);
@@ -1004,7 +1015,12 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
         for (var i = 0; i < widget.capacity; i++)
           Expanded(
             child: i < rows.length
-                ? _journey(person, rows[i], stackChips: stackChips)
+                ? _journey(
+                    person,
+                    rows[i],
+                    stackChips: stackChips,
+                    compact: compact,
+                  )
                 : _freePlace(guardian.firstName, i),
           ),
         _history(person),
@@ -1080,6 +1096,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     ZyraGuardianCardPerson person,
     ZyraGuardianCardJourney journey, {
     required bool stackChips,
+    required bool compact,
   }) {
     final firstName = journey.name;
     final identity = Row(
@@ -1098,7 +1115,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
             fontSize: 16,
             textScaler: TextScaler.noScaling,
           ),
-        const SizedBox(width: 4),
+        const SizedBox(width: 14),
         Expanded(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -1145,7 +1162,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
           : Row(
               children: [
                 Expanded(child: identity),
-                const SizedBox(width: 4),
+                SizedBox(width: compact ? 2 : 4),
                 chips,
               ],
             ),
@@ -1158,15 +1175,15 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
       children: [
         CustomPaint(
           foregroundPainter: ZyraGuardianDashedBorder(
-            21,
+            20,
             ZyraColors.journeyGold,
           ),
           child: SizedBox.square(
-            dimension: 42,
+            dimension: 40,
             child: Icon(Icons.add, size: 18, color: ZyraColors.journeyGold),
           ),
         ),
-        const SizedBox(width: 4),
+        const SizedBox(width: 14),
         Expanded(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -1394,40 +1411,5 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
         if (expandDetails) Expanded(child: details) else details,
       ],
     );
-  }
-
-  Widget _pill(String label, String key, VoidCallback onTap) {
-    final action = _action(onTap);
-    const radius = BorderRadius.all(Radius.circular(26));
-    final pill = Semantics(
-      key: ValueKey(key),
-      button: true,
-      label: label,
-      onTap: action,
-      excludeSemantics: true,
-      child: Material(
-        color: const Color(0xFFFBF7F0),
-        shape: RoundedRectangleBorder(
-          borderRadius: radius,
-          side: BorderSide(color: ZyraColors.surfaceBorder),
-        ),
-        child: InkWell(
-          onTap: action,
-          excludeFromSemantics: true,
-          borderRadius: radius,
-          child: Container(
-            constraints: const BoxConstraints(minHeight: 52),
-            alignment: Alignment.center,
-            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-            child: Text(
-              label,
-              textAlign: TextAlign.center,
-              style: ZyraText.body(size: 14, color: ZyraColors.espresso),
-            ),
-          ),
-        ),
-      ),
-    );
-    return ZyraFloatingSurface(radius: 26, child: pill);
   }
 }

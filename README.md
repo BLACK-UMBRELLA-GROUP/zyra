@@ -26,9 +26,11 @@ selection updates when the cards settle. Each Guardian card shows details and
 Journey access together. The three-dot menu opens Main Guardian and removal
 actions. Guardian Circle opens on Main and keeps past Journey topics open
 for members who can write.
-The Seeker Basic Add card counts active Guardian links, shows the Basic place
-and remaining Guardian One places, and opens Add a Guardian and the Seeker One
-comparison separately. The client checks a maximum of 10 active links including Main.
+The Guardian tab’s full-height Add card opens Add a Guardian from its round
+plus button. The Seeker Basic card also counts active links, shows the Basic
+place and remaining Guardian One places, and links to the Seeker One comparison.
+Help & Support lists Past Journey summaries in the Guardians FAQ.
+The client checks a maximum of 10 active links including Main.
 For a Seeker Basic roster, at most one Guardian can be on Guardian Basic.
 Live link responses need verified Guardian plans before the client can admit
 a second link for Seeker Basic. Profile details show the gold ring and announce

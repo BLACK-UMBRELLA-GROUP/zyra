@@ -323,8 +323,8 @@ Finder? _lastSurface(String screen, bool basic) => switch (screen) {
         : _key('guardian_notifications'),
   'Guardian' ||
   'Guardian — populated' ||
-  'Guardian — invited' => _fixedCard(screen),
-  'Guardian — Add card' => _key('guardian-card-center'),
+  'Guardian — invited' ||
+  'Guardian — Add card' => _fixedCard(screen),
   'Network' => _key('guardian_connect_confirm'),
   'Journeys' || 'Journeys — empty' => _key('guardian_ended'),
   'Profile' =>
@@ -596,7 +596,7 @@ Map<String, double> _verifySpacing(
         card: card,
       );
       if (screen == 'Guardian — Add card') {
-        gap('card to pill', card, _key('guardian-card-center'), 12);
+        expect(_key('guardian-card-center'), findsNothing);
       } else if (screen == 'Guardian' || screen == 'Guardian — populated') {
         gap(
           'Journey access label to row',

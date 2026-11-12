@@ -46,6 +46,8 @@ class ZyraHelpCategory {
   const ZyraHelpCategory(this.title, this.entries);
 }
 
+const zyraPastJourneySummariesQuestion = 'What are Past Journey summaries?';
+
 const List<ZyraHelpCategory> zyraHelpCategories = [
   // LEADS THE FILE, 2026-08-01. Fable's single best finding: for an
   // audience the product docs describe as "cautious about marriage apps
@@ -299,6 +301,16 @@ const List<ZyraHelpCategory> zyraHelpCategories = [
           'widening it usually helps. More filters are on the way.\n\n'
           'ZYRA also only ever shows you people whose profile is live, who you '
           'have not already decided on, and who you have not blocked.',
+    ),
+  ]),
+  ZyraHelpCategory('Guardians', [
+    ZyraHelpEntry(
+      zyraPastJourneySummariesQuestion,
+      "When you switch this on for a Guardian, they can see your Journeys "
+      "that have ended — the other person's first name and the dates, nothing else. "
+      "It is off for every Guardian until you turn it on, and you choose for "
+      "each Guardian separately. Turn it on or off any time on that Guardian's "
+      "card in the Guardian tab.",
     ),
   ]),
   ZyraHelpCategory('Safety and reporting', [

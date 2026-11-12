@@ -33,7 +33,7 @@ Finder _free(int index) => _key('guardian-card-free-place-$index');
 Finder _tile(String id) => _key('guardian-card-tile-$id');
 Finder _dotTarget(int index) => _key('guardian-card-dot-target-$index');
 Finder get _dots => find.byType(ZyraProfilesDots);
-Finder get _center => _key('guardian-card-center');
+Finder get _addButton => _key('guardian-card-add-button');
 Finder _history(String id) => _key('guardian-card-history-$id');
 Finder _view(String id) => _key('guardian-card-view-$id-$_journeyId');
 Finder _chat(String id) => _key('guardian-card-chat-$id-$_journeyId');
@@ -482,7 +482,7 @@ void main() {
     expect(find.text('Send invitation again'), findsNothing);
     await next(tester);
     expect(_card('add'), findsOneWidget);
-    expect(find.text('Add a Guardian'), findsNWidgets(2));
+    expect(find.text('Add a Guardian'), findsOneWidget);
     expect(state().pages, [1, 2, 3, 4]);
   });
 
@@ -767,7 +767,7 @@ void main() {
         await tester.pump();
         expect(haptics() - semanticHaptics, 1);
         expect(_card('preview-invited-omar'), findsOneWidget);
-        expect(_center, findsNothing);
+        expect(_addButton.hitTestable(), findsNothing);
         expect(state().adds, 0);
       }
       await next(tester);
@@ -788,10 +788,28 @@ void main() {
     expect(_card('add'), findsOneWidget);
     expect(find.text('View Seeker One'), findsNothing);
     final before = haptics();
-    await tester.tap(_center);
+    await tester.tap(_addButton);
     await tester.pump();
     expect(state().adds, 1);
     expect(haptics() - before, 1);
+  });
+
+  testWidgets('Add presses to 96 percent and cancels without opening', (
+    tester,
+  ) async {
+    await mount(tester, people: [], disableAnimations: false);
+    final feedback = find.ancestor(
+      of: _addButton,
+      matching: find.byType(AnimatedScale),
+    );
+    expect(tester.widget<AnimatedScale>(feedback).scale, 1);
+    final gesture = await tester.startGesture(tester.getCenter(_addButton));
+    await tester.pump();
+    expect(tester.widget<AnimatedScale>(feedback).scale, .96);
+    await gesture.cancel();
+    await tester.pumpAndSettle();
+    expect(tester.widget<AnimatedScale>(feedback).scale, 1);
+    expect(state().adds, 0);
   });
 
   testWidgets('Guardian card follows the selected roster entry after removal', (
@@ -1224,7 +1242,7 @@ void main() {
       await next(tester);
       expect(find.text('Ibrahim'), findsOneWidget);
       await next(tester);
-      expect(find.text('Add a Guardian'), findsNWidgets(2));
+      expect(find.text('Add a Guardian'), findsOneWidget);
       expect(find.text('Used'), findsOneWidget);
       expect(find.text('Guardian Basic place'), findsOneWidget);
       expect(find.text('Guardian One places'), findsOneWidget);
@@ -1242,7 +1260,7 @@ void main() {
       expect(find.text('Omar'), findsNothing);
       expect(find.text('Ibrahim'), findsNothing);
       expect(_key('guardian-card-next'), findsNothing);
-      await tester.tap(_center);
+      await tester.tap(_addButton);
       await tester.pump();
       expect(state().adds, 1);
       expect(state().permissions, isEmpty);
@@ -1603,7 +1621,7 @@ void main() {
       );
       final invited = _card('preview-invited-omar');
       expect(_menu, findsNothing);
-      expect(find.descendant(of: invited, matching: _center), findsNothing);
+      expect(find.descendant(of: invited, matching: _addButton), findsNothing);
       expect(find.text('Waiting for Omar to accept'), findsOneWidget);
       expect(
         find.textContaining('Access starts once they accept.'),
