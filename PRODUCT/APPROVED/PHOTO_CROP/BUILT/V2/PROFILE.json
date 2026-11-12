@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "queueLine": 87,
+  "sourceCommit": "5dccfedd1e9af143b7de6826a203eb7380224702",
+  "verificationCommit": "c4c64ce8904300931529a33471e4e832e58b7987",
+  "protectedRoutePinsCommit": "4331a28e9df36f1c973c108c80fca915816abed2",
+  "flutterVersion": "3.44.2",
+  "buildMode": "profile",
+  "flavor": "production",
+  "architecture": "ios-arm64",
+  "version": "1.0.0",
+  "buildNumber": 5,
+  "buildStartedAt": "2026-11-12T09:01:57.443Z",
+  "buildFinishedAt": "2026-11-12T09:02:29.686Z",
+  "layout": "Edge-to-edge rectangular photos, 390:673 crop and Manage Photos tiles, centered 375×667 guide.",
+  "buildReceiptSha256": "176a43f6f37895233af67afc0807c1bb7f0f993a28c9459c01c79beb99c432cc",
+  "artifactSha256": "8fe027affe96841c50a6bcaa9fb6eb5aef91e7be4369e2df22264ee204c9ab84",
+  "sourceSealSha256": "c00da1614cdcf7fa1abf10d17f340bf3fe89431d16bc1757c0cbde7e06130a41",
+  "planSha256": "986bb0467bb74b9f63f816bf4170c7122a9403c6156fbcfc8bd4442d0b106786",
+  "routeSha256": "e098d65ff9f70dd646e50ecf35ad7c0e746addac1a7645d9f2df178ac6a6dac4",
+  "sealedInputs": 1598,
+  "routeTests": {
+    "pass": 16,
+    "fail": 0,
+    "logSha256": "9d3a630436d1bb1bbf99592c938f9b1880f8bf1fe4f4de816a51dd9f0e4e3c69"
+  },
+  "codeSignature": "Verified with codesign --verify --deep --strict",
+  "delivery": {
+    "status": "awaiting separate Founder GO",
+    "installExecuted": false
+  }
+}
