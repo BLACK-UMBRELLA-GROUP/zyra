@@ -106,7 +106,9 @@ List<SupportiveCard> supportiveCardsFromResolution(
         section: SupportiveSection.needsYou,
         title: signal.title,
         detail: signal.detail,
-        actionLabel: _ownerAction(signal.target) ?? signal.actionLabel,
+        actionLabel: signal.id == 'preference-quick-check'
+            ? signal.actionLabel
+            : _ownerAction(signal.target) ?? signal.actionLabel,
         target: signal.target,
         date: signal.dueAt,
       ),

@@ -23,6 +23,7 @@ const _evidence = SupportiveEvidence(
 );
 
 DashboardSnapshot _snapshot({
+  bool hasPreferencesToCheck = false,
   List<DashboardSignal> journeySignals = const [],
   DashboardJourneyKind journeyKind = DashboardJourneyKind.searching,
   String journeyTitle = 'Current Journey',
@@ -56,6 +57,7 @@ DashboardSnapshot _snapshot({
   guardianInvitations: invitations,
   insights: insights,
   stableState: DashboardStableState(family: family),
+  hasPreferencesToCheck: hasPreferencesToCheck,
 );
 
 DashboardResolution _resolve(DashboardSnapshot snapshot) =>
@@ -153,6 +155,36 @@ void main() {
       'What You’ve Learned',
       'What May Help',
     ]);
+  });
+
+  test('quick check keeps its locked action label', () {
+    const ordinaryPreferences = DashboardSignal(
+      id: 'ordinary-preferences',
+      kind: DashboardSignalKind.addressedDecision,
+      title: 'Review preferences',
+      actionLabel: 'Review',
+      target: ZyraDashboardTarget.preferences,
+    );
+    final cards = _project(
+      _snapshot(
+        hasPreferencesToCheck: true,
+        journeySignals: const [ordinaryPreferences],
+      ),
+    );
+    final quickCheck = cards.singleWhere(
+      (card) => card.id == 'preference-quick-check',
+    );
+    expect(quickCheck.section, SupportiveSection.needsYou);
+    expect(quickCheck.actionLabel, 'Check now');
+    expect(quickCheck.target, ZyraDashboardTarget.preferences);
+    expect(
+      cards.singleWhere((card) => card.id == ordinaryPreferences.id).actionLabel,
+      'View preferences',
+    );
+    expect(
+      _project(_snapshot()).any((card) => card.id == quickCheck.id),
+      isFalse,
+    );
   });
 
   test('same explicit issue gets one highest-priority presentation', () {
