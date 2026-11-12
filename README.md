@@ -73,7 +73,13 @@ be set with a deliberate tap. Saved results and Unlocks are kept.
 In the Founder preview, Guardian invitations and code link requests expire
 after 14 days. A Seeker who is still unready sees a Needs you reminder at
 48 hours. A Journey that is still waiting for readiness at 72 hours moves
-to Past as Not taken up. The same person can be asked again after 7 days.
+to Past as Not taken up. Under My ZYRA → Journey requests → Past, repeat
+requests share one card per person and direction. Open a card to see the
+latest five requests and use Show all to see the rest. In sample data the
+sender waits 7 days after Not taken up, 14 days after five in a row and
+30 days from the tenth onward. Beginning a Journey clears the streak.
+The profile button shows the same date during the wait. Live ask-again
+dates await SERVER 1.
 Ended Journeys have no fixed reading deadline. A Seeker can remove their own
 archived Journey, and a block from either side hides it until unblock. A
 preview restart can be requested after 24 hours and stays open for 30 days.

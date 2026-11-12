@@ -17,6 +17,122 @@ void main() {
     model = ReceivedRequestFixture(capacity: 3, clock: () => now);
   });
 
+  void seedOutcome(
+    DateTime at, {
+    String id = _sara,
+    DraftPastRequestOutcome outcome = DraftPastRequestOutcome.notTakenUp,
+  }) {
+    expect(
+      model.seedPastRequest(
+        profileId: id,
+        outcome: outcome,
+        requestedAt: at.subtract(const Duration(days: 2)),
+        movedAt: at,
+      ),
+      isTrue,
+    );
+  }
+
+  for (final (count, wait) in [(4, 7), (5, 14), (9, 14), (10, 30), (20, 30)]) {
+    test(
+      '$count sender outcomes wait exactly $wait days from the Past move',
+      () {
+        for (var i = 0; i < count; i++) {
+          seedOutcome(now.subtract(Duration(days: i * 31)));
+        }
+        final deadline = now.add(Duration(days: wait));
+        final latest = model.pastRequests.first;
+        expect(model.pastRequestAskAgainAfter(latest), deadline);
+        expect(model.requestCooldownUntil(_sara), deadline);
+        expect(model.nextTimeRuleDeadline, deadline);
+        expect(model.requestCooldownUntil(_aisha), isNull);
+        now = deadline.subtract(const Duration(microseconds: 1));
+        expect(model.canRequest(_sara), isFalse);
+        now = deadline;
+        expect(model.canRequest(_sara), isTrue);
+        expect(model.requestCooldownUntil(_sara), isNull);
+        expect(model.pastRequestAskAgainAfter(latest), deadline);
+      },
+    );
+  }
+
+  test(
+    'own cancel and incoming decline add no wait and do not reset a streak',
+    () {
+      for (var i = 1; i <= 4; i++) {
+        seedOutcome(now.subtract(Duration(days: i * 31)));
+      }
+      seedOutcome(
+        now.subtract(const Duration(days: 2)),
+        outcome: DraftPastRequestOutcome.cancelled,
+      );
+      seedOutcome(
+        now.subtract(const Duration(days: 1)),
+        outcome: DraftPastRequestOutcome.youDeclined,
+      );
+      expect(model.requestCooldownUntil(_sara), isNull);
+      seedOutcome(now);
+      expect(
+        model.requestCooldownUntil(_sara),
+        now.add(const Duration(days: 14)),
+      );
+      expect(
+        model.pastRequests.skip(1).take(2).map(model.pastRequestAskAgainAfter),
+        everyElement(isNull),
+      );
+    },
+  );
+
+  test(
+    'a ready close adds a sender outcome until a Journey actually begins',
+    () {
+      for (var i = 1; i <= 4; i++) {
+        seedOutcome(now.subtract(Duration(days: i * 31)));
+      }
+      expect(model.request(_sara), isTrue);
+      expect(model.simulateRecipientAccept(_sara), isTrue);
+      now = now.add(ViewRequestDraftModel.readyCloseDelay);
+      expect(model.advanceTimeRules(), isTrue);
+      expect(
+        model.requestCooldownUntil(_sara),
+        now.add(const Duration(days: 14)),
+      );
+    },
+  );
+
+  test(
+    'a Journey begun from the other direction resets the active sender wait',
+    () {
+      for (var i = 0; i < 5; i++) {
+        seedOutcome(now.subtract(Duration(days: i * 31)));
+      }
+      final deadline = now.add(const Duration(days: 14));
+      expect(model.seedReceived(_sara), isTrue);
+      expect(model.acceptReceived(_sara), isTrue);
+      expect(model.requestCooldownUntil(_sara), deadline);
+      expect(
+        model.completePreparation(
+          _sara,
+          linkedGuardianIds: const {'draft-guardian-hassan'},
+        ),
+        isTrue,
+      );
+      final restored = ViewRequestDraftModel.fromSnapshot(
+        model.snapshot(),
+        clock: () => now,
+      );
+      expect(restored.requestCooldownUntil(_sara), isNull);
+      expect(
+        restored.pastRequestAskAgainAfter(restored.pastRequests.first),
+        deadline,
+      );
+      expect(restored.pastRequests, hasLength(5));
+      restored.reset();
+      expect(restored.pastRequests, isEmpty);
+      expect(restored.requestCooldownUntil(_sara), isNull);
+    },
+  );
+
   test(
     'fresh Past is empty and the existing received fixture keeps its date',
     () {

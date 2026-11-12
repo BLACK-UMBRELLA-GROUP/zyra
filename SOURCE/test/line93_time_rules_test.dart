@@ -65,7 +65,7 @@ void main() {
       expect(model.snapshot().endedAttempts, isEmpty);
 
       now = closesAt.add(const Duration(days: 7)).subtract(_tick);
-      expect(model.canRequest(_peer), isFalse);
+      expect(model.canRequest(_peer), incoming);
       now = now.add(_tick);
       expect(model.canRequest(_peer), isTrue);
     });

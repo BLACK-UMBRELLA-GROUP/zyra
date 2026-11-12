@@ -45,6 +45,7 @@ final class DraftPastRequest {
     required this.requestedAt,
     required this.movedAt,
     required this.sequence,
+    required this._journeyStartSequence,
     required this.incoming,
     required this.closedBeforeReady,
   });
@@ -53,6 +54,7 @@ final class DraftPastRequest {
   final DraftPastRequestOutcome outcome;
   final DateTime requestedAt, movedAt;
   final int sequence;
+  final int _journeyStartSequence;
   final bool incoming, closedBeforeReady;
 }
 
@@ -353,6 +355,9 @@ final class ViewRequestDraftSnapshot {
       ),
       pastRequests = List.unmodifiable(model._pastRequests),
       pastRequestSequence = model._pastRequestSequence,
+      _pastRequestJourneyStarts = Map.unmodifiable(
+        model._pastRequestJourneyStarts,
+      ),
       journeyStartedAt = Map.unmodifiable(model._journeyStartedAt),
       journeyLastActivityAt = Map.unmodifiable(model._journeyLastActivityAt),
       endedAttempts = List.unmodifiable(model._endedAttempts),
@@ -402,6 +407,7 @@ final class ViewRequestDraftSnapshot {
   final Map<String, int> outgoingRequestAcceptedRevisions;
   final List<DraftPastRequest> pastRequests;
   final int pastRequestSequence;
+  final Map<String, int> _pastRequestJourneyStarts;
   final Map<String, DateTime> journeyStartedAt;
   final Map<String, DateTime> journeyLastActivityAt;
   final List<DraftEndedJourneyAttempt> endedAttempts;
@@ -556,6 +562,13 @@ final class ViewRequestDraftSnapshot {
         outgoingRequestAcceptedRevisions.values.toSet().length ==
             outgoingRequestAcceptedRevisions.length &&
         pastRequestSequence >= 0 &&
+        _pastRequestJourneyStarts.entries.every(
+          (entry) =>
+              peers.contains(entry.key) &&
+              !departedPeers.contains(entry.key) &&
+              entry.value >= 0 &&
+              entry.value <= pastRequestSequence,
+        ) &&
         pastRequests.map((entry) => entry.id).toSet().length ==
             pastRequests.length &&
         pastRequests.map((entry) => entry.sequence).toSet().length ==
@@ -567,6 +580,8 @@ final class ViewRequestDraftSnapshot {
               entry.id.isNotEmpty &&
               entry.sequence > 0 &&
               entry.sequence <= pastRequestSequence &&
+              entry._journeyStartSequence >= 0 &&
+              entry._journeyStartSequence < entry.sequence &&
               entry.requestedAt.isUtc &&
               entry.movedAt.isUtc &&
               !entry.requestedAt.isAfter(entry.movedAt),
@@ -748,6 +763,7 @@ class ViewRequestDraftModel {
     );
     _pastRequests.addAll(snapshot.pastRequests);
     _pastRequestSequence = snapshot.pastRequestSequence;
+    _pastRequestJourneyStarts.addAll(snapshot._pastRequestJourneyStarts);
     _journeyStartedAt.addAll(snapshot.journeyStartedAt);
     _journeyLastActivityAt.addAll(snapshot.journeyLastActivityAt);
     _endedAttempts.addAll(snapshot.endedAttempts);
@@ -835,6 +851,7 @@ class ViewRequestDraftModel {
   final Map<String, int> _outgoingRequestAcceptedRevisions = {};
   final List<DraftPastRequest> _pastRequests = [];
   int _pastRequestSequence = 0;
+  final Map<String, int> _pastRequestJourneyStarts = {};
   final Map<String, _DraftJourneyProgress> _progress = {};
   final Map<String, DateTime> _journeyStartedAt = {};
   final Map<String, DateTime> _journeyLastActivityAt = {};
@@ -928,6 +945,7 @@ class ViewRequestDraftModel {
     _outgoingRequestAcceptedAt.remove(id);
     _outgoingRequestAcceptedRevisions.remove(id);
     _pastRequests.removeWhere((request) => request.profileId == id);
+    _pastRequestJourneyStarts.remove(id);
     _currentEndedAttemptIds.remove(id);
     _endedAttempts.removeWhere((attempt) => attempt.profileId == id);
     _removedEndedAttemptIds.removeAll(
@@ -1034,11 +1052,13 @@ class ViewRequestDraftModel {
   /// transitions deterministic, without sorting or exposing the stored list.
   List<DraftPastRequest> get pastRequests {
     final entries = _pastRequests.toList();
-    entries.sort((a, b) {
-      final dates = b.movedAt.compareTo(a.movedAt);
-      return dates != 0 ? dates : b.sequence.compareTo(a.sequence);
-    });
+    entries.sort(_newestPastRequestFirst);
     return List.unmodifiable(entries);
+  }
+
+  static int _newestPastRequestFirst(DraftPastRequest a, DraftPastRequest b) {
+    final dates = b.movedAt.compareTo(a.movedAt);
+    return dates != 0 ? dates : b.sequence.compareTo(a.sequence);
   }
 
   /// Bounded, explicit fictional history; never changes a current request,
@@ -1085,6 +1105,7 @@ class ViewRequestDraftModel {
         requestedAt: requestedAt,
         movedAt: movedAt,
         sequence: sequence,
+        journeyStartSequence: _pastRequestJourneyStarts[id] ?? 0,
         incoming: incoming ?? outcome == DraftPastRequestOutcome.youDeclined,
         closedBeforeReady: closedBeforeReady,
       ),
@@ -1116,15 +1137,51 @@ class ViewRequestDraftModel {
     return true;
   }
 
-  bool _requestCooldownFinished(String id) {
-    final now = _clock().toUtc();
-    return !_pastRequests.any(
-      (entry) =>
-          entry.profileId == id &&
-          (!entry.incoming || entry.closedBeforeReady) &&
-          entry.outcome == DraftPastRequestOutcome.notTakenUp &&
-          now.isBefore(entry.movedAt.add(askAgainWait)),
-    );
+  static bool _isOutgoingNotTakenUp(DraftPastRequest request) =>
+      !request.incoming &&
+      request.outcome == DraftPastRequestOutcome.notTakenUp;
+
+  /// The date shown for this historical sender outcome, even after a Journey
+  /// began and cleared the current streak. Only sample history is used here.
+  DateTime? pastRequestAskAgainAfter(DraftPastRequest request) {
+    if (!_isOutgoingNotTakenUp(request)) return null;
+    final count = _pastRequests
+        .where(
+          (entry) =>
+              entry.profileId == request.profileId &&
+              entry._journeyStartSequence == request._journeyStartSequence &&
+              _isOutgoingNotTakenUp(entry) &&
+              _newestPastRequestFirst(entry, request) >= 0,
+        )
+        .length;
+    final wait = switch (count) {
+      >= 10 => const Duration(days: 30),
+      >= 5 => const Duration(days: 14),
+      _ => askAgainWait,
+    };
+    return request.movedAt.add(wait);
+  }
+
+  DateTime? _currentAskAgainAfter(String id) {
+    final journeyStart = _pastRequestJourneyStarts[id] ?? 0;
+    DraftPastRequest? latest;
+    for (final entry in _pastRequests) {
+      if (entry.profileId == id &&
+          entry._journeyStartSequence == journeyStart &&
+          _isOutgoingNotTakenUp(entry) &&
+          (latest == null || _newestPastRequestFirst(entry, latest) < 0)) {
+        latest = entry;
+      }
+    }
+    return latest == null ? null : pastRequestAskAgainAfter(latest);
+  }
+
+  /// The local send guard and profile button share this active deadline.
+  DateTime? requestCooldownUntil(String id) {
+    final deadline = _currentAskAgainAfter(id);
+    return deadline != null && _clock().toUtc().isBefore(deadline)
+        ? deadline
+        : null;
   }
 
   DraftEndedJourneyAttempt? currentEndedAttemptFor(String id) => _endedAttempts
@@ -1486,7 +1543,7 @@ class ViewRequestDraftModel {
       !isHidden(id) &&
       !hasDeparted(id) &&
       !_states.containsKey(id) &&
-      _requestCooldownFinished(id) &&
+      requestCooldownUntil(id) == null &&
       canBrowse &&
       !peerOccupied(id);
   bool canAccept(String id) =>
@@ -1731,6 +1788,14 @@ class ViewRequestDraftModel {
     for (final sentAt in _restartRequestedAt.values) {
       consider(sentAt.add(restartLifetime));
     }
+    for (final id
+        in _pastRequests
+            .where(_isOutgoingNotTakenUp)
+            .map((entry) => entry.profileId)
+            .toSet()) {
+      final deadline = _currentAskAgainAfter(id);
+      if (deadline != null) consider(deadline);
+    }
     return next;
   }
 
@@ -1776,9 +1841,9 @@ class ViewRequestDraftModel {
 
   Duration timeUntil(DateTime deadline) => deadline.difference(_clock());
 
-  bool wasClosedBeforeReady(String id) => _pastRequests.any(
-    (request) => request.profileId == id && request.closedBeforeReady,
-  );
+  DraftPastRequest? latestReadyCloseFor(String id) => pastRequests
+      .where((request) => request.profileId == id && request.closedBeforeReady)
+      .firstOrNull;
 
   bool _bothReady(String id) => isReady(id) && peerIsReady(id);
 
@@ -1877,6 +1942,7 @@ class ViewRequestDraftModel {
     }
     _preparingRequests.remove(id);
     _states[id] = DraftJourneyState.active;
+    _pastRequestJourneyStarts[id] = _pastRequestSequence;
     _journeyStartedAt.putIfAbsent(id, () => _clock().toUtc());
     for (final guardianId in agreedPaidAdditionalGuardianIds) {
       final key = '$guardianId|$id';
@@ -2261,6 +2327,7 @@ class ViewRequestDraftModel {
     _outgoingRequestAcceptedRevisions.clear();
     _pastRequests.clear();
     _pastRequestSequence = 0;
+    _pastRequestJourneyStarts.clear();
     _hiddenPeers.clear();
     _blockedPeers.clear();
     _peerBlocks.clear();

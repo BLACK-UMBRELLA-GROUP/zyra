@@ -2387,13 +2387,27 @@ class _ZyraOneJourneyConceptShellState
       !_model.isBlocked(id) &&
       (_model.stateFor(id) == DraftJourneyState.sent || _model.canRequest(id));
 
-  String _invitationLabel(String id) => switch (_model.stateFor(id)) {
-    null => 'Request a Journey',
-    DraftJourneyState.sent => 'Request sent',
-    DraftJourneyState.acceptedWaiting => 'Accepted · waiting for confirmation',
-    DraftJourneyState.ended => 'Journey archived',
-    final state => _stateLabel(state),
-  };
+  String _invitationLabel(String id) {
+    final state = _model.stateFor(id);
+    final cooldown =
+        state == null &&
+            !_guardianRole &&
+            !_model.isHidden(id) &&
+            !_model.isBlocked(id)
+        ? _model.requestCooldownUntil(id)
+        : null;
+    return switch (state) {
+      null =>
+        cooldown == null
+            ? 'Request a Journey'
+            : 'Ask again from ${_requestDate(cooldown)}',
+      DraftJourneyState.sent => 'Request sent',
+      DraftJourneyState.acceptedWaiting =>
+        'Accepted · waiting for confirmation',
+      DraftJourneyState.ended => 'Journey archived',
+      final state => _stateLabel(state),
+    };
+  }
 
   void _toggleInvitation(String id) {
     if (!_allowed || !_canToggleInvitation(id)) return;
@@ -3266,20 +3280,7 @@ class _ZyraOneJourneyConceptShellState
     ),
   );
 
-  List<Widget> _pastRequests() {
-    final history = _model.pastRequests
-        .where((entry) => !_model.isBlocked(entry.profileId))
-        .toList(growable: false);
-    if (history.isEmpty) {
-      return const [
-        ZyraRequestActivityEmpty(
-          icon: Icons.history_rounded,
-          title: 'No past requests.',
-          message:
-              'Requests that were declined, expired or cancelled stay here.',
-        ),
-      ];
-    }
+  String _requestDate(DateTime date) {
     const months = [
       'Jan',
       'Feb',
@@ -3294,24 +3295,94 @@ class _ZyraOneJourneyConceptShellState
       'Nov',
       'Dec',
     ];
+    return '${date.day} ${months[date.month - 1]}';
+  }
+
+  String _pastRequestStatus(DraftPastRequest entry) => switch (entry.outcome) {
+    DraftPastRequestOutcome.notTakenUp => 'Not taken up',
+    DraftPastRequestOutcome.cancelled => 'Cancelled',
+    DraftPastRequestOutcome.youDeclined => 'You declined',
+    DraftPastRequestOutcome.youLetItGo => 'You let it go',
+  };
+
+  List<Widget> _pastRequests() {
+    // Insertion order preserves the most recent Past transition for each pair
+    // and direction. Each group's entries keep the same newest-first order.
+    final groups = <(String, bool), List<DraftPastRequest>>{};
+    for (final entry in _model.pastRequests) {
+      if (_model.isBlocked(entry.profileId)) continue;
+      (groups[(entry.profileId, entry.incoming)] ??= []).add(entry);
+    }
+    if (groups.isEmpty) {
+      return const [
+        ZyraRequestActivityEmpty(
+          icon: Icons.history_rounded,
+          title: 'No past requests.',
+          message:
+              'Requests that were declined, expired or cancelled stay here.',
+        ),
+      ];
+    }
+    final revision = _uiRevision;
+    final fresh = _accountFreshGuard();
     return [
-      for (final entry in history)
-        ZyraPastRequestActivityCard(
-          profile: _displayProfile(
-            draftProfiles.firstWhere((person) => person.id == entry.profileId),
-          ),
-          subtitle:
-              '${entry.incoming ? 'Received' : 'Sent'} '
-              '${entry.requestedAt.day} ${months[entry.requestedAt.month - 1]}',
-          status: switch (entry.outcome) {
-            DraftPastRequestOutcome.notTakenUp => 'Not taken up',
-            DraftPastRequestOutcome.cancelled => 'Cancelled',
-            DraftPastRequestOutcome.youDeclined => 'You declined',
-            DraftPastRequestOutcome.youLetItGo => 'You let it go',
-          },
-          cardId: 'past_request_${entry.id}',
+      for (final group in groups.values)
+        _pastRequestCard(
+          group,
+          canInteract: () =>
+              fresh() &&
+              revision == _uiRevision &&
+              !_guardianRole &&
+              _tab == 2 &&
+              _page == 'requests' &&
+              _requestsTab == 2 &&
+              !_model.isBlocked(group.first.profileId) &&
+              !_model.hasDeparted(group.first.profileId),
         ),
     ];
+  }
+
+  Widget _pastRequestCard(
+    List<DraftPastRequest> group, {
+    required bool Function() canInteract,
+  }) {
+    final latest = group.first;
+    final person = draftProfiles.firstWhere(
+      (person) => person.id == latest.profileId,
+    );
+    final profile = _displayProfile(person);
+    final date = _requestDate(latest.requestedAt);
+    final status = _pastRequestStatus(latest);
+    if (group.length == 1) {
+      return ZyraPastRequestActivityCard(
+        profile: profile,
+        subtitle: '${latest.incoming ? 'Received' : 'Sent'} $date',
+        status: status,
+        cardId: 'past_request_${latest.id}',
+      );
+    }
+    final direction = latest.incoming ? 'received' : 'sent';
+    final cardId = 'past_request_${latest.profileId}_$direction';
+    final askAgain = _model.pastRequestAskAgainAfter(latest);
+    return ZyraPastRequestActivityCard(
+      key: ValueKey(cardId),
+      profile: profile,
+      subtitle: 'Last $direction $date · ${group.length} requests',
+      status: status,
+      cardId: cardId,
+      controller: _expansion,
+      canInteract: canInteract,
+      history: [
+        for (final entry in group)
+          (
+            date: 'Sent ${_requestDate(entry.requestedAt)}',
+            status: _pastRequestStatus(entry),
+          ),
+      ],
+      askAgain: askAgain == null
+          ? null
+          : 'You can ask ${person.firstName} again from ${_requestDate(askAgain)}.',
+    );
   }
 
   List<Widget> _requests(int tab) {
@@ -4440,14 +4511,18 @@ class _ZyraOneJourneyConceptShellState
     final p = _person;
     if (p == null) return _unavailable();
     if (_model.stateFor(p.id) == null) {
-      return _model.wasClosedBeforeReady(p.id)
-          ? _pageScroll([
-              _card([
-                _title('Not taken up', size: 23),
-                _body('You can ask again after 7 days.'),
-              ]),
-            ])
-          : _unavailable();
+      final close = _model.latestReadyCloseFor(p.id);
+      if (close == null) return _unavailable();
+      final askAgain = _model.pastRequestAskAgainAfter(close);
+      return _pageScroll([
+        _card([
+          _title('Not taken up', size: 23),
+          if (askAgain != null)
+            _body(
+              'You can ask again after ${askAgain.difference(close.movedAt).inDays} days.',
+            ),
+        ]),
+      ]);
     }
     if (_model.isBlocked(p.id)) return _userNotFoundView();
     if (_model.stateFor(p.id) == DraftJourneyState.ended) {

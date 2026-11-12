@@ -35,6 +35,12 @@ bool _quietMotion(BuildContext context) =>
     MediaQuery.disableAnimationsOf(context) ||
     MediaQuery.accessibleNavigationOf(context);
 
+Icon _requestActivityChevron(bool open) => Icon(
+  open ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded,
+  color: _accentInk,
+  size: 23,
+);
+
 bool _wholeWordsFit(
   BuildContext context,
   String value,
@@ -474,13 +480,7 @@ class ZyraRequestActivityCard extends StatelessWidget {
         padding: const EdgeInsets.all(18),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final chevron = Icon(
-              open
-                  ? Icons.keyboard_arrow_up_rounded
-                  : Icons.keyboard_arrow_down_rounded,
-              color: _accentInk,
-              size: 23,
-            );
+            final chevron = _requestActivityChevron(open);
             final horizontalNameWidth = constraints.maxWidth - 64 - 16 - 5 - 23;
             final stackIdentity =
                 MediaQuery.textScalerOf(context).scale(1) > 1.3 ||
@@ -674,7 +674,7 @@ class ZyraRequestActivityCard extends StatelessWidget {
   );
 }
 
-/// A retained request outcome is display-only: it cannot expand or act.
+/// Single outcomes keep their display-only card. A group can reveal history.
 class ZyraPastRequestActivityCard extends StatelessWidget {
   const ZyraPastRequestActivityCard({
     super.key,
@@ -682,12 +682,20 @@ class ZyraPastRequestActivityCard extends StatelessWidget {
     required this.subtitle,
     required this.status,
     required this.cardId,
+    this.controller,
+    this.canInteract,
+    this.history = const [],
+    this.askAgain,
   });
 
   final SeekerProfile profile;
   final String subtitle;
   final String status;
   final String cardId;
+  final ZyraConnectionsExpansionController? controller;
+  final bool Function()? canInteract;
+  final List<({String date, String status})> history;
+  final String? askAgain;
 
   String get _name =>
       '${profile.firstName} ${profile.surnameLine ?? ''}'.trim();
@@ -712,52 +720,223 @@ class ZyraPastRequestActivityCard extends StatelessWidget {
     ],
   );
 
-  @override
-  Widget build(BuildContext context) => ZyraFloatingSurface(
-    radius: 26,
-    circle: false,
-    gold: false,
-    child: Container(
-      key: ValueKey('past_request_activity_card_$cardId'),
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
-        borderRadius: BorderRadius.circular(26),
-        border: Border.all(color: ZyraColors.surfaceBorder),
-      ),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final stackIdentity =
-              MediaQuery.textScalerOf(context).scale(1) > 1.3 ||
-              !_wholeWordsFit(
-                context,
-                _name,
-                ZyraText.heading(size: 21),
-                constraints.maxWidth - 64 - 16,
-              );
-          if (stackIdentity) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _requestActivityPortrait(profile),
-                const SizedBox(height: 16),
-                _identity(),
-              ],
-            );
-          }
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _requestActivityPortrait(profile),
-              const SizedBox(width: 16),
-              Expanded(child: _identity()),
-            ],
+  Widget _header({bool? open}) => LayoutBuilder(
+    builder: (context, constraints) {
+      final chevron = open == null ? null : _requestActivityChevron(open);
+      final nameWidth =
+          constraints.maxWidth - 64 - 16 - (chevron == null ? 0 : 5 + 23);
+      final stackIdentity =
+          MediaQuery.textScalerOf(context).scale(1) > 1.3 ||
+          !_wholeWordsFit(
+            context,
+            _name,
+            ZyraText.heading(size: 21),
+            nameWidth,
           );
-        },
-      ),
-    ),
+      final portrait = _requestActivityPortrait(profile);
+      if (stackIdentity) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (chevron == null)
+              portrait
+            else
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [portrait, chevron],
+              ),
+            const SizedBox(height: 16),
+            _identity(),
+          ],
+        );
+      }
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          portrait,
+          const SizedBox(width: 16),
+          Expanded(child: _identity()),
+          if (chevron != null) ...[const SizedBox(width: 5), chevron],
+        ],
+      );
+    },
   );
+
+  Widget _surface({required Widget child, bool open = false}) =>
+      ZyraFloatingSurface(
+        radius: 26,
+        circle: false,
+        gold: false,
+        child: Container(
+          key: ValueKey('past_request_activity_card_$cardId'),
+          decoration: BoxDecoration(
+            color: open
+                ? ZyraColors.surfaceEmphasisFill
+                : ZyraColors.surfaceFill,
+            borderRadius: BorderRadius.circular(26),
+            border: Border.all(
+              color: open
+                  ? ZyraColors.surfaceEmphasisBorder
+                  : ZyraColors.surfaceBorder,
+            ),
+          ),
+          child: child,
+        ),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    final expansion = controller;
+    if (expansion == null) {
+      return _surface(
+        child: Padding(padding: const EdgeInsets.all(18), child: _header()),
+      );
+    }
+    return ValueListenableBuilder<String?>(
+      valueListenable: expansion,
+      builder: (context, selected, _) {
+        final open = selected == cardId;
+        bool isCurrent() => canInteract?.call() != false;
+        return _surface(
+          open: open,
+          child: Material(
+            type: MaterialType.transparency,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Semantics(
+                  button: true,
+                  expanded: open,
+                  child: InkWell(
+                    key: ValueKey('past_request_activity_header_$cardId'),
+                    borderRadius: BorderRadius.circular(24),
+                    onTap: ZyraTapFeedback.onTap(context, () {
+                      if (!isCurrent()) return;
+                      if (expansion.value == cardId) {
+                        expansion.close(cardId);
+                        return;
+                      }
+                      expansion.open(cardId);
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (!context.mounted ||
+                            expansion.value != cardId ||
+                            !isCurrent()) {
+                          return;
+                        }
+                        unawaited(
+                          Scrollable.ensureVisible(
+                            context,
+                            alignment: 0,
+                            duration: _quietMotion(context)
+                                ? Duration.zero
+                                : const Duration(milliseconds: 240),
+                            curve: Curves.easeOutCubic,
+                          ),
+                        );
+                      });
+                    }),
+                    child: Padding(
+                      padding: const EdgeInsets.all(18),
+                      child: _header(open: open),
+                    ),
+                  ),
+                ),
+                if (open)
+                  _PastRequestHistory(
+                    entries: history,
+                    askAgain: askAgain,
+                    canInteract: () => expansion.value == cardId && isCurrent(),
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _PastRequestHistory extends StatefulWidget {
+  const _PastRequestHistory({
+    required this.entries,
+    required this.askAgain,
+    required this.canInteract,
+  });
+
+  final List<({String date, String status})> entries;
+  final String? askAgain;
+  final bool Function() canInteract;
+
+  @override
+  State<_PastRequestHistory> createState() => _PastRequestHistoryState();
+}
+
+class _PastRequestHistoryState extends State<_PastRequestHistory> {
+  static const _initialRowCount = 5;
+  bool _showAll = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final entries = _showAll
+        ? widget.entries
+        : widget.entries.take(_initialRowCount);
+    final muted = ZyraText.subtext(size: 12, color: _helperInk);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Divider(height: 1, thickness: 1, color: ZyraColors.surfaceBorder),
+          const SizedBox(height: 6),
+          for (final entry in entries)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(child: Text(entry.date, style: muted)),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      entry.status,
+                      style: muted,
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          if (!_showAll && widget.entries.length > _initialRowCount)
+            InkWell(
+              onTap: ZyraTapFeedback.onTap(context, () {
+                if (widget.canInteract()) setState(() => _showAll = true);
+              }),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 44),
+                child: Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  widthFactor: 1,
+                  heightFactor: 1,
+                  child: Text(
+                    'Show all ${widget.entries.length}',
+                    style: ZyraText.subtext(
+                      size: 12,
+                      color: ZyraColors.goldText,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          if (widget.askAgain case final line?)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(line, style: muted),
+            ),
+        ],
+      ),
+    );
+  }
 }
 
 /// An empty collection uses the same quiet, unboxed state as Journey.
