@@ -413,6 +413,11 @@ rollback to q100_ch2_preference;
 -- Q105: append inside the Q100 fixture transaction, before its final rollback.
 savepoint q105_preference_confirmation;
 
+
+insert into public.consents(user_id, consent_type, granted, policy_version)
+select pg_temp.q100_actor(label), 'article9_special_category', true, 'test'
+from unnest(array['male1','fem1']) label;
+
 grant select on server0_v2_fixture_actors to authenticated;
 grant execute on function pg_temp.q100_actor(text) to authenticated;
 
@@ -587,20 +592,20 @@ update public.seeker_details
 set preferences = jsonb_set(preferences, '{sect,matrix,sunni}', '"yellow"')
 where user_id = auth.uid();
 select pg_temp.q105_assert(
-  (select count(*) = 1 and bool_and(question_id = 'sect' and option_value = 'sunni'
+  (select count(*) = 1 and bool_and(question_id = 'ch2.sect.matrix' and option_value = 'sunni'
                                    and light = 'amber')
    from public.zyra_my_lights_needing_reconfirmation()),
   'the Chapter 2 sect matrix uses the same affected-item reader'
 );
 select public.zyra_confirm_preference_lights(
-  '[{"question_id":"sect","option_value":"sunni","light":"amber"}]'
+  '[{"question_id":"ch2.sect.matrix","option_value":"sunni","light":"amber"}]'
 );
 select pg_temp.q105_assert(
   (select preferences #>> '{sect,matrix,sunni}' = 'amber'
    from public.seeker_details where user_id = auth.uid())
   and exists (
     select 1 from public.preference_light_confirmations
-    where question_id = 'sect' and option_value = 'sunni'
+    where question_id = 'ch2.sect.matrix' and option_value = 'sunni'
       and light = 'amber' and capture_version = 'v1'
   )
   and not exists (select 1 from public.zyra_my_lights_needing_reconfirmation()),
@@ -625,7 +630,7 @@ select pg_temp.q105_assert(
   )
   and exists (
     select 1 from public.preference_light_confirmations
-    where user_id = pg_temp.q100_actor('male1') and question_id = 'sect' and option_value = 'sunni'
+    where user_id = pg_temp.q100_actor('male1') and question_id = 'ch2.sect.matrix' and option_value = 'sunni'
   ),
   'deleting a preference row revokes only its chapter receipts'
 );
@@ -1040,7 +1045,7 @@ from generate_series(1, 73) as member(n);
 insert into public.seeker_details (user_id, nationality, ethnicity, sect, preferences)
 values
   (pg_temp.q94_id(1), null, null, null,
-    '{"nationality":{"preferred":["FR"],"flexibility":"red"},"sect":{"hard_requirement":["shia"]}}'),
+    '{"nationality":{"preferred":["FR"],"flexibility":"red"},"sect":{"matrix":{"shia":"red"},"hard_requirement":["shia"]}}'),
   (pg_temp.q94_id(2), 'GB', 'white_british', 'sunni', '{}'),
   (pg_temp.q94_id(3), 'FR', 'white_other', 'sunni', '{}'),
   (pg_temp.q94_id(4), null, null, 'sunni', '{}'),
