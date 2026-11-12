@@ -4898,6 +4898,7 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
   bool _accountRetryRequired = false;
   bool _checkingAnswers = false;
   bool _checkedFromResult = false;
+  bool _readyNoticePending = false;
   ZyraCompatibilityTopicsResult? _topics;
   ZyraCompatibilityReadStatus _readStatus =
       ZyraCompatibilityReadStatus.unavailable;
@@ -4967,6 +4968,7 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
     _pollLoadBusy = false;
     _checkingAnswers = false;
     _checkedFromResult = false;
+    _readyNoticePending = false;
     _scope = _currentScope();
     // Eagerly discard another member's or a previous session's protected data.
     _settledSnapshots.removeWhere(
@@ -5294,6 +5296,13 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
       _loading = false;
       if (animateNow) _animateReveal = true;
     });
+    if (mounted &&
+        _readyNoticePending &&
+        resultTopics?.state == ZyraCompatibilityTopicsState.ready &&
+        ModalRoute.of(context)?.isCurrent == true) {
+      _readyNoticePending = false;
+      showZyraPreferenceToast(context, 'Thank you. Your result is ready.');
+    }
   }
 
   ZyraCompatibilitySnapshot? _snapshotForRead(
@@ -5349,6 +5358,7 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
         return;
       }
       _checkedFromResult = true;
+      _readyNoticePending = true;
       await _loadFlight;
       if (!mounted || !current() || ModalRoute.of(context)?.isCurrent != true) {
         return;
@@ -5357,11 +5367,7 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
       if (!mounted || !current() || ModalRoute.of(context)?.isCurrent != true) {
         return;
       }
-      if (_readIsAvailable &&
-          _topics?.state == ZyraCompatibilityTopicsState.ready) {
-        showZyraPreferenceToast(context, 'Thank you. Your result is ready.');
-      } else if (_topics?.state ==
-          ZyraCompatibilityTopicsState.needsReconfirmation) {
+      if (_topics?.state == ZyraCompatibilityTopicsState.needsReconfirmation) {
         showZyraPreferenceToast(
           context,
           'Your compatibility score isn’t available right now.',

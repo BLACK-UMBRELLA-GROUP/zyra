@@ -125,6 +125,7 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
   bool _resultReadFailed = false;
   bool _checking = false;
   bool _checkedFromResult = false;
+  bool _readyNoticePending = false;
   ZyraCompatibilityTopicsResult? _topics;
   late final bool _sampleMode;
   bool _previewAuthorizedAtOpen = false;
@@ -229,6 +230,7 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
       _guardians = null;
       _realScore = null;
       _topics = null;
+      _readyNoticePending = false;
       _previewPlusUnlocked = false;
     });
     _balanceRequest++;
@@ -378,6 +380,14 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
       _resultReadFailed = failed;
       _loadingScore = false;
     });
+    if (mounted &&
+        _readyNoticePending &&
+        topics?.state == ZyraCompatibilityTopicsState.ready &&
+        _canReadResult &&
+        _route?.isCurrent == true) {
+      _readyNoticePending = false;
+      showZyraPreferenceToast(context, 'Thank you. Your result is ready.');
+    }
   }
 
   Future<void> _checkResultAnswers() async {
@@ -400,12 +410,10 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
       );
       if (!completed || !current() || _route?.isCurrent != true) return;
       _checkedFromResult = true;
+      _readyNoticePending = true;
       await _loadRealScore(allowLegacy: false);
       if (!mounted || !current() || _route?.isCurrent != true) return;
-      if (_topics?.state == ZyraCompatibilityTopicsState.ready) {
-        showZyraPreferenceToast(context, 'Thank you. Your result is ready.');
-      } else if (_topics?.state ==
-          ZyraCompatibilityTopicsState.needsReconfirmation) {
+      if (_topics?.state == ZyraCompatibilityTopicsState.needsReconfirmation) {
         showZyraPreferenceToast(
           context,
           'Your compatibility score isn’t available right now.',
@@ -741,6 +749,7 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
                                   guardians: _guardians,
                                   firstName: name,
                                   gender: widget.profile.gender,
+                                  lightSurface: true,
                                 )
                               : null,
                         ),
@@ -1221,6 +1230,7 @@ class _GuardianSection extends StatelessWidget {
   final bool unlocked;
   final List<GuardianInfo>? guardians;
   final String firstName;
+  final bool lightSurface;
 
   /// The viewed profile's gender — 'male' | 'female' | null.
   ///
@@ -1241,6 +1251,7 @@ class _GuardianSection extends StatelessWidget {
     required this.guardians,
     required this.firstName,
     required this.gender,
+    this.lightSurface = false,
   });
 
   /// his / her / their. Falls back to "their" rather than guessing — an
@@ -1250,15 +1261,20 @@ class _GuardianSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final list = guardians;
+    final ink = lightSurface ? ZyraColors.espresso : Colors.white;
+    final muted = lightSurface ? ZyraColors.secondaryText : null;
 
     return Padding(
       padding: const EdgeInsets.only(top: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Divider(color: Colors.white.withValues(alpha: 0.10), height: 1),
+          Divider(color: ink.withValues(alpha: 0.10), height: 1),
           const SizedBox(height: 14),
-          Text('GUARDIAN', style: ZyraText.chapterLabel(color: Colors.white54)),
+          Text(
+            'GUARDIAN',
+            style: ZyraText.chapterLabel(color: muted ?? Colors.white54),
+          ),
           const SizedBox(height: 10),
 
           if (!unlocked || list == null)
@@ -1269,7 +1285,7 @@ class _GuardianSection extends StatelessWidget {
                   child: Container(
                     height: 6,
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.07),
+                      color: ink.withValues(alpha: 0.07),
                       borderRadius: BorderRadius.circular(3),
                     ),
                   ),
@@ -1278,7 +1294,7 @@ class _GuardianSection extends StatelessWidget {
                 Icon(
                   Icons.lock_outline,
                   size: 14,
-                  color: Colors.white.withValues(alpha: 0.35),
+                  color: ink.withValues(alpha: 0.35),
                 ),
               ],
             )
@@ -1289,7 +1305,7 @@ class _GuardianSection extends StatelessWidget {
               'No Guardian linked.',
               style: ZyraText.body(
                 size: 14,
-                color: Colors.white.withValues(alpha: 0.85),
+                color: ink.withValues(alpha: 0.85),
               ),
             )
           else ...[
@@ -1301,17 +1317,20 @@ class _GuardianSection extends StatelessWidget {
                     Icon(
                       Icons.shield_outlined,
                       size: 16,
-                      color: Colors.white.withValues(alpha: 0.55),
+                      color: ink.withValues(alpha: 0.55),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         g.displayLine,
-                        style: ZyraText.body(size: 14, color: Colors.white),
+                        style: ZyraText.body(size: 14, color: ink),
                       ),
                     ),
                     if (g.isMain)
-                      Text('Main', style: ZyraText.subtext(size: 11.5)),
+                      Text(
+                        'Main',
+                        style: ZyraText.subtext(size: 11.5, color: muted),
+                      ),
                   ],
                 ),
               ),
@@ -1320,7 +1339,7 @@ class _GuardianSection extends StatelessWidget {
               list.length == 1
                   ? '$firstName has a Guardian involved in $_possessive Journey.'
                   : '$firstName has ${list.length} Guardians involved in $_possessive Journey.',
-              style: ZyraText.subtext(size: 12),
+              style: ZyraText.subtext(size: 12, color: muted),
             ),
           ],
         ],

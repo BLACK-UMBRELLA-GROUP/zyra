@@ -40,9 +40,9 @@ const _visible = '/rest/v1/rpc/zyra_my_lights_needing_reconfirmation';
 const _hidden = '/rest/v1/rpc/zyra_my_lights_needed_for_compatibility';
 const _confirm = '/rest/v1/rpc/zyra_confirm_preference_lights';
 
-http.Response _json(Object? body) => http.Response(
+http.Response _json(Object? body, {int status = 200}) => http.Response(
   jsonEncode(body),
-  200,
+  status,
   headers: {'content-type': 'application/json'},
 );
 
@@ -75,6 +75,8 @@ void main() {
   var serverStage = 'compatibility_reveal';
   var mutualReveal = false;
   var savedCheck = false;
+  var retryReadyResult = false;
+  var readyReadFailed = false;
   late Future<http.Response> Function(http.Request) familyReadReply;
   final familyReadObservations = <Map<String, Object?>>[];
   int count(String path, [String? method]) => requests
@@ -106,6 +108,8 @@ void main() {
     serverStage = 'compatibility_reveal';
     mutualReveal = false;
     savedCheck = false;
+    retryReadyResult = false;
+    readyReadFailed = false;
     familyReadObservations.clear();
     familyReadReply = (_) async => _json(<Object>[]);
     for (final channel in ['events', 'methods']) {
@@ -247,17 +251,30 @@ void main() {
             'p_subject': _other,
             'p_match_id': _match,
           });
-          response = _json([
-            for (final area in ZyraCompatibilityArea.values)
-              {
-                'overall': null,
-                'topics_locked': true,
-                'area_no': area.index + 1,
-                'area_code': area.name,
-                'band': null,
-                'state': savedCheck ? 'incomplete' : 'needs_reconfirmation',
-              },
-          ]);
+          if (retryReadyResult && savedCheck && !readyReadFailed) {
+            readyReadFailed = true;
+            response = _json({
+              'code': '503',
+              'message': 'Synthetic transient failure',
+            }, status: 503);
+          } else {
+            final ready = retryReadyResult && savedCheck;
+            response = _json([
+              for (final area in ZyraCompatibilityArea.values)
+                {
+                  'overall': ready ? 84 : null,
+                  'topics_locked': true,
+                  'area_no': area.index + 1,
+                  'area_code': area.name,
+                  'band': null,
+                  'state': ready
+                      ? 'ok'
+                      : savedCheck
+                      ? 'incomplete'
+                      : 'needs_reconfirmation',
+                },
+            ]);
+          }
         } else if (path == _visible || path == _hidden) {
           expect(jsonDecode(request.body), <String, Object?>{});
           response = _json([
@@ -441,9 +458,7 @@ void main() {
     return arrival;
   }
 
-  testWidgets('Q115 Journey rereads the same match without inventing a score', (
-    tester,
-  ) async {
+  Future<void> completeJourneyQuickCheck(WidgetTester tester) async {
     ZyraCompatibilityTopicsService.setClientReadyForTesting(true);
     ZyraOnboardingAnswersService.setClientReadyForTesting(true);
     mutualReveal = true;
@@ -480,10 +495,43 @@ void main() {
     expect(count(_hidden), 1);
     expect(count(_confirm), 1);
     expect(count(_topics), greaterThanOrEqualTo(2));
+  }
+
+  testWidgets('Q115 Journey rereads the same match without inventing a score', (
+    tester,
+  ) async {
+    await completeJourneyQuickCheck(tester);
     expect(find.text('One quick check first'), findsNothing);
     expect(find.text('Thank you. Your result is ready.'), findsNothing);
     expect(find.byType(ZyraCompatibilityScoreReader), findsNothing);
     expect(find.text('You both chose to reveal.'), findsOneWidget);
+  });
+
+  testWidgets('Q115 Journey announces a ready result once after Retry', (
+    tester,
+  ) async {
+    retryReadyResult = true;
+    await completeJourneyQuickCheck(tester);
+    expect(readyReadFailed, isTrue);
+    final notice = find.text('Thank you. Your result is ready.');
+    expect(notice, findsNothing);
+    await tester.tap(find.text('Try again'));
+    await flush(tester);
+    await tester.pump(const Duration(milliseconds: 400));
+    await flush(tester);
+    expect(notice, findsOneWidget);
+    expect(find.byType(ZyraCompatibilityScoreReader), findsOneWidget);
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.pump(const Duration(seconds: 2));
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(notice, findsNothing);
+    final readsAfterRetry = count(_topics);
+    await tester.pump(const Duration(seconds: 5));
+    await flush(tester);
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(count(_topics), greaterThan(readsAfterRetry));
+    expect(notice, findsNothing);
+    expect(count(_confirm), 1);
   });
 
   for (final mode in ['same owner', 'A-B', 'A-B-A', 'disposed']) {

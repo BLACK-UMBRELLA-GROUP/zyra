@@ -17,6 +17,7 @@ import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_discovery_service.dart';
 import 'package:zyra/services/zyra_onboarding_answers_service.dart';
 import 'package:zyra/services/zyra_unlock_service.dart';
+import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_gold_action_pill.dart';
 
@@ -343,9 +344,8 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
-  testWidgets(
-    'paid result checks both owner lists and rereads its saved score',
-    (tester) async {
+  void testPaidResult(String description, {bool retryRead = false}) {
+    testWidgets(description, (tester) async {
       ZyraCompatibilityTopicsService.setClientReadyForTesting(true);
       ZyraOnboardingAnswersService.setClientReadyForTesting(true);
       const visible = (questionId: 'ch2.revert.flexibility', optionValue: '*');
@@ -361,16 +361,31 @@ void main() {
       const confirm = 'zyra_confirm_preference_lights';
       final checkCalls = <String>[];
       var checked = false;
+      var readFailed = false;
       responder = (request) async {
         final endpoint = request.url.pathSegments.last;
         switch (endpoint) {
           case 'profile_unlocks':
             return json([
-              {'unlocked_id': _target, 'unlock_type': 'paid_single'},
+              {
+                'unlocked_id': _target,
+                'unlock_type': retryRead ? 'paid_plus_bundle' : 'paid_single',
+              },
+            ]);
+          case 'guardians_for_unlocked':
+            return json([
+              {'first_name': 'Synthetic Guardian', 'is_main': true},
             ]);
           case topics:
             checkCalls.add(topics);
             expect(jsonDecode(request.body), {'p_subject': _target});
+            if (retryRead && checked && !readFailed) {
+              readFailed = true;
+              return json({
+                'code': '503',
+                'message': 'Synthetic transient failure',
+              }, status: 503);
+            }
             return json([
               for (final area in ZyraCompatibilityArea.values)
                 {
@@ -438,14 +453,51 @@ void main() {
 
       await tester.tap(find.text('Done'));
       await tester.pumpAndSettle();
+      final readyNotice = find.text('Thank you. Your result is ready.');
+      if (retryRead) {
+        expect(readFailed, isTrue);
+        expect(readyNotice, findsNothing);
+        await tester.tap(find.text('Try again'));
+        await tester.pumpAndSettle();
+      }
       expect(find.text('84%'), findsOneWidget);
-      expect(find.text('Thank you. Your result is ready.'), findsOneWidget);
-      expect(find.byTooltip('Next page'), findsOneWidget);
-      expect(checkCalls, [topics, visibleRead, hiddenRead, confirm, topics]);
+      expect(readyNotice, findsOneWidget);
+      final next = find.byTooltip('Next page');
+      expect(next, findsOneWidget);
+      expect(checkCalls, [
+        topics,
+        visibleRead,
+        hiddenRead,
+        confirm,
+        topics,
+        if (retryRead) topics,
+      ]);
       expect(scoreReads(), isEmpty);
       expect(debits(), isEmpty);
+      if (retryRead) {
+        final guardian = find.text('Synthetic Guardian');
+        expect(guardian, findsOneWidget);
+        await tester.ensureVisible(guardian);
+        expect(tester.widget<Text>(guardian).style!.color, ZyraColors.espresso);
+        expect(
+          tester.widget<Text>(find.text('GUARDIAN')).style!.color,
+          ZyraColors.secondaryText,
+        );
+        expect(
+          tester.widget<Text>(find.text('Main')).style!.color,
+          ZyraColors.secondaryText,
+        );
+      }
       await tester.pumpWidget(const SizedBox());
-    },
+    });
+  }
+
+  testPaidResult(
+    'paid result checks both owner lists and rereads its saved score',
+  );
+  testPaidResult(
+    'Q115 Profiles retry shows readiness and keeps Guardian text legible',
+    retryRead: true,
   );
 
   testWidgets(
