@@ -265,6 +265,12 @@ delete from storage.objects
 where bucket_id = 'profile-videos' and name = pg_temp.video_path('male1', 2)
 returning id as old_object_id
 \gset
+select set_config('storage.operation', '', true);
+select pg_temp.video_assert(
+  not exists (select 1 from public.zyra_my_profile_video())
+  and exists (select 1 from public.profile_videos where id = :'old_object_id'::uuid),
+  'direct deletion hides the missing approved object from its owner and retains its path reservation'
+);
 select set_config('storage.operation', 'storage.object.upload', true);
 select pg_temp.video_refused(
   $sql$insert into storage.objects(bucket_id, name, owner_id)
@@ -283,6 +289,12 @@ select pg_temp.video_assert(
   'fixture replacement at the same path has a distinct object identity'
 );
 set local role authenticated;
+select set_config('storage.operation', '', true);
+select pg_temp.video_as('male1');
+select pg_temp.video_assert(
+  not exists (select 1 from public.zyra_my_profile_video()),
+  'same-path replacement does not become the current owner video'
+);
 select set_config('storage.operation', 'storage.object.get_authenticated', true);
 select pg_temp.video_as('fem1');
 select pg_temp.video_view(2, false, 'fixture replacement does not inherit the old approval');
@@ -395,6 +407,32 @@ select pg_temp.video_assert(
 select pg_temp.video_assert(
   public.zyra_remove_my_profile_video() = pg_temp.video_path('male2', 1),
   'owner can also remove a pending video'
+);
+select set_config('storage.operation', 'storage.object.upload', true);
+insert into storage.objects(bucket_id, name, owner_id)
+values ('profile-videos', pg_temp.video_path('male2', 2), auth.uid()::text);
+reset role;
+
+set local role service_role;
+select set_config('request.jwt.claims', '{"role":"service_role"}', true);
+select public.zyra_record_profile_video(pg_temp.video_actor('male2'), pg_temp.video_path('male2', 2), 8000) as missing_pending_id \gset
+reset role;
+
+set local role authenticated;
+select pg_temp.video_as('male2');
+select set_config('storage.operation', '', true);
+select pg_temp.video_assert(
+  (select id = :'missing_pending_id'::uuid and status = 'pending' from public.zyra_my_profile_video()),
+  'owner RPC returns the pending object outside a Storage operation'
+);
+select set_config('storage.operation', 'storage.object.delete_many', true);
+delete from storage.objects
+where bucket_id = 'profile-videos' and name = pg_temp.video_path('male2', 2);
+select set_config('storage.operation', '', true);
+select pg_temp.video_assert(
+  not exists (select 1 from public.zyra_my_profile_video())
+  and exists (select 1 from public.profile_videos where id = :'missing_pending_id'::uuid),
+  'direct deletion hides the missing pending object from its owner and retains its path reservation'
 );
 reset role;
 

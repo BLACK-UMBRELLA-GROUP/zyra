@@ -86,7 +86,7 @@ create policy profile_videos_storage_delete on storage.objects
 
 create function public.zyra_my_profile_video()
 returns table (id uuid, status text, reject_reason text, storage_path text, duration_ms integer)
-language sql stable security invoker set search_path = ''
+language sql stable security definer set search_path = ''
 as $$
   select latest.id, latest.status, latest.reject_reason, latest.storage_path, latest.duration_ms
   from (
@@ -96,7 +96,17 @@ as $$
     order by video.created_at desc, video.id desc
     limit 1
   ) latest
-  where latest.status <> 'removed';
+  where latest.status = 'rejected'
+     or (
+       latest.status in ('pending', 'approved')
+       and exists (
+         select 1
+         from storage.objects object
+         where object.id = latest.id
+           and object.bucket_id = 'profile-videos'
+           and object.name = latest.storage_path
+       )
+     );
 $$;
 
 create function public.zyra_profile_video_for(p_user uuid)

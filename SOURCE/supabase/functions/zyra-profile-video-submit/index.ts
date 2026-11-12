@@ -196,6 +196,17 @@ export function createSubmitHandler(config: Config, request = fetch) {
       const path = body?.path;
       if (!ownsVideoPath(path, user)) return refuse("not_allowed");
 
+      const entitlement = await send("/rest/v1/rpc/zyra_my_paid_access", {
+        method: "POST",
+        headers: { ...memberHeaders, "Content-Type": "application/json" },
+        body: JSON.stringify({ p_role: "seeker" }),
+      });
+      if (entitlement.status === 401) return refuse("not_allowed", 401);
+      if (!entitlement.ok) return unavailable();
+      const paid = await entitlement.json();
+      if (paid === false) return refuse("not_allowed");
+      if (paid !== true) return unavailable();
+
       const key = `profile-videos/${path}`;
       const info = await send(`/storage/v1/object/info/authenticated/${key}`, {
         headers: serviceHeaders,
@@ -243,18 +254,10 @@ export function createSubmitHandler(config: Config, request = fetch) {
       const error = await record.json();
       if (error.message === "profile_video_upload_changed" ||
           error.message === "profile_video_path_used") return refuse("not_a_video");
-      if (error.message !== "profile_video_not_allowed") return unavailable();
-
-      // A delayed retry after downgrade must not remove a previously checked clip.
-      const own = await send("/rest/v1/rpc/zyra_my_profile_video", {
-        method: "POST",
-        headers: { ...memberHeaders, "Content-Type": "application/json" },
-        body: "{}",
-      });
-      if (!own.ok) return unavailable();
-      const [current] = await own.json();
-      if (current?.storage_path === path) return refuse("not_allowed");
-      return await discard("not_allowed");
+      // Another eligible submission can record this validated object after a
+      // role denial. Leave it private unless a separate request records it.
+      if (error.message === "profile_video_not_allowed") return refuse("not_allowed");
+      return unavailable();
     } catch {
       return unavailable();
     }

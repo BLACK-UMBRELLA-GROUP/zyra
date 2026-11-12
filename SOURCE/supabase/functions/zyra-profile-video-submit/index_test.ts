@@ -102,8 +102,10 @@ function submit(uploadPath: string): Request {
 function mock(
   bytes: Uint8Array,
   options: {
+    paid?: boolean;
     recordError?: string;
-    ownPath?: string;
+    recordResult?: () => Response | Promise<Response>;
+    ownerRead?: () => Promise<Response>;
     cleanupFailure?: boolean;
     missing?: boolean;
   } = {},
@@ -119,9 +121,15 @@ function mock(
       equal(headers.get("authorization"), "Bearer fixture-jwt");
       return Response.json({ id: user });
     }
-    if (url.pathname === "/rest/v1/rpc/zyra_my_profile_video") {
+    if (url.pathname === "/rest/v1/rpc/zyra_my_paid_access") {
       equal(headers.get("authorization"), "Bearer fixture-jwt");
-      return Response.json(options.ownPath ? [{ storage_path: options.ownPath }] : []);
+      equal(headers.get("apikey"), "fixture-public");
+      equal(method, "POST");
+      equal(JSON.parse(String(init?.body)), { p_role: "seeker" });
+      return Response.json(options.paid ?? true);
+    }
+    if (url.pathname === "/rest/v1/rpc/zyra_my_profile_video" && options.ownerRead) {
+      return await options.ownerRead();
     }
     equal(headers.get("authorization"), "Bearer fixture-service");
     if (url.pathname.includes("/info/authenticated/")) {
@@ -133,6 +141,7 @@ function mock(
       equal(JSON.parse(String(init?.body)), {
         p_user: user, p_path: path, p_duration_ms: 8000, p_object_id: objectId,
       });
+      if (options.recordResult) return await options.recordResult();
       return options.recordError
         ? Response.json({ message: options.recordError }, { status: 403 })
         : Response.json(objectId);
@@ -154,32 +163,75 @@ Deno.test("wrong folder never touches Storage", async () => {
 Deno.test("acceptance binds the reviewed upload identity and records pending", async () => {
   const { calls, handler } = mock(fixture(8000));
   equal(await (await handler(submit(path))).json(), { ok: true, status: "pending" });
-  equal(calls.length, 4);
+  equal(calls.length, 5);
   equal(calls.at(-1), "POST /rest/v1/rpc/zyra_record_profile_video");
 });
 
 Deno.test("audio is deleted before refusal, with no record call", async () => {
   const { calls, handler } = mock(fixture(8000, ["vide", "soun"]));
   equal(await (await handler(submit(path))).json(), { ok: false, reason: "has_sound" });
-  equal(calls.length, 4);
+  equal(calls.length, 5);
   equal(calls.at(-1), `DELETE /storage/v1/object/profile-videos/${path}`);
 });
 
-Deno.test("cleanup failure is retryable and a downgraded retry preserves the current clip", async () => {
+Deno.test("cleanup failure for refused media is retryable", async () => {
   const failed = mock(fixture(8000, ["vide", "soun"]), { cleanupFailure: true });
   equal((await failed.handler(submit(path))).status, 503);
+});
 
-  const downgraded = mock(fixture(8000), {
-    recordError: "profile_video_not_allowed", ownPath: path,
+Deno.test("a currently ineligible member is refused before Storage is accessed", async () => {
+  const { calls, handler } = mock(fixture(8000), { paid: false });
+  equal(await (await handler(submit(path))).json(), { ok: false, reason: "not_allowed" });
+  equal(calls, ["GET /auth/v1/user", "POST /rest/v1/rpc/zyra_my_paid_access"]);
+});
+
+function signal() {
+  let reach!: () => void;
+  const reached = new Promise<void>((resolve) => { reach = resolve; });
+  return { reach, reached };
+}
+
+Deno.test("a late role refusal cannot delete the version a concurrent retry records", async () => {
+  const deniedRecord = signal();
+  const ownerRead = signal();
+  const allowRetry = signal();
+  const retryRecorded = signal();
+  let recordAttempts = 0;
+  const { calls, handler } = mock(fixture(8000), {
+    recordResult: async () => {
+      if (++recordAttempts === 1) {
+        deniedRecord.reach();
+        return Response.json({ message: "profile_video_not_allowed" }, { status: 403 });
+      }
+      await allowRetry.reached;
+      retryRecorded.reach();
+      return Response.json(objectId);
+    },
+    ownerRead: async () => {
+      // Model the old check-then-delete path reading an empty owner slot
+      // before the retry commits and getting that stale result afterwards.
+      ownerRead.reach();
+      await retryRecorded.reached;
+      return Response.json([]);
+    },
   });
-  equal(await (await downgraded.handler(submit(path))).json(), { ok: false, reason: "not_allowed" });
-  equal(downgraded.calls.at(-1), "POST /rest/v1/rpc/zyra_my_profile_video");
+
+  const denied = handler(submit(path));
+  await deniedRecord.reached;
+  const retry = handler(submit(path));
+  await Promise.race([denied, ownerRead.reached]);
+  allowRetry.reach();
+
+  equal(await (await retry).json(), { ok: true, status: "pending" });
+  equal(await (await denied).json(), { ok: false, reason: "not_allowed" });
+  equal(recordAttempts, 2);
+  equal(calls.filter((call) => call.startsWith("DELETE ")), []);
 });
 
 Deno.test("Storage's missing-object envelope is a content refusal", async () => {
   const missing = mock(fixture(8000), { missing: true });
   equal(await (await missing.handler(submit(path))).json(), { ok: false, reason: "not_a_video" });
-  equal(missing.calls.length, 2);
+  equal(missing.calls.length, 3);
 });
 
 Deno.test("a substituted object fails without removing the current upload", async () => {
