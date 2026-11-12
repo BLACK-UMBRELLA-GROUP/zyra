@@ -59,14 +59,28 @@ String zyraSectCodeFor(String label) {
   return code.isEmpty ? 'other' : code;
 }
 
-/// One Seeker's Chapter 2 answers, in DISPLAY form.
-///
-/// Codes live in the database; this object holds labels, because that is
-/// what every widget wants and what the pickers produce. Conversion
-/// happens at the boundary — [toRow] on the way down, [fromRow] on the way
-/// up — so no screen ever has to know a code exists.
+/// Current third matrix key for the owner's saved or newly entered sect.
+String zyraThirdSectKey(String? canonicalCode, String? displayLabel) {
+  // Older rows can pair a literal 'other' code with the owner's words.
+  final key = canonicalCode == 'other'
+      ? zyraSectCodeFor(displayLabel ?? 'other')
+      : canonicalCode;
+  return switch (key) {
+    null || 'sunni' || 'shia' => 'other',
+    final String code => code,
+  };
+}
+
+/// One Seeker's Chapter 2 answers, with display labels for the pickers.
+/// The full sect code is carried separately because its display label is capped.
 class SeekerDetails {
   final String? sect; // 'Sunni' | 'Shia' | free text when Other
+  final String? _storedSectCode;
+
+  String? get canonicalSectCode =>
+      _storedSectCode ?? (sect == null ? null : zyraSectCodeFor(sect!));
+
+  String get thirdSectKey => zyraThirdSectKey(canonicalSectCode, sect);
   final bool? revertStatus;
   final String? countryOfBirth;
   final String? nationality; // demonym, e.g. 'Pakistani'
@@ -76,6 +90,7 @@ class SeekerDetails {
 
   const SeekerDetails({
     this.sect,
+    this._storedSectCode,
     this.revertStatus,
     this.countryOfBirth,
     this.nationality,
@@ -107,7 +122,7 @@ class SeekerDetails {
 
     // Sect is a fixed three-value list, not a reference list. 'Other'
     // carries the user's own words in sect_other.
-    final sectCode = sect == null ? null : zyraSectCodeFor(sect!);
+    final sectCode = canonicalSectCode;
     final isOther =
         sectCode != null && !const {'sunni', 'shia'}.contains(sectCode);
 
@@ -169,6 +184,7 @@ class SeekerDetails {
 
     final sectCode = r['sect'] as String?;
     return SeekerDetails(
+      storedSectCode: sectCode,
       sect: switch (sectCode) {
         'sunni' => 'Sunni',
         'shia' => 'Shia',

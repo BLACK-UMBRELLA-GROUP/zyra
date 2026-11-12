@@ -136,7 +136,6 @@ class _ServerCompatibilityEditorRepository
     final sect = details.preferences['sect'];
     final matrix = sect is Map ? sect['matrix'] : null;
     final revert = details.preferences['revert'];
-    final storedSect = zyraSectCodeFor(details.sect ?? 'other');
     TrafficLight? light(Object? value) => switch (value) {
       'green' => TrafficLight.green,
       'yellow' || 'amber' => TrafficLight.yellow,
@@ -144,9 +143,7 @@ class _ServerCompatibilityEditorRepository
       _ => null,
     };
     return ZyraSetupPreferenceLights(
-      otherSect: storedSect == 'sunni' || storedSect == 'shia'
-          ? 'other'
-          : storedSect,
+      otherSect: details.thirdSectKey,
       lights: {
         if (matrix is Map)
           for (final entry in matrix.entries)

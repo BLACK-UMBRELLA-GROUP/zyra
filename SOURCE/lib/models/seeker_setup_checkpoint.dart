@@ -57,9 +57,7 @@ bool seekerProfileSectionComplete({
     }
     final sect = section('sect');
     final matrix = sect['matrix'];
-    final other = const {'Sunni', 'Shia'}.contains(details.sect)
-        ? 'other'
-        : zyraSectCodeFor(details.sect!);
+    final other = details.thirdSectKey;
     if (matrix is! Map ||
         !['sunni', 'shia', other].every((key) => light(matrix[key])) ||
         !light(sect['outside_flexibility']) ||

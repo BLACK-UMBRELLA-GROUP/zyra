@@ -150,6 +150,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
 
   String? _sect;
   String _sectOther = '';
+  String? _restoredOtherSectCode;
   Map<String, TrafficLight> _sectMatrix = {};
 
   /// Sect codes never to be introduced to. Per-OPTION since 2026-08-10
@@ -302,6 +303,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
   };
 
   void _applySavedDetails(SeekerDetails details) {
+    _restoredOtherSectCode = null;
     switch (details.sect) {
       case null || 'Sunni' || 'Shia':
         _sect = details.sect;
@@ -309,6 +311,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
       case final custom:
         _sect = 'Other';
         _sectOther = custom;
+        _restoredOtherSectCode = details.canonicalSectCode;
     }
     _revertStatus = details.revertStatus == null
         ? null
@@ -408,6 +411,18 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
     return ZyraBackgroundVariant.neutral;
   }
 
+  String _sectKeyForOption(String label) => switch (label) {
+    'Sunni' => 'sunni',
+    'Shia' => 'shia',
+    _ =>
+      _sect == 'Other'
+          ? zyraThirdSectKey(
+              _restoredOtherSectCode ?? zyraSectCodeFor(_sectOther),
+              _sectOther,
+            )
+          : 'other',
+  };
+
   List<String> get _sectOptions => [
     'Sunni',
     'Shia',
@@ -426,6 +441,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
 
   SeekerDetails get _currentDetails => SeekerDetails(
     sect: _sect == 'Other' ? _sectOther : _sect,
+    storedSectCode: _sect == 'Other' ? _restoredOtherSectCode : null,
     revertStatus: _revertStatus == null ? null : _revertStatus == 'Yes',
     countryOfBirth: _countryOfBirth,
     nationality: _nationality,
@@ -748,7 +764,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
             (_sect != 'Other' || _sectOther.trim().isNotEmpty);
       case 5:
         return _sectOptions.every(
-          (label) => _sectMatrix.containsKey(zyraSectCodeFor(label)),
+          (label) => _sectMatrix.containsKey(_sectKeyForOption(label)),
         );
       case 6:
         return _sectOutsideFlex != null;
@@ -959,7 +975,13 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
               _TextField(
                 hint: 'Please specify…',
                 value: _sectOther,
-                onChanged: (v) => setState(() => _sectOther = v),
+                onChanged: (v) {
+                  if (v == _sectOther) return;
+                  setState(() {
+                    _sectOther = v;
+                    _restoredOtherSectCode = null;
+                  });
+                },
               ),
             ],
           ],
@@ -981,21 +1003,21 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
           options: _sectOptions,
           initialValues: {
             for (final label in _sectOptions)
-              label: ?_sectMatrix[zyraSectCodeFor(label)],
+              label: ?_sectMatrix[_sectKeyForOption(label)],
           },
           initialHardRequirement: {
             for (final label in _sectOptions)
-              if (_sectHard.contains(zyraSectCodeFor(label))) label,
+              if (_sectHard.contains(_sectKeyForOption(label))) label,
           },
           onChanged: (values) => setState(() {
             for (final entry in values.entries) {
-              _sectMatrix[zyraSectCodeFor(entry.key)] = entry.value;
+              _sectMatrix[_sectKeyForOption(entry.key)] = entry.value;
             }
           }),
           onHardRequirementChanged: (values) => setState(() {
             _sectHard
-              ..removeAll(_sectOptions.map(zyraSectCodeFor))
-              ..addAll(values.map(zyraSectCodeFor));
+              ..removeAll(_sectOptions.map(_sectKeyForOption))
+              ..addAll(values.map(_sectKeyForOption));
           }),
         );
         break;
