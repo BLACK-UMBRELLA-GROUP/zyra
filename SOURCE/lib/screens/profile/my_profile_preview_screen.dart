@@ -18,6 +18,7 @@ import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_browse_designs.dart';
 import '../../widgets/floating_nav_bar.dart';
 import '../../widgets/zyra_profile_image.dart';
+import '../../widgets/zyra_profile_video_player.dart';
 import '../../widgets/zyra_pull_down_back_scope.dart';
 
 /// Read-only owner view of the live Profiles card and its photo pages.
@@ -29,7 +30,8 @@ class MyProfilePreviewScreen extends StatefulWidget {
       _onBack = null,
       _onSelectTab = null,
       _showMyZyraActivity = false,
-      _hapticLevel = null;
+      _hapticLevel = null,
+      _loadProfileVideo = null;
 
   /// Public argument names intentionally initialize private preview fields.
   const MyProfilePreviewScreen.preview({
@@ -40,6 +42,7 @@ class MyProfilePreviewScreen extends StatefulWidget {
     ValueChanged<int>? onSelectTab,
     bool showMyZyraActivity = false,
     ZyraHapticLevel? hapticLevel,
+    ZyraProfileVideoLoader? loadProfileVideo,
   }) : _preview = true,
        // ignore: prefer_initializing_formals
        _profile = profile,
@@ -52,7 +55,9 @@ class MyProfilePreviewScreen extends StatefulWidget {
        // ignore: prefer_initializing_formals
        _showMyZyraActivity = showMyZyraActivity,
        // ignore: prefer_initializing_formals
-       _hapticLevel = hapticLevel;
+       _hapticLevel = hapticLevel,
+       // ignore: prefer_initializing_formals
+       _loadProfileVideo = loadProfileVideo;
 
   final bool _preview;
   final SeekerProfile? _profile;
@@ -61,6 +66,7 @@ class MyProfilePreviewScreen extends StatefulWidget {
   final ValueChanged<int>? _onSelectTab;
   final bool _showMyZyraActivity;
   final ZyraHapticLevel? _hapticLevel;
+  final ZyraProfileVideoLoader? _loadProfileVideo;
 
   @override
   State<MyProfilePreviewScreen> createState() => _MyProfilePreviewScreenState();
@@ -395,13 +401,18 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
                   ),
                   const SizedBox(height: 12),
                   Expanded(
-                    child: ZyraBrowseDesigns.ownProfile(
-                      key: const ValueKey('my-profile-browse-preview'),
-                      profile: profile,
-                      photoBuilder: _photo,
-                      canAct: _canInteract,
-                      showRequestInfo: _requestInfo,
-                      hapticLevel: widget._hapticLevel,
+                    child: ZyraProfileVideoAccess(
+                      ownerId: profile.id,
+                      load: widget._loadProfileVideo,
+                      builder: (context, video) => ZyraBrowseDesigns.ownProfile(
+                        key: const ValueKey('my-profile-browse-preview'),
+                        profile: profile,
+                        photoBuilder: _photo,
+                        canAct: _canInteract,
+                        showRequestInfo: _requestInfo,
+                        hapticLevel: widget._hapticLevel,
+                        profileVideo: video,
+                      ),
                     ),
                   ),
                 ],

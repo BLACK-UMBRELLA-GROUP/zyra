@@ -18,6 +18,7 @@ import '../services/zyra_wali_link_service.dart' show WaliLinkedPerson;
 import '../services/zyra_wali_journey_service.dart' show WaliJourneyView;
 import '../services/zyra_family_messaging_service.dart';
 import '../services/zyra_account_state.dart';
+import '../services/zyra_profile_video_service.dart';
 import '../services/zyra_guardian_info_service.dart' show GuardianInfo;
 import '../screens/wali/family_messaging_screens.dart';
 import '../screens/wali/seeker_guardian_designs.dart';
@@ -41,6 +42,8 @@ import '../widgets/zyra_browse_options_button.dart';
 import '../widgets/zyra_browse_next_photo_motion.dart';
 import '../widgets/zyra_guardian_dashboard_profile_card.dart';
 import '../widgets/zyra_loading.dart';
+import '../widgets/zyra_full_screen_profile_gallery.dart';
+import '../widgets/zyra_profile_video_player.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_confirm_sheet.dart';
 import '../widgets/zyra_shell_navigation.dart';
@@ -123,6 +126,7 @@ class ZyraOneJourneyShellFixture {
     this.activityExample,
     this.timeline,
     this.browseNextMotion = ZyraBrowseNextMotion.current,
+    this.profileVideoLoader,
     this.circleBubbleDesign = ZyraCircleBubbleDesign.current,
     this.circleArrivalsFor,
     this.guardianTabs,
@@ -134,9 +138,12 @@ class ZyraOneJourneyShellFixture {
     this.onCompatibilityAccessAttached,
     this.onStateAttached,
     this.onCheckpoint,
+    this.profileVideoStore,
+    this.profileVideoMedia = const ZyraProfileVideoMedia(),
   });
 
   final ViewRequestDraftModel? model;
+  final ZyraProfileVideoLoader? profileVideoLoader;
   // The caller owns model mutation and notification; these never supply access.
   final Listenable? changes;
   final ZyraSubscriptionWalletDraft? wallet;
@@ -157,6 +164,8 @@ class ZyraOneJourneyShellFixture {
   onCompatibilityAccessAttached;
   final ValueChanged<ZyraOneJourneyShellFixtureState>? onStateAttached;
   final ValueChanged<ZyraPreviewNavigationCheckpoint>? onCheckpoint;
+  final ZyraProfileVideoStore? profileVideoStore;
+  final ZyraProfileVideoMedia profileVideoMedia;
 }
 
 /// One caller-owned fixture update. No account or disclosure grant is carried.
@@ -245,6 +254,7 @@ class _ZyraOneJourneyConceptShellState
   final _message = TextEditingController();
   final _messages = <String, List<String>>{};
   final _pages = <String>[];
+  ({String ownerId, String page, int revision})? _bioGallery;
   final _expansion = ZyraConnectionsExpansionController();
   ZyraOneJourneySamplePhotos? _photos;
   final _browsePhotoRenderer = ZyraBrowseLocalPhotoRenderer();
@@ -1483,6 +1493,10 @@ class _ZyraOneJourneyConceptShellState
   }
 
   void _back() {
+    if (_currentBioGallery != null) {
+      setState(() => _bioGallery = null);
+      return;
+    }
     if (_locationSheet != 0) {
       setState(_closeLocationFlow);
       return;
@@ -1667,6 +1681,20 @@ class _ZyraOneJourneyConceptShellState
       _fixtureAccount ==
           (ZyraAccountState.userId, ZyraAccountState.generation) &&
       ModalRoute.of(context)?.isCurrent == true;
+
+  ZyraProfileVideoLoader? get _fixtureProfileVideoLoader =>
+      identical(widget.fixture, _fixtureOwner) &&
+          _fixtureOwner?.profileVideoLoader != null
+      ? _loadFixtureProfileVideo
+      : null;
+
+  Future<ZyraProfileVideoPlayback?> _loadFixtureProfileVideo(
+    String ownerId,
+  ) async {
+    if (!_fixtureIsCurrent()) return null;
+    final video = await _fixtureOwner?.profileVideoLoader?.call(ownerId);
+    return _fixtureIsCurrent() ? video : null;
+  }
 
   void _fixtureChanged() {
     if (!_fixtureIsCurrent()) return;
@@ -1883,7 +1911,10 @@ class _ZyraOneJourneyConceptShellState
               child: _content(),
             ),
           );
-    final rootContent = content;
+    final bioGallery = _currentBioGallery;
+    final rootContent = _bioGalleryEnabled
+        ? ExcludeFocus(excluding: bioGallery != null, child: content)
+        : content;
     return ZyraTapFeedback(
       level: () => _accountSession.hapticLevel,
       canAct: () => _allowed,
@@ -1948,6 +1979,7 @@ class _ZyraOneJourneyConceptShellState
                                 _expandedJourneyOptionsId,
                               ),
                               enabled:
+                                  bioGallery == null &&
                                   _allowed &&
                                   !_browseOptionsOpen &&
                                   _ownedConfirmRoute == null,
@@ -2045,6 +2077,15 @@ class _ZyraOneJourneyConceptShellState
                             ),
                           ),
                         ),
+                      if (bioGallery != null)
+                        Positioned.fill(
+                          child: BlockSemantics(
+                            child: FocusScope(
+                              autofocus: true,
+                              child: _journeyBioGallery(bioGallery),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -2107,6 +2148,10 @@ class _ZyraOneJourneyConceptShellState
     'one_upgrade' => ZyraOneUpgradePage(
       guardian: _guardianRole,
       includesPreviewComparisons: true,
+      includesProfileVideo:
+          identical(widget.fixture, _fixtureOwner) &&
+          (_fixtureOwner?.profileVideoLoader != null ||
+              _fixtureOwner?.profileVideoStore != null),
       canContinue: _accountFreshGuard(),
       onBack: _bound(_back),
     ),
@@ -2524,80 +2569,86 @@ class _ZyraOneJourneyConceptShellState
         _publishCheckpoint();
       }
     });
-    return ZyraOneJourneyBrowseDesigns(
-      key: ValueKey(('prepared-browse', _photos != null)),
-      profileSwipe: (
-        previousIndex: previous,
-        nextIndex: next,
-        onBlockedPrevious: seekerBasic ? _openBrowseBackSheet : null,
-        canAct: () => current() && !_browseOptionsOpen && !_browseBackSheetOpen,
-      ),
-      profiles: people.map(_displayProfile).toList(growable: false),
-      selectedIndex: index,
-      design: _browseDesign,
-      photoBuilder: _browsePhotoRenderer.build,
-      initialGalleryIndices: _browseGalleryIndices,
-      onPhotoIndexChanged: _rememberPhoto,
-      onGalleryIndexChanged: _rememberGallery,
-      alignHeaderActions: true,
-      hapticLevel: _accountSession.hapticLevel,
-      bottomPadding: ZyraNavBarMetrics.contentBottomClearance(context),
-      fixedTabFooter: true,
-      onFilters: _bound(() {
-        _open('filters');
-      }),
-      onBrowseMenu: (profile) {
-        if (profile == null) {
-          if (_allowed &&
-              revision == _uiRevision &&
-              !_guardianRole &&
-              _tab == 0 &&
-              _page == null) {
-            _openBrowseOptions(null);
+    return ZyraProfileVideoAccess(
+      ownerId: displayed.id,
+      load: _fixtureProfileVideoLoader,
+      builder: (context, video) => ZyraOneJourneyBrowseDesigns(
+        key: ValueKey(('prepared-browse', _photos != null)),
+        profileVideo: video,
+        profileSwipe: (
+          previousIndex: previous,
+          nextIndex: next,
+          onBlockedPrevious: seekerBasic ? _openBrowseBackSheet : null,
+          canAct: () =>
+              current() && !_browseOptionsOpen && !_browseBackSheetOpen,
+        ),
+        profiles: people.map(_displayProfile).toList(growable: false),
+        selectedIndex: index,
+        design: _browseDesign,
+        photoBuilder: _browsePhotoRenderer.build,
+        initialGalleryIndices: _browseGalleryIndices,
+        onPhotoIndexChanged: _rememberPhoto,
+        onGalleryIndexChanged: _rememberGallery,
+        alignHeaderActions: true,
+        hapticLevel: _accountSession.hapticLevel,
+        bottomPadding: ZyraNavBarMetrics.contentBottomClearance(context),
+        fixedTabFooter: true,
+        onFilters: _bound(() {
+          _open('filters');
+        }),
+        onBrowseMenu: (profile) {
+          if (profile == null) {
+            if (_allowed &&
+                revision == _uiRevision &&
+                !_guardianRole &&
+                _tab == 0 &&
+                _page == null) {
+              _openBrowseOptions(null);
+            }
+          } else if (current() && profile.id == displayed.id) {
+            _openBrowseOptions(profile.id);
           }
-        } else if (current() && profile.id == displayed.id) {
-          _openBrowseOptions(profile.id);
-        }
-      },
-      onPrevious: previous == null
-          ? null
-          : _bound(
-              () => _act(() {
-                final id = _browseHistory.back();
-                if (id != null) _showBrowseVisit(previous, id);
-              }),
-            ),
-      onNext: next == null
-          ? null
-          : _bound(
-              () => _act(() {
-                final id = people[next].id;
-                if (replays) {
-                  _browseHistory.forwardReplay();
-                } else {
-                  _browseHistory.discardForwardReplay();
-                  _browseHistory.appendFrontier(id);
-                }
-                _showBrowseVisit(next, id);
-              }),
-            ),
-      canRequest: (profile) => _canToggleInvitation(profile.id),
-      requestLabel: (profile) => _invitationLabel(profile.id),
-      requestSemanticLabel: (profile) =>
-          _model.stateFor(profile.id) == DraftJourneyState.sent
-          ? 'Request sent. Tap to cancel request'
-          : _invitationLabel(profile.id),
-      invitationSent: (profile) =>
-          _model.stateFor(profile.id) == DraftJourneyState.sent,
-      // Photo browsing stays inside the approved bounded card.
-      onProfile: null,
-      onRequest: (profile) {
-        if (!current() || profile.id != displayed.id) {
-          ZyraInteractionStyle.cancelSelectionTap();
-          return;
-        }
-        _toggleInvitation(profile.id);
-      },
+        },
+        onPrevious: previous == null
+            ? null
+            : _bound(
+                () => _act(() {
+                  final id = _browseHistory.back();
+                  if (id != null) _showBrowseVisit(previous, id);
+                }),
+              ),
+        onNext: next == null
+            ? null
+            : _bound(
+                () => _act(() {
+                  final id = people[next].id;
+                  if (replays) {
+                    _browseHistory.forwardReplay();
+                  } else {
+                    _browseHistory.discardForwardReplay();
+                    _browseHistory.appendFrontier(id);
+                  }
+                  _showBrowseVisit(next, id);
+                }),
+              ),
+        canRequest: (profile) => _canToggleInvitation(profile.id),
+        requestLabel: (profile) => _invitationLabel(profile.id),
+        requestSemanticLabel: (profile) =>
+            _model.stateFor(profile.id) == DraftJourneyState.sent
+            ? 'Request sent. Tap to cancel request'
+            : _invitationLabel(profile.id),
+        invitationSent: (profile) =>
+            _model.stateFor(profile.id) == DraftJourneyState.sent,
+        // Photo browsing stays inside the approved bounded card.
+        onProfile: null,
+        onRequest: (profile) {
+          if (!current() || profile.id != displayed.id) {
+            ZyraInteractionStyle.cancelSelectionTap();
+            return;
+          }
+          _toggleInvitation(profile.id);
+        },
+      ),
     );
   }
 
@@ -4095,6 +4146,7 @@ class _ZyraOneJourneyConceptShellState
             useLegacyFixture: true,
           ),
           portrait: _journeyBioPortrait(person),
+          galleryButton: _journeyBioGalleryButton(person),
         ),
       );
     }
@@ -7404,6 +7456,9 @@ class _ZyraOneJourneyConceptShellState
         if (fresh()) _tabTo(index);
       },
       showMyZyraActivity: _hasNewMyZyraTabActivity,
+      loadProfileVideo: seekerPlan == ZyraPlan.one
+          ? _fixtureProfileVideoLoader
+          : null,
     );
   }
 
@@ -7894,6 +7949,10 @@ class _ZyraOneJourneyConceptShellState
     final preferences = page == 'filter_preferences'
         ? _accountSession.compatibility.load('draft-self')
         : null;
+    final videoFixture = !guardian && identical(widget.fixture, _fixtureOwner)
+        ? _fixtureOwner
+        : null;
+    final videoStore = videoFixture?.profileVideoStore;
     final navigator = GlobalKey<NavigatorState>();
     _accountNavigator = navigator;
     _accountLeafRevision = revision;
@@ -7979,6 +8038,23 @@ class _ZyraOneJourneyConceptShellState
                 initialAlignmentY: _accountSession.avatar(guardian).dy,
                 onPhotosChanged: photosChanged,
                 onAvatarChanged: avatarChanged,
+                profileVideo: videoStore == null
+                    ? null
+                    : (
+                        store: videoStore,
+                        media: videoFixture!.profileVideoMedia,
+                        basic: _seekerMembership == 'Seeker Basic',
+                        canAct: () =>
+                            identical(widget.fixture, videoFixture) &&
+                            _fixtureAccount ==
+                                (ZyraAccountState.userId,
+                                 ZyraAccountState.generation),
+                        onUpgrade: () {
+                          if (current() && _fixtureIsCurrent()) {
+                            _open('one_upgrade');
+                          }
+                        },
+                      ),
               ),
               _ => _unavailable(),
             },
@@ -8183,6 +8259,101 @@ class _ZyraOneJourneyConceptShellState
     );
   }
 
+  bool get _bioGalleryEnabled =>
+      identical(widget.fixture, _fixtureOwner) &&
+      (_fixtureOwner?.profileVideoLoader != null ||
+          _fixtureOwner?.profileVideoStore != null);
+
+  bool _canOpenBioGallery(String ownerId, String page, int revision) =>
+      _bioGalleryEnabled &&
+      _fixtureIsCurrent() &&
+      _uiRevision == revision &&
+      _page == page &&
+      _personId == ownerId &&
+      switch (page) {
+        'bio' =>
+          _canViewJourneyBio(ownerId) && _model.canViewJourneyBio(ownerId),
+        'ended_bio' => _canViewEndedBio(ownerId),
+        'journey' =>
+          _canAddressJourneyDisclosure(ownerId) &&
+              _model.canParticipateInJourney(ownerId) &&
+              _model.isBioStepOpen(ownerId) &&
+              _model.bioRevealed(ownerId),
+        _ => false,
+      };
+
+  DraftProfile? get _currentBioGallery {
+    final gallery = _bioGallery;
+    return gallery != null &&
+            _canOpenBioGallery(gallery.ownerId, gallery.page, gallery.revision)
+        ? _person
+        : null;
+  }
+
+  List<String> _journeyBioPhotos(DraftProfile person) => _displayProfile(person)
+      .photos
+      .where(_browsePhotoRenderer.isReady)
+      .toList(growable: false);
+
+  Widget? _journeyBioGalleryButton(DraftProfile person) {
+    final page = _page;
+    final revision = _uiRevision;
+    final id = person.id;
+    if (page == null ||
+        !_canOpenBioGallery(id, page, revision) ||
+        _journeyBioPhotos(person).isEmpty) {
+      return null;
+    }
+
+    return ZyraProfileVideoAccess(
+      ownerId: id,
+      load: _fixtureProfileVideoLoader,
+      builder: (context, video) => ZyraFloatingSurface(
+        radius: 999,
+        child: TextButton(
+          key: const ValueKey('journey-bio-gallery-button'),
+          style: TextButton.styleFrom(
+            foregroundColor: ZyraColors.espresso,
+            backgroundColor: const Color(0xFFFBF7F0),
+            padding: const EdgeInsets.symmetric(horizontal: 14),
+            minimumSize: const Size(0, 34),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            textStyle: ZyraText.body(size: 12.5),
+          ),
+          onPressed: ZyraTapFeedback.onTap(
+            context,
+            () => setState(
+              () => _bioGallery = (ownerId: id, page: page, revision: revision),
+            ),
+            canAct: () => _canOpenBioGallery(id, page, revision),
+          ),
+          child: Text(video == null ? 'Photos ›' : 'Photos & video ›'),
+        ),
+      ),
+    );
+  }
+
+  Widget _journeyBioGallery(DraftProfile person) {
+    final gallery = _bioGallery!;
+    bool canAct() =>
+        _bioGallery == gallery &&
+        _canOpenBioGallery(gallery.ownerId, gallery.page, gallery.revision);
+    return ZyraProfileVideoAccess(
+      key: ValueKey(('bio-gallery', gallery)),
+      ownerId: person.id,
+      load: _fixtureProfileVideoLoader,
+      builder: (context, video) => ZyraFullScreenProfileGallery(
+        photos: _journeyBioPhotos(person),
+        video: video,
+        photoBuilder: _browsePhotoRenderer.build,
+        canAct: canAct,
+        onClose: () {
+          if (canAct()) setState(() => _bioGallery = null);
+        },
+      ),
+    );
+  }
+
   Widget _bio() {
     final person = _person;
     if (person == null || !_canAddressJourneyDisclosure(person.id)) {
@@ -8217,6 +8388,7 @@ class _ZyraOneJourneyConceptShellState
         useLegacyFixture: true,
       ),
       portrait: _journeyBioPortrait(person),
+      galleryButton: _journeyBioGalleryButton(person),
     );
   }
 
@@ -8265,6 +8437,7 @@ class _ZyraOneJourneyConceptShellState
                   useLegacyFixture: true,
                 ),
                 portrait: _journeyBioPortrait(person),
+                galleryButton: _journeyBioGalleryButton(person),
                 ownedViewport: false,
                 showTitle: false,
               )

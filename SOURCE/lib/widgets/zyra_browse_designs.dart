@@ -24,6 +24,7 @@ import 'zyra_browse_options_button.dart';
 import 'zyra_browse_next_photo_motion.dart';
 import 'zyra_invitation_outline.dart';
 import 'zyra_profile_details_page.dart';
+import 'zyra_profile_video_player.dart';
 import 'zyra_profiles_components.dart';
 import 'zyra_swipe_track.dart';
 
@@ -95,6 +96,7 @@ class ZyraBrowseDesigns extends StatefulWidget {
     this.initialGalleryIndices = const <String, int>{},
     this.onGalleryIndexChanged,
     this.ownPreviewActions,
+    this.profileVideo,
   });
 
   /// The owner sees the live card with local photo taps and an informational
@@ -106,6 +108,7 @@ class ZyraBrowseDesigns extends StatefulWidget {
     required bool Function() canAct,
     required VoidCallback showRequestInfo,
     ZyraHapticLevel? hapticLevel,
+    ZyraProfileVideoPlayback? profileVideo,
   }) : this(
          key: key,
          profiles: [profile],
@@ -115,11 +118,15 @@ class ZyraBrowseDesigns extends StatefulWidget {
          readOnlyPreview: true,
          showFeedChrome: false,
          hapticLevel: hapticLevel,
+         profileVideo: profileVideo,
          ownPreviewActions: (canAct: canAct, requestInfo: showRequestInfo),
        );
 
   final List<SeekerProfile> profiles;
   final ZyraBrowsePhotoBuilder photoBuilder;
+
+  /// Approved media for the currently selected profile only.
+  final ZyraProfileVideoPlayback? profileVideo;
 
   /// Own-profile presentation only. Shows inert feed controls, without menu;
   /// this flag never supplies profile data or changes disclosure authority.
@@ -212,8 +219,11 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
             .profiles[widget.selectedIndex.clamp(0, widget.profiles.length - 1)]
             .id;
 
+  ZyraProfileVideoPlayback? _videoFor(SeekerProfile profile) =>
+      profile.id == _selectedId ? widget.profileVideo : null;
+
   int _galleryPageCount(SeekerProfile profile) =>
-      math.max(1, profile.photos.length + 1);
+      1 + profile.photos.length + (_videoFor(profile) == null ? 0 : 1);
 
   int _galleryIndex(SeekerProfile profile) => (_galleryIndices[profile.id] ?? 0)
       .clamp(0, _galleryPageCount(profile) - 1);
@@ -259,8 +269,8 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
     onGallery?.call(profile.id, index);
     // A caller may withdraw this presenter from its first callback. Never
     // borrow a replacement photo delegate or publish after that withdrawal.
-    if (profile.photos.isNotEmpty &&
-        index >= 1 &&
+    if (index >= 1 &&
+        index <= profile.photos.length &&
         mounted &&
         revision == _layoutRevision &&
         _isCurrent(profile) &&
@@ -374,6 +384,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
     final revision = _layoutRevision;
     final swipe = widget.profileSwipe;
     final preview = widget.ownPreviewActions;
+    final video = neighbour ? null : _videoFor(profile);
     final avatarPhotoSize = ZyraProfileDetailsPage.photoSizeFor(
       profile.seekerPlan,
       showUnverifiedRing: preview == null,
@@ -383,12 +394,13 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
       profileId: profile.id,
       hapticLevel: widget.hapticLevel,
       photoSources: List<String>.unmodifiable(profile.photos),
+      profileVideo: video,
       photoCount: _galleryPageCount(profile),
       selectedIndex: neighbour ? 0 : _galleryIndex(profile),
       height: height,
       // Only the outer Current viewport is rounded. Sliding photos retain
       // their existing full bounds and seam geometry.
-      photo: (index) => index == 0
+      photo: (index, active) => index == 0
           ? ZyraProfileDetailsPage(
               profile: profile,
               showUnverifiedRing: preview == null,
@@ -404,6 +416,12 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
                       height: avatarPhotoSize,
                       alignment: ZyraProfileDetailsPage.photoAlignment,
                     ),
+            )
+          : video != null && index == profile.photos.length + 1
+          ? ZyraProfileVideoPage(
+              video: video,
+              active: active && (preview?.canAct() ?? swipe?.canAct() ?? true),
+              placeholder: _studyPhoto(profile, 0, height, rounded: false),
             )
           : Stack(
               fit: StackFit.expand,
@@ -840,7 +858,9 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
         revision == _layoutRevision &&
         profile != null &&
         _isCurrent(profile) &&
-        (widget.profileSwipe?.canAct() ?? true) &&
+        (widget.ownPreviewActions?.canAct() ??
+            widget.profileSwipe?.canAct() ??
+            true) &&
         !_profileTrack.isMoving;
     return SizedBox(
       height: 24,
@@ -1009,12 +1029,20 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
         ? null
         : profiles[widget.selectedIndex.clamp(0, profiles.length - 1)];
     if (widget.ownPreviewActions != null && current != null) {
-      return LayoutBuilder(
+      final card = LayoutBuilder(
         builder: (context, constraints) => KeyedSubtree(
           key: const ValueKey('concept_browse_portrait_card'),
           child: _portraitCard(current, constraints.maxHeight),
         ),
       );
+      return _videoFor(current) == null
+          ? card
+          : Column(
+              children: [
+                _photoPagination(current),
+                Expanded(child: card),
+              ],
+            );
     }
     return _portraitPage(current);
   }
@@ -1028,6 +1056,7 @@ class _BrowsePhotoPager extends StatefulWidget {
     required this.profileId,
     this.hapticLevel,
     required this.photoSources,
+    required this.profileVideo,
     required this.photoCount,
     required this.selectedIndex,
     required this.height,
@@ -1041,10 +1070,11 @@ class _BrowsePhotoPager extends StatefulWidget {
   final String profileId;
   final ZyraHapticLevel? hapticLevel;
   final List<String> photoSources;
+  final ZyraProfileVideoPlayback? profileVideo;
   final int photoCount;
   final int selectedIndex;
   final double height;
-  final Widget Function(int) photo;
+  final Widget Function(int, bool) photo;
   final ValueChanged<int> onPageChanged;
   final bool tapToAdvance;
   final bool allowPhotoDrag;
@@ -1137,6 +1167,7 @@ class _BrowsePhotoPagerState extends State<_BrowsePhotoPager>
     final sourceChanged =
         oldWidget.profileId != widget.profileId ||
         oldWidget.tapToAdvance != widget.tapToAdvance ||
+        oldWidget.profileVideo != widget.profileVideo ||
         !listEquals(oldWidget.photoSources, widget.photoSources);
     final externalSelection =
         oldWidget.selectedIndex != widget.selectedIndex &&
@@ -1204,7 +1235,7 @@ class _BrowsePhotoPagerState extends State<_BrowsePhotoPager>
       ++_motionEpoch;
       setState(() {
         _tapTargetIndex = index;
-        _wrapPhoto = widget.photo(visible);
+        _wrapPhoto = widget.photo(visible, false);
         _configureWrapMotion(cyclicDirection);
       });
       _controller.jumpToPage(index);
@@ -1259,7 +1290,7 @@ class _BrowsePhotoPagerState extends State<_BrowsePhotoPager>
           ? null
           : const NeverScrollableScrollPhysics(),
       onPageChanged: onPageChanged,
-      itemBuilder: (_, index) => widget.photo(index),
+      itemBuilder: (_, index) => widget.photo(index, index == selected),
     );
     if (widget.tapToAdvance) {
       pager = SlideTransition(
@@ -1299,6 +1330,9 @@ class _BrowsePhotoPagerState extends State<_BrowsePhotoPager>
     return Semantics(
       label: widget.selectedIndex == 0
           ? 'Profile details'
+          : widget.profileVideo != null &&
+                widget.selectedIndex == widget.photoCount - 1
+          ? 'Video · no sound'
           : widget.photoSources.isEmpty
           ? 'No photos available'
           : 'Photo ${widget.selectedIndex} of ${widget.photoSources.length}',

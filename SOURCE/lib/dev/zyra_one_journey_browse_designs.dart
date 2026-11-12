@@ -10,6 +10,7 @@ import '../theme/zyra_text.dart';
 import '../widgets/zyra_browse_designs.dart';
 import '../widgets/zyra_browse_next_photo_motion.dart';
 import '../widgets/zyra_profile_image.dart';
+import '../widgets/zyra_profile_video_player.dart';
 import '../widgets/zyra_tap_feedback.dart';
 
 export '../widgets/zyra_browse_designs.dart' show ZyraOneJourneyBrowseDesign;
@@ -60,6 +61,7 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
     this.onPhotoIndexChanged,
     this.initialGalleryIndices = const <String, int>{},
     this.onGalleryIndexChanged,
+    this.profileVideo,
   });
 
   final List<SeekerProfile> profiles;
@@ -95,6 +97,7 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
   // Gallery seeds use the selected layout. An explicit seed takes precedence.
   final Map<String, int> initialGalleryIndices;
   final void Function(String, int)? onGalleryIndexChanged;
+  final ZyraProfileVideoPlayback? profileVideo;
 
   @override
   State<ZyraOneJourneyBrowseDesigns> createState() =>
@@ -146,6 +149,7 @@ class _ZyraOneJourneyBrowseDesignsState
     onPhotoIndexChanged: widget.onPhotoIndexChanged,
     initialGalleryIndices: widget.initialGalleryIndices,
     onGalleryIndexChanged: widget.onGalleryIndexChanged,
+    profileVideo: widget.profileVideo,
   );
 }
 

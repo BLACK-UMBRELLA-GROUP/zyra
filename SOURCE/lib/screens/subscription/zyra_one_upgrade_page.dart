@@ -15,10 +15,12 @@ class ZyraOneUpgradePage extends StatelessWidget {
     required this.canContinue,
     required this.onBack,
     this.includesPreviewComparisons = false,
+    this.includesProfileVideo = false,
   });
 
   final bool guardian;
   final bool includesPreviewComparisons;
+  final bool includesProfileVideo;
   final bool Function() canContinue;
   final VoidCallback onBack;
 
@@ -29,6 +31,7 @@ class ZyraOneUpgradePage extends StatelessWidget {
       ('Compatibility score', 'Overall score', 'Every topic'),
       ('Filters', 'Age and location', 'All filters'),
     ],
+    if (includesProfileVideo) ('Profile video', '—', '1 silent video'),
     ('Guardians', '1 on Guardian Basic', 'Any 10'),
     ('Look again at declined profiles', '—', 'Up to 10'),
     ('Chaperoned video calls', '—', 'Coming later'),

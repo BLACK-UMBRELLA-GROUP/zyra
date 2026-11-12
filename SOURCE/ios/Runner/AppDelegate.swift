@@ -10,6 +10,7 @@ import LocalAuthentication
 @objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
   private var appIconChannel: FlutterMethodChannel?
   private var profilePhotoChannel: FlutterMethodChannel?
+  private var profileVideoChannel: FlutterMethodChannel?
   private var roughLocation: ZyraRoughLocation?
   private var phoneAccess: ZyraPhoneAccess?
 
@@ -129,6 +130,9 @@ import LocalAuthentication
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
     roughLocation = ZyraRoughLocation(messenger: engineBridge.applicationRegistrar.messenger())
     phoneAccess = ZyraPhoneAccess(messenger: engineBridge.applicationRegistrar.messenger())
+    profileVideoChannel = ProfileVideoChannel.register(
+      messenger: engineBridge.applicationRegistrar.messenger()
+    )
 
     let photoChannel = FlutterMethodChannel(
       name: "app.zyraconnect.zyra/profile_photo",

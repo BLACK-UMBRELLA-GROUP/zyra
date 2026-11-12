@@ -124,6 +124,7 @@ class ZyraDraftJourneyBioPresentation extends StatelessWidget {
     required this.firstName,
     required this.projection,
     this.portrait,
+    this.galleryButton,
     this.ownedViewport = true,
     this.showTitle = true,
     this.showProfileHeader = true,
@@ -133,6 +134,7 @@ class ZyraDraftJourneyBioPresentation extends StatelessWidget {
   final String firstName;
   final ZyraDraftJourneyBioProjection? projection;
   final Widget? portrait;
+  final Widget? galleryButton;
   final bool ownedViewport;
   final bool showTitle;
   final bool showProfileHeader;
@@ -168,6 +170,7 @@ class ZyraDraftJourneyBioPresentation extends StatelessWidget {
             // A mismatched or unavailable projection must not paint another
             // subject's supplied portrait either.
             portrait: admitted == null ? null : portrait,
+            galleryButton: admitted == null ? null : galleryButton,
           ),
           const SizedBox(height: 24),
         ],
@@ -232,11 +235,13 @@ class _ProfileHeader extends StatelessWidget {
     required this.subjectId,
     required this.firstName,
     this.portrait,
+    this.galleryButton,
   });
 
   final String subjectId;
   final String firstName;
   final Widget? portrait;
+  final Widget? galleryButton;
 
   @override
   Widget build(BuildContext context) {
@@ -264,7 +269,9 @@ class _ProfileHeader extends StatelessWidget {
       ),
     );
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: galleryButton == null
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start,
       children: [
         ExcludeSemantics(
           child: SizedBox(width: 88, height: 108, child: portraitSurface),
@@ -291,6 +298,10 @@ class _ProfileHeader extends StatelessWidget {
                   ),
                 ),
               ),
+              if (galleryButton != null) ...[
+                const SizedBox(height: 10),
+                galleryButton!,
+              ],
             ],
           ),
         ),

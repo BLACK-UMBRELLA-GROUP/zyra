@@ -3,6 +3,7 @@ import '../../widgets/zyra_tap_feedback.dart';
 import '../../widgets/zyra_profiles_components.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show listEquals;
@@ -20,6 +21,7 @@ import '../../services/zyra_internal_preview_client.dart';
 import '../../services/zyra_local_prefs.dart';
 import '../../services/zyra_photo_service.dart';
 import '../../services/zyra_profile_photo_processor.dart';
+import '../../services/zyra_profile_video_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_interaction_style.dart';
@@ -31,6 +33,7 @@ import '../../widgets/zyra_state_widgets.dart';
 import 'avatar_adjust_screen.dart';
 import 'photo_crop_review_screen.dart';
 import 'zyra_photo_batch_flow.dart';
+import 'zyra_manage_profile_video.dart';
 
 class EditPhotosScreen extends StatefulWidget {
   const EditPhotosScreen({super.key, this.photoBatchRunner})
@@ -42,6 +45,8 @@ class EditPhotosScreen extends StatefulWidget {
       _initialAlignmentY = 0,
       _onPhotosChanged = null,
       _onAvatarChanged = null,
+      profileVideo = null,
+      initialPage = 0,
       localPhotoImport = null,
       hapticLevel = null,
       embedded = false;
@@ -62,6 +67,8 @@ class EditPhotosScreen extends StatefulWidget {
     this.photoBatchRunner,
     this.localPhotoImport,
     this.embedded = true,
+    this.profileVideo,
+    this.initialPage = 0,
   }) : _preview = true,
        // ignore: prefer_initializing_formals
        _canAct = canAct,
@@ -89,6 +96,15 @@ class EditPhotosScreen extends StatefulWidget {
   final ZyraHapticLevel? hapticLevel;
   final bool embedded;
   final ZyraLocalPhotoImport? localPhotoImport;
+  final ({
+    ZyraProfileVideoStore store,
+    ZyraProfileVideoMedia media,
+    bool basic,
+    bool Function() canAct,
+    VoidCallback onUpgrade,
+  })?
+  profileVideo;
+  final int initialPage;
 
   @visibleForTesting
   final ZyraPhotoBatchRunner? photoBatchRunner;
@@ -131,6 +147,7 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
 
   String? _progressLabel;
   late final PageController _pageController = PageController(
+    initialPage: _currentPage,
     viewportFraction: 0.98,
   );
   int _currentPage = 0;
@@ -294,12 +311,17 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
   void _saveAvatar(Offset alignment) {
     if (!_canUse) return;
     if (_previewMode) {
-      _alignmentX = alignment.dx.clamp(-1.0, 1.0).toDouble();
-      _alignmentY = alignment.dy.clamp(-1.0, 1.0).toDouble();
-      _onAvatarChanged!(Offset(_alignmentX, _alignmentY));
+      _publishPreviewAvatar(alignment);
     } else {
       AppState.instance.setAvatarAlignment(x: alignment.dx, y: alignment.dy);
     }
+  }
+
+  void _publishPreviewAvatar(Offset alignment) {
+    if (!_ownerCanAct) return;
+    _alignmentX = alignment.dx.clamp(-1.0, 1.0).toDouble();
+    _alignmentY = alignment.dy.clamp(-1.0, 1.0).toDouble();
+    _onAvatarChanged!(Offset(_alignmentX, _alignmentY));
   }
 
   Future<Uint8List> _preparePhoto(String photo) async {
@@ -342,6 +364,11 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
           initial.length > _maximumPhotos ||
           initial.any((photo) => !_localPhotoReference(photo));
       if (!_previewRevoked) _photos.addAll(initial);
+      _currentPage = widget.initialPage.clamp(
+        0,
+        math.max(0, _photos.length - 1),
+      );
+      _compactSelected = _currentPage;
       _alignmentX = widget._initialAlignmentX.clamp(-1.0, 1.0).toDouble();
       _alignmentY = widget._initialAlignmentY.clamp(-1.0, 1.0).toDouble();
       _loading = false;
@@ -901,6 +928,10 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
     if ((_previewMode && !_ownerCanAct) || widget._preview != _previewMode) {
       return const SizedBox.expand(key: ValueKey('photos-preview-unavailable'));
     }
+    final video = widget.profileVideo;
+    if (_previewMode && video != null) {
+      return _videoGrid(video);
+    }
     final page = ZyraTapFeedback(
       level: () => _feedbackLevel,
       canAct: () => mounted,
@@ -1118,6 +1149,178 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
           gradient: ZyraColors.genderGradient(gender),
         ),
         child: page,
+      ),
+    );
+  }
+
+  Widget _videoGrid(
+    ({
+      ZyraProfileVideoStore store,
+      ZyraProfileVideoMedia media,
+      bool basic,
+      bool Function() canAct,
+      VoidCallback onUpgrade,
+    })
+    video,
+  ) {
+    final slots = math.max(_maximumNewPhotos, _photos.length);
+    final rows = (slots + 2) ~/ 2;
+    return Material(
+      color: Colors.transparent,
+      child: ZyraTapFeedback(
+        level: () => _feedbackLevel,
+        canAct: () => _ownerCanAct,
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+                child: Text(
+                  'Photos',
+                  key: const ValueKey('photos-title'),
+                  style: ZyraText.heading(size: 28),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+                child: Text(
+                  '4 photo spaces available${video.basic ? '' : ' · 1 video space'}',
+                  style: ZyraText.subtext(),
+                ),
+              ),
+              if (_error != null)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+                  child: ZyraErrorBanner(
+                    message: _error!,
+                    referenceCode: _errorReference,
+                    onDismiss: () {
+                      if (_canUse) setState(() => _error = null);
+                    },
+                  ),
+                ),
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, limits) {
+                    final minRow = MediaQuery.textScalerOf(context).scale(114);
+                    final rowHeight = math.max(
+                      minRow,
+                      (limits.maxHeight - 16 - 12 * (rows - 1)) / rows,
+                    );
+                    final tiles = <Widget>[
+                      for (var i = 0; i < slots; i++) _gridPhoto(i),
+                      ZyraManageProfileVideo(
+                        key: ValueKey((video.store, video.basic)),
+                        basic: video.basic,
+                        store: video.store,
+                        media: video.media,
+                        canAct: () => _ownerCanAct && video.canAct(),
+                        onUpgrade: () {
+                          if (_canUse) video.onUpgrade();
+                        },
+                      ),
+                    ];
+                    return SingleChildScrollView(
+                      key: const ValueKey('profile-video-photos-grid'),
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+                      child: Column(
+                        children: [
+                          for (var i = 0; i < rows; i++) ...[
+                            if (i != 0) const SizedBox(height: 12),
+                            SizedBox(
+                              height: rowHeight,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Expanded(child: tiles[i * 2]),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: i * 2 + 1 < tiles.length
+                                        ? tiles[i * 2 + 1]
+                                        : const SizedBox(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _gridPhoto(int index) {
+    if (index >= _photos.length) {
+      return ZyraPhotoGridTile(
+        label: 'Add photo',
+        onTap: _working ? null : _addPhoto,
+        child: const Center(
+          child: Icon(Icons.add, size: 34, color: ZyraColors.journeyGold),
+        ),
+      );
+    }
+    final main = index == 0;
+    return ZyraPhotoGridTile(
+      main: main,
+      label: main ? 'Main photo' : 'Photo ${index + 1}',
+      onTap: _working ? null : () => _openPhotoGallery(index),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          _retainedPhotoImage(_photos[index]),
+          if (main)
+            Positioned(
+              right: 10,
+              bottom: 10,
+              child: Container(
+                width: 26,
+                height: 26,
+                decoration: const BoxDecoration(
+                  color: ZyraColors.goldTextFill,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.check,
+                  size: 14,
+                  color: ZyraColors.espresso,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  void _openPhotoGallery(int index) {
+    if (!_canUse) return;
+    Navigator.of(context).push<void>(
+      MaterialPageRoute(
+        builder: (_) => EditPhotosScreen.preview(
+          canAct: () => _ownerCanAct,
+          initialPhotos: List<String>.of(_photos),
+          initialPage: index,
+          gender: _previewGender,
+          initialAlignmentX: _alignmentX,
+          initialAlignmentY: _alignmentY,
+          onPhotosChanged: (photos) {
+            if (!_ownerCanAct) return;
+            setState(() => _apply(photos));
+            _onPhotosChanged?.call(photos);
+          },
+          onAvatarChanged: _publishPreviewAvatar,
+          hapticLevel: _feedbackLevel,
+          photoBatchRunner: widget.photoBatchRunner,
+          localPhotoImport: widget.localPhotoImport,
+          embedded: false,
+        ),
       ),
     );
   }

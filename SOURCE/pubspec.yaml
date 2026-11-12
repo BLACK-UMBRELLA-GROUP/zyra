@@ -47,6 +47,7 @@ dependencies:
   # OA-104 — real device photo picking for the Chapter 2 Photos step,
   # replacing the mock 6-photo picsum pool.
   image_picker: ^1.1.2
+  video_player: 2.11.1
 
   # ZYRA profile-photo composer. Embeds the crop surface inside ZYRA's own
   # UI so members can position each selected photo in the same 3:4 portrait

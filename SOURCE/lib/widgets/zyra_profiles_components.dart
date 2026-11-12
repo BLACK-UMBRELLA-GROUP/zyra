@@ -350,6 +350,8 @@ class ZyraProfilesDots extends StatelessWidget {
     required this.index,
     required this.dotKey,
     this.activeWidth = 30,
+    this.activeColor,
+    this.inactiveColor,
     this.size = 6,
     this.lift = 0,
     this.onSelected,
@@ -362,6 +364,7 @@ class ZyraProfilesDots extends StatelessWidget {
   final int count, index;
   final Key Function(int) dotKey;
   final double activeWidth, size, lift;
+  final Color? activeColor, inactiveColor;
   final ValueChanged<int>? onSelected;
   final bool Function()? canAct;
   final bool Function()? canSelect;
@@ -420,8 +423,8 @@ class ZyraProfilesDots extends StatelessWidget {
                   height: size,
                   decoration: BoxDecoration(
                     color: i == index
-                        ? ZyraColors.journeyGold
-                        : ZyraColors.ink(.35),
+                        ? activeColor ?? ZyraColors.journeyGold
+                        : inactiveColor ?? ZyraColors.ink(.35),
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
