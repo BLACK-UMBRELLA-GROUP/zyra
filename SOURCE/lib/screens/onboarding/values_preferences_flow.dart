@@ -87,6 +87,7 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
   final Map<String, dynamic> _ch3Answers = {};
   final Map<String, Map<String, TrafficLight>> _ch4Preferences = {};
   final Map<String, Set<String>> _ch4HardRequirement = {};
+  Set<ZyraPreferenceOption> _canonicalAmberOptions = const {};
 
   // A revoked preview is denied, never reclassified as a live signup.
   bool get _devPreview => widget.devPreview;
@@ -171,6 +172,7 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
       if (snapshot == null) return;
 
       AppState.instance.saveJourneyBio(snapshot.journeyBio);
+      _canonicalAmberOptions = snapshot.canonicalAmberOptions;
       for (final category in chapter3Categories) {
         for (final question in category.questions) {
           final persisted = ZyraOnboardingAnswersService.persistedQuestionId(
@@ -294,6 +296,7 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
       ch3Answers: _ch3Answers,
       ch4Preferences: _ch4Preferences,
       ch4HardRequirements: _ch4HardRequirement,
+      canonicalAmberOptions: _canonicalAmberOptions,
       expectedUserId: _ownerId,
     );
   }
@@ -611,7 +614,7 @@ class _ValuesPreferencesFlowState extends State<ValuesPreferencesFlow> {
         eyebrow: 'COMPATIBILITY · PART 2',
         title: 'Partner Preferences',
         description:
-            'Move through the same sections again and set what you prefer, feel neutral about or would rather avoid.',
+            'Move through the same sections again and choose what you prefer, what you’re open to, or what isn’t for you.',
         count: '11',
         countLabel: 'scrolling sections',
         continueLabel: 'Begin Partner Preferences',
@@ -804,8 +807,8 @@ class _PreferenceGuideScreen extends StatelessWidget {
                 SizedBox(height: 10),
                 const _PreferenceMeaningRow(
                   color: ZyraColors.journeyGold,
-                  title: 'No preference',
-                  description: 'You neither prefer nor avoid this.',
+                  title: 'Open to this',
+                  description: 'You’d consider this in a partner.',
                 ),
                 SizedBox(height: 10),
                 const _PreferenceMeaningRow(

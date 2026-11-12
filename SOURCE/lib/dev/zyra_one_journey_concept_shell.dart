@@ -140,6 +140,7 @@ class ZyraOneJourneyShellFixture {
     this.onCheckpoint,
     this.profileVideoStore,
     this.profileVideoMedia = const ZyraProfileVideoMedia(),
+    this.legacyAmberQuickCheck = false,
   });
 
   final ViewRequestDraftModel? model;
@@ -166,6 +167,7 @@ class ZyraOneJourneyShellFixture {
   final ValueChanged<ZyraPreviewNavigationCheckpoint>? onCheckpoint;
   final ZyraProfileVideoStore? profileVideoStore;
   final ZyraProfileVideoMedia profileVideoMedia;
+  final bool legacyAmberQuickCheck;
 }
 
 /// One caller-owned fixture update. No account or disclosure grant is carried.
@@ -775,6 +777,7 @@ class _ZyraOneJourneyConceptShellState
       palette: ZyraColors.devPalette,
       hapticLevel: ZyraInteractionStyle.hapticLevel,
       goldEnabled: false,
+      legacyAmberQuickCheck: _fixtureOwner?.legacyAmberQuickCheck == true,
     )..addListener(_accountChanged);
     _syncLocationOrigins();
     if (!sameRole && widget.initialSeekerBasic) {
@@ -1822,6 +1825,7 @@ class _ZyraOneJourneyConceptShellState
         [
           'filters',
           'filter_preferences',
+          'preference_quick_check',
           'settings',
           'phone_access',
           'edit_profile',
@@ -2143,6 +2147,7 @@ class _ZyraOneJourneyConceptShellState
     'phone_access' => _phoneAccess(),
     'edit_profile' ||
     'manage_photos' ||
+    'preference_quick_check' ||
     'filter_preferences' => _retainedAccountLeaf(),
     'membership' => _membershipView(),
     'one_upgrade' => ZyraOneUpgradePage(
@@ -5239,6 +5244,18 @@ class _ZyraOneJourneyConceptShellState
               _publishCheckpoint();
             })(),
             items: [
+              if (!_guardianRole &&
+                  _accountSession.compatibility.hasPreferencesToCheck)
+                ZyraFocusItem(
+                  id: 'preference-quick-check',
+                  icon: Icons.check,
+                  title: 'A few preferences need a quick check',
+                  detail:
+                      'The amber light now means “Open to this”. Tap each one again so it counts.',
+                  actionLabel: 'Check now',
+                  actionKey: 'focus-open-preference-quick-check',
+                  onAction: action(() => _open('preference_quick_check')),
+                ),
               for (final event in events)
                 ZyraFocusItem(
                   id: event.tokens.join('|'),
@@ -7924,6 +7941,7 @@ class _ZyraOneJourneyConceptShellState
   bool get _isRetainedAccountPage => const [
     'edit_profile',
     'filter_preferences',
+    'preference_quick_check',
     'manage_photos',
   ].contains(_page);
 
@@ -7946,9 +7964,6 @@ class _ZyraOneJourneyConceptShellState
     final guardian = _guardianRole;
     final page = _page;
     final tab = _tab;
-    final preferences = page == 'filter_preferences'
-        ? _accountSession.compatibility.load('draft-self')
-        : null;
     final videoFixture = !guardian && identical(widget.fixture, _fixtureOwner)
         ? _fixtureOwner
         : null;
@@ -7963,6 +7978,35 @@ class _ZyraOneJourneyConceptShellState
         page == _page &&
         tab == _tab &&
         _accountSession.current;
+    final compatibility = _accountSession.compatibility;
+    Future<(ZyraCompatibilityDraft, ZyraPreferenceQuickCheck)>
+    loadPreferences() async {
+      final snapshot = await compatibility.load('draft-self');
+      final items = await compatibility.lightsNeedingReconfirmation(
+        'draft-self',
+      );
+      return (
+        ZyraCompatibilityDraft.fromSnapshot(gender: 'male', snapshot: snapshot),
+        ZyraPreferenceQuickCheck(
+          items: items,
+          setup: await compatibility.loadSetupPreferenceLights('draft-self'),
+          confirm: (option, light) async {
+            if (!current()) throw StateError('The preview account changed.');
+            await compatibility.confirmPreferenceLight(
+              'draft-self',
+              option,
+              light,
+            );
+          },
+        ),
+      );
+    }
+
+    final preferences =
+        !guardian &&
+            (page == 'filter_preferences' || page == 'preference_quick_check')
+        ? loadPreferences()
+        : null;
     void back() {
       if (current()) _back();
     }
@@ -7998,28 +8042,32 @@ class _ZyraOneJourneyConceptShellState
           child: ListenableBuilder(
             listenable: _accountSession,
             builder: (_, _) => switch (page) {
-              'filter_preferences' => FutureBuilder(
+              'filter_preferences' || 'preference_quick_check' => FutureBuilder(
                 future: preferences,
-                builder: (_, snapshot) =>
-                    snapshot.connectionState != ConnectionState.done
-                    ? const ZyraLoading()
-                    : CompatibilityEditorScreen.preview(
-                        kind: CompatibilityEditorKind.trafficLights,
-                        initialDraft: ZyraCompatibilityDraft.fromSnapshot(
-                          gender: 'male',
-                          snapshot: snapshot.data,
-                        ),
-                        onPreviewReturn: (_) => back(),
-                        canAct: current,
-                        canActChanges: _accountSession,
-                        onPersist: (draft) async =>
-                            current() &&
-                            await _accountSession.compatibility.save(
-                              'draft-self',
-                              draft,
-                            ) &&
-                            current(),
-                      ),
+                builder: (_, snapshot) {
+                  if (guardian || !current()) return const SizedBox.shrink();
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return const ZyraLoading();
+                  }
+                  final data = snapshot.data;
+                  if (data == null) return const SizedBox.shrink();
+                  return CompatibilityEditorScreen.preview(
+                    kind: CompatibilityEditorKind.trafficLights,
+                    initialDraft: data.$1,
+                    quickCheck: data.$2,
+                    openQuickCheck: page == 'preference_quick_check',
+                    onPreviewReturn: (_) => back(),
+                    canAct: current,
+                    canActChanges: _accountSession,
+                    onPersist: (draft) async =>
+                        current() &&
+                        await _accountSession.compatibility.save(
+                          'draft-self',
+                          draft,
+                        ) &&
+                        current(),
+                  );
+                },
               ),
               'edit_profile' => EditProfileScreen.preview(
                 repository: _accountSession.compatibility,
@@ -8047,8 +8095,10 @@ class _ZyraOneJourneyConceptShellState
                         canAct: () =>
                             identical(widget.fixture, videoFixture) &&
                             _fixtureAccount ==
-                                (ZyraAccountState.userId,
-                                 ZyraAccountState.generation),
+                                (
+                                  ZyraAccountState.userId,
+                                  ZyraAccountState.generation,
+                                ),
                         onUpgrade: () {
                           if (current() && _fixtureIsCurrent()) {
                             _open('one_upgrade');

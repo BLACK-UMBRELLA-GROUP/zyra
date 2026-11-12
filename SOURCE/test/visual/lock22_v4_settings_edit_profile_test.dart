@@ -170,11 +170,14 @@ void main() {
       expect(find.text('FIXED'), findsNothing);
       expect(find.textContaining('Your answers stay private.'), findsOneWidget);
       expect(find.text('Partner preferences'), findsOneWidget);
+      final counterpartTotal = ZyraCompatibilityDraft.fromSnapshot(
+        gender: 'male',
+      ).preferenceOptionCount;
       for (final count in [
         '0 of 20 answered',
         '0 of 46 answered',
         '0 of 38 answered',
-        '0 of 325 set',
+        '0 of $counterpartTotal set',
         '0 introduction-blocking answers',
       ]) {
         expect(find.text(count), findsOneWidget);

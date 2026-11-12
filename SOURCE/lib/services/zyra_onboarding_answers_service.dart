@@ -44,10 +44,13 @@ import 'zyra_auth.dart';
 import 'zyra_account_state.dart';
 import 'zyra_internal_preview_client.dart';
 
+typedef ZyraPreferenceOption = ({String questionId, String optionValue});
+
 class ZyraOnboardingAnswersSnapshot {
   final Map<String, dynamic> ch3Answers;
   final Map<String, Map<String, TrafficLight>> ch4Preferences;
   final Map<String, Set<String>> ch4HardRequirements;
+  final Set<ZyraPreferenceOption> canonicalAmberOptions;
   final JourneyBio journeyBio;
 
   const ZyraOnboardingAnswersSnapshot({
@@ -55,6 +58,7 @@ class ZyraOnboardingAnswersSnapshot {
     required this.ch4Preferences,
     required this.ch4HardRequirements,
     required this.journeyBio,
+    this.canonicalAmberOptions = const {},
   });
 }
 
@@ -64,6 +68,8 @@ class ZyraOnboardingAnswersService {
   static bool? _clientReadyForTesting;
 
   static bool get clientReady => _clientReadyForTesting ?? supabaseReady;
+
+  static final preferenceConfirmationRevision = ValueNotifier<int>(0);
 
   @visibleForTesting
   static void setClientReadyForTesting(bool? ready) {
@@ -105,6 +111,75 @@ class ZyraOnboardingAnswersService {
   static String persistedQuestionId(String responseKey) =>
       responseKey.split('::').first;
 
+  static String _preferenceRpcAuthorization() {
+    final token = supabase.auth.currentSession?.accessToken;
+    if (token == null || token.isEmpty) {
+      throw StateError('The setup account is no longer available.');
+    }
+    return 'Bearer $token';
+  }
+
+  /// Returns only the signed-in Seeker's legacy Amber controls to check.
+  static Future<Set<ZyraPreferenceOption>> lightsNeedingReconfirmation({
+    String? expectedUserId,
+  }) async {
+    final actor = _captureActor(expectedUserId);
+    final rows = await supabase
+        .rpc<List<dynamic>>(
+          'zyra_my_lights_needing_reconfirmation',
+          params: const {},
+        )
+        .setHeader('Authorization', _preferenceRpcAuthorization());
+    _requireActor(actor);
+
+    final options = <ZyraPreferenceOption>{};
+    for (final row in rows) {
+      if (row
+          case {
+            'question_id': final String questionId,
+            'option_value': final String optionValue,
+            'light': 'amber',
+          }
+          when row.length == 3 &&
+              questionId.isNotEmpty &&
+              optionValue.isNotEmpty) {
+        if (options.add((questionId: questionId, optionValue: optionValue))) {
+          continue;
+        }
+      }
+      throw const FormatException('Invalid preference check response.');
+    }
+    return options;
+  }
+
+  /// Records an explicit tap on a light through the owner-only RPC.
+  static Future<void> confirmPreferenceLight({
+    required String expectedUserId,
+    required ZyraPreferenceOption option,
+    required TrafficLight light,
+  }) async {
+    final actor = _captureActor(expectedUserId);
+    final acknowledgement = await supabase
+        .rpc<Object?>(
+          'zyra_confirm_preference_lights',
+          params: {
+            'p_items': [
+              {
+                'question_id': persistedQuestionId(option.questionId),
+                'option_value': option.optionValue,
+                'light': light == TrafficLight.yellow ? 'amber' : light.name,
+              },
+            ],
+          },
+        )
+        .setHeader('Authorization', _preferenceRpcAuthorization());
+    _requireActor(actor);
+    if (acknowledgement != null) {
+      throw const FormatException('Invalid preference confirmation response.');
+    }
+    preferenceConfirmationRevision.value++;
+  }
+
   /// Reads the signed-in Seeker's saved compatibility and Journey Bio draft.
   ///
   /// The former flow persisted category checkpoints but never read them on
@@ -128,6 +203,7 @@ class ZyraOnboardingAnswersService {
         row['ch3_answers'] as Map? ?? const {},
       );
       final preferences = <String, Map<String, TrafficLight>>{};
+      final canonicalAmberOptions = <ZyraPreferenceOption>{};
       final rawPreferences = row['ch4_preferences'];
       if (rawPreferences is Map) {
         for (final question in rawPreferences.entries) {
@@ -137,11 +213,17 @@ class ZyraOnboardingAnswersService {
             if (option.key is! String || option.value is! String) continue;
             final light = switch (option.value as String) {
               'green' => TrafficLight.green,
-              'yellow' => TrafficLight.yellow,
+              'yellow' || 'amber' => TrafficLight.yellow,
               'red' => TrafficLight.red,
               _ => null,
             };
             if (light != null) values[option.key as String] = light;
+            if (option.value == 'amber') {
+              canonicalAmberOptions.add((
+                questionId: question.key as String,
+                optionValue: option.key as String,
+              ));
+            }
           }
           if (values.isNotEmpty) {
             preferences[question.key as String] = values;
@@ -166,6 +248,7 @@ class ZyraOnboardingAnswersService {
         ch4Preferences: preferences,
         ch4HardRequirements: hardRequirements,
         journeyBio: JourneyBio.fromOnboardingAnswers(rawCh3),
+        canonicalAmberOptions: canonicalAmberOptions,
       );
     } catch (e) {
       debugPrint('ZYRA: onboarding answer restore failed (${e.runtimeType}).');
@@ -181,6 +264,7 @@ class ZyraOnboardingAnswersService {
     required Map<String, dynamic> ch3Answers,
     required Map<String, Map<String, TrafficLight>> ch4Preferences,
     required Map<String, Set<String>> ch4HardRequirements,
+    Set<ZyraPreferenceOption> canonicalAmberOptions = const {},
     String? expectedUserId,
   }) async {
     try {
@@ -202,7 +286,14 @@ class ZyraOnboardingAnswersService {
               for (final entry in ch4Preferences.entries)
                 persistedQuestionId(entry.key): {
                   for (final option in entry.value.entries)
-                    option.key: option.value.name,
+                    option.key:
+                        option.value == TrafficLight.yellow &&
+                            canonicalAmberOptions.contains((
+                              questionId: persistedQuestionId(entry.key),
+                              optionValue: option.key,
+                            ))
+                        ? 'amber'
+                        : option.value.name,
                 },
             },
             // PER-OPTION SINCE 2026-08-10 —

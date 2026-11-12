@@ -190,7 +190,7 @@ void main() {
           editorText('How every possible partner answer feels to you.'),
           findsOneWidget,
         );
-        for (final meaning in ['Prefer', 'Neutral', 'Not for me']) {
+        for (final meaning in ['Prefer', 'Open to this', 'Not for me']) {
           expect(editorText(meaning), findsOneWidget);
         }
         expect(
@@ -232,7 +232,10 @@ void main() {
           .chips
           .singleWhere((chip) => chip.id == 'focus-preferences')
           .onTap;
-      expect(find.text('Preferences 0/325'), findsOneWidget);
+      final counterpartTotal = ZyraCompatibilityDraft.fromSnapshot(
+        gender: 'male',
+      ).preferenceOptionCount;
+      expect(find.text('Preferences 0/$counterpartTotal'), findsOneWidget);
       await h.tap('focus-preferences');
       h.assertPage('filter_preferences');
       assertPartnerPreferences();
@@ -246,7 +249,7 @@ void main() {
       expect(await retainedSave(initialDraft), isFalse);
       await h.flush();
       expect(h.latest.pages, isEmpty);
-      expect(find.text('Preferences 0/325'), findsOneWidget);
+      expect(find.text('Preferences 0/$counterpartTotal'), findsOneWidget);
 
       await _physicalTab(tester, 4);
       await h.tap('concept_edit_profile');
@@ -260,7 +263,10 @@ void main() {
         findsOneWidget,
       );
       expect(
-        find.descendant(of: preferenceRow, matching: find.text('0 of 325 set')),
+        find.descendant(
+          of: preferenceRow,
+          matching: find.text('0 of $counterpartTotal set'),
+        ),
         findsOneWidget,
       );
       await h.tap('compatibility-editor-trafficLights');

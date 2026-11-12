@@ -17,12 +17,14 @@ import '../../services/zyra_dashboard_adapter.dart';
 import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_internal_preview_client.dart';
 import '../../services/zyra_notification_service.dart';
+import '../../services/zyra_onboarding_answers_service.dart';
 import '../../services/zyra_profile_service.dart';
 import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
 import '../../widgets/zyra_quiet_dashboard.dart';
 import '../../widgets/zyra_glass_dialog.dart';
 import '../../theme/zyra_text.dart';
+import '../profile/compatibility_editors.dart';
 
 typedef ZyraDashboardSnapshotLoader = Future<DashboardSnapshot> Function();
 
@@ -36,6 +38,7 @@ class SeekerDashboardScreen extends StatefulWidget {
   final VoidCallback? onOpenDiscovery;
   final VoidCallback? onOpenProfile;
   final VoidCallback? onReviewPreferences;
+  final VoidCallback? onPreferenceQuickCheck;
   final VoidCallback? onResumeOnboarding;
   final ZyraOnboardingProgress? initialOnboardingProgress;
 
@@ -58,6 +61,7 @@ class SeekerDashboardScreen extends StatefulWidget {
     this.onOpenDiscovery,
     this.onOpenProfile,
     this.onReviewPreferences,
+    this.onPreferenceQuickCheck,
     this.onResumeOnboarding,
     this.initialOnboardingProgress,
     this.onboardingEntryPreview = false,
@@ -95,6 +99,9 @@ class _SeekerDashboardScreenState extends State<SeekerDashboardScreen> {
     ZyraDeveloperAccess.authorizationChanges.addListener(_scenarioChanged);
     ZyraWaliLinkService.invitationRevision.addListener(_sourceChanged);
     ZyraWaliLinkService.linkRevision.addListener(_sourceChanged);
+    ZyraOnboardingAnswersService.preferenceConfirmationRevision.addListener(
+      _sourceChanged,
+    );
     if (!_wasUsingLab) _reload();
   }
 
@@ -118,6 +125,9 @@ class _SeekerDashboardScreenState extends State<SeekerDashboardScreen> {
     ZyraDeveloperAccess.authorizationChanges.removeListener(_scenarioChanged);
     ZyraWaliLinkService.invitationRevision.removeListener(_sourceChanged);
     ZyraWaliLinkService.linkRevision.removeListener(_sourceChanged);
+    ZyraOnboardingAnswersService.preferenceConfirmationRevision.removeListener(
+      _sourceChanged,
+    );
     super.dispose();
   }
 
@@ -172,7 +182,9 @@ class _SeekerDashboardScreenState extends State<SeekerDashboardScreen> {
     if (_usingLab) return;
     final generation = ++_loadGeneration;
     try {
-      final snapshot = await (widget.loadDashboard ?? _adapter.load)();
+      final snapshot =
+          await (widget.loadDashboard?.call() ??
+              _adapter.load(loadPreferenceQuickCheck: _hasPreferencesToCheck));
       if (!mounted || generation != _loadGeneration) return;
       final next = _resolver.resolve(snapshot).retainUpdatesFrom(_resolution);
       setState(() => _resolution = next);
@@ -182,6 +194,36 @@ class _SeekerDashboardScreenState extends State<SeekerDashboardScreen> {
           .resolve(_failedSnapshot())
           .retainUpdatesFrom(_resolution);
       setState(() => _resolution = next);
+    }
+  }
+
+  Future<bool> _hasPreferencesToCheck() async {
+    final owner = _notificationOwner;
+    if (owner?.isCurrent != true) return false;
+    try {
+      final items =
+          await ZyraOnboardingAnswersService.lightsNeedingReconfirmation(
+            expectedUserId: owner!.userId,
+          ).timeout(const Duration(seconds: 10));
+      if (items.isEmpty || !owner.isCurrent) return false;
+      if (items.any(ZyraSetupPreferenceLights.isSetupOption)) return true;
+      final snapshot = await ZyraOnboardingAnswersService.fetchOwn(
+        expectedUserId: owner.userId,
+        throwOnError: true,
+      ).timeout(const Duration(seconds: 10));
+      if (!owner.isCurrent) return false;
+      final draft = ZyraCompatibilityDraft.fromSnapshot(
+        gender: AppState.instance.gender,
+        snapshot: snapshot,
+      );
+      return draft.preferenceQuestionBank.any(
+        (question) => question.options.any(
+          (option) =>
+              items.contains((questionId: question.id, optionValue: option)),
+        ),
+      );
+    } catch (_) {
+      return false;
     }
   }
 
@@ -374,7 +416,16 @@ class _SeekerDashboardScreenState extends State<SeekerDashboardScreen> {
     child: ZyraQuietDashboard(
       resolution: _resolution,
       firstName: firstName,
-      onNavigate: (card) => _navigate(card.target),
+      onNavigate: (card) {
+        if (card.id == 'preference-quick-check' &&
+            widget.onPreferenceQuickCheck != null) {
+          if (_notificationOwner?.isCurrent == true) {
+            widget.onPreferenceQuickCheck!();
+          }
+        } else {
+          _navigate(card.target);
+        }
+      },
       onNotificationViewed: _notificationViewedAction(),
       onRetry: _reload,
       onRefresh: _reload,

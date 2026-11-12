@@ -83,7 +83,8 @@ class ZyraCompatibilityDraft {
     required this.answers,
     required this.preferences,
     required this.hardRequirements,
-  });
+    Set<ZyraPreferenceOption> canonicalAmberOptions = const {},
+  }) : canonicalAmberOptions = Set.of(canonicalAmberOptions);
 
   factory ZyraCompatibilityDraft.fromSnapshot({
     required String? gender,
@@ -102,28 +103,32 @@ class ZyraCompatibilityDraft {
         answers[entry.key] = _copyAnswerValue(entry.value);
       }
     }
+    final counterpart = _counterpartGender(gender);
+    final preferenceKeys = <String, String>{};
     for (final category in chapter3Categories) {
       for (final question in category.questions) {
-        if (!question.visibleFor(gender)) continue;
-        final persisted = ZyraOnboardingAnswersService.persistedQuestionId(
-          question.responseKey,
-        );
-        if (rawAnswers.containsKey(persisted)) {
+        if (question.visibleFor(gender) &&
+            rawAnswers.containsKey(question.id)) {
           answers[question.responseKey] = _copyAnswerValue(
-            rawAnswers[persisted],
+            rawAnswers[question.id],
           );
         }
-        final savedPreferences = snapshot?.ch4Preferences[persisted];
-        if (savedPreferences != null) {
-          preferences[question.responseKey] = Map<String, TrafficLight>.from(
-            savedPreferences,
-          );
-        }
-        final savedHard = snapshot?.ch4HardRequirements[persisted];
-        if (savedHard != null) {
-          hard[question.responseKey] = Set<String>.from(savedHard);
+        if (question.ch4Status != Ch4Status.none &&
+            question.visibleFor(counterpart)) {
+          preferenceKeys[question.id] = question.responseKey;
         }
       }
+    }
+    for (final entry
+        in (snapshot?.ch4Preferences ??
+                const <String, Map<String, TrafficLight>>{})
+            .entries) {
+      preferences[preferenceKeys[entry.key] ?? entry.key] = Map.of(entry.value);
+    }
+    for (final entry
+        in (snapshot?.ch4HardRequirements ?? const <String, Set<String>>{})
+            .entries) {
+      hard[preferenceKeys[entry.key] ?? entry.key] = Set.of(entry.value);
     }
 
     final draft = ZyraCompatibilityDraft(
@@ -131,6 +136,7 @@ class ZyraCompatibilityDraft {
       answers: answers,
       preferences: preferences,
       hardRequirements: hard,
+      canonicalAmberOptions: snapshot?.canonicalAmberOptions ?? const {},
     );
     draft.pruneHiddenAnswers();
     return draft;
@@ -140,6 +146,7 @@ class ZyraCompatibilityDraft {
   final Map<String, dynamic> answers;
   final Map<String, Map<String, TrafficLight>> preferences;
   final Map<String, Set<String>> hardRequirements;
+  final Set<ZyraPreferenceOption> canonicalAmberOptions;
 
   ZyraCompatibilityDraft copy() => ZyraCompatibilityDraft(
     gender: gender,
@@ -155,6 +162,7 @@ class ZyraCompatibilityDraft {
       for (final entry in hardRequirements.entries)
         entry.key: Set<String>.from(entry.value),
     },
+    canonicalAmberOptions: canonicalAmberOptions,
   );
 
   /// A detached own-draft checkpoint. Uses the established canonical question
@@ -178,6 +186,7 @@ class ZyraCompatibilityDraft {
               Set<String>.from(entry.value),
       },
       journeyBio: JourneyBio.fromOnboardingAnswers(normalized),
+      canonicalAmberOptions: Set.of(canonicalAmberOptions),
     );
   }
 
@@ -200,10 +209,82 @@ class ZyraCompatibilityDraft {
           )
           .toList(growable: false);
 
-  List<OnboardingQuestion> preferenceQuestions(OnboardingCategory category) =>
-      visibleQuestions(category)
-          .where((question) => question.ch4Status != Ch4Status.none)
-          .toList(growable: false);
+  static String? _counterpartGender(String? ownerGender) =>
+      switch (ownerGender) {
+        'male' => 'female',
+        'female' => 'male',
+        _ => null,
+      };
+
+  List<OnboardingQuestion> preferenceQuestions(OnboardingCategory category) {
+    final counterpart = _counterpartGender(gender);
+    final answersById = _answersByQuestionId;
+    return category.questions
+        .where(
+          (question) =>
+              question.ch4Status != Ch4Status.none &&
+              question.visibleGiven(counterpart, answersById),
+        )
+        .toList(growable: false);
+  }
+
+  Iterable<OnboardingQuestion> get preferenceQuestionBank =>
+      chapter3Categories.expand(preferenceQuestions);
+
+  Map<String, TrafficLight> valuesFor(OnboardingQuestion question) {
+    final saved = preferences[question.responseKey];
+    return {
+      for (final option in question.options)
+        if (saved?[option] case final TrafficLight value) option: value,
+    };
+  }
+
+  Set<String> hardRequirementsFor(OnboardingQuestion question) =>
+      hardRequirements[question.responseKey]?.intersection(
+        question.options.toSet(),
+      ) ??
+      {};
+
+  void savePreferenceQuestion(
+    OnboardingQuestion question,
+    Map<String, TrafficLight> values,
+    Set<String> hard,
+  ) {
+    final previous = preferences[question.responseKey] ?? const {};
+    preferences[question.responseKey] = {
+      for (final entry in previous.entries)
+        if (!question.options.contains(entry.key)) entry.key: entry.value,
+      ...values,
+    };
+    final previousHard =
+        hardRequirements[question.responseKey] ?? const <String>{};
+    final nextHard = {
+      ...previousHard.difference(question.options.toSet()),
+      ...hard,
+    };
+    if (nextHard.isEmpty) {
+      hardRequirements.remove(question.responseKey);
+    } else {
+      hardRequirements[question.responseKey] = nextHard;
+    }
+  }
+
+  void applyConfirmedPreference(
+    OnboardingQuestion question,
+    String option,
+    TrafficLight light,
+  ) {
+    (preferences[question.responseKey] ??= {})[option] = light;
+    final key = (questionId: question.id, optionValue: option);
+    if (light == TrafficLight.yellow) {
+      canonicalAmberOptions.add(key);
+    } else {
+      canonicalAmberOptions.remove(key);
+    }
+    if (light != TrafficLight.red) {
+      hardRequirements[question.responseKey]?.remove(option);
+    }
+  }
 
   void setAnswer(OnboardingQuestion question, dynamic value) {
     answers[question.responseKey] = value;
@@ -218,8 +299,8 @@ class ZyraCompatibilityDraft {
     answers.removeWhere(
       (key, _) => !key.startsWith('bio_') && !visibleKeys.contains(key),
     );
-    preferences.removeWhere((key, _) => !visibleKeys.contains(key));
-    hardRequirements.removeWhere((key, _) => !visibleKeys.contains(key));
+    // Hidden preference values keep their original keys and are excluded from
+    // the visible bank. A plain save must not clear an unmatched legacy light.
   }
 
   int answeredIn(Iterable<OnboardingCategory> categories) => categories
@@ -230,16 +311,18 @@ class ZyraCompatibilityDraft {
   int questionsIn(Iterable<OnboardingCategory> categories) =>
       categories.expand(visibleQuestions).length;
 
-  int get preferenceAnswerCount =>
-      preferences.values.fold<int>(0, (total, values) => total + values.length);
+  int get preferenceAnswerCount => preferenceQuestionBank.fold<int>(
+    0,
+    (total, question) => total + valuesFor(question).length,
+  );
 
   int get preferenceOptionCount => chapter3Categories
       .expand(preferenceQuestions)
       .fold<int>(0, (total, question) => total + question.options.length);
 
-  int get hardRequirementCount => hardRequirements.values.fold<int>(
+  int get hardRequirementCount => preferenceQuestionBank.fold<int>(
     0,
-    (total, values) => total + values.length,
+    (total, question) => total + hardRequirementsFor(question).length,
   );
 
   static bool _hasValue(dynamic value) => switch (value) {
@@ -247,6 +330,120 @@ class ZyraCompatibilityDraft {
     String value => value.trim().isNotEmpty,
     null => false,
     _ => true,
+  };
+}
+
+class ZyraPreferenceQuickCheck {
+  ZyraPreferenceQuickCheck({
+    required Set<ZyraPreferenceOption> items,
+    required this.confirm,
+    this.onConfirmed,
+    this.setup,
+  }) : _items = Set.of(items);
+
+  final Set<ZyraPreferenceOption> _items;
+  final Future<void> Function(ZyraPreferenceOption, TrafficLight) confirm;
+  final void Function(OnboardingQuestion, String, TrafficLight)? onConfirmed;
+  final ZyraSetupPreferenceLights? setup;
+
+  Iterable<OnboardingQuestion> questionsFor(
+    ZyraCompatibilityDraft draft,
+  ) sync* {
+    for (final category in chapter3Categories) {
+      if (category.id == 'deen_practice') yield* setup?.questions ?? const [];
+      yield* draft.preferenceQuestions(category);
+    }
+  }
+
+  List<OnboardingQuestion> setupQuestionsFor(OnboardingCategory category) =>
+      category.id == 'deen_practice' ? setup?.questions ?? const [] : const [];
+
+  bool isSetup(OnboardingQuestion question) =>
+      setup?.questions.contains(question) ?? false;
+
+  ZyraPreferenceOption _key(OnboardingQuestion question, String option) =>
+      isSetup(question)
+      ? setup!.key(question, option)
+      : (questionId: question.id, optionValue: option);
+
+  Set<String> optionsFor(OnboardingQuestion question) => {
+    for (final option in question.options)
+      if (_items.contains(_key(question, option))) option,
+  };
+
+  int countFor(Iterable<OnboardingQuestion> questions) => questions.fold(
+    0,
+    (count, question) => count + optionsFor(question).length,
+  );
+
+  int countForDraft(ZyraCompatibilityDraft draft) =>
+      countFor(questionsFor(draft));
+
+  Future<void> check(
+    OnboardingQuestion question,
+    String option,
+    TrafficLight light,
+  ) async {
+    final key = _key(question, option);
+    final setupQuestion = isSetup(question);
+    if (!_items.contains(key)) return;
+    await confirm(key, light);
+    _items.remove(key);
+    if (setupQuestion) {
+      setup!.lights[key] = light;
+    } else {
+      onConfirmed?.call(question, option, light);
+    }
+  }
+}
+
+class ZyraSetupPreferenceLights {
+  ZyraSetupPreferenceLights({
+    Map<ZyraPreferenceOption, TrafficLight> lights = const {},
+    this.otherSect = 'other',
+  }) : lights = Map.of(lights);
+
+  final Map<ZyraPreferenceOption, TrafficLight> lights;
+  final String otherSect;
+
+  static const _sect = OnboardingQuestion(
+    id: 'ch2.sect.matrix',
+    prompt: "Your partner's sect",
+    options: ['Sunni', 'Shia', 'Other'],
+    hardRequirementSupported: false,
+  );
+  static const _outside = OnboardingQuestion(
+    id: 'ch2.sect.outside_flexibility',
+    prompt: 'Someone from outside your preferred sect',
+    options: ['Outside my preferred sect'],
+    hardRequirementSupported: false,
+  );
+  static const _revert = OnboardingQuestion(
+    id: 'ch2.revert.flexibility',
+    prompt: 'Someone who reverted to Islam',
+    options: ['A partner who reverted to Islam'],
+    hardRequirementSupported: false,
+  );
+
+  static bool isSetupOption(ZyraPreferenceOption option) =>
+      option.questionId == _sect.id ||
+      (option.optionValue == '*' &&
+          (option.questionId == _outside.id ||
+              option.questionId == _revert.id));
+
+  List<OnboardingQuestion> get questions => [_sect, _outside, _revert];
+
+  ZyraPreferenceOption key(OnboardingQuestion question, String label) => (
+    questionId: question.id,
+    optionValue: question == _sect
+        ? (label == 'Other' ? otherSect : label.toLowerCase())
+        : '*',
+  );
+
+  Map<String, TrafficLight> valuesFor(OnboardingQuestion question) => {
+    for (final label in question.options)
+      if (lights[key(question, label)] case final TrafficLight light)
+        label: light,
   };
 }
 
@@ -341,6 +538,8 @@ class CompatibilityEditorScreen extends StatefulWidget {
     required this.onPersist,
     this.canAct,
     this.canActChanges,
+    this.quickCheck,
+    this.openQuickCheck = false,
   }) : _preview = false,
        onPreviewReturn = null;
 
@@ -352,6 +551,8 @@ class CompatibilityEditorScreen extends StatefulWidget {
     required bool Function() canAct,
     this.canActChanges,
     this.onPreviewReturn,
+    this.quickCheck,
+    this.openQuickCheck = false,
   }) : _preview = true,
        // Keep preview's guard non-nullable while ordinary callers may omit it.
        // ignore: prefer_initializing_formals
@@ -361,6 +562,8 @@ class CompatibilityEditorScreen extends StatefulWidget {
   final ZyraCompatibilityDraft initialDraft;
   final Future<bool> Function(ZyraCompatibilityDraft draft) onPersist;
   final bool _preview;
+  final ZyraPreferenceQuickCheck? quickCheck;
+  final bool openQuickCheck;
 
   /// Local standalone preview owners return through their own page stack.
   /// Existing hub-pushed editors keep Navigator.pop as their default.
@@ -395,6 +598,8 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
       identical(widget.initialDraft, _opening.initialDraft) &&
       widget.onPersist == _opening.onPersist &&
       widget.onPreviewReturn == _opening.onPreviewReturn &&
+      identical(widget.quickCheck, _opening.quickCheck) &&
+      widget.openQuickCheck == _opening.openQuickCheck &&
       widget.canAct == _opening.canAct &&
       identical(widget.canActChanges, _opening.canActChanges);
 
@@ -429,6 +634,7 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
     _draft.answers.clear();
     _draft.preferences.clear();
     _draft.hardRequirements.clear();
+    _draft.canonicalAmberOptions.clear();
   }
 
   void _ownerChanged() {
@@ -576,6 +782,8 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
               CompatibilityEditorKind.trafficLights => _PreferenceGroups(
                 draft: _draft,
                 owner: _owner,
+                quickCheck: _opening.quickCheck,
+                openQuickCheck: _opening.openQuickCheck,
                 plannedSpacing: _previewMode,
                 onChanged: () {
                   if (mounted && _editorCurrent(context, _owner)) {
@@ -814,52 +1022,102 @@ class _AnswerQuestionEditorState extends State<_AnswerQuestionEditor> {
   );
 }
 
-class _PreferenceGroups extends StatelessWidget {
+class _PreferenceGroups extends StatefulWidget {
   const _PreferenceGroups({
     required this.draft,
     required this.onChanged,
     required this.plannedSpacing,
+    required this.quickCheck,
+    required this.openQuickCheck,
     this.owner,
   });
 
   final ZyraCompatibilityDraft draft;
   final VoidCallback onChanged;
   final bool plannedSpacing;
+  final ZyraPreferenceQuickCheck? quickCheck;
+  final bool openQuickCheck;
   final _CompatibilityPreviewOwner? owner;
 
   @override
+  State<_PreferenceGroups> createState() => _PreferenceGroupsState();
+}
+
+class _PreferenceGroupsState extends State<_PreferenceGroups> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.openQuickCheck) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _checkNow());
+    }
+  }
+
+  Future<void> _checkNow() async {
+    if (!mounted || !_editorCurrent(context, widget.owner)) return;
+    final quickCheck = widget.quickCheck;
+    if (quickCheck == null) return;
+    for (final question in quickCheck.questionsFor(widget.draft)) {
+      if (quickCheck.optionsFor(question).isEmpty) continue;
+      await _openPreferenceQuestion(
+        context,
+        widget.draft,
+        question,
+        widget.owner,
+        quickCheck,
+      );
+      if (mounted && _editorCurrent(context, widget.owner)) widget.onChanged();
+      return;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final draft = widget.draft;
+    final quickCheck = widget.quickCheck;
+    final count = quickCheck?.countForDraft(draft) ?? 0;
     final categories = chapter3Categories
         .where((category) => draft.preferenceQuestions(category).isNotEmpty)
         .toList();
+    final gap = widget.plannedSpacing ? ZyraPreviewSpacing.cardToCard : 14.0;
     return ListView(
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
       children: [
+        if (count > 0) ...[
+          _QuickCheckCard(count: count, onCheck: _checkNow),
+          const SizedBox(height: 14),
+        ],
         _MeaningCard(),
-        if (!plannedSpacing || categories.isNotEmpty)
-          SizedBox(height: plannedSpacing ? ZyraPreviewSpacing.cardToCard : 14),
+        if (!widget.plannedSpacing || categories.isNotEmpty)
+          SizedBox(height: gap),
         for (final (index, category) in categories.indexed)
           _CategoryDoor(
             key: ValueKey('edit-preferences-${category.id}'),
-            bottomGap: plannedSpacing && index < categories.length - 1
+            bottomGap: widget.plannedSpacing && index < categories.length - 1
                 ? ZyraPreviewSpacing.cardToCard
                 : 11,
             label: category.name,
             status: _preferenceCategoryStatus(draft, category),
+            toCheck:
+                quickCheck?.countFor([
+                  ...quickCheck.setupQuestionsFor(category),
+                  ...draft.preferenceQuestions(category),
+                ]) ??
+                0,
             onTap: () async {
-              if (!_editorCurrent(context, owner)) return;
+              if (!_editorCurrent(context, widget.owner)) return;
               await Navigator.of(context).push<void>(
                 MaterialPageRoute(
                   builder: (_) => _PreferenceCategoryEditor(
                     category: category,
                     draft: draft,
-                    owner: owner,
+                    owner: widget.owner,
+                    quickCheck: quickCheck,
                   ),
                 ),
               );
-              if (context.mounted && _editorCurrent(context, owner)) {
-                onChanged();
+              if (context.mounted && _editorCurrent(context, widget.owner)) {
+                widget.onChanged();
               }
             },
           ),
@@ -873,11 +1131,13 @@ class _PreferenceCategoryEditor extends StatefulWidget {
     required this.category,
     required this.draft,
     this.owner,
+    this.quickCheck,
   });
 
   final OnboardingCategory category;
   final ZyraCompatibilityDraft draft;
   final _CompatibilityPreviewOwner? owner;
+  final ZyraPreferenceQuickCheck? quickCheck;
 
   @override
   State<_PreferenceCategoryEditor> createState() =>
@@ -887,7 +1147,13 @@ class _PreferenceCategoryEditor extends StatefulWidget {
 class _PreferenceCategoryEditorState extends State<_PreferenceCategoryEditor> {
   @override
   Widget build(BuildContext context) {
-    final questions = widget.draft.preferenceQuestions(widget.category);
+    final setupQuestions =
+        widget.quickCheck?.setupQuestionsFor(widget.category) ??
+        const <OnboardingQuestion>[];
+    final questions = [
+      ...setupQuestions,
+      ...widget.draft.preferenceQuestions(widget.category),
+    ];
     return _EditorScaffold(
       title: widget.category.name,
       owner: widget.owner,
@@ -897,53 +1163,86 @@ class _PreferenceCategoryEditorState extends State<_PreferenceCategoryEditor> {
         itemCount: questions.length,
         itemBuilder: (context, index) {
           final question = questions[index];
-          final values = widget.draft.preferences[question.responseKey];
-          return _QuestionDoor(
+          final isSetup = index < setupQuestions.length;
+          final values = isSetup
+              ? widget.quickCheck!.setup!.valuesFor(question)
+              : widget.draft.valuesFor(question);
+          final toCheck = widget.quickCheck?.optionsFor(question).length ?? 0;
+          final door = _QuestionDoor(
             key: ValueKey('edit-lights-${question.responseKey}'),
             question: question.prompt,
-            value: values == null
+            value: toCheck > 0
+                ? '$toCheck to check'
+                : values.isEmpty
                 ? 'Not set'
                 : '${values.length} of ${question.options.length} set',
+            needsCheck: toCheck > 0,
             onTap: () async {
-              if (!_editorCurrent(context, widget.owner)) return;
-              final result = await Navigator.of(context)
-                  .push<_PreferenceEditResult>(
-                    MaterialPageRoute(
-                      builder: (_) => _PreferenceQuestionEditor(
-                        question: question,
-                        yourAnswers: _asStringSet(
-                          widget.draft.answers[question.responseKey],
-                        ),
-                        initialValues: values ?? const {},
-                        initialHard:
-                            widget.draft.hardRequirements[question
-                                .responseKey] ??
-                            const {},
-                        owner: widget.owner,
-                      ),
-                    ),
-                  );
-              if (result == null ||
-                  !mounted ||
-                  !context.mounted ||
-                  !_editorCurrent(context, widget.owner)) {
-                return;
+              await _openPreferenceQuestion(
+                context,
+                widget.draft,
+                question,
+                widget.owner,
+                widget.quickCheck,
+              );
+              if (mounted &&
+                  context.mounted &&
+                  _editorCurrent(context, widget.owner)) {
+                setState(() {});
               }
-              setState(() {
-                widget.draft.preferences[question.responseKey] = result.values;
-                if (result.hard.isEmpty) {
-                  widget.draft.hardRequirements.remove(question.responseKey);
-                } else {
-                  widget.draft.hardRequirements[question.responseKey] =
-                      result.hard;
-                }
-              });
             },
+          );
+          if (setupQuestions.isEmpty ||
+              (index != 0 && index != setupQuestions.length)) {
+            return door;
+          }
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(2, isSetup ? 2 : 14, 2, 8),
+                child: Text(
+                  isSetup ? 'FROM YOUR PROFILE SET-UP' : 'PARTNER PREFERENCES',
+                  style: ZyraText.subtext(
+                    size: 11,
+                    color: isSetup ? _quickCheckInk : null,
+                  ).copyWith(letterSpacing: 1.2),
+                ),
+              ),
+              door,
+            ],
           );
         },
       ),
     );
   }
+}
+
+Future<void> _openPreferenceQuestion(
+  BuildContext context,
+  ZyraCompatibilityDraft draft,
+  OnboardingQuestion question,
+  _CompatibilityPreviewOwner? owner,
+  ZyraPreferenceQuickCheck? quickCheck,
+) async {
+  if (!_editorCurrent(context, owner)) return;
+  final result = await Navigator.of(context).push<_PreferenceEditResult>(
+    MaterialPageRoute(
+      builder: (_) => _PreferenceQuestionEditor(
+        question: question,
+        draft: draft,
+        owner: owner,
+        quickCheck: quickCheck,
+      ),
+    ),
+  );
+  if (result == null ||
+      !context.mounted ||
+      !_editorCurrent(context, owner) ||
+      quickCheck?.isSetup(question) == true) {
+    return;
+  }
+  draft.savePreferenceQuestion(question, result.values, result.hard);
 }
 
 class _PreferenceEditResult {
@@ -956,17 +1255,15 @@ class _PreferenceEditResult {
 class _PreferenceQuestionEditor extends StatefulWidget {
   const _PreferenceQuestionEditor({
     required this.question,
-    required this.yourAnswers,
-    required this.initialValues,
-    required this.initialHard,
+    required this.draft,
     this.owner,
+    this.quickCheck,
   });
 
   final OnboardingQuestion question;
-  final Set<String> yourAnswers;
-  final Map<String, TrafficLight> initialValues;
-  final Set<String> initialHard;
+  final ZyraCompatibilityDraft draft;
   final _CompatibilityPreviewOwner? owner;
+  final ZyraPreferenceQuickCheck? quickCheck;
 
   @override
   State<_PreferenceQuestionEditor> createState() =>
@@ -974,51 +1271,137 @@ class _PreferenceQuestionEditor extends StatefulWidget {
 }
 
 class _PreferenceQuestionEditorState extends State<_PreferenceQuestionEditor> {
-  late Map<String, TrafficLight> _values = Map.from(widget.initialValues);
-  late Set<String> _hard = Set.from(widget.initialHard);
+  bool get _setup => widget.quickCheck?.isSetup(widget.question) == true;
+  late Map<String, TrafficLight> _values = Map.of(
+    _setup
+        ? widget.quickCheck!.setup!.valuesFor(widget.question)
+        : widget.draft.valuesFor(widget.question),
+  );
+  late Set<String> _hard = Set.of(
+    widget.draft.hardRequirementsFor(widget.question),
+  );
+  bool _confirming = false;
 
-  bool get _complete => widget.question.options.every(_values.containsKey);
+  bool get _complete =>
+      (widget.quickCheck?.optionsFor(widget.question).isEmpty ?? true) &&
+      widget.question.options.every(_values.containsKey);
+
+  Future<bool> _reconfirm(String option, TrafficLight light) async {
+    final quickCheck = widget.quickCheck;
+    if (quickCheck == null ||
+        _confirming ||
+        !_editorCurrent(context, widget.owner)) {
+      return false;
+    }
+    setState(() => _confirming = true);
+    final wasFlagged = quickCheck.optionsFor(widget.question).contains(option);
+    try {
+      await quickCheck.check(widget.question, option, light);
+      if (widget.owner?.alive == false) return false;
+      if (!_setup) {
+        widget.draft.applyConfirmedPreference(widget.question, option, light);
+      }
+      if (!mounted || !_editorCurrent(context, widget.owner)) return false;
+      if (wasFlagged && quickCheck.optionsFor(widget.question).isEmpty) {
+        final left = quickCheck.countForDraft(widget.draft);
+        _message(
+          left == 0 ? 'All checked. Thank you.' : 'Saved. $left left to check.',
+          confirmed: true,
+        );
+      }
+      return true;
+    } catch (_) {
+      if (mounted && _editorCurrent(context, widget.owner)) {
+        _message('Your changes could not be saved. Please try again.');
+      }
+      return false;
+    } finally {
+      if (mounted) setState(() => _confirming = false);
+    }
+  }
+
+  void _message(String text, {bool confirmed = false}) {
+    final message = confirmed
+        ? SnackBar(
+            content: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: ZyraText.subtext(
+                size: 12.5,
+                color: const Color(0xFFFFFFFE),
+              ),
+            ),
+            duration: const Duration(milliseconds: 1700),
+            backgroundColor: const Color(0xF02B2420),
+            behavior: SnackBarBehavior.floating,
+            margin: EdgeInsets.fromLTRB(
+              20,
+              0,
+              20,
+              100 - MediaQuery.viewPaddingOf(context).bottom,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+            ),
+          )
+        : SnackBar(content: Text(text));
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(message);
+  }
 
   @override
-  Widget build(BuildContext context) => _EditorScaffold(
-    title: 'Partner preference',
-    owner: widget.owner,
-    bottom: _BottomSave(
-      enabled: _complete,
-      onPressed: () {
-        if (_editorCurrent(context, widget.owner)) {
-          Navigator.of(
-            context,
-          ).pop(_PreferenceEditResult(Map.from(_values), Set.from(_hard)));
-        }
-      },
-    ),
-    child: ListView(
-      physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 110),
-      children: [
-        Text(widget.question.prompt, style: ZyraText.heading(size: 21)),
-        const SizedBox(height: 20),
-        TrafficLightQuestionScreen(
-          key: ValueKey('edit-preference-${widget.question.responseKey}'),
-          yourAnswer: '',
-          yourAnswers: widget.yourAnswers,
-          options: widget.question.options,
-          hardRequirementSupported: widget.question.hardRequirementSupported,
-          initialValues: widget.initialValues,
-          initialHardRequirement: widget.initialHard,
-          onChanged: (values) {
-            if (mounted && _editorCurrent(context, widget.owner)) {
-              setState(() => _values = Map.from(values));
-            }
-          },
-          onHardRequirementChanged: (values) {
-            if (mounted && _editorCurrent(context, widget.owner)) {
-              setState(() => _hard = Set.from(values));
-            }
-          },
-        ),
-      ],
+  Widget build(BuildContext context) => PopScope(
+    canPop: !_confirming,
+    child: _EditorScaffold(
+      title: 'Partner preference',
+      owner: widget.owner,
+      allowBack: !_confirming,
+      bottom: _BottomSave(
+        enabled: _complete && !_confirming,
+        onPressed: () {
+          if (!_confirming && _editorCurrent(context, widget.owner)) {
+            Navigator.of(
+              context,
+            ).pop(_PreferenceEditResult(Map.from(_values), Set.from(_hard)));
+          }
+        },
+      ),
+      child: ListView(
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 110),
+        children: [
+          Text(widget.question.prompt, style: ZyraText.heading(size: 21)),
+          const SizedBox(height: 20),
+          TrafficLightQuestionScreen(
+            key: ValueKey('edit-preference-${widget.question.responseKey}'),
+            yourAnswer: '',
+            yourAnswers: _asStringSet(
+              widget.draft.answers[widget.question.responseKey],
+            ),
+            options: widget.question.options,
+            hardRequirementSupported: widget.question.hardRequirementSupported,
+            initialValues: _values,
+            initialHardRequirement: _hard,
+            optionsToCheck:
+                widget.quickCheck?.optionsFor(widget.question) ?? const {},
+            onlyCheckOptions: _setup,
+            confirming: _confirming,
+            onReconfirm: _reconfirm,
+            onChanged: (values) {
+              if (mounted && _editorCurrent(context, widget.owner)) {
+                setState(() => _values = Map.from(values));
+              }
+            },
+            onHardRequirementChanged: (values) {
+              if (mounted && _editorCurrent(context, widget.owner)) {
+                setState(() => _hard = Set.from(values));
+              }
+            },
+          ),
+        ],
+      ),
     ),
   );
 }
@@ -1185,6 +1568,80 @@ class _HardQuestionCard extends StatelessWidget {
   );
 }
 
+const _quickCheckInk = Color(0xFF845F24);
+
+class _QuickCheckCard extends StatelessWidget {
+  const _QuickCheckCard({required this.count, required this.onCheck});
+
+  final int count;
+  final VoidCallback onCheck;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: const Color(0xFFFBF7F0),
+      borderRadius: BorderRadius.circular(18),
+      border: Border.all(color: const Color(0xFFA9792E).withValues(alpha: 0.5)),
+      boxShadow: [
+        BoxShadow(
+          color: const Color(0xFF3E2E1E).withValues(alpha: 0.08),
+          blurRadius: 20,
+          offset: const Offset(0, 8),
+        ),
+      ],
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          'QUICK CHECK',
+          style: ZyraText.subtext(
+            size: 11,
+            color: _quickCheckInk,
+          ).copyWith(letterSpacing: 1.2),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          '$count ${count == 1 ? 'answer' : 'answers'} to check',
+          style: ZyraText.heading(size: 17),
+        ),
+        const SizedBox(height: 4),
+        Text.rich(
+          TextSpan(
+            children: [
+              const TextSpan(text: 'The amber light now means '),
+              TextSpan(
+                text: '“Open to this”',
+                style: ZyraText.subtext(
+                  size: 12.5,
+                ).copyWith(fontWeight: FontWeight.w500),
+              ),
+              const TextSpan(
+                text:
+                    '. Tap a light again on each one, even if it stays amber, so it counts.',
+              ),
+            ],
+          ),
+          style: ZyraText.subtext(size: 12.5),
+        ),
+        const SizedBox(height: 12),
+        FilledButton(
+          key: const ValueKey('partner-preferences-check-now'),
+          onPressed: ZyraTapFeedback.onTap(context, onCheck),
+          style: FilledButton.styleFrom(
+            fixedSize: const Size.fromHeight(44),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            backgroundColor: ZyraColors.goldTextFill,
+            foregroundColor: ZyraColors.espresso,
+          ),
+          child: const Text('Check now'),
+        ),
+      ],
+    ),
+  );
+}
+
 class _MeaningCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ZyraFloatingSurface(
@@ -1207,7 +1664,7 @@ class _MeaningCard extends StatelessWidget {
           Expanded(
             child: _LightMeaning(
               color: ZyraColors.journeyGold,
-              label: 'Neutral',
+              label: 'Open to this',
             ),
           ),
           Expanded(
@@ -1249,12 +1706,14 @@ class _CategoryDoor extends StatelessWidget {
     required this.status,
     required this.onTap,
     this.bottomGap = 11,
+    this.toCheck = 0,
   });
 
   final String label;
   final String status;
   final VoidCallback onTap;
   final double bottomGap;
+  final int toCheck;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -1282,7 +1741,26 @@ class _CategoryDoor extends StatelessWidget {
                       children: [
                         Text(label, style: ZyraText.body(size: 14)),
                         const SizedBox(height: 4),
-                        Text(status, style: ZyraText.subtext(size: 11.5)),
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              if (toCheck > 0)
+                                TextSpan(
+                                  text: '$toCheck to check',
+                                  style: ZyraText.subtext(
+                                    size: 11.5,
+                                    color: _quickCheckInk,
+                                  ),
+                                ),
+                              TextSpan(
+                                text: toCheck > 0
+                                    ? ' · ${status.replaceFirst(' preferences set', ' set')}'
+                                    : status,
+                              ),
+                            ],
+                          ),
+                          style: ZyraText.subtext(size: 11.5),
+                        ),
                       ],
                     ),
                   ),
@@ -1307,11 +1785,13 @@ class _QuestionDoor extends StatelessWidget {
     required this.question,
     required this.value,
     required this.onTap,
+    this.needsCheck = false,
   });
 
   final String question;
   final String value;
   final VoidCallback onTap;
+  final bool needsCheck;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -1345,7 +1825,9 @@ class _QuestionDoor extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: ZyraText.subtext(
                             size: 11.5,
-                            color: value == 'Not answered'
+                            color: needsCheck
+                                ? _quickCheckInk
+                                : value == 'Not answered'
                                 ? ZyraColors.negativeRed
                                 : ZyraColors.ink(0.58),
                           ),
@@ -1375,12 +1857,14 @@ class _EditorScaffold extends StatelessWidget {
     required this.child,
     this.bottom,
     this.owner,
+    this.allowBack = true,
   });
 
   final String title;
   final Widget child;
   final Widget? bottom;
   final _CompatibilityPreviewOwner? owner;
+  final bool allowBack;
 
   @override
   Widget build(BuildContext context) => owner == null
@@ -1416,15 +1900,20 @@ class _EditorScaffold extends StatelessWidget {
       appBar: preview
           ? null
           : AppBar(
-              automaticallyImplyLeading: owner == null,
+              automaticallyImplyLeading: owner == null && allowBack,
               leading: owner != null && Navigator.of(context).canPop()
                   ? BackButton(
-                      onPressed: ZyraTapFeedback.onTap(context, () {
-                        if (_editorCurrent(context, owner) &&
-                            Navigator.of(context).canPop()) {
-                          Navigator.of(context).pop();
-                        }
-                      }),
+                      onPressed: ZyraTapFeedback.onTap(
+                        context,
+                        allowBack
+                            ? () {
+                                if (_editorCurrent(context, owner) &&
+                                    Navigator.of(context).canPop()) {
+                                  Navigator.of(context).pop();
+                                }
+                              }
+                            : null,
+                      ),
                     )
                   : null,
               title: Text(title, style: ZyraText.heading(size: 17)),
@@ -1457,11 +1946,13 @@ class _EditorScaffold extends StatelessWidget {
     return ZyraPullDownBackScope(
       routeIdentity: (ModalRoute.of(context), owner),
       onBack: () {
-        if (_editorCurrent(context, owner) && Navigator.of(context).canPop()) {
+        if (allowBack &&
+            _editorCurrent(context, owner) &&
+            Navigator.of(context).canPop()) {
           Navigator.of(context).pop();
         }
       },
-      enabled: owner!.alive,
+      enabled: allowBack && owner!.alive,
       child: page,
     );
   }
@@ -1549,8 +2040,7 @@ String _preferenceCategoryStatus(
   );
   final answered = questions.fold<int>(
     0,
-    (count, question) =>
-        count + (draft.preferences[question.responseKey]?.length ?? 0),
+    (count, question) => count + draft.valuesFor(question).length,
   );
   return '$answered of $total preferences set';
 }

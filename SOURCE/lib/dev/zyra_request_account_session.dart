@@ -5,10 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show Offset;
 
 import '../models/seeker_profile.dart';
+import '../models/onboarding_question.dart';
 import '../screens/profile/compatibility_editors.dart';
 import '../screens/profile/edit_profile_screen.dart';
 import '../services/zyra_onboarding_answers_service.dart'
-    show ZyraOnboardingAnswersSnapshot;
+    show ZyraOnboardingAnswersSnapshot, ZyraPreferenceOption;
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_interaction_style.dart';
 
@@ -18,6 +19,7 @@ class ZyraRequestAccountSession extends ChangeNotifier {
     required ZyraDevPalette palette,
     required ZyraHapticLevel hapticLevel,
     required bool goldEnabled,
+    bool legacyAmberQuickCheck = false,
     // Public constructor names intentionally do not expose private state.
     // ignore: prefer_initializing_formals
   }) : _canAct = canAct,
@@ -26,7 +28,10 @@ class ZyraRequestAccountSession extends ChangeNotifier {
        _hapticLevel = hapticLevel,
        // ignore: prefer_initializing_formals
        _goldEnabled = goldEnabled {
-    compatibility = ZyraRequestCompatibilityRepository(canAct: () => current);
+    compatibility = ZyraRequestCompatibilityRepository(
+      canAct: () => current,
+      legacyAmberQuickCheck: legacyAmberQuickCheck,
+    );
   }
 
   final bool Function() _canAct;
@@ -108,7 +113,10 @@ class ZyraRequestAccountSession extends ChangeNotifier {
     return true;
   }
 
-  SeekerProfile ownProfile(bool guardian, {ZyraPlan? seekerPlan}) => SeekerProfile(
+  SeekerProfile ownProfile(
+    bool guardian, {
+    ZyraPlan? seekerPlan,
+  }) => SeekerProfile(
     id: guardian ? 'draft-own-guardian' : 'draft-self',
     firstName: guardian ? 'Hassan' : 'Adam',
     surnameLine: guardian ? 'Rahman' : 'Khan',
@@ -141,15 +149,49 @@ class ZyraRequestAccountSession extends ChangeNotifier {
 /// Uses the retained editor contract with detached canonical question keys.
 /// No server repository, Auth reads, preferences or AppState merging exist.
 class ZyraRequestCompatibilityRepository
-    implements ZyraCompatibilityEditorRepository {
-  ZyraRequestCompatibilityRepository({required bool Function() canAct})
+    implements
+        ZyraCompatibilityEditorRepository,
+        ZyraPreferenceQuickCheckRepository {
+  ZyraRequestCompatibilityRepository({
+    required bool Function() canAct,
+    bool legacyAmberQuickCheck = false,
+  })
     // Keep the caller's public guard parameter separate from private storage.
     // ignore: prefer_initializing_formals
-    : _canAct = canAct;
+    : _canAct = canAct {
+    if (legacyAmberQuickCheck) {
+      _legacy.addAll(const {
+        (questionId: 'ch3_q33', optionValue: 'Usually all five prayers'),
+        (questionId: 'ch3_q33', optionValue: 'Most days'),
+        (questionId: 'ch2.sect.matrix', optionValue: 'shia'),
+        (questionId: 'ch2.sect.outside_flexibility', optionValue: '*'),
+        (questionId: 'ch2.revert.flexibility', optionValue: '*'),
+      });
+      _draft = ZyraCompatibilityDraft(
+        gender: 'male',
+        answers: {},
+        hardRequirements: {},
+        preferences: {
+          'ch3_q33': {
+            'Usually all five prayers': TrafficLight.yellow,
+            'Most days': TrafficLight.yellow,
+          },
+        },
+      );
+      for (final option in _legacy.where(
+        ZyraSetupPreferenceLights.isSetupOption,
+      )) {
+        _setupLights[option] = TrafficLight.yellow;
+      }
+    }
+  }
 
   final bool Function() _canAct;
   bool _closed = false;
   ZyraCompatibilityDraft? _draft;
+  final Set<ZyraPreferenceOption> _legacy = {};
+  final _setupLights = <ZyraPreferenceOption, TrafficLight>{};
+  bool get hasPreferencesToCheck => _current && _legacy.isNotEmpty;
   static const _owner = 'draft-self';
 
   bool get _current {
@@ -184,8 +226,46 @@ class ZyraRequestCompatibilityRepository
     return true;
   }
 
+  @override
+  Future<Set<ZyraPreferenceOption>> lightsNeedingReconfirmation(
+    String userId,
+  ) async {
+    if (!isCurrentOwner(userId, 0)) {
+      throw StateError('The preview account changed.');
+    }
+    return Set.of(_legacy);
+  }
+
+  @override
+  Future<ZyraSetupPreferenceLights?> loadSetupPreferenceLights(
+    String userId,
+  ) async {
+    if (!isCurrentOwner(userId, 0)) return null;
+    return ZyraSetupPreferenceLights(lights: _setupLights);
+  }
+
+  @override
+  Future<void> confirmPreferenceLight(
+    String userId,
+    ZyraPreferenceOption option,
+    TrafficLight light,
+  ) async {
+    if (!isCurrentOwner(userId, 0) || !_legacy.contains(option)) {
+      throw StateError('The preview preference is unavailable.');
+    }
+    if (ZyraSetupPreferenceLights.isSetupOption(option)) {
+      _setupLights[option] = light;
+    } else {
+      (_draft!.preferences[option.questionId] ??= {})[option.optionValue] =
+          light;
+    }
+    _legacy.remove(option);
+  }
+
   void close() {
     _closed = true;
     _draft = null;
+    _legacy.clear();
+    _setupLights.clear();
   }
 }

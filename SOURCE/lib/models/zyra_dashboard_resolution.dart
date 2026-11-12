@@ -305,6 +305,7 @@ final class DashboardSnapshot {
   final DashboardSource<List<DashboardSignal>> insights;
   final DashboardSource<List<DashboardAdvisory>> advisories;
   final DashboardStableState stableState;
+  final bool hasPreferencesToCheck;
 
   const DashboardSnapshot({
     required this.role,
@@ -315,6 +316,7 @@ final class DashboardSnapshot {
     required this.insights,
     this.advisories = const DashboardSource.available([]),
     this.stableState = const DashboardStableState(),
+    this.hasPreferencesToCheck = false,
   });
 }
 
@@ -510,6 +512,23 @@ final class DashboardResolver {
       DashboardSignalSource.guardianInvitations,
     );
     _addSignals(collected, snapshot.insights, DashboardSignalSource.insights);
+    if (snapshot.role == DashboardRole.seeker &&
+        snapshot.hasPreferencesToCheck) {
+      collected.add(
+        const DashboardResolvedItem(
+          signal: DashboardSignal(
+            id: 'preference-quick-check',
+            kind: DashboardSignalKind.ownJourneyMove,
+            title: 'A few preferences need a quick check',
+            detail:
+                'The amber light now means “Open to this”. Tap each one again so it counts.',
+            actionLabel: 'Check now',
+            target: ZyraDashboardTarget.preferences,
+          ),
+          source: DashboardSignalSource.onboarding,
+        ),
+      );
+    }
 
     final deduplicated = _deduplicate(collected);
     final obligations = [

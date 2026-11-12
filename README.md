@@ -62,7 +62,10 @@ The full tab bar stays visible on My ZYRA quick access pages, including the
 read-only Journey requests opened from Guardian Notifications. A sideways swipe
 on My ZYRA changes the Needs you item. New activity badges reflect arrivals.
 The My ZYRA Preferences chip and Edit profile open the same Partner preferences
-page. Haptics starts on Light for members who have never saved a level.
+page. Amber is labelled Open to this. The Founder preview includes a
+sample Quick check for saved amber choices, including setup lights and the
+counterpart’s preference questions. A deliberate tap clears a pending check.
+Haptics starts on Light for members who have never saved a level.
 
 ## Built with
 

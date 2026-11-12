@@ -7,6 +7,7 @@ import 'package:http/testing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/main.dart' show supabase;
+import 'package:zyra/models/onboarding_question.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_consent_service.dart';
 import 'package:zyra/services/zyra_profile_service.dart';
@@ -198,6 +199,67 @@ void main() {
     await rejected;
     expect(_ownReads, 1);
   });
+
+  test(
+    'ordinary profile checkpoints preserve existing Amber spellings',
+    () async {
+      final preferences = ZyraSeekerDetailsService.buildPreferences(
+        sectMatrix: const {
+          'Sunni': TrafficLight.yellow,
+          'Shia': TrafficLight.yellow,
+          'Ahl-e-Hadith': TrafficLight.green,
+        },
+        sectOutsideFlex: TrafficLight.yellow,
+        revertFlex: TrafficLight.yellow,
+        countryFlex: TrafficLight.yellow,
+        ethnicityFlex: TrafficLight.yellow,
+        previousPreferences: const {
+          'sect': {
+            'matrix': {
+              'sunni': 'amber',
+              'shia': 'yellow',
+              'ahl-e-hadith': 'amber',
+            },
+            'outside_flexibility': 'amber',
+          },
+          'revert': {'flexibility': 'yellow'},
+          'country_of_birth': {'flexibility': 'amber'},
+        },
+      );
+      expect(
+        await ZyraSeekerDetailsService.saveDetails(
+          SeekerDetails(preferences: preferences),
+          expectedUserId: _ownerA,
+        ),
+        isTrue,
+      );
+      final saved = _detailsPayload!['preferences'] as Map;
+      expect(saved['sect'], {
+        'matrix': {'sunni': 'amber', 'shia': 'yellow', 'ahl-e-hadith': 'green'},
+        'outside_flexibility': 'amber',
+        'hard_requirement': [],
+      });
+      expect(saved['revert']['flexibility'], 'yellow');
+      expect(saved['country_of_birth']['flexibility'], 'amber');
+      expect(saved['ethnicity']['flexibility'], 'yellow');
+      expect(_detailsWrites, 1);
+      expect(_consentReads, 1);
+      expect(
+        _detailsPayload!.keys,
+        unorderedEquals([
+          'user_id',
+          'sect',
+          'sect_other',
+          'revert_status',
+          'country_of_birth',
+          'nationality',
+          'ethnicity',
+          'languages',
+          'preferences',
+        ]),
+      );
+    },
+  );
 
   test(
     'a late details write is not reported saved after a generation reset',

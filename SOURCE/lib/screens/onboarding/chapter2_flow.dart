@@ -146,6 +146,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
   String? _location;
   String? _distancePref;
   TrafficLight? _distanceFlex;
+  Map<String, dynamic> _savedPreferences = const {};
 
   String? _sect;
   String _sectOther = '';
@@ -295,7 +296,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
 
   TrafficLight? _light(Object? value) => switch (value) {
     'green' => TrafficLight.green,
-    'yellow' => TrafficLight.yellow,
+    'yellow' || 'amber' => TrafficLight.yellow,
     'red' => TrafficLight.red,
     _ => null,
   };
@@ -313,6 +314,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
     _languages = List<String>.from(details.languages);
 
     final p = details.preferences;
+    _savedPreferences = p;
     final location = p['location'] as Map?;
     _distancePref = zyraNameFor(
       zyraLocationPreferences,
@@ -451,6 +453,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
       languagePrefs: _languagePrefs,
       languageSkipped: _languageSkipped,
       languageFlex: _languageFlex,
+      previousPreferences: _savedPreferences,
     ),
   );
 
@@ -513,12 +516,15 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
     // Respect refusal. The existing service cannot store special-category
     // details without consent, and the server still owns readiness.
     if (_article9Consent == true && (step >= 4 || finalCheckpoint)) {
+      final details = _currentDetails;
       if (!await ZyraSeekerDetailsService.saveDetails(
-        _currentDetails,
+        details,
         expectedUserId: _owner,
       )) {
         return false;
       }
+      if (!_canProceed) return false;
+      _savedPreferences = details.preferences;
     }
     return _canProceed;
   }

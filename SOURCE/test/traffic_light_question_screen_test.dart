@@ -13,7 +13,7 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
 
     const firstOption = 'Usually all five prayers';
-    const secondOption = 'Some daily prayers';
+    const secondOption = 'No preference';
     var values = <String, TrafficLight>{};
 
     await tester.pumpWidget(
@@ -36,7 +36,9 @@ void main() {
     expect(values, isEmpty, reason: 'Preferences must not be preselected.');
     expect(find.text('YOUR ANSWER'), findsOneWidget);
     expect(find.text('Prefer this'), findsNWidgets(2));
-    expect(find.text('No preference'), findsNWidgets(2));
+    expect(find.text('Open to this'), findsNWidgets(2));
+    expect(find.text('No preference'), findsOneWidget);
+    expect(find.text('Neutral'), findsNothing);
     expect(find.text('Not for me'), findsNWidgets(2));
 
     await tester.tap(
@@ -46,6 +48,16 @@ void main() {
 
     expect(values, {firstOption: TrafficLight.green});
     expect(values.containsKey(secondOption), isFalse);
+
+    await tester.tap(
+      find.byKey(const ValueKey('preference_${secondOption}_yellow')),
+    );
+    await tester.pump();
+
+    expect(values, {
+      firstOption: TrafficLight.green,
+      secondOption: TrafficLight.yellow,
+    });
     expect(tester.takeException(), isNull);
   });
 }

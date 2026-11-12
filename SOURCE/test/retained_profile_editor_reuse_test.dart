@@ -223,7 +223,7 @@ void main() {
 
   for (final gender in ['female', 'male']) {
     test(
-      'checkpoint uses canonical q26 for $gender without the hidden variant',
+      'checkpoint restores the own answer and counterpart q26 preferences for $gender',
       () {
         final variants = chapter3Categories
             .expand((category) => category.questions)
@@ -232,15 +232,17 @@ void main() {
         final visible = variants.singleWhere(
           (question) => question.visibleFor(gender),
         );
-        final hidden = variants.singleWhere(
+        final counterpart = variants.singleWhere(
           (question) => !question.visibleFor(gender),
         );
         final draft = ZyraCompatibilityDraft.fromSnapshot(gender: gender);
         draft.answers[visible.responseKey] = visible.options.first;
-        draft.preferences[visible.responseKey] = {
-          visible.options.first: TrafficLight.red,
+        draft.preferences[counterpart.responseKey] = {
+          counterpart.options.first: TrafficLight.red,
         };
-        draft.hardRequirements[visible.responseKey] = {visible.options.first};
+        draft.hardRequirements[counterpart.responseKey] = {
+          counterpart.options.first,
+        };
         final checkpoint = draft.toSnapshot();
         expect(checkpoint.ch3Answers['ch3_q26'], visible.options.first);
         expect(checkpoint.ch3Answers.containsKey(visible.responseKey), isFalse);
@@ -249,13 +251,15 @@ void main() {
           snapshot: checkpoint,
         );
         expect(restored.answers[visible.responseKey], visible.options.first);
-        expect(restored.answers.containsKey(hidden.responseKey), isFalse);
+        expect(restored.answers.containsKey(counterpart.responseKey), isFalse);
         expect(
-          restored.preferences[visible.responseKey]![visible.options.first],
+          restored.preferences[counterpart.responseKey]![counterpart
+              .options
+              .first],
           TrafficLight.red,
         );
-        expect(restored.hardRequirements[visible.responseKey], {
-          visible.options.first,
+        expect(restored.hardRequirements[counterpart.responseKey], {
+          counterpart.options.first,
         });
       },
     );

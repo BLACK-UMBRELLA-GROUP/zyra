@@ -1,6 +1,6 @@
 import '../../widgets/zyra_floating_surface.dart';
 // Generic per-option preference screen. Every possible answer receives its
-// own explicit Prefer this / No preference / Not for me choice.
+// own explicit Prefer this / Open to this / Not for me choice.
 //
 // HARD REQUIREMENTS ARE PER-OPTION IN CHAPTER 4 SINCE 2026-08-10 (Onboarding
 // Direction B, Founder decision; migration onboarding_b_stage1_hard_
@@ -55,6 +55,10 @@ class TrafficLightQuestionScreen extends StatefulWidget {
   /// Under [HardRequirementScope.perQuestion] this is all-or-nothing: either
   /// empty, or exactly the set of 🔴 options.
   final Set<String> initialHardRequirement;
+  final Set<String> optionsToCheck;
+  final Future<bool> Function(String, TrafficLight)? onReconfirm;
+  final bool confirming;
+  final bool onlyCheckOptions;
 
   final ValueChanged<Map<String, TrafficLight>> onChanged;
   final ValueChanged<Set<String>> onHardRequirementChanged;
@@ -69,6 +73,10 @@ class TrafficLightQuestionScreen extends StatefulWidget {
     this.hardRequirementSupported = true,
     this.initialValues = const {},
     this.initialHardRequirement = const {},
+    this.optionsToCheck = const {},
+    this.onReconfirm,
+    this.confirming = false,
+    this.onlyCheckOptions = false,
   });
 
   @override
@@ -90,6 +98,17 @@ class _TrafficLightQuestionScreenState
 
   bool get _allRed =>
       widget.options.isNotEmpty && _redOptions.length == widget.options.length;
+
+  Future<void> _choose(String option, TrafficLight light) async {
+    final check = widget.optionsToCheck.contains(option);
+    if (widget.confirming || (widget.onlyCheckOptions && !check)) return;
+    if (check) {
+      if (await widget.onReconfirm?.call(option, light) != true || !mounted) {
+        return;
+      }
+    }
+    _set(option, light);
+  }
 
   void _set(String option, TrafficLight light) {
     setState(() {
@@ -141,8 +160,13 @@ class _TrafficLightQuestionScreenState
           SizedBox(height: 18),
         ],
         ...widget.options.map((option) {
-          final current = _values[option];
+          final check = widget.optionsToCheck.contains(option);
+          final current = check ? null : _values[option];
           final isRed = current == TrafficLight.red;
+          final canChoose =
+              !widget.confirming && (!widget.onlyCheckOptions || check);
+          const checkInk = Color(0xFF845F24);
+          final checkBorder = const Color(0xFFA9792E).withValues(alpha: 0.6);
           return ZyraFloatingSurface(
             radius: 13,
             child: Container(
@@ -154,7 +178,9 @@ class _TrafficLightQuestionScreenState
                 color: ZyraColors.surfaceFill,
                 borderRadius: BorderRadius.circular(13),
                 border: Border.all(
-                  color: ZyraColors.foreground.withValues(alpha: 0.09),
+                  color: check
+                      ? checkBorder
+                      : ZyraColors.foreground.withValues(alpha: 0.09),
                 ),
               ),
               child: Column(
@@ -164,7 +190,26 @@ class _TrafficLightQuestionScreenState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(child: Text(option, style: ZyraText.option())),
-                      if (widget.yourAnswers.contains(option)) ...[
+                      if (check) ...[
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 3,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(999),
+                            border: Border.all(color: checkBorder),
+                          ),
+                          child: Text(
+                            'Check',
+                            style: ZyraText.subtext(
+                              size: 10.5,
+                              color: checkInk,
+                            ),
+                          ),
+                        ),
+                      ] else if (widget.yourAnswers.contains(option)) ...[
                         SizedBox(width: 9),
                         Container(
                           padding: const EdgeInsets.symmetric(
@@ -189,6 +234,13 @@ class _TrafficLightQuestionScreenState
                       ],
                     ],
                   ),
+                  if (check) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      'Saved before as “No preference”. Tap a light to confirm.',
+                      style: ZyraText.subtext(size: 11.5, color: checkInk),
+                    ),
+                  ],
                   SizedBox(height: 11),
                   Row(
                     children: [
@@ -199,7 +251,9 @@ class _TrafficLightQuestionScreenState
                           label: 'Prefer this',
                           semanticLabel: 'Prefer this for $option',
                           active: current == TrafficLight.green,
-                          onTap: () => _set(option, TrafficLight.green),
+                          onTap: canChoose
+                              ? () => _choose(option, TrafficLight.green)
+                              : null,
                         ),
                       ),
                       SizedBox(width: 7),
@@ -207,10 +261,12 @@ class _TrafficLightQuestionScreenState
                         child: _LightButton(
                           key: ValueKey('preference_${option}_yellow'),
                           light: TrafficLight.yellow,
-                          label: 'No preference',
-                          semanticLabel: 'No preference for $option',
+                          label: 'Open to this',
+                          semanticLabel: 'Open to this: $option',
                           active: current == TrafficLight.yellow,
-                          onTap: () => _set(option, TrafficLight.yellow),
+                          onTap: canChoose
+                              ? () => _choose(option, TrafficLight.yellow)
+                              : null,
                         ),
                       ),
                       SizedBox(width: 7),
@@ -221,7 +277,9 @@ class _TrafficLightQuestionScreenState
                           label: 'Not for me',
                           semanticLabel: 'Not for me: $option',
                           active: isRed,
-                          onTap: () => _set(option, TrafficLight.red),
+                          onTap: canChoose
+                              ? () => _choose(option, TrafficLight.red)
+                              : null,
                         ),
                       ),
                     ],
@@ -234,7 +292,9 @@ class _TrafficLightQuestionScreenState
                     InkWell(
                       onTap: ZyraTapFeedback.onTap(
                         context,
-                        () => _toggleHardOption(option),
+                        widget.confirming
+                            ? null
+                            : () => _toggleHardOption(option),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(
@@ -312,7 +372,7 @@ class _LightButton extends StatelessWidget {
   final String label;
   final String semanticLabel;
   final bool active;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   const _LightButton({
     super.key,

@@ -209,10 +209,8 @@ class ZyraSeekerDetailsService {
 
   /// Serialises the traffic-light structures Chapter 2 collects.
   ///
-  /// Uses the SAME green/yellow/red vocabulary as
-  /// `onboarding_answers.ch4_preferences`, deliberately: `score_candidates()`
-  /// already reads that vocabulary in Postgres, so a future Chapter-2-aware
-  /// scorer reuses its logic unchanged instead of learning a second dialect.
+  /// An ordinary checkpoint preserves a previously stored `amber` at the
+  /// same control. New ordinary yellow selections still store `yellow`.
   static Map<String, dynamic> buildPreferences({
     String? distancePref,
     TrafficLight? distanceFlex,
@@ -237,52 +235,80 @@ class ZyraSeekerDetailsService {
     List<String> languagePrefs = const [],
     bool languageSkipped = false,
     TrafficLight? languageFlex,
+    Map<String, dynamic> previousPreferences = const {},
   }) {
     List<String> codes(List<ZyraRefItem> list, List<String> labels) => [
       for (final l in labels) ?zyraCodeFor(list, l),
     ];
+    Object? previousLight(String area, [String key = 'flexibility']) {
+      final section = previousPreferences[area];
+      return section is Map ? section[key] : null;
+    }
+
+    String? encodeLight(TrafficLight? light, Object? previous) =>
+        light == TrafficLight.yellow && previous == 'amber'
+        ? 'amber'
+        : light?.name;
+
+    final previousMatrix = previousLight('sect', 'matrix');
+    final persistedMatrix = <String, String?>{};
+    for (final entry in sectMatrix.entries) {
+      final code = zyraSectCodeFor(entry.key);
+      persistedMatrix[code] = encodeLight(
+        entry.value,
+        previousMatrix is Map ? previousMatrix[code] : null,
+      );
+    }
 
     return {
       'location': {
         'preference': zyraCodeFor(zyraLocationPreferences, distancePref),
-        'flexibility': distanceFlex?.name,
+        'flexibility': encodeLight(distanceFlex, previousLight('location')),
       },
       'sect': {
         // Codes on BOTH sides. score_candidates reads seeker_details.sect
         // directly; no initcap/display-label bridge is allowed here.
-        'matrix': {
-          for (final e in sectMatrix.entries)
-            zyraSectCodeFor(e.key): e.value.name,
-        },
+        'matrix': persistedMatrix,
         'hard_requirement': [
           for (final label in sectHard) zyraSectCodeFor(label),
         ],
-        'outside_flexibility': sectOutsideFlex?.name,
+        'outside_flexibility': encodeLight(
+          sectOutsideFlex,
+          previousLight('sect', 'outside_flexibility'),
+        ),
       },
-      'revert': {'flexibility': revertFlex?.name},
+      'revert': {
+        'flexibility': encodeLight(revertFlex, previousLight('revert')),
+      },
       'country_of_birth': {
         'preferred': codes([
           for (final c in zyraCountries) ZyraRefItem(c.code, c.name),
         ], countryPrefs),
         'skipped': countrySkipped,
-        'flexibility': countryFlex?.name,
+        'flexibility': encodeLight(
+          countryFlex,
+          previousLight('country_of_birth'),
+        ),
       },
       'nationality': {
         'preferred': [
           for (final l in nationalityPrefs) ?zyraNationalityCodeFor(l),
         ],
         'skipped': nationalitySkipped,
-        'flexibility': nationalityFlex?.name,
+        'flexibility': encodeLight(
+          nationalityFlex,
+          previousLight('nationality'),
+        ),
       },
       'ethnicity': {
         'preferred': codes(zyraEthnicities, ethnicityPrefs),
         'skipped': ethnicitySkipped,
-        'flexibility': ethnicityFlex?.name,
+        'flexibility': encodeLight(ethnicityFlex, previousLight('ethnicity')),
       },
       'languages': {
         'preferred': codes(zyraLanguages, languagePrefs),
         'skipped': languageSkipped,
-        'flexibility': languageFlex?.name,
+        'flexibility': encodeLight(languageFlex, previousLight('languages')),
       },
     };
   }

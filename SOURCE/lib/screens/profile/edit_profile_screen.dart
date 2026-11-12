@@ -42,10 +42,12 @@ import '../../dev/zyra_app_gold_preview.dart';
 
 import '../../main.dart';
 import '../../models/zyra_gender.dart';
+import '../../models/onboarding_question.dart';
 import '../../services/zyra_account_state.dart';
 import '../../services/zyra_auth.dart';
 import '../../services/zyra_internal_preview_client.dart';
 import '../../services/zyra_onboarding_answers_service.dart';
+import '../../services/zyra_seeker_details_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
@@ -62,8 +64,20 @@ abstract interface class ZyraCompatibilityEditorRepository {
   Future<bool> save(String userId, ZyraCompatibilityDraft draft);
 }
 
+abstract interface class ZyraPreferenceQuickCheckRepository {
+  Future<Set<ZyraPreferenceOption>> lightsNeedingReconfirmation(String userId);
+  Future<ZyraSetupPreferenceLights?> loadSetupPreferenceLights(String userId);
+  Future<void> confirmPreferenceLight(
+    String userId,
+    ZyraPreferenceOption option,
+    TrafficLight light,
+  );
+}
+
 class _ServerCompatibilityEditorRepository
-    implements ZyraCompatibilityEditorRepository {
+    implements
+        ZyraCompatibilityEditorRepository,
+        ZyraPreferenceQuickCheckRepository {
   const _ServerCompatibilityEditorRepository();
 
   @override
@@ -89,7 +103,69 @@ class _ServerCompatibilityEditorRepository
         ch3Answers: draft.answers,
         ch4Preferences: draft.preferences,
         ch4HardRequirements: draft.hardRequirements,
+        canonicalAmberOptions: draft.canonicalAmberOptions,
       );
+
+  @override
+  Future<Set<ZyraPreferenceOption>> lightsNeedingReconfirmation(
+    String userId,
+  ) => ZyraOnboardingAnswersService.lightsNeedingReconfirmation(
+    expectedUserId: userId,
+  );
+
+  @override
+  Future<ZyraSetupPreferenceLights?> loadSetupPreferenceLights(
+    String userId,
+  ) async {
+    final details = await ZyraSeekerDetailsService.fetchOwn(
+      expectedUserId: userId,
+      throwOnError: true,
+    );
+    if (details == null) return null;
+    final sect = details.preferences['sect'];
+    final matrix = sect is Map ? sect['matrix'] : null;
+    final revert = details.preferences['revert'];
+    final storedSect = zyraSectCodeFor(details.sect ?? 'other');
+    TrafficLight? light(Object? value) => switch (value) {
+      'green' => TrafficLight.green,
+      'yellow' || 'amber' => TrafficLight.yellow,
+      'red' => TrafficLight.red,
+      _ => null,
+    };
+    return ZyraSetupPreferenceLights(
+      otherSect: storedSect == 'sunni' || storedSect == 'shia'
+          ? 'other'
+          : storedSect,
+      lights: {
+        if (matrix is Map)
+          for (final entry in matrix.entries)
+            if (entry.key is String)
+              if (light(entry.value) case final TrafficLight value)
+                (
+                  questionId: 'ch2.sect.matrix',
+                  optionValue: entry.key as String,
+                ): value,
+        if (light(sect is Map ? sect['outside_flexibility'] : null)
+            case final TrafficLight outside)
+          (questionId: 'ch2.sect.outside_flexibility', optionValue: '*'):
+              outside,
+        if (light(revert is Map ? revert['flexibility'] : null)
+            case final TrafficLight flexibility)
+          (questionId: 'ch2.revert.flexibility', optionValue: '*'): flexibility,
+      },
+    );
+  }
+
+  @override
+  Future<void> confirmPreferenceLight(
+    String userId,
+    ZyraPreferenceOption option,
+    TrafficLight light,
+  ) => ZyraOnboardingAnswersService.confirmPreferenceLight(
+    expectedUserId: userId,
+    option: option,
+    light: light,
+  );
 }
 
 class EditProfileScreen extends StatefulWidget {
@@ -103,13 +179,17 @@ class EditProfileScreen extends StatefulWidget {
   /// navigation is not injectable and can never be a preview fallback.
   final VoidCallback? onSupport;
   final bool embedded;
-  const EditProfileScreen({super.key, this.repository})
-    : _preview = false,
-      _previewCanAct = null,
-      _previewGender = null,
-      _previewAge = null,
-      onSupport = null,
-      embedded = false;
+  final bool openPreferenceQuickCheck;
+  const EditProfileScreen({
+    super.key,
+    this.repository,
+    this.openPreferenceQuickCheck = false,
+  }) : _preview = false,
+       _previewCanAct = null,
+       _previewGender = null,
+       _previewAge = null,
+       onSupport = null,
+       embedded = false;
 
   /// The existing editor with caller-owned local storage and account facts.
   /// This mode cannot fall through to a live repository or global AppState.
@@ -121,6 +201,7 @@ class EditProfileScreen extends StatefulWidget {
     required int? age,
     this.onSupport,
     this.embedded = true,
+    this.openPreferenceQuickCheck = false,
   }) : _preview = true,
        _previewCanAct = canAct,
        _previewGender = gender,
@@ -153,6 +234,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String? _owner;
   int _ownerGeneration = 0;
   bool _loading = false;
+  bool _openQuickCheckOnLoad = false;
   String? _loadError;
 
   bool get _currentOwner {
@@ -222,6 +304,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void initState() {
     super.initState();
     _explicitPreview = widget._preview;
+    _openQuickCheckOnLoad = widget.openPreferenceQuickCheck;
     _embeddedPreview = widget.embedded;
     _previewOwner = widget._previewCanAct;
     _previewGender = widget._previewGender;
@@ -370,6 +453,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         );
         _loading = false;
       });
+      if (_openQuickCheckOnLoad) {
+        _openQuickCheckOnLoad = false;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            _open(CompatibilityEditorKind.trafficLights, checkNow: true);
+          }
+        });
+      }
     } catch (_) {
       if (!mounted || epoch != _loadEpoch) return;
       setState(() {
@@ -394,7 +485,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
-  Future<void> _open(CompatibilityEditorKind kind) async {
+  Future<void> _open(
+    CompatibilityEditorKind kind, {
+    bool checkNow = false,
+  }) async {
     final draft = _draft;
     if (draft == null ||
         !_canUse ||
@@ -403,6 +497,39 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
     bool canEdit() => _canUse;
     final persist = _persist;
+    ZyraPreferenceQuickCheck? quickCheck;
+    final repository = _repository;
+    final userId = _owner;
+    if (kind == CompatibilityEditorKind.trafficLights &&
+        repository is ZyraPreferenceQuickCheckRepository &&
+        userId != null) {
+      final checkRepository = repository as ZyraPreferenceQuickCheckRepository;
+      try {
+        final items = await checkRepository
+            .lightsNeedingReconfirmation(userId)
+            .timeout(const Duration(seconds: 10));
+        final setup = await checkRepository
+            .loadSetupPreferenceLights(userId)
+            .timeout(const Duration(seconds: 10));
+        quickCheck = ZyraPreferenceQuickCheck(
+          items: items,
+          setup: setup,
+          confirm: (option, light) async {
+            if (!canEdit()) throw StateError('The profile account changed.');
+            await checkRepository.confirmPreferenceLight(userId, option, light);
+            if (!canEdit()) throw StateError('The profile account changed.');
+          },
+          onConfirmed: draft.applyConfirmedPreference,
+        );
+      } catch (_) {
+        // The previous server can still serve the ordinary editor.
+      }
+      if (!mounted ||
+          !_canUse ||
+          !(ModalRoute.of(context)?.isCurrent ?? true)) {
+        return;
+      }
+    }
     final updated = await Navigator.of(context).push<ZyraCompatibilityDraft>(
       MaterialPageRoute(
         builder: (_) => _explicitPreview
@@ -412,6 +539,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 onPersist: persist,
                 canAct: canEdit,
                 canActChanges: _ownerChanges,
+                quickCheck: quickCheck,
+                openQuickCheck: checkNow,
               )
             : CompatibilityEditorScreen(
                 kind: kind,
@@ -419,6 +548,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 onPersist: persist,
                 canAct: canEdit,
                 canActChanges: _ownerChanges,
+                quickCheck: quickCheck,
+                openQuickCheck: checkNow,
               ),
       ),
     );

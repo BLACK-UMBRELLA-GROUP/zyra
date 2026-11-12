@@ -486,6 +486,15 @@ class _HomeShellState extends State<HomeShell> {
             _openConnectionsSection(ZyraConnectionsSection.activity),
         onOpenGuardian: () => _goToTab(3),
         onReviewPreferences: _openPreferenceEditor,
+        onPreferenceQuickCheck: () {
+          if (!_currentAccount || widget.deferredOnboardingDevPreview) return;
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) =>
+                  const EditProfileScreen(openPreferenceQuickCheck: true),
+            ),
+          );
+        },
         onNotificationsChanged: _refreshUnread,
       ),
       const SeekerWaliTab(),

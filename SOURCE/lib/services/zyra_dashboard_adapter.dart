@@ -17,7 +17,9 @@ import 'zyra_wali_link_service.dart';
 class ZyraSeekerDashboardAdapter {
   const ZyraSeekerDashboardAdapter();
 
-  Future<DashboardSnapshot> load() async {
+  Future<DashboardSnapshot> load({
+    Future<bool> Function()? loadPreferenceQuickCheck,
+  }) async {
     // Start independent reads together. No surface is expected to hydrate
     // AppState first, so cold launch and returning from another tab are equal.
     final onboardingFuture = ZyraProfileService.fetchOnboardingProgress();
@@ -41,6 +43,7 @@ class ZyraSeekerDashboardAdapter {
       invitationsFuture,
       linksFuture,
       unreadCountFuture,
+      loadPreferenceQuickCheck?.call() ?? Future.value(false),
     ]);
     final onboarding = reads[0] as ZyraOnboardingProgress?;
     final journeys = reads[1] as List<JourneyMatch>?;
@@ -76,6 +79,7 @@ class ZyraSeekerDashboardAdapter {
             )
           : DashboardSource.available(unreadCount),
       journeyMilestones: journeyMilestones,
+      hasPreferencesToCheck: reads[6] == true,
     );
   }
 
@@ -254,6 +258,7 @@ class ZyraSeekerDashboardAdapter {
     List<ZyraMilestone> journeyMilestones = const [],
     int? savedProfiles,
     DateTime? now,
+    bool hasPreferencesToCheck = false,
   }) {
     final resolvedNow = now ?? DateTime.now();
     final family = _familyStatus(
@@ -263,6 +268,7 @@ class ZyraSeekerDashboardAdapter {
     );
     return DashboardSnapshot(
       role: DashboardRole.seeker,
+      hasPreferencesToCheck: hasPreferencesToCheck,
       onboarding: _onboardingSignals(onboarding),
       journeys: _journeyState(
         journeys,
