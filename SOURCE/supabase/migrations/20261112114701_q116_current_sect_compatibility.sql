@@ -1,9 +1,8 @@
 -- Line 92 / Q116 / OA-ZYRA-193 / DR-ZYRA-250 D2, D5, D6.
 begin;
 
--- Use the same canonicalization as Chapter 2. Old custom rows can have
--- just a canonical code. The display label is capped at 60 characters by
--- the existing client, so accept a corresponding truncated prefix.
+-- The canonical code was stored from the full label. A display prefix
+-- can be shorter because the client caps that separate field at 60 UTF-16 units.
 create function private.zyra_current_sect_third_key(p_sect text, p_words text)
 returns text
 language sql immutable set search_path = ''
@@ -11,11 +10,14 @@ as $function$
   select case
     when p_sect is null or p_sect in ('sunni', 'shia') then 'other'
     when p_sect !~ '^[a-z0-9]+(-[a-z0-9]+)*$' then null
-    when p_words is null then p_sect
-    when code in ('sunni', 'shia') then null
-    when p_sect in ('other', code)
-      or (length(p_words) = 60 and code <> 'other' and starts_with(p_sect, code))
-      then code
+    when p_words is null or p_sect = code then p_sect
+    when p_sect = 'other' then case when code not in ('sunni', 'shia') then code end
+    when length(p_words) + (
+      select count(*) from regexp_split_to_table(p_words, '') letter
+      where octet_length(letter) = 4
+    ) = 60 and (
+      lower(p_words) collate "C" !~ '[a-z0-9]' or starts_with(p_sect, code)
+    ) then p_sect
     else null
   end
   from (select public.zyra_sect_code(p_words) as code) words;
@@ -665,6 +667,16 @@ $old$;
             v_excluded := TRUE;
           ELSE
             v_light := v_block -> 'matrix' ->> v_sect_key;
+            -- Keep the existing Browse half-weight for a confirmed current Amber.
+            IF v_light = 'amber' AND EXISTS (
+              SELECT 1 FROM public.preference_light_confirmations c
+              WHERE c.user_id = v_me
+                AND c.question_id IN ('sect', 'ch2.sect.matrix')
+                AND c.option_value = v_sect_key
+                AND c.light = 'amber' AND c.capture_version = 'v1'
+            ) THEN
+              v_light := 'yellow';
+            END IF;
 $new$;
 begin
   if cardinality(string_to_array(v_definition, v_old_declaration)) <> 2

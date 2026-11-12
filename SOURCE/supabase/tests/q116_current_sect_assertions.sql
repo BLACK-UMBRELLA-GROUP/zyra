@@ -91,6 +91,26 @@ create temporary table q116_baseline as select * from pg_temp.q116_score('fem1')
 select pg_temp.q116_assert((select state = 'ok' and overall is not null from q116_baseline),
   'valid real-bank baseline produces a score');
 
+-- Direct helper coverage for display truncation and the older sentinel. The
+-- full-bank tests below separately exercise typed unavailable and its audit.
+select pg_temp.q116_assert(
+  private.zyra_current_sect_third_key(repeat('a', 60) || '-full-slot', repeat('a', 60)) =
+    repeat('a', 60) || '-full-slot',
+  'a capped ASCII display label cannot replace the full canonical matrix key');
+select pg_temp.q116_assert(
+  private.zyra_current_sect_third_key(
+    repeat('a', 50) || '-full-slot', repeat('a', 50) || repeat(U&'\+01F642', 5)) =
+    repeat('a', 50) || '-full-slot'
+  and private.zyra_current_sect_third_key('full-slot', repeat(U&'\+01F642', 30)) = 'full-slot',
+  'count the UTF-16 cap with supplementary characters, including an all-non-ASCII prefix');
+select pg_temp.q116_assert(
+  private.zyra_current_sect_third_key('other', 'Legacy Fellowship') = 'legacy-fellowship'
+  and private.zyra_current_sect_third_key('other', null) = 'other'
+  and private.zyra_current_sect_third_key('other', 'Sunni') is null
+  and private.zyra_current_sect_third_key('current-fellowship', 'Different Own Words') is null
+  and private.zyra_current_sect_third_key('Invalid Code', 'Invalid Code') is null,
+  'retain legacy Other recovery and refuse malformed or contradictory current keys');
+
 -- Seed historical storage without applying the new ordinary-write policy.
 alter table public.seeker_details disable trigger zyra_keep_red_ch2_hard_requirements;
 update public.seeker_details
@@ -220,6 +240,65 @@ select pg_temp.q116_assert(
    and jsonb_array_length(preferences #> '{sect,hard_requirement}') = 4
    from public.seeker_details where user_id = pg_temp.q116_actor('male1')),
   'ordinary setup saves preserve exact retired storage and write current entries only');
+
+-- The same live Browse direction should retain its half point when a
+-- current legacy Yellow is explicitly accepted as v1 Amber.
+savepoint q116_browse_amber;
+create temporary table q116_browse_sect_before as
+select (preferences #> '{sect,matrix}') - 'current-fellowship' as retained_lights,
+       preferences #> '{sect,hard_requirement}' as retained_hard
+from public.seeker_details where user_id = pg_temp.q116_actor('male1');
+grant select on q116_browse_sect_before to authenticated;
+
+update public.seeker_details
+set preferences = jsonb_set(preferences, '{sect,matrix,current-fellowship}', '"yellow"')
+where user_id = pg_temp.q116_actor('male1');
+set local role authenticated;
+select pg_temp.q116_as('male1');
+create temporary table q116_browse_yellow as
+select * from public.score_candidates(array[pg_temp.q116_actor('fem1')]);
+reset role;
+
+update public.seeker_details
+set preferences = jsonb_set(preferences, '{sect,matrix,current-fellowship}', '"amber"')
+where user_id = pg_temp.q116_actor('male1');
+set local role authenticated;
+select pg_temp.q116_as('male1');
+select pg_temp.q116_assert(
+  (select s.score < y.score
+   from public.score_candidates(array[pg_temp.q116_actor('fem1')]) s
+   join q116_browse_yellow y using (candidate_id)),
+  'an unconfirmed raw Amber does not gain a new Browse half point');
+
+select public.zyra_confirm_preference_lights(
+  '[{"question_id":"ch2.sect.matrix","option_value":"current-fellowship","light":"amber"}]');
+select pg_temp.q116_assert(
+  (select s.score = y.score
+   from public.score_candidates(array[pg_temp.q116_actor('fem1')]) s
+   join q116_browse_yellow y using (candidate_id)),
+  'confirmed current sect Amber keeps the existing Browse Yellow half point');
+select pg_temp.q116_assert(
+  (select (d.preferences #> '{sect,matrix}') - 'current-fellowship' = b.retained_lights
+     and d.preferences #> '{sect,hard_requirement}' = b.retained_hard
+   from public.seeker_details d cross join q116_browse_sect_before b
+   where d.user_id = auth.uid()),
+  'confirming the current Browse light preserves every retired light and hard flag');
+reset role;
+delete from public.preference_light_confirmations
+where user_id = pg_temp.q116_actor('male1')
+  and question_id = 'ch2.sect.matrix' and option_value = 'current-fellowship';
+insert into public.preference_light_confirmations(user_id, question_id, option_value, light)
+values (pg_temp.q116_actor('male1'), 'sect', 'current-fellowship', 'amber');
+set local role authenticated;
+select pg_temp.q116_as('male1');
+select pg_temp.q116_assert(
+  (select s.score = y.score
+   from public.score_candidates(array[pg_temp.q116_actor('fem1')]) s
+   join q116_browse_yellow y using (candidate_id)),
+  'a matching historical receipt also retains its current Browse half point');
+reset role;
+rollback to savepoint q116_browse_amber;
+release savepoint q116_browse_amber;
 
 -- Acquire one real synthetic entitlement before any result is saved.
 insert into public.unlock_credits(user_id,tier,delta,reason)
