@@ -68,6 +68,7 @@ class ZyraPreviewNavigationCheckpoint {
     this.guardianInvitationClockStart,
     this.networkTab = 0,
     this.guardianJourneyId,
+    this.guardianJourneyAttemptRevision,
     this.browseId,
     ZyraBrowseFilter browseFilter = const ZyraBrowseFilter(),
     Iterable<String> browseHistory = const [],
@@ -138,6 +139,7 @@ class ZyraPreviewNavigationCheckpoint {
   // Viewed synthetic IDs only; never an entitlement or source of profiles.
   final Set<String> seenBrowseProfiles;
   final String? personId, guardianJourneyId, browseId;
+  final int? guardianJourneyAttemptRevision;
   final ZyraBrowseFilter browseFilter;
   final int browseCursor;
   // Actual photo ordinals for the standalone full-profile viewer.

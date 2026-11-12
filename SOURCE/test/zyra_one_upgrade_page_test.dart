@@ -67,6 +67,7 @@ void main() {
     'See the Journeys your Seeker allows',
     'Family Review (Main Guardian)',
     'Chat in a Journey',
+    'Compatibility score',
     'Join chaperoned video calls',
   ];
   const seekerHidden = [
@@ -81,7 +82,6 @@ void main() {
     'Introductions',
     'Connect with Guardian',
     'Your Seeker shows in Network',
-    'Compatibility score',
     'Gold ring on your profile',
   ];
 
@@ -123,9 +123,9 @@ void main() {
             findsNothing,
           );
         }
+        expect(find.text('Overall score'), findsOneWidget);
+        expect(find.text('Every topic'), findsOneWidget);
         if (!guardian) {
-          expect(find.text('Overall score'), findsOneWidget);
-          expect(find.text('Every topic'), findsOneWidget);
           expect(find.text('Age and location'), findsOneWidget);
           expect(find.text('All filters'), findsOneWidget);
         }
@@ -243,6 +243,9 @@ void main() {
             .guardian,
         surface == ZyraTelemetrySurface.guardian,
       );
+      expect(find.text('Compatibility score'), findsNothing);
+      expect(find.text('Overall score'), findsNothing);
+      expect(find.text('Every topic'), findsNothing);
     }
   });
 

@@ -44,6 +44,11 @@ In the Founder preview, Seeker Basic filters by age and location. The
 Nationality and Ethnicity cards link to the Seeker One comparison. In a
 mutually revealed Journey, Seeker Basic sees the overall compatibility score
 and can use a local Unlock to open the topics for that person.
+In the Founder preview, a Guardian with View can open Compatibility score
+after both Seekers reveal. Guardian Basic shows the overall score and six
+locked topics with a Guardian One comparison. Guardian One shows all seven
+pages. A shared Past summary with View on that attempt carries the read-only
+row until three calendar months after the Journey ends.
 The Guardian Basic invitation example shows what happens when a Seeker’s
 free Guardian place is taken, keeping the current holder private.
 Basic profiles and explicit upgrade prompts open the Seeker One or Guardian

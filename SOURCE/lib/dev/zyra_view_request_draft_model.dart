@@ -308,7 +308,7 @@ abstract final class DraftEndedJourneyReadWindow {
 }
 
 /// Immutable, fictional attempt history. It contains no paid entitlement,
-/// Guardian snapshot, answers or authority. A fresh attempt never adopts these
+/// live Guardian permission, answers or authority. A fresh attempt never adopts these
 /// progress values as its current consent. Legacy missing dates stay missing.
 final class DraftEndedJourneyAttempt {
   const DraftEndedJourneyAttempt._({
@@ -317,11 +317,13 @@ final class DraftEndedJourneyAttempt {
     required this.startedAt,
     required this.endedAt,
     required this.progress,
+    required this.guardiansWithView,
   });
 
   final String id, profileId;
   final DateTime? startedAt, endedAt;
   final ViewRequestDraftProgressSnapshot progress;
+  final Set<String> guardiansWithView;
 
   bool hasReadWindow(DateTime now) =>
       !(startedAt != null && endedAt != null && startedAt!.isAfter(endedAt!)) &&
@@ -378,6 +380,7 @@ final class ViewRequestDraftSnapshot {
         model._familyGuardianChatConsent,
       ),
       guardianAccess = Map.unmodifiable(model._guardianAccess),
+      guardianViewAttempts = Set.unmodifiable(model._guardianViewAttempts),
       requiredPaidGuardianAccess = Set.unmodifiable(
         model._requiredPaidGuardianAccess,
       ),
@@ -411,6 +414,7 @@ final class ViewRequestDraftSnapshot {
   final Map<String, DraftGuardianMembership> guardianMemberships;
   final Set<String> familyGuardianChatConsent;
   final Map<String, ({bool view, bool chat})> guardianAccess;
+  final Set<(String, int)> guardianViewAttempts;
   final Set<String> requiredPaidGuardianAccess;
   final bool ownMainGuardianPresent;
   final bool peerMainGuardianPresent;
@@ -743,6 +747,7 @@ class ViewRequestDraftModel {
     _guardianMemberships.addAll(snapshot.guardianMemberships);
     _familyGuardianChatConsent.addAll(snapshot.familyGuardianChatConsent);
     _guardianAccess.addAll(snapshot.guardianAccess);
+    _guardianViewAttempts.addAll(snapshot.guardianViewAttempts);
     _requiredPaidGuardianAccess.addAll(snapshot.requiredPaidGuardianAccess);
     _ownMainGuardian = snapshot.ownMainGuardianPresent;
     _peerMainGuardian = snapshot.peerMainGuardianPresent;
@@ -784,6 +789,7 @@ class ViewRequestDraftModel {
   final Map<String, DraftGuardianMembership> _guardianMemberships = {};
   final Set<String> _familyGuardianChatConsent = {};
   final Map<String, ({bool view, bool chat})> _guardianAccess = {};
+  final Set<(String, int)> _guardianViewAttempts = {};
   final Set<String> _requiredPaidGuardianAccess = {};
   bool _ownMainGuardian = true;
   bool _peerMainGuardian = true;
@@ -979,7 +985,11 @@ class ViewRequestDraftModel {
     return List.unmodifiable(values);
   }
 
-  void _recordEndedAttempt(String id, {required DateTime? endedAt}) {
+  void _recordEndedAttempt(
+    String id, {
+    required DateTime? endedAt,
+    String? mainGuardianId,
+  }) {
     final progress = _progress[id];
     if (progress == null || _currentEndedAttemptIds.containsKey(id)) return;
     final end = endedAt?.toUtc();
@@ -992,6 +1002,16 @@ class ViewRequestDraftModel {
         startedAt: _journeyStartedAt[id],
         endedAt: end,
         progress: _progressValue(progress),
+        guardiansWithView: Set.unmodifiable([
+          for (final guardian in draftGuardians)
+            if (hasGuardianViewForAttempt(
+              guardian.id,
+              id,
+              _attemptRevisions[id],
+              isMain: guardian.id == mainGuardianId,
+            ))
+              guardian.id,
+        ]),
       ),
     );
     _currentEndedAttemptIds[id] = attemptId;
@@ -1062,6 +1082,7 @@ class ViewRequestDraftModel {
     required int? expectedAttemptRevision,
     required int expectedSafetyRevision,
     required bool endCurrentJourney,
+    String? mainGuardianId,
   }) {
     if (!canApplyPersonSafety(
       id,
@@ -1072,7 +1093,7 @@ class ViewRequestDraftModel {
     )) {
       return false;
     }
-    if (endCurrentJourney) end(id);
+    if (endCurrentJourney) end(id, mainGuardianId: mainGuardianId);
     return hide ? this.hide(id) : block(id);
   }
 
@@ -1158,6 +1179,7 @@ class ViewRequestDraftModel {
   /// well as agreement evidence so relinking/upgrading cannot restore chat.
   bool revokeSampleGuardianAccess(String guardianId) {
     if (!_knownGuardian(guardianId)) return false;
+    _guardianViewAttempts.removeWhere((grant) => grant.$1 == guardianId);
     _requiredPaidGuardianAccess.removeWhere(
       (key) => key.startsWith('$guardianId|'),
     );
@@ -1192,6 +1214,22 @@ class ViewRequestDraftModel {
     );
   }
 
+  /// Current fictional View for a single attempt. The sample card's default
+  /// View value is not evidence of a grant for an Additional Guardian.
+  bool hasGuardianViewForAttempt(
+    String guardianId,
+    String peerId,
+    int? attemptRevision, {
+    required bool isMain,
+  }) =>
+      attemptRevision != null &&
+      _knownGuardian(guardianId) &&
+      !isBlocked(peerId) &&
+      _states[peerId] == DraftJourneyState.active &&
+      _attemptRevisions[peerId] == attemptRevision &&
+      ((isMain && _ownMainGuardian) ||
+          _guardianViewAttempts.contains((guardianId, attemptRevision)));
+
   /// Local write boundary, independently rejecting forged Basic chat grants
   /// and retired/stale Journey destinations before recording any change.
   bool setSampleGuardianJourneyAccess(
@@ -1211,6 +1249,14 @@ class ViewRequestDraftModel {
     final old = sampleGuardianAccessFor(guardianId, peerId);
     final view = viewEnabled ?? old.view;
     if (chatEnabled == true && !view) return false;
+    if (viewEnabled != null) {
+      final grant = (guardianId, _attemptRevisions[peerId]!);
+      if (viewEnabled) {
+        _guardianViewAttempts.add(grant);
+      } else {
+        _guardianViewAttempts.remove(grant);
+      }
+    }
     _guardianAccess['$guardianId|$peerId'] = (
       view: view,
       chat:
@@ -1349,6 +1395,7 @@ class ViewRequestDraftModel {
     String requestId,
     String endingId, {
     required bool incoming,
+    String? mainGuardianId,
   }) {
     if (!canReplaceJourneyForRequest(requestId, endingId, incoming: incoming)) {
       return false;
@@ -1357,7 +1404,7 @@ class ViewRequestDraftModel {
       _waitForAcceptance(requestId, incoming: true, endingId: endingId);
       return true;
     }
-    end(endingId);
+    end(endingId, mainGuardianId: mainGuardianId);
     // On the sent side this confirmation is the other person's held ending
     // being committed too. No counterpart Journey details are modelled.
     if (!incoming) _busyPeers.remove(requestId);
@@ -1367,7 +1414,7 @@ class ViewRequestDraftModel {
 
   /// Explicit peer confirmation commits one exact held ending, or reserves a
   /// currently free place. Every check happens before either Journey changes.
-  bool confirmWaitingRequest(String id) {
+  bool confirmWaitingRequest(String id, {String? mainGuardianId}) {
     if (!_validWaitingAttempt(id)) return false;
     if (!waitingIsIncoming(id)) {
       if (!hasCapacity) return false;
@@ -1384,7 +1431,7 @@ class ViewRequestDraftModel {
         occupiedCount > capacity) {
       return false;
     }
-    if (ending != null) end(ending);
+    if (ending != null) end(ending, mainGuardianId: mainGuardianId);
     _busyPeers.remove(id);
     _prepareAcceptedRequest(id);
     return true;
@@ -1520,6 +1567,7 @@ class ViewRequestDraftModel {
       final key = '$guardianId|$id';
       _guardianAccess[key] = (view: true, chat: true);
       _requiredPaidGuardianAccess.add(key);
+      _guardianViewAttempts.add((guardianId, _attemptRevisions[id]!));
     }
     _recordJourneyActivity(id);
     return true;
@@ -1817,7 +1865,7 @@ class ViewRequestDraftModel {
     };
   }
 
-  bool end(String id) {
+  bool end(String id, {String? mainGuardianId}) {
     final state = _states[id];
     if (state == null ||
         state == DraftJourneyState.received ||
@@ -1826,7 +1874,10 @@ class ViewRequestDraftModel {
         state == DraftJourneyState.ended) {
       return false;
     }
-    _recordEndedAttempt(id, endedAt: _clock());
+    _recordEndedAttempt(id, endedAt: _clock(), mainGuardianId: mainGuardianId);
+    _guardianViewAttempts.removeWhere(
+      (grant) => grant.$2 == _attemptRevisions[id],
+    );
     _states[id] = DraftJourneyState.ended;
     _clearRequiredPaidGuardianAccess(id);
     _recordJourneyActivity(id);
@@ -1902,6 +1953,7 @@ class ViewRequestDraftModel {
     _endedAttempts.clear();
     _currentEndedAttemptIds.clear();
     _guardianAccess.clear();
+    _guardianViewAttempts.clear();
     _requiredPaidGuardianAccess.clear();
     for (final entry in _guardianMemberships.entries.toList()) {
       if (entry.value == DraftGuardianMembership.basic) {

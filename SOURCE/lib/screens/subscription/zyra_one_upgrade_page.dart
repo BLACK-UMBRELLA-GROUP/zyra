@@ -34,10 +34,12 @@ class ZyraOneUpgradePage extends StatelessWidget {
     ('Chaperoned video calls', '—', 'Coming later'),
   ];
 
-  static const _guardianRows = [
+  List<(String, String, String)> get _guardianRows => [
     ('See the Journeys your Seeker allows', '✓', '✓'),
     ('Family Review (Main Guardian)', '✓', '✓'),
     ('Chat in a Journey', '—', '✓'),
+    if (includesPreviewComparisons)
+      ('Compatibility score', 'Overall score', 'Every topic'),
     ('Join chaperoned video calls', '—', 'Coming later'),
   ];
 

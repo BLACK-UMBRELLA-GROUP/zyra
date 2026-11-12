@@ -39,11 +39,14 @@ class ZyraCompatibilityScoreReader extends StatefulWidget {
     required this.personName,
     required this.overallScore,
     this.topicGate,
-  }) : assert(overallScore >= 0 && overallScore <= 100);
+    this.topicScores,
+  }) : assert(overallScore >= 0 && overallScore <= 100),
+       assert(topicGate == null || topicScores == null);
 
   final String personName;
   final int overallScore;
   final ZyraCompatibilityTopicGate? topicGate;
+  final List<ZyraCompatibilityDemoCategory>? topicScores;
 
   @override
   State<ZyraCompatibilityScoreReader> createState() =>
@@ -65,10 +68,10 @@ class _ZyraCompatibilityScoreReaderState
   static const _muted = ZyraColors.secondaryText;
   static const _discuss = ZyraColors.journeyGold;
   static const _opposed = ZyraColors.mutedText;
-  static final _pageCount = 1 + ZyraCompatibilityDemo.categories.length;
+  static final _pageCount = 1 + ZyraCompatibilityDemo.topicNames.length;
 
   String _name(int index) =>
-      index == 0 ? 'Overall' : ZyraCompatibilityDemo.categories[index - 1].name;
+      index == 0 ? 'Overall' : ZyraCompatibilityDemo.topicNames[index - 1];
 
   @override
   void didUpdateWidget(covariant ZyraCompatibilityScoreReader oldWidget) {
@@ -229,7 +232,7 @@ class _ZyraCompatibilityScoreReaderState
     final largeText = MediaQuery.textScalerOf(context).scale(14) > 20;
     final category = index == 0
         ? null
-        : ZyraCompatibilityDemo.categories[index - 1];
+        : (widget.topicScores ?? ZyraCompatibilityDemo.categories)[index - 1];
     final score = category?.aligned ?? widget.overallScore;
     return ZyraShadowScrollView(
       key: ValueKey('draft_compatibility_score_page_$index'),

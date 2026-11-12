@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_draft_compatibility_score_designs.dart';
+import 'zyra_compatibility_demo.dart';
 
 /// Display-only Compatibility for the protected, fictional member preview.
 ///
@@ -19,6 +20,7 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
     required this.overallScore,
     required this.revealed,
     this.topicGate,
+    this.topicScores,
     this.onUnlock,
     this.onBuyMore,
     this.canAct,
@@ -30,6 +32,7 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
   final int overallScore;
   final bool revealed;
   final ZyraCompatibilityTopicGate? topicGate;
+  final List<ZyraCompatibilityDemoCategory>? topicScores;
   final VoidCallback? onUnlock;
   final VoidCallback? onBuyMore;
   final bool Function()? canAct;
@@ -271,6 +274,7 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
           personName: personName,
           overallScore: overallScore,
           topicGate: topicGate,
+          topicScores: topicScores,
         );
         final headingHeight =
             16 +

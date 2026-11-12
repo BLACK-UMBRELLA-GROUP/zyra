@@ -34,6 +34,7 @@ import '../screens/profile/edit_photos_screen.dart';
 import '../screens/profile/my_profile_preview_screen.dart';
 import '../theme/zyra_card_metrics.dart';
 import '../theme/zyra_colors.dart';
+import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/floating_nav_bar.dart';
 import '../widgets/zyra_browse_options_button.dart';
@@ -61,6 +62,7 @@ import 'zyra_draft_timeline_preview.dart';
 import 'zyra_draft_timeline_presentation.dart';
 import 'zyra_draft_journey_bio_presentation.dart';
 import 'zyra_draft_compatibility_presentation.dart';
+import 'zyra_compatibility_demo.dart';
 import 'zyra_draft_compatibility_score_designs.dart';
 import 'zyra_draft_compatibility_store_presentation.dart';
 import 'zyra_draft_browse_utility_presentation.dart';
@@ -103,6 +105,12 @@ import 'zyra_dev_personal_code_fixtures.dart';
 import '../theme/zyra_interaction_style.dart';
 import '../data/zyra_membership_catalog.dart';
 import '../screens/subscription/zyra_one_upgrade_page.dart';
+
+typedef _GuardianCompatibilityTarget = ({
+  String subjectId,
+  int? activeRevision,
+  String? archiveId,
+});
 
 /// Code-only sample inputs for captures and widget tests. The app supplies no
 /// fixture and exposes no action for changing these values.
@@ -273,6 +281,8 @@ class _ZyraOneJourneyConceptShellState
   );
   String? _personId;
   String? _guardianJourneyId;
+  int? _guardianJourneyAttemptRevision;
+  _GuardianCompatibilityTarget? _guardianCompatibilityTarget;
   ({String id, int revision, int navigatorStamp})? _hiddenProfileRestore;
   bool _journeyOptionsOpen = false;
   String? _expandedJourneyOptionsId;
@@ -575,9 +585,8 @@ class _ZyraOneJourneyConceptShellState
     _endedReadScope = null;
   }
 
-  // Only an actually visible private Journey reader needs a deadline timer.
-  // Lists, Profiles, empty Guardian snapshots and metadata-only Timeline do not.
-  // The captured owner / route epoch can only withdraw, never supply access.
+  // Schedule only for visible private content. The owner and route epoch
+  // can withdraw the row or reader without changing the archived attempt.
   void _syncEndedReadDeadline() {
     DraftEndedJourneyAttempt? attempt;
     final id = _personId;
@@ -594,6 +603,26 @@ class _ZyraOneJourneyConceptShellState
             attemptId: _endedCompatibilityAttemptId,
           )) {
         attempt = _endedAttempt(id, _endedCompatibilityAttemptId);
+      }
+    } else if (_guardianCompatibilityOrigin(archived: true)) {
+      final target = _guardianCompatibilityTarget;
+      if (target != null && _canReadGuardianCompatibility(target)) {
+        attempt = _endedAttempt(target.subjectId, target.archiveId);
+      } else if (_page == 'held_action') {
+        for (final summary in _guardianPastSummaries) {
+          if (!_canReadGuardianCompatibility(_guardianPastTarget(summary))) {
+            continue;
+          }
+          final deadline = DraftEndedJourneyReadWindow.expiresAt(
+            summary.endedAt,
+          )!;
+          final scheduled = DraftEndedJourneyReadWindow.expiresAt(
+            attempt?.endedAt,
+          );
+          if (scheduled == null || deadline.isBefore(scheduled)) {
+            attempt = summary;
+          }
+        }
       }
     }
     final next = DraftEndedJourneyReadWindow.expiresAt(attempt?.endedAt);
@@ -616,7 +645,13 @@ class _ZyraOneJourneyConceptShellState
     _endedReadTimer = Timer(remaining, () {
       final sameScope = _endedReadScope == scope;
       _cancelEndedReadDeadline();
-      if (sameScope && fresh()) _act(() {});
+      if (sameScope && fresh()) {
+        if (_guardianRole) {
+          setState(() => _uiRevision++);
+        } else {
+          _act(() {});
+        }
+      }
     });
   }
 
@@ -825,6 +860,8 @@ class _ZyraOneJourneyConceptShellState
       };
 
   void _restoreCheckpoint(ZyraPreviewNavigationCheckpoint saved) {
+    _guardianCompatibilityTarget = null;
+    _guardianJourneyAttemptRevision = null;
     _myZyraQuickAccessPage = null;
     _guardianFamily = ZyraGuardianFamilyPreview(snapshot: saved.guardianFamily);
     _guardianFamily.expire(_previewNow);
@@ -843,9 +880,7 @@ class _ZyraOneJourneyConceptShellState
         openedRevision >= 0 && openedRevision <= _model.receivedActivityRevision
         ? openedRevision
         : 0;
-    _guardianMembership = saved.guardianMembership == 'Guardian Basic'
-        ? 'Guardian Basic'
-        : 'Guardian One';
+    _guardianMembership = saved.guardianMembership;
     _subscriptionWallet = _subscriptionWallet
         .withRole(
           ZyraWalletRole.seeker,
@@ -856,9 +891,11 @@ class _ZyraOneJourneyConceptShellState
         )
         .withRole(
           ZyraWalletRole.guardian,
-          coverage: _guardianMembership == 'Guardian Basic'
-              ? ZyraWalletCoverage.basic
-              : ZyraWalletCoverage.individualOne,
+          coverage: switch (_guardianMembership) {
+            'Guardian Basic' => ZyraWalletCoverage.basic,
+            'Guardian One' => ZyraWalletCoverage.individualOne,
+            _ => ZyraWalletCoverage.unavailable,
+          },
         );
     if (_guardianIds.contains(saved.mainGuardianId)) {
       _conceptMainGuardianId = saved.mainGuardianId;
@@ -866,13 +903,15 @@ class _ZyraOneJourneyConceptShellState
     _conceptRemovedGuardians.addAll(
       saved.removedGuardians.where(_guardianIds.contains),
     );
-    _conceptGuardianHistory.addEntries(
-      saved.guardianHistory.entries.where(
-        (e) =>
-            _guardianIds.contains(e.key) &&
-            !_conceptRemovedGuardians.contains(e.key),
-      ),
-    );
+    _conceptGuardianHistory
+      ..clear()
+      ..addEntries(
+        saved.guardianHistory.entries.where(
+          (e) =>
+              _guardianIds.contains(e.key) &&
+              !_conceptRemovedGuardians.contains(e.key),
+        ),
+      );
     _conceptNetworkSent.addAll(saved.networkSent.where(_profileIds.contains));
     _guardianInvitationCancelled = saved.guardianInvitationCancelled;
     final invitationClockStart = saved.guardianInvitationClockStart;
@@ -910,6 +949,7 @@ class _ZyraOneJourneyConceptShellState
     _guardianJourneyId = _profileIds.contains(saved.guardianJourneyId)
         ? saved.guardianJourneyId
         : null;
+    _guardianJourneyAttemptRevision = saved.guardianJourneyAttemptRevision;
     _browseFilter = saved.browseFilter.isValid
         ? saved.browseFilter
         : const ZyraBrowseFilter();
@@ -1194,6 +1234,7 @@ class _ZyraOneJourneyConceptShellState
       guardianInvitationClockStart: _guardianInvitationClockStart,
       networkTab: _networkTab,
       guardianJourneyId: _guardianJourneyId,
+      guardianJourneyAttemptRevision: _guardianJourneyAttemptRevision,
       browseId: _browseHistory.currentId,
       browseFilter: _browseFilter.withOrigin(_homeTownPoint),
       browseHistory: _browseHistory.ids,
@@ -1323,6 +1364,9 @@ class _ZyraOneJourneyConceptShellState
               _pages.contains('ended_compatibility'))) {
         _compatibilityRoute = null;
         _endedCompatibilityAttemptId = null;
+      }
+      if (!_guardianRole || !_pages.contains('guardian_compatibility')) {
+        _guardianCompatibilityTarget = null;
       }
       if (_guardianRole || !_pages.contains('timeline')) {
         _timelinePreview = null;
@@ -1651,9 +1695,13 @@ class _ZyraOneJourneyConceptShellState
             : 'Seeker One';
       }
       if (next?.guardianMembership case final membership?) {
-        _guardianMembership = membership == 'Guardian Basic'
-            ? 'Guardian Basic'
-            : 'Guardian One';
+        _guardianMembership = membership;
+        if (!_hasGuardianCompatibilityPlan) {
+          _subscriptionWallet = _subscriptionWallet.withRole(
+            ZyraWalletRole.guardian,
+            coverage: ZyraWalletCoverage.unavailable,
+          );
+        }
       }
       if (next?.membershipPaymentHistory case final history?) {
         _membershipPaymentHistory = history;
@@ -1760,6 +1808,8 @@ class _ZyraOneJourneyConceptShellState
           'bio_locked',
           'journey_compatibility',
           'journey_compatibility_locked',
+          'guardian_compatibility',
+          'guardian_compatibility_upgrade',
           'request_capacity',
           'journey_guardians',
           'ended_bio',
@@ -2012,6 +2062,8 @@ class _ZyraOneJourneyConceptShellState
     'journey_options' => _journeyOptionsPage(),
     'request_capacity' => _requestCapacityView(),
     'journey_compatibility' => _journeyCompatibility(),
+    'guardian_compatibility' => _guardianCompatibilityReader(),
+    'guardian_compatibility_upgrade' => _guardianCompatibilityUpgrade(),
     'journey_compatibility_locked' => _journeyDisclosureLocked(bio: false),
     'journey_guardians' => _journeyGuardians(),
     'ended_bio' => _endedJourneyDetail(bio: true),
@@ -3293,7 +3345,10 @@ class _ZyraOneJourneyConceptShellState
       return;
     }
     _act(() {
-      if (_model.confirmWaitingRequest(p.id)) {
+      if (_model.confirmWaitingRequest(
+        p.id,
+        mainGuardianId: _conceptMainGuardianId,
+      )) {
         _personId = p.id;
         _pages.add('journey');
       }
@@ -3492,6 +3547,7 @@ class _ZyraOneJourneyConceptShellState
           request.id,
           ending.id,
           incoming: request.incoming,
+          mainGuardianId: _conceptMainGuardianId,
         );
         if (!replaced) return;
         _pages
@@ -3769,7 +3825,7 @@ class _ZyraOneJourneyConceptShellState
       return;
     }
     _act(() {
-      final ok = _model.end(id);
+      final ok = _model.end(id, mainGuardianId: _conceptMainGuardianId);
       _result(ok);
       if (ok) _message.clear();
     });
@@ -5873,7 +5929,7 @@ class _ZyraOneJourneyConceptShellState
             }
             if (guardian) {
               _move(() {
-                _guardianJourneyId = context.referenceId;
+                _selectGuardianJourney(context.referenceId);
                 _pages.add('guardian');
               });
             } else {
@@ -6158,10 +6214,181 @@ class _ZyraOneJourneyConceptShellState
     );
   }
 
+  void _selectGuardianJourney(String? id) {
+    _guardianJourneyId = id;
+    _guardianJourneyAttemptRevision = id == null
+        ? null
+        : _model.attemptRevisionFor(id);
+  }
+
+  bool get _hasGuardianCompatibilityPlan =>
+      _guardianMembership == 'Guardian Basic' ||
+      _guardianMembership == 'Guardian One';
+
+  bool get _guardianCompatibilityOwner =>
+      _allowed &&
+      _fixtureAccount ==
+          (ZyraAccountState.userId, ZyraAccountState.generation) &&
+      ModalRoute.of(context)?.isCurrent == true &&
+      _guardianRole &&
+      _guardianTabs.main &&
+      _conceptHassanLinked &&
+      _hasGuardianCompatibilityPlan;
+
+  bool _guardianCompatibilityOrigin({required bool archived}) {
+    if (!_guardianRole) return false;
+    // These leaves are session-local. Validate their exact parent chain on
+    // every render, including while the informational upgrade is visible.
+    final depth = switch (_page) {
+      'guardian_compatibility' => 1,
+      'guardian_compatibility_upgrade' => 2,
+      _ => 0,
+    };
+    final origin = _pages.take(_pages.length - depth).toList();
+    if (archived) {
+      return _tab == 1 &&
+          _heldTitle == 'Ended Journeys' &&
+          origin.length == 1 &&
+          origin.single == 'held_action';
+    }
+    return switch ((_tab, origin)) {
+      (1 || 2, ['guardian']) ||
+      (3, ['guardian_seeker', 'guardian']) ||
+      (3, ['guardian_seeker', 'guardian_circle', 'guardian']) ||
+      (_, ['guardian_circle', 'guardian']) => true,
+      _ => false,
+    };
+  }
+
+  bool _canReadGuardianCompatibility(_GuardianCompatibilityTarget target) {
+    final id = target.subjectId;
+    final archiveId = target.archiveId;
+    if (!_guardianCompatibilityOwner ||
+        !_profileIds.contains(id) ||
+        _model.isBlocked(id) ||
+        !_guardianCompatibilityOrigin(archived: archiveId != null)) {
+      return false;
+    }
+    if (archiveId != null) {
+      final attempt = _endedAttempt(id, archiveId);
+      return attempt != null &&
+          _guardianCanSeePastSummary(attempt) &&
+          attempt.hasReadWindow(_previewNow) &&
+          attempt.progress.compatibilityConsent &&
+          attempt.progress.peerCompatibilityConsent;
+    }
+    return id == _guardianJourneyId &&
+        target.activeRevision == _guardianJourneyAttemptRevision &&
+        _model.hasGuardianViewForAttempt(
+          'draft-guardian-hassan',
+          id,
+          target.activeRevision,
+          isMain: _conceptLinkedSeeker.isMain,
+        ) &&
+        _model.compatibilityRevealed(id);
+  }
+
+  bool _guardianCanSeePastSummary(DraftEndedJourneyAttempt attempt) =>
+      _guardianCompatibilityOwner &&
+      !_model.isBlocked(attempt.profileId) &&
+      _conceptGuardianHistory['draft-guardian-hassan'] == true &&
+      attempt.guardiansWithView.contains('draft-guardian-hassan');
+
+  _GuardianCompatibilityTarget _guardianPastTarget(
+    DraftEndedJourneyAttempt attempt,
+  ) => (
+    subjectId: attempt.profileId,
+    activeRevision: null,
+    archiveId: attempt.id,
+  );
+
+  Widget _guardianCompatibilityRow(_GuardianCompatibilityTarget target) {
+    final fresh = _accountFreshGuard();
+    final tier = _guardianMembership;
+    final archiveId = target.archiveId;
+    return ZyraGuardianCompatibilityRow(
+      rowKey: ValueKey(
+        archiveId == null
+            ? 'draft_guardian_compatibility_${target.subjectId}'
+            : 'draft_guardian_past_compatibility_${target.subjectId}_$archiveId',
+      ),
+      canAct: () =>
+          fresh() &&
+          _guardianMembership == tier &&
+          _canReadGuardianCompatibility(target),
+      onTap: () => _move(() {
+        _guardianCompatibilityTarget = target;
+        _pages.add('guardian_compatibility');
+      }),
+    );
+  }
+
+  Widget _guardianCompatibilityReader() {
+    final target = _guardianCompatibilityTarget;
+    if (target == null || !_canReadGuardianCompatibility(target)) {
+      return _unavailable();
+    }
+    final person = draftProfiles.firstWhere((p) => p.id == target.subjectId);
+    final fresh = _accountFreshGuard();
+    final basic = _guardianMembership == 'Guardian Basic';
+    bool canSeeUpgrade() =>
+        fresh() &&
+        _guardianMembership == 'Guardian Basic' &&
+        _guardianCompatibilityTarget == target &&
+        _canReadGuardianCompatibility(target);
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+        child: ZyraDraftCompatibilityPresentation(
+          key: ValueKey((target, _guardianMembership)),
+          personName: person.firstName,
+          overallScore: ZyraDraftCompatibilityPreview(
+            person.id,
+            balance: 0,
+          ).overallScore,
+          balance: 0,
+          revealed: true,
+          topicScores: basic ? null : ZyraCompatibilityDemo.categories,
+          topicGate: basic
+              ? ZyraCompatibilityTopicGate(
+                  guardian: true,
+                  canAct: canSeeUpgrade,
+                  onUpgrade: () => _open('guardian_compatibility_upgrade'),
+                )
+              : null,
+        ),
+      ),
+    );
+  }
+
+  Widget _guardianCompatibilityUpgrade() {
+    final target = _guardianCompatibilityTarget;
+    if (target == null ||
+        _guardianMembership != 'Guardian Basic' ||
+        !_canReadGuardianCompatibility(target)) {
+      return _unavailable();
+    }
+    final fresh = _accountFreshGuard();
+    return ZyraOneUpgradePage(
+      guardian: true,
+      includesPreviewComparisons: true,
+      canContinue: () =>
+          fresh() &&
+          _guardianMembership == 'Guardian Basic' &&
+          _canReadGuardianCompatibility(target),
+      onBack: _bound(_back),
+    );
+  }
+
   Widget _guardianDetail() => _guardianPermittedJourney();
 
   Widget _guardianPermittedJourney() {
     final journey = _conceptGuardianJourney;
+    final _GuardianCompatibilityTarget compatibility = (
+      subjectId: _guardianJourneyId ?? '',
+      activeRevision: _guardianJourneyAttemptRevision,
+      archiveId: null,
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -6199,6 +6426,11 @@ class _ZyraOneJourneyConceptShellState
                 'A Main Guardian is needed before the Journey can continue.',
               ),
           ]),
+        if (journey?.partner.id == compatibility.subjectId &&
+            _canReadGuardianCompatibility(compatibility)) ...[
+          const SizedBox(height: ZyraPreviewSpacing.cardToCard),
+          _guardianCompatibilityRow(compatibility),
+        ],
       ],
     );
   }
@@ -6417,7 +6649,7 @@ class _ZyraOneJourneyConceptShellState
     final selected = people.indexWhere((p) => p.id == _guardianFocus?.id);
     final callbacks = [
       for (final p in people)
-        _bound(() => _move(() => _guardianJourneyId = p.id)),
+        _bound(() => _move(() => _selectGuardianJourney(p.id))),
     ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -6631,7 +6863,7 @@ class _ZyraOneJourneyConceptShellState
       }
       final id = action.substring('seeker_journey_'.length);
       if (!_guardianTabJourneyPeople.any((p) => p.id == id)) return;
-      _guardianJourneyId = id;
+      _selectGuardianJourney(id);
       if (id == 'draft-sara') state.consumedFocus.add(state.reviewFocusId);
       _open('guardian');
       return;
@@ -6647,9 +6879,9 @@ class _ZyraOneJourneyConceptShellState
       );
       if (!_guardianTabJourneyPeople.any((p) => p.id == id)) return;
       if (!opening) {
-        _act(() => _guardianJourneyId = id);
+        _act(() => _selectGuardianJourney(id));
       } else {
-        _guardianJourneyId = id;
+        _selectGuardianJourney(id);
         if (id == 'draft-sara') state.consumedFocus.add(state.reviewFocusId);
         _open('guardian');
       }
@@ -6675,6 +6907,7 @@ class _ZyraOneJourneyConceptShellState
       if (!_conceptHassanLinked) return;
       _move(() {
         state.seeker = 0;
+        _selectGuardianJourney('draft-sara');
         state.consumedFocus.add(state.reviewFocusId);
         _pages.add('guardian');
       });
@@ -7062,45 +7295,82 @@ class _ZyraOneJourneyConceptShellState
     );
   }
 
-  Widget _heldPreviewAction() => _guardianRole && _heldTitle == 'Ended Journeys'
-      ? SafeArea(
-          bottom: false,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-            child: Column(
-              key: const ValueKey('concept_held_action'),
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _heading(_heldTitle, ''),
-                Expanded(
-                  child: Builder(
-                    builder: (context) => Padding(
-                      padding: EdgeInsets.only(
-                        bottom:
-                            MediaQuery.textScalerOf(context).scale(12.5) <= 12.5
-                            ? 240
-                            : 0,
-                      ),
-                      child: ZyraEmptyState(
-                        icon: Icons.history_outlined,
-                        title: 'No ended Journeys to show.',
-                        message: _heldDetail,
-                      ),
+  List<DraftEndedJourneyAttempt> get _guardianPastSummaries => [
+    for (final person in draftProfiles)
+      ..._model.endedAttemptsFor(person.id).where(_guardianCanSeePastSummary),
+  ];
+
+  Widget _heldPreviewAction() {
+    if (_guardianRole && _heldTitle == 'Ended Journeys') {
+      final summaries = _guardianCompatibilityOrigin(archived: true)
+          ? _guardianPastSummaries
+          : const <DraftEndedJourneyAttempt>[];
+      if (summaries.isNotEmpty) {
+        final dates = MaterialLocalizations.of(context);
+        return _pageScroll([
+          _heading(_heldTitle, ''),
+          for (final attempt in summaries) ...[
+            const SizedBox(height: ZyraPreviewSpacing.cardToCard),
+            _card([
+              _title('Ended Journey', size: 25),
+              _body(switch (attempt.startedAt) {
+                final start? => 'Started ${dates.formatFullDate(start)}',
+                null => 'Start date not recorded',
+              }),
+              _body(switch (attempt.endedAt) {
+                final end? => 'Ended ${dates.formatFullDate(end)}',
+                null => 'End date not recorded',
+              }),
+            ]),
+            if (_canReadGuardianCompatibility(
+              _guardianPastTarget(attempt),
+            )) ...[
+              const SizedBox(height: ZyraPreviewSpacing.cardToCard),
+              _guardianCompatibilityRow(_guardianPastTarget(attempt)),
+            ],
+          ],
+        ], key: const ValueKey('concept_held_action'));
+      }
+      return SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+          child: Column(
+            key: const ValueKey('concept_held_action'),
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _heading(_heldTitle, ''),
+              Expanded(
+                child: Builder(
+                  builder: (context) => Padding(
+                    padding: EdgeInsets.only(
+                      bottom:
+                          MediaQuery.textScalerOf(context).scale(12.5) <= 12.5
+                          ? 240
+                          : 0,
+                    ),
+                    child: ZyraEmptyState(
+                      icon: Icons.history_outlined,
+                      title: 'No ended Journeys to show.',
+                      message: _heldDetail,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        )
-      : Column(
-          key: const ValueKey('concept_held_action'),
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _heading(_heldTitle, ''),
-            _card([_body(_heldDetail)]),
-          ],
-        );
+        ),
+      );
+    }
+    return Column(
+      key: const ValueKey('concept_held_action'),
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _heading(_heldTitle, ''),
+        _card([_body(_heldDetail)]),
+      ],
+    );
+  }
 
   Widget _ownProfilePreview() {
     if (_photos == null && !_photoLoadFailed) {
@@ -8494,6 +8764,7 @@ class _ZyraOneJourneyConceptShellState
           expectedAttemptRevision: attempt,
           expectedSafetyRevision: safetyRevision,
           endCurrentJourney: true,
+          mainGuardianId: hide ? _conceptMainGuardianId : null,
         )) {
           return;
         }
