@@ -18,7 +18,7 @@ This record covers the SQL and handler verified on the disposable PostgreSQL 17.
 
 `accept_wali_invite(p_token text, p_relationship text default null)` returns the linked row UUID. A Seeker Basic can accept one active Guardian Basic. Additional Guardians require verified Guardian One. An already-paid Guardian leaves the free place available. Seeker One can accept Guardians of either plan. Both Seeker plans are capped at ten active links through this invitation path. Admission rechecks plans and occupancy under a per-Seeker write lock even on the first link. `needs_guardian_one` and `guardian_capacity_exceeded` leave the invitation open. A new link stores the invitation UUID and the admission place, `basic_place` or `guardian_one`. The Guardian-sent reverse route and addressed requests retain their existing admission rules.
 
-## Q92, Q97, Q98 and Q100 · Compatibility
+## Q92, Q97, Q98, Q100 and Q105 · Compatibility
 
 `zyra_compatibility_topics(p_subject uuid, p_match_id uuid default null)` returns 12 rows in D3 order for an admitted caller. Each row contains `overall, topics_locked, area_no, area_code, band, state`. A locked response has a null band. The band codes are `strong`, `good`, `some_differences` and `not_enough`. A result can be `ok`, `incomplete`, `invalid` or `needs_reconfirmation`. Only `ok` carries an Overall or any bands. The response carries no area percentages, raw answers, input hash or saved score from the other direction.
 
@@ -26,7 +26,9 @@ An entitled Profiles request uses the caller's paid Unlock for this subject. A J
 
 The service-only `zyra_score_direction_v1(p_viewer, p_subject)` validates both sides' applicable answers, the viewer's counterpart-specific lights, and Chapter 2. It uses one contribution per question and averages every selected option within a multi-select. The private saved result stores Overall, 12 bands and a validation hash once per directional pair. Reveal writes both validated Overall values into the existing match projection. An existing exact Unlock+ uses the same saved direction. Purchase and new Plus spending remain held. The existing Reveal-state read retains its legacy projection until Reveal writes validated values.
 
-Old capture rows start at `v0`. New captures start at `v1`. The current client still emits Yellow for No preference, so the scorer requests reconfirmation. Existing `v0` Amber stays ambiguous. QUESTIONS row 105 tracks how the app records an explicit same-value reconfirmation as a trusted v1 capture. Repair can retry without spending another Unlock.
+`zyra_my_lights_needing_reconfirmation()` returns only the caller's affected `question_id, option_value, light` rows. It returns `amber` for the legacy Yellow representation. The app sends explicit choices to `zyra_confirm_preference_lights(p_items jsonb)` as an array of `{question_id, option_value, light}` objects. The accepted lights are `green`, `amber` and `red`. Chapter 4 uses the bank's option value. Chapter 2 Sect uses its canonical code and the other applicable Chapter 2 controls use `flexibility`. The write returns void and records the JSON and its owner-only confirmation in the same transaction. Invalid batches return `invalid_preference_lights` without writing any item.
+
+Amber counts as half only with an explicit matching v1 confirmation, even when the value stays Amber. An ordinary change or deletion revokes the affected confirmation. The current app still emits Yellow for No preference, so it needs the reconfirmation flow when the area connects. A custom sect requires an exact applicable preference light. Repair or reconfirmation can retry without spending another Unlock.
 
 ## Q99 and Q101 · Browse
 

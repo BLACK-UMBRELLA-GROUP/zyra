@@ -1,4 +1,4 @@
--- Q92, Q97, Q98, Q100 / DOC-ZYRA-0472 V3 / DR-ZYRA-250.
+-- Q92, Q97, Q98, Q100 / DOC-ZYRA-0472 V4 / DR-ZYRA-250.
 -- The Dart presentation grouping is the source of area assignment only.
 -- Scoring eligibility and applicability remain with the authoritative scorer.
 
@@ -74,8 +74,8 @@ from (values
 cross join lateral unnest(areas.question_ids) as questions(question_id);
 
 
--- Preserve legacy semantics. New rows start at v1. A legacy write can
--- advance only after the previous Amber values have been replaced.
+-- Preserve the source row's capture version. Scoring uses per-light receipts
+-- even when a new row starts at v1.
 alter table public.onboarding_answers
   add column capture_version text not null default 'v0' check (capture_version in ('v0', 'v1'));
 alter table public.onboarding_answers alter column capture_version set default 'v1';
@@ -87,26 +87,12 @@ alter table public.seeker_details alter column capture_version set default 'v1';
 create function private.zyra_version_compatibility_capture()
 returns trigger language plpgsql set search_path = ''
 as $$
-declare
-  v_before jsonb;
-  v_after jsonb;
 begin
-  if current_user not in ('authenticated', 'anon') then
-    return new;
-  end if;
-  if tg_op = 'INSERT' then
-    new.capture_version := 'v1';
-    return new;
-  end if;
-
-  new.capture_version := old.capture_version;
-  if old.capture_version = 'v0' then
-    v_before := to_jsonb(old) -> tg_argv[0];
-    v_after := to_jsonb(new) -> tg_argv[0];
-    if v_after is distinct from v_before and
-       (not jsonb_path_exists(v_before, '$.** ? (@ == "amber")')
-        or not jsonb_path_exists(v_after, '$.** ? (@ == "amber")')) then
+  if current_user in ('authenticated', 'anon') then
+    if tg_op = 'INSERT' then
       new.capture_version := 'v1';
+    else
+      new.capture_version := old.capture_version;
     end if;
   end if;
   return new;
@@ -117,11 +103,11 @@ revoke all on function private.zyra_version_compatibility_capture()
 
 create trigger zyra_compatibility_capture_version
 before insert or update on public.onboarding_answers
-for each row execute function private.zyra_version_compatibility_capture('ch4_preferences');
+for each row execute function private.zyra_version_compatibility_capture();
 
 create trigger zyra_compatibility_capture_version
 before insert or update on public.seeker_details
-for each row execute function private.zyra_version_compatibility_capture('preferences');
+for each row execute function private.zyra_version_compatibility_capture();
 
 create table private.zyra_directional_results (
   viewer uuid not null references public.profiles(id) on delete cascade,
@@ -158,8 +144,10 @@ begin
 end;
 $$;
 
-create function private.zyra_compatibility_light(p_value jsonb, p_version text)
-returns numeric language plpgsql immutable set search_path = ''
+create function private.zyra_compatibility_light(
+  p_value jsonb, p_viewer uuid, p_question text, p_option text
+)
+returns numeric language plpgsql stable set search_path = ''
 as $$
 declare
   v_light text := private.zyra_compatibility_input(p_value, 'string') #>> '{}';
@@ -168,7 +156,11 @@ begin
     when 'green' then return 1;
     when 'red' then return 0;
     when 'amber' then
-      if p_version = 'v1' then return 0.5; end if;
+      if exists (
+        select 1 from public.preference_light_confirmations c
+        where c.user_id = p_viewer and c.question_id = p_question
+          and c.option_value = p_option and c.capture_version = 'v1' and c.light = v_light
+      ) then return 0.5; end if;
     when 'yellow' then null;
     else
       raise exception using errcode = 'P8911', message = 'compatibility_light_invalid';
@@ -209,7 +201,7 @@ end;
 $$;
 
 revoke all on function private.zyra_compatibility_input(jsonb, text),
-  private.zyra_compatibility_light(jsonb, text),
+  private.zyra_compatibility_light(jsonb, uuid, text, text),
   private.zyra_compatibility_answer(jsonb, text, jsonb, boolean)
   from public, anon, authenticated, service_role;
 
@@ -312,14 +304,14 @@ begin
       raise exception using errcode = 'P8911', message = 'compatibility_preference_outside_bank';
     end if;
     for v_option in select jsonb_array_elements_text(v_question.options) loop
-      perform private.zyra_compatibility_light(v_lights -> v_option, v_ch4_version);
+      perform private.zyra_compatibility_light(v_lights -> v_option, p_viewer, v_question.qid, v_option);
     end loop;
     v_selected := private.zyra_compatibility_answer(
       v_subject_answers -> v_question.qid, v_question.qid, v_question.options, v_question.is_multi);
     if exists (select 1 from jsonb_array_elements_text(v_selected) s where v_hard_options ? s) then
       raise exception using errcode = 'P8911', message = 'compatibility_hard_exclusion';
     end if;
-    select avg(private.zyra_compatibility_light(v_lights -> option, v_ch4_version))
+    select avg(private.zyra_compatibility_light(v_lights -> option, p_viewer, v_question.qid, option))
       into v_points
       from jsonb_array_elements_text(v_selected) as selected(option);
     v_items := v_items || jsonb_build_object(v_question.qid, v_points);
@@ -349,19 +341,20 @@ begin
   foreach v_option in array array['sunni', 'shia',
     case when v_viewer_details.sect in ('sunni', 'shia') then 'other' else v_viewer_details.sect end]
   loop
-    perform private.zyra_compatibility_light(v_lights -> v_option, v_ch2_version);
+    perform private.zyra_compatibility_light(v_lights -> v_option, p_viewer, 'sect', v_option);
   end loop;
   for v_option in select jsonb_object_keys(v_lights) loop
-    perform private.zyra_compatibility_light(v_lights -> v_option, v_ch2_version);
+    perform private.zyra_compatibility_light(v_lights -> v_option, p_viewer, 'sect', v_option);
   end loop;
   if v_hard_options ? v_subject_details.sect then
     raise exception using errcode = 'P8911', message = 'compatibility_hard_exclusion';
   end if;
-  v_points := private.zyra_compatibility_light(v_lights -> v_subject_details.sect, v_ch2_version);
+  v_points := private.zyra_compatibility_light(v_lights -> v_subject_details.sect, p_viewer, 'sect', v_subject_details.sect);
   v_items := v_items || jsonb_build_object('sect', v_points);
 
   if v_subject_details.revert_status then
-    v_points := private.zyra_compatibility_light(v_ch2_prefs -> 'revert' -> 'flexibility', v_ch2_version);
+    v_points := private.zyra_compatibility_light(
+      v_ch2_prefs -> 'revert' -> 'flexibility', p_viewer, 'revert', 'flexibility');
     v_items := v_items || jsonb_build_object('revert', v_points);
   end if;
 
@@ -394,7 +387,7 @@ begin
       continue;
     end if;
 
-    v_points := private.zyra_compatibility_light(v_block -> 'flexibility', v_ch2_version);
+    v_points := private.zyra_compatibility_light(v_block -> 'flexibility', p_viewer, v_question.item, 'flexibility');
     if v_question.item = 'languages' then
       v_actual := private.zyra_compatibility_input(v_question.actual, 'array');
       if jsonb_array_length(v_actual) = 0 then
@@ -440,6 +433,10 @@ begin
   inputs_hash := encode(sha256(convert_to(jsonb_build_array(
     p_viewer, p_subject, v_target_gender, v_viewer_answers, v_subject_answers,
     v_prefs, v_hards, v_ch2_version, v_ch4_version, v_ch2_prefs,
+    (select jsonb_agg(jsonb_build_array(c.question_id, c.option_value, c.light)
+                      order by c.question_id collate "C", c.option_value collate "C")
+       from public.preference_light_confirmations c
+      where c.user_id = p_viewer and c.light = 'amber' and c.capture_version = 'v1'),
     v_viewer_details.sect, v_viewer_details.revert_status,
     v_subject_details.sect, v_subject_details.revert_status, v_subject_details.country_of_birth,
     v_subject_details.nationality, v_subject_details.ethnicity, v_subject_details.languages
@@ -475,6 +472,15 @@ begin
   if found then
     return v_result;
   end if;
+  -- A first save uses one coherent capture. Preference updates and
+  -- confirmation writes lock these same rows, in chapter order.
+  perform o.user_id from public.onboarding_answers o
+  where o.user_id in (p_viewer, p_subject)
+  order by o.user_id for share;
+  perform d.user_id from public.seeker_details d
+  where d.user_id in (p_viewer, p_subject)
+  order by d.user_id for share;
+
   select p_viewer, p_subject, s.capture_version, s.inputs_hash, s.overall, s.area_bands, s.state, now()
     into v_result
     from public.zyra_score_direction_v1(p_viewer, p_subject) s;
@@ -493,6 +499,266 @@ end;
 $$;
 revoke all on function private.zyra_save_direction_result(uuid,uuid)
   from public, anon, authenticated, service_role;
+
+-- DOC-ZYRA-0472 V4 / Q105. An explicit owner call confirms a single light.
+create table public.preference_light_confirmations (
+  user_id uuid not null references public.profiles(id) on delete cascade,
+  question_id text not null,
+  option_value text not null,
+  light text not null check (light in ('green', 'amber', 'red')),
+  capture_version text not null default 'v1' check (capture_version = 'v1'),
+  confirmed_at timestamptz not null default statement_timestamp(),
+  primary key (user_id, question_id, option_value)
+);
+
+alter table public.preference_light_confirmations enable row level security;
+revoke all on public.preference_light_confirmations
+  from public, anon, authenticated, service_role;
+grant select on public.preference_light_confirmations to authenticated;
+create policy preference_light_confirmations_read_own
+  on public.preference_light_confirmations for select to authenticated
+  using (user_id = (select auth.uid()));
+
+-- Use the scored Chapter 4 bank and the existing Chapter 2 storage keys.
+create function private.zyra_preference_light_controls(p_gender text, p_sect text)
+returns table (question_id text, option_value text, chapter integer, path text[])
+language sql stable set search_path = ''
+as $function$
+  select q.qid, o.option_value, 4, array[q.qid, o.option_value]
+  from public.zyra_onboarding_questions q
+  cross join lateral jsonb_array_elements_text(q.options) o(option_value)
+  where q.ch4_scored
+    and q.gender_visibility in ('all',
+      case p_gender when 'male' then 'womenOnly' when 'female' then 'menOnly' end)
+  union all
+  select 'sect', sect_code, 2, array['sect', 'matrix', sect_code]
+  from unnest(array['sunni', 'shia',
+    case when p_sect is null or p_sect in ('sunni', 'shia') then 'other' else p_sect end
+  ]) sect_code
+  union all
+  select qid, 'flexibility', 2, array[qid, 'flexibility']
+  from unnest(array['revert', 'country_of_birth', 'nationality', 'ethnicity', 'languages']) qid;
+$function$;
+revoke all on function private.zyra_preference_light_controls(text, text)
+  from public, anon, authenticated, service_role;
+
+-- This path helper intentionally covers obsolete controls too. An old JSON
+-- writer may remove a bank option or move a member between vocabularies.
+create function private.zyra_preference_receipt_path(
+  p_chapter integer, p_question text, p_option text
+)
+returns text[]
+language sql immutable set search_path = ''
+as $function$
+  select case
+    when p_chapter = 4 then array[p_question, p_option]
+    when p_question = 'sect' then array['sect', 'matrix', p_option]
+    else array[p_question, 'flexibility'] end;
+$function$;
+revoke all on function private.zyra_preference_receipt_path(integer, text, text)
+  from public, anon, authenticated, service_role;
+
+create function private.zyra_invalidate_preference_light_confirmations()
+returns trigger
+language plpgsql security definer set search_path = ''
+as $function$
+declare
+  v_chapter integer := tg_argv[0]::integer;
+  v_old jsonb := to_jsonb(old) -> tg_argv[1];
+  v_new jsonb;
+  v_confirm_call boolean := current_setting('zyra.confirm_preference_lights', true) = 'on';
+begin
+  if tg_op = 'UPDATE' and new.user_id is not distinct from old.user_id then
+    v_new := to_jsonb(new) -> tg_argv[1];
+  end if;
+  if v_new is null then
+    delete from public.preference_light_confirmations c
+    where c.user_id = old.user_id
+      and (v_chapter = 2) = (c.question_id in (
+        'sect', 'revert', 'country_of_birth', 'nationality', 'ethnicity', 'languages'));
+    return null;
+  end if;
+
+  if v_new is not distinct from v_old then return null; end if;
+
+  delete from public.preference_light_confirmations c
+  where c.user_id = old.user_id
+    and (v_chapter = 2) = (c.question_id in (
+      'sect', 'revert', 'country_of_birth', 'nationality', 'ethnicity', 'languages'))
+    and (v_old #> private.zyra_preference_receipt_path(v_chapter, c.question_id, c.option_value))
+      is distinct from (v_new #> private.zyra_preference_receipt_path(v_chapter, c.question_id, c.option_value))
+    -- A caller can set a GUC. Keeping a changed receipt also requires a
+    -- matching row written in this statement by the protected RPC.
+    and not coalesce(v_confirm_call and c.confirmed_at = statement_timestamp()
+      and to_jsonb(c.light) =
+        (v_new #> private.zyra_preference_receipt_path(v_chapter, c.question_id, c.option_value)), false);
+  return null;
+end;
+$function$;
+revoke all on function private.zyra_invalidate_preference_light_confirmations()
+  from public, anon, authenticated, service_role;
+
+create trigger zyra_invalidate_ch4_preference_light_confirmations
+after update or delete on public.onboarding_answers
+for each row execute function private.zyra_invalidate_preference_light_confirmations('4', 'ch4_preferences');
+
+create trigger zyra_invalidate_ch2_preference_light_confirmations
+after update or delete on public.seeker_details
+for each row execute function private.zyra_invalidate_preference_light_confirmations('2', 'preferences');
+
+create function public.zyra_confirm_preference_lights(p_items jsonb)
+returns void
+language plpgsql security definer set search_path = ''
+as $function$
+declare
+  v_me uuid := (select auth.uid());
+  v_gender text;
+  v_sect text;
+  v_ch4 jsonb;
+  v_ch2 jsonb;
+  v_item jsonb;
+  v_control record;
+  v_light text;
+  v_block jsonb;
+  v_matrix jsonb;
+  v_ch4_changed boolean := false;
+  v_ch2_changed boolean := false;
+  v_previous_flag text := current_setting('zyra.confirm_preference_lights', true);
+begin
+  if v_me is null then
+    raise exception using errcode = '42501', message = 'not_signed_in';
+  end if;
+  select p.gender into v_gender
+  from public.profiles p where p.id = v_me and p.role = 'seeker';
+  if not found then
+    raise exception using errcode = '42501', message = 'seeker_required';
+  end if;
+  if jsonb_typeof(p_items) is distinct from 'array' then
+    raise exception using errcode = '22023', message = 'invalid_preference_lights';
+  end if;
+  if jsonb_array_length(p_items) = 0 then
+    raise exception using errcode = '22023', message = 'invalid_preference_lights';
+  end if;
+
+  for v_item in select value from jsonb_array_elements(p_items) loop
+    if jsonb_typeof(v_item) is distinct from 'object' then
+      raise exception using errcode = '22023', message = 'invalid_preference_lights';
+    end if;
+    if v_item - array['question_id', 'option_value', 'light'] <> '{}'::jsonb
+       or jsonb_typeof(v_item -> 'question_id') is distinct from 'string'
+       or jsonb_typeof(v_item -> 'option_value') is distinct from 'string'
+       or jsonb_typeof(v_item -> 'light') is distinct from 'string'
+       or v_item ->> 'light' not in ('green', 'amber', 'red') then
+      raise exception using errcode = '22023', message = 'invalid_preference_lights';
+    end if;
+  end loop;
+  if exists (
+    select 1 from jsonb_to_recordset(p_items) i(question_id text, option_value text)
+    group by i.question_id, i.option_value having count(*) > 1
+  ) then
+    raise exception using errcode = '22023', message = 'invalid_preference_lights';
+  end if;
+
+  -- Use the same row-before-receipt order as ordinary preference writers.
+  select o.ch4_preferences into v_ch4 from public.onboarding_answers o
+  where o.user_id = v_me for update;
+  select d.preferences, d.sect into v_ch2, v_sect from public.seeker_details d
+  where d.user_id = v_me for update;
+
+  for v_control in
+    select i.question_id, i.option_value, i.light, c.chapter
+    from jsonb_to_recordset(p_items) i(question_id text, option_value text, light text)
+    left join private.zyra_preference_light_controls(v_gender, v_sect) c
+      on c.question_id = i.question_id and c.option_value = i.option_value
+  loop
+    if v_control.chapter is null then
+      raise exception using errcode = '22023', message = 'invalid_preference_lights';
+    end if;
+    v_light := v_control.light;
+    if v_control.chapter = 4 then
+      if jsonb_typeof(v_ch4) is distinct from 'object' then
+        raise exception using errcode = '22023', message = 'invalid_preference_lights';
+      end if;
+      v_block := coalesce(v_ch4 -> v_control.question_id, '{}'::jsonb);
+      if jsonb_typeof(v_block) <> 'object' then
+        raise exception using errcode = '22023', message = 'invalid_preference_lights';
+      end if;
+      v_block := v_block || jsonb_build_object(v_control.option_value, v_light);
+      v_ch4 := jsonb_set(v_ch4, array[v_control.question_id], v_block);
+      v_ch4_changed := true;
+    else
+      if jsonb_typeof(v_ch2) is distinct from 'object' then
+        raise exception using errcode = '22023', message = 'invalid_preference_lights';
+      end if;
+      v_block := coalesce(v_ch2 -> v_control.question_id, '{}'::jsonb);
+      if jsonb_typeof(v_block) <> 'object' then
+        raise exception using errcode = '22023', message = 'invalid_preference_lights';
+      end if;
+      if v_control.question_id = 'sect' then
+        v_matrix := coalesce(v_block -> 'matrix', '{}'::jsonb);
+        if jsonb_typeof(v_matrix) <> 'object' then
+          raise exception using errcode = '22023', message = 'invalid_preference_lights';
+        end if;
+        v_block := jsonb_set(v_block, array['matrix'],
+          v_matrix || jsonb_build_object(v_control.option_value, v_light));
+      else
+        v_block := v_block || jsonb_build_object('flexibility', v_light);
+      end if;
+      v_ch2 := jsonb_set(v_ch2, array[v_control.question_id], v_block);
+      v_ch2_changed := true;
+    end if;
+  end loop;
+
+  perform set_config('zyra.confirm_preference_lights', 'on', true);
+  insert into public.preference_light_confirmations (user_id, question_id, option_value, light, confirmed_at)
+  select v_me, i.question_id, i.option_value, i.light, statement_timestamp()
+  from jsonb_to_recordset(p_items) i(question_id text, option_value text, light text)
+  on conflict (user_id, question_id, option_value) do update
+  set light = excluded.light, confirmed_at = excluded.confirmed_at;
+
+  if v_ch4_changed then
+    update public.onboarding_answers set ch4_preferences = v_ch4 where user_id = v_me;
+  end if;
+  if v_ch2_changed then
+    update public.seeker_details set preferences = v_ch2 where user_id = v_me;
+  end if;
+  perform set_config('zyra.confirm_preference_lights', coalesce(v_previous_flag, ''), true);
+end;
+$function$;
+revoke all on function public.zyra_confirm_preference_lights(jsonb)
+  from public, anon, authenticated, service_role;
+grant execute on function public.zyra_confirm_preference_lights(jsonb) to authenticated;
+
+create function public.zyra_my_lights_needing_reconfirmation()
+returns table (question_id text, option_value text, light text)
+language sql stable security definer set search_path = ''
+as $function$
+  select c.question_id, c.option_value, 'amber'::text
+  from public.profiles p
+  left join public.onboarding_answers o on o.user_id = p.id
+  left join public.seeker_details d on d.user_id = p.id
+  cross join lateral private.zyra_preference_light_controls(p.gender, d.sect) c
+  cross join lateral (
+    select case c.chapter
+      when 4 then o.ch4_preferences #>> c.path
+      else d.preferences #>> c.path end as light
+  ) current_light
+  where p.id = (select auth.uid()) and p.role = 'seeker'
+    and current_light.light in ('amber', 'yellow')
+    and (c.chapter = 4 or c.question_id in ('sect', 'revert')
+      or (d.preferences -> c.question_id -> 'skipped') is distinct from 'true'::jsonb)
+    and (c.question_id <> 'languages'
+      or (d.preferences -> 'languages' -> 'preferred') is distinct from '["en"]'::jsonb)
+    and not exists (
+      select 1 from public.preference_light_confirmations r
+      where r.user_id = p.id and r.question_id = c.question_id
+        and r.option_value = c.option_value and r.light = current_light.light
+    )
+  order by c.question_id, c.option_value;
+$function$;
+revoke all on function public.zyra_my_lights_needing_reconfirmation()
+  from public, anon, authenticated, service_role;
+grant execute on function public.zyra_my_lights_needing_reconfirmation() to authenticated;
 
 -- DOC-ZYRA-0472 Q100. Keep the OA-ZYRA-283 member RPC names and envelopes.
 create or replace function public.zyra_reveal_journey_compatibility(

@@ -1,4 +1,4 @@
--- DOC-ZYRA-0472 V3. Disposable PostgreSQL 17 after the governed replay.
+-- DOC-ZYRA-0472 V4. Disposable PostgreSQL 17 after the governed replay.
 \set ON_ERROR_STOP on
 
 -- Q91: use actual authenticated RPC grants and request JWT claims.
@@ -385,15 +385,14 @@ rollback to q100_legacy;
 
 create temporary table q100_unmodified_score on commit drop as
 select overall from pg_temp.q100_score();
-savepoint q100_amber;
+savepoint q100_raw_amber;
 update public.onboarding_answers set
   ch4_preferences = jsonb_set(ch4_preferences, array['ch3_q1','Never Married'], '"amber"')
 where user_id = pg_temp.q100_actor('male1');
 select pg_temp.q100_assert(
-  (select s.state = 'ok' and b.overall - s.overall between 0.6 and 0.8
-   from pg_temp.q100_score() s cross join q100_unmodified_score b),
-  'v1 Amber contributes half rather than a full point');
-rollback to q100_amber;
+  (select state = 'needs_reconfirmation' and overall is null from pg_temp.q100_score()),
+  'even a v1 source row cannot turn an unconfirmed Amber into a score');
+rollback to q100_raw_amber;
 
 savepoint q100_ch2_light;
 update public.seeker_details set preferences = preferences #- '{sect,matrix,other}'
@@ -410,6 +409,228 @@ select pg_temp.q100_assert(
   (select state = 'incomplete' and overall is null from pg_temp.q100_score()),
   'a non-skipped Chapter 2 control must have a selected preference');
 rollback to q100_ch2_preference;
+
+-- Q105: append inside the Q100 fixture transaction, before its final rollback.
+savepoint q105_preference_confirmation;
+
+grant select on server0_v2_fixture_actors to authenticated;
+grant execute on function pg_temp.q100_actor(text) to authenticated;
+
+create function pg_temp.q105_as(p_label text) returns void
+language sql volatile as $$
+  select set_config('request.jwt.claims',
+    jsonb_build_object('sub', pg_temp.q100_actor(p_label), 'role', 'authenticated')::text,
+    true);
+$$;
+create function pg_temp.q105_assert(p_ok boolean, p_check text) returns void
+language plpgsql as $$
+begin
+  if p_ok is distinct from true then raise exception 'Q105 FAIL: %', p_check; end if;
+  raise notice 'Q105 PASS: %', p_check;
+end;
+$$;
+grant execute on function pg_temp.q105_as(text), pg_temp.q105_assert(boolean,text)
+to authenticated;
+
+create temporary table q105_score_endpoints (light text primary key, overall numeric) on commit drop;
+insert into q105_score_endpoints
+select 'green', overall from pg_temp.q100_score();
+
+update public.onboarding_answers
+set ch4_preferences = jsonb_set(ch4_preferences, '{ch3_q1,Never Married}', '"red"')
+where user_id = pg_temp.q100_actor('male1');
+insert into q105_score_endpoints
+select 'red', overall from pg_temp.q100_score();
+
+-- The fixture rows explicitly carry v1 at row level. Without an item receipt
+-- even this stamp cannot turn an unconfirmed v0 light into v1.
+update public.onboarding_answers
+set capture_version = 'v1',
+    ch4_preferences = jsonb_set(
+      jsonb_set(ch4_preferences, '{ch3_q1,Never Married}', '"amber"'),
+      '{ch3_q1,Separated}', '"yellow"')
+where user_id = pg_temp.q100_actor('male1');
+update public.onboarding_answers
+set ch4_preferences = jsonb_set(ch4_preferences, '{ch3_q2,No}', '"amber"')
+where user_id = pg_temp.q100_actor('fem1');
+
+select pg_temp.q105_assert(
+  (select state = 'needs_reconfirmation' and overall is null and area_bands is null
+   from pg_temp.q100_score()),
+  'row stamp cannot convert plain legacy Amber and Yellow into a score'
+);
+select pg_temp.q105_assert(
+  not has_function_privilege('anon', 'public.zyra_confirm_preference_lights(jsonb)', 'execute')
+  and not has_function_privilege('anon', 'public.zyra_my_lights_needing_reconfirmation()', 'execute')
+  and has_table_privilege('authenticated', 'public.preference_light_confirmations', 'SELECT')
+  and not has_table_privilege('authenticated', 'public.preference_light_confirmations', 'INSERT')
+  and not has_table_privilege('authenticated', 'public.preference_light_confirmations', 'UPDATE')
+  and not has_table_privilege('authenticated', 'public.preference_light_confirmations', 'DELETE'),
+  'receipt reads are authenticated and the RPC is the only member writer'
+);
+
+set local role authenticated;
+select pg_temp.q105_as('fem1');
+select public.zyra_confirm_preference_lights(
+  '[{"question_id":"ch3_q1","option_value":"Never Married","light":"green"}]'
+);
+select pg_temp.q105_as('male1');
+
+select pg_temp.q105_assert(
+  (select jsonb_agg(to_jsonb(l) order by l.option_value)
+   from public.zyra_my_lights_needing_reconfirmation() l) =
+  '[{"question_id":"ch3_q1","option_value":"Never Married","light":"amber"},
+    {"question_id":"ch3_q1","option_value":"Separated","light":"amber"}]'::jsonb,
+  'only caller-affected items are listed, including the app legacy Yellow'
+);
+select pg_temp.q105_assert(
+  not exists (select 1 from public.preference_light_confirmations),
+  'caller cannot see another member receipt'
+);
+
+select public.zyra_confirm_preference_lights(
+  '[{"question_id":"ch3_q1","option_value":"Never Married","light":"amber"},
+    {"question_id":"ch3_q1","option_value":"Separated","light":"green"}]'
+);
+
+select pg_temp.q105_assert(
+  (select count(*) = 2 and bool_and(user_id = auth.uid() and capture_version = 'v1'
+                                   and confirmed_at is not null)
+   from public.preference_light_confirmations)
+  and exists (
+    select 1 from public.preference_light_confirmations
+    where question_id = 'ch3_q1' and option_value = 'Never Married' and light = 'amber'
+  )
+  and not exists (select 1 from public.zyra_my_lights_needing_reconfirmation()),
+  'reconfirming the same Amber writes a matching caller-owned v1 receipt'
+);
+
+do $q105_atomic$
+begin
+  perform public.zyra_confirm_preference_lights(
+    '[{"question_id":"ch3_q1","option_value":"Never Married","light":"red"},
+      {"question_id":"not_a_question","option_value":"invalid","light":"amber"}]'
+  );
+  raise exception 'Q105 FAIL: invalid mixed batch was accepted';
+exception
+  when invalid_parameter_value then
+    if sqlerrm <> 'invalid_preference_lights' then raise; end if;
+end
+$q105_atomic$;
+select pg_temp.q105_assert(
+  (select ch4_preferences #>> '{ch3_q1,Never Married}' = 'amber'
+   from public.onboarding_answers where user_id = auth.uid())
+  and (select count(*) = 2 from public.preference_light_confirmations)
+  and exists (
+    select 1 from public.preference_light_confirmations
+    where question_id = 'ch3_q1' and option_value = 'Never Married' and light = 'amber'
+  ),
+  'invalid mixed batch rolls back both the earlier JSON write and receipt'
+);
+
+reset role;
+select pg_temp.q105_assert(
+  (select scored.state = 'ok'
+     and scored.overall > red.overall and scored.overall < green.overall
+     and abs(scored.overall - (green.overall + red.overall) / 2) <= 0.1
+   from pg_temp.q100_score() scored
+   cross join q105_score_endpoints green cross join q105_score_endpoints red
+   where green.light = 'green' and red.light = 'red'),
+  'confirmed unchanged Amber lands halfway between Green and Red within stored rounding'
+);
+
+set local role authenticated;
+select pg_temp.q105_as('male1');
+select set_config('zyra.confirm_preference_lights', 'on', true);
+update public.onboarding_answers
+set ch4_preferences = jsonb_set(ch4_preferences, '{ch3_q1,Never Married}', '"red"')
+where user_id = auth.uid();
+select pg_temp.q105_assert(
+  not exists (
+    select 1 from public.preference_light_confirmations
+    where question_id = 'ch3_q1' and option_value = 'Never Married'
+  )
+  and exists (
+    select 1 from public.preference_light_confirmations
+    where question_id = 'ch3_q1' and option_value = 'Separated' and light = 'green'
+  ),
+  'even a forged transaction flag cannot preserve a changed receipt'
+);
+
+update public.onboarding_answers
+set ch4_preferences = jsonb_set(ch4_preferences, '{ch3_q1,Never Married}', '"amber"')
+where user_id = auth.uid();
+select pg_temp.q105_assert(
+  not exists (
+    select 1 from public.preference_light_confirmations
+    where question_id = 'ch3_q1' and option_value = 'Never Married'
+  )
+  and (select count(*) = 1 and bool_and(question_id = 'ch3_q1'
+       and option_value = 'Never Married' and light = 'amber')
+       from public.zyra_my_lights_needing_reconfirmation()),
+  'restoring Amber through plain JSON cannot recreate its receipt'
+);
+reset role;
+select pg_temp.q105_assert(
+  (select state = 'needs_reconfirmation' and overall is null and area_bands is null
+   from pg_temp.q100_score()),
+  'an invalidated and restored Amber still has no score'
+);
+select set_config('zyra.confirm_preference_lights', '', true);
+
+set local role authenticated;
+select pg_temp.q105_as('male1');
+select public.zyra_confirm_preference_lights(
+  '[{"question_id":"ch3_q1","option_value":"Never Married","light":"green"}]'
+);
+update public.seeker_details
+set preferences = jsonb_set(preferences, '{sect,matrix,sunni}', '"yellow"')
+where user_id = auth.uid();
+select pg_temp.q105_assert(
+  (select count(*) = 1 and bool_and(question_id = 'sect' and option_value = 'sunni'
+                                   and light = 'amber')
+   from public.zyra_my_lights_needing_reconfirmation()),
+  'the Chapter 2 sect matrix uses the same affected-item reader'
+);
+select public.zyra_confirm_preference_lights(
+  '[{"question_id":"sect","option_value":"sunni","light":"amber"}]'
+);
+select pg_temp.q105_assert(
+  (select preferences #>> '{sect,matrix,sunni}' = 'amber'
+   from public.seeker_details where user_id = auth.uid())
+  and exists (
+    select 1 from public.preference_light_confirmations
+    where question_id = 'sect' and option_value = 'sunni'
+      and light = 'amber' and capture_version = 'v1'
+  )
+  and not exists (select 1 from public.zyra_my_lights_needing_reconfirmation()),
+  'Chapter 2 confirmation writes the light and receipt together'
+);
+reset role;
+select pg_temp.q105_assert(
+  (select scored.state = 'ok'
+     and scored.overall > red.overall and scored.overall < green.overall
+     and abs(scored.overall - (green.overall + red.overall) / 2) <= 0.1
+   from pg_temp.q100_score() scored
+   cross join q105_score_endpoints green cross join q105_score_endpoints red
+   where green.light = 'green' and red.light = 'red'),
+  'confirmed applicable Chapter 2 Amber also contributes half'
+);
+
+delete from public.onboarding_answers where user_id = pg_temp.q100_actor('male1');
+select pg_temp.q105_assert(
+  not exists (
+    select 1 from public.preference_light_confirmations
+    where user_id = pg_temp.q100_actor('male1') and question_id = 'ch3_q1'
+  )
+  and exists (
+    select 1 from public.preference_light_confirmations
+    where user_id = pg_temp.q100_actor('male1') and question_id = 'sect' and option_value = 'sunni'
+  ),
+  'deleting a preference row revokes only its chapter receipts'
+);
+rollback to q105_preference_confirmation;
+release savepoint q105_preference_confirmation;
 
 create temporary table q100_saved on commit drop as
 select s.* from private.zyra_save_direction_result(pg_temp.q100_actor('male1'), pg_temp.q100_actor('fem1')) s;
