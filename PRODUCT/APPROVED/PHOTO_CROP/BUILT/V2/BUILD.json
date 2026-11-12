@@ -1,0 +1,169 @@
+{
+  "schema": 1,
+  "queueLine": 87,
+  "commitSha": "5dccfedd1e9af143b7de6826a203eb7380224702",
+  "recordedAt": "2026-11-12T09:01:19+00:00",
+  "flutterVersion": "3.44.2",
+  "buildMode": "widget tests",
+  "version": "1.0.0+5",
+  "approvedInputs": {
+    "PHOTO_CROP/BRIEFS/FIX_BRIEF_2026-11-12.md": {
+      "bytes": 2697,
+      "sha256": "d04296501bc5a0f7f649cdcd2da654000f2b4d8a1c12f6132cbb0a562e8d16a2"
+    }
+  },
+  "analyzer": {
+    "issues": 0,
+    "sha256": "70e11a1cea596ce7e77d6353cdec61fd9944ada28c99676aa812d02978ff0d9f"
+  },
+  "focused": {
+    "passes": 280,
+    "sha256": "02636e59aafc8759640579864b90fd9fd7086de5a21bf6037a6da685a8b2d1bc"
+  },
+  "exactBaseline": {
+    "queueLine": 86,
+    "sourceCommit": "526c26732e71389e590ed05c938f5a0e1082bef2",
+    "originMainAtStart": "1d7ae0251b23206115d71da32bcf2321ac35504a",
+    "passes": 7020,
+    "failures": 37,
+    "skips": 122,
+    "suites": 535
+  },
+  "fullSuite": {
+    "analyzeSha256": "70e11a1cea596ce7e77d6353cdec61fd9944ada28c99676aa812d02978ff0d9f",
+    "testsSha256": "62571866f1836b08a6a40b7aef1a4c17e2bf4f20caa18275f1e59214de35a0f0",
+    "failureBaselineSha256": "338abe3d893d63946c4cf9014de83c2d9acd8ac30b2d6f70757dfa9c066b1914",
+    "comparisonSha256": "ad6d80ac13fdabf9903436be2ada8e48d44fd554c5a558b531761e20012efe59",
+    "candidateFailureSetSha256": "df17c4cf9465f0ee1b1942011fe67d42774f15deb67922bdf63b3b946621240d",
+    "retainedSkipSetSha256": "515ba0de8caed46b2ec74ff3bbe63967beb4293636a9bbc6b72c5e7de69f544a",
+    "passes": 7020,
+    "failures": 37,
+    "skips": 122,
+    "suites": 535,
+    "newFailures": 0,
+    "resolvedBaselineFailures": 0,
+    "newSkips": 0,
+    "sameRetainedSkips": true,
+    "renamedPassingTests": [
+      [
+        [
+          "test/browse_truth_test.dart",
+          "ordinary Profiles paints all legacy photo edges at Size(375.0, 667.0)"
+        ],
+        [
+          "test/browse_truth_test.dart",
+          "legacy 3:4 fills ordinary Profiles at Size(375.0, 667.0)"
+        ]
+      ],
+      [
+        [
+          "test/browse_truth_test.dart",
+          "ordinary Profiles paints all legacy photo edges at Size(430.0, 932.0)"
+        ],
+        [
+          "test/browse_truth_test.dart",
+          "legacy 3:4 fills ordinary Profiles at Size(430.0, 932.0)"
+        ]
+      ],
+      [
+        [
+          "test/photo_crop_review_screen_test.dart",
+          "crop uses one full 3:4 canvas without a nested frame"
+        ],
+        [
+          "test/photo_crop_review_screen_test.dart",
+          "crop uses one full canvas without a nested frame"
+        ]
+      ],
+      [
+        [
+          "test/profile_photo_aperture_test.dart",
+          "375×667 photo apertures match the crop"
+        ],
+        [
+          "test/profile_photo_aperture_test.dart",
+          "375×667 legacy 3:4 photos cover the full photo bounds"
+        ]
+      ],
+      [
+        [
+          "test/profile_photo_aperture_test.dart",
+          "430×932 photo apertures match the crop"
+        ],
+        [
+          "test/profile_photo_aperture_test.dart",
+          "430×932 legacy 3:4 photos cover the full photo bounds"
+        ]
+      ]
+    ],
+    "lostPassingTests": 0,
+    "missingSuites": 0
+  },
+  "protectedPhotoAreasLogicalPoints": {
+    "430x932": {
+      "profiles": [
+        390,
+        673
+      ],
+      "preview": [
+        390,
+        667
+      ],
+      "journeyBio": [
+        88,
+        108
+      ]
+    },
+    "375x667": {
+      "profiles": [
+        335,
+        467
+      ],
+      "preview": [
+        335,
+        461
+      ],
+      "journeyBio": [
+        88,
+        108
+      ]
+    }
+  },
+  "cropWidthToHeight": [
+    390,
+    673
+  ],
+  "compactGuideWidthToHeight": [
+    335,
+    467
+  ],
+  "compactGuideRetainedHeightFraction": 0.8078330487236922,
+  "syntheticVisualChecks": {
+    "physicalDevice": false,
+    "pixelRatio": 3,
+    "photoPaintMatchesCardBounds": true,
+    "screenshotsSha256": {
+      "journey_bio__375x667.png": "dc1bccae9411cf4ab7399c79483122ab1692dbd93baf0bddd26b4e39f3a3f8e1",
+      "journey_bio__430x932.png": "60905f88d00c39568c47c2ab1feab43a3c99722ca684b33851af2ae9c7035309",
+      "preview__375x667.png": "f454837d10d822749d56a9682609089439013c4485e29ec9c1c9bb0d94b05c5f",
+      "preview__430x932.png": "c18d5212677eb990b3c0491c5fc6e655796a44b80f7e4c5e4f16d86469f07763",
+      "profiles__375x667.png": "0a72d77c8917ca8e6ba81b19dc15773ea08d1fb329238830fd75980878576f63",
+      "profiles__430x932.png": "30adea119099ab7c552bc6d457ecb7fa14121bdc61e7be9a85ce0a0ef1290d52"
+    }
+  },
+  "checkedCases": [
+    "Profiles and both Profile Preview paths fill their rectangular photo bounds with cover.",
+    "Journey Bio and the full Manage Photos card fill their photo bounds with cover.",
+    "Manage Photos photo tiles fill the measured ratio and their existing touch slots still respond.",
+    "Legacy 3:4 photos fill all four edges. Circular avatars keep their established rendering.",
+    "Guardian gallery routes reuse cover. Guardian Journey and ordinary Guardian profile photos already use cover.",
+    "The centered compact guide paints at the measured inset. The widest initial crop uses the full frame.",
+    "The photo pipeline still caps review at 3000 px and final JPEG at 1440 px, strips metadata and avoids upscaling."
+  ],
+  "openItems": {
+    "Q95": "Private originals still require the approved storage contract. Adjust uses the saved crop.",
+    "Q96": "Line 86 photo preparation failure still requires the separately authorized on-device reproduction.",
+    "line87DeviceCheck": "Pending a separate Founder GO for this exact signed Profile."
+  },
+  "independentReview": "Reviewed route geometry, crop guide, touch guards, photo admission, avatar boundaries and the diff before commit."
+}
