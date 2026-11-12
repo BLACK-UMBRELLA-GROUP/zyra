@@ -17,6 +17,7 @@ import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_swipe_track.dart';
 import 'zyra_conversation_unread_badge.dart';
 import 'zyra_one_journey_guardian_family_sheet.dart';
+import 'zyra_guardian_family_preview.dart';
 import '../theme/zyra_preview_spacing.dart';
 
 class ZyraGuardianCardPerson {
@@ -117,7 +118,7 @@ class ZyraOneJourneyGuardianCards extends StatefulWidget {
   final ValueChanged<String>? onFamilyInvite, onFamilyCancel;
   static final previewInvitationSent = DateTime.utc(2026, 11, 2);
   static final previewInvitationExpiry = previewInvitationSent.add(
-    const Duration(days: 7),
+    ZyraGuardianFamilyInvite.lifetime,
   );
   final DateTime? previewInvitationNow;
   final bool previewInvitationCancelled;
@@ -805,24 +806,30 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
             ),
           ),
           child: LayoutBuilder(
-            builder: (context, box) => SingleChildScrollView(
-              key: ValueKey('guardian-card-content-$target'),
-              primary: false,
-              physics: const ClampingScrollPhysics(),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: box.maxHeight),
-                // Equal flex rows reserve the largest natural row height when
-                // space is tight. Clamping permits movement only on overflow.
-                child: IntrinsicHeight(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(29, 12, 29, 12),
-                    child: person == null
-                        ? _invited()
-                        : _linked(person, box.maxWidth - 58),
-                  ),
+            builder: (context, box) {
+              final useNaturalHeight =
+                  person == null &&
+                  MediaQuery.textScalerOf(context).scale(1) > 1.3;
+              final content = Padding(
+                padding: const EdgeInsets.fromLTRB(29, 12, 29, 12),
+                child: person == null
+                    ? _invited(expandDetails: !useNaturalHeight)
+                    : _linked(person, box.maxWidth - 58),
+              );
+              return SingleChildScrollView(
+                key: ValueKey('guardian-card-content-$target'),
+                primary: false,
+                physics: const ClampingScrollPhysics(),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: box.maxHeight),
+                  // At larger text the invitation uses the laid-out height,
+                  // since intrinsic measurement can undercount wrapped lines.
+                  child: useNaturalHeight
+                      ? content
+                      : IntrinsicHeight(child: content),
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ),
       );
@@ -1281,7 +1288,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     );
   }
 
-  Widget _invited() {
+  Widget _invited({required bool expandDetails}) {
     final sent = ZyraOneJourneyGuardianCards.previewInvitationSent;
     final expiry = ZyraOneJourneyGuardianCards.previewInvitationExpiry;
     final expired = !(widget.previewInvitationNow ?? sent).isBefore(expiry);
@@ -1289,6 +1296,87 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     final expiresOn = _date(expiry, short: true);
     final cancel = widget.onCancelPreviewInvitation;
     final muted = ZyraColors.foregroundMuted;
+    final details = CustomPaint(
+      foregroundPainter: ZyraGuardianDashedBorder(
+        16,
+        ZyraColors.journeyGold.withValues(alpha: .3),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: expired ? 24 : 34,
+              height: expired ? 24 : 34,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: expired
+                    ? Border.all(color: ZyraColors.surfaceBorder)
+                    : null,
+              ),
+              child: expired
+                  ? Center(
+                      child: Text(
+                        '!',
+                        style: ZyraText.body(size: 15, color: muted),
+                      ),
+                    )
+                  : CustomPaint(
+                      foregroundPainter: ZyraGuardianDashedBorder(
+                        17,
+                        ZyraColors.journeyGold.withValues(alpha: .55),
+                      ),
+                      child: Icon(
+                        Icons.mail_outline,
+                        size: 17,
+                        color: ZyraColors.goldText,
+                      ),
+                    ),
+            ),
+            const SizedBox(height: 9),
+            Text(
+              expired
+                  ? 'The invitation has expired'
+                  : 'Waiting for Omar to accept',
+              textAlign: TextAlign.center,
+              style: ZyraText.body(
+                size: 14,
+              ).copyWith(fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 6),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 270),
+              child: Text(
+                expired
+                    ? "Omar didn't accept within 14 days (ended $expiresOn)."
+                    : 'Invitation sent $sentOn. Omar has until $expiresOn '
+                          'to accept in their app. Access starts once they accept.',
+                textAlign: TextAlign.center,
+                style: ZyraText.body(
+                  size: 12.5,
+                  color: muted,
+                ).copyWith(height: 1.45),
+              ),
+            ),
+            if (!expired && cancel != null) ...[
+              const SizedBox(height: 10),
+              TextButton(
+                key: const ValueKey('guardian-card-cancel-invitation'),
+                onPressed: _action(
+                  cancel,
+                  expectedTarget: 'preview-invited-omar',
+                ),
+                child: Text(
+                  'Cancel invitation',
+                  style: ZyraText.body(size: 13, color: muted),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -1303,89 +1391,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
         _detail('Membership', 'Not joined yet'),
         _detail('Status', expired ? 'Expired $expiresOn' : 'Waiting for Omar'),
         const SizedBox(height: 12),
-        Expanded(
-          child: CustomPaint(
-            foregroundPainter: ZyraGuardianDashedBorder(
-              16,
-              ZyraColors.journeyGold.withValues(alpha: .3),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: expired ? 24 : 34,
-                    height: expired ? 24 : 34,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: expired
-                          ? Border.all(color: ZyraColors.surfaceBorder)
-                          : null,
-                    ),
-                    child: expired
-                        ? Center(
-                            child: Text(
-                              '!',
-                              style: ZyraText.body(size: 15, color: muted),
-                            ),
-                          )
-                        : CustomPaint(
-                            foregroundPainter: ZyraGuardianDashedBorder(
-                              17,
-                              ZyraColors.journeyGold.withValues(alpha: .55),
-                            ),
-                            child: Icon(
-                              Icons.mail_outline,
-                              size: 17,
-                              color: ZyraColors.goldText,
-                            ),
-                          ),
-                  ),
-                  const SizedBox(height: 9),
-                  Text(
-                    expired
-                        ? 'The invitation has expired'
-                        : 'Waiting for Omar to accept',
-                    textAlign: TextAlign.center,
-                    style: ZyraText.body(
-                      size: 14,
-                    ).copyWith(fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(height: 6),
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 270),
-                    child: Text(
-                      expired
-                          ? "Omar didn't accept within 7 days (ended $expiresOn)."
-                          : 'Invitation sent $sentOn. Omar has until $expiresOn '
-                                'to accept in their app. Access starts once they accept.',
-                      textAlign: TextAlign.center,
-                      style: ZyraText.body(
-                        size: 12.5,
-                        color: muted,
-                      ).copyWith(height: 1.45),
-                    ),
-                  ),
-                  if (!expired && cancel != null) ...[
-                    const SizedBox(height: 10),
-                    TextButton(
-                      key: const ValueKey('guardian-card-cancel-invitation'),
-                      onPressed: _action(
-                        cancel,
-                        expectedTarget: 'preview-invited-omar',
-                      ),
-                      child: Text(
-                        'Cancel invitation',
-                        style: ZyraText.body(size: 13, color: muted),
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ),
-        ),
+        if (expandDetails) Expanded(child: details) else details,
       ],
     );
   }

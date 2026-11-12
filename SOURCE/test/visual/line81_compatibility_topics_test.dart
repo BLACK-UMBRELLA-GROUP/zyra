@@ -61,7 +61,12 @@ ZyraPreviewNavigationCheckpoint _basicJourney({
 }
 
 Future<void> _openCompatibility(BaselineHarness harness) async {
-  await harness.tap('draft_journey_options_$_person');
+  final archive = harness.key('draft_archive_details_$_person');
+  if (archive.evaluate().isNotEmpty) {
+    await harness.tapFinder(archive);
+  } else {
+    await harness.tap('draft_journey_options_$_person');
+  }
   await harness.tap('draft_options_compatibility_$_person');
 }
 
@@ -405,15 +410,12 @@ void main() {
     now = DateTime.utc(2027, 2, 1);
     expect(fixture.refresh(), isTrue);
     await harness.flush();
-    expect(
-      harness.key('draft_ended_compatibility_locked_$_person'),
-      findsOneWidget,
-    );
+    _expectAreas(tester, locked: true);
     expect(access.balance, 1);
     expect(access.isUnlocked(_person), isFalse);
 
-    // A grant supplied by the same store from another authorized route
-    // remains readable even after the archived Journey window expires.
+    // An independent authorized Unlock opens the areas. The dated archive
+    // itself remains readable without spending a credit.
     expect(access.unlock(_person), isTrue);
     expect(fixture.refresh(), isTrue);
     await harness.flush();

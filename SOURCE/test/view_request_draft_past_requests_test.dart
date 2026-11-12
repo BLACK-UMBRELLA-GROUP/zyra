@@ -243,7 +243,7 @@ void main() {
   );
 
   test(
-    'Not taken up waits exactly 30 days and preserves other request guards',
+    'Not taken up waits exactly 7 days and preserves other request guards',
     () {
       final moved = now;
       expect(
@@ -256,11 +256,11 @@ void main() {
         isTrue,
       );
       now = moved
-          .add(const Duration(days: 30))
+          .add(const Duration(days: 7))
           .subtract(const Duration(microseconds: 1));
       expect(model.canRequest(_aisha), isFalse);
       expect(model.request(_aisha), isFalse);
-      now = moved.add(const Duration(days: 30));
+      now = moved.add(const Duration(days: 7));
       expect(model.canRequest(_aisha), isTrue);
       expect(model.hide(_aisha), isTrue);
       expect(model.canRequest(_aisha), isFalse);
@@ -425,10 +425,10 @@ void main() {
       );
       now = moved
           .toUtc()
-          .add(const Duration(days: 30))
+          .add(const Duration(days: 7))
           .subtract(const Duration(microseconds: 1));
       expect(restored.canRequest(_aisha), isFalse);
-      now = moved.toUtc().add(const Duration(days: 30));
+      now = moved.toUtc().add(const Duration(days: 7));
       expect(restored.canRequest(_aisha), isTrue);
       expect(
         restored.receivedActivityRevision,

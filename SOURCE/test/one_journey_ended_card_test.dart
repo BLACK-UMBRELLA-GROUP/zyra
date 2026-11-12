@@ -260,7 +260,7 @@ Future<void> _press(WidgetTester tester, Finder target) async {
 
 Future<void> _openOptions(WidgetTester tester) async {
   if (find.byType(ZyraConceptJourneyOptions).evaluate().isEmpty) {
-    await _press(tester, _key('draft_journey_options_$_sara'));
+    await _press(tester, _key('draft_archive_details_$_sara'));
   }
   expect(find.byType(BottomSheet), findsNothing);
   expect(find.byType(ZyraConceptJourneyOptions), findsOneWidget);
@@ -459,7 +459,7 @@ void main() {
   });
 
   testWidgets(
-    'Ended keeps the active portrait card and holds Request restart',
+    'Ended keeps the portrait card and shows the 24-hour restart wait',
     (tester) async {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
@@ -486,7 +486,7 @@ void main() {
       expect(send, findsOneWidget);
       expect(tester.widget<OutlinedButton>(send).onPressed, isNull);
       expect(find.text('Request sent'), findsNothing);
-      expect(find.textContaining('No request has been sent.'), findsOneWidget);
+      expect(find.textContaining('The request lasts 30 days.'), findsOneWidget);
       _expectSameModel(current, before);
       await _capture(tester, 'ended_restart_393');
       expect(_key('draft_restart_archive_$_sara'), findsNothing);
@@ -705,55 +705,53 @@ void main() {
   }
 
   for (final offset in [-1, 0, 1]) {
-    testWidgets('Ended private doors use exact calendar boundary $offset', (
-      tester,
-    ) async {
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
-      final current = owner();
-      final end = DateTime.utc(2026, 7, 31, 12);
-      final now = DateTime.utc(2026, 10, 31, 12).add(Duration(minutes: offset));
-      await current.mount(
-        tester,
-        model: _ended(endedAt: end, sharedBio: true),
-        clock: () => now,
-      );
-      final before = current.latest.model;
-      await _openOptions(tester);
-      final menu = tester.widget<ZyraConceptJourneyOptions>(
-        find.byType(ZyraConceptJourneyOptions),
-      );
-      expect(menu.canViewBio, offset < 0);
-      expect(menu.canViewCompatibility, offset < 0);
-      expect(menu.canViewGuardians, offset < 0);
-      await _press(tester, _option(ZyraConceptJourneyOption.bio));
-      expect(
-        find.byType(ZyraDraftJourneyBioPresentation),
-        offset < 0 ? findsOneWidget : findsNothing,
-      );
-      await returnZyraPreviewPage(tester);
-      await _openOptions(tester);
-      await _press(tester, _option(ZyraConceptJourneyOption.compatibility));
-      expect(
-        find.byType(ZyraDraftCompatibilityPresentation),
-        offset < 0 ? findsOneWidget : findsNothing,
-      );
-      if (offset < 0) {
+    testWidgets(
+      'Ended private doors survive the former calendar boundary $offset',
+      (tester) async {
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+        final current = owner();
+        final end = DateTime.utc(2026, 7, 31, 12);
+        final now = DateTime.utc(
+          2026,
+          10,
+          31,
+          12,
+        ).add(Duration(minutes: offset));
+        await current.mount(
+          tester,
+          model: _ended(endedAt: end, sharedBio: true),
+          clock: () => now,
+        );
+        final before = current.latest.model;
+        await _openOptions(tester);
+        final menu = tester.widget<ZyraConceptJourneyOptions>(
+          find.byType(ZyraConceptJourneyOptions),
+        );
+        expect(menu.canViewBio, isTrue);
+        expect(menu.canViewCompatibility, isTrue);
+        expect(menu.canViewGuardians, isTrue);
+        await _press(tester, _option(ZyraConceptJourneyOption.bio));
+        expect(find.byType(ZyraDraftJourneyBioPresentation), findsOneWidget);
+        await returnZyraPreviewPage(tester);
+        await _openOptions(tester);
+        await _press(tester, _option(ZyraConceptJourneyOption.compatibility));
+        expect(find.byType(ZyraDraftCompatibilityPresentation), findsOneWidget);
         final score = tester.widget<ZyraDraftCompatibilityPresentation>(
           find.byType(ZyraDraftCompatibilityPresentation),
         );
         expect(score.revealed, isTrue);
         expect(score.onUnlock, isNull);
         expect(score.onBuyMore, isNull);
-      }
-      expect(current.access.balance, 1);
-      _expectSameModel(current, before);
-    });
+        expect(current.access.balance, 1);
+        _expectSameModel(current, before);
+      },
+    );
   }
 
   for (final wrongProfileGrant in [false, true]) {
     testWidgets(
-      'expired score rejects balance and wrong-profile grant: $wrongProfileGrant',
+      'unshared score rejects balance and wrong-profile grant: $wrongProfileGrant',
       (tester) async {
         addTearDown(tester.view.resetPhysicalSize);
         addTearDown(tester.view.resetDevicePixelRatio);
@@ -761,10 +759,7 @@ void main() {
         expect(current.access.setBalance(count: 5), isTrue);
         if (wrongProfileGrant) expect(current.access.unlock(_amira), isTrue);
         final balance = current.access.balance;
-        final model = _ended(
-          endedAt: DateTime.utc(2026, 1, 31),
-          sharedBio: true,
-        );
+        final model = _ended(endedAt: DateTime.utc(2026, 1, 31));
         await current.mount(
           tester,
           clock: () => DateTime.utc(2026, 5, 1),
@@ -787,9 +782,7 @@ void main() {
     );
   }
 
-  testWidgets('used profile Unlock outlasts only the score window', (
-    tester,
-  ) async {
+  testWidgets('used profile Unlock grants only the score', (tester) async {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     final current = owner();
@@ -797,7 +790,7 @@ void main() {
     final saved = current.access.resultFor(_sara);
     await current.mount(
       tester,
-      model: _ended(endedAt: DateTime.utc(2025, 1, 31), sharedBio: true),
+      model: _ended(endedAt: DateTime.utc(2025, 1, 31)),
       clock: () => DateTime.utc(2026, 10, 22),
     );
     await _openOptions(tester);
@@ -806,7 +799,7 @@ void main() {
     );
     expect(menu.canViewCompatibility, isTrue);
     expect(menu.canViewBio, isFalse);
-    expect(menu.canViewGuardians, isFalse);
+    expect(menu.canViewGuardians, isTrue);
     await _press(tester, _option(ZyraConceptJourneyOption.compatibility));
     final score = tester.widget<ZyraDraftCompatibilityPresentation>(
       find.byType(ZyraDraftCompatibilityPresentation),
@@ -818,13 +811,13 @@ void main() {
     await returnZyraPreviewPage(tester);
     await _openOptions(tester);
     await _press(tester, _option(ZyraConceptJourneyOption.guardians));
-    expect(find.text('Journey access has ended'), findsOneWidget);
+    expect(find.text('No saved Guardian details'), findsOneWidget);
     expect(find.text('Hassan'), findsNothing);
     expect(find.text('Yusuf'), findsNothing);
   });
 
   testWidgets(
-    'visible Ended Bio withdraws and retained actions recheck expiry',
+    'visible Ended Bio stays readable and retained menu actions still expire on navigation',
     (tester) async {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
@@ -847,8 +840,7 @@ void main() {
       now = deadline;
       await tester.pump(const Duration(minutes: 10));
       await tester.pumpAndSettle();
-      expect(find.byType(ZyraDraftJourneyBioPresentation), findsNothing);
-      expect(find.text('Journey access has ended'), findsOneWidget);
+      expect(find.byType(ZyraDraftJourneyBioPresentation), findsOneWidget);
       retained(ZyraConceptJourneyOption.compatibility);
       await tester.pumpAndSettle();
       expect(current.latest.pages.last, 'ended_bio');
@@ -856,7 +848,7 @@ void main() {
     },
   );
 
-  testWidgets('Timeline score door rechecks the same deadline at tap time', (
+  testWidgets('Timeline score remains available after the former deadline', (
     tester,
   ) async {
     addTearDown(tester.view.resetPhysicalSize);
@@ -880,8 +872,8 @@ void main() {
     now = deadline;
     retained(attemptId);
     await tester.pump();
-    expect(current.latest.pages.last, 'timeline');
-    expect(find.byType(ZyraDraftCompatibilityPresentation), findsNothing);
+    expect(current.latest.pages.last, 'ended_compatibility');
+    expect(find.byType(ZyraDraftCompatibilityPresentation), findsOneWidget);
     expect(current.access.balance, 1);
   });
 
@@ -903,7 +895,7 @@ void main() {
       tester
           .widget<OutlinedButton>(_key('draft_restart_send_$_sara'))
           .onPressed,
-      isNull,
+      isNotNull,
     );
     expect(model.hide(_sara), isTrue);
     await current.mount(
@@ -1046,27 +1038,25 @@ void main() {
     });
   }
 
-  testWidgets('blocked Ended peer retains a neutral archive without actions', (
-    tester,
-  ) async {
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
-    final current = owner();
-    await current.mount(tester, model: _ended(blocked: true));
-    final before = current.latest.model;
-    expect(_key('concept_blocked_archive_$_sara'), findsOneWidget);
-    expect(find.text('Sara'), findsNothing);
-    expect(find.byType(ZyraOneJourneyConnectionsActiveCard), findsNothing);
-    expect(find.byType(ZyraProfileImage), findsNothing);
-    expect(_key('draft_journey_options_$_sara'), findsNothing);
-    expect(_key('draft_restart_$_sara'), findsNothing);
-    await _press(tester, _key('draft_journey_$_sara'));
-    expect(_key('concept_user_not_found'), findsOneWidget);
-    expect(find.text('Journey with Sara'), findsNothing);
-    expect(find.byType(ZyraProfileImage), findsNothing);
-    expect(_key('concept_archive_$_sara'), findsNothing);
-    _expectSameModel(current, before);
-  });
+  testWidgets(
+    'blocked Ended peer stays out of the list and keeps its attempt',
+    (tester) async {
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final current = owner();
+      await current.mount(tester, model: _ended(blocked: true));
+      final before = current.latest.model;
+      expect(find.text('No ended Journeys'), findsOneWidget);
+      expect(find.text('Sara'), findsNothing);
+      expect(find.byType(ZyraOneJourneyConnectionsActiveCard), findsNothing);
+      expect(find.byType(ZyraProfileImage), findsNothing);
+      expect(_key('draft_journey_options_$_sara'), findsNothing);
+      expect(_key('draft_restart_$_sara'), findsNothing);
+      expect(_key('draft_journey_$_sara'), findsNothing);
+      expect(current.model.currentEndedAttemptFor(_sara), isNotNull);
+      _expectSameModel(current, before);
+    },
+  );
 
   for (final viewport in [
     (size: const Size(393, 852), scale: 1.0, suffix: '393'),

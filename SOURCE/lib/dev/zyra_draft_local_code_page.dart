@@ -71,6 +71,9 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
   ZyraLocalCodeIdentity? _person;
   String? _error;
   bool _busy = false, _sent = false, _closed = false;
+  bool _expired = false;
+  Timer? _requestExpiry;
+  static const _requestLifetime = Duration(days: 14);
   _CameraMode _camera = _CameraMode.off;
   bool get _cameraLive => _camera == _CameraMode.live;
   int _revision = 0, _cameraRevision = 0;
@@ -115,7 +118,8 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
     ++_revision;
     ++_cameraRevision;
     _person = null;
-    _busy = _sent = false;
+    _busy = false;
+    _clearRequest();
     _camera = _CameraMode.off;
     _error = null;
   }
@@ -160,7 +164,8 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
           ++_revision;
           if (_cameraLive) _camera = _CameraMode.starting;
           _person = null;
-          _busy = _sent = false;
+          _busy = false;
+          _clearRequest();
           _error = null;
         });
       } else {
@@ -174,6 +179,7 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
     ++_revision;
     ++_cameraRevision;
     WidgetsBinding.instance.removeObserver(this);
+    _requestExpiry?.cancel();
     _controller.dispose();
     _focus.dispose();
     super.dispose();
@@ -185,7 +191,8 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
       ++_revision;
       _person = null;
       _error = null;
-      _busy = _sent = false;
+      _busy = false;
+      _clearRequest();
     });
   }
 
@@ -204,7 +211,7 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
     setState(() {
       _busy = true;
       _person = null;
-      _sent = false;
+      _clearRequest();
       _error = null;
     });
     ZyraLocalCodeIdentity? person;
@@ -257,11 +264,21 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
     }
   });
 
+  void _clearRequest() {
+    _requestExpiry?.cancel();
+    _requestExpiry = null;
+    _sent = false;
+    _expired = false;
+  }
+
   void _send(int revision, Object? epoch) {
     if (!_current(epoch) || revision != _revision || _person == null || _sent) {
       return;
     }
     setState(() => _sent = true);
+    _requestExpiry = Timer(_requestLifetime, () {
+      if (mounted && _sent) setState(() => _expired = true);
+    });
     _reveal();
   }
 
@@ -533,7 +550,9 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
                               if (_sent) ...[
                                 const SizedBox(height: 4),
                                 Text(
-                                  'Request sent',
+                                  _expired
+                                      ? 'Expired after 14 days'
+                                      : 'Request sent',
                                   style: ZyraText.body(
                                     size: 12,
                                     color: ZyraColors.goldText,
@@ -547,14 +566,14 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
                     ),
                     if (!scan) ...[
                       const SizedBox(height: 12),
-                      if (_sent)
+                      if (_sent && !_expired)
                         Text(
-                          '${person.firstName} chooses whether to link. You’ll see them in ${widget.mode == ZyraLocalCodeContext.addGuardian ? 'Guardians' : 'Seekers'} once they accept.',
+                          '${person.firstName} has 14 days to accept. You’ll see them in ${widget.mode == ZyraLocalCodeContext.addGuardian ? 'Guardians' : 'Seekers'} once they accept.',
                           style: ZyraText.subtext(
                             size: 12,
                           ).copyWith(height: 1.5),
                         )
-                      else
+                      else if (!_sent)
                         _CodeAction(
                           key: const ValueKey('local-code-send'),
                           label: 'Send request',

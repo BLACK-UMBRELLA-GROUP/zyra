@@ -100,7 +100,7 @@ void main() {
       await swipeGuardianCard(t);
       await h.flush();
       expect(find.text('Waiting for Omar to accept'), findsOneWidget);
-      expect(find.textContaining('Omar has until 9 Nov'), findsOneWidget);
+      expect(find.textContaining('Omar has until 16 Nov'), findsOneWidget);
       expect(find.text('Send invitation again'), findsNothing);
       expect(find.text('Send again'), findsNothing);
       await h.tap('guardian-card-cancel-invitation');
@@ -119,13 +119,13 @@ void main() {
     t,
   ) async {
     final h = harness(t);
-    await h.mount(tab: 3, previewClock: () => DateTime.utc(2026, 11, 9));
+    await h.mount(tab: 3, previewClock: () => DateTime.utc(2026, 11, 16));
     await swipeGuardianCard(t);
     await h.flush();
     await swipeGuardianCard(t);
     await h.flush();
     expect(find.text('INVITATION EXPIRED'), findsOneWidget);
-    expect(find.text('Expired 9 Nov'), findsOneWidget);
+    expect(find.text('Expired 16 Nov'), findsOneWidget);
     expect(find.text('The invitation has expired'), findsOneWidget);
     expect(find.text('Send again'), findsNothing);
     expect(find.text('Cancel invitation'), findsNothing);
@@ -154,7 +154,7 @@ void main() {
       expect(saved.guardianInvitationClockStart, started);
       await h.mount(
         checkpoint: saved,
-        previewClock: () => DateTime.utc(2026, 11, 14),
+        previewClock: () => DateTime.utc(2026, 11, 21),
       );
       expect(find.text('The invitation has expired'), findsOneWidget);
       expect(h.latest.guardianInvitationClockStart, started);
@@ -164,7 +164,7 @@ void main() {
     'an invitation that expires during confirmation stays on the expired card',
     (t) async {
       final h = harness(t);
-      var now = DateTime.utc(2026, 11, 8, 23, 59);
+      var now = DateTime.utc(2026, 11, 15, 23, 59);
       await h.mount(tab: 3, previewClock: () => now);
       await swipeGuardianCard(t);
       await h.flush();
@@ -172,7 +172,7 @@ void main() {
       await h.flush();
       await h.tap('guardian-card-cancel-invitation');
       expect(find.text('Cancel Omar’s invitation?'), findsOneWidget);
-      now = DateTime.utc(2026, 11, 9);
+      now = DateTime.utc(2026, 11, 16);
       await h.tap('guardian-card-confirm-cancel-invitation');
       expect(find.text('The invitation has expired'), findsOneWidget);
       expect(find.text('Cancel invitation'), findsNothing);

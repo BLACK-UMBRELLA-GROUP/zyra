@@ -580,24 +580,19 @@ void main() {
       await harness.tapFinder(row);
       expect(_reader, findsOneWidget);
 
-      // An earlier readable attempt can expire independently of the latest one.
-      final olderDeadline = DraftEndedJourneyReadWindow.expiresAt(
-        olderAttempt.endedAt,
-      )!;
-      await _mount(
-        harness,
-        _checkpoint(pair, share: true),
-        clock: () => olderDeadline,
-      );
+      // Time alone leaves the earlier attempt's original grant intact.
+      final later = olderAttempt.endedAt!.add(const Duration(days: 365));
+      await _mount(harness, _checkpoint(pair, share: true), clock: () => later);
       await harness.tap('guardian_ended');
-      expect(row, findsNothing);
-      expect(_reader, findsNothing);
+      expect(row, findsOneWidget);
+      await harness.tapFinder(row);
+      expect(_reader, findsOneWidget);
     },
   );
 
   for (final openReader in [false, true]) {
     testWidgets(
-      'Past ${openReader ? 'reader' : 'row'} expires on the calendar deadline',
+      'Past ${openReader ? 'reader' : 'row'} stays readable beyond the previous deadline',
       (tester) async {
         final harness = BaselineHarness(
           tester,
@@ -612,10 +607,7 @@ void main() {
         expect(model.end(_sara, mainGuardianId: _hassan), isTrue);
         final attempt = model.currentEndedAttemptFor(_sara)!;
         final rowKey = _pastRow(attempt);
-        final deadline = DraftEndedJourneyReadWindow.expiresAt(
-          attempt.endedAt,
-        )!;
-        expect(deadline, DateTime.utc(2027, 1, 29, 12));
+        final deadline = DateTime.utc(2027, 1, 29, 12);
         var now = deadline.subtract(const Duration(seconds: 30));
         await _mount(
           harness,
@@ -624,20 +616,17 @@ void main() {
         );
         await harness.tap('guardian_ended');
         expect(harness.key(rowKey), findsOneWidget);
-        VoidCallback? stale;
         if (openReader) {
           await harness.tap(rowKey);
           expect(find.text('1 / 2'), findsOneWidget);
           await harness.tap(_next);
           _expectAreas(tester, locked: true);
-          stale = tester.widget<FilledButton>(harness.key(_cta)).onPressed!;
           await _capture(
             harness,
             'past_basic_locked_430x932',
             'Guardian Basic reads a shared archived Journey before expiry',
           );
         } else {
-          stale = _rowTap(harness);
           await _capture(
             harness,
             'past_row_430x932',
@@ -648,11 +637,13 @@ void main() {
         now = deadline;
         await tester.pump(const Duration(seconds: 30));
         await harness.flush();
-        expect(harness.key(rowKey), findsNothing);
-        expect(_reader, findsNothing);
-        stale();
-        await harness.flush();
-        expect(find.byType(ZyraOneUpgradePage), findsNothing);
+        if (openReader) {
+          expect(_reader, findsOneWidget);
+        } else {
+          expect(harness.key(rowKey), findsOneWidget);
+          await harness.tap(rowKey);
+          expect(_reader, findsOneWidget);
+        }
         expect(
           harness.shellFixture.model.currentEndedAttemptFor(_sara)?.id,
           attempt.id,
@@ -663,8 +654,8 @@ void main() {
         );
         await _capture(
           harness,
-          'past_${openReader ? 'reader' : 'row'}_expired_430x932',
-          'Guardian Past at the exact read deadline',
+          'past_${openReader ? 'reader' : 'row'}_retained_430x932',
+          'Guardian Past remains readable after the previous cutoff',
         );
       },
     );

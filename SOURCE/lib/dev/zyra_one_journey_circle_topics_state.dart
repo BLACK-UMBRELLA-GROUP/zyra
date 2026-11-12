@@ -178,6 +178,7 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
                 guardianBasic: topics.guardianBasic,
                 senderId: data.senderId,
                 seekerName: widget.seekerFirstName,
+                hasDepartedMember: data.hasDepartedMember,
                 participantIds: data.participants.map((p) => p.userId).toSet(),
                 loading: _loading,
                 available: _available,

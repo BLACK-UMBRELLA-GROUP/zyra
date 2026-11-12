@@ -475,11 +475,11 @@ void main() {
   }
 
   for (final approved in [false, true]) {
-    testWidgets('Ended Bio gallery closes at expiry with approval $approved', (
+    testWidgets('Ended Bio gallery remains open with approval $approved', (
       tester,
     ) async {
       final endedAt = DateTime.utc(2026, 8, 12, 10);
-      final expiry = DraftEndedJourneyReadWindow.expiresAt(endedAt)!;
+      final expiry = endedAt.add(const Duration(days: 365));
       var now = expiry.subtract(const Duration(seconds: 5));
       await _openBio(
         tester,
@@ -510,10 +510,8 @@ void main() {
       now = expiry;
       await tester.pump(const Duration(seconds: 5));
       await tester.pumpAndSettle();
-      expect(find.byType(ZyraFullScreenProfileGallery), findsNothing);
-      expect(find.byKey(_bioButton), findsNothing);
-      expect(find.text('Video · no sound'), findsNothing);
-      expect(find.text('Journey access has ended'), findsOneWidget);
+      expect(find.byType(ZyraFullScreenProfileGallery), findsOneWidget);
+      expect(find.text('Journey access has ended'), findsNothing);
       expect(tester.takeException(), isNull);
     });
   }

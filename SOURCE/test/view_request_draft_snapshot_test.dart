@@ -336,7 +336,7 @@ void main() {
       expect(attempt.endedAt, clock);
       expect(attempt.progress.compatibilityConsent, isTrue);
       expect(attempt.progress.peerCompatibilityConsent, isFalse);
-      expect(attempt.hasReadWindow(DateTime.utc(2031, 12, 31)), isFalse);
+      expect(attempt.hasRecordedEnd(DateTime.utc(2031, 12, 31)), isTrue);
       expect(restored.canRequest(_sara), isFalse);
       expect(restored.compatibilityRevealed(_sara), isFalse);
       model.reset();
@@ -419,7 +419,7 @@ void main() {
     expect(restored.currentEndedAttemptFor(id), same(attempt));
     expect(attempt.endedAt, isNull);
     expect(attempt.startedAt, isNull);
-    expect(attempt.hasReadWindow(DateTime.utc(2036, 1, 1)), isFalse);
+    expect(attempt.hasRecordedEnd(DateTime.utc(2036, 1, 1)), isFalse);
     expect(restored.end(id), isFalse);
     expect(restored.endedAttemptsFor(id), [attempt]);
   });

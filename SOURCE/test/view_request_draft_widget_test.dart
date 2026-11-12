@@ -1560,16 +1560,14 @@ void main() {
           if (action == 'hide') {
             expect(_key('draft_journey_${_fixture}_header'), findsOneWidget);
           } else {
-            expect(_key('concept_blocked_archive_$_fixture'), findsOneWidget);
+            expect(find.text('No ended Journeys'), findsOneWidget);
             expect(find.text('Sara'), findsNothing);
           }
           if (action == 'hide') {
-            await _press(tester, 'draft_journey_options_$_fixture');
+            await _press(tester, 'draft_archive_details_$_fixture');
             expect(_key('draft_options_archive_$_fixture'), findsNothing);
             expect(find.text('View archive'), findsNothing);
             await _press(tester, 'draft_options_timeline_$_fixture');
-          } else {
-            await _press(tester, 'draft_journey_$_fixture');
           }
           expect(_key('concept_journey_menu'), findsNothing);
           expect(_key('concept_message'), findsNothing);
@@ -1594,13 +1592,15 @@ void main() {
             );
             expect(find.text('User not found'), findsNothing);
           } else {
-            expect(_key('concept_user_not_found'), findsOneWidget);
-            expect(find.text('User not found'), findsOneWidget);
             expect(find.text('Journey with Sara'), findsNothing);
             expect(find.byType(ZyraProfileImage), findsNothing);
-            expect(_key('concept_user_not_found_back'), findsNothing);
-            await _returnPage(tester, from: _key('concept_user_not_found'));
             expect(_key('concept_activity_ended'), findsOneWidget);
+            expect(
+              zyraShellFixtureFor(
+                tester,
+              ).model.currentEndedAttemptFor(_fixture),
+              isNotNull,
+            );
           }
           expect(tester.takeException(), isNull);
         }, network);
@@ -1831,7 +1831,8 @@ void main() {
       await _nav(tester, 0);
       expect(find.byType(ZyraOneJourneyBrowseDesigns), findsOneWidget);
       await _openEnded(tester);
-      expect(_key('concept_blocked_archive_$_fixture'), findsOneWidget);
+      expect(find.text('No ended Journeys'), findsOneWidget);
+      expect(fixture.model.currentEndedAttemptFor(_fixture), isNotNull);
       expect(tester.takeException(), isNull);
     },
   );
@@ -4502,7 +4503,7 @@ void main() {
           expect(find.text('Paused'), findsNothing);
           expect(_key('draft_journey_${_fixture}_header'), findsOneWidget);
           expect(_key('draft_fill'), findsNothing);
-          await _press(tester, 'draft_journey_options_$_fixture');
+          await _press(tester, 'draft_archive_details_$_fixture');
           expect(_key('draft_options_archive_$_fixture'), findsNothing);
           expect(find.text('View archive'), findsNothing);
           await _press(tester, 'draft_options_timeline_$_fixture');
@@ -4572,7 +4573,9 @@ void main() {
         final access = Map.of(model.snapshot().guardianAccess);
         await _press(tester, 'guardian-card-menu');
         await _press(tester, 'guardian-remove');
-        final confirmation = find.byKey(ValueKey('guardian-remove-confirmation-approve'));
+        final confirmation = find.byKey(
+          ValueKey('guardian-remove-confirmation-approve'),
+        );
         expect(confirmation.hitTestable(), findsOneWidget);
         await tester.tap(confirmation);
         await tester.pumpAndSettle();

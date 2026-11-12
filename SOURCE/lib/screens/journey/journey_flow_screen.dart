@@ -2627,7 +2627,7 @@ _journeyLifecycleCopy(
     title: 'End with $name?',
     body:
         'Your Journey closes for both of you. Your Timeline stays. '
-        '${ZyraReleaseGates.requestNewJourneyEnabled ? 'Either of you can request a new Journey within 60 days.' : ZyraReleaseGates.requestNewJourneyUnavailable}',
+        '${ZyraReleaseGates.requestNewJourneyEnabled ? 'Either of you can request a new Journey after 24 hours. The request lasts 30 days.' : ZyraReleaseGates.requestNewJourneyUnavailable}',
     primary: 'End Journey',
     keep: 'Keep Journey',
     busy: 'Ending…',
@@ -2777,10 +2777,8 @@ class _JourneyLifecycleCompleteScreen extends StatelessWidget {
                     SizedBox(height: 20),
                     Text(
                       ZyraReleaseGates.requestNewJourneyEnabled
-                          ? 'Starting again requires a new request and agreement '
-                                'from both of you. The direct request is available '
-                                'for 60 days; after that, you would need to meet '
-                                'again in Profiles.'
+                          ? 'You can request a new Journey 24 hours after it ends. '
+                                'The request lasts 30 days and the other person needs to accept.'
                           : ZyraReleaseGates.requestNewJourneyUnavailable,
                       style: ZyraText.subtext(size: 13),
                       textAlign: TextAlign.center,
@@ -4361,10 +4359,8 @@ class _EndedView extends StatelessWidget {
               SizedBox(height: 20),
               Text(
                 ZyraReleaseGates.requestNewJourneyEnabled
-                    ? 'Beginning together again means starting a new Journey. One '
-                          'person requests it and the other decides. That direct option '
-                          'lasts 60 days; after it closes, you would need to meet again '
-                          'through Profiles.'
+                    ? 'You can request a new Journey 24 hours after it ends. '
+                          'The request lasts 30 days and the other person needs to accept.'
                     : ZyraReleaseGates.requestNewJourneyUnavailable,
                 style: ZyraText.subtext(size: 13),
                 textAlign: TextAlign.center,

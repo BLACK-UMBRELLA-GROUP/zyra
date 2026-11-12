@@ -228,7 +228,7 @@ void main() {
         // This was received; only our own sent Not-taken-up requests carry
         // the existing sender cooldown.
         expect(model.canRequest(_received), isTrue);
-        now = now.add(const Duration(days: 30));
+        now = now.add(const Duration(days: 7));
         expect(model.canRequest(_received), isTrue);
         ViewRequestDraftModel.fromSnapshot(model.snapshot());
       },
@@ -438,7 +438,10 @@ void main() {
         test(
           'V2 capacity $capacity localFull=$localFull peerFull=$peerFull obeys four cases',
           () {
-            model = ReceivedRequestFixture(capacity: capacity, clock: () => now);
+            model = ReceivedRequestFixture(
+              capacity: capacity,
+              clock: () => now,
+            );
             if (localFull) model.fillCapacity();
             expect(model.setPeerOccupied(_received, peerFull), isTrue);
             final occupied = model.occupiedCount;

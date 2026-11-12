@@ -31,7 +31,9 @@ class ZyraGuardianFamilyInvite {
   final bool main;
   final DateTime sentAt;
   final ZyraGuardianFamilyInviteStatus status;
-  DateTime get expiresAt => sentAt.add(const Duration(days: 7));
+  static const lifetime = Duration(days: 14);
+
+  DateTime get expiresAt => sentAt.add(lifetime);
   bool pendingAt(DateTime now) =>
       status == ZyraGuardianFamilyInviteStatus.pending &&
       !now.isBefore(sentAt) &&

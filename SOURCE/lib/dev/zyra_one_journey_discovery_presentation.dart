@@ -1105,6 +1105,7 @@ class ZyraOneJourneyConnectionsActiveCard extends StatelessWidget {
     this.inlineOptions,
     this.inlineOptionsFillHeight = true,
     this.bottomGap,
+    this.onPhotoTap,
   });
 
   final SeekerProfile profile;
@@ -1120,6 +1121,7 @@ class ZyraOneJourneyConnectionsActiveCard extends StatelessWidget {
   final Widget? inlineOptions;
   final bool inlineOptionsFillHeight;
   final double? bottomGap;
+  final VoidCallback? onPhotoTap;
 
   double _originalSingleInteriorHeight(BuildContext context, double width) {
     // Measure the existing single-card text, including its real inherited
@@ -1204,10 +1206,23 @@ class ZyraOneJourneyConnectionsActiveCard extends StatelessWidget {
 
   Widget _alternateContent(BuildContext context) {
     final deck = actions;
+    final photo = imageBuilder(context, profile.photoUrl);
+    final onTap = onPhotoTap;
     final content = ZyraOneJourneyCardContent(
       design: cardDesign,
       profile: profile,
-      photo: imageBuilder(context, profile.photoUrl),
+      photo: onTap == null
+          ? photo
+          : Semantics(
+              button: true,
+              label: 'View archived Journey details',
+              child: GestureDetector(
+                key: ValueKey('draft_archive_details_${profile.id}'),
+                behavior: HitTestBehavior.opaque,
+                onTap: ZyraTapFeedback.onTap(context, onTap),
+                child: photo,
+              ),
+            ),
       action: primaryAction ?? actions,
       primaryButton: deck is ZyraOneJourneyConnectionsActionDeck
           ? ZyraOneJourneyConnectionsActionButton(

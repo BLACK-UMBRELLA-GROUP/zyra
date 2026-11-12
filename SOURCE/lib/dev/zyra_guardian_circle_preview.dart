@@ -17,8 +17,18 @@ class ZyraGuardianCirclePreviewData {
     Iterable<ZyraFamilyMessage> messages = const [],
     Iterable<ZyraFamilyMessageContext> contexts = const [],
     required this.canSend,
-  }) : participants = List.unmodifiable(participants),
-       messages = List.unmodifiable(messages.map(_snapshotMessage)),
+    Set<String> departedMemberIds = const {},
+  }) : hasDepartedMember = departedMemberIds.isNotEmpty,
+       participants = List.unmodifiable(
+         participants.where(
+           (person) => !departedMemberIds.contains(person.userId),
+         ),
+       ),
+       messages = List.unmodifiable(
+         messages
+             .where((message) => !departedMemberIds.contains(message.senderId))
+             .map((message) => _snapshotMessage(message, departedMemberIds)),
+       ),
        contexts = List.unmodifiable(contexts);
 
   final String seekerId;
@@ -26,7 +36,7 @@ class ZyraGuardianCirclePreviewData {
   final List<ZyraFamilyCircleParticipant> participants;
   final List<ZyraFamilyMessage> messages;
   final List<ZyraFamilyMessageContext> contexts;
-  final bool canSend;
+  final bool canSend, hasDepartedMember;
 
   bool validFor(String expectedSeeker, {bool? viewerIsSeeker}) =>
       seekerId.isNotEmpty &&
@@ -79,20 +89,26 @@ class ZyraGuardianCirclePreviewData {
   );
 }
 
-ZyraFamilyMessage _snapshotMessage(ZyraFamilyMessage message) =>
-    ZyraFamilyMessage(
-      id: message.id,
-      senderId: message.senderId,
-      senderFirstName: message.senderFirstName,
-      senderRelationship: message.senderRelationship,
-      senderRoleLabel: message.senderRoleLabel,
-      body: message.body,
-      createdAt: message.createdAt,
-      lifecycle: message.lifecycle,
-      context: message.context,
-      readBy: List.unmodifiable(message.readBy),
-      unreadForMe: message.unreadForMe,
-    );
+ZyraFamilyMessage _snapshotMessage(
+  ZyraFamilyMessage message,
+  Set<String> departedMemberIds,
+) => ZyraFamilyMessage(
+  id: message.id,
+  senderId: message.senderId,
+  senderFirstName: message.senderFirstName,
+  senderRelationship: message.senderRelationship,
+  senderRoleLabel: message.senderRoleLabel,
+  body: message.body,
+  createdAt: message.createdAt,
+  lifecycle: message.lifecycle,
+  context: message.context,
+  readBy: List.unmodifiable(
+    message.readBy.where(
+      (reader) => !departedMemberIds.contains(reader.userId),
+    ),
+  ),
+  unreadForMe: message.unreadForMe,
+);
 
 /// LOCK 20 display metadata for an already-admitted local preview. It never
 /// enables preview, links a member, or supplies a server writing entitlement.

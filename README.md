@@ -48,8 +48,7 @@ bands in admitted preview results. In a mutually revealed Journey,
 Seeker Basic can use a local Unlock to open the areas for that person.
 A Guardian with View can open the reader after both Seekers reveal.
 Guardian Basic sees the area names with locks and a Guardian One comparison.
-A shared Past summary with View on that attempt carries the read-only
-row until three calendar months after the Journey ends.
+A shared Past summary with View on that attempt keeps its read-only row.
 Live Compatibility areas show locks or `Not enough answers` pending
 approved result wiring.
 The Guardian Basic invitation example shows what happens when a Seeker’s
@@ -71,6 +70,17 @@ to the result with their existing Unlock.
 New Compatibility results use the three sect choices shown in the Seeker’s
 set-up. A missing sect light appears as Not set in Partner preferences and can
 be set with a deliberate tap. Saved results and Unlocks are kept.
+In the Founder preview, Guardian invitations and code link requests expire
+after 14 days. A Seeker who is still unready sees a Needs you reminder at
+48 hours. A Journey that is still waiting for readiness at 72 hours moves
+to Past as Not taken up. The same person can be asked again after 7 days.
+Ended Journeys have no fixed reading deadline. A Seeker can remove their own
+archived Journey, and a block from either side hides it until unblock. A
+preview restart can be requested after 24 hours and stays open for 30 days.
+A departed sample member's Journey and Timeline show This member has left
+ZYRA. The Guardian One comparison uses Continue until a verified store offer
+is available. Push delivery and server enforcement await their server rollout.
+
 Haptics starts on Light for members who have never saved a level.
 
 ## Built with

@@ -28,6 +28,12 @@ typedef DraftWaitingAcceptance = ({
   int? heldEndingAttemptRevision,
 });
 
+typedef DraftJourneyPreparation = ({
+  DateTime requestedAt,
+  DateTime acceptedAt,
+  bool incoming,
+});
+
 final class DraftPastRequest {
   const DraftPastRequest._({
     required this.id,
@@ -37,13 +43,14 @@ final class DraftPastRequest {
     required this.movedAt,
     required this.sequence,
     required this.incoming,
+    required this.closedBeforeReady,
   });
 
   final String id, profileId;
   final DraftPastRequestOutcome outcome;
   final DateTime requestedAt, movedAt;
   final int sequence;
-  final bool incoming;
+  final bool incoming, closedBeforeReady;
 }
 
 /// Invented preview plans only; these never prove a real entitlement.
@@ -275,38 +282,6 @@ ViewRequestDraftProgressSnapshot _progressValue(_DraftJourneyProgress value) =>
       peerStageContinue: value.peerStageContinue,
     );
 
-/// Presentation-only calendar policy. Real private reads still require their
-/// server authority; a device clock, checkpoint or an unused credit is no grant.
-abstract final class DraftEndedJourneyReadWindow {
-  static DateTime? expiresAt(DateTime? endedAt) {
-    if (endedAt == null) return null;
-    final end = endedAt.toUtc();
-    try {
-      final lastDay = DateTime.utc(end.year, end.month + 4, 0).day;
-      return DateTime.utc(
-        end.year,
-        end.month + 3,
-        end.day > lastDay ? lastDay : end.day,
-        end.hour,
-        end.minute,
-        end.second,
-        end.millisecond,
-        end.microsecond,
-      );
-    } on ArgumentError {
-      return null;
-    }
-  }
-
-  static bool isOpen(DateTime? endedAt, DateTime now) {
-    final deadline = expiresAt(endedAt);
-    return endedAt != null &&
-        !endedAt.toUtc().isAfter(now.toUtc()) &&
-        deadline != null &&
-        now.toUtc().isBefore(deadline);
-  }
-}
-
 /// Immutable, fictional attempt history. It contains no paid entitlement,
 /// live Guardian permission, answers or authority. A fresh attempt never adopts these
 /// progress values as its current consent. Legacy missing dates stay missing.
@@ -325,9 +300,12 @@ final class DraftEndedJourneyAttempt {
   final ViewRequestDraftProgressSnapshot progress;
   final Set<String> guardiansWithView;
 
-  bool hasReadWindow(DateTime now) =>
-      !(startedAt != null && endedAt != null && startedAt!.isAfter(endedAt!)) &&
-      DraftEndedJourneyReadWindow.isOpen(endedAt, now);
+  bool hasRecordedEnd(DateTime now) {
+    final end = endedAt;
+    return end != null &&
+        !end.isAfter(now) &&
+        !(startedAt?.isAfter(end) ?? false);
+  }
 }
 
 /// Detached, memory-only fictional values for a fresh preview owner.
@@ -342,6 +320,11 @@ final class ViewRequestDraftSnapshot {
       busyPeers = Set.unmodifiable(model._busyPeers),
       hiddenPeers = Set.unmodifiable(model._hiddenPeers),
       blockedPeers = Set.unmodifiable(model._blockedPeers),
+      peerBlocks = Set.unmodifiable(model._peerBlocks),
+      departedPeers = Set.unmodifiable(model._departedPeers),
+      removedEndedAttemptIds = Set.unmodifiable(model._removedEndedAttemptIds),
+      preparingRequests = Map.unmodifiable(model._preparingRequests),
+      restartRequestedAt = Map.unmodifiable(model._restartRequestedAt),
       acknowledgedReceivedRequestIds = Set.unmodifiable(
         model._acknowledgedReceivedRequestIds,
       ),
@@ -391,7 +374,12 @@ final class ViewRequestDraftSnapshot {
   final Map<String, DraftJourneyState> states;
   final Set<String> busyPeers;
   final Set<String> hiddenPeers;
-  final Set<String> blockedPeers;
+  final Set<String> blockedPeers,
+      peerBlocks,
+      departedPeers,
+      removedEndedAttemptIds;
+  final Map<String, DraftJourneyPreparation> preparingRequests;
+  final Map<String, DateTime> restartRequestedAt;
   final Set<String> acknowledgedReceivedRequestIds;
   final int receivedActivityRevision;
   final Map<String, int> receivedRequestRevisions;
@@ -474,6 +462,26 @@ final class ViewRequestDraftSnapshot {
         busyPeers.every(peers.contains) &&
         hiddenPeers.every(peers.contains) &&
         blockedPeers.every(peers.contains) &&
+        peerBlocks.every(peers.contains) &&
+        departedPeers.every(peers.contains) &&
+        preparingRequests.entries.every(
+          (entry) =>
+              states[entry.key] == DraftJourneyState.preparing &&
+              entry.value.acceptedAt.isUtc &&
+              entry.value.requestedAt.isUtc &&
+              !entry.value.requestedAt.isAfter(entry.value.acceptedAt),
+        ) &&
+        states.entries.every(
+          (entry) =>
+              entry.value != DraftJourneyState.preparing ||
+              preparingRequests.containsKey(entry.key),
+        ) &&
+        restartRequestedAt.entries.every(
+          (entry) =>
+              states[entry.key] == DraftJourneyState.ended &&
+              !departedPeers.contains(entry.key) &&
+              entry.value.isUtc,
+        ) &&
         acknowledgedReceivedRequestIds.every(peers.contains) &&
         receivedActivityRevision >= 0 &&
         receivedRequestRevisions.keys.every(peers.contains) &&
@@ -557,6 +565,9 @@ final class ViewRequestDraftSnapshot {
               attempt.progress.stageIndex >= 0 &&
               attempt.progress.stageIndex < ZyraJourneyStages.all.length &&
               _validDisclosureProgress(attempt.progress),
+        ) &&
+        removedEndedAttemptIds.every(
+          (id) => endedAttempts.any((attempt) => attempt.id == id),
         ) &&
         currentEndedAttemptIds.entries.every(
           (entry) =>
@@ -692,6 +703,11 @@ class ViewRequestDraftModel {
     _busyPeers.addAll(snapshot.busyPeers);
     _hiddenPeers.addAll(snapshot.hiddenPeers);
     _blockedPeers.addAll(snapshot.blockedPeers);
+    _peerBlocks.addAll(snapshot.peerBlocks);
+    _departedPeers.addAll(snapshot.departedPeers);
+    _removedEndedAttemptIds.addAll(snapshot.removedEndedAttemptIds);
+    _preparingRequests.addAll(snapshot.preparingRequests);
+    _restartRequestedAt.addAll(snapshot.restartRequestedAt);
     _acknowledgedReceivedRequestIds.addAll(
       snapshot.acknowledgedReceivedRequestIds,
     );
@@ -756,6 +772,12 @@ class ViewRequestDraftModel {
 
   ViewRequestDraftSnapshot snapshot() => ViewRequestDraftSnapshot._(this);
 
+  static const readyReminderDelay = Duration(hours: 48);
+  static const readyCloseDelay = Duration(hours: 72);
+  static const askAgainWait = Duration(days: 7);
+  static const restartWait = Duration(hours: 24);
+  static const restartLifetime = Duration(days: 30);
+
   static final Set<String> _fixtureIds = {
     for (final profile in draftProfiles) profile.id,
   };
@@ -766,6 +788,11 @@ class ViewRequestDraftModel {
   final Set<String> _busyPeers = {};
   final Set<String> _hiddenPeers = {};
   final Set<String> _blockedPeers = {};
+  final Set<String> _peerBlocks = {};
+  final Set<String> _departedPeers = {};
+  final Set<String> _removedEndedAttemptIds = {};
+  final Map<String, DraftJourneyPreparation> _preparingRequests = {};
+  final Map<String, DateTime> _restartRequestedAt = {};
   final Set<String> _acknowledgedReceivedRequestIds = {};
   int _receivedActivityRevision = 0;
   final Map<String, int> _receivedRequestRevisions = {};
@@ -799,7 +826,56 @@ class ViewRequestDraftModel {
   Set<String> get hiddenPeers => UnmodifiableSetView(_hiddenPeers);
   Set<String> get blockedPeers => UnmodifiableSetView(_blockedPeers);
   bool isHidden(String id) => _hiddenPeers.contains(id);
-  bool isBlocked(String id) => _blockedPeers.contains(id);
+  bool isBlocked(String id) =>
+      _blockedPeers.contains(id) || _peerBlocks.contains(id);
+  bool hasDeparted(String id) => _departedPeers.contains(id);
+
+  bool hasVisibleEndedJourney(String id) =>
+      _states[id] == DraftJourneyState.ended &&
+      !isBlocked(id) &&
+      !_removedEndedAttemptIds.contains(_currentEndedAttemptIds[id]);
+
+  bool isEndedAttemptRemoved(String attemptId) =>
+      _removedEndedAttemptIds.contains(attemptId);
+
+  bool canSeeEndedAttempt(DraftEndedJourneyAttempt attempt) =>
+      !isBlocked(attempt.profileId) &&
+      !hasDeparted(attempt.profileId) &&
+      !isEndedAttemptRemoved(attempt.id);
+
+  /// Removes this exact sample attempt from the local Seeker's archive.
+  bool removeEndedJourney(String id, String attemptId) =>
+      hasVisibleEndedJourney(id) &&
+      _currentEndedAttemptIds[id] == attemptId &&
+      _removedEndedAttemptIds.add(attemptId);
+
+  /// Fictional input only. A real deletion or peer block requires server data.
+  bool markPeerDeparted(String id) {
+    final state = _states[id];
+    if (state != DraftJourneyState.preparing &&
+        state != DraftJourneyState.active &&
+        state != DraftJourneyState.ended) {
+      return false;
+    }
+    if (!_departedPeers.add(id)) return false;
+    _restartRequestedAt.remove(id);
+    if (state != DraftJourneyState.ended) end(id);
+    _personSafetyRevision++;
+    return true;
+  }
+
+  bool setPeerBlock(String id, bool blocked) {
+    if (!_fixtureIds.contains(id)) return false;
+    final changed = blocked ? _peerBlocks.add(id) : _peerBlocks.remove(id);
+    if (changed) _personSafetyRevision++;
+    return changed;
+  }
+
+  bool unblock(String id) {
+    if (!_blockedPeers.remove(id)) return false;
+    _personSafetyRevision++;
+    return true;
+  }
 
   /// Capture both revisions when opening a person-level safety action. The
   /// safety revision also invalidates absent-attempt actions after reset or
@@ -911,6 +987,7 @@ class ViewRequestDraftModel {
     DateTime requestedAt,
     DateTime movedAt, {
     bool? incoming,
+    bool closedBeforeReady = false,
   }) {
     final sequence = ++_pastRequestSequence;
     _pastRequests.add(
@@ -922,6 +999,7 @@ class ViewRequestDraftModel {
         movedAt: movedAt,
         sequence: sequence,
         incoming: incoming ?? outcome == DraftPastRequestOutcome.youDeclined,
+        closedBeforeReady: closedBeforeReady,
       ),
     );
   }
@@ -956,9 +1034,9 @@ class ViewRequestDraftModel {
     return !_pastRequests.any(
       (entry) =>
           entry.profileId == id &&
-          !entry.incoming &&
+          (!entry.incoming || entry.closedBeforeReady) &&
           entry.outcome == DraftPastRequestOutcome.notTakenUp &&
-          now.isBefore(entry.movedAt.add(const Duration(days: 30))),
+          now.isBefore(entry.movedAt.add(askAgainWait)),
     );
   }
 
@@ -1022,7 +1100,7 @@ class ViewRequestDraftModel {
   bool hasUnseenReceivedRequest(String id) =>
       _fixtureIds.contains(id) &&
       _states[id] == DraftJourneyState.received &&
-      !_blockedPeers.contains(id) &&
+      !isBlocked(id) &&
       !_acknowledgedReceivedRequestIds.contains(id);
 
   /// Acknowledges only currently received, unblocked fixture requests.
@@ -1032,7 +1110,7 @@ class ViewRequestDraftModel {
     for (final id in ids) {
       if (_fixtureIds.contains(id) &&
           _states[id] == DraftJourneyState.received &&
-          !_blockedPeers.contains(id)) {
+          !isBlocked(id)) {
         changed = _acknowledgedReceivedRequestIds.add(id) || changed;
       }
     }
@@ -1117,7 +1195,8 @@ class ViewRequestDraftModel {
   /// history is modelled; terminal records are never overwritten.
   List<DraftProfile> get discoverableProfiles => List.unmodifiable(
     draftProfiles.where((profile) {
-      return !isHidden(profile.id) &&
+      return !hasDeparted(profile.id) &&
+          !isHidden(profile.id) &&
           !isBlocked(profile.id) &&
           !peerOccupied(profile.id);
     }),
@@ -1314,6 +1393,7 @@ class ViewRequestDraftModel {
       _fixtureIds.contains(id) &&
       !isBlocked(id) &&
       !isHidden(id) &&
+      !hasDeparted(id) &&
       !_states.containsKey(id) &&
       _requestCooldownFinished(id) &&
       canBrowse &&
@@ -1408,7 +1488,7 @@ class ViewRequestDraftModel {
     // On the sent side this confirmation is the other person's held ending
     // being committed too. No counterpart Journey details are modelled.
     if (!incoming) _busyPeers.remove(requestId);
-    _prepareAcceptedRequest(requestId);
+    _prepareAcceptedRequest(requestId, incoming: incoming);
     return true;
   }
 
@@ -1419,7 +1499,7 @@ class ViewRequestDraftModel {
     if (!waitingIsIncoming(id)) {
       if (!hasCapacity) return false;
       _busyPeers.remove(id);
-      _prepareAcceptedRequest(id);
+      _prepareAcceptedRequest(id, incoming: false);
       return true;
     }
     final waiting = _waitingAcceptances[id]!;
@@ -1433,7 +1513,7 @@ class ViewRequestDraftModel {
     }
     if (ending != null) end(ending, mainGuardianId: mainGuardianId);
     _busyPeers.remove(id);
-    _prepareAcceptedRequest(id);
+    _prepareAcceptedRequest(id, incoming: true);
     return true;
   }
 
@@ -1500,11 +1580,22 @@ class ViewRequestDraftModel {
       _waitForAcceptance(id, incoming: true);
       return true;
     }
-    _prepareAcceptedRequest(id);
+    _prepareAcceptedRequest(
+      id,
+      incoming: expected == DraftJourneyState.received,
+    );
     return true;
   }
 
-  void _prepareAcceptedRequest(String id) {
+  void _prepareAcceptedRequest(String id, {required bool incoming}) {
+    final requestedAt = _pendingRequestedAt[id]!;
+    final now = _clock().toUtc();
+    _preparingRequests[id] = (
+      requestedAt: requestedAt,
+      // A restored preview can use a clock earlier than the request fixture.
+      acceptedAt: now.isBefore(requestedAt) ? requestedAt : now,
+      incoming: incoming,
+    );
     _states[id] = DraftJourneyState.preparing;
     _waitingAcceptances.remove(id);
     _pendingRequestedAt.remove(id);
@@ -1513,10 +1604,141 @@ class ViewRequestDraftModel {
     _recordJourneyActivity(id);
   }
 
+  DateTime? readyReminderAt(String id, {bool forPeer = false}) {
+    final acceptedAt = _preparingRequests[id]?.acceptedAt;
+    if (acceptedAt == null ||
+        isBlocked(id) ||
+        (forPeer ? peerIsReady(id) : isReady(id))) {
+      return null;
+    }
+    final now = _clock().toUtc();
+    final reminderAt = acceptedAt.add(readyReminderDelay);
+    return !now.isBefore(reminderAt) &&
+            now.isBefore(acceptedAt.add(readyCloseDelay))
+        ? reminderAt
+        : null;
+  }
+
+  DateTime? get nextTimeRuleDeadline {
+    final now = _clock().toUtc();
+    DateTime? next;
+    void consider(DateTime deadline) {
+      if (deadline.isAfter(now) && (next == null || deadline.isBefore(next!))) {
+        next = deadline;
+      }
+    }
+
+    for (final entry in _preparingRequests.entries) {
+      if (_bothReady(entry.key)) continue;
+      consider(entry.value.acceptedAt.add(readyReminderDelay));
+      consider(entry.value.acceptedAt.add(readyCloseDelay));
+    }
+    for (final attempt in _endedAttempts) {
+      final endedAt = attempt.endedAt;
+      if (endedAt != null) consider(endedAt.add(restartWait));
+    }
+    for (final sentAt in _restartRequestedAt.values) {
+      consider(sentAt.add(restartLifetime));
+    }
+    return next;
+  }
+
+  /// Applies elapsed time to fictional requests. At the deadline an unready
+  /// preparation frees both sample reservations and becomes request history.
+  bool advanceTimeRules() {
+    var changed = false;
+    final now = _clock().toUtc();
+    for (final entry in _preparingRequests.entries.toList()) {
+      final closesAt = entry.value.acceptedAt.add(readyCloseDelay);
+      if (!_bothReady(entry.key) && !now.isBefore(closesAt)) {
+        changed = true;
+        final id = entry.key;
+        _recordPastRequest(
+          id,
+          DraftPastRequestOutcome.notTakenUp,
+          entry.value.requestedAt,
+          closesAt,
+          incoming: entry.value.incoming,
+          closedBeforeReady: true,
+        );
+        _preparingRequests.remove(id);
+        _states.remove(id);
+        _progress.remove(id);
+        _guardianViewAttempts.removeWhere(
+          (grant) => grant.$2 == _attemptRevisions[id],
+        );
+        _attemptRevisions.remove(id);
+        _journeyLastActivityAt.remove(id);
+        _outgoingRequestAcceptedAt.remove(id);
+        _outgoingRequestAcceptedRevisions.remove(id);
+        _guardianAccess.removeWhere((key, _) => key.endsWith('|$id'));
+      }
+    }
+    for (final entry in _restartRequestedAt.entries.toList()) {
+      if (!now.isBefore(entry.value.add(restartLifetime))) {
+        changed = true;
+        _restartRequestedAt.remove(entry.key);
+      }
+    }
+    return changed;
+  }
+
+  Duration timeUntil(DateTime deadline) => deadline.difference(_clock());
+
+  bool wasClosedBeforeReady(String id) => _pastRequests.any(
+    (request) => request.profileId == id && request.closedBeforeReady,
+  );
+
+  bool _bothReady(String id) => isReady(id) && peerIsReady(id);
+
+  DateTime? restartAvailableAt(String id) =>
+      currentEndedAttemptFor(id)?.endedAt?.add(restartWait);
+
+  DateTime? restartExpiresAt(String id) {
+    final expiresAt = _restartRequestedAt[id]?.add(restartLifetime);
+    return expiresAt != null && expiresAt.isAfter(_clock()) ? expiresAt : null;
+  }
+
+  bool isRecentEndedJourney(String id) {
+    final current = _currentEndedAttemptIds[id];
+    if (current == null) return false;
+    final attempts = _endedAttempts.toList()
+      ..sort((a, b) {
+        final aDate = a.endedAt;
+        final bDate = b.endedAt;
+        if (aDate == null) return bDate == null ? b.id.compareTo(a.id) : 1;
+        if (bDate == null) return -1;
+        final order = bDate.compareTo(aDate);
+        return order == 0 ? b.id.compareTo(a.id) : order;
+      });
+    return attempts.take(5).any((attempt) => attempt.id == current);
+  }
+
+  bool canRequestEndedJourney(String id) {
+    final availableAt = restartAvailableAt(id);
+    return hasVisibleEndedJourney(id) &&
+        isRecentEndedJourney(id) &&
+        !isHidden(id) &&
+        !hasDeparted(id) &&
+        hasCapacity &&
+        !peerOccupied(id) &&
+        availableAt != null &&
+        !_clock().isBefore(availableAt) &&
+        restartExpiresAt(id) == null;
+  }
+
+  bool requestEndedJourney(String id) {
+    advanceTimeRules();
+    if (!canRequestEndedJourney(id)) return false;
+    _restartRequestedAt[id] = _clock().toUtc();
+    return true;
+  }
+
   bool isReady(String id) => _progress[id]?.ready ?? false;
   bool peerIsReady(String id) => _progress[id]?.peerReady ?? false;
 
   bool markReady(String id) {
+    advanceTimeRules();
     if (isBlocked(id) ||
         _states[id] != DraftJourneyState.preparing ||
         isReady(id)) {
@@ -1528,6 +1750,7 @@ class ViewRequestDraftModel {
   }
 
   bool simulatePeerReady(String id) {
+    advanceTimeRules();
     if (isBlocked(id) ||
         _states[id] != DraftJourneyState.preparing ||
         peerIsReady(id)) {
@@ -1561,6 +1784,7 @@ class ViewRequestDraftModel {
         )) {
       return false;
     }
+    _preparingRequests.remove(id);
     _states[id] = DraftJourneyState.active;
     _journeyStartedAt.putIfAbsent(id, () => _clock().toUtc());
     for (final guardianId in agreedPaidAdditionalGuardianIds) {
@@ -1584,6 +1808,7 @@ class ViewRequestDraftModel {
     String? mainGuardianId = 'draft-guardian-hassan',
     Set<String> agreedPaidAdditionalGuardianIds = const {},
   }) {
+    advanceTimeRules();
     if (isBlocked(id) ||
         _states[id] != DraftJourneyState.preparing ||
         _busyPeers.contains(id) ||
@@ -1878,6 +2103,7 @@ class ViewRequestDraftModel {
     _guardianViewAttempts.removeWhere(
       (grant) => grant.$2 == _attemptRevisions[id],
     );
+    _preparingRequests.remove(id);
     _states[id] = DraftJourneyState.ended;
     _clearRequiredPaidGuardianAccess(id);
     _recordJourneyActivity(id);
@@ -1946,6 +2172,11 @@ class ViewRequestDraftModel {
     _pastRequestSequence = 0;
     _hiddenPeers.clear();
     _blockedPeers.clear();
+    _peerBlocks.clear();
+    _departedPeers.clear();
+    _removedEndedAttemptIds.clear();
+    _preparingRequests.clear();
+    _restartRequestedAt.clear();
     _acknowledgedReceivedRequestIds.clear();
     _progress.clear();
     _journeyStartedAt.clear();

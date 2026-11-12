@@ -266,8 +266,13 @@ void main() {
           await pressCode(t, find.byKey(sendKey));
           expect(find.text('Request sent'), findsOneWidget);
           expect(find.byType(BottomSheet), findsNothing);
+          expect(find.textContaining('has 14 days to accept.'), findsOneWidget);
           expect(find.textContaining('once they accept.'), findsOneWidget);
           expect(find.byKey(sendKey), findsNothing);
+          await t.pump(const Duration(days: 13, hours: 23));
+          expect(find.text('Request sent'), findsOneWidget);
+          await t.pump(const Duration(hours: 1));
+          expect(find.text('Expired after 14 days'), findsOneWidget);
         } else {
           expect(find.byKey(sendKey), findsNothing);
         }

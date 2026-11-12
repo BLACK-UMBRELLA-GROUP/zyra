@@ -38,7 +38,6 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
     this.canViewBio = false,
     this.canViewCompatibility = false,
     this.canViewGuardians = true,
-    this.endedReadWindowOpen = false,
     this.archived = false,
     this.lockedPage = false,
   });
@@ -52,7 +51,6 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
   final bool canViewBio;
   final bool canViewCompatibility;
   final bool canViewGuardians;
-  final bool endedReadWindowOpen;
   final bool archived;
   // LOCK13 opts in; existing inline cards and sheets keep their geometry.
   final bool lockedPage;
@@ -297,16 +295,14 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
     final explanation = switch (option) {
       ZyraConceptJourneyOption.bio when locked =>
         archived
-            ? endedReadWindowOpen
-                  ? 'Journey Bio was not shared before this Journey ended.'
-                  : 'Journey Bio is available for three months after a Journey ends.'
+            ? 'Journey Bio was not shared before this Journey ended.'
             : 'Complete Journey Bio together to view it here.',
       ZyraConceptJourneyOption.compatibility when locked =>
         archived
-            ? 'Journey access lasts three months. A used profile Unlock stays permanent.'
+            ? 'You can view the result you revealed together or used a profile Unlock to open.'
             : 'Complete Compatibility Reveal together to view your result.',
       ZyraConceptJourneyOption.guardians when locked =>
-        'Historical Guardian details are available for three months after a Journey ends.',
+        'No Guardian details were saved in this archive.',
       _ => detail,
     };
     return _journeyOptionRow(
@@ -551,4 +547,95 @@ class ZyraConceptJourneyOptionsButton extends StatelessWidget {
       ),
     ),
   );
+}
+
+enum ZyraEndedJourneyAction { restart, remove }
+
+/// The V203 Ended Journeys action sheet. The caller validates the attempt and
+/// owns the following confirmation.
+class ZyraEndedJourneyMenu extends StatelessWidget {
+  const ZyraEndedJourneyMenu({super.key, required this.onSelect});
+
+  final ValueChanged<ZyraEndedJourneyAction?> onSelect;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget pill(String label, ZyraEndedJourneyAction? action) => DecoratedBox(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(999)),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0x143E2E1E),
+            offset: Offset(0, 4),
+            blurRadius: 12,
+          ),
+        ],
+      ),
+      child: OutlinedButton(
+        onPressed: ZyraTapFeedback.onTap(context, () => onSelect(action)),
+        style: OutlinedButton.styleFrom(
+          minimumSize: const Size.fromHeight(52),
+          backgroundColor: ZyraColors.ivoryTop,
+          foregroundColor: ZyraColors.secondaryText,
+          side: const BorderSide(color: ZyraColors.divider),
+          shape: const StadiumBorder(),
+          textStyle: ZyraText.body(size: 15),
+        ),
+        child: Text(label, textAlign: TextAlign.center),
+      ),
+    );
+
+    return DecoratedBox(
+      decoration: const BoxDecoration(
+        color: Color(0xFFF7F2EA),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0x2E3E2E1E),
+            offset: Offset(0, -10),
+            blurRadius: 30,
+          ),
+        ],
+      ),
+      child: SafeArea(
+        top: false,
+        minimum: const EdgeInsets.fromLTRB(20, 10, 20, 26),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: ZyraColors.ink(.18),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              pill('Request a new Journey', ZyraEndedJourneyAction.restart),
+              const Divider(height: 1, color: ZyraColors.divider),
+              TextButton(
+                onPressed: ZyraTapFeedback.onTap(
+                  context,
+                  () => onSelect(ZyraEndedJourneyAction.remove),
+                ),
+                style: TextButton.styleFrom(
+                  minimumSize: const Size.fromHeight(52),
+                  foregroundColor: ZyraColors.dangerText,
+                  textStyle: ZyraText.body(size: 15),
+                ),
+                child: const Text('Remove from my Journeys'),
+              ),
+              const SizedBox(height: 8),
+              pill('Cancel', null),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

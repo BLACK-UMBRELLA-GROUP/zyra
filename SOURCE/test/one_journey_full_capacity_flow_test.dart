@@ -549,7 +549,7 @@ void main() {
         await _nav(tester, 2);
         await _press(tester, 'concept-my-ended');
         expect(find.textContaining('Aisha'), findsWidgets);
-        await _press(tester, 'draft_journey_options_draft-aisha');
+        await _press(tester, 'draft_archive_details_draft-aisha');
         expect(_key('draft_options_archive_draft-aisha'), findsNothing);
         expect(find.text('View archive'), findsNothing);
         await _press(tester, 'draft_options_timeline_draft-aisha');

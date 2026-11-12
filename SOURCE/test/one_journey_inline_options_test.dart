@@ -53,7 +53,6 @@ Widget _options({
   bool canViewBio = false,
   bool canViewCompatibility = false,
   bool archived = false,
-  bool endedReadWindowOpen = true,
   bool canViewGuardians = true,
   ValueChanged<ZyraConceptJourneyOption>? onSelected,
   VoidCallback? onCancel,
@@ -67,7 +66,6 @@ Widget _options({
   canViewBio: canViewBio,
   canViewCompatibility: canViewCompatibility,
   archived: archived,
-  endedReadWindowOpen: endedReadWindowOpen,
   canViewGuardians: canViewGuardians,
   onSelected: onSelected ?? (_) {},
   onCancel: onCancel ?? () {},
@@ -287,7 +285,7 @@ void main() {
         find.byTooltip(
           shared
               ? 'Your revealed compatibility result for this profile.'
-              : 'Journey access lasts three months. A used profile Unlock stays permanent.',
+              : 'You can view the result you revealed together or used a profile Unlock to open.',
         ),
         findsOneWidget,
       );

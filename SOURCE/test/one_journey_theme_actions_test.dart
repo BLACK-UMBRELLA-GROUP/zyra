@@ -552,7 +552,7 @@ void main() {
       await _press(tester, 'concept-my-ended');
       expect(find.textContaining('Ended Journey'), findsWidgets);
       expect(find.textContaining('Maryam'), findsWidgets);
-      await _press(tester, 'draft_journey_options_draft-maryam');
+      await _press(tester, 'draft_archive_details_draft-maryam');
       expect(_key('draft_options_archive_draft-maryam'), findsNothing);
       expect(find.text('View archive'), findsNothing);
       await _press(tester, 'draft_options_timeline_draft-maryam');

@@ -129,6 +129,7 @@ class ZyraOneJourneyShellFixture {
     this.profileVideoLoader,
     this.circleBubbleDesign = ZyraCircleBubbleDesign.current,
     this.circleArrivalsFor,
+    this.circleDepartedMemberIds = const {},
     this.guardianTabs,
     this.readState,
     this.onAttached,
@@ -154,6 +155,7 @@ class ZyraOneJourneyShellFixture {
   final ZyraBrowseNextMotion browseNextMotion;
   final ZyraCircleBubbleDesign circleBubbleDesign;
   final ZyraCirclePreviewArrivals? circleArrivalsFor;
+  final Set<String> circleDepartedMemberIds;
   final ZyraGuardianTabsSnapshot? guardianTabs;
   final ZyraOneJourneyShellFixtureState? Function()? readState;
   final void Function(bool Function() isCurrent)? onAttached;
@@ -422,9 +424,8 @@ class _ZyraOneJourneyConceptShellState
       ZyraDraftCompatibilityAccessStore(canAct: () => _allowed);
   Object? _compatibilityRoute;
   String? _endedCompatibilityAttemptId;
-  Timer? _endedReadTimer;
-  DateTime? _endedReadDeadline;
-  Object? _endedReadScope;
+  Timer? _timeRuleTimer;
+  DateTime? _timeRuleDeadline;
   ZyraDraftTimelinePreview? _timelinePreview;
   Widget? _scanEntryView;
   int _scanEntryRevision = -1;
@@ -463,13 +464,18 @@ class _ZyraOneJourneyConceptShellState
 
   void _routeChanged() {
     _closeLocationFlow();
-    _cancelEndedReadDeadline();
+    _cancelTimeRuleTimer();
     _hiddenProfileRestore = null;
     if (_routeRefreshScheduled) return;
     _routeRefreshScheduled = true;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _routeRefreshScheduled = false;
-      if (mounted) setState(() {});
+      if (!mounted) return;
+      if (_allowed) {
+        _refreshTimeRules();
+      } else {
+        setState(() {});
+      }
     });
     WidgetsBinding.instance.ensureVisualUpdate();
   }
@@ -556,8 +562,7 @@ class _ZyraOneJourneyConceptShellState
       _endedHistoryRoot &&
       id != null &&
       _profileIds.contains(id) &&
-      !_model.isBlocked(id) &&
-      _model.stateFor(id) == DraftJourneyState.ended;
+      _model.hasVisibleEndedJourney(id);
 
   DateTime get _previewNow => (widget.previewClock ?? DateTime.now)().toUtc();
 
@@ -565,8 +570,8 @@ class _ZyraOneJourneyConceptShellState
       .previewInvitationSent
       .add(_previewNow.difference(_guardianInvitationClockStart));
 
-  bool _endedReadWindowOpen(String id) =>
-      _model.currentEndedAttemptFor(id)?.hasReadWindow(_previewNow) == true;
+  bool _hasRecordedEnd(String id) =>
+      _model.currentEndedAttemptFor(id)?.hasRecordedEnd(_previewNow) == true;
 
   DraftEndedJourneyAttempt? _endedAttempt(String id, String? attemptId) =>
       attemptId == null
@@ -577,93 +582,46 @@ class _ZyraOneJourneyConceptShellState
             .firstOrNull;
 
   bool _canViewEndedCompatibility(String id, {String? attemptId}) {
-    if (!_canAddressEndedJourney(id)) return false;
+    if (!_canAddressEndedJourney(id) || _model.hasDeparted(id)) return false;
     final attempt = _endedAttempt(id, attemptId);
-    if (attempt == null) return false;
+    if (attempt == null || !_model.canSeeEndedAttempt(attempt)) return false;
     if (_compatibilityAccess.isUnlocked(id)) return true;
     final progress = attempt.progress;
-    return attempt.hasReadWindow(_previewNow) &&
+    return attempt.hasRecordedEnd(_previewNow) &&
         progress.compatibilityConsent &&
         progress.peerCompatibilityConsent;
   }
 
   bool _canRequestEndedRestart(String id) =>
-      _canAddressEndedJourney(id) && !_model.isHidden(id);
+      _canAddressEndedJourney(id) &&
+      !_model.hasDeparted(id) &&
+      !_model.isHidden(id);
 
-  void _cancelEndedReadDeadline() {
-    _endedReadTimer?.cancel();
-    _endedReadTimer = null;
-    _endedReadDeadline = null;
-    _endedReadScope = null;
+  void _cancelTimeRuleTimer() {
+    _timeRuleTimer?.cancel();
+    _timeRuleTimer = null;
+    _timeRuleDeadline = null;
   }
 
-  // Schedule only for visible private content. The owner and route epoch
-  // can withdraw the row or reader without changing the archived attempt.
-  void _syncEndedReadDeadline() {
-    DraftEndedJourneyAttempt? attempt;
-    final id = _personId;
-    if (_allowed &&
-        ModalRoute.of(context)?.isCurrent == true &&
-        id != null &&
-        _canAddressEndedJourney(id)) {
-      if (_page == 'ended_bio' && _canViewEndedBio(id)) {
-        attempt = _model.currentEndedAttemptFor(id);
-      } else if (_page == 'ended_compatibility' &&
-          !_compatibilityAccess.isUnlocked(id) &&
-          _canViewEndedCompatibility(
-            id,
-            attemptId: _endedCompatibilityAttemptId,
-          )) {
-        attempt = _endedAttempt(id, _endedCompatibilityAttemptId);
-      }
-    } else if (_guardianCompatibilityOrigin(archived: true)) {
-      final target = _guardianCompatibilityTarget;
-      if (target != null && _canReadGuardianCompatibility(target)) {
-        attempt = _endedAttempt(target.subjectId, target.archiveId);
-      } else if (_page == 'held_action') {
-        for (final summary in _guardianPastSummaries) {
-          if (!_canReadGuardianCompatibility(_guardianPastTarget(summary))) {
-            continue;
-          }
-          final deadline = DraftEndedJourneyReadWindow.expiresAt(
-            summary.endedAt,
-          )!;
-          final scheduled = DraftEndedJourneyReadWindow.expiresAt(
-            attempt?.endedAt,
-          );
-          if (scheduled == null || deadline.isBefore(scheduled)) {
-            attempt = summary;
-          }
-        }
-      }
-    }
-    final next = DraftEndedJourneyReadWindow.expiresAt(attempt?.endedAt);
-    final now = _previewNow;
-    if (attempt == null ||
-        !attempt.hasReadWindow(now) ||
-        next == null ||
-        !next.isAfter(now)) {
-      _cancelEndedReadDeadline();
+  void _refreshTimeRules() {
+    final changed = _model.advanceTimeRules();
+    setState(() {});
+    if (changed) _publishCheckpoint();
+  }
+
+  void _syncTimeRuleTimer() {
+    final deadline = _model.nextTimeRuleDeadline;
+    final routeCurrent = ModalRoute.isCurrentOf(context) == true;
+    if (!_allowed || !routeCurrent || deadline == null) {
+      _cancelTimeRuleTimer();
       return;
     }
-    final scope = (_uiRevision, _routeStamp, _page, id, attempt.id);
-    if (next == _endedReadDeadline && scope == _endedReadScope) return;
-    _cancelEndedReadDeadline();
-    final fresh = _accountFreshGuard();
-    final remaining = next.difference(_previewNow);
-    if (remaining <= Duration.zero) return;
-    _endedReadDeadline = next;
-    _endedReadScope = scope;
-    _endedReadTimer = Timer(remaining, () {
-      final sameScope = _endedReadScope == scope;
-      _cancelEndedReadDeadline();
-      if (sameScope && fresh()) {
-        if (_guardianRole) {
-          setState(() => _uiRevision++);
-        } else {
-          _act(() {});
-        }
-      }
+    if (deadline == _timeRuleDeadline) return;
+    _cancelTimeRuleTimer();
+    _timeRuleDeadline = deadline;
+    _timeRuleTimer = Timer(_model.timeUntil(deadline), () {
+      _cancelTimeRuleTimer();
+      if (_allowed) _refreshTimeRules();
     });
   }
 
@@ -671,7 +629,8 @@ class _ZyraOneJourneyConceptShellState
   // from a paid Unlock, the menu's presence or today's Guardian roster.
   bool _canViewEndedBio(String id) =>
       _canAddressEndedJourney(id) &&
-      _endedReadWindowOpen(id) &&
+      !_model.hasDeparted(id) &&
+      _hasRecordedEnd(id) &&
       _model.hasCompletedCompatibilityStep(id) &&
       _model.hasCompletedBioStep(id) &&
       _model.bioRevealed(id) &&
@@ -682,8 +641,10 @@ class _ZyraOneJourneyConceptShellState
   // Hide is deliberately different: it only removes the peer from Browse.
   List<DraftProfile> _visibleRequests(DraftJourneyState state) => draftProfiles
       .where(
-        (person) =>
-            !_model.isBlocked(person.id) && _model.stateFor(person.id) == state,
+        (person) => state == DraftJourneyState.ended
+            ? _model.hasVisibleEndedJourney(person.id)
+            : !_model.isBlocked(person.id) &&
+                  _model.stateFor(person.id) == state,
       )
       .toList(growable: false);
 
@@ -747,6 +708,7 @@ class _ZyraOneJourneyConceptShellState
                 clock: widget.previewClock,
               )
             : ViewRequestDraftModel(capacity: 3, clock: widget.previewClock));
+    _model.advanceTimeRules();
     if (sameRole) _restoreCheckpoint(checkpoint!);
     if (_guardianRole && _tab == 2 && _page == null) {
       _seeGuardianTabActivity();
@@ -1185,7 +1147,8 @@ class _ZyraOneJourneyConceptShellState
             'journey_guardians',
             'bio',
           }.contains(page) &&
-          !_currentJourneys.any((p) => p.id == _personId)) {
+          !_currentJourneys.any((p) => p.id == _personId) &&
+          !(page == 'journey' && _canAddressEndedJourney(_personId))) {
         break;
       }
       // A remembered page is not a disclosure grant. The detached model must
@@ -1331,8 +1294,9 @@ class _ZyraOneJourneyConceptShellState
   void _act(VoidCallback change, {bool preserveCircle = false}) {
     if (!_allowed) return;
     _guardianFamily.expire(_previewNow);
+    _model.advanceTimeRules();
     _closeLocationFlow();
-    _cancelEndedReadDeadline();
+    _cancelTimeRuleTimer();
     setState(() {
       _browseOptionsOpen = false;
       _browseOptionsPersonId = null;
@@ -1773,7 +1737,7 @@ class _ZyraOneJourneyConceptShellState
     _location.removeListener(_locationChanged);
     _location.dispose();
     _noticeTimer?.cancel();
-    _cancelEndedReadDeadline();
+    _cancelTimeRuleTimer();
     _browsePhotoRenderer.dispose();
     _expansion.dispose();
     _scroll.removeListener(_publishCheckpoint);
@@ -1793,7 +1757,7 @@ class _ZyraOneJourneyConceptShellState
   @override
   Widget build(BuildContext context) {
     _syncLocationOrigins();
-    _syncEndedReadDeadline();
+    _syncTimeRuleTimer();
     final navigationRouteStamp = _routeStamp;
     final navigationRevision = _uiRevision;
     final navigationGuardian = _guardianRole;
@@ -2661,6 +2625,7 @@ class _ZyraOneJourneyConceptShellState
     final p = _person;
     if (p == null) return _unavailable();
     if (_model.isBlocked(p.id)) return _userNotFoundView();
+    if (_model.hasDeparted(p.id)) return _departedJourneyView();
     final fromHiddenProfiles =
         _tab == 4 &&
         _pages.length >= 2 &&
@@ -3143,7 +3108,11 @@ class _ZyraOneJourneyConceptShellState
 
   List<Widget> _pastRequests() {
     final history = _model.pastRequests
-        .where((entry) => !_model.isBlocked(entry.profileId))
+        .where(
+          (entry) =>
+              !_model.isBlocked(entry.profileId) &&
+              !_model.hasDeparted(entry.profileId),
+        )
         .toList(growable: false);
     if (history.isEmpty) {
       return const [
@@ -3626,13 +3595,15 @@ class _ZyraOneJourneyConceptShellState
     bool inlineOptionsFillHeight = true,
   }) {
     final state = _model.stateFor(p.id)!;
+    final ended = state == DraftJourneyState.ended;
     final navigatorStamp = _routeStamp;
     bool currentCard() =>
         _allowed &&
         navigatorStamp == _routeStamp &&
         ModalRoute.of(context)?.isCurrent == true &&
         !_model.isBlocked(p.id) &&
-        _model.stateFor(p.id) == state;
+        _model.stateFor(p.id) == state &&
+        (!ended || _model.hasVisibleEndedJourney(p.id));
     if (_model.isBlocked(p.id)) {
       return _card([
         Text(
@@ -3651,7 +3622,6 @@ class _ZyraOneJourneyConceptShellState
         ),
       ]);
     }
-    final ended = state == DraftJourneyState.ended;
     final primary = _connectionAction(
       ended ? 'draft_restart_${p.id}' : 'draft_journey_${p.id}',
       ended ? 'Request restart' : 'Continue Journey',
@@ -3669,10 +3639,15 @@ class _ZyraOneJourneyConceptShellState
       primary: primary,
       primaryTrailing: ZyraConceptJourneyOptionsButton(
         key: ValueKey('draft_journey_options_${p.id}'),
-        isExpandable: true,
-        expanded: expandedOptions,
+        isExpandable: !ended,
+        expanded: !ended && expandedOptions,
         onTap: _bound(() {
-          if (currentCard()) _toggleJourneyCardOptions(p);
+          if (!currentCard()) return;
+          if (ended) {
+            _showEndedJourneyMenu(p);
+          } else {
+            _toggleJourneyCardOptions(p);
+          }
         }),
       ),
     );
@@ -3681,6 +3656,11 @@ class _ZyraOneJourneyConceptShellState
         ended) {
       return ZyraOneJourneyConnectionsActiveCard(
         profile: _displayProfile(p),
+        onPhotoTap: ended
+            ? _bound(() {
+                if (currentCard()) _toggleJourneyCardOptions(p);
+              })
+            : null,
         stateLabel: _stateLabel(state),
         actions: actions,
         compact: compact,
@@ -3751,9 +3731,7 @@ class _ZyraOneJourneyConceptShellState
           ? _canViewEndedCompatibility(person.id)
           : _canViewJourneyCompatibility(person.id),
       canViewGuardians:
-          state != DraftJourneyState.ended || _endedReadWindowOpen(person.id),
-      endedReadWindowOpen:
-          state == DraftJourneyState.ended && _endedReadWindowOpen(person.id),
+          state != DraftJourneyState.ended || _hasRecordedEnd(person.id),
       canEnd: state != null && state != DraftJourneyState.ended,
       onSelected: (choice) {
         if (!current()) return;
@@ -4092,10 +4070,7 @@ class _ZyraOneJourneyConceptShellState
   }
 
   List<Widget> _history() {
-    final people = draftProfiles.where((p) {
-      final s = _model.stateFor(p.id);
-      return s == DraftJourneyState.ended;
-    }).toList();
+    final people = _visibleRequests(DraftJourneyState.ended);
     return people.isEmpty
         ? [
             ZyraRequestActivityEmpty(
@@ -4106,17 +4081,9 @@ class _ZyraOneJourneyConceptShellState
           ]
         : [
             for (final p in people)
-              if (_model.isBlocked(p.id))
+              if (_model.hasDeparted(p.id))
                 _card([
-                  Text(
-                    'User not found',
-                    key: ValueKey('concept_blocked_archive_${p.id}'),
-                    style: ZyraText.heading(size: 18),
-                  ),
-                  _body(
-                    'This ended Journey remains archived. Its profile and messages are unavailable.',
-                    small: true,
-                  ),
+                  _title(_departedMemberTitle, size: 18),
                   _button(
                     'draft_journey_${p.id}',
                     'View archive',
@@ -4135,11 +4102,96 @@ class _ZyraOneJourneyConceptShellState
           ];
   }
 
+  Future<void> _showEndedJourneyMenu(DraftProfile person) async {
+    final id = person.id;
+    if (!_canExpandJourneyCard(id)) return;
+    final attempt = _model.currentEndedAttemptFor(id);
+    if (attempt == null) return;
+    final account = (ZyraAccountState.userId, ZyraAccountState.generation);
+    final revision = _uiRevision;
+    final page = _page;
+    var expectedStamp = _routeStamp;
+    final fresh = _accountFreshGuard(
+      expectedNavigatorStamp: () => expectedStamp,
+    );
+
+    bool currentAttempt() =>
+        mounted &&
+        account == (ZyraAccountState.userId, ZyraAccountState.generation) &&
+        revision == _uiRevision &&
+        page == _page &&
+        _model.hasVisibleEndedJourney(id) &&
+        _model.currentEndedAttemptFor(id)?.id == attempt.id;
+
+    _journeyOptionsOpen = true;
+    ZyraEndedJourneyAction? action;
+    try {
+      final pending = showModalBottomSheet<ZyraEndedJourneyAction>(
+        context: _tapContext,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        barrierColor: const Color(0x611E1610),
+        sheetAnimationStyle:
+            MediaQuery.disableAnimationsOf(context) ||
+                MediaQuery.accessibleNavigationOf(context)
+            ? AnimationStyle.noAnimation
+            : null,
+        builder: (sheetContext) {
+          bool admitted() =>
+              currentAttempt() &&
+              expectedStamp == _routeStamp &&
+              ModalRoute.of(sheetContext)?.isCurrent == true &&
+              (widget.canActInOwnedDialog?.call() ?? _allowed);
+          return ZyraTapFeedback(
+            level: () => _accountSession.hapticLevel,
+            canAct: admitted,
+            child: ZyraEndedJourneyMenu(
+              onSelect: (action) {
+                if (!admitted()) return;
+                Navigator.pop(sheetContext, action);
+                expectedStamp = _routeStamp;
+              },
+            ),
+          );
+        },
+      );
+      expectedStamp = _routeStamp;
+      action = await pending;
+    } finally {
+      _journeyOptionsOpen = false;
+    }
+    if (action == null || !fresh() || !currentAttempt()) return;
+    if (action == ZyraEndedJourneyAction.restart) {
+      _open('ended_restart', person: id);
+      return;
+    }
+
+    final confirmed = await _confirmConceptAction(
+      title: 'Remove this Journey?',
+      body:
+          'It disappears from your Ended Journeys for good, with its '
+          'Timeline and messages. You can’t undo this. '
+          '${person.firstName} still sees her copy.',
+      primaryLabel: 'Remove Journey',
+      secondaryLabel: 'Keep Journey',
+      personName: person.firstName,
+      canCommit: currentAttempt,
+    );
+    if (!confirmed) return;
+    _act(() {
+      if (_model.removeEndedJourney(id, attempt.id)) {
+        _expandedJourneyOptionsId = null;
+        _notice = 'Removed from your Journeys.';
+      }
+    });
+  }
+
   Widget _endedJourneyDetail({required bool bio}) {
     final person = _person;
     if (person == null || !_canAddressEndedJourney(person.id)) {
       return _unavailable();
     }
+    if (_model.hasDeparted(person.id)) return _departedJourneyView();
     if (bio && _canViewEndedBio(person.id)) {
       return KeyedSubtree(
         key: ValueKey('draft_ended_bio_${person.id}'),
@@ -4159,17 +4211,11 @@ class _ZyraOneJourneyConceptShellState
       _heading(bio ? 'Journey Bio' : 'Guardians', ''),
       _card([
         _title(
-          !_endedReadWindowOpen(person.id)
-              ? 'Journey access has ended'
-              : bio
-              ? 'Not shared in this Journey'
-              : 'No saved Guardian details',
+          bio ? 'Not shared in this Journey' : 'No saved Guardian details',
           size: 23,
         ),
         _body(
-          !_endedReadWindowOpen(person.id)
-              ? 'Journey Bio and Guardian details are available for three months after a Journey ends. A new Journey needs a new accepted request.'
-              : bio
+          bio
               ? 'Journey Bio was not shared before this Journey ended. '
                     'Opening its archive does not unlock private details.'
               : 'No Guardian details were saved in this archive. '
@@ -4184,36 +4230,99 @@ class _ZyraOneJourneyConceptShellState
     if (person == null || !_canRequestEndedRestart(person.id)) {
       return _unavailable();
     }
+    final expiresAt = _model.restartExpiresAt(person.id);
+    final eligible =
+        _seekerMembership == 'Seeker One' &&
+        _model.isRecentEndedJourney(person.id);
+    final canSend = eligible && _model.canRequestEndedJourney(person.id);
     return _pageScroll([
-      _heading('Request restart', 'You and ${person.firstName}'),
+      _heading('Request a new Journey', 'You and ${person.firstName}'),
       _card([
-        _title('A new Journey, not a reopened one', size: 23),
+        _body('${person.firstName} needs to accept a new request.'),
         _body(
-          '${person.firstName} would need to accept a new request. '
-          'Your ended Journey and its archive stay unchanged.',
+          expiresAt != null
+              ? 'Request sent. It expires on ${MaterialLocalizations.of(context).formatMediumDate(expiresAt.toLocal())}.'
+              : eligible
+              ? 'You can ask 24 hours after the Journey ends. The request lasts 30 days.'
+              : 'Restart requests are not available in this preview.',
         ),
-        _body(
-          'Restart requests are not available in this preview. '
-          'No request has been sent.',
-          small: true,
-        ),
-        _button(
-          'draft_restart_send_${person.id}',
-          'Request restart',
-          null,
-          primary: true,
-          fitLabel: true,
-        ),
+        if (expiresAt == null)
+          _button(
+            'draft_restart_send_${person.id}',
+            'Request a new Journey',
+            canSend
+                ? _bound(() {
+                    if (_seekerMembership != 'Seeker One') return;
+                    _act(() => _model.requestEndedJourney(person.id));
+                  })
+                : null,
+            primary: true,
+            fitLabel: true,
+          ),
       ]),
     ], key: ValueKey('draft_ended_restart_${person.id}'));
   }
 
+  static const _departedMemberTitle = 'This member has left ZYRA';
+
+  Widget _departedJourneyView({String? id, bool timelineOnly = false}) {
+    final attempt = id == null ? null : _model.currentEndedAttemptFor(id);
+    final ownMessages = id == null ? null : _messages[id];
+    return _pageScroll([
+      _card([_title(_departedMemberTitle, size: 23)]),
+      if (attempt != null)
+        ZyraDraftTimelinePresentation(
+          subjectId: attempt.profileId,
+          firstName: '',
+          ownedViewport: false,
+          showContext: false,
+          view: ZyraDraftTimelineView(
+            frozen: true,
+            entries: [
+              if (attempt.startedAt case final started?)
+                ZyraDraftTimelineEntry(
+                  type: 'match_created',
+                  occurredOn: started,
+                ),
+              if (attempt.endedAt case final ended?)
+                ZyraDraftTimelineEntry(
+                  type: 'journey_ended',
+                  occurredOn: ended,
+                ),
+            ],
+          ),
+        ),
+      if (!timelineOnly && ownMessages != null && ownMessages.isNotEmpty)
+        _card([
+          _title('Messages', size: 18),
+          for (final message in ownMessages) _body('You · $message'),
+        ]),
+    ]);
+  }
+
   Widget _journeyView() {
     final p = _person;
-    if (p == null || _model.stateFor(p.id) == null) return _unavailable();
+    if (p == null) return _unavailable();
+    if (_model.stateFor(p.id) == null) {
+      return _model.wasClosedBeforeReady(p.id)
+          ? _pageScroll([
+              _card([
+                _title('Not taken up', size: 23),
+                _body('You can ask again after 7 days.'),
+              ]),
+            ])
+          : _unavailable();
+    }
     if (_model.isBlocked(p.id)) return _userNotFoundView();
+    if (_model.hasDeparted(p.id)) {
+      return _model.hasVisibleEndedJourney(p.id)
+          ? _departedJourneyView(id: p.id)
+          : _unavailable();
+    }
     if (_model.stateFor(p.id) == DraftJourneyState.ended) {
-      return _archiveView(p);
+      return _model.hasVisibleEndedJourney(p.id)
+          ? _archiveView(p)
+          : _unavailable();
     }
     final stage = _model.stageFor(p.id);
     final state = _model.stateFor(p.id);
@@ -4365,7 +4474,10 @@ class _ZyraOneJourneyConceptShellState
               gold: true,
             ),
             _body(
-              '${p.firstName}: ${_model.peerIsReady(id) ? 'ready' : 'waiting'}',
+              _model.isReady(id) &&
+                      _model.readyReminderAt(id, forPeer: true) != null
+                  ? 'Waiting for ${p.firstName}'
+                  : '${p.firstName}: ${_model.peerIsReady(id) ? 'ready' : 'waiting'}',
             ),
             _button(
               'draft_ready_$id',
@@ -4714,7 +4826,9 @@ class _ZyraOneJourneyConceptShellState
         DraftJourneyState.preparing,
         DraftJourneyState.active,
         DraftJourneyState.ended,
-      }.contains(_model.stateFor(id));
+      }.contains(_model.stateFor(id)) &&
+      (_model.stateFor(id) != DraftJourneyState.ended ||
+          _model.hasVisibleEndedJourney(id));
 
   ZyraDraftTimelinePreview _makeTimelinePreview(DraftProfile person) =>
       widget.fixture?.timeline?.call(person.id) ??
@@ -4724,13 +4838,19 @@ class _ZyraOneJourneyConceptShellState
         journeyState: _model.stateFor(person.id),
         stageValue: _model.stageFor(person.id)?.value,
         compatibilityRevealed: _model.compatibilityRevealed(person.id),
-        endedAttempts: _model.endedAttemptsFor(person.id),
+        endedAttempts: _model
+            .endedAttemptsFor(person.id)
+            .where(_model.canSeeEndedAttempt)
+            .toList(),
       );
 
   Widget _timeline(String id) {
     if (!_canViewTimeline(id)) return _unavailable();
     final person = draftProfiles.firstWhere((p) => p.id == id);
     final standalone = _page == 'timeline';
+    if (_model.hasDeparted(id)) {
+      return _departedJourneyView(id: id, timelineOnly: true);
+    }
     final interactive =
         standalone && _model.stateFor(id) != DraftJourneyState.ended;
     final preview = standalone
@@ -4982,6 +5102,24 @@ class _ZyraOneJourneyConceptShellState
       );
     }
     if (example == null) {
+      for (final person in _currentJourneys) {
+        final at = _model.readyReminderAt(person.id);
+        if (at == null) continue;
+        events.add(
+          ZyraFocusEvent(
+            tokens: [
+              'ready:${person.id}:${_model.attemptRevisionFor(person.id)}',
+            ],
+            target: 'ready',
+            personId: person.id,
+            occurredAt: at,
+            title: 'Your Journey with ${person.firstName} is waiting',
+            detail: "Tap I'm ready to begin within 24 hours to start.",
+            action: "I'm ready to begin",
+            icon: Icons.schedule,
+          ),
+        );
+      }
       final circle = _currentCircleData();
       if (circle != null &&
           circle.validFor(circle.seekerId, viewerIsSeeker: true)) {
@@ -5040,7 +5178,9 @@ class _ZyraOneJourneyConceptShellState
             target: 'ended',
             personId: person.id,
             occurredAt: at,
-            title: 'Your Journey with ${person.firstName} has ended',
+            title: _model.hasDeparted(person.id)
+                ? _departedMemberTitle
+                : 'Your Journey with ${person.firstName} has ended',
             detail: 'It stays in your read-only Ended Journeys.',
             action: 'View Ended Journeys',
             icon: Icons.history,
@@ -5184,6 +5324,11 @@ class _ZyraOneJourneyConceptShellState
         _activity('ended');
       case 'request_capacity':
         if (id != null) _openAcceptedCapacity(id);
+      case 'ready':
+        if (id != null && _model.readyReminderAt(id) != null) {
+          _act(() => _model.markReady(id));
+          if (_model.isReady(id)) _journey(id);
+        }
       case 'journey':
         if (id != null && _currentJourneys.any((p) => p.id == id)) _journey(id);
       case 'guardian':
@@ -5612,12 +5757,23 @@ class _ZyraOneJourneyConceptShellState
               _seekerMembership == 'Seeker Basic';
     final circleSeekerId = circleYusuf ? 'draft-linked-yusuf' : 'draft-self';
     final circleSeekerName = circleYusuf ? 'Yusuf' : 'Adam';
-    final arrivalsFor = _fixtureOwner?.circleArrivalsFor;
-    final arrived = <ZyraFamilyMessage>[];
-    if (arrivalsFor != null &&
+    final fixtureOwnsCircle =
         identical(widget.fixture, _fixtureOwner) &&
         _fixtureAccount ==
-            (ZyraAccountState.userId, ZyraAccountState.generation)) {
+            (ZyraAccountState.userId, ZyraAccountState.generation);
+    final departedIds = <String>{
+      if (fixtureOwnsCircle) ...?_fixtureOwner?.circleDepartedMemberIds,
+      if (!circleYusuf)
+        for (final person in draftProfiles)
+          if (_model.hasDeparted(person.id)) person.id,
+    };
+    if (departedIds.contains(circleSeekerId) ||
+        departedIds.contains(senderId)) {
+      return null;
+    }
+    final arrivalsFor = _fixtureOwner?.circleArrivalsFor;
+    final arrived = <ZyraFamilyMessage>[];
+    if (arrivalsFor != null && fixtureOwnsCircle) {
       final senderIds = {circleSeekerId, ...people.map((p) => p.id)};
       final seen = {'draft-circle-welcome', 'draft-circle-response'};
       for (final message in arrivalsFor(circleSeekerId, senderId)) {
@@ -5721,6 +5877,7 @@ class _ZyraOneJourneyConceptShellState
         ...arrived,
       ],
       contexts: contexts,
+      departedMemberIds: departedIds,
     );
   }
 
@@ -5814,11 +5971,12 @@ class _ZyraOneJourneyConceptShellState
     final currentTopicExamples = List<ZyraCircleDiscussionTopic>.unmodifiable([
       if (!circleYusuf)
         for (final name in const ['Sara', 'Aisha', 'Maryam'])
-          ZyraCircleDiscussionTopic(
-            id: 'draft-circle-current-${name.toLowerCase()}',
-            firstName: name,
-            kind: ZyraCircleTopicKind.current,
-          ),
+          if (!_model.hasDeparted('draft-${name.toLowerCase()}'))
+            ZyraCircleDiscussionTopic(
+              id: 'draft-circle-current-${name.toLowerCase()}',
+              firstName: name,
+              kind: ZyraCircleTopicKind.current,
+            ),
     ]);
     final pastTopics = List<ZyraCircleDiscussionTopic>.unmodifiable([
       if (pastShared)
@@ -6344,7 +6502,7 @@ class _ZyraOneJourneyConceptShellState
       final attempt = _endedAttempt(id, archiveId);
       return attempt != null &&
           _guardianCanSeePastSummary(attempt) &&
-          attempt.hasReadWindow(_previewNow) &&
+          attempt.hasRecordedEnd(_previewNow) &&
           attempt.progress.compatibilityConsent &&
           attempt.progress.peerCompatibilityConsent;
     }
@@ -6362,6 +6520,8 @@ class _ZyraOneJourneyConceptShellState
   bool _guardianCanSeePastSummary(DraftEndedJourneyAttempt attempt) =>
       _guardianCompatibilityOwner &&
       !_model.isBlocked(attempt.profileId) &&
+      !_model.hasDeparted(attempt.profileId) &&
+      !_model.isEndedAttemptRemoved(attempt.id) &&
       _conceptGuardianHistory['draft-guardian-hassan'] == true &&
       attempt.guardiansWithView.contains('draft-guardian-hassan');
 
@@ -7946,7 +8106,7 @@ class _ZyraOneJourneyConceptShellState
   ].contains(_page);
 
   void _accountChanged() {
-    if (!_allowed) _cancelEndedReadDeadline();
+    if (!_allowed) _cancelTimeRuleTimer();
     if (!_allowed) return;
     // Local presentation updates are not navigation epochs. Keeping this
     // lifetime stable lets the retained choice sheet return to its own page.
@@ -8339,10 +8499,9 @@ class _ZyraOneJourneyConceptShellState
         : null;
   }
 
-  List<String> _journeyBioPhotos(DraftProfile person) => _displayProfile(person)
-      .photos
-      .where(_browsePhotoRenderer.isReady)
-      .toList(growable: false);
+  List<String> _journeyBioPhotos(DraftProfile person) => _displayProfile(
+    person,
+  ).photos.where(_browsePhotoRenderer.isReady).toList(growable: false);
 
   Widget? _journeyBioGalleryButton(DraftProfile person) {
     final page = _page;
@@ -8567,9 +8726,7 @@ class _ZyraOneJourneyConceptShellState
         _card([
           _title('Compatibility score is private', size: 23),
           _body(
-            'Journey access lasts for three months after that Journey ends, '
-            'and only includes a result you revealed together. A used profile '
-            'Unlock stays permanent. Unused Unlocks do not open this history.',
+            'You can view the result you revealed together or used a profile Unlock to open.',
           ),
         ]),
       ], key: ValueKey('draft_ended_compatibility_locked_${person.id}'));
@@ -8601,6 +8758,9 @@ class _ZyraOneJourneyConceptShellState
   }
 
   Widget _compatibilityInfo() {
+    if (_personId != null && _model.hasDeparted(_personId!)) {
+      return _departedJourneyView();
+    }
     final route = _compatibilityRoute;
     final person = _person;
     final navigatorStamp = _routeStamp;

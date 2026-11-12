@@ -24,67 +24,19 @@ void main() {
 
   setUp(() => model = ReceivedRequestFixture());
 
-  test(
-    'Ended read window uses exact clamped calendar months, not ninety days',
-    () {
-      final cases = [
-        (
-          DateTime.utc(2026, 1, 31, 12, 34, 56, 789, 123),
-          DateTime.utc(2026, 4, 30, 12, 34, 56, 789, 123),
-        ),
-        (DateTime.utc(2027, 11, 30, 8), DateTime.utc(2028, 2, 29, 8)),
-        (DateTime.utc(2026, 11, 30, 8), DateTime.utc(2027, 2, 28, 8)),
-        (DateTime.utc(2028, 2, 29, 8), DateTime.utc(2028, 5, 29, 8)),
-        (DateTime.utc(2026, 8, 31, 8), DateTime.utc(2026, 11, 30, 8)),
-      ];
-      for (final (end, deadline) in cases) {
-        expect(DraftEndedJourneyReadWindow.expiresAt(end), deadline);
-        expect(DraftEndedJourneyReadWindow.isOpen(end, end), isTrue);
-        expect(
-          DraftEndedJourneyReadWindow.isOpen(
-            end,
-            deadline.subtract(const Duration(microseconds: 1)),
-          ),
-          isTrue,
-        );
-        expect(DraftEndedJourneyReadWindow.isOpen(end, deadline), isFalse);
-        expect(
-          DraftEndedJourneyReadWindow.isOpen(
-            end,
-            deadline.add(const Duration(microseconds: 1)),
-          ),
-          isFalse,
-        );
-      }
-      final end = DateTime.utc(2026, 1, 31);
-      expect(
-        DraftEndedJourneyReadWindow.expiresAt(end),
-        isNot(end.add(const Duration(days: 90))),
-      );
-    },
-  );
-
-  test(
-    'missing, future and unsupported end times do not open private reads',
-    () {
-      final now = DateTime.utc(2026, 10, 22);
-      expect(DraftEndedJourneyReadWindow.expiresAt(null), isNull);
-      expect(DraftEndedJourneyReadWindow.isOpen(null, now), isFalse);
-      expect(
-        DraftEndedJourneyReadWindow.isOpen(
-          now.add(const Duration(microseconds: 1)),
-          now,
-        ),
-        isFalse,
-      );
-      final lastDate = DateTime.fromMillisecondsSinceEpoch(
-        8640000000000000,
-        isUtc: true,
-      );
-      expect(DraftEndedJourneyReadWindow.expiresAt(lastDate), isNull);
-      expect(DraftEndedJourneyReadWindow.isOpen(lastDate, lastDate), isFalse);
-    },
-  );
+  test('a recorded end stays valid at any age and cannot be in the future', () {
+    final now = DateTime.utc(2026, 10, 22);
+    model = ReceivedRequestFixture(clock: () => now);
+    start(first);
+    expect(model.end(first), isTrue);
+    final attempt = model.currentEndedAttemptFor(first)!;
+    expect(
+      attempt.hasRecordedEnd(now.subtract(const Duration(microseconds: 1))),
+      isFalse,
+    );
+    expect(attempt.hasRecordedEnd(now), isTrue);
+    expect(attempt.hasRecordedEnd(DateTime.utc(2040)), isTrue);
+  });
 
   test(
     'a terminal Journey records one immutable dated attempt and progress',
@@ -167,7 +119,7 @@ void main() {
     final attempt = model.currentEndedAttemptFor(id)!;
     expect(attempt.endedAt, isNull);
     expect(attempt.startedAt, isNull);
-    expect(attempt.hasReadWindow(now), isFalse);
+    expect(attempt.hasRecordedEnd(now), isFalse);
     model.seedHistory();
     expect(model.endedAttemptsFor(id), [attempt]);
     expect(model.currentEndedAttemptFor(id), same(attempt));
@@ -431,7 +383,10 @@ void main() {
 
   test('invalid constructor capacity refuses rather than clamps', () {
     for (final capacity in [-100, -1, 0, 4, 100]) {
-      expect(() => ReceivedRequestFixture(capacity: capacity), throwsRangeError);
+      expect(
+        () => ReceivedRequestFixture(capacity: capacity),
+        throwsRangeError,
+      );
     }
     expect(model.capacity, 1);
     expect(model.states, {received: DraftJourneyState.received});

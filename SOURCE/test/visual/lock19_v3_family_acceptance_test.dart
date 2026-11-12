@@ -172,7 +172,7 @@ void main() {
       (t) => shadows(() async {
         final h = await mount(t, scale: scale);
         expect(find.text('Adam has given\nyou Guardian One'), findsOneWidget);
-        expect(find.textContaining('Choose by 7 Nov.'), findsOneWidget);
+        expect(find.textContaining('Choose by 14 Nov.'), findsOneWidget);
         await cap(h, 'k20_${scale == 1 ? 'normal' : 'larger_top'}', scale);
         if (scale > 1) {
           await Scrollable.ensureVisible(
@@ -185,7 +185,7 @@ void main() {
         h.assertPage('guardian_family_offer');
         expect(t.getSize(key('guardian_action_monogram')), const Size(96, 96));
         expect(find.text('ZYRA FAMILY PLACE'), findsOneWidget);
-        expect(find.text('Choose by 7 Nov'), findsOneWidget);
+        expect(find.text('Choose by 14 Nov'), findsOneWidget);
         expect(
           find.textContaining('You stay Adam’s Father and Main Guardian.'),
           findsOneWidget,
@@ -346,7 +346,7 @@ void main() {
       final retained = t
           .widget<TextButton>(key('guardian_family_accept'))
           .onPressed!;
-      now = sent.add(const Duration(days: 7));
+      now = sent.add(const Duration(days: 14));
       retained();
       await h.flush();
       expect(find.byType(InitialIdentityCheckScreen), findsNothing);

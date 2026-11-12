@@ -26,12 +26,12 @@ ZyraGuardianFamilyInvite _send(
 )!;
 
 void main() {
-  test('the deadline is exactly seven days across the year boundary', () {
+  test('the deadline is exactly fourteen days across the year boundary', () {
     final invite = _send(ZyraGuardianFamilyPreview());
-    final deadline = DateTime.utc(2027, 1, 4, 13, 45);
+    final deadline = DateTime.utc(2027, 1, 11, 13, 45);
 
     expect(invite.expiresAt, deadline);
-    expect(invite.chooseBy, '4 Jan');
+    expect(invite.chooseBy, '11 Jan');
     expect(
       invite.pendingAt(_sentAt.subtract(const Duration(microseconds: 1))),
       isFalse,

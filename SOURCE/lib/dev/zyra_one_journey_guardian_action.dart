@@ -286,7 +286,7 @@ class ZyraGuardianFreePlacePage extends StatelessWidget {
     (
       Icons.history,
       'Or wait for Adam',
-      'If Adam moves to Seeker One, his Guardians can join on any plan. Your invitation stays open for 7 days.',
+      'If Adam moves to Seeker One, his Guardians can join on any plan. Your invitation stays open for 14 days.',
     ),
   ];
 

@@ -400,7 +400,7 @@ class _ZyraGuardianFamilySheetState extends State<ZyraGuardianFamilySheet> {
     _row(
       Icons.mail_outline,
       '$name accepts in their app',
-      '$name has 7 days to accept. If they don\'t, the place stays free for you.',
+      '$name has 14 days to accept. If they don\'t, the place stays free for you.',
     ),
     _divider(),
     _row(
