@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "queueLine": 88,
+  "sourceCommit": "48411b7c5b105f403bdc40bb7d9ed3541bdd23ab",
+  "verificationCommit": "0cc3ffa6f3106b54fb26f7036227fe84fc66a1ad",
+  "protectedRoutePinsCommit": "645f0a224e0873f381f907bdf50023cabdea0e0f",
+  "flutterVersion": "3.44.2",
+  "buildMode": "profile",
+  "flavor": "production",
+  "architecture": "ios-arm64",
+  "version": "1.0.0",
+  "buildNumber": 5,
+  "buildStartedAt": "2026-11-12T09:27:29.295Z",
+  "buildFinishedAt": "2026-11-12T09:28:01.845Z",
+  "layout": "Guardian Compatibility score on the mutually revealed Journey and in readable shared Past. Basic Overall with six locked topics and Guardian One comparison. One has seven scored pages.",
+  "data": "Detached synthetic Founder preview",
+  "buildReceiptSha256": "ba4b975dbd9d8502679eca6ac791743655d5949a3998b1d255702cb96ffbbb53",
+  "artifactSha256": "503d88b2bd10e6871648e05166558e30e68173e77cfc3e0b26a56db11fb3832f",
+  "sourceSealSha256": "b74ce15d4746acdf0b9fea930d50c2497d15b9383e1188aa5627caa74f651808",
+  "planSha256": "fc9de110e7812817d821cf4fe1ca547218fbd464bc8a173bd18285b4becb2618",
+  "routeSha256": "6f10860c5e078f8cf8e15491f255d922c4c64d273ab73df0ea26bd9423582155",
+  "sealedInputs": 1599,
+  "routeTests": {
+    "pass": 20,
+    "fail": 0,
+    "logSha256": "9710c4a5d6368a1676815e45dc3028f718534923e686350ab3d153052d85b5cb"
+  },
+  "codeSignature": "Verified with codesign --verify --deep --strict",
+  "delivery": {
+    "status": "awaiting separate Founder GO",
+    "installExecuted": false
+  }
+}
