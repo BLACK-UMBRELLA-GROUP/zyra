@@ -6,13 +6,18 @@ import 'package:flutter/material.dart';
 import '../../dev/zyra_one_journey_monogram_presentation.dart';
 import 'dart:math' as math;
 
+import '../../data/zyra_guardian_capacity.dart';
+import '../../data/zyra_seeker_plan_limits.dart';
+import '../../services/zyra_account_state.dart';
 import '../../services/zyra_wali_link_service.dart';
+import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import '../../widgets/zyra_guardian_invitation_dashboard.dart';
 import '../../widgets/zyra_guardian_preview_lifetime.dart';
 import '../../widgets/floating_nav_bar.dart';
+import '../../widgets/zyra_profile_image.dart';
 
 // The roster may rebuild one frame after revocation. Its retained child
 // callbacks must independently deny stale preview and asynchronous results.
@@ -77,8 +82,18 @@ mixin _GuardianControlLifetime<T extends StatefulWidget> on State<T> {
 }
 
 const double _managerPageTopInset = 16;
-const double _guardianPageDotTail = 4;
-const double _guardianPageNavigationGap = 20;
+const double _journeyAccessIdentityGap = 14;
+
+bool _shortGuardianPage(BuildContext context) =>
+    MediaQuery.sizeOf(context).height <= 667;
+
+double _guardianNavigationReserve(BuildContext context) =>
+    math.max(
+      MediaQuery.viewPaddingOf(context).bottom,
+      ZyraNavBarMetrics.bottomInset,
+    ) +
+    ZyraNavBarMetrics.legacyRestingHeight +
+    ZyraNavBarMetrics.contentGap;
 
 String _recordedGuardianRole(WaliLinkedPerson person) => [
   if (person.relationshipLabel != null) person.relationshipLabel!,
@@ -96,6 +111,8 @@ class GuardianshipManagerView extends StatelessWidget {
   final VoidCallback onRetryLinks;
   final ValueChanged<WaliLinkedPerson> onOpenGuardian;
   final VoidCallback onAdd;
+  final ZyraGuardianCapacity? basicCapacity;
+  final VoidCallback? onUpgrade;
   final VoidCallback? onOpenMessages;
   final Widget Function(Widget)? conversationButtonBuilder;
   final GuardianPendingInvitesLoader? pendingInvitesLoader;
@@ -112,6 +129,8 @@ class GuardianshipManagerView extends StatelessWidget {
     required this.onRetryLinks,
     required this.onOpenGuardian,
     required this.onAdd,
+    this.basicCapacity,
+    this.onUpgrade,
     this.onOpenMessages,
     this.conversationButtonBuilder,
     this.pendingInvitesLoader,
@@ -158,37 +177,22 @@ class GuardianshipManagerView extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
             sliver: SliverToBoxAdapter(child: invitationLifecycle()),
           ),
-          // Q17 / LOCK 19 k08: this card supports intrinsic measurement,
-          // so the sliver can centre its content and scroll on short screens.
+          // Keep pending invitations above the card and let the whole tab
+          // scroll if the card and invitations exceed the available height.
           SliverFillRemaining(
             hasScrollBody: false,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 72),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Expanded(
-                    child: ZyraGuardianAddCard(
-                      key: ValueKey('guardianship-manager-empty'),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ZyraFloatingSurface(
-                    radius: 28,
-                    child: TextButton(
-                      key: const ValueKey('guardian-empty-add'),
-                      onPressed: ZyraTapFeedback.onTap(context, onAdd),
-                      style: TextButton.styleFrom(
-                        minimumSize: const Size(48, 52),
-                        foregroundColor: ZyraColors.goldText,
-                        backgroundColor: ZyraColors.ivoryTop,
-                        side: BorderSide(color: ZyraColors.surfaceBorder),
-                        shape: const StadiumBorder(),
-                      ),
-                      child: const Text('Add a Guardian'),
-                    ),
-                  ),
-                ],
+              padding: EdgeInsets.fromLTRB(
+                20,
+                0,
+                20,
+                _guardianNavigationReserve(context),
+              ),
+              child: ZyraGuardianAddCard(
+                key: const ValueKey('guardianship-manager-empty'),
+                basicCapacity: basicCapacity,
+                onAdd: ZyraTapFeedback.onTap(context, onAdd),
+                onUpgrade: ZyraTapFeedback.onTap(context, onUpgrade),
               ),
             ),
           ),
@@ -525,6 +529,8 @@ class SeekerGuardianPage extends StatelessWidget {
   final bool activityAvailable;
   final VoidCallback onRetry;
   final VoidCallback onAdd;
+  final ZyraPlan? seekerPlan;
+  final VoidCallback? onUpgrade;
   final VoidCallback? onOpenMessages;
   final Widget Function(Widget)? conversationButtonBuilder;
   final GuardianPendingInvitesLoader? pendingInvitesLoader;
@@ -554,6 +560,8 @@ class SeekerGuardianPage extends StatelessWidget {
     required this.activityAvailable,
     required this.onRetry,
     required this.onAdd,
+    this.seekerPlan,
+    this.onUpgrade,
     this.onOpenMessages,
     this.conversationButtonBuilder,
     this.pendingInvitesLoader,
@@ -574,6 +582,13 @@ class SeekerGuardianPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ordered = _ordered(people);
+    final linkedCount = ordered.map((person) => person.id).toSet().length;
+    final basicCapacity = seekerPlan == ZyraPlan.basic
+        ? ZyraGuardianCapacity.fromCount(
+            plan: ZyraPlan.basic,
+            linkedGuardianCount: linkedCount,
+          )
+        : null;
     if (!linksAvailable || ordered.isEmpty) {
       return GuardianshipManagerView(
         people: ordered,
@@ -581,6 +596,8 @@ class SeekerGuardianPage extends StatelessWidget {
         onRetryLinks: onRetry,
         onOpenGuardian: (_) {},
         onAdd: onAdd,
+        basicCapacity: basicCapacity,
+        onUpgrade: onUpgrade,
         onOpenMessages: onOpenMessages,
         conversationButtonBuilder: conversationButtonBuilder,
         pendingInvitesLoader: pendingInvitesLoader,
@@ -590,17 +607,6 @@ class SeekerGuardianPage extends StatelessWidget {
       );
     }
 
-    // Reserve the shared bar's full touch height, not only its smaller idle
-    // height. The pager may sit in SafeArea(bottom: false), so retain the
-    // actual bottom inset instead of assuming it was already consumed.
-    final navigationReserve =
-        math.max(
-          MediaQuery.paddingOf(context).bottom,
-          ZyraNavBarMetrics.bottomInset,
-        ) +
-        ZyraNavBarMetrics.height +
-        _guardianPageNavigationGap -
-        _guardianPageDotTail;
     return Column(
       key: const ValueKey('guardian-page-quiet-sections'),
       children: [
@@ -617,13 +623,20 @@ class SeekerGuardianPage extends StatelessWidget {
         const SizedBox(height: 10),
         Expanded(
           child: Padding(
-            padding: EdgeInsets.only(bottom: navigationReserve),
+            padding: EdgeInsets.only(
+              bottom: _guardianNavigationReserve(context),
+            ),
             child: _GuardianPager(
               key: const ValueKey('guardian-pager'),
               people: ordered,
               activity: activity,
               activityAvailable: activityAvailable,
               onRetry: onRetry,
+              onAdd: linkedCount < ZyraSeekerPlanLimits.maxLinkedGuardians
+                  ? onAdd
+                  : null,
+              basicCapacity: basicCapacity,
+              onUpgrade: onUpgrade,
               historyConsentLoader: historyConsentLoader,
               journeyAccessLoader: journeyAccessLoader,
               historyConsentPreview: historyConsentPreview,
@@ -646,6 +659,9 @@ class _GuardianPager extends StatefulWidget {
   final Map<String, List<GuardianActivity>> activity;
   final bool activityAvailable;
   final VoidCallback onRetry;
+  final VoidCallback? onAdd;
+  final ZyraGuardianCapacity? basicCapacity;
+  final VoidCallback? onUpgrade;
   final GuardianPageHistoryConsentLoader? historyConsentLoader;
   final GuardianPageJourneyAccessLoader? journeyAccessLoader;
   final bool historyConsentPreview;
@@ -662,6 +678,9 @@ class _GuardianPager extends StatefulWidget {
     required this.activity,
     required this.activityAvailable,
     required this.onRetry,
+    required this.onAdd,
+    required this.basicCapacity,
+    required this.onUpgrade,
     required this.historyConsentLoader,
     required this.journeyAccessLoader,
     required this.historyConsentPreview,
@@ -681,17 +700,23 @@ class _GuardianPagerState extends State<_GuardianPager> {
   late final PageController _controller = PageController();
   int _page = 0;
 
+  int get _pageCount => widget.people.length + (widget.onAdd != null ? 1 : 0);
+
   @override
   void didUpdateWidget(covariant _GuardianPager oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final oldPage = _page.clamp(0, oldWidget.people.length - 1);
-    final currentGuardianId = oldWidget.people[oldPage].id;
-    final sameGuardianPage = widget.people.indexWhere(
-      (person) => person.id == currentGuardianId,
-    );
-    final nextPage = sameGuardianPage >= 0
-        ? sameGuardianPage
-        : _page.clamp(0, widget.people.length - 1);
+    final int nextPage;
+    if (_page >= oldWidget.people.length) {
+      nextPage = _pageCount - 1;
+    } else {
+      final currentGuardianId = oldWidget.people[_page].id;
+      final sameGuardianPage = widget.people.indexWhere(
+        (person) => person.id == currentGuardianId,
+      );
+      nextPage = sameGuardianPage >= 0
+          ? sameGuardianPage
+          : _page.clamp(0, widget.people.length - 1);
+    }
     if (nextPage == _page) return;
     _page = nextPage;
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -709,15 +734,34 @@ class _GuardianPagerState extends State<_GuardianPager> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        _GuardianPageDots(count: widget.people.length, selected: _page),
+        const SizedBox(height: 12),
         Expanded(
           child: ZyraVerticalShadowViewport(
             builder: (context, clearance) => PageView.builder(
               key: const ValueKey('guardian-page-view'),
               controller: _controller,
               physics: const BouncingScrollPhysics(),
-              itemCount: widget.people.length,
+              itemCount: _pageCount,
               onPageChanged: (value) => setState(() => _page = value),
               itemBuilder: (context, index) {
+                if (index == widget.people.length) {
+                  return Padding(
+                    padding: clearance.add(
+                      const EdgeInsets.symmetric(horizontal: 20),
+                    ),
+                    child: ZyraGuardianAddCard(
+                      key: const ValueKey('guardian-pager-add'),
+                      basicCapacity: widget.basicCapacity,
+                      onAdd: ZyraTapFeedback.onTap(context, widget.onAdd),
+                      onUpgrade: ZyraTapFeedback.onTap(
+                        context,
+                        widget.onUpgrade,
+                      ),
+                      allowContentScroll: true,
+                    ),
+                  );
+                }
                 final person = widget.people[index];
                 final activities = widget.activity[person.id] ?? const [];
                 return Padding(
@@ -756,11 +800,6 @@ class _GuardianPagerState extends State<_GuardianPager> {
             ),
           ),
         ),
-        if (widget.people.length > 1) ...[
-          const SizedBox(height: 12),
-          _GuardianPageDots(count: widget.people.length, selected: _page),
-          const SizedBox(height: _guardianPageDotTail),
-        ],
       ],
     );
   }
@@ -886,52 +925,73 @@ class _QuietSections extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Column(
-    key: ValueKey('guardian-quiet-sections-${person.id}'),
-    mainAxisSize: MainAxisSize.max,
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      SizedBox(height: compact ? 2 : 4),
-      Row(
-        children: [
-          _GuardianMonogram(person: person, size: compact ? 58 : 64),
-          const SizedBox(width: 14),
-          Expanded(child: _GuardianIdentity(person: person)),
-        ],
-      ),
-      SizedBox(height: compact ? 10 : 14),
-      _GuardianDetailsStrip(person: person),
-      SizedBox(height: compact ? 12 : 16),
-      Divider(height: 1, color: ZyraColors.ink(.12)),
-      const SizedBox(height: 10),
-      Expanded(child: access),
-      if (!person.isMain && (!activityAvailable || obligation != null))
-        _QuietSection(
-          label: 'CURRENT OBLIGATION',
-          compact: true,
-          child: _ActivityTruth(
-            available: activityAvailable,
-            obligation: obligation,
-            onRetry: onRetry,
+  Widget build(BuildContext context) {
+    final short = _shortGuardianPage(context);
+    return Column(
+      key: ValueKey('guardian-quiet-sections-${person.id}'),
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: short
+              ? 0
+              : compact
+              ? 2
+              : 4,
+        ),
+        Row(
+          children: [
+            _GuardianMonogram(person: person, size: compact ? 58 : 64),
+            const SizedBox(width: 14),
+            Expanded(child: _GuardianIdentity(person: person)),
+          ],
+        ),
+        SizedBox(
+          height: short
+              ? 3
+              : compact
+              ? 10
+              : 14,
+        ),
+        _GuardianDetailsStrip(person: person),
+        SizedBox(
+          height: short
+              ? 3
+              : compact
+              ? 12
+              : 16,
+        ),
+        Divider(height: 1, color: ZyraColors.ink(.12)),
+        SizedBox(height: short ? 3 : 10),
+        Expanded(child: access),
+        if (!person.isMain && (!activityAvailable || obligation != null))
+          _QuietSection(
+            label: 'CURRENT OBLIGATION',
             compact: true,
+            child: _ActivityTruth(
+              available: activityAvailable,
+              obligation: obligation,
+              onRetry: onRetry,
+              compact: true,
+            ),
+          ),
+        SizedBox(height: short ? 3 : 10),
+        _QuietSection(
+          compact: true,
+          child: _GuardianManageActions(
+            person: person,
+            otherGuardians: otherGuardians,
+            preview: preview,
+            makeMainGuardian: makeMainGuardian,
+            clearMainGuardian: clearMainGuardian,
+            removeGuardian: removeGuardian,
+            onChanged: onChanged,
+            compact: compact,
           ),
         ),
-      const SizedBox(height: 10),
-      _QuietSection(
-        compact: true,
-        child: _GuardianManageActions(
-          person: person,
-          otherGuardians: otherGuardians,
-          preview: preview,
-          makeMainGuardian: makeMainGuardian,
-          clearMainGuardian: clearMainGuardian,
-          removeGuardian: removeGuardian,
-          onChanged: onChanged,
-          compact: compact,
-        ),
-      ),
-    ],
-  );
+      ],
+    );
+  }
 }
 
 class _GuardianDetailsStrip extends StatelessWidget {
@@ -1523,9 +1583,9 @@ class _MainGuardianJourneyAccessState extends State<_MainGuardianJourneyAccess>
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       const _GuardianJourneyAccessHeading(),
-      const SizedBox(height: 6),
+      SizedBox(height: _shortGuardianPage(context) ? 3 : 6),
       Expanded(child: _buildJourneyAccess()),
-      const SizedBox(height: 12),
+      SizedBox(height: _shortGuardianPage(context) ? 3 : 12),
       _GuardianHistoryConsentControl(
         key: ValueKey('guardian-history-consent-${widget.person.id}'),
         person: widget.person,
@@ -1906,9 +1966,9 @@ class _AdditionalGuardianJourneyAccessState
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const _GuardianJourneyAccessHeading(),
-        const SizedBox(height: 6),
+        SizedBox(height: _shortGuardianPage(context) ? 3 : 6),
         Expanded(child: _buildJourneyAccess(states)),
-        const SizedBox(height: 12),
+        SizedBox(height: _shortGuardianPage(context) ? 3 : 12),
         _GuardianHistoryConsentControl(
           key: ValueKey('guardian-history-consent-${widget.person.id}'),
           person: widget.person,
@@ -2089,6 +2149,7 @@ class _JourneyAccessSummary extends StatelessWidget {
                             ? _PendingJourneyPermissionRow(
                                 slot: index,
                                 label: placeholderLabel,
+                                showFreePlace: statusLabel == null,
                                 permissionColumnWidth: permissionColumnWidth,
                                 showChat: showChat,
                               )
@@ -2198,11 +2259,13 @@ class _PendingJourneyPermissionRow extends StatelessWidget {
   const _PendingJourneyPermissionRow({
     required this.slot,
     required this.label,
+    required this.showFreePlace,
     required this.permissionColumnWidth,
     required this.showChat,
   });
   final int slot;
   final String label;
+  final bool showFreePlace;
   final double permissionColumnWidth;
   final bool showChat;
 
@@ -2210,6 +2273,20 @@ class _PendingJourneyPermissionRow extends StatelessWidget {
   Widget build(BuildContext context) => Row(
     key: ValueKey('guardian-journey-pending-row-$slot'),
     children: [
+      if (showFreePlace) ...[
+        CustomPaint(
+          key: ValueKey('guardian-journey-free-circle-$slot'),
+          foregroundPainter: ZyraGuardianDashedBorder(
+            20,
+            ZyraColors.journeyGold,
+          ),
+          child: SizedBox.square(
+            dimension: 40,
+            child: Icon(Icons.add, size: 18, color: ZyraColors.journeyGold),
+          ),
+        ),
+        const SizedBox(width: _journeyAccessIdentityGap),
+      ],
       Expanded(child: Text(label, style: ZyraText.subtext(size: 12.25))),
       for (final permission in ['view', if (showChat) 'chat'])
         SizedBox(
@@ -2249,11 +2326,49 @@ class _JourneyPermissionTableRow extends StatelessWidget {
     required this.onChatChanged,
   });
 
+  Widget _portrait() {
+    final name = state.counterpartFirstName;
+    final monogram = ZyraGoldRingMonogram(
+      name: name,
+      size: 42,
+      fontSize: 16,
+      textScaler: TextScaler.noScaling,
+    );
+    // The signed-in Seeker's existing Journey list already owns these photos.
+    // Match the permission row's exact Journey and never substitute a sample.
+    final journey = AppState.instance.activeJourneys
+        .where(
+          (item) =>
+              !item.isMock &&
+              item.matchId == state.matchId &&
+              item.profile.id != ZyraAccountState.userId &&
+              item.profile.firstName.trim() == name,
+        )
+        .firstOrNull;
+    final photo = journey?.profile.photoUrl ?? '';
+    return SizedBox.square(
+      key: ValueKey('guardian-journey-portrait-${state.attemptId}'),
+      dimension: 42,
+      child: photo.isEmpty
+          ? monogram
+          : ClipOval(
+              child: ZyraProfileImageFallback(
+                fallback: monogram,
+                child: ZyraProfileImage(photo, width: 42, fit: BoxFit.cover),
+              ),
+            ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 7),
+    padding: EdgeInsets.symmetric(
+      vertical: _shortGuardianPage(context) ? 0 : 3,
+    ),
     child: Row(
       children: [
+        _portrait(),
+        const SizedBox(width: _journeyAccessIdentityGap),
         Expanded(
           child: Text(
             'Journey with ${state.counterpartFirstName}',
@@ -2484,31 +2599,6 @@ class _CompactZyraSwitch extends StatelessWidget {
   );
 }
 
-// WaliLinkedPerson has no gender field. Copy follows only an explicit gendered
-// relationship code in that record; a name or unrecorded/neutral relationship
-// never implies pronouns. This does not validate or change relationship policy.
-({String subject, String object, bool plural}) _guardianHistoryPronouns(
-  WaliLinkedPerson person,
-) => switch (person.relationship?.trim().toLowerCase()) {
-  'father' ||
-  'brother' ||
-  'son' ||
-  'grandfather' ||
-  'uncle' ||
-  'nephew' ||
-  'father_in_law' ||
-  'brother_in_law' => (subject: 'he', object: 'him', plural: false),
-  'mother' ||
-  'sister' ||
-  'daughter' ||
-  'grandmother' ||
-  'aunt' ||
-  'niece' ||
-  'mother_in_law' ||
-  'sister_in_law' => (subject: 'she', object: 'her', plural: false),
-  _ => (subject: 'they', object: 'them', plural: true),
-};
-
 class _GuardianHistoryConsentControl extends StatefulWidget {
   final WaliLinkedPerson person;
   final GuardianPageHistoryConsentLoader? loader;
@@ -2533,7 +2623,6 @@ class _GuardianHistoryConsentControlState
   bool _loading = false;
   bool _busy = false;
   bool _available = true;
-  bool _explanationOpen = false;
 
   @override
   bool get guardianPreviewRequested => widget.preview;
@@ -2689,93 +2778,6 @@ class _GuardianHistoryConsentControlState
     });
   }
 
-  Future<void> _showExplanation() async {
-    if (!mounted ||
-        !guardianLifetime.isCurrent ||
-        _explanationOpen ||
-        ModalRoute.of(context)?.isCurrent != true) {
-      return;
-    }
-    final lifetime = guardianLifetime;
-    final person = widget.person;
-    final pronouns = _guardianHistoryPronouns(person);
-    final subject = pronouns.subject;
-    final capitalizedSubject =
-        '${subject[0].toUpperCase()}${subject.substring(1)}';
-    _explanationOpen = true;
-    try {
-      await showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        useSafeArea: true,
-        backgroundColor: Colors.transparent,
-        builder: (sheetContext) => ZyraGuardianPreviewRouteBoundary(
-          authority: lifetime,
-          child: ZyraShadowScrollView(
-            key: const ValueKey('guardian-history-consent-explanation-scroll'),
-            child: SafeArea(
-              top: false,
-              child: ZyraFloatingSurface(
-                radius: 20,
-                child: Container(
-                  key: const ValueKey('guardian-history-consent-explanation'),
-                  margin: const EdgeInsets.all(12),
-                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-                  decoration: BoxDecoration(
-                    color: ZyraColors.waliSheetBg,
-                    borderRadius: BorderRadius.circular(26),
-                    border: Border.all(color: ZyraColors.surfaceBorder),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Container(
-                          width: 36,
-                          height: 4,
-                          decoration: BoxDecoration(
-                            color: ZyraColors.ink(0.22),
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 18),
-                      Text(
-                        'Past Journey summaries',
-                        style: ZyraText.heading(size: 20),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Right now ${person.firstName} only sees Journeys '
-                        'from the day $subject ${pronouns.plural ? 'were' : 'was'} '
-                        'linked onwards. Turn this on to also show '
-                        '${pronouns.object} the ones before that.',
-                        style: ZyraText.subtext(size: 12.5),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        '$capitalizedSubject ${pronouns.plural ? 'see' : 'sees'} '
-                        'start date, end date and status — nothing else. Never '
-                        'names, messages, answers, reasons, notes or safety information.',
-                        style: ZyraText.subtext(
-                          size: 12.5,
-                          color: ZyraColors.ink(0.56),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    } finally {
-      _explanationOpen = false;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final confirmed = _confirmed;
@@ -2794,18 +2796,6 @@ class _GuardianHistoryConsentControlState
                   'Share past Journey summaries',
                   style: ZyraText.body(size: 13.25),
                 ),
-              ),
-              IconButton(
-                key: const ValueKey('guardian-history-consent-details-toggle'),
-                tooltip: 'About sharing past Journey summaries',
-                visualDensity: VisualDensity.compact,
-                iconSize: 19,
-                color: ZyraColors.ink(0.58),
-                onPressed: ZyraTapFeedback.onTap(
-                  context,
-                  boundGuardianCallback(_showExplanation),
-                ),
-                icon: const Icon(Icons.info_outline_rounded),
               ),
               const SizedBox(width: 4),
               if (confirmed != null)
@@ -2976,7 +2966,7 @@ class _GuardianPageDots extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Semantics(
-    label: 'Guardian ${selected + 1} of $count',
+    label: selected < count ? 'Guardian ${selected + 1} of $count' : null,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

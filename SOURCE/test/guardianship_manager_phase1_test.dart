@@ -123,7 +123,7 @@ void main() {
 
     await tester.tap(find.byKey(const ValueKey('guardian-add-top')));
     expect(addCalls, 1);
-    final centreAdd = find.byKey(const ValueKey('guardian-empty-add'));
+    final centreAdd = find.byKey(const ValueKey('guardian-card-add-button'));
     await tester.ensureVisible(centreAdd);
     await tester.tap(centreAdd);
     expect(addCalls, 2);
@@ -152,7 +152,7 @@ void main() {
     expect(
       find.descendant(
         of: find.byType(ZyraGuardianAddCard),
-        matching: find.byIcon(Icons.add),
+        matching: find.byKey(const ValueKey('guardian-card-add-button')),
       ),
       findsOneWidget,
     );
@@ -192,7 +192,10 @@ void main() {
       );
       expect(MediaQuery.textScalerOf(tester.element(title)).scale(15), 30);
       expect(
-        find.descendant(of: empty, matching: find.byIcon(Icons.add)),
+        find.descendant(
+          of: empty,
+          matching: find.byKey(const ValueKey('guardian-card-add-button')),
+        ),
         findsOneWidget,
       );
       expect(title.hitTestable(), findsOneWidget);

@@ -741,7 +741,8 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
                           onUpgrade: widget.basic && upgrade != null
                               ? _action(upgrade, expectedTarget: target)
                               : null,
-                          allowContentScroll: largerText,
+                          allowContentScroll:
+                              largerText || basicCapacity != null,
                         )
                       else
                         _card(person, target),

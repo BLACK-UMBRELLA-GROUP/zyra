@@ -177,23 +177,15 @@ void _expectNoSteadyInstructions() {
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  testWidgets('main empty marks and linked-summary copy actual frames', (
+  testWidgets('main and additional empty Journey access actual frames', (
     tester,
   ) async {
     await _mount(tester, _page(activeJourneyCount: 0));
     await _capture(tester, 'main_empty_locked_ticks');
     await _nextGuardian(tester);
     await _capture(tester, 'additional_empty_unset');
-    await tester.tap(_key('guardian-history-consent-details-toggle'));
-    await tester.pumpAndSettle();
-    expect(
-      find.text(
-        'Right now Yusuf only sees Journeys from the day he was linked onwards. Turn this on to also show him the ones before that.',
-      ),
-      findsOneWidget,
-    );
-    await _capture(tester, 'past_summary_yusuf_copy');
   });
+
   late HttpOverrides? previousNetwork;
   late _NoNetwork network;
 
@@ -233,97 +225,6 @@ void main() {
         .setMockMethodCallHandler(SystemChannels.platform, null);
     expect(network.attempts, 0);
   });
-
-  for (final sample
-      in <
-        ({
-          String name,
-          String? relationship,
-          String subject,
-          String object,
-          bool plural,
-        })
-      >[
-        (
-          name: 'Amina',
-          relationship: 'uncle',
-          subject: 'he',
-          object: 'him',
-          plural: false,
-        ),
-        (
-          name: 'Ibrahim',
-          relationship: 'mother',
-          subject: 'she',
-          object: 'her',
-          plural: false,
-        ),
-        (
-          name: 'Yusuf',
-          relationship: null,
-          subject: 'they',
-          object: 'them',
-          plural: true,
-        ),
-        (
-          name: 'Maryam',
-          relationship: 'cousin',
-          subject: 'they',
-          object: 'them',
-          plural: true,
-        ),
-        (
-          name: 'Ali',
-          relationship: 'uncle-like',
-          subject: 'they',
-          object: 'them',
-          plural: true,
-        ),
-      ]) {
-    testWidgets(
-      'Past summaries copy uses ${sample.relationship} record, never ${sample.name} inference',
-      (tester) async {
-        final person = WaliLinkedPerson(
-          id: 'summary-copy-${sample.name}',
-          firstName: sample.name,
-          relationship: sample.relationship,
-        );
-        await _mount(tester, _page(people: [person]));
-        final toggle = _key('guardian-history-consent-toggle');
-        expect(tester.widget<Switch>(toggle).value, isFalse);
-        final info = _key('guardian-history-consent-details-toggle');
-        await tester.ensureVisible(info);
-        await tester.tap(info);
-        await tester.pumpAndSettle();
-        expect(find.text('Past Journey summaries'), findsOneWidget);
-        expect(
-          find.text(
-            'Right now ${sample.name} only sees Journeys from the day '
-            '${sample.subject} ${sample.plural ? 'were' : 'was'} linked onwards. '
-            'Turn this on to also show ${sample.object} the ones before that.',
-          ),
-          findsOneWidget,
-        );
-        final subject =
-            '${sample.subject[0].toUpperCase()}${sample.subject.substring(1)}';
-        expect(
-          find.text(
-            '$subject ${sample.plural ? 'see' : 'sees'} start date, end date and '
-            'status — nothing else. Never names, messages, answers, reasons, '
-            'notes or safety information.',
-          ),
-          findsOneWidget,
-        );
-        expect(find.textContaining('already sees your current'), findsNothing);
-        expect(tester.widget<Switch>(toggle).value, isFalse);
-        expect(
-          _key('guardian-history-consent-explanation-scroll'),
-          findsOneWidget,
-        );
-        expect(tester.takeException(), isNull);
-      },
-    );
-  }
 
   testWidgets(
     'recorded role relationship and continuous link dates stay truthful',
@@ -384,7 +285,7 @@ void main() {
         expect(find.text('Not recorded'), findsOneWidget);
         expect(find.text('20 Sep 2026'), findsNothing);
         expect(find.text('23 Sep 2026'), findsNothing);
-        expect(find.byKey(const ValueKey('guardian-page-dot-0')), findsNothing);
+        expect(_key('guardian-page-dot-0'), findsOneWidget);
         _expectNoSteadyInstructions();
       },
     );
@@ -433,30 +334,20 @@ void main() {
         expect(remove.bottom, lessThanOrEqualTo(page.bottom + .01));
         final nav = _key('floating-nav-quiet-true');
         final navTop = tester.getRect(nav).top;
-        if (count == 1) {
-          expect(
-            find.byKey(const ValueKey('guardian-page-dot-0')),
-            findsNothing,
-          );
-          expect(navTop - page.bottom, greaterThanOrEqualTo(20));
-        } else {
-          final dots = tester.getRect(_key('guardian-page-dot-0'));
-          expect(dots.top - page.bottom, closeTo(12, .01));
-          expect(navTop - dots.bottom, closeTo(28.12, .01));
-          for (var index = 0; index < count; index++) {
-            expect(_key('guardian-page-dot-$index'), findsOneWidget);
-          }
-          final touch = await tester.startGesture(
-            tester.getCenter(_key('floating-nav-item-3')),
-          );
-          await tester.pump(const Duration(milliseconds: 110));
-          expect(
-            tester.getRect(nav).top - dots.bottom,
-            greaterThanOrEqualTo(20 - .01),
-          );
-          await touch.cancel();
-          await tester.pumpAndSettle();
+        final dots = tester.getRect(_key('guardian-page-dot-0'));
+        expect(page.top - dots.bottom, closeTo(12, .01));
+        expect(navTop - page.bottom, closeTo(16, .01));
+        for (var index = 0; index < count; index++) {
+          expect(_key('guardian-page-dot-$index'), findsOneWidget);
         }
+        expect(_key('guardian-page-dot-$count'), findsNothing);
+        final touch = await tester.startGesture(
+          tester.getCenter(_key('floating-nav-item-3')),
+        );
+        await tester.pump(const Duration(milliseconds: 110));
+        expect(tester.getRect(nav).top, greaterThan(page.bottom));
+        await touch.cancel();
+        await tester.pumpAndSettle();
         expect(tester.takeException(), isNull);
       },
     );

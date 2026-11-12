@@ -245,7 +245,15 @@ void _expectHeaderGeometry(
           )
         : find.text('Journey with ${['Maryam', 'Aaliyah', 'Sara'][index]}');
     expect(rowLabel, findsOneWidget);
-    expect(globalRect(rowLabel).left, closeTo(rects['Journey']!.left, .01));
+    final identityKey = pending
+        ? 'guardian-journey-free-circle-$index'
+        : 'guardian-journey-portrait-$attempt';
+    final identity = globalRect(_key(identityKey));
+    expect(identity.left, closeTo(rects['Journey']!.left, .01));
+    expect(
+      globalRect(rowLabel).left - identity.right,
+      closeTo(14 * scaleX, .01),
+    );
     for (final permission in ['view', 'chat']) {
       final key = pending
           ? 'guardian-journey-pending-$permission-$index'

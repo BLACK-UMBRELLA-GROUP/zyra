@@ -256,7 +256,15 @@ void main() {
             )
           : find.text('Journey with ${['Maryam', 'Aaliyah', 'Sara'][index]}');
       expect(rowLabel, findsOneWidget);
-      expect(globalRect(rowLabel).left, closeTo(rects['Journey']!.left, .01));
+      final identityKey = pending
+          ? 'guardian-journey-free-circle-$index'
+          : 'guardian-journey-portrait-$attempt';
+      final identity = globalRect(find.byKey(ValueKey(identityKey)));
+      expect(identity.left, closeTo(rects['Journey']!.left, .01));
+      expect(
+        globalRect(rowLabel).left - identity.right,
+        closeTo(14 * scaleX, .01),
+      );
       for (final permission in ['view', 'chat']) {
         final key = pending
             ? 'guardian-journey-pending-$permission-$index'
@@ -1075,11 +1083,19 @@ void main() {
       find.byKey(const ValueKey('guardian-clear-main-confirmation')),
       findsOneWidget,
     );
-    expect(find.byKey(const ValueKey('guardian-clear-main-confirmation-keep')), findsOneWidget);
-    expect(find.byKey(const ValueKey('guardian-clear-main-confirmation-approve')), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('guardian-clear-main-confirmation-keep')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey('guardian-clear-main-confirmation-approve')),
+      findsOneWidget,
+    );
     expect(find.byType(AlertDialog), findsNothing);
 
-    await tester.tap(find.byKey(const ValueKey('guardian-clear-main-confirmation-keep')));
+    await tester.tap(
+      find.byKey(const ValueKey('guardian-clear-main-confirmation-keep')),
+    );
     await tester.pumpAndSettle();
     expect(find.text('Remove as Main Guardian'), findsOneWidget);
   });
@@ -1125,7 +1141,9 @@ void main() {
       findsOneWidget,
     );
     expect(find.byType(AlertDialog), findsNothing);
-    await tester.tap(find.byKey(const ValueKey('guardian-make-main-confirmation-approve')));
+    await tester.tap(
+      find.byKey(const ValueKey('guardian-make-main-confirmation-approve')),
+    );
     await tester.pumpAndSettle();
     expect(madeMain, isTrue);
     expect(changed, 1);
@@ -1140,7 +1158,9 @@ void main() {
       findsOneWidget,
     );
     expect(find.byType(AlertDialog), findsNothing);
-    await tester.tap(find.byKey(const ValueKey('guardian-remove-confirmation-approve')));
+    await tester.tap(
+      find.byKey(const ValueKey('guardian-remove-confirmation-approve')),
+    );
     await tester.pumpAndSettle();
     expect(removed, isTrue);
     expect(changed, 2);
@@ -1168,35 +1188,20 @@ void main() {
     expect(toggle().value, isTrue);
   });
 
-  testWidgets('past Journey summary information opens in a bottom sheet', (
-    tester,
-  ) async {
-    tester.view.physicalSize = const Size(390, 844);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
+  testWidgets(
+    'past Journey summaries retains the switch without an info button',
+    (tester) async {
+      await tester.pumpWidget(subject());
+      await tester.pumpAndSettle();
 
-    await tester.pumpWidget(subject());
-    await tester.pumpAndSettle();
-
-    expect(
-      find.byKey(const ValueKey('guardian-history-consent-explanation')),
-      findsNothing,
-    );
-    await tester.tap(
-      find.byKey(const ValueKey('guardian-history-consent-details-toggle')),
-    );
-    await tester.pumpAndSettle();
-    expect(find.text('Past Journey summaries'), findsOneWidget);
-    expect(
-      find.byKey(const ValueKey('guardian-history-consent-explanation')),
-      findsOneWidget,
-    );
-    final sheet = tester.widget<Container>(
-      find.byKey(const ValueKey('guardian-history-consent-explanation')),
-    );
-    final decoration = sheet.decoration! as BoxDecoration;
-    expect(decoration.color, ZyraColors.modalSheetSurface);
-    expect(find.byType(BottomSheet), findsOneWidget);
-  });
+      expect(
+        find.byKey(const ValueKey('guardian-history-consent-toggle')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('guardian-history-consent-details-toggle')),
+        findsNothing,
+      );
+    },
+  );
 }

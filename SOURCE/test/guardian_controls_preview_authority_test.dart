@@ -177,39 +177,6 @@ void main() {
     });
   }
 
-  testWidgets(
-    'opened consent explanation closes and stale info cannot reopen',
-    (tester) async {
-      size(tester);
-      ZyraDeveloperAccess.setAuthorizedForTesting(true);
-      await tester.pumpWidget(subject());
-      await tester.pumpAndSettle();
-      final button = find.byKey(
-        const ValueKey('guardian-history-consent-details-toggle'),
-      );
-      final oldInfo = tester.widget<IconButton>(button).onPressed!;
-      await tester.tap(button);
-      await tester.pumpAndSettle();
-      expect(
-        find.byKey(const ValueKey('guardian-history-consent-explanation')),
-        findsOneWidget,
-      );
-      ZyraDeveloperAccess.setAuthorizedForTesting(false);
-      oldInfo();
-      ZyraDeveloperAccess.setAuthorizedForTesting(true);
-      await tester.pumpAndSettle();
-      expect(
-        find.byKey(const ValueKey('guardian-history-consent-explanation')),
-        findsNothing,
-      );
-      expect(
-        find.byKey(const ValueKey('guardian-history-consent-toggle')),
-        findsNothing,
-      );
-      await tester.pumpWidget(const SizedBox());
-    },
-  );
-
   testWidgets('older live read cannot overwrite the replacement source', (
     tester,
   ) async {
@@ -341,55 +308,6 @@ void main() {
     oldConsent(true);
     await tester.pump();
     expect(toggle(tester, 'guardian-history-consent-toggle').value, isFalse);
-    await tester.pumpWidget(const SizedBox());
-  });
-
-  testWidgets('removing permission owner closes its separate consent sheet', (
-    tester,
-  ) async {
-    size(tester);
-    ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    final navigator = GlobalKey<NavigatorState>();
-    await tester.pumpWidget(
-      MaterialApp(
-        navigatorKey: navigator,
-        home: const Scaffold(body: Text('Unaffected permission owner')),
-      ),
-    );
-    final owner = MaterialPageRoute<void>(
-      builder: (_) => Scaffold(
-        body: SafeArea(
-          child: SeekerGuardianPage(
-            people: const [_person],
-            activity: const {},
-            linksAvailable: true,
-            activityAvailable: true,
-            onRetry: () {},
-            onAdd: () {},
-            historyConsentPreview: true,
-            previewActiveJourneyCount: 1,
-          ),
-        ),
-      ),
-    );
-    navigator.currentState!.push(owner);
-    await tester.pumpAndSettle();
-    await tester.tap(
-      find.byKey(const ValueKey('guardian-history-consent-details-toggle')),
-    );
-    await tester.pumpAndSettle();
-    expect(
-      find.byKey(const ValueKey('guardian-history-consent-explanation')),
-      findsOneWidget,
-    );
-    navigator.currentState!.removeRoute(owner);
-    await tester.pumpAndSettle();
-    expect(
-      find.byKey(const ValueKey('guardian-history-consent-explanation')),
-      findsNothing,
-    );
-    expect(find.text('Unaffected permission owner'), findsOneWidget);
-    expect(tester.takeException(), isNull);
     await tester.pumpWidget(const SizedBox());
   });
 }

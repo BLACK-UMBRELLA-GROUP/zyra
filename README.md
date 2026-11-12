@@ -17,8 +17,8 @@ that failure. Connection and route errors can retry every 15 seconds while the
 page is open. On the release framework fallback, Try again restarts the app
 when pressed. Contact support opens Help & Support with the error reference.
 
-The empty Guardian tab offers Add a Guardian. Browse gives one haptic tick for
-an accepted photo action, including the accessible Next page control.
+Browse gives one haptic tick for an accepted photo action, including the
+accessible Next page control.
 
 In the Founder preview, a sideways drag brings the neighbouring card into view
 on Profiles, Guardian, Journey, Filters and My ZYRA’s Needs you section. The
@@ -26,9 +26,12 @@ selection updates when the cards settle. Each Guardian card shows details and
 Journey access together. The three-dot menu opens Main Guardian and removal
 actions. Guardian Circle opens on Main and keeps past Journey topics open
 for members who can write.
-The Guardian tab’s full-height Add card opens Add a Guardian from its round
-plus button. The Seeker Basic card also counts active links, shows the Basic
-place and remaining Guardian One places, and links to the Seeker One comparison.
+In the ordinary Seeker Guardian tab and Founder preview, the round plus on the
+full-height Add card opens Add a Guardian. The ordinary tab shows the card when
+there are no linked Guardians and after the last Guardian when there is room.
+The Seeker Basic card counts active links, shows the Basic place when its status
+is known, shows remaining Guardian One places, and links to the Seeker One
+comparison.
 Help & Support lists Past Journey summaries in the Guardians FAQ.
 The client checks a maximum of 10 active links including Main.
 For a Seeker Basic roster, at most one Guardian can be on Guardian Basic.

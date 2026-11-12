@@ -84,18 +84,20 @@ class ZyraGuardianAddCard extends StatelessWidget {
             textAlign: TextAlign.center,
             style: ZyraText.body(size: 13, color: ZyraColors.ink(.55)),
           ),
-          if (capacity != null && basicUsed != null) ...[
+          if (capacity != null) ...[
             const SizedBox(height: 16),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: _place(
-                    basicUsed ? 'Used' : 'Free',
-                    'Guardian Basic place',
+                if (basicUsed != null) ...[
+                  Expanded(
+                    child: _place(
+                      basicUsed ? 'Used' : 'Free',
+                      'Guardian Basic place',
+                    ),
                   ),
-                ),
-                const SizedBox(width: 8),
+                  const SizedBox(width: 8),
+                ],
                 Expanded(
                   child: _place(
                     '${capacity.guardianOnePlaces}',
@@ -119,7 +121,7 @@ class ZyraGuardianAddCard extends StatelessWidget {
         ],
       ),
     );
-    if (!allowContentScroll && capacity == null) return content;
+    if (!allowContentScroll) return content;
     return LayoutBuilder(
       builder: (context, box) => SingleChildScrollView(
         primary: false,

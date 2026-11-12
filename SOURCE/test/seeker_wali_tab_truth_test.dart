@@ -134,7 +134,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(const ValueKey('guardian-empty-add')));
+    await tester.tap(find.byKey(const ValueKey('guardian-card-add-button')));
     await tester.pumpAndSettle();
 
     // Q17 / LOCK 19 k08: the centre action opens the existing LOCK 9 page.
@@ -558,7 +558,9 @@ void main() {
     await tester.ensureVisible(makeMain);
     await tester.tap(makeMain);
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('guardian-make-main-confirmation-approve')));
+    await tester.tap(
+      find.byKey(const ValueKey('guardian-make-main-confirmation-approve')),
+    );
     await tester.pumpAndSettle();
 
     expect(find.text('Hassan'), findsOneWidget);
@@ -568,7 +570,9 @@ void main() {
     await tester.ensureVisible(clearMain);
     await tester.tap(clearMain);
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('guardian-clear-main-confirmation-approve')));
+    await tester.tap(
+      find.byKey(const ValueKey('guardian-clear-main-confirmation-approve')),
+    );
     await tester.pumpAndSettle();
 
     expect(find.byKey(const ValueKey('guardian-clear-main')), findsNothing);
@@ -577,7 +581,9 @@ void main() {
     await tester.ensureVisible(removeGuardian);
     await tester.tap(removeGuardian);
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('guardian-remove-confirmation-approve')));
+    await tester.tap(
+      find.byKey(const ValueKey('guardian-remove-confirmation-approve')),
+    );
     await tester.pumpAndSettle();
 
     expect(find.text('Hassan'), findsNothing);

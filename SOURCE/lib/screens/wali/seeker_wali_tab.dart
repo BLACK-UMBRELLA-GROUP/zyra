@@ -16,6 +16,7 @@ import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../widgets/zyra_loading.dart';
+import '../subscription/upgrade_screen.dart';
 import 'link_guardian_panel.dart';
 import 'family_messaging_screens.dart';
 import 'seeker_guardian_designs.dart';
@@ -270,6 +271,12 @@ class _SeekerWaliTabState extends State<SeekerWaliTab> {
     );
   }
 
+  void _openSeekerOneComparison() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (_) => const UpgradeScreen.compare()),
+    );
+  }
+
   bool get _familyMessagingVisible =>
       ZyraReleaseGates.familyMessagingEnabled ||
       ZyraDevScenario.instance.guardianOverride;
@@ -294,14 +301,20 @@ class _SeekerWaliTabState extends State<SeekerWaliTab> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) =>
+      ListenableBuilder(listenable: AppState.instance, builder: _buildTab);
+
+  Widget _buildTab(BuildContext context, Widget? child) {
     final preview = ZyraDevScenario.instance.guardianOverride;
     final showSpinner = _loading && !preview;
+    final app = AppState.instance;
+    final plan = app.verifiedSeekerPlan ?? app.plan;
     return Container(
       decoration: ZyraAppGoldDecoration(
-        gradient: ZyraColors.genderGradient(AppState.instance.gender),
+        gradient: ZyraColors.genderGradient(app.gender),
       ),
       child: SafeArea(
+        bottom: false,
         child: showSpinner
             ? const ZyraLoading()
             : SeekerGuardianPage(
@@ -313,6 +326,10 @@ class _SeekerWaliTabState extends State<SeekerWaliTab> {
                 activityAvailable: preview || _activityAvailable,
                 onRetry: _load,
                 onAdd: _openAdd,
+                seekerPlan: plan,
+                onUpgrade: plan == ZyraPlan.basic
+                    ? _openSeekerOneComparison
+                    : null,
                 onOpenMessages: _familyMessagingVisible && _people.isNotEmpty
                     ? _openFamilyMessages
                     : null,
