@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
@@ -9,6 +10,7 @@ import 'package:zyra/models/onboarding_question.dart';
 import 'package:zyra/models/journey_bio.dart';
 import 'package:zyra/screens/profile/compatibility_editors.dart';
 import 'package:zyra/services/zyra_onboarding_answers_service.dart';
+import 'package:zyra/theme/zyra_colors.dart';
 
 import '../support/zyra_hidden_dev_controls_driver.dart';
 import 'baseline_capture_support.dart';
@@ -171,6 +173,76 @@ void main() {
       expect(find.byKey(const ValueKey(_myZyraAction)), findsNothing);
       await capture('my_zyra_complete');
     });
+
+    testWidgets(
+      'Q116 ordinary check sets a missing sect light at $dimensions',
+      (tester) async {
+        final harness = BaselineHarness(
+          tester,
+          group: 'line92_missing_$dimensions',
+          outputRoot: _captures,
+          evidenceRoot: _captures,
+          flatOutput: true,
+          logicalSize: size,
+          safePadding: safePadding,
+          reduceMotion: true,
+        );
+        final checkpoint = ZyraPreviewNavigationCheckpoint(
+          guardian: false,
+          model: ViewRequestDraftModel(capacity: 3).snapshot(),
+          tab: 2,
+          pages: const [],
+        );
+        const missing = (
+          questionId: 'ch2.sect.matrix',
+          optionValue: 'current-sect',
+        );
+        final confirmed = <ZyraPreferenceOption, TrafficLight>{};
+        await harness.mountPresentation(
+          backdrop: ZyraAppGoldDecoration(
+            gradient: ZyraColors.genderGradient('male'),
+          ),
+          child: CompatibilityEditorScreen(
+            kind: CompatibilityEditorKind.trafficLights,
+            initialDraft: ZyraCompatibilityDraft.fromSnapshot(gender: 'male'),
+            onPersist: (_) async =>
+                fail('Missing lights need an explicit tap.'),
+            quickCheck: ZyraPreferenceQuickCheck(
+              items: const {},
+              missing: const {missing},
+              setup: ZyraSetupPreferenceLights(
+                otherSect: missing.optionValue,
+                lights: {
+                  for (final sect in ['sunni', 'shia'])
+                    (questionId: missing.questionId, optionValue: sect):
+                        TrafficLight.green,
+                },
+              ),
+              confirm: (option, light) async => confirmed[option] = light,
+            ),
+          ),
+          checkpoint: checkpoint,
+        );
+        await harness.tap(_cardAction);
+        await tester.pumpAndSettle();
+        expect(find.text(_legacyLine), findsNothing);
+        expect(find.text('Not set'), findsOneWidget);
+        expect(confirmed, isEmpty);
+        if (_captures.isNotEmpty) {
+          await harness.capture(
+            'preferences',
+            'quick_check',
+            'sect_not_set',
+            'sect_not_set',
+            fileName: 'sect_not_set_$dimensions.png',
+          );
+        }
+        await harness.tap('preference_Other_yellow');
+        expect(confirmed, {missing: TrafficLight.yellow});
+        expect(find.text('Not set'), findsNothing);
+        expect(find.text('All checked. Thank you.'), findsOneWidget);
+      },
+    );
   }
 
   test(

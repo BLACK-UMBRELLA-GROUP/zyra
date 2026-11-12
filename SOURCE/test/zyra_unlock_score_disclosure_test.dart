@@ -344,11 +344,19 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
-  void testPaidResult(String description, {bool retryRead = false}) {
+  void testPaidResult(
+    String description, {
+    bool retryRead = false,
+    bool missingSect = false,
+  }) {
     testWidgets(description, (tester) async {
       ZyraCompatibilityTopicsService.setClientReadyForTesting(true);
       ZyraOnboardingAnswersService.setClientReadyForTesting(true);
       const visible = (questionId: 'ch2.revert.flexibility', optionValue: '*');
+      const missing = (
+        questionId: 'ch2.sect.matrix',
+        optionValue: 'current-sect',
+      );
       const hidden = (questionId: 'ch3_q24', optionValue: 'Within 2–3 years');
       Map<String, String> item(ZyraPreferenceOption option, String light) => {
         'question_id': option.questionId,
@@ -399,8 +407,12 @@ void main() {
             ]);
           case visibleRead:
             checkCalls.add(visibleRead);
-            expect(jsonDecode(request.body), isEmpty);
-            return json([item(visible, 'amber')]);
+            expect(jsonDecode(request.body), {'p_include_missing': true});
+            return json([
+              {...item(visible, 'amber'), 'reason': null},
+              if (missingSect)
+                {...item(missing, 'amber'), 'light': null, 'reason': 'missing'},
+            ]);
           case hiddenRead:
             checkCalls.add(hiddenRead);
             expect(jsonDecode(request.body), isEmpty);
@@ -410,7 +422,11 @@ void main() {
           case confirm:
             checkCalls.add(confirm);
             expect(jsonDecode(request.body), {
-              'p_items': [item(visible, 'amber'), item(hidden, 'green')],
+              'p_items': [
+                if (missingSect) item(missing, 'green'),
+                item(visible, 'amber'),
+                item(hidden, 'green'),
+              ],
             });
             checked = true;
             return http.Response('', 204);
@@ -431,9 +447,23 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Quick check'), findsOneWidget);
       expect(find.textContaining(_profile.firstName), findsNothing);
-      expect(find.text('Done · 2 left'), findsOneWidget);
+      expect(find.text('Done · ${missingSect ? 3 : 2} left'), findsOneWidget);
       expect(checkCalls, [topics, visibleRead, hiddenRead]);
 
+      if (missingSect) {
+        final notSet = find.byKey(const ValueKey(missing));
+        expect(
+          find.descendant(of: notSet, matching: find.text('Not set')),
+          findsOneWidget,
+        );
+        expect(find.textContaining('current-sect'), findsNothing);
+        await tester.tap(
+          find.descendant(of: notSet, matching: find.text('Prefer this')),
+        );
+        await tester.pumpAndSettle();
+        expect(find.text('Done · 2 left'), findsOneWidget);
+        expect(checked, isFalse);
+      }
       final selectAmber = find.descendant(
         of: find.byKey(const ValueKey(visible)),
         matching: find.text('Open to this'),
@@ -447,6 +477,7 @@ void main() {
       expect(find.text('Done · 1 left'), findsOneWidget);
       expect(checked, isFalse);
       await tester.ensureVisible(selectGreen);
+      await tester.pumpAndSettle();
       await tester.tap(selectGreen);
       await tester.pumpAndSettle();
       expect(checked, isFalse);
@@ -499,6 +530,56 @@ void main() {
     'Q115 Profiles retry shows readiness and keeps Guardian text legible',
     retryRead: true,
   );
+  testPaidResult(
+    'Q116 paid result check saves an unset sect light only after a tap and Done',
+    missingSect: true,
+  );
+
+  testWidgets('Q116 unavailable paid result has no score, bands or spend', (
+    tester,
+  ) async {
+    ZyraCompatibilityTopicsService.setClientReadyForTesting(true);
+    responder = (request) {
+      return switch (request.url.pathSegments.last) {
+        'profile_unlocks' => Future.value(
+          json([
+            {'unlocked_id': _target, 'unlock_type': 'paid_single'},
+          ]),
+        ),
+        'zyra_compatibility_topics' => Future.value(
+          json([
+            for (final area in ZyraCompatibilityArea.values)
+              {
+                'overall': null,
+                'topics_locked': true,
+                'area_no': area.index + 1,
+                'area_code': area.name,
+                'band': null,
+                'state': 'unavailable',
+              },
+          ]),
+        ),
+        _ => defaults(request),
+      };
+    };
+    await tester.pumpWidget(
+      const MaterialApp(home: ProfileUnlockScreen(profile: _profile)),
+    );
+    await tester.pumpAndSettle();
+    expect(
+      find.text('Your compatibility score isn’t available right now.'),
+      findsOneWidget,
+    );
+    expect(find.text('Check my answers'), findsNothing);
+    expect(find.text('Unlock Compatibility'), findsNothing);
+    expect(
+      find.byKey(const ValueKey('compatibility-area-row-deen')),
+      findsNothing,
+    );
+    expect(scoreReads(), isEmpty);
+    expect(debits(), isEmpty);
+    await tester.pumpWidget(const SizedBox());
+  });
 
   testWidgets(
     'unknown grant can be checked using existing read-only recovery',

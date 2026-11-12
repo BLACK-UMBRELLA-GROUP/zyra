@@ -152,7 +152,7 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
   String _sectOther = '';
   Map<String, TrafficLight> _sectMatrix = {};
 
-  /// Sect labels never to be introduced to. Per-OPTION since 2026-08-10
+  /// Sect codes never to be introduced to. Per-OPTION since 2026-08-10
   /// (OA-ZYRA-185) — Chapter 2 now matches Chapter 4.
   Set<String> _sectHard = {};
   TrafficLight? _sectOutsideFlex;
@@ -302,7 +302,14 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
   };
 
   void _applySavedDetails(SeekerDetails details) {
-    _sect = details.sect;
+    switch (details.sect) {
+      case null || 'Sunni' || 'Shia':
+        _sect = details.sect;
+        _sectOther = '';
+      case final custom:
+        _sect = 'Other';
+        _sectOther = custom;
+    }
     _revertStatus = details.revertStatus == null
         ? null
         : details.revertStatus!
@@ -323,31 +330,16 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
     _distanceFlex = _light(location?['flexibility']);
 
     final sect = p['sect'] as Map?;
-    final rawMatrix = sect?['matrix'];
-    if (rawMatrix is Map) {
-      _sectMatrix = {
-        for (final entry in rawMatrix.entries)
-          if (entry.key is String && _light(entry.value) != null)
-            switch (entry.key as String) {
-              'sunni' => 'Sunni',
-              'shia' => 'Shia',
-              _ => entry.key as String,
-            }: _light(
-              entry.value,
-            )!,
-      };
-    }
-    final rawHard = sect?['hard_requirement'];
-    if (rawHard is List) {
-      _sectHard = {
-        for (final value in rawHard.whereType<String>())
-          switch (value) {
-            'sunni' => 'Sunni',
-            'shia' => 'Shia',
-            _ => value,
-          },
-      };
-    }
+    _sectMatrix = {
+      if (sect?['matrix'] case final Map matrix)
+        for (final entry in matrix.entries)
+          if (entry.key case final String key)
+            if (_light(entry.value) case final TrafficLight light) key: light,
+    };
+    _sectHard = {
+      if (sect?['hard_requirement'] case final List hard)
+        ...hard.whereType<String>(),
+    };
     _sectOutsideFlex = _light(sect?['outside_flexibility']);
     _revertFlex = _light((p['revert'] as Map?)?['flexibility']);
 
@@ -419,7 +411,12 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
   List<String> get _sectOptions => [
     'Sunni',
     'Shia',
-    if (_sect == 'Other' && _sectOther.isNotEmpty) _sectOther else 'Other',
+    if (_sect == 'Other' &&
+        _sectOther.trim().isNotEmpty &&
+        !const {'sunni', 'shia'}.contains(zyraSectCodeFor(_sectOther)))
+      _sectOther
+    else
+      'Other',
   ];
 
   void _goto(int step) {
@@ -750,7 +747,9 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
         return _sect != null &&
             (_sect != 'Other' || _sectOther.trim().isNotEmpty);
       case 5:
-        return _sectOptions.every((o) => _sectMatrix.containsKey(o));
+        return _sectOptions.every(
+          (label) => _sectMatrix.containsKey(zyraSectCodeFor(label)),
+        );
       case 6:
         return _sectOutsideFlex != null;
       case 7:
@@ -980,10 +979,24 @@ class _Chapter2FlowState extends State<Chapter2Flow> {
           key: const ValueKey('ch2_sect_matrix'),
           yourAnswer: _sect == 'Other' ? _sectOther : (_sect ?? ''),
           options: _sectOptions,
-          initialValues: _sectMatrix,
-          initialHardRequirement: _sectHard,
-          onChanged: (v) => setState(() => _sectMatrix = v),
-          onHardRequirementChanged: (v) => setState(() => _sectHard = v),
+          initialValues: {
+            for (final label in _sectOptions)
+              label: ?_sectMatrix[zyraSectCodeFor(label)],
+          },
+          initialHardRequirement: {
+            for (final label in _sectOptions)
+              if (_sectHard.contains(zyraSectCodeFor(label))) label,
+          },
+          onChanged: (values) => setState(() {
+            for (final entry in values.entries) {
+              _sectMatrix[zyraSectCodeFor(entry.key)] = entry.value;
+            }
+          }),
+          onHardRequirementChanged: (values) => setState(() {
+            _sectHard
+              ..removeAll(_sectOptions.map(zyraSectCodeFor))
+              ..addAll(values.map(zyraSectCodeFor));
+          }),
         );
         break;
       case 6:

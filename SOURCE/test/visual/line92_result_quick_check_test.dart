@@ -15,6 +15,7 @@ import 'package:zyra/theme/zyra_text.dart';
 import 'baseline_capture_support.dart';
 
 const _captures = String.fromEnvironment('ZYRA_LINE92_CAPTURE_DIR');
+const _missing = (questionId: 'ch2.sect.matrix', optionValue: 'current-sect');
 const _visible = <ZyraPreferenceOption>{
   (questionId: 'ch2.sect.matrix', optionValue: 'shia'),
   (questionId: 'ch2.sect.outside_flexibility', optionValue: '*'),
@@ -140,12 +141,54 @@ void main() {
       await tester.pump(const Duration(seconds: 5));
       await tester.pumpAndSettle();
     });
+
+    testWidgets('Q116 combined check shows missing and Amber at $dimensions', (
+      tester,
+    ) async {
+      final harness = BaselineHarness(
+        tester,
+        group: 'q116_$dimensions',
+        outputRoot: _captures,
+        evidenceRoot: _captures,
+        flatOutput: true,
+        logicalSize: size,
+        safePadding: safePadding,
+        reduceMotion: true,
+      );
+      await harness.mountPresentation(
+        child: _ResultFixture(
+          missing: const {_missing},
+          confirm: (_) async => fail('No lights were tapped.'),
+        ),
+        checkpoint: ZyraPreviewNavigationCheckpoint(
+          guardian: false,
+          model: ViewRequestDraftModel(capacity: 3).snapshot(),
+          tab: 0,
+          pages: const [],
+        ),
+      );
+      await tester.tap(find.text('Check my answers'));
+      await tester.pumpAndSettle();
+      expect(find.text('Not set'), findsOneWidget);
+      expect(find.text('Done · 7 left'), findsOneWidget);
+      expect(find.textContaining('Sara'), findsNothing);
+      if (_captures.isNotEmpty) {
+        await harness.capture(
+          'compatibility',
+          'quick_check',
+          'result_check_missing_sect',
+          'result_check_missing_sect',
+          fileName: 'result_check_missing_sect_$dimensions.png',
+        );
+      }
+    });
   }
 }
 
 class _ResultFixture extends StatefulWidget {
-  const _ResultFixture({required this.confirm});
+  const _ResultFixture({required this.confirm, this.missing = const {}});
   final Future<void> Function(Map<ZyraPreferenceOption, TrafficLight>) confirm;
+  final Set<ZyraPreferenceOption> missing;
 
   @override
   State<_ResultFixture> createState() => _ResultFixtureState();
@@ -159,7 +202,8 @@ class _ResultFixtureState extends State<_ResultFixture> {
       MaterialPageRoute(
         builder: (_) => ZyraCompatibilityResultQuickCheck(
           isOwnerCurrent: () => mounted,
-          load: () async => (visible: _visible, hidden: _hidden),
+          load: () async =>
+              (visible: _visible, hidden: _hidden, missing: widget.missing),
           confirm: widget.confirm,
         ),
       ),

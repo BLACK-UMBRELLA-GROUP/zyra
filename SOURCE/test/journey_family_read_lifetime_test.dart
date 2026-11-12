@@ -75,6 +75,7 @@ void main() {
   var serverStage = 'compatibility_reveal';
   var mutualReveal = false;
   var savedCheck = false;
+  var unavailableAfterCheck = false;
   var retryReadyResult = false;
   var readyReadFailed = false;
   late Future<http.Response> Function(http.Request) familyReadReply;
@@ -108,6 +109,7 @@ void main() {
     serverStage = 'compatibility_reveal';
     mutualReveal = false;
     savedCheck = false;
+    unavailableAfterCheck = false;
     retryReadyResult = false;
     readyReadFailed = false;
     familyReadObservations.clear();
@@ -270,13 +272,15 @@ void main() {
                   'state': ready
                       ? 'ok'
                       : savedCheck
-                      ? 'incomplete'
+                      ? (unavailableAfterCheck ? 'unavailable' : 'incomplete')
                       : 'needs_reconfirmation',
                 },
             ]);
           }
         } else if (path == _visible || path == _hidden) {
-          expect(jsonDecode(request.body), <String, Object?>{});
+          expect(jsonDecode(request.body), {
+            if (path == _visible) 'p_include_missing': true,
+          });
           response = _json([
             if (path == _visible)
               {
@@ -532,6 +536,20 @@ void main() {
     expect(count(_topics), greaterThan(readsAfterRetry));
     expect(notice, findsNothing);
     expect(count(_confirm), 1);
+  });
+
+  testWidgets('Q116 Journey uses its unavailable result treatment', (
+    tester,
+  ) async {
+    unavailableAfterCheck = true;
+    await completeJourneyQuickCheck(tester);
+    expect(
+      find.text('Your compatibility score isn’t available right now.'),
+      findsOneWidget,
+    );
+    expect(find.text('Thank you. Your result is ready.'), findsNothing);
+    expect(find.byType(ZyraCompatibilityScoreReader), findsNothing);
+    expect(find.text('Check my answers'), findsNothing);
   });
 
   for (final mode in ['same owner', 'A-B', 'A-B-A', 'disposed']) {

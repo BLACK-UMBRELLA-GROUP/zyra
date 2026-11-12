@@ -109,7 +109,7 @@ void main() {
               request,
             );
           }
-          _savedRow = payload;
+          _savedRow = {...?_savedRow, ...payload};
           return _jsonResponse(
             {'user_id': _writeReplyOwner ?? payload['user_id']},
             200,
@@ -261,8 +261,12 @@ void main() {
       expect(answers['ch3_q1'], 'Never Married');
       expect(answers['bio_about_me'], 'Faith and kindness.');
       expect(answers['bio_reviewed'], isTrue);
-      expect((_lastPayload!['ch4_preferences'] as Map)['ch3_q1'], {
-        'Never Married': 'green',
+      expect(_lastPayload!.keys, unorderedEquals(['user_id', 'ch3_answers']));
+      expect(_savedRow!['ch4_preferences'], {
+        'ch3_q1': {'Never Married': 'green'},
+      });
+      expect(_savedRow!['ch4_hard_requirements'], {
+        'ch3_q1': ['Currently Married'],
       });
       _writeReplyOwner = _userB;
       expect(

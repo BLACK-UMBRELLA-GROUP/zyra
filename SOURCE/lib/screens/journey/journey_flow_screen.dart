@@ -5536,14 +5536,21 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
       );
     }
 
-    if (widget.readOnly &&
-        topics?.state == ZyraCompatibilityTopicsState.incomplete) {
-      return Center(
-        child: Text(
-          'Your compatibility score isn’t available right now.',
-          style: ZyraText.subtext(),
-          textAlign: TextAlign.center,
-        ),
+    if (topics?.state == ZyraCompatibilityTopicsState.unavailable ||
+        (widget.readOnly &&
+            topics?.state == ZyraCompatibilityTopicsState.incomplete)) {
+      final message = Text(
+        'Your compatibility score isn’t available right now.',
+        style: ZyraText.subtext(),
+        textAlign: TextAlign.center,
+      );
+      if (widget.readOnly || widget.waitingReason == 'waiting_for_continue') {
+        return Center(child: message);
+      }
+      return _JourneyScrollToContinue(
+        onContinue: continueIfCurrent,
+        openingLabel: 'Opening your choices…',
+        child: message,
       );
     }
 

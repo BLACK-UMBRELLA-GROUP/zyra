@@ -6,7 +6,12 @@ import 'zyra_account_state.dart';
 import 'zyra_auth.dart';
 import 'zyra_internal_preview_client.dart';
 
-enum ZyraCompatibilityTopicsState { ready, needsReconfirmation, incomplete }
+enum ZyraCompatibilityTopicsState {
+  ready,
+  needsReconfirmation,
+  incomplete,
+  unavailable,
+}
 
 @immutable
 class ZyraCompatibilityTopicsResult {
@@ -97,6 +102,7 @@ abstract final class ZyraCompatibilityTopicsService {
           'needs_reconfirmation' =>
             ZyraCompatibilityTopicsState.needsReconfirmation,
           'incomplete' || 'invalid' => ZyraCompatibilityTopicsState.incomplete,
+          'unavailable' => ZyraCompatibilityTopicsState.unavailable,
           _ => throw malformed,
         };
         final ready = currentState == ZyraCompatibilityTopicsState.ready;

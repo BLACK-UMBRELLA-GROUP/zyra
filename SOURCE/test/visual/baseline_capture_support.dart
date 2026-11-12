@@ -162,6 +162,7 @@ class _ProductionPreviewFrame extends StatelessWidget {
     this.safePadding = const EdgeInsets.only(top: 59, bottom: 34),
     this.reduceMotion = false,
     this.navigatorObservers = const [],
+    this.backdrop,
   });
   final double textScale;
   final bool highContrast;
@@ -169,6 +170,7 @@ class _ProductionPreviewFrame extends StatelessWidget {
   final bool reduceMotion;
   final List<NavigatorObserver> navigatorObservers;
   final Widget child;
+  final Decoration? backdrop;
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +198,12 @@ class _ProductionPreviewFrame extends StatelessWidget {
             ),
             child: DefaultTextStyle.merge(
               style: const TextStyle(fontFamilyFallback: [_symbolFont]),
-              child: RepaintBoundary(key: _boundary, child: child!),
+              child: RepaintBoundary(
+                key: _boundary,
+                child: backdrop == null
+                    ? child!
+                    : DecoratedBox(decoration: backdrop!, child: child!),
+              ),
             ),
           ),
           home: child,
@@ -257,6 +264,7 @@ class BaselineHarness {
   Future<void> mountPresentation({
     required Widget child,
     required ZyraPreviewNavigationCheckpoint checkpoint,
+    Decoration? backdrop,
   }) async {
     guardian = checkpoint.guardian;
     checkpoints
@@ -270,6 +278,7 @@ class BaselineHarness {
         highContrast: highContrast,
         safePadding: safePadding,
         reduceMotion: reduceMotion,
+        backdrop: backdrop,
         child: child,
       ),
     );

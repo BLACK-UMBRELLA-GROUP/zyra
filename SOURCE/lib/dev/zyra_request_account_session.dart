@@ -9,7 +9,10 @@ import '../models/onboarding_question.dart';
 import '../screens/profile/compatibility_editors.dart';
 import '../screens/profile/edit_profile_screen.dart';
 import '../services/zyra_onboarding_answers_service.dart'
-    show ZyraOnboardingAnswersSnapshot, ZyraPreferenceOption;
+    show
+        ZyraOnboardingAnswersSnapshot,
+        ZyraPreferenceOption,
+        ZyraVisiblePreferenceChecks;
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_interaction_style.dart';
 
@@ -227,13 +230,16 @@ class ZyraRequestCompatibilityRepository
   }
 
   @override
-  Future<Set<ZyraPreferenceOption>> lightsNeedingReconfirmation(
+  Future<ZyraVisiblePreferenceChecks> visiblePreferenceChecks(
     String userId,
   ) async {
     if (!isCurrentOwner(userId, 0)) {
       throw StateError('The preview account changed.');
     }
-    return Set.of(_legacy);
+    return (
+      legacyAmber: Set.of(_legacy),
+      missing: const <ZyraPreferenceOption>{},
+    );
   }
 
   @override

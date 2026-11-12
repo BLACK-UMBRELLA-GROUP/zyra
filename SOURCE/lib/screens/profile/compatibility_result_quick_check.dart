@@ -98,6 +98,7 @@ class ZyraCompatibilityCheckCard extends StatelessWidget {
 typedef ZyraPreferenceCheckLists = ({
   Set<ZyraPreferenceOption> visible,
   Set<ZyraPreferenceOption> hidden,
+  Set<ZyraPreferenceOption> missing,
 });
 typedef ZyraPreferenceSelections = Map<ZyraPreferenceOption, TrafficLight>;
 
@@ -116,8 +117,8 @@ Future<bool> openZyraCompatibilityResultCheck({
       builder: (_) => ZyraCompatibilityResultQuickCheck(
         isOwnerCurrent: isOwnerCurrent,
         load: () async {
-          final visible =
-              await ZyraOnboardingAnswersService.lightsNeedingReconfirmation(
+          final checks =
+              await ZyraOnboardingAnswersService.visiblePreferenceChecks(
                 expectedUserId: ownerId,
               );
           if (!isOwnerCurrent()) throw StateError('The setup account changed.');
@@ -125,7 +126,11 @@ Future<bool> openZyraCompatibilityResultCheck({
               await ZyraOnboardingAnswersService.lightsNeededForCompatibility(
                 expectedUserId: ownerId,
               );
-          return (visible: visible, hidden: hidden);
+          return (
+            visible: checks.legacyAmber,
+            hidden: hidden,
+            missing: checks.missing,
+          );
         },
         confirm: (selections) =>
             ZyraOnboardingAnswersService.confirmPreferenceLights(
@@ -152,13 +157,14 @@ typedef _CheckItem = ({
   String question,
   String option,
   _CheckGroup group,
+  bool missing,
 });
 
 List<_CheckItem> _items(ZyraPreferenceCheckLists lists) {
   final items = <_CheckItem>[];
   // A visibility change between the two reads can briefly put an item in both.
   // Use the current hidden classification, and never submit a duplicate key.
-  final visible = lists.visible.difference(lists.hidden);
+  final visible = {...lists.visible, ...lists.missing}.difference(lists.hidden);
   final remaining = {...visible, ...lists.hidden};
   void add(
     ZyraPreferenceOption key,
@@ -167,7 +173,13 @@ List<_CheckItem> _items(ZyraPreferenceCheckLists lists) {
     _CheckGroup group,
   ) {
     if (remaining.remove(key)) {
-      items.add((key: key, question: question, option: option, group: group));
+      items.add((
+        key: key,
+        question: question,
+        option: option,
+        group: group,
+        missing: lists.missing.contains(key),
+      ));
     }
   }
 
@@ -392,11 +404,12 @@ class _ZyraCompatibilityResultQuickCheckState
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text(
-                          'These were saved before amber meant “Open to this”. '
-                          'Tap a light on each, even if it stays amber, so it counts.',
-                          style: ZyraText.subtext(size: 12.5),
-                        ),
+                        if (items?.any((item) => item.missing) != true)
+                          Text(
+                            'These were saved before amber meant “Open to this”. '
+                            'Tap a light on each, even if it stays amber, so it counts.',
+                            style: ZyraText.subtext(size: 12.5),
+                          ),
                         if (_error case final message?) ...[
                           const SizedBox(height: 8),
                           ZyraErrorBanner(
@@ -530,7 +543,7 @@ class _ItemCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(99),
                 ),
                 child: Text(
-                  'Check',
+                  item.missing ? 'Not set' : 'Check',
                   style: ZyraText.subtext(
                     size: 10.5,
                     color: ZyraColors.goldText,

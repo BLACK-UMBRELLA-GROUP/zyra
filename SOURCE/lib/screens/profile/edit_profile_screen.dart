@@ -65,7 +65,7 @@ abstract interface class ZyraCompatibilityEditorRepository {
 }
 
 abstract interface class ZyraPreferenceQuickCheckRepository {
-  Future<Set<ZyraPreferenceOption>> lightsNeedingReconfirmation(String userId);
+  Future<ZyraVisiblePreferenceChecks> visiblePreferenceChecks(String userId);
   Future<ZyraSetupPreferenceLights?> loadSetupPreferenceLights(String userId);
   Future<void> confirmPreferenceLight(
     String userId,
@@ -119,11 +119,10 @@ class _ServerCompatibilityEditorRepository
   }
 
   @override
-  Future<Set<ZyraPreferenceOption>> lightsNeedingReconfirmation(
-    String userId,
-  ) => ZyraOnboardingAnswersService.lightsNeedingReconfirmation(
-    expectedUserId: userId,
-  );
+  Future<ZyraVisiblePreferenceChecks> visiblePreferenceChecks(String userId) =>
+      ZyraOnboardingAnswersService.visiblePreferenceChecks(
+        expectedUserId: userId,
+      );
 
   @override
   Future<ZyraSetupPreferenceLights?> loadSetupPreferenceLights(
@@ -524,14 +523,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         userId != null) {
       final checkRepository = repository as ZyraPreferenceQuickCheckRepository;
       try {
-        final items = await checkRepository
-            .lightsNeedingReconfirmation(userId)
+        final checks = await checkRepository
+            .visiblePreferenceChecks(userId)
             .timeout(const Duration(seconds: 10));
         final setup = await checkRepository
             .loadSetupPreferenceLights(userId)
             .timeout(const Duration(seconds: 10));
         quickCheck = ZyraPreferenceQuickCheck(
-          items: items,
+          items: checks.legacyAmber,
+          missing: checks.missing,
           setup: setup,
           confirm: (option, light) async {
             if (!canEdit()) throw StateError('The profile account changed.');

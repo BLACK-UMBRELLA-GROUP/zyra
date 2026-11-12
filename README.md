@@ -68,6 +68,9 @@ counterpart’s preference questions. A deliberate tap clears a pending check.
 When the server asks for reconfirmation before showing a Compatibility result,
 the Seeker can check their saved amber choices in one place and return
 to the result with their existing Unlock.
+New Compatibility results use the three sect choices shown in the Seeker’s
+set-up. A missing sect light appears as Not set in Partner preferences and can
+be set with a deliberate tap. Saved results and Unlocks are kept.
 Haptics starts on Light for members who have never saved a level.
 
 ## Built with

@@ -371,6 +371,79 @@ void main() {
   });
 
   test(
+    'visible reader separates a missing sect light from legacy Amber',
+    () async {
+      const missing = (
+        questionId: 'ch2.sect.matrix',
+        optionValue: 'current-sect',
+      );
+      final missingRow = {
+        ..._item(missing, 'amber'),
+        'light': null,
+        'reason': 'missing',
+      };
+      respond = (request) {
+        expect(request.url.path, _read);
+        expect(jsonDecode(request.body), {'p_include_missing': true});
+        return _json([
+          {..._item(_legacy, 'amber'), 'reason': null},
+          missingRow,
+        ]);
+      };
+      final checks =
+          await ZyraOnboardingAnswersService.visiblePreferenceChecks();
+      expect(checks.legacyAmber, {_legacy});
+      expect(checks.missing, {missing});
+      expect(requests, hasLength(1));
+
+      for (final rows in [
+        [
+          missingRow,
+          {..._item(missing, 'amber'), 'reason': null},
+        ],
+        [
+          {...missingRow, 'question_id': 'ch3_q33'},
+        ],
+        [
+          {...missingRow, 'light': 'amber'},
+        ],
+        [
+          {...missingRow, 'subject_id': _other},
+        ],
+      ]) {
+        respond = (_) => _json(rows);
+        await expectLater(
+          ZyraOnboardingAnswersService.visiblePreferenceChecks(),
+          throwsFormatException,
+        );
+      }
+    },
+  );
+
+  test(
+    'visible check falls back to the Amber-only reader on the prior schema',
+    () async {
+      respond = (request) {
+        expect(request.url.path, _read);
+        return jsonDecode(request.body).isEmpty
+            ? _json([_item(_legacy, 'amber')])
+            : _json({
+                'code': 'PGRST202',
+                'message': 'No matching overload',
+              }, status: 404);
+      };
+      final checks =
+          await ZyraOnboardingAnswersService.visiblePreferenceChecks();
+      expect(checks.legacyAmber, {_legacy});
+      expect(checks.missing, isEmpty);
+      expect(requests.map((request) => jsonDecode(request.body)), [
+        {'p_include_missing': true},
+        {},
+      ]);
+    },
+  );
+
+  test(
     'combined check uses two subject-free reads and one explicit batch',
     () async {
       final token = supabase.auth.currentSession!.accessToken;
@@ -474,6 +547,7 @@ void main() {
         _topicRows('ok', overall: 72.5, locked: true),
         _topicRows('incomplete'),
         _topicRows('invalid'),
+        _topicRows('unavailable', locked: true),
         [],
       ].iterator;
       respond = (request) {
@@ -526,9 +600,13 @@ void main() {
         expect(incomplete.overallScore, isNull);
         expect(incomplete.areaBands, isNull);
       }
+      final unavailable = (await fetch())!;
+      expect(unavailable.state, ZyraCompatibilityTopicsState.unavailable);
+      expect(unavailable.overallScore, isNull);
+      expect(unavailable.areaBands, isNull);
       expect(await fetch(), isNull);
 
-      expect(requests, hasLength(6));
+      expect(requests, hasLength(7));
       for (final request in requests.take(3)) {
         expect(request.headers['Authorization'], 'Bearer $token');
         expect(jsonDecode(request.body), {

@@ -56,6 +56,7 @@ class TrafficLightQuestionScreen extends StatefulWidget {
   /// empty, or exactly the set of 🔴 options.
   final Set<String> initialHardRequirement;
   final Set<String> optionsToCheck;
+  final Set<String> missingOptions;
   final Future<bool> Function(String, TrafficLight)? onReconfirm;
   final bool confirming;
   final bool confirmEveryTap;
@@ -74,6 +75,7 @@ class TrafficLightQuestionScreen extends StatefulWidget {
     this.initialValues = const {},
     this.initialHardRequirement = const {},
     this.optionsToCheck = const {},
+    this.missingOptions = const {},
     this.onReconfirm,
     this.confirming = false,
     this.confirmEveryTap = false,
@@ -160,6 +162,7 @@ class _TrafficLightQuestionScreenState
         ],
         ...widget.options.map((option) {
           final check = widget.optionsToCheck.contains(option);
+          final missing = widget.missingOptions.contains(option);
           final current = check ? null : _values[option];
           final isRed = current == TrafficLight.red;
           final canChoose = !widget.confirming;
@@ -200,7 +203,7 @@ class _TrafficLightQuestionScreenState
                             border: Border.all(color: checkBorder),
                           ),
                           child: Text(
-                            'Check',
+                            missing ? 'Not set' : 'Check',
                             style: ZyraText.subtext(
                               size: 10.5,
                               color: checkInk,
@@ -232,7 +235,7 @@ class _TrafficLightQuestionScreenState
                       ],
                     ],
                   ),
-                  if (check) ...[
+                  if (check && !missing) ...[
                     const SizedBox(height: 4),
                     Text(
                       'Saved before as “No preference”. Tap a light to confirm.',

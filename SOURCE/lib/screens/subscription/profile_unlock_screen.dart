@@ -692,6 +692,8 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
     final checkedScore = overallUnlocked && _checkedFromResult
         ? _topics?.overallScore
         : null;
+    final resultUnavailable =
+        _topics?.state == ZyraCompatibilityTopicsState.unavailable;
 
     return DecoratedBox(
       decoration: ZyraAppGoldDecoration(
@@ -852,7 +854,9 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
                                   _balanceUnavailable,
                               // The local fixture never calls a transaction service.
                               // Ordinary full-detail attempts retain both spend fuses.
-                              onUnlock: _needsRecovery || _accessUnavailable
+                              onUnlock: resultUnavailable
+                                  ? null
+                                  : _needsRecovery || _accessUnavailable
                                   ? _checkUnlockAccess
                                   : _balanceUnavailable
                                   ? _checkBalance
@@ -865,6 +869,7 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
                                   : null,
                               child: _Detail(
                                 unlocked: detailUnlocked,
+                                showAreas: !resultUnavailable,
                                 developerPreview: _isDeveloperPreview,
                                 demoBands: demoUnlocked
                                     ? ZyraCompatibilityDemo.bandsFor(
@@ -1076,6 +1081,7 @@ class _OverallResult extends StatelessWidget {
 /// overall result. A real Plus grant admits the area list with no band data
 /// until the trusted result is wired. Demo bands come only from the caller.
 class _Detail extends StatelessWidget {
+  final bool showAreas;
   final bool unlocked;
   final bool developerPreview;
   final Map<ZyraCompatibilityArea, ZyraCompatibilityBand>? demoBands;
@@ -1092,6 +1098,7 @@ class _Detail extends StatelessWidget {
 
   const _Detail({
     required this.unlocked,
+    this.showAreas = true,
     required this.developerPreview,
     this.demoBands,
     required this.guardians,
@@ -1122,19 +1129,20 @@ class _Detail extends StatelessWidget {
           ),
           const SizedBox(height: 14),
         ],
-        Column(
-          key: demoUnlocked
-              ? const ValueKey('compatibility-demo-result')
-              : null,
-          children: [
-            for (final area in ZyraCompatibilityArea.values)
-              ZyraCompatibilityAreaRow(
-                key: ValueKey('compatibility-area-row-${area.name}'),
-                area: area,
-                band: demoBands?[area] ?? unavailable,
-              ),
-          ],
-        ),
+        if (showAreas)
+          Column(
+            key: demoUnlocked
+                ? const ValueKey('compatibility-demo-result')
+                : null,
+            children: [
+              for (final area in ZyraCompatibilityArea.values)
+                ZyraCompatibilityAreaRow(
+                  key: ValueKey('compatibility-area-row-${area.name}'),
+                  area: area,
+                  band: demoBands?[area] ?? unavailable,
+                ),
+            ],
+          ),
         if (demoUnlocked)
           const _DemoGuardian()
         else

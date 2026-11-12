@@ -360,12 +360,15 @@ class ZyraCompatibilityDraft {
 class ZyraPreferenceQuickCheck {
   ZyraPreferenceQuickCheck({
     required Set<ZyraPreferenceOption> items,
+    Set<ZyraPreferenceOption> missing = const {},
     required this.confirm,
     this.onConfirmed,
     this.setup,
-  }) : _items = Set.of(items);
+  }) : _items = {...items, ...missing},
+       _missing = Set.of(missing);
 
   final Set<ZyraPreferenceOption> _items;
+  final Set<ZyraPreferenceOption> _missing;
   final Future<void> Function(ZyraPreferenceOption, TrafficLight) confirm;
   final void Function(OnboardingQuestion, String, TrafficLight)? onConfirmed;
   final ZyraSetupPreferenceLights? setup;
@@ -395,6 +398,13 @@ class ZyraPreferenceQuickCheck {
       if (_items.contains(_key(question, option))) option,
   };
 
+  bool get hasMissing => _missing.isNotEmpty;
+
+  Set<String> missingOptionsFor(OnboardingQuestion question) => {
+    for (final option in question.options)
+      if (_missing.contains(_key(question, option))) option,
+  };
+
   int countFor(Iterable<OnboardingQuestion> questions) => questions.fold(
     0,
     (count, question) => count + optionsFor(question).length,
@@ -413,6 +423,7 @@ class ZyraPreferenceQuickCheck {
     if (!_items.contains(key) && !setupQuestion) return;
     await confirm(key, light);
     _items.remove(key);
+    _missing.remove(key);
     if (setupQuestion) {
       setup!.lights[key] = light;
     } else {
@@ -1108,7 +1119,11 @@ class _PreferenceGroupsState extends State<_PreferenceGroups> {
       padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
       children: [
         if (count > 0) ...[
-          _QuickCheckCard(count: count, onCheck: _checkNow),
+          _QuickCheckCard(
+            count: count,
+            onCheck: _checkNow,
+            hasMissing: quickCheck!.hasMissing,
+          ),
           const SizedBox(height: 14),
         ],
         _MeaningCard(),
@@ -1389,6 +1404,9 @@ class _PreferenceQuestionEditorState extends State<_PreferenceQuestionEditor> {
             initialHardRequirement: _hard,
             optionsToCheck:
                 widget.quickCheck?.optionsFor(widget.question) ?? const {},
+            missingOptions:
+                widget.quickCheck?.missingOptionsFor(widget.question) ??
+                const {},
             confirmEveryTap: _setup,
             confirming: _confirming,
             onReconfirm: _reconfirm,
@@ -1574,10 +1592,15 @@ class _HardQuestionCard extends StatelessWidget {
 const _quickCheckInk = Color(0xFF845F24);
 
 class _QuickCheckCard extends StatelessWidget {
-  const _QuickCheckCard({required this.count, required this.onCheck});
+  const _QuickCheckCard({
+    required this.count,
+    required this.onCheck,
+    required this.hasMissing,
+  });
 
   final int count;
   final VoidCallback onCheck;
+  final bool hasMissing;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -1609,25 +1632,27 @@ class _QuickCheckCard extends StatelessWidget {
           '$count ${count == 1 ? 'answer' : 'answers'} to check',
           style: ZyraText.heading(size: 17),
         ),
-        const SizedBox(height: 4),
-        Text.rich(
-          TextSpan(
-            children: [
-              const TextSpan(text: 'The amber light now means '),
-              TextSpan(
-                text: '“Open to this”',
-                style: ZyraText.subtext(
-                  size: 12.5,
-                ).copyWith(fontWeight: FontWeight.w500),
-              ),
-              const TextSpan(
-                text:
-                    '. Tap a light again on each one, even if it stays amber, so it counts.',
-              ),
-            ],
+        if (!hasMissing) ...[
+          const SizedBox(height: 4),
+          Text.rich(
+            TextSpan(
+              children: [
+                const TextSpan(text: 'The amber light now means '),
+                TextSpan(
+                  text: '“Open to this”',
+                  style: ZyraText.subtext(
+                    size: 12.5,
+                  ).copyWith(fontWeight: FontWeight.w500),
+                ),
+                const TextSpan(
+                  text:
+                      '. Tap a light again on each one, even if it stays amber, so it counts.',
+                ),
+              ],
+            ),
+            style: ZyraText.subtext(size: 12.5),
           ),
-          style: ZyraText.subtext(size: 12.5),
-        ),
+        ],
         const SizedBox(height: 12),
         FilledButton(
           key: const ValueKey('partner-preferences-check-now'),

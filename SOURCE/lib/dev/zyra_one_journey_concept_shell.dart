@@ -7982,13 +7982,12 @@ class _ZyraOneJourneyConceptShellState
     Future<(ZyraCompatibilityDraft, ZyraPreferenceQuickCheck)>
     loadPreferences() async {
       final snapshot = await compatibility.load('draft-self');
-      final items = await compatibility.lightsNeedingReconfirmation(
-        'draft-self',
-      );
+      final checks = await compatibility.visiblePreferenceChecks('draft-self');
       return (
         ZyraCompatibilityDraft.fromSnapshot(gender: 'male', snapshot: snapshot),
         ZyraPreferenceQuickCheck(
-          items: items,
+          items: checks.legacyAmber,
+          missing: checks.missing,
           setup: await compatibility.loadSetupPreferenceLights('draft-self'),
           confirm: (option, light) async {
             if (!current()) throw StateError('The preview account changed.');

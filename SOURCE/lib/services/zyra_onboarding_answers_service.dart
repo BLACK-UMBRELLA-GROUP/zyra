@@ -35,6 +35,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show PostgrestException;
 
 import '../main.dart';
 import '../models/journey_bio.dart';
@@ -45,6 +46,10 @@ import 'zyra_account_state.dart';
 import 'zyra_internal_preview_client.dart';
 
 typedef ZyraPreferenceOption = ({String questionId, String optionValue});
+typedef ZyraVisiblePreferenceChecks = ({
+  Set<ZyraPreferenceOption> legacyAmber,
+  Set<ZyraPreferenceOption> missing,
+});
 
 class ZyraOnboardingAnswersSnapshot {
   final Map<String, dynamic> ch3Answers;
@@ -70,6 +75,7 @@ class ZyraOnboardingAnswersService {
   static bool get clientReady => _clientReadyForTesting ?? supabaseReady;
 
   static const _preferenceRpcTimeout = Duration(seconds: 10);
+  static const _visiblePreferenceRpc = 'zyra_my_lights_needing_reconfirmation';
 
   static final preferenceConfirmationRevision = ValueNotifier<int>(0);
 
@@ -124,52 +130,118 @@ class ZyraOnboardingAnswersService {
   /// Returns only the signed-in Seeker's legacy Amber controls to check.
   static Future<Set<ZyraPreferenceOption>> lightsNeedingReconfirmation({
     String? expectedUserId,
-  }) => _readPreferenceLights(
-    'zyra_my_lights_needing_reconfirmation',
-    expectedUserId: expectedUserId,
-  );
+  }) async => _decodeVisiblePreferenceChecks(
+    await _readPreferenceLights(
+      _visiblePreferenceRpc,
+      actor: _captureActor(expectedUserId),
+    ),
+  ).legacyAmber;
+
+  /// Includes unset Chapter 2 sect lights alongside legacy Amber.
+  static Future<ZyraVisiblePreferenceChecks> visiblePreferenceChecks({
+    String? expectedUserId,
+  }) async {
+    final actor = _captureActor(expectedUserId);
+    try {
+      return _decodeVisiblePreferenceChecks(
+        await _readPreferenceLights(
+          _visiblePreferenceRpc,
+          actor: actor,
+          params: const {'p_include_missing': true},
+        ),
+        includeMissing: true,
+      );
+    } on PostgrestException catch (error) {
+      // The older schema only has the no-argument, Amber-only reader.
+      if (error.code != 'PGRST202') rethrow;
+      _requireActor(actor);
+      return _decodeVisiblePreferenceChecks(
+        await _readPreferenceLights(_visiblePreferenceRpc, actor: actor),
+      );
+    }
+  }
+
+  static ZyraVisiblePreferenceChecks _decodeVisiblePreferenceChecks(
+    List<Map> rows, {
+    bool includeMissing = false,
+  }) {
+    final legacyAmber = <ZyraPreferenceOption>{};
+    final missing = <ZyraPreferenceOption>{};
+    for (final row in rows) {
+      final option = _readPreferenceOption(row);
+      if (legacyAmber.contains(option) || missing.contains(option)) {
+        throw _invalidPreferenceCheck;
+      }
+      if (row['light'] == 'amber' &&
+          (row.length == 3 ||
+              (includeMissing &&
+                  row.length == 4 &&
+                  row.containsKey('reason') &&
+                  row['reason'] == null))) {
+        legacyAmber.add(option);
+      } else if (includeMissing &&
+          row.length == 4 &&
+          row['light'] == null &&
+          row['reason'] == 'missing' &&
+          option.questionId == 'ch2.sect.matrix') {
+        missing.add(option);
+      } else {
+        throw _invalidPreferenceCheck;
+      }
+    }
+    return (legacyAmber: legacyAmber, missing: missing);
+  }
 
   /// The caller's own hidden legacy Amber controls that can affect a result.
   static Future<Set<ZyraPreferenceOption>> lightsNeededForCompatibility({
     String? expectedUserId,
-  }) => _readPreferenceLights(
-    'zyra_my_lights_needed_for_compatibility',
-    expectedUserId: expectedUserId,
-    reason: 'hidden_but_applicable',
+  }) async {
+    final rows = await _readPreferenceLights(
+      'zyra_my_lights_needed_for_compatibility',
+      actor: _captureActor(expectedUserId),
+    );
+    final options = <ZyraPreferenceOption>{};
+    for (final row in rows) {
+      final option = _readPreferenceOption(row);
+      if (row.length != 4 ||
+          row['light'] != 'amber' ||
+          row['reason'] != 'hidden_but_applicable' ||
+          !options.add(option)) {
+        throw _invalidPreferenceCheck;
+      }
+    }
+    return options;
+  }
+
+  static const _invalidPreferenceCheck = FormatException(
+    'Invalid preference check response.',
   );
 
-  static Future<Set<ZyraPreferenceOption>> _readPreferenceLights(
+  static ZyraPreferenceOption _readPreferenceOption(Object? row) {
+    if (row case {
+      'question_id': final String questionId,
+      'option_value': final String optionValue,
+      'light': _,
+    } when questionId.isNotEmpty && optionValue.isNotEmpty) {
+      return (questionId: questionId, optionValue: optionValue);
+    }
+    throw _invalidPreferenceCheck;
+  }
+
+  static Future<List<Map>> _readPreferenceLights(
     String functionName, {
-    required String? expectedUserId,
-    String? reason,
+    required (String, int) actor,
+    Map<String, Object> params = const {},
   }) async {
-    final actor = _captureActor(expectedUserId);
+    _requireActor(actor);
     final rows = await supabase
-        .rpc<List<dynamic>>(functionName, params: const {})
+        .rpc<List<dynamic>>(functionName, params: params)
         .setHeader('Authorization', _preferenceRpcAuthorization())
         .timeout(_preferenceRpcTimeout);
     _requireActor(actor);
 
-    final options = <ZyraPreferenceOption>{};
-    for (final row in rows) {
-      if (row
-          case {
-            'question_id': final String questionId,
-            'option_value': final String optionValue,
-            'light': 'amber',
-          }
-          when (reason == null
-                  ? row.length == 3
-                  : row.length == 4 && row['reason'] == reason) &&
-              questionId.isNotEmpty &&
-              optionValue.isNotEmpty) {
-        if (options.add((questionId: questionId, optionValue: optionValue))) {
-          continue;
-        }
-      }
-      throw const FormatException('Invalid preference check response.');
-    }
-    return options;
+    if (rows.any((row) => row is! Map)) throw _invalidPreferenceCheck;
+    return rows.cast<Map>();
   }
 
   /// Records an explicit tap on a light through the owner-only RPC.

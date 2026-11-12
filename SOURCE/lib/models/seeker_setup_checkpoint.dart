@@ -36,7 +36,8 @@ bool seekerProfileSectionComplete({
   if (photoCount < 3 || (location ?? '').trim().isEmpty || details == null) {
     return false;
   }
-  bool light(Object? value) => const {'green', 'yellow', 'red'}.contains(value);
+  bool light(Object? value) =>
+      const {'green', 'yellow', 'amber', 'red'}.contains(value);
   Map<dynamic, dynamic> section(String key) => details.preferences[key] is Map
       ? details.preferences[key] as Map
       : const {};
