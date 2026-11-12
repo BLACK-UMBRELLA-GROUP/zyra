@@ -1,6 +1,7 @@
 import 'dart:collection';
 
-import 'package:flutter/foundation.dart' show Listenable, ValueNotifier;
+import 'package:flutter/foundation.dart'
+    show Listenable, ValueNotifier, visibleForTesting;
 
 import '../data/zyra_journey_life_snapshot.dart';
 import '../data/zyra_journey_stages.dart';
@@ -326,6 +327,7 @@ final class ViewRequestDraftSnapshot {
       departedPeers = Set.unmodifiable(model._departedPeers),
       departureNoticeSequence = model._departureNoticeSequence,
       departureNotices = Map.unmodifiable(model._departureNotices),
+      _inactivityNoticeOpen = model._inactivityNoticeOpen,
       removedEndedAttemptIds = Set.unmodifiable(model._removedEndedAttemptIds),
       preparingRequests = Map.unmodifiable(model._preparingRequests),
       restartRequestedAt = Map.unmodifiable(model._restartRequestedAt),
@@ -384,6 +386,7 @@ final class ViewRequestDraftSnapshot {
       removedEndedAttemptIds;
   final int departureNoticeSequence;
   final Map<int, DateTime> departureNotices;
+  final bool _inactivityNoticeOpen;
   final Map<String, DraftJourneyPreparation> preparingRequests;
   final Map<String, DateTime> restartRequestedAt;
   final Set<String> acknowledgedReceivedRequestIds;
@@ -723,6 +726,7 @@ class ViewRequestDraftModel {
     _departedPeers.addAll(snapshot.departedPeers);
     _departureNoticeSequence = snapshot.departureNoticeSequence;
     _departureNotices.addAll(snapshot.departureNotices);
+    _inactivityNoticeOpen = snapshot._inactivityNoticeOpen;
     _removedEndedAttemptIds.addAll(snapshot.removedEndedAttemptIds);
     _preparingRequests.addAll(snapshot.preparingRequests);
     _restartRequestedAt.addAll(snapshot.restartRequestedAt);
@@ -813,6 +817,7 @@ class ViewRequestDraftModel {
   final _peerDepartures = ValueNotifier(0);
   int _departureNoticeSequence = 0;
   final Map<int, DateTime> _departureNotices = {};
+  bool _inactivityNoticeOpen = false;
   final Set<String> _removedEndedAttemptIds = {};
   final Map<String, DraftJourneyPreparation> _preparingRequests = {};
   final Map<String, DateTime> _restartRequestedAt = {};
@@ -855,6 +860,24 @@ class ViewRequestDraftModel {
   Listenable get peerDepartures => _peerDepartures;
   Map<int, DateTime> get departureNotices =>
       UnmodifiableMapView(_departureNotices);
+
+  bool get _hasRetainedEndedJourneys =>
+      _endedAttempts.any((attempt) => !isEndedAttemptRemoved(attempt.id));
+
+  /// Sets up an open notice for a fictional account with retained history.
+  @visibleForTesting
+  bool seedOpenInactivityNotice() {
+    if (!_hasRetainedEndedJourneys) return false;
+    _inactivityNoticeOpen = true;
+    return true;
+  }
+
+  /// Local equivalent of the launch activity touch and its one-time read.
+  DateTime? recordInactivityReturn() {
+    if (!_inactivityNoticeOpen) return null;
+    _inactivityNoticeOpen = false;
+    return _hasRetainedEndedJourneys ? _clock().toUtc() : null;
+  }
 
   bool hasVisibleEndedJourney(String id) =>
       _states[id] == DraftJourneyState.ended &&
@@ -2243,6 +2266,7 @@ class ViewRequestDraftModel {
     _peerBlocks.clear();
     _departedPeers.clear();
     _departureNotices.clear();
+    _inactivityNoticeOpen = false;
     _removedEndedAttemptIds.clear();
     _preparingRequests.clear();
     _restartRequestedAt.clear();

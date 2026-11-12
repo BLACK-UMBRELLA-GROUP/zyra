@@ -84,6 +84,11 @@ with Open Journey, and the Journey place is free. The Guardian One comparison
 uses Continue until a verified store offer is available. Live account deletion
 and push delivery await their server rollout.
 
+An open inactivity notice in the Founder preview's sample data clears on
+return. My ZYRA shows Welcome back once, with a link to Ended Journeys. The
+item goes away when opened or when the Seeker leaves My ZYRA. Member
+availability awaits the inactivity server rollout.
+
 Haptics starts on Light for members who have never saved a level.
 
 ## Built with

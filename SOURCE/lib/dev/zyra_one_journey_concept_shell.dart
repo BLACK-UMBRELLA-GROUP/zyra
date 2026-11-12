@@ -267,6 +267,9 @@ class _ZyraOneJourneyConceptShellState
   bool _personSafetyConfirmationOpen = false;
   int _myZyraLastOpenedRevision = 0;
   int _myZyraFocusIndex = 0;
+  DateTime? _welcomeBackAt;
+  bool _backgroundedSinceReturn = false;
+  late final AppLifecycleListener _inactivityLifecycle;
   String? _myZyraQuickAccessPage;
   final _myZyraConsumedFocusTokens = <String>{};
   final _circleReadMessageKeys = <String>{};
@@ -472,6 +475,9 @@ class _ZyraOneJourneyConceptShellState
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _routeRefreshScheduled = false;
       if (!mounted) return;
+      if (_activityRoot && ModalRoute.isCurrentOf(context) == false) {
+        _dismissWelcomeBack();
+      }
       if (_allowed) {
         _refreshTimeRules();
       } else {
@@ -712,6 +718,14 @@ class _ZyraOneJourneyConceptShellState
     _model.peerDepartures.addListener(_peerDeparted);
     _model.advanceTimeRules();
     if (sameRole) _restoreCheckpoint(checkpoint!);
+    if (_allowed && !_guardianRole) {
+      _welcomeBackAt = _model.recordInactivityReturn();
+      if (_welcomeBackAt != null) _myZyraFocusIndex = 0;
+    }
+    _inactivityLifecycle = AppLifecycleListener(
+      onHide: () => _backgroundedSinceReturn = true,
+      onResume: _resumeInactivityNotice,
+    );
     if (_guardianRole && _tab == 2 && _page == null) {
       _seeGuardianTabActivity();
     }
@@ -1312,10 +1326,12 @@ class _ZyraOneJourneyConceptShellState
     _closeLocationFlow();
     _cancelTimeRuleTimer();
     setState(() {
+      final wasMyZyra = _activityRoot;
       _browseOptionsOpen = false;
       _browseOptionsPersonId = null;
       _hiddenProfileRestore = null;
       change();
+      if (wasMyZyra && !_activityRoot) _dismissWelcomeBack();
       if (_tab != 2 ||
           _pages.firstOrNull != _myZyraQuickAccessPage ||
           !_isMyZyraQuickPage(_myZyraQuickAccessPage)) {
@@ -1860,6 +1876,7 @@ class _ZyraOneJourneyConceptShellState
 
   @override
   void dispose() {
+    _inactivityLifecycle.dispose();
     _model.peerDepartures.removeListener(_peerDeparted);
     final confirmRoute = _ownedConfirmRoute;
     _ownedConfirmRoute = null;
@@ -3099,6 +3116,7 @@ class _ZyraOneJourneyConceptShellState
     int requestsTab = 0,
     String? viewedReceivedRequestId,
     bool quickAccess = false,
+    bool consumeFocus = true,
   }) {
     if (!_allowed ||
         _guardianRole ||
@@ -3122,9 +3140,11 @@ class _ZyraOneJourneyConceptShellState
       return;
     }
     _move(() {
-      _consumeFocusTarget(
-        page == 'requests' && requestsTab == 2 ? 'requests_past' : page,
-      );
+      if (consumeFocus) {
+        _consumeFocusTarget(
+          page == 'requests' && requestsTab == 2 ? 'requests_past' : page,
+        );
+      }
       // Opening an addressed highlight consumes only that item's attention,
       // never its pending request. Generic list entry remains unacknowledged.
       if (viewedId != null) _model.acknowledgeReceivedRequests([viewedId]);
@@ -5148,6 +5168,26 @@ class _ZyraOneJourneyConceptShellState
 
   bool get _activityRoot => !_guardianRole && _tab == 2 && _page == null;
 
+  void _dismissWelcomeBack() {
+    if (_welcomeBackAt == null) return;
+    _welcomeBackAt = null;
+    _myZyraFocusIndex = 0;
+  }
+
+  void _resumeInactivityNotice() {
+    if (!_backgroundedSinceReturn) return;
+    _backgroundedSinceReturn = false;
+    final at = _allowed && !_guardianRole
+        ? _model.recordInactivityReturn()
+        : null;
+    if (_welcomeBackAt == null && at == null) return;
+    setState(() {
+      _welcomeBackAt = at;
+      _myZyraFocusIndex = 0;
+    });
+    _publishCheckpoint();
+  }
+
   void _clearActivityFixture() {
     _activityExample = null;
     _activityFixtureRevision++;
@@ -5164,6 +5204,17 @@ class _ZyraOneJourneyConceptShellState
 
   List<ZyraFocusEvent> _focusEvents({bool includeConsumed = false}) {
     final events = <ZyraFocusEvent>[
+      if (_welcomeBackAt case final at? when !_guardianRole)
+        ZyraFocusEvent(
+          tokens: ['welcome-back:${at.microsecondsSinceEpoch}'],
+          target: 'welcome_back',
+          title: 'Welcome back, ${_accountSession.ownProfile(false).firstName}',
+          detail:
+              'You were away for a while. Your Ended Journeys are kept — nothing was removed.',
+          action: 'View Ended Journeys',
+          icon: Icons.history,
+          occurredAt: at,
+        ),
       for (final notice in _model.departureNotices.entries)
         ZyraFocusEvent(
           tokens: ['departure:${notice.key}'],
@@ -5403,6 +5454,10 @@ class _ZyraOneJourneyConceptShellState
     visible.sort((a, b) {
       final time = b.occurredAt.compareTo(a.occurredAt);
       if (time != 0) return time;
+      if (a.target != b.target) {
+        if (a.target == 'welcome_back') return -1;
+        if (b.target == 'welcome_back') return 1;
+      }
       final order = b.order.compareTo(a.order);
       return order != 0 ? order : a.tokens.first.compareTo(b.tokens.first);
     });
@@ -5441,6 +5496,8 @@ class _ZyraOneJourneyConceptShellState
         _activity('introductions');
       case 'ended':
         _activity('ended');
+      case 'welcome_back':
+        _activity('ended', quickAccess: true, consumeFocus: false);
       case 'request_capacity':
         if (id != null) _openAcceptedCapacity(id);
       case 'ready':
