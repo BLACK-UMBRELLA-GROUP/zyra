@@ -100,7 +100,9 @@ class ZyraWalletPlace {
     ZyraWalletPlaceState.invitationPending =>
       'Invitation pending · ${recipient ?? 'Recipient'}',
     ZyraWalletPlaceState.fundedUntilRenewal =>
-      'Funded until renewal · ${recipient ?? 'Former member'}',
+      recipient == null
+          ? 'Funded until renewal'
+          : 'Funded until renewal · $recipient',
   };
 
   ZyraWalletPlace copyWith({ZyraWalletPlaceState? state, String? recipient}) =>

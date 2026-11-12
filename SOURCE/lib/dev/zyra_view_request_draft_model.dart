@@ -1,5 +1,7 @@
 import 'dart:collection';
 
+import 'package:flutter/foundation.dart' show Listenable, ValueNotifier;
+
 import '../data/zyra_journey_life_snapshot.dart';
 import '../data/zyra_journey_stages.dart';
 import '../data/zyra_reference_data.dart' show zyraRelationshipLabel;
@@ -322,6 +324,8 @@ final class ViewRequestDraftSnapshot {
       blockedPeers = Set.unmodifiable(model._blockedPeers),
       peerBlocks = Set.unmodifiable(model._peerBlocks),
       departedPeers = Set.unmodifiable(model._departedPeers),
+      departureNoticeSequence = model._departureNoticeSequence,
+      departureNotices = Map.unmodifiable(model._departureNotices),
       removedEndedAttemptIds = Set.unmodifiable(model._removedEndedAttemptIds),
       preparingRequests = Map.unmodifiable(model._preparingRequests),
       restartRequestedAt = Map.unmodifiable(model._restartRequestedAt),
@@ -378,6 +382,8 @@ final class ViewRequestDraftSnapshot {
       peerBlocks,
       departedPeers,
       removedEndedAttemptIds;
+  final int departureNoticeSequence;
+  final Map<int, DateTime> departureNotices;
   final Map<String, DraftJourneyPreparation> preparingRequests;
   final Map<String, DateTime> restartRequestedAt;
   final Set<String> acknowledgedReceivedRequestIds;
@@ -464,6 +470,14 @@ final class ViewRequestDraftSnapshot {
         blockedPeers.every(peers.contains) &&
         peerBlocks.every(peers.contains) &&
         departedPeers.every(peers.contains) &&
+        departedPeers.every((id) => !states.containsKey(id)) &&
+        departureNoticeSequence >= 0 &&
+        departureNotices.entries.every(
+          (entry) =>
+              entry.key > 0 &&
+              entry.key <= departureNoticeSequence &&
+              entry.value.isUtc,
+        ) &&
         preparingRequests.entries.every(
           (entry) =>
               states[entry.key] == DraftJourneyState.preparing &&
@@ -546,6 +560,7 @@ final class ViewRequestDraftSnapshot {
         pastRequests.every(
           (entry) =>
               peers.contains(entry.profileId) &&
+              !departedPeers.contains(entry.profileId) &&
               entry.id.isNotEmpty &&
               entry.sequence > 0 &&
               entry.sequence <= pastRequestSequence &&
@@ -561,6 +576,7 @@ final class ViewRequestDraftSnapshot {
         endedAttempts.every(
           (attempt) =>
               peers.contains(attempt.profileId) &&
+              !departedPeers.contains(attempt.profileId) &&
               attempt.id.isNotEmpty &&
               attempt.progress.stageIndex >= 0 &&
               attempt.progress.stageIndex < ZyraJourneyStages.all.length &&
@@ -705,6 +721,8 @@ class ViewRequestDraftModel {
     _blockedPeers.addAll(snapshot.blockedPeers);
     _peerBlocks.addAll(snapshot.peerBlocks);
     _departedPeers.addAll(snapshot.departedPeers);
+    _departureNoticeSequence = snapshot.departureNoticeSequence;
+    _departureNotices.addAll(snapshot.departureNotices);
     _removedEndedAttemptIds.addAll(snapshot.removedEndedAttemptIds);
     _preparingRequests.addAll(snapshot.preparingRequests);
     _restartRequestedAt.addAll(snapshot.restartRequestedAt);
@@ -733,6 +751,7 @@ class ViewRequestDraftModel {
     // Detached local fixtures can add older attempts, never replace the current
     // attempt or its progress. Production pair-wide history is a server task.
     for (final attempt in earlierAttempts) {
+      if (hasDeparted(attempt.profileId)) continue;
       if (!_fixtureIds.contains(attempt.profileId) ||
           _endedAttempts.any((existing) => existing.id == attempt.id)) {
         throw ArgumentError('Invalid fictional prior attempt.');
@@ -789,7 +808,11 @@ class ViewRequestDraftModel {
   final Set<String> _hiddenPeers = {};
   final Set<String> _blockedPeers = {};
   final Set<String> _peerBlocks = {};
+  // Only a fixture exclusion. Anonymous notices carry neither name nor ID.
   final Set<String> _departedPeers = {};
+  final _peerDepartures = ValueNotifier(0);
+  int _departureNoticeSequence = 0;
+  final Map<int, DateTime> _departureNotices = {};
   final Set<String> _removedEndedAttemptIds = {};
   final Map<String, DraftJourneyPreparation> _preparingRequests = {};
   final Map<String, DateTime> _restartRequestedAt = {};
@@ -829,6 +852,9 @@ class ViewRequestDraftModel {
   bool isBlocked(String id) =>
       _blockedPeers.contains(id) || _peerBlocks.contains(id);
   bool hasDeparted(String id) => _departedPeers.contains(id);
+  Listenable get peerDepartures => _peerDepartures;
+  Map<int, DateTime> get departureNotices =>
+      UnmodifiableMapView(_departureNotices);
 
   bool hasVisibleEndedJourney(String id) =>
       _states[id] == DraftJourneyState.ended &&
@@ -849,23 +875,56 @@ class ViewRequestDraftModel {
       _currentEndedAttemptIds[id] == attemptId &&
       _removedEndedAttemptIds.add(attemptId);
 
-  /// Fictional input only. A real deletion or peer block requires server data.
+  /// Applies a deletion to this local fixture before notifying the preview.
   bool markPeerDeparted(String id) {
-    final state = _states[id];
-    if (state != DraftJourneyState.preparing &&
-        state != DraftJourneyState.active &&
-        state != DraftJourneyState.ended) {
-      return false;
+    if (!_fixtureIds.contains(id) || !_departedPeers.add(id)) return false;
+    final state = _states.remove(id);
+    final removedAttempts = endedAttemptsFor(id);
+    if (_usesActivePlace(state) ||
+        state == DraftJourneyState.ended ||
+        removedAttempts.isNotEmpty) {
+      _departureNotices[++_departureNoticeSequence] = _clock().toUtc();
     }
-    if (!_departedPeers.add(id)) return false;
+    final attemptRevision = _attemptRevisions.remove(id);
+    _guardianViewAttempts.removeWhere((grant) => grant.$2 == attemptRevision);
+    _guardianAccess.removeWhere((key, _) => key.endsWith('|$id'));
+    _clearRequiredPaidGuardianAccess(id);
+    _peerMainGuardianOverrides.remove(id);
+    _busyPeers.remove(id);
+    _hiddenPeers.remove(id);
+    _blockedPeers.remove(id);
+    _peerBlocks.remove(id);
+    _progress.remove(id);
+    _journeyStartedAt.remove(id);
+    _journeyLastActivityAt.remove(id);
+    _preparingRequests.remove(id);
     _restartRequestedAt.remove(id);
-    if (state != DraftJourneyState.ended) end(id);
+    _acknowledgedReceivedRequestIds.remove(id);
+    _receivedRequestRevisions.remove(id);
+    _pendingRequestedAt.remove(id);
+    _outgoingRequestAcceptedAt.remove(id);
+    _outgoingRequestAcceptedRevisions.remove(id);
+    _pastRequests.removeWhere((request) => request.profileId == id);
+    _currentEndedAttemptIds.remove(id);
+    _endedAttempts.removeWhere((attempt) => attempt.profileId == id);
+    _removedEndedAttemptIds.removeAll(
+      removedAttempts.map((attempt) => attempt.id),
+    );
+    _waitingAcceptances.remove(id);
+    for (final entry in _waitingAcceptances.entries.toList()) {
+      if (entry.value.heldEndingId == id) {
+        // The other request still awaits a decision. Retire the old choice
+        // of which Journey to end, so it cannot commit against a freed place.
+        _waitForAcceptance(entry.key, incoming: entry.value.incoming);
+      }
+    }
     _personSafetyRevision++;
+    _peerDepartures.value++;
     return true;
   }
 
   bool setPeerBlock(String id, bool blocked) {
-    if (!_fixtureIds.contains(id)) return false;
+    if (!_fixtureIds.contains(id) || hasDeparted(id)) return false;
     final changed = blocked ? _peerBlocks.add(id) : _peerBlocks.remove(id);
     if (changed) _personSafetyRevision++;
     return changed;
@@ -931,7 +990,11 @@ class ViewRequestDraftModel {
   /// Explicit fictional arrival only. Never overwrites a request or Journey,
   /// and never creates a member record or proves server notification state.
   bool seedReceived(String id, {DateTime? requestedAt}) {
-    if (!_fixtureIds.contains(id) || _states.containsKey(id)) return false;
+    if (!_fixtureIds.contains(id) ||
+        hasDeparted(id) ||
+        _states.containsKey(id)) {
+      return false;
+    }
     _states[id] = DraftJourneyState.received;
     _attemptRevisions[id] = ++_attemptSequence;
     _outgoingRequestAcceptedAt.remove(id);
@@ -966,6 +1029,7 @@ class ViewRequestDraftModel {
     final requested = requestedAt.toUtc();
     final moved = movedAt.toUtc();
     if (!_fixtureIds.contains(profileId) ||
+        hasDeparted(profileId) ||
         _states.containsKey(profileId) ||
         requested.isAfter(moved) ||
         _pastRequests.any(
@@ -1119,7 +1183,7 @@ class ViewRequestDraftModel {
 
   /// Only disposable fictional visibility changes; archive records survive.
   bool hide(String id) {
-    if (!_fixtureIds.contains(id)) return false;
+    if (!_fixtureIds.contains(id) || hasDeparted(id)) return false;
     if (_hiddenPeers.add(id)) _personSafetyRevision++;
     return true;
   }
@@ -1132,7 +1196,7 @@ class ViewRequestDraftModel {
   }
 
   bool block(String id) {
-    if (!_fixtureIds.contains(id)) return false;
+    if (!_fixtureIds.contains(id) || hasDeparted(id)) return false;
     if (_blockedPeers.add(id)) _personSafetyRevision++;
     return true;
   }
@@ -1145,6 +1209,7 @@ class ViewRequestDraftModel {
     required bool endCurrentJourney,
   }) =>
       _fixtureIds.contains(id) &&
+      !hasDeparted(id) &&
       _attemptRevisions[id] == expectedAttemptRevision &&
       _personSafetyRevision == expectedSafetyRevision &&
       _usesActivePlace(_states[id]) == endCurrentJourney &&
@@ -1275,6 +1340,7 @@ class ViewRequestDraftModel {
   }) {
     if (!_knownGuardian(guardianId) ||
         !_fixtureIds.contains(peerId) ||
+        hasDeparted(peerId) ||
         isBlocked(peerId)) {
       return (view: false, chat: false);
     }
@@ -1349,6 +1415,7 @@ class ViewRequestDraftModel {
   bool get peerMainGuardianPresent => _peerMainGuardian;
   bool peerMainGuardianPresentFor(String id) =>
       _fixtureIds.contains(id) &&
+      !hasDeparted(id) &&
       (_peerMainGuardianOverrides[id] ?? _peerMainGuardian);
   bool _mainLeadershipPresent(String id) =>
       _ownMainGuardian && peerMainGuardianPresentFor(id);
@@ -1358,7 +1425,7 @@ class ViewRequestDraftModel {
   /// changes only that fictional counterpart; own Main leadership is shared.
   bool setPeerMainGuardianPresent(bool present, {String? id}) {
     if (id != null) {
-      if (!_fixtureIds.contains(id)) return false;
+      if (!_fixtureIds.contains(id) || hasDeparted(id)) return false;
       _peerMainGuardianOverrides[id] = present;
     } else {
       _peerMainGuardian = present;
@@ -1378,6 +1445,7 @@ class ViewRequestDraftModel {
   /// this pair cannot simultaneously be assigned to an unrelated sample pair.
   bool setPeerOccupied(String id, bool occupied) {
     if (!_fixtureIds.contains(id) ||
+        hasDeparted(id) ||
         (occupied && _usesActivePlace(_states[id]))) {
       return false;
     }
@@ -2150,7 +2218,7 @@ class ViewRequestDraftModel {
   /// never overwrite requests, an existing Journey or checkpoint progress.
   void seedHistory() {
     final id = draftProfiles[5].id;
-    if (_states.containsKey(id)) return;
+    if (hasDeparted(id) || _states.containsKey(id)) return;
     _states[id] = DraftJourneyState.ended;
     _attemptRevisions[id] = ++_attemptSequence;
     _progress[id] = _DraftJourneyProgress()
@@ -2174,6 +2242,7 @@ class ViewRequestDraftModel {
     _blockedPeers.clear();
     _peerBlocks.clear();
     _departedPeers.clear();
+    _departureNotices.clear();
     _removedEndedAttemptIds.clear();
     _preparingRequests.clear();
     _restartRequestedAt.clear();

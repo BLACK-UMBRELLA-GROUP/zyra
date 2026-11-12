@@ -159,18 +159,106 @@ void main() {
     },
   );
 
-  test('a departed sample ends the Journey and cannot be asked again', () {
-    expect(model.request(_peer), isTrue);
-    expect(model.simulateRecipientAccept(_peer), isTrue);
+  for (final state in [DraftJourneyState.active, DraftJourneyState.ended]) {
+    test(
+      'account deletion purges all attempts and frees the place: $state',
+      () {
+        const kept = 'draft-aisha';
+        model = ViewRequestDraftModel(capacity: 2, clock: () => now);
+        expect(
+          model.seedPastRequest(
+            profileId: _peer,
+            outcome: DraftPastRequestOutcome.youDeclined,
+            requestedAt: now,
+            movedAt: now,
+          ),
+          isTrue,
+        );
+        expect(model.request(_peer), isTrue);
+        expect(model.simulateRecipientAccept(_peer), isTrue);
+        expect(
+          model.completePreparation(
+            _peer,
+            linkedGuardianIds: const {'draft-guardian-hassan'},
+            mainGuardianId: 'draft-guardian-hassan',
+          ),
+          isTrue,
+        );
+        expect(model.seedReceived(kept), isTrue);
+        DraftEndedJourneyAttempt? previousAttempt;
+        if (state == DraftJourneyState.ended) {
+          expect(model.end(_peer), isTrue);
+          previousAttempt = model.currentEndedAttemptFor(_peer)!;
+          now = now.add(const Duration(hours: 24));
+          expect(model.requestEndedJourney(_peer), isTrue);
+        }
+        expect(model.markPeerDeparted(_peer), isTrue);
+        expect(model.markPeerDeparted(_peer), isFalse);
+        final restored = ViewRequestDraftModel.fromSnapshot(
+          model.snapshot(),
+          clock: () => now,
+          earlierAttempts: [?previousAttempt],
+        );
+        expect(restored.departureNotices, {1: now});
+        expect(restored.hasDeparted(_peer), isTrue);
+        expect(restored.stateFor(_peer), isNull);
+        expect(restored.occupiedCount, 0);
+        expect(restored.peerOccupied(_peer), isFalse);
+        expect(restored.attemptRevisionFor(_peer), isNull);
+        expect(restored.pastRequests, isEmpty);
+        expect(restored.currentEndedAttemptFor(_peer), isNull);
+        expect(restored.endedAttemptsFor(_peer), isEmpty);
+        expect(restored.restartExpiresAt(_peer), isNull);
+        expect(restored.outgoingRequestAcceptedAt(_peer), isNull);
+        expect(restored.canRequest(_peer), isFalse);
+        expect(restored.seedReceived(_peer), isFalse);
+        expect(
+          restored.discoverableProfiles.map((p) => p.id),
+          isNot(contains(_peer)),
+        );
+        expect(restored.stateFor(kept), DraftJourneyState.received);
+      },
+    );
+  }
+
+  test('a request-only deletion clears the request and its Past items', () {
+    expect(
+      model.seedPastRequest(
+        profileId: _peer,
+        outcome: DraftPastRequestOutcome.youDeclined,
+        requestedAt: now,
+        movedAt: now,
+      ),
+      isTrue,
+    );
+    expect(model.seedReceived(_peer), isTrue);
     expect(model.markPeerDeparted(_peer), isTrue);
-    expect(model.stateFor(_peer), DraftJourneyState.ended);
-    expect(model.occupiedCount, 0);
-    expect(model.hasDeparted(_peer), isTrue);
-    expect(model.discoverableProfiles.map((p) => p.id), isNot(contains(_peer)));
-    now = now.add(const Duration(hours: 25));
-    expect(model.requestEndedJourney(_peer), isFalse);
     final restored = ViewRequestDraftModel.fromSnapshot(model.snapshot());
-    expect(restored.hasDeparted(_peer), isTrue);
+    expect(restored.stateFor(_peer), isNull);
+    expect(restored.pastRequests, isEmpty);
+    expect(restored.departureNotices, isEmpty);
+  });
+
+  test('deletion retires the held ending while the other request waits', () {
+    const incoming = 'draft-aisha';
+    expect(model.seedJourneys(1), isTrue);
+    expect(model.seedReceived(incoming), isTrue);
+    expect(model.setPeerOccupied(incoming, true), isTrue);
+    expect(
+      model.replaceJourneyForRequest(incoming, _peer, incoming: true),
+      isTrue,
+    );
+    expect(model.heldEndingId(incoming), _peer);
+    final priorIntent = model.acceptanceIntentRevision(incoming);
+    expect(model.markPeerDeparted(_peer), isTrue);
+
+    expect(model.occupiedCount, 0);
+    expect(model.heldEndingId(incoming), isNull);
+    expect(model.acceptanceIntentRevision(incoming), isNot(priorIntent));
+    expect(model.stateFor(incoming), DraftJourneyState.acceptedWaiting);
+    expect(model.confirmWaitingRequest(incoming), isTrue);
+    expect(model.occupiedCount, 1);
+    expect(model.stateFor(incoming), DraftJourneyState.preparing);
   });
 
   test('Circle preview excludes departed messages and read receipts', () {

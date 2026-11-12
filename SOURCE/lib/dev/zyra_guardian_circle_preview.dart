@@ -18,25 +18,32 @@ class ZyraGuardianCirclePreviewData {
     Iterable<ZyraFamilyMessageContext> contexts = const [],
     required this.canSend,
     Set<String> departedMemberIds = const {},
-  }) : hasDepartedMember = departedMemberIds.isNotEmpty,
-       participants = List.unmodifiable(
+  }) : participants = List.unmodifiable(
          participants.where(
            (person) => !departedMemberIds.contains(person.userId),
          ),
        ),
        messages = List.unmodifiable(
          messages
-             .where((message) => !departedMemberIds.contains(message.senderId))
+             .where(
+               (message) =>
+                   !departedMemberIds.contains(message.senderId) &&
+                   !departedMemberIds.contains(message.context?.referenceId),
+             )
              .map((message) => _snapshotMessage(message, departedMemberIds)),
        ),
-       contexts = List.unmodifiable(contexts);
+       contexts = List.unmodifiable(
+         contexts.where(
+           (context) => !departedMemberIds.contains(context.referenceId),
+         ),
+       );
 
   final String seekerId;
   final String senderId;
   final List<ZyraFamilyCircleParticipant> participants;
   final List<ZyraFamilyMessage> messages;
   final List<ZyraFamilyMessageContext> contexts;
-  final bool canSend, hasDepartedMember;
+  final bool canSend;
 
   bool validFor(String expectedSeeker, {bool? viewerIsSeeker}) =>
       seekerId.isNotEmpty &&

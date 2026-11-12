@@ -129,7 +129,6 @@ class ZyraOneJourneyShellFixture {
     this.profileVideoLoader,
     this.circleBubbleDesign = ZyraCircleBubbleDesign.current,
     this.circleArrivalsFor,
-    this.circleDepartedMemberIds = const {},
     this.guardianTabs,
     this.readState,
     this.onAttached,
@@ -155,7 +154,6 @@ class ZyraOneJourneyShellFixture {
   final ZyraBrowseNextMotion browseNextMotion;
   final ZyraCircleBubbleDesign circleBubbleDesign;
   final ZyraCirclePreviewArrivals? circleArrivalsFor;
-  final Set<String> circleDepartedMemberIds;
   final ZyraGuardianTabsSnapshot? guardianTabs;
   final ZyraOneJourneyShellFixtureState? Function()? readState;
   final void Function(bool Function() isCurrent)? onAttached;
@@ -289,6 +287,9 @@ class _ZyraOneJourneyConceptShellState
       : ZyraOneJourneyGuardianCards.previewInvitationSent;
   ModalRoute<dynamic>? _guardianOptionsRoute;
   ModalRoute<bool>? _ownedConfirmRoute;
+  List<String> _confirmPeerIds = const [];
+  String? _journeyOptionsPersonId;
+  ModalRoute<dynamic>? _journeyOptionsRoute;
   int _networkTab = 0;
   late ZyraGuardianTabsState _guardianTabs = ZyraGuardianTabsState(
     widget.fixture?.guardianTabs ?? const ZyraGuardianTabsSnapshot.quiet(),
@@ -526,9 +527,12 @@ class _ZyraOneJourneyConceptShellState
     'guardian_linked_profile',
     'guardian_network_profile',
   ].contains(_page);
-  DraftProfile? get _person => _personId == null
-      ? null
-      : draftProfiles.where((p) => p.id == _personId).firstOrNull;
+  DraftProfile? get _person {
+    final id = _personId;
+    if (id == null || _model.hasDeparted(id)) return null;
+    return draftProfiles.where((p) => p.id == id).firstOrNull;
+  }
+
   List<DraftProfile> get _currentJourneys => draftProfiles.where((p) {
     final s = _model.stateFor(p.id);
     return s == DraftJourneyState.preparing || s == DraftJourneyState.active;
@@ -582,7 +586,7 @@ class _ZyraOneJourneyConceptShellState
             .firstOrNull;
 
   bool _canViewEndedCompatibility(String id, {String? attemptId}) {
-    if (!_canAddressEndedJourney(id) || _model.hasDeparted(id)) return false;
+    if (!_canAddressEndedJourney(id)) return false;
     final attempt = _endedAttempt(id, attemptId);
     if (attempt == null || !_model.canSeeEndedAttempt(attempt)) return false;
     if (_compatibilityAccess.isUnlocked(id)) return true;
@@ -593,9 +597,7 @@ class _ZyraOneJourneyConceptShellState
   }
 
   bool _canRequestEndedRestart(String id) =>
-      _canAddressEndedJourney(id) &&
-      !_model.hasDeparted(id) &&
-      !_model.isHidden(id);
+      _canAddressEndedJourney(id) && !_model.isHidden(id);
 
   void _cancelTimeRuleTimer() {
     _timeRuleTimer?.cancel();
@@ -629,7 +631,6 @@ class _ZyraOneJourneyConceptShellState
   // from a paid Unlock, the menu's presence or today's Guardian roster.
   bool _canViewEndedBio(String id) =>
       _canAddressEndedJourney(id) &&
-      !_model.hasDeparted(id) &&
       _hasRecordedEnd(id) &&
       _model.hasCompletedCompatibilityStep(id) &&
       _model.hasCompletedBioStep(id) &&
@@ -708,6 +709,7 @@ class _ZyraOneJourneyConceptShellState
                 clock: widget.previewClock,
               )
             : ViewRequestDraftModel(capacity: 3, clock: widget.previewClock));
+    _model.peerDepartures.addListener(_peerDeparted);
     _model.advanceTimeRules();
     if (sameRole) _restoreCheckpoint(checkpoint!);
     if (_guardianRole && _tab == 2 && _page == null) {
@@ -920,7 +922,13 @@ class _ZyraOneJourneyConceptShellState
     _journeyTabIndex = saved.journeyPlaceIndex.clamp(0, _model.capacity - 1);
     _guardianPage = saved.guardianPage.clamp(0, draftGuardians.length + 1);
     _networkTab = saved.networkTab.clamp(0, 1);
-    _personId = _profileIds.contains(saved.personId) ? saved.personId : null;
+    final savedPerson = saved.personId;
+    _personId =
+        savedPerson != null &&
+            _profileIds.contains(savedPerson) &&
+            !_model.hasDeparted(savedPerson)
+        ? savedPerson
+        : null;
     _guardianJourneyId = _profileIds.contains(saved.guardianJourneyId)
         ? saved.guardianJourneyId
         : null;
@@ -963,6 +971,7 @@ class _ZyraOneJourneyConceptShellState
         (e) => _profileIds.contains(e.key) && e.value >= 0 && e.value < 7,
       ),
     );
+    _purgeDepartedPreviewState();
     // Restore the Photos parent after a brief app switch, using a fresh
     // admitted editor and the existing photo-readiness gate. Never replay a
     // camera/crop child, decision sheet, checkout or pending operation.
@@ -1022,6 +1031,11 @@ class _ZyraOneJourneyConceptShellState
         }
       }
       if (_guardianRole && guardianPages.contains(page)) {
+        if (page == 'guardian_introduce') {
+          final peer =
+              ZyraGuardianTabsState.network[_guardianTabs.networkIndex].id;
+          if (_model.hasDeparted('draft-$peer')) break;
+        }
         if (page == 'guardian_free_place_invite' &&
             (_tab != 2 ||
                 _pages.isNotEmpty ||
@@ -1359,6 +1373,7 @@ class _ZyraOneJourneyConceptShellState
         _seeGuardianTabActivity();
       }
       _tab = index;
+      if (!_guardianRole && index == 1) _consumeFocusTarget('journey_tab');
       if (!_guardianRole && index == 2) {
         _myZyraLastOpenedRevision = _model.receivedActivityRevision;
       }
@@ -1372,6 +1387,7 @@ class _ZyraOneJourneyConceptShellState
   }
 
   void _open(String page, {String? person}) {
+    if (person != null && _model.hasDeparted(person)) return;
     var target = page;
     if ({
       'ended_bio',
@@ -1554,6 +1570,7 @@ class _ZyraOneJourneyConceptShellState
       primaryLabel: 'Hide profile',
       secondaryLabel: 'Keep profile',
       personName: name,
+      peerIds: [person.id],
       sheetKey: const ValueKey('concept_browse_hide_confirmation'),
       primaryKey: const ValueKey('browse-hide-confirm'),
       secondaryKey: const ValueKey('browse-hide-cancel'),
@@ -1663,6 +1680,127 @@ class _ZyraOneJourneyConceptShellState
     return _fixtureIsCurrent() ? video : null;
   }
 
+  void _peerDeparted() {
+    if (!mounted) return;
+    final person = _personId;
+    final selectedPeerDeparted = person != null && _model.hasDeparted(person);
+    final optionsPeer = _journeyOptionsPersonId;
+    final options = optionsPeer != null && _model.hasDeparted(optionsPeer)
+        ? _journeyOptionsRoute
+        : null;
+    final confirm = _confirmPeerIds.any(_model.hasDeparted)
+        ? _ownedConfirmRoute
+        : null;
+    final keepDialog =
+        (confirm == null && _ownedConfirmRoute != null) ||
+        (options == null && _journeyOptionsRoute != null);
+
+    setState(() {
+      _purgeDepartedPreviewState();
+      if (selectedPeerDeparted) {
+        _personId = null;
+        _message.clear();
+        _timelinePreview = null;
+        _bioGallery = null;
+        _compatibilityRoute = null;
+        _endedCompatibilityAttemptId = null;
+        _paidGuardianAgreement = null;
+        final addressed = _pages.indexWhere(
+          const {
+            'profile',
+            'safety',
+            'journey',
+            'journey_options',
+            'request_capacity',
+            'timeline',
+            'bio',
+            'bio_locked',
+            'journey_compatibility',
+            'journey_compatibility_locked',
+            'journey_guardians',
+            'compatibility',
+            'ended_bio',
+            'ended_guardians',
+            'ended_restart',
+            'ended_compatibility',
+            'guardian_access_agreement',
+            'guardian_network_profile',
+            'guardian_introduce',
+          }.contains,
+        );
+        if (addressed >= 0) _pages.removeRange(addressed, _pages.length);
+      }
+      final guardianPeer = _guardianJourneyId;
+      if (guardianPeer != null && _model.hasDeparted(guardianPeer)) {
+        _guardianJourneyId = null;
+        _guardianJourneyAttemptRevision = null;
+      }
+      final guardianCompatibility = _guardianCompatibilityTarget;
+      if (guardianCompatibility != null &&
+          _model.hasDeparted(guardianCompatibility.subjectId)) {
+        _guardianCompatibilityTarget = null;
+        _pages.removeWhere(
+          (page) =>
+              page == 'guardian_compatibility' ||
+              page == 'guardian_compatibility_upgrade',
+        );
+      }
+      final expanded = _expandedJourneyOptionsId;
+      if (expanded != null && _model.hasDeparted(expanded)) {
+        _expandedJourneyOptionsId = null;
+      }
+      final ending = _capacityEndingId;
+      if (ending != null && _model.hasDeparted(ending)) {
+        _capacityEndingId = null;
+      }
+      final browsePeer = _browseOptionsPersonId;
+      if (browsePeer != null && _model.hasDeparted(browsePeer)) {
+        _browseOptionsOpen = false;
+        _browseOptionsPersonId = null;
+      }
+      final capacity = _capacityRequest;
+      if (capacity != null && !_capacityRequestAdmitted(capacity)) {
+        _capacityRequest = null;
+        _capacityEndingId = null;
+        _pages.remove('request_capacity');
+      }
+      _myZyraFocusIndex = 0;
+      if (!keepDialog) _uiRevision++;
+      _circleScopeRevision++;
+      _circleEntryView = null;
+      _circleVisibility.value = _page == 'guardian_circle';
+    });
+    if (confirm != null && confirm.isActive) {
+      confirm.navigator?.removeRoute(confirm, false);
+    }
+    if (options != null && options.isActive) {
+      options.navigator?.removeRoute(options);
+    }
+    _publishCheckpoint();
+  }
+
+  void _purgeDepartedPreviewState() {
+    final departed = draftProfiles
+        .where((profile) => _model.hasDeparted(profile.id))
+        .map((profile) => profile.id)
+        .toSet();
+    if (departed.isEmpty) return;
+    _messages.removeWhere((id, _) => departed.contains(id));
+    _browsePhotoIndices.removeWhere((id, _) => departed.contains(id));
+    _browseGalleryIndices.removeWhere((id, _) => departed.contains(id));
+    _seenBrowseProfileIds.removeAll(departed);
+    _conceptNetworkSent.removeAll(departed);
+    _browseHistory.reconcile(
+      _browseHistory.ids.where((id) => !departed.contains(id)),
+    );
+    _myZyraConsumedFocusTokens.removeWhere(
+      (token) => token.split(':').any(departed.contains),
+    );
+    _guardianTabs.introduced.removeWhere(
+      (key) => departed.contains('draft-${key.split(':').last}'),
+    );
+  }
+
   void _fixtureChanged() {
     if (!_fixtureIsCurrent()) return;
     final next = _fixtureOwner?.readState?.call();
@@ -1722,6 +1860,7 @@ class _ZyraOneJourneyConceptShellState
 
   @override
   void dispose() {
+    _model.peerDepartures.removeListener(_peerDeparted);
     final confirmRoute = _ownedConfirmRoute;
     _ownedConfirmRoute = null;
     if (confirmRoute != null) {
@@ -2625,7 +2764,6 @@ class _ZyraOneJourneyConceptShellState
     final p = _person;
     if (p == null) return _unavailable();
     if (_model.isBlocked(p.id)) return _userNotFoundView();
-    if (_model.hasDeparted(p.id)) return _departedJourneyView();
     final fromHiddenProfiles =
         _tab == 4 &&
         _pages.length >= 2 &&
@@ -2689,6 +2827,7 @@ class _ZyraOneJourneyConceptShellState
           personName: person.firstName,
           primaryLabel: 'Block profile',
           secondaryLabel: 'Keep profile',
+          peerIds: [person.id],
           sheetKey: const ValueKey('concept_hidden_inspection_block_prompt'),
           primaryKey: const ValueKey('concept_hidden_inspection_confirm_block'),
           secondaryKey: const ValueKey('concept_hidden_inspection_cancel'),
@@ -3108,11 +3247,7 @@ class _ZyraOneJourneyConceptShellState
 
   List<Widget> _pastRequests() {
     final history = _model.pastRequests
-        .where(
-          (entry) =>
-              !_model.isBlocked(entry.profileId) &&
-              !_model.hasDeparted(entry.profileId),
-        )
+        .where((entry) => !_model.isBlocked(entry.profileId))
         .toList(growable: false);
     if (history.isEmpty) {
       return const [
@@ -3561,6 +3696,7 @@ class _ZyraOneJourneyConceptShellState
             ? 'End & accept request'
             : 'End & begin with ${target.firstName}',
         secondaryLabel: 'Keep my Journeys',
+        peerIds: [ending.id, target.id],
         primaryKey: const ValueKey('request_capacity_confirm'),
         secondaryKey: const ValueKey('request_capacity_keep'),
         canCommit: sameSelection,
@@ -3774,6 +3910,16 @@ class _ZyraOneJourneyConceptShellState
     }
   }
 
+  bool _attachJourneyOptionsRoute(BuildContext context, String id) {
+    final route = ModalRoute.of(context);
+    _journeyOptionsRoute = route;
+    if (!_model.hasDeparted(id)) return true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (route != null && route.isActive) route.navigator?.removeRoute(route);
+    });
+    return false;
+  }
+
   Future<void> _openJourneyOptions(DraftProfile person) async {
     if (!_allowed || _guardianRole || _journeyOptionsOpen) return;
     final state = _model.stateFor(person.id);
@@ -3785,41 +3931,47 @@ class _ZyraOneJourneyConceptShellState
     final canViewBio = _canViewJourneyBio(person.id);
     final canViewCompatibility = _canViewJourneyCompatibility(person.id);
     _journeyOptionsOpen = true;
+    _journeyOptionsPersonId = person.id;
     try {
       final choice = await showModalBottomSheet<ZyraConceptJourneyOption>(
         context: _tapContext,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         barrierColor: Colors.black38,
-        builder: (sheetContext) => ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.sizeOf(sheetContext).height * .85,
-          ),
-          child: ZyraConceptJourneyOptions(
-            id: person.id,
-            firstName: person.firstName,
-            canViewBio: canViewBio,
-            canViewCompatibility: canViewCompatibility,
-            canEnd: state != DraftJourneyState.ended,
-            onSelected: (value) {
-              if (!sheetContext.mounted ||
-                  ModalRoute.of(sheetContext)?.isCurrent != true) {
-                return;
-              }
-              // The owned modal temporarily makes the parent route non-current.
-              // This only returns an intent; recheck owner/revision/state below,
-              // after dismissal restores the parent route. Never mutate here.
-              Navigator.pop(sheetContext, value);
-            },
-            onCancel: () {
-              if (!sheetContext.mounted ||
-                  ModalRoute.of(sheetContext)?.isCurrent != true) {
-                return;
-              }
-              Navigator.pop(sheetContext);
-            },
-          ),
-        ),
+        builder: (sheetContext) {
+          if (!_attachJourneyOptionsRoute(sheetContext, person.id)) {
+            return const SizedBox.shrink();
+          }
+          return ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.sizeOf(sheetContext).height * .85,
+            ),
+            child: ZyraConceptJourneyOptions(
+              id: person.id,
+              firstName: person.firstName,
+              canViewBio: canViewBio,
+              canViewCompatibility: canViewCompatibility,
+              canEnd: state != DraftJourneyState.ended,
+              onSelected: (value) {
+                if (!sheetContext.mounted ||
+                    ModalRoute.of(sheetContext)?.isCurrent != true) {
+                  return;
+                }
+                // The owned modal temporarily makes the parent route non-current.
+                // This only returns an intent; recheck owner/revision/state below,
+                // after dismissal restores the parent route. Never mutate here.
+                Navigator.pop(sheetContext, value);
+              },
+              onCancel: () {
+                if (!sheetContext.mounted ||
+                    ModalRoute.of(sheetContext)?.isCurrent != true) {
+                  return;
+                }
+                Navigator.pop(sheetContext);
+              },
+            ),
+          );
+        },
       );
       if (!fresh() || choice == null || _model.stateFor(person.id) != state) {
         return;
@@ -3827,6 +3979,8 @@ class _ZyraOneJourneyConceptShellState
       _selectJourneyOption(person, choice);
     } finally {
       _journeyOptionsOpen = false;
+      _journeyOptionsPersonId = null;
+      _journeyOptionsRoute = null;
     }
   }
 
@@ -3851,6 +4005,7 @@ class _ZyraOneJourneyConceptShellState
       icon: Icons.route_outlined,
       primaryLabel: 'End Journey',
       secondaryLabel: 'Keep this Journey',
+      peerIds: [id],
       sheetKey: ValueKey('draft_journey_action_$id'),
       primaryKey: ValueKey('draft_confirm_end_$id'),
       secondaryKey: ValueKey('draft_cancel_journey_action_$id'),
@@ -4081,35 +4236,14 @@ class _ZyraOneJourneyConceptShellState
           ]
         : [
             for (final p in people)
-              if (_model.hasDeparted(p.id))
-                _card([
-                  Row(
-                    children: [
-                      Icon(Icons.person_outline, color: ZyraColors.mutedText),
-                      const SizedBox(width: 8),
-                      Expanded(child: _title(_departedMemberTitle, size: 18)),
-                      const SizedBox(width: 8),
-                      ZyraConceptJourneyOptionsButton(
-                        key: ValueKey('draft_journey_options_${p.id}'),
-                        onTap: _bound(() => _showEndedJourneyMenu(p)),
-                      ),
-                    ],
-                  ),
-                  _button(
-                    'draft_journey_${p.id}',
-                    'View archive',
-                    () => _journey(p.id),
-                  ),
-                ])
-              else
-                KeyedSubtree(
-                  key: ValueKey('draft_journey_${p.id}_header'),
-                  child: _connectionCard(
-                    p,
-                    expandedOptions: _expandedJourneyOptionsId == p.id,
-                    inlineOptionsFillHeight: false,
-                  ),
+              KeyedSubtree(
+                key: ValueKey('draft_journey_${p.id}_header'),
+                child: _connectionCard(
+                  p,
+                  expandedOptions: _expandedJourneyOptionsId == p.id,
+                  inlineOptionsFillHeight: false,
                 ),
+              ),
           ];
   }
 
@@ -4118,7 +4252,6 @@ class _ZyraOneJourneyConceptShellState
     if (!_canExpandJourneyCard(id)) return;
     final attempt = _model.currentEndedAttemptFor(id);
     if (attempt == null) return;
-    final departed = _model.hasDeparted(id);
     final account = (ZyraAccountState.userId, ZyraAccountState.generation);
     final revision = _uiRevision;
     final page = _page;
@@ -4133,10 +4266,10 @@ class _ZyraOneJourneyConceptShellState
         revision == _uiRevision &&
         page == _page &&
         _model.hasVisibleEndedJourney(id) &&
-        _model.hasDeparted(id) == departed &&
         _model.currentEndedAttemptFor(id)?.id == attempt.id;
 
     _journeyOptionsOpen = true;
+    _journeyOptionsPersonId = id;
     ZyraEndedJourneyAction? action;
     try {
       final pending = showModalBottomSheet<ZyraEndedJourneyAction>(
@@ -4150,6 +4283,9 @@ class _ZyraOneJourneyConceptShellState
             ? AnimationStyle.noAnimation
             : null,
         builder: (sheetContext) {
+          if (!_attachJourneyOptionsRoute(sheetContext, id)) {
+            return const SizedBox.shrink();
+          }
           bool admitted() =>
               currentAttempt() &&
               expectedStamp == _routeStamp &&
@@ -4159,7 +4295,6 @@ class _ZyraOneJourneyConceptShellState
             level: () => _accountSession.hapticLevel,
             canAct: admitted,
             child: ZyraEndedJourneyMenu(
-              showRestart: !departed,
               onSelect: (action) {
                 if (!admitted()) return;
                 Navigator.pop(sheetContext, action);
@@ -4173,6 +4308,8 @@ class _ZyraOneJourneyConceptShellState
       action = await pending;
     } finally {
       _journeyOptionsOpen = false;
+      _journeyOptionsPersonId = null;
+      _journeyOptionsRoute = null;
     }
     if (action == null || !fresh() || !currentAttempt()) return;
     if (action == ZyraEndedJourneyAction.restart) {
@@ -4182,16 +4319,15 @@ class _ZyraOneJourneyConceptShellState
 
     final confirmed = await _confirmConceptAction(
       title: 'Remove this Journey?',
-      body: departed
-          ? 'It disappears from your Ended Journeys for good, with its '
-                'Timeline. You can’t undo this.'
-          : 'It disappears from your Ended Journeys for good, with its '
-                'Timeline and messages. You can’t undo this. '
-                '${person.firstName} still sees her copy.',
+      body:
+          'It disappears from your Ended Journeys for good, with its '
+          'Timeline and messages. You can’t undo this. '
+          '${person.firstName} still sees her copy.',
       primaryLabel: 'Remove Journey',
       secondaryLabel: 'Keep Journey',
-      personName: departed ? null : person.firstName,
-      icon: departed ? Icons.remove : Icons.info_outline,
+      personName: person.firstName,
+      peerIds: [id],
+      icon: Icons.info_outline,
       canCommit: currentAttempt,
     );
     if (!confirmed) return;
@@ -4208,7 +4344,6 @@ class _ZyraOneJourneyConceptShellState
     if (person == null || !_canAddressEndedJourney(person.id)) {
       return _unavailable();
     }
-    if (_model.hasDeparted(person.id)) return _departedJourneyView();
     if (bio && _canViewEndedBio(person.id)) {
       return KeyedSubtree(
         key: ValueKey('draft_ended_bio_${person.id}'),
@@ -4280,43 +4415,6 @@ class _ZyraOneJourneyConceptShellState
     ], key: ValueKey('draft_ended_restart_${person.id}'));
   }
 
-  static const _departedMemberTitle = 'This member has left ZYRA';
-
-  Widget _departedJourneyView({String? id, bool timelineOnly = false}) {
-    final attempt = id == null ? null : _model.currentEndedAttemptFor(id);
-    final ownMessages = id == null ? null : _messages[id];
-    return _pageScroll([
-      _card([_title(_departedMemberTitle, size: 23)]),
-      if (attempt != null)
-        ZyraDraftTimelinePresentation(
-          subjectId: attempt.profileId,
-          firstName: '',
-          ownedViewport: false,
-          showContext: false,
-          view: ZyraDraftTimelineView(
-            frozen: true,
-            entries: [
-              if (attempt.startedAt case final started?)
-                ZyraDraftTimelineEntry(
-                  type: 'match_created',
-                  occurredOn: started,
-                ),
-              if (attempt.endedAt case final ended?)
-                ZyraDraftTimelineEntry(
-                  type: 'journey_ended',
-                  occurredOn: ended,
-                ),
-            ],
-          ),
-        ),
-      if (!timelineOnly && ownMessages != null && ownMessages.isNotEmpty)
-        _card([
-          _title('Messages', size: 18),
-          for (final message in ownMessages) _body('You · $message'),
-        ]),
-    ]);
-  }
-
   Widget _journeyView() {
     final p = _person;
     if (p == null) return _unavailable();
@@ -4331,11 +4429,6 @@ class _ZyraOneJourneyConceptShellState
           : _unavailable();
     }
     if (_model.isBlocked(p.id)) return _userNotFoundView();
-    if (_model.hasDeparted(p.id)) {
-      return _model.hasVisibleEndedJourney(p.id)
-          ? _departedJourneyView(id: p.id)
-          : _unavailable();
-    }
     if (_model.stateFor(p.id) == DraftJourneyState.ended) {
       return _model.hasVisibleEndedJourney(p.id)
           ? _archiveView(p)
@@ -4865,9 +4958,6 @@ class _ZyraOneJourneyConceptShellState
     if (!_canViewTimeline(id)) return _unavailable();
     final person = draftProfiles.firstWhere((p) => p.id == id);
     final standalone = _page == 'timeline';
-    if (_model.hasDeparted(id)) {
-      return _departedJourneyView(id: id, timelineOnly: true);
-    }
     final interactive =
         standalone && _model.stateFor(id) != DraftJourneyState.ended;
     final preview = standalone
@@ -5066,13 +5156,27 @@ class _ZyraOneJourneyConceptShellState
   bool _activityItemVisible(ZyraMyZyraActivityItem item) =>
       item.personId == null ||
       (_profileIds.contains(item.personId) &&
-          !_model.isBlocked(item.personId!));
+          !_model.isBlocked(item.personId!) &&
+          !_model.hasDeparted(item.personId!));
 
   String _receivedFocusToken(String id) =>
       'received:$id:${_model.receivedRequestRevision(id)}';
 
   List<ZyraFocusEvent> _focusEvents({bool includeConsumed = false}) {
-    final events = <ZyraFocusEvent>[];
+    final events = <ZyraFocusEvent>[
+      for (final notice in _model.departureNotices.entries)
+        ZyraFocusEvent(
+          tokens: ['departure:${notice.key}'],
+          target: 'journey_tab',
+          title: 'One of your Journeys has ended',
+          detail:
+              'This profile is no longer active. Your place is free for a new Journey.',
+          action: 'Open Journey',
+          icon: Icons.history,
+          occurredAt: notice.value,
+          order: notice.key,
+        ),
+    ];
     final example = _activityExample;
     final fixtureRequests =
         example == ZyraMyZyraActivityExample.requestReceived ||
@@ -5195,9 +5299,7 @@ class _ZyraOneJourneyConceptShellState
             target: 'ended',
             personId: person.id,
             occurredAt: at,
-            title: _model.hasDeparted(person.id)
-                ? _departedMemberTitle
-                : 'Your Journey with ${person.firstName} has ended',
+            title: 'Your Journey with ${person.firstName} has ended',
             detail: 'It stays in your read-only Ended Journeys.',
             action: 'View Ended Journeys',
             icon: Icons.history,
@@ -5348,6 +5450,8 @@ class _ZyraOneJourneyConceptShellState
         }
       case 'journey':
         if (id != null && _currentJourneys.any((p) => p.id == id)) _journey(id);
+      case 'journey_tab':
+        _tabTo(1);
       case 'guardian':
         _tabTo(3);
       case 'guardian_circle':
@@ -5779,15 +5883,10 @@ class _ZyraOneJourneyConceptShellState
         _fixtureAccount ==
             (ZyraAccountState.userId, ZyraAccountState.generation);
     final departedIds = <String>{
-      if (fixtureOwnsCircle) ...?_fixtureOwner?.circleDepartedMemberIds,
       if (!circleYusuf)
         for (final person in draftProfiles)
           if (_model.hasDeparted(person.id)) person.id,
     };
-    if (departedIds.contains(circleSeekerId) ||
-        departedIds.contains(senderId)) {
-      return null;
-    }
     final arrivalsFor = _fixtureOwner?.circleArrivalsFor;
     final arrived = <ZyraFamilyMessage>[];
     if (arrivalsFor != null && fixtureOwnsCircle) {
@@ -5995,36 +6094,43 @@ class _ZyraOneJourneyConceptShellState
               kind: ZyraCircleTopicKind.current,
             ),
     ]);
-    final pastTopics = List<ZyraCircleDiscussionTopic>.unmodifiable([
+    const pastExamples = [
+      (name: 'Elif', peer: null),
+      (name: 'Noor', peer: 'draft-noor'),
+      (name: 'Hafsa', peer: null),
+      (name: 'Zainab', peer: 'draft-zainab'),
+      (name: 'Huda', peer: null),
+      (name: 'Safiya', peer: 'draft-safiya'),
+      (name: 'Mariam', peer: null),
+      (name: 'Amina', peer: null),
+      (name: 'Khadija', peer: null),
+      (name: 'Sumayya', peer: null),
+      (name: 'Layla', peer: null),
+      (name: 'Yasmin', peer: null),
+    ];
+    final pastTopicsByIndex = {
       if (pastShared)
-        for (var index = 0; index < 12; index++)
-          ZyraCircleDiscussionTopic(
-            id: 'draft-circle-past-$index',
-            firstName: const [
-              'Elif',
-              'Noor',
-              'Hafsa',
-              'Zainab',
-              'Huda',
-              'Safiya',
-              'Mariam',
-              'Amina',
-              'Khadija',
-              'Sumayya',
-              'Layla',
-              'Yasmin',
-            ][index],
-            kind: ZyraCircleTopicKind.past,
-            sharedSummaryLabel: guardian
-                ? _sharedPastJourneyLabel(index)
-                : null,
-            endedOn: DateTime.utc(
-              2026,
-              10,
-              10,
-            ).subtract(Duration(days: index * 15)),
-          ),
-    ]);
+        for (final (index, example) in pastExamples.indexed)
+          if (circleYusuf ||
+              example.peer == null ||
+              !_model.hasDeparted(example.peer!))
+            index: ZyraCircleDiscussionTopic(
+              id: 'draft-circle-past-$index',
+              firstName: example.name,
+              kind: ZyraCircleTopicKind.past,
+              sharedSummaryLabel: guardian
+                  ? _sharedPastJourneyLabel(index)
+                  : null,
+              endedOn: DateTime.utc(
+                2026,
+                10,
+                10,
+              ).subtract(Duration(days: index * 15)),
+            ),
+    };
+    final pastTopics = List<ZyraCircleDiscussionTopic>.unmodifiable(
+      pastTopicsByIndex.values,
+    );
     // Explicit dates for detached past examples, not real archive/history
     // access. Never derive a profile or message lookup from a picker label.
     final pastArchives = <String, ZyraCircleDiscussionArchive>{
@@ -6112,11 +6218,11 @@ class _ZyraOneJourneyConceptShellState
                     ?.forIndex(draftProfiles.indexOf(person))
                     .firstOrNull,
               ),
-        for (var index = 0; index < pastTopics.length; index++)
+        for (final entry in pastTopicsByIndex.entries)
           ZyraCircleTopicTile(
-            id: pastTopics[index].id,
-            name: pastTopics[index].firstName,
-            photo: guardian ? null : _photos?.forIndex(index).firstOrNull,
+            id: entry.value.id,
+            name: entry.value.firstName,
+            photo: guardian ? null : _photos?.forIndex(entry.key).firstOrNull,
           ),
       ],
       onManageGuardians: () {
@@ -7274,25 +7380,35 @@ class _ZyraOneJourneyConceptShellState
     }
     if (action == 'introduce_confirm' || action == 'connect_confirm') {
       if (!paid || !_conceptHassanLinked) return;
-      if (action == 'introduce_confirm' && state.introducedForCurrent()) return;
+      if (action == 'introduce_confirm' &&
+          (state.introducedForCurrent() ||
+              _model.hasDeparted(
+                'draft-${ZyraGuardianTabsState.network[state.networkIndex].id}',
+              ))) {
+        return;
+      }
       if (action == 'connect_confirm' &&
           state.sent.contains(
             ZyraGuardianTabsState.network[state.networkIndex].id,
           )) {
         return;
       }
-      _open(
-        action == 'introduce_confirm'
-            ? 'guardian_introduce'
-            : 'network_request',
-      );
+      if (action == 'introduce_confirm') {
+        final peer = ZyraGuardianTabsState.network[state.networkIndex].id;
+        _open('guardian_introduce', person: 'draft-$peer');
+      } else {
+        _open('network_request');
+      }
       return;
     }
     if (action == 'introduce_send' || action == 'connect_send') {
       if (!paid || !_conceptHassanLinked) return;
       _act(() {
         if (action == 'introduce_send') {
-          state.introduced.add(state.introducedKey);
+          final peer = ZyraGuardianTabsState.network[state.networkIndex].id;
+          if (!_model.hasDeparted('draft-$peer')) {
+            state.introduced.add(state.introducedKey);
+          }
         } else {
           state.sent.add(ZyraGuardianTabsState.network[state.networkIndex].id);
         }
@@ -7696,6 +7812,7 @@ class _ZyraOneJourneyConceptShellState
     required String secondaryLabel,
     required bool Function() canCommit,
     String? personName,
+    List<String> peerIds = const [],
     IconData icon = Icons.info_outline,
     Key? sheetKey,
     Key? primaryKey,
@@ -7712,6 +7829,7 @@ class _ZyraOneJourneyConceptShellState
     final tab = _tab;
     final guardian = _guardianRole;
     late ModalRoute<bool> route;
+    _confirmPeerIds = peerIds;
     try {
       final pending = showZyraConfirm(
         context: _tapContext,
@@ -7743,6 +7861,7 @@ class _ZyraOneJourneyConceptShellState
       return await pending == true && fresh() && canCommit();
     } finally {
       _ownedConfirmRoute = null;
+      _confirmPeerIds = const [];
     }
   }
 
@@ -8775,9 +8894,6 @@ class _ZyraOneJourneyConceptShellState
   }
 
   Widget _compatibilityInfo() {
-    if (_personId != null && _model.hasDeparted(_personId!)) {
-      return _departedJourneyView();
-    }
     final route = _compatibilityRoute;
     final person = _person;
     final navigatorStamp = _routeStamp;
@@ -9157,6 +9273,7 @@ class _ZyraOneJourneyConceptShellState
         primaryLabel: hide ? 'End Journey and hide' : 'End Journey and block',
         secondaryLabel: 'Keep this Journey',
         personName: name,
+        peerIds: [person.id],
         primaryKey: const ValueKey('journey_person_safety_confirm'),
         secondaryKey: const ValueKey('journey_person_safety_keep'),
         canCommit: samePerson,

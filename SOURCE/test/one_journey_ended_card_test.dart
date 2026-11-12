@@ -66,6 +66,7 @@ class _Owner {
   final navigator = GlobalKey<NavigatorState>();
   final observer = ZyraPreviewRouteObserver();
   final checkpoints = <ZyraPreviewNavigationCheckpoint>[];
+  final shellFixture = ZyraShellTestFixture();
   late final access = ZyraDraftCompatibilityAccessStore(canAct: () => true);
 
   ZyraPreviewNavigationCheckpoint get latest => checkpoints.last;
@@ -110,7 +111,7 @@ class _Owner {
         ),
         home: clock != null
             ? ZyraOneJourneyConceptShell(
-                fixture: ZyraShellTestFixture().fixture,
+                fixture: shellFixture.fixture,
                 key: UniqueKey(),
                 canAct: () =>
                     ZyraDeveloperAccess.isAuthorizedOperator &&
@@ -126,7 +127,7 @@ class _Owner {
                 },
               )
             : ViewRequestDraftScreen(
-                fixture: ZyraShellTestFixture().fixture,
+                fixture: shellFixture.fixture,
                 key: UniqueKey(),
                 ownerGeneration: ZyraAccountState.generation,
                 ownerId: ZyraAccountState.userId,
@@ -502,24 +503,25 @@ void main() {
     },
   );
 
-  testWidgets('Founder host admits anonymous archive removal sheets', (
+  testWidgets('preview deletion closes a mounted archive confirmation', (
     tester,
   ) async {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     final current = owner();
-    final departed = _ended();
-    expect(departed.markPeerDeparted(_sara), isTrue);
-    final attempt = departed.currentEndedAttemptFor(_sara)!;
-    await current.mount(tester, model: departed);
-
+    await current.mount(tester);
     await _press(tester, _key('draft_journey_options_$_sara'));
     await _press(tester, find.text('Remove from my Journeys'));
-    await _press(tester, find.text('Remove Journey'));
+    expect(find.text('Remove this Journey?'), findsOneWidget);
+    expect(find.textContaining('Sara still sees her copy.'), findsOneWidget);
 
+    expect(current.shellFixture.model.markPeerDeparted(_sara), isTrue);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Remove this Journey?'), findsNothing);
+    expect(find.textContaining('Sara'), findsNothing);
     expect(find.text('No ended Journeys'), findsOneWidget);
-    expect(find.text('Removed from your Journeys.'), findsOneWidget);
-    expect(current.model.isEndedAttemptRemoved(attempt.id), isTrue);
+    expect(current.model.currentEndedAttemptFor(_sara), isNull);
   });
 
   testWidgets('all six read-only options address their owned destination', (

@@ -77,11 +77,12 @@ to Past as Not taken up. The same person can be asked again after 7 days.
 Ended Journeys have no fixed reading deadline. A Seeker can remove their own
 archived Journey, and a block from either side hides it until unblock. A
 preview restart can be requested after 24 hours and stays open for 30 days.
-A departed sample member's Journey and Timeline show This member has left
-ZYRA. The anonymous card's options let the Seeker remove the archived Journey
-and its Timeline from their preview. The Guardian One comparison uses Continue
-until a verified store offer is available. Push delivery and server enforcement
-await their server rollout.
+When a sample member deletes their account, their active and ended Journeys,
+Timelines, Circle discussions, requests, Past items and Introductions disappear
+from the other Seeker's preview. My ZYRA shows one anonymous Needs you item
+with Open Journey, and the Journey place is free. The Guardian One comparison
+uses Continue until a verified store offer is available. Live account deletion
+and push delivery await their server rollout.
 
 Haptics starts on Light for members who have never saved a level.
 

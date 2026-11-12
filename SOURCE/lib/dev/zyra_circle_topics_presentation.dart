@@ -71,7 +71,6 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
     required this.onReport,
     required this.bind,
     this.seekerName,
-    this.hasDepartedMember = false,
     this.participantIds,
     this.canSendNow,
   });
@@ -85,7 +84,6 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
   final bool canCompose;
   final String senderId;
   final String? seekerName;
-  final bool hasDepartedMember;
   final Set<String>? participantIds;
   final bool Function()? canSendNow;
   final List<ZyraCircleTopicTile> current;
@@ -216,11 +214,6 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: _side),
           child: _headCard(context, selected!),
-        ),
-      if (!loading && available && hasDepartedMember)
-        Padding(
-          padding: const EdgeInsets.fromLTRB(_side, 4, _side, 8),
-          child: Text('This member has left ZYRA', style: ZyraText.subtext()),
         ),
       Expanded(child: _body(context)),
       if (!loading && available && !_pastList) _footer(context),

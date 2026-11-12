@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zyra/dev/zyra_my_zyra_activity_preview.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'package:zyra/screens/wali/family_messaging_screens.dart';
 
 import '../support/zyra_hidden_dev_controls_driver.dart';
 import 'baseline_capture_support.dart';
 
 const _captures = String.fromEnvironment('ZYRA_LINE93_CAPTURE_DIR');
 const _peer = 'draft-sara';
+const _namedPeer = 'draft-amira';
+const _deletionBody =
+    'This profile is no longer active. Your place is free for a new Journey.';
 final _reminderTitle = find.textContaining(
   RegExp(r'Your Journey with\s+Sara\s+is waiting'),
+);
+final _deletionTitle = find.textContaining(
+  RegExp(r'^One\s+of\s+your\s+Journeys\s+has\s+ended$'),
 );
 
 void main() {
@@ -20,7 +28,9 @@ void main() {
     (const Size(375, 667), const EdgeInsets.only(top: 20)),
   ]) {
     final dimensions = '${size.width.toInt()}x${size.height.toInt()}';
-    testWidgets('Line 93 ready and archive at $dimensions', (tester) async {
+    testWidgets('Line 93 ready, archive and deletion at $dimensions', (
+      tester,
+    ) async {
       final h = BaselineHarness(
         tester,
         group: 'line93_$dimensions',
@@ -117,103 +127,155 @@ void main() {
       expect(h.shellFixture.model.currentEndedAttemptFor(_peer), isNotNull);
       await capture('archive_removed');
 
-      expect(archive.markPeerDeparted(_peer), isTrue);
-      await h.mount(
-        tab: 2,
-        pages: const ['ended'],
-        model: archive,
-        previewClock: () => now,
-      );
-      await h.tap('draft_journey_$_peer');
-      h.assertPage('journey');
-      expect(find.text('This member has left ZYRA'), findsOneWidget);
-      expect(find.text('Journey ended'), findsOneWidget);
-      expect(find.text('Messages'), findsNothing);
-      expect(find.textContaining('Sara'), findsNothing);
-      await capture('journey_member_left');
-      await h.mount(
-        tab: 2,
-        pages: const ['ended', 'timeline'],
-        model: archive,
-        previewClock: () => now,
-      );
-      h.assertPage('timeline');
-      expect(find.text('This member has left ZYRA'), findsOneWidget);
-      expect(find.text('Journey ended'), findsOneWidget);
-      expect(find.textContaining('Sara'), findsNothing);
-      await capture('timeline_member_left');
-      await h.mount(
-        tab: 3,
-        pages: const ['guardian_circle'],
-        model: archive,
-        previewClock: () => now,
-      );
-      expect(find.text('Guardian Circle'), findsOneWidget);
-      expect(find.text('This member has left ZYRA'), findsOneWidget);
-      expect(find.text('Sara'), findsNothing);
-      await capture('circle_member_left');
-
-      await h.mount(
-        tab: 2,
-        pages: const ['ended'],
-        model: archive,
-        previewClock: () => now,
-      );
-      final anonymousTitle = find.text('This member has left ZYRA');
-      final attemptId = archive.currentEndedAttemptFor(_peer)!.id;
-      expect(anonymousTitle, findsOneWidget);
-      expect(find.byIcon(Icons.person_outline), findsWidgets);
-      expect(find.textContaining('Sara'), findsNothing);
-      await capture('q132_anonymous_card');
-
-      await h.tap('draft_journey_options_$_peer');
-      expect(find.text('Remove from my Journeys'), findsOneWidget);
-      expect(find.text('Cancel'), findsOneWidget);
-      expect(find.text('Request a new Journey'), findsNothing);
-      await capture('q132_anonymous_menu');
-      await h.tapFinder(find.text('Cancel'));
-      expect(anonymousTitle, findsOneWidget);
-
-      await h.tap('draft_journey_options_$_peer');
-      await h.tapFinder(find.text('Remove from my Journeys'));
-      expect(find.text('Remove this Journey?'), findsOneWidget);
+      final active = ViewRequestDraftModel(capacity: 3, clock: () => now);
+      expect(active.request(_peer), isTrue);
+      expect(active.simulateRecipientAccept(_peer), isTrue);
       expect(
-        find.text(
-          'It disappears from your Ended Journeys for good, with its '
-          'Timeline. You can’t undo this.',
+        active.completePreparation(
+          _peer,
+          linkedGuardianIds: const {'draft-guardian-hassan'},
         ),
-        findsOneWidget,
+        isTrue,
       );
-      expect(find.textContaining('still sees'), findsNothing);
+      expect(active.stateFor(_peer), DraftJourneyState.active);
+      expect(active.occupiedCount, 1);
+      expect(active.markPeerDeparted(_peer), isTrue);
+      await h.mount(tab: 2, model: active, previewClock: () => now);
+      expect(h.latest.pages, isEmpty);
+      expect(h.shellFixture.model.occupiedCount, 0);
+      expect(find.text('NEEDS YOU'), findsOneWidget);
+      expect(_deletionTitle, findsOneWidget);
+      expect(find.text(_deletionBody), findsOneWidget);
+      expect(find.text('Open Journey'), findsOneWidget);
       expect(find.textContaining('Sara'), findsNothing);
-      await capture('q132_anonymous_confirm');
-      await h.tapFinder(find.text('Keep Journey'));
-      expect(anonymousTitle, findsOneWidget);
-      expect(h.shellFixture.model.isEndedAttemptRemoved(attemptId), isFalse);
+      await capture('q134_my_zyra_ended');
+      await h.tapText('Open Journey');
+      expect(h.latest.tab, 1);
+      expect(h.latest.pages, isEmpty);
+      expect(h.key('journey_tab_empty_title'), findsOneWidget);
+      expect(h.key('journey_tab_person_$_peer'), findsNothing);
+      await capture('q134_open_journey');
 
-      await h.tap('draft_journey_options_$_peer');
-      await h.tapFinder(find.text('Remove from my Journeys'));
-      await h.tapFinder(find.text('Remove Journey'));
-      expect(find.text('Removed from your Journeys.'), findsOneWidget);
-      expect(find.text('No ended Journeys'), findsOneWidget);
-      expect(anonymousTitle, findsNothing);
-      expect(h.key('draft_journey_$_peer'), findsNothing);
-      await capture('q132_anonymous_removed');
-
-      final restored = ViewRequestDraftModel.fromSnapshot(h.latest.model);
-      expect(restored.isEndedAttemptRemoved(attemptId), isTrue);
-      expect(restored.currentEndedAttemptFor(_peer)?.id, attemptId);
-      for (final page in ['journey', 'timeline']) {
+      final ended = ViewRequestDraftModel(capacity: 3, clock: () => now);
+      for (final person in [_peer, _namedPeer]) {
+        expect(ended.request(person), isTrue);
+        expect(ended.simulateRecipientAccept(person), isTrue);
+        expect(ended.end(person), isTrue);
+      }
+      expect(ended.markPeerDeparted(_peer), isTrue);
+      for (final page in ['journey', 'timeline', 'ended_guardians']) {
         await h.mount(
           tab: 2,
           pages: ['ended', page],
-          model: restored,
+          model: ended,
           previewClock: () => now,
         );
         h.assertPage('ended');
-        expect(find.text('No ended Journeys'), findsOneWidget);
-        expect(anonymousTitle, findsNothing);
+        expect(h.key('draft_journey_options_$_peer'), findsNothing);
+        expect(h.key('draft_journey_options_$_namedPeer'), findsOneWidget);
+        expect(find.textContaining('Sara'), findsNothing);
       }
+      await capture('q134_ended_journeys');
     });
   }
+
+  testWidgets(
+    'Line 93 deletion refreshes the mounted Circle and clears activity',
+    (tester) async {
+      const deleted = 'draft-noor';
+      final now = DateTime.utc(2026, 11, 12);
+      final h = BaselineHarness(
+        tester,
+        group: 'line93_circle',
+        outputRoot: _captures,
+        evidenceRoot: _captures,
+        flatOutput: true,
+        logicalSize: const Size(430, 932),
+        safePadding: const EdgeInsets.only(top: 59, bottom: 34),
+        reduceMotion: true,
+      );
+      final model = ViewRequestDraftModel(capacity: 3, clock: () => now);
+      expect(model.seedJourneys(1), isTrue);
+      expect(
+        model.seedPastRequest(
+          profileId: deleted,
+          outcome: DraftPastRequestOutcome.youDeclined,
+          requestedAt: now,
+          movedAt: now,
+        ),
+        isTrue,
+      );
+      expect(model.request(deleted), isTrue);
+      expect(model.simulateRecipientAccept(deleted), isTrue);
+      expect(
+        model.completePreparation(
+          deleted,
+          linkedGuardianIds: const {'draft-guardian-hassan'},
+        ),
+        isTrue,
+      );
+
+      await h.mount(tab: 2, model: model, previewClock: () => now);
+      const example = ZyraMyZyraActivityExample.introductionReceived;
+      expect(h.shellFixture.selectActivity(example), isTrue);
+      await h.flush();
+      expect(
+        find.textContaining(RegExp(r'Hassan\s+introduced\s+Noor')),
+        findsOneWidget,
+      );
+
+      await h.mount(
+        tab: 3,
+        pages: const ['guardian_circle'],
+        model: model,
+        previewClock: () => now,
+      );
+      ZyraGuardianCircleScreen circle() =>
+          tester.widget(find.byType(ZyraGuardianCircleScreen));
+      expect(
+        circle().previewData!.contexts.map((context) => context.referenceId),
+        containsAll([_peer, deleted]),
+      );
+      expect(
+        circle().previewPastTopics.map((topic) => topic.firstName),
+        contains('Noor'),
+      );
+
+      expect(h.shellFixture.model.markPeerDeparted(deleted), isTrue);
+      await h.flush();
+      h.assertPage('guardian_circle');
+      expect(
+        circle().previewData!.contexts.map((context) => context.referenceId),
+        [_peer],
+      );
+      expect(
+        circle().previewPastTopics.map((topic) => topic.firstName),
+        isNot(contains('Noor')),
+      );
+      if (_captures.isNotEmpty) {
+        await h.capture(
+          'time_rules',
+          'line93',
+          'q134_circle_after',
+          'q134_circle_after',
+          fileName: 'q134_circle_after_430x932.png',
+        );
+      }
+
+      final purged = h.shellFixture.model;
+      await h.mount(
+        tab: 2,
+        pages: const ['requests'],
+        requestsTab: 2,
+        model: purged,
+        previewClock: () => now,
+      );
+      expect(find.text('No past requests.'), findsOneWidget);
+      await h.mount(tab: 2, model: purged, previewClock: () => now);
+      expect(h.shellFixture.selectActivity(example), isTrue);
+      await h.flush();
+      expect(find.textContaining('Noor'), findsNothing);
+      expect(_deletionTitle, findsOneWidget);
+    },
+  );
 }
