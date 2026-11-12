@@ -77,9 +77,95 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
     }
   }
 
-  ZyraCircleTopicTile _topicsTile(ZyraCircleDiscussionTopic topic) {
+  String _topicFor(ZyraFamilyMessage message) =>
+      _discussionMessageTags[message.id]?.id ??
+      message.context?.referenceId ??
+      ZyraCircleDiscussionTopic.general.id;
+
+  bool _topicUnread(ZyraFamilyMessage message) =>
+      message.unreadForMe &&
+      message.senderId != _currentSenderId &&
+      !message.lifecycle &&
+      !_topicReadIds.contains((message.id, message.senderId));
+
+  bool _topicMuted(String? id) =>
+      _topics!.mutedChats.contains(_previewData!.muteKey(id));
+
+  void _readTopics({bool preserveDivider = false}) {
+    if (_topicsPast && _topicsSelection == null || _selectedPastUnavailable) {
+      _topicUnreadDividerId = null;
+      return;
+    }
+    final id = _topicsSelection?.id ?? ZyraCircleDiscussionTopic.general.id;
+    final read =
+        _messages.where((m) => _topicFor(m) == id && _topicUnread(m)).toList()
+          ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+    if (!preserveDivider || _topicUnreadDividerId == null) {
+      _topicUnreadDividerId = read.firstOrNull?.id;
+    }
+    if (read.isEmpty) return;
+    _topicReadIds.addAll(read.map((message) => (message.id, message.senderId)));
+    _topics!.onRead?.call(read);
+  }
+
+  void _setTopicsMessageTags(ZyraGuardianCirclePreviewData data) {
+    final tags = {..._topics!.messageTopics, ...data.messageTopics};
+    for (final message in data.messages) {
+      final tag = tags[message.id];
+      // Existing About labels remain display metadata and grant no tab.
+      if (tag != null &&
+          tag.id.isNotEmpty &&
+          tag.id.length <= 200 &&
+          tag.firstName.trim().isNotEmpty &&
+          tag.firstName.length <= 80 &&
+          !tag.isGeneral &&
+          (!tag.isPast || tag.endedOn != null)) {
+        _discussionMessageTags[message.id] = tag;
+      }
+    }
+  }
+
+  void _refreshTopicsMessages() {
+    if (!_topicsEnabled || !_canInteract) return;
+    final data = _topics!.arrivals?.value;
+    final original = _previewData!;
+    if (data == null ||
+        data.senderId != original.senderId ||
+        !data.validFor(
+          original.seekerId,
+          viewerIsSeeker: widget.viewerIsSeeker,
+        ) ||
+        data.contexts.length != original.contexts.length ||
+        !data.contexts.every(original.includesContext)) {
+      return;
+    }
+    final routeVisible = _canActOnCircleRoute && _topicsSheet == null;
+    _topicsChange(() {
+      final local = _messages
+          .where((m) => !_topicsSourceIds.contains(m.id))
+          .toList();
+      _discussionMessageTags.removeWhere(
+        (id, _) => _topicsSourceIds.contains(id),
+      );
+      _topicsSourceIds = data.messages.map((m) => m.id).toSet();
+      _setTopicsMessageTags(data);
+      _messages = [
+        ...data.messages,
+        ...local.where((m) => !_topicsSourceIds.contains(m.id)),
+      ];
+      if (routeVisible) {
+        _readTopics(preserveDivider: true);
+        _topicsLaidOut = false;
+      }
+    });
+  }
+
+  ZyraCircleTopicTile _topicsTile(
+    ZyraCircleDiscussionTopic topic,
+    Map<String, int> unread, {
+    ZyraCircleDiscussionArchive? archive,
+  }) {
     final detail = _topics!.tiles.where((t) => t.id == topic.id).firstOrNull;
-    final archive = topic.isPast ? _topicsArchiveFor(topic) : null;
     return ZyraCircleTopicTile(
       id: topic.id,
       name: topic.firstName,
@@ -88,6 +174,8 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
       startedOn: archive?.startedOn,
       endedOn: archive?.endedOn,
       sharedLabel: archive?.sharedSummaryLabel?.split(' · ').first,
+      unread: unread[topic.id] ?? 0,
+      muted: _topicMuted(topic.id),
     );
   }
 
@@ -104,6 +192,7 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
     _topicsChange(() {
       _topicsSelection = selected;
       _topicsPast = past;
+      _readTopics();
       _topicPickRequest++;
       _messageReferenceEpoch++;
       _topicsEpoch++;
@@ -143,24 +232,63 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
         _topicsSheet == null) {
       _topicsEpoch++;
     }
+    if (routeCurrent &&
+        _topicsRouteCurrent == false &&
+        _topicsSheet == null &&
+        _canInteract) {
+      final epoch = _topicsEpoch;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted &&
+            epoch == _topicsEpoch &&
+            _canActOnCircleRoute &&
+            _topicsSheet == null) {
+          _topicsChange(() => _readTopics(preserveDivider: true));
+        }
+      });
+    }
     _topicsRouteCurrent = routeCurrent;
     _topicsNewest();
     final selected = _topicsSelection;
-    final messages =
-        _messages
-            .where(
-              (m) =>
-                  selected == null ||
-                  _discussionMessageTags[m.id]?.id == selected.id ||
-                  m.context?.referenceId == selected.id,
-            )
-            .toList()
-          ..sort((a, b) {
-            final time = a.createdAt.compareTo(b.createdAt);
-            return time != 0
-                ? time
-                : _messages.indexOf(a).compareTo(_messages.indexOf(b));
-          });
+    final unread = <String, int>{};
+    final newestMessage = <String, DateTime>{};
+    final messages = <ZyraCircleTopicMessage>[];
+    for (final message in _messages) {
+      final chat = _topicFor(message);
+      if (_topicUnread(message)) {
+        unread.update(chat, (count) => count + 1, ifAbsent: () => 1);
+      }
+      final latest = newestMessage[chat];
+      if (!message.lifecycle &&
+          (latest == null || message.createdAt.isAfter(latest))) {
+        newestMessage[chat] = message.createdAt;
+      }
+      if (selected == null || chat == selected.id) {
+        messages.add(
+          ZyraCircleTopicMessage(
+            message: message,
+            about:
+                _discussionMessageTags[message.id]?.firstName ??
+                message.context?.firstName,
+          ),
+        );
+      }
+    }
+    final past =
+        [
+          for (final topic in _pastTopics)
+            if (_topicsArchiveFor(topic) case final archive?)
+              _topicsTile(topic, unread, archive: archive),
+        ]..sort((a, b) {
+          final aUnread = !a.muted && a.unread > 0;
+          final bUnread = !b.muted && b.unread > 0;
+          if (aUnread != bUnread) return aUnread ? -1 : 1;
+          if (aUnread) {
+            final time = newestMessage[b.id]!.compareTo(newestMessage[a.id]!);
+            if (time != 0) return time;
+          }
+          final end = b.endedOn!.compareTo(a.endedOn!);
+          return end == 0 ? a.id.compareTo(b.id) : end;
+        });
     return _withBackReturn(
       context,
       ZyraGuardianPreviewRouteBoundary(
@@ -182,29 +310,30 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
                 loading: _loading,
                 available: _available,
                 pastSelected: _topicsPast,
-                showPast: _pastTopics.isNotEmpty,
+                showPast: past.isNotEmpty,
+                mainUnread: unread[ZyraCircleDiscussionTopic.general.id] ?? 0,
+                mainMuted: _topicMuted(ZyraCircleDiscussionTopic.general.id),
+                unreadDividerId: _topicUnreadDividerId,
                 canSendNow: () =>
                     _canSend &&
                     !_sending &&
                     !(_topicsPast && _topicsSelection == null),
                 canCompose:
                     _canPresentComposer && !(_topicsPast && selected == null),
-                current: _currentTopics.map(_topicsTile).toList(),
-                past: _pastTopics
-                    .where((t) => _topicsArchiveFor(t) != null)
-                    .map(_topicsTile)
+                current: _currentTopics
+                    .map((topic) => _topicsTile(topic, unread))
                     .toList(),
-                selected: selected == null ? null : _topicsTile(selected),
-                messages: messages
-                    .map(
-                      (m) => ZyraCircleTopicMessage(
-                        message: m,
-                        about:
-                            _discussionMessageTags[m.id]?.firstName ??
-                            m.context?.firstName,
+                past: past,
+                selected: selected == null
+                    ? null
+                    : _topicsTile(
+                        selected,
+                        unread,
+                        archive: selected.isPast
+                            ? _topicsArchiveFor(selected)
+                            : null,
                       ),
-                    )
-                    .toList(),
+                messages: messages,
                 now: _topicsNow,
                 scrollController: _topicMessageScroll,
                 composer: _composer,
@@ -254,9 +383,29 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
     );
   }
 
+  void _toggleTopicsMute(String? id, String chat, VoidCallback clearToast) {
+    final key = _previewData!.muteKey(id);
+    final muted = _topics!.mutedChats.add(key);
+    if (!muted) _topics.mutedChats.remove(key);
+    _topics.onMuteChanged?.call();
+    _topicsToastTimer?.cancel();
+    _topicsToast = muted
+        ? '$chat muted — no alerts, messages still arrive.'
+        : '$chat unmuted.';
+    _topicsToastTimer = Timer(const Duration(milliseconds: 1700), clearToast);
+  }
+
   Future<void> _showTopicsMenu() async {
     if (!_canActOnCircleRoute || _topicsSheet != null) return;
     final lease = Object(), epoch = _topicsEpoch;
+    final selection = _topicsSelection;
+    if (_selectedPastUnavailable) return;
+    final chatId =
+        selection?.id ??
+        (_topicsPast ? null : ZyraCircleDiscussionTopic.general.id);
+    final chatName = selection == null
+        ? 'Main chat'
+        : '${selection.firstName}’s chat';
     _topicsSheet = lease;
     BuildContext? owned;
     var revision = 0;
@@ -264,6 +413,7 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
         mounted &&
         _canInteract &&
         _topicsEpoch == epoch &&
+        !_selectedPastUnavailable &&
         identical(_topicsSheet, lease) &&
         owned?.mounted == true &&
         ModalRoute.of(owned!)?.isCurrent == true;
@@ -297,22 +447,33 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
                   };
                 }
 
+                void toggle(String? id, String name) {
+                  if (!current()) return;
+                  _topicsChange(
+                    () => _toggleTopicsMute(id, name, () {
+                      if (current()) update(() => _topicsToast = null);
+                    }),
+                  );
+                  update(() => revision++);
+                }
+
                 return _CircleTopicsMenu(
                   participants: _previewData!.participants,
                   readOnly: _topics!.readOnlyParticipantIds,
                   oneParticipantIds: _topics.oneParticipantIds,
                   viewerIsSeeker: widget.viewerIsSeeker,
-                  muted: _topicsMuted,
+                  muted: _topicMuted(null),
+                  chatMuted: chatId != null && _topicMuted(chatId),
+                  chatLabel: chatId == null
+                      ? null
+                      : selection == null
+                      ? 'the Main chat'
+                      : chatName,
+                  toast: _topicsToast,
                   bind: bind,
                   onDone: () => Navigator.of(sheetContext).pop(),
-                  onMute: () {
-                    if (current()) {
-                      update(() {
-                        _topicsMuted = !_topicsMuted;
-                        revision++;
-                      });
-                    }
-                  },
+                  onMute: () => toggle(null, 'Circle'),
+                  onMuteChat: () => toggle(chatId, chatName),
                   onReport: () => Navigator.of(sheetContext).pop('report'),
                   onManage: () => Navigator.of(sheetContext).pop('manage'),
                   onBasic: (id) => Navigator.of(sheetContext).pop('basic:$id'),
@@ -323,10 +484,13 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
         },
       );
     } finally {
+      _topicsToastTimer?.cancel();
+      _topicsToast = null;
       if (identical(_topicsSheet, lease)) _topicsSheet = null;
       _topicsEpoch++;
     }
     if (!_canActOnCircleRoute) return;
+    _topicsChange(() => _readTopics(preserveDivider: true));
     if (result == 'report') _notice('Press and hold a message to report it.');
     if (result == 'manage' && widget.viewerIsSeeker) {
       _topics!.onManageGuardians();
@@ -392,6 +556,9 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
       if (identical(_topicsSheet, lease)) _topicsSheet = null;
       _topicsEpoch++;
     }
+    if (_canActOnCircleRoute) {
+      _topicsChange(() => _readTopics(preserveDivider: true));
+    }
   }
 }
 
@@ -402,6 +569,10 @@ class _CircleTopicsMenu extends StatelessWidget {
     required this.oneParticipantIds,
     required this.viewerIsSeeker,
     required this.muted,
+    required this.chatMuted,
+    required this.chatLabel,
+    required this.toast,
+    required this.onMuteChat,
     required this.bind,
     required this.onDone,
     required this.onMute,
@@ -411,9 +582,10 @@ class _CircleTopicsMenu extends StatelessWidget {
   });
   final List<ZyraFamilyCircleParticipant> participants;
   final Set<String> readOnly, oneParticipantIds;
-  final bool viewerIsSeeker, muted;
+  final bool viewerIsSeeker, muted, chatMuted;
+  final String? chatLabel, toast;
   final VoidCallback Function(BuildContext, VoidCallback) bind;
-  final VoidCallback onDone, onMute, onReport, onManage;
+  final VoidCallback onDone, onMute, onMuteChat, onReport, onManage;
   final ValueChanged<String> onBasic;
   @override
   Widget build(BuildContext context) {
@@ -432,12 +604,12 @@ class _CircleTopicsMenu extends StatelessWidget {
             Expanded(child: Text(text, style: ZyraText.body(size: 14))),
             if (trailing != null)
               Text(trailing, style: ZyraText.subtext(size: 12)),
-            const Icon(Icons.chevron_right, size: 16),
+            if (trailing == null) const Icon(Icons.chevron_right, size: 16),
           ],
         ),
       ),
     );
-    return SingleChildScrollView(
+    final menu = SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(22, 14, 22, 22),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -536,8 +708,20 @@ class _CircleTopicsMenu extends StatelessWidget {
               color: ZyraColors.foregroundMuted.withValues(alpha: .18),
             ),
           ],
+          if (chatLabel case final label?) ...[
+            row(
+              chatMuted ? 'Unmute $label' : 'Mute $label',
+              onMuteChat,
+              trailing: chatMuted ? 'Muted' : null,
+              key: const ValueKey('circle_topics_mute_chat'),
+            ),
+            Divider(
+              height: 1,
+              color: ZyraColors.foregroundMuted.withValues(alpha: .18),
+            ),
+          ],
           row(
-            muted ? 'Unmute the Circle' : 'Mute the Circle',
+            muted ? 'Unmute the whole Circle' : 'Mute the whole Circle',
             onMute,
             trailing: muted ? 'Muted' : null,
             key: const ValueKey('circle_topics_mute'),
@@ -585,6 +769,44 @@ class _CircleTopicsMenu extends StatelessWidget {
           ),
         ],
       ),
+    );
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        menu,
+        if (toast case final text?)
+          Positioned(
+            left: 20,
+            right: 20,
+            bottom: 100,
+            child: IgnorePointer(
+              child: Semantics(
+                liveRegion: true,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2B2420).withValues(alpha: .94),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: ZyraColors.surfaceBorder),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 10,
+                    ),
+                    child: Text(
+                      text,
+                      textAlign: TextAlign.center,
+                      style: ZyraText.body(
+                        size: 12.5,
+                        color: const Color(0xFFFFFFFE),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

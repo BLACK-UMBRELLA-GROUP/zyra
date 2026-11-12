@@ -518,9 +518,9 @@ void main() {
       expect(tester.widget<InkWell>(_key('member_draft-self')).onTap, isNull);
       expect(tester.widget<InkWell>(_key('member_draft-hassan')).onTap, isNull);
       await _press(tester, _key('mute'));
-      expect(find.text('Unmute the Circle'), findsOneWidget);
+      expect(find.text('Unmute the whole Circle'), findsOneWidget);
       await _press(tester, _key('mute'));
-      expect(find.text('Mute the Circle'), findsOneWidget);
+      expect(find.text('Mute the whole Circle'), findsOneWidget);
       await _press(tester, _key('member_draft-yusuf'));
       expect(find.byType(ZyraGuardianFamilySheet), findsOneWidget);
       final sheet = tester.widget<ZyraGuardianFamilySheet>(
@@ -573,14 +573,14 @@ void main() {
       mute();
       await tester.pumpAndSettle();
       expect(haptics, before);
-      expect(find.text('Unmute the Circle'), findsOneWidget);
+      expect(find.text('Unmute the whole Circle'), findsOneWidget);
       await _press(tester, _key('done'));
       final afterDone = haptics;
       mute();
       await tester.pumpAndSettle();
       expect(haptics, afterDone);
       await _press(tester, _key('menu'));
-      expect(find.text('Unmute the Circle'), findsOneWidget);
+      expect(find.text('Unmute the whole Circle'), findsOneWidget);
     },
   );
 

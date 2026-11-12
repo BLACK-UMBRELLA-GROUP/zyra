@@ -1,3 +1,4 @@
+import 'dart:async';
 import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -275,7 +276,11 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
   late final ZyraCircleTopicsPreview? _topics;
   ZyraCircleDiscussionTopic? _topicsSelection;
   bool _topicsPast = false;
-  bool _topicsMuted = false;
+  final _topicReadIds = <(String, String?)>{};
+  String? _topicUnreadDividerId;
+  Set<String> _topicsSourceIds = {};
+  String? _topicsToast;
+  Timer? _topicsToastTimer;
   int _topicsEpoch = 0;
   Object? _topicsSheet;
   final _familyInvites = <String>{};
@@ -465,6 +470,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
     _bubbleDesign?.addListener(_presentationChanged);
     _previewVisibility?.addListener(_topicVisibilityChanged);
     _load();
+    _topics?.arrivals?.addListener(_refreshTopicsMessages);
   }
 
   @override
@@ -522,6 +528,8 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
   @override
   void dispose() {
     _bubbleDesign?.removeListener(_presentationChanged);
+    _topics?.arrivals?.removeListener(_refreshTopicsMessages);
+    _topicsToastTimer?.cancel();
     _previewVisibility?.removeListener(_topicVisibilityChanged);
     _topicMessageScroll.dispose();
     _composer.dispose();
@@ -1014,20 +1022,9 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
               : ZyraFamilyMessageAccess.membershipRequired;
           _messages = data.messages;
           if (_topicsEnabled) {
-            for (final entry in _topics!.messageTopics.entries) {
-              // A transcript's existing About label is display metadata, even
-              // when its Journey has no admitted tab. It grants no target.
-              final tag = entry.value;
-              if (_messages.any((message) => message.id == entry.key) &&
-                  tag.id.isNotEmpty &&
-                  tag.id.length <= 200 &&
-                  tag.firstName.trim().isNotEmpty &&
-                  tag.firstName.length <= 80 &&
-                  !tag.isGeneral &&
-                  (!tag.isPast || tag.endedOn != null)) {
-                _discussionMessageTags[entry.key] = entry.value;
-              }
-            }
+            _topicsSourceIds = data.messages.map((m) => m.id).toSet();
+            _setTopicsMessageTags(data);
+            _readTopics();
           }
         });
         return;

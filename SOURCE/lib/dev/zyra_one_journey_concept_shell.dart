@@ -274,6 +274,9 @@ class _ZyraOneJourneyConceptShellState
   String? _myZyraQuickAccessPage;
   final _myZyraConsumedFocusTokens = <String>{};
   final _circleReadMessageKeys = <String>{};
+  final _circleTabSeenKeys = <String>{};
+  final _circleMuteKeys = <ZyraCirclePreviewMuteKey>{};
+  final _circleArrivals = ValueNotifier<ZyraGuardianCirclePreviewData?>(null);
   int _browseIndex = 1;
   // Session-only viewing order, never a visibility or request permission.
   final _seenBrowseProfileIds = <String>{};
@@ -657,6 +660,7 @@ class _ZyraOneJourneyConceptShellState
       .toList(growable: false);
 
   bool get _hasNewMyZyraTabActivity =>
+      _hasCircleTabActivity ||
       _visibleRequests(DraftJourneyState.received).any(
         (person) =>
             _model.hasUnseenReceivedRequest(person.id) &&
@@ -860,6 +864,8 @@ class _ZyraOneJourneyConceptShellState
     _guardianTabs = ZyraGuardianTabsState(saved.guardianTabs);
     _myZyraConsumedFocusTokens.addAll(saved.myZyraConsumedFocusTokens);
     _circleReadMessageKeys.addAll(saved.circleReadMessageKeys);
+    _circleTabSeenKeys.addAll(saved.circleTabSeenKeys);
+    _circleMuteKeys.addAll(saved.circleMuteKeys);
     _myZyraFocusIndex = widget.restoreLocation ? saved.myZyraFocusIndex : 0;
 
     // Restore the saved account choices before the short-return check.
@@ -1232,6 +1238,8 @@ class _ZyraOneJourneyConceptShellState
           .readiness,
       myZyraConsumedFocusTokens: _myZyraConsumedFocusTokens,
       circleReadMessageKeys: _circleReadMessageKeys,
+      circleTabSeenKeys: _circleTabSeenKeys,
+      circleMuteKeys: _circleMuteKeys,
       myZyraFocusIndex: _myZyraFocusIndex,
       myZyraQuickAccessPage: _myZyraQuickAccessPage,
       guardianPage: _guardianPage,
@@ -1389,6 +1397,16 @@ class _ZyraOneJourneyConceptShellState
       if (_guardianRole && (_tab == 2 || index == 2)) {
         _seeGuardianTabActivity();
       }
+      if (_tab == 2 || index == 2) {
+        final circle = _currentCircleData();
+        if (circle != null) {
+          _circleTabSeenKeys.addAll(
+            _circleAttention(
+              circle,
+            ).map((message) => _circleMessageKey(circle, message)),
+          );
+        }
+      }
       _tab = index;
       if (!_guardianRole && index == 1) _consumeFocusTarget('journey_tab');
       if (!_guardianRole && index == 2) {
@@ -1460,8 +1478,10 @@ class _ZyraOneJourneyConceptShellState
         ? person
         : null;
     _move(() {
-      _consumeFocusTarget(page, personId: person);
       if (page == 'guardian_circle') _markCurrentCircleRead();
+      if (page != 'guardian_circle' || _activityExample != null) {
+        _consumeFocusTarget(page, personId: person);
+      }
       if (receivedBeingOpened != null) {
         _model.acknowledgeReceivedRequests([receivedBeingOpened]);
       }
@@ -1813,6 +1833,7 @@ class _ZyraOneJourneyConceptShellState
     _myZyraConsumedFocusTokens.removeWhere(
       (token) => token.split(':').any(departed.contains),
     );
+    _circleMuteKeys.removeWhere((key) => departed.contains(key.$3));
     _guardianTabs.introduced.removeWhere(
       (key) => departed.contains('draft-${key.split(':').last}'),
     );
@@ -1872,6 +1893,9 @@ class _ZyraOneJourneyConceptShellState
       }
       if (next?.replaceTimeline == true) _timelinePreview = next?.timeline;
     }, preserveCircle: _page == 'guardian_circle');
+    if (_page == 'guardian_circle') {
+      _circleArrivals.value = _currentCircleData();
+    }
     if (oldRole != _guardianRole) widget.onRoleChanged?.call(_guardianRole);
   }
 
@@ -1908,6 +1932,7 @@ class _ZyraOneJourneyConceptShellState
     }
     _circleBubbleDesign.dispose();
     _circleVisibility.dispose();
+    _circleArrivals.dispose();
     super.dispose();
   }
 
@@ -5370,7 +5395,7 @@ class _ZyraOneJourneyConceptShellState
       final circle = _currentCircleData();
       if (circle != null &&
           circle.validFor(circle.seekerId, viewerIsSeeker: true)) {
-        for (final message in circle.messages.where((m) => m.unreadForMe)) {
+        for (final message in _circleAttention(circle)) {
           events.add(
             ZyraFocusEvent(
               tokens: ['circle:${_circleMessageKey(circle, message)}'],
@@ -5971,6 +5996,46 @@ class _ZyraOneJourneyConceptShellState
     return 'Adam & ${names[index]} · $startLabel–${end.day} ${months[end.month - 1]} ${end.year}';
   }
 
+  Map<int, ZyraCircleDiscussionTopic> _circlePastTopics(bool guardian) {
+    final pastShared =
+        !guardian ||
+        (_guardianTabs.main &&
+            _conceptHassanLinked &&
+            _conceptGuardianHistory['draft-guardian-hassan'] == true);
+    const pastExamples = [
+      (name: 'Elif', peer: null),
+      (name: 'Noor', peer: 'draft-noor'),
+      (name: 'Hafsa', peer: null),
+      (name: 'Zainab', peer: 'draft-zainab'),
+      (name: 'Huda', peer: null),
+      (name: 'Safiya', peer: 'draft-safiya'),
+      (name: 'Mariam', peer: null),
+      (name: 'Amina', peer: null),
+      (name: 'Khadija', peer: null),
+      (name: 'Sumayya', peer: null),
+      (name: 'Layla', peer: null),
+      (name: 'Yasmin', peer: null),
+    ];
+    return {
+      if (pastShared)
+        for (final (index, example) in pastExamples.indexed)
+          if (example.peer == null || !_model.hasDeparted(example.peer!))
+            index: ZyraCircleDiscussionTopic(
+              id: 'draft-circle-past-$index',
+              firstName: example.name,
+              kind: ZyraCircleTopicKind.past,
+              sharedSummaryLabel: guardian
+                  ? _sharedPastJourneyLabel(index)
+                  : null,
+              endedOn: DateTime.utc(
+                2026,
+                10,
+                10,
+              ).subtract(Duration(days: index * 15)),
+            ),
+    };
+  }
+
   // One caller-owned fixture feeds both the icon and the admitted reader.
   // No notification total, Focus dismissal or unrelated message list is used.
   ZyraGuardianCirclePreviewData? _currentCircleData() {
@@ -6021,17 +6086,40 @@ class _ZyraOneJourneyConceptShellState
     };
     final arrivalsFor = _fixtureOwner?.circleArrivalsFor;
     final arrived = <ZyraFamilyMessage>[];
+    final messageTopics = <String, ZyraCircleDiscussionTopic>{};
     if (arrivalsFor != null && fixtureOwnsCircle) {
       final senderIds = {circleSeekerId, ...people.map((p) => p.id)};
       final seen = {'draft-circle-welcome', 'draft-circle-response'};
+      final past = _circlePastTopics(guardian).values;
       for (final message in arrivalsFor(circleSeekerId, senderId)) {
         if (message.senderId == senderId ||
             !senderIds.contains(message.senderId) ||
             message.lifecycle ||
-            message.context != null ||
-            !seen.add(message.id)) {
+            seen.contains(message.id)) {
           continue;
         }
+        final context = message.context;
+        if (context != null) {
+          if (context.kind == ZyraFamilyMessageContextKind.ended) {
+            final topic = past
+                .where(
+                  (topic) =>
+                      topic.id == context.referenceId &&
+                      topic.firstName == context.firstName,
+                )
+                .firstOrNull;
+            if (topic == null) continue;
+            messageTopics[message.id] = topic;
+          } else if (!contexts.any(
+            (known) =>
+                known.referenceId == context.referenceId &&
+                known.firstName == context.firstName &&
+                known.kind == context.kind,
+          )) {
+            continue;
+          }
+        }
+        seen.add(message.id);
         arrived.add(
           ZyraFamilyMessage(
             id: message.id,
@@ -6042,6 +6130,9 @@ class _ZyraOneJourneyConceptShellState
             body: message.body,
             createdAt: message.createdAt,
             readBy: message.readBy,
+            context: context?.kind == ZyraFamilyMessageContextKind.active
+                ? context
+                : null,
             unreadForMe:
                 message.unreadForMe &&
                 !_circleReadMessageKeys.contains(
@@ -6125,6 +6216,7 @@ class _ZyraOneJourneyConceptShellState
         ...arrived,
       ],
       contexts: contexts,
+      messageTopics: messageTopics,
       departedMemberIds: departedIds,
     );
   }
@@ -6134,13 +6226,48 @@ class _ZyraOneJourneyConceptShellState
     ZyraFamilyMessage message,
   ) => '${data.seekerId}:${data.senderId}:${message.id}:${message.senderId}';
 
+  Iterable<ZyraFamilyMessage> _circleAttention(
+    ZyraGuardianCirclePreviewData data, {
+    bool ignoreWholeCircleMute = false,
+  }) {
+    if (!data.validFor(data.seekerId, viewerIsSeeker: !_guardianRole) ||
+        (!ignoreWholeCircleMute &&
+            _circleMuteKeys.contains(data.muteKey(null)))) {
+      return const [];
+    }
+    return data.messages.where(
+      (message) =>
+          message.unreadForMe &&
+          !_circleMuteKeys.contains(data.muteKey(data.chatFor(message))),
+    );
+  }
+
+  bool get _hasCircleTabActivity {
+    if (_tab == 2) return false;
+    final data = _currentCircleData();
+    return data != null &&
+        _circleAttention(data).any(
+          (message) =>
+              !_circleTabSeenKeys.contains(_circleMessageKey(data, message)),
+        );
+  }
+
   int get _currentCircleUnreadCount {
     final data = _currentCircleData();
-    if (data == null ||
-        !data.validFor(data.seekerId, viewerIsSeeker: !_guardianRole)) {
-      return 0;
+    return data == null
+        ? 0
+        : _circleAttention(data, ignoreWholeCircleMute: true).length;
+  }
+
+  void _rememberCircleReads(
+    ZyraGuardianCirclePreviewData data,
+    Iterable<ZyraFamilyMessage> messages,
+  ) {
+    for (final message in messages) {
+      final key = _circleMessageKey(data, message);
+      _circleReadMessageKeys.add(key);
+      if (!_guardianRole) _myZyraConsumedFocusTokens.add('circle:$key');
     }
-    return data.messages.where((message) => message.unreadForMe).length;
   }
 
   void _markCurrentCircleRead() {
@@ -6149,10 +6276,13 @@ class _ZyraOneJourneyConceptShellState
         !data.validFor(data.seekerId, viewerIsSeeker: !_guardianRole)) {
       return;
     }
-    _circleReadMessageKeys.addAll(
-      data.messages
-          .where((message) => message.unreadForMe)
-          .map((message) => _circleMessageKey(data, message)),
+    _rememberCircleReads(
+      data,
+      data.messages.where(
+        (message) =>
+            message.unreadForMe &&
+            data.chatFor(message) == ZyraCircleDiscussionTopic.general.id,
+      ),
     );
   }
 
@@ -6226,40 +6356,7 @@ class _ZyraOneJourneyConceptShellState
               kind: ZyraCircleTopicKind.current,
             ),
     ]);
-    const pastExamples = [
-      (name: 'Elif', peer: null),
-      (name: 'Noor', peer: 'draft-noor'),
-      (name: 'Hafsa', peer: null),
-      (name: 'Zainab', peer: 'draft-zainab'),
-      (name: 'Huda', peer: null),
-      (name: 'Safiya', peer: 'draft-safiya'),
-      (name: 'Mariam', peer: null),
-      (name: 'Amina', peer: null),
-      (name: 'Khadija', peer: null),
-      (name: 'Sumayya', peer: null),
-      (name: 'Layla', peer: null),
-      (name: 'Yasmin', peer: null),
-    ];
-    final pastTopicsByIndex = {
-      if (pastShared)
-        for (final (index, example) in pastExamples.indexed)
-          if (circleYusuf ||
-              example.peer == null ||
-              !_model.hasDeparted(example.peer!))
-            index: ZyraCircleDiscussionTopic(
-              id: 'draft-circle-past-$index',
-              firstName: example.name,
-              kind: ZyraCircleTopicKind.past,
-              sharedSummaryLabel: guardian
-                  ? _sharedPastJourneyLabel(index)
-                  : null,
-              endedOn: DateTime.utc(
-                2026,
-                10,
-                10,
-              ).subtract(Duration(days: index * 15)),
-            ),
-    };
+    final pastTopicsByIndex = _circlePastTopics(guardian);
     final pastTopics = List<ZyraCircleDiscussionTopic>.unmodifiable(
       pastTopicsByIndex.values,
     );
@@ -6318,6 +6415,18 @@ class _ZyraOneJourneyConceptShellState
     }
 
     final topicsPreview = ZyraCircleTopicsPreview(
+      arrivals: _circleArrivals,
+      mutedChats: _circleMuteKeys,
+      onRead: (messages) {
+        if (!current()) return;
+        _rememberCircleReads(data, messages);
+        _publishCheckpoint();
+      },
+      onMuteChanged: () {
+        if (!current()) return;
+        setState(() {});
+        _publishCheckpoint();
+      },
       guardianBasic: guardian && _guardianMembership == 'Guardian Basic',
       readOnlyParticipantIds: [
         for (final participant in data.participants)
@@ -7180,7 +7289,8 @@ class _ZyraOneJourneyConceptShellState
 
   bool get _hasGuardianMyZyraTabActivity =>
       _conceptHassanLinked &&
-      ((_tab != 2 &&
+      (_hasCircleTabActivity ||
+          (_tab != 2 &&
               _guardianJourneyRequests(DraftJourneyState.received).any(
                 (person) =>
                     !_guardianTabs.consumedFocus.contains(
@@ -7226,9 +7336,39 @@ class _ZyraOneJourneyConceptShellState
     final selected = people.indexWhere((p) => p.id == _guardianJourneyId);
     final current = people.isEmpty ? null : people[selected < 0 ? 0 : selected];
     final fresh = _accountFreshGuard();
+    final circle = page == 'my_zyra' ? _currentCircleData() : null;
+    final arrivals = circle == null
+        ? const <ZyraFamilyMessage>[]
+        : (_circleAttention(circle).toList()
+            ..sort((a, b) => b.createdAt.compareTo(a.createdAt)));
+    final circleFocus = arrivals.map((message) {
+      final key = _circleMessageKey(circle!, message);
+      final seeker = circle.participants.firstWhere(
+        (person) => person.userId == circle.seekerId,
+      );
+      return ZyraFocusItem(
+        id: 'circle:$key',
+        title: "New message in ${seeker.firstName}'s Guardian Circle",
+        detail:
+            "${message.senderFirstName} has added to the families' conversation.",
+        actionLabel: 'Open Circle',
+        icon: Icons.forum_outlined,
+        onAction: () {
+          if (!fresh() || !_guardianRole || _tab != 2 || _page != null) return;
+          final data = _currentCircleData();
+          if (data != null &&
+              _circleAttention(
+                data,
+              ).any((arrival) => _circleMessageKey(data, arrival) == key)) {
+            _open('guardian_circle');
+          }
+        },
+      );
+    }).toList();
     return ZyraGuardianTabsPresentation(
       state: _guardianTabs,
       page: page,
+      circleFocus: circleFocus,
       linked: _conceptHassanLinked,
       paid: _guardianMembership == 'Guardian One',
       tabClearance: _quickAccessTabBar,
@@ -7375,7 +7515,9 @@ class _ZyraOneJourneyConceptShellState
     }
     if (action.startsWith('focus_index_')) {
       final index = int.tryParse(action.substring('focus_index_'.length));
-      if (index != null && index >= 0 && index < 2) {
+      final circle = _currentCircleData();
+      final circleItems = circle == null ? 0 : _circleAttention(circle).length;
+      if (index != null && index >= 0 && index < 3 + circleItems) {
         state.focusIndex = index;
         _publishCheckpoint();
       }

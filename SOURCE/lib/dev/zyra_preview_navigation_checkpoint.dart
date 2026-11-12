@@ -8,6 +8,7 @@ import 'zyra_subscription_wallet_draft.dart' show ZyraWalletReadiness;
 import 'zyra_one_journey_guardian_tabs.dart' show ZyraGuardianTabsSnapshot;
 import 'zyra_view_request_draft_model.dart';
 import 'zyra_guardian_family_preview.dart';
+import 'zyra_guardian_circle_preview.dart';
 
 /// Measures the first real background departure, not the authorization wait.
 /// Inactive-only system sheets do not start the reset interval.
@@ -62,6 +63,8 @@ class ZyraPreviewNavigationCheckpoint {
     this.seekerReadiness = ZyraWalletReadiness.ready,
     Iterable<String> myZyraConsumedFocusTokens = const [],
     Iterable<String> circleReadMessageKeys = const [],
+    Iterable<ZyraCirclePreviewMuteKey> circleMuteKeys = const [],
+    Iterable<String> circleTabSeenKeys = const [],
     int myZyraFocusIndex = 0,
     this.guardianPage = 0,
     this.guardianInvitationCancelled = false,
@@ -94,7 +97,9 @@ class ZyraPreviewNavigationCheckpoint {
        myZyraConsumedFocusTokens = Set.unmodifiable(
          myZyraConsumedFocusTokens.take(64),
        ),
-       circleReadMessageKeys = Set.unmodifiable(circleReadMessageKeys.take(64)),
+       circleReadMessageKeys = Set.unmodifiable(circleReadMessageKeys),
+       circleMuteKeys = Set.unmodifiable(circleMuteKeys),
+       circleTabSeenKeys = Set.unmodifiable(circleTabSeenKeys),
        myZyraFocusIndex = myZyraFocusIndex < 0 ? 0 : myZyraFocusIndex,
        browseFilter = browseFilter.detached(),
        pages = List.unmodifiable(pages.take(8)),
@@ -133,7 +138,8 @@ class ZyraPreviewNavigationCheckpoint {
   final Set<String> myZyraConsumedFocusTokens;
   // Fixed-fixture read facts only, isolated by Circle and viewer. This is
   // neither Focus consumption nor authority to read a conversation.
-  final Set<String> circleReadMessageKeys;
+  final Set<String> circleReadMessageKeys, circleTabSeenKeys;
+  final Set<ZyraCirclePreviewMuteKey> circleMuteKeys;
   final int myZyraFocusIndex;
   final List<String> pages, browseHistory;
   // Viewed synthetic IDs only; never an entitlement or source of profiles.

@@ -340,6 +340,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     this.paid = true,
     this.adamMain = true,
     this.focusItems,
+    this.circleFocus = const [],
     this.notificationCount = 0,
     this.newJourneyRequestCount = 0,
     this.receivedJourneyRequests = const [],
@@ -360,6 +361,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   final String? Function(String) photoFor;
   final bool linked, paid, adamMain;
   final List<ZyraFocusItem>? focusItems;
+  final List<ZyraFocusItem> circleFocus;
   final int notificationCount, newJourneyRequestCount;
   final List<DraftProfile> receivedJourneyRequests, sentJourneyRequests;
   final bool tabClearance;
@@ -824,7 +826,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   Widget _home() {
     final hasRequest = linked && adamMain && newJourneyRequestCount > 0;
     final hasConnect = linked && paid && adamMain && state.hasUnseenConnection;
-    final items = (focusItems ?? _homeFocusItems)
+    final items = [...circleFocus, ...(focusItems ?? _homeFocusItems)]
         .where((item) => !state.consumedFocus.contains(item.id))
         .toList(growable: false);
     return ZyraFocusDashboard(

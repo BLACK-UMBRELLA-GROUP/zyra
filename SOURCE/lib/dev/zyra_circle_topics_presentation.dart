@@ -8,6 +8,7 @@ import '../widgets/zyra_loading.dart';
 import '../widgets/zyra_state_widgets.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../theme/zyra_interaction_style.dart';
+import 'zyra_conversation_unread_badge.dart';
 
 @immutable
 class ZyraCircleTopicTile {
@@ -19,6 +20,8 @@ class ZyraCircleTopicTile {
     this.startedOn,
     this.endedOn,
     this.sharedLabel,
+    this.unread = 0,
+    this.muted = false,
   });
 
   final String id;
@@ -28,6 +31,8 @@ class ZyraCircleTopicTile {
   final DateTime? startedOn;
   final DateTime? endedOn;
   final String? sharedLabel;
+  final int unread;
+  final bool muted;
 }
 
 @immutable
@@ -49,6 +54,9 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
     required this.available,
     required this.pastSelected,
     required this.showPast,
+    required this.mainUnread,
+    required this.mainMuted,
+    required this.unreadDividerId,
     required this.canCompose,
     required this.senderId,
     required this.current,
@@ -80,7 +88,9 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
   final bool loading;
   final bool available;
   final bool pastSelected;
-  final bool showPast;
+  final bool showPast, mainMuted;
+  final int mainUnread;
+  final String? unreadDividerId;
   final bool canCompose;
   final String senderId;
   final String? seekerName;
@@ -148,7 +158,7 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       Padding(
-        padding: const EdgeInsets.fromLTRB(_side, 14, _side, 10),
+        padding: const EdgeInsets.fromLTRB(_side, 14, _side, 5),
         child: Row(
           children: [
             Expanded(
@@ -182,7 +192,7 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
       ),
       SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: _side),
+        padding: const EdgeInsets.fromLTRB(_side, 5, _side, 0),
         child: Row(
           children: [
             _pill(
@@ -191,6 +201,8 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
               'Main',
               onAll,
               selected: !pastSelected && selected == null,
+              unread: mainUnread,
+              muted: mainMuted,
             ),
             for (final tile in current) ...[
               const SizedBox(width: 6),
@@ -200,11 +212,23 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
                 tile.name,
                 () => onTopic(tile.id),
                 selected: !pastSelected && selected?.id == tile.id,
+                unread: tile.unread,
+                muted: tile.muted,
               ),
             ],
             if (showPast) ...[
               const SizedBox(width: 6),
-              _pill(context, 'past', 'Past', onPast, selected: pastSelected),
+              _pill(
+                context,
+                'past',
+                'Past',
+                onPast,
+                selected: pastSelected,
+                unread: past.fold(
+                  0,
+                  (total, tile) => total + (tile.muted ? 0 : tile.unread),
+                ),
+              ),
             ],
           ],
         ),
@@ -247,7 +271,7 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
           item.$2.message.readBy.any((reader) => reader.userId != senderId),
     );
     final firstUnread = ordered.indexWhere(
-      (item) => item.$2.message.unreadForMe,
+      (item) => item.$2.message.id == unreadDividerId,
     );
     return ListView.builder(
       controller: scrollController,
@@ -291,7 +315,11 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
           child: _action(
             context,
             id: 'past_${tile.id}',
-            label: '${_pastName(tile)}, ${_pastDates(tile)}',
+            label: _attentionLabel(
+              '${_pastName(tile)}, ${_pastDates(tile)}',
+              unread: tile.unread,
+              muted: tile.muted,
+            ),
             onTap: () => onTopic(tile.id),
             child: Container(
               padding: const EdgeInsets.all(10),
@@ -304,7 +332,11 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(_pastName(tile), style: ZyraText.body(size: 15)),
+                        _chatName(
+                          _pastName(tile),
+                          ZyraText.body(size: 15),
+                          muted: tile.muted,
+                        ),
                         Text(
                           _pastDates(tile),
                           style: ZyraText.subtext(size: 11.5),
@@ -313,6 +345,14 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 12),
+                  if (tile.unread > 0) ...[
+                    ZyraConversationUnreadCount(
+                      count: tile.unread,
+                      muted: tile.muted,
+                      backgroundColor: ZyraColors.ivoryTop,
+                    ),
+                    const SizedBox(width: 8),
+                  ],
                   Icon(
                     Icons.chevron_right,
                     size: 18,
@@ -720,6 +760,37 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
     ),
   );
 
+  Widget _chatName(String name, TextStyle style, {required bool muted}) {
+    if (!muted) return Text(name, style: style);
+    return Text.rich(
+      TextSpan(
+        text: name,
+        children: [
+          WidgetSpan(
+            alignment: PlaceholderAlignment.middle,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: Icon(
+                Icons.notifications_off_outlined,
+                size: 13,
+                color: ZyraColors.foregroundMuted,
+              ),
+            ),
+          ),
+        ],
+      ),
+      style: style,
+    );
+  }
+
+  String _attentionLabel(
+    String name, {
+    required int unread,
+    required bool muted,
+  }) =>
+      '$name${muted ? ', Muted' : ''}'
+      '${unread > 0 ? ', ${zyraConversationUnreadLabel(unread)}' : ''}';
+
   Widget _pill(
     BuildContext context,
     String id,
@@ -727,13 +798,11 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
     VoidCallback onTap, {
     bool selected = false,
     bool gold = false,
-  }) => _action(
-    context,
-    id: id,
-    label: label,
-    onTap: onTap,
-    selected: selected,
-    child: Container(
+    int unread = 0,
+    bool muted = false,
+  }) {
+    final count = selected ? 0 : unread;
+    final pill = Container(
       constraints: const BoxConstraints(minHeight: 32),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
       decoration: BoxDecoration(
@@ -745,18 +814,33 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
               : ZyraColors.surfaceBorder,
         ),
       ),
-      child: Text(
+      child: _chatName(
         label,
-        textAlign: TextAlign.center,
-        style: ZyraText.body(
+        ZyraText.body(
           size: 13,
           color: selected || gold
               ? ZyraColors.goldText
               : ZyraColors.foregroundMuted,
         ),
+        muted: muted,
       ),
-    ),
-  );
+    );
+    return _action(
+      context,
+      id: id,
+      label: _attentionLabel(label, unread: count, muted: muted),
+      onTap: onTap,
+      selected: selected,
+      child: count == 0
+          ? pill
+          : ZyraConversationUnreadBadge(
+              unreadCount: count,
+              backgroundColor: ZyraColors.ivoryTop,
+              muted: muted,
+              child: pill,
+            ),
+    );
+  }
 
   /// Both accessibility and pointer routes call the same owner-bound action.
   Widget _action(

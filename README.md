@@ -24,8 +24,10 @@ In the Founder preview, a sideways drag brings the neighbouring card into view
 on Profiles, Guardian, Journey, Filters and My ZYRA’s Needs you section. The
 selection updates when the cards settle. Each Guardian card shows details and
 Journey access together. The three-dot menu opens Main Guardian and removal
-actions. Guardian Circle opens on Main and keeps past Journey topics open
-for members who can write.
+actions. In the Founder preview, Guardian Circle opens on Main, shows unread
+counts by chat, and puts unread Past chats first. Opening a chat clears its
+count. The Circle menu offers separate controls for one chat and the whole
+Circle. Past Journey topics stay open for members who can write.
 In the ordinary Seeker Guardian tab and Founder preview, the round plus on the
 full-height Add card opens Add a Guardian. The ordinary tab shows the card when
 there are no linked Guardians and after the last Guardian when there is room.
