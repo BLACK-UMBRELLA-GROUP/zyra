@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "queueLine": 88,
+  "commitSha": "48411b7c5b105f403bdc40bb7d9ed3541bdd23ab",
+  "flutterVersion": "3.44.2",
+  "buildMode": "widget verification",
+  "timestamp": "2026-11-12T09:26:15.816443+00:00",
+  "authority": "LOCK 27 V2, answered Questions 91–93",
+  "scope": "Detached synthetic Founder preview",
+  "baselineTestsSha256": "62571866f1836b08a6a40b7aef1a4c17e2bf4f20caa18275f1e59214de35a0f0",
+  "analyzer": "No issues found",
+  "focused": {
+    "passed": 25,
+    "sha256": "bd1e19e4cee288335d86c646d5c9a590b7efd9cb4a229127f20548721fc7410e"
+  },
+  "regression": {
+    "analyzeSha256": "478506bf1e73083c0fdcace638dbdd965b12832507098a9ef0be3bcae03cdee0",
+    "testsSha256": "23a5db6174be958e9c785775f5efa9ca98773c61a9c790e1e2730cd61e2f9c70",
+    "failureBaselineSha256": "7ccd8bd116b4a475f966e68621724297a490dfb582c76401c9655ad00024f9ab",
+    "comparisonSha256": "62fcc9852aedeb53e7be93b74f72bb2afbb429573817a24b56d569d67f259ef6",
+    "candidateFailureSetSha256": "7ccd8bd116b4a475f966e68621724297a490dfb582c76401c9655ad00024f9ab",
+    "retainedSkipSetSha256": "6645df8b1919af6efa14255cfa631d0276f9391e9a6a98d2b7d12be9e3672539",
+    "passes": 7036,
+    "failures": 37,
+    "skips": 122,
+    "suites": 536,
+    "newFailures": 0,
+    "resolvedBaselineFailures": 0,
+    "newSkips": 0,
+    "sameRetainedSkips": true
+  },
+  "visualEvidence": [
+    {
+      "name": "guardian_compatibility__basic_locked_375x667.png",
+      "width": 1125,
+      "height": 2001,
+      "sha256": "551e139712b69a88506726a2460f0079cc9f496e64a5a028585d5771b669fbfa"
+    },
+    {
+      "name": "guardian_compatibility__basic_locked_430x932.png",
+      "width": 1290,
+      "height": 2796,
+      "sha256": "525dfd055961481e07bc001f8dfe8b04ee7424454ef898715db5e143b90fe7b3"
+    },
+    {
+      "name": "guardian_compatibility__basic_overall_375x667.png",
+      "width": 1125,
+      "height": 2001,
+      "sha256": "ee7292d1413b6de2bf08523640933e72d44b5308fff698d5a7b4f2dfe58abc8c"
+    },
+    {
+      "name": "guardian_compatibility__basic_overall_430x932.png",
+      "width": 1290,
+      "height": 2796,
+      "sha256": "8e37278c3ae27898e35af009d7e3e19a63f568a769f1d81c8c334dd10b7f1df2"
+    },
+    {
+      "name": "guardian_compatibility__both_reveals_375x667.png",
+      "width": 1125,
+      "height": 2001,
+      "sha256": "a10915236368b23d70361aabe1499a7019ae23068056a8d62e3e0e6ed5a0508d"
+    },
+    {
+      "name": "guardian_compatibility__both_reveals_430x932.png",
+      "width": 1290,
+      "height": 2796,
+      "sha256": "39ae8426e78332445ae821c2e6a04537480123258224f9d371b395cb5f34e653"
+    },
+    {
+      "name": "guardian_compatibility__one_lifestyle_430x932.png",
+      "width": 1290,
+      "height": 2796,
+      "sha256": "b73a3130e6a4eeb92230b0934a10c99e56f3f4b0ef24cde5ba1a15a88a0d48a1"
+    },
+    {
+      "name": "guardian_compatibility__one_reveal_375x667.png",
+      "width": 1125,
+      "height": 2001,
+      "sha256": "877d1b7411b8972a9b579865339b8abed7076b0616948d7dacbf165b7cf04e68"
+    },
+    {
+      "name": "guardian_compatibility__one_reveal_430x932.png",
+      "width": 1290,
+      "height": 2796,
+      "sha256": "62f9c81c7c796978a9a9c6035b7cdfc45c4baeb4b1fe9cf9d30785c2be14385e"
+    },
+    {
+      "name": "guardian_compatibility__past_basic_locked_430x932.png",
+      "width": 1290,
+      "height": 2796,
+      "sha256": "525dfd055961481e07bc001f8dfe8b04ee7424454ef898715db5e143b90fe7b3"
+    },
+    {
+      "name": "guardian_compatibility__past_reader_expired_430x932.png",
+      "width": 1290,
+      "height": 2796,
+      "sha256": "07c8bc0ecb03701ab80e64918abceb755b7c7067059825e0b0450ff02bda8a74"
+    },
+    {
+      "name": "guardian_compatibility__past_row_430x932.png",
+      "width": 1290,
+      "height": 2796,
+      "sha256": "4d79bc2c0b6f4ee69b73bc25007d39db4264b9933d6dc9687e5c04b3ca7a2cac"
+    },
+    {
+      "name": "guardian_compatibility__past_row_expired_430x932.png",
+      "width": 1290,
+      "height": 2796,
+      "sha256": "fabb4a7c7bb42d7de9ddd44ee08270da09bd92dc810ba2307b61675b2c7f6087"
+    }
+  ]
+}
