@@ -6,7 +6,7 @@ The app is intended for adult members of that community and their guardians. It 
 
 ## Status
 
-Pre-launch, built solo since June 2026. Version 1.0.0 (build 5) runs on the Founder's iPhone for internal testing; the redesigned interface is a Founder preview over the existing app, and server integration, pricing and purchases are not yet connected to it. The website is [zyraconnect.app](https://zyraconnect.app).
+Pre-launch, built solo since June 2026. Version 1.0.0 (build 5) runs on the Founder's iPhone for internal testing. The redesigned interface is a Founder preview over the existing app. Server and checkout integration are still pending. The website is [zyraconnect.app](https://zyraconnect.app).
 
 The app has no developer rail, Home/Preview/Actions panel, comparison picker, role/plan/wallet selector, reset or onboarding skip shortcut. The protected Founder entry starts with sample Adam on Seeker One. Member settings and controls drawn in current LOCK masters remain, including the Profile Switch flow and the locked local request Demo actions.
 
@@ -118,6 +118,8 @@ Widget and capture tests select other sample roles, plans and states from code. 
 Confirmations share a compact bottom sheet. Profile Preview uses the Profiles card with the member’s own public details and photos. Its request button shows an explanation.
 
 Profile photo review uses the reference Profiles card shape and shows which part of the crop stays visible on the smaller reference screen. Photos fill the full rectangular photo areas in Profiles, Profile Preview, Journey Bio, Guardian views and Manage Photos. The review source is bounded at 3000 px on its longest edge and the saved JPEG at 1440 px. Photo preparation errors show recovery advice and a support reference.
+
+The app requests signed links for private profile photos with a one-hour lifetime.
 
 Use the protected local driver with the installed pinned SDK for checks, without resolving dependencies again:
 

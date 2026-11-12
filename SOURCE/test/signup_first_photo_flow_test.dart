@@ -180,7 +180,6 @@ Future<void> _installLocalSession(WidgetTester tester) async {
           },
           'user_metadata': <String, Object?>{},
           'aud': 'authenticated',
-          'email': 'synthetic@example.invalid',
           'created_at': '2026-10-04T00:00:00Z',
         },
       }),
@@ -230,6 +229,7 @@ void main() {
   var photoReadFails = false;
   final savedPhotoRows = <Map<String, Object?>>[];
   final photoRequests = <({String method, String path})>[];
+  final signingLifetimes = <Object?>[];
 
   void installSixSavedPhotos() {
     savedPhotoRows.addAll([
@@ -307,6 +307,7 @@ void main() {
         if (request.method == 'POST' &&
             path == '/storage/v1/object/sign/profile-photos') {
           final body = jsonDecode(request.body) as Map<String, dynamic>;
+          signingLifetimes.add(body['expiresIn']);
           final paths = (body['paths'] as List).cast<String>();
           return json([
             for (final photoPath in paths)
@@ -319,10 +320,16 @@ void main() {
         }
         if (request.method == 'POST' &&
             path.startsWith('/storage/v1/object/sign/profile-photos/')) {
+          final body = jsonDecode(request.body) as Map<String, dynamic>;
+          signingLifetimes.add(body['expiresIn']);
           return json({
             'signedURL':
                 '${path.substring('/storage/v1'.length)}?token=synthetic',
           });
+        }
+        if (request.method == 'POST' &&
+            path.startsWith('/storage/v1/object/profile-photos/$_ownerId/')) {
+          return json({'Key': path.substring('/storage/v1/object/'.length)});
         }
         return http.Response(
           '{"message":"All service traffic is rejected by this local test"}',
@@ -367,6 +374,7 @@ void main() {
     photoReadFails = false;
     savedPhotoRows.clear();
     photoRequests.clear();
+    signingLifetimes.clear();
     store = FakeSignupStore();
     repository = ZyraSignupDraftRepository(
       store: store,
@@ -589,6 +597,30 @@ void main() {
     expect(store.operations, 0);
     expect(httpCalls, 0);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('upload, signup and batch signing request one-hour photo URLs', (
+    tester,
+  ) async {
+    await _installLocalSession(tester);
+    const path = '$_ownerId/first.jpg';
+
+    await tester.runAsync(() async {
+      final upload = await ZyraPhotoService.saveReviewedPhoto(
+        base64Decode(_localPhoto.split(',').last),
+        localPreview: false,
+      );
+      expect(upload.outcome, ZyraPhotoOutcome.uploaded);
+      final single = await ZyraPhotoService.signupPhotoUrl(
+        path,
+        expectedUserId: _ownerId,
+        expectedGeneration: ZyraAccountState.generation,
+      );
+      expect(single, _firstUrl);
+      expect(await ZyraPhotoService.signedUrlsFor([path]), [_firstUrl]);
+    });
+
+    expect(signingLifetimes, [3600, 3600, 3600]);
   });
 
   testWidgets(

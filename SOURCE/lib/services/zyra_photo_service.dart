@@ -7,11 +7,9 @@
 // PRIVATE BUCKET (2026-07-19, Fable review): the bucket was public,
 // which contradicted IMAGE_HANDLING_CURRENT_VERSION_V1.md ("Originals
 // never publicly accessible") — a public bucket serves objects by URL
-// with no auth check at all. It is now private, and every display URL
-// is a signed URL (7-day expiry — longer than any app session, short
-// enough that a leaked URL dies). Storage read RLS mirrors the
-// profile_photos table policy: own photos, or photos of an
-// active+complete profile.
+// with no auth check at all. It is now private. The app requests
+// signed display URLs that expire after one hour. Storage RLS checks
+// ownership or the viewer's access to the saved profile photo.
 //
 // Photo REMOVAL in the Chapter 2 picker only removes the URL from the
 // in-memory list, not the underlying Storage object or table row — a
@@ -158,10 +156,8 @@ class ZyraPhotoService {
     'app.zyraconnect.zyra/profile_photo',
   );
 
-  /// Signed-URL lifetime. 7 days: outlives any realistic app session
-  /// (URLs are regenerated on every fetch anyway), short enough that a
-  /// leaked URL expires.
-  static const int _signedUrlExpirySeconds = 60 * 60 * 24 * 7;
+  /// Profile photo capabilities issued by the app last at most one hour.
+  static const int _signedUrlExpirySeconds = 60 * 60;
 
   static Future<XFile?> _pickProfilePhoto() => ImagePicker().pickImage(
     source: ImageSource.gallery,
@@ -692,19 +688,15 @@ class ZyraPhotoService {
   // the session's already-minted URLs so a refresh only signs what it
   // has never signed before.
   //
-  // IN MEMORY, DELIBERATELY, and this is a privacy line, not a
-  // convenience: a signed URL is a bearer capability — anyone holding
-  // the string can fetch the photo for 7 days with no auth check — so
-  // it must never be written to disk (the review's NEVER-STORE item N2).
-  // The disk cache stores BYTES keyed by the tokenless URL instead
-  // (zyra_image_cache.dart), which is exactly as fast and carries no
-  // capability.
+  // Keep signed URLs in memory. Anyone holding the URL can fetch the
+  // photo without their own session, so never write it to disk (review
+  // item N2). The disk cache stores bytes keyed by the tokenless URL
+  // (zyra_image_cache.dart).
   //
-  // Entries older than 6 days re-sign on next use — one day of margin
-  // before the 7-day URL under them dies. Cleared on sign-out
-  // (zyra_auth.dart) with everything else the account minted.
+  // Re-sign on next use after 55 minutes so cached URLs still have time
+  // to load. Clear all entries on sign-out with the rest of the account state.
   static final Map<String, ({String url, DateTime at})> _urlMemo = {};
-  static const Duration _memoMaxAge = Duration(days: 6);
+  static const Duration _memoMaxAge = Duration(minutes: 55);
   static String? _owner;
   static int _epoch = 0;
 
@@ -815,8 +807,8 @@ class ZyraPhotoService {
     final byPath = <String, String>{};
 
     // Memo first (DR-ZYRA-169 Phase 2): anything this session already
-    // minted — and that is younger than 6 of its 7 days — is answered
-    // without a round trip. Only genuine misses go to Storage below.
+    // minted within the memo lifetime is answered without a round trip.
+    // Refresh older entries before they expire.
     final now = DateTime.now();
     final unique = <String>[];
     for (final p in storagePaths.toSet()) {
@@ -861,7 +853,7 @@ class ZyraPhotoService {
           if (signed.length == slice.length) {
             for (var i = 0; i < slice.length; i++) {
               byPath[slice[i]] = signed[i].signedUrl;
-              // Remembered for the rest of the session — see _urlMemo.
+              // Keep the new URL in memory until its refresh window.
               _urlMemo[slice[i]] = (url: signed[i].signedUrl, at: now);
             }
             break;

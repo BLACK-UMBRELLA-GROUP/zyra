@@ -16,7 +16,7 @@
 //
 // SELF-MANAGING, five ways — the Founder's requirement is that no user
 // ever clears a cache by hand:
-//   1. TTL      — stalePeriod 7 days, matching the signed-URL lifetime.
+//   1. TTL      — stalePeriod 7 days for cached image bytes.
 //   2. Size     — LRU cap of 500 objects, enforced by the cache manager;
 //                 lives in the OS cache directory, which iOS excludes
 //                 from iCloud backup and may purge under storage
