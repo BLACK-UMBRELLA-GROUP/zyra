@@ -69,6 +69,8 @@ class ZyraOnboardingAnswersService {
 
   static bool get clientReady => _clientReadyForTesting ?? supabaseReady;
 
+  static const _preferenceRpcTimeout = Duration(seconds: 10);
+
   static final preferenceConfirmationRevision = ValueNotifier<int>(0);
 
   @visibleForTesting
@@ -122,14 +124,30 @@ class ZyraOnboardingAnswersService {
   /// Returns only the signed-in Seeker's legacy Amber controls to check.
   static Future<Set<ZyraPreferenceOption>> lightsNeedingReconfirmation({
     String? expectedUserId,
+  }) => _readPreferenceLights(
+    'zyra_my_lights_needing_reconfirmation',
+    expectedUserId: expectedUserId,
+  );
+
+  /// The caller's own hidden legacy Amber controls that can affect a result.
+  static Future<Set<ZyraPreferenceOption>> lightsNeededForCompatibility({
+    String? expectedUserId,
+  }) => _readPreferenceLights(
+    'zyra_my_lights_needed_for_compatibility',
+    expectedUserId: expectedUserId,
+    reason: 'hidden_but_applicable',
+  );
+
+  static Future<Set<ZyraPreferenceOption>> _readPreferenceLights(
+    String functionName, {
+    required String? expectedUserId,
+    String? reason,
   }) async {
     final actor = _captureActor(expectedUserId);
     final rows = await supabase
-        .rpc<List<dynamic>>(
-          'zyra_my_lights_needing_reconfirmation',
-          params: const {},
-        )
-        .setHeader('Authorization', _preferenceRpcAuthorization());
+        .rpc<List<dynamic>>(functionName, params: const {})
+        .setHeader('Authorization', _preferenceRpcAuthorization())
+        .timeout(_preferenceRpcTimeout);
     _requireActor(actor);
 
     final options = <ZyraPreferenceOption>{};
@@ -140,7 +158,9 @@ class ZyraOnboardingAnswersService {
             'option_value': final String optionValue,
             'light': 'amber',
           }
-          when row.length == 3 &&
+          when (reason == null
+                  ? row.length == 3
+                  : row.length == 4 && row['reason'] == reason) &&
               questionId.isNotEmpty &&
               optionValue.isNotEmpty) {
         if (options.add((questionId: questionId, optionValue: optionValue))) {
@@ -157,22 +177,47 @@ class ZyraOnboardingAnswersService {
     required String expectedUserId,
     required ZyraPreferenceOption option,
     required TrafficLight light,
+  }) => confirmPreferenceLights(
+    expectedUserId: expectedUserId,
+    selections: {option: light},
+  );
+
+  /// Records explicit taps from a completed Quick check in one transaction.
+  static Future<void> confirmPreferenceLights({
+    required String expectedUserId,
+    required Map<ZyraPreferenceOption, TrafficLight> selections,
   }) async {
     final actor = _captureActor(expectedUserId);
+    if (selections.isEmpty) {
+      throw ArgumentError(
+        'A preference confirmation requires an explicit tap.',
+      );
+    }
+    final keys = <ZyraPreferenceOption>{};
+    final items = <Map<String, String>>[];
+    for (final MapEntry(key: option, value: light) in selections.entries) {
+      final key = (
+        questionId: persistedQuestionId(option.questionId),
+        optionValue: option.optionValue,
+      );
+      if (!keys.add(key)) {
+        throw ArgumentError(
+          'A preference can be confirmed only once per call.',
+        );
+      }
+      items.add({
+        'question_id': key.questionId,
+        'option_value': key.optionValue,
+        'light': light == TrafficLight.yellow ? 'amber' : light.name,
+      });
+    }
     final acknowledgement = await supabase
         .rpc<Object?>(
           'zyra_confirm_preference_lights',
-          params: {
-            'p_items': [
-              {
-                'question_id': persistedQuestionId(option.questionId),
-                'option_value': option.optionValue,
-                'light': light == TrafficLight.yellow ? 'amber' : light.name,
-              },
-            ],
-          },
+          params: {'p_items': items},
         )
-        .setHeader('Authorization', _preferenceRpcAuthorization());
+        .setHeader('Authorization', _preferenceRpcAuthorization())
+        .timeout(_preferenceRpcTimeout);
     _requireActor(actor);
     if (acknowledgement != null) {
       throw const FormatException('Invalid preference confirmation response.');

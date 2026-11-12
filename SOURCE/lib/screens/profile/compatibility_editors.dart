@@ -16,6 +16,30 @@ import '../../widgets/zyra_pull_down_back_scope.dart';
 import '../onboarding/generic_select_question_screen.dart';
 import '../onboarding/traffic_light_question_screen.dart';
 
+void showZyraPreferenceToast(BuildContext context, String text) {
+  final message = SnackBar(
+    content: Text(
+      text,
+      textAlign: TextAlign.center,
+      style: ZyraText.subtext(size: 12.5, color: const Color(0xFFFFFFFE)),
+    ),
+    duration: const Duration(milliseconds: 1700),
+    backgroundColor: const Color(0xF02B2420),
+    behavior: SnackBarBehavior.floating,
+    margin: EdgeInsets.fromLTRB(
+      20,
+      0,
+      20,
+      100 - MediaQuery.viewPaddingOf(context).bottom,
+    ),
+    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+  );
+  ScaffoldMessenger.of(context)
+    ..hideCurrentSnackBar()
+    ..showSnackBar(message);
+}
+
 enum CompatibilityEditorKind {
   aboutYou,
   lifestyle,
@@ -1321,34 +1345,13 @@ class _PreferenceQuestionEditorState extends State<_PreferenceQuestionEditor> {
   }
 
   void _message(String text, {bool confirmed = false}) {
-    final message = confirmed
-        ? SnackBar(
-            content: Text(
-              text,
-              textAlign: TextAlign.center,
-              style: ZyraText.subtext(
-                size: 12.5,
-                color: const Color(0xFFFFFFFE),
-              ),
-            ),
-            duration: const Duration(milliseconds: 1700),
-            backgroundColor: const Color(0xF02B2420),
-            behavior: SnackBarBehavior.floating,
-            margin: EdgeInsets.fromLTRB(
-              20,
-              0,
-              20,
-              100 - MediaQuery.viewPaddingOf(context).bottom,
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14),
-            ),
-          )
-        : SnackBar(content: Text(text));
+    if (confirmed) {
+      showZyraPreferenceToast(context, text);
+      return;
+    }
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(message);
+      ..showSnackBar(SnackBar(content: Text(text)));
   }
 
   @override

@@ -45,8 +45,11 @@ import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show PostgrestException;
 import '../../theme/zyra_interaction_style.dart';
 import '../../dev/zyra_app_gold_preview.dart';
+import '../../dev/zyra_draft_compatibility_presentation.dart';
+import '../../dev/zyra_draft_compatibility_score_designs.dart';
 import 'package:flutter/services.dart';
 import '../../data/journey_questions.dart';
 import '../../data/zyra_journey_guardian_selection.dart';
@@ -64,6 +67,7 @@ import '../../models/zyra_gender.dart';
 import '../../models/zyra_identity_verification.dart';
 import '../../services/zyra_auth.dart';
 import '../../services/zyra_account_state.dart';
+import '../../services/zyra_compatibility_topics_service.dart';
 import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_guardian_info_service.dart';
 import '../../services/zyra_image_cache.dart';
@@ -76,6 +80,8 @@ import '../../theme/zyra_text.dart';
 import '../chat/chat_screen.dart';
 import '../matches/journey_timeline_screen.dart';
 import '../onboarding/identity_verification_screen.dart';
+import '../profile/compatibility_editors.dart' show showZyraPreferenceToast;
+import '../profile/compatibility_result_quick_check.dart';
 // seeker_profile_screen / journey_map_screen imports left with the
 // header pill row (2026-08-13) — Profile lives on the Connections card,
 // the Map inside the Timeline.
@@ -3114,6 +3120,7 @@ class _JourneyScrollToContinue extends StatefulWidget {
   final String openingLabel;
   final Widget? child;
   final bool expand;
+  final bool scrollIfNeeded;
 
   const _JourneyScrollToContinue({
     required this.onContinue,
@@ -3121,6 +3128,7 @@ class _JourneyScrollToContinue extends StatefulWidget {
     this.openingLabel = 'Opening your choices…',
     this.child,
     this.expand = false,
+    this.scrollIfNeeded = false,
   });
 
   @override
@@ -3132,26 +3140,33 @@ class _JourneyScrollToContinueState extends State<_JourneyScrollToContinue> {
   static const _threshold = 22.0;
   double _distance = 0;
   bool _committed = false;
+  bool _trackDrag = true;
+  final _contentScroll = ScrollController();
   Timer? _signalReset;
+
+  bool get _canTrack =>
+      !_contentScroll.hasClients || _contentScroll.position.extentAfter <= 0.5;
 
   @override
   void dispose() {
     _signalReset?.cancel();
+    _contentScroll.dispose();
     super.dispose();
   }
 
   void _start(PointerDownEvent event) {
     if (_committed) return;
+    _trackDrag = _canTrack;
     _signalReset?.cancel();
     setState(() => _distance = 0);
   }
 
   void _track(PointerMoveEvent event) {
-    _applyDelta(-event.delta.dy);
+    if (_trackDrag) _applyDelta(-event.delta.dy);
   }
 
   void _trackSignal(PointerSignalEvent event) {
-    if (event is! PointerScrollEvent) return;
+    if (event is! PointerScrollEvent || !_canTrack) return;
     _applyDelta(event.scrollDelta.dy);
     _signalReset?.cancel();
     _signalReset = Timer(const Duration(milliseconds: 450), () {
@@ -3217,7 +3232,18 @@ class _JourneyScrollToContinueState extends State<_JourneyScrollToContinue> {
       onPointerSignal: _trackSignal,
       onPointerUp: _finish,
       onPointerCancel: _finish,
-      child: widget.expand
+      child: widget.scrollIfNeeded
+          ? LayoutBuilder(
+              builder: (context, constraints) => SingleChildScrollView(
+                controller: _contentScroll,
+                primary: false,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: Center(child: contents),
+                ),
+              ),
+            )
+          : widget.expand
           ? SizedBox.expand(child: Center(child: contents))
           : contents,
     );
@@ -4870,6 +4896,9 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
   bool _animateReveal = false;
   bool _hasConfirmedSnapshot = false;
   bool _accountRetryRequired = false;
+  bool _checkingAnswers = false;
+  bool _checkedFromResult = false;
+  ZyraCompatibilityTopicsResult? _topics;
   ZyraCompatibilityReadStatus _readStatus =
       ZyraCompatibilityReadStatus.unavailable;
   ZyraCompatibilityReadFailure? _readFailure;
@@ -4926,6 +4955,7 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
     _mine = false;
     _theirs = false;
     _score = null;
+    _topics = null;
     _plusScore = null;
     _hasConfirmedSnapshot = false;
     _animateReveal = false;
@@ -4935,6 +4965,8 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
     _readGeneration++;
     _loadFlight = null;
     _pollLoadBusy = false;
+    _checkingAnswers = false;
+    _checkedFromResult = false;
     _scope = _currentScope();
     // Eagerly discard another member's or a previous session's protected data.
     _settledSnapshots.removeWhere(
@@ -5068,6 +5100,7 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
 
   Future<void> _pollLoad() async {
     if (_pollLoadBusy ||
+        _checkingAnswers ||
         !widget.isCurrentSurface() ||
         !_scopeIsCurrent(_scope) ||
         !_journeyViewCanPoll(context) ||
@@ -5139,27 +5172,73 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
       }
       return;
     }
-    var result = await ZyraJourneyService.fetchCompatibility(scope.matchId);
-    if (!_canPublish(scope, generation, surfaceOwner: surfaceOwner)) return;
-    if (result.scope != scope ||
-        result.status != ZyraCompatibilityReadStatus.available) {
-      _publishReadFailure(
-        result.scope == scope
-            ? result
-            : ZyraCompatibilityReadResult.unavailable(
-                scope: scope,
-                failure: ZyraCompatibilityReadFailure.staleOwner,
-              ),
-      );
-      return;
+    bool current() =>
+        _canPublish(scope, generation, surfaceOwner: surfaceOwner);
+
+    ZyraCompatibilityTopicsResult? topics;
+    var useLegacy = !ZyraCompatibilityTopicsService.clientReady;
+    Future<bool> readTopics() async {
+      try {
+        topics = await ZyraCompatibilityTopicsService.fetch(
+          expectedUserId: scope.actorId!,
+          subjectId: otherId,
+          matchId: scope.matchId,
+        );
+      } catch (error) {
+        if (!current()) return false;
+        if (error is PostgrestException &&
+            error.code == 'PGRST202' &&
+            !_checkedFromResult) {
+          useLegacy = true;
+          return true;
+        }
+        _publishReadFailure(
+          ZyraCompatibilityReadResult.unavailable(
+            scope: scope,
+            failure: ZyraJourneyService.compatibilityReadFailure(error),
+          ),
+        );
+        return false;
+      }
+      if (!current()) return false;
+      if (topics == null) {
+        _publishReadFailure(ZyraCompatibilityReadResult.empty(scope: scope));
+        return false;
+      }
+      return true;
     }
-    var snapshot = result.snapshot!;
+
+    // Completed-stage history can be admitted after the reveal-stage RPC has
+    // closed. The result RPC independently verifies this match and its consent.
+    if (widget.readOnly && !useLegacy && !await readTopics()) return;
+
+    ZyraCompatibilitySnapshot? snapshot;
+    if (topics == null) {
+      final result = await ZyraJourneyService.fetchCompatibility(scope.matchId);
+      if (!current()) return;
+      snapshot = _snapshotForRead(result, scope);
+      if (snapshot == null) return;
+
+      if (!useLegacy &&
+          !widget.readOnly &&
+          snapshot.mine &&
+          snapshot.theirs &&
+          !await readTopics()) {
+        return;
+      }
+    }
+    snapshot ??= const ZyraCompatibilitySnapshot(
+      mine: false,
+      theirs: false,
+      overallScore: null,
+    );
 
     // Keep the existing valid mutual/null-score first-score recovery.
     // DR250D5's future-held change is not implemented here. An unavailable or
     // empty read never enters this mutation. Explicit Retry skips this legacy
     // recovery; validated one-sided Plus retains its existing server policy.
     if (allowScoreRecovery &&
+        useLegacy &&
         !widget.readOnly &&
         snapshot.mine &&
         snapshot.theirs &&
@@ -5167,36 +5246,28 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
       if (!_canPublish(scope, generation, surfaceOwner: surfaceOwner)) return;
       await ZyraJourneyService.revealCompatibility(scope.matchId, otherId);
       if (!_canPublish(scope, generation, surfaceOwner: surfaceOwner)) return;
-      result = await ZyraJourneyService.fetchCompatibility(scope.matchId);
-      if (!_canPublish(scope, generation, surfaceOwner: surfaceOwner)) return;
-      if (result.scope != scope ||
-          result.status != ZyraCompatibilityReadStatus.available) {
-        _publishReadFailure(
-          result.scope == scope
-              ? result
-              : ZyraCompatibilityReadResult.unavailable(
-                  scope: scope,
-                  failure: ZyraCompatibilityReadFailure.staleOwner,
-                ),
-        );
-        return;
-      }
-      snapshot = result.snapshot!;
+      final result = await ZyraJourneyService.fetchCompatibility(scope.matchId);
+      if (!current()) return;
+      snapshot = _snapshotForRead(result, scope);
+      if (snapshot == null) return;
     }
 
+    final resultTopics = topics;
+    final confirmed = snapshot;
     double? plus;
-    if (!widget.readOnly && snapshot.mine && !snapshot.theirs) {
-      if (!_canPublish(scope, generation, surfaceOwner: surfaceOwner)) return;
+    if (!widget.readOnly && confirmed.mine && !confirmed.theirs) {
       plus = await ZyraJourneyService.fetchCompatibilityForPlus(scope.matchId);
-      if (!_canPublish(scope, generation, surfaceOwner: surfaceOwner)) return;
     }
 
-    if (!_canPublish(scope, generation, surfaceOwner: surfaceOwner)) return;
-    if (snapshot.mine && snapshot.theirs) {
+    if (!current()) return;
+    final score = resultTopics == null
+        ? confirmed.overallScore
+        : resultTopics.overallScore;
+    if (confirmed.mine && confirmed.theirs) {
       _settledSnapshots[scope] = (
-        mine: snapshot.mine,
-        theirs: snapshot.theirs,
-        score: snapshot.overallScore,
+        mine: confirmed.mine,
+        theirs: confirmed.theirs,
+        score: score,
         plusScore: plus,
       );
     } else {
@@ -5204,17 +5275,18 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
     }
     final animateNow = ZyraCompatibilityRevealPolicy.shouldAnimate(
       isActionVisible: widget.isActionVisible,
-      mineRevealed: snapshot.mine,
-      theirsRevealed: snapshot.theirs,
-      hasScore: snapshot.overallScore != null,
+      mineRevealed: confirmed.mine,
+      theirsRevealed: confirmed.theirs,
+      hasScore: score != null,
       alreadyCelebrated: _animateReveal || _celebratedMatches.contains(scope),
     );
     if (animateNow) _celebratedMatches.add(scope);
     setState(() {
       _plusScore = plus;
-      _mine = snapshot.mine;
-      _theirs = snapshot.theirs;
-      _score = snapshot.overallScore;
+      _mine = confirmed.mine;
+      _theirs = confirmed.theirs;
+      _score = score;
+      _topics = topics;
       _hasConfirmedSnapshot = true;
       _readStatus = ZyraCompatibilityReadStatus.available;
       _readFailure = null;
@@ -5224,9 +5296,82 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
     });
   }
 
+  ZyraCompatibilitySnapshot? _snapshotForRead(
+    ZyraCompatibilityReadResult result,
+    ZyraCompatibilityReadScope scope,
+  ) {
+    if (result.scope == scope &&
+        result.status == ZyraCompatibilityReadStatus.available) {
+      return result.snapshot;
+    }
+    _publishReadFailure(
+      result.scope == scope
+          ? result
+          : ZyraCompatibilityReadResult.unavailable(
+              scope: scope,
+              failure: ZyraCompatibilityReadFailure.staleOwner,
+            ),
+    );
+    return null;
+  }
+
   Future<void> _retryRead() {
     _accountRetryRequired = false;
     return _load(allowScoreRecovery: false);
+  }
+
+  Future<void> _checkResultAnswers() async {
+    final scope = _scope;
+    final generation = _readGeneration;
+    final surfaceOwner = widget.isCurrentSurface;
+    final owner = scope.actorId;
+    bool current() =>
+        _canPublish(scope, generation, surfaceOwner: surfaceOwner);
+    if (owner == null ||
+        _checkingAnswers ||
+        !_readIsAvailable ||
+        !current() ||
+        _topics?.state != ZyraCompatibilityTopicsState.needsReconfirmation ||
+        ModalRoute.of(context)?.isCurrent != true) {
+      return;
+    }
+    setState(() => _checkingAnswers = true);
+    try {
+      final completed = await openZyraCompatibilityResultCheck(
+        context: context,
+        ownerId: owner,
+        isOwnerCurrent: current,
+      );
+      if (!mounted ||
+          !completed ||
+          !current() ||
+          ModalRoute.of(context)?.isCurrent != true) {
+        return;
+      }
+      _checkedFromResult = true;
+      await _loadFlight;
+      if (!mounted || !current() || ModalRoute.of(context)?.isCurrent != true) {
+        return;
+      }
+      await _load(allowScoreRecovery: false);
+      if (!mounted || !current() || ModalRoute.of(context)?.isCurrent != true) {
+        return;
+      }
+      if (_readIsAvailable &&
+          _topics?.state == ZyraCompatibilityTopicsState.ready) {
+        showZyraPreferenceToast(context, 'Thank you. Your result is ready.');
+      } else if (_topics?.state ==
+          ZyraCompatibilityTopicsState.needsReconfirmation) {
+        showZyraPreferenceToast(
+          context,
+          'Your compatibility score isn’t available right now.',
+        );
+      }
+    } finally {
+      if (mounted && generation == _readGeneration) {
+        setState(() => _checkingAnswers = false);
+      }
+    }
   }
 
   Future<void> _reveal(
@@ -5330,6 +5475,72 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
       await widget.onContinue();
     }
 
+    final topics = _topics;
+    if (topics?.state == ZyraCompatibilityTopicsState.needsReconfirmation) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text('Compatibility score', style: ZyraText.heading(size: 26)),
+            const SizedBox(height: 12),
+            Expanded(
+              child: ZyraCompatibilityCheckCard(
+                personName: widget.profile.firstName,
+                onCheck: _checkingAnswers ? null : _checkResultAnswers,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    if ((widget.readOnly || (_checkedFromResult && _mine && _theirs)) &&
+        topics?.state == ZyraCompatibilityTopicsState.ready) {
+      final ready = topics!;
+      final reader = ZyraDraftCompatibilityPresentation(
+        personName: widget.profile.firstName,
+        balance: 0,
+        overallScore: ready.overallScore!.round(),
+        revealed: true,
+        areaGate: ready.topicsLocked
+            ? const ZyraCompatibilityAreaGate(guardian: false)
+            : null,
+        areaBands: ready.areaBands,
+        showDemoGuardian: false,
+      );
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+        child: Column(
+          children: [
+            Expanded(child: reader),
+            if (!widget.readOnly)
+              if (widget.waitingReason == 'waiting_for_continue')
+                Text(
+                  "You've chosen to continue. Waiting for ${widget.profile.firstName} — every step here is taken together.",
+                  style: ZyraText.subtext(),
+                  textAlign: TextAlign.center,
+                )
+              else
+                _JourneyScrollToContinue(
+                  onContinue: continueIfCurrent,
+                  openingLabel: 'Opening your choices…',
+                ),
+          ],
+        ),
+      );
+    }
+
+    if (widget.readOnly &&
+        topics?.state == ZyraCompatibilityTopicsState.incomplete) {
+      return Center(
+        child: Text(
+          'Your compatibility score isn’t available right now.',
+          style: ZyraText.subtext(),
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+
     // REVEALED, BUT NOT SCOREABLE. Distinct from the retry above, which
     // covers a figure that failed to compute: this is a figure that cannot
     // exist yet, because there is not enough between the two of them to score.
@@ -5377,12 +5588,14 @@ class _CompatibilityRevealViewState extends State<_CompatibilityRevealView> {
         ),
       );
       if (widget.readOnly || widget.waitingReason == 'waiting_for_continue') {
-        return Center(child: content);
+        return Center(
+          child: SingleChildScrollView(primary: false, child: content),
+        );
       }
       return _JourneyScrollToContinue(
         onContinue: continueIfCurrent,
         openingLabel: 'Opening your choices…',
-        expand: true,
+        scrollIfNeeded: true,
         child: content,
       );
     }

@@ -10,9 +10,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show PostgrestException;
 import '../../dev/zyra_app_gold_preview.dart';
 
 import '../../dev/zyra_compatibility_demo.dart';
+import '../../dev/zyra_draft_compatibility_presentation.dart';
+import '../../dev/zyra_draft_compatibility_score_designs.dart';
 import '../../dev/zyra_preview_navigation_checkpoint.dart';
 import '../../models/seeker_profile.dart';
 import '../../models/zyra_compatibility_area.dart';
@@ -22,12 +25,16 @@ import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_guardian_info_service.dart';
 import '../../services/zyra_auth.dart';
 import '../../services/zyra_account_state.dart';
+import '../../services/zyra_compatibility_topics_service.dart';
 import '../../services/zyra_unlock_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_compatibility_area_row.dart';
 import '../../widgets/zyra_gold_action_pill.dart';
+import '../../widgets/zyra_state_widgets.dart';
+import '../profile/compatibility_editors.dart' show showZyraPreferenceToast;
+import '../profile/compatibility_result_quick_check.dart';
 
 /// Code-only fixture access to a mounted local sample. Binding and mutation
 /// exist only inside assertions; release app routes cannot attach this owner.
@@ -86,11 +93,13 @@ class ProfileUnlockScreen extends StatefulWidget {
   /// that grant keeps its open/no-charge door but shows an unavailable figure
   /// until the held saved Journey-result server contract is integrated.
   final bool journeyRevealed;
+  final String? journeyMatchId;
 
   const ProfileUnlockScreen({
     super.key,
     required this.profile,
     this.journeyRevealed = false,
+    this.journeyMatchId,
     this.fixture,
   });
 
@@ -105,6 +114,7 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
   late final String? _ownerAtOpen;
   late final int _generationAtOpen;
   late final String _profileAtOpen;
+  late final String? _matchAtOpen;
   StreamSubscription<dynamic>? _authSubscription;
   int _balanceRequest = 0;
   int _scoreRequest = 0;
@@ -112,6 +122,10 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
   int _unlockRequest = 0;
   int _accessRequest = 0;
   bool _accessUnavailable = false;
+  bool _resultReadFailed = false;
+  bool _checking = false;
+  bool _checkedFromResult = false;
+  ZyraCompatibilityTopicsResult? _topics;
   late final bool _sampleMode;
   bool _previewAuthorizedAtOpen = false;
   ModalRoute<dynamic>? _route;
@@ -150,6 +164,7 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
     _ownerAtOpen = _currentOwner();
     _generationAtOpen = ZyraAccountState.generation;
     _profileAtOpen = widget.profile.id;
+    _matchAtOpen = widget.journeyMatchId;
     // Raw sample identity never falls into live balance reads after revocation.
     _sampleMode = ZyraUnlockService.isSampleProfile(widget.profile.id);
     _previewAuthorizedAtOpen =
@@ -186,7 +201,8 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
       !ZyraAccountState.isSigningOut &&
       _generationAtOpen == ZyraAccountState.generation &&
       _ownerAtOpen == _currentOwner() &&
-      _profileAtOpen == widget.profile.id;
+      _profileAtOpen == widget.profile.id &&
+      _matchAtOpen == widget.journeyMatchId;
 
   bool get _fixtureCurrent =>
       _lifetimeCurrent && _isDeveloperPreview && (_route?.isCurrent ?? false);
@@ -212,6 +228,7 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
       _balance = const {};
       _guardians = null;
       _realScore = null;
+      _topics = null;
       _previewPlusUnlocked = false;
     });
     _balanceRequest++;
@@ -224,7 +241,7 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
   @override
   void didUpdateWidget(covariant ProfileUnlockScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.profile.id != widget.profile.id) _onAccountChanged();
+    _onAccountChanged();
   }
 
   @override
@@ -286,13 +303,20 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
         _loadingScore = false;
       }
     });
-    if (owned == true) {
-      _loadGuardians();
+    if (owned == true) _loadGuardians();
+    if (owned == true || _canReadJourneyResult) {
       await _loadRealScore();
     }
   }
 
-  Future<void> _loadRealScore() async {
+  bool get _canReadJourneyResult =>
+      widget.journeyRevealed && _matchAtOpen != null;
+
+  bool get _canReadResult =>
+      _canReadJourneyResult ||
+      ZyraUnlockService.isUnlocked(_profileAtOpen, UnlockTier.standard);
+
+  Future<void> _loadRealScore({bool allowLegacy = true}) async {
     if (!_lifetimeCurrent) return;
     final request = ++_scoreRequest;
     // Founder preview cards have no onboarding rows. Give only that isolated
@@ -314,12 +338,82 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
       if (mounted) setState(() => _loadingScore = false);
       return;
     }
-    final s = await ZyraDiscoveryService.fetchMyScoreFor(widget.profile.id);
+    final owner = _ownerAtOpen;
+    if (owner == null || !_canReadResult) return;
+    setState(() {
+      _loadingScore = true;
+      _resultReadFailed = false;
+    });
+    ZyraCompatibilityTopicsResult? topics;
+    double? score;
+    bool failed = false;
+    try {
+      if (ZyraCompatibilityTopicsService.clientReady) {
+        topics = await ZyraCompatibilityTopicsService.fetch(
+          expectedUserId: owner,
+          subjectId: _profileAtOpen,
+          matchId: _canReadJourneyResult ? _matchAtOpen : null,
+        );
+        score = topics?.overallScore;
+      } else if (allowLegacy &&
+          ZyraUnlockService.isUnlocked(_profileAtOpen, UnlockTier.standard)) {
+        score = await ZyraDiscoveryService.fetchMyScoreFor(_profileAtOpen);
+      }
+    } on PostgrestException catch (error) {
+      if (error.code == 'PGRST202' && allowLegacy) {
+        if (!_lifetimeCurrent || request != _scoreRequest) return;
+        if (ZyraUnlockService.isUnlocked(_profileAtOpen, UnlockTier.standard)) {
+          score = await ZyraDiscoveryService.fetchMyScoreFor(_profileAtOpen);
+        }
+      } else {
+        failed = true;
+      }
+    } catch (_) {
+      failed = true;
+    }
     if (!_lifetimeCurrent || request != _scoreRequest) return;
     setState(() {
-      _realScore = s;
+      _topics = topics;
+      _realScore = score;
+      _resultReadFailed = failed;
       _loadingScore = false;
     });
+  }
+
+  Future<void> _checkResultAnswers() async {
+    final owner = _ownerAtOpen;
+    bool current() => _lifetimeCurrent && _canReadResult;
+    if (owner == null ||
+        _checking ||
+        _loadingScore ||
+        !current() ||
+        _topics?.state != ZyraCompatibilityTopicsState.needsReconfirmation ||
+        _route?.isCurrent != true) {
+      return;
+    }
+    setState(() => _checking = true);
+    try {
+      final completed = await openZyraCompatibilityResultCheck(
+        context: context,
+        ownerId: owner,
+        isOwnerCurrent: current,
+      );
+      if (!completed || !current() || _route?.isCurrent != true) return;
+      _checkedFromResult = true;
+      await _loadRealScore(allowLegacy: false);
+      if (!mounted || !current() || _route?.isCurrent != true) return;
+      if (_topics?.state == ZyraCompatibilityTopicsState.ready) {
+        showZyraPreferenceToast(context, 'Thank you. Your result is ready.');
+      } else if (_topics?.state ==
+          ZyraCompatibilityTopicsState.needsReconfirmation) {
+        showZyraPreferenceToast(
+          context,
+          'Your compatibility score isn’t available right now.',
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _checking = false);
+    }
   }
 
   Future<void> _loadBalance() async {
@@ -584,6 +678,12 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
         detailUnlocked ||
         widget.journeyRevealed ||
         ZyraUnlockService.isUnlocked(widget.profile.id, UnlockTier.standard);
+    final needsCheck =
+        overallUnlocked &&
+        _topics?.state == ZyraCompatibilityTopicsState.needsReconfirmation;
+    final checkedScore = overallUnlocked && _checkedFromResult
+        ? _topics?.overallScore
+        : null;
 
     return DecoratedBox(
       decoration: ZyraAppGoldDecoration(
@@ -596,126 +696,184 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
           surfaceTintColor: Colors.transparent,
           scrolledUnderElevation: 0,
           elevation: 0,
-          title: Text('Compatibility', style: ZyraText.heading(size: 17)),
+          title: needsCheck || checkedScore != null
+              ? null
+              : Text('Compatibility', style: ZyraText.heading(size: 17)),
           iconTheme: const IconThemeData(color: Colors.white70),
         ),
-        body: Container(
-          // BoxConstraints.expand for the same reason as the report screen
-          // and transition_screen: the Scaffold background is now the gender
-          // gradient's first stop, so a short page would show a band of flat
-          // Rose Pink under the content.
-          constraints: const BoxConstraints.expand(),
-          child: SafeArea(
-            top: false,
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
-              children: [
-                Text('You and $name', style: ZyraText.heading(size: 22)),
-                const SizedBox(height: 4),
-                Text(
-                  _isDeveloperPreview
-                      ? 'Try Compatibility with a sample profile. Demo results '
-                            'are not calculated from anyone’s answers.'
-                      : 'Built from what you both already told ZYRA. Neither of you '
-                            'sees the other’s answers.',
-                  style: ZyraText.subtext(size: 12.5),
-                ),
-                const SizedBox(height: 20),
-
-                // ONE card, two sections, one divider. A card each would put
-                // a gap between them and read as two unrelated offers; the
-                // whole point of the single page is that the second section
-                // is the inside of the first.
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.16),
-                      width: 1,
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      _Section(
-                        label: 'OVERALL',
-                        // `left: null` while the ledger is still loading.
-                        // Showing 0 would render "none left" for a moment to
-                        // someone who has five — the exact complaint that
-                        // started this screen's rebuild, reintroduced by the
-                        // move to an async balance. The corner stays empty
-                        // until the real number arrives.
-                        left: null,
-                        unlocked: overallUnlocked,
-                        busy: _busy,
-                        child: overallUnlocked
-                            ? _OverallResult(
-                                score: _realScore,
-                                loading: _loadingScore,
-                              )
-                            : _OverallLocked(name: name),
-                      ),
-                      Divider(
-                        color: Colors.white.withValues(alpha: 0.14),
-                        height: 1,
-                        thickness: 1,
-                      ),
-                      _Section(
-                        label: 'EVERY AREA',
-                        left:
-                            (_loadingBalance ||
-                                _balanceUnavailable ||
-                                _accessUnavailable ||
-                                _needsRecovery)
-                            ? null
-                            : unlocksLeft,
-                        unlocked: demoUnlocked || detailUnlocked,
-                        busy: _busy,
-                        buttonLabel: 'Unlock Compatibility',
-                        recoveryLabel: _needsRecovery || _accessUnavailable
-                            ? 'Check access'
-                            : _balanceUnavailable
-                            ? 'Check balance'
-                            : null,
-                        buttonIcon: Icons.lock_open_outlined,
-                        readOnlyRecovery:
-                            _needsRecovery ||
-                            _accessUnavailable ||
-                            _balanceUnavailable,
-                        // The local fixture never calls a transaction service.
-                        // Ordinary full-detail attempts retain both spend fuses.
-                        onUnlock: _needsRecovery || _accessUnavailable
-                            ? _checkUnlockAccess
-                            : _balanceUnavailable
-                            ? _checkBalance
-                            : _isDeveloperPreview
-                            ? _unlockPreview
-                            : ZyraUnlockService.isTierAvailable(
-                                ZyraUnlockService.currentTier,
-                              )
-                            ? _unlock
-                            : null,
-                        child: _Detail(
-                          unlocked: detailUnlocked,
-                          developerPreview: _isDeveloperPreview,
-                          demoBands: demoUnlocked
-                              ? ZyraCompatibilityDemo.bandsFor(
-                                  widget.profile.id,
+        body: needsCheck || checkedScore != null
+            ? SafeArea(
+                top: false,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+                  child: needsCheck
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              'Compatibility score',
+                              style: ZyraText.heading(size: 26),
+                            ),
+                            const SizedBox(height: 12),
+                            Expanded(
+                              child: ZyraCompatibilityCheckCard(
+                                personName: name,
+                                onCheck: _checking || _loadingScore
+                                    ? null
+                                    : _checkResultAnswers,
+                              ),
+                            ),
+                          ],
+                        )
+                      : ZyraDraftCompatibilityPresentation(
+                          personName: name,
+                          balance: unlocksLeft,
+                          overallScore: checkedScore!.round(),
+                          revealed: true,
+                          areaGate: _topics!.topicsLocked
+                              ? const ZyraCompatibilityAreaGate(guardian: false)
+                              : null,
+                          areaBands: _topics!.areaBands,
+                          showDemoGuardian: false,
+                          guardian: detailUnlocked
+                              ? _GuardianSection(
+                                  unlocked: true,
+                                  guardians: _guardians,
+                                  firstName: name,
+                                  gender: widget.profile.gender,
                                 )
                               : null,
-                          guardians: _guardians,
-                          firstName: name,
-                          gender: widget.profile.gender,
+                        ),
+                ),
+              )
+            : Container(
+                // BoxConstraints.expand for the same reason as the report screen
+                // and transition_screen: the Scaffold background is now the gender
+                // gradient's first stop, so a short page would show a band of flat
+                // Rose Pink under the content.
+                constraints: const BoxConstraints.expand(),
+                child: SafeArea(
+                  top: false,
+                  child: ListView(
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+                    children: [
+                      if (_resultReadFailed)
+                        ZyraErrorBanner(
+                          message:
+                              'Could not load compatibility. Please try again.',
+                          onRetry: () {
+                            if (_route?.isCurrent == true && !_loadingScore) {
+                              _loadRealScore(allowLegacy: !_checkedFromResult);
+                            }
+                          },
+                        ),
+                      Text('You and $name', style: ZyraText.heading(size: 22)),
+                      const SizedBox(height: 4),
+                      Text(
+                        _isDeveloperPreview
+                            ? 'Try Compatibility with a sample profile. Demo results '
+                                  'are not calculated from anyone’s answers.'
+                            : 'Built from what you both already told ZYRA. Neither of you '
+                                  'sees the other’s answers.',
+                        style: ZyraText.subtext(size: 12.5),
+                      ),
+                      const SizedBox(height: 20),
+
+                      // ONE card, two sections, one divider. A card each would put
+                      // a gap between them and read as two unrelated offers; the
+                      // whole point of the single page is that the second section
+                      // is the inside of the first.
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.08),
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.16),
+                            width: 1,
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            _Section(
+                              label: 'OVERALL',
+                              // `left: null` while the ledger is still loading.
+                              // Showing 0 would render "none left" for a moment to
+                              // someone who has five — the exact complaint that
+                              // started this screen's rebuild, reintroduced by the
+                              // move to an async balance. The corner stays empty
+                              // until the real number arrives.
+                              left: null,
+                              unlocked: overallUnlocked,
+                              busy: _busy,
+                              child: overallUnlocked
+                                  ? _OverallResult(
+                                      score: _realScore,
+                                      loading: _loadingScore,
+                                    )
+                                  : _OverallLocked(name: name),
+                            ),
+                            Divider(
+                              color: Colors.white.withValues(alpha: 0.14),
+                              height: 1,
+                              thickness: 1,
+                            ),
+                            _Section(
+                              label: 'EVERY AREA',
+                              left:
+                                  (_loadingBalance ||
+                                      _balanceUnavailable ||
+                                      _accessUnavailable ||
+                                      _needsRecovery)
+                                  ? null
+                                  : unlocksLeft,
+                              unlocked: demoUnlocked || detailUnlocked,
+                              busy: _busy,
+                              buttonLabel: 'Unlock Compatibility',
+                              recoveryLabel:
+                                  _needsRecovery || _accessUnavailable
+                                  ? 'Check access'
+                                  : _balanceUnavailable
+                                  ? 'Check balance'
+                                  : null,
+                              buttonIcon: Icons.lock_open_outlined,
+                              readOnlyRecovery:
+                                  _needsRecovery ||
+                                  _accessUnavailable ||
+                                  _balanceUnavailable,
+                              // The local fixture never calls a transaction service.
+                              // Ordinary full-detail attempts retain both spend fuses.
+                              onUnlock: _needsRecovery || _accessUnavailable
+                                  ? _checkUnlockAccess
+                                  : _balanceUnavailable
+                                  ? _checkBalance
+                                  : _isDeveloperPreview
+                                  ? _unlockPreview
+                                  : ZyraUnlockService.isTierAvailable(
+                                      ZyraUnlockService.currentTier,
+                                    )
+                                  ? _unlock
+                                  : null,
+                              child: _Detail(
+                                unlocked: detailUnlocked,
+                                developerPreview: _isDeveloperPreview,
+                                demoBands: demoUnlocked
+                                    ? ZyraCompatibilityDemo.bandsFor(
+                                        widget.profile.id,
+                                      )
+                                    : null,
+                                guardians: _guardians,
+                                firstName: name,
+                                gender: widget.profile.gender,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              ),
       ),
     );
   }

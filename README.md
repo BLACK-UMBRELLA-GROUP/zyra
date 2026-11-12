@@ -65,6 +65,9 @@ The My ZYRA Preferences chip and Edit profile open the same Partner preferences
 page. Amber is labelled Open to this. The Founder preview includes a
 sample Quick check for saved amber choices, including setup lights and the
 counterpart’s preference questions. A deliberate tap clears a pending check.
+When the server asks for reconfirmation before showing a Compatibility result,
+the Seeker can check their saved amber choices in one place and return
+to the result with their existing Unlock.
 Haptics starts on Light for members who have never saved a level.
 
 ## Built with

@@ -715,7 +715,7 @@ class ZyraJourneyService {
       }
       return ZyraCompatibilityReadResult.unavailable(
         scope: scope,
-        failure: _compatibilityReadFailure(error),
+        failure: compatibilityReadFailure(error),
       );
     }
   }
@@ -727,8 +727,11 @@ class ZyraJourneyService {
         ZyraAccountState.isCurrent(actorId, scope.accountGeneration);
   }
 
-  static ZyraCompatibilityReadFailure _compatibilityReadFailure(Object error) {
+  static ZyraCompatibilityReadFailure compatibilityReadFailure(Object error) {
     if (error is AuthException) return ZyraCompatibilityReadFailure.signedOut;
+    if (error is FormatException || error is TypeError) {
+      return ZyraCompatibilityReadFailure.invalidResponse;
+    }
     if (error is PostgrestException) {
       final code = error.code;
       if (code == '401' ||

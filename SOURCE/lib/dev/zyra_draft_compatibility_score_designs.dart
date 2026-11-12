@@ -41,6 +41,8 @@ class ZyraCompatibilityScoreReader extends StatefulWidget {
     required this.overallScore,
     this.areaGate,
     this.areaBands,
+    this.showDemoGuardian = true,
+    this.guardian,
   }) : assert(overallScore >= 0 && overallScore <= 100),
        assert(areaGate == null || areaBands == null);
 
@@ -48,6 +50,8 @@ class ZyraCompatibilityScoreReader extends StatefulWidget {
   final int overallScore;
   final ZyraCompatibilityAreaGate? areaGate;
   final Map<ZyraCompatibilityArea, ZyraCompatibilityBand>? areaBands;
+  final bool showDemoGuardian;
+  final Widget? guardian;
 
   @override
   State<ZyraCompatibilityScoreReader> createState() =>
@@ -248,8 +252,12 @@ class _ZyraCompatibilityScoreReaderState
             textAlign: TextAlign.center,
             style: ZyraText.body(size: 14, color: _muted),
           ),
-          const SizedBox(height: 24),
-          _guardian(),
+          if (widget.guardian case final guardian?)
+            guardian
+          else if (widget.showDemoGuardian) ...[
+            const SizedBox(height: 24),
+            _guardian(),
+          ],
         ],
       ),
     );

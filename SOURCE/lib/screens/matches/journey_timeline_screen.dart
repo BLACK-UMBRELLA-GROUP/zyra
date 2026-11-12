@@ -185,6 +185,21 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
     }
   }
 
+  Future<void> _openCompatibilityReport() async {
+    if (!_accountCurrent || ModalRoute.of(context)?.isCurrent != true) return;
+    final profile = widget.withProfile;
+    final matchId = _context.matchId;
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => ProfileUnlockScreen(
+          profile: profile,
+          journeyRevealed: true,
+          journeyMatchId: matchId,
+        ),
+      ),
+    );
+  }
+
   bool Function() _intentGuard(String matchId) {
     final revision = _actionRevision;
     return () =>
@@ -1357,18 +1372,7 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                                               InkWell(
                                                 borderRadius:
                                                     BorderRadius.circular(8),
-                                                onTap: () =>
-                                                    Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                        builder: (_) =>
-                                                            ProfileUnlockScreen(
-                                                              profile: widget
-                                                                  .withProfile,
-                                                              journeyRevealed:
-                                                                  true,
-                                                            ),
-                                                      ),
-                                                    ),
+                                                onTap: _openCompatibilityReport,
                                                 child: Padding(
                                                   padding:
                                                       const EdgeInsets.symmetric(

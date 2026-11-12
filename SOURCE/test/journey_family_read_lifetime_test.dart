@@ -15,12 +15,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/main.dart' show supabase, supabaseReady;
 import 'package:zyra/models/seeker_profile.dart';
+import 'package:zyra/models/zyra_compatibility_area.dart';
+import 'package:zyra/dev/zyra_draft_compatibility_score_designs.dart';
 import 'package:zyra/screens/journey/journey_flow_screen.dart';
+import 'package:zyra/screens/profile/compatibility_result_quick_check.dart';
 import 'package:zyra/services/zyra_account_state.dart';
+import 'package:zyra/services/zyra_compatibility_topics_service.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_identity_verification_service.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/services/zyra_local_prefs.dart';
+import 'package:zyra/services/zyra_onboarding_answers_service.dart';
 import 'package:zyra/services/zyra_product_telemetry.dart';
 import 'package:zyra/services/zyra_wali_link_service.dart';
 import 'package:zyra/theme/zyra_text.dart';
@@ -30,6 +35,10 @@ const _actorB = '00000000-0000-4000-8000-000000003074';
 const _other = '00000000-0000-4000-8000-000000003072';
 const _match = '00000000-0000-4000-8000-000000003073';
 const _host = 'family-read-lifetime-evidence.invalid';
+const _topics = '/rest/v1/rpc/zyra_compatibility_topics';
+const _visible = '/rest/v1/rpc/zyra_my_lights_needing_reconfirmation';
+const _hidden = '/rest/v1/rpc/zyra_my_lights_needed_for_compatibility';
+const _confirm = '/rest/v1/rpc/zyra_confirm_preference_lights';
 
 http.Response _json(Object? body) => http.Response(
   jsonEncode(body),
@@ -64,6 +73,8 @@ void main() {
   final denied = <String>[];
   var name = 'Synthetic counterpart';
   var serverStage = 'compatibility_reveal';
+  var mutualReveal = false;
+  var savedCheck = false;
   late Future<http.Response> Function(http.Request) familyReadReply;
   final familyReadObservations = <Map<String, Object?>>[];
   int count(String path, [String? method]) => requests
@@ -93,6 +104,8 @@ void main() {
     denied.clear();
     name = 'Synthetic counterpart';
     serverStage = 'compatibility_reveal';
+    mutualReveal = false;
+    savedCheck = false;
     familyReadObservations.clear();
     familyReadReply = (_) async => _json(<Object>[]);
     for (final channel in ['events', 'methods']) {
@@ -127,6 +140,7 @@ void main() {
           '/rest/v1/rpc/ages_for',
           '/rest/v1/rpc/zyra_journey_busy_flags',
           '/rest/v1/rpc/zyra_journey_compatibility_state',
+          if (mutualReveal) ...[_topics, _visible, _hidden, _confirm],
         };
         final gets = {
           '/rest/v1/matches',
@@ -220,7 +234,52 @@ void main() {
           response = _json(null);
         } else if (path == '/rest/v1/rpc/zyra_journey_compatibility_state') {
           expect(jsonDecode(request.body), {'p_match_id': _match});
-          response = _json(<Object>[]);
+          response = _json([
+            if (mutualReveal)
+              {
+                'mine_revealed': true,
+                'counterpart_revealed': true,
+                'my_score': null,
+              },
+          ]);
+        } else if (path == _topics) {
+          expect(jsonDecode(request.body), {
+            'p_subject': _other,
+            'p_match_id': _match,
+          });
+          response = _json([
+            for (final area in ZyraCompatibilityArea.values)
+              {
+                'overall': null,
+                'topics_locked': true,
+                'area_no': area.index + 1,
+                'area_code': area.name,
+                'band': null,
+                'state': savedCheck ? 'incomplete' : 'needs_reconfirmation',
+              },
+          ]);
+        } else if (path == _visible || path == _hidden) {
+          expect(jsonDecode(request.body), <String, Object?>{});
+          response = _json([
+            if (path == _visible)
+              {
+                'question_id': 'ch3_q33',
+                'option_value': 'Most days',
+                'light': 'amber',
+              },
+          ]);
+        } else if (path == _confirm) {
+          expect(jsonDecode(request.body), {
+            'p_items': [
+              {
+                'question_id': 'ch3_q33',
+                'option_value': 'Most days',
+                'light': 'amber',
+              },
+            ],
+          });
+          savedCheck = true;
+          response = _json(null);
         } else if (path == '/rest/v1/journey_salams') {
           expect(request.url.queryParameters, {
             'select': 'seeker_id',
@@ -284,6 +343,8 @@ void main() {
   });
 
   tearDown(() async {
+    ZyraCompatibilityTopicsService.setClientReadyForTesting(null);
+    ZyraOnboardingAnswersService.setClientReadyForTesting(null);
     await ZyraAccountState.synchronize(null);
     ZyraAccountState.resetForTesting();
     ZyraAccountState.clearImagesForTesting = null;
@@ -379,6 +440,51 @@ void main() {
     }
     return arrival;
   }
+
+  testWidgets('Q115 Journey rereads the same match without inventing a score', (
+    tester,
+  ) async {
+    ZyraCompatibilityTopicsService.setClientReadyForTesting(true);
+    ZyraOnboardingAnswersService.setClientReadyForTesting(true);
+    mutualReveal = true;
+    await mount(
+      tester,
+      size: const Size(375, 667),
+      reduced: true,
+      openAction: true,
+    );
+    expect(find.text('One quick check first'), findsOneWidget);
+    expect(find.byType(ZyraCompatibilityScoreReader), findsNothing);
+    final check = find.text('Check my answers');
+    await tester.ensureVisible(check);
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.tap(check);
+    await tester.pump(const Duration(milliseconds: 400));
+    await flush(tester);
+    expect(find.text('Done · 1 left'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byType(ZyraCompatibilityResultQuickCheck),
+        matching: find.textContaining('Synthetic counterpart'),
+      ),
+      findsNothing,
+    );
+    await tester.tap(find.text('Open to this'));
+    await tester.pump();
+    expect(count(_confirm), 0);
+    await tester.tap(find.text('Done'));
+    await flush(tester);
+    await tester.pump(const Duration(milliseconds: 400));
+    await flush(tester);
+    expect(count(_visible), 1);
+    expect(count(_hidden), 1);
+    expect(count(_confirm), 1);
+    expect(count(_topics), greaterThanOrEqualTo(2));
+    expect(find.text('One quick check first'), findsNothing);
+    expect(find.text('Thank you. Your result is ready.'), findsNothing);
+    expect(find.byType(ZyraCompatibilityScoreReader), findsNothing);
+    expect(find.text('You both chose to reveal.'), findsOneWidget);
+  });
 
   for (final mode in ['same owner', 'A-B', 'A-B-A', 'disposed']) {
     testWidgets('Family pending read retains its starting lifetime: $mode', (

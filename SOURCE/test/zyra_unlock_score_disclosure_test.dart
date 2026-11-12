@@ -9,10 +9,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/main.dart';
 import 'package:zyra/models/seeker_profile.dart';
+import 'package:zyra/models/zyra_compatibility_area.dart';
 import 'package:zyra/screens/subscription/profile_unlock_screen.dart';
 import 'package:zyra/services/zyra_account_state.dart';
+import 'package:zyra/services/zyra_compatibility_topics_service.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_discovery_service.dart';
+import 'package:zyra/services/zyra_onboarding_answers_service.dart';
 import 'package:zyra/services/zyra_unlock_service.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_gold_action_pill.dart';
@@ -106,6 +109,8 @@ void main() {
     requests.clear();
   });
   tearDown(() {
+    ZyraCompatibilityTopicsService.setClientReadyForTesting(null);
+    ZyraOnboardingAnswersService.setClientReadyForTesting(null);
     ZyraUnlockService.clearForSignOut();
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     ZyraText.useTestFontStubs = false;
@@ -306,12 +311,18 @@ void main() {
   testWidgets('paid grant loads when initial full-cache hydration is absent', (
     tester,
   ) async {
+    ZyraCompatibilityTopicsService.setClientReadyForTesting(true);
     responder = (request) {
       if (request.url.path.endsWith('/profile_unlocks')) {
         return Future.value(
           json([
             {'unlocked_id': _target, 'unlock_type': 'paid_plus_bundle'},
           ]),
+        );
+      }
+      if (request.url.path.endsWith('/zyra_compatibility_topics')) {
+        return Future.value(
+          json({'code': 'PGRST202', 'message': 'Unavailable'}, status: 404),
         );
       }
       return defaults(request);
@@ -322,11 +333,120 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('77%'), findsOneWidget);
+    expect(
+      requests.where((r) => r.url.path.endsWith('/zyra_compatibility_topics')),
+      hasLength(1),
+    );
     expect(scoreReads(), hasLength(1));
     expect(ZyraUnlockService.loaded, isFalse);
     expect(debits(), isEmpty);
     await tester.pumpWidget(const SizedBox());
   });
+
+  testWidgets(
+    'paid result checks both owner lists and rereads its saved score',
+    (tester) async {
+      ZyraCompatibilityTopicsService.setClientReadyForTesting(true);
+      ZyraOnboardingAnswersService.setClientReadyForTesting(true);
+      const visible = (questionId: 'ch2.revert.flexibility', optionValue: '*');
+      const hidden = (questionId: 'ch3_q24', optionValue: 'Within 2–3 years');
+      Map<String, String> item(ZyraPreferenceOption option, String light) => {
+        'question_id': option.questionId,
+        'option_value': option.optionValue,
+        'light': light,
+      };
+      const topics = 'zyra_compatibility_topics';
+      const visibleRead = 'zyra_my_lights_needing_reconfirmation';
+      const hiddenRead = 'zyra_my_lights_needed_for_compatibility';
+      const confirm = 'zyra_confirm_preference_lights';
+      final checkCalls = <String>[];
+      var checked = false;
+      responder = (request) async {
+        final endpoint = request.url.pathSegments.last;
+        switch (endpoint) {
+          case 'profile_unlocks':
+            return json([
+              {'unlocked_id': _target, 'unlock_type': 'paid_single'},
+            ]);
+          case topics:
+            checkCalls.add(topics);
+            expect(jsonDecode(request.body), {'p_subject': _target});
+            return json([
+              for (final area in ZyraCompatibilityArea.values)
+                {
+                  'overall': checked ? 84 : null,
+                  'topics_locked': false,
+                  'area_no': area.index + 1,
+                  'area_code': area.name,
+                  'band': checked ? 'good' : null,
+                  'state': checked ? 'ok' : 'needs_reconfirmation',
+                },
+            ]);
+          case visibleRead:
+            checkCalls.add(visibleRead);
+            expect(jsonDecode(request.body), isEmpty);
+            return json([item(visible, 'amber')]);
+          case hiddenRead:
+            checkCalls.add(hiddenRead);
+            expect(jsonDecode(request.body), isEmpty);
+            return json([
+              {...item(hidden, 'amber'), 'reason': 'hidden_but_applicable'},
+            ]);
+          case confirm:
+            checkCalls.add(confirm);
+            expect(jsonDecode(request.body), {
+              'p_items': [item(visible, 'amber'), item(hidden, 'green')],
+            });
+            checked = true;
+            return http.Response('', 204);
+          default:
+            return defaults(request);
+        }
+      };
+
+      await tester.pumpWidget(
+        const MaterialApp(home: ProfileUnlockScreen(profile: _profile)),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('One quick check first'), findsOneWidget);
+      expect(find.byTooltip('Next page'), findsNothing);
+      expect(checkCalls, [topics]);
+
+      await tester.tap(find.text('Check my answers'));
+      await tester.pumpAndSettle();
+      expect(find.text('Quick check'), findsOneWidget);
+      expect(find.textContaining(_profile.firstName), findsNothing);
+      expect(find.text('Done · 2 left'), findsOneWidget);
+      expect(checkCalls, [topics, visibleRead, hiddenRead]);
+
+      final selectAmber = find.descendant(
+        of: find.byKey(const ValueKey(visible)),
+        matching: find.text('Open to this'),
+      );
+      final selectGreen = find.descendant(
+        of: find.byKey(const ValueKey(hidden)),
+        matching: find.text('Prefer this'),
+      );
+      await tester.tap(selectAmber);
+      await tester.pumpAndSettle();
+      expect(find.text('Done · 1 left'), findsOneWidget);
+      expect(checked, isFalse);
+      await tester.ensureVisible(selectGreen);
+      await tester.tap(selectGreen);
+      await tester.pumpAndSettle();
+      expect(checked, isFalse);
+
+      await tester.tap(find.text('Done'));
+      await tester.pumpAndSettle();
+      expect(find.text('84%'), findsOneWidget);
+      expect(find.text('Thank you. Your result is ready.'), findsOneWidget);
+      expect(find.byTooltip('Next page'), findsOneWidget);
+      expect(checkCalls, [topics, visibleRead, hiddenRead, confirm, topics]);
+      expect(scoreReads(), isEmpty);
+      expect(debits(), isEmpty);
+      await tester.pumpWidget(const SizedBox());
+    },
+  );
 
   testWidgets(
     'unknown grant can be checked using existing read-only recovery',

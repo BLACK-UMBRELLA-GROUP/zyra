@@ -21,6 +21,8 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
     required this.revealed,
     this.areaGate,
     this.areaBands,
+    this.showDemoGuardian = true,
+    this.guardian,
     this.onUnlock,
     this.onBuyMore,
     this.canAct,
@@ -34,6 +36,8 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
   final bool revealed;
   final ZyraCompatibilityAreaGate? areaGate;
   final Map<ZyraCompatibilityArea, ZyraCompatibilityBand>? areaBands;
+  final bool showDemoGuardian;
+  final Widget? guardian;
   final VoidCallback? onUnlock;
   final VoidCallback? onBuyMore;
   final bool Function()? canAct;
@@ -276,6 +280,8 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
           overallScore: overallScore,
           areaGate: areaGate,
           areaBands: areaBands,
+          showDemoGuardian: showDemoGuardian,
+          guardian: guardian,
         );
         final headingHeight =
             16 +

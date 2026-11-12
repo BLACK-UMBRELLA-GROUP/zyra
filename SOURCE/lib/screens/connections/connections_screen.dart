@@ -3417,12 +3417,15 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
   }
 
   Future<void> _openCompatibility() async {
+    final journey = widget.j;
+    final revealed = widget.compatibilityRevealed;
     widget.expansionController.collapseAll();
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => ProfileUnlockScreen(
-          profile: _p,
-          journeyRevealed: widget.compatibilityRevealed,
+          profile: journey.profile,
+          journeyRevealed: revealed,
+          journeyMatchId: journey.matchId,
         ),
       ),
     );
