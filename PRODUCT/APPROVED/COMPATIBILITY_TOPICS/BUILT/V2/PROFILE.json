@@ -27,7 +27,25 @@
   },
   "codeSignature": "Verified with codesign --verify --deep --strict",
   "delivery": {
-    "status": "awaiting separate Founder GO",
-    "installExecuted": false
+    "status": "verified",
+    "announcedExactCandidate": true,
+    "authorization": "Founder said “go” after the exact line 88 offer.",
+    "transport": "localNetwork",
+    "readOnlyLockCheckConfirmed": true,
+    "installExecuted": true,
+    "installed": true,
+    "opened": true,
+    "postVerified": true,
+    "installationAttempts": 1,
+    "adapterSha256": "2a0366ffb5dd1d2bf96007dc06da7644084c50d2262971d46e8dd507e5e417a9",
+    "wifiPhoneHelperSha256": "e77eee2294a0a2a7d1ce41f20fd7a366dd6c1bb547b211f1886705375ca7e3de",
+    "offlineVerificationSha256": "26c5dbd020f96432d314460891c1ae48ede0398da7b49e686705b5dd7f1f3777",
+    "independentReviewPassed": true,
+    "focusedRouteTestsPassed": 16,
+    "originalPlanSourceSealAndBuildReceiptMatch": true,
+    "lastProtectedStage": "complete",
+    "deliveryReceiptSha256": "d3b0e25db8cb18b4da4951b17a231f17f401325ad69345f9c82e6bd5bb468038",
+    "verifiedAt": "2026-11-12T09:42:14.339821+00:00",
+    "firstFrameStatus": "needs-visual-confirmation"
   }
 }
