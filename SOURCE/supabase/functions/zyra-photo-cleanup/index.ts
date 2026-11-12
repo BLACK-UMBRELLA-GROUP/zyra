@@ -1,6 +1,7 @@
 type Config = { url: string; serviceKey: string };
 type Claim = { bucket: string; path: string; attempts: number };
 
+const MAX_DELETIONS_PER_REQUEST = 12;
 const BUCKETS = new Set(["profile-photos", "profile-photo-sources"]);
 
 export function createCleanupHandler(config: Config, request = fetch) {
@@ -26,13 +27,18 @@ export function createCleanupHandler(config: Config, request = fetch) {
     }
 
     try {
-      const response = await send("/rest/v1/rpc/zyra_claim_photo_object_deletions", "POST", {});
-      if (!response.ok) return new Response(null, { status: 503 });
-      const claims: Claim[] = await response.json();
       let deleted = 0;
       let failed = 0;
 
-      for (const { bucket, path, attempts } of claims) {
+      for (let index = 0; index < MAX_DELETIONS_PER_REQUEST; index++) {
+        const response = await send("/rest/v1/rpc/zyra_claim_photo_object_deletions", "POST", {});
+        if (!response.ok) return new Response(null, { status: 503 });
+        const claims: Claim[] = await response.json();
+        if (!Array.isArray(claims) || claims.length > 1) {
+          return new Response(null, { status: 503 });
+        }
+        if (claims.length === 0) break;
+        const { bucket, path, attempts } = claims[0];
         if (!BUCKETS.has(bucket)) return new Response(null, { status: 503 });
         let error: string | null = null;
         try {

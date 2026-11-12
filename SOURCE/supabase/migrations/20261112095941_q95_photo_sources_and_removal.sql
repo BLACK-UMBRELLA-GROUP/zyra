@@ -153,26 +153,56 @@ as $$
   );
 $$;
 
+-- Refuse a legacy DELETE before any row in that statement is lost. The
+-- revision-checked definer RPCs and the Auth cascade retain their own paths.
+create function private.zyra_guard_legacy_photo_row_write()
+returns trigger language plpgsql security invoker set search_path = ''
+as $$
+begin
+  if current_user = 'authenticated' and old.source_path is not null then
+    if tg_op = 'DELETE' or new.storage_path is distinct from old.storage_path then
+      raise exception using errcode = '42501', message = 'photo_requires_revision_write';
+    end if;
+  end if;
+  if tg_op = 'DELETE' then return old; end if;
+  return new;
+end;
+$$;
+revoke all on function private.zyra_guard_legacy_photo_row_write()
+  from public, anon, authenticated, service_role;
+create trigger zyra_guard_legacy_photo_row_write
+before update of storage_path or delete on public.profile_photos
+for each row execute function private.zyra_guard_legacy_photo_row_write();
+
 create policy zyra_display_photo_writable_insert on storage.objects
   as restrictive for insert to authenticated with check (
     bucket_id <> 'profile-photos' or private.zyra_photo_path_writable(bucket_id, name)
   );
-create policy zyra_display_photo_writable_update on storage.objects
-  as restrictive for update to authenticated using (true) with check (
-    bucket_id <> 'profile-photos' or private.zyra_photo_path_writable(bucket_id, name)
-  );
-
--- Storage may authorize an upload in a rolled-back policy probe before its
--- privileged metadata write. Apply the fence to that final write as well.
+-- The final metadata mutation must also enforce the fence. Storage can
+-- run the client policy probe separately and then write as a privileged role.
 create function private.zyra_enforce_photo_upload_fence()
 returns trigger language plpgsql security definer set search_path = ''
 as $$
 declare
-  v_folder text := pg_catalog.split_part(new.name, '/', 1);
+  v_folder text;
+  v_uuid_pattern constant text := '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$';
 begin
-  if v_folder !~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' then
+  if tg_op <> 'INSERT' and old.bucket_id in ('profile-photos', 'profile-photo-sources') then
+    v_folder := pg_catalog.split_part(old.name, '/', 1);
+    if v_folder ~ v_uuid_pattern then
+      perform private.zyra_lock_photo_folder(v_folder);
+      if private.zyra_photo_object_referenced(old.bucket_id, old.name) then
+        raise exception using errcode = '42501', message = 'photo_object_referenced';
+      end if;
+    end if;
+  end if;
+  if tg_op = 'DELETE' then return old; end if;
+  if new.bucket_id is null or new.bucket_id not in ('profile-photos', 'profile-photo-sources') then
     return new;
   end if;
+
+  v_folder := pg_catalog.split_part(new.name, '/', 1);
+  if v_folder !~ v_uuid_pattern then return new; end if;
   perform private.zyra_lock_photo_folder(v_folder);
   if (new.owner_id = v_folder and not exists (select 1 from auth.users u where u.id = v_folder::uuid))
      or exists (
@@ -187,14 +217,14 @@ $$;
 revoke all on function private.zyra_enforce_photo_upload_fence()
   from public, anon, authenticated, service_role, supabase_storage_admin;
 create trigger zyra_enforce_photo_upload_fence
-before insert or update of bucket_id, name, owner_id on storage.objects
-for each row when (new.bucket_id in ('profile-photos', 'profile-photo-sources'))
-execute function private.zyra_enforce_photo_upload_fence();
+before insert or update of bucket_id, name, owner_id, metadata, version or delete on storage.objects
+for each row execute function private.zyra_enforce_photo_upload_fence();
 
 create function private.zyra_source_photo_path_owned(p_path text, p_owner text)
-returns boolean language sql stable set search_path = ''
+returns boolean language sql stable security definer set search_path = ''
 as $$
   select p_owner = (select auth.uid())::text and
+    exists (select 1 from auth.users u where u.id = (select auth.uid())) and
     p_path ~ ('^' || p_owner || '/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}[.]jpg$');
 $$;
 revoke all on function private.zyra_source_photo_path_owned(text,text)
@@ -216,19 +246,28 @@ $$;
 revoke all on function private.zyra_photo_object_referenced(text,text)
   from public, anon, authenticated, service_role;
 
-create function private.zyra_source_photo_can_delete(p_path text)
+create function private.zyra_unreferenced_photo_path_writable(p_bucket text, p_path text)
 returns boolean language plpgsql volatile security definer set search_path = ''
 as $$
 begin
-  if not private.zyra_photo_path_writable('profile-photo-sources', p_path) then
-    return false;
-  end if;
-  return not private.zyra_photo_object_referenced('profile-photo-sources', p_path);
+  if not private.zyra_photo_path_writable(p_bucket, p_path) then return false; end if;
+  return not private.zyra_photo_object_referenced(p_bucket, p_path);
 end;
 $$;
-revoke all on function private.zyra_source_photo_can_delete(text)
+revoke all on function private.zyra_unreferenced_photo_path_writable(text,text)
   from public, anon, authenticated, service_role;
-grant execute on function private.zyra_source_photo_can_delete(text) to authenticated;
+grant execute on function private.zyra_unreferenced_photo_path_writable(text,text) to authenticated;
+
+create policy zyra_display_photo_writable_update on storage.objects
+  as restrictive for update to authenticated using (
+    bucket_id <> 'profile-photos' or private.zyra_unreferenced_photo_path_writable(bucket_id, name)
+  ) with check (
+    bucket_id <> 'profile-photos' or private.zyra_unreferenced_photo_path_writable(bucket_id, name)
+  );
+create policy zyra_display_photo_writable_delete on storage.objects
+  as restrictive for delete to authenticated using (
+    bucket_id <> 'profile-photos' or private.zyra_unreferenced_photo_path_writable(bucket_id, name)
+  );
 
 create policy zyra_photo_sources_read on storage.objects for select to authenticated using (
   bucket_id = 'profile-photo-sources' and private.zyra_source_photo_path_owned(name, owner_id)
@@ -244,7 +283,7 @@ create policy zyra_photo_sources_insert on storage.objects for insert to authent
 );
 create policy zyra_photo_sources_delete on storage.objects for delete to authenticated using (
   bucket_id = 'profile-photo-sources' and private.zyra_source_photo_path_owned(name, owner_id)
-  and private.zyra_source_photo_can_delete(name)
+  and private.zyra_unreferenced_photo_path_writable(bucket_id, name)
 );
 
 create function private.zyra_queue_owned_photo_object(p_owner uuid, p_bucket text, p_path text)
@@ -519,6 +558,8 @@ begin
       insert into private.zyra_photo_cleanup_leases (bucket, path, expires_at)
       values (v_item.bucket, v_item.path, v_now + interval '2 minutes')
       on conflict on constraint zyra_photo_cleanup_leases_pkey do update set expires_at = excluded.expires_at;
+      -- Claim only the path the worker is about to process.
+      return;
     end if;
   end loop;
 end;
@@ -537,7 +578,9 @@ begin
     set last_error = left(p_error, 128), done_at = case when p_error is null then now() end
     where d.bucket = p_bucket and d.path = p_path and d.attempts = p_attempt
       and d.done_at is null and d.attempts > 0;
-  if found then
+  -- Leave a failed attempt's lease in place as the retry cooldown, so a
+  -- single invocation cannot exhaust the same path's attempts in a loop.
+  if found and p_error is null then
     delete from private.zyra_photo_cleanup_leases l where l.bucket = p_bucket and l.path = p_path;
   end if;
 end;

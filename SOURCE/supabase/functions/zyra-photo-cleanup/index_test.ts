@@ -30,12 +30,15 @@ Deno.test("cleanup is callable only with the exact service authorization", async
 Deno.test("cleanup deletes only claimed exact object names and treats missing as success", async () => {
   const path = "uid/display original.jpg";
   const calls: unknown[] = [];
+  let claimed = false;
   const handler = createCleanupHandler({ url, serviceKey }, async (input, init) => {
     const route = new URL(String(input)).pathname;
     const body = JSON.parse(String(init?.body));
     assertEqual(new Headers(init?.headers).get("Authorization"), serviceAuthorization);
     calls.push([route, init?.method, body]);
     if (route.endsWith("zyra_claim_photo_object_deletions")) {
+      if (claimed) return Response.json([]);
+      claimed = true;
       return Response.json([{ bucket: "profile-photos", path, attempts: 1 }]);
     }
     if (route.startsWith("/storage/v1/")) return Response.json([]);
@@ -51,18 +54,20 @@ Deno.test("cleanup deletes only claimed exact object names and treats missing as
       p_attempt: 1,
       p_error: null,
     }],
+    ["/rest/v1/rpc/zyra_claim_photo_object_deletions", "POST", {}],
   ]);
 });
 
 Deno.test("cleanup persists Storage errors for the active attempt", async () => {
   const reports: unknown[] = [];
+  const pending = [
+    { bucket: "profile-photo-sources", path: "uid/source-a.jpg", attempts: 2 },
+    { bucket: "profile-photos", path: "uid/display-b.jpg", attempts: 7 },
+  ];
   const handler = createCleanupHandler({ url, serviceKey }, async (input, init) => {
     const route = new URL(String(input)).pathname;
     if (route.endsWith("zyra_claim_photo_object_deletions")) {
-      return Response.json([
-        { bucket: "profile-photo-sources", path: "uid/source-a.jpg", attempts: 2 },
-        { bucket: "profile-photos", path: "uid/display-b.jpg", attempts: 7 },
-      ]);
+      return Response.json(pending.splice(0, 1));
     }
     if (route.endsWith("/profile-photo-sources")) return new Response(null, { status: 500 });
     if (route.endsWith("/profile-photos")) throw new TypeError("network");
@@ -76,14 +81,36 @@ Deno.test("cleanup persists Storage errors for the active attempt", async () => 
   ]);
 });
 
-Deno.test("cleanup reports unavailable when it cannot persist completion", async () => {
+Deno.test("cleanup leaves later paths unclaimed when it cannot persist completion", async () => {
+  let claims = 0;
   const handler = createCleanupHandler({ url, serviceKey }, async (input) => {
     const route = new URL(String(input)).pathname;
     if (route.endsWith("zyra_claim_photo_object_deletions")) {
+      claims++;
       return Response.json([{ bucket: "profile-photos", path: "uid/photo.jpg", attempts: 1 }]);
     }
     if (route.startsWith("/storage/v1/")) return Response.json([]);
     return new Response(null, { status: 500 });
   });
   assertEqual((await handler(invocation())).status, 503);
+  assertEqual(claims, 1);
+});
+
+Deno.test("cleanup processes at most twelve paths per invocation", async () => {
+  let claims = 0;
+  let finishes = 0;
+  const handler = createCleanupHandler({ url, serviceKey }, async (input) => {
+    const route = new URL(String(input)).pathname;
+    if (route.endsWith("zyra_claim_photo_object_deletions")) {
+      assertEqual(claims, finishes);
+      claims++;
+      return Response.json([{ bucket: "profile-photos", path: `uid/${claims}.jpg`, attempts: 1 }]);
+    }
+    if (route.startsWith("/storage/v1/")) return Response.json([]);
+    finishes++;
+    return new Response(null, { status: 204 });
+  });
+  assertEqual(await (await handler(invocation())).json(), { deleted: 12, failed: 0 });
+  assertEqual(claims, 12);
+  assertEqual(finishes, 12);
 });

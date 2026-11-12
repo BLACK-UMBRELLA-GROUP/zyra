@@ -1448,6 +1448,43 @@ with deleted as (
   delete from storage.objects where name = pg_temp.q95_source('male1', 1) returning id
 )
 select pg_temp.q95_assert(not exists (select 1 from deleted), 'a live source cannot be directly deleted');
+with deleted as (
+  delete from storage.objects where name = pg_temp.q95_display('male1', 2) returning id
+)
+select pg_temp.q95_assert(not exists (select 1 from deleted), 'a live display cannot be directly deleted');
+select set_config('storage.operation', 'storage.object.upload_update', true);
+with changed as (
+  update storage.objects set metadata = '{"fixture":true}'
+  where name = pg_temp.q95_display('male1', 2) returning id
+)
+select pg_temp.q95_assert(not exists (select 1 from changed), 'a live display cannot be directly overwritten');
+select set_config('storage.operation', 'storage.object.move', true);
+with changed as (
+  update storage.objects set name = pg_temp.q95_display('male1', 99)
+  where name = pg_temp.q95_display('male1', 2) returning id
+)
+select pg_temp.q95_assert(not exists (select 1 from changed), 'a live display cannot be directly moved');
+select pg_temp.q95_refused($sql$
+  update public.profile_photos set storage_path = pg_temp.q95_display('male1', 3)
+  where id = pg_temp.q95_photo(1)
+$sql$, '42501', 'photo_requires_revision_write');
+reset role;
+select pg_temp.q95_refused($sql$
+  update storage.objects set metadata = '{"fixture":true}'
+  where name = pg_temp.q95_display('male1', 2)
+$sql$, '42501', 'photo_object_referenced');
+select pg_temp.q95_refused($sql$
+  delete from storage.objects where name = pg_temp.q95_display('male1', 2)
+$sql$, '42501', 'photo_object_referenced');
+set local role authenticated;
+select set_config('storage.operation', 'storage.object.upload', true);
+insert into storage.objects(bucket_id, name, owner_id)
+values ('profile-photos', pg_temp.q95_display('male1', 99), auth.uid()::text);
+select set_config('storage.operation', 'storage.object.delete', true);
+with deleted as (
+  delete from storage.objects where name = pg_temp.q95_display('male1', 99) returning id
+)
+select pg_temp.q95_assert((select count(*) = 1 from deleted), 'an unreferenced staged display can be rolled back');
 
 select pg_temp.q95_as('fem1');
 select set_config('storage.operation', 'storage.object.get_authenticated', true);
@@ -1486,6 +1523,12 @@ select pg_temp.q95_assert(
 );
 create temp table q95_claims as select * from public.zyra_claim_photo_object_deletions();
 select pg_temp.q95_assert(
+  (select count(*) = 1 from q95_claims)
+  and (select count(*) = 1 from public.photo_object_deletions where attempts > 0),
+  'claim spends a retry only on the next path'
+);
+insert into q95_claims select * from public.zyra_claim_photo_object_deletions();
+select pg_temp.q95_assert(
   (select count(*) = 2 from q95_claims)
   and not exists (select 1 from q95_claims where path = pg_temp.q95_display('male1', 1))
   and not exists (select 1 from public.zyra_claim_photo_object_deletions()),
@@ -1502,17 +1545,26 @@ select pg_temp.q95_assert(
        where path = pg_temp.q95_source('male1', 1)),
   'worker records completion and preserves a recoverable failure'
 );
+select pg_temp.q95_assert(
+  not exists (select 1 from public.zyra_claim_photo_object_deletions()),
+  'failed Storage attempts keep a retry cooldown'
+);
+reset role;
 do $retry$
 declare
   v_claim record;
 begin
   for i in 2..10 loop
+    update private.zyra_photo_cleanup_leases
+      set expires_at = clock_timestamp() - interval '1 second'
+      where path = pg_temp.q95_source('male1', 1);
     select * into strict v_claim from public.zyra_claim_photo_object_deletions();
     if v_claim.attempts <> i then raise exception 'unexpected attempt %', v_claim.attempts; end if;
     perform public.zyra_finish_photo_object_deletion(v_claim.bucket, v_claim.path, i, 'test_retry');
   end loop;
 end
 $retry$;
+set local role service_role;
 select pg_temp.q95_assert(
   not exists (select 1 from public.zyra_claim_photo_object_deletions())
   and exists (select 1 from public.photo_object_deletions
@@ -1529,14 +1581,35 @@ select pg_temp.q95_refused($sql$
   values (auth.uid(), pg_temp.q95_display('male1', 2))
 $sql$, '22023', 'photo_path_retired');
 select set_config('storage.operation', 'storage.object.upload', true);
-select pg_temp.q95_refused($sql$
+with changed as (
   update storage.objects set name = name
   where bucket_id = 'profile-photos' and name = pg_temp.q95_display('male1', 2)
-$sql$, '42501');
+  returning id
+)
+select pg_temp.q95_assert(not exists (select 1 from changed), 'a retired display cannot be reused');
+reset role;
+set local role service_role;
+with deleted as (
+  delete from storage.objects where name = pg_temp.q95_display('male1', 2) returning id
+)
+select pg_temp.q95_assert((select count(*) = 1 from deleted), 'the worker can remove a claimed unreferenced display');
+reset role;
+set local role authenticated;
 
 select public.zyra_save_profile_photo(pg_temp.q95_photo(3), pg_temp.q95_display('male1', 3),
   pg_temp.q95_source('male1', 3), '{"x":0,"y":0,"w":0.5,"h":1}', 0, 0);
-delete from public.profile_photos where user_id = auth.uid();
+select pg_temp.q95_refused($sql$
+  delete from public.profile_photos where user_id = auth.uid()
+$sql$, '42501', 'photo_requires_revision_write');
+select pg_temp.q95_assert(
+  exists (select 1 from public.zyra_my_photo_sources()
+    where photo = pg_temp.q95_photo(3) and source_path = pg_temp.q95_source('male1', 3))
+  and exists (select 1 from public.profile_photos where storage_path = pg_temp.q95_display('male1', 1)),
+  'legacy replace-all refuses atomically and retains the paired source and legacy row'
+);
+select public.zyra_remove_profile_photo(pg_temp.q95_photo(3), 1);
+delete from public.profile_photos where user_id = auth.uid()
+  and storage_path = pg_temp.q95_display('male1', 1);
 select pg_temp.q95_assert(
   (public.zyra_set_profile_complete(true)->>'missing') = 'photos',
   'publication does not count a removed photo'
@@ -1590,4 +1663,12 @@ select pg_temp.q95_assert(
                       pg_temp.q95_source('fem1', 6))),
   'account deletion queues legacy and modern paths before the Auth cascade'
 );
+set local role authenticated;
+select pg_temp.q95_as('fem1');
+select set_config('storage.operation', 'storage.object.get_authenticated', true);
+select pg_temp.q95_assert(
+  not exists (select 1 from storage.objects where name = pg_temp.q95_source('fem1', 6)),
+  'the deleted account JWT cannot read the queued original source'
+);
+reset role;
 rollback;
