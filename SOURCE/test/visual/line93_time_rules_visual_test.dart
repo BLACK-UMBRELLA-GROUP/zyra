@@ -152,6 +152,68 @@ void main() {
       expect(find.text('This member has left ZYRA'), findsOneWidget);
       expect(find.text('Sara'), findsNothing);
       await capture('circle_member_left');
+
+      await h.mount(
+        tab: 2,
+        pages: const ['ended'],
+        model: archive,
+        previewClock: () => now,
+      );
+      final anonymousTitle = find.text('This member has left ZYRA');
+      final attemptId = archive.currentEndedAttemptFor(_peer)!.id;
+      expect(anonymousTitle, findsOneWidget);
+      expect(find.byIcon(Icons.person_outline), findsWidgets);
+      expect(find.textContaining('Sara'), findsNothing);
+      await capture('q132_anonymous_card');
+
+      await h.tap('draft_journey_options_$_peer');
+      expect(find.text('Remove from my Journeys'), findsOneWidget);
+      expect(find.text('Cancel'), findsOneWidget);
+      expect(find.text('Request a new Journey'), findsNothing);
+      await capture('q132_anonymous_menu');
+      await h.tapFinder(find.text('Cancel'));
+      expect(anonymousTitle, findsOneWidget);
+
+      await h.tap('draft_journey_options_$_peer');
+      await h.tapFinder(find.text('Remove from my Journeys'));
+      expect(find.text('Remove this Journey?'), findsOneWidget);
+      expect(
+        find.text(
+          'It disappears from your Ended Journeys for good, with its '
+          'Timeline. You can’t undo this.',
+        ),
+        findsOneWidget,
+      );
+      expect(find.textContaining('still sees'), findsNothing);
+      expect(find.textContaining('Sara'), findsNothing);
+      await capture('q132_anonymous_confirm');
+      await h.tapFinder(find.text('Keep Journey'));
+      expect(anonymousTitle, findsOneWidget);
+      expect(h.shellFixture.model.isEndedAttemptRemoved(attemptId), isFalse);
+
+      await h.tap('draft_journey_options_$_peer');
+      await h.tapFinder(find.text('Remove from my Journeys'));
+      await h.tapFinder(find.text('Remove Journey'));
+      expect(find.text('Removed from your Journeys.'), findsOneWidget);
+      expect(find.text('No ended Journeys'), findsOneWidget);
+      expect(anonymousTitle, findsNothing);
+      expect(h.key('draft_journey_$_peer'), findsNothing);
+      await capture('q132_anonymous_removed');
+
+      final restored = ViewRequestDraftModel.fromSnapshot(h.latest.model);
+      expect(restored.isEndedAttemptRemoved(attemptId), isTrue);
+      expect(restored.currentEndedAttemptFor(_peer)?.id, attemptId);
+      for (final page in ['journey', 'timeline']) {
+        await h.mount(
+          tab: 2,
+          pages: ['ended', page],
+          model: restored,
+          previewClock: () => now,
+        );
+        h.assertPage('ended');
+        expect(find.text('No ended Journeys'), findsOneWidget);
+        expect(anonymousTitle, findsNothing);
+      }
     });
   }
 }

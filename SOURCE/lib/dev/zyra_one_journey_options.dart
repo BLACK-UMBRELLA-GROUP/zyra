@@ -551,11 +551,16 @@ class ZyraConceptJourneyOptionsButton extends StatelessWidget {
 
 enum ZyraEndedJourneyAction { restart, remove }
 
-/// The V203 Ended Journeys action sheet. The caller validates the attempt and
-/// owns the following confirmation.
+/// Ended Journeys action sheet. The caller validates the attempt and owns the
+/// following confirmation.
 class ZyraEndedJourneyMenu extends StatelessWidget {
-  const ZyraEndedJourneyMenu({super.key, required this.onSelect});
+  const ZyraEndedJourneyMenu({
+    super.key,
+    required this.showRestart,
+    required this.onSelect,
+  });
 
+  final bool showRestart;
   final ValueChanged<ZyraEndedJourneyAction?> onSelect;
 
   @override
@@ -616,8 +621,10 @@ class ZyraEndedJourneyMenu extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12),
-              pill('Request a new Journey', ZyraEndedJourneyAction.restart),
-              const Divider(height: 1, color: ZyraColors.divider),
+              if (showRestart) ...[
+                pill('Request a new Journey', ZyraEndedJourneyAction.restart),
+                const Divider(height: 1, color: ZyraColors.divider),
+              ],
               TextButton(
                 onPressed: ZyraTapFeedback.onTap(
                   context,

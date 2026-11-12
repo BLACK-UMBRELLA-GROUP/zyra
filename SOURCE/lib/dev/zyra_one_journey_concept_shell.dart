@@ -4083,7 +4083,18 @@ class _ZyraOneJourneyConceptShellState
             for (final p in people)
               if (_model.hasDeparted(p.id))
                 _card([
-                  _title(_departedMemberTitle, size: 18),
+                  Row(
+                    children: [
+                      Icon(Icons.person_outline, color: ZyraColors.mutedText),
+                      const SizedBox(width: 8),
+                      Expanded(child: _title(_departedMemberTitle, size: 18)),
+                      const SizedBox(width: 8),
+                      ZyraConceptJourneyOptionsButton(
+                        key: ValueKey('draft_journey_options_${p.id}'),
+                        onTap: _bound(() => _showEndedJourneyMenu(p)),
+                      ),
+                    ],
+                  ),
                   _button(
                     'draft_journey_${p.id}',
                     'View archive',
@@ -4107,6 +4118,7 @@ class _ZyraOneJourneyConceptShellState
     if (!_canExpandJourneyCard(id)) return;
     final attempt = _model.currentEndedAttemptFor(id);
     if (attempt == null) return;
+    final departed = _model.hasDeparted(id);
     final account = (ZyraAccountState.userId, ZyraAccountState.generation);
     final revision = _uiRevision;
     final page = _page;
@@ -4121,6 +4133,7 @@ class _ZyraOneJourneyConceptShellState
         revision == _uiRevision &&
         page == _page &&
         _model.hasVisibleEndedJourney(id) &&
+        _model.hasDeparted(id) == departed &&
         _model.currentEndedAttemptFor(id)?.id == attempt.id;
 
     _journeyOptionsOpen = true;
@@ -4146,6 +4159,7 @@ class _ZyraOneJourneyConceptShellState
             level: () => _accountSession.hapticLevel,
             canAct: admitted,
             child: ZyraEndedJourneyMenu(
+              showRestart: !departed,
               onSelect: (action) {
                 if (!admitted()) return;
                 Navigator.pop(sheetContext, action);
@@ -4168,13 +4182,16 @@ class _ZyraOneJourneyConceptShellState
 
     final confirmed = await _confirmConceptAction(
       title: 'Remove this Journey?',
-      body:
-          'It disappears from your Ended Journeys for good, with its '
-          'Timeline and messages. You can’t undo this. '
-          '${person.firstName} still sees her copy.',
+      body: departed
+          ? 'It disappears from your Ended Journeys for good, with its '
+                'Timeline. You can’t undo this.'
+          : 'It disappears from your Ended Journeys for good, with its '
+                'Timeline and messages. You can’t undo this. '
+                '${person.firstName} still sees her copy.',
       primaryLabel: 'Remove Journey',
       secondaryLabel: 'Keep Journey',
-      personName: person.firstName,
+      personName: departed ? null : person.firstName,
+      icon: departed ? Icons.remove : Icons.info_outline,
       canCommit: currentAttempt,
     );
     if (!confirmed) return;

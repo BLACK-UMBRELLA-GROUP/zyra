@@ -502,6 +502,26 @@ void main() {
     },
   );
 
+  testWidgets('Founder host admits anonymous archive removal sheets', (
+    tester,
+  ) async {
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final current = owner();
+    final departed = _ended();
+    expect(departed.markPeerDeparted(_sara), isTrue);
+    final attempt = departed.currentEndedAttemptFor(_sara)!;
+    await current.mount(tester, model: departed);
+
+    await _press(tester, _key('draft_journey_options_$_sara'));
+    await _press(tester, find.text('Remove from my Journeys'));
+    await _press(tester, find.text('Remove Journey'));
+
+    expect(find.text('No ended Journeys'), findsOneWidget);
+    expect(find.text('Removed from your Journeys.'), findsOneWidget);
+    expect(current.model.isEndedAttemptRemoved(attempt.id), isTrue);
+  });
+
   testWidgets('all six read-only options address their owned destination', (
     tester,
   ) async {
