@@ -227,6 +227,24 @@ void main() {
       });
     }
     expect(requests.length, 4);
+
+    const unflagged = (questionId: 'ch2.sect.matrix', optionValue: 'sunni');
+    await ZyraOnboardingAnswersService.confirmPreferenceLight(
+      expectedUserId: _owner,
+      option: unflagged,
+      light: TrafficLight.red,
+    );
+    expect(jsonDecode(requests.last.body), {
+      'p_items': [_item(unflagged, 'red')],
+    });
+    await ZyraOnboardingAnswersService.confirmPreferenceLight(
+      expectedUserId: _owner,
+      option: unflagged,
+      light: TrafficLight.yellow,
+    );
+    expect(jsonDecode(requests.last.body), {
+      'p_items': [_item(unflagged, 'amber')],
+    });
   });
 
   test('the reader rejects data outside the owner response shape', () async {

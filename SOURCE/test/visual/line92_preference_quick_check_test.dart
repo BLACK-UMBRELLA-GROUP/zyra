@@ -107,6 +107,16 @@ void main() {
       expect(find.text(_legacyLine), findsNothing);
       expect(find.text('Saved. 4 left to check.'), findsOneWidget);
       await capture('sect_after');
+      await harness.tap('preference_Sunni_red');
+      await harness.tap('preference_Sunni_yellow');
+      final sunniAmber = find
+          .descendant(
+            of: harness.key('preference_Sunni_yellow'),
+            matching: find.byType(Semantics),
+          )
+          .first;
+      expect(tester.widget<Semantics>(sunniAmber).properties.selected, isTrue);
+      expect(find.text(_legacyLine), findsNothing);
       await tester.pump(const Duration(seconds: 5));
       await tester.pumpAndSettle();
       await swipeZyraBack(tester);
@@ -118,6 +128,9 @@ void main() {
       expect(find.text('1 to check'), findsNWidgets(2));
       expect(find.text('2 to check'), findsOneWidget);
 
+      await harness.tap('edit-lights-ch2.sect.matrix');
+      expect(tester.widget<Semantics>(sunniAmber).properties.selected, isTrue);
+      await swipeZyraBack(tester);
       await harness.tap('edit-lights-ch2.sect.outside_flexibility');
       expect(find.text(_legacyLine), findsOneWidget);
       await capture('outside_before');

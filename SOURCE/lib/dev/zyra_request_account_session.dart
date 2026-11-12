@@ -250,10 +250,14 @@ class ZyraRequestCompatibilityRepository
     ZyraPreferenceOption option,
     TrafficLight light,
   ) async {
-    if (!isCurrentOwner(userId, 0) || !_legacy.contains(option)) {
+    final setup =
+        ZyraSetupPreferenceLights.isSetupOption(option) &&
+        (option.questionId != 'ch2.sect.matrix' ||
+            const {'sunni', 'shia', 'other'}.contains(option.optionValue));
+    if (!isCurrentOwner(userId, 0) || (!setup && !_legacy.contains(option))) {
       throw StateError('The preview preference is unavailable.');
     }
-    if (ZyraSetupPreferenceLights.isSetupOption(option)) {
+    if (setup) {
       _setupLights[option] = light;
     } else {
       (_draft!.preferences[option.questionId] ??= {})[option.optionValue] =

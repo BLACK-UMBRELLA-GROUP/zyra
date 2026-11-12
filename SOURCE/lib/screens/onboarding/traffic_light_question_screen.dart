@@ -58,7 +58,7 @@ class TrafficLightQuestionScreen extends StatefulWidget {
   final Set<String> optionsToCheck;
   final Future<bool> Function(String, TrafficLight)? onReconfirm;
   final bool confirming;
-  final bool onlyCheckOptions;
+  final bool confirmEveryTap;
 
   final ValueChanged<Map<String, TrafficLight>> onChanged;
   final ValueChanged<Set<String>> onHardRequirementChanged;
@@ -76,7 +76,7 @@ class TrafficLightQuestionScreen extends StatefulWidget {
     this.optionsToCheck = const {},
     this.onReconfirm,
     this.confirming = false,
-    this.onlyCheckOptions = false,
+    this.confirmEveryTap = false,
   });
 
   @override
@@ -100,9 +100,8 @@ class _TrafficLightQuestionScreenState
       widget.options.isNotEmpty && _redOptions.length == widget.options.length;
 
   Future<void> _choose(String option, TrafficLight light) async {
-    final check = widget.optionsToCheck.contains(option);
-    if (widget.confirming || (widget.onlyCheckOptions && !check)) return;
-    if (check) {
+    if (widget.confirming) return;
+    if (widget.confirmEveryTap || widget.optionsToCheck.contains(option)) {
       if (await widget.onReconfirm?.call(option, light) != true || !mounted) {
         return;
       }
@@ -163,8 +162,7 @@ class _TrafficLightQuestionScreenState
           final check = widget.optionsToCheck.contains(option);
           final current = check ? null : _values[option];
           final isRed = current == TrafficLight.red;
-          final canChoose =
-              !widget.confirming && (!widget.onlyCheckOptions || check);
+          final canChoose = !widget.confirming;
           const checkInk = Color(0xFF845F24);
           final checkBorder = const Color(0xFFA9792E).withValues(alpha: 0.6);
           return ZyraFloatingSurface(

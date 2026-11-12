@@ -386,7 +386,7 @@ class ZyraPreferenceQuickCheck {
   ) async {
     final key = _key(question, option);
     final setupQuestion = isSetup(question);
-    if (!_items.contains(key)) return;
+    if (!_items.contains(key) && !setupQuestion) return;
     await confirm(key, light);
     _items.remove(key);
     if (setupQuestion) {
@@ -1386,7 +1386,7 @@ class _PreferenceQuestionEditorState extends State<_PreferenceQuestionEditor> {
             initialHardRequirement: _hard,
             optionsToCheck:
                 widget.quickCheck?.optionsFor(widget.question) ?? const {},
-            onlyCheckOptions: _setup,
+            confirmEveryTap: _setup,
             confirming: _confirming,
             onReconfirm: _reconfirm,
             onChanged: (values) {
