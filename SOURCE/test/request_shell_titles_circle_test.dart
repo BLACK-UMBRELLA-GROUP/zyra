@@ -48,8 +48,10 @@ Future<void> _mount(
   WidgetTester tester, {
   bool seekerBasic = false,
   bool guardianBasic = false,
+  Size size = const Size(393, 852),
+  EdgeInsets safePadding = const EdgeInsets.only(top: _top, bottom: 34),
 }) async {
-  tester.view.physicalSize = const Size(393, 852);
+  tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
@@ -58,13 +60,14 @@ Future<void> _mount(
       theme: ThemeData.dark(),
       builder: (context, child) => MediaQuery(
         data: MediaQuery.of(context).copyWith(
-          padding: const EdgeInsets.only(top: _top, bottom: 34),
-          viewPadding: const EdgeInsets.only(top: _top, bottom: 34),
+          padding: safePadding,
+          viewPadding: safePadding,
           disableAnimations: true,
         ),
         child: RepaintBoundary(key: _captureKey, child: child!),
       ),
       home: ViewRequestDraftScreen(
+        key: UniqueKey(),
         fixture: ZyraShellTestFixture().fixture,
         ownerGeneration: ZyraAccountState.generation,
         ownerId: ZyraAccountState.userId,
@@ -149,39 +152,36 @@ Future<void> _nav(WidgetTester tester, int index) async {
   expect(tester.takeException(), isNull);
 }
 
-TextStyle _expectTitle(
+typedef _TitleMetrics = ({TextStyle style, double baseline});
+
+_TitleMetrics _expectTitle(
   WidgetTester tester,
   String key,
   String label, {
-  TextStyle? reference,
+  double safeTop = _top,
+  _TitleMetrics? reference,
 }) {
   final target = key.isEmpty ? find.text(label) : _key(key);
   expect(target, findsOneWidget);
   final title = tester.widget<Text>(target);
   final style = title.style!;
   expect(title.data, label);
-  expect(
-    title.textAlign ?? TextAlign.start,
-    anyOf(TextAlign.left, TextAlign.start),
-  );
-  expect(style.fontSize, label == 'My ZYRA' ? 28 : 26);
-  expect(
-    style.fontWeight,
-    label == 'My ZYRA' ? FontWeight.w300 : FontWeight.w200,
-  );
-  expect(style.fontFamily, _font);
+  expect(title.textAlign, TextAlign.left, reason: label);
+  expect(style.fontSize, 26, reason: label);
+  expect(style.fontWeight, FontWeight.w200, reason: label);
+  expect(style.fontFamily, _font, reason: label);
   final rect = tester.getRect(target);
-  expect(rect.left, closeTo(20, .01));
-  expect(rect.top, inInclusiveRange(_top + 15.99, _top + 32));
+  expect(rect.left, closeTo(20, .01), reason: label);
+  expect(rect.top, closeTo(safeTop + 16, .01), reason: label);
+  final paragraph = tester.renderObject<RenderParagraph>(target);
+  final baseline =
+      rect.top +
+      paragraph.getDryBaseline(paragraph.constraints, TextBaseline.alphabetic)!;
   if (reference != null) {
-    expect(style.fontSize, reference.fontSize);
-    expect(style.fontWeight, reference.fontWeight);
-    expect(style.fontFamily, reference.fontFamily);
-    expect(style.color, reference.color);
-    expect(style.height, reference.height);
-    expect(style.letterSpacing, reference.letterSpacing);
+    expect(style, reference.style, reason: label);
+    expect(baseline, closeTo(reference.baseline, 1), reason: label);
   }
-  return style;
+  return (style: style, baseline: baseline);
 }
 
 ZyraCircleTopicsPresentation _topics(WidgetTester tester) =>
@@ -298,40 +298,55 @@ void main() {
     expect(network.attempts, 0);
   });
 
-  // Q34: title checks use the current LOCK 13, 15 and 19 roots.
   testWidgets(
-    'all five actual Seeker tabs share title typography and top-left position',
+    'all five actual tabs in each role share title style and position at both phone sizes',
     (tester) async {
-      await _mount(tester);
-      final reference = _expectTitle(
-        tester,
-        'concept_browse_title',
-        'Profiles',
-      );
-      await _capture(tester, 'browse-title');
-      await _nav(tester, 1);
-      _expectTitle(tester, '', 'Journey', reference: reference);
-      await _capture(tester, 'journey-title');
-      await _nav(tester, 2);
-      _expectTitle(tester, '', 'My ZYRA');
-      await _capture(tester, 'my-zyra-title');
-      await _nav(tester, 3);
-      _expectTitle(
-        tester,
-        'guardian-manager-title',
-        'Guardian',
-        reference: reference,
-      );
-      await _capture(tester, 'guardian-title');
-      expect(_key('guardian-family-messages-top'), findsOneWidget);
-      await _nav(tester, 4);
-      _expectTitle(
-        tester,
-        'concept_profile_title',
-        'Profile',
-        reference: reference,
-      );
-      await _capture(tester, 'profile-title');
+      const seekerTabs = [
+        ('concept_browse_title', 'Profiles'),
+        ('', 'Journey'),
+        ('', 'My ZYRA'),
+        ('guardian-manager-title', 'Guardian'),
+        ('concept_profile_title', 'Profile'),
+      ];
+      const guardianTabs = [
+        ('', 'Network'),
+        ('', 'Journeys'),
+        ('', 'My ZYRA'),
+        ('', 'Seekers'),
+        ('concept_profile_title', 'Profile'),
+      ];
+      for (final (size, safePadding) in const [
+        (Size(430, 932), EdgeInsets.only(top: 59, bottom: 34)),
+        (Size(375, 667), EdgeInsets.only(top: 20)),
+      ]) {
+        await _mount(tester, size: size, safePadding: safePadding);
+        final reference = _expectTitle(
+          tester,
+          'concept_browse_title',
+          'Profiles',
+          safeTop: safePadding.top,
+        );
+        final dimensions = '${size.width.toInt()}x${size.height.toInt()}';
+        for (final (role, tabs) in [
+          ('seeker', seekerTabs),
+          ('guardian', guardianTabs),
+        ]) {
+          if (role == 'guardian') {
+            await _press(tester, _key('draft_role_guardian'));
+          }
+          for (final (index, (key, label)) in tabs.indexed) {
+            if (role == 'guardian' || index > 0) await _nav(tester, index);
+            _expectTitle(
+              tester,
+              key,
+              label,
+              safeTop: safePadding.top,
+              reference: reference,
+            );
+            await _capture(tester, '$dimensions-$role-tab-$index');
+          }
+        }
+      }
     },
   );
 

@@ -7,6 +7,7 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
 import '../theme/zyra_interaction_style.dart';
+import '../widgets/zyra_tab_title.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_state_widgets.dart';
 import '../widgets/zyra_profile_image.dart';
@@ -391,30 +392,50 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   );
   // R2 Larger Text: fit the longest word only when it cannot fit on one
   // line. Text still handles ordinary word wrapping and explicit line breaks.
-  Widget _networkLabel(Text label) => LayoutBuilder(
+  Widget _networkTitle() => _fitNetworkLabel(
+    'Network',
+    ZyraText.pageTitle(),
+    (scaler) => ZyraTabTitle('Network', textScaler: scaler),
+  );
+
+  Widget _networkLabel(Text label) => _fitNetworkLabel(
+    label.data!,
+    label.style!,
+    (scaler) => scaler == null
+        ? label
+        : Text(
+            label.data!,
+            style: label.style,
+            textAlign: label.textAlign,
+            textScaler: scaler,
+          ),
+  );
+
+  Widget _fitNetworkLabel(
+    String label,
+    TextStyle style,
+    Widget Function(TextScaler?) buildLabel,
+  ) => LayoutBuilder(
     builder: (context, constraints) {
       final scaler = MediaQuery.textScalerOf(context);
-      final fontSize = label.style!.fontSize!;
-      if (scaler.scale(fontSize) <= fontSize) return label;
+      final fontSize = style.fontSize!;
+      if (scaler.scale(fontSize) <= fontSize) return buildLabel(null);
       var widest = 0.0;
       final painter = TextPainter(
         textDirection: Directionality.of(context),
         textScaler: scaler,
         locale: Localizations.maybeLocaleOf(context),
       );
-      final style = DefaultTextStyle.of(context).style.merge(label.style);
-      for (final word in label.data!.split(RegExp(r'\s+'))) {
-        painter.text = TextSpan(text: word, style: style);
+      final inheritedStyle = DefaultTextStyle.of(context).style.merge(style);
+      for (final word in label.split(RegExp(r'\s+'))) {
+        painter.text = TextSpan(text: word, style: inheritedStyle);
         painter.layout();
         if (painter.width > widest) widest = painter.width;
       }
       painter.dispose();
-      if (widest <= constraints.maxWidth) return label;
-      return Text(
-        label.data!,
-        style: label.style,
-        textAlign: label.textAlign,
-        textScaler: TextScaler.linear(
+      if (widest <= constraints.maxWidth) return buildLabel(null);
+      return buildLabel(
+        TextScaler.linear(
           scaler.scale(fontSize) /
               fontSize *
               constraints.maxWidth /
@@ -542,15 +563,16 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
       ),
     ),
   );
-  Widget _header(String title, {Widget? trailing}) => Padding(
+  Widget _header(
+    Widget title, {
+    Widget? trailing,
+    CrossAxisAlignment alignment = CrossAxisAlignment.center,
+  }) => Padding(
     padding: const EdgeInsets.only(bottom: 20),
     child: Row(
+      crossAxisAlignment: alignment,
       children: [
-        Expanded(
-          child: title == 'Network'
-              ? _networkLabel(_title(title))
-              : _title(title),
-        ),
+        Expanded(child: title),
         ?trailing,
       ],
     ),
@@ -881,7 +903,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _header(
-            'Journey requests',
+            _title('Journey requests'),
             trailing: _switcher(
               const [
                 'All Seekers',
@@ -962,7 +984,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
       Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _header('Connect with Guardian'),
+          _header(_title('Connect with Guardian')),
           _segments(
             const ['Sent', 'Received'],
             received ? 1 : 0,
@@ -1062,7 +1084,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _header("Introductions you've made"),
+              _header(_title("Introductions you've made")),
               _quiet(
                 'No introductions yet.',
                 'Find someone in Network and choose Introduce to ${state.seekerName}.',
@@ -1076,7 +1098,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
       : _viewport(
           Column(
             children: [
-              _header("Introductions you've made"),
+              _header(_title("Introductions you've made")),
               for (final (i, entry)
                   in state.introduced
                       .where(
@@ -1130,7 +1152,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
       return _viewport(
         Column(
           children: [
-            _header('Network'),
+            _header(_networkTitle()),
             _tile(
               'Invite your Seeker',
               'Support someone on their journey.',
@@ -1151,7 +1173,8 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _header(
-            'Network',
+            _networkTitle(),
+            alignment: CrossAxisAlignment.start,
             trailing: _switcher('for ${state.seekerName}', 'seeker'),
           ),
           Expanded(
@@ -1304,15 +1327,16 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _title('Journeys'),
+                      const ZyraTabTitle('Journeys'),
                       const SizedBox(height: 12),
                       Align(alignment: Alignment.centerRight, child: switcher),
                     ],
                   );
                 }
                 return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(child: _title('Journeys')),
+                    const Expanded(child: ZyraTabTitle('Journeys')),
                     switcher,
                   ],
                 );
@@ -1358,7 +1382,8 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _header(
-          'Seekers',
+          const ZyraTabTitle('Seekers'),
+          alignment: CrossAxisAlignment.start,
           trailing: Builder(
             builder: (context) => SizedBox.square(
               dimension: 38,

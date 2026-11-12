@@ -44,6 +44,7 @@ import '../widgets/zyra_guardian_dashboard_profile_card.dart';
 import '../widgets/zyra_loading.dart';
 import '../widgets/zyra_full_screen_profile_gallery.dart';
 import '../widgets/zyra_profile_video_player.dart';
+import '../widgets/zyra_tab_title.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_confirm_sheet.dart';
 import '../widgets/zyra_shell_navigation.dart';
@@ -9416,11 +9417,9 @@ class _ZyraOneJourneyConceptShellState
     padding: const EdgeInsets.only(bottom: 12),
     child: Align(
       alignment: Alignment.topLeft,
-      child: Text(
+      child: ZyraTabTitle(
         title,
-        key: ValueKey('concept_main_title_$title'),
-        style: ZyraText.pageTitle(),
-        textAlign: TextAlign.left,
+        textKey: ValueKey('concept_main_title_$title'),
       ),
     ),
   );

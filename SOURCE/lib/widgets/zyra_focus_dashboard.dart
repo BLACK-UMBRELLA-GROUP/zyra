@@ -5,6 +5,7 @@ import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
 import 'floating_nav_bar.dart';
 import 'zyra_floating_surface.dart';
+import 'zyra_tab_title.dart';
 import 'zyra_tap_feedback.dart';
 import 'zyra_profiles_components.dart';
 import 'zyra_swipe_track.dart';
@@ -486,12 +487,7 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
-                      widget.title,
-                      style: ZyraText.heading(
-                        size: 28,
-                      ).copyWith(fontWeight: FontWeight.w300, height: 1.2),
-                    ),
+                    ZyraTabTitle(widget.title),
                     if (widget.greeting != null) ...[
                       const SizedBox(height: 14),
                       Text(

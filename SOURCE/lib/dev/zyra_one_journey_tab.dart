@@ -11,6 +11,7 @@ import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_journey_icon.dart';
 import '../widgets/zyra_profiles_components.dart';
+import '../widgets/zyra_tab_title.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_swipe_track.dart';
 
@@ -465,19 +466,57 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                ConstrainedBox(
-                  constraints: const BoxConstraints(minHeight: 44),
-                  child: Row(
-                    crossAxisAlignment: widget.journeys.isEmpty
-                        ? CrossAxisAlignment.center
-                        : CrossAxisAlignment.end,
+                if (widget.journeys.isEmpty) ...[
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: 44),
+                    child: const Align(
+                      alignment: Alignment.topLeft,
+                      child: ZyraTabTitle('Journey'),
+                    ),
+                  ),
+                  Expanded(child: _empty(current)),
+                ] else ...[
+                  Stack(
                     children: [
-                      Expanded(
-                        child: Text('Journey', style: ZyraText.pageTitle()),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Padding(
+                            padding: EdgeInsetsDirectional.only(
+                              end: card != null && !card.unavailable ? 44 : 0,
+                            ),
+                            child: const ZyraTabTitle('Journey'),
+                          ),
+                          const SizedBox(
+                            height: ZyraPreviewSpacing.titleToDots,
+                          ),
+                          SizedBox(
+                            height: 24,
+                            child: Center(
+                              child: ZyraProfilesDots(
+                                count: widget.capacity,
+                                index: index,
+                                dotKey: (i) => ValueKey('journey_tab_dot_$i'),
+                                activeWidth: 30,
+                                size: 6,
+                                lift: 0,
+                                canAct: current,
+                                onSelected: (value) {
+                                  if (current()) _track.animateTo(value);
+                                },
+                                targetKey: (i) =>
+                                    ValueKey('journey_tab_dot_target_$i'),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       if (card != null && !card.unavailable)
-                        SizedBox.square(
-                          dimension: 44,
+                        PositionedDirectional(
+                          top: 0,
+                          end: 0,
+                          width: 44,
+                          height: 44,
                           child: IconButton(
                             key: ValueKey('draft_journey_options_${card.id}'),
                             tooltip: 'Journey options for ${card.firstName}',
@@ -493,29 +532,6 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
                           ),
                         ),
                     ],
-                  ),
-                ),
-                if (widget.journeys.isEmpty)
-                  Expanded(child: _empty(current))
-                else ...[
-                  const SizedBox(height: ZyraPreviewSpacing.titleToDots),
-                  SizedBox(
-                    height: 24,
-                    child: Center(
-                      child: ZyraProfilesDots(
-                        count: widget.capacity,
-                        index: index,
-                        dotKey: (i) => ValueKey('journey_tab_dot_$i'),
-                        activeWidth: 30,
-                        size: 6,
-                        lift: 0,
-                        canAct: current,
-                        onSelected: (value) {
-                          if (current()) _track.animateTo(value);
-                        },
-                        targetKey: (i) => ValueKey('journey_tab_dot_target_$i'),
-                      ),
-                    ),
                   ),
                   // The 6 pt dot ends 9 pt before the end of its touch slot.
                   const SizedBox(height: 3),

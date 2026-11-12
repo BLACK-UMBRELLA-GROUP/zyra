@@ -13,6 +13,7 @@ import '../widgets/zyra_guardian_add_card.dart';
 import 'zyra_one_journey_monogram_presentation.dart';
 import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_profiles_components.dart';
+import '../widgets/zyra_tab_title.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_swipe_track.dart';
 import 'zyra_conversation_unread_badge.dart';
@@ -655,10 +656,9 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
             LayoutBuilder(
               key: const ValueKey('guardian-manager-title-block'),
               builder: (context, box) {
-                final title = Text(
+                const title = ZyraTabTitle(
                   'Guardian',
-                  key: const ValueKey('guardian-manager-title'),
-                  style: ZyraText.pageTitle(),
+                  textKey: ValueKey('guardian-manager-title'),
                 );
                 final actions = Row(
                   mainAxisSize: MainAxisSize.min,
@@ -687,7 +687,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
                   );
                 }
                 return Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(child: title),
                     actions,

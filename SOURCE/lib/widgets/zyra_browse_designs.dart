@@ -5,6 +5,7 @@ import 'zyra_floating_surface.dart';
 // Photo rendering is required and explicitly supplied by the caller; this
 // widget has no default image provider or ability to fetch a photo.
 
+import 'zyra_tab_title.dart';
 import 'zyra_tap_feedback.dart';
 import 'dart:async';
 import 'dart:math' as math;
@@ -625,11 +626,9 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
 
   Widget _header({Widget? dots}) {
     const key = ValueKey('concept_browse_header');
-    final title = Text(
+    const title = ZyraTabTitle(
       'Profiles',
-      key: const ValueKey('concept_browse_title'),
-      textAlign: TextAlign.left,
-      style: ZyraText.pageTitle(),
+      textKey: ValueKey('concept_browse_title'),
     );
     final action = widget.onBrowseMenu != null
         ? ZyraBrowseOptionsButton(

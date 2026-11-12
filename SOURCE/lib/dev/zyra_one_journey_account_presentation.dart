@@ -2,6 +2,7 @@ import '../widgets/zyra_floating_surface.dart';
 // Disposable account presentation, copied from the current account owners.
 // The caller supplies every sample fact and every action. This file neither
 // reads a member account nor changes preferences, security or paid access.
+import '../widgets/zyra_tab_title.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 
@@ -269,15 +270,13 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
       bottom: false,
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 16, 20, 8),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text(
+              child: ZyraTabTitle(
                 'Profile',
-                textAlign: TextAlign.left,
-                key: const ValueKey('concept_profile_title'),
-                style: ZyraText.pageTitle(),
+                textKey: ValueKey('concept_profile_title'),
               ),
             ),
           ),
