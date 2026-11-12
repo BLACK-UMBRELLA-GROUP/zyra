@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image/image.dart' as img;
+import 'package:zyra/models/zyra_profile_photo_geometry.dart';
 import 'package:zyra/screens/profile/photo_crop_review_screen.dart';
 import 'package:zyra/theme/zyra_text.dart';
 
@@ -39,7 +40,7 @@ void main() {
     expect(find.byKey(const ValueKey('photo-preview')), findsNothing);
   });
 
-  testWidgets('crop uses one full 3:4 canvas without a nested frame', (
+  testWidgets('crop uses one full canvas without a nested frame', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(430, 932);
@@ -58,7 +59,10 @@ void main() {
     final canvas = find.byKey(const ValueKey('photo-crop-canvas'));
     expect(canvas, findsOneWidget);
     final size = tester.getSize(canvas);
-    expect(size.width / size.height, closeTo(3 / 4, 0.001));
+    expect(
+      size.width / size.height,
+      closeTo(zyraProfilePhotoAspectRatio, 0.001),
+    );
     expect(find.textContaining('Pinch to zoom'), findsNothing);
   });
 
@@ -124,6 +128,24 @@ void main() {
           await Future<void>.delayed(const Duration(milliseconds: 20));
         }
         expect(tester.widget<FilledButton>(confirm).onPressed, isNotNull);
+        final guide = find.byKey(const ValueKey('photo-crop-guide'));
+        final frame = tester.getSize(guide);
+        final safeHeight = frame.width / (335 / 467);
+        final inset = (frame.height - safeHeight) / 2;
+        expect(inset, greaterThan(0));
+        expect(
+          guide,
+          paints
+            ..line()
+            ..line()
+            ..line()
+            ..line()
+            ..line(p1: Offset(0, inset), p2: Offset(frame.width, inset))
+            ..line(
+              p1: Offset(0, inset + safeHeight),
+              p2: Offset(frame.width, inset + safeHeight),
+            ),
+        );
         await tester.tap(confirm);
         for (var attempt = 0; attempt < 80 && result == null; attempt++) {
           await tester.pump(const Duration(milliseconds: 20));
@@ -131,8 +153,14 @@ void main() {
         }
       });
       final crop = img.decodeImage(result!.single)!;
-      expect(crop.width, closeTo(portrait ? 240 : 180, 1));
-      expect(crop.height, closeTo(portrait ? 320 : 240, 1));
+      expect(
+        crop.width,
+        closeTo(portrait ? 240 : 240 * zyraProfilePhotoAspectRatio, 1),
+      );
+      expect(
+        crop.height,
+        closeTo(portrait ? 240 / zyraProfilePhotoAspectRatio : 240, 1),
+      );
       final first = crop.getPixel(
         portrait ? 2 : crop.width ~/ 2,
         portrait ? crop.height ~/ 2 : 2,

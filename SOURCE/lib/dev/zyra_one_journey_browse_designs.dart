@@ -24,7 +24,7 @@ Widget _samplePhoto(
   photo.startsWith('data:image/') ? photo : '',
   width: width,
   height: height,
-  fit: width.isInfinite ? BoxFit.contain : BoxFit.cover,
+  fit: BoxFit.cover,
   alignment: alignment,
 );
 

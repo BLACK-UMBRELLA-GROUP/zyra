@@ -24,13 +24,12 @@ import 'zyra_browse_options_button.dart';
 import 'zyra_browse_next_photo_motion.dart';
 import 'zyra_invitation_outline.dart';
 import 'zyra_profile_details_page.dart';
-import 'zyra_profile_photo_frame.dart';
 import 'zyra_profiles_components.dart';
 import 'zyra_swipe_track.dart';
 
 /// Explicit rendering seam. The caller supplies already-authorised photo
 /// references and the renderer; a reference alone never initiates a fetch here.
-/// A gallery page requests infinite width inside a bounded crop-shaped frame.
+/// A gallery page requests infinite width inside the bounded photo card.
 /// Details-page avatars request a finite square and keep their own fit.
 typedef ZyraBrowsePhotoBuilder =
     Widget Function(
@@ -351,7 +350,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
       photo,
       width: double.infinity,
       height: height,
-      alignment: Alignment.topCenter,
+      alignment: Alignment.center,
     );
     return SizedBox(
       key: ValueKey('${keyPrefix}_${profile.id}_$index'),
@@ -360,9 +359,9 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
       child: rounded
           ? ClipRRect(
               borderRadius: BorderRadius.circular(ZyraCardMetrics.thumbRadius),
-              child: ZyraProfilePhotoFrame(child: renderedPhoto),
+              child: renderedPhoto,
             )
-          : ZyraProfilePhotoFrame(child: renderedPhoto),
+          : renderedPhoto,
     );
   }
 

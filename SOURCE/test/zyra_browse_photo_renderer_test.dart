@@ -182,7 +182,7 @@ void main() {
             expect(call.photo, _member.photos.first);
             expect(call.alignment, ZyraProfileDetailsPage.photoAlignment);
           } else {
-            expect(call.alignment, Alignment.topCenter);
+            expect(call.alignment, Alignment.center);
           }
         }
         // The shared presenter creates no image provider behind the callback.

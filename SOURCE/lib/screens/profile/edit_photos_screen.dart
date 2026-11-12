@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart'
     show AuthChangeEvent, AuthState, Supabase;
 
+import '../../models/zyra_profile_photo_geometry.dart';
 import '../../services/zyra_auth.dart';
 import '../../services/zyra_account_state.dart';
 import '../../services/zyra_internal_preview_client.dart';
@@ -26,7 +27,6 @@ import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_confirm_sheet.dart';
 import '../../widgets/zyra_loading.dart';
 import '../../widgets/zyra_profile_image.dart';
-import '../../widgets/zyra_profile_photo_frame.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import 'avatar_adjust_screen.dart';
 import 'photo_crop_review_screen.dart';
@@ -1127,11 +1127,11 @@ Widget _retainedPhotoImage(String photo, {bool showLoader = false}) =>
     photo.startsWith('assets/')
     ? Image.asset(
         photo,
-        fit: BoxFit.contain,
+        fit: BoxFit.cover,
         errorBuilder: (_, _, _) =>
             const ColoredBox(color: ZyraColors.luxuryDarkPurple),
       )
-    : ZyraProfileImage(photo, fit: BoxFit.contain, showLoader: showLoader);
+    : ZyraProfileImage(photo, fit: BoxFit.cover, showLoader: showLoader);
 
 class _PhotoGallery extends StatelessWidget {
   const _PhotoGallery({
@@ -1370,12 +1370,7 @@ class _LargePhotoCardState extends State<_LargePhotoCard> {
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
-                        ZyraProfilePhotoFrame(
-                          child: _retainedPhotoImage(
-                            widget.photo,
-                            showLoader: true,
-                          ),
-                        ),
+                        _retainedPhotoImage(widget.photo, showLoader: true),
                         const DecoratedBox(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
@@ -1646,53 +1641,59 @@ class _CompactPhotoTile extends StatelessWidget {
     label: index == 0 ? 'Main photo' : 'Select photo ${index + 1}',
     child: GestureDetector(
       key: ValueKey('compact-photo-$index'),
+      behavior: HitTestBehavior.opaque,
       onTap: ZyraTapFeedback.onTap(
         context,
         working ? null : () => onSelected(index),
       ),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(17)),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            ZyraProfilePhotoFrame(child: _retainedPhotoImage(photo)),
-            if (selected)
-              Positioned(
-                right: 7,
-                bottom: 7,
-                child: Container(
-                  width: 24,
-                  height: 24,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: ZyraColors.journeyGold,
+      child: Center(
+        child: AspectRatio(
+          aspectRatio: zyraProfilePhotoAspectRatio,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 180),
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(17)),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                _retainedPhotoImage(photo),
+                if (selected)
+                  Positioned(
+                    right: 7,
+                    bottom: 7,
+                    child: Container(
+                      width: 24,
+                      height: 24,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: ZyraColors.journeyGold,
+                      ),
+                      child: const Icon(
+                        Icons.check_rounded,
+                        size: 16,
+                        color: ZyraColors.luxuryDarkPurple,
+                      ),
+                    ),
                   ),
-                  child: const Icon(
-                    Icons.check_rounded,
-                    size: 16,
-                    color: ZyraColors.luxuryDarkPurple,
-                  ),
-                ),
-              ),
-            Positioned.fill(
-              child: IgnorePointer(
-                child: DecoratedBox(
-                  key: ValueKey('compact-photo-border-$index'),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(17),
-                    border: Border.all(
-                      color: index == 0
-                          ? ZyraColors.journeyGold
-                          : ZyraColors.surfaceBorder,
-                      width: index == 0 ? 1.8 : 0.7,
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: DecoratedBox(
+                      key: ValueKey('compact-photo-border-$index'),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(17),
+                        border: Border.all(
+                          color: index == 0
+                              ? ZyraColors.journeyGold
+                              : ZyraColors.surfaceBorder,
+                          width: index == 0 ? 1.8 : 0.7,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     ),

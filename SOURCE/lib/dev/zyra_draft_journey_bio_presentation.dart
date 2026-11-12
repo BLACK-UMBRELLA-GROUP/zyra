@@ -5,7 +5,6 @@ import '../data/zyra_journey_life_snapshot.dart';
 import '../models/journey_bio.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
-import '../widgets/zyra_profile_photo_frame.dart';
 import '../widgets/zyra_state_widgets.dart';
 import 'zyra_view_request_draft_model.dart' show draftProfiles;
 
@@ -268,13 +267,7 @@ class _ProfileHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ExcludeSemantics(
-          child: SizedBox(
-            width: 88,
-            height: 108,
-            child: portrait == null
-                ? portraitSurface
-                : ZyraProfilePhotoFrame(child: portraitSurface),
-          ),
+          child: SizedBox(width: 88, height: 108, child: portraitSurface),
         ),
         const SizedBox(width: 18),
         Expanded(

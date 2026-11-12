@@ -683,10 +683,7 @@ void main() {
         final page = tester.widget<PageView>(_pager()).controller!.page!;
         expect(page, inExclusiveRange(1.25, 1.75));
         final aperture = tester.getRect(
-          find.descendant(
-            of: _key('concept_browse_photo_${_person.id}_1'),
-            matching: find.byType(AspectRatio),
-          ),
+          _key('concept_browse_photo_${_person.id}_1'),
         );
         final seam = aperture.left;
         final boundary = tester.renderObject<RenderRepaintBoundary>(

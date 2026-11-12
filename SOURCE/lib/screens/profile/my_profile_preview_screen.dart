@@ -307,13 +307,12 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
         ),
       );
     }
-    final fit = width.isInfinite ? BoxFit.contain : BoxFit.cover;
     if (_previewMode && photo.startsWith('assets/')) {
       return Image.asset(
         photo,
         width: width,
         height: height,
-        fit: fit,
+        fit: BoxFit.cover,
         alignment: alignment,
         errorBuilder: (_, _, _) => SizedBox(
           width: width,
@@ -326,7 +325,7 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
       photo,
       width: width,
       height: height,
-      fit: fit,
+      fit: BoxFit.cover,
       alignment: alignment,
     );
   }

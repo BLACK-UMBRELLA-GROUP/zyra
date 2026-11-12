@@ -29,7 +29,6 @@ import 'package:zyra/services/zyra_wali_link_service.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_profile_image.dart';
-import 'package:zyra/widgets/zyra_profile_photo_frame.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -278,7 +277,7 @@ void main() {
   });
 
   for (final viewport in [const Size(430, 932), const Size(375, 667)]) {
-    browseTest('ordinary Profiles paints all legacy photo edges at $viewport', (
+    browseTest('legacy 3:4 fills ordinary Profiles at $viewport', (
       tester,
     ) async {
       tester.view.physicalSize = viewport;
@@ -286,40 +285,40 @@ void main() {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
       const urls = [
-        'https://fixture.invalid/legacy-wide-first.jpg',
-        'https://fixture.invalid/legacy-wide-second.jpg',
+        'https://fixture.invalid/legacy-portrait-first.jpg',
+        'https://fixture.invalid/legacy-portrait-second.jpg',
       ];
-      final source = img.Image(width: 120, height: 80);
+      final source = img.Image(width: 90, height: 120);
       img.fillRect(
         source,
         x1: 0,
         y1: 0,
-        x2: 119,
+        x2: 89,
         y2: 9,
         color: img.ColorRgb8(255, 0, 0),
       );
       img.fillRect(
         source,
         x1: 0,
-        y1: 70,
-        x2: 119,
-        y2: 79,
+        y1: 110,
+        x2: 89,
+        y2: 119,
         color: img.ColorRgb8(0, 0, 255),
       );
       img.fillRect(
         source,
         x1: 0,
         y1: 10,
-        x2: 9,
-        y2: 69,
+        x2: 29,
+        y2: 109,
         color: img.ColorRgb8(0, 255, 0),
       );
       img.fillRect(
         source,
-        x1: 110,
+        x1: 60,
         y1: 10,
-        x2: 119,
-        y2: 69,
+        x2: 89,
+        y2: 109,
         color: img.ColorRgb8(255, 255, 255),
       );
 
@@ -367,22 +366,17 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      final photo = find.byType(ZyraProfilePhotoFrame);
-      final raw = find.descendant(of: photo, matching: find.byType(RawImage));
-      final aperture = tester.getRect(raw);
-      expect(aperture.size.aspectRatio, closeTo(3 / 4, .000001));
-      expect(tester.widget<RawImage>(raw).fit, BoxFit.contain);
-      final paintedSize = applyBoxFit(
-        BoxFit.contain,
-        const Size(120, 80),
-        aperture.size,
-      ).destination;
-      final painted = Rect.fromCenter(
-        center: aperture.center,
-        width: paintedSize.width,
-        height: paintedSize.height,
+      final profileImage = find.byWidgetPredicate(
+        (widget) => widget is ZyraProfileImage && urls.contains(widget.photo),
       );
+      final raw = find.descendant(
+        of: profileImage,
+        matching: find.byType(RawImage),
+      );
+      final painted = tester.getRect(raw);
       final boundaryFinder = find.byKey(boundaryKey);
+      expect(painted, tester.getRect(boundaryFinder));
+      expect(tester.widget<RawImage>(raw).fit, BoxFit.cover);
       final origin = tester.getTopLeft(boundaryFinder);
       final boundary = tester.renderObject<RenderRepaintBoundary>(
         boundaryFinder,
@@ -416,22 +410,18 @@ void main() {
       });
       // Browse paints its original gradients over the photo.
       expect(edges!.top[0], greaterThan(edges.top[2] + 100));
-      expect(edges.bottom[2], greaterThan(edges.bottom[0] + 100));
+      expect(edges.bottom[2], greaterThan(edges.bottom[0] + 50));
       expect(edges.left[1], greaterThan(edges.left[0] + 100));
       expect(edges.right[0], greaterThan(edges.center[0] + 100));
       expect(edges.right[1], greaterThan(edges.center[1] + 100));
       expect(edges.right[2], greaterThan(edges.center[2] + 100));
 
-      final profileImage = find.descendant(
-        of: photo,
-        matching: find.byType(ZyraProfileImage),
-      );
       expect(tester.widget<ZyraProfileImage>(profileImage).photo, urls[0]);
-      await tester.tapAt(Offset(aperture.width * .75, aperture.top - 12));
+      await tester.tapAt(Offset(painted.width * .75, painted.center.dy));
       await tester.pumpAndSettle();
       expect(tester.widget<ZyraProfileImage>(profileImage).photo, urls[1]);
       expect(tester.takeException(), isNull);
-      debugPrint('Ordinary Profiles aperture at $viewport: ${aperture.size}');
+      debugPrint('Ordinary Profiles aperture at $viewport: ${painted.size}');
     });
   }
 

@@ -8,6 +8,7 @@ import 'package:zyra/dev/zyra_browse_photo_renderer.dart';
 import 'package:zyra/dev/zyra_draft_journey_bio_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/models/seeker_profile.dart';
+import 'package:zyra/models/zyra_profile_photo_geometry.dart';
 import 'package:zyra/screens/profile/edit_photos_screen.dart';
 import 'package:zyra/screens/profile/my_profile_preview_screen.dart';
 import 'package:zyra/screens/profile/photo_crop_review_screen.dart';
@@ -54,9 +55,9 @@ Future<void> _mount(WidgetTester tester, Size viewport, Widget home) async {
 
 Future<Size> _expectFullPhoto(
   WidgetTester tester,
-  Key key,
-  double cropRatio,
-) async {
+  Key key, {
+  Key? boundsKey,
+}) async {
   final page = find.byKey(key);
   final imageFinder = find.descendant(of: page, matching: find.byType(Image));
   final image = tester.widget<Image>(imageFinder);
@@ -72,19 +73,22 @@ Future<Size> _expectFullPhoto(
   await tester.pumpAndSettle();
   final rawFinder = find.descendant(of: page, matching: find.byType(RawImage));
   final raw = tester.widget<RawImage>(rawFinder);
-  final aperture = tester.getSize(rawFinder);
-  expect(aperture.aspectRatio, closeTo(cropRatio, .000001));
-  expect(raw.fit, BoxFit.contain);
+  final aperture = tester.getRect(rawFinder);
+  expect(
+    aperture,
+    tester.getRect(boundsKey == null ? page : find.byKey(boundsKey)),
+  );
+  expect(raw.fit, BoxFit.cover);
   final source = Size(
     raw.image!.width.toDouble(),
     raw.image!.height.toDouble(),
   );
-  final fitted = applyBoxFit(raw.fit!, source, aperture);
-  expect(fitted.source, const Size(90, 120));
+  expect(source, const Size(90, 120));
+  final fitted = applyBoxFit(raw.fit!, source, aperture.size);
   expect(fitted.destination.width, closeTo(aperture.width, .000001));
   expect(fitted.destination.height, closeTo(aperture.height, .000001));
   expect(tester.takeException(), isNull);
-  return aperture;
+  return aperture.size;
 }
 
 void main() {
@@ -95,7 +99,7 @@ void main() {
 
   for (final viewport in [const Size(430, 932), const Size(375, 667)]) {
     testWidgets(
-      '${viewport.width.toInt()}×${viewport.height.toInt()} photo apertures match the crop',
+      '${viewport.width.toInt()}×${viewport.height.toInt()} legacy 3:4 photos cover the full photo bounds',
       (tester) async {
         tester.view.physicalSize = viewport;
         tester.view.devicePixelRatio = 1;
@@ -115,7 +119,7 @@ void main() {
         final crop = tester.getSize(
           find.byKey(const ValueKey('photo-crop-canvas')),
         );
-        expect(crop.aspectRatio, closeTo(.75, .000001));
+        expect(crop.aspectRatio, closeTo(zyraProfilePhotoAspectRatio, .000001));
 
         final renderer = ZyraBrowseLocalPhotoRenderer();
         addTearDown(renderer.dispose);
@@ -145,10 +149,26 @@ void main() {
             ),
           ),
         );
-        final profiles = await _expectFullPhoto(
-          tester,
-          _galleryPage,
-          crop.aspectRatio,
+        final profiles = await _expectFullPhoto(tester, _galleryPage);
+        expect(
+          profiles.aspectRatio,
+          closeTo(
+            viewport.width == 430
+                ? crop.aspectRatio
+                : zyraCompactProfilePhotoAspectRatio,
+            .000001,
+          ),
+        );
+        expect(
+          tester
+              .widget<Image>(
+                find.descendant(
+                  of: find.byKey(_galleryPage),
+                  matching: find.byType(Image),
+                ),
+              )
+              .alignment,
+          Alignment.center,
         );
 
         await _mount(
@@ -170,11 +190,7 @@ void main() {
         );
         await tester.tapAt(Offset(previewTap.right - 36, previewTap.center.dy));
         await tester.pumpAndSettle();
-        final preview = await _expectFullPhoto(
-          tester,
-          _galleryPage,
-          crop.aspectRatio,
-        );
+        final preview = await _expectFullPhoto(tester, _galleryPage);
 
         await _mount(
           tester,
@@ -194,7 +210,6 @@ void main() {
                   width: 104,
                   height: 132,
                   alignment: Alignment.topCenter,
-                  fit: BoxFit.contain,
                 ),
               ),
             ),
@@ -203,7 +218,6 @@ void main() {
         final journeyBio = await _expectFullPhoto(
           tester,
           const ValueKey('draft_journey_bio_portrait_$_id'),
-          crop.aspectRatio,
         );
 
         await _mount(
@@ -225,22 +239,22 @@ void main() {
         final large = await _expectFullPhoto(
           tester,
           const ValueKey('photo-large-0'),
-          crop.aspectRatio,
         );
         await tester.tap(find.byKey(const ValueKey('photos-compact-toggle')));
         await tester.pumpAndSettle();
         final grid = await _expectFullPhoto(
           tester,
           const ValueKey('compact-photo-0'),
-          crop.aspectRatio,
+          boundsKey: const ValueKey('compact-photo-border-0'),
         );
+        expect(grid.aspectRatio, closeTo(crop.aspectRatio, .000001));
         final tile = tester.getRect(
           find.byKey(const ValueKey('compact-photo-1')),
         );
         final add = tester.getRect(find.byKey(const ValueKey('compact-add-2')));
         expect(tile.size, add.size);
         expect(tile.width, greaterThan(grid.width));
-        // The blank margin beside the framed photo still selects the tile.
+        // The original grid slot still responds to taps beside the narrower tile.
         await tester.tapAt(Offset(tile.left + 4, tile.center.dy));
         await tester.pumpAndSettle();
         expect(find.byKey(const ValueKey('make-main-1')), findsOneWidget);

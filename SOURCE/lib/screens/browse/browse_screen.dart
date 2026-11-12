@@ -87,7 +87,6 @@
 
 import 'dart:async';
 import '../../widgets/zyra_profile_image.dart';
-import '../../widgets/zyra_profile_photo_frame.dart';
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, TargetPlatform;
 import 'package:flutter/material.dart';
@@ -1799,16 +1798,11 @@ class _BrowseScreenState extends State<BrowseScreen> {
                           // The policy fix addresses the cause of (1); this
                           // addresses the consequence of both, permanently. A
                           // missing photo is a placeholder, never a blank screen.
-                          if (photo.isEmpty)
-                            const ZyraProfileImage('', showLoader: true)
-                          else
-                            ZyraProfilePhotoFrame(
-                              child: ZyraProfileImage(
-                                photo,
-                                fit: BoxFit.contain,
-                                showLoader: true,
-                              ),
-                            ),
+                          ZyraProfileImage(
+                            photo,
+                            fit: BoxFit.cover,
+                            showLoader: true,
+                          ),
                           // Top gradient — status bar / glass button legibility.
                           Container(
                             alignment: Alignment.topCenter,

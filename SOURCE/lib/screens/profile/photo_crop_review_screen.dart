@@ -410,8 +410,11 @@ class _CropGuide extends StatelessWidget {
   const _CropGuide();
 
   @override
-  Widget build(BuildContext context) =>
-      CustomPaint(painter: _CropGuidePainter(), child: const SizedBox.expand());
+  Widget build(BuildContext context) => CustomPaint(
+    key: const ValueKey('photo-crop-guide'),
+    painter: _CropGuidePainter(),
+    child: const SizedBox.expand(),
+  );
 }
 
 class _CropGuidePainter extends CustomPainter {
@@ -431,6 +434,14 @@ class _CropGuidePainter extends CustomPainter {
         Offset(size.width, size.height * fraction),
         grid,
       );
+    }
+    final safeHeight = size.width / zyraCompactProfilePhotoAspectRatio;
+    final safeTop = (size.height - safeHeight) / 2;
+    final guide = Paint()
+      ..color = Colors.white.withValues(alpha: 0.24)
+      ..strokeWidth = 1;
+    for (final y in [safeTop, safeTop + safeHeight]) {
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), guide);
     }
   }
 

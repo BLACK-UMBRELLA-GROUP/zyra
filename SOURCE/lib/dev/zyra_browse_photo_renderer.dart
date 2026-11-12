@@ -63,7 +63,6 @@ class ZyraBrowseLocalPhotoRenderer {
     required double width,
     required double height,
     required Alignment alignment,
-    BoxFit? fit,
   }) {
     final photo = _disposed ? null : _photos[source];
     if (photo == null || !photo.ready) {
@@ -75,7 +74,7 @@ class ZyraBrowseLocalPhotoRenderer {
       image: photo.provider,
       width: width,
       height: height,
-      fit: fit ?? (width.isInfinite ? BoxFit.contain : BoxFit.cover),
+      fit: BoxFit.cover,
       alignment: alignment,
       gaplessPlayback: false,
       errorBuilder: (_, _, _) => _empty(width, height, alignment),

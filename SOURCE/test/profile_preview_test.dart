@@ -280,6 +280,15 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(tester.widget<PageView>(pager).controller!.page, closeTo(1, .01));
+      final photoPage = find.byKey(
+        const ValueKey('concept_browse_photo_my-profile-preview_0'),
+      );
+      final photo = find.descendant(
+        of: photoPage,
+        matching: find.byType(Image),
+      );
+      expect(tester.getRect(photo), tester.getRect(photoPage));
+      expect(tester.widget<Image>(photo).fit, BoxFit.cover);
       expect(
         find.byWidgetPredicate(
           (widget) =>

@@ -7907,7 +7907,6 @@ class _ZyraOneJourneyConceptShellState
         width: 104,
         height: 132,
         alignment: Alignment.topCenter,
-        fit: BoxFit.contain,
       ),
     );
   }

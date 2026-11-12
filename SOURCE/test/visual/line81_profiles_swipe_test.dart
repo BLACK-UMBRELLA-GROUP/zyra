@@ -6,6 +6,7 @@ import 'package:zyra/dev/zyra_browse_filter.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'package:zyra/models/zyra_profile_photo_geometry.dart';
 import 'package:zyra/screens/subscription/zyra_one_upgrade_page.dart';
 import 'package:zyra/widgets/floating_nav_bar.dart';
 
@@ -110,6 +111,19 @@ void main() {
         }
         final retainedRequest = tester.widget<InkWell>(_request(id)).onTap!;
         await harness.tap('concept_browse_dot_target_1');
+        final photo = tester.getRect(
+          harness.key('concept_browse_photo_${id}_0'),
+        );
+        expect(photo, card);
+        expect(
+          photo.size.aspectRatio,
+          closeTo(
+            size.width == 430
+                ? zyraProfilePhotoAspectRatio
+                : zyraCompactProfilePhotoAspectRatio,
+            .000001,
+          ),
+        );
         expect(_request(id).hitTestable(), findsNothing);
         retainedRequest();
         await harness.flush();
