@@ -25,9 +25,25 @@
     "logSha256": "ce3d627e0f4690c65e3bbe09dbee226f0950a255ff77e5b25979d2cb53af5570"
   },
   "delivery": {
-    "status": "awaiting_line_86_device_go",
-    "installExecuted": false,
-    "installed": false,
-    "opened": false
+    "status": "verified",
+    "announcedExactCandidate": true,
+    "authorization": "Founder said \u201cgo\u201d after the exact line 86 offer.",
+    "transport": "localNetwork",
+    "readOnlyLockCheckConfirmed": true,
+    "installExecuted": true,
+    "installed": true,
+    "opened": true,
+    "postVerified": true,
+    "installationAttempts": 1,
+    "adapterSha256": "5d0249ff72285a7418fa16c08adb5adc44fba6afa410b794b6a64ded98abbbb1",
+    "wifiPhoneHelperSha256": "e77eee2294a0a2a7d1ce41f20fd7a366dd6c1bb547b211f1886705375ca7e3de",
+    "offlineVerificationSha256": "bca36af02bb3710a98cae7d6574c493ffeef4f91e5e264ffb61991f5e122922f",
+    "independentReviewPassed": true,
+    "focusedRouteTestsPassed": 16,
+    "originalPlanSourceSealAndBuildReceiptMatch": true,
+    "lastProtectedStage": "complete",
+    "deliveryReceiptSha256": "b0881968ed5c33ea577d81fe143ccd9a9a94f58aa3d6f6a42a07d55929101021",
+    "verifiedAt": "2026-11-12T08:32:20.891571+00:00",
+    "firstFrameStatus": "needs-visual-confirmation"
   }
 }
