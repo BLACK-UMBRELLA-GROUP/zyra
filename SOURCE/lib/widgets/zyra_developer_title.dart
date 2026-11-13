@@ -350,7 +350,7 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
     _opening = true;
     final presentation = _presentationRevision;
     try {
-      if (!await access.verify() ||
+      if (!await access.refreshForTitle() ||
           !mounted ||
           !context.mounted ||
           presentation != _presentationRevision ||

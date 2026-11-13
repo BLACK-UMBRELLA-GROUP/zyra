@@ -67,8 +67,10 @@ flutter run --profile --flavor production --dart-define=ZYRA_INTERNAL_FOUNDER_AC
 
 The signed-in ZYRA Founder can tap the page heading in the ordinary Seeker
 app to open **Developer**. The panel verifies the current session against
-the existing Founder account, project and server claim. The panel shows the
-verified Seeker plan and caps sample Journey places accordingly.
+the existing Founder account, project and server claim. When the current
+session remains authorized, the sample view stays visible while the heading
+tap checks access. The sheet opens after the check succeeds and shows the
+verified Seeker plan and its sample Journey capacity.
 
 The panel loads local sample Journeys, requests, history and Introductions
 for that account. App Lock and a temporary verification failure hide the

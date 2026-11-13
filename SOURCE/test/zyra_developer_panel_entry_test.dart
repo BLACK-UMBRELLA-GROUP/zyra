@@ -368,7 +368,7 @@ void main() {
     await tester.tapAt(tester.getCenter(_key('floating-nav-item-4')));
     await settle(tester);
     expect(find.text('My ZYRA').hitTestable(), findsNothing);
-    expect(_key('dev_page_title'), findsNothing);
+    expect(_key('dev_panel'), findsNothing);
     await tester.tapAt(tester.getCenter(_key('floating-nav-item-2')));
     await settle(tester);
     expect(find.text('My ZYRA'), findsOneWidget);
@@ -376,6 +376,9 @@ void main() {
     await settle(tester);
     expect(_key('dev_panel'), findsNothing);
     expect(_key('dev_page_title'), findsOneWidget);
+    await tap(tester, find.text('My ZYRA'));
+    expect(_key('dev_panel'), findsOneWidget);
+    await tap(tester, _key('dev_done'));
     await dispose(tester);
   });
 
@@ -421,6 +424,76 @@ void main() {
 
   final samples = ZyraDeveloperSamples.instance;
 
+  Future<void> openSampleRequests(WidgetTester tester) async {
+    final dashboardLink = find.text('Journey requests');
+    await tester.scrollUntilVisible(
+      dashboardLink,
+      160,
+      scrollable: find
+          .descendant(
+            of: _key('my-zyra-quiet-scroll-0'),
+            matching: find.byType(Scrollable),
+          )
+          .first,
+    );
+    await tap(tester, dashboardLink);
+  }
+
+  for (final requests in [true, false]) {
+    testWidgets(
+      'sample ${requests ? 'Journey requests' : 'Journey'} title opens after a delayed refresh',
+      (tester) async {
+        await mount(tester);
+        await tap(tester, find.text('My ZYRA'));
+        await tap(tester, _key('dev_active_1'));
+        await tap(tester, _key('dev_received_1'));
+        await tap(tester, _key('dev_done'));
+
+        if (requests) {
+          await openSampleRequests(tester);
+        } else {
+          await tester.tapAt(tester.getCenter(_key('floating-nav-item-1')));
+          await settle(tester);
+          await tap(tester, find.text('Continue Journey'));
+        }
+
+        final title = find.text(
+          requests
+              ? 'Journey requests'
+              : 'Journey with ${samples.activeRows!.single.person.firstName}',
+        );
+        final sampleContent = requests
+            ? _key('sample-request-true-draft-amira-header')
+            : find.text('End Journey');
+        expect(title, findsOneWidget);
+        expect(sampleContent, findsOneWidget);
+
+        final delayed = Completer<void>();
+        respondToRefresh = (version) async {
+          await delayed.future;
+          return _session(version: version);
+        };
+        final before = refreshCalls;
+        // tap() pumps frames while the mock response is still outstanding.
+        await tap(tester, title);
+        expect(refreshCalls, before + 1);
+        expect(_key('dev_panel'), findsNothing);
+        expect(title, findsOneWidget);
+        expect(sampleContent, findsOneWidget);
+
+        delayed.complete();
+        await settle(tester);
+        expect(_key('dev_panel'), findsOneWidget);
+        await tap(tester, _key('dev_done'));
+        expect(title, findsOneWidget);
+        expect(sampleContent, findsOneWidget);
+        expect(samples.received, 1);
+        expect(samples.active, 1);
+        await dispose(tester);
+      },
+    );
+  }
+
   void resume(WidgetTester tester) {
     final binding = tester.binding;
     if (binding.lifecycleState == AppLifecycleState.paused) {
@@ -432,6 +505,66 @@ void main() {
 
   void suspend(WidgetTester tester) {
     tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+  }
+
+  for (final expires in [false, true]) {
+    testWidgets(
+      expires
+          ? 'sample requests lose access when the old proof expires during refresh'
+          : 'sample requests lose access on title refresh timeout until explicit reproof',
+      (tester) async {
+        await mount(tester);
+        await tap(tester, find.text('My ZYRA'));
+        await tap(tester, _key('dev_received_1'));
+        await tap(tester, _key('dev_done'));
+        await openSampleRequests(tester);
+
+        final title = find.text('Journey requests');
+        final row = _key('sample-request-true-draft-amira-header');
+        if (expires) {
+          respondToRefresh = (version) async {
+            // The SDK counts a token as expired 30 seconds before its exp.
+            final deadline = DateTime.now().add(const Duration(seconds: 37));
+            return _session(
+              version: version,
+              expiry: deadline.millisecondsSinceEpoch ~/ 1000,
+            );
+          };
+          await tap(tester, title);
+          await tap(tester, _key('dev_done'));
+        }
+
+        final delayed = Completer<void>();
+        respondToRefresh = (version) async {
+          await delayed.future;
+          return _session(version: version);
+        };
+        final before = refreshCalls;
+        await tap(tester, title);
+        expect(refreshCalls, before + 1);
+        expect(row, findsOneWidget);
+
+        // The expiry case reaches the old proof's timer before the timeout.
+        await tester.pump(Duration(seconds: expires ? 8 : 10));
+        expect(row, findsNothing);
+        expect(samples.isAuthorized, isFalse);
+        expect(_key('dev_panel'), findsNothing);
+
+        delayed.complete();
+        await settle(tester);
+        expect(row, findsNothing);
+        expect(_key('dev_panel'), findsNothing);
+        expect(samples.isAuthorized, isFalse);
+
+        suspend(tester);
+        resume(tester);
+        await settle(tester);
+        expect(refreshCalls, before + 2);
+        expect(row, findsOneWidget);
+        expect(_key('dev_panel'), findsNothing);
+        await dispose(tester);
+      },
+    );
   }
 
   Future<void> lock(WidgetTester tester) async {

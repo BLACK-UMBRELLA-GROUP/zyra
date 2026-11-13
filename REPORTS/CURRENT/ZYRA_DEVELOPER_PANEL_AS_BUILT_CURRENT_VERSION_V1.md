@@ -36,14 +36,19 @@ or discard choices; it cannot grant access or route the protected Founder
 preview. The panel's own refresh responses and transient errors are kept
 separate from legacy authorization routing.
 
-Locking the app, leaving the foreground, or starting a fresh check
-withdraws sample presentation and retires outstanding action leases.
-Only the Developer sheet route owned by that host is removed. A successful
-fresh check of the same account and session restores the retained choices.
-A transient failure keeps them hidden; a token event alone cannot restore
-them. App sign-out or account replacement clears choices synchronously
-through the account memory reset. SDK session replacement and a fresh
-server claim denial discard choices even while the Seeker host is absent.
+Tapping an already available heading keeps the sample view mounted while
+the same account and session retain their current, unexpired proof. During
+the check, the SDK treats the original session as expired 30 seconds before
+the token expires. The Developer sheet opens only after the refresh succeeds
+and the tapped heading is still current. Locking the app, leaving the
+foreground, proof expiry, or a failed or timed-out refresh withdraws sample
+presentation and retires outstanding action leases. The host removes its
+own Developer sheet route.
+A successful fresh check of the same account and session restores retained
+choices. A token event alone cannot restore them after suspension. App
+sign-out or account replacement clears choices synchronously through the
+account memory reset. SDK session replacement and a fresh server claim
+denial discard choices even while the Seeker host is absent.
 
 ## Local sample data
 
@@ -83,6 +88,10 @@ and `dev/zyra_one_journey_options.dart` and
 wait thresholds. Both READMEs and the mocked entry and sample suites were
 updated.
 
+The title refresh correction updates `services/zyra_developer_access.dart`
+and `widgets/zyra_developer_title.dart`. Its widget regressions live in
+`SOURCE/test/zyra_developer_panel_entry_test.dart`.
+
 ## Verification and ownership
 
 Original delivery (Flutter 3.44.2): tests used a mocked signed-in Seeker and synthetic Supabase
@@ -117,6 +126,26 @@ session. A second test run passed 257 across the following suites:
 Suites are Dart files in `SOURCE/test` run with `flutter test --no-pub`.
 An independent read-only Codex review checked the proof and lease
 boundaries, real-versus-sample row sources, and Line 93 / Line 95 parity.
+
+Title refresh correction, 13 November 2026: both sample-title widget tests
+reproduced the lost tap against `c0869e6` with the mock Auth response held
+across a rendered frame. `flutter test --no-pub
+test/zyra_developer_panel_entry_test.dart` passed all 27 tests after the fix.
+The four added cases cover the actual sample Journey requests and Journey
+headings, the 10-second timeout, and the original proof reaching the SDK
+expiry cutoff during the wait. A late response leaves access suspended.
+A fresh explicit verification of the same session restores the samples.
+`flutter analyze --no-pub` reported no issues. A focused
+`flutter test --no-pub` run passed 115 tests across these 12 suites:
+
+- `zyra_developer_panel_entry_test`, `zyra_developer_samples_test`,
+  `zyra_developer_panel_test`, `zyra_developer_access_test`,
+  `zyra_developer_access_concurrency_test`, `zyra_developer_route_gate_test`.
+- `zyra_internal_founder_policy_test`, `developer_controls_release_safety_test`,
+  `global_hidden_dev_controls_test`, `zyra_app_lock_lifecycle_test`,
+  `auth_gate_lifetime_test`, `auth_gate_recovery_test`.
+
+Independent Codex review checked the title refresh proof and expiry path.
 
 No migration or server change. Fable and the ZYRA design chat retain their
 handover review. Protected iPhone verification was outside this follow-up.

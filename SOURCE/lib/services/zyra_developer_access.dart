@@ -440,9 +440,12 @@ class ZyraDeveloperAccess {
 class ZyraDeveloperPanelAccess extends ChangeNotifier {
   static const _founderId = ZyraInternalFounderPolicy.approvedFounderUserId;
   static const _project = ZyraInternalFounderPolicy.approvedSupabaseUrl;
+  // GoTrue 2.26 Session.isExpired treats the final 30 seconds as expired.
+  static const _titleProofExpiryBuffer = Duration(seconds: 30);
 
   ({String sessionId, int generation})? _owner;
   bool _verified = false;
+  Session? _titleRefreshProof;
   Future<AuthResponse>? _sdkRefresh;
   final _panelRefreshResults = Expando<bool>();
   Object? _lastRefreshError;
@@ -542,6 +545,7 @@ class ZyraDeveloperPanelAccess extends ChangeNotifier {
     final current = _currentSession;
     final owner = _owner;
     if (!_verified ||
+        _titleRefreshProof?.isExpired == true ||
         owner == null ||
         !_currentOwner(owner) ||
         _lifetime(current) != owner.sessionId ||
@@ -553,7 +557,14 @@ class ZyraDeveloperPanelAccess extends ChangeNotifier {
     return email == null || email.trim().isEmpty ? null : email;
   }
 
-  Future<bool> verify() {
+  Future<bool> verify() => _verify();
+
+  /// A title that already passed admission can keep its sample route mounted
+  /// while its current proof is valid. Opening the sheet still requires success.
+  Future<bool> refreshForTitle() =>
+      email == null ? Future.value(false) : _verify(keepCurrentProof: true);
+
+  Future<bool> _verify({bool keepCurrentProof = false}) {
     observeWhileLocked();
     final active = _refresh;
     if (active != null) return active;
@@ -603,13 +614,20 @@ class ZyraDeveloperPanelAccess extends ChangeNotifier {
       return Future.value(false);
     }
     if (_owner != null && _owner != owner) _discard();
-    suspend();
+    if (keepCurrentProof && _owner == owner && email != null) {
+      _titleRefreshProof = before;
+      ++_revision;
+      _watchExpiry(before!, buffer: _titleProofExpiryBuffer);
+    } else {
+      suspend();
+    }
     final revision = _revision;
     final future = Future.microtask(() async {
       try {
         if (_disposed ||
             _revision != revision ||
             !_currentOwner(owner) ||
+            _titleRefreshProof?.isExpired == true ||
             !identical(before, _currentSession)) {
           return false;
         }
@@ -645,7 +663,8 @@ class ZyraDeveloperPanelAccess extends ChangeNotifier {
           _discard();
           return false;
         }
-        if (!identical(refreshed, current) ||
+        if (_titleRefreshProof?.isExpired == true ||
+            !identical(refreshed, current) ||
             current!.isExpired ||
             (current.accessToken == before.accessToken &&
                 current.refreshToken == before.refreshToken) ||
@@ -654,17 +673,22 @@ class ZyraDeveloperPanelAccess extends ChangeNotifier {
         }
         _owner = owner;
         _verified = true;
+        _titleRefreshProof = null;
         _watchExpiry(current);
         notifyListeners();
         return true;
       } catch (_) {
+        final current = _currentSession;
         if (!_disposed &&
             _revision == revision &&
             (!_currentOwner(owner) ||
-                _lifetime(_currentSession) != sessionId)) {
+                _lifetime(current) != sessionId ||
+                !_hasClaim(current))) {
           _discard();
         }
         return false;
+      } finally {
+        if (_revision == revision && _titleRefreshProof != null) suspend();
       }
     });
     _refresh = future;
@@ -693,7 +717,9 @@ class ZyraDeveloperPanelAccess extends ChangeNotifier {
         if (_verified) {
           if (email == null) {
             suspend();
-          } else {
+          } else if (_titleRefreshProof == null) {
+            // A title refresh extends the lease only after its response has
+            // passed the explicit verification above.
             _watchExpiry(_currentSession!);
           }
         }
@@ -704,21 +730,22 @@ class ZyraDeveloperPanelAccess extends ChangeNotifier {
     }
   }
 
-  void _watchExpiry(Session session) {
+  void _watchExpiry(
+    Session session, {
+    Duration buffer = const Duration(seconds: 10),
+  }) {
     _expiry?.cancel();
     final expiry = DateTime.fromMillisecondsSinceEpoch(
       session.expiresAt! * 1000,
     );
-    _expiry = Timer(
-      expiry.difference(DateTime.now()) - const Duration(seconds: 10),
-      suspend,
-    );
+    _expiry = Timer(expiry.difference(DateTime.now()) - buffer, suspend);
   }
 
   void suspend() {
     _revision++;
     final hadProof = _verified;
     _verified = false;
+    _titleRefreshProof = null;
     _refresh = null;
     _expiry?.cancel();
     _expiry = null;
