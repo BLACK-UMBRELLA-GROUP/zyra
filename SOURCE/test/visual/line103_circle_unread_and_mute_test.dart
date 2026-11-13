@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_circle_topics_presentation.dart';
 import 'package:zyra/dev/zyra_conversation_unread_badge.dart';
+import 'package:zyra/dev/zyra_guardian_circle_preview.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/screens/wali/family_messaging_screens.dart';
@@ -139,6 +140,169 @@ void main() {
     ),
   );
   tearDownAll(baselineTearDown);
+
+  testWidgets(
+    'an ended attempt keeps its chat and a restart gets a new chat',
+    (t) async {
+      addTearDown(t.view.resetPhysicalSize);
+      addTearDown(t.view.resetDevicePixelRatio);
+      DateTime clock() => DateTime.utc(2026, 11, 12, 13);
+      final model = ViewRequestDraftModel(capacity: 3, clock: clock)
+        ..seedJourneys(1);
+      final person = draftProfiles.firstWhere(
+        (p) => model.stateFor(p.id) == DraftJourneyState.active,
+      );
+      final chatId = model.circleChatIdFor(person.id)!;
+      final current = ZyraFamilyMessageContext(
+        referenceId: person.id,
+        firstName: person.firstName,
+        kind: ZyraFamilyMessageContextKind.active,
+      );
+      final arrivals = <ZyraFamilyMessage>[];
+      final h = BaselineHarness(
+        t,
+        group: 'line103_lifecycle',
+        circleArrivalsFor: (seeker, viewer) => arrivals,
+      );
+      final scenario = _Scenario(false, h);
+      arrivals.add(scenario.delivery('original', topic: current));
+      await h.mount(
+        model: model,
+        tab: 3,
+        pages: const ['guardian_circle'],
+        previewClock: clock,
+      );
+      expect(_topics(t).current.single.id, chatId);
+      await scenario.tap('topic_${person.id}');
+      expect(_topics(t).unreadDividerId, 'original');
+      await t.enterText(find.byType(TextField), 'Keep this with the attempt.');
+      await scenario.tap('send');
+      expect(
+        _topics(t).messages.last.message.body,
+        'Keep this with the attempt.',
+      );
+      await scenario.tap('menu');
+      await scenario.tap('mute_chat');
+      await scenario.tap('done');
+      final saved = h.latest;
+
+      expect(
+        model.end(person.id, mainGuardianId: 'draft-guardian-hassan'),
+        isTrue,
+      );
+      final ended = model.currentEndedAttemptFor(person.id)!;
+      expect(ended.circleChatId, chatId);
+      final fresh = ViewRequestDraftModel(capacity: 3, clock: clock)
+        ..seedJourneys(1);
+      final restarted = ViewRequestDraftModel.fromSnapshot(
+        fresh.snapshot(),
+        earlierAttempts: [ended],
+        clock: clock,
+      );
+      final newId = restarted.circleChatIdFor(person.id)!;
+      expect(newId, isNot(chatId));
+      await h.mount(
+        checkpoint: ZyraPreviewNavigationCheckpoint(
+          guardian: false,
+          model: restarted.snapshot(),
+          tab: 3,
+          pages: const ['guardian_circle'],
+          circleReadMessageKeys: saved.circleReadMessageKeys,
+          circleMuteKeys: saved.circleMuteKeys,
+          circleArrivalChatIds: saved.circleArrivalChatIds,
+          circleSentSequence: saved.circleSentSequence,
+          circleSentMessages: saved.circleSentMessages,
+        ),
+        previewClock: clock,
+      );
+      expect(_topics(t).current.single.id, newId);
+      expect(_topics(t).current.single.muted, isFalse);
+      expect(_topics(t).current.single.unread, 0);
+      final archived = _topics(t).past.singleWhere((tile) => tile.id == chatId);
+      expect(archived.muted, isTrue);
+      expect(archived.unread, 0);
+      await scenario.tap('past');
+      await scenario.tap('past_$chatId');
+      expect(_topics(t).messages.map((item) => item.message.body), [
+        'Circle delivery original',
+        'Keep this with the attempt.',
+      ]);
+      await scenario.addAndRefresh(
+        arrivals,
+        'opened-past',
+        topic: _past(chatId, person.firstName),
+      );
+      expect(
+        h.latest.circleReadMessageKeys.any(
+          (key) => key.startsWith('$chatId:') && key.contains('opened-past'),
+        ),
+        isTrue,
+      );
+      await scenario.back();
+      await h.tap('guardian-family-messages-top');
+      await scenario.tap('past');
+      expect(
+        _topics(t).past.singleWhere((tile) => tile.id == chatId).unread,
+        0,
+      );
+    },
+    variant: TargetPlatformVariant.only(TargetPlatform.iOS),
+  );
+
+  testWidgets(
+    'Circle mute suppresses delivery attention through unmute',
+    (t) async {
+      addTearDown(t.view.resetPhysicalSize);
+      addTearDown(t.view.resetDevicePixelRatio);
+      final arrivals = <ZyraFamilyMessage>[];
+      final h = BaselineHarness(
+        t,
+        group: 'line103_attention',
+        circleArrivalsFor: (seeker, viewer) => arrivals,
+      );
+      final scenario = _Scenario(false, h);
+      await h.mount(
+        tab: 3,
+        pages: const ['guardian_circle'],
+        receivedRequest: false,
+      );
+      await scenario.tap('past');
+      await scenario.tap('menu');
+      await scenario.tap('mute');
+      await scenario.tap('done');
+      await scenario.addAndRefresh(
+        arrivals,
+        'quiet-past',
+        topic: _past(_past0, 'Elif'),
+      );
+      expect(_badge(t, 'past_$_past0')?.count, 1);
+      await scenario.tap('menu');
+      await scenario.tap('mute');
+      await scenario.tap('done');
+      await scenario.back();
+      expect(
+        t
+            .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
+            .items[2]
+            .hasUnread,
+        isFalse,
+      );
+      await scenario.tab(2);
+      Iterable<String> focus() => t
+          .widget<ZyraFocusDashboard>(find.byType(ZyraFocusDashboard))
+          .items
+          .where((item) => item.id.startsWith('circle:'))
+          .map((item) => item.id);
+      expect(focus(), isEmpty);
+      await scenario.addAndRefresh(
+        arrivals,
+        'audible-past',
+        topic: _past(_past0, 'Elif'),
+      );
+      expect(focus().single, contains('audible-past'));
+    },
+    variant: TargetPlatformVariant.only(TargetPlatform.iOS),
+  );
 
   for (final guardian in [false, true]) {
     final role = guardian ? 'Guardian' : 'Seeker';
@@ -300,6 +464,33 @@ void main() {
           previewClock: clock,
         );
         final activeKey = 'topic_${journey.referenceId}';
+        final circleData = t
+            .widget<ZyraGuardianCircleScreen>(
+              find.byType(ZyraGuardianCircleScreen),
+            )
+            .previewData!;
+        final activeId = circleData.currentChatId(journey.referenceId);
+        final list = circleData.listChats(
+          admittedTopics: circleData.admittedTopics,
+          messages: circleData.messages,
+          chatFor: circleData.chatFor,
+          isUnread: circleData.isUnread,
+          isMuted: (id) => id == null,
+        );
+        expect(list[circleData.mainChatId]!.kind, ZyraCircleChatKind.main);
+        expect(list[activeId], (
+          chatId: activeId,
+          kind: ZyraCircleChatKind.journey,
+          state: ZyraCircleChatState.current,
+          otherFirstName: journey.firstName,
+          lastMessageAt: clock(),
+          endedAt: null,
+          unreadCount: 1,
+          muted: false,
+          circleMuted: true,
+          countsTowardTotal: false,
+        ));
+        expect(list[_past0]!.state, ZyraCircleChatState.past);
         expect(_badge(t, 'all'), isNull);
         expect(_badge(t, activeKey)?.count, 1);
         expect(_badge(t, 'past')?.count, 12);

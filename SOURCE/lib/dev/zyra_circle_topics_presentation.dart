@@ -15,6 +15,7 @@ class ZyraCircleTopicTile {
   const ZyraCircleTopicTile({
     required this.id,
     required this.name,
+    this.journeyReferenceId,
     this.stage,
     this.photo,
     this.startedOn,
@@ -26,6 +27,7 @@ class ZyraCircleTopicTile {
 
   final String id;
   final String name;
+  final String? journeyReferenceId;
   final String? stage;
   final String? photo;
   final DateTime? startedOn;
@@ -208,7 +210,7 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
               const SizedBox(width: 6),
               _pill(
                 context,
-                'topic_${tile.id}',
+                'topic_${tile.journeyReferenceId ?? tile.id}',
                 tile.name,
                 () => onTopic(tile.id),
                 selected: !pastSelected && selected?.id == tile.id,

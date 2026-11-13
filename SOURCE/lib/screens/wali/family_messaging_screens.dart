@@ -363,7 +363,9 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
       _pastTopics.every(
         (topic) =>
             topic.kind == ZyraCircleTopicKind.past &&
-            topic.id.startsWith('draft-circle-past-') &&
+            (topic.id.startsWith('draft-circle-past-') ||
+                (_topicsEnabled &&
+                    topic.id.startsWith('draft-circle-attempt-'))) &&
             topic.firstName.trim().isNotEmpty &&
             topic.firstName.length <= 80 &&
             topic.endedOn != null &&
@@ -386,7 +388,9 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
     return [
       for (final item in contexts)
         ZyraCircleDiscussionTopic(
-          id: item.referenceId,
+          id: _topicsEnabled
+              ? _previewData!.currentChatId(item.referenceId)
+              : item.referenceId,
           firstName: item.firstName,
           kind: ZyraCircleTopicKind.current,
         ),
@@ -1054,8 +1058,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
                       message.senderId == hint.senderId &&
                       !message.unreadForMe &&
                       !message.lifecycle &&
-                      _topicFor(message) ==
-                          ZyraCircleDiscussionTopic.general.id,
+                      _topicFor(message) == data.mainChatId,
                 )) {
               _topicUnreadDivider = (
                 messageId: hint.messageId,
@@ -1235,7 +1238,8 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
         )) {
           messageNumber++;
         }
-        final messageId = 'dev-family-$messageNumber';
+        final messageId =
+            _topics?.nextSentId?.call() ?? 'dev-family-$messageNumber';
         if (discussionTopic != null) {
           _discussionMarkers.add(
             _CircleDiscussionMarker(
@@ -1246,21 +1250,22 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
           );
           _discussionMessageTags[messageId] = discussionTopic;
         }
-        _messages = [
-          ..._messages,
-          ZyraFamilyMessage(
-            id: messageId,
-            senderId: senderId,
-            senderFirstName: 'You',
-            senderRoleLabel: _previewData?.participants
-                .where((person) => person.isCurrentUser)
-                .firstOrNull
-                ?.roleLabel,
-            body: text,
-            createdAt: _topicsEnabled ? _topicsNow : DateTime.now(),
-            context: selectedContext,
-          ),
-        ];
+        final message = ZyraFamilyMessage(
+          id: messageId,
+          senderId: senderId,
+          senderFirstName: 'You',
+          senderRoleLabel: _previewData?.participants
+              .where((person) => person.isCurrentUser)
+              .firstOrNull
+              ?.roleLabel,
+          body: text,
+          createdAt: _topicsEnabled ? _topicsNow : DateTime.now(),
+          context: selectedContext,
+        );
+        _messages = [..._messages, message];
+        if (_topicsEnabled) {
+          _topics!.onSent?.call(_topicFor(message), message);
+        }
         _sending = false;
         _topicsEpoch++;
         _selectedContext = null;

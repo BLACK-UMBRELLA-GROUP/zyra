@@ -36,6 +36,9 @@ class ZyraCircleDiscussionTopic {
     kind: ZyraCircleTopicKind.general,
   );
 
+  static String mainChatId(String seekerId) =>
+      seekerId == 'draft-self' ? general.id : '${general.id}-$seekerId';
+
   final String id;
   final String firstName;
   final ZyraCircleTopicKind kind;

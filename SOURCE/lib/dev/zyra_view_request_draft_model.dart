@@ -294,6 +294,7 @@ final class DraftEndedJourneyAttempt {
   const DraftEndedJourneyAttempt._({
     required this.id,
     required this.profileId,
+    required this.circleChatId,
     required this.startedAt,
     required this.endedAt,
     required this.progress,
@@ -301,6 +302,7 @@ final class DraftEndedJourneyAttempt {
   });
 
   final String id, profileId;
+  final String? circleChatId;
   final DateTime? startedAt, endedAt;
   final ViewRequestDraftProgressSnapshot progress;
   final Set<String> guardiansWithView;
@@ -343,6 +345,7 @@ final class ViewRequestDraftSnapshot {
       pendingRequestedAt = Map.unmodifiable(model._pendingRequestedAt),
       attemptSequence = model._attemptSequence,
       attemptRevisions = Map.unmodifiable(model._attemptRevisions),
+      _circleChatScope = model._circleChatScope,
       acceptanceIntentSequence = model._acceptanceIntentSequence,
       waitingAcceptances = Map.unmodifiable(model._waitingAcceptances),
       outgoingAcceptedActivityRevision =
@@ -400,6 +403,7 @@ final class ViewRequestDraftSnapshot {
   final Map<String, DateTime> pendingRequestedAt;
   final int attemptSequence;
   final Map<String, int> attemptRevisions;
+  final int _circleChatScope;
   final int acceptanceIntentSequence;
   final Map<String, DraftWaitingAcceptance> waitingAcceptances;
   final int outgoingAcceptedActivityRevision;
@@ -752,6 +756,7 @@ class ViewRequestDraftModel {
     _receivedRequestRevisions.addAll(snapshot.receivedRequestRevisions);
     _pendingRequestedAt.addAll(snapshot.pendingRequestedAt);
     _attemptSequence = snapshot.attemptSequence;
+    _circleChatScope = snapshot._circleChatScope;
     _attemptRevisions.addAll(snapshot.attemptRevisions);
     _acceptanceIntentSequence = snapshot.acceptanceIntentSequence;
     _waitingAcceptances.addAll(snapshot.waitingAcceptances);
@@ -842,6 +847,8 @@ class ViewRequestDraftModel {
   final Map<String, int> _receivedRequestRevisions = {};
   final Map<String, DateTime> _pendingRequestedAt = {};
   int _attemptSequence = 0;
+  static int _nextCircleChatScope = 0;
+  late int _circleChatScope = ++_nextCircleChatScope;
   final Map<String, int> _attemptRevisions = {};
   int _personSafetyRevision = 0;
   int _acceptanceIntentSequence = 0;
@@ -982,6 +989,12 @@ class ViewRequestDraftModel {
   /// a completed visibility action, including an intervening unhide.
   int get personSafetyRevision => _personSafetyRevision;
   int? attemptRevisionFor(String id) => _attemptRevisions[id];
+
+  String? circleChatIdFor(String id) {
+    final revision = _attemptRevisions[id];
+    if (revision == null) return null;
+    return 'draft-circle-attempt-$id-$_circleChatScope-$revision';
+  }
 
   /// The last successful local Journey action, never a server timestamp or
   /// a date fabricated from a Timeline example. Equal dates stay equal so the
@@ -1223,6 +1236,7 @@ class ViewRequestDraftModel {
       DraftEndedJourneyAttempt._(
         id: attemptId,
         profileId: id,
+        circleChatId: circleChatIdFor(id),
         startedAt: _journeyStartedAt[id],
         endedAt: end,
         progress: _progressValue(progress),

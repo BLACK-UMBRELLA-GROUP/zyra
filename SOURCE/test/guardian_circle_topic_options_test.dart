@@ -2003,11 +2003,14 @@ void main() {
         isTrue,
       );
       expect(owner.previewPastTopics, hasLength(12));
-      expect(_shellTopics(tester).current.map((tile) => tile.id), [
-        'draft-sara',
-        'draft-aisha',
-        'draft-maryam',
-      ]);
+      expect(
+        _shellTopics(tester).current.map((tile) => tile.id),
+        const [
+          'draft-sara',
+          'draft-aisha',
+          'draft-maryam',
+        ].map(owner.previewData!.currentChatId),
+      );
       const sent = 'The shared transcript survives the Topics menu';
       await tester.enterText(_shellComposer, sent);
       await _press(tester, _key('circle_topics_send'));

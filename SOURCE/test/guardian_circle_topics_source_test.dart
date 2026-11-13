@@ -166,7 +166,9 @@ void _expectCurrentTabs(WidgetTester tester) {
   final view = _presentation(tester);
   expect(
     view.current.map((tile) => (tile.id, tile.name)),
-    data.contexts.map((context) => (context.referenceId, context.firstName)),
+    data.contexts.map(
+      (context) => (data.currentChatId(context.referenceId), context.firstName),
+    ),
   );
   for (final context in data.contexts) {
     expect(context.kind, ZyraFamilyMessageContextKind.active);
@@ -314,7 +316,10 @@ void main() {
         expect(contexts, hasLength(2));
         final exact = contexts.last;
         await h.tap('circle_topics_topic_${exact.referenceId}');
-        expect(_presentation(tester).selected!.id, exact.referenceId);
+        expect(
+          _presentation(tester).selected!.id,
+          _data(tester).currentChatId(exact.referenceId),
+        );
         await h.tap('circle_topics_view_journey');
         expect(h.latest.pages.last, isNot('guardian_circle'));
         if (guardian) {

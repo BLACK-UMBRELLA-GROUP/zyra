@@ -23,7 +23,9 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
         topics.tiles.map((t) => t.id).toSet().length == topics.tiles.length &&
         topics.tiles.every(
           (tile) => [
-            ...data.contexts.map((c) => (c.referenceId, c.firstName)),
+            ...data.contexts.map(
+              (c) => (data.currentChatId(c.referenceId), c.firstName),
+            ),
             ..._pastTopics.map((t) => (t.id, t.firstName)),
           ].contains((tile.id, tile.name)),
         );
@@ -78,25 +80,25 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
   }
 
   String _topicFor(ZyraFamilyMessage message) =>
-      _discussionMessageTags[message.id]?.id ??
-      message.context?.referenceId ??
-      ZyraCircleDiscussionTopic.general.id;
+      _discussionMessageTags[message.id]?.id ?? _previewData!.chatFor(message);
 
   bool _topicUnread(ZyraFamilyMessage message) =>
-      message.unreadForMe &&
-      message.senderId != _currentSenderId &&
-      !message.lifecycle &&
+      _previewData!.isUnread(message) &&
       !_topicReadIds.contains((message.id, message.senderId));
 
   bool _topicMuted(String? id) =>
-      _topics!.mutedChats.contains(_previewData!.muteKey(id));
+      _topics!.mutedChats.contains(_previewData!.muteKey(id)) ||
+      (id == _previewData.mainChatId &&
+          _topics.mutedChats.contains(
+            _previewData.muteKey(ZyraCircleDiscussionTopic.general.id),
+          ));
 
   void _readTopics({bool preserveDivider = false}) {
     if (_topicsPast && _topicsSelection == null || _selectedPastUnavailable) {
       _topicUnreadDivider = null;
       return;
     }
-    final id = _topicsSelection?.id ?? ZyraCircleDiscussionTopic.general.id;
+    final id = _topicsSelection?.id ?? _previewData!.mainChatId;
     final read =
         _messages.where((m) => _topicFor(m) == id && _topicUnread(m)).toList()
           ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
@@ -108,7 +110,7 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
     }
     if (read.isEmpty) return;
     _topicReadIds.addAll(read.map((message) => (message.id, message.senderId)));
-    _topics!.onRead?.call(read);
+    _topics!.onRead?.call(id, read);
   }
 
   void _setTopicsMessageTags(ZyraGuardianCirclePreviewData data) {
@@ -157,7 +159,7 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
         ...local.where((m) => !_topicsSourceIds.contains(m.id)),
       ];
       final divider = _topicUnreadDivider;
-      final chat = _topicsSelection?.id ?? ZyraCircleDiscussionTopic.general.id;
+      final chat = _topicsSelection?.id ?? original.mainChatId;
       if (divider != null &&
           !_messages.any(
             (message) =>
@@ -177,20 +179,21 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
 
   ZyraCircleTopicTile _topicsTile(
     ZyraCircleDiscussionTopic topic,
-    Map<String, int> unread, {
+    ZyraCircleChatListEntry entry, {
     ZyraCircleDiscussionArchive? archive,
   }) {
     final detail = _topics!.tiles.where((t) => t.id == topic.id).firstOrNull;
     return ZyraCircleTopicTile(
       id: topic.id,
       name: topic.firstName,
+      journeyReferenceId: detail?.journeyReferenceId,
       stage: detail?.stage,
       photo: widget.viewerIsSeeker || !topic.isPast ? detail?.photo : null,
       startedOn: archive?.startedOn,
       endedOn: archive?.endedOn,
       sharedLabel: archive?.sharedSummaryLabel?.split(' · ').first,
-      unread: unread[topic.id] ?? 0,
-      muted: _topicMuted(topic.id),
+      unread: entry.unreadCount,
+      muted: entry.muted,
     );
   }
 
@@ -264,19 +267,24 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
     _topicsRouteCurrent = routeCurrent;
     _topicsNewest();
     final selected = _topicsSelection;
-    final unread = <String, int>{};
-    final newestMessage = <String, DateTime>{};
+    final currentTopics = _currentTopics;
+    final pastArchives = {
+      for (final topic in _pastTopics) topic.id: ?_topicsArchiveFor(topic),
+    };
+    final pastTopics = _pastTopics.where(
+      (topic) => pastArchives.containsKey(topic.id),
+    );
+    final entries = data.listChats(
+      admittedTopics: [...currentTopics, ...pastTopics],
+      messages: _messages,
+      chatFor: _topicFor,
+      isUnread: _topicUnread,
+      isMuted: _topicMuted,
+    );
+    final main = entries[data.mainChatId]!;
     final messages = <ZyraCircleTopicMessage>[];
     for (final message in _messages) {
       final chat = _topicFor(message);
-      if (_topicUnread(message)) {
-        unread.update(chat, (count) => count + 1, ifAbsent: () => 1);
-      }
-      final latest = newestMessage[chat];
-      if (!message.lifecycle &&
-          (latest == null || message.createdAt.isAfter(latest))) {
-        newestMessage[chat] = message.createdAt;
-      }
       if (selected == null || chat == selected.id) {
         messages.add(
           ZyraCircleTopicMessage(
@@ -290,15 +298,20 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
     }
     final past =
         [
-          for (final topic in _pastTopics)
-            if (_topicsArchiveFor(topic) case final archive?)
-              _topicsTile(topic, unread, archive: archive),
+          for (final topic in pastTopics)
+            _topicsTile(
+              topic,
+              entries[topic.id]!,
+              archive: pastArchives[topic.id],
+            ),
         ]..sort((a, b) {
           final aUnread = !a.muted && a.unread > 0;
           final bUnread = !b.muted && b.unread > 0;
           if (aUnread != bUnread) return aUnread ? -1 : 1;
           if (aUnread) {
-            final time = newestMessage[b.id]!.compareTo(newestMessage[a.id]!);
+            final time = entries[b.id]!.lastMessageAt!.compareTo(
+              entries[a.id]!.lastMessageAt!,
+            );
             if (time != 0) return time;
           }
           final end = b.endedOn!.compareTo(a.endedOn!);
@@ -326,8 +339,8 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
                 available: _available,
                 pastSelected: _topicsPast,
                 showPast: past.isNotEmpty,
-                mainUnread: unread[ZyraCircleDiscussionTopic.general.id] ?? 0,
-                mainMuted: _topicMuted(ZyraCircleDiscussionTopic.general.id),
+                mainUnread: main.unreadCount,
+                mainMuted: main.muted,
                 unreadDividerId: _topicUnreadDivider?.messageId,
                 canSendNow: () =>
                     _canSend &&
@@ -335,15 +348,15 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
                     !(_topicsPast && _topicsSelection == null),
                 canCompose:
                     _canPresentComposer && !(_topicsPast && selected == null),
-                current: _currentTopics
-                    .map((topic) => _topicsTile(topic, unread))
+                current: currentTopics
+                    .map((topic) => _topicsTile(topic, entries[topic.id]!))
                     .toList(),
                 past: past,
-                selected: selected == null
+                selected: selected == null || !entries.containsKey(selected.id)
                     ? null
                     : _topicsTile(
                         selected,
-                        unread,
+                        entries[selected.id]!,
                         archive: selected.isPast
                             ? _topicsArchiveFor(selected)
                             : null,
@@ -369,7 +382,7 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
                   final exact = data.contexts
                       .where(
                         (c) =>
-                            c.referenceId == selected?.id &&
+                            data.currentChatId(c.referenceId) == selected?.id &&
                             c.firstName == selected?.firstName,
                       )
                       .firstOrNull;
@@ -400,8 +413,17 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
 
   void _toggleTopicsMute(String? id, String chat, VoidCallback clearToast) {
     final key = _previewData!.muteKey(id);
-    final muted = _topics!.mutedChats.add(key);
-    if (!muted) _topics.mutedChats.remove(key);
+    final muted = !_topicMuted(id);
+    if (muted) {
+      _topics!.mutedChats.add(key);
+    } else {
+      _topics!.mutedChats.remove(key);
+      if (id == _previewData.mainChatId) {
+        _topics.mutedChats.remove(
+          _previewData.muteKey(ZyraCircleDiscussionTopic.general.id),
+        );
+      }
+    }
     _topics.onMuteChanged?.call();
     _topicsToastTimer?.cancel();
     _topicsToast = muted
@@ -416,8 +438,7 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
     final selection = _topicsSelection;
     if (_selectedPastUnavailable) return;
     final chatId =
-        selection?.id ??
-        (_topicsPast ? null : ZyraCircleDiscussionTopic.general.id);
+        selection?.id ?? (_topicsPast ? null : _previewData!.mainChatId);
     final chatName = selection == null
         ? 'Main chat'
         : '${selection.firstName}’s chat';

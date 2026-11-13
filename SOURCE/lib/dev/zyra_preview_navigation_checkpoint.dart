@@ -9,6 +9,7 @@ import 'zyra_one_journey_guardian_tabs.dart' show ZyraGuardianTabsSnapshot;
 import 'zyra_view_request_draft_model.dart';
 import 'zyra_guardian_family_preview.dart';
 import 'zyra_guardian_circle_preview.dart';
+import '../services/zyra_family_messaging_service.dart' show ZyraFamilyMessage;
 
 /// Measures the first real background departure, not the authorization wait.
 /// Inactive-only system sheets do not start the reset interval.
@@ -65,6 +66,12 @@ class ZyraPreviewNavigationCheckpoint {
     Iterable<String> circleReadMessageKeys = const [],
     Iterable<ZyraCirclePreviewMuteKey> circleMuteKeys = const [],
     Iterable<String> circleTabSeenKeys = const [],
+    Iterable<String> circleSuppressedAttentionKeys = const [],
+    Iterable<String> circleObservedArrivalKeys = const [],
+    Map<String, String> circleArrivalChatIds = const {},
+    this.circleSentSequence = 0,
+    Map<ZyraCirclePreviewMuteKey, List<ZyraFamilyMessage>> circleSentMessages =
+        const {},
     int myZyraFocusIndex = 0,
     this.guardianPage = 0,
     this.guardianInvitationCancelled = false,
@@ -100,6 +107,17 @@ class ZyraPreviewNavigationCheckpoint {
        circleReadMessageKeys = Set.unmodifiable(circleReadMessageKeys),
        circleMuteKeys = Set.unmodifiable(circleMuteKeys),
        circleTabSeenKeys = Set.unmodifiable(circleTabSeenKeys),
+       circleSuppressedAttentionKeys = Set.unmodifiable(
+         circleSuppressedAttentionKeys,
+       ),
+       circleObservedArrivalKeys = Set.unmodifiable(circleObservedArrivalKeys),
+       circleArrivalChatIds = Map.unmodifiable(circleArrivalChatIds),
+       circleSentMessages = Map.unmodifiable(
+         circleSentMessages.map(
+           (key, messages) =>
+               MapEntry(key, List<ZyraFamilyMessage>.unmodifiable(messages)),
+         ),
+       ),
        myZyraFocusIndex = myZyraFocusIndex < 0 ? 0 : myZyraFocusIndex,
        browseFilter = browseFilter.detached(),
        pages = List.unmodifiable(pages.take(8)),
@@ -139,6 +157,12 @@ class ZyraPreviewNavigationCheckpoint {
   // Fixed-fixture read facts only, isolated by Circle and viewer. This is
   // neither Focus consumption nor authority to read a conversation.
   final Set<String> circleReadMessageKeys, circleTabSeenKeys;
+  final Set<String> circleSuppressedAttentionKeys;
+  final Set<String> circleObservedArrivalKeys;
+  final Map<String, String> circleArrivalChatIds;
+  final int circleSentSequence;
+  final Map<ZyraCirclePreviewMuteKey, List<ZyraFamilyMessage>>
+  circleSentMessages;
   final Set<ZyraCirclePreviewMuteKey> circleMuteKeys;
   final int myZyraFocusIndex;
   final List<String> pages, browseHistory;
