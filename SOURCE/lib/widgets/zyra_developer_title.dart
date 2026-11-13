@@ -74,12 +74,17 @@ class _ZyraDeveloperTitleState extends State<ZyraDeveloperTitle> {
               ? const SizedBox.shrink()
               : heading!;
         }
+        final proof = host.access.proofRevision;
         return Semantics(
           button: true,
           child: GestureDetector(
             key: const ValueKey('dev_page_title'),
             behavior: HitTestBehavior.deferToChild,
-            onTap: () => unawaited(host.open(context, route, foreground)),
+            onTap: () {
+              if (host.access.proofRevision == proof) {
+                unawaited(host.open(context, route, foreground));
+              }
+            },
             child: heading,
           ),
         );
@@ -175,9 +180,11 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
   ModalRoute<dynamic>? _seekerRoute;
   ModalBottomSheetRoute<void>? _sheet;
   int? _generation;
-  bool _bound = false;
+  final _binding = Object();
   bool _opening = false;
   int _presentationRevision = 0;
+  int _sheetRevision = 0;
+  late bool _lockUnavailable;
 
   ZyraDeveloperPanelAccess get access => widget.access;
 
@@ -197,12 +204,15 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
 
   bool availableOn(ModalRoute<dynamic> route) =>
       _seekerCurrent &&
+      _foreground &&
       route.navigator == _seekerRoute?.navigator &&
       access.email != null;
 
   @override
   void initState() {
     super.initState();
+    final lock = ZyraAppLock.instance;
+    _lockUnavailable = lock.isLocked || lock.isObscured;
     access.addListener(_accessChanged);
     AppState.instance.addListener(_accountOrPlanChanged);
     ZyraAppLock.instance.addListener(_lockChanged);
@@ -216,12 +226,12 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
     if (!mounted || !owner.mounted) return;
     if (_owner != owner) {
       _release();
-      access.revoke();
+      access.suspend();
     }
     _owner = owner;
     _seekerRoute = route;
     _generation = ZyraAccountState.generation;
-    unawaited(access.verify());
+    if (_foreground) unawaited(access.verify());
   }
 
   void unregister(_ZyraDeveloperSeekerScopeState owner) {
@@ -229,52 +239,73 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
     _owner = null;
     _seekerRoute = null;
     _generation = null;
-    // Disposal can occur while the Navigator is processing a removed route.
+    // Navigator teardown may be in progress; retire the presentation
+    // before the next frame, then notify once teardown has finished.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && _owner == null) access.revoke();
+      if (mounted && _owner == null) {
+        access.suspend();
+        _release();
+      }
     });
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     _presentationRevision++;
-    if (state == AppLifecycleState.resumed && _seekerCurrent) {
+    if (!_foreground) {
+      access.suspend();
+      _release();
+    } else if (state == AppLifecycleState.resumed && _seekerCurrent) {
       unawaited(access.verify());
     }
   }
 
-  void _lockChanged() => _presentationRevision++;
+  void _lockChanged() {
+    final lock = ZyraAppLock.instance;
+    final unavailable = lock.isLocked || lock.isObscured;
+    if (unavailable == _lockUnavailable) return;
+    _lockUnavailable = unavailable;
+    _presentationRevision++;
+    if (!_foreground) {
+      access.suspend();
+      _release();
+    } else if (_seekerCurrent) {
+      unawaited(access.verify());
+    }
+  }
 
   void _accountOrPlanChanged() {
     if (_generation != null && !_seekerCurrent) {
-      access.revoke();
+      access.suspend();
       _release();
     }
   }
 
   void _accessChanged() {
-    if (!_seekerCurrent || access.email == null) {
+    final lifetime = access.verifiedLifetime;
+    if (!_seekerCurrent || !_foreground || lifetime == null) {
       _release();
       return;
     }
     _samples.bind(
-      authorized: () => _seekerCurrent && access.email != null,
+      lifetime: lifetime,
+      binding: _binding,
+      authorized: () =>
+          _seekerCurrent && _foreground && access.verifiedLifetime == lifetime,
       capacity: _places,
+      isSeekerOne: () => AppState.instance.verifiedSeekerPlan == ZyraPlan.one,
     );
-    _bound = true;
   }
 
   void _release() {
-    if (_bound) {
-      _bound = false;
-      _samples.unbind();
-    }
+    _samples.unbind(binding: _binding);
     _closeSheet();
   }
 
   void _closeSheet() {
     final sheet = _sheet;
     if (sheet == null) return;
+    ++_sheetRevision;
     final binding = WidgetsBinding.instance;
     binding.addPostFrameCallback((_) {
       if (sheet.isActive) sheet.navigator?.removeRoute(sheet);
@@ -296,8 +327,8 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
   };
 
   ZyraDeveloperPanelValues _values() => ZyraDeveloperPanelValues(
-    active: _samples.active ?? _samples.realActive,
-    ended: _samples.ended ?? _samples.realEnded,
+    active: _samples.placesUsed,
+    ended: _samples.endedCount,
     received: _samples.received ?? 0,
     sent: _samples.sent ?? 0,
     past: _samples.past ?? ZyraDeveloperPast.none,
@@ -331,6 +362,7 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
       final email = access.email!;
       final owner = _owner;
       final places = _places();
+      final lease = _sheetRevision;
       final values = ValueNotifier(_values());
       void updateValues() {
         if (places != _places() || email != access.email) {
@@ -343,13 +375,14 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
       _samples.addListener(updateValues);
       AppState.instance.addListener(updateValues);
       late final ModalBottomSheetRoute<void> route;
-      bool currentSheet() =>
+      bool visibleSheet() =>
           identical(_sheet, route) &&
           identical(_owner, owner) &&
           _seekerCurrent &&
           _foreground &&
-          access.email != null &&
-          route.isCurrent;
+          _sheetRevision == lease &&
+          _samples.isAuthorized;
+      bool currentSheet() => visibleSheet() && route.isCurrent;
 
       void Function(T) allowed<T>(void Function(T) action) => (value) {
         if (currentSheet()) action(value);
@@ -361,6 +394,8 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
         planName: _planName(),
         journeyPlaces: places,
         values: values,
+        visibilityListenable: _samples,
+        isVisible: visibleSheet,
         onActive: allowed((value) {
           if (value <= _places()) _samples.setActive(value);
         }),
@@ -394,7 +429,14 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
     access.removeListener(_accessChanged);
     AppState.instance.removeListener(_accountOrPlanChanged);
     ZyraAppLock.instance.removeListener(_lockChanged);
-    if (_bound) _samples.unbind();
+    // The real App Lock and lifecycle callbacks suspend before teardown.
+    // Do not notify sibling routes synchronously during a widget dispose.
+    final panelAccess = access;
+    final binding = WidgetsBinding.instance;
+    binding.addPostFrameCallback((_) {
+      if (_samples.unbind(binding: _binding)) panelAccess.suspend();
+    });
+    _closeSheet();
     super.dispose();
   }
 

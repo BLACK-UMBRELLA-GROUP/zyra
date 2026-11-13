@@ -314,6 +314,7 @@ class ZyraJourneyService {
   /// distinction is DR-ZYRA-179's whole lesson — see the catch below.
   static Future<List<JourneyMatch>?> fetchJourneyMatches({
     required List<String> statuses,
+    void Function(int)? onActivePlaceCount,
   }) async {
     final user = ZyraAuth.currentUser;
     if (user == null) return [];
@@ -329,6 +330,16 @@ class ZyraJourneyService {
                   .inFilter('status', statuses)
                   .or('seeker_a_id.eq.${user.id},seeker_b_id.eq.${user.id}')
               as List;
+
+      // Profile admission may hide a row without freeing its occupied place.
+      if (onActivePlaceCount != null && statuses.contains('active')) {
+        onActivePlaceCount(
+          rows.where((row) {
+            final match = row as Map<String, dynamic>;
+            return match['status'] == 'active' && match['suspended_by'] == null;
+          }).length,
+        );
+      }
 
       if (rows.isEmpty) return [];
 

@@ -3,6 +3,7 @@ import 'package:flutter/painting.dart' show PaintingBinding;
 
 import '../dev/zyra_dev_scenario.dart';
 import '../state/app_state.dart';
+import '../state/zyra_developer_samples.dart';
 import '../theme/zyra_app_gold_style.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_interaction_style.dart';
@@ -44,6 +45,7 @@ abstract final class ZyraAccountState {
       _initialized = false;
       _signingOut = false;
       _cleanup = Future<void>.value();
+      ZyraDeveloperSamples.instance.resetForAccountChange();
       ZyraInternalPreviewClient.bindAccount(null);
       return true;
     }());
@@ -80,6 +82,7 @@ abstract final class ZyraAccountState {
     _initialized = true;
     _userId = userId;
     final version = ++_generation;
+    ZyraDeveloperSamples.instance.resetForAccountChange();
     ZyraInternalPreviewClient.bindAccount(userId);
     // Binding first makes all following callbacks observe the new owner.
     final preferences = ZyraLocalPrefs.bindAccount(userId);

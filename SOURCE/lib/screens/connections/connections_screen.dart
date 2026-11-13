@@ -345,6 +345,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   final _samples = ZyraDeveloperSamples.instance;
   final _accountGeneration = ZyraAccountState.generation;
   final _accountOwner = ZyraAccountState.userId;
+  int _activePlaceRead = 0;
   bool get _accountCurrent =>
       !ZyraAccountState.isSigningOut &&
       _accountGeneration == ZyraAccountState.generation &&
@@ -918,9 +919,25 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     // zero then means zero visible cards and the operator adds only the states
     // they want to inspect. No server row is deleted or mutated by that view.
     final dev = ZyraDevScenario.instance;
+    final activePlaceRead = ++_activePlaceRead;
+    bool currentPlaceRead() =>
+        mounted && _accountCurrent && activePlaceRead == _activePlaceRead;
+    var sawRealOccupancy = false;
     final realOrNull = await ZyraJourneyService.fetchJourneyMatches(
       statuses: const ['potential', 'active', 'ended'],
+      onActivePlaceCount: (count) {
+        if (!currentPlaceRead()) return;
+        sawRealOccupancy = true;
+        _samples.recordRealCounts(
+          _accountOwner,
+          _accountGeneration,
+          active: count,
+        );
+      },
     );
+    if (!sawRealOccupancy && currentPlaceRead()) {
+      _samples.markRealActiveUnavailable(_accountOwner, _accountGeneration);
+    }
     // DR-ZYRA-179. Null means the fetch FAILED — not "no Journeys".
     // The old [] return here let a 403 (a missing column grant) read
     // as an empty list for three days, and in dev builds the panel's
@@ -2072,6 +2089,12 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   }) {
     final sampleActive = _samples.activeRows;
     final sampleEnded = _samples.endedRows;
+    final ordinaryActive = _samples.overridesActive
+        ? const <JourneyMatch>[]
+        : active;
+    final ordinaryEnded = _samples.overridesEnded
+        ? const <JourneyMatch>[]
+        : _ended;
     final currentUserId = ZyraAuth.currentUser?.id;
     final incomingPaused = _suspended
         .where(
@@ -2109,6 +2132,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     }
 
     Widget endedCard(JourneyMatch journey) => _JourneyExpandingCard(
+      key: ValueKey('ended-${journey.matchId}'),
       j: journey,
       expansionController: _expansionController,
       subtitle: journey.inAnotherJourney
@@ -2149,11 +2173,12 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       if (sampleActive != null && sampleActive.isNotEmpty)
         ...sampleActive.map(
           (row) => Padding(
+            key: ValueKey(row.id),
             padding: const EdgeInsets.only(bottom: 10),
-            child: ZyraSampleActiveJourneyCard(key: ValueKey(row.id), row: row),
+            child: ZyraSampleActiveJourneyCard(row: row),
           ),
-        )
-      else if ((sampleActive?.isEmpty ?? active.isEmpty))
+        ),
+      if ((sampleActive?.isEmpty ?? true) && ordinaryActive.isEmpty)
         Padding(
           padding: EdgeInsets.symmetric(vertical: 12),
           child: ZyraEmptyState(
@@ -2162,7 +2187,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
           ),
         )
       else
-        ...active.map((j) {
+        ...ordinaryActive.map((j) {
           // TRAILING ACTION — Founder, 2026-08-10: "active journey should be
           // enter", styled like POTENTIAL's "Start Journey", so every Journey
           // row states its action on the right instead of leaving three of the
@@ -2357,11 +2382,12 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       if (sampleEnded != null && sampleEnded.isNotEmpty)
         ...sampleEnded.map(
           (row) => Padding(
+            key: ValueKey(row.id),
             padding: const EdgeInsets.only(bottom: 10),
-            child: ZyraSampleEndedJourneyCard(key: ValueKey(row.id), row: row),
+            child: ZyraSampleEndedJourneyCard(row: row),
           ),
-        )
-      else if ((sampleEnded?.isEmpty ?? _ended.isEmpty))
+        ),
+      if ((sampleEnded?.isEmpty ?? true) && ordinaryEnded.isEmpty)
         Padding(
           padding: EdgeInsets.symmetric(vertical: 12),
           child: ZyraEmptyState(
@@ -2370,7 +2396,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
           ),
         )
       else
-        ..._ended.map(endedCard),
+        ...ordinaryEnded.map(endedCard),
     ];
   }
 
@@ -3433,6 +3459,7 @@ class _JourneyExpandingCard extends StatefulWidget {
   final bool showStateLine;
 
   const _JourneyExpandingCard({
+    super.key,
     required this.j,
     required this.expansionController,
     required this.subtitle,

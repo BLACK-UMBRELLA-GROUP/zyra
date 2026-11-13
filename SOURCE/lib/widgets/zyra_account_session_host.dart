@@ -24,6 +24,47 @@ typedef _RefreshPresentation = ({
   bool Function() current,
 });
 
+/// Keeps only the panel's proof and auth observer above App Lock. The
+/// member Navigator and the legacy preview routing host still unmount.
+class ZyraDeveloperPanelSession extends StatefulWidget {
+  const ZyraDeveloperPanelSession({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  State<ZyraDeveloperPanelSession> createState() =>
+      _ZyraDeveloperPanelSessionState();
+}
+
+class _ZyraDeveloperPanelSessionState extends State<ZyraDeveloperPanelSession> {
+  final _access = ZyraDeveloperPanelAccess();
+
+  @override
+  Widget build(BuildContext context) {
+    _access.observeWhileLocked();
+    return _DeveloperPanelSessionScope(access: _access, child: widget.child);
+  }
+
+  @override
+  void dispose() {
+    _access.dispose();
+    super.dispose();
+  }
+}
+
+class _DeveloperPanelSessionScope extends InheritedWidget {
+  const _DeveloperPanelSessionScope({
+    required this.access,
+    required super.child,
+  });
+
+  final ZyraDeveloperPanelAccess access;
+
+  @override
+  bool updateShouldNotify(_DeveloperPanelSessionScope oldWidget) =>
+      !identical(access, oldWidget.access);
+}
+
 /// Clears the outgoing member's presentation before a different account can
 /// reuse its Navigator, and retains the existing refreshed-claim safeguards.
 class ZyraAccountSessionHost extends StatefulWidget {
@@ -59,7 +100,19 @@ class ZyraAccountSessionHost extends StatefulWidget {
 class _ZyraAccountSessionHostState extends State<ZyraAccountSessionHost>
     with WidgetsBindingObserver {
   StreamSubscription<AuthState>? _authSubscription;
-  final _panelAccess = ZyraDeveloperPanelAccess();
+  ZyraDeveloperPanelAccess? _ownedPanelAccess;
+  late ZyraDeveloperPanelAccess _panelAccess;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final scope = context
+        .dependOnInheritedWidgetOfExactType<_DeveloperPanelSessionScope>();
+    _panelAccess =
+        scope?.access ?? (_ownedPanelAccess ??= ZyraDeveloperPanelAccess());
+    _panelAccess.observeWhileLocked();
+  }
+
   int _authEventRevision = 0;
   bool _refreshingAuthorization = false;
   ZyraPreviewResumeHandoff? _resumePresentation;
@@ -98,8 +151,23 @@ class _ZyraAccountSessionHostState extends State<ZyraAccountSessionHost>
 
   void _onAuthStateError(Object error, StackTrace stackTrace) {
     if (!mounted) return;
-    _authEventRevision++;
-    _panelAccess.revoke();
+    final revision = ++_authEventRevision;
+    if (widget.authStateChangesOverride != null) _panelAccess.suspend();
+    final panelError = _panelAccess.panelRefreshError(error);
+    if (panelError == null) {
+      _revokeAfterAuthError();
+    } else {
+      unawaited(
+        panelError.then((isPanelError) {
+          if (mounted && revision == _authEventRevision && !isPanelError) {
+            _revokeAfterAuthError();
+          }
+        }),
+      );
+    }
+  }
+
+  void _revokeAfterAuthError() {
     // A pending check may already have retracted _lastAllowed. Preserve the
     // prior page's denial provenance before revoking its presentation lease.
     final presentation = _beginRefreshPresentation(
@@ -145,7 +213,7 @@ class _ZyraAccountSessionHostState extends State<ZyraAccountSessionHost>
       _cancelResumePresentation();
     }
     final cleanup = ZyraAccountState.synchronize(userId);
-    _panelAccess.observe(state);
+    if (widget.authStateChangesOverride != null) _panelAccess.observe(state);
     if ((_accountTransition ||
             (previousUserId != null && previousUserId != userId)) &&
         _accountTransitionGeneration != ZyraAccountState.generation) {
@@ -455,7 +523,7 @@ class _ZyraAccountSessionHostState extends State<ZyraAccountSessionHost>
     );
     unawaited(_authSubscription?.cancel());
     _authSubscription = null;
-    _panelAccess.dispose();
+    _ownedPanelAccess?.dispose();
     super.dispose();
   }
 

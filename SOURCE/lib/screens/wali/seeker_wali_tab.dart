@@ -4,7 +4,6 @@
 // Guardian page. Retired comparison designs were removed only after device
 // acceptance under the governed promotion gate.
 
-import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart';
 import '../../dev/zyra_app_gold_preview.dart';
 
@@ -311,48 +310,11 @@ class _SeekerWaliTabState extends State<SeekerWaliTab> {
     builder: _buildTab,
   );
 
-  GuardianJourneyAccessLoader _sampleAccessLoader(
-    List<ZyraSampleJourney> sampleRows,
-    int generation,
-  ) => ({required guardianId, attemptId, enabled, chatEnabled}) async {
-    final samples = ZyraDeveloperSamples.instance;
-    final person = _people
-        .where((person) => person.id == guardianId)
-        .firstOrNull;
-    final rows = samples.activeRows;
-    if (person == null ||
-        rows == null ||
-        generation != samples.generation ||
-        !listEquals(rows, sampleRows) ||
-        (attemptId != null && !rows.any((row) => row.id == attemptId))) {
-      return const ZyraSourceResult.unavailable(
-        ZyraSourceFailure.requestFailed,
-      );
-    }
-    if (attemptId != null && enabled != null && !person.isMain) {
-      samples.setGuardianIncluded(guardianId, attemptId, enabled);
-    }
-    return ZyraSourceResult.available([
-      for (final row in rows)
-        GuardianJourneyAccessState(
-          attemptId: row.id,
-          matchId: row.id,
-          counterpartFirstName: row.person.firstName,
-          included:
-              person.isMain || samples.guardianIncluded(guardianId, row.id),
-          canChange: !person.isMain,
-          guardianIsMain: person.isMain,
-        ),
-    ]);
-  };
-
   Widget _buildTab(BuildContext context, Widget? child) {
     final preview = ZyraDevScenario.instance.guardianOverride;
     final showSpinner = _loading && !preview;
     final app = AppState.instance;
     final plan = app.verifiedSeekerPlan ?? app.plan;
-    final samples = ZyraDeveloperSamples.instance;
-    final sampleRows = samples.activeRows;
     return Container(
       decoration: ZyraAppGoldDecoration(
         gradient: ZyraColors.genderGradient(app.gender),
@@ -379,11 +341,7 @@ class _SeekerWaliTabState extends State<SeekerWaliTab> {
                     : null,
                 pendingInvitesLoader: widget.pendingInvitesLoader,
                 historyConsentLoader: preview ? null : _consentLoader,
-                journeyAccessLoader: preview
-                    ? null
-                    : sampleRows == null
-                    ? _journeyAccessLoader
-                    : _sampleAccessLoader(sampleRows, samples.generation),
+                journeyAccessLoader: preview ? null : _journeyAccessLoader,
                 historyConsentPreview: preview,
                 previewActiveJourneyCount: preview
                     ? ZyraDevScenario.instance.guardianPreviewActiveJourneyCount

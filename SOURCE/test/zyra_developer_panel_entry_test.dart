@@ -19,6 +19,8 @@ import 'package:zyra/main.dart' show supabase;
 import 'package:zyra/screens/home/home_shell.dart';
 import 'package:zyra/screens/wali/wali_home_shell.dart';
 import 'package:zyra/services/zyra_account_state.dart';
+import 'package:zyra/services/zyra_app_lock.dart';
+import 'package:zyra/services/zyra_auth.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/services/zyra_local_prefs.dart';
@@ -27,6 +29,7 @@ import 'package:zyra/services/zyra_session_router.dart';
 import 'package:zyra/state/zyra_developer_samples.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_account_session_host.dart';
+import 'package:zyra/widgets/zyra_app_lock_gate.dart';
 
 const _owner = ZyraInternalFounderPolicy.approvedFounderUserId;
 const _project = ZyraInternalFounderPolicy.approvedSupabaseUrl;
@@ -170,7 +173,8 @@ void main() {
     ZyraAccountState.clearImagesForTesting = null;
     ZyraText.useTestFontStubs = false;
     ZyraText.testReadingFontFamily = null;
-    ZyraDeveloperSamples.instance.unbind();
+    ZyraDeveloperSamples.instance.resetForAccountChange();
+    ZyraAppLock.instance.clearForSignOut();
   });
 
   tearDownAll(() => Supabase.instance.dispose());
@@ -200,15 +204,19 @@ void main() {
       MaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: navigator,
-        builder: (_, child) => ZyraAccountSessionHost(
-          navigatorKey: navigator,
-          child: MediaQuery(
-            data: MediaQueryData.fromView(tester.view).copyWith(
-              padding: const EdgeInsets.only(top: 59, bottom: 34),
-              viewPadding: const EdgeInsets.only(top: 59, bottom: 34),
-              disableAnimations: true,
+        builder: (_, child) => ZyraDeveloperPanelSession(
+          child: ZyraAppLockGate(
+            child: ZyraAccountSessionHost(
+              navigatorKey: navigator,
+              child: MediaQuery(
+                data: MediaQueryData.fromView(tester.view).copyWith(
+                  padding: const EdgeInsets.only(top: 59, bottom: 34),
+                  viewPadding: const EdgeInsets.only(top: 59, bottom: 34),
+                  disableAnimations: true,
+                ),
+                child: RepaintBoundary(key: _captureRoot, child: child!),
+              ),
             ),
-            child: RepaintBoundary(key: _captureRoot, child: child!),
           ),
         ),
         home: home,
@@ -360,7 +368,7 @@ void main() {
     await tester.tapAt(tester.getCenter(_key('floating-nav-item-4')));
     await settle(tester);
     expect(find.text('My ZYRA').hitTestable(), findsNothing);
-    expect(_key('dev_page_title'), findsOneWidget);
+    expect(_key('dev_page_title'), findsNothing);
     await tester.tapAt(tester.getCenter(_key('floating-nav-item-2')));
     await settle(tester);
     expect(find.text('My ZYRA'), findsOneWidget);
@@ -386,11 +394,23 @@ void main() {
   testWidgets('sign-out intent clears the overlay and removes only its sheet', (
     tester,
   ) async {
-    await mount(tester);
+    final navigator = await mount(tester);
     await tap(tester, find.text('My ZYRA'));
     await tap(tester, _key('dev_received_3'));
     expect(ZyraDeveloperSamples.instance.received, 3);
+    unawaited(
+      navigator.currentState!.push(
+        MaterialPageRoute<void>(
+          builder: (_) => const Scaffold(body: Text('Independent route')),
+        ),
+      ),
+    );
+    await settle(tester);
     await tester.runAsync(ZyraAccountState.beginSignOut);
+    await settle(tester);
+    expect(_key('dev_panel'), findsNothing);
+    expect(find.text('Independent route'), findsOneWidget);
+    navigator.currentState!.pop();
     await settle(tester);
     expect(_key('dev_panel'), findsNothing);
     expect(ZyraDeveloperSamples.instance.hasSamples, isFalse);
@@ -399,7 +419,152 @@ void main() {
     await dispose(tester);
   });
 
-  testWidgets('claim removal on explicit reopen clears existing sample data', (
+  final samples = ZyraDeveloperSamples.instance;
+
+  void resume(WidgetTester tester) {
+    final binding = tester.binding;
+    if (binding.lifecycleState == AppLifecycleState.paused) {
+      binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+      binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+    }
+    binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+  }
+
+  void suspend(WidgetTester tester) {
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+  }
+
+  Future<void> lock(WidgetTester tester) async {
+    final messenger =
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+    messenger.setMockMethodCallHandler(
+      const MethodChannel('plugins.flutter.io/local_auth'),
+      (_) async => true,
+    );
+    addTearDown(
+      () => messenger.setMockMethodCallHandler(
+        const MethodChannel('plugins.flutter.io/local_auth'),
+        null,
+      ),
+    );
+    final enabled = await tester.runAsync(
+      () => ZyraAppLock.instance.setEnabled(true),
+    );
+    expect(enabled, isTrue);
+    suspend(tester);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+    expect(samples.isAuthorized, isFalse);
+    await settle(tester);
+    expect(find.byType(ZyraAccountSessionHost), findsNothing);
+    expect(find.text('Locked'), findsOneWidget);
+  }
+
+  testWidgets(
+    'App Lock teardown restores choices only after same-session proof',
+    (tester) async {
+      await mount(tester);
+      await tap(tester, find.text('My ZYRA'));
+      await tap(tester, _key('dev_received_3'));
+      final heldAction = tester
+          .widget<TextButton>(_key('dev_received_2'))
+          .onPressed!;
+      final lease = samples.generation;
+      final before = refreshCalls;
+      await lock(tester);
+      expect(samples.isCurrentLease(lease), isFalse);
+      expect(samples.receivedRows, isNull);
+      expect(_key('dev_panel'), findsNothing);
+      final delayed = Completer<void>();
+      respondToRefresh = (version) async {
+        await delayed.future;
+        return _session(version: version);
+      };
+      resume(tester);
+      await settle(tester);
+      expect(samples.isAuthorized, isFalse);
+      expect(refreshCalls, before + 1);
+      delayed.complete();
+      await settle(tester);
+      expect(samples.received, 3);
+      heldAction();
+      expect(samples.received, 3);
+      expect(samples.isCurrentLease(lease), isFalse);
+      await dispose(tester);
+    },
+  );
+
+  testWidgets('unlock waits for a retired refresh then reproofs once', (
+    tester,
+  ) async {
+    await mount(tester);
+    await tap(tester, find.text('My ZYRA'));
+    await tap(tester, _key('dev_received_3'));
+    await tap(tester, _key('dev_done'));
+    final before = refreshCalls;
+    final retired = Completer<void>();
+    final fresh = Completer<void>();
+    respondToRefresh = (version) async {
+      await (version == before + 1 ? retired : fresh).future;
+      return _session(version: version);
+    };
+    await tap(tester, find.text('My ZYRA'));
+    expect(refreshCalls, before + 1);
+    await lock(tester);
+    resume(tester);
+    await settle(tester);
+    expect(refreshCalls, before + 1);
+    retired.complete();
+    await settle(tester);
+    expect(refreshCalls, before + 2);
+    expect(_key('dev_page_title'), findsNothing);
+    expect(samples.receivedRows, isNull);
+    fresh.complete();
+    await settle(tester);
+    expect(samples.received, 3);
+    expect(refreshCalls, before + 2);
+    expect(_key('dev_panel'), findsNothing);
+    await dispose(tester);
+  });
+
+  testWidgets(
+    'temporary refresh error suspends choices until explicit reproof',
+    (tester) async {
+      await mount(tester);
+      await tap(tester, find.text('My ZYRA'));
+      await tap(tester, _key('dev_received_3'));
+      final lease = samples.generation;
+      final before = refreshCalls;
+      suspend(tester);
+      expect(samples.isCurrentLease(lease), isFalse);
+      // A response the SDK cannot decode produces a non-terminal auth error
+      // without exercising its separate network retry/backoff policy.
+      respondToRefresh = (_) async => {'access_token': 'malformed-fixture'};
+      resume(tester);
+      await settle(tester);
+      expect(refreshCalls, before + 1);
+      expect(_key('dev_panel'), findsNothing);
+      expect(_key('dev_page_title'), findsNothing);
+      expect(samples.receivedRows, isNull);
+
+      respondToRefresh = (version) async => _session(version: version);
+      await tester.runAsync(() => supabase.auth.refreshSession());
+      await settle(tester);
+      expect(refreshCalls, before + 2);
+      expect(_key('dev_page_title'), findsNothing);
+      expect(samples.receivedRows, isNull);
+      suspend(tester);
+      resume(tester);
+      await settle(tester);
+      expect(refreshCalls, before + 3);
+      expect(samples.received, 3);
+      expect(samples.isCurrentLease(lease), isFalse);
+      expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);
+      await dispose(tester);
+    },
+  );
+
+  testWidgets('claim denial empties choices even after same-session reproof', (
     tester,
   ) async {
     await mount(tester);
@@ -411,9 +576,63 @@ void main() {
     await tap(tester, find.text('My ZYRA'));
     expect(_key('dev_panel'), findsNothing);
     expect(_key('dev_page_title'), findsNothing);
-    expect(ZyraDeveloperSamples.instance.hasSamples, isFalse);
+    expect(samples.hasSamples, isFalse);
+    respondToRefresh = (version) async => _session(version: version);
+    suspend(tester);
+    resume(tester);
+    await settle(tester);
+    expect(_key('dev_page_title'), findsOneWidget);
+    expect(samples.receivedRows, isNull);
+    expect(samples.hasSamples, isFalse);
     await dispose(tester);
   });
+
+  for (final signOut in [true, false]) {
+    testWidgets(
+      signOut
+          ? 'sign-out from App Lock wipes choices even after same-session proof'
+          : 'same-account SDK session replacement while locked wipes choices',
+      (tester) async {
+        await mount(tester);
+        await tap(tester, find.text('My ZYRA'));
+        await tap(tester, _key('dev_received_3'));
+        await lock(tester);
+        if (signOut) {
+          final nextGeneration = ZyraAccountState.generation + 1;
+          // Account reset is immediate even though remote cleanup is async.
+          await tester.runAsync(() async {
+            debugDefaultTargetPlatformOverride = TargetPlatform.linux;
+            try {
+              final signingOut = ZyraAuth.signOut();
+              expect(ZyraAccountState.generation, nextGeneration);
+              await signingOut;
+            } finally {
+              debugDefaultTargetPlatformOverride = null;
+            }
+          });
+          await tester.runAsync(() => installSession(_session(version: 90)));
+        } else {
+          await tester.runAsync(() async {
+            await supabase.auth.setInitialSession(
+              jsonEncode(
+                _session(lifetime: 'replacement-session', version: 90),
+              ),
+            );
+            await Future<void>.delayed(Duration.zero);
+            await supabase.auth.setInitialSession(
+              jsonEncode(_session(version: 91)),
+            );
+          });
+        }
+        resume(tester);
+        await settle(tester);
+        expect(_key('dev_page_title'), findsOneWidget);
+        expect(samples.receivedRows, isNull);
+        expect(samples.hasSamples, isFalse);
+        await dispose(tester);
+      },
+    );
+  }
 
   for (final pinned in [true, false]) {
     testWidgets(

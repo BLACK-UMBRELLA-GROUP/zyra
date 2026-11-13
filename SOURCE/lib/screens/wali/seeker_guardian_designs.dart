@@ -12,6 +12,7 @@ import '../../data/zyra_seeker_plan_limits.dart';
 import '../../services/zyra_account_state.dart';
 import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
+import '../../state/zyra_developer_samples.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_state_widgets.dart';
@@ -1449,6 +1450,21 @@ class _ManageActionButton extends StatelessWidget {
   }
 }
 
+List<GuardianJourneyAccessState> _sampleJourneyAccess(
+  ZyraDeveloperSamples samples,
+  WaliLinkedPerson person,
+) => [
+  for (final row in samples.activeRows ?? const <ZyraSampleJourney>[])
+    GuardianJourneyAccessState(
+      attemptId: row.id,
+      matchId: row.id,
+      counterpartFirstName: row.person.firstName,
+      included: person.isMain || samples.guardianIncluded(person.id, row.id),
+      canChange: !person.isMain,
+      guardianIsMain: person.isMain,
+    ),
+];
+
 class _MainGuardianJourneyAccess extends StatefulWidget {
   final WaliLinkedPerson person;
   final GuardianPageJourneyAccessLoader? loader;
@@ -1594,19 +1610,32 @@ class _MainGuardianJourneyAccessState extends State<_MainGuardianJourneyAccess>
   );
 
   Widget _buildJourneyAccess() {
-    final states = _confirmed;
-    if (_loading && states == null) {
+    final samples = ZyraDeveloperSamples.instance;
+    final overlay = widget.preview
+        ? const <GuardianJourneyAccessState>[]
+        : _sampleJourneyAccess(samples, widget.person);
+    final replacesOrdinary = !widget.preview && samples.overridesActive;
+    final ordinary = _confirmed;
+    final states = [if (!replacesOrdinary) ...?ordinary, ...overlay];
+    if (replacesOrdinary) {
       return _JourneyAccessSummary(
-        states: [],
+        states: states,
+        requiredAccess: true,
+        showChat: widget.showChat,
+      );
+    }
+    if (_loading && ordinary == null) {
+      return _JourneyAccessSummary(
+        states: states,
         showChat: widget.showChat,
         requiredAccess: true,
         placeholderLabel: 'Loading Journey…',
         statusLabel: 'LOADING JOURNEY ACCESS',
       );
     }
-    if (!_available || states == null) {
+    if (!_available || ordinary == null) {
       return _JourneyAccessSummary(
-        states: states ?? const [],
+        states: states,
         showChat: widget.showChat,
         requiredAccess: true,
         placeholderLabel: 'Journey unavailable',
@@ -1809,6 +1838,7 @@ class _AdditionalGuardianJourneyAccessState
     bool enabled,
   ) async {
     if (!mounted ||
+        (!widget.preview && ZyraDeveloperSamples.instance.overridesActive) ||
         !state.canChange ||
         state.requiredByPaidAgreement ||
         !guardianLifetime.isCurrent ||
@@ -1884,6 +1914,7 @@ class _AdditionalGuardianJourneyAccessState
     bool enabled,
   ) async {
     if (!mounted ||
+        (!widget.preview && ZyraDeveloperSamples.instance.overridesActive) ||
         !widget.showChat ||
         !state.canChange ||
         state.requiredByPaidAgreement ||
@@ -1977,19 +2008,45 @@ class _AdditionalGuardianJourneyAccessState
     );
   }
 
-  Widget _buildJourneyAccess(List<GuardianJourneyAccessState>? states) {
+  Widget _buildJourneyAccess(List<GuardianJourneyAccessState>? ordinary) {
     final lifetime = guardianLifetime;
-    if (_loading && states == null) {
+    final samples = ZyraDeveloperSamples.instance;
+    final overlay = widget.preview
+        ? const <GuardianJourneyAccessState>[]
+        : _sampleJourneyAccess(samples, widget.person);
+    final replacesOrdinary = !widget.preview && samples.overridesActive;
+    final states = [if (!replacesOrdinary) ...?ordinary, ...overlay];
+    final lease = samples.generation;
+    final guardian = widget.person;
+    void changeSample(GuardianJourneyAccessState state, bool enabled) {
+      if (mounted &&
+          identical(lifetime, guardianLifetime) &&
+          lifetime.isCurrent &&
+          samples.isCurrentLease(lease) &&
+          guardian.id == widget.person.id &&
+          !widget.person.isMain) {
+        samples.setGuardianIncluded(guardian.id, state.attemptId, enabled);
+      }
+    }
+
+    if (replacesOrdinary) {
       return _JourneyAccessSummary(
-        states: [],
+        states: states,
+        showChat: widget.showChat,
+        onViewChanged: changeSample,
+      );
+    }
+    if (_loading && ordinary == null) {
+      return _JourneyAccessSummary(
+        states: states,
         showChat: widget.showChat,
         placeholderLabel: 'Loading Journey…',
         statusLabel: 'LOADING JOURNEY ACCESS',
       );
     }
-    if (!_available || states == null) {
+    if (!_available || ordinary == null) {
       return _JourneyAccessSummary(
-        states: states ?? const [],
+        states: states,
         showChat: widget.showChat,
         busyAttempt: 'unavailable',
         placeholderLabel: 'Journey unavailable',
@@ -2006,11 +2063,16 @@ class _AdditionalGuardianJourneyAccessState
             showChat: widget.showChat,
             busyAttempt: _busyAttempt,
             onViewChanged: (state, enabled) {
+              if (overlay.contains(state)) {
+                changeSample(state, enabled);
+                return;
+              }
               if (identical(lifetime, guardianLifetime) && lifetime.isCurrent) {
                 _setEnabled(state, enabled);
               }
             },
             onChatChanged: (state, enabled) {
+              if (overlay.contains(state)) return;
               if (identical(lifetime, guardianLifetime) && lifetime.isCurrent) {
                 _setChatEnabled(state, enabled);
               }

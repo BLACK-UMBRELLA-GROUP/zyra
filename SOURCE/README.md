@@ -71,8 +71,12 @@ the existing Founder account, project and server claim. The panel shows the
 verified Seeker plan and caps sample Journey places accordingly.
 
 The panel loads local sample Journeys, requests, history and Introductions
-for that account. **Clear sample data** and signing out restore the ordinary
-account data. Run the mocked entry and sample tests with
+for that account. App Lock and a temporary verification failure hide the
+samples and disable their actions. A fresh check of the same session restores
+them. **Clear sample data**, signing out, a different session, and loss of the
+server claim clear the choices. When Active or Ended has no explicit selector
+choice, taking a sample action adds only the sample row and keeps ordinary
+rows. Run the mocked entry and sample tests with
 `flutter test --no-pub test/zyra_developer_panel_entry_test.dart test/zyra_developer_samples_test.dart`.
 
 ## Backend

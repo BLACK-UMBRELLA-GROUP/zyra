@@ -545,21 +545,23 @@ class ZyraApp extends StatelessWidget {
         builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.dark,
           child: ZyraKeyboardDismissScope(
-            child: ZyraAppLockGate(
-              child: ZyraAppGoldPreviewHost(
-                child: ListenableBuilder(
-                  listenable: AppState.instance,
-                  builder: (context, _) => AnimatedContainer(
-                    duration: const Duration(milliseconds: 260),
-                    curve: Curves.easeOut,
-                    decoration: ZyraAppGoldDecoration(
-                      gradient: ZyraColors.genderGradient(
-                        AppState.instance.gender,
+            child: ZyraDeveloperPanelSession(
+              child: ZyraAppLockGate(
+                child: ZyraAppGoldPreviewHost(
+                  child: ListenableBuilder(
+                    listenable: AppState.instance,
+                    builder: (context, _) => AnimatedContainer(
+                      duration: const Duration(milliseconds: 260),
+                      curve: Curves.easeOut,
+                      decoration: ZyraAppGoldDecoration(
+                        gradient: ZyraColors.genderGradient(
+                          AppState.instance.gender,
+                        ),
                       ),
-                    ),
-                    child: ZyraAccountSessionHost(
-                      navigatorKey: zyraNavigatorKey,
-                      child: child ?? const SizedBox.shrink(),
+                      child: ZyraAccountSessionHost(
+                        navigatorKey: zyraNavigatorKey,
+                        child: child ?? const SizedBox.shrink(),
+                      ),
                     ),
                   ),
                 ),

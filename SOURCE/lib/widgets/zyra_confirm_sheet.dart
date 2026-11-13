@@ -21,6 +21,8 @@ Future<bool?> showZyraConfirm({
   Key? primaryKey,
   Key? secondaryKey,
   bool Function()? canConfirm,
+  Listenable? visibilityListenable,
+  bool Function()? isVisible,
   Future<String?> Function()? onCommit,
   String? busyLabel,
   void Function(ModalRoute<bool> route)? onOpening,
@@ -47,6 +49,7 @@ Future<bool?> showZyraConfirm({
         confirm &&
         context.mounted &&
         (origin?.isActive ?? true) &&
+        (isVisible?.call() ?? true) &&
         (canConfirm?.call() ?? true);
     if (confirm && !accepted) {
       navigator.pop(false);
@@ -95,27 +98,40 @@ Future<bool?> showZyraConfirm({
             MediaQuery.accessibleNavigationOf(context)
         ? AnimationStyle.noAnimation
         : null,
-    builder: (_) => ValueListenableBuilder(
-      valueListenable: state,
-      builder: (context, status, _) => PopScope(
-        canPop: !status.busy,
-        child: ZyraConfirmSheet(
-          surfaceKey: sheetKey,
-          title: title,
-          body: body,
-          primaryLabel: status.busy ? busyLabel ?? primaryLabel : primaryLabel,
-          secondaryLabel: secondaryLabel,
-          error: status.error,
-          icon: icon,
-          personName: personName,
-          primaryKey: primaryKey,
-          secondaryKey: secondaryKey,
-          onConfirm: status.busy ? null : () => unawaited(choose(true)),
-          onKeep: status.busy ? null : () => unawaited(choose(false)),
-          swipeToKeep: onCommit != null,
+    builder: (context) {
+      final sheet = ValueListenableBuilder(
+        valueListenable: state,
+        builder: (context, status, _) => PopScope(
+          canPop: !status.busy,
+          child: ZyraConfirmSheet(
+            surfaceKey: sheetKey,
+            title: title,
+            body: body,
+            primaryLabel: status.busy
+                ? busyLabel ?? primaryLabel
+                : primaryLabel,
+            secondaryLabel: secondaryLabel,
+            error: status.error,
+            icon: icon,
+            personName: personName,
+            primaryKey: primaryKey,
+            secondaryKey: secondaryKey,
+            onConfirm: status.busy ? null : () => unawaited(choose(true)),
+            onKeep: status.busy ? null : () => unawaited(choose(false)),
+            swipeToKeep: onCommit != null,
+          ),
         ),
-      ),
-    ),
+      );
+      final visibility = visibilityListenable;
+      return visibility == null
+          ? sheet
+          : ListenableBuilder(
+              listenable: visibility,
+              child: sheet,
+              builder: (context, child) =>
+                  isVisible?.call() == false ? const SizedBox.shrink() : child!,
+            );
+    },
   );
   onOpening?.call(route);
   final pending = navigator.push(route);

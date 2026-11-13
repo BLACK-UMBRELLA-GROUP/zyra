@@ -554,9 +554,14 @@ enum ZyraEndedJourneyAction { restart, remove }
 /// Ended Journeys action sheet. The caller validates the attempt and owns the
 /// following confirmation.
 class ZyraEndedJourneyMenu extends StatelessWidget {
-  const ZyraEndedJourneyMenu({super.key, required this.onSelect});
+  const ZyraEndedJourneyMenu({
+    super.key,
+    required this.onSelect,
+    this.restartEnabled = true,
+  });
 
   final ValueChanged<ZyraEndedJourneyAction?> onSelect;
+  final bool restartEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -572,7 +577,9 @@ class ZyraEndedJourneyMenu extends StatelessWidget {
         ],
       ),
       child: OutlinedButton(
-        onPressed: ZyraTapFeedback.onTap(context, () => onSelect(action)),
+        onPressed: action == ZyraEndedJourneyAction.restart && !restartEnabled
+            ? null
+            : ZyraTapFeedback.onTap(context, () => onSelect(action)),
         style: OutlinedButton.styleFrom(
           minimumSize: const Size.fromHeight(52),
           backgroundColor: ZyraColors.ivoryTop,

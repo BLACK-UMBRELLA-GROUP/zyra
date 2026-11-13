@@ -231,6 +231,12 @@ class _PastJourneysScreenState extends State<PastJourneysScreen> {
       _loading = false;
       _failed = false;
     });
+    final (ownerId, generation) = _owner;
+    ZyraDeveloperSamples.instance.recordRealCounts(
+      ownerId,
+      generation,
+      ended: loadedEnded.where((journey) => !journey.isMock).length,
+    );
   }
 
   @override
@@ -315,58 +321,45 @@ class _PastJourneysScreenState extends State<PastJourneysScreen> {
         );
 
   Widget _body(int index) {
+    final samples = ZyraDeveloperSamples.instance;
     final sampleRows = index == 1
-        ? ZyraDeveloperSamples.instance.endedRows
-        : null;
-    if (sampleRows != null) {
-      if (sampleRows.isEmpty) {
-        return const Center(
-          child: Padding(
-            padding: EdgeInsets.all(28),
-            child: ZyraEmptyState(
-              icon: Icons.history_rounded,
-              title: 'No ended Journeys',
-              message: "When a Journey ends, it's kept here with its Timeline.",
-            ),
-          ),
-        );
-      }
-      return ListView.separated(
-        padding: const EdgeInsets.fromLTRB(20, 14, 20, 42),
-        itemCount: sampleRows.length,
-        separatorBuilder: (_, _) => const SizedBox(height: 10),
-        itemBuilder: (_, index) => ZyraSampleEndedJourneyCard(
-          key: ValueKey(sampleRows[index].id),
-          row: sampleRows[index],
-        ),
-      );
-    }
+        ? samples.endedRows ?? const <ZyraSampleJourney>[]
+        : const <ZyraSampleJourney>[];
+    final overridesOrdinary = index == 1 && samples.overridesEnded;
     final routeRevision = _routeRevision;
-    if (_loading) return const Center(child: ZyraLoading());
-    if (_failed) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(28),
-          child: ZyraEmptyState(
-            icon: Icons.refresh_rounded,
-            title: "We couldn't load this just now",
-            message: 'Check your connection and try again. Nothing changed.',
-            ctaLabel: 'Try again',
-            onCta: () {
-              if (!_ownerCurrent) return;
-              setState(() {
-                _loading = true;
-                _failed = false;
-              });
-              _load();
-            },
-          ),
-        ),
-      );
+    final loadStatus = overridesOrdinary
+        ? null
+        : _loading
+        ? const ZyraLoading()
+        : _failed
+        ? Padding(
+            padding: const EdgeInsets.all(28),
+            child: ZyraEmptyState(
+              icon: Icons.refresh_rounded,
+              title: "We couldn't load this just now",
+              message: 'Check your connection and try again. Nothing changed.',
+              ctaLabel: 'Try again',
+              onCta: () {
+                if (!_ownerCurrent) return;
+                setState(() {
+                  _loading = true;
+                  _failed = false;
+                });
+                _load();
+              },
+            ),
+          )
+        : null;
+    if (loadStatus != null && sampleRows.isEmpty) {
+      return Center(child: loadStatus);
     }
 
-    final rows = index == 0 ? _paused : _ended;
-    if (rows.isEmpty) {
+    final rows = overridesOrdinary
+        ? const <JourneyMatch>[]
+        : index == 0
+        ? _paused
+        : _ended;
+    if (rows.isEmpty && sampleRows.isEmpty) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(28),
@@ -411,11 +404,19 @@ class _PastJourneysScreenState extends State<PastJourneysScreen> {
       key: ValueKey<String>('past-journeys-${index == 0 ? 'paused' : 'ended'}'),
       padding: const EdgeInsets.fromLTRB(20, 14, 20, 42),
       children: [
+        for (final row in sampleRows)
+          Padding(
+            key: ValueKey(row.id),
+            padding: const EdgeInsets.only(bottom: 10),
+            child: ZyraSampleEndedJourneyCard(row: row),
+          ),
+        ?loadStatus,
         if (requestsForYou.isNotEmpty) ...[
           _PastSectionLabel('REQUESTS FOR YOU'),
           const SizedBox(height: 8),
           ...requestsForYou.map(
             (journey) => Padding(
+              key: ValueKey(journey.matchId),
               padding: const EdgeInsets.only(bottom: 10),
               child: _PastJourneyCard(
                 journey: journey,
@@ -432,6 +433,7 @@ class _PastJourneysScreenState extends State<PastJourneysScreen> {
         ],
         ...ordinary.map(
           (journey) => Padding(
+            key: ValueKey(journey.matchId),
             padding: const EdgeInsets.only(bottom: 10),
             child: _PastJourneyCard(
               journey: journey,

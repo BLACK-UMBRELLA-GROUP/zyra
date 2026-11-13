@@ -421,52 +421,56 @@ class _SeekerDashboardScreenState extends State<SeekerDashboardScreen> {
   Widget _production(
     String? firstName, {
     bool blankUntilDeveloperSelection = false,
-  }) => KeyedSubtree(
-    key: const ValueKey('seeker-production-dashboard'),
-    child: ZyraQuietDashboard(
-      resolution: _developerResolution(),
-      accountCards: _developerAccountCards(),
-      suppressActiveJourneyPrompt: _samples.active == 0,
-      permanentNavigation: _samples.isAuthorized,
-      firstName: firstName,
-      onNavigate: (card) {
-        if (_openDeveloperDestination(card)) return;
-        if (card.id == 'preference-quick-check' &&
-            widget.onPreferenceQuickCheck != null) {
-          if (_notificationOwner?.isCurrent == true) {
-            widget.onPreferenceQuickCheck!();
+  }) {
+    final sampleLease = _samples.generation;
+    return KeyedSubtree(
+      key: const ValueKey('seeker-production-dashboard'),
+      child: ZyraQuietDashboard(
+        resolution: _developerResolution(),
+        accountCards: _developerAccountCards(),
+        suppressActiveJourneyPrompt:
+            _samples.overridesActive && _samples.active == 0,
+        permanentNavigation: _samples.isAuthorized,
+        firstName: firstName,
+        onNavigate: (card) {
+          if (_openDeveloperDestination(card, sampleLease)) return;
+          if (card.id == 'preference-quick-check' &&
+              widget.onPreferenceQuickCheck != null) {
+            if (_notificationOwner?.isCurrent == true) {
+              widget.onPreferenceQuickCheck!();
+            }
+          } else {
+            _navigate(card.target);
           }
-        } else {
-          _navigate(card.target);
-        }
-      },
-      onNotificationViewed: _notificationViewedAction(),
-      onRetry: _reload,
-      onRefresh: _reload,
-      blankUntilDeveloperSelection: blankUntilDeveloperSelection,
-      insightsEntitled: AppState.instance.plan == ZyraPlan.one,
-      onMarkAllNotificationsRead: _notificationAction(),
-      unreadCount: widget.unreadCount,
-      selectedTabIndex: ZyraDeveloperAccess.canUseDeveloperTools
-          ? ZyraDevScenario.instance.dashboardTab.index
-          : null,
-      onTabChanged: (index) {
-        if (ZyraDeveloperAccess.canUseDeveloperTools) {
-          ZyraDevScenario.instance.setDashboardTab(
-            ZyraDashboardTab.values[index],
-          );
-        }
-      },
-    ),
-  );
+        },
+        onNotificationViewed: _notificationViewedAction(),
+        onRetry: _reload,
+        onRefresh: _reload,
+        blankUntilDeveloperSelection: blankUntilDeveloperSelection,
+        insightsEntitled: AppState.instance.plan == ZyraPlan.one,
+        onMarkAllNotificationsRead: _notificationAction(),
+        unreadCount: widget.unreadCount,
+        selectedTabIndex: ZyraDeveloperAccess.canUseDeveloperTools
+            ? ZyraDevScenario.instance.dashboardTab.index
+            : null,
+        onTabChanged: (index) {
+          if (ZyraDeveloperAccess.canUseDeveloperTools) {
+            ZyraDevScenario.instance.setDashboardTab(
+              ZyraDashboardTab.values[index],
+            );
+          }
+        },
+      ),
+    );
+  }
 
   DashboardResolution _developerResolution() {
-    final active = _samples.active;
-    final ended = _samples.ended;
-    if (active == null && ended == null) return _resolution;
+    final active = _samples.overridesActive;
+    final ended = _samples.overridesEnded;
+    if (!active && !ended) return _resolution;
     final live = _resolution;
     bool isSampledJourney(DashboardResolvedItem item) =>
-        item.source == DashboardSignalSource.journeys && active != null;
+        item.source == DashboardSignalSource.journeys && active;
     final obligations = [
       if (live.answer.item case final item? when !isSampledJourney(item)) item,
       ...live.otherActions.where((item) => !isSampledJourney(item)),
@@ -477,10 +481,8 @@ class _SeekerDashboardScreenState extends State<SeekerDashboardScreen> {
               : const DashboardAnswer.calm()
         : DashboardAnswer.signal(obligations.first);
     final journey =
-        (active != null &&
-                live.journey.summary?.kind == DashboardJourneyKind.active) ||
-            (ended != null &&
-                live.journey.summary?.kind == DashboardJourneyKind.ended)
+        (active && live.journey.summary?.kind == DashboardJourneyKind.active) ||
+            (ended && live.journey.summary?.kind == DashboardJourneyKind.ended)
         ? const DashboardJourneyResolution.available(
             DashboardJourneySummary(
               id: 'sample-journey-state',
@@ -513,7 +515,7 @@ class _SeekerDashboardScreenState extends State<SeekerDashboardScreen> {
         const <String>[];
     final received = names.length;
     final sent = _samples.sent ?? 0;
-    final ended = _samples.ended ?? _samples.realEnded;
+    final ended = _samples.endedCount;
     final introductions = _samples.introductions ?? _samples.realIntroductions;
     return [
       if (received > 0)
@@ -529,7 +531,7 @@ class _SeekerDashboardScreenState extends State<SeekerDashboardScreen> {
           target: ZyraDashboardTarget.connectionsJourneys,
           hasNewActivity: true,
         ),
-      if (_samples.active != null)
+      if (_samples.overridesActive || (_samples.active ?? 0) > 0)
         SupportiveCard(
           id: 'sample-places',
           section: SupportiveSection.stand,
@@ -566,7 +568,7 @@ class _SeekerDashboardScreenState extends State<SeekerDashboardScreen> {
     ];
   }
 
-  bool _openDeveloperDestination(SupportiveCard card) {
+  bool _openDeveloperDestination(SupportiveCard card, int sampleLease) {
     const destinations = {
       'sample-needs-requests',
       'sample-places',
@@ -576,7 +578,7 @@ class _SeekerDashboardScreenState extends State<SeekerDashboardScreen> {
     };
     if (!destinations.contains(card.id)) return false;
     if (!widget.isActive ||
-        !_samples.isAuthorized ||
+        !_samples.isCurrentLease(sampleLease) ||
         !(ModalRoute.of(context)?.isCurrent ?? true)) {
       return true;
     }

@@ -30,6 +30,8 @@ ModalBottomSheetRoute<void> zyraDeveloperPanelRoute(
   required String planName,
   required int journeyPlaces,
   required ValueListenable<ZyraDeveloperPanelValues> values,
+  Listenable? visibilityListenable,
+  bool Function()? isVisible,
   required ValueChanged<int> onActive,
   required ValueChanged<int> onEnded,
   required ValueChanged<int> onReceived,
@@ -53,19 +55,31 @@ ModalBottomSheetRoute<void> zyraDeveloperPanelRoute(
     sheetAnimationStyle: ZyraMotion.reduceMotion(context)
         ? AnimationStyle.noAnimation
         : null,
-    builder: (context) => _DeveloperPanel(
-      email: email,
-      planName: planName,
-      journeyPlaces: journeyPlaces,
-      values: values,
-      onActive: onActive,
-      onEnded: onEnded,
-      onReceived: onReceived,
-      onSent: onSent,
-      onPast: onPast,
-      onIntroductions: onIntroductions,
-      onClear: onClear,
-    ),
+    builder: (context) {
+      final panel = _DeveloperPanel(
+        email: email,
+        planName: planName,
+        journeyPlaces: journeyPlaces,
+        values: values,
+        onActive: onActive,
+        onEnded: onEnded,
+        onReceived: onReceived,
+        onSent: onSent,
+        onPast: onPast,
+        onIntroductions: onIntroductions,
+        onClear: onClear,
+        isVisible: isVisible,
+      );
+      final visibility = visibilityListenable;
+      return visibility == null
+          ? panel
+          : ListenableBuilder(
+              listenable: visibility,
+              child: panel,
+              builder: (context, child) =>
+                  isVisible?.call() == false ? const SizedBox.shrink() : child!,
+            );
+    },
   );
 }
 
@@ -82,6 +96,7 @@ class _DeveloperPanel extends StatefulWidget {
     required this.onPast,
     required this.onIntroductions,
     required this.onClear,
+    this.isVisible,
   });
 
   final String email, planName;
@@ -94,6 +109,7 @@ class _DeveloperPanel extends StatefulWidget {
       onIntroductions;
   final ValueChanged<ZyraDeveloperPast> onPast;
   final VoidCallback onClear;
+  final bool Function()? isVisible;
 
   @override
   State<_DeveloperPanel> createState() => _DeveloperPanelState();
@@ -103,6 +119,7 @@ class _DeveloperPanelState extends State<_DeveloperPanel> {
   Timer? _clearToast;
 
   void _clear() {
+    if (widget.isVisible?.call() == false) return;
     widget.onClear();
     if (!mounted) return;
     _clearToast?.cancel();
@@ -254,8 +271,9 @@ class _DeveloperPanelState extends State<_DeveloperPanel> {
                                 child: OutlinedButton(
                                   key: const ValueKey('dev_done'),
                                   onPressed: ZyraTapFeedback.onTap(context, () {
-                                    if (ModalRoute.isCurrentOf(context) ==
-                                        true) {
+                                    if (widget.isVisible?.call() != false &&
+                                        ModalRoute.isCurrentOf(context) ==
+                                            true) {
                                       Navigator.of(context).pop();
                                     }
                                   }),

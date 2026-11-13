@@ -144,14 +144,21 @@ class _ZyraDeveloperJourneyRequestsScreenState
 
   Widget _requestCard(ZyraSampleRequest request) {
     final id = 'sample-request-${request.incoming}-${request.person.id}';
-    bool present() => _samples.isRequestCurrent(request);
+    final lease = _samples.generation;
+    bool visible() => _samples.isCurrentLease(lease);
+    bool present() => visible() && _samples.isRequestCurrent(request);
     bool current() =>
         _current() && _tab == (request.incoming ? 0 : 1) && present();
+    final expiry = request.expiresAt;
     return ZyraRequestActivityCard(
       key: ValueKey(id),
       headerKey: ValueKey('$id-header'),
       profile: _samples.profileFor(request.person),
-      subtitle: request.incoming ? 'Journey request' : 'Waiting for a response',
+      subtitle: request.incoming
+          ? 'Journey request'
+          : expiry == null
+          ? 'Waiting for a response'
+          : 'Request sent. It expires on ${MaterialLocalizations.of(context).formatMediumDate(expiry.toLocal())}.',
       cardId: id,
       controller: _expansion,
       canInteract: current,
@@ -173,11 +180,11 @@ class _ZyraDeveloperJourneyRequestsScreenState
           ZyraOneJourneyConnectionsAction(
             label: 'Accept request',
             icon: Icons.check,
-            onTap: _samples.capacity == 0
-                ? null
-                : () {
+            onTap: _samples.canAccept(request)
+                ? () {
                     if (current()) _accept(request);
-                  },
+                  }
+                : null,
           ),
         ZyraOneJourneyConnectionsAction(
           label: request.incoming ? 'Decline' : 'Cancel request',
@@ -195,6 +202,8 @@ class _ZyraDeveloperJourneyRequestsScreenState
               primaryLabel: request.incoming ? 'Decline' : 'Cancel request',
               secondaryLabel: 'Keep request',
               canConfirm: present,
+              visibilityListenable: _samples,
+              isVisible: visible,
             );
             if (accepted == true &&
                 current() &&
@@ -208,13 +217,14 @@ class _ZyraDeveloperJourneyRequestsScreenState
   }
 
   Future<void> _accept(ZyraSampleRequest request) async {
-    if (_samples.capacity == 0) return;
-    if (_samples.placesUsed < _samples.capacity) {
+    if (!_samples.canAccept(request)) return;
+    if (_samples.hasSparePlace) {
       final preparing = _samples.accept(request);
       if (preparing != null) _showPreparation(preparing);
       return;
     }
     final choices = _samples.capacityChoices(request);
+    if (choices.isEmpty) return;
     final expectedGeneration = _samples.generation;
     final expectedCapacity = _samples.capacity;
     final expectedPlaces = _samples.placesUsed;
@@ -229,7 +239,7 @@ class _ZyraDeveloperJourneyRequestsScreenState
             listenable: _samples,
             builder: (context, _) {
               bool present() =>
-                  _samples.generation == expectedGeneration &&
+                  _samples.isCurrentLease(expectedGeneration) &&
                   _samples.capacity == expectedCapacity &&
                   _samples.placesUsed == expectedPlaces &&
                   _samples.activeRows?.map((row) => row.id).join(',') ==
@@ -279,6 +289,9 @@ class _ZyraDeveloperJourneyRequestsScreenState
                                 primaryLabel: 'End and continue',
                                 secondaryLabel: 'Keep Journey',
                                 canConfirm: present,
+                                visibilityListenable: _samples,
+                                isVisible: () =>
+                                    _samples.isCurrentLease(expectedGeneration),
                               );
                               if (confirmed != true ||
                                   !context.mounted ||
@@ -288,7 +301,6 @@ class _ZyraDeveloperJourneyRequestsScreenState
                               }
                               final preparing = _samples.accept(
                                 request,
-                                choices: choices,
                                 replace: ending,
                               );
                               if (preparing != null) {
@@ -307,7 +319,12 @@ class _ZyraDeveloperJourneyRequestsScreenState
         ),
       ),
     );
-    if (preparing != null && mounted && _current()) _showPreparation(preparing);
+    if (preparing != null &&
+        mounted &&
+        _current() &&
+        _samples.isCurrentLease(expectedGeneration)) {
+      _showPreparation(preparing);
+    }
   }
 
   void _showPreparation(ZyraSampleJourney row) {
@@ -335,23 +352,13 @@ class _ZyraDeveloperJourneyRequestsScreenState
   }
 
   Widget _pastCard(List<ZyraSamplePastRequest> group) {
+    final generation = _samples.generation;
     final latest = group.first;
     final request = latest.request;
     final id = 'sample-past-${request.person.id}-${request.incoming}';
     final direction = request.incoming ? 'Received' : 'Sent';
     final grouped = group.length > 1;
-    final consecutive = group
-        .takeWhile((row) => row.label == 'Not taken up')
-        .length;
-    final askAgain = request.date.add(
-      Duration(
-        days: consecutive >= 10
-            ? 30
-            : consecutive >= 5
-            ? 14
-            : 7,
-      ),
-    );
+    final askAgain = grouped ? _samples.pastRequestAskAgainAfter(latest) : null;
     return ZyraPastRequestActivityCard(
       key: ValueKey(id),
       cardId: id,
@@ -363,6 +370,7 @@ class _ZyraDeveloperJourneyRequestsScreenState
       controller: grouped ? _expansion : null,
       canInteract: () =>
           _current() &&
+          _samples.isCurrentLease(generation) &&
           _tab == 2 &&
           (_samples.history?.contains(latest) ?? false),
       history: grouped
@@ -374,7 +382,7 @@ class _ZyraDeveloperJourneyRequestsScreenState
                 ),
             ]
           : const [],
-      askAgain: grouped && !request.incoming && consecutive > 0
+      askAgain: askAgain != null
           ? 'You can ask ${request.person.firstName} again from ${_date(askAgain)}.'
           : null,
     );
@@ -387,8 +395,9 @@ class ZyraSampleEndedJourneyCard extends StatelessWidget {
 
   bool _present() => _samples.endedRows?.contains(row) ?? false;
 
-  Future<void> _options(BuildContext context) async {
-    if (!_foreground(context) || !_present()) return;
+  Future<void> _options(BuildContext context, int generation) async {
+    bool current() => _samples.isCurrentLease(generation) && _present();
+    if (!_foreground(context) || !current()) return;
     final action = await showModalBottomSheet<ZyraEndedJourneyAction>(
       context: context,
       isScrollControlled: true,
@@ -396,11 +405,12 @@ class ZyraSampleEndedJourneyCard extends StatelessWidget {
       barrierColor: const Color(0x611E1610),
       builder: (context) => ListenableBuilder(
         listenable: _samples,
-        builder: (context, _) => !_present()
+        builder: (context, _) => !current()
             ? const SizedBox.shrink()
             : ZyraEndedJourneyMenu(
+                restartEnabled: _samples.mayRestart(row),
                 onSelect: (action) {
-                  if (_foreground(context) && _present()) {
+                  if (_foreground(context) && current()) {
                     Navigator.of(context).pop(action);
                   }
                 },
@@ -409,12 +419,12 @@ class ZyraSampleEndedJourneyCard extends StatelessWidget {
     );
     if (!context.mounted ||
         !_foreground(context) ||
-        !_present() ||
+        !current() ||
         action == null) {
       return;
     }
     if (action == ZyraEndedJourneyAction.restart) {
-      await _restart(context);
+      await _restart(context, generation);
       return;
     }
     final confirm = await showZyraConfirm(
@@ -424,29 +434,38 @@ class ZyraSampleEndedJourneyCard extends StatelessWidget {
           'It disappears from your Ended Journeys for good, with its Timeline and messages. You can’t undo this. ${row.person.firstName} still sees her copy.',
       primaryLabel: 'Remove Journey',
       secondaryLabel: 'Keep Journey',
-      canConfirm: _present,
+      canConfirm: current,
+      visibilityListenable: _samples,
+      isVisible: current,
     );
     if (confirm == true &&
         context.mounted &&
         _foreground(context) &&
+        current() &&
         _samples.removeEnded(row)) {
       _notice(context, 'Removed from your Journeys.');
     }
   }
 
-  Future<void> _restart(BuildContext context) async {
-    if (!_foreground(context) || !_samples.mayRestart(row)) return;
+  Future<void> _restart(BuildContext context, int generation) async {
+    bool current() => _samples.isCurrentLease(generation) && _present();
+    if (!_foreground(context) || !current() || !_samples.mayRestart(row)) {
+      return;
+    }
     final confirm = await showZyraConfirm(
       context: context,
       title: 'Request a new Journey?',
       body: 'Send a new Journey request to ${row.person.firstName}.',
       primaryLabel: 'Send request',
       secondaryLabel: 'Keep Journey',
-      canConfirm: () => _samples.mayRestart(row),
+      canConfirm: () => current() && _samples.mayRestart(row),
+      visibilityListenable: _samples,
+      isVisible: current,
     );
     if (confirm == true &&
         context.mounted &&
         _foreground(context) &&
+        current() &&
         _samples.restart(row)) {
       _notice(context, 'Journey request sent.');
     }
@@ -454,15 +473,19 @@ class ZyraSampleEndedJourneyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final generation = _samples.generation;
+    bool current() => _samples.isCurrentLease(generation) && _present();
     final actions = ZyraOneJourneyConnectionsActionDeck(
       primary: ZyraOneJourneyConnectionsAction(
         label: 'Request restart',
         icon: null,
         fitLabel: true,
-        onTap: _samples.mayRestart(row) ? () => _restart(context) : null,
+        onTap: _samples.mayRestart(row)
+            ? () => _restart(context, generation)
+            : null,
       ),
       primaryTrailing: ZyraConceptJourneyOptionsButton(
-        onTap: () => _options(context),
+        onTap: () => _options(context, generation),
       ),
     );
     return ZyraOneJourneyConnectionsActiveCard(
@@ -471,7 +494,7 @@ class ZyraSampleEndedJourneyCard extends StatelessWidget {
       stageLabel: ZyraJourneyStages.labelFor(row.stage),
       actions: actions,
       primaryAction: actions.primaryRow,
-      onPhotoTap: () => _showProfile(context, row.person, _present),
+      onPhotoTap: () => _showProfile(context, row.person, current),
       bottomGap: 0,
     );
   }
@@ -481,16 +504,18 @@ void _openSampleJourney(BuildContext context, ZyraSampleJourney row) {
   if (!_foreground(context) || !(_samples.activeRows?.contains(row) ?? false)) {
     return;
   }
+  final lease = _samples.generation;
   Navigator.of(context).push<void>(
     MaterialPageRoute<void>(
-      builder: (_) => _SampleJourneyScreen(attemptId: row.id),
+      builder: (_) => _SampleJourneyScreen(attemptId: row.id, lease: lease),
     ),
   );
 }
 
 class _SampleJourneyScreen extends StatelessWidget {
-  const _SampleJourneyScreen({required this.attemptId});
+  const _SampleJourneyScreen({required this.attemptId, required this.lease});
   final String attemptId;
+  final int lease;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -501,12 +526,16 @@ class _SampleJourneyScreen extends StatelessWidget {
           final row = _samples.activeRows
               ?.where((row) => row.id == attemptId)
               .firstOrNull;
-          if (row == null) return const _SampleBack();
+          if (row == null || !_samples.isCurrentLease(lease)) {
+            return const _SampleBack();
+          }
           final person = row.person;
           final ownReady = _samples.ready(row, peer: false);
           final peerReady = _samples.ready(row, peer: true);
           final stage = ZyraJourneyStages.of(row.stage);
-          bool present() => _samples.activeRows?.contains(row) ?? false;
+          bool present() =>
+              _samples.isCurrentLease(lease) &&
+              (_samples.activeRows?.contains(row) ?? false);
           return SafeArea(
             child: Column(
               children: [
@@ -557,7 +586,7 @@ class _SampleJourneyScreen extends StatelessWidget {
                           onPressed: ownReady
                               ? null
                               : () {
-                                  if (_foreground(context)) {
+                                  if (_foreground(context) && present()) {
                                     _samples.markReady(row, peer: false);
                                   }
                                 },
@@ -569,7 +598,7 @@ class _SampleJourneyScreen extends StatelessWidget {
                           onPressed: peerReady
                               ? null
                               : () {
-                                  if (_foreground(context)) {
+                                  if (_foreground(context) && present()) {
                                     _samples.markReady(row, peer: true);
                                   }
                                 },
@@ -580,7 +609,9 @@ class _SampleJourneyScreen extends StatelessWidget {
                         FilledButton(
                           onPressed: ownReady && peerReady
                               ? () {
-                                  if (_foreground(context)) _samples.begin(row);
+                                  if (_foreground(context) && present()) {
+                                    _samples.begin(row);
+                                  }
                                 }
                               : null,
                           child: const Text('Begin your Journey'),
@@ -601,10 +632,12 @@ class _SampleJourneyScreen extends StatelessWidget {
                             context,
                             row,
                             present,
+                            lease,
                           );
                           if (confirmed &&
                               context.mounted &&
                               _foreground(context) &&
+                              present() &&
                               _samples.endActive(row)) {
                             Navigator.of(context).pop();
                           }
@@ -627,6 +660,7 @@ Future<bool> _confirmEnd(
   BuildContext context,
   ZyraSampleJourney row,
   bool Function() present,
+  int lease,
 ) async =>
     await showZyraConfirm(
       context: context,
@@ -637,6 +671,8 @@ Future<bool> _confirmEnd(
       primaryLabel: 'End Journey',
       secondaryLabel: 'Keep Journey',
       canConfirm: present,
+      visibilityListenable: _samples,
+      isVisible: () => _samples.isCurrentLease(lease),
     ) ==
     true;
 
@@ -682,37 +718,46 @@ class ZyraSampleActiveJourneyCard extends StatelessWidget {
   const ZyraSampleActiveJourneyCard({super.key, required this.row});
   final ZyraSampleJourney row;
 
-  bool _present() => _samples.activeRows?.contains(row) ?? false;
-
   @override
-  Widget build(BuildContext context) => ZyraOneJourneyConnectionsActiveCard(
-    profile: _samples.profileFor(row.person),
-    stageLabel: row.preparing
-        ? 'Preparing'
-        : ZyraJourneyStages.labelFor(row.stage),
-    primaryAction: OutlinedButton(
-      onPressed: () => _openSampleJourney(context, row),
-      child: const Text('Continue Journey'),
-    ),
-    actions: Row(
-      children: [
-        TextButton(
-          onPressed: () => _showProfile(context, row.person, _present),
-          child: const Text('View profile'),
-        ),
-        TextButton(
-          onPressed: () async {
-            if (!_foreground(context) || !_present()) return;
-            final confirmed = await _confirmEnd(context, row, _present);
-            if (confirmed && context.mounted && _foreground(context)) {
-              _samples.endActive(row);
-            }
-          },
-          child: const Text('End Journey'),
-        ),
-      ],
-    ),
-  );
+  Widget build(BuildContext context) {
+    final lease = _samples.generation;
+    bool present() =>
+        _samples.isCurrentLease(lease) &&
+        (_samples.activeRows?.contains(row) ?? false);
+    return ZyraOneJourneyConnectionsActiveCard(
+      profile: _samples.profileFor(row.person),
+      stageLabel: row.preparing
+          ? 'Preparing'
+          : ZyraJourneyStages.labelFor(row.stage),
+      primaryAction: OutlinedButton(
+        onPressed: () {
+          if (present()) _openSampleJourney(context, row);
+        },
+        child: const Text('Continue Journey'),
+      ),
+      actions: Row(
+        children: [
+          TextButton(
+            onPressed: () => _showProfile(context, row.person, present),
+            child: const Text('View profile'),
+          ),
+          TextButton(
+            onPressed: () async {
+              if (!_foreground(context) || !present()) return;
+              final confirmed = await _confirmEnd(context, row, present, lease);
+              if (confirmed &&
+                  context.mounted &&
+                  _foreground(context) &&
+                  present()) {
+                _samples.endActive(row);
+              }
+            },
+            child: const Text('End Journey'),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class ZyraSampleIntroductionsList extends StatelessWidget {
@@ -721,6 +766,7 @@ class ZyraSampleIntroductionsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lease = _samples.generation;
     final rows = _samples.introductionRows ?? const [];
     const guardians = [
       'Hassan · Father',
@@ -753,7 +799,9 @@ class ZyraSampleIntroductionsList extends StatelessWidget {
                 onOpen: () => _showProfile(
                   context,
                   person,
-                  () => _samples.hasIntroduction(person),
+                  () =>
+                      _samples.isCurrentLease(lease) &&
+                      _samples.hasIntroduction(person),
                   suggestedBy: guardians[index],
                 ),
               ),

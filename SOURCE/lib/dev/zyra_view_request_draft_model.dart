@@ -1154,13 +1154,15 @@ class ViewRequestDraftModel {
               _newestPastRequestFirst(entry, request) >= 0,
         )
         .length;
-    final wait = switch (count) {
-      >= 10 => const Duration(days: 30),
-      >= 5 => const Duration(days: 14),
-      _ => askAgainWait,
-    };
-    return request.movedAt.add(wait);
+    return request.movedAt.add(pastRequestWait(count));
   }
+
+  static Duration pastRequestWait(int consecutiveNotTakenUp) =>
+      switch (consecutiveNotTakenUp) {
+        >= 10 => const Duration(days: 30),
+        >= 5 => const Duration(days: 14),
+        _ => askAgainWait,
+      };
 
   DateTime? _currentAskAgainAfter(String id) {
     final journeyStart = _pastRequestJourneyStarts[id] ?? 0;

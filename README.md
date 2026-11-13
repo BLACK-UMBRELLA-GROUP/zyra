@@ -149,7 +149,8 @@ Widget and capture tests select other sample roles, plans and states from code. 
 
 The signed-in Founder can open **Developer** from a page heading in the
 ordinary Seeker app. A fresh session with the existing Founder claim enables
-local sample data on that account. See [the Flutter source guide](SOURCE/README.md)
+local sample data on that account. App Lock hides samples until the same
+session is verified again; signing out clears them. See [the Flutter source guide](SOURCE/README.md)
 for the offline test commands.
 
 Confirmations share a compact bottom sheet. Profile Preview uses the Profiles card with the member’s own public details and photos. Its request button shows an explanation.
