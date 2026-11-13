@@ -55,6 +55,31 @@ was decoded from the screenshots. See
 note for the source comparison, results, and independent review. Fable and
 the ZYRA design chat retain their separate handover review.
 
+### 13 November follow-up — Line 105 request safeguards
+
+Add and Scan now pass one lookup guard from `zyra_draft_local_code_page.dart`
+through their callers to `zyra_wali_link_service.dart` and
+`zyra_discovery_service.dart`. It binds the exact entry, attempt, account
+generation, route and visible Their code view. An edit, cover, tab change,
+app interruption or timeout retires the attempt. Its reply cannot publish a
+result, record an outcome event or clear a newer check.
+
+On signed-in ordinary Add, Check recognises a manually entered eight-digit
+hex invite and offers the existing invite screen with the code filled in.
+The member still presses Check there. A manual personal-code check that
+returns an authoritative empty result can offer the same screen with a blank
+field. Scan and camera entries do not offer it; edits and new checks clear
+it. In the ordinary Founder Guardian demo, Send simulates a request only
+after the visible relationship is selected. Detached and signup fixtures
+keep their existing local behaviour.
+
+Verification: `flutter analyze --no-pub` reported no issues and 150 tests
+passed in nine affected suites, including caller and camera lifetime,
+Founder fixtures, the shared code page, signup, invitation reuse, Guardian
+capacity, known-person matching and the link service. Tests used local fake
+transport and camera. Raw sharing and Q139 remain as above; no server work,
+device run or change to the Line 96 Developer titles.
+
 ---
 
 ## Historical V2 handover

@@ -14,6 +14,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/screens/browse/find_by_zyra_code_screen.dart';
 import 'package:zyra/services/zyra_discovery_service.dart';
 import 'package:zyra/main.dart' show supabase, supabaseReady;
+import 'package:zyra/screens/wali/accept_wali_invite_screen.dart';
 import 'package:zyra/screens/wali/zyra_code_screen.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
@@ -34,6 +35,7 @@ const _declinePath = '/rest/v1/rpc/zyra_decline_guardian_request';
 const _cancelPath = '/rest/v1/rpc/zyra_cancel_guardian_request';
 const _rotatePath = '/rest/v1/rpc/zyra_rotate_my_personal_code';
 const _previewPath = '/rest/v1/rpc/zyra_preview_personal_code';
+const _legacyPath = '/rest/v1/rpc/preview_wali_invite';
 const _matchPath = '/rest/v1/rpc/zyra_preview_match_code';
 const _sendPath = '/rest/v1/rpc/zyra_request_guardian_link';
 const _considerPath = '/rest/v1/rpc/zyra_consider_match_code';
@@ -166,6 +168,7 @@ void main() {
               _cancelPath,
               _rotatePath,
               _previewPath,
+              _legacyPath,
               _matchPath,
               _sendPath,
               _considerPath,
@@ -178,6 +181,7 @@ void main() {
         final expected = switch (request.url.path) {
           _rotatePath => {'p_role_context': 'wali'},
           _previewPath || _matchPath || _considerPath => {'p_code': _codeA},
+          _legacyPath => {'p_token': 'AB12CD34'},
           _sendPath => {'p_code': _codeA, 'p_relationship': 'father'},
           _acceptPath => {
             'p_request_id': _requestId,
@@ -418,12 +422,288 @@ void main() {
           findsOneWidget,
         );
         expect(find.text('Too many tries. Try again later.'), findsNothing);
-        if (!scan) {
-          expect(find.text('Check an older invite code'), findsOneWidget);
-        }
+        expect(
+          find.text('Check an older invite code'),
+          scan ? findsNothing : findsOneWidget,
+        );
       },
     );
   }
+
+  Iterable<ZyraTelemetryEventName> checkEvents() => ZyraProductTelemetry
+      .instance
+      .snapshot
+      .recentEvents
+      .where((event) => event.action == ZyraTelemetryAction.zyraCodeCheck)
+      .map((event) => event.name);
+
+  testWidgets(
+    'Add offers an exact manual older invite and checks only on tap',
+    (t) async {
+      ZyraWaliLinkService.setCodeReadyForTesting(true);
+      await render(t);
+      await press(t, 'Their code');
+      final field = find.byKey(const ValueKey('local-code-field'));
+      const legacyLabel = 'Check an older invite code';
+      for (final invalid in ['AB12CG34', 'AB12-CD34']) {
+        await t.enterText(field, invalid);
+        await flush(t);
+        await press(t, 'Check code');
+        expect(find.text(legacyLabel), findsNothing);
+        expect(calls, isEmpty);
+      }
+      await t.enterText(field, ' ab12cd34 ');
+      await flush(t);
+      expect(find.text(legacyLabel), findsNothing);
+      await press(t, 'Check code');
+      expect(calls, isEmpty);
+      expect(checkEvents(), isEmpty);
+      await press(t, legacyLabel);
+      expect(
+        t
+            .widget<AcceptWaliInviteScreen>(find.byType(AcceptWaliInviteScreen))
+            .initialCode,
+        'AB12CD34',
+      );
+      expect(calls, isEmpty);
+      await press(t, 'Check Code');
+      expect(calls.single.request.url.path, _legacyPath);
+      calls.single.complete([]);
+      await flush(t);
+      expect(
+        find.text("That code wasn't found. Check it and try again."),
+        findsOneWidget,
+      );
+    },
+  );
+
+  testWidgets('Add offers generic older entry only for a manual empty reply', (
+    t,
+  ) async {
+    ZyraWaliLinkService.setCodeReadyForTesting(true);
+    await render(t);
+    await press(t, 'Their code');
+    const legacyLabel = 'Check an older invite code';
+    await check(t);
+    calls.last.complete([]);
+    await flush(t);
+    expect(find.text(legacyLabel), findsOneWidget);
+    for (final message in ['too_many_code_checks', 'unavailable']) {
+      await press(t, 'Check code'); // A new check of the same entry.
+      expect(find.text(legacyLabel), findsNothing);
+      calls.last.complete({'code': 'P0001', 'message': message}, status: 400);
+      await flush(t);
+      expect(find.text(legacyLabel), findsNothing);
+    }
+    await press(t, 'Check code');
+    calls.last.complete([
+      {'owner_first_name': 'Wrong Role', 'owner_role': 'wali'},
+    ]);
+    await flush(t);
+    expect(find.text(legacyLabel), findsNothing);
+    await press(t, 'Check code');
+    calls.last.complete([]);
+    await flush(t);
+    await press(t, legacyLabel);
+    expect(
+      t
+          .widget<AcceptWaliInviteScreen>(find.byType(AcceptWaliInviteScreen))
+          .initialCode,
+      isNull,
+    );
+    expect(
+      calls.every((call) => call.request.url.path == _previewPath),
+      isTrue,
+    );
+  });
+
+  testWidgets('Add tab change retires lookup without clearing its retry', (
+    t,
+  ) async {
+    ZyraWaliLinkService.setCodeReadyForTesting(true);
+    await render(t);
+    await press(t, 'Their code');
+    await check(t);
+    final scroll = Scrollable.of(t.element(find.text('Checking…'))).position;
+    scroll.jumpTo(scroll.minScrollExtent);
+    await t.pump();
+    await press(t, 'My code');
+    await press(t, 'Their code');
+    await press(t, 'Check code');
+    expect(calls.map((call) => call.request.url.path), [
+      _previewPath,
+      _previewPath,
+    ]);
+    calls.first.complete([
+      {'owner_first_name': 'Stale', 'owner_role': 'seeker'},
+    ]);
+    await flush(t);
+    expect(find.text('Stale'), findsNothing);
+    expect(find.text('Checking…'), findsOneWidget);
+    expect(checkEvents(), [
+      ZyraTelemetryEventName.started,
+      ZyraTelemetryEventName.started,
+    ]);
+    calls.last.complete([
+      {'owner_first_name': 'Current', 'owner_role': 'seeker'},
+    ]);
+    await flush(t);
+    expect(find.text('Current'), findsOneWidget);
+    expect(checkEvents(), [
+      ZyraTelemetryEventName.started,
+      ZyraTelemetryEventName.started,
+      ZyraTelemetryEventName.completed,
+    ]);
+  });
+
+  testWidgets('Add rechecks its lookup before dispatch after start telemetry', (
+    t,
+  ) async {
+    ZyraWaliLinkService.setCodeReadyForTesting(true);
+    await render(t);
+    await press(t, 'Their code');
+    final telemetry = ZyraProductTelemetry.instance;
+    void revoke() {
+      telemetry.removeListener(revoke);
+      t.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+    }
+
+    telemetry.addListener(revoke);
+    addTearDown(() => telemetry.removeListener(revoke));
+    try {
+      await check(t);
+    } finally {
+      t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    }
+    expect(calls, isEmpty);
+    expect(checkEvents(), [ZyraTelemetryEventName.started]);
+  });
+
+  testWidgets('Scan does not offer the manual older invite flow', (t) async {
+    ZyraDiscoveryService.setCodeReadyForTesting(true);
+    size(t);
+    await t.pumpWidget(const MaterialApp(home: FindByZyraCodeScreen()));
+    await flush(t);
+    await t.enterText(
+      find.byKey(const ValueKey('local-code-field')),
+      'AB12CD34',
+    );
+    FocusManager.instance.primaryFocus?.unfocus();
+    await flush(t);
+    await press(t, 'Check code');
+    expect(find.text('Enter all 20 characters.'), findsOneWidget);
+    expect(find.text('Check an older invite code'), findsNothing);
+    expect(calls, isEmpty);
+    expect(checkEvents(), isEmpty);
+  });
+
+  for (final interruption in ['edit', 'cover', 'inactive', 'timeout']) {
+    testWidgets('Scan ignores old lookup after $interruption and retry', (
+      t,
+    ) async {
+      ZyraDiscoveryService.setCodeReadyForTesting(true);
+      final navigator = GlobalKey<NavigatorState>();
+      size(t);
+      await t.pumpWidget(
+        MaterialApp(
+          navigatorKey: navigator,
+          home: const FindByZyraCodeScreen(),
+        ),
+      );
+      await flush(t);
+      await check(t);
+      final old = calls.single;
+      expect(old.request.url.path, _matchPath);
+
+      switch (interruption) {
+        case 'edit':
+          final field = find.byKey(const ValueKey('local-code-field'));
+          await t.enterText(field, 'A');
+          await check(t);
+        case 'cover':
+          unawaited(
+            navigator.currentState!.push<void>(
+              MaterialPageRoute(builder: (_) => const Scaffold()),
+            ),
+          );
+          await flush(t);
+          navigator.currentState!.pop();
+          await flush(t);
+          await press(t, 'Check code');
+        case 'inactive':
+          t.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+          t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+          await flush(t);
+          await press(t, 'Check code');
+        case 'timeout':
+          await t.pump(const Duration(seconds: 10));
+          await flush(t);
+          expect(
+            find.text("The code couldn't be checked. Please try again."),
+            findsOneWidget,
+          );
+          await press(t, 'Check code');
+      }
+      expect(calls, hasLength(2));
+      expect(calls.last.request.url.path, _matchPath);
+
+      old.complete([
+        {
+          'owner_first_name': 'Old result',
+          'owner_age': 30,
+          'owner_location': 'Sample City',
+        },
+      ]);
+      await flush(t);
+      expect(find.text('Checking…'), findsOneWidget);
+      expect(find.text('Old result'), findsNothing);
+      expect(checkEvents(), [
+        ZyraTelemetryEventName.started,
+        ZyraTelemetryEventName.started,
+      ]);
+
+      calls.last.complete([
+        {
+          'owner_first_name': 'Current result',
+          'owner_age': 30,
+          'owner_location': 'Sample City',
+        },
+      ]);
+      await flush(t);
+      expect(find.text('Current result'), findsOneWidget);
+      expect(checkEvents(), [
+        ZyraTelemetryEventName.started,
+        ZyraTelemetryEventName.started,
+        ZyraTelemetryEventName.completed,
+      ]);
+    });
+  }
+
+  testWidgets('Scan drops an ACK from an earlier account generation', (
+    t,
+  ) async {
+    ZyraDiscoveryService.setCodeReadyForTesting(true);
+    size(t);
+    await t.pumpWidget(const MaterialApp(home: FindByZyraCodeScreen()));
+    await flush(t);
+    await check(t);
+    expect(calls.single.request.url.path, _matchPath);
+    await t.runAsync(() async {
+      await _session(_b).timeout(const Duration(seconds: 3));
+      await _session(_a).timeout(const Duration(seconds: 3));
+    });
+    calls.single.complete([
+      {
+        'owner_first_name': 'Old account result',
+        'owner_age': 30,
+        'owner_location': 'Sample City',
+      },
+    ]);
+    await flush(t);
+    expect(find.text('Old account result'), findsNothing);
+    expect(checkEvents(), [ZyraTelemetryEventName.started]);
+    expect(t.takeException(), isNull);
+  });
 
   testWidgets(
     'ordinary Add a Seeker requires relationship and sends one request',

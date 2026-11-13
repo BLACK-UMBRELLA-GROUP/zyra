@@ -18,6 +18,14 @@ abstract final class ZyraCodeFormat {
 
   static String? scanEntry(String raw) =>
       scanned(raw)?.substring(5).replaceAll('-', '');
+
+  // Older invite tokens are four random bytes encoded as uppercase hex.
+  static final _legacyInvitePattern = RegExp(r'^[0-9A-Fa-f]{8}$');
+
+  static String? legacyInvite(String raw) {
+    final value = raw.trim();
+    return _legacyInvitePattern.hasMatch(value) ? value.toUpperCase() : null;
+  }
 }
 
 const zyraCodeRateLimitSignal = 'too_many_code_checks';

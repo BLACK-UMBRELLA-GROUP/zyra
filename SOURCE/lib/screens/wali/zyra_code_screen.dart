@@ -763,7 +763,11 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     }
   }
 
-  Future<ZyraLocalCodeIdentity?> _lookup(String canonical) async {
+  Future<ZyraLocalCodeIdentity?> _lookup(
+    String canonical,
+    bool Function() isCurrent,
+  ) async {
+    if (!isCurrent()) return null;
     ZyraPersonalCodePreview? person;
     _relationship = null;
     if (_localRequested) {
@@ -780,7 +784,11 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
         ZyraTelemetryEventName.started,
         ZyraTelemetryAction.zyraCodeCheck,
       );
-      final result = await ZyraWaliLinkService.previewPersonalCode(canonical);
+      final result = await ZyraWaliLinkService.previewPersonalCode(
+        canonical,
+        isCurrent: isCurrent,
+      );
+      if (!isCurrent()) return null;
       _recordCodeEvent(
         result.valueOrNull == null
             ? ZyraTelemetryEventName.failed
@@ -986,30 +994,20 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
       interactionEpoch: _localRequested ? _localOperationEpoch : null,
       isLocal: local,
       simulatedCamera: _localRequested || widget.signupPreview,
-      legacyEntry: local
+      onLegacyInvite: local || owner == null
           ? null
-          : Align(
-              alignment: Alignment.center,
-              child: TextButton(
-                onPressed: ZyraTapFeedback.onTap(context, () {
-                  if (canAct() && origin?.isCurrent == true) {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const AcceptWaliInviteScreen(),
-                      ),
-                    );
-                  }
-                }),
-                child: Text(
-                  'Check an older invite code',
-                  style: ZyraText.subtext(size: 11.5),
+          : (code) {
+              if (!canAct() || origin?.isCurrent != true) return;
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => AcceptWaliInviteScreen(initialCode: code),
                 ),
-              ),
-            ),
+              );
+            },
       personalCode: code != null && (local || _canUseMemberCode(code))
           ? code.code
           : null,
-      lookupCode: _lookup,
+      guardedLookupCode: _lookup,
       onCopy: _rotating ? null : _copy,
       onShare: _rotating ? null : _share,
       onRotate: _rotating ? null : _rotate,
@@ -1018,9 +1016,13 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
           asGuardian && (!local || !_localRequested && !widget.signupPreview)
           ? _relationshipPicker
           : null,
-      onLocalSend:
-          local && !_localRequested && !widget.signupPreview && !asGuardian
+      onLocalSend: local && !_localRequested && !widget.signupPreview
           ? () {
+              if (asGuardian) {
+                if (_relationship != null) return true;
+                _toast('Choose how you are related first.');
+                return false;
+              }
               final capacity = ZyraGuardianCapacity.fromCount(
                 plan: AppState.instance.plan,
                 linkedGuardianCount: ZyraDevScenario.instance.guardianCount,

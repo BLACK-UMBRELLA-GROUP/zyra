@@ -7,6 +7,7 @@ import '../../dev/zyra_draft_local_code_page.dart';
 import '../../models/zyra_code_format.dart';
 import '../../models/zyra_known_person_code.dart';
 import '../../services/zyra_account_state.dart';
+import '../../services/zyra_auth.dart';
 import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_discovery_service.dart';
 import '../../services/zyra_internal_preview_client.dart';
@@ -41,17 +42,35 @@ class _FindByZyraCodeScreenState extends State<FindByZyraCodeScreen> {
       ZyraDeveloperAccess.isMainAppFounderPreview;
 
   late final _entryOwner = _owner;
-  (String?, int, int, bool) get _owner => (
+  (String?, String?, int, int, bool) get _owner => (
     ZyraAccountState.userId,
+    _authenticatedUserId(),
     ZyraAccountState.generation,
     ZyraInternalPreviewClient.previewSession,
     _isFounderPreview,
   );
 
-  bool _canAct() =>
-      mounted && !ZyraAccountState.isSigningOut && _entryOwner == _owner;
+  String? _authenticatedUserId() {
+    try {
+      return ZyraAuth.currentUser?.id;
+    } catch (_) {
+      return null;
+    }
+  }
 
-  Future<ZyraLocalCodeIdentity?> _lookup(String code) async {
+  bool _canAct() {
+    if (!mounted || ZyraAccountState.isSigningOut) return false;
+    final owner = _owner;
+    final (displayUserId, authenticatedUserId, _, _, preview) = owner;
+    return _entryOwner == owner &&
+        (preview || displayUserId == authenticatedUserId);
+  }
+
+  Future<ZyraLocalCodeIdentity?> _lookup(
+    String code,
+    bool Function() isCurrent,
+  ) async {
+    if (!isCurrent()) return null;
     final preview = _isFounderPreview;
     _considerError = null;
     _recordCodeEvent(
@@ -69,8 +88,11 @@ class _FindByZyraCodeScreenState extends State<FindByZyraCodeScreen> {
                   )
                 : null,
           )
-        : await ZyraDiscoveryService.previewKnownPersonCode(code);
-    if (!_canAct()) return null;
+        : await ZyraDiscoveryService.previewKnownPersonCode(
+            code,
+            isCurrent: isCurrent,
+          );
+    if (!isCurrent()) return null;
     _recordCodeEvent(
       result.person == null
           ? ZyraTelemetryEventName.failed
@@ -161,7 +183,7 @@ class _FindByZyraCodeScreenState extends State<FindByZyraCodeScreen> {
             isLocal: false,
             ownerKey: _entryOwner,
             canAct: _canAct,
-            lookupCode: _lookup,
+            guardedLookupCode: _lookup,
             manualAlias: !preview
                 ? null
                 : (raw) =>

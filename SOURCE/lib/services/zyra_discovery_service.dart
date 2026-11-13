@@ -56,17 +56,20 @@ class ZyraDiscoveryService {
   /// Seeker-only server boundary. An authoritative empty result deliberately
   /// does not reveal whether the code was unknown or the pair was ineligible.
   static Future<ZyraKnownPersonCodeLookup> previewKnownPersonCode(
-    String code,
-  ) async {
+    String code, {
+    required bool Function() isCurrent,
+  }) async {
     final user = ZyraAuth.currentUser;
     if (!(_codeReadyForTesting ?? supabaseReady) || user == null) {
       return const ZyraKnownPersonCodeLookup.unavailable();
     }
     try {
+      if (!isCurrent()) return const ZyraKnownPersonCodeLookup.unavailable();
       final raw = await supabase.rpc(
         'zyra_preview_match_code',
         params: {'p_code': code},
       );
+      if (!isCurrent()) return const ZyraKnownPersonCodeLookup.unavailable();
       if (raw is! List) return const ZyraKnownPersonCodeLookup.unavailable();
       if (raw.isEmpty) return const ZyraKnownPersonCodeLookup.available(null);
       if (raw.length != 1 || raw.single is! Map) {
@@ -79,11 +82,11 @@ class ZyraDiscoveryService {
           ? const ZyraKnownPersonCodeLookup.unavailable()
           : ZyraKnownPersonCodeLookup.available(person);
     } on PostgrestException catch (e) {
-      return e.message == zyraCodeRateLimitSignal
+      return isCurrent() && e.message == zyraCodeRateLimitSignal
           ? const ZyraKnownPersonCodeLookup.rateLimited()
           : const ZyraKnownPersonCodeLookup.unavailable();
     } catch (e) {
-      debugPrint('ZYRA: previewKnownPersonCode failed — $e');
+      if (isCurrent()) debugPrint('ZYRA: previewKnownPersonCode failed — $e');
       return const ZyraKnownPersonCodeLookup.unavailable();
     }
   }

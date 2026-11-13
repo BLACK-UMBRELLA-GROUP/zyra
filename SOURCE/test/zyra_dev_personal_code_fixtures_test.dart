@@ -8,6 +8,7 @@ import 'package:zyra/dev/zyra_dev_personal_code_fixtures.dart';
 import 'package:zyra/screens/wali/zyra_code_screen.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
+import 'package:zyra/services/zyra_product_telemetry.dart';
 import 'package:zyra/services/zyra_wali_link_service.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
@@ -186,9 +187,12 @@ void main() {
   });
 
   testWidgets(
-    'Guardian retains relationship controls in ordinary-flow preview',
+    'Guardian must select a relationship before simulating a request',
     (t) async {
+      final telemetry = ZyraProductTelemetry.instance;
+      final originalEvents = telemetry.snapshot.sessionEventCount;
       await open(t, guardian: true);
+      final invitationRevision = ZyraWaliLinkService.invitationRevision.value;
       await press(t, 'Their code');
       await t.enterText(
         find.byKey(const ValueKey('local-code-field')),
@@ -198,7 +202,26 @@ void main() {
       expect(find.text('Adam'), findsOneWidget);
       expect(find.text('Seeker · first name and role only'), findsOneWidget);
       expect(find.text('How are you related?'), findsOneWidget);
-      expect(find.text('Send request'), findsOneWidget);
+      await press(t, 'Send request');
+      expect(find.text('Choose how you are related first.'), findsOneWidget);
+      expect(find.text('Request sent'), findsNothing);
+      ScaffoldMessenger.of(
+        t.element(find.byType(ZyraCodeScreen)),
+      ).clearSnackBars();
+      await t.pumpAndSettle();
+
+      await press(t, 'Father');
+      expect(
+        t
+            .widget<ChoiceChip>(find.widgetWithText(ChoiceChip, 'Father'))
+            .selected,
+        isTrue,
+      );
+      await press(t, 'Send request');
+      expect(find.text('Request sent'), findsOneWidget);
+      expect(find.byType(BottomSheet), findsNothing);
+      expect(ZyraWaliLinkService.invitationRevision.value, invitationRevision);
+      expect(telemetry.snapshot.sessionEventCount, originalEvents);
     },
   );
 }

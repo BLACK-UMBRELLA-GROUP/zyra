@@ -628,8 +628,9 @@ class ZyraWaliLinkService {
   /// Available(null) is an authoritative invalid/unavailable code. A failed
   /// server read remains unavailable and must not be rendered as that claim.
   static Future<ZyraSourceResult<ZyraPersonalCodePreview?>> previewPersonalCode(
-    String code,
-  ) async {
+    String code, {
+    required bool Function() isCurrent,
+  }) async {
     if (!(_codeReadyForTesting ?? supabaseReady)) {
       return const ZyraSourceResult.unavailable(ZyraSourceFailure.notReady);
     }
@@ -637,10 +638,20 @@ class ZyraWaliLinkService {
       return const ZyraSourceResult.unavailable(ZyraSourceFailure.signedOut);
     }
     try {
+      if (!isCurrent()) {
+        return const ZyraSourceResult.unavailable(
+          ZyraSourceFailure.requestFailed,
+        );
+      }
       final raw = await supabase.rpc(
         'zyra_preview_personal_code',
         params: {'p_code': code},
       );
+      if (!isCurrent()) {
+        return const ZyraSourceResult.unavailable(
+          ZyraSourceFailure.requestFailed,
+        );
+      }
       if (raw is! List) {
         return const ZyraSourceResult.unavailable(
           ZyraSourceFailure.invalidResponse,
@@ -664,12 +675,12 @@ class ZyraWaliLinkService {
           : ZyraSourceResult.available(preview);
     } on PostgrestException catch (e) {
       return ZyraSourceResult.unavailable(
-        e.message == zyraCodeRateLimitSignal
+        isCurrent() && e.message == zyraCodeRateLimitSignal
             ? ZyraSourceFailure.codeRateLimited
             : ZyraSourceFailure.requestFailed,
       );
     } catch (e) {
-      debugPrint('ZYRA: previewPersonalCode failed — $e');
+      if (isCurrent()) debugPrint('ZYRA: previewPersonalCode failed — $e');
       return const ZyraSourceResult.unavailable(
         ZyraSourceFailure.requestFailed,
       );

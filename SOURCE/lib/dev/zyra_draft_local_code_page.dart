@@ -43,8 +43,9 @@ class ZyraLocalCodePage extends StatefulWidget {
     super.key,
     required this.mode,
     required this.canAct,
-    required this.lookupCode,
     required this.ownerKey,
+    this.lookupCode,
+    this.guardedLookupCode,
     this.canInteract,
     this.interactionEpoch,
     this.personalCode,
@@ -58,25 +59,31 @@ class ZyraLocalCodePage extends StatefulWidget {
     this.isLocal = true,
     this.copyLabel = 'Copy code',
     this.myCodeStatus,
-    this.legacyEntry,
+    this.onLegacyInvite,
     this.simulatedCamera = false,
     this.onShare,
     this.extra,
     this.captureBuilder,
     this.cameraEnabled = true,
-  });
+  }) : assert((lookupCode == null) != (guardedLookupCode == null));
   final ZyraLocalCodeContext mode;
   final bool Function() canAct;
   final bool Function()? canInteract;
   final Object Function()? interactionEpoch;
   final Object ownerKey;
-  final Future<ZyraLocalCodeIdentity?> Function(String) lookupCode;
+  final Future<ZyraLocalCodeIdentity?> Function(String)? lookupCode;
+  final Future<ZyraLocalCodeIdentity?> Function(
+    String code,
+    bool Function() isCurrent,
+  )?
+  guardedLookupCode;
   final String? personalCode;
   final VoidCallback? onCopy, onRotate;
   final ValueChanged<BuildContext>? onShare;
   final bool isLocal, cameraEnabled;
   final String copyLabel;
-  final Widget? myCodeStatus, legacyEntry;
+  final Widget? myCodeStatus;
+  final ValueChanged<String?>? onLegacyInvite;
   final bool simulatedCamera;
   final String? Function(String)? manualAlias;
   final Future<String?> Function(
@@ -108,11 +115,14 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
   final _focus = FocusNode();
   final _resultKey = GlobalKey();
   final _errorKey = GlobalKey();
+  final _legacyKey = GlobalKey();
   ZyraLocalCodeIdentity? _person;
   String? _error;
-  bool _theirCode = false, _invalidScan = false, _showLegacy = false;
+  ({String? code})? _legacyOffer;
+  bool _theirCode = false, _invalidScan = false, _scannedEntry = false;
   Timer? _invalidScanTimer;
   bool _busy = false, _sent = false, _closed = false;
+  bool _sending = false;
   bool _expired = false;
   Timer? _requestExpiry;
   static const _requestLifetime = Duration(days: 14);
@@ -121,6 +131,12 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
   int _revision = 0, _cameraRevision = 0;
   Object? _seenEpoch;
   AppLifecycleState? _lifecycle;
+  bool get _entryVisible =>
+      _theirCode || widget.mode == ZyraLocalCodeContext.scan;
+  bool get _canOfferLegacy =>
+      !widget.isLocal &&
+      widget.mode != ZyraLocalCodeContext.scan &&
+      widget.onLegacyInvite != null;
 
   bool _ownerAllows() {
     if (!mounted || _closed) return false;
@@ -157,12 +173,18 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
   }
 
   void _invalidate() {
-    ++_revision;
     _stopCapture();
+    _resetEntry();
+  }
+
+  void _resetEntry() {
+    ++_revision;
     _person = null;
     _busy = false;
+    _sending = false;
     _clearRequest();
     _error = null;
+    _legacyOffer = null;
   }
 
   @override
@@ -202,12 +224,8 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
         // A first-use permission prompt is inactive-only. Keep its capture
         // session, while retiring any lookup/result callbacks from before it.
         setState(() {
-          ++_revision;
           if (_cameraLive) _camera = _CameraMode.starting;
-          _person = null;
-          _busy = false;
-          _clearRequest();
-          _error = null;
+          _resetEntry();
         });
       } else {
         setState(_invalidate);
@@ -230,50 +248,73 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
   void _changed(String _) {
     if (!_current()) return;
     setState(() {
-      ++_revision;
-      _person = null;
-      _error = null;
-      _busy = false;
-      _clearRequest();
+      _scannedEntry = false;
+      _resetEntry();
     });
   }
 
   Future<void> _checkLocal() async {
-    if (!_current() || _busy) return;
+    if (!_current() || !_entryVisible || _busy) return;
     final entry = _controller.text;
+    final mayOfferLegacy = _canOfferLegacy && !_scannedEntry;
+    setState(_resetEntry);
     if (entry.length != 20) {
-      if (widget.legacyEntry != null) setState(() => _showLegacy = true);
+      final legacy = mayOfferLegacy ? ZyraCodeFormat.legacyInvite(entry) : null;
+      if (legacy != null) {
+        setState(() => _legacyOffer = (code: legacy));
+        _focus.unfocus();
+        _reveal();
+        return;
+      }
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Enter all 20 characters.')));
       return;
     }
     final epoch = _epoch();
-    final revision = ++_revision;
+    final revision = _revision;
+    final route = ModalRoute.of(context);
+    bool entryIsCurrent() =>
+        mounted &&
+        revision == _revision &&
+        _entryVisible &&
+        _controller.text == entry &&
+        (route?.isCurrent ?? widget.isLocal) &&
+        _current(epoch);
+    // Timeout closes this lease immediately, even if the underlying RPC
+    // eventually answers. The current entry can still show the timeout.
+    var leaseOpen = true;
+    bool isCurrent() => leaseOpen && entryIsCurrent();
     final canonical = widget.isLocal
         ? ZyraLocalCodeAliases.canonical(widget.mode, entry)
         : ZyraCodeFormat.grouped(entry);
-    setState(() {
-      _busy = true;
-      _person = null;
-      _clearRequest();
-      _error = null;
-    });
+    setState(() => _busy = true);
     ZyraLocalCodeIdentity? person;
     String? failure;
     try {
-      if (canonical != null) {
-        person = await widget
-            .lookupCode(canonical)
-            .timeout(const Duration(seconds: 10));
+      if (canonical != null && isCurrent()) {
+        final lookup = widget.guardedLookupCode;
+        person =
+            await (lookup != null
+                    ? lookup(canonical, isCurrent)
+                    : widget.lookupCode!(canonical))
+                .timeout(
+                  const Duration(seconds: 10),
+                  onTimeout: () {
+                    leaseOpen = false;
+                    throw TimeoutException('Code check timed out');
+                  },
+                );
       }
     } on ZyraCodeCheckFailure catch (e) {
       failure = e.message;
     } catch (_) {
       failure = "The code couldn't be checked. Please try again.";
+    } finally {
+      leaseOpen = false;
     }
     if (!mounted || revision != _revision) return;
-    if (!_current(epoch) || _controller.text != entry) {
+    if (!entryIsCurrent()) {
       setState(_invalidate);
       return;
     }
@@ -289,7 +330,9 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
           ? ZyraLocalCodeIdentity(person.firstName.trim(), role)
           : null;
       if (_person == null) {
-        if (failure == null) _showLegacy = true;
+        if (failure == null && person == null && mayOfferLegacy) {
+          _legacyOffer = (code: null);
+        }
         _error =
             failure ??
             (widget.mode == ZyraLocalCodeContext.scan
@@ -302,7 +345,10 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
   }
 
   void _reveal() => WidgetsBinding.instance.addPostFrameCallback((_) {
-    final target = _errorKey.currentContext ?? _resultKey.currentContext;
+    final target =
+        _legacyKey.currentContext ??
+        _errorKey.currentContext ??
+        _resultKey.currentContext;
     if (_current() && target != null) {
       Scrollable.ensureVisible(
         target,
@@ -323,12 +369,15 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
   Future<void> _send(int revision, Object? epoch) async {
     bool current() => _current(epoch) && revision == _revision;
     final person = _person;
-    if (!current() || person == null || _sent || _busy) return;
+    if (!_entryVisible || !current() || person == null || _sent || _busy) {
+      return;
+    }
     if (!widget.isLocal) {
       final send = widget.onMemberSend;
       if (send == null) return;
       setState(() {
         _busy = true;
+        _sending = true;
         _error = null;
       });
       String? error;
@@ -343,11 +392,15 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
       }
       if (!mounted || revision != _revision) return;
       if (!current()) {
-        setState(() => _busy = false);
+        setState(() {
+          _busy = false;
+          _sending = false;
+        });
         return;
       }
       setState(() {
         _busy = false;
+        _sending = false;
         _sent = error == null;
         _error = error;
       });
@@ -383,6 +436,7 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
     final revision = _cameraRevision;
     final epoch = _epoch();
     bool current() =>
+        _entryVisible &&
         _current(epoch) &&
         revision == _cameraRevision &&
         _camera != _CameraMode.off &&
@@ -400,6 +454,7 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
       }
       setState(() {
         _invalidate();
+        _scannedEntry = true;
         _controller.text = entry;
       });
       _checkLocal();
@@ -456,6 +511,12 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
     setState(() {
       _theirCode = theirCode;
       _stopCapture();
+      if (_busy && !_sending) {
+        _resetEntry();
+      } else {
+        if (!_sending) ++_revision;
+        _legacyOffer = null;
+      }
     });
   }
 
@@ -598,7 +659,7 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
         const SizedBox(height: 12),
       ],
     ];
-    final their = scan || _theirCode;
+    final their = _entryVisible;
     return SafeArea(
       child: CustomScrollView(
         key: ValueKey(('local-code-scroll', their)),
@@ -714,6 +775,7 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
                 ? (raw) => ZyraLocalCodeAliases.entry(widget.mode, raw)
                 : null),
         onChanged: _changed,
+        allowLegacyInvite: _canOfferLegacy,
         onCheck: _bound(_checkLocal),
         onFocus: _bound(_focus.requestFocus),
       ),
@@ -723,7 +785,25 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
         label: _busy ? 'Checking…' : 'Check code',
         onTap: _busy ? null : _bound(_checkLocal),
       ),
-      if (_showLegacy) ?widget.legacyEntry,
+      if (_legacyOffer case final offer? when _canOfferLegacy)
+        Align(
+          key: _legacyKey,
+          alignment: Alignment.center,
+          child: TextButton(
+            onPressed: ZyraTapFeedback.onTap(
+              context,
+              _bound(() {
+                if (_entryVisible && _legacyOffer == offer) {
+                  widget.onLegacyInvite?.call(offer.code);
+                }
+              }),
+            ),
+            child: Text(
+              'Check an older invite code',
+              style: ZyraText.subtext(size: 11.5),
+            ),
+          ),
+        ),
       if (person != null) ...[
         const SizedBox(height: 16),
         _CodeGlass(
@@ -801,6 +881,7 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
                         final revision = _revision;
                         return extra(
                           () =>
+                              _entryVisible &&
                               _current(epoch) &&
                               revision == _revision &&
                               !_busy,
@@ -849,8 +930,10 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
 }
 
 class _LocalCodeFormatter extends TextInputFormatter {
-  const _LocalCodeFormatter(this.alias);
+  const _LocalCodeFormatter(this.alias, {required this.allowLegacyInvite});
   final String? Function(String)? alias;
+  final bool allowLegacyInvite;
+  static final _nonAsciiAlphanumeric = RegExp(r'[^A-Za-z0-9]');
   @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,
@@ -869,7 +952,12 @@ class _LocalCodeFormatter extends TextInputFormatter {
       RegExp('[^A-Z0-9]'),
       '',
     );
-    if (clean.length > 20) return oldValue;
+    if (clean.length > 20 ||
+        (allowLegacyInvite &&
+            clean.length < 20 &&
+            _nonAsciiAlphanumeric.hasMatch(newValue.text.trim()))) {
+      return oldValue;
+    }
     return TextEditingValue(
       text: clean,
       selection: TextSelection.collapsed(offset: clean.length),
@@ -883,6 +971,7 @@ class _CodeBoxes extends StatelessWidget {
     required this.focus,
     required this.alias,
     required this.onChanged,
+    required this.allowLegacyInvite,
     required this.onCheck,
     required this.onFocus,
   });
@@ -890,6 +979,7 @@ class _CodeBoxes extends StatelessWidget {
   final FocusNode focus;
   final String? Function(String)? alias;
   final ValueChanged<String> onChanged;
+  final bool allowLegacyInvite;
   final VoidCallback onCheck, onFocus;
   @override
   Widget build(BuildContext context) => Semantics(
@@ -905,7 +995,12 @@ class _CodeBoxes extends StatelessWidget {
               key: const ValueKey('local-code-field'),
               controller: controller,
               focusNode: focus,
-              inputFormatters: [_LocalCodeFormatter(alias)],
+              inputFormatters: [
+                _LocalCodeFormatter(
+                  alias,
+                  allowLegacyInvite: allowLegacyInvite,
+                ),
+              ],
               textCapitalization: TextCapitalization.characters,
               textInputAction: TextInputAction.done,
               autocorrect: false,

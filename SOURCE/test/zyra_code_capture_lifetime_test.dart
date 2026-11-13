@@ -193,8 +193,9 @@ void main() {
 
   Future<void> mountFramed(
     WidgetTester tester,
-    ZyraLocalCodeContext mode,
-  ) async {
+    ZyraLocalCodeContext mode, {
+    bool ordinaryAdd = false,
+  }) async {
     tester.view.physicalSize = const Size(430, 932);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
@@ -212,6 +213,10 @@ void main() {
                 ownerKey: mode,
                 canAct: () => true,
                 lookupCode: (_) async => null,
+                isLocal: !ordinaryAdd,
+                onLegacyInvite: ordinaryAdd
+                    ? (_) => fail('Scanner must not open an older invite')
+                    : null,
                 captureBuilder: (_, guard, onCode, manual, onRunningChanged) =>
                     ZyraCodeCapture(
                       canCapture: guard,
@@ -235,6 +240,20 @@ void main() {
     await tester.tap(find.byKey(_frameKey));
     await _flush(tester);
   }
+
+  testWidgets('an empty Add scanner result never offers older invite entry', (
+    tester,
+  ) async {
+    await mountFramed(
+      tester,
+      ZyraLocalCodeContext.addGuardian,
+      ordinaryAdd: true,
+    );
+    platform.emit(['ZYRA-1A01-1B02-1C03-1D04-1E05']);
+    await _flush(tester);
+    expect(find.text('Invalid code. Please try again.'), findsOneWidget);
+    expect(find.text('Check an older invite code'), findsNothing);
+  });
 
   for (final mode in ZyraLocalCodeContext.values) {
     testWidgets(
@@ -325,6 +344,7 @@ void main() {
         'https://zyraconnect.app/ZYRA-ABCD-EFGH-IJKL-MNOP-QRST',
         'https://example.invalid/?code=ZYRA-ABCD-EFGH-IJKL-MNOP-QRST',
         'ZYRA-1234',
+        'AB12CD34',
       ]);
       await t.pump();
       await t.pump();
