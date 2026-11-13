@@ -224,7 +224,11 @@ void main() {
       ),
     );
     await _flush(tester);
-    expect(find.text('Camera is off — enter the code below'), findsOneWidget);
+    if (mode != ZyraLocalCodeContext.scan) {
+      await tester.tap(find.text('Their code'));
+      await _flush(tester);
+    }
+    expect(find.text('Tap to scan their code'), findsOneWidget);
     expect(find.byKey(_captionKey), findsNothing);
     await tester.ensureVisible(find.byKey(_frameKey));
     await _flush(tester);
@@ -239,7 +243,7 @@ void main() {
         await mountFramed(tester, mode);
         final frame = find.byKey(_frameKey);
         final caption = find.byKey(_captionKey);
-        final side = mode == ZyraLocalCodeContext.scan ? 250.0 : 190.0;
+        const side = 250.0;
         expect(platform.running, isTrue);
         expect(tester.getSize(frame), Size.square(side));
         expect(
@@ -303,12 +307,39 @@ void main() {
       await _flush(tester);
       expect(platform.running, isFalse);
       expect(find.byKey(_captionKey), findsNothing);
-      expect(find.text('Camera is off — enter the code below'), findsOneWidget);
+      expect(find.text('Tap to scan their code'), findsOneWidget);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
       await _flush(tester);
       expect(platform.running, isTrue);
       expect(find.byKey(_captionKey), findsOneWidget);
       expect(find.text('Camera is off — enter the code below'), findsNothing);
+    },
+  );
+
+  testWidgets(
+    'invalid web and malformed codes show a two-second hint without consuming the camera',
+    (t) async {
+      await mountFramed(t, ZyraLocalCodeContext.scan);
+      final hint = find.text("This isn't a ZYRA Code");
+      platform.emit([
+        'https://zyraconnect.app/ZYRA-ABCD-EFGH-IJKL-MNOP-QRST',
+        'https://example.invalid/?code=ZYRA-ABCD-EFGH-IJKL-MNOP-QRST',
+        'ZYRA-1234',
+      ]);
+      await t.pump();
+      await t.pump();
+      expect(hint, findsOneWidget);
+      expect(platform.running, isTrue);
+      expect(platform.stops, 0);
+      await t.pump(const Duration(milliseconds: 1999));
+      expect(hint, findsOneWidget);
+      await t.pump(const Duration(milliseconds: 1));
+      await t.pump();
+      expect(hint, findsNothing);
+      platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
+      await _flush(t);
+      expect(platform.running, isFalse);
+      expect(find.byKey(_captionKey), findsNothing);
     },
   );
 
@@ -356,9 +387,9 @@ void main() {
       await _flush(tester);
       expect(captured, isEmpty);
       expect(platform.stops, 0);
-      platform.emit(['  zyra-draft-sara  ']);
+      platform.emit(['  zyra-7k2mq9td4hxa2b8c5e1f  ']);
       await _flush(tester);
-      expect(captured, ['zyra-draft-sara']);
+      expect(captured, ['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
       expect(platform.stops, 1);
       expect(platform.running, isFalse);
     },
@@ -375,19 +406,23 @@ void main() {
         onCode: captured.add,
         onManualEntry: () {},
       );
-      platform.emit(['ZYRA-DRAFT-SARA', 'ZYRA-DRAFT-SARA', 'ZYRA-DRAFT-AMIRA']);
-      platform.emit(['ZYRA-DRAFT-SARA']);
+      platform.emit([
+        'ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F',
+        'ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F',
+        'ZYRA-DRAF-TAMI-RA00-0000-0000',
+      ]);
+      platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
       await _flush(tester);
-      platform.emit(['ZYRA-DRAFT-AMIRA']);
+      platform.emit(['ZYRA-DRAF-TAMI-RA00-0000-0000']);
       await _flush(tester);
-      expect(captured, ['ZYRA-DRAFT-SARA']);
+      expect(captured, ['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
       expect(platform.stops, 1);
       expect(platform.startOptions, hasLength(1));
     },
   );
 
   testWidgets(
-    'capture rejects overlong input while forwarding bounded prefix',
+    'capture rejects a prefix with the wrong length and keeps listening',
     (tester) async {
       final captured = <String>[];
       await _mount(
@@ -402,9 +437,9 @@ void main() {
       platform.emit(['${longest}A']);
       await _flush(tester);
       expect(captured, isEmpty);
-      platform.emit([longest]);
+      platform.emit([longest, 'ZYRA-ABCD-EFGH-IJKL-MNOP-QRST']);
       await _flush(tester);
-      expect(captured, [longest]);
+      expect(captured, ['ZYRA-ABCD-EFGH-IJKL-MNOP-QRST']);
       expect(platform.stops, 1);
     },
   );
@@ -429,7 +464,7 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('Enter code instead'), findsOneWidget);
-    platform.emit(['ZYRA-DRAFT-SARA']);
+    platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
     await _flush(tester);
     expect(captured, isEmpty);
     await tester.tap(find.byKey(_manualKey));
@@ -482,7 +517,7 @@ void main() {
         findsOneWidget,
       );
       expect(platform.stops, 1);
-      platform.emit(['ZYRA-DRAFT-SARA']);
+      platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
       await _flush(tester);
       expect(captured, isEmpty);
       await tester.tap(find.byKey(_manualKey));
@@ -507,7 +542,7 @@ void main() {
       tester.widget<ZyraKnownPersonCodePill>(find.byKey(_manualKey)).onTap,
       isNull,
     );
-    platform.emit(['ZYRA-DRAFT-SARA']);
+    platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
     await _flush(tester);
     expect(platform.stops, 0);
   });
@@ -530,9 +565,11 @@ void main() {
         .onDetect!;
     final staleManual = _manualCallback(tester);
     allowed = false;
-    platform.emit(['ZYRA-DRAFT-SARA']);
+    platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
     staleDetect(
-      const BarcodeCapture(barcodes: [Barcode(rawValue: 'ZYRA-DRAFT-AMIRA')]),
+      const BarcodeCapture(
+        barcodes: [Barcode(rawValue: 'ZYRA-DRAF-TAMI-RA00-0000-0000')],
+      ),
     );
     staleManual();
     await _flush(tester);
@@ -563,7 +600,7 @@ void main() {
       ),
     );
     await _flush(tester);
-    platform.emit(['ZYRA-DRAFT-AMIRA']);
+    platform.emit(['ZYRA-DRAF-TAMI-RA00-0000-0000']);
     await _flush(tester);
     expect(captured, isEmpty);
     expect(manual, 0);
@@ -603,12 +640,12 @@ void main() {
       onManualEntry: () {},
     );
     throws = true;
-    platform.emit(['ZYRA-DRAFT-SARA']);
+    platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
     await _flush(tester);
     expect(captured, isEmpty);
     expect(tester.takeException(), isNull);
     throws = false;
-    platform.emit(['ZYRA-DRAFT-AMIRA']);
+    platform.emit(['ZYRA-DRAF-TAMI-RA00-0000-0000']);
     await _flush(tester);
     expect(captured, isEmpty);
     await tester.pumpWidget(
@@ -645,9 +682,11 @@ void main() {
       await _flush(tester);
       expect(platform.stops, 1);
       expect(platform.running, isFalse);
-      platform.emit(['ZYRA-DRAFT-SARA']);
+      platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
       staleDetect(
-        const BarcodeCapture(barcodes: [Barcode(rawValue: 'ZYRA-DRAFT-SARA')]),
+        const BarcodeCapture(
+          barcodes: [Barcode(rawValue: 'ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F')],
+        ),
       );
       staleManual();
       await _flush(tester);
@@ -657,9 +696,9 @@ void main() {
       await _flush(tester);
       expect(platform.startOptions, hasLength(2));
       expect(platform.running, isTrue);
-      platform.emit(['ZYRA-DRAFT-AMIRA']);
+      platform.emit(['ZYRA-DRAF-TAMI-RA00-0000-0000']);
       await _flush(tester);
-      expect(captured, ['ZYRA-DRAFT-AMIRA']);
+      expect(captured, ['ZYRA-DRAF-TAMI-RA00-0000-0000']);
       expect(platform.stops, 2);
     },
   );
@@ -695,9 +734,11 @@ void main() {
     );
     await _flush(tester);
     expect(platform.stops, 1);
-    platform.emit(['ZYRA-DRAFT-SARA']);
+    platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
     staleDetect(
-      const BarcodeCapture(barcodes: [Barcode(rawValue: 'ZYRA-DRAFT-SARA')]),
+      const BarcodeCapture(
+        barcodes: [Barcode(rawValue: 'ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F')],
+      ),
     );
     staleManual();
     await _flush(tester);
@@ -706,9 +747,9 @@ void main() {
     navigator.currentState!.pop();
     await _flush(tester);
     expect(platform.startOptions, hasLength(2));
-    platform.emit(['ZYRA-DRAFT-AMIRA']);
+    platform.emit(['ZYRA-DRAF-TAMI-RA00-0000-0000']);
     await _flush(tester);
-    expect(captured, ['ZYRA-DRAFT-AMIRA']);
+    expect(captured, ['ZYRA-DRAF-TAMI-RA00-0000-0000']);
   });
 
   testWidgets(
@@ -731,7 +772,9 @@ void main() {
           .onDetect!;
       await tester.pumpWidget(const SizedBox.shrink());
       staleDetect(
-        const BarcodeCapture(barcodes: [Barcode(rawValue: 'ZYRA-DRAFT-SARA')]),
+        const BarcodeCapture(
+          barcodes: [Barcode(rawValue: 'ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F')],
+        ),
       );
       staleManual();
       platform.releasePendingStart();
@@ -762,7 +805,7 @@ void main() {
       await _flush(tester);
       expect(platform.stops, 1);
       expect(platform.running, isFalse);
-      platform.emit(['ZYRA-DRAFT-SARA']);
+      platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
       await _flush(tester);
       expect(captured, isEmpty);
     },
@@ -806,7 +849,7 @@ void main() {
     final staleManual = _manualCallback(tester);
     await tester.tap(find.byKey(_manualKey));
     staleManual();
-    platform.emit(['ZYRA-DRAFT-SARA']);
+    platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
     await _flush(tester);
     expect(manual, 1);
     expect(captured, isEmpty);

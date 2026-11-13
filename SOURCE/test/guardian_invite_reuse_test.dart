@@ -90,6 +90,11 @@ void main() {
       ),
     );
     await t.pumpAndSettle();
+    final tab = find.byKey(const ValueKey('zyra-their-code-tab'));
+    if (tab.evaluate().isNotEmpty) {
+      await t.tap(tab);
+      await t.pumpAndSettle();
+    }
   }
 
   testWidgets('actual Add Check then Send is local and never becomes Main', (

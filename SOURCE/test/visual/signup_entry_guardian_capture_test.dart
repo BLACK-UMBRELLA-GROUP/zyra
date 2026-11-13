@@ -472,16 +472,7 @@ Future<void> _guardianFlow(SignupCaptureHarness h) async {
     reached:
         'Actual responsibilities Continue opens the bounded fictional personal-code screen.',
   );
-  await h.tap('local-code-qr');
-  await _page(
-    h,
-    18,
-    'zyra_code',
-    'qr',
-    reached:
-        'Actual QR control displays the fictional signup code; no share, clipboard or camera.',
-  );
-  await h.tap('local-code-qr');
+  await h.tap('zyra-their-code-tab');
   await h.tester.enterText(
     find.byKey(const ValueKey('local-code-field')),
     '7K2MQ9TD4H',
@@ -494,7 +485,7 @@ Future<void> _guardianFlow(SignupCaptureHarness h) async {
     'zyra_code',
     'enter_info',
     reached:
-        'Actual signup Enter code control displays its existing local informational response.',
+        'Their code opens the five boxes and accepts local entry without sending a request.',
   );
   await h.tap('onboarding_dev_skip');
   await _currentRoute<WaliHomeShell>(h);

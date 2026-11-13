@@ -140,9 +140,9 @@ void main() {
           await h.tap('guardian-card-add-button');
           h.assertPage('guardian_invite');
           expect(h.key('zyra_code_local_preview_denied'), findsNothing);
-          expect(h.key('local-code-scroll'), findsOneWidget);
-          expect(find.text('YOUR ZYRA CODE'), findsOneWidget);
-          expect(find.textContaining('ZYRA-DEMO-'), findsOneWidget);
+          expect(h.key('zyra-code-main-card'), findsOneWidget);
+          expect(find.text('My code'), findsOneWidget);
+          expect(find.textContaining('ZYRA · DEMO ·'), findsOneWidget);
           await capture(h, 'invite_$state');
         });
       }

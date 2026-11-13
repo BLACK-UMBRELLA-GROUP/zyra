@@ -1,3 +1,5 @@
+import 'package:zyra/screens/browse/browse_screen.dart';
+import 'package:zyra/screens/wali/wali_invite_seeker_screen.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -27,11 +29,16 @@ const _owner = '00000000-0000-4000-8000-000000000101';
 const _captureRoot = ValueKey('line101-ordinary-guardian-capture');
 const _output = String.fromEnvironment('ZYRA_LINE101_ORDINARY_CAPTURE_DIR');
 const _font = 'PoppinsOrdinaryGuardian';
+const _codeOutput = String.fromEnvironment('ZYRA_LINE105_CAPTURE_DIR');
 
 Finder _key(String value) => find.byKey(ValueKey(value));
 
-Future<void> _capture(WidgetTester tester, String name) async {
-  if (_output.isEmpty) return;
+Future<void> _capture(
+  WidgetTester tester,
+  String name, {
+  String output = _output,
+}) async {
+  if (output.isEmpty) return;
   await tester.runAsync(() async {
     final boundary = tester.renderObject<RenderRepaintBoundary>(
       find.byKey(_captureRoot),
@@ -39,9 +46,7 @@ Future<void> _capture(WidgetTester tester, String name) async {
     final image = await boundary.toImage();
     try {
       final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
-      await File(
-        '$_output/$name.png',
-      ).writeAsBytes(bytes!.buffer.asUint8List());
+      await File('$output/$name.png').writeAsBytes(bytes!.buffer.asUint8List());
     } finally {
       image.dispose();
     }
@@ -128,6 +133,14 @@ void main() {
             for (final (index, id) in guardIds.indexed)
               {'id': id, 'first_name': index == 0 ? 'Hassan' : 'Yusuf $index'},
           ];
+        } else if (path == 'zyra_my_personal_code') {
+          final args = jsonDecode(request.body) as Map<String, dynamic>;
+          body = [
+            {
+              'code': 'ZYRA-ABCD-1234-5678-ABCD-1234',
+              'role_context': args['p_role_context'],
+            },
+          ];
         } else if (path == 'zyra_guardian_journey_access') {
           final args = jsonDecode(request.body) as Map<String, dynamic>;
           final isMain = args['p_guardian'] == 'guardian-0';
@@ -192,6 +205,7 @@ void main() {
     required EdgeInsets insets,
     required ZyraPlan plan,
     required int links,
+    int initialTab = 2,
   }) async {
     linkedCount = links;
     if (!supabaseReady) {
@@ -230,13 +244,15 @@ void main() {
           ),
           child: RepaintBoundary(key: _captureRoot, child: child!),
         ),
-        home: const HomeShell(),
+        home: HomeShell(initialTab: initialTab),
       ),
     );
     await tester.pumpAndSettle();
-    await tester.tapAt(tester.getCenter(_key('floating-nav-item-3')));
-    await tester.pumpAndSettle();
-    expect(linkReads, isNotEmpty);
+    if (initialTab != 0) {
+      await tester.tapAt(tester.getCenter(_key('floating-nav-item-3')));
+      await tester.pumpAndSettle();
+      expect(linkReads, isNotEmpty);
+    }
     expect(tester.takeException(), isNull);
   }
 
@@ -245,6 +261,65 @@ void main() {
     (const Size(375, 667), const EdgeInsets.only(top: 20)),
   ]) {
     final dimensions = '${size.width.toInt()}x${size.height.toInt()}';
+    testWidgets('ordinary Scan menu and Guardian Add a Seeker at $dimensions', (
+      t,
+    ) async {
+      await mount(
+        t,
+        size: size,
+        insets: insets,
+        plan: ZyraPlan.basic,
+        links: 0,
+        initialTab: 0,
+      );
+      // Exercise HomeShell's real Browse actions callback with a synthetic card.
+      t.widget<BrowseScreen>(find.byType(BrowseScreen)).onOpenActions!((
+        report: () {},
+        hide: () {},
+        compatibility: () {},
+        firstName: 'Sample',
+        hideWarning: 'Hide',
+      ));
+      await t.pumpAndSettle();
+      await t.tapAt(t.getCenter(_key('floating-nav-item-1')));
+      await t.pumpAndSettle();
+      expect(find.text('Scan'), findsOneWidget);
+      expect(find.text('Tap to scan their code'), findsOneWidget);
+      expect(find.text('My code'), findsNothing);
+      if (_codeOutput.isNotEmpty) {
+        await _capture(
+          t,
+          'ordinary_scan_${dimensions}__empty',
+          output: _codeOutput,
+        );
+      }
+      final navigator = t.state<NavigatorState>(find.byType(Navigator));
+      navigator.push(
+        MaterialPageRoute<void>(builder: (_) => const WaliInviteSeekerScreen()),
+      );
+      await t.pumpAndSettle();
+      expect(find.text('Add a Seeker'), findsOneWidget);
+      if (_codeOutput.isNotEmpty) {
+        await _capture(
+          t,
+          'ordinary_add_seeker_${dimensions}__my_code',
+          output: _codeOutput,
+        );
+      }
+      await t.tap(find.text('Their code'));
+      await t.pumpAndSettle();
+      expect(find.text('Tap to scan their code'), findsOneWidget);
+      if (_codeOutput.isNotEmpty) {
+        await _capture(
+          t,
+          'ordinary_add_seeker_${dimensions}__their_code',
+          output: _codeOutput,
+        );
+      }
+      expect(t.takeException(), isNull);
+      await t.pumpWidget(const SizedBox.shrink());
+      await t.pumpAndSettle();
+    });
     for (final plan in ZyraPlan.values) {
       for (final links in [0, 1]) {
         testWidgets('ordinary ${plan.name} with $links links at $dimensions', (
@@ -367,8 +442,25 @@ void main() {
           await tester.tap(add);
           await tester.pumpAndSettle();
           expect(find.byType(LinkGuardianScreen), findsOneWidget);
-          expect(find.text('Scan code'), findsOneWidget);
-          expect(find.text('Enter code'), findsOneWidget);
+          expect(find.text('My code'), findsOneWidget);
+          expect(find.text('Their code'), findsOneWidget);
+          if (_codeOutput.isNotEmpty && plan == ZyraPlan.basic && links == 0) {
+            await _capture(
+              tester,
+              'ordinary_add_guardian_${dimensions}__my_code',
+              output: _codeOutput,
+            );
+          }
+          await tester.tap(find.text('Their code'));
+          await tester.pumpAndSettle();
+          expect(find.text('Tap to scan their code'), findsOneWidget);
+          if (_codeOutput.isNotEmpty && plan == ZyraPlan.basic && links == 0) {
+            await _capture(
+              tester,
+              'ordinary_add_guardian_${dimensions}__their_code',
+              output: _codeOutput,
+            );
+          }
           expect(tester.takeException(), isNull);
           await tester.pumpWidget(const SizedBox.shrink());
           await tester.pumpAndSettle();

@@ -1,275 +1,15 @@
+import '../models/zyra_code_format.dart';
 import 'zyra_tap_feedback.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-import '../models/zyra_known_person_code.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 
 /// Retained code-entry presentation with all lookup and action authority owned
 /// by its caller. This widget does not resolve codes or create connections.
-class ZyraKnownPersonCodeContent extends StatelessWidget {
-  const ZyraKnownPersonCodeContent({
-    super.key,
-    required this.controller,
-    required this.focusNode,
-    required this.preview,
-    required this.busy,
-    required this.onScan,
-    required this.onCheck,
-    required this.onReset,
-    required this.resultAction,
-    required this.resultActionLabel,
-    this.resultActionKey = const ValueKey('known-person-consider'),
-    this.introDetail,
-    this.resultDetail,
-  });
-
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final ZyraKnownPersonCodePreview? preview;
-  final bool busy;
-  final VoidCallback? onScan;
-  final VoidCallback onCheck;
-  final VoidCallback onReset;
-  final VoidCallback? resultAction;
-  final String resultActionLabel;
-  final Key? resultActionKey;
-  final String? introDetail;
-  final String? resultDetail;
-
-  @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      _KnownPersonIntro(onScan: busy ? null : onScan, detail: introDetail),
-      const SizedBox(height: 20),
-      _KnownPersonEntryCard(
-        controller: controller,
-        focusNode: focusNode,
-        preview: preview,
-        busy: busy,
-        onCheck: onCheck,
-        onReset: onReset,
-        resultAction: resultAction,
-        resultActionLabel: resultActionLabel,
-        resultActionKey: resultActionKey,
-        detail: resultDetail,
-      ),
-    ],
-  );
-}
-
-class _KnownPersonIntro extends StatelessWidget {
-  const _KnownPersonIntro({required this.onScan, required this.detail});
-
-  final VoidCallback? onScan;
-  final String? detail;
-
-  @override
-  Widget build(BuildContext context) => Column(
-    children: [
-      Container(
-        width: 58,
-        height: 58,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: ZyraColors.accentBg,
-          border: Border.all(color: ZyraColors.accentBorder),
-        ),
-        child: Icon(
-          Icons.person_search_outlined,
-          size: 27,
-          color: ZyraColors.surfaceSignal,
-        ),
-      ),
-      const SizedBox(height: 16),
-      Text(
-        'Already know someone?',
-        textAlign: TextAlign.center,
-        style: ZyraText.heading(size: 22),
-      ),
-      const SizedBox(height: 8),
-      Text(
-        detail ??
-            'Scan or enter their ZYRA Code. You can then Consider '
-                'them through the normal matching process.',
-        textAlign: TextAlign.center,
-        style: ZyraText.subtext(size: 12.5),
-      ),
-      const SizedBox(height: 18),
-      ZyraKnownPersonCodePill(
-        icon: Icons.qr_code_scanner_rounded,
-        label: 'Scan code',
-        onTap: onScan,
-      ),
-    ],
-  );
-}
-
-class _KnownPersonEntryCard extends StatelessWidget {
-  const _KnownPersonEntryCard({
-    required this.controller,
-    required this.focusNode,
-    required this.preview,
-    required this.busy,
-    required this.onCheck,
-    required this.onReset,
-    required this.resultAction,
-    required this.resultActionLabel,
-    required this.resultActionKey,
-    required this.detail,
-  });
-
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final ZyraKnownPersonCodePreview? preview;
-  final bool busy;
-  final VoidCallback onCheck;
-  final VoidCallback onReset;
-  final VoidCallback? resultAction;
-  final String resultActionLabel;
-  final Key? resultActionKey;
-  final String? detail;
-
-  Widget _resultActions(BuildContext context) {
-    final reset = ZyraKnownPersonCodePill(
-      key: const ValueKey('known-person-different-code'),
-      icon: Icons.refresh_rounded,
-      label: 'Different code',
-      onTap: busy ? null : onReset,
-    );
-    final result = ZyraKnownPersonCodePill(
-      key: resultActionKey,
-      icon: Icons.person_add_alt_1_outlined,
-      label: busy ? 'Sending…' : resultActionLabel,
-      onTap: busy ? null : resultAction,
-    );
-    if (MediaQuery.textScalerOf(context).scale(12.5) > 18.75) {
-      // Retain the original row at ordinary text sizes. At large text sizes,
-      // full-width actions keep their names readable instead of truncating.
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [reset, const SizedBox(height: 10), result],
-      );
-    }
-    return Row(
-      children: [
-        Expanded(child: reset),
-        const SizedBox(width: 10),
-        Expanded(child: result),
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.all(18),
-    decoration: BoxDecoration(
-      color: ZyraColors.surfaceFill,
-      border: Border.all(color: ZyraColors.surfaceBorder),
-      borderRadius: BorderRadius.circular(22),
-    ),
-    child: AnimatedSwitcher(
-      duration: const Duration(milliseconds: 220),
-      switchInCurve: Curves.easeOutCubic,
-      switchOutCurve: Curves.easeInCubic,
-      child: preview == null
-          ? Column(
-              key: const ValueKey('known-code-entry'),
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                TextField(
-                  key: const ValueKey('known-person-code-field'),
-                  controller: controller,
-                  focusNode: focusNode,
-                  textCapitalization: TextCapitalization.characters,
-                  textInputAction: TextInputAction.done,
-                  onSubmitted: (_) => busy ? null : onCheck(),
-                  style: ZyraText.body(size: 14),
-                  decoration: InputDecoration(
-                    hintText: 'ZYRA-XXXX-XXXX-XXXX-XXXX-XXXX',
-                    prefixIcon: Icon(
-                      Icons.keyboard_outlined,
-                      color: ZyraColors.surfaceSignal,
-                    ),
-                    filled: true,
-                    fillColor: ZyraColors.iconButtonBg,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 14),
-                ZyraKnownPersonCodePill(
-                  key: const ValueKey('known-person-check-code'),
-                  icon: Icons.search_rounded,
-                  label: busy ? 'Checking…' : 'Check code',
-                  onTap: busy ? null : onCheck,
-                ),
-              ],
-            )
-          : Column(
-              key: const ValueKey('known-code-confirmation'),
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 56,
-                      height: 56,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: ZyraColors.accentBg,
-                        border: Border.all(color: ZyraColors.accentBorder),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        preview!.firstName.substring(0, 1).toUpperCase(),
-                        style: ZyraText.heading(
-                          size: 21,
-                          color: ZyraColors.goldText,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            preview!.firstName,
-                            style: ZyraText.heading(size: 17),
-                          ),
-                          const SizedBox(height: 3),
-                          Text(
-                            '${preview!.age} · ${preview!.city}',
-                            style: ZyraText.subtext(size: 12),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 13),
-                Text(
-                  detail ??
-                      'Confirm this is the right person. They will only become '
-                          'a Match if they also Consider you.',
-                  style: ZyraText.subtext(size: 11.5),
-                ),
-                const SizedBox(height: 16),
-                _resultActions(context),
-              ],
-            ),
-    ),
-  );
-}
-
-/// The original code-entry action styling, shared without transport behavior.
 class ZyraKnownPersonCodePill extends StatelessWidget {
   const ZyraKnownPersonCodePill({
     super.key,
@@ -334,12 +74,14 @@ class ZyraCodeCapture extends StatefulWidget {
     required this.onManualEntry,
     this.framed = false,
     this.onRunningChanged,
+    this.onRejected,
     this.unavailableMessage = 'Camera unavailable. Enter the code instead.',
   });
 
   final String unavailableMessage;
   final bool framed;
   final ValueChanged<bool>? onRunningChanged;
+  final VoidCallback? onRejected;
   final bool Function() canCapture;
   final ValueChanged<String> onCode;
   final VoidCallback onManualEntry;
@@ -352,6 +94,7 @@ class _ZyraCodeCaptureState extends State<ZyraCodeCapture>
     with WidgetsBindingObserver {
   final MobileScannerController _controller = MobileScannerController(
     autoStart: false,
+    formats: const [BarcodeFormat.qrCode],
   );
   Future<void> _cameraWork = Future<void>.value();
   ModalRoute<dynamic>? _route;
@@ -456,11 +199,13 @@ class _ZyraCodeCaptureState extends State<ZyraCodeCapture>
 
   void _onDetect(BarcodeCapture capture) {
     if (!_canAccept || _cameraFailed) return;
+    var rejected = false;
     for (final barcode in capture.barcodes) {
-      final code = barcode.rawValue?.trim();
-      if (code == null ||
-          code.length > 200 ||
-          !code.toUpperCase().startsWith('ZYRA-')) {
+      final raw = barcode.rawValue;
+      if (raw == null || raw.isEmpty) continue;
+      final code = raw.length <= 200 ? ZyraCodeFormat.scanned(raw) : null;
+      if (code == null) {
+        rejected = true;
         continue;
       }
       _handled = true;
@@ -468,6 +213,7 @@ class _ZyraCodeCaptureState extends State<ZyraCodeCapture>
       widget.onCode(code);
       return;
     }
+    if (rejected) widget.onRejected?.call();
   }
 
   void _onManualEntry() {

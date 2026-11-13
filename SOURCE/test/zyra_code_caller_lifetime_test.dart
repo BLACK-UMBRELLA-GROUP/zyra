@@ -11,6 +11,8 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:zyra/screens/browse/find_by_zyra_code_screen.dart';
+import 'package:zyra/services/zyra_discovery_service.dart';
 import 'package:zyra/main.dart' show supabase, supabaseReady;
 import 'package:zyra/screens/wali/zyra_code_screen.dart';
 import 'package:zyra/services/zyra_account_state.dart';
@@ -30,6 +32,11 @@ const _codeNew = 'ZYRA-2A01-2B02-2C03-2D04-2E05';
 const _acceptPath = '/rest/v1/rpc/zyra_accept_guardian_request';
 const _declinePath = '/rest/v1/rpc/zyra_decline_guardian_request';
 const _cancelPath = '/rest/v1/rpc/zyra_cancel_guardian_request';
+const _rotatePath = '/rest/v1/rpc/zyra_rotate_my_personal_code';
+const _previewPath = '/rest/v1/rpc/zyra_preview_personal_code';
+const _matchPath = '/rest/v1/rpc/zyra_preview_match_code';
+const _sendPath = '/rest/v1/rpc/zyra_request_guardian_link';
+const _considerPath = '/rest/v1/rpc/zyra_consider_match_code';
 const _changedError =
     'Your account changed. Please check your Guardian requests before continuing.';
 
@@ -153,20 +160,33 @@ void main() {
             request.url.query.isEmpty &&
             request.url.fragment.isEmpty &&
             request.method == 'POST' &&
-            {_acceptPath, _declinePath, _cancelPath}.contains(request.url.path);
+            {
+              _acceptPath,
+              _declinePath,
+              _cancelPath,
+              _rotatePath,
+              _previewPath,
+              _matchPath,
+              _sendPath,
+              _considerPath,
+            }.contains(request.url.path);
         if (!allowed) {
           denied.add('${request.method} ${request.url}');
           throw StateError('Strict Code evidence transport refused request');
         }
         final payload = jsonDecode(request.body) as Map<String, dynamic>;
-        final accept = request.url.path == _acceptPath;
-        final keys = payload.keys.toSet();
-        if (payload['p_request_id'] != _requestId ||
-            keys.length != (accept ? 2 : 1) ||
-            !keys.contains('p_request_id') ||
-            accept &&
-                (!keys.contains('p_relationship') ||
-                    payload['p_relationship'] != 'father')) {
+        final expected = switch (request.url.path) {
+          _rotatePath => {'p_role_context': 'wali'},
+          _previewPath || _matchPath || _considerPath => {'p_code': _codeA},
+          _sendPath => {'p_code': _codeA, 'p_relationship': 'father'},
+          _acceptPath => {
+            'p_request_id': _requestId,
+            'p_relationship': 'father',
+          },
+          _ => {'p_request_id': _requestId},
+        };
+        if (payload.length != expected.length ||
+            !expected.entries.every((e) => payload[e.key] == e.value)) {
           denied.add('Unexpected RPC payload on ${request.url.path}');
           throw StateError('Strict Code evidence transport refused payload');
         }
@@ -185,6 +205,8 @@ void main() {
   });
 
   tearDown(() async {
+    ZyraWaliLinkService.setCodeReadyForTesting(null);
+    ZyraDiscoveryService.setCodeReadyForTesting(null);
     // No normal test leaves an ACK pending; this is failure-cleanup only.
     for (final call in calls) {
       if (!call.reply.isCompleted) call.complete(false);
@@ -231,7 +253,7 @@ void main() {
     await tester.pumpWidget(subject());
     await flush(tester);
     expect(find.text('Synthetic Seeker'), findsOneWidget);
-    expect(find.text(_codeA), findsOneWidget);
+    expect(find.text(_codeA.replaceAll("-", " · ")), findsOneWidget);
   }
 
   Finder button(String action) => action == 'accept'
@@ -267,6 +289,167 @@ void main() {
     await tester.pumpWidget(const SizedBox());
     await tester.pump();
   }
+
+  Future<void> press(WidgetTester t, String label) async {
+    final target = find.text(label);
+    await t.ensureVisible(target);
+    await t.pump();
+    await t.tap(target.hitTestable());
+    await flush(t);
+  }
+
+  Future<void> check(WidgetTester t) async {
+    final field = find.byKey(const ValueKey('local-code-field'));
+    await t.enterText(field, _codeA);
+    FocusManager.instance.primaryFocus?.unfocus();
+    await flush(t);
+    await press(t, 'Check code');
+  }
+
+  testWidgets('ordinary share and copy use the same raw value as the QR', (
+    t,
+  ) async {
+    final deviceCalls = <MethodCall>[];
+    final messenger =
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+    const share = MethodChannel('dev.fluttercommunity.plus/share');
+    messenger.setMockMethodCallHandler(share, (call) async {
+      deviceCalls.add(call);
+      return '';
+    });
+    messenger.setMockMethodCallHandler(SystemChannels.platform, (call) async {
+      if (call.method == 'Clipboard.setData') deviceCalls.add(call);
+      return null;
+    });
+    addTearDown(() {
+      messenger.setMockMethodCallHandler(share, null);
+      messenger.setMockMethodCallHandler(SystemChannels.platform, null);
+    });
+    await render(t);
+    expect(find.byKey(const ValueKey(('zyra-qr', _codeA))), findsOneWidget);
+    await press(t, 'Share my code');
+    await press(t, 'Copy code');
+    expect(deviceCalls.map((call) => (call.arguments as Map)['text']), [
+      _codeA,
+      _codeA,
+    ]);
+    expect(calls, isEmpty);
+  });
+
+  testWidgets(
+    'rotation requires confirmation and publishes through a stale refresh and pause',
+    (t) async {
+      ZyraWaliLinkService.setCodeReadyForTesting(true);
+      await render(t);
+      await press(t, 'Get a new code');
+      expect(find.text('Get a new code?'), findsOneWidget);
+      expect(calls, isEmpty);
+      await press(t, 'Keep my code');
+      expect(calls, isEmpty);
+      await press(t, 'Get a new code');
+      await press(t, 'Get new code');
+      expect(calls.single.request.url.path, _rotatePath);
+      ZyraWaliLinkService.invitationRevision.value++;
+      await flush(t);
+      t.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      t.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+      t.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+      calls.single.complete([
+        {'code': _codeNew, 'role_context': 'wali'},
+      ]);
+      await flush(t);
+      t.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
+      t.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await flush(t);
+      expect(find.byKey(const ValueKey(('zyra-qr', _codeA))), findsNothing);
+      expect(find.byKey(const ValueKey(('zyra-qr', _codeNew))), findsOneWidget);
+      expect(
+        find.text('New code ready. Your old code no longer works.'),
+        findsOneWidget,
+      );
+      expect(find.text('Synthetic Seeker'), findsOneWidget);
+    },
+  );
+
+  for (final scan in [false, true]) {
+    testWidgets(
+      '${scan ? 'Scan' : 'Add'} only maps the exact check limit signal',
+      (t) async {
+        ZyraWaliLinkService.setCodeReadyForTesting(true);
+        ZyraDiscoveryService.setCodeReadyForTesting(true);
+        if (scan) {
+          size(t);
+          await t.pumpWidget(const MaterialApp(home: FindByZyraCodeScreen()));
+          await flush(t);
+        } else {
+          await render(t);
+          await press(t, 'Their code');
+        }
+        for (final message in [
+          'too_many_code_checks',
+          'not_too_many_code_checks',
+        ]) {
+          await check(t);
+          expect(calls.last.request.url.path, scan ? _matchPath : _previewPath);
+          calls.last.complete({
+            'code': 'P0001',
+            'message': message,
+          }, status: 400);
+          await flush(t);
+          expect(
+            find.text('Too many tries. Try again later.'),
+            message == 'too_many_code_checks' ? findsOneWidget : findsNothing,
+          );
+        }
+        expect(
+          find.text("The code couldn't be checked. Please try again."),
+          findsOneWidget,
+        );
+        await check(t);
+        calls.last.complete([]);
+        await flush(t);
+        expect(
+          find.text(
+            scan
+                ? 'That code is not available.'
+                : 'Invalid code. Please try again.',
+          ),
+          findsOneWidget,
+        );
+        expect(find.text('Too many tries. Try again later.'), findsNothing);
+        if (!scan) {
+          expect(find.text('Check an older invite code'), findsOneWidget);
+        }
+      },
+    );
+  }
+
+  testWidgets(
+    'ordinary Add a Seeker requires relationship and sends one request',
+    (t) async {
+      ZyraWaliLinkService.setCodeReadyForTesting(true);
+      await render(t);
+      await press(t, 'Their code');
+      await check(t);
+      calls.single.complete([
+        {'owner_first_name': 'Sam', 'owner_role': 'seeker'},
+      ]);
+      await flush(t);
+      expect(find.text('Seeker · first name and role only'), findsOneWidget);
+      await press(t, 'Send request');
+      expect(calls, hasLength(1));
+      expect(find.text('Choose how you are related first.'), findsOneWidget);
+      await press(t, 'Father');
+      await press(t, 'Send request');
+      expect(calls.last.request.url.path, _sendPath);
+      calls.last.complete(_requestId);
+      await flush(t);
+      expect(find.text('Request sent'), findsOneWidget);
+      expect(find.byType(BottomSheet), findsNothing);
+      expect(linked, 0);
+    },
+  );
 
   testWidgets('production read defaults retain not-ready refusal', (
     tester,
@@ -378,7 +561,7 @@ void main() {
       );
       rows.complete(ZyraSourceResult.available([_row()]));
       await flush(tester);
-      expect(find.text(_codeA), findsNothing);
+      expect(find.text(_codeA.replaceAll("-", " · ")), findsNothing);
       expect(find.text('Synthetic Seeker'), findsNothing);
       expect(calls, isEmpty);
       await unmount(tester);
@@ -462,7 +645,7 @@ void main() {
       );
       await flush(tester);
       expect(find.text('Latest Synthetic Seeker'), findsOneWidget);
-      expect(find.text(_codeNew), findsOneWidget);
+      expect(find.text(_codeNew.replaceAll("-", " · ")), findsOneWidget);
       expect(find.text('Older Synthetic Seeker'), findsNothing);
       await unmount(tester);
     },

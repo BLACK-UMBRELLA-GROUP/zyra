@@ -3169,7 +3169,8 @@ void main() {
       expect(code.asGuardian, isTrue);
       expect(find.byKey(const ValueKey('signup_code_preview')), findsOneWidget);
       expect(find.text('Add a Seeker').hitTestable(), findsOneWidget);
-      expect(find.byKey(const ValueKey('local-code-field')), findsOneWidget);
+      expect(find.text('My code'), findsOneWidget);
+      expect(find.byKey(const ValueKey('local-code-field')), findsNothing);
       _expectNoHeader(tester);
       await _candidate(tester, 'guardian_code__standard');
       for (final action in const ['copy', 'share']) {

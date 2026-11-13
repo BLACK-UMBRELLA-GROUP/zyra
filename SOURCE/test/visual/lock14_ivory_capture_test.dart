@@ -233,6 +233,16 @@ void main() {
       );
       await h.mount(tab: 3);
       await h.tap('guardian-add-top');
+      await h.tap('zyra-their-code-tab');
+      if (k('local-code-field').evaluate().isEmpty) {
+        await t.scrollUntilVisible(
+          k('local-code-field'),
+          140,
+          scrollable: find.byType(Scrollable).first,
+        );
+      }
+      await t.ensureVisible(k('local-code-field'));
+      await h.flush();
       await t.enterText(k('local-code-field'), ZyraLocalCodeAliases.master);
       FocusManager.instance.primaryFocus?.unfocus();
       await h.flush();
@@ -349,6 +359,16 @@ void main() {
       );
       await h.mount(tab: 3);
       await h.tap('guardian-add-top');
+      await h.tap('zyra-their-code-tab');
+      if (k('local-code-field').evaluate().isEmpty) {
+        await t.scrollUntilVisible(
+          k('local-code-field'),
+          140,
+          scrollable: find.byType(Scrollable).first,
+        );
+      }
+      await t.ensureVisible(k('local-code-field'));
+      await h.flush();
       await t.enterText(k('local-code-field'), ZyraLocalCodeAliases.master);
       FocusManager.instance.primaryFocus?.unfocus();
       await h.flush();

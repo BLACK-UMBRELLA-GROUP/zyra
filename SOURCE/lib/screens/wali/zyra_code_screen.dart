@@ -1,10 +1,8 @@
+import 'accept_wali_invite_screen.dart';
 import '../../widgets/zyra_tap_feedback.dart';
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../data/zyra_membership_catalog.dart';
@@ -15,6 +13,7 @@ import '../../dev/zyra_draft_local_code_page.dart';
 import '../../dev/zyra_draft_local_code_aliases.dart';
 import '../../dev/zyra_dev_personal_code_fixtures.dart';
 import '../../models/zyra_initial_signup_draft.dart';
+import '../../models/zyra_code_format.dart';
 import '../../services/zyra_account_state.dart';
 import '../../services/zyra_auth.dart';
 import '../../services/zyra_developer_access.dart';
@@ -22,17 +21,13 @@ import '../../services/zyra_internal_preview_client.dart';
 import '../../services/zyra_product_telemetry.dart';
 import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
-import '../../theme/zyra_motion.dart';
 import '../../theme/zyra_colors.dart';
-import '../../theme/zyra_interaction_style.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_loading.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import '../../widgets/zyra_guardian_capacity_notice.dart';
 import '../../widgets/zyra_confirm_sheet.dart';
-import '../../widgets/zyra_onboarding_direction_style.dart';
 import '../../widgets/zyra_pull_down_back_scope.dart';
-import 'accept_wali_invite_screen.dart';
 
 /// Caller-owned, session-only data for the protected concept's existing code UI.
 /// A revoked or replaced adapter can never become a live-service route.
@@ -57,27 +52,6 @@ class ZyraCodeLocalPreview {
 }
 
 typedef _LocalCodeEpoch = ({int local, int caller});
-
-Size _codeTextSize(
-  BuildContext context,
-  String text,
-  TextStyle style, {
-  double maxWidth = double.infinity,
-}) {
-  var effective = DefaultTextStyle.of(context).style.merge(style);
-  if (MediaQuery.boldTextOf(context)) {
-    effective = effective.merge(const TextStyle(fontWeight: FontWeight.bold));
-  }
-  final painter = TextPainter(
-    text: TextSpan(text: text, style: effective),
-    textDirection: Directionality.of(context),
-    textScaler: MediaQuery.textScalerOf(context),
-    locale: Localizations.maybeLocaleOf(context),
-  )..layout(maxWidth: maxWidth);
-  final size = painter.size;
-  painter.dispose();
-  return size;
-}
 
 /// One role-neutral surface for the Founder-approved permanent ZYRA Code.
 ///
@@ -126,19 +100,10 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
   List<ZyraGuardianLinkRequest> _requests = const [];
   bool _loading = true;
   bool _available = true;
-  bool _showQr = false;
   bool _copied = false;
-  bool _copyPulseActive = false;
-  int _copyPulseRevision = 0;
-  bool _shareSelected = false;
-  bool _showEnterCode = false;
-  String? _initialEnteredCode;
-  Timer? _copyPulseTimer;
-  Timer? _shareResetTimer;
-  Timer? _entryRevealTimer;
-  final GlobalKey _entryRevealKey = GlobalKey();
-  final GlobalKey _entryActionRevealKey = GlobalKey();
-  final ScrollController _screenScrollController = ScrollController();
+  bool _rotating = false;
+  int _previewRotations = 0;
+  String? _relationship;
   String? _error;
   String? _busyRequest;
   int _readRevision = 0;
@@ -161,7 +126,6 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
   AppLifecycleState? _localLifecycle;
   String? _localNotice;
 
-  String get _other => widget.asGuardian ? 'Seeker' : 'Guardian';
   bool get _signupPreviewAllowed =>
       mounted && ZyraDeveloperAccess.canUseDeveloperTools;
   bool get _isFounderDemoPreview =>
@@ -219,10 +183,6 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     if (_invitationListener) {
       ZyraWaliLinkService.invitationRevision.removeListener(_reload);
     }
-    _copyPulseTimer?.cancel();
-    _shareResetTimer?.cancel();
-    _entryRevealTimer?.cancel();
-    _screenScrollController.dispose();
     super.dispose();
   }
 
@@ -257,7 +217,6 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     final current = ModalRoute.of(context)?.isCurrent ?? true;
     if (_localRouteCurrent != null && _localRouteCurrent != current) {
       ++_localEpoch;
-      _entryRevealTimer?.cancel();
     }
     _localRouteCurrent = current;
   }
@@ -267,7 +226,6 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     if (!_localRequested) return;
     _localLifecycle = state;
     ++_localEpoch;
-    _entryRevealTimer?.cancel();
     if (mounted) {
       setState(() {
         _localOwnerAllows();
@@ -280,12 +238,9 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     _localDenied = true;
     ++_localEpoch;
     ++_readRevision;
-    _entryRevealTimer?.cancel();
     _code = null;
     _codeReadScope = null;
     _requests = const [];
-    _showQr = false;
-    _showEnterCode = false;
     _localNotice = null;
   }
 
@@ -348,18 +303,9 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     }
   }
 
-  VoidCallback _localBound(VoidCallback action) {
-    if (!_localRequested) return action;
-    final epoch = _localOperationEpoch();
-    return () {
-      if (_localInteractive(epoch)) action();
-    };
-  }
-
   void _localAuthorityChanged() {
     if (!mounted || !_localRequested) return;
     ++_localEpoch;
-    _entryRevealTimer?.cancel();
     setState(() {
       _localOwnerAllows();
     });
@@ -392,7 +338,6 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
         _code = null;
         _codeReadScope = null;
         _requests = const [];
-        _showQr = false;
         _signupPreviewNotice = null;
       });
     }
@@ -407,7 +352,7 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     if (_localRequested) {
       if (!_localOwnerAllows()) return;
       setState(() {
-        _code = _localPreview!.personalCode;
+        _code ??= _localPreview!.personalCode;
         _codeReadScope = null;
         _requests = const [];
         _loading = false;
@@ -427,11 +372,9 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
       );
       setState(() {
         if (_code?.code != null && _code!.code != nextCode.code) {
-          _copyPulseTimer?.cancel();
           _copied = false;
-          _copyPulseActive = false;
         }
-        _code = nextCode;
+        if (_previewRotations == 0 || _code == null) _code = nextCode;
         _codeReadScope = null;
         _requests = const [];
         _loading = false;
@@ -462,11 +405,12 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     setState(() {
       _loading = false;
       _available = codeResult.isAvailable && requestResult.isAvailable;
-      if (codeResult.valueOrNull case final value?) {
+      final codeValue = codeResult.valueOrNull;
+      if (codeValue != null &&
+          codeValue.roleContext == (asGuardian ? 'wali' : 'seeker')) {
+        final value = codeValue;
         if (_code?.code != null && _code!.code != value.code) {
-          _copyPulseTimer?.cancel();
           _copied = false;
-          _copyPulseActive = false;
         }
         _code = value;
         _codeReadScope = (ownerId, generation, asGuardian);
@@ -526,6 +470,16 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     }
   }
 
+  bool _canUseMemberCode(ZyraPersonalCode code) {
+    final scope = _codeReadScope;
+    return scope != null &&
+        scope.$1 != null &&
+        _isCurrentAccount(scope.$1, scope.$2) &&
+        widget.asGuardian == scope.$3 &&
+        !_isFounderDemoPreview &&
+        identical(code, _code);
+  }
+
   Future<void> _copy() async {
     if (_localRequested) {
       _localInformation('This is a local preview. Nothing was copied.');
@@ -538,21 +492,18 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
       );
       return;
     }
-    final code = _code?.code;
-    if (code == null) return;
-    await ZyraInteractionStyle.emitSelectionHaptic();
-    if (_localRequested) return;
-    await Clipboard.setData(ClipboardData(text: code));
-    if (!mounted) return;
-    _copyPulseTimer?.cancel();
-    setState(() {
-      _copied = true;
-      _copyPulseActive = true;
-      _copyPulseRevision += 1;
-    });
-    _copyPulseTimer = Timer(const Duration(milliseconds: 240), () {
-      if (mounted) setState(() => _copyPulseActive = false);
-    });
+    final code = _code;
+    if (code == null ||
+        _rotating ||
+        (!_isFounderDemoPreview && !_canUseMemberCode(code))) {
+      return;
+    }
+    try {
+      await Clipboard.setData(ClipboardData(text: code.code));
+      if (mounted && identical(_code, code)) setState(() => _copied = true);
+    } on PlatformException {
+      if (mounted) _toast("Your code couldn't be copied. Please try again.");
+    }
   }
 
   Future<void> _share(BuildContext buttonContext) async {
@@ -569,170 +520,124 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
       );
       return;
     }
-    final code = _code?.code;
-    if (code == null) return;
+    final code = _code;
+    if (code == null ||
+        _rotating ||
+        (!_isFounderDemoPreview && !_canUseMemberCode(code))) {
+      return;
+    }
     final box = buttonContext.findRenderObject() as RenderBox?;
     final origin = box == null
         ? null
         : box.localToGlobal(Offset.zero) & box.size;
-    await ZyraInteractionStyle.emitSelectionHaptic();
-    if (!mounted || _localRequested) return;
-    setState(() => _shareSelected = true);
-    _shareResetTimer?.cancel();
-    _shareResetTimer = Timer(const Duration(seconds: 2), () {
-      if (mounted) setState(() => _shareSelected = false);
-    });
-    await SharePlus.instance.share(
-      ShareParams(
-        text: _isFounderDemoPreview
-            ? 'ZYRA Developer Preview code:\n$code\n\n'
-                  'This sample code cannot connect real accounts.'
-            : 'Use my ZYRA Code to send me a Guardian request:\n$code\n\n'
-                  'I will still need to approve the request in ZYRA.',
-        subject: 'My ZYRA Code',
-        sharePositionOrigin: origin,
-      ),
-    );
+    try {
+      // The locked domain has no approved code route yet. Share the same
+      // raw code as the QR and clipboard until that handoff is specified.
+      await SharePlus.instance.share(
+        ShareParams(
+          text: _isFounderDemoPreview
+              ? 'ZYRA Developer Preview code:\n${code.code}\n\n'
+                    'This sample code cannot connect real accounts.'
+              : code.code,
+          subject: 'My ZYRA Code',
+          sharePositionOrigin: origin,
+        ),
+      );
+    } on PlatformException {
+      if (mounted) _toast("Your code couldn't be shared. Please try again.");
+    }
   }
 
-  bool _rotating = false;
+  void _toast(String message) => ScaffoldMessenger.maybeOf(
+    context,
+  )?.showSnackBar(SnackBar(content: Text(message)));
 
   Future<void> _rotate() async {
-    if (_localRequested) {
-      _localInformation(
-        'This is a local preview. No personal code was changed.',
-      );
-      return;
-    }
-    if (widget.signupPreview) {
-      _signupInformation('Preview only. No personal code was changed.');
-      return;
-    }
     final origin = ModalRoute.of(context);
-    if (_rotating || origin?.isCurrent != true) return;
-    final owner = _currentMemberId();
-    final generation = ZyraAccountState.generation;
-    final asGuardian = widget.asGuardian;
     final code = _code;
-    bool sameCode() =>
-        owner != null &&
-        _codeReadScope == (owner, generation, asGuardian) &&
-        _isCurrentAccount(owner, generation) &&
-        !_localRequested &&
-        !widget.signupPreview &&
-        widget.asGuardian == asGuardian &&
-        _code == code;
-    if (!sameCode() || code == null) return;
-    _rotating = true;
+    if (_rotating || origin?.isCurrent != true || code == null) return;
+    final asGuardian = widget.asGuardian;
+    final preview = _isFounderDemoPreview;
+    final generation = ZyraAccountState.generation;
+    final session = ZyraInternalPreviewClient.previewSession;
+    bool sameCode({bool requireForeground = true}) {
+      if (!mounted ||
+          code.code != _code?.code ||
+          widget.asGuardian != asGuardian) {
+        return false;
+      }
+      final lifecycle = WidgetsBinding.instance.lifecycleState;
+      if (requireForeground &&
+          lifecycle != null &&
+          lifecycle != AppLifecycleState.resumed) {
+        return false;
+      }
+      if (!preview) {
+        return ZyraAccountState.generation == generation &&
+            _canUseMemberCode(_code!);
+      }
+      if (!_isFounderDemoPreview ||
+          ZyraAccountState.generation != generation ||
+          ZyraInternalPreviewClient.previewSession != session) {
+        return false;
+      }
+      try {
+        return _localRequested
+            ? _localOwnerAllows() &&
+                  (_localPreview?.canInteract?.call() ?? true)
+            : ZyraDeveloperAccess.canUseDeveloperTools;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    if (!sameCode()) return;
+    setState(() => _rotating = true);
     try {
       final confirmed = await showZyraConfirm(
         context: context,
         icon: Icons.refresh_rounded,
-        title: 'Change your ZYRA Code?',
+        title: 'Get a new code?',
         body:
-            'Your current code will stop working and will never be issued again. '
-            'Requests already sent will stay visible.',
-        primaryLabel: 'Change code',
-        secondaryLabel: 'Keep code',
-        canConfirm: sameCode,
+            'Your current code and QR stop working straight away. Anyone you shared it with will need the new one. Requests already sent to you stay.',
+        primaryLabel: 'Get new code',
+        secondaryLabel: 'Keep my code',
+        canConfirm: () => sameCode(),
       );
-      if (confirmed != true || !sameCode() || origin?.isCurrent != true) {
+      if (confirmed != true || !sameCode() || origin?.isCurrent != true) return;
+      final role = asGuardian ? 'wali' : 'seeker';
+      final next = preview
+          ? ZyraPersonalCode(
+              code: _previewRotations == 0
+                  ? 'ZYRA-7K2M-Q9TD-4H8P-2XJW-R6NB'
+                  : ZyraCodeFormat.grouped(
+                      '7K2MQ9TD4H8P2XJW${(_previewRotations + 1).toRadixString(36).toUpperCase().padLeft(4, '0')}',
+                    ),
+              roleContext: role,
+            )
+          : (await ZyraWaliLinkService.rotatePersonalCode(
+              roleContext: role,
+            )).valueOrNull;
+      if (!sameCode(requireForeground: false)) return;
+      if (next == null || next.roleContext != role || next.code == code.code) {
+        setState(
+          () => _error = "Your code couldn't be changed. Please try again.",
+        );
         return;
       }
-      final result = await ZyraWaliLinkService.rotatePersonalCode(
-        roleContext: asGuardian ? 'wali' : 'seeker',
-      );
-      if (!sameCode()) return;
+      ++_readRevision; // A read started before rotation must not restore the old QR.
       setState(() {
-        if (result.valueOrNull case final code?) {
-          _copyPulseTimer?.cancel();
-          _code = code;
-          _showQr = false;
-          _copied = false;
-          _copyPulseActive = false;
-          _error = null;
-        } else {
-          _error = "Your code couldn't be changed. Please try again.";
-        }
+        if (preview) ++_previewRotations;
+        _code = next;
+        _copied = false;
+        _error = null;
       });
-    } finally {
-      _rotating = false;
-    }
-  }
-
-  void _enterCode([String? initialCode]) {
-    if (_localRequested && !_localInteractive()) return;
-    if (widget.signupPreview) {
-      _signupInformation(
-        'Preview only. In the app, enter the other person\'s ZYRA Code, '
-        'confirm who they are, then send a request. A link is created only '
-        'after they accept. No code is checked or request sent here.',
-      );
-      return;
-    }
-    final opening = initialCode != null || !_showEnterCode;
-    setState(() {
-      _initialEnteredCode = initialCode;
-      _showEnterCode = opening;
-      if (opening) _showQr = false;
-    });
-    if (opening) _revealCodeEntry();
-  }
-
-  void _revealCodeEntry() {
-    final epoch = _localRequested ? _localOperationEpoch() : null;
-    void reveal() {
-      if (!mounted || _localRequested && !_localInteractive(epoch)) return;
-      if (_screenScrollController.hasClients) {
-        final duration = ZyraMotion.scrollDuration(context);
-        final target = _screenScrollController.position.maxScrollExtent;
-        if (duration == Duration.zero) {
-          _screenScrollController.jumpTo(target);
-        } else {
-          _screenScrollController.animateTo(
-            target,
-            duration: duration,
-            curve: ZyraMotion.curve,
-          );
-        }
+      if (origin?.isCurrent == true) {
+        _toast('New code ready. Your old code no longer works.');
       }
-      final entryContext =
-          _entryActionRevealKey.currentContext ??
-          _entryRevealKey.currentContext;
-      if (!mounted || entryContext == null) return;
-      Scrollable.ensureVisible(
-        entryContext,
-        duration: ZyraMotion.scrollDuration(context),
-        curve: ZyraMotion.curve,
-        alignment: 0.84,
-      );
+    } finally {
+      if (mounted) setState(() => _rotating = false);
     }
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted || _localRequested && !_localInteractive(epoch)) return;
-      reveal();
-      _entryRevealTimer?.cancel();
-      _entryRevealTimer = Timer(const Duration(milliseconds: 380), reveal);
-    });
-  }
-
-  Future<void> _scan() async {
-    if (_localRequested) {
-      _localInformation('This is a local preview. The camera was not opened.');
-      return;
-    }
-    if (widget.signupPreview) {
-      _signupInformation(
-        'Preview only. Scanning uses the camera after you choose to scan '
-        'a code in the app. This preview never opens the camera or asks '
-        'for access.',
-      );
-      return;
-    }
-    final code = await Navigator.of(context).push<String>(
-      MaterialPageRoute(builder: (_) => const _ScanZyraCodeScreen()),
-    );
-    if (code != null && mounted) _enterCode(code);
   }
 
   Future<void> _accept(ZyraGuardianLinkRequest request) async {
@@ -858,223 +763,149 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     }
   }
 
-  bool get _canUseExpandedComposition =>
-      _code != null &&
-      _available &&
-      !_requests.any((request) => request.isPending) &&
-      _error == null;
-
-  Future<void> _toggleQr() async {
+  Future<ZyraLocalCodeIdentity?> _lookup(String canonical) async {
+    ZyraPersonalCodePreview? person;
+    _relationship = null;
     if (_localRequested) {
-      if (!_localInteractive()) return;
-      setState(() => _showQr = !_showQr);
-      return;
-    }
-    if (widget.signupPreview) {
-      if (!_signupPreviewAllowed) return;
-      setState(() => _showQr = !_showQr);
-      return;
-    }
-    await ZyraInteractionStyle.emitSelectionHaptic();
-    if (!mounted) return;
-    setState(() => _showQr = !_showQr);
-  }
-
-  Widget _buildSharingActions({double height = 54, required double maxWidth}) {
-    final large = height > 54;
-    final labels = [_copied ? 'Copied' : 'Copy', 'QR', 'Share'];
-    final style = ZyraText.body(size: large ? 13.5 : 12.5);
-    final iconWidth = large ? 19.0 : 17.0;
-    final requiredWidth = labels
-        .map(
-          (label) =>
-              _codeTextSize(context, label, style).width + iconWidth + 6 + 24,
-        )
-        .reduce((a, b) => a > b ? a : b);
-    int columns = 3;
-    double slot() => (maxWidth - (columns - 1) * 9) / columns;
-    while (_localRequested && columns > 1 && requiredWidth > slot()) {
-      columns--;
-    }
-    final labelWidth = (slot() - iconWidth - 6 - 24)
-        .clamp(1.0, double.infinity)
-        .toDouble();
-    final labelHeight = labels
-        .map(
-          (label) =>
-              _codeTextSize(context, label, style, maxWidth: labelWidth).height,
-        )
-        .reduce((a, b) => a > b ? a : b);
-    final actionHeight = _localRequested && labelHeight + 20 > height
-        ? labelHeight + 20
-        : height;
-    final actions = <Widget>[
-      _SmallAction(
-        icon: _copied ? Icons.check_rounded : Icons.copy_outlined,
-        label: labels[0],
-        height: actionHeight,
-        prominent: large,
-        adaptive: _localRequested,
-        selected: _copied,
-        pulse: _copyPulseActive,
-        pulseRevision: _copyPulseRevision,
-        enableFeedback: !_localRequested,
-        onTap: _localBound(_copy),
-      ),
-      _SmallAction(
-        icon: Icons.qr_code_2,
-        label: 'QR',
-        height: actionHeight,
-        prominent: large,
-        adaptive: _localRequested,
-        selected: _showQr,
-        enableFeedback: !_localRequested,
-        onTap: _localBound(_toggleQr),
-      ),
-      Builder(
-        builder: (buttonContext) => _SmallAction(
-          icon: Icons.ios_share_outlined,
-          label: 'Share',
-          height: actionHeight,
-          prominent: large,
-          adaptive: _localRequested,
-          selected: _shareSelected,
-          enableFeedback: !_localRequested,
-          onTap: _localBound(() => _share(buttonContext)),
-        ),
-      ),
-    ];
-    if (columns == 3) {
-      return Row(
-        children: [
-          for (int i = 0; i < actions.length; i++) ...[
-            if (i != 0) const SizedBox(width: 9),
-            Expanded(child: actions[i]),
-          ],
-        ],
+      if (!_localInteractive()) return null;
+      person = await _localPreview!.lookupCode(canonical);
+      if (!_localInteractive()) return null;
+    } else if (_isFounderDemoPreview) {
+      person = ZyraDevPersonalCodeFixtures.previewEntryCode(
+        canonical,
+        asGuardian: widget.asGuardian,
       );
+    } else {
+      _recordCodeEvent(
+        ZyraTelemetryEventName.started,
+        ZyraTelemetryAction.zyraCodeCheck,
+      );
+      final result = await ZyraWaliLinkService.previewPersonalCode(canonical);
+      _recordCodeEvent(
+        result.valueOrNull == null
+            ? ZyraTelemetryEventName.failed
+            : ZyraTelemetryEventName.completed,
+        ZyraTelemetryAction.zyraCodeCheck,
+      );
+      if (result.failure == ZyraSourceFailure.codeRateLimited) {
+        throw const ZyraCodeCheckFailure(zyraCodeRateLimitMessage);
+      }
+      if (result.isUnavailable) {
+        throw const ZyraCodeCheckFailure(
+          "The code couldn't be checked. Please try again.",
+        );
+      }
+      person = result.valueOrNull;
     }
-    return Wrap(
-      spacing: 9,
-      runSpacing: 9,
-      children: [
-        for (final action in actions) SizedBox(width: slot(), child: action),
-      ],
+    if (person == null) return null;
+    return ZyraLocalCodeIdentity(
+      person.firstName,
+      person.role == 'wali' ? 'Guardian' : 'Seeker',
     );
   }
 
-  Widget _buildExpandedComposition({required double availableWidth}) {
-    final code = _code!;
-    return SingleChildScrollView(
-      controller: _screenScrollController,
-      padding: const EdgeInsets.fromLTRB(24, 24, 24, 30),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+  void _recordCodeEvent(
+    ZyraTelemetryEventName event,
+    ZyraTelemetryAction action,
+  ) => ZyraProductTelemetry.instance.record(
+    feature: ZyraTelemetryFeature.zyraCode,
+    name: event,
+    action: action,
+    surface: widget.asGuardian
+        ? ZyraTelemetrySurface.guardian
+        : ZyraTelemetrySurface.seeker,
+  );
+
+  Future<String?> _send(
+    String code,
+    ZyraLocalCodeIdentity person,
+    bool Function() current,
+  ) async {
+    final owner = _currentMemberId();
+    final generation = ZyraAccountState.generation;
+    final asGuardian = widget.asGuardian;
+    final plan = asGuardian
+        ? null
+        : AppState.instance.verifiedSeekerPlan ?? ZyraPlan.basic;
+    bool canSend() =>
+        current() &&
+        owner != null &&
+        _isCurrentRequestAction(owner, generation) &&
+        widget.asGuardian == asGuardian &&
+        (plan == null ||
+            (AppState.instance.verifiedSeekerPlan ?? ZyraPlan.basic) == plan);
+    if (!canSend()) return "That request didn't go through. Please try again.";
+    final relationship = asGuardian ? _relationship : null;
+    if (asGuardian && relationship == null) {
+      return 'Choose how you are related first.';
+    }
+    _recordCodeEvent(
+      ZyraTelemetryEventName.started,
+      ZyraTelemetryAction.zyraCodeRequest,
+    );
+    final error = await ZyraWaliLinkService.requestGuardianLink(
+      code,
+      relationship: relationship,
+      currentSeekerPlan: plan,
+      isActionCurrent: canSend,
+    );
+    if (mounted && canSend()) {
+      _recordCodeEvent(
+        error == null
+            ? ZyraTelemetryEventName.completed
+            : ZyraTelemetryEventName.failed,
+        ZyraTelemetryAction.zyraCodeRequest,
+      );
+      showZyraGuardianCapacityNotice(context, error);
+      if (error == null) _load(keepRows: true);
+    }
+    return error;
+  }
+
+  Widget _relationshipPicker(bool Function() current) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text('How are you related?', style: ZyraText.body(size: 13)),
+      const SizedBox(height: 8),
+      Wrap(
+        spacing: 7,
+        runSpacing: 7,
         children: [
-          SizedBox(
-            height: 310,
-            child: _CodeCard(
-              code: code.code,
-              demoOnly: _isFounderDemoPreview,
-              prominent: true,
-              showQr: _showQr,
+          for (final relation in zyraGuardianRelationships)
+            ChoiceChip(
+              label: Text(relation.name),
+              selected: _relationship == relation.code,
+              onSelected: ZyraTapFeedback.onChanged(context, (selected) {
+                if (current()) {
+                  setState(
+                    () => _relationship = selected ? relation.code : null,
+                  );
+                }
+              }),
             ),
-          ),
-          const SizedBox(height: 14),
-          _buildSharingActions(height: 64, maxWidth: availableWidth),
-          if (!_isFounderDemoPreview)
-            SizedBox(
-              height: 38,
-              child: TextButton(
-                onPressed: ZyraTapFeedback.onTap(context, _rotate),
-                child: Text('Change code', style: ZyraText.subtext(size: 12)),
-              ),
-            ),
-          const SizedBox(height: 18),
-          const _OrDivider(),
-          const SizedBox(height: 18),
-          _LargeAction(
-            icon: Icons.qr_code_scanner,
-            label: 'Scan code',
-            enableFeedback: !_localRequested,
-            onTap: _localBound(_scan),
-          ),
-          const SizedBox(height: 12),
-          _buildEnterCodeAction(availableWidth: availableWidth),
-          if (_localRequested) _localInformationContent(),
         ],
       ),
-    );
-  }
+    ],
+  );
 
-  Widget _buildOwnCodeSection({required double availableWidth}) {
-    final code = _code;
-    if (code == null) return const SizedBox.shrink();
+  Widget? _requestRows() {
+    final owner = _rowsOwnerId;
+    if (owner == null || !_isCurrentAccount(owner, _rowsOwnerGeneration)) {
+      return null;
+    }
+    final pending = _requests.where((row) => row.isPending);
+    if (pending.isEmpty && _error == null) return null;
     return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _CodeCard(code: code.code, demoOnly: _isFounderDemoPreview),
-        const SizedBox(height: 14),
-        _buildSharingActions(maxWidth: availableWidth),
-        AnimatedCrossFade(
-          duration: const Duration(milliseconds: 300),
-          firstCurve: Curves.easeOutCubic,
-          secondCurve: Curves.easeOutCubic,
-          sizeCurve: Curves.easeInOutCubic,
-          alignment: Alignment.topCenter,
-          crossFadeState: _showQr
-              ? CrossFadeState.showSecond
-              : CrossFadeState.showFirst,
-          firstChild: const SizedBox(width: double.infinity),
-          secondChild: Padding(
-            padding: const EdgeInsets.only(top: 14),
-            child: Center(
-              child: Container(
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: QrImageView(
-                  data: code.code,
-                  size: 190,
-                  padding: EdgeInsets.zero,
-                ),
-              ),
-            ),
-          ),
-        ),
-        if (!_isFounderDemoPreview)
-          TextButton(
-            onPressed: ZyraTapFeedback.onTap(context, _rotate),
-            child: Text('Change code', style: ZyraText.subtext(size: 12)),
-          ),
-      ],
-    );
-  }
-
-  Widget _buildOtherCodeActions({required double availableWidth}) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _LargeAction(
-          icon: Icons.qr_code_scanner,
-          label: 'Scan code',
-          enableFeedback: !_localRequested,
-          onTap: _localBound(_scan),
-        ),
-        const SizedBox(height: 12),
-        _buildEnterCodeAction(availableWidth: availableWidth),
-        if (_localRequested) _localInformationContent(),
-        if (_requests.any((r) => r.isPending)) ...[
-          const SizedBox(height: 30),
+        if (pending.isNotEmpty) ...[
+          const SizedBox(height: 20),
           Text(
             'REQUESTS',
-            style: ZyraText.chapterLabel(color: ZyraColors.ink(0.54)),
+            style: ZyraText.chapterLabel(color: ZyraColors.ink(.54)),
           ),
           const SizedBox(height: 10),
-          for (final request in _requests.where((r) => r.isPending))
+          for (final request in pending)
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: _RequestCard(
@@ -1086,202 +917,15 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
               ),
             ),
         ],
-        if (_error case final error?) ...[
-          const SizedBox(height: 12),
-          ZyraErrorBanner(
-            message: error,
-            onDismiss: _localBound(() => setState(() => _error = null)),
-          ),
-        ],
-      ],
-    );
-  }
-
-  Widget _buildEnterCodeAction({required double availableWidth}) => Material(
-    color: ZyraColors.surfaceFill,
-    borderRadius: BorderRadius.circular(18),
-    clipBehavior: Clip.antiAlias,
-    child: Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: _showEnterCode
-              ? ZyraColors.accentBorder
-              : ZyraColors.surfaceBorder,
-        ),
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          InkWell(
-            enableFeedback: !_localRequested,
-            onTap: ZyraTapFeedback.onTap(context, _localBound(_enterCode)),
-            child: SizedBox(
-              height: 64,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.keyboard_outlined,
-                      size: 21,
-                      color: ZyraColors.surfaceSignal,
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text('Enter code', style: ZyraText.body(size: 14)),
-                    ),
-                    AnimatedRotation(
-                      turns: _showEnterCode ? 0.25 : 0,
-                      duration: const Duration(milliseconds: 220),
-                      curve: Curves.easeOutCubic,
-                      child: Icon(
-                        Icons.chevron_right,
-                        size: 19,
-                        color: ZyraColors.ink(0.48),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+        if (_error case final error?)
+          Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: ZyraErrorBanner(
+              message: error,
+              onDismiss: () => setState(() => _error = null),
             ),
           ),
-          AnimatedSize(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOutCubic,
-            alignment: Alignment.topCenter,
-            child: _showEnterCode
-                ? Column(
-                    children: [
-                      Divider(height: 1, color: ZyraColors.surfaceBorder),
-                      Padding(
-                        key: _entryRevealKey,
-                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 18),
-                        child: _InlineEnterZyraCodePanel(
-                          key: ValueKey(
-                            _localRequested
-                                ? ('local-code-entry', _initialEnteredCode)
-                                : _initialEnteredCode ?? 'blank-code-entry',
-                          ),
-                          initialCode: _initialEnteredCode,
-                          asGuardian: widget.asGuardian,
-                          developerPreview: _isFounderDemoPreview,
-                          availableWidth: (availableWidth - 32)
-                              .clamp(1.0, double.infinity)
-                              .toDouble(),
-                          localPreview: _localRequested ? _localPreview : null,
-                          localCanInteract: _localRequested
-                              ? _localInteractive
-                              : null,
-                          localEpoch: _localRequested
-                              ? _localOperationEpoch
-                              : null,
-                          localViewEpoch: _localRequested
-                              ? _localOperationEpoch()
-                              : null,
-                          primaryActionKey: _entryActionRevealKey,
-                          onNeedsReveal: _revealCodeEntry,
-                          onSent: () {
-                            setState(() {
-                              _showEnterCode = false;
-                              _initialEnteredCode = null;
-                            });
-                            _load(keepRows: true);
-                          },
-                        ),
-                      ),
-                    ],
-                  )
-                : const SizedBox(width: double.infinity),
-          ),
-        ],
-      ),
-    ),
-  );
-
-  bool _lockedCanAct() =>
-      _localRequested ? _localOwnerAllows() : _signupPreviewAllowed;
-
-  bool _lockedCanInteract() =>
-      _localRequested ? _localInteractive() : _signupPreviewAllowed;
-
-  Future<ZyraLocalCodeIdentity?> _lockedLookup(String canonical) async {
-    if (!_lockedCanInteract()) return null;
-    final person = _localRequested
-        ? await _localPreview!.lookupCode(canonical)
-        : ZyraDevPersonalCodeFixtures.previewEntryCode(
-            canonical,
-            asGuardian: widget.asGuardian,
-          );
-    if (!_lockedCanInteract() || person == null) return null;
-    return ZyraLocalCodeIdentity(
-      person.firstName,
-      person.role == 'wali'
-          ? 'Guardian'
-          : person.role == 'seeker'
-          ? 'Seeker'
-          : '',
-    );
-  }
-
-  Widget _lockedLocalPage() => Scaffold(
-    key: widget.signupPreview ? const ValueKey('signup_code_preview') : null,
-    backgroundColor: Colors.transparent,
-    body: SizedBox.expand(
-      child: DecoratedBox(
-        decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
-        child: ZyraLocalCodePage(
-          mode: widget.asGuardian
-              ? ZyraLocalCodeContext.addSeeker
-              : ZyraLocalCodeContext.addGuardian,
-          ownerKey:
-              _localPreview ??
-              (widget.signupPreviewIdentity, widget.asGuardian),
-          canAct: _lockedCanAct,
-          canInteract: _lockedCanInteract,
-          interactionEpoch: _localRequested ? _localOperationEpoch : null,
-          personalCode: _code?.code,
-          lookupCode: _lockedLookup,
-          onCopy: _copy,
-          onQr: _toggleQr,
-          onShare: () => _share(context),
-          extra: Column(
-            children: [
-              if (_showQr && _code != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 14),
-                  child: QrImageView(
-                    data: _code!.code,
-                    backgroundColor: Colors.white,
-                    size: 160,
-                  ),
-                ),
-              if (_localRequested) _localInformationContent(),
-              if (widget.signupPreview && _signupPreviewNotice != null)
-                Text(
-                  _signupPreviewNotice!,
-                  key: const ValueKey('signup_code_action_info'),
-                  style: ZyraText.subtext(size: 12.5),
-                ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
-
-  AppBar _codeAppBar({bool denied = false}) {
-    final hideInlineReturn =
-        _localRequested && widget.previewLeading is ZyraInlineBackButton;
-    final titleStyle = ZyraText.heading(size: 17);
-    final title = 'Add a $_other';
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      automaticallyImplyLeading: !hideInlineReturn,
-      leading: hideInlineReturn ? null : widget.previewLeading,
-      title: denied ? null : Text(title, style: titleStyle),
-      iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
+      ],
     );
   }
 
@@ -1291,7 +935,6 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
       return Scaffold(
         key: const ValueKey('zyra_code_local_preview_denied'),
         backgroundColor: ZyraColors.modalSheetSurface,
-        appBar: _codeAppBar(denied: true),
         body: const SizedBox.expand(),
       );
     }
@@ -1302,1219 +945,135 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
         body: const SizedBox.expand(),
       );
     }
-    if (_localRequested || widget.signupPreview) return _lockedLocalPage();
-    final previewStyle = widget.signupPreview
-        ? OnboardingPreviewStyle.maybeOf(context)
-        : null;
-    return Scaffold(
-      backgroundColor: _localRequested ? Colors.transparent : null,
-      extendBodyBehindAppBar: !_localRequested && !widget.signupPreview,
-      appBar: _codeAppBar(),
-      body: Container(
-        constraints: const BoxConstraints.expand(),
-        decoration: BoxDecoration(
-          gradient:
-              previewStyle?.backgroundGradient ??
-              ZyraColors.genderGradient(AppState.instance.gender),
-        ),
-        child: SafeArea(
-          child: _loading
-              ? const ZyraLoading()
-              : LayoutBuilder(
-                  builder: (context, constraints) {
-                    if (_canUseExpandedComposition &&
-                        constraints.maxHeight >= 620) {
-                      return _buildExpandedComposition(
-                        availableWidth: (constraints.maxWidth - 48)
-                            .clamp(1.0, double.infinity)
-                            .toDouble(),
-                      );
-                    }
-                    return SingleChildScrollView(
-                      controller: _screenScrollController,
-                      padding: const EdgeInsets.fromLTRB(24, 14, 24, 30),
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minHeight: (constraints.maxHeight - 44).clamp(
-                            0.0,
-                            double.infinity,
-                          ),
-                        ),
-                        child: IntrinsicHeight(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              _buildOwnCodeSection(
-                                availableWidth: (constraints.maxWidth - 48)
-                                    .clamp(1.0, double.infinity)
-                                    .toDouble(),
-                              ),
-                              const SizedBox(height: 28),
-                              if (!_available) ...[
-                                ZyraErrorBanner(
-                                  message:
-                                      "Your ZYRA Code couldn't be refreshed.",
-                                  onRetry: _load,
-                                ),
-                                const SizedBox(height: 18),
-                              ],
-                              const _OrDivider(),
-                              const SizedBox(height: 28),
-                              _buildOtherCodeActions(
-                                availableWidth: (constraints.maxWidth - 48)
-                                    .clamp(1.0, double.infinity)
-                                    .toDouble(),
-                              ),
-                            ],
-                          ),
-                        ),
+
+    final local = _isFounderDemoPreview;
+    final owner = _currentMemberId();
+    final generation = ZyraAccountState.generation;
+    final asGuardian = widget.asGuardian;
+    final origin = ModalRoute.of(context);
+    bool canAct() {
+      if (_localRequested) return _localOwnerAllows();
+      if (widget.signupPreview) return _signupPreviewAllowed;
+      if (local) return _isFounderDemoPreview;
+      return !_isFounderDemoPreview &&
+          asGuardian == widget.asGuardian &&
+          _isCurrentAccount(owner, generation);
+    }
+
+    final code = _code;
+    final page = ZyraLocalCodePage(
+      key: ValueKey((
+        widget.localPreview,
+        widget.signupPreviewIdentity,
+        local,
+        owner,
+        generation,
+        asGuardian,
+      )),
+      mode: asGuardian
+          ? ZyraLocalCodeContext.addSeeker
+          : ZyraLocalCodeContext.addGuardian,
+      ownerKey: (
+        widget.localPreview,
+        widget.signupPreviewIdentity,
+        local,
+        owner,
+        generation,
+        asGuardian,
+      ),
+      canAct: canAct,
+      canInteract: _localRequested ? _localInteractive : null,
+      interactionEpoch: _localRequested ? _localOperationEpoch : null,
+      isLocal: local,
+      simulatedCamera: _localRequested || widget.signupPreview,
+      legacyEntry: local
+          ? null
+          : Align(
+              alignment: Alignment.center,
+              child: TextButton(
+                onPressed: ZyraTapFeedback.onTap(context, () {
+                  if (canAct() && origin?.isCurrent == true) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const AcceptWaliInviteScreen(),
                       ),
                     );
-                  },
-                ),
-        ),
-      ),
-    );
-  }
-}
-
-class _InlineEnterZyraCodePanel extends StatefulWidget {
-  final String? initialCode;
-  final bool asGuardian;
-  final bool developerPreview;
-  final double availableWidth;
-  final ZyraCodeLocalPreview? localPreview;
-  final bool Function([_LocalCodeEpoch? epoch])? localCanInteract;
-  final _LocalCodeEpoch Function()? localEpoch;
-  final _LocalCodeEpoch? localViewEpoch;
-  final GlobalKey primaryActionKey;
-  final VoidCallback onNeedsReveal;
-  final VoidCallback onSent;
-
-  const _InlineEnterZyraCodePanel({
-    super.key,
-    this.initialCode,
-    required this.asGuardian,
-    required this.developerPreview,
-    required this.availableWidth,
-    this.localPreview,
-    this.localCanInteract,
-    this.localEpoch,
-    this.localViewEpoch,
-    required this.primaryActionKey,
-    required this.onNeedsReveal,
-    required this.onSent,
-  });
-
-  @override
-  State<_InlineEnterZyraCodePanel> createState() =>
-      _InlineEnterZyraCodePanelState();
-}
-
-class _InlineEnterZyraCodePanelState extends State<_InlineEnterZyraCodePanel> {
-  late final TextEditingController _controller;
-  late final FocusNode _focusNode;
-  ZyraPersonalCodePreview? _preview;
-  ({String code, String? userId, int generation})? _checkedTarget;
-  String? _relationship;
-  String? _error;
-  bool _busy = false;
-  bool _legacyPossible = false;
-  bool _sent = false;
-  String? _lastInvalidCode;
-  late final ZyraCodeLocalPreview? _localPreview;
-  late final bool Function([_LocalCodeEpoch? epoch])? _localCanInteract;
-  late final _LocalCodeEpoch Function()? _localReadEpoch;
-  late final bool _localRole;
-  bool _localRequested = false;
-  bool _localDenied = false;
-  int _localCheckRevision = 0;
-  _LocalCodeEpoch? _seenLocalEpoch;
-  String? _localNotice;
-
-  @override
-  void initState() {
-    super.initState();
-    _localPreview = widget.localPreview;
-    _localRequested = _localPreview != null;
-    _localCanInteract = widget.localCanInteract;
-    _localReadEpoch = widget.localEpoch;
-    _localRole = widget.asGuardian;
-    _seenLocalEpoch = widget.localViewEpoch;
-    _controller = TextEditingController(text: widget.initialCode);
-    _focusNode = FocusNode();
-    if (widget.initialCode != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => _check());
-    }
-  }
-
-  @override
-  void dispose() {
-    ++_localCheckRevision;
-    _controller.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  @override
-  void didUpdateWidget(covariant _InlineEnterZyraCodePanel oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (_localRequested || widget.localPreview != null) {
-      _localRequested = true;
-      if (!identical(widget.localPreview, _localPreview) ||
-          widget.asGuardian != _localRole) {
-        _denyLocal();
-      } else if (_seenLocalEpoch != widget.localViewEpoch) {
-        _seenLocalEpoch = widget.localViewEpoch;
-        _resetLocalRead();
-      }
-    }
-  }
-
-  void _denyLocal() {
-    _localDenied = true;
-    _resetLocalRead();
-  }
-
-  /// Forget an interrupted check, not the user's fictional input. The local
-  /// owner/mode latch remains unchanged and no stale identity is published.
-  void _resetLocalRead() {
-    ++_localCheckRevision;
-    _preview = null;
-    _relationship = null;
-    _error = null;
-    _busy = false;
-    _legacyPossible = false;
-    _lastInvalidCode = null;
-    _sent = false;
-    _localNotice = null;
-  }
-
-  bool _localAllows([_LocalCodeEpoch? epoch]) {
-    if (!mounted || !_localRequested || _localDenied) return false;
-    if (_localPreview == null ||
-        !identical(widget.localPreview, _localPreview) ||
-        widget.asGuardian != _localRole ||
-        _localCanInteract == null ||
-        _localReadEpoch == null) {
-      _denyLocal();
-      return false;
-    }
-    try {
-      return _localCanInteract(epoch);
-    } catch (_) {
-      _denyLocal();
-      return false;
-    }
-  }
-
-  VoidCallback _localBound(VoidCallback action) {
-    if (!_localRequested) return action;
-    if (_localDenied || _localReadEpoch == null) return () {};
-    final epoch = _localReadEpoch();
-    return () {
-      if (_localAllows(epoch)) action();
-    };
-  }
-
-  ValueChanged<bool> _relationshipSelection(String code) {
-    final select = _localBound(() => setState(() => _relationship = code));
-    return (_) => select();
-  }
-
-  Future<void> _checkLocal() async {
-    if (!_localAllows() || _busy) return;
-    final epoch = _localReadEpoch!();
-    final revision = ++_localCheckRevision;
-    final code = _controller.text.trim().toUpperCase();
-    if (code.isEmpty) return;
-    setState(() {
-      _busy = true;
-      _error = null;
-      _preview = null;
-      _relationship = null;
-      _legacyPossible = false;
-      _lastInvalidCode = null;
-      _localNotice = null;
-    });
-    // Real and old invitation codes never reach a lookup or live fallback.
-    ZyraPersonalCodePreview? preview;
-    if (RegExp(r'^ZYRA-DEMO-[A-Z0-9]+(?:-[A-Z0-9]+)*$').hasMatch(code)) {
-      try {
-        preview = await _localPreview!.lookupCode(code);
-      } catch (_) {
-        // A failed fictional lookup is a neutral local invalid-code result.
-      }
-    }
-    if (!_localAllows(epoch) ||
-        revision != _localCheckRevision ||
-        code != _controller.text.trim().toUpperCase()) {
-      // A caller can change its overlay epoch before rebuilding this child.
-      // Only clear the superseded operation, never a newer successful check.
-      if (mounted &&
-          !_localDenied &&
-          revision == _localCheckRevision &&
-          _localReadEpoch() != epoch) {
-        setState(() {
-          _seenLocalEpoch = _localReadEpoch();
-          _resetLocalRead();
-        });
-      }
-      return;
-    }
-    final resolved = preview;
-    if (resolved == null ||
-        resolved.firstName.trim().isEmpty ||
-        resolved.role != (_localRole ? 'seeker' : 'wali')) {
-      _showInvalidCode(legacyPossible: false);
-    } else {
-      setState(() {
-        _busy = false;
-        _preview = ZyraPersonalCodePreview(
-          firstName: resolved.firstName.trim(),
-          role: resolved.role,
-        );
-      });
-      _focusNode.unfocus();
-    }
-    if (_localAllows(epoch)) widget.onNeedsReveal();
-  }
-
-  void _showInvalidCode({required bool legacyPossible}) {
-    final epoch = _localRequested ? _localReadEpoch!() : null;
-    if (_localRequested && !_localAllows(epoch)) return;
-    final invalidCode = _controller.text.trim();
-    setState(() {
-      _busy = false;
-      _preview = null;
-      _relationship = null;
-      _error = 'Invalid code. Please try again.';
-      _legacyPossible = legacyPossible;
-      _lastInvalidCode = invalidCode.isEmpty ? null : invalidCode;
-      _controller.clear();
-    });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && (!_localRequested || _localAllows(epoch))) {
-        _focusNode.requestFocus();
-      }
-    });
-  }
-
-  Future<void> _check() async {
-    if (_localRequested) {
-      await _checkLocal();
-      return;
-    }
-    if (!mounted || _busy || _controller.text.trim().isEmpty) return;
-    final target = (
-      code: _controller.text,
-      userId: ZyraAccountState.userId,
-      generation: ZyraAccountState.generation,
-    );
-    final asGuardian = widget.asGuardian;
-    bool current() =>
-        mounted &&
-        !_localRequested &&
-        !ZyraAccountState.isSigningOut &&
-        widget.asGuardian == asGuardian &&
-        _controller.text == target.code &&
-        ZyraAccountState.userId == target.userId &&
-        ZyraAccountState.generation == target.generation &&
-        (ModalRoute.of(context)?.isCurrent ?? false);
-
-    if (!current()) return;
-    _recordCodeEvent(
-      ZyraTelemetryEventName.started,
-      ZyraTelemetryAction.zyraCodeCheck,
-    );
-    setState(() {
-      _busy = true;
-      _error = null;
-      _preview = null;
-      _checkedTarget = null;
-      _legacyPossible = false;
-      _lastInvalidCode = null;
-    });
-    if (widget.developerPreview) {
-      await Future<void>.delayed(const Duration(milliseconds: 260));
-      if (!mounted) return;
-      if (!current()) {
-        setState(() => _busy = false);
-        return;
-      }
-      final preview = ZyraDevPersonalCodeFixtures.previewEntryCode(
-        target.code,
-        asGuardian: asGuardian,
-      );
-      if (preview == null) {
-        _showInvalidCode(legacyPossible: false);
-      } else {
-        setState(() {
-          _busy = false;
-          _preview = preview;
-          _checkedTarget = target;
-        });
-      }
-      _recordCodeEvent(
-        preview == null
-            ? ZyraTelemetryEventName.failed
-            : ZyraTelemetryEventName.completed,
-        ZyraTelemetryAction.zyraCodeCheck,
-      );
-      if (preview != null) _focusNode.unfocus();
-      widget.onNeedsReveal();
-      return;
-    }
-    final result = await ZyraWaliLinkService.previewPersonalCode(target.code);
-    if (!mounted) return;
-    if (!current()) {
-      setState(() => _busy = false);
-      return;
-    }
-    if (result.isAvailable && result.valueOrNull == null) {
-      _showInvalidCode(legacyPossible: true);
-    } else {
-      setState(() {
-        _busy = false;
-        if (result.isUnavailable) {
-          _error = "The code couldn't be checked. Please try again.";
-        } else {
-          _preview = result.valueOrNull;
-          _checkedTarget = target;
-        }
-      });
-    }
-    _recordCodeEvent(
-      _preview == null
-          ? ZyraTelemetryEventName.failed
-          : ZyraTelemetryEventName.completed,
-      ZyraTelemetryAction.zyraCodeCheck,
-    );
-    if (_preview != null) _focusNode.unfocus();
-    widget.onNeedsReveal();
-  }
-
-  Future<void> _send() async {
-    if (_localRequested) {
-      if (!_localAllows() || _busy || _preview == null) return;
-      if (_preview!.role == 'seeker' && _relationship == null) {
-        setState(() => _error = 'Choose how you are related first.');
-        return;
-      }
-      setState(
-        () => _localNotice =
-            'No invitation was sent. This local preview does not create '
-            'requests or connect accounts.',
-      );
-      return;
-    }
-    final preview = _preview;
-    if (!mounted || _busy || _sent || preview == null) return;
-    final target = _checkedTarget;
-    if (target == null) return;
-    final code = target.code;
-    final asGuardian = widget.asGuardian;
-    final developerPreview = widget.developerPreview;
-    final account = (target.userId, target.generation);
-    final plan = asGuardian
-        ? null
-        : AppState.instance.verifiedSeekerPlan ?? ZyraPlan.basic;
-    bool current() =>
-        mounted &&
-        !_localRequested &&
-        !ZyraAccountState.isSigningOut &&
-        account == (ZyraAccountState.userId, ZyraAccountState.generation) &&
-        widget.asGuardian == asGuardian &&
-        widget.developerPreview == developerPreview &&
-        identical(_preview, preview) &&
-        _controller.text == code &&
-        (ModalRoute.of(context)?.isCurrent ?? false);
-
-    if (!current() || preview.role != (asGuardian ? 'seeker' : 'wali')) {
-      return;
-    }
-    if (preview.role == 'seeker' && _relationship == null) {
-      setState(() => _error = 'Choose how you are related first.');
-      return;
-    }
-    _recordCodeEvent(
-      ZyraTelemetryEventName.started,
-      ZyraTelemetryAction.zyraCodeRequest,
-    );
-    setState(() {
-      _busy = true;
-      _error = null;
-    });
-    if (widget.developerPreview) {
-      if (!widget.asGuardian) {
-        final capacity = ZyraGuardianCapacity.fromCount(
-          plan: AppState.instance.plan,
-          linkedGuardianCount: ZyraDevScenario.instance.guardianCount,
-        );
-        if (!capacity.canAdd) {
-          setState(() {
-            _busy = false;
-            _error = capacity.message;
-          });
-          showZyraGuardianCapacityNotice(context, capacity.message);
-          return;
-        }
-      }
-      await ZyraInteractionStyle.emitSelectionHaptic();
-      if (!mounted) return;
-      if (!current()) {
-        setState(() => _busy = false);
-        return;
-      }
-      setState(() {
-        _busy = false;
-        _sent = true;
-      });
-      _recordCodeEvent(
-        ZyraTelemetryEventName.completed,
-        ZyraTelemetryAction.zyraCodeRequest,
-      );
-      return;
-    }
-    final error = await ZyraWaliLinkService.requestGuardianLink(
-      code,
-      relationship: preview.role == 'seeker' ? _relationship : null,
-      currentSeekerPlan: plan,
-      isActionCurrent: () =>
-          current() &&
-          (plan == null ||
-              (AppState.instance.verifiedSeekerPlan ?? ZyraPlan.basic) == plan),
-    );
-    if (!mounted) return;
-    if (!current()) {
-      setState(() => _busy = false);
-      return;
-    }
-    setState(() {
-      _busy = false;
-      _sent = error == null;
-      _error = error;
-    });
-    showZyraGuardianCapacityNotice(context, error);
-    _recordCodeEvent(
-      error == null
-          ? ZyraTelemetryEventName.completed
-          : ZyraTelemetryEventName.failed,
-      ZyraTelemetryAction.zyraCodeRequest,
-    );
-    if (error == null) widget.onSent();
-  }
-
-  void _recordCodeEvent(
-    ZyraTelemetryEventName name,
-    ZyraTelemetryAction action,
-  ) {
-    if (_localRequested) return;
-    ZyraProductTelemetry.instance.record(
-      feature: ZyraTelemetryFeature.zyraCode,
-      name: name,
-      action: action,
-      surface: widget.asGuardian
-          ? ZyraTelemetrySurface.guardian
-          : ZyraTelemetrySurface.seeker,
-    );
-  }
-
-  void _useDifferentCode() {
-    final epoch = _localRequested ? _localReadEpoch!() : null;
-    if (_localRequested && !_localAllows(epoch)) return;
-    ++_localCheckRevision;
-    setState(() {
-      _preview = null;
-      _relationship = null;
-      _error = null;
-      _legacyPossible = false;
-      _lastInvalidCode = null;
-      _localNotice = null;
-    });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted || _localRequested && !_localAllows(epoch)) return;
-      _focusNode.requestFocus();
-      widget.onNeedsReveal();
-    });
-  }
-
-  Widget _buildPersonInitial(ZyraPersonalCodePreview person) {
-    final guardian = person.role == 'wali';
-    final initial = person.firstName.substring(0, 1).toUpperCase();
-    final style = ZyraText.heading(
-      size: 20,
-      color: guardian ? ZyraColors.secondaryText : ZyraColors.goldText,
-    );
-    final text = _codeTextSize(context, initial, style);
-    final textExtent = text.height > text.width ? text.height : text.width;
-    final dimension = _localRequested && textExtent + 18 > 48
-        ? textExtent + 18
-        : 48.0;
-    return Container(
-      key: const ValueKey('zyra_code_person_initial'),
-      width: dimension,
-      height: dimension,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: guardian ? ZyraColors.ivoryTop : ZyraColors.accentBg,
-        border: guardian ? null : Border.all(color: ZyraColors.accentBorder),
-      ),
-      child: Center(child: Text(initial, style: style)),
-    );
-  }
-
-  Widget _buildConfirmationActions() {
-    final change = _PillAction(
-      key: const ValueKey('inline-code-different-action'),
-      icon: Icons.refresh_rounded,
-      label: 'Change code',
-      adaptive: _localRequested,
-      enableFeedback: !_localRequested,
-      onTap: _busy ? null : _localBound(_useDifferentCode),
-    );
-    final confirmLabel = _busy ? 'Sending…' : 'Confirm';
-    final confirm = KeyedSubtree(
-      key: widget.primaryActionKey,
-      child: _PillAction(
-        key: const ValueKey('inline-code-primary-action'),
-        icon: Icons.person_add_alt_1_outlined,
-        label: confirmLabel,
-        adaptive: _localRequested,
-        enableFeedback: !_localRequested,
-        onTap: _busy ? null : _localBound(_send),
-      ),
-    );
-    final style = ZyraText.body(size: 12.5, color: ZyraColors.goldText);
-    final requiredWidth = ['Change code', confirmLabel]
-        .map(
-          (label) => _codeTextSize(context, label, style).width + 17 + 7 + 34,
-        )
-        .reduce((a, b) => a > b ? a : b);
-    if (!_localRequested || requiredWidth <= (widget.availableWidth - 10) / 2) {
-      return Row(
-        children: [
-          Expanded(child: change),
-          const SizedBox(width: 10),
-          Expanded(child: confirm),
-        ],
-      );
-    }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [change, const SizedBox(height: 10), confirm],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_localRequested && (_localDenied || _localReadEpoch == null)) {
-      return const SizedBox.shrink();
-    }
-    final needsRelationship = _preview?.role == 'seeker';
-    final changedEntry = _localBound(
-      () => setState(() {
-        _relationship = null;
-        _error = null;
-        _legacyPossible = false;
-        _lastInvalidCode = null;
-        if (_localRequested) {
-          ++_localCheckRevision;
-          _busy = false;
-          _preview = null;
-          _localNotice = null;
-        }
-      }),
-    );
-    final submittedEntry = _localBound(() {
-      if (!_busy) _check();
-    });
-    if (_sent) {
-      return Column(
-        key: const ValueKey('inline-zyra-code-entry'),
-        children: [
-          Container(
-            width: 46,
-            height: 46,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: ZyraColors.accentBg,
-              border: Border.all(color: ZyraColors.accentBorder),
-            ),
-            child: Icon(Icons.check_rounded, color: ZyraColors.surfaceSignal),
-          ),
-          const SizedBox(height: 10),
-          Text('Request sent', style: ZyraText.heading(size: 16)),
-          const SizedBox(height: 4),
-          Text(
-            '${_preview!.firstName} can now accept or decline it.',
-            textAlign: TextAlign.center,
-            style: ZyraText.subtext(size: 12),
-          ),
-        ],
-      );
-    }
-    return Column(
-      key: const ValueKey('inline-zyra-code-entry'),
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (_preview == null)
-          Container(
-            key: const ValueKey('inline-code-composer'),
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              color: ZyraColors.iconButtonBg,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: ZyraColors.iconButtonBorder),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    key: const ValueKey('inline-zyra-code-field'),
-                    controller: _controller,
-                    focusNode: _focusNode,
-                    autofocus: widget.initialCode == null,
-                    scrollPadding: const EdgeInsets.fromLTRB(20, 20, 20, 220),
-                    textCapitalization: TextCapitalization.characters,
-                    style: ZyraText.body(size: 14),
-                    decoration: const InputDecoration(
-                      hintText: 'ZYRA-XXXX-XXXX-XXXX-XXXX-XXXX',
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 15,
-                      ),
-                      border: InputBorder.none,
-                    ),
-                    onChanged: (_) => changedEntry(),
-                    onSubmitted: (_) => submittedEntry(),
-                  ),
-                ),
-                Container(
-                  width: 1,
-                  height: 30,
-                  color: ZyraColors.iconButtonBorder,
-                ),
-                KeyedSubtree(
-                  key: widget.primaryActionKey,
-                  child: Semantics(
-                    button: true,
-                    label: _busy ? 'Checking code' : 'Check code',
-                    child: Material(
-                      key: const ValueKey('inline-code-primary-action'),
-                      color: ZyraColors.accentBg,
-                      child: InkWell(
-                        enableFeedback: !_localRequested,
-                        onTap: ZyraTapFeedback.onTap(
-                          context,
-                          _busy ? null : _localBound(_check),
-                        ),
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(
-                            minWidth: 96,
-                            minHeight: 52,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.search_outlined,
-                                  size: 17,
-                                  color: ZyraColors.surfaceSignal,
-                                ),
-                                const SizedBox(width: 6),
-                                Text(
-                                  _busy ? 'Checking…' : 'Check',
-                                  style: ZyraText.button(
-                                    size: 12.5,
-                                    color: ZyraColors.goldText,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        if (_preview case final preview?) ...[
-          Container(
-            key: const ValueKey('zyra-code-person-confirmation'),
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              color: ZyraColors.iconButtonBg,
-              border: Border.all(color: ZyraColors.iconButtonBorder),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              children: [
-                _buildPersonInitial(preview),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(preview.firstName, style: ZyraText.body(size: 15)),
-                      const SizedBox(height: 2),
-                      Text(
-                        preview.role == 'wali' ? 'Guardian' : 'Seeker',
-                        style: ZyraText.subtext(size: 11.5),
-                      ),
-                    ],
-                  ),
-                ),
-                Icon(
-                  Icons.person_outline_rounded,
-                  size: 19,
-                  color: ZyraColors.surfaceSignal,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 9),
-          Text(
-            'Confirm this is the right person before sending your request.',
-            style: ZyraText.subtext(size: 11.5),
-          ),
-          if (needsRelationship) ...[
-            const SizedBox(height: 14),
-            Text('How are you related?', style: ZyraText.body(size: 13)),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 7,
-              runSpacing: 7,
-              children: [
-                for (final relationship in zyraGuardianRelationships)
-                  ChoiceChip(
-                    label: Text(relationship.name),
-                    selected: _relationship == relationship.code,
-                    onSelected: ZyraTapFeedback.onChanged(
-                      context,
-                      _relationshipSelection(relationship.code),
-                    ),
-                  ),
-              ],
-            ),
-          ],
-        ],
-        if (_error case final error?) ...[
-          const SizedBox(height: 10),
-          ZyraErrorBanner(
-            message: error,
-            onDismiss: _localBound(() => setState(() => _error = null)),
-          ),
-        ],
-        if (_legacyPossible)
-          Align(
-            alignment: Alignment.centerLeft,
-            child: TextButton(
-              onPressed: ZyraTapFeedback.onTap(
-                context,
-                () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => AcceptWaliInviteScreen(
-                      initialCode: _lastInvalidCode ?? _controller.text,
-                    ),
-                  ),
+                  }
+                }),
+                child: Text(
+                  'Check an older invite code',
+                  style: ZyraText.subtext(size: 11.5),
                 ),
               ),
-              child: Text(
-                'Check an older invite code',
-                style: ZyraText.subtext(size: 11.5),
-              ),
             ),
-          ),
-        if (_preview != null) ...[
-          const SizedBox(height: 10),
-          _buildConfirmationActions(),
-        ],
-        if (_localNotice case final notice?) ...[
-          const SizedBox(height: 10),
-          Text(
-            notice,
-            key: const ValueKey('zyra_code_local_confirmation_notice'),
-            style: ZyraText.subtext(size: 12),
-          ),
-        ],
-      ],
-    );
-  }
-}
-
-class _PillAction extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback? onTap;
-  final bool enableFeedback;
-  final bool adaptive;
-
-  const _PillAction({
-    super.key,
-    required this.icon,
-    required this.label,
-    this.onTap,
-    this.enableFeedback = true,
-    this.adaptive = false,
-  });
-
-  Widget _content() => Row(
-    mainAxisSize: MainAxisSize.min,
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Icon(icon, size: 17, color: ZyraColors.surfaceSignal),
-      const SizedBox(width: 7),
-      Flexible(
-        child: Text(
-          label,
-          maxLines: adaptive ? null : 1,
-          overflow: adaptive ? TextOverflow.visible : TextOverflow.ellipsis,
-          softWrap: adaptive ? true : null,
-          style: ZyraText.body(size: 12.5, color: ZyraColors.goldText),
-        ),
-      ),
-    ],
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: ZyraColors.accentBg,
-      borderRadius: BorderRadius.circular(999),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(999),
-        enableFeedback: enableFeedback,
-        onTap: ZyraTapFeedback.onTap(context, onTap),
-        child: Container(
-          constraints: const BoxConstraints(minHeight: 44),
-          padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
-          decoration: BoxDecoration(
-            border: Border.all(color: ZyraColors.accentBorder),
-            borderRadius: BorderRadius.circular(999),
-          ),
-          child: _content(),
-        ),
-      ),
-    );
-  }
-}
-
-class _ScanZyraCodeScreen extends StatefulWidget {
-  const _ScanZyraCodeScreen();
-
-  @override
-  State<_ScanZyraCodeScreen> createState() => _ScanZyraCodeScreenState();
-}
-
-class _ScanZyraCodeScreenState extends State<_ScanZyraCodeScreen> {
-  bool _handled = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: Text('Scan ZYRA Code', style: ZyraText.heading(size: 17)),
-        backgroundColor: Colors.black,
-        systemOverlayStyle: SystemUiOverlayStyle.light,
-      ),
-      body: MobileScanner(
-        onDetect: (capture) {
-          if (_handled) return;
-          for (final barcode in capture.barcodes) {
-            final value = barcode.rawValue?.trim();
-            if (value != null && value.toUpperCase().startsWith('ZYRA')) {
-              _handled = true;
-              Navigator.of(context).pop(value);
-              return;
+      personalCode: code != null && (local || _canUseMemberCode(code))
+          ? code.code
+          : null,
+      lookupCode: _lookup,
+      onCopy: _rotating ? null : _copy,
+      onShare: _rotating ? null : _share,
+      onRotate: _rotating ? null : _rotate,
+      onMemberSend: local ? null : _send,
+      foundExtra:
+          asGuardian && (!local || !_localRequested && !widget.signupPreview)
+          ? _relationshipPicker
+          : null,
+      onLocalSend:
+          local && !_localRequested && !widget.signupPreview && !asGuardian
+          ? () {
+              final capacity = ZyraGuardianCapacity.fromCount(
+                plan: AppState.instance.plan,
+                linkedGuardianCount: ZyraDevScenario.instance.guardianCount,
+              );
+              if (!capacity.canAdd) {
+                showZyraGuardianCapacityNotice(context, capacity.message);
+              }
+              return capacity.canAdd;
             }
-          }
-        },
-      ),
+          : null,
+      copyLabel: _copied ? 'Copied' : 'Copy code',
+      myCodeStatus: _loading
+          ? const SizedBox(height: 100, child: ZyraLoading())
+          : !_available
+          ? ZyraErrorBanner(
+              message: "Your ZYRA Code couldn't be refreshed.",
+              onRetry: _load,
+            )
+          : null,
+      extra: local
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (_localRequested) _localInformationContent(),
+                if (widget.signupPreview && _signupPreviewNotice != null)
+                  Text(
+                    _signupPreviewNotice!,
+                    key: const ValueKey('signup_code_action_info'),
+                    style: ZyraText.subtext(size: 12.5),
+                  ),
+              ],
+            )
+          : _requestRows(),
     );
-  }
-}
-
-class _CodeCard extends StatelessWidget {
-  final String code;
-  final bool demoOnly;
-  final bool prominent;
-  final bool showQr;
-  const _CodeCard({
-    required this.code,
-    required this.demoOnly,
-    this.prominent = false,
-    this.showQr = false,
-  });
-
-  Widget _details() => Column(
-    key: const ValueKey('zyra_code_details'),
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Text(
-        'YOUR ZYRA CODE',
-        style: ZyraText.chapterLabel(color: ZyraColors.ink(0.58)),
-      ),
-      SizedBox(height: prominent ? 18 : 12),
-      FittedBox(
-        fit: BoxFit.scaleDown,
-        child: Text(
-          code,
-          style: ZyraText.heading(
-            size: prominent ? 24 : 20,
-          ).copyWith(letterSpacing: 1.3),
-        ),
-      ),
-      SizedBox(height: prominent ? 14 : 9),
-      Text(
-        'They can send a request. You still choose whether to link.',
-        textAlign: TextAlign.center,
-        style: ZyraText.subtext(size: prominent ? 13 : 11.5),
-      ),
-      if (demoOnly) ...[
-        SizedBox(height: prominent ? 14 : 10),
-        Text(
-          'Developer preview only — not stored or accepted by the live service.',
-          textAlign: TextAlign.center,
-          style: ZyraText.subtext(
-            size: prominent ? 11.5 : 10.5,
-          ).copyWith(color: ZyraColors.goldText),
-        ),
-      ],
-    ],
-  );
-
-  Widget _qrPreview() => Column(
-    key: const ValueKey('zyra_code_qr_preview'),
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Text(
-        'YOUR ZYRA QR CODE',
-        style: ZyraText.chapterLabel(color: ZyraColors.ink(0.58)),
-      ),
-      const SizedBox(height: 14),
-      Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
-        ),
-        child: QrImageView(
-          data: code,
-          size: prominent ? 184 : 156,
-          padding: EdgeInsets.zero,
-        ),
-      ),
-      const SizedBox(height: 10),
-      Text(
-        'Tap QR again to return',
-        style: ZyraText.subtext(size: prominent ? 11.5 : 10.5),
-      ),
-    ],
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(minHeight: 174),
-      padding: const EdgeInsets.fromLTRB(18, 18, 18, 20),
-      decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
-        border: Border.all(color: ZyraColors.surfaceBorder),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Center(
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 320),
-          reverseDuration: const Duration(milliseconds: 280),
-          switchInCurve: Curves.easeOutCubic,
-          switchOutCurve: Curves.easeInCubic,
-          layoutBuilder: (currentChild, previousChildren) => Stack(
-            alignment: Alignment.center,
-            children: [...previousChildren, ?currentChild],
-          ),
-          transitionBuilder: (child, animation) {
-            final entrance = CurvedAnimation(
-              parent: animation,
-              curve: Curves.easeOutCubic,
-              reverseCurve: Curves.easeInCubic,
-            );
-            return FadeTransition(
-              opacity: entrance,
-              child: ScaleTransition(
-                scale: Tween<double>(begin: 0.965, end: 1).animate(entrance),
-                child: child,
-              ),
-            );
-          },
-          child: showQr ? _qrPreview() : _details(),
-        ),
-      ),
-    );
-  }
-}
-
-class _OrDivider extends StatelessWidget {
-  const _OrDivider();
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(child: Divider(color: ZyraColors.ink(0.20))),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text(
-            'OR USE THEIR CODE',
-            style: ZyraText.chapterLabel(color: ZyraColors.ink(0.48)),
-          ),
-        ),
-        Expanded(child: Divider(color: ZyraColors.ink(0.20))),
-      ],
-    );
-  }
-}
-
-class _SmallAction extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final double height;
-  final bool? prominent;
-  final bool adaptive;
-  final bool selected;
-  final bool pulse;
-  final int pulseRevision;
-  final VoidCallback? onTap;
-  final bool enableFeedback;
-  const _SmallAction({
-    required this.icon,
-    required this.label,
-    this.height = 54,
-    this.prominent,
-    this.adaptive = false,
-    this.selected = false,
-    this.pulse = false,
-    this.pulseRevision = 0,
-    this.onTap,
-    this.enableFeedback = true,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final large = prominent ?? height > 54;
-    final labelWidget = Text(
-      label,
-      style: ZyraText.body(
-        size: large ? 13.5 : 12.5,
-        color: selected ? ZyraColors.goldText : null,
-      ),
-    );
-    return Material(
-      color: Colors.transparent,
-      borderRadius: BorderRadius.circular(14),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(14),
-        enableFeedback: enableFeedback,
-        onTap: ZyraTapFeedback.onTap(context, onTap),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 180),
-          curve: Curves.easeOutCubic,
-          height: height,
+    return Scaffold(
+      key: widget.signupPreview ? const ValueKey('signup_code_preview') : null,
+      backgroundColor: Colors.transparent,
+      body: SizedBox.expand(
+        child: DecoratedBox(
           decoration: BoxDecoration(
-            color: pulse || selected
-                ? ZyraColors.ivoryTop
-                : ZyraColors.iconButtonBg,
-            border: Border.all(
-              color: pulse
-                  ? ZyraColors.surfaceSignal
-                  : selected
-                  ? ZyraColors.accentBorder
-                  : ZyraColors.iconButtonBorder,
-            ),
-            borderRadius: BorderRadius.circular(14),
+            gradient: local
+                ? ZyraColors.brandGradient
+                : ZyraColors.genderGradient(AppState.instance.gender),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox.square(
-                dimension: large ? 19 : 17,
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 220),
-                  switchInCurve: Curves.easeOutBack,
-                  switchOutCurve: Curves.easeInCubic,
-                  transitionBuilder: (child, animation) => FadeTransition(
-                    opacity: animation,
-                    child: ScaleTransition(
-                      scale: Tween<double>(
-                        begin: 0.68,
-                        end: 1,
-                      ).animate(animation),
-                      child: child,
-                    ),
-                  ),
-                  child: Icon(
-                    icon,
-                    key: ValueKey('small-action-$label-$pulseRevision'),
-                    size: large ? 19 : 17,
-                    color: selected
-                        ? ZyraColors.surfaceSignal
-                        : ZyraColors.ink(0.70),
-                  ),
+          child: _localRequested || origin == null
+              ? page
+              : ZyraPullDownCloseCue(
+                  enabled: origin.canPop,
+                  paintBackground: false,
+                  routeIdentity: origin,
+                  onBack: () => Navigator.of(context).maybePop(),
+                  child: page,
                 ),
-              ),
-              const SizedBox(width: 6),
-              if (adaptive) Flexible(child: labelWidget) else labelWidget,
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _LargeAction extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback? onTap;
-  final bool enableFeedback;
-  const _LargeAction({
-    required this.icon,
-    required this.label,
-    this.onTap,
-    this.enableFeedback = true,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(18),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(18),
-        enableFeedback: enableFeedback,
-        onTap: ZyraTapFeedback.onTap(context, onTap),
-        child: Container(
-          height: 64,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            border: Border.all(color: ZyraColors.surfaceBorder),
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: Row(
-            children: [
-              Icon(icon, size: 21, color: ZyraColors.surfaceSignal),
-              const SizedBox(width: 12),
-              Expanded(child: Text(label, style: ZyraText.body(size: 14))),
-              Icon(Icons.chevron_right, size: 19, color: ZyraColors.ink(0.48)),
-            ],
-          ),
         ),
       ),
     );

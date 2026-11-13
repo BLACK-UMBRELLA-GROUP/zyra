@@ -16,6 +16,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show PostgrestException;
 import '../data/zyra_reference_data.dart';
+import '../models/zyra_code_format.dart';
 import '../data/zyra_guardian_capacity.dart';
 import '../state/app_state.dart' show ZyraPlan;
 import '../main.dart';
@@ -28,7 +29,13 @@ import 'zyra_auth.dart';
 /// server did not answer authoritatively, so callers must not turn it into an
 /// empty-state claim. Legacy collection-returning methods remain below while
 /// older surfaces migrate to this contract.
-enum ZyraSourceFailure { notReady, signedOut, requestFailed, invalidResponse }
+enum ZyraSourceFailure {
+  notReady,
+  signedOut,
+  requestFailed,
+  invalidResponse,
+  codeRateLimited,
+}
 
 class ZyraSourceResult<T> {
   final T? _value;
@@ -573,10 +580,20 @@ class ZyraWaliLinkService {
     }
   }
 
+  static bool? _codeReadyForTesting;
+
+  @visibleForTesting
+  static void setCodeReadyForTesting(bool? value) {
+    assert(() {
+      _codeReadyForTesting = value;
+      return true;
+    }());
+  }
+
   static Future<ZyraSourceResult<ZyraPersonalCode>> rotatePersonalCode({
     String? roleContext,
   }) async {
-    if (!supabaseReady) {
+    if (!(_codeReadyForTesting ?? supabaseReady)) {
       return const ZyraSourceResult.unavailable(ZyraSourceFailure.notReady);
     }
     if (ZyraAuth.currentUser == null) {
@@ -613,7 +630,7 @@ class ZyraWaliLinkService {
   static Future<ZyraSourceResult<ZyraPersonalCodePreview?>> previewPersonalCode(
     String code,
   ) async {
-    if (!supabaseReady) {
+    if (!(_codeReadyForTesting ?? supabaseReady)) {
       return const ZyraSourceResult.unavailable(ZyraSourceFailure.notReady);
     }
     if (ZyraAuth.currentUser == null) {
@@ -645,6 +662,12 @@ class ZyraWaliLinkService {
               ZyraSourceFailure.invalidResponse,
             )
           : ZyraSourceResult.available(preview);
+    } on PostgrestException catch (e) {
+      return ZyraSourceResult.unavailable(
+        e.message == zyraCodeRateLimitSignal
+            ? ZyraSourceFailure.codeRateLimited
+            : ZyraSourceFailure.requestFailed,
+      );
     } catch (e) {
       debugPrint('ZYRA: previewPersonalCode failed — $e');
       return const ZyraSourceResult.unavailable(
@@ -675,6 +698,9 @@ class ZyraWaliLinkService {
         return null;
       } catch (e) {
         if (!isCurrentAccount()) return _staleLinkAction;
+        if (e is PostgrestException && e.message == zyraCodeRateLimitSignal) {
+          return zyraCodeRateLimitMessage;
+        }
         final message = e.toString();
         if (message.contains('request_already_pending')) {
           return 'You already have a request waiting with this person.';

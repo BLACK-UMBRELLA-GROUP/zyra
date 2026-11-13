@@ -3,12 +3,63 @@ id: ASBUILT-ZYRA-QUEUE30
 type: HANDOVER
 status: CURRENT
 feature: CODE PAGE
-purpose: As-built LOCK 9 V2 local Code page, queue 30
+purpose: As-built LOCK 9 V3 Code pages, queue 105, and prior V2 implementation
 links: [AD-AIOS-115, DR-ZYRA-231, OA-ZYRA-316, OA-ZYRA-317]
 owner: Codex
 ---
 
-# ZYRA Code page — queue 30, LOCK 9 V2
+# ZYRA Code page — line 105, LOCK 9 V3
+
+Add a Guardian and Add a Seeker now open on My code. Their code and the
+Profiles Scan entry share the light scanner and the five-box manual field.
+The source is the 12 November V3 brief, DOC-ZYRA-0343 §0, LOCK record
+DOC-ZYRA-0344, Q137 and the archived snapshot of prototype V224. The
+historical V2 handover below describes the 30 October build only.
+
+| Surface | Entry and behavior |
+|---|---|
+| Ordinary Add a Guardian / Add a Seeker | Guardian Add action or signup Support and guidance → Continue, through the existing callers to `ZyraCodeScreen`. My code uses the account-scoped code read. Check shows first name and role; Send uses the existing request RPC and keeps the Guardian relationship and Seeker capacity checks. Existing pending request controls and manual older-invite fallback remain. |
+| Ordinary Scan | Profiles action menu → Scan via `HomeShell` and `FindByZyraCodeScreen`. First name and role only; the ordinary matching route retains Consider and the original server matching boundary. |
+| Founder preview | Existing Profiles and Guardian entry points, plus the signup rehearsal. Uses the DRAFT/DEMO fixtures, local results and simulated Send. Protected Add and signup previews do not open native camera, clipboard or share sheets. Local rotation changes the sample QR only. Founder Scan retains the guarded capture path. |
+
+`SOURCE/lib/dev/zyra_draft_local_code_page.dart` is the shared presenter;
+`zyra_request_tab_pill.dart` shares the Journey requests pill, and the title
+uses `ZyraTabTitle`. `zyra_known_person_code_content.dart` owns the
+camera lifetime. `zyra_code_format.dart` accepts only the whole raw prefixed
+code, with 20 ASCII letters or digits in five groups or compact form. Bad
+payloads show the two-second hint and never open a URL. The existing sample
+aliases still work in the manual field. The timed preview sent state retains
+the 14-day wording from Guardian rules DOC-ZYRA-0290 V5 and the 12 November
+time-rules brief. Ordinary sent state does not claim an expiry before the
+server change.
+
+Rotation uses the shared LOCK 28 confirm sheet and the existing
+`zyra_rotate_my_personal_code(p_role_context)` contract. An account change
+invalidates pending actions and a late refresh cannot restore a replaced
+QR. Cancel leaves the code and requests in place. The code page maps the
+exact `too_many_code_checks` server error; an empty successful lookup stays
+not found. Only line 106 owns the server signal. No migration, service
+deployment, live service calls or device installation were performed.
+
+**Open — Q139 / OA-ZYRA-317.** LOCK 9 V3 and Q137 specify the HTTPS domain,
+but no exact path, payload grammar or app and web handoff is recorded.
+Share sends the raw code and the scanner rejects all URLs until that
+contract is approved. Refused for this build: guessing a path or treating
+any path on the domain as a code. No website or app link files were changed.
+
+Verification uses local fake camera, share, clipboard and RPC calls, plus
+the ordinary and Founder app routes at 430 × 932 and 375 × 667. The
+prototype's drawn QR is a reference for layout; the app generates a QR that
+was decoded from the screenshots. See
+`REPORTS/EVIDENCE/LINE105_2026-11-13/` and the 13 November line 105 task
+note for the source comparison, results, and independent review. Fable and
+the ZYRA design chat retain their separate handover review.
+
+---
+
+## Historical V2 handover
+
+ZYRA Code page — queue 30, LOCK 9 V2
 
 Built 30 October 2026 from `PRODUCT/APPROVED/CODE_PAGE/BRIEFS/BUILD_BRIEF_2026-10-30_V2.md`,
 `RECORD/CODE_PAGE_SPEC_CURRENT_VERSION_V2.md`, `RECORD/LOCK_RECORD.md` and all nine `MASTERS/*.png` in that feature folder.

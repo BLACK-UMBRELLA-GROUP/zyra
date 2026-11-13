@@ -199,19 +199,22 @@ void main() {
   }
 
   Future<void> confirmDemoGuardian(WidgetTester tester) async {
-    await tester.tap(find.text('Enter code'));
+    await tester.tap(find.text('Their code'));
     await tester.pumpAndSettle();
     await tester.pump(const Duration(milliseconds: 500));
     await tester.enterText(
-      find.byKey(const ValueKey('inline-zyra-code-field')),
+      find.byKey(const ValueKey('local-code-field')),
       ZyraDevPersonalCodeFixtures.validGuardianEntryCode,
     );
-    await tester.tap(find.text('Check'));
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Check code'));
+    await tester.tap(find.text('Check code'));
     await tester.pump(const Duration(milliseconds: 300));
     await tester.pumpAndSettle();
     await tester.pump(const Duration(milliseconds: 500));
-    await tester.ensureVisible(find.text('Confirm'));
-    await tester.tap(find.text('Confirm'));
+    await tester.ensureVisible(find.text('Send request'));
+    await tester.tap(find.text('Send request'));
     await tester.pumpAndSettle();
   }
 
@@ -219,15 +222,12 @@ void main() {
     'Basic unknown mix retains code and QR and refuses an unverified second request',
     (tester) async {
       await openDemoCode(tester, plan: ZyraPlan.basic, count: 1);
-      expect(find.text('ZYRA-DEMO-SEEKER-ADAM'), findsOneWidget);
-      expect(find.text('Copy'), findsOneWidget);
-      expect(find.text('Share'), findsOneWidget);
-      await tester.tap(find.text('QR'));
-      await tester.pumpAndSettle();
       expect(
-        find.byKey(const ValueKey('zyra_code_qr_preview')),
+        find.byKey(const ValueKey(('zyra-qr', 'ZYRA-DEMO-SEEKER-ADAM'))),
         findsOneWidget,
       );
+      expect(find.text('Copy code'), findsOneWidget);
+      expect(find.text('Share my code'), findsOneWidget);
       await confirmDemoGuardian(tester);
       expect(find.text('Upgrade'), findsNothing);
       expect(find.text(ZyraGuardianCapacity.unavailableMessage), findsWidgets);

@@ -131,7 +131,7 @@ void main() {
     expect(ZyraInternalPreviewClient.isActive, isFalse);
     expect(ZyraDeveloperAccess.isMainAppFounderPreview, isFalse);
     expect(find.byKey(const ValueKey('signup_code_preview')), findsOneWidget);
-    expect(find.text('ZYRA-DEMO-GUARDIAN-IBRAHIM'), findsOneWidget);
+    expect(find.text('ZYRA · DEMO · GUARDIAN · IBRAHIM'), findsOneWidget);
     expect(
       find.text('They can send a request. You still choose whether to link.'),
       findsOneWidget,
@@ -170,7 +170,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(const ValueKey('signup_code_preview')), findsOneWidget);
-    expect(find.text('ZYRA-DEMO-GUARDIAN-IBRAHIM'), findsOneWidget);
+    expect(find.text('ZYRA · DEMO · GUARDIAN · IBRAHIM'), findsOneWidget);
     expect(ZyraInternalPreviewClient.isActive, isFalse);
     expect(platformCalls, isEmpty);
     expect(tester.takeException(), isNull);
@@ -207,24 +207,18 @@ void main() {
     }
   });
 
-  testWidgets('QR changes presentation only without platform feedback', (
-    tester,
-  ) async {
+  testWidgets('My code immediately encodes the fictional code', (tester) async {
     await mount(tester);
-    await tester.ensureVisible(find.byKey(const ValueKey('local-code-qr')));
-    await tester.tap(find.byKey(const ValueKey('local-code-qr')));
-    await tester.pumpAndSettle();
-
-    expect(find.byType(QrImageView), findsOneWidget);
-    expect(find.text('QR'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey(('zyra-qr', 'ZYRA-DEMO-GUARDIAN-IBRAHIM'))),
+      findsOneWidget,
+    );
     expect(find.byType(MobileScanner), findsNothing);
     expect(platformCalls, isEmpty);
-
-    await tester.ensureVisible(find.byKey(const ValueKey('local-code-qr')));
-    await tester.tap(find.byKey(const ValueKey('local-code-qr')));
+    await tester.tap(find.text('Their code'));
     await tester.pumpAndSettle();
     expect(find.byType(QrImageView), findsNothing);
-    expect(platformCalls, isEmpty);
+    expect(find.byType(MobileScanner), findsNothing);
   });
 
   testWidgets('revocation denies presentation and stale external callbacks', (
@@ -233,7 +227,7 @@ void main() {
     final routes = _Routes();
     await mount(tester, observer: routes);
     final callbacks = [
-      for (final name in ['copy', 'share', 'qr']) action(tester, name).onTap!,
+      for (final name in ['copy', 'share']) action(tester, name).onTap!,
     ];
     final originalPushes = routes.pushes;
 
@@ -259,7 +253,7 @@ void main() {
     await mount(tester);
     ZyraWaliLinkService.invitationRevision.value++;
     await tester.pumpAndSettle();
-    expect(find.text('ZYRA-DEMO-GUARDIAN-IBRAHIM'), findsOneWidget);
+    expect(find.text('ZYRA · DEMO · GUARDIAN · IBRAHIM'), findsOneWidget);
     expect(find.text('REQUESTS'), findsNothing);
     expect(find.textContaining("couldn't be refreshed"), findsNothing);
     expect(platformCalls, isEmpty);
@@ -269,8 +263,15 @@ void main() {
     tester,
   ) async {
     await mount(tester, size: const Size(320, 568), scale: 2);
-    for (final name in ['copy', 'qr', 'share']) {
+    for (final name in ['copy', 'share']) {
       final option = find.byKey(ValueKey('local-code-$name'));
+      if (option.evaluate().isEmpty) {
+        await tester.scrollUntilVisible(
+          option,
+          120,
+          scrollable: find.byType(Scrollable).first,
+        );
+      }
       await tester.ensureVisible(option);
       await tester.pumpAndSettle();
       expect(option.hitTestable(), findsOneWidget);

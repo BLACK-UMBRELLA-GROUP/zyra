@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show SystemUiOverlayStyle;
-import '../../dev/zyra_app_gold_preview.dart';
 
+import '../../dev/zyra_app_gold_preview.dart';
 import '../../dev/zyra_dev_personal_code_fixtures.dart';
+import '../../dev/zyra_draft_local_code_aliases.dart';
+import '../../dev/zyra_draft_local_code_page.dart';
+import '../../models/zyra_code_format.dart';
 import '../../models/zyra_known_person_code.dart';
+import '../../services/zyra_account_state.dart';
 import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_discovery_service.dart';
 import '../../services/zyra_internal_preview_client.dart';
 import '../../services/zyra_product_telemetry.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
-import '../../theme/zyra_interaction_style.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_known_person_code_content.dart';
-import '../../widgets/zyra_state_widgets.dart';
+import '../../widgets/zyra_pull_down_back_scope.dart';
 
 /// Deliberate known-person discovery from Browse.
 ///
@@ -28,144 +30,118 @@ class FindByZyraCodeScreen extends StatefulWidget {
 }
 
 class _FindByZyraCodeScreenState extends State<FindByZyraCodeScreen> {
-  final TextEditingController _controller = TextEditingController();
-  final FocusNode _focusNode = FocusNode();
-  ZyraKnownPersonCodePreview? _preview;
+  static const _previewEntry = 'DRAFTMATCH0000000000';
   ZyraKnownPersonConsiderOutcome? _outcome;
-  String? _error;
-  bool _busy = false;
+  String? _considerError;
+  String? _firstName;
+  bool _considering = false;
 
   bool get _isFounderPreview =>
       ZyraInternalPreviewClient.isActive &&
       ZyraDeveloperAccess.isMainAppFounderPreview;
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
+  late final _entryOwner = _owner;
+  (String?, int, int, bool) get _owner => (
+    ZyraAccountState.userId,
+    ZyraAccountState.generation,
+    ZyraInternalPreviewClient.previewSession,
+    _isFounderPreview,
+  );
 
-  Future<void> _scan() async {
-    final code = await Navigator.of(context).push<String>(
-      MaterialPageRoute(builder: (_) => const _KnownPersonCodeScanner()),
-    );
-    if (!mounted || code == null) return;
-    _controller.text = code;
-    await _check();
-  }
+  bool _canAct() =>
+      mounted && !ZyraAccountState.isSigningOut && _entryOwner == _owner;
 
-  Future<void> _check() async {
-    if (_controller.text.trim().isEmpty || _busy) return;
+  Future<ZyraLocalCodeIdentity?> _lookup(String code) async {
+    final preview = _isFounderPreview;
+    _considerError = null;
     _recordCodeEvent(
       ZyraTelemetryEventName.started,
       ZyraTelemetryAction.zyraCodeCheck,
     );
-    setState(() {
-      _busy = true;
-      _error = null;
-      _preview = null;
-      _outcome = null;
-    });
-
-    if (_isFounderPreview) {
-      await Future<void>.delayed(const Duration(milliseconds: 260));
-      if (!mounted) return;
-      final preview = ZyraDevPersonalCodeFixtures.previewKnownPersonCode(
-        _controller.text,
-        currentGender: AppState.instance.gender,
-      );
-      setState(() {
-        _busy = false;
-        _preview = preview;
-        if (preview == null) _error = 'That code is not available.';
-      });
-      _recordCodeEvent(
-        preview == null
-            ? ZyraTelemetryEventName.failed
-            : ZyraTelemetryEventName.completed,
-        ZyraTelemetryAction.zyraCodeCheck,
-      );
-      if (preview != null) _focusNode.unfocus();
-      return;
-    }
-
-    final result = await ZyraDiscoveryService.previewKnownPersonCode(
-      _controller.text,
-    );
-    if (!mounted) return;
-    setState(() {
-      _busy = false;
-      if (!result.serverAvailable) {
-        _error = "The code couldn't be checked. Please try again.";
-      } else if (result.person == null) {
-        _error = 'That code is not available.';
-      } else {
-        _preview = result.person;
-      }
-    });
+    final result = preview
+        ? ZyraKnownPersonCodeLookup.available(
+            ZyraCodeFormat.scanEntry(code) == _previewEntry
+                ? ZyraDevPersonalCodeFixtures.previewKnownPersonCode(
+                    ZyraDevPersonalCodeFixtures.validKnownPersonEntryCode(
+                      currentGender: AppState.instance.gender,
+                    ),
+                    currentGender: AppState.instance.gender,
+                  )
+                : null,
+          )
+        : await ZyraDiscoveryService.previewKnownPersonCode(code);
+    if (!_canAct()) return null;
     _recordCodeEvent(
-      _preview == null
+      result.person == null
           ? ZyraTelemetryEventName.failed
           : ZyraTelemetryEventName.completed,
       ZyraTelemetryAction.zyraCodeCheck,
     );
-    if (_preview != null) _focusNode.unfocus();
+    if (result.rateLimited) {
+      throw const ZyraCodeCheckFailure(zyraCodeRateLimitMessage);
+    }
+    if (!result.serverAvailable) {
+      throw const ZyraCodeCheckFailure(
+        "The code couldn't be checked. Please try again.",
+      );
+    }
+    final person = result.person;
+    return person == null
+        ? null
+        : ZyraLocalCodeIdentity(person.firstName, 'Seeker');
   }
 
-  Future<void> _consider() async {
-    if (_preview == null || _busy) return;
+  Future<void> _consider(
+    String code,
+    ZyraLocalCodeIdentity person,
+    bool Function() current,
+  ) async {
+    if (!current() || _considering) return;
+    final preview = _isFounderPreview;
+    setState(() {
+      _considering = true;
+      _considerError = null;
+    });
     _recordCodeEvent(
       ZyraTelemetryEventName.started,
       ZyraTelemetryAction.knownPersonConsider,
     );
+    final outcome = preview
+        ? ZyraKnownPersonConsiderOutcome.considered
+        : await ZyraDiscoveryService.considerKnownPersonCode(code);
+    if (!mounted) return;
+    final error = switch (outcome) {
+      ZyraKnownPersonConsiderOutcome.rateLimited => zyraCodeRateLimitMessage,
+      ZyraKnownPersonConsiderOutcome.noLongerAvailable =>
+        'That person is no longer available.',
+      ZyraKnownPersonConsiderOutcome.failed =>
+        "Your interest couldn't be sent. Please try again.",
+      _ => null,
+    };
+    final canPublish = current() && _isFounderPreview == preview;
     setState(() {
-      _busy = true;
-      _error = null;
+      _considering = false;
+      if (canPublish) {
+        _considerError = error;
+        _outcome = error == null ? outcome : null;
+        _firstName = person.firstName;
+      }
     });
-
-    if (_isFounderPreview) {
-      await Future<void>.delayed(const Duration(milliseconds: 260));
-      await ZyraInteractionStyle.emitSelectionHaptic();
-      if (!mounted) return;
-      setState(() {
-        _busy = false;
-        _outcome = ZyraKnownPersonConsiderOutcome.considered;
-      });
+    if (canPublish) {
       _recordCodeEvent(
-        ZyraTelemetryEventName.completed,
+        error == null
+            ? ZyraTelemetryEventName.completed
+            : ZyraTelemetryEventName.failed,
         ZyraTelemetryAction.knownPersonConsider,
       );
-      return;
     }
-
-    final outcome = await ZyraDiscoveryService.considerKnownPersonCode(
-      _controller.text,
-    );
-    if (!mounted) return;
-    setState(() {
-      _busy = false;
-      if (outcome == ZyraKnownPersonConsiderOutcome.failed) {
-        _error = "Your interest couldn't be sent. Please try again.";
-      } else if (outcome == ZyraKnownPersonConsiderOutcome.noLongerAvailable) {
-        _error = 'That person is no longer available.';
-      } else {
-        _outcome = outcome;
-      }
-    });
-    _recordCodeEvent(
-      outcome == ZyraKnownPersonConsiderOutcome.failed ||
-              outcome == ZyraKnownPersonConsiderOutcome.noLongerAvailable
-          ? ZyraTelemetryEventName.failed
-          : ZyraTelemetryEventName.completed,
-      ZyraTelemetryAction.knownPersonConsider,
-    );
   }
 
   void _recordCodeEvent(
     ZyraTelemetryEventName name,
     ZyraTelemetryAction action,
   ) {
+    if (_isFounderPreview) return;
     ZyraProductTelemetry.instance.record(
       feature: ZyraTelemetryFeature.zyraCode,
       name: name,
@@ -174,78 +150,75 @@ class _FindByZyraCodeScreenState extends State<FindByZyraCodeScreen> {
     );
   }
 
-  void _reset() {
-    setState(() {
-      _controller.clear();
-      _preview = null;
-      _outcome = null;
-      _error = null;
-    });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) _focusNode.requestFocus();
-    });
-  }
-
   @override
-  Widget build(BuildContext context) => Scaffold(
-    extendBodyBehindAppBar: true,
-    appBar: AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      title: Text('Find by ZYRA Code', style: ZyraText.heading(size: 17)),
-      iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
-    ),
-    body: Container(
-      constraints: const BoxConstraints.expand(),
-      decoration: ZyraAppGoldDecoration(
-        gradient: ZyraColors.genderGradient(AppState.instance.gender),
-      ),
-      child: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(24, 20, 24, 34),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight:
-                  MediaQuery.sizeOf(context).height -
-                  MediaQuery.paddingOf(context).vertical -
-                  106,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+  Widget build(BuildContext context) {
+    final origin = ModalRoute.of(context);
+    final preview = _isFounderPreview;
+    final admitted = _canAct();
+    final page = !admitted || _outcome == null
+        ? ZyraLocalCodePage(
+            mode: ZyraLocalCodeContext.scan,
+            isLocal: false,
+            ownerKey: _entryOwner,
+            canAct: _canAct,
+            lookupCode: _lookup,
+            manualAlias: !preview
+                ? null
+                : (raw) =>
+                      raw.trim().toUpperCase() ==
+                          ZyraDevPersonalCodeFixtures.validKnownPersonEntryCode(
+                            currentGender: AppState.instance.gender,
+                          )
+                      ? _previewEntry
+                      : null,
+            onMemberScanAction: (code, person, current) => Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                if (_outcome == null) ...[
-                  ZyraKnownPersonCodeContent(
-                    controller: _controller,
-                    focusNode: _focusNode,
-                    preview: _preview,
-                    busy: _busy,
-                    onScan: _busy ? null : _scan,
-                    onCheck: _check,
-                    onReset: _reset,
-                    resultAction: _consider,
-                    resultActionLabel: 'Consider',
-                  ),
-                  if (_error case final error?) ...[
-                    const SizedBox(height: 14),
-                    ZyraErrorBanner(
-                      message: error,
-                      onDismiss: () => setState(() => _error = null),
-                    ),
-                  ],
-                ] else
-                  _KnownPersonSuccess(
-                    firstName: _preview!.firstName,
-                    matched: _outcome == ZyraKnownPersonConsiderOutcome.matched,
-                    onDone: () => Navigator.of(context).pop(),
+                ZyraKnownPersonCodePill(
+                  key: const ValueKey('known-person-consider'),
+                  icon: Icons.check_rounded,
+                  label: 'Consider',
+                  onTap: _considering
+                      ? null
+                      : () => _consider(code, person, current),
+                ),
+                if (_considerError case final error?)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(error, style: ZyraText.subtext(size: 12)),
                   ),
               ],
             ),
+          )
+        : Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: _KnownPersonSuccess(
+                firstName: _firstName!,
+                matched: _outcome == ZyraKnownPersonConsiderOutcome.matched,
+                onDone: () => Navigator.of(context).pop(),
+              ),
+            ),
+          );
+    return Scaffold(
+      body: SizedBox.expand(
+        child: DecoratedBox(
+          decoration: ZyraAppGoldDecoration(
+            gradient: ZyraColors.genderGradient(AppState.instance.gender),
           ),
+          child: origin == null
+              ? page
+              : ZyraPullDownCloseCue(
+                  enabled: origin.canPop,
+                  routeIdentity: origin,
+                  paintBackground: false,
+                  onBack: () => Navigator.of(context).maybePop(),
+                  child: page,
+                ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class _KnownPersonSuccess extends StatelessWidget {
@@ -301,37 +274,5 @@ class _KnownPersonSuccess extends StatelessWidget {
         ),
       ),
     ],
-  );
-}
-
-class _KnownPersonCodeScanner extends StatefulWidget {
-  const _KnownPersonCodeScanner();
-
-  @override
-  State<_KnownPersonCodeScanner> createState() =>
-      _KnownPersonCodeScannerState();
-}
-
-class _KnownPersonCodeScannerState extends State<_KnownPersonCodeScanner> {
-  bool get _canCapture =>
-      mounted && (ModalRoute.of(context)?.isCurrent ?? false);
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    backgroundColor: Colors.black,
-    appBar: AppBar(
-      title: Text('Scan ZYRA Code', style: ZyraText.heading(size: 17)),
-      backgroundColor: Colors.black,
-      systemOverlayStyle: SystemUiOverlayStyle.light,
-    ),
-    body: ZyraCodeCapture(
-      canCapture: () => _canCapture,
-      onCode: (code) {
-        if (_canCapture) Navigator.of(context).pop(code);
-      },
-      onManualEntry: () {
-        if (_canCapture) Navigator.of(context).pop();
-      },
-    ),
   );
 }

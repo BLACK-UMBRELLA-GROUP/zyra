@@ -34,6 +34,8 @@ Future<void> pressCode(WidgetTester t, Finder f) async {
 }
 
 Future<void> enterCode(WidgetTester t, String value) async {
+  await t.ensureVisible(find.byKey(fieldKey));
+  await t.pumpAndSettle();
   await t.enterText(find.byKey(fieldKey), value);
   FocusManager.instance.primaryFocus?.unfocus();
   await t.pumpAndSettle();
@@ -105,6 +107,25 @@ void main() {
       ),
     );
     await t.pumpAndSettle();
+    if (mode != ZyraLocalCodeContext.scan &&
+        key('zyra-their-code-tab').evaluate().isNotEmpty) {
+      await t.ensureVisible(key('zyra-their-code-tab'));
+      await t.pumpAndSettle();
+      expect(
+        key('zyra-their-code-tab').hitTestable(),
+        findsOneWidget,
+        reason: 'Their tab at ${t.getRect(key('zyra-their-code-tab'))}',
+      );
+      await t.tap(key('zyra-their-code-tab').hitTestable());
+      await t.pumpAndSettle();
+      if (find.byKey(fieldKey).evaluate().isEmpty) {
+        await t.scrollUntilVisible(
+          find.byKey(fieldKey),
+          140,
+          scrollable: find.byType(Scrollable).first,
+        );
+      }
+    }
   }
 
   test(
@@ -440,8 +461,8 @@ void main() {
       await enterCode(t, '7k2m');
       expect(find.text('fake guarded camera'), findsOneWidget);
       expect(canCapture(), isTrue);
-      oldCapture('ZYRA-DRAFT-SARA');
-      oldCapture('ZYRA-DRAFT-AMIRA');
+      oldCapture('ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F');
+      oldCapture('ZYRA-DRAF-TAMI-RA00-0000-0000');
       await t.pumpAndSettle();
       expect(find.text('Sara'), findsOneWidget);
       expect(calls, 1);
@@ -485,7 +506,7 @@ void main() {
     t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
     await t.pump();
     expect(guard(), isTrue);
-    detected('ZYRA-DRAFT-SARA');
+    detected('ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F');
     await t.pumpAndSettle();
     expect(find.text('Sample'), findsOneWidget);
   });

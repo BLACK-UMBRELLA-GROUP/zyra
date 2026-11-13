@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/zyra_known_person_code_content.dart';
 import 'zyra_view_request_draft_model.dart';
 import 'zyra_draft_local_code_aliases.dart';
 import 'zyra_draft_local_code_page.dart';
@@ -54,15 +53,6 @@ class ZyraDraftCodeEntry extends StatelessWidget {
           ? null
           : ZyraLocalCodeIdentity(person.firstName, 'Seeker');
     },
-    captureBuilder:
-        captureBuilder ??
-        (context, canCapture, onCode, onManualEntry, onRunningChanged) =>
-            ZyraCodeCapture(
-              canCapture: canCapture,
-              onCode: onCode,
-              onManualEntry: onManualEntry,
-              framed: true,
-              onRunningChanged: onRunningChanged,
-            ),
+    captureBuilder: captureBuilder,
   );
 }

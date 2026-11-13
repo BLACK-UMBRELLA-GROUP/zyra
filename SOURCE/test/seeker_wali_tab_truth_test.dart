@@ -139,8 +139,8 @@ void main() {
 
     // Q17 / LOCK 19 k08: the centre action opens the existing LOCK 9 page.
     expect(find.text('Add a Guardian'), findsOneWidget);
-    expect(find.text('Scan code'), findsOneWidget);
-    expect(find.text('Enter code'), findsOneWidget);
+    expect(find.text('My code'), findsOneWidget);
+    expect(find.text('Their code'), findsOneWidget);
     expect(find.text('Generate Invite Code'), findsNothing);
   });
 

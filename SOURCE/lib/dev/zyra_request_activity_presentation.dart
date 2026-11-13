@@ -13,6 +13,7 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_profile_image.dart';
+import '../widgets/zyra_request_tab_pill.dart';
 import '../widgets/zyra_segmented_toggle.dart';
 import '../widgets/zyra_state_widgets.dart';
 import '../widgets/floating_nav_bar.dart';
@@ -179,55 +180,15 @@ class _ZyraRequestActivityPresentationState
 
   Widget _tab(int index, int revision) {
     final selected = widget.selectedIndex == index;
-    final radius = BorderRadius.circular(22);
-    void action() {
-      if (mounted && revision == _renderRevision) _select(index);
-    }
-
-    return Semantics(
-      selected: selected,
-      inMutuallyExclusiveGroup: true,
-      button: true,
+    return ZyraRequestTabPill(
       label: widget.labels[index],
-      onTap: ZyraTapFeedback.onTap(context, action),
-      excludeSemantics: true,
-      child: ZyraFloatingSurface(
-        radius: 999,
-        child: Material(
-          color: selected
-              ? ZyraColors.accentOnCanvas.withValues(alpha: .12)
-              : ZyraColors.surfaceFill,
-          borderRadius: radius,
-          child: InkWell(
-            key: widget.segmentKeys.length > index
-                ? widget.segmentKeys[index]
-                : null,
-            borderRadius: radius,
-            onTap: ZyraTapFeedback.onTap(context, action),
-            child: Container(
-              constraints: const BoxConstraints(minHeight: 44),
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
-              decoration: BoxDecoration(
-                borderRadius: radius,
-                border: Border.all(
-                  color: selected
-                      ? ZyraColors.accentOnCanvas.withValues(alpha: .70)
-                      : ZyraColors.surfaceBorder,
-                ),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                widget.labels[index],
-                textAlign: TextAlign.center,
-                style: ZyraText.button(
-                  size: 12,
-                  color: selected ? ZyraColors.foreground : _helperInk,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+      selected: selected,
+      tapKey: widget.segmentKeys.length > index
+          ? widget.segmentKeys[index]
+          : null,
+      onTap: () {
+        if (mounted && revision == _renderRevision) _select(index);
+      },
     );
   }
 

@@ -288,9 +288,9 @@ void main() {
         find.byKey(const ValueKey('zyra_code_local_preview_denied')),
         findsNothing,
       );
-      expect(find.byKey(const ValueKey('zyra_code_details')), findsOneWidget);
+      expect(find.byKey(const ValueKey('zyra-code-main-card')), findsOneWidget);
       expect(find.text('Add a Guardian').hitTestable(), findsOneWidget);
-      expect(find.textContaining('ZYRA-DEMO-'), findsOneWidget);
+      expect(find.textContaining('ZYRA · DEMO ·'), findsOneWidget);
       await _page(
         h,
         'guardian_invite',

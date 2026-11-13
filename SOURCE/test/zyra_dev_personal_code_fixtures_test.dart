@@ -1,3 +1,4 @@
+import 'package:qr_flutter/qr_flutter.dart';
 // LOCK 14 V5: APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V5.md;
 // masters APP_COLOURS/MASTERS/c11_app_icon_1024.png and c12_splash.png.
 import 'package:flutter/material.dart';
@@ -117,245 +118,87 @@ void main() {
     );
   });
 
-  testWidgets(
-    'Founder preview renders its local code without a refresh error',
-    (tester) async {
-      ZyraDeveloperAccess.setAuthorizedForTesting(true);
-      ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
-      ZyraInternalPreviewClient.beginPreview();
-      AppState.instance.applyDevPreset(name: 'Adam', gender: 'male');
-
-      await tester.pumpWidget(
-        const MaterialApp(home: ZyraCodeScreen(asGuardian: false)),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('ZYRA-DEMO-SEEKER-ADAM'), findsOneWidget);
-      expect(find.textContaining("couldn't be refreshed"), findsNothing);
-      expect(find.textContaining('not stored or accepted'), findsOneWidget);
-      expect(find.text('Change code'), findsNothing);
-    },
-  );
-
-  testWidgets('QR morphs inside the expanded card without changing page mode', (
-    tester,
-  ) async {
-    tester.view.devicePixelRatio = 1;
-    tester.view.physicalSize = const Size(430, 900);
-    addTearDown(tester.view.resetDevicePixelRatio);
-    addTearDown(tester.view.resetPhysicalSize);
+  Future<void> open(WidgetTester t, {bool guardian = false}) async {
+    t.view.devicePixelRatio = 1;
+    t.view.physicalSize = const Size(430, 932);
+    addTearDown(t.view.resetDevicePixelRatio);
+    addTearDown(t.view.resetPhysicalSize);
     ZyraDeveloperAccess.setAuthorizedForTesting(true);
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
     ZyraInternalPreviewClient.beginPreview();
     AppState.instance.applyDevPreset(name: 'Adam', gender: 'male');
+    await t.pumpWidget(MaterialApp(home: ZyraCodeScreen(asGuardian: guardian)));
+    await t.pumpAndSettle();
+  }
 
-    await tester.pumpWidget(
-      const MaterialApp(home: ZyraCodeScreen(asGuardian: false)),
+  Future<void> press(WidgetTester t, String text) async {
+    final target = find.text(text);
+    if (text == 'Check code') {
+      FocusManager.instance.primaryFocus?.unfocus();
+      await t.pumpAndSettle();
+    }
+    await t.ensureVisible(target);
+    await t.tap(target);
+    await t.pumpAndSettle();
+  }
+
+  testWidgets('Founder preview shows the fictional QR and no refresh error', (
+    t,
+  ) async {
+    await open(t);
+    expect(
+      find.byKey(const ValueKey(('zyra-qr', 'ZYRA-DEMO-SEEKER-ADAM'))),
+      findsOneWidget,
     );
-    await tester.pumpAndSettle();
-
-    expect(find.byKey(const ValueKey('zyra_code_details')), findsOneWidget);
-    expect(find.byType(SingleChildScrollView), findsOneWidget);
-
-    await tester.tap(find.text('QR'));
-    await tester.pump(const Duration(milliseconds: 120));
-    expect(find.byKey(const ValueKey('zyra_code_qr_preview')), findsOneWidget);
-    expect(find.byType(SingleChildScrollView), findsOneWidget);
-    await tester.pumpAndSettle();
-    expect(find.text('Tap QR again to return'), findsOneWidget);
-
-    await tester.tap(find.text('QR'));
-    await tester.pumpAndSettle();
-    expect(find.byKey(const ValueKey('zyra_code_details')), findsOneWidget);
-    expect(find.text('Tap QR again to return'), findsNothing);
+    expect(find.textContaining("couldn't be refreshed"), findsNothing);
+    expect(find.text('Get a new code'), findsOneWidget);
   });
 
-  testWidgets('Copy stays confirmed and repeat taps replay feedback', (
-    tester,
-  ) async {
-    tester.view.devicePixelRatio = 1;
-    tester.view.physicalSize = const Size(430, 900);
-    addTearDown(tester.view.resetDevicePixelRatio);
-    addTearDown(tester.view.resetPhysicalSize);
-    ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
-    ZyraInternalPreviewClient.beginPreview();
-    AppState.instance.applyDevPreset(name: 'Adam', gender: 'male');
-
-    await tester.pumpWidget(
-      const MaterialApp(home: ZyraCodeScreen(asGuardian: false)),
+  testWidgets('copy remains confirmed and repeat taps copy again', (t) async {
+    await open(t);
+    await press(t, 'Copy code');
+    await press(t, 'Copied');
+    expect(
+      platformCalls.where((call) => call.method == 'Clipboard.setData'),
+      hasLength(2),
     );
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.text('Copy'));
-    await tester.pump();
     expect(find.text('Copied'), findsOneWidget);
-    expect(
-      tester.widget<Text>(find.text('Copied')).style?.color,
-      const Color(0xFF845F24),
-    );
-    expect(find.text('ZYRA Code copied.'), findsNothing);
-    expect(find.byType(SnackBar), findsNothing);
-    expect(find.byKey(const ValueKey('small-action-Copied-1')), findsOneWidget);
+  });
 
-    await tester.tap(find.text('Copied'));
-    await tester.pump();
-    expect(find.byKey(const ValueKey('small-action-Copied-2')), findsOneWidget);
-
-    await tester.tap(find.text('Share'));
-    await tester.pump();
-    expect(
-      tester.widget<Text>(find.text('Share')).style?.color,
-      const Color(0xFF845F24),
+  testWidgets('Their code preserves invalid and found/sent states', (t) async {
+    await open(t);
+    await press(t, 'Their code');
+    expect(find.byType(QrImageView), findsNothing);
+    final field = find.byKey(const ValueKey('local-code-field'));
+    await t.enterText(field, ZyraDevPersonalCodeFixtures.invalidEntryCode);
+    await press(t, 'Check code');
+    expect(find.text('Invalid code. Please try again.'), findsOneWidget);
+    await t.enterText(
+      field,
+      ZyraDevPersonalCodeFixtures.validGuardianEntryCode,
     );
-
-    expect(
-      platformCalls.where(
-        (call) =>
-            call.method == 'HapticFeedback.vibrate' &&
-            call.arguments == 'HapticFeedbackType.lightImpact',
-      ),
-      hasLength(3),
-    );
-    await tester.pump(const Duration(seconds: 2));
-    expect(find.text('Copied'), findsOneWidget);
-    expect(find.text('Copy'), findsNothing);
-    expect(
-      tester.widget<Text>(find.text('Copied')).style?.color,
-      const Color(0xFF845F24),
-    );
+    await press(t, 'Check code');
+    expect(find.text('Ibrahim'), findsOneWidget);
+    expect(find.text('Guardian · first name and role only'), findsOneWidget);
+    await press(t, 'Send request');
+    expect(find.text('Request sent'), findsOneWidget);
+    expect(find.byType(BottomSheet), findsNothing);
   });
 
   testWidgets(
-    'Enter code closes QR and previews valid and wrong codes inline',
-    (tester) async {
-      tester.view.devicePixelRatio = 1;
-      tester.view.physicalSize = const Size(430, 900);
-      addTearDown(tester.view.resetDevicePixelRatio);
-      addTearDown(tester.view.resetPhysicalSize);
-      ZyraDeveloperAccess.setAuthorizedForTesting(true);
-      ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
-      ZyraInternalPreviewClient.beginPreview();
-      AppState.instance.applyDevPreset(name: 'Adam', gender: 'male');
-
-      await tester.pumpWidget(
-        const MaterialApp(home: ZyraCodeScreen(asGuardian: false)),
+    'Guardian retains relationship controls in ordinary-flow preview',
+    (t) async {
+      await open(t, guardian: true);
+      await press(t, 'Their code');
+      await t.enterText(
+        find.byKey(const ValueKey('local-code-field')),
+        ZyraDevPersonalCodeFixtures.validSeekerEntryCode,
       );
-      await tester.pumpAndSettle();
-
-      await tester.tap(find.text('QR'));
-      await tester.pumpAndSettle();
-      expect(
-        find.byKey(const ValueKey('zyra_code_qr_preview')),
-        findsOneWidget,
-      );
-
-      await tester.tap(find.text('Enter code'));
-      await tester.pumpAndSettle();
-      await tester.pump(const Duration(milliseconds: 400));
-      expect(find.byKey(const ValueKey('zyra_code_qr_preview')), findsNothing);
-      expect(
-        find.byKey(const ValueKey('inline-zyra-code-field')),
-        findsOneWidget,
-      );
-      final composerRect = tester.getRect(
-        find.byKey(const ValueKey('inline-code-composer')),
-      );
-      final checkRect = tester.getRect(
-        find.byKey(const ValueKey('inline-code-primary-action')),
-      );
-      // The composer's 1px border wraps the integrated action.
-      expect(checkRect.top, closeTo(composerRect.top, 1.1));
-      expect(checkRect.right, closeTo(composerRect.right, 1.1));
-      expect(checkRect.bottom, closeTo(composerRect.bottom, 1.1));
-
-      await tester.enterText(
-        find.byKey(const ValueKey('inline-zyra-code-field')),
-        ZyraDevPersonalCodeFixtures.invalidEntryCode,
-      );
-      await tester.tap(find.text('Check'));
-      await tester.pump(const Duration(milliseconds: 300));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 400));
-      await tester.pumpAndSettle();
-      expect(find.text('Invalid code. Please try again.'), findsOneWidget);
-      final clearedField = tester.widget<TextField>(
-        find.byKey(const ValueKey('inline-zyra-code-field')),
-      );
-      expect(clearedField.controller!.text, isEmpty);
-      expect(clearedField.focusNode!.hasFocus, isTrue);
-
-      await tester.enterText(
-        find.byKey(const ValueKey('inline-zyra-code-field')),
-        ZyraDevPersonalCodeFixtures.validGuardianEntryCode,
-      );
-      await tester.tap(find.text('Check'));
-      await tester.pump(const Duration(milliseconds: 300));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 400));
-      await tester.pumpAndSettle();
-      expect(
-        find.byKey(const ValueKey('zyra-code-person-confirmation')),
-        findsOneWidget,
-      );
-      expect(find.text('Ibrahim'), findsOneWidget);
-      expect(find.text('Guardian'), findsOneWidget);
-      expect(find.text('Change code'), findsOneWidget);
-      expect(find.text('Confirm'), findsOneWidget);
-      final differentCodeRect = tester.getRect(
-        find.byKey(const ValueKey('inline-code-different-action')),
-      );
-      final confirmRect = tester.getRect(
-        find.byKey(const ValueKey('inline-code-primary-action')),
-      );
-      expect(differentCodeRect.top, confirmRect.top);
-      expect(differentCodeRect.height, confirmRect.height);
-      expect(
-        (differentCodeRect.width - confirmRect.width).abs(),
-        lessThan(0.01),
-      );
-      expect(
-        find.byKey(const ValueKey('inline-zyra-code-field')),
-        findsNothing,
-      );
-      await tester.tap(find.text('Confirm'));
-      await tester.pump();
-      expect(find.text('Request sent'), findsOneWidget);
+      await press(t, 'Check code');
+      expect(find.text('Adam'), findsOneWidget);
+      expect(find.text('Seeker · first name and role only'), findsOneWidget);
+      expect(find.text('How are you related?'), findsOneWidget);
+      expect(find.text('Send request'), findsOneWidget);
     },
   );
-
-  testWidgets('Guardian receives the same Seeker confirmation flow', (
-    tester,
-  ) async {
-    tester.view.devicePixelRatio = 1;
-    tester.view.physicalSize = const Size(430, 900);
-    addTearDown(tester.view.resetDevicePixelRatio);
-    addTearDown(tester.view.resetPhysicalSize);
-    ZyraDeveloperAccess.setAuthorizedForTesting(true);
-    ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);
-    ZyraInternalPreviewClient.beginPreview();
-    AppState.instance.applyDevPreset(name: 'Ibrahim', gender: 'male');
-
-    await tester.pumpWidget(
-      const MaterialApp(home: ZyraCodeScreen(asGuardian: true)),
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Enter code'));
-    await tester.pumpAndSettle();
-    await tester.pump(const Duration(milliseconds: 400));
-    await tester.enterText(
-      find.byKey(const ValueKey('inline-zyra-code-field')),
-      ZyraDevPersonalCodeFixtures.validSeekerEntryCode,
-    );
-    await tester.tap(find.text('Check'));
-    await tester.pump(const Duration(milliseconds: 300));
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 400));
-    await tester.pumpAndSettle();
-
-    expect(find.text('Adam'), findsOneWidget);
-    expect(find.text('Seeker'), findsOneWidget);
-    expect(find.text('How are you related?'), findsOneWidget);
-    expect(find.text('Confirm'), findsOneWidget);
-  });
 }

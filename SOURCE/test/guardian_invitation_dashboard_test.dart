@@ -290,21 +290,16 @@ void main() {
     );
 
     await tester.pumpAndSettle();
-    expect(find.text('Scan code'), findsOneWidget);
-    expect(find.text('Enter code'), findsOneWidget);
-    await tester.tap(find.text('Enter code'));
+    expect(find.text('My code'), findsOneWidget);
+    expect(find.byKey(const ValueKey('local-code-field')), findsNothing);
+    await tester.tap(find.text('Their code'));
     await tester.pumpAndSettle();
-
-    expect(find.text('Enter ZYRA Code'), findsNothing);
-    expect(
-      find.byKey(const ValueKey('inline-zyra-code-entry')),
-      findsOneWidget,
-    );
-    expect(find.text('ZYRA-XXXX-XXXX-XXXX-XXXX-XXXX'), findsOneWidget);
-
-    await tester.tap(find.text('Enter code'));
+    expect(find.text('Tap to scan their code'), findsOneWidget);
+    expect(find.byKey(const ValueKey('local-code-field')), findsOneWidget);
+    expect(find.byKey(const ValueKey('local-code-box-4')), findsOneWidget);
+    await tester.tap(find.text('My code'));
     await tester.pumpAndSettle();
-    expect(find.byKey(const ValueKey('inline-zyra-code-entry')), findsNothing);
+    expect(find.byKey(const ValueKey('local-code-field')), findsNothing);
   });
 
   testWidgets('manager owns pending expiry, detail and cancel entry', (

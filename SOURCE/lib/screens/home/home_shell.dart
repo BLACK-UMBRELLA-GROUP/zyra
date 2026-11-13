@@ -176,7 +176,7 @@ class _HomeShellState extends State<HomeShell> {
     ),
     (
       icon: Icons.qr_code_scanner_rounded,
-      label: 'ZYRA Code',
+      label: 'Scan',
       act: _CardAct.findByCode,
     ),
     (icon: Icons.visibility_off_outlined, label: 'Hide', act: _CardAct.hide),

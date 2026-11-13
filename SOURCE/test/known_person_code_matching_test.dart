@@ -47,41 +47,32 @@ void main() {
     await tester.pumpWidget(const MaterialApp(home: FindByZyraCodeScreen()));
     await tester.pumpAndSettle();
 
-    expect(find.text('Find by ZYRA Code'), findsOneWidget);
-    expect(find.text('Scan code'), findsOneWidget);
+    expect(find.text('Scan'), findsOneWidget);
+    expect(find.text('Tap to scan their code'), findsOneWidget);
     expect(
-      find.text(
-        'Scan or enter their ZYRA Code. You can then Consider '
-        'them through the normal matching process.',
-      ),
+      find.text('Scan or enter their ZYRA Code to find their profile.'),
       findsOneWidget,
     );
-    expect(find.textContaining('permanent ZYRA Code'), findsNothing);
-
     await tester.enterText(
-      find.byKey(const ValueKey('known-person-code-field')),
+      find.byKey(const ValueKey('local-code-field')),
       ZyraDevPersonalCodeFixtures.validKnownPersonEntryCode(
         currentGender: 'male',
       ),
     );
-    await tester.tap(find.byKey(const ValueKey('known-person-check-code')));
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byKey(const ValueKey('local-code-check')));
+    await tester.tap(find.byKey(const ValueKey('local-code-check')));
     await tester.pump(const Duration(milliseconds: 300));
     await tester.pumpAndSettle();
 
     expect(find.text('Maryam'), findsOneWidget);
-    expect(find.text('27 · Birmingham'), findsOneWidget);
-    expect(find.text('Different code'), findsOneWidget);
+    expect(find.text('27 · Birmingham'), findsNothing);
+    expect(find.text('Seeker · first name and role only'), findsOneWidget);
     expect(find.text('Consider'), findsOneWidget);
-
-    final different = tester.getRect(
-      find.byKey(const ValueKey('known-person-different-code')),
-    );
-    final consider = tester.getRect(
+    await tester.ensureVisible(
       find.byKey(const ValueKey('known-person-consider')),
     );
-    expect(different.top, consider.top);
-    expect(different.height, consider.height);
-    expect((different.width - consider.width).abs(), lessThan(0.01));
 
     await tester.tap(find.byKey(const ValueKey('known-person-consider')));
     await tester.pump(const Duration(milliseconds: 300));
@@ -125,7 +116,7 @@ void main() {
   test('Browse action mode exposes the dedicated ZYRA Code route', () {
     final shell = File('lib/screens/home/home_shell.dart').readAsStringSync();
 
-    expect(shell, contains("label: 'ZYRA Code'"));
+    expect(shell, contains("label: 'Scan'"));
     expect(shell, contains('_CardAct.findByCode'));
     expect(shell, contains('const FindByZyraCodeScreen()'));
   });

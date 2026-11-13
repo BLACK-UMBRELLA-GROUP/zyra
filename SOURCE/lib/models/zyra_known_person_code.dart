@@ -30,13 +30,21 @@ class ZyraKnownPersonCodePreview {
 
 class ZyraKnownPersonCodeLookup {
   final bool serverAvailable;
+  final bool rateLimited;
   final ZyraKnownPersonCodePreview? person;
 
   const ZyraKnownPersonCodeLookup.available(this.person)
-    : serverAvailable = true;
+    : serverAvailable = true,
+      rateLimited = false;
 
   const ZyraKnownPersonCodeLookup.unavailable()
     : serverAvailable = false,
+      rateLimited = false,
+      person = null;
+
+  const ZyraKnownPersonCodeLookup.rateLimited()
+    : serverAvailable = false,
+      rateLimited = true,
       person = null;
 }
 
@@ -44,5 +52,6 @@ enum ZyraKnownPersonConsiderOutcome {
   considered,
   matched,
   noLongerAvailable,
+  rateLimited,
   failed,
 }

@@ -24,11 +24,13 @@
 // unseen score doesn't violate that display rule, but showing the
 // number would — so it stays entirely inside this service.
 
-import 'package:flutter/foundation.dart' show debugPrint;
+import 'package:flutter/foundation.dart' show debugPrint, visibleForTesting;
+import 'package:supabase_flutter/supabase_flutter.dart' show PostgrestException;
 
 import '../main.dart';
 import '../models/seeker_profile.dart';
 import '../models/zyra_known_person_code.dart';
+import '../models/zyra_code_format.dart';
 import '../models/zyra_gender.dart';
 import 'zyra_account_state.dart';
 import 'zyra_auth.dart';
@@ -40,6 +42,16 @@ import 'zyra_wali_link_service.dart' show ZyraSourceFailure, ZyraSourceResult;
 class ZyraDiscoveryService {
   ZyraDiscoveryService._();
 
+  static bool? _codeReadyForTesting;
+
+  @visibleForTesting
+  static void setCodeReadyForTesting(bool? value) {
+    assert(() {
+      _codeReadyForTesting = value;
+      return true;
+    }());
+  }
+
   /// Resolves a bearer-held permanent ZYRA Code through the dedicated
   /// Seeker-only server boundary. An authoritative empty result deliberately
   /// does not reveal whether the code was unknown or the pair was ineligible.
@@ -47,7 +59,7 @@ class ZyraDiscoveryService {
     String code,
   ) async {
     final user = ZyraAuth.currentUser;
-    if (!supabaseReady || user == null) {
+    if (!(_codeReadyForTesting ?? supabaseReady) || user == null) {
       return const ZyraKnownPersonCodeLookup.unavailable();
     }
     try {
@@ -66,6 +78,10 @@ class ZyraDiscoveryService {
       return person == null
           ? const ZyraKnownPersonCodeLookup.unavailable()
           : ZyraKnownPersonCodeLookup.available(person);
+    } on PostgrestException catch (e) {
+      return e.message == zyraCodeRateLimitSignal
+          ? const ZyraKnownPersonCodeLookup.rateLimited()
+          : const ZyraKnownPersonCodeLookup.unavailable();
     } catch (e) {
       debugPrint('ZYRA: previewKnownPersonCode failed — $e');
       return const ZyraKnownPersonCodeLookup.unavailable();
@@ -78,7 +94,7 @@ class ZyraDiscoveryService {
     String code,
   ) async {
     final user = ZyraAuth.currentUser;
-    if (!supabaseReady || user == null) {
+    if (!(_codeReadyForTesting ?? supabaseReady) || user == null) {
       return ZyraKnownPersonConsiderOutcome.failed;
     }
     try {
@@ -92,6 +108,10 @@ class ZyraDiscoveryService {
         null => ZyraKnownPersonConsiderOutcome.noLongerAvailable,
         _ => ZyraKnownPersonConsiderOutcome.failed,
       };
+    } on PostgrestException catch (e) {
+      return e.message == zyraCodeRateLimitSignal
+          ? ZyraKnownPersonConsiderOutcome.rateLimited
+          : ZyraKnownPersonConsiderOutcome.failed;
     } catch (e) {
       debugPrint('ZYRA: considerKnownPersonCode failed — $e');
       return ZyraKnownPersonConsiderOutcome.failed;
