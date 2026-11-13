@@ -236,9 +236,10 @@ class ZyraHealthUsageScreen extends StatelessWidget {
     width: double.infinity,
     padding: const EdgeInsets.all(18),
     decoration: BoxDecoration(
-      color: ZyraColors.iconButtonBg,
+      color: ZyraColors.cardSurface,
       borderRadius: BorderRadius.circular(18),
-      border: Border.all(color: ZyraColors.iconButtonBorder, width: 0.75),
+      border: Border.all(color: ZyraColors.surfaceBorder),
+      boxShadow: ZyraColors.cardShadows,
     ),
     child: child,
   );

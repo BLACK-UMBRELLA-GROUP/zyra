@@ -174,11 +174,11 @@ void main() {
     }
   });
 
-  test('centred dialogs use the approved opaque modal boundary', () {
+  test('centred dialogs use the shared card surface without blur', () {
     final source = File(
       'lib/widgets/zyra_glass_dialog.dart',
     ).readAsStringSync();
-    expect(source, contains('ZyraColors.modalSheetSurface'));
+    expect(source, contains('ZyraColors.cardSurface'));
     expect(source, isNot(contains('BackdropFilter(')));
   });
 }

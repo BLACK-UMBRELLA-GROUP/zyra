@@ -49,7 +49,7 @@ class GuardianDashboardProfileCard extends StatelessWidget {
         key: ValueKey('guardian-dashboard-seeker-snapshot-${person.id}'),
         padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
         decoration: BoxDecoration(
-          color: ZyraColors.surfaceFill,
+          color: ZyraColors.cardSurface,
           borderRadius: BorderRadius.circular(22),
           border: Border.all(color: ZyraColors.surfaceBorder),
         ),

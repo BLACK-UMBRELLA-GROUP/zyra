@@ -157,22 +157,10 @@ class _ZyraBottomPromotionState extends State<ZyraBottomPromotion>
           child: Container(
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
-              color: Color.alphaBlend(
-                ZyraColors.surfaceEmphasisFill,
-                ZyraColors.waliSheetBg,
-              ),
+              color: ZyraColors.cardSurface,
               borderRadius: BorderRadius.circular(19),
-              border: Border.all(
-                color: ZyraColors.surfaceEmphasisBorder,
-                width: 0.8,
-              ),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color(0x55000000),
-                  blurRadius: 22,
-                  offset: Offset(0, 8),
-                ),
-              ],
+              border: Border.all(color: ZyraColors.surfaceBorder),
+              boxShadow: ZyraColors.cardShadows,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,

@@ -70,12 +70,12 @@ class ZyraJourneyPhotoCard extends StatelessWidget {
       key: surfaceKey,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(22),
       ),
       foregroundDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: ZyraColors.journeyGold.withValues(alpha: .6)),
+        border: Border.all(color: ZyraColors.surfaceBorder),
       ),
       child: LayoutBuilder(
         builder: (context, constraints) => Stack(

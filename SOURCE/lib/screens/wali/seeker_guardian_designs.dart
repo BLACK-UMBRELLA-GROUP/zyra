@@ -417,9 +417,7 @@ class _ManagerGuardianCard extends StatelessWidget {
       radius: 16,
       child: Material(
         key: ValueKey('guardian-manager-card-${person.id}'),
-        color: person.isMain
-            ? ZyraColors.surfaceEmphasisFill
-            : ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(24),
         child: InkWell(
           onTap: ZyraTapFeedback.onTap(context, onOpen),
@@ -428,11 +426,7 @@ class _ManagerGuardianCard extends StatelessWidget {
             padding: const EdgeInsets.all(17),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: person.isMain
-                    ? ZyraColors.surfaceEmphasisBorder
-                    : ZyraColors.surfaceBorder,
-              ),
+              border: Border.all(color: ZyraColors.surfaceBorder),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1007,7 +1001,7 @@ class _GuardianDetailsStrip extends StatelessWidget {
       key: const ValueKey('guardian-details-strip'),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
       decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: ZyraColors.surfaceBorder),
       ),
@@ -2144,7 +2138,7 @@ class _JourneyAccessSummary extends StatelessWidget {
           key: const ValueKey('guardian-journey-access-summary'),
           padding: const EdgeInsets.fromLTRB(14, 11, 10, 8),
           decoration: BoxDecoration(
-            color: ZyraColors.surfaceFill,
+            color: ZyraColors.cardSurface,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: ZyraColors.surfaceBorder),
           ),

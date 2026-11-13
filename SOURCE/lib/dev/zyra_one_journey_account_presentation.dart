@@ -152,7 +152,7 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
       radius: 20,
       child: Container(
         decoration: BoxDecoration(
-          color: ZyraColors.surfaceFill,
+          color: ZyraColors.cardSurface,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: ZyraColors.surfaceBorder),
         ),
@@ -851,14 +851,9 @@ class _SettingsSummary extends StatelessWidget {
           vertical: smooth ? 22 : 18,
         ),
         decoration: BoxDecoration(
-          color: ZyraColors.surfaceFill,
+          color: ZyraColors.cardSurface,
           borderRadius: BorderRadius.circular(radius),
-          border: Border.all(
-            color: smooth
-                ? ZyraColors.unlockText.withValues(alpha: .28)
-                : ZyraColors.surfaceBorder,
-            width: 0.5,
-          ),
+          border: Border.all(color: ZyraColors.surfaceBorder),
         ),
         child: Column(
           children: [

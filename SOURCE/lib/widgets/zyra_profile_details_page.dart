@@ -141,7 +141,7 @@ class ZyraProfileDetailsPage extends StatelessWidget {
     ];
     return DecoratedBox(
       key: ValueKey('concept_browse_details_${profile.id}'),
-      decoration: BoxDecoration(color: ZyraColors.surfaceFill),
+      decoration: const BoxDecoration(color: ZyraColors.cardSurface),
       child: LayoutBuilder(
         builder: (context, constraints) {
           final compact =
@@ -288,7 +288,7 @@ class _DetailTile extends StatelessWidget {
       key: ValueKey('profile-detail-tile-${fact.$1}'),
       padding: _padding,
       decoration: BoxDecoration(
-        color: ZyraColors.ivoryTop,
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: ZyraColors.surfaceBorder),
       ),

@@ -877,16 +877,10 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
   }
 
   BoxDecoration _surface({double radius = 16}) => BoxDecoration(
-    color: ZyraColors.surfaceFill,
+    color: ZyraColors.cardSurface,
     borderRadius: BorderRadius.circular(radius),
     border: Border.all(color: ZyraColors.surfaceBorder),
-    boxShadow: [
-      BoxShadow(
-        color: ZyraColors.warmOverlay.withValues(alpha: .12),
-        blurRadius: 18,
-        offset: const Offset(0, 7),
-      ),
-    ],
+    boxShadow: ZyraColors.cardShadows,
   );
 
   bool _sameDay(DateTime a, DateTime b) =>

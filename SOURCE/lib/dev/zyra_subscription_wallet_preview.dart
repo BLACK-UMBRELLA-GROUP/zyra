@@ -859,9 +859,8 @@ class _ZyraSubscriptionWalletPreviewState
       context: context,
       builder: (dialogContext) => Dialog(
         key: const ValueKey('wallet_info_dialog'),
-        backgroundColor: ZyraColors.isLightPalette
-            ? ZyraColors.cardSurface
-            : ZyraColors.cardSurface,
+        backgroundColor: ZyraColors.cardSurface,
+        surfaceTintColor: Colors.transparent,
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -1022,7 +1021,6 @@ class _ZyraSubscriptionWalletPreviewState
     final next = widget.draft.nextStep(role);
     return _card(
       id: 'wallet_role_${role.name}',
-      emphasized: facts.isCovered,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1219,7 +1217,6 @@ class _ZyraSubscriptionWalletPreviewState
           };
     return _card(
       id: 'wallet_role_${role.name}',
-      emphasized: facts.isCovered,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -1381,22 +1378,17 @@ class _ZyraSubscriptionWalletPreviewState
         : _walletBodyStyle(size),
   );
 
-  Widget _card({String? id, bool emphasized = false, required Widget child}) =>
-      Container(
-        key: id == null ? null : ValueKey(id),
-        padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          // Coverage is signalled by the gold outline, not a pale overlay.
-          color: ZyraColors.surfaceFill,
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: emphasized
-                ? ZyraColors.journeyGold.withValues(alpha: 0.5)
-                : ZyraColors.surfaceBorder,
-          ),
-        ),
-        child: child,
-      );
+  Widget _card({String? id, required Widget child}) => Container(
+    key: id == null ? null : ValueKey(id),
+    padding: const EdgeInsets.all(18),
+    decoration: BoxDecoration(
+      color: ZyraColors.cardSurface,
+      borderRadius: BorderRadius.circular(24),
+      border: Border.all(color: ZyraColors.surfaceBorder),
+      boxShadow: ZyraColors.cardShadows,
+    ),
+    child: child,
+  );
 
   Widget _action({
     required String id,

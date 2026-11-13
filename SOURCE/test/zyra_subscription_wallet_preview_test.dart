@@ -693,7 +693,7 @@ void main() {
     ZyraDevPalette.midnightBlue,
   ]) {
     testWidgets(
-      'wallet cards keep shared quiet fill and coverage outlines for ${palette.name}',
+      'wallet cards share one surface across coverage states for ${palette.name}',
       (tester) async {
         final previousPalette = ZyraColors.devPalette;
         final previousSurface = ZyraColors.appSurfaceStyle;
@@ -715,11 +715,12 @@ void main() {
           await tester.pumpAndSettle();
           final state = _state(tester);
           final covered = _cardDecoration(tester, 'wallet_role_seeker');
-          expect(covered.color, ZyraColors.surfaceFill);
+          expect(covered.color, ZyraColors.cardSurface);
           expect(
             (covered.border! as Border).top.color,
-            ZyraColors.journeyGold.withValues(alpha: .5),
+            ZyraColors.surfaceBorder,
           );
+          expect(covered.boxShadow, ZyraColors.cardShadows);
           expect(
             tester
                 .widget<OutlinedButton>(_key('wallet_primary_seeker'))
@@ -730,11 +731,12 @@ void main() {
           await _tap(tester, 'wallet_profiles_next');
           expect(find.text('2 of 2 profiles'), findsOneWidget);
           final uncovered = _cardDecoration(tester, 'wallet_role_guardian');
-          expect(uncovered.color, ZyraColors.surfaceFill);
+          expect(uncovered.color, ZyraColors.cardSurface);
           expect(
             (uncovered.border! as Border).top.color,
             ZyraColors.surfaceBorder,
           );
+          expect(uncovered.boxShadow, ZyraColors.cardShadows);
           expect(find.text('Use a Guardian place for me'), findsOneWidget);
           expect(
             tester
@@ -749,8 +751,9 @@ void main() {
             tester,
             'wallet_place_sample-spare-guardian',
           );
-          expect(place.color, ZyraColors.surfaceFill);
+          expect(place.color, ZyraColors.cardSurface);
           expect((place.border! as Border).top.color, ZyraColors.surfaceBorder);
+          expect(place.boxShadow, ZyraColors.cardShadows);
           await _tap(tester, 'wallet_assign_sample-spare-guardian');
           final confirmation = tester.widget<Material>(
             _key('wallet_confirmation'),

@@ -540,18 +540,10 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
             child: Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: const Color(0xFFFFFDF9),
+                color: ZyraColors.cardSurface,
                 borderRadius: BorderRadius.circular(22),
-                border: Border.all(
-                  color: ZyraColors.journeyGold.withValues(alpha: .35),
-                ),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0x1A3E2E1E),
-                    blurRadius: 24,
-                    offset: Offset(0, 10),
-                  ),
-                ],
+                border: Border.all(color: ZyraColors.surfaceBorder),
+                boxShadow: ZyraColors.cardShadows,
               ),
               child: QrImageView(
                 key: ValueKey(('zyra-qr', code)),
@@ -1151,10 +1143,8 @@ class _CodeGlass extends StatelessWidget {
     child: Container(
       padding: padding,
       decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
-        border: Border.all(
-          color: ZyraColors.warmOverlay.withValues(alpha: .16),
-        ),
+        color: ZyraColors.cardSurface,
+        border: Border.all(color: ZyraColors.surfaceBorder),
         borderRadius: BorderRadius.circular(radius),
       ),
       child: child,

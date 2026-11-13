@@ -1278,7 +1278,6 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
     }
     final main = index == 0;
     return ZyraPhotoGridTile(
-      main: main,
       label: main ? 'Main photo' : 'Photo ${index + 1}',
       onTap: _working ? null : () => _openPhotoGallery(index),
       child: Stack(

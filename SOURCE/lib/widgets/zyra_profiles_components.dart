@@ -24,8 +24,10 @@ class ZyraProfilesDetailsContent extends StatelessWidget {
   Widget build(BuildContext context) => DecoratedBox(
     key: surfaceKey,
     decoration: BoxDecoration(
-      color: ZyraColors.surfaceFill,
+      color: ZyraColors.cardSurface,
       borderRadius: borderRadius,
+      border: Border.all(color: ZyraColors.surfaceBorder),
+      boxShadow: ZyraColors.cardShadows,
     ),
     child: LayoutBuilder(
       builder: (context, constraints) => ZyraShadowScrollView(

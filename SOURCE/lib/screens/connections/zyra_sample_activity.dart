@@ -833,10 +833,10 @@ class _SamplePersonCard extends StatelessWidget {
     circle: false,
     gold: false,
     child: Material(
-      color: ZyraColors.surfaceFill,
+      color: ZyraColors.cardSurface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(22),
-        side: BorderSide(color: ZyraColors.divider),
+        side: BorderSide(color: ZyraColors.surfaceBorder),
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(

@@ -66,7 +66,7 @@ void main() {
   setUp(() => ZyraText.useTestFontStubs = true);
   tearDown(() => ZyraText.useTestFontStubs = false);
 
-  testWidgets('standalone choice uses the shared frost and gold card tokens', (
+  testWidgets('standalone choice keeps the same surface when selected', (
     tester,
   ) async {
     var selected = false;
@@ -90,9 +90,10 @@ void main() {
     var decoration = container.decoration! as BoxDecoration;
     expect(container.duration, const Duration(milliseconds: 480));
     expect(container.curve, Curves.easeInOutCubic);
-    expect(decoration.color, ZyraColors.surfaceFill);
+    expect(decoration.color, ZyraColors.cardSurface);
     expect(decoration.borderRadius, BorderRadius.circular(20));
-    expect((decoration.border! as Border).top.color, ZyraColors.frostBorder);
+    expect((decoration.border! as Border).top.color, ZyraColors.surfaceBorder);
+    expect(decoration.boxShadow, ZyraColors.cardShadows);
     final initialHeight = tester.getSize(find.byKey(_first)).height;
     expect(initialHeight, greaterThanOrEqualTo(72));
     expect(find.byIcon(Icons.male_rounded), findsOneWidget);
@@ -102,11 +103,9 @@ void main() {
     await tester.pump();
     container = _cardContainer(tester, _first);
     decoration = container.decoration! as BoxDecoration;
-    expect(decoration.color, ZyraColors.journeyGold.withValues(alpha: .13));
-    expect(
-      (decoration.border! as Border).top.color,
-      ZyraColors.journeyGold.withValues(alpha: .85),
-    );
+    expect(decoration.color, ZyraColors.cardSurface);
+    expect((decoration.border! as Border).top.color, ZyraColors.surfaceBorder);
+    expect(decoration.boxShadow, ZyraColors.cardShadows);
     expect(find.byType(AnimatedSwitcher), findsNothing);
     expect(
       find.descendant(

@@ -1,7 +1,6 @@
 import 'zyra_floating_surface.dart';
 // ZYRA's centred chrome for information and blocked-state notices.
-// Founder full-app consistency review, 2026-10-03: opaque plum like the
-// approved sheets/toasts, a quiet gold edge, and scroll-safe large text.
+// Centred notices use the shared card surface and scroll-safe large text.
 //
 // EXTRACTED 2026-08-04. The exact same fourteen lines of chrome appeared in
 // browse_screen twice (daily limit, save/consider cap) and was about to be
@@ -64,23 +63,23 @@ class ZyraGlassCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 480),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(24),
-                child: DecoratedBox(
-                  key: const ValueKey('zyra_modal_surface'),
-                  decoration: BoxDecoration(
-                    color: ZyraColors.modalSheetSurface,
-                    borderRadius: BorderRadius.circular(24),
-                    border: Border.all(
-                      color: ZyraColors.journeyGold.withValues(alpha: 0.28),
-                      width: 1,
+              child: ZyraFloatingSurface(
+                radius: 24,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(24),
+                  child: DecoratedBox(
+                    key: const ValueKey('zyra_modal_surface'),
+                    decoration: BoxDecoration(
+                      color: ZyraColors.cardSurface,
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(color: ZyraColors.surfaceBorder),
                     ),
-                  ),
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: ZyraShadowScrollView(
-                      padding: const EdgeInsets.fromLTRB(24, 28, 24, 20),
-                      child: child,
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: ZyraShadowScrollView(
+                        padding: const EdgeInsets.fromLTRB(24, 28, 24, 20),
+                        child: child,
+                      ),
                     ),
                   ),
                 ),
@@ -93,7 +92,7 @@ class ZyraGlassCard extends StatelessWidget {
   }
 }
 
-/// Shared opaque chrome. The caller supplies the contents, so a dialog with
+/// Shared card chrome. The caller supplies the contents, so a dialog with
 /// conditional icons or two-branch copy keeps its own logic rather than
 /// being forced through a parameter list that cannot express it.
 Future<T?> showZyraGlassDialog<T>({

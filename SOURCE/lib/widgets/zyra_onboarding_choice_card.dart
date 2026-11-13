@@ -47,27 +47,13 @@ class ZyraOnboardingChoiceCard extends StatelessWidget {
         width: double.infinity,
         constraints: const BoxConstraints(minHeight: 72),
         decoration: BoxDecoration(
-          color: selected
-              ? ZyraColors.journeyGold.withValues(alpha: .13)
-              : ZyraColors.surfaceFill,
+          color: ZyraColors.cardSurface,
           border: Border.all(
-            color: selected
-                ? ZyraColors.journeyGold.withValues(alpha: .85)
-                : ZyraColors.frostBorder,
-            width: selected ? 1.2 : .8,
-            // Paint weight can change without shifting long-label layout.
+            color: ZyraColors.surfaceBorder,
             strokeAlign: BorderSide.strokeAlignOutside,
           ),
           borderRadius: radius,
-          boxShadow: selected
-              ? [
-                  BoxShadow(
-                    color: ZyraColors.journeyGold.withValues(alpha: .11),
-                    blurRadius: 26,
-                    offset: const Offset(0, 10),
-                  ),
-                ]
-              : const [],
+          boxShadow: ZyraColors.cardShadows,
         ),
         child: Material(
           color: Colors.transparent,

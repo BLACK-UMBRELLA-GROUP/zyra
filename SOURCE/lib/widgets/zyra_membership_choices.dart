@@ -749,7 +749,6 @@ class _PersonalCard extends StatelessWidget {
       history: paymentHistory,
     );
     return _MembershipPanel(
-      highlighted: selected,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(18, 22, 18, 18),
         child: Column(
@@ -1320,18 +1319,16 @@ class _ReviewLine extends StatelessWidget {
 }
 
 class _MembershipPanel extends StatelessWidget {
-  const _MembershipPanel({required this.child, this.highlighted = false});
+  const _MembershipPanel({required this.child});
   final Widget child;
-  final bool highlighted;
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
     decoration: BoxDecoration(
-      color: ZyraColors.surfaceFill,
+      color: ZyraColors.cardSurface,
       borderRadius: BorderRadius.circular(26),
-      border: Border.all(
-        color: highlighted ? ZyraColors.journeyGold : ZyraColors.surfaceBorder,
-      ),
+      border: Border.all(color: ZyraColors.surfaceBorder),
+      boxShadow: ZyraColors.cardShadows,
     ),
     child: child,
   );

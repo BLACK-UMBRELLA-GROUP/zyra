@@ -315,7 +315,7 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
     builder: (context) => ZyraFloatingSurface(
       radius: 26,
       child: Material(
-        color: ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(26),
           side: BorderSide(color: ZyraColors.surfaceBorder),

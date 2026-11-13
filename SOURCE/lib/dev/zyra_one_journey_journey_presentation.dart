@@ -239,10 +239,9 @@ class ZyraConceptJourneyFirstQuestion extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
             decoration: BoxDecoration(
-              color: ZyraColors.surfaceFill,
-              border: const Border(
-                left: BorderSide(color: ZyraColors.journeyGold, width: 2),
-              ),
+              color: ZyraColors.cardSurface,
+              border: Border.all(color: ZyraColors.surfaceBorder),
+              boxShadow: ZyraColors.cardShadows,
             ),
             child: Text.rich(
               TextSpan(

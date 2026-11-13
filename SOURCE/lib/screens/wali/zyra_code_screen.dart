@@ -1101,9 +1101,10 @@ class _RequestCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         border: Border.all(color: ZyraColors.surfaceBorder),
         borderRadius: BorderRadius.circular(17),
+        boxShadow: ZyraColors.cardShadows,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

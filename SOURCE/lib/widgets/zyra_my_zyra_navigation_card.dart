@@ -107,7 +107,7 @@ class ZyraMyZyraNavigationCard extends StatelessWidget {
       gold: false,
       child: Material(
         key: ValueKey('my-zyra-item-${card.id}'),
-        color: ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(22),
           side: BorderSide(color: ZyraColors.surfaceBorder),

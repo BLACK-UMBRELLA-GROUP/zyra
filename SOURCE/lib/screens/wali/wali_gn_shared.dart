@@ -982,15 +982,9 @@ class _GNIncomingCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: ZyraCardMetrics.spacing),
       padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-        border: Border.all(
-          color: Color.alphaBlend(
-            gnGold.withValues(alpha: 0.38),
-            ZyraColors.surfaceBorder,
-          ),
-          width: 0.8,
-        ),
+        border: Border.all(color: ZyraColors.surfaceBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1070,7 +1064,7 @@ class _GNSentCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: ZyraCardMetrics.spacing),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: ZyraColors.surfaceBorder),
       ),
@@ -1236,20 +1230,9 @@ class _GNConnectedCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: ZyraCardMetrics.spacing),
       padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
-        color: Color.alphaBlend(
-          gnGold.withValues(alpha: revealed ? 0.12 : 0.07),
-          revealed ? ZyraColors.surfaceEmphasisFill : ZyraColors.surfaceFill,
-        ),
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-        border: Border.all(
-          color: Color.alphaBlend(
-            gnGold.withValues(alpha: 0.46),
-            revealed
-                ? ZyraColors.surfaceEmphasisBorder
-                : ZyraColors.surfaceBorder,
-          ),
-          width: 0.8,
-        ),
+        border: Border.all(color: ZyraColors.surfaceBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1358,7 +1341,7 @@ class _GNClosedRow extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: ZyraColors.surfaceBorder),
       ),

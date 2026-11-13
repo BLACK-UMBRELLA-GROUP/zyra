@@ -133,7 +133,7 @@ class _ZyraGuardianFamilySheetState extends State<ZyraGuardianFamilySheet> {
     };
     return Material(
       key: const ValueKey('guardian-family-sheet'),
-      color: const Color(0xFFF7F2EA),
+      color: ZyraColors.cardSurface,
       borderRadius: const BorderRadius.vertical(top: Radius.circular(26)),
       clipBehavior: Clip.antiAlias,
       child: SafeArea(
@@ -233,9 +233,9 @@ class _ZyraGuardianFamilySheetState extends State<ZyraGuardianFamilySheet> {
     radius: 22,
     child: Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFFAF5EC),
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: ZyraColors.ink(0.04)),
+        border: Border.all(color: ZyraColors.surfaceBorder),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
       child: Column(mainAxisSize: MainAxisSize.min, children: children),

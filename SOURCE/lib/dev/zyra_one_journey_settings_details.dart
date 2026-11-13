@@ -137,198 +137,210 @@ class _HiddenProfileCard extends StatelessWidget {
     final ink = ZyraFounderLaunchPageStyle.inkOf(context);
     final secondary = ZyraFounderLaunchPageStyle.secondaryOf(context);
     final gold = ZyraFounderLaunchPageStyle.goldOf(context);
-    final border = ZyraFounderLaunchPageStyle.borderOf(context);
+    final border = ZyraColors.surfaceBorder;
     final viewInk = onView == null ? secondary.withValues(alpha: .5) : ink;
     final photo = person.thumbnail;
     final radius = BorderRadius.circular(24);
-    return Material(
-      color: ZyraFounderLaunchPageStyle.surfaceOf(context),
-      shape: RoundedRectangleBorder(
+    return DecoratedBox(
+      decoration: BoxDecoration(
         borderRadius: radius,
-        side: BorderSide(
-          color: expanded ? gold.withValues(alpha: .65) : border,
-        ),
+        boxShadow: ZyraColors.cardShadows,
       ),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Semantics(
-            button: true,
-            expanded: expanded,
-            child: InkWell(
-              key: ValueKey('concept_hidden_profile_unhide_${person.id}'),
-              onTap: ZyraTapFeedback.onTap(
-                context,
-                expanded ? onCancel : onOpen,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    ExcludeSemantics(
-                      child: Container(
-                        key: ValueKey(
-                          'concept_hidden_profile_avatar_${person.id}',
-                        ),
-                        width: 56,
-                        height: 56,
-                        padding: const EdgeInsets.all(2),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: gold.withValues(alpha: .8)),
-                        ),
-                        child: photo != null
-                            ? ClipOval(
-                                key: ValueKey(
-                                  'concept_hidden_profile_photo_${person.id}',
+      child: Material(
+        color: ZyraColors.cardSurface,
+        shape: RoundedRectangleBorder(
+          borderRadius: radius,
+          side: BorderSide(color: border),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Semantics(
+              button: true,
+              expanded: expanded,
+              child: InkWell(
+                key: ValueKey('concept_hidden_profile_unhide_${person.id}'),
+                onTap: ZyraTapFeedback.onTap(
+                  context,
+                  expanded ? onCancel : onOpen,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      ExcludeSemantics(
+                        child: Container(
+                          key: ValueKey(
+                            'concept_hidden_profile_avatar_${person.id}',
+                          ),
+                          width: 56,
+                          height: 56,
+                          padding: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: gold.withValues(alpha: .8),
+                            ),
+                          ),
+                          child: photo != null
+                              ? ClipOval(
+                                  key: ValueKey(
+                                    'concept_hidden_profile_photo_${person.id}',
+                                  ),
+                                  child: photo,
+                                )
+                              : Icon(
+                                  Icons.person_outline_rounded,
+                                  key: ValueKey(
+                                    'concept_hidden_profile_placeholder_${person.id}',
+                                  ),
+                                  size: 26,
+                                  color: gold,
                                 ),
-                                child: photo,
-                              )
-                            : Icon(
-                                Icons.person_outline_rounded,
-                                key: ValueKey(
-                                  'concept_hidden_profile_placeholder_${person.id}',
-                                ),
-                                size: 26,
-                                color: gold,
+                        ),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              person.name,
+                              style: ZyraText.body(size: 16, color: ink),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              person.detail,
+                              style: ZyraText.subtext(
+                                size: 12,
+                                color: secondary,
                               ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      ExcludeSemantics(
+                        child: Icon(
+                          expanded
+                              ? Icons.expand_less_rounded
+                              : Icons.expand_more_rounded,
+                          size: 20,
+                          color: gold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            if (expanded)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Divider(height: 1, thickness: 1, color: border),
+                    const SizedBox(height: 5),
+                    ZyraFloatingSurface(
+                      radius: 999,
+                      circle: false,
+                      gold: false,
+                      child: OutlinedButton(
+                        key: const ValueKey('concept_hidden_profile_view'),
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: const Size(44, 48),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 4,
+                            vertical: 12,
+                          ),
+                          foregroundColor: ink,
+                          side: BorderSide.none,
+                        ),
+                        onPressed: ZyraTapFeedback.onTap(context, onView),
+                        child: Row(
+                          children: [
+                            ExcludeSemantics(
+                              child: Icon(
+                                Icons.person_outline_rounded,
+                                size: 20,
+                                color: viewInk,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                'View profile',
+                                style: ZyraText.button(
+                                  size: 14,
+                                  color: viewInk,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            ExcludeSemantics(
+                              child: Icon(
+                                Icons.chevron_right_rounded,
+                                size: 20,
+                                color: viewInk,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            person.name,
-                            style: ZyraText.body(size: 16, color: ink),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            person.detail,
-                            style: ZyraText.subtext(size: 12, color: secondary),
-                          ),
-                        ],
+                    const SizedBox(height: 8),
+                    OutlinedButton.icon(
+                      key: const ValueKey(
+                        'concept_hidden_profile_restore_confirm',
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size(44, 48),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        foregroundColor: gold,
+                        side: BorderSide(color: gold),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(28),
+                        ),
+                      ),
+                      onPressed: ZyraTapFeedback.onTap(context, onConfirm),
+                      icon: const ExcludeSemantics(
+                        child: Icon(Icons.visibility_outlined, size: 18),
+                      ),
+                      label: Text(
+                        'Unhide profile',
+                        textAlign: TextAlign.center,
+                        style: ZyraText.button(
+                          size: 14,
+                          color: ZyraColors.goldText,
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    ExcludeSemantics(
-                      child: Icon(
-                        expanded
-                            ? Icons.expand_less_rounded
-                            : Icons.expand_more_rounded,
-                        size: 20,
-                        color: gold,
+                    TextButton(
+                      key: const ValueKey(
+                        'concept_hidden_profile_restore_cancel',
+                      ),
+                      style: TextButton.styleFrom(
+                        minimumSize: const Size(44, 48),
+                        foregroundColor: secondary,
+                      ),
+                      onPressed: ZyraTapFeedback.onTap(context, onCancel),
+                      child: Text(
+                        'Cancel',
+                        style: ZyraText.button(size: 14, color: secondary),
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
-          ),
-          if (expanded)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Divider(height: 1, thickness: 1, color: border),
-                  const SizedBox(height: 5),
-                  ZyraFloatingSurface(
-                    radius: 999,
-                    circle: false,
-                    gold: false,
-                    child: OutlinedButton(
-                      key: const ValueKey('concept_hidden_profile_view'),
-                      style: OutlinedButton.styleFrom(
-                        minimumSize: const Size(44, 48),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 4,
-                          vertical: 12,
-                        ),
-                        foregroundColor: ink,
-                        side: BorderSide.none,
-                      ),
-                      onPressed: ZyraTapFeedback.onTap(context, onView),
-                      child: Row(
-                        children: [
-                          ExcludeSemantics(
-                            child: Icon(
-                              Icons.person_outline_rounded,
-                              size: 20,
-                              color: viewInk,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              'View profile',
-                              style: ZyraText.button(size: 14, color: viewInk),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          ExcludeSemantics(
-                            child: Icon(
-                              Icons.chevron_right_rounded,
-                              size: 20,
-                              color: viewInk,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  OutlinedButton.icon(
-                    key: const ValueKey(
-                      'concept_hidden_profile_restore_confirm',
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      minimumSize: const Size(44, 48),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      foregroundColor: gold,
-                      side: BorderSide(color: gold),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(28),
-                      ),
-                    ),
-                    onPressed: ZyraTapFeedback.onTap(context, onConfirm),
-                    icon: const ExcludeSemantics(
-                      child: Icon(Icons.visibility_outlined, size: 18),
-                    ),
-                    label: Text(
-                      'Unhide profile',
-                      textAlign: TextAlign.center,
-                      style: ZyraText.button(
-                        size: 14,
-                        color: ZyraColors.goldText,
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    key: const ValueKey(
-                      'concept_hidden_profile_restore_cancel',
-                    ),
-                    style: TextButton.styleFrom(
-                      minimumSize: const Size(44, 48),
-                      foregroundColor: secondary,
-                    ),
-                    onPressed: ZyraTapFeedback.onTap(context, onCancel),
-                    child: Text(
-                      'Cancel',
-                      style: ZyraText.button(size: 14, color: secondary),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -863,11 +875,10 @@ class _SettingsPage extends StatelessWidget {
                       key: ValueKey('concept_settings_preview_scope_$id'),
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: ZyraFounderLaunchPageStyle.surfaceOf(context),
+                        color: ZyraColors.cardSurface,
                         borderRadius: BorderRadius.circular(18),
-                        border: Border.all(
-                          color: ZyraFounderLaunchPageStyle.borderOf(context),
-                        ),
+                        border: Border.all(color: ZyraColors.surfaceBorder),
+                        boxShadow: ZyraColors.cardShadows,
                       ),
                       child: Text(
                         note,
@@ -907,9 +918,10 @@ class _FounderLaunchNote extends StatelessWidget {
     key: ValueKey('founder_launch_note_$id'),
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
-      color: ZyraFounderLaunchPageStyle.surfaceOf(context),
-      border: Border.all(color: ZyraFounderLaunchPageStyle.borderOf(context)),
+      color: ZyraColors.cardSurface,
+      border: Border.all(color: ZyraColors.surfaceBorder),
       borderRadius: BorderRadius.circular(18),
+      boxShadow: ZyraColors.cardShadows,
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -980,58 +992,66 @@ class _SettingsDestination extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context) => Material(
-    color: ZyraFounderLaunchPageStyle.surfaceOf(context),
-    borderRadius: BorderRadius.circular(18),
-    child: InkWell(
-      borderRadius: BorderRadius.circular(18),
-      onTap: ZyraTapFeedback.onTap(context, onTap),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minHeight: 48),
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ExcludeSemantics(
-                child: Icon(
-                  icon,
-                  size: 23,
-                  color: ZyraFounderLaunchPageStyle.goldOf(context),
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    radius: 18,
+    child: Material(
+      color: ZyraColors.cardSurface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(18),
+        side: BorderSide(color: ZyraColors.surfaceBorder),
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(18),
+        onTap: ZyraTapFeedback.onTap(context, onTap),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 48),
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ExcludeSemantics(
+                  child: Icon(
+                    icon,
+                    size: 23,
+                    color: ZyraFounderLaunchPageStyle.goldOf(context),
+                  ),
                 ),
-              ),
-              const SizedBox(width: 13),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: ZyraText.body(
-                        size: 14,
-                        color: ZyraFounderLaunchPageStyle.bodyOf(context),
+                const SizedBox(width: 13),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: ZyraText.body(
+                          size: 14,
+                          color: ZyraFounderLaunchPageStyle.bodyOf(context),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      body,
-                      style: ZyraText.subtext(
-                        size: 12,
-                        color: ZyraFounderLaunchPageStyle.secondaryOf(context),
+                      const SizedBox(height: 5),
+                      Text(
+                        body,
+                        style: ZyraText.subtext(
+                          size: 12,
+                          color: ZyraFounderLaunchPageStyle.secondaryOf(
+                            context,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              ExcludeSemantics(
-                child: Icon(
-                  Icons.chevron_right_rounded,
-                  size: 20,
-                  color: ZyraFounderLaunchPageStyle.secondaryOf(context),
+                const SizedBox(width: 10),
+                ExcludeSemantics(
+                  child: Icon(
+                    Icons.chevron_right_rounded,
+                    size: 20,
+                    color: ZyraFounderLaunchPageStyle.secondaryOf(context),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

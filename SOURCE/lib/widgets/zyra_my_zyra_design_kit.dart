@@ -225,14 +225,15 @@ class MyZyraDesignKit {
     margin: const EdgeInsets.only(bottom: 24),
     padding: const EdgeInsets.fromLTRB(16, 14, 16, 8),
     decoration: BoxDecoration(
-      color: ZyraColors.sheetSurface,
-      border: Border(left: BorderSide(color: lavender, width: 2)),
+      color: ZyraColors.cardSurface,
+      border: Border.all(color: ZyraColors.surfaceBorder),
       borderRadius: BorderRadius.circular(4),
+      boxShadow: ZyraColors.cardShadows,
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: ZyraText.body(size: 14, color: ink)),
+        Text(title, style: ZyraText.body(size: 14, color: ZyraColors.goldText)),
         const SizedBox(height: 7),
         body(detail),
         if (onRetry != null)

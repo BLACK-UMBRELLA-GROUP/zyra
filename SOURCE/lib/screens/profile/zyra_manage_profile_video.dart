@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -257,7 +256,6 @@ class _ZyraManageProfileVideoState extends State<ZyraManageProfileVideo> {
       return ZyraPhotoGridTile(
         label: 'See Seeker One',
         onTap: widget.onUpgrade,
-        dashed: true,
         child: _caption(
           const Icon(
             Icons.lock_outline,
@@ -452,15 +450,11 @@ class ZyraPhotoGridTile extends StatelessWidget {
     required this.child,
     this.label,
     this.onTap,
-    this.main = false,
-    this.dashed = false,
   });
 
   final Widget child;
   final String? label;
   final VoidCallback? onTap;
-  final bool main;
-  final bool dashed;
 
   @override
   Widget build(BuildContext context) {
@@ -468,69 +462,26 @@ class ZyraPhotoGridTile extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: radius,
-        boxShadow: [
-          BoxShadow(
-            color: ZyraColors.warmOverlay.withValues(alpha: .08),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
-        ],
+        boxShadow: ZyraColors.cardShadows,
       ),
       child: Material(
-        color: ZyraColors.ivoryTop,
+        color: ZyraColors.cardSurface,
         shape: RoundedRectangleBorder(
           borderRadius: radius,
-          side: dashed
-              ? BorderSide.none
-              : BorderSide(
-                  color: main ? ZyraColors.journeyGold : ZyraColors.divider,
-                  width: main ? 1.5 : 1,
-                ),
+          side: BorderSide(color: ZyraColors.surfaceBorder),
         ),
         clipBehavior: Clip.antiAlias,
-        child: CustomPaint(
-          foregroundPainter: dashed ? const _DashedTileBorder() : null,
-          child: onTap == null
-              ? child
-              : Semantics(
-                  label: label,
-                  button: true,
-                  child: InkWell(
-                    onTap: ZyraTapFeedback.onTap(context, onTap),
-                    child: child,
-                  ),
+        child: onTap == null
+            ? child
+            : Semantics(
+                label: label,
+                button: true,
+                child: InkWell(
+                  onTap: ZyraTapFeedback.onTap(context, onTap),
+                  child: child,
                 ),
-        ),
+              ),
       ),
     );
   }
-}
-
-class _DashedTileBorder extends CustomPainter {
-  const _DashedTileBorder();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final outline = Path()
-      ..addRRect(
-        RRect.fromRectAndRadius(
-          (Offset.zero & size).deflate(.5),
-          const Radius.circular(17.5),
-        ),
-      );
-    final paint = Paint()
-      ..color = ZyraColors.journeyGold.withValues(alpha: .5)
-      ..style = PaintingStyle.stroke;
-    for (final metric in outline.computeMetrics()) {
-      for (double start = 0; start < metric.length; start += 8) {
-        canvas.drawPath(
-          metric.extractPath(start, math.min(start + 4, metric.length)),
-          paint,
-        );
-      }
-    }
-  }
-
-  @override
-  bool shouldRepaint(_DashedTileBorder oldDelegate) => false;
 }

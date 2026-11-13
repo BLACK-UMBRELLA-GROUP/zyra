@@ -207,9 +207,10 @@ class _SafetyCaseCard extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
-      color: ZyraColors.surfaceFill,
+      color: ZyraColors.cardSurface,
       borderRadius: BorderRadius.circular(18),
       border: Border.all(color: ZyraColors.surfaceBorder),
+      boxShadow: ZyraColors.cardShadows,
     ),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,

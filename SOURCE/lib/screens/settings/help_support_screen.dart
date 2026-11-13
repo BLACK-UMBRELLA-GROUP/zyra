@@ -414,14 +414,10 @@ class _HelpTileState extends State<_HelpTile> {
             curve: Curves.easeOut,
             padding: const EdgeInsets.fromLTRB(16, 14, 14, 14),
             decoration: BoxDecoration(
-              color: ZyraColors.surfaceFill,
+              color: ZyraColors.cardSurface,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: ZyraColors.foreground.withValues(
-                  alpha: _open ? 0.16 : 0.10,
-                ),
-                width: 1,
-              ),
+              border: Border.all(color: ZyraColors.surfaceBorder),
+              boxShadow: ZyraColors.cardShadows,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -541,9 +537,10 @@ class _ContactCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
-        border: Border.all(color: ZyraColors.ink(0.12), width: 0.5),
+        color: ZyraColors.cardSurface,
+        border: Border.all(color: ZyraColors.surfaceBorder),
         borderRadius: BorderRadius.circular(16),
+        boxShadow: ZyraColors.cardShadows,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -680,9 +680,9 @@ class _SummaryCard extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 18, vertical: 18),
         decoration: BoxDecoration(
-          color: ZyraColors.surfaceFill,
+          color: ZyraColors.cardSurface,
           borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-          border: Border.all(color: ZyraColors.surfaceBorder, width: 0.5),
+          border: Border.all(color: ZyraColors.surfaceBorder),
         ),
         child: Column(
           children: [
@@ -819,9 +819,9 @@ class _Section extends StatelessWidget {
             radius: ZyraCardMetrics.cardRadius,
             child: Container(
               decoration: BoxDecoration(
-                color: ZyraColors.surfaceFill,
+                color: ZyraColors.cardSurface,
                 borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-                border: Border.all(color: ZyraColors.surfaceBorder, width: 0.5),
+                border: Border.all(color: ZyraColors.surfaceBorder),
               ),
               clipBehavior: Clip.none,
               child: Column(children: children),

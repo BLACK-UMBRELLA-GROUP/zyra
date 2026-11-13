@@ -507,13 +507,10 @@ class _QuotePage extends StatelessWidget {
                         child: Container(
                           padding: EdgeInsets.all(compact ? 15 : 18),
                           decoration: BoxDecoration(
-                            color: ZyraColors.surfaceFill,
+                            color: ZyraColors.cardSurface,
                             borderRadius: BorderRadius.circular(22),
-                            border: Border.all(
-                              color: ZyraColors.journeyGold.withValues(
-                                alpha: .22,
-                              ),
-                            ),
+                            border: Border.all(color: ZyraColors.surfaceBorder),
+                            boxShadow: ZyraColors.cardShadows,
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,

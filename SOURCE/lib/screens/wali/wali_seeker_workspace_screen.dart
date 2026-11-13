@@ -694,9 +694,10 @@ class _WorkspaceSection extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.all(14),
     decoration: BoxDecoration(
-      color: ZyraColors.surfaceFill,
+      color: ZyraColors.cardSurface,
       borderRadius: BorderRadius.circular(14),
-      border: Border.all(color: ZyraColors.surfaceBorder, width: 0.5),
+      border: Border.all(color: ZyraColors.surfaceBorder),
+      boxShadow: ZyraColors.cardShadows,
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -743,7 +744,7 @@ class _AttemptSummaryCard extends StatelessWidget {
         : 'Not ended';
     return Material(
       key: ValueKey('guardian-attempt-summary-${summary.attemptId}'),
-      color: ZyraColors.surfaceFill,
+      color: ZyraColors.cardSurface,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),

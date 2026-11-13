@@ -1,0 +1,140 @@
+{
+  "queue_line": 114,
+  "decision_date": "2026-11-13",
+  "decision": "Same colour, no gold edge",
+  "colour_decision": "DR-ZYRA-276",
+  "colour_lock": "LOCK 14",
+  "brief": "PRODUCT/APPROVED/APP_COLOURS/BRIEFS/FIX_BRIEF_2026-11-13_ONE_CARD_COLOUR.md",
+  "reference": "My ZYRA tiles and Profile groups",
+  "card_fill": "0xD9FAF5EC",
+  "card_border": {
+    "colour": "0x0F3E2E1E",
+    "width": 1
+  },
+  "card_shadow": [
+    {
+      "colour": "0x1F3E2E1E",
+      "blur_radius": 24,
+      "offset": [
+        0,
+        10
+      ]
+    },
+    {
+      "colour": "0x123E2E1E",
+      "blur_radius": 6,
+      "offset": [
+        0,
+        2
+      ]
+    }
+  ],
+  "scope": [
+    "Founder Preview",
+    "member app",
+    "Seeker",
+    "Guardian"
+  ],
+  "locked_exceptions": [
+    "LOCK 28 confirmation sheet shell",
+    "photo overlays",
+    "gold action and selection indicators"
+  ],
+  "source_search": {
+    "directories": [
+      "SOURCE/lib/dev",
+      "SOURCE/lib/widgets",
+      "SOURCE/lib/screens"
+    ],
+    "pattern": "Color\\(0xFF(FBF7F0|F7F2EA|FAF5EC|FFFFFE|FFFDF9|F5F3EF)",
+    "before_matches": 20,
+    "after_matches": 4,
+    "after_card_fill_matches": 0,
+    "after_other_matches": [
+      "two text colours",
+      "gallery button",
+      "dialog action button"
+    ],
+    "before_card_fill_matches": 7,
+    "before_separate_sheet_shell_matches": 8,
+    "before_other_matches": 5
+  },
+  "visual_evidence": "REPORTS/EVIDENCE/LINE114_CARD_SURFACE_2026-11-13/",
+  "changed_files": [
+    "PRODUCT/APPROVED/APP_COLOURS/BUILT/ONE_CARD_COLOUR_2026-11-13.json",
+    "README.md",
+    "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+    "SOURCE/lib/dev/zyra_draft_compatibility_score_designs.dart",
+    "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart",
+    "SOURCE/lib/dev/zyra_draft_local_code_page.dart",
+    "SOURCE/lib/dev/zyra_founder_launch_review.dart",
+    "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+    "SOURCE/lib/dev/zyra_one_journey_browse_designs.dart",
+    "SOURCE/lib/dev/zyra_one_journey_circle_topics_state.dart",
+    "SOURCE/lib/dev/zyra_one_journey_discovery_presentation.dart",
+    "SOURCE/lib/dev/zyra_one_journey_filters_presentation.dart",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_family_sheet.dart",
+    "SOURCE/lib/dev/zyra_one_journey_journey_presentation.dart",
+    "SOURCE/lib/dev/zyra_one_journey_options.dart",
+    "SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+    "SOURCE/lib/dev/zyra_one_journey_tab.dart",
+    "SOURCE/lib/dev/zyra_subscription_wallet_preview.dart",
+    "SOURCE/lib/main.dart",
+    "SOURCE/lib/screens/connections/connections_screen.dart",
+    "SOURCE/lib/screens/connections/zyra_sample_activity.dart",
+    "SOURCE/lib/screens/dev/zyra_health_usage_screen.dart",
+    "SOURCE/lib/screens/journey/journey_flow_screen.dart",
+    "SOURCE/lib/screens/onboarding/account_path_overview_screen.dart",
+    "SOURCE/lib/screens/onboarding/onboarding_stage_intro_screen.dart",
+    "SOURCE/lib/screens/profile/compatibility_editors.dart",
+    "SOURCE/lib/screens/profile/compatibility_result_quick_check.dart",
+    "SOURCE/lib/screens/profile/edit_photos_screen.dart",
+    "SOURCE/lib/screens/profile/edit_profile_screen.dart",
+    "SOURCE/lib/screens/profile/zyra_manage_profile_video.dart",
+    "SOURCE/lib/screens/settings/feedback_screen.dart",
+    "SOURCE/lib/screens/settings/help_support_screen.dart",
+    "SOURCE/lib/screens/settings/notification_settings_screen.dart",
+    "SOURCE/lib/screens/settings/privacy_settings_screen.dart",
+    "SOURCE/lib/screens/settings/safety_case_status_screen.dart",
+    "SOURCE/lib/screens/settings/settings_screen.dart",
+    "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+    "SOURCE/lib/screens/wali/seeker_guardian_designs.dart",
+    "SOURCE/lib/screens/wali/wali_dashboard_screen.dart",
+    "SOURCE/lib/screens/wali/wali_gn_shared.dart",
+    "SOURCE/lib/screens/wali/wali_network_screen.dart",
+    "SOURCE/lib/screens/wali/wali_seeker_workspace_screen.dart",
+    "SOURCE/lib/screens/wali/zyra_code_screen.dart",
+    "SOURCE/lib/theme/zyra_colors.dart",
+    "SOURCE/lib/widgets/report_profile_sheet.dart",
+    "SOURCE/lib/widgets/zyra_account_switch_sheet.dart",
+    "SOURCE/lib/widgets/zyra_bottom_promotion.dart",
+    "SOURCE/lib/widgets/zyra_confirm_sheet.dart",
+    "SOURCE/lib/widgets/zyra_developer_panel.dart",
+    "SOURCE/lib/widgets/zyra_floating_surface.dart",
+    "SOURCE/lib/widgets/zyra_focus_dashboard.dart",
+    "SOURCE/lib/widgets/zyra_full_screen_error.dart",
+    "SOURCE/lib/widgets/zyra_glass_dialog.dart",
+    "SOURCE/lib/widgets/zyra_guardian_add_card.dart",
+    "SOURCE/lib/widgets/zyra_guardian_dashboard_profile_card.dart",
+    "SOURCE/lib/widgets/zyra_guardian_invitation_dashboard.dart",
+    "SOURCE/lib/widgets/zyra_intelligence_card.dart",
+    "SOURCE/lib/widgets/zyra_membership_choices.dart",
+    "SOURCE/lib/widgets/zyra_my_zyra_design_kit.dart",
+    "SOURCE/lib/widgets/zyra_my_zyra_navigation_card.dart",
+    "SOURCE/lib/widgets/zyra_onboarding_choice_card.dart",
+    "SOURCE/lib/widgets/zyra_onboarding_direction_style.dart",
+    "SOURCE/lib/widgets/zyra_onboarding_study.dart",
+    "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+    "SOURCE/lib/widgets/zyra_profiles_components.dart",
+    "SOURCE/lib/widgets/zyra_ward_card.dart",
+    "SOURCE/test/global_app_surface_test.dart",
+    "SOURCE/test/guardian_card_interaction_test.dart",
+    "SOURCE/test/membership_wallet_visual_test.dart",
+    "SOURCE/test/popup_style_consistency_test.dart",
+    "SOURCE/test/visual/line114_card_surface_visual_test.dart",
+    "SOURCE/test/zyra_ivory_lock14_test.dart",
+    "SOURCE/test/zyra_onboarding_choice_card_test.dart",
+    "SOURCE/test/zyra_subscription_wallet_preview_test.dart"
+  ]
+}

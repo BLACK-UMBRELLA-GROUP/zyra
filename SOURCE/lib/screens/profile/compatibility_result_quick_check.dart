@@ -32,16 +32,10 @@ class ZyraCompatibilityCheckCard extends StatelessWidget {
         ),
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: ZyraColors.surfaceFill,
+            color: ZyraColors.cardSurface,
             borderRadius: BorderRadius.circular(26),
             border: Border.all(color: ZyraColors.surfaceBorder),
-            boxShadow: [
-              BoxShadow(
-                color: ZyraColors.ink(.12),
-                blurRadius: 14,
-                offset: const Offset(0, 5),
-              ),
-            ],
+            boxShadow: ZyraColors.cardShadows,
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 24),
@@ -520,11 +514,10 @@ class _ItemCard extends StatelessWidget {
     margin: const EdgeInsets.only(bottom: 10),
     padding: const EdgeInsets.all(12),
     decoration: BoxDecoration(
-      color: const Color(0xFFFBF7F0),
+      color: ZyraColors.cardSurface,
       borderRadius: BorderRadius.circular(14),
-      border: selected == null
-          ? _checkBorder
-          : Border.all(color: ZyraColors.surfaceBorder),
+      border: Border.all(color: ZyraColors.surfaceBorder),
+      boxShadow: ZyraColors.cardShadows,
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -355,7 +355,7 @@ class _ErrorHelpCard extends StatelessWidget {
       radius: 20,
       child: Container(
         decoration: BoxDecoration(
-          color: ZyraColors.surfaceFill,
+          color: ZyraColors.cardSurface,
           border: Border.all(color: ZyraColors.surfaceBorder),
           borderRadius: BorderRadius.circular(20),
         ),

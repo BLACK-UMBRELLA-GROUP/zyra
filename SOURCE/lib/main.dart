@@ -416,7 +416,7 @@ class ZyraApp extends StatelessWidget {
             onPrimary: ZyraColors.onAction,
             secondary: ZyraColors.actionFill,
             onSecondary: ZyraColors.onAction,
-            surface: ZyraColors.cardSurface,
+            surface: ZyraColors.ivoryTop,
             onSurface: ZyraColors.foreground,
             error: ZyraColors.destructive,
             onError: ZyraColors.luxuryDarkPurple,

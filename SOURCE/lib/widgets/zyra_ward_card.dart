@@ -142,10 +142,14 @@ class ZyraWardCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: ZyraCardMetrics.spacing),
+    return Container(
+      margin: const EdgeInsets.only(bottom: ZyraCardMetrics.spacing),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
+        boxShadow: ZyraColors.cardShadows,
+      ),
       child: Material(
-        color: ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
         child: InkWell(
           borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
@@ -154,7 +158,7 @@ class ZyraWardCard extends StatelessWidget {
             padding: const EdgeInsets.all(ZyraCardMetrics.padding),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-              border: Border.all(color: ZyraColors.surfaceBorder, width: 0.5),
+              border: Border.all(color: ZyraColors.surfaceBorder),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

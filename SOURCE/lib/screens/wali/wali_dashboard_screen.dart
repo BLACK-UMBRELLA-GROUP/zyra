@@ -42,6 +42,7 @@ import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_account_state.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
+import '../../widgets/zyra_floating_surface.dart';
 import '../../theme/zyra_motion.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_state_widgets.dart';
@@ -1265,9 +1266,10 @@ class _GuardianStatusCard extends StatelessWidget {
     width: double.infinity,
     padding: const EdgeInsets.all(15),
     decoration: BoxDecoration(
-      color: ZyraColors.surfaceFill,
+      color: ZyraColors.cardSurface,
       borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: ZyraColors.surfaceBorder, width: 0.5),
+      border: Border.all(color: ZyraColors.surfaceBorder),
+      boxShadow: ZyraColors.cardShadows,
     ),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1340,47 +1342,47 @@ class _AttentionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
-      child: Material(
-        color: ZyraColors.surfaceEmphasisFill,
-        borderRadius: BorderRadius.circular(14),
-        child: InkWell(
+      child: ZyraFloatingSurface(
+        radius: 14,
+        child: Material(
+          color: ZyraColors.cardSurface,
           borderRadius: BorderRadius.circular(14),
-          onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: ZyraColors.surfaceEmphasisBorder,
-                width: 1,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(14),
+            onTap: onTap,
+            child: Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: ZyraColors.surfaceBorder),
               ),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: ZyraText.body(size: 13.5, color: Colors.white),
-                      ),
-                      SizedBox(height: 3),
-                      Text(body, style: ZyraText.subtext(size: 11.5)),
-                    ],
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: ZyraText.body(size: 13.5, color: Colors.white),
+                        ),
+                        SizedBox(height: 3),
+                        Text(body, style: ZyraText.subtext(size: 11.5)),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(width: 10),
-                Text(
-                  cta,
-                  style: ZyraText.body(size: 12.5, color: Colors.white),
-                ),
-                Icon(
-                  Icons.chevron_right,
-                  color: ZyraColors.ink(0.54),
-                  size: 16,
-                ),
-              ],
+                  SizedBox(width: 10),
+                  Text(
+                    cta,
+                    style: ZyraText.body(size: 12.5, color: Colors.white),
+                  ),
+                  Icon(
+                    Icons.chevron_right,
+                    color: ZyraColors.ink(0.54),
+                    size: 16,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -1471,9 +1473,10 @@ class _ErrorBanner extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
         decoration: BoxDecoration(
-          color: ZyraColors.surfaceFill,
+          color: ZyraColors.cardSurface,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: ZyraColors.surfaceBorder, width: 0.5),
+          border: Border.all(color: ZyraColors.surfaceBorder),
+          boxShadow: ZyraColors.cardShadows,
         ),
         child: Row(
           children: [

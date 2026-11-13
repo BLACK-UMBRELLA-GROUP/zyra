@@ -671,12 +671,7 @@ class _SelectableOffer extends StatelessWidget {
             minimumSize: const Size(44, 92),
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
             foregroundColor: ZyraColors.foreground,
-            backgroundColor: selected
-                ? Color.alphaBlend(
-                    ZyraColors.journeyGold.withValues(alpha: .12),
-                    const Color(0xFFFAF5EC),
-                  )
-                : ZyraColors.surfaceFill,
+            backgroundColor: ZyraColors.cardSurface,
             side: BorderSide(
               color: selected
                   ? ZyraColors.journeyGold

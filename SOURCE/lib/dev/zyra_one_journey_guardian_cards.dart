@@ -373,7 +373,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
           ),
           child: Material(
             key: const ValueKey('guardian-card-menu-sheet'),
-            color: const Color(0xFFF7F2EA),
+            color: ZyraColors.cardSurface,
             borderRadius: corners,
             clipBehavior: Clip.antiAlias,
             child: SafeArea(
@@ -570,7 +570,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
         context: context,
         isScrollControlled: true,
         useSafeArea: true,
-        backgroundColor: const Color(0xFFF7F2EA),
+        backgroundColor: Colors.transparent,
         barrierColor: const Color(0xFF1E1610).withValues(alpha: .38),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
@@ -795,13 +795,9 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
         radius: 22,
         child: Container(
           decoration: BoxDecoration(
-            color: ZyraColors.ivoryTop,
+            color: ZyraColors.cardSurface,
             borderRadius: BorderRadius.circular(22),
-            border: Border.all(
-              color: person?.person.isMain == true
-                  ? const Color(0xFFE8C98A).withValues(alpha: .6)
-                  : ZyraColors.surfaceBorder,
-            ),
+            border: Border.all(color: ZyraColors.surfaceBorder),
           ),
           child: LayoutBuilder(
             builder: (context, box) {
@@ -849,7 +845,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
         child: SizedBox.square(
           dimension: 38,
           child: Material(
-            color: const Color(0xFFFBF7F0),
+            color: ZyraColors.cardSurface,
             shape: const CircleBorder(),
             child: IconButton(
               key: ValueKey(key),

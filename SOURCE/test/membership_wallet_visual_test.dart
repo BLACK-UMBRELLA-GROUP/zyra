@@ -672,11 +672,12 @@ void main() {
       final seekerCard =
           tester.widget<Container>(_key('wallet_role_seeker')).decoration!
               as BoxDecoration;
-      expect(seekerCard.color, ZyraColors.surfaceFill);
+      expect(seekerCard.color, ZyraColors.cardSurface);
       expect(
         (seekerCard.border! as Border).top.color,
-        ZyraColors.journeyGold.withValues(alpha: .5),
+        ZyraColors.surfaceBorder,
       );
+      expect(seekerCard.boxShadow, ZyraColors.cardShadows);
       expect(_key('wallet_identity_seeker_row'), findsOneWidget);
       _expectWholeIdentityWord(tester, 'Seeker profile', 'Seeker');
       expect(find.text('Sample'), findsNothing);

@@ -35,7 +35,7 @@ void main() {
     );
   });
 
-  testWidgets('all centred modal chrome is opaque plum with one gold edge', (
+  testWidgets('centred modal cards use the shared ivory surface', (
     tester,
   ) async {
     await tester.pumpWidget(
@@ -51,11 +51,20 @@ void main() {
       find.byKey(const ValueKey('zyra_modal_surface')),
     );
     final decoration = surface.decoration as BoxDecoration;
-    expect(decoration.color, ZyraColors.modalSheetSurface);
-    expect(decoration.color!.a, 1);
+    expect(decoration.color, ZyraColors.cardSurface);
+    expect((decoration.border! as Border).top.color, ZyraColors.surfaceBorder);
     expect(
-      (decoration.border! as Border).top.color,
-      ZyraColors.journeyGold.withValues(alpha: 0.28),
+      find.ancestor(
+        of: find.byKey(const ValueKey('zyra_modal_surface')),
+        matching: find.byWidgetPredicate(
+          (widget) =>
+              widget is DecoratedBox &&
+              widget.decoration is BoxDecoration &&
+              (widget.decoration as BoxDecoration).boxShadow ==
+                  ZyraColors.cardShadows,
+        ),
+      ),
+      findsOneWidget,
     );
     expect(find.byType(BackdropFilter), findsNothing);
     expect(tester.takeException(), isNull);

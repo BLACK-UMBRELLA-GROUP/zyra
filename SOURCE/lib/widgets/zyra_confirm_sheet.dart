@@ -328,13 +328,7 @@ class ZyraConfirmSheet extends StatelessWidget {
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(999),
                                   ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color(0x143E2E1E),
-                                      blurRadius: 12,
-                                      offset: Offset(0, 4),
-                                    ),
-                                  ],
+                                  boxShadow: ZyraColors.cardShadows,
                                 ),
                                 child: OutlinedButton(
                                   key: secondaryKey,
@@ -346,11 +340,11 @@ class ZyraConfirmSheet extends StatelessWidget {
                                       horizontal: 12,
                                       vertical: 8,
                                     ),
-                                    side: const BorderSide(
-                                      color: ZyraColors.divider,
+                                    side: BorderSide(
+                                      color: ZyraColors.surfaceBorder,
                                     ),
                                     shape: const StadiumBorder(),
-                                    backgroundColor: ZyraColors.ivoryTop,
+                                    backgroundColor: ZyraColors.cardSurface,
                                     foregroundColor: ZyraColors.secondaryText,
                                   ),
                                   onPressed: onKeep,
@@ -405,7 +399,7 @@ class ZyraIvorySheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Material(
     key: surfaceKey,
-    color: const Color(0xFFF7F2EA),
+    color: ZyraColors.confirmSheetSurface,
     borderRadius: corners,
     clipBehavior: Clip.antiAlias,
     child: child,

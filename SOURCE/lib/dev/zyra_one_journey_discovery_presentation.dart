@@ -977,16 +977,10 @@ class _ZyraOneJourneyConnectionsPersonCardState
           padding: const EdgeInsets.only(bottom: 10),
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: open
-                  ? ZyraColors.surfaceEmphasisFill
-                  : ZyraColors.surfaceFill,
+              color: ZyraColors.cardSurface,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: open
-                    ? ZyraColors.surfaceEmphasisBorder
-                    : ZyraColors.surfaceBorder,
-                width: open ? 1 : .5,
-              ),
+              border: Border.all(color: ZyraColors.surfaceBorder),
+              boxShadow: ZyraColors.cardShadows,
             ),
             child: Material(
               color: Colors.transparent,
@@ -1267,9 +1261,10 @@ class ZyraOneJourneyConnectionsActiveCard extends StatelessWidget {
     padding: EdgeInsets.only(bottom: bottomGap ?? (compact ? 0 : 14)),
     child: DecoratedBox(
       decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: ZyraColors.surfaceEmphasisBorder),
+        border: Border.all(color: ZyraColors.surfaceBorder),
+        boxShadow: ZyraColors.cardShadows,
       ),
       child: Material(
         color: Colors.transparent,

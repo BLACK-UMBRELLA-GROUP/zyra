@@ -1550,7 +1550,7 @@ class _HardQuestionCard extends StatelessWidget {
     child: Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: ZyraColors.surfaceBorder),
       ),
@@ -1609,16 +1609,10 @@ class _QuickCheckCard extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
-      color: const Color(0xFFFBF7F0),
+      color: ZyraColors.cardSurface,
       borderRadius: BorderRadius.circular(18),
-      border: Border.all(color: const Color(0xFFA9792E).withValues(alpha: 0.5)),
-      boxShadow: [
-        BoxShadow(
-          color: const Color(0xFF3E2E1E).withValues(alpha: 0.08),
-          blurRadius: 20,
-          offset: const Offset(0, 8),
-        ),
-      ],
+      border: Border.all(color: ZyraColors.surfaceBorder),
+      boxShadow: ZyraColors.cardShadows,
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1680,7 +1674,7 @@ class _MeaningCard extends StatelessWidget {
     child: Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: ZyraColors.surfaceBorder),
       ),
@@ -1752,7 +1746,7 @@ class _CategoryDoor extends StatelessWidget {
     child: ZyraFloatingSurface(
       radius: 16,
       child: Material(
-        color: ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(16),
         child: Ink(
           decoration: BoxDecoration(
@@ -1830,7 +1824,7 @@ class _QuestionDoor extends StatelessWidget {
     child: ZyraFloatingSurface(
       radius: 16,
       child: Material(
-        color: ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(15),
         child: Ink(
           decoration: BoxDecoration(

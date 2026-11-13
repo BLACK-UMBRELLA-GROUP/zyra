@@ -165,7 +165,7 @@ class ZyraBrowseBackUpgradeSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Material(
-    color: const Color(0xFFF7F2EA),
+    color: ZyraColors.cardSurface,
     borderRadius: const BorderRadius.vertical(top: Radius.circular(26)),
     clipBehavior: Clip.antiAlias,
     child: SafeArea(

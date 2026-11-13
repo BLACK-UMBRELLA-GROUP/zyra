@@ -128,12 +128,10 @@ class ZyraAccountSwitchScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: ZyraColors.surfaceFill,
+                  color: ZyraColors.cardSurface,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: ZyraColors.surfaceBorder,
-                    width: 0.6,
-                  ),
+                  border: Border.all(color: ZyraColors.surfaceBorder),
+                  boxShadow: ZyraColors.cardShadows,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,8 +231,11 @@ class _AccountOption extends StatelessWidget {
       child: ZyraFloatingSurface(
         radius: 16,
         child: Material(
-          color: ZyraColors.surfaceFill,
-          borderRadius: BorderRadius.circular(16),
+          color: ZyraColors.cardSurface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(color: ZyraColors.surfaceBorder),
+          ),
           child: InkWell(
             onTap: ZyraTapFeedback.onTap(context, onTap),
             borderRadius: BorderRadius.circular(16),
@@ -244,15 +245,6 @@ class _AccountOption extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                   horizontal: 15,
                   vertical: 17,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: option.current
-                        ? ZyraColors.accentBorder
-                        : ZyraColors.surfaceBorder,
-                    width: option.current ? 0.9 : 0.6,
-                  ),
                 ),
                 child: Row(
                   children: [

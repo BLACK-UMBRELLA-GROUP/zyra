@@ -459,7 +459,7 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
         context: context,
         isScrollControlled: true,
         useSafeArea: true,
-        backgroundColor: const Color(0xFFF7F2EA),
+        backgroundColor: ZyraColors.cardSurface,
         barrierColor: const Color(0xFF1E1610).withValues(alpha: .38),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
@@ -563,7 +563,7 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
         context: context,
         isScrollControlled: true,
         useSafeArea: true,
-        backgroundColor: const Color(0xFFF7F2EA),
+        backgroundColor: Colors.transparent,
         barrierColor: const Color(0xFF1E1610).withValues(alpha: .38),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(26)),

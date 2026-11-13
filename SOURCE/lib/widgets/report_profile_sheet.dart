@@ -712,16 +712,10 @@ class _ReasonTile extends StatelessWidget {
               duration: const Duration(milliseconds: 150),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               decoration: BoxDecoration(
-                color: selected
-                    ? ZyraColors.surfaceEmphasisFill
-                    : ZyraColors.surfaceFill,
+                color: ZyraColors.cardSurface,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: selected
-                      ? ZyraColors.surfaceEmphasisBorder
-                      : ZyraColors.surfaceBorder,
-                  width: selected ? 1.5 : 1,
-                ),
+                border: Border.all(color: ZyraColors.surfaceBorder),
+                boxShadow: ZyraColors.cardShadows,
               ),
               child: Row(
                 children: [
@@ -748,11 +742,9 @@ class _ReasonTile extends StatelessWidget {
                         ? Icons.radio_button_checked
                         : Icons.radio_button_unchecked,
                     size: 20,
-                    // White, not ZyraColors.accentBorder — that constant is a
-                    // 40%-opacity purple intended as a BORDER against a light
-                    // fill. As an icon colour on this dark sheet it reads as
-                    // disabled rather than selected.
-                    color: selected ? Colors.white : ZyraColors.ink(0.30),
+                    color: selected
+                        ? ZyraColors.goldText
+                        : ZyraColors.ink(0.30),
                   ),
                 ],
               ),
@@ -859,9 +851,10 @@ class _BlockOnlyRow extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: ZyraColors.surfaceFill,
+          color: ZyraColors.cardSurface,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: ZyraColors.surfaceBorder, width: 1),
+          boxShadow: ZyraColors.cardShadows,
         ),
         child: Row(
           children: [

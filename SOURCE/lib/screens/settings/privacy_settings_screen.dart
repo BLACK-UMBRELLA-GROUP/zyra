@@ -264,9 +264,10 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: ZyraColors.surfaceFill,
+                  color: ZyraColors.cardSurface,
                   borderRadius: BorderRadius.circular(22),
                   border: Border.all(color: ZyraColors.surfaceBorder),
+                  boxShadow: ZyraColors.cardShadows,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,

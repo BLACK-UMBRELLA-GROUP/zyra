@@ -594,7 +594,7 @@ class ZyraEndedJourneyMenu extends StatelessWidget {
 
     return DecoratedBox(
       decoration: const BoxDecoration(
-        color: Color(0xFFF7F2EA),
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
         boxShadow: [
           BoxShadow(

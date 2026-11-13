@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../data/zyra_reference_data.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
-import '../widgets/zyra_guardian_add_card.dart' show ZyraGuardianDashedBorder;
 import '../widgets/zyra_profiles_components.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_swipe_track.dart';
@@ -739,16 +738,14 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
   Widget _lockedHeritage(int page) {
     final guard = _guard(page);
     final canPage = widget.canPage;
-    return CustomPaint(
-      foregroundPainter: ZyraGuardianDashedBorder(
-        18,
-        ZyraColors.journeyGold.withValues(alpha: .5),
-      ),
+    return ZyraFloatingSurface(
+      radius: 18,
       child: Container(
         key: const ValueKey('filter-heritage-lock-panel'),
         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
         decoration: BoxDecoration(
-          color: const Color(0xFFFBF7F0),
+          color: ZyraColors.cardSurface,
+          border: Border.all(color: ZyraColors.surfaceBorder),
           borderRadius: BorderRadius.circular(18),
         ),
         child: Column(
@@ -983,25 +980,8 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
                           clipBehavior: Clip.antiAlias,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(22),
-                            border: Border.all(
-                              color: ZyraColors.journeyGold.withValues(
-                                alpha: .6,
-                              ),
-                            ),
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Color.alphaBlend(
-                                  ZyraColors.surfaceFill,
-                                  ZyraColors.ivoryTop,
-                                ),
-                                Color.alphaBlend(
-                                  ZyraColors.surfaceFill,
-                                  ZyraColors.ivoryBottom,
-                                ),
-                              ],
-                            ),
+                            color: ZyraColors.cardSurface,
+                            border: Border.all(color: ZyraColors.surfaceBorder),
                           ),
                           child: _cardContent(page),
                         ),

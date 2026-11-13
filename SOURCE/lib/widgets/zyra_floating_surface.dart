@@ -1,6 +1,8 @@
 // LOCK14 V4 floating surfaces. Presentation only; no sizing or action authority.
 import 'package:flutter/material.dart';
 
+import '../theme/zyra_colors.dart';
+
 class ZyraFloatingSurface extends StatelessWidget {
   const ZyraFloatingSurface({
     super.key,
@@ -14,10 +16,7 @@ class ZyraFloatingSurface extends StatelessWidget {
   final double radius;
   final bool gold, tabBar, circle;
 
-  static const standardShadows = [
-    BoxShadow(color: Color(0x1F3E2E1E), blurRadius: 24, offset: Offset(0, 10)),
-    BoxShadow(color: Color(0x123E2E1E), blurRadius: 6, offset: Offset(0, 2)),
-  ];
+  static const standardShadows = ZyraColors.cardShadows;
   static const tabShadows = [
     BoxShadow(color: Color(0x293E2E1E), blurRadius: 28, offset: Offset(0, 12)),
     BoxShadow(color: Color(0x143E2E1E), blurRadius: 8, offset: Offset(0, 3)),

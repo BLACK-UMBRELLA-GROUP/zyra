@@ -39,9 +39,10 @@ class ZyraIntelligenceCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: compact ? 8 : 14),
       padding: const EdgeInsets.fromLTRB(15, 13, 15, 14),
       decoration: BoxDecoration(
-        color: ZyraColors.accentBg,
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: ZyraColors.accentBorder, width: 0.5),
+        border: Border.all(color: ZyraColors.surfaceBorder),
+        boxShadow: ZyraColors.cardShadows,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,9 +105,10 @@ class ZyraIntelligenceInvitation extends StatelessWidget {
     margin: const EdgeInsets.symmetric(vertical: 14),
     padding: const EdgeInsets.fromLTRB(15, 14, 15, 15),
     decoration: BoxDecoration(
-      color: ZyraColors.accentBg,
+      color: ZyraColors.cardSurface,
       borderRadius: BorderRadius.circular(14),
-      border: Border.all(color: ZyraColors.accentBorder, width: 0.5),
+      border: Border.all(color: ZyraColors.surfaceBorder),
+      boxShadow: ZyraColors.cardShadows,
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -6703,12 +6703,10 @@ class _LifeSnapshotView extends StatelessWidget {
 }
 
 BoxDecoration _lifeSnapshotCardDecoration() => BoxDecoration(
-  color: ZyraColors.surfaceFill,
+  color: ZyraColors.cardSurface,
   borderRadius: BorderRadius.circular(16),
-  border: Border.all(
-    color: ZyraColors.foreground.withValues(alpha: 0.13),
-    width: 0.7,
-  ),
+  border: Border.all(color: ZyraColors.surfaceBorder),
+  boxShadow: ZyraColors.cardShadows,
 );
 
 class _LifeSnapshotSectionHeading extends StatelessWidget {
@@ -7314,7 +7312,6 @@ class _JourneyGuardianPortraitCard extends StatelessWidget {
     final duration = reduceMotion
         ? Duration.zero
         : const Duration(milliseconds: 420);
-    const gold = ZyraColors.journeyGold;
     final role = guardian.isMain ? 'Main Guardian' : 'Additional Guardian';
 
     return AnimatedContainer(
@@ -7322,17 +7319,10 @@ class _JourneyGuardianPortraitCard extends StatelessWidget {
       curve: Curves.easeOutCubic,
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 19),
       decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: guardian.isMain && revealed
-              ? gold.withValues(alpha: 0.5)
-              : ZyraColors.foreground.withValues(alpha: 0.14),
-          width: guardian.isMain && revealed ? 1.2 : 0.8,
-        ),
-        boxShadow: guardian.isMain && revealed
-            ? [BoxShadow(color: gold.withValues(alpha: 0.1), blurRadius: 22)]
-            : null,
+        border: Border.all(color: ZyraColors.surfaceBorder),
+        boxShadow: ZyraColors.cardShadows,
       ),
       child: AnimatedSwitcher(
         duration: duration,

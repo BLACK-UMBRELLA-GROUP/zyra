@@ -54,25 +54,12 @@ class OnboardingPreviewStyle extends InheritedWidget {
   /// colour, distinguishes each option.
   LinearGradient get backgroundGradient => ZyraColors.brandGradient;
 
-  BoxDecoration cardDecoration({bool selected = false}) {
+  BoxDecoration cardDecoration() {
     return BoxDecoration(
-      color: selected
-          ? ZyraColors.journeyGold.withValues(alpha: .14)
-          : ZyraColors.surfaceFill,
-      border: Border.all(
-        color: selected
-            ? ZyraColors.journeyGold.withValues(alpha: .68)
-            : ZyraColors.frostBorder,
-        width: .7,
-      ),
+      color: ZyraColors.cardSurface,
+      border: Border.all(color: ZyraColors.surfaceBorder),
       borderRadius: cardRadius,
-      boxShadow: [
-        BoxShadow(
-          color: ZyraColors.journeyGold.withValues(alpha: .055),
-          blurRadius: 24,
-          spreadRadius: 1,
-        ),
-      ],
+      boxShadow: ZyraColors.cardShadows,
     );
   }
 

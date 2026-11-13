@@ -3151,16 +3151,10 @@ class _ActivityCardState extends State<_ActivityCard> {
       child: DecoratedBox(
         key: ValueKey<String>('connections-activity-card-${widget.profile.id}'),
         decoration: BoxDecoration(
-          color: _open
-              ? ZyraColors.surfaceEmphasisFill
-              : ZyraColors.surfaceFill,
+          color: ZyraColors.cardSurface,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: _open
-                ? ZyraColors.surfaceEmphasisBorder
-                : ZyraColors.surfaceBorder,
-            width: _open ? 1 : 0.5,
-          ),
+          border: Border.all(color: ZyraColors.surfaceBorder),
+          boxShadow: ZyraColors.cardShadows,
         ),
         child: Material(
           color: Colors.transparent,
@@ -3601,16 +3595,10 @@ class _JourneyExpandingCardState extends State<_JourneyExpandingCard> {
         child: DecoratedBox(
           key: ValueKey<String>('connections-journey-card-${widget.j.matchId}'),
           decoration: BoxDecoration(
-            color: _open
-                ? ZyraColors.surfaceEmphasisFill
-                : ZyraColors.surfaceFill,
+            color: ZyraColors.cardSurface,
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(
-              color: _open
-                  ? ZyraColors.surfaceEmphasisBorder
-                  : ZyraColors.surfaceBorder,
-              width: _open ? 1 : 0.5,
-            ),
+            border: Border.all(color: ZyraColors.surfaceBorder),
+            boxShadow: ZyraColors.cardShadows,
           ),
           child: Material(
             color: Colors.transparent,
@@ -4458,9 +4446,10 @@ class _ActiveJourneyCard extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 14),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: ZyraColors.surfaceFill,
+          color: ZyraColors.cardSurface,
           borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: ZyraColors.surfaceEmphasisBorder),
+          border: Border.all(color: ZyraColors.surfaceBorder),
+          boxShadow: ZyraColors.cardShadows,
         ),
         // NOT tappable as a card — see the note at the call site. The two
         // pills below are the only actions, so there is no invisible third

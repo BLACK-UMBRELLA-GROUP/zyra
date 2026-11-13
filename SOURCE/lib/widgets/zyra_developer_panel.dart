@@ -259,13 +259,7 @@ class _DeveloperPanelState extends State<_DeveloperPanel> {
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(999),
                                   ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Color(0x143E2E1E),
-                                      blurRadius: 12,
-                                      offset: Offset(0, 4),
-                                    ),
-                                  ],
+                                  boxShadow: ZyraColors.cardShadows,
                                 ),
                                 child: OutlinedButton(
                                   key: const ValueKey('dev_done'),
@@ -280,11 +274,11 @@ class _DeveloperPanelState extends State<_DeveloperPanel> {
                                     minimumSize: const Size.fromHeight(52),
                                     tapTargetSize:
                                         MaterialTapTargetSize.shrinkWrap,
-                                    side: const BorderSide(
-                                      color: ZyraColors.divider,
+                                    side: BorderSide(
+                                      color: ZyraColors.surfaceBorder,
                                     ),
                                     shape: const StadiumBorder(),
-                                    backgroundColor: ZyraColors.ivoryTop,
+                                    backgroundColor: ZyraColors.cardSurface,
                                     foregroundColor: ZyraColors.mutedText,
                                     textStyle: ZyraText.body(size: 15),
                                   ),

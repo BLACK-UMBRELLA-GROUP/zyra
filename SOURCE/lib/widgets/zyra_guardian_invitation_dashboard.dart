@@ -10,7 +10,6 @@
 // invitations remain clearly preview state.
 
 import 'zyra_tap_feedback.dart';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -23,6 +22,7 @@ import '../services/zyra_wali_link_service.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_confirm_sheet.dart';
+import 'zyra_floating_surface.dart';
 import 'zyra_state_widgets.dart';
 
 enum ZyraGuardianInvitationAudience { seeker, guardian }
@@ -322,13 +322,13 @@ class _ZyraGuardianInvitationDashboardState
             ),
           ],
           if (received.isNotEmpty || pending.isNotEmpty)
-            ClipRRect(
-              borderRadius: BorderRadius.circular(18),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+            ZyraFloatingSurface(
+              radius: 18,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(18),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: ZyraColors.surfaceFill,
+                    color: ZyraColors.cardSurface,
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(color: ZyraColors.surfaceBorder),
                   ),
@@ -579,7 +579,6 @@ class _InvitationRowShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: emphasized ? ZyraColors.surfaceEmphasisFill : Colors.transparent,
       padding: const EdgeInsets.fromLTRB(14, 11, 10, 11),
       child: Row(
         children: [

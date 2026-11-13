@@ -26,7 +26,7 @@ void main() {
           (file) => file.readAsStringSync().contains('ZyraColors.$retiredFill'),
         );
     expect(callers, isEmpty);
-    expect(ZyraColors.cardSurface, ZyraColors.ivoryTop);
+    expect(ZyraColors.cardSurface, const Color(0xD9FAF5EC));
     expect(ZyraColors.lowerSurface, ZyraColors.ivoryTop);
     expect(ZyraColors.modalSheetSurface, ZyraColors.ivoryTop);
     expect(ZyraColors.frostSelectedFill, ZyraColors.ivoryTop);

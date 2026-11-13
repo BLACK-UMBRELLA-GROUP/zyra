@@ -365,9 +365,10 @@ class _DeviceNotificationStatus extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: ZyraColors.ink(0.12), width: 0.6),
+        border: Border.all(color: ZyraColors.surfaceBorder),
+        boxShadow: ZyraColors.cardShadows,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -438,9 +439,10 @@ class _EssentialNotificationRow extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.all(14),
     decoration: BoxDecoration(
-      color: ZyraColors.surfaceFill,
+      color: ZyraColors.cardSurface,
       borderRadius: BorderRadius.circular(12),
-      border: Border.all(color: ZyraColors.ink(0.10), width: 0.5),
+      border: Border.all(color: ZyraColors.surfaceBorder),
+      boxShadow: ZyraColors.cardShadows,
     ),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,

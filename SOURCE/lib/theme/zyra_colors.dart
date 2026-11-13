@@ -145,9 +145,16 @@ class ZyraColors {
   /// LOCK14 V5: gold reading text below 24 regular / 18.66 bold.
   static const Color goldText = Color(0xFF845F24);
   static const Color goldTextFill = Color(0xFFC08A3A);
-  static const Color cardSurface = ivoryTop;
+
+  /// The My ZYRA tile and Profile group surface used for app cards.
+  static const Color cardSurface = Color(0xD9FAF5EC);
+  static const cardShadows = [
+    BoxShadow(color: Color(0x1F3E2E1E), blurRadius: 24, offset: Offset(0, 10)),
+    BoxShadow(color: Color(0x123E2E1E), blurRadius: 6, offset: Offset(0, 2)),
+  ];
   static const Color lowerSurface = ivoryTop;
   static const Color sheetIvory = ivoryTop;
+  static const Color confirmSheetSurface = Color(0xFFF7F2EA);
   static const Color divider = Color(0x1A3E2E1E);
   static const Color avatarSand = Color(0xFF9C8A72);
   static const Color avatarDeepSand = Color(0xFF6B5B49);
@@ -200,14 +207,12 @@ class ZyraColors {
   static Color get foregroundSecondary => secondaryText;
   static Color get foregroundMuted => mutedText;
 
-  /// Neutral app-card fill. This is the shared visual-language boundary for
-  /// the three App Surface choices; page code should use this rather than
-  /// inventing a private white-alpha recipe.
-  static Color get surfaceFill => const Color(0xD9FAF5EC);
+  /// Compatibility name for shared surfaces and controls.
+  static const Color surfaceFill = cardSurface;
 
   static Color get surfaceBorder => const Color(0x0F3E2E1E);
 
-  /// Selected/expanded cards use the shared ivory fill and a gold edge.
+  /// Selection controls share the card fill and can signal selection in gold.
   static Color get surfaceEmphasisFill => surfaceFill;
 
   static Color get surfaceEmphasisBorder => journeyGold.withValues(alpha: 0.70);

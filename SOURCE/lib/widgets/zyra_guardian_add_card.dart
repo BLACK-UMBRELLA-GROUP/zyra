@@ -28,18 +28,13 @@ class ZyraGuardianAddCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ZyraFloatingSurface(
     radius: 22,
-    child: CustomPaint(
-      foregroundPainter: ZyraGuardianDashedBorder(
-        22,
-        ZyraColors.journeyGold.withValues(alpha: .6),
+    child: DecoratedBox(
+      decoration: BoxDecoration(
+        color: ZyraColors.cardSurface,
+        border: Border.all(color: ZyraColors.surfaceBorder),
+        borderRadius: BorderRadius.circular(22),
       ),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: ZyraColors.ivoryTop,
-          borderRadius: BorderRadius.circular(22),
-        ),
-        child: _content(context),
-      ),
+      child: _content(context),
     ),
   );
   Widget _content(BuildContext context) {
@@ -175,7 +170,7 @@ class ZyraGuardianAddCard extends StatelessWidget {
 
   Widget _place(String value, String label) => DecoratedBox(
     decoration: BoxDecoration(
-      color: ZyraColors.ivoryTop,
+      color: ZyraColors.cardSurface,
       border: Border.all(color: ZyraColors.surfaceBorder),
       borderRadius: BorderRadius.circular(12),
     ),

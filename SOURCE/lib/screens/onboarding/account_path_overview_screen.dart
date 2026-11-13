@@ -1057,13 +1057,12 @@ class _OverviewRow extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
       decoration:
-          previewStyle?.cardDecoration(
-            selected: item.active || item.complete,
-          ) ??
+          previewStyle?.cardDecoration() ??
           BoxDecoration(
-            color: ZyraColors.surfaceFill,
+            color: ZyraColors.cardSurface,
             borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: ZyraColors.frostBorder, width: 0.5),
+            border: Border.all(color: ZyraColors.surfaceBorder),
+            boxShadow: ZyraColors.cardShadows,
           ),
       child: Row(
         children: [

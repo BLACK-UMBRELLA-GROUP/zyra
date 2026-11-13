@@ -151,13 +151,10 @@ class _ZyraCompatibilityScoreReaderState
         height: height,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [ZyraColors.cardSurface, ZyraColors.lowerSurface],
-            ),
+            color: ZyraColors.cardSurface,
             borderRadius: BorderRadius.circular(26),
-            border: Border.all(color: _ink.withValues(alpha: .13)),
+            border: Border.all(color: ZyraColors.surfaceBorder),
+            boxShadow: ZyraColors.cardShadows,
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(26),

@@ -827,8 +827,11 @@ class _EditProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ZyraFloatingSurface(
     child: Material(
-      color: ZyraColors.surfaceFill,
-      borderRadius: BorderRadius.circular(22),
+      color: ZyraColors.cardSurface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(22),
+        side: BorderSide(color: ZyraColors.surfaceBorder),
+      ),
       clipBehavior: Clip.antiAlias,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

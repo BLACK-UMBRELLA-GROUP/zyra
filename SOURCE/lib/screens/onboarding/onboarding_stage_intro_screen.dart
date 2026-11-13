@@ -889,7 +889,7 @@ class _RoadmapRow extends StatelessWidget {
       return Container(
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 10),
-        decoration: previewStyle.cardDecoration(selected: number == 1),
+        decoration: previewStyle.cardDecoration(),
         child: row,
       );
     }

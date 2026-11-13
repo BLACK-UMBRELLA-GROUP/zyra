@@ -25,6 +25,7 @@ import '../../services/zyra_wali_journey_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_motion.dart';
 import '../../theme/zyra_colors.dart';
+import '../../widgets/zyra_floating_surface.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_loading.dart';
 import '../../widgets/zyra_pull_down_back_scope.dart';
@@ -1871,68 +1872,77 @@ class _GuardianCircleCard extends StatelessWidget {
   const _GuardianCircleCard({required this.circle, required this.onTap});
 
   @override
-  Widget build(BuildContext context) => Material(
-    color: ZyraColors.surfaceFill,
-    borderRadius: BorderRadius.circular(18),
-    child: InkWell(
-      borderRadius: BorderRadius.circular(18),
-      onTap: ZyraTapFeedback.onTap(context, onTap),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: ZyraColors.surfaceBorder),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: ZyraColors.surfaceFill,
-                border: Border.all(color: ZyraColors.surfaceEmphasisBorder),
-              ),
-              child: Text(circle.seekerFirstName[0].toUpperCase()),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${circle.seekerFirstName}’s Guardian Circle',
-                    style: ZyraText.body(size: 15),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    circle.lastMessage ??
-                        '${circle.participantCount} members · No messages yet',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: ZyraText.subtext(size: 12),
-                  ),
-                ],
-              ),
-            ),
-            if (circle.unreadCount > 0)
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    radius: 18,
+    child: Material(
+      color: ZyraColors.cardSurface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(18),
+        side: BorderSide(color: ZyraColors.surfaceBorder),
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(18),
+        onTap: ZyraTapFeedback.onTap(context, onTap),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: ZyraColors.surfaceBorder),
+          ),
+          child: Row(
+            children: [
               Container(
-                constraints: const BoxConstraints(minWidth: 22, minHeight: 22),
+                width: 40,
+                height: 40,
                 alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(horizontal: 6),
                 decoration: BoxDecoration(
-                  color: ZyraColors.actionFill,
-                  borderRadius: BorderRadius.circular(11),
+                  shape: BoxShape.circle,
+                  color: ZyraColors.surfaceFill,
+                  border: Border.all(color: ZyraColors.surfaceEmphasisBorder),
                 ),
-                child: Text(
-                  '${circle.unreadCount}',
-                  style: ZyraText.body(size: 11, color: Colors.black),
+                child: Text(circle.seekerFirstName[0].toUpperCase()),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${circle.seekerFirstName}’s Guardian Circle',
+                      style: ZyraText.body(size: 15),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      circle.lastMessage ??
+                          '${circle.participantCount} members · No messages yet',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: ZyraText.subtext(size: 12),
+                    ),
+                  ],
                 ),
-              )
-            else
-              Icon(Icons.chevron_right_rounded, color: ZyraColors.ink(0.5)),
-          ],
+              ),
+              if (circle.unreadCount > 0)
+                Container(
+                  constraints: const BoxConstraints(
+                    minWidth: 22,
+                    minHeight: 22,
+                  ),
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  decoration: BoxDecoration(
+                    color: ZyraColors.actionFill,
+                    borderRadius: BorderRadius.circular(11),
+                  ),
+                  child: Text(
+                    '${circle.unreadCount}',
+                    style: ZyraText.body(size: 11, color: Colors.black),
+                  ),
+                )
+              else
+                Icon(Icons.chevron_right_rounded, color: ZyraColors.ink(0.5)),
+            ],
+          ),
         ),
       ),
     ),
@@ -2179,9 +2189,10 @@ class _CircleMemberRow extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.all(12),
     decoration: BoxDecoration(
-      color: ZyraColors.surfaceFill,
+      color: ZyraColors.cardSurface,
       borderRadius: BorderRadius.circular(17),
-      border: Border.all(color: ZyraColors.surfaceBorder, width: 0.7),
+      border: Border.all(color: ZyraColors.surfaceBorder),
+      boxShadow: ZyraColors.cardShadows,
     ),
     child: Row(
       children: [
@@ -2627,7 +2638,7 @@ class ZyraFamilyMessageComposer extends StatelessWidget {
           Container(
             padding: const EdgeInsets.fromLTRB(7, 6, 4, 6),
             decoration: BoxDecoration(
-              color: ZyraColors.surfaceFill,
+              color: ZyraColors.cardSurface,
               borderRadius: BorderRadius.circular(18),
               border: Border.all(color: ZyraColors.surfaceBorder, width: 0.7),
             ),
@@ -2871,7 +2882,7 @@ class _MessageContextChoice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Material(
-    color: ZyraColors.surfaceFill,
+    color: ZyraColors.cardSurface,
     borderRadius: BorderRadius.circular(17),
     child: InkWell(
       borderRadius: BorderRadius.circular(17),
@@ -2926,7 +2937,7 @@ class _MessageContextCard extends StatelessWidget {
     button: onTap != null,
     label: 'Open ${this.context.firstName} ${this.context.stateLabel}',
     child: Material(
-      color: ZyraColors.surfaceFill,
+      color: ZyraColors.cardSurface,
       borderRadius: BorderRadius.circular(13),
       child: InkWell(
         key: ValueKey('open-message-context-${this.context.referenceId}'),

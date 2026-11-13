@@ -86,8 +86,6 @@ class ZyraFounderLaunchPageStyle extends InheritedWidget {
       activeOf(context) ? darkInk : ZyraColors.foregroundBody;
   static Color goldOf(BuildContext context) =>
       activeOf(context) ? darkGoldInk : ZyraColors.journeyGold;
-  static Color surfaceOf(BuildContext context) =>
-      activeOf(context) ? const Color(0xFFF5F3EF) : ZyraColors.surfaceFill;
   static Color borderOf(BuildContext context) =>
       activeOf(context) ? const Color(0xFFC3BBAE) : ZyraColors.surfaceBorder;
 

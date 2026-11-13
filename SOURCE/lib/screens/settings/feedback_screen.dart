@@ -248,9 +248,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   vertical: 9,
                 ),
                 decoration: BoxDecoration(
-                  color: selected
-                      ? ZyraColors.ivoryTop
-                      : ZyraColors.surfaceFill,
+                  color: ZyraColors.cardSurface,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
                     color: selected
@@ -276,11 +274,10 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
       Container(
         decoration: BoxDecoration(
-          color: ZyraColors.surfaceFill,
+          color: ZyraColors.cardSurface,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: ZyraColors.foreground.withValues(alpha: 0.11),
-          ),
+          border: Border.all(color: ZyraColors.surfaceBorder),
+          boxShadow: ZyraColors.cardShadows,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
         child: TextField(

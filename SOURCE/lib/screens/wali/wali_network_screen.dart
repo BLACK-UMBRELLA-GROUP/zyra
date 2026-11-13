@@ -1399,15 +1399,10 @@ class _CapReachedCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: ZyraColors.surfaceFill,
+        color: ZyraColors.cardSurface,
         borderRadius: BorderRadius.circular(ZyraCardMetrics.cardRadius),
-        border: Border.all(
-          color: Color.alphaBlend(
-            gnGold.withValues(alpha: 0.34),
-            ZyraColors.surfaceBorder,
-          ),
-          width: 0.7,
-        ),
+        border: Border.all(color: ZyraColors.surfaceBorder),
+        boxShadow: ZyraColors.cardShadows,
       ),
       child: Column(
         children: [
