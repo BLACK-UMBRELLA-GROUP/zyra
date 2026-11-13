@@ -18,6 +18,21 @@ const _nativeViewKey = ValueKey('fake-native-code-camera');
 const _frameKey = ValueKey('local-code-camera');
 const _captionKey = ValueKey('local-code-camera-caption');
 const _scanLineKey = ValueKey('local-code-scan-line');
+const _firstCode = 'ZYRA-7A2B-A9CD-4EFA-2B8C-5E1F';
+const _secondCode = 'ZYRA-ABCD-EF01-2345-6789-ABCD';
+final _invalidCodes = [
+  '',
+  'https://zyraconnect.app/c/#$_firstCode',
+  'https://example.invalid/?code=$_firstCode',
+  ' $_firstCode',
+  '$_firstCode ',
+  '$_firstCode\n',
+  _firstCode.toLowerCase(),
+  'ZYRA-7A2BA9CD4EFA2B8C5E1F',
+  'ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F',
+  'ZYRA-1234',
+  'AB12CD34',
+];
 const _checkKey = ValueKey('local-code-check');
 const _viewAttributes = MobileScannerViewAttributes(
   cameraDirection: CameraFacing.back,
@@ -340,23 +355,23 @@ void main() {
     (t) async {
       await mountFramed(t, ZyraLocalCodeContext.scan);
       final hint = find.text("This isn't a ZYRA Code");
-      platform.emit([
-        'https://zyraconnect.app/ZYRA-ABCD-EFGH-IJKL-MNOP-QRST',
-        'https://example.invalid/?code=ZYRA-ABCD-EFGH-IJKL-MNOP-QRST',
-        'ZYRA-1234',
-        'AB12CD34',
-      ]);
-      await t.pump();
-      await t.pump();
-      expect(hint, findsOneWidget);
-      expect(platform.running, isTrue);
-      expect(platform.stops, 0);
-      await t.pump(const Duration(milliseconds: 1999));
-      expect(hint, findsOneWidget);
-      await t.pump(const Duration(milliseconds: 1));
-      await t.pump();
-      expect(hint, findsNothing);
-      platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
+      for (final invalid in _invalidCodes) {
+        platform.emit([invalid]);
+        await t.pump();
+        await t.pump();
+        expect(
+          hint,
+          findsOneWidget,
+          reason: 'rejected payload: ${invalid.codeUnits}',
+        );
+        expect(platform.running, isTrue);
+        expect(platform.stops, 0);
+        await t.pump(const Duration(milliseconds: 1999));
+        expect(hint, findsOneWidget);
+        await t.pump(const Duration(milliseconds: 1));
+        expect(hint, findsNothing);
+      }
+      platform.emit([_firstCode]);
       await _flush(t);
       expect(platform.running, isFalse);
       expect(find.byKey(_captionKey), findsNothing);
@@ -386,8 +401,55 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('injected capture validates raw payloads before lookup', (
+    tester,
+  ) async {
+    final lookups = <String>[];
+    late ValueChanged<String> detect;
+    tester.view.physicalSize = const Size(430, 932);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpWidget(
+      _app(
+        ZyraLocalCodePage(
+          mode: ZyraLocalCodeContext.scan,
+          canAct: () => true,
+          ownerKey: 'injected-capture',
+          isLocal: false,
+          lookupCode: (code) async {
+            lookups.add(code);
+            return null;
+          },
+          captureBuilder: (_, _, onCode, _, _) {
+            detect = onCode;
+            return const SizedBox.expand();
+          },
+        ),
+      ),
+    );
+    await tester.tap(find.byKey(_frameKey));
+    await tester.pump();
+    final hint = find.text("This isn't a ZYRA Code");
+    for (final invalid in _invalidCodes) {
+      detect(invalid);
+      await tester.pump();
+      expect(
+        hint,
+        findsOneWidget,
+        reason: 'rejected payload: ${invalid.codeUnits}',
+      );
+      expect(lookups, isEmpty);
+      await tester.pump(const Duration(seconds: 2));
+      expect(hint, findsNothing);
+    }
+    detect(_firstCode);
+    await _flush(tester);
+    expect(lookups, [_firstCode]);
+  });
+
   testWidgets(
-    'native stream ignores unrelated values and captures trimmed code',
+    'native stream ignores unrelated values and captures the original code',
     (tester) async {
       final captured = <String>[];
       await _mount(
@@ -407,9 +469,9 @@ void main() {
       await _flush(tester);
       expect(captured, isEmpty);
       expect(platform.stops, 0);
-      platform.emit(['  zyra-7k2mq9td4hxa2b8c5e1f  ']);
+      platform.emit([_firstCode]);
       await _flush(tester);
-      expect(captured, ['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
+      expect(captured, [_firstCode]);
       expect(platform.stops, 1);
       expect(platform.running, isFalse);
     },
@@ -426,16 +488,12 @@ void main() {
         onCode: captured.add,
         onManualEntry: () {},
       );
-      platform.emit([
-        'ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F',
-        'ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F',
-        'ZYRA-DRAF-TAMI-RA00-0000-0000',
-      ]);
-      platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
+      platform.emit([_firstCode, _firstCode, _secondCode]);
+      platform.emit([_firstCode]);
       await _flush(tester);
-      platform.emit(['ZYRA-DRAF-TAMI-RA00-0000-0000']);
+      platform.emit([_secondCode]);
       await _flush(tester);
-      expect(captured, ['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
+      expect(captured, [_firstCode]);
       expect(platform.stops, 1);
       expect(platform.startOptions, hasLength(1));
     },
@@ -457,9 +515,9 @@ void main() {
       platform.emit(['${longest}A']);
       await _flush(tester);
       expect(captured, isEmpty);
-      platform.emit([longest, 'ZYRA-ABCD-EFGH-IJKL-MNOP-QRST']);
+      platform.emit([longest, _secondCode]);
       await _flush(tester);
-      expect(captured, ['ZYRA-ABCD-EFGH-IJKL-MNOP-QRST']);
+      expect(captured, [_secondCode]);
       expect(platform.stops, 1);
     },
   );
@@ -484,7 +542,7 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('Enter code instead'), findsOneWidget);
-    platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
+    platform.emit([_firstCode]);
     await _flush(tester);
     expect(captured, isEmpty);
     await tester.tap(find.byKey(_manualKey));
@@ -537,7 +595,7 @@ void main() {
         findsOneWidget,
       );
       expect(platform.stops, 1);
-      platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
+      platform.emit([_firstCode]);
       await _flush(tester);
       expect(captured, isEmpty);
       await tester.tap(find.byKey(_manualKey));
@@ -562,7 +620,7 @@ void main() {
       tester.widget<ZyraKnownPersonCodePill>(find.byKey(_manualKey)).onTap,
       isNull,
     );
-    platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
+    platform.emit([_firstCode]);
     await _flush(tester);
     expect(platform.stops, 0);
   });
@@ -585,11 +643,9 @@ void main() {
         .onDetect!;
     final staleManual = _manualCallback(tester);
     allowed = false;
-    platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
+    platform.emit([_firstCode]);
     staleDetect(
-      const BarcodeCapture(
-        barcodes: [Barcode(rawValue: 'ZYRA-DRAF-TAMI-RA00-0000-0000')],
-      ),
+      const BarcodeCapture(barcodes: [Barcode(rawValue: _secondCode)]),
     );
     staleManual();
     await _flush(tester);
@@ -620,7 +676,7 @@ void main() {
       ),
     );
     await _flush(tester);
-    platform.emit(['ZYRA-DRAF-TAMI-RA00-0000-0000']);
+    platform.emit([_secondCode]);
     await _flush(tester);
     expect(captured, isEmpty);
     expect(manual, 0);
@@ -660,12 +716,12 @@ void main() {
       onManualEntry: () {},
     );
     throws = true;
-    platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
+    platform.emit([_firstCode]);
     await _flush(tester);
     expect(captured, isEmpty);
     expect(tester.takeException(), isNull);
     throws = false;
-    platform.emit(['ZYRA-DRAF-TAMI-RA00-0000-0000']);
+    platform.emit([_secondCode]);
     await _flush(tester);
     expect(captured, isEmpty);
     await tester.pumpWidget(
@@ -702,11 +758,9 @@ void main() {
       await _flush(tester);
       expect(platform.stops, 1);
       expect(platform.running, isFalse);
-      platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
+      platform.emit([_firstCode]);
       staleDetect(
-        const BarcodeCapture(
-          barcodes: [Barcode(rawValue: 'ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F')],
-        ),
+        const BarcodeCapture(barcodes: [Barcode(rawValue: _firstCode)]),
       );
       staleManual();
       await _flush(tester);
@@ -716,9 +770,9 @@ void main() {
       await _flush(tester);
       expect(platform.startOptions, hasLength(2));
       expect(platform.running, isTrue);
-      platform.emit(['ZYRA-DRAF-TAMI-RA00-0000-0000']);
+      platform.emit([_secondCode]);
       await _flush(tester);
-      expect(captured, ['ZYRA-DRAF-TAMI-RA00-0000-0000']);
+      expect(captured, [_secondCode]);
       expect(platform.stops, 2);
     },
   );
@@ -754,11 +808,9 @@ void main() {
     );
     await _flush(tester);
     expect(platform.stops, 1);
-    platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
+    platform.emit([_firstCode]);
     staleDetect(
-      const BarcodeCapture(
-        barcodes: [Barcode(rawValue: 'ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F')],
-      ),
+      const BarcodeCapture(barcodes: [Barcode(rawValue: _firstCode)]),
     );
     staleManual();
     await _flush(tester);
@@ -767,9 +819,9 @@ void main() {
     navigator.currentState!.pop();
     await _flush(tester);
     expect(platform.startOptions, hasLength(2));
-    platform.emit(['ZYRA-DRAF-TAMI-RA00-0000-0000']);
+    platform.emit([_secondCode]);
     await _flush(tester);
-    expect(captured, ['ZYRA-DRAF-TAMI-RA00-0000-0000']);
+    expect(captured, [_secondCode]);
   });
 
   testWidgets(
@@ -792,9 +844,7 @@ void main() {
           .onDetect!;
       await tester.pumpWidget(const SizedBox.shrink());
       staleDetect(
-        const BarcodeCapture(
-          barcodes: [Barcode(rawValue: 'ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F')],
-        ),
+        const BarcodeCapture(barcodes: [Barcode(rawValue: _firstCode)]),
       );
       staleManual();
       platform.releasePendingStart();
@@ -825,7 +875,7 @@ void main() {
       await _flush(tester);
       expect(platform.stops, 1);
       expect(platform.running, isFalse);
-      platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
+      platform.emit([_firstCode]);
       await _flush(tester);
       expect(captured, isEmpty);
     },
@@ -869,7 +919,7 @@ void main() {
     final staleManual = _manualCallback(tester);
     await tester.tap(find.byKey(_manualKey));
     staleManual();
-    platform.emit(['ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F']);
+    platform.emit([_firstCode]);
     await _flush(tester);
     expect(manual, 1);
     expect(captured, isEmpty);

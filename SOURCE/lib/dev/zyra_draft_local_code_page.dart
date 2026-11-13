@@ -940,7 +940,7 @@ class _LocalCodeFormatter extends TextInputFormatter {
     TextEditingValue newValue,
   ) {
     final known =
-        alias?.call(newValue.text) ?? ZyraCodeFormat.scanEntry(newValue.text);
+        alias?.call(newValue.text) ?? ZyraCodeFormat.manualEntry(newValue.text);
     if (known != null) {
       return TextEditingValue(
         text: known,

@@ -202,8 +202,8 @@ class _ZyraCodeCaptureState extends State<ZyraCodeCapture>
     var rejected = false;
     for (final barcode in capture.barcodes) {
       final raw = barcode.rawValue;
-      if (raw == null || raw.isEmpty) continue;
-      final code = raw.length <= 200 ? ZyraCodeFormat.scanned(raw) : null;
+      if (raw == null) continue;
+      final code = ZyraCodeFormat.scanned(raw);
       if (code == null) {
         rejected = true;
         continue;

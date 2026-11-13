@@ -531,14 +531,13 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
         ? null
         : box.localToGlobal(Offset.zero) & box.size;
     try {
-      // The locked domain has no approved code route yet. Share the same
-      // raw code as the QR and clipboard until that handoff is specified.
       await SharePlus.instance.share(
         ShareParams(
           text: _isFounderDemoPreview
               ? 'ZYRA Developer Preview code:\n${code.code}\n\n'
                     'This sample code cannot connect real accounts.'
-              : code.code,
+              : 'Here’s my ZYRA Code. Enter it in ZYRA to send me a request:\n'
+                    '${code.code}',
           subject: 'My ZYRA Code',
           sharePositionOrigin: origin,
         ),

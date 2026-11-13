@@ -11,11 +11,13 @@ Pre-launch, built solo since June 2026. Version 1.0.0 (build 5) runs on the Foun
 The app has no developer rail, Home/Preview/Actions panel, comparison picker, role/plan/wallet selector, reset or onboarding skip shortcut. The protected Founder entry starts with sample Adam on Seeker One. Member settings and controls drawn in current LOCK masters remain, including the Profile Switch flow and the locked local request Demo actions.
 
 Add a Guardian and Add a Seeker open on My code, with a QR, copy and
-share. Their code and the Profiles Scan page use the same camera and five
-code boxes. Sharing sends the raw code. On the signed-in Add pages, Check
-code can offer the older invite form after an older code is entered manually
-or a manual ZYRA Code check finds no match. The older form has its own Check
-button. A request still needs the other person to accept it.
+share. Sharing adds a short instruction above the code. Copy and QR use the
+plain code. Their code and the Profiles Scan page use the same camera and five
+code boxes. The camera accepts only uppercase, grouped ZYRA codes. On the
+signed-in Add pages, Check code can offer the older invite form after an
+older code is entered manually or a manual ZYRA Code check finds no match.
+The older form has its own Check button. A request still needs the other
+person to accept it.
 
 See [ROADMAP.md](ROADMAP.md) for the next work, including bringing the full test suite back to green. The baseline and final interface milestone stays open until queues 44, 73 and 75 are built and the full suite passes.
 

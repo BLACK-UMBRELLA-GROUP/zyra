@@ -79,6 +79,7 @@ ZyraGuardianLinkRequest _row({
 
 class _Reads {
   String code = _codeA;
+  String expectedRole = 'wali';
   List<ZyraGuardianLinkRequest> rows = [_row()];
   int codeCalls = 0;
   int requestCalls = 0;
@@ -89,12 +90,12 @@ class _Reads {
   Future<ZyraSourceResult<ZyraPersonalCode>> personalCode({
     String? roleContext,
   }) {
-    expectSync(roleContext, 'wali');
+    expectSync(roleContext, expectedRole);
     final held = heldCodes[++codeCalls];
     return held?.future ??
         Future.value(
           ZyraSourceResult.available(
-            ZyraPersonalCode(code: code, roleContext: 'wali'),
+            ZyraPersonalCode(code: code, roleContext: expectedRole),
           ),
         );
   }
@@ -237,14 +238,15 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
   }
 
-  Widget subject({bool productionReads = false}) => MaterialApp(
-    home: ZyraCodeScreen(
-      asGuardian: true,
-      onLinked: () => linked++,
-      loadPersonalCode: productionReads ? null : reads.personalCode,
-      loadGuardianRequests: productionReads ? null : reads.requests,
-    ),
-  );
+  Widget subject({bool productionReads = false, bool asGuardian = true}) =>
+      MaterialApp(
+        home: ZyraCodeScreen(
+          asGuardian: asGuardian,
+          onLinked: () => linked++,
+          loadPersonalCode: productionReads ? null : reads.personalCode,
+          loadGuardianRequests: productionReads ? null : reads.requests,
+        ),
+      );
 
   Future<void> flush(WidgetTester tester) async {
     for (var i = 0; i < 6; i++) {
@@ -310,35 +312,46 @@ void main() {
     await press(t, 'Check code');
   }
 
-  testWidgets('ordinary share and copy use the same raw value as the QR', (
-    t,
-  ) async {
-    final deviceCalls = <MethodCall>[];
-    final messenger =
-        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
-    const share = MethodChannel('dev.fluttercommunity.plus/share');
-    messenger.setMockMethodCallHandler(share, (call) async {
-      deviceCalls.add(call);
-      return '';
+  for (final asGuardian in [false, true]) {
+    final title = asGuardian ? 'Add a Seeker' : 'Add a Guardian';
+    testWidgets('$title shares the locked message and copies the QR code', (
+      t,
+    ) async {
+      final shareCalls = <MethodCall>[];
+      final clipboardCalls = <MethodCall>[];
+      final messenger =
+          TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+      const share = MethodChannel('dev.fluttercommunity.plus/share');
+      messenger.setMockMethodCallHandler(share, (call) async {
+        shareCalls.add(call);
+        return '';
+      });
+      messenger.setMockMethodCallHandler(SystemChannels.platform, (call) async {
+        if (call.method == 'Clipboard.setData') clipboardCalls.add(call);
+        return null;
+      });
+      addTearDown(() {
+        messenger.setMockMethodCallHandler(share, null);
+        messenger.setMockMethodCallHandler(SystemChannels.platform, null);
+      });
+      size(t);
+      reads.expectedRole = asGuardian ? 'wali' : 'seeker';
+      await t.pumpWidget(subject(asGuardian: asGuardian));
+      await flush(t);
+      expect(find.text(title), findsOneWidget);
+      expect(find.byKey(const ValueKey(('zyra-qr', _codeA))), findsOneWidget);
+      await press(t, 'Share my code');
+      await press(t, 'Copy code');
+      final shared = shareCalls.single.arguments as Map;
+      expect(
+        shared['text'],
+        'Here’s my ZYRA Code. Enter it in ZYRA to send me a request:\n$_codeA',
+      );
+      expect(shared['subject'], 'My ZYRA Code');
+      expect(clipboardCalls.single.arguments, {'text': _codeA});
+      expect(calls, isEmpty);
     });
-    messenger.setMockMethodCallHandler(SystemChannels.platform, (call) async {
-      if (call.method == 'Clipboard.setData') deviceCalls.add(call);
-      return null;
-    });
-    addTearDown(() {
-      messenger.setMockMethodCallHandler(share, null);
-      messenger.setMockMethodCallHandler(SystemChannels.platform, null);
-    });
-    await render(t);
-    expect(find.byKey(const ValueKey(('zyra-qr', _codeA))), findsOneWidget);
-    await press(t, 'Share my code');
-    await press(t, 'Copy code');
-    expect(deviceCalls.map((call) => (call.arguments as Map)['text']), [
-      _codeA,
-      _codeA,
-    ]);
-    expect(calls, isEmpty);
-  });
+  }
 
   testWidgets(
     'rotation requires confirmation and publishes through a stale refresh and pause',

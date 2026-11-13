@@ -18,10 +18,12 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   final platformCalls = <MethodCall>[];
+  final shareCalls = <MethodCall>[];
   const shareChannel = MethodChannel('dev.fluttercommunity.plus/share');
 
   setUp(() {
     platformCalls.clear();
+    shareCalls.clear();
     ZyraText.useTestFontStubs = true;
     ZyraInteractionStyle.restoreDefaults();
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
@@ -30,7 +32,10 @@ void main() {
           return null;
         });
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(shareChannel, (_) async => '');
+        .setMockMethodCallHandler(shareChannel, (call) async {
+          shareCalls.add(call);
+          return '';
+        });
   });
 
   tearDown(() {
@@ -164,6 +169,18 @@ void main() {
       hasLength(2),
     );
     expect(find.text('Copied'), findsOneWidget);
+  });
+
+  testWidgets('Founder preview shares the existing sample wording', (t) async {
+    await open(t);
+    await press(t, 'Share my code');
+    final shared = shareCalls.single.arguments as Map;
+    expect(
+      shared['text'],
+      'ZYRA Developer Preview code:\nZYRA-DEMO-SEEKER-ADAM\n\n'
+      'This sample code cannot connect real accounts.',
+    );
+    expect(shared['subject'], 'My ZYRA Code');
   });
 
   testWidgets('Their code preserves invalid and found/sent states', (t) async {

@@ -79,7 +79,7 @@ class _FindByZyraCodeScreenState extends State<FindByZyraCodeScreen> {
     );
     final result = preview
         ? ZyraKnownPersonCodeLookup.available(
-            ZyraCodeFormat.scanEntry(code) == _previewEntry
+            ZyraCodeFormat.manualEntry(code) == _previewEntry
                 ? ZyraDevPersonalCodeFixtures.previewKnownPersonCode(
                     ZyraDevPersonalCodeFixtures.validKnownPersonEntryCode(
                       currentGender: AppState.instance.gender,

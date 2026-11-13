@@ -25,10 +25,10 @@ historical V2 handover below describes the 30 October build only.
 `SOURCE/lib/dev/zyra_draft_local_code_page.dart` is the shared presenter;
 `zyra_request_tab_pill.dart` shares the Journey requests pill, and the title
 uses `ZyraTabTitle`. `zyra_known_person_code_content.dart` owns the
-camera lifetime. `zyra_code_format.dart` accepts only the whole raw prefixed
-code, with 20 ASCII letters or digits in five groups or compact form. Bad
-payloads show the two-second hint and never open a URL. The existing sample
-aliases still work in the manual field. The timed preview sent state retains
+camera lifetime. The camera accepts only an unmodified `ZYRA-` code with
+five groups of four uppercase hexadecimal characters. Bad payloads show the
+two-second hint and never open a URL. Manual entry retains its existing code
+and sample alias handling. The timed preview sent state retains
 the 14-day wording from Guardian rules DOC-ZYRA-0290 V5 and the 12 November
 time-rules brief. Ordinary sent state does not claim an expiry before the
 server change.
@@ -41,11 +41,21 @@ exact `too_many_code_checks` server error; an empty successful lookup stays
 not found. Only line 106 owns the server signal. No migration, service
 deployment, live service calls or device installation were performed.
 
-**Open — Q139 / OA-ZYRA-317.** LOCK 9 V3 and Q137 specify the HTTPS domain,
-but no exact path, payload grammar or app and web handoff is recorded.
-Share sends the raw code and the scanner rejects all URLs until that
-contract is approved. Refused for this build: guessing a path or treating
-any path on the domain as a code. No website or app link files were changed.
+**13 November, Q139 / OA-ZYRA-317.** From the reissued V3 brief
+(DOC-ZYRA-0477), spec V4 §0 and §0b (DOC-ZYRA-0343), the LOCK record and
+prototype V226, ordinary Share sends “Here’s my ZYRA Code. Enter it in ZYRA
+to send me a request:” followed by a newline and the plain code, with the
+subject “My ZYRA Code”. Founder demo sharing retains its sample wording.
+Copy and QR use the plain code. Lines 108 and 109 own the link work.
+
+Q139 verification covered both ordinary Add roles, Founder sample sharing,
+exact subject and body, plain QR and clipboard values, and raw validation
+at the native and injected scanner entry points. The 151 focused tests and
+six LOCK 9 visual widget cases passed. `flutter analyze --no-pub` was clean.
+The camera and share sheet were checked through their platform test doubles.
+The full test run matched 38 recorded baseline failures. Two additional
+failures used non-hex camera fixtures and passed when replayed with valid
+grouped codes. See the 13 November task note for the run totals.
 
 Verification uses local fake camera, share, clipboard and RPC calls, plus
 the ordinary and Founder app routes at 430 × 932 and 375 × 667. The
@@ -77,8 +87,8 @@ Verification: `flutter analyze --no-pub` reported no issues and 150 tests
 passed in nine affected suites, including caller and camera lifetime,
 Founder fixtures, the shared code page, signup, invitation reuse, Guardian
 capacity, known-person matching and the link service. Tests used local fake
-transport and camera. Raw sharing and Q139 remain as above; no server work,
-device run or change to the Line 96 Developer titles.
+transport and camera. This follow-up made no server or Line 96 Developer
+title changes and did not run on a device.
 
 ---
 

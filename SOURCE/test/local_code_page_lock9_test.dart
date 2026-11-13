@@ -67,6 +67,7 @@ void main() {
     GlobalKey<NavigatorState>? navigator,
     double scale = 1,
     bool disableAnimations = false,
+    bool isLocal = true,
     Size size = const Size(430, 932),
   }) async {
     t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
@@ -92,6 +93,7 @@ void main() {
             canAct: canAct ?? () => true,
             canInteract: canInteract,
             interactionEpoch: epoch,
+            isLocal: isLocal,
             personalCode: 'ZYRA-DEMO-GUARDIAN-IBRAHIM',
             captureBuilder: capture,
             lookupCode:
@@ -445,6 +447,7 @@ void main() {
       int calls = 0;
       await mount(
         t,
+        isLocal: false,
         capture: (context, guard, code, manual, onRunningChanged) {
           canCapture = guard;
           detected = code;
@@ -458,11 +461,11 @@ void main() {
       await t.tap(key('local-code-camera'));
       await t.pumpAndSettle();
       final oldCapture = detected;
-      await enterCode(t, '7k2m');
+      await enterCode(t, '7a2b');
       expect(find.text('fake guarded camera'), findsOneWidget);
       expect(canCapture(), isTrue);
-      oldCapture('ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F');
-      oldCapture('ZYRA-DRAF-TAMI-RA00-0000-0000');
+      oldCapture('ZYRA-7A2B-A9CD-4EFA-2B8C-5E1F');
+      oldCapture('ZYRA-ABCD-EF01-2345-6789-ABCD');
       await t.pumpAndSettle();
       expect(find.text('Sara'), findsOneWidget);
       expect(calls, 1);
@@ -491,6 +494,7 @@ void main() {
     late ValueChanged<String> detected;
     await mount(
       t,
+      isLocal: false,
       capture: (context, canCapture, onCode, manual, onRunningChanged) {
         guard = canCapture;
         detected = onCode;
@@ -506,7 +510,7 @@ void main() {
     t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
     await t.pump();
     expect(guard(), isTrue);
-    detected('ZYRA-7K2M-Q9TD-4HXA-2B8C-5E1F');
+    detected('ZYRA-7A2B-A9CD-4EFA-2B8C-5E1F');
     await t.pumpAndSettle();
     expect(find.text('Sample'), findsOneWidget);
   });
