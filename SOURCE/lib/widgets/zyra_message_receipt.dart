@@ -34,6 +34,8 @@ class ZyraMessageReceipt extends StatelessWidget {
   final bool Function()? canOpenReaders;
   final Widget Function(BuildContext context, Widget sheet)?
   readersSheetWrapper;
+  final Widget? Function(ZyraMessageReader)? readerAvatar;
+  final VoidCallback? onOpenReaders;
 
   const ZyraMessageReceipt({
     super.key,
@@ -41,6 +43,8 @@ class ZyraMessageReceipt extends StatelessWidget {
     required this.recipientCount,
     this.canOpenReaders,
     this.readersSheetWrapper,
+    this.readerAvatar,
+    this.onOpenReaders,
   });
 
   String get summary {
@@ -96,6 +100,7 @@ class ZyraMessageReceipt extends StatelessWidget {
 
   Future<void> _showReaders(BuildContext context) async {
     if (canOpenReaders?.call() == false) return;
+    onOpenReaders?.call();
     await showModalBottomSheet<void>(
       context: context,
       backgroundColor: Colors.transparent,
@@ -132,19 +137,20 @@ class ZyraMessageReceipt extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Row(
                       children: [
-                        CircleAvatar(
-                          radius: 19,
-                          backgroundColor: ZyraColors.actionFill.withValues(
-                            alpha: 0.14,
-                          ),
-                          child: Text(
-                            reader.firstName.substring(0, 1).toUpperCase(),
-                            style: ZyraText.body(
-                              size: 13,
-                              color: ZyraColors.goldText,
+                        readerAvatar?.call(reader) ??
+                            CircleAvatar(
+                              radius: 19,
+                              backgroundColor: ZyraColors.actionFill.withValues(
+                                alpha: 0.14,
+                              ),
+                              child: Text(
+                                reader.firstName.substring(0, 1).toUpperCase(),
+                                style: ZyraText.body(
+                                  size: 13,
+                                  color: ZyraColors.goldText,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
                         const SizedBox(width: 11),
                         Expanded(
                           child: Text(

@@ -10,7 +10,7 @@ import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_loading.dart';
-import '../../widgets/zyra_profile_image.dart';
+import '../../widgets/zyra_seeker_avatar.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import '../../widgets/zyra_ward_card.dart';
 import 'wali_journey_detail_screen.dart';
@@ -549,7 +549,7 @@ class _EmbeddedSeekerIdentity extends StatelessWidget {
         ClipOval(
           child: SizedBox.square(
             dimension: 64,
-            child: ZyraProfileImage(photoUrl, width: 64, height: 64),
+            child: ZyraSeekerAvatar(photo: photoUrl, size: 64),
           ),
         ),
         const SizedBox(width: 14),

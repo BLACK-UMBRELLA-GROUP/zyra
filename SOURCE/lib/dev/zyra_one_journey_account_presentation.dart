@@ -14,7 +14,7 @@ import '../widgets/zyra_haptics_setting.dart';
 import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_membership_choices.dart';
-import '../widgets/zyra_profile_image.dart';
+import '../widgets/zyra_seeker_avatar.dart';
 import '../widgets/floating_nav_bar.dart';
 
 enum ZyraConceptAccountAction {
@@ -68,6 +68,7 @@ class ZyraConceptAccountData {
     this.familyPlacePayer,
     this.guardianInfoSeen = false,
     this.photoAsset,
+    this.avatarAlignment = Offset.zero,
     this.standardUnlocks,
     this.plusUnlocks,
     this.appLock = false,
@@ -95,6 +96,7 @@ class ZyraConceptAccountData {
   final String hapticLabel;
   final bool gold;
   final String? photoAsset;
+  final Offset avatarAlignment;
   final int? standardUnlocks;
   final int? plusUnlocks;
   final bool appLock;
@@ -239,9 +241,9 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
           width: data.guardian ? 1 : 2,
         ),
       ),
-      child: ClipOval(
-        child: data.guardian || data.photoAsset == null
-            ? Center(
+      child: data.guardian
+          ? ClipOval(
+              child: Center(
                 child: Text(
                   data.name.characters.firstOrNull ?? '',
                   style: ZyraText.heading(
@@ -249,17 +251,14 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
                     color: ZyraColors.journeyGold,
                   ),
                 ),
-              )
-            : data.photoAsset!.startsWith('assets/')
-            ? Image.asset(data.photoAsset!, fit: BoxFit.cover)
-            : ZyraAvatarImage(
-                data.photoAsset!,
-                width: 104,
-                height: 104,
-                alignmentX: 0,
-                alignmentY: 0,
               ),
-      ),
+            )
+          : ZyraSeekerAvatar(
+              photo: data.photoAsset,
+              size: 104,
+              alignmentX: data.avatarAlignment.dx,
+              alignmentY: data.avatarAlignment.dy,
+            ),
     ),
   );
 

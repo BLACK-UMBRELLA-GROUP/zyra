@@ -459,6 +459,7 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
 
                 return _CircleTopicsMenu(
                   participants: _previewData!.participants,
+                  seekerAvatar: _seekerAvatar(36),
                   readOnly: _topics!.readOnlyParticipantIds,
                   oneParticipantIds: _topics.oneParticipantIds,
                   viewerIsSeeker: widget.viewerIsSeeker,
@@ -565,6 +566,7 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
 class _CircleTopicsMenu extends StatelessWidget {
   const _CircleTopicsMenu({
     required this.participants,
+    required this.seekerAvatar,
     required this.readOnly,
     required this.oneParticipantIds,
     required this.viewerIsSeeker,
@@ -581,6 +583,7 @@ class _CircleTopicsMenu extends StatelessWidget {
     required this.onBasic,
   });
   final List<ZyraFamilyCircleParticipant> participants;
+  final Widget seekerAvatar;
   final Set<String> readOnly, oneParticipantIds;
   final bool viewerIsSeeker, muted, chatMuted;
   final String? chatLabel, toast;
@@ -653,21 +656,7 @@ class _CircleTopicsMenu extends StatelessWidget {
                         fontSize: 14,
                       )
                     else
-                      Container(
-                        width: 36,
-                        height: 36,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: LinearGradient(
-                            colors: [Color(0xFFAC7C2E), Color(0xFF4C3A20)],
-                          ),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          p.firstName.characters.first,
-                          style: ZyraText.body(size: 14),
-                        ),
-                      ),
+                      seekerAvatar,
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(

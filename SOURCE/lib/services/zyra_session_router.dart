@@ -32,6 +32,7 @@ import 'zyra_account_state.dart';
 import 'zyra_discovery_service.dart';
 import 'zyra_developer_access.dart';
 import 'zyra_unlock_service.dart';
+import 'zyra_photo_service.dart';
 import 'zyra_profile_service.dart';
 import 'zyra_identity_verification_service.dart';
 import 'zyra_identity_admission_policy.dart';
@@ -534,7 +535,9 @@ class ZyraSessionRouter {
           // Active rows can be expired. Use only the existing owner-scoped
           // direct subscription's explicit expiry. This read does not resolve
           // effective access through grace, cancellation coverage or Family.
-          if (seekerPlan != null && sub != null && sub.containsKey('expires_at')) {
+          if (seekerPlan != null &&
+              sub != null &&
+              sub.containsKey('expires_at')) {
             final value = sub['expires_at'];
             final expiry = value is String ? DateTime.tryParse(value) : null;
             if (value == null || expiry != null) {
@@ -559,6 +562,9 @@ class ZyraSessionRouter {
       plan: plan,
       verifiedSeekerPlan: verifiedSeekerPlan,
     );
+    if (row['role'] == 'seeker') {
+      unawaited(_hydratePhotos(userId, generation));
+    }
 
     // DECISION HYDRATION — ADDED 2026-08-01.
     //
@@ -582,6 +588,24 @@ class ZyraSessionRouter {
     // Fire-and-forget with a notifyListeners() at the end, so Connections
     // fills in a beat after Home rather than delaying Home.
     unawaited(_hydrateDecisions(userId, generation));
+  }
+
+  static Future<void> _hydratePhotos(String userId, int generation) async {
+    final state = AppState.instance;
+    final before = state.photos;
+    if (before.isNotEmpty) return;
+    try {
+      final projection = await ZyraPhotoService.fetchOwnPhotoProjection(
+        expectedUserId: userId,
+      ).timeout(_effectiveReadTimeout);
+      _requireMember(userId, generation);
+      // An edit or another hydration may have published fresher photos.
+      if (!identical(state.photos, before)) return;
+      if (projection.photos.isEmpty) return;
+      state.setProfilePhotos(projection.photos, photoOne: projection.photoOne);
+    } catch (_) {
+      // Photos can fill in after launch without gating member routing.
+    }
   }
 
   /// Best-effort, never throws. A failure leaves the lists empty, which is

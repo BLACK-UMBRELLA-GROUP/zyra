@@ -14,6 +14,8 @@ void main() {
   const secondId = '00000000-0000-0000-0000-000000000822';
   final requests = <http.Request>[];
   var photoRowMode = false;
+  String? firstPath;
+  var signFirst = false;
 
   setUpAll(() async {
     SharedPreferences.setMockInitialValues({});
@@ -44,6 +46,14 @@ void main() {
                         'display_order': 0,
                       },
                     ]
+                  : firstPath != null
+                  ? [
+                      {'storage_path': firstPath, 'display_order': 0},
+                      {
+                        'storage_path': 'synthetic/later.jpg',
+                        'display_order': 1,
+                      },
+                    ]
                   : <Object>[],
             },
             {
@@ -63,7 +73,16 @@ void main() {
           ]);
         }
         if (request.url.path.contains('/object/sign/')) {
-          return json(<Object>[]);
+          final paths = jsonDecode(request.body)['paths'] as List;
+          return json([
+            for (final path in paths)
+              if ((path == firstPath && signFirst) ||
+                  path == 'synthetic/later.jpg')
+                {
+                  'path': path,
+                  'signedURL': '/object/sign/profile-photos/$path',
+                },
+          ]);
         }
         return json(<Object>[]);
       }),
@@ -74,6 +93,8 @@ void main() {
   setUp(() {
     requests.clear();
     photoRowMode = false;
+    firstPath = null;
+    signFirst = false;
   });
 
   test(
@@ -133,6 +154,72 @@ void main() {
         requests.any((request) => request.url.path.contains('/object/sign/')),
         isTrue,
       );
+    },
+  );
+
+  test(
+    'admitted photo one follows reorder and omits an unsignable first slot',
+    () async {
+      const owner = '00000000-0000-0000-0000-000000000824';
+      String part(Object value) =>
+          base64Url.encode(utf8.encode(jsonEncode(value))).replaceAll('=', '');
+      await Supabase.instance.client.auth.setInitialSession(
+        jsonEncode({
+          'access_token':
+              '${part({'alg': 'none'})}.${part({'sub': owner, 'exp': 4102444800})}.synthetic',
+          'token_type': 'bearer',
+          'refresh_token': 'synthetic-refresh',
+          'user': {
+            'id': owner,
+            'app_metadata': <String, Object?>{},
+            'user_metadata': <String, Object?>{},
+            'aud': 'authenticated',
+            'created_at': '2026-09-13T00:00:00Z',
+          },
+        }),
+      );
+      firstPath = 'synthetic/first.jpg';
+      signFirst = true;
+      final first = await ZyraDiscoveryService.photoOnesByIds([
+        firstId,
+        secondId,
+      ]);
+      expect(first.keys, [firstId]);
+      expect(first[firstId], contains(firstPath!));
+
+      firstPath = 'synthetic/reordered.jpg';
+      final changed = await ZyraDiscoveryService.photoOnesByIds([
+        firstId,
+        secondId,
+      ]);
+      expect(changed[firstId], contains(firstPath!));
+
+      firstPath = 'synthetic/unavailable.jpg';
+      signFirst = false;
+      expect(
+        await ZyraDiscoveryService.photoOnesByIds([firstId, secondId]),
+        isEmpty,
+      );
+      final firstReads = requests.where(
+        (r) => r.url.path == '/rest/v1/profiles',
+      );
+      for (final read in firstReads) {
+        expect(read.url.queryParameters['role'], 'eq.seeker');
+        expect(read.url.queryParameters['profile_photos.limit'], '1');
+        expect(
+          read.url.queryParameters['profile_photos.order'],
+          'display_order.asc.nullslast,id.asc.nullslast',
+        );
+      }
+      final signing = requests.where(
+        (r) => r.url.path.contains('/object/sign/'),
+      );
+      expect(signing.map((r) => jsonDecode(r.body)['paths']), [
+        ['synthetic/first.jpg'],
+        ['synthetic/reordered.jpg'],
+        ['synthetic/unavailable.jpg'],
+        ['synthetic/unavailable.jpg'],
+      ]);
     },
   );
 }

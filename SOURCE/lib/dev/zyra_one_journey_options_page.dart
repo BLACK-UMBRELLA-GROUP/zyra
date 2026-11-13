@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
-import '../widgets/zyra_profile_image.dart';
+import '../widgets/zyra_seeker_avatar.dart';
 import '../widgets/zyra_tap_feedback.dart';
 
 class ZyraOneJourneyOptionsPage extends StatelessWidget {
@@ -41,11 +41,7 @@ class ZyraOneJourneyOptionsPage extends StatelessWidget {
             color: ZyraColors.journeyGold.withValues(alpha: .7),
           ),
         ),
-        child: ClipOval(
-          child: photo == null
-              ? const Icon(Icons.person_outline, size: 40)
-              : ZyraProfileImage(photo!),
-        ),
+        child: ZyraSeekerAvatar(photo: photo, size: 84, applyAvatarCrop: false),
       ),
       const SizedBox(height: 12),
       Text(

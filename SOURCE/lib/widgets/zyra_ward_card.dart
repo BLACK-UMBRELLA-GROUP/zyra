@@ -12,8 +12,8 @@
 //   · ZyraCardMetrics for every number (thumb 52 / radius 10 / padding
 //     12 / card radius 14 / gap 14 / spacing 10) — the same constants
 //     the Connections rows, Guardian Suggestions and Wali-tab cards use.
-//   · ZyraProfileImage for the photo, so a ward with no viewable photo
-//     degrades to the same quiet block as everywhere else (a Guardian
+//   · ZyraSeekerAvatar for the photo, so a ward with no viewable photo
+//     uses the same silhouette as the Profile tab (a Guardian
 //     CAN see their own ward — guard-suite clause 2 — so real wards
 //     normally render a real photo).
 //   · The frost surface (white .07 fill, .14 line) and text hierarchy
@@ -30,7 +30,7 @@ import 'package:flutter/material.dart';
 import '../theme/zyra_card_metrics.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
-import 'zyra_profile_image.dart';
+import 'zyra_seeker_avatar.dart';
 
 /// One small stat chip — "Active 1", "Saved 4". Used by the Dashboard's
 /// per-ward activity row. Zero-count chips should simply not be built
@@ -104,7 +104,7 @@ class ZyraWardCard extends StatelessWidget {
   final String name;
 
   /// Signed photo URL when the ward's profile has been fetched; empty
-  /// renders the standard quiet block via ZyraProfileImage.
+  /// renders the standard Seeker silhouette.
   final String photoUrl;
 
   /// One line under the name: "Journey with Khadija — Faith & Values",
@@ -162,19 +162,9 @@ class ZyraWardCard extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(
-                        ZyraCardMetrics.thumbRadius,
-                      ),
-                      child: SizedBox(
-                        width: ZyraCardMetrics.thumb,
-                        height: ZyraCardMetrics.thumb,
-                        child: ZyraProfileImage(
-                          photoUrl,
-                          width: ZyraCardMetrics.thumb,
-                          height: ZyraCardMetrics.thumb,
-                        ),
-                      ),
+                    ZyraSeekerAvatar(
+                      photo: photoUrl,
+                      size: ZyraCardMetrics.thumb,
                     ),
                     SizedBox(width: ZyraCardMetrics.gap),
                     Expanded(

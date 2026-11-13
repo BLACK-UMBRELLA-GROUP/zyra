@@ -356,7 +356,7 @@ class ZyraJourneyService {
           await supabase
                   .from('profiles')
                   .select(
-                    'id, first_name, surname_line, location_text, gender, profile_photos(storage_path, display_order)',
+                    'id, first_name, surname_line, location_text, gender, profile_photos(id, storage_path, display_order)',
                   )
                   .inFilter('id', otherIds)
               as List;
@@ -374,10 +374,14 @@ class ZyraJourneyService {
         final photosRaw = List<Map<String, dynamic>>.from(
           (map['profile_photos'] as List?) ?? const [],
         );
-        photosRaw.sort(
-          (a, b) =>
-              (a['display_order'] as int).compareTo(b['display_order'] as int),
-        );
+        photosRaw.sort((a, b) {
+          final order = (a['display_order'] as int).compareTo(
+            b['display_order'] as int,
+          );
+          return order != 0
+              ? order
+              : (a['id'] as String? ?? '').compareTo(b['id'] as String? ?? '');
+        });
         photoPathsById[otherId] = [
           for (final photo in photosRaw) photo['storage_path'] as String,
         ];
@@ -408,6 +412,7 @@ class ZyraJourneyService {
           age: ages[otherId] ?? 0,
           city: (map['location_text'] as String?) ?? '—',
           photos: photos,
+          photoOne: signedPhotos[photoPathsById[otherId]?.firstOrNull] ?? '',
           gender: map['gender'] as String,
         );
 
@@ -1535,7 +1540,7 @@ class ZyraJourneyService {
       final profileRow = await supabase
           .from('profiles')
           .select(
-            'id, first_name, location_text, gender, profile_photos(storage_path, display_order)',
+            'id, first_name, location_text, gender, profile_photos(id, storage_path, display_order)',
           )
           .eq('id', otherUserId)
           .maybeSingle();
@@ -1549,13 +1554,22 @@ class ZyraJourneyService {
       final photosRaw = List<Map<String, dynamic>>.from(
         (profileRow['profile_photos'] as List?) ?? const [],
       );
-      photosRaw.sort(
-        (a, b) =>
-            (a['display_order'] as int).compareTo(b['display_order'] as int),
-      );
-      final photos = await ZyraPhotoService.signedUrlsFor(
-        photosRaw.map((p) => p['storage_path'] as String).toList(),
-      );
+      photosRaw.sort((a, b) {
+        final order = (a['display_order'] as int).compareTo(
+          b['display_order'] as int,
+        );
+        return order != 0
+            ? order
+            : (a['id'] as String? ?? '').compareTo(b['id'] as String? ?? '');
+      });
+      final paths = [
+        for (final photo in photosRaw) photo['storage_path'] as String,
+      ];
+      final signed = await ZyraPhotoService.signedUrlMap(paths);
+      final photos = [
+        for (final path in paths)
+          if (signed[path] != null) signed[path]!,
+      ];
 
       final profile = SeekerProfile(
         id: profileRow['id'] as String,
@@ -1563,6 +1577,7 @@ class ZyraJourneyService {
         age: ages[otherUserId] ?? 0,
         city: (profileRow['location_text'] as String?) ?? '—',
         photos: photos,
+        photoOne: signed[paths.firstOrNull] ?? '',
         gender: profileRow['gender'] as String,
       );
 

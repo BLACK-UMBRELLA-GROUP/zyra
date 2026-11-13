@@ -18,6 +18,7 @@ class SeekerProfile {
   final int age;
   final String city;
   final List<String> photos;
+  final String? photoOne;
   final String
   gender; // drives ZyraBackgroundVariant on their own onboarding, not used in Browse UI directly
 
@@ -81,6 +82,7 @@ class SeekerProfile {
     required this.age,
     required this.city,
     required this.photos,
+    this.photoOne,
     required this.gender,
     this.surnameLine,
     this.publicNationality,
@@ -95,6 +97,26 @@ class SeekerProfile {
   // A privacy-filtered or not-yet-uploaded photo list is valid. The shared
   // image widget uses an empty URL for its neutral placeholder.
   String get photoUrl => photos.isEmpty ? '' : photos.first;
+
+  /// Photo one for circular identities. An explicit empty value keeps the
+  /// avatar empty if signing that slot failed while later gallery photos work.
+  String get profilePhotoOne => photoOne ?? photoUrl;
+
+  SeekerProfile withProfilePhotoOne(String photo) => SeekerProfile(
+    id: id,
+    firstName: firstName,
+    age: age,
+    city: city,
+    photos: photos,
+    gender: gender,
+    surnameLine: surnameLine,
+    publicNationality: publicNationality,
+    publicEthnicity: publicEthnicity,
+    seekerPlan: seekerPlan,
+    videoPhotoIndex: videoPhotoIndex,
+    alreadyLikedYou: alreadyLikedYou,
+    photoOne: photo,
+  );
 }
 
 /// Placeholder profile photos (public placeholder image service) so the

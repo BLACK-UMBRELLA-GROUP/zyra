@@ -17,6 +17,7 @@ import '../../data/zyra_release_gates.dart';
 import '../../models/journey_match.dart';
 import '../../models/seeker_profile.dart';
 import '../../services/zyra_auth.dart';
+import '../../services/zyra_discovery_service.dart';
 import '../../services/zyra_family_messaging_service.dart';
 import '../../services/zyra_journey_service.dart';
 import '../../services/zyra_wali_journey_service.dart';
@@ -28,6 +29,7 @@ import '../../widgets/zyra_loading.dart';
 import '../../widgets/zyra_pull_down_back_scope.dart';
 import '../../widgets/zyra_guardian_preview_lifetime.dart';
 import '../../widgets/zyra_message_receipt.dart';
+import '../../widgets/zyra_seeker_avatar.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import '../journey/journey_flow_screen.dart';
 import '../profile/seeker_profile_screen.dart';
@@ -175,6 +177,7 @@ class ZyraGuardianCircleScreen extends StatefulWidget {
   final ZyraGuardianCircleSummary? initialCircle;
   final ValueChanged<ZyraFamilyMessageContext>? onOpenContext;
   final ZyraGuardianCirclePreviewData? previewData;
+  final Widget Function(double size)? previewSeekerAvatar;
   final ZyraCircleTopicsPreview? previewTopics;
   // Detached developer presentation only. None of these values grants
   // preview, member access, history access or a send entitlement.
@@ -206,6 +209,7 @@ class ZyraGuardianCircleScreen extends StatefulWidget {
     this.initialCircle,
     this.onOpenContext,
     this.previewData,
+    this.previewSeekerAvatar,
     this.previewTopics,
     this.previewBubbleDesign,
     this.previewCurrentTopics = const [],
@@ -252,6 +256,9 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
   late final ZyraGuardianPreviewLifetime _authority;
   int _loadRequest = 0;
   late final ZyraGuardianCirclePreviewData? _previewData;
+  late final Widget Function(double size)? _previewSeekerAvatar;
+  final _linkedPhotoOne = ValueNotifier<String?>(null);
+  int _linkedPhotoRequest = 0;
   late final bool Function()? _callerGuard;
   bool _callerRevoked = false;
   int _sendRequest = 0;
@@ -456,6 +463,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
   void initState() {
     super.initState();
     _previewData = widget.previewData;
+    _previewSeekerAvatar = widget.previewSeekerAvatar;
     _topics = widget.previewTopics;
     _callerGuard = widget.canAct;
     _bubbleDesign = widget.previewBubbleDesign;
@@ -481,6 +489,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
         oldWidget.preview != widget.preview ||
         !identical(_callerGuard, widget.canAct) ||
         !identical(_previewData, widget.previewData) ||
+        !identical(_previewSeekerAvatar, widget.previewSeekerAvatar) ||
         !identical(_topics, widget.previewTopics) ||
         !identical(_bubbleDesign, widget.previewBubbleDesign) ||
         !identical(
@@ -506,6 +515,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
     if (!mounted) return;
     _loadRequest++;
     _sendRequest++;
+    _linkedPhotoOne.value = null;
     _composer.clear();
     setState(() {
       _loading = false;
@@ -532,6 +542,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
     _topicsToastTimer?.cancel();
     _previewVisibility?.removeListener(_topicVisibilityChanged);
     _topicMessageScroll.dispose();
+    _linkedPhotoOne.dispose();
     _composer.dispose();
     _authority
       ..removeListener(_withdraw)
@@ -1438,6 +1449,48 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
     );
   }
 
+  Future<void> _loadLinkedPhotoOne(String seekerId, int request) async {
+    final photoRequest = ++_linkedPhotoRequest;
+    final photos = await ZyraDiscoveryService.photoOnesByIds([seekerId]);
+    if (_canInteract &&
+        request == _loadRequest &&
+        photoRequest == _linkedPhotoRequest) {
+      _linkedPhotoOne.value = photos[seekerId];
+    }
+  }
+
+  void _refreshLinkedPhotoOne() {
+    if (!_authority.canPreview && !widget.viewerIsSeeker) {
+      unawaited(_loadLinkedPhotoOne(widget.seekerId, _loadRequest));
+    }
+  }
+
+  Widget _seekerAvatar(double size) {
+    if (_authority.canPreview) {
+      return _previewSeekerAvatar?.call(size) ?? ZyraSeekerAvatar(size: size);
+    }
+    if (widget.viewerIsSeeker) {
+      return ListenableBuilder(
+        listenable: AppState.instance,
+        builder: (_, _) {
+          final state = AppState.instance;
+          final isOwner = _canInteract && widget.seekerId == _currentSenderId;
+          return ZyraSeekerAvatar(
+            photo: isOwner ? state.profilePhotoOne : null,
+            size: size,
+            alignmentX: isOwner ? state.avatarAlignmentX : 0,
+            alignmentY: isOwner ? state.avatarAlignmentY : 0,
+          );
+        },
+      );
+    }
+    return ValueListenableBuilder(
+      valueListenable: _linkedPhotoOne,
+      builder: (_, photo, _) =>
+          ZyraSeekerAvatar(size: size, photo: _canInteract ? photo : null),
+    );
+  }
+
   void _showMembers() {
     if (!_canActOnCircleRoute) return;
     final threadId = _threadId;
@@ -1445,6 +1498,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
       _notice('Circle members are not available right now.');
       return;
     }
+    _refreshLinkedPhotoOne();
     final previewParticipants = _authority.canPreview
         ? (_previewData?.participants ??
               <ZyraFamilyCircleParticipant>[
@@ -1481,6 +1535,8 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
           threadId: threadId,
           expectedCount: _participantCount,
           previewParticipants: previewParticipants,
+          seekerId: widget.seekerId,
+          seekerAvatar: _seekerAvatar,
           canInteract: () => _canInteract,
         ),
       ),
@@ -1743,6 +1799,11 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
           canInteract: () => _canInteract,
           canOpen: () => _canActOnCircleRoute,
           sheetWrapper: _guardRoute,
+          readerAvatar: (reader) =>
+              reader.userId == widget.seekerId && reader.roleLabel == 'Seeker'
+              ? _seekerAvatar(38)
+              : null,
+          onOpenReaders: _refreshLinkedPhotoOne,
           discussionTopic: _discussionMessageTags[message.id],
           onChooseJourneyReference: _messageReferenceAction(message),
           onOpenContext: message.context == null
@@ -1932,10 +1993,14 @@ class _CircleMembersSheet extends StatefulWidget {
   final int expectedCount;
   final List<ZyraFamilyCircleParticipant>? previewParticipants;
   final bool Function()? canInteract;
+  final String seekerId;
+  final Widget Function(double size) seekerAvatar;
 
   const _CircleMembersSheet({
     required this.threadId,
     required this.expectedCount,
+    required this.seekerId,
+    required this.seekerAvatar,
     this.previewParticipants,
     this.canInteract,
   });
@@ -2044,8 +2109,15 @@ class _CircleMembersSheetState extends State<_CircleMembersSheet> {
                 shrinkWrap: true,
                 itemCount: _participants.length,
                 separatorBuilder: (_, _) => const SizedBox(height: 9),
-                itemBuilder: (_, index) =>
-                    _CircleMemberRow(participant: _participants[index]),
+                itemBuilder: (_, index) {
+                  final participant = _participants[index];
+                  return _CircleMemberRow(
+                    participant: participant,
+                    seekerAvatar: participant.userId == widget.seekerId
+                        ? widget.seekerAvatar(42)
+                        : const ZyraSeekerAvatar(size: 42),
+                  );
+                },
               ),
             ),
         ],
@@ -2056,8 +2128,12 @@ class _CircleMembersSheetState extends State<_CircleMembersSheet> {
 
 class _CircleMemberRow extends StatelessWidget {
   final ZyraFamilyCircleParticipant participant;
+  final Widget seekerAvatar;
 
-  const _CircleMemberRow({required this.participant});
+  const _CircleMemberRow({
+    required this.participant,
+    required this.seekerAvatar,
+  });
 
   @override
   Widget build(BuildContext context) => Container(
@@ -2077,20 +2153,7 @@ class _CircleMemberRow extends StatelessWidget {
             fontSize: 15,
           )
         else
-          Container(
-            width: 42,
-            height: 42,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: ZyraColors.surfaceFill,
-              border: Border.all(color: ZyraColors.surfaceEmphasisBorder),
-            ),
-            child: Text(
-              participant.firstName.substring(0, 1).toUpperCase(),
-              style: ZyraText.body(size: 15, color: ZyraColors.goldText),
-            ),
-          ),
+          seekerAvatar,
         const SizedBox(width: 11),
         Expanded(
           child: Column(
@@ -2151,6 +2214,8 @@ class _FamilyMessageBubble extends StatelessWidget {
   final bool Function()? canInteract;
   final bool Function()? canOpen;
   final Widget Function(BuildContext context, Widget sheet)? sheetWrapper;
+  final Widget? Function(ZyraMessageReader)? readerAvatar;
+  final VoidCallback? onOpenReaders;
   final ZyraCircleDiscussionTopic? discussionTopic;
   final VoidCallback? onChooseJourneyReference;
 
@@ -2164,6 +2229,8 @@ class _FamilyMessageBubble extends StatelessWidget {
     this.canInteract,
     this.canOpen,
     this.sheetWrapper,
+    this.readerAvatar,
+    this.onOpenReaders,
     this.discussionTopic,
     this.onChooseJourneyReference,
   });
@@ -2326,6 +2393,8 @@ class _FamilyMessageBubble extends StatelessWidget {
                   recipientCount: recipientCount,
                   canOpenReaders: canOpen ?? canInteract,
                   readersSheetWrapper: sheetWrapper,
+                  readerAvatar: readerAvatar,
+                  onOpenReaders: onOpenReaders,
                 ),
               ),
             if (!showReceipt) const SizedBox(height: 10),

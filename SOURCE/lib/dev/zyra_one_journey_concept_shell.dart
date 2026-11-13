@@ -100,6 +100,8 @@ import 'zyra_one_journey_switch_signup_preview.dart';
 import 'zyra_subscription_wallet_draft.dart';
 import 'zyra_subscription_wallet_preview.dart';
 import '../widgets/zyra_membership_choices.dart';
+import '../widgets/zyra_seeker_avatar.dart';
+import '../widgets/zyra_profile_details_page.dart';
 import 'zyra_one_journey_settings_details.dart';
 import 'zyra_one_journey_phone_access.dart';
 import 'zyra_founder_launch_review.dart';
@@ -142,6 +144,7 @@ class ZyraOneJourneyShellFixture {
     this.profileVideoStore,
     this.profileVideoMedia = const ZyraProfileVideoMedia(),
     this.legacyAmberQuickCheck = false,
+    this.seekerPhotos,
   });
 
   final ViewRequestDraftModel? model;
@@ -169,6 +172,7 @@ class ZyraOneJourneyShellFixture {
   final ZyraProfileVideoStore? profileVideoStore;
   final ZyraProfileVideoMedia profileVideoMedia;
   final bool legacyAmberQuickCheck;
+  final List<String>? seekerPhotos;
 }
 
 /// One caller-owned fixture update. No account or disclosure grant is carried.
@@ -1313,7 +1317,10 @@ class _ZyraOneJourneyConceptShellState
       setState(() {
         if (ready) {
           _photos = value;
-          _accountSession.seedPhotos(false, [value.seekerPhoto]);
+          _accountSession.seedPhotos(
+            false,
+            _fixtureOwner?.seekerPhotos ?? [value.seekerPhoto],
+          );
           _accountSession.seedPhotos(true, [value.guardianPhoto]);
         } else {
           _photoLoadFailed = true;
@@ -4805,6 +4812,7 @@ class _ZyraOneJourneyConceptShellState
         theirs: theirs,
         salam: true,
         selfPhoto: _accountData.photoAsset,
+        selfAvatarAlignment: _accountData.avatarAlignment,
         otherPhoto: _displayProfile(p).photoUrl,
         headline: mine && theirs
             ? stage.completionHeading
@@ -4871,6 +4879,7 @@ class _ZyraOneJourneyConceptShellState
               mine: revealMine,
               theirs: revealTheirs,
               selfPhoto: _accountData.photoAsset,
+              selfAvatarAlignment: _accountData.avatarAlignment,
               otherPhoto: _displayProfile(p).photoUrl,
               headline: revealMine ? 'Reveal chosen' : stage.label,
               body: revealMine
@@ -6481,6 +6490,15 @@ class _ZyraOneJourneyConceptShellState
       },
     );
 
+    Widget seekerAvatar(double size) => ListenableBuilder(
+      listenable: _accountSession,
+      builder: (_, _) => ZyraSeekerAvatar(
+        photo: current() && !circleYusuf ? _ownSeekerPhoto : null,
+        size: size,
+        alignmentX: _ownSeekerAvatarAlignment.dx,
+        alignmentY: _ownSeekerAvatarAlignment.dy,
+      ),
+    );
     return _circleEntryView = Navigator(
       observers: [ZyraPreviewRouteObserver()],
       key: navigator,
@@ -6492,6 +6510,7 @@ class _ZyraOneJourneyConceptShellState
           viewerIsSeeker: !guardian,
           preview: true,
           previewData: data,
+          previewSeekerAvatar: seekerAvatar,
           previewTopics: topicsPreview,
           previewBubbleDesign: _circleBubbleDesign,
           previewForeground: foreground,
@@ -6997,6 +7016,7 @@ class _ZyraOneJourneyConceptShellState
           GuardianDashboardProfileCard(
             person: _conceptLinkedSeeker,
             profile: _conceptLinkedSeekerProfile,
+            avatarAlignment: _ownSeekerAvatarAlignment,
             onViewProfile: _bound(() => _open('guardian_linked_profile')),
           ),
         const SizedBox(height: 20),
@@ -7375,6 +7395,8 @@ class _ZyraOneJourneyConceptShellState
       canInteract: () => fresh() && _guardianRole && _tab == 2 && _page == null,
       adamMain: _conceptLinkedSeeker.isMain,
       seekerGender: _conceptLinkedSeekerProfile.gender,
+      adamPhoto: _ownSeekerPhoto,
+      adamAvatarAlignment: _ownSeekerAvatarAlignment,
       familyOffer: offer,
       freePlaceInvite: _pendingGuardianFreePlace != null,
       familyCanAct: offer == null
@@ -8031,6 +8053,16 @@ class _ZyraOneJourneyConceptShellState
         _guardianRole,
         seekerPlan: seekerPlan,
       ),
+      previewAvatar: (size) => ListenableBuilder(
+        listenable: _accountSession,
+        builder: (_, _) => ZyraSeekerAvatar(
+          photo: fresh() ? _ownSeekerPhoto : null,
+          size: size,
+          alignmentX: ZyraProfileDetailsPage.photoAlignment.x,
+          alignmentY: ZyraProfileDetailsPage.photoAlignment.y,
+          applyAvatarCrop: false,
+        ),
+      ),
       hapticLevel: _accountSession.hapticLevel,
       canAct: fresh,
       onBack: () {
@@ -8045,6 +8077,9 @@ class _ZyraOneJourneyConceptShellState
           : null,
     );
   }
+
+  String? get _ownSeekerPhoto => _accountSession.photos(false).firstOrNull;
+  Offset get _ownSeekerAvatarAlignment => _accountSession.avatar(false);
 
   // These are explicitly synthetic presentation facts. They do not read a
   // member account, establish verification or grant any purchased access.
@@ -8074,7 +8109,8 @@ class _ZyraOneJourneyConceptShellState
     hapticLabel: _accountSession.hapticLevel.label,
     gold: false,
     plusUnlocks: _compatibilityAccess.balance,
-    photoAsset: _accountSession.photos(_guardianRole).firstOrNull,
+    photoAsset: _guardianRole ? null : _ownSeekerPhoto,
+    avatarAlignment: _guardianRole ? Offset.zero : _ownSeekerAvatarAlignment,
     smoothSettings: false,
     membershipPaymentHistory: _membershipPaymentHistory,
   );

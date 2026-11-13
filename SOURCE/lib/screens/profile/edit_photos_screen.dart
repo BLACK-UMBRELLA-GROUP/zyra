@@ -427,20 +427,23 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
       if (mounted) setState(() => _loading = false);
       return;
     }
-    final restored = await ZyraPhotoService.fetchOwnPhotos(
+    final restored = await ZyraPhotoService.fetchOwnPhotoProjection(
       expectedUserId: _sdkOwner.$2,
     );
     if (!_ownerCanAct) return;
     setState(() {
       _photos
         ..clear()
-        ..addAll(restored);
+        ..addAll(restored.photos);
       _loading = false;
     });
-    AppState.instance.setProfilePhotos(restored);
+    AppState.instance.setProfilePhotos(
+      restored.photos,
+      photoOne: restored.photoOne,
+    );
   }
 
-  void _apply(List<String> next) {
+  void _apply(List<String> next, {String? photoOne}) {
     if (!_ownerCanAct) return;
     _photos
       ..clear()
@@ -451,7 +454,9 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
         : last;
     _currentPage = _currentPage.clamp(0, lastGalleryPage);
     _compactSelected = _compactSelected.clamp(0, last);
-    if (!_previewMode) AppState.instance.setProfilePhotos(next);
+    if (!_previewMode) {
+      AppState.instance.setProfilePhotos(next, photoOne: photoOne);
+    }
   }
 
   @override
@@ -497,6 +502,9 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
       return false;
     }
     final previous = List<String>.of(_photos);
+    final previousPhotoOne = _previewMode
+        ? null
+        : AppState.instance.profilePhotoOne;
     setState(() {
       _working = true;
       _error = null;
@@ -515,7 +523,7 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
         // same owner's editor in a busy state. Reconcile this known ACK only;
         // no result can cross the opening account/session boundary.
         setState(() {
-          if (!saved) _apply(previous);
+          if (!saved) _apply(previous, photoOne: previousPhotoOne);
           _working = false;
           _progressLabel = null;
           if (!saved) {
@@ -528,7 +536,7 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
     }
     if (!saved) {
       setState(() {
-        _apply(previous);
+        _apply(previous, photoOne: previousPhotoOne);
         _working = false;
         _error = "Your photo changes weren't saved. Please try again.";
       });

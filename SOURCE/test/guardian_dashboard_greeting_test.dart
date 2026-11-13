@@ -1147,7 +1147,7 @@ void main() {
         [id],
       ]);
       expect(
-        find.descendant(of: avatar, matching: find.text('A')),
+        find.descendant(of: avatar, matching: find.byIcon(Icons.person)),
         findsOneWidget,
       );
       expect(find.text('Father · Main Guardian'), findsOneWidget);

@@ -148,13 +148,14 @@ void main() {
   });
 
   test('main user-facing surfaces consume the shared app-surface boundary', () {
-    // Borderless Profile deliberately consumes the canonical icon-button
-    // alias rather than duplicating raw card fill calls in page code.
+    // Profile's shared avatar uses the canonical icon-button surface.
     expect(ZyraColors.iconButtonBg, ZyraColors.surfaceFill);
+    final profile = File('lib/screens/profile/profile_screen.dart');
+    expect(profile.readAsStringSync(), contains('ZyraSeekerAvatar('));
     final readers = <String, String>{
       'Connections': 'lib/screens/connections/connections_screen.dart',
       'Guardian': 'lib/screens/wali/seeker_guardian_designs.dart',
-      'Profile': 'lib/screens/profile/profile_screen.dart',
+      'Profile avatar': 'lib/widgets/zyra_seeker_avatar.dart',
       'Browser navigation': 'lib/widgets/floating_nav_bar.dart',
     };
 

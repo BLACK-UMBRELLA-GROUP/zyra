@@ -32,6 +32,7 @@ class ZyraShellTestFixture extends ChangeNotifier {
     ZyraDraftCompatibilityAccessStore? compatibilityAccess,
     ZyraMyZyraActivityExample? activityExample,
     ZyraCirclePreviewArrivals? circleArrivalsFor,
+    List<String>? seekerPhotos,
     ZyraMembershipPaymentHistory membershipPaymentHistory =
         ZyraMembershipPaymentHistory.paidBefore,
   }) : _model =
@@ -53,6 +54,7 @@ class ZyraShellTestFixture extends ChangeNotifier {
       activityExample: activityExample,
       timeline: timelineFor,
       circleArrivalsFor: circleArrivalsFor,
+      seekerPhotos: seekerPhotos,
       guardianTabs: guardianTabs,
       readState: _consumeState,
       onAttached: (isCurrent) => _isCurrent = isCurrent,

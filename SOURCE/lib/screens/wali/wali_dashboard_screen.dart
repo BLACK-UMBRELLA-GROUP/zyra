@@ -173,6 +173,12 @@ class _WaliDashboardScreenState extends State<WaliDashboardScreen> {
     setState(() => _pagerPosition = page);
   }
 
+  @override
+  void didUpdateWidget(covariant WaliDashboardScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isActive && !oldWidget.isActive) _loadProfiles(force: true);
+  }
+
   void _configurePager(
     List<WaliLinkedPerson> people, {
     required int selectedIndex,

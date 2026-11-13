@@ -6,7 +6,7 @@ import '../models/seeker_profile.dart';
 import '../services/zyra_wali_link_service.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
-import 'zyra_profile_image.dart';
+import 'zyra_seeker_avatar.dart';
 
 /// Linked-Seeker identity, not a Journey counterpart or authority summary.
 class GuardianDashboardProfileCard extends StatelessWidget {
@@ -14,12 +14,14 @@ class GuardianDashboardProfileCard extends StatelessWidget {
     super.key,
     required this.person,
     this.profile,
+    this.avatarAlignment = Offset.zero,
     this.detailsLoading = false,
     this.onViewProfile,
   });
 
   final WaliLinkedPerson person;
   final SeekerProfile? profile;
+  final Offset avatarAlignment;
   final bool detailsLoading;
   final VoidCallback? onViewProfile;
 
@@ -27,7 +29,7 @@ class GuardianDashboardProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // Reject even an accidentally mismatched injected model at presentation.
     final details = profile?.id == person.id ? profile : null;
-    final photo = details?.photoUrl ?? '';
+    final photo = details?.profilePhotoOne;
     final relationship =
         person.relationshipLabel ?? 'Relationship not recorded';
     final role = person.isMain ? 'Main Guardian' : 'Additional Guardian';
@@ -73,20 +75,11 @@ class GuardianDashboardProfileCard extends StatelessWidget {
                         color: ZyraColors.journeyGold.withValues(alpha: .48),
                       ),
                     ),
-                    child: ClipOval(
-                      child: photo.isEmpty
-                          ? ColoredBox(
-                              color: ZyraColors.surfaceEmphasisFill,
-                              child: Center(
-                                child: Text(
-                                  person.firstName.isEmpty
-                                      ? '?'
-                                      : person.firstName.characters.first,
-                                  style: ZyraText.heading(size: 24),
-                                ),
-                              ),
-                            )
-                          : ZyraProfileImage(photo, width: 58, height: 58),
+                    child: ZyraSeekerAvatar(
+                      photo: photo,
+                      size: 58,
+                      alignmentX: avatarAlignment.dx,
+                      alignmentY: avatarAlignment.dy,
                     ),
                   ),
                 ),

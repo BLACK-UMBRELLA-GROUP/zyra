@@ -15,6 +15,7 @@ import '../../dev/zyra_app_gold_preview.dart';
 import '../../dev/zyra_dev_scenario.dart';
 import '../../data/zyra_release_gates.dart';
 import '../../models/seeker_profile.dart';
+import '../../services/zyra_account_state.dart';
 import '../../services/zyra_discovery_service.dart';
 import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_guardian_seeker_roster_resolver.dart';
@@ -24,7 +25,7 @@ import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_loading.dart';
-import '../../widgets/zyra_profile_image.dart';
+import '../../widgets/zyra_seeker_avatar.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import 'wali_gn_shared.dart';
 import 'wali_invite_seeker_screen.dart';
@@ -42,6 +43,7 @@ typedef GuardianRosterProfilesLoader =
 
 class WaliSeekersScreen extends StatefulWidget {
   final bool hasGuardianOne;
+  final bool isActive;
   final GuardianLinksLoader? loadLinks;
   final GuardianRosterContextLoader? loadContext;
   final GuardianRosterProfilesLoader? loadProfiles;
@@ -52,6 +54,7 @@ class WaliSeekersScreen extends StatefulWidget {
   const WaliSeekersScreen({
     super.key,
     this.hasGuardianOne = false,
+    this.isActive = true,
     this.loadLinks,
     this.loadContext,
     this.loadProfiles,
@@ -73,10 +76,17 @@ class _WaliSeekersScreenState extends State<WaliSeekersScreen> {
   bool _linksUnavailable = false;
   bool _contextUnavailable = false;
   int _loadGeneration = 0;
+  int _photoRequest = 0;
   List<WaliLinkedPerson> _people = const [];
   GuardianSeekerRosterContext _context = const GuardianSeekerRosterContext();
   Set<String> _contextRoleKeys = const {};
   Map<String, String> _photos = const {};
+  final _owner = ZyraAccountState.userId;
+  final _ownerGeneration = ZyraAccountState.generation;
+  bool get _ownerCurrent =>
+      _owner == ZyraAccountState.userId &&
+      _ownerGeneration == ZyraAccountState.generation &&
+      !ZyraAccountState.isSigningOut;
 
   bool get _usesInjectedData =>
       widget.loadLinks != null ||
@@ -106,16 +116,25 @@ class _WaliSeekersScreenState extends State<WaliSeekersScreen> {
     if (mounted) setState(() {});
   }
 
+  @override
+  void didUpdateWidget(covariant WaliSeekersScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isActive && !oldWidget.isActive && !_loading && _ownerCurrent) {
+      _loadPhotos(_people, _loadGeneration);
+    }
+  }
+
   void _onLinksChanged() => _load();
 
   Future<void> _load() async {
+    if (!_ownerCurrent) return;
     final generation = ++_loadGeneration;
     if (mounted) setState(() => _loading = true);
     final linksLoader =
         widget.loadLinks ??
         () => ZyraWaliLinkService.fetchLinkedPeopleResult(asWali: true);
     final linksResult = await linksLoader();
-    if (!mounted || generation != _loadGeneration) return;
+    if (!mounted || !_ownerCurrent || generation != _loadGeneration) return;
 
     if (linksResult.isUnavailable) {
       setState(() {
@@ -140,7 +159,7 @@ class _WaliSeekersScreenState extends State<WaliSeekersScreen> {
       final contextLoader =
           widget.loadContext ?? ZyraWaliJourneyService.fetchRosterContextResult;
       contextResult = await contextLoader(people);
-      if (!mounted || generation != _loadGeneration) return;
+      if (!mounted || !_ownerCurrent || generation != _loadGeneration) return;
     }
 
     setState(() {
@@ -168,21 +187,28 @@ class _WaliSeekersScreenState extends State<WaliSeekersScreen> {
     List<WaliLinkedPerson> people,
     int generation,
   ) async {
+    final request = ++_photoRequest;
     if (people.isEmpty) {
-      if (mounted && generation == _loadGeneration) {
+      if (mounted && _ownerCurrent && generation == _loadGeneration) {
         setState(() => _photos = const {});
       }
       return;
     }
-    final loader = widget.loadProfiles ?? ZyraDiscoveryService.profilesByIds;
-    final profiles = await loader(people.map((person) => person.id).toList());
-    if (!mounted || generation != _loadGeneration) return;
-    setState(
-      () => _photos = {
-        for (final profile in profiles)
-          if (profile.photos.isNotEmpty) profile.id: profile.photos.first,
-      },
-    );
+    final ids = people.map((person) => person.id).toList();
+    final loader = widget.loadProfiles;
+    final photos = loader == null
+        ? await ZyraDiscoveryService.photoOnesByIds(ids)
+        : {
+            for (final profile in await loader(ids))
+              if (ids.contains(profile.id)) profile.id: profile.profilePhotoOne,
+          };
+    if (!mounted ||
+        !_ownerCurrent ||
+        generation != _loadGeneration ||
+        request != _photoRequest) {
+      return;
+    }
+    setState(() => _photos = photos);
   }
 
   List<WaliLinkedPerson> get _visiblePeople {
@@ -268,6 +294,7 @@ class _WaliSeekersScreenState extends State<WaliSeekersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (!_ownerCurrent) return const SizedBox.shrink();
     final people = _visiblePeople;
     final developerPreview = ZyraDeveloperAccess.canUseDeveloperTools;
     final hasMain = people.any((person) => person.isMain);
@@ -660,12 +687,7 @@ class _SeekerPageIdentity extends StatelessWidget {
     padding: const EdgeInsets.only(bottom: 12),
     child: Row(
       children: [
-        ClipOval(
-          child: SizedBox.square(
-            dimension: 72,
-            child: ZyraProfileImage(photoUrl, width: 72, height: 72),
-          ),
-        ),
+        ZyraSeekerAvatar(photo: photoUrl, size: 72),
         const SizedBox(width: 16),
         Expanded(
           child: Column(

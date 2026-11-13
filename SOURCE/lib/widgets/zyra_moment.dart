@@ -23,10 +23,11 @@
 
 import 'package:flutter/material.dart';
 import '../models/seeker_profile.dart';
+import '../services/zyra_account_state.dart';
 import '../state/app_state.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
-import 'zyra_profile_image.dart';
+import 'zyra_seeker_avatar.dart';
 
 enum ZyraMomentLineKind { whisper, heading, guiding, body, quiet }
 
@@ -127,6 +128,12 @@ class ZyraMomentScreen extends StatefulWidget {
 
 class _ZyraMomentScreenState extends State<ZyraMomentScreen>
     with SingleTickerProviderStateMixin {
+  final _owner = ZyraAccountState.userId;
+  final _ownerGeneration = ZyraAccountState.generation;
+  bool get _ownerCurrent =>
+      _owner == ZyraAccountState.userId &&
+      _ownerGeneration == ZyraAccountState.generation &&
+      !ZyraAccountState.isSigningOut;
   late final AnimationController _c;
 
   /// Seconds at which each element begins. The mark/pair/ring leads at
@@ -273,14 +280,13 @@ class _ZyraMomentScreenState extends State<ZyraMomentScreen>
           mainAxisSize: MainAxisSize.min,
           children: [
             _circle(
-              child: p.photos.isEmpty
-                  ? Center(
-                      child: Text(
-                        p.firstName.isEmpty ? '?' : p.firstName[0],
-                        style: ZyraText.heading(size: 18),
-                      ),
-                    )
-                  : ZyraProfileImage(p.photoUrl, width: 56, height: 56),
+              child: ListenableBuilder(
+                listenable: AppState.instance,
+                builder: (_, _) => ZyraSeekerAvatar(
+                  photo: _ownerCurrent ? p.profilePhotoOne : null,
+                  size: 56,
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -291,8 +297,21 @@ class _ZyraMomentScreenState extends State<ZyraMomentScreen>
               ),
             ),
             _circle(
-              child: Center(
-                child: Text('You', style: ZyraText.subtext(size: 11)),
+              child: ListenableBuilder(
+                listenable: AppState.instance,
+                builder: (context, child) {
+                  final account = AppState.instance;
+                  return Semantics(
+                    label: 'You',
+                    image: true,
+                    child: ZyraSeekerAvatar(
+                      photo: _ownerCurrent ? account.profilePhotoOne : null,
+                      size: 56,
+                      alignmentX: account.avatarAlignmentX,
+                      alignmentY: account.avatarAlignmentY,
+                    ),
+                  );
+                },
               ),
             ),
           ],

@@ -929,12 +929,23 @@ class ZyraPhotoService {
   static Future<List<String>> fetchOwnPhotos({
     String? expectedUserId,
     bool throwOnError = false,
+  }) async => (await fetchOwnPhotoProjection(
+    expectedUserId: expectedUserId,
+    throwOnError: throwOnError,
+  )).photos;
+
+  /// Keeps the first slot distinct from the renderable gallery on a
+  /// partial signing failure.
+  static Future<({List<String> photos, String photoOne})>
+  fetchOwnPhotoProjection({
+    String? expectedUserId,
+    bool throwOnError = false,
   }) async {
     _synchronizeOwner();
     final user = ZyraAuth.currentUser;
     if (user == null || (expectedUserId != null && user.id != expectedUserId)) {
       if (throwOnError) throw StateError('Account changed.');
-      return const [];
+      return const (photos: <String>[], photoOne: '');
     }
     final epoch = _epoch;
     try {
@@ -942,22 +953,27 @@ class ZyraPhotoService {
           .from('profile_photos')
           .select('storage_path, display_order')
           .eq('user_id', user.id)
-          .order('display_order');
+          .order('display_order')
+          .order('id');
       if (!_isCurrent(user.id, epoch)) throw StateError('Account changed.');
       final paths = <String>[
         for (final row in rows)
           if (row['storage_path'] is String) row['storage_path'] as String,
       ];
-      final urls = await signedUrlsFor(paths);
+      final signed = await signedUrlMap(paths);
+      final urls = [
+        for (final path in paths)
+          if (signed[path] != null) signed[path]!,
+      ];
       if (!_isCurrent(user.id, epoch) ||
           (throwOnError && urls.length != paths.length)) {
         throw StateError('Photos unavailable.');
       }
-      return urls;
+      return (photos: urls, photoOne: signed[paths.firstOrNull] ?? '');
     } catch (e) {
       debugPrint('ZYRA: own onboarding photos could not be restored — $e');
       if (throwOnError) rethrow;
-      return const [];
+      return const (photos: <String>[], photoOne: '');
     }
   }
 

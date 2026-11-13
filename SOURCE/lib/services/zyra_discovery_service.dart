@@ -30,6 +30,7 @@ import '../main.dart';
 import '../models/seeker_profile.dart';
 import '../models/zyra_known_person_code.dart';
 import '../models/zyra_gender.dart';
+import 'zyra_account_state.dart';
 import 'zyra_auth.dart';
 import 'zyra_unlock_service.dart';
 import 'zyra_photo_service.dart';
@@ -160,7 +161,7 @@ class ZyraDiscoveryService {
                   // constructed a SeekerProfile with surnameLine == null below,
                   // regardless of what the mockProfiles fallback had.
                   .select(
-                    'id, first_name, surname_line, location_text, gender, profile_photos(storage_path, display_order)',
+                    'id, first_name, surname_line, location_text, gender, profile_photos(id, storage_path, display_order)',
                   )
                   .eq(
                     'role',
@@ -208,10 +209,14 @@ class ZyraDiscoveryService {
         if (photosRaw.isEmpty) {
           continue; // no photo — not browsable per Browse spec
         }
-        photosRaw.sort(
-          (a, b) =>
-              (a['display_order'] as int).compareTo(b['display_order'] as int),
-        );
+        photosRaw.sort((a, b) {
+          final order = (a['display_order'] as int).compareTo(
+            b['display_order'] as int,
+          );
+          return order != 0
+              ? order
+              : (a['id'] as String? ?? '').compareTo(b['id'] as String? ?? '');
+        });
         validRows.add(map);
         photoPathsPerRow.add(
           photosRaw.map((p) => p['storage_path'] as String).toList(),
@@ -256,6 +261,7 @@ class ZyraDiscoveryService {
             age: ages[map['id'] as String] ?? 0,
             city: (map['location_text'] as String?) ?? '—',
             photos: photos,
+            photoOne: signedByPath[photoPathsPerRow[i].first] ?? '',
             gender: map['gender'] as String,
             surnameLine: map['surname_line'] as String?,
           ),
@@ -534,7 +540,7 @@ class ZyraDiscoveryService {
           await supabase
                   .from('profiles')
                   .select(
-                    'id, first_name, surname_line, location_text, gender, profile_photos(storage_path, display_order)',
+                    'id, first_name, surname_line, location_text, gender, profile_photos(id, storage_path, display_order)',
                   )
                   .inFilter('id', ids)
               as List;
@@ -553,10 +559,14 @@ class ZyraDiscoveryService {
           (map['profile_photos'] as List?) ?? const [],
         );
         if (photosRaw.isEmpty && !includeWithoutPhotos) continue;
-        photosRaw.sort(
-          (a, b) =>
-              (a['display_order'] as int).compareTo(b['display_order'] as int),
-        );
+        photosRaw.sort((a, b) {
+          final order = (a['display_order'] as int).compareTo(
+            b['display_order'] as int,
+          );
+          return order != 0
+              ? order
+              : (a['id'] as String? ?? '').compareTo(b['id'] as String? ?? '');
+        });
         validRows.add(map);
         photoPathsPerRow.add(
           photosRaw.map((p) => p['storage_path'] as String).toList(),
@@ -584,6 +594,7 @@ class ZyraDiscoveryService {
           age: ages[id] ?? 0,
           city: (map['location_text'] as String?) ?? '—',
           photos: photos,
+          photoOne: signedByPath[photoPathsPerRow[i].firstOrNull] ?? '',
           gender: map['gender'] as String,
           surnameLine: map['surname_line'] as String?,
         );
@@ -596,6 +607,53 @@ class ZyraDiscoveryService {
       ];
     } catch (_) {
       return const [];
+    }
+  }
+
+  /// Reads the first photo of Seekers already admitted by the caller's
+  /// current surface. Both the profile read and the object signer enforce
+  /// the signed-in account's existing permissions.
+  static Future<Map<String, String>> photoOnesByIds(List<String> ids) async {
+    if (ids.isEmpty || ZyraAccountState.isSigningOut) return const {};
+    try {
+      final owner = ZyraAuth.currentUser?.id;
+      if (owner == null) return const {};
+      final generation = ZyraAccountState.generation;
+      bool current() =>
+          ZyraAuth.currentUser?.id == owner &&
+          ZyraAccountState.generation == generation &&
+          !ZyraAccountState.isSigningOut;
+      final rows = await supabase
+          .from('profiles')
+          .select('id, profile_photos(storage_path, display_order)')
+          .inFilter('id', ids)
+          .eq('role', 'seeker')
+          .order(
+            'display_order',
+            referencedTable: 'profile_photos',
+            ascending: true,
+          )
+          .order('id', referencedTable: 'profile_photos', ascending: true)
+          .limit(1, referencedTable: 'profile_photos');
+      if (!current()) return const {};
+      final paths = <String, String>{};
+      for (final row in rows) {
+        final id = row['id'];
+        if (id is! String || !ids.contains(id)) continue;
+        final photos = row['profile_photos'] as List;
+        final first = photos.firstOrNull;
+        final path = first is Map ? first['storage_path'] : null;
+        if (path is String && path.isNotEmpty) paths[id] = path;
+      }
+      final signed = await ZyraPhotoService.signedUrlMap(paths.values.toList());
+      if (!current()) return const {};
+      return {
+        for (final entry in paths.entries)
+          if (signed[entry.value]?.isNotEmpty == true)
+            entry.key: signed[entry.value]!,
+      };
+    } catch (_) {
+      return const {};
     }
   }
 

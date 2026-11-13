@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart' show listEquals;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:supabase_flutter/supabase_flutter.dart'
@@ -18,6 +19,8 @@ import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_browse_designs.dart';
 import '../../widgets/floating_nav_bar.dart';
 import '../../widgets/zyra_profile_image.dart';
+import '../../widgets/zyra_profile_details_page.dart';
+import '../../widgets/zyra_seeker_avatar.dart';
 import '../../widgets/zyra_profile_video_player.dart';
 import '../../widgets/zyra_pull_down_back_scope.dart';
 
@@ -31,6 +34,7 @@ class MyProfilePreviewScreen extends StatefulWidget {
       _onSelectTab = null,
       _showMyZyraActivity = false,
       _hapticLevel = null,
+      _previewAvatar = null,
       _loadProfileVideo = null;
 
   /// Public argument names intentionally initialize private preview fields.
@@ -43,6 +47,7 @@ class MyProfilePreviewScreen extends StatefulWidget {
     bool showMyZyraActivity = false,
     ZyraHapticLevel? hapticLevel,
     ZyraProfileVideoLoader? loadProfileVideo,
+    Widget Function(double size)? previewAvatar,
   }) : _preview = true,
        // ignore: prefer_initializing_formals
        _profile = profile,
@@ -57,7 +62,9 @@ class MyProfilePreviewScreen extends StatefulWidget {
        // ignore: prefer_initializing_formals
        _hapticLevel = hapticLevel,
        // ignore: prefer_initializing_formals
-       _loadProfileVideo = loadProfileVideo;
+       _loadProfileVideo = loadProfileVideo,
+       // ignore: prefer_initializing_formals
+       _previewAvatar = previewAvatar;
 
   final bool _preview;
   final SeekerProfile? _profile;
@@ -67,6 +74,7 @@ class MyProfilePreviewScreen extends StatefulWidget {
   final bool _showMyZyraActivity;
   final ZyraHapticLevel? _hapticLevel;
   final ZyraProfileVideoLoader? _loadProfileVideo;
+  final Widget Function(double size)? _previewAvatar;
 
   @override
   State<MyProfilePreviewScreen> createState() => _MyProfilePreviewScreenState();
@@ -74,13 +82,13 @@ class MyProfilePreviewScreen extends StatefulWidget {
 
 class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
   late List<String> _photos;
+  List<String> _lastAccountPhotos = const [];
   late final bool _previewMode;
   late final SeekerProfile? _previewProfile;
   late final bool Function()? _ownerGuard;
   late final VoidCallback? _onBack;
   late final ValueChanged<int>? _onSelectTab;
   late final (String?, int) _ordinaryOwner;
-  ZyraPlan? _ordinaryPlan;
   late final (bool, String?) _sdkOwner;
   String? _initialAccessToken;
   StreamSubscription<AuthState>? _authSubscription;
@@ -197,8 +205,8 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
       });
       return;
     }
-    _photos = List<String>.of(AppState.instance.photos);
-    _ordinaryPlan = AppState.instance.verifiedSeekerPlan;
+    _lastAccountPhotos = List<String>.of(AppState.instance.photos);
+    _photos = _lastAccountPhotos;
     AppState.instance.addListener(_ordinaryAccountChanged);
     _watchSdkOwner();
     if (_photos.isEmpty &&
@@ -222,8 +230,14 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
       _withdrawOrdinaryOwner();
       return;
     }
-    final plan = AppState.instance.verifiedSeekerPlan;
-    if (plan != _ordinaryPlan) setState(() => _ordinaryPlan = plan);
+    final photos = AppState.instance.photos;
+    setState(() {
+      if (!listEquals(photos, _lastAccountPhotos)) {
+        ++_photoRequest;
+        _lastAccountPhotos = List<String>.of(photos);
+        _photos = _lastAccountPhotos;
+      }
+    });
   }
 
   void _withdrawPreviewOwner() {
@@ -408,6 +422,22 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
                         key: const ValueKey('my-profile-browse-preview'),
                         profile: profile,
                         photoBuilder: _photo,
+                        avatarBuilder:
+                            widget._previewAvatar ??
+                            (size) {
+                              final state = AppState.instance;
+                              return ZyraSeekerAvatar(
+                                photo: _previewMode
+                                    ? profile.photos.firstOrNull
+                                    : state.profilePhotoOne,
+                                size: size,
+                                alignmentX:
+                                    ZyraProfileDetailsPage.photoAlignment.x,
+                                alignmentY:
+                                    ZyraProfileDetailsPage.photoAlignment.y,
+                                applyAvatarCrop: false,
+                              );
+                            },
                         canAct: _canInteract,
                         showRequestInfo: _requestInfo,
                         hapticLevel: widget._hapticLevel,
@@ -499,13 +529,18 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
   Future<void> _restoreOwnPhotos() async {
     if (!_ordinaryOwnerCurrent) return;
     final request = ++_photoRequest;
-    final photos = await ZyraPhotoService.fetchOwnPhotos(
+    final state = AppState.instance;
+    final before = state.photos;
+    final projection = await ZyraPhotoService.fetchOwnPhotoProjection(
       expectedUserId: _sdkOwner.$2,
     );
-    if (!_ordinaryOwnerCurrent || request != _photoRequest || photos.isEmpty) {
+    if (!_ordinaryOwnerCurrent ||
+        request != _photoRequest ||
+        !identical(before, state.photos) ||
+        projection.photos.isEmpty) {
       return;
     }
-    setState(() => _photos = photos);
+    state.setProfilePhotos(projection.photos, photoOne: projection.photoOne);
   }
 
   int _age(AppState state) {

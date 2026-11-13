@@ -51,6 +51,8 @@ class AppState extends ChangeNotifier {
   String? gender;
   DateTime? dob;
   List<String> photos = [];
+  String? _profilePhotoOne;
+  String get profilePhotoOne => _profilePhotoOne ?? photos.firstOrNull ?? '';
   double avatarAlignmentX = 0;
   double avatarAlignmentY = 0;
   String? location;
@@ -97,6 +99,7 @@ class AppState extends ChangeNotifier {
     gender = null;
     dob = null;
     photos = [];
+    _profilePhotoOne = null;
     avatarAlignmentX = 0;
     avatarAlignmentY = 0;
     location = null;
@@ -355,6 +358,7 @@ class AppState extends ChangeNotifier {
     String? sect,
   }) {
     this.photos = photos;
+    _profilePhotoOne = null;
     this.location = location;
     this.sect = sect;
     notifyListeners();
@@ -363,8 +367,9 @@ class AppState extends ChangeNotifier {
   /// Updates only the ordered profile-photo projection after Edit Photos.
   /// The first entry is the main photo; persistence remains owned by
   /// ZyraPhotoService rather than this in-memory state object.
-  void setProfilePhotos(List<String> value) {
+  void setProfilePhotos(List<String> value, {String? photoOne}) {
     photos = List<String>.of(value);
+    _profilePhotoOne = photoOne;
     notifyListeners();
   }
 
@@ -525,6 +530,7 @@ class AppState extends ChangeNotifier {
     _verifiedSeekerPlan = null;
     this.location = location;
     photos = [];
+    _profilePhotoOne = null;
     avatarAlignmentX = 0;
     avatarAlignmentY = 0;
     sect = null;

@@ -11,7 +11,7 @@ import '../../data/zyra_membership_catalog.dart';
 import '../../dev/zyra_app_gold_preview.dart';
 import '../../models/zyra_gender.dart';
 import '../../dev/zyra_dev_local_preview.dart';
-import '../../widgets/zyra_profile_image.dart';
+import '../../widgets/zyra_seeker_avatar.dart';
 import '../../widgets/zyra_account_switch_sheet.dart';
 import '../../widgets/zyra_one_profile_avatar.dart';
 import '../../widgets/zyra_profile_membership_row.dart';
@@ -346,24 +346,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         ZyraOneProfileAvatar(
                           isOne: state.plan == ZyraPlan.one,
-                          child: state.photos.isNotEmpty
-                              ? ZyraAvatarImage(
-                                  state.photos.first,
-                                  width: 64,
-                                  height: 64,
-                                  alignmentX: state.avatarAlignmentX,
-                                  alignmentY: state.avatarAlignmentY,
-                                )
-                              : Container(
-                                  width: 64,
-                                  height: 64,
-                                  color: ZyraColors.iconButtonBg,
-                                  child: Icon(
-                                    Icons.person,
-                                    color: ZyraColors.ink(0.38),
-                                    size: 30,
-                                  ),
-                                ),
+                          child: ZyraSeekerAvatar(
+                            photo: state.profilePhotoOne,
+                            size: 64,
+                            alignmentX: state.avatarAlignmentX,
+                            alignmentY: state.avatarAlignmentY,
+                          ),
                         ),
                         SizedBox(width: 16),
                         Expanded(

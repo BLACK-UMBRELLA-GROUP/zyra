@@ -96,7 +96,7 @@ import '../wali/link_wali_screen.dart';
 // now happens at the person: the Active card's flag on Connections.
 import '../../widgets/zyra_intelligence_card.dart';
 import '../../widgets/zyra_loading.dart';
-import '../../widgets/zyra_profile_image.dart';
+import '../../widgets/zyra_seeker_avatar.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import '../../widgets/zyra_write_feedback.dart';
 
@@ -136,6 +136,21 @@ class JourneyFlowScreen extends StatefulWidget {
 }
 
 class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
+  String? _refreshedPhotoOne;
+  final _owner = ZyraAccountState.userId;
+  final _ownerGeneration = ZyraAccountState.generation;
+  bool get _ownerCurrent =>
+      _owner == ZyraAccountState.userId &&
+      _ownerGeneration == ZyraAccountState.generation &&
+      !ZyraAccountState.isSigningOut;
+  SeekerProfile get _profile {
+    if (!_ownerCurrent) return widget.profile.withProfilePhotoOne('');
+    final photo = _refreshedPhotoOne;
+    return photo == null
+        ? widget.profile
+        : widget.profile.withProfilePhotoOne(photo);
+  }
+
   late final DevPage _previousDevPage;
   String _status = 'active';
   String? _stage = 'salam_exchange'; // first stage — Salam first, DR-ZYRA-183
@@ -225,6 +240,15 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
       _resolveIdentityGate();
     } else {
       _startJourneyExperience();
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant JourneyFlowScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.matchId != widget.matchId ||
+        oldWidget.profile.id != widget.profile.id) {
+      _refreshedPhotoOne = null;
     }
   }
 
@@ -424,10 +448,9 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
     // moment either party next opens it, exactly like every other
     // poll-driven state in this screen.
     await ZyraJourneyService.resolveFamilyReviewIfDue(widget.matchId);
-    var fresh = await ZyraJourneyService.refetchOne(
-      widget.matchId,
-      widget.profile.id,
-    );
+    final matchId = widget.matchId;
+    final profileId = widget.profile.id;
+    var fresh = await ZyraJourneyService.refetchOne(matchId, profileId);
 
     // ── THE STALLED-TRANSITION RETRY.
     //
@@ -472,6 +495,12 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
     if (fresh != null) {
       final m = fresh;
       setState(() {
+        if (matchId == widget.matchId &&
+            profileId == widget.profile.id &&
+            m.profile.id == profileId &&
+            _ownerCurrent) {
+          _refreshedPhotoOne = m.profile.profilePhotoOne;
+        }
         final stageChanged = _stageLoaded && _stage != m.journeyStage;
         final journeySurfaceChanged =
             stageChanged ||
@@ -1158,10 +1187,10 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
                         waitingReason: null,
                       ),
                       salamHistoryChild: _SalamExchangeHistoryView(
-                        profile: widget.profile,
+                        profile: _profile,
                       ),
                       lifeSnapshotHistoryChild: _LifeSnapshotView(
-                        profile: widget.profile,
+                        profile: _profile,
                         showBio: true,
                         visibleFieldIds:
                             ZyraJourneyLifeSnapshotMock.defaultVisibleFieldIds,
@@ -1196,9 +1225,8 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
                             ),
                       onOpenTimeline: () => Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (_) => JourneyTimelineScreen(
-                            withProfile: widget.profile,
-                          ),
+                          builder: (_) =>
+                              JourneyTimelineScreen(withProfile: _profile),
                         ),
                       ),
                       onActionVisibilityChanged: _setStageActionVisible,
@@ -1334,7 +1362,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
   Widget _buildStage(BuildContext context) {
     if (_lifeSnapshotOpen && _stage == 'compatibility_reveal') {
       return _LifeSnapshotView(
-        profile: widget.profile,
+        profile: _profile,
         showBio: true,
         visibleFieldIds: ZyraJourneyLifeSnapshotMock.defaultVisibleFieldIds,
         mineRevealed: _lifeSnapshotMineRevealed,
@@ -1355,7 +1383,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
       case 'compatibility_reveal':
         return _CompatibilityRevealView(
           matchId: widget.matchId,
-          profile: widget.profile,
+          profile: _profile,
           isActionVisible: _stageActionVisible,
           isCurrentSurface: _captureCompatibilitySurfaceOwner(readOnly: false),
           onContinue: () => _openStageDecision(
@@ -1368,7 +1396,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
       case 'salam_exchange':
         return _SalamExchangeView(
           matchId: widget.matchId,
-          profile: widget.profile,
+          profile: _profile,
           isActionVisible: _stageActionVisible,
           onContinue: () => _openStageDecision(
             fromStage: 'salam_exchange',
@@ -1377,7 +1405,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
         );
       case 'wali_gate':
         return _WaliGateView(
-          profile: widget.profile,
+          profile: _profile,
           otherFirstName: widget.profile.firstName,
           reason: _advanceReason,
           onChanged: _resetGuardianGate,
@@ -1394,7 +1422,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
       case 'phase_1':
         return _PhaseView(
           matchId: widget.matchId,
-          profile: widget.profile,
+          profile: _profile,
           phase: 1,
           isActionVisible: _stageActionVisible,
           onAdvance: () => _advanceGated('phase_1', 'phase_2'),
@@ -1406,7 +1434,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
       case 'phase_2':
         return _PhaseView(
           matchId: widget.matchId,
-          profile: widget.profile,
+          profile: _profile,
           phase: 2,
           isActionVisible: _stageActionVisible,
           onAdvance: () => _advanceGated('phase_2', 'phase_3'),
@@ -1418,7 +1446,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
       case 'phase_3':
         return _PhaseView(
           matchId: widget.matchId,
-          profile: widget.profile,
+          profile: _profile,
           phase: 3,
           isActionVisible: _stageActionVisible,
           onAdvance: () => _advanceGated('phase_3', 'family_stage'),
@@ -1430,7 +1458,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
       case 'family_stage':
         return _FamilyStageView(
           matchId: widget.matchId,
-          profile: widget.profile,
+          profile: _profile,
           isActionVisible: _stageActionVisible,
           onAdvance: () => _advanceGated('family_stage', 'conversation'),
           onRequestDecision: (continueAction) => _openStageDecision(
@@ -1454,7 +1482,7 @@ class _JourneyFlowScreenState extends State<JourneyFlowScreen> {
         // then, rather than a trapdoor.
         return _OpenConversationView(
           matchId: widget.matchId,
-          profile: widget.profile,
+          profile: _profile,
         );
       default:
         return const ZyraLoading();
@@ -1705,6 +1733,8 @@ class _JourneyPairStatus extends StatefulWidget {
 
 class _JourneyPairStatusState extends State<_JourneyPairStatus>
     with SingleTickerProviderStateMixin {
+  final _owner = ZyraAccountState.userId;
+  final _ownerGeneration = ZyraAccountState.generation;
   late final AnimationController _pulse = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 3100),
@@ -1768,7 +1798,6 @@ class _JourneyPairStatusState extends State<_JourneyPairStatus>
       required bool complete,
       required double t,
     }) {
-      final photos = you ? AppState.instance.photos : widget.profile.photos;
       final name = you
           ? (AppState.instance.name ?? 'You')
           : widget.profile.firstName;
@@ -1890,28 +1919,25 @@ class _JourneyPairStatusState extends State<_JourneyPairStatus>
                                 ),
                               ],
                       ),
-                      child: ClipOval(
-                        child: photos.isEmpty
-                            ? ColoredBox(
-                                color: ZyraColors.foreground.withValues(
-                                  alpha: 0.1,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    you
-                                        ? 'You'
-                                        : (name.isEmpty ? '?' : name[0]),
-                                    style: ZyraText.subtext(
-                                      size: you ? 11 : 19,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : ZyraProfileImage(
-                                photos.first,
-                                width: 60,
-                                height: 60,
-                              ),
+                      child: ListenableBuilder(
+                        listenable: AppState.instance,
+                        builder: (context, child) {
+                          final account = AppState.instance;
+                          final current =
+                              _owner == ZyraAccountState.userId &&
+                              _ownerGeneration == ZyraAccountState.generation &&
+                              !ZyraAccountState.isSigningOut;
+                          return ZyraSeekerAvatar(
+                            photo: !current
+                                ? null
+                                : you
+                                ? account.profilePhotoOne
+                                : widget.profile.profilePhotoOne,
+                            size: 60,
+                            alignmentX: you ? account.avatarAlignmentX : 0,
+                            alignmentY: you ? account.avatarAlignmentY : 0,
+                          );
+                        },
                       ),
                     ),
                     if (!widget.salamGoldWake)
@@ -6542,21 +6568,7 @@ class _LifeSnapshotView extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(color: ZyraColors.journeyGold, width: 1.5),
               ),
-              child: ClipOval(
-                child: profile.photoUrl.isEmpty
-                    ? ColoredBox(
-                        color: ZyraColors.luxuryDarkPurple,
-                        child: Center(
-                          child: Text(
-                            profile.firstName.isEmpty
-                                ? '·'
-                                : profile.firstName[0].toUpperCase(),
-                            style: ZyraText.heading(size: 28),
-                          ),
-                        ),
-                      )
-                    : ZyraProfileImage(profile.photoUrl, width: 86, height: 86),
-              ),
+              child: ZyraSeekerAvatar(photo: profile.profilePhotoOne, size: 86),
             ),
           ),
           SizedBox(height: 14),

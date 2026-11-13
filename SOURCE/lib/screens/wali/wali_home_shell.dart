@@ -347,6 +347,7 @@ class _WaliHomeShellState extends State<WaliHomeShell> {
       // Seekers. Profile is intentionally unavailable until real sign-up.
       const WaliNetworkScreen(),
       WaliSeekersScreen(
+        isActive: _page == WaliPage.seekers,
         loadLinks: widget.initialOnboardingPreview
             ? () async => const ZyraSourceResult.available(<WaliLinkedPerson>[])
             : null,

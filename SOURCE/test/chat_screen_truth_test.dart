@@ -10,6 +10,7 @@ import 'package:zyra/state/app_state.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/services/zyra_match_service.dart';
 import 'package:zyra/services/zyra_wali_link_service.dart';
+import 'package:zyra/widgets/zyra_seeker_avatar.dart';
 
 const _profile = SeekerProfile(
   id: 'member',
@@ -28,6 +29,38 @@ void main() {
   tearDown(() {
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
     ZyraInternalPreviewClient.finishSignOut();
+  });
+
+  testWidgets('chat reads the admitted partner photo one and its empty state', (
+    tester,
+  ) async {
+    final photo = Completer<Map<String, String>>();
+    final ids = <String>[];
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ChatScreen(
+          withProfile: _profile,
+          resolveConversation: (_) async => 'conversation',
+          loadMessages: (_) async => const ZyraSourceResult.available([]),
+          incomingMessages: (_) => const Stream.empty(),
+          loadPhotoOnes: (people) {
+            ids.addAll(people);
+            return photo.future;
+          },
+        ),
+      ),
+    );
+    await tester.pump();
+    expect(ids, [_profile.id]);
+    final avatar = find.byType(ZyraSeekerAvatar);
+    expect(
+      find.descendant(of: avatar, matching: find.byIcon(Icons.person)),
+      findsOneWidget,
+    );
+    const photoOne = 'assets/dev/one_journey_photos/seeker_self.jpg';
+    photo.complete({_profile.id: photoOne});
+    await tester.pump();
+    expect(tester.widget<ZyraSeekerAvatar>(avatar).photo, photoOne);
   });
 
   testWidgets(

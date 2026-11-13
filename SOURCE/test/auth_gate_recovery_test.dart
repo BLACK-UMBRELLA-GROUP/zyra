@@ -23,6 +23,7 @@ import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/services/zyra_local_prefs.dart';
+import 'package:zyra/services/zyra_session_router.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_full_screen_error.dart';
@@ -114,6 +115,7 @@ void main() {
   var requests = 0;
   var refreshFails = false;
   var profileReplyError = false;
+  var ownerPhoto = '';
   Future<void> Function(String path)? beforeResponse;
   Completer<void>? refreshGate;
 
@@ -165,6 +167,19 @@ void main() {
           }
         } else if (path.endsWith('/ages_for_one')) {
           body = 29;
+        } else if (path == '/rest/v1/profile_photos' && ownerPhoto.isNotEmpty) {
+          body = [
+            {'storage_path': ownerPhoto, 'display_order': 0},
+            {'storage_path': 'synthetic/later.jpg', 'display_order': 1},
+          ];
+        } else if (path == '/storage/v1/object/sign/profile-photos') {
+          body = [
+            for (final photo in jsonDecode(request.body)['paths'] as List)
+              {
+                'path': photo,
+                'signedURL': '/object/sign/profile-photos/$photo?token=local',
+              },
+          ];
         }
         return http.Response(
           jsonEncode(body),
@@ -189,6 +204,7 @@ void main() {
     requests = 0;
     refreshFails = false;
     profileReplyError = false;
+    ownerPhoto = '';
     beforeResponse = null;
     refreshGate = null;
     ZyraDeveloperAccess.setAuthorizedForTesting(false);
@@ -214,6 +230,25 @@ void main() {
     debugDefaultTargetPlatformOverride = null;
   });
   tearDownAll(() => Supabase.instance.dispose());
+
+  test(
+    'returning member hydrates the first photo before opening Profile',
+    () async {
+      ownerPhoto = 'synthetic/first.jpg';
+      expect(await ZyraSessionRouter.resolveHome(), isA<HomeShell>());
+      final state = AppState.instance;
+      for (var turn = 0; turn < 10 && state.photos.isEmpty; turn++) {
+        await Future<void>.delayed(Duration.zero);
+      }
+      expect(state.photos, hasLength(2));
+      expect(state.profilePhotoOne, contains(ownerPhoto));
+      expect(state.photos.last, contains('synthetic/later.jpg'));
+      state.setProfilePhotos(state.photos.reversed.toList());
+      expect(state.profilePhotoOne, contains('synthetic/later.jpg'));
+      state.setProfilePhotos(const []);
+      expect(state.profilePhotoOne, isEmpty);
+    },
+  );
 
   testWidgets('healthy same-owner events do not restart routing', (
     tester,

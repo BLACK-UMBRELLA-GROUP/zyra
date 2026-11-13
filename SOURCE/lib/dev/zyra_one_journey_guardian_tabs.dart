@@ -12,6 +12,7 @@ import '../widgets/zyra_tab_title.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_state_widgets.dart';
 import '../widgets/zyra_profile_image.dart';
+import '../widgets/zyra_seeker_avatar.dart';
 import '../widgets/zyra_focus_dashboard.dart';
 import '../widgets/zyra_profiles_components.dart';
 import '../widgets/zyra_swipe_track.dart';
@@ -333,6 +334,8 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     required this.page,
     required this.onAction,
     required this.photoFor,
+    this.adamPhoto,
+    this.adamAvatarAlignment = Offset.zero,
     required this.seekerGender,
     this.currentSeekerJourney,
     this.currentSeekerJourneyId,
@@ -359,6 +362,8 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   final String? currentSeekerJourney, currentSeekerJourneyId;
   final ValueChanged<String> onAction;
   final String? Function(String) photoFor;
+  final String? adamPhoto;
+  final Offset adamAvatarAlignment;
   final bool linked, paid, adamMain;
   final List<ZyraFocusItem>? focusItems;
   final List<ZyraFocusItem> circleFocus;
@@ -613,15 +618,19 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
       ),
     ),
   );
-  Widget _avatar(String name, {double size = 56, Color? color}) => Container(
-    width: size,
-    height: size,
+  Widget _linkedSeekerAvatar({required bool adam}) => Container(
+    width: 62,
+    height: 62,
     decoration: BoxDecoration(
       shape: BoxShape.circle,
-      color: color ?? ZyraColors.avatarDeepSand,
       border: Border.all(color: ZyraColors.journeyGold.withValues(alpha: .6)),
     ),
-    child: Center(child: _text(name[0], size: size * .35)),
+    child: ZyraSeekerAvatar(
+      photo: adam ? adamPhoto : null,
+      size: 62,
+      alignmentX: adam ? adamAvatarAlignment.dx : 0,
+      alignmentY: adam ? adamAvatarAlignment.dy : 0,
+    ),
   );
   Widget _photo(String id) => ClipOval(
     child: ZyraAvatarImage(
@@ -1428,11 +1437,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
                   child: _box(
                     Row(
                       children: [
-                        _avatar(
-                          i == 0 ? 'Adam' : 'Yusuf',
-                          size: 62,
-                          color: i == 0 ? null : ZyraColors.avatarWarmSand,
-                        ),
+                        _linkedSeekerAvatar(adam: i == 0),
                         const SizedBox(width: 14),
                         Expanded(
                           child: Column(
@@ -1471,6 +1476,8 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   );
   Widget _seeker() => ZyraGuardianSeekerPage(
     name: state.seekerName,
+    photo: state.main ? adamPhoto : null,
+    avatarAlignment: state.main ? adamAvatarAlignment : Offset.zero,
     gender: seekerGender,
     main: state.main && adamMain,
     linkedDate: state.main ? '20 Sep 2026' : '02 Oct 2026',

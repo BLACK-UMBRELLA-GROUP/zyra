@@ -5,6 +5,7 @@ import '../theme/zyra_text.dart';
 import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_journey_icon.dart';
+import '../widgets/zyra_seeker_avatar.dart';
 
 class ZyraGuardianSeekerPage extends StatelessWidget {
   const ZyraGuardianSeekerPage({
@@ -18,12 +19,16 @@ class ZyraGuardianSeekerPage extends StatelessWidget {
     required this.currentJourney,
     required this.onJourney,
     required this.onCircle,
+    this.photo,
+    this.avatarAlignment = Offset.zero,
   });
   final String name, gender, linkedDate, journeys, requests;
   final bool main;
   final String? currentJourney;
   final VoidCallback? onJourney;
   final VoidCallback onCircle;
+  final String? photo;
+  final Offset avatarAlignment;
 
   Text _text(String value, {bool muted = false, double size = 14}) => Text(
     value,
@@ -195,10 +200,11 @@ class ZyraGuardianSeekerPage extends StatelessWidget {
           border: Border.all(color: ZyraColors.journeyGold),
         ),
         alignment: Alignment.center,
-        child: Text(
-          name.characters.firstOrNull ?? '',
-          textScaler: TextScaler.noScaling,
-          style: ZyraText.heading(size: 40, color: ZyraColors.journeyGold),
+        child: ZyraSeekerAvatar(
+          photo: photo,
+          size: 84,
+          alignmentX: avatarAlignment.dx,
+          alignmentY: avatarAlignment.dy,
         ),
       ),
       const SizedBox(height: 12),

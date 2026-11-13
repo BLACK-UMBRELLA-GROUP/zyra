@@ -9,12 +9,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import '../../dev/zyra_app_gold_preview.dart';
-import '../../widgets/zyra_profile_image.dart';
+import '../../widgets/zyra_seeker_avatar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../main.dart';
 import '../../models/seeker_profile.dart';
 import '../../services/zyra_auth.dart';
 import '../../services/zyra_account_state.dart';
+import '../../services/zyra_discovery_service.dart';
 import '../../services/zyra_internal_preview_client.dart';
 import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_match_service.dart';
@@ -53,6 +54,7 @@ class ChatScreen extends StatefulWidget {
   final Future<bool> Function(String, String)? sendMessage;
   final Stream<ZyraChatMessage> Function(String)? incomingMessages;
   final Future<bool> Function(String)? markMessagesRead;
+  final Future<Map<String, String>> Function(List<String>)? loadPhotoOnes;
 
   const ChatScreen({
     super.key,
@@ -62,6 +64,7 @@ class ChatScreen extends StatefulWidget {
     this.sendMessage,
     this.incomingMessages,
     this.markMessagesRead,
+    this.loadPhotoOnes,
   });
 
   @override
@@ -88,6 +91,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   // Non-null only after a real conversation and its history were confirmed.
   String? _conversationId;
+  String? _partnerPhotoOne;
+  String? get _visiblePartnerPhoto => _accountCurrent
+      ? _partnerPhotoOne ?? widget.withProfile.profilePhotoOne
+      : null;
   RealtimeChannel? _channel;
   StreamSubscription<ZyraChatMessage>? _incomingSubscription;
 
@@ -120,6 +127,7 @@ class _ChatScreenState extends State<ChatScreen> {
       _messages.clear();
       _controller.clear();
       _conversationId = null;
+      _partnerPhotoOne = null;
       _unavailable = true;
       _loading = false;
       _sendError = null;
@@ -136,6 +144,7 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {
       _loading = true;
       _unavailable = false;
+      _partnerPhotoOne = null;
     });
     if (_localPreview && _accountCurrent) {
       setState(() => _loading = false);
@@ -183,6 +192,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ?.id;
       });
       unawaited(_markRead(convId));
+      unawaited(_loadPartnerPhoto(generation, convId));
       final incoming = widget.incomingMessages;
       if (incoming != null) {
         _incomingSubscription = incoming(convId).listen((message) {
@@ -267,6 +277,27 @@ class _ChatScreenState extends State<ChatScreen> {
         _unavailable = true;
         _conversationId = null;
       });
+    }
+  }
+
+  Future<void> _loadPartnerPhoto(int generation, String conversationId) async {
+    final loader =
+        widget.loadPhotoOnes ??
+        (supabaseReady ? ZyraDiscoveryService.photoOnesByIds : null);
+    if (loader == null) return;
+    final partner = widget.withProfile.id;
+    try {
+      final photos = await loader([partner]);
+      if (!mounted ||
+          !_accountCurrent ||
+          generation != _loadGeneration ||
+          conversationId != _conversationId ||
+          partner != widget.withProfile.id) {
+        return;
+      }
+      setState(() => _partnerPhotoOne = photos[partner] ?? '');
+    } catch (_) {
+      // The admitted route can still show its initial identity projection.
     }
   }
 
@@ -355,14 +386,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       onPressed: () => Navigator.of(context).pop(),
                       icon: Icon(Icons.arrow_back, color: ZyraColors.ink(0.70)),
                     ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(18),
-                      child: ZyraProfileImage(
-                        widget.withProfile.photoUrl,
-                        width: 36,
-                        height: 36,
-                      ),
-                    ),
+                    ZyraSeekerAvatar(photo: _visiblePartnerPhoto, size: 36),
                     SizedBox(width: 10),
                     Expanded(
                       child: Text(
@@ -493,6 +517,11 @@ class _ChatScreenState extends State<ChatScreen> {
                                                 ),
                                               ],
                                         recipientCount: 1,
+                                        canOpenReaders: () => _accountCurrent,
+                                        readerAvatar: (_) => ZyraSeekerAvatar(
+                                          photo: _visiblePartnerPhoto,
+                                          size: 38,
+                                        ),
                                       )
                                     else
                                       const SizedBox(height: 8),

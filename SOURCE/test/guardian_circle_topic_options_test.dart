@@ -23,6 +23,7 @@ import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/floating_nav_bar.dart';
+import 'package:zyra/widgets/zyra_seeker_avatar.dart';
 
 import 'support/zyra_hidden_dev_controls_driver.dart';
 
@@ -857,7 +858,7 @@ void main() {
   }
 
   testWidgets(
-    'Circle uses plain initials when Guardian membership is unverified',
+    'Circle keeps unverified Guardian initials and uses the Seeker silhouette',
     (tester) async {
       final fixture = _Fixture();
       await _mount(tester, fixture);
@@ -877,7 +878,7 @@ void main() {
               (widget.decoration! as BoxDecoration).shape == BoxShape.circle,
         ),
       );
-      expect(avatars, findsNWidgets(3));
+      expect(avatars, findsNWidgets(2));
       final decorations = tester
           .widgetList<Container>(avatars)
           .map((avatar) => avatar.decoration! as BoxDecoration)
@@ -890,13 +891,15 @@ void main() {
         plain.every((decoration) => decoration.color == ZyraColors.ivoryTop),
         isTrue,
       );
-      final seeker = decorations.singleWhere(
-        (decoration) => decoration.border != null,
+      final seekerAvatar = find.descendant(
+        of: sheet,
+        matching: find.byType(ZyraSeekerAvatar),
       );
-      expect(seeker.color, ZyraColors.surfaceFill);
+      expect(seekerAvatar, findsOneWidget);
+      expect(tester.getSize(seekerAvatar), const Size(42, 42));
       expect(
-        (seeker.border! as Border).top.color,
-        ZyraColors.surfaceEmphasisBorder,
+        find.descendant(of: seekerAvatar, matching: find.byIcon(Icons.person)),
+        findsOneWidget,
       );
       final ownIdentity =
           tester

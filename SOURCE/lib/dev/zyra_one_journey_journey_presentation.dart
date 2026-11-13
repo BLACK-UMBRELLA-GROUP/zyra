@@ -12,11 +12,10 @@ import '../data/zyra_journey_stages.dart';
 import '../theme/zyra_motion.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
-import '../widgets/zyra_profile_image.dart';
+import '../widgets/zyra_seeker_avatar.dart';
 
 /// Current compact mutual-action layout with exclusively caller-owned facts.
-/// Photos must be offline data URLs; a missing photo keeps the current neutral
-/// initial, never a remote member image.
+/// The shell supplies the two admitted sample photos and the owner's crop.
 class ZyraConceptJourneyThresholdBody extends StatelessWidget {
   const ZyraConceptJourneyThresholdBody({
     super.key,
@@ -26,6 +25,7 @@ class ZyraConceptJourneyThresholdBody extends StatelessWidget {
     required this.headline,
     required this.body,
     this.selfPhoto,
+    this.selfAvatarAlignment = Offset.zero,
     this.otherPhoto,
     this.salam = false,
     this.actionKey,
@@ -39,6 +39,7 @@ class ZyraConceptJourneyThresholdBody extends StatelessWidget {
   final String headline;
   final String body;
   final String? selfPhoto;
+  final Offset selfAvatarAlignment;
   final String? otherPhoto;
   final bool salam;
   final Key? actionKey;
@@ -100,22 +101,14 @@ class ZyraConceptJourneyThresholdBody extends StatelessWidget {
                         ]
                       : const [],
                 ),
-                child: ClipOval(
-                  child: photo != null && photo.startsWith('data:image/')
-                      ? ZyraProfileImage(photo, width: 60, height: 60)
-                      : ColoredBox(
-                          color: ZyraColors.surfaceFill,
-                          child: Center(
-                            child: Text(
-                              you
-                                  ? 'You'
-                                  : firstName.isEmpty
-                                  ? '?'
-                                  : firstName[0],
-                              style: ZyraText.subtext(size: you ? 11 : 19),
-                            ),
-                          ),
-                        ),
+                child: ZyraSeekerAvatar(
+                  photo: photo?.startsWith('data:image/') == true
+                      ? photo
+                      : null,
+                  size: 60,
+                  alignmentX: you ? selfAvatarAlignment.dx : 0,
+                  alignmentY: you ? selfAvatarAlignment.dy : 0,
+                  applyAvatarCrop: you,
                 ),
               ),
               const SizedBox(height: 7),

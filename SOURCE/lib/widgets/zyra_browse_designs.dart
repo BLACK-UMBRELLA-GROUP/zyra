@@ -97,6 +97,7 @@ class ZyraBrowseDesigns extends StatefulWidget {
     this.initialGalleryIndices = const <String, int>{},
     this.onGalleryIndexChanged,
     this.ownPreviewActions,
+    this.ownAvatarBuilder,
     this.profileVideo,
   });
 
@@ -108,6 +109,7 @@ class ZyraBrowseDesigns extends StatefulWidget {
     required ZyraBrowsePhotoBuilder photoBuilder,
     required bool Function() canAct,
     required VoidCallback showRequestInfo,
+    Widget Function(double size)? avatarBuilder,
     ZyraHapticLevel? hapticLevel,
     ZyraProfileVideoPlayback? profileVideo,
   }) : this(
@@ -121,6 +123,7 @@ class ZyraBrowseDesigns extends StatefulWidget {
          hapticLevel: hapticLevel,
          profileVideo: profileVideo,
          ownPreviewActions: (canAct: canAct, requestInfo: showRequestInfo),
+         ownAvatarBuilder: avatarBuilder,
        );
 
   final List<SeekerProfile> profiles;
@@ -133,6 +136,7 @@ class ZyraBrowseDesigns extends StatefulWidget {
   /// this flag never supplies profile data or changes disclosure authority.
   final bool readOnlyPreview;
   final ({bool Function() canAct, VoidCallback requestInfo})? ownPreviewActions;
+  final Widget Function(double size)? ownAvatarBuilder;
 
   /// Presentation only: omit feed controls and their reserved space when an
   /// owner supplies its own inspection header/actions. Feed decision delegates
@@ -409,15 +413,17 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
               requestAction: preview == null && swipe == null
                   ? null
                   : _inCardRequest(profile),
-              firstPhoto: profile.photos.isEmpty || profile.photos.first.isEmpty
-                  ? null
-                  : widget.photoBuilder(
-                      context,
-                      profile.photos.first,
-                      width: avatarPhotoSize,
-                      height: avatarPhotoSize,
-                      alignment: ZyraProfileDetailsPage.photoAlignment,
-                    ),
+              firstPhoto:
+                  widget.ownAvatarBuilder?.call(avatarPhotoSize) ??
+                  (profile.photos.isEmpty || profile.photos.first.isEmpty
+                      ? null
+                      : widget.photoBuilder(
+                          context,
+                          profile.photos.first,
+                          width: avatarPhotoSize,
+                          height: avatarPhotoSize,
+                          alignment: ZyraProfileDetailsPage.photoAlignment,
+                        )),
             )
           : video != null && index == profile.photos.length + 1
           ? ZyraProfileVideoPage(

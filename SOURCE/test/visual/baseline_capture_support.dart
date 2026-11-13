@@ -302,6 +302,7 @@ class BaselineHarness {
     bool initialGuardianBasic = false,
     bool restoreLocation = true,
     DateTime Function()? previewClock,
+    List<String>? seekerPhotos,
     List<NavigatorObserver> navigatorObservers = const [],
   }) async {
     this.guardian = guardian;
@@ -313,7 +314,10 @@ class BaselineHarness {
     tester.view.physicalSize = logicalSize * 3;
     tester.view.devicePixelRatio = 3;
     final ready = Completer<void>();
-    shellFixture = ZyraShellTestFixture(circleArrivalsFor: circleArrivalsFor);
+    shellFixture = ZyraShellTestFixture(
+      circleArrivalsFor: circleArrivalsFor,
+      seekerPhotos: seekerPhotos,
+    );
     final capacity = initialSeekerBasic ? 1 : 3;
     final defaultModel = receivedRequest
         ? ReceivedRequestFixture(capacity: capacity)
