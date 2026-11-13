@@ -145,7 +145,16 @@ void main() {
         router,
         contains("if (role == 'wali') return const WaliHomeShell();"),
       );
-      expect(router, contains('return HomeShell(initialTab: 2'));
+      expect(
+        router,
+        matches(
+          RegExp(
+            r'return HomeShell\(\s*initialTab: 2,\s*'
+            r'initialOnboardingProgress: onboarding,\s*'
+            r"developerPanelSeeker: role == 'seeker',",
+          ),
+        ),
+      );
       expect(router, contains('authorization.founderAuthorized'));
       expect(router, contains('return ZyraFounderLaunchScreen('));
       expect(

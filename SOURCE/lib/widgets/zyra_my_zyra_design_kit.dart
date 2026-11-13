@@ -29,6 +29,8 @@ class MyZyraReviewData {
     required bool fixtureMode,
     required DateTime clock,
     List<SupportiveCard> fixtureCards = const [],
+    List<SupportiveCard> accountCards = const [],
+    bool suppressActiveJourneyPrompt = false,
     Set<String> hiddenCards = const {},
     Set<SupportiveSection> mutedSections = const {},
     bool showAllActions = false,
@@ -38,8 +40,15 @@ class MyZyraReviewData {
          fixtureMode: fixtureMode,
          clock: clock,
          cards: mergeSupportiveCards(
-           supportiveCardsFromResolution(resolution, comparisonClock: clock),
-           fixtureMode ? fixtureCards : const [],
+           supportiveCardsFromResolution(
+             resolution,
+             comparisonClock: clock,
+           ).where(
+             (card) =>
+                 !suppressActiveJourneyPrompt ||
+                 card.id != 'guardian:main-required',
+           ),
+           fixtureMode ? fixtureCards : accountCards,
          ),
          hiddenCards: hiddenCards,
          mutedSections: mutedSections,

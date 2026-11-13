@@ -148,8 +148,6 @@ class ZyraConfirmSheet extends StatelessWidget {
   final Key? surfaceKey, primaryKey, secondaryKey;
   final VoidCallback? onConfirm, onKeep;
 
-  static const corners = BorderRadius.vertical(top: Radius.circular(26));
-
   Widget _dragToKeep(Widget child, VoidCallback? keep) {
     if (keep == null) return child;
     var distance = 0.0;
@@ -179,25 +177,13 @@ class ZyraConfirmSheet extends StatelessWidget {
       child: ConstrainedBox(
         constraints: BoxConstraints(maxHeight: maxHeight),
         child: DecoratedBox(
-          decoration: const BoxDecoration(
-            borderRadius: corners,
-            boxShadow: [
-              BoxShadow(
-                color: Color(0x2E3E2E1E),
-                blurRadius: 30,
-                offset: Offset(0, -10),
-              ),
-            ],
-          ),
+          decoration: ZyraIvorySheet.decoration,
           child: _dragToKeep(
-            Material(
-              key: surfaceKey ?? const ValueKey('zyra-confirm-sheet'),
-              color: const Color(0xFFF7F2EA),
-              borderRadius: corners,
-              clipBehavior: Clip.antiAlias,
+            ZyraIvorySheet(
+              surfaceKey: surfaceKey ?? const ValueKey('zyra-confirm-sheet'),
               child: SafeArea(
                 top: false,
-                minimum: const EdgeInsets.only(bottom: 26),
+                minimum: ZyraIvorySheet.bottomPadding,
                 child: LayoutBuilder(
                   builder: (context, constraints) => Column(
                     mainAxisSize: MainAxisSize.min,
@@ -207,19 +193,9 @@ class ZyraConfirmSheet extends StatelessWidget {
                       // when Larger Text makes the body vertically scrollable.
                       if (constraints.maxHeight >= 30)
                         _dragToKeep(
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10, bottom: 16),
-                            child: Center(
-                              child: Container(
-                                key: const ValueKey('zyra-confirm-handle'),
-                                width: 40,
-                                height: 4,
-                                decoration: BoxDecoration(
-                                  color: ZyraColors.ink(.18),
-                                  borderRadius: BorderRadius.circular(2),
-                                ),
-                              ),
-                            ),
+                          const ZyraIvorySheetHandle(
+                            handleKey: ValueKey('zyra-confirm-handle'),
+                            bottomSpacing: 16,
                           ),
                           onKeep,
                         ),
@@ -387,4 +363,62 @@ class ZyraConfirmSheet extends StatelessWidget {
       ),
     );
   }
+}
+
+/// The LOCK 28 ivory surface shared by the confirmation and Developer sheets.
+class ZyraIvorySheet extends StatelessWidget {
+  const ZyraIvorySheet({super.key, this.surfaceKey, required this.child});
+
+  final Key? surfaceKey;
+  final Widget child;
+
+  static const bottomPadding = EdgeInsets.only(bottom: 26);
+  static const corners = BorderRadius.vertical(top: Radius.circular(26));
+
+  static const decoration = BoxDecoration(
+    borderRadius: corners,
+    boxShadow: [
+      BoxShadow(
+        color: Color(0x2E3E2E1E),
+        blurRadius: 30,
+        offset: Offset(0, -10),
+      ),
+    ],
+  );
+
+  @override
+  Widget build(BuildContext context) => Material(
+    key: surfaceKey,
+    color: const Color(0xFFF7F2EA),
+    borderRadius: corners,
+    clipBehavior: Clip.antiAlias,
+    child: child,
+  );
+}
+
+class ZyraIvorySheetHandle extends StatelessWidget {
+  const ZyraIvorySheetHandle({
+    super.key,
+    this.handleKey,
+    this.bottomSpacing = 12,
+  });
+
+  final Key? handleKey;
+  final double bottomSpacing;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: EdgeInsets.only(top: 10, bottom: bottomSpacing),
+    child: Center(
+      child: Container(
+        key: handleKey,
+        width: 40,
+        height: 4,
+        decoration: BoxDecoration(
+          color: ZyraColors.ink(.18),
+          borderRadius: BorderRadius.circular(2),
+        ),
+      ),
+    ),
+  );
 }

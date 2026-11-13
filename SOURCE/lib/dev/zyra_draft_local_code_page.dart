@@ -10,6 +10,7 @@ import '../models/zyra_code_format.dart';
 import '../widgets/zyra_known_person_code_content.dart';
 import '../widgets/zyra_request_tab_pill.dart';
 import '../widgets/zyra_tab_title.dart';
+import '../widgets/zyra_developer_title.dart';
 
 import '../theme/zyra_motion.dart';
 import '../theme/zyra_colors.dart';
@@ -560,7 +561,10 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
         ? 'Add a Guardian'
         : 'Add a Seeker';
     final header = <Widget>[
-      ZyraTabTitle(title),
+      ZyraDeveloperTitle(
+        enabled: !widget.isLocal && widget.mode == ZyraLocalCodeContext.scan,
+        child: ZyraTabTitle(title),
+      ),
       const SizedBox(height: 5),
       Text(
         scan

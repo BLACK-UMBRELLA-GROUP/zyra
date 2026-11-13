@@ -8,6 +8,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../dev/zyra_dev_scenario.dart';
+import '../../dev/zyra_my_zyra_focus.dart' show zyraFocusRequestNames;
 import '../../dev/zyra_supportive_dashboard_preview.dart';
 import '../../models/zyra_dashboard_lab.dart';
 import '../../models/zyra_dashboard_resolution.dart';
@@ -21,6 +22,9 @@ import '../../services/zyra_onboarding_answers_service.dart';
 import '../../services/zyra_profile_service.dart';
 import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
+import '../../state/zyra_developer_samples.dart';
+import '../connections/zyra_sample_activity.dart';
+import '../profile/past_journeys_screen.dart';
 import '../../widgets/zyra_quiet_dashboard.dart';
 import '../../widgets/zyra_glass_dialog.dart';
 import '../../theme/zyra_text.dart';
@@ -34,6 +38,8 @@ class SeekerDashboardScreen extends StatefulWidget {
   final VoidCallback onOpenConnections;
   final VoidCallback? onOpenConnectionsActivity;
   final VoidCallback onOpenGuardian;
+  final VoidCallback? onOpenIntroductions;
+  final VoidCallback? onOpenDeveloperJourneys;
   final VoidCallback? onNotificationsChanged;
   final VoidCallback? onOpenDiscovery;
   final VoidCallback? onOpenProfile;
@@ -57,6 +63,8 @@ class SeekerDashboardScreen extends StatefulWidget {
     required this.onOpenConnections,
     this.onOpenConnectionsActivity,
     required this.onOpenGuardian,
+    this.onOpenIntroductions,
+    this.onOpenDeveloperJourneys,
     this.onNotificationsChanged,
     this.onOpenDiscovery,
     this.onOpenProfile,
@@ -75,6 +83,7 @@ class SeekerDashboardScreen extends StatefulWidget {
 class _SeekerDashboardScreenState extends State<SeekerDashboardScreen> {
   static const _resolver = DashboardResolver();
   static const _adapter = ZyraSeekerDashboardAdapter();
+  final _samples = ZyraDeveloperSamples.instance;
 
   late DashboardResolution _resolution;
   var _loadGeneration = 0;
@@ -237,6 +246,7 @@ class _SeekerDashboardScreenState extends State<SeekerDashboardScreen> {
         scenario,
         preview,
         ZyraDeveloperAccess.authorizationChanges,
+        _samples,
       ]),
       builder: (context, _) {
         if (_requestedLocalOnboardingPreview) {
@@ -414,9 +424,13 @@ class _SeekerDashboardScreenState extends State<SeekerDashboardScreen> {
   }) => KeyedSubtree(
     key: const ValueKey('seeker-production-dashboard'),
     child: ZyraQuietDashboard(
-      resolution: _resolution,
+      resolution: _developerResolution(),
+      accountCards: _developerAccountCards(),
+      suppressActiveJourneyPrompt: _samples.active == 0,
+      permanentNavigation: _samples.isAuthorized,
       firstName: firstName,
       onNavigate: (card) {
+        if (_openDeveloperDestination(card)) return;
         if (card.id == 'preference-quick-check' &&
             widget.onPreferenceQuickCheck != null) {
           if (_notificationOwner?.isCurrent == true) {
@@ -445,6 +459,148 @@ class _SeekerDashboardScreenState extends State<SeekerDashboardScreen> {
       },
     ),
   );
+
+  DashboardResolution _developerResolution() {
+    final active = _samples.active;
+    final ended = _samples.ended;
+    if (active == null && ended == null) return _resolution;
+    final live = _resolution;
+    bool isSampledJourney(DashboardResolvedItem item) =>
+        item.source == DashboardSignalSource.journeys && active != null;
+    final obligations = [
+      if (live.answer.item case final item? when !isSampledJourney(item)) item,
+      ...live.otherActions.where((item) => !isSampledJourney(item)),
+    ];
+    final answer = obligations.isEmpty
+        ? live.answer.item == null
+              ? live.answer
+              : const DashboardAnswer.calm()
+        : DashboardAnswer.signal(obligations.first);
+    final journey =
+        (active != null &&
+                live.journey.summary?.kind == DashboardJourneyKind.active) ||
+            (ended != null &&
+                live.journey.summary?.kind == DashboardJourneyKind.ended)
+        ? const DashboardJourneyResolution.available(
+            DashboardJourneySummary(
+              id: 'sample-journey-state',
+              kind: DashboardJourneyKind.searching,
+              title: 'Journey',
+            ),
+          )
+        : live.journey;
+    return DashboardResolution(
+      answer: answer,
+      otherActions: obligations.skip(1).toList(),
+      journey: journey,
+      stableState: live.stableState,
+      recently: live.recently,
+      updatesState: live.updatesState,
+      updatesAreLastKnown: live.updatesAreLastKnown,
+      intelligence: live.intelligence,
+      insightsState: live.insightsState,
+      tone: live.tone,
+      sourceHealth: live.sourceHealth,
+    );
+  }
+
+  List<SupportiveCard> _developerAccountCards() {
+    if (!_samples.isAuthorized) return const [];
+    final names =
+        _samples.receivedRows
+            ?.map((request) => request.person.firstName)
+            .toList() ??
+        const <String>[];
+    final received = names.length;
+    final sent = _samples.sent ?? 0;
+    final ended = _samples.ended ?? _samples.realEnded;
+    final introductions = _samples.introductions ?? _samples.realIntroductions;
+    return [
+      if (received > 0)
+        SupportiveCard(
+          id: 'sample-needs-requests',
+          section: SupportiveSection.needsYou,
+          title: received == 1
+              ? 'Journey request from ${names.first}'
+              : '$received Journey requests',
+          detail:
+              '${zyraFocusRequestNames(names)} would like to begin a Journey with you.',
+          actionLabel: received == 1 ? 'View request' : 'View requests',
+          target: ZyraDashboardTarget.connectionsJourneys,
+          hasNewActivity: true,
+        ),
+      if (_samples.active != null)
+        SupportiveCard(
+          id: 'sample-places',
+          section: SupportiveSection.stand,
+          title: 'Journey',
+          detail:
+              '${_samples.placesUsed} of ${_samples.capacity} ${_samples.capacity == 1 ? 'place' : 'places'} in use',
+          actionLabel: 'View Journey',
+          target: ZyraDashboardTarget.connectionsJourneys,
+        ),
+      SupportiveCard(
+        id: 'concept-my-requests',
+        section: SupportiveSection.stand,
+        title: 'Journey requests',
+        detail: '$received received · $sent sent',
+        actionLabel: 'View requests',
+        hasNewActivity: received > 0,
+      ),
+      SupportiveCard(
+        id: 'concept-my-introductions',
+        section: SupportiveSection.stand,
+        title: 'Introductions',
+        detail:
+            '$introductions ${introductions == 1 ? 'introduction' : 'introductions'}',
+        actionLabel: 'View introductions',
+        hasNewActivity: (_samples.introductions ?? 0) > 0,
+      ),
+      SupportiveCard(
+        id: 'concept-my-ended',
+        section: SupportiveSection.stand,
+        title: 'Ended Journeys',
+        detail: '$ended ended',
+        actionLabel: 'View Ended Journeys',
+      ),
+    ];
+  }
+
+  bool _openDeveloperDestination(SupportiveCard card) {
+    const destinations = {
+      'sample-needs-requests',
+      'sample-places',
+      'concept-my-requests',
+      'concept-my-introductions',
+      'concept-my-ended',
+    };
+    if (!destinations.contains(card.id)) return false;
+    if (!widget.isActive ||
+        !_samples.isAuthorized ||
+        !(ModalRoute.of(context)?.isCurrent ?? true)) {
+      return true;
+    }
+    switch (card.id) {
+      case 'sample-places':
+        widget.onOpenDeveloperJourneys?.call();
+      case 'sample-needs-requests':
+      case 'concept-my-requests':
+        Navigator.of(context).push<void>(
+          MaterialPageRoute<void>(
+            builder: (_) => const ZyraDeveloperJourneyRequestsScreen(),
+          ),
+        );
+      case 'concept-my-introductions':
+        widget.onOpenIntroductions?.call();
+      case 'concept-my-ended':
+        Navigator.of(context).push<void>(
+          MaterialPageRoute<void>(
+            builder: (_) => const PastJourneysScreen(openEnded: true),
+          ),
+        );
+    }
+    return true;
+  }
 
   void _navigate(ZyraDashboardTarget target) {
     switch (target) {

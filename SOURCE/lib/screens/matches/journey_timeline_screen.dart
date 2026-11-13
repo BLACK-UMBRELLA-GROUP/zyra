@@ -29,6 +29,7 @@ import '../../services/zyra_journey_service.dart';
 import '../../services/zyra_match_service.dart';
 import '../../services/zyra_wali_link_service.dart';
 import '../../state/app_state.dart';
+import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_glass_dialog.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
@@ -804,9 +805,11 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text(
-          'Timeline with ${widget.withProfile.firstName}',
-          style: ZyraText.heading(size: 17),
+        title: ZyraDeveloperTitle(
+          child: Text(
+            'Timeline with ${widget.withProfile.firstName}',
+            style: ZyraText.heading(size: 17),
+          ),
         ),
         iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
       ),

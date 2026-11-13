@@ -1,3 +1,4 @@
+import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_floating_surface.dart';
 import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
@@ -873,7 +874,9 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
               leading: _owner != null && Navigator.of(context).canPop()
                   ? BackButton(onPressed: ZyraTapFeedback.onTap(context, _back))
                   : null,
-              title: Text(kind.label, style: ZyraText.heading(size: 17)),
+              title: ZyraDeveloperTitle(
+                child: Text(kind.label, style: ZyraText.heading(size: 17)),
+              ),
               iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
             ),
       body: Container(
@@ -1937,7 +1940,9 @@ class _EditorScaffold extends StatelessWidget {
                       ),
                     )
                   : null,
-              title: Text(title, style: ZyraText.heading(size: 17)),
+              title: ZyraDeveloperTitle(
+                child: Text(title, style: ZyraText.heading(size: 17)),
+              ),
               iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
             ),
       body: Container(

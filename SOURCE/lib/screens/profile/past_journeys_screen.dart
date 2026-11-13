@@ -11,10 +11,13 @@ import '../../services/zyra_auth.dart';
 import '../../services/zyra_account_state.dart';
 import '../../services/zyra_journey_service.dart';
 import '../../state/app_state.dart';
+import '../../state/zyra_developer_samples.dart';
+import '../connections/zyra_sample_activity.dart';
 import '../../theme/zyra_card_metrics.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_loading.dart';
+import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_profile_image.dart';
 import '../../widgets/zyra_segmented_toggle.dart';
 import '../../widgets/zyra_state_widgets.dart';
@@ -33,12 +36,14 @@ class PastJourneysScreen extends StatefulWidget {
   final PastJourneysLoader? loader;
   final List<JourneyMatch>? previewPaused;
   final List<JourneyMatch>? previewEnded;
+  final bool openEnded;
 
   const PastJourneysScreen({
     super.key,
     this.loader,
     this.previewPaused,
     this.previewEnded,
+    this.openEnded = false,
   });
 
   @override
@@ -110,7 +115,9 @@ class _PastJourneysScreenState extends State<PastJourneysScreen> {
   void initState() {
     super.initState();
     _owner = (ZyraAccountState.userId, ZyraAccountState.generation);
-    _pageController = PageController()..addListener(_followSwipe);
+    _position = widget.openEnded ? 1 : 0;
+    _pageController = PageController(initialPage: _position.toInt())
+      ..addListener(_followSwipe);
     _watchSdkOwner();
     AppState.instance.addListener(_accountChanged);
     _load();
@@ -227,7 +234,12 @@ class _PastJourneysScreenState extends State<PastJourneysScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => !_ownerCurrent
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: ZyraDeveloperSamples.instance,
+    builder: (context, _) => _buildArchive(context),
+  );
+
+  Widget _buildArchive(BuildContext context) => !_ownerCurrent
       ? const SizedBox.expand(key: ValueKey('past-journeys-unavailable'))
       : Scaffold(
           body: Container(
@@ -255,38 +267,45 @@ class _PastJourneysScreenState extends State<PastJourneysScreen> {
                           ),
                         ),
                         Expanded(
-                          child: Text(
-                            'Past Journeys',
-                            style: ZyraText.heading(size: 20),
+                          child: ZyraDeveloperTitle(
+                            child: Text(
+                              widget.openEnded
+                                  ? 'Ended Journeys'
+                                  : 'Past Journeys',
+                              style: ZyraText.heading(size: 20),
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 14, 20, 6),
-                    child: ZyraSegmentedToggle(
-                      key: const ValueKey('past-journeys-toggle'),
-                      labels: const ['Paused', 'Ended'],
-                      position: _position,
-                      onChanged: _selectPage,
-                      labelSize: 13,
+                  if (!widget.openEnded)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 14, 20, 6),
+                      child: ZyraSegmentedToggle(
+                        key: const ValueKey('past-journeys-toggle'),
+                        labels: const ['Paused', 'Ended'],
+                        position: _position,
+                        onChanged: _selectPage,
+                        labelSize: 13,
+                      ),
                     ),
-                  ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 8),
-                      child: PageView(
-                        key: const ValueKey('past-journeys-pages'),
-                        controller: _pageController,
-                        physics: ZyraSegmentedMotion.pagePhysics,
-                        onPageChanged: (index) {
-                          if (_ownerCurrent) {
-                            setState(() => _position = index.toDouble());
-                          }
-                        },
-                        children: [_body(0), _body(1)],
-                      ),
+                      child: widget.openEnded
+                          ? _body(1)
+                          : PageView(
+                              key: const ValueKey('past-journeys-pages'),
+                              controller: _pageController,
+                              physics: ZyraSegmentedMotion.pagePhysics,
+                              onPageChanged: (index) {
+                                if (_ownerCurrent) {
+                                  setState(() => _position = index.toDouble());
+                                }
+                              },
+                              children: [_body(0), _body(1)],
+                            ),
                     ),
                   ),
                 ],
@@ -296,6 +315,32 @@ class _PastJourneysScreenState extends State<PastJourneysScreen> {
         );
 
   Widget _body(int index) {
+    final sampleRows = index == 1
+        ? ZyraDeveloperSamples.instance.endedRows
+        : null;
+    if (sampleRows != null) {
+      if (sampleRows.isEmpty) {
+        return const Center(
+          child: Padding(
+            padding: EdgeInsets.all(28),
+            child: ZyraEmptyState(
+              icon: Icons.history_rounded,
+              title: 'No ended Journeys',
+              message: "When a Journey ends, it's kept here with its Timeline.",
+            ),
+          ),
+        );
+      }
+      return ListView.separated(
+        padding: const EdgeInsets.fromLTRB(20, 14, 20, 42),
+        itemCount: sampleRows.length,
+        separatorBuilder: (_, _) => const SizedBox(height: 10),
+        itemBuilder: (_, index) => ZyraSampleEndedJourneyCard(
+          key: ValueKey(sampleRows[index].id),
+          row: sampleRows[index],
+        ),
+      );
+    }
     final routeRevision = _routeRevision;
     if (_loading) return const Center(child: ZyraLoading());
     if (_failed) {

@@ -30,6 +30,7 @@ import '../../services/zyra_unlock_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
+import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_compatibility_area_row.dart';
 import '../../widgets/zyra_gold_action_pill.dart';
 import '../../widgets/zyra_state_widgets.dart';
@@ -708,7 +709,12 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
           elevation: 0,
           title: needsCheck || checkedScore != null
               ? null
-              : Text('Compatibility', style: ZyraText.heading(size: 17)),
+              : ZyraDeveloperTitle(
+                  child: Text(
+                    'Compatibility',
+                    style: ZyraText.heading(size: 17),
+                  ),
+                ),
           iconTheme: const IconThemeData(color: Colors.white70),
         ),
         body: needsCheck || checkedScore != null

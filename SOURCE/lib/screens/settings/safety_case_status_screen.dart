@@ -9,6 +9,7 @@ import '../../services/zyra_auth.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
+import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_loading.dart';
 import '../../widgets/zyra_state_widgets.dart';
 
@@ -108,7 +109,9 @@ class _SafetyCaseStatusScreenState extends State<SafetyCaseStatusScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: Text('Your safety reports', style: ZyraText.heading(size: 17)),
+      title: ZyraDeveloperTitle(
+        child: Text('Your safety reports', style: ZyraText.heading(size: 17)),
+      ),
     ),
     body: Container(
       decoration: ZyraAppGoldDecoration(

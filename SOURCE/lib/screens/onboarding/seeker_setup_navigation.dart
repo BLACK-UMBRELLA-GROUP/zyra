@@ -54,6 +54,7 @@ Future<bool> returnToMyZyra(
       builder: (_) => HomeShell(
         initialTab: 2,
         deferredOnboardingDevPreview: devPreview,
+        developerPanelSeeker: !devPreview,
         initialOnboardingProgress: progress,
       ),
     ),

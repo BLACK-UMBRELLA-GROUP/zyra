@@ -78,6 +78,9 @@ import '../../data/zyra_journey_pause_state.dart';
 import '../../data/zyra_journey_stages.dart';
 import '../../data/zyra_release_gates.dart';
 import '../../models/journey_match.dart';
+import '../../state/zyra_developer_samples.dart';
+import '../../widgets/zyra_developer_title.dart';
+import 'zyra_sample_activity.dart';
 import '../../models/seeker_profile.dart';
 import '../../models/zyra_gender.dart';
 import '../../services/zyra_auth.dart';
@@ -339,6 +342,7 @@ class ConnectionsScreen extends StatefulWidget {
 }
 
 class _ConnectionsScreenState extends State<ConnectionsScreen> {
+  final _samples = ZyraDeveloperSamples.instance;
   final _accountGeneration = ZyraAccountState.generation;
   final _accountOwner = ZyraAccountState.userId;
   bool get _accountCurrent =>
@@ -492,7 +496,9 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   /// Deliberately does NOT re-fetch. The list must not reorder or reload
   /// under someone who has just arrived to read it; only the badge changes.
   Future<void> _markIntroductionsSeen() async {
-    if (_markingSeen) return;
+    if (_markingSeen || !_accountCurrent || _samples.introductions != null) {
+      return;
+    }
     if (!_undecidedSuggestions.any((s) => s.unseen)) return;
     _markingSeen = true;
     final changed = await ZyraGuardianSuggestionService.markSeen();
@@ -527,6 +533,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     widget.sectionController?.addListener(_onExternalSectionRequest);
     _devJourneySignatureSeen = _devJourneySignature(ZyraDevScenario.instance);
     AppState.instance.addListener(_onChange);
+    _samples.addListener(_samplesChanged);
     // ADDED 2026-08-06. The Journey toggles wrote to ZyraDevScenario and
     // nothing on this screen was listening, so `_refresh()` never re-ran and
     // no fake Journeys ever appeared — the toggles moved and did nothing,
@@ -590,9 +597,14 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     }
   }
 
+  void _samplesChanged() {
+    if (mounted && _accountCurrent) setState(() {});
+  }
+
   @override
   void dispose() {
     AppState.instance.removeListener(_onChange);
+    _samples.removeListener(_samplesChanged);
     ZyraDevScenario.instance.removeListener(_onScenarioChange);
     widget.sectionController?.removeListener(_onExternalSectionRequest);
     _pager.removeListener(_onPagerScroll);
@@ -618,6 +630,11 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       });
       return;
     }
+    _samples.recordRealCounts(
+      _accountOwner,
+      _accountGeneration,
+      introductions: _realUndecidedSuggestions.length,
+    );
     final v = AppState.instance.suggestionsVersion;
     if (v != _suggestionsVersion) {
       _suggestionsVersion = v;
@@ -676,6 +693,11 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     AppState.instance.setGuardianSuggestedBy({
       for (final x in s) x.profile.id: x.suggestedBy,
     });
+    _samples.recordRealCounts(
+      _accountOwner,
+      _accountGeneration,
+      introductions: _realUndecidedSuggestions.length,
+    );
     // A suggestion can arrive while the Seeker is already sitting on
     // Introductions. They have arrived; the alert has nothing left to tell
     // them, so it is discharged here too rather than waiting for them to
@@ -767,7 +789,9 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     //
     // The badge is the alert; the list is the work. Arriving discharges
     // the alert, and the heading goes on saying the work is there.
-    _undecidedSuggestions.where((s) => s.unseen).length,
+    _samples.introductions == null
+        ? _undecidedSuggestions.where((s) => s.unseen).length
+        : 0,
   ];
 
   // NAV BAR AGGREGATION IS NOT WIRED HERE, deliberately.
@@ -803,6 +827,13 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
   bool _suggestionsLoaded = false;
 
   Widget _introductionsPage() {
+    if (_samples.introductions != null) {
+      return ZyraSampleIntroductionsList(
+        wrapTitle: (title) => _settledPage == _kIntroductionsIndex
+            ? ZyraDeveloperTitle(tab: 1, child: title)
+            : title,
+      );
+    }
     final unavailable =
         _suggestionsUnavailable && !ZyraDeveloperAccess.canUseDeveloperTools;
     if (shouldZyraIntroductionShowLoading(
@@ -863,16 +894,22 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     }).toList();
   }
 
-  List<GuardianSuggestion> get _undecidedSuggestions {
+  List<GuardianSuggestion> get _realUndecidedSuggestions =>
+      _excludeDecidedSuggestions(_suggestions);
+
+  List<GuardianSuggestion> get _undecidedSuggestions =>
+      _excludeDecidedSuggestions(_displaySuggestions);
+
+  List<GuardianSuggestion> _excludeDecidedSuggestions(
+    List<GuardianSuggestion> suggestions,
+  ) {
     final app = AppState.instance;
     final decided = <String>{
       ...app.declined.map((p) => p.id),
       ...app.saved.map((p) => p.id),
       ...app.outgoingLikes.map((p) => p.id),
     };
-    return _displaySuggestions
-        .where((s) => !decided.contains(s.profile.id))
-        .toList();
+    return suggestions.where((s) => !decided.contains(s.profile.id)).toList();
   }
 
   Future<void> _refresh() async {
@@ -896,6 +933,12 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       return;
     }
     final real = realOrNull;
+    if (!mounted || !_accountCurrent) return;
+    _samples.recordRealCounts(
+      _accountOwner,
+      _accountGeneration,
+      ended: real.where((row) => row.status == 'ended').length,
+    );
     bool isRunning(JourneyMatch j) => j.status == 'active' && !j.isSuspended;
 
     final all = !ZyraDeveloperAccess.canUseDeveloperTools
@@ -921,7 +964,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
               real.where((j) => j.status == 'ended').toList(),
             ),
           );
-    if (!mounted) return;
+    if (!mounted || !_accountCurrent) return;
     final potential = all.where((j) => j.status == 'potential').toList();
     final activeAll = all.where((j) => j.status == 'active').toList();
     final active = activeAll.where((j) => !j.isSuspended).toList();
@@ -980,7 +1023,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       mayRequest = result[0];
       availableReturns = result[1];
     }
-    if (!mounted) return;
+    if (!mounted || !_accountCurrent) return;
 
     setState(() {
       _suspended = suspended;
@@ -1899,7 +1942,17 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-              child: Text('Connections', style: ZyraText.heading(size: 26)),
+              child:
+                  _samples.introductions != null &&
+                      _settledPage == _kIntroductionsIndex
+                  ? Text('Connections', style: ZyraText.heading(size: 26))
+                  : ZyraDeveloperTitle(
+                      tab: 1,
+                      child: Text(
+                        'Connections',
+                        style: ZyraText.heading(size: 26),
+                      ),
+                    ),
             ),
             // 2026-07-29 (Founder review — Connections-page redesign,
             // Option 1 of 5 presented): Journeys/Activity segmented
@@ -2017,6 +2070,8 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
     required List<JourneyMatch> active,
     required List<JourneyMatch> potential,
   }) {
+    final sampleActive = _samples.activeRows;
+    final sampleEnded = _samples.endedRows;
     final currentUserId = ZyraAuth.currentUser?.id;
     final incomingPaused = _suspended
         .where(
@@ -2091,7 +2146,14 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       // one here would collide with the gender gradient behind it.
       _ConnectionsSectionHeading(title: 'Active Journey', emphasised: true),
       SizedBox(height: 8),
-      if (active.isEmpty)
+      if (sampleActive != null && sampleActive.isNotEmpty)
+        ...sampleActive.map(
+          (row) => Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: ZyraSampleActiveJourneyCard(key: ValueKey(row.id), row: row),
+          ),
+        )
+      else if ((sampleActive?.isEmpty ?? active.isEmpty))
         Padding(
           padding: EdgeInsets.symmetric(vertical: 12),
           child: ZyraEmptyState(
@@ -2292,7 +2354,14 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       SizedBox(height: 20),
       _ConnectionsSectionHeading(title: 'Ended Journeys'),
       SizedBox(height: 8),
-      if (_ended.isEmpty)
+      if (sampleEnded != null && sampleEnded.isNotEmpty)
+        ...sampleEnded.map(
+          (row) => Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: ZyraSampleEndedJourneyCard(key: ValueKey(row.id), row: row),
+          ),
+        )
+      else if ((sampleEnded?.isEmpty ?? _ended.isEmpty))
         Padding(
           padding: EdgeInsets.symmetric(vertical: 12),
           child: ZyraEmptyState(

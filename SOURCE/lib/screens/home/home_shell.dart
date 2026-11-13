@@ -58,11 +58,13 @@ import '../../services/zyra_auth.dart';
 import '../../services/zyra_account_state.dart';
 import '../../services/zyra_product_telemetry.dart';
 import '../../state/app_state.dart';
+import '../../state/zyra_developer_samples.dart';
 import '../../theme/zyra_colors.dart';
 import '../../widgets/zyra_bottom_promotion.dart';
 import '../../widgets/floating_nav_bar.dart';
 import '../../widgets/zyra_shell_navigation.dart';
 import '../../widgets/zyra_keyboard_dismiss_scope.dart';
+import '../../widgets/zyra_developer_title.dart';
 import '../../theme/zyra_interaction_style.dart';
 import '../browse/browse_screen.dart';
 import '../browse/find_by_zyra_code_screen.dart';
@@ -81,12 +83,14 @@ class HomeShell extends StatefulWidget {
   final int initialTab;
   final ZyraOnboardingProgress? initialOnboardingProgress;
   final bool deferredOnboardingDevPreview;
+  final bool developerPanelSeeker;
 
   const HomeShell({
     super.key,
     this.initialTab = 2,
     this.initialOnboardingProgress,
     this.deferredOnboardingDevPreview = false,
+    this.developerPanelSeeker = false,
   });
 
   @override
@@ -390,12 +394,22 @@ class _HomeShellState extends State<HomeShell> {
     }
   }
 
-  void _goToTab(int index) {
+  void _goToTab(int index, {bool sampleNavigation = false}) {
     dismissZyraKeyboardAfterNavigation();
     final changed = index != _tab;
     if (index != 1) _connectionsSection.collapseCards();
     setState(() => _tab = index);
-    if (changed) {
+    final samples = ZyraDeveloperSamples.instance;
+    final section = _connectionsSection.section;
+    final showsSample =
+        (index == 1 &&
+            ((section == ZyraConnectionsSection.journeys &&
+                    (samples.activeRows != null ||
+                        samples.endedRows != null)) ||
+                (section == ZyraConnectionsSection.introductions &&
+                    samples.introductionRows != null))) ||
+        (index == 3 && samples.activeRows != null);
+    if (changed && !sampleNavigation && !showsSample) {
       ZyraProductTelemetry.instance.record(
         feature: _telemetryFeatures[index],
         name: ZyraTelemetryEventName.opened,
@@ -409,9 +423,12 @@ class _HomeShellState extends State<HomeShell> {
     unawaited(_refreshUnread());
   }
 
-  void _openConnectionsSection(ZyraConnectionsSection section) {
+  void _openConnectionsSection(
+    ZyraConnectionsSection section, {
+    bool sampleNavigation = false,
+  }) {
     _connectionsSection.open(section);
-    _goToTab(1);
+    _goToTab(1, sampleNavigation: sampleNavigation);
   }
 
   void _openPreferenceEditor() {
@@ -441,7 +458,10 @@ class _HomeShellState extends State<HomeShell> {
         },
       );
     }
-    return _buildShell(context);
+    final shell = _buildShell(context);
+    return widget.developerPanelSeeker
+        ? ZyraDeveloperSeekerScope(child: shell)
+        : shell;
   }
 
   Widget _buildShell(BuildContext context) {
@@ -485,6 +505,14 @@ class _HomeShellState extends State<HomeShell> {
         onOpenConnectionsActivity: () =>
             _openConnectionsSection(ZyraConnectionsSection.activity),
         onOpenGuardian: () => _goToTab(3),
+        onOpenIntroductions: () => _openConnectionsSection(
+          ZyraConnectionsSection.introductions,
+          sampleNavigation: true,
+        ),
+        onOpenDeveloperJourneys: () => _openConnectionsSection(
+          ZyraConnectionsSection.journeys,
+          sampleNavigation: true,
+        ),
         onReviewPreferences: _openPreferenceEditor,
         onPreferenceQuickCheck: () {
           if (!_currentAccount || widget.deferredOnboardingDevPreview) return;
@@ -533,7 +561,16 @@ class _HomeShellState extends State<HomeShell> {
                     for (var index = 0; index < pages.length; index++)
                       index == _tab ? pages[index] : const SizedBox.shrink(),
                   ]
-                : pages,
+                : !widget.developerPanelSeeker
+                ? pages
+                : [
+                    for (final page in pages)
+                      ZyraDeveloperSeekerTab(
+                        selected: _tab,
+                        isSelected: (index) => _tab == index,
+                        child: page,
+                      ),
+                  ],
           ),
           // 2026-07-26 (Founder review of the Browse page): the Dev
           // Access wrench that used to sit here is gone — it was

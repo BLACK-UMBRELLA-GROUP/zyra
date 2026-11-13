@@ -63,15 +63,17 @@ flutter run --profile --flavor production --dart-define=ZYRA_INTERNAL_FOUNDER_AC
   two interfere.
 - Full background: `../REPORTS/ARCHIVE/ZYRA_FABLE_BUILD_REVIEW_2026-07-19_V1.md` §7.
 
-## Developer Mode
+## Developer panel
 
-In-app test-scenario switcher on the Welcome screen ("Developer
-Access"): one tap signs into seeded real Supabase test accounts
-(`dev.*@zyra.test`, see `supabase/seed_dev_accounts.sql`) and lands
-fully onboarded. No OAuth is needed for that developer path. Real local
-OAuth IDs live in gitignored `lib/config/oauth_config.dart`; the matching
-Google bundle/package registrations and Supabase provider allow-list remain
-external configuration and must be verified after any application-ID change.
+The signed-in ZYRA Founder can tap the page heading in the ordinary Seeker
+app to open **Developer**. The panel verifies the current session against
+the existing Founder account, project and server claim. The panel shows the
+verified Seeker plan and caps sample Journey places accordingly.
+
+The panel loads local sample Journeys, requests, history and Introductions
+for that account. **Clear sample data** and signing out restore the ordinary
+account data. Run the mocked entry and sample tests with
+`flutter test --no-pub test/zyra_developer_panel_entry_test.dart test/zyra_developer_samples_test.dart`.
 
 ## Backend
 

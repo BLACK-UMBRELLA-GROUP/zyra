@@ -1,3 +1,4 @@
+import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_state_widgets.dart';
 // Help & Support — rebuilt 2026-08-01 (Founder: "the help and support
 // page we gotta start building it... start building Q/A etc to let users
@@ -263,7 +264,10 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text('Help & Support', style: ZyraText.heading(size: 17)),
+        title: ZyraDeveloperTitle(
+          enabled: widget.telemetrySurface == ZyraTelemetrySurface.seeker,
+          child: Text('Help & Support', style: ZyraText.heading(size: 17)),
+        ),
         iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
       ),
       body: Container(

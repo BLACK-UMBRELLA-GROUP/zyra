@@ -16,6 +16,7 @@ import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_interaction_style.dart';
 import '../../theme/zyra_preview_spacing.dart';
 import '../../theme/zyra_text.dart';
+import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_browse_designs.dart';
 import '../../widgets/floating_nav_bar.dart';
 import '../../widgets/zyra_profile_image.dart';
@@ -403,7 +404,9 @@ class _MyProfilePreviewScreenState extends State<MyProfilePreviewScreen> {
                   Container(
                     constraints: const BoxConstraints(minHeight: 44),
                     alignment: AlignmentDirectional.centerStart,
-                    child: Text('Preview', style: ZyraText.pageTitle()),
+                    child: ZyraDeveloperTitle(
+                      child: Text('Preview', style: ZyraText.pageTitle()),
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(

@@ -1,4 +1,5 @@
 import 'dart:async';
+import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -1640,6 +1641,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
                           _CircleHeader(
                             participantCount: _participantCount,
                             onShowMembers: _showMembers,
+                            seeker: widget.viewerIsSeeker,
                             compactPending:
                                 dockDiscussion &&
                                 _topicOptionsEnabled &&
@@ -1908,11 +1910,13 @@ class _CircleHeader extends StatelessWidget {
   const _CircleHeader({
     required this.participantCount,
     required this.onShowMembers,
+    required this.seeker,
     this.compactPending = false,
   });
 
   final int participantCount;
   final VoidCallback onShowMembers;
+  final bool seeker;
   final bool compactPending;
 
   @override
@@ -1956,21 +1960,23 @@ class _CircleHeader extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (compactPending)
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          primary: false,
-                          child: Text(
-                            'Guardian Circle',
-                            softWrap: false,
-                            style: ZyraText.heading(size: 20),
-                          ),
-                        )
-                      else
-                        Text(
-                          'Guardian Circle',
-                          style: ZyraText.heading(size: 20),
-                        ),
+                      ZyraDeveloperTitle(
+                        enabled: seeker,
+                        child: compactPending
+                            ? SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                primary: false,
+                                child: Text(
+                                  'Guardian Circle',
+                                  softWrap: false,
+                                  style: ZyraText.heading(size: 20),
+                                ),
+                              )
+                            : Text(
+                                'Guardian Circle',
+                                style: ZyraText.heading(size: 20),
+                              ),
+                      ),
                       const SizedBox(height: 2),
                       Text(
                         '$participantCount ${participantCount == 1 ? 'member' : 'members'}',

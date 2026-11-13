@@ -107,6 +107,7 @@ class ZyraRequestActivityPresentation extends StatefulWidget {
     this.segmentKeys = const [],
     this.title = 'Journey requests',
     this.tabClearance = false,
+    this.wrapTitle,
   }) : assert(labels.length == pages.length),
        assert(labels.length > 0),
        assert(selectedIndex >= 0 && selectedIndex < labels.length);
@@ -119,6 +120,7 @@ class ZyraRequestActivityPresentation extends StatefulWidget {
   final List<Key> segmentKeys;
   final String title;
   final bool tabClearance;
+  final Widget Function(Widget)? wrapTitle;
 
   @override
   State<ZyraRequestActivityPresentation> createState() =>
@@ -270,11 +272,12 @@ class _ZyraRequestActivityPresentationState
                   }
                   if (fits) break;
                 }
-                return Text(
+                final title = Text(
                   widget.title,
                   key: const ValueKey('concept_connections_title'),
                   style: style,
                 );
+                return widget.wrapTitle?.call(title) ?? title;
               },
             ),
           ),

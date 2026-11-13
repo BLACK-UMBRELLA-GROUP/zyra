@@ -86,6 +86,7 @@
 // stay as the history of how this corner earned its button back.
 
 import 'dart:async';
+import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_profile_image.dart';
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, TargetPlatform;
@@ -2158,6 +2159,23 @@ class _BrowseScreenState extends State<BrowseScreen> {
           // The visible door that replaced the centre-hold: it hands
           // the shell what Report should mean right now — whoever is
           // on the card — and the shell's action bar does the rest.
+          SafeArea(
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 12, 60, 0),
+                child: ZyraDeveloperTitle(
+                  tab: 0,
+                  hideWhenUnavailable: true,
+                  child: Text(
+                    'Profiles',
+                    style: ZyraText.heading(size: 26, color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
           // Last child on purpose: it must sit above every layer of card
           // chrome.
           SafeArea(

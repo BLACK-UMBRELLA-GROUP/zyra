@@ -11,6 +11,7 @@ import '../../data/zyra_membership_catalog.dart';
 import '../../dev/zyra_app_gold_preview.dart';
 import '../../models/zyra_gender.dart';
 import '../../dev/zyra_dev_local_preview.dart';
+import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_seeker_avatar.dart';
 import '../../widgets/zyra_account_switch_sheet.dart';
 import '../../widgets/zyra_one_profile_avatar.dart';
@@ -369,11 +370,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               // back to the first name on its own when there is no
                               // surname, which is a real state — nothing in
                               // onboarding asks for one yet.
-                              Text(
-                                fullName,
-                                style: ZyraText.heading(size: 20),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
+                              ZyraDeveloperTitle(
+                                tab: 4,
+                                child: Text(
+                                  fullName,
+                                  style: ZyraText.heading(size: 20),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                               SizedBox(height: 4),
                               // PLAN BADGE REMOVED 2026-08-07 (Founder: "membership

@@ -69,6 +69,10 @@ void main() {
           );
           expect(find.byType(ZyraOneJourneyConceptShell), findsOneWidget);
           _expectNoRetiredControls();
+          // Legacy preview authority cannot open the separate line 96 panel.
+          await tester.tapAt(const Offset(215, 70));
+          await h.flush();
+          _expectNoRetiredControls();
           // A held touch formerly opened the rail. It now leaves the member page.
           final before = h.latest;
           final finger = await tester.startGesture(const Offset(215, 70));

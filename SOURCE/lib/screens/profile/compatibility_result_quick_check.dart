@@ -7,6 +7,7 @@ import '../../services/zyra_onboarding_answers_service.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
+import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_loading.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import '../../widgets/zyra_tap_feedback.dart';
@@ -390,7 +391,9 @@ class _ZyraCompatibilityResultQuickCheckState
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            title: Text('Quick check', style: ZyraText.heading(size: 26)),
+            title: ZyraDeveloperTitle(
+              child: Text('Quick check', style: ZyraText.heading(size: 26)),
+            ),
             centerTitle: false,
             backgroundColor: Colors.transparent,
             surfaceTintColor: Colors.transparent,

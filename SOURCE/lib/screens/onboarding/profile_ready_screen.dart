@@ -249,6 +249,7 @@ class _ProfileReadyScreenState extends State<ProfileReadyScreen> {
         builder: (_) => HomeShell(
           initialTab: 2,
           deferredOnboardingDevPreview: _devPreview,
+          developerPanelSeeker: !_devPreview,
           initialOnboardingProgress: _devPreview
               ? SeekerPostIdentityChoiceScreen.previewIncompleteProgress
               : _snapshot?.progress,

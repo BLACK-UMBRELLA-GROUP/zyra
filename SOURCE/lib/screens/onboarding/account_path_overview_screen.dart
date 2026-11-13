@@ -130,6 +130,7 @@ class _SeekerPostIdentityChoiceScreenState
         builder: (_) => HomeShell(
           initialTab: 2,
           deferredOnboardingDevPreview: devPreview,
+          developerPanelSeeker: !devPreview,
           initialOnboardingProgress: devPreview
               ? SeekerPostIdentityChoiceScreen.previewIncompleteProgress
               : null,

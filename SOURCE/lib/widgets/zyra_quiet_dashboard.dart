@@ -1,3 +1,4 @@
+import 'zyra_developer_title.dart';
 import 'zyra_tap_feedback.dart';
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
@@ -26,6 +27,8 @@ import 'zyra_segmented_toggle.dart';
 class ZyraQuietDashboard extends StatefulWidget {
   final DashboardResolution resolution;
   final List<SupportiveCard> fixtureCards;
+  final List<SupportiveCard> accountCards;
+  final bool suppressActiveJourneyPrompt;
   final bool fixtureMode;
   final DateTime? comparisonClock;
   final String? firstName;
@@ -69,6 +72,8 @@ class ZyraQuietDashboard extends StatefulWidget {
     super.key,
     required this.resolution,
     this.fixtureCards = const [],
+    this.accountCards = const [],
+    this.suppressActiveJourneyPrompt = false,
     this.fixtureMode = false,
     this.comparisonClock,
     this.firstName,
@@ -243,13 +248,16 @@ class _ZyraQuietDashboardState extends State<ZyraQuietDashboard> {
                 padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
                 child: Align(
                   alignment: widget.titleAlignment,
-                  child: Text(
-                    'My ZYRA',
-                    key: const ValueKey('my-zyra-main-title'),
-                    textAlign: widget.titleAlignment.x > 0
-                        ? TextAlign.right
-                        : TextAlign.left,
-                    style: ZyraText.pageTitle(),
+                  child: ZyraDeveloperTitle(
+                    tab: 2,
+                    child: Text(
+                      'My ZYRA',
+                      key: const ValueKey('my-zyra-main-title'),
+                      textAlign: widget.titleAlignment.x > 0
+                          ? TextAlign.right
+                          : TextAlign.left,
+                      style: ZyraText.pageTitle(),
+                    ),
                   ),
                 ),
               ),
@@ -310,6 +318,8 @@ class _ZyraQuietDashboardState extends State<ZyraQuietDashboard> {
       isInsights: tab == 1,
       fixtureMode: fixtureMode,
       fixtureCards: widget.fixtureCards,
+      accountCards: widget.accountCards,
+      suppressActiveJourneyPrompt: widget.suppressActiveJourneyPrompt,
       clock: widget.comparisonClock ?? DateTime.now(),
       hiddenCards: _hidden,
       mutedSections: _muted,

@@ -1,3 +1,4 @@
+import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_confirm_sheet.dart';
 // Pre-Journey Ritual host screen — APP/Journey/PRE-JOURNEY RITUAL/
 // Summary.md. Routes an Active Journey through its real stages
@@ -4310,10 +4311,12 @@ class _JourneyAppBar extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Text(
-              'Journey with ${profile.firstName}',
-              style: ZyraText.heading(size: 16),
-              textAlign: TextAlign.center,
+            child: ZyraDeveloperTitle(
+              child: Text(
+                'Journey with ${profile.firstName}',
+                style: ZyraText.heading(size: 16),
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
           // The old trailing controls' footprint, kept as space so the

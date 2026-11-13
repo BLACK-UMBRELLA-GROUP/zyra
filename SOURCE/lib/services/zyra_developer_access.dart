@@ -8,8 +8,16 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart'
-    show Listenable, ValueNotifier, visibleForTesting;
-import 'package:supabase_flutter/supabase_flutter.dart' show Supabase, User;
+    show ChangeNotifier, Listenable, ValueNotifier, visibleForTesting;
+import 'package:supabase_flutter/supabase_flutter.dart'
+    show
+        AuthChangeEvent,
+        AuthResponse,
+        AuthState,
+        Session,
+        Supabase,
+        User,
+        decodeJwt;
 
 import '../config/zyra_app_variant.dart';
 import '../config/supabase_config.dart';
@@ -423,5 +431,210 @@ class ZyraDeveloperAccess {
     } catch (_) {
       return null;
     }
+  }
+}
+
+/// The ordinary Seeker panel has its own session proof. This capability
+/// cannot publish legacy developer authority or start the Founder preview.
+class ZyraDeveloperPanelAccess extends ChangeNotifier {
+  static const _founderId = ZyraInternalFounderPolicy.approvedFounderUserId;
+  static const _project = ZyraInternalFounderPolicy.approvedSupabaseUrl;
+
+  String? _sessionId;
+  Future<AuthResponse>? _sdkRefresh;
+  Session? _lastRefreshResult;
+  int? _accountGeneration;
+  int _revision = 0;
+  Future<bool>? _refresh;
+  Timer? _expiry;
+  bool _disposed = false;
+
+  Future<bool>? panelRefreshEvent(Session? session) {
+    if (session == null || !identical(session, _currentSession)) return null;
+    if (identical(session, _lastRefreshResult)) return Future.value(true);
+    final pending = _sdkRefresh;
+    return pending?.then(
+      (result) => identical(session, result.session),
+      onError: (Object _) => false,
+    );
+  }
+
+  static Session? get _currentSession {
+    try {
+      final client = Supabase.instance.client;
+      return client.rest.url == '$_project/rest/v1'
+          ? client.auth.currentSession
+          : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static String? _lifetime(Session? session, {bool requireFreshClaim = false}) {
+    if (session?.user.id != _founderId) {
+      return null;
+    }
+    try {
+      final jwt = decodeJwt(session!.accessToken).payload;
+      final id = jwt.claims['session_id'];
+      if (jwt.iss != '$_project/auth/v1' ||
+          jwt.sub != _founderId ||
+          id is! String ||
+          id.isEmpty ||
+          jwt.exp == null) {
+        return null;
+      }
+      if (requireFreshClaim) {
+        final metadata = jwt.claims['app_metadata'];
+        if (session.isExpired ||
+            session.user.appMetadata[ZyraDeveloperAccess.roleClaim] !=
+                'founder' ||
+            metadata is! Map ||
+            metadata[ZyraDeveloperAccess.roleClaim] != 'founder') {
+          return null;
+        }
+      }
+      return id;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  bool get _isCurrentAccount =>
+      ZyraAccountState.isCurrent(_founderId, _accountGeneration ?? -1);
+
+  String? get email {
+    final current = _currentSession;
+    final sessionId = _sessionId;
+    if (!_isCurrentAccount ||
+        sessionId == null ||
+        _lifetime(current, requireFreshClaim: true) != sessionId) {
+      return null;
+    }
+    final email = current?.user.email;
+    return email == null || email.trim().isEmpty ? null : email;
+  }
+
+  Future<bool> verify() {
+    final active = _refresh;
+    if (active != null) return active;
+    final before = _currentSession;
+    final sessionId = _lifetime(before);
+    final generation = ZyraAccountState.generation;
+    if (_disposed ||
+        sessionId == null ||
+        !ZyraAccountState.isCurrent(_founderId, generation) ||
+        before?.refreshToken?.isNotEmpty != true) {
+      revoke();
+      return Future.value(false);
+    }
+    final revision = _revision;
+    final future = Future.microtask(() async {
+      try {
+        if (_disposed ||
+            _revision != revision ||
+            !ZyraAccountState.isCurrent(_founderId, generation) ||
+            !identical(before, _currentSession)) {
+          if (!_disposed && _revision == revision) revoke();
+          return false;
+        }
+        final sdkRefresh = Supabase.instance.client.auth.refreshSession(
+          before!.refreshToken,
+        );
+        _sdkRefresh = sdkRefresh;
+        unawaited(
+          sdkRefresh.then(
+            (result) {
+              if (identical(_sdkRefresh, sdkRefresh)) {
+                _lastRefreshResult = result.session;
+                _sdkRefresh = null;
+              }
+            },
+            onError: (Object _) {
+              if (identical(_sdkRefresh, sdkRefresh)) _sdkRefresh = null;
+            },
+          ),
+        );
+        final result = await sdkRefresh.timeout(const Duration(seconds: 10));
+        final refreshed = result.session;
+        final current = _currentSession;
+        if (_disposed || _revision != revision) return false;
+        if (!ZyraAccountState.isCurrent(_founderId, generation) ||
+            _lifetime(refreshed, requireFreshClaim: true) != sessionId ||
+            _lifetime(current, requireFreshClaim: true) != sessionId ||
+            refreshed!.accessToken != current!.accessToken ||
+            refreshed.refreshToken != current.refreshToken ||
+            (refreshed.accessToken == before.accessToken &&
+                refreshed.refreshToken == before.refreshToken) ||
+            current.user.email?.trim().isNotEmpty != true) {
+          revoke();
+          return false;
+        }
+        _accountGeneration = generation;
+        _sessionId = sessionId;
+        _watchExpiry(current);
+        notifyListeners();
+        return true;
+      } catch (_) {
+        if (!_disposed && _revision == revision) revoke();
+        return false;
+      }
+    });
+    _refresh = future;
+    return future.whenComplete(() {
+      if (identical(_refresh, future)) _refresh = null;
+    });
+  }
+
+  void observe(AuthState state) {
+    switch (state.event) {
+      case AuthChangeEvent.tokenRefreshed:
+        if (_sessionId == null) {
+          if (_refresh != null &&
+              _lifetime(state.session, requireFreshClaim: true) == null) {
+            revoke();
+          }
+          return;
+        }
+        if (_lifetime(state.session, requireFreshClaim: true) != _sessionId ||
+            email == null) {
+          revoke();
+          return;
+        }
+        _watchExpiry(_currentSession!);
+      case AuthChangeEvent.initialSession:
+        if (_sessionId != null && email == null) revoke();
+      default:
+        revoke();
+    }
+  }
+
+  void _watchExpiry(Session session) {
+    _expiry?.cancel();
+    final expiry = DateTime.fromMillisecondsSinceEpoch(
+      session.expiresAt! * 1000,
+    );
+    _expiry = Timer(
+      expiry.difference(DateTime.now()) - const Duration(seconds: 10),
+      revoke,
+    );
+  }
+
+  void revoke() {
+    _revision++;
+    final hadProof = _sessionId != null;
+    _sessionId = null;
+    _refresh = null;
+    _accountGeneration = null;
+    _expiry?.cancel();
+    _expiry = null;
+    if (hadProof && !_disposed) notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    revoke();
+    super.dispose();
   }
 }

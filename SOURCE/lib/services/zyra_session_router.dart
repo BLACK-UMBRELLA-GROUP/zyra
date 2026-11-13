@@ -234,7 +234,11 @@ class ZyraSessionRouter {
       final onboarding = await ZyraProfileService.fetchOnboardingProgress()
           .timeout(_effectiveReadTimeout);
       _requireMember(userId, generation);
-      return HomeShell(initialTab: 2, initialOnboardingProgress: onboarding);
+      return HomeShell(
+        initialTab: 2,
+        initialOnboardingProgress: onboarding,
+        developerPanelSeeker: role == 'seeker',
+      );
     } catch (e) {
       // Never let an old account's cached role, failed refresh or preview
       // denial turn into a member shell after an asynchronous boundary.

@@ -37,6 +37,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart' show ValueListenable;
 import 'package:flutter/material.dart';
 
+import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_floating_surface.dart';
 import 'package:flutter/scheduler.dart';
 import '../../theme/zyra_interaction_style.dart';
@@ -432,7 +433,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         leading: Navigator.of(context).canPop()
             ? BackButton(onPressed: _back)
             : null,
-        title: Text('Settings', style: ZyraText.heading(size: 17)),
+        title: ZyraDeveloperTitle(
+          enabled: !widget.guardian,
+          child: Text('Settings', style: ZyraText.heading(size: 17)),
+        ),
         iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
       ),
       body: Container(

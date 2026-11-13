@@ -1,3 +1,4 @@
+import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_floating_surface.dart';
 // Edit Profile — everything that changes what is ON your profile.
 //
@@ -671,7 +672,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 }),
               )
             : null,
-        title: Text('Edit profile', style: ZyraText.heading(size: 28)),
+        title: ZyraDeveloperTitle(
+          child: Text('Edit profile', style: ZyraText.heading(size: 28)),
+        ),
         centerTitle: false,
         iconTheme: IconThemeData(color: ZyraColors.ink(0.70)),
       ),

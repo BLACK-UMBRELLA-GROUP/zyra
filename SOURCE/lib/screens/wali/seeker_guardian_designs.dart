@@ -1,3 +1,4 @@
+import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_confirm_sheet.dart';
 import '../../widgets/zyra_floating_surface.dart';
 import '../../widgets/zyra_guardian_add_card.dart';
@@ -278,13 +279,16 @@ class _ManagerHeader extends StatelessWidget {
   }
 
   Widget _title() => Expanded(
-    child: Text(
-      'Guardian',
-      key: const ValueKey('guardian-manager-title'),
-      textAlign: titleAlignment.x > 0 ? TextAlign.right : TextAlign.left,
-      style: titleSize == null || titleSize == ZyraText.pageTitleSize
-          ? ZyraText.pageTitle()
-          : ZyraText.heading(size: titleSize!),
+    child: ZyraDeveloperTitle(
+      tab: 3,
+      child: Text(
+        'Guardian',
+        key: const ValueKey('guardian-manager-title'),
+        textAlign: titleAlignment.x > 0 ? TextAlign.right : TextAlign.left,
+        style: titleSize == null || titleSize == ZyraText.pageTitleSize
+            ? ZyraText.pageTitle()
+            : ZyraText.heading(size: titleSize!),
+      ),
     ),
   );
 

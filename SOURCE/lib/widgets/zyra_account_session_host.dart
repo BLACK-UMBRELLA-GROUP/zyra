@@ -16,6 +16,7 @@ import '../services/zyra_developer_access.dart';
 import '../services/zyra_internal_preview_client.dart';
 import '../services/zyra_local_prefs.dart';
 import '../theme/zyra_colors.dart';
+import 'zyra_developer_title.dart';
 
 typedef _RefreshPresentation = ({
   ZyraPreviewResumeHandoff? handoff,
@@ -58,6 +59,8 @@ class ZyraAccountSessionHost extends StatefulWidget {
 class _ZyraAccountSessionHostState extends State<ZyraAccountSessionHost>
     with WidgetsBindingObserver {
   StreamSubscription<AuthState>? _authSubscription;
+  final _panelAccess = ZyraDeveloperPanelAccess();
+  int _authEventRevision = 0;
   bool _refreshingAuthorization = false;
   ZyraPreviewResumeHandoff? _resumePresentation;
   bool _accountTransition = false;
@@ -95,6 +98,8 @@ class _ZyraAccountSessionHostState extends State<ZyraAccountSessionHost>
 
   void _onAuthStateError(Object error, StackTrace stackTrace) {
     if (!mounted) return;
+    _authEventRevision++;
+    _panelAccess.revoke();
     // A pending check may already have retracted _lastAllowed. Preserve the
     // prior page's denial provenance before revoking its presentation lease.
     final presentation = _beginRefreshPresentation(
@@ -115,6 +120,7 @@ class _ZyraAccountSessionHostState extends State<ZyraAccountSessionHost>
 
   void _onAuthState(AuthState state) {
     if (!mounted) return;
+    _authEventRevision++;
     // Supabase has already replaced currentUser by the time this callback is
     // delivered. Preserve the capability observed before the event; reading
     // currentUser here would make a removed claim look as though it was never
@@ -139,6 +145,7 @@ class _ZyraAccountSessionHostState extends State<ZyraAccountSessionHost>
       _cancelResumePresentation();
     }
     final cleanup = ZyraAccountState.synchronize(userId);
+    _panelAccess.observe(state);
     if ((_accountTransition ||
             (previousUserId != null && previousUserId != userId)) &&
         _accountTransitionGeneration != ZyraAccountState.generation) {
@@ -165,7 +172,12 @@ class _ZyraAccountSessionHostState extends State<ZyraAccountSessionHost>
         // A persona's protected claim is not sufficient. Keep the overlay
         // absent while its caller-scoped synthetic IDV fixture is checked. If
         // refreshSession emitted this event, this joins that exact flight.
-        unawaited(_acceptFreshTokenEvent(user, wasAllowed: wasAllowed));
+        final panelEvent = _panelAccess.panelRefreshEvent(state.session);
+        if (panelEvent == null) {
+          unawaited(_acceptFreshTokenEvent(user, wasAllowed: wasAllowed));
+        } else {
+          unawaited(_handlePossiblePanelEvent(panelEvent, user, wasAllowed));
+        }
         return;
       }
       ZyraDeveloperAccess.clearRefreshedClaims();
@@ -237,6 +249,22 @@ class _ZyraAccountSessionHostState extends State<ZyraAccountSessionHost>
     await authorization;
     if (!mounted) return;
     _syncAuthorization(redirectIfLost: wasAllowed && !_isAllowed);
+  }
+
+  Future<void> _handlePossiblePanelEvent(
+    Future<bool> panelEvent,
+    User user,
+    bool wasAllowed,
+  ) async {
+    final generation = ZyraAccountState.generation;
+    final revision = _authEventRevision;
+    if (await panelEvent) return;
+    if (!mounted ||
+        generation != ZyraAccountState.generation ||
+        revision != _authEventRevision) {
+      return;
+    }
+    await _acceptFreshTokenEvent(user, wasAllowed: wasAllowed);
   }
 
   Future<void> _acceptFreshTokenEvent(
@@ -427,6 +455,7 @@ class _ZyraAccountSessionHostState extends State<ZyraAccountSessionHost>
     );
     unawaited(_authSubscription?.cancel());
     _authSubscription = null;
+    _panelAccess.dispose();
     super.dispose();
   }
 
@@ -436,7 +465,13 @@ class _ZyraAccountSessionHostState extends State<ZyraAccountSessionHost>
     return Stack(
       fit: StackFit.expand,
       children: [
-        Offstage(offstage: _accountTransition, child: widget.child),
+        Offstage(
+          offstage: _accountTransition,
+          child: ZyraDeveloperPanelHost(
+            access: _panelAccess,
+            child: widget.child,
+          ),
+        ),
         if (_accountTransition) ColoredBox(color: ZyraColors.modalSheetSurface),
       ],
     );

@@ -144,6 +144,11 @@ The default is PROFILE mode, which supports reopening the installed app after un
 
 Widget and capture tests select other sample roles, plans and states from code. The shell uses `ZyraOneJourneyShellFixture` through `SOURCE/test/support/zyra_hidden_dev_controls_driver.dart`; onboarding fixtures and immutable scenario catalogs also live under `SOURCE/test/support/`. These helpers provide values and call guarded source callbacks. They add no runtime picker or navigation door. Ordinary member navigation, saved Personalisation choices and account ownership checks remain with the app.
 
+The signed-in Founder can open **Developer** from a page heading in the
+ordinary Seeker app. A fresh session with the existing Founder claim enables
+local sample data on that account. See [the Flutter source guide](SOURCE/README.md)
+for the offline test commands.
+
 Confirmations share a compact bottom sheet. Profile Preview uses the Profiles card with the member’s own public details and photos. Its request button shows an explanation.
 
 Profile photo review uses the reference Profiles card shape and shows which part of the crop stays visible on the smaller reference screen. Photos fill the full rectangular photo areas in Profiles, Profile Preview, Journey Bio, Guardian views and Manage Photos. The review source is bounded at 3000 px on its longest edge and the saved JPEG at 1440 px. Photo preparation errors show recovery advice and a support reference.
