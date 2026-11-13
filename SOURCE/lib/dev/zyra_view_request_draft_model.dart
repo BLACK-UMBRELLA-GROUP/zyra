@@ -990,7 +990,9 @@ class ViewRequestDraftModel {
   int get personSafetyRevision => _personSafetyRevision;
   int? attemptRevisionFor(String id) => _attemptRevisions[id];
 
+  /// An attempt gets a Circle chat once its Journey begins.
   String? circleChatIdFor(String id) {
+    if (_states[id] != DraftJourneyState.active) return null;
     final revision = _attemptRevisions[id];
     if (revision == null) return null;
     return 'draft-circle-attempt-$id-$_circleChatScope-$revision';

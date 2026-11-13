@@ -1280,6 +1280,9 @@ void main() {
     test(
       'ending $endingState retains terminal history with no resurrection',
       () {
+        final acceptedAt = DateTime.utc(2026, 11, 12, 12);
+        var now = acceptedAt;
+        model = ReceivedRequestFixture(clock: () => now);
         expect(model.request(first), isTrue);
         expect(model.simulateRecipientAccept(first), isTrue);
         if (endingState != DraftJourneyState.preparing) {
@@ -1292,8 +1295,24 @@ void main() {
           );
         }
         expect(model.stateFor(first), endingState);
+        final chatId = model.circleChatIdFor(first);
+        now = acceptedAt.add(const Duration(hours: 1));
         expect(model.end(first), isTrue);
         expect(model.stateFor(first), DraftJourneyState.ended);
+        final attempt = model.currentEndedAttemptFor(first)!;
+        expect(attempt.endedAt, now);
+        expect(attempt.hasRecordedEnd(now), isTrue);
+        expect(model.endedAttemptsFor(first), [attempt]);
+        if (endingState == DraftJourneyState.preparing) {
+          expect(attempt.startedAt, isNull);
+          expect(attempt.circleChatId, isNull);
+          expect(chatId, isNull);
+        } else {
+          expect(attempt.startedAt, acceptedAt);
+          expect(chatId, isNotNull);
+          expect(attempt.circleChatId, chatId);
+        }
+        expect(model.circleChatIdFor(first), isNull);
         expect(model.activeCount, 0);
         expect(model.preparingCount, 0);
         expect(model.discoverable, isTrue);

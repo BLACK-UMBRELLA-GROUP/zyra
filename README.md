@@ -37,8 +37,9 @@ actions. In the Founder preview, Guardian Circle opens on Main, shows unread
 counts by chat, and puts unread Past chats first. Opening a chat clears its
 count. On entry, Main shows the unread divider before the first unread Main
 message. The Circle menu offers separate controls for one chat and the whole
-Circle. An ended Journey keeps its Circle chat, and a restart opens a fresh
-chat. Past Journey topics stay open for members who can write.
+Circle. A Journey gets its Circle chat when it becomes Active. That chat stays
+with the ended attempt, and a restart opens a fresh chat once Active. Past
+Journey topics stay open for members who can write.
 Seeker avatars use the first profile photo or the Profile silhouette in
 Profile, Circle and Journey. The same photo appears in the profile Preview
 and the Guardian's linked Seeker views. Guardians use monograms.
