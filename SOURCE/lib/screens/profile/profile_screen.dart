@@ -287,6 +287,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       child: SafeArea(
         child: ListView(
+          physics: const ScrollPhysics(),
           padding: const EdgeInsets.fromLTRB(24, 20, 24, 100),
           children: [
             LayoutBuilder(

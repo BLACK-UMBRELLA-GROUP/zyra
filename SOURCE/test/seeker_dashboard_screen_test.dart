@@ -728,34 +728,58 @@ void main() {
     expect(guardianRoutes, 1);
   });
 
-  testWidgets('a complete quiet snapshot shows the honest caught-up state', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      subject(
-        dashboard: snapshot(
-          stableState: const DashboardStableState(
-            family: DashboardSource.available(
-              DashboardFamilyStatus(
-                kind: DashboardFamilyKind.connected,
-                title: 'Guardian connected',
-                linkedCount: 1,
-              ),
+  testWidgets(
+    'a short caught-up dashboard shows the quiet state and can refresh',
+    (tester) async {
+      await tester.binding.setSurfaceSize(const Size(800, 1000));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      var loads = 0;
+      final quiet = snapshot(
+        stableState: const DashboardStableState(
+          family: DashboardSource.available(
+            DashboardFamilyStatus(
+              kind: DashboardFamilyKind.connected,
+              title: 'Guardian connected',
+              linkedCount: 1,
             ),
           ),
         ),
-      ),
-    );
-    await tester.pump();
-    expect(find.byKey(const ValueKey('my-zyra-quiet')), findsOneWidget);
-    expect(find.text('You’re all caught up'), findsOneWidget);
-    expect(
-      find.text('Nothing needs your attention right now.'),
-      findsOneWidget,
-    );
-    expect(find.text('Guardian connected'), findsNothing);
-    expect(find.byKey(const ValueKey('my-zyra-source-gap')), findsNothing);
-  });
+      );
+      await tester.pumpWidget(
+        subject(
+          loadDashboard: () async {
+            loads++;
+            return quiet;
+          },
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('my-zyra-quiet')), findsOneWidget);
+      expect(find.text('You’re all caught up'), findsOneWidget);
+      expect(
+        find.text('Nothing needs your attention right now.'),
+        findsOneWidget,
+      );
+      expect(find.text('Guardian connected'), findsNothing);
+      expect(find.byKey(const ValueKey('my-zyra-source-gap')), findsNothing);
+      expect(loads, 1);
+
+      final list = find.byKey(const ValueKey('my-zyra-quiet-scroll-0'));
+      final position = tester
+          .state<ScrollableState>(
+            find.descendant(of: list, matching: find.byType(Scrollable)),
+          )
+          .position;
+      expect(position.maxScrollExtent, position.minScrollExtent);
+      final bounds = tester.getRect(list);
+      await tester.dragFrom(
+        bounds.topCenter + const Offset(0, 36),
+        Offset(0, bounds.height * .75),
+      );
+      await tester.pumpAndSettle();
+      expect(loads, 2);
+    },
+  );
 
   testWidgets('Updates failure never renders the successful empty state', (
     tester,

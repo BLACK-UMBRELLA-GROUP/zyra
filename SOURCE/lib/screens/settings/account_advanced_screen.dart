@@ -162,6 +162,7 @@ class _AccountAdvancedScreenState extends State<AccountAdvancedScreen> {
         ),
         child: SafeArea(
           child: ListView(
+            physics: const ScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 60),
             children: [
               Text(
@@ -283,6 +284,7 @@ class _AccountControlInformationScreenState
           ),
           child: SafeArea(
             child: ListView(
+              physics: const ScrollPhysics(),
               padding: const EdgeInsets.fromLTRB(24, 20, 24, 40),
               children: [
                 Icon(

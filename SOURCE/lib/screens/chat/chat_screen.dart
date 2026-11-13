@@ -430,6 +430,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             'Say Salam to start your Journey with ${widget.withProfile.firstName}.',
                       )
                     : ListView.builder(
+                        physics: const ScrollPhysics(),
                         reverse: true,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 16,

@@ -312,6 +312,7 @@ class _HiddenProfilesScreenState extends State<HiddenProfilesScreen> {
             ? const ZyraLoading()
             : _unavailable || !_current
             ? ListView(
+                physics: const ScrollPhysics(),
                 padding: EdgeInsets.fromLTRB(20, topInset + 8, 20, 40),
                 children: [
                   ZyraEmptyState(
@@ -348,6 +349,7 @@ class _HiddenProfilesScreenState extends State<HiddenProfilesScreen> {
                 ),
               )
             : ListView(
+                physics: const ScrollPhysics(),
                 padding: EdgeInsets.fromLTRB(20, topInset + 8, 20, 40),
                 children: [
                   Text(

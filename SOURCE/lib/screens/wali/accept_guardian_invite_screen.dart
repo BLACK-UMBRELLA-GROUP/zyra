@@ -79,6 +79,7 @@ class _AcceptGuardianInviteScreenState
                 child: ZyraFadeEdges(
                   top: 34,
                   child: ListView(
+                    physics: const ScrollPhysics(),
                     padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
                     children: [
                       Center(child: _Monogram(letter: widget.from)),

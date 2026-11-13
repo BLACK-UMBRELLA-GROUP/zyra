@@ -115,6 +115,7 @@ class _PickerSheetState extends State<_PickerSheet> {
                             "No matches for that — try a different spelling.",
                       )
                     : ListView.builder(
+                        physics: const ScrollPhysics(),
                         itemCount: filtered.length,
                         itemBuilder: (context, index) {
                           final item = filtered[index];

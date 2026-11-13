@@ -277,6 +277,7 @@ class GuardianSeekerWorkspaceView extends StatelessWidget {
               ),
               Expanded(
                 child: ListView(
+                  physics: const ScrollPhysics(),
                   key: const PageStorageKey('guardian-seeker-workspace'),
                   padding: const EdgeInsets.fromLTRB(20, 6, 20, 40),
                   children: [

@@ -141,6 +141,7 @@ class _ZyraGuardianCirclesInboxScreenState
                       'A Seeker’s shared circle appears after you are linked as their Guardian.',
                 )
               : ListView.separated(
+                  physics: const ScrollPhysics(),
                   padding: const EdgeInsets.fromLTRB(20, 14, 20, 40),
                   itemCount: _circles.length,
                   separatorBuilder: (_, _) => const SizedBox(height: 10),
@@ -1851,6 +1852,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
       appendDiscussionMarkers(index + 1);
     }
     return ListView(
+      physics: const ScrollPhysics(),
       controller: _topicOptionsEnabled ? _topicMessageScroll : null,
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       // Keep the whole viewport available behind the floating launcher. Only
@@ -2143,6 +2145,7 @@ class _CircleMembersSheetState extends State<_CircleMembersSheet> {
           else
             Flexible(
               child: ListView.separated(
+                physics: const ScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: _participants.length,
                 separatorBuilder: (_, _) => const SizedBox(height: 9),
@@ -2811,6 +2814,7 @@ class _MessageContextPicker extends StatelessWidget {
             const SizedBox(height: 17),
             Flexible(
               child: ListView(
+                physics: const ScrollPhysics(),
                 shrinkWrap: true,
                 children: [
                   for (final group in groups)

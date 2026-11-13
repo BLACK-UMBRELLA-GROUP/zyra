@@ -579,6 +579,7 @@ class _NetworkSeekerDropdown extends StatelessWidget {
             key: const Key('gn-seeker-picker-sheet'),
             height: listHeight,
             child: ListView.separated(
+              physics: const ScrollPhysics(),
               padding: EdgeInsets.zero,
               itemCount: wards.length,
               separatorBuilder: (_, index) => const SizedBox(height: 7),

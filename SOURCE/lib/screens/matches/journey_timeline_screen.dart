@@ -1070,6 +1070,7 @@ class _JourneyTimelineScreenState extends State<JourneyTimelineScreen> {
                               ? null
                               : displayMilestones.last;
                           return ListView.builder(
+                            physics: const ScrollPhysics(),
                             padding: const EdgeInsets.fromLTRB(24, 12, 24, 40),
                             itemCount: entries.length,
                             itemBuilder: (context, index) {

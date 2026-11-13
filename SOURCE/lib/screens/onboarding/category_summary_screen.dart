@@ -97,6 +97,7 @@ class _CategorySummaryScreenState extends State<CategorySummaryScreen> {
                   ),
                   Expanded(
                     child: ListView.builder(
+                      physics: const ScrollPhysics(),
                       padding: const EdgeInsets.fromLTRB(20, 12, 20, 104),
                       itemCount: widget.questions.length,
                       itemBuilder: (context, index) {

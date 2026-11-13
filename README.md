@@ -63,8 +63,10 @@ shows the Seeker One comparison prompt on a backward profile swipe.
 Profiles, Guardian, Journey, Filters and My ZYRA let cards slide to the screen
 edges with their shadows visible throughout the swipe.
 A card settles from the point where the finger lifts, with shorter travel
-for a fast flick. Reduce Motion switches pages instantly. Scrolling uses
-iPhone-style bounce, with fixed cards following their layout rules.
+for a fast flick. Reduce Motion switches pages instantly. Pages and sheets
+that fit stay still when dragged. Longer content uses iPhone-style bounce.
+Dashboard pull-to-refresh still works on short lists. Fixed cards follow their
+layout rules.
 In the Founder preview, Seeker Basic filters by age and location. The
 Nationality and Ethnicity cards link to the Seeker One comparison.
 The Founder preview's Compatibility reader has two pages, Overall and

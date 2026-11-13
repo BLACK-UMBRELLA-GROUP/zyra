@@ -9029,6 +9029,7 @@ class _ZyraOneJourneyConceptShellState
             ),
             Expanded(
               child: ListView(
+                physics: const ScrollPhysics(),
                 key: const ValueKey('concept_account_action_scroll'),
                 padding: const EdgeInsets.fromLTRB(24, 26, 24, 100),
                 children: [

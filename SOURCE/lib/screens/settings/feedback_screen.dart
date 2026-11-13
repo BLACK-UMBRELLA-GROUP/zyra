@@ -217,6 +217,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   );
 
   Widget _form() => ListView(
+    physics: const ScrollPhysics(),
     padding: const EdgeInsets.fromLTRB(20, 12, 20, 40),
     children: [
       Text(

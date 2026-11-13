@@ -128,6 +128,7 @@ class _SafetyCaseStatusScreenState extends State<SafetyCaseStatusScreen> {
             : _cases.isEmpty
             ? const _NoSafetyCases()
             : ListView(
+                physics: const ScrollPhysics(),
                 padding: const EdgeInsets.fromLTRB(20, 18, 20, 40),
                 children: [
                   const _SafetyReportExplanation(),
@@ -153,6 +154,7 @@ class _NoSafetyCases extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView(
+    physics: const ScrollPhysics(),
     padding: const EdgeInsets.fromLTRB(20, 18, 20, 40),
     children: const [
       _SafetyReportExplanation(),

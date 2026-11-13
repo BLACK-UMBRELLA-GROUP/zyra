@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "queueLine": 113,
+  "lock": "LOCK 26 V4",
+  "spec": "PRODUCT/APPROVED/APP_SWIPE/RECORD/APP_SWIPE_SPEC_CURRENT_VERSION_V4.md",
+  "sharedBehavior": "Short pages and sheets stay still. Overflowing vertical content scrolls and bounces at the ends.",
+  "refreshExceptions": [
+    {
+      "surface": "Seeker member My ZYRA, Now and Insights",
+      "file": "SOURCE/lib/widgets/zyra_quiet_dashboard.dart",
+      "when": "A refresh callback is present and the dashboard is outside fixture mode."
+    },
+    {
+      "surface": "Guardian member dashboard, unlinked and linked Seeker pages",
+      "file": "SOURCE/lib/screens/wali/wali_dashboard_screen.dart",
+      "when": "The dashboard is outside the onboarding rehearsal."
+    }
+  ],
+  "existingExceptions": "Fixed cards retain their separate layout locks. Native framework selectors keep their built-in behavior.",
+  "verification": {
+    "preview": "Seeker and Guardian caught-up images were byte-identical at rest and during drags in both directions. Settings scrolled and bounced at both ends.",
+    "member": "A real drag refreshed short Seeker and Guardian dashboards through injected offline loaders. The Guardian rehearsal had no refresh indicator.",
+    "sidewaysSwipe": "The existing swipe timing, gesture and edge Back tests passed.",
+    "captureMode": "Offline Flutter widget tests",
+    "localEvidence": "REPORTS/EVIDENCE/LINE113_2026-11-13/"
+  }
+}

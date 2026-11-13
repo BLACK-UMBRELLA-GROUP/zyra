@@ -662,6 +662,7 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
     final their = _entryVisible;
     return SafeArea(
       child: CustomScrollView(
+        physics: const ScrollPhysics(),
         key: ValueKey(('local-code-scroll', their)),
         clipBehavior: Clip.none,
         slivers: [

@@ -272,6 +272,7 @@ class ZyraPhoneAccessPresentation extends StatelessWidget {
       child: ListenableBuilder(
         listenable: controller,
         builder: (context, _) => ListView(
+          physics: const ScrollPhysics(),
           key: const ValueKey('phone_access_scroll'),
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
           children: [

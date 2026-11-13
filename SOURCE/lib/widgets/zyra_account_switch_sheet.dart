@@ -79,6 +79,7 @@ class ZyraAccountSwitchScreen extends StatelessWidget {
         decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
         child: SafeArea(
           child: ListView(
+            physics: const ScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
             children: [
               Row(

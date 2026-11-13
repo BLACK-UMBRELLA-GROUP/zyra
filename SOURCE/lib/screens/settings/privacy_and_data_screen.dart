@@ -69,6 +69,7 @@ class PrivacyAndDataScreen extends StatelessWidget {
         body: SafeArea(
           top: false,
           child: ListView(
+            physics: const ScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(24, 8, 24, 40),
             children: [
               const _Lead(

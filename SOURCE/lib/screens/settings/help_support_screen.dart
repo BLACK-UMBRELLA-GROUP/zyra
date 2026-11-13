@@ -213,6 +213,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
             ),
             Expanded(
               child: ListView(
+                physics: const ScrollPhysics(),
                 key: const ValueKey('help-support-preview-scroll'),
                 padding: const EdgeInsets.fromLTRB(20, 22, 20, 40),
                 children: [
@@ -275,6 +276,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
           gradient: ZyraColors.genderGradient(AppState.instance.gender),
         ),
         child: ListView(
+          physics: const ScrollPhysics(),
           padding: EdgeInsets.fromLTRB(20, topInset + 8, 20, 40),
           children: [
             if (reference != null) ...[

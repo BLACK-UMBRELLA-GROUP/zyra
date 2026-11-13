@@ -401,6 +401,7 @@ class _PastJourneysScreenState extends State<PastJourneysScreen> {
         : rows.where((journey) => !requestsForYou.contains(journey)).toList();
 
     return ListView(
+      physics: const ScrollPhysics(),
       key: ValueKey<String>('past-journeys-${index == 0 ? 'paused' : 'ended'}'),
       padding: const EdgeInsets.fromLTRB(20, 14, 20, 42),
       children: [
@@ -698,6 +699,7 @@ class _PastJourneyArchiveUnavailableScreenState
         decoration: ZyraAppGoldDecoration(gradient: ZyraColors.brandGradient),
         child: SafeArea(
           child: ListView(
+            physics: const ScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(24, 24, 24, 40),
             children: [
               Text(

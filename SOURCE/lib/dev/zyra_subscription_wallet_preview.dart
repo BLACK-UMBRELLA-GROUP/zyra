@@ -712,6 +712,7 @@ class _ZyraSubscriptionWalletPreviewState
             );
           }
           return CustomScrollView(
+            physics: const ScrollPhysics(),
             key: const ValueKey('wallet_scroll'),
             slivers: [
               SliverPadding(

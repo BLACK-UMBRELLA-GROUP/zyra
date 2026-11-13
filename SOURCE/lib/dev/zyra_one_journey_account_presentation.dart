@@ -569,6 +569,7 @@ class ZyraConceptSettingsPresentation extends StatelessWidget {
             ),
             Expanded(
               child: ListView(
+                physics: const ScrollPhysics(),
                 key: const ValueKey('concept-current-settings-scroll'),
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 90),
                 children: [

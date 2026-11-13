@@ -626,6 +626,7 @@ class _ZyraOneJourneyConnectionsPresentationState
                     children: [
                       for (var index = 0; index < widget.pages.length; index++)
                         ListView(
+                          physics: const ScrollPhysics(),
                           key: PageStorageKey(
                             'concept_connections_page_$index',
                           ),

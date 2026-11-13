@@ -270,6 +270,7 @@ class _EmailRecoveryScreenState extends State<EmailRecoveryScreen> {
             maintainState: true,
             maintainAnimation: true,
             child: ListView(
+              physics: const ScrollPhysics(),
               padding: const EdgeInsets.fromLTRB(25, 44, 25, 60),
               children: [
                 Icon(

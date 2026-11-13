@@ -42,6 +42,7 @@ import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_account_state.dart';
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
+import '../../theme/zyra_motion.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import '../../widgets/floating_nav_bar.dart';
@@ -695,23 +696,32 @@ class _WaliDashboardScreenState extends State<WaliDashboardScreen> {
   Widget _guardianPage({
     required String pageKey,
     required List<Widget> children,
-  }) => ZyraFadeEdges.bottomOnly(
-    key: ValueKey('guardian-dashboard-fade-$pageKey'),
-    bottom:
-        ZyraNavBarMetrics.legacyRestingHeight +
-        ZyraNavBarMetrics.bottomInset +
-        10,
-    child: RefreshIndicator(
-      color: ZyraColors.accentOnCanvas,
-      backgroundColor: ZyraColors.surfaceFill,
-      onRefresh: () async => _retry(),
-      child: ListView(
-        key: PageStorageKey('guardian-dashboard-$pageKey'),
-        padding: const EdgeInsets.fromLTRB(20, 12, 20, 108),
-        children: children,
-      ),
-    ),
-  );
+  }) {
+    final canRefresh = !widget.initialOnboardingPreview;
+    final list = ListView(
+      key: PageStorageKey('guardian-dashboard-$pageKey'),
+      physics: canRefresh
+          ? ZyraMotion.refreshScrollPhysics
+          : ZyraMotion.scrollPhysics,
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 108),
+      children: children,
+    );
+    return ZyraFadeEdges.bottomOnly(
+      key: ValueKey('guardian-dashboard-fade-$pageKey'),
+      bottom:
+          ZyraNavBarMetrics.legacyRestingHeight +
+          ZyraNavBarMetrics.bottomInset +
+          10,
+      child: canRefresh
+          ? RefreshIndicator(
+              color: ZyraColors.accentOnCanvas,
+              backgroundColor: ZyraColors.surfaceFill,
+              onRefresh: _retry,
+              child: list,
+            )
+          : list,
+    );
+  }
 
   List<Widget> _guardianCombinedChildren({
     required WaliLinkedPerson? person,

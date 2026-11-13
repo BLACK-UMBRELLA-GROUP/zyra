@@ -73,6 +73,7 @@ class _SignInSecurityScreenState extends State<SignInSecurityScreen> {
         decoration: ZyraAppGoldDecoration(gradient: ZyraColors.brandGradient),
         child: SafeArea(
           child: ListView(
+            physics: const ScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(20, 18, 20, 90),
             children: [
               Text('How you sign in', style: ZyraText.heading(size: 24)),
@@ -328,6 +329,7 @@ class _RecoveryEmailSetupScreenState extends State<RecoveryEmailSetupScreen> {
         decoration: ZyraAppGoldDecoration(gradient: ZyraColors.brandGradient),
         child: SafeArea(
           child: ListView(
+            physics: const ScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(24, 32, 24, 70),
             children: [
               if (!_accountCurrent)

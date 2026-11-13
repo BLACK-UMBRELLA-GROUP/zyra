@@ -228,6 +228,7 @@ class _ZyraRequestActivityPresentationState
       );
     }
     return ListView.separated(
+      physics: const ScrollPhysics(),
       key: PageStorageKey('concept_connections_page_$index'),
       padding: EdgeInsets.fromLTRB(
         ZyraPreviewSpacing.pageMargin,

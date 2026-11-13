@@ -72,6 +72,7 @@ class ZyraHealthUsageScreen extends StatelessWidget {
                                 ).compareTo(_actionLabel(b.key));
                         });
                     return ListView(
+                      physics: const ScrollPhysics(),
                       padding: const EdgeInsets.fromLTRB(24, 18, 24, 40),
                       children: [
                         _statusCard(snapshot),

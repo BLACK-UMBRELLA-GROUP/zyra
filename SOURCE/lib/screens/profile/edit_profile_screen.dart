@@ -688,6 +688,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget _content() => ListView(
+    physics: const ScrollPhysics(),
     key: const ValueKey('edit_profile_content_scroll'),
     padding: EdgeInsets.fromLTRB(20, 12, 20, _explicitPreview ? 24 : 90),
     children: [

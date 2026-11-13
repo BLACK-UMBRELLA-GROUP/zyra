@@ -56,6 +56,7 @@ void main() {
   Widget subject({
     Key? key,
     bool plus = false,
+    bool initialOnboardingPreview = false,
     VoidCallback? onOpenNetwork,
     VoidCallback? onOpenSeekers,
     ValueChanged<String>? onOpenSeeker,
@@ -67,6 +68,7 @@ void main() {
   }) => MaterialApp(
     home: WaliDashboardScreen(
       key: key,
+      initialOnboardingPreview: initialOnboardingPreview,
       hasGuardianPlus: plus,
       onOpenNetwork: onOpenNetwork,
       onOpenSeekers: onOpenSeekers,
@@ -769,6 +771,45 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('No Guardian updates yet'), findsOneWidget);
+  });
+
+  testWidgets('short Guardian dashboard refreshes outside the rehearsal', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(800, 1200));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    var loads = 0;
+    Future<ZyraDashboardUpdatesPage> loadUpdates() async {
+      loads++;
+      return ZyraDashboardUpdatesPage(rows: [], nextCursor: null);
+    }
+
+    await tester.pumpWidget(
+      subject(initialOnboardingPreview: true, loadUpdates: loadUpdates),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byType(RefreshIndicator), findsNothing);
+    expect(loads, 0);
+
+    await tester.pumpWidget(
+      subject(key: const ValueKey('guardian-member'), loadUpdates: loadUpdates),
+    );
+    await tester.pumpAndSettle();
+    expect(loads, 1);
+    final list = find.byKey(const PageStorageKey('guardian-dashboard-empty'));
+    final position = tester
+        .state<ScrollableState>(
+          find.descendant(of: list, matching: find.byType(Scrollable)),
+        )
+        .position;
+    expect(position.maxScrollExtent, position.minScrollExtent);
+    final bounds = tester.getRect(list);
+    await tester.dragFrom(
+      bounds.topCenter + const Offset(0, 36),
+      Offset(0, bounds.height * .75),
+    );
+    await tester.pumpAndSettle();
+    expect(loads, 2);
   });
 
   testWidgets('failed first Journey read never claims linked family is calm', (

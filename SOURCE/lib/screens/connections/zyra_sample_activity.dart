@@ -557,6 +557,7 @@ class _SampleJourneyScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: ListView(
+                    physics: const ScrollPhysics(),
                     padding: const EdgeInsets.all(20),
                     children: [
                       if (row.preparing) ...[

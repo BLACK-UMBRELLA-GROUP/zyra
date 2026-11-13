@@ -11,6 +11,7 @@ import '../services/zyra_developer_access.dart';
 import '../services/zyra_promotion_engine.dart';
 import '../state/app_state.dart';
 import '../theme/zyra_colors.dart';
+import '../theme/zyra_motion.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_my_zyra_design_kit.dart';
 import 'zyra_my_zyra_navigation_card.dart';
@@ -101,6 +102,8 @@ class ZyraQuietDashboard extends StatefulWidget {
 }
 
 class _ZyraQuietDashboardState extends State<ZyraQuietDashboard> {
+  bool get _canPullToRefresh => widget.onRefresh != null && !widget.fixtureMode;
+
   late int _tab;
   String? _expanded;
   bool _showAllActions = false;
@@ -307,6 +310,7 @@ class _ZyraQuietDashboardState extends State<ZyraQuietDashboard> {
         ListView(
           key: ValueKey('my-zyra-quiet-scroll-$tab'),
           controller: scroll,
+          physics: _canPullToRefresh ? ZyraMotion.refreshScrollPhysics : null,
           padding: const EdgeInsets.fromLTRB(24, 28, 24, 130),
         ),
         current,
@@ -508,6 +512,7 @@ class _ZyraQuietDashboardState extends State<ZyraQuietDashboard> {
       ListView(
         key: ValueKey('my-zyra-quiet-scroll-$tab'),
         controller: scroll,
+        physics: _canPullToRefresh ? ZyraMotion.refreshScrollPhysics : null,
         padding: const EdgeInsets.fromLTRB(24, 28, 24, 130),
         children: [
           if (_canPreviewActivities(widget) &&
@@ -641,7 +646,7 @@ class _ZyraQuietDashboardState extends State<ZyraQuietDashboard> {
   }
 
   Widget _scrollSurface(Widget child, bool Function() current, int tab) {
-    if (widget.onRefresh != null && !widget.fixtureMode) {
+    if (_canPullToRefresh) {
       child = RefreshIndicator(
         color: ZyraColors.accentOnCanvas,
         backgroundColor: ZyraColors.surfaceFill,

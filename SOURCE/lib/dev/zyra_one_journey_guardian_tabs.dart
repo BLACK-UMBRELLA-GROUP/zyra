@@ -1576,6 +1576,7 @@ class _ZyraGuardianPrivateChatState extends State<ZyraGuardianPrivateChat> {
           children: [
             Expanded(
               child: CustomScrollView(
+                physics: const ScrollPhysics(),
                 key: const ValueKey('guardian_chat_scroll'),
                 slivers: [
                   SliverToBoxAdapter(

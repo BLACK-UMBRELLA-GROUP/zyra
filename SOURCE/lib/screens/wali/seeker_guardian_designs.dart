@@ -160,6 +160,7 @@ class GuardianshipManagerView extends StatelessWidget {
 
     if (linksAvailable && ordered.isEmpty) {
       return CustomScrollView(
+        physics: const ScrollPhysics(),
         key: const PageStorageKey('guardianship-manager'),
         slivers: [
           SliverPadding(
@@ -202,6 +203,7 @@ class GuardianshipManagerView extends StatelessWidget {
     }
 
     return ListView(
+      physics: const ScrollPhysics(),
       key: const PageStorageKey('guardianship-manager'),
       padding: const EdgeInsets.fromLTRB(20, _managerPageTopInset, 20, 118),
       children: [

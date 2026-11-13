@@ -864,6 +864,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       );
     }
     return ListView(
+      physics: const ScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
       children: [
         if (unavailable) ...[
@@ -2019,6 +2020,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                 // field is what created the unused one.
                 children: [
                   ListView(
+                    physics: const ScrollPhysics(),
                     padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
                     children: _journeysChildren(
                       active: active,
@@ -2026,6 +2028,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                     ),
                   ),
                   ListView(
+                    physics: const ScrollPhysics(),
                     padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
                     children: _activityChildren(
                       considered: considered,

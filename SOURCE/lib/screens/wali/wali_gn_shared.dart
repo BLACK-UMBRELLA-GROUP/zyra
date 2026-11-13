@@ -482,6 +482,7 @@ class _GNSeekerSliderState extends State<GNSeekerSlider> {
           child: SizedBox(
             height: listHeight,
             child: ListView.separated(
+              physics: const ScrollPhysics(),
               itemCount: widget.wards.length,
               separatorBuilder: (_, index) =>
                   Divider(height: 1, color: ZyraColors.surfaceBorder),

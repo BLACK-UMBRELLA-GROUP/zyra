@@ -445,6 +445,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         child: SafeArea(
           child: ListView(
+            physics: const ScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 90),
             children: [
               // §1 — the page answers "what can I control?" before it offers

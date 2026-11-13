@@ -320,6 +320,7 @@ class _WaliProfileScreenState extends State<WaliProfileScreen> {
       ),
       child: SafeArea(
         child: ListView(
+          physics: const ScrollPhysics(),
           padding: const EdgeInsets.fromLTRB(24, 20, 24, 100),
           children: [
             Row(

@@ -838,6 +838,7 @@ class _SettingsPage extends StatelessWidget {
             child: KeyedSubtree(
               key: ValueKey('concept_settings_scroll_$id'),
               child: ListView(
+                physics: const ScrollPhysics(),
                 key: id.startsWith('overview_')
                     ? const ValueKey('concept_account_action_scroll')
                     : null,

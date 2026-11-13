@@ -429,6 +429,7 @@ class _ZyraCompatibilityResultQuickCheckState
                         if (items != null) ...[
                           Expanded(
                             child: ListView(
+                              physics: const ScrollPhysics(),
                               children: [
                                 for (final group in _CheckGroup.values)
                                   if (items.any(

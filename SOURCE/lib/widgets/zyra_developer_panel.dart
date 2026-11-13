@@ -163,7 +163,6 @@ class _DeveloperPanelState extends State<_DeveloperPanel> {
                     Flexible(
                       child: SingleChildScrollView(
                         primary: false,
-                        physics: const BouncingScrollPhysics(),
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: ValueListenableBuilder(
                           valueListenable: widget.values,

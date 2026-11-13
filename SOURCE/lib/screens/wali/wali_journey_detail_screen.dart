@@ -806,6 +806,7 @@ class _WaliJourneyDetailScreenState extends State<WaliJourneyDetailScreen> {
           child: _loading
               ? const ZyraLoading()
               : ListView(
+                  physics: const ScrollPhysics(),
                   padding: const EdgeInsets.fromLTRB(20, 8, 20, 40),
                   children: [
                     Container(

@@ -248,6 +248,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
         ),
         child: SafeArea(
           child: ListView(
+            physics: const ScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(24, 12, 24, 40),
             children: [
               Text(

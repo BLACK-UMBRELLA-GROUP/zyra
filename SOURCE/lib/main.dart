@@ -751,9 +751,9 @@ class _NativeIdentityBlocked extends StatelessWidget {
 
 /// No overscroll indicator, anywhere.
 ///
-/// Bouncing physics on every platform, so the page still gives when pulled —
-/// the give is the feedback, and the painted glow was only ever a second,
-/// uglier way of saying the same thing.
+/// Bouncing physics on every platform for content that can scroll.
+/// Controllerless vertical ScrollViews pass ScrollPhysics explicitly to
+/// inherit this behavior without Flutter making short content draggable.
 class _ZyraScrollBehavior extends MaterialScrollBehavior {
   const _ZyraScrollBehavior();
 

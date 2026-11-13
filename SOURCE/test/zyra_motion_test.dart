@@ -210,47 +210,50 @@ void main() {
     },
   );
 
-  testWidgets(
-    'short lists bounce while edge Back still closes the route once',
-    (tester) async {
-      var backs = 0;
-      await tester.pumpWidget(
-        MaterialApp(
-          scrollBehavior: _TestScrollBehavior(),
-          home: Scaffold(
-            body: ZyraPullDownBackScope(
-              routeIdentity: 'test',
-              onBack: () => backs++,
-              child: ListView(
-                key: _listKey,
-                children: const [SizedBox(height: 30)],
-              ),
+  testWidgets('short lists stay still while edge Back still works', (
+    tester,
+  ) async {
+    var backs = 0;
+    await tester.pumpWidget(
+      MaterialApp(
+        scrollBehavior: _TestScrollBehavior(),
+        home: Scaffold(
+          body: ZyraPullDownBackScope(
+            routeIdentity: 'test',
+            onBack: () => backs++,
+            child: ListView(
+              key: _listKey,
+              physics: const ScrollPhysics(),
+              children: const [SizedBox(height: 30)],
             ),
           ),
         ),
-      );
-      final position = tester
-          .state<ScrollableState>(
-            find.descendant(
-              of: find.byKey(_listKey),
-              matching: find.byType(Scrollable),
-            ),
-          )
-          .position;
-      expect(position.maxScrollExtent, 0);
+      ),
+    );
+    final position = tester
+        .state<ScrollableState>(
+          find.descendant(
+            of: find.byKey(_listKey),
+            matching: find.byType(Scrollable),
+          ),
+        )
+        .position;
+    expect(position.maxScrollExtent, 0);
+    for (final step in [40.0, -40.0]) {
       final drag = await tester.startGesture(
         tester.getCenter(find.byKey(_listKey)),
       );
-      await drag.moveBy(const Offset(0, 100));
+      await drag.moveBy(Offset(0, step));
+      await drag.moveBy(Offset(0, step));
       await tester.pump();
-      expect(position.pixels, lessThan(0));
+      expect(position.pixels, 0);
       await drag.up();
       await tester.pumpAndSettle();
-      expect(position.pixels, closeTo(0, .01));
-      expect(backs, 0);
-      await tester.dragFrom(const Offset(2, 260), const Offset(290, 0));
-      await tester.pumpAndSettle();
-      expect(backs, 1);
-    },
-  );
+      expect(position.pixels, 0);
+    }
+    expect(backs, 0);
+    await tester.dragFrom(const Offset(2, 260), const Offset(290, 0));
+    await tester.pumpAndSettle();
+    expect(backs, 1);
+  });
 }

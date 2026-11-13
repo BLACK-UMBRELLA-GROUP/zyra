@@ -603,6 +603,7 @@ class _InitialIdentityCheckScreenState
           const SizedBox(height: 26),
           Expanded(
             child: ListView(
+              physics: const ScrollPhysics(),
               children: [
                 _IconMark(icon: presentation.icon),
                 const SizedBox(height: 22),

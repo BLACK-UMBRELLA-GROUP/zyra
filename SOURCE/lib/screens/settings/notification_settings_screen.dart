@@ -261,6 +261,7 @@ class _NotificationSettingsScreenState
           child: _loading
               ? const ZyraLoading()
               : ListView(
+                  physics: const ScrollPhysics(),
                   padding: const EdgeInsets.fromLTRB(20, 12, 20, 60),
                   children: [
                     if (_error != null) ...[

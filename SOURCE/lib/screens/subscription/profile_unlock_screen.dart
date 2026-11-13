@@ -772,6 +772,7 @@ class _ProfileUnlockScreenState extends State<ProfileUnlockScreen> {
                 child: SafeArea(
                   top: false,
                   child: ListView(
+                    physics: const ScrollPhysics(),
                     padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
                     children: [
                       if (_resultReadFailed)

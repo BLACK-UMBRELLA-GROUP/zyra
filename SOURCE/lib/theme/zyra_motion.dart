@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// LOCK 26 V3 motion shared by swipe tracks and programmatic scrolling.
+/// LOCK 26 motion shared by swipe tracks and scrolling.
 abstract final class ZyraMotion {
   static const duration = Duration(milliseconds: 420);
   static const curve = Cubic(0.22, 1, 0.36, 1);
@@ -29,7 +29,10 @@ abstract final class ZyraMotion {
     );
   }
 
-  static const scrollPhysics = BouncingScrollPhysics(
+  static const scrollPhysics = BouncingScrollPhysics();
+
+  /// Pull-to-refresh must accept a drag even when the list fits the viewport.
+  static const refreshScrollPhysics = BouncingScrollPhysics(
     parent: AlwaysScrollableScrollPhysics(),
   );
 

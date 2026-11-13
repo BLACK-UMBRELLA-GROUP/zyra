@@ -38,6 +38,7 @@ class LegalDocumentScreen extends StatelessWidget {
       body: SafeArea(
         top: false,
         child: ListView(
+          physics: const ScrollPhysics(),
           key: ValueKey('legal_document_${document.name}'),
           padding: const EdgeInsets.fromLTRB(22, 16, 22, 36),
           children: [
