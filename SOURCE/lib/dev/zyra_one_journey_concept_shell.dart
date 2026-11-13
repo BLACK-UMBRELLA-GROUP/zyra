@@ -280,6 +280,7 @@ class _ZyraOneJourneyConceptShellState
   final _circleReadMessageKeys = <String>{};
   final _circleTabSeenKeys = <String>{};
   final _circleMuteKeys = <ZyraCirclePreviewMuteKey>{};
+  ZyraCircleMainUnreadHint? _pendingMainUnreadOnEntry;
   final _circleArrivals = ValueNotifier<ZyraGuardianCirclePreviewData?>(null);
   int _browseIndex = 1;
   // Session-only viewing order, never a visibility or request permission.
@@ -860,6 +861,7 @@ class _ZyraOneJourneyConceptShellState
       };
 
   void _restoreCheckpoint(ZyraPreviewNavigationCheckpoint saved) {
+    _pendingMainUnreadOnEntry = null;
     _guardianCompatibilityTarget = null;
     _guardianJourneyAttemptRevision = null;
     _myZyraQuickAccessPage = null;
@@ -1346,6 +1348,7 @@ class _ZyraOneJourneyConceptShellState
       _browseOptionsOpen = false;
       _browseOptionsPersonId = null;
       _hiddenProfileRestore = null;
+      if (!preserveCircle) _pendingMainUnreadOnEntry = null;
       change();
       if (wasMyZyra && !_activityRoot) _dismissWelcomeBack();
       if (_tab != 2 ||
@@ -1370,6 +1373,7 @@ class _ZyraOneJourneyConceptShellState
       }
       _uiRevision++;
       if (!preserveCircle) _circleScopeRevision++;
+      if (_page != 'guardian_circle') _pendingMainUnreadOnEntry = null;
       _circleVisibility.value = _page == 'guardian_circle';
     });
     _publishCheckpoint();
@@ -1812,6 +1816,7 @@ class _ZyraOneJourneyConceptShellState
       if (!keepDialog) _uiRevision++;
       _circleScopeRevision++;
       _circleEntryView = null;
+      _pendingMainUnreadOnEntry = null;
       _circleVisibility.value = _page == 'guardian_circle';
     });
     if (confirm != null && confirm.isActive) {
@@ -6285,17 +6290,35 @@ class _ZyraOneJourneyConceptShellState
         !data.validFor(data.seekerId, viewerIsSeeker: !_guardianRole)) {
       return;
     }
-    _rememberCircleReads(
-      data,
-      data.messages.where(
-        (message) =>
-            message.unreadForMe &&
-            data.chatFor(message) == ZyraCircleDiscussionTopic.general.id,
-      ),
+    final reads = data.messages.where(
+      (message) =>
+          message.unreadForMe &&
+          data.chatFor(message) == ZyraCircleDiscussionTopic.general.id,
     );
+    ZyraFamilyMessage? firstUnread;
+    for (final message in reads) {
+      if (message.senderId != null &&
+          message.senderId != data.senderId &&
+          !message.lifecycle &&
+          (firstUnread == null ||
+              message.createdAt.isBefore(firstUnread.createdAt))) {
+        firstUnread = message;
+      }
+    }
+    if (firstUnread case final message?) {
+      _pendingMainUnreadOnEntry = (
+        seekerId: data.seekerId,
+        viewerId: data.senderId,
+        messageId: message.id,
+        senderId: message.senderId!,
+      );
+    }
+    _rememberCircleReads(data, reads);
   }
 
   Widget _guardianCircle() {
+    final mainUnreadOnEntry = _pendingMainUnreadOnEntry;
+    _pendingMainUnreadOnEntry = null;
     if (_guardianRole && !_conceptHassanLinked) return _unavailable();
     if (_circleEntryView != null &&
         _circleEntryRevision == _circleScopeRevision) {
@@ -6426,6 +6449,7 @@ class _ZyraOneJourneyConceptShellState
     final topicsPreview = ZyraCircleTopicsPreview(
       arrivals: _circleArrivals,
       mutedChats: _circleMuteKeys,
+      mainUnreadOnEntry: mainUnreadOnEntry,
       onRead: (messages) {
         if (!current()) return;
         _rememberCircleReads(data, messages);

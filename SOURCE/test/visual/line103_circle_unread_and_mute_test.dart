@@ -5,6 +5,7 @@ import 'package:zyra/dev/zyra_circle_topics_presentation.dart';
 import 'package:zyra/dev/zyra_conversation_unread_badge.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'package:zyra/screens/wali/family_messaging_screens.dart';
 import 'package:zyra/services/zyra_family_messaging_service.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 import 'package:zyra/widgets/zyra_focus_dashboard.dart';
@@ -14,6 +15,9 @@ import 'baseline_capture_support.dart';
 
 const _evidence = '../REPORTS/EVIDENCE/OA-ZYRA-317_LINE103_2026-11-12';
 const _capture = bool.fromEnvironment('ZYRA_LINE103_CAPTURE');
+const _dividerEvidence =
+    '../REPORTS/EVIDENCE/OA-ZYRA-317_LINE103_MAIN_DIVIDER_2026-11-13';
+const _captureDivider = bool.fromEnvironment('ZYRA_LINE103_DIVIDER_CAPTURE');
 const _past0 = 'draft-circle-past-0';
 const _past1 = 'draft-circle-past-1';
 const _past3 = 'draft-circle-past-3';
@@ -22,6 +26,35 @@ Finder _circle(String id) => find.byKey(ValueKey('circle_topics_$id'));
 
 ZyraCircleTopicsPresentation _topics(WidgetTester t) =>
     t.widget(find.byType(ZyraCircleTopicsPresentation));
+
+Future<void> _expectMainDivider(WidgetTester t, String? id) async {
+  final divider = find.text('UNREAD MESSAGES');
+  final topics = _topics(t);
+  expect(topics.unreadDividerId, id);
+  if (id == null) {
+    expect(divider, findsNothing);
+    return;
+  }
+  final controller = topics.scrollController;
+  final offset = controller.offset;
+  if (divider.evaluate().isEmpty) {
+    await t.scrollUntilVisible(
+      divider,
+      -200,
+      scrollable: find.byWidgetPredicate(
+        (widget) => widget is Scrollable && widget.controller == controller,
+      ),
+    );
+  }
+  final firstUnread = find.text('Circle delivery $id');
+  expect(divider, findsOneWidget);
+  expect(firstUnread, findsOneWidget);
+  expect(t.getBottomLeft(divider).dy, lessThan(t.getTopLeft(firstUnread).dy));
+  if (controller.offset != offset) {
+    controller.jumpTo(offset);
+    await t.pump();
+  }
+}
 
 ZyraConversationUnreadCount? _badge(WidgetTester t, String id) => t
     .widgetList<ZyraConversationUnreadCount>(
@@ -47,6 +80,10 @@ class _Scenario {
   final bool guardian;
   final BaselineHarness h;
 
+  String get viewer => guardian ? 'draft-guardian-hassan' : 'draft-self';
+  String get sender => guardian ? 'draft-self' : 'draft-guardian-hassan';
+  String readKey(String id) => 'draft-self:$viewer:$id:$sender';
+
   Future<void> addAndRefresh(
     List<ZyraFamilyMessage> arrivals,
     String id, {
@@ -65,7 +102,7 @@ class _Scenario {
     bool unread = true,
   }) => ZyraFamilyMessage(
     id: id,
-    senderId: guardian ? 'draft-self' : 'draft-guardian-hassan',
+    senderId: sender,
     senderFirstName: guardian ? 'Adam' : 'Hassan',
     body: 'Circle delivery $id',
     createdAt: DateTime.utc(2026, 11, 12, 12, minute),
@@ -94,11 +131,115 @@ class _Scenario {
 }
 
 void main() {
-  setUpAll(() => baselineSetUp(evidenceRoot: _capture ? _evidence : null));
+  setUpAll(
+    () => baselineSetUp(
+      evidenceRoot: _captureDivider
+          ? _dividerEvidence
+          : (_capture ? _evidence : null),
+    ),
+  );
   tearDownAll(baselineTearDown);
 
   for (final guardian in [false, true]) {
     final role = guardian ? 'Guardian' : 'Seeker';
+    testWidgets(
+      '$role Main entry keeps its first unread divider until reopening',
+      (t) async {
+        addTearDown(t.view.resetPhysicalSize);
+        addTearDown(t.view.resetDevicePixelRatio);
+        DateTime clock() => DateTime.utc(2026, 11, 12, 12);
+        final arrivals = <ZyraFamilyMessage>[];
+        final h = BaselineHarness(
+          t,
+          group: 'line103_${role}_main_entry',
+          outputRoot: _dividerEvidence,
+          evidenceRoot: _dividerEvidence,
+          flatOutput: true,
+          circleArrivalsFor: (seeker, viewer) =>
+              seeker == 'draft-self' &&
+                  viewer == (guardian ? 'draft-guardian-hassan' : 'draft-self')
+              ? arrivals
+              : const [],
+        );
+        final scenario = _Scenario(guardian, h);
+        arrivals.addAll([
+          scenario.delivery('main-later', minute: 6),
+          scenario.delivery('main-first', minute: 4),
+          scenario.delivery('main-already-read', minute: 1, unread: false),
+        ]);
+        await h.mount(
+          guardian: guardian,
+          tab: 3,
+          previewClock: clock,
+          receivedRequest: false,
+        );
+        if (guardian) await h.tap('guardian_seeker_0');
+        final entry = guardian
+            ? 'guardian_circle'
+            : 'guardian-family-messages-top';
+        expect(h.latest.circleReadMessageKeys, isEmpty);
+        await h.tap(entry);
+        h.assertPage('guardian_circle');
+        final reads = {
+          scenario.readKey('main-first'),
+          scenario.readKey('main-later'),
+        };
+        expect(h.latest.circleReadMessageKeys, reads);
+        final reader = t.widget<ZyraGuardianCircleScreen>(
+          find.byType(ZyraGuardianCircleScreen),
+        );
+        expect(
+          reader.previewData!.messages.every((m) => !m.unreadForMe),
+          isTrue,
+        );
+        await _expectMainDivider(t, 'main-first');
+        if (_captureDivider) {
+          await h.capture(
+            'circle',
+            '${role.toLowerCase()}_main',
+            'unread_divider',
+            'Main opened through the Founder preview.',
+          );
+        }
+
+        await scenario.addAndRefresh(arrivals, 'main-arrived-open', minute: 3);
+        expect(find.text('Circle delivery main-arrived-open'), findsOneWidget);
+        expect(h.latest.circleReadMessageKeys, {
+          ...reads,
+          scenario.readKey('main-arrived-open'),
+        });
+        await _expectMainDivider(t, 'main-first');
+
+        await scenario.back();
+        await h.tap(entry);
+        h.assertPage('guardian_circle');
+        await _expectMainDivider(t, null);
+
+        await h.mount(
+          guardian: guardian,
+          checkpoint: h.latest,
+          previewClock: clock,
+        );
+        h.assertPage('guardian_circle');
+        await _expectMainDivider(t, null);
+
+        await scenario.back();
+        await scenario.addAndRefresh(arrivals, 'main-new-entry', minute: 10);
+        await h.tap(entry);
+        await _expectMainDivider(t, 'main-new-entry');
+        final withdrawn = arrivals.removeLast();
+        h.shellFixture.circleArrivalsChanged();
+        await h.flush();
+        await _expectMainDivider(t, null);
+        arrivals.add(withdrawn);
+        h.shellFixture.circleArrivalsChanged();
+        await h.flush();
+        expect(find.text('Circle delivery main-new-entry'), findsOneWidget);
+        await _expectMainDivider(t, null);
+      },
+      variant: TargetPlatformVariant.only(TargetPlatform.iOS),
+    );
+
     testWidgets(
       '$role sees topic counts, Past order, read clearing and mute scope',
       (t) async {
@@ -133,8 +274,8 @@ void main() {
         final noor = _past(_past1, 'Noor');
         final zainab = _past(_past3, 'Zainab');
         arrivals.addAll([
-          scenario.delivery('main'),
-          scenario.delivery('active', topic: journey, minute: 1),
+          scenario.delivery('main', minute: 1),
+          scenario.delivery('active', topic: journey),
           scenario.delivery('elif', topic: elif, minute: 2),
           for (var i = 0; i < 10; i++)
             scenario.delivery('zainab-$i', topic: zainab, minute: 4 + i),
@@ -163,7 +304,8 @@ void main() {
         expect(_badge(t, activeKey)?.count, 1);
         expect(_badge(t, 'past')?.count, 12);
         expect(find.text('9+'), findsOneWidget);
-        expect(h.latest.circleReadMessageKeys, hasLength(1));
+        expect(h.latest.circleReadMessageKeys, {scenario.readKey('main')});
+        await _expectMainDivider(t, 'main');
         await scenario.screenshot('${role.toLowerCase()}_tab_totals');
 
         await scenario.tap('past');
@@ -235,10 +377,12 @@ void main() {
         await scenario.tap(activeKey);
         expect(_badge(t, activeKey), isNull);
         expect(_topics(t).messages.single.message.id, 'active');
+        expect(_topics(t).unreadDividerId, 'active');
         await scenario.tap('menu');
         expect(find.text('Mute ${journey.firstName}’s chat'), findsOneWidget);
         await scenario.tap('done');
         await scenario.tap('all');
+        await _expectMainDivider(t, null);
         await scenario.tap('menu');
         expect(find.text('Mute the Main chat'), findsOneWidget);
         await scenario.tap('mute_chat');
@@ -305,6 +449,11 @@ void main() {
             circleMuteKeys: saved.circleMuteKeys,
           ),
         );
+        await _expectMainDivider(t, 'muted-main');
+        expect(h.latest.circleReadMessageKeys, {
+          ...saved.circleReadMessageKeys,
+          scenario.readKey('muted-main'),
+        });
         await scenario.tap('past');
         expect(_badge(t, 'past_$_past3')?.muted, isTrue);
         await scenario.tap('past_$_past3');

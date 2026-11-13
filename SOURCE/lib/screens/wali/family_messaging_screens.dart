@@ -285,7 +285,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
   ZyraCircleDiscussionTopic? _topicsSelection;
   bool _topicsPast = false;
   final _topicReadIds = <(String, String?)>{};
-  String? _topicUnreadDividerId;
+  ({String messageId, String? senderId})? _topicUnreadDivider;
   Set<String> _topicsSourceIds = {};
   String? _topicsToast;
   Timer? _topicsToastTimer;
@@ -531,6 +531,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
       _discussionTopic = null;
       _discussionMessageTags.clear();
       _discussionMarkers.clear();
+      _topicUnreadDivider = null;
       _topicPickRequest++;
       _messageReferenceEpoch++;
     });
@@ -1036,7 +1037,32 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
           if (_topicsEnabled) {
             _topicsSourceIds = data.messages.map((m) => m.id).toSet();
             _setTopicsMessageTags(data);
-            _readTopics();
+            // Main receipts are already recorded by the shell. Use its
+            // display hint only on the initial load of this route.
+            final hint = _topics!.mainUnreadOnEntry;
+            if (request == 1 &&
+                hint != null &&
+                hint.seekerId == data.seekerId &&
+                hint.viewerId == data.senderId &&
+                hint.senderId != data.senderId &&
+                data.participants.any(
+                  (person) => person.userId == hint.senderId,
+                ) &&
+                _messages.any(
+                  (message) =>
+                      message.id == hint.messageId &&
+                      message.senderId == hint.senderId &&
+                      !message.unreadForMe &&
+                      !message.lifecycle &&
+                      _topicFor(message) ==
+                          ZyraCircleDiscussionTopic.general.id,
+                )) {
+              _topicUnreadDivider = (
+                messageId: hint.messageId,
+                senderId: hint.senderId,
+              );
+            }
+            _readTopics(preserveDivider: request == 1);
           }
         });
         return;

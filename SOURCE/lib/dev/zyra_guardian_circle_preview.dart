@@ -15,6 +15,14 @@ typedef ZyraCirclePreviewMuteKey = (
   String? chatId,
 );
 
+/// Identity of the Main divider for one entry after the shell records reads.
+typedef ZyraCircleMainUnreadHint = ({
+  String seekerId,
+  String viewerId,
+  String messageId,
+  String senderId,
+});
+
 /// Immutable caller-owned examples for the retained Circle presentation.
 /// These values are never a link, membership, identity or server grant.
 class ZyraGuardianCirclePreviewData {
@@ -151,6 +159,7 @@ class ZyraCircleTopicsPreview {
     this.onRead,
     this.arrivals,
     this.onMuteChanged,
+    this.mainUnreadOnEntry,
     Set<ZyraCirclePreviewMuteKey>? mutedChats,
     Map<String, ZyraCircleDiscussionTopic> messageTopics = const {},
   }) : mutedChats = mutedChats ?? {},
@@ -168,6 +177,7 @@ class ZyraCircleTopicsPreview {
   final ValueChanged<List<ZyraFamilyMessage>>? onRead;
   final ValueListenable<ZyraGuardianCirclePreviewData?>? arrivals;
   final VoidCallback? onMuteChanged;
+  final ZyraCircleMainUnreadHint? mainUnreadOnEntry;
   final Set<ZyraCirclePreviewMuteKey> mutedChats;
 
   /// Labels already carried by this admitted transcript. These never add a

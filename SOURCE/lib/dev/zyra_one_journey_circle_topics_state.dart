@@ -93,15 +93,18 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
 
   void _readTopics({bool preserveDivider = false}) {
     if (_topicsPast && _topicsSelection == null || _selectedPastUnavailable) {
-      _topicUnreadDividerId = null;
+      _topicUnreadDivider = null;
       return;
     }
     final id = _topicsSelection?.id ?? ZyraCircleDiscussionTopic.general.id;
     final read =
         _messages.where((m) => _topicFor(m) == id && _topicUnread(m)).toList()
           ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
-    if (!preserveDivider || _topicUnreadDividerId == null) {
-      _topicUnreadDividerId = read.firstOrNull?.id;
+    if (!preserveDivider || _topicUnreadDivider == null) {
+      final first = read.firstOrNull;
+      _topicUnreadDivider = first == null
+          ? null
+          : (messageId: first.id, senderId: first.senderId);
     }
     if (read.isEmpty) return;
     _topicReadIds.addAll(read.map((message) => (message.id, message.senderId)));
@@ -153,6 +156,18 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
         ...data.messages,
         ...local.where((m) => !_topicsSourceIds.contains(m.id)),
       ];
+      final divider = _topicUnreadDivider;
+      final chat = _topicsSelection?.id ?? ZyraCircleDiscussionTopic.general.id;
+      if (divider != null &&
+          !_messages.any(
+            (message) =>
+                message.id == divider.messageId &&
+                message.senderId == divider.senderId &&
+                !message.lifecycle &&
+                _topicFor(message) == chat,
+          )) {
+        _topicUnreadDivider = null;
+      }
       if (routeVisible) {
         _readTopics(preserveDivider: true);
         _topicsLaidOut = false;
@@ -313,7 +328,7 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
                 showPast: past.isNotEmpty,
                 mainUnread: unread[ZyraCircleDiscussionTopic.general.id] ?? 0,
                 mainMuted: _topicMuted(ZyraCircleDiscussionTopic.general.id),
-                unreadDividerId: _topicUnreadDividerId,
+                unreadDividerId: _topicUnreadDivider?.messageId,
                 canSendNow: () =>
                     _canSend &&
                     !_sending &&
