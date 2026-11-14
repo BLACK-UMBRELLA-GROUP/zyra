@@ -1,0 +1,55 @@
+{
+  "result": "Preview verification passed",
+  "measurements": {
+    "430×932": "All four role and plan combinations fit; 0 px scroll extent and no movement during vertical drags.",
+    "375×667": "Seeker and Guardian One scroll in master-aligned captures. Real iOS-inset tests verify that Sign out is reachable.",
+    "all": "16 pt from the Sign out card to the shared tab bar at rest or at the scroll endpoint. Avatar 84 pt; header pills 34 pt with at least 44 pt tap targets; rows at least 44 pt, card gaps 12 pt.",
+    "large_text": "Pills wrap and the page scrolls at 200%. One-line content can ellipsize and keeps its full accessibility label."
+  },
+  "visual_review": {
+    "comparisons": 8,
+    "additional_large_text_frames": 4,
+    "differences": [
+      "Shared Flutter tab title, avatar placeholder, card surface/shadows, icon glyphs and tab bar artwork differ from the V229 prototype.",
+      "The prototype reserves 22 pt below the tab bar at both sizes. The app uses shared iOS safe-area spacing. Captures use the master inset, and tests separately check the real iOS inset."
+    ],
+    "review_owner": "ZYRA design review and Founder device observation remain pending under OA-ZYRA-317."
+  },
+  "tests": {
+    "route": "SOURCE/tooling/no_git_driver.mjs flutter test --no-pub",
+    "scoped": {
+      "passes": 119,
+      "suites": [
+        "test/profile_tab_monogram_contract_test.dart",
+        "test/one_journey_current_presentation_test.dart",
+        "test/retained_account_routes_test.dart",
+        "test/profile_action_subtitle_removal_test.dart",
+        "test/visual/lock24_tab_spacing_test.dart",
+        "test/visual/lock26_v4_still_pages_test.dart",
+        "test/visual/lock19_v3_family_acceptance_test.dart",
+        "test/visual/line104_own_photo_test.dart",
+        "test/visual/profile_tab_monogram_capture_test.dart"
+      ]
+    },
+    "account_route": {
+      "passes": 1,
+      "suite": "test/view_request_draft_widget_test.dart",
+      "name": "shared account widgets and My ZYRA keep sample destinations local"
+    },
+    "analyze": "Nine changed Dart files; no issues.",
+    "format": "Nine changed Dart files; no changes required.",
+    "protected_driver": "Five SDK pins and both immediate and inherited process-execution denials passed.",
+    "known_wider_failures": {
+      "tracking": "OA-ZYRA-348; PRODUCT/APPROVED/TEST_CLEANUP/BUILT/R2/FINAL_FAILURES.json, Q66",
+      "cases": [
+        "preview exposes no Pause; End stays deliberate, retains history and reset is draft-only",
+        "fresh whole-app real-font candidates are not approval_compact200_final"
+      ],
+      "observed": "Journey Options Cancel retained its page; compact Guardian View/Chat row overflowed by 2 pt."
+    }
+  },
+  "entry": "Protected Founder preview, Profile tab, both roles and both plans.",
+  "data_and_routes": "The admitted shell supplies avatar, role, plan, Guardian links, Family place payer and local Unlock balance. Existing handlers still own every route and action.",
+  "migrations": [],
+  "backend_apply": false
+}

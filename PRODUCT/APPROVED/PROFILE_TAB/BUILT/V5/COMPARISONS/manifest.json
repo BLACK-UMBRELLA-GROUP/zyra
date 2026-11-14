@@ -1,0 +1,98 @@
+[
+  {
+    "state": "p11_seeker_one__one_screen",
+    "master_px": [
+      1290,
+      2796
+    ],
+    "preview_px": [
+      1290,
+      2796
+    ],
+    "comparison": "p11_seeker_one__one_screen__comparison.png"
+  },
+  {
+    "state": "p12_seeker_basic__one_screen",
+    "master_px": [
+      1290,
+      2796
+    ],
+    "preview_px": [
+      1290,
+      2796
+    ],
+    "comparison": "p12_seeker_basic__one_screen__comparison.png"
+  },
+  {
+    "state": "p13_guardian_one__one_screen",
+    "master_px": [
+      1290,
+      2796
+    ],
+    "preview_px": [
+      1290,
+      2796
+    ],
+    "comparison": "p13_guardian_one__one_screen__comparison.png"
+  },
+  {
+    "state": "p14_guardian_basic__one_screen",
+    "master_px": [
+      1290,
+      2796
+    ],
+    "preview_px": [
+      1290,
+      2796
+    ],
+    "comparison": "p14_guardian_basic__one_screen__comparison.png"
+  },
+  {
+    "state": "p15_seeker_one__small_phone_top",
+    "master_px": [
+      750,
+      1334
+    ],
+    "preview_px": [
+      750,
+      1334
+    ],
+    "comparison": "p15_seeker_one__small_phone_top__comparison.png"
+  },
+  {
+    "state": "p15_seeker_one__small_phone_end",
+    "master_px": [
+      750,
+      1334
+    ],
+    "preview_px": [
+      750,
+      1334
+    ],
+    "comparison": "p15_seeker_one__small_phone_end__comparison.png"
+  },
+  {
+    "state": "p16_guardian_one__small_phone_top",
+    "master_px": [
+      750,
+      1334
+    ],
+    "preview_px": [
+      750,
+      1334
+    ],
+    "comparison": "p16_guardian_one__small_phone_top__comparison.png"
+  },
+  {
+    "state": "p16_guardian_one__small_phone_end",
+    "master_px": [
+      750,
+      1334
+    ],
+    "preview_px": [
+      750,
+      1334
+    ],
+    "comparison": "p16_guardian_one__small_phone_end__comparison.png"
+  }
+]

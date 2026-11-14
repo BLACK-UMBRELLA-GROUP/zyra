@@ -1,0 +1,26 @@
+{
+  "queue": 115,
+  "lock": "21 V5",
+  "question": 145,
+  "authority": [
+    "DR-ZYRA-351",
+    "AD-AIOS-115",
+    "OA-ZYRA-317"
+  ],
+  "source_commit": "89052a74c8d8589e66d890a16e58484aed545e5a",
+  "baseline_commit": "7ea9792",
+  "flutter": "3.44.2",
+  "mode": "protected no-Git Flutter widget-test render, Founder preview",
+  "timestamp_utc": "2026-11-14T12:37:39.480256+00:00",
+  "live": false,
+  "iphone_install": false,
+  "brief": "PRODUCT/APPROVED/PROFILE_TAB/BRIEFS/BUILD_BRIEF_2026-11-13_ONE_SCREEN.md",
+  "spec": "PRODUCT/APPROVED/PROFILE_TAB/RECORD/PROFILE_TAB_SPEC_CURRENT_VERSION_V5.md §8",
+  "lock_record": "PRODUCT/APPROVED/PROFILE_TAB/RECORD/LOCK_RECORD.md",
+  "prototype": "V229",
+  "masters": "PRODUCT/APPROVED/PROFILE_TAB/MASTERS/p11–p16",
+  "source": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+  "screenshots": "MANIFEST.json",
+  "comparisons": "COMPARISONS/manifest.json",
+  "verification": "QA.json"
+}
