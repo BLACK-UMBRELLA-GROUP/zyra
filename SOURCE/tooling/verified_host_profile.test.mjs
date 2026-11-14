@@ -1,8 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {machoPayload, sameNativePayload, validSourcePath, requiredNativeInputs, flutterAssembleArgs, isWildcardRerunMarker, classifyCompilerDependency, verifyWildcardRerunRecords, singleArm64FatAsset, sameSingleArm64FatAssetPayload, sameUnusedNativeAssetRequirements, validateAotFrameworkPayload} from './verified_host_profile.mjs';
+import {machoPayload, sameNativePayload, validSourcePath, requiredNativeInputs, flutterAssembleArgs, isWildcardRerunMarker, classifyCompilerDependency, verifyWildcardRerunRecords, singleArm64FatAsset, sameSingleArm64FatAssetPayload, sameUnusedNativeAssetRequirements, validateAotFrameworkPayload, validateNativeBuildReceipt, measureNativeHost} from './verified_host_profile.mjs';
 
 const source = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const marker = path.join(source, 'DOES_NOT_EXIST_RERUN_FOR_WILDCARD77885537');
@@ -72,7 +73,36 @@ test('source input guard refuses traversal, metadata and private directories', (
     assert.equal(validSourcePath(name), false, name);
   }
   for (const name of ['lib/main.dart', 'assets/fonts/Poppins-Regular.ttf', 'test/example_test.dart',
+    'ios/Runner/ProfileVideoChannel.swift', 'ios/Runner/ProfileVideoMedia.swift',
     ...requiredNativeInputs]) assert.equal(validSourcePath(name), true, name);
+});
+test('fresh native delivery accepts only the exact verified build receipt', () => {
+  const pins = {sourceCommit: 'a'.repeat(40), hostFiles: 177,
+    hostSha256: 'b'.repeat(64), sourceSealSha256: 'c'.repeat(64)};
+  const receipt = {schema: 1, success: true, fullXcodeBuild: true, commitSha: pins.sourceCommit,
+    flutterVersion: '3.44.2', buildMode: 'profile', target: 'ios-arm64 / lib/main.dart / production',
+    timestamp: '2026-11-14T12:00:00Z', artifactSha256: pins.hostSha256, artifactFiles: pins.hostFiles,
+    sourceSealSha256: pins.sourceSealSha256};
+  function checkedRecord(record) {
+    const bytes = Buffer.from(JSON.stringify(record));
+    const buildReceiptSha256 = createHash('sha256').update(bytes).digest('hex');
+    return [bytes, {...pins, buildReceiptSha256}];
+  }
+  const [bytes, approved] = checkedRecord(receipt);
+  assert.doesNotThrow(() => validateNativeBuildReceipt(bytes, approved));
+  assert.throws(() => validateNativeBuildReceipt(Buffer.concat([bytes, Buffer.from('\n')]), approved), /receipt drift/);
+  for (const change of [{success: false}, {fullXcodeBuild: false}, {buildMode: 'release'},
+    {commitSha: '0'.repeat(40)}, {artifactSha256: '0'.repeat(64)}, {artifactFiles: 176},
+    {sourceSealSha256: '0'.repeat(64)}, {timestamp: 'unknown'}]) {
+    assert.throws(() => validateNativeBuildReceipt(...checkedRecord({...receipt, ...change})), /exact successful native/);
+  }
+  assert.throws(() => validateNativeBuildReceipt(...checkedRecord({...receipt, candidate: '/tmp/Runner.app'})), /Unknown plan fields/);
+});
+test('fresh host measurement refuses artifacts outside the protected build path', () => {
+  for (const candidate of [path.join(source, 'Runner.app'), path.join(source, 'build-other/Runner.app'),
+    'build/Runner.app', path.join(source, 'build/NotRunner.app'), `${source}/build/../Runner.app`]) {
+    assert.throws(() => measureNativeHost(candidate), /under SOURCE\/build/);
+  }
 });
 test('genuine assemble receives encoded exact Founder defines and no Xcode configuration', () => {
   const args = flutterAssembleArgs('/owned/products', '/owned', '/Applications/Xcode.app/iPhoneOS.sdk');

@@ -10,7 +10,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Prepare Flutter Framework Script"
-               scriptText = "/bin/sh &quot;$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh&quot; prepare&#10;">
+               scriptText = "if [ &quot;$ZYRA_NO_GIT_ACTIVE&quot; = pinned-v1 ]; then /bin/sh &quot;$SRCROOT/../tooling/zyra_xcode_backend.sh&quot; prepare; else /bin/sh &quot;$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh&quot; prepare; fi&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"

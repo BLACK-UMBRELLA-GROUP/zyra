@@ -1,6 +1,6 @@
 // Contained Dart-only PROFILE payload build using an exact measured native host.
 // Uses the existing protected signing flow and the cached profile SDK.
-// The native Xcode route is independent of this Dart-only build.
+// The native Xcode route verifies and delivers a separately built signed app.
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -23,6 +23,19 @@ const team = '9Y7Z8F36SJ';
 const profileHash = '1af45878575c7449b427169878ace2caae4d39be5425fe54e1906fe6415b96d7';
 const engine = 'bin/cache/artifacts/engine/ios-profile/Flutter.xcframework/ios-arm64/Flutter.framework/Flutter';
 const enginePayloadHash = 'eb7bfa2968b9005682fcf7506f5ddcbcea9d35c5551d7f55542f10d95022832a';
+// Line 84 stays held until the build owner records the exact checked artifacts.
+const nativePins = Object.freeze({
+  hostPath: 'build/ios/line84-native-2026-11-14/products/Runner.app',
+  hostSha256: '5f23cefddc203308da3f354eda8580437355134b627c604d6548b2d9e42bec88',
+  hostFiles: 179,
+  profileSha256: '1af45878575c7449b427169878ace2caae4d39be5425fe54e1906fe6415b96d7',
+  sourceCommit: '12fcf8f8306cf1895b020973e9d1d60e61db9fa8',
+  sourceSealSha256: '28697bc19f08744319ded0c701a66cf02d7cd2a2570f77ef57986e87dfe58c98',
+  nativeInputsSha256: '44d99a483c5dc9bef5fca470e52df633e0476ebb2640f6ccd875dc266aa6460d',
+  buildReceiptSha256: 'c69a57b7a141a9db16a731cc9bf6a31fc1554539fff33f1cd4b92cd7eeb5a1ec',
+});
+const nativePacketName = 'ZYRA_LINE84_2026_11_14';
+const nativeTarget = 'ios-arm64 / lib/main.dart / production';
 const sdkPins = {
   'bin/cache/dart-sdk/bin/dart': '3760a76d390be872c4b4a44a5d045f06183bc21b191b98c8f1e26bc9b1d65d20',
   'bin/cache/flutter_tools.snapshot': '13abc665bbccfaf78f1357ada1818adf27ed05663a1d3c4519da5b89e3ea0f1a',
@@ -75,6 +88,11 @@ export const requiredNativeInputs = [
   'ios/Flutter/Profile.xcconfig', 'ios/Flutter/Profile-production.xcconfig',
   'ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Package.swift',
 ];
+const freshHostNativeInputs = [
+  'ios/Runner/ProfileVideoChannel.swift', 'ios/Runner/ProfileVideoMedia.swift',
+  'tooling/zyra_xcode_backend.sh', 'tooling/zyra_xcode_backend.dart',
+  'tooling/no_git.sb', 'tooling/sdk_pins.json',
+];
 const sha = buffer => crypto.createHash('sha256').update(buffer).digest('hex');
 const readJson = file => JSON.parse(fs.readFileSync(file, 'utf8'));
 const sortedJson = object => JSON.stringify(Object.fromEntries(Object.entries(object).sort(([a], [b]) => a.localeCompare(b))));
@@ -98,7 +116,7 @@ export function validSourcePath(relative) {
   if (typeof relative !== 'string' || path.isAbsolute(relative) || relative.includes('\\') ||
       relative.split('/').some(part => !part || part === '.' || part === '..' ||
         part === '.git' || part === 'PRIVATE — API KEYS — DO NOT SYNC')) return false;
-  return /^(?:lib|test|assets|tooling)\//.test(relative) || requiredNativeInputs.includes(relative) ||
+  return /^(?:lib|test|assets|tooling)\//.test(relative) || requiredNativeInputs.includes(relative) || freshHostNativeInputs.includes(relative) ||
     relative === 'run.sh' || /^ios\/Runner\/Assets\.xcassets\//.test(relative);
 }
 function verifyFiles(files) {
@@ -132,6 +150,20 @@ export function publicNativeInventory() {
   const entries = publicInventory('ios/Runner/Assets.xcassets');
   for (const relative of requiredNativeInputs) entries[relative] = sha(fs.readFileSync(sourceFile(relative)));
   return entries;
+}
+export function measureNativeInputs() {
+  const entries = publicNativeInventory();
+  for (const relative of freshHostNativeInputs) entries[relative] = sha(fs.readFileSync(sourceFile(relative)));
+  return sha(Buffer.from(sortedJson(entries)));
+}
+export function nativeSourceSeal(commit) {
+  if (!/^[a-f0-9]{40,64}$/.test(commit)) throw Error('Expected an exact source commit');
+  const files = {
+    ...publicInventory('lib'),
+    ...publicInventory('test', relative => !/^test\/visual\/(?:candidates\/.+\.(?:png|json)|failures\/.+\.png)$/.test(relative)),
+    ...publicInventory('assets'),
+  };
+  return {source, sourceCommit: commit, files: JSON.parse(sortedJson(files))};
 }
 function exactPublicInventory(sealFiles) {
   const localFiles = {};
@@ -167,6 +199,25 @@ function artifactEntries(root) {
   }
   scan(root);
   return Object.fromEntries(Object.entries(entries).sort(([a], [b]) => a.localeCompare(b)));
+}
+
+function assertProtectedHost(candidate) {
+  if (!candidate.startsWith(path.join(source, 'build') + path.sep) || path.resolve(candidate) !== candidate ||
+      path.basename(candidate) !== 'Runner.app') throw Error('Pinned native host must be under SOURCE/build');
+  for (let directory = candidate; directory !== source; directory = path.dirname(directory)) {
+    if (!fs.lstatSync(directory).isDirectory() || fs.realpathSync(directory) !== directory) {
+      throw Error('Pinned native host is not in the protected build directory');
+    }
+  }
+}
+
+export function measureNativeHost(candidate) {
+  assertProtectedHost(candidate);
+  return summarizeHost(artifactEntries(candidate));
+}
+
+function summarizeHost(entries) {
+  return {artifactFiles: Object.keys(entries).length, artifactSha256: sha(Buffer.from(JSON.stringify(entries)))};
 }
 
 // Strict thin arm64 Mach-O: only signing geometry may change. A mutable copy is
@@ -272,26 +323,26 @@ export function sameUnusedNativeAssetRequirements(before, after) {
   const a = unusedAssetRequirementSlice(before), b = unusedAssetRequirementSlice(after);
   return a.prefix.equals(b.prefix) && a.slice.equals(b.slice);
 }
-function verifySdkAndHost() {
+function verifySdkAndHost(pins) {
   if (fs.readFileSync(path.join(tooling, 'no_git.sb'), 'utf8') !== policyText) throw Error('No-Git policy drift');
   for (const [relative, hash] of Object.entries(sdkPins)) {
     if (sha(fs.readFileSync(plainFile(path.join(sdk, relative)))) !== hash) throw Error('Pinned SDK drift: ' + relative);
   }
   const version = readJson(path.join(sdk, 'bin/cache/flutter.version.json'));
   if (version.frameworkVersion !== '3.44.2' || version.channel !== 'stable') throw Error('Unsupported SDK');
-  for (let directory = host; directory !== source; directory = path.dirname(directory)) {
-    if (!fs.lstatSync(directory).isDirectory() || fs.realpathSync(directory) !== directory) {
-      throw Error('Pinned native host is not in the protected build directory');
-    }
-  }
-  const entries = artifactEntries(host);
-  if (Object.keys(entries).length !== hostFileCount || sha(Buffer.from(JSON.stringify(entries))) !== hostHash) {
+  const checkedHost = pins ? path.join(source, pins.hostPath) : host;
+  assertProtectedHost(checkedHost);
+  const entries = artifactEntries(checkedHost);
+  const measured = summarizeHost(entries);
+  if (measured.artifactFiles !== (pins?.hostFiles ?? hostFileCount) ||
+      measured.artifactSha256 !== (pins?.hostSha256 ?? hostHash)) {
     throw Error('Measured native host file list/content drift');
   }
-  if (entries['embedded.mobileprovision']?.sha256 !== profileHash) throw Error('Profile drift');
-  if (sha(Buffer.from(sortedJson(publicNativeInventory()))) !== nativeInputHash) throw Error('New native requirement');
+  if (entries['embedded.mobileprovision']?.sha256 !== (pins?.profileSha256 ?? profileHash)) throw Error('Profile drift');
+  const inputsHash = pins ? measureNativeInputs() : sha(Buffer.from(sortedJson(publicNativeInventory())));
+  if (inputsHash !== (pins?.nativeInputsSha256 ?? nativeInputHash)) throw Error('New native requirement');
   const engineBytes = fs.readFileSync(path.join(sdk, engine));
-  const hostEngine = fs.readFileSync(path.join(host, 'Frameworks/Flutter.framework/Flutter'));
+  const hostEngine = fs.readFileSync(path.join(checkedHost, 'Frameworks/Flutter.framework/Flutter'));
   const a = machoPayload(engineBytes), b = machoPayload(hostEngine);
   if (a.rawSha256 !== enginePayloadHash || b.rawSha256 !== enginePayloadHash ||
       a.signatureOffset !== b.signatureOffset || a.signatureSize !== b.signatureSize || !sameNativePayload(engineBytes, hostEngine)) {
@@ -373,9 +424,9 @@ async function checkIdentity(app) {
   if (sha(Buffer.from(entitlements.stdout)) !== hostEntitlementsHash) throw Error('Native entitlements drift');
   return entitlements.stdout;
 }
-async function checkProvision(app) {
+async function verifyProvision(app, expectedHash) {
   const provision = path.join(app, 'embedded.mobileprovision');
-  if (sha(fs.readFileSync(plainFile(provision))) !== profileHash) throw Error('Embedded profile changed');
+  if (sha(fs.readFileSync(plainFile(provision))) !== expectedHash) throw Error('Embedded profile changed');
   const profile = (await command('/usr/bin/security', ['cms', '-D', '-i', provision])).stdout;
   const extract = async (key, format) => (await command('/usr/bin/plutil', ['-extract', key, format, '-o', '-', '-'], profile)).stdout.trim();
   const created = Date.parse(await extract('CreationDate', 'raw'));
@@ -390,7 +441,30 @@ async function checkProvision(app) {
       devices.some(device => typeof device !== 'string' || !/^[a-f0-9-]+$/i.test(device))) {
     throw Error('Provisioning profile expired or has no checked devices');
   }
-  return devices;
+  return {devices, extract};
+}
+async function checkProvision(app) {
+  return (await verifyProvision(app, profileHash)).devices;
+}
+async function checkNativeProvision(app, expectedHash) {
+  const retained = await verifyProvision(host, profileHash);
+  const current = await verifyProvision(app, expectedHash);
+  if (current.devices[0] !== retained.devices[0]) throw Error('Native profile targets a different device');
+  const retainedCertificate = await retained.extract('DeveloperCertificates.0', 'raw');
+  if (!/^[A-Za-z0-9+/]+={0,2}$/.test(retainedCertificate) ||
+      await retained.extract('DeveloperCertificates', 'raw') !== '1' ||
+      await current.extract('DeveloperCertificates', 'raw') !== '1' ||
+      await current.extract('DeveloperCertificates.0', 'raw') !== retainedCertificate) {
+    throw Error('Native profile signing certificate changed');
+  }
+  const applicationId = await retained.extract('Entitlements.application-identifier', 'raw');
+  if (!applicationId || await current.extract('Entitlements.application-identifier', 'raw') !== applicationId) {
+    throw Error('Native profile application identity changed');
+  }
+  // Apple code requirements use SHA-1 for the exact DER leaf certificate.
+  const leaf = crypto.createHash('sha1').update(Buffer.from(retainedCertificate, 'base64')).digest('hex');
+  await command('/usr/bin/codesign', ['--verify', '--strict', `-R=certificate leaf = H"${leaf}"`, app]);
+  return current.devices;
 }
 function verifyRuntimePins(pins) {
   for (const [relative, hash] of Object.entries(pins)) if (sha(fs.readFileSync(path.join(sdk, relative))) !== hash) throw Error('Runtime input drift');
@@ -512,6 +586,14 @@ async function deliver(file, context, measured, originalEntitlements, expectedBu
   };
   await recheckArtifact();
   const profileDevices = await checkProvision(candidate);
+  await recordPhoneDelivery(root, {candidate, profileDevices, recheckArtifact}, {
+    commitSha: receipt.commitSha, artifactSha256: receipt.artifact.sha256,
+    planSha256: context.planHash, buildReceiptSha256: sha(bytes), sourceSealSha256: context.sealHash,
+  });
+}
+
+async function recordPhoneDelivery(root, deliveryArgs, record) {
+  const {profileDevices} = deliveryArgs;
   const phone = await checkVerifiedPhone(profileDevices);
   if (!phone.ready) {
     console.log(JSON.stringify(phone));
@@ -529,23 +611,99 @@ async function deliver(file, context, measured, originalEntitlements, expectedBu
     const directory = path.join(attempts, attempt);
     if (fs.realpathSync(directory) !== directory) throw Error('Linked prior delivery state');
     const prior = readJson(plainFile(path.join(directory, 'DELIVERY.json')));
-    if (prior.buildReceiptSha256 !== expectedBuildReceiptHash || prior.installAttempted !== false) {
+    if (prior.buildReceiptSha256 !== record.buildReceiptSha256 || prior.installAttempted !== false) {
       throw Error('An install was attempted for this candidate. Check its recorded state before any further action.');
     }
   }
   // mkdir with an exclusive sequence prevents two calls from starting the same attempt.
   const work = path.join(attempts, 'attempt-' + (priorAttempts.length + 1));
   fs.mkdirSync(work, {mode: 0o700});
-  const delivery = await deliverVerifiedPhone({candidate, bundleIdentifier: 'app.zyraconnect.zyra', profileDevices, work, recheckArtifact});
+  const delivery = await deliverVerifiedPhone({...deliveryArgs, bundleIdentifier: 'app.zyraconnect.zyra', work});
   const {captureFile, ...safeDelivery} = delivery;
-  const summary = {...safeDelivery, commitSha: receipt.commitSha, artifactSha256: receipt.artifact.sha256,
-    planSha256: context.planHash, buildReceiptSha256: sha(bytes), sourceSealSha256: context.sealHash};
+  const summary = {...safeDelivery, ...record};
   fs.writeFileSync(path.join(work, 'DELIVERY.json'), JSON.stringify(summary, null, 2) + '\n', {flag: 'wx', mode: 0o600});
   console.log(JSON.stringify(summary));
   if (!summary.postVerified) process.exitCode = 1;
 }
+
+export function validateNativeBuildReceipt(bytes, pins) {
+  if (sha(bytes) !== pins.buildReceiptSha256) throw Error('Native build receipt drift');
+  const receipt = JSON.parse(bytes);
+  exactKeys(receipt, ['schema', 'success', 'fullXcodeBuild', 'commitSha', 'flutterVersion', 'buildMode',
+    'target', 'timestamp', 'artifactSha256', 'artifactFiles', 'sourceSealSha256']);
+  if (receipt.schema !== 1 || receipt.success !== true || receipt.fullXcodeBuild !== true ||
+      receipt.commitSha !== pins.sourceCommit || receipt.flutterVersion !== '3.44.2' ||
+      receipt.buildMode !== 'profile' || receipt.target !== nativeTarget ||
+      !Number.isFinite(Date.parse(receipt.timestamp)) || receipt.artifactSha256 !== pins.hostSha256 ||
+      receipt.artifactFiles !== pins.hostFiles || receipt.sourceSealSha256 !== pins.sourceSealSha256) {
+    throw Error('No exact successful native build receipt');
+  }
+}
+
+function verifyNativeBuild(file, pins) {
+  const packet = path.join(reviews, nativePacketName);
+  if (file !== path.join(packet, 'CHECKED_PREBUILD.json') || fs.realpathSync(packet) !== packet) {
+    throw Error('Wrong owned native delivery plan');
+  }
+  const sealBytes = fs.readFileSync(plainFile(file));
+  if (sha(sealBytes) !== pins.sourceSealSha256) throw Error('Native source seal drift');
+  const seal = JSON.parse(sealBytes);
+  exactKeys(seal, ['source', 'sourceCommit', 'files']);
+  const current = nativeSourceSeal(pins.sourceCommit);
+  if (seal.source !== current.source || seal.sourceCommit !== current.sourceCommit ||
+      !seal.files?.['lib/main.dart'] || sortedJson(seal.files) !== sortedJson(current.files)) {
+    throw Error('Checked native application source inventory/content drift');
+  }
+  validateNativeBuildReceipt(fs.readFileSync(plainFile(path.join(packet, 'BUILD.json'))), pins);
+}
+
+async function runNative(mode, file, receiptHash) {
+  if (!nativePins.hostFiles || !/^[a-f0-9]{40,64}$/.test(nativePins.sourceCommit) ||
+      ![nativePins.hostSha256, nativePins.profileSha256, nativePins.nativeInputsSha256, nativePins.sourceSealSha256,
+        nativePins.buildReceiptSha256].every(value => /^[a-f0-9]{64}$/.test(value))) {
+    throw Error('Fresh native host is held until the checked line 84 pins are recorded');
+  }
+  if (mode === 'native-deliver' && receiptHash !== nativePins.buildReceiptSha256) {
+    throw Error('Use the build receipt SHA-256 observed in native-inspect');
+  }
+  const candidate = path.join(source, nativePins.hostPath);
+  let profileDevices;
+  const recheckArtifact = async () => {
+    verifyNativeBuild(file, nativePins);
+    verifySdkAndHost(nativePins);
+    await checkIdentity(candidate);
+    profileDevices = await checkNativeProvision(candidate, nativePins.profileSha256);
+    return true;
+  };
+  await recheckArtifact();
+  if (mode === 'native-inspect') {
+    console.log(JSON.stringify({sourceChecked: true, sourceCommit: nativePins.sourceCommit,
+      hostFiles: nativePins.hostFiles, hostSha256: nativePins.hostSha256, genuineEngineCompatible: true,
+      fullXcodeBuild: true, buildReceiptSha256: nativePins.buildReceiptSha256}));
+    return;
+  }
+  if (mode === 'native-phone-check') {
+    const phone = await checkVerifiedPhone(profileDevices);
+    console.log(JSON.stringify(phone));
+    if (!phone.ready) process.exitCode = 1;
+    return;
+  }
+  await recordPhoneDelivery(path.dirname(candidate), {candidate, profileDevices, recheckArtifact}, {
+    commitSha: nativePins.sourceCommit, artifactSha256: nativePins.hostSha256,
+    buildReceiptSha256: nativePins.buildReceiptSha256, sourceSealSha256: nativePins.sourceSealSha256,
+  });
+}
+
 async function main() {
   const [mode, input, expectedBuildReceiptHash, ...unknown] = process.argv.slice(2);
+  if (['native-inspect', 'native-phone-check', 'native-deliver'].includes(mode)) {
+    if (!input || unknown.length || (mode === 'native-deliver'
+      ? !/^[a-f0-9]{64}$/.test(expectedBuildReceiptHash ?? '') : expectedBuildReceiptHash !== undefined)) {
+      throw Error('Use the exact native CHECKED_PREBUILD.json and supply the observed receipt SHA-256 for native-deliver');
+    }
+    await runNative(mode, path.resolve(input), expectedBuildReceiptHash);
+    return;
+  }
   if (!['inspect', 'build', 'phone-check', 'deliver'].includes(mode) || !input || unknown.length ||
       (mode === 'deliver' ? !/^[a-f0-9]{64}$/.test(expectedBuildReceiptHash ?? '') : expectedBuildReceiptHash !== undefined)) {
     throw Error('Use inspect/build/phone-check with the exact HOST_PROFILE_PLAN.json, or deliver with the observed build receipt SHA-256');

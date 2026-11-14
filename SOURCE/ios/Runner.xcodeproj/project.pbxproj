@@ -271,7 +271,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
+			shellScript = "if [ \"$ZYRA_NO_GIT_ACTIVE\" = pinned-v1 ]; then /bin/sh \"$SRCROOT/../tooling/zyra_xcode_backend.sh\" embed_and_thin; else /bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin; fi";
 		};
 		9740EEB61CF901F6004384FC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -286,7 +286,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "if [ \"$ZYRA_NO_GIT_ACTIVE\" = pinned-v1 ]; then /bin/sh \"$SRCROOT/../tooling/zyra_xcode_backend.sh\" build; else /bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build; fi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
