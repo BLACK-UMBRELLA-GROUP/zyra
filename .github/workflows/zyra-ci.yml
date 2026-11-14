@@ -7,19 +7,72 @@ on:
   schedule:
     - cron: '30 2 * * *'
       timezone: Europe/London
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name == 'schedule' && 'nightly' || github.ref }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'schedule' && 'nightly' || github.event_name == 'workflow_dispatch' && 'manual' || github.ref }}
   cancel-in-progress: true
 
 jobs:
+  scope:
+    name: Select Flutter tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      mode: ${{ steps.scope.outputs.mode }}
+      tests: ${{ steps.scope.outputs.tests }}
+      shards: ${{ steps.scope.outputs.shards }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        if: github.event_name == 'push' || github.event_name == 'pull_request'
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          # Only checkout-tree blobs are needed by the test selector.
+          filter: blob:none
+      - name: Select affected tests or full suite shards
+        id: scope
+        shell: bash
+        env:
+          ZYRA_DIFF_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [[ "$GITHUB_EVENT_NAME" == push || "$GITHUB_EVENT_NAME" == pull_request ]]; then
+            selection=$(cd SOURCE && python3 ../.github/scripts/zyra_test_scope.py "$ZYRA_DIFF_BASE")
+          else
+            selection='{"mode":"full","tests":[]}'
+          fi
+          mode=$(jq -er '.mode' <<< "$selection")
+          tests=$(jq -ec '.tests' <<< "$selection")
+          case "$mode" in
+            full) shards='[0,1,2]' ;;
+            selected)
+              if (( $(jq 'length' <<< "$tests") > 200 )); then
+                shards='[0,1,2]'
+              else
+                shards='[0]'
+              fi
+              ;;
+            none) shards='[0]' ;;
+            *) echo 'Unexpected Flutter test selection.' >&2; exit 1 ;;
+          esac
+          {
+            printf 'mode=%s\n' "$mode"
+            printf 'tests=%s\n' "$tests"
+            printf 'shards=%s\n' "$shards"
+          } >> "$GITHUB_OUTPUT"
+
   flutter:
-    name: Flutter checks
+    name: Flutter checks (shard ${{ matrix.shard }})
+    needs: scope
     runs-on: ubuntu-24.04
     timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.scope.outputs.shards) }}
     defaults:
       run:
         working-directory: SOURCE
@@ -29,8 +82,6 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           persist-credentials: false
-          fetch-depth: 0
-          filter: blob:none
       - name: Set up Flutter 3.44.2
         shell: bash
         run: |
@@ -52,25 +103,19 @@ jobs:
         run: flutter pub get --enforce-lockfile
       - name: Analyze
         run: flutter analyze --no-pub
-      - name: Run the full test suite
-        if: github.event_name == 'schedule'
+      - name: Run the assigned Flutter tests
+        if: needs.scope.outputs.mode != 'none'
+        shell: bash
         # The hosted checkout exercises the existing fail-closed flavor without
         # loading a production backend configuration or OAuth client IDs.
-        run: flutter test --no-pub --flavor offline-ci --reporter expanded
-      - name: Run tests affected by the change
-        if: github.event_name != 'schedule'
         env:
-          ZYRA_DIFF_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          ZYRA_TEST_MODE: ${{ needs.scope.outputs.mode }}
+          ZYRA_TESTS: ${{ needs.scope.outputs.tests }}
+          ZYRA_SHARD: ${{ matrix.shard }}
+          ZYRA_SHARDS: ${{ strategy.job-total }}
         run: |
-          python3 ../.github/scripts/zyra_test_scope.py "$ZYRA_DIFF_BASE" > "$RUNNER_TEMP/zyra-test-scope.json"
-          mode=$(jq -er '.mode' "$RUNNER_TEMP/zyra-test-scope.json")
-          case "$mode" in
-            full) flutter test --no-pub --flavor offline-ci --reporter expanded ;;
-            selected)
-              mapfile -t tests < <(jq -er '.tests[]' "$RUNNER_TEMP/zyra-test-scope.json")
-              (( ${#tests[@]} > 0 ))
-              flutter test --no-pub --flavor offline-ci --reporter expanded "${tests[@]}"
-              ;;
-            none) echo 'No Flutter test inputs changed.' ;;
-            *) echo 'Unexpected Flutter test selection.' >&2; exit 1 ;;
-          esac
+          test_list=$(python3 ../.github/scripts/zyra_test_shard.py \
+            "$ZYRA_TEST_MODE" "$ZYRA_TESTS" "$ZYRA_SHARD" "$ZYRA_SHARDS")
+          tests=()
+          while IFS= read -r path; do tests+=("$path"); done <<< "$test_list"
+          flutter test --no-pub --flavor offline-ci --reporter expanded "${tests[@]}"
