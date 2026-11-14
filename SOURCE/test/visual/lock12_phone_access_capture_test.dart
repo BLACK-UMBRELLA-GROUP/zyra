@@ -138,9 +138,7 @@ void main() {
     },
   );
   test('locked purpose strings and protected Location/Add remain exact', () {
-    final source = File(
-      '$root/SOURCE/ios/Runner/Info.plist',
-    ).readAsStringSync();
+    final source = File('ios/Runner/Info.plist').readAsStringSync();
     for (final text in [
       'Scanning ZYRA Codes, taking photos and the identity check.',
       'Choosing your profile photos. ZYRA only sees the ones you pick.',

@@ -830,7 +830,7 @@ class _SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) => Material(
     key: ValueKey('concept_settings_$id'),
     color: ZyraFounderLaunchPageStyle.activeOf(context)
-        ? ZyraColors.foreground
+        ? ZyraColors.ivoryTop
         : Colors.transparent,
     child: SafeArea(
       child: Column(

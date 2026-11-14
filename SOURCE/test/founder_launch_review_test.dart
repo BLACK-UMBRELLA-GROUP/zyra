@@ -142,6 +142,7 @@ void _readable(WidgetTester tester, {required bool white}) {
           ZyraFounderLaunchPageStyle.darkInk,
           ZyraFounderLaunchPageStyle.darkSecondaryInk,
           ZyraFounderLaunchPageStyle.darkGoldInk,
+          ZyraColors.goldText,
         ]),
       );
     }
@@ -259,7 +260,7 @@ class _Owner {
   }
 }
 
-// Q20 / LOCK 14 V5: launch-attention uses the Ivory page background.
+// Q61 / LOCK 14: launch attention and its return destinations use Ivory.
 void _shellCanvas(WidgetTester tester, {required bool white}) {
   final shell = find.byType(ZyraOneJourneyConceptShell);
   final scaffold = find
@@ -279,7 +280,7 @@ void _shellCanvas(WidgetTester tester, {required bool white}) {
       .first;
   expect(
     tester.widget<AnnotatedRegion<SystemUiOverlayStyle>>(region).value,
-    white ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
+    SystemUiOverlayStyle.dark,
   );
   final scope = tester.widget<ZyraPullDownBackScope>(
     _key('concept_pull_down_back_scope'),

@@ -415,10 +415,27 @@ void main() {
       expect(membership.size, unlocks.size);
       final title = find.text('Compatibility Unlocks');
       expect(title.hitTestable(), findsOneWidget);
-      expect(
-        tester.renderObject<RenderParagraph>(title).didExceedMaxLines,
-        isFalse,
-      );
+      // LOCK 21 V5 §8 fits the title and remaining balance on one line.
+      // At larger text the visible title can elide; assistive text stays full.
+      final titleText = tester.widget<Text>(title);
+      expect(titleText.maxLines, 1);
+      expect(titleText.overflow, TextOverflow.ellipsis);
+      final semantics = tester.ensureSemantics();
+      try {
+        await tester.pump();
+        expect(
+          tester.getSemantics(_key('concept_compatibility')).label,
+          contains('Compatibility Unlocks'),
+        );
+      } finally {
+        semantics.dispose();
+      }
+      if (!compact) {
+        expect(
+          tester.renderObject<RenderParagraph>(title).didExceedMaxLines,
+          isFalse,
+        );
+      }
 
       await _tap(tester, 'concept_membership');
       expect(find.byType(ZyraConceptMembershipPresentation), findsOneWidget);

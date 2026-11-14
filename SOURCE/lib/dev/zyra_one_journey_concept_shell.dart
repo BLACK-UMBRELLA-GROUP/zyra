@@ -479,6 +479,7 @@ class _ZyraOneJourneyConceptShellState
   late final _fixtureOwner = widget.fixture;
   late final Object _fixtureAccount;
   bool _routeRefreshScheduled = false;
+  Widget? _retainedJourneyOptions;
   int get _routeStamp => ZyraPreviewRouteObserver.navigationRevision;
 
   void _routeChanged() {
@@ -1531,7 +1532,7 @@ class _ZyraOneJourneyConceptShellState
         _filtersCardIndex = 0;
       }
       _pages.add(target);
-    });
+    }, preserveCircle: _pages.contains('guardian_circle'));
   }
 
   void _openMyZyraQuickPage(String page) {
@@ -1580,10 +1581,12 @@ class _ZyraOneJourneyConceptShellState
       _act(() {});
       return;
     }
+    final retainingCircle =
+        _page != 'guardian_circle' && _pages.contains('guardian_circle');
     _move(() {
       if (_page == 'filters') _editingBrowseFilter = _browseFilter;
       if (_pages.isNotEmpty) _pages.removeLast();
-    });
+    }, preserveCircle: retainingCircle);
   }
 
   bool _canOpenBrowseOptions(String? id) =>
@@ -2081,7 +2084,16 @@ class _ZyraOneJourneyConceptShellState
       internalReview: _allowed,
     );
     final founderWhite = founderPending.isNotEmpty;
-    final content = ownsViewport
+    final onCircle = _page == 'guardian_circle';
+    final onJourneyOptions = _page == 'journey_options';
+    if (onJourneyOptions) {
+      _retainedJourneyOptions = _journeyOptionsPage();
+    } else if (!_pages.contains('journey_options')) {
+      _retainedJourneyOptions = null;
+    }
+    final leaves = onCircle || onJourneyOptions
+        ? null
+        : ownsViewport
         ? _content()
         : SafeArea(
             bottom: false,
@@ -2099,6 +2111,36 @@ class _ZyraOneJourneyConceptShellState
               child: _content(),
             ),
           );
+    final circle = onCircle
+        ? _guardianCircle()
+        : _pages.contains('guardian_circle') &&
+              _circleEntryRevision == _circleScopeRevision
+        ? _circleEntryView
+        : null;
+    final content = Stack(
+      fit: StackFit.expand,
+      children: [
+        ?leaves,
+        if (_retainedJourneyOptions case final options?)
+          Offstage(
+            key: const ValueKey('journey-options-parent'),
+            offstage: !onJourneyOptions,
+            child: TickerMode(
+              enabled: onJourneyOptions,
+              child: ExcludeFocus(excluding: !onJourneyOptions, child: options),
+            ),
+          ),
+        if (circle != null)
+          Offstage(
+            key: const ValueKey('circle-topics-parent'),
+            offstage: !onCircle,
+            child: TickerMode(
+              enabled: onCircle,
+              child: ExcludeFocus(excluding: !onCircle, child: circle),
+            ),
+          ),
+      ],
+    );
     final bioGallery = _currentBioGallery;
     final rootContent = _bioGalleryEnabled
         ? ExcludeFocus(excluding: bioGallery != null, child: content)
@@ -2122,13 +2164,11 @@ class _ZyraOneJourneyConceptShellState
                 if (!didPop && _allowed) _back();
               },
               child: Scaffold(
-                backgroundColor: founderWhite
-                    ? ZyraColors.foreground
-                    : ZyraColors.ivoryTop,
+                backgroundColor: ZyraColors.ivoryTop,
                 extendBody: true,
                 body: DecoratedBox(
                   decoration: BoxDecoration(
-                    color: founderWhite ? ZyraColors.foreground : null,
+                    color: founderWhite ? ZyraColors.ivoryTop : null,
                     gradient: founderWhite
                         ? null
                         : _accountSession.palette.gradient,
@@ -2288,7 +2328,6 @@ class _ZyraOneJourneyConceptShellState
   Widget _content() => switch (_page) {
     'profile' => _profileView(),
     'journey' => _journeyView(),
-    'journey_options' => _journeyOptionsPage(),
     'request_capacity' => _requestCapacityView(),
     'journey_compatibility' => _journeyCompatibility(),
     'guardian_compatibility' => _guardianCompatibilityReader(),
@@ -2300,7 +2339,6 @@ class _ZyraOneJourneyConceptShellState
     'ended_restart' => _endedRestart(),
     'ended_compatibility' => _endedCompatibility(),
     'guardian_access_agreement' => _guardianAccessAgreement(),
-    'guardian_circle' => _guardianCircle(),
     'guardian_invite' => _guardianInvite(),
     'guardian_main_notice' => _mainGuardianNotice(),
     'guardian_info' => _guardianInfo(),
@@ -4079,7 +4117,13 @@ class _ZyraOneJourneyConceptShellState
     if (!_allowed || _guardianRole || _journeyOptionsOpen) return;
     final state = _model.stateFor(person.id);
     if (state == null) return;
-    final fresh = _accountFreshGuard();
+    final attempt = _model.attemptRevisionFor(person.id);
+    var expectedStamp = _routeStamp;
+    final fresh = _accountFreshGuard(
+      expectedNavigatorStamp: () => expectedStamp,
+    );
+    final account = (ZyraAccountState.userId, ZyraAccountState.generation);
+    final revision = _uiRevision;
     // The owned sheet makes its parent route non-current. Capture only its
     // display state while the parent is current; the returned intent still
     // rechecks fresh ownership and the live disclosure gate after dismissal.
@@ -4088,7 +4132,7 @@ class _ZyraOneJourneyConceptShellState
     _journeyOptionsOpen = true;
     _journeyOptionsPersonId = person.id;
     try {
-      final choice = await showModalBottomSheet<ZyraConceptJourneyOption>(
+      final pending = showModalBottomSheet<ZyraConceptJourneyOption>(
         context: _tapContext,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
@@ -4097,38 +4141,48 @@ class _ZyraOneJourneyConceptShellState
           if (!_attachJourneyOptionsRoute(sheetContext, person.id)) {
             return const SizedBox.shrink();
           }
+          final route = ModalRoute.of(sheetContext);
+          bool ownsSheet() =>
+              sheetContext.mounted &&
+              identical(_journeyOptionsRoute, route) &&
+              route?.isCurrent == true &&
+              revision == _uiRevision &&
+              expectedStamp == _routeStamp &&
+              account ==
+                  (ZyraAccountState.userId, ZyraAccountState.generation) &&
+              (widget.canActInOwnedDialog?.call() ?? _allowed);
           return ConstrainedBox(
             constraints: BoxConstraints(
               maxHeight: MediaQuery.sizeOf(sheetContext).height * .85,
             ),
-            child: ZyraConceptJourneyOptions(
-              id: person.id,
-              firstName: person.firstName,
-              canViewBio: canViewBio,
-              canViewCompatibility: canViewCompatibility,
-              canEnd: state != DraftJourneyState.ended,
-              onSelected: (value) {
-                if (!sheetContext.mounted ||
-                    ModalRoute.of(sheetContext)?.isCurrent != true) {
-                  return;
-                }
-                // The owned modal temporarily makes the parent route non-current.
-                // This only returns an intent; recheck owner/revision/state below,
-                // after dismissal restores the parent route. Never mutate here.
-                Navigator.pop(sheetContext, value);
-              },
-              onCancel: () {
-                if (!sheetContext.mounted ||
-                    ModalRoute.of(sheetContext)?.isCurrent != true) {
-                  return;
-                }
-                Navigator.pop(sheetContext);
-              },
+            child: ZyraTapFeedback(
+              level: () => _accountSession.hapticLevel,
+              canAct: ownsSheet,
+              child: ZyraConceptJourneyOptions(
+                id: person.id,
+                firstName: person.firstName,
+                canViewBio: canViewBio,
+                canViewCompatibility: canViewCompatibility,
+                canEnd: state != DraftJourneyState.ended,
+                onSelected: (value) {
+                  if (!ownsSheet()) return;
+                  Navigator.pop(sheetContext, value);
+                  expectedStamp = _routeStamp;
+                },
+                onCancel: () {
+                  if (ownsSheet()) Navigator.pop(sheetContext);
+                },
+              ),
             ),
           );
         },
       );
-      if (!fresh() || choice == null || _model.stateFor(person.id) != state) {
+      expectedStamp = _routeStamp;
+      final choice = await pending;
+      if (!fresh() ||
+          choice == null ||
+          _model.stateFor(person.id) != state ||
+          _model.attemptRevisionFor(person.id) != attempt) {
         return;
       }
       _selectJourneyOption(person, choice);
@@ -6509,11 +6563,12 @@ class _ZyraOneJourneyConceptShellState
     ].join('|');
     final stamp = linkStamp();
     bool current() =>
-        _allowed &&
+        mounted &&
+        (widget.canActInOwnedDialog?.call() ?? _allowed) &&
         revision == _circleScopeRevision &&
         guardian == _guardianRole &&
         tab == _tab &&
-        _page == 'guardian_circle' &&
+        _pages.contains('guardian_circle') &&
         stamp == linkStamp() &&
         pastShared == ((!guardian || _guardianTabs.main) && canReadPast()) &&
         (!guardian || _conceptHassanLinked);
@@ -6530,7 +6585,7 @@ class _ZyraOneJourneyConceptShellState
     _circleNavigator = navigator;
     _circleEntryRevision = revision;
     final ownerGuard = current;
-    bool foreground() => current() && _page == 'guardian_circle';
+    bool foreground() => _allowed && current() && _page == 'guardian_circle';
     final currentTopicExamples = List<ZyraCircleDiscussionTopic>.unmodifiable([
       if (!circleYusuf)
         for (final name in const ['Sara', 'Aisha', 'Maryam'])
@@ -6572,8 +6627,7 @@ class _ZyraOneJourneyConceptShellState
     // may replay the route builder; a newly created closure would correctly
     // be rejected as a different caller by the retained chat's owner guard.
     SeekerProfile? discussionProfileFor(ZyraFamilyMessageContext context) {
-      if (!current() ||
-          _page != 'guardian_circle' ||
+      if (!foreground() ||
           !contexts.any(
             (allowed) =>
                 allowed.referenceId == context.referenceId &&
@@ -6604,18 +6658,18 @@ class _ZyraOneJourneyConceptShellState
       mutedChats: _circleMuteKeys,
       nextSentId: () => 'draft-circle-sent-${++_circleSentSequence}',
       onSent: (chatId, message) {
-        if (!current()) return;
+        if (!foreground()) return;
         (_circleSentMessages[data.muteKey(chatId)] ??= []).add(message);
         _publishCheckpoint();
       },
       mainUnreadOnEntry: mainUnreadOnEntry,
       onRead: (chatId, messages) {
-        if (!current()) return;
+        if (!foreground()) return;
         _rememberCircleReads(data, chatId, messages);
         _publishCheckpoint();
       },
       onMuteChanged: () {
-        if (!current()) return;
+        if (!foreground()) return;
         setState(() {});
         _publishCheckpoint();
       },
@@ -6708,11 +6762,10 @@ class _ZyraOneJourneyConceptShellState
           previewDiscussionArchiveFor: discussionArchiveFor,
           canAct: ownerGuard,
           onBack: () {
-            if (current() && _page == 'guardian_circle') _back();
+            if (foreground()) _back();
           },
           onOpenContext: (context) {
-            if (!current() ||
-                _page != 'guardian_circle' ||
+            if (!foreground() ||
                 !contexts.any(
                   (allowed) =>
                       allowed.referenceId == context.referenceId &&
@@ -6727,7 +6780,7 @@ class _ZyraOneJourneyConceptShellState
               _move(() {
                 _selectGuardianJourney(context.referenceId);
                 _pages.add('guardian');
-              });
+              }, preserveCircle: true);
             } else {
               _journey(context.referenceId);
             }

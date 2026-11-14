@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/widgets/zyra_swipe_track.dart';
+import 'package:zyra/dev/zyra_one_journey_monogram_presentation.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_draft.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_preview.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_state_widgets.dart';
+import 'package:zyra/widgets/zyra_swipe_track.dart';
 
 class _NoNetwork extends HttpOverrides {
   int attempts = 0;
@@ -973,6 +974,7 @@ void main() {
   );
 
   for (final enlarged in [false, true]) {
+    // Q62: the confirmed-empty state uses the shared LOCK 22 V3 monogram.
     testWidgets(
       'confirmed zero Family places is a plain empty state at ${enlarged ? 'compact200' : 'normal'} size',
       (tester) async {
@@ -996,21 +998,23 @@ void main() {
         await _tap(tester, 'wallet_group_family');
         final empty = _key('wallet_places_empty');
         expect(tester.widget(empty), isA<ZyraEmptyState>());
-        expect(
-          find.descendant(of: empty, matching: find.byType(Container)),
-          findsNothing,
+        final monogram = find.descendant(
+          of: empty,
+          matching: find.byType(ZyraGoldRingMonogram),
         );
+        expect(tester.getSize(monogram), const Size.square(96));
         final icon = tester.widget<Icon>(
           find.descendant(of: empty, matching: find.byType(Icon)),
         );
-        expect(icon.size, 30);
-        expect(icon.color, ZyraColors.ink(.35));
+        expect(icon.size, 34);
+        expect(icon.color, ZyraColors.journeyGold);
         final message = find.text(
           'No Family places. Your individual memberships stay separate.',
         );
         await tester.ensureVisible(message);
         await tester.pumpAndSettle();
         expect(message.hitTestable(), findsOneWidget);
+        expect(tester.widget<Text>(message).style!.fontSize, 12.5);
         expect(find.textContaining('could not be checked'), findsNothing);
         expect(_key('wallet_family_pages'), findsNothing);
         expect(_key('wallet_availability'), findsNothing);
@@ -1040,7 +1044,7 @@ void main() {
         } else {
           expect(scroll.maxScrollExtent, greaterThan(0));
           final messageContext = tester.element(message);
-          expect(MediaQuery.textScalerOf(messageContext).scale(13.5), 27);
+          expect(MediaQuery.textScalerOf(messageContext).scale(12.5), 25);
           await tester.drag(_key('wallet_scroll'), const Offset(0, -120));
           await tester.pumpAndSettle();
           expect(scroll.pixels, greaterThan(0));

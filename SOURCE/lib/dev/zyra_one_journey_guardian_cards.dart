@@ -1140,28 +1140,33 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
         ),
       ],
     );
-    final chips = Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        _permission(person, journey, chat: false),
-        const SizedBox(width: 4),
-        _permission(person, journey, chat: true),
-      ],
-    );
+    final view = _permission(person, journey, chat: false);
+    final chat = _permission(person, journey, chat: true);
     return _accessRow(
       key: ValueKey('guardian-card-tile-${journey.id}'),
       child: stackChips
           ? Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: [identity, const SizedBox(height: 4), chips],
+              children: [
+                identity,
+                const SizedBox(height: 4),
+                Wrap(
+                  alignment: WrapAlignment.end,
+                  spacing: 4,
+                  runSpacing: 4,
+                  children: [view, chat],
+                ),
+              ],
             )
           : Row(
               children: [
                 Expanded(child: identity),
                 SizedBox(width: compact ? 2 : 4),
-                chips,
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [view, const SizedBox(width: 4), chat],
+                ),
               ],
             ),
     );

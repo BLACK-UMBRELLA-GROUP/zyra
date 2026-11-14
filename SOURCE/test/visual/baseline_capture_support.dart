@@ -47,6 +47,11 @@ const _boundary = ValueKey('zyra-founder-baseline-boundary');
 HttpOverrides? _previousNetwork;
 late _NoNetwork _network;
 
+String _capturePath(String path) {
+  if (Platform.isMacOS || !path.startsWith('/Users/')) return path;
+  return 'build/test_capture$path';
+}
+
 class _NoNetwork extends HttpOverrides {
   int attempts = 0;
   @override
@@ -58,7 +63,7 @@ class _NoNetwork extends HttpOverrides {
 
 Future<void> baselineSetUp({
   String? evidenceRoot = baselineEvidence,
-  bool useSystemSymbolFont = true,
+  bool? useSystemSymbolFont,
 }) async {
   TestWidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.setMockInitialValues({});
@@ -77,7 +82,7 @@ Future<void> baselineSetUp({
     ..addFont(rootBundle.load('fonts/MaterialIcons-Regular.otf'));
   final wordmark = FontLoader(_wordmark)
     ..addFont(rootBundle.load('assets/fonts/Syne-SemiBold.ttf'));
-  final symbolBytes = useSystemSymbolFont
+  final symbolBytes = (useSystemSymbolFont ?? Platform.isMacOS)
       ? await File(_symbolPath).readAsBytes()
       : null;
   final symbols = symbolBytes == null
@@ -91,7 +96,9 @@ Future<void> baselineSetUp({
     if (symbols != null) symbols.load(),
   ]);
   if (!_compareOnly && evidenceRoot != null && symbolBytes != null) {
-    final environment = File('$evidenceRoot/capture_environment.json');
+    final environment = File(
+      _capturePath('$evidenceRoot/capture_environment.json'),
+    );
     await environment.parent.create(recursive: true);
     await environment.writeAsString(
       const JsonEncoder.withIndent('  ').convert({
@@ -243,7 +250,7 @@ class BaselineHarness {
   late ZyraShellTestFixture shellFixture;
   bool guardian = false;
   List<Map<String, Object?>> get rows => _rowsByGroup.putIfAbsent(group, () {
-    final file = File('$evidenceRoot/rows_$group.json');
+    final file = File(_capturePath('$evidenceRoot/rows_$group.json'));
     if (file.existsSync()) {
       return (jsonDecode(file.readAsStringSync()) as List)
           .map((row) => Map<String, Object?>.from(row as Map))
@@ -514,7 +521,7 @@ class BaselineHarness {
         expect(image.width, (logicalSize.width * devicePixelRatio).round());
         expect(image.height, (logicalSize.height * devicePixelRatio).round());
         final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
-        final file = File('$outputRoot/$relative');
+        final file = File(_capturePath('$outputRoot/$relative'));
         if (_compareOnly) {
           if (page == 'controls') {
             _skippedControlPaths.add(relative);
@@ -530,7 +537,9 @@ class BaselineHarness {
           if (actual != expected) {
             _mismatchedBaselinePaths.add(relative);
             final mismatch = File(
-              '${baselineEvidence.replaceFirst('BASELINE_2026-10-29', 'TIER4_TESTS_2026-10-29')}/PIXEL_PARITY_MISMATCHES/$relative',
+              _capturePath(
+                '${baselineEvidence.replaceFirst('BASELINE_2026-10-29', 'TIER4_TESTS_2026-10-29')}/PIXEL_PARITY_MISMATCHES/$relative',
+              ),
             );
             await mismatch.parent.create(recursive: true);
             await mismatch.writeAsBytes(
@@ -561,7 +570,7 @@ class BaselineHarness {
           'route': latest.pages,
           'tab': latest.tab,
         });
-        final output = File('$evidenceRoot/rows_$group.json');
+        final output = File(_capturePath('$evidenceRoot/rows_$group.json'));
         await output.parent.create(recursive: true);
         await output.writeAsString(
           const JsonEncoder.withIndent('  ').convert(rows),

@@ -156,42 +156,87 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      Padding(
-        padding: const EdgeInsets.fromLTRB(_side, 14, _side, 5),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text('Guardian Circle', style: ZyraText.heading(size: 28)),
-            ),
-            const SizedBox(width: 8),
-            _action(
-              context,
-              id: 'menu',
-              label: 'Guardian Circle menu',
-              onTap: onMenu,
-              child: SizedBox(
-                width: 44,
-                height: 48,
-                child: Center(
-                  child: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: _surface(radius: 99),
-                    child: Icon(
-                      Icons.more_horiz,
-                      size: 20,
-                      color: ZyraColors.foreground,
-                    ),
-                  ),
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, constraints) {
+      final compactViewport = constraints.maxHeight < 400;
+      final topics = _topicHeader(context);
+      final footer = !loading && available && !_pastList
+          ? _footer(context, compactViewport: compactViewport)
+          : null;
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (compactViewport)
+            ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: constraints.maxHeight / 3),
+              child: SingleChildScrollView(
+                primary: false,
+                child: _titleBar(context),
+              ),
+            )
+          else
+            _titleBar(context),
+          if (compactViewport)
+            Flexible(
+              child: SingleChildScrollView(primary: false, child: topics),
+            )
+          else
+            topics,
+          Expanded(child: _body(context)),
+          if (compactViewport && footer != null)
+            ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: constraints.maxHeight / 2),
+              child: SingleChildScrollView(
+                primary: false,
+                reverse: true,
+                child: footer,
+              ),
+            )
+          else
+            ?footer,
+        ],
+      );
+    },
+  );
+
+  Widget _titleBar(BuildContext context) => Padding(
+    padding: const EdgeInsets.fromLTRB(_side, 14, _side, 5),
+    child: Row(
+      children: [
+        Expanded(
+          child: Text('Guardian Circle', style: ZyraText.heading(size: 28)),
+        ),
+        const SizedBox(width: 8),
+        _action(
+          context,
+          id: 'menu',
+          label: 'Guardian Circle menu',
+          onTap: onMenu,
+          child: SizedBox(
+            width: 44,
+            height: 48,
+            child: Center(
+              child: Container(
+                width: 36,
+                height: 36,
+                decoration: _surface(radius: 99),
+                child: Icon(
+                  Icons.more_horiz,
+                  size: 20,
+                  color: ZyraColors.foreground,
                 ),
               ),
             ),
-          ],
+          ),
         ),
-      ),
+      ],
+    ),
+  );
+
+  Widget _topicHeader(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    mainAxisSize: MainAxisSize.min,
+    children: [
       SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.fromLTRB(_side, 5, _side, 0),
@@ -241,8 +286,6 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: _side),
           child: _headCard(context, selected!),
         ),
-      Expanded(child: _body(context)),
-      if (!loading && available && !_pastList) _footer(context),
     ],
   );
 
@@ -612,7 +655,7 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
     ),
   );
 
-  Widget _footer(BuildContext context) {
+  Widget _footer(BuildContext context, {required bool compactViewport}) {
     if (guardianBasic) {
       return _footerLine(
         child: LayoutBuilder(
@@ -682,7 +725,7 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
               controller: composer,
               enabled: !sending,
               minLines: 1,
-              maxLines: 4,
+              maxLines: compactViewport ? 2 : 4,
               textInputAction: TextInputAction.send,
               onSubmitted: sending ? null : (_) => send(),
               style: ZyraText.body(size: 14),

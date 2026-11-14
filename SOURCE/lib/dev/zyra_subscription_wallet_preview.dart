@@ -697,9 +697,8 @@ class _ZyraSubscriptionWalletPreviewState
         if (_family &&
             widget.draft.inventoryAvailable &&
             widget.draft.places.isEmpty) {
-          // Use the shared empty state's actual intrinsic text layout rather
-          // than a measured card height. It fills the remaining body when it
-          // fits, and the same viewport scrolls naturally at enlarged text.
+          // Measure the shared empty state in the regular layout pass. It
+          // fills the remaining body when it fits and can grow at larger text.
           if (!constraints.hasBoundedHeight) {
             return SingleChildScrollView(
               key: const ValueKey('wallet_scroll'),
@@ -724,12 +723,25 @@ class _ZyraSubscriptionWalletPreviewState
                   ),
                 ),
               ),
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 28),
-                  child: pager,
-                ),
+              SliverLayoutBuilder(
+                builder: (context, sliver) {
+                  final remainingHeight =
+                      sliver.viewportMainAxisExtent -
+                      sliver.precedingScrollExtent;
+                  return SliverToBoxAdapter(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: remainingHeight
+                            .clamp(0.0, double.infinity)
+                            .toDouble(),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 28),
+                        child: pager,
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           );

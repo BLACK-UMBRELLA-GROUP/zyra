@@ -295,7 +295,8 @@ void main() {
     );
     final launchBytes = await t.runAsync(
       () => File(
-        '$root/SOURCE/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png',
+        'ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage'
+        '@3x.png',
       ).readAsBytes(),
     );
     await h.mountPresentation(

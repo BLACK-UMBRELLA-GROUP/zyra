@@ -479,9 +479,9 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(
                 ZyraPreviewSpacing.pageMargin,
-                10,
+                16,
                 ZyraPreviewSpacing.pageMargin,
-                14,
+                8,
               ),
               child: Align(
                 alignment: Alignment.centerLeft,
