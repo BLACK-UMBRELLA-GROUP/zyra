@@ -980,7 +980,7 @@ void main() {
           expect(targetSize.width, greaterThanOrEqualTo(44));
           expect(targetSize.height, greaterThanOrEqualTo(44));
           expect(find.text('Buy more'), findsNothing);
-          expect(find.text('3 left · 3 more each month'), findsOneWidget);
+          expect(find.text('3 left'), findsOneWidget);
           expect(find.textContaining('Earlier overall credits'), findsNothing);
           expect(
             _hasNamedTap(tester.getSemantics(control), 'Compatibility Unlocks'),
@@ -990,10 +990,7 @@ void main() {
           );
           final accessible = tester.getSemantics(control);
           expect(_tapActions(accessible), 1);
-          expect(
-            accessible.getSemanticsData().label,
-            contains('3 left · 3 more each month'),
-          );
+          expect(accessible.getSemanticsData().label, contains('3 left'));
           expect(actions, isEmpty);
           final label = find.descendant(
             of: control,
@@ -1016,7 +1013,7 @@ void main() {
             List.filled(3, ZyraConceptAccountAction.compatibilityStore),
             reason: 'Each physical word, arrow or padding tap dispatches once.',
           );
-          expect(find.text('3 left · 3 more each month'), findsOneWidget);
+          expect(find.text('3 left'), findsOneWidget);
           expect(tester.takeException(), isNull);
         } finally {
           semantics.dispose();
@@ -1066,7 +1063,7 @@ void main() {
             final expected = tester.widget<Icon>(reference);
             final expectedRight = tester.getRect(reference).right;
             expect(expected.size, 18);
-            expect(expected.color, ZyraColors.ink(.28));
+            expect(expected.color, ZyraColors.ink(.30));
             for (final row in [
               'concept_membership',
               'concept_subscriptions',
@@ -1122,7 +1119,7 @@ void main() {
           final control = _key('concept_compatibility_buy_more');
           await tester.ensureVisible(control);
           await tester.pumpAndSettle();
-          final copy = '${balance?.toString() ?? '—'} left · 3 more each month';
+          final copy = '${balance?.toString() ?? '—'} left';
           expect(find.text(copy, findRichText: true), findsOneWidget);
           expect(find.textContaining('Earlier overall credits'), findsNothing);
           final node = tester.getSemantics(control);
@@ -1144,34 +1141,34 @@ void main() {
 
   for (final guardian in [false, true]) {
     for (final sample in const [
-      (name: 'Adam Khan', size: Size(440, 932), scale: 1.0, inline: true),
+      (name: 'Adam Khan', size: Size(440, 932), scale: 1.0, clipped: false),
       (
         name: 'Muhammad Ibrahim',
         size: Size(430, 932),
         scale: 1.0,
-        inline: true,
+        clipped: true,
       ),
       (
         name: 'Abdulrahman Muhammad Khan',
         size: Size(393, 852),
         scale: 1.0,
-        inline: false,
+        clipped: true,
       ),
       (
         name: 'Abdulrahman Muhammad Khan',
         size: Size(320, 568),
         scale: 2.0,
-        inline: false,
+        clipped: true,
       ),
       (
         name: 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ',
         size: Size(320, 568),
         scale: 2.0,
-        inline: false,
+        clipped: true,
       ),
     ]) {
       testWidgets(
-        '${guardian ? 'Guardian' : 'Seeker'} Profile full name stays clear of Switch at ${sample.size.width}/${sample.scale}/${sample.name}',
+        '${guardian ? 'Guardian' : 'Seeker'} Profile name stays on one line above Switch at ${sample.size.width}/${sample.scale}/${sample.name}',
         (tester) async {
           final semantics = tester.ensureSemantics();
           try {
@@ -1194,21 +1191,24 @@ void main() {
             final switchButton = _key('switch-account-button');
             final text = tester.widget<Text>(name);
             expect(text.data, sample.name);
-            expect(text.style?.fontSize, 28);
-            expect(text.textAlign, TextAlign.center);
-            expect(text.softWrap, isNot(false));
+            expect(text.style?.fontSize, 24);
+            expect(text.maxLines, 1);
+            expect(text.overflow, TextOverflow.ellipsis);
             final paragraph = tester.renderObject<RenderParagraph>(
               find.descendant(of: name, matching: find.byType(RichText)),
             );
-            expect(paragraph.didExceedMaxLines, isFalse);
+            expect(paragraph.didExceedMaxLines, sample.clipped);
             final nameRect = tester.getRect(name);
             final switchRect = tester.getRect(switchButton);
             expect(nameRect.overlaps(switchRect), isFalse);
-            expect(nameRect.left, greaterThanOrEqualTo(20));
+            final avatar = _key('concept_profile_avatar');
+            expect(
+              nameRect.left - tester.getTopRight(avatar).dx,
+              closeTo(16, .01),
+            );
             expect(nameRect.right, lessThanOrEqualTo(sample.size.width - 20));
             expect(switchRect.width, greaterThanOrEqualTo(44));
             expect(switchRect.height, greaterThanOrEqualTo(44));
-            expect(text.maxLines, isNull);
             expect(nameRect.bottom, lessThanOrEqualTo(switchRect.top));
             final accessible = tester.getSemantics(name).getSemanticsData();
             expect(accessible.label, contains(sample.name));

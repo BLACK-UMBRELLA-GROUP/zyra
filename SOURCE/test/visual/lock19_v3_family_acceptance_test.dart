@@ -210,11 +210,11 @@ void main() {
           );
         }
         await nav(h, 4);
-        expect(find.text('Family place · paid by Adam'), findsOneWidget);
+        expect(find.text('Paid by Adam'), findsOneWidget);
         await cap(h, 'k22_${scale == 1 ? 'normal' : 'larger_top'}', scale);
         if (scale > 1) {
           await Scrollable.ensureVisible(
-            t.element(find.text('Family place · paid by Adam')),
+            t.element(find.text('Paid by Adam')),
             alignment: .5,
           );
           await h.flush();
@@ -227,7 +227,7 @@ void main() {
           checkpoint: saved,
           previewClock: () => sent,
         );
-        expect(find.text('Family place · paid by Adam'), findsOneWidget);
+        expect(find.text('Paid by Adam'), findsOneWidget);
         final restored = ViewRequestDraftModel.fromSnapshot(h.latest.model);
         expect(
           restored

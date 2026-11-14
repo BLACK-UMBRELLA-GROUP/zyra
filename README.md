@@ -43,6 +43,8 @@ Journey topics stay open for members who can write.
 Seeker avatars use the first profile photo or the Profile silhouette in
 Profile, Circle and Journey. The same photo appears in the profile Preview
 and the Guardian's linked Seeker views. Guardians use monograms.
+The Founder preview Profile fits above the tab bar whenever there is room.
+On short screens or with Larger Text, scroll to reach Sign out.
 In the ordinary Seeker Guardian tab and Founder preview, the round plus on the
 full-height Add card opens Add a Guardian. The ordinary tab shows the card when
 there are no linked Guardians and after the last Guardian when there is room.

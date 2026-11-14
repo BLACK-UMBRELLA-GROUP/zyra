@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../widgets/zyra_floating_surface.dart';
 // Disposable account presentation, copied from the current account owners.
 // The caller supplies every sample fact and every action. This file neither
@@ -10,6 +12,7 @@ import '../data/zyra_membership_catalog.dart';
 import '../theme/zyra_card_metrics.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_interaction_style.dart';
+import '../theme/zyra_motion.dart';
 import '../widgets/zyra_haptics_setting.dart';
 import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
@@ -116,7 +119,7 @@ class ZyraConceptAccountData {
 typedef ZyraConceptAccountActionCallback =
     void Function(ZyraConceptAccountAction action);
 
-/// LOCK21: caller-owned Profile actions in the locked Monogram layout.
+/// LOCK 21 V5. The caller owns the Profile facts and action destinations.
 class ZyraConceptProfilePresentation extends StatelessWidget {
   const ZyraConceptProfilePresentation({
     super.key,
@@ -130,6 +133,12 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
   final VoidCallback onSwitchRole;
   final bool simplifiedMethodology;
 
+  static const _avatarSize = 84.0;
+  static const _cardRadius = 20.0;
+  // Two points of interior padding and a one-point border at each end.
+  static const _cardVerticalInset = 3.0;
+  static const _dividerHeight = 1.0;
+
   Widget _row(
     String id,
     String title,
@@ -137,7 +146,7 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
     ZyraConceptAccountAction action, {
     String? detail,
     bool destructive = false,
-  }) => _MonogramRow(
+  }) => _ProfileRow(
     key: ValueKey('concept_$id'),
     title: title,
     icon: icon,
@@ -146,34 +155,38 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
     onTap: () => onAction(action),
   );
 
-  Widget _card(List<Widget> rows, {bool last = false}) => Padding(
-    padding: EdgeInsets.only(bottom: last ? 0 : ZyraPreviewSpacing.cardToCard),
-    child: ZyraFloatingSurface(
-      radius: 20,
-      child: Container(
-        decoration: BoxDecoration(
-          color: ZyraColors.cardSurface,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: ZyraColors.surfaceBorder),
+  Widget _card(List<Widget> rows, double height, {double firstRowExtra = 0}) =>
+      ZyraFloatingSurface(
+        radius: _cardRadius,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: ZyraColors.cardSurface,
+            borderRadius: BorderRadius.circular(_cardRadius),
+            border: Border.all(color: ZyraColors.surfaceBorder),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: _cardVerticalInset),
+            child: Column(
+              children: [
+                for (var i = 0; i < rows.length; i++) ...[
+                  if (i > 0)
+                    Divider(
+                      height: _dividerHeight,
+                      thickness: _dividerHeight,
+                      indent: 55,
+                      endIndent: 17,
+                      color: ZyraColors.divider,
+                    ),
+                  SizedBox(
+                    height: height + (i == 0 ? firstRowExtra : 0),
+                    child: rows[i],
+                  ),
+                ],
+              ],
+            ),
+          ),
         ),
-        child: Column(
-          children: [
-            for (var i = 0; i < rows.length; i++) ...[
-              if (i > 0)
-                Divider(
-                  height: 1,
-                  thickness: 1,
-                  indent: 54,
-                  endIndent: 16,
-                  color: ZyraColors.divider,
-                ),
-              rows[i],
-            ],
-          ],
-        ),
-      ),
-    ),
-  );
+      );
 
   Widget _pill(
     BuildContext context,
@@ -182,17 +195,22 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
     VoidCallback action, {
     bool switcher = false,
   }) {
+    final textSize = switcher ? 13.0 : 12.5;
+    final textHeight = MediaQuery.textScalerOf(context).scale(textSize) * 1.45;
     final pill = Material(
+      key: ValueKey('${id}_surface'),
       color: switcher ? Colors.transparent : ZyraColors.surfaceFill,
       shape: StadiumBorder(side: BorderSide(color: ZyraColors.surfaceBorder)),
-      child: InkWell(
-        key: ValueKey(id),
-        customBorder: const StadiumBorder(),
-        onTap: ZyraTapFeedback.onTap(context, action),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minWidth: 44,
+          minHeight: math.max(34, textHeight + 8),
+        ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 13),
           child: Row(
             mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (switcher) ...[
                 Icon(
@@ -202,13 +220,17 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
               ],
-              Text(
-                label,
-                style: ZyraText.body(
-                  size: 13,
-                  color: switcher
-                      ? ZyraColors.foregroundSecondary
-                      : ZyraColors.foreground,
+              Flexible(
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: ZyraText.body(
+                    size: textSize,
+                    color: switcher
+                        ? ZyraColors.foregroundSecondary
+                        : ZyraColors.foreground,
+                  ).copyWith(height: 1.45),
                 ),
               ),
             ],
@@ -216,11 +238,31 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
         ),
       ),
     );
-    return ConstrainedBox(
-      constraints: const BoxConstraints(minHeight: 44),
-      child: Semantics(
-        button: true,
-        child: switcher ? pill : ZyraFloatingSurface(radius: 999, child: pill),
+    return Semantics(
+      button: true,
+      label: label,
+      child: Stack(
+        key: ValueKey(id),
+        children: [
+          ExcludeSemantics(
+            child: Padding(
+              // Extend the touch target five points on both sides of the pill.
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: switcher
+                  ? pill
+                  : ZyraFloatingSurface(radius: 999, child: pill),
+            ),
+          ),
+          Positioned.fill(
+            child: Material(
+              type: MaterialType.transparency,
+              child: InkWell(
+                customBorder: const StadiumBorder(),
+                onTap: ZyraTapFeedback.onTap(context, action),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -231,8 +273,8 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
     excludeSemantics: true,
     child: Container(
       key: const ValueKey('concept_profile_avatar'),
-      width: 104,
-      height: 104,
+      width: _avatarSize,
+      height: _avatarSize,
       padding: EdgeInsets.all(data.guardian ? 1 : 2),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
@@ -246,8 +288,9 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
               child: Center(
                 child: Text(
                   data.name.characters.firstOrNull ?? '',
+                  textScaler: TextScaler.noScaling,
                   style: ZyraText.heading(
-                    size: 50,
+                    size: 40,
                     color: ZyraColors.journeyGold,
                   ),
                 ),
@@ -255,193 +298,277 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
             )
           : ZyraSeekerAvatar(
               photo: data.photoAsset,
-              size: 104,
+              size: _avatarSize,
               alignmentX: data.avatarAlignment.dx,
               alignmentY: data.avatarAlignment.dy,
             ),
     ),
   );
 
-  @override
-  Widget build(BuildContext context) => Material(
-    color: Colors.transparent,
-    child: SafeArea(
-      bottom: false,
-      child: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(20, 16, 20, 8),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: ZyraTabTitle(
-                'Profile',
-                textKey: ValueKey('concept_profile_title'),
-              ),
+  Widget _header(BuildContext context) => Row(
+    children: [
+      _avatar(),
+      const SizedBox(width: 16),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              data.name,
+              key: const ValueKey('concept_profile_name'),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: ZyraText.body(
+                size: 24,
+                color: ZyraColors.foreground,
+              ).copyWith(height: 1.45),
             ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              key: const ValueKey('concept-current-profile-scroll'),
-              padding: EdgeInsets.fromLTRB(
+            const SizedBox(height: 2),
+            Text(
+              '${data.membership.toUpperCase()} · ${data.guardian ? 'GUARDIAN' : 'SEEKER'}',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: ZyraText.body(
+                size: 11,
+                color: ZyraColors.goldText,
+              ).copyWith(letterSpacing: 1.2, height: 1.45),
+            ),
+            const SizedBox(height: 5),
+            Wrap(
+              key: const ValueKey('concept_profile_pills'),
+              spacing: 6,
+              children: [
+                if (!data.guardian) ...[
+                  _pill(
+                    context,
+                    'concept_preview_profile',
+                    'Preview',
+                    () => onAction(ZyraConceptAccountAction.previewProfile),
+                  ),
+                  _pill(
+                    context,
+                    'concept_edit_profile',
+                    'Edit',
+                    () => onAction(ZyraConceptAccountAction.editProfile),
+                  ),
+                ],
+                KeyedSubtree(
+                  key: ValueKey(
+                    data.guardian ? 'draft_role_seeker' : 'draft_role_guardian',
+                  ),
+                  child: _pill(
+                    context,
+                    'switch-account-button',
+                    'Switch',
+                    onSwitchRole,
+                    switcher: true,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+
+  List<List<Widget>> _groups() => [
+    [
+      if (data.guardian)
+        _row(
+          'your_seekers',
+          'Your Seekers',
+          Icons.people,
+          ZyraConceptAccountAction.yourSeekers,
+          detail: data.linkedSeekerSummary,
+        )
+      else
+        _row(
+          'manage_photos',
+          'Manage photos',
+          Icons.photo_library_outlined,
+          ZyraConceptAccountAction.managePhotos,
+        ),
+    ],
+    [
+      _row(
+        'membership',
+        data.membership,
+        Icons.workspace_premium_outlined,
+        ZyraConceptAccountAction.membership,
+        detail: switch ((data.isOne, data.familyPlacePayer)) {
+          (false, _) => 'See One',
+          (true, final String payer) when data.guardian => 'Paid by $payer',
+          _ => null,
+        },
+      ),
+      if (!data.guardian)
+        _row(
+          'compatibility_buy_more',
+          'Compatibility Unlocks',
+          Icons.insights_outlined,
+          ZyraConceptAccountAction.compatibilityStore,
+          detail: '${data.plusUnlocks?.toString() ?? '—'} left',
+        ),
+      _row(
+        'subscriptions',
+        'Profiles & Family places',
+        Icons.card_membership,
+        ZyraConceptAccountAction.subscriptions,
+      ),
+    ],
+    [
+      if (!data.guardian)
+        _row(
+          'guardian_info',
+          'What Guardians can do',
+          Icons.security,
+          ZyraConceptAccountAction.guardianInfo,
+        ),
+      _row(
+        'safety_advice',
+        'Safety & advice',
+        Icons.health_and_safety,
+        ZyraConceptAccountAction.safetyAdvice,
+      ),
+      _row(
+        'invite',
+        'Invite someone to ZYRA',
+        Icons.person_add,
+        ZyraConceptAccountAction.invite,
+      ),
+    ],
+    [
+      _row(
+        'settings',
+        'Settings',
+        Icons.settings,
+        ZyraConceptAccountAction.settings,
+      ),
+      _row(
+        'sign_out',
+        'Sign out',
+        Icons.logout,
+        ZyraConceptAccountAction.signOut,
+        destructive: true,
+      ),
+    ],
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final groups = _groups();
+    final rowCount = groups.fold(0, (count, group) => count + group.length);
+    const contentGap = ZyraNavBarMetrics.contentGap;
+    final navInset =
+        ZyraNavBarMetrics.contentBottomClearance(context) - contentGap;
+    final minRowHeight = math.max(
+      44.0,
+      MediaQuery.textScalerOf(context).scale(_ProfileRow.titleSize) * 1.45 + 22,
+    );
+    final firstRowExtra = data.guardian ? 3.0 : 0.0;
+    final groupGaps = (groups.length - 1) * ZyraPreviewSpacing.cardToCard;
+    final groupInsets = groups.length * 2 * _cardVerticalInset;
+    final dividers = (rowCount - groups.length) * _dividerHeight;
+    return Material(
+      color: Colors.transparent,
+      child: SafeArea(
+        bottom: false,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                ZyraPreviewSpacing.pageMargin,
+                10,
                 ZyraPreviewSpacing.pageMargin,
                 14,
-                ZyraPreviewSpacing.pageMargin,
-                ZyraNavBarMetrics.contentBottomClearance(context),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Center(child: _avatar()),
-                  const SizedBox(height: 12),
-                  Text(
-                    data.name,
-                    key: const ValueKey('concept_profile_name'),
-                    textAlign: TextAlign.center,
-                    style: ZyraText.heading(size: 28),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(minHeight: 44),
+                  child: const ZyraTabTitle(
+                    'Profile',
+                    textKey: ValueKey('concept_profile_title'),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '${data.membership.toUpperCase()} · ${data.guardian ? 'GUARDIAN' : 'SEEKER'}',
-                    textAlign: TextAlign.center,
-                    style: ZyraText.body(
-                      size: 11,
-                      color: ZyraColors.goldText,
-                    ).copyWith(letterSpacing: 1.2),
-                  ),
-                  const SizedBox(height: 12),
-                  Wrap(
-                    key: const ValueKey('concept_profile_pills'),
-                    alignment: WrapAlignment.center,
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: [
-                      if (!data.guardian) ...[
-                        _pill(
-                          context,
-                          'concept_preview_profile',
-                          'Preview',
-                          () =>
-                              onAction(ZyraConceptAccountAction.previewProfile),
-                        ),
-                        _pill(
-                          context,
-                          'concept_edit_profile',
-                          'Edit',
-                          () => onAction(ZyraConceptAccountAction.editProfile),
-                        ),
-                      ],
-                      KeyedSubtree(
-                        key: ValueKey(
-                          data.guardian
-                              ? 'draft_role_seeker'
-                              : 'draft_role_guardian',
-                        ),
-                        child: _pill(
-                          context,
-                          'switch-account-button',
-                          'Switch',
-                          onSwitchRole,
-                          switcher: true,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  _card([
-                    if (data.guardian)
-                      _row(
-                        'your_seekers',
-                        'Your Seekers',
-                        Icons.people_outline,
-                        ZyraConceptAccountAction.yourSeekers,
-                        detail: data.linkedSeekerSummary,
-                      )
-                    else
-                      _row(
-                        'manage_photos',
-                        'Manage photos',
-                        Icons.photo_library_outlined,
-                        ZyraConceptAccountAction.managePhotos,
-                      ),
-                  ]),
-                  _card([
-                    _row(
-                      'membership',
-                      data.membership,
-                      Icons.workspace_premium_outlined,
-                      ZyraConceptAccountAction.membership,
-                      detail: data.isOne && data.familyPlacePayer != null
-                          ? 'Family place · paid by ${data.familyPlacePayer}'
-                          : data.isOne
-                          ? 'Manage membership'
-                          : 'See ${data.guardian ? 'Guardian' : 'Seeker'} One',
-                    ),
-                    if (!data.guardian)
-                      _row(
-                        'compatibility_buy_more',
-                        'Compatibility Unlocks',
-                        Icons.insights_outlined,
-                        ZyraConceptAccountAction.compatibilityStore,
-                        detail:
-                            '${data.plusUnlocks?.toString() ?? '—'} left${data.isOne ? ' · 3 more each month' : ''}',
-                      ),
-                    _row(
-                      'subscriptions',
-                      'Profiles & Family places',
-                      Icons.card_membership_outlined,
-                      ZyraConceptAccountAction.subscriptions,
-                      detail: 'Who your membership covers',
-                    ),
-                  ]),
-                  _card([
-                    if (!data.guardian)
-                      _row(
-                        'guardian_info',
-                        'What Guardians can do',
-                        Icons.verified_user_outlined,
-                        ZyraConceptAccountAction.guardianInfo,
-                      ),
-                    _row(
-                      'safety_advice',
-                      'Safety & advice',
-                      Icons.health_and_safety,
-                      ZyraConceptAccountAction.safetyAdvice,
-                    ),
-                    _row(
-                      'invite',
-                      'Invite someone to ZYRA',
-                      Icons.person_add,
-                      ZyraConceptAccountAction.invite,
-                    ),
-                  ]),
-                  _card([
-                    _row(
-                      'settings',
-                      'Settings',
-                      Icons.settings,
-                      ZyraConceptAccountAction.settings,
-                      detail: 'Account, privacy, notifications, haptics',
-                    ),
-                    _row(
-                      'sign_out',
-                      'Sign out',
-                      Icons.logout,
-                      ZyraConceptAccountAction.signOut,
-                      destructive: true,
-                    ),
-                  ], last: true),
-                ],
+                ),
               ),
             ),
-          ),
-        ],
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: navInset),
+                child: CustomScrollView(
+                  key: const ValueKey('concept-current-profile-scroll'),
+                  physics: ZyraMotion.scrollPhysics,
+                  slivers: [
+                    SliverPadding(
+                      // The 44-point target extends five points below the pill.
+                      padding: const EdgeInsets.fromLTRB(
+                        ZyraPreviewSpacing.pageMargin,
+                        2,
+                        ZyraPreviewSpacing.pageMargin,
+                        11,
+                      ),
+                      sliver: SliverToBoxAdapter(child: _header(context)),
+                    ),
+                    SliverLayoutBuilder(
+                      builder: (context, constraints) {
+                        // precedingScrollExtent includes the header at its actual
+                        // wrapped height and stays constant while scrolling.
+                        final rowSpace =
+                            constraints.viewportMainAxisExtent -
+                            constraints.precedingScrollExtent -
+                            contentGap -
+                            groupGaps -
+                            groupInsets -
+                            dividers -
+                            firstRowExtra;
+                        final rowHeight = math.max(
+                          minRowHeight,
+                          // Leave a rounding allowance so fitted content has no
+                          // positive scroll extent from floating-point layout.
+                          (rowSpace - 0.000001) / rowCount,
+                        );
+                        return SliverPadding(
+                          padding: const EdgeInsets.fromLTRB(
+                            ZyraPreviewSpacing.pageMargin,
+                            0,
+                            ZyraPreviewSpacing.pageMargin,
+                            contentGap,
+                          ),
+                          sliver: SliverToBoxAdapter(
+                            child: Column(
+                              children: [
+                                for (var i = 0; i < groups.length; i++) ...[
+                                  if (i > 0)
+                                    const SizedBox(
+                                      height: ZyraPreviewSpacing.cardToCard,
+                                    ),
+                                  _card(
+                                    groups[i],
+                                    rowHeight,
+                                    firstRowExtra: i == 0 ? firstRowExtra : 0,
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
 
-class _MonogramRow extends StatelessWidget {
-  const _MonogramRow({
+class _ProfileRow extends StatelessWidget {
+  const _ProfileRow({
     super.key,
     required this.title,
     required this.icon,
@@ -449,57 +576,78 @@ class _MonogramRow extends StatelessWidget {
     this.detail,
     this.destructive = false,
   });
+
+  static const titleSize = 14.5;
+
   final String title;
   final IconData icon;
   final VoidCallback onTap;
   final String? detail;
   final bool destructive;
+
   @override
-  Widget build(BuildContext context) {
-    final color = destructive ? const Color(0xFFB84A42) : ZyraColors.foreground;
-    return MergeSemantics(
-      key: title == 'Compatibility Unlocks'
-          ? const ValueKey('concept_compatibility')
-          : null,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(20),
-        onTap: ZyraTapFeedback.onTap(context, onTap),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          child: Row(
+  Widget build(BuildContext context) => MergeSemantics(
+    key: title == 'Compatibility Unlocks'
+        ? const ValueKey('concept_compatibility')
+        : null,
+    child: InkWell(
+      borderRadius: BorderRadius.circular(20),
+      onTap: ZyraTapFeedback.onTap(context, onTap),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 17),
+        child: LayoutBuilder(
+          builder: (context, constraints) => Row(
             children: [
               Icon(
                 icon,
                 size: 20,
-                color: destructive ? color : ZyraColors.journeyGold,
+                color: destructive
+                    ? const Color(0xFFB84A42)
+                    : ZyraColors.journeyGold,
               ),
               const SizedBox(width: 14),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title, style: ZyraText.body(size: 14, color: color)),
-                    if (detail != null) ...[
-                      const SizedBox(height: 3),
-                      Text(detail!, style: ZyraText.subtext(size: 12.5)),
-                    ],
-                  ],
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: ZyraText.body(
+                    size: titleSize,
+                    color: destructive
+                        ? const Color(0xFFAC453E)
+                        : ZyraColors.foreground,
+                  ).copyWith(height: 1.45),
                 ),
               ),
+              if (detail case final value?) ...[
+                const SizedBox(width: 22),
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: constraints.maxWidth * .4,
+                  ),
+                  child: Text(
+                    value,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: ZyraText.subtext(size: 13).copyWith(height: 1.45),
+                  ),
+                ),
+                const SizedBox(width: 6),
+              ],
               if (!destructive) ...[
-                const SizedBox(width: 8),
+                const SizedBox(width: 14),
                 Icon(
                   Icons.chevron_right_rounded,
                   size: 18,
-                  color: ZyraColors.ink(.28),
+                  color: ZyraColors.ink(.30),
                 ),
               ],
             ],
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
 
 /// SettingsScreen's current sections and row copy. All actions stay caller-owned.

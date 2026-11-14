@@ -1,14 +1,88 @@
-// LOCK21: actual four Profile tab states, rendered locally with real tabs.
+// LOCK 21 V5: actual Founder Profile routes against the p11–p16 master sizes.
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zyra/widgets/zyra_floating_surface.dart';
+
 import 'baseline_capture_support.dart';
 
-const _root = '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA';
-const _evidence = '$_root/REPORTS/EVIDENCE/LOCK21_PROFILE_TAB_2026-10-31';
-const _capture = bool.fromEnvironment('ZYRA_LOCK21_CAPTURE');
+const _output = String.fromEnvironment('ZYRA_LOCK21_CAPTURE_OUTPUT');
+final _ios = TargetPlatformVariant({TargetPlatform.iOS});
+const _navKey = ValueKey('compact-nav-surface');
 
-Future<void> _cap(BaselineHarness h, String name) async {
-  if (!_capture) return;
+Finder _key(String id) => find.byKey(ValueKey(id));
+Finder get _scroll => _key('concept-current-profile-scroll');
+
+ScrollPosition _position(WidgetTester tester) => tester
+    .state<ScrollableState>(
+      find.descendant(of: _scroll, matching: find.byType(Scrollable)),
+    )
+    .position;
+
+Finder _surface(String id) => find
+    .ancestor(
+      of: _key('concept_$id'),
+      matching: find.byType(ZyraFloatingSurface),
+    )
+    .first;
+
+BaselineHarness _harness(
+  WidgetTester tester, {
+  required String group,
+  required bool compact,
+  required bool masterInsets,
+  double scale = 1,
+}) {
+  addTearDown(tester.view.resetPhysicalSize);
+  addTearDown(tester.view.resetDevicePixelRatio);
+  return BaselineHarness(
+    tester,
+    group: group,
+    outputRoot: _output,
+    evidenceRoot: _output,
+    flatOutput: true,
+    logicalSize: compact ? const Size(375, 667) : const Size(430, 932),
+    devicePixelRatio: compact ? 2 : 3,
+    safePadding: EdgeInsets.only(
+      top: compact ? 20 : 59,
+      bottom: masterInsets ? 22 : (compact ? 0 : 34),
+    ),
+    textScale: scale,
+  );
+}
+
+Future<void> _mount(
+  BaselineHarness h, {
+  required bool guardian,
+  bool basic = false,
+}) async {
+  await h.mount(
+    tab: 4,
+    guardian: guardian,
+    receivedRequest: false,
+    seekerPhotos: const [],
+    initialSeekerBasic: !guardian && basic,
+    initialGuardianBasic: guardian && basic,
+    seekerMembership: !guardian && basic ? 'Seeker Basic' : 'Seeker One',
+    guardianMembership: guardian && basic ? 'Guardian Basic' : 'Guardian One',
+  );
+  if (!guardian) {
+    final balance = basic ? 0 : 1;
+    final fixture = h.shellFixture;
+    expect(
+      fixture.update(() {
+        expect(fixture.compatibilityAccess!.setBalance(count: balance), isTrue);
+      }),
+      isTrue,
+    );
+    await h.flush();
+    expect(find.text('$balance left'), findsOneWidget);
+  }
+}
+
+Future<void> _capture(BaselineHarness h, String name) async {
+  if (_output.isEmpty) return;
   final previous = debugDisableShadows;
   debugDisableShadows = false;
   void repaint(RenderObject node) {
@@ -27,7 +101,7 @@ Future<void> _cap(BaselineHarness h, String name) async {
       'profile',
       name,
       name,
-      'Actual admitted Profile tab; current Guardian sample has Adam and Yusuf.',
+      'Actual Founder Profile shell with the locked fixture data.',
       fileName: '$name.png',
     );
   } finally {
@@ -35,91 +109,167 @@ Future<void> _cap(BaselineHarness h, String name) async {
   }
 }
 
-Future<void> _scroll(BaselineHarness h, double offset) async {
-  final scroll = find.descendant(
-    of: find.byKey(const ValueKey('concept-current-profile-scroll')),
-    matching: find.byType(Scrollable),
-  );
-  final position = h.tester.state<ScrollableState>(scroll).position;
-  expect(position.maxScrollExtent, greaterThan(0));
-  final reached = offset.clamp(0.0, position.maxScrollExtent).toDouble();
-  position.jumpTo(reached);
-  await h.flush();
+void _verifyEndpoint(WidgetTester tester, Rect nav) {
+  expect(tester.getRect(find.byKey(_navKey)), nav);
   expect(
-    h.tester.state<ScrollableState>(scroll).position.pixels,
-    closeTo(reached, .01),
+    nav.top - tester.getBottomLeft(_surface('sign_out')).dy,
+    closeTo(16, .02),
   );
+  expect(_key('concept_sign_out').hitTestable(), findsOneWidget);
+}
+
+void _verifyCards(WidgetTester tester, bool guardian, double width) {
+  final cards = [
+    _surface(guardian ? 'your_seekers' : 'manage_photos'),
+    _surface('membership'),
+    _surface(guardian ? 'safety_advice' : 'guardian_info'),
+    _surface('sign_out'),
+  ].map(tester.getRect).toList();
+  for (var index = 0; index < cards.length; index++) {
+    expect(cards[index].left, closeTo(20, .02));
+    expect(cards[index].right, closeTo(width - 20, .02));
+    if (index > 0) {
+      expect(cards[index].top - cards[index - 1].bottom, closeTo(12, .02));
+    }
+  }
+}
+
+Future<void> _verifyStill(BaselineHarness h, {required bool guardian}) async {
+  final t = h.tester;
+  final nav = t.getRect(find.byKey(_navKey));
+  final position = _position(t);
+  expect(position.maxScrollExtent, closeTo(0, .02));
+  _verifyCards(t, guardian, h.logicalSize.width);
+  _verifyEndpoint(t, nav);
+
+  final rows = [
+    guardian ? 'your_seekers' : 'manage_photos',
+    'membership',
+    if (!guardian) 'compatibility_buy_more',
+    'subscriptions',
+    if (!guardian) 'guardian_info',
+    'safety_advice',
+    'invite',
+    'settings',
+    'sign_out',
+  ];
+  final rowHeight = t.getSize(_key('concept_membership')).height;
+  expect(rowHeight, greaterThan(44));
+  for (final row in rows) {
+    final extra = row == 'your_seekers' ? 3 : 0;
+    expect(
+      t.getSize(_key('concept_$row')).height,
+      closeTo(rowHeight + extra, .02),
+    );
+  }
+
+  final firstCard = _surface(guardian ? 'your_seekers' : 'manage_photos');
+  final origin = t.getTopLeft(firstCard);
+  for (final distance in [-80.0, 80.0]) {
+    final drag = await t.startGesture(t.getCenter(firstCard));
+    await drag.moveBy(Offset(0, distance / 2));
+    await t.pump();
+    await drag.moveBy(Offset(0, distance / 2));
+    await t.pump();
+    expect(t.getTopLeft(firstCard), origin);
+    expect(position.pixels, closeTo(0, .02));
+    await drag.up();
+    await h.flush();
+    _verifyEndpoint(t, nav);
+  }
 }
 
 void main() {
-  setUpAll(() => baselineSetUp(evidenceRoot: _evidence));
+  setUpAll(
+    () => baselineSetUp(
+      evidenceRoot: null,
+      useSystemSymbolFont: Platform.isMacOS,
+    ),
+  );
   tearDownAll(baselineTearDown);
-  testWidgets('LOCK21 renders p01-p06 actual Profile roots', (t) async {
-    addTearDown(t.view.resetPhysicalSize);
-    addTearDown(t.view.resetDevicePixelRatio);
-    final h = BaselineHarness(
-      t,
-      group: 'lock21',
-      outputRoot: '$_root/PRODUCT/APPROVED/PROFILE_TAB/BUILT',
-      evidenceRoot: _evidence,
-      flatOutput: true,
-    );
-    await h.mount(tab: 4);
-    await _cap(h, 'p01_seeker_one__top');
-    await _scroll(h, 204);
-    await _cap(h, 'p02_seeker_one__scrolled');
-    await h.mount(
-      tab: 4,
-      initialSeekerBasic: true,
-      seekerMembership: 'Seeker Basic',
-    );
-    await _cap(h, 'p03_seeker_basic__top');
-    await h.mount(tab: 4, guardian: true);
-    await _cap(h, 'p04_guardian_one__top');
-    await _scroll(h, 105);
-    await _cap(h, 'p05_guardian_one__scrolled');
-    await h.mount(
-      tab: 4,
-      guardian: true,
-      initialGuardianBasic: true,
-      guardianMembership: 'Guardian Basic',
-    );
-    await _cap(h, 'p06_guardian_basic__top');
-  });
-  testWidgets('LOCK21 larger text retains wrapped pills and final Sign out', (
-    t,
-  ) async {
-    addTearDown(t.view.resetPhysicalSize);
-    addTearDown(t.view.resetDevicePixelRatio);
-    final h = BaselineHarness(
-      t,
-      group: 'lock21_large',
-      outputRoot: '$_root/PRODUCT/APPROVED/PROFILE_TAB/BUILT',
-      evidenceRoot: _evidence,
-      flatOutput: true,
-      textScale: 2,
-    );
-    for (final guardian in [false, true]) {
-      await h.mount(tab: 4, guardian: guardian);
-      await _cap(
-        h,
-        guardian ? 'guardian_large_text__top' : 'seeker_large_text__top',
+
+  const states = [
+    (name: 'p11_seeker_one__one_screen', guardian: false, basic: false),
+    (name: 'p12_seeker_basic__one_screen', guardian: false, basic: true),
+    (name: 'p13_guardian_one__one_screen', guardian: true, basic: false),
+    (name: 'p14_guardian_basic__one_screen', guardian: true, basic: true),
+  ];
+  for (final state in states) {
+    testWidgets('LOCK 21 V5 ${state.name} fits and stays still', (t) async {
+      final h = _harness(
+        t,
+        group: state.name,
+        compact: false,
+        masterInsets: true,
       );
-      final scroll = find.descendant(
-        of: find.byKey(const ValueKey('concept-current-profile-scroll')),
-        matching: find.byType(Scrollable),
+      await _mount(h, guardian: state.guardian, basic: state.basic);
+      await _verifyStill(h, guardian: state.guardian);
+      await _capture(h, state.name);
+    }, variant: _ios);
+
+    testWidgets('LOCK 21 V5 ${state.name} fits iOS safe insets', (t) async {
+      final h = _harness(
+        t,
+        group: state.name,
+        compact: false,
+        masterInsets: false,
       );
-      final position = t.state<ScrollableState>(scroll).position;
+      await _mount(h, guardian: state.guardian, basic: state.basic);
+      await _verifyStill(h, guardian: state.guardian);
+    }, variant: _ios);
+  }
+
+  for (final guardian in [false, true]) {
+    final name = guardian ? 'p16_guardian_one' : 'p15_seeker_one';
+    testWidgets('LOCK 21 V5 $name reaches the compact master endpoint', (
+      t,
+    ) async {
+      final h = _harness(t, group: name, compact: true, masterInsets: true);
+      await _mount(h, guardian: guardian);
+      _verifyCards(t, guardian, h.logicalSize.width);
+      final position = _position(t);
+      final nav = t.getRect(find.byKey(_navKey));
+      expect(position.maxScrollExtent, greaterThan(0));
+      expect(t.getBottomLeft(_scroll).dy, closeTo(nav.top, .02));
+      await _capture(h, '${name}__small_phone_top');
+
       position.jumpTo(position.maxScrollExtent);
       await h.flush();
-      expect(
-        find.byKey(const ValueKey('concept_sign_out')).hitTestable(),
-        findsOneWidget,
+      _verifyEndpoint(t, nav);
+      await _capture(h, '${name}__small_phone_end');
+    }, variant: _ios);
+
+    testWidgets('LOCK 21 V5 $name ends above the actual compact tab bar', (
+      t,
+    ) async {
+      final h = _harness(t, group: name, compact: true, masterInsets: false);
+      await _mount(h, guardian: guardian);
+      final position = _position(t);
+      final nav = t.getRect(find.byKey(_navKey));
+      if (!guardian) expect(position.maxScrollExtent, greaterThan(0));
+      position.jumpTo(position.maxScrollExtent);
+      await h.flush();
+      _verifyEndpoint(t, nav);
+    }, variant: _ios);
+
+    final large = guardian ? 'guardian_large_text' : 'seeker_large_text';
+    testWidgets('LOCK 21 V5 $large reaches Sign out', (t) async {
+      final h = _harness(
+        t,
+        group: large,
+        compact: true,
+        masterInsets: false,
+        scale: 2,
       );
-      await _cap(
-        h,
-        guardian ? 'guardian_large_text__last' : 'seeker_large_text__last',
-      );
-    }
-  });
+      await _mount(h, guardian: guardian);
+      final position = _position(t);
+      final nav = t.getRect(find.byKey(_navKey));
+      expect(position.maxScrollExtent, greaterThan(0));
+      await _capture(h, '${large}__top');
+      position.jumpTo(position.maxScrollExtent);
+      await h.flush();
+      _verifyEndpoint(t, nav);
+      await _capture(h, '${large}__last');
+    }, variant: _ios);
+  }
 }

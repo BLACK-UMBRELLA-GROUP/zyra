@@ -42,26 +42,30 @@ class _NoNetwork extends HttpOverrides {
 
 Finder _key(String value) => find.byKey(ValueKey(value));
 
-ZyraConceptAccountData _data({required bool guardian, required bool one}) =>
-    ZyraConceptAccountData(
-      guardian: guardian,
-      name: guardian ? 'Hassan Rahman' : 'Adam Khan',
-      age: guardian ? '54' : '30',
-      gender: 'Male',
-      location: 'London',
-      membership:
-          '${guardian ? 'Guardian' : 'Seeker'} ${one ? 'One' : 'Basic'}',
-      isOne: one,
-      relationship: 'Father',
-      linkedSeekers: '1',
-      linkedSeekerSummary: "Adam · you're his Father and Main Guardian",
-      guardianCount: '2',
-      signedInWith: 'Apple',
-      backgroundLabel: 'Ivory',
-      hapticLabel: 'Subtle',
-      gold: false,
-      plusUnlocks: 3,
-    );
+ZyraConceptAccountData _data({
+  required bool guardian,
+  required bool one,
+  String? name,
+  String? familyPlacePayer,
+}) => ZyraConceptAccountData(
+  guardian: guardian,
+  name: name ?? (guardian ? 'Hassan Rahman' : 'Adam Khan'),
+  age: guardian ? '54' : '30',
+  gender: 'Male',
+  location: 'London',
+  membership: '${guardian ? 'Guardian' : 'Seeker'} ${one ? 'One' : 'Basic'}',
+  isOne: one,
+  relationship: 'Father',
+  linkedSeekers: '1',
+  linkedSeekerSummary: 'Adam, Yusuf',
+  familyPlacePayer: familyPlacePayer,
+  guardianCount: '2',
+  signedInWith: 'Apple',
+  backgroundLabel: 'Ivory',
+  hapticLabel: 'Subtle',
+  gold: false,
+  plusUnlocks: 3,
+);
 
 Map<String, ZyraConceptAccountAction> _rows(bool guardian) => {
   if (guardian)
@@ -226,7 +230,16 @@ void main() {
       );
       expect(
         tester.getSize(_key('concept_profile_avatar')),
-        const Size(104, 104),
+        const Size(84, 84),
+      );
+      expect(
+        tester.getTopLeft(_key('concept_profile_name')).dx -
+            tester.getTopRight(_key('concept_profile_avatar')).dx,
+        closeTo(16, .01),
+      );
+      expect(
+        tester.widget<Text>(_key('concept_profile_name')).style?.fontSize,
+        24,
       );
       expect(
         find.text(
@@ -235,26 +248,27 @@ void main() {
         findsOneWidget,
       );
       expect(find.text('Profiles & Family places'), findsOneWidget);
-      expect(
-        find.text(
-          role.one
-              ? 'Manage membership'
-              : 'See ${role.guardian ? 'Guardian' : 'Seeker'} One',
-        ),
-        findsOneWidget,
-      );
+      expect(find.text('See One'), role.one ? findsNothing : findsOneWidget);
+      for (final id in [
+        if (!role.guardian) ...[
+          'concept_preview_profile',
+          'concept_edit_profile',
+        ],
+        'switch-account-button',
+      ]) {
+        final painted = tester.getRect(_key('${id}_surface'));
+        final target = tester.getRect(_key(id));
+        expect(painted.height, closeTo(34, .01), reason: id);
+        expect(target.height, greaterThanOrEqualTo(44), reason: id);
+        expect(target.width, greaterThanOrEqualTo(44), reason: id);
+        expect(target.center, painted.center, reason: id);
+      }
       if (role.guardian) {
-        expect(
-          find.text("Adam · you're his Father and Main Guardian"),
-          findsOneWidget,
-        );
+        expect(find.text('Adam, Yusuf'), findsOneWidget);
         expect(_key('concept_preview_profile'), findsNothing);
         expect(_key('concept_edit_profile'), findsNothing);
       } else {
-        expect(
-          find.text(role.one ? '3 left · 3 more each month' : '3 left'),
-          findsOneWidget,
-        );
+        expect(find.text('3 left'), findsOneWidget);
         await _tap(tester, 'concept_preview_profile');
         await _tap(tester, 'concept_edit_profile');
       }
@@ -275,6 +289,12 @@ void main() {
         'Edit profile',
         'Your subscriptions',
         'Past Journeys',
+        'Manage membership',
+        'See Guardian One',
+        'See Seeker One',
+        '3 left · 3 more each month',
+        'Who your membership covers',
+        'Account, privacy, notifications, haptics',
       ]) {
         expect(find.text(removed), findsNothing, reason: removed);
       }
@@ -290,7 +310,7 @@ void main() {
       );
       expect(
         tester.widget<Text>(signOutText).style?.color,
-        const Color(0xFFB84A42),
+        const Color(0xFFAC453E),
       );
       expect(
         find.descendant(
@@ -316,64 +336,80 @@ void main() {
       ]);
       await _tap(tester, 'switch-account-button');
       expect(switches, 1);
+      final switchTarget = tester.getRect(_key('switch-account-button'));
+      await tester.tapAt(Offset(switchTarget.center.dx, switchTarget.top + 2));
+      await tester.pumpAndSettle();
+      expect(switches, 2, reason: 'The area above the visible pill also taps.');
     });
 
-    testWidgets('${role.label} Larger Text keeps pills and rows readable', (
+    testWidgets('${role.label} Larger Text keeps targets and action labels', (
       tester,
     ) async {
-      await _mount(
-        tester,
-        ZyraConceptProfilePresentation(
-          data: _data(guardian: role.guardian, one: role.one),
-          onAction: (_) {},
-          onSwitchRole: () {},
-        ),
-        size: const Size(320, 568),
-        scale: 2,
-      );
-      final pills = [
-        if (!role.guardian) ...[
-          'concept_preview_profile',
-          'concept_edit_profile',
-        ],
-        'switch-account-button',
-      ];
-      final rects = pills.map((key) => tester.getRect(_key(key))).toList();
-      if (!role.guardian) {
-        expect(
-          rects.map((rect) => rect.top).toSet().length,
-          greaterThan(1),
-          reason: 'The three Seeker pills wrap at 320px and 200% text.',
+      final semantics = tester.ensureSemantics();
+      try {
+        await _mount(
+          tester,
+          ZyraConceptProfilePresentation(
+            data: _data(guardian: role.guardian, one: role.one),
+            onAction: (_) {},
+            onSwitchRole: () {},
+          ),
+          size: const Size(320, 568),
+          scale: 2,
         );
-      }
-      for (final rect in rects) {
-        expect(rect.width, greaterThanOrEqualTo(44));
-        expect(rect.height, greaterThanOrEqualTo(44));
-        expect(rect.left, greaterThanOrEqualTo(0));
-        expect(rect.right, lessThanOrEqualTo(320));
-      }
-      for (var i = 0; i < rects.length; i++) {
-        for (var j = i + 1; j < rects.length; j++) {
-          expect(rects[i].overlaps(rects[j]), isFalse);
-        }
-      }
-      for (final key in [...pills, ..._rows(role.guardian).keys]) {
-        final row = _key(key);
-        await tester.ensureVisible(row);
-        await tester.pumpAndSettle();
-        for (final text
-            in find
-                .descendant(of: row, matching: find.byType(Text))
-                .evaluate()) {
-          final paragraph = tester.renderObject<RenderParagraph>(
-            find.descendant(
-              of: find.byWidget(text.widget),
-              matching: find.byType(RichText),
-            ),
+        final pills = [
+          if (!role.guardian) ...[
+            'concept_preview_profile',
+            'concept_edit_profile',
+          ],
+          'switch-account-button',
+        ];
+        final rects = pills.map((key) => tester.getRect(_key(key))).toList();
+        if (!role.guardian) {
+          expect(
+            rects.map((rect) => rect.top).toSet().length,
+            greaterThan(1),
+            reason: 'The three Seeker pills wrap at 320px and 200% text.',
           );
-          expect(paragraph.didExceedMaxLines, isFalse, reason: key);
         }
-        expect(tester.takeException(), isNull);
+        for (final rect in rects) {
+          expect(rect.width, greaterThanOrEqualTo(44));
+          expect(rect.height, greaterThanOrEqualTo(44));
+          expect(rect.left, greaterThanOrEqualTo(0));
+          expect(rect.right, lessThanOrEqualTo(320));
+        }
+        for (var i = 0; i < rects.length; i++) {
+          for (var j = i + 1; j < rects.length; j++) {
+            expect(rects[i].overlaps(rects[j]), isFalse);
+          }
+        }
+        for (final key in [...pills, ..._rows(role.guardian).keys]) {
+          final row = _key(key);
+          await tester.ensureVisible(row);
+          await tester.pumpAndSettle();
+          final label = tester.getSemantics(row).getSemanticsData().label;
+          final isPill = pills.contains(key);
+          final textRoot = isPill ? _key('${key}_surface') : row;
+          expect(textRoot, findsOneWidget, reason: key);
+          for (final element
+              in find
+                  .descendant(of: textRoot, matching: find.byType(Text))
+                  .evaluate()) {
+            final text = element.widget as Text;
+            expect(label, contains(text.data!), reason: key);
+            final paragraph = tester.renderObject<RenderParagraph>(
+              find.byWidget(text),
+            );
+            if (isPill) {
+              expect(paragraph.didExceedMaxLines, isFalse, reason: key);
+            } else {
+              expect(text.maxLines, 1, reason: key);
+            }
+          }
+          expect(tester.takeException(), isNull);
+        }
+      } finally {
+        semantics.dispose();
       }
     });
 
@@ -437,6 +473,44 @@ void main() {
             'seekers',
           );
         }
+      },
+    );
+  }
+
+  for (final guardian in [false, true]) {
+    testWidgets(
+      'Profile truncates long ${guardian ? 'Guardian' : 'Seeker'} names',
+      (tester) async {
+        const name = 'A Name Long Enough to Require an Ellipsis on Profile';
+        await _mount(
+          tester,
+          ZyraConceptProfilePresentation(
+            data: _data(
+              guardian: guardian,
+              one: true,
+              name: name,
+              familyPlacePayer: guardian ? 'Adam' : null,
+            ),
+            onAction: (_) {},
+            onSwitchRole: () {},
+          ),
+        );
+        final label = _key('concept_profile_name');
+        final text = tester.widget<Text>(label);
+        expect(text.data, name);
+        expect(text.maxLines, 1);
+        expect(text.overflow, TextOverflow.ellipsis);
+        expect(
+          tester.renderObject<RenderParagraph>(label).didExceedMaxLines,
+          true,
+        );
+        expect(
+          find.descendant(
+            of: _key('concept_membership'),
+            matching: find.text('Paid by Adam'),
+          ),
+          guardian ? findsOneWidget : findsNothing,
+        );
       },
     );
   }

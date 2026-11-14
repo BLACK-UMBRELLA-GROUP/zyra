@@ -260,14 +260,19 @@ void main() {
                   ZyraConceptAccountAction.editProfile => 'Edit',
                   _ => entry.label,
                 };
+                final isPill =
+                    entry.action != ZyraConceptAccountAction.managePhotos;
+                final surface = isPill
+                    ? _key('${entry.protectedKey}_surface')
+                    : row;
                 expect(
-                  find.descendant(of: row, matching: find.text(label)),
+                  find.descendant(of: surface, matching: find.text(label)),
                   findsOneWidget,
                 );
-                if (entry.action != ZyraConceptAccountAction.managePhotos) {
+                if (isPill) {
                   expect(
                     find.descendant(
-                      of: row,
+                      of: surface,
                       matching: find.byIcon(Icons.chevron_right_rounded),
                     ),
                     findsNothing,

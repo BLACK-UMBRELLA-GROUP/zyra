@@ -224,6 +224,7 @@ class BaselineHarness {
     this.textScale = 1,
     this.highContrast = false,
     this.logicalSize = const Size(430, 932),
+    this.devicePixelRatio = 3,
     this.safePadding = const EdgeInsets.only(top: 59, bottom: 34),
     this.reduceMotion = false,
     this.circleArrivalsFor,
@@ -235,6 +236,7 @@ class BaselineHarness {
   final double textScale;
   final bool highContrast;
   final Size logicalSize;
+  final double devicePixelRatio;
   final EdgeInsets safePadding;
   final bool reduceMotion;
   final ZyraCirclePreviewArrivals? circleArrivalsFor;
@@ -272,8 +274,8 @@ class BaselineHarness {
     checkpoints
       ..clear()
       ..add(checkpoint);
-    tester.view.physicalSize = logicalSize * 3;
-    tester.view.devicePixelRatio = 3;
+    tester.view.physicalSize = logicalSize * devicePixelRatio;
+    tester.view.devicePixelRatio = devicePixelRatio;
     await tester.pumpWidget(
       _ProductionPreviewFrame(
         textScale: textScale,
@@ -311,8 +313,8 @@ class BaselineHarness {
     ZyraInteractionStyle.restoreDefaults();
     ZyraText.restoreAppFont(null);
     checkpoints.clear();
-    tester.view.physicalSize = logicalSize * 3;
-    tester.view.devicePixelRatio = 3;
+    tester.view.physicalSize = logicalSize * devicePixelRatio;
+    tester.view.devicePixelRatio = devicePixelRatio;
     final ready = Completer<void>();
     shellFixture = ZyraShellTestFixture(
       circleArrivalsFor: circleArrivalsFor,
@@ -507,10 +509,10 @@ class BaselineHarness {
       find.byKey(_boundary),
     );
     await tester.runAsync(() async {
-      final image = await boundary.toImage(pixelRatio: 3);
+      final image = await boundary.toImage(pixelRatio: devicePixelRatio);
       try {
-        expect(image.width, (logicalSize.width * 3).round());
-        expect(image.height, (logicalSize.height * 3).round());
+        expect(image.width, (logicalSize.width * devicePixelRatio).round());
+        expect(image.height, (logicalSize.height * devicePixelRatio).round());
         final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
         final file = File('$outputRoot/$relative');
         if (_compareOnly) {

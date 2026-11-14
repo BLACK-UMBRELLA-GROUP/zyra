@@ -306,7 +306,7 @@ void main() {
             await _reveal(tester, find.text(accountName));
             final avatar = _key('concept_profile_avatar');
             expect(avatar, findsOneWidget);
-            expect(tester.getSize(avatar), const Size(104, 104));
+            expect(tester.getSize(avatar), const Size(84, 84));
             if (guardian) expect(find.text('H'), findsOneWidget);
             expect(find.text(accountName), findsOneWidget);
             expect(
@@ -587,7 +587,9 @@ void main() {
           expect(identical(tester.state(preview), state), isTrue);
           expect(find.text('Adam'), findsOneWidget);
           expect(
-            tester.getSemantics(_key('concept_browse_details_avatar_draft-self')),
+            tester.getSemantics(
+              _key('concept_browse_details_avatar_draft-self'),
+            ),
             matchesSemantics(label: 'Profile photo, Seeker One', isImage: true),
           );
           expect(_key('my-profile-preview-unavailable'), findsNothing);

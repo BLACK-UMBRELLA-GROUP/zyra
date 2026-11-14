@@ -3902,10 +3902,10 @@ void main() {
     (tester) async {
       await _mount(tester, guardianReviewFixture: true);
       await _nav(tester, 4);
-      // LOCK 21, PROFILE_TAB/MASTERS/p01,p04: 104 pt account head.
+      // LOCK 21 V5, PROFILE_TAB/MASTERS/p11: 84 pt account avatar.
       expect(
         tester.getSize(_key('concept_profile_avatar')),
-        const Size(104, 104),
+        const Size(84, 84),
       );
       final profile = tester.widget<ZyraConceptProfilePresentation>(
         find.byType(ZyraConceptProfilePresentation),
