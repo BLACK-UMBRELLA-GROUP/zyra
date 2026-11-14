@@ -9,8 +9,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'package:zyra/screens/profile/zyra_manage_profile_video.dart';
 import 'package:zyra/services/zyra_profile_video_service.dart';
+import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
+import 'package:zyra/widgets/zyra_guardian_add_card.dart';
 
 const _captureFont = 'PhotosCapturePoppins';
 const _capture = ValueKey('profile-video-photos-capture');
@@ -212,6 +215,40 @@ void main() {
         );
         expect(find.text('4 photo spaces available'), findsOneWidget);
         expect(find.text('Add a video'), findsNothing);
+        final lockedTile = find.ancestor(
+          of: find.text('See Seeker One ›'),
+          matching: find.byType(ZyraPhotoGridTile),
+        );
+        final lockedOutline = find.byWidgetPredicate(
+          (widget) =>
+              widget is CustomPaint &&
+              widget.foregroundPainter is ZyraGuardianDashedBorder,
+        );
+        final outline = tester.widget<CustomPaint>(
+          find.descendant(of: lockedTile, matching: lockedOutline),
+        );
+        final dashedBorder =
+            outline.foregroundPainter! as ZyraGuardianDashedBorder;
+        expect(
+          dashedBorder.color,
+          ZyraColors.journeyGold.withValues(alpha: .5),
+        );
+        final mainPhoto = find.byWidgetPredicate(
+          (widget) =>
+              widget is ZyraPhotoGridTile && widget.label == 'Main photo',
+        );
+        final mainTile = tester.widget<Material>(
+          find.descendant(of: mainPhoto, matching: find.byType(Material)),
+        );
+        final mainShape = mainTile.shape! as RoundedRectangleBorder;
+        expect(
+          mainShape.side,
+          const BorderSide(color: ZyraColors.journeyGold, width: 1.5),
+        );
+        expect(
+          find.descendant(of: mainPhoto, matching: find.byIcon(Icons.check)),
+          findsOneWidget,
+        );
         await _save(tester, 'photos_basic_$resolution');
         await tester.tap(find.text('See Seeker One ›'));
         await _settle(tester);

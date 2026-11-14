@@ -8,6 +8,8 @@ import '../../services/zyra_profile_video_service.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_confirm_sheet.dart';
+import '../../widgets/zyra_guardian_add_card.dart'
+    show ZyraGuardianDashedBorder;
 import '../../widgets/zyra_profile_video_player.dart';
 import '../../widgets/zyra_tap_feedback.dart';
 import 'zyra_profile_video_trim_screen.dart';
@@ -256,6 +258,7 @@ class _ZyraManageProfileVideoState extends State<ZyraManageProfileVideo> {
       return ZyraPhotoGridTile(
         label: 'See Seeker One',
         onTap: widget.onUpgrade,
+        border: ZyraPhotoGridTileBorder.lockedVideo,
         child: _caption(
           const Icon(
             Icons.lock_outline,
@@ -444,43 +447,63 @@ class _ZyraManageProfileVideoState extends State<ZyraManageProfileVideo> {
   );
 }
 
+enum ZyraPhotoGridTileBorder { standard, mainPhoto, lockedVideo }
+
 class ZyraPhotoGridTile extends StatelessWidget {
   const ZyraPhotoGridTile({
     super.key,
     required this.child,
     this.label,
     this.onTap,
+    this.border = ZyraPhotoGridTileBorder.standard,
   });
 
   final Widget child;
   final String? label;
   final VoidCallback? onTap;
+  final ZyraPhotoGridTileBorder border;
 
   @override
   Widget build(BuildContext context) {
-    const radius = BorderRadius.all(Radius.circular(18));
+    const cornerRadius = 18.0;
+    const radius = BorderRadius.all(Radius.circular(cornerRadius));
+    final side = switch (border) {
+      ZyraPhotoGridTileBorder.standard => BorderSide(
+        color: ZyraColors.surfaceBorder,
+      ),
+      ZyraPhotoGridTileBorder.mainPhoto => const BorderSide(
+        color: ZyraColors.journeyGold,
+        width: 1.5,
+      ),
+      ZyraPhotoGridTileBorder.lockedVideo => BorderSide.none,
+    };
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: radius,
         boxShadow: ZyraColors.cardShadows,
       ),
-      child: Material(
-        color: ZyraColors.cardSurface,
-        shape: RoundedRectangleBorder(
-          borderRadius: radius,
-          side: BorderSide(color: ZyraColors.surfaceBorder),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: onTap == null
-            ? child
-            : Semantics(
-                label: label,
-                button: true,
-                child: InkWell(
-                  onTap: ZyraTapFeedback.onTap(context, onTap),
-                  child: child,
+      child: CustomPaint(
+        foregroundPainter: border == ZyraPhotoGridTileBorder.lockedVideo
+            ? ZyraGuardianDashedBorder(
+                cornerRadius,
+                ZyraColors.journeyGold.withValues(alpha: .5),
+              )
+            : null,
+        child: Material(
+          color: ZyraColors.cardSurface,
+          shape: RoundedRectangleBorder(borderRadius: radius, side: side),
+          clipBehavior: Clip.antiAlias,
+          child: onTap == null
+              ? child
+              : Semantics(
+                  label: label,
+                  button: true,
+                  child: InkWell(
+                    onTap: ZyraTapFeedback.onTap(context, onTap),
+                    child: child,
+                  ),
                 ),
-              ),
+        ),
       ),
     );
   }
