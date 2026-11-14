@@ -574,6 +574,27 @@ Future<void> _waitForReleasedPhotoSurface(
   }
 }
 
+Future<void> _waitForFastResumeHandover(
+  WidgetTester tester,
+  String surfaceKey,
+  ZyraOneJourneyConceptShell old,
+) async {
+  final surface = _key(surfaceKey);
+  // Local asset I/O and native image decoding run on the real event loop.
+  // Keep the fake clock at the proof completion time so the handover must
+  // finish on readiness and paint without an artificial delay.
+  for (var turn = 0; turn < 200 && surface.evaluate().isNotEmpty; turn++) {
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 25)),
+    );
+    await tester.pump();
+    expect(_key('founder_resume_status'), findsNothing);
+    expect(find.byType(ZyraLoading), findsNothing);
+    expect(old.canAct(), isFalse);
+  }
+  expect(surface, findsNothing);
+}
+
 Future<void> _writePreference(
   WidgetTester tester,
   Future<void> Function() write,
@@ -3646,21 +3667,11 @@ void main() {
         expect(forwarded, 0);
         await _captureQuiet(tester, 'quiet_refresh_no_previous_layer');
         pending.complete(supabase.auth.currentUser);
-        for (
-          var frame = 0;
-          frame < 30 &&
-              _key('founder_resume_quiet_background').evaluate().isNotEmpty;
-          frame++
-        ) {
-          await tester.pump(const Duration(milliseconds: 16));
-          await tester.runAsync(
-            () => Future<void>.delayed(const Duration(milliseconds: 5)),
-          );
-          expect(_key('founder_resume_status'), findsNothing);
-          expect(find.byType(ZyraLoading), findsNothing);
-          expect(old.canAct(), isFalse);
-        }
-        expect(_key('founder_resume_quiet_background'), findsNothing);
+        await _waitForFastResumeHandover(
+          tester,
+          'founder_resume_quiet_background',
+          old,
+        );
         expect(_key('founder_resume_recovery'), findsNothing);
         expect(find.byType(ZyraOneJourneyConceptShell), findsOneWidget);
         expect(ZyraDeveloperAccess.canUseDeveloperTools, isTrue);
@@ -3833,20 +3844,11 @@ void main() {
         _expectResumeContinuity(tester);
         expect(_key('founder_resume_status'), findsNothing);
         pending.complete(supabase.auth.currentUser);
-        for (
-          var frame = 0;
-          frame < 30 && _key('founder_resume_continuity').evaluate().isNotEmpty;
-          frame++
-        ) {
-          await tester.pump(const Duration(milliseconds: 16));
-          await tester.runAsync(
-            () => Future<void>.delayed(const Duration(milliseconds: 5)),
-          );
-          expect(_key('founder_resume_status'), findsNothing);
-          expect(find.byType(ZyraLoading), findsNothing);
-          expect(old.canAct(), isFalse);
-        }
-        expect(_key('founder_resume_continuity'), findsNothing);
+        await _waitForFastResumeHandover(
+          tester,
+          'founder_resume_continuity',
+          old,
+        );
         expect(find.byType(ZyraOneJourneyConceptShell), findsOneWidget);
         expect(_key('founder_resume_status'), findsNothing);
         expect(_key('founder_resume_recovery'), findsNothing);

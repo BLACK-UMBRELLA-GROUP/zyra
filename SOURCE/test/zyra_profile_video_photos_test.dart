@@ -112,6 +112,7 @@ Future<void> _mount(
   final padding = size.width == 430
       ? const EdgeInsets.only(top: 59, bottom: 34)
       : const EdgeInsets.only(top: 20);
+  var presentationReady = false;
   await tester.pumpWidget(
     MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -126,6 +127,7 @@ Future<void> _mount(
       home: ZyraOneJourneyConceptShell(
         canAct: () => true,
         onExit: () {},
+        onPresentationReady: () => presentationReady = true,
         initialCheckpoint: ZyraPreviewNavigationCheckpoint(
           guardian: false,
           model: ViewRequestDraftModel(capacity: 3).snapshot(),
@@ -140,7 +142,26 @@ Future<void> _mount(
       ),
     ),
   );
+  // The Photos page waits for the shell's bundled image decodes, which run
+  // outside the widget test clock.
+  final deadline = DateTime.now().add(const Duration(seconds: 5));
+  while (!presentationReady && DateTime.now().isBefore(deadline)) {
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 5)),
+    );
+    await tester.pump();
+  }
+  expect(
+    presentationReady,
+    isTrue,
+    reason: 'The shell did not finish preparing its bundled photo deck in 5 s.',
+  );
   await _settle(tester);
+  expect(
+    find.byKey(const ValueKey('profile-video-photos-grid')),
+    findsOneWidget,
+    reason: 'Manage Photos did not mount after the bundled photo deck loaded.',
+  );
 }
 
 Future<void> _save(WidgetTester tester, String name) async {
