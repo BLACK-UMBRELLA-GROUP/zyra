@@ -4,12 +4,15 @@ on:
   push:
     branches: [main]
   pull_request:
+  schedule:
+    - cron: '30 2 * * *'
+      timezone: Europe/London
 
 permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'schedule' && 'nightly' || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -26,6 +29,8 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           persist-credentials: false
+          fetch-depth: 0
+          filter: blob:none
       - name: Set up Flutter 3.44.2
         shell: bash
         run: |
@@ -48,6 +53,24 @@ jobs:
       - name: Analyze
         run: flutter analyze --no-pub
       - name: Run the full test suite
+        if: github.event_name == 'schedule'
         # The hosted checkout exercises the existing fail-closed flavor without
         # loading a production backend configuration or OAuth client IDs.
         run: flutter test --no-pub --flavor offline-ci --reporter expanded
+      - name: Run tests affected by the change
+        if: github.event_name != 'schedule'
+        env:
+          ZYRA_DIFF_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          python3 ../.github/scripts/zyra_test_scope.py "$ZYRA_DIFF_BASE" > "$RUNNER_TEMP/zyra-test-scope.json"
+          mode=$(jq -er '.mode' "$RUNNER_TEMP/zyra-test-scope.json")
+          case "$mode" in
+            full) flutter test --no-pub --flavor offline-ci --reporter expanded ;;
+            selected)
+              mapfile -t tests < <(jq -er '.tests[]' "$RUNNER_TEMP/zyra-test-scope.json")
+              (( ${#tests[@]} > 0 ))
+              flutter test --no-pub --flavor offline-ci --reporter expanded "${tests[@]}"
+              ;;
+            none) echo 'No Flutter test inputs changed.' ;;
+            *) echo 'Unexpected Flutter test selection.' >&2; exit 1 ;;
+          esac
