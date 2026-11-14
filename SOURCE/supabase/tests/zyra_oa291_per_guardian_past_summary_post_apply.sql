@@ -32,27 +32,17 @@ declare
   v_columns text;
 begin
   insert into auth.users (
-    instance_id, id, aud, role, email, encrypted_password,
-    email_confirmed_at, raw_app_meta_data, raw_user_meta_data,
-    created_at, updated_at, confirmation_token, recovery_token,
-    email_change, email_change_token_new, email_change_token_current
+    id, aud, role, email, raw_app_meta_data, raw_user_meta_data, created_at, updated_at
   )
   select
-    '00000000-0000-0000-0000-000000000000'::uuid,
     actor.id,
     'authenticated',
     'authenticated',
     actor.email,
-    extensions.crypt(
-      pg_catalog.encode(extensions.gen_random_bytes(32), 'hex'),
-      extensions.gen_salt('bf')
-    ),
-    pg_catalog.clock_timestamp(),
     '{"provider":"email","providers":["email"]}'::jsonb,
     '{}'::jsonb,
     pg_catalog.clock_timestamp(),
-    pg_catalog.clock_timestamp(),
-    '', '', '', '', ''
+    pg_catalog.clock_timestamp()
   from (
     values
       (v_seeker, 'oa291-seeker@zyra.test'),

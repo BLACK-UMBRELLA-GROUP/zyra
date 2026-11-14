@@ -97,7 +97,7 @@ from server0_v2_fixture_actors actor;
 -- Real bank values supply every applicable question; no completeness flag is
 -- forced and no trigger is disabled. Extra conditional answers are harmless.
 insert into public.onboarding_answers (
-  user_id, ch3_answers, ch4_preferences, ch4_hard_requirements, is_synthetic
+  user_id, ch3_answers, ch4_preferences, ch4_hard_requirements
 )
 select actor.id,
   pg_catalog.jsonb_object_agg(question.qid,
@@ -107,7 +107,7 @@ select actor.id,
   pg_catalog.jsonb_object_agg(question.qid, coalesce((
     select pg_catalog.jsonb_object_agg(option.value, 'green')
     from pg_catalog.jsonb_array_elements_text(question.options) option(value)
-  ), '{}'::jsonb)), '{}'::jsonb, true
+  ), '{}'::jsonb)), '{}'::jsonb
 from server0_v2_fixture_actors actor
 join public.zyra_onboarding_questions question
   on question.gender_visibility = 'all'
@@ -116,9 +116,9 @@ join public.zyra_onboarding_questions question
 where actor.role_name = 'seeker'
 group by actor.id;
 
-insert into public.seeker_details (user_id, sect, preferences, is_synthetic)
+insert into public.seeker_details (user_id, sect, preferences)
 select actor.id, 'sunni',
-  '{"sect":{"matrix":{"sunni":"green"},"hard_requirement":[]}}'::jsonb, true
+  '{"sect":{"matrix":{"sunni":"green"},"hard_requirement":[]}}'::jsonb
 from server0_v2_fixture_actors actor where actor.role_name = 'seeker';
 
 -- Explicit paid Basic capacity premises: one place for each Seeker. Guardian

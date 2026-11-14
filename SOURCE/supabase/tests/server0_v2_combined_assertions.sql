@@ -63,8 +63,14 @@ select set_config('request.jwt.claims',json_build_object('sub',pg_temp.actor('ma
 select pg_temp.assert(not public.zyra_my_paid_access('seeker'),'Basic has no paid role');
 select pg_temp.reject('select public.zyra_has_paid_role('''||pg_temp.actor('fem1')||''',''seeker'')','42501','arbitrary-user paid helper denied');
 select pg_temp.reject('select public.zyra_active_journey_cap('''||pg_temp.actor('fem1')||''')','42501','arbitrary-user capacity helper denied');
-select pg_temp.reject('select public.mock_purchase_wali_premium()','42501','legacy premium mint denied');
-select pg_temp.reject('select public.mock_set_wali_plan(''wali_premium'')','42501','legacy plan setter denied');
+-- Historical schemas retain these denied helpers. Line 110 removes both
+-- from production, so the combined proof accepts the stricter absence case.
+select pg_temp.reject('select public.mock_purchase_wali_premium()',
+  case when to_regprocedure('public.mock_purchase_wali_premium()') is null then '42883' else '42501' end,
+  'legacy premium mint denied');
+select pg_temp.reject('select public.mock_set_wali_plan(''wali_premium'')',
+  case when to_regprocedure('public.mock_set_wali_plan(text)') is null then '42883' else '42501' end,
+  'legacy plan setter denied');
 reset role;
 update public.subscriptions set plan_type='seeker_premium' where user_id=pg_temp.actor('male1');
 update public.subscriptions set plan_type='wali_premium' where user_id in(pg_temp.actor('gmain'),pg_temp.actor('gadd'),pg_temp.actor('gb'));

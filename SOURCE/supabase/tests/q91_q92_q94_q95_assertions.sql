@@ -86,6 +86,10 @@ update public.wali_invites
 set expires_at = clock_timestamp() - interval '1 minute'
 where token = 'Q91EXPRD';
 
+update public.wali_invites
+set expires_at = now() + interval '10 days'
+where token = 'Q91LATER';
+
 insert into public.wali_links (seeker_id, wali_id, status, relationship)
 select pg_temp.q91_actor(102), pg_temp.q91_actor(n), 'active', 'other'
 from generate_series(110, 118) as actors(n);
@@ -150,9 +154,10 @@ select pg_temp.q91_assert(
       'inviter_ward_count', 0,
       'seeker_plan', 'basic',
       'basic_place_free', false,
-      'needs_guardian_one', true)
+      'needs_guardian_one', true,
+      'expires_at', now() + interval '10 days')
    from public.preview_wali_invite('Q91LATER') preview),
-  'occupied-place preview returns exactly seven allowed fields, without a holder');
+  'occupied-place preview returns exactly eight allowed fields, including its stored deadline');
 select pg_temp.q91_refuse('Q91LATER', 'needs_guardian_one');
 select pg_temp.q91_assert(
   (select invite_status = 'pending' from public.preview_wali_invite('Q91LATER')),
@@ -974,12 +979,20 @@ select pg_temp.q92_as('gb');
 select pg_temp.q92_assert(not exists(select from pg_temp.q92_topics('oa283b')),
   'Guardian archive older than three months returns no rows');
 select pg_temp.q92_as('oa283a');
+select pg_temp.q92_assert(
+  (select count(*) = 12 and bool_and(overall = 73)
+   from pg_temp.q92_topics('oa283b')),
+  'Seeker archive remains visible beyond three months');
+select public.zyra_remove_ended_journey((
+  select attempt_id from public.zyra_my_attempt_participation
+  where match_id = pg_temp.q92_match() and attempt_status = 'ended'
+));
 select pg_temp.q92_assert(not exists(select from pg_temp.q92_topics('oa283b')),
-  'Seeker archive older than three months returns no rows');
+  'removing the ended Journey hides its topics for that Seeker');
 select pg_temp.q92_assert(
   (select count(*) = 12 and bool_and(overall = 73 and not topics_locked and band is not null)
    from public.zyra_compatibility_topics(pg_temp.q92_actor('oa283b'))),
-  'owned Profiles Unlock survives ordinary Journey archive expiry');
+  'owned Profiles Unlock survives ordinary Journey archive removal');
 reset role;
 update public.matches set end_reason = 'safety_concern' where id = pg_temp.q92_match();
 set local role authenticated;
@@ -1064,12 +1077,12 @@ set preferences = excluded.preferences
 where public.seeker_details.preferences = '{}'::jsonb;
 
 insert into public.onboarding_answers (user_id, ch3_answers, ch4_preferences,
-                                      ch4_hard_requirements, is_synthetic)
+                                      ch4_hard_requirements)
 select p.id,
   jsonb_object_agg(q.qid, case when q.is_multi
     then jsonb_build_array(q.options -> 0)
     else coalesce(q.options -> 0, '"fixture"'::jsonb) end),
-  jsonb_object_agg(q.qid, '{}'::jsonb), '{}'::jsonb, true
+  jsonb_object_agg(q.qid, '{}'::jsonb), '{}'::jsonb
 from public.profiles p
 join public.zyra_onboarding_questions q
   on q.gender_visibility = 'all'

@@ -254,6 +254,8 @@ begin
   -- DR-ZYRA-123. Before this rule, zyra_can_match(brother, sister) with
   -- their father guarding both returned TRUE — a mutual Like would have
   -- created a real Journey between siblings.
+  -- Q152 scopes the predicate to the signed-in member's own pair.
+  perform set_config('request.jwt.claims', json_build_object('sub', male1)::text, true);
   insert into wali_links (seeker_id, wali_id, status, is_main) values (fem1, gmain,'active',false);
   insert into zyra_journey_results values (46,'tier-1','siblings sharing a Guardian cannot match',
     zyra_can_match(male1,fem1)::text,'false');

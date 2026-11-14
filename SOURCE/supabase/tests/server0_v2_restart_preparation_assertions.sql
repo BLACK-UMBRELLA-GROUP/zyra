@@ -156,9 +156,9 @@ savepoint last_five;
 -- Two additional historical counterpart identities make six valid opposite-
 -- gender pair envelopes. Their onboarding is deliberately irrelevant to this
 -- ranking check; no request to a filler actor is claimed eligible.
-insert into auth.users(instance_id,id,aud,role,email,encrypted_password,email_confirmed_at,raw_app_meta_data,raw_user_meta_data,created_at,updated_at,confirmation_token,recovery_token,email_change,email_change_token_new,email_change_token_current)
-values('00000000-0000-0000-0000-000000000000','33000000-0000-0000-0000-000000000491','authenticated','authenticated','server0-restart-history-a@zyra.test',null,now(),'{}','{}',now(),now(),'','','','',''),
-      ('00000000-0000-0000-0000-000000000000','33000000-0000-0000-0000-000000000492','authenticated','authenticated','server0-restart-history-b@zyra.test',null,now(),'{}','{}',now(),now(),'','','','','');
+insert into auth.users(id,aud,role,email,raw_app_meta_data,raw_user_meta_data,created_at,updated_at)
+values('33000000-0000-0000-0000-000000000491','authenticated','authenticated','server0-restart-history-a@zyra.test','{}','{}',now(),now()),
+      ('33000000-0000-0000-0000-000000000492','authenticated','authenticated','server0-restart-history-b@zyra.test','{}','{}',now(),now());
 insert into public.profiles(id,role,first_name,date_of_birth,gender,is_active,profile_complete)
 values('33000000-0000-0000-0000-000000000491','seeker','History A',date '1990-01-01','female',true,false),
       ('33000000-0000-0000-0000-000000000492','seeker','History B',date '1990-01-01','female',true,false);

@@ -27,35 +27,12 @@ begin
     'oa289-guardian-%s@zyra.test', replace(v_guardian::text, '-', '')
   );
 
-  insert into auth.users (
-    instance_id, id, aud, role, email, encrypted_password,
-    email_confirmed_at, raw_app_meta_data, raw_user_meta_data,
-    created_at, updated_at, confirmation_token, recovery_token,
-    email_change, email_change_token_new, email_change_token_current
-  )
-  values
-    (
-      '00000000-0000-0000-0000-000000000000', v_seeker,
-      'authenticated', 'authenticated', v_seeker_email,
-      extensions.crypt(
-        encode(extensions.gen_random_bytes(32), 'hex'),
-        extensions.gen_salt('bf')
-      ),
-      clock_timestamp(),
-      '{"provider":"email","providers":["email"]}'::jsonb,
-      '{}'::jsonb, clock_timestamp(), clock_timestamp(), '', '', '', '', ''
-    ),
-    (
-      '00000000-0000-0000-0000-000000000000', v_guardian,
-      'authenticated', 'authenticated', v_guardian_email,
-      extensions.crypt(
-        encode(extensions.gen_random_bytes(32), 'hex'),
-        extensions.gen_salt('bf')
-      ),
-      clock_timestamp(),
-      '{"provider":"email","providers":["email"]}'::jsonb,
-      '{}'::jsonb, clock_timestamp(), clock_timestamp(), '', '', '', '', ''
-    );
+  insert into auth.users (id, aud, role, email, raw_app_meta_data, raw_user_meta_data,
+                          created_at, updated_at)
+  select actor.id, 'authenticated', 'authenticated', actor.email,
+         '{"provider":"email","providers":["email"]}'::jsonb, '{}'::jsonb,
+         clock_timestamp(), clock_timestamp()
+  from (values (v_seeker, v_seeker_email), (v_guardian, v_guardian_email)) actor(id, email);
 
   insert into public.profiles (
     id, role, first_name, date_of_birth, gender,
