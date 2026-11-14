@@ -28,6 +28,11 @@ const nativePins = Object.freeze({
   hostPath: 'build/ios/line84-native-2026-11-14/products/Runner.app',
   hostSha256: '5f23cefddc203308da3f354eda8580437355134b627c604d6548b2d9e42bec88',
   hostFiles: 179,
+  // Q150 accepts this development profile for the line 84 Founder preview.
+  // iOS Team Provisioning Profile: app.zyraconnect.zyra expires 2027-09-10T17:25:55Z.
+  // Profile entitlement keys: application-identifier, aps-environment, com.apple.developer.applesignin, com.apple.developer.team-identifier, get-task-allow, keychain-access-groups.
+  // Signed app entitlement keys: application-identifier, com.apple.developer.applesignin, com.apple.developer.team-identifier, get-task-allow, keychain-access-groups.
+  // Associated Domains is absent from both. The exact hashes still govern.
   profileSha256: '1af45878575c7449b427169878ace2caae4d39be5425fe54e1906fe6415b96d7',
   sourceCommit: '12fcf8f8306cf1895b020973e9d1d60e61db9fa8',
   sourceSealSha256: '28697bc19f08744319ded0c701a66cf02d7cd2a2570f77ef57986e87dfe58c98',
