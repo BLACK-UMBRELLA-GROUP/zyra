@@ -4,7 +4,7 @@
 // Role Selection -> Onboarding -> Transition -> Home (Browse/Matches/Profile).
 
 import 'theme/zyra_motion.dart';
-import 'dart:async' show unawaited;
+import 'dart:async' show Timer, unawaited;
 import 'dart:ui' show PlatformDispatcher;
 
 import 'package:flutter/foundation.dart'
@@ -22,16 +22,22 @@ import 'dev/zyra_preview_navigation_checkpoint.dart'
     show ZyraPreviewRouteObserver;
 import 'dev/zyra_app_gold_preview.dart';
 import 'models/zyra_error_state.dart';
+import 'models/zyra_code_format.dart';
 import 'screens/auth_gate.dart';
+import 'screens/browse/find_by_zyra_code_screen.dart';
+import 'screens/wali/zyra_code_screen.dart';
 import 'services/zyra_app_lock.dart';
 import 'services/zyra_account_state.dart';
 import 'services/zyra_auth.dart';
+import 'services/zyra_code_link_coordinator.dart';
+import 'services/zyra_code_link_service.dart';
 import 'services/zyra_internal_preview_client.dart';
 import 'services/zyra_image_cache.dart';
 import 'services/zyra_local_prefs.dart';
 import 'services/zyra_promotion_engine.dart';
 import 'services/zyra_reliability_monitor.dart';
 import 'services/zyra_release_diagnostics.dart';
+import 'services/zyra_wali_link_service.dart' show ZyraPersonalCodePreview;
 import 'state/app_state.dart';
 import 'screens/welcome_screen.dart';
 import 'theme/zyra_colors.dart';
@@ -147,7 +153,126 @@ void main() async {
       );
     };
   }
+  if (_nativeIdentityAccepted &&
+      !kIsWeb &&
+      defaultTargetPlatform == TargetPlatform.iOS) {
+    _listenForCodeLinks();
+  }
   runApp(const ZyraApp());
+}
+
+void _listenForCodeLinks() {
+  final links = ZyraCodeLinkCoordinator.instance;
+  final lock = ZyraAppLock.instance;
+  links.configure(
+    currentUser: () => supabaseReady && !ZyraAccountState.isSigningOut
+        ? ZyraAuth.currentUser?.id
+        : null,
+    canPresent: () =>
+        WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed &&
+        !lock.isLocked &&
+        !lock.isObscured &&
+        zyraNavigatorKey.currentState != null,
+    showBadLink: _showInvalidCodeLink,
+    open: _openResolvedCodeLink,
+  );
+  lock.addListener(links.presentationChanged);
+  WidgetsBinding.instance.addObserver(_CodeLinkLifecycle());
+  unawaited(links.listenToNative());
+}
+
+void _showInvalidCodeLink() {
+  final overlay = zyraNavigatorKey.currentState?.overlay;
+  if (overlay == null) return;
+  final toast = OverlayEntry(
+    builder: (context) => Positioned(
+      left: 20,
+      right: 20,
+      bottom: 100,
+      child: IgnorePointer(
+        child: Center(
+          child: Material(
+            color: Color(0xF02B2420),
+            borderRadius: const BorderRadius.all(Radius.circular(14)),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              child: Semantics(
+                liveRegion: true,
+                child: const Text(
+                  "This isn't a ZYRA Code.",
+                  style: TextStyle(color: Colors.white, fontSize: 12.5),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+  overlay.insert(toast);
+  Timer(const Duration(milliseconds: 1700), () {
+    toast.remove();
+    toast.dispose();
+  });
+}
+
+class _CodeLinkLifecycle with WidgetsBindingObserver {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      ZyraCodeLinkCoordinator.instance.presentationChanged();
+    }
+  }
+}
+
+void _openResolvedCodeLink(
+  ZyraCodeLinkMemberRole role,
+  String code,
+  ZyraCodeLinkResult result,
+) {
+  final guardian = role == ZyraCodeLinkMemberRole.guardian;
+  final error = switch (result.outcome) {
+    ZyraCodeLinkOutcome.rateLimited => zyraCodeRateLimitMessage,
+    ZyraCodeLinkOutcome.failed =>
+      "The code couldn't be checked. Please try again.",
+    _ => null,
+  };
+  final name = result.firstName;
+  Widget page;
+  if (result.outcome == ZyraCodeLinkOutcome.addGuardian &&
+      !guardian &&
+      name != null) {
+    page = ZyraCodeScreen(
+      asGuardian: false,
+      initialCode: code,
+      initialCodePreview: ZyraPersonalCodePreview(
+        firstName: name,
+        role: 'wali',
+      ),
+    );
+  } else if (guardian) {
+    page = ZyraCodeScreen(
+      asGuardian: true,
+      initialCode: code,
+      initialCodePreview:
+          result.outcome == ZyraCodeLinkOutcome.addSeeker && name != null
+          ? ZyraPersonalCodePreview(firstName: name, role: 'seeker')
+          : null,
+      initialCodeError: error,
+    );
+  } else {
+    page = FindByZyraCodeScreen(
+      initialCode: code,
+      initialCodePreview:
+          result.outcome == ZyraCodeLinkOutcome.scan && name != null
+          ? ZyraPersonalCodePreview(firstName: name, role: 'seeker')
+          : null,
+      initialCodeError: error,
+    );
+  }
+  zyraNavigatorKey.currentState?.push<void>(
+    MaterialPageRoute<void>(builder: (_) => page, allowSnapshotting: false),
+  );
 }
 
 void _installReliabilityHooks() {

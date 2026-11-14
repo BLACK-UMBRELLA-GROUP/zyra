@@ -3,12 +3,39 @@ id: ASBUILT-ZYRA-QUEUE30
 type: HANDOVER
 status: CURRENT
 feature: CODE PAGE
-purpose: As-built LOCK 9 V3 Code pages, queue 105, and prior V2 implementation
+purpose: As-built LOCK 9 code pages and shared links, queues 105 and 109
 links: [AD-AIOS-115, DR-ZYRA-231, OA-ZYRA-316, OA-ZYRA-317]
 owner: Codex
 ---
 
-# ZYRA Code page — line 105, LOCK 9 V3
+# ZYRA Code pages and shared links
+
+## 14 November 2026 — line 109, LOCK 9 V4
+
+The iOS Runner handles the Universal Link for `zyraconnect.app` from a cold or
+warm launch. The parser accepts the locked HTTPS address and five-group hex
+code, with the code after the fragment marker. The same parser lets the
+scanner read the link as a code. On the member My code tab, Share and the QR
+carry the link and Copy code copies the plain code. The Founder demo carries
+plain sample codes and treats a valid link as locally unavailable.
+
+The app waits for the current account, App Lock and the relevant signup step.
+A single caller-scoped check pre-fills the Add a Guardian, Add a Seeker or Scan
+page on top of the current member screen. Unknown, own and ineligible codes go
+to the member's existing code page and message. The shared limit retains its
+existing message. Opening the link performs the read and records one server
+budget attempt. Request and Consider actions still require a tap.
+
+DOC-ZYRA-0512, LOCK 9 V4 §0b, Q140, Q154 and Q155 cover the handoff. The site
+fallback and Apple association file answered HTTP 200 without redirects.
+`20261114135839_line109_resolve_code_link.sql` shares the limit and eligibility
+guards with the existing previews. Line 110 includes that migration in the
+clean server baseline. Live: no. The isolated PostgreSQL replay and widget
+captures are in `REPORTS/EVIDENCE/OA-ZYRA-317_LINE109_2026-11-14/`. Line 117 owns
+the signed build and the device checks in DOC-ZYRA-0514 step 5. The real
+member found card from a Universal Link is checked after the live rollout.
+
+## 13 November 2026 — line 105, LOCK 9 V3
 
 Add a Guardian and Add a Seeker now open on My code. Their code and the
 Profiles Scan entry share the light scanner and the five-box manual field.

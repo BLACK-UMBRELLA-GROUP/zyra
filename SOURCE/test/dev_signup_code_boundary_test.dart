@@ -14,6 +14,8 @@ import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/widgets/zyra_tap_feedback.dart';
 
+import 'support/zyra_qr_assertions.dart';
+
 class _Routes extends NavigatorObserver {
   int pushes = 0;
   int replacements = 0;
@@ -209,10 +211,7 @@ void main() {
 
   testWidgets('My code immediately encodes the fictional code', (tester) async {
     await mount(tester);
-    expect(
-      find.byKey(const ValueKey(('zyra-qr', 'ZYRA-DEMO-GUARDIAN-IBRAHIM'))),
-      findsOneWidget,
-    );
+    await expectZyraQrPayload(tester, 'ZYRA-DEMO-GUARDIAN-IBRAHIM');
     expect(find.byType(MobileScanner), findsNothing);
     expect(platformCalls, isEmpty);
     await tester.tap(find.text('Their code'));

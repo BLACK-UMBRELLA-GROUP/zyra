@@ -56,6 +56,7 @@ import '../../services/zyra_promotion_engine.dart';
 import '../../services/zyra_profile_service.dart';
 import '../../services/zyra_auth.dart';
 import '../../services/zyra_account_state.dart';
+import '../../services/zyra_code_link_coordinator.dart';
 import '../../services/zyra_product_telemetry.dart';
 import '../../state/app_state.dart';
 import '../../state/zyra_developer_samples.dart';
@@ -283,6 +284,16 @@ class _HomeShellState extends State<HomeShell> {
   void initState() {
     super.initState();
     _ownerScope = (ZyraAccountState.userId, ZyraAccountState.generation);
+    final linkOwner = _ownerScope.$1;
+    if (linkOwner != null && !widget.deferredOnboardingDevPreview) {
+      ZyraCodeLinkCoordinator.instance.memberMounted(
+        this,
+        role: ZyraCodeLinkMemberRole.seeker,
+        userId: linkOwner,
+        isCurrent: () =>
+            mounted && _currentAccount && !ZyraInternalPreviewClient.isActive,
+      );
+    }
     _notificationOwner = widget.deferredOnboardingDevPreview
         ? null
         : ZyraNotificationOwnerLease.capture();
@@ -347,6 +358,7 @@ class _HomeShellState extends State<HomeShell> {
 
   @override
   void dispose() {
+    ZyraCodeLinkCoordinator.instance.memberUnmounted(this);
     ZyraNotificationService.confirmedAcknowledgements.removeListener(
       _onConfirmedAcknowledgement,
     );

@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../models/zyra_code_format.dart';
+import '../models/zyra_code_link.dart';
 import '../widgets/zyra_known_person_code_content.dart';
 import '../widgets/zyra_request_tab_pill.dart';
 import '../widgets/zyra_tab_title.dart';
@@ -24,6 +25,15 @@ class ZyraLocalCodeIdentity {
   const ZyraLocalCodeIdentity(this.firstName, this.role);
   final String firstName;
   final String role;
+}
+
+@immutable
+class ZyraLocalCodeLinkEntry {
+  const ZyraLocalCodeLinkEntry(this.code, {this.person, this.error});
+
+  final String code;
+  final ZyraLocalCodeIdentity? person;
+  final String? error;
 }
 
 typedef ZyraLocalCaptureBuilder =
@@ -49,6 +59,8 @@ class ZyraLocalCodePage extends StatefulWidget {
     this.canInteract,
     this.interactionEpoch,
     this.personalCode,
+    this.personalCodeQr,
+    this.linkEntry,
     this.onCopy,
     this.onRotate,
     this.onMemberSend,
@@ -78,6 +90,8 @@ class ZyraLocalCodePage extends StatefulWidget {
   )?
   guardedLookupCode;
   final String? personalCode;
+  final String? personalCodeQr;
+  final ZyraLocalCodeLinkEntry? linkEntry;
   final VoidCallback? onCopy, onRotate;
   final ValueChanged<BuildContext>? onShare;
   final bool isLocal, cameraEnabled;
@@ -137,6 +151,11 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
       !widget.isLocal &&
       widget.mode != ZyraLocalCodeContext.scan &&
       widget.onLegacyInvite != null;
+  String get _expectedRole =>
+      widget.mode == ZyraLocalCodeContext.addGuardian ? 'Guardian' : 'Seeker';
+  String get _unavailableCodeMessage => widget.mode == ZyraLocalCodeContext.scan
+      ? 'That code is not available.'
+      : 'Invalid code. Please try again.';
 
   bool _ownerAllows() {
     if (!mounted || _closed) return false;
@@ -193,6 +212,7 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
     _lifecycle = WidgetsBinding.instance.lifecycleState;
     _seenEpoch = _epoch();
     WidgetsBinding.instance.addObserver(this);
+    _applyLinkEntry();
   }
 
   @override
@@ -208,6 +228,7 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
       _seenEpoch = _epoch();
       _invalidate();
     }
+    if (oldWidget.linkEntry != widget.linkEntry) _applyLinkEntry();
   }
 
   @override
@@ -251,6 +272,31 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
       _scannedEntry = false;
       _resetEntry();
     });
+  }
+
+  void _applyLinkEntry() {
+    final linkEntry = widget.linkEntry;
+    if (linkEntry == null || !_ownerAllows()) return;
+    final entry = ZyraCodeFormat.scanEntry(linkEntry.code);
+    if (entry == null) return;
+    _invalidate();
+    _theirCode = true;
+    _scannedEntry = true;
+    _controller.text = entry;
+    _person = widget.isLocal ? null : _acceptedIdentity(linkEntry.person);
+    if (_person == null) {
+      _error = linkEntry.error ?? _unavailableCodeMessage;
+    }
+    _reveal();
+  }
+
+  ZyraLocalCodeIdentity? _acceptedIdentity(ZyraLocalCodeIdentity? person) {
+    if (person == null ||
+        person.firstName.trim().isEmpty ||
+        person.role != _expectedRole) {
+      return null;
+    }
+    return ZyraLocalCodeIdentity(person.firstName.trim(), _expectedRole);
   }
 
   Future<void> _checkLocal() async {
@@ -318,26 +364,14 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
       setState(_invalidate);
       return;
     }
-    final role = widget.mode == ZyraLocalCodeContext.addGuardian
-        ? 'Guardian'
-        : 'Seeker';
     setState(() {
       _busy = false;
-      _person =
-          person != null &&
-              person.firstName.trim().isNotEmpty &&
-              person.role == role
-          ? ZyraLocalCodeIdentity(person.firstName.trim(), role)
-          : null;
+      _person = _acceptedIdentity(person);
       if (_person == null) {
         if (failure == null && person == null && mayOfferLegacy) {
           _legacyOffer = (code: null);
         }
-        _error =
-            failure ??
-            (widget.mode == ZyraLocalCodeContext.scan
-                ? 'That code is not available.'
-                : 'Invalid code. Please try again.');
+        _error = failure ?? _unavailableCodeMessage;
       }
     });
     _focus.unfocus();
@@ -447,7 +481,7 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
 
     void detected(String raw) {
       if (!current()) return;
-      final entry = ZyraCodeFormat.scanEntry(raw);
+      final entry = ZyraCodeFormat.scanEntry(parseZyraCodeLink(raw) ?? raw);
       if (entry == null) {
         rejected();
         return;
@@ -546,8 +580,8 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
                 boxShadow: ZyraColors.cardShadows,
               ),
               child: QrImageView(
-                key: ValueKey(('zyra-qr', code)),
-                data: code,
+                key: const ValueKey('zyra-qr'),
+                data: widget.personalCodeQr ?? code,
                 size: 196,
                 padding: const EdgeInsets.all(16),
                 semanticsLabel: 'Your ZYRA Code as a QR code',

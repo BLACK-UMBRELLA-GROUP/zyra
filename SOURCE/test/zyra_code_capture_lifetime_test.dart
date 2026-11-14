@@ -22,7 +22,8 @@ const _firstCode = 'ZYRA-7A2B-A9CD-4EFA-2B8C-5E1F';
 const _secondCode = 'ZYRA-ABCD-EF01-2345-6789-ABCD';
 final _invalidCodes = [
   '',
-  'https://zyraconnect.app/c/#$_firstCode',
+  'https://zyraconnect.app/c/?tracking=1#$_firstCode',
+  'https://zyraconnect.app@elsewhere.invalid/c/#$_firstCode',
   'https://example.invalid/?code=$_firstCode',
   ' $_firstCode',
   '$_firstCode ',
@@ -443,13 +444,13 @@ void main() {
       await tester.pump(const Duration(seconds: 2));
       expect(hint, findsNothing);
     }
-    detect(_firstCode);
+    detect('https://zyraconnect.app/c/#$_firstCode');
     await _flush(tester);
     expect(lookups, [_firstCode]);
   });
 
   testWidgets(
-    'native stream ignores unrelated values and captures the original code',
+    'native stream ignores unrelated values and extracts a shared code',
     (tester) async {
       final captured = <String>[];
       await _mount(
@@ -469,7 +470,7 @@ void main() {
       await _flush(tester);
       expect(captured, isEmpty);
       expect(platform.stops, 0);
-      platform.emit([_firstCode]);
+      platform.emit(['https://zyraconnect.app/c#${_firstCode.toLowerCase()}']);
       await _flush(tester);
       expect(captured, [_firstCode]);
       expect(platform.stops, 1);

@@ -9,6 +9,7 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_interaction_style.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_app_lock.dart';
+import 'zyra_code_link_coordinator.dart';
 import 'zyra_consent_service.dart';
 import 'zyra_image_cache.dart';
 import 'zyra_hidden_profile_store.dart';
@@ -82,6 +83,7 @@ abstract final class ZyraAccountState {
     _initialized = true;
     _userId = userId;
     final version = ++_generation;
+    ZyraCodeLinkCoordinator.instance.accountChanged(userId);
     ZyraDeveloperSamples.instance.resetForAccountChange();
     ZyraInternalPreviewClient.bindAccount(userId);
     // Binding first makes all following callbacks observe the new owner.

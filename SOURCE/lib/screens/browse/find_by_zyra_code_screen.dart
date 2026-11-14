@@ -12,6 +12,8 @@ import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_discovery_service.dart';
 import '../../services/zyra_internal_preview_client.dart';
 import '../../services/zyra_product_telemetry.dart';
+import '../../services/zyra_wali_link_service.dart'
+    show ZyraPersonalCodePreview;
 import '../../state/app_state.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
@@ -24,7 +26,16 @@ import '../../widgets/zyra_pull_down_back_scope.dart';
 /// records ordinary interest; it never bypasses ZYRA's server rules and never
 /// creates a Match without reciprocal Consider.
 class FindByZyraCodeScreen extends StatefulWidget {
-  const FindByZyraCodeScreen({super.key});
+  const FindByZyraCodeScreen({
+    super.key,
+    this.initialCode,
+    this.initialCodePreview,
+    this.initialCodeError,
+  });
+
+  final String? initialCode;
+  final ZyraPersonalCodePreview? initialCodePreview;
+  final String? initialCodeError;
 
   @override
   State<FindByZyraCodeScreen> createState() => _FindByZyraCodeScreenState();
@@ -36,6 +47,7 @@ class _FindByZyraCodeScreenState extends State<FindByZyraCodeScreen> {
   String? _considerError;
   String? _firstName;
   bool _considering = false;
+  ZyraLocalCodeLinkEntry? _linkEntry;
 
   bool get _isFounderPreview =>
       ZyraInternalPreviewClient.isActive &&
@@ -49,6 +61,27 @@ class _FindByZyraCodeScreenState extends State<FindByZyraCodeScreen> {
     ZyraInternalPreviewClient.previewSession,
     _isFounderPreview,
   );
+
+  @override
+  void initState() {
+    super.initState();
+    final code = widget.initialCode;
+    final (displayUserId, authenticatedUserId, _, _, preview) = _entryOwner;
+    if (code == null ||
+        preview ||
+        displayUserId == null ||
+        displayUserId != authenticatedUserId) {
+      return;
+    }
+    final person = widget.initialCodePreview;
+    _linkEntry = ZyraLocalCodeLinkEntry(
+      code,
+      person: person?.role == 'seeker'
+          ? ZyraLocalCodeIdentity(person!.firstName, 'Seeker')
+          : null,
+      error: widget.initialCodeError,
+    );
+  }
 
   String? _authenticatedUserId() {
     try {
@@ -184,6 +217,7 @@ class _FindByZyraCodeScreenState extends State<FindByZyraCodeScreen> {
             ownerKey: _entryOwner,
             canAct: _canAct,
             guardedLookupCode: _lookup,
+            linkEntry: admitted ? _linkEntry : null,
             manualAlias: !preview
                 ? null
                 : (raw) =>

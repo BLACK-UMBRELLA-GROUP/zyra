@@ -11,6 +11,7 @@ import LocalAuthentication
   private var appIconChannel: FlutterMethodChannel?
   private var profilePhotoChannel: FlutterMethodChannel?
   private var profileVideoChannel: FlutterMethodChannel?
+  private var codeLinks: ZyraCodeLinks?
   private var roughLocation: ZyraRoughLocation?
   private var phoneAccess: ZyraPhoneAccess?
 
@@ -127,6 +128,12 @@ import LocalAuthentication
   }
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
+    if let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "ZyraCodeLinks") {
+      let bridge = ZyraCodeLinks(messenger: registrar.messenger())
+      // Handle the universal link before generic link observers see it.
+      registrar.addSceneDelegate(bridge)
+      codeLinks = bridge
+    }
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
     roughLocation = ZyraRoughLocation(messenger: engineBridge.applicationRegistrar.messenger())
     phoneAccess = ZyraPhoneAccess(messenger: engineBridge.applicationRegistrar.messenger())
@@ -249,6 +256,61 @@ import LocalAuthentication
   }
 }
 
+private final class ZyraCodeLinks: NSObject, FlutterSceneLifeCycleDelegate {
+  private let channel: FlutterMethodChannel
+  private var pendingLink: String?
+  private var dartReady = false
+
+  init(messenger: FlutterBinaryMessenger) {
+    channel = FlutterMethodChannel(
+      name: "app.zyraconnect.zyra/code_links",
+      binaryMessenger: messenger
+    )
+    super.init()
+    channel.setMethodCallHandler { [weak self] call, result in
+      guard call.method == "takePendingCodeLink" else {
+        result(FlutterMethodNotImplemented)
+        return
+      }
+      let link = self?.pendingLink
+      self?.pendingLink = nil
+      self?.dartReady = true
+      result(link)
+    }
+  }
+
+  func scene(
+    _ scene: UIScene,
+    willConnectTo session: UISceneSession,
+    options connectionOptions: UIScene.ConnectionOptions?
+  ) -> Bool {
+    for activity in connectionOptions?.userActivities ?? [] {
+      if forward(activity) {
+        return true
+      }
+    }
+    return false
+  }
+
+  func scene(_ scene: UIScene, continue userActivity: NSUserActivity) -> Bool {
+    return forward(userActivity)
+  }
+
+  private func forward(_ activity: NSUserActivity) -> Bool {
+    guard activity.activityType == NSUserActivityTypeBrowsingWeb,
+          let link = activity.webpageURL?.absoluteString else {
+      return false
+    }
+    // Preserve the fragment for the Dart parser. Cold launch data lives only
+    // in memory and is cleared as soon as Dart takes it.
+    if dartReady {
+      channel.invokeMethod("openCodeLink", arguments: link)
+    } else {
+      pendingLink = link
+    }
+    return true
+  }
+}
 
 // LOCK12: authorization metadata only. This adapter never acquires a fix,
 // creates a capture session, fetches a photo, or registers a remote push token.

@@ -3,20 +3,26 @@
 // This proves local caller lifetime, not provider, capacity, or server authority.
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:zyra/models/zyra_code_format.dart';
 import 'package:zyra/screens/browse/find_by_zyra_code_screen.dart';
 import 'package:zyra/services/zyra_discovery_service.dart';
 import 'package:zyra/main.dart' show supabase, supabaseReady;
 import 'package:zyra/screens/wali/accept_wali_invite_screen.dart';
 import 'package:zyra/screens/wali/zyra_code_screen.dart';
 import 'package:zyra/services/zyra_account_state.dart';
+import 'package:zyra/services/zyra_code_link_coordinator.dart';
+import 'package:zyra/services/zyra_code_link_service.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/services/zyra_local_prefs.dart';
@@ -24,12 +30,18 @@ import 'package:zyra/services/zyra_product_telemetry.dart';
 import 'package:zyra/services/zyra_wali_link_service.dart';
 import 'package:zyra/theme/zyra_text.dart';
 
+import 'support/zyra_qr_assertions.dart';
+
 const _a = '00000000-0000-0000-0000-000000009821';
 const _b = '00000000-0000-0000-0000-000000009822';
 const _requestId = '00000000-0000-0000-0000-000000009823';
 const _host = 'guardian-code-caller-evidence.invalid';
 const _codeA = 'ZYRA-1A01-1B02-1C03-1D04-1E05';
 const _codeNew = 'ZYRA-2A01-2B02-2C03-2D04-2E05';
+const _codeLink = 'https://zyraconnect.app/c/#$_codeA';
+const _captureDir = String.fromEnvironment('ZYRA_LINE109_CAPTURE_DIR');
+const _captureBoundary = ValueKey('line109-code-capture');
+const _captureFont = 'ZYRALinkCapturePoppins';
 const _acceptPath = '/rest/v1/rpc/zyra_accept_guardian_request';
 const _declinePath = '/rest/v1/rpc/zyra_decline_guardian_request';
 const _cancelPath = '/rest/v1/rpc/zyra_cancel_guardian_request';
@@ -39,6 +51,7 @@ const _legacyPath = '/rest/v1/rpc/preview_wali_invite';
 const _matchPath = '/rest/v1/rpc/zyra_preview_match_code';
 const _sendPath = '/rest/v1/rpc/zyra_request_guardian_link';
 const _considerPath = '/rest/v1/rpc/zyra_consider_match_code';
+const _resolveLinkPath = '/rest/v1/rpc/zyra_resolve_code_link';
 const _changedError =
     'Your account changed. Please check your Guardian requests before continuing.';
 
@@ -130,6 +143,30 @@ void main() {
   const linksMethods = MethodChannel('com.llfbandit.app_links/messages');
   const linksEvents = MethodChannel('com.llfbandit.app_links/events');
 
+  if (_captureDir.isNotEmpty) {
+    setUpAll(() async {
+      final font = FontLoader(_captureFont);
+      for (final weight in [
+        'ExtraLight',
+        'Light',
+        'Regular',
+        'Medium',
+        'SemiBold',
+        'Bold',
+      ]) {
+        font.addFont(rootBundle.load('assets/fonts/Poppins-$weight.ttf'));
+      }
+      await Future.wait([
+        font.load(),
+        (FontLoader(
+          'MaterialIcons',
+        )..addFont(rootBundle.load('fonts/MaterialIcons-Regular.otf'))).load(),
+      ]);
+      ZyraText.testReadingFontFamily = _captureFont;
+    });
+    tearDownAll(() => ZyraText.testReadingFontFamily = null);
+  }
+
   setUp(() async {
     calls.clear();
     denied.clear();
@@ -173,6 +210,7 @@ void main() {
               _matchPath,
               _sendPath,
               _considerPath,
+              _resolveLinkPath,
             }.contains(request.url.path);
         if (!allowed) {
           denied.add('${request.method} ${request.url}');
@@ -181,7 +219,10 @@ void main() {
         final payload = jsonDecode(request.body) as Map<String, dynamic>;
         final expected = switch (request.url.path) {
           _rotatePath => {'p_role_context': 'wali'},
-          _previewPath || _matchPath || _considerPath => {'p_code': _codeA},
+          _previewPath ||
+          _matchPath ||
+          _considerPath ||
+          _resolveLinkPath => {'p_code': _codeA},
           _legacyPath => {'p_token': 'AB12CD34'},
           _sendPath => {'p_code': _codeA, 'p_relationship': 'father'},
           _acceptPath => {
@@ -212,6 +253,8 @@ void main() {
   tearDown(() async {
     ZyraWaliLinkService.setCodeReadyForTesting(null);
     ZyraDiscoveryService.setCodeReadyForTesting(null);
+    ZyraCodeLinkService.setClientReadyForTesting(null);
+    ZyraCodeLinkCoordinator.instance.accountChanged(null);
     // No normal test leaves an ACK pending; this is failure-cleanup only.
     for (final call in calls) {
       if (!call.reply.isCompleted) call.complete(false);
@@ -247,6 +290,44 @@ void main() {
           loadGuardianRequests: productionReads ? null : reads.requests,
         ),
       );
+
+  Widget captureApp({required Widget home, Key? key}) => MaterialApp(
+    key: key,
+    theme: _captureDir.isEmpty ? null : ThemeData(fontFamily: _captureFont),
+    builder: _captureDir.isEmpty
+        ? null
+        : (context, child) => RepaintBoundary(
+            key: _captureBoundary,
+            child: MediaQuery(
+              data: MediaQuery.of(
+                context,
+              ).copyWith(padding: const EdgeInsets.only(top: 59, bottom: 34)),
+              child: child!,
+            ),
+          ),
+    home: home,
+  );
+
+  Future<void> capture(WidgetTester tester, String name) async {
+    if (_captureDir.isEmpty) return;
+    await tester.pumpAndSettle();
+    await tester.runAsync(() async {
+      final render = tester.renderObject<RenderRepaintBoundary>(
+        find.byKey(_captureBoundary),
+      );
+      final image = await render.toImage(pixelRatio: 3);
+      try {
+        final bytes = (await image.toByteData(format: ui.ImageByteFormat.png))!;
+        final file = File('$_captureDir/$name.png');
+        await file.parent.create(recursive: true);
+        await file.writeAsBytes(
+          bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes),
+        );
+      } finally {
+        image.dispose();
+      }
+    });
+  }
 
   Future<void> flush(WidgetTester tester) async {
     for (var i = 0; i < 6; i++) {
@@ -314,9 +395,7 @@ void main() {
 
   for (final asGuardian in [false, true]) {
     final title = asGuardian ? 'Add a Seeker' : 'Add a Guardian';
-    testWidgets('$title shares the locked message and copies the QR code', (
-      t,
-    ) async {
+    testWidgets('$title shares a link and copies the plain code', (t) async {
       final shareCalls = <MethodCall>[];
       final clipboardCalls = <MethodCall>[];
       final messenger =
@@ -339,19 +418,177 @@ void main() {
       await t.pumpWidget(subject(asGuardian: asGuardian));
       await flush(t);
       expect(find.text(title), findsOneWidget);
-      expect(find.byKey(const ValueKey(('zyra-qr', _codeA))), findsOneWidget);
+      await expectZyraQrPayload(t, _codeLink);
       await press(t, 'Share my code');
       await press(t, 'Copy code');
       final shared = shareCalls.single.arguments as Map;
       expect(
         shared['text'],
-        'Here’s my ZYRA Code. Enter it in ZYRA to send me a request:\n$_codeA',
+        'Here’s my ZYRA Code. Open it in ZYRA to send me a request:\n$_codeLink',
       );
       expect(shared['subject'], 'My ZYRA Code');
       expect(clipboardCalls.single.arguments, {'text': _codeA});
       expect(calls, isEmpty);
     });
   }
+
+  testWidgets('a checked link opens its found card without another check', (
+    t,
+  ) async {
+    size(t);
+    for (final (asGuardian, role, title) in [
+      (false, 'wali', 'Add a Guardian'),
+      (true, 'seeker', 'Add a Seeker'),
+    ]) {
+      reads.expectedRole = role == 'wali' ? 'seeker' : 'wali';
+      await t.pumpWidget(
+        captureApp(
+          key: ValueKey(title),
+          home: ZyraCodeScreen(
+            asGuardian: asGuardian,
+            initialCode: _codeA,
+            initialCodePreview: ZyraPersonalCodePreview(
+              firstName: 'Linked sample',
+              role: role,
+            ),
+            loadPersonalCode: reads.personalCode,
+            loadGuardianRequests: reads.requests,
+          ),
+        ),
+      );
+      await flush(t);
+      final codePageScroll = find
+          .descendant(
+            of: find.byType(CustomScrollView),
+            matching: find.byType(Scrollable),
+          )
+          .first;
+      final titleFinder = find.text(title);
+      if (titleFinder.evaluate().isEmpty) {
+        await t.scrollUntilVisible(
+          titleFinder,
+          -150,
+          scrollable: codePageScroll,
+        );
+      }
+      expect(titleFinder, findsOneWidget);
+      final linkedName = find.text('Linked sample');
+      if (linkedName.evaluate().isEmpty) {
+        await t.scrollUntilVisible(linkedName, 150, scrollable: codePageScroll);
+      }
+      expect(linkedName, findsOneWidget);
+      expect(find.text('Send request'), findsOneWidget);
+      final codeField = t.widget<TextField>(
+        find.byKey(const ValueKey('local-code-field')),
+      );
+      expect(
+        codeField.controller?.text,
+        _codeA.substring(5).replaceAll('-', ''),
+      );
+      expect(calls, isEmpty);
+      await capture(
+        t,
+        asGuardian ? 'guardian-add-seeker' : 'seeker-add-guardian',
+      );
+    }
+  });
+
+  testWidgets('Scan shows the checked card or the current error', (t) async {
+    size(t);
+    for (final error in [null, zyraCodeRateLimitMessage]) {
+      await t.pumpWidget(
+        captureApp(
+          key: ValueKey(error),
+          home: FindByZyraCodeScreen(
+            initialCode: _codeA,
+            initialCodePreview: error == null
+                ? const ZyraPersonalCodePreview(
+                    firstName: 'Linked sample',
+                    role: 'seeker',
+                  )
+                : null,
+            initialCodeError: error,
+          ),
+        ),
+      );
+      await flush(t);
+      expect(find.text('Scan'), findsOneWidget);
+      expect(find.text(error ?? 'Linked sample'), findsOneWidget);
+      expect(calls, isEmpty);
+      await capture(
+        t,
+        error == null ? 'seeker-scan-found' : 'seeker-scan-limit',
+      );
+    }
+  });
+
+  testWidgets(
+    'an own-code result keeps the code and current unavailable copy',
+    (t) async {
+      size(t);
+      await t.pumpWidget(
+        const MaterialApp(home: FindByZyraCodeScreen(initialCode: _codeA)),
+      );
+      await flush(t);
+      expect(find.text('That code is not available.'), findsOneWidget);
+      expect(find.text('Consider'), findsNothing);
+      final field = t.widget<TextField>(
+        find.byKey(const ValueKey('local-code-field')),
+      );
+      expect(field.controller?.text, _codeA.substring(5).replaceAll('-', ''));
+      expect(calls, isEmpty);
+    },
+  );
+
+  testWidgets('Guardian signup takes a pending link and checks it once', (
+    t,
+  ) async {
+    size(t);
+    t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    ZyraCodeLinkService.setClientReadyForTesting(true);
+    final coordinator = ZyraCodeLinkCoordinator.instance;
+    coordinator.configure(
+      currentUser: () => ZyraAccountState.userId,
+      canPresent: () => true,
+      showBadLink: () => fail('Expected an accepted code link.'),
+      open: (_, _, _) => fail('Signup must display the result in place.'),
+    );
+    addTearDown(() {
+      coordinator.configure(
+        currentUser: () => null,
+        canPresent: () => false,
+        showBadLink: () {},
+        open: (_, _, _) {},
+      );
+    });
+    coordinator.receive(_codeLink);
+    await t.pumpWidget(
+      captureApp(
+        home: ZyraCodeScreen(
+          asGuardian: true,
+          acceptSignupCodeLink: true,
+          loadPersonalCode: reads.personalCode,
+          loadGuardianRequests: reads.requests,
+        ),
+      ),
+    );
+    await flush(t);
+    expect(calls.single.request.url.path, _resolveLinkPath);
+    calls.single.complete([
+      {
+        'outcome': 'add_seeker',
+        'owner_first_name': 'Linked sample',
+        'owner_role': 'seeker',
+        'owner_age': null,
+        'owner_location': null,
+      },
+    ]);
+    await flush(t);
+    expect(find.text('Linked sample'), findsOneWidget);
+    expect(find.text('Send request'), findsOneWidget);
+    expect(calls, hasLength(1));
+    await capture(t, 'guardian-signup-add-seeker');
+  });
 
   testWidgets(
     'rotation requires confirmation and publishes through a stale refresh and pause',
@@ -379,8 +616,9 @@ void main() {
       t.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
       t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
       await flush(t);
-      expect(find.byKey(const ValueKey(('zyra-qr', _codeA))), findsNothing);
-      expect(find.byKey(const ValueKey(('zyra-qr', _codeNew))), findsOneWidget);
+      expect(find.text(_codeA.replaceAll('-', ' · ')), findsNothing);
+      expect(find.text(_codeNew.replaceAll('-', ' · ')), findsOneWidget);
+      await expectZyraQrPayload(t, 'https://zyraconnect.app/c/#$_codeNew');
       expect(
         find.text('New code ready. Your old code no longer works.'),
         findsOneWidget,

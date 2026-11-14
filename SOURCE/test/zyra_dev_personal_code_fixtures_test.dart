@@ -14,6 +14,8 @@ import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
 
+import 'support/zyra_qr_assertions.dart';
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -152,10 +154,7 @@ void main() {
     t,
   ) async {
     await open(t);
-    expect(
-      find.byKey(const ValueKey(('zyra-qr', 'ZYRA-DEMO-SEEKER-ADAM'))),
-      findsOneWidget,
-    );
+    await expectZyraQrPayload(t, 'ZYRA-DEMO-SEEKER-ADAM');
     expect(find.textContaining("couldn't be refreshed"), findsNothing);
     expect(find.text('Get a new code'), findsOneWidget);
   });

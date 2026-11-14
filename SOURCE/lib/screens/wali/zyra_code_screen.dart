@@ -14,8 +14,12 @@ import '../../dev/zyra_draft_local_code_aliases.dart';
 import '../../dev/zyra_dev_personal_code_fixtures.dart';
 import '../../models/zyra_initial_signup_draft.dart';
 import '../../models/zyra_code_format.dart';
+import '../../models/zyra_code_link.dart';
 import '../../services/zyra_account_state.dart';
+import '../../services/zyra_app_lock.dart';
 import '../../services/zyra_auth.dart';
+import '../../services/zyra_code_link_coordinator.dart';
+import '../../services/zyra_code_link_service.dart';
 import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_internal_preview_client.dart';
 import '../../services/zyra_product_telemetry.dart';
@@ -76,6 +80,10 @@ class ZyraCodeScreen extends StatefulWidget {
   final ZyraInitialSignupDraft? signupPreviewIdentity;
   final ZyraCodeLocalPreview? localPreview;
   final Widget? previewLeading;
+  final String? initialCode;
+  final ZyraPersonalCodePreview? initialCodePreview;
+  final String? initialCodeError;
+  final bool acceptSignupCodeLink;
 
   const ZyraCodeScreen({
     super.key,
@@ -87,6 +95,10 @@ class ZyraCodeScreen extends StatefulWidget {
     this.signupPreviewIdentity,
     this.localPreview,
     this.previewLeading,
+    this.initialCode,
+    this.initialCodePreview,
+    this.initialCodeError,
+    this.acceptSignupCodeLink = false,
   });
 
   @override
@@ -121,6 +133,9 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
   bool _invitationListener = false;
   bool _signupListener = false;
   bool _localListeners = false;
+  bool _signupCodeLinkRegistered = false;
+  ZyraLocalCodeLinkEntry? _linkEntry;
+  (String?, int)? _linkEntryOwner;
   int _localEpoch = 0;
   bool? _localRouteCurrent;
   AppLifecycleState? _localLifecycle;
@@ -161,12 +176,33 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
       ZyraWaliLinkService.invitationRevision.addListener(_reload);
       _invitationListener = true;
     }
+    final initialCode = widget.initialCode;
+    if (!_isFounderDemoPreview && initialCode != null) {
+      final preview = widget.initialCodePreview;
+      _linkEntry = ZyraLocalCodeLinkEntry(
+        initialCode,
+        person: preview == null
+            ? null
+            : ZyraLocalCodeIdentity(
+                preview.firstName,
+                preview.role == 'wali' ? 'Guardian' : 'Seeker',
+              ),
+        error: widget.initialCodeError,
+      );
+      _linkEntryOwner = (_currentMemberId(), ZyraAccountState.generation);
+    }
+    _registerSignupCodeLink();
     _load();
   }
 
   @override
   void dispose() {
     ++_localEpoch;
+    if (_signupCodeLinkRegistered) {
+      WidgetsBinding.instance.removeObserver(this);
+      ZyraAppLock.instance.removeListener(_notifySignupCodeLink);
+      ZyraCodeLinkCoordinator.instance.guardianSignupUnmounted(this);
+    }
     if (_localListeners) {
       WidgetsBinding.instance.removeObserver(this);
       ZyraDeveloperAccess.authorizationChanges.removeListener(
@@ -213,6 +249,7 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    _notifySignupCodeLink();
     if (!_localRequested) return;
     final current = ModalRoute.of(context)?.isCurrent ?? true;
     if (_localRouteCurrent != null && _localRouteCurrent != current) {
@@ -223,6 +260,7 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) _notifySignupCodeLink();
     if (!_localRequested) return;
     _localLifecycle = state;
     ++_localEpoch;
@@ -231,6 +269,65 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
         _localOwnerAllows();
       });
     }
+  }
+
+  void _notifySignupCodeLink() {
+    if (_signupCodeLinkRegistered) {
+      ZyraCodeLinkCoordinator.instance.presentationChanged();
+    }
+  }
+
+  void _registerSignupCodeLink() {
+    if (!widget.acceptSignupCodeLink || !_localRole || _isFounderDemoPreview) {
+      return;
+    }
+    final owner = _currentMemberId();
+    final generation = ZyraAccountState.generation;
+    if (owner == null || !_isCurrentAccount(owner, generation)) return;
+    final lock = ZyraAppLock.instance;
+    final binding = WidgetsBinding.instance;
+    bool isCurrent() =>
+        mounted &&
+        widget.acceptSignupCodeLink &&
+        widget.asGuardian &&
+        !_isFounderDemoPreview &&
+        _isCurrentAccount(owner, generation) &&
+        !lock.isLocked &&
+        !lock.isObscured &&
+        binding.lifecycleState == AppLifecycleState.resumed &&
+        ModalRoute.of(context)?.isCurrent == true;
+
+    _signupCodeLinkRegistered = true;
+    binding.addObserver(this);
+    lock.addListener(_notifySignupCodeLink);
+    ZyraCodeLinkCoordinator.instance.guardianSignupMounted(
+      this,
+      userId: owner,
+      isCurrent: isCurrent,
+      open: (code, result) {
+        if (!isCurrent()) return;
+        final name = result.firstName;
+        final person =
+            result.outcome == ZyraCodeLinkOutcome.addSeeker && name != null
+            ? ZyraLocalCodeIdentity(name, 'Seeker')
+            : null;
+        final error = switch (result.outcome) {
+          ZyraCodeLinkOutcome.rateLimited => zyraCodeRateLimitMessage,
+          ZyraCodeLinkOutcome.failed =>
+            "The code couldn't be checked. Please try again.",
+          _ => null,
+        };
+        setState(() {
+          _relationship = null;
+          _linkEntry = ZyraLocalCodeLinkEntry(
+            code,
+            person: person,
+            error: error,
+          );
+          _linkEntryOwner = (owner, generation);
+        });
+      },
+    );
   }
 
   void _revokeLocal() {
@@ -526,6 +623,9 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
         (!_isFounderDemoPreview && !_canUseMemberCode(code))) {
       return;
     }
+    final preview = _isFounderDemoPreview;
+    final link = preview ? null : zyraCodeLinkFor(code.code);
+    if (!preview && link == null) return;
     final box = buttonContext.findRenderObject() as RenderBox?;
     final origin = box == null
         ? null
@@ -533,11 +633,11 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     try {
       await SharePlus.instance.share(
         ShareParams(
-          text: _isFounderDemoPreview
+          text: preview
               ? 'ZYRA Developer Preview code:\n${code.code}\n\n'
                     'This sample code cannot connect real accounts.'
-              : 'Here’s my ZYRA Code. Enter it in ZYRA to send me a request:\n'
-                    '${code.code}',
+              : 'Here’s my ZYRA Code. Open it in ZYRA to send me a request:\n'
+                    '$link',
           subject: 'My ZYRA Code',
           sharePositionOrigin: origin,
         ),
@@ -968,6 +1068,9 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     }
 
     final code = _code;
+    final displayCode = code != null && (local || _canUseMemberCode(code))
+        ? code.code
+        : null;
     final page = ZyraLocalCodePage(
       key: ValueKey((
         widget.localPreview,
@@ -1003,8 +1106,13 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
                 ),
               );
             },
-      personalCode: code != null && (local || _canUseMemberCode(code))
-          ? code.code
+      personalCode: displayCode,
+      personalCodeQr: !local && displayCode != null
+          ? zyraCodeLinkFor(displayCode)
+          : null,
+      linkEntry:
+          !local && owner != null && _linkEntryOwner == (owner, generation)
+          ? _linkEntry
           : null,
       guardedLookupCode: _lookup,
       onCopy: _rotating ? null : _copy,

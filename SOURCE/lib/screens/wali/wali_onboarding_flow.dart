@@ -557,6 +557,7 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
                   builder: (_) => WaliInviteSeekerScreen(
                     signupPreview: _devPreview,
                     signupPreviewIdentity: _devPreview ? draft : null,
+                    acceptSignupCodeLink: !_devPreview,
                   ),
                 ),
               );

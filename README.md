@@ -10,14 +10,17 @@ Pre-launch, built solo since June 2026. Version 1.0.0 (build 5) runs on the Foun
 
 The app has no developer rail, Home/Preview/Actions panel, comparison picker, role/plan/wallet selector, reset or onboarding skip shortcut. The protected Founder entry starts with sample Adam on Seeker One. Member settings and controls drawn in current LOCK masters remain, including the Profile Switch flow and the locked local request Demo actions.
 
-Add a Guardian and Add a Seeker open on My code, with a QR, copy and
-share. Sharing adds a short instruction above the code. Copy and QR use the
-plain code. Their code and the Profiles Scan page use the same camera and five
-code boxes. The camera accepts only uppercase, grouped ZYRA codes. On the
-signed-in Add pages, Check code can offer the older invite form after an
-older code is entered manually or a manual ZYRA Code check finds no match.
-The older form has its own Check button. A request still needs the other
-person to accept it.
+Add a Guardian and Add a Seeker open on My code. In the iPhone and iPad
+member app, Share and the QR carry a `https://zyraconnect.app/c/#<CODE>` link.
+Copy code copies the plain code. The Founder demo keeps sample codes. The
+in-app scanner reads either a grouped ZYRA Code or the ZYRA code link. Opening
+the link gives the signed-in member a review screen and leaves sending a
+request to them. On the signed-in Add pages, manual Check code can still
+offer the older invite form, which has its own Check button. A Guardian
+request still needs the other person to accept it.
+
+Member link lookup depends on the line 109 server migration. The migration
+passed isolated database tests. The server rollout is pending.
 
 See [ROADMAP.md](ROADMAP.md) for the next work, including bringing the full test suite back to green. The baseline and final interface milestone stays open until queues 44, 73 and 75 are built and the full suite passes.
 

@@ -85,8 +85,8 @@ class ZyraDiscoveryService {
       return isCurrent() && e.message == zyraCodeRateLimitSignal
           ? const ZyraKnownPersonCodeLookup.rateLimited()
           : const ZyraKnownPersonCodeLookup.unavailable();
-    } catch (e) {
-      if (isCurrent()) debugPrint('ZYRA: previewKnownPersonCode failed — $e');
+    } catch (_) {
+      if (isCurrent()) debugPrint('ZYRA: previewKnownPersonCode failed.');
       return const ZyraKnownPersonCodeLookup.unavailable();
     }
   }
@@ -115,8 +115,8 @@ class ZyraDiscoveryService {
       return e.message == zyraCodeRateLimitSignal
           ? ZyraKnownPersonConsiderOutcome.rateLimited
           : ZyraKnownPersonConsiderOutcome.failed;
-    } catch (e) {
-      debugPrint('ZYRA: considerKnownPersonCode failed — $e');
+    } catch (_) {
+      debugPrint('ZYRA: considerKnownPersonCode failed.');
       return ZyraKnownPersonConsiderOutcome.failed;
     }
   }

@@ -572,8 +572,8 @@ class ZyraWaliLinkService {
               ZyraSourceFailure.invalidResponse,
             )
           : ZyraSourceResult.available(code);
-    } catch (e) {
-      debugPrint('ZYRA: personalCode failed — $e');
+    } catch (_) {
+      debugPrint('ZYRA: personalCode failed.');
       return const ZyraSourceResult.unavailable(
         ZyraSourceFailure.requestFailed,
       );
@@ -617,8 +617,8 @@ class ZyraWaliLinkService {
               ZyraSourceFailure.invalidResponse,
             )
           : ZyraSourceResult.available(code);
-    } catch (e) {
-      debugPrint('ZYRA: rotatePersonalCode failed — $e');
+    } catch (_) {
+      debugPrint('ZYRA: rotatePersonalCode failed.');
       return const ZyraSourceResult.unavailable(
         ZyraSourceFailure.requestFailed,
       );
@@ -679,8 +679,8 @@ class ZyraWaliLinkService {
             ? ZyraSourceFailure.codeRateLimited
             : ZyraSourceFailure.requestFailed,
       );
-    } catch (e) {
-      if (isCurrent()) debugPrint('ZYRA: previewPersonalCode failed — $e');
+    } catch (_) {
+      if (isCurrent()) debugPrint('ZYRA: previewPersonalCode failed.');
       return const ZyraSourceResult.unavailable(
         ZyraSourceFailure.requestFailed,
       );
@@ -725,7 +725,7 @@ class ZyraWaliLinkService {
         if (message.contains('code_unavailable')) {
           return 'That code is not available.';
         }
-        debugPrint('ZYRA: requestGuardianLink failed — $e');
+        debugPrint('ZYRA: requestGuardianLink failed.');
         return "That request didn't go through. Please try again.";
       }
     },

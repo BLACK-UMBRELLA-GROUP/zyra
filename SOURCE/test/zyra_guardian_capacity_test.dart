@@ -11,6 +11,8 @@ import 'package:zyra/services/zyra_wali_link_service.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_text.dart';
 
+import 'support/zyra_qr_assertions.dart';
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -222,10 +224,7 @@ void main() {
     'Basic unknown mix retains code and QR and refuses an unverified second request',
     (tester) async {
       await openDemoCode(tester, plan: ZyraPlan.basic, count: 1);
-      expect(
-        find.byKey(const ValueKey(('zyra-qr', 'ZYRA-DEMO-SEEKER-ADAM'))),
-        findsOneWidget,
-      );
+      await expectZyraQrPayload(tester, 'ZYRA-DEMO-SEEKER-ADAM');
       expect(find.text('Copy code'), findsOneWidget);
       expect(find.text('Share my code'), findsOneWidget);
       await confirmDemoGuardian(tester);

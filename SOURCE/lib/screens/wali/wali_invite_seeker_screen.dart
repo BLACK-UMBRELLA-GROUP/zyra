@@ -8,11 +8,13 @@ class WaliInviteSeekerScreen extends StatelessWidget {
   /// Requested rehearsal mode is never reinterpreted as live on revocation.
   final bool signupPreview;
   final ZyraInitialSignupDraft? signupPreviewIdentity;
+  final bool acceptSignupCodeLink;
 
   const WaliInviteSeekerScreen({
     super.key,
     this.signupPreview = false,
     this.signupPreviewIdentity,
+    this.acceptSignupCodeLink = false,
   });
 
   @override
@@ -20,5 +22,6 @@ class WaliInviteSeekerScreen extends StatelessWidget {
     asGuardian: true,
     signupPreview: signupPreview,
     signupPreviewIdentity: signupPreviewIdentity,
+    acceptSignupCodeLink: acceptSignupCodeLink,
   );
 }

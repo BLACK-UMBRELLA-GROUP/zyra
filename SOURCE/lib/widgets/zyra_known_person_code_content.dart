@@ -1,4 +1,5 @@
 import '../models/zyra_code_format.dart';
+import '../models/zyra_code_link.dart';
 import 'zyra_tap_feedback.dart';
 import 'dart:async';
 
@@ -203,7 +204,7 @@ class _ZyraCodeCaptureState extends State<ZyraCodeCapture>
     for (final barcode in capture.barcodes) {
       final raw = barcode.rawValue;
       if (raw == null) continue;
-      final code = ZyraCodeFormat.scanned(raw);
+      final code = ZyraCodeFormat.scanned(raw) ?? parseZyraCodeLink(raw);
       if (code == null) {
         rejected = true;
         continue;

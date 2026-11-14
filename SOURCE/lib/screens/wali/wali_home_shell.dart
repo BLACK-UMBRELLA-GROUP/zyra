@@ -63,6 +63,7 @@ import '../../dev/zyra_app_gold_preview.dart';
 import '../../dev/zyra_dev_scenario.dart';
 import '../../services/zyra_notification_service.dart';
 import '../../services/zyra_account_state.dart';
+import '../../services/zyra_code_link_coordinator.dart';
 import '../../services/zyra_developer_access.dart';
 import '../../services/zyra_internal_preview_client.dart';
 import '../../services/zyra_entitlement_service.dart';
@@ -149,6 +150,16 @@ class _WaliHomeShellState extends State<WaliHomeShell> {
     super.initState();
     _ownerUserId = ZyraAccountState.userId;
     _ownerGeneration = ZyraAccountState.generation;
+    final linkOwner = _ownerUserId;
+    if (linkOwner != null && !widget.initialOnboardingPreview) {
+      ZyraCodeLinkCoordinator.instance.memberMounted(
+        this,
+        role: ZyraCodeLinkMemberRole.guardian,
+        userId: linkOwner,
+        isCurrent: () =>
+            mounted && _currentAccount && !ZyraInternalPreviewClient.isActive,
+      );
+    }
     _notificationOwner = widget.initialOnboardingPreview
         ? null
         : ZyraNotificationOwnerLease.capture();
@@ -192,6 +203,7 @@ class _WaliHomeShellState extends State<WaliHomeShell> {
 
   @override
   void dispose() {
+    ZyraCodeLinkCoordinator.instance.memberUnmounted(this);
     ZyraNotificationService.confirmedAcknowledgements.removeListener(
       _onConfirmedAcknowledgement,
     );

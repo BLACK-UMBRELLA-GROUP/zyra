@@ -10,6 +10,7 @@ import '../models/zyra_error_state.dart';
 import '../screens/auth_gate.dart';
 import '../services/zyra_account_state.dart';
 import '../services/zyra_app_lock.dart';
+import '../services/zyra_code_link_coordinator.dart';
 import '../services/zyra_developer_access.dart';
 import '../services/zyra_internal_preview_client.dart';
 import '../services/zyra_local_prefs.dart';
@@ -17,10 +18,13 @@ import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_full_screen_error.dart';
 import '../widgets/zyra_loading.dart';
+import '../widgets/zyra_pull_down_back_scope.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'dev_discovery_directions.dart';
 import 'zyra_concept_preview_boundary.dart';
 import 'zyra_dev_local_preview.dart';
+import 'zyra_draft_local_code_aliases.dart';
+import 'zyra_draft_local_code_page.dart';
 import 'zyra_local_photo_import.dart';
 import 'zyra_draft_compatibility_access_store.dart';
 import 'zyra_preview_resume_transition.dart';
@@ -288,6 +292,7 @@ class _ZyraFounderReviewSurfaceState extends State<ZyraFounderReviewSurface>
       return;
     }
     _presentedEpoch = epoch;
+    ZyraCodeLinkCoordinator.instance.presentationChanged();
     if (_hasContinuityAdmission) return;
     final guardian = _guardianRole;
     final previewSession = ZyraInternalPreviewClient.previewSession;
@@ -532,12 +537,54 @@ class _ZyraFounderReviewSurfaceState extends State<ZyraFounderReviewSurface>
   void initState() {
     super.initState();
     _hadProof = _hasProof;
+    ZyraCodeLinkCoordinator.instance.founderPreviewMounted(
+      this,
+      userId: _ownerId,
+      isCurrent: () =>
+          _hasProof &&
+          _currentVisible &&
+          _ownsVisibleRoute &&
+          _presentedEpoch == _proofEpoch,
+      openUnknownCode: _openUnknownCodeLink,
+    );
     WidgetsBinding.instance.addObserver(this);
     ZyraAppLock.instance.addListener(_visibilityChanged);
     ZyraConceptPreviewIsolation.changes.addListener(_visibilityChanged);
     ZyraPreviewResumeTransition.changes.addListener(_resumePresentationChanged);
     ZyraDeveloperAccess.authorizationChanges.addListener(_proofChanged);
     ZyraInternalPreviewClient.changes.addListener(_proofChanged);
+  }
+
+  // A well-formed link can only show the existing unavailable state in the
+  // Founder preview. Its local sample codes are outside the link grammar.
+  void _openUnknownCodeLink(String code) {
+    final session = ZyraInternalPreviewClient.previewSession;
+    final mode = _guardianRole
+        ? ZyraLocalCodeContext.addSeeker
+        : ZyraLocalCodeContext.scan;
+    final entry = ZyraLocalCodeLinkEntry(code);
+    Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        allowSnapshotting: false,
+        builder: (routeContext) => Scaffold(
+          body: ZyraPullDownCloseCue(
+            enabled: true,
+            routeIdentity: ModalRoute.of(routeContext),
+            onBack: () => Navigator.of(routeContext).maybePop(),
+            child: ZyraLocalCodePage(
+              mode: mode,
+              canAct: () =>
+                  mounted &&
+                  _hasProof &&
+                  ZyraInternalPreviewClient.previewSession == session,
+              ownerKey: session,
+              linkEntry: entry,
+              lookupCode: (_) async => null,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   void _proofChanged() {
@@ -771,6 +818,7 @@ class _ZyraFounderReviewSurfaceState extends State<ZyraFounderReviewSurface>
   @override
   void dispose() {
     _revoked = true;
+    ZyraCodeLinkCoordinator.instance.founderPreviewUnmounted(this);
     _compatibilityAccess.close();
     _photoImports.dispose();
     _checkpoint = null;
