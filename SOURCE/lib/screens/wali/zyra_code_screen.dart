@@ -43,12 +43,24 @@ class ZyraCodeLocalPreview {
     required this.lookupCode,
     this.canInteract,
     this.interactionEpoch,
+    this.confirmRotation,
   });
 
   final bool Function() canAct;
   final ZyraPersonalCode personalCode;
   final Future<ZyraPersonalCodePreview?> Function(String code) lookupCode;
   final bool Function()? canInteract;
+
+  /// The preview host can authorize the exact confirmation covering its page.
+  final Future<bool> Function({
+    required String title,
+    required String body,
+    required String primaryLabel,
+    required String secondaryLabel,
+    required IconData icon,
+    required bool Function() canCommit,
+  })?
+  confirmRotation;
 
   /// A caller-owned monotonic revision for covers which do not push a route.
   /// Increase it on both cover and uncover, not only while an overlay is open.
@@ -659,7 +671,11 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     final preview = _isFounderDemoPreview;
     final generation = ZyraAccountState.generation;
     final session = ZyraInternalPreviewClient.previewSession;
-    bool sameCode({bool requireForeground = true}) {
+    final confirmRotation = _localPreview?.confirmRotation;
+    bool sameCode({
+      bool requireForeground = true,
+      bool inOwnedConfirmation = false,
+    }) {
       if (!mounted ||
           code.code != _code?.code ||
           widget.asGuardian != asGuardian) {
@@ -683,7 +699,8 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
       try {
         return _localRequested
             ? _localOwnerAllows() &&
-                  (_localPreview?.canInteract?.call() ?? true)
+                  (inOwnedConfirmation ||
+                      (_localPreview?.canInteract?.call() ?? true))
             : ZyraDeveloperAccess.canUseDeveloperTools;
       } catch (_) {
         return false;
@@ -693,16 +710,30 @@ class _ZyraCodeScreenState extends State<ZyraCodeScreen>
     if (!sameCode()) return;
     setState(() => _rotating = true);
     try {
-      final confirmed = await showZyraConfirm(
-        context: context,
-        icon: Icons.refresh_rounded,
-        title: 'Get a new code?',
-        body:
-            'Your current code and QR stop working straight away. Anyone you shared it with will need the new one. Requests already sent to you stay.',
-        primaryLabel: 'Get new code',
-        secondaryLabel: 'Keep my code',
-        canConfirm: () => sameCode(),
-      );
+      const title = 'Get a new code?';
+      const body =
+          'Your current code and QR stop working straight away. Anyone you shared it with will need the new one. Requests already sent to you stay.';
+      const primaryLabel = 'Get new code';
+      const secondaryLabel = 'Keep my code';
+      const icon = Icons.refresh_rounded;
+      final confirmed = confirmRotation != null
+          ? await confirmRotation(
+              icon: icon,
+              title: title,
+              body: body,
+              primaryLabel: primaryLabel,
+              secondaryLabel: secondaryLabel,
+              canCommit: () => sameCode(inOwnedConfirmation: true),
+            )
+          : await showZyraConfirm(
+              context: context,
+              icon: icon,
+              title: title,
+              body: body,
+              primaryLabel: primaryLabel,
+              secondaryLabel: secondaryLabel,
+              canConfirm: () => sameCode(),
+            );
       if (confirmed != true || !sameCode() || origin?.isCurrent != true) return;
       final role = asGuardian ? 'wali' : 'seeker';
       final next = preview

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {machoPayload, sameNativePayload, validSourcePath, requiredNativeInputs, flutterAssembleArgs, isWildcardRerunMarker, classifyCompilerDependency, verifyWildcardRerunRecords, singleArm64FatAsset, sameSingleArm64FatAssetPayload, sameUnusedNativeAssetRequirements, validateAotFrameworkPayload, validateNativeBuildReceipt, measureNativeHost} from './verified_host_profile.mjs';
+import {machoPayload, sameNativePayload, validSourcePath, requiredNativeInputs, flutterAssembleArgs, isWildcardRerunMarker, classifyCompilerDependency, verifyWildcardRerunRecords, singleArm64FatAsset, sameSingleArm64FatAssetPayload, sameUnusedNativeAssetRequirements, validateAotFrameworkPayload, validateNativeBuildReceipt, measureNativeHost, requireNativeAssociatedDomain} from './verified_host_profile.mjs';
 
 const source = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const marker = path.join(source, 'DOES_NOT_EXIST_RERUN_FOR_WILDCARD77885537');
@@ -97,6 +97,17 @@ test('fresh native delivery accepts only the exact verified build receipt', () =
     assert.throws(() => validateNativeBuildReceipt(...checkedRecord({...receipt, ...change})), /exact successful native/);
   }
   assert.throws(() => validateNativeBuildReceipt(...checkedRecord({...receipt, candidate: '/tmp/Runner.app'})), /Unknown plan fields/);
+});
+test('native Universal Links require the exact signed domain and its development profile authorization', () => {
+  const key = 'com.apple.developer.associated-domains';
+  const app = {[key]: ['applinks:zyraconnect.app'], 'get-task-allow': true};
+  const profile = {[key]: '*', 'get-task-allow': true};
+  assert.doesNotThrow(() => requireNativeAssociatedDomain(app, profile));
+  for (const domains of [undefined, '*', [], ['applinks:www.zyraconnect.app'], [...app[key], 'applinks:example.org']]) {
+    assert.throws(() => requireNativeAssociatedDomain({...app, [key]: domains}, profile), /entitlement drift/);
+  }
+  assert.throws(() => requireNativeAssociatedDomain(app, {'get-task-allow': true}), /entitlement drift/);
+  assert.throws(() => requireNativeAssociatedDomain(app, {...profile, 'get-task-allow': false}), /entitlement drift/);
 });
 test('fresh host measurement refuses artifacts outside the protected build path', () => {
   for (const candidate of [path.join(source, 'Runner.app'), path.join(source, 'build-other/Runner.app'),

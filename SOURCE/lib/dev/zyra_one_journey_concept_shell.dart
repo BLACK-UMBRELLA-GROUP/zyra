@@ -8164,7 +8164,9 @@ class _ZyraOneJourneyConceptShellState
     final revision = _uiRevision;
     _guardianInviteRevision = revision;
     bool current() =>
-        _allowed &&
+        (_allowed ||
+            (_ownedConfirmRoute?.isCurrent == true &&
+                (widget.canActInOwnedDialog?.call() ?? false))) &&
         revision == _uiRevision &&
         !_guardianRole &&
         _tab == 3 &&
@@ -8176,7 +8178,8 @@ class _ZyraOneJourneyConceptShellState
       previewLeading: const ZyraInlineBackButton(),
       localPreview: ZyraCodeLocalPreview(
         canAct: current,
-        canInteract: () => current(),
+        canInteract: () => _allowed && current(),
+        confirmRotation: _confirmConceptAction,
         interactionEpoch: () => _routeStamp,
         personalCode: ZyraDevPersonalCodeFixtures.forPersona(
           asGuardian: false,

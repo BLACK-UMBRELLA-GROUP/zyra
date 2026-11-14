@@ -58,6 +58,7 @@ import 'package:zyra/widgets/zyra_profile_image.dart';
 import 'package:zyra/widgets/zyra_focus_dashboard.dart';
 
 import 'support/zyra_hidden_dev_controls_driver.dart';
+import 'support/zyra_qr_assertions.dart';
 
 // Retired control identities remain absence-only regression evidence.
 const _historicalBrowseControlNames = [
@@ -4314,6 +4315,59 @@ void main() {
     await _nav(tester, 0);
     await _nav(tester, 3);
     expect(_key('guardian-card-dot-target-$invitationIndex'), findsNothing);
+  });
+
+  testWidgets('Founder Add a Guardian retains its code page through rotation', (
+    tester,
+  ) async {
+    final network = _NoNetwork();
+    await HttpOverrides.runWithHttpOverrides(() async {
+      addTearDown(ZyraInternalPreviewClient.finishSignOut);
+      ZyraInternalPreviewClient.beginPreview();
+      await _mount(tester);
+      await _tapRootNav(tester, 'Guardian');
+      await _press(tester, 'guardian-add-top');
+      const original = 'ZYRA · DEMO · SEEKER · ADAM';
+      const rotated = 'ZYRA · 7K2M · Q9TD · 4H8P · 2XJW · R6NB';
+      expect(find.text(original), findsOneWidget);
+      await _press(tester, 'zyra-code-rotate');
+      expect(find.text('Get a new code?'), findsOneWidget);
+      expect(_key('zyra_code_local_preview_denied'), findsNothing);
+      await tester.tap(find.text('Keep my code'));
+      await tester.pumpAndSettle();
+      expect(find.text(original), findsOneWidget);
+      await _press(tester, 'zyra-code-rotate');
+      await tester.tap(find.text('Get new code'));
+      await tester.pumpAndSettle();
+      expect(find.text(rotated), findsOneWidget);
+      expect(find.text(original), findsNothing);
+      await expectZyraQrPayload(tester, 'ZYRA-7K2M-Q9TD-4H8P-2XJW-R6NB');
+      expect(
+        find.text('New code ready. Your old code no longer works.'),
+        findsOneWidget,
+      );
+      await _press(tester, 'zyra-their-code-tab');
+      await tester.enterText(_key('local-code-field'), '7K2MQ9TD4H8P2XJWR6NB');
+      FocusManager.instance.primaryFocus?.unfocus();
+      await tester.pumpAndSettle();
+      await _press(tester, 'local-code-check');
+      expect(find.text('Invalid code. Please try again.'), findsOneWidget);
+
+      await tester.pumpAndSettle(const Duration(seconds: 5));
+      await _press(tester, 'zyra-my-code-tab');
+      await _press(tester, 'zyra-code-rotate');
+      await tester.tap(find.text('Get new code'));
+      await tester.pumpAndSettle();
+      expect(find.text(rotated), findsNothing);
+      await expectZyraQrPayload(tester, 'ZYRA-7K2M-Q9TD-4H8P-2XJW-0002');
+      await _press(tester, 'zyra-their-code-tab');
+      await tester.enterText(_key('local-code-field'), '7K2MQ9TD4H8P2XJWR6NB');
+      FocusManager.instance.primaryFocus?.unfocus();
+      await tester.pumpAndSettle();
+      await _press(tester, 'local-code-check');
+      expect(find.text('Invalid code. Please try again.'), findsOneWidget);
+    }, network);
+    expect(network.attempts, 0);
   });
 
   // Q40: an existing Guardian account does not get sign-up Add a Seeker.

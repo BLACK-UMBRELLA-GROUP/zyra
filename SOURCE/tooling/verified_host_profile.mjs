@@ -23,23 +23,20 @@ const team = '9Y7Z8F36SJ';
 const profileHash = '1af45878575c7449b427169878ace2caae4d39be5425fe54e1906fe6415b96d7';
 const engine = 'bin/cache/artifacts/engine/ios-profile/Flutter.xcframework/ios-arm64/Flutter.framework/Flutter';
 const enginePayloadHash = 'eb7bfa2968b9005682fcf7506f5ddcbcea9d35c5551d7f55542f10d95022832a';
-// Line 84 stays held until the build owner records the exact checked artifacts.
+// Line 117: exact fresh native host after line 109. Line 84's host remains on disk.
 const nativePins = Object.freeze({
-  hostPath: 'build/ios/line84-native-2026-11-14/products/Runner.app',
-  hostSha256: '5f23cefddc203308da3f354eda8580437355134b627c604d6548b2d9e42bec88',
+  hostPath: 'build/ios/line117-native-2026-11-14/products/Runner.app',
+  hostSha256: 'ff8e32e800ef25b7c1ea5313b55c258135030fddb32d0efdd1bfa5280f565e46',
   hostFiles: 179,
-  // Q150 accepts this development profile for the line 84 Founder preview.
-  // iOS Team Provisioning Profile: app.zyraconnect.zyra expires 2027-09-10T17:25:55Z.
-  // Profile entitlement keys: application-identifier, aps-environment, com.apple.developer.applesignin, com.apple.developer.team-identifier, get-task-allow, keychain-access-groups.
-  // Signed app entitlement keys: application-identifier, com.apple.developer.applesignin, com.apple.developer.team-identifier, get-task-allow, keychain-access-groups.
-  // Associated Domains is absent from both. The exact hashes still govern.
-  profileSha256: '1af45878575c7449b427169878ace2caae4d39be5425fe54e1906fe6415b96d7',
-  sourceCommit: '12fcf8f8306cf1895b020973e9d1d60e61db9fa8',
-  sourceSealSha256: '28697bc19f08744319ded0c701a66cf02d7cd2a2570f77ef57986e87dfe58c98',
-  nativeInputsSha256: '44d99a483c5dc9bef5fca470e52df633e0476ebb2640f6ccd875dc266aa6460d',
-  buildReceiptSha256: 'c69a57b7a141a9db16a731cc9bf6a31fc1554539fff33f1cd4b92cd7eeb5a1ec',
+  // iOS Team Provisioning Profile: app.zyraconnect.zyra; expires 2027-11-14T14:31:53Z.
+  // The profile allows Associated Domains; the app claims only applinks:zyraconnect.app.
+  profileSha256: '416b86da0439ca07ed0802ddcd657d8362d32502e99552a76449abcc5898327f',
+  entitlementsSha256: '922db307b9556a786d52952deba2eca017ee7f219203970238bcfa9e9518d943',
+  sourceCommit: 'd01b414df48499cd79dc4f405023c124a3f2ff65',
+  sourceSealSha256: '242eb8ed311a06456c63e80c26a78258e70be470eb7ab60d8a87942d8504a763',
+  nativeInputsSha256: '9a188971691f6b963d110824b6d31f477af1839922f4cfcbc38e0e10a3a43e82',
+  buildReceiptSha256: '4d976907925010038c0d08873d28710b2bf5b088e8e608e1eeb5ae664c89eee2',
 });
-const nativePacketName = 'ZYRA_LINE84_2026_11_14';
 const nativeTarget = 'ios-arm64 / lib/main.dart / production';
 const sdkPins = {
   'bin/cache/dart-sdk/bin/dart': '3760a76d390be872c4b4a44a5d045f06183bc21b191b98c8f1e26bc9b1d65d20',
@@ -417,7 +414,7 @@ async function command(executable, args, input) {
   if (status.code !== 0 || status.signal) throw Error('Protected command failed: ' + executable + ' (' + status.code + ')');
   return result;
 }
-async function checkIdentity(app) {
+async function checkIdentity(app, expectedEntitlementsHash = hostEntitlementsHash) {
   await command('/usr/bin/codesign', ['--verify', '--deep', '--strict', app]);
   const detail = await command('/usr/bin/codesign', ['-d', '--verbose=4', app]);
   const signatureFields = detail.stderr.split('\n');
@@ -426,7 +423,7 @@ async function checkIdentity(app) {
     '-c', 'Print :CFBundleShortVersionString', '-c', 'Print :CFBundleVersion', '-c', 'Print :MinimumOSVersion', path.join(app, 'Info.plist')]);
   if (plist.stdout.trim() !== 'app.zyraconnect.zyra\nZYRA\n1.0.0\n5\n15.0') throw Error('Main identity/version/OS mismatch');
   const entitlements = await command('/usr/bin/codesign', ['-d', '--entitlements', ':-', app]);
-  if (sha(Buffer.from(entitlements.stdout)) !== hostEntitlementsHash) throw Error('Native entitlements drift');
+  if (sha(Buffer.from(entitlements.stdout)) !== expectedEntitlementsHash) throw Error('Native entitlements drift');
   return entitlements.stdout;
 }
 async function verifyProvision(app, expectedHash) {
@@ -451,10 +448,23 @@ async function verifyProvision(app, expectedHash) {
 async function checkProvision(app) {
   return (await verifyProvision(app, profileHash)).devices;
 }
-async function checkNativeProvision(app, expectedHash) {
+export function requireNativeAssociatedDomain(appEntitlements, profileEntitlements) {
+  const key = 'com.apple.developer.associated-domains';
+  const signedDomains = appEntitlements?.[key];
+  if (!Array.isArray(signedDomains) || signedDomains.length !== 1 || signedDomains[0] !== 'applinks:zyraconnect.app' ||
+      profileEntitlements?.[key] !== '*' || appEntitlements['get-task-allow'] !== true ||
+      profileEntitlements['get-task-allow'] !== true) {
+    throw Error('Native Associated Domains or development entitlement drift');
+  }
+}
+async function checkNativeProvision(app, expectedHash, signedEntitlements) {
   const retained = await verifyProvision(host, profileHash);
   const current = await verifyProvision(app, expectedHash);
   if (current.devices[0] !== retained.devices[0]) throw Error('Native profile targets a different device');
+  const appEntitlements = JSON.parse((await command('/usr/bin/plutil',
+    ['-convert', 'json', '-o', '-', '-'], signedEntitlements)).stdout);
+  const profileEntitlements = JSON.parse(await current.extract('Entitlements', 'json'));
+  requireNativeAssociatedDomain(appEntitlements, profileEntitlements);
   const retainedCertificate = await retained.extract('DeveloperCertificates.0', 'raw');
   if (!/^[A-Za-z0-9+/]+={0,2}$/.test(retainedCertificate) ||
       await retained.extract('DeveloperCertificates', 'raw') !== '1' ||
@@ -646,7 +656,7 @@ export function validateNativeBuildReceipt(bytes, pins) {
 }
 
 function verifyNativeBuild(file, pins) {
-  const packet = path.join(reviews, nativePacketName);
+  const packet = path.dirname(path.dirname(path.join(source, pins.hostPath)));
   if (file !== path.join(packet, 'CHECKED_PREBUILD.json') || fs.realpathSync(packet) !== packet) {
     throw Error('Wrong owned native delivery plan');
   }
@@ -664,9 +674,9 @@ function verifyNativeBuild(file, pins) {
 
 async function runNative(mode, file, receiptHash) {
   if (!nativePins.hostFiles || !/^[a-f0-9]{40,64}$/.test(nativePins.sourceCommit) ||
-      ![nativePins.hostSha256, nativePins.profileSha256, nativePins.nativeInputsSha256, nativePins.sourceSealSha256,
+      ![nativePins.hostSha256, nativePins.profileSha256, nativePins.entitlementsSha256, nativePins.nativeInputsSha256, nativePins.sourceSealSha256,
         nativePins.buildReceiptSha256].every(value => /^[a-f0-9]{64}$/.test(value))) {
-    throw Error('Fresh native host is held until the checked line 84 pins are recorded');
+    throw Error('Fresh native host is held until the checked line 117 pins are recorded');
   }
   if (mode === 'native-deliver' && receiptHash !== nativePins.buildReceiptSha256) {
     throw Error('Use the build receipt SHA-256 observed in native-inspect');
@@ -676,8 +686,8 @@ async function runNative(mode, file, receiptHash) {
   const recheckArtifact = async () => {
     verifyNativeBuild(file, nativePins);
     verifySdkAndHost(nativePins);
-    await checkIdentity(candidate);
-    profileDevices = await checkNativeProvision(candidate, nativePins.profileSha256);
+    const signedEntitlements = await checkIdentity(candidate, nativePins.entitlementsSha256);
+    profileDevices = await checkNativeProvision(candidate, nativePins.profileSha256, signedEntitlements);
     return true;
   };
   await recheckArtifact();
