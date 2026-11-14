@@ -403,6 +403,32 @@ Map<String, Map<String, dynamic>> _baselines(String field) {
 Map<String, dynamic> _readManifest(String path) =>
     jsonDecode(File(path).readAsStringSync()) as Map<String, dynamic>;
 
+void _expectPromotedScreenshot(Map screenshot) {
+  final id = screenshot['id'] as String;
+  final sourcePath =
+      (screenshot['path'] ?? screenshot['source_path']) as String;
+  final approvedPath = screenshot['approved_path'] as String;
+  final approved = File(approvedPath);
+  expect(approved.existsSync(), isTrue, reason: 'missing $approvedPath');
+  final bytes = approved.readAsBytesSync();
+  expect(bytes.length, screenshot['bytes'], reason: '$id byte drift');
+  expect(
+    sha256.convert(bytes).toString(),
+    screenshot['sha256'],
+    reason: '$id hash drift',
+  );
+
+  // A fresh checkout has the promoted bytes and manifest. The local candidate
+  // capture tree is ignored, so also compare its bytes whenever it is present.
+  final source = File(sourcePath);
+  if (sourcePath.startsWith('test/visual/candidates/') &&
+      !source.existsSync()) {
+    return;
+  }
+  expect(source.existsSync(), isTrue, reason: 'missing $sourcePath');
+  expect(source.readAsBytesSync(), bytes, reason: '$id copy drift');
+}
+
 Map<String, Map<String, dynamic>> _retiredBaselines() {
   final manifest = _readManifest('test/visual/approved/manifest.json');
   return {
@@ -1348,30 +1374,7 @@ void main() {
           expect(historical[id], isNull);
           continue;
         }
-        final sourcePath =
-            (screenshot['path'] ?? screenshot['source_path']) as String;
-        final approvedPath = screenshot['approved_path'] as String;
-        final sourceFile = File(sourcePath);
-        final approvedFile = File(approvedPath);
-        expect(sourceFile.existsSync(), isTrue, reason: 'missing $sourcePath');
-        expect(
-          approvedFile.existsSync(),
-          isTrue,
-          reason: 'missing $approvedPath',
-        );
-        final sourceBytes = sourceFile.readAsBytesSync();
-        final approvedBytes = approvedFile.readAsBytesSync();
-        expect(sourceBytes, approvedBytes, reason: '$id copy drift');
-        expect(
-          sourceBytes.length,
-          screenshot['bytes'],
-          reason: '$id byte drift',
-        );
-        expect(
-          sha256.convert(sourceBytes).toString(),
-          screenshot['sha256'],
-          reason: '$id hash drift',
-        );
+        _expectPromotedScreenshot(screenshot);
         final wasPhase1Superseded =
             phase.version == 'OA-ZYRA-282-phase1-v1' &&
             _phase1SupersededFixtures.keys.any(
@@ -1451,24 +1454,8 @@ void main() {
         expect(historical[screenshot['id']], isNull);
         continue;
       }
-      final path = screenshot['path'] as String;
-      final file = File(path);
-      expect(file.existsSync(), isTrue, reason: 'missing candidate $path');
-      final bytes = file.readAsBytesSync();
-      expect(bytes.length, screenshot['bytes'], reason: '$path byte drift');
-      expect(
-        sha256.convert(bytes).toString(),
-        screenshot['sha256'],
-        reason: '$path hash drift',
-      );
       final approvedPath = screenshot['approved_path'] as String;
-      final approvedFile = File(approvedPath);
-      expect(
-        approvedFile.existsSync(),
-        isTrue,
-        reason: 'missing promoted copy $approvedPath',
-      );
-      expect(approvedFile.readAsBytesSync(), bytes);
+      _expectPromotedScreenshot(screenshot);
       final active = historical[screenshot['id']];
       expect(active, isNotNull);
       expect(active?['path'], approvedPath.replaceFirst('test/visual/', ''));

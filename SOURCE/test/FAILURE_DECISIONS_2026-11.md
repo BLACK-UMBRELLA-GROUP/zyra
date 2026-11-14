@@ -4,7 +4,7 @@ Line 111 · DOC-ZYRA-0508 · OA-ZYRA-348
 
 The 14 November protected Flutter 3.44.2 baseline took 10 minutes 40 seconds. It recorded 7,262 passes, 44 failures and 122 skips. The 44 include all 37 accepted failures plus seven regressions. Of the 39 in line 75 evidence, the Q65 End-confirmation return case and the Q66 stale Guardian grant case already passed in the new baseline.
 
-The 14 checkpoint suites passed all 512 tests and the analyser found no issues. Whole-suite verification after these changes and GitHub Actions are pending in the Founder’s revised queue order.
+The 14 checkpoint suites passed all 512 tests. The 14 November full Mac run on the source through `2e4c4d9` passed 7,346 tests across 560 suites, with zero failures and all 122 existing skips. Analysis found no issues.
 
 ## Failures
 
@@ -54,6 +54,19 @@ The 14 checkpoint suites passed all 512 tests and the analyser found no issues. 
 | `SOURCE/test/zyra_request_page_titles_test.dart` | main 6 Profile title narrow | Fix | Line 100 title brief and LOCK 21 V5. Restore the shared title offset and keep the total title-area height from line 115. |
 | `SOURCE/test/zyra_subscription_wallet_preview_test.dart` | confirmed zero Family places is a plain empty state at compact200 size | Fix | Q62 and LOCK 22 V3. Size the shared empty state from the remaining Sliver viewport without requesting intrinsic height. Check the current Monogram and preserve the confirmed-empty assertions. |
 | `SOURCE/test/zyra_subscription_wallet_preview_test.dart` | confirmed zero Family places is a plain empty state at normal size | Fix | Q62 and LOCK 22 V3. Size the shared empty state from the remaining Sliver viewport without requesting intrinsic height. Check the current Monogram and preserve the confirmed-empty assertions. |
+
+## Failure found after the checkpoint
+
+| Suite | Test | Decision | Reason |
+|---|---|---|---|
+| `SOURCE/test/guardian_circle_discussion_bubble_test.dart` | request shell source binds profile projection to its exact permitted Seeker context and stable loaded-photo cache | Update | Q64, LOCK 20 and the 14 November queue instruction. Assert that the resolver uses the foreground guard and that the guard requires active preview authority, the same Circle owner and the Circle foreground page. Keep the exact context, privacy and cache assertions. |
+
+## Hosted checkout fixes
+
+| Suite | Test | Decision | Reason |
+|---|---|---|---|
+| `SOURCE/test/visual/zyra_visual_regression_test.dart` | all OA-ZYRA-282 candidate manifests record governed promotion | Fix | Always verify the tracked promoted PNGs against the approved manifest's size and SHA-256. Compare local candidate copies when present under the ignored `test/visual/candidates/` tree. |
+| `SOURCE/test/visual/zyra_visual_regression_test.dart` | Phase 1 v2 successors are promoted and supersessions finalized | Fix | Verify the promoted PNGs directly on a clean checkout, and keep every supersession and retirement assertion. |
 
 ## Skipped tests
 

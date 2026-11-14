@@ -1,0 +1,50 @@
+name: ZYRA CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  flutter:
+    name: Flutter checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: SOURCE
+    env:
+      FLUTTER_SUPPRESS_ANALYTICS: 'true'
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - name: Set up Flutter 3.44.2
+        shell: bash
+        run: |
+          archive="$RUNNER_TEMP/flutter_linux_3.44.2-stable.tar.xz"
+          curl --fail --silent --show-error --location --retry 3 \
+            --output "$archive" \
+            https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.44.2-stable.tar.xz
+          printf '%s  %s\n' 'b0de1d19754688ec6769c9a067db3b0594479d3d767f971bfecfc132904c8d5e' "$archive" | sha256sum --check
+          tar -xf "$archive" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/flutter/bin" >> "$GITHUB_PATH"
+      - name: Set up offline app configuration
+        run: |
+          cp lib/config/oauth_config.dart.example lib/config/oauth_config.dart
+          cp lib/config/supabase_config.dart.example lib/config/supabase_config.dart
+      - name: Resolve dependencies
+        run: flutter pub get --enforce-lockfile
+      - name: Analyze
+        run: flutter analyze --no-pub
+      - name: Run the full test suite
+        # The hosted checkout exercises the existing fail-closed flavor without
+        # loading a production backend configuration or OAuth client IDs.
+        run: flutter test --no-pub --flavor offline-ci --reporter expanded

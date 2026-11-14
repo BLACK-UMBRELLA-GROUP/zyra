@@ -658,6 +658,9 @@ void main() {
       final binding = source
           .substring(resolverStart, resolverEnd)
           .replaceAll(RegExp(r'\s+'), ' ');
+      final owner = source
+          .substring(circleStart, resolverStart)
+          .replaceAll(RegExp(r'\s+'), ' ');
       expect(
         source.substring(resolverEnd),
         contains(
@@ -665,8 +668,13 @@ void main() {
         ),
         reason: 'The exact guarded resolver is captured before route replay.',
       );
-      expect(binding, contains('!current()'));
-      expect(binding, contains("_page != 'guardian_circle'"));
+      expect(binding, contains('!foreground()'));
+      expect(
+        owner,
+        contains(
+          "bool foreground() => _allowed && current() && _page == 'guardian_circle';",
+        ),
+      );
       expect(binding, contains('allowed.referenceId == context.referenceId'));
       expect(binding, contains('allowed.firstName == context.firstName'));
       expect(binding, contains('allowed.kind == context.kind'));
@@ -686,7 +694,7 @@ void main() {
       expect(binding, contains('discussionProfiles.putIfAbsent('));
       expect(binding, contains('_displayProfile(person)'));
       expect(
-        source.substring(circleStart, resolverStart),
+        owner,
         contains('final discussionProfiles = <String, SeekerProfile>{};'),
       );
     },
