@@ -132,7 +132,7 @@ Intentionally retained boundaries: authenticated due-only expiry cleanup can clo
 
 ## Closing live comparison
 
-Reused `REPORTS/CURRENT/ZYRA_LIVE_DATABASE_CHECK_2026-10-30_V1.md`. The only new production operation was `BEGIN READ ONLY; SELECT version,name FROM supabase_migrations.schema_migrations ORDER BY version; ROLLBACK;`. All **211** version/name pairs match that completed pass exactly; canonical SHA256 `3c79363c462a07a0980df442befbce1057801530b95dc5bda4e7152e113b8baa`. No drift, credential file, key, secret URL or configuration of credentials was used.
+Reused `BLACK UMBRELLA GROUP/BUSINESS/ZYRA/SECURITY/ZYRA_LIVE_DATABASE_CHECK_2026-10-30_V1.md`. The only new production operation was `BEGIN READ ONLY; SELECT version,name FROM supabase_migrations.schema_migrations ORDER BY version; ROLLBACK;`. All **211** version/name pairs match that completed pass exactly; canonical SHA256 `3c79363c462a07a0980df442befbce1057801530b95dc5bda4e7152e113b8baa`. No drift, credential file, key, secret URL or configuration of credentials was used.
 
 ## Future backup/apply/release gates
 

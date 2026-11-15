@@ -18,8 +18,8 @@ to production is a separate queue line that needs the Founder's own words "apply
 
 | Step | Detail |
 |---|---|
-| 1 | Read DOC-ZYRA-0329 (§3.2, §3.4, §4, §5), the live check `REPORTS/CURRENT/ZYRA_LIVE_DATABASE_CHECK_2026-10-26_V1.md` (DOC-ZYRA-0294) and `SOURCE/supabase/tests/`. Never open the keys folder; never print, log or copy a key, URL secret or token |
-| 2 | **Live read-only pass** (production, read-only queries only, same method as DOC-0294): which migration files are applied; answer every "not verified" line in DOC-0329 (e.g. the `is_synthetic` flag, the profile fields Filters need, test-account counts). Write `ZYRA/REPORTS/CURRENT/ZYRA_LIVE_DATABASE_CHECK_2026-10-30_V1.md` (new id; older one stays until Fable archives it) |
+| 1 | `BLACK UMBRELLA GROUP/BUSINESS/ZYRA/SECURITY/ZYRA_LIVE_DATABASE_CHECK_2026-10-26_V1.md` |
+| 2 | `BLACK UMBRELLA GROUP/BUSINESS/ZYRA/SECURITY/ZYRA_LIVE_DATABASE_CHECK_2026-10-30_V1.md` |
 | 3 | **Throw-away database** (local Supabase or a branch — never production): replay every migration in `SOURCE/supabase/migrations` from empty in order (OA-ZYRA-319 replay test). Record the result |
 | 4 | Apply the unapplied files exactly as DOC-0329 §4 decides: **drop** 25 Aug `shared_pause_decision_state_machine` (move the file to `~/_to_delete/SERVER0_DROPPED_2026-10-30/` with a note; never delete); **keep** 18 Sep Main-Guardian hold, known-person code matching, product telemetry (stays off); 19 Sep Circle messaging; 23 Sep retire legacy purchase functions; 25–26 Sep Circle participants, sender identity, read receipts; 5 Oct f01–f07 in that order after the 24 Sep rewrite. **Rewrite** as new dated files (the originals moved to `~/_to_delete/` with a note): 24 Sep paid-only contract → Basic 1 place, safe send rule kept (§3.2), view replay fixed; 19 Sep Journey return gate → ended-then-restart (§3.6). Each file does one thing |
 | 5 | Run all SQL suites in `SOURCE/supabase/tests` **before and after** step 4 on the throw-away database; add an impersonation test for every rule a kept or rewritten file changes. All must pass |
