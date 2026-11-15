@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**339 decisions; 4 marked superseded/retired.**
+**350 decisions; 4 marked superseded/retired.**
 
 | ID | Date | Title | Status |
 |---|---|---|---|
@@ -355,3 +355,14 @@ Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_
 | DR-ZYRA-339 | 2026-10-31 | One-time iPhone install with the old PROFILE installer | APPROVED - Founder direct (clickable "Y… |
 | DR-ZYRA-340 | 2026-11-02 | Developer-toggle removal goes ahead with a no-new-failures test gate; old failing tests c… | APPROVED - Founder direct (clickable "A… |
 | DR-ZYRA-341 | 2026-11-04 | Line 44 test gate: the nine old LOCK 2/LOCK 5 failures are excepted and repaired first in… | APPROVED - Founder direct (clickable "Y… |
+| DR-ZYRA-342 | 2026-11-10 | ZYRA restarted; LOCK 23 - one app-error page with help; repair the iPhone route before th… | APPROVED - Founder direct |
+| DR-ZYRA-343 | 2026-11-10 | LOCK 14 V6 - small danger text uses the deeper red #AC453E | APPROVED - Founder direct (clickable) |
+| DR-ZYRA-344 | 2026-11-11 | 11 Nov iPhone pass - LOCKs 6 V3-V4, 7 V3-V4, 10 V8, 15 V4-V6, 19 V4-V11, 20 V3, 21 V2-V3,… | APPROVED - Founder direct (clickable an… |
+| DR-ZYRA-345 | 2026-11-11 | Plans: Seeker Basic sends up to 5 and may end a Journey; Guardians per Seeker; Seeker One… | APPROVED - Founder direct |
+| DR-ZYRA-346 | 2026-11-12 | 12 Nov LOCKs: compatibility bands, profile video, partner preferences, request cards, Dev… | APPROVED - Founder direct |
+| DR-ZYRA-347 | 2026-11-12 | Time rules, ended Journeys, account deletion and the 2-year inactivity notice | APPROVED - Founder direct |
+| DR-ZYRA-348 | 2026-11-12 | ZYRA emails designed later, with a reminder every 7 days; line 84 native host stays defer… | APPROVED - Founder direct |
+| DR-ZYRA-349 | 2026-11-13 | ZYRA audit decisions - clean new production server, green tests while away, paid plan bef… | APPROVED - Founder direct (clickables) |
+| DR-ZYRA-350 | 2026-11-13 | ZYRA audit design choices - contrast options first, photo rule by the ZYRA chat, all righ… | APPROVED - Founder direct (clickables, … |
+| DR-ZYRA-351 | 2026-11-13 | 13 Nov ZYRA chat LOCKs - shared code link (LOCK 9 V4), still short pages (LOCK 26 V4), on… | APPROVED - Founder direct (clickables a… |
+| DR-ZYRA-352 | 2026-11-14 | Line 84 un-deferred - one online fetch of the pinned Swift packages for the fresh iPhone … | APPROVED - Founder direct (clickable, B… |

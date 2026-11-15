@@ -26,3 +26,4 @@ owner: ZYRA chat
 | 2026-10-31 ~10:10 | Unity review 1 of 9 (Swipe cards): Before · Today / After A · Monogram / After B · One page → clickable **"After A · Monogram (Recommended)"** | **LOCK 10 V7**: Monogram card head with current-choice line; Age/Location centred; f01–f10 re-rendered (V6 in `ARCHIVE/MASTERS_V6/`). Queue line 53 |
 
 Pictures showing sample photos moved to the private group folder 9 Nov 2026 (OA-AIOS-430); recaptured with placeholders when ZYRA restarts.
+| 2026-11-11 20:33 | Design 3 of 3: Seeker One-only filters → prototype V182 (A Nationality + Ethnicity are One / B all 4 free, other country + Worldwide One) → clickable **"A · Nationality + Ethnicity are Seeker One (Recommended)"** | **LOCK 10 V8**: Basic = Age + Location; Nationality + Ethnicity locked cards → See Seeker One. Spec V8; queue line 81 step 1i |

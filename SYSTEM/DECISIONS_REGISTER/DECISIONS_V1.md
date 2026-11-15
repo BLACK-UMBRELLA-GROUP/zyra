@@ -17222,6 +17222,10 @@ Title:       Journey requests and stages in the planned app - limits, expiry, ge
              Review kept, one expiry rule for restart requests
 Date:        2026-10-26
 Status:      APPROVED - Founder direct ("aabb": Q1 A, Q2 A, Q3 B; Q4 B = key rotation later)
+Note:        13 Nov (Fable, ZYRA audit Q5): item 3's 7-day expiry for a restart request is superseded by the Founder's
+             12 Nov answer: a restart request expires after 30 days (JOURNEY rules blueprint V3). Item 2 stands: a
+             Journey request expires after 7 days. Guardian invitations and ZYRA Code link requests use 14 days
+             (GUARDIAN_CARD V12) - a different kind of request, not a conflict.
 Authority:   Founder, 26 Oct 2026, answering blueprint part 2 V2 §8 (DOC-ZYRA-0283).
 Decision:    1. The three question stages (Faith & Values, Building a Life, Navigating Life) and Family
                 Compatibility keep real questions and answers, and the 48-hour Family Review after each,
@@ -18333,9 +18337,258 @@ Related:     DR-ZYRA-340, OA-ZYRA-325, QUESTIONS.md rows 12-55, queue lines 44 a
 
 ------------------------------------------------------------
 
-TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-341,
+DR-ZYRA-342
+Title:       ZYRA restarted; LOCK 23 - one app-error page with help; repair the iPhone route before the trip
+Date:        2026-11-10
+Status:      APPROVED - Founder direct
+Authority:   Founder, 10 Nov 2026, ZYRA chat (note 13:40-14:40 UK) and BLACK UMBRELLA GROUP chat; filed by Fable 11 Nov.
+Decision:    1. Restart: "ok we aint gonna wait for lablebox so we are gonna get this app ready- wait for my commads" -
+             ends the ZYRA design pause of AD-AIOS-123 (and the "no new ZYRA lines" rule of AD-AIOS-131) on his word;
+             building still only on his commands.
+             2. LOCK 23 (APP_ERROR): "fix those 2 pages into 1", "ensure app is on ihpone also pelase", then clickable
+             "After A · One page + help (Recommended)" - one error page per cause (offline, server down, session
+             ended) with a "What you can try" card, 15 s auto-retry and Contact support; queue line 74.
+             3. Supabase project paused itself (free plan, 7+ days unused): "check my chrome im in suparbase … do it all"
+             - the ZYRA chat clicked Resume (free, no upgrade). Keep-awake: AD-AIOS-142.
+             4. Install route: "repair the install route before 20 Nov" (group chat) and "do line 76 now and then
+             instal on phone" (ZYRA Codex chat) - queue line 76.
+Consequence: Line 74 BUILT 10 Nov (704f16b, 4b445d4) and the ZYRA chat's build check matched e01-e05 (only the
+             production wordmark and ~3 pt on e03 differ). Line 76 route repaired (c537d90), waiting for the paired iPhone
+             (deadline 20 Nov, OA-AIOS-420).
+Related:     DR-ZYRA-080 (error language standard), AD-AIOS-123, AD-AIOS-131, AD-AIOS-142, QUESTIONS rows 56-60.
+
+------------------------------------------------------------
+
+DR-ZYRA-343
+Title:       LOCK 14 V6 - small danger text uses the deeper red #AC453E
+Date:        2026-11-10
+Status:      APPROVED - Founder direct (clickable)
+Authority:   Founder, 10 Nov 2026 15:15 UK, ZYRA chat; QUESTIONS row 21 ANSWERED. Filed by Fable 11 Nov.
+Decision:    "Deeper red #AC453E (Recommended)" (4.6 : 1 contrast) for small red text, instead of #B84A42 (4.1 : 1).
+             Spec APP_COLOURS_SPEC_CURRENT_VERSION_V6 (V5 archived by rename); prototype V144.
+Consequence: Applied in queue line 75 (BUILT 10 Nov, f32dd47). No masters re-rendered.
+Related:     LOCK 14, OA-ZYRA-348, QUESTIONS row 21.
+
+------------------------------------------------------------
+
+DR-ZYRA-344
+Title:       11 Nov iPhone pass - LOCKs 6 V3-V4, 7 V3-V4, 10 V8, 15 V4-V6, 19 V4-V11, 20 V3, 21 V2-V3, 22 V7, 24 V1-V2,
+             25, 26 V1-V2, 27, 28, 29 V1-V2, APP COLOURS V8 and the Profiles details card V2-V4
+Date:        2026-11-11
+Status:      APPROVED - Founder direct (clickable and typed)
+Authority:   Founder, 11 Nov 2026, ZYRA chat (note 13:35-22:15 UK) and BLACK UMBRELLA GROUP chat. Filed by Fable 12 Nov.
+Decision:    Guardian card: "A · Dot per Guardian + '+' (Recommended)" (V4), swipe between Guardians "remove [the +]"
+             (V5), "1 · Quiet list + •••" (V6), "LOCK rule + card (Recommended)" (V7), ••• as a full bottom sheet and
+             card follows the finger (V8), next card visible while swiping (V9), invited card "LOCK it (Recommended)"
+             (V10), free place taken "A Join with Guardian One · Not now" + keep private (V11).
+             Spacing LOCK 24: "Yes, 16 pt everywhere (Recommended)"; V2 values from QUESTIONS 72-73 (ZYRA chat answer).
+             Sent ring LOCK 7 V3: "B · Thin + slow glow"; LOCK 7 V4 request button in the card "only on the first page
+             ie the profile card". Tab bar LOCK 6 V3 "LOCK one size (Recommended)"; V4 + LOCK 15 V4 tab bar on My ZYRA
+             pages "LOCK it (Recommended)"; LOCK 15 V5 whole-page swipe "LOCK it (Recommended)". Haptics into Settings
+             (LOCK 21 V2, his instruction; the Light start level is the ZYRA chat's assumption, QUESTIONS 71). LOCK 22
+             V7 / 15 V6: "this still says green yellow red - i dont want that", "Partner preferences (Recommended)".
+             "No test button" (no planted activity at start). Upgrade pages LOCK 25 "LOCK both + ring
+             (Recommended)". One swipe app-wide LOCK 26 "LOCK it app-wide (Recommended)"; V2 no line or edge while
+             swiping ("applies to all card swipe features"). LOCK 27 compatibility topics "if seeker one is 7 pages
+             then copy that", Guardian One only. LOCK 10 V8 "A Nationality + Ethnicity are One". LOCK 20 V3 Circle:
+             All → Main and no 30-day rule, "LOCK it (Recommended)". LOCK 28 every confirm a bottom sheet ("A bottom
+             sheet" + "every confirm"). APP COLOURS V8 "Remove this darker colour everywhere", LOCK app-wide. LOCK 21
+             V3 Preview = live Profiles card "Show it, doesn't work". LOCK 29 silent profile video "1 no sound video
+             (not for seeker basic)", then "Fable builds the video server work" and "App strips, server refuses
+             (Recommended)" (V2). Profiles details card: "yes gold and basic get no ring just profiel photo" (V2),
+             "option 2 please" (V3), exact tile sizes (V4).
+Consequence: Queue lines 77-83 and 86 BUILT 11 Nov; 84 waits for 85 (server video, Fable, throw-away only). Replaced:
+             DR-ZYRA-334 "past topics 30 days then read only" (GUARDIAN_RULES V4 §6); OA-ZYRA-340 server close of past
+             topics no longer wanted. Server needs go to OA-ZYRA-317 (QUESTIONS 83-96).
+Related:     DR-ZYRA-345, DR-ZYRA-334, OA-ZYRA-317, OA-ZYRA-340, queue lines 77-86, DOC-ZYRA-0445-0471.
+
+------------------------------------------------------------
+
+DR-ZYRA-345
+Title:       Plans: Seeker Basic sends up to 5 and may end a Journey; Guardians per Seeker; Seeker One and Guardian One
+             extras; gold ring = One
+Date:        2026-11-11
+Status:      APPROVED - Founder direct
+Authority:   Founder, 11 Nov 2026, ZYRA chat (note 18:06-19:30 UK). Filed by Fable 12 Nov.
+Decision:    1. Seeker Basic sends "for basic up to 5" (was 3, DR-ZYRA-283); Seeker One stays 25.
+             2. "lets allow basic to end a journey also" - Basic may end its Journey to accept a new request.
+             3. "both seeker one and seeker basic you can have a max of 10 gurdians paid or free but with seker one it
+             can be a optoins of 10 paid or 10 free but for seekr basic its only 1 free. the 9 other slots either stay
+             empty or get filled by paid gurdians ie gurdian ones or he upgrades" (ZYRA chat reading: free = Guardian
+             Basic, paid = Guardian One; confirmed by LOCK 19 V7). Replaces DR-ZYRA-282 Q1.
+             4. Seeker One extras: compatibility breakdown YES (Basic sees the overall score; a bought Unlock opens that
+             person's breakdown); chaperoned video call YES, later (off for both if either is Basic); advanced filters
+             YES; guidance packs, introduction note, priority requests, boost/featured and a One-only verified badge NO
+             ("we already have a gold ring to show they are seeker one").
+             5. Gold ring = Seeker One: "yes gold and basic get no ring just profiel photo".
+             6. Guardian ideas G1-G4 all yes: Guardian One 7-day free trial once per person; per-topic compatibility
+             for Guardian One; only Guardian One joins chaperoned calls; gold monogram ring = Guardian One.
+             7. Upgrade pages must show every One difference (LOCK 25); rows for features not built stay hidden.
+Consequence: Blueprint pages to update (Fable, OA-ZYRA-352): MEMBERSHIP V1 §6/§8, JOURNEY V2, BROWSE V2, TRACE,
+             GUARDIAN_RULES V4. Server limits still missing (OA-ZYRA-317) - no app limit change yet.
+Related:     DR-ZYRA-282, DR-ZYRA-283, DR-ZYRA-344, OA-ZYRA-317, OA-ZYRA-352.
+
+------------------------------------------------------------
+
+DR-ZYRA-346
+Title:       12 Nov LOCKs: compatibility bands, profile video, partner preferences, request cards, Developer panel,
+             inactivity notice, names, Guardian tab, smooth scrolling, Circle unread and mute, Code page
+Date:        2026-11-12
+Status:      APPROVED - Founder direct
+Authority:   Founder, 12 Nov 2026, ZYRA chat (note 09:48-21:58 UK; clickables and typed words quoted below). Filed by
+             Fable 13 Nov 04:15.
+Decision:    1. Compatibility reader: "Keep 28 Sep: bands" - Strong · Good · Some differences at 75 / 50, "Not enough
+             answers" under 3 (LOCK 27 V3; DR-ZYRA-250 stands). Guardian reader: "A row on the Guardian's Journey page" and
+             read-only in Past (LOCK 27 V2).
+             2. Profile video: "They choose which 10 seconds" (LOCK 29 V3); gallery entry "B · Photos & video button"
+             (LOCK 29 V4).
+             3. Partner preferences: "LOCK it" + My ZYRA item "Yes" (LOCK 30); "Inside Deen, top section" + "Yes, same
+             section" (V2); "Only the other person's version" + "Yes, only the other gender sees it" (V3); "LOCK it"
+             (V5, combined Quick check).
+             4. Requests: Past "A · One card per person"; repeat limit "no limit … after 5 attempts 14 days then another 5
+             30 days, 30 max" (LOCK 2 V3). "my journey request card and ended journey request cards look different id want
+             them to be same copying journey request style" / "that shoudl apply to all inc introductions" -> "LOCK it
+             (Recommended)", Guardian sees "Not taken forward", introductions "Into a Past tab" (LOCK 2 V4).
+             5. Developer panel (reverses the 30 Oct removal): "Every build, admin only", "App sample data now" (LOCK 31).
+             6. Names: "A · One line, then … (Recommended)", "First 30 · Surname 40 (Recommended)" (LOCK 33).
+             7. Guardian tab: no Add button at the bottom, bigger plus that adds - "LOCK it (Recommended)" (LOCK 19 V13);
+             FAQ entry in Help instead of an (i).
+             8. Scrolling: "A · Smooth (Recommended)" + "iPhone bounce everywhere (Recommended)" (LOCK 26 V3).
+             9. Circle: "A · Unread first (Recommended)" and per-chat mute "LOCK it (Recommended)" (LOCK 20 V4). Own picture
+             everywhere = profile photo 1 (PROFILE_TAB V4 §7).
+             10. Code page: keep the code; "Get a new code", "Scanner reads ZYRA codes only", "Limit code checks" (LOCK 9 V3).
+             Standing rule: "Yes always, shouldn't have to ask" - a page refresh applies to every matching page without asking.
+             11. Prototype parity: "ensure prototype is exactly same as the app" (parity log, queue line 90).
+Consequence: Queue lines 87-106 (ZYRA BUILD_QUEUE). IDs DOC-ZYRA-0476-0506 assigned by Fable 13 Nov.
+Related:     DR-ZYRA-250, DR-ZYRA-344, AD-AIOS-146, AD-AIOS-147, OA-ZYRA-317.
+
+------------------------------------------------------------
+
+DR-ZYRA-347
+Title:       Time rules, ended Journeys, account deletion and the 2-year inactivity notice
+Date:        2026-11-12
+Status:      APPROVED - Founder direct
+Authority:   Founder, 12 Nov 2026, ZYRA chat (15:49-17:45 UK) and BLACK UMBRELLA GROUP chat (16:35). Filed by Fable 13 Nov.
+Decision:    1. 48-hour ready window: "Send one reminder, then give 24 more hours"; closes at 72 h as "Not taken up".
+             2. Not taken up 30 -> 7 days; ended-Journey re-ask 24 h + 30 days; Guardian invitation and code link requests
+             "Both 14 days"; Guardian One trial 14 days; Apple grace 3 days.
+             3. Ended Journeys: the 3-month rule is removed; "Remove from my Journeys" per person (cannot be undone); history
+             goes only when an account is deleted; no time limit (Founder chose no limit after the 12-month suggestion).
+             Block: "Hidden for her too while blocked" - back on unblock.
+             4. Deleted member: "if its deleted account then it should go" - an active Journey "Ends and goes at once
+             (Recommended)"; wording "D · Profile no longer active" (not "This member has left ZYRA").
+             5. Sealed safety copy 12 months; accounts unused 2 years warned. Notice: "Assalaamu alaikum"; only accounts
+             with Ended Journeys; Welcome back item once; five emails (-14, -7, 2-year day, +7, +14 = "removed"); removal
+             "14 days after 2 years" (LOCK 32).
+Consequence: Blueprint JOURNEY V3, GUARDIAN V5, MEMBERSHIP V3, MESSAGING V2, PROFILE V3 (group chat, 12 Nov); server
+             lines 94 and 100 (throw-away only); private legal note DOC-BUG-0059 (GDPR storage-limitation reason for
+             no end date, privacy notice). No live apply without the Founder's yes.
+Related:     DR-ZYRA-277, DR-ZYRA-284, DR-ZYRA-285, OA-ZYRA-317, OA-ZYRA-321.
+
+------------------------------------------------------------
+
+DR-ZYRA-348
+Title:       ZYRA emails designed later, with a reminder every 7 days; line 84 native host stays deferred
+Date:        2026-11-12
+Status:      APPROVED - Founder direct
+Authority:   Founder, 12 Nov 2026, ZYRA chat 17:09 (verbatim) and BLACK UMBRELLA GROUP chat (line 84). Filed by Fable 13 Nov.
+Decision:    1. "we will talk about email later so record the saved emils we logged including sorry to see you go, welcome
+             ect, you subscribed, your subscription is endidng but we will sort that another day. just remind me as again
+             every. 7 days". List: PRODUCT/APPROVED/EMAILS/RECORD/EMAIL_LIST_CURRENT_VERSION_V1.md (DOC-ZYRA-0483).
+             2. Line 84 (profile video native host): "Keep it deferred (Recommended)" - not before 15 Dec 2026.
+Consequence: OA-ZYRA-355 (email design session + weekly reminder). OA-ZYRA-354 (line 84).
+Related:     DR-ZYRA-346, DR-ZYRA-347, OA-ZYRA-354, OA-ZYRA-355.
+
+------------------------------------------------------------
+
+DR-ZYRA-349
+Title:       ZYRA audit decisions - clean new production server, green tests while away, paid plan before the first
+             real member, all 30 findings filed
+Date:        2026-11-13
+Status:      APPROVED - Founder direct (clickables)
+Authority:   Founder, 13 Nov 2026, ZYRA chat (ZYRA audit, sections 13-14). Filed by Fable 13 Nov.
+Decision:    1. "Yes, clean new server (Recommended)" - production is rebuilt from the repository on a clean project;
+             today's project becomes the lab. Queue line 110 (DOC-ZYRA-0507); live only on the Founder's own words.
+             2. "Yes, while I'm away (Recommended)" - tests to zero failures and automatic checks on every push during
+             quiet mode. Queue line 111 (DOC-ZYRA-0508), not before 21 Nov.
+             3. Paid server plan (daily backups) before the first real member.
+             4. "Yes, file them all (Recommended)" - findings F-01 to F-30 filed as OA-ZYRA-357 to OA-ZYRA-386 with the
+             owners in the audit; design choices F-15 (colours), F-25 (photo visibility), F-19b (licence) come back to
+             the Founder.
+Consequence: BUILT now means Preview; server lines carry "Live: no" (queue rule, Q4). Closed actions moved to
+             ARCHIVE/OUTSTANDING_ACTIONS_V2_CLOSED.md (Q6). built_brief_check.py (Q7). Monthly package check, line 112
+             (Q8). Section 4 corrections (Q5).
+Related:     AD-AIOS-149, DR-ZYRA-348, OA-ZYRA-357 to OA-ZYRA-386.
+
+------------------------------------------------------------
+
+DR-ZYRA-350
+Title:       ZYRA audit design choices - contrast options first, photo rule by the ZYRA chat, all rights reserved
+             for future work, iPhone first
+Date:        2026-11-13
+Status:      APPROVED - Founder direct (clickables, BLACK UMBRELLA GROUP chat 09:10)
+Authority:   Founder, 13 Nov 2026. Filed by Fable.
+Decision:    1. F-15 contrast: "Show me options first (Recommended)" - the ZYRA chat shows the fixes in the prototype; he
+             picks, then it is built.
+             2. F-25 photos: "ZYRA chat designs, I approve (Recommended)" - who sees which photos (gender, blocks,
+             hidden profiles) and a screenshot notice.
+             3. F-19b licence: "All rights reserved from now (Recommended)" - published versions stay open-licensed.
+             4. F-23: "iPhone first (Recommended)" - Android prepared after launch.
+Consequence: OA-ZYRA-371, 375, 379, 381 updated. Licence change is a Codex task queued by the ZYRA chat.
+Related:     DR-ZYRA-349.
+
+------------------------------------------------------------
+
+DR-ZYRA-351
+Title:       13 Nov ZYRA chat LOCKs - shared code link (LOCK 9 V4), still short pages (LOCK 26 V4), one card colour,
+             Profile on one screen (PROFILE_TAB V5)
+Date:        2026-11-13
+Status:      APPROVED - Founder direct (clickables and words in the ZYRA chat)
+Authority:   Founder, 13 Nov 2026, ZYRA chat (chat note 13 Nov). Filed by Fable 14 Nov 04:15.
+Decision:    1. Code link (QUESTIONS 139, ~07:05): "Code after a # (Recommended)" - link https://zyraconnect.app/c/#<CODE>;
+             "Show who it is (Recommended)"; website page "LOCK it (Recommended)"; until live "Send the code as text
+             (Recommended)". CODE_PAGE spec V4 §0b, prototype V226. Queue lines 105 (BUILT), 108 (BUILT, SITE local
+             only), 109 (WAITING on 105, 108 and QUESTIONS 140 "live").
+             2. LOCK 26 V4 (11:13, his My ZYRA screenshot): pages that fit the screen stay still; bounce only when the
+             content is taller, app-wide. APP_SWIPE spec V4; queue line 113 (BUILT 13 Nov, 89890f4).
+             3. One card colour (11:15): "Same colour, no gold edge (Recommended)" - every card uses the My ZYRA / Profile
+             card colour; the Guardian card gold edge is removed. Queue line 114 (BUILT 13 Nov, 00691d0).
+             4. PROFILE_TAB V5: "Locj it" (prototype V228) - Profile fits one screen above the tab bar. Queue line 115
+             (QUESTION, row 145: real-size masters needed).
+Consequence: Items 2-4 came after AD-AIOS-149 "Fixes only, connect first" (same morning); they are layout changes the
+             Founder locked himself, filed as his decisions. Blueprint 2 Guardian rules §1 to note the link form when
+             QUESTIONS 140 is live.
+Related:     DR-ZYRA-231, DR-ZYRA-276, DR-ZYRA-344, AD-AIOS-149, OA-ZYRA-317, OA-AIOS-407.
+
+------------------------------------------------------------
+
+DR-ZYRA-352
+Title:       Line 84 un-deferred - one online fetch of the pinned Swift packages for the fresh iPhone build, today
+Date:        2026-11-14
+Status:      APPROVED - Founder direct (clickable, BLACK UMBRELLA GROUP chat)
+Authority:   Founder, 14 Nov 2026: "WHATEVER WAS DEFFERED TO DECEMBER BASCILLY I WANT IT TO BE LATEST UPDATE ON CODEX
+             CLAUDE AND MY PHONE TODFAY" then "Yes, allow it today (Recommended)". Filed by Fable.
+Decision:    For line 84's one native Xcode build, SwiftPM may fetch over the network only the packages pinned in
+             ios/Runner.xcworkspace/xcshareddata/swiftpm/Package.resolved at exactly those versions (GoogleUtilities
+             8.1.3 is the missing one; github.com/google, github.com/openid; roughly 10-50 MB). Package.resolved stays
+             byte-identical; nothing upgraded or installed. This one exception to DOC-ZYRA-0438 "no downloads" and the
+             12 Nov deferral replaces QUESTIONS 110's outbound-denial requirement. Line 84 is PRIORITY; the iPhone
+             install follows on Shakeel's GO (brief step 8).
+Addendum:    14 Nov (Founder, clickable "Yes, allow it (Recommended)"): Xcode may also contact Apple with
+             -allowProvisioningUpdates only to regenerate the ZYRA development profile for this build (Associated Domains
+             was switched on 14 Nov). Brief step 0 (iii-b).
+Addendum 2:  14 Nov (Founder, clickables "Yes, one retry after Fable's route" in the ZYRA chat and "Yes, one more
+             attempt" here): one retry after attempt 1 exited 65; Fable's route is brief step 0 (iii-d).
+Addendum 3:  14 Nov (Founder, clickable "Yes, for this build only (Recommended)"): temporary Xcode preference
+             IDEPackageSupportDisableManifestSandbox=YES for this one build, restored straight after. Brief (iii-e).
+Consequence: Line 84 brief V2 step 0 (iii) rewritten (line not BUILT). OA-ZYRA-354 closed by this decision.
+Related:     DR-ZYRA-348 (item 2 superseded), OA-ZYRA-354, OA-AIOS-420, QUESTIONS 110.
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-352,
   Historical Identifiers, permanent
-NEXT IDENTIFIER: DR-ZYRA-342 (Enterprise format, active
+NEXT IDENTIFIER: DR-ZYRA-353 (Enterprise format, active
   2026-07-12 — continues this sequence, does not reset;
   sequential identifiers are global and never reset per AIOS
   Package Specification Standard Part 5. See BLACK UMBRELLA

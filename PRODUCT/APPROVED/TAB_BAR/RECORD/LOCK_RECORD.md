@@ -21,3 +21,5 @@ Replaces the Floating Glass bar's gold selection ring (DR-ZYRA-276 kept Floating
 the current tab is shown and adds the small idle state).
 
 Pictures showing sample photos moved to the private group folder 9 Nov 2026 (OA-AIOS-430); recaptured with placeholders when ZYRA restarts.
+| 2026-11-11 14:39 | "im also thinking of remeing the shrinking tab bar options and leaving it the one sizde - (bigger size)" → prototype V154 (New one size / Today shrinks) → clickable **"LOCK one size (Recommended)"** | **LOCK 6 V3**: always full size, no shrink, no touch growth, first tap switches tab. Built by queue line 77 step 5g |
+| 2026-11-11 14:45 | Same decision as LOCK 15 V4 ("leave bottom nav bar showing on them pages" → "LOCK it (Recommended)") | **LOCK 6 V4**: "Where" row adds the My ZYRA quick-access pages |

@@ -1,7 +1,7 @@
 ---
 id: DOC-ZYRA-0291
 type: SPEC
-status: CURRENT
+status: ARCHIVED
 feature: PRODUCT BLUEPRINT
 purpose: Blueprint part 2 (Membership and payments) - plans and prices, the joining fee, the trial, Family places, Compatibility Unlocks, what each plan includes, cancelling and billing grace, and what App Store purchases need - each marked built, different or missing, with its decision
 links: [OA-ZYRA-309, OA-ZYRA-317, DOC-ZYRA-0287, DOC-ZYRA-0289, DR-ZYRA-252, DR-ZYRA-275]

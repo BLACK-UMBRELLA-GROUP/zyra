@@ -6,13 +6,14 @@
 These rules sit above every other instruction in this tree. Where any older
 document, overlay or AD says otherwise, this block wins.
 
-> **BUILD FREEZE — Founder, 24 Oct 2026; updated 3 Nov 2026.** Builds come only from LOCKed
-> designs (rule 11) and work Shakeel names. **Building: THE FOUR GATES** (2 Nov) and **SELAH**
-> (3 Nov: "work on SELAH to change as much as we can" - its own identity). **ZYRA: new design
-> paused** (3 Nov) - only lines already WAITING (44, 73) finish; no new ZYRA lines until Shakeel
-> restarts it. **AZMARA and WAFA stay frozen** until Shakeel lifts each in writing. At most two
-> businesses are worked at a time (Mac memory, Founder 3 Nov). Allowed while frozen: review,
-> documentation, and fixes Shakeel approves one by one. Tracked as OA-AIOS-406, AD-AIOS-123.
+> **BUILD FREEZE — Founder, 24 Oct 2026; updated 13 Nov 2026.** Builds come only from LOCKed
+> designs (rule 11) and work Shakeel names. **Building: THE FOUR GATES and WAFA** (WAFA unfrozen
+> 8 Nov, AD-AIOS-131; THE FOUR GATES at night, AD-AIOS-141). **ZYRA: fixes only** - lines already
+> WAITING finish; no new feature LOCKs until the app is connected to its server (AD-AIOS-149).
+> **SELAH paused** after its checks (AD-AIOS-131, -145). **AZMARA stays frozen** until Shakeel lifts
+> it in writing. Quiet mode 21 Nov-14 Dec (AD-AIOS-149). At most two businesses are worked at a time
+> (Mac memory, Founder 3 Nov). Allowed while frozen: review, documentation, and fixes Shakeel
+> approves one by one. Tracked as OA-AIOS-406, AD-AIOS-123.
 
 1. **Only the Founder (Shakeel) approves.** Agreement between AIs is never
    approval. His direct instruction in conversation is approval.
@@ -99,7 +100,7 @@ Record A-F in the task note's Commit line ("public checks: A ok, B ok, C row n /
 
 **The planned ZYRA is the Founder preview** — the latest design built with Codex, which opens when the Founder signs in
 (`SOURCE/lib/dev/zyra_founder_launch_screen.dart` → `ViewRequestDraftScreen` / `ZyraOneJourneyConceptShell`). It runs on sample
-people today. The ordinary member app (`HomeShell`, `journey_flow_screen.dart`) is the **old app being replaced**. Features the
+people today. The ordinary member app (`HomeShell`, `journey_flow_screen.dart`) is the **old app being replaced** - yet every non-Founder account still opens it, Pause and Save included; no member may get it. Features the
 preview retired — Pause and Save — are retired for ZYRA ("Request restart" after an ending is planned, not retired). Decision DR-ZYRA-274 (25 Oct 2026); work tracked in OA-ZYRA-316; deep review DOC-ZYRA-0285.
 **The rules are the blueprint** (CURRENT, Founder-approved 26 Oct): part 1 screen map DOC-ZYRA-0278, the part 2 rule pages
 (Journey, Guardians, Membership, Browse, Messages, Profile, Onboarding, Safety), parts 3-7 - routes in `MAP.md`. Building
@@ -153,3 +154,26 @@ History (build 3, mailboxes 110-116, the Test-app retirement): `REPORTS/ARCHIVE/
    `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V4.md`.
 
 Roles are in the core rules (V4, 27 Oct). Older role models (AD-AIOS-097 to 111) are history in the AD register.
+
+## Public check before you finish (AD-AIOS-146)
+This is a public repo. Before ending any session (business chat or Codex line owner), run
+`BLACK UMBRELLA GROUP/SYSTEM/TOOLS/fable_public_check.py` on every file you wrote or changed here, and move or reword any
+hit first (private material goes to `BLACK UMBRELLA GROUP/BUSINESS/<BUSINESS>/`). Founder, 12 Nov 2026: "Yes, make it
+required (Recommended)".
+
+## Blockers found mid-run: hand them to Claude at once (AD-AIOS-147)
+Founder, 12 Nov 2026: "all codex chats ... if they find issues that block anything mid process ... show me what to paste
+to claude so they can continue working ... rather than showing at end of the run. i want every codex chat to learn this."
+1. The moment you find something that blocks, or will block, any line (a gap or clash in a brief or LOCK, a missing server
+   contract, an unclear design detail), **stop only that part** and at once show Shakeel, in the chat, a ready-to-paste
+   message headed **"Paste this to <name> Claude chat"**: **ZYRA Claude chat** for design, LOCK, spec, app-brief and
+   wording questions; **Fable - BLACK UMBRELLA GROUP Claude chat** for server-design questions (scoring, storage, data
+   protection, server briefs) - Founder 12 Nov "Fable answers server (Recommended)". Plain words, exact questions, the file and line it is about.
+2. Also file the `QUESTIONS.md` row as usual, then **keep working** on every line and step that is not blocked. Never wait
+   for the end of the run to report a blocker.
+3. When the Claude chat's answer lands (row ANSWERED, brief updated), pick the blocked part back up in the same run.
+4. Unattended runs (01:00, nobody watching): put every paste message in the first lines of the report, under
+   "Paste to Claude", before anything else.
+
+**Disk and trip (AD-AIOS-149, Founder 13 Nov):** start no new queue line when the Mac has under 15 GB free - report and stop. 21 Nov - 14 Dec is quiet mode: only work that needs no approvals and no downloads.
+**ZYRA fixes only (AD-AIOS-149):** no new feature LOCKs until the planned app is connected to the server; queued lines and fixes continue.

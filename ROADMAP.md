@@ -6,11 +6,11 @@ ZYRA is pre-launch. This is an estimate of the next 26 hours of work from the op
 
 | Work | Estimated hours | Intended result |
 | --- | ---: | --- |
-| Server rules and real data | 8 | Implement the approved server-rules specification, connect the new interface to real member data, and check permissions and state changes. The current Founder preview still uses sample data. |
+| Server rules and real data | 8 | Implement the approved server-rules specification, connect the new interface to real member data, and check permissions and state changes. The current Founder preview still uses sample data. This figure is too low (13 Nov review: server updates not yet live, no screens connected, no scheduled jobs or purchases); it will be re-estimated after the connection plan. |
 | Android build preparation | 3 | Check the Android project and build route, record any blockers, and prepare a testable build when authorised. |
 | Safety and consent | 4 | Complete the approved safety and consent screens, check guardian-sharing privacy, and reconcile wording with the legal and safety review before launch. Terms and purchase wording need review before purchases become available. |
 | Onboarding tour | 3 | Implement or complete the tour from locked designs and check the empty, loading and error paths around onboarding. |
-| Test baseline and final interface pass | 6 | Triage the existing failing baseline, agree the repairs, and run the required checks after those approved changes. The last full run recorded 649 failure/error records across 91 files. Remove Developer Access controls only after the other interface work is complete, as the queue requires. |
+| Test baseline and final interface pass | 6 | Triage the existing failing baseline, agree the repairs, and run the required checks after those approved changes. The latest recorded run has 37 failing tests; queue line 111 brings them to zero and turns on automatic checks. Remove Developer Access controls only after the other interface work is complete, as the queue requires. |
 | Documentation and handover | 2 | Update setup instructions, record checked versions and limitations, and prepare the as-built handover for review. |
 
 The private legal review covers member terms, data protection, safety response and online safety duties. Those actions, the real-data connection and purchase wording remain launch dependencies. Repository preparation does not make the app ready for members or authorise publishing the repository.

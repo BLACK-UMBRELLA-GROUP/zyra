@@ -8,7 +8,7 @@ The app is intended for adult members of that community and their guardians. It 
 
 Pre-launch, built solo since June 2026. Version 1.0.0 (build 5) runs on the Founder's iPhone for internal testing. The redesigned interface is a Founder preview over the existing app. Server and checkout integration are still pending. The website is [zyraconnect.app](https://zyraconnect.app).
 
-The app has no developer rail, Home/Preview/Actions panel, comparison picker, role/plan/wallet selector, reset or onboarding skip shortcut. The protected Founder entry starts with sample Adam on Seeker One. Member settings and controls drawn in current LOCK masters remain, including the Profile Switch flow and the locked local request Demo actions.
+The app has no developer rail, Home/Preview/Actions panel, comparison picker, role/plan/wallet selector, reset or onboarding skip shortcut for members. The Founder's account alone has an admin-only Developer panel, opened by tapping a page title. The protected Founder entry starts with sample Adam on Seeker One. Member settings and controls drawn in current LOCK masters remain, including the Profile Switch flow and the locked local request Demo actions.
 
 Add a Guardian and Add a Seeker open on My code. In the iPhone and iPad
 member app, Share and the QR carry a `https://zyraconnect.app/c/#<CODE>` link.

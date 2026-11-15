@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**335 actions: 70 open or unclear, 265 closed.**
+**108 actions: 106 open or unclear, 2 closed.**
 
 ## Open
 
@@ -64,7 +64,7 @@ Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS
 | OA-ZYRA-314 | Look-and-feel code fixes - Journey haptics, privacy-word contrast, stray file | OPEN - found by Fable in blueprint part 5 (OA-ZYRA-309). Nothing chan… | MEDIUM |
 | OA-ZYRA-315 | Journey rules - server gaps and loose ends found in blueprint part 2 | OPEN - found by Fable in blueprint part 2 (OA-ZYRA-309). Nothing chan… | HIGH for (a)(b) - r… |
 | OA-ZYRA-316 | Two apps in one codebase - decide which is ZYRA, then a deep clean-code review | OPEN (choice made 25 Oct, DR-ZYRA-274; review next) - found by Fable … | HIGH (Founder, 25 O… |
-| OA-ZYRA-317 | Connect the planned app to real data - server support it does not have yet | OPEN - found in the planned-app deep review (DOC-ZYRA-0285 §4). The d… | HIGH - the planned … |
+| OA-ZYRA-317 | Connect the planned app to real data - server support it does not have yet | 12 Nov (Fable): new server needs from the 11 Nov LOCKs (DR-ZYRA-344/3… ⚠️ | HIGH - the planned … |
 | OA-ZYRA-319 | Database files - message send rule lost its block/ended checks; 24 Sep and 5 Oct migratio… | OPEN (repository only - not live, DOC-ZYRA-0294) - found by Fable rea… | HIGH - possible saf… |
 | OA-ZYRA-320 | Member terms and purchase-screen wording - written and legally reviewed before purchases … | OPEN - raised from DR-ZYRA-289. The website terms page today only say… | HIGH before purchas… |
 | OA-ZYRA-321 | Launch legal and safety pack - DPIA, safety response and Online Safety Act check, from th… | OPEN - opened when the Founder withdrew the 14 old drafts (OA-AIOS-40… | HIGH before launch … |
@@ -88,9 +88,45 @@ Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS
 | OA-ZYRA-348 | 358 app tests still fail after lines 44 and 73 - 43 OPEN questions (rows 13-55) need sort… | OPEN - Codex 4 Nov (line 73, bb2fe54): 649 -> 644 (line 44) -> 358 fa… | MEDIUM - the "Test … |
 | OA-ZYRA-349 | Line 44 build check: Guardian Settings has no LOCK master (paired with the Seeker Setting… | OPEN - ZYRA chat 5 Nov 13:28 build check (2026-11-05_ZYRA_CHAT_NOTE.m… | LOW |
 | OA-ZYRA-350 | Line 44 build check: seeker_one_browse pair compares two different states | OPEN - ZYRA chat 5 Nov build check, item (b): master shows "Request s… | LOW |
+| OA-ZYRA-351 | 56 LOCK masters moved out by group line 30 must be re-rendered with placeholder photos (r… | OPEN - ZYRA chat note 10 Nov 05:39 item (a): after line 30 the MASTER… | MEDIUM - no build c… |
+| OA-ZYRA-352 | Blueprint pages to match DR-ZYRA-344/345 (plans, Guardians per Seeker, Circle past topics… | IN PROGRESS - 12 Nov: MEMBERSHIP V2 done (V1 archived by rename to RE… | MEDIUM - the bluepr… |
+| OA-ZYRA-355 | Design ZYRA's emails in one session with the ZYRA chat; weekly reminder to Shakeel until … | OPEN - Founder 12 Nov 17:09: "we will talk about email later ... just… | LOW - no member ema… |
+| OA-ZYRA-356 | ZYRA queue tidy: two lines numbered 100; lines 93 and 97 marked QUESTION with no OPEN row… | OPEN - 13 Nov 04:15: BUILD_QUEUE has two "100" lines (Fable's name-li… | MEDIUM |
+| OA-ZYRA-357 | F-01 BUILT meant preview only - 75 BUILT lines, no server link in the planned app | IN PROGRESS - 13 Nov Fable (Q4): queue rule added - BUILT = Preview; … | CRITICAL |
+| OA-ZYRA-358 | F-02 Live server is 33 updates behind the repository | OPEN - queue line 110 (DOC-ZYRA-0507, clean production server, Founde… | HIGH |
+| OA-ZYRA-359 | F-03 5 October security fixes are not live | OPEN - inside line 110; run the 64 existing server tests on the new p… | HIGH |
+| OA-ZYRA-360 | F-04 Test shortcuts and 149 shared-password test accounts reachable on the live project | OPEN - line 110 removes shortcuts, test tables and accounts from prod… | HIGH |
+| OA-ZYRA-361 | F-05 Account deletion leaves photos and erases reports | OPEN - inside line 110 plus a deletion test on the lab with an accoun… | HIGH |
+| OA-ZYRA-362 | F-06 Free plan, no backups | OPEN - Founder 13 Nov decision (3): paid plan before the first real m… | CRITICAL |
+| OA-ZYRA-363 | F-07 No scheduler or email sender - five locked time rules need a clock | OPEN - design now, build after connect (AD-AIOS-149 fixes only). | HIGH |
+| OA-ZYRA-364 | F-08 No purchase system | OPEN - waits the Founder's route decision (Apple direct or a purchase… | HIGH |
+| OA-ZYRA-365 | F-09 Terms and privacy pack thin for launch | OPEN - start now; longest wait. | HIGH |
+| OA-ZYRA-366 | F-10 No crash reporting; 248 swallowed errors | OPEN - before outside testers. | HIGH |
+| OA-ZYRA-367 | F-11 No automatic checks; 37 failing tests | OPEN - queue line 111 (DOC-ZYRA-0508), not before 21 Nov. | HIGH |
+| OA-ZYRA-368 | F-12 Two apps tangled; planned app inside the dev folder | DEFERRED - after the first wired flows. | MEDIUM |
+| OA-ZYRA-369 | F-13 Very large files | OPEN - rule as you go. | MEDIUM |
+| OA-ZYRA-370 | F-14 Design values hand-typed | OPEN - after connect. | MEDIUM |
+| OA-ZYRA-371 | F-15 Text contrast below minimums (probable) | OPEN - Founder 13 Nov "Show me options first (Recommended)" (DR-ZYRA-… | MEDIUM |
+| OA-ZYRA-372 | F-16 Few end-to-end tests | DEFERRED - with wiring. | MEDIUM |
+| OA-ZYRA-374 | F-18 Heavy repository history | DEFERRED - rule only. | LOW |
+| OA-ZYRA-375 | F-19 Public source: ids and a default tester password visible; open licence | OPEN - (a) remove default tester details, pass them in at build time … | MEDIUM |
+| OA-ZYRA-376 | F-20 Supabase checker items | OPEN - with line 110. | MEDIUM |
+| OA-ZYRA-377 | F-21 Out-of-date statements (audit section 4) | IN PROGRESS - 13 Nov Fable (Q5): README developer panel, roadmap test… | LOW |
+| OA-ZYRA-378 | F-22 Store items missing | OPEN - before the first outside test build. | MEDIUM |
+| OA-ZYRA-379 | F-23 Android not prepared | DEFERRED - Founder 13 Nov "iPhone first (Recommended)" (DR-ZYRA-350);… | LOW |
+| OA-ZYRA-380 | F-24 No admin tool or audit log | OPEN - scheduled. | HIGH |
+| OA-ZYRA-381 | F-25 Photo records readable by any signed-in member | OPEN - Founder 13 Nov "ZYRA chat designs, I approve (Recommended)" (D… | MEDIUM |
+| OA-ZYRA-382 | F-26 Nothing measured (speed) | DEFERRED - until wiring. | LOW |
+| OA-ZYRA-383 | F-27 High cost per task | IN PROGRESS - 13 Nov Fable (Q7): built_brief_check.py refuses edits t… | MEDIUM |
+| OA-ZYRA-384 | F-28 Website headers | OPEN - scheduled. | LOW |
+| OA-ZYRA-385 | F-29 Wording held in code | DEFERRED - during wiring. | LOW |
+| OA-ZYRA-386 | F-30 171 packages, no update routine | IN PROGRESS - 13 Nov Fable (Q8): queue line 112, monthly package chec… | LOW |
+| OA-ZYRA-387 | Build-check differences 13 Nov - lines 88, 92, 95, 101 do not match their LOCKed masters | OPEN - 14 Nov: waiting for the ZYRA chat's fix briefs (the chat sent … | MEDIUM |
+| OA-ZYRA-388 | Dead route - guardian_network_profile builder has no opener (line 90 capture gap) | OPEN - backlog; not ZYRA real-backlog night work (AD-AIOS-133 exclude… | LOW |
+| OA-ZYRA-389 | Server call to resend the same expired Guardian invitation to its recipient (QUESTIONS 88) | DEFERRED - connect-first work after 14 Dec (AD-AIOS-149). No resend c… | LOW |
 
-⚠️ = status wording not recognised as open or closed (3). Fix the wording in the register.
+⚠️ = status wording not recognised as open or closed (4). Fix the wording in the register.
 
-## Closed (265)
+## Closed (2)
 
-OA-001, OA-002, OA-003, OA-004, OA-005, OA-006, OA-007, OA-008, OA-009, OA-010, OA-011, OA-012, OA-013, OA-014, OA-015, OA-016, OA-017, OA-018, OA-019, OA-020, OA-021, OA-022, OA-023, OA-024, OA-025, OA-026, OA-027, OA-028, OA-029, OA-030, OA-031, OA-032, OA-033, OA-034, OA-035, OA-036, OA-037, OA-038, OA-039, OA-040, OA-041, OA-042, OA-043, OA-044, OA-045, OA-046, OA-047, OA-048, OA-049, OA-050, OA-051, OA-052, OA-053, OA-054, OA-055, OA-056, OA-057, OA-058, OA-059, OA-060, OA-061, OA-062, OA-063, OA-064, OA-065, OA-066, OA-067, OA-068, OA-069, OA-070, OA-071, OA-072, OA-073, OA-074, OA-075, OA-076, OA-077, OA-078, OA-079, OA-080, OA-081, OA-082, OA-083, OA-084, OA-085, OA-086, OA-087, OA-088, OA-089, OA-090, OA-091, OA-092, OA-093, OA-094, OA-095, OA-096, OA-097, OA-098, OA-099, OA-100, OA-101, OA-102, OA-103, OA-104, OA-120, OA-121, OA-ZYRA-122, OA-ZYRA-123, OA-ZYRA-124, OA-ZYRA-125, OA-ZYRA-126, OA-ZYRA-127, OA-ZYRA-128, OA-ZYRA-129, OA-ZYRA-130, OA-ZYRA-131, OA-ZYRA-132, OA-ZYRA-133, OA-ZYRA-134, OA-ZYRA-135, OA-ZYRA-136, OA-ZYRA-137, OA-ZYRA-138, OA-ZYRA-154, OA-ZYRA-155, OA-ZYRA-156, OA-ZYRA-157, OA-ZYRA-158, OA-ZYRA-159, OA-ZYRA-160, OA-ZYRA-161, OA-ZYRA-162, OA-ZYRA-163, OA-ZYRA-164, OA-ZYRA-165, OA-ZYRA-139, OA-ZYRA-140, OA-ZYRA-141, OA-ZYRA-142, OA-ZYRA-143, OA-ZYRA-144, OA-ZYRA-145, OA-ZYRA-146, OA-ZYRA-147, OA-ZYRA-151, OA-ZYRA-152, OA-ZYRA-153, OA-ZYRA-166, OA-ZYRA-167, OA-ZYRA-168, OA-ZYRA-169, OA-ZYRA-171, OA-ZYRA-172, OA-ZYRA-173, OA-ZYRA-174, OA-ZYRA-175, OA-ZYRA-176, OA-ZYRA-177, OA-ZYRA-178, OA-ZYRA-180, OA-ZYRA-181, OA-ZYRA-182, OA-ZYRA-183, OA-ZYRA-184, OA-ZYRA-185, OA-ZYRA-186, OA-ZYRA-187, OA-ZYRA-188, OA-ZYRA-189, OA-ZYRA-191, OA-ZYRA-192, OA-ZYRA-194, OA-ZYRA-195, OA-ZYRA-196, OA-ZYRA-197, OA-ZYRA-198, OA-ZYRA-199, OA-ZYRA-200, OA-ZYRA-201, OA-ZYRA-202, OA-ZYRA-203, OA-ZYRA-204, OA-ZYRA-205, OA-ZYRA-206, OA-ZYRA-207, OA-ZYRA-208, OA-ZYRA-209, OA-ZYRA-210, OA-ZYRA-211, OA-ZYRA-212, OA-ZYRA-213, OA-ZYRA-214, OA-ZYRA-215, OA-ZYRA-216, OA-ZYRA-217, OA-ZYRA-218, OA-ZYRA-219, OA-ZYRA-220, OA-ZYRA-221, OA-ZYRA-222, OA-ZYRA-223, OA-ZYRA-224, OA-ZYRA-225, OA-ZYRA-228, OA-ZYRA-229, OA-ZYRA-230, OA-ZYRA-231, OA-ZYRA-232, OA-ZYRA-233, OA-ZYRA-234, OA-ZYRA-235, OA-ZYRA-236, OA-ZYRA-237, OA-ZYRA-238, OA-ZYRA-239, OA-ZYRA-240, OA-ZYRA-241, OA-ZYRA-242, OA-ZYRA-244, OA-ZYRA-245, OA-ZYRA-246, OA-ZYRA-247, OA-ZYRA-248, OA-ZYRA-250, OA-ZYRA-251, OA-ZYRA-252, OA-ZYRA-255, OA-ZYRA-257, OA-ZYRA-260, OA-ZYRA-261, OA-ZYRA-262, OA-ZYRA-263, OA-ZYRA-264, OA-ZYRA-265, OA-ZYRA-267, OA-ZYRA-269, OA-ZYRA-271, OA-ZYRA-273, OA-ZYRA-274, OA-ZYRA-277, OA-ZYRA-278, OA-ZYRA-280, OA-ZYRA-281, OA-ZYRA-282, OA-ZYRA-283, OA-ZYRA-284, OA-ZYRA-286, OA-ZYRA-288, OA-ZYRA-289, OA-ZYRA-290, OA-ZYRA-291, OA-ZYRA-303, OA-ZYRA-304, OA-ZYRA-305, OA-ZYRA-309, OA-ZYRA-318, OA-ZYRA-322, OA-ZYRA-326, OA-ZYRA-327, OA-ZYRA-328, OA-ZYRA-329, OA-ZYRA-330, OA-ZYRA-335, OA-ZYRA-339, OA-ZYRA-340
+OA-ZYRA-354, OA-ZYRA-373

@@ -22,3 +22,4 @@ owner: ZYRA chat
 | 2026-10-31 ~14:10 | Guardian row "Safety & advice" showed "not redrawn" → V134 options → "show me what im meant to be lookign at" → labelled pictures → clickable **"After A · Guardian advice (Recommended)"** (option text: "Guardian tips, same look as the Seeker page — LOCK it") | **LOCK 22 V6**: Guardian Safety & advice page; masters x08 (Guardian One), x09 (Guardian Basic). Queue line 66 |
 
 Pictures showing sample photos moved to the private group folder 9 Nov 2026 (OA-AIOS-430); recaptured with placeholders when ZYRA restarts.
+| 2026-11-11 17:31 | "this still says green yellow red - i dont want that" → clickable **"Partner preferences (Recommended)"** | **LOCK 22 V7**: the page is named Partner preferences everywhere; no "Green / Yellow / Red" or "traffic lights" in member-facing words. Built by queue line 78 step 6b |
