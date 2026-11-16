@@ -98,33 +98,29 @@ Record A-F in the task note's Commit line ("public checks: A ok, B ok, C row n /
 
 ## What we are building (read before any ZYRA work)
 
-**The planned ZYRA is the Founder preview** — the latest design built with Codex, which opens when the Founder signs in
-(`SOURCE/lib/dev/zyra_founder_launch_screen.dart` → `ViewRequestDraftScreen` / `ZyraOneJourneyConceptShell`). It runs on sample
-people today. The ordinary member app (`HomeShell`, `journey_flow_screen.dart`) is the **old app being replaced** - yet every non-Founder account still opens it, Pause and Save included; no member may get it. Features the
-preview retired — Pause and Save — are retired for ZYRA ("Request restart" after an ending is planned, not retired). Decision DR-ZYRA-274 (25 Oct 2026); work tracked in OA-ZYRA-316; deep review DOC-ZYRA-0285.
-**The rules are the blueprint** (CURRENT, Founder-approved 26 Oct): part 1 screen map DOC-ZYRA-0278, the part 2 rule pages
-(Journey, Guardians, Membership, Browse, Messages, Profile, Onboarding, Safety), parts 3-7 - routes in `MAP.md`. Building
-anything that breaks a blueprint page needs a new Founder decision first; update the page in the same change.
-Update this paragraph the same day the direction changes (lesson S13).
+**The planned app is the Founder preview** (`SOURCE/lib/dev/zyra_founder_launch_screen.dart` → `ViewRequestDraftScreen` /
+`ZyraOneJourneyConceptShell`). Founder sign-in opens it with sample people. Other accounts still open the retired member
+app (`HomeShell`, `journey_flow_screen.dart`), which must never reach members. Pause and Save are retired. Request restart
+after Ending is planned (DR-ZYRA-274, OA-ZYRA-316, DOC-ZYRA-0285).
+**Follow the Founder-approved blueprint** (26 Oct), including screen map DOC-ZYRA-0278 and the rule pages routed by `MAP.md`.
+A departure first requires a Founder decision and a blueprint update in the same change. Update this summary the day direction changes (S13).
 
 ## Locked design workflow (core rule 11, AD-AIOS-115)
 
 | Step | Who | Where |
 |---|---|---|
-| Queue start and dispatch | Codex | GO and 01:00 receivers only dispatch each eligible WAITING line to one new normal owner chat; never reuse a conversation or build in the receiver. If native fresh-chat creation fails, file QUESTION and continue independent work. Each owner runs `python3 "../BLACK UMBRELLA GROUP/SYSTEM/TOOLS/start_pack.py" "ZYRA" "<DEVELOPMENT-relative brief path>"`, then reads only brief-named files. Task note: start_pack total bytes and named reads; `Conversation: new (started HH:MM)`; actual line tokens from read-only usage records. Verify its note and commit before archiving under standing authority (OA-AIOS-426). |
+| Queue dispatch | Codex | GO and 01:00 receivers only dispatch to one fresh normal chat per eligible WAITING line. If creation fails, file QUESTION and continue independent work. The owner runs `python3 "../BLACK UMBRELLA GROUP/SYSTEM/TOOLS/start_pack.py" "ZYRA" "<DEVELOPMENT-relative brief path>"`, then reads only brief-named files. Note start-pack bytes, named reads, `Conversation: new (started HH:MM)` and actual count-only usage. Verify the note and commit before archival (OA-AIOS-426) |
 | Brief | Shakeel | ZYRA chat (Claude) - the **lead designer** |
 | 2-5 options, one picture at a time, each with "what changed" | ZYRA chat | Chat |
 | Pick and tweak, then `LOCK` | Shakeel | Chat |
-| Record the LOCK: screen pictures at **real phone size with the real tabs/bars on top**, every state (empty, loading, error), a spec with numbers (sizes, positions, rules, data), and a `LOCK_RECORD.md` line with Shakeel's words and the date | ZYRA chat | `PRODUCT/APPROVED/<FEATURE>/` - one live copy `<NAME>_CURRENT_VERSION_V<n>.<ext>`, old ones `<NAME>_<date>_V<n>` in `ARCHIVE/` |
-| Build brief: locked file paths, "copy exactly, no improvements", what not to touch, checks; then one WAITING line in `PRODUCT/APPROVED/BUILD_QUEUE.md` | ZYRA chat | `PRODUCT/APPROVED/<FEATURE>/BUILD_BRIEF_<YYYY-MM-DD>.md`. Codex builds the queue at 01:00, or when Shakeel types GO in the ZYRA Codex chat (charter rule 9). **Every** ZYRA instruction for Codex - LOCKed builds and Founder-named tasks (captures, fixes, clean-up) - goes in as a queue line with a brief; Shakeel only types GO (Founder, 29 Oct) |
+| Record the LOCK with full-size phone pictures showing real bars and every state, numeric spec, rules, data, and the Founder's words and date in `LOCK_RECORD.md` | ZYRA chat | `PRODUCT/APPROVED/<FEATURE>/`. Keep one `<NAME>_CURRENT_VERSION_V<n>.<ext>` and date older versions in `ARCHIVE/` |
+| Give every LOCKed build or Founder-named task a brief naming inputs, scope and checks, plus one WAITING row in `PRODUCT/APPROVED/BUILD_QUEUE.md` | ZYRA chat | `PRODUCT/APPROVED/<FEATURE>/BUILD_BRIEF_<YYYY-MM-DD>.md`. Queue runs at 01:00 or on Shakeel's GO in the ZYRA Codex chat (charter rule 9, Founder 29 Oct) |
 | Check the locked files first, report problems, then build exactly | Codex | Task note: "Built from: <paths>" plus a screenshot of the built screen beside the master |
 | Compare the build with the master | ZYRA chat | Its chat note; Fable files the decision (DR-ZYRA) at 04:15 |
-| Every morning (05:36 scheduled task, after Codex 01:00 and Fable 04:15): read the newest app screenshots and `BUILT/` folders, compare with the masters and the prototype, update the prototype to the real app, and list every difference | ZYRA chat | Chat note row "Morning check"; differences go to Shakeel and become OAs via Fable (Founder, 29 Oct: "every morning ... check app screenshots and update prototype ... spot any differences ... and highlight it") |
+| At 05:36 compare the newest app screenshots and `BUILT/` folders with the masters and prototype, then update the prototype to match the app | ZYRA chat | In the "Morning check" note, list every difference for Shakeel. Fable files OAs (Founder 29 Oct) |
 
-Lessons from AZMARA: never specify a behaviour in words only - add a picture of the expected result; never lock art before the
-screen's data, navigation and states; review at real phone size before `LOCK`; locked design sources live in the repo, not only
-in a chat's workspace. A change to a locked design = a new `LOCK` and a new version. The blueprint stays the rulebook: a design
-that would change a rule needs Shakeel's decision first.
+Include a picture of expected behaviour. Review data, navigation and states at phone size before `LOCK`. Keep locked sources
+in the repo. Design changes need a new `LOCK` and version. Blueprint rule changes need Shakeel's decision first.
 
 ## Standing ZYRA rules
 
@@ -133,6 +129,7 @@ that would change a rule needs Shakeel's decision first.
 | `SUB BUSINESS/` was removed 24 Oct: older documents saying `SUB BUSINESS/<venture>` mean `DEVELOPMENT/<venture>`. Never recreate it | Knowledge routing standard §10 |
 | **One app.** `SOURCE/` is one Flutter product, ZYRA. The separate ZYRA Test app is cancelled - never recreate it. Unsupported or retired build variants must fail closed, never fall back to production | OA-ZYRA-286 |
 | **Developer access** needs all of: the compile-time opt-in (off by default), the pinned company Founder account ID, the main database and the Founder role. An email address alone never grants it. Public builds stay locked | OA-ZYRA-286 |
+| **Gate.** A red ZYRA CI check fails the gate for every ZYRA queue line | DOC-ZYRA-0508 |
 | **Phone delivery.** After a Founder-requested routine change is built and checked, Codex may build, install and open the PROFILE app on the paired Founder iPhone while he says he is home - no second approval for that same change. When he says he is away, wait. Stop on any failure or drift. This never covers TestFlight uploads, signing, backend, payment or migration changes. Paused by the build freeze | DR-ZYRA-257, OA-AIOS-406 |
 | **Uploads.** Every TestFlight upload needs the Founder's exact GO for that build number; there is no standing upload authority | Runbook DOC-ZYRA-0254 §3 |
 
@@ -152,8 +149,6 @@ History (build 3, mailboxes 110-116, the Test-app retirement): `REPORTS/ARCHIVE/
    `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1_INDEX.md`, then search by ID. Check the live NEXT IDENTIFIER before drafting entries.
 3. Building or changing the app: `SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/ZYRA_RULES_CURRENT_VERSION_V1.md` (DOC-ZYRA-0277) and
    `../BLACK UMBRELLA GROUP/SYSTEM/DOCUMENTS/MASTER_STANDARDS/IMPLEMENTATION_HANDOVER_STANDARD_CURRENT_VERSION_V4.md`.
-
-Roles are in the core rules (V4, 27 Oct). Older role models (AD-AIOS-097 to 111) are history in the AD register.
 
 ## Public check before you finish (AD-AIOS-146)
 This is a public repo. Before ending any session (business chat or Codex line owner), run

@@ -367,9 +367,11 @@ void main() {
           materialSearch.longestAxis,
           materialProfile.longestAxis,
         );
+        // Q160 permits one pixel at the test icon size on non-macOS hosts.
+        final maxPeerRatio = Platform.isMacOS ? 1.20 : 1.20 + 1 / peerExtent;
         expect(
           raster.longestAxis / peerExtent,
-          inInclusiveRange(.9, 1.2),
+          inInclusiveRange(.9, maxPeerRatio),
           reason: 'Journey must have comparable visible size to peers: $reason',
         );
         // Use painted bounds, not a constant SizedBox, for centring and safety.

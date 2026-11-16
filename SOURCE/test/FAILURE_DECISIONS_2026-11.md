@@ -6,6 +6,8 @@ The 14 November protected Flutter 3.44.2 baseline took 10 minutes 40 seconds. It
 
 The 14 checkpoint suites passed all 512 tests. The 14 November full Mac run on the source through `2e4c4d9` passed 7,346 tests across 560 suites, with zero failures and all 122 existing skips. Analysis found no issues.
 
+The 16 November full Mac rerun after Q159 and Q160 passed 7,346 tests across 560 suites, with zero failures and the same 122 skips. Analysis found no issues.
+
 ## Failures
 
 | Suite | Test | Decision | Reason |
@@ -67,6 +69,9 @@ The 14 checkpoint suites passed all 512 tests. The 14 November full Mac run on t
 |---|---|---|---|
 | `SOURCE/test/visual/zyra_visual_regression_test.dart` | all OA-ZYRA-282 candidate manifests record governed promotion | Fix | Always verify the tracked promoted PNGs against the approved manifest's size and SHA-256. Compare local candidate copies when present under the ignored `test/visual/candidates/` tree. |
 | `SOURCE/test/visual/zyra_visual_regression_test.dart` | Phase 1 v2 successors are promoted and supersessions finalized | Fix | Verify the promoted PNGs directly on a clean checkout, and keep every supersession and retirement assertion. |
+| `SOURCE/test/visual/zyra_visual_regression_test.dart` | Round 2 LOCK master `g11_seeker__adam_main` | Update | Q159 and LOCK 8 V6. Compare exact pixels on macOS. On other hosts, skip only the pixel comparison with `exact PNG reference is macOS-rendered, Q159`. Keep layout, Main Guardian disclosure and approved-file hashes on every host. |
+| `SOURCE/test/visual/zyra_visual_regression_test.dart` | Round 2 LOCK master `g12_seeker__yusuf_additional` | Update | Q159 and LOCK 8 V6. Compare exact pixels on macOS. On other hosts, use the same Q159 skip reason for pixels only. Keep layout, Additional Guardian disclosure and approved-file hashes on every host. |
+| `SOURCE/test/zyra_journey_icon_optical_size_test.dart` | selected Couple at 22 px has the expected optical size | Update | Q160 and LOCK 6 V4. At 22 px and 48 px, keep the 21/24 footprint on every host and the 0.90–1.20 peer ratio on macOS. On other hosts, add `1 / peerExtent` to the upper ratio limit for rounding at the test icon size. |
 
 ## Skipped tests
 

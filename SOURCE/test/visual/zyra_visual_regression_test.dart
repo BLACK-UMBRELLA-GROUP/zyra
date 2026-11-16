@@ -55,6 +55,10 @@ const _candidateDirectory = String.fromEnvironment(
   'ZYRA_VISUAL_CANDIDATE_DIRECTORY',
   defaultValue: 'candidates',
 );
+const _macOSReferenceGoldens = {
+  'g11_seeker__adam_main',
+  'g12_seeker__yusuf_additional',
+};
 
 /// Founder-approved OA-ZYRA-281 files remain byte-preserved after Phase 3
 /// supersedes their Today presentation. Each archived fixture is explicitly
@@ -1023,6 +1027,12 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
         final replacement = _lockedMasterReplacements[entry.id];
         if (replacement != null && !_captureCandidates) {
           await _assertLockedMasterReplacement(h, replacement);
+          return;
+        }
+        if (!Platform.isMacOS &&
+            !_captureCandidates &&
+            _macOSReferenceGoldens.contains(entry.id)) {
+          markTestSkipped('exact PNG reference is macOS-rendered, Q159');
           return;
         }
         final path = _captureCandidates
