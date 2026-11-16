@@ -10,7 +10,7 @@ ZYRA is pre-launch. This is an estimate of the next 26 hours of work from the op
 | Android build preparation | 3 | Check the Android project and build route, record any blockers, and prepare a testable build when authorised. |
 | Safety and consent | 4 | Complete the approved safety and consent screens, check guardian-sharing privacy, and reconcile wording with the legal and safety review before launch. Terms and purchase wording need review before purchases become available. |
 | Onboarding tour | 3 | Implement or complete the tour from locked designs and check the empty, loading and error paths around onboarding. |
-| Test baseline and final interface pass | 6 | Triage the existing failing baseline, agree the repairs, and run the required checks after those approved changes. The latest recorded run has 37 failing tests; queue line 111 brings them to zero and turns on automatic checks. Remove Developer Access controls only after the other interface work is complete, as the queue requires. |
+| Test baseline and final interface pass | 6 | Triage the existing failing baseline, agree the repairs, and run the required checks after those approved changes. Line 111 resolved the 37 accepted failures and verified automatic checks. Developer Access controls were removed in line 44 in queue order. Done 2026-11-16. |
 | Documentation and handover | 2 | Update setup instructions, record checked versions and limitations, and prepare the as-built handover for review. |
 
 The private legal review covers member terms, data protection, safety response and online safety duties. Those actions, the real-data connection and purchase wording remain launch dependencies. Repository preparation does not make the app ready for members or authorise publishing the repository.
