@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**108 actions: 106 open or unclear, 2 closed.**
+**110 actions: 108 open or unclear, 2 closed.**
 
 ## Open
 
@@ -124,6 +124,8 @@ Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS
 | OA-ZYRA-387 | Build-check differences 13 Nov - lines 88, 92, 95, 101 do not match their LOCKed masters | OPEN - 14 Nov: waiting for the ZYRA chat's fix briefs (the chat sent … | MEDIUM |
 | OA-ZYRA-388 | Dead route - guardian_network_profile builder has no opener (line 90 capture gap) | OPEN - backlog; not ZYRA real-backlog night work (AD-AIOS-133 exclude… | LOW |
 | OA-ZYRA-389 | Server call to resend the same expired Guardian invitation to its recipient (QUESTIONS 88) | DEFERRED - connect-first work after 14 Dec (AD-AIOS-149). No resend c… | LOW |
+| OA-ZYRA-390 | Build-check differences, 14 Nov morning check (lines 103, 105, 108; built pictures) | OPEN - filed by Fable 15 Nov 04:15 from the ZYRA chat note 14 Nov 05:… | MEDIUM |
+| OA-ZYRA-391 | Founder to confirm two number calls the ZYRA chat made for QUESTIONS 145 (line 115) | OPEN - filed by Fable 15 Nov 04:15 from the ZYRA chat note 14 Nov ite… | LOW |
 
 ⚠️ = status wording not recognised as open or closed (4). Fix the wording in the register.
 

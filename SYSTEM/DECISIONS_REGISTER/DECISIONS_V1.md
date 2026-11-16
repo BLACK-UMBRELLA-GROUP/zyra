@@ -18586,9 +18586,36 @@ Related:     DR-ZYRA-348 (item 2 superseded), OA-ZYRA-354, OA-AIOS-420, QUESTION
 
 ------------------------------------------------------------
 
-TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-352,
+DR-ZYRA-353
+Title:       One final signed iPhone build after line 109; the line 84 host is kept, not installed
+Date:        2026-11-14
+Status:      APPROVED - Founder direct (clickable, QUESTIONS 153)
+Authority:   Founder, 14 Nov 2026 (clickable): "One final build after 109 (Recommended)". Filed by Fable 15 Nov 04:15
+             from the QUESTIONS 153 answer and the 14 Nov Codex report.
+Decision:    The signed line 84 host 1.0.0 (5) from 12fcf8f is not installed; it stays under SOURCE/build until line 117
+             is BUILT. Line 117 (DOC-ZYRA-0514) makes one fresh signed build from the newest commit once lines 84, 109
+             and 113-115 are in, then installs on the iPhone only on Shakeel's separate GO.
+Related:     DR-ZYRA-352, QUESTIONS 153, queue lines 84 and 117, OA-ZYRA-317.
+
+------------------------------------------------------------
+
+DR-ZYRA-354
+Title:       The ZYRA Claude chat answers every ZYRA Codex question from QUESTIONS 157 on
+Date:        2026-11-14
+Status:      APPROVED - Founder direct (Fable chat, relayed in the 14 Nov ZYRA chat note)
+Authority:   Founder, 14 Nov 2026: "LET ME KNOW IF ZYRA CLAUDE CAN TAKE OVER WITH THESE NOW AND ILL LEAVE IT TO HIM ANY
+             OTHER QUESTION AFTER THIS". Filed by Fable 15 Nov 04:15.
+Decision:    From QUESTIONS 157 the ZYRA chat answers all ZYRA Codex questions in QUESTIONS.md (charters rule 10),
+             including lines whose briefs Fable wrote (109, 110-112, 117). Fable keeps only: a live server apply (the
+             Founder's words "apply the clean server"), anything in the Apple, Cloudflare, GitHub or Supabase accounts,
+             Mac disk or build-route changes, and group rules.
+Related:     Charters rule 10, lesson F51, OA-AIOS-446 item 5.
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-354,
   Historical Identifiers, permanent
-NEXT IDENTIFIER: DR-ZYRA-353 (Enterprise format, active
+NEXT IDENTIFIER: DR-ZYRA-355 (Enterprise format, active
   2026-07-12 — continues this sequence, does not reset;
   sequential identifiers are global and never reset per AIOS
   Package Specification Standard Part 5. See BLACK UMBRELLA

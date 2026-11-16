@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**350 decisions; 4 marked superseded/retired.**
+**352 decisions; 4 marked superseded/retired.**
 
 | ID | Date | Title | Status |
 |---|---|---|---|
@@ -366,3 +366,5 @@ Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_
 | DR-ZYRA-350 | 2026-11-13 | ZYRA audit design choices - contrast options first, photo rule by the ZYRA chat, all righ… | APPROVED - Founder direct (clickables, … |
 | DR-ZYRA-351 | 2026-11-13 | 13 Nov ZYRA chat LOCKs - shared code link (LOCK 9 V4), still short pages (LOCK 26 V4), on… | APPROVED - Founder direct (clickables a… |
 | DR-ZYRA-352 | 2026-11-14 | Line 84 un-deferred - one online fetch of the pinned Swift packages for the fresh iPhone … | APPROVED - Founder direct (clickable, B… |
+| DR-ZYRA-353 | 2026-11-14 | One final signed iPhone build after line 109; the line 84 host is kept, not installed | APPROVED - Founder direct (clickable, Q… |
+| DR-ZYRA-354 | 2026-11-14 | The ZYRA Claude chat answers every ZYRA Codex question from QUESTIONS 157 on | APPROVED - Founder direct (Fable chat, … |

@@ -1732,23 +1732,9 @@ Owner:       Codex (implements) with Claude (Architecture Reviewer)
              per AD-AIOS-099; Founder approves any behavioural change
 Raised:      2026-08-20
 Completed:   —
-Source:      Supabase security advisors on project sxoaxonzjqkgajmlagyk
-             (89 findings), run by Fable via the Supabase connector.
-Detail:      (1) ERROR — view public.zyra_my_attempt_participation is
-             SECURITY DEFINER: it evaluates with its creator's
-             permissions, not the querying user's; convert to
-             security_invoker or document why it is safe. (2) WARN —
-             Auth leaked-password protection is disabled; enable in
-             Authentication settings. (3) Pattern confirmation — the
-             RPC layer is SECURITY DEFINER functions callable by
-             authenticated users (79 flagged); zyra_debug_grant_credits,
-             mock_purchase_wali_premium and zyra_dev_reset_account were
-             source-verified 2026-08-20 to enforce the @zyra.test guard
-             in-function; one pass to confirm EVERY remaining function
-             performs internal authorisation, fixing any that do not.
-             (4) INFO — 8 tables have RLS enabled with no policies
-             (deny-all): confirm intent per table.
-
+Source:      Supabase security advisors (moved to private group storage).
+Detail:      Moved to private group storage on 15 Nov 2026 (DOC-BUG-0062):
+             BLACK UMBRELLA GROUP/BUSINESS/ZYRA/SECURITY/OA-ZYRA-243_PRIVATE_DETAIL.md
 Target:      Items 1–2 before any external testing; items 3–4 before
              launch is declared.
 Dependencies: AD-AIOS-099 seat assignments; Supabase project access;
@@ -5090,9 +5076,41 @@ Acceptance:  Resend call built and tested on a throw-away database; app shows Se
 Source:      ZYRA QUESTIONS 88 (11 Nov), answered by Fable 14 Nov 04:15
 ------------------------------------------------------------
 
+OA-ZYRA-390
+Title:       Build-check differences, 14 Nov morning check (lines 103, 105, 108; built pictures)
+Category:    Build check (charters rule 8)
+Priority:    MEDIUM
+Date:        2026-11-15
+Status:      OPEN - filed by Fable 15 Nov 04:15 from the ZYRA chat note 14 Nov 05:46 (items a-e).
+Owner:       ZYRA chat (fix briefs, CODE_PAGE V3/V4 masters); Codex (build, pictures)
+Detail:      (a) built pictures for lines 103, 105, 113, 114 are only in REPORTS/EVIDENCE, not in <FEATURE>/BUILT/
+             (third day); (b) line 105 selected My code / Their code pill has a darker taupe fill - prototype is ivory
+             with a gold border (APP COLOURS V8), likely the shared pill widget also behind line 95; CODE_PAGE/MASTERS
+             still hold the old LOCK 9 V2 pictures; (c) line 103 Seeker Past list shows a chat icon tile instead of the
+             person's photo; (d) line 103 mute toast covers a sheet row; (e) line 108 comparison picture not on the Mac.
+Next:        ZYRA chat writes one fix brief (fixes only, AD-AIOS-149 / OA-AIOS-446 item 5) and re-renders the CODE_PAGE
+             masters; Codex saves the line 108 picture into CODE_PAGE/BUILT/.
+Acceptance:  Each item MATCH in a later ZYRA chat build check.
+Source:      2026-11-14_ZYRA_CHAT_NOTE.md, morning check
+------------------------------------------------------------
+
+OA-ZYRA-391
+Title:       Founder to confirm two number calls the ZYRA chat made for QUESTIONS 145 (line 115)
+Category:    Founder confirmation
+Priority:    LOW
+Date:        2026-11-15
+Status:      OPEN - filed by Fable 15 Nov 04:15 from the ZYRA chat note 14 Nov item (f).
+Owner:       Shakeel (confirm or overrule); ZYRA chat (asks him)
+Detail:      Profile Switch button 34 pt (like Preview/Edit) and a 16 pt gap above the tab bar (LOCK 24 app-wide; spec
+             said 14). Line 115 is BUILT with these values.
+Next:        ZYRA chat asks Shakeel with a clickable question; a change is a new fix line.
+Acceptance:  His answer recorded in the ZYRA chat note.
+Source:      2026-11-14_ZYRA_CHAT_NOTE.md item (f)
+------------------------------------------------------------
+
 TOTAL REGISTERED (this file): 309 (OA-001 through OA-ZYRA-309,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-390 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-392 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_
