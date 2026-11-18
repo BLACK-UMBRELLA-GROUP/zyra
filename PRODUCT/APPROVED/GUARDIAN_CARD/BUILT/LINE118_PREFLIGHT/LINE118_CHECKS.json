@@ -1,0 +1,98 @@
+{
+  "line": 118,
+  "status": "QUESTION",
+  "question": 165,
+  "checked_at_utc": "2026-11-18T22:05:36.209937+00:00",
+  "source_commit": "4379d9284c3ed0a8e939e7198570a233aadbf0f5",
+  "source_changes": false,
+  "tests_total": 120,
+  "failures": 0,
+  "runs": [
+    {
+      "command": "flutter test --no-pub --flavor offline-ci --reporter expanded test/popup_style_consistency_test.dart test/floating_nav_confirmation_layout_test.dart test/browse_options_menu_test.dart",
+      "passed": 51,
+      "exit_code": 0
+    },
+    {
+      "command": "flutter test --no-pub --flavor offline-ci --reporter expanded test/guardian_card_shell_test.dart test/guardian_card_interaction_test.dart",
+      "passed": 69,
+      "exit_code": 0
+    }
+  ],
+  "ci": {
+    "workflow": "ZYRA CI",
+    "run_id": 44285749359,
+    "commit": "4379d9284c3ed0a8e939e7198570a233aadbf0f5",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "menu_inventory": [
+    {
+      "widget": "Guardian card management menu",
+      "implementation": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "line": 338,
+      "rows": "SOURCE/lib/screens/wali/seeker_guardian_designs.dart:1365",
+      "confirms": [
+        "Make Main Guardian",
+        "Remove as Main Guardian",
+        "Remove <firstName>"
+      ]
+    },
+    {
+      "widget": "Founder Journey options modal",
+      "implementation": "SOURCE/lib/dev/zyra_one_journey_options.dart",
+      "line": 123,
+      "routes": [
+        "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart:4135"
+      ],
+      "confirms": [
+        "End Journey"
+      ],
+      "preserve": [
+        "inline layout",
+        "lockedPage layout"
+      ]
+    },
+    {
+      "widget": "Shared Ended Journey menu",
+      "implementation": "SOURCE/lib/dev/zyra_one_journey_options.dart",
+      "line": 556,
+      "routes": [
+        "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart:4484",
+        "SOURCE/lib/screens/connections/zyra_sample_activity.dart:401"
+      ],
+      "confirms": [
+        "Remove",
+        "Request a new Journey"
+      ]
+    },
+    {
+      "widget": "Member active Journey options",
+      "implementation": "SOURCE/lib/screens/connections/connections_screen.dart",
+      "line": 4643,
+      "routes": [
+        "SOURCE/lib/screens/connections/connections_screen.dart:1599"
+      ],
+      "confirms": [
+        "Request Pause",
+        "End Journey"
+      ]
+    }
+  ],
+  "excluded": "Browse actions are a page; Guardian private-chat and Circle menus navigate or act directly; message long-press menus do not open LOCK 28 confirms; legacy Guardian management actions are inline.",
+  "pending": [
+    "Q165 answer and corrected brief",
+    "implementation",
+    "post-change analyzer/static/UI/visual gates",
+    "updated screenshots and golden review",
+    "as-built handover",
+    "Founder-authorized iPhone observation"
+  ],
+  "phone_install": false,
+  "native_build": false,
+  "migrations": [],
+  "independent_review": {
+    "result": "records reviewed; corrected member Ended Journey route and person-specific Remove label",
+    "scope": "inventory and Q165 only; test/CI results observed by owner"
+  }
+}
