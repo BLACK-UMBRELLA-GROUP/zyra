@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-18",
+  "queue_line": 121,
+  "lock": "LOCK 34 V1",
+  "verdict": "QUESTION",
+  "questions": [
+    166,
+    167
+  ],
+  "start_pack_bytes": 18769,
+  "start_pack_invocation": {
+    "cwd": "/Users/shakeelahmad/Developer/DEVELOPMENT",
+    "script": "/Users/shakeelahmad/Developer/DEVELOPMENT/BLACK UMBRELLA GROUP/SYSTEM/TOOLS/start_pack.py",
+    "arguments": [
+      "ZYRA",
+      "ZYRA/PRODUCT/APPROVED/SIGN_UP/BRIEFS/BUILD_BRIEF_2026-11-18_V1.md"
+    ]
+  },
+  "approved_inputs": [
+    "PRODUCT/APPROVED/SIGN_UP/BRIEFS/BUILD_BRIEF_2026-11-18_V1.md",
+    "PRODUCT/APPROVED/SIGN_UP/RECORD/SIGN_UP_SPEC_CURRENT_VERSION_V1.md",
+    "PRODUCT/APPROVED/SIGN_UP/RECORD/LOCK_RECORD.md"
+  ],
+  "lock_master_pictures": [],
+  "master_search_scope": [
+    "PRODUCT/APPROVED",
+    "REPORTS/EVIDENCE",
+    "BLACK UMBRELLA GROUP/BUSINESS/ZYRA/PROTOTYPE (filenames only)"
+  ],
+  "private_prototype": "BLACK UMBRELLA GROUP/BUSINESS/ZYRA/PROTOTYPE/ZYRA_PROTOTYPE_CURRENT_VERSION_V271.html",
+  "phone_size_navigation_and_required_states": "UNVERIFIED: no approved LOCK 34 pictures found",
+  "older_partial_reference": {
+    "paths": [
+      "PRODUCT/APPROVED/CODE_PAGE/MASTERS/guardian_signup_add_seeker__normal.png",
+      "PRODUCT/APPROVED/CODE_PAGE/MASTERS/guardian_signup_add_seeker__found.png",
+      "PRODUCT/APPROVED/CODE_PAGE/MASTERS/guardian_signup_add_seeker__sent.png"
+    ],
+    "dimensions": [
+      1290,
+      2796
+    ],
+    "lock": "LOCK 9 V1/V2, 2026-10-30",
+    "coverage": "Older Add a Seeker step only; does not satisfy LOCK 34"
+  },
+  "spec_conflict": {
+    "file": "PRODUCT/APPROVED/SIGN_UP/RECORD/SIGN_UP_SPEC_CURRENT_VERSION_V1.md",
+    "section_2_line": 28,
+    "section_2": "Full 320-question Partner preferences; age-range-only step removed",
+    "row_3_8d_line": 44,
+    "row_3_8d": "Age-range-only step remains"
+  },
+  "source_mutated_by_owner": false,
+  "native_build": false,
+  "phone_install": false,
+  "migrations": [],
+  "app_tests": "NOT RUN: lock preflight only",
+  "free_space_at_start": "35 GiB (df -h)",
+  "source_sequencing": "Lines 119 and 120 active; source remains read-only for this owner",
+  "next_owner": "ZYRA Claude: answer Q166-167 and supply a consistent approved lock pack"
+}
