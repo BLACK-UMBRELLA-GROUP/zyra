@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**110 actions: 108 open or unclear, 2 closed.**
+**112 actions: 107 open or unclear, 5 closed.**
 
 ## Open
 
@@ -85,11 +85,9 @@ Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS
 | OA-ZYRA-345 | Settings cards grey-beige and footer letter-spaced (line 62) | OPEN - ZYRA chat 2 Nov 05:42 build check (2026-11-02_ZYRA_CHAT_NOTE.m… | LOW |
 | OA-ZYRA-346 | Guardian Journeys photo card about 24 pt shorter than the g09 masters (line 56) | OPEN - ZYRA chat 2 Nov 05:42 build check (2026-11-02_ZYRA_CHAT_NOTE.m… | LOW |
 | OA-ZYRA-347 | Network first-card back arrow looks disabled (line 63) | OPEN - ZYRA chat 2 Nov 05:42 build check (2026-11-02_ZYRA_CHAT_NOTE.m… | LOW |
-| OA-ZYRA-348 | 358 app tests still fail after lines 44 and 73 - 43 OPEN questions (rows 13-55) need sort… | OPEN - Codex 4 Nov (line 73, bb2fe54): 649 -> 644 (line 44) -> 358 fa… | MEDIUM - the "Test … |
 | OA-ZYRA-349 | Line 44 build check: Guardian Settings has no LOCK master (paired with the Seeker Setting… | OPEN - ZYRA chat 5 Nov 13:28 build check (2026-11-05_ZYRA_CHAT_NOTE.m… | LOW |
 | OA-ZYRA-350 | Line 44 build check: seeker_one_browse pair compares two different states | OPEN - ZYRA chat 5 Nov build check, item (b): master shows "Request s… | LOW |
 | OA-ZYRA-351 | 56 LOCK masters moved out by group line 30 must be re-rendered with placeholder photos (r… | OPEN - ZYRA chat note 10 Nov 05:39 item (a): after line 30 the MASTER… | MEDIUM - no build c… |
-| OA-ZYRA-352 | Blueprint pages to match DR-ZYRA-344/345 (plans, Guardians per Seeker, Circle past topics… | IN PROGRESS - 12 Nov: MEMBERSHIP V2 done (V1 archived by rename to RE… | MEDIUM - the bluepr… |
 | OA-ZYRA-355 | Design ZYRA's emails in one session with the ZYRA chat; weekly reminder to Shakeel until … | OPEN - Founder 12 Nov 17:09: "we will talk about email later ... just… | LOW - no member ema… |
 | OA-ZYRA-356 | ZYRA queue tidy: two lines numbered 100; lines 93 and 97 marked QUESTION with no OPEN row… | OPEN - 13 Nov 04:15: BUILD_QUEUE has two "100" lines (Fable's name-li… | MEDIUM |
 | OA-ZYRA-357 | F-01 BUILT meant preview only - 75 BUILT lines, no server link in the planned app | IN PROGRESS - 13 Nov Fable (Q4): queue rule added - BUILT = Preview; … | CRITICAL |
@@ -102,7 +100,6 @@ Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS
 | OA-ZYRA-364 | F-08 No purchase system | OPEN - waits the Founder's route decision (Apple direct or a purchase… | HIGH |
 | OA-ZYRA-365 | F-09 Terms and privacy pack thin for launch | OPEN - start now; longest wait. | HIGH |
 | OA-ZYRA-366 | F-10 No crash reporting; 248 swallowed errors | OPEN - before outside testers. | HIGH |
-| OA-ZYRA-367 | F-11 No automatic checks; 37 failing tests | OPEN - queue line 111 (DOC-ZYRA-0508), not before 21 Nov. | HIGH |
 | OA-ZYRA-368 | F-12 Two apps tangled; planned app inside the dev folder | DEFERRED - after the first wired flows. | MEDIUM |
 | OA-ZYRA-369 | F-13 Very large files | OPEN - rule as you go. | MEDIUM |
 | OA-ZYRA-370 | F-14 Design values hand-typed | OPEN - after connect. | MEDIUM |
@@ -126,9 +123,11 @@ Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS
 | OA-ZYRA-389 | Server call to resend the same expired Guardian invitation to its recipient (QUESTIONS 88) | DEFERRED - connect-first work after 14 Dec (AD-AIOS-149). No resend c… | LOW |
 | OA-ZYRA-390 | Build-check differences, 14 Nov morning check (lines 103, 105, 108; built pictures) | OPEN - filed by Fable 15 Nov 04:15 from the ZYRA chat note 14 Nov 05:… | MEDIUM |
 | OA-ZYRA-391 | Founder to confirm two number calls the ZYRA chat made for QUESTIONS 145 (line 115) | OPEN - filed by Fable 15 Nov 04:15 from the ZYRA chat note 14 Nov ite… | LOW |
+| OA-ZYRA-392 | Build-check differences, 15 Nov morning check (lines 109, 115; built pictures; line 92 da… | OPEN - filed by Fable 16 Nov 04:15 from the ZYRA chat note 15 Nov 05:… | MEDIUM |
+| OA-ZYRA-393 | LOCK 2 V4 pack gaps stopped line 98 twice (Q161 missing masters, Q163 Guardian mismatch);… | OPEN - filed by Fable 17 Nov 04:15 from the ZYRA chat note 16 Nov (it… | HIGH - line 98 FAIL… |
 
 ⚠️ = status wording not recognised as open or closed (4). Fix the wording in the register.
 
-## Closed (2)
+## Closed (5)
 
-OA-ZYRA-354, OA-ZYRA-373
+OA-ZYRA-348, OA-ZYRA-352, OA-ZYRA-354, OA-ZYRA-367, OA-ZYRA-373

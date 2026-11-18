@@ -10,6 +10,8 @@ owner: Fable
 
 # BRIEF — FINAL SIGNED BUILD AND iPHONE INSTALL — 14 NOV 2026
 
+**Needs: Founder present - at the Mac to click Allow on signing and device prompts, iPhone plugged in and unlocked** (charters rule 15, Q162). Never start this line in the 01:00 run; build and install on Shakeel's daytime GO only.
+
 **Founder-named task.** Founder 14 Nov: "I WANT IT TO BE LATEST UPDATE ON CODEX CLAUDE AND MY PHONE TODFAY", then
 (clickable, QUESTIONS 153) **"One final build after 109 (Recommended)"**: the line 84 host (12fcf8f) is not installed;
 one fresh build from the newest commit carries lines 84, 109, 113-115 and every fix together.

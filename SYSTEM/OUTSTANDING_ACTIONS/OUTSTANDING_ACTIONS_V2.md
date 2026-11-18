@@ -4540,7 +4540,9 @@ Title:       358 app tests still fail after lines 44 and 73 - 43 OPEN questions 
 Category:    Quality / Tests
 Priority:    MEDIUM - the "Test baseline and final interface pass" ROADMAP row and its GitHub issue stay open until 0
 Date:        2026-11-05
-Status:      OPEN - Codex 4 Nov (line 73, bb2fe54): 649 -> 644 (line 44) -> 358 failures in 36 files; every case has a
+Status:      CLOSED 2026-11-16 (Fable 04:15) - acceptance met: rows 13-70 no longer OPEN; line 111 BUILT 16 Nov,
+             full suite 0 failures (Mac 7,346 pass; Ubuntu 7,344 pass); ROADMAP row done. History below.
+             Was: OPEN - Codex 4 Nov (line 73, bb2fe54): 649 -> 644 (line 44) -> 358 failures in 36 files; every case has a
              reason in TEST_CLEANUP/BUILT/QUEUE73_CLASSIFICATION.json and an OPEN row in PRODUCT/APPROVED/QUESTIONS.md
              (13-55): current app defects, Tier 3 contract gaps, old fixture lineage, and 112 visual cases waiting for
              exact current masters and designer build checks.
@@ -4595,7 +4597,9 @@ Title:       Blueprint pages to match DR-ZYRA-344/345 (plans, Guardians per Seek
 Category:    Blueprint upkeep (standard §4b.3)
 Priority:    MEDIUM - the blueprint is CURRENT; it now disagrees with the Founder's 11 Nov decisions
 Date:        2026-11-12
-Status:      IN PROGRESS - 12 Nov: MEMBERSHIP V2 done (V1 archived by rename to REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_VERSIONS/). Left: JOURNEY, BROWSE, TRACE, GUARDIAN_RULES. Pages named by the ZYRA chat: MEMBERSHIP V1 §6 + line 31 + §8 Q1 (Basic sends 5, Basic may end a Journey,
+Status:      CLOSED 2026-11-16 (Fable 04:15, own actions) - BROWSE V3, JOURNEY V4, TRACE V2 written (old versions archived by
+             rename to REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_VERSIONS/); GUARDIAN_RULES V5 §6 was done 13 Nov; MEMBERSHIP V2 12 Nov.
+             Was: IN PROGRESS - 12 Nov: MEMBERSHIP V2 done (V1 archived by rename to REPORTS/ARCHIVE/PRODUCT_BLUEPRINT_VERSIONS/). Left: JOURNEY, BROWSE, TRACE, GUARDIAN_RULES. Pages named by the ZYRA chat: MEMBERSHIP V1 §6 + line 31 + §8 Q1 (Basic sends 5, Basic may end a Journey,
              10 Guardians with one Guardian Basic place for Seeker Basic, One extras, Guardian One trial and ring), JOURNEY V2
              line 62, BROWSE V2 lines 89/103 (Nationality and Ethnicity filters = Seeker One), TRACE line 32, GUARDIAN_RULES
              V4 §6 (30-day past-topics rule replaced by LOCK 20 V3).
@@ -4783,7 +4787,9 @@ Title:       F-11 No automatic checks; 37 failing tests
 Category:    ZYRA audit finding
 Priority:    HIGH
 Date:        2026-11-13
-Status:      OPEN - queue line 111 (DOC-ZYRA-0508), not before 21 Nov.
+Status:      CLOSED 2026-11-16 (Fable 04:15) - line 111 BUILT 16 Nov (4dbb974, cf72166, pushed): Mac full suite 7,346 pass,
+             0 fail; Ubuntu CI runs 43785172596 and 43785862647 green; AGENTS.md gate "a red ZYRA CI check fails the gate
+             for every ZYRA queue line"; ROADMAP row done, GitHub #5 closed.
 Owner:       Codex
 Next:        Line 111.
 Acceptance:  Zero failures; checks run on every push; red means not BUILT.
@@ -5108,9 +5114,44 @@ Acceptance:  His answer recorded in the ZYRA chat note.
 Source:      2026-11-14_ZYRA_CHAT_NOTE.md item (f)
 ------------------------------------------------------------
 
+OA-ZYRA-392
+Title:       Build-check differences, 15 Nov morning check (lines 109, 115; built pictures; line 92 date)
+Category:    Build check (charters rule 8)
+Priority:    MEDIUM
+Date:        2026-11-16
+Status:      OPEN - filed by Fable 16 Nov 04:15 from the ZYRA chat note 15 Nov 05:42 (items a-d).
+Owner:       ZYRA chat (fix brief, queue row); Codex (build, pictures)
+Detail:      (a) Profile tab own-photo placeholder (lines 104/115, PROFILE_TAB V5 §7): app shows an ivory circle with a
+             thin gold ring and a small person icon; spec and masters say the silhouette on the light gold circle (as on
+             Manage photos). (b) Line 109 Add a Seeker "How are you related?" chips are default lavender square chips
+             with a grey-purple border - off the ZYRA style (ivory pill, gold border when chosen, as the Filters chips);
+             likely the same shared pill as OA-ZYRA-390 (b). (c) Built pictures for lines 84 and 109 not in
+             <FEATURE>/BUILT/ (fourth day; same as OA-ZYRA-390 (a)). (d) Line 92 queue row has no completion date.
+Next:        ZYRA chat adds (a) and (b) to the one fix brief of OA-ZYRA-390 (fixes only, AD-AIOS-149) and sets line 92's
+             date; Codex saves line 84/109 pictures into PROFILE_VIDEO/BUILT and CODE_PAGE/BUILT.
+Acceptance:  Each item MATCH in a later ZYRA chat build check; line 92 dated.
+Source:      2026-11-15_ZYRA_CHAT_NOTE.md, morning check
+------------------------------------------------------------
+
+OA-ZYRA-393
+Title:       LOCK 2 V4 pack gaps stopped line 98 twice (Q161 missing masters, Q163 Guardian mismatch); line 99 waits behind it
+Category:    Design loop (charters rules 8-10, 15)
+Priority:    HIGH - line 98 FAILED 16 and 17 Nov; line 99 (LOCK 33 names) needs 98's card first
+Date:        2026-11-17
+Status:      OPEN - filed by Fable 17 Nov 04:15 from the ZYRA chat note 16 Nov (item a) and Codex's 17 Nov note. Q161 was
+             answered 16 Nov (nine masters added); line 98 then failed at preflight again: the Seeker Received/Past masters
+             say Khadija introduced Hana, but the Guardian master shows Hana "Not taken forward" in Hassan's list (Q163).
+Owner:       ZYRA chat (answer Q163, keep LOCK packs whole)
+Next:        ZYRA chat answers Q163 (matching masters for one Hassan-owned introduction, or the approved fixture for
+             Khadija's) and returns line 98 to WAITING. From now on each LOCK row lists its master filenames and, where a
+             master shows another member's record, which fixture person owns it. No new design (AD-AIOS-149, fixes only).
+Acceptance:  Line 98 BUILT and line 99 moving; no further preflight failure on a missing or mismatched master.
+Source:      2026-11-16_ZYRA_CHAT_NOTE.md item (a); 2026-11-17_CODEX_REPORT.md task 1; QUESTIONS 161, 163
+------------------------------------------------------------
+
 TOTAL REGISTERED (this file): 309 (OA-001 through OA-ZYRA-309,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-392 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-394 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_

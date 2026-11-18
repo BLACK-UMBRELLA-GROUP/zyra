@@ -8,7 +8,7 @@ links: []
 owner: ZYRA chat
 ---
 > **SUPERSEDED — NOT CURRENT. DO NOT USE AS A SOURCE OF TRUTH.**
-> Replaced on 2026-10-25 by DOC-ZYRA-0283, `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_JOURNEY_RULES_CURRENT_VERSION_V3.md` (OA-ZYRA-315 d).
+> Replaced on 2026-10-25 by DOC-ZYRA-0283, `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_JOURNEY_RULES_CURRENT_VERSION_V4.md` (OA-ZYRA-315 d).
 > This file keeps its `CURRENT_VERSION` filename so references to it still work. Marked by Fable. **The text below is unchanged.**
 
 
