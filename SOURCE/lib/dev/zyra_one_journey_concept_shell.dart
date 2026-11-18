@@ -1988,21 +1988,13 @@ class _ZyraOneJourneyConceptShellState
     final names = _guardianRole
         ? ['Network', 'Journeys', 'My ZYRA', 'Seekers', 'Profile']
         : ['Profiles', 'Journey', 'My ZYRA', 'Guardian', 'Profile'];
-    final icons = _guardianRole
-        ? [
-            Icons.diversity_3_outlined,
-            Icons.people_outline,
-            Icons.grid_view_outlined,
-            Icons.gpp_good_outlined,
-            Icons.person_outline,
-          ]
-        : [
-            Icons.search,
-            Icons.route_outlined,
-            Icons.dashboard_outlined,
-            Icons.gpp_good_outlined,
-            Icons.person_outline,
-          ];
+    const icons = [
+      Icons.search,
+      Icons.route_outlined,
+      Icons.dashboard_outlined,
+      Icons.gpp_good_outlined,
+      Icons.person_outline,
+    ];
     final fullPhoto = _isPhotoPage;
     final ownsViewport =
         _page == null ||
@@ -7627,6 +7619,7 @@ class _ZyraOneJourneyConceptShellState
       page: page,
       circleFocus: circleFocus,
       linked: _conceptHassanLinked,
+      linkedSeekerNames: _conceptHassanLinked ? const ['Adam', 'Yusuf'] : const [],
       paid: _guardianMembership == 'Guardian One',
       tabClearance: _quickAccessTabBar,
       canInteract: () => fresh() && _guardianRole && _tab == 2 && _page == null,
@@ -8666,8 +8659,6 @@ class _ZyraOneJourneyConceptShellState
   Widget _membershipView() {
     final fresh = _accountFreshGuard();
     bool allowed() => fresh();
-    bool unlocksCurrent() =>
-        allowed() && _membershipDraft.section == ZyraMembershipSection.unlocks;
     return ZyraConceptMembershipPresentation(
       data: _accountData,
       initialDraft: _membershipDraft,
@@ -8675,19 +8666,6 @@ class _ZyraOneJourneyConceptShellState
       currentDetail: _subscriptionWallet
           .forRole(_walletRole)
           .coverageLabel(_walletRole),
-      unlocksContent: ZyraDraftCompatibilityStorePresentation(
-        isSeekerOne: _seekerMembership == 'Seeker One',
-        canAct: unlocksCurrent,
-        balance: _guardianRole ? null : _compatibilityAccess.balance,
-        onTerms: _bound(() {
-          if (!unlocksCurrent()) return;
-          _move(() {
-            _accountDestination = ZyraConceptAccountAction.privacyData;
-            _settingsDetail = ZyraConceptSettingsDetail.terms;
-            _pages.add('settings_detail');
-          });
-        }),
-      ),
       canAct: allowed,
       showBackButton: false,
       onAction: (action) {

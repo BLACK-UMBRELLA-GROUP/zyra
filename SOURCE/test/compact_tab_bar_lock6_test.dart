@@ -24,7 +24,7 @@ const _seekerItems = [
   FloatingNavItem(icon: Icons.person_outline, label: 'Profile'),
 ];
 const _guardianItems = [
-  FloatingNavItem(icon: Icons.diversity_3_outlined, label: 'Network'),
+  FloatingNavItem(icon: Icons.search, label: 'Network'),
   FloatingNavItem(
     icon: Icons.route_outlined,
     label: 'Journeys',

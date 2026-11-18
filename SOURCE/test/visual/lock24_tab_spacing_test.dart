@@ -262,6 +262,9 @@ Finder? _outerViewport(String screen) => switch (screen) {
   'My ZYRA' || 'My ZYRA — activity' => find.byKey(
     const PageStorageKey('my-zyra-focus-scroll'),
   ),
+  'Network' || 'Network — unlinked'
+      when _key('guardian_network_locked_scroll').evaluate().isNotEmpty =>
+    _key('guardian_network_locked_scroll'),
   'Network' || 'Network — unlinked' => find.byKey(
     const PageStorageKey('guardian_tabs_network'),
   ),
@@ -325,7 +328,10 @@ Finder? _lastSurface(String screen, bool basic) => switch (screen) {
   'Guardian — populated' ||
   'Guardian — invited' ||
   'Guardian — Add card' => _fixedCard(screen),
-  'Network' => _key('guardian_connect_confirm'),
+  'Network' => _key(
+    basic ? 'guardian_network_membership' : 'guardian_connect_confirm',
+  ),
+  'Network — unlinked' when basic => _key('guardian_network_membership'),
   'Journeys' || 'Journeys — empty' => _key('guardian_ended'),
   'Profile' =>
     find
@@ -366,7 +372,9 @@ Finder? _fixedCard(String screen) => switch (screen) {
   'Guardian — populated' => _key('guardian-card-draft-guardian-hassan'),
   'Guardian — invited' => _key('guardian-card-preview-invited-omar'),
   'Guardian — Add card' => _key('guardian-card-add'),
-  'Network' => _key('guardian-network-card'),
+  'Network' when _key('guardian-network-card').evaluate().isNotEmpty => _key(
+    'guardian-network-card',
+  ),
   'Journeys' => _key('guardian_journey_card'),
   _ => null,
 };
@@ -490,15 +498,26 @@ Map<String, double> _verifySpacing(
         );
       }
     case 'Network':
-      final card = _key('guardian-network-card');
-      margins(card);
-      gap('card to pill', card, _key('guardian_connect_confirm'), 12);
-      gap(
-        'card to Introduce pill',
-        card,
-        _key('guardian_introduce_confirm'),
-        12,
-      );
+    case 'Network — unlinked':
+      if (basic) {
+        final action = _key('guardian_network_membership');
+        margins(action);
+        expect(_key('guardian-network-card'), findsNothing);
+        expect(find.text('View Guardian One'), findsOneWidget);
+        final lock = box(_key('guardian_network_lock_circle'));
+        check('lock circle width', lock.width, 102);
+        check('lock circle height', lock.height, 102);
+      } else if (screen == 'Network') {
+        final card = _key('guardian-network-card');
+        margins(card);
+        gap('card to pill', card, _key('guardian_connect_confirm'), 12);
+        gap(
+          'card to Introduce pill',
+          card,
+          _key('guardian_introduce_confirm'),
+          12,
+        );
+      }
     case 'Journeys':
       final card = _key('guardian_journey_card');
       margins(card);
@@ -1170,7 +1189,19 @@ void main() {
                 active: false,
                 linked: false,
               );
-              expect(find.text('Invite your Seeker'), findsOneWidget);
+              if (basic) {
+                expect(
+                  find.text('Network is part\nof Guardian One'),
+                  findsOneWidget,
+                );
+                expect(
+                  find.text('Introduce someone to your Seekers'),
+                  findsOneWidget,
+                );
+                expect(find.text('Invite your Seeker'), findsNothing);
+              } else {
+                expect(find.text('Invite your Seeker'), findsOneWidget);
+              }
               await measure('Network — unlinked');
               await mount(
                 t,

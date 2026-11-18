@@ -340,6 +340,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     this.currentSeekerJourney,
     this.currentSeekerJourneyId,
     this.linked = true,
+    this.linkedSeekerNames = const ['Adam', 'Yusuf'],
     this.paid = true,
     this.adamMain = true,
     this.focusItems,
@@ -365,6 +366,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   final String? adamPhoto;
   final Offset adamAvatarAlignment;
   final bool linked, paid, adamMain;
+  final List<String> linkedSeekerNames;
   final List<ZyraFocusItem>? focusItems;
   final List<ZyraFocusItem> circleFocus;
   final int notificationCount, newJourneyRequestCount;
@@ -1158,7 +1160,182 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     },
   );
 
+  // Line119: the membership gate is a full-page presentation. The shell owns
+  // linked names and the existing membership action; this grants no access.
+  Widget _lockedNetwork(BuildContext context) {
+    final names = linked ? linkedSeekerNames : const <String>[];
+    final seeker = names.length == 1 ? names.single : 'your Seekers';
+    final suggestion = names.length == 1 ? names.single : 'one of your Seekers';
+    Widget row(IconData icon, String title, String detail) => Container(
+      padding: const EdgeInsets.symmetric(vertical: 14),
+      decoration: BoxDecoration(
+        border: Border(top: BorderSide(color: ZyraColors.divider)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: ZyraColors.journeyGold.withValues(alpha: .5),
+              ),
+            ),
+            child: Icon(icon, color: ZyraColors.journeyGold, size: 20),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: ZyraText.body(size: 15)),
+                const SizedBox(height: 2),
+                Text(
+                  detail,
+                  style: ZyraText.body(
+                    size: 12.5,
+                    color: ZyraColors.foregroundMuted,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+    return SafeArea(
+      bottom: false,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(
+          ZyraPreviewSpacing.pageMargin,
+          16,
+          ZyraPreviewSpacing.pageMargin,
+          ZyraNavBarMetrics.contentBottomClearance(context),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _header(_networkTitle()),
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, bounds) => SingleChildScrollView(
+                  key: const ValueKey('guardian_network_locked_scroll'),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: bounds.maxHeight),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    key: const ValueKey(
+                                      'guardian_network_lock_circle',
+                                    ),
+                                    width: 102,
+                                    height: 102,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: ZyraColors.journeyGold
+                                            .withValues(alpha: .65),
+                                      ),
+                                    ),
+                                    child: const Icon(
+                                      Icons.lock_outline,
+                                      color: ZyraColors.journeyGold,
+                                      size: 34,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 18),
+                                  Text(
+                                    'NETWORK',
+                                    style: ZyraText.body(
+                                      size: 11,
+                                      color: ZyraColors.journeyGold,
+                                    ).copyWith(letterSpacing: 1.2),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    'Network is part\nof Guardian One',
+                                    textAlign: TextAlign.center,
+                                    style: ZyraText.heading(size: 24).copyWith(
+                                      fontWeight: FontWeight.w300,
+                                      height: 1.25,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          row(
+                            Icons.search,
+                            'Find other families',
+                            'Browse Seekers whose Guardians are open to it',
+                          ),
+                          row(
+                            Icons.person_add_outlined,
+                            'Introduce someone to $seeker',
+                            'Suggest a profile for $suggestion to look at',
+                          ),
+                          row(
+                            Icons.groups_outlined,
+                            'Connect with their Guardians',
+                            'Talk Guardian to Guardian before anything moves',
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 12, bottom: 14),
+                            child: Text(
+                              'Everything else you do for $seeker stays the same.',
+                              textAlign: TextAlign.center,
+                              style: ZyraText.body(
+                                size: 12.5,
+                                color: ZyraColors.foregroundMuted,
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            key: const ValueKey('guardian_network_membership'),
+                            onPressed: ZyraTapFeedback.onTap(
+                              context,
+                              () => onAction('membership'),
+                            ),
+                            style: TextButton.styleFrom(
+                              minimumSize: const Size(double.infinity, 52),
+                              backgroundColor: ZyraColors.primaryAction,
+                              shape: const StadiumBorder(),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            child: Text(
+                              'View Guardian One',
+                              style: ZyraText.body(
+                                size: 14,
+                                color: ZyraColors.onPrimaryAction,
+                              ).copyWith(fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _network(BuildContext context) {
+    if (!paid) return _lockedNetwork(context);
     final bottom = ZyraNavBarMetrics.contentBottomClearance(context);
     if (!linked) {
       return _viewport(

@@ -286,63 +286,11 @@ void main() {
         );
         expect(AppState.instance.plan, before);
         expect(tester.takeException(), isNull);
-        final compatibilityStore = find.byKey(
-          const ValueKey('membership-section-unlocks'),
-        );
-        expect(compatibilityStore, findsOneWidget);
-        await tester.ensureVisible(compatibilityStore);
-        await tester.pumpAndSettle();
-        await tester.tap(compatibilityStore);
-        await tester.pumpAndSettle();
-        expect(find.byType(CompatibilityUnlockStoreScreen), findsNothing);
-        expect(find.byType(CompatibilityUnlockStoreContent), findsOneWidget);
         expect(
-          find.byKey(const ValueKey('membership-review-selection')),
+          find.byKey(const ValueKey('membership-section-unlocks')),
           findsNothing,
         );
-        expect(find.text('See your overall match score'), findsNothing);
-        expect(
-          // LOCK 22 V1, UNITY_PASS/MASTERS/x02–x03: inline eight-page preview.
-          find.byKey(const ValueKey('draft_compatibility_store_preview')),
-          findsOneWidget,
-        );
-        expect(
-          find.byKey(const ValueKey('draft_compatibility_store_use_unlocks')),
-          findsNothing,
-        );
-        expect(find.text('Current membership'), findsNothing);
-        final compatibility = find.byKey(
-          const ValueKey('draft_compatibility_store_terms'),
-        );
-        await tester.scrollUntilVisible(
-          compatibility,
-          200,
-          scrollable: find
-              .descendant(
-                of: find.byKey(
-                  const ValueKey('draft_compatibility_store_viewport'),
-                ),
-                matching: find.byWidgetPredicate(
-                  (widget) =>
-                      widget is Scrollable &&
-                      widget.axisDirection == AxisDirection.down,
-                ),
-              )
-              .first,
-        );
-        await tester.ensureVisible(compatibility);
-        await tester.pumpAndSettle();
-        await tester.tap(compatibility);
-        await tester.pumpAndSettle();
-        expect(find.text('Terms of Service'), findsOneWidget);
-        expect(tester.takeException(), isNull);
-        expect(find.text('Not available yet'), findsOneWidget);
-        expect(tester.takeException(), isNull);
-        await tester.pageBack();
-        await tester.pumpAndSettle();
-        expect(find.text('£2.99'), findsOneWidget);
-        expect(find.text('£6.99'), findsOneWidget);
-        expect(find.text('£9.99'), findsOneWidget);
+        expect(find.byType(CompatibilityUnlockStoreContent), findsNothing);
         final current = find.byKey(
           const ValueKey('membership-section-current'),
         );

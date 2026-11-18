@@ -135,6 +135,27 @@ void _size(WidgetTester tester, {bool compact = false}) {
 
 Future<void> _reveal(WidgetTester tester, Finder target) async {
   if (target.evaluate().isEmpty) {
+    final membership = _key('membership-choices-scroll');
+    if (membership.evaluate().isNotEmpty) {
+      final vertical = find
+          .descendant(
+            of: membership,
+            matching: find.byWidgetPredicate(
+              (widget) =>
+                  widget is Scrollable &&
+                  widget.axisDirection == AxisDirection.down,
+            ),
+          )
+          .first;
+      tester.state<ScrollableState>(vertical).position.jumpTo(0);
+      await tester.pumpAndSettle();
+      if (target.evaluate().isNotEmpty) {
+        await Scrollable.ensureVisible(tester.element(target), alignment: .5);
+        await tester.pumpAndSettle();
+        expect(target.hitTestable(), findsOneWidget);
+        return;
+      }
+    }
     final owner = [
       'dev_controls_scroll',
       'concept-current-profile-scroll',
@@ -708,28 +729,26 @@ void main() {
   );
 
   testWidgets(
-    'protected Unlocks terms callbacks never revive after a section round trip',
+    'protected Membership terms callbacks never revive after a section round trip',
     (tester) async {
       final owner = _Owner();
       await owner.mount(tester);
       final before = _modelFacts(owner.latest);
       await _tap(tester, _key('concept_membership'));
-      await _tap(tester, _key('membership-section-unlocks'));
-      final terms = _key('draft_compatibility_store_terms');
-      expect(_key('draft_compatibility_store_use_unlocks'), findsNothing);
-      expect(find.text('Purchase terms'), findsOneWidget);
-      await _reveal(tester, terms);
-      final oldTerms = tester.widget<TextButton>(terms).onPressed!;
+      expect(_key('membership-section-unlocks'), findsNothing);
+      final terms = _key('membership-terms');
+      final oldTerms = tester.widget<IconButton>(terms).onPressed!;
+      await _tap(tester, _key('membership-section-seeker'));
+      oldTerms();
+      await tester.pumpAndSettle();
+      expect(find.text('Membership terms'), findsNothing);
       await _tap(tester, _key('membership-section-current'));
       oldTerms();
       await tester.pumpAndSettle();
-      expect(owner.latest.pages, ['membership']);
-      await _tap(tester, _key('membership-section-unlocks'));
-      oldTerms();
-      await tester.pumpAndSettle();
-      expect(owner.latest.pages, ['membership']);
+      expect(find.text('Membership terms'), findsNothing);
       await _tap(tester, terms);
-      expect(owner.latest.pages.last, 'settings_detail');
+      expect(find.text('Membership terms'), findsOneWidget);
+      expect(owner.latest.pages, ['membership']);
       expect(_modelFacts(owner.latest), before);
       expect(owner.roles, isEmpty);
     },

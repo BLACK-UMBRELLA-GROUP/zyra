@@ -1,0 +1,28 @@
+{
+  "queue": 119,
+  "authority": [
+    "Founder GO line119, 18 Nov 2026",
+    "AD-AIOS-149",
+    "AD-AIOS-115",
+    "OA-ZYRA-317"
+  ],
+  "brief": "PRODUCT/APPROVED/PROFILE_TAB/BRIEFS/FIX_BRIEF_2026-11-18_MEMBERSHIP_ROW.md",
+  "baseline_commit": "8ee1281c767a79e9f4450218e454b212882b425d",
+  "flutter": "3.44.2",
+  "mode": "guarded offline Flutter widget-test render, Founder preview",
+  "timestamp_utc": "2026-11-18T22:23:52.731725+00:00",
+  "live": false,
+  "iphone_install": false,
+  "migrations": [],
+  "source_sha256": {
+    "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart": "a99e7fdf399980c8d13a798e705e8e35e4a20073344c0e00dd72aec1e14be565",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart": "9c8cb4a487039a391ae2942d8118e1a3c0a88043d6542764914fee0cb327f2d1",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart": "5655e29809249c75ff2120c3a00a0ba45f38636762d6184c1bcd8e27762feaa9",
+    "SOURCE/lib/screens/subscription/upgrade_screen.dart": "71fd955861e28a1ecdbf72b043e8b3580aeaea6c75898931e9e72e11bd4c96cb",
+    "SOURCE/lib/widgets/zyra_focus_dashboard.dart": "63a3d011a7c915ef0f3821bfc0b32c5dcf5dc50dc6f0990a298d8f92b708b528",
+    "SOURCE/lib/widgets/zyra_membership_choices.dart": "e16b0eef2de0cbe37d4262e8dc159b6258d93fe52fed26e1572be9b865e38b4e"
+  },
+  "screenshots": "REPORTS/EVIDENCE/LINE119_2026-11-18/BUILT",
+  "verification": "LINE119_CHECKS.json",
+  "source_commit_resolution": "The source commit is recorded in ignored REPORTS/EVIDENCE/LINE119_2026-11-18/BUILD.json after committing; file hashes identify the tested source exactly."
+}

@@ -393,13 +393,12 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
     [
       _row(
         'membership',
-        data.membership,
+        'Membership',
         Icons.workspace_premium_outlined,
         ZyraConceptAccountAction.membership,
         detail: switch ((data.isOne, data.familyPlacePayer)) {
-          (false, _) => 'See One',
           (true, final String payer) when data.guardian => 'Paid by $payer',
-          _ => null,
+          _ => data.membership,
         },
       ),
       if (!data.guardian)
@@ -412,7 +411,7 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
         ),
       _row(
         'subscriptions',
-        'Profiles & Family places',
+        'Your places',
         Icons.card_membership,
         ZyraConceptAccountAction.subscriptions,
       ),
@@ -879,7 +878,6 @@ class ZyraConceptMembershipPresentation extends StatelessWidget {
     this.initialDraft,
     this.currentProducts,
     this.currentDetail,
-    this.unlocksContent,
     this.canAct,
     this.showBackButton = true,
     this.storeName = 'App Store',
@@ -893,7 +891,6 @@ class ZyraConceptMembershipPresentation extends StatelessWidget {
   final ZyraMembershipDraft? initialDraft;
   final Set<ZyraMembershipProduct>? currentProducts;
   final String? currentDetail;
-  final Widget? unlocksContent;
   final bool Function()? canAct;
   final bool showBackButton;
   final String storeName;
@@ -922,28 +919,29 @@ class ZyraConceptMembershipPresentation extends StatelessWidget {
             builder: (_) => const ZyraMembershipTermsSheet(),
           );
         },
-        unlocksContent: unlocksContent,
-        currentContent: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (data.isOne) ...[
-              _MembershipAction(
-                key: const ValueKey('concept_cancel_membership'),
-                icon: Icons.cancel_outlined,
-                title: 'Cancel membership',
-                detail: data.guardian
-                    ? 'If billed to you, manage or cancel securely in $storeName.'
-                    : 'Turn off renewal securely in $storeName.',
-                destructive: true,
-                onTap: () {
-                  if (canAct?.call() ?? true) {
-                    onAction(ZyraConceptAccountAction.cancelMembership);
-                  }
-                },
-              ),
-            ],
-          ],
-        ),
+        currentContent: data.isOne
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (data.isOne) ...[
+                    _MembershipAction(
+                      key: const ValueKey('concept_cancel_membership'),
+                      icon: Icons.cancel_outlined,
+                      title: 'Cancel membership',
+                      detail: data.guardian
+                          ? 'If billed to you, manage or cancel securely in $storeName.'
+                          : 'Turn off renewal securely in $storeName.',
+                      destructive: true,
+                      onTap: () {
+                        if (canAct?.call() ?? true) {
+                          onAction(ZyraConceptAccountAction.cancelMembership);
+                        }
+                      },
+                    ),
+                  ],
+                ],
+              )
+            : null,
       ),
     ),
   );

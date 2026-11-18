@@ -1,0 +1,141 @@
+{
+  "queue": 119,
+  "evidence_root": "REPORTS/EVIDENCE/LINE119_2026-11-18",
+  "files": [
+    {
+      "path": "VISUAL_QA.json",
+      "bytes": 7049,
+      "sha256": "5fd1efdaf625847ae0f17de6d50aa4e6efb40b398ca158a0f357cd08e4acbf98"
+    },
+    {
+      "path": "COMPARISONS/seeker_basic_profile.png",
+      "bytes": 251106,
+      "sha256": "8f94df99f52829898efbe77b358091183d37608cba42501c10cb26d0ee7b2364"
+    },
+    {
+      "path": "COMPARISONS/guardian_one_profile.png",
+      "bytes": 221197,
+      "sha256": "674c434d46c5838e5198094ac3fd090bd723e94af6c2333a6f6d6824c8f88b63"
+    },
+    {
+      "path": "COMPARISONS/guardian_basic_network.png",
+      "bytes": 308037,
+      "sha256": "0059c42516117889a66e28a1ac57e8eb4da3fbc0680d14f27c21285d7f28ac26"
+    },
+    {
+      "path": "COMPARISONS/guardian_basic_my_zyra.png",
+      "bytes": 255148,
+      "sha256": "c69bd53f5f14be783bb092c7ac2ca7d34b9b8a3f8594dd36c03dbf23f82bc25b"
+    },
+    {
+      "path": "COMPARISONS/seeker_one_profile.png",
+      "bytes": 248776,
+      "sha256": "e59b41062145c1c9fef2d69b6d06cc0a1b548b132dd809eea00cf66e5097b95c"
+    },
+    {
+      "path": "COMPARISONS/guardian_basic_profile.png",
+      "bytes": 222648,
+      "sha256": "599d4b0e9a30e95fc6fc89b52a18904b73439a48b438b68b818563680acaf7fb"
+    },
+    {
+      "path": "COMPARISONS/CONTACT_SHEET.png",
+      "bytes": 418668,
+      "sha256": "2651afb12a6791315414aaf7a2b9bd6faa12939e106f81d603000a01bb942567"
+    },
+    {
+      "path": "BUILT/seeker_current_membership.png",
+      "bytes": 293818,
+      "sha256": "43a974240166ca5ccbb1441bff71ab45d3b1306cb6a620298675c54ec2fb270d"
+    },
+    {
+      "path": "BUILT/seeker_basic_profile.png",
+      "bytes": 343809,
+      "sha256": "b10dd98ae8a75d1befef9343a2df79b41cbc190361ba6bdf4e20b9efeb75ee8c"
+    },
+    {
+      "path": "BUILT/rows_line119_seeker_one.json",
+      "bytes": 544,
+      "sha256": "9d6d9bfd06893f3a8747a0652c5cae64974ab9cc298206fd904459e90dbf6769"
+    },
+    {
+      "path": "BUILT/guardian_one_profile.png",
+      "bytes": 310063,
+      "sha256": "68834b0e0061f157709bbe6b9cd38067fc3715bef84c04a1f2b461a39a0629f2"
+    },
+    {
+      "path": "BUILT/guardian_basic_network.png",
+      "bytes": 438574,
+      "sha256": "c78dc61acba187479861ce8014bfbdbe31d0f3c0cb1409d735e6e14d43ca2a2d"
+    },
+    {
+      "path": "BUILT/rows_line119_guardian_one.json",
+      "bytes": 556,
+      "sha256": "4daa395c40b5792505f9d678339144648b522d5d378b712f87b958afd1633075"
+    },
+    {
+      "path": "BUILT/rows_line119_seeker_basic.json",
+      "bytes": 254,
+      "sha256": "e0398bbc4bc7d67e55029f32647cede1c5b24377ac4dbf8586726360f30c68cc"
+    },
+    {
+      "path": "BUILT/guardian_basic_my_zyra.png",
+      "bytes": 382341,
+      "sha256": "70298658b76bbae4701f3f0d50b8531bee9b897a02b2620650712ffce2ad1a4c"
+    },
+    {
+      "path": "BUILT/seeker_one_profile.png",
+      "bytes": 340431,
+      "sha256": "4074fa5542973e82005a53d24a8042f53bcfa12c252d9f0e0f0bbb360693f6f2"
+    },
+    {
+      "path": "BUILT/guardian_basic_profile.png",
+      "bytes": 313186,
+      "sha256": "fcb2aa3c8866cf3421ec0ac973808c0f02e34170763c176d2fda3cc65f2d26cd"
+    },
+    {
+      "path": "BUILT/rows_line119_guardian_basic.json",
+      "bytes": 776,
+      "sha256": "b34b486d8e95e8a07d4d064d714b24f532b450ac561b0f4222585c5342cf8ef5"
+    },
+    {
+      "path": "BUILT/guardian_current_membership.png",
+      "bytes": 300597,
+      "sha256": "d1eaa373df303b799cc3032bc97309210f96b16edade3c2e50be3772da3fed81"
+    },
+    {
+      "path": "REFERENCE/seeker_basic_profile.png",
+      "bytes": 421650,
+      "sha256": "a4a34dae5f40993a191b1ecd8a53b98445ab9e938e69c18998922ab7ad0a77a1"
+    },
+    {
+      "path": "REFERENCE/CAPTURE.json",
+      "bytes": 3313,
+      "sha256": "d3468013320a872819aee1698bb1f196d426b5f9fd271f6794c8989a117884a5"
+    },
+    {
+      "path": "REFERENCE/guardian_one_profile.png",
+      "bytes": 376287,
+      "sha256": "7dcb5bf7bf91d4ecaf35385c3a8004184f5285e8035b8e4db618cb43f9cd14fb"
+    },
+    {
+      "path": "REFERENCE/guardian_basic_network.png",
+      "bytes": 516023,
+      "sha256": "9ec68f03cb6703df77ebd52ee21bfcdf2a034c2a5554be6c0f03f4140cb667c0"
+    },
+    {
+      "path": "REFERENCE/guardian_basic_my_zyra.png",
+      "bytes": 457726,
+      "sha256": "0100d5c2093220db3b71a0d9470be1ac7f0ea3e626201ac2b4b5bd8ef4c1385d"
+    },
+    {
+      "path": "REFERENCE/seeker_one_profile.png",
+      "bytes": 418946,
+      "sha256": "a2737f4ca74de6f7385c7e4fd1142370c9704c9eecc90ccb7e0693104a1d32e0"
+    },
+    {
+      "path": "REFERENCE/guardian_basic_profile.png",
+      "bytes": 378105,
+      "sha256": "26901e314aa56c14a8237605b1650af8c4cc73d6f39f2bbac75a69a3c976a5e2"
+    }
+  ]
+}

@@ -17,7 +17,8 @@ Future<ZyraFocusDashboard> _mount(
       home: Scaffold(
         body: ZyraGuardianTabsPresentation(
           seekerGender: 'male',
-          state: state ??
+          state:
+              state ??
               ZyraGuardianTabsState(
                 const ZyraGuardianTabsSnapshot(
                   connection: ZyraGuardianConnection.pending,
@@ -132,6 +133,23 @@ void main() {
     expect(dashboard.tiles[2].locked, isTrue);
     expect(dashboard.tiles[1].status, 'Guardian One');
     expect(dashboard.tiles[2].status, 'Guardian One');
+    for (final id in ['guardian_connect', 'guardian_introductions']) {
+      final badge = find.byKey(ValueKey('${id}_lock_badge'));
+      expect(tester.getSize(badge), const Size(18, 18));
+      expect(
+        find.descendant(of: badge, matching: find.byIcon(Icons.lock_outline)),
+        findsOneWidget,
+      );
+      final status = tester.widget<Text>(
+        find.descendant(
+          of: find.byKey(ValueKey(id)),
+          matching: find.text('Guardian One'),
+        ),
+      );
+      expect(status.maxLines, 1);
+      expect(status.softWrap, false);
+      expect(status.style!.fontSize, 10.5);
+    }
     dashboard.tiles[1].onTap();
     dashboard.tiles[2].onTap();
     expect(actions, ['membership', 'membership']);

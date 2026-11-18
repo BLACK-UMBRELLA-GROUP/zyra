@@ -247,8 +247,10 @@ void main() {
         ),
         findsOneWidget,
       );
-      expect(find.text('Profiles & Family places'), findsOneWidget);
-      expect(find.text('See One'), role.one ? findsNothing : findsOneWidget);
+      expect(find.text('Your places'), findsOneWidget);
+      expect(find.text('Membership'), findsOneWidget);
+      expect(find.text(role.label), findsOneWidget);
+      expect(find.text('See One'), findsNothing);
       for (final id in [
         if (!role.guardian) ...[
           'concept_preview_profile',

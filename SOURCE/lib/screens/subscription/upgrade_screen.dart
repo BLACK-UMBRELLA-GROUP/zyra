@@ -607,9 +607,6 @@ class _UpgradeScreenState extends State<UpgradeScreen> {
         });
       },
       currentContent: _membershipCurrent(fresh),
-      unlocksContent: CompatibilityUnlockStoreContent(
-        telemetrySurface: widget.telemetrySurface,
-      ),
       onTerms: () => _openMembershipTerms(fresh),
     );
   }

@@ -833,7 +833,7 @@ void main() {
             'Manage photos',
           ],
           if (guardian) 'Your Seekers',
-          'Profiles & Family places',
+          'Your places',
           'Safety & advice',
           'Invite someone to ZYRA',
           'Settings',
@@ -1277,7 +1277,7 @@ void main() {
   }
 
   testWidgets(
-    'Membership has Current controls, inline Unlocks and separate Peek plan sections',
+    'Membership has Current controls and four separate plan sections',
     (tester) async {
       final network = _NoNetwork();
       await HttpOverrides.runWithHttpOverrides(() async {
@@ -1287,9 +1287,6 @@ void main() {
             data: _account,
             initialDraft: ZyraMembershipDraft(
               section: ZyraMembershipSection.current,
-            ),
-            unlocksContent: const ZyraDraftCompatibilityStorePresentation(
-              balance: 1,
             ),
             onAction: (_) {},
             onDraftChanged: (_) {},
@@ -1324,18 +1321,16 @@ void main() {
         expect(find.text('Monthly total'), findsOneWidget);
         expect(find.text('0% saving'), findsOneWidget);
         expect(find.text('Review selection'), findsOneWidget);
-        await tester.ensureVisible(_key('membership-section-unlocks'));
-        await tester.pumpAndSettle();
-        await tester.tap(_key('membership-section-unlocks'));
-        await tester.pumpAndSettle();
+        expect(_key('membership-section-unlocks'), findsNothing);
         expect(
           find.byType(ZyraDraftCompatibilityStorePresentation),
-          findsOneWidget,
+          findsNothing,
         );
+        await tester.tap(_key('membership-section-guardian'));
+        await tester.pumpAndSettle();
+        expect(_key('membership-halo-guardianOne'), findsOneWidget);
         expect(_key('membership-current'), findsNothing);
-        expect(_key('membership-review-selection'), findsNothing);
         expect(_key('concept_cancel_membership'), findsNothing);
-        expect(_key('concept_compatibility'), findsNothing);
         await tester.ensureVisible(_key('membership-terms'));
         await tester.pumpAndSettle();
         await tester.tap(_key('membership-terms'));

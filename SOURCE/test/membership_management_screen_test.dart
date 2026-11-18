@@ -101,6 +101,20 @@ void main() {
 
   Future<void> tapKey(WidgetTester tester, String key) async {
     final finder = find.byKey(ValueKey(key));
+    if (finder.evaluate().isEmpty) {
+      final scroll = find
+          .descendant(
+            of: find.byKey(const ValueKey('membership-choices-scroll')),
+            matching: find.byWidgetPredicate(
+              (widget) =>
+                  widget is Scrollable &&
+                  widget.axisDirection == AxisDirection.down,
+            ),
+          )
+          .first;
+      tester.state<ScrollableState>(scroll).position.jumpTo(0);
+      await tester.pumpAndSettle();
+    }
     await tester.ensureVisible(finder);
     await tester.pumpAndSettle();
     await tester.tap(finder);
@@ -243,27 +257,23 @@ void main() {
   );
 
   testWidgets(
-    'inline Unlocks Terms owner cannot revive after leaving the section',
+    'Membership terms owner cannot revive after leaving the section',
     (tester) async {
       await pump(tester);
-      await tapKey(tester, 'membership-section-unlocks');
+      expect(
+        find.byKey(const ValueKey('membership-section-unlocks')),
+        findsNothing,
+      );
       final oldTerms = tester
-          .widget<ZyraDraftCompatibilityStorePresentation>(
-            find.byType(ZyraDraftCompatibilityStorePresentation),
-          )
-          .onTerms!;
+          .widget<IconButton>(find.byKey(const ValueKey('membership-terms')))
+          .onPressed!;
+      await tapKey(tester, 'membership-section-seeker');
       await tapKey(tester, 'membership-section-current');
-      await tapKey(tester, 'membership-section-unlocks');
       oldTerms();
       await tester.pumpAndSettle();
-      expect(find.text('Terms of Service'), findsNothing);
-      final current = tester.widget<ZyraDraftCompatibilityStorePresentation>(
-        find.byType(ZyraDraftCompatibilityStorePresentation),
-      );
-      expect(current.balance, isNull);
-      await tapKey(tester, 'draft_compatibility_store_terms');
-      expect(find.text('Terms of Service'), findsOneWidget);
-      expect(find.text('Not available yet'), findsOneWidget);
+      expect(find.byType(ZyraMembershipTermsSheet), findsNothing);
+      await tapKey(tester, 'membership-terms');
+      expect(find.byType(ZyraMembershipTermsSheet), findsOneWidget);
       expect(AppState.instance.plan, ZyraPlan.basic);
     },
   );
@@ -678,7 +688,7 @@ void main() {
     );
     expect(source, isNot(contains("ValueKey('membership-basket-summary')")));
     expect(source, contains('currentContent:'));
-    expect(source, contains('unlocksContent:'));
+    expect(source, isNot(contains('unlocksContent:')));
     expect(source, contains('onTerms:'));
     expect(source, isNot(contains('_MembershipInfoTile')));
   });
@@ -730,7 +740,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('Membership Unlocks pill renders the held store inline', (
+  testWidgets('Unlocks remains a separate held store outside Membership', (
     tester,
   ) async {
     AppState.instance.plan = ZyraPlan.one;
@@ -740,13 +750,17 @@ void main() {
       choices(tester).initialDraft!.section,
       ZyraMembershipSection.current,
     );
-    await tapKey(tester, 'membership-section-unlocks');
     expect(
-      choices(tester).initialDraft!.section,
-      ZyraMembershipSection.unlocks,
+      find.byKey(const ValueKey('membership-section-unlocks')),
+      findsNothing,
     );
-    expect(find.byType(CompatibilityUnlockStoreScreen), findsNothing);
-    expect(find.byType(CompatibilityUnlockStoreContent), findsOneWidget);
+    expect(find.byType(CompatibilityUnlockStoreContent), findsNothing);
+    await tester.pumpWidget(
+      const MaterialApp(home: CompatibilityUnlockStoreScreen()),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byType(CompatibilityUnlockStoreScreen), findsOneWidget);
+    expect(find.byType(CompatibilityUnlockStoreContent), findsNothing);
     expect(
       tester
           .widget<ZyraDraftCompatibilityStorePresentation>(

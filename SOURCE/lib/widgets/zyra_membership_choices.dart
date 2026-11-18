@@ -28,7 +28,6 @@ class ZyraMembershipChoices extends StatefulWidget {
     this.onBack,
     this.showBackButton = true,
     this.currentContent,
-    this.unlocksContent,
     this.onTerms,
   }) : currentProducts = Set.unmodifiable(currentProducts);
 
@@ -43,7 +42,6 @@ class ZyraMembershipChoices extends StatefulWidget {
   final VoidCallback? onBack;
   final bool showBackButton;
   final Widget? currentContent;
-  final Widget? unlocksContent;
   final VoidCallback? onTerms;
 
   @override
@@ -61,9 +59,16 @@ class _ZyraMembershipChoicesState extends State<ZyraMembershipChoices> {
   @override
   void initState() {
     super.initState();
-    _draft = widget.initialDraft ?? ZyraMembershipDraft();
+    _draft = _visibleDraft(widget.initialDraft ?? ZyraMembershipDraft());
     _createControllers();
   }
+
+  // Older preview checkpoints may name the retired Membership Unlocks tab.
+  // Restore them on Current; Unlocks remains its own Profile destination.
+  ZyraMembershipDraft _visibleDraft(ZyraMembershipDraft draft) =>
+      draft.section == ZyraMembershipSection.unlocks
+      ? draft.copyWith(section: ZyraMembershipSection.current)
+      : draft;
 
   void _createControllers() {
     _controllerRevision++;
@@ -88,7 +93,7 @@ class _ZyraMembershipChoicesState extends State<ZyraMembershipChoices> {
     if (incoming != oldWidget.initialDraft &&
         incoming != null &&
         incoming != _draft) {
-      _draft = incoming;
+      _draft = _visibleDraft(incoming);
       _seekerController.dispose();
       _guardianController.dispose();
       _createControllers();
@@ -177,106 +182,156 @@ class _ZyraMembershipChoicesState extends State<ZyraMembershipChoices> {
       currentProducts: widget.currentProducts,
       paymentHistory: widget.paymentHistory,
     );
-    return SingleChildScrollView(
+    final current = _draft.section == ZyraMembershipSection.current;
+    return CustomScrollView(
       key: const ValueKey('membership-choices-scroll'),
       controller: _scrollController,
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 36),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (widget.showBackButton && widget.onBack != null) ...[
-            _BackAction(
-              onPressed: enabled
-                  ? () {
-                      if (_allows(epoch)) widget.onBack?.call();
-                    }
-                  : null,
-            ),
-            const SizedBox(height: 18),
-          ],
-          Row(
-            children: [
-              Expanded(child: Text('Membership', style: ZyraText.pageTitle())),
-              const SizedBox(width: 8),
-              IconButton(
-                key: const ValueKey('membership-terms'),
-                tooltip: 'Membership terms',
-                onPressed: ZyraTapFeedback.onTap(
-                  context,
-                  enabled && widget.onTerms != null
-                      ? () {
-                          if (_allows(epoch)) widget.onTerms?.call();
-                        }
-                      : null,
-                ),
-                color: ZyraColors.journeyGold,
-                constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-                icon: const Icon(Icons.description_outlined),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          _MembershipSectionSlider(
-            section: _draft.section,
-            onSelected: enabled
-                ? (section) => _change(epoch, _draft.copyWith(section: section))
-                : null,
-          ),
-          const SizedBox(height: 18),
-          if (_draft.section == ZyraMembershipSection.current) ...[
-            _MembershipPanel(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  key: const ValueKey('membership-current'),
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+          sliver: SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (widget.showBackButton && widget.onBack != null) ...[
+                  _BackAction(
+                    onPressed: enabled
+                        ? () {
+                            if (_allows(epoch)) widget.onBack?.call();
+                          }
+                        : null,
+                  ),
+                  const SizedBox(height: 18),
+                ],
+                Row(
                   children: [
-                    Text(
-                      widget.currentSummary,
-                      style: ZyraText.heading(size: 23),
+                    Expanded(
+                      child: Text('Membership', style: ZyraText.pageTitle()),
                     ),
-                    if (widget.currentDetail?.isNotEmpty ?? false) ...[
-                      const SizedBox(height: 8),
-                      Text(widget.currentDetail!, style: ZyraText.subtext()),
-                    ],
+                    const SizedBox(width: 8),
+                    IconButton(
+                      key: const ValueKey('membership-terms'),
+                      tooltip: 'Membership terms',
+                      onPressed: ZyraTapFeedback.onTap(
+                        context,
+                        enabled && widget.onTerms != null
+                            ? () {
+                                if (_allows(epoch)) widget.onTerms?.call();
+                              }
+                            : null,
+                      ),
+                      color: ZyraColors.journeyGold,
+                      constraints: const BoxConstraints(
+                        minWidth: 48,
+                        minHeight: 48,
+                      ),
+                      icon: const Icon(Icons.description_outlined),
+                    ),
                   ],
                 ),
+                const SizedBox(height: 16),
+                _MembershipSectionSlider(
+                  section: _draft.section,
+                  onSelected: enabled
+                      ? (section) =>
+                            _change(epoch, _draft.copyWith(section: section))
+                      : null,
+                ),
+                const SizedBox(height: 18),
+              ],
+            ),
+          ),
+        ),
+        if (current)
+          SliverLayoutBuilder(
+            builder: (context, constraints) => SliverPadding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+              sliver: SliverToBoxAdapter(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: math.max(
+                      0,
+                      constraints.viewportMainAxisExtent -
+                          constraints.precedingScrollExtent -
+                          16,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _MembershipPanel(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            key: const ValueKey('membership-current'),
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                widget.currentSummary,
+                                style: ZyraText.heading(size: 23),
+                              ),
+                              if (widget.currentDetail?.isNotEmpty ??
+                                  false) ...[
+                                const SizedBox(height: 8),
+                                Text(
+                                  widget.currentDetail!,
+                                  style: ZyraText.subtext(),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                      ),
+                      if (widget.currentContent != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: widget.currentContent!,
+                        ),
+                    ],
+                  ),
+                ),
               ),
             ),
-            if (widget.currentContent != null) ...[
-              const SizedBox(height: 20),
-              widget.currentContent!,
-            ],
-          ] else if (_draft.section == ZyraMembershipSection.unlocks) ...[
-            if (widget.unlocksContent != null) widget.unlocksContent!,
-          ] else ...[
-            if (_draft.section == ZyraMembershipSection.family)
-              _FamilyCard(
-                draft: _draft,
-                onChanged: enabled ? (next) => _change(epoch, next) : null,
-              )
-            else
-              _personalPager(context, epoch, enabled),
-            const SizedBox(height: 18),
-            _GoldButton(
-              key: const ValueKey('membership-review-selection'),
-              label: 'Review selection',
-              icon: Icons.arrow_forward_rounded,
-              onPressed: enabled && review != null
-                  ? () {
-                      if (!_allows(epoch)) return;
-                      final fresh = ZyraMembershipReviewRequest.fromDraft(
-                        _draft,
-                        currentProducts: widget.currentProducts,
-                        paymentHistory: widget.paymentHistory,
-                      );
-                      if (fresh != null) widget.onReview(fresh);
-                    }
-                  : null,
+          )
+        else
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 36),
+            sliver: SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (_draft.section == ZyraMembershipSection.family)
+                    _FamilyCard(
+                      draft: _draft,
+                      onChanged: enabled
+                          ? (next) => _change(epoch, next)
+                          : null,
+                    )
+                  else
+                    _personalPager(context, epoch, enabled),
+                  const SizedBox(height: 18),
+                  _GoldButton(
+                    key: const ValueKey('membership-review-selection'),
+                    label: 'Review selection',
+                    icon: Icons.arrow_forward_rounded,
+                    onPressed: enabled && review != null
+                        ? () {
+                            if (!_allows(epoch)) return;
+                            final fresh = ZyraMembershipReviewRequest.fromDraft(
+                              _draft,
+                              currentProducts: widget.currentProducts,
+                              paymentHistory: widget.paymentHistory,
+                            );
+                            if (fresh != null) widget.onReview(fresh);
+                          }
+                        : null,
+                  ),
+                ],
+              ),
             ),
-          ],
-        ],
-      ),
+          ),
+      ],
     );
   }
 
@@ -526,7 +581,6 @@ class _MembershipSectionSlider extends StatefulWidget {
 class _MembershipSectionSliderState extends State<_MembershipSectionSlider> {
   static const _sections = [
     ZyraMembershipSection.current,
-    ZyraMembershipSection.unlocks,
     ZyraMembershipSection.seeker,
     ZyraMembershipSection.guardian,
     ZyraMembershipSection.family,
@@ -657,7 +711,7 @@ class _SectionPill extends StatelessWidget {
               : ZyraColors.foregroundSecondary,
           backgroundColor: selected ? ZyraColors.surfaceEmphasisFill : null,
           minimumSize: const Size(44, 44),
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           side: BorderSide(
             color: selected ? ZyraColors.journeyGold : ZyraColors.surfaceBorder,
           ),

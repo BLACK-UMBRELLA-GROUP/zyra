@@ -1,0 +1,73 @@
+{
+  "queue": 119,
+  "result": "Preview verification passed; five full-run failures passed final-source retries",
+  "scoped": {
+    "command": "guarded no_git_driver.mjs flutter test --no-pub (17 suites)",
+    "initial_passed": 261,
+    "initial_failures": 4,
+    "failure_reason": "Spacing test expected the replaced Basic Network card. Updated to the full-page gate, linked and unlinked.",
+    "corrected_spacing_suite_passed": 16,
+    "distinct_scoped_tests_after_correction": 265
+  },
+  "analyze": {
+    "command": "guarded no_git_driver.mjs flutter analyze --no-pub",
+    "result": "No issues found"
+  },
+  "format": {
+    "files": 19,
+    "result": "No formatting changes required"
+  },
+  "protected_driver": {
+    "flutter": "3.44.2",
+    "sdk_pins": 5,
+    "immediate_execution_denial": "PASS",
+    "inherited_execution_denial": "PASS"
+  },
+  "measurements": {
+    "Profile": "All four role/plan combinations; existing row order and destinations, plan/payer value, Your places, no extra descriptions.",
+    "Membership": "Four one-line tabs fit at 393 and 430 pt; horizontal accessibility fallback at 320 pt or Larger Text. Current cancellation ends 16 pt before the bottom safe area with 20 pt side margins. Larger content remains scrollable.",
+    "Network": "102 pt circle per explicit brief; full-width CTA, 20 pt side margins and 16 pt above navigation. Zero/one/multiple linked names checked.",
+    "locked_tiles": "18 pt icon-corner badge; Guardian One stays on one line in shared status size and colour.",
+    "navigation": "All four role/plan combinations share the Seeker icon ordering and glyphs."
+  },
+  "visual": {
+    "screenshots": 8,
+    "reference": "Preserved prototype V245, matching the V235\u2013V243 changes named in the brief.",
+    "evidence_root": "REPORTS/EVIDENCE/LINE119_2026-11-18",
+    "review": "Independent source and screenshot review completed before commit.",
+    "intentional_difference": "Explicit brief circle102pt overrides prototype CSS88pt. Existing shadows, sample counts and missing prototype Seeker photo are outside this fix.",
+    "headline": "Final Network capture matches the prototype balanced two-line headline; no wording change."
+  },
+  "public_check": {
+    "files": 28,
+    "hits": 88,
+    "byte_identical_preexisting_lines": 79,
+    "remaining": "Nine geometry/layout false positives in new text. Inherited catalog prices and existing private-document route pointers contain no new private material; reviewed under AD-AIOS-146.",
+    "secret_scan": "Staged scan PASS, redacted; outgoing origin/main..HEAD scan follows the commit and is recorded in the daily task note."
+  },
+  "migrations": [],
+  "backend_apply": false,
+  "live": false,
+  "iphone_install": false,
+  "remaining": {
+    "Founder_phone_observation": "PENDING; line117, applicable Founder GO",
+    "visual_acceptance": "ZYRA Claude / Founder",
+    "live_members": "OA-ZYRA-317"
+  },
+  "full_suite": {
+    "command": "guarded no_git_driver.mjs flutter test --no-pub --flavor offline-ci",
+    "passed": 7349,
+    "skipped": 122,
+    "initial_failures": 5,
+    "failures": [
+      "First Requests test: transient missing framework shaders/ink_sparkle.frag asset",
+      "Four Basic Network spacing cases compiled before the final headline assertion change"
+    ],
+    "retry_command": "Same guarded offline-ci driver: requests_guardians_lock2_shell_test, lock24_tab_spacing_test, guardian_network_membership_gate_test, guardian_focus_dashboard_test, zyra_focus_dashboard_test, line119_membership_capture_test",
+    "retry_passed": 56,
+    "retry_failures": 0,
+    "unique_passed_after_retries": 7354,
+    "unresolved_failures": 0
+  },
+  "timestamp_utc": "2026-11-18T22:23:52.726726+00:00"
+}

@@ -14,14 +14,12 @@ const _guardianBasic = ZyraMembershipProduct.guardianBasic;
 const _paid = ZyraMembershipPaymentHistory.paidBefore;
 const _sections = [
   ZyraMembershipSection.current,
-  ZyraMembershipSection.unlocks,
   ZyraMembershipSection.seeker,
   ZyraMembershipSection.guardian,
   ZyraMembershipSection.family,
 ];
 const _sectionLabels = {
   ZyraMembershipSection.current: 'Current',
-  ZyraMembershipSection.unlocks: 'Compatibility Unlocks',
   ZyraMembershipSection.seeker: 'Seeker',
   ZyraMembershipSection.guardian: 'Guardian',
   ZyraMembershipSection.family: 'ZYRA Family',
@@ -40,7 +38,6 @@ void main() {
     ValueChanged<ZyraMembershipReviewRequest>? onReview,
     VoidCallback? onTerms,
     Widget? currentContent,
-    Widget? unlocksContent,
     bool Function()? canAct,
     double width = 430,
     double height = 950,
@@ -72,7 +69,6 @@ void main() {
                 onReview: onReview ?? (_) {},
                 onTerms: onTerms ?? () {},
                 currentContent: currentContent,
-                unlocksContent: unlocksContent,
                 canAct: canAct,
               ),
             ),
@@ -94,6 +90,20 @@ void main() {
   }
 
   Future<void> tapKey(WidgetTester tester, String key) async {
+    if (keyed(key).evaluate().isEmpty) {
+      tester
+          .state<ScrollableState>(
+            find
+                .descendant(
+                  of: keyed('membership-choices-scroll'),
+                  matching: find.byType(Scrollable),
+                )
+                .first,
+          )
+          .position
+          .jumpTo(0);
+      await tester.pumpAndSettle();
+    }
     await tester.ensureVisible(keyed(key));
     await tester.tap(keyed(key));
     await tester.pumpAndSettle();
@@ -180,7 +190,7 @@ void main() {
   );
 
   testWidgets(
-    'one swipeable pill strip separates information from role and Family choices',
+    'four Membership pills fit one line and retain role and Family choices',
     (tester) async {
       ZyraMembershipDraft? changed;
       final original = ZyraMembershipDraft(
@@ -196,14 +206,13 @@ void main() {
         draft: original,
         onChanged: (draft) => changed = draft,
         currentContent: const Text('Current-only account controls'),
-        unlocksContent: const Text('Unlocks-only store content'),
       );
       await tester.pumpAndSettle();
       final strip = keyed('membership-section-slider');
       expect(strip, findsOneWidget);
       final position = sectionPosition(tester);
       expect(position.axis, Axis.horizontal);
-      expect(position.maxScrollExtent, greaterThan(0));
+      expect(position.maxScrollExtent, greaterThanOrEqualTo(0));
       final pills = [
         for (final section in _sections)
           tester.getRect(keyed('membership-section-${section.name}')),
@@ -218,19 +227,8 @@ void main() {
       expect(find.text('Current-only account controls'), findsOneWidget);
       expect(keyed('membership-review-selection'), findsNothing);
       expect(find.byType(PageView), findsNothing);
-      final beforeScroll = position.pixels;
-      await tester.drag(strip, const Offset(-180, 0));
-      await tester.pumpAndSettle();
-      expect(position.pixels, greaterThan(beforeScroll));
-      expect(changed, isNull, reason: 'Scrolling is not a section selection.');
-      expect(keyed('membership-current'), findsOneWidget);
-      await tapKey(tester, 'membership-section-unlocks');
-      expect(keyed('membership-current'), findsNothing);
-      expect(find.text('Current-only account controls'), findsNothing);
-      expect(find.text('Unlocks-only store content'), findsOneWidget);
-      expect(keyed('membership-review-selection'), findsNothing);
-      expect(find.byType(PageView), findsNothing);
-      expect(changed!.selectedProducts, original.selectedProducts);
+      expect(keyed('membership-section-unlocks'), findsNothing);
+      expect(changed, isNull);
       await tapKey(tester, 'membership-section-guardian');
       expect(find.text('2 / 2'), findsOneWidget);
       expect(keyed('membership-review-selection'), findsOneWidget);
@@ -256,7 +254,7 @@ void main() {
     for (final initial in const [
       ZyraMembershipSection.guardian,
       ZyraMembershipSection.family,
-      ZyraMembershipSection.unlocks,
+      ZyraMembershipSection.current,
     ]) {
       testWidgets(
         'initial ${initial.name} pill is visible in one full-size strip at ${viewport.size.width}/${viewport.scale}',
@@ -279,7 +277,6 @@ void main() {
               scale: viewport.scale,
               draft: original,
               currentContent: const Text('Current-only account controls'),
-              unlocksContent: const Text('Unlocks-only store content'),
               onChanged: changes.add,
             );
             await tester.pumpAndSettle();
@@ -294,7 +291,7 @@ void main() {
             }
             final position = sectionPosition(tester);
             expect(position.axis, Axis.horizontal);
-            expect(position.maxScrollExtent, greaterThan(0));
+            expect(position.maxScrollExtent, greaterThanOrEqualTo(0));
             final beforeScroll = position.pixels;
             final beforePage = initial == ZyraMembershipSection.guardian
                 ? tester
@@ -304,7 +301,9 @@ void main() {
                 : null;
             await tester.drag(strip, Offset(beforeScroll > 1 ? 180 : -180, 0));
             await tester.pumpAndSettle();
-            expect(position.pixels, isNot(closeTo(beforeScroll, .1)));
+            if (position.maxScrollExtent > 0) {
+              expect(position.pixels, isNot(closeTo(beforeScroll, .1)));
+            }
             expect(changes, isEmpty);
             expect(selected(tester, initial), isTrue);
             if (beforePage != null) {
@@ -317,7 +316,10 @@ void main() {
               expect(find.text('5% saving'), findsOneWidget);
               expect(keyed('membership-family-total'), findsOneWidget);
             } else {
-              expect(find.text('Unlocks-only store content'), findsOneWidget);
+              expect(
+                find.text('Current-only account controls'),
+                findsOneWidget,
+              );
               expect(keyed('membership-review-selection'), findsNothing);
             }
             double? baseline;
@@ -418,7 +420,7 @@ void main() {
       await tester.pump();
       expect(opened, 0);
       allowed = true;
-      await tapKey(tester, 'membership-section-unlocks');
+      await tapKey(tester, 'membership-section-seeker');
       old();
       await tester.pump();
       expect(opened, 0);
@@ -429,7 +431,7 @@ void main() {
   );
 
   for (final size in [const Size(393, 852), const Size(320, 568)]) {
-    testWidgets('Current and Unlocks keep controls reachable at $size', (
+    testWidgets('Current pins controls above the bottom safe margin at $size', (
       tester,
     ) async {
       await pumpChoices(
@@ -443,17 +445,23 @@ void main() {
           onPressed: () {},
           child: const Text('Cancel membership'),
         ),
-        unlocksContent: const Text('Unlocks-only store content'),
       );
       await tester.ensureVisible(keyed('current-only-cancel'));
       await tester.pumpAndSettle();
       expect(keyed('current-only-cancel').hitTestable(), findsOneWidget);
+      final bottom = size.height - 34 - 16;
+      expect(
+        tester.getBottomLeft(keyed('current-only-cancel')).dy,
+        closeTo(bottom, .1),
+      );
+      expect(tester.getTopLeft(keyed('current-only-cancel')).dx, 20);
+      expect(keyed('membership-section-unlocks'), findsNothing);
       expect(keyed('membership-review-selection'), findsNothing);
       await tapKey(tester, 'membership-terms');
-      await tapKey(tester, 'membership-section-unlocks');
-      expect(find.text('Unlocks-only store content'), findsOneWidget);
+      await tapKey(tester, 'membership-section-seeker');
+      expect(keyed('membership-pager-seeker'), findsOneWidget);
       expect(find.text('Cancel membership'), findsNothing);
-      expect(keyed('membership-review-selection'), findsNothing);
+      expect(keyed('membership-review-selection'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   }
@@ -669,7 +677,10 @@ void main() {
       final beforeScroll = sectionPosition(tester).pixels;
       await tester.drag(strip, const Offset(-180, 0));
       await tester.pumpAndSettle();
-      expect(sectionPosition(tester).pixels, greaterThan(beforeScroll));
+      expect(
+        sectionPosition(tester).pixels,
+        greaterThanOrEqualTo(beforeScroll),
+      );
       expect(changes, 0);
       allowed = false;
       oldGuardian();

@@ -50,7 +50,7 @@ re-run the tool.
 | DOC-ZYRA-0255 (large - search it) | `SYSTEM/DOCUMENTS/ZYRA_DEVELOPER_CONTROL_SYSTEM_HANDOVER_CURRENT_VERSION_V2.md` | 228 |
 | DOC-ZYRA-0289 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_7_TRACE_CURRENT_VERSION_V2.md` | 10 |
 | DOC-ZYRA-0278 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_1_SCREEN_MAP_CURRENT_VERSION_V3.md` | 9 |
-| DOC-ZYRA-0286 | `PRODUCT/BLUEPRINT/ZYRA_PLANNED_SCREEN_INVENTORY_GENERATED.md` | 15 |
+| DOC-ZYRA-0286 | `PRODUCT/BLUEPRINT/ZYRA_PLANNED_SCREEN_INVENTORY_GENERATED.md` | 17 |
 | DOC-ZYRA-0279 (large - search it) | `PRODUCT/BLUEPRINT/ZYRA_SCREEN_INVENTORY_GENERATED.md` | 54 |
 | DOC-ZYRA-0248 | `SYSTEM/DOCUMENTS/PROJECT_OVERVIEW_V1.md` | 2 |
 | DOC-ZYRA-0252 (large - search it) | `SYSTEM/DOCUMENTS/ZYRA_PRODUCT_SPEC_CURRENT_VERSION_V5.md` | 87 |
@@ -79,7 +79,7 @@ re-run the tool.
 
 _Stop here unless you need to look up another ID._
 
-## Documents (410 live)
+## Documents (411 live)
 
 ### APP SPACING
 
@@ -539,7 +539,7 @@ _Stop here unless you need to look up another ID._
 | DOC-ZYRA-0281 | `PRODUCT/BLUEPRINT/ZYRA_DATA_INVENTORY_GENERATED.md` | REPORT | Generated inventory of ZYRA data from the migrations - every table, column, link, security rule, database… | OA-ZYRA-309, DOC-ZYRA-0280 | 81 |
 | DOC-ZYRA-0282 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_5_LOOK_AND_FEEL_CURRENT_VERSION_V1.md` | SPEC | Blueprint part 5 - ZYRA's look and feel from the code: every colour (hex), background, font and weight, text… | OA-ZYRA-309, DOC-ZYRA-0102, DOC-ZYRA-0278, OA-ZYRA-313, OA-ZYRA-314 | 17 |
 | DOC-ZYRA-0283 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_2_JOURNEY_RULES_CURRENT_VERSION_V4.md` | SPEC | Blueprint part 2 V2 (Journey) - the planned app's Journey rules - browsing and visibility, requests, places,… | OA-ZYRA-309, OA-ZYRA-317, OA-ZYRA-315, DR-ZYRA-274, DR-ZYRA-275, DOC-ZYRA-0278, DOC-ZYRA-0285, OA-ZYRA-352, DR-ZYRA-345 | 11 |
-| DOC-ZYRA-0286 | `PRODUCT/BLUEPRINT/ZYRA_PLANNED_SCREEN_INVENTORY_GENERATED.md` | REPORT | Generated screen inventory of the planned app (Founder preview) - every tab and page, its title, what opens… | DOC-ZYRA-0278, DR-ZYRA-274 | 15 |
+| DOC-ZYRA-0286 | `PRODUCT/BLUEPRINT/ZYRA_PLANNED_SCREEN_INVENTORY_GENERATED.md` | REPORT | Generated screen inventory of the planned app (Founder preview) - every tab and page, its title, what opens… | DOC-ZYRA-0278, DR-ZYRA-274 | 17 |
 | DOC-ZYRA-0287 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_4_OUTSIDE_CONNECTIONS_CURRENT_VERSION_V1.md` | SPEC | Blueprint part 4 - every outside service ZYRA depends on - what it is for, which part of the code uses it,… | OA-ZYRA-309, OA-ZYRA-317, DOC-ZYRA-0280, DR-ZYRA-274, DR-ZYRA-275 | 7 |
 | DOC-ZYRA-0288 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_6_BUILD_AND_RELEASE_CURRENT_VERSION_V1.md` | SPEC | Blueprint part 6 - how ZYRA gets from code to a phone - what you need, the app's identity, the daily… | OA-ZYRA-309, OA-ZYRA-312, OA-ZYRA-317, DOC-ZYRA-0287 | 8 |
 | DOC-ZYRA-0289 | `PRODUCT/BLUEPRINT/ZYRA_BLUEPRINT_7_TRACE_CURRENT_VERSION_V2.md` | SPEC | Blueprint part 7 - trace - for each rule of the planned app, the decision that set it (DR) and the code that… | OA-ZYRA-309, DOC-ZYRA-0278, DOC-ZYRA-0283, DOC-ZYRA-0287, DOC-ZYRA-0288, DR-ZYRA-274, OA-ZYRA-352, DR-ZYRA-345 | 10 |
@@ -708,6 +708,12 @@ _Stop here unless you need to look up another ID._
 | DOC-ZYRA-0514 | `PRODUCT/APPROVED/PHONE_INSTALL/BRIEFS/FINAL_BUILD_INSTALL_BRIEF_2026-11-14.md` | PLAN | Codex task - one fresh signed iPhone build from the newest ZYRA commit after line 109, verified and… | DR-ZYRA-352, OA-ZYRA-317, OA-AIOS-420, DOC-ZYRA-0448 | 3 |
 | OA-ZYRA-316-BASELINE-2026-10-29 | `PRODUCT/APPROVED/BASELINE/SCREENSHOTS/INDEX.md` | INDEX | Generated capture artifact for DOC-ZYRA-0301; every available planned-app page and local preview state | DOC-ZYRA-0301, DOC-ZYRA-0278, DOC-ZYRA-0286, OA-ZYRA-316 | 405 |
 
+### PROFILE AND MEMBERSHIP
+
+| ID | File | Type | Purpose | Links | KB |
+|---|---|---|---|---|---|
+| ASBUILT-ZYRA-LINE119 | `REPORTS/CURRENT/ZYRA_PROFILE_MEMBERSHIP_AS_BUILT_CURRENT_VERSION_V1.md` | HANDOVER | As-built record of the Founder-requested Profile, Membership and Guardian visual fixes in queue line 119 | AD-AIOS-115, AD-AIOS-149, OA-ZYRA-317, DOC-ZYRA-0419 | 4 |
+
 ### PROFILE TAB
 
 | ID | File | Type | Purpose | Links | KB |
@@ -818,9 +824,10 @@ _Stop here unless you need to look up another ID._
 
 - Over the 30 KB limit (40) — split or trim when next edited: DOC-ZYRA-0005, DOC-ZYRA-0011, DOC-ZYRA-0012, DOC-ZYRA-0018, DOC-ZYRA-0034, DOC-ZYRA-0040, DOC-ZYRA-0044, DOC-ZYRA-0052, DOC-ZYRA-0454, OA-ZYRA-316-BASELINE-2026-10-29, DOC-ZYRA-0281, DOC-ZYRA-0279, DOC-ZYRA-0284, DOC-ZYRA-0329, INDEX-DECISIONS_V1, DOC-ZYRA-0263, DOC-ZYRA-0229, DOC-ZYRA-0174, DOC-ZYRA-0133, DOC-ZYRA-0255, DOC-ZYRA-0076, DOC-ZYRA-0226, DOC-ZYRA-0142, DOC-ZYRA-0143, DOC-ZYRA-0144, DOC-ZYRA-0176, DOC-ZYRA-0178, DOC-ZYRA-0189, DOC-ZYRA-0215, DOC-ZYRA-0230, DOC-ZYRA-0245, DOC-ZYRA-0084, DOC-ZYRA-0154, DOC-ZYRA-0196, DOC-ZYRA-0252, DOC-ZYRA-0209, DOC-ZYRA-0161, DOC-ZYRA-0137, DOC-ZYRA-0210, DOC-ZYRA-0267
 
-Documents without a header (4) — add one so they appear above:
+Documents without a header (5) — add one so they appear above:
 
 - `PRODUCT/APPROVED/APP_COLOURS/BRIEFS/FIX_BRIEF_2026-11-13_ONE_CARD_COLOUR.md` (2 KB)
 - `PRODUCT/APPROVED/APP_SWIPE/BRIEFS/FIX_BRIEF_2026-11-13_STILL_PAGES.md` (1 KB)
 - `PRODUCT/APPROVED/PROFILE_TAB/BRIEFS/BUILD_BRIEF_2026-11-13_ONE_SCREEN.md` (1 KB)
+- `PRODUCT/APPROVED/PROFILE_TAB/BRIEFS/FIX_BRIEF_2026-11-18_MEMBERSHIP_ROW.md` (3 KB)
 - `REPORTS/CURRENT/PACKAGE_CHECK_2026-11.md` (6 KB)

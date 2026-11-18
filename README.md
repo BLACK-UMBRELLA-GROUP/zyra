@@ -48,6 +48,13 @@ Profile, Circle and Journey. The same photo appears in the profile Preview
 and the Guardian's linked Seeker views. Guardians use monograms.
 The Founder preview Profile fits above the tab bar whenever there is room.
 On short screens or with Larger Text, scroll to reach Sign out.
+Profile shows Membership with the current plan or Family payer, and Your places
+opens the existing places page. Membership has Current, Seeker, Guardian and
+ZYRA Family tabs. On Current, cancellation sits at the bottom safe margin.
+Compatibility Unlocks stays in its own Profile row. Guardian Basic Network
+explains Guardian One across the page, using linked Seeker names only when
+there is one. Both roles share the same navigation icons. Locked Guardian
+My ZYRA tiles show a small lock badge and a one-line Guardian One status.
 In the ordinary Seeker Guardian tab and Founder preview, the round plus on the
 full-height Add card opens Add a Guardian. The ordinary tab shows the card when
 there are no linked Guardians and after the last Guardian when there is room.

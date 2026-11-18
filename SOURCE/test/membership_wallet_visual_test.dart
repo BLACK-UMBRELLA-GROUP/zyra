@@ -260,7 +260,6 @@ Widget _membershipSection(ZyraMembershipSection section) =>
       ),
       initialDraft: ZyraMembershipDraft(section: section),
       currentDetail: 'Seeker One · ZYRA Family · local example',
-      unlocksContent: const ZyraDraftCompatibilityStorePresentation(balance: 1),
       onAction: (_) {},
       onDraftChanged: (_) {},
       onReview: (_) {},
@@ -324,9 +323,14 @@ void main() {
       );
       expect(scrollable, findsOneWidget);
       final position = tester.state<ScrollableState>(scrollable).position;
-      expect(position.maxScrollExtent, greaterThan(0));
+      expect(position.maxScrollExtent, compact ? greaterThan(0) : 0);
       final baseline = tester.getCenter(_key('membership-section-current')).dy;
-      for (final section in ZyraMembershipSection.values) {
+      for (final section in const [
+        ZyraMembershipSection.current,
+        ZyraMembershipSection.seeker,
+        ZyraMembershipSection.guardian,
+        ZyraMembershipSection.family,
+      ]) {
         final pill = _key('membership-section-${section.name}');
         expect(tester.getCenter(pill).dy, closeTo(baseline, .01));
         expect(tester.getSize(pill).height, greaterThanOrEqualTo(44));
@@ -344,7 +348,10 @@ void main() {
       );
       await tester.drag(strip, const Offset(-1200, 0));
       await tester.pumpAndSettle();
-      expect(position.pixels, greaterThan(0));
+      expect(
+        position.pixels,
+        position.maxScrollExtent > 0 ? greaterThan(0) : 0,
+      );
       expect(_key('membership-current'), findsOneWidget);
       final family = _key('membership-section-family');
       expect(family.hitTestable(), findsOneWidget);
@@ -473,9 +480,12 @@ void main() {
   });
 
   testWidgets(
-    'component: inline Halo focus keeps read-only balance and permanent access information',
+    'component: separate Halo store keeps read-only balance and permanent access information',
     (tester) async {
-      await _mount(tester, _membershipSection(ZyraMembershipSection.unlocks));
+      await _mount(
+        tester,
+        const ZyraDraftCompatibilityStorePresentation(balance: 1),
+      );
       expect(_key('membership-current'), findsNothing);
       expect(_key('concept_cancel_membership'), findsNothing);
       expect(_key('membership-review-selection'), findsNothing);
@@ -492,14 +502,8 @@ void main() {
       );
       expect(_key('draft_compatibility_store_use_unlocks'), findsNothing);
       expect(find.text('See your overall match score'), findsNothing);
-      expect(
-        tester.getRect(_key('draft_compatibility_store_title')).top,
-        greaterThanOrEqualTo(
-          tester.getRect(_key('membership-section-slider')).bottom + 18,
-        ),
-        reason: 'Inline Unlocks must not cover the role and Family pills.',
-      );
-      await _capture(tester, '12-inline-unlocks-component');
+      expect(_key('membership-section-slider'), findsNothing);
+      await _capture(tester, '12-separate-unlocks-component');
       expect(_key('draft_compatibility_store_info_dialog'), findsNothing);
       expect(find.text('Your match, revealed'), findsOneWidget);
       expect(find.text('1 / 8'), findsOneWidget);

@@ -299,6 +299,27 @@ void main() {
         (tester) async {
           final owner = _Owner();
           await owner.mount(tester, guardian: guardian, basic: basic);
+          final navigation = _navigation(tester);
+          expect(navigation.items.map((item) => item.icon), [
+            Icons.search,
+            Icons.route_outlined,
+            Icons.dashboard_outlined,
+            Icons.gpp_good_outlined,
+            Icons.person_outline,
+          ]);
+          expect(navigation.items.map((item) => item.useJourneyGlyph), [
+            false,
+            true,
+            false,
+            false,
+            false,
+          ]);
+          expect(
+            navigation.items.map((item) => item.label),
+            guardian
+                ? ['Network', 'Journeys', 'My ZYRA', 'Seekers', 'Profile']
+                : ['Profiles', 'Journey', 'My ZYRA', 'Guardian', 'Profile'],
+          );
           expect(owner.latest.model.states, isEmpty);
           expect(owner.latest.model.receivedActivityRevision, 0);
           expect(_hasTabAttention(tester), isFalse);

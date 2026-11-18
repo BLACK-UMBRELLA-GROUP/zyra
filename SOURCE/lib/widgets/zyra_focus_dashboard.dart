@@ -334,42 +334,66 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  width: 38,
-                  height: 38,
-                  decoration: BoxDecoration(
-                    color: ZyraColors.surfaceFill,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(
-                    tile.icon,
-                    size: 20,
-                    color: ZyraColors.journeyGold,
-                  ),
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Container(
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        color: ZyraColors.surfaceFill,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        tile.icon,
+                        size: 20,
+                        color: ZyraColors.journeyGold,
+                      ),
+                    ),
+                    if (tile.locked)
+                      Positioned(
+                        right: -5,
+                        bottom: -5,
+                        child: Container(
+                          key: ValueKey('${tile.id}_lock_badge'),
+                          width: 18,
+                          height: 18,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: ZyraColors.cardSurface,
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(
+                                  0xFF3E2E1E,
+                                ).withValues(alpha: .18),
+                                offset: const Offset(0, 1),
+                                blurRadius: 4,
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.lock_outline,
+                            size: 11,
+                            color: ZyraColors.journeyGold,
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
                 const SizedBox(height: 8),
                 text(tile.label, 11.5, height: 1.25),
                 const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (tile.locked) ...[
-                      Icon(
-                        Icons.lock_outline,
-                        size: 13,
-                        color: ZyraColors.foregroundMuted,
-                      ),
-                      const SizedBox(width: 4),
-                    ],
-                    Flexible(
-                      child: text(
-                        tile.status,
-                        10.5,
-                        muted: !tile.isNew,
-                        gold: tile.isNew,
-                      ),
-                    ),
-                  ],
+                Text(
+                  tile.status,
+                  maxLines: tile.locked ? 1 : null,
+                  softWrap: !tile.locked,
+                  textAlign: TextAlign.center,
+                  style: ZyraText.body(
+                    size: 10.5,
+                    color: tile.isNew
+                        ? ZyraColors.goldText
+                        : ZyraColors.foregroundMuted,
+                  ).copyWith(fontWeight: FontWeight.w300, height: 1.45),
                 ),
               ],
             ),
@@ -409,7 +433,7 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
       final value =
           84 +
           height(tile.label, 11.5, textWidth, 1.25) +
-          height(tile.status, 10.5, textWidth - (tile.locked ? 17 : 0), 1.45);
+          height(tile.status, 10.5, textWidth, 1.45);
       if (value > result) result = value;
     }
     return result.ceilToDouble() + 1;
