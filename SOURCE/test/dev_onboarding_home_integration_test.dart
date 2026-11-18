@@ -228,7 +228,7 @@ void main() {
       expect(find.byType(SignupFlowFixture), findsNothing);
       expect(
         find.byKey(const ValueKey('welcome_recovery_email')),
-        findsOneWidget,
+        findsNothing,
       );
       expectQueue44ControlsAbsent();
     },

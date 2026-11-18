@@ -504,8 +504,50 @@ void main() {
       },
     );
 
+    testWidgets(
+      '$role discards a retired recovery detail when resuming Sign-in and security',
+      (tester) async {
+        final owner = _Owner();
+        await owner.mount(
+          tester,
+          guardian: guardian,
+          checkpoint: _seed(
+            guardian: guardian,
+            tab: guardian ? 3 : 4,
+            pages: const ['settings', 'account_action', 'settings_detail'],
+            accountDestination: 'signInSecurity',
+            settingsDetail: 'recovery',
+          ),
+        );
+        expect(find.byType(ZyraConceptSettingsOverview), findsOneWidget);
+        expect(
+          find.byType(ZyraConceptSettingsDetailPresentation),
+          findsNothing,
+        );
+        expect(owner.latest.pages, ['settings', 'account_action']);
+        expect(owner.latest.accountDestination, 'signInSecurity');
+        expect(owner.latest.settingsDetail, isNull);
+        expect(
+          find.textContaining('Apple or Google handles provider sign-in.'),
+          findsOneWidget,
+        );
+        expect(
+          find.textContaining(RegExp('recovery', caseSensitive: false)),
+          findsNothing,
+        );
+        final captured = owner.latest;
+        await owner.mount(tester, checkpoint: captured, guardian: guardian);
+        expect(find.byType(ZyraConceptSettingsOverview), findsOneWidget);
+        expect(
+          find.byType(ZyraConceptSettingsDetailPresentation),
+          findsNothing,
+        );
+        expect(owner.latest.settingsDetail, isNull);
+        expect(tester.takeException(), isNull);
+      },
+    );
+
     for (final (action, detail) in <(String, String)>[
-      ('signInSecurity', 'recovery'),
       ('appLock', 'appLock'),
       ('advanced', 'deleteAccount'),
       ('advanced', 'resetProfile'),

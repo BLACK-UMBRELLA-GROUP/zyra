@@ -194,14 +194,14 @@ void main() {
     },
   );
   testWidgets(
-    'unauthorized entry retains member recovery without developer choices',
+    'unauthorized entry retains provider sign-in without developer choices',
     (tester) async {
       ZyraDeveloperAccess.setAuthorizedForTesting(false);
       await tester.pumpWidget(const Queue44MemberFrame(child: WelcomeScreen()));
       await tester.pumpAndSettle();
       expect(
         find.byKey(const ValueKey('welcome_recovery_email')),
-        findsOneWidget,
+        findsNothing,
       );
       expect(find.byKey(const ValueKey('welcome_google')), findsOneWidget);
       expectQueue44ControlsAbsent();

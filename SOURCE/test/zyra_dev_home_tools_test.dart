@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/screens/welcome_screen.dart';
-import 'package:zyra/screens/auth/email_recovery_screen.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/theme/zyra_text.dart';
@@ -43,9 +42,9 @@ void main() {
     await t.pumpWidget(const Queue44MemberFrame(child: WelcomeScreen()));
     await t.pumpAndSettle();
     expectQueue44ControlsAbsent();
-    await t.tap(find.byKey(const ValueKey('welcome_recovery_email')));
-    await t.pumpAndSettle();
-    expect(find.byType(EmailRecoveryScreen), findsOneWidget);
+    expect(find.byKey(const ValueKey('welcome_google')), findsOneWidget);
+    expect(find.byKey(const ValueKey('welcome_apple')), findsOneWidget);
+    expect(find.byKey(const ValueKey('welcome_recovery_email')), findsNothing);
     expectQueue44ControlsAbsent();
   });
   testWidgets(

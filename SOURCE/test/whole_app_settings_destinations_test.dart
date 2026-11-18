@@ -88,9 +88,7 @@ List<ZyraConceptSettingsDetail> _children(
   ZyraConceptAccountAction action,
   bool guardian,
 ) => switch (action) {
-  ZyraConceptAccountAction.signInSecurity => [
-    ZyraConceptSettingsDetail.recovery,
-  ],
+  ZyraConceptAccountAction.signInSecurity => const [],
   ZyraConceptAccountAction.appLock => [ZyraConceptSettingsDetail.appLock],
   ZyraConceptAccountAction.advanced => [
     ZyraConceptSettingsDetail.resetProfile,
@@ -266,7 +264,6 @@ Future<void> _nav(WidgetTester tester, String label) async {
 
 void _noLiveActionWidgets({bool helpSearchAllowed = false}) {
   expect(find.byType(SignInSecurityScreen), findsNothing);
-  expect(find.byType(RecoveryEmailSetupScreen), findsNothing);
   expect(find.byType(AppLockScreen), findsNothing);
   expect(find.byType(AccountAdvancedScreen), findsNothing);
   expect(find.byType(PrivacySettingsScreen), findsNothing);
@@ -568,6 +565,12 @@ void main() {
         );
         await tester.pumpAndSettle();
         expect(_overview(action), findsOneWidget);
+        if (action == ZyraConceptAccountAction.signInSecurity) {
+          expect(
+            find.textContaining(RegExp('recovery', caseSensitive: false)),
+            findsNothing,
+          );
+        }
         final title = tester.widget<Text>(
           _key('concept_settings_title_overview_${action.name}'),
         );
@@ -765,7 +768,7 @@ void main() {
       final owner = _ShellOwner();
       await owner.mount(tester, guardedRouteOwner: true);
       await owner.settings(tester);
-      await owner.overview(tester, ZyraConceptAccountAction.signInSecurity);
+      await owner.overview(tester, ZyraConceptAccountAction.appLock);
       final overview = tester.widget<ZyraConceptSettingsOverview>(
         find.byType(ZyraConceptSettingsOverview),
       );
@@ -791,7 +794,7 @@ void main() {
 
       await cover();
       final checkpoint = owner.checkpoints.last;
-      overview.onOpenDetail(ZyraConceptSettingsDetail.recovery);
+      overview.onOpenDetail(ZyraConceptSettingsDetail.appLock);
       overview.onHelp();
       back();
       await tester.pump();
@@ -807,8 +810,8 @@ void main() {
       await _tap(
         tester,
         _detailRow(
-          ZyraConceptAccountAction.signInSecurity,
-          ZyraConceptSettingsDetail.recovery,
+          ZyraConceptAccountAction.appLock,
+          ZyraConceptSettingsDetail.appLock,
         ),
       );
       final detail = tester.widget<ZyraConceptSettingsDetailPresentation>(
@@ -821,8 +824,8 @@ void main() {
       expect(owner.checkpoints.last, same(detailCheckpoint));
       navigator.pop();
       await tester.pumpAndSettle();
-      expect(_detail(ZyraConceptSettingsDetail.recovery), findsOneWidget);
-      await _tap(tester, _key('concept_settings_help_detail_recovery'));
+      expect(_detail(ZyraConceptSettingsDetail.appLock), findsOneWidget);
+      await _tap(tester, _key('concept_settings_help_detail_appLock'));
       expect(find.byType(HelpSupportScreen), findsOneWidget);
     },
   );
@@ -876,13 +879,13 @@ void main() {
       expect(await pressZyraDevControlKey(tester, 'draft_role_seeker'), isTrue);
       await _nav(tester, 'Profile');
       await owner.settings(tester);
-      await owner.overview(tester, ZyraConceptAccountAction.signInSecurity);
+      await owner.overview(tester, ZyraConceptAccountAction.appLock);
       final current = tester.widget<ZyraConceptSettingsOverview>(
         find.byType(ZyraConceptSettingsOverview),
       );
       owner.allowed = false;
       final denied = owner.checkpoints.last;
-      current.onOpenDetail(ZyraConceptSettingsDetail.recovery);
+      current.onOpenDetail(ZyraConceptSettingsDetail.appLock);
       current.onHelp();
       saved.onHelp();
       savedDetail.onHelp();

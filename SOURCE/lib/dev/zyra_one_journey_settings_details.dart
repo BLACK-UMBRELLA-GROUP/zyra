@@ -11,7 +11,6 @@ import 'zyra_one_journey_account_presentation.dart';
 import 'zyra_founder_launch_review.dart';
 
 enum ZyraConceptSettingsDetail {
-  recovery,
   appLock,
   resetProfile,
   deleteAccount,
@@ -413,21 +412,12 @@ _PageContent _overview(
   ZyraConceptAccountAction.signInSecurity => _PageContent(
     title: 'Sign-in & security',
     lead: 'Keep a way back to your account.',
-    previewNote:
-        'Connected sign-in methods and recovery addresses are not inspected or changed here.',
+    previewNote: 'Connected sign-in methods are not inspected or changed here.',
     blocks: [
       _Information('Sign-in method shown', data.signedInWith),
       const _Information(
         'Your provider stays in control',
         'Apple or Google handles provider sign-in. ZYRA does not create a separate app password.',
-      ),
-    ],
-    items: const [
-      _Destination(
-        ZyraConceptSettingsDetail.recovery,
-        'Recovery email',
-        'Learn how a verified address helps with account recovery.',
-        Icons.alternate_email_rounded,
       ),
     ],
   ),
@@ -615,22 +605,6 @@ _PageContent _detail(
   bool guardian,
   ZyraConceptAccountAction? overviewAction,
 ) => switch (detail) {
-  ZyraConceptSettingsDetail.recovery => const _PageContent(
-    title: 'Recovery email',
-    lead: 'A verified route back to your account.',
-    previewNote:
-        'No address is requested, no code is sent and no recovery setup is completed here.',
-    blocks: [
-      _Information(
-        'Verify before relying on it',
-        'The account recovery flow checks a recovery address using one-time codes. An unverified address is not a confirmed recovery method.',
-      ),
-      _Information(
-        'Keep codes private',
-        'Only enter a code in the recovery flow you started. Do not share sign-in codes, your provider password or your device passcode in feedback or support messages.',
-      ),
-    ],
-  ),
   ZyraConceptSettingsDetail.appLock => const _PageContent(
     title: 'How App Lock works',
     lead: 'A local device check, not another ZYRA password.',

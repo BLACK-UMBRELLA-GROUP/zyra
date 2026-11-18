@@ -172,7 +172,7 @@ void main() {
   }
 
   testWidgets(
-    'privacy summary states real recovery and build telemetry boundary',
+    'privacy summary states provider sign-in and build telemetry boundary',
     (tester) async {
       await tester.pumpWidget(_app(const PrivacyAndDataScreen()));
       await tester.pumpAndSettle();
@@ -180,8 +180,12 @@ void main() {
         find.textContaining('This is not the full Privacy Policy'),
         findsOneWidget,
       );
-      await _reveal(tester, find.textContaining('recovery email can help'));
-      expect(find.textContaining('one-time code'), findsOneWidget);
+      await _reveal(
+        tester,
+        find.textContaining('Use Apple or Google to sign in.'),
+      );
+      expect(find.textContaining('recovery email'), findsNothing);
+      expect(find.textContaining('one-time code'), findsNothing);
       await tester.drag(find.byType(ListView), const Offset(0, 1000));
       await tester.pumpAndSettle();
       expect(find.text('Feature usage'), findsOneWidget);

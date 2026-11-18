@@ -3,9 +3,6 @@
 //
 // Rework (2026-07-18, Founder instruction): Google + Apple sign-in as the
 // normal entry methods — no ZYRA password and no open email sign-up.
-// Founder decision 2026-08-20 adds passwordless recovery for an email that
-// was verified from inside an existing Apple/Google account. It is recovery,
-// not sign-up: shouldCreateUser=false prevents duplicate profiles.
 // Sign-up and sign-in collapse into the same action with OAuth (a
 // first-time Google/Apple sign-in has no `profiles` row yet, so
 // ZyraSessionRouter routes it to Role Selection exactly like resuming
@@ -26,7 +23,6 @@ import '../services/zyra_developer_access.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_state_widgets.dart';
-import 'auth/email_recovery_screen.dart';
 import 'auth/role_selection_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -285,22 +281,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       button: orderedButtons[1],
                       height: 46,
                     ),
-                    const SizedBox(height: 12),
-                    if (!widget.devPreview)
-                      TextButton(
-                        key: const ValueKey('welcome_recovery_email'),
-                        onPressed: _loading
-                            ? null
-                            : () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => const EmailRecoveryScreen(),
-                                ),
-                              ),
-                        child: Text(
-                          'Use recovery email',
-                          style: ZyraText.subtext(size: 12.5),
-                        ),
-                      ),
                     const SizedBox(height: 24),
                   ],
                 ),

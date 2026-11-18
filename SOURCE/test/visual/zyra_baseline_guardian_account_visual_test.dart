@@ -148,10 +148,6 @@ void main() {
     }
 
     final details = <(ZyraConceptAccountAction, ZyraConceptSettingsDetail)>[
-      (
-        ZyraConceptAccountAction.signInSecurity,
-        ZyraConceptSettingsDetail.recovery,
-      ),
       (ZyraConceptAccountAction.appLock, ZyraConceptSettingsDetail.appLock),
       (
         ZyraConceptAccountAction.advanced,

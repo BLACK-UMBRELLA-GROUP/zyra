@@ -108,14 +108,15 @@ void main() {
     expect(find.text('Continue with Apple'), findsOneWidget);
     expect(find.byType(ZyraErrorBanner), findsOneWidget);
     expect(find.textContaining('Synthetic'), findsNothing);
-    expect(
-      tester
-          .widget<TextButton>(
-            find.byKey(const ValueKey('welcome_recovery_email')),
-          )
-          .onPressed,
-      isNotNull,
-    );
+    expect(find.byKey(const ValueKey('welcome_recovery_email')), findsNothing);
+    for (final provider in ['google', 'apple']) {
+      final button = find.byKey(ValueKey('welcome_$provider'));
+      final action = find.descendant(
+        of: button,
+        matching: find.byType(InkWell),
+      );
+      expect(tester.widget<InkWell>(action).onTap, isNotNull);
+    }
     debugDefaultTargetPlatformOverride = null;
   }
 

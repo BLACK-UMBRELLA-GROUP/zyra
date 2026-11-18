@@ -78,6 +78,23 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets(
+    'legacy email identity does not expose recovery on an OAuth account',
+    (tester) async {
+      await _setSession(const ['google', 'email']);
+      await _pumpScreen(tester);
+
+      expect(
+        find.byKey(const ValueKey('sign_in_method_google')),
+        findsOneWidget,
+      );
+      expect(find.text('google.member@example.com'), findsOneWidget);
+      expect(find.byKey(const ValueKey('sign_in_method_email')), findsNothing);
+      expect(find.text('email.member@example.com'), findsNothing);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
   testWidgets('keeps a seeded email-only account truthful and non-actionable', (
     tester,
   ) async {
@@ -112,6 +129,13 @@ Future<void> _pumpScreen(WidgetTester tester) async {
 
   await tester.pumpWidget(const MaterialApp(home: SignInSecurityScreen()));
   await tester.pump();
+  expect(
+    find.textContaining(RegExp('recovery', caseSensitive: false)),
+    findsNothing,
+  );
+  expect(find.byKey(const ValueKey('manage_recovery_email')), findsNothing);
+  expect(find.byType(TextField), findsNothing);
+  expect(find.byType(TextButton), findsNothing);
 }
 
 Future<void> _setSession(List<String> providers) async {

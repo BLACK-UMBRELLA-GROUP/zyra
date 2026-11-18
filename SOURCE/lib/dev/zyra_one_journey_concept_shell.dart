@@ -845,8 +845,7 @@ class _ZyraOneJourneyConceptShellState
   ) =>
       _canRestoreSettingsOverview(action) &&
       switch (action) {
-        ZyraConceptAccountAction.signInSecurity =>
-          detail == ZyraConceptSettingsDetail.recovery,
+        ZyraConceptAccountAction.signInSecurity => false,
         ZyraConceptAccountAction.appLock =>
           detail == ZyraConceptSettingsDetail.appLock,
         ZyraConceptAccountAction.advanced =>

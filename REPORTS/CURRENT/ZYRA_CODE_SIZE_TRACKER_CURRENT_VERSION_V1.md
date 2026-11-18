@@ -785,3 +785,19 @@ Local sheet invitations now survive the owned role switch/checkpoint and feed th
 Measured with code_size.py. Its only classifier addition is the new `zyra_guardian_family_preview.dart`, explicitly counted in both developer/preview and Founder categories; no historical files reclassified. Twelve-file scoped run271 passes, final eight acceptance cases (including added checkpoint assertions) pass; full SOURCE analyser clean,11-file format0, protected3.44.2/five pins/exec-denial checks pass. No full-suite claim.
 
 GUARDIAN_CARD/BUILT/V3 holds nine actual normal/200% captures, nine native-size master/build pairs (build pixels preserved exactly), contact sheet, QA and exact manifests. Shared frame/type/icon/shadow differences, source notification/linked-summary facts and existing 200% dashboard/Profile/nav limits remain visible (QUEUE67-R1/R2, OA-ZYRA-335). Scoped offer actions and payer row reachable by scrolling; no pixel equality, full accessibility-quality or Founder visual-approval claim. Read-cost caveat, including parent guard-helper overrun, is in QA and the single task note under OA-AIOS-419. AD-AIOS-115/118/120; DR-ZYRA-291/221.
+
+
+## Queue 120 — Remove recovery email — 18 November 2026
+
+Founder removal brief: `PRODUCT/APPROVED/PHONE_ACCESS/BRIEFS/FIX_BRIEF_2026-11-18_REMOVE_RECOVERY_EMAIL.md` (AD-AIOS-149; OA-ZYRA-316). Measured after line 119 commit `7ac11bc8` and the bounded removal.
+
+| Measure | After |
+|---|---:|
+| All app code | 175,663 lines / 344 files |
+| Developer and preview code | 48,992 lines / 76 files |
+| Founder planned app | 39,052 lines / 50 files |
+| Test code | 241,095 lines / 589 files |
+| Test goldens | 3,061 images / 335 MB |
+| Old Pause / Restart files | 41 / 1 |
+
+Client code decreased by 1,183 lines and one file. Four recovery-only test files were retired; useful provider tests from the mixed file remain in `welcome_provider_entry_test.dart`. The five retired files were moved to the sole `~/_to_delete/ZYRA_LINE120_RECOVERY_EMAIL_2026-11-18/`, retaining their original paths. No migrations or server changes. Exact checks, source hashes and retirement destinations: `PRODUCT/APPROVED/PHONE_ACCESS/BUILT/LINE120/LINE120_AS_BUILT.json` and `LINE120_CHECKS.json`. Live: no; no phone install.

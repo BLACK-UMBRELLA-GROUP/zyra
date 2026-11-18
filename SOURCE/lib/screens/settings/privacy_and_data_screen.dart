@@ -1,6 +1,6 @@
 // Current 2026-10-18: product summary only, not a formal app policy. The
 // website notice covers the website, not the app. Fixed-label first-party
-// telemetry and verified recovery email supersede the older dated inventory
+// telemetry supersedes the older dated inventory
 // below; no placeholder consent control or legal acceptance is created here.
 // Settings › Legal › Privacy & data.
 //
@@ -95,9 +95,8 @@ class PrivacyAndDataScreen extends StatelessWidget {
               const _Block(
                 heading: 'How you sign in',
                 body:
-                    'Use Apple or Google to sign in. A separately verified '
-                    'recovery email can help you recover your account with a '
-                    'one-time code. ZYRA does not ask you to create an app password.',
+                    'Use Apple or Google to sign in. '
+                    'ZYRA does not ask you to create an app password.',
               ),
 
               if (guardian)

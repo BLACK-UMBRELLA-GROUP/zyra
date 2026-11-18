@@ -1,11 +1,7 @@
 // Thin wrapper around Supabase Auth — OA-102.
 //
 // Apple + Google remain the normal sign-in methods and ZYRA never stores a
-// password. Founder decision 2026-08-20 adds two recovery protections:
-// another Apple/Google identity can be linked to the SAME Supabase user, and
-// an already-authenticated member can verify a recovery email for one-time-
-// code sign-in. Recovery OTP requests always set shouldCreateUser=false, so
-// an unknown address cannot manufacture a second Seeker account.
+// password.
 //
 // Sign-up and sign-in are the same action with OAuth — there's no
 // separate "create account" step for the user to choose. A first-time
@@ -34,17 +30,9 @@ enum ZyraAuthOutcome { success, cancelled, error }
 class ZyraAuthResult {
   final ZyraAuthOutcome outcome;
   final String? errorMessage;
-  // Binds recovery's local handoff to the principal returned by Auth. This
-  // is not profile, identity-verification or membership authorization.
-  final String? authenticatedUserId;
-  const ZyraAuthResult._(
-    this.outcome,
-    this.errorMessage, [
-    this.authenticatedUserId,
-  ]);
+  const ZyraAuthResult._(this.outcome, this.errorMessage);
 
-  const ZyraAuthResult.success({String? authenticatedUserId})
-    : this._(ZyraAuthOutcome.success, null, authenticatedUserId);
+  const ZyraAuthResult.success() : this._(ZyraAuthOutcome.success, null);
   const ZyraAuthResult.cancelled() : this._(ZyraAuthOutcome.cancelled, null);
   const ZyraAuthResult.error(String message)
     : this._(ZyraAuthOutcome.error, message);
@@ -96,18 +84,6 @@ class ZyraAuth {
     }());
   }
 
-  static bool get hasLinkedOAuth =>
-      linkedProviders.contains('apple') || linkedProviders.contains('google');
-
-  static String? get recoveryEmail {
-    for (final identity in currentUser?.identities ?? const <UserIdentity>[]) {
-      if (identity.provider != 'email') continue;
-      final email = identity.identityData?['email'];
-      if (email is String && email.trim().isNotEmpty) return email.trim();
-    }
-    return null;
-  }
-
   static String? providerEmail(String provider) {
     for (final identity in currentUser?.identities ?? const <UserIdentity>[]) {
       if (identity.provider != provider) continue;
@@ -116,9 +92,6 @@ class ZyraAuth {
     }
     return null;
   }
-
-  static bool isValidEmail(String value) =>
-      RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(value.trim());
 
   /// First name supplied by Apple/Google, when the provider made one
   /// available. Apple only returns the name on the first authorisation, so
@@ -378,145 +351,6 @@ class ZyraAuth {
     }
   }
 
-  /// Starts an authenticated email change. Supabase confirms the new address
-  /// and, when Secure Email Change is enabled, also confirms the current one.
-  /// Once complete it creates/updates the email identity on this same user.
-  static Future<ZyraAuthResult> requestRecoveryEmail(String email) async {
-    final normalised = email.trim().toLowerCase();
-    if (!isSignedIn) {
-      return const ZyraAuthResult.error(
-        'Sign in again before adding a recovery email.',
-      );
-    }
-    if (!hasLinkedOAuth) {
-      return const ZyraAuthResult.error(
-        'A recovery email can only be added to an Apple or Google account.',
-      );
-    }
-    if (!isValidEmail(normalised)) {
-      return const ZyraAuthResult.error('Enter a valid email address.');
-    }
-    if (currentUser?.email?.toLowerCase() == normalised) {
-      return const ZyraAuthResult.error(
-        'Choose a different email address for recovery.',
-      );
-    }
-
-    try {
-      await supabase.auth.updateUser(UserAttributes(email: normalised));
-      return const ZyraAuthResult.success();
-    } on AuthException catch (error) {
-      return ZyraAuthResult.error(_mapEmailError(error));
-    } catch (_) {
-      return const ZyraAuthResult.error(
-        'Having trouble connecting. Check your connection and try again.',
-      );
-    }
-  }
-
-  static Future<ZyraAuthResult> verifyRecoveryEmailCode({
-    required String email,
-    required String code,
-  }) async {
-    try {
-      await supabase.auth.verifyOTP(
-        email: email.trim().toLowerCase(),
-        token: code.trim(),
-        type: OtpType.emailChange,
-      );
-      return const ZyraAuthResult.success();
-    } on AuthException catch (error) {
-      return ZyraAuthResult.error(_mapEmailError(error));
-    } catch (_) {
-      return const ZyraAuthResult.error(
-        'Having trouble connecting. Check your connection and try again.',
-      );
-    }
-  }
-
-  static Future<bool> isRecoveryEmailVerified(String email) async {
-    final normalised = email.trim().toLowerCase();
-    try {
-      final identities = await supabase.auth.getUserIdentities();
-      return identities.any((identity) {
-        if (identity.provider != 'email') return false;
-        return identity.identityData?['email']?.toString().toLowerCase() ==
-            normalised;
-      });
-    } catch (_) {
-      return recoveryEmail?.toLowerCase() == normalised;
-    }
-  }
-
-  /// Passwordless recovery only. shouldCreateUser=false is the critical
-  /// duplicate-account guard: a typo or unknown address gets the same calm UI
-  /// response but can never create a new auth.users/profile identity.
-  static Future<ZyraAuthResult> sendRecoverySignInCode(String email) async {
-    final normalised = email.trim().toLowerCase();
-    if (!isValidEmail(normalised)) {
-      return const ZyraAuthResult.error('Enter a valid email address.');
-    }
-    try {
-      await supabase.auth.signInWithOtp(
-        email: normalised,
-        shouldCreateUser: false,
-      );
-      return const ZyraAuthResult.success();
-    } on AuthException catch (error) {
-      return ZyraAuthResult.error(_mapEmailError(error));
-    } catch (_) {
-      return const ZyraAuthResult.error(
-        'Having trouble connecting. Check your connection and try again.',
-      );
-    }
-  }
-
-  static Future<ZyraAuthResult> verifyRecoverySignInCode({
-    required String email,
-    required String code,
-  }) async {
-    try {
-      final startingUserId = currentUser?.id;
-      final startingGeneration = ZyraAccountState.generation;
-      if (ZyraAccountState.isSigningOut) {
-        return const ZyraAuthResult.cancelled();
-      }
-      final response = await supabase.auth.verifyOTP(
-        email: email.trim().toLowerCase(),
-        token: code.trim(),
-        type: OtpType.email,
-      );
-      if (response.session == null || response.user == null) {
-        return const ZyraAuthResult.error(
-          "That code couldn't sign you in. Please request a new one.",
-        );
-      }
-      final verifiedUserId = response.user!.id;
-      final generation = ZyraAccountState.generation;
-      // The SDK applies the Auth session before returning. Permit only its
-      // intended first sign-in transition, never a superseded local handoff.
-      final unchanged = generation == startingGeneration;
-      final firstSignIn =
-          startingUserId == null &&
-          generation == startingGeneration + 1 &&
-          ZyraAccountState.userId == verifiedUserId;
-      if (ZyraAccountState.isSigningOut ||
-          currentUser?.id != verifiedUserId ||
-          response.session!.user.id != verifiedUserId ||
-          (!unchanged && !firstSignIn) ||
-          (startingUserId != null && startingUserId != verifiedUserId)) {
-        return const ZyraAuthResult.cancelled();
-      }
-      return ZyraAuthResult.success(authenticatedUserId: verifiedUserId);
-    } on AuthException catch (error) {
-      return ZyraAuthResult.error(_mapEmailError(error));
-    } catch (_) {
-      return const ZyraAuthResult.error(
-        'Having trouble connecting. Check your connection and try again.',
-      );
-    }
-  }
-
   // 2026-07-19: guarded against overlapping calls, same root cause as the
   // developer_access_screen.dart crash fixed earlier today. Any duplicate/
   // overlapping tap on a Sign Out button (profile_screen.dart,
@@ -672,24 +506,6 @@ class ZyraAuth {
     }
     if (message.contains('already') || message.contains('identity')) {
       return 'That sign-in is already connected to a ZYRA account.';
-    }
-    return _mapError(error);
-  }
-
-  static String _mapEmailError(AuthException error) {
-    final message = error.message.toLowerCase();
-    if (message.contains('expired') ||
-        message.contains('invalid') ||
-        message.contains('token')) {
-      return "That code has expired or isn't correct. Request a new one.";
-    }
-    if (message.contains('rate') || message.contains('seconds')) {
-      return 'Please wait a minute before requesting another code.';
-    }
-    if (message.contains('already') ||
-        message.contains('exists') ||
-        message.contains('registered')) {
-      return 'That email is already connected to another ZYRA account.';
     }
     return _mapError(error);
   }

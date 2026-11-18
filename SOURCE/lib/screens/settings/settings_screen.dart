@@ -362,9 +362,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   /// deliberate while doing it. A fallback that produces a plausible
   /// string is how a display bug survives to launch.
   String get _provider {
-    if (_providerRaw == 'email' && ZyraAuth.hasLinkedOAuth) {
-      return 'Recovery email';
-    }
     return switch (_providerRaw) {
       'google' => 'Google',
       'apple' => 'Apple',

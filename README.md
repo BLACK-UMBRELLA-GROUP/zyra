@@ -4,6 +4,8 @@ ZYRA is a matrimonial app for a faith community where the family is part of find
 
 The app is intended for adult members of that community and their guardians. It is being developed before launch; the current Founder preview uses made-up sample profiles while the server rules and real member journeys are completed.
 
+Welcome offers Apple and Google sign-in, with Apple first on iPhone and Google first on Android. Recovery email entry and setup have been removed from the app.
+
 ## Status
 
 Pre-launch, built solo since June 2026. Version 1.0.0 (build 5) runs on the Founder's iPhone for internal testing. The redesigned interface is a Founder preview over the existing app. Server and checkout integration are still pending. The website is [zyraconnect.app](https://zyraconnect.app).

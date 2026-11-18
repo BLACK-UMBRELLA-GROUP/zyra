@@ -1842,7 +1842,7 @@ void main() {
       );
       expect(
         find.byKey(const ValueKey('welcome_recovery_email')),
-        findsOneWidget,
+        findsNothing,
       );
       await tester.tap(find.byKey(ValueKey('welcome_$provider')));
       await tester.pumpAndSettle();
