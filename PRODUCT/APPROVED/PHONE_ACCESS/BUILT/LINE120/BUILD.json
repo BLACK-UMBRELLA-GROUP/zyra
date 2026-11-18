@@ -1,0 +1,90 @@
+{
+  "commit_sha": "8a1c3c26301460eeedb6a5c42e00274ba1faf315",
+  "source_base_commit": "7ac11bc813e51d417e9e7d8b82b6f193bd8d54fe",
+  "flutter_version": "3.44.2",
+  "build_mode": "flutter_test; no native build",
+  "target": "macOS host, iOS and Android widget variants",
+  "timestamp_utc": "2026-11-18T22:40:04.123485+00:00",
+  "capture_time_utc": "2026-11-18T22:28:51.520857+00:00",
+  "app_version": "1.0.0+5",
+  "source_and_test_sha256": [
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "sha256": "2898d7d3b929f83e67f9936344ec3f2704c8be1d84da07e298667b867c44bd77"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "sha256": "158019d62668a61235fc3d104ffb4188a8f47ac078492e0b48ecd117d3d66a7a"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/privacy_and_data_screen.dart",
+      "sha256": "b11512c7b8267ae4b800b0a5269549bb8f478ef53996c35589fca34112b0ba13"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/settings_screen.dart",
+      "sha256": "5d1791d8bab7e4603d9a4762b2357afc53dd84850fb7f9fc848034eedf934cc5"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/sign_in_security_screen.dart",
+      "sha256": "25aada303bbeeef814401123768aa4cd57b0bf88c6ae81644270a19ed3b68fe5"
+    },
+    {
+      "path": "SOURCE/lib/screens/welcome_screen.dart",
+      "sha256": "cc882f6cefb7b18177b963eb82134aaf43fe054365188812ff8d307d44a65634"
+    },
+    {
+      "path": "SOURCE/lib/services/zyra_auth.dart",
+      "sha256": "42b39e869659716b81a360b234ca08bc2f91b70f2308941d03994a602e2d5509"
+    },
+    {
+      "path": "SOURCE/test/dev_onboarding_home_integration_test.dart",
+      "sha256": "2502d3205e3d4d0099dbf941484e03c9d2cd4a1c845298bf8c4ee74c42119dbd"
+    },
+    {
+      "path": "SOURCE/test/dev_signup_process_test.dart",
+      "sha256": "2a0567f6639155e826b5189a523ee4b0ba2b5031968f696f40016e62f57c15a9"
+    },
+    {
+      "path": "SOURCE/test/dev_signup_toggle_options_test.dart",
+      "sha256": "fe69367761aabda4954ef3805a20df0979f9931ec74ef2134b64bee1f0b2576a"
+    },
+    {
+      "path": "SOURCE/test/legal_document_destinations_test.dart",
+      "sha256": "da907002833bc723996e6c8ce23bc30e2cd89746bd9ab64577b84155165ff7a6"
+    },
+    {
+      "path": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "sha256": "47bc277987b2b0fedf0f93dd3cd57690907ac9592d453671fac33572a4908e74"
+    },
+    {
+      "path": "SOURCE/test/sign_in_security_screen_test.dart",
+      "sha256": "ea759aa247959ada617fb0e187ab7e2aead7812e86ad8ce36c58fde76830bfd2"
+    },
+    {
+      "path": "SOURCE/test/visual/zyra_baseline_guardian_account_visual_test.dart",
+      "sha256": "45304ad09b4fba2b91818636c6445dd5b16a8d19745b22f90a77aa5627085ce4"
+    },
+    {
+      "path": "SOURCE/test/welcome_auth_failure_recovery_test.dart",
+      "sha256": "7c2d06f69318419017ffe43cde962746c36f02673af8da06a51c60c77cd98356"
+    },
+    {
+      "path": "SOURCE/test/whole_app_settings_destinations_test.dart",
+      "sha256": "812bbafba65f452a3ca0dc77fa474f6cd206d763c143c95b54609681d0b39b75"
+    },
+    {
+      "path": "SOURCE/test/zyra_dev_home_tools_test.dart",
+      "sha256": "3008d2b86cd68ee79e1c92d4f885f0398c91fd42aecaa03645e916f936d37da5"
+    },
+    {
+      "path": "SOURCE/test/welcome_provider_entry_test.dart",
+      "sha256": "06f51d54d3ea7ce3a5cb255fadf3722ee7030c95ab2a3274fd4fb4812919b872"
+    },
+    {
+      "path": "SOURCE/test/visual/line120_recovery_removal_capture_test.dart",
+      "sha256": "012451b1c1e32c5e68af440e63a8bd62641a0d3fe4cde3551cc2be3905c3bbd2"
+    }
+  ],
+  "compiled_artifacts_in_evidence": false,
+  "copied_source_trees_in_evidence": false
+}

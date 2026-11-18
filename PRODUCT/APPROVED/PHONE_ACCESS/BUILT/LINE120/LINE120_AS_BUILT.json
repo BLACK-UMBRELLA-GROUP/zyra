@@ -1,0 +1,126 @@
+{
+  "line": 120,
+  "status": "BUILT",
+  "live": false,
+  "source_commit": "8a1c3c26301460eeedb6a5c42e00274ba1faf315",
+  "authority": {
+    "founder_words": "lets remove recovery email text and whatever it was from app - we will talk security further down line",
+    "date": "2026-11-18",
+    "brief": "PRODUCT/APPROVED/PHONE_ACCESS/BRIEFS/FIX_BRIEF_2026-11-18_REMOVE_RECOVERY_EMAIL.md",
+    "related_lock": "PRODUCT/APPROVED/SIGN_UP/RECORD/LOCK_RECORD.md, LOCK 34 account-method and platform-order rows only; remaining sign-up work is separate line 121",
+    "rules": [
+      "AD-AIOS-149",
+      "AD-AIOS-115",
+      "OA-ZYRA-316",
+      "DOC-BUG-0004"
+    ]
+  },
+  "built": [
+    "Welcome retains only Apple and Google entry, Apple first on iOS and Google first on Android. Existing styling, provider actions and loading states retained.",
+    "Sign-in & security retains attached provider information and the existing no-password sentence; recovery row, setup, verification and disabled-test-account explanation removed.",
+    "Founder Sign-in & security recovery destination, enum and saved-detail restoration removed. Old recovery-detail checkpoints fall back to the overview and clear that detail.",
+    "Privacy & data retains its existing Apple/Google and no-app-password sentences, with only the recovery-email sentence removed.",
+    "Recovery-only auth getters, validation, request/verify methods, error mapping and local authenticated-user handoff field removed.",
+    "Seeded account labels, provider linking APIs, sign-out ownership protection and unrelated session recovery retained."
+  ],
+  "live_files": {
+    "SOURCE/lib/screens/welcome_screen.dart": "Apple/Google-only entry and existing platform order.",
+    "SOURCE/lib/screens/settings/sign_in_security_screen.dart": "Attached provider information, with recovery setup removed.",
+    "SOURCE/lib/screens/settings/privacy_and_data_screen.dart": "Existing provider/no-password explanation, recovery sentence removed.",
+    "SOURCE/lib/screens/settings/settings_screen.dart": "Existing provider summary without recovery-specific label.",
+    "SOURCE/lib/dev/zyra_one_journey_settings_details.dart": "Protected Founder security overview without recovery destination/detail.",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart": "Rejects restoration of the removed recovery detail.",
+    "SOURCE/lib/services/zyra_auth.dart": "Existing OAuth/linking/sign-out with recovery-only client methods removed."
+  },
+  "architecture": "No replacement recovery mechanism. Existing Supabase OAuth session routing, provider linking and sign-out lifetime protections remain. The removed recovery detail cannot be restored by its old enum name.",
+  "data_flow": "Apple/Google sign-in input, Auth result and session routing unchanged. No email OTP request or verification path remains in the app. No persistent data, server function, table or migration was changed.",
+  "entry_points": "Welcome; ordinary Settings Sign-in & security and Privacy & data; protected Founder Settings Sign-in & security.",
+  "developer_controls": "Existing Founder admission and local sample boundaries retained. No new runtime control or bypass.",
+  "mock_vs_production": "Checks use mocked Auth/session fixtures and local Founder sample presentations. Provider login on a physical phone and live member traffic were not exercised.",
+  "removed_files": [
+    {
+      "original": "SOURCE/lib/screens/auth/email_recovery_screen.dart",
+      "moved_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE120_RECOVERY_EMAIL_2026-11-18/SOURCE/lib/screens/auth/email_recovery_screen.dart",
+      "bytes": 13636,
+      "sha256": "65781f181279c14a269028ec810a236b82ff77232efa992531cab1b48d165089",
+      "matches_pre_removal_commit": true
+    },
+    {
+      "original": "SOURCE/test/email_recovery_lifetime_test.dart",
+      "moved_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE120_RECOVERY_EMAIL_2026-11-18/SOURCE/test/email_recovery_lifetime_test.dart",
+      "bytes": 13105,
+      "sha256": "f20256bddfeacd45c248765a95c6ba0b87125dee8f032c551e3ff9a0d1cd589e",
+      "matches_pre_removal_commit": true
+    },
+    {
+      "original": "SOURCE/test/email_recovery_screen_test.dart",
+      "moved_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE120_RECOVERY_EMAIL_2026-11-18/SOURCE/test/email_recovery_screen_test.dart",
+      "bytes": 6245,
+      "sha256": "f95632808f34fa1def61b622f56a0a56e858a51d2eb63ab1cb54d0140466231e",
+      "matches_pre_removal_commit": true
+    },
+    {
+      "original": "SOURCE/test/recovery_email_setup_lifetime_test.dart",
+      "moved_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE120_RECOVERY_EMAIL_2026-11-18/SOURCE/test/recovery_email_setup_lifetime_test.dart",
+      "bytes": 17124,
+      "sha256": "856593c4dab1db9fdb4c1f7c52b359d05255600e22cfa8cf170f03aeb250f787",
+      "matches_pre_removal_commit": true
+    },
+    {
+      "original": "SOURCE/test/zyra_recovery_auth_contract_test.dart",
+      "moved_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE120_RECOVERY_EMAIL_2026-11-18/SOURCE/test/zyra_recovery_auth_contract_test.dart",
+      "bytes": 5846,
+      "sha256": "acec4a1c422bdc034ed56cedd00befe5f45aeff88d8ba8ca8929908fb689796d",
+      "matches_pre_removal_commit": true
+    }
+  ],
+  "preserved_mixed_test_coverage": "The three Apple/Google order, brand, size and progress tests from email_recovery_screen_test.dart are retained in welcome_provider_entry_test.dart.",
+  "migrations": [],
+  "verification": "LINE120_CHECKS.json",
+  "visual_evidence": [
+    "welcome_ios.png",
+    "welcome_android.png",
+    "founder_sign_in_security.png",
+    "privacy_and_data.png"
+  ],
+  "visual_review": "All four actual frames viewed by root. Native provider order and absence of recovery UI/text verified. No new master or visual approval claimed. The separately queued LOCK 34 visual styling is outside this removal brief.",
+  "limitations_and_next_owner": [
+    {
+      "item": "Account recovery/security after loss of a provider remains deferred by the Founder, as the brief states.",
+      "owner": "Fable and Founder",
+      "disposition": "Written deferral: no replacement designed or built on line 120."
+    },
+    {
+      "item": "Older recovery descriptions in DOC-ZYRA-0210 are superseded for this task by the Founder removal brief.",
+      "owner": "ZYRA Claude chat",
+      "disposition": "Written scope refusal: no product-spec rewrite or new wording by Codex."
+    },
+    {
+      "item": "Physical iPhone observation and delivery require applicable Founder GO.",
+      "owner": "Founder / line 117",
+      "disposition": "No install or native build performed."
+    }
+  ],
+  "measurements": {
+    "client_lines_removed_net": 1183,
+    "app_dart_lines": 175663,
+    "app_dart_files": 344,
+    "test_dart_lines": 241095,
+    "test_dart_files": 589
+  },
+  "handover_acceptance": "Implementation records current; later design acceptance remains with the Founder and ZYRA Claude chat.",
+  "test_files": [
+    "SOURCE/test/dev_onboarding_home_integration_test.dart",
+    "SOURCE/test/dev_signup_process_test.dart",
+    "SOURCE/test/dev_signup_toggle_options_test.dart",
+    "SOURCE/test/legal_document_destinations_test.dart",
+    "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+    "SOURCE/test/sign_in_security_screen_test.dart",
+    "SOURCE/test/visual/zyra_baseline_guardian_account_visual_test.dart",
+    "SOURCE/test/welcome_auth_failure_recovery_test.dart",
+    "SOURCE/test/whole_app_settings_destinations_test.dart",
+    "SOURCE/test/zyra_dev_home_tools_test.dart",
+    "SOURCE/test/welcome_provider_entry_test.dart",
+    "SOURCE/test/visual/line120_recovery_removal_capture_test.dart"
+  ]
+}

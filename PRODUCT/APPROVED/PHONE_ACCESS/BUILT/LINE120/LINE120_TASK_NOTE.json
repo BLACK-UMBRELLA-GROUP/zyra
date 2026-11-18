@@ -1,0 +1,81 @@
+{
+  "line": 120,
+  "conversation": "new (started 22:05:52 London, 2026-11-18)",
+  "source_edit_gate": "Read-only until line 119 committed as 7ac11bc8 and SOURCE/lib/test/ios were clean; edits began 22:26:23 UTC.",
+  "start_pack_bytes": 18998,
+  "startup_reads": "Project AGENTS; MAP; line 120 brief; relevant SIGN_UP LOCK record/account-order rows; ZYRA rules and implementation handover standard; affected client/test code and tool/check definitions. Registers searched by ID/tail.",
+  "read_scope_correction": "Initial MAP slice 1-210 and lessons tail 150 exceeded the requested route/delta scope (L46, OA-AIOS-471). No whole lessons file was opened. Subsequent lesson material came from start_pack.py. Relative start_pack invocation refused; the documented absolute script invocation succeeded without changing the tool.",
+  "usage": {
+    "timestamp": "2026-11-18T22:38:17.034Z",
+    "counts": {
+      "input_tokens": 14569572,
+      "cached_input_tokens": 14379648,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 43834,
+      "reasoning_output_tokens": 19426,
+      "total_tokens": 14613406
+    }
+  },
+  "helpers": "One scoped helper reused for read-only dependency audit, scratch test preparation and independent final review; actual helper counts unavailable, not estimated.",
+  "done": [
+    "Welcome retains only Apple and Google entry, Apple first on iOS and Google first on Android. Existing styling, provider actions and loading states retained.",
+    "Sign-in & security retains attached provider information and the existing no-password sentence; recovery row, setup, verification and disabled-test-account explanation removed.",
+    "Founder Sign-in & security recovery destination, enum and saved-detail restoration removed. Old recovery-detail checkpoints fall back to the overview and clear that detail.",
+    "Privacy & data retains its existing Apple/Google and no-app-password sentences, with only the recovery-email sentence removed.",
+    "Recovery-only auth getters, validation, request/verify methods, error mapping and local authenticated-user handoff field removed.",
+    "Seeded account labels, provider linking APIs, sign-out ownership protection and unrelated session recovery retained."
+  ],
+  "checks": "LINE120_CHECKS.json; final 199 focused, 4 capture and 56 checkpoint cases pass; full run 7,316 pass / 124 skips / two retired expectations replaced and passed. Zero unresolved failures.",
+  "retired_files": [
+    {
+      "original": "SOURCE/lib/screens/auth/email_recovery_screen.dart",
+      "moved_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE120_RECOVERY_EMAIL_2026-11-18/SOURCE/lib/screens/auth/email_recovery_screen.dart",
+      "bytes": 13636,
+      "sha256": "65781f181279c14a269028ec810a236b82ff77232efa992531cab1b48d165089",
+      "matches_pre_removal_commit": true
+    },
+    {
+      "original": "SOURCE/test/email_recovery_lifetime_test.dart",
+      "moved_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE120_RECOVERY_EMAIL_2026-11-18/SOURCE/test/email_recovery_lifetime_test.dart",
+      "bytes": 13105,
+      "sha256": "f20256bddfeacd45c248765a95c6ba0b87125dee8f032c551e3ff9a0d1cd589e",
+      "matches_pre_removal_commit": true
+    },
+    {
+      "original": "SOURCE/test/email_recovery_screen_test.dart",
+      "moved_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE120_RECOVERY_EMAIL_2026-11-18/SOURCE/test/email_recovery_screen_test.dart",
+      "bytes": 6245,
+      "sha256": "f95632808f34fa1def61b622f56a0a56e858a51d2eb63ab1cb54d0140466231e",
+      "matches_pre_removal_commit": true
+    },
+    {
+      "original": "SOURCE/test/recovery_email_setup_lifetime_test.dart",
+      "moved_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE120_RECOVERY_EMAIL_2026-11-18/SOURCE/test/recovery_email_setup_lifetime_test.dart",
+      "bytes": 17124,
+      "sha256": "856593c4dab1db9fdb4c1f7c52b359d05255600e22cfa8cf170f03aeb250f787",
+      "matches_pre_removal_commit": true
+    },
+    {
+      "original": "SOURCE/test/zyra_recovery_auth_contract_test.dart",
+      "moved_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE120_RECOVERY_EMAIL_2026-11-18/SOURCE/test/zyra_recovery_auth_contract_test.dart",
+      "bytes": 5846,
+      "sha256": "acec4a1c422bdc034ed56cedd00befe5f45aeff88d8ba8ca8929908fb689796d",
+      "matches_pre_removal_commit": true
+    }
+  ],
+  "build_evidence": "Four PNGs and JSON/text records only; no compiled binaries or copied source tree.",
+  "commit": "8a1c3c26301460eeedb6a5c42e00274ba1faf315",
+  "public_checks": {
+    "A": "Staged secret scan clear; outgoing scan and origin verification at push.",
+    "B": "17 inherited flagged lines across 24 files, zero new flagged lines; final evidence files checked separately.",
+    "C": "No ROADMAP row finished.",
+    "D": "Version unchanged; no release.",
+    "E": "Existing member wording retained by deletion; neutral technical documentation.",
+    "F": "README updated."
+  },
+  "server_changes": false,
+  "phone_install": false,
+  "live": false,
+  "boundaries": "Unrelated admin/design files, line 118 Q165, line 121 Q166-167, line 122 Q168 and pending line 123 were preserved. No stash/reset/checkout/deletion command used.",
+  "retirement_destination": "/Users/shakeelahmad/_to_delete/ZYRA_LINE120_RECOVERY_EMAIL_2026-11-18"
+}

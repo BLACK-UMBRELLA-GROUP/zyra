@@ -1,0 +1,188 @@
+{
+  "line": 120,
+  "source_commit": "8a1c3c26301460eeedb6a5c42e00274ba1faf315",
+  "flutter_version": "3.44.2",
+  "guarded_driver": "SOURCE/tooling/no_git_driver.mjs",
+  "sdk_pins": 5,
+  "execution_denial": "PASS",
+  "inherited_execution_denial": "PASS",
+  "analyze": "No issues found",
+  "focused": {
+    "passed": 199,
+    "skipped": 0,
+    "failed": 0,
+    "completed": true,
+    "log_sha256": "f33f3980bae52a5b71e84d57214e5b3ad056038e8e01b22a7d29c2a33fbc7d28"
+  },
+  "capture": {
+    "passed": 4,
+    "skipped": 0,
+    "failed": 0,
+    "completed": true,
+    "log_sha256": "3370311aead56f5b4095620bc766bf3ffad42aae2264e7c7c59f95f931b86522"
+  },
+  "full_run": {
+    "passed": 7316,
+    "skipped": 124,
+    "failed": 2,
+    "completed": true,
+    "log_sha256": "5d8b886e4dfb293eb3632a9503564a831877e51e9eeb96e06d4853dc31a6c83b"
+  },
+  "checkpoint_final_source_retry": {
+    "passed": 56,
+    "skipped": 0,
+    "failed": 0,
+    "completed": true,
+    "log_sha256": "b75eae90c29e5a27a55727e8a79ff158ebde965aa2d9bab9ae9b126ba906c94a"
+  },
+  "resolved_initial_failures": [
+    "Seeker resumes informational signInSecurity/recovery with fresh callbacks",
+    "Guardian resumes informational signInSecurity/recovery with fresh callbacks"
+  ],
+  "resolution": "Replaced the retired detail cases with two role-specific checks that discard the old detail, restore the Apple/Google Sign-in & security overview and safely re-resume the cleaned checkpoint. All 56 checkpoint tests passed on the final file. No app source changed during the full run.",
+  "current_non_capture_cases_passed": 7318,
+  "unresolved_failures": 0,
+  "independent_review": "Read-only source, test and final checkpoint reviews: no concrete findings.",
+  "member_facing_recovery_email_search_hits": 0,
+  "server_changes": false,
+  "phone_install": false,
+  "public_check": {
+    "checked_files": 24,
+    "flags": [
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "line": 1873,
+        "category": "money",
+        "inherited_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "line": 8878,
+        "category": "money",
+        "inherited_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "line": 8879,
+        "category": "money",
+        "inherited_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+        "line": 778,
+        "category": "money",
+        "inherited_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/screens/settings/privacy_and_data_screen.dart",
+        "line": 33,
+        "category": "legal/company",
+        "inherited_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/screens/settings/privacy_and_data_screen.dart",
+        "line": 35,
+        "category": "legal/company",
+        "inherited_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/screens/settings/settings_screen.dart",
+        "line": 25,
+        "category": "legal/company",
+        "inherited_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/screens/settings/settings_screen.dart",
+        "line": 192,
+        "category": "money",
+        "inherited_exact_line": true
+      },
+      {
+        "path": "SOURCE/lib/screens/settings/settings_screen.dart",
+        "line": 727,
+        "category": "money",
+        "inherited_exact_line": true
+      },
+      {
+        "path": "README.md",
+        "line": 55,
+        "category": "money",
+        "inherited_exact_line": true
+      },
+      {
+        "path": "REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md",
+        "line": 472,
+        "category": "money",
+        "inherited_exact_line": true
+      },
+      {
+        "path": "REPORTS/CURRENT/ZYRA_CODE_SIZE_TRACKER_CURRENT_VERSION_V1.md",
+        "line": 616,
+        "category": "money",
+        "inherited_exact_line": true
+      },
+      {
+        "path": "MAP.md",
+        "line": 29,
+        "category": "money",
+        "inherited_exact_line": true
+      },
+      {
+        "path": "MAP.md",
+        "line": 33,
+        "category": "legal/company",
+        "inherited_exact_line": true
+      },
+      {
+        "path": "MAP.md",
+        "line": 521,
+        "category": "money",
+        "inherited_exact_line": true
+      },
+      {
+        "path": "MAP.md",
+        "line": 525,
+        "category": "money",
+        "inherited_exact_line": true
+      },
+      {
+        "path": "MAP.md",
+        "line": 553,
+        "category": "money",
+        "inherited_exact_line": true
+      }
+    ],
+    "new_flagged_lines": 0,
+    "review": "All flagged lines are unchanged existing technical routes/comments, app-copy values or geometry; no line 120 flagged addition. App-visible existing values retained under AD-AIOS-146."
+  },
+  "secret_scan_before_implementation_commit": "gitleaks protect --staged --redact: no leaks",
+  "github_ci": "The pushed commit checks are authoritative; the prior line 119 CI completed successfully before this push.",
+  "commands": [
+    "node tooling/no_git_driver.mjs check",
+    "node tooling/no_git_driver.mjs flutter analyze --no-pub",
+    "node tooling/no_git_driver.mjs flutter test --no-pub --reporter json <14 focused files>",
+    "node tooling/no_git_driver.mjs flutter test --no-pub --reporter json --dart-define=ZYRA_LINE120_OUTPUT=<absolute BUILT/LINE120> test/visual/line120_recovery_removal_capture_test.dart",
+    "node tooling/no_git_driver.mjs flutter test --no-pub --reporter json",
+    "node tooling/no_git_driver.mjs flutter test --no-pub --reporter json test/one_journey_resume_checkpoint_test.dart",
+    "python3 SYSTEM/tools/blueprint/code_size.py",
+    "python3 SYSTEM/tools/blueprint/generate_planned_screen_map.py",
+    "python3 <group>/SYSTEM/TOOLS/generate_map.py ."
+  ],
+  "focused_files": [
+    "welcome_provider_entry_test.dart",
+    "welcome_auth_failure_recovery_test.dart",
+    "sign_in_security_screen_test.dart",
+    "legal_document_destinations_test.dart",
+    "whole_app_settings_destinations_test.dart",
+    "dev_signup_toggle_options_test.dart",
+    "dev_signup_process_test.dart",
+    "dev_onboarding_home_integration_test.dart",
+    "zyra_dev_home_tools_test.dart",
+    "welcome_splash_palette_test.dart",
+    "auth_gate_recovery_test.dart",
+    "auth_gate_lifetime_test.dart",
+    "zyra_auth_name_test.dart",
+    "zyra_signout_intent_test.dart"
+  ],
+  "evidence_secret_scan_note": "Initial staged evidence scan matched the auth source file SHA-256 under a path-keyed JSON object. Verified it as a checksum, then separated each path and digest into distinct fields. No credential was present; final staged and outgoing scans must pass without an exception."
+}
