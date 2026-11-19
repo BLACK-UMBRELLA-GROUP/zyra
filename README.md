@@ -176,11 +176,28 @@ The default is PROFILE mode, which supports reopening the installed app after un
 
 Widget and capture tests select other sample roles, plans and states from code. The shell uses `ZyraOneJourneyShellFixture` through `SOURCE/test/support/zyra_hidden_dev_controls_driver.dart`; onboarding fixtures and immutable scenario catalogs also live under `SOURCE/test/support/`. These helpers provide values and call guarded source callbacks. They add no runtime picker or navigation door. Ordinary member navigation, saved Personalisation choices and account ownership checks remain with the app.
 
-The signed-in Founder can open **Developer** from a page heading in the
-ordinary Seeker app. A fresh session with the existing Founder claim enables
-local sample data on that account. App Lock hides samples until the same
-session is verified again; signing out clears them. See [the Flutter source guide](SOURCE/README.md)
-for the offline test commands.
+The signed-in Founder can open **Developer** from page headings throughout
+the planned Seeker and Guardian preview. A fresh session with the existing
+Founder server claim enables local sample data on that account. The panel
+can view Seeker One, Seeker Basic, Guardian One or Guardian Basic, select
+Sara, Maryam or Noor's Journey and its stage, and set sample requests,
+Introductions, My ZYRA presets and shared error pages. Inactivity notices
+and email previews are available on the Seeker side only.
+
+**Unverified** opens the locked Profiles or Network gate and local identity
+verification preview. **Setup unfinished** blocks Request a Journey with
+“Finish setting up your profile to start a Journey.” The setup card,
+Continue setting up and Start sign-up depend on line 121. Until then,
+Everything leaves the setup card out. If the real membership is unavailable,
+the preview starts as Seeker One sample data and says
+“Viewing as Seeker One · real plan: none”. **Clear sample data** restores
+the real account view, or that same local Seeker One start when there is no
+readable real membership. Nothing grants or changes a server plan.
+
+App Lock hides samples until the same session is verified again; signing out
+clears them. See [the Flutter source guide](SOURCE/README.md) for the offline
+test commands and [the as-built handover](REPORTS/CURRENT/ZYRA_DEVELOPER_PANEL_AS_BUILT_CURRENT_VERSION_V1.md)
+for line 123's scope and evidence. Phone delivery is a separate step.
 
 Confirmations share a compact bottom sheet. Profile Preview uses the Profiles card with the member’s own public details and photos. Its request button shows an explanation.
 

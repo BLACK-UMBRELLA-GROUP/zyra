@@ -1,0 +1,138 @@
+{
+  "line": 123,
+  "lock": "31 V2",
+  "action": "OA-ZYRA-325",
+  "status": "BUILT (local app preview; live no)",
+  "code_commit": "1c5757c4baf005b82c778913228e9383417a565b",
+  "timestamp": "2026-11-19T05:37:08.325635+00:00",
+  "inputs": [
+    "DOC-ZYRA-0481 DEV_PANEL_SPEC V2, including section7.4",
+    "DOC-ZYRA-0482 LOCK_RECORD",
+    "V2 and V1 build briefs",
+    "LOCK34 gates",
+    "LOCK32 notices",
+    "LOCK23 errors"
+  ],
+  "start_pack_bytes": 15983,
+  "source_clean_baseline": "d80c478d4bf443537a84466ec24ef162cc6395ca",
+  "questions": {
+    "171": "ANSWERED: gate-only setup; card and continuation owned by121",
+    "173": "ANSWERED: local Seeker One fallback and Clear when real plan absent",
+    "174": "ANSWERED: no Guardian NOTICES or inactivity previews"
+  },
+  "analyzer": "No issues found (analyze_final5.log)",
+  "tests": {
+    "suites": [
+      "test/line123_preview_journey_model_test.dart",
+      "test/line123_identity_panel_preview_test.dart",
+      "test/zyra_developer_panel_test.dart",
+      "test/zyra_developer_samples_test.dart",
+      "test/zyra_developer_panel_entry_test.dart",
+      "test/developer_controls_release_safety_test.dart",
+      "test/global_hidden_dev_controls_test.dart",
+      "test/zyra_developer_access_test.dart",
+      "test/zyra_developer_access_concurrency_test.dart",
+      "test/zyra_developer_route_gate_test.dart",
+      "test/zyra_app_lock_lifecycle_test.dart",
+      "test/auth_gate_lifetime_test.dart",
+      "test/zyra_one_app_release_tooling_contract_test.dart",
+      "test/one_journey_inline_options_test.dart",
+      "test/one_journey_pull_down_routes_test.dart",
+      "test/compatibility_editor_opening_owner_test.dart",
+      "test/compatibility_editors_test.dart",
+      "test/retained_photo_editor_reuse_test.dart",
+      "test/edit_photos_opening_owner_test.dart",
+      "test/zyra_profile_video_photos_test.dart",
+      "test/help_support_preview_reuse_test.dart",
+      "test/edit_photos_screen_test.dart"
+    ],
+    "passed": 270,
+    "skipped": 0,
+    "failed": 0,
+    "log_sha256": "3f00a550e93eb343c91f4d4560f90959d1540d24305120832ae09d4892c319ac",
+    "elapsed_ms": 31010
+  },
+  "captures": [
+    {
+      "path": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/LINE123_BUILD/SCREENSHOTS/line96_ordinary_basic_panel.png",
+      "sha256": "48aad954c40d19a0be725b5bbef6d385cf0e46e353f8b0e9df5f8901b4e09d6c",
+      "bytes": 59060
+    },
+    {
+      "path": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/LINE123_BUILD/SCREENSHOTS/lock31_developer_basic.png",
+      "sha256": "e5b9b8a56aec02b156f74729463942ea693a6d87cb21093db4c7cd0f93cd275a",
+      "bytes": 158522
+    },
+    {
+      "path": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/LINE123_BUILD/SCREENSHOTS/lock31_developer_one.png",
+      "sha256": "3868d64c048e50f28700738bd9e580b72f18836b615f933e25e6fe23f888c6b4",
+      "bytes": 158005
+    },
+    {
+      "path": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/LINE123_BUILD/SCREENSHOTS/lock31_v2_320x568_2x_bottom.png",
+      "sha256": "2e33b9535c2ca743bb31af915a6cd92e8616ef87ce3915fa1caafe516b780283",
+      "bytes": 75462
+    },
+    {
+      "path": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/LINE123_BUILD/SCREENSHOTS/lock31_v2_320x568_2x_top.png",
+      "sha256": "80cdd995c555ea93d33cef2b8b826db0c96aa8b68f21c3684f27a1608ecdad0b",
+      "bytes": 101609
+    },
+    {
+      "path": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/LINE123_BUILD/SCREENSHOTS/lock31_v2_430x932_2x_bottom.png",
+      "sha256": "4077436be4b26f6c2301ca91fd70685895934d1762558fd650ac0c9645252423",
+      "bytes": 159239
+    },
+    {
+      "path": "PRODUCT/APPROVED/DEV_TOGGLES/BUILT/LINE123_BUILD/SCREENSHOTS/lock31_v2_430x932_2x_top.png",
+      "sha256": "9b05d46d7c0d07702412f0956cd7b950da9ac1115a9f2fc81b8866b71b064051",
+      "bytes": 186549
+    }
+  ],
+  "visual_review": {
+    "inspected": [
+      "normal430x932 actual host",
+      "320x568 at2x top",
+      "430x932 at2x bottom"
+    ],
+    "result": "Shared ivory sheet at88% viewport. All controls scroll into hit-testable positions at both2x sizes; no overflow exceptions. LOCK31/32 text-only master exemption; no pixel-equality claim."
+  },
+  "public_check": {
+    "scanned_files": 57,
+    "reviewed_hits": 68,
+    "new_hits": 2,
+    "result": "Reviewed; PUBLIC_CHECK.json"
+  },
+  "secret_scan": {
+    "tool": "gitleaks stdin --redact",
+    "scope": "changed source/tests/handover documents",
+    "findings": 0
+  },
+  "independent_review": [
+    "82 original title surfaces plus6 additional actual preview surfaces",
+    "exact route/navigator ownership and member title semantics",
+    "profile and Photos covered-action denial and terminal owner loss"
+  ],
+  "fixed_regressions": [
+    "Clear preserves ordinary subtree without new backend reads",
+    "same-session reproof restores hidden local sample page",
+    "nested editors retain draft under their own Developer sheet with covered actions inert",
+    "stage changes preserve other attempts; Clear restores colliding native histories"
+  ],
+  "test_contract_updates": [
+    "Canonical seeker_premium database fixture",
+    "Entry tests follow planned-preview navigation",
+    "Sign-out checks retired controls; Q173 permits fresh local fallback after unreadable membership"
+  ],
+  "deferred_to_line121": [
+    "Start sign-up",
+    "progress-bar long press",
+    "Finish setting up card and saved-step continuation"
+  ],
+  "native_run": false,
+  "phone_install": false,
+  "line98_prompt": false,
+  "migrations": false,
+  "dependency_changes": false,
+  "startup_exception": "Initial lessons read exceeded requested scoped output; recorded under OA-AIOS-471. Subsequent reads were task scoped."
+}

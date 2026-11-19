@@ -65,21 +65,46 @@ flutter run --profile --flavor production --dart-define=ZYRA_INTERNAL_FOUNDER_AC
 
 ## Developer panel
 
-The signed-in ZYRA Founder can tap the page heading in the ordinary Seeker
-app to open **Developer**. The panel verifies the current session against
-the existing Founder account, project and server claim. When the current
-session remains authorized, the sample view stays visible while the heading
-tap checks access. The sheet opens after the check succeeds and shows the
-verified Seeker plan and its sample Journey capacity.
+The signed-in ZYRA Founder can tap a page heading across the planned Seeker
+and Guardian preview to open **Developer** (LOCK 31 V2, queue line 123).
+The panel verifies the pinned Founder account, project, server claim, exact
+session lifetime and account generation. The sheet opens only after a fresh
+check succeeds and the tapped title still belongs to the foreground route.
+Covered or retired title callbacks cannot reopen it.
 
-The panel loads local sample Journeys, requests, history and Introductions
-for that account. App Lock and a temporary verification failure hide the
-samples and disable their actions. A fresh check of the same session restores
-them. **Clear sample data**, signing out, a different session, and loss of the
-server claim clear the choices. When Active or Ended has no explicit selector
-choice, taking a sample action adds only the sample row and keeps ordinary
-rows. Run the mocked entry and sample tests with
-`flutter test --no-pub test/zyra_developer_panel_entry_test.dart test/zyra_developer_samples_test.dart`.
+The four **View as** choices switch only local role, plan limits and locks.
+Active sample Journeys use Sara, Maryam and Noor; the Journey and Stage
+pickers open the chosen Journey at one of the nine canonical preview stages.
+The existing request, history and Introduction selectors remain, alongside
+My ZYRA presets, Seeker inactivity previews and shared error pages.
+Guardian views have no NOTICES section. Samples use the existing local
+presentations and actions, with no server writes or product events.
+
+**Unverified** uses the locked Profiles/Network gate and a typed local
+identity-verification preview. It cannot finalize live verification.
+**Setup unfinished** supplies the Request a Journey gate only until line
+121 supplies the setup card and continuation. Start sign-up also waits for
+line 121; Everything omits the unavailable setup card. If real membership
+is missing or unreadable, the approved start and Clear state are local
+Seeker One samples, labelled “Viewing as Seeker One · real plan: none”.
+No server membership is granted.
+
+App Lock, backgrounding or a temporary verification failure withdraw sample
+actions. A fresh check of the same authorized session restores retained
+choices. Signing out, session replacement or loss of the server claim clears
+them. **Clear sample data** resets the controls and restores the real view,
+with the approved local fallback above when needed.
+
+Run the mocked panel, state, entry and local verification regressions through
+the protected driver with the pinned SDK:
+
+```sh
+node tooling/no_git_driver.mjs flutter test --no-pub test/zyra_developer_panel_test.dart test/zyra_developer_samples_test.dart test/zyra_developer_panel_entry_test.dart test/line123_preview_journey_model_test.dart test/line123_identity_panel_preview_test.dart
+```
+
+The [as-built handover](../REPORTS/CURRENT/ZYRA_DEVELOPER_PANEL_AS_BUILT_CURRENT_VERSION_V1.md)
+records title coverage, evidence and final verification. This task has no
+migration, native build, phone installation or delivery.
 
 ## Backend
 

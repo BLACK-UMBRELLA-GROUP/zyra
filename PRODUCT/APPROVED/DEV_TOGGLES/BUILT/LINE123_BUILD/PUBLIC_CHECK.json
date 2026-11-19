@@ -1,0 +1,431 @@
+{
+  "files": 57,
+  "scanner_exit": 1,
+  "hits": [
+    {
+      "path": "README.md",
+      "line": 62,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "line": 313,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "line": 314,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "line": 318,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "line": 319,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "line": 322,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "line": 329,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "line": 333,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "line": 612,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "line": 615,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "line": 617,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart",
+      "line": 633,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart",
+      "line": 639,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_timeline_presentation.dart",
+      "line": 345,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "line": 988,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 2400,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 9586,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 9587,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_discovery_presentation.dart",
+      "line": 229,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_action.dart",
+      "line": 125,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 1827,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 779,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_switch_signup_preview.dart",
+      "line": 230,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_switch_signup_preview.dart",
+      "line": 233,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_subscription_wallet_preview.dart",
+      "line": 238,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_subscription_wallet_preview.dart",
+      "line": 241,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "line": 936,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "line": 1424,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "line": 1842,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "line": 2279,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "line": 2385,
+      "category": "money",
+      "unchanged_from_HEAD": false
+    },
+    {
+      "path": "SOURCE/lib/screens/home/home_shell.dart",
+      "line": 287,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 30,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 1522,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 1527,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 1532,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 1534,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 1541,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/edit_photos_screen.dart",
+      "line": 187,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/edit_photos_screen.dart",
+      "line": 215,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/edit_photos_screen.dart",
+      "line": 216,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/edit_photos_screen.dart",
+      "line": 220,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/edit_photos_screen.dart",
+      "line": 227,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/edit_photos_screen.dart",
+      "line": 454,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/edit_photos_screen.dart",
+      "line": 541,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/edit_profile_screen.dart",
+      "line": 341,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/edit_profile_screen.dart",
+      "line": 349,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+      "line": 8,
+      "category": "email",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+      "line": 74,
+      "category": "email",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+      "line": 530,
+      "category": "email",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+      "line": 57,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "line": 2104,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "line": 2376,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "line": 2800,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "line": 2835,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "line": 2839,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "line": 2846,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_membership_choices.dart",
+      "line": 775,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_membership_choices.dart",
+      "line": 782,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_membership_choices.dart",
+      "line": 784,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_membership_choices.dart",
+      "line": 786,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_membership_choices.dart",
+      "line": 804,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_membership_choices.dart",
+      "line": 937,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_membership_choices.dart",
+      "line": 1187,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_membership_choices.dart",
+      "line": 1314,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/test/compatibility_editor_opening_owner_test.dart",
+      "line": 84,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/test/compatibility_editor_opening_owner_test.dart",
+      "line": 347,
+      "category": "money",
+      "unchanged_from_HEAD": true
+    },
+    {
+      "path": "SOURCE/test/compatibility_editor_opening_owner_test.dart",
+      "line": 512,
+      "category": "money",
+      "unchanged_from_HEAD": false
+    }
+  ],
+  "new_hits": [
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "line": 2385,
+      "category": "money",
+      "unchanged_from_HEAD": false
+    },
+    {
+      "path": "SOURCE/test/compatibility_editor_opening_owner_test.dart",
+      "line": 512,
+      "category": "money",
+      "unchanged_from_HEAD": false
+    }
+  ],
+  "reviewed": true,
+  "review_reference": "AD-AIOS-146",
+  "review": "66 hits are unchanged public source lines. Two new hits are a local permission-variable name and Dart positional tuple access; neither contains financial data. No new commercial or private account information."
+}

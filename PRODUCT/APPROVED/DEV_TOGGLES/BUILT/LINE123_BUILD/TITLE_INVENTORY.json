@@ -1,0 +1,1956 @@
+{
+  "purpose": "As-built line123 title inventory and read-only hook/ownership review; original 82 coverage entries retained",
+  "snapshot": "2026-11-19T05:35:06+00:00",
+  "source_root": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/",
+  "title_entries": [
+    {
+      "title": "Profiles",
+      "side": "Seeker",
+      "route": "tab:0",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10602,
+      "existing_wrapper": true,
+      "title_callsite_lines": [
+        3255,
+        3295
+      ],
+      "hook_lines": [
+        10602
+      ],
+      "hook_kind": "_mainHeading -> ZyraTabTitle -> ZyraDeveloperTitle",
+      "preflight_line": 2685,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "shared_wrapper_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_tab_title.dart",
+      "shared_wrapper_line": 33,
+      "hook_line_texts": [
+        "      child: ZyraTabTitle("
+      ],
+      "title_callsite_texts": [
+        "              _mainHeading('Profiles'),",
+        "              _mainHeading('Profiles'),"
+      ]
+    },
+    {
+      "title": "Journey",
+      "side": "Seeker",
+      "route": "tab:1",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_tab.dart",
+      "line": 475,
+      "existing_wrapper": true,
+      "hook_lines": [
+        475,
+        489
+      ],
+      "hook_kind": "ZyraTabTitle -> ZyraDeveloperTitle",
+      "preflight_line": 475,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "shared_wrapper_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_tab_title.dart",
+      "shared_wrapper_line": 33,
+      "hook_line_texts": [
+        "                      child: ZyraTabTitle('Journey'),",
+        "                            child: const ZyraTabTitle('Journey'),"
+      ]
+    },
+    {
+      "title": "My ZYRA",
+      "side": "Both",
+      "route": "tab:2",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_focus_dashboard.dart",
+      "line": 514,
+      "existing_wrapper": true,
+      "hook_lines": [
+        514
+      ],
+      "hook_kind": "ZyraTabTitle -> ZyraDeveloperTitle",
+      "preflight_line": 514,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "shared_wrapper_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_tab_title.dart",
+      "shared_wrapper_line": 33,
+      "hook_line_texts": [
+        "                    ZyraTabTitle(widget.title),"
+      ]
+    },
+    {
+      "title": "Guardian",
+      "side": "Seeker",
+      "route": "tab:3",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "line": 618,
+      "existing_wrapper": true,
+      "hook_lines": [
+        618
+      ],
+      "hook_kind": "ZyraTabTitle -> ZyraDeveloperTitle",
+      "preflight_line": 618,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "shared_wrapper_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_tab_title.dart",
+      "shared_wrapper_line": 33,
+      "hook_line_texts": [
+        "                const title = ZyraTabTitle("
+      ]
+    },
+    {
+      "title": "Profile",
+      "side": "Both",
+      "route": "tab:4",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "line": 490,
+      "existing_wrapper": true,
+      "hook_lines": [
+        490
+      ],
+      "hook_kind": "ZyraTabTitle -> ZyraDeveloperTitle",
+      "preflight_line": 489,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "shared_wrapper_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_tab_title.dart",
+      "shared_wrapper_line": 33,
+      "hook_line_texts": [
+        "                  child: const ZyraTabTitle("
+      ]
+    },
+    {
+      "title": "Network",
+      "side": "Guardian",
+      "route": "tab:0",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 411,
+      "existing_wrapper": true,
+      "hook_lines": [
+        411
+      ],
+      "hook_kind": "ZyraTabTitle -> ZyraDeveloperTitle",
+      "preflight_line": 409,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "shared_wrapper_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_tab_title.dart",
+      "shared_wrapper_line": 33,
+      "hook_line_texts": [
+        "    (scaler) => ZyraTabTitle('Network', textScaler: scaler),"
+      ]
+    },
+    {
+      "title": "Journeys",
+      "side": "Guardian",
+      "route": "tab:1",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 1511,
+      "existing_wrapper": true,
+      "hook_lines": [
+        1511,
+        1520
+      ],
+      "hook_kind": "ZyraTabTitle -> ZyraDeveloperTitle",
+      "preflight_line": 1519,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "shared_wrapper_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_tab_title.dart",
+      "shared_wrapper_line": 33,
+      "hook_line_texts": [
+        "                      const ZyraTabTitle('Journeys'),",
+        "                    const Expanded(child: ZyraTabTitle('Journeys')),"
+      ]
+    },
+    {
+      "title": "Seekers",
+      "side": "Guardian",
+      "route": "tab:3",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_guardian_seekers.dart",
+      "line": 126,
+      "existing_wrapper": true,
+      "delegating_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "hook_lines": [
+        126
+      ],
+      "hook_kind": "delegated pager -> ZyraTabTitle -> ZyraDeveloperTitle",
+      "preflight_line": 1574,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "shared_wrapper_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_tab_title.dart",
+      "shared_wrapper_line": 33,
+      "hook_line_texts": [
+        "              const Expanded(child: ZyraTabTitle('Seekers')),"
+      ]
+    },
+    {
+      "title": "Profile",
+      "side": "Seeker",
+      "route": "profile",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10602,
+      "existing_wrapper": true,
+      "title_callsite_lines": [
+        3549
+      ],
+      "hook_lines": [
+        10602
+      ],
+      "hook_kind": "_mainHeading -> ZyraTabTitle -> ZyraDeveloperTitle",
+      "preflight_line": 2981,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "shared_wrapper_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_tab_title.dart",
+      "shared_wrapper_line": 33,
+      "hook_line_texts": [
+        "      child: ZyraTabTitle("
+      ],
+      "title_callsite_texts": [
+        "            child: _mainHeading('Profile'),"
+      ]
+    },
+    {
+      "title": "Journey requests",
+      "side": "Seeker",
+      "route": "requests",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_request_activity_presentation.dart",
+      "line": 281,
+      "existing_wrapper": true,
+      "wrapper_owner_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "wrapper_owner_lines": [
+        3839,
+        3859,
+        3865,
+        3904,
+        3908
+      ],
+      "hook_lines": [
+        281
+      ],
+      "hook_kind": "wrapTitle callback supplied by shell",
+      "preflight_line": 276,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "                return widget.wrapTitle?.call(title) ?? title;"
+      ]
+    },
+    {
+      "title": "Introductions",
+      "side": "Seeker",
+      "route": "introductions",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_request_activity_presentation.dart",
+      "line": 281,
+      "existing_wrapper": true,
+      "wrapper_owner_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "wrapper_owner_lines": [
+        3839,
+        3859,
+        3865,
+        3904,
+        3908
+      ],
+      "hook_lines": [
+        281
+      ],
+      "hook_kind": "wrapTitle callback supplied by shell",
+      "preflight_line": 276,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "                return widget.wrapTitle?.call(title) ?? title;"
+      ]
+    },
+    {
+      "title": "Ended Journeys",
+      "side": "Both",
+      "route": "ended / past_journeys",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_request_activity_presentation.dart",
+      "line": 281,
+      "existing_wrapper": true,
+      "wrapper_owner_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "wrapper_owner_lines": [
+        3839,
+        3859,
+        3865,
+        3904,
+        3908
+      ],
+      "hook_lines": [
+        281
+      ],
+      "hook_kind": "wrapTitle callback supplied by shell",
+      "preflight_line": 276,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "scope_note": "Guardian archive means the permitted supported-Seeker history; Guardian has no own inactivity archive.",
+      "hook_line_texts": [
+        "                return widget.wrapTitle?.call(title) ?? title;"
+      ]
+    },
+    {
+      "title": "Journey requests",
+      "side": "Guardian",
+      "route": "guardian_requests",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 908,
+      "existing_wrapper": true,
+      "hook_lines": [
+        908
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 920,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            ZyraDeveloperTitle(child: _title('Journey requests')),"
+      ]
+    },
+    {
+      "title": "Connect with Guardian",
+      "side": "Guardian",
+      "route": "guardian_connect",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 989,
+      "existing_wrapper": true,
+      "hook_lines": [
+        989
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 1001,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "          _header(ZyraDeveloperTitle(child: _title('Connect with Guardian'))),"
+      ]
+    },
+    {
+      "title": "Introductions you've made",
+      "side": "Guardian",
+      "route": "guardian_introductions",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 1090,
+      "existing_wrapper": true,
+      "hook_lines": [
+        1090,
+        1106
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 1101,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "                ZyraDeveloperTitle(child: _title(\"Introductions you've made\")),",
+        "                ZyraDeveloperTitle(child: _title(\"Introductions you've made\")),"
+      ]
+    },
+    {
+      "title": "Guardian chat",
+      "side": "Guardian",
+      "route": "guardian_private_chat",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 1682,
+      "existing_wrapper": true,
+      "hook_lines": [
+        1682
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 1766,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "                          ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "<Seeker name>",
+      "side": "Guardian",
+      "route": "guardian_seeker",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_guardian_seeker.dart",
+      "line": 212,
+      "existing_wrapper": true,
+      "hook_lines": [
+        212
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 211,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "      ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Settings",
+      "side": "Both",
+      "route": "settings",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "line": 712,
+      "existing_wrapper": true,
+      "hook_lines": [
+        712
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 711,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "              child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Phone access",
+      "side": "Both",
+      "route": "phone_access",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_phone_access.dart",
+      "line": 280,
+      "existing_wrapper": true,
+      "hook_lines": [
+        280
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 279,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "What Guardians can do",
+      "side": "Both",
+      "route": "guardian_info",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_guardian_info_presentation.dart",
+      "line": 88,
+      "existing_wrapper": true,
+      "hook_lines": [
+        88
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 87,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Switch Account",
+      "side": "Both",
+      "route": "switch_account_signup",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_switch_signup_preview.dart",
+      "line": 47,
+      "existing_wrapper": true,
+      "hook_lines": [
+        47
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 46,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Set up your <target> profile",
+      "side": "Both",
+      "route": "switch_account_setup",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_switch_signup_preview.dart",
+      "line": 47,
+      "existing_wrapper": true,
+      "hook_lines": [
+        47
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 46,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Switch profile",
+      "side": "Both",
+      "route": "subscriptions -> switch",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_subscription_wallet_preview.dart",
+      "line": 421,
+      "existing_wrapper": true,
+      "hook_lines": [
+        421
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 420,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "              child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Your subscriptions",
+      "side": "Both",
+      "route": "subscriptions",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_subscription_wallet_preview.dart",
+      "line": 625,
+      "existing_wrapper": true,
+      "hook_lines": [
+        625
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 623,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "          child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Membership",
+      "side": "Both",
+      "route": "membership",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_membership_choices.dart",
+      "line": 210,
+      "existing_wrapper": true,
+      "hook_lines": [
+        210
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 209,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "                      child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Review selection",
+      "side": "Both",
+      "route": "membership_review",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_membership_choices.dart",
+      "line": 1272,
+      "existing_wrapper": true,
+      "hook_lines": [
+        1272
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 1269,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "          ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "<role> One",
+      "side": "Both",
+      "route": "one_upgrade",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+      "line": 102,
+      "existing_wrapper": true,
+      "hook_lines": [
+        102
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 101,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "                  child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Filters",
+      "side": "Seeker",
+      "route": "filters",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_filters_presentation.dart",
+      "line": 923,
+      "existing_wrapper": true,
+      "hook_lines": [
+        923
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 922,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "                  child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Guardian Circle",
+      "side": "Both",
+      "route": "guardian_circle",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "line": 208,
+      "existing_wrapper": true,
+      "hook_lines": [
+        208
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 207,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "          child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Journey Bio",
+      "side": "Seeker",
+      "route": "bio / ended_bio",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_draft_journey_bio_presentation.dart",
+      "line": 159,
+      "existing_wrapper": true,
+      "hook_lines": [
+        159
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 158,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "          ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Guardians",
+      "side": "Seeker",
+      "route": "journey_guardians / ended_guardians",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_journey_peer_guardians_presentation.dart",
+      "line": 50,
+      "existing_wrapper": true,
+      "hook_lines": [
+        50
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 49,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Timeline",
+      "side": "Both",
+      "route": "timeline",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_draft_timeline_presentation.dart",
+      "line": 493,
+      "existing_wrapper": true,
+      "hook_lines": [
+        493
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 492,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Compatibility score",
+      "side": "Both",
+      "route": "compatibility / guardian_compatibility / ended_compatibility",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_draft_compatibility_presentation.dart",
+      "line": 166,
+      "existing_wrapper": true,
+      "hook_lines": [
+        166,
+        279
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 165,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            ZyraDeveloperTitle(",
+        "            ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Compatibility Unlocks",
+      "side": "Seeker",
+      "route": "compatibility_store",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart",
+      "line": 146,
+      "existing_wrapper": true,
+      "hook_lines": [
+        146
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 145,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "                child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Journey Bio",
+      "side": "Seeker",
+      "route": "bio_locked",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10613,
+      "existing_wrapper": true,
+      "title_callsite_lines": [
+        9953,
+        10014
+      ],
+      "hook_lines": [
+        10613
+      ],
+      "hook_kind": "_heading -> ZyraDeveloperTitle",
+      "preflight_line": 9241,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "        ZyraDeveloperTitle(child: _title(title, size: 26)),"
+      ],
+      "title_callsite_texts": [
+        "        _heading('Journey Bio', 'You and ${person.firstName}'),",
+        "            _heading('Journey Bio', 'You and ${person.firstName}'),"
+      ]
+    },
+    {
+      "title": "Compatibility score",
+      "side": "Seeker",
+      "route": "journey_compatibility_locked",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10613,
+      "existing_wrapper": true,
+      "title_callsite_lines": [
+        4824,
+        10101
+      ],
+      "hook_lines": [
+        10613
+      ],
+      "hook_kind": "_heading -> ZyraDeveloperTitle",
+      "preflight_line": 4234,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "        ZyraDeveloperTitle(child: _title(title, size: 26)),"
+      ],
+      "title_callsite_texts": [
+        "        _heading('Compatibility score', ''),",
+        "        _heading('Compatibility score', ''),"
+      ]
+    },
+    {
+      "title": "Journey Bio / Guardians",
+      "side": "Seeker",
+      "route": "ended_bio / ended_guardians [no stored details]",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10613,
+      "existing_wrapper": true,
+      "title_callsite_lines": [
+        5166
+      ],
+      "hook_lines": [
+        10613
+      ],
+      "hook_kind": "_heading -> ZyraDeveloperTitle",
+      "preflight_line": 4563,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "        ZyraDeveloperTitle(child: _title(title, size: 26)),"
+      ],
+      "title_callsite_texts": [
+        "      _heading(bio ? 'Journey Bio' : 'Guardians', ''),"
+      ]
+    },
+    {
+      "title": "Request a new Journey",
+      "side": "Seeker",
+      "route": "ended_restart",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10613,
+      "existing_wrapper": true,
+      "title_callsite_lines": [
+        5194
+      ],
+      "hook_lines": [
+        10613
+      ],
+      "hook_kind": "_heading -> ZyraDeveloperTitle",
+      "preflight_line": 4591,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "        ZyraDeveloperTitle(child: _title(title, size: 26)),"
+      ],
+      "title_callsite_texts": [
+        "      _heading('Request a new Journey', 'You and ${person.firstName}'),"
+      ]
+    },
+    {
+      "title": "Guardian access",
+      "side": "Seeker",
+      "route": "guardian_access_agreement",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10613,
+      "existing_wrapper": true,
+      "title_callsite_lines": [
+        5920
+      ],
+      "hook_lines": [
+        10613
+      ],
+      "hook_kind": "_heading -> ZyraDeveloperTitle",
+      "preflight_line": 5313,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "        ZyraDeveloperTitle(child: _title(title, size: 26)),"
+      ],
+      "title_callsite_texts": [
+        "      _heading('Guardian access', ''),"
+      ]
+    },
+    {
+      "title": "Journey",
+      "side": "Guardian",
+      "route": "guardian [permitted Journey]",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10602,
+      "existing_wrapper": true,
+      "title_callsite_lines": [
+        7883
+      ],
+      "hook_lines": [
+        10602
+      ],
+      "hook_kind": "_mainHeading -> ZyraTabTitle -> ZyraDeveloperTitle",
+      "preflight_line": 7237,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "shared_wrapper_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_tab_title.dart",
+      "shared_wrapper_line": 33,
+      "hook_line_texts": [
+        "      child: ZyraTabTitle("
+      ],
+      "title_callsite_texts": [
+        "        _mainHeading('Journey'),"
+      ]
+    },
+    {
+      "title": "Scan",
+      "side": "Seeker",
+      "route": "scan",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "line": 492,
+      "existing_wrapper": true,
+      "title_callsite_lines": [
+        37
+      ],
+      "hook_lines": [
+        492
+      ],
+      "hook_kind": "_UtilityTitle -> ZyraDeveloperTitle",
+      "preflight_line": 36,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "  Widget build(BuildContext context) => ZyraDeveloperTitle("
+      ],
+      "title_callsite_texts": [
+        "                const _UtilityTitle('Scan', id: 'draft_scan_title'),"
+      ]
+    },
+    {
+      "title": "Choose a profile to report",
+      "side": "Both",
+      "route": "safety / guardian_chat_report [no subject]",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "line": 217,
+      "existing_wrapper": true,
+      "hook_lines": [
+        217
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 216,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "                          ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Safety & advice",
+      "side": "Both",
+      "route": "safety_advice",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_draft_safety_advice_presentation.dart",
+      "line": 93,
+      "existing_wrapper": true,
+      "hook_lines": [
+        93
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 92,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "              ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Invitation",
+      "side": "Guardian",
+      "route": "guardian_free_place_invite",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_guardian_action.dart",
+      "line": 334,
+      "existing_wrapper": true,
+      "hook_lines": [
+        334
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 333,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "                    ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "<person> Main Guardian / Put <person> forward to <seeker>? / <person> has given you Guardian One",
+      "side": "Guardian",
+      "route": "network_request / guardian_introduce / guardian_family_offer",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_monogram_presentation.dart",
+      "line": 102,
+      "existing_wrapper": true,
+      "delegating_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_guardian_action.dart",
+      "delegating_line": 132,
+      "hook_lines": [
+        102
+      ],
+      "hook_kind": "ZyraMonogramHead -> ZyraDeveloperTitle",
+      "preflight_line": 134,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "      ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "<Guardian> will be your Main Guardian",
+      "side": "Seeker",
+      "route": "guardian_main_notice",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 6577,
+      "existing_wrapper": true,
+      "hook_lines": [
+        6577
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 5938,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "                ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Only what matters to you.",
+      "side": "Both",
+      "route": "notifications",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10228,
+      "existing_wrapper": true,
+      "hook_lines": [
+        10228
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 9516,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "      ZyraDeveloperTitle(child: _title('Only what matters to you.', size: 26)),"
+      ]
+    },
+    {
+      "title": "Journey",
+      "side": "Seeker",
+      "route": "journey_options",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_options_page.dart",
+      "line": 123,
+      "existing_wrapper": true,
+      "hook_lines": [
+        123
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 122,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "          ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "<held title>",
+      "side": "Both",
+      "route": "held_action",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10613,
+      "existing_wrapper": true,
+      "title_callsite_lines": [
+        8904,
+        8935,
+        8962
+      ],
+      "hook_lines": [
+        10613
+      ],
+      "hook_kind": "_heading -> ZyraDeveloperTitle",
+      "preflight_line": 8203,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "        ZyraDeveloperTitle(child: _title(title, size: 26)),"
+      ],
+      "title_callsite_texts": [
+        "          _heading(_heldTitle, ''),",
+        "              _heading(_heldTitle, ''),",
+        "        _heading(_heldTitle, ''),"
+      ]
+    },
+    {
+      "title": "Photos",
+      "side": "Both",
+      "route": "manage_photos",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/screens/profile/edit_photos_screen.dart",
+      "line": 998,
+      "existing_wrapper": true,
+      "hook_lines": [
+        998,
+        1214
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 974,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "                      child: ZyraDeveloperTitle(",
+        "                child: ZyraDeveloperTitle("
+      ],
+      "scope_note": "Both Photos branches are actual wrapped headers: normal photo grid and profile-video grid."
+    },
+    {
+      "title": "Sign-in & security",
+      "side": "Both",
+      "route": "account_action:signInSecurity",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "App lock",
+      "side": "Both",
+      "route": "account_action:appLock",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Advanced",
+      "side": "Both",
+      "route": "account_action:advanced",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Pause My Profile",
+      "side": "Both",
+      "route": "account_action:visibility",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Hidden profiles",
+      "side": "Both",
+      "route": "account_action:hiddenProfiles",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Guardian privacy",
+      "side": "Both",
+      "route": "account_action:guardianPrivacy",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Notifications & emails",
+      "side": "Both",
+      "route": "account_action:notificationSettings",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Send feedback",
+      "side": "Both",
+      "route": "account_action:feedback",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Privacy & data",
+      "side": "Both",
+      "route": "account_action:privacyData",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "How App Lock works",
+      "side": "Both",
+      "route": "settings_detail:appLock",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Reset Profile",
+      "side": "Both",
+      "route": "settings_detail:resetProfile",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Delete Account",
+      "side": "Both",
+      "route": "settings_detail:deleteAccount",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Guardian privacy",
+      "side": "Both",
+      "route": "settings_detail:discovery [Guardian]",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Pause My Profile",
+      "side": "Both",
+      "route": "settings_detail:discovery [Seeker]",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Hidden profiles",
+      "side": "Both",
+      "route": "settings_detail:hiddenProfiles",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "About notifications",
+      "side": "Both",
+      "route": "settings_detail:notifications",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Feedback and support",
+      "side": "Both",
+      "route": "settings_detail:feedback",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Privacy Policy",
+      "side": "Both",
+      "route": "settings_detail:privacyPolicy",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Terms",
+      "side": "Both",
+      "route": "settings_detail:terms",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "existing_wrapper": true,
+      "hook_lines": [
+        816
+      ],
+      "hook_kind": "_SettingsPage title -> ZyraDeveloperTitle",
+      "preflight_line": 815,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Edit Profile",
+      "side": "Both",
+      "route": "edit_profile",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/screens/profile/edit_profile_screen.dart",
+      "line": 637,
+      "existing_wrapper": true,
+      "hook_lines": [
+        637,
+        687
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 675,
+      "preflight_existing_wrapper": true,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "scope_note": "Both explicit preview header and ordinary AppBar hooked; preview nested Navigator has exact owner admission.",
+      "hook_line_texts": [
+        "                child: ZyraDeveloperTitle(",
+        "        title: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Partner preferences / compatibility editor",
+      "side": "Seeker",
+      "route": "filter_preferences",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 819,
+      "existing_wrapper": true,
+      "hook_lines": [
+        819,
+        909,
+        1976,
+        1995
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 877,
+      "preflight_existing_wrapper": true,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "              child: ZyraDeveloperTitle(",
+        "              title: ZyraDeveloperTitle(",
+        "              title: ZyraDeveloperTitle(",
+        "                      child: ZyraDeveloperTitle("
+      ],
+      "scope_note": "Actual planned root and nested _EditorScaffold headers are wrapped independently of the ordinary AppBars. Covers Partner preferences, category names, Edit answer and Partner preference.",
+      "planned_preview_hook_lines": [
+        819,
+        1995
+      ],
+      "ordinary_appbar_hook_lines": [
+        909,
+        1976
+      ]
+    },
+    {
+      "title": "Quick check",
+      "side": "Seeker",
+      "route": "preference_quick_check",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/screens/profile/compatibility_result_quick_check.dart",
+      "line": 388,
+      "existing_wrapper": true,
+      "hook_lines": [
+        388
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 388,
+      "preflight_existing_wrapper": true,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "            title: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Preview",
+      "side": "Both",
+      "route": "own_profile_preview",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/screens/profile/my_profile_preview_screen.dart",
+      "line": 407,
+      "existing_wrapper": true,
+      "hook_lines": [
+        407
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 407,
+      "preflight_existing_wrapper": true,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "                    child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Help & support",
+      "side": "Both",
+      "route": "help_support",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/screens/settings/help_support_screen.dart",
+      "line": 208,
+      "existing_wrapper": true,
+      "hook_lines": [
+        208,
+        270
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 268,
+      "preflight_existing_wrapper": true,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "              child: ZyraDeveloperTitle(",
+        "        title: ZyraDeveloperTitle("
+      ],
+      "scope_note": "Actual HelpSupportScreen.preview header and ordinary AppBar both wrapped; planned preview does not depend on the suppressed AppBar.",
+      "planned_preview_hook_lines": [
+        208
+      ],
+      "ordinary_appbar_hook_lines": [
+        270
+      ]
+    },
+    {
+      "title": "<local code page title>",
+      "side": "Both",
+      "route": "guardian_invite / code sharing",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_draft_local_code_page.dart",
+      "line": 651,
+      "existing_wrapper": true,
+      "hook_lines": [
+        651
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 651,
+      "preflight_existing_wrapper": true,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "scope_note": "Outer explicit wrapper owns admission; inner ZyraTabTitle uses developerTitle:false to avoid duplication.",
+      "hook_line_texts": [
+        "      ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Journey with <firstName>",
+      "side": "Both",
+      "route": "journey",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_journey_presentation.dart",
+      "line": 486,
+      "existing_wrapper": true,
+      "hook_lines": [
+        486
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 485,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "                          child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Journey with <firstName>",
+      "side": "Seeker",
+      "route": "journey [not active]",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 5261,
+      "existing_wrapper": true,
+      "hook_lines": [
+        5261
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 4658,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "                  child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "Journey with <firstName>",
+      "side": "Seeker",
+      "route": "journey [ended archive]",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 5312,
+      "existing_wrapper": true,
+      "hook_lines": [
+        5312
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 4707,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "              child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "<firstName> accepted your request. / Your Journey places are full.",
+      "side": "Seeker",
+      "route": "request_capacity",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_request_capacity_choice.dart",
+      "line": 77,
+      "existing_wrapper": true,
+      "hook_lines": [
+        77
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 76,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "                    child: ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "<selected report subject>",
+      "side": "Both",
+      "route": "safety / guardian_chat_report",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "line": 290,
+      "existing_wrapper": true,
+      "hook_lines": [
+        290
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 287,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "                      ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "<action title>",
+      "side": "Guardian",
+      "route": "network_request / guardian_introduce / guardian_family_offer",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_monogram_presentation.dart",
+      "line": 102,
+      "existing_wrapper": true,
+      "hook_lines": [
+        102
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 101,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "hook_line_texts": [
+        "      ZyraDeveloperTitle("
+      ]
+    },
+    {
+      "title": "<identity status title>",
+      "side": "Guardian",
+      "route": "guardian_family_identity",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/screens/onboarding/identity_verification_screen.dart",
+      "line": 530,
+      "existing_wrapper": true,
+      "hook_lines": [
+        530,
+        579,
+        670,
+        765,
+        1161
+      ],
+      "hook_kind": "direct ZyraDeveloperTitle",
+      "preflight_line": 610,
+      "preflight_existing_wrapper": false,
+      "verification": "Read-only actual rendered-header trace; includes planned-preview branch where one exists. Runtime results recorded separately in LINE123_CHECKS.json.",
+      "scope_note": "Consent, status, expired sign-in, required-verification and privacy headings hooked; typed local route has no live finalizer.",
+      "hook_line_texts": [
+        "        ZyraDeveloperTitle(",
+        "                ZyraDeveloperTitle(",
+        "                ZyraDeveloperTitle(",
+        "        ZyraDeveloperTitle(",
+        "                ZyraDeveloperTitle("
+      ]
+    }
+  ],
+  "entry_count": 82,
+  "shared_hooks": [
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10602,
+      "hook": "_mainHeading",
+      "covers": [
+        "Profiles",
+        "browsed Profile",
+        "Guardian Journey"
+      ],
+      "wrapper": true,
+      "note": "Shared ZyraTabTitle supplies guarded wrapper.",
+      "line_text": "      child: ZyraTabTitle("
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10613,
+      "hook": "_heading",
+      "covers": [
+        "locked/empty Bio, Guardians, Compatibility",
+        "Guardian access",
+        "Request a new Journey",
+        "held_action"
+      ],
+      "wrapper": true,
+      "line_text": "        ZyraDeveloperTitle(child: _title(title, size: 26)),"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_request_activity_presentation.dart",
+      "line": 281,
+      "hook": "existing wrapTitle callback",
+      "covers": [
+        "Journey requests",
+        "Introductions",
+        "Ended Journeys"
+      ],
+      "wrapper": true,
+      "note": "Layout invokes callback; planned shell supplies ZyraDeveloperTitle.",
+      "line_text": "                return widget.wrapTitle?.call(title) ?? title;"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 579,
+      "hook": "_header",
+      "covers": [
+        "Guardian Journey requests",
+        "Connect with Guardian",
+        "Introductions",
+        "Network",
+        "Seekers"
+      ],
+      "wrapper": false,
+      "note": "Transparent layout helper; caller titles explicitly wrapped. Network/Journeys use ZyraTabTitle and Seekers delegates to pager.",
+      "line_text": "  Widget _header("
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 816,
+      "hook": "_SettingsPage title",
+      "covers": [
+        "all account_action and settings_detail titles"
+      ],
+      "wrapper": true,
+      "line_text": "            child: ZyraDeveloperTitle("
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_tab_title.dart",
+      "line": 33,
+      "hook": "ZyraTabTitle",
+      "covers": [
+        "most main tabs"
+      ],
+      "wrapper": true,
+      "note": "Guarded wrapper preserves original heading when unavailable and suppresses duplicate ancestor wrappers.",
+      "line_text": "    return developerTitle ? ZyraDeveloperTitle(child: heading) : heading;"
+    },
+    {
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_developer_title.dart",
+      "line": 525,
+      "hook": "availableOn",
+      "note": "Planned owner scope now registered. Exact active account route, foreground, valid proof email, and same Navigator or exact nested owner bridge/Navigator required; root foreground required for nested admission.",
+      "line_text": "  bool availableOn("
+    }
+  ],
+  "no_heading_exclusions": [
+    {
+      "route": "full_photo / bio gallery",
+      "reason": "Full photo overlay has no page title; do not invent a new title."
+    },
+    {
+      "route": "sign-up steps",
+      "reason": "Progress-bar long-press specified by LOCK31V2 §7.1, but line121 not built and Start sign-up expressly deferred."
+    },
+    {
+      "route": "stage card internal headings",
+      "reason": "Stage labels, questions and body headlines are content, not a standalone page title."
+    },
+    {
+      "route": "sheet/popover/dialog controls",
+      "reason": "Confirm sheets and option rows are not page titles; preserve their action semantics."
+    },
+    {
+      "route": "Network person card / Journey options person card",
+      "reason": "Person names inside the main page card are content; wrap the large Network/Journey page heading only."
+    }
+  ],
+  "followup_verification": [
+    "All 82 original surfaces traced to actual direct, shared-tab or wrapper-callback hooks; no pending listed heading gap.",
+    "Audited actual planned-preview branches rather than relying on ordinary AppBars: Edit Profile, Compatibility root/category/question, Help, normal Photos grid and Photos profile-video grid.",
+    "Corrected delegated Guardian Seekers path; retained root and nested compatibility headers recorded separately from ordinary AppBars.",
+    "Six added explicit surfaces cover shared error, inactivity email, unverified gate, retained Circle, nested compatibility and profile-video Photos headings.",
+    "Both retained Navigator hosts use exact bridge/Navigator admission. Widget, release-safety and analyzer outcomes are recorded separately by line owner.",
+    "Titleless sign-up progress entry expressly deferred to line121; no replacement heading invented."
+  ],
+  "line123_additional_surfaces": [
+    {
+      "title": "Shared error page title",
+      "side": "Both",
+      "route": "error offline/server/session",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_full_screen_error.dart",
+      "line": 176,
+      "existing_wrapper": true,
+      "verification": "Read-only actual heading hook trace",
+      "line_text": "                              ZyraDeveloperTitle("
+    },
+    {
+      "title": "Inactivity email subject",
+      "side": "Seeker",
+      "route": "developer_inactivity_email 1–5",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_developer_inactivity_email.dart",
+      "line": 91,
+      "existing_wrapper": true,
+      "verification": "Read-only actual heading hook trace",
+      "line_text": "            ZyraDeveloperTitle("
+    },
+    {
+      "title": "Profiles / Network unverified gate",
+      "side": "Both",
+      "route": "unverified gate",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_developer_unverified_gate.dart",
+      "line": 33,
+      "existing_wrapper": true,
+      "verification": "Read-only actual heading hook trace",
+      "line_text": "          ZyraTabTitle(guardian ? 'Network' : 'Profiles'),"
+    },
+    {
+      "title": "Guardian Circle retained chat",
+      "side": "Both",
+      "route": "guardian_circle nested Navigator",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "line": 2009,
+      "existing_wrapper": true,
+      "verification": "Read-only actual heading hook trace",
+      "line_text": "                      ZyraDeveloperTitle("
+    },
+    {
+      "title": "Compatibility nested editor headings",
+      "side": "Seeker",
+      "route": "compatibility category / edit answer / partner preference",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 1995,
+      "covers": [
+        "category name",
+        "Edit answer",
+        "Partner preference"
+      ],
+      "verification": "Actual _EditorScaffold preview header, independent of suppressed ordinary AppBar",
+      "existing_wrapper": true,
+      "line_text": "                      child: ZyraDeveloperTitle("
+    },
+    {
+      "title": "Photos profile-video grid",
+      "side": "Both",
+      "route": "manage_photos with local profile-video fixture",
+      "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/screens/profile/edit_photos_screen.dart",
+      "line": 1214,
+      "verification": "Actual profile-video Photos grid header, independent of the normal Photos grid branch",
+      "existing_wrapper": true,
+      "line_text": "                child: ZyraDeveloperTitle("
+    }
+  ],
+  "independent_member_guard_review": {
+    "method": "Read-only code review; no source edits or runtime pass claim",
+    "findings": [],
+    "checks": [
+      {
+        "check": "Unavailable or absent host preserves original heading without added button semantics or dev_page_title key.",
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_developer_title.dart",
+        "line": 82,
+        "line_text": "    if (host == null) {"
+      },
+      {
+        "check": "Duplicate wrapper returns original child.",
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_developer_title.dart",
+        "line": 62,
+        "line_text": "    if (context.findAncestorWidgetOfExactType<ZyraDeveloperTitle>() != null) {"
+      },
+      {
+        "check": "Current route, tab, visibility and revision required for callback.",
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_developer_title.dart",
+        "line": 74,
+        "line_text": "    bool foreground() =>"
+      },
+      {
+        "check": "Email requires verified unexpired exact account/session/generation and server claim.",
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/services/zyra_developer_access.dart",
+        "line": 544,
+        "line_text": "  String? get email {"
+      },
+      {
+        "check": "Exact nested bridge/Navigator and parent foreground required.",
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_developer_title.dart",
+        "line": 157,
+        "line_text": "  bool admits(ZyraDeveloperPreviewBridge? owner, ModalRoute<dynamic> route) =>"
+      },
+      {
+        "check": "Refresh followed by repeated ownership and foreground validation before sheet.",
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/widgets/zyra_developer_title.dart",
+        "line": 738,
+        "line_text": "      if (!await access.refreshForTitle() ||"
+      }
+    ],
+    "limitation": "Not a native phone walkthrough; widget and release-safety results belong in LINE123_CHECKS.json.",
+    "resolved_findings": [
+      {
+        "action": "OA-ZYRA-325",
+        "finding": "Compatibility root and nested preview headers previously bypassed wrapped ordinary AppBars",
+        "status": "Fixed in working source",
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/screens/profile/compatibility_editors.dart",
+        "hook_lines": [
+          819,
+          1995
+        ]
+      },
+      {
+        "action": "OA-ZYRA-325",
+        "finding": "Help preview header previously bypassed wrapped ordinary AppBar",
+        "status": "Fixed in working source",
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/screens/settings/help_support_screen.dart",
+        "hook_lines": [
+          208
+        ]
+      },
+      {
+        "action": "OA-ZYRA-325",
+        "finding": "Photos profile-video grid had separate actual header",
+        "status": "Fixed in working source",
+        "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/screens/profile/edit_photos_screen.dart",
+        "hook_lines": [
+          998,
+          1214
+        ]
+      }
+    ]
+  },
+  "line_numbers": "One-based actual hook lines at snapshot; preflight_line historical only; source hashes detect subsequent drift.",
+  "wrapped_entry_count": 82,
+  "gaps": [],
+  "source_sha256": {
+    "SOURCE/lib/dev/zyra_circle_topics_presentation.dart": "176afb3144bbf4ac422f0f9502b270902275d56638b5f95df519637573e742be",
+    "SOURCE/lib/dev/zyra_developer_inactivity_email.dart": "61e5f56ba2792ed561b25b0a1744c85d1a7affe124812f54bd288ebc78a654f4",
+    "SOURCE/lib/dev/zyra_developer_unverified_gate.dart": "09f093ed6407f904876734665b33c83f505be8446a6252369ffcc624cc7c44a4",
+    "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart": "a9b0bfc34d30c29cf7e0cb32f3339af70755971a52cc1ed52365cc38a7260675",
+    "SOURCE/lib/dev/zyra_draft_compatibility_presentation.dart": "045e41b45129b7a7cc7f4f150c79e9bfd0ef3b6cc7a15a0d266a6e07a3fdb1db",
+    "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart": "28c1ea0f428d689abb6fabc7a920f658f395de58f493d58deccf5bda4e7fa14a",
+    "SOURCE/lib/dev/zyra_draft_journey_bio_presentation.dart": "e0eab70495b2f4c9cbe34828b6eafa2bfa5abf110c4dfb266d8492316e419e28",
+    "SOURCE/lib/dev/zyra_draft_local_code_page.dart": "55ec5797f6422cae3552169afc82aa8dd6e50465fb336d723196a2e322473fc7",
+    "SOURCE/lib/dev/zyra_draft_safety_advice_presentation.dart": "d1d66c1e67d9cf6bb25343ee1ddf2f5b254bdf8a97d0c6a56650a51e73112744",
+    "SOURCE/lib/dev/zyra_draft_timeline_presentation.dart": "11028d42608526c03cc9f479103e21b0e5c0633a0c3b91da93ed3482d31f2400",
+    "SOURCE/lib/dev/zyra_journey_peer_guardians_presentation.dart": "bdcc505c3f20a70474e8d09d3584502a23a5f92f0d7ecb2b2d089a00550ba439",
+    "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart": "8a08c9d31f6af61fea32315bf97d4f6babeb78c5e9ac317c557a07d8b19ca5cb",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart": "4defa41ec4a107daf95ed995084eaeda1205b408462e178383520ecae9a79cb8",
+    "SOURCE/lib/dev/zyra_one_journey_filters_presentation.dart": "aad1f4eab6891e2e929ddc42df7ace5e4148bf42f89fa83dcec6b1059ceb8599",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_action.dart": "1cb68469585e66e47e27fe531169ce0ff18843e64367f3d310379efb66a630d6",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart": "407cfd2d79c2eada706056e64a2dfcc78a0fdfd22b37a2b2829ad8ff6bcc9bae",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_info_presentation.dart": "2aeae99f9002b60cb9d21c7559b5d97c6efb37260881512352403fe1826d9e43",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_seeker.dart": "ee192b529852182b6d62354b16a77b8e65985e14d1c41e6354772551da3e210a",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_seekers.dart": "3c97d1b942cb55227959ebac144d0cba58fd760ee0424aa302b27d931d492d28",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart": "a32364a748386c7dd42afd91788f951d865771641b58c22952f156017d26b607",
+    "SOURCE/lib/dev/zyra_one_journey_journey_presentation.dart": "ad109be63673ea6c6eed791c49fe4d03f8e04f50676e24b7af18d505971c7761",
+    "SOURCE/lib/dev/zyra_one_journey_monogram_presentation.dart": "949fd4909b9f17cda4da18e077bca8dacf4f6029e42cbc2efbb93267140a961c",
+    "SOURCE/lib/dev/zyra_one_journey_options_page.dart": "d4f8b44681c3a31bdb0777c45a4950ca8be907680f0cdff342199946793da867",
+    "SOURCE/lib/dev/zyra_one_journey_phone_access.dart": "a559b03cd6856b8a0fc854db7116e4c987154ef5ba78cf7256a6309ea2feb1c7",
+    "SOURCE/lib/dev/zyra_one_journey_settings_details.dart": "ddd9cabba0574046ac34936ec4e650b2493702ca6b96f3c9420f43d71c28d272",
+    "SOURCE/lib/dev/zyra_one_journey_switch_signup_preview.dart": "30f5c2c9061115a25dfea15d8ccea203274c2ed50b3988b44afad7ad1c74cc7b",
+    "SOURCE/lib/dev/zyra_one_journey_tab.dart": "aeccc433ee0c5f075f0c2653a2eedff1e3e8487d6b17bf1f24eea0a289453d79",
+    "SOURCE/lib/dev/zyra_request_activity_presentation.dart": "c41eeeb1b6131f931701b95dc235a73c3124fafe3bac4677633f2f9daa29307b",
+    "SOURCE/lib/dev/zyra_request_capacity_choice.dart": "79cac3d22f20a776a24b4edc8aef82ac0c65516fb6b95cedd7894bfa8221b227",
+    "SOURCE/lib/dev/zyra_subscription_wallet_preview.dart": "ae3e65486d2032078e1e3bcff8ddabe0cc12cdb825132febc4c4a7debac846cb",
+    "SOURCE/lib/screens/onboarding/identity_verification_screen.dart": "21e5310619f50d6a9bb42f114fc85936ea568d5625a447bdfd563c7069edd1d9",
+    "SOURCE/lib/screens/profile/compatibility_editors.dart": "a7aca20e8316dbd2e4a5fbd5ba29b54919cead27913703adc6af3acb1fbc974c",
+    "SOURCE/lib/screens/profile/compatibility_result_quick_check.dart": "04ab0f427a00901f259a443abd14e173e9ec45e313f1b80c64c6ff9feb828f44",
+    "SOURCE/lib/screens/profile/edit_photos_screen.dart": "593c809e7c408e4e76de16dc40d6dca3144fa52c6ff72f7ecf7a1a8a1c349550",
+    "SOURCE/lib/screens/profile/edit_profile_screen.dart": "bbbebf21d29d6161c60d7cfa24aee39f96b1b6562f8f5a44e6aea2180bfbe2ff",
+    "SOURCE/lib/screens/profile/my_profile_preview_screen.dart": "d64014192cc84f9f713e5f038540f02e33c1d760d3547895bd17dd7dc229e451",
+    "SOURCE/lib/screens/settings/help_support_screen.dart": "849168ba5b3531faab3a4d4567b8662e6db019c2401116ecb96bee0df45c37c2",
+    "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart": "2f846ccffa8e2aba255371f3ee27a7d68f7b30acc6cca75320100c57da9375d6",
+    "SOURCE/lib/screens/wali/family_messaging_screens.dart": "c3388515a39b01a4d80ede329c8fc2e778b03f004b9a7ed4b7f438154c372c9f",
+    "SOURCE/lib/services/zyra_developer_access.dart": "ea544e2ee86e8a90afe51bcd8e1f6bcb6fabd4bbe358dff300157d6f31b20af7",
+    "SOURCE/lib/widgets/zyra_developer_title.dart": "3cbfffc79b70a6680995858dd793f1b044d15763f76fbf148da51ed3e58caa78",
+    "SOURCE/lib/widgets/zyra_focus_dashboard.dart": "63a3d011a7c915ef0f3821bfc0b32c5dcf5dc50dc6f0990a298d8f92b708b528",
+    "SOURCE/lib/widgets/zyra_full_screen_error.dart": "3899fbffae73b9acfe20cd7b6ac85ce10179aab46e8333cdc41f57f556b9c5eb",
+    "SOURCE/lib/widgets/zyra_membership_choices.dart": "4f8d358a0a73304994fa54fe79897adfead3aebf34794f764ea81713881b9382",
+    "SOURCE/lib/widgets/zyra_tab_title.dart": "4da603f9a875104c04b407cf1f966ccc2ccfbd7bd0dfd6d815d197defbac766e"
+  },
+  "line123_additional_surface_count": 6
+}

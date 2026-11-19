@@ -1,0 +1,13 @@
+{
+  "commit": "1c5757c4baf005b82c778913228e9383417a565b",
+  "flutter_version": "3.44.2",
+  "build_mode": "local Flutter widget/model tests; no native app build",
+  "target": "LOCK31V2 / queue123",
+  "timestamp": "2026-11-19T05:37:08.325635+00:00",
+  "live": false,
+  "phone_install": false,
+  "dependency_changes": false,
+  "backend_changes": false,
+  "runtime_driver": "tooling/no_git_driver.mjs",
+  "ci": "Remote verification is reported separately after push."
+}

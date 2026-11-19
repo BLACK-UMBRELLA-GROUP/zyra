@@ -3,12 +3,119 @@ id: AS-BUILT-ZYRA-LOCK31
 type: HANDOVER
 status: CURRENT
 feature: DEV_TOGGLES
-purpose: As-built handover for queue line 96 and the Seeker Developer panel
-links: [OA-ZYRA-325, OA-ZYRA-317, AD-AIOS-115]
+purpose: As-built handover for LOCK 31 V2 Developer panel, queue line 123; includes line 96 history
+links: [OA-ZYRA-325, OA-ZYRA-317, AD-AIOS-115, AD-AIOS-147]
 owner: Codex
 ---
 
-# Seeker Developer panel
+# Developer panel — LOCK 31 V2
+
+## Current delivery — queue line 123, 19 November 2026
+
+Built from `PRODUCT/APPROVED/DEV_TOGGLES/RECORD/DEV_PANEL_SPEC_CURRENT_VERSION_V2.md`
+(DOC-ZYRA-0481), the LOCK record (DOC-ZYRA-0482), the 18 November V2 brief
+and its V1 requirements. Questions 171, 173 and 174 are ANSWERED and are
+recorded in spec §7.4. OA-ZYRA-325 owns this work. The approved sheet reuses
+LOCK 28; no new master pictures were required by the design charter.
+
+The panel opens from planned-app titles on the Seeker and Guardian sides,
+including shared headings and retained account editors. The title inventory
+is `REPORTS/EVIDENCE/OA-ZYRA-325_LINE123_2026-11-19/TITLE_INVENTORY.json`.
+It records the title, side, route and source for each entry and identifies
+shared hooks and titleless exclusions. Sign-up progress-bar entry and
+Start sign-up wait for line 121.
+
+### Controls and local behaviour
+
+- **View as:** Seeker One, Seeker Basic, Guardian One and Guardian Basic.
+  Role, plan limits, tabs, locks and upgrade prompts use local preview state;
+  the real account and server plan stay unchanged.
+- **Journeys:** Active and Ended counts, Sara/Maryam/Noor selection, and the
+  app's nine preview stages in canonical order. Changing one Journey keeps
+  the other Journey attempts and their progress. Existing local Accept,
+  Decline, Cancel, End and restart rules remain in use.
+- **Requests and Introductions:** existing Received, Sent, Past and Guardian
+  Introduction controls use the existing sample presentations. An explicit
+  zero is an empty sample selection; unset controls preserve the ordinary
+  state.
+- **My ZYRA:** All caught up, Typical day, New member and Everything use local
+  preset state. The setup card and Continue setting up depend on line 121;
+  Everything leaves that card out until then (Q171).
+- **Sign up:** Unverified shows the locked Profiles/Network gate and its typed
+  local identity-verification route. It has no live finalizer or provider
+  write. Setup unfinished supplies the gate only: “Finish setting up your
+  profile to start a Journey.” Start sign-up is deferred to line 121.
+- **Notices:** Seeker inactivity email states and Welcome back use LOCK 32.
+  Both Guardian views hide the entire NOTICES section and cannot select an
+  inactivity preview (Q174); no Guardian archive or role switch is invented.
+- **Error pages:** Phone offline, ZYRA server down and Session ended use the
+  shared error page, with its return action owned by the current preview.
+- **Clear sample data:** clears local choices and restores the real account
+  view. If the real membership is absent or unreadable, initial state and
+  Clear use Seeker One samples and the exact line “Viewing as Seeker One ·
+  real plan: none” (Q173). This grants nothing on the server.
+
+### Ownership and isolation
+
+The existing pinned account, project, server role claim, exact session
+lifetime and account-generation checks remain the authority. A title tap
+refreshes proof before the host presents its owned sheet. Each action
+requires the current sheet or preview route. Nested account titles require
+the exact preview bridge and Navigator owner. Temporary route coverage does
+not grant a covered callback permission to act. Proof loss, account changes,
+App Lock and backgrounding withdraw access.
+
+The ordinary subtree remains mounted while a local sample shell is shown.
+This retains ordinary state across sample activation and Clear without
+reissuing its reads. A detached working model protects colliding fixture
+identities, and Clear restores the captured native local baseline, including
+conversation state. Preview role or plan values never merge into AppState
+or server membership. Non-admin titles and member behaviour retain their
+existing access rules.
+
+The main implementation is in `SOURCE/lib/widgets/zyra_developer_title.dart`,
+`widgets/zyra_developer_panel.dart`, `models/zyra_developer_preview.dart`,
+`state/zyra_developer_samples.dart`, and
+`dev/zyra_one_journey_concept_shell.dart`. Shared title hooks span the
+presentation files listed in the inventory. The typed local verification
+entry is in `screens/onboarding/identity_verification_screen.dart`; the
+shared unverified gate and inactivity email presentation are in `dev/`.
+Paths after the first are relative to `SOURCE/lib`.
+
+### Verification and remaining dependency
+
+Code commit `1c5757c4baf005b82c778913228e9383417a565b` (OA-ZYRA-325). The protected pinned Flutter 3.44.2
+run passed **270 tests across 22 suites, zero skips and zero failures**;
+analysis reported no issues. Scope includes panel controls, all four
+presets, proof lifetimes, App Lock, release safety, Journey models,
+IDV isolation, nested profile editors, Photos and Help reuse. Temporary
+proof suspension hides samples while retaining the local page for a
+successful recheck of the same session. Covered callbacks remain inert;
+true owner loss is terminal.
+
+Seven captures cover normal phone presentation and 2x text at 320×568 and
+430×932. All controls scroll into hit-testable positions without layout
+exceptions. The inventory traces 82 original titles and six added surfaces.
+Public checking reviewed 68 lexical hits: 66 unchanged lines and two
+harmless code syntax/name hits. Gitleaks found zero leaks in changed files.
+Independent review verified actual preview headings and ownership guards.
+
+`PRODUCT/APPROVED/DEV_TOGGLES/BUILT/LINE123_BUILD/` holds BUILD metadata,
+checks, reviewed public scan, master audit, inventory and screenshots.
+No compiled app or source copy is evidence. Remote CI is checked after
+push and reported with the task result.
+
+No migration, backend change, dependency upgrade, native build or phone
+installation is part of this task. Founder iPhone verification remains a
+separate delivery step. Line 121 owns the future sign-up flow, setup card,
+saved-step continuation and progress-bar entry; it does not block the
+Q171 gate-only behaviour described above.
+
+## Historical line 96 delivery and follow-up — 12–13 November 2026
+
+The notes below describe the earlier V1 delivery and its verification.
+The line 123 sections above supersede V1 title gaps, control limits and
+missing-membership behaviour. Historical counts are not line 123 results.
 
 Line 96 implements LOCK 31 and the Q129 answer. The source design is
 `PRODUCT/APPROVED/DEV_TOGGLES/RECORD/DEV_PANEL_SPEC_CURRENT_VERSION_V1.md`,
@@ -16,7 +123,7 @@ its 12 November brief and LOCK record, and the private archived prototype
 V204. The sample history and ended actions reuse the presentations verified
 for lines 95 and 93.
 
-## Entry and authority
+### Entry and authority
 
 The ordinary signed-in Seeker taps the visible heading. The five main tabs
 use their existing titles where present. Profiles is a full-bleed card in
@@ -50,7 +157,7 @@ sign-out or account replacement clears choices synchronously through the
 account memory reset. SDK session replacement and a fresh server claim
 denial discard choices even while the Seeker host is absent.
 
-## Local sample data
+### Local sample data
 
 **Clear sample data** removes the in-memory choices and leaves the panel
 open. An explicit selector choice replaces its own view, including zero.
@@ -92,7 +199,7 @@ The title refresh correction updates `services/zyra_developer_access.dart`
 and `widgets/zyra_developer_title.dart`. Its widget regressions live in
 `SOURCE/test/zyra_developer_panel_entry_test.dart`.
 
-## Verification and ownership
+### Verification and ownership
 
 Original delivery (Flutter 3.44.2): tests used a mocked signed-in Seeker and synthetic Supabase
 responses. Independent Codex review checked auth lifetime, sample write
