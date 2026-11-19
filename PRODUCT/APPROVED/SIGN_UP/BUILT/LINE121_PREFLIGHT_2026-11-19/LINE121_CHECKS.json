@@ -1,0 +1,88 @@
+{
+  "line": 121,
+  "date": "2026-11-19",
+  "verdict": "QUESTION",
+  "question": 170,
+  "authority": [
+    "LOCK 34 V1",
+    "AD-AIOS-115",
+    "AD-AIOS-147",
+    "GO: line 121"
+  ],
+  "start_pack": {
+    "cwd": "DEVELOPMENT",
+    "script": "BLACK UMBRELLA GROUP/SYSTEM/TOOLS/start_pack.py",
+    "business": "ZYRA",
+    "brief": "ZYRA/PRODUCT/APPROVED/SIGN_UP/BRIEFS/BUILD_BRIEF_2026-11-18_V1.md",
+    "bytes_printed": 16537,
+    "result": "PASS"
+  },
+  "input_records": [
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/RECORD/LOCK_RECORD.md",
+      "bytes": 946,
+      "sha256": "e63d73131f867978858745c7e48b8abc1446ef651115bfc92fdd06a2e2871c4b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/RECORD/SIGN_UP_SPEC_CURRENT_VERSION_V1.md",
+      "bytes": 10049,
+      "sha256": "165134fb2bfcac279daf4112f1643167464b303e3d3ec0451cf63e8d7464267b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/BRIEFS/BUILD_BRIEF_2026-11-18_V1.md",
+      "bytes": 1662,
+      "sha256": "6c5a3812ec0b9f1f3f5fc1178eb1f8ad292dc101cfb7903fb40bb029f904f863"
+    }
+  ],
+  "previous_questions": {
+    "166": "ANSWERED: 41 masters supplied and shared states recorded",
+    "167": "ANSWERED: one setup order, completion and resume now defined"
+  },
+  "lock_audit": "41 filenames, sizes, PNG dimensions and SHA-256 verified independently by root; all visually inspected by helper; gender and setup clashes also inspected by root. See MASTER_AUDIT.json.",
+  "source_ownership": "Line 118 actively editing SOURCE. This owner and both helpers performed read-only source preflight; no SOURCE file written, no toolchain/cache mutation.",
+  "source_preflight": {
+    "entry": [
+      "SOURCE/lib/dev/zyra_founder_launch_screen.dart:903",
+      "SOURCE/lib/dev/dev_discovery_directions.dart:161"
+    ],
+    "owner": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart owns route-bound sample state and guarded callbacks",
+    "preferences": "Reuse CompatibilityEditorScreen.preview and sample account compatibility repository; add preview-only autosave and persistent outer setup bar. Existing repository male-only guard must support selected sample gender.",
+    "request_gates": "Cover ordinary invitation and requestEndedJourney restart paths.",
+    "coverage": "Intercept Profiles/Network and profile shortcuts; Needs you/resume requires both Seeker and Guardian dashboards.",
+    "boundaries": "Do not change real account signup, owner isolation, provider OAuth, native photo admission, payment or server. Line 123 owns expanded developer panel."
+  },
+  "record_validation": {
+    "master_inventory": "PASS: 41 current files/hash/dimensions match",
+    "question": "PASS: one Q170 OPEN",
+    "queue": "PASS: line 121 QUESTION"
+  },
+  "ci_at_preflight": {
+    "head": "448489850524ab0a9ce30ac73f2b0aa49dcf2ea8",
+    "conclusion": "success",
+    "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/44413993941"
+  },
+  "app_tests": "NOT RUN: implementation blocked before coding. Record validation is not app acceptance.",
+  "build": "NOT RUN",
+  "migrations": [],
+  "phone_install": false,
+  "live": false,
+  "line98_run": false,
+  "written_refusal": "Do not choose among contradictory LOCK requirements or produce substitute approval pictures. ZYRA Claude must reconcile Q170 first; then recheck WAITING status, line 118 commit and clean SOURCE/lib/test/ios before coding.",
+  "startup_breach": {
+    "issue": "Root read full lessons file before start_pack despite recent-change-only scope. No further broad lesson reads.",
+    "action": "Recorded under existing OA-AIOS-471; do not edit standing governance here."
+  },
+  "shared_files": "QUESTIONS.md Q170 and BUILD_QUEUE.md line 121 edited in place preserving other changes; not staged by this owner because they also contain unrelated uncommitted admin/design work.",
+  "question_row": "| 170 | 2026-11-19 | 121 | Can the selected gender and setup navigation masters be reconciled with the written LOCK 34 requirements? | ZYRA Claude chat: `SIGN_UP/RECORD/SIGN_UP_SPEC_CURRENT_VERSION_V1.md:38` (\u00a73.6) requires gold outline + \u201c\u2713 CHOSEN\u201d, but `s13_gender__male_chosen.png` omits both; line 44 (\u00a73.8d) requires \u201cFinish later and go to ZYRA\u201d on every setup step, but All set masters `s29` and `g08` omit it; line 76 (\u00a76) requires Back on every step, but About you masters `s27` and `g07` omit it. Record intended exceptions or supply consistent masters/spec. All 41 supplied masters exist at 430 \u00d7 932 @3x; other required shared/loading/error coverage is defined. | Refuse to choose or invent these states under core rule 11. Keep line 121 QUESTION pending a consistent pack; source remains untouched while line 118 owns it. AD-AIOS-115, AD-AIOS-147. | Pending ZYRA Claude. | OPEN |",
+  "next_owner": "ZYRA Claude: reconcile Q170; current/fresh Codex owner: rebuild from the corrected locked inputs after source sequencing clears.",
+  "public_checks": {
+    "A": "Staged and outgoing secret scan pending record commit.",
+    "B": "4 files scanned; 5 money-pattern hits at QUESTIONS lines 60, 88, 91, 105, 141 are identical to HEAD, inherited and outside Q170. No new flagged lines.",
+    "C": "No ROADMAP row finished.",
+    "D": "No version change or release.",
+    "E": "Neutral technical prose.",
+    "F": "No app behavior change; README not changed."
+  },
+  "independent_review": "PASS before commit: second helper recomputed all 41 image dimensions/size/hash and three input hashes; checked exact Q170 row, queue status, no app-acceptance overclaim and source map. No correction.",
+  "scratch_cleanup": "41,078,711 bytes moved to /Users/shakeelahmad/_to_delete/ZYRA_LINE121_PREFLIGHT_2026-11-19/master_preflight. No scratch inspection images retained in repo."
+}

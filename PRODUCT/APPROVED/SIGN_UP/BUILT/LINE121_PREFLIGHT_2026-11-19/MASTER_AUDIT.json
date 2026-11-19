@@ -1,0 +1,345 @@
+{
+  "line": 121,
+  "lock": 34,
+  "master_count": 41,
+  "expected_count": 41,
+  "expected_pixels": [
+    1290,
+    2796
+  ],
+  "logical_phone_size": [
+    430,
+    932
+  ],
+  "scale": 3,
+  "all_dimensions_match": true,
+  "visual_review": "All 41 reviewed in four contact sheets; s13, s15, s26 and g04 also inspected at full resolution.",
+  "files": [
+    {
+      "file": "g01_guardian__name.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 290386,
+      "sha256": "5305d09535c29acf967d73ba5ab49d90f35e4d5d4743770880b79853dca69660"
+    },
+    {
+      "file": "g02_guardian__relationship_empty.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 375976,
+      "sha256": "309d453d12f1f643fb32fe2037f5b20d90ee3a340447bc4a1aad0ec8dac9789d"
+    },
+    {
+      "file": "g03_guardian__relationship_chosen.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 391211,
+      "sha256": "49ae97211207e16a50aff2c2ff71acc20a8a416113e2762301d01824a46b372f"
+    },
+    {
+      "file": "g04_guardian__add_seeker.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 293872,
+      "sha256": "726472bd454da1049a85572c0b019f72c7baadcd04588fd5194c25c6ef8fe233"
+    },
+    {
+      "file": "g05_guardian__verify.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 367585,
+      "sha256": "de828018fbf60b54dd81754df9ab9ca271477c8b844ee86a8c4e1a7b4c517f15"
+    },
+    {
+      "file": "g06_guardian__account_ready.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 392571,
+      "sha256": "0b8c119f78d2e43e2e64eae722d090479d7a1a5b79bd92fd1dc77d1989a46800"
+    },
+    {
+      "file": "g07_guardian__setup_about_you.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 324919,
+      "sha256": "390514c073537910714b136cf56f05bd5ff35f223c964e2fd578034296f3efc7"
+    },
+    {
+      "file": "g08_guardian__setup_all_set.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 274304,
+      "sha256": "78f6b770676182d116c76c7944e489c05cf0f9417a02cf2e811da277a69ab7f3"
+    },
+    {
+      "file": "s01_splash.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 261335,
+      "sha256": "702eec157fdf65b060ccc4c7887709aaa13746ceb631860da93006ada6f32b18"
+    },
+    {
+      "file": "s02_welcome__iphone_apple_first.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 305062,
+      "sha256": "5c27a8f7eb30c9290016ea8c7c79151403e2e771b9892a883e7caf229720396f"
+    },
+    {
+      "file": "s03_welcome__android_google_first.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 306593,
+      "sha256": "65ce8bf5fa7bc8baee90bfdfe30ebe2a142d8453055000cf1de89ef9b2713a05"
+    },
+    {
+      "file": "s04_role__seeker_card.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 384923,
+      "sha256": "fe8eff1062503e8ba5d0eac25aeea05ac3d22937a1a59851aa1095684310620d"
+    },
+    {
+      "file": "s05_role__guardian_card.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 392684,
+      "sha256": "25a1cddff30e6d16524828fcf88ddbbc6a4879252c69e1cf7dac2cc6a2735f6b"
+    },
+    {
+      "file": "s06_name__filled_from_apple.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 289918,
+      "sha256": "4be233b4b5b95dde8e183416e50332c89556c621985a1062fc6fa8cd37c97087"
+    },
+    {
+      "file": "s07_name__empty_error.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 286655,
+      "sha256": "4e9f49cfe25395e3bec50cc74051f9b2d33a03caf6d1be31aed66a202fa4fb1c"
+    },
+    {
+      "file": "s08_dob__empty.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 277199,
+      "sha256": "ddd52656aa83552c5259a57015a9d306c8865807ce2b45e06da8da7ea84c7b10"
+    },
+    {
+      "file": "s09_dob__filled.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 292781,
+      "sha256": "64431e53217b3861618334fa20f1cd59f4ddb814e218b6a5895cbb4bf552bddd"
+    },
+    {
+      "file": "s10_dob__year_error.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 300819,
+      "sha256": "a5e4688aeb65e42c6d67a172c08945b265d8f13aa3e32e779efe63d358608df5"
+    },
+    {
+      "file": "s11_dob__under_18.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 290707,
+      "sha256": "1ea724d81634156d53a8a4d09a6260c98b711a12c42f30833108f49d7735355b"
+    },
+    {
+      "file": "s12_gender__none.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 320556,
+      "sha256": "1aab6b693a6b9e99e16357c9b75217bf9df94f0266c197d11497cdcc0fd0ccf8"
+    },
+    {
+      "file": "s13_gender__male_chosen.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 327794,
+      "sha256": "9161bf3a629ecaad1656cda78062337427cc3d97efd817752fb55a1381c2e5dc"
+    },
+    {
+      "file": "s14_location__empty.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 305504,
+      "sha256": "31d3cd7f9431fb367c1d91cb13e3e8c82ff58fac3465f1a22cc3308593a05557"
+    },
+    {
+      "file": "s15_location__chosen.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 326530,
+      "sha256": "596d75865913eec60b64b4d5c188453d11b37691641a42de4156095d5d9d3d61"
+    },
+    {
+      "file": "s16_nationality__chosen.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 303541,
+      "sha256": "bf44f874d4ec17626580cc7cbbb32ac7fcc7cb39ffbcc1d0f8ea521b8be81243"
+    },
+    {
+      "file": "s17_ethnicity__several.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 321722,
+      "sha256": "1f1b6732ac732feb9cefdb09145f68623ca185aca1860b77951702a2dfb0365a"
+    },
+    {
+      "file": "s18_ethnicity__empty.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 300618,
+      "sha256": "7d0fbed8688c1540a81ec29b47f7d0a5514ddb32789671599fc8743261809260"
+    },
+    {
+      "file": "s19_photos__empty.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 297939,
+      "sha256": "7e39cc59fb71c7fb85a4055fca270255f8b339ca926aeebd7aa97fb61eab391c"
+    },
+    {
+      "file": "s20_photos__two.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 572153,
+      "sha256": "4c460b08e1e38cfbe3e4f42dc6738fac690c670e9179e17f9cb2f80ac34c406b"
+    },
+    {
+      "file": "s21_verify.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 367845,
+      "sha256": "b40316ea1702ef5d8079b2c56ecc60bffc40ccd8380eaa698025ddba7d978ccc"
+    },
+    {
+      "file": "s22_plan__seeker_one.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 428163,
+      "sha256": "40a45f9691e8be972ed66bb0695140cbcf6ec7ec154a1d96ee2be758b3f6a0d6"
+    },
+    {
+      "file": "s23_plan__seeker_basic.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 420464,
+      "sha256": "a530a1b6654df5fa243f2079b1163581949479da862d01de73e78fb9a1d477a2"
+    },
+    {
+      "file": "s24_account_ready__verified.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 410782,
+      "sha256": "91297b3a47bbc4fa0847ef9afae662895115c46acde7010b28f55b5d012f3332"
+    },
+    {
+      "file": "s25_account_ready__not_verified.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 415595,
+      "sha256": "c8f586ea0882c53ccfa17f51d725691d8e0e1542d9024a295a31df8a83a8a23c"
+    },
+    {
+      "file": "s26_setup__partner_preferences_bar.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 997241,
+      "sha256": "14de8f5042d57dbdcde8432df1622b31406109f675df4b61e3189bd3b69e1a0b"
+    },
+    {
+      "file": "s27_setup__about_you.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 324919,
+      "sha256": "4b62bd4f2680ed50ab8cc1198a849d4bd31d90f497e61fcc9e1a90608600d343"
+    },
+    {
+      "file": "s28_setup__add_guardian.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 376183,
+      "sha256": "c5af871499ba39207a8d6e5aa119b40c158d61b3898c025b9b611c5cbd4a3dce"
+    },
+    {
+      "file": "s29_setup__all_set.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 274304,
+      "sha256": "c6c9615fedf04b132f0c1864263e9009e1c7179a751ec5362f0b3047031d79fd"
+    },
+    {
+      "file": "s30_paused__my_zyra_needs_you.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 1167921,
+      "sha256": "9ae7b630202ca30e9439f68097cb7a0e53195ead4cf3674aeae90d19518ab013"
+    },
+    {
+      "file": "s31_gate__unverified_profiles.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 1138406,
+      "sha256": "989e575eac48e07cf7965943ecbab26cd28a9d201a1af388dd7c1bbeeb99eee7"
+    },
+    {
+      "file": "s91_error__offline.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 462945,
+      "sha256": "4881f44b8e493a646373803e09a07313c0d676b24eab0a79d078212e7598d9fa"
+    },
+    {
+      "file": "s92_error__server.png",
+      "width": 1290,
+      "height": 2796,
+      "bytes": 490226,
+      "sha256": "094b4cfc813de97548c31ca6dbca7c14bbc70f61713332b3a2eb3b1d1fb36742"
+    }
+  ],
+  "findings": [
+    {
+      "spec_line": 38,
+      "section": "3.6",
+      "master_files": [
+        "s13_gender__male_chosen.png"
+      ],
+      "finding": "Chosen Male master lacks required gold outline and tick CHOSEN label.",
+      "kind": "contradictory required state"
+    },
+    {
+      "spec_line": 44,
+      "section": "3.8d",
+      "master_files": [
+        "s29_setup__all_set.png",
+        "g08_guardian__setup_all_set.png"
+      ],
+      "finding": "All-set masters omit Finish later and go to ZYRA although spec requires it under button on every setup step.",
+      "kind": "literal navigation clash for root review"
+    },
+    {
+      "spec_line": 76,
+      "section": "6",
+      "master_files": [
+        "s27_setup__about_you.png",
+        "g07_guardian__setup_about_you.png"
+      ],
+      "finding": "About-you setup masters omit Back although spec requires Back on every step.",
+      "kind": "literal navigation clash for root review"
+    }
+  ],
+  "coverage_notes": [
+    "Seeker and Guardian branches represented.",
+    "Completion and resume sequence defined in spec section 3.8d.",
+    "Female chosen, Nationality empty/no-match and Guardian Network gate can use corresponding defined shared component; no additional blocker proposed.",
+    "Loading spinner and connection-error states explicitly shared by spec section 6."
+  ],
+  "contact_sheets": "Scratch inspection only; all four were inspected. Not retained or treated as approval pictures.",
+  "question": 170
+}
