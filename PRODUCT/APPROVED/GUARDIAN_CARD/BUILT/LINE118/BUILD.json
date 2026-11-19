@@ -1,0 +1,14 @@
+{
+  "line": 118,
+  "commit_sha": "fa1050cb681b2e97d3859819e3d35559ca1811cc",
+  "flutter_version": "3.44.2",
+  "dart_version": "3.12.2",
+  "build_mode": "Flutter widget tests / offline-ci; no native build",
+  "target": "Founder preview Guardian and Journey menus; member active/ended menu presenters",
+  "timestamp_utc": "2026-11-19T03:55:14.840492+00:00",
+  "native_build": false,
+  "phone_install": false,
+  "live": false,
+  "evidence_bytes": 3374435,
+  "confirm_source_unchanged": true
+}

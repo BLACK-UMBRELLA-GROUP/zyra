@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-11-19T03:55:14.929Z",
+  "counts": {
+    "input_tokens": 13496568,
+    "cached_input_tokens": 13320704,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 43346,
+    "reasoning_output_tokens": 17564,
+    "total_tokens": 13539914
+  }
+}

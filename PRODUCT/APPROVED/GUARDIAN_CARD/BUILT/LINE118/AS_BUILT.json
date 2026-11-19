@@ -1,0 +1,122 @@
+{
+  "line": 118,
+  "authority": [
+    "Founder GO 19 Nov 2026",
+    "LOCK 28: DOC-ZYRA-0450 / DOC-ZYRA-0451",
+    "Q165 ANSWERED",
+    "AD-AIOS-149 fix scope",
+    "OA-ZYRA-316 planned preview"
+  ],
+  "built_from": [
+    "PRODUCT/APPROVED/GUARDIAN_CARD/BRIEFS/FIX_BRIEF_2026-11-18_MENU_SHEET_SIZE.md",
+    "PRODUCT/APPROVED/APP_CONFIRM/RECORD/APP_CONFIRM_SPEC_CURRENT_VERSION_V1.md",
+    "PRODUCT/APPROVED/APP_CONFIRM/RECORD/LOCK_RECORD.md"
+  ],
+  "current_behavior": "Menus leading to LOCK 28 confirms share ZyraIvorySheet, its26pt corners,40x4handle,20pt content side inset,10pt handle top/16pt bottom spacing and safe-area minimum bottom26. Existing top text is centred12.5pt muted; options use15pt body,52pt minimum rows; Cancel uses the existing52pt ivory keep-pill style. Larger Text can grow and scroll, as confirms do.",
+  "files": {
+    "SOURCE/lib/widgets/zyra_menu_sheet.dart": "Shared menu presentation only; imports existing confirm shell, never writes state or owns routes.",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart": "Guardian sheet shell/header migration; existing owned route/lease/epoch logic retained.",
+    "SOURCE/lib/screens/wali/seeker_guardian_designs.dart": "Only card-layout menu actions use shared option/cancel primitives; legacy inline management untouched.",
+    "SOURCE/lib/dev/zyra_one_journey_options.dart": "Founder modal and shared Ended menu; inline and lockedPage layouts preserved.",
+    "SOURCE/lib/screens/connections/connections_screen.dart": "Member active Journey menu and narrow visibleForTesting seam.",
+    "README.md": "Documents menu sizing."
+  },
+  "entry_points": [
+    {
+      "menu": "Guardian card management",
+      "routes": [
+        "Founder Guardian tab > linked card > three dots"
+      ],
+      "confirms": [
+        "Make Main Guardian",
+        "Remove as Main Guardian",
+        "Remove <firstName>"
+      ],
+      "source": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart::_openMenu"
+    },
+    {
+      "menu": "Founder Journey options modal",
+      "routes": [
+        "Founder Journey > options modal"
+      ],
+      "confirms": [
+        "End Journey"
+      ],
+      "source": "SOURCE/lib/dev/zyra_one_journey_options.dart::ZyraConceptJourneyOptions",
+      "excluded_branches": [
+        "inline",
+        "lockedPage"
+      ]
+    },
+    {
+      "menu": "Shared Ended Journey menu",
+      "routes": [
+        "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart::_showEndedJourneyMenu",
+        "SOURCE/lib/screens/connections/zyra_sample_activity.dart"
+      ],
+      "confirms": [
+        "Remove from my Journeys",
+        "Request a new Journey where caller uses confirmation"
+      ],
+      "source": "SOURCE/lib/dev/zyra_one_journey_options.dart::ZyraEndedJourneyMenu"
+    },
+    {
+      "menu": "Member active Journey options",
+      "routes": [
+        "SOURCE/lib/screens/connections/connections_screen.dart::_showActiveJourneyOptions"
+      ],
+      "confirms": [
+        "Request Pause",
+        "End Journey"
+      ],
+      "source": "SOURCE/lib/screens/connections/connections_screen.dart::_ActiveJourneyOptionsSheet"
+    }
+  ],
+  "preserved_invariants": [
+    "Exact labels, descriptions, order, routes and actions",
+    "Guardian retained/stale handlers continue denying after authority/identity/epoch changes",
+    "Menu closes before caller-owned confirm; keep/barrier dismissal leaves state unchanged",
+    "Haptic wrappers and option enablement retained",
+    "Confirm source byte-for-byte unchanged"
+  ],
+  "excluded": "Circle topic actions, message long-press, Guardian private chat and picker/information sheets do not directly open LOCK 28 confirms. Legacy inline Guardian actions and inline/card Journey options retain their layout.",
+  "data_flow": "Caller supplies labels and current callbacks; shared menu emits existing selection/dismiss callbacks only. Existing caller validates ownership and performs confirmation/write. No new persistence, network route, server object, migration or developer toggle.",
+  "production_boundary": "Founder preview uses existing local sample people; member presenters retain existing caller/server wiring. No new live connection. Live: no.",
+  "verification": "LINE118_CHECKS.json records exact commands/results. Actual Guardian captures exercise menu > Make Main > Keep; Journey/Ended screenshots are production presenter fixtures over the offline shell, not public-entry-route captures.",
+  "evidence": "REPORTS/EVIDENCE/LINE118_MENU_SHEET_2026-11-19: original Guardian before; final Guardian/Journey/Ended after at430x932 and375x667; guardian_comparison_*.png; gate report and BUILD.json. No source copies or binaries.",
+  "limitations": [
+    {
+      "item": "iPhone observation deferred because Founder is away; no native build/install.",
+      "owner": "Founder / dispatcher phone-delivery line117",
+      "trace": "Explicit19Nov task instruction"
+    },
+    {
+      "item": "Existing static-check parsing findings and generated inventory drift are outside this sizing fix. Baseline measured separately; no additional finding introduced.",
+      "owner": "UI gate maintenance / Fable",
+      "trace": "OA-ZYRA-257; written refusal to widen this fix"
+    },
+    {
+      "item": "Fable document review and ZYRA Claude MATCH remain external review steps, not Codex approval.",
+      "owner": "Fable and ZYRA Claude",
+      "trace": "DOC-BUG-0004 / charter8"
+    }
+  ],
+  "next_steps": [
+    "ZYRA Claude compare saved Guardian comparison with Q165/brief and record MATCH.",
+    "Founder observe on iPhone only when home and applicable phone GO is given."
+  ],
+  "migrations": [],
+  "retirements": [],
+  "new_controls": [],
+  "code_commit": "fa1050cb681b2e97d3859819e3d35559ca1811cc",
+  "tests": [
+    "SOURCE/test/menu_sheet_sizing_test.dart",
+    "SOURCE/test/visual/line118_menu_sheet_capture_test.dart",
+    "SOURCE/test/guardian_card_interaction_test.dart",
+    "SOURCE/test/journey_options_row_geometry_test.dart",
+    "SOURCE/test/one_journey_inline_options_test.dart",
+    "SOURCE/test/one_journey_pull_down_routes_test.dart",
+    "SOURCE/test/view_request_draft_widget_test.dart"
+  ],
+  "measurements": "Exact52pt normal rows pass with bundled Poppins at375x667; primitive parity also430x932. At2xtext content can grow/scroll, as LOCK28 confirms do. Rich rows preserve captions with no extra internal padding and1pt label-caption gap."
+}

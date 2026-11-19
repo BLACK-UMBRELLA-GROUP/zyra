@@ -1,0 +1,199 @@
+{
+  "line": 118,
+  "baseline_sha": "75d0a661d4a7d06327ee80c1da49e095c8c29b61",
+  "start_pack_bytes": 17458,
+  "initial_source_clean": true,
+  "baseline_ci": {
+    "run_id": 44413993941,
+    "sha": "448489850524ab0a9ce30ac73f2b0aa49dcf2ea8",
+    "conclusion": "success"
+  },
+  "before_capture": {
+    "command": "flutter test --no-pub --flavor offline-ci --reporter expanded --dart-define=ZYRA_LINE118_CAPTURE=<evidence>/before test/visual/line118_menu_sheet_capture_test.dart --plain-name actual Guardian",
+    "passed": 2,
+    "exit_code": 0
+  },
+  "focused_initial": {
+    "passed": 210,
+    "failed": 1,
+    "reason": "Retired InkWell-only finder for modal archived rows; changed to accept shared ZyraMenuOption and rerun passed."
+  },
+  "sizing_and_inline_rerun": {
+    "command": "flutter test --no-pub --flavor offline-ci --reporter expanded test/menu_sheet_sizing_test.dart test/one_journey_inline_options_test.dart",
+    "passed": 21,
+    "failed": 0,
+    "exit_code": 0,
+    "note": "Before addition of two member active menu cases; final focused gate pending."
+  },
+  "static_comparison": {
+    "baseline_unique": 122,
+    "candidate_unique": 122,
+    "new": [],
+    "resolved": []
+  },
+  "public_review": [
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_options.dart",
+      "line": 77,
+      "kind": "money",
+      "unchanged_text_at_HEAD": true
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_options.dart",
+      "line": 169,
+      "kind": "money",
+      "unchanged_text_at_HEAD": true
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_options.dart",
+      "line": 170,
+      "kind": "money",
+      "unchanged_text_at_HEAD": true
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_options.dart",
+      "line": 171,
+      "kind": "money",
+      "unchanged_text_at_HEAD": true
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_options.dart",
+      "line": 172,
+      "kind": "money",
+      "unchanged_text_at_HEAD": true
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_options.dart",
+      "line": 178,
+      "kind": "money",
+      "unchanged_text_at_HEAD": true
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_options.dart",
+      "line": 179,
+      "kind": "money",
+      "unchanged_text_at_HEAD": true
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_options.dart",
+      "line": 180,
+      "kind": "money",
+      "unchanged_text_at_HEAD": true
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_options.dart",
+      "line": 181,
+      "kind": "money",
+      "unchanged_text_at_HEAD": true
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_options.dart",
+      "line": 208,
+      "kind": "money",
+      "unchanged_text_at_HEAD": true
+    },
+    {
+      "file": "SOURCE/lib/screens/wali/seeker_guardian_designs.dart",
+      "line": 2939,
+      "kind": "money",
+      "unchanged_text_at_HEAD": true
+    },
+    {
+      "file": "README.md",
+      "line": 57,
+      "kind": "money",
+      "unchanged_text_at_HEAD": true
+    }
+  ],
+  "confirm_images_byte_identical": [
+    "430x932",
+    "375x667"
+  ],
+  "confirm_source_unchanged": true,
+  "native_build": false,
+  "phone_install": false,
+  "line98_run": false,
+  "migrations": [],
+  "code_commit": "fa1050cb681b2e97d3859819e3d35559ca1811cc",
+  "status": "BUILT",
+  "checked_at_utc": "2026-11-19T03:55:14.839796+00:00",
+  "analyze": {
+    "command": "flutter analyze --no-pub",
+    "exit_code": 0,
+    "result": "No issues found (5.3s); final source including test seam."
+  },
+  "full_gate": {
+    "command": "python3 tools/zyra_visual_gate.py --force --full",
+    "exit_code": 1,
+    "duration_seconds": 545.3,
+    "render_variants": 212,
+    "approved_baselines": 9,
+    "visual_baseline_exit_code": 0,
+    "l1": {
+      "exit_code": 0,
+      "critical": 0,
+      "high": 0,
+      "medium": 29,
+      "low": 365,
+      "scope": "Full repository; compared to old tool ledger, which predated several prior lines. No new menu widget finding."
+    },
+    "flutter_suite": {
+      "passed": 7320,
+      "skipped": 124,
+      "failed": 3,
+      "failures": [
+        "menu_sheet_sizing_test.dart failed to load during overlapping seam edit; later clean load passes all7.",
+        "one_journey_pull_down_routes_test.dart used retired TextButton Cancel finder; updated to OutlinedButton and passes.",
+        "view_request_draft_widget_test.dart used retired TextButton Cancel finder; updated to OutlinedButton and passes."
+      ]
+    },
+    "format": {
+      "reported_files": 15,
+      "mutation": false,
+      "command_uses_output_none": true,
+      "scope": "All15 reported files were untouched by this line; written refusal to reformat unrelated files."
+    },
+    "analyzer_info": "use_null_aware_elements fixed; final analyzer clean.",
+    "static": "122 unique findings at HEAD baseline and candidate,0new. Existing parser/reference debt under OA-ZYRA-257; no scope expansion.",
+    "gate_report": "REPORTS/EVIDENCE/LINE118_MENU_SHEET_2026-11-19/gate/ZYRA_VISUAL_AUDIT_2026-11-19_70a1d0b5.md"
+  },
+  "final_affected_run": {
+    "command": "flutter test --no-pub --flavor offline-ci --reporter expanded --dart-define=ZYRA_LINE118_CAPTURE=<evidence>/after test/menu_sheet_sizing_test.dart test/journey_options_row_geometry_test.dart test/one_journey_inline_options_test.dart test/one_journey_pull_down_routes_test.dart test/view_request_draft_widget_test.dart test/visual/line118_menu_sheet_capture_test.dart",
+    "passed": 162,
+    "failed": 1,
+    "resolved_failure": "Strict52member row test used square Ahem glyphs, yielding extra description lines. Removed extra rich-row padding and tightened caption gap; then loaded bundled real Poppins for precise wrapping. Exact normal52 assertion retained and all7metrics tests rerun successfully. Other156cases in this run passed on final app source.",
+    "changed_app_source_after_this_run": false
+  },
+  "final_metrics": {
+    "command": "flutter test --no-pub --flavor offline-ci --reporter expanded test/menu_sheet_sizing_test.dart",
+    "passed": 7,
+    "failed": 0,
+    "exit_code": 0,
+    "coverage": "375x667 and430x932 atnormal/2xtext; actual confirm/menu style and surface parity; member active modal strict52normal rows, larger text reachability and existing pause/end/cancel intents; ended enablement/order."
+  },
+  "final_format": {
+    "command": "dart format --output=none --set-exit-if-changed <12 owned Dart files>",
+    "exit_code": 0,
+    "files": 12,
+    "changed": 0
+  },
+  "unresolved_new_failures": 0,
+  "baseline_updated": false,
+  "independent_review": {
+    "agent": "menu_inventory",
+    "verdict": "No blocking defect; sizing only, unchanged text/order/flow/guards/haptics. Reviewed initial diff and final rich-row padding delta."
+  },
+  "generated_outputs_retired": "/Users/shakeelahmad/_to_delete/ZYRA_LINE118_GENERATED_2026-11-19",
+  "map": {
+    "command": "python3 ../BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_map.py .",
+    "documents": 423,
+    "existing_metadata_problems": 40,
+    "scope": "Regenerated; existing unrelated MAP/admin diff remains unstaged. As-built is JSON, so no new document index entry."
+  },
+  "planned_inventory": "Generator run; nondeterministic/unrelated generated changes moved to retirement folder; original tracked baseline retained. No shell navigation changed.",
+  "public_final": {
+    "files": 13,
+    "hits": 11,
+    "review": "Brief side-spacing word is a false positive;5QUESTIONShits unchanged and outside owned Q165 row;5MAPhits unchanged/private-source route names. No new private material. Prior12source/READMEhits unchanged."
+  }
+}
