@@ -3,8 +3,8 @@
   "lock": "31 V2",
   "action": "OA-ZYRA-325",
   "status": "BUILT (local app preview; live no)",
-  "code_commit": "1c5757c4baf005b82c778913228e9383417a565b",
-  "timestamp": "2026-11-19T05:37:08.325635+00:00",
+  "code_commit": "8de131596c51776650c03e30da24b786d65e77e2",
+  "timestamp": "2026-11-19T05:57:21.956615+00:00",
   "inputs": [
     "DOC-ZYRA-0481 DEV_PANEL_SPEC V2, including section7.4",
     "DOC-ZYRA-0482 LOCK_RECORD",
@@ -20,7 +20,7 @@
     "173": "ANSWERED: local Seeker One fallback and Clear when real plan absent",
     "174": "ANSWERED: no Guardian NOTICES or inactivity previews"
   },
-  "analyzer": "No issues found (analyze_final5.log)",
+  "analyzer": "No issues found in isolated final snapshot",
   "tests": {
     "suites": [
       "test/line123_preview_journey_model_test.dart",
@@ -44,13 +44,16 @@
       "test/edit_photos_opening_owner_test.dart",
       "test/zyra_profile_video_photos_test.dart",
       "test/help_support_preview_reuse_test.dart",
-      "test/edit_photos_screen_test.dart"
+      "test/edit_photos_screen_test.dart",
+      "test/guardian_circle_discussion_bubble_test.dart",
+      "test/identity_privacy_preview_boundary_test.dart",
+      "test/identity_verification_state_test.dart"
     ],
-    "passed": 270,
+    "passed": 368,
     "skipped": 0,
     "failed": 0,
-    "log_sha256": "3f00a550e93eb343c91f4d4560f90959d1540d24305120832ae09d4892c319ac",
-    "elapsed_ms": 31010
+    "log_sha256": "0c03e210d5aaf143360e561b493d13a184a812a06491a3c1444237cc010e56c2",
+    "elapsed_ms": 37223
   },
   "captures": [
     {
@@ -141,5 +144,22 @@
     "hits": 1,
     "review": "Existing unchanged README layout wording."
   },
-  "inventory_validation": "All45 source digests verified against code commit1c5757c4, independently of ongoing work for the next queue line."
+  "inventory_validation": "All45 digests and130 anchors verified against final code commit8de13159; later Source work excluded.",
+  "initial_verification": {
+    "code_commit": "1c5757c4baf005b82c778913228e9383417a565b",
+    "passed": 270,
+    "suites": 22
+  },
+  "capture_basis_commit": "1c5757c4baf005b82c778913228e9383417a565b",
+  "followup": {
+    "notice_return": "All five emails return to My ZYRA; emails1\u20134 keep history with Welcome back, email5 remains removed; covered callbacks are inert.",
+    "circle_contract": "Static source boundary follows the owned Navigator wrapper while preserving all projection/permission assertions.",
+    "identity_mode": "Original legacy mode-change session warning restored; typed panel proof denial remains terminal.",
+    "failed_ci_run": 44466825326,
+    "ci_failures_resolved": [
+      "guardian_circle_discussion_bubble source-boundary assertion",
+      "identity_privacy_preview_boundary legacy mode-change presentation"
+    ],
+    "test_environment": "Read-only Git archive of committed Source with exactly four staged follow-up files; offline example configuration, pinned SDK, no dependency fetch."
+  }
 }

@@ -20,7 +20,7 @@ LOCK 28; no new master pictures were required by the design charter.
 
 The panel opens from planned-app titles on the Seeker and Guardian sides,
 including shared headings and retained account editors. The title inventory
-is `REPORTS/EVIDENCE/OA-ZYRA-325_LINE123_2026-11-19/TITLE_INVENTORY.json`.
+is `PRODUCT/APPROVED/DEV_TOGGLES/BUILT/LINE123_BUILD/TITLE_INVENTORY.json`.
 It records the title, side, route and source for each entry and identifies
 shared hooks and titleless exclusions. Sign-up progress-bar entry and
 Start sign-up wait for line 121.
@@ -84,8 +84,8 @@ Paths after the first are relative to `SOURCE/lib`.
 
 ### Verification and remaining dependency
 
-Code commit `1c5757c4baf005b82c778913228e9383417a565b` (OA-ZYRA-325). The protected pinned Flutter 3.44.2
-run passed **270 tests across 22 suites, zero skips and zero failures**;
+Code commit `8de131596c51776650c03e30da24b786d65e77e2` (OA-ZYRA-325). The protected pinned Flutter 3.44.2
+run passed **368 tests across 25 suites, zero skips and zero failures**;
 analysis reported no issues. Scope includes panel controls, all four
 presets, proof lifetimes, App Lock, release safety, Journey models,
 IDV isolation, nested profile editors, Photos and Help reuse. Temporary
@@ -99,6 +99,9 @@ exceptions. The inventory traces 82 original titles and six added surfaces.
 Public checking reviewed 68 lexical hits: 66 unchanged lines and two
 harmless code syntax/name hits. Gitleaks found zero leaks in changed files.
 Independent review verified actual preview headings and ownership guards.
+The final isolated snapshot also checks all five inactivity return actions,
+the Circle wrapper permission contract and legacy identity mode-change
+warnings. Typed panel proof denial remains terminal.
 
 `PRODUCT/APPROVED/DEV_TOGGLES/BUILT/LINE123_BUILD/` holds BUILD metadata,
 checks, reviewed public scan, master audit, inventory and screenshots.

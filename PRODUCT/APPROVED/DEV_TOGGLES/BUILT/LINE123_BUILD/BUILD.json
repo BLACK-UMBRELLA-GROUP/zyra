@@ -1,9 +1,9 @@
 {
-  "commit": "1c5757c4baf005b82c778913228e9383417a565b",
+  "commit": "8de131596c51776650c03e30da24b786d65e77e2",
   "flutter_version": "3.44.2",
-  "build_mode": "local Flutter widget/model tests; no native app build",
+  "build_mode": "isolated committed-snapshot widget/model tests; offline example configuration; no native app build",
   "target": "LOCK31V2 / queue123",
-  "timestamp": "2026-11-19T05:37:08.325635+00:00",
+  "timestamp": "2026-11-19T05:57:21.956615+00:00",
   "live": false,
   "phone_install": false,
   "dependency_changes": false,

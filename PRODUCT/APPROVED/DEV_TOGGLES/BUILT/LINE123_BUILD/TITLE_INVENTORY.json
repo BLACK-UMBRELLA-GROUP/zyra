@@ -1,6 +1,6 @@
 {
   "purpose": "As-built line123 title inventory and read-only hook/ownership review; original 82 coverage entries retained",
-  "snapshot": "2026-11-19T05:35:06+00:00",
+  "snapshot": "2026-11-19T05:56:00+00:00",
   "source_root": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/",
   "title_entries": [
     {
@@ -8,14 +8,14 @@
       "side": "Seeker",
       "route": "tab:0",
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
-      "line": 10602,
+      "line": 10609,
       "existing_wrapper": true,
       "title_callsite_lines": [
-        3255,
-        3295
+        3262,
+        3302
       ],
       "hook_lines": [
-        10602
+        10609
       ],
       "hook_kind": "_mainHeading -> ZyraTabTitle -> ZyraDeveloperTitle",
       "preflight_line": 2685,
@@ -181,13 +181,13 @@
       "side": "Seeker",
       "route": "profile",
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
-      "line": 10602,
+      "line": 10609,
       "existing_wrapper": true,
       "title_callsite_lines": [
-        3549
+        3556
       ],
       "hook_lines": [
-        10602
+        10609
       ],
       "hook_kind": "_mainHeading -> ZyraTabTitle -> ZyraDeveloperTitle",
       "preflight_line": 2981,
@@ -211,11 +211,11 @@
       "existing_wrapper": true,
       "wrapper_owner_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
       "wrapper_owner_lines": [
-        3839,
-        3859,
-        3865,
-        3904,
-        3908
+        3846,
+        3866,
+        3872,
+        3911,
+        3915
       ],
       "hook_lines": [
         281
@@ -237,11 +237,11 @@
       "existing_wrapper": true,
       "wrapper_owner_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
       "wrapper_owner_lines": [
-        3839,
-        3859,
-        3865,
-        3904,
-        3908
+        3846,
+        3866,
+        3872,
+        3911,
+        3915
       ],
       "hook_lines": [
         281
@@ -263,11 +263,11 @@
       "existing_wrapper": true,
       "wrapper_owner_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
       "wrapper_owner_lines": [
-        3839,
-        3859,
-        3865,
-        3904,
-        3908
+        3846,
+        3866,
+        3872,
+        3911,
+        3915
       ],
       "hook_lines": [
         281
@@ -686,14 +686,14 @@
       "side": "Seeker",
       "route": "bio_locked",
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
-      "line": 10613,
+      "line": 10620,
       "existing_wrapper": true,
       "title_callsite_lines": [
-        9953,
-        10014
+        9960,
+        10021
       ],
       "hook_lines": [
-        10613
+        10620
       ],
       "hook_kind": "_heading -> ZyraDeveloperTitle",
       "preflight_line": 9241,
@@ -712,14 +712,14 @@
       "side": "Seeker",
       "route": "journey_compatibility_locked",
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
-      "line": 10613,
+      "line": 10620,
       "existing_wrapper": true,
       "title_callsite_lines": [
-        4824,
-        10101
+        4831,
+        10108
       ],
       "hook_lines": [
-        10613
+        10620
       ],
       "hook_kind": "_heading -> ZyraDeveloperTitle",
       "preflight_line": 4234,
@@ -738,13 +738,13 @@
       "side": "Seeker",
       "route": "ended_bio / ended_guardians [no stored details]",
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
-      "line": 10613,
+      "line": 10620,
       "existing_wrapper": true,
       "title_callsite_lines": [
-        5166
+        5173
       ],
       "hook_lines": [
-        10613
+        10620
       ],
       "hook_kind": "_heading -> ZyraDeveloperTitle",
       "preflight_line": 4563,
@@ -762,13 +762,13 @@
       "side": "Seeker",
       "route": "ended_restart",
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
-      "line": 10613,
+      "line": 10620,
       "existing_wrapper": true,
       "title_callsite_lines": [
-        5194
+        5201
       ],
       "hook_lines": [
-        10613
+        10620
       ],
       "hook_kind": "_heading -> ZyraDeveloperTitle",
       "preflight_line": 4591,
@@ -786,13 +786,13 @@
       "side": "Seeker",
       "route": "guardian_access_agreement",
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
-      "line": 10613,
+      "line": 10620,
       "existing_wrapper": true,
       "title_callsite_lines": [
-        5920
+        5927
       ],
       "hook_lines": [
-        10613
+        10620
       ],
       "hook_kind": "_heading -> ZyraDeveloperTitle",
       "preflight_line": 5313,
@@ -810,13 +810,13 @@
       "side": "Guardian",
       "route": "guardian [permitted Journey]",
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
-      "line": 10602,
+      "line": 10609,
       "existing_wrapper": true,
       "title_callsite_lines": [
-        7883
+        7890
       ],
       "hook_lines": [
-        10602
+        10609
       ],
       "hook_kind": "_mainHeading -> ZyraTabTitle -> ZyraDeveloperTitle",
       "preflight_line": 7237,
@@ -934,10 +934,10 @@
       "side": "Seeker",
       "route": "guardian_main_notice",
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
-      "line": 6577,
+      "line": 6584,
       "existing_wrapper": true,
       "hook_lines": [
-        6577
+        6584
       ],
       "hook_kind": "direct ZyraDeveloperTitle",
       "preflight_line": 5938,
@@ -952,10 +952,10 @@
       "side": "Both",
       "route": "notifications",
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
-      "line": 10228,
+      "line": 10235,
       "existing_wrapper": true,
       "hook_lines": [
-        10228
+        10235
       ],
       "hook_kind": "direct ZyraDeveloperTitle",
       "preflight_line": 9516,
@@ -988,15 +988,15 @@
       "side": "Both",
       "route": "held_action",
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
-      "line": 10613,
+      "line": 10620,
       "existing_wrapper": true,
       "title_callsite_lines": [
-        8904,
-        8935,
-        8962
+        8911,
+        8942,
+        8969
       ],
       "hook_lines": [
-        10613
+        10620
       ],
       "hook_kind": "_heading -> ZyraDeveloperTitle",
       "preflight_line": 8203,
@@ -1533,10 +1533,10 @@
       "side": "Seeker",
       "route": "journey [not active]",
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
-      "line": 5261,
+      "line": 5268,
       "existing_wrapper": true,
       "hook_lines": [
-        5261
+        5268
       ],
       "hook_kind": "direct ZyraDeveloperTitle",
       "preflight_line": 4658,
@@ -1551,10 +1551,10 @@
       "side": "Seeker",
       "route": "journey [ended archive]",
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
-      "line": 5312,
+      "line": 5319,
       "existing_wrapper": true,
       "hook_lines": [
-        5312
+        5319
       ],
       "hook_kind": "direct ZyraDeveloperTitle",
       "preflight_line": 4707,
@@ -1623,14 +1623,14 @@
       "side": "Guardian",
       "route": "guardian_family_identity",
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/screens/onboarding/identity_verification_screen.dart",
-      "line": 530,
+      "line": 535,
       "existing_wrapper": true,
       "hook_lines": [
-        530,
-        579,
-        670,
-        765,
-        1161
+        535,
+        584,
+        675,
+        770,
+        1166
       ],
       "hook_kind": "direct ZyraDeveloperTitle",
       "preflight_line": 610,
@@ -1650,7 +1650,7 @@
   "shared_hooks": [
     {
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
-      "line": 10602,
+      "line": 10609,
       "hook": "_mainHeading",
       "covers": [
         "Profiles",
@@ -1663,7 +1663,7 @@
     },
     {
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
-      "line": 10613,
+      "line": 10620,
       "hook": "_heading",
       "covers": [
         "locked/empty Bio, Guardians, Compatibility",
@@ -1738,7 +1738,7 @@
     },
     {
       "route": "sign-up steps",
-      "reason": "Progress-bar long-press specified by LOCK31V2 \u00a77.1, but line121 not built and Start sign-up expressly deferred."
+      "reason": "Progress-bar long-press specified by LOCK31V2 §7.1, but line121 not built and Start sign-up expressly deferred."
     },
     {
       "route": "stage card internal headings",
@@ -1775,7 +1775,7 @@
     {
       "title": "Inactivity email subject",
       "side": "Seeker",
-      "route": "developer_inactivity_email 1\u20135",
+      "route": "developer_inactivity_email 1–5",
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_developer_inactivity_email.dart",
       "line": 91,
       "existing_wrapper": true,
@@ -1956,7 +1956,7 @@
     },
     {
       "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
-      "sha256": "4defa41ec4a107daf95ed995084eaeda1205b408462e178383520ecae9a79cb8"
+      "sha256": "db6b77b15eefe62fa7d4e9a4e44fb63924e43563db03223d7a43c448dcd76747"
     },
     {
       "path": "SOURCE/lib/dev/zyra_one_journey_filters_presentation.dart",
@@ -2028,7 +2028,7 @@
     },
     {
       "path": "SOURCE/lib/screens/onboarding/identity_verification_screen.dart",
-      "sha256": "21e5310619f50d6a9bb42f114fc85936ea568d5625a447bdfd563c7069edd1d9"
+      "sha256": "b4eac2232520911b4b8088454332bf4d934236a7a16cb72ca4eb8a6534b667aa"
     },
     {
       "path": "SOURCE/lib/screens/profile/compatibility_editors.dart",
@@ -2088,5 +2088,5 @@
     }
   ],
   "line123_additional_surface_count": 6,
-  "code_commit": "1c5757c4baf005b82c778913228e9383417a565b"
+  "code_commit": "8de131596c51776650c03e30da24b786d65e77e2"
 }
