@@ -165,8 +165,29 @@ class _OwnerSurfaces {
 
   Future<void> guardianRoster(String? photo) async {
     await tab(3);
-    expectAvatar(avatarUnder(h.key('guardian_seeker_0')), photo);
-    expectAvatar(avatarUnder(h.key('guardian_seeker_1')), null);
+    // LOCK 35 uses monograms on the cards; details retain the own photo.
+    Finder card() => h.key('guardian_seekers_card_0');
+    expect(avatarUnder(card()), findsNothing);
+    final monogram = find.descendant(
+      of: card(),
+      matching: find.byType(ZyraGoldRingMonogram),
+    );
+    expect(monogram, findsOneWidget);
+    expect(t.widget<ZyraGoldRingMonogram>(monogram).name, 'Adam');
+    await t.drag(h.key('guardian_seekers_track'), const Offset(-320, 0));
+    await t.pump(const Duration(milliseconds: 450));
+    await h.flush();
+    final additional = h.key('guardian_seekers_card_1');
+    expect(avatarUnder(additional), findsNothing);
+    final additionalMonogram = find.descendant(
+      of: additional,
+      matching: find.byType(ZyraGoldRingMonogram),
+    );
+    expect(additionalMonogram, findsOneWidget);
+    expect(t.widget<ZyraGoldRingMonogram>(additionalMonogram).name, 'Yusuf');
+    await t.drag(h.key('guardian_seekers_track'), const Offset(320, 0));
+    await t.pump(const Duration(milliseconds: 450));
+    await h.flush();
     await h.tap('guardian_seeker_0');
     h.assertPage('guardian_seeker');
     expectAvatar(find.byType(ZyraSeekerAvatar), photo);

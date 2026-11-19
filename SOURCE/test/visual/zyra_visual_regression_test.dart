@@ -774,6 +774,12 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
             expect(staleJourney, isNotNull);
             await returnZyraPreviewPage(h.tester);
             await h.flush();
+            // LOCK 35 mounts only the visible swipe card.
+            await h.tester.drag(
+              _key('guardian_seekers_track'),
+              const Offset(-320, 0),
+            );
+            await h.tester.pump(const Duration(milliseconds: 450));
             await h.tap('guardian_seeker_1');
             staleJourney!();
             await h.flush();
@@ -914,8 +920,8 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
         ),
       ];
 
-  // Q50/Q51: LOCK 8 g10 has historical Espresso pixels. Preserve the
-  // current Ivory roster and its role isolation while the golden is held.
+  // Q50/Q51: LOCK 8 g10 has historical Espresso pixels. LOCK 35 replaces
+  // its roster with swipe cards; keep the role isolation checks.
   for (final device in _devices) {
     for (final scale in device.id == 'standard' ? [1.0, 1.3] : [1.0]) {
       testWidgets(
@@ -926,19 +932,25 @@ void _round2MasterTests(Map<String, Map<String, dynamic>> approved) {
           await h.mount(guardian: true, tab: 3, model: model);
           await _resizeRound2(h, device.size);
           expect(_key('guardian_seeker_0'), findsOneWidget);
-          final additional = _key('guardian_seeker_1');
+          expect(_key('guardian_seeker_1'), findsNothing);
+          await tester.drag(
+            _key('guardian_seekers_track'),
+            const Offset(-320, 0),
+          );
+          await tester.pump(const Duration(milliseconds: 450));
+          final additional = _key('guardian_seekers_card_1');
           expect(additional, findsOneWidget);
           expect(
             find.descendant(
               of: additional,
-              matching: find.textContaining('Additional Guardian'),
+              matching: find.text('ADDITIONAL GUARDIAN'),
             ),
             findsOneWidget,
           );
           expect(
             find.descendant(
               of: additional,
-              matching: find.textContaining('Journey with Sara'),
+              matching: find.textContaining('With Sara'),
             ),
             findsNothing,
           );

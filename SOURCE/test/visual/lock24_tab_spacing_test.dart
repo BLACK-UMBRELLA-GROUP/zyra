@@ -268,9 +268,6 @@ Finder? _outerViewport(String screen) => switch (screen) {
   'Network' || 'Network — unlinked' => find.byKey(
     const PageStorageKey('guardian_tabs_network'),
   ),
-  'Seekers' || 'Seekers — unlinked' => find.byKey(
-    const PageStorageKey('guardian_tabs_seekers'),
-  ),
   'Profile' => _key('concept-current-profile-scroll'),
   'Quick · Seeker Journey requests' ||
   'Quick · Seeker Introductions' ||
@@ -333,6 +330,8 @@ Finder? _lastSurface(String screen, bool basic) => switch (screen) {
   ),
   'Network — unlinked' when basic => _key('guardian_network_membership'),
   'Journeys' || 'Journeys — empty' => _key('guardian_ended'),
+  // LOCK 35 replaces the roster footer with a fixed swipe card.
+  'Seekers' || 'Seekers — unlinked' => _fixedCard(screen),
   'Profile' =>
     find
         .ancestor(
@@ -376,6 +375,7 @@ Finder? _fixedCard(String screen) => switch (screen) {
     'guardian-network-card',
   ),
   'Journeys' => _key('guardian_journey_card'),
+  'Seekers' || 'Seekers — unlinked' => _key('guardian_seekers_card_0'),
   _ => null,
 };
 
@@ -396,13 +396,13 @@ Map<String, double> _verifySpacing(
     expect(actual, closeTo(expected, .02), reason: '$screen · $name');
   }
 
-  void margins(Finder surface) {
+  void margins(Finder surface, {double inset = 20}) {
     final rect = box(surface);
     final width = MediaQuery.sizeOf(
       t.element(find.byType(ZyraOneJourneyConceptShell)),
     ).width;
-    check('left page margin', rect.left, 20);
-    check('right page margin', width - rect.right, 20);
+    check('left page margin', rect.left, inset);
+    check('right page margin', width - rect.right, inset);
   }
 
   void gap(String name, Finder upper, Finder lower, double expected) {
@@ -530,15 +530,16 @@ Map<String, double> _verifySpacing(
       );
       gap('card to Ended Journeys card', card, _key('guardian_ended'), 12);
     case 'Seekers':
-      final first = _key('guardian_seeker_0');
-      final last = _key('guardian_seeker_1');
-      margins(first);
-      cardGaps([first, last]);
-      gap(
-        'roster card to footer',
-        last,
-        find.text('You can support up to 10 Seekers.'),
-        10,
+    case 'Seekers — unlinked':
+      // LOCK 35 uses the shared swipe track, with its 2 pt card inset.
+      final card = _key('guardian_seekers_card_0');
+      margins(card, inset: 22);
+      titleToDots(
+        find.text('Seekers'),
+        _key('guardian_seekers_dot_target_0'),
+        _key('guardian_seekers_dot_0'),
+        titleBlock: _key('guardian_seekers_title_block'),
+        card: card,
       );
     case 'Profile':
       final cards = [
@@ -734,9 +735,6 @@ void main() {
                             'draft_focus_journey',
                           ),
                           'Network — unlinked' => _key('guardian_invite'),
-                          'Seekers' || 'Seekers — unlinked' => find.text(
-                            'You can support up to 10 Seekers.',
-                          ),
                           _ => _quickLastSurface(screen),
                         }
                       : null);
@@ -804,7 +802,11 @@ void main() {
               final overflow = contents
                   .where((s) => s.maxScrollExtent > .01)
                   .firstOrNull;
-              if ((large || (compact && screen == 'Profiles')) &&
+              if ((large ||
+                      (compact &&
+                          (screen == 'Profiles' ||
+                              screen == 'Seekers' ||
+                              screen == 'Seekers — unlinked'))) &&
                   overflow != null) {
                 final initial = overflow.pixels;
                 final finger = await t.startGesture(frame.center);

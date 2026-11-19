@@ -1,0 +1,181 @@
+{
+  "queue_line": 122,
+  "lock": "35 V1",
+  "question_168": "ANSWERED",
+  "approved_masters": [
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_SEEKERS/MASTERS/gs01_guardian_one__adam_main_current_journey.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "e861b25c13fdc420f9be7e4702d78cb731a06e61fc335ceaf27aa791dc59424f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_SEEKERS/MASTERS/gs02_guardian_one__yusuf_additional_no_journey.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "942145f5ae05d78607a39b852186f742bac6f9399d2a50976789844111de08a2"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_SEEKERS/MASTERS/gs03_invite_card.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "c95f9f6c9148856f7a4e21b6abd084a10c3b6e18fe35f74faf5409b419595ee4"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_SEEKERS/MASTERS/gs04_guardian_basic__adam_main_current_journey.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "174123e172b31db4e8e5c1a411f58c937051f3deb52856808f47e22c8a47261e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_SEEKERS/MASTERS/gs05_empty__no_seekers_invite_only.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "a27de0b07fa12ee61a72b4f22b624db3d83695f89a08780ee95a2664e8a90531"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_SEEKERS/MASTERS/gs06_guardian_one__guardian_circle.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "bb275126e88380400a53907f79bb84192f89afbbc060813d099fd2fd095fa687"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_SEEKERS/MASTERS/gs07_guardian_basic__guardian_circle_read_only.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "f89287c97b5c232d83e48120f6fd7804d43b1e810baa5a79c10182981fc7bb7d"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_SEEKERS/MASTERS/gs08_current_journey_row_opens_journey.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "0946b701deb1274fa944ad62d731c69ac593034a6c9ffaed2a5ef90559dd9340"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_SEEKERS/MASTERS/gs91_error__offline.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "0d96c1dad04f57b2530b924aae9432099ca564ed3302a88029111262e0c90fce"
+    },
+    {
+      "path": "PRODUCT/APPROVED/GUARDIAN_SEEKERS/MASTERS/gs92_error__server.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "0155966ee34457261a74d6bfc5ba0e8b7a0599dfd553d89913286daaa24d2d31"
+    }
+  ],
+  "master_preflight": "PASS; ten 430x932 @3x PNGs visually inspected",
+  "start_pack_printed_bytes": 15665,
+  "named_pack_text_bytes": 3763,
+  "source_release": "Parent released after line118 fa1050cb; SOURCE/lib/test/ios clean before edits; line121 documentation-only QUESTION",
+  "tests": {
+    "new_initial": {
+      "pass": 12
+    },
+    "expanded_focus": {
+      "pass": 268,
+      "failure": 2,
+      "cause": "Photo-test reverse swipe before source rebuild; test waits corrected"
+    },
+    "corrected_focus_and_captures": {
+      "pass": 14,
+      "failure": 0
+    },
+    "full_suite": {
+      "command": "flutter test --no-pub --reporter json",
+      "visible_pass": 7341,
+      "skipped": 124,
+      "failure": 0,
+      "success": true,
+      "duration_ms": 466876,
+      "success_events_including_hidden_setup": 8466
+    },
+    "analysis": {
+      "command": "flutter analyze --no-pub",
+      "result": "No issues found",
+      "duration_seconds": 5.7
+    },
+    "post_lint_focus": {
+      "pass": 12,
+      "failure": 0,
+      "change": "Braces around one if statement in capture test; no behaviour change"
+    }
+  },
+  "independent_review": "PASS after Invite callback-generation correction; read-only review of production diff and all ten final captures",
+  "capture_mode": "Flutter widget test in real Founder shell frame; production fonts, nav and shadows; no live network",
+  "captures": [
+    "gs01_guardian_one__adam_main_current_journey.png",
+    "gs02_guardian_one__yusuf_additional_no_journey.png",
+    "gs03_invite_card.png",
+    "gs04_guardian_basic__adam_main_current_journey.png",
+    "gs05_empty__no_seekers_invite_only.png",
+    "gs06_guardian_one__guardian_circle.png",
+    "gs07_guardian_basic__guardian_circle_read_only.png",
+    "gs08_current_journey_row_opens_journey.png",
+    "gs91_error__offline.png",
+    "gs92_error__server.png"
+  ],
+  "comparison_pairs": [
+    "gs01_master_and_build.png",
+    "gs02_master_and_build.png",
+    "gs03_master_and_build.png",
+    "gs05_master_and_build.png"
+  ],
+  "visual_limits": [
+    "Existing Circle fixture has shorter history than the master",
+    "Existing Journey destination uses test silhouette",
+    "Shared Flutter title/navigation/icon/shadow metrics differ from HTML reference; no claim of pixel identity"
+  ],
+  "migrations": [],
+  "live_server_changes": false,
+  "native_build": false,
+  "phone_install": false,
+  "device_observation": "PENDING; Founder away, installation excluded by instruction",
+  "loading": "Unchanged existing shared spinner per Q168/spec",
+  "public_checks": {
+    "A": "PENDING commit-range gitleaks",
+    "B": "34 text hits reviewed: 27 same text at HEAD, four margins geometry identifiers, three Dart record-field syntax hits; no private additions. Direct PNG scan produced 1722 compressed-binary false positives across 24 validated visually inspected PNGs with no text/EXIF metadata. Written refusal: no unrelated scanner change in this UI task.",
+    "C": "none; no roadmap row completed",
+    "D": "none; app version unchanged",
+    "E": "neutral community wording in written documents",
+    "F": "README updated"
+  },
+  "startup_deviations": [
+    "Whole lessons file opened before start pack contrary to scoped queue instruction; recorded under OA-AIOS-471; no further whole reads",
+    "First start_pack call omitted BUSINESS; corrected immediately using exact Usage"
+  ],
+  "cleanup": "No throwaway scripts or compiled apps in evidence; test logs remain ignored in SOURCE/build/line122",
+  "hosted_ci": {
+    "preceding_line_118": "PASS, run 44454890907",
+    "line_122": "PENDING after push"
+  },
+  "usage_snapshot": {
+    "input_tokens": 17201093,
+    "cached_input_tokens": 16975488,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 45299,
+    "reasoning_output_tokens": 16836,
+    "total_tokens": 17246392,
+    "helper_usage": "one reused helper; counter not exposed"
+  }
+}

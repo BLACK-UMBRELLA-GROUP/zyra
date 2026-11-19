@@ -7580,7 +7580,10 @@ class _ZyraOneJourneyConceptShellState
   Widget _guardianTabsView(String page) {
     _guardianFamily.expire(_previewNow);
     final offer = _pendingGuardianFamilyOffer;
-    final people = _guardianTabJourneyPeople;
+    final permitted = _permittedGuardianJourneys.map((p) => p.id).toSet();
+    final people = page == 'seekers'
+        ? _tabJourneys.where((p) => permitted.contains(p.id)).toList()
+        : _guardianTabJourneyPeople;
     final selected = people.indexWhere((p) => p.id == _guardianJourneyId);
     final current = people.isEmpty ? null : people[selected < 0 ? 0 : selected];
     final fresh = _accountFreshGuard();
@@ -7618,11 +7621,18 @@ class _ZyraOneJourneyConceptShellState
       page: page,
       circleFocus: circleFocus,
       linked: _conceptHassanLinked,
-      linkedSeekerNames: _conceptHassanLinked ? const ['Adam', 'Yusuf'] : const [],
+      linkedSeekerNames: _conceptHassanLinked
+          ? const ['Adam', 'Yusuf']
+          : const [],
       paid: _guardianMembership == 'Guardian One',
       tabClearance: _quickAccessTabBar,
-      canInteract: () => fresh() && _guardianRole && _tab == 2 && _page == null,
+      canInteract: () =>
+          fresh() &&
+          _guardianRole &&
+          _tab == (page == 'seekers' ? 3 : 2) &&
+          _page == null,
       adamMain: _conceptLinkedSeeker.isMain,
+      adamMembership: _seekerMembership,
       seekerGender: _conceptLinkedSeekerProfile.gender,
       adamPhoto: _ownSeekerPhoto,
       adamAvatarAlignment: _ownSeekerAvatarAlignment,
@@ -7734,6 +7744,34 @@ class _ZyraOneJourneyConceptShellState
     }
     final state = _guardianTabs;
     final paid = _guardianMembership == 'Guardian One';
+    if (action.startsWith('seekers_')) {
+      if (_page != null || _tab != 3 || !_conceptHassanLinked) return;
+      final index = int.tryParse(action.split('_').last);
+      if (index == null || index < 0 || index > 2) return;
+      if (action.startsWith('seekers_select_')) {
+        if (index == 2) {
+          _act(
+            () {},
+          ); // Revoke the previous card without changing Circle owner.
+        } else {
+          _act(() => state.seeker = index);
+        }
+      } else if (state.seeker == index) {
+        if (action.startsWith('seekers_circle_')) {
+          _open('guardian_circle');
+        } else if (action == 'seekers_journey_0' &&
+            _guardianTabJourneyPeople.isNotEmpty) {
+          final people = _guardianTabJourneyPeople;
+          _selectGuardianJourney(
+            people.any((p) => p.id == _guardianJourneyId)
+                ? _guardianJourneyId!
+                : people.first.id,
+          );
+          _tabTo(1);
+        }
+      }
+      return;
+    }
     if (action.startsWith('seeker_journey_')) {
       if (_page != 'guardian_seeker' || !state.main || !_conceptHassanLinked) {
         return;

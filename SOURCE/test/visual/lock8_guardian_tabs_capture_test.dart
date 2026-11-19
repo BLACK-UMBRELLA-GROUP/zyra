@@ -110,7 +110,10 @@ void main() {
       await _tab(h, 1);
       expect(find.text('No current Journey'), findsOneWidget);
       await _tab(h, 3);
-      expect(find.text('Journey with Sara · Paused by family'), findsOneWidget);
+      // LOCK 35 reflects permitted Journeys, matching the existing detail page.
+      // This unseeded model has only requests, even after the local review pause.
+      expect(find.text('No current Journey'), findsOneWidget);
+      expect(find.textContaining('Sara'), findsNothing);
       await h.tap('guardian_seeker_0');
       // V6 uses permitted active Journeys; this unseeded model has only requests.
       expect(find.text('No current Journey'), findsOneWidget);
@@ -245,6 +248,9 @@ void main() {
       await _cap(h, 'g11_seeker', 'adam_main');
       expect(find.text('Not shared'), findsOneWidget);
       await _mount(h, tab: 3);
+      // LOCK 35 mounts only the visible swipe card.
+      await t.drag(_key('guardian_seekers_track'), const Offset(-320, 0));
+      await t.pump(const Duration(milliseconds: 450));
       await h.tap('guardian_seeker_1');
       await _cap(h, 'g12_seeker', 'yusuf_additional');
       expect(find.text('Main Guardian only'), findsOneWidget);
@@ -370,6 +376,9 @@ void main() {
     (t) async {
       final h = _h(t, 'circle');
       await _mount(h, tab: 3);
+      // LOCK 35 mounts only the visible swipe card.
+      await t.drag(_key('guardian_seekers_track'), const Offset(-320, 0));
+      await t.pump(const Duration(milliseconds: 450));
       await h.tap('guardian_seeker_1');
       await h.tap('guardian_circle');
       final circle = t.widget<ZyraGuardianCircleScreen>(

@@ -1,0 +1,12 @@
+{
+  "source_commit": "7b0a6832d46d813305cf9f19f1234f64d9997946",
+  "worktree_changes": true,
+  "source_commit_note": "Pre-implementation baseline; replace with implementation commit after commit",
+  "flutter_version": "3.44.2",
+  "dart_version": "3.12.2",
+  "build_mode": "offline Flutter widget tests; no native app build",
+  "timestamp": "2026-11-19T04:06:22.823819+00:00",
+  "queue_line": 122,
+  "lock": "35 V1",
+  "captures": "430x932 logical, 3x pixels"
+}

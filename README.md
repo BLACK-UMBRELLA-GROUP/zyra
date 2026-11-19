@@ -49,7 +49,12 @@ with the ended attempt, and a restart opens a fresh chat once Active. Past
 Journey topics stay open for members who can write.
 Seeker avatars use the first profile photo or the Profile silhouette in
 Profile, Circle and Journey. The same photo appears in the profile Preview
-and the Guardian's linked Seeker views. Guardians use monograms.
+and Guardian Seeker details. Guardians use monograms. In the Founder preview,
+the Guardian Seekers tab uses full-height monogram cards with swipe dots and a
+final Invite a Seeker card. Relationship, Membership and Linked open existing
+Seeker details. Current Journey opens that Seeker's Journeys tab; a Seeker with
+no Journey opens their details. The header and card Circle actions open the
+selected Seeker's Guardian Circle. Guardian Basic reads the Circle only.
 The Founder preview Profile fits above the tab bar whenever there is room.
 On short screens or with Larger Text, scroll to reach Sign out.
 Profile shows Membership with the current plan or Family payer, and Your places

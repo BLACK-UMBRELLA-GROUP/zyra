@@ -12,12 +12,12 @@ import '../widgets/zyra_tab_title.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_state_widgets.dart';
 import '../widgets/zyra_profile_image.dart';
-import '../widgets/zyra_seeker_avatar.dart';
 import '../widgets/zyra_focus_dashboard.dart';
 import '../widgets/zyra_profiles_components.dart';
 import '../widgets/zyra_swipe_track.dart';
 import 'zyra_one_journey_tab.dart' show ZyraJourneyPhotoCard;
 import 'zyra_one_journey_guardian_seeker.dart';
+import 'zyra_one_journey_guardian_seekers.dart';
 import 'zyra_one_journey_guardian_action.dart';
 import 'zyra_one_journey_monogram_presentation.dart';
 import 'zyra_guardian_family_preview.dart';
@@ -343,6 +343,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     this.linkedSeekerNames = const ['Adam', 'Yusuf'],
     this.paid = true,
     this.adamMain = true,
+    this.adamMembership = 'Seeker One',
     this.focusItems,
     this.circleFocus = const [],
     this.notificationCount = 0,
@@ -359,7 +360,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     this.familyCanAct,
   });
   final ZyraGuardianTabsState state;
-  final String page, seekerGender;
+  final String page, seekerGender, adamMembership;
   final String? currentSeekerJourney, currentSeekerJourneyId;
   final ValueChanged<String> onAction;
   final String? Function(String) photoFor;
@@ -618,20 +619,6 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
           ),
         ),
       ),
-    ),
-  );
-  Widget _linkedSeekerAvatar({required bool adam}) => Container(
-    width: 62,
-    height: 62,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      border: Border.all(color: ZyraColors.journeyGold.withValues(alpha: .6)),
-    ),
-    child: ZyraSeekerAvatar(
-      photo: adam ? adamPhoto : null,
-      size: 62,
-      alignmentX: adam ? adamAvatarAlignment.dx : 0,
-      alignmentY: adam ? adamAvatarAlignment.dy : 0,
     ),
   );
   Widget _photo(String id) => ClipOval(
@@ -1566,90 +1553,15 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     ),
     scroll: false,
   );
-  Widget _seekers(BuildContext context) => _viewport(
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _header(
-          const ZyraTabTitle('Seekers'),
-          alignment: CrossAxisAlignment.start,
-          trailing: Builder(
-            builder: (context) => SizedBox.square(
-              dimension: 38,
-              child: IconButton(
-                key: const ValueKey('guardian_invite'),
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints.tightFor(
-                  width: 38,
-                  height: 38,
-                ),
-                onPressed: ZyraTapFeedback.onTap(
-                  context,
-                  () => onAction('invite'),
-                ),
-                style: IconButton.styleFrom(
-                  backgroundColor: ZyraColors.surfaceFill,
-                  shape: CircleBorder(
-                    side: BorderSide(color: ZyraColors.surfaceBorder),
-                  ),
-                ),
-                icon: Icon(Icons.add, size: 21, color: ZyraColors.foreground),
-              ),
-            ),
-          ),
-        ),
-        if (linked)
-          for (var i = 0; i < 2; i++)
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: i == 0 ? ZyraPreviewSpacing.cardToCard : 10,
-              ),
-              child: Builder(
-                builder: (context) => InkWell(
-                  key: ValueKey('guardian_seeker_$i'),
-                  onTap: ZyraTapFeedback.onTap(
-                    context,
-                    () => onAction('seeker_$i'),
-                  ),
-                  child: _box(
-                    Row(
-                      children: [
-                        _linkedSeekerAvatar(adam: i == 0),
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _text(i == 0 ? 'Adam' : 'Yusuf', size: 20),
-                              _text(
-                                i == 0
-                                    ? 'You are his Main Guardian · Father'
-                                    : 'Additional Guardian · Father',
-                                size: 12,
-                                muted: true,
-                              ),
-                              const SizedBox(height: 4),
-                              _text(
-                                i == 0
-                                    ? 'Journey with Sara · ${state.stage}'
-                                    : 'No current Journey',
-                                size: 12,
-                                gold: true,
-                              ),
-                            ],
-                          ),
-                        ),
-                        _text('›', muted: true),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-        _text('You can support up to 10 Seekers.', size: 12, muted: true),
-      ],
-    ),
-    bottom: ZyraNavBarMetrics.contentBottomClearance(context),
+  Widget _seekers(BuildContext context) => ZyraGuardianSeekersPager(
+    linked: linked,
+    selectedSeeker: state.seeker,
+    adamMain: adamMain,
+    adamMembership: adamMembership,
+    adamJourney: currentSeekerJourney,
+    identity: journeyIdentity,
+    canAct: canInteract ?? () => true,
+    onAction: onAction,
   );
   Widget _seeker() => ZyraGuardianSeekerPage(
     name: state.seekerName,
