@@ -667,12 +667,12 @@ void main() {
       );
       await _capture(tester, 'ended_journeys');
       expect(find.text('Ended Journeys'), findsOneWidget);
-      await _tap(tester, find.byTooltip('Journey options').first);
+      await _tap(tester, find.text('Zainab Malik'));
       await _capture(tester, 'ended_journey_options');
       await _tap(tester, find.text('Request a new Journey'));
       await _tap(tester, find.text('Send request'));
       expect(_samples.sentRows!.single.person.firstName, 'Zainab');
-      await _tap(tester, find.byTooltip('Journey options').last);
+      await _tap(tester, find.text('Safiya Ali'));
       await _tap(tester, find.text('Remove from my Journeys'));
       await _tap(tester, find.text('Remove Journey'));
       expect(_samples.ended, 1);
@@ -810,9 +810,8 @@ void main() {
       await _capture(tester, 'introductions');
       expect(find.text('Put forward by Hassan · Father'), findsOneWidget);
       expect(find.text('Put forward by Khadija · Mother'), findsOneWidget);
-      expect(find.text('New introduction'), findsOneWidget);
-      expect(find.text('Introduced 8 Nov'), findsOneWidget);
       await _tap(tester, find.text('Noor Patel'));
+      await _tap(tester, find.text('View profile'));
       expect(find.text('Noor'), findsOneWidget);
       _samples.clear();
       await tester.pumpAndSettle();

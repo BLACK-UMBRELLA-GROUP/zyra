@@ -10,6 +10,7 @@ import 'package:zyra/dev/zyra_one_journey_monogram_presentation.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/widgets/zyra_state_widgets.dart';
+import 'package:zyra/widgets/zyra_request_tab_pill.dart';
 import 'baseline_capture_support.dart';
 
 const root = '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA';
@@ -32,7 +33,8 @@ Future<void> cap(
     ),
   );
   final expectedCenters = {
-    'e01': 360.8,
+    // LOCK 2 V4 adds the shared 44pt pills plus 18pt gap above this body.
+    'e01': 391.8,
     'e02': 360.8,
     'g05': 329.8,
     'g16': 367.8,
@@ -118,6 +120,20 @@ void main() {
         var h = await mount(pages: ['introductions']);
         expect(find.byType(ZyraEmptyState), findsOneWidget);
         expect(find.text('No introductions yet'), findsOneWidget);
+        final introductionTabs = find.byType(ZyraRequestTabPill);
+        expect(introductionTabs, findsNWidgets(2));
+        expect(
+          t
+              .widgetList<ZyraRequestTabPill>(introductionTabs)
+              .map((tab) => tab.label),
+          ['Received', 'Past'],
+        );
+        if (scale == 1) {
+          expect(
+            t.getSize(introductionTabs.first).width,
+            t.getSize(introductionTabs.last).width,
+          );
+        }
         await cap(
           h,
           'e01_introductions__empty$suffix',

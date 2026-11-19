@@ -1,0 +1,294 @@
+{
+  "line": 98,
+  "capture_method": "Offline Flutter widget rendering at logical430x932 and375x667,3x. Images moved from final named capture runs; original pixel content unchanged.",
+  "captures": [
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/native__ended_journeys__empty_375x667.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "cda145aada03ffde7a770b818a39cb60ef3103306a7bb27303a6380abe00d81f"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/native__ended_journeys__empty_430x932.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "f8f6f185edeff17b084d02276317c2e20b81a0fc9291d5c61f6374cb681f1bfd"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/native__ended_journeys__list_375x667.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "d2fe78a606ff2fe0bc22ba65e7135d943bed8b8810cefaaea550282518f22a5e"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/native__ended_journeys__list_430x932.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "faefc4ca0465e6f3bf84f2fec5af540b66339fbd0ffac3489ceb7f4365fbdf35"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/native__ended_journeys__open_375x667.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "fe58652f4cecd0f9fca94293dced3d5fc5b3d84f9103a3b230d4c31ad74b2f55"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/native__ended_journeys__open_430x932.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "dc2fd95a7dbc5776acda68e5c7df14d9c7d692d5366bcbfe02c5a6d48538e97c"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/native__ended_journeys__view_timeline_read_only_375x667.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "633f0c688e5a84860ef39df39e04f5b713c6d8596a08c2284895f8a17e361133"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/native__ended_journeys__view_timeline_read_only_430x932.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "54fde0a383de692e91b7f4ccf2aba88c8cd7eb0ae81238a2eeb8bf0887ecec64"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/guardian_introductions_made__not_taken_forward_375x667.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "5a15fdcfb1aade44e3fedc08d4414bea11f9c2f50da85fd5f94990342fe096f4"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/guardian_introductions_made__not_taken_forward_430x932.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "e807feadd8e6aa0a54c5a97d8595c151727d9694f5c62b64e469967ff95fd745"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/introductions__past_375x667.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "6c56c9478b8b5716955849198d1bdd79f06d14117406bca05759ba53918117d7"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/introductions__past_430x932.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "99d272a413d53d264d10fe7e3b6f0de8c9fd912d0be55675b357a517755df53e"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/introductions__past_empty_375x667.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "d676f0ab82d4fe22369124f67894386038903bd6e987df41e38c13dadaeeeadc"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/introductions__past_empty_430x932.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "c4ec07079ed2151b1bfb59cb104a62a466f00e21fa79bc39daed267a5c1832ab"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/introductions__received_375x667.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "b57fd77c124ba657ca0033046d5e5455fe1462281dee8ad9f0a4d5e0a07ad3ca"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/introductions__received_430x932.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "d4cbc4aec46e199b914bdec10ee81bd7faa64e72f16a017c127c0c8350ed8bf5"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/introductions__received_empty_375x667.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "d47e478bd0c827132dd58c834419ce5f3143054e097d329a332f30712631bf84"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/introductions__received_empty_430x932.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "158d0fde9bdd780baff8dae96fdcd741e7d56b16d7bf8bdaa4d754aeb71483a4"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/introductions__received_open_375x667.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "438e1ed60c07a5df85ca305ddb7a85f4faadcbdf5169fed9f94d5a8ada8a2a34"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/introductions__received_open_430x932.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "c6f3bdb0abaed5757dc1bd8f3a139c94d9393d591cff292bc3583ec364a0d632"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/ended_journeys__list_375x667.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "31e13d07ffc7f8b41ed4c6e972e9932164564160c5319d13f98bb08c068276db"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/ended_journeys__list_430x932.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "6ed3db9eb2bde9daa4e828a83cf03efe5386900f935fcbd550da80ace342327c"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/ended_journeys__open_375x667.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "c121f1aa16064842354f9e4441f13e263a5ed9a3fc47af1e4411913106129d8b"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/ended_journeys__open_430x932.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "03ad2361a2da48cffd329d2e69a1be3a4ed79ffb2266f0050791dfefa97ddc04"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/ended_journeys__view_timeline_read_only_375x667.png",
+      "pixels": [
+        1125,
+        2001
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "633f0c688e5a84860ef39df39e04f5b713c6d8596a08c2284895f8a17e361133"
+    },
+    {
+      "file": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BUILT/V4/CAPTURES/ended_journeys__view_timeline_read_only_430x932.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "metadata_keys": [
+        "srgb"
+      ],
+      "sha256": "54fde0a383de692e91b7f4ccf2aba88c8cd7eb0ae81238a2eeb8bf0887ecec64"
+    }
+  ],
+  "comparisons": "Six deterministic layouts of original master and built PNGs, unscaled; only canvas labels added.",
+  "review": "Independent source/test/visual review complete; no unresolved actionable findings."
+}

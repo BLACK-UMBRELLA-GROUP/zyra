@@ -17,6 +17,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/config/zyra_internal_founder_policy.dart';
 import 'package:zyra/data/zyra_journey_stages.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
+import 'package:zyra/dev/zyra_request_activity_presentation.dart';
 import 'package:zyra/dev/zyra_signup_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
@@ -305,6 +306,7 @@ void main() {
     ViewRequestDraftModel? model,
     int tab = 2,
     ZyraPreviewNavigationCheckpoint? checkpoint,
+    ValueChanged<ZyraPreviewNavigationCheckpoint>? onCheckpoint,
   }) => ZyraDeveloperSeekerScope(
     preview: true,
     child: Builder(
@@ -313,6 +315,7 @@ void main() {
         onExit: () {},
         initialTab: tab,
         initialCheckpoint: checkpoint,
+        onCheckpoint: onCheckpoint,
         fixture: ZyraOneJourneyShellFixture(model: model),
       ),
     ),
@@ -697,6 +700,55 @@ void main() {
   });
 
   final samples = ZyraDeveloperSamples.instance;
+
+  testWidgets(
+    'LOCK 2 V4 sample archive keeps shell navigation and revokes on Clear',
+    (tester) async {
+      plan = 'seeker_premium';
+      ZyraPreviewNavigationCheckpoint? checkpoint;
+      await mount(
+        tester,
+        homeOverride: previewHome(
+          model: ViewRequestDraftModel(capacity: 3),
+          onCheckpoint: (value) => checkpoint = value,
+        ),
+      );
+      await tap(tester, _key('dev_page_title'));
+      await tap(tester, _key('dev_ended_3'));
+      await tap(tester, _key('dev_done'));
+      expect(samples.endedRows, hasLength(3));
+      final row = samples.endedRows!.first;
+      expect(row.person.firstName, 'Zainab');
+      await tap(tester, _key('concept-my-ended'));
+      await tap(tester, _key('sample-ended-${row.id}-header'));
+      await tap(tester, find.text('View Timeline'));
+      expect(checkpoint!.pages.last, 'ended_archive');
+      expect(find.text('Journey with Zainab'), findsOneWidget);
+      expect(_key('compact-nav-surface'), findsOneWidget);
+      expect(find.byType(ZyraEndedJourneyArchivePresentation), findsOneWidget);
+      for (final label in ['Timeline', 'Journey Bio', 'Guardians']) {
+        expect(find.text(label), findsOneWidget);
+      }
+      final retained = tester
+          .widget<ListTile>(
+            find.ancestor(
+              of: find.text('Timeline'),
+              matching: find.byType(ListTile),
+            ),
+          )
+          .onTap!;
+      samples.clear();
+      await settle(tester);
+      expect(find.byType(ZyraEndedJourneyArchivePresentation), findsNothing);
+      expect(find.text('Journey with Zainab'), findsNothing);
+      final afterClear = List<String>.of(checkpoint!.pages);
+      retained();
+      await settle(tester);
+      expect(checkpoint!.pages, afterClear);
+      expect(find.byType(ZyraEndedJourneyArchivePresentation), findsNothing);
+      await dispose(tester);
+    },
+  );
 
   Future<void> openSampleRequests(WidgetTester tester) async {
     final dashboardLink = find.text('Journey\nrequests');
@@ -1345,7 +1397,8 @@ void main() {
       state = ZyraOneJourneyShellFixtureState(checkpoint: checkpoint, tab: 2);
       changes.notifyListeners();
       await settle(tester);
-      await tap(tester, _key('draft_restart_draft-sara'));
+      await tap(tester, _key('draft_journey_draft-sara_header'));
+      await tap(tester, _key('draft_ended_restart_draft-sara'));
       await tap(tester, _key('draft_restart_send_draft-sara'));
       expect(
         find.text('Finish setting up your profile to start a Journey.'),

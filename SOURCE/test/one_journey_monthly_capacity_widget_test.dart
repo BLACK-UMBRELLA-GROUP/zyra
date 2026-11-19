@@ -11,7 +11,7 @@ import 'package:zyra/dev/dev_discovery_directions.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_card_content.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
-import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
+import 'package:zyra/dev/zyra_request_activity_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_journey_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_options.dart';
 import 'package:zyra/dev/zyra_one_journey_options_page.dart';
@@ -665,12 +665,11 @@ void main() {
         expect(find.textContaining('Paused'), findsNothing);
         await _press(tester, 'concept-my-ended');
         expect(_key('concept_activity_ended'), findsOneWidget);
-        expect(
-          find.byType(ZyraOneJourneyConnectionsActiveCard),
-          findsOneWidget,
-        );
-        expect(_key('draft_restart_draft-noor'), findsOneWidget);
-        expect(_key('draft_journey_options_draft-noor'), findsOneWidget);
+        expect(find.byType(ZyraRequestActivityCard), findsOneWidget);
+        await _press(tester, 'draft_journey_draft-noor_header');
+        expect(_key('draft_ended_restart_draft-noor'), findsOneWidget);
+        expect(_key('draft_ended_view_draft-noor'), findsOneWidget);
+        expect(_key('draft_journey_options_draft-noor'), findsNothing);
         expect(find.textContaining('Paused'), findsNothing);
         await _nav(tester, 1);
         _expectJourneys(tester, 1);

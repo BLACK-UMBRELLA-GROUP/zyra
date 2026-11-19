@@ -1046,6 +1046,48 @@ void main() {
   );
 
   testWidgets(
+    'retained card actions reject collapse, another card and reopen',
+    (tester) async {
+      var acts = 0;
+      var reports = 0;
+      final expansion = ZyraConnectionsExpansionController();
+      addTearDown(expansion.dispose);
+      await _mount(
+        tester,
+        profile: profile,
+        controller: expansion,
+        onPrimary: () => acts++,
+        onReport: () => reports++,
+      );
+      await _press(tester, _key(_header));
+      final action = tester.widget<InkWell>(_key(_primary)).onTap!;
+      final report = tester
+          .widget<IconButton>(find.byType(IconButton))
+          .onPressed!;
+      // The notifier changes before the next layout unmounts the old buttons.
+      expansion.collapseAll();
+      action();
+      report();
+      expect(acts, 0);
+      expect(reports, 0);
+      expansion.open('another-card');
+      action();
+      report();
+      expect(acts, 0);
+      expect(reports, 0);
+      await tester.pumpAndSettle();
+      expansion.open('request');
+      await tester.pumpAndSettle();
+      action();
+      report();
+      expect(acts, 0);
+      expect(reports, 0);
+      await _press(tester, _key(_primary));
+      expect(acts, 1);
+    },
+  );
+
+  testWidgets(
     'disabled actions stay disabled and Report calls only its supplied callback',
     (tester) async {
       var reports = 0;

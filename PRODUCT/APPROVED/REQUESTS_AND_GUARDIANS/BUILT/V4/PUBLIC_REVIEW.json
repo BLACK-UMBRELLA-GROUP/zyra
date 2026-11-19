@@ -1,0 +1,112 @@
+{
+  "status": "In progress before staging",
+  "text_check": "36 text files checked, 13 reviewed inherited false positives; no new private material.",
+  "reviewed_hits": [
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 2763,
+      "kind": "money",
+      "unchanged_line_present_in_HEAD": true,
+      "reason": "Existing layout spacing wording or Dart record field-access syntax."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 9922,
+      "kind": "money",
+      "unchanged_line_present_in_HEAD": true,
+      "reason": "Existing layout spacing wording or Dart record field-access syntax."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 9923,
+      "kind": "money",
+      "unchanged_line_present_in_HEAD": true,
+      "reason": "Existing layout spacing wording or Dart record field-access syntax."
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 1866,
+      "kind": "money",
+      "unchanged_line_present_in_HEAD": true,
+      "reason": "Existing layout spacing wording or Dart record field-access syntax."
+    },
+    {
+      "file": "SOURCE/lib/screens/profile/past_journeys_screen.dart",
+      "line": 78,
+      "kind": "money",
+      "unchanged_line_present_in_HEAD": true,
+      "reason": "Existing layout spacing wording or Dart record field-access syntax."
+    },
+    {
+      "file": "SOURCE/lib/screens/profile/past_journeys_screen.dart",
+      "line": 92,
+      "kind": "money",
+      "unchanged_line_present_in_HEAD": true,
+      "reason": "Existing layout spacing wording or Dart record field-access syntax."
+    },
+    {
+      "file": "SOURCE/lib/screens/profile/past_journeys_screen.dart",
+      "line": 99,
+      "kind": "money",
+      "unchanged_line_present_in_HEAD": true,
+      "reason": "Existing layout spacing wording or Dart record field-access syntax."
+    },
+    {
+      "file": "README.md",
+      "line": 62,
+      "kind": "money",
+      "unchanged_line_present_in_HEAD": true,
+      "reason": "Existing layout spacing wording or Dart record field-access syntax."
+    },
+    {
+      "file": "MAP.md",
+      "line": 29,
+      "kind": "money",
+      "unchanged_line_present_in_HEAD": true,
+      "reason": "Existing catalog title/reference only."
+    },
+    {
+      "file": "MAP.md",
+      "line": 33,
+      "kind": "legal/company",
+      "unchanged_line_present_in_HEAD": true,
+      "reason": "Existing catalog title/reference only."
+    },
+    {
+      "file": "MAP.md",
+      "line": 528,
+      "kind": "money",
+      "unchanged_line_present_in_HEAD": true,
+      "reason": "Existing catalog title/reference only."
+    },
+    {
+      "file": "MAP.md",
+      "line": 532,
+      "kind": "money",
+      "unchanged_line_present_in_HEAD": true,
+      "reason": "Existing catalog title/reference only."
+    },
+    {
+      "file": "MAP.md",
+      "line": 560,
+      "kind": "money",
+      "unchanged_line_present_in_HEAD": true,
+      "reason": "Existing catalog title/reference only."
+    }
+  ],
+  "images": {
+    "files_checked": 33,
+    "scanner_hits": 1235,
+    "categories": {
+      "money": 1233,
+      "legal/company": 2
+    },
+    "review": "Compressed PNG byte matches. Final PNG metadata only sRGB or empty; no text/EXIF. Approved fictional sample UI visually reviewed. Six comparisons retain original image pixels."
+  },
+  "A": "Pending staged and outgoing commit-range secret scans.",
+  "B": "Only implementation, locked UI inputs and evidence will be staged. Unrelated Claude documents remain unstaged.",
+  "C": "No ROADMAP row completed; brief explicitly says do not tick.",
+  "D": "No app version change, no release.",
+  "E": "New text uses neutral community wording; no member wording invented.",
+  "F": "README describes card/archive/Introductions behavior."
+}

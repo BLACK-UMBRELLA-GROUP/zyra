@@ -130,6 +130,14 @@ sender waits 7 days after Not taken up, 14 days after five in a row and
 30 days from the tenth onward. Beginning a Journey clears the streak.
 The profile button shows the same date during the wait. Live ask-again
 dates await SERVER 1.
+Ended Journeys and Introductions in the Founder preview use the Journey
+request card. Open an ended card for View Timeline, Request a new Journey or
+Remove from my Journeys. View Timeline opens a read-only hub with Timeline,
+Journey Bio and Guardians while keeping My ZYRA navigation. Introductions
+have Received and Past tabs. Requesting creates a local Sent request;
+declining records You declined and the original Guardian sees Not taken
+forward. Past keeps both outcomes, newest first. These actions use local
+sample data; live response transport remains pending.
 Ended Journeys have no fixed reading deadline. A Seeker can remove their own
 archived Journey, and a block from either side hides it until unblock. A
 preview restart can be requested after 24 hours and stays open for 30 days.

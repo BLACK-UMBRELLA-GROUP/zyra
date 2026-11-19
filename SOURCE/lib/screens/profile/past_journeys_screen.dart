@@ -13,6 +13,7 @@ import '../../services/zyra_journey_service.dart';
 import '../../state/app_state.dart';
 import '../../state/zyra_developer_samples.dart';
 import '../connections/zyra_sample_activity.dart';
+import '../connections/connections_section_controller.dart';
 import '../../theme/zyra_card_metrics.dart';
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
@@ -51,6 +52,7 @@ class PastJourneysScreen extends StatefulWidget {
 }
 
 class _PastJourneysScreenState extends State<PastJourneysScreen> {
+  final _sampleExpansion = ZyraConnectionsExpansionController();
   late final PageController _pageController;
   double _position = 0;
   bool _loading = true;
@@ -160,6 +162,7 @@ class _PastJourneysScreenState extends State<PastJourneysScreen> {
 
   @override
   void dispose() {
+    _sampleExpansion.dispose();
     _authSubscription?.cancel();
     AppState.instance.removeListener(_accountChanged);
     _revoked = true;
@@ -409,7 +412,10 @@ class _PastJourneysScreenState extends State<PastJourneysScreen> {
           Padding(
             key: ValueKey(row.id),
             padding: const EdgeInsets.only(bottom: 10),
-            child: ZyraSampleEndedJourneyCard(row: row),
+            child: ZyraSampleEndedJourneyCard(
+              row: row,
+              controller: _sampleExpansion,
+            ),
           ),
         ?loadStatus,
         if (requestsForYou.isNotEmpty) ...[

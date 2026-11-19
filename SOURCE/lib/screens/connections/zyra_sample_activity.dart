@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../data/zyra_journey_stages.dart';
+import '../../dev/zyra_draft_timeline_presentation.dart';
+import '../../dev/zyra_draft_timeline_preview.dart';
 import '../../dev/zyra_one_journey_discovery_presentation.dart';
-import '../../dev/zyra_one_journey_options.dart';
 import '../../dev/zyra_request_activity_presentation.dart';
 import '../../dev/zyra_request_capacity_choice.dart';
 import '../../dev/zyra_view_request_draft_model.dart' show DraftProfile;
@@ -411,43 +412,21 @@ class _ZyraDeveloperJourneyRequestsScreenState
 }
 
 class ZyraSampleEndedJourneyCard extends StatelessWidget {
-  const ZyraSampleEndedJourneyCard({super.key, required this.row});
+  const ZyraSampleEndedJourneyCard({
+    super.key,
+    required this.row,
+    required this.controller,
+    this.onViewArchive,
+  });
   final ZyraSampleJourney row;
+  final ZyraConnectionsExpansionController controller;
+  final VoidCallback? onViewArchive;
 
   bool _present() => _samples.endedRows?.contains(row) ?? false;
 
-  Future<void> _options(BuildContext context, int generation) async {
+  Future<void> _remove(BuildContext context, int generation) async {
     bool current() => _samples.isCurrentLease(generation) && _present();
     if (!_foreground(context) || !current()) return;
-    final action = await showModalBottomSheet<ZyraEndedJourneyAction>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      barrierColor: const Color(0x611E1610),
-      builder: (context) => ListenableBuilder(
-        listenable: _samples,
-        builder: (context, _) => !current()
-            ? const SizedBox.shrink()
-            : ZyraEndedJourneyMenu(
-                restartEnabled: _samples.mayRestart(row),
-                onSelect: (action) {
-                  if (_foreground(context) && current()) {
-                    Navigator.of(context).pop(action);
-                  }
-                },
-              ),
-      ),
-    );
-    if (!context.mounted ||
-        !_foreground(context) ||
-        !current() ||
-        action == null) {
-      return;
-    }
-    if (action == ZyraEndedJourneyAction.restart) {
-      await _restart(context, generation);
-      return;
-    }
     final confirm = await showZyraConfirm(
       context: context,
       title: 'Remove this Journey?',
@@ -466,6 +445,28 @@ class ZyraSampleEndedJourneyCard extends StatelessWidget {
         _samples.removeEnded(row)) {
       _notice(context, 'Removed from your Journeys.');
     }
+  }
+
+  void _archive(BuildContext context, int generation) {
+    if (!_foreground(context) ||
+        !_samples.isCurrentLease(generation) ||
+        !_present()) {
+      return;
+    }
+    if (onViewArchive case final open?) {
+      open();
+      return;
+    }
+    Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (_) => Scaffold(
+          body: ZyraSampleEndedJourneyArchive(
+            row: row,
+            wrapTitle: (title) => _SampleRouteTitle(title: title),
+          ),
+        ),
+      ),
+    );
   }
 
   Future<void> _restart(BuildContext context, int generation) async {
@@ -496,27 +497,219 @@ class ZyraSampleEndedJourneyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final generation = _samples.generation;
     bool current() => _samples.isCurrentLease(generation) && _present();
-    final actions = ZyraOneJourneyConnectionsActionDeck(
-      primary: ZyraOneJourneyConnectionsAction(
-        label: 'Request restart',
-        icon: null,
-        fitLabel: true,
-        onTap: _samples.mayRestart(row)
-            ? () => _restart(context, generation)
-            : null,
-      ),
-      primaryTrailing: ZyraConceptJourneyOptionsButton(
-        onTap: () => _options(context, generation),
-      ),
-    );
-    return ZyraOneJourneyConnectionsActiveCard(
+    final id = 'sample-ended-${row.id}';
+    return ZyraRequestActivityCard(
+      key: ValueKey(id),
+      headerKey: ValueKey('$id-header'),
       profile: _samples.profileFor(row.person),
-      stateLabel: 'Ended · Timeline kept',
-      stageLabel: ZyraJourneyStages.labelFor(row.stage),
-      actions: actions,
-      primaryAction: actions.primaryRow,
-      onPhotoTap: () => _showProfile(context, row.person, current),
-      bottomGap: 0,
+      subtitle: 'Journey ended · Timeline kept',
+      cardId: id,
+      controller: controller,
+      canInteract: () => _foreground(context) && current(),
+      onToggle: () {
+        if (!_foreground(context) || !current()) return;
+        if (controller.value == id) {
+          controller.close(id);
+        } else {
+          controller.open(id);
+        }
+      },
+      primary: ZyraOneJourneyConnectionsAction(
+        label: 'View Timeline',
+        icon: Icons.history_rounded,
+        onTap: () => _archive(context, generation),
+      ),
+      actions: [
+        ZyraOneJourneyConnectionsAction(
+          label: 'Request a new Journey',
+          icon: Icons.people_outline,
+          onTap: _samples.mayRestart(row)
+              ? () => _restart(context, generation)
+              : null,
+        ),
+        ZyraOneJourneyConnectionsAction(
+          label: 'Remove from my Journeys',
+          icon: Icons.close,
+          dangerLabel: true,
+          onTap: () => _remove(context, generation),
+        ),
+      ],
+    );
+  }
+}
+
+/// The caller owns the archive route and its real navigation. Only this
+/// selected sample attempt is projected; a later attempt cannot replace it.
+class ZyraSampleEndedJourneyArchive extends StatefulWidget {
+  const ZyraSampleEndedJourneyArchive({
+    super.key,
+    required this.row,
+    required this.wrapTitle,
+    this.tabClearance = false,
+    this.canInteract,
+  });
+  final ZyraSampleJourney row;
+  final Widget Function(Widget) wrapTitle;
+  final bool tabClearance;
+  final bool Function()? canInteract;
+
+  @override
+  State<ZyraSampleEndedJourneyArchive> createState() =>
+      _ZyraSampleEndedJourneyArchiveState();
+}
+
+class _ZyraSampleEndedJourneyArchiveState
+    extends State<ZyraSampleEndedJourneyArchive> {
+  late final ZyraSampleJourney row;
+  late final int generation;
+  final _sourceLifetime = ValueNotifier(true);
+  late final _archiveListenable = Listenable.merge([_samples, _sourceLifetime]);
+
+  @override
+  void initState() {
+    super.initState();
+    row = widget.row;
+    generation = _samples.generation;
+  }
+
+  bool _present() =>
+      mounted &&
+      _sourceLifetime.value &&
+      identical(widget.row, row) &&
+      (_samples.endedRows?.contains(row) ?? false);
+
+  @override
+  void dispose() {
+    final lifetime = _sourceLifetime;
+    // A detail route can outlive its source page. Withdraw it after the
+    // source's frame is unlocked rather than notifying during disposal.
+    // The value remains owned by any pushed detail until that route retires.
+    Future<void>.microtask(() {
+      lifetime.value = false;
+    });
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => _SamplePageCanvas(
+    child: ListenableBuilder(
+      listenable: _samples,
+      builder: (context, _) =>
+          !_samples.isCurrentLease(generation) || !_present()
+          ? const _SampleBack()
+          : ZyraEndedJourneyArchivePresentation(
+              profile: _samples.profileFor(row.person),
+              wrapTitle: widget.wrapTitle,
+              tabClearance: widget.tabClearance,
+              canInteract: () =>
+                  _foreground(context) &&
+                  (widget.canInteract?.call() ?? true) &&
+                  _samples.isCurrentLease(generation) &&
+                  _present(),
+              onTimeline: () => _archiveDetail(context, generation, 0),
+              onBio: () => _archiveDetail(context, generation, 1),
+              onGuardians: () => _archiveDetail(context, generation, 2),
+            ),
+    ),
+  );
+
+  void _archiveDetail(BuildContext context, int generation, int page) {
+    bool present() => _samples.isCurrentLease(generation) && _present();
+    if (!_foreground(context) ||
+        !present() ||
+        widget.canInteract?.call() == false) {
+      return;
+    }
+    Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (_) => Scaffold(
+          body: _SamplePageCanvas(
+            child: ListenableBuilder(
+              listenable: _archiveListenable,
+              builder: (context, _) {
+                if (!present()) return const _SampleBack();
+                if (page == 0) {
+                  return SafeArea(
+                    child: Column(
+                      children: [
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: BackButton(),
+                        ),
+                        Expanded(
+                          child: ZyraDraftTimelinePresentation(
+                            subjectId: row.id,
+                            firstName: row.person.firstName,
+                            ownedViewport: true,
+                            view: ZyraDraftTimelineView(
+                              frozen: true,
+                              entries: [
+                                ZyraDraftTimelineEntry(
+                                  type: 'journey_ended',
+                                  occurredOn: row.endedAt,
+                                  attemptId: row.id,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                final bio = page == 1;
+                return SafeArea(
+                  child: ListView(
+                    padding: const EdgeInsets.fromLTRB(20, 16, 20, 110),
+                    children: [
+                      _SampleRouteTitle(
+                        title: Text(
+                          bio ? 'Journey Bio' : 'Guardians',
+                          style: ZyraText.pageTitle(),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      ZyraFloatingSurface(
+                        circle: false,
+                        gold: false,
+                        radius: 22,
+                        child: Container(
+                          padding: const EdgeInsets.all(18),
+                          decoration: BoxDecoration(
+                            color: ZyraColors.cardSurface,
+                            borderRadius: BorderRadius.circular(22),
+                            border: Border.all(color: ZyraColors.surfaceBorder),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                bio
+                                    ? 'Not shared in this Journey'
+                                    : 'No saved Guardian details',
+                                style: ZyraText.heading(size: 23),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                bio
+                                    ? 'Journey Bio was not shared before this Journey ended. '
+                                          'Opening its archive does not unlock private details.'
+                                    : 'No Guardian details were saved in this archive. '
+                                          'Today’s Guardian list is not a record of this past Journey.',
+                                style: ZyraText.body(size: 14),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -782,7 +975,7 @@ class ZyraSampleActiveJourneyCard extends StatelessWidget {
   }
 }
 
-class ZyraSampleIntroductionsList extends StatelessWidget {
+class ZyraSampleIntroductionsList extends StatefulWidget {
   const ZyraSampleIntroductionsList({
     super.key,
     required this.wrapTitle,
@@ -792,120 +985,149 @@ class ZyraSampleIntroductionsList extends StatelessWidget {
   final bool tabClearance;
 
   @override
-  Widget build(BuildContext context) {
-    final lease = _samples.generation;
-    final rows = _samples.introductionRows ?? const [];
-    const guardians = [
-      'Hassan · Father',
-      'Khadija · Mother',
-      'Yusuf · Brother',
-    ];
-    return _SamplePageCanvas(
-      child: ZyraRequestActivityPresentation(
-        title: 'Introductions',
-        wrapTitle: wrapTitle,
-        tabClearance: tabClearance,
-        labels: const ['Introductions'],
-        selectedIndex: 0,
-        onChanged: (_) {},
-        pages: [
-          [
-            if (rows.isEmpty)
-              const ZyraRequestActivityEmpty(
-                icon: Icons.groups_outlined,
-                title: 'No introductions yet',
-                message: 'People your Guardians put forward will appear here.',
-              ),
-            for (final (index, person) in rows.indexed)
-              _SamplePersonCard(
-                person: person,
-                subtitle: 'Put forward by ${guardians[index]}',
-                detail: index == 0
-                    ? 'New introduction'
-                    : 'Introduced ${9 - index} Nov',
-                accentDetail: index == 0,
-                onOpen: () => _showProfile(
-                  context,
-                  person,
-                  () =>
-                      _samples.isCurrentLease(lease) &&
-                      _samples.hasIntroduction(person),
-                  suggestedBy: guardians[index],
-                ),
-              ),
-          ],
-        ],
-      ),
-    );
-  }
+  State<ZyraSampleIntroductionsList> createState() =>
+      _ZyraSampleIntroductionsListState();
 }
 
-class _SamplePersonCard extends StatelessWidget {
-  const _SamplePersonCard({
-    required this.person,
-    required this.subtitle,
-    required this.onOpen,
-    this.detail,
-    this.accentDetail = false,
-  });
-  final DraftProfile person;
-  final String subtitle;
-  final String? detail;
-  final bool accentDetail;
-  final VoidCallback onOpen;
+class _ZyraSampleIntroductionsListState
+    extends State<ZyraSampleIntroductionsList> {
+  final _expansion = ZyraConnectionsExpansionController();
+  int _tab = 0;
 
   @override
-  Widget build(BuildContext context) => ZyraFloatingSurface(
-    radius: 26,
-    circle: false,
-    gold: false,
-    child: Material(
-      color: ZyraColors.cardSurface,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(22),
-        side: BorderSide(color: ZyraColors.surfaceBorder),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onOpen,
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Row(
-            children: [
-              ClipOval(
-                child: ZyraProfileImage(
-                  _samples.profileFor(person).photoUrl,
-                  width: 58,
-                  height: 58,
-                ),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(_name(person), style: ZyraText.heading(size: 21)),
-                    const SizedBox(height: 5),
-                    Text(subtitle, style: ZyraText.subtext(size: 12)),
-                    if (detail != null) ...[
-                      const SizedBox(height: 5),
-                      Text(
-                        detail!,
-                        style: ZyraText.subtext(
-                          size: 12,
-                          color: accentDetail
-                              ? ZyraColors.accentOnCanvas
-                              : null,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+  void dispose() {
+    _expansion.dispose();
+    super.dispose();
+  }
+
+  bool _current() => mounted && _foreground(context) && _samples.isAuthorized;
+
+  @override
+  Widget build(BuildContext context) => _SamplePageCanvas(
+    child: ListenableBuilder(
+      listenable: _samples,
+      builder: (context, _) => !_samples.isAuthorized
+          ? const _SampleBack()
+          : ZyraRequestActivityPresentation(
+              title: 'Introductions',
+              wrapTitle: widget.wrapTitle,
+              tabClearance: widget.tabClearance,
+              labels: const ['Received', 'Past'],
+              selectedIndex: _tab,
+              canInteract: _current,
+              onChanged: (tab) {
+                if (!_current() || tab < 0 || tab > 1 || tab == _tab) return;
+                _expansion.collapseAll();
+                setState(() => _tab = tab);
+              },
+              pages: [_received(), _past()],
+            ),
     ),
   );
+
+  List<Widget> _received() {
+    final rows = _samples.receivedIntroductions;
+    if (rows.isEmpty) {
+      return const [
+        ZyraRequestActivityEmpty(
+          icon: Icons.groups_outlined,
+          title: 'No introductions yet',
+          message: 'People your Guardians put forward will appear here.',
+        ),
+      ];
+    }
+    return [for (final introduction in rows) _receivedCard(introduction)];
+  }
+
+  Widget _receivedCard(ZyraSampleIntroduction introduction) {
+    final person = introduction.person;
+    final id = 'sample-introduction-${person.id}';
+    final lease = _samples.generation;
+    bool present() =>
+        _samples.isCurrentLease(lease) && _samples.hasIntroduction(person);
+    bool current() => _current() && _tab == 0 && present();
+    return ZyraRequestActivityCard(
+      key: ValueKey(id),
+      headerKey: ValueKey('$id-header'),
+      profile: _samples.profileFor(person),
+      subtitle:
+          'Put forward by ${introduction.guardianName} · ${introduction.relation}',
+      cardId: id,
+      controller: _expansion,
+      canInteract: current,
+      onToggle: () {
+        if (!current()) return;
+        if (_expansion.value == id) {
+          _expansion.close(id);
+        } else {
+          _expansion.open(id);
+        }
+      },
+      primary: ZyraOneJourneyConnectionsAction(
+        label: 'View profile',
+        icon: Icons.visibility_outlined,
+        onTap: () => _showProfile(
+          context,
+          person,
+          present,
+          suggestedBy:
+              '${introduction.guardianName} · ${introduction.relation}',
+        ),
+      ),
+      actions: [
+        ZyraOneJourneyConnectionsAction(
+          label: 'Request a Journey',
+          icon: Icons.check,
+          onTap: _samples.canRequestIntroduction(person)
+              ? () {
+                  if (!current() || !_samples.requestIntroduction(person)) {
+                    return;
+                  }
+                  _expansion.collapseAll();
+                  _notice(
+                    context,
+                    'Request sent to ${person.firstName}. It’s in Journey requests → Sent.',
+                  );
+                }
+              : null,
+        ),
+        ZyraOneJourneyConnectionsAction(
+          label: 'Decline',
+          icon: Icons.close,
+          onTap: () {
+            if (!current() || !_samples.declineIntroduction(person)) return;
+            _expansion.collapseAll();
+            _notice(
+              context,
+              'Declined. ${introduction.guardianName} sees “Not taken forward”.',
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  List<Widget> _past() {
+    final rows = _samples.pastIntroductions;
+    if (rows.isEmpty) {
+      return const [
+        ZyraRequestActivityEmpty(
+          icon: Icons.history_rounded,
+          title: 'No past introductions.',
+          message: 'Introductions you declined or took forward stay here.',
+        ),
+      ];
+    }
+    return [
+      for (final row in rows)
+        ZyraPastRequestActivityCard(
+          key: ValueKey('sample-past-introduction-${row.sequence}'),
+          cardId: 'sample-past-introduction-${row.sequence}',
+          profile: _samples.profileFor(row.introduction.person),
+          subtitle:
+              'Introduced ${_date(row.introduction.introducedAt)} · from ${row.introduction.guardianName}',
+          status: row.label,
+        ),
+    ];
+  }
 }

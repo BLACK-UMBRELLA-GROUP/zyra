@@ -16,13 +16,15 @@ import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_focus_dashboard.dart';
 import '../widgets/zyra_profiles_components.dart';
 import '../widgets/zyra_swipe_track.dart';
+import '../models/seeker_profile.dart';
+import 'zyra_request_activity_presentation.dart';
 import 'zyra_one_journey_tab.dart' show ZyraJourneyPhotoCard;
 import 'zyra_one_journey_guardian_seeker.dart';
 import 'zyra_one_journey_guardian_seekers.dart';
 import 'zyra_one_journey_guardian_action.dart';
 import 'zyra_one_journey_monogram_presentation.dart';
 import 'zyra_guardian_family_preview.dart';
-import 'zyra_view_request_draft_model.dart' show DraftProfile;
+import 'zyra_view_request_draft_model.dart' show DraftProfile, draftProfiles;
 import '../screens/wali/family_messaging_screens.dart'
     show ZyraFamilyMessageComposer;
 
@@ -359,6 +361,9 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     this.familyOffer,
     this.freePlaceInvite = false,
     this.familyCanAct,
+    this.introductionDeclined,
+    this.introducingGuardianId = 'draft-guardian-hassan',
+    this.madeIntroductions = const [],
   });
   final ZyraGuardianTabsState state;
   final String page, seekerGender, adamMembership;
@@ -381,6 +386,10 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   final ZyraGuardianFamilyInvite? familyOffer;
   final bool freePlaceInvite;
   final bool Function()? familyCanAct;
+  final bool Function(String candidateId, String guardianId)?
+  introductionDeclined;
+  final String introducingGuardianId;
+  final List<DraftProfile> madeIntroductions;
   Widget _text(
     String text, {
     double size = 14,
@@ -877,7 +886,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
         ZyraFocusTile(
           id: 'guardian_introductions',
           label: 'Introductions',
-          status: paid ? '${state.introduced.length} made' : 'Guardian One',
+          status: paid ? '$_madeIntroductionCount made' : 'Guardian One',
           icon: Icons.groups_outlined,
           locked: !paid,
           onTap: () => onAction(paid ? 'quick_introductions' : 'membership'),
@@ -1081,7 +1090,24 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     );
   }
 
-  Widget _introductions() => state.introductionCount == 0
+  List<String> get _madeIntroductionEntries => {
+    if (state.seekerName == 'Adam')
+      for (final person in madeIntroductions)
+        if (ZyraGuardianTabsState.validId(person.id.replaceFirst('draft-', '')))
+          'adam:${person.id.replaceFirst('draft-', '')}',
+    ...state.introduced.where(
+      (id) => id.startsWith('${state.seekerName.toLowerCase()}:'),
+    ),
+  }.toList();
+
+  int get _madeIntroductionCount => {
+    ...state.introduced,
+    for (final person in madeIntroductions)
+      if (ZyraGuardianTabsState.validId(person.id.replaceFirst('draft-', '')))
+        'adam:${person.id.replaceFirst('draft-', '')}',
+  }.length;
+
+  Widget _introductions() => _madeIntroductionEntries.isEmpty
       ? _viewport(
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1101,30 +1127,43 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
         )
       : _viewport(
           Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _header(
                 ZyraDeveloperTitle(child: _title("Introductions you've made")),
               ),
-              for (final (i, entry)
-                  in state.introduced
-                      .where(
-                        (id) =>
-                            id.startsWith('${state.seekerName.toLowerCase()}:'),
-                      )
-                      .indexed) ...[
+              for (final (i, entry) in _madeIntroductionEntries.indexed) ...[
                 if (i > 0)
                   const SizedBox(height: ZyraPreviewSpacing.cardToCard),
-                _tile(
-                  entry.split(':').last == 'aisha' ? 'Aisha' : 'Noor',
-                  'Suggested to ${state.seekerName}',
-                  Icons.groups_outlined,
-                  'network',
-                  bottomGap: 0,
-                ),
+                _introductionMade(entry),
               ],
             ],
           ),
         );
+  Widget _introductionMade(String entry) {
+    final candidate = entry.split(':').last;
+    final person = draftProfiles.firstWhere((p) => p.id == 'draft-$candidate');
+    final declined =
+        state.seekerName == 'Adam' &&
+        (introductionDeclined?.call(person.id, introducingGuardianId) ?? false);
+    return ZyraRequestActivityIdentity(
+      key: ValueKey('guardian_introduction_$entry'),
+      profile: SeekerProfile(
+        id: person.id,
+        firstName: person.firstName,
+        surnameLine: person.surname,
+        age: person.age,
+        city: person.city,
+        gender: 'female',
+        photos: [?photoFor(candidate)],
+      ),
+      subtitle: declined
+          ? 'Not taken forward'
+          : 'Suggested to ${state.seekerName}',
+      mutedSubtitle: declined,
+    );
+  }
+
   Widget _networkArrow(bool forward) => Builder(
     builder: (context) {
       final enabled = forward ? state.canNext : state.canPrevious;

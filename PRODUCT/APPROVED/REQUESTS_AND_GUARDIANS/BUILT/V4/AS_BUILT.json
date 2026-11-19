@@ -1,0 +1,109 @@
+{
+  "line": 98,
+  "built_from": [
+    "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/BRIEFS/BUILD_BRIEF_2026-11-12_V4.md",
+    "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/RECORD/REQUESTS_AND_GUARDIANS_SPEC_CURRENT_VERSION_V4.md",
+    "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/RECORD/LOCK_RECORD.md"
+  ],
+  "authority": [
+    "Founder daytime GO 19 Nov 2026",
+    "LOCK 2 V4",
+    "DR-ZYRA-284",
+    "DOC-ZYRA-0505",
+    "OA-ZYRA-393",
+    "Q161",
+    "Q163",
+    "Q164",
+    "Q169"
+  ],
+  "status": "Local gates passed; hosted CI pending.",
+  "live": false,
+  "behavior": [
+    "Ended Journeys reuse ZyraRequestActivityCard, with one open card and View Timeline / Request a new Journey / red Remove from my Journeys. Existing restart rules, confirm and toast remain.",
+    "View Timeline opens Journey with <first name>, same card identity, three read-only archive doors and My ZYRA navigation. Compact/enlarged text scrolls. Existing Bio/Timeline/Guardian disclosure gates remain.",
+    "Introductions reuse request cards and Received/Past pills. Local Request creates Sent plus Journey requested history; Decline records You declined and original Guardian sees Not taken forward. Past is newest first, indefinite, display only.",
+    "Guardian list and quick-access count merge existing made introductions with same-Guardian sample projection. Other Guardians and other Seekers never inherit the decline."
+  ],
+  "live_files": [
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+    "SOURCE/lib/dev/zyra_request_activity_presentation.dart",
+    "SOURCE/lib/screens/connections/connections_screen.dart",
+    "SOURCE/lib/screens/connections/zyra_sample_activity.dart",
+    "SOURCE/lib/screens/profile/past_journeys_screen.dart",
+    "SOURCE/lib/state/zyra_developer_samples.dart"
+  ],
+  "tests": [
+    "SOURCE/test/global_dev_overlay_test.dart",
+    "SOURCE/test/line98_introductions_test.dart",
+    "SOURCE/test/one_journey_bottom_close_cue_test.dart",
+    "SOURCE/test/one_journey_compact_controls_test.dart",
+    "SOURCE/test/one_journey_ended_card_test.dart",
+    "SOURCE/test/one_journey_full_capacity_flow_test.dart",
+    "SOURCE/test/one_journey_monthly_capacity_widget_test.dart",
+    "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+    "SOURCE/test/one_journey_theme_actions_test.dart",
+    "SOURCE/test/request_page_options_context_test.dart",
+    "SOURCE/test/view_request_draft_widget_test.dart",
+    "SOURCE/test/visual/line81_compatibility_topics_test.dart",
+    "SOURCE/test/visual/line93_time_rules_visual_test.dart",
+    "SOURCE/test/visual/line98_ended_journeys_visual_test.dart",
+    "SOURCE/test/visual/line98_introductions_visual_test.dart",
+    "SOURCE/test/visual/lock22_v3_empty_states_test.dart",
+    "SOURCE/test/visual/lock24_tab_spacing_test.dart",
+    "SOURCE/test/zyra_developer_panel_entry_test.dart",
+    "SOURCE/test/zyra_developer_samples_test.dart",
+    "SOURCE/test/zyra_request_activity_presentation_test.dart"
+  ],
+  "state_and_data_flow": {
+    "owner": "Existing guarded Founder shell and account-bound in-memory ZyraDeveloperSamples; no production service mutation.",
+    "input": "Explicit developer sample selections or existing fictional draft model Ended attempts.",
+    "output": "Local Sent/Past, display status and guarded archive navigation.",
+    "invariants": [
+      "Shared Received card/pills remain style authority; no local card redraw.",
+      "Fresh account, route, UI revision, visible exact ended attempt and local generation are checked at dispatch.",
+      "Sample archive retains exact selected row.id. The transient sample attempt is not checkpointed; restoring a page is no disclosure grant.",
+      "Owned removal dialog supplies its own authorization; attempt/account/page checks remain valid while parent route is covered.",
+      "Sample archived Timeline uses only recorded row.endedAt; missing Bio/Guardian details use existing unavailable archive words.",
+      "Public sample archive detail callbacks check mounted source, exact opening row, sample lease and caller permission before push; already-open detail withdraws when source retires.",
+      "Shared expanded action/report dispatch checks the current expansion ID before unmount; the existing tap helper checks mounted context, so a closed/reopened button cannot replay."
+    ]
+  },
+  "entry_points": "Founder preview My ZYRA -> Ended Journeys / Introductions; Guardian My ZYRA -> Introductions. Existing sample cards also used by retained Connections/Profile archive. Ordinary member server lists and backend authority are not connected here.",
+  "developer_controls": "Existing Ended and Introductions count selectors only; no new release toggle or authority. Clear/account change retires local history and archived sample callbacks.",
+  "production_boundary": {
+    "scope": "Local Founder preview; Live: no. No native build, install, backend apply, payment or migration.",
+    "static_server_evidence": [
+      "SOURCE/supabase/migrations/20260718190011_initial_schema.sql: wali_suggestions already defines wali_id,seeker_id,suggested_id,status pending/accepted/rejected and responded_at, with owner/candidate uniqueness.",
+      "SOURCE/supabase/migrations/20260806111305_ownership_classify_wali_suggestions.sql scopes Seeker response status to the introducing Guardian.",
+      "SOURCE/lib/services/zyra_guardian_suggestion_service.dart reads pending suggestions and markSeen; planned response transport/projection remains outside this UI brief."
+    ],
+    "verification": "Static source only; no live database query. The brief condition that a server field is absent was not established: repository schema already includes rejected.",
+    "open_owner": "OA-ZYRA-317: planned-app server adapter, real status synchronization and live authority remain pending. Written refusal to add live transport under this UI brief."
+  },
+  "migrations": [],
+  "retired_code": "Removed unused shell ended portrait/card/inline/menu builder paths and the sample ended menu path; Git retains prior committed implementation. Eight files of the earlier failed attempt were retired before GO, path list and all hashes verified under L42; none reused.",
+  "verification": {
+    "analyze": "No issues found (5.2 s), final source.",
+    "focused": "271/271 affected regressions plus 154/154 visual/archive regressions pass, including final gold and Guardian page width. No tests skipped or removed by the change.",
+    "full_suite": {
+      "result": "PASS",
+      "visible_pass": 7445,
+      "skip": 163,
+      "failure": 0,
+      "seconds": 446.292,
+      "success_events": 8588,
+      "scope": "All local tests immediately before final two dispatch-lifetime guards; final complete card/integration suites and hosted full suite cover those exact guards."
+    },
+    "hosted_ci": "PENDING",
+    "independent_review": "COMPLETE: no remaining actionable source, test-invariant or visual findings; final gold/ivory/current navigation read back at both sizes.",
+    "device": "Not installed or observed on phone; delivery belongs to line117 after98 ->99 ->124.",
+    "focused_after_full": "127/127 complete shared-card, Ended, Introduction, Developer-entry and visual tests pass (17 s); includes RED-to-PASS closed-card replay regression."
+  },
+  "visual_limits": "Existing app card/title/pill/nav/surface tokens remain in use. Shared request status and chevrons now use the existing goldText token required by LOCK 2 V4, including Received/Ended/Introductions parity. Muted Past and Not taken forward remain muted. Current Guardian navigation has five items after line122 rather than four in the older master. Native draft fixture orders people differently; sample Ended fixture matches Zainab/Safiya/Noor. No exact-pixel claim.",
+  "next_steps": [
+    "Finish final full suite, secret/public checks, commit/push and verify hosted ZYRA CI.",
+    "ZYRA Claude/Fable compare built evidence during normal design/document review.",
+    "Queue continues 99 ->124 ->117 last; real server authority remains OA-ZYRA-317."
+  ]
+}

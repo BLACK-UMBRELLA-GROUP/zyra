@@ -1,0 +1,14 @@
+{
+  "line": 98,
+  "source_base_commit": "c56ff44265180bd77478144dbd800791d69660e4",
+  "source_commit": "PENDING reviewed implementation commit",
+  "flutter_version": "3.44.2",
+  "build_mode": "offline-ci widget tests",
+  "timestamp_utc": "2026-11-19T19:25:57.000258+00:00",
+  "live": false,
+  "installed": false,
+  "source_manifest": "SOURCE_MANIFEST.json",
+  "input_manifest": "INPUT_MANIFEST.json",
+  "render_manifest": "RENDER_MANIFEST.json",
+  "ci": "PENDING"
+}

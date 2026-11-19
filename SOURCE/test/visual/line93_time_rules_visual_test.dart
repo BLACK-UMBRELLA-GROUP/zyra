@@ -99,9 +99,9 @@ void main() {
         model: archive,
         previewClock: () => now,
       );
-      await h.tap('draft_journey_options_$_peer');
+      await h.tap('draft_journey_${_peer}_header');
       expect(find.text('Remove from my Journeys'), findsOneWidget);
-      expect(find.text('Cancel'), findsOneWidget);
+      expect(h.key('draft_journey_options_$_peer'), findsNothing);
       await capture('archive_menu');
       await h.tapFinder(find.text('Request a new Journey'));
       expect(find.textContaining('The request lasts 30 days.'), findsOneWidget);
@@ -112,14 +112,18 @@ void main() {
         findsOneWidget,
       );
       await returnZyraPreviewPage(tester);
-      await h.tap('draft_journey_options_$_peer');
+      if (find.text('Remove from my Journeys').evaluate().isEmpty) {
+        await h.tap('draft_journey_${_peer}_header');
+      }
       await h.tapFinder(find.text('Remove from my Journeys'));
       expect(find.text('Remove this Journey?'), findsOneWidget);
       expect(find.textContaining('Sara still sees her copy.'), findsOneWidget);
       await capture('archive_confirm');
       await h.tapFinder(find.text('Keep Journey'));
-      expect(h.key('draft_journey_options_$_peer'), findsOneWidget);
-      await h.tap('draft_journey_options_$_peer');
+      expect(h.key('draft_journey_${_peer}_header'), findsOneWidget);
+      if (find.text('Remove from my Journeys').evaluate().isEmpty) {
+        await h.tap('draft_journey_${_peer}_header');
+      }
       await h.tapFinder(find.text('Remove from my Journeys'));
       await h.tapFinder(find.text('Remove Journey'));
       expect(find.text('No ended Journeys'), findsOneWidget);
@@ -172,7 +176,7 @@ void main() {
         );
         h.assertPage('ended');
         expect(h.key('draft_journey_options_$_peer'), findsNothing);
-        expect(h.key('draft_journey_options_$_namedPeer'), findsOneWidget);
+        expect(h.key('draft_journey_${_namedPeer}_header'), findsOneWidget);
         expect(find.textContaining('Sara'), findsNothing);
       }
       await capture('q134_ended_journeys');

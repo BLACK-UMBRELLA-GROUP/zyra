@@ -274,9 +274,10 @@ void main() {
       find.byKey(const ValueKey('concept_activity_introductions')),
     );
     expect(introductions.title, 'Introductions');
-    expect(introductions.pages, hasLength(1));
+    expect(introductions.labels, ['Received', 'Past']);
+    expect(introductions.pages, hasLength(2));
     expect(introductions.selectedIndex, 0);
-    expect(find.byType(PageView), findsNothing);
+    expect(find.byType(PageView), findsOneWidget);
     expect(owner.latest.pages, ['introductions']);
     expect(owner.latest.requestsTab, 0);
     expect(owner.latest.model.states, captured.model.states);

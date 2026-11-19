@@ -275,7 +275,7 @@ void main() {
         find.byKey(const ValueKey('concept_activity_introductions')),
       );
       expect(page.title, 'Introductions');
-      expect(page.labels, ['Introductions']);
+      expect(page.labels, ['Received', 'Past']);
       expect(find.text('No introductions yet'), findsOneWidget);
       expect(fixture.latest!.pages, ['introductions']);
       expect(before(), isFalse);

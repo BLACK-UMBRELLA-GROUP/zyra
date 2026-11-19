@@ -11,6 +11,41 @@ import '../services/zyra_account_state.dart';
 
 enum ZyraDeveloperPast { none, mixed, samePerson }
 
+enum ZyraSampleIntroductionOutcome { requested, declined }
+
+class ZyraSampleIntroduction {
+  const ZyraSampleIntroduction({
+    required this.person,
+    required this.guardianId,
+    required this.guardianName,
+    required this.relation,
+    required this.introducedAt,
+  });
+
+  final DraftProfile person;
+  final String guardianId, guardianName, relation;
+  final DateTime introducedAt;
+}
+
+class ZyraSamplePastIntroduction {
+  const ZyraSamplePastIntroduction._(
+    this.introduction,
+    this.outcome,
+    this.movedAt,
+    this.sequence,
+  );
+
+  final ZyraSampleIntroduction introduction;
+  final ZyraSampleIntroductionOutcome outcome;
+  final DateTime movedAt;
+  final int sequence;
+
+  String get label => switch (outcome) {
+    ZyraSampleIntroductionOutcome.requested => 'Journey requested',
+    ZyraSampleIntroductionOutcome.declined => 'You declined',
+  };
+}
+
 class ZyraSampleJourney {
   const ZyraSampleJourney(this.person, this.id, {this.stage, this.endedAt});
 
@@ -100,6 +135,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
   bool _overridesActive = false, _overridesEnded = false;
   List<ZyraSampleRequest>? _received, _sent;
   List<DraftProfile>? _introductions;
+  final _introductionHistory = <ZyraSamplePastIntroduction>[];
   List<ZyraSamplePastRequest>? _history;
   ZyraDeveloperPast? _past;
   ZyraDeveloperViewAs? _viewAs;
@@ -163,6 +199,12 @@ class ZyraDeveloperSamples extends ChangeNotifier {
       isAuthorized && _introductions != null
       ? List.unmodifiable(_introductions!)
       : null;
+  List<ZyraSampleIntroduction> get receivedIntroductions => [
+    for (final person in introductionRows ?? const <DraftProfile>[])
+      _introductionFor(person),
+  ];
+  List<ZyraSamplePastIntroduction> get pastIntroductions =>
+      isAuthorized ? List.unmodifiable(_introductionHistory) : const [];
   List<ZyraSamplePastRequest>? get history =>
       isAuthorized && _history != null ? List.unmodifiable(_history!) : null;
   int? get active => activeRows?.length;
@@ -189,6 +231,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
           _received != null ||
           _sent != null ||
           _introductions != null ||
+          _introductionHistory.isNotEmpty ||
           _history != null ||
           _viewAs != null ||
           _unverified ||
@@ -306,6 +349,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     _received = null;
     _sent = null;
     _introductions = null;
+    _introductionHistory.clear();
     _history = null;
     _past = null;
     _guardianChoices.clear();
@@ -582,6 +626,92 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     if (!_permits(value) || introductions == value) return;
     _introductions = _introNames.take(value).map(_person).toList();
     _changed();
+  }
+
+  ZyraSampleIntroduction _introductionFor(DraftProfile person) {
+    final guardian = switch (person.id) {
+      'draft-noor' => (
+        id: 'draft-guardian-hassan',
+        name: 'Hassan',
+        relation: 'Father',
+      ),
+      'draft-hana' => (
+        id: 'draft-guardian-khadija',
+        name: 'Khadija',
+        relation: 'Mother',
+      ),
+      _ => (id: 'draft-guardian-yusuf', name: 'Yusuf', relation: 'Brother'),
+    };
+    return ZyraSampleIntroduction(
+      person: person,
+      guardianId: guardian.id,
+      guardianName: guardian.name,
+      relation: guardian.relation,
+      introducedAt: _lastSampleRequest,
+    );
+  }
+
+  bool canRequestIntroduction(DraftProfile person) =>
+      hasIntroduction(person) &&
+      !unverified &&
+      !hasPreviewSent(person.id) &&
+      canSendPreviewRequest(person.id);
+
+  bool requestIntroduction(DraftProfile person) {
+    if (!canRequestIntroduction(person)) return false;
+    (_sent ??= []).insert(
+      0,
+      ZyraSampleRequest(person, _clock(), incoming: false),
+    );
+    _finishIntroduction(person, ZyraSampleIntroductionOutcome.requested);
+    return true;
+  }
+
+  bool declineIntroduction(DraftProfile person) {
+    if (!hasIntroduction(person)) return false;
+    _finishIntroduction(person, ZyraSampleIntroductionOutcome.declined);
+    return true;
+  }
+
+  void _finishIntroduction(
+    DraftProfile person,
+    ZyraSampleIntroductionOutcome outcome,
+  ) {
+    _introductions!.remove(person);
+    _introductionHistory.add(
+      ZyraSamplePastIntroduction._(
+        _introductionFor(person),
+        outcome,
+        _clock(),
+        ++_serial,
+      ),
+    );
+    _introductionHistory.sort((a, b) {
+      final order = b.movedAt.compareTo(a.movedAt);
+      return order == 0 ? b.sequence.compareTo(a.sequence) : order;
+    });
+    _changed();
+  }
+
+  bool hasDeclinedIntroduction(String candidateId, String guardianId) =>
+      isAuthorized &&
+      _introductionHistory.any(
+        (row) =>
+            row.introduction.person.id == candidateId &&
+            row.introduction.guardianId == guardianId &&
+            row.outcome == ZyraSampleIntroductionOutcome.declined,
+      );
+
+  List<DraftProfile> guardianIntroductions(String guardianId) {
+    if (!isAuthorized) return const [];
+    final people = <String, DraftProfile>{};
+    for (final row in [
+      ...receivedIntroductions,
+      ...pastIntroductions.map((row) => row.introduction),
+    ]) {
+      if (row.guardianId == guardianId) people[row.person.id] = row.person;
+    }
+    return List.unmodifiable(people.values);
   }
 
   void setPast(ZyraDeveloperPast value) {

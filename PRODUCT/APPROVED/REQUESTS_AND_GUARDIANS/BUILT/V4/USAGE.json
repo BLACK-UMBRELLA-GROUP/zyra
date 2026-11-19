@@ -1,0 +1,12 @@
+{
+  "snapshot_utc": "2026-11-19T19:32:30.009398+00:00",
+  "owner_count_only": {
+    "input_tokens": 43245321,
+    "cached_input_tokens": 43008512,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 71883,
+    "reasoning_output_tokens": 30492,
+    "total_tokens": 43317204
+  },
+  "helpers": "Three scoped helpers; individual counters are not exposed by the collaboration API. No estimates."
+}

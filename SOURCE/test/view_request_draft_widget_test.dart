@@ -1565,10 +1565,11 @@ void main() {
             expect(find.text('Sara'), findsNothing);
           }
           if (action == 'hide') {
-            await _press(tester, 'draft_archive_details_$_fixture');
+            await _press(tester, 'draft_journey_${_fixture}_header');
+            await _press(tester, 'draft_ended_view_$_fixture');
             expect(_key('draft_options_archive_$_fixture'), findsNothing);
             expect(find.text('View archive'), findsNothing);
-            await _press(tester, 'draft_options_timeline_$_fixture');
+            await _press(tester, 'draft_ended_timeline_$_fixture');
           }
           expect(_key('concept_journey_menu'), findsNothing);
           expect(_key('concept_message'), findsNothing);
@@ -2011,7 +2012,7 @@ void main() {
   ]) {
     for (final reduce in [false, true]) {
       testWidgets(
-        'Requests has two swipe pages and Introductions is a separate leaf ${viewport.suffix} reduce=$reduce',
+        'Requests has three swipe pages and Introductions has Received/Past separately ${viewport.suffix} reduce=$reduce',
         (tester) async {
           final network = _NoNetwork();
           final app = AppState.instance;
@@ -2068,26 +2069,43 @@ void main() {
               expect(find.byType(ZyraFocusDashboard), findsNothing);
             }
 
-            void expectIntroductions() {
+            void expectIntroductions([int selected = 0]) {
               expect(_key('concept_activity_requests'), findsNothing);
               final source = tester.widget<ZyraRequestActivityPresentation>(
                 _key('concept_activity_introductions'),
               );
               expect(source.title, 'Introductions');
-              expect(source.pages, hasLength(1));
-              expect(source.selectedIndex, 0);
-              expect(
-                source.pages.single.whereType<ZyraRequestActivityCard>(),
-                isEmpty,
+              expect(source.labels, const ['Received', 'Past']);
+              expect(source.pages, hasLength(2));
+              expect(source.selectedIndex, selected);
+              for (final page in source.pages) {
+                expect(page.whereType<ZyraRequestActivityCard>(), isEmpty);
+              }
+              final introPager = find.descendant(
+                of: _key('concept_activity_introductions'),
+                matching: find.byType(PageView),
               );
-              expect(find.byType(PageView), findsNothing);
+              expect(introPager, findsOneWidget);
+              expect(
+                tester.widget<PageView>(introPager).controller!.page,
+                closeTo(selected, .01),
+              );
               for (final index in [0, 1, 2]) {
                 expect(_key('draft_requests_$index'), findsNothing);
               }
-              expect(find.text('No introductions yet'), findsOneWidget);
               expect(
                 find.text(
-                  'People your Guardians put forward will appear here.',
+                  selected == 0
+                      ? 'No introductions yet'
+                      : 'No past introductions.',
+                ),
+                findsOneWidget,
+              );
+              expect(
+                find.text(
+                  selected == 0
+                      ? 'People your Guardians put forward will appear here.'
+                      : 'Introductions you declined or took forward stay here.',
                 ),
                 findsOneWidget,
               );
@@ -2195,6 +2213,9 @@ void main() {
               ),
               const Offset(-200, 0),
             );
+            await tester.pumpAndSettle();
+            expectIntroductions(1);
+            await tester.tap(find.text('Received'));
             await tester.pumpAndSettle();
             expectIntroductions();
             await backToMyZyra();
@@ -4557,10 +4578,11 @@ void main() {
           expect(find.text('Paused'), findsNothing);
           expect(_key('draft_journey_${_fixture}_header'), findsOneWidget);
           expect(_key('draft_fill'), findsNothing);
-          await _press(tester, 'draft_archive_details_$_fixture');
+          await _press(tester, 'draft_journey_${_fixture}_header');
+          await _press(tester, 'draft_ended_view_$_fixture');
           expect(_key('draft_options_archive_$_fixture'), findsNothing);
           expect(find.text('View archive'), findsNothing);
-          await _press(tester, 'draft_options_timeline_$_fixture');
+          await _press(tester, 'draft_ended_timeline_$_fixture');
           expect(find.text('Journey with Sara'), findsOneWidget);
           expect(_key('draft_end_$_fixture'), findsNothing);
           expect(_key('draft_pause_$_fixture'), findsNothing);
@@ -4577,6 +4599,11 @@ void main() {
           expect(
             history.view.entries.map((entry) => entry.type),
             containsAll(['match_created', 'journey_started', 'journey_ended']),
+          );
+          await returnZyraPreviewPage(tester);
+          expect(
+            find.byType(ZyraEndedJourneyArchivePresentation),
+            findsOneWidget,
           );
           await returnZyraPreviewPage(tester);
           expect(_key('concept_activity_ended'), findsOneWidget);

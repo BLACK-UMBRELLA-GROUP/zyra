@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
-import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_browse_filter.dart';
@@ -396,13 +395,13 @@ Map<String, double> _verifySpacing(
     expect(actual, closeTo(expected, .02), reason: '$screen · $name');
   }
 
-  void margins(Finder surface, {double inset = 20}) {
+  void pageInsets(Finder surface, {double inset = 20}) {
     final rect = box(surface);
     final width = MediaQuery.sizeOf(
       t.element(find.byType(ZyraOneJourneyConceptShell)),
     ).width;
-    check('left page margin', rect.left, inset);
-    check('right page margin', width - rect.right, inset);
+    check('left page inset', rect.left, inset);
+    check('right page inset', width - rect.right, inset);
   }
 
   void gap(String name, Finder upper, Finder lower, double expected) {
@@ -435,7 +434,7 @@ Map<String, double> _verifySpacing(
   switch (screen) {
     case 'Profiles':
       final card = _key('concept_browse_portrait_card');
-      margins(card);
+      pageInsets(card);
       titleToDots(
         _key('concept_browse_title'),
         _key('concept_browse_dot_target_0'),
@@ -467,7 +466,7 @@ Map<String, double> _verifySpacing(
     case 'Journey':
     case 'Journey — free place':
       final card = _key('journey_tab_card');
-      margins(card);
+      pageInsets(card);
       titleToDots(
         find.text('Journey'),
         _key('journey_tab_dot_target_0'),
@@ -480,7 +479,7 @@ Map<String, double> _verifySpacing(
         for (final group in ['main', 'guardians', 'actions'])
           _key('journey_options_${group}_card_draft-sara'),
       ];
-      margins(cards.first);
+      pageInsets(cards.first);
       gap(
         'title to identity',
         find.text('Journey'),
@@ -501,7 +500,7 @@ Map<String, double> _verifySpacing(
     case 'Network — unlinked':
       if (basic) {
         final action = _key('guardian_network_membership');
-        margins(action);
+        pageInsets(action);
         expect(_key('guardian-network-card'), findsNothing);
         expect(find.text('View Guardian One'), findsOneWidget);
         final lock = box(_key('guardian_network_lock_circle'));
@@ -509,7 +508,7 @@ Map<String, double> _verifySpacing(
         check('lock circle height', lock.height, 102);
       } else if (screen == 'Network') {
         final card = _key('guardian-network-card');
-        margins(card);
+        pageInsets(card);
         gap('card to pill', card, _key('guardian_connect_confirm'), 12);
         gap(
           'card to Introduce pill',
@@ -520,7 +519,7 @@ Map<String, double> _verifySpacing(
       }
     case 'Journeys':
       final card = _key('guardian_journey_card');
-      margins(card);
+      pageInsets(card);
       titleToDots(
         find.text('Journeys'),
         _key('guardian_journey_dot_target_0'),
@@ -533,7 +532,7 @@ Map<String, double> _verifySpacing(
     case 'Seekers — unlinked':
       // LOCK 35 uses the shared swipe track, with its 2 pt card inset.
       final card = _key('guardian_seekers_card_0');
-      margins(card, inset: 22);
+      pageInsets(card, inset: 22);
       titleToDots(
         find.text('Seekers'),
         _key('guardian_seekers_dot_target_0'),
@@ -551,7 +550,7 @@ Map<String, double> _verifySpacing(
         ])
           surfaceFor(_key('concept_$row')),
       ];
-      margins(cards.first);
+      pageInsets(cards.first);
       cardGaps(cards);
     case 'My ZYRA':
     case 'My ZYRA — activity':
@@ -575,8 +574,8 @@ Map<String, double> _verifySpacing(
       final width = MediaQuery.sizeOf(
         t.element(find.byType(ZyraOneJourneyConceptShell)),
       ).width;
-      check('left page margin', box(tiles.first).left, 20);
-      check('right page margin', width - box(tiles.last).right, 20);
+      check('left page inset', box(tiles.first).left, 20);
+      check('right page inset', width - box(tiles.last).right, 20);
       for (var i = 1; i < tiles.length; i++) {
         check('card gap $i', box(tiles[i]).left - box(tiles[i - 1]).right, 12);
       }
@@ -600,14 +599,14 @@ Map<String, double> _verifySpacing(
       final cards = [
         for (var i = 0; i < 2; i++) surfaceFor(requestLabels.at(i)),
       ];
-      margins(cards.first);
+      pageInsets(cards.first);
       cardGaps(cards);
     case 'Guardian':
     case 'Guardian — populated':
     case 'Guardian — invited':
     case 'Guardian — Add card':
       final card = _fixedCard(screen)!;
-      margins(card);
+      pageInsets(card);
       titleToDots(
         _key('guardian-manager-title'),
         _key('guardian-card-dot-target-0'),
@@ -926,14 +925,14 @@ void main() {
                 final exception = t.takeException();
                 expect(exception, isNull, reason: name);
                 final values = {
-                  'left page margin': first.left,
-                  'right page margin': (compact ? 375.0 : 430.0) - first.right,
+                  'left page inset': first.left,
+                  'right page inset': (compact ? 375.0 : 430.0) - first.right,
                   'card gap': endLast.top + position.pixels - firstBottom,
                   'last card to bar': nav.top - endLast.bottom,
                   'scroll extent': position.maxScrollExtent,
                 };
-                expect(values['left page margin'], closeTo(20, .02));
-                expect(values['right page margin'], closeTo(20, .02));
+                expect(values['left page inset'], closeTo(20, .02));
+                expect(values['right page inset'], closeTo(20, .02));
                 expect(values['card gap'], closeTo(12, .02), reason: name);
                 if (position.maxScrollExtent > 0) {
                   expect(
@@ -982,12 +981,11 @@ void main() {
                 ),
                 'past_request_activity_card_',
               );
-              Finder ended(String id) => paintIn(
+              Finder ended(String id) => requestPaint(
                 find.byWidgetPredicate(
-                  (w) =>
-                      w is ZyraOneJourneyConnectionsActiveCard &&
-                      w.profile.id == id,
+                  (w) => w is ZyraRequestActivityCard && w.profile.id == id,
                 ),
+                'request_activity_card_',
               );
 
               if (guardian) {
@@ -1067,8 +1065,8 @@ void main() {
               expect(surface.left, closeTo(20, .02));
               expect(width - surface.right, closeTo(20, .02));
               expect(gap, closeTo(8, .02), reason: label);
-              settingsSpacing['left page margin'] = surface.left;
-              settingsSpacing['right page margin'] = width - surface.right;
+              settingsSpacing['left page inset'] = surface.left;
+              settingsSpacing['right page inset'] = width - surface.right;
               settingsSpacing['$label label to card'] = gap;
             }
             final settingsException = t.takeException();

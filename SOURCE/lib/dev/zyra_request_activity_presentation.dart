@@ -16,6 +16,7 @@ import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_request_tab_pill.dart';
 import '../widgets/zyra_segmented_toggle.dart';
 import '../widgets/zyra_state_widgets.dart';
+import '../widgets/zyra_tab_title.dart';
 import '../widgets/floating_nav_bar.dart';
 import 'zyra_one_journey_discovery_presentation.dart'
     show ZyraOneJourneyConnectionsAction;
@@ -25,13 +26,9 @@ Color get _helperInk => Color.alphaBlend(
   ZyraColors.isLightPalette ? Colors.white : ZyraColors.luxuryDarkPurple,
 );
 
-// Text/icon ink must not inherit the older 45%-alpha unlock decoration.
-Color get _accentInk => ZyraColors.isLightPalette
-    ? ZyraColors.luxuryDarkPurple
-    : Color.alphaBlend(
-        Colors.white.withValues(alpha: .16),
-        ZyraColors.journeyGold,
-      );
+// LOCK 2 V4 uses the app's existing gold ink for every shared request-card
+// status and chevron. Past outcomes keep their independent muted ink.
+Color get _accentInk => ZyraColors.goldText;
 
 bool _quietMotion(BuildContext context) =>
     MediaQuery.disableAnimationsOf(context) ||
@@ -385,27 +382,10 @@ class ZyraRequestActivityCard extends StatelessWidget {
 
   Widget _portrait() => _requestActivityPortrait(profile);
 
-  Widget _identity() => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        _name,
-        key: ValueKey('request_activity_name_$cardId'),
-        style: ZyraText.heading(size: 21),
-      ),
-      if (profile.age > 0 || profile.city.isNotEmpty) ...[
-        const SizedBox(height: 5),
-        Text(
-          [
-            if (profile.age > 0) '${profile.age}',
-            if (profile.city.isNotEmpty) profile.city,
-          ].join(' · '),
-          style: ZyraText.subtext(size: 12, color: _helperInk),
-        ),
-      ],
-      const SizedBox(height: 10),
-      Text(subtitle, style: ZyraText.subtext(size: 12, color: _accentInk)),
-    ],
+  Widget _identity() => _requestIdentity(
+    profile,
+    subtitle,
+    nameKey: ValueKey('request_activity_name_$cardId'),
   );
 
   Widget _header(BuildContext context, bool open) => Semantics(
@@ -490,9 +470,14 @@ class ZyraRequestActivityCard extends StatelessWidget {
     bool primary = false,
   }) {
     final enabled = action.onTap != null;
+    final ink = enabled && action.dangerLabel
+        ? ZyraColors.dangerText
+        : enabled
+        ? ZyraColors.foreground
+        : _helperInk;
     final radius = BorderRadius.circular(24);
     void invoke() {
-      if (canInteract?.call() == false) return;
+      if (controller.value != cardId || canInteract?.call() == false) return;
       action.onTap?.call();
     }
 
@@ -528,21 +513,14 @@ class ZyraRequestActivityCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   if (action.icon != null) ...[
-                    Icon(
-                      action.icon,
-                      size: 18,
-                      color: enabled ? ZyraColors.foreground : _helperInk,
-                    ),
+                    Icon(action.icon, size: 18, color: ink),
                     const SizedBox(width: 8),
                   ],
                   Flexible(
                     child: Text(
                       action.label,
                       textAlign: TextAlign.center,
-                      style: ZyraText.button(
-                        size: 13,
-                        color: enabled ? ZyraColors.foreground : _helperInk,
-                      ),
+                      style: ZyraText.button(size: 13, color: ink),
                     ),
                   ),
                 ],
@@ -577,7 +555,10 @@ class ZyraRequestActivityCard extends StatelessWidget {
               child: IconButton(
                 tooltip: 'Report ${profile.firstName}',
                 onPressed: ZyraTapFeedback.onTap(context, () {
-                  if (canInteract?.call() != false) onReport!();
+                  if (controller.value == cardId &&
+                      canInteract?.call() != false) {
+                    onReport!();
+                  }
                 }),
                 icon: Icon(Icons.flag_outlined, size: 20, color: _helperInk),
                 constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
@@ -924,4 +905,237 @@ class ZyraRequestActivityEmpty extends StatelessWidget {
     title: title,
     message: message,
   );
+}
+
+Widget _requestIdentity(
+  SeekerProfile profile,
+  String subtitle, {
+  Key? nameKey,
+  bool mutedSubtitle = false,
+}) => Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Text(
+      '${profile.firstName} ${profile.surnameLine ?? ''}'.trim(),
+      key: nameKey,
+      style: ZyraText.heading(size: 21),
+    ),
+    if (profile.age > 0 || profile.city.isNotEmpty) ...[
+      const SizedBox(height: 5),
+      Text(
+        [
+          if (profile.age > 0) '${profile.age}',
+          if (profile.city.isNotEmpty) profile.city,
+        ].join(' · '),
+        style: ZyraText.subtext(size: 12, color: _helperInk),
+      ),
+    ],
+    const SizedBox(height: 10),
+    Text(
+      subtitle,
+      style: ZyraText.subtext(
+        size: 12,
+        color: mutedSubtitle ? _helperInk : _accentInk,
+      ),
+    ),
+  ],
+);
+
+/// The same request-card identity, displayed without an expansion action.
+class ZyraRequestActivityIdentity extends StatelessWidget {
+  const ZyraRequestActivityIdentity({
+    super.key,
+    required this.profile,
+    required this.subtitle,
+    this.mutedSubtitle = false,
+  });
+  final SeekerProfile profile;
+  final String subtitle;
+  final bool mutedSubtitle;
+
+  @override
+  Widget build(BuildContext context) => ZyraFloatingSurface(
+    radius: 26,
+    circle: false,
+    gold: false,
+    child: Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: ZyraColors.surfaceFill,
+        borderRadius: BorderRadius.circular(26),
+        border: Border.all(color: ZyraColors.surfaceBorder),
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final stacked =
+              MediaQuery.textScalerOf(context).scale(1) > 1.3 ||
+              !_wholeWordsFit(
+                context,
+                '${profile.firstName} ${profile.surnameLine ?? ''}'.trim(),
+                ZyraText.heading(size: 21),
+                constraints.maxWidth - 80,
+              );
+          final portrait = _requestActivityPortrait(profile);
+          final identity = _requestIdentity(
+            profile,
+            subtitle,
+            mutedSubtitle: mutedSubtitle,
+          );
+          return stacked
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [portrait, const SizedBox(height: 16), identity],
+                )
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    portrait,
+                    const SizedBox(width: 16),
+                    Expanded(child: identity),
+                  ],
+                );
+        },
+      ),
+    ),
+  );
+}
+
+/// LOCK 2 V4: caller-owned read-only archive doors. No disclosure is granted here.
+class ZyraEndedJourneyArchivePresentation extends StatelessWidget {
+  const ZyraEndedJourneyArchivePresentation({
+    super.key,
+    required this.profile,
+    required this.onTimeline,
+    required this.onBio,
+    required this.onGuardians,
+    this.canInteract,
+    this.wrapTitle,
+    this.keyPrefix = 'ended_archive',
+    this.tabClearance = false,
+  });
+  final SeekerProfile profile;
+  final VoidCallback onTimeline, onBio, onGuardians;
+  final bool Function()? canInteract;
+  final Widget Function(Widget)? wrapTitle;
+  final String keyPrefix;
+  final bool tabClearance;
+
+  @override
+  Widget build(BuildContext context) {
+    final title = ZyraTabTitle('Journey with ${profile.firstName}');
+    Widget row(String id, String label, IconData icon, VoidCallback action) =>
+        ListTile(
+          key: ValueKey('${keyPrefix}_${id}_${profile.id}'),
+          minVerticalPadding: 20,
+          leading: Icon(icon, color: _accentInk),
+          title: Text(label, style: ZyraText.body(size: 15)),
+          trailing: Icon(Icons.chevron_right, color: _helperInk),
+          onTap: ZyraTapFeedback.onTap(context, () {
+            if (canInteract?.call() != false) action();
+          }),
+        );
+    Widget panel() => ZyraFloatingSurface(
+      radius: 26,
+      circle: false,
+      gold: false,
+      child: Container(
+        decoration: BoxDecoration(
+          color: ZyraColors.surfaceFill,
+          borderRadius: BorderRadius.circular(26),
+          border: Border.all(color: ZyraColors.surfaceBorder),
+        ),
+        child: Material(
+          type: MaterialType.transparency,
+          child: Column(
+            children: [
+              Expanded(
+                child: Center(
+                  child: row(
+                    'timeline',
+                    'Timeline',
+                    Icons.timeline,
+                    onTimeline,
+                  ),
+                ),
+              ),
+              Divider(
+                height: 1,
+                indent: 54,
+                endIndent: 18,
+                color: ZyraColors.surfaceBorder,
+              ),
+              Expanded(
+                child: Center(
+                  child: row('bio', 'Journey Bio', Icons.subject, onBio),
+                ),
+              ),
+              Divider(
+                height: 1,
+                indent: 54,
+                endIndent: 18,
+                color: ZyraColors.surfaceBorder,
+              ),
+              Expanded(
+                child: Center(
+                  child: row(
+                    'guardians',
+                    'Guardians',
+                    Icons.people,
+                    onGuardians,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    List<Widget> content(Widget doors) => [
+      wrapTitle?.call(title) ?? title,
+      const SizedBox(height: 24),
+      ZyraRequestActivityIdentity(
+        profile: profile,
+        subtitle: 'Journey ended · Timeline kept',
+      ),
+      const SizedBox(height: 14),
+      doors,
+      const SizedBox(height: 16),
+      Text(
+        'Read only · nothing here can be changed',
+        textAlign: TextAlign.center,
+        style: ZyraText.subtext(size: 12, color: _helperInk),
+      ),
+    ];
+    return SafeArea(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final padding = EdgeInsets.fromLTRB(
+            20,
+            16,
+            20,
+            tabClearance ? 112 : 24,
+          );
+          final scale = MediaQuery.textScalerOf(context).scale(1);
+          // A tall phone fills the locked panel. Compact/enlarged text scrolls
+          // instead of compressing the shared identity or clipping an archive door.
+          if (constraints.maxHeight >= 700 && scale <= 1.3) {
+            return Padding(
+              padding: padding,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: content(Expanded(child: panel())),
+              ),
+            );
+          }
+          return ZyraShadowScrollView(
+            padding: padding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: content(SizedBox(height: 216 * scale, child: panel())),
+            ),
+          );
+        },
+      ),
+    );
+  }
 }

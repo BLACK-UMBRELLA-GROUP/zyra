@@ -14,7 +14,7 @@ import 'package:zyra/dev/dev_discovery_directions.dart';
 import 'package:zyra/dev/zyra_concept_preview_boundary.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
-import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
+import 'package:zyra/dev/zyra_request_activity_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_options_page.dart';
 import 'package:zyra/dev/zyra_one_journey_tab.dart';
 import 'package:zyra/services/zyra_account_state.dart';
@@ -520,8 +520,8 @@ void main() {
       expect(_key('draft_journey_draft-noor_header'), findsOneWidget);
       expect(
         tester
-            .widget<ZyraOneJourneyConnectionsActiveCard>(
-              find.byType(ZyraOneJourneyConnectionsActiveCard),
+            .widget<ZyraRequestActivityCard>(
+              find.byType(ZyraRequestActivityCard),
             )
             .profile
             .id,

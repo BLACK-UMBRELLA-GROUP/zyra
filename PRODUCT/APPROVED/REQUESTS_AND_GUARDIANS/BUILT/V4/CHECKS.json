@@ -1,0 +1,100 @@
+{
+  "line": 98,
+  "date": "2026-11-19",
+  "startup": {
+    "conversation": "new",
+    "started_london": "18:49:41",
+    "start_pack_bytes": 19251,
+    "lessons_full_read_bytes": 64097,
+    "lessons_read_note": "Initial full read followed the supplied standing instruction and exceeded scoped startup. Recorded under existing OA-AIOS-471; no later whole lessons, MAP or register read.",
+    "extra_named_reads": "ZYRA AGENTS; spec section 2.6 / LOCK and 13 named lock inputs; scoped queue / Q161, Q163, Q164, Q169; own source/tests; required driver/CI/handover/public-check tools. Input file sizes/hashes in INPUT_MANIFEST.",
+    "command_corrections": "Relative start_pack invocation refused its lexical parent path; corrected once to absolute tool path. Missing node PATH resolved to bundled runtime. No new install or SDK guard change."
+  },
+  "preflight": {
+    "line98": "WAITING, Q169 ANSWERED; Founder daytime GO",
+    "dependencies": "93 and 95 BUILT",
+    "queue_order": "98 → 99 → 124 → 117 LAST",
+    "l42": "8 retired files match PATHS.txt SHA256; lib/test/ios clean before edit; failed candidate never resumed/reused.",
+    "disk_start": "37GiB free"
+  },
+  "toolchain": {
+    "version": "Flutter 3.44.2",
+    "route": "tooling/no_git_driver.mjs",
+    "mode": "offline-ci widget tests; no native build/install",
+    "pinned_files": 5,
+    "exec_denial": "PASS including nested process",
+    "policy_sha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d",
+    "logs": "SOURCE/build/line98* (ignored) only"
+  },
+  "analyze": {
+    "result": "PASS",
+    "seconds": 5.2,
+    "issues": 0
+  },
+  "focused": [
+    {
+      "result": "PASS",
+      "tests": 271,
+      "seconds": 31,
+      "scope": "Nine affected older suites, Ended privacy/guards/gold, authenticated sample hub, navigation and Clear and native visual checks."
+    },
+    {
+      "result": "PASS",
+      "tests": 154,
+      "seconds": 32,
+      "scope": "view_request, LOCK 22/24 geometry, lines 81/93, Introductions unit/visual checks and 18 final captures."
+    }
+  ],
+  "first_full": {
+    "visible_pass": 7409,
+    "skip": 163,
+    "failure": 36,
+    "seconds": 472.684,
+    "resolution": "Guardian width failures (2): source parent now stretches shared cards at enlarged text. Other 34: superseded Ended portrait/menu and single-page Introductions assumptions updated to LOCK 2 V4. No privacy/access assertions weakened, no test skip/removal introduced."
+  },
+  "final_full": {
+    "result": "PASS",
+    "visible_pass": 7445,
+    "skip": 163,
+    "failure": 0,
+    "seconds": 446.292,
+    "success_events": 8588,
+    "scope": "All local tests immediately before final two dispatch-lifetime guards; final complete card/integration suites and hosted full suite cover those exact guards."
+  },
+  "test_decisions": [
+    "Retired Ended portrait/ellipsis controls replaced by request-card header -> View Timeline hub -> existing archive doors; existing restart/removal/deletion/retention checks retained.",
+    "Archived compatibility reached through existing Timeline result action; identity, balance, mutual consent, read-only/unlock invariants retained.",
+    "Introductions now Received/Past with two pages and actual swipe; route epochs, Back, reset and member-state checks retained.",
+    "LOCK22 e01 center adjusted for added shared tab selector only;96 px ring / 8 px tolerance retained.",
+    "LOCK24 Ended finder follows same shared request outer paint;20 px page insets, 12 px card gap, 16 px tab bar geometry remain strict.",
+    "Gold status/chevron exact existing-token assertions added; shared Received/Ended/Introduction style remains unified."
+  ],
+  "independent_review": {
+    "result": "PASS",
+    "scope": "Source, test invariants and regenerated visual read-back; no unresolved actionable findings.",
+    "corrections": "Owned confirmation admission, unverified send, original Guardian projection/count, exact sample attempt/source lifetime, Material wrapper, tall/compact hub, navigation, gold ink and width."
+  },
+  "visual": {
+    "raw_captures": 26,
+    "comparison_layouts": 6,
+    "logical_sizes": [
+      "430x932",
+      "375x667"
+    ],
+    "scale": 3,
+    "metadata": "Only sRGB or empty; no PNG text/EXIF",
+    "extra_layout_coverage": "320 × 568 at 2× text; other compact/accessibility paths preserved.",
+    "exact_pixel_claim": false
+  },
+  "live": false,
+  "migrations": [],
+  "hosted_ci": "PENDING",
+  "public": "PUBLIC_REVIEW.json",
+  "not_done": "No phone build/install,live apply, server transport, payment or release. OA-ZYRA-317 owns planned-app server integration; line 117 owns final delivery.",
+  "cleanup": "No new one-off scripts or copied apps/source. Intermediate ignored logs/row ledgers will be retired; final logs kept under SOURCE/build per Q169. MAP regenerated; resulting diff only catalogs unrelated Claude FIRST_TOUR documents and is left unstaged.",
+  "post_full_lifetime_guard": {
+    "reason": "Expansion ValueNotifier changes before old button is unmounted; guard primary/actions/Report against an already-collapsed or different card. Existing tap helper also checks mounted context, rejecting reopen ABA.",
+    "regression": "RED reproduced immediate collapsed-card replay. After two central checks: 127/127 complete shared-card, Ended, Introduction, Developer-entry and visual tests pass in 17 seconds. Analyzer clean. Independent review PASS.",
+    "hosted_gate": "Push selector runs FULL suite: shared state code and non-Dart locked inputs changed."
+  }
+}

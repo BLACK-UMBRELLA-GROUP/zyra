@@ -61,12 +61,15 @@ ZyraPreviewNavigationCheckpoint _basicJourney({
 }
 
 Future<void> _openCompatibility(BaselineHarness harness) async {
-  final archive = harness.key('draft_archive_details_$_person');
-  if (archive.evaluate().isNotEmpty) {
-    await harness.tapFinder(archive);
-  } else {
-    await harness.tap('draft_journey_options_$_person');
+  if (harness.latest.pages.any(const {'ended', 'past_journeys'}.contains)) {
+    // LOCK 2 V4 preserves the archived reader behind the Timeline door.
+    await harness.tap('draft_journey_${_person}_header');
+    await harness.tap('draft_ended_view_$_person');
+    await harness.tap('draft_ended_timeline_$_person');
+    await harness.tapFinder(find.text('View compatibility').first);
+    return;
   }
+  await harness.tap('draft_journey_options_$_person');
   await harness.tap('draft_options_compatibility_$_person');
 }
 
@@ -315,7 +318,7 @@ void main() {
         await _capture(
           harness,
           '${historyPage}_overall_$dimensions',
-          'Seeker $historyPage → Journey options → Compatibility score',
+          'Seeker $historyPage → View Timeline → Timeline → Compatibility score',
         );
         await harness.tap(_next);
         _expectAreas(tester, locked: true);

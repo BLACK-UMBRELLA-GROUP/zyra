@@ -2388,7 +2388,10 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
           (row) => Padding(
             key: ValueKey(row.id),
             padding: const EdgeInsets.only(bottom: 10),
-            child: ZyraSampleEndedJourneyCard(row: row),
+            child: ZyraSampleEndedJourneyCard(
+              row: row,
+              controller: _expansionController,
+            ),
           ),
         ),
       if ((sampleEnded?.isEmpty ?? true) && ordinaryEnded.isEmpty)

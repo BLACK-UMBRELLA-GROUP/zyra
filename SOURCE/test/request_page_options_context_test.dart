@@ -44,10 +44,10 @@ const _guardianTitles = ['My ZYRA', 'Network', 'Seekers', 'Profile'];
 Finder _key(String value) => find.byKey(ValueKey(value));
 
 void _expectEndedCard() {
-  expect(find.byType(ZyraOneJourneyConnectionsActiveCard), findsOneWidget);
-  expect(_key('draft_restart_draft-noor'), findsOneWidget);
-  expect(_key('draft_journey_options_draft-noor'), findsOneWidget);
-  expect(find.text('Request restart'), findsOneWidget);
+  expect(find.byType(ZyraRequestActivityCard), findsOneWidget);
+  expect(_key('draft_journey_draft-noor_header'), findsOneWidget);
+  expect(_key('draft_journey_options_draft-noor'), findsNothing);
+  expect(find.text('Journey ended · Timeline kept'), findsOneWidget);
   expect(find.text('Ended Journey · read-only archive'), findsNothing);
 }
 
@@ -248,8 +248,9 @@ Future<void> _openRequests(
     );
     expect(page.title, 'Introductions');
     expect(page.selectedIndex, 0);
-    expect(page.pages, hasLength(1));
-    expect(find.byType(PageView), findsNothing);
+    expect(page.labels, ['Received', 'Past']);
+    expect(page.pages, hasLength(2));
+    expect(find.byType(PageView), findsOneWidget);
   } else {
     expect(_requests(tester).selectedIndex, 0);
   }
@@ -647,17 +648,17 @@ void main() {
 
   // Q33: Introductions has its own Focus tile and no request selector.
   testWidgets(
-    'standalone Introductions keeps its own route and has no request selector',
+    'standalone Introductions keeps its own tabs without the Journey request selector',
     (tester) async {
       await _mount(tester);
       await _openRequests(tester, introductions: true);
       final page = tester.widget<ZyraRequestActivityPresentation>(
         _key('concept_activity_introductions'),
       );
-      expect(page.labels, ['Introductions']);
-      expect(page.pages.single.whereType<ZyraRequestActivityCard>(), isEmpty);
+      expect(page.labels, ['Received', 'Past']);
+      expect(page.pages.first.whereType<ZyraRequestActivityCard>(), isEmpty);
       expect(
-        page.pages.single.whereType<ZyraRequestActivityEmpty>().single.title,
+        page.pages.first.whereType<ZyraRequestActivityEmpty>().single.title,
         'No introductions yet',
       );
       expect(find.text('No introductions yet'), findsOneWidget);

@@ -596,8 +596,9 @@ void main() {
       );
       expect(requests.selectedIndex, 0);
       expect(requests.title, 'Introductions');
-      expect(requests.pages, hasLength(1));
-      expect(find.byType(PageView), findsNothing);
+      expect(requests.labels, ['Received', 'Past']);
+      expect(requests.pages, hasLength(2));
+      expect(find.byType(PageView), findsOneWidget);
       expect(owner.latest.requestsTab, 0);
       expect(owner.latest.pages, ['introductions']);
       final title = find.text('No introductions yet');
