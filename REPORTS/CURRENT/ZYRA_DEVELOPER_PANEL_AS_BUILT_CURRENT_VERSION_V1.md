@@ -22,8 +22,9 @@ The panel opens from planned-app titles on the Seeker and Guardian sides,
 including shared headings and retained account editors. The title inventory
 is `PRODUCT/APPROVED/DEV_TOGGLES/BUILT/LINE123_BUILD/TITLE_INVENTORY.json`.
 It records the title, side, route and source for each entry and identifies
-shared hooks and titleless exclusions. Sign-up progress-bar entry and
-Start sign-up wait for line 121.
+shared hooks and titleless exclusions. Line 121 adds Start sign-up and
+progress-bar long-press entry; its current record is
+`PRODUCT/APPROVED/SIGN_UP/BUILT/AS_BUILT_CURRENT_VERSION_V1.md`.
 
 ### Controls and local behaviour
 
@@ -39,12 +40,15 @@ Start sign-up wait for line 121.
   zero is an empty sample selection; unset controls preserve the ordinary
   state.
 - **My ZYRA:** All caught up, Typical day, New member and Everything use local
-  preset state. The setup card and Continue setting up depend on line 121;
-  Everything leaves that card out until then (Q171).
+  preset state. Line 121 supplies the setup card and saved-step continuation
+  for New member and Everything (Q171). Explicitly switching Setup unfinished
+  off clears that card and gate.
 - **Sign up:** Unverified shows the locked Profiles/Network gate and its typed
   local identity-verification route. It has no live finalizer or provider
-  write. Setup unfinished supplies the gate only: “Finish setting up your
-  profile to start a Journey.” Start sign-up is deferred to line 121.
+  write. Setup unfinished blocks ordinary and restart requests with
+  “Finish setting up your profile to start a Journey.” Start sign-up now
+  opens the local LOCK 34 rehearsal. Its preferences save into the same
+  caller-owned local profile draft; no member or server account is created.
 - **Notices:** Seeker inactivity email states and Welcome back use LOCK 32.
   Both Guardian views hide the entire NOTICES section and cannot select an
   inactivity preview (Q174); no Guardian archive or role switch is invented.
@@ -110,9 +114,9 @@ push and reported with the task result.
 
 No migration, backend change, dependency upgrade, native build or phone
 installation is part of this task. Founder iPhone verification remains a
-separate delivery step. Line 121 owns the future sign-up flow, setup card,
-saved-step continuation and progress-bar entry; it does not block the
-Q171 gate-only behaviour described above.
+separate delivery step. The measurements above belong to line 123.
+Line 121's handover records its later sign-up flow, setup card, saved-step
+continuation and progress-bar entry, with their separate tests and captures.
 
 ## Historical line 96 delivery and follow-up — 12–13 November 2026
 

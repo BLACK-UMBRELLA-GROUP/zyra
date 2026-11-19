@@ -1,0 +1,463 @@
+{
+  "master_count": 41,
+  "logical_size": [
+    430,
+    932
+  ],
+  "scale": 3,
+  "all_dimensions_match": true,
+  "visual_review": "All41 compared by independent helper; full-size key states and4retained pairs. Root independently inspected preferences and both actual-shell states. Shared foundation/fixture differences in AS_BUILT_CURRENT_VERSION_V1.md; no pixel-parity claim.",
+  "files": [
+    {
+      "file": "g01_guardian__name.png",
+      "master_sha256": "5305d09535c29acf967d73ba5ab49d90f35e4d5d4743770880b79853dca69660",
+      "built_sha256": "db39075dd0fc7f028cb17776b2208b454e5895073bc7668b0d3c1fed10f65688",
+      "master_bytes": 290386,
+      "built_bytes": 327884,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "g02_guardian__relationship_empty.png",
+      "master_sha256": "309d453d12f1f643fb32fe2037f5b20d90ee3a340447bc4a1aad0ec8dac9789d",
+      "built_sha256": "905aa1cb3b17c922c2994cf753fcfdc8907c8a64999875a891654c1afa094186",
+      "master_bytes": 375976,
+      "built_bytes": 365760,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "g03_guardian__relationship_chosen.png",
+      "master_sha256": "49ae97211207e16a50aff2c2ff71acc20a8a416113e2762301d01824a46b372f",
+      "built_sha256": "34a7eb9c9936faad52d8225decbd0e87c54ce8e24d86740260b7c0f913b16b3c",
+      "master_bytes": 391211,
+      "built_bytes": 354109,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "g04_guardian__add_seeker.png",
+      "master_sha256": "726472bd454da1049a85572c0b019f72c7baadcd04588fd5194c25c6ef8fe233",
+      "built_sha256": "db6aba6611b6849b09f34175b86c120952be5ff49f334a5a5e91a4f3515c73a6",
+      "master_bytes": 293872,
+      "built_bytes": 350350,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "g05_guardian__verify.png",
+      "master_sha256": "de828018fbf60b54dd81754df9ab9ca271477c8b844ee86a8c4e1a7b4c517f15",
+      "built_sha256": "85f8ee68e993a4181b75915e1db981724570c5ad2bb50ea05203dcd32e0f4526",
+      "master_bytes": 367585,
+      "built_bytes": 441554,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "g06_guardian__account_ready.png",
+      "master_sha256": "0b8c119f78d2e43e2e64eae722d090479d7a1a5b79bd92fd1dc77d1989a46800",
+      "built_sha256": "3cd689e754c775a2303791b9d69febcc4fef17f459bb73a1a515b8631d9bf419",
+      "master_bytes": 392571,
+      "built_bytes": 404789,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "g07_guardian__setup_about_you.png",
+      "master_sha256": "390514c073537910714b136cf56f05bd5ff35f223c964e2fd578034296f3efc7",
+      "built_sha256": "ecb41ff69b52a55e9e7b63204f8cc2efd13db55a72a53a5d1e34e9072920da82",
+      "master_bytes": 324919,
+      "built_bytes": 350032,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "g08_guardian__setup_all_set.png",
+      "master_sha256": "78f6b770676182d116c76c7944e489c05cf0f9417a02cf2e811da277a69ab7f3",
+      "built_sha256": "80ced2ce2ce9788b331e0427db32c446b639a750981ddd210dbc74a5f5c2283c",
+      "master_bytes": 274304,
+      "built_bytes": 306876,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s01_splash.png",
+      "master_sha256": "702eec157fdf65b060ccc4c7887709aaa13746ceb631860da93006ada6f32b18",
+      "built_sha256": "5aa7385f7a0396a85d7636bbe02082003c3825eddf6489fe7d5800252f0a079d",
+      "master_bytes": 261335,
+      "built_bytes": 230011,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s02_welcome__iphone_apple_first.png",
+      "master_sha256": "5c27a8f7eb30c9290016ea8c7c79151403e2e771b9892a883e7caf229720396f",
+      "built_sha256": "2812e5a8c72be769ef75a0e3caf5aa186e2b94b546adadbc1083d96d7a789085",
+      "master_bytes": 305062,
+      "built_bytes": 286079,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s03_welcome__android_google_first.png",
+      "master_sha256": "65ce8bf5fa7bc8baee90bfdfe30ebe2a142d8453055000cf1de89ef9b2713a05",
+      "built_sha256": "c184abb0b51ab27a1585257fa91d256eb929121577399b0a3459aa6d6c83b532",
+      "master_bytes": 306593,
+      "built_bytes": 286272,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s04_role__seeker_card.png",
+      "master_sha256": "fe8eff1062503e8ba5d0eac25aeea05ac3d22937a1a59851aa1095684310620d",
+      "built_sha256": "ffe3cc817930a901e139f53e56c264a0d3c5c10ce3afd05bb6861b86e614e9db",
+      "master_bytes": 384923,
+      "built_bytes": 393947,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s05_role__guardian_card.png",
+      "master_sha256": "25a1cddff30e6d16524828fcf88ddbbc6a4879252c69e1cf7dac2cc6a2735f6b",
+      "built_sha256": "c8d3096344a11aea67a8e76244a63dbfd47e4209cc066aee8b96c9b8d392db75",
+      "master_bytes": 392684,
+      "built_bytes": 399619,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s06_name__filled_from_apple.png",
+      "master_sha256": "4be233b4b5b95dde8e183416e50332c89556c621985a1062fc6fa8cd37c97087",
+      "built_sha256": "6d98a37587905e487eb5d11661882ae7a2c416e2932c089ec0dbff742257d639",
+      "master_bytes": 289918,
+      "built_bytes": 326477,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s07_name__empty_error.png",
+      "master_sha256": "4e9f49cfe25395e3bec50cc74051f9b2d33a03caf6d1be31aed66a202fa4fb1c",
+      "built_sha256": "ff839b81689dc650459a880d8d59be1fe966db171e5ceb539e6e85d3f773c670",
+      "master_bytes": 286655,
+      "built_bytes": 344952,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s08_dob__empty.png",
+      "master_sha256": "ddd52656aa83552c5259a57015a9d306c8865807ce2b45e06da8da7ea84c7b10",
+      "built_sha256": "951522a59698c0e320e25acf85dbdb9f9dbc9c4e6e3f7dc22b4f5fdb0b03b4fb",
+      "master_bytes": 277199,
+      "built_bytes": 339572,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s09_dob__filled.png",
+      "master_sha256": "64431e53217b3861618334fa20f1cd59f4ddb814e218b6a5895cbb4bf552bddd",
+      "built_sha256": "a3b493a5f8d47fdc536ccbcfff4df68db5a67cf89f212ba7d4f480ed435ac975",
+      "master_bytes": 292781,
+      "built_bytes": 333792,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s10_dob__year_error.png",
+      "master_sha256": "a5e4688aeb65e42c6d67a172c08945b265d8f13aa3e32e779efe63d358608df5",
+      "built_sha256": "c52a2d9d6f74f26bb15245f2c91e6ebd9620f8c9fd55db3447340ad7d3bf63fb",
+      "master_bytes": 300819,
+      "built_bytes": 360836,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s11_dob__under_18.png",
+      "master_sha256": "1ea724d81634156d53a8a4d09a6260c98b711a12c42f30833108f49d7735355b",
+      "built_sha256": "713fd69b05e656a33989fe4dbaa2a0b576a6013371689d82aeceaf700eaa43e2",
+      "master_bytes": 290707,
+      "built_bytes": 361618,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s12_gender__none.png",
+      "master_sha256": "1aab6b693a6b9e99e16357c9b75217bf9df94f0266c197d11497cdcc0fd0ccf8",
+      "built_sha256": "2be1240d67f4a0f984249044c44a7b1b3b3eb3c5d11d9ec8b987bc93191e2b42",
+      "master_bytes": 320556,
+      "built_bytes": 371843,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s13_gender__male_chosen.png",
+      "master_sha256": "4c24e80af04efb08e7c1016893243099bddde3fbb367f8f044cd6131084363a6",
+      "built_sha256": "911fe903a2c9a1e83ad624b4687a6549a81092ef953dc48cf6ceda85bb075db1",
+      "master_bytes": 332788,
+      "built_bytes": 358489,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s14_location__empty.png",
+      "master_sha256": "31d3cd7f9431fb367c1d91cb13e3e8c82ff58fac3465f1a22cc3308593a05557",
+      "built_sha256": "1de52915a744e87cb280c9a4737a3a093faa6c5fc5a3038b95c505ebc3bf84e5",
+      "master_bytes": 305504,
+      "built_bytes": 364150,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s15_location__chosen.png",
+      "master_sha256": "596d75865913eec60b64b4d5c188453d11b37691641a42de4156095d5d9d3d61",
+      "built_sha256": "bb4070b4caba243f2754291c13d277caa928a6cf4a27e4175173ad2a273f83a7",
+      "master_bytes": 326530,
+      "built_bytes": 362338,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s16_nationality__chosen.png",
+      "master_sha256": "bf44f874d4ec17626580cc7cbbb32ac7fcc7cb39ffbcc1d0f8ea521b8be81243",
+      "built_sha256": "c0b13eec4f4f553edaaf5765145d399a16b067367196793c656eea24554608ac",
+      "master_bytes": 303541,
+      "built_bytes": 342895,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s17_ethnicity__several.png",
+      "master_sha256": "1f1b6732ac732feb9cefdb09145f68623ca185aca1860b77951702a2dfb0365a",
+      "built_sha256": "743053ac021e660dc10ec520ba42527a5ca023a06b39f1e263cd1f111ac065e8",
+      "master_bytes": 321722,
+      "built_bytes": 360249,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s18_ethnicity__empty.png",
+      "master_sha256": "7d0fbed8688c1540a81ec29b47f7d0a5514ddb32789671599fc8743261809260",
+      "built_sha256": "f059665fa352aa87f6ac4e19bb302efe5679b51706f39ee1bd08ed574f19fd9d",
+      "master_bytes": 300618,
+      "built_bytes": 361532,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s19_photos__empty.png",
+      "master_sha256": "7e39cc59fb71c7fb85a4055fca270255f8b339ca926aeebd7aa97fb61eab391c",
+      "built_sha256": "e83f9611395bb1cddc5758a301c040921887e7f03b3c6e5120caf21997f4df8f",
+      "master_bytes": 297939,
+      "built_bytes": 366022,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s20_photos__two.png",
+      "master_sha256": "4c460b08e1e38cfbe3e4f42dc6738fac690c670e9179e17f9cb2f80ac34c406b",
+      "built_sha256": "39d5aa3c618d4d06fb30af1ac1ea408bea59b661c80f7759c67b685d053df66a",
+      "master_bytes": 572153,
+      "built_bytes": 355493,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s21_verify.png",
+      "master_sha256": "b40316ea1702ef5d8079b2c56ecc60bffc40ccd8380eaa698025ddba7d978ccc",
+      "built_sha256": "f0bc719946b48c4466176d7261e62b749328a39002232229bf1f86236db3ecb1",
+      "master_bytes": 367845,
+      "built_bytes": 441555,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s22_plan__seeker_one.png",
+      "master_sha256": "40a45f9691e8be972ed66bb0695140cbcf6ec7ec154a1d96ee2be758b3f6a0d6",
+      "built_sha256": "8c237808ed353090aaedb3cfcc18fa5ba5e0e97055695ce44e44b5e18d068cc3",
+      "master_bytes": 428163,
+      "built_bytes": 435606,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s23_plan__seeker_basic.png",
+      "master_sha256": "a530a1b6654df5fa243f2079b1163581949479da862d01de73e78fb9a1d477a2",
+      "built_sha256": "52d53326cfcd41d687c6c47a3e7629fbb4269e218d1bf466f71ea1db098d7a60",
+      "master_bytes": 420464,
+      "built_bytes": 427945,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s24_account_ready__verified.png",
+      "master_sha256": "91297b3a47bbc4fa0847ef9afae662895115c46acde7010b28f55b5d012f3332",
+      "built_sha256": "d65dae42896ecec04b613601593877cef49fac24edac11fe8311e666928c138d",
+      "master_bytes": 410782,
+      "built_bytes": 438886,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s25_account_ready__not_verified.png",
+      "master_sha256": "c8f586ea0882c53ccfa17f51d725691d8e0e1542d9024a295a31df8a83a8a23c",
+      "built_sha256": "66d37757a65bd663d17a445d439498a66190864aa5f625e7c20849dc54389b7c",
+      "master_bytes": 415595,
+      "built_bytes": 446386,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s26_setup__partner_preferences_bar.png",
+      "master_sha256": "14de8f5042d57dbdcde8432df1622b31406109f675df4b61e3189bd3b69e1a0b",
+      "built_sha256": "eaebb0c4b8acea203d3ea44c1138994a7cf578cb4575f45afba3bf5d536499dd",
+      "master_bytes": 997241,
+      "built_bytes": 629901,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s27_setup__about_you.png",
+      "master_sha256": "4b62bd4f2680ed50ab8cc1198a849d4bd31d90f497e61fcc9e1a90608600d343",
+      "built_sha256": "ecb41ff69b52a55e9e7b63204f8cc2efd13db55a72a53a5d1e34e9072920da82",
+      "master_bytes": 324919,
+      "built_bytes": 350032,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s28_setup__add_guardian.png",
+      "master_sha256": "c5af871499ba39207a8d6e5aa119b40c158d61b3898c025b9b611c5cbd4a3dce",
+      "built_sha256": "5b6fc698e9fefdcd9c372fde9cbe95544c7e3ddee1365f7216c427c927ef9d3f",
+      "master_bytes": 376183,
+      "built_bytes": 400349,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s29_setup__all_set.png",
+      "master_sha256": "c6c9615fedf04b132f0c1864263e9009e1c7179a751ec5362f0b3047031d79fd",
+      "built_sha256": "80ced2ce2ce9788b331e0427db32c446b639a750981ddd210dbc74a5f5c2283c",
+      "master_bytes": 274304,
+      "built_bytes": 306876,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s30_paused__my_zyra_needs_you.png",
+      "master_sha256": "9ae7b630202ca30e9439f68097cb7a0e53195ead4cf3674aeae90d19518ab013",
+      "built_sha256": "ee19845a0562e38f35d94f7a94a83aaf451559341e1784b027722f5205a73a46",
+      "master_bytes": 1167921,
+      "built_bytes": 398915,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s31_gate__unverified_profiles.png",
+      "master_sha256": "989e575eac48e07cf7965943ecbab26cd28a9d201a1af388dd7c1bbeeb99eee7",
+      "built_sha256": "e4e9667e550ac6a88fad2017a9440991a14ceb31e2c7cfe3da71714f556e02e3",
+      "master_bytes": 1138406,
+      "built_bytes": 333488,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s91_error__offline.png",
+      "master_sha256": "4881f44b8e493a646373803e09a07313c0d676b24eab0a79d078212e7598d9fa",
+      "built_sha256": "8503cdc4ecb79a322f9723b0387e34849b71ca4b9ced14a2e8aae837f20abf18",
+      "master_bytes": 462945,
+      "built_bytes": 424836,
+      "pixels": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "file": "s92_error__server.png",
+      "master_sha256": "094b4cfc813de97548c31ca6dbca7c14bbc70f61713332b3a2eb3b1d1fb36742",
+      "built_sha256": "bb5f3039fb06907fe6ff440d71cfdc6db94885947f18b330e3f462c684dc0429",
+      "master_bytes": 490226,
+      "built_bytes": 447979,
+      "pixels": [
+        1290,
+        2796
+      ]
+    }
+  ]
+}

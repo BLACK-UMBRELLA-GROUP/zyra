@@ -1,0 +1,43 @@
+{
+  "databaseId": 44476628733,
+  "headSha": "b0911faaf95ecf1c43c95f9d8cbcbbdbd74f4bd0",
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/44476628733",
+  "createdAt": "2026-11-19T07:03:01Z",
+  "updatedAt": "2026-11-19T07:13:52Z",
+  "jobs": [
+    {
+      "databaseId": 135398643316,
+      "name": "Select Flutter tests",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T07:03:03Z",
+      "completedAt": "2026-11-19T07:03:26Z"
+    },
+    {
+      "databaseId": 135398817020,
+      "name": "Flutter checks (shard 1)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T07:03:29Z",
+      "completedAt": "2026-11-19T07:11:39Z"
+    },
+    {
+      "databaseId": 135398817089,
+      "name": "Flutter checks (shard 0)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T07:03:29Z",
+      "completedAt": "2026-11-19T07:11:12Z"
+    },
+    {
+      "databaseId": 135398817106,
+      "name": "Flutter checks (shard 2)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T07:03:29Z",
+      "completedAt": "2026-11-19T07:13:51Z"
+    }
+  ]
+}

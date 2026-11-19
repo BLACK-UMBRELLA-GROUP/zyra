@@ -1,0 +1,10 @@
+{
+  "commit_sha": "b0911faaf95ecf1c43c95f9d8cbcbbdbd74f4bd0",
+  "flutter_version": "3.44.2",
+  "build_mode": "Flutter widget tests and offline captures; no native app built",
+  "timestamp": "2026-11-19T06:56:35.876468+00:00",
+  "source_gate_commit": "1c5757c4baf005b82c778913228e9383417a565b",
+  "source_seal_sha256": "a226b922d97316dbb57a892bc34161f62a6a769a8e5f0579d45cff87f6f1a1ef",
+  "live": false,
+  "phone_install": false
+}

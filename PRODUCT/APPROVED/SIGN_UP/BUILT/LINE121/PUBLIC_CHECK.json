@@ -1,0 +1,363 @@
+{
+  "files_scanned": 120,
+  "comparison_base": "82156d4c",
+  "text_hits": [
+    {
+      "file": "MAP.md",
+      "line": 29,
+      "kind": "money",
+      "inherited_exact_line": true,
+      "review": "Existing exact line before line121 implementation"
+    },
+    {
+      "file": "MAP.md",
+      "line": 33,
+      "kind": "legal/company",
+      "inherited_exact_line": true,
+      "review": "Existing exact line before line121 implementation"
+    },
+    {
+      "file": "MAP.md",
+      "line": 522,
+      "kind": "money",
+      "inherited_exact_line": true,
+      "review": "Existing exact line before line121 implementation"
+    },
+    {
+      "file": "MAP.md",
+      "line": 526,
+      "kind": "money",
+      "inherited_exact_line": true,
+      "review": "Existing exact line before line121 implementation"
+    },
+    {
+      "file": "MAP.md",
+      "line": 554,
+      "kind": "money",
+      "inherited_exact_line": true,
+      "review": "Existing exact line before line121 implementation"
+    },
+    {
+      "file": "PRODUCT/APPROVED/SIGN_UP/RECORD/SIGN_UP_SPEC_CURRENT_VERSION_V1.md",
+      "line": 42,
+      "kind": "money",
+      "inherited_exact_line": false,
+      "review": "Founder-approved LOCK34 app-visible membership copy or variable under AD-AIOS-146"
+    },
+    {
+      "file": "README.md",
+      "line": 62,
+      "kind": "money",
+      "inherited_exact_line": true,
+      "review": "Existing exact line before line121 implementation"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 2732,
+      "kind": "money",
+      "inherited_exact_line": true,
+      "review": "Existing exact line before line121 implementation"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 9966,
+      "kind": "money",
+      "inherited_exact_line": true,
+      "review": "Existing exact line before line121 implementation"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 9967,
+      "kind": "money",
+      "inherited_exact_line": true,
+      "review": "Existing exact line before line121 implementation"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 519,
+      "kind": "money",
+      "inherited_exact_line": false,
+      "review": "Founder-approved LOCK34 app-visible membership copy or variable under AD-AIOS-146"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 563,
+      "kind": "money",
+      "inherited_exact_line": false,
+      "review": "Founder-approved LOCK34 app-visible membership copy or variable under AD-AIOS-146"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 566,
+      "kind": "money",
+      "inherited_exact_line": false,
+      "review": "Founder-approved LOCK34 app-visible membership copy or variable under AD-AIOS-146"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 595,
+      "kind": "money",
+      "inherited_exact_line": false,
+      "review": "Founder-approved LOCK34 app-visible membership copy or variable under AD-AIOS-146"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 640,
+      "kind": "money",
+      "inherited_exact_line": false,
+      "review": "Founder-approved LOCK34 app-visible membership copy or variable under AD-AIOS-146"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 641,
+      "kind": "money",
+      "inherited_exact_line": false,
+      "review": "Founder-approved LOCK34 app-visible membership copy or variable under AD-AIOS-146"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 642,
+      "kind": "money",
+      "inherited_exact_line": false,
+      "review": "Founder-approved LOCK34 app-visible membership copy or variable under AD-AIOS-146"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 668,
+      "kind": "money",
+      "inherited_exact_line": false,
+      "review": "Founder-approved LOCK34 app-visible membership copy or variable under AD-AIOS-146"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 669,
+      "kind": "money",
+      "inherited_exact_line": false,
+      "review": "Founder-approved LOCK34 app-visible membership copy or variable under AD-AIOS-146"
+    },
+    {
+      "file": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 31,
+      "kind": "money",
+      "inherited_exact_line": true,
+      "review": "Existing exact line before line121 implementation"
+    },
+    {
+      "file": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 1650,
+      "kind": "money",
+      "inherited_exact_line": true,
+      "review": "Existing exact line before line121 implementation"
+    },
+    {
+      "file": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 1655,
+      "kind": "money",
+      "inherited_exact_line": true,
+      "review": "Existing exact line before line121 implementation"
+    },
+    {
+      "file": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 1660,
+      "kind": "money",
+      "inherited_exact_line": true,
+      "review": "Existing exact line before line121 implementation"
+    },
+    {
+      "file": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 1662,
+      "kind": "money",
+      "inherited_exact_line": true,
+      "review": "Existing exact line before line121 implementation"
+    },
+    {
+      "file": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 1669,
+      "kind": "money",
+      "inherited_exact_line": true,
+      "review": "Existing exact line before line121 implementation"
+    },
+    {
+      "file": "SOURCE/test/line121_preference_setup_test.dart",
+      "line": 110,
+      "kind": "money",
+      "inherited_exact_line": false,
+      "review": "Dart second positional record field; lexical false positive"
+    },
+    {
+      "file": "SOURCE/test/line121_preference_setup_test.dart",
+      "line": 157,
+      "kind": "money",
+      "inherited_exact_line": false,
+      "review": "Dart second positional record field; lexical false positive"
+    },
+    {
+      "file": "SOURCE/test/line121_preference_setup_test.dart",
+      "line": 196,
+      "kind": "money",
+      "inherited_exact_line": false,
+      "review": "Dart second positional record field; lexical false positive"
+    },
+    {
+      "file": "SOURCE/test/line121_preference_setup_test.dart",
+      "line": 217,
+      "kind": "money",
+      "inherited_exact_line": false,
+      "review": "Dart second positional record field; lexical false positive"
+    }
+  ],
+  "binary_hits": 3644,
+  "binary_files": {
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/MASTER_BUILD_PAIRS/s04_role__seeker_card.png": 128,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/MASTER_BUILD_PAIRS/s06_name__filled_from_apple.png": 71,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/MASTER_BUILD_PAIRS/s26_setup__partner_preferences_bar.png": 153,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/MASTER_BUILD_PAIRS/s31_gate__unverified_profiles.png": 108,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/g01_guardian__name.png": 20,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/g02_guardian__relationship_empty.png": 32,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/g03_guardian__relationship_chosen.png": 27,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/g04_guardian__add_seeker.png": 44,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/g05_guardian__verify.png": 40,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/g06_guardian__account_ready.png": 38,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/g07_guardian__setup_about_you.png": 29,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/g08_guardian__setup_all_set.png": 24,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s01_splash.png": 6,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s02_welcome__iphone_apple_first.png": 14,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s03_welcome__android_google_first.png": 12,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s04_role__seeker_card.png": 39,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s05_role__guardian_card.png": 41,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s06_name__filled_from_apple.png": 21,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s07_name__empty_error.png": 36,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s08_dob__empty.png": 33,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s09_dob__filled.png": 34,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s10_dob__year_error.png": 41,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s11_dob__under_18.png": 36,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s12_gender__none.png": 45,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s13_gender__male_chosen.png": 33,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s14_location__empty.png": 45,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s15_location__chosen.png": 44,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s16_nationality__chosen.png": 41,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s17_ethnicity__several.png": 30,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s18_ethnicity__empty.png": 32,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s19_photos__empty.png": 32,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s20_photos__two.png": 25,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s21_verify.png": 51,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s22_plan__seeker_one.png": 48,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s23_plan__seeker_basic.png": 60,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s24_account_ready__verified.png": 42,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s25_account_ready__not_verified.png": 53,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s26_setup__partner_preferences_bar.png": 68,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s27_setup__about_you.png": 29,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s28_setup__add_guardian.png": 43,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s29_setup__all_set.png": 24,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s30_paused__my_zyra_needs_you.png": 52,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s31_gate__unverified_profiles.png": 16,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s91_error__offline.png": 36,
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s92_error__server.png": 38,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/g01_guardian__name.png": 29,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/g02_guardian__relationship_empty.png": 43,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/g03_guardian__relationship_chosen.png": 47,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/g04_guardian__add_seeker.png": 19,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/g05_guardian__verify.png": 30,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/g06_guardian__account_ready.png": 44,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/g07_guardian__setup_about_you.png": 30,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/g08_guardian__setup_all_set.png": 29,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s01_splash.png": 19,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s02_welcome__iphone_apple_first.png": 35,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s03_welcome__android_google_first.png": 33,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s04_role__seeker_card.png": 36,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s05_role__guardian_card.png": 44,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s06_name__filled_from_apple.png": 45,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s07_name__empty_error.png": 28,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s08_dob__empty.png": 31,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s09_dob__filled.png": 26,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s10_dob__year_error.png": 30,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s11_dob__under_18.png": 27,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s12_gender__none.png": 33,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s13_gender__male_chosen.png": 31,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s14_location__empty.png": 31,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s15_location__chosen.png": 38,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s16_nationality__chosen.png": 30,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s17_ethnicity__several.png": 27,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s18_ethnicity__empty.png": 21,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s19_photos__empty.png": 25,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s20_photos__two.png": 104,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s21_verify.png": 49,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s22_plan__seeker_one.png": 33,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s23_plan__seeker_basic.png": 46,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s24_account_ready__verified.png": 60,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s25_account_ready__not_verified.png": 64,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s26_setup__partner_preferences_bar.png": 115,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s27_setup__about_you.png": 30,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s28_setup__add_guardian.png": 32,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s29_setup__all_set.png": 29,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s30_paused__my_zyra_needs_you.png": 112,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s31_gate__unverified_profiles.png": 85,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s91_error__offline.png": 59,
+    "PRODUCT/APPROVED/SIGN_UP/MASTERS/s92_error__server.png": 51
+  },
+  "binary_review": "Compressed PNG lexical matches; app pictures visually reviewed; no PNG text chunks. Four generated comparisons contain harmless numerical image properties listed below. Digital provenance chunks retained as approved inputs.",
+  "png_exif_review": {
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/MASTER_BUILD_PAIRS/s26_setup__partner_preferences_bar.png": {
+      "bytes": 120,
+      "tags": [
+        "0x11a",
+        "0x11b",
+        "0x128",
+        "0x8769",
+        "0xa001",
+        "0xa002",
+        "0xa003"
+      ],
+      "review": "Only resolution, colour space, image dimensions and the EXIF directory pointer; no person, location, author or timestamp fields."
+    },
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/MASTER_BUILD_PAIRS/s06_name__filled_from_apple.png": {
+      "bytes": 120,
+      "tags": [
+        "0x11a",
+        "0x11b",
+        "0x128",
+        "0x8769",
+        "0xa001",
+        "0xa002",
+        "0xa003"
+      ],
+      "review": "Only resolution, colour space, image dimensions and the EXIF directory pointer; no person, location, author or timestamp fields."
+    },
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/MASTER_BUILD_PAIRS/s31_gate__unverified_profiles.png": {
+      "bytes": 120,
+      "tags": [
+        "0x11a",
+        "0x11b",
+        "0x128",
+        "0x8769",
+        "0xa001",
+        "0xa002",
+        "0xa003"
+      ],
+      "review": "Only resolution, colour space, image dimensions and the EXIF directory pointer; no person, location, author or timestamp fields."
+    },
+    "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/MASTER_BUILD_PAIRS/s04_role__seeker_card.png": {
+      "bytes": 120,
+      "tags": [
+        "0x11a",
+        "0x11b",
+        "0x128",
+        "0x8769",
+        "0xa001",
+        "0xa002",
+        "0xa003"
+      ],
+      "review": "Only resolution, colour space, image dimensions and the EXIF directory pointer; no person, location, author or timestamp fields."
+    }
+  },
+  "result": "Reviewed inherited lines, Founder-approved app-visible copy, Dart syntax and compressed image matches; no new private business material.",
+  "public_checks": {
+    "A": "Code and metadata staged scans clear; outgoing code scan clear; final metadata range scan required immediately before its push",
+    "B": "Reviewed as recorded",
+    "C": "No ROADMAP row finished",
+    "D": "No version change/release",
+    "E": "Neutral technical prose; unchanged locked/member wording retained",
+    "F": "README updated"
+  },
+  "ci_metadata_recheck": "CI receipt and updated notes rechecked separately"
+}

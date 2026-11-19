@@ -1,0 +1,741 @@
+{
+  "line": 121,
+  "lock": 34,
+  "status": "BUILT (Founder preview; live no)",
+  "authority": [
+    "DR-ZYRA-355",
+    "OA-ZYRA-317",
+    "OA-ZYRA-325",
+    "AD-AIOS-115",
+    "AD-AIOS-147"
+  ],
+  "timestamp": "2026-11-19T06:56:35.870645+00:00",
+  "code_commit": "b0911faaf95ecf1c43c95f9d8cbcbbdbd74f4bd0",
+  "source_gate": {
+    "commit": "1c5757c4baf005b82c778913228e9383417a565b",
+    "clean_observed_utc": "2026-11-19T05:37:37Z",
+    "later_line123_commits_preserved_through": "82156d4c5471521dfdb8c25eb896e5ed48d7c7e0"
+  },
+  "start_pack": {
+    "initial_bytes": 16537,
+    "resumed_bytes": 17533,
+    "mode": "named brief; scoped reads; no repeated full lessons/MAP"
+  },
+  "inputs": [
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/BRIEFS/BUILD_BRIEF_2026-11-18_V1.md",
+      "sha256": "6c5a3812ec0b9f1f3f5fc1178eb1f8ad292dc101cfb7903fb40bb029f904f863"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/RECORD/LOCK_RECORD.md",
+      "sha256": "e63d73131f867978858745c7e48b8abc1446ef651115bfc92fdd06a2e2871c4b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/RECORD/SIGN_UP_SPEC_CURRENT_VERSION_V1.md",
+      "sha256": "f030104958b2fc9d3fd4e94d0195945bbfaf4f57c5117ac77a8a149eb87a13f4"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "SOURCE/lib/dev/zyra_developer_unverified_gate.dart",
+      "bytes": 3248,
+      "sha256": "faf39357a2afc7116387d9d825301cf73e3f5ea645c3e244b9c6c00435fbbb6e"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 405185,
+      "sha256": "e386b2c170417733053d7317af2f170cee6fe174aa1467d4ecfae953eb82f1e3"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_account_session.dart",
+      "bytes": 13610,
+      "sha256": "582962af06e35875f6003fff3cd5e398dc4c1db0e53085cd99c213ec68a0f907"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preferences_preview.dart",
+      "bytes": 5712,
+      "sha256": "8cb2419573aecde358e054c2fadd0f70e3a96f859849e39932a993c6677730c1"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "bytes": 50849,
+      "sha256": "96d90dfc9e71d2faa65a5e266dbdf5309c012994118171617308cbf57b73ad5f"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview_controller.dart",
+      "bytes": 12781,
+      "sha256": "c54f306a3542dac4aae93ace04399cadac2343f3dde4963f3f950a8544ea98dd"
+    },
+    {
+      "path": "SOURCE/lib/models/zyra_developer_preview.dart",
+      "bytes": 2575,
+      "sha256": "d2cdffc80ca9a49b4b11a47e3e8a7c0bcfa568820b256fc4f62ea929f8325617"
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "bytes": 72297,
+      "sha256": "c0481467d080aa14184813376d07c359cd7029aa4e343deaf445dfbe668af57a"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_developer_panel.dart",
+      "bytes": 28005,
+      "sha256": "db4b7fc474316482f5d1b048a7c6060a7cd879a4b3225177ebe387557c08a89b"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_developer_title.dart",
+      "bytes": 32020,
+      "sha256": "d9cc7a4fe870f3b3d399204eeafae28f363d476432c02c5cba75105034fff816"
+    },
+    {
+      "path": "SOURCE/test/line121_preference_setup_test.dart",
+      "bytes": 13555,
+      "sha256": "44df73506cdcef622eac3b62ee698d6acdf3aa5ddd016e0dfca7de8d46748c43"
+    },
+    {
+      "path": "SOURCE/test/line121_signup_account_session_test.dart",
+      "bytes": 8493,
+      "sha256": "0600aa64f916ea035428b306adf50a23b373fbc62217ccfeba4bf5d2b312486b"
+    },
+    {
+      "path": "SOURCE/test/line121_signup_preview_controller_test.dart",
+      "bytes": 6595,
+      "sha256": "c50c8933352c69ea20356d8f55ce3ce10bcb35abf30eb6734c0e7214485036c8"
+    },
+    {
+      "path": "SOURCE/test/line121_signup_preview_widget_test.dart",
+      "bytes": 12723,
+      "sha256": "c77dfba8070ac8df1b6fd22172d9fe75f372ce6e98b4431b4429fb3d6061e247"
+    },
+    {
+      "path": "SOURCE/test/zyra_developer_panel_entry_test.dart",
+      "bytes": 56440,
+      "sha256": "ff32637f0ce74280bcefb4e6b434e543a3a41f4498293845228e750beed9de22"
+    },
+    {
+      "path": "SOURCE/test/visual/line121_signup_capture_test.dart",
+      "bytes": 10412,
+      "sha256": "f857cfec4a847fbb90feae629c73fd0a0e01625704517b92db32d7d6a26033a5"
+    },
+    {
+      "path": "SOURCE/test/zyra_developer_panel_test.dart",
+      "bytes": 28306,
+      "sha256": "048f8de9894c913a189658aecc815ae0f63fee470393bef3b36979bfc9ab64eb"
+    }
+  ],
+  "analyzer": {
+    "result": "No issues found",
+    "log_sha256": "5d7ae6eea5b659d570a66c9f467ee56d7bf23dccf6f66e42686bde300cab34ae"
+  },
+  "full_suite": {
+    "log": "SOURCE/build/line121_full.jsonl",
+    "sha256": "d520699b5bbad9bef5241e10fb7c4a77c366f4ab24f34701aa0b7071b2920ba8",
+    "suite_count": 570,
+    "visible_passed": 7430,
+    "skipped": 163,
+    "failed": 0,
+    "elapsed_ms": 455540,
+    "complete_success": true,
+    "scoped_suites": {
+      "test/zyra_developer_panel_entry_test.dart": {
+        "passed": 44,
+        "skipped": 0,
+        "failed": 0
+      },
+      "test/line121_preference_setup_test.dart": {
+        "passed": 7,
+        "skipped": 0,
+        "failed": 0
+      },
+      "test/line121_signup_preview_widget_test.dart": {
+        "passed": 9,
+        "skipped": 0,
+        "failed": 0
+      },
+      "test/zyra_developer_panel_test.dart": {
+        "passed": 12,
+        "skipped": 0,
+        "failed": 0
+      },
+      "test/line121_signup_account_session_test.dart": {
+        "passed": 7,
+        "skipped": 0,
+        "failed": 0
+      },
+      "test/visual/line121_signup_capture_test.dart": {
+        "passed": 0,
+        "skipped": 39,
+        "failed": 0
+      },
+      "test/line121_signup_preview_controller_test.dart": {
+        "passed": 7,
+        "skipped": 0,
+        "failed": 0
+      }
+    }
+  },
+  "captures": {
+    "presenter39": {
+      "log": "SOURCE/build/line121_capture.jsonl",
+      "sha256": "9ee127c8770bbb2dcd4862381e4a51665ef06773c00b74903eeced1b12863801",
+      "suite_count": 1,
+      "visible_passed": 39,
+      "skipped": 0,
+      "failed": 0,
+      "elapsed_ms": 11031,
+      "complete_success": true,
+      "scoped_suites": {
+        "test/visual/line121_signup_capture_test.dart": {
+          "passed": 39,
+          "skipped": 0,
+          "failed": 0
+        }
+      }
+    },
+    "shell2": {
+      "log": "SOURCE/build/line121_shell_capture.jsonl",
+      "sha256": "076d52a25fbeae2ef27d70d57dd694e241cae73d93b2b844863a6e3518a95f8f",
+      "suite_count": 1,
+      "visible_passed": 1,
+      "skipped": 0,
+      "failed": 0,
+      "elapsed_ms": 4953,
+      "complete_success": true,
+      "scoped_suites": {
+        "test/zyra_developer_panel_entry_test.dart": {
+          "passed": 1,
+          "skipped": 0,
+          "failed": 0
+        }
+      }
+    },
+    "images": [
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/MASTER_BUILD_PAIRS/s04_role__seeker_card.png",
+        "sha256": "a35791c6b290009a44d7c1a7e6395e2cd7d6a92155a306ca592a01c0b119f1f7",
+        "bytes": 926226,
+        "pixels": [
+          2580,
+          2892
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/MASTER_BUILD_PAIRS/s06_name__filled_from_apple.png",
+        "sha256": "de7f1053b1f5cc7ab6f7acfb3bc4714d08565a709dc0e3568013cf510f2fa0ec",
+        "bytes": 769133,
+        "pixels": [
+          2580,
+          2892
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/MASTER_BUILD_PAIRS/s26_setup__partner_preferences_bar.png",
+        "sha256": "b22e552eb8128f9b3270504d70c15a6d421559eadb5f750ad5568432cd407434",
+        "bytes": 1649284,
+        "pixels": [
+          2580,
+          2892
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/MASTER_BUILD_PAIRS/s31_gate__unverified_profiles.png",
+        "sha256": "30c2cf03e46ff2478ff6e6354b83c19c38ba0e6365eb4377d233b5a40ba8236f",
+        "bytes": 1577322,
+        "pixels": [
+          2580,
+          2892
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/g01_guardian__name.png",
+        "sha256": "db39075dd0fc7f028cb17776b2208b454e5895073bc7668b0d3c1fed10f65688",
+        "bytes": 327884,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/g02_guardian__relationship_empty.png",
+        "sha256": "905aa1cb3b17c922c2994cf753fcfdc8907c8a64999875a891654c1afa094186",
+        "bytes": 365760,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/g03_guardian__relationship_chosen.png",
+        "sha256": "34a7eb9c9936faad52d8225decbd0e87c54ce8e24d86740260b7c0f913b16b3c",
+        "bytes": 354109,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/g04_guardian__add_seeker.png",
+        "sha256": "db6aba6611b6849b09f34175b86c120952be5ff49f334a5a5e91a4f3515c73a6",
+        "bytes": 350350,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/g05_guardian__verify.png",
+        "sha256": "85f8ee68e993a4181b75915e1db981724570c5ad2bb50ea05203dcd32e0f4526",
+        "bytes": 441554,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/g06_guardian__account_ready.png",
+        "sha256": "3cd689e754c775a2303791b9d69febcc4fef17f459bb73a1a515b8631d9bf419",
+        "bytes": 404789,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/g07_guardian__setup_about_you.png",
+        "sha256": "ecb41ff69b52a55e9e7b63204f8cc2efd13db55a72a53a5d1e34e9072920da82",
+        "bytes": 350032,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/g08_guardian__setup_all_set.png",
+        "sha256": "80ced2ce2ce9788b331e0427db32c446b639a750981ddd210dbc74a5f5c2283c",
+        "bytes": 306876,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s01_splash.png",
+        "sha256": "5aa7385f7a0396a85d7636bbe02082003c3825eddf6489fe7d5800252f0a079d",
+        "bytes": 230011,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s02_welcome__iphone_apple_first.png",
+        "sha256": "2812e5a8c72be769ef75a0e3caf5aa186e2b94b546adadbc1083d96d7a789085",
+        "bytes": 286079,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s03_welcome__android_google_first.png",
+        "sha256": "c184abb0b51ab27a1585257fa91d256eb929121577399b0a3459aa6d6c83b532",
+        "bytes": 286272,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s04_role__seeker_card.png",
+        "sha256": "ffe3cc817930a901e139f53e56c264a0d3c5c10ce3afd05bb6861b86e614e9db",
+        "bytes": 393947,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s05_role__guardian_card.png",
+        "sha256": "c8d3096344a11aea67a8e76244a63dbfd47e4209cc066aee8b96c9b8d392db75",
+        "bytes": 399619,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s06_name__filled_from_apple.png",
+        "sha256": "6d98a37587905e487eb5d11661882ae7a2c416e2932c089ec0dbff742257d639",
+        "bytes": 326477,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s07_name__empty_error.png",
+        "sha256": "ff839b81689dc650459a880d8d59be1fe966db171e5ceb539e6e85d3f773c670",
+        "bytes": 344952,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s08_dob__empty.png",
+        "sha256": "951522a59698c0e320e25acf85dbdb9f9dbc9c4e6e3f7dc22b4f5fdb0b03b4fb",
+        "bytes": 339572,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s09_dob__filled.png",
+        "sha256": "a3b493a5f8d47fdc536ccbcfff4df68db5a67cf89f212ba7d4f480ed435ac975",
+        "bytes": 333792,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s10_dob__year_error.png",
+        "sha256": "c52a2d9d6f74f26bb15245f2c91e6ebd9620f8c9fd55db3447340ad7d3bf63fb",
+        "bytes": 360836,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s11_dob__under_18.png",
+        "sha256": "713fd69b05e656a33989fe4dbaa2a0b576a6013371689d82aeceaf700eaa43e2",
+        "bytes": 361618,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s12_gender__none.png",
+        "sha256": "2be1240d67f4a0f984249044c44a7b1b3b3eb3c5d11d9ec8b987bc93191e2b42",
+        "bytes": 371843,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s13_gender__male_chosen.png",
+        "sha256": "911fe903a2c9a1e83ad624b4687a6549a81092ef953dc48cf6ceda85bb075db1",
+        "bytes": 358489,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s14_location__empty.png",
+        "sha256": "1de52915a744e87cb280c9a4737a3a093faa6c5fc5a3038b95c505ebc3bf84e5",
+        "bytes": 364150,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s15_location__chosen.png",
+        "sha256": "bb4070b4caba243f2754291c13d277caa928a6cf4a27e4175173ad2a273f83a7",
+        "bytes": 362338,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s16_nationality__chosen.png",
+        "sha256": "c0b13eec4f4f553edaaf5765145d399a16b067367196793c656eea24554608ac",
+        "bytes": 342895,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s17_ethnicity__several.png",
+        "sha256": "743053ac021e660dc10ec520ba42527a5ca023a06b39f1e263cd1f111ac065e8",
+        "bytes": 360249,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s18_ethnicity__empty.png",
+        "sha256": "f059665fa352aa87f6ac4e19bb302efe5679b51706f39ee1bd08ed574f19fd9d",
+        "bytes": 361532,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s19_photos__empty.png",
+        "sha256": "e83f9611395bb1cddc5758a301c040921887e7f03b3c6e5120caf21997f4df8f",
+        "bytes": 366022,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s20_photos__two.png",
+        "sha256": "39d5aa3c618d4d06fb30af1ac1ea408bea59b661c80f7759c67b685d053df66a",
+        "bytes": 355493,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s21_verify.png",
+        "sha256": "f0bc719946b48c4466176d7261e62b749328a39002232229bf1f86236db3ecb1",
+        "bytes": 441555,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s22_plan__seeker_one.png",
+        "sha256": "8c237808ed353090aaedb3cfcc18fa5ba5e0e97055695ce44e44b5e18d068cc3",
+        "bytes": 435606,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s23_plan__seeker_basic.png",
+        "sha256": "52d53326cfcd41d687c6c47a3e7629fbb4269e218d1bf466f71ea1db098d7a60",
+        "bytes": 427945,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s24_account_ready__verified.png",
+        "sha256": "d65dae42896ecec04b613601593877cef49fac24edac11fe8311e666928c138d",
+        "bytes": 438886,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s25_account_ready__not_verified.png",
+        "sha256": "66d37757a65bd663d17a445d439498a66190864aa5f625e7c20849dc54389b7c",
+        "bytes": 446386,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s26_setup__partner_preferences_bar.png",
+        "sha256": "eaebb0c4b8acea203d3ea44c1138994a7cf578cb4575f45afba3bf5d536499dd",
+        "bytes": 629901,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s27_setup__about_you.png",
+        "sha256": "ecb41ff69b52a55e9e7b63204f8cc2efd13db55a72a53a5d1e34e9072920da82",
+        "bytes": 350032,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s28_setup__add_guardian.png",
+        "sha256": "5b6fc698e9fefdcd9c372fde9cbe95544c7e3ddee1365f7216c427c927ef9d3f",
+        "bytes": 400349,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s29_setup__all_set.png",
+        "sha256": "80ced2ce2ce9788b331e0427db32c446b639a750981ddd210dbc74a5f5c2283c",
+        "bytes": 306876,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s30_paused__my_zyra_needs_you.png",
+        "sha256": "ee19845a0562e38f35d94f7a94a83aaf451559341e1784b027722f5205a73a46",
+        "bytes": 398915,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s31_gate__unverified_profiles.png",
+        "sha256": "e4e9667e550ac6a88fad2017a9440991a14ceb31e2c7cfe3da71714f556e02e3",
+        "bytes": 333488,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s91_error__offline.png",
+        "sha256": "8503cdc4ecb79a322f9723b0387e34849b71ca4b9ced14a2e8aae837f20abf18",
+        "bytes": 424836,
+        "pixels": [
+          1290,
+          2796
+        ]
+      },
+      {
+        "path": "PRODUCT/APPROVED/SIGN_UP/BUILT/LINE121/s92_error__server.png",
+        "sha256": "bb5f3039fb06907fe6ff440d71cfdc6db94885947f18b330e3f462c684dc0429",
+        "bytes": 447979,
+        "pixels": [
+          1290,
+          2796
+        ]
+      }
+    ],
+    "master_audit": "MASTER_AUDIT.json",
+    "visual_review": "All41 masters compared;4retained pairs; helper review and root key-state inspection pass. Existing shared foundations/fixture differences explicitly recorded in handover."
+  },
+  "independent_review": [
+    "Controller/UI + all masters",
+    "Session/editor + integration/permission boundaries",
+    "Cross-role IDV fix + compact layout follow-up"
+  ],
+  "corrected_findings": [
+    "Impossible-calendar DOB fields now red",
+    "Cross-role verification cannot reuse other role controller",
+    "Small2x setup headings/actions remain reachable",
+    "Shared checkout notice replaces platform dialog",
+    "Gate uses shared action fill",
+    "Pre121panel expectations updated without weakening disabled-action checks"
+  ],
+  "first_full_run": {
+    "result": "Diagnostic run stopped after shared-popup-policy failure and two obsolete pre121expectations; corrected before final source seal",
+    "log_sha256": "a8a36361f85cdd26baf6a6d85e88abba91afc041e43be9a557f8b47b3c9f1a28"
+  },
+  "public_scan": "PUBLIC_CHECK.json",
+  "migrations": false,
+  "backend_changes": false,
+  "dependency_changes": false,
+  "native_build": false,
+  "phone_install": false,
+  "line98_attempt": false,
+  "gaps": {
+    "OA-ZYRA-317": "Live account/identity/purchase/server integration outside this local preview brief",
+    "OA-ZYRA-325": "Developer authority remains existing typed proof",
+    "device_observation": "Pending separate Founder-present delivery",
+    "design_acceptance": "Fable/ZYRA Claude and Founder review remain separate"
+  },
+  "written_refusals": [
+    "No shared foundation redesign or new photography to mimic prototype fixtures",
+    "No live accounts/payments/identity/visibility writes under UI brief",
+    "No unrelated metadata/governance cleanup; generated MAP existing40size warnings and12missingheaders recorded"
+  ],
+  "startup_correction": "Initial full lessons read exceeded scoped startup (OA-AIOS-471). Fable19Novreview also corrected question-only commits: those belong to sweep; no further preflight-only commits.",
+  "count_only_usage": {
+    "first_event": "2026-11-19T03:35:29.237Z",
+    "snapshot": "2026-11-19T06:56:35.883Z",
+    "root": {
+      "input_tokens": 88430608,
+      "cached_input_tokens": 87871232,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 189948,
+      "reasoning_output_tokens": 101605,
+      "total_tokens": 88620556
+    },
+    "helper": "Unavailable; not estimated"
+  },
+  "visual_lineage": "CURRENT41_REVIEW.json:40deterministic final states identical to finalreview; correctedgate separately fullresolution reviewed;4pair columns equalcurrentcaptures.",
+  "code_size_measurement": {
+    "log": "SOURCE/build/line121_code_size.log",
+    "text": "| What | Size |\n|---|---|\n| All app code | 181,740 lines in 353 files |\n| Developer and preview code inside it | 53,464 lines in 83 files |\n| The Founder preview (planned app) | 40,759 lines in 51 files |\n| Test code | 245,839 lines in 599 files |\n| Test screenshots (goldens) | 3,061 images, 335 MB |\n| Old-app files that still mention Pause | 41 |\n| Old-app files that still mention Restart | 1 |\n"
+  },
+  "scratch_retirement": {
+    "moved_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE121_BUILD_2026-11-19/work_070156",
+    "files": 265,
+    "bytes": 576570688,
+    "method": "Move to the sole Founder delete folder; no files deleted"
+  },
+  "independent_metadata_review": "PASS: full/log counts and hashes recomputed;17source files equal code commit blobs;45image artifacts and inputs exact; no factual correction.",
+  "secret_scans": {
+    "tool": "gitleaks redacted",
+    "code_staged": "PASS,0findings",
+    "metadata_staged": "PASS,0findings; repeated on final metadata before commit",
+    "outgoing_code": "PASS,1commit,0findings"
+  },
+  "public_check_summary": {
+    "files": 120,
+    "text_hits": 29,
+    "inherited_exact": 15,
+    "new_approved_app_copy_or_syntax": 14,
+    "compressed_png_hits": 3644,
+    "harmless_exif_files": 4,
+    "metadata_recheck": "PASS",
+    "final_ci_metadata": "CI.json plus changed notes rechecked"
+  },
+  "remote_ci": {
+    "databaseId": 44476628733,
+    "headSha": "b0911faaf95ecf1c43c95f9d8cbcbbdbd74f4bd0",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/44476628733",
+    "createdAt": "2026-11-19T07:03:01Z",
+    "updatedAt": "2026-11-19T07:13:52Z",
+    "jobs": [
+      {
+        "databaseId": 135398643316,
+        "name": "Select Flutter tests",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-11-19T07:03:03Z",
+        "completedAt": "2026-11-19T07:03:26Z"
+      },
+      {
+        "databaseId": 135398817020,
+        "name": "Flutter checks (shard 1)",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-11-19T07:03:29Z",
+        "completedAt": "2026-11-19T07:11:39Z"
+      },
+      {
+        "databaseId": 135398817089,
+        "name": "Flutter checks (shard 0)",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-11-19T07:03:29Z",
+        "completedAt": "2026-11-19T07:11:12Z"
+      },
+      {
+        "databaseId": 135398817106,
+        "name": "Flutter checks (shard 2)",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-11-19T07:03:29Z",
+        "completedAt": "2026-11-19T07:13:51Z"
+      }
+    ]
+  }
+}
