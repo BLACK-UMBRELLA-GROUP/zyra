@@ -1738,7 +1738,7 @@
     },
     {
       "route": "sign-up steps",
-      "reason": "Progress-bar long-press specified by LOCK31V2 §7.1, but line121 not built and Start sign-up expressly deferred."
+      "reason": "Progress-bar long-press specified by LOCK31V2 \u00a77.1, but line121 not built and Start sign-up expressly deferred."
     },
     {
       "route": "stage card internal headings",
@@ -1775,7 +1775,7 @@
     {
       "title": "Inactivity email subject",
       "side": "Seeker",
-      "route": "developer_inactivity_email 1–5",
+      "route": "developer_inactivity_email 1\u20135",
       "path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/lib/dev/zyra_developer_inactivity_email.dart",
       "line": 91,
       "existing_wrapper": true,
@@ -1905,52 +1905,188 @@
   "line_numbers": "One-based actual hook lines at snapshot; preflight_line historical only; source hashes detect subsequent drift.",
   "wrapped_entry_count": 82,
   "gaps": [],
-  "source_sha256": {
-    "SOURCE/lib/dev/zyra_circle_topics_presentation.dart": "176afb3144bbf4ac422f0f9502b270902275d56638b5f95df519637573e742be",
-    "SOURCE/lib/dev/zyra_developer_inactivity_email.dart": "61e5f56ba2792ed561b25b0a1744c85d1a7affe124812f54bd288ebc78a654f4",
-    "SOURCE/lib/dev/zyra_developer_unverified_gate.dart": "09f093ed6407f904876734665b33c83f505be8446a6252369ffcc624cc7c44a4",
-    "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart": "a9b0bfc34d30c29cf7e0cb32f3339af70755971a52cc1ed52365cc38a7260675",
-    "SOURCE/lib/dev/zyra_draft_compatibility_presentation.dart": "045e41b45129b7a7cc7f4f150c79e9bfd0ef3b6cc7a15a0d266a6e07a3fdb1db",
-    "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart": "28c1ea0f428d689abb6fabc7a920f658f395de58f493d58deccf5bda4e7fa14a",
-    "SOURCE/lib/dev/zyra_draft_journey_bio_presentation.dart": "e0eab70495b2f4c9cbe34828b6eafa2bfa5abf110c4dfb266d8492316e419e28",
-    "SOURCE/lib/dev/zyra_draft_local_code_page.dart": "55ec5797f6422cae3552169afc82aa8dd6e50465fb336d723196a2e322473fc7",
-    "SOURCE/lib/dev/zyra_draft_safety_advice_presentation.dart": "d1d66c1e67d9cf6bb25343ee1ddf2f5b254bdf8a97d0c6a56650a51e73112744",
-    "SOURCE/lib/dev/zyra_draft_timeline_presentation.dart": "11028d42608526c03cc9f479103e21b0e5c0633a0c3b91da93ed3482d31f2400",
-    "SOURCE/lib/dev/zyra_journey_peer_guardians_presentation.dart": "bdcc505c3f20a70474e8d09d3584502a23a5f92f0d7ecb2b2d089a00550ba439",
-    "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart": "8a08c9d31f6af61fea32315bf97d4f6babeb78c5e9ac317c557a07d8b19ca5cb",
-    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart": "4defa41ec4a107daf95ed995084eaeda1205b408462e178383520ecae9a79cb8",
-    "SOURCE/lib/dev/zyra_one_journey_filters_presentation.dart": "aad1f4eab6891e2e929ddc42df7ace5e4148bf42f89fa83dcec6b1059ceb8599",
-    "SOURCE/lib/dev/zyra_one_journey_guardian_action.dart": "1cb68469585e66e47e27fe531169ce0ff18843e64367f3d310379efb66a630d6",
-    "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart": "407cfd2d79c2eada706056e64a2dfcc78a0fdfd22b37a2b2829ad8ff6bcc9bae",
-    "SOURCE/lib/dev/zyra_one_journey_guardian_info_presentation.dart": "2aeae99f9002b60cb9d21c7559b5d97c6efb37260881512352403fe1826d9e43",
-    "SOURCE/lib/dev/zyra_one_journey_guardian_seeker.dart": "ee192b529852182b6d62354b16a77b8e65985e14d1c41e6354772551da3e210a",
-    "SOURCE/lib/dev/zyra_one_journey_guardian_seekers.dart": "3c97d1b942cb55227959ebac144d0cba58fd760ee0424aa302b27d931d492d28",
-    "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart": "a32364a748386c7dd42afd91788f951d865771641b58c22952f156017d26b607",
-    "SOURCE/lib/dev/zyra_one_journey_journey_presentation.dart": "ad109be63673ea6c6eed791c49fe4d03f8e04f50676e24b7af18d505971c7761",
-    "SOURCE/lib/dev/zyra_one_journey_monogram_presentation.dart": "949fd4909b9f17cda4da18e077bca8dacf4f6029e42cbc2efbb93267140a961c",
-    "SOURCE/lib/dev/zyra_one_journey_options_page.dart": "d4f8b44681c3a31bdb0777c45a4950ca8be907680f0cdff342199946793da867",
-    "SOURCE/lib/dev/zyra_one_journey_phone_access.dart": "a559b03cd6856b8a0fc854db7116e4c987154ef5ba78cf7256a6309ea2feb1c7",
-    "SOURCE/lib/dev/zyra_one_journey_settings_details.dart": "ddd9cabba0574046ac34936ec4e650b2493702ca6b96f3c9420f43d71c28d272",
-    "SOURCE/lib/dev/zyra_one_journey_switch_signup_preview.dart": "30f5c2c9061115a25dfea15d8ccea203274c2ed50b3988b44afad7ad1c74cc7b",
-    "SOURCE/lib/dev/zyra_one_journey_tab.dart": "aeccc433ee0c5f075f0c2653a2eedff1e3e8487d6b17bf1f24eea0a289453d79",
-    "SOURCE/lib/dev/zyra_request_activity_presentation.dart": "c41eeeb1b6131f931701b95dc235a73c3124fafe3bac4677633f2f9daa29307b",
-    "SOURCE/lib/dev/zyra_request_capacity_choice.dart": "79cac3d22f20a776a24b4edc8aef82ac0c65516fb6b95cedd7894bfa8221b227",
-    "SOURCE/lib/dev/zyra_subscription_wallet_preview.dart": "ae3e65486d2032078e1e3bcff8ddabe0cc12cdb825132febc4c4a7debac846cb",
-    "SOURCE/lib/screens/onboarding/identity_verification_screen.dart": "21e5310619f50d6a9bb42f114fc85936ea568d5625a447bdfd563c7069edd1d9",
-    "SOURCE/lib/screens/profile/compatibility_editors.dart": "a7aca20e8316dbd2e4a5fbd5ba29b54919cead27913703adc6af3acb1fbc974c",
-    "SOURCE/lib/screens/profile/compatibility_result_quick_check.dart": "04ab0f427a00901f259a443abd14e173e9ec45e313f1b80c64c6ff9feb828f44",
-    "SOURCE/lib/screens/profile/edit_photos_screen.dart": "593c809e7c408e4e76de16dc40d6dca3144fa52c6ff72f7ecf7a1a8a1c349550",
-    "SOURCE/lib/screens/profile/edit_profile_screen.dart": "bbbebf21d29d6161c60d7cfa24aee39f96b1b6562f8f5a44e6aea2180bfbe2ff",
-    "SOURCE/lib/screens/profile/my_profile_preview_screen.dart": "d64014192cc84f9f713e5f038540f02e33c1d760d3547895bd17dd7dc229e451",
-    "SOURCE/lib/screens/settings/help_support_screen.dart": "849168ba5b3531faab3a4d4567b8662e6db019c2401116ecb96bee0df45c37c2",
-    "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart": "2f846ccffa8e2aba255371f3ee27a7d68f7b30acc6cca75320100c57da9375d6",
-    "SOURCE/lib/screens/wali/family_messaging_screens.dart": "c3388515a39b01a4d80ede329c8fc2e778b03f004b9a7ed4b7f438154c372c9f",
-    "SOURCE/lib/services/zyra_developer_access.dart": "ea544e2ee86e8a90afe51bcd8e1f6bcb6fabd4bbe358dff300157d6f31b20af7",
-    "SOURCE/lib/widgets/zyra_developer_title.dart": "3cbfffc79b70a6680995858dd793f1b044d15763f76fbf148da51ed3e58caa78",
-    "SOURCE/lib/widgets/zyra_focus_dashboard.dart": "63a3d011a7c915ef0f3821bfc0b32c5dcf5dc50dc6f0990a298d8f92b708b528",
-    "SOURCE/lib/widgets/zyra_full_screen_error.dart": "3899fbffae73b9acfe20cd7b6ac85ce10179aab46e8333cdc41f57f556b9c5eb",
-    "SOURCE/lib/widgets/zyra_membership_choices.dart": "4f8d358a0a73304994fa54fe79897adfead3aebf34794f764ea81713881b9382",
-    "SOURCE/lib/widgets/zyra_tab_title.dart": "4da603f9a875104c04b407cf1f966ccc2ccfbd7bd0dfd6d815d197defbac766e"
-  },
-  "line123_additional_surface_count": 6
+  "source_sha256": [
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "sha256": "176afb3144bbf4ac422f0f9502b270902275d56638b5f95df519637573e742be"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_developer_inactivity_email.dart",
+      "sha256": "61e5f56ba2792ed561b25b0a1744c85d1a7affe124812f54bd288ebc78a654f4"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_developer_unverified_gate.dart",
+      "sha256": "09f093ed6407f904876734665b33c83f505be8446a6252369ffcc624cc7c44a4"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "sha256": "a9b0bfc34d30c29cf7e0cb32f3339af70755971a52cc1ed52365cc38a7260675"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_compatibility_presentation.dart",
+      "sha256": "045e41b45129b7a7cc7f4f150c79e9bfd0ef3b6cc7a15a0d266a6e07a3fdb1db"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart",
+      "sha256": "28c1ea0f428d689abb6fabc7a920f658f395de58f493d58deccf5bda4e7fa14a"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_journey_bio_presentation.dart",
+      "sha256": "e0eab70495b2f4c9cbe34828b6eafa2bfa5abf110c4dfb266d8492316e419e28"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_local_code_page.dart",
+      "sha256": "55ec5797f6422cae3552169afc82aa8dd6e50465fb336d723196a2e322473fc7"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_safety_advice_presentation.dart",
+      "sha256": "d1d66c1e67d9cf6bb25343ee1ddf2f5b254bdf8a97d0c6a56650a51e73112744"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_timeline_presentation.dart",
+      "sha256": "11028d42608526c03cc9f479103e21b0e5c0633a0c3b91da93ed3482d31f2400"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_journey_peer_guardians_presentation.dart",
+      "sha256": "bdcc505c3f20a70474e8d09d3584502a23a5f92f0d7ecb2b2d089a00550ba439"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "sha256": "8a08c9d31f6af61fea32315bf97d4f6babeb78c5e9ac317c557a07d8b19ca5cb"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "sha256": "4defa41ec4a107daf95ed995084eaeda1205b408462e178383520ecae9a79cb8"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_filters_presentation.dart",
+      "sha256": "aad1f4eab6891e2e929ddc42df7ace5e4148bf42f89fa83dcec6b1059ceb8599"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_action.dart",
+      "sha256": "1cb68469585e66e47e27fe531169ce0ff18843e64367f3d310379efb66a630d6"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "sha256": "407cfd2d79c2eada706056e64a2dfcc78a0fdfd22b37a2b2829ad8ff6bcc9bae"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_info_presentation.dart",
+      "sha256": "2aeae99f9002b60cb9d21c7559b5d97c6efb37260881512352403fe1826d9e43"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_seeker.dart",
+      "sha256": "ee192b529852182b6d62354b16a77b8e65985e14d1c41e6354772551da3e210a"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_seekers.dart",
+      "sha256": "3c97d1b942cb55227959ebac144d0cba58fd760ee0424aa302b27d931d492d28"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "sha256": "a32364a748386c7dd42afd91788f951d865771641b58c22952f156017d26b607"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_journey_presentation.dart",
+      "sha256": "ad109be63673ea6c6eed791c49fe4d03f8e04f50676e24b7af18d505971c7761"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_monogram_presentation.dart",
+      "sha256": "949fd4909b9f17cda4da18e077bca8dacf4f6029e42cbc2efbb93267140a961c"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_options_page.dart",
+      "sha256": "d4f8b44681c3a31bdb0777c45a4950ca8be907680f0cdff342199946793da867"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_phone_access.dart",
+      "sha256": "a559b03cd6856b8a0fc854db7116e4c987154ef5ba78cf7256a6309ea2feb1c7"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "sha256": "ddd9cabba0574046ac34936ec4e650b2493702ca6b96f3c9420f43d71c28d272"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_switch_signup_preview.dart",
+      "sha256": "30f5c2c9061115a25dfea15d8ccea203274c2ed50b3988b44afad7ad1c74cc7b"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_tab.dart",
+      "sha256": "aeccc433ee0c5f075f0c2653a2eedff1e3e8487d6b17bf1f24eea0a289453d79"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_activity_presentation.dart",
+      "sha256": "c41eeeb1b6131f931701b95dc235a73c3124fafe3bac4677633f2f9daa29307b"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_capacity_choice.dart",
+      "sha256": "79cac3d22f20a776a24b4edc8aef82ac0c65516fb6b95cedd7894bfa8221b227"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_subscription_wallet_preview.dart",
+      "sha256": "ae3e65486d2032078e1e3bcff8ddabe0cc12cdb825132febc4c4a7debac846cb"
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/identity_verification_screen.dart",
+      "sha256": "21e5310619f50d6a9bb42f114fc85936ea568d5625a447bdfd563c7069edd1d9"
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "sha256": "a7aca20e8316dbd2e4a5fbd5ba29b54919cead27913703adc6af3acb1fbc974c"
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/compatibility_result_quick_check.dart",
+      "sha256": "04ab0f427a00901f259a443abd14e173e9ec45e313f1b80c64c6ff9feb828f44"
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/edit_photos_screen.dart",
+      "sha256": "593c809e7c408e4e76de16dc40d6dca3144fa52c6ff72f7ecf7a1a8a1c349550"
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/edit_profile_screen.dart",
+      "sha256": "bbbebf21d29d6161c60d7cfa24aee39f96b1b6562f8f5a44e6aea2180bfbe2ff"
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/my_profile_preview_screen.dart",
+      "sha256": "d64014192cc84f9f713e5f038540f02e33c1d760d3547895bd17dd7dc229e451"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+      "sha256": "849168ba5b3531faab3a4d4567b8662e6db019c2401116ecb96bee0df45c37c2"
+    },
+    {
+      "path": "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+      "sha256": "2f846ccffa8e2aba255371f3ee27a7d68f7b30acc6cca75320100c57da9375d6"
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "sha256": "c3388515a39b01a4d80ede329c8fc2e778b03f004b9a7ed4b7f438154c372c9f"
+    },
+    {
+      "path": "SOURCE/lib/services/zyra_developer_access.dart",
+      "sha256": "ea544e2ee86e8a90afe51bcd8e1f6bcb6fabd4bbe358dff300157d6f31b20af7"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_developer_title.dart",
+      "sha256": "3cbfffc79b70a6680995858dd793f1b044d15763f76fbf148da51ed3e58caa78"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_focus_dashboard.dart",
+      "sha256": "63a3d011a7c915ef0f3821bfc0b32c5dcf5dc50dc6f0990a298d8f92b708b528"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_full_screen_error.dart",
+      "sha256": "3899fbffae73b9acfe20cd7b6ac85ce10179aab46e8333cdc41f57f556b9c5eb"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_membership_choices.dart",
+      "sha256": "4f8d358a0a73304994fa54fe79897adfead3aebf34794f764ea81713881b9382"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_tab_title.dart",
+      "sha256": "4da603f9a875104c04b407cf1f966ccc2ccfbd7bd0dfd6d815d197defbac766e"
+    }
+  ],
+  "line123_additional_surface_count": 6,
+  "code_commit": "1c5757c4baf005b82c778913228e9383417a565b"
 }

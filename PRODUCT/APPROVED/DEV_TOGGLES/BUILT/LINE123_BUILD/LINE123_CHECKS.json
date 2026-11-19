@@ -106,7 +106,8 @@
   "secret_scan": {
     "tool": "gitleaks stdin --redact",
     "scope": "changed source/tests/handover documents",
-    "findings": 0
+    "findings": 0,
+    "metadata_findings": 0
   },
   "independent_review": [
     "82 original title surfaces plus6 additional actual preview surfaces",
@@ -134,5 +135,11 @@
   "line98_prompt": false,
   "migrations": false,
   "dependency_changes": false,
-  "startup_exception": "Initial lessons read exceeded requested scoped output; recorded under OA-AIOS-471. Subsequent reads were task scoped."
+  "startup_exception": "Initial lessons read exceeded requested scoped output; recorded under OA-AIOS-471. Subsequent reads were task scoped.",
+  "metadata_public_check": {
+    "files": 9,
+    "hits": 1,
+    "review": "Existing unchanged README layout wording."
+  },
+  "inventory_validation": "All45 source digests verified against code commit1c5757c4, independently of ongoing work for the next queue line."
 }
