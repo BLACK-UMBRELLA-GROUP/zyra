@@ -66,6 +66,25 @@ void main() {
     ),
   );
 
+  test(
+    'draft name recovery counts visible characters like the input fields',
+    () {
+      final firstName = 'A\u0301' * 30;
+      final surname = 'B\u0301' * 40;
+      final draft = ZyraInitialSignupDraft(
+        role: ZyraSignupRole.seeker,
+        step: 1,
+        firstName: firstName,
+        lastName: surname,
+      );
+      expect(surname.length, greaterThan(60));
+      expect(draft.isValid(), isTrue);
+      final restored = ZyraInitialSignupDraft.fromJson(draft.toJson());
+      expect(restored.firstName, firstName);
+      expect(restored.lastName, surname);
+    },
+  );
+
   for (final draft in [seeker, guardian]) {
     test(
       '${draft.role.name} verification draft round trips without authority fields',

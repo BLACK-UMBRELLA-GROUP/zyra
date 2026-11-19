@@ -228,10 +228,16 @@ void main() {
         );
         expect(page.id, id);
         expect(page.stageNumber, id == sara ? 4 : 1);
+        final firstName = id == sara ? 'Sara' : 'Aisha';
+        final surname = id == sara ? 'Ahmed' : 'Khan';
+        expect(find.text(firstName), findsOneWidget);
+        expect(find.text(surname), findsOneWidget);
         expect(
-          find.text(id == sara ? 'Sara Ahmed' : 'Aisha Khan'),
-          findsOneWidget,
+          t.widget<Text>(find.text(firstName)).semanticsLabel,
+          '$firstName $surname',
         );
+        expect(t.widget<Text>(find.text(firstName)).maxLines, 1);
+        expect(t.widget<Text>(find.text(surname)).maxLines, 2);
         expect(t.takeException(), isNull);
         if (const bool.fromEnvironment('ZYRA_LOCK13_V3_CAPTURE')) {
           final name = basic

@@ -1,0 +1,163 @@
+{
+  "text_hits": [
+    {
+      "path": "README.md",
+      "line": 62,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "line": 625,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "line": 628,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "line": 630,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_discovery_presentation.dart",
+      "line": 229,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 1873,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "line": 782,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 519,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 563,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 566,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 595,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 640,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 641,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 642,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 668,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 669,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/wali_onboarding_flow.dart",
+      "line": 732,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/wali_onboarding_flow.dart",
+      "line": 733,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/wali_onboarding_flow.dart",
+      "line": 734,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/wali_onboarding_flow.dart",
+      "line": 735,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/wali_onboarding_flow.dart",
+      "line": 737,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "line": 284,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "line": 287,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "line": 297,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "line": 308,
+      "kind": "money",
+      "unchanged_from_base": true
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "line": 310,
+      "kind": "money",
+      "unchanged_from_base": true
+    }
+  ],
+  "png_byte_pattern_hits": 22,
+  "png_review": "12fictional component renders visually reviewed; PNGchunk scan confirms no text/EXIF metadata. Compressed bytes produce random regex matches.",
+  "review": "All26text hits are unchanged public app presentation, layout properties or comments; AD-AIOS-146 public app copy. No new private material."
+}

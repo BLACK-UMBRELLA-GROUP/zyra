@@ -79,6 +79,10 @@ Seeker One when the displayed profile's plan is verified as One. A verified
 Seeker Basic profile uses a plain circle. Profiles with an unavailable plan
 keep the existing ring. The Profiles details card shows the first photo
 above the name and the public age, location, nationality and ethnicity tiles.
+List cards keep full names on one line with an ellipsis and a complete
+screen-reader label. Large profile names fit down to 75% before ellipsising;
+surnames use up to two lines. Name entry allows 30 characters for first names
+and 40 for surnames, preserving longer saved names until edited.
 Request a Journey appears below the tiles on the details page. Seeker Basic
 shows the Seeker One comparison prompt on a backward profile swipe.
 Profiles, Guardian, Journey, Filters and My ZYRA let cards slide to the screen

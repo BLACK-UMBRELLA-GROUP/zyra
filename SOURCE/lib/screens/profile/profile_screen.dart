@@ -375,8 +375,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 tab: 4,
                                 child: Text(
                                   fullName,
+                                  semanticsLabel: fullName,
                                   style: ZyraText.heading(size: 20),
-                                  maxLines: 2,
+                                  maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),

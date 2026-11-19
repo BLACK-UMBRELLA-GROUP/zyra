@@ -71,6 +71,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   int _step = 0; // 0 = name, 1 = gender, 2 = dob, 3 = first photo
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+  String? _initialFirstName, _initialLastName;
   String? _gender; // 'male' | 'female'
   DateTime? _dob;
   String? _dobError;
@@ -134,6 +135,8 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           _showStageIntroduction = draft.showIntroduction;
           _nameController.text = draft.firstName ?? _nameController.text;
           _lastNameController.text = draft.lastName ?? '';
+          _initialFirstName = draft.firstName;
+          _initialLastName = draft.lastName;
           _gender = draft.gender;
           _dob = draft.dob;
           _membershipChoice = draft.membershipChoice;
@@ -164,8 +167,12 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
       case 0:
         return _nameController.text.trim().isNotEmpty &&
             _lastNameController.text.trim().isNotEmpty &&
-            _nameController.text.trim().length <= 60 &&
-            _lastNameController.text.trim().length <= 60;
+            (_nameController.text == _initialFirstName ||
+                _nameController.text.trim().characters.length <=
+                    ZyraOnboardingNameField.firstNameLimit) &&
+            (_lastNameController.text == _initialLastName ||
+                _lastNameController.text.trim().characters.length <=
+                    ZyraOnboardingNameField.surnameLimit);
       case 1:
         return _gender != null;
       case 2:

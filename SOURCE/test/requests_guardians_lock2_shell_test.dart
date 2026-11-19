@@ -618,7 +618,7 @@ void main() {
   );
 
   testWidgets(
-    'Past keeps full identity and natural type at compact 200 percent',
+    'Past keeps full semantic identity and unshrunk type at compact 200 percent',
     (tester) async {
       final owner = _Owner();
       final model = ReceivedRequestFixture(capacity: 3, clock: () => owner.now);
@@ -644,8 +644,9 @@ void main() {
       final name = find.descendant(of: card, matching: find.text('Aisha Khan'));
       expect(name, findsOneWidget);
       final text = tester.widget<Text>(name);
-      expect(text.maxLines, isNull);
-      expect(text.overflow, isNull);
+      expect(text.maxLines, 1);
+      expect(text.overflow, TextOverflow.ellipsis);
+      expect(text.semanticsLabel, 'Aisha Khan');
       expect(
         MediaQuery.textScalerOf(
           tester.element(name),

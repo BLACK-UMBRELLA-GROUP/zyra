@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart' show StringCharacters;
+
 import 'zyra_signup_membership_choice.dart';
 
 export 'zyra_signup_membership_choice.dart' show ZyraSignupRole;
@@ -64,14 +66,14 @@ class ZyraInitialSignupDraft {
     if (firstName != null &&
         (firstName!.trim() != firstName ||
             firstName!.isEmpty ||
-            firstName!.length > 60)) {
+            firstName!.characters.length > 60)) {
       return false;
     }
     if (gender != null && gender != 'male' && gender != 'female') return false;
     if (lastName != null &&
         (lastName!.trim() != lastName ||
             lastName!.isEmpty ||
-            lastName!.length > 60)) {
+            lastName!.characters.length > 60)) {
       return false;
     }
     if (dob != null) {

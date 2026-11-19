@@ -1,0 +1,54 @@
+{
+  "analyzer": {
+    "command": "flutter analyze --no-pub",
+    "result": "No issues found",
+    "seconds": 15.7
+  },
+  "focused": {
+    "command": "flutter test --no-pub --flavor offline-ci --reporter expanded --dart-define=ZYRA_LOCK33_CAPTURE=true <15 named affected test files>",
+    "passed": 422,
+    "failed": 0,
+    "seconds": 41,
+    "log": "SOURCE/build/line99_focused.log",
+    "test_files": [
+      "lock33_profile_names_test.dart",
+      "lock33_other_names_test.dart",
+      "zyra_request_activity_presentation_test.dart",
+      "requests_guardians_lock2_shell_test.dart",
+      "onboarding_name_field_test.dart",
+      "initial_signup_draft_test.dart",
+      "line121_signup_preview_widget_test.dart",
+      "line121_signup_preview_controller_test.dart",
+      "journey_options_v3_layout_test.dart",
+      "zyra_draft_browse_utility_presentation_test.dart",
+      "zyra_profile_details_first_test.dart",
+      "view_request_draft_widget_test.dart",
+      "one_journey_hidden_profiles_test.dart",
+      "visual/lock22_report_v2_capture_test.dart",
+      "visual/lock13_journey_tab_test.dart"
+    ]
+  },
+  "request_renders": {
+    "command": "flutter test --no-pub --flavor offline-ci --reporter expanded --dart-define=ZYRA_LOCK33_CAPTURE=true test/zyra_request_activity_presentation_test.dart --plain-name 'LOCK 33'",
+    "passed": 8,
+    "failed": 0,
+    "log": "SOURCE/build/line99_render.log"
+  },
+  "full_regression": {
+    "command": "flutter test --no-pub --flavor offline-ci --reporter expanded",
+    "passed": 7489,
+    "skipped": 163,
+    "failed": 0,
+    "elapsed": "07:34",
+    "log": "SOURCE/build/line99_full.log"
+  },
+  "independent_review": {
+    "implementation": "PASS",
+    "tests": "PASS; name-only exceptions preserve all non-name readability and original access/state/geometry checks",
+    "visual": "PASS all12component PNGs at both viewports; no unintended clipping/overlap; component-only, no browser/master MATCH"
+  },
+  "inventory": "Planned screen inventory and MAP regenerated. No added navigation/screens. MAP changes for unrelated Claude documents left unstaged.",
+  "scope": "No migrations, live apply, phone/native build, install, version change or roadmap tick.",
+  "scratch_retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE99_SCRATCH_2026-11-19",
+  "cleanup": "Initial failed regression log and duplicate working renders moved to the single Mac retirement folder. Final successful logs remain under SOURCE/build; approved12PNGs remain in BUILT/CAPTURES. No source or compiled binaries copied."
+}

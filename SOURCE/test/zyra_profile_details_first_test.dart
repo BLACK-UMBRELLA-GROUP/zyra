@@ -200,6 +200,22 @@ Future<void> _capture(WidgetTester tester, String name) async {
   }
 }
 
+// LOCK33 caps names while public fact values retain their scroll fallback.
+void _expectLock33NameOrPublicFact(Text text, SeekerProfile profile) {
+  if (text.data == profile.firstName) {
+    expect(text.maxLines, 1);
+    expect(text.overflow, TextOverflow.ellipsis);
+    expect(text.style!.fontSize, inInclusiveRange(34 * .75, 34));
+    expect(text.semanticsLabel, '${profile.firstName} ${profile.surnameLine}');
+  } else if (text.data == profile.surnameLine) {
+    expect(text.maxLines, 2);
+    expect(text.overflow, TextOverflow.ellipsis);
+  } else {
+    expect(text.maxLines, isNull);
+    expect(text.overflow, isNot(TextOverflow.ellipsis));
+  }
+}
+
 void _expectCleanPhoto(WidgetTester tester, {required int photo}) {
   final image = _key('concept_browse_photo_${_person.id}_$photo');
   expect(image, findsOneWidget);
@@ -611,8 +627,7 @@ void main() {
           matching: find.byType(Text),
         ),
       )) {
-        expect(text.maxLines, isNull);
-        expect(text.overflow, isNot(TextOverflow.ellipsis));
+        _expectLock33NameOrPublicFact(text, _longPerson);
       }
       expect(tester.takeException(), isNull);
     },
@@ -1139,8 +1154,7 @@ void main() {
             matching: find.byType(Text),
           ),
         )) {
-          expect(text.maxLines, isNull);
-          expect(text.overflow, isNot(TextOverflow.ellipsis));
+          _expectLock33NameOrPublicFact(text, _longPerson);
         }
         expect(tester.takeException(), isNull);
       },

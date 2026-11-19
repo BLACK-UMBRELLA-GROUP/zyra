@@ -1,0 +1,28 @@
+{
+  "line": 99,
+  "lock": 33,
+  "inputs": [
+    {
+      "path": "PRODUCT/APPROVED/NAME_DISPLAY/BRIEFS/BUILD_BRIEF_2026-11-12.md",
+      "bytes": 2050,
+      "sha256": "221076baa8aa2f140bbf63510cbb26122a1f16b4de2d913a3cd99350d0ad02f7"
+    },
+    {
+      "path": "PRODUCT/APPROVED/NAME_DISPLAY/RECORD/LOCK_RECORD.md",
+      "bytes": 782,
+      "sha256": "2e835aa635e8d79a3a264a8073cdc59fea7c24b0cffdd0c1c6ce076bc28c06a0"
+    },
+    {
+      "path": "PRODUCT/APPROVED/NAME_DISPLAY/RECORD/NAME_DISPLAY_SPEC_CURRENT_VERSION_V1.md",
+      "bytes": 2250,
+      "sha256": "06b3b6547e1b07bc36be5624572c6b4cc2deff17a0a878b3732f28e2a7d5107b"
+    }
+  ],
+  "reference": {
+    "archive": "BLACK UMBRELLA GROUP/BUSINESS/ZYRA/PROTOTYPE/ARCHIVE/ZYRA_PROTOTYPE_2026-11-12_V214.html",
+    "read_scope": "LOCK33 CSS, nameMode fixtures and nameFit source; no prototype changes",
+    "visual_observation": "Browser policy refused local file URL. No browser match claimed."
+  },
+  "start_pack_bytes": 17097,
+  "startup_note": "Initial relative script invocation failed; absolute script invocation succeeded. User-supplied global instruction caused whole lessons read before start pack; existing OA-AIOS-471. No further whole lessons/MAP reads."
+}

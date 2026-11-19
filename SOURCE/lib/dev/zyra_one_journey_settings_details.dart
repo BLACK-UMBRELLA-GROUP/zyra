@@ -209,6 +209,9 @@ class _HiddenProfileCard extends StatelessWidget {
                             Text(
                               person.name,
                               style: ZyraText.body(size: 16, color: ink),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              semanticsLabel: person.name,
                             ),
                             const SizedBox(height: 5),
                             Text(

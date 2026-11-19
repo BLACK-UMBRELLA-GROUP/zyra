@@ -4510,22 +4510,17 @@ class _ActiveJourneyCard extends StatelessWidget {
                           // it. The stage is still on the Journey itself and
                           // still comes from the one map (DR-ZYRA-129) — no
                           // second label was written here to replace it.
+                          // LOCK 33: one full-name line keeps list cards equal.
                           Text(
-                            profile.firstName,
+                            '${profile.firstName} ${profile.surnameLine ?? ''}'
+                                .trim(),
                             style: ZyraText.heading(size: 19),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            semanticsLabel:
+                                '${profile.firstName} ${profile.surnameLine ?? ''}'
+                                    .trim(),
                           ),
-                          // surnameLine is a display string, not a lastName —
-                          // it may already carry "middle name + surname"
-                          // together (models/seeker_profile.dart). Rendered
-                          // whole, never split.
-                          if ((profile.surnameLine ?? '').trim().isNotEmpty)
-                            Text(
-                              profile.surnameLine!.trim(),
-                              style: ZyraText.heading(
-                                size: 15,
-                                color: ZyraColors.ink(0.86),
-                              ),
-                            ),
                           SizedBox(height: 6),
                           Text(
                             '${profile.age} · ${profile.city}',

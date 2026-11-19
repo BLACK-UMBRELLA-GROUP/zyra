@@ -177,6 +177,28 @@ void main() {
     expect(c.monthError, isNotNull);
   });
 
+  test('existing names survive setup loading until that field is edited', () {
+    final c = _controller();
+    addTearDown(c.dispose);
+    final firstName = 'A' * 35;
+    final surname = 'B' * 45;
+    c.seedSetup(
+      guardian: false,
+      verified: true,
+      firstName: firstName,
+      surname: surname,
+    );
+    c.resumeSetup();
+    c.pauseSetup();
+    expect(c.firstName, firstName);
+    expect(c.surname, surname);
+    c.setFirstName('C' * 31);
+    expect(c.firstName, 'C' * 30);
+    expect(c.surname, surname);
+    c.setSurname('D' * 41);
+    expect(c.surname, 'D' * 40);
+  });
+
   test('Name and biography limits count displayed characters', () {
     final c = _controller();
     addTearDown(c.dispose);

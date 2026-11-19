@@ -53,16 +53,13 @@ class ZyraOneJourneyCardContent extends StatelessWidget {
   Widget _identity() => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(profile.firstName, style: ZyraText.heading(size: 19)),
-          if ((profile.surnameLine ?? '').trim().isNotEmpty)
-            Text(
-              profile.surnameLine!.trim(),
-              style: ZyraText.heading(size: 15, color: ZyraColors.ink(.86)),
-            ),
-        ],
+      Text(
+        '${profile.firstName} ${profile.surnameLine ?? ''}'.trim(),
+        style: ZyraText.heading(size: 19),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        semanticsLabel: '${profile.firstName} ${profile.surnameLine ?? ''}'
+            .trim(),
       ),
       const SizedBox(height: 4),
       Text(

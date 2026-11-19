@@ -941,9 +941,16 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _text(
-                            '${person.firstName} ${person.surname}',
-                            size: 18,
+                          Text(
+                            '${person.firstName} ${person.surname}'.trim(),
+                            style: ZyraText.body(
+                              size: 18,
+                              color: ZyraColors.foreground,
+                            ).copyWith(height: 1.45),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            semanticsLabel:
+                                '${person.firstName} ${person.surname}'.trim(),
                           ),
                           _text(
                             '${person.age} · ${person.city}',

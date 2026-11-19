@@ -1,0 +1,135 @@
+{
+  "scope": "Actual Flutter components, real bundled Poppins, fictional locked name samples, no member/network data. Component snapshots; no native device or browser match claimed. Request cards use complete viewport; photo-name block is a transparent content-sized crop.",
+  "phone_viewports": [
+    [
+      375,
+      667
+    ],
+    [
+      430,
+      932
+    ]
+  ],
+  "files": [
+    {
+      "path": "CAPTURES/details_375x667.png",
+      "pixels": [
+        375,
+        667
+      ],
+      "bytes": 27099,
+      "sha256": "c6c4e1a61d69d2ce24793faf5c576a4c78af3ecb70e833e0bc80e3bc488ec661",
+      "metadata_chunks": []
+    },
+    {
+      "path": "CAPTURES/details_430x932.png",
+      "pixels": [
+        430,
+        932
+      ],
+      "bytes": 28192,
+      "sha256": "f5fde467cb98d215d78f3e2ddb6c0883338297dc1428ff62c699b435c697b1b8",
+      "metadata_chunks": []
+    },
+    {
+      "path": "CAPTURES/photo_375x667.png",
+      "pixels": [
+        299,
+        142
+      ],
+      "bytes": 25615,
+      "sha256": "073b9d80e52b51a3e99263217c4053c9b8038fa3e434b24293ef43d7bc960f17",
+      "metadata_chunks": []
+    },
+    {
+      "path": "CAPTURES/photo_430x932.png",
+      "pixels": [
+        299,
+        142
+      ],
+      "bytes": 25615,
+      "sha256": "073b9d80e52b51a3e99263217c4053c9b8038fa3e434b24293ef43d7bc960f17",
+      "metadata_chunks": []
+    },
+    {
+      "path": "CAPTURES/request-active-375x667.png",
+      "pixels": [
+        375,
+        667
+      ],
+      "bytes": 12900,
+      "sha256": "2506e36e62e4161f789565f9fbd063f9aa9c62f605299011c8d3bc578ec631ca",
+      "metadata_chunks": []
+    },
+    {
+      "path": "CAPTURES/request-active-430x932.png",
+      "pixels": [
+        430,
+        932
+      ],
+      "bytes": 15316,
+      "sha256": "4d08661a659043c4c0dda09739f57fd1ba7244576d09aa8050baab6658788490",
+      "metadata_chunks": []
+    },
+    {
+      "path": "CAPTURES/request-grouped-375x667.png",
+      "pixels": [
+        375,
+        667
+      ],
+      "bytes": 12227,
+      "sha256": "487e02678e7e4a2e836186e4b8a7f6891dff98c39f02608ef28d9ea52fa6cb56",
+      "metadata_chunks": []
+    },
+    {
+      "path": "CAPTURES/request-grouped-430x932.png",
+      "pixels": [
+        430,
+        932
+      ],
+      "bytes": 14663,
+      "sha256": "6dec15d711ae083e1716eb9124a5934066bc60135db111c38c69942ec859b93c",
+      "metadata_chunks": []
+    },
+    {
+      "path": "CAPTURES/request-identity-375x667.png",
+      "pixels": [
+        375,
+        667
+      ],
+      "bytes": 12978,
+      "sha256": "6ac0b6971d78cd7884c6f09295ed6a2654294bfb3084ecc89741da569ce9ca85",
+      "metadata_chunks": []
+    },
+    {
+      "path": "CAPTURES/request-identity-430x932.png",
+      "pixels": [
+        430,
+        932
+      ],
+      "bytes": 15386,
+      "sha256": "04085818f1ab50d43be3003614d988f2836dda7f79ddfa775b9bcb1e3039e80e",
+      "metadata_chunks": []
+    },
+    {
+      "path": "CAPTURES/request-past-375x667.png",
+      "pixels": [
+        375,
+        667
+      ],
+      "bytes": 12598,
+      "sha256": "da9027f53f338806a6e1f3d62f7ec4e2f79009752a1b28d564153877b454cc2e",
+      "metadata_chunks": []
+    },
+    {
+      "path": "CAPTURES/request-past-430x932.png",
+      "pixels": [
+        430,
+        932
+      ],
+      "bytes": 15016,
+      "sha256": "62cea7deb033e6098415e43229696a257737f788a91a458e445b5e05eae7f7ef",
+      "metadata_chunks": []
+    }
+  ]
+}

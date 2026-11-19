@@ -166,10 +166,18 @@ void main() {
           photoWidget.decoration is BoxDecoration &&
           (photoWidget.decoration as BoxDecoration).shape == BoxShape.circle;
       expect(photoIsRound || roundPhoto.evaluate().isNotEmpty, isTrue);
-      final name = find.text('Sara Ahmed');
+      // LOCK 33 keeps the first name fitted and surname on its own line.
+      final name = find.text('Sara');
+      final surname = find.text('Ahmed');
       expect(name, findsOneWidget);
+      expect(surname, findsOneWidget);
       expect(tester.widget<Text>(name).style!.fontSize, 24);
       expect(tester.widget<Text>(name).style!.fontWeight, FontWeight.w300);
+      expect(tester.widget<Text>(name).maxLines, 1);
+      expect(tester.widget<Text>(name).overflow, TextOverflow.ellipsis);
+      expect(tester.widget<Text>(name).semanticsLabel, 'Sara Ahmed');
+      expect(tester.widget<Text>(surname).maxLines, 2);
+      expect(tester.widget<Text>(surname).overflow, TextOverflow.ellipsis);
       expect(find.text('STAGE 4 OF 8 · FAITH & VALUES'), findsOneWidget);
       final details = find.text('27 · Birmingham · British');
       expect(details, findsOneWidget);

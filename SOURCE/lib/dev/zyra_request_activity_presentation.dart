@@ -40,32 +40,6 @@ Icon _requestActivityChevron(bool open) => Icon(
   size: 23,
 );
 
-bool _wholeWordsFit(
-  BuildContext context,
-  String value,
-  TextStyle style,
-  double availableWidth,
-) {
-  if (availableWidth <= 0) return false;
-  var effectiveStyle = DefaultTextStyle.of(context).style.merge(style);
-  if (MediaQuery.boldTextOf(context)) {
-    effectiveStyle = effectiveStyle.copyWith(fontWeight: FontWeight.bold);
-  }
-  for (final word
-      in value.split(RegExp(r'\s+')).where((word) => word.isNotEmpty)) {
-    final painter = TextPainter(
-      text: TextSpan(text: word, style: effectiveStyle),
-      textDirection: Directionality.of(context),
-      textScaler: MediaQuery.textScalerOf(context),
-      locale: Localizations.maybeLocaleOf(context),
-    )..layout();
-    final fits = painter.width <= availableWidth;
-    painter.dispose();
-    if (!fits) return false;
-  }
-  return true;
-}
-
 Widget _requestActivityPortrait(SeekerProfile profile) {
   final photo = profile.photoUrl;
   // A retained URL cannot become a member/network lookup in this renderer.
@@ -377,9 +351,6 @@ class ZyraRequestActivityCard extends StatelessWidget {
   final Key? headerKey;
   final List<ZyraOneJourneyConnectionsAction> actions;
 
-  String get _name =>
-      '${profile.firstName} ${profile.surnameLine ?? ''}'.trim();
-
   Widget _portrait() => _requestActivityPortrait(profile);
 
   Widget _identity() => _requestIdentity(
@@ -427,15 +398,8 @@ class ZyraRequestActivityCard extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final chevron = _requestActivityChevron(open);
-            final horizontalNameWidth = constraints.maxWidth - 64 - 16 - 5 - 23;
             final stackIdentity =
-                MediaQuery.textScalerOf(context).scale(1) > 1.3 ||
-                !_wholeWordsFit(
-                  context,
-                  _name,
-                  ZyraText.heading(size: 21),
-                  horizontalNameWidth,
-                );
+                MediaQuery.textScalerOf(context).scale(1) > 1.3;
             if (stackIdentity) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -655,6 +619,9 @@ class ZyraPastRequestActivityCard extends StatelessWidget {
         _name,
         key: ValueKey('past_request_activity_name_$cardId'),
         style: ZyraText.heading(size: 21),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        semanticsLabel: _name,
       ),
       const SizedBox(height: 5),
       Text(subtitle, style: ZyraText.subtext(size: 12, color: _helperInk)),
@@ -670,16 +637,8 @@ class ZyraPastRequestActivityCard extends StatelessWidget {
   Widget _header({bool? open}) => LayoutBuilder(
     builder: (context, constraints) {
       final chevron = open == null ? null : _requestActivityChevron(open);
-      final nameWidth =
-          constraints.maxWidth - 64 - 16 - (chevron == null ? 0 : 5 + 23);
       final stackIdentity =
-          MediaQuery.textScalerOf(context).scale(1) > 1.3 ||
-          !_wholeWordsFit(
-            context,
-            _name,
-            ZyraText.heading(size: 21),
-            nameWidth,
-          );
+          MediaQuery.textScalerOf(context).scale(1) > 1.3;
       final portrait = _requestActivityPortrait(profile);
       if (stackIdentity) {
         return Column(
@@ -919,6 +878,10 @@ Widget _requestIdentity(
       '${profile.firstName} ${profile.surnameLine ?? ''}'.trim(),
       key: nameKey,
       style: ZyraText.heading(size: 21),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      semanticsLabel:
+          '${profile.firstName} ${profile.surnameLine ?? ''}'.trim(),
     ),
     if (profile.age > 0 || profile.city.isNotEmpty) ...[
       const SizedBox(height: 5),
@@ -968,13 +931,7 @@ class ZyraRequestActivityIdentity extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final stacked =
-              MediaQuery.textScalerOf(context).scale(1) > 1.3 ||
-              !_wholeWordsFit(
-                context,
-                '${profile.firstName} ${profile.surnameLine ?? ''}'.trim(),
-                ZyraText.heading(size: 21),
-                constraints.maxWidth - 80,
-              );
+              MediaQuery.textScalerOf(context).scale(1) > 1.3;
           final portrait = _requestActivityPortrait(profile);
           final identity = _requestIdentity(
             profile,

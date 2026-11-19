@@ -113,6 +113,49 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  for (final lastName in [false, true]) {
+    final limit = lastName ? 40 : 30;
+    final key = lastName ? _lastNameFieldKey : _fieldKey;
+    testWidgets(
+      '${lastName ? 'surname' : 'first name'} caps edits at $limit and counts from five left',
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: _question(controller: controller, lastName: lastName),
+          ),
+        );
+        expect(tester.widget<TextField>(find.byKey(key)).maxLength, limit);
+        expect(find.text('0/$limit'), findsNothing);
+        await tester.enterText(find.byKey(key), 'é' * (limit - 6));
+        await tester.pump();
+        expect(find.text('${limit - 6}/$limit'), findsNothing);
+        await tester.enterText(find.byKey(key), 'é' * (limit - 5));
+        await tester.pump();
+        expect(find.text('${limit - 5}/$limit'), findsOneWidget);
+        await tester.enterText(find.byKey(key), 'é' * (limit + 1));
+        await tester.pump();
+        expect(controller.text, 'é' * limit);
+        expect(find.text('$limit/$limit'), findsOneWidget);
+        expect(tester.takeException(), isNull);
+      },
+    );
+
+    testWidgets('an existing longer name loads without being shortened', (
+      tester,
+    ) async {
+      final existing = 'A' * (limit + 5);
+      controller.text = existing;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: _question(controller: controller, lastName: lastName),
+        ),
+      );
+      expect(controller.text, existing);
+      await tester.enterText(find.byKey(key), 'Amira');
+      expect(controller.text, 'Amira');
+    });
+  }
+
   testWidgets('editing reports the raw given name without changing the value', (
     tester,
   ) async {
@@ -209,6 +252,69 @@ void main() {
     expect(action.right, lessThanOrEqualTo(320));
     expect(tester.takeException(), isNull);
   });
+
+  for (final role in ZyraSignupRole.values) {
+    testWidgets('${role.name} preserves unchanged longer recovered names', (
+      tester,
+    ) async {
+      final firstName = 'A' * 35;
+      final surname = 'B' * 45;
+      final draft = ZyraInitialSignupDraft(
+        role: role,
+        firstName: firstName,
+        lastName: surname,
+      );
+      await tester.pumpWidget(
+        MaterialApp(
+          home: role == ZyraSignupRole.seeker
+              ? OnboardingFlow(signupUserId: 'account-a', initialDraft: draft)
+              : WaliOnboardingFlow(
+                  signupUserId: 'account-a',
+                  initialDraft: draft,
+                ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(
+        tester.widget<TextField>(find.byKey(_fieldKey)).controller!.text,
+        firstName,
+      );
+      expect(
+        tester
+            .widget<TextField>(find.byKey(_lastNameFieldKey))
+            .controller!
+            .text,
+        surname,
+      );
+      expect(
+        tester
+            .widget<ZyraOnboardingArrowAction>(
+              find.byType(ZyraOnboardingArrowAction),
+            )
+            .active,
+        isTrue,
+      );
+      // Editing one field applies its current limit without rewriting the other.
+      await tester.enterText(find.byKey(_fieldKey), 'C' * 31);
+      await tester.pump();
+      expect(
+        tester.widget<TextField>(find.byKey(_fieldKey)).controller!.text,
+        'C' * 30,
+      );
+      final actionKey = ValueKey(
+        role == ZyraSignupRole.seeker
+            ? 'onboarding_continue'
+            : 'wali_onboarding_continue',
+      );
+      await tester.tap(find.byKey(actionKey));
+      await tester.runAsync(() async => Future<void>.delayed(Duration.zero));
+      await tester.pumpAndSettle();
+      final saved = await tester.runAsync(() => repository.read('account-a'));
+      expect(saved?.firstName, 'C' * 30);
+      expect(saved?.lastName, surname);
+      expect(tester.takeException(), isNull);
+    });
+  }
 
   for (final role in ZyraSignupRole.values) {
     testWidgets('${role.name} requires both public names before advancing', (

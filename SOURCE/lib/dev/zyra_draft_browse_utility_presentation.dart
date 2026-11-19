@@ -1,3 +1,4 @@
+import '../widgets/zyra_profile_name_block.dart';
 import '../widgets/zyra_developer_title.dart';
 import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
@@ -288,14 +289,26 @@ class _ZyraDraftReportPresentationState
                       ),
                       const SizedBox(height: 12),
                       ZyraDeveloperTitle(
-                        child: Text(
-                          name,
+                        child: ZyraFittedProfileFirstName(
+                          profile.firstName,
+                          semanticsLabel: name,
                           textAlign: TextAlign.center,
                           style: ZyraText.heading(
                             size: 22,
                           ).copyWith(fontWeight: FontWeight.w300),
                         ),
                       ),
+                      if (profile.surnameLine?.trim().isNotEmpty ?? false)
+                        Text(
+                          profile.surnameLine!.trim(),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          semanticsLabel: '',
+                          textAlign: TextAlign.center,
+                          style: ZyraText.heading(
+                            size: 22,
+                          ).copyWith(fontWeight: FontWeight.w300),
+                        ),
                       const SizedBox(height: 6),
                       Text(
                         'CHOOSE THE REASON',

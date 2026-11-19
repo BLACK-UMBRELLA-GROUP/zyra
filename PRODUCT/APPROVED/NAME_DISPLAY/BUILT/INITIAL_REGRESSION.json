@@ -1,0 +1,23 @@
+{
+  "result": "7472 visible passes,163 skips,17 superseded assertions failed",
+  "scope": "All failures were outdated uncapped-name or combined-name assumptions, plus RenderParagraph lookup now wrapped for explicit full-name semantics. No runtime source failure observed. Assertions updated only for names; privacy, state, actions, facts, navigation and geometry preserved. Independent final review PASS. Final reruns recorded separately.",
+  "failed_cases": [
+    "test/zyra_draft_browse_utility_presentation_test.dart: Report fits Size(390.0, 844.0) with all reasons and no submission",
+    "test/zyra_draft_browse_utility_presentation_test.dart: Report fits Size(393.0, 852.0) with all reasons and no submission",
+    "test/zyra_draft_browse_utility_presentation_test.dart: Report fits Size(430.0, 932.0) with all reasons and no submission",
+    "test/zyra_draft_browse_utility_presentation_test.dart: target replacement resets radio and revokes old delegates",
+    "test/journey_options_v3_layout_test.dart: 430x932 head keeps locked identity and full width gold Continue",
+    "test/zyra_profile_details_first_test.dart: inspection scrolls long public details naturally at 320 and 200 percent",
+    "test/zyra_profile_details_first_test.dart: long public details scroll at 320 wide and text scale 1.4",
+    "test/zyra_profile_details_first_test.dart: long public details scroll at 320 wide and text scale 2.0",
+    "test/view_request_draft_widget_test.dart: compact 200% Browse identity clears neutral controls",
+    "test/one_journey_hidden_profiles_test.dart: Compact halo uses its admitted fixture photo and one action card",
+    "test/one_journey_hidden_profiles_test.dart: Compact halo list scrolls at 200 percent while Help stays fixed",
+    "test/one_journey_hidden_profiles_test.dart: Missing-photo long-name halo fits standard dark and attention styles",
+    "test/one_journey_hidden_profiles_test.dart: Missing-photo long-name halo fits compact200 dark and attention styles",
+    "test/one_journey_hidden_profiles_test.dart: hidden list and three actions remain readable at 320px and 200 percent",
+    "test/visual/lock22_report_v2_capture_test.dart: Report x05/x06 actual route at text 1.0 selects all reasons, stays offline and draft",
+    "test/visual/lock22_report_v2_capture_test.dart: Report x05/x06 actual route at text 2.0 selects all reasons, stays offline and draft",
+    "test/visual/lock13_journey_tab_test.dart: LOCK13 V3 actual Sara Aisha and Basic options captures"
+  ]
+}

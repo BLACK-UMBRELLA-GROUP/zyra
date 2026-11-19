@@ -1,0 +1,101 @@
+{
+  "line": 99,
+  "lock": 33,
+  "authority": [
+    "DOC-ZYRA-0491",
+    "DOC-ZYRA-0492",
+    "DOC-ZYRA-0493",
+    "DR-ZYRA-346",
+    "OA-ZYRA-393",
+    "AD-AIOS-115"
+  ],
+  "current_state": "Implemented; final gates in CHECKS.json and CI_CHECKS.json. Founder sample preview only. Live: no.",
+  "behavior": [
+    "All request/Ended/Introduction cards keep the full name in one fixed-size line, ellipsise visually and expose the full semantic name. Name length no longer changes card layout or height. Existing accessibility stacking is retained.",
+    "Shared big first-name helper measures with inherited text scaling, locale, direction and bold text; fits from full font size to 75%, then ellipsises. Profile surname caps at two lines. Age/city remains unchanged.",
+    "Onboarding first30/surname40; counters at five left; independently preserves unchanged longer saved names. Preview seeds retain names. Local recovery draft retains its legacy60-grapheme acceptance ceiling."
+  ],
+  "display_inventory": [
+    {
+      "path": "SOURCE/lib/dev/zyra_request_activity_presentation.dart",
+      "surfaces": "active requests, Past including grouped requests, Ended Journeys, Introduction Received/Past, Guardian introductions made; one-line identity and name-independent geometry"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_name_block.dart",
+      "surfaces": "shared photo Browse/full-profile name block and reusable ZyraFittedProfileFirstName"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "surfaces": "Profiles detail face and own Preview; explicitly measured width avoids intrinsic layout conflict"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_card_content.dart",
+      "surfaces": "Journey list/card identity, fixed19 full-name line"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_discovery_presentation.dart",
+      "surfaces": "Journey reference height measures capped full-name line"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "surfaces": "Guardian Journey-request names capped at18"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_options_page.dart",
+      "surfaces": "large options-page first-name/surname heading"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "surfaces": "large Report-profile first-name/surname heading"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_settings_details.dart",
+      "surfaces": "hidden-profile list names"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_capacity_choice.dart",
+      "surfaces": "full-name capacity-choice list row"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_browse_designs.dart",
+      "surfaces": "Browse identity height matches capped name lines"
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/connections_screen.dart",
+      "surfaces": "retired member Connections list identity still compiled; full-name line capped"
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/profile_screen.dart",
+      "surfaces": "retired member account summary full-name row capped"
+    },
+    {
+      "unchanged": "Short first-name mentions in toasts/confirmations/Journey title; full-name report semantics and Browse-options tooltips; Guardian card details combine full name with age/city/access as narrative prose; existing preview Profile header and retired hidden-profile list already cap names."
+    }
+  ],
+  "entry_and_data_flow": "Existing profile inputs and permissions only. No new name fixtures or toggles in runtime. Capture defines are test-only. Names are never modified by display helpers; edited form limits apply before existing draft/account save paths.",
+  "boundaries": "Presentation and local name entry only; no new relationship state, navigation destination, server authority, membership change or transport. No migrations or live apply.",
+  "limitations": [
+    {
+      "item": "There is no profile name editor in the current app: edit_profile_screen.dart explicitly excludes names. Written refusal to invent one under this display-only LOCK; all existing name entry fields audited and covered.",
+      "owner": "ZYRA Claude if a future editor is requested"
+    },
+    {
+      "item": "Server name enforcement is QUESTIONS135 / line100 and existing backend work, outside this UI task. No server apply claimed.",
+      "owner": "Fable, OA-ZYRA-317"
+    },
+    {
+      "item": "No standalone NAME_DISPLAY PNG master was supplied; LOCK names archived prototypeV214. Browser local-file viewing was refused by browser security policy. Numeric spec and reference source inspected, component renders retained; no browser visual MATCH claimed.",
+      "owner": "ZYRA Claude/Fable normal as-built review"
+    },
+    {
+      "item": "No phone/native build or installation during line99; final requested device delivery remains line117 after124.",
+      "owner": "line117"
+    }
+  ],
+  "next": [
+    "ZYRA Claude/Fable review filed renders and handover.",
+    "Release SOURCE for line124 only after implementation, hosted CI and handover commits complete.",
+    "Line117 remains last for device delivery."
+  ],
+  "supersession": "LOCK33 overrides older wrapped name presentation only. Existing privacy/state/access tests retained. No runtime file retired."
+}

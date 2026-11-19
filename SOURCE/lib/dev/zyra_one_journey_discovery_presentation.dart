@@ -1156,17 +1156,11 @@ class ZyraOneJourneyConnectionsActiveCard extends StatelessWidget {
         : 0;
     final identityWidth = width - 96 - 16 - referenceReportWidth;
     var identity = textHeight(
-      profile.firstName,
+      '${profile.firstName} ${profile.surnameLine ?? ''}'.trim(),
       ZyraText.heading(size: 19),
       identityWidth,
+      singleLine: true,
     );
-    if ((profile.surnameLine ?? '').trim().isNotEmpty) {
-      identity += textHeight(
-        profile.surnameLine!.trim(),
-        ZyraText.heading(size: 15),
-        identityWidth,
-      );
-    }
     identity +=
         6 +
         textHeight(

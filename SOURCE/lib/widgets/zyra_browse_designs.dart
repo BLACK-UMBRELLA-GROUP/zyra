@@ -768,11 +768,18 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
     );
   }
 
-  double _textHeight(String text, TextStyle style, double width) {
+  double _textHeight(
+    String text,
+    TextStyle style,
+    double width, {
+    int? maxLines,
+  }) {
     final painter = TextPainter(
       text: TextSpan(text: text, style: style),
       textDirection: Directionality.of(context),
       textScaler: MediaQuery.textScalerOf(context),
+      maxLines: maxLines,
+      ellipsis: maxLines == null ? null : '…',
     )..layout(maxWidth: math.max(1, width));
     final height = painter.height;
     painter.dispose();
@@ -823,6 +830,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
       profile.firstName,
       ZyraText.heading(size: 28).copyWith(fontWeight: FontWeight.w600),
       width,
+      maxLines: 1,
     );
     if (profile.surnameLine?.trim().isNotEmpty ?? false) {
       height +=
@@ -831,6 +839,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
             profile.surnameLine!.trim(),
             ZyraText.heading(size: 16.8).copyWith(fontWeight: FontWeight.w500),
             width,
+            maxLines: 2,
           );
     }
     height += 4 + _textHeight('28 · City', ZyraText.body(size: 14.924), width);

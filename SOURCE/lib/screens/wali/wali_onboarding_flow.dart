@@ -78,6 +78,7 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
   final TextEditingController _lastNameController = TextEditingController();
   DateTime? _dob;
   String? _dobError;
+  String? _initialFirstName, _initialLastName;
   String? _gender;
   String? _relationship;
   String? _saveError;
@@ -113,6 +114,8 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
           _step = draft.step;
           _nameController.text = draft.firstName ?? '';
           _lastNameController.text = draft.lastName ?? '';
+          _initialFirstName = draft.firstName;
+          _initialLastName = draft.lastName;
           _gender = draft.gender;
           _dob = draft.dob;
           _relationship = draft.relationship;
@@ -178,8 +181,12 @@ class _WaliOnboardingFlowState extends State<WaliOnboardingFlow> {
       case 0:
         return _nameController.text.trim().isNotEmpty &&
             _lastNameController.text.trim().isNotEmpty &&
-            _nameController.text.trim().length <= 60 &&
-            _lastNameController.text.trim().length <= 60;
+            (_nameController.text == _initialFirstName ||
+                _nameController.text.trim().characters.length <=
+                    ZyraOnboardingNameField.firstNameLimit) &&
+            (_lastNameController.text == _initialLastName ||
+                _lastNameController.text.trim().characters.length <=
+                    ZyraOnboardingNameField.surnameLimit);
       case 1:
         return _dob != null && _dobError == null;
       case 2:

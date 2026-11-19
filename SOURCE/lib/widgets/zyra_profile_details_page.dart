@@ -10,6 +10,7 @@ import '../theme/zyra_text.dart';
 import '../theme/zyra_motion.dart';
 import 'zyra_floating_surface.dart';
 import 'zyra_profile_image.dart';
+import 'zyra_profile_name_block.dart';
 
 /// LOCK 4 V4, design 2. Only the caller's public profile fields and admitted
 /// first photo reach this face. No private answers or photo lookup here.
@@ -179,8 +180,13 @@ class ZyraProfileDetailsPage extends StatelessWidget {
                             children: [
                               _avatar(avatarSize),
                               const SizedBox(height: 16),
-                              Text(
+                              ZyraFittedProfileFirstName(
                                 profile.firstName,
+                                maxWidth:
+                                    constraints.maxWidth - 2 * _horizontalInset,
+                                semanticsLabel:
+                                    '${profile.firstName} ${surname ?? ''}'
+                                        .trim(),
                                 textAlign: TextAlign.center,
                                 style: ZyraText.heading(
                                   size: 34,
@@ -189,6 +195,9 @@ class ZyraProfileDetailsPage extends StatelessWidget {
                               if (surname?.isNotEmpty ?? false)
                                 Text(
                                   surname!,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  semanticsLabel: '',
                                   textAlign: TextAlign.center,
                                   style: ZyraText.heading(
                                     size: 22,

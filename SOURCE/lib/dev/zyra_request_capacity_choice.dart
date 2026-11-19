@@ -261,7 +261,13 @@ class _CapacityRow extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(item.name, style: ZyraText.heading(size: 17)),
+                          Text(
+                            item.name,
+                            style: ZyraText.heading(size: 17),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            semanticsLabel: item.name,
+                          ),
                           if (subtitle != null && subtitle.isNotEmpty) ...[
                             const SizedBox(height: 4),
                             Text(subtitle, style: ZyraText.subtext(size: 12)),

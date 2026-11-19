@@ -243,8 +243,12 @@ void main() {
       _expectTitle(tester, 'draft_report_title', 'Report profile');
       _expectFit(tester, 'draft_report_viewport', 'draft_report_submit');
       expect(_key('draft_report_target'), findsOneWidget);
-      expect(find.text('Sara Ahmed'), findsOneWidget);
-      final name = tester.widget<Text>(find.text('Sara Ahmed'));
+      expect(find.text('Sara'), findsOneWidget);
+      expect(find.text('Ahmed'), findsOneWidget);
+      final name = tester.widget<Text>(find.text('Sara'));
+      expect(name.maxLines, 1);
+      expect(name.semanticsLabel, 'Sara Ahmed');
+      expect(tester.widget<Text>(find.text('Ahmed')).maxLines, 2);
       expect(name.style!.fontSize, 22);
       expect(name.style!.fontWeight, FontWeight.w300);
       expect(find.text('CHOOSE THE REASON'), findsOneWidget);
@@ -498,8 +502,14 @@ void main() {
     retainedHide();
     retainedBlock();
     await tester.pumpAndSettle();
-    expect(find.text('Amira Rahman'), findsOneWidget);
-    expect(find.text('Sara Ahmed'), findsNothing);
+    expect(find.text('Amira'), findsOneWidget);
+    expect(find.text('Rahman'), findsOneWidget);
+    expect(
+      tester.widget<Text>(find.text('Amira')).semanticsLabel,
+      'Amira Rahman',
+    );
+    expect(find.text('Sara'), findsNothing);
+    expect(find.text('Ahmed'), findsNothing);
     _expectSelection(tester, ZyraDraftReportReason.fakeProfile);
     expect((hidden, blocked), (0, 0));
     expect(haptics, isEmpty);

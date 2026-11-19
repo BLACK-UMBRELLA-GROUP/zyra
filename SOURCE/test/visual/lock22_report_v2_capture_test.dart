@@ -120,7 +120,11 @@ void main() {
         await h.mount(tab: 0, pages: ['profile']);
         await _openReport(h);
         h.assertPage('safety');
-        expect(find.text('Sara Ahmed'), findsOneWidget);
+        expect(find.text('Sara'), findsOneWidget);
+        expect(find.text('Ahmed'), findsOneWidget);
+        expect(t.widget<Text>(find.text('Sara')).semanticsLabel, 'Sara Ahmed');
+        expect(t.widget<Text>(find.text('Sara')).maxLines, 1);
+        expect(t.widget<Text>(find.text('Ahmed')).maxLines, 2);
         final before = h.latest.model;
         _selected(t, ZyraDraftReportReason.fakeProfile);
         final suffix = scale == 1 ? '' : '__text200';
@@ -232,10 +236,7 @@ void main() {
             final action = hide ? 'draft_safety_hide' : 'draft_safety_block';
             await h.tap(action);
             if (phase != 'none') {
-              expect(
-                find.byType(ZyraConfirmSheet),
-                findsOneWidget,
-              );
+              expect(find.byType(ZyraConfirmSheet), findsOneWidget);
               await h.tap('journey_person_safety_keep');
               _selected(t, ZyraDraftReportReason.privacy);
               expect(h.latest.model.states, before.states);

@@ -1,0 +1,16 @@
+{
+  "line": 99,
+  "lock": 33,
+  "source_base_commit": "ced27db19c19d4e305df8e3a8598586bef4753d8",
+  "source_commit": "PENDING",
+  "flutter_version": "3.44.2",
+  "build_mode": "offline-ci widget tests",
+  "live": false,
+  "installed": false,
+  "source_manifest": "SOURCE_MANIFEST.json",
+  "input_manifest": "INPUT_MANIFEST.json",
+  "render_manifest": "RENDER_MANIFEST.json",
+  "flutter_revision": "c9a6c484230f8b5e408ec57be1ef71dee1e77020",
+  "dart_version": "3.12.2",
+  "timestamp_utc": "2026-11-19T20:11:25.518848+00:00"
+}

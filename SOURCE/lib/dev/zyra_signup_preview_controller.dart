@@ -102,8 +102,10 @@ class ZyraSignupPreviewController extends ChangeNotifier {
     _guardian = guardian;
     _verified = verified;
     _hasAccount = true;
-    _firstName = firstName.characters.take(30).toString();
-    _surname = surname.characters.take(40).toString();
+    // Loading an existing account must not rewrite its stored public names.
+    // The edit setters below apply the current limits only when changed.
+    _firstName = firstName;
+    _surname = surname;
     _gender = guardian ? null : 'male';
     _step = ZyraSignupStep.accountReady;
     notifyListeners();

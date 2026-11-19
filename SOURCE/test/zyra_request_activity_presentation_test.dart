@@ -16,6 +16,7 @@ import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_state_widgets.dart';
 
 const _captures = String.fromEnvironment('ZYRA_REQUEST_ACTIVITY_CAPTURE_DIR');
+const _lock33Capture = bool.fromEnvironment('ZYRA_LOCK33_CAPTURE');
 const _font = 'PoppinsRequestActivity';
 const _boundaryKey = ValueKey('request-activity-capture');
 const _header = ValueKey('request_header');
@@ -292,6 +293,18 @@ void _expectNaturalText(WidgetTester tester) {
   for (final element
       in find.descendant(of: content, matching: find.byType(Text)).evaluate()) {
     final text = element.widget as Text;
+    final key = text.key;
+    final isPersonName =
+        key is ValueKey<String> &&
+        (key.value.startsWith('request_activity_name_') ||
+            key.value.startsWith('past_request_activity_name_'));
+    if (isPersonName) {
+      expect(text.maxLines, 1);
+      expect(text.overflow, TextOverflow.ellipsis);
+      expect(text.semanticsLabel, text.data);
+      expect(text.style!.fontSize, 21);
+      continue;
+    }
     expect(text.maxLines, isNull);
     expect(text.overflow, isNull);
     final paragraph = element.renderObject;
@@ -303,7 +316,9 @@ void _expectNaturalText(WidgetTester tester) {
 
 void _expectWholeWordsFit(WidgetTester tester, Finder textFinder) {
   expect(textFinder, findsOneWidget);
-  final paragraph = tester.renderObject<RenderParagraph>(textFinder);
+  final paragraph = tester.renderObject<RenderParagraph>(
+    find.descendant(of: textFinder, matching: find.byType(RichText)),
+  );
   final text = paragraph.text.toPlainText();
   for (final word
       in text.split(RegExp(r'\s+')).where((word) => word.isNotEmpty)) {
@@ -814,7 +829,7 @@ void main() {
   });
 
   testWidgets(
-    'a wide surname uses full card width before the large-type threshold',
+    'a wide surname ellipsises without moving the portrait or shrinking type',
     (tester) async {
       const wideName = SeekerProfile(
         id: 'local-wide-name',
@@ -831,22 +846,184 @@ void main() {
         size: const Size(320, 568),
         scale: 1.2,
       );
-      _expectWholeWordsFit(tester, find.text('Sara Rahmanullah'));
       final portrait = find.descendant(
         of: find.byType(ZyraRequestActivityCard),
         matching: find.byType(ClipOval),
       );
       expect(
-        tester.getRect(portrait).bottom,
-        lessThan(tester.getRect(find.text('Sara Rahmanullah')).top),
+        tester.getRect(portrait).right,
+        lessThan(tester.getRect(find.text('Sara Rahmanullah')).left),
       );
       expect(
         tester.widget<Text>(find.text('Sara Rahmanullah')).style!.fontSize,
         21,
       );
+      final name = tester.widget<Text>(find.text('Sara Rahmanullah'));
+      expect(name.maxLines, 1);
+      expect(name.overflow, TextOverflow.ellipsis);
+      expect(name.semanticsLabel, 'Sara Rahmanullah');
       _expectNaturalText(tester);
     },
   );
+
+  for (final size in [const Size(375, 667), const Size(430, 932)]) {
+    for (final variant in ['active', 'past', 'grouped', 'identity']) {
+      testWidgets(
+        'LOCK 33 $variant names keep equal card heights at ${size.width}',
+        (tester) async {
+          tester.view.physicalSize = size;
+          tester.view.devicePixelRatio = 1;
+          addTearDown(tester.view.resetPhysicalSize);
+          addTearDown(tester.view.resetDevicePixelRatio);
+          final semantics = tester.ensureSemantics();
+          var semanticsDisposed = false;
+          void disposeSemantics() {
+            if (semanticsDisposed) return;
+            semanticsDisposed = true;
+            semantics.dispose();
+          }
+
+          addTearDown(disposeSemantics);
+          final expansion = ZyraConnectionsExpansionController();
+          addTearDown(expansion.dispose);
+
+          Future<double> mountName(String first, String surname) async {
+            final person = SeekerProfile(
+              id: 'long-name',
+              firstName: first,
+              surnameLine: surname,
+              age: 27,
+              city: 'Birmingham',
+              gender: 'female',
+              photos: const [],
+            );
+            final Widget card;
+            if (variant == 'active') {
+              card = ZyraRequestActivityCard(
+                profile: person,
+                subtitle: 'Journey request',
+                cardId: 'long-name',
+                controller: expansion,
+                primary: const ZyraOneJourneyConnectionsAction(
+                  key: ValueKey('long-name-view'),
+                  label: 'View profile',
+                  icon: Icons.visibility_outlined,
+                  onTap: null,
+                ),
+                onToggle: () {},
+              );
+            } else if (variant == 'identity') {
+              card = ZyraRequestActivityIdentity(
+                profile: person,
+                subtitle: 'Journey ended',
+              );
+            } else {
+              card = ZyraPastRequestActivityCard(
+                profile: person,
+                subtitle: 'Journey request',
+                status: 'Declined',
+                cardId: 'long-name',
+                controller: variant == 'grouped' ? expansion : null,
+                history: variant == 'grouped'
+                    ? const [(date: '12 November', status: 'Declined')]
+                    : const [],
+              );
+            }
+            await tester.pumpWidget(
+              RepaintBoundary(
+                key: _boundaryKey,
+                child: MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  theme: ThemeData.dark(),
+                  home: Scaffold(
+                    body: SingleChildScrollView(
+                      padding: const EdgeInsets.all(20),
+                      child: SizedBox(
+                        key: const ValueKey('name-test-card'),
+                        child: card,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+            await tester.pumpAndSettle();
+            expect(tester.takeException(), isNull);
+            final fullName = '$first $surname';
+            final nameFinder = find.text(fullName);
+            final name = tester.widget<Text>(nameFinder);
+            expect(name.maxLines, 1);
+            expect(name.overflow, TextOverflow.ellipsis);
+            expect(name.style!.fontSize, 21);
+            expect(name.semanticsLabel, fullName);
+            expect(
+              find.bySemanticsLabel(RegExp(RegExp.escape(fullName))),
+              findsWidgets,
+            );
+            final portrait = find.byType(ClipOval);
+            expect(
+              tester.getRect(portrait).right,
+              lessThan(tester.getRect(nameFinder).left),
+            );
+            if (variant == 'active' || variant == 'grouped') {
+              final chevron = find.byIcon(Icons.keyboard_arrow_down_rounded);
+              expect(
+                tester.getRect(nameFinder).right,
+                lessThanOrEqualTo(tester.getRect(chevron).left),
+              );
+            }
+            expect(find.byType(FittedBox), findsNothing);
+            return tester
+                .getSize(_key(const ValueKey('name-test-card')))
+                .height;
+          }
+
+          final shortHeight = await mountName('Sara', 'Ahmed');
+          for (final (first, surname) in [
+            ('Fatima-Zahra', 'Abdul-Rahman Al-Hashimi'),
+            ('Zainab', 'Malik-Abdulkareem Bin Yusuf'),
+          ]) {
+            final height = await mountName(first, surname);
+            expect(height, shortHeight);
+            expect(
+              tester
+                  .renderObject<RenderParagraph>(
+                    find.descendant(
+                      of: find.text('$first $surname'),
+                      matching: find.byType(RichText),
+                    ),
+                  )
+                  .didExceedMaxLines,
+              isTrue,
+            );
+            if (_lock33Capture && first == 'Fatima-Zahra') {
+              final boundary = tester.renderObject<RenderRepaintBoundary>(
+                _key(_boundaryKey),
+              );
+              await tester.runAsync(() async {
+                final directory = Directory('build/line99_captures');
+                await directory.create(recursive: true);
+                final image = await boundary.toImage(pixelRatio: 1);
+                try {
+                  final bytes = await image.toByteData(
+                    format: ui.ImageByteFormat.png,
+                  );
+                  expect(bytes, isNotNull);
+                  await File(
+                    '${directory.path}/request-$variant-'
+                    '${size.width.toInt()}x${size.height.toInt()}.png',
+                  ).writeAsBytes(bytes!.buffer.asUint8List(), flush: true);
+                } finally {
+                  image.dispose();
+                }
+              });
+            }
+          }
+          disposeSemantics();
+        },
+      );
+    }
+  }
 
   for (final reduce in [false, true]) {
     testWidgets(

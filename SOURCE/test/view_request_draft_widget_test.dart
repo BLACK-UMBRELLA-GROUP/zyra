@@ -4924,7 +4924,9 @@ void main() {
       await tester.ensureVisible(initial);
       await tester.pumpAndSettle();
       final footer = Offset.zero & tester.view.physicalSize;
-      final initialParagraph = tester.renderObject<RenderParagraph>(initial);
+      final initialParagraph = tester.renderObject<RenderParagraph>(
+        find.descendant(of: initial, matching: find.byType(RichText)),
+      );
       final origin = initialParagraph.localToGlobal(Offset.zero);
       for (final box in initialParagraph.getBoxesForSelection(
         const TextSelection(baseOffset: 0, extentOffset: 4),

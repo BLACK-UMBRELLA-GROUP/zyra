@@ -127,8 +127,8 @@ void main() {
     addTearDown(c.dispose);
     c.setStep(ZyraSignupStep.name);
     await _mount(tester, c);
-    expect(find.text('0/30'), findsOneWidget);
-    expect(find.text('0/40'), findsOneWidget);
+    expect(find.text('0/30'), findsNothing);
+    expect(find.text('0/40'), findsNothing);
     expect(
       tester.widget<FilledButton>(_key('signup_continue')).onPressed,
       isNull,
@@ -136,7 +136,24 @@ void main() {
     await tester.enterText(_key('signup_first_name'), 'Adam');
     await tester.enterText(_key('signup_surname'), 'Hussain');
     await tester.pump();
-    expect(find.text('4/30'), findsOneWidget);
+    expect(find.text('4/30'), findsNothing);
+    await tester.enterText(_key('signup_first_name'), 'A' * 24);
+    await tester.enterText(_key('signup_surname'), 'B' * 34);
+    await tester.pump();
+    expect(find.text('24/30'), findsNothing);
+    expect(find.text('34/40'), findsNothing);
+    await tester.enterText(_key('signup_first_name'), 'A' * 25);
+    await tester.enterText(_key('signup_surname'), 'B' * 35);
+    await tester.pump();
+    expect(find.text('25/30'), findsOneWidget);
+    expect(find.text('35/40'), findsOneWidget);
+    await tester.enterText(_key('signup_first_name'), 'A' * 31);
+    await tester.enterText(_key('signup_surname'), 'B' * 41);
+    await tester.pump();
+    expect(c.firstName, 'A' * 30);
+    expect(c.surname, 'B' * 40);
+    expect(find.text('30/30'), findsOneWidget);
+    expect(find.text('40/40'), findsOneWidget);
     await tester.tap(_key('signup_continue'));
     await tester.pumpAndSettle();
     await tester.enterText(_key('signup_day'), '14');

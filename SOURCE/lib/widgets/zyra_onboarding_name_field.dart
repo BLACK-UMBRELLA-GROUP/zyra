@@ -6,6 +6,8 @@ import '../theme/zyra_text.dart';
 /// An open, centred name entry rather than a card inside a question card.
 /// The owning signup flow still validates, saves and advances this answer.
 class ZyraOnboardingNameField extends StatelessWidget {
+  static const firstNameLimit = 30;
+  static const surnameLimit = 40;
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final bool lastName;
@@ -44,14 +46,22 @@ class ZyraOnboardingNameField extends StatelessWidget {
       ],
       autocorrect: false,
       enableSuggestions: false,
-      maxLength: 60,
+      maxLength: lastName ? surnameLimit : firstNameLimit,
+      buildCounter:
+          (
+            context, {
+            required currentLength,
+            required isFocused,
+            required maxLength,
+          }) => maxLength! - currentLength <= 5
+          ? Text('$currentLength/$maxLength', style: ZyraText.subtext(size: 12))
+          : null,
       style: ZyraText.body(size: 28, color: ZyraColors.foreground),
       cursorColor: ZyraColors.splashWordmark,
       decoration: InputDecoration(
         hintText: lastName ? 'Last name' : 'First name',
         hintStyle: ZyraText.body(size: 28, color: ZyraColors.ink(0.46)),
         filled: false,
-        counterText: '',
         contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 18),
         border: UnderlineInputBorder(
           borderSide: BorderSide(

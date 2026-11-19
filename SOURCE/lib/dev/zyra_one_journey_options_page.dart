@@ -1,3 +1,4 @@
+import '../widgets/zyra_profile_name_block.dart';
 import '../widgets/zyra_developer_title.dart';
 import '../widgets/floating_nav_bar.dart';
 import '../widgets/zyra_floating_surface.dart';
@@ -45,13 +46,25 @@ class ZyraOneJourneyOptionsPage extends StatelessWidget {
         child: ZyraSeekerAvatar(photo: photo, size: 84, applyAvatarCrop: false),
       ),
       const SizedBox(height: 12),
-      Text(
-        '$firstName $surname'.trim(),
+      ZyraFittedProfileFirstName(
+        firstName,
+        semanticsLabel: '$firstName $surname'.trim(),
         textAlign: TextAlign.center,
         style: ZyraText.heading(
           size: 24,
         ).copyWith(height: 1.2, fontWeight: FontWeight.w300),
       ),
+      if (surname.trim().isNotEmpty)
+        Text(
+          surname.trim(),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          semanticsLabel: '',
+          textAlign: TextAlign.center,
+          style: ZyraText.heading(
+            size: 24,
+          ).copyWith(height: 1.2, fontWeight: FontWeight.w300),
+        ),
       const SizedBox(height: 8),
       Text(
         'STAGE $stageNumber OF 8 · ${stageLabel.toUpperCase()}',

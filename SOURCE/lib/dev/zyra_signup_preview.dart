@@ -827,7 +827,11 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
       hintText: hint,
       hintStyle: ZyraText.subtext(size: 15),
       suffixIconConstraints: const BoxConstraints(minHeight: 24),
-      suffixIcon: limit != null && !numeric && lines == 1
+      suffixIcon:
+          limit != null &&
+              !numeric &&
+              lines == 1 &&
+              limit - value.characters.length <= 5
           ? Padding(
               padding: const EdgeInsets.only(right: 14),
               child: Text(

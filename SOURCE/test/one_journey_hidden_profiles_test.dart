@@ -324,6 +324,28 @@ void _expectCardContents(WidgetTester tester) {
   expect(find.descendant(of: _key(_card), matching: _key(_help)), findsNothing);
 }
 
+// Only the projected person-name label is capped by LOCK 33. Actions and
+// explanatory copy retain the full-reading checks below.
+bool _expectLockedHiddenName(
+  WidgetTester tester,
+  Element element,
+  double width,
+) {
+  final text = element.widget as Text;
+  final names = _overview(tester).hiddenProfiles?.map((p) => p.name).toSet();
+  if (names?.contains(text.data) != true) return false;
+  expect(text.maxLines, 1);
+  expect(text.overflow, TextOverflow.ellipsis);
+  expect(text.semanticsLabel, text.data);
+  expect(text.style!.fontSize, 16);
+  final paragraph = tester.renderObject<RenderParagraph>(
+    find.descendant(of: find.byWidget(text), matching: find.byType(RichText)),
+  );
+  expect(paragraph.maxLines, 1);
+  expect(paragraph.size.width, lessThanOrEqualTo(width));
+  return true;
+}
+
 void _expectReadableHiddenText(WidgetTester tester) {
   var measured = 0;
   final width = tester.view.physicalSize.width / tester.view.devicePixelRatio;
@@ -335,6 +357,10 @@ void _expectReadableHiddenText(WidgetTester tester) {
           )
           .evaluate()) {
     final text = element.widget as Text;
+    if (_expectLockedHiddenName(tester, element, width)) {
+      measured++;
+      continue;
+    }
     expect(text.overflow, isNot(TextOverflow.ellipsis));
     final object = element.findRenderObject();
     if (object is RenderParagraph && object.hasSize) {
@@ -1417,6 +1443,7 @@ void main() {
       expect(tester.getSize(_key(_confirm)).height, greaterThanOrEqualTo(44));
       for (final element in find.byType(Text).evaluate()) {
         final text = element.widget as Text;
+        if (_expectLockedHiddenName(tester, element, 320)) continue;
         expect(text.overflow, isNot(TextOverflow.ellipsis));
         final object = element.findRenderObject();
         if (object is RenderParagraph && object.hasSize) {

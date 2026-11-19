@@ -121,8 +121,9 @@ class ZyraProfileNameBlock extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         // LINE 1 — the first name.
-        Text(
+        ZyraFittedProfileFirstName(
           profile.firstName,
+          semanticsLabel: '${profile.firstName} $surname'.trim(),
           style: ZyraText.heading(
             size: nameSize,
             color: onPhoto ? Colors.white : null,
@@ -140,6 +141,9 @@ class ZyraProfileNameBlock extends StatelessWidget {
           const SizedBox(height: 2),
           Text(
             surname,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            semanticsLabel: '',
             style: ZyraText.heading(size: _surnameSize).copyWith(
               color: Colors.white.withValues(alpha: 0.95),
               fontWeight: FontWeight.w500,
@@ -172,4 +176,81 @@ class ZyraProfileNameBlock extends StatelessWidget {
       ],
     );
   }
+}
+
+/// LOCK 33: a profile first name stays on one line, down to 75% of its
+/// original font size, then ellipsises. Text scaling remains caller-owned.
+class ZyraFittedProfileFirstName extends StatelessWidget {
+  const ZyraFittedProfileFirstName(
+    this.name, {
+    super.key,
+    required this.style,
+    this.textAlign = TextAlign.start,
+    this.semanticsLabel,
+    this.maxWidth,
+  });
+
+  final String name;
+  final TextStyle style;
+  final TextAlign textAlign;
+  final String? semanticsLabel;
+
+  // Intrinsic-height profile cards already know their content width. Supplying
+  // it avoids asking a LayoutBuilder for intrinsic dimensions.
+  final double? maxWidth;
+
+  Widget _text(BuildContext context, double width) {
+    var effective = DefaultTextStyle.of(context).style.merge(style);
+    if (MediaQuery.boldTextOf(context)) {
+      effective = effective.copyWith(fontWeight: FontWeight.bold);
+    }
+    final base = effective.fontSize!;
+    final scaler = MediaQuery.textScalerOf(context);
+    bool fits(double size) {
+      final painter = TextPainter(
+        text: TextSpan(
+          text: name,
+          style: effective.copyWith(fontSize: size),
+        ),
+        textDirection: Directionality.of(context),
+        textScaler: scaler,
+        locale: Localizations.maybeLocaleOf(context),
+        maxLines: 1,
+      )..layout(maxWidth: width);
+      final fits = !painter.didExceedMaxLines;
+      painter.dispose();
+      return fits;
+    }
+
+    var size = base;
+    if (width.isFinite && !fits(base)) {
+      var lower = base * .75;
+      var upper = base;
+      for (var i = 0; i < 12; i++) {
+        final middle = (lower + upper) / 2;
+        if (fits(middle)) {
+          lower = middle;
+        } else {
+          upper = middle;
+        }
+      }
+      size = lower;
+    }
+    return Text(
+      name,
+      style: style.copyWith(fontSize: size),
+      textAlign: textAlign,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      semanticsLabel: semanticsLabel,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) => maxWidth != null
+      ? _text(context, maxWidth!)
+      : LayoutBuilder(
+          builder: (context, constraints) =>
+              _text(context, constraints.maxWidth),
+        );
 }
