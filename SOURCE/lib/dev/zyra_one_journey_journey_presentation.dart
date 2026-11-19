@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import '../widgets/zyra_floating_surface.dart';
 // Current Journey presentation with caller-owned, disposable local actions.
 // No JourneyFlowScreen, transport, member singleton or preference mutation.
@@ -482,10 +483,12 @@ class _ZyraConceptJourneyPresentationState
                             ),
                           ),
                         Expanded(
-                          child: Text(
-                            'Journey with ${widget.firstName}',
-                            style: ZyraText.heading(size: 16),
-                            textAlign: TextAlign.center,
+                          child: ZyraDeveloperTitle(
+                            child: Text(
+                              'Journey with ${widget.firstName}',
+                              style: ZyraText.heading(size: 16),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
                         widget.options ?? const SizedBox(width: 48),

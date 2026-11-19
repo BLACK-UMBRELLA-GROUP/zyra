@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
@@ -73,11 +74,13 @@ class ZyraRequestCapacityChoice extends StatelessWidget {
                   Semantics(
                     value:
                         '$capacity Journey ${capacity == 1 ? 'place' : 'places'} in use',
-                    child: Text(
-                      acceptedSent
-                          ? '$firstName accepted your request.'
-                          : 'Your Journey places are full.',
-                      style: ZyraText.heading(size: 26).copyWith(height: 1.2),
+                    child: ZyraDeveloperTitle(
+                      child: Text(
+                        acceptedSent
+                            ? '$firstName accepted your request.'
+                            : 'Your Journey places are full.',
+                        style: ZyraText.heading(size: 26).copyWith(height: 1.2),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 12),

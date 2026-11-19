@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import '../widgets/zyra_floating_surface.dart';
 // Pure presentation for the protected One Journey comparison. The source of
 // the visual rules is the current Browse/Connections screen, not a new design.
@@ -575,13 +576,15 @@ class _ZyraOneJourneyConnectionsPresentationState
                 Expanded(
                   child: Align(
                     alignment: widget.titleAlignment,
-                    child: Text(
-                      widget.title,
-                      key: const ValueKey('concept_connections_title'),
-                      textAlign: widget.titleAlignment.x > 0
-                          ? TextAlign.right
-                          : TextAlign.left,
-                      style: ZyraText.pageTitle(),
+                    child: ZyraDeveloperTitle(
+                      child: Text(
+                        widget.title,
+                        key: const ValueKey('concept_connections_title'),
+                        textAlign: widget.titleAlignment.x > 0
+                            ? TextAlign.right
+                            : TextAlign.left,
+                        style: ZyraText.pageTitle(),
+                      ),
                     ),
                   ),
                 ),

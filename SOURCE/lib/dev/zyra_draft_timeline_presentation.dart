@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import '../widgets/zyra_floating_surface.dart';
 // Read-only Timeline presentation. Callers supply admitted values and fresh
 // local actions; this widget owns no lookup, disclosure or relationship state.
@@ -489,11 +490,13 @@ class ZyraDraftTimelinePresentation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Text(
-              'Timeline',
-              key: const ValueKey('draft_timeline_title'),
-              style: ZyraText.pageTitle(),
-              textAlign: TextAlign.left,
+            child: ZyraDeveloperTitle(
+              child: Text(
+                'Timeline',
+                key: const ValueKey('draft_timeline_title'),
+                style: ZyraText.pageTitle(),
+                textAlign: TextAlign.left,
+              ),
             ),
           ),
           if (canPropose && available.isNotEmpty)

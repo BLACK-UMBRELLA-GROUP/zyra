@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 // LOCK 3: local Founder preview education, using current Profiles components.
 import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
@@ -84,7 +85,9 @@ class _ZyraGuardianInfoPresentationState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('What Guardians can do', style: ZyraText.pageTitle()),
+            ZyraDeveloperTitle(
+              child: Text('What Guardians can do', style: ZyraText.pageTitle()),
+            ),
             const SizedBox(height: 20),
             ZyraProfilesDots(
               count: 4,

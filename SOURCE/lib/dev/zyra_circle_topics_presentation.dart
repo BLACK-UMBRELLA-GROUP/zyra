@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import 'package:flutter/material.dart';
 
 import '../services/zyra_family_messaging_service.dart';
@@ -204,7 +205,9 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
     child: Row(
       children: [
         Expanded(
-          child: Text('Guardian Circle', style: ZyraText.heading(size: 28)),
+          child: ZyraDeveloperTitle(
+            child: Text('Guardian Circle', style: ZyraText.heading(size: 28)),
+          ),
         ),
         const SizedBox(width: 8),
         _action(

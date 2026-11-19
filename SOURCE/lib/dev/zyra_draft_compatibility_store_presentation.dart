@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import 'package:flutter/material.dart';
 
 import '../data/zyra_membership_catalog.dart';
@@ -142,10 +143,12 @@ class _ZyraDraftCompatibilityStorePresentationState
             children: [
               Semantics(
                 header: true,
-                child: Text(
-                  'Compatibility Unlocks',
-                  key: const ValueKey('draft_compatibility_store_title'),
-                  style: _pageTitleStyle,
+                child: ZyraDeveloperTitle(
+                  child: Text(
+                    'Compatibility Unlocks',
+                    key: const ValueKey('draft_compatibility_store_title'),
+                    style: _pageTitleStyle,
+                  ),
                 ),
               ),
               if (fits)

@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import '../widgets/zyra_floating_surface.dart';
 // LOCK12 V2: real device permissions inside the admitted Founder shell.
 import 'dart:async';
@@ -276,7 +277,9 @@ class ZyraPhoneAccessPresentation extends StatelessWidget {
           key: const ValueKey('phone_access_scroll'),
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
           children: [
-            Text('Phone access', style: ZyraText.heading(size: 28)),
+            ZyraDeveloperTitle(
+              child: Text('Phone access', style: ZyraText.heading(size: 28)),
+            ),
             const SizedBox(height: 16),
             Text(
               'What ZYRA can use on this phone.',

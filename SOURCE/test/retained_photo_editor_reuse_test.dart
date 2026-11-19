@@ -21,6 +21,8 @@ import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_profile_image.dart';
+import 'package:zyra/state/zyra_developer_samples.dart';
+import 'package:zyra/widgets/zyra_developer_panel.dart';
 import 'package:zyra/widgets/zyra_pull_down_back_scope.dart';
 
 const _editorKey = ValueKey('retained-photo-editor-owner');
@@ -98,12 +100,15 @@ Widget _harness(Widget child, {double textScale = 1}) => MaterialApp(
 
 EditPhotosScreen _editor(
   _Owner owner, {
+  bool Function()? canAct,
+  bool Function()? canRetain,
   List<String>? photos,
   ZyraPhotoBatchRunner? runner,
   ZyraHapticLevel hapticLevel = ZyraInteractionStyle.currentDefaultHapticLevel,
 }) => EditPhotosScreen.preview(
   key: _editorKey,
-  canAct: owner.guard,
+  canAct: canAct ?? owner.guard,
+  canRetain: canRetain,
   initialPhotos: photos ?? [_photo(90), _photo(140)],
   gender: 'female',
   initialAlignmentX: .1,
@@ -270,6 +275,136 @@ void main() {
         findsNothing,
       );
       expect(owner.photos, isEmpty);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'retained Photos survive a root Developer sheet and reject covered writes',
+    (tester) async {
+      final owner = _Owner();
+      final initial = [_photo(90), _photo(140)];
+      final rootNavigation = GlobalKey<NavigatorState>();
+      final innerNavigation = GlobalKey<NavigatorState>();
+      late ModalRoute<dynamic> rootRoute;
+      late BuildContext rootContext;
+      bool focused() => owner.allowed && rootRoute.isCurrent;
+      final panelValues = ValueNotifier(
+        const ZyraDeveloperPanelValues(
+          active: 0,
+          ended: 0,
+          received: 0,
+          sent: 0,
+          past: ZyraDeveloperPast.none,
+          introductions: 0,
+        ),
+      );
+      addTearDown(panelValues.dispose);
+      tester.view.physicalSize = const Size(393, 852);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(
+        MaterialApp(
+          navigatorKey: rootNavigation,
+          theme: ThemeData.dark(),
+          home: Builder(
+            builder: (context) {
+              rootRoute = ModalRoute.of(context)!;
+              rootContext = context;
+              return Scaffold(
+                body: Navigator(
+                  key: innerNavigation,
+                  onGenerateRoute: (_) => MaterialPageRoute<void>(
+                    builder: (_) => _editor(
+                      owner,
+                      photos: initial,
+                      canAct: focused,
+                      canRetain: owner.guard,
+                      hapticLevel: ZyraHapticLevel.off,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      final state = tester.state(find.byType(EditPhotosScreen));
+      final innerRoute = ModalRoute.of(
+        tester.element(find.byType(EditPhotosScreen)),
+      )!;
+      await _compact(tester);
+      await tester.tap(find.byKey(const ValueKey('compact-photo-1')));
+      await tester.pumpAndSettle();
+      final coveredPromote = tester
+          .widget<FilledButton>(
+            find.widgetWithText(FilledButton, 'Make main photo'),
+          )
+          .onPressed!;
+      unawaited(
+        rootNavigation.currentState!.push<void>(
+          zyraDeveloperPanelRoute(
+            rootContext,
+            email: 'preview@example.com',
+            planName: 'Seeker One',
+            journeyPlaces: 3,
+            values: panelValues,
+            onActive: (_) {},
+            onEnded: (_) {},
+            onReceived: (_) {},
+            onSent: (_) {},
+            onPast: (_) {},
+            onIntroductions: (_) {},
+            onClear: () {},
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(rootRoute.isCurrent, isFalse);
+      expect(innerRoute.isCurrent, isTrue);
+      coveredPromote();
+      await tester.pumpAndSettle();
+      expect(owner.photos, isEmpty);
+      expect(owner.avatars, isEmpty);
+      expect(find.byKey(const ValueKey('dev_panel')), findsOneWidget);
+      await tester.ensureVisible(find.byKey(const ValueKey('dev_done')));
+      await tester.tap(find.byKey(const ValueKey('dev_done')));
+      await tester.pumpAndSettle();
+      expect(rootRoute.isCurrent, isTrue);
+      expect(tester.state(find.byType(EditPhotosScreen)), same(state));
+      expect(
+        find.byKey(const ValueKey('photos-preview-unavailable')),
+        findsNothing,
+      );
+      expect(find.byKey(const ValueKey('compact-photo-1')), findsOneWidget);
+      await tester.tap(find.widgetWithText(FilledButton, 'Make main photo'));
+      await tester.pumpAndSettle();
+      expect(owner.photos.single, [initial[1], initial[0]]);
+      expect(owner.avatars.single, Offset.zero);
+
+      // Retention is a terminal owner lease, not a pause/resume switch.
+      await _compact(tester);
+      await tester.tap(find.byKey(const ValueKey('compact-photo-1')));
+      await tester.pumpAndSettle();
+      final revokedPromote = tester
+          .widget<FilledButton>(
+            find.widgetWithText(FilledButton, 'Make main photo'),
+          )
+          .onPressed!;
+      owner.allowed = false;
+      revokedPromote();
+      await tester.pumpAndSettle();
+      owner.allowed = true;
+      revokedPromote();
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const ValueKey('photos-preview-unavailable')),
+        findsOneWidget,
+      );
+      expect(owner.photos, hasLength(1));
+      expect(owner.avatars, hasLength(1));
       expect(tester.takeException(), isNull);
     },
   );

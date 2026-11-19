@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 // LOCK22 V5/V6: local Seeker and Guardian advice. Navigation and account authority stay in the host.
 import 'package:flutter/material.dart';
 
@@ -89,7 +90,12 @@ class ZyraDraftSafetyAdvicePresentation extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text('Safety & advice', style: ZyraText.heading(size: 26)),
+              ZyraDeveloperTitle(
+                child: Text(
+                  'Safety & advice',
+                  style: ZyraText.heading(size: 26),
+                ),
+              ),
               const SizedBox(height: 20),
               Center(
                 child: Container(

@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -46,11 +47,13 @@ class ZyraJourneyPeerGuardiansPresentation extends StatelessWidget {
               style: ZyraText.subtext(size: 13),
             ),
             const SizedBox(height: 12),
-            Text(
-              'Guardians',
-              key: const ValueKey('peer_guardians_title'),
-              style: ZyraText.pageTitle(),
-              textAlign: TextAlign.left,
+            ZyraDeveloperTitle(
+              child: Text(
+                'Guardians',
+                key: const ValueKey('peer_guardians_title'),
+                style: ZyraText.pageTitle(),
+                textAlign: TextAlign.left,
+              ),
             ),
             const SizedBox(height: 20),
             Expanded(

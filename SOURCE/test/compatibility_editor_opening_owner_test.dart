@@ -22,6 +22,9 @@ import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/services/zyra_local_prefs.dart';
 import 'package:zyra/services/zyra_onboarding_answers_service.dart';
 import 'package:zyra/state/app_state.dart';
+import 'package:zyra/state/zyra_developer_samples.dart';
+import 'package:zyra/widgets/zyra_developer_panel.dart';
+import 'package:zyra/widgets/zyra_pull_down_back_scope.dart';
 import 'package:zyra/theme/zyra_text.dart';
 
 const _a = '00000000-0000-4000-8000-000000003421';
@@ -386,6 +389,145 @@ void main() {
       use();
       await _settle(tester);
       withdrawn(tester);
+    },
+  );
+
+  ownerTest(
+    'preview nested answer retains its lease across a root Developer sheet',
+    (tester) async {
+      final innerNavigation = GlobalKey<NavigatorState>();
+      final innerObserver = _Navigation();
+      late ModalRoute<dynamic> rootRoute;
+      late BuildContext rootContext;
+      var retained = true;
+      bool canAct() => retained && rootRoute.isCurrent;
+      bool canRetain() => retained;
+      final panelValues = ValueNotifier(
+        const ZyraDeveloperPanelValues(
+          active: 0,
+          ended: 0,
+          received: 0,
+          sent: 0,
+          past: ZyraDeveloperPast.none,
+          introductions: 0,
+        ),
+      );
+      addTearDown(panelValues.dispose);
+      await tester.pumpWidget(
+        app(
+          Builder(
+            builder: (context) {
+              rootContext = context;
+              rootRoute = ModalRoute.of(context)!;
+              return Scaffold(
+                body: Navigator(
+                  key: innerNavigation,
+                  observers: [innerObserver],
+                  onGenerateRoute: (_) => MaterialPageRoute<void>(
+                    builder: (_) => EditProfileScreen.preview(
+                      key: _hub,
+                      repository: repository,
+                      canAct: canAct,
+                      canRetain: canRetain,
+                      gender: 'male',
+                      age: 30,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      );
+      await _settle(tester);
+      await _tap(tester, 'compatibility-editor-aboutYou');
+      final save = _save(tester);
+      final question = await _answerPage(tester);
+      final use = _save(tester, 'question-save');
+      final back = tester
+          .widget<ZyraPullDownBackScope>(
+            find
+                .ancestor(
+                  of: find.byType(GenericSelectQuestionScreen),
+                  matching: find.byType(ZyraPullDownBackScope),
+                )
+                .first,
+          )
+          .onBack;
+      final questionState = tester.state(
+        find.byType(GenericSelectQuestionScreen),
+      );
+      final questionRoute = ModalRoute.of(
+        tester.element(find.byType(GenericSelectQuestionScreen)),
+      )!;
+      question.onChanged(_answer.options.last);
+      await _settle(tester);
+      final innerPops = innerObserver.pops;
+      unawaited(
+        navigation.currentState!.push<void>(
+          zyraDeveloperPanelRoute(
+            rootContext,
+            email: 'preview@example.com',
+            planName: 'Seeker One',
+            journeyPlaces: 3,
+            values: panelValues,
+            onActive: (_) {},
+            onEnded: (_) {},
+            onReceived: (_) {},
+            onSent: (_) {},
+            onPast: (_) {},
+            onIntroductions: (_) {},
+            onClear: () {},
+          ),
+        ),
+      );
+      await _settle(tester);
+      expect(rootRoute.isCurrent, isFalse);
+      expect(questionRoute.isCurrent, isTrue);
+      question.onChanged(_answer.options.first);
+      use();
+      back();
+      save();
+      await _settle(tester);
+      expect(_key('dev_panel'), findsOneWidget);
+      expect(innerObserver.pops, innerPops);
+      expect(repository.saves, isEmpty);
+      await _tap(tester, 'dev_done');
+      expect(rootRoute.isCurrent, isTrue);
+      expect(
+        tester.state(find.byType(GenericSelectQuestionScreen)),
+        same(questionState),
+      );
+      expect(_key('compatibility_editor_preview_denied'), findsNothing);
+      use();
+      await _settle(tester);
+      tester
+          .widget<ZyraPullDownBackScope>(find.byType(ZyraPullDownBackScope))
+          .onBack();
+      await _settle(tester);
+      save();
+      await _settle(tester);
+      expect(repository.saves, hasLength(1));
+      expect(
+        repository.saves.single.$2.answers[_answer.responseKey],
+        _answer.options.last,
+      );
+
+      // A real lease loss remains terminal even if the same caller returns.
+      await _tap(tester, 'compatibility-editor-aboutYou');
+      final staleSave = _save(tester);
+      final retiredQuestion = await _answerPage(tester);
+      final retiredUse = _save(tester, 'question-save');
+      retained = false;
+      retiredQuestion.onChanged(_answer.options.first);
+      await _settle(tester);
+      retained = true;
+      retiredUse();
+      staleSave();
+      await _settle(tester);
+      expect(_key('compatibility_editor_preview_denied'), findsOneWidget);
+      expect(repository.saves, hasLength(1));
+      expect(tester.takeException(), isNull);
     },
   );
 

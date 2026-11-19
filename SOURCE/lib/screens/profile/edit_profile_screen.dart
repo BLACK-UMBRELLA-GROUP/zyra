@@ -181,6 +181,7 @@ class EditProfileScreen extends StatefulWidget {
   final ZyraCompatibilityEditorRepository? repository;
   final bool _preview;
   final bool Function()? _previewCanAct;
+  final bool Function()? _previewCanRetain;
   final String? _previewGender;
   final int? _previewAge;
 
@@ -195,6 +196,7 @@ class EditProfileScreen extends StatefulWidget {
     this.openPreferenceQuickCheck = false,
   }) : _preview = false,
        _previewCanAct = null,
+       _previewCanRetain = null,
        _previewGender = null,
        _previewAge = null,
        onSupport = null,
@@ -206,6 +208,7 @@ class EditProfileScreen extends StatefulWidget {
     super.key,
     required ZyraCompatibilityEditorRepository this.repository,
     required bool Function() canAct,
+    bool Function()? canRetain,
     required String? gender,
     required int? age,
     this.onSupport,
@@ -213,6 +216,7 @@ class EditProfileScreen extends StatefulWidget {
     this.openPreferenceQuickCheck = false,
   }) : _preview = true,
        _previewCanAct = canAct,
+       _previewCanRetain = canRetain ?? canAct,
        _previewGender = gender,
        _previewAge = age;
 
@@ -227,6 +231,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late final bool _explicitPreview;
   late final bool _embeddedPreview;
   late final bool Function()? _previewOwner;
+  late final bool Function()? _previewRetention;
   late final String? _previewGender;
   late final int? _previewAge;
   late final VoidCallback? _previewSupport;
@@ -262,11 +267,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       if (!widget._preview ||
           widget.repository != _repository ||
           widget._previewCanAct != _previewOwner ||
+          widget._previewCanRetain != _previewRetention ||
           widget._previewGender != _previewGender ||
           widget._previewAge != _previewAge ||
           widget.onSupport != _previewSupport ||
-          _previewOwner?.call() != true ||
-          widget._previewCanAct?.call() != true ||
+          _previewRetention?.call() != true ||
           !_currentOwner) {
         _previewRevoked = true;
         return false;
@@ -288,7 +293,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   bool get _canUse {
     if (!mounted) return false;
-    if (_explicitPreview) return _previewAvailable;
+    if (_explicitPreview) {
+      return _previewAvailable && _previewOwner?.call() == true;
+    }
     if (_ordinaryRevoked) return false;
     final preview = (
       ZyraInternalPreviewClient.isActive,
@@ -316,6 +323,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _openQuickCheckOnLoad = widget.openPreferenceQuickCheck;
     _embeddedPreview = widget.embedded;
     _previewOwner = widget._previewCanAct;
+    _previewRetention = widget._previewCanRetain;
     _previewGender = widget._previewGender;
     _previewAge = widget._previewAge;
     _previewSupport = widget.onSupport;
@@ -375,7 +383,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   void _admissionChanged() {
     if (!mounted) return;
-    final available = _canUse;
+    final available = _explicitPreview ? _previewAvailable : _canUse;
     if (!available) {
       ++_loadEpoch;
       _loading = false;
@@ -511,6 +519,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       return;
     }
     bool canEdit() => _canUse;
+    bool canRetain() => _previewAvailable;
     Future<bool> persist(ZyraCompatibilityDraft candidate) =>
         _persist(kind, candidate);
     ZyraPreferenceQuickCheck? quickCheck;
@@ -555,6 +564,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 initialDraft: draft,
                 onPersist: persist,
                 canAct: canEdit,
+                canRetain: canRetain,
                 canActChanges: _ownerChanges,
                 quickCheck: quickCheck,
                 openQuickCheck: checkNow,
@@ -624,10 +634,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-                child: Text(
-                  'Edit profile',
-                  key: const ValueKey('edit_profile_preview_title'),
-                  style: ZyraText.heading(size: 28),
+                child: ZyraDeveloperTitle(
+                  child: Text(
+                    'Edit profile',
+                    key: const ValueKey('edit_profile_preview_title'),
+                    style: ZyraText.heading(size: 28),
+                  ),
                 ),
               ),
               Expanded(child: content),

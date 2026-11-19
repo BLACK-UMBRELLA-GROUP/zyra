@@ -1,3 +1,4 @@
+import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_floating_surface.dart';
 import '../../widgets/zyra_tap_feedback.dart';
 import '../../widgets/zyra_profiles_components.dart';
@@ -40,6 +41,7 @@ class EditPhotosScreen extends StatefulWidget {
   const EditPhotosScreen({super.key, this.photoBatchRunner})
     : _preview = false,
       _canAct = null,
+      _canRetain = null,
       _initialPhotos = null,
       _gender = null,
       _initialAlignmentX = 0,
@@ -58,6 +60,7 @@ class EditPhotosScreen extends StatefulWidget {
   const EditPhotosScreen.preview({
     super.key,
     required bool Function() canAct,
+    bool Function()? canRetain,
     required List<String> initialPhotos,
     required String? gender,
     required double initialAlignmentX,
@@ -73,6 +76,7 @@ class EditPhotosScreen extends StatefulWidget {
   }) : _preview = true,
        // ignore: prefer_initializing_formals
        _canAct = canAct,
+       _canRetain = canRetain ?? canAct,
        // ignore: prefer_initializing_formals
        _initialPhotos = initialPhotos,
        // ignore: prefer_initializing_formals
@@ -88,6 +92,7 @@ class EditPhotosScreen extends StatefulWidget {
 
   final bool _preview;
   final bool Function()? _canAct;
+  final bool Function()? _canRetain;
   final List<String>? _initialPhotos;
   final String? _gender;
   final double _initialAlignmentX;
@@ -159,6 +164,7 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
   late final bool _previewMode;
   late final bool _embedded;
   late final bool Function()? _previewOwnerCanAct;
+  late final bool Function()? _previewOwnerCanRetain;
   late final ValueChanged<List<String>>? _onPhotosChanged;
   late final ValueChanged<Offset>? _onAvatarChanged;
   late final String? _previewGender;
@@ -266,6 +272,24 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
     binding.ensureVisualUpdate();
   }
 
+  bool get _previewLeaseCurrent {
+    if (!mounted || _previewRevoked) return false;
+    try {
+      if (!widget._preview ||
+          widget._canAct != _previewOwnerCanAct ||
+          widget._canRetain != _previewOwnerCanRetain ||
+          _previewOwnerCanRetain?.call() != true ||
+          widget._canRetain?.call() != true) {
+        _previewRevoked = true;
+        return false;
+      }
+      return true;
+    } catch (_) {
+      _previewRevoked = true;
+      return false;
+    }
+  }
+
   bool get _ownerCanAct {
     if (!mounted) return false;
     if (!_previewMode) {
@@ -273,15 +297,11 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
       _withdrawOrdinaryOwner();
       return false;
     }
-    if (_previewRevoked) return false;
+    if (!_previewLeaseCurrent) return false;
     try {
-      if (!widget._preview ||
-          _previewOwnerCanAct?.call() != true ||
-          widget._canAct?.call() != true) {
-        _previewRevoked = true;
-        return false;
-      }
-      return true;
+      // Coverage denies actions without retiring an otherwise current lease.
+      return _previewOwnerCanAct?.call() == true &&
+          widget._canAct?.call() == true;
     } catch (_) {
       _previewRevoked = true;
       return false;
@@ -355,6 +375,7 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
     _previewMode = widget._preview;
     _embedded = widget.embedded;
     _previewOwnerCanAct = widget._canAct;
+    _previewOwnerCanRetain = widget._canRetain;
     _onPhotosChanged = widget._onPhotosChanged;
     _onAvatarChanged = widget._onAvatarChanged;
     _previewGender = widget._gender;
@@ -412,6 +433,8 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
     super.didUpdateWidget(oldWidget);
     if (_previewMode &&
         (!widget._preview ||
+            widget._canAct != _previewOwnerCanAct ||
+            widget._canRetain != _previewOwnerCanRetain ||
             !identical(widget._onPhotosChanged, _onPhotosChanged) ||
             !identical(widget._onAvatarChanged, _onAvatarChanged) ||
             !identical(widget.localPhotoImport, _localPhotoImport))) {
@@ -934,7 +957,8 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
     if (!_previewMode && !_ownerCanAct) {
       return const SizedBox.expand(key: ValueKey('photos-owner-unavailable'));
     }
-    if ((_previewMode && !_ownerCanAct) || widget._preview != _previewMode) {
+    if ((_previewMode && !_previewLeaseCurrent) ||
+        widget._preview != _previewMode) {
       return const SizedBox.expand(key: ValueKey('photos-preview-unavailable'));
     }
     final video = widget.profileVideo;
@@ -971,10 +995,12 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
                       ),
                     if (!_previewMode) const SizedBox(width: 4),
                     Expanded(
-                      child: Text(
-                        'Photos',
-                        key: const ValueKey('photos-title'),
-                        style: ZyraText.heading(size: _previewMode ? 28 : 20),
+                      child: ZyraDeveloperTitle(
+                        child: Text(
+                          'Photos',
+                          key: const ValueKey('photos-title'),
+                          style: ZyraText.heading(size: _previewMode ? 28 : 20),
+                        ),
                       ),
                     ),
                     IconButton(
@@ -1185,10 +1211,12 @@ class _EditPhotosScreenState extends State<EditPhotosScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-                child: Text(
-                  'Photos',
-                  key: const ValueKey('photos-title'),
-                  style: ZyraText.heading(size: 28),
+                child: ZyraDeveloperTitle(
+                  child: Text(
+                    'Photos',
+                    key: const ValueKey('photos-title'),
+                    style: ZyraText.heading(size: 28),
+                  ),
                 ),
               ),
               Padding(

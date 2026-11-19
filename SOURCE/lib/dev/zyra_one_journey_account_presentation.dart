@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import 'dart:math' as math;
 
 import '../widgets/zyra_floating_surface.dart';
@@ -708,10 +709,12 @@ class ZyraConceptSettingsPresentation extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-              child: Text(
-                'Settings',
-                key: const ValueKey('concept_settings_title'),
-                style: ZyraText.heading(size: 28),
+              child: ZyraDeveloperTitle(
+                child: Text(
+                  'Settings',
+                  key: const ValueKey('concept_settings_title'),
+                  style: ZyraText.heading(size: 28),
+                ),
               ),
             ),
             Expanded(

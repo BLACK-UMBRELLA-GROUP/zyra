@@ -3,9 +3,13 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../data/zyra_journey_stages.dart';
+import '../models/zyra_developer_preview.dart';
+import '../models/zyra_error_state.dart';
 import '../state/zyra_developer_samples.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_motion.dart';
+import '../theme/zyra_interaction_style.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_confirm_sheet.dart';
 import 'zyra_tap_feedback.dart';
@@ -18,10 +22,12 @@ class ZyraDeveloperPanelValues {
     required this.sent,
     required this.past,
     required this.introductions,
+    this.preview,
   });
 
   final int active, ended, received, sent, introductions;
   final ZyraDeveloperPast past;
+  final ZyraDeveloperPreviewValues? preview;
 }
 
 ModalBottomSheetRoute<void> zyraDeveloperPanelRoute(
@@ -30,6 +36,7 @@ ModalBottomSheetRoute<void> zyraDeveloperPanelRoute(
   required String planName,
   required int journeyPlaces,
   required ValueListenable<ZyraDeveloperPanelValues> values,
+  ZyraDeveloperPreviewActions? previewActions,
   Listenable? visibilityListenable,
   bool Function()? isVisible,
   required ValueChanged<int> onActive,
@@ -40,6 +47,9 @@ ModalBottomSheetRoute<void> zyraDeveloperPanelRoute(
   required ValueChanged<int> onIntroductions,
   required VoidCallback onClear,
 }) {
+  final hapticLevel = context
+      .dependOnInheritedWidgetOfExactType<ZyraTapFeedback>()
+      ?.level();
   return ModalBottomSheetRoute<void>(
     capturedThemes: InheritedTheme.capture(
       from: context,
@@ -61,6 +71,7 @@ ModalBottomSheetRoute<void> zyraDeveloperPanelRoute(
         planName: planName,
         journeyPlaces: journeyPlaces,
         values: values,
+        previewActions: previewActions,
         onActive: onActive,
         onEnded: onEnded,
         onReceived: onReceived,
@@ -71,7 +82,7 @@ ModalBottomSheetRoute<void> zyraDeveloperPanelRoute(
         isVisible: isVisible,
       );
       final visibility = visibilityListenable;
-      return visibility == null
+      final body = visibility == null
           ? panel
           : ListenableBuilder(
               listenable: visibility,
@@ -79,6 +90,15 @@ ModalBottomSheetRoute<void> zyraDeveloperPanelRoute(
               builder: (context, child) =>
                   isVisible?.call() == false ? const SizedBox.shrink() : child!,
             );
+      // A captured preview feedback scope belongs to the covered page.
+      // This sheet retains the chosen level and its own current-route gate.
+      return ZyraTapFeedback(
+        level: () => hapticLevel ?? ZyraInteractionStyle.hapticLevel,
+        canAct: () =>
+            isVisible?.call() != false &&
+            ModalRoute.isCurrentOf(context) == true,
+        child: body,
+      );
     },
   );
 }
@@ -96,12 +116,14 @@ class _DeveloperPanel extends StatefulWidget {
     required this.onPast,
     required this.onIntroductions,
     required this.onClear,
+    this.previewActions,
     this.isVisible,
   });
 
   final String email, planName;
   final int journeyPlaces;
   final ValueListenable<ZyraDeveloperPanelValues> values;
+  final ZyraDeveloperPreviewActions? previewActions;
   final ValueChanged<int> onActive,
       onEnded,
       onReceived,
@@ -130,6 +152,136 @@ class _DeveloperPanelState extends State<_DeveloperPanel> {
     });
   }
 
+  void _previewAction(VoidCallback action) {
+    if (!mounted ||
+        widget.isVisible?.call() == false ||
+        ModalRoute.isCurrentOf(context) != true) {
+      return;
+    }
+    action();
+  }
+
+  List<Widget> _previewBeginning(ZyraDeveloperPreviewValues preview) {
+    final actions = widget.previewActions!;
+    return [
+      const _SectionLabel('VIEW AS'),
+      _DeveloperSelector(
+        id: 'view_as',
+        label: 'View as',
+        labels: [for (final view in ZyraDeveloperViewAs.values) view.label],
+        value: preview.viewAs?.index ?? -1,
+        stacked: true,
+        onChanged: (index) => _previewAction(
+          () => actions.onViewAs(ZyraDeveloperViewAs.values[index]),
+        ),
+      ),
+      const _SectionLabel('SIGN UP'),
+      _DeveloperSwitch(
+        id: 'unverified',
+        label: 'Unverified',
+        value: preview.unverified,
+        onChanged: preview.canActivate
+            ? (value) => _previewAction(() => actions.onUnverified(value))
+            : null,
+      ),
+      _DeveloperSwitch(
+        id: 'setup_unfinished',
+        label: 'Setup unfinished',
+        value: preview.setupUnfinished,
+        onChanged: preview.canActivate
+            ? (value) => _previewAction(() => actions.onSetupUnfinished(value))
+            : null,
+      ),
+    ];
+  }
+
+  List<Widget> _previewJourneys(ZyraDeveloperPreviewValues preview) {
+    final actions = widget.previewActions!;
+    final journeys = preview.journeys;
+    final selectedIndex = journeys.indexWhere(
+      (journey) => journey.id == preview.selectedJourneyId,
+    );
+    final stages = ZyraJourneyStages.previewAll;
+    final selectedStage = selectedIndex < 0
+        ? -1
+        : stages.indexWhere(
+            (stage) => stage.value == journeys[selectedIndex].stage,
+          );
+    return [
+      _DeveloperSelector(
+        id: 'journey',
+        label: 'Open Journey',
+        labels: journeys.isEmpty
+            ? const ['—']
+            : [for (final journey in journeys) journey.name],
+        value: selectedIndex,
+        max: preview.canActivate ? journeys.length - 1 : -1,
+        stacked: true,
+        onChanged: (index) =>
+            _previewAction(() => actions.onJourney(journeys[index].id)),
+      ),
+      _DeveloperSelector(
+        id: 'stage',
+        label: 'Stage',
+        labels: [for (final stage in stages) stage.label],
+        value: selectedStage,
+        max: !preview.canActivate || selectedIndex < 0 ? -1 : stages.length - 1,
+        stacked: true,
+        onChanged: (index) =>
+            _previewAction(() => actions.onStage(stages[index].value)),
+      ),
+    ];
+  }
+
+  List<Widget> _previewEnding(ZyraDeveloperPreviewValues preview) {
+    final actions = widget.previewActions!;
+    return [
+      const _SectionLabel('MY ZYRA'),
+      _DeveloperSelector(
+        id: 'preset',
+        label: 'Preset',
+        labels: [for (final preset in ZyraDeveloperPreset.values) preset.label],
+        value: preview.preset?.index ?? -1,
+        max: preview.canActivate ? 3 : -1,
+        stacked: true,
+        onChanged: (index) => _previewAction(
+          () => actions.onPreset(ZyraDeveloperPreset.values[index]),
+        ),
+      ),
+      if (preview.viewAs?.guardian != true) ...[
+        const _SectionLabel('NOTICES'),
+        _DeveloperSelector(
+          id: 'notice',
+          label: '2-year inactivity',
+          labels: const [
+            'None',
+            'Email 1',
+            'Email 2',
+            'Email 3',
+            'Email 4',
+            'Email 5',
+            'Welcome back',
+          ],
+          value: preview.notice,
+          max: preview.canActivate ? 6 : -1,
+          stacked: true,
+          onChanged: (value) => _previewAction(() => actions.onNotice(value)),
+        ),
+      ],
+      const _SectionLabel('ERROR PAGES'),
+      for (final error in const [
+        (label: 'Phone offline', kind: ZyraErrorKind.offline),
+        (label: 'ZYRA server down', kind: ZyraErrorKind.serviceUnavailable),
+        (label: 'Session ended', kind: ZyraErrorKind.sessionExpired),
+      ])
+        _DeveloperAction(
+          id: 'error_${error.kind.name}',
+          label: error.label,
+          onPressed: () => _previewAction(() => actions.onError(error.kind)),
+        ),
+    ];
+  }
+
   @override
   void dispose() {
     _clearToast?.cancel();
@@ -138,9 +290,6 @@ class _DeveloperPanelState extends State<_DeveloperPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final places = widget.journeyPlaces;
-    final cap =
-        '${widget.planName} has $places ${places == 1 ? 'place' : 'places'}';
     return ConstrainedBox(
       constraints: BoxConstraints(
         maxHeight: MediaQuery.sizeOf(context).height * .88,
@@ -166,127 +315,169 @@ class _DeveloperPanelState extends State<_DeveloperPanel> {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: ValueListenableBuilder(
                           valueListenable: widget.values,
-                          builder: (context, values, _) => Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Semantics(
-                                header: true,
-                                child: Text(
-                                  'Developer',
-                                  style: ZyraText.heading(
-                                    size: 21,
-                                  ).copyWith(fontWeight: FontWeight.w300),
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                '${widget.email} · ${widget.planName}\n'
-                                'Sample data on this account only. Members never see it.',
-                                style: ZyraText.subtext(
-                                  size: 12,
-                                  color: ZyraColors.mutedText,
-                                ).copyWith(height: 1.45),
-                              ),
-                              const _SectionLabel('JOURNEYS'),
-                              _DeveloperSelector.count(
-                                id: 'active',
-                                label: 'Active Journeys',
-                                subtitle: cap,
-                                value: values.active,
-                                max: places,
-                                onChanged: widget.onActive,
-                              ),
-                              _DeveloperSelector.count(
-                                id: 'ended',
-                                label: 'Ended Journeys',
-                                value: values.ended,
-                                onChanged: widget.onEnded,
-                              ),
-                              const _SectionLabel('JOURNEY REQUESTS'),
-                              _DeveloperSelector.count(
-                                id: 'received',
-                                label: 'Received',
-                                value: values.received,
-                                onChanged: widget.onReceived,
-                              ),
-                              _DeveloperSelector.count(
-                                id: 'sent',
-                                label: 'Sent',
-                                value: values.sent,
-                                onChanged: widget.onSent,
-                              ),
-                              _DeveloperSelector(
-                                id: 'past',
-                                label: 'Past',
-                                subtitle: '“Same person” = 20 requests to Sara',
-                                labels: const ['None', 'Mixed', 'Same person'],
-                                value: values.past.index,
-                                onChanged: (index) => widget.onPast(
-                                  ZyraDeveloperPast.values[index],
-                                ),
-                              ),
-                              const _SectionLabel('INTRODUCTIONS'),
-                              _DeveloperSelector.count(
-                                id: 'introductions',
-                                label: 'From your Guardians',
-                                value: values.introductions,
-                                onChanged: widget.onIntroductions,
-                              ),
-                              const SizedBox(height: 14),
-                              const Divider(
-                                height: 1,
-                                thickness: 1,
-                                color: ZyraColors.divider,
-                              ),
-                              TextButton(
-                                key: const ValueKey('dev_clear'),
-                                onPressed: ZyraTapFeedback.onTap(
-                                  context,
-                                  _clear,
-                                ),
-                                style: TextButton.styleFrom(
-                                  minimumSize: const Size.fromHeight(52),
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                  foregroundColor: ZyraColors.espresso,
-                                  textStyle: ZyraText.body(size: 15),
-                                ),
-                                child: const Text('Clear sample data'),
-                              ),
-                              const SizedBox(height: 8),
-                              DecoratedBox(
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(999),
+                          builder: (context, values, _) {
+                            final preview = widget.previewActions == null
+                                ? null
+                                : values.preview;
+                            final places =
+                                preview?.journeyPlaces ?? widget.journeyPlaces;
+                            final plan = preview?.viewAs?.guardian == true
+                                ? switch (places) {
+                                    1 => ZyraDeveloperViewAs.seekerBasic.label,
+                                    3 => ZyraDeveloperViewAs.seekerOne.label,
+                                    _ => preview!.realPlanName,
+                                  }
+                                : preview?.viewAs?.label ??
+                                      preview?.realPlanName ??
+                                      widget.planName;
+                            final cap =
+                                '$plan has $places ${places == 1 ? 'place' : 'places'}';
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Semantics(
+                                  header: true,
+                                  child: Text(
+                                    'Developer',
+                                    style: ZyraText.heading(
+                                      size: 21,
+                                    ).copyWith(fontWeight: FontWeight.w300),
                                   ),
-                                  boxShadow: ZyraColors.cardShadows,
                                 ),
-                                child: OutlinedButton(
-                                  key: const ValueKey('dev_done'),
-                                  onPressed: ZyraTapFeedback.onTap(context, () {
-                                    if (widget.isVisible?.call() != false &&
-                                        ModalRoute.isCurrentOf(context) ==
-                                            true) {
-                                      Navigator.of(context).pop();
-                                    }
-                                  }),
-                                  style: OutlinedButton.styleFrom(
+                                const SizedBox(height: 4),
+                                Text(
+                                  preview == null
+                                      ? '${widget.email} · ${widget.planName}\n'
+                                            'Sample data on this account only. Members never see it.'
+                                      : '${widget.email}\n'
+                                            'Viewing as ${preview.viewAs?.label ?? preview.realPlanName} · real plan${preview.realPlanName == 'none' ? ':' : ''} ${preview.realPlanName}\n'
+                                            'Sample data on this account only. Members never see it.',
+                                  style: ZyraText.subtext(
+                                    size: 12,
+                                    color: ZyraColors.mutedText,
+                                  ).copyWith(height: 1.45),
+                                ),
+                                if (preview != null)
+                                  ..._previewBeginning(preview),
+                                const _SectionLabel('JOURNEYS'),
+                                _DeveloperSelector.count(
+                                  id: 'active',
+                                  label: 'Active Journeys',
+                                  subtitle: cap,
+                                  value: values.active,
+                                  max: preview?.canActivate == false
+                                      ? -1
+                                      : places,
+                                  onChanged: widget.onActive,
+                                ),
+                                if (preview != null)
+                                  ..._previewJourneys(preview),
+                                _DeveloperSelector.count(
+                                  id: 'ended',
+                                  max: preview?.canActivate == false ? -1 : 3,
+                                  label: 'Ended Journeys',
+                                  value: values.ended,
+                                  onChanged: widget.onEnded,
+                                ),
+                                const _SectionLabel('JOURNEY REQUESTS'),
+                                _DeveloperSelector.count(
+                                  id: 'received',
+                                  max: preview?.canActivate == false ? -1 : 3,
+                                  label: 'Received',
+                                  value: values.received,
+                                  onChanged: widget.onReceived,
+                                ),
+                                _DeveloperSelector.count(
+                                  id: 'sent',
+                                  max: preview?.canActivate == false ? -1 : 3,
+                                  label: 'Sent',
+                                  value: values.sent,
+                                  onChanged: widget.onSent,
+                                ),
+                                _DeveloperSelector(
+                                  id: 'past',
+                                  max: preview?.canActivate == false ? -1 : 2,
+                                  label: 'Past',
+                                  subtitle:
+                                      '“Same person” = 20 requests to Sara',
+                                  labels: const [
+                                    'None',
+                                    'Mixed',
+                                    'Same person',
+                                  ],
+                                  value: values.past.index,
+                                  onChanged: (index) => widget.onPast(
+                                    ZyraDeveloperPast.values[index],
+                                  ),
+                                ),
+                                const _SectionLabel('INTRODUCTIONS'),
+                                _DeveloperSelector.count(
+                                  id: 'introductions',
+                                  max: preview?.canActivate == false ? -1 : 3,
+                                  label: 'From your Guardians',
+                                  value: values.introductions,
+                                  onChanged: widget.onIntroductions,
+                                ),
+                                if (preview != null) ..._previewEnding(preview),
+                                const SizedBox(height: 14),
+                                const Divider(
+                                  height: 1,
+                                  thickness: 1,
+                                  color: ZyraColors.divider,
+                                ),
+                                TextButton(
+                                  key: const ValueKey('dev_clear'),
+                                  onPressed: ZyraTapFeedback.onTap(
+                                    context,
+                                    _clear,
+                                  ),
+                                  style: TextButton.styleFrom(
                                     minimumSize: const Size.fromHeight(52),
                                     tapTargetSize:
                                         MaterialTapTargetSize.shrinkWrap,
-                                    side: BorderSide(
-                                      color: ZyraColors.surfaceBorder,
-                                    ),
-                                    shape: const StadiumBorder(),
-                                    backgroundColor: ZyraColors.cardSurface,
-                                    foregroundColor: ZyraColors.mutedText,
+                                    foregroundColor: ZyraColors.espresso,
                                     textStyle: ZyraText.body(size: 15),
                                   ),
-                                  child: const Text('Done'),
+                                  child: const Text('Clear sample data'),
                                 ),
-                              ),
-                            ],
-                          ),
+                                const SizedBox(height: 8),
+                                DecoratedBox(
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(999),
+                                    ),
+                                    boxShadow: ZyraColors.cardShadows,
+                                  ),
+                                  child: OutlinedButton(
+                                    key: const ValueKey('dev_done'),
+                                    onPressed: ZyraTapFeedback.onTap(
+                                      context,
+                                      () {
+                                        if (widget.isVisible?.call() != false &&
+                                            ModalRoute.isCurrentOf(context) ==
+                                                true) {
+                                          Navigator.of(context).pop();
+                                        }
+                                      },
+                                    ),
+                                    style: OutlinedButton.styleFrom(
+                                      minimumSize: const Size.fromHeight(52),
+                                      tapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                      side: BorderSide(
+                                        color: ZyraColors.surfaceBorder,
+                                      ),
+                                      shape: const StadiumBorder(),
+                                      backgroundColor: ZyraColors.cardSurface,
+                                      foregroundColor: ZyraColors.mutedText,
+                                      textStyle: ZyraText.body(size: 15),
+                                    ),
+                                    child: const Text('Done'),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -360,7 +551,9 @@ class _DeveloperSelector extends StatelessWidget {
     required this.value,
     required this.onChanged,
     this.subtitle,
-  }) : max = 2;
+    this.max = 0x7fffffff,
+    this.stacked = false,
+  });
 
   const _DeveloperSelector.count({
     required this.id,
@@ -369,12 +562,14 @@ class _DeveloperSelector extends StatelessWidget {
     required this.onChanged,
     this.subtitle,
     this.max = 3,
-  }) : labels = const ['0', '1', '2', '3'];
+  }) : labels = const ['0', '1', '2', '3'],
+       stacked = false;
 
   final String id, label;
   final String? subtitle;
   final List<String> labels;
   final int value, max;
+  final bool stacked;
   final ValueChanged<int> onChanged;
 
   @override
@@ -420,7 +615,7 @@ class _DeveloperSelector extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final scale = MediaQuery.textScalerOf(context).scale(14) / 14;
-          if (constraints.maxWidth < 260 || scale > 1.4) {
+          if (stacked || constraints.maxWidth < 260 || scale > 1.4) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [caption, const SizedBox(height: 8), track],
@@ -484,4 +679,75 @@ class _DeveloperSelector extends StatelessWidget {
       ),
     );
   }
+}
+
+class _DeveloperSwitch extends StatelessWidget {
+  const _DeveloperSwitch({
+    required this.id,
+    required this.label,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final String id, label;
+  final bool value;
+  final ValueChanged<bool>? onChanged;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    decoration: const BoxDecoration(
+      border: Border(top: BorderSide(color: ZyraColors.divider)),
+    ),
+    padding: const EdgeInsets.symmetric(vertical: 8),
+    child: MergeSemantics(
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              label,
+              style: ZyraText.body(size: 14).copyWith(height: 1.3),
+            ),
+          ),
+          const SizedBox(width: 10),
+          Switch.adaptive(
+            key: ValueKey('dev_$id'),
+            value: value,
+            activeTrackColor: ZyraColors.goldText,
+            onChanged: ZyraTapFeedback.onChanged(context, onChanged),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+class _DeveloperAction extends StatelessWidget {
+  const _DeveloperAction({
+    required this.id,
+    required this.label,
+    required this.onPressed,
+  });
+
+  final String id, label;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+    decoration: const BoxDecoration(
+      border: Border(top: BorderSide(color: ZyraColors.divider)),
+    ),
+    child: TextButton(
+      key: ValueKey('dev_$id'),
+      onPressed: ZyraTapFeedback.onTap(context, onPressed),
+      style: TextButton.styleFrom(
+        minimumSize: const Size.fromHeight(52),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        foregroundColor: ZyraColors.espresso,
+        textStyle: ZyraText.body(size: 14),
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        alignment: Alignment.centerLeft,
+      ),
+      child: Text(label),
+    ),
+  );
 }

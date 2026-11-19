@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'dart:convert';
@@ -213,10 +214,12 @@ class _ZyraDraftReportPresentationState
                             ),
                           ),
                           const SizedBox(height: 16),
-                          Text(
-                            'Choose a profile to report',
-                            textAlign: TextAlign.center,
-                            style: ZyraText.heading(size: 26),
+                          ZyraDeveloperTitle(
+                            child: Text(
+                              'Choose a profile to report',
+                              textAlign: TextAlign.center,
+                              style: ZyraText.heading(size: 26),
+                            ),
                           ),
                           const SizedBox(height: 10),
                           Padding(
@@ -284,12 +287,14 @@ class _ZyraDraftReportPresentationState
                         ),
                       ),
                       const SizedBox(height: 12),
-                      Text(
-                        name,
-                        textAlign: TextAlign.center,
-                        style: ZyraText.heading(
-                          size: 22,
-                        ).copyWith(fontWeight: FontWeight.w300),
+                      ZyraDeveloperTitle(
+                        child: Text(
+                          name,
+                          textAlign: TextAlign.center,
+                          style: ZyraText.heading(
+                            size: 22,
+                          ).copyWith(fontWeight: FontWeight.w300),
+                        ),
                       ),
                       const SizedBox(height: 6),
                       Text(
@@ -484,11 +489,13 @@ class _UtilityTitle extends StatelessWidget {
   final String id;
 
   @override
-  Widget build(BuildContext context) => Text(
-    title,
-    key: ValueKey(id),
-    textAlign: TextAlign.left,
-    style: ZyraText.heading(size: 26),
+  Widget build(BuildContext context) => ZyraDeveloperTitle(
+    child: Text(
+      title,
+      key: ValueKey(id),
+      textAlign: TextAlign.left,
+      style: ZyraText.heading(size: 26),
+    ),
   );
 }
 

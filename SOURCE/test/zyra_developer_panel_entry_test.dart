@@ -15,6 +15,11 @@ import 'package:http/testing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/config/zyra_internal_founder_policy.dart';
+import 'package:zyra/data/zyra_journey_stages.dart';
+import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
+import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'package:zyra/widgets/zyra_developer_title.dart';
+import 'package:zyra/widgets/zyra_shell_navigation.dart';
 import 'package:zyra/main.dart' show supabase;
 import 'package:zyra/screens/home/home_shell.dart';
 import 'package:zyra/screens/wali/wali_home_shell.dart';
@@ -28,6 +33,8 @@ import 'package:zyra/services/zyra_product_telemetry.dart';
 import 'package:zyra/services/zyra_session_router.dart';
 import 'package:zyra/state/zyra_developer_samples.dart';
 import 'package:zyra/theme/zyra_text.dart';
+import 'package:zyra/state/app_state.dart';
+import 'package:zyra/widgets/zyra_focus_dashboard.dart';
 import 'package:zyra/widgets/zyra_account_session_host.dart';
 import 'package:zyra/widgets/zyra_app_lock_gate.dart';
 
@@ -186,7 +193,10 @@ void main() {
     }
   }
 
-  Future<GlobalKey<NavigatorState>> mount(WidgetTester tester) async {
+  Future<GlobalKey<NavigatorState>> mount(
+    WidgetTester tester, {
+    Widget? homeOverride,
+  }) async {
     final home = (await tester.runAsync(() async {
       debugDefaultTargetPlatformOverride = TargetPlatform.linux;
       try {
@@ -219,11 +229,15 @@ void main() {
             ),
           ),
         ),
-        home: home,
+        home: homeOverride ?? home,
       ),
     );
     await settle(tester);
     expect(tester.takeException(), isNull);
+    addTearDown(() async {
+      await tester.pumpWidget(const SizedBox.shrink());
+      await settle(tester);
+    });
     return navigator;
   }
 
@@ -256,6 +270,214 @@ void main() {
     await tester.tap(target);
     await settle(tester);
   }
+
+  Widget previewHome({ViewRequestDraftModel? model, int tab = 2}) =>
+      ZyraDeveloperSeekerScope(
+        preview: true,
+        child: Builder(
+          builder: (context) => ZyraOneJourneyConceptShell(
+            canAct: () => ModalRoute.of(context)?.isCurrent == true,
+            onExit: () {},
+            initialTab: tab,
+            fixture: ZyraOneJourneyShellFixture(model: model),
+          ),
+        ),
+      );
+
+  Future<void> previewTab(WidgetTester tester, int index) async {
+    tester
+        .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
+        .onTap(index);
+    await settle(tester);
+  }
+
+  Future<void> openSampleConversation(WidgetTester tester) async {
+    await tap(tester, _key('dev_active_1'));
+    await tap(tester, _key('dev_journey_0'));
+    final stage = ZyraJourneyStages.previewAll.indexWhere(
+      (stage) => stage.value == 'conversation',
+    );
+    await tap(tester, _key('dev_stage_$stage'));
+    await tap(tester, _key('dev_done'));
+    final arrival = _key('concept_journey_arrival_continue');
+    if (arrival.evaluate().isNotEmpty) await tap(tester, arrival);
+    expect(_key('concept_message'), findsOneWidget);
+  }
+
+  testWidgets(
+    'all My ZYRA presets fill approved needs and status sets before setup continuation',
+    (tester) async {
+      plan = 'seeker_premium';
+      await mount(tester, homeOverride: previewHome());
+      for (final example in [
+        (index: 1, needs: 2, chips: 3),
+        (index: 3, needs: 14, chips: 5),
+        (index: 2, needs: 0, chips: 3),
+        (index: 0, needs: 0, chips: 1),
+      ]) {
+        await tap(tester, _key('dev_page_title'));
+        await tap(tester, _key('dev_preset_${example.index}'));
+        await tap(tester, _key('dev_done'));
+        final dashboard = tester.widget<ZyraFocusDashboard>(
+          find.byType(ZyraFocusDashboard),
+        );
+        expect(dashboard.items.length, example.needs);
+        expect(dashboard.chips.length, example.chips);
+        expect(
+          dashboard.items.any((item) => item.title == 'Finish setting up'),
+          isFalse,
+        );
+        expect(find.text('Continue setting up'), findsNothing);
+      }
+      await dispose(tester);
+    },
+  );
+
+  testWidgets(
+    'missing membership uses local Seeker One and Clear returns to it',
+    (tester) async {
+      plan = 'unavailable';
+      await mount(tester);
+      await tap(tester, _key('dev_page_title'));
+      expect(
+        find.textContaining('Viewing as Seeker One · real plan: none'),
+        findsOneWidget,
+      );
+      expect(ZyraDeveloperSamples.instance.viewAs?.name, 'seekerOne');
+      await tap(tester, _key('dev_view_as_3'));
+      await tap(tester, _key('dev_clear'));
+      expect(ZyraDeveloperSamples.instance.viewAs?.name, 'seekerOne');
+      expect(ZyraDeveloperSamples.instance.setupUnfinished, isFalse);
+      expect(
+        find.textContaining('Viewing as Seeker One · real plan: none'),
+        findsOneWidget,
+      );
+      await tap(tester, _key('dev_done'));
+      expect(AppState.instance.verifiedSeekerPlan, isNull);
+      expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);
+      await dispose(tester);
+    },
+  );
+
+  testWidgets(
+    'panel proof and View as preserve unselected native request state',
+    (tester) async {
+      plan = 'seeker_premium';
+      final native = ViewRequestDraftModel(capacity: 3);
+      expect(native.seedReceived('draft-amira'), isTrue);
+      await mount(tester, homeOverride: previewHome(model: native));
+      expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);
+      expect(ZyraDeveloperSamples.instance.hasSamples, isFalse);
+      expect(find.text('Journey request from Amira'), findsOneWidget);
+      await tap(tester, _key('dev_page_title'));
+      await tap(tester, _key('dev_done'));
+      expect(find.text('Journey request from Amira'), findsOneWidget);
+      await tap(tester, _key('dev_page_title'));
+      await tap(tester, _key('dev_view_as_0'));
+      await tap(tester, _key('dev_done'));
+      expect(ZyraDeveloperSamples.instance.received, isNull);
+      expect(find.text('Journey request from Amira'), findsOneWidget);
+      expect(native.stateFor('draft-amira'), DraftJourneyState.received);
+      await dispose(tester);
+    },
+  );
+
+  testWidgets(
+    'owned nested title admits current editor and rejects covered callbacks',
+    (tester) async {
+      plan = 'seeker_premium';
+      final navigator = await mount(tester, homeOverride: previewHome(tab: 4));
+      await tap(tester, _key('concept_edit_profile'));
+      final owned = tester.widget<ZyraDeveloperOwnedNavigatorScope>(
+        find.byType(ZyraDeveloperOwnedNavigatorScope),
+      );
+      expect(_key('dev_page_title'), findsOneWidget);
+      await tap(tester, _key('dev_page_title'));
+      expect(_key('dev_panel'), findsOneWidget);
+      await tap(tester, _key('dev_done'));
+      final stale = tester
+          .widget<GestureDetector>(_key('dev_page_title'))
+          .onTap!;
+      final before = refreshCalls;
+      unawaited(
+        owned.navigatorKey.currentState!.push<void>(
+          MaterialPageRoute<void>(
+            builder: (_) => const Scaffold(body: Text('Nested cover')),
+          ),
+        ),
+      );
+      await settle(tester);
+      stale();
+      await settle(tester);
+      expect(refreshCalls, before);
+      expect(_key('dev_panel'), findsNothing);
+      owned.navigatorKey.currentState!.pop();
+      await settle(tester);
+      final rootCovered = tester
+          .widget<GestureDetector>(_key('dev_page_title'))
+          .onTap!;
+      unawaited(
+        navigator.currentState!.push<void>(
+          MaterialPageRoute<void>(
+            builder: (_) => const Scaffold(body: Text('Root cover')),
+          ),
+        ),
+      );
+      await settle(tester);
+      rootCovered();
+      await settle(tester);
+      expect(refreshCalls, before);
+      expect(_key('dev_panel'), findsNothing);
+      navigator.currentState!.pop();
+      await settle(tester);
+      await tap(tester, _key('dev_page_title'));
+      expect(_key('dev_panel'), findsOneWidget);
+      await tap(tester, _key('dev_done'));
+      await dispose(tester);
+    },
+  );
+
+  testWidgets(
+    'Clear discards conversation samples and restores colliding native history',
+    (tester) async {
+      plan = 'seeker_premium';
+      final native = ViewRequestDraftModel(capacity: 3);
+      expect(
+        native.replacePreviewJourneys([
+          (profileId: 'draft-sara', stage: 'phase_1'),
+        ]),
+        isTrue,
+      );
+      expect(native.end('draft-sara'), isTrue);
+      final original = native.snapshot();
+      await mount(tester, homeOverride: previewHome(model: native));
+      await tap(tester, _key('dev_page_title'));
+      await openSampleConversation(tester);
+      // A fixed Sara sample replaces a colliding ended state only in its own
+      // working model; the native fixture and archive remain untouched.
+      expect(native.stateFor('draft-sara'), DraftJourneyState.ended);
+      expect(native.snapshot().endedAttempts, original.endedAttempts);
+      await tester.ensureVisible(_key('concept_message'));
+      await tester.enterText(_key('concept_message'), 'line123 sample marker');
+      await tap(tester, _key('concept_send_message'));
+      expect(find.text('You · line123 sample marker'), findsOneWidget);
+      await tester.enterText(_key('concept_message'), 'line123 unsent marker');
+      await tap(tester, _key('dev_page_title'));
+      await tap(tester, _key('dev_clear'));
+      await tap(tester, _key('dev_done'));
+      expect(ZyraDeveloperSamples.instance.hasSamples, isFalse);
+      await previewTab(tester, 1);
+      expect(find.text('No Journey yet'), findsOneWidget);
+      await tap(tester, _key('dev_page_title'));
+      await openSampleConversation(tester);
+      expect(find.text('You · line123 sample marker'), findsNothing);
+      expect(
+        tester.widget<TextField>(_key('concept_message')).controller!.text,
+        isEmpty,
+      );
+      await dispose(tester);
+    },
+  );
 
   testWidgets(
     'ordinary Seeker title opens the Basic panel after explicit refresh',
@@ -290,29 +512,10 @@ void main() {
       expect(ZyraDeveloperSamples.instance.introductions, 2);
       await capture(tester, 'line96_ordinary_basic_panel');
       await tap(tester, _key('dev_done'));
-      await tester.scrollUntilVisible(
-        find.text('1 of 1 place in use'),
-        200,
-        scrollable: find
-            .descendant(
-              of: _key('my-zyra-quiet-scroll-0'),
-              matching: find.byType(Scrollable),
-            )
-            .first,
-      );
       expect(find.text('1 of 1 place in use'), findsOneWidget);
-      expect(find.text('Journey requests'), findsOneWidget);
-      final requests = find.text('Journey requests');
-      await tester.scrollUntilVisible(
-        requests,
-        160,
-        scrollable: find
-            .descendant(
-              of: _key('my-zyra-quiet-scroll-0'),
-              matching: find.byType(Scrollable),
-            )
-            .first,
-      );
+      expect(find.byKey(const ValueKey('dev_founder_preview')), findsOneWidget);
+      final requests = find.text('Journey\nrequests');
+      expect(requests, findsOneWidget);
       await tap(tester, requests);
       expect(find.text('Received'), findsOneWidget);
       expect(_key('dev_page_title'), findsOneWidget);
@@ -425,17 +628,7 @@ void main() {
   final samples = ZyraDeveloperSamples.instance;
 
   Future<void> openSampleRequests(WidgetTester tester) async {
-    final dashboardLink = find.text('Journey requests');
-    await tester.scrollUntilVisible(
-      dashboardLink,
-      160,
-      scrollable: find
-          .descendant(
-            of: _key('my-zyra-quiet-scroll-0'),
-            matching: find.byType(Scrollable),
-          )
-          .first,
-    );
+    final dashboardLink = find.text('Journey\nrequests');
     await tap(tester, dashboardLink);
   }
 
@@ -447,14 +640,11 @@ void main() {
         await tap(tester, find.text('My ZYRA'));
         await tap(tester, _key('dev_active_1'));
         await tap(tester, _key('dev_received_1'));
+        if (!requests) await tap(tester, _key('dev_journey_0'));
         await tap(tester, _key('dev_done'));
 
         if (requests) {
           await openSampleRequests(tester);
-        } else {
-          await tester.tapAt(tester.getCenter(_key('floating-nav-item-1')));
-          await settle(tester);
-          await tap(tester, find.text('Continue Journey'));
         }
 
         final title = find.text(
@@ -464,7 +654,7 @@ void main() {
         );
         final sampleContent = requests
             ? _key('sample-request-true-draft-amira-header')
-            : find.text('End Journey');
+            : _key('concept_journey_${samples.activeRows!.single.person.id}');
         expect(title, findsOneWidget);
         expect(sampleContent, findsOneWidget);
 
@@ -761,7 +951,18 @@ void main() {
         await settle(tester);
         expect(_key('dev_page_title'), findsOneWidget);
         expect(samples.receivedRows, isNull);
-        expect(samples.hasSamples, isFalse);
+        expect(samples.activeRows, isNull);
+        expect(samples.unverified, isFalse);
+        expect(samples.setupUnfinished, isFalse);
+        expect(samples.preset, isNull);
+        expect(samples.notice, 0);
+        if (AppState.instance.verifiedSeekerPlan == null) {
+          // Q173: a new session with no hydrated real plan starts afresh in
+          // local Seeker One; none of the retired session's choices survive.
+          expect(samples.viewAs?.name, 'seekerOne');
+        } else {
+          expect(samples.hasSamples, isFalse);
+        }
         await dispose(tester);
       },
     );

@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 // LOCK 8 V6. Display facts and leased actions supplied by the admitted shell.
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
@@ -208,10 +209,14 @@ class ZyraGuardianSeekerPage extends StatelessWidget {
         ),
       ),
       const SizedBox(height: 12),
-      Text(
-        name,
-        textAlign: TextAlign.center,
-        style: ZyraText.heading(size: 24).copyWith(fontWeight: FontWeight.w300),
+      ZyraDeveloperTitle(
+        child: Text(
+          name,
+          textAlign: TextAlign.center,
+          style: ZyraText.heading(
+            size: 24,
+          ).copyWith(fontWeight: FontWeight.w300),
+        ),
       ),
       const SizedBox(height: 6),
       Text(

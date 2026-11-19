@@ -472,7 +472,7 @@ class _HomeShellState extends State<HomeShell> {
     }
     final shell = _buildShell(context);
     return widget.developerPanelSeeker
-        ? ZyraDeveloperSeekerScope(child: shell)
+        ? ZyraDeveloperSeekerScope(initialTab: _tab, child: shell)
         : shell;
   }
 

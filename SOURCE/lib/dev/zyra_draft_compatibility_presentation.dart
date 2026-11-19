@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
@@ -162,7 +163,12 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
           key: const ValueKey('draft_compatibility_presentation'),
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Compatibility score', style: ZyraText.heading(size: 26)),
+            ZyraDeveloperTitle(
+              child: Text(
+                'Compatibility score',
+                style: ZyraText.heading(size: 26),
+              ),
+            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 24),
@@ -270,7 +276,9 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
         final heading = Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Compatibility score', style: titleStyle),
+            ZyraDeveloperTitle(
+              child: Text('Compatibility score', style: titleStyle),
+            ),
             const SizedBox(height: 16),
           ],
         );

@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import '../widgets/zyra_floating_surface.dart';
 import 'package:flutter/material.dart';
 
@@ -155,11 +156,13 @@ class ZyraDraftJourneyBioPresentation extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (showTitle) ...[
-          Text(
-            'Journey Bio',
-            key: const ValueKey('draft_journey_bio_title'),
-            style: ZyraText.pageTitle(),
-            textAlign: TextAlign.left,
+          ZyraDeveloperTitle(
+            child: Text(
+              'Journey Bio',
+              key: const ValueKey('draft_journey_bio_title'),
+              style: ZyraText.pageTitle(),
+              textAlign: TextAlign.left,
+            ),
           ),
           const SizedBox(height: 20),
         ],

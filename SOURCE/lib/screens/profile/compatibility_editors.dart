@@ -501,11 +501,13 @@ class _CompatibilityPreviewOwner extends ChangeNotifier {
     this.guard,
     this.gender,
     this.canEdit, {
+    required this.canAct,
     required this.preview,
   });
   final bool Function() guard;
   final String? gender;
   final bool Function() canEdit;
+  final bool Function() canAct;
   final bool preview;
   bool revoked = false;
   bool _disposed = false;
@@ -539,6 +541,17 @@ class _CompatibilityPreviewOwner extends ChangeNotifier {
     return false;
   }
 
+  // Temporary route coverage denies actions without retiring the owner.
+  bool get hasFocus {
+    if (revoked || _disposed) return false;
+    try {
+      return canAct();
+    } catch (_) {
+      revoke();
+      return false;
+    }
+  }
+
   @override
   void dispose() {
     _disposed = true;
@@ -554,7 +567,8 @@ bool _editorCurrent(
   if (!context.mounted) return false;
   final routeCurrent = ModalRoute.of(context)?.isCurrent;
   return (owner == null ? routeCurrent ?? true : routeCurrent == true) &&
-      (owner == null || (owner.alive && (!editing || owner.canEdit())));
+      (owner == null ||
+          (owner.alive && owner.hasFocus && (!editing || owner.canEdit())));
 }
 
 List<OnboardingCategory> categoriesForKind(CompatibilityEditorKind kind) {
@@ -573,10 +587,12 @@ class CompatibilityEditorScreen extends StatefulWidget {
     required this.initialDraft,
     required this.onPersist,
     this.canAct,
+    bool Function()? canRetain,
     this.canActChanges,
     this.quickCheck,
     this.openQuickCheck = false,
-  }) : _preview = false,
+  }) : canRetain = canRetain ?? canAct,
+       _preview = false,
        onPreviewReturn = null;
 
   const CompatibilityEditorScreen.preview({
@@ -585,11 +601,13 @@ class CompatibilityEditorScreen extends StatefulWidget {
     required this.initialDraft,
     required this.onPersist,
     required bool Function() canAct,
+    bool Function()? canRetain,
     this.canActChanges,
     this.onPreviewReturn,
     this.quickCheck,
     this.openQuickCheck = false,
   }) : _preview = true,
+       canRetain = canRetain ?? canAct,
        // Keep preview's guard non-nullable while ordinary callers may omit it.
        // ignore: prefer_initializing_formals
        canAct = canAct;
@@ -608,6 +626,9 @@ class CompatibilityEditorScreen extends StatefulWidget {
   /// Optional deny-only ordinary ownership; no account or save authority is
   /// conferred by the guard. Unbound callers retain their existing behavior.
   final bool Function()? canAct;
+  // A stable owner lease may survive temporary coverage. Every action still
+  // requires canAct and the current route; omitted retention keeps old guards.
+  final bool Function()? canRetain;
   final Listenable? canActChanges;
 
   @override
@@ -637,7 +658,15 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
       identical(widget.quickCheck, _opening.quickCheck) &&
       widget.openQuickCheck == _opening.openQuickCheck &&
       widget.canAct == _opening.canAct &&
+      widget.canRetain == _opening.canRetain &&
       identical(widget.canActChanges, _opening.canActChanges);
+
+  bool _openingRetention() =>
+      mounted &&
+      !_bindingRevoked &&
+      _openingBindingsCurrent &&
+      _opening.canRetain?.call() == true &&
+      widget.canRetain?.call() == true;
 
   bool _openingAdmission() =>
       mounted &&
@@ -655,9 +684,10 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
     _owner = widget.canAct == null
         ? null
         : _CompatibilityPreviewOwner(
-            _openingAdmission,
+            _openingRetention,
             _draft.gender,
             () => mounted && !_saving,
+            canAct: _openingAdmission,
             preview: _previewMode,
           );
     _opening.canActChanges?.addListener(_ownerChanged);
@@ -786,7 +816,9 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text(kind.label, style: ZyraText.heading(size: 28)),
+              child: ZyraDeveloperTitle(
+                child: Text(kind.label, style: ZyraText.heading(size: 28)),
+              ),
             ),
           ),
         Padding(
@@ -1960,7 +1992,9 @@ class _EditorScaffold extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
-                      child: Text(title, style: ZyraText.heading(size: 28)),
+                      child: ZyraDeveloperTitle(
+                        child: Text(title, style: ZyraText.heading(size: 28)),
+                      ),
                     ),
                     Expanded(child: content),
                   ],

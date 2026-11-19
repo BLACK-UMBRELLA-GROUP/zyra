@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import '../widgets/zyra_floating_surface.dart';
 // LOCK10 V7 presentation for the local sample preview. No repositories,
 // transports, device permission, private answers or member counts.
@@ -919,7 +920,9 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
             Row(
               children: [
                 Expanded(
-                  child: Text('Filters', style: ZyraText.heading(size: 28)),
+                  child: ZyraDeveloperTitle(
+                    child: Text('Filters', style: ZyraText.heading(size: 28)),
+                  ),
                 ),
                 _button(
                   'concept_reset_filter_draft',

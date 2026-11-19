@@ -79,7 +79,18 @@ String _name(DraftProfile person) =>
 
 /// The same three request tabs and grouped Past cards used by LOCK 2 V3.
 class ZyraDeveloperJourneyRequestsScreen extends StatefulWidget {
-  const ZyraDeveloperJourneyRequestsScreen({super.key});
+  const ZyraDeveloperJourneyRequestsScreen({
+    super.key,
+    this.tabClearance = false,
+    this.initialTab = 0,
+    this.onTabChanged,
+    this.wrapTitle,
+  });
+
+  final bool tabClearance;
+  final int initialTab;
+  final ValueChanged<int>? onTabChanged;
+  final Widget Function(Widget)? wrapTitle;
 
   @override
   State<ZyraDeveloperJourneyRequestsScreen> createState() =>
@@ -89,7 +100,13 @@ class ZyraDeveloperJourneyRequestsScreen extends StatefulWidget {
 class _ZyraDeveloperJourneyRequestsScreenState
     extends State<ZyraDeveloperJourneyRequestsScreen> {
   final _expansion = ZyraConnectionsExpansionController();
-  var _tab = 0;
+  late int _tab;
+
+  @override
+  void initState() {
+    super.initState();
+    _tab = widget.initialTab.clamp(0, 2);
+  }
 
   @override
   void dispose() {
@@ -108,14 +125,18 @@ class _ZyraDeveloperJourneyRequestsScreenState
             ? const _SampleBack()
             : ZyraRequestActivityPresentation(
                 title: 'Journey requests',
-                wrapTitle: (title) => _SampleRouteTitle(title: title),
+                tabClearance: widget.tabClearance,
+                wrapTitle:
+                    widget.wrapTitle ??
+                    ((title) => _SampleRouteTitle(title: title)),
                 labels: const ['Received', 'Sent', 'Past'],
                 selectedIndex: _tab,
                 canInteract: _current,
                 onChanged: (tab) {
-                  if (!_current()) return;
+                  if (!_current() || tab < 0 || tab > 2 || tab == _tab) return;
                   _expansion.collapseAll();
                   setState(() => _tab = tab);
+                  widget.onTabChanged?.call(tab);
                 },
                 pages: [_pending(true), _pending(false), _past()],
               ),
@@ -762,8 +783,13 @@ class ZyraSampleActiveJourneyCard extends StatelessWidget {
 }
 
 class ZyraSampleIntroductionsList extends StatelessWidget {
-  const ZyraSampleIntroductionsList({super.key, required this.wrapTitle});
+  const ZyraSampleIntroductionsList({
+    super.key,
+    required this.wrapTitle,
+    this.tabClearance = false,
+  });
   final Widget Function(Widget) wrapTitle;
+  final bool tabClearance;
 
   @override
   Widget build(BuildContext context) {
@@ -778,6 +804,7 @@ class ZyraSampleIntroductionsList extends StatelessWidget {
       child: ZyraRequestActivityPresentation(
         title: 'Introductions',
         wrapTitle: wrapTitle,
+        tabClearance: tabClearance,
         labels: const ['Introductions'],
         selectedIndex: 0,
         onChanged: (_) {},

@@ -6,6 +6,7 @@ import 'package:flutter/scheduler.dart';
 import '../services/zyra_account_state.dart';
 import '../services/zyra_developer_access.dart';
 import '../state/app_state.dart';
+import '../widgets/zyra_developer_title.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_one_journey_concept_shell.dart';
@@ -144,34 +145,37 @@ class _ViewRequestDraftScreenState extends State<ViewRequestDraftScreen> {
         ),
       );
     }
-    return ZyraConceptPreviewBoundary(
-      child: ZyraOneJourneyConceptShell(
-        canAct: () => _canAct,
-        canActInOwnedDialog: () => mounted && _owner.current,
-        localPhotoImport: widget.localPhotoImport,
-        compatibilityAccess: widget.compatibilityAccess,
-        onExit: _close,
-        onRoleChanged: widget.onRoleChanged == null
-            ? null
-            : (guardian) {
-                if (_canAct) widget.onRoleChanged!(guardian);
-              },
-        initialGuardianRole: widget.initialGuardianRole,
-        initialSeekerBasic: widget.initialSeekerBasic,
-        initialGuardianBasic: widget.initialGuardianBasic,
-        fixture: widget.fixture,
-        initialCheckpoint: widget.initialCheckpoint,
-        restoreLocation: widget.restoreLocation,
-        onCheckpoint: widget.onCheckpoint == null
-            ? null
-            : (checkpoint) {
-                if (_canAct) widget.onCheckpoint!(checkpoint);
-              },
-        onPresentationReady: widget.onPresentationReady == null
-            ? null
-            : () {
-                if (_canAct) widget.onPresentationReady!();
-              },
+    return ZyraDeveloperSeekerScope(
+      preview: true,
+      child: ZyraConceptPreviewBoundary(
+        child: ZyraOneJourneyConceptShell(
+          canAct: () => _canAct,
+          canActInOwnedDialog: () => mounted && _owner.current,
+          localPhotoImport: widget.localPhotoImport,
+          compatibilityAccess: widget.compatibilityAccess,
+          onExit: _close,
+          onRoleChanged: widget.onRoleChanged == null
+              ? null
+              : (guardian) {
+                  if (_canAct) widget.onRoleChanged!(guardian);
+                },
+          initialGuardianRole: widget.initialGuardianRole,
+          initialSeekerBasic: widget.initialSeekerBasic,
+          initialGuardianBasic: widget.initialGuardianBasic,
+          fixture: widget.fixture,
+          initialCheckpoint: widget.initialCheckpoint,
+          restoreLocation: widget.restoreLocation,
+          onCheckpoint: widget.onCheckpoint == null
+              ? null
+              : (checkpoint) {
+                  if (_canAct) widget.onCheckpoint!(checkpoint);
+                },
+          onPresentationReady: widget.onPresentationReady == null
+              ? null
+              : () {
+                  if (_canAct) widget.onPresentationReady!();
+                },
+        ),
       ),
     );
   }

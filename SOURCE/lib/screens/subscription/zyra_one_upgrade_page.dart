@@ -1,3 +1,4 @@
+import '../../widgets/zyra_developer_title.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/zyra_membership_catalog.dart';
@@ -98,7 +99,9 @@ class ZyraOneUpgradePage extends StatelessWidget {
               Expanded(
                 child: Semantics(
                   header: true,
-                  child: Text(_title, style: ZyraText.heading(size: 26)),
+                  child: ZyraDeveloperTitle(
+                    child: Text(_title, style: ZyraText.heading(size: 26)),
+                  ),
                 ),
               ),
             ],

@@ -8,6 +8,7 @@ import '../screens/settings/help_support_screen.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import 'zyra_floating_surface.dart';
+import 'zyra_developer_title.dart';
 import 'zyra_info_row.dart';
 import 'zyra_tap_feedback.dart';
 
@@ -172,10 +173,12 @@ class _ZyraFullScreenErrorState extends State<ZyraFullScreenError>
                           child: Column(
                             children: [
                               const _InterruptedConnectionMark(),
-                              Text(
-                                content.title,
-                                textAlign: TextAlign.center,
-                                style: ZyraText.heading(size: 26),
+                              ZyraDeveloperTitle(
+                                child: Text(
+                                  content.title,
+                                  textAlign: TextAlign.center,
+                                  style: ZyraText.heading(size: 26),
+                                ),
                               ),
                               const SizedBox(height: 9),
                               Text(

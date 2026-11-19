@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import '../widgets/floating_nav_bar.dart';
 import '../widgets/zyra_floating_surface.dart';
 // LOCK 8 V3 / LOCK 15 V2: fictional Guardian presentation only. No service, RPC or member
@@ -904,7 +905,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _header(
-            _title('Journey requests'),
+            ZyraDeveloperTitle(child: _title('Journey requests')),
             trailing: _switcher(
               const [
                 'All Seekers',
@@ -985,7 +986,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
       Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _header(_title('Connect with Guardian')),
+          _header(ZyraDeveloperTitle(child: _title('Connect with Guardian'))),
           _segments(
             const ['Sent', 'Received'],
             received ? 1 : 0,
@@ -1085,7 +1086,9 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _header(_title("Introductions you've made")),
+              _header(
+                ZyraDeveloperTitle(child: _title("Introductions you've made")),
+              ),
               _quiet(
                 'No introductions yet.',
                 'Find someone in Network and choose Introduce to ${state.seekerName}.',
@@ -1099,7 +1102,9 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
       : _viewport(
           Column(
             children: [
-              _header(_title("Introductions you've made")),
+              _header(
+                ZyraDeveloperTitle(child: _title("Introductions you've made")),
+              ),
               for (final (i, entry)
                   in state.introduced
                       .where(
@@ -1674,11 +1679,13 @@ class _ZyraGuardianPrivateChatState extends State<ZyraGuardianPrivateChat> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Guardian chat',
-                            style: ZyraText.heading(
-                              size: 28,
-                            ).copyWith(fontWeight: FontWeight.w300),
+                          ZyraDeveloperTitle(
+                            child: Text(
+                              'Guardian chat',
+                              style: ZyraText.heading(
+                                size: 28,
+                              ).copyWith(fontWeight: FontWeight.w300),
+                            ),
                           ),
                           const SizedBox(height: 20),
                           ZyraFloatingSurface(

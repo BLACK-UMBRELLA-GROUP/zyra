@@ -108,15 +108,15 @@ void main() {
       'lib/screens/onboarding/identity_verification_screen.dart',
     ).readAsStringSync();
     expect(identity, contains('bool get _isDevPreview => _previewMode;'));
-    expect(identity, contains('_previewMode = widget.devPreview;'));
-    expect(identity, contains('widget.devPreview != _previewMode'));
-    expect(identity, contains('_modeRevoked = true;'));
     expect(
       identity,
       contains(
-        'if (_isDevPreview && !ZyraDeveloperAccess.canUseDeveloperTools)',
+        '_previewMode = widget.devPreview || widget.developerPanelAccess != null;',
       ),
     );
+    expect(identity, contains('widget.devPreview != _previewMode'));
+    expect(identity, contains('_modeRevoked = true;'));
+    expect(identity, contains('if (_isDevPreview && !_hasPreviewAuthority)'));
 
     expect(File('lib/dev/zyra_dev_signup.dart').existsSync(), isFalse);
   });

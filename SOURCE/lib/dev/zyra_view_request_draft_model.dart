@@ -2293,6 +2293,153 @@ class ViewRequestDraftModel {
     return true;
   }
 
+  /// Explicit admin-preview fixture replacement. The admitted UI owns the
+  /// account guard; this model accepts only its existing fictional people.
+  /// Requests and ended records cannot be overwritten by this operation.
+  /// A caller retaining its own attempt identities can preserve matching rows,
+  /// including partial decisions and the grants owned by those same attempts.
+  bool replacePreviewJourneys(
+    List<({String profileId, String? stage})> rows, {
+    bool preserveUnchanged = false,
+  }) {
+    final selected = <String>{};
+    if (rows.length > capacity ||
+        rows.any(
+          (row) =>
+              !_fixtureIds.contains(row.profileId) ||
+              hasDeparted(row.profileId) ||
+              !selected.add(row.profileId) ||
+              (row.stage != null && !_knownPreviewStage(row.stage!)) ||
+              (_states.containsKey(row.profileId) &&
+                  !_usesActivePlace(_states[row.profileId])),
+        )) {
+      return false;
+    }
+    final preserved = <String>{
+      if (preserveUnchanged)
+        for (final row in rows)
+          if (_matchesPreviewJourney(row.profileId, row.stage)) row.profileId,
+    };
+    final affected = <String>{
+      for (final entry in _states.entries)
+        if (_usesActivePlace(entry.value)) entry.key,
+      ...selected,
+    }..removeAll(preserved);
+    if (affected.isEmpty) return true;
+    final now = _clock().toUtc();
+    _retirePreviewJourneyChoices(affected);
+    for (final id in affected) {
+      _clearPreviewJourney(id);
+    }
+    for (final row in rows) {
+      if (!preserved.contains(row.profileId)) {
+        _installPreviewJourney(row.profileId, row.stage, now);
+      }
+    }
+    _personSafetyRevision++;
+    return true;
+  }
+
+  bool _matchesPreviewJourney(String id, String? stage) {
+    final state = _states[id];
+    if (stage == null) return state == DraftJourneyState.preparing;
+    if (state != DraftJourneyState.active) return false;
+    return stage ==
+        (isBioStepOpen(id)
+            ? ZyraJourneyStages.lifeSnapshotPreview.value
+            : stageFor(id)?.value);
+  }
+
+  /// Replaces one occupied fixture's attempt and progress, leaving every
+  /// other Journey, request and archive record in place.
+  bool setPreviewJourneyStage(String profileId, String stage) {
+    if (!_fixtureIds.contains(profileId) ||
+        hasDeparted(profileId) ||
+        !_usesActivePlace(_states[profileId]) ||
+        !_knownPreviewStage(stage)) {
+      return false;
+    }
+    final now = _clock().toUtc();
+    _retirePreviewJourneyChoices({profileId});
+    _clearPreviewJourney(profileId);
+    _installPreviewJourney(profileId, stage, now);
+    _personSafetyRevision++;
+    return true;
+  }
+
+  bool _knownPreviewStage(String stage) =>
+      ZyraJourneyStages.previewAll.any((value) => value.value == stage);
+
+  void _retirePreviewJourneyChoices(Set<String> affected) {
+    for (final entry in _waitingAcceptances.entries.toList()) {
+      if (affected.contains(entry.value.heldEndingId)) {
+        // Preserve the pending request; its old choice cannot end a newly
+        // seeded attempt. This is the existing held-choice retirement path.
+        _waitForAcceptance(entry.key, incoming: entry.value.incoming);
+      }
+    }
+  }
+
+  void _clearPreviewJourney(String id) {
+    final revision = _attemptRevisions.remove(id);
+    _guardianViewAttempts.removeWhere((grant) => grant.$2 == revision);
+    _states.remove(id);
+    _progress.remove(id);
+    _preparingRequests.remove(id);
+    _journeyStartedAt.remove(id);
+    _journeyLastActivityAt.remove(id);
+    // These acceptance markers belong to the retired occupied attempt.
+    _outgoingRequestAcceptedAt.remove(id);
+    _outgoingRequestAcceptedRevisions.remove(id);
+    _initializePreparationGuardianAccess(id);
+  }
+
+  void _installPreviewJourney(String id, String? stage, DateTime now) {
+    _attemptRevisions[id] = ++_attemptSequence;
+    final progress = _DraftJourneyProgress();
+    _progress[id] = progress;
+    _journeyLastActivityAt[id] = now;
+    if (stage == null) {
+      _states[id] = DraftJourneyState.preparing;
+      _preparingRequests[id] = (
+        requestedAt: now,
+        acceptedAt: now,
+        incoming: true,
+      );
+      return;
+    }
+    final compatibilityIndex = ZyraJourneyStages.all.indexWhere(
+      (value) => value.value == 'compatibility_reveal',
+    );
+    final bioOpen = stage == ZyraJourneyStages.lifeSnapshotPreview.value;
+    final index = bioOpen
+        ? compatibilityIndex
+        : ZyraJourneyStages.all.indexWhere((value) => value.value == stage);
+    final pastCompatibility = index > compatibilityIndex;
+    // These explicit fictional completions describe the selected fixture's
+    // earlier thresholds. They grant no real disclosure or server authority.
+    progress
+      ..ready = true
+      ..peerReady = true
+      ..stageIndex = index
+      ..salam = index > 0
+      ..peerSalam = index > 0
+      ..compatibilityConsent = bioOpen || pastCompatibility
+      ..peerCompatibilityConsent = bioOpen || pastCompatibility
+      ..compatibilityStepCompleted = bioOpen || pastCompatibility
+      ..bioStepOpen = bioOpen
+      ..bioCompleted = pastCompatibility
+      ..bioConsent = pastCompatibility
+      ..peerBioConsent = pastCompatibility
+      ..bioContinue = pastCompatibility
+      ..peerBioContinue = pastCompatibility
+      ..stageContinue = bioOpen
+      ..peerStageContinue = bioOpen;
+    _states[id] = DraftJourneyState.active;
+    _pastRequestJourneyStarts[id] = _pastRequestSequence;
+    _journeyStartedAt[id] = now;
+  }
+
   /// Clears fictional interaction state, retaining the configured local cap.
   void reset() {
     _guardianMemberships.clear();

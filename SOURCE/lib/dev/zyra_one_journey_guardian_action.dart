@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 // LOCK 8 V7: presentation only. The admitted shell owns action/route leases.
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
@@ -330,7 +331,9 @@ class ZyraGuardianFreePlacePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text('Invitation', style: ZyraText.pageTitle()),
+                    ZyraDeveloperTitle(
+                      child: Text('Invitation', style: ZyraText.pageTitle()),
+                    ),
                     SizedBox(height: gap),
                     const ZyraMonogramHead(
                       name: 'Adam',

@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import '../widgets/floating_nav_bar.dart';
 import '../widgets/zyra_floating_surface.dart';
 // LOCK13 presentation only. The shell retains every destination and gate.
@@ -119,9 +120,11 @@ class ZyraOneJourneyOptionsPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'Journey',
-            style: ZyraText.heading(size: 26).copyWith(height: 1.2),
+          ZyraDeveloperTitle(
+            child: Text(
+              'Journey',
+              style: ZyraText.heading(size: 26).copyWith(height: 1.2),
+            ),
           ),
           const SizedBox(height: 22),
           Expanded(

@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/models/journey_match.dart';
+import 'package:zyra/models/zyra_developer_preview.dart';
 import 'package:zyra/models/zyra_dashboard_resolution.dart';
 import 'package:zyra/models/seeker_profile.dart';
 import 'package:zyra/screens/connections/zyra_sample_activity.dart';
@@ -147,6 +148,141 @@ void main() {
     ZyraAccountState.clearImagesForTesting = null;
     ZyraText.useTestFontStubs = false;
   });
+
+  test(
+    'Q171 Everything preserves gate-only setup and permits cancellation',
+    () async {
+      await _bind(capacity: 3);
+      expect(_samples.togglePreviewRequest('draft-sara'), isTrue);
+      _samples.setReceived(1);
+      final request = _samples.receivedRows!.single;
+      _samples.setSetupUnfinished(true);
+      _samples.setPreset(ZyraDeveloperPreset.everything);
+      expect(_samples.preset, ZyraDeveloperPreset.everything);
+      expect(_samples.setupUnfinished, isTrue);
+      expect(_samples.canSendPreviewRequest('draft-maryam'), isFalse);
+      expect(_samples.canAccept(request), isFalse);
+      expect(_samples.togglePreviewRequest('draft-sara'), isTrue);
+      expect(_samples.hasPreviewSent('draft-sara'), isFalse);
+      expect(_samples.history!.single.label, 'Cancelled');
+    },
+  );
+
+  test(
+    'Q173 Clear restores baseline before selecting the approved local default',
+    () async {
+      await _bind(capacity: 3, liveActive: 2);
+      final realPlan = AppState.instance.verifiedSeekerPlan;
+      _samples.setViewAs(ZyraDeveloperViewAs.guardianOne);
+      _samples.setPreviewActive(1);
+      _samples.setSent(1);
+      _samples.setSetupUnfinished(true);
+      final lease = _samples.generation;
+      final retired = _samples.activeRows!.single;
+      final observed = <({bool samples, ZyraDeveloperViewAs? view})>[];
+      void changed() =>
+          observed.add((samples: _samples.hasSamples, view: _samples.viewAs));
+      _samples.addListener(changed);
+      try {
+        _samples.clear(previewDefault: ZyraDeveloperViewAs.seekerOne);
+      } finally {
+        _samples.removeListener(changed);
+      }
+      expect(observed.first, (samples: false, view: null));
+      expect(observed.last, (
+        samples: true,
+        view: ZyraDeveloperViewAs.seekerOne,
+      ));
+      expect(_samples.viewAs, ZyraDeveloperViewAs.seekerOne);
+      expect(_samples.viewedSeekerPlaces, 3);
+      expect(_samples.setupUnfinished, isFalse);
+      expect(_samples.activeRows, isNull);
+      expect(_samples.sentRows, isNull);
+      expect(_samples.history, isNull);
+      expect(_samples.isCurrentLease(lease), isFalse);
+      expect(_samples.endActive(retired), isFalse);
+      expect(_samples.knownRealActive, 2);
+      expect(AppState.instance.verifiedSeekerPlan, realPlan);
+      _samples.clear();
+      expect(_samples.hasSamples, isFalse);
+      expect(_samples.viewAs, isNull);
+    },
+  );
+
+  test(
+    'Q173 an unauthorized clear cannot establish a sample default',
+    () async {
+      await _bind(capacity: 3);
+      _samples.unbind();
+      _samples.clear(previewDefault: ZyraDeveloperViewAs.seekerOne);
+      expect(_samples.hasSamples, isFalse);
+      expect(_samples.viewAs, isNull);
+      expect(_samples.viewedSeekerPlaces, isNull);
+    },
+  );
+
+  for (final view in [
+    ZyraDeveloperViewAs.guardianOne,
+    ZyraDeveloperViewAs.guardianBasic,
+  ]) {
+    test(
+      'Q174 ${view.label} retires and rejects every own-account notice',
+      () async {
+        await _bind(capacity: 3);
+        _samples.setViewAs(ZyraDeveloperViewAs.seekerOne);
+        _samples.setNotice(6);
+        expect(_samples.notice, 6);
+        _samples.setViewAs(view);
+        expect(_samples.notice, 0);
+        for (var notice = 1; notice <= 6; notice++) {
+          _samples.setNotice(notice);
+          expect(_samples.notice, 0);
+        }
+        _samples.setViewAs(ZyraDeveloperViewAs.seekerOne);
+        expect(_samples.notice, 0);
+        _samples.setNotice(1);
+        expect(_samples.notice, 1);
+      },
+    );
+  }
+
+  test(
+    'preview request and cancellation share the Sent and Past records',
+    () async {
+      await _bind();
+      expect(_samples.canSendPreviewRequest('draft-sara'), isTrue);
+      expect(_samples.togglePreviewRequest('draft-sara'), isTrue);
+      final sent = _samples.sentRows!.single;
+      expect(sent.person.id, 'draft-sara');
+      expect(_samples.hasPreviewSent('draft-sara'), isTrue);
+      expect(_samples.togglePreviewRequest('draft-sara'), isTrue);
+      expect(_samples.sentRows, isEmpty);
+      expect(_samples.history!.single.request, same(sent));
+      expect(_samples.history!.single.label, 'Cancelled');
+      expect(_samples.togglePreviewRequest('real-test-profile'), isFalse);
+    },
+  );
+
+  test(
+    'unfinished setup blocks sample sending and accepting until cleared',
+    () async {
+      await _bind();
+      _samples.setReceived(1);
+      final request = _samples.receivedRows!.single;
+      expect(_samples.canAccept(request), isTrue);
+      _samples.setSetupUnfinished(true);
+      expect(_samples.canAccept(request), isFalse);
+      expect(_samples.accept(request), isNull);
+      expect(_samples.togglePreviewRequest('draft-sara'), isFalse);
+      _samples.clear();
+      expect(_samples.setupUnfinished, isFalse);
+      expect(_samples.hasSamples, isFalse);
+      expect(_samples.togglePreviewRequest('draft-sara'), isTrue);
+      _samples.unbind();
+      expect(_samples.hasPreviewSent('draft-sara'), isFalse);
+      expect(_samples.canSendPreviewRequest('draft-hana'), isFalse);
+    },
+  );
 
   test(
     'independent controls preserve explicit zero and signed-in real data',

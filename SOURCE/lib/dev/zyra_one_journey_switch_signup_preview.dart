@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'package:flutter/material.dart';
@@ -43,9 +44,13 @@ class ZyraSwitchSignupPreview extends StatelessWidget {
         children: [
           Semantics(
             header: true,
-            child: Text(
-              setupOverview ? 'Set up your $_target profile' : 'Switch Account',
-              style: ZyraText.pageTitle(),
+            child: ZyraDeveloperTitle(
+              child: Text(
+                setupOverview
+                    ? 'Set up your $_target profile'
+                    : 'Switch Account',
+                style: ZyraText.pageTitle(),
+              ),
             ),
           ),
           const SizedBox(height: 12),

@@ -649,8 +649,8 @@ class _ZyraLocalCodePageState extends State<ZyraLocalCodePage>
         : 'Add a Seeker';
     final header = <Widget>[
       ZyraDeveloperTitle(
-        enabled: !widget.isLocal && widget.mode == ZyraLocalCodeContext.scan,
-        child: ZyraTabTitle(title),
+        enabled: widget.isLocal || widget.mode == ZyraLocalCodeContext.scan,
+        child: ZyraTabTitle(title, developerTitle: false),
       ),
       const SizedBox(height: 5),
       Text(

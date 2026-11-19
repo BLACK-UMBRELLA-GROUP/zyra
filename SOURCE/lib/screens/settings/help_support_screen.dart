@@ -205,10 +205,12 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-              child: Text(
-                'Help & Support',
-                key: const ValueKey('help-support-preview-title'),
-                style: ZyraText.heading(size: 28),
+              child: ZyraDeveloperTitle(
+                child: Text(
+                  'Help & Support',
+                  key: const ValueKey('help-support-preview-title'),
+                  style: ZyraText.heading(size: 28),
+                ),
               ),
             ),
             Expanded(

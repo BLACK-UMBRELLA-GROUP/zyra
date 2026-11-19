@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 // Shared LOCK19 monogram; LOCK8 V7 head/card presentation. No action authority.
 import 'package:flutter/material.dart';
 import '../theme/zyra_colors.dart';
@@ -98,12 +99,14 @@ class ZyraMonogramHead extends StatelessWidget {
         textScaler: TextScaler.noScaling,
       ),
       const SizedBox(height: 14),
-      Text(
-        title,
-        textAlign: TextAlign.center,
-        style: ZyraText.heading(
-          size: 24,
-        ).copyWith(fontWeight: FontWeight.w300, height: 1.2),
+      ZyraDeveloperTitle(
+        child: Text(
+          title,
+          textAlign: TextAlign.center,
+          style: ZyraText.heading(
+            size: 24,
+          ).copyWith(fontWeight: FontWeight.w300, height: 1.2),
+        ),
       ),
       const SizedBox(height: 8),
       Text(

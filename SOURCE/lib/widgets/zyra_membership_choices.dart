@@ -1,3 +1,4 @@
+import 'zyra_developer_title.dart';
 import 'zyra_tap_feedback.dart';
 import 'dart:math' as math;
 
@@ -206,7 +207,9 @@ class _ZyraMembershipChoicesState extends State<ZyraMembershipChoices> {
                 Row(
                   children: [
                     Expanded(
-                      child: Text('Membership', style: ZyraText.pageTitle()),
+                      child: ZyraDeveloperTitle(
+                        child: Text('Membership', style: ZyraText.pageTitle()),
+                      ),
                     ),
                     const SizedBox(width: 8),
                     IconButton(
@@ -1266,7 +1269,9 @@ class ZyraMembershipReviewPresentation extends StatelessWidget {
             ),
             const SizedBox(height: 18),
           ],
-          Text('Review selection', style: ZyraText.pageTitle()),
+          ZyraDeveloperTitle(
+            child: Text('Review selection', style: ZyraText.pageTitle()),
+          ),
           const SizedBox(height: 24),
           _MembershipPanel(
             child: Padding(

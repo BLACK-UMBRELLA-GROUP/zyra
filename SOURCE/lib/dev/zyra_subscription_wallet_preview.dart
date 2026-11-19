@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import '../widgets/zyra_swipe_track.dart';
 import '../widgets/zyra_confirm_sheet.dart';
 import '../services/zyra_account_state.dart';
@@ -417,7 +418,9 @@ class _ZyraSubscriptionWalletPreviewState
             ],
             Semantics(
               header: true,
-              child: Text('Switch profile', style: ZyraText.pageTitle()),
+              child: ZyraDeveloperTitle(
+                child: Text('Switch profile', style: ZyraText.pageTitle()),
+              ),
             ),
             const SizedBox(height: 12),
             _body(
@@ -619,10 +622,12 @@ class _ZyraSubscriptionWalletPreviewState
         );
         final title = Semantics(
           header: true,
-          child: Text(
-            'Your subscriptions',
-            key: const ValueKey('wallet_title'),
-            style: titleStyle,
+          child: ZyraDeveloperTitle(
+            child: Text(
+              'Your subscriptions',
+              key: const ValueKey('wallet_title'),
+              style: titleStyle,
+            ),
           ),
         );
         final headingContent = <Widget>[

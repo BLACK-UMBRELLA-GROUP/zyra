@@ -6,6 +6,7 @@ import '../data/zyra_journey_stages.dart';
 import '../dev/zyra_one_journey_sample_photos.dart';
 import '../dev/zyra_view_request_draft_model.dart';
 import '../models/seeker_profile.dart';
+import '../models/zyra_developer_preview.dart';
 import '../services/zyra_account_state.dart';
 
 enum ZyraDeveloperPast { none, mixed, samePerson }
@@ -74,6 +75,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
   };
   static final _lastSampleRequest = DateTime(2026, 11, 9);
   static const _activeNames = ['sara', 'aisha', 'maryam'];
+  static const _previewActiveNames = ['sara', 'maryam', 'noor'];
   static const _activeStages = [
     'phase_1',
     'salam_exchange',
@@ -100,6 +102,12 @@ class ZyraDeveloperSamples extends ChangeNotifier {
   List<DraftProfile>? _introductions;
   List<ZyraSamplePastRequest>? _history;
   ZyraDeveloperPast? _past;
+  ZyraDeveloperViewAs? _viewAs;
+  int? _viewedSeekerPlaces;
+  bool _unverified = false, _setupUnfinished = false;
+  ZyraDeveloperPreset? _preset;
+  int _notice = 0;
+  String? _selectedJourneyId;
   var _realEnded = 0;
   int? _realActive;
   bool _realActiveStale = false;
@@ -163,6 +171,17 @@ class ZyraDeveloperSamples extends ChangeNotifier {
   int? get sent => sentRows?.length;
   int? get introductions => introductionRows?.length;
   ZyraDeveloperPast? get past => isAuthorized ? _past : null;
+  ZyraDeveloperViewAs? get viewAs => isAuthorized ? _viewAs : null;
+  int? get viewedSeekerPlaces => isAuthorized ? _viewedSeekerPlaces : null;
+  bool get unverified => isAuthorized && _unverified;
+  bool get setupUnfinished => isAuthorized && _setupUnfinished;
+  ZyraDeveloperPreset? get preset => isAuthorized ? _preset : null;
+  int get notice => isAuthorized ? _notice : 0;
+  String? get selectedJourneyId =>
+      isAuthorized &&
+          (activeRows?.any((row) => row.id == _selectedJourneyId) ?? false)
+      ? _selectedJourneyId
+      : null;
   bool get hasSamples =>
       isAuthorized &&
       (_active != null ||
@@ -170,7 +189,13 @@ class ZyraDeveloperSamples extends ChangeNotifier {
           _received != null ||
           _sent != null ||
           _introductions != null ||
-          _history != null);
+          _history != null ||
+          _viewAs != null ||
+          _unverified ||
+          _setupUnfinished ||
+          _preset != null ||
+          _notice != 0 ||
+          _selectedJourneyId != null);
   bool get hasRealCounts =>
       _realOwner ==
       (
@@ -225,9 +250,12 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     if (changed || presentationChanged || !wasBound) notifyListeners();
   }
 
-  void clear() {
+  void clear({ZyraDeveloperViewAs? previewDefault}) {
     _reset();
+    // Retire the previous overlay first so its owner restores its detached
+    // baseline. A missing-membership default is a new, local sample view.
     notifyListeners();
+    if (isAuthorized && previewDefault != null) setViewAs(previewDefault);
   }
 
   bool unbind({Object? binding}) {
@@ -266,6 +294,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
   }
 
   void _reset() {
+    _resetSelections();
     _cancelTimeRuleTimer();
     _journeyStarts.clear();
     _removedEnded.clear();
@@ -352,6 +381,140 @@ class ZyraDeveloperSamples extends ChangeNotifier {
 
   bool _permits(int value, {int max = 3}) =>
       isAuthorized && value >= 0 && value <= max;
+
+  /// Changes only this verified lifetime's local preview plan.
+  void setViewAs(ZyraDeveloperViewAs value) {
+    if (!isAuthorized || _viewAs == value) return;
+    final previousPlaces = capacity;
+    _viewAs = value;
+    if (value.guardian) {
+      // Q174: Guardian accounts have no own Ended Journeys or notices.
+      _notice = 0;
+      _viewedSeekerPlaces ??= previousPlaces;
+    } else {
+      _viewedSeekerPlaces = value.places;
+    }
+    final places = _viewedSeekerPlaces ?? previousPlaces;
+    final rows = _active;
+    if (rows != null && rows.length > places) {
+      final retired = rows.skip(places).map((row) => row.id).toSet();
+      _active = rows.take(places).toList();
+      _guardianChoices.removeWhere(
+        (pair, _) => retired.contains(pair.attemptId),
+      );
+      _ownReady.removeAll(retired);
+      _peerReady.removeAll(retired);
+    }
+    if (_selectedJourneyId != null &&
+        !(_active?.any((row) => row.id == _selectedJourneyId) ?? false)) {
+      _selectedJourneyId = _active?.firstOrNull?.id;
+    }
+    _changed();
+  }
+
+  void setUnverified(bool value) {
+    if (!isAuthorized || _unverified == value) return;
+    _unverified = value;
+    _changed();
+  }
+
+  void setSetupUnfinished(bool value) {
+    if (!isAuthorized || _setupUnfinished == value) return;
+    _setupUnfinished = value;
+    _changed();
+  }
+
+  void setPreset(ZyraDeveloperPreset value) {
+    if (!isAuthorized || _preset == value) return;
+    _preset = value;
+    _changed();
+  }
+
+  void setNotice(int value) {
+    if (!isAuthorized ||
+        viewAs?.guardian == true ||
+        value < 0 ||
+        value > 6 ||
+        _notice == value) {
+      return;
+    }
+    _notice = value;
+    if (value == 6) _preset = null;
+    _changed();
+  }
+
+  void setSelectedJourney(String sampleAttemptId) {
+    if (!isAuthorized ||
+        _selectedJourneyId == sampleAttemptId ||
+        !(activeRows?.any((row) => row.id == sampleAttemptId) ?? false)) {
+      return;
+    }
+    _selectedJourneyId = sampleAttemptId;
+    _changed();
+  }
+
+  /// Retained callbacks cannot address a removed or superseded sample attempt.
+  /// Replacing the immutable row also retires callbacks holding its old object.
+  void setJourneyStage(String sampleAttemptId, String stage) {
+    if (!isAuthorized ||
+        !ZyraJourneyStages.previewAll.any((value) => value.value == stage)) {
+      return;
+    }
+    final row = activeRows
+        ?.where((row) => row.id == sampleAttemptId)
+        .firstOrNull;
+    if (row == null || row.stage == stage) return;
+    final rows = _active;
+    final index = rows?.indexOf(row) ?? -1;
+    if (rows == null || index < 0) return;
+    rows[index] = ZyraSampleJourney(
+      row.person,
+      row.id,
+      stage: stage,
+      endedAt: row.endedAt,
+    );
+    _changed();
+  }
+
+  /// V2 has its own roster; the ordinary panel retains its existing V1 roster.
+  /// Attempt IDs remain monotonic across resets and presentation leases.
+  void setPreviewActive(int value) {
+    if (!_permits(value, max: capacity)) return;
+    final rows = _active;
+    if (overridesActive &&
+        rows != null &&
+        rows.length == value &&
+        List.generate(
+          value,
+          (index) =>
+              rows[index].person.id == _person(_previewActiveNames[index]).id,
+        ).every((matches) => matches)) {
+      return;
+    }
+    _overridesActive = true;
+    _active = [
+      for (var index = 0; index < value; index++)
+        _journey(
+          _person(_previewActiveNames[index]),
+          stage: _activeStages[index],
+        ),
+    ];
+    _selectedJourneyId = _active!.firstOrNull?.id;
+    _guardianChoices.clear();
+    _ownReady.clear();
+    _peerReady.clear();
+    _changed();
+  }
+
+  void _resetSelections() {
+    _viewAs = null;
+    _viewedSeekerPlaces = null;
+    _unverified = false;
+    _setupUnfinished = false;
+    _preset = null;
+    _notice = 0;
+    _selectedJourneyId = null;
+  }
 
   void setActive(int value) {
     if (!_permits(value, max: capacity) ||
@@ -520,9 +683,56 @@ class ZyraDeveloperSamples extends ChangeNotifier {
   }
 
   bool _canReceive(ZyraSampleRequest request) =>
+      !setupUnfinished &&
       request.incoming &&
       isRequestCurrent(request) &&
       !(_active?.any((row) => row.person.id == request.person.id) ?? false);
+
+  bool hasPreviewSent(String profileId) =>
+      isAuthorized && (_sent?.any((r) => r.person.id == profileId) ?? false);
+
+  DateTime? previewRequestCooldown(String profileId) {
+    if (!isAuthorized) return null;
+    final rows =
+        _history
+            ?.where(
+              (r) => r._outgoingNotTakenUp && r.request.person.id == profileId,
+            )
+            .toList() ??
+        const <ZyraSamplePastRequest>[];
+    if (rows.isEmpty) return null;
+    final latest = rows.reduce((a, b) => a.movedAt.isAfter(b.movedAt) ? a : b);
+    return pastRequestAskAgainAfter(latest);
+  }
+
+  bool canSendPreviewRequest(String profileId) {
+    if (!isAuthorized ||
+        setupUnfinished ||
+        capacity == 0 ||
+        !_people.containsKey(profileId) ||
+        (_active?.any((r) => r.person.id == profileId) ?? false) ||
+        (_received?.any((r) => r.person.id == profileId) ?? false)) {
+      return false;
+    }
+    final after = previewRequestCooldown(profileId);
+    return (capacity == 3 || hasSparePlace) &&
+        (after == null || !_clock().isBefore(after));
+  }
+
+  /// The planned preview and its request list use the same local request.
+  /// No member identity or transport is accepted by this sample-only API.
+  bool togglePreviewRequest(String profileId) {
+    if (!isAuthorized) return false;
+    final sent = _sent?.where((r) => r.person.id == profileId).firstOrNull;
+    if (sent != null) return declineOrCancel(sent);
+    if (!canSendPreviewRequest(profileId)) return false;
+    (_sent ??= []).insert(
+      0,
+      ZyraSampleRequest(_people[profileId]!, _clock(), incoming: false),
+    );
+    _changed();
+    return true;
+  }
 
   bool canAccept(ZyraSampleRequest request) =>
       _canReceive(request) &&

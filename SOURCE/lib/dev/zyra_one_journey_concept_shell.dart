@@ -3,6 +3,7 @@ import '../widgets/zyra_floating_surface.dart';
 // No production routes/services are called, no member records are loaded,
 // and only a device-local education marker is persisted (LOCK 3).
 import 'dart:async';
+import 'zyra_developer_focus_presets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'
@@ -45,6 +46,14 @@ import '../widgets/zyra_loading.dart';
 import '../widgets/zyra_full_screen_profile_gallery.dart';
 import '../widgets/zyra_profile_video_player.dart';
 import '../widgets/zyra_tab_title.dart';
+import '../widgets/zyra_developer_title.dart';
+import '../state/zyra_developer_samples.dart';
+import '../models/zyra_developer_preview.dart';
+import '../models/zyra_error_state.dart';
+import '../widgets/zyra_full_screen_error.dart';
+import '../screens/connections/zyra_sample_activity.dart';
+import 'zyra_developer_inactivity_email.dart';
+import 'zyra_developer_unverified_gate.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_confirm_sheet.dart';
 import '../widgets/zyra_shell_navigation.dart';
@@ -219,6 +228,7 @@ class ZyraOneJourneyConceptShell extends StatefulWidget {
     this.initialGuardianRole = false,
     this.initialSeekerBasic = false,
     this.initialGuardianBasic = false,
+    this.initialTab,
     this.initialCheckpoint,
     this.restoreLocation = true,
     this.onCheckpoint,
@@ -239,6 +249,7 @@ class ZyraOneJourneyConceptShell extends StatefulWidget {
   final bool initialGuardianRole;
   final bool initialSeekerBasic;
   final bool initialGuardianBasic;
+  final int? initialTab;
   final ZyraPreviewNavigationCheckpoint? initialCheckpoint;
   final bool restoreLocation;
   final ValueChanged<ZyraPreviewNavigationCheckpoint>? onCheckpoint;
@@ -253,7 +264,470 @@ class ZyraOneJourneyConceptShell extends StatefulWidget {
 
 class _ZyraOneJourneyConceptShellState
     extends State<ZyraOneJourneyConceptShell> {
-  late final ViewRequestDraftModel _model;
+  late ViewRequestDraftModel _model;
+  ZyraDeveloperPreviewBridge? _developerBridge;
+  final _developerSamples = ZyraDeveloperSamples.instance;
+  ViewRequestDraftSnapshot? _developerBaseline;
+  ZyraPreviewNavigationCheckpoint? _developerCheckpointBaseline;
+  Map<String, List<String>>? _developerMessagesBaseline;
+  TextEditingValue? _developerMessageDraftBaseline;
+  DateTime? _developerWelcomeBackBaseline;
+  Object? _developerSelectionFingerprint;
+  ZyraSubscriptionWalletDraft? _developerWalletBaseline;
+  String? _developerSeekerBaseline, _developerGuardianBaseline;
+  bool? _developerRoleBaseline;
+  String _developerJourneySignature = '';
+  final _developerStoreAttempts = <String, String>{};
+  ZyraDeveloperViewAs? _developerLastView;
+  int _developerNavigation = 0, _developerLastNotice = 0;
+  int _developerNoticeEpoch = 0, _developerPresetEpoch = 0;
+  int _developerEmailCount = 2;
+
+  bool get _hasDeveloperPreview =>
+      _developerBridge?.canPresent == true &&
+      _developerBridge?.viewAs != null &&
+      _developerSamples.hasSamples;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final bridge = ZyraDeveloperSeekerScope.bridgeOf(context);
+    if (identical(bridge, _developerBridge)) return;
+    _developerBridge?.detach(this);
+    _developerBridge = bridge;
+    bridge?.attach(
+      owner: this,
+      samplesChanged: _syncDeveloperSamples,
+      showError: _showDeveloperError,
+    );
+  }
+
+  Future<void> _showDeveloperError(ZyraErrorKind kind) async {
+    final bridge = _developerBridge;
+    final lifetime = bridge?.verifiedLifetime;
+    if (!mounted || bridge?.canPresent != true || lifetime == null) return;
+    late final MaterialPageRoute<void> route;
+    bool current() =>
+        mounted &&
+        identical(bridge, _developerBridge) &&
+        bridge!.canPresent &&
+        bridge.verifiedLifetime == lifetime;
+    route = MaterialPageRoute<void>(
+      builder: (_) => ListenableBuilder(
+        listenable: bridge!,
+        builder: (context, _) => !current()
+            ? const SizedBox.shrink()
+            : ZyraFullScreenError(
+                kind: kind,
+                referenceCode: 'ZY-PREVIEW',
+                onPrimary: () async {
+                  if (current() && route.isCurrent) route.navigator?.pop();
+                },
+              ),
+      ),
+    );
+    void withdraw() {
+      if (current()) return;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (route.isActive) route.navigator?.removeRoute(route);
+      });
+    }
+
+    bridge!.addListener(withdraw);
+    try {
+      await Navigator.of(context, rootNavigator: true).push(route);
+    } finally {
+      bridge.removeListener(withdraw);
+    }
+  }
+
+  void _syncDeveloperSamples() {
+    final bridge = _developerBridge;
+    if (!mounted || bridge?.canPresent != true) return;
+    final samples = _developerSamples;
+    if (!samples.hasSamples) {
+      final baseline = _developerBaseline;
+      if (baseline == null) return;
+      setState(() {
+        _model.peerDepartures.removeListener(_peerDeparted);
+        _model = ViewRequestDraftModel.fromSnapshot(
+          baseline,
+          clock: widget.previewClock,
+        );
+        _model.peerDepartures.addListener(_peerDeparted);
+        final checkpoint = _developerCheckpointBaseline!;
+        _guardianRole = checkpoint.guardian;
+        _myZyraConsumedFocusTokens.clear();
+        _circleReadMessageKeys.clear();
+        _circleTabSeenKeys.clear();
+        _circleMuteKeys.clear();
+        _circleSuppressedAttentionKeys.clear();
+        _circleObservedArrivalKeys.clear();
+        _circleArrivalChatIds.clear();
+        _conceptRemovedGuardians.clear();
+        _conceptNetworkSent.clear();
+        _browsePhotoIndices.clear();
+        _browseGalleryIndices.clear();
+        _pages.clear();
+        _restoreCheckpoint(checkpoint);
+        _messages
+          ..clear()
+          ..addAll(
+            _developerMessagesBaseline!.map(
+              (id, messages) => MapEntry(id, messages.toList()),
+            ),
+          );
+        _message.value = _developerMessageDraftBaseline!;
+        _subscriptionWallet = _developerWalletBaseline!;
+        _seekerMembership = _developerSeekerBaseline!;
+        _guardianMembership = _developerGuardianBaseline!;
+        _guardianRole = _developerRoleBaseline!;
+        _pages.clear();
+        _tab = _guardianRole ? 2 : 0;
+        _developerBaseline = null;
+        _developerCheckpointBaseline = null;
+        _developerMessagesBaseline = null;
+        _developerMessageDraftBaseline = null;
+        _developerWalletBaseline = null;
+        _developerSeekerBaseline = null;
+        _developerGuardianBaseline = null;
+        _developerRoleBaseline = null;
+        _developerSelectionFingerprint = null;
+        _developerJourneySignature = '';
+        _developerStoreAttempts.clear();
+        _developerLastView = null;
+        _developerLastNotice = 0;
+        _welcomeBackAt = _developerWelcomeBackBaseline;
+        _developerWelcomeBackBaseline = null;
+        _developerNavigation = bridge!.journeyNavigationEpoch;
+        _developerNoticeEpoch = bridge.noticeNavigationEpoch;
+        _developerPresetEpoch = bridge.presetSelectionEpoch;
+        _circleScopeRevision++;
+        _circleEntryView = null;
+        _circleEntryRevision = -1;
+        _circleVisibility.value = false;
+        _accountLeafView = null;
+        _accountLeafRevision = -1;
+        _uiRevision++;
+      });
+      return;
+    }
+    // Q173 uses an explicitly local Seeker One sample when real membership is absent.
+    final view = bridge!.viewAs;
+    if (view == null || bridge.journeyPlaces == 0) return;
+    final rows = samples.activeRows;
+    final fingerprint = (
+      samples.generation,
+      bridge.verifiedLifetime,
+      view,
+      bridge.journeyPlaces,
+      samples.unverified,
+      samples.setupUnfinished,
+      rows?.map((row) => '${row.id}:${row.stage}').join('|'),
+      samples.endedRows?.map((row) => '${row.id}:${row.endedAt}').join('|'),
+      samples.receivedRows
+          ?.map((row) => '${row.person.id}:${row.date}')
+          .join('|'),
+      samples.sentRows?.map((row) => '${row.person.id}:${row.date}').join('|'),
+      samples.history
+          ?.map(
+            (row) => '${row.request.person.id}:${row.status}:${row.movedAt}',
+          )
+          .join('|'),
+      samples.introductionRows?.map((person) => person.id).join('|'),
+      samples.preset,
+      samples.notice,
+      bridge.journeyNavigationEpoch,
+      bridge.noticeNavigationEpoch,
+      bridge.presetSelectionEpoch,
+    );
+    if (fingerprint == _developerSelectionFingerprint) {
+      // Photos and a healthy proof refresh may repaint a title, but must not
+      // retire its currently admitted editor or pending title-tap callback.
+      setState(() {});
+      return;
+    }
+    _developerSelectionFingerprint = fingerprint;
+    if (_developerBaseline == null) {
+      _developerBaseline = _model.snapshot();
+      _developerCheckpointBaseline = _captureCheckpoint();
+      _developerMessagesBaseline = {
+        for (final entry in _messages.entries) entry.key: entry.value.toList(),
+      };
+      _developerMessageDraftBaseline = _message.value;
+      _developerWelcomeBackBaseline = _welcomeBackAt;
+    }
+    _developerWalletBaseline ??= _subscriptionWallet;
+    _developerSeekerBaseline ??= _seekerMembership;
+    _developerGuardianBaseline ??= _guardianMembership;
+    _developerRoleBaseline ??= _guardianRole;
+    setState(() {
+      if (_developerLastView != view) {
+        final first = _developerLastView == null;
+        final roleChanged = _guardianRole != view.guardian;
+        _guardianRole = view.guardian;
+        if (!first || roleChanged) {
+          _tab = view.guardian ? 2 : 0;
+          _pages.clear();
+        }
+        if (view.guardian) {
+          _guardianMembership = view.label;
+          _developerLastNotice = 0;
+          _welcomeBackAt = null;
+        } else {
+          _seekerMembership = view.label;
+        }
+        _subscriptionWallet = _subscriptionWallet.withRole(
+          view.guardian ? ZyraWalletRole.guardian : ZyraWalletRole.seeker,
+          coverage:
+              view == ZyraDeveloperViewAs.seekerBasic ||
+                  view == ZyraDeveloperViewAs.guardianBasic
+              ? ZyraWalletCoverage.basic
+              : ZyraWalletCoverage.individualOne,
+        );
+        _developerLastView = view;
+      }
+      final rows = samples.activeRows;
+      final signature = rows == null
+          ? ''
+          : 'set:${rows.map((r) => '${r.id}:${r.stage}').join('|')}';
+      final places = bridge.journeyPlaces;
+      if (_model.capacity != places) {
+        // A smaller explicit sample plan cannot retain extra occupied places.
+        if (_model.occupiedCount > places) _model.replacePreviewJourneys([]);
+        _model.setCapacity(places);
+      }
+      if (rows != null && signature != _developerJourneySignature) {
+        final journeys = [
+          for (final row in rows) (profileId: row.person.id, stage: row.stage),
+        ];
+        final preserve =
+            _developerJourneySignature.isNotEmpty &&
+            rows.every(
+              (row) =>
+                  !_developerStoreAttempts.containsKey(row.person.id) ||
+                  _developerStoreAttempts[row.person.id] == row.id,
+            );
+        var synchronized = _model.replacePreviewJourneys(
+          journeys,
+          preserveUnchanged: preserve,
+        );
+        if (!synchronized) {
+          // A fixed sample person may already be a native request or ended
+          // attempt. Keep that untouched in the captured baseline and use an
+          // isolated working model for this explicit Journey override.
+          final working = ViewRequestDraftModel(
+            capacity: places,
+            clock: widget.previewClock,
+          );
+          synchronized = working.replacePreviewJourneys(journeys);
+          if (synchronized) {
+            _model.peerDepartures.removeListener(_peerDeparted);
+            _model = working;
+            _model.peerDepartures.addListener(_peerDeparted);
+          }
+        }
+        if (synchronized) {
+          _developerJourneySignature = signature;
+          _developerStoreAttempts
+            ..clear()
+            ..addEntries(rows.map((row) => MapEntry(row.person.id, row.id)));
+        }
+      }
+      if (bridge.journeyNavigationEpoch != _developerNavigation) {
+        _developerNavigation = bridge.journeyNavigationEpoch;
+        final selected = rows
+            ?.where((r) => r.id == samples.selectedJourneyId)
+            .firstOrNull;
+        if (selected != null) {
+          _pages
+            ..clear()
+            ..add('journey');
+          _tab = 1;
+          _personId = selected.person.id;
+          _guardianJourneyId = selected.person.id;
+          _guardianJourneyAttemptRevision = _model.attemptRevisionFor(
+            selected.person.id,
+          );
+        }
+      }
+      if (_developerPresetEpoch != bridge.presetSelectionEpoch) {
+        _developerPresetEpoch = bridge.presetSelectionEpoch;
+        final preset = samples.preset;
+        if (preset == ZyraDeveloperPreset.allCaughtUp ||
+            preset == ZyraDeveloperPreset.typicalDay) {
+          final lifetime = bridge.verifiedLifetime;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted &&
+                bridge.canPresent &&
+                bridge.verifiedLifetime == lifetime &&
+                samples.preset == preset) {
+              samples.setReceived(
+                preset == ZyraDeveloperPreset.typicalDay ? 1 : 0,
+              );
+              samples.setIntroductions(0);
+            }
+          });
+        }
+        _myZyraFocusIndex = 0;
+        _myZyraConsumedFocusTokens.clear();
+        if (samples.preset != null && !_guardianRole) {
+          _pages.clear();
+          _tab = 2;
+        }
+      }
+      if (_developerNoticeEpoch != bridge.noticeNavigationEpoch) {
+        _developerNoticeEpoch = bridge.noticeNavigationEpoch;
+        _developerLastNotice = samples.notice;
+        _developerEmailCount = (samples.ended ?? 0) > 0 ? samples.ended! : 2;
+        final notice = samples.notice;
+        final lifetime = bridge.verifiedLifetime;
+        if (notice > 0) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!mounted ||
+                !bridge.canPresent ||
+                bridge.verifiedLifetime != lifetime ||
+                samples.notice != notice) {
+              return;
+            }
+            if (notice == 5) {
+              samples.setEnded(0);
+            } else if ((samples.ended ?? 0) == 0) {
+              samples.setEnded(2);
+            }
+          });
+        }
+        _pages.clear();
+        _tab = 2;
+        if (samples.notice >= 1 && samples.notice <= 5) {
+          _pages.add('developer_inactivity_email');
+        }
+        _welcomeBackAt = samples.notice == 6 ? _previewNow : null;
+        _myZyraFocusIndex = 0;
+      }
+      _uiRevision++;
+      _expandedJourneyOptionsId = null;
+      _capacityRequest = null;
+      _capacityEndingId = null;
+    });
+  }
+
+  void _verifyDeveloperIdentity() {
+    final bridge = _developerBridge;
+    final access = bridge?.access;
+    final lifetime = bridge?.verifiedLifetime;
+    if (!_allowed || access == null || lifetime == null) return;
+    late final MaterialPageRoute<void> route;
+    bool current() =>
+        mounted &&
+        identical(bridge, _developerBridge) &&
+        bridge!.canPresent &&
+        bridge.verifiedLifetime == lifetime;
+    route = MaterialPageRoute<void>(
+      builder: (_) => InitialIdentityCheckScreen(
+        devPreview: true,
+        developerPanelAccess: access,
+        onContinue: (context) async {
+          if (current() && route.isCurrent) {
+            _developerSamples.setUnverified(false);
+            route.navigator?.pop();
+          }
+        },
+      ),
+    );
+    Navigator.of(context, rootNavigator: true).push(route);
+  }
+
+  Widget _developerEmail() => ZyraDeveloperInactivityEmail(
+    number: _developerLastNotice.clamp(1, 5),
+    endedCount: _developerEmailCount,
+    firstName: _accountSession.ownProfile(_guardianRole).firstName,
+    removalDate: DateTime(2026, 11, 26),
+    onBack: _bound(_back),
+    onOpen: _guardianRole && _developerLastNotice < 5
+        ? null
+        : _bound(() {
+            final kept = _developerLastNotice < 5;
+            _developerSamples.setNotice(kept ? 6 : 0);
+          }),
+  );
+
+  List<ZyraFocusEvent>? _developerFocusEvents(
+    List<ZyraFocusEvent> native, {
+    bool includeConsumed = false,
+  }) {
+    if (!_hasDeveloperPreview || _guardianRole) return null;
+    final preset = _developerSamples.preset;
+    if (preset != null) {
+      return zyraDeveloperFocusPreset(preset, now: _previewNow)
+          .where(
+            (event) =>
+                includeConsumed ||
+                event.tokens.any(
+                  (token) => !_myZyraConsumedFocusTokens.contains(token),
+                ),
+          )
+          .toList();
+    }
+    final received = _developerSamples.receivedRows;
+    final introductions = _developerSamples.introductionRows;
+    final events = <ZyraFocusEvent>[
+      if (preset == null)
+        ...native.where(
+          (event) =>
+              !(received != null && event.target == 'requests') &&
+              !(introductions != null && event.target == 'introductions') &&
+              event.target != 'welcome_back',
+        ),
+      if (_welcomeBackAt case final at?)
+        ZyraFocusEvent(
+          tokens: ['developer-welcome:${at.microsecondsSinceEpoch}'],
+          target: 'welcome_back',
+          title: 'Welcome back, ${_accountSession.ownProfile(false).firstName}',
+          detail:
+              'You were away for a while. Your Ended Journeys are kept — nothing was removed.',
+          action: 'View Ended Journeys',
+          icon: Icons.history,
+          occurredAt: at,
+        ),
+      if (received != null && received.isNotEmpty)
+        ZyraFocusEvent(
+          tokens: [
+            'developer-received:${received.map((r) => r.date.toIso8601String()).join(',')}',
+          ],
+          target: 'requests',
+          title: received.length == 1
+              ? 'Journey request from ${received.first.person.firstName}'
+              : '${received.length} Journey requests',
+          detail:
+              '${zyraFocusRequestNames(received.map((r) => r.person.firstName).toList())} '
+              'would like to begin a Journey with you.',
+          action: received.length == 1 ? 'View request' : 'View requests',
+          icon: Icons.mail_outline,
+          occurredAt: _previewNow,
+        ),
+      if (introductions != null && introductions.isNotEmpty)
+        ZyraFocusEvent(
+          tokens: [
+            'developer-introductions:${introductions.map((p) => p.id).join(',')}',
+          ],
+          target: 'introductions',
+          title: 'Hassan introduced ${introductions.first.firstName}',
+          detail: 'Review the person your Guardian has put forward.',
+          action: 'View introduction',
+          icon: Icons.groups_outlined,
+          occurredAt: _previewNow,
+        ),
+    ];
+    return events
+        .where(
+          (e) =>
+              includeConsumed ||
+              e.tokens.any((t) => !_myZyraConsumedFocusTokens.contains(t)),
+        )
+        .toList();
+  }
+
   late final ScrollController _scroll;
   late final ZyraPreviewPositionBucket _positions;
   final _browsePhotoIndices = <String, int>{};
@@ -721,7 +1195,9 @@ class _ZyraOneJourneyConceptShellState
     );
     // A warm timeout returns to My ZYRA, not the fresh-launch Browse tab.
     // The host still owns elapsed-time and fresh-admission decisions.
-    _tab = _guardianRole || !widget.restoreLocation ? 2 : 0;
+    _tab =
+        widget.initialTab?.clamp(0, 4) ??
+        (_guardianRole || !widget.restoreLocation ? 2 : 0);
     final checkpoint = widget.initialCheckpoint;
     final sameRole = checkpoint?.guardian == _guardianRole;
     _model =
@@ -766,6 +1242,7 @@ class _ZyraOneJourneyConceptShellState
     _accountSession = ZyraRequestAccountSession(
       canAct: () =>
           _allowed ||
+          (_developerBridge?.canPresent == true) ||
           ((_guardianOptionsRoute?.isCurrent == true ||
                   _ownedConfirmRoute?.isCurrent == true) &&
               (widget.canActInOwnedDialog?.call() ?? false)),
@@ -1239,15 +1716,11 @@ class _ZyraOneJourneyConceptShellState
     _circleVisibility.value = _page == 'guardian_circle';
   }
 
-  void _publishCheckpoint() {
-    if (!_allowed ||
-        (widget.onCheckpoint == null && widget.fixture?.onCheckpoint == null)) {
-      return;
-    }
+  ZyraPreviewNavigationCheckpoint _captureCheckpoint() {
     final offset = _scroll.hasClients
         ? _scroll.offset
         : _scroll.initialScrollOffset;
-    final checkpoint = ZyraPreviewNavigationCheckpoint(
+    return ZyraPreviewNavigationCheckpoint(
       guardian: _guardianRole,
       model: _model.snapshot(),
       tab: _tab,
@@ -1307,6 +1780,14 @@ class _ZyraOneJourneyConceptShellState
           ? _settingsDetail?.name
           : null,
     );
+  }
+
+  void _publishCheckpoint() {
+    if (!_allowed ||
+        (widget.onCheckpoint == null && widget.fixture?.onCheckpoint == null)) {
+      return;
+    }
+    final checkpoint = _captureCheckpoint();
     widget.onCheckpoint?.call(checkpoint);
     widget.fixture?.onCheckpoint?.call(checkpoint);
   }
@@ -1398,7 +1879,53 @@ class _ZyraOneJourneyConceptShellState
       if (_page != 'guardian_circle') _pendingMainUnreadOnEntry = null;
       _circleVisibility.value = _page == 'guardian_circle';
     });
+    _mirrorDeveloperJourneys();
     _publishCheckpoint();
+  }
+
+  void _mirrorDeveloperJourneys() {
+    if (!_hasDeveloperPreview) return;
+    final bridge = _developerBridge!;
+    final lifetime = bridge.verifiedLifetime;
+    final revision = _uiRevision;
+    final rows = _developerSamples.activeRows;
+    if (rows == null || lifetime == null) return;
+    final changes = [
+      for (final row in rows)
+        if (_model.stateFor(row.person.id) == DraftJourneyState.ended ||
+            (_model.stateFor(row.person.id) == DraftJourneyState.active &&
+                (_model.isBioStepOpen(row.person.id)
+                        ? ZyraJourneyStages.lifeSnapshotPreview.value
+                        : _model.stageFor(row.person.id)?.value) !=
+                    row.stage))
+          (
+            row: row,
+            ended: _model.stateFor(row.person.id) == DraftJourneyState.ended,
+            stage: _model.isBioStepOpen(row.person.id)
+                ? ZyraJourneyStages.lifeSnapshotPreview.value
+                : _model.stageFor(row.person.id)?.value,
+          ),
+    ];
+    if (changes.isEmpty) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted ||
+          !identical(bridge, _developerBridge) ||
+          !bridge.canPresent ||
+          bridge.verifiedLifetime != lifetime ||
+          revision != _uiRevision) {
+        return;
+      }
+      for (final change in changes) {
+        if (!(_developerSamples.activeRows?.contains(change.row) ?? false)) {
+          continue;
+        }
+        if (change.ended) {
+          _developerSamples.endActive(change.row);
+        } else if (change.stage case final stage?) {
+          _developerSamples.setJourneyStage(change.row.id, stage);
+        }
+      }
+    });
   }
 
   void _move(VoidCallback change, {bool preserveCircle = false}) {
@@ -1942,6 +2469,7 @@ class _ZyraOneJourneyConceptShellState
 
   @override
   void dispose() {
+    _developerBridge?.detach(this);
     _inactivityLifecycle.dispose();
     _model.peerDepartures.removeListener(_peerDeparted);
     final confirmRoute = _ownedConfirmRoute;
@@ -1996,6 +2524,7 @@ class _ZyraOneJourneyConceptShellState
     ];
     final fullPhoto = _isPhotoPage;
     final ownsViewport =
+        _page == 'developer_inactivity_email' ||
         _page == null ||
         (_page == 'held_action' &&
             _guardianRole &&
@@ -2316,95 +2845,107 @@ class _ZyraOneJourneyConceptShellState
     );
   }
 
-  Widget _content() => switch (_page) {
-    'profile' => _profileView(),
-    'journey' => _journeyView(),
-    'request_capacity' => _requestCapacityView(),
-    'journey_compatibility' => _journeyCompatibility(),
-    'guardian_compatibility' => _guardianCompatibilityReader(),
-    'guardian_compatibility_upgrade' => _guardianCompatibilityUpgrade(),
-    'journey_compatibility_locked' => _journeyDisclosureLocked(bio: false),
-    'journey_guardians' => _journeyGuardians(),
-    'ended_bio' => _endedJourneyDetail(bio: true),
-    'ended_guardians' => _endedJourneyDetail(bio: false),
-    'ended_restart' => _endedRestart(),
-    'ended_compatibility' => _endedCompatibility(),
-    'guardian_access_agreement' => _guardianAccessAgreement(),
-    'guardian_invite' => _guardianInvite(),
-    'guardian_main_notice' => _mainGuardianNotice(),
-    'guardian_info' => _guardianInfo(),
-    'network_request' => _guardianTabsView('connect_confirm'),
-    'guardian_introduce' => _guardianTabsView('introduce_confirm'),
-    'guardian_family_offer' => _guardianTabsView('family_offer'),
-    'guardian_free_place_invite' => _guardianFreePlaceInvite(),
-    'guardian_family_identity' => _guardianFamilyIdentity(),
-    'guardian_requests' => _guardianTabsView('requests'),
-    'guardian_connect' => _guardianTabsView('connect'),
-    'guardian_introductions' => _guardianTabsView('introductions'),
-    'guardian_seeker' => _guardianTabsView('seeker'),
-    'guardian_private_chat' => _guardianPrivateChat(),
-    'guardian_chat_report' => _guardianChatReport(),
-    'held_action' => _heldPreviewAction(),
-    'own_profile_preview' => _ownProfilePreview(),
-    'switch_account_signup' => _switchSignupView(setupOverview: false),
-    'switch_account_setup' => _switchSignupView(setupOverview: true),
-    'past_journeys' => _activityPage('Ended Journeys', _history()),
-    'requests' => _requestActivity(),
-    'introductions' => _introductionsActivity(),
-    'saved' || 'paused' => _unavailable(),
-    'ended' => _historyActivity(),
-    'guardian' => _guardianDetail(),
-    'guardian_linked_profile' => _guardianLinkedProfile(),
-    'guardian_network_profile' => _guardianNetworkProfile(),
-    'settings' => _settings(),
-    'phone_access' => _phoneAccess(),
-    'edit_profile' ||
-    'manage_photos' ||
-    'preference_quick_check' ||
-    'filter_preferences' => _retainedAccountLeaf(),
-    'membership' => _membershipView(),
-    'one_upgrade' => ZyraOneUpgradePage(
-      guardian: _guardianRole,
-      includesPreviewComparisons: true,
-      includesProfileVideo:
-          identical(widget.fixture, _fixtureOwner) &&
-          (_fixtureOwner?.profileVideoLoader != null ||
-              _fixtureOwner?.profileVideoStore != null),
-      canContinue: _accountFreshGuard(),
-      onBack: _bound(_back),
-    ),
-    'membership_review' => _membershipReviewView(),
-    'subscriptions' => _subscriptionsView(),
-    'bio' => _bio(),
-    'bio_locked' => _journeyDisclosureLocked(bio: true),
-    'compatibility' => _compatibilityInfo(),
-    'compatibility_store' => _compatibilityStore(),
-    'notifications' => _notificationsView(),
-    'filters' => _filters(),
-    'scan' => _scanEntry(),
-    'help_support' => _helpSupport(),
-    'safety' => _safety(),
-    'safety_advice' => _safetyAdvice(),
-    'timeline' => _timeline(_personId ?? ''),
-    'account_action' => _accountActionView(),
-    'settings_detail' => _settingsDetailView(),
-    _ =>
-      _guardianRole
-          ? switch (_tab) {
-              0 => _guardianTabsView('network'),
-              1 => _guardianTabsView('journeys'),
-              2 => _guardianTabsView('my_zyra'),
-              3 => _guardianTabsView('seekers'),
-              _ => _ownProfile(),
-            }
-          : switch (_tab) {
-              0 => _discover(),
-              1 => _connections(),
-              2 => _dashboard(),
-              3 => _guardians(),
-              _ => _ownProfile(),
-            },
-  };
+  Widget _content() =>
+      _hasDeveloperPreview &&
+          _developerSamples.unverified &&
+          _page == null &&
+          _tab == 0
+      ? ZyraDeveloperUnverifiedGate(
+          guardian: _guardianRole,
+          onVerify: _bound(_verifyDeveloperIdentity),
+        )
+      : switch (_page) {
+          'developer_inactivity_email' => _developerEmail(),
+          'profile' => _profileView(),
+          'journey' => _journeyView(),
+          'request_capacity' => _requestCapacityView(),
+          'journey_compatibility' => _journeyCompatibility(),
+          'guardian_compatibility' => _guardianCompatibilityReader(),
+          'guardian_compatibility_upgrade' => _guardianCompatibilityUpgrade(),
+          'journey_compatibility_locked' => _journeyDisclosureLocked(
+            bio: false,
+          ),
+          'journey_guardians' => _journeyGuardians(),
+          'ended_bio' => _endedJourneyDetail(bio: true),
+          'ended_guardians' => _endedJourneyDetail(bio: false),
+          'ended_restart' => _endedRestart(),
+          'ended_compatibility' => _endedCompatibility(),
+          'guardian_access_agreement' => _guardianAccessAgreement(),
+          'guardian_invite' => _guardianInvite(),
+          'guardian_main_notice' => _mainGuardianNotice(),
+          'guardian_info' => _guardianInfo(),
+          'network_request' => _guardianTabsView('connect_confirm'),
+          'guardian_introduce' => _guardianTabsView('introduce_confirm'),
+          'guardian_family_offer' => _guardianTabsView('family_offer'),
+          'guardian_free_place_invite' => _guardianFreePlaceInvite(),
+          'guardian_family_identity' => _guardianFamilyIdentity(),
+          'guardian_requests' => _guardianTabsView('requests'),
+          'guardian_connect' => _guardianTabsView('connect'),
+          'guardian_introductions' => _guardianTabsView('introductions'),
+          'guardian_seeker' => _guardianTabsView('seeker'),
+          'guardian_private_chat' => _guardianPrivateChat(),
+          'guardian_chat_report' => _guardianChatReport(),
+          'held_action' => _heldPreviewAction(),
+          'own_profile_preview' => _ownProfilePreview(),
+          'switch_account_signup' => _switchSignupView(setupOverview: false),
+          'switch_account_setup' => _switchSignupView(setupOverview: true),
+          'past_journeys' => _activityPage('Ended Journeys', _history()),
+          'requests' => _requestActivity(),
+          'introductions' => _introductionsActivity(),
+          'saved' || 'paused' => _unavailable(),
+          'ended' => _historyActivity(),
+          'guardian' => _guardianDetail(),
+          'guardian_linked_profile' => _guardianLinkedProfile(),
+          'guardian_network_profile' => _guardianNetworkProfile(),
+          'settings' => _settings(),
+          'phone_access' => _phoneAccess(),
+          'edit_profile' ||
+          'manage_photos' ||
+          'preference_quick_check' ||
+          'filter_preferences' => _retainedAccountLeaf(),
+          'membership' => _membershipView(),
+          'one_upgrade' => ZyraOneUpgradePage(
+            guardian: _guardianRole,
+            includesPreviewComparisons: true,
+            includesProfileVideo:
+                identical(widget.fixture, _fixtureOwner) &&
+                (_fixtureOwner?.profileVideoLoader != null ||
+                    _fixtureOwner?.profileVideoStore != null),
+            canContinue: _accountFreshGuard(),
+            onBack: _bound(_back),
+          ),
+          'membership_review' => _membershipReviewView(),
+          'subscriptions' => _subscriptionsView(),
+          'bio' => _bio(),
+          'bio_locked' => _journeyDisclosureLocked(bio: true),
+          'compatibility' => _compatibilityInfo(),
+          'compatibility_store' => _compatibilityStore(),
+          'notifications' => _notificationsView(),
+          'filters' => _filters(),
+          'scan' => _scanEntry(),
+          'help_support' => _helpSupport(),
+          'safety' => _safety(),
+          'safety_advice' => _safetyAdvice(),
+          'timeline' => _timeline(_personId ?? ''),
+          'account_action' => _accountActionView(),
+          'settings_detail' => _settingsDetailView(),
+          _ =>
+            _guardianRole
+                ? switch (_tab) {
+                    0 => _guardianTabsView('network'),
+                    1 => _guardianTabsView('journeys'),
+                    2 => _guardianTabsView('my_zyra'),
+                    3 => _guardianTabsView('seekers'),
+                    _ => _ownProfile(),
+                  }
+                : switch (_tab) {
+                    0 => _discover(),
+                    1 => _connections(),
+                    2 => _dashboard(),
+                    3 => _guardians(),
+                    _ => _ownProfile(),
+                  },
+        };
 
   VoidCallback _bound(VoidCallback action) {
     final revision = _uiRevision;
@@ -2474,12 +3015,31 @@ class _ZyraOneJourneyConceptShellState
     photos: _photos?.forIndex(draftProfiles.indexOf(p)) ?? const [],
   );
 
+  bool _hasSentInvitation(String id) => _hasDeveloperPreview
+      ? _developerSamples.hasPreviewSent(id)
+      : _model.stateFor(id) == DraftJourneyState.sent;
+
   bool _canToggleInvitation(String id) =>
       !_guardianRole &&
       !_model.isBlocked(id) &&
-      (_model.stateFor(id) == DraftJourneyState.sent || _model.canRequest(id));
+      (_hasDeveloperPreview
+          ? _hasSentInvitation(id) ||
+                (_developerSamples.setupUnfinished && _model.canRequest(id)) ||
+                _developerSamples.canSendPreviewRequest(id)
+          : _hasSentInvitation(id) || _model.canRequest(id));
 
   String _invitationLabel(String id) {
+    if (_hasDeveloperPreview) {
+      if (_hasSentInvitation(id)) return 'Request sent';
+      final cooldown = _developerSamples.previewRequestCooldown(id);
+      if (cooldown != null && cooldown.isAfter(_previewNow)) {
+        return 'Ask again from ${_requestDate(cooldown)}';
+      }
+      final state = _model.stateFor(id);
+      return state == null || state == DraftJourneyState.sent
+          ? 'Request a Journey'
+          : _stateLabel(state);
+    }
     final state = _model.stateFor(id);
     final cooldown =
         state == null &&
@@ -2503,10 +3063,20 @@ class _ZyraOneJourneyConceptShellState
 
   void _toggleInvitation(String id) {
     if (!_allowed || !_canToggleInvitation(id)) return;
-
+    if (_hasDeveloperPreview) {
+      if (_developerSamples.setupUnfinished && !_hasSentInvitation(id)) {
+        setState(
+          () => _notice = 'Finish setting up your profile to start a Journey.',
+        );
+      } else {
+        _seenBrowseProfileIds.add(id);
+        _developerSamples.togglePreviewRequest(id);
+      }
+      return;
+    }
     _act(() {
       _seenBrowseProfileIds.add(id);
-      if (_model.stateFor(id) == DraftJourneyState.sent) {
+      if (_hasSentInvitation(id)) {
         _model.cancel(id);
       } else {
         _model.request(id);
@@ -2531,10 +3101,10 @@ class _ZyraOneJourneyConceptShellState
         nextKey: const ValueKey('draft_browse_next'),
         requestKey: const ValueKey('draft_request'),
         requestLabel: _invitationLabel(p.id),
-        requestSemanticLabel: _model.stateFor(p.id) == DraftJourneyState.sent
+        requestSemanticLabel: _hasSentInvitation(p.id)
             ? 'Request sent. Tap to cancel request'
             : null,
-        invitationSent: _model.stateFor(p.id) == DraftJourneyState.sent,
+        invitationSent: _hasSentInvitation(p.id),
         onRequest: _canToggleInvitation(p.id)
             ? _bound(() => _toggleInvitation(p.id))
             : null,
@@ -2865,12 +3435,10 @@ class _ZyraOneJourneyConceptShellState
               ),
         canRequest: (profile) => _canToggleInvitation(profile.id),
         requestLabel: (profile) => _invitationLabel(profile.id),
-        requestSemanticLabel: (profile) =>
-            _model.stateFor(profile.id) == DraftJourneyState.sent
+        requestSemanticLabel: (profile) => _hasSentInvitation(profile.id)
             ? 'Request sent. Tap to cancel request'
             : _invitationLabel(profile.id),
-        invitationSent: (profile) =>
-            _model.stateFor(profile.id) == DraftJourneyState.sent,
+        invitationSent: (profile) => _hasSentInvitation(profile.id),
         // Photo browsing stays inside the approved bounded card.
         onProfile: null,
         onRequest: (profile) {
@@ -3268,6 +3836,7 @@ class _ZyraOneJourneyConceptShellState
   Widget _activityPage(String title, List<Widget> content) =>
       ZyraRequestActivityPresentation(
         key: ValueKey('concept_activity_$_page'),
+        wrapTitle: (title) => ZyraDeveloperTitle(child: title),
         title: title,
         labels: [title],
         pages: [content],
@@ -3277,9 +3846,23 @@ class _ZyraOneJourneyConceptShellState
       );
 
   Widget _requestActivity() {
+    if (_hasDeveloperPreview &&
+        (_developerSamples.receivedRows != null ||
+            _developerSamples.sentRows != null ||
+            _developerSamples.history != null)) {
+      return ZyraDeveloperJourneyRequestsScreen(
+        tabClearance: _quickAccessTabBar,
+        initialTab: _requestsTab,
+        onTabChanged: (tab) {
+          if (_allowed) _requestsTab = tab;
+        },
+        wrapTitle: (title) => ZyraDeveloperTitle(child: title),
+      );
+    }
     final revision = _uiRevision;
     return ZyraRequestActivityPresentation(
       key: const ValueKey('concept_activity_requests'),
+      wrapTitle: (title) => ZyraDeveloperTitle(child: title),
       canInteract: () =>
           _allowed &&
           revision == _uiRevision &&
@@ -3314,23 +3897,30 @@ class _ZyraOneJourneyConceptShellState
     );
   }
 
-  Widget _introductionsActivity() => ZyraRequestActivityPresentation(
-    key: const ValueKey('concept_activity_introductions'),
-    title: 'Introductions',
-    tabClearance: _quickAccessTabBar,
-    labels: const ['Introductions'],
-    pages: const [
-      [
-        ZyraRequestActivityEmpty(
-          icon: Icons.groups_outlined,
-          title: 'No introductions yet',
-          message: 'People your Guardians put forward will appear here.',
-        ),
-      ],
-    ],
-    selectedIndex: 0,
-    onChanged: (_) {},
-  );
+  Widget _introductionsActivity() =>
+      _hasDeveloperPreview && _developerSamples.introductionRows != null
+      ? ZyraSampleIntroductionsList(
+          tabClearance: _quickAccessTabBar,
+          wrapTitle: (title) => ZyraDeveloperTitle(child: title),
+        )
+      : ZyraRequestActivityPresentation(
+          key: const ValueKey('concept_activity_introductions'),
+          wrapTitle: (title) => ZyraDeveloperTitle(child: title),
+          title: 'Introductions',
+          tabClearance: _quickAccessTabBar,
+          labels: const ['Introductions'],
+          pages: const [
+            [
+              ZyraRequestActivityEmpty(
+                icon: Icons.groups_outlined,
+                title: 'No introductions yet',
+                message: 'People your Guardians put forward will appear here.',
+              ),
+            ],
+          ],
+          selectedIndex: 0,
+          onChanged: (_) {},
+        );
 
   Widget _historyActivity() => _activityPage('Ended Journeys', _history());
 
@@ -4425,6 +5015,19 @@ class _ZyraOneJourneyConceptShellState
   }
 
   List<Widget> _history() {
+    final rows = _hasDeveloperPreview ? _developerSamples.endedRows : null;
+    if (rows != null && rows.isNotEmpty) {
+      return [for (final row in rows) ZyraSampleEndedJourneyCard(row: row)];
+    }
+    if (rows != null) {
+      return const [
+        ZyraRequestActivityEmpty(
+          icon: Icons.history_outlined,
+          title: 'No ended Journeys',
+          message: "When a Journey ends, it's kept here with its Timeline.",
+        ),
+      ];
+    }
     final people = _visibleRequests(DraftJourneyState.ended);
     return people.isEmpty
         ? [
@@ -4655,10 +5258,12 @@ class _ZyraOneJourneyConceptShellState
             Row(
               children: [
                 Expanded(
-                  child: Text(
-                    'Journey with ${p.firstName}',
-                    textAlign: TextAlign.center,
-                    style: ZyraText.heading(size: 16),
+                  child: ZyraDeveloperTitle(
+                    child: Text(
+                      'Journey with ${p.firstName}',
+                      textAlign: TextAlign.center,
+                      style: ZyraText.heading(size: 16),
+                    ),
                   ),
                 ),
                 IconButton(
@@ -4704,10 +5309,12 @@ class _ZyraOneJourneyConceptShellState
         Row(
           children: [
             Expanded(
-              child: Text(
-                'Journey with ${person.firstName}',
-                textAlign: TextAlign.center,
-                style: ZyraText.heading(size: 16),
+              child: ZyraDeveloperTitle(
+                child: Text(
+                  'Journey with ${person.firstName}',
+                  textAlign: TextAlign.center,
+                  style: ZyraText.heading(size: 16),
+                ),
               ),
             ),
           ],
@@ -5389,6 +5996,12 @@ class _ZyraOneJourneyConceptShellState
       'received:$id:${_model.receivedRequestRevision(id)}';
 
   List<ZyraFocusEvent> _focusEvents({bool includeConsumed = false}) {
+    final native = _nativeFocusEvents(includeConsumed: includeConsumed);
+    return _developerFocusEvents(native, includeConsumed: includeConsumed) ??
+        native;
+  }
+
+  List<ZyraFocusEvent> _nativeFocusEvents({bool includeConsumed = false}) {
     final events = <ZyraFocusEvent>[
       if (_welcomeBackAt case final at? when !_guardianRole)
         ZyraFocusEvent(
@@ -5706,14 +6319,29 @@ class _ZyraOneJourneyConceptShellState
 
   Widget _dashboard() {
     final events = _focusEvents();
-    final incoming = _visibleRequests(
-      DraftJourneyState.received,
-    ).where((p) => _model.hasUnseenReceivedRequest(p.id)).length;
-    final sent = _visibleRequests(DraftJourneyState.sent).length;
-    final ended = _visibleRequests(DraftJourneyState.ended).length;
-    final introductions = events
-        .where((event) => event.target == 'introductions')
-        .length;
+    final developerPreset = _hasDeveloperPreview
+        ? _developerSamples.preset
+        : null;
+    final incoming = _hasDeveloperPreview
+        ? _developerSamples.received ??
+              _visibleRequests(
+                DraftJourneyState.received,
+              ).where((p) => _model.hasUnseenReceivedRequest(p.id)).length
+        : _visibleRequests(
+            DraftJourneyState.received,
+          ).where((p) => _model.hasUnseenReceivedRequest(p.id)).length;
+    final sent = _hasDeveloperPreview
+        ? _developerSamples.sent ??
+              _visibleRequests(DraftJourneyState.sent).length
+        : _visibleRequests(DraftJourneyState.sent).length;
+    final ended = _hasDeveloperPreview
+        ? _developerSamples.ended ??
+              _visibleRequests(DraftJourneyState.ended).length
+        : _visibleRequests(DraftJourneyState.ended).length;
+    final introductions = _hasDeveloperPreview
+        ? _developerSamples.introductions ??
+              events.where((event) => event.target == 'introductions').length
+        : events.where((event) => event.target == 'introductions').length;
     final fresh = _accountFreshGuard();
     final revision = _uiRevision,
         routes = _routeStamp,
@@ -5754,7 +6382,8 @@ class _ZyraOneJourneyConceptShellState
             })(),
             items: [
               if (!_guardianRole &&
-                  _accountSession.compatibility.hasPreferencesToCheck)
+                  _accountSession.compatibility.hasPreferencesToCheck &&
+                  developerPreset == null)
                 ZyraFocusItem(
                   id: 'preference-quick-check',
                   icon: Icons.check,
@@ -5780,21 +6409,26 @@ class _ZyraOneJourneyConceptShellState
                 ),
             ],
             chips: [
-              if (!setup)
+              if (developerPreset == ZyraDeveloperPreset.newMember ||
+                  developerPreset == ZyraDeveloperPreset.everything ||
+                  (developerPreset == null && !setup))
                 ZyraFocusChip(
                   id: 'focus-setup',
                   label: 'Finish setup',
                   icon: Icons.person_outline,
                   onTap: action(() => _walletSetup(ZyraWalletRole.seeker)),
                 ),
-              if (_conceptGuardianPeople.isEmpty)
+              if (developerPreset == ZyraDeveloperPreset.newMember ||
+                  developerPreset == ZyraDeveloperPreset.everything ||
+                  (developerPreset == null && _conceptGuardianPeople.isEmpty))
                 ZyraFocusChip(
                   id: 'focus-guardian',
                   label: 'No Guardian yet',
                   icon: Icons.verified_user_outlined,
                   onTap: action(() => _tabTo(3)),
                 ),
-              if (setup)
+              if (developerPreset != ZyraDeveloperPreset.newMember &&
+                  (developerPreset != null || setup))
                 ZyraFocusChip(
                   id: 'focus-places',
                   label:
@@ -5802,7 +6436,10 @@ class _ZyraOneJourneyConceptShellState
                   icon: Icons.people_outline,
                   onTap: action(() => _tabTo(1)),
                 ),
-              if (notificationsAllowed == false)
+              if ((developerPreset == null && notificationsAllowed == false) ||
+                  developerPreset == ZyraDeveloperPreset.typicalDay ||
+                  developerPreset == ZyraDeveloperPreset.newMember ||
+                  developerPreset == ZyraDeveloperPreset.everything)
                 ZyraFocusChip(
                   id: 'focus-notifications-off',
                   label: 'Notifications off',
@@ -5812,7 +6449,9 @@ class _ZyraOneJourneyConceptShellState
                     _open('phone_access');
                   }),
                 ),
-              if (set < total)
+              if (developerPreset == ZyraDeveloperPreset.typicalDay ||
+                  developerPreset == ZyraDeveloperPreset.everything ||
+                  (developerPreset == null && set < total))
                 ZyraFocusChip(
                   id: 'focus-preferences',
                   label: 'Preferences $set/$total',
@@ -5935,10 +6574,12 @@ class _ZyraOneJourneyConceptShellState
                   ),
                 ),
                 const SizedBox(height: 18),
-                Text(
-                  '$name will be your Main Guardian',
-                  textAlign: TextAlign.center,
-                  style: ZyraText.heading(size: 26),
+                ZyraDeveloperTitle(
+                  child: Text(
+                    '$name will be your Main Guardian',
+                    textAlign: TextAlign.center,
+                    style: ZyraText.heading(size: 26),
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Text(
@@ -6728,54 +7369,59 @@ class _ZyraOneJourneyConceptShellState
         alignmentY: _ownSeekerAvatarAlignment.dy,
       ),
     );
-    return _circleEntryView = Navigator(
-      observers: [ZyraPreviewRouteObserver()],
-      key: navigator,
-      onGenerateRoute: (_) => MaterialPageRoute<void>(
-        builder: (_) => ZyraGuardianCircleScreen(
-          key: ValueKey(('request-guardian-circle', revision, senderId)),
-          seekerId: data.seekerId,
-          seekerFirstName: circleSeekerName,
-          viewerIsSeeker: !guardian,
-          preview: true,
-          previewData: data,
-          previewSeekerAvatar: seekerAvatar,
-          previewTopics: topicsPreview,
-          previewBubbleDesign: _circleBubbleDesign,
-          previewForeground: foreground,
-          previewVisibility: _circleVisibility,
-          previewCurrentTopics: currentTopicExamples,
-          previewPastTopics: pastTopics,
-          // A topic is not permission to look up a profile. Only this bound
-          // Seeker caller can return an already admitted current example.
-          // Guardian/Past comparisons never gain a full-profile capability.
-          previewDiscussionProfileFor: guardian ? null : discussionProfileFor,
-          previewDiscussionArchiveFor: discussionArchiveFor,
-          canAct: ownerGuard,
-          onBack: () {
-            if (foreground()) _back();
-          },
-          onOpenContext: (context) {
-            if (!foreground() ||
-                !contexts.any(
-                  (allowed) =>
-                      allowed.referenceId == context.referenceId &&
-                      allowed.kind == context.kind,
-                ) ||
-                _model.isBlocked(context.referenceId) ||
-                _model.stateFor(context.referenceId) !=
-                    DraftJourneyState.active) {
-              return;
-            }
-            if (guardian) {
-              _move(() {
-                _selectGuardianJourney(context.referenceId);
-                _pages.add('guardian');
-              }, preserveCircle: true);
-            } else {
-              _journey(context.referenceId);
-            }
-          },
+    return _circleEntryView = ZyraDeveloperOwnedNavigatorScope(
+      bridge: _developerBridge,
+      navigatorKey: navigator,
+      canPresent: foreground,
+      child: Navigator(
+        observers: [ZyraPreviewRouteObserver()],
+        key: navigator,
+        onGenerateRoute: (_) => MaterialPageRoute<void>(
+          builder: (_) => ZyraGuardianCircleScreen(
+            key: ValueKey(('request-guardian-circle', revision, senderId)),
+            seekerId: data.seekerId,
+            seekerFirstName: circleSeekerName,
+            viewerIsSeeker: !guardian,
+            preview: true,
+            previewData: data,
+            previewSeekerAvatar: seekerAvatar,
+            previewTopics: topicsPreview,
+            previewBubbleDesign: _circleBubbleDesign,
+            previewForeground: foreground,
+            previewVisibility: _circleVisibility,
+            previewCurrentTopics: currentTopicExamples,
+            previewPastTopics: pastTopics,
+            // A topic is not permission to look up a profile. Only this bound
+            // Seeker caller can return an already admitted current example.
+            // Guardian/Past comparisons never gain a full-profile capability.
+            previewDiscussionProfileFor: guardian ? null : discussionProfileFor,
+            previewDiscussionArchiveFor: discussionArchiveFor,
+            canAct: ownerGuard,
+            onBack: () {
+              if (foreground()) _back();
+            },
+            onOpenContext: (context) {
+              if (!foreground() ||
+                  !contexts.any(
+                    (allowed) =>
+                        allowed.referenceId == context.referenceId &&
+                        allowed.kind == context.kind,
+                  ) ||
+                  _model.isBlocked(context.referenceId) ||
+                  _model.stateFor(context.referenceId) !=
+                      DraftJourneyState.active) {
+                return;
+              }
+              if (guardian) {
+                _move(() {
+                  _selectGuardianJourney(context.referenceId);
+                  _pages.add('guardian');
+                }, preserveCircle: true);
+              } else {
+                _journey(context.referenceId);
+              }
+            },
+          ),
         ),
       ),
     );
@@ -7524,13 +8170,30 @@ class _ZyraOneJourneyConceptShellState
     );
   }
 
-  List<DraftProfile> _guardianJourneyRequests(DraftJourneyState state) =>
-      _conceptHassanLinked && _conceptLinkedSeeker.isMain
-      ? _visibleRequests(state)
-      : const [];
+  List<DraftProfile> _guardianJourneyRequests(DraftJourneyState state) {
+    if (!_conceptHassanLinked || !_conceptLinkedSeeker.isMain) return const [];
+    if (_hasDeveloperPreview) {
+      final rows = state == DraftJourneyState.received
+          ? _developerSamples.receivedRows
+          : state == DraftJourneyState.sent
+          ? _developerSamples.sentRows
+          : null;
+      if (rows != null) return [for (final row in rows) row.person];
+    }
+    return _visibleRequests(state);
+  }
 
-  String _guardianRequestReadToken(String id) =>
-      'guardian-${_receivedFocusToken(id)}';
+  String _guardianRequestReadToken(String id) {
+    if (_hasDeveloperPreview) {
+      final request = _developerSamples.receivedRows
+          ?.where((row) => row.person.id == id)
+          .firstOrNull;
+      if (request != null) {
+        return 'guardian-sample:$id:${request.date.toIso8601String()}';
+      }
+    }
+    return 'guardian-${_receivedFocusToken(id)}';
+  }
 
   String _guardianRequestTabToken(String id) =>
       'tab-${_guardianRequestReadToken(id)}';
@@ -8832,13 +9495,15 @@ class _ZyraOneJourneyConceptShellState
     final navigator = GlobalKey<NavigatorState>();
     _accountNavigator = navigator;
     _accountLeafRevision = revision;
-    bool current() =>
-        _allowed &&
+    bool retainedOwner() =>
+        mounted &&
+        (_allowed || _developerBridge?.canPresent == true) &&
         revision == _uiRevision &&
         guardian == _guardianRole &&
         page == _page &&
         tab == _tab &&
         _accountSession.current;
+    bool current() => _allowed && retainedOwner();
     final compatibility = _accountSession.compatibility;
     Future<(ZyraCompatibilityDraft, ZyraPreferenceQuickCheck)>
     loadPreferences() async {
@@ -8888,86 +9553,95 @@ class _ZyraOneJourneyConceptShellState
     // The retained hub owns its ordinary child routes in this Navigator.
     // Covering the hub with its own editor or picker does not cover the
     // admitted Founder route or grant a stale page permission to save.
-    return _accountLeafView = Navigator(
-      observers: [ZyraPreviewRouteObserver()],
-      key: navigator,
-      onGenerateRoute: (_) => MaterialPageRoute<void>(
-        builder: (_) => ZyraPullDownBackScope(
-          key: const ValueKey('concept_pull_down_back_scope'),
-          // This shell already paints the full-viewport local palette and
-          // gold. A global cue fill would hide both behind the retained leaf.
-          paintBackground: false,
-          routeIdentity: ('retained-account', revision, guardian, page, tab),
-          onBack: back,
-          child: ListenableBuilder(
-            listenable: _accountSession,
-            builder: (_, _) => switch (page) {
-              'filter_preferences' || 'preference_quick_check' => FutureBuilder(
-                future: preferences,
-                builder: (_, snapshot) {
-                  if (guardian || !current()) return const SizedBox.shrink();
-                  if (snapshot.connectionState != ConnectionState.done) {
-                    return const ZyraLoading();
-                  }
-                  final data = snapshot.data;
-                  if (data == null) return const SizedBox.shrink();
-                  return CompatibilityEditorScreen.preview(
-                    kind: CompatibilityEditorKind.trafficLights,
-                    initialDraft: data.$1,
-                    quickCheck: data.$2,
-                    openQuickCheck: page == 'preference_quick_check',
-                    onPreviewReturn: (_) => back(),
-                    canAct: current,
-                    canActChanges: _accountSession,
-                    onPersist: (draft) async =>
-                        current() &&
-                        await _accountSession.compatibility.save(
-                          'draft-self',
-                          draft,
-                        ) &&
-                        current(),
-                  );
-                },
-              ),
-              'edit_profile' => EditProfileScreen.preview(
-                repository: _accountSession.compatibility,
-                canAct: current,
-                gender: 'male',
-                age: 30,
-                onSupport: support,
-              ),
-              'manage_photos' => EditPhotosScreen.preview(
-                canAct: current,
-                localPhotoImport: widget.localPhotoImport,
-                initialPhotos: _accountSession.photos(guardian),
-                gender: 'male',
-                hapticLevel: _accountSession.hapticLevel,
-                initialAlignmentX: _accountSession.avatar(guardian).dx,
-                initialAlignmentY: _accountSession.avatar(guardian).dy,
-                onPhotosChanged: photosChanged,
-                onAvatarChanged: avatarChanged,
-                profileVideo: videoStore == null
-                    ? null
-                    : (
-                        store: videoStore,
-                        media: videoFixture!.profileVideoMedia,
-                        basic: _seekerMembership == 'Seeker Basic',
-                        canAct: () =>
-                            identical(widget.fixture, videoFixture) &&
-                            _fixtureAccount ==
-                                (
-                                  ZyraAccountState.userId,
-                                  ZyraAccountState.generation,
-                                ),
-                        onUpgrade: () {
-                          if (current() && _fixtureIsCurrent()) {
-                            _open('one_upgrade');
-                          }
-                        },
-                      ),
-              ),
-              _ => _unavailable(),
-            },
+    return _accountLeafView = ZyraDeveloperOwnedNavigatorScope(
+      bridge: _developerBridge,
+      navigatorKey: navigator,
+      canPresent: current,
+      child: Navigator(
+        observers: [ZyraPreviewRouteObserver()],
+        key: navigator,
+        onGenerateRoute: (_) => MaterialPageRoute<void>(
+          builder: (_) => ZyraPullDownBackScope(
+            key: const ValueKey('concept_pull_down_back_scope'),
+            // This shell already paints the full-viewport local palette and
+            // gold. A global cue fill would hide both behind the retained leaf.
+            paintBackground: false,
+            routeIdentity: ('retained-account', revision, guardian, page, tab),
+            onBack: back,
+            child: ListenableBuilder(
+              listenable: _accountSession,
+              builder: (_, _) => switch (page) {
+                'filter_preferences' ||
+                'preference_quick_check' => FutureBuilder(
+                  future: preferences,
+                  builder: (_, snapshot) {
+                    if (guardian || !current()) return const SizedBox.shrink();
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return const ZyraLoading();
+                    }
+                    final data = snapshot.data;
+                    if (data == null) return const SizedBox.shrink();
+                    return CompatibilityEditorScreen.preview(
+                      kind: CompatibilityEditorKind.trafficLights,
+                      initialDraft: data.$1,
+                      quickCheck: data.$2,
+                      openQuickCheck: page == 'preference_quick_check',
+                      onPreviewReturn: (_) => back(),
+                      canAct: current,
+                      canRetain: retainedOwner,
+                      canActChanges: _accountSession,
+                      onPersist: (draft) async =>
+                          current() &&
+                          await _accountSession.compatibility.save(
+                            'draft-self',
+                            draft,
+                          ) &&
+                          current(),
+                    );
+                  },
+                ),
+                'edit_profile' => EditProfileScreen.preview(
+                  repository: _accountSession.compatibility,
+                  canAct: current,
+                  canRetain: retainedOwner,
+                  gender: 'male',
+                  age: 30,
+                  onSupport: support,
+                ),
+                'manage_photos' => EditPhotosScreen.preview(
+                  canAct: current,
+                  canRetain: retainedOwner,
+                  localPhotoImport: widget.localPhotoImport,
+                  initialPhotos: _accountSession.photos(guardian),
+                  gender: 'male',
+                  hapticLevel: _accountSession.hapticLevel,
+                  initialAlignmentX: _accountSession.avatar(guardian).dx,
+                  initialAlignmentY: _accountSession.avatar(guardian).dy,
+                  onPhotosChanged: photosChanged,
+                  onAvatarChanged: avatarChanged,
+                  profileVideo: videoStore == null
+                      ? null
+                      : (
+                          store: videoStore,
+                          media: videoFixture!.profileVideoMedia,
+                          basic: _seekerMembership == 'Seeker Basic',
+                          canAct: () =>
+                              identical(widget.fixture, videoFixture) &&
+                              _fixtureAccount ==
+                                  (
+                                    ZyraAccountState.userId,
+                                    ZyraAccountState.generation,
+                                  ),
+                          onUpgrade: () {
+                            if (current() && _fixtureIsCurrent()) {
+                              _open('one_upgrade');
+                            }
+                          },
+                        ),
+                ),
+                _ => _unavailable(),
+              },
+            ),
           ),
         ),
       ),
@@ -9551,7 +10225,7 @@ class _ZyraOneJourneyConceptShellState
   Widget _notificationsView() => KeyedSubtree(
     key: const ValueKey('concept_notifications_end_card'),
     child: _card([
-      _title('Only what matters to you.', size: 26),
+      ZyraDeveloperTitle(child: _title('Only what matters to you.', size: 26)),
       _body(
         _currentJourneys.length > 1
             ? '${_currentJourneys.length} Journeys are in progress. Open Journey to choose one.'
@@ -9936,7 +10610,7 @@ class _ZyraOneJourneyConceptShellState
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _title(title, size: 26),
+        ZyraDeveloperTitle(child: _title(title, size: 26)),
         if (description.isNotEmpty) ...[
           const SizedBox(height: 8),
           _body(description, small: true),

@@ -1675,6 +1675,7 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
                             participantCount: _participantCount,
                             onShowMembers: _showMembers,
                             seeker: widget.viewerIsSeeker,
+                            preview: widget.preview,
                             compactPending:
                                 dockDiscussion &&
                                 _topicOptionsEnabled &&
@@ -1954,12 +1955,14 @@ class _CircleHeader extends StatelessWidget {
     required this.participantCount,
     required this.onShowMembers,
     required this.seeker,
+    this.preview = false,
     this.compactPending = false,
   });
 
   final int participantCount;
   final VoidCallback onShowMembers;
   final bool seeker;
+  final bool preview;
   final bool compactPending;
 
   @override
@@ -2004,7 +2007,7 @@ class _CircleHeader extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ZyraDeveloperTitle(
-                        enabled: seeker,
+                        enabled: seeker || preview,
                         child: compactPending
                             ? SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,

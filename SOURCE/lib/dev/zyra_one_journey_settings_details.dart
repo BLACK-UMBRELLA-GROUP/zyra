@@ -1,3 +1,4 @@
+import '../widgets/zyra_developer_title.dart';
 import '../theme/zyra_colors.dart';
 import '../widgets/zyra_floating_surface.dart';
 // Detached Settings click-through content for the protected comparison.
@@ -812,11 +813,13 @@ class _SettingsPage extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-            child: Text(
-              title,
-              key: ValueKey('concept_settings_title_$id'),
-              style: ZyraText.pageTitle().copyWith(
-                color: ZyraFounderLaunchPageStyle.inkOf(context),
+            child: ZyraDeveloperTitle(
+              child: Text(
+                title,
+                key: ValueKey('concept_settings_title_$id'),
+                style: ZyraText.pageTitle().copyWith(
+                  color: ZyraFounderLaunchPageStyle.inkOf(context),
+                ),
               ),
             ),
           ),

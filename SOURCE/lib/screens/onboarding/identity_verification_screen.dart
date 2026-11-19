@@ -1,3 +1,4 @@
+import '../../widgets/zyra_developer_title.dart';
 // Mandatory identity-verification step — DR-ZYRA-220/221, OA-ZYRA-266.
 //
 // Phase A owns the exact consent surface, coarse-state presentation and the
@@ -35,8 +36,51 @@ const String kIdentityVerificationConsentBody =
     'face data; we only receive the result. This uses biometric data, and '
     'we need your explicit consent.';
 
+// One local rehearsal admission. The panel's server-role proof is separate
+// from legacy developer tools and is never used to authorize production IDV.
+final class _IdentityPreviewAuthority {
+  _IdentityPreviewAuthority(this.panelAccess, {required bool previewRequested})
+    : _previewRequested = previewRequested,
+      _generation = ZyraAccountState.generation,
+      _lifetime = previewRequested ? panelAccess?.verifiedLifetime : null {
+    if (previewRequested) available;
+  }
+
+  final ZyraDeveloperPanelAccess? panelAccess;
+  final bool _previewRequested;
+  final int _generation;
+  final Object? _lifetime;
+  bool _revoked = false;
+
+  bool get available {
+    if (_revoked) return false;
+    try {
+      final access = panelAccess;
+      if (!_previewRequested ||
+          (access == null
+              ? !ZyraDeveloperAccess.canUseDeveloperTools
+              : ZyraAccountState.generation != _generation ||
+                    ZyraAccountState.isSigningOut ||
+                    _lifetime == null ||
+                    access.email?.trim().isNotEmpty != true ||
+                    access.verifiedLifetime != _lifetime)) {
+        _revoked = true;
+      }
+    } catch (_) {
+      _revoked = true;
+    }
+    return !_revoked;
+  }
+
+  bool admits(bool previewRequested, ZyraDeveloperPanelAccess? access) {
+    if (!previewRequested || !identical(access, panelAccess)) _revoked = true;
+    return available;
+  }
+}
+
 class InitialIdentityCheckScreen extends StatefulWidget {
   final bool devPreview;
+  final ZyraDeveloperPanelAccess? developerPanelAccess;
   final ZyraIdentityVerificationState? initialState;
   final bool requireDuplicateResolution;
   final Future<String?> Function()? finalizeOnboarding;
@@ -48,6 +92,7 @@ class InitialIdentityCheckScreen extends StatefulWidget {
   const InitialIdentityCheckScreen({
     super.key,
     this.devPreview = false,
+    this.developerPanelAccess,
     this.initialState,
     this.requireDuplicateResolution = false,
     this.finalizeOnboarding,
@@ -64,7 +109,9 @@ class _InitialIdentityCheckScreenState
   late final Listenable _boundaryChanges = Listenable.merge([
     ZyraDeveloperAccess.authorizationChanges,
     AppState.instance,
+    ?_previewAuthority.panelAccess,
   ]);
+  late final _IdentityPreviewAuthority _previewAuthority;
   ZyraIdentityVerificationState? _state;
   bool _busy = false;
   bool _attemptDeleted = false;
@@ -76,17 +123,17 @@ class _InitialIdentityCheckScreenState
   late final Future<String?> Function()? _openingFinalizer;
   late final Future<void> Function(BuildContext)? _openingContinue;
   bool _modeRevoked = false;
-  bool _previewRevoked = false;
   final _openingAccountGeneration = ZyraAccountState.generation;
 
   // Isolation follows the requested mode, not current capability. Losing
   // capability must deny the preview rather than enable live IDV/sign-out.
   bool get _isDevPreview => _previewMode;
 
+  bool get _hasPreviewAuthority =>
+      _previewAuthority.admits(widget.devPreview, widget.developerPanelAccess);
+
   void _observePreviewBoundary() {
-    if (_isDevPreview && !ZyraDeveloperAccess.canUseDeveloperTools) {
-      _previewRevoked = true;
-    }
+    if (_isDevPreview) _hasPreviewAuthority;
   }
 
   bool get _providerUnavailable =>
@@ -100,8 +147,7 @@ class _InitialIdentityCheckScreenState
       widget.requireDuplicateResolution == _duplicateResolution &&
       (_isDevPreview
           ? _openingAccountGeneration == ZyraAccountState.generation &&
-                !_previewRevoked &&
-                ZyraDeveloperAccess.canUseDeveloperTools
+                _hasPreviewAuthority
           : ZyraIdentityVerificationService.isCurrentPrincipal(_screenUserId));
 
   bool get _showsSignupAccountExit =>
@@ -109,9 +155,7 @@ class _InitialIdentityCheckScreenState
 
   bool _guardPrincipal() {
     if (!mounted) return false;
-    if (_isDevPreview && !ZyraDeveloperAccess.canUseDeveloperTools) {
-      return false;
-    }
+    if (_isDevPreview && !_hasPreviewAuthority) return false;
     if (_hasOriginalPrincipal) return true;
     setState(() {
       _busy = false;
@@ -133,14 +177,20 @@ class _InitialIdentityCheckScreenState
   @override
   void initState() {
     super.initState();
-    _previewMode = widget.devPreview;
+    // An invalid panel-only request remains isolated; it cannot fall back
+    // to production when devPreview is missing or its proof is unavailable.
+    _previewMode = widget.devPreview || widget.developerPanelAccess != null;
+    _previewAuthority = _IdentityPreviewAuthority(
+      widget.developerPanelAccess,
+      previewRequested: widget.devPreview,
+    );
     _duplicateResolution = widget.requireDuplicateResolution;
-    _openingFinalizer = widget.finalizeOnboarding;
+    _openingFinalizer = widget.developerPanelAccess != null
+        ? null
+        : widget.finalizeOnboarding;
     _openingContinue = widget.onContinue;
     _observePreviewBoundary();
-    ZyraDeveloperAccess.authorizationChanges.addListener(
-      _observePreviewBoundary,
-    );
+    _boundaryChanges.addListener(_observePreviewBoundary);
     _screenUserId = _isDevPreview ? null : ZyraAuth.currentUser?.id;
     _state = widget.initialState;
     _recordIdentityEvent(
@@ -153,6 +203,10 @@ class _InitialIdentityCheckScreenState
   void didUpdateWidget(covariant InitialIdentityCheckScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.devPreview != _previewMode ||
+        !identical(
+          widget.developerPanelAccess,
+          _previewAuthority.panelAccess,
+        ) ||
         widget.requireDuplicateResolution != _duplicateResolution) {
       _modeRevoked = true;
     }
@@ -160,9 +214,7 @@ class _InitialIdentityCheckScreenState
 
   @override
   void dispose() {
-    ZyraDeveloperAccess.authorizationChanges.removeListener(
-      _observePreviewBoundary,
-    );
+    _boundaryChanges.removeListener(_observePreviewBoundary);
     super.dispose();
   }
 
@@ -182,6 +234,7 @@ class _InitialIdentityCheckScreenState
       MaterialPageRoute<void>(
         builder: (_) => IdentityVerificationPrivacyScreen(
           devPreview: _isDevPreview,
+          developerPanelAccess: _previewAuthority.panelAccess,
           canAct: privacyOwnerCurrent,
         ),
       ),
@@ -424,7 +477,7 @@ class _InitialIdentityCheckScreenState
   Widget build(BuildContext context) => ListenableBuilder(
     listenable: _boundaryChanges,
     builder: (context, _) {
-      if (_isDevPreview && !ZyraDeveloperAccess.canUseDeveloperTools) {
+      if (_isDevPreview && !_hasPreviewAuthority) {
         return Scaffold(
           key: const ValueKey('identity_preview_denied'),
           backgroundColor: ZyraColors.modalSheetSurface,
@@ -474,7 +527,12 @@ class _InitialIdentityCheckScreenState
         const Spacer(),
         const _IconMark(icon: Icons.lock_outline),
         const SizedBox(height: 22),
-        Text('Your sign-in has changed.', style: ZyraText.heading(size: 28)),
+        ZyraDeveloperTitle(
+          child: Text(
+            'Your sign-in has changed.',
+            style: ZyraText.heading(size: 28),
+          ),
+        ),
         const SizedBox(height: 12),
         Text(
           'Close and reopen ZYRA to continue with your current account. '
@@ -518,9 +576,11 @@ class _InitialIdentityCheckScreenState
               children: [
                 const _IconMark(icon: Icons.verified_user_outlined),
                 const SizedBox(height: 22),
-                Text(
-                  kIdentityVerificationConsentTitle,
-                  style: ZyraText.heading(size: 28),
+                ZyraDeveloperTitle(
+                  child: Text(
+                    kIdentityVerificationConsentTitle,
+                    style: ZyraText.heading(size: 28),
+                  ),
                 ),
                 const SizedBox(height: 14),
                 Text(
@@ -607,7 +667,12 @@ class _InitialIdentityCheckScreenState
               children: [
                 _IconMark(icon: presentation.icon),
                 const SizedBox(height: 22),
-                Text(presentation.title, style: ZyraText.heading(size: 28)),
+                ZyraDeveloperTitle(
+                  child: Text(
+                    presentation.title,
+                    style: ZyraText.heading(size: 28),
+                  ),
+                ),
                 const SizedBox(height: 12),
                 Text(
                   presentation.body,
@@ -697,7 +762,12 @@ class _InitialIdentityCheckScreenState
         const Spacer(),
         const _IconMark(icon: Icons.lock_outline),
         const SizedBox(height: 22),
-        Text('Verification is required.', style: ZyraText.heading(size: 28)),
+        ZyraDeveloperTitle(
+          child: Text(
+            'Verification is required.',
+            style: ZyraText.heading(size: 28),
+          ),
+        ),
         const SizedBox(height: 12),
         Text(
           'Without identity verification, a ZYRA account cannot be created '
@@ -954,10 +1024,12 @@ class IdentityVerificationPrivacyScreen extends StatefulWidget {
     super.key,
     this.devPreview = false,
     this.canAct,
+    this.developerPanelAccess,
   });
 
   final bool devPreview;
   final bool Function()? canAct;
+  final ZyraDeveloperPanelAccess? developerPanelAccess;
 
   @override
   State<IdentityVerificationPrivacyScreen> createState() =>
@@ -969,18 +1041,33 @@ class _IdentityVerificationPrivacyScreenState
   late final Listenable _boundaryChanges = Listenable.merge([
     ZyraDeveloperAccess.authorizationChanges,
     AppState.instance,
+    ?_previewAuthority.panelAccess,
   ]);
-  late final bool _preview = widget.devPreview;
+  late final bool _requestedPreview = widget.devPreview;
+  late final bool _preview =
+      _requestedPreview || widget.developerPanelAccess != null;
+  late final _previewAuthority = _IdentityPreviewAuthority(
+    widget.developerPanelAccess,
+    previewRequested: _requestedPreview,
+  );
   late final bool Function()? _openingGuard = widget.canAct;
   bool _revoked = false;
 
   bool get _available {
     if (!mounted || _revoked) return false;
     try {
-      if (widget.devPreview != _preview ||
+      if (widget.devPreview != _requestedPreview ||
+          !identical(
+            widget.developerPanelAccess,
+            _previewAuthority.panelAccess,
+          ) ||
           !identical(widget.canAct, _openingGuard) ||
           (_openingGuard != null && !_openingGuard()) ||
-          (_preview && !ZyraDeveloperAccess.canUseDeveloperTools)) {
+          (_preview &&
+              !_previewAuthority.admits(
+                widget.devPreview,
+                widget.developerPanelAccess,
+              ))) {
         _revoked = true;
       }
     } catch (_) {
@@ -1019,7 +1106,10 @@ class _IdentityVerificationPrivacyScreenState
         builder: (_) {
           if (!_available) return const SizedBox.shrink();
           return _preview
-              ? _IdentityPrivacyPreviewDestination(canAct: ownerCurrent)
+              ? _IdentityPrivacyPreviewDestination(
+                  canAct: ownerCurrent,
+                  developerPanelAccess: _previewAuthority.panelAccess,
+                )
               : const PrivacyAndDataScreen();
         },
       ),
@@ -1068,9 +1158,11 @@ class _IdentityVerificationPrivacyScreenState
                   ),
                   const SizedBox(height: 12),
                 ],
-                Text(
-                  'Identity verification privacy',
-                  style: ZyraText.heading(size: 27),
+                ZyraDeveloperTitle(
+                  child: Text(
+                    'Identity verification privacy',
+                    style: ZyraText.heading(size: 27),
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Text(
@@ -1106,9 +1198,11 @@ class _IdentityPrivacyPreviewDestination extends StatefulWidget {
   const _IdentityPrivacyPreviewDestination({
     required this.canAct,
     this.help = false,
+    this.developerPanelAccess,
   });
   final bool Function() canAct;
   final bool help;
+  final ZyraDeveloperPanelAccess? developerPanelAccess;
 
   @override
   State<_IdentityPrivacyPreviewDestination> createState() =>
@@ -1120,7 +1214,12 @@ class _IdentityPrivacyPreviewDestinationState
   late final Listenable _boundaryChanges = Listenable.merge([
     ZyraDeveloperAccess.authorizationChanges,
     AppState.instance,
+    ?_previewAuthority.panelAccess,
   ]);
+  late final _previewAuthority = _IdentityPreviewAuthority(
+    widget.developerPanelAccess,
+    previewRequested: true,
+  );
   late final bool Function() _openingGuard = widget.canAct;
   late final bool _help = widget.help;
   bool _revoked = false;
@@ -1131,7 +1230,7 @@ class _IdentityPrivacyPreviewDestinationState
       if (!identical(widget.canAct, _openingGuard) ||
           widget.help != _help ||
           !_openingGuard() ||
-          !ZyraDeveloperAccess.canUseDeveloperTools) {
+          !_previewAuthority.admits(true, widget.developerPanelAccess)) {
         _revoked = true;
       }
     } catch (_) {
@@ -1172,6 +1271,7 @@ class _IdentityPrivacyPreviewDestinationState
         builder: (_) => _IdentityPrivacyPreviewDestination(
           canAct: ownerCurrent,
           help: true,
+          developerPanelAccess: _previewAuthority.panelAccess,
         ),
       ),
     );
