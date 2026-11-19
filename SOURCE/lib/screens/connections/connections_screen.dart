@@ -1,4 +1,5 @@
 import '../../widgets/zyra_confirm_sheet.dart';
+import '../../widgets/zyra_menu_sheet.dart';
 // Connections tab — per APP/Navigation/SEEKER NAVIGATION/Summary.md's
 // CONNECTIONS section: "Relationship Journey = Save → Consider → Match
 // → Conversation → Family Stage." Matches is NOT a conversation inbox
@@ -4029,6 +4030,11 @@ class _ConnectionsSecondaryActions extends StatelessWidget {
   }
 }
 
+/// Uses the live member Journey menu without starting account or server work.
+@visibleForTesting
+Widget buildZyraActiveJourneyOptionsTestSurface({required String firstName}) =>
+    _ActiveJourneyOptionsSheet(firstName: firstName);
+
 /// Narrow public seam for layout regression tests. It uses the same private
 /// heading and action widgets as the live Connections card, so the test proves
 /// the Compact Chips row fills its real width rather than testing a replica.
@@ -4647,69 +4653,28 @@ class _ActiveJourneyOptionsSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: ZyraColors.modalSheetSurface,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      child: SafeArea(
-        top: false,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 11, 20, 18),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  width: 36,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: ZyraColors.ink(0.24),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-              ),
-              SizedBox(height: 18),
-              Text('Journey options', style: ZyraText.heading(size: 22)),
-              SizedBox(height: 5),
-              Text(
-                'Manage your Journey with $firstName.',
-                style: ZyraText.subtext(size: 12),
-              ),
-              SizedBox(height: 14),
-              _ActiveJourneyOptionRow(
-                icon: Icons.pause_rounded,
-                label: 'Request Pause',
-                detail: '$firstName chooses whether to pause or continue.',
-                onTap: () =>
-                    Navigator.of(context).pop(_ActiveJourneyOption.pause),
-              ),
-              _ActiveJourneyOptionRow(
-                icon: Icons.close_rounded,
-                label: 'End Journey',
-                detail: 'Close this Journey permanently. Your Timeline stays.',
-                danger: true,
-                onTap: () =>
-                    Navigator.of(context).pop(_ActiveJourneyOption.end),
-              ),
-              SizedBox(height: 6),
-              SizedBox(
-                width: double.infinity,
-                child: TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text(
-                    'Cancel',
-                    style: ZyraText.button(
-                      size: 12,
-                    ).copyWith(color: ZyraColors.ink(0.70)),
-                  ),
-                ),
-              ),
-            ],
-          ),
+    return ZyraMenuSheet(
+      children: [
+        const ZyraMenuHeader(text: 'Journey options'),
+        const SizedBox(height: 5),
+        ZyraMenuHeader(text: 'Manage your Journey with $firstName.'),
+        const SizedBox(height: 14),
+        _ActiveJourneyOptionRow(
+          icon: Icons.pause_rounded,
+          label: 'Request Pause',
+          detail: '$firstName chooses whether to pause or continue.',
+          onTap: () => Navigator.of(context).pop(_ActiveJourneyOption.pause),
         ),
-      ),
+        _ActiveJourneyOptionRow(
+          icon: Icons.close_rounded,
+          label: 'End Journey',
+          detail: 'Close this Journey permanently. Your Timeline stays.',
+          danger: true,
+          onTap: () => Navigator.of(context).pop(_ActiveJourneyOption.end),
+        ),
+        const SizedBox(height: 6),
+        ZyraMenuCancel(onPressed: () => Navigator.of(context).pop()),
+      ],
     );
   }
 }
@@ -4733,60 +4698,36 @@ class _ActiveJourneyOptionRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final foreground = danger ? _takeoverCoral : ZyraColors.foreground;
 
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          constraints: const BoxConstraints(minHeight: 62),
-          padding: const EdgeInsets.symmetric(vertical: 10),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(color: ZyraColors.ink(0.12), width: 0.6),
+        ),
+      ),
+      child: ZyraMenuOption(
+        label: label,
+        onPressed: onTap,
+        destructive: danger,
+        leading: Container(
+          width: 38,
+          height: 38,
           decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(color: ZyraColors.ink(0.12), width: 0.6),
-            ),
+            shape: BoxShape.circle,
+            color: foreground.withValues(alpha: 0.09),
           ),
-          child: Row(
-            children: [
-              Container(
-                width: 38,
-                height: 38,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: foreground.withValues(alpha: 0.09),
-                ),
-                child: Icon(icon, size: 18, color: foreground),
-              ),
-              SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      label,
-                      style: ZyraText.body(size: 13).copyWith(
-                        color: danger ? ZyraColors.dangerText : foreground,
-                      ),
-                    ),
-                    SizedBox(height: 3),
-                    Text(
-                      detail,
-                      style: ZyraText.subtext(
-                        size: 10.5,
-                        color: danger
-                            ? ZyraColors.dangerText
-                            : ZyraColors.ink(0.38),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Icon(
-                Icons.chevron_right_rounded,
-                size: 18,
-                color: foreground.withValues(alpha: 0.72),
-              ),
-            ],
+          child: Icon(icon, size: 18, color: foreground),
+        ),
+        subtitle: Text(
+          detail,
+          style: ZyraText.subtext(
+            size: 10.5,
+            color: danger ? ZyraColors.dangerText : ZyraColors.ink(0.38),
           ),
+        ),
+        trailing: Icon(
+          Icons.chevron_right_rounded,
+          size: 18,
+          color: foreground.withValues(alpha: 0.72),
         ),
       ),
     );

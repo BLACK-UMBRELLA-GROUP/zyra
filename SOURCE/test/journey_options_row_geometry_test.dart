@@ -390,7 +390,7 @@ void main() {
   );
 
   testWidgets(
-    'legacy sheet retains natural 62px rows rather than bounded inline expansion',
+    'modal sheet uses 52px confirm rows rather than bounded inline expansion',
     (tester) async {
       final visible = _visible(report: true, end: true);
       await _mount(tester, height: 850, width: 600, inline: false);
@@ -401,14 +401,14 @@ void main() {
       expect(find.text('Cancel'), findsOneWidget);
       final rows = [for (final option in visible) tester.getRect(_row(option))];
       for (var index = 0; index < rows.length; index++) {
-        expect(rows[index].height, closeTo(62, .05));
+        expect(rows[index].height, closeTo(52, .05));
         if (index > 0) {
           expect(rows[index].top, closeTo(rows[index - 1].bottom, .05));
         }
       }
       expect(
         rows.fold<double>(0, (total, row) => total + row.height),
-        closeTo(visible.length * 62, .05),
+        closeTo(visible.length * 52, .05),
       );
       expect(
         rows.last.bottom,

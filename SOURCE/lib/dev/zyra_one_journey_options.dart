@@ -1,4 +1,5 @@
 import '../widgets/zyra_floating_surface.dart';
+import '../widgets/zyra_menu_sheet.dart';
 // Caller-owned Journey options, either in the original opaque sheet or
 // expanded inside a card. Choosing an option does not itself change a Journey.
 import '../widgets/zyra_tap_feedback.dart';
@@ -120,46 +121,23 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
             },
           ),
         )
-      : Material(
-          color: ZyraColors.modalSheetSurface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          child: SafeArea(
-            top: false,
-            child: ZyraShadowScrollView(
-              padding: const EdgeInsets.fromLTRB(20, 11, 20, 18),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Center(
-                    child: Container(
-                      width: 36,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: ZyraColors.ink(.24),
-                        borderRadius: BorderRadius.circular(999),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text('Journey options', style: ZyraText.heading(size: 22)),
-                  const SizedBox(height: 5),
-                  Text(
-                    archived
-                        ? 'Review your ended Journey with $firstName.'
-                        : 'Manage your Journey with $firstName.',
-                    style: ZyraText.subtext(size: 12),
-                  ),
-                  const SizedBox(height: 14),
-                  ..._rows,
-                  const SizedBox(height: 10),
-                  TextButton(
-                    onPressed: ZyraTapFeedback.onTap(context, onCancel),
-                    child: Text('Cancel', style: ZyraText.button(size: 12)),
-                  ),
-                ],
+      : Builder(
+          builder: (context) => ZyraMenuSheet(
+            children: [
+              const ZyraMenuHeader(text: 'Journey options'),
+              const SizedBox(height: 5),
+              ZyraMenuHeader(
+                text: archived
+                    ? 'Review your ended Journey with $firstName.'
+                    : 'Manage your Journey with $firstName.',
               ),
-            ),
+              const SizedBox(height: 14),
+              ..._rows,
+              const SizedBox(height: 8),
+              ZyraMenuCancel(
+                onPressed: ZyraTapFeedback.onTap(context, onCancel),
+              ),
+            ],
           ),
         );
 
@@ -305,6 +283,49 @@ class ZyraConceptJourneyOptions extends StatelessWidget {
         'No Guardian details were saved in this archive.',
       _ => detail,
     };
+    if (!inline && !lockedPage) {
+      return Builder(
+        builder: (context) => Tooltip(
+          message: explanation,
+          excludeFromSemantics: explanation == title,
+          child: ZyraMenuOption(
+            key: ValueKey('draft_options_${option.name}_$id'),
+            label: title,
+            destructive:
+                option == ZyraConceptJourneyOption.end ||
+                option == ZyraConceptJourneyOption.report,
+            onPressed: ZyraTapFeedback.onTap(context, () => onSelected(option)),
+            leading: Container(
+              width: 38,
+              height: 38,
+              decoration: const BoxDecoration(
+                color: ZyraColors.ivoryTop,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                icon,
+                size: 18,
+                color: option == ZyraConceptJourneyOption.end
+                    ? ZyraColors.destructive
+                    : locked
+                    ? ZyraColors.ink(.42)
+                    : ZyraColors.foreground,
+              ),
+            ),
+            subtitle: Text(explanation, style: ZyraText.subtext(size: 10.5)),
+            trailing: Icon(
+              locked ? Icons.lock_outline : Icons.chevron_right,
+              key: locked
+                  ? ValueKey('draft_options_${option.name}_locked_$id')
+                  : null,
+              semanticLabel: locked ? '$title locked' : null,
+              size: 18,
+              color: ZyraColors.ink(.4),
+            ),
+          ),
+        ),
+      );
+    }
     return _journeyOptionRow(
       key: ValueKey('draft_options_${option.name}_$id'),
       lockKey: ValueKey('draft_options_${option.name}_locked_$id'),
@@ -564,85 +585,30 @@ class ZyraEndedJourneyMenu extends StatelessWidget {
   final bool restartEnabled;
 
   @override
-  Widget build(BuildContext context) {
-    Widget pill(String label, ZyraEndedJourneyAction? action) => DecoratedBox(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(999)),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0x143E2E1E),
-            offset: Offset(0, 4),
-            blurRadius: 12,
-          ),
-        ],
+  Widget build(BuildContext context) => ZyraMenuSheet(
+    children: [
+      ZyraMenuOption(
+        label: 'Request a new Journey',
+        onPressed: restartEnabled
+            ? ZyraTapFeedback.onTap(
+                context,
+                () => onSelect(ZyraEndedJourneyAction.restart),
+              )
+            : null,
       ),
-      child: OutlinedButton(
-        onPressed: action == ZyraEndedJourneyAction.restart && !restartEnabled
-            ? null
-            : ZyraTapFeedback.onTap(context, () => onSelect(action)),
-        style: OutlinedButton.styleFrom(
-          minimumSize: const Size.fromHeight(52),
-          backgroundColor: ZyraColors.ivoryTop,
-          foregroundColor: ZyraColors.secondaryText,
-          side: const BorderSide(color: ZyraColors.divider),
-          shape: const StadiumBorder(),
-          textStyle: ZyraText.body(size: 15),
-        ),
-        child: Text(label, textAlign: TextAlign.center),
-      ),
-    );
-
-    return DecoratedBox(
-      decoration: const BoxDecoration(
-        color: ZyraColors.cardSurface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0x2E3E2E1E),
-            offset: Offset(0, -10),
-            blurRadius: 30,
-          ),
-        ],
-      ),
-      child: SafeArea(
-        top: false,
-        minimum: const EdgeInsets.fromLTRB(20, 10, 20, 26),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: ZyraColors.ink(.18),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              pill('Request a new Journey', ZyraEndedJourneyAction.restart),
-              const Divider(height: 1, color: ZyraColors.divider),
-              TextButton(
-                onPressed: ZyraTapFeedback.onTap(
-                  context,
-                  () => onSelect(ZyraEndedJourneyAction.remove),
-                ),
-                style: TextButton.styleFrom(
-                  minimumSize: const Size.fromHeight(52),
-                  foregroundColor: ZyraColors.dangerText,
-                  textStyle: ZyraText.body(size: 15),
-                ),
-                child: const Text('Remove from my Journeys'),
-              ),
-              const SizedBox(height: 8),
-              pill('Cancel', null),
-            ],
-          ),
+      const Divider(height: 1, color: ZyraColors.divider),
+      ZyraMenuOption(
+        label: 'Remove from my Journeys',
+        destructive: true,
+        onPressed: ZyraTapFeedback.onTap(
+          context,
+          () => onSelect(ZyraEndedJourneyAction.remove),
         ),
       ),
-    );
-  }
+      const SizedBox(height: 8),
+      ZyraMenuCancel(
+        onPressed: ZyraTapFeedback.onTap(context, () => onSelect(null)),
+      ),
+    ],
+  );
 }

@@ -562,7 +562,7 @@ void main() {
     expect(find.byType(ZyraConceptJourneyPresentation), findsOneWidget);
     final cancel = find.descendant(
       of: find.byType(ZyraConceptJourneyOptions),
-      matching: find.widgetWithText(TextButton, 'Cancel'),
+      matching: find.widgetWithText(OutlinedButton, 'Cancel'),
     );
     await _tapFinder(tester, cancel);
     expect(find.byType(ZyraConceptJourneyOptions), findsNothing);

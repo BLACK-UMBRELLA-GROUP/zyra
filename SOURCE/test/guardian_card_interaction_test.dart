@@ -1151,7 +1151,7 @@ void main() {
       const Color(0xFF1E1610).withValues(alpha: .38),
     );
     final sheet = tester.widget<Material>(_menuSheet);
-    expect(sheet.color, ZyraColors.cardSurface);
+    expect(sheet.color, ZyraColors.confirmSheetSurface);
     expect(
       sheet.borderRadius,
       const BorderRadius.vertical(top: Radius.circular(26)),

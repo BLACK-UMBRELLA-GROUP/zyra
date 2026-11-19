@@ -983,7 +983,7 @@ Future<void> _cancelJourneyOptions(WidgetTester tester) async {
     expect(tester.takeException(), isNull);
     return;
   }
-  final cancel = find.widgetWithText(TextButton, 'Cancel');
+  final cancel = find.widgetWithText(OutlinedButton, 'Cancel');
   expect(cancel, findsOneWidget);
   await tester.ensureVisible(cancel);
   await tester.pumpAndSettle();
@@ -4146,7 +4146,7 @@ void main() {
         'simplified_journey_options_no_pause_standard',
       );
       // Q39 (R1): dismiss the menu, then cancel End on its mounted detail.
-      final cancelMenu = find.widgetWithText(TextButton, 'Cancel');
+      final cancelMenu = find.widgetWithText(OutlinedButton, 'Cancel');
       expect(cancelMenu, findsOneWidget);
       await Scrollable.ensureVisible(tester.element(cancelMenu), alignment: .5);
       await tester.pumpAndSettle();

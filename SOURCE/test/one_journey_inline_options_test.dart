@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_one_journey_options.dart';
+import 'package:zyra/widgets/zyra_menu_sheet.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 
@@ -214,7 +215,7 @@ void main() {
             of: find.byKey(_subject),
             matching: find.byWidgetPredicate(
               (widget) =>
-                  widget is InkWell &&
+                  (widget is InkWell || widget is ZyraMenuOption) &&
                   widget.key is ValueKey<String> &&
                   (widget.key! as ValueKey<String>).value.startsWith(
                     'draft_options_',
@@ -530,7 +531,7 @@ void main() {
     expect(selected, [ZyraConceptJourneyOption.profile]);
   });
 
-  testWidgets('default modal preserves chrome, descriptions and cancel', (
+  testWidgets('default modal shares confirm chrome and preserves cancel', (
     tester,
   ) async {
     final selected = <ZyraConceptJourneyOption>[];
@@ -561,10 +562,10 @@ void main() {
           )
           .first,
     );
-    expect(material.color, ZyraColors.modalSheetSurface);
+    expect(material.color, ZyraColors.confirmSheetSurface);
     expect(
       material.borderRadius,
-      const BorderRadius.vertical(top: Radius.circular(24)),
+      const BorderRadius.vertical(top: Radius.circular(26)),
     );
     expect(find.text('Journey options'), findsOneWidget);
     expect(find.text('Manage your Journey with Sara.'), findsOneWidget);
@@ -575,7 +576,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(
       tester.getSize(_row(ZyraConceptJourneyOption.report)).height,
-      greaterThanOrEqualTo(62),
+      closeTo(52, .05),
     );
     await tester.tap(_row(ZyraConceptJourneyOption.report));
     await tester.pump();

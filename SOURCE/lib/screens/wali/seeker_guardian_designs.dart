@@ -3,6 +3,7 @@ import '../../widgets/zyra_confirm_sheet.dart';
 import '../../widgets/zyra_floating_surface.dart';
 import '../../widgets/zyra_guardian_add_card.dart';
 import '../../widgets/zyra_tap_feedback.dart';
+import '../../widgets/zyra_menu_sheet.dart';
 import 'package:flutter/material.dart';
 import '../../dev/zyra_one_journey_monogram_presentation.dart';
 import 'dart:math' as math;
@@ -1363,32 +1364,19 @@ class _ManageActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final signal = destructive ? ZyraColors.destructive : ZyraColors.ink(0.68);
     if (cardLayout) {
-      final radius = pill ? BorderRadius.circular(30) : null;
-      return InkWell(
-        borderRadius: radius,
-        onTap: ZyraTapFeedback.onTap(context, onTap, canAct: canAct),
-        child: Container(
-          constraints: const BoxConstraints(minHeight: 42),
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            borderRadius: radius,
-            border: pill
-                ? Border.all(color: ZyraColors.ink(.14))
-                : Border(bottom: BorderSide(color: ZyraColors.ink(.10))),
-          ),
-          child: Text(
-            label,
-            textAlign: TextAlign.center,
-            style: ZyraText.body(
-              size: 13,
-              color: destructive
-                  ? const Color(0xFFAC453E)
-                  : ZyraColors.foreground,
-            ),
-          ),
-        ),
-      );
+      final callback = ZyraTapFeedback.onTap(context, onTap, canAct: canAct);
+      return pill
+          ? ZyraMenuCancel(label: label, onPressed: callback)
+          : DecoratedBox(
+              decoration: const BoxDecoration(
+                border: Border(bottom: BorderSide(color: ZyraColors.divider)),
+              ),
+              child: ZyraMenuOption(
+                label: label,
+                destructive: destructive,
+                onPressed: callback,
+              ),
+            );
     }
     return ZyraFloatingSurface(
       radius: 16,

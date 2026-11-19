@@ -38,7 +38,9 @@ In the Founder preview, a sideways drag brings the neighbouring card into view
 on Profiles, Guardian, Journey, Filters and My ZYRA’s Needs you section. The
 selection updates when the cards settle. Each Guardian card shows details and
 Journey access together. The three-dot menu opens Main Guardian and removal
-actions. In the Founder preview, Guardian Circle opens on Main, shows unread
+actions. Menus that lead to a confirmation share its ivory sheet, 52 pt option
+rows, 15 pt action text and Cancel pill; their centred top line is 12.5 pt.
+In the Founder preview, Guardian Circle opens on Main, shows unread
 counts by chat, and puts unread Past chats first. Opening a chat clears its
 count. On entry, Main shows the unread divider before the first unread Main
 message. The Circle menu offers separate controls for one chat and the whole

@@ -11,6 +11,7 @@ import '../theme/zyra_text.dart';
 import '../widgets/floating_nav_bar.dart';
 import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_guardian_add_card.dart';
+import '../widgets/zyra_menu_sheet.dart';
 import 'zyra_one_journey_monogram_presentation.dart';
 import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_profiles_components.dart';
@@ -359,69 +360,27 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
           return true;
         }
 
-        const corners = BorderRadius.vertical(top: Radius.circular(26));
-        final sheet = DecoratedBox(
-          decoration: const BoxDecoration(
-            borderRadius: corners,
-            boxShadow: [
-              BoxShadow(
-                color: Color(0x241E1610),
-                blurRadius: 24,
-                offset: Offset(0, -3),
-              ),
-            ],
-          ),
-          child: Material(
-            key: const ValueKey('guardian-card-menu-sheet'),
-            color: ZyraColors.cardSurface,
-            borderRadius: corners,
-            clipBehavior: Clip.antiAlias,
-            child: SafeArea(
-              top: false,
-              minimum: const EdgeInsets.only(bottom: 14),
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(18, 11, 18, 0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 36,
-                        height: 4,
-                        decoration: BoxDecoration(
-                          color: ZyraColors.ink(.20),
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      '${person.firstName} · ${person.isMain ? 'Main Guardian' : 'Additional Guardian'}',
-                      textAlign: TextAlign.center,
-                      style: ZyraText.body(
-                        size: 12,
-                        color: ZyraColors.ink(.55),
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    zyraGuardianCardManageActions(
-                      person: person,
-                      otherGuardians: widget.people
-                          .map((p) => p.person)
-                          .where((p) => p.id != person.id)
-                          .toList(),
-                      canAct: current,
-                      onSelect: choose,
-                      closeMenu: () {
-                        if (current()) Navigator.of(sheetContext).pop();
-                      },
-                    ),
-                  ],
-                ),
-              ),
+        final sheet = ZyraMenuSheet(
+          surfaceKey: const ValueKey('guardian-card-menu-sheet'),
+          children: [
+            ZyraMenuHeader(
+              text:
+                  '${person.firstName} · ${person.isMain ? 'Main Guardian' : 'Additional Guardian'}',
             ),
-          ),
+            const SizedBox(height: 6),
+            zyraGuardianCardManageActions(
+              person: person,
+              otherGuardians: widget.people
+                  .map((p) => p.person)
+                  .where((p) => p.id != person.id)
+                  .toList(),
+              canAct: current,
+              onSelect: choose,
+              closeMenu: () {
+                if (current()) Navigator.of(sheetContext).pop();
+              },
+            ),
+          ],
         );
         final feedback = sheetContext
             .dependOnInheritedWidgetOfExactType<ZyraTapFeedback>();
