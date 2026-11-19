@@ -1,7 +1,7 @@
 {
-  "source_commit": "7b0a6832d46d813305cf9f19f1234f64d9997946",
-  "worktree_changes": true,
-  "source_commit_note": "Pre-implementation baseline; replace with implementation commit after commit",
+  "source_commit": "9b2e1bcd8ae532d45810c05598782341ee543d57",
+  "worktree_changes": false,
+  "source_commit_note": "Implementation commit; subsequent handover-only commits do not change captured source.",
   "flutter_version": "3.44.2",
   "dart_version": "3.12.2",
   "build_mode": "offline Flutter widget tests; no native app build",

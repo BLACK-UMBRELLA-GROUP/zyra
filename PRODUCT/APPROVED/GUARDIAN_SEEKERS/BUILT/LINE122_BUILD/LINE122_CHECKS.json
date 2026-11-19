@@ -87,7 +87,7 @@
   "master_preflight": "PASS; ten 430x932 @3x PNGs visually inspected",
   "start_pack_printed_bytes": 15665,
   "named_pack_text_bytes": 3763,
-  "source_release": "Parent released after line118 fa1050cb; SOURCE/lib/test/ios clean before edits; line121 documentation-only QUESTION",
+  "source_release": "Parent released after line118 fa1050cb; SOURCE/lib/test/ios clean before edits; line121 documentation-only QUESTION; implementation 9b2e1bcd pushed, SOURCE/lib/test/ios clean at release",
   "tests": {
     "new_initial": {
       "pass": 12
@@ -153,29 +153,53 @@
   "device_observation": "PENDING; Founder away, installation excluded by instruction",
   "loading": "Unchanged existing shared spinner per Q168/spec",
   "public_checks": {
-    "A": "PENDING commit-range gitleaks",
-    "B": "34 text hits reviewed: 27 same text at HEAD, four margins geometry identifiers, three Dart record-field syntax hits; no private additions. Direct PNG scan produced 1722 compressed-binary false positives across 24 validated visually inspected PNGs with no text/EXIF metadata. Written refusal: no unrelated scanner change in this UI task.",
+    "A": "PASS staged scan and origin/main..HEAD commit-range scan; no leaks, 9b2e1bcd pushed",
+    "B": "34 text hits reviewed: 27 same text at HEAD, four geometry identifiers, three Dart record-field syntax hits; no private additions. Direct PNG scan produced 1722 compressed-binary false positives across 24 validated visually inspected PNGs with no text/EXIF metadata. Written refusal: no unrelated scanner change in this UI task.",
     "C": "none; no roadmap row completed",
     "D": "none; app version unchanged",
     "E": "neutral community wording in written documents",
     "F": "README updated"
   },
   "startup_deviations": [
-    "Whole lessons file opened before start pack contrary to scoped queue instruction; recorded under OA-AIOS-471; no further whole reads",
+    "Whole lessons file opened (63,352 bytes) before start pack contrary to scoped queue instruction; recorded under OA-AIOS-471; no further whole reads.",
     "First start_pack call omitted BUSINESS; corrected immediately using exact Usage"
   ],
-  "cleanup": "No throwaway scripts or compiled apps in evidence; test logs remain ignored in SOURCE/build/line122",
+  "cleanup": "One-off partial-staging editor moved to ~/_to_delete/ZYRA_LINE122_2026-11-19; no temporary scripts/compiled apps/source copies in evidence. Test logs stay ignored in SOURCE/build/line122.",
   "hosted_ci": {
     "preceding_line_118": "PASS, run 44454890907",
-    "line_122": "PENDING after push"
+    "line_122": {
+      "run": 44456941745,
+      "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/44456941745",
+      "source_commit": "9b2e1bcd8ae532d45810c05598782341ee543d57",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "Select Flutter tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Flutter checks (shard 2)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Flutter checks (shard 0)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Flutter checks (shard 1)",
+          "conclusion": "success"
+        }
+      ]
+    }
   },
   "usage_snapshot": {
-    "input_tokens": 17201093,
-    "cached_input_tokens": 16975488,
+    "input_tokens": 26591650,
+    "cached_input_tokens": 26339200,
     "cache_write_input_tokens": 0,
-    "output_tokens": 45299,
-    "reasoning_output_tokens": 16836,
-    "total_tokens": 17246392,
+    "output_tokens": 67543,
+    "reasoning_output_tokens": 31024,
+    "total_tokens": 26659193,
     "helper_usage": "one reused helper; counter not exposed"
   }
 }
