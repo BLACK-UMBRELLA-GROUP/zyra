@@ -648,6 +648,13 @@ class _ZyraOneJourneyConceptShellState
         ? null
         : _bound(() {
             final kept = _developerLastNotice < 5;
+            _move(() {
+              _pages.clear();
+              _tab = 2;
+              _developerLastNotice = kept ? 6 : 0;
+              _welcomeBackAt = kept ? _previewNow : null;
+              _myZyraFocusIndex = 0;
+            });
             _developerSamples.setNotice(kept ? 6 : 0);
           }),
   );

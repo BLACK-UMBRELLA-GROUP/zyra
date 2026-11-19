@@ -477,6 +477,11 @@ class _InitialIdentityCheckScreenState
   Widget build(BuildContext context) => ListenableBuilder(
     listenable: _boundaryChanges,
     builder: (context, _) {
+      // Legacy mode changes retain their existing session-changed warning.
+      // Typed panel owners still deny the whole preview on any proof change.
+      if (_modeRevoked && _previewAuthority.panelAccess == null) {
+        return _buildIdentity(context);
+      }
       if (_isDevPreview && !_hasPreviewAuthority) {
         return Scaffold(
           key: const ValueKey('identity_preview_denied'),

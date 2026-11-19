@@ -35,6 +35,7 @@ import 'package:zyra/state/zyra_developer_samples.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/widgets/zyra_focus_dashboard.dart';
+import 'package:zyra/dev/zyra_developer_inactivity_email.dart';
 import 'package:zyra/widgets/zyra_account_session_host.dart';
 import 'package:zyra/widgets/zyra_app_lock_gate.dart';
 
@@ -303,6 +304,44 @@ void main() {
     if (arrival.evaluate().isNotEmpty) await tap(tester, arrival);
     expect(_key('concept_message'), findsOneWidget);
   }
+
+  testWidgets(
+    'every inactivity email returns to My ZYRA with the correct kept or removed history',
+    (tester) async {
+      plan = 'seeker_premium';
+      await mount(tester, homeOverride: previewHome());
+      for (var number = 1; number <= 5; number++) {
+        await tap(tester, _key('dev_page_title'));
+        await tap(tester, _key('dev_notice_$number'));
+        await tap(tester, _key('dev_done'));
+        final email = tester.widget<ZyraDeveloperInactivityEmail>(
+          find.byType(ZyraDeveloperInactivityEmail),
+        );
+        expect(email.number, number);
+        await tap(tester, _key('dev_page_title'));
+        email.onOpen!();
+        await settle(tester);
+        expect(ZyraDeveloperSamples.instance.notice, number);
+        expect(find.byType(ZyraDeveloperInactivityEmail), findsOneWidget);
+        await tap(tester, _key('dev_done'));
+        tester
+            .widget<ZyraDeveloperInactivityEmail>(
+              find.byType(ZyraDeveloperInactivityEmail),
+            )
+            .onOpen!();
+        await settle(tester);
+        expect(find.byType(ZyraDeveloperInactivityEmail), findsNothing);
+        expect(find.byType(ZyraFocusDashboard), findsOneWidget);
+        expect(ZyraDeveloperSamples.instance.notice, number < 5 ? 6 : 0);
+        expect(ZyraDeveloperSamples.instance.ended, number < 5 ? 2 : 0);
+        expect(
+          find.text('Welcome back, Adam'),
+          number < 5 ? findsOneWidget : findsNothing,
+        );
+      }
+      await dispose(tester);
+    },
+  );
 
   testWidgets(
     'all My ZYRA presets fill approved needs and status sets before setup continuation',

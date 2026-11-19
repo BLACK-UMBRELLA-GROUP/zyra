@@ -650,11 +650,20 @@ void main() {
         circleStart,
       );
       final resolverEnd = source.indexOf(
-        'return _circleEntryView = Navigator(',
+        'return _circleEntryView = ZyraDeveloperOwnedNavigatorScope(',
         resolverStart,
       );
       expect(resolverStart, greaterThan(circleStart));
       expect(resolverEnd, greaterThan(resolverStart));
+      expect(
+        source.substring(resolverEnd).replaceAll(RegExp(r'\s+'), ' '),
+        contains(
+          'bridge: _developerBridge, navigatorKey: navigator, '
+          'canPresent: foreground, child: Navigator(',
+        ),
+        reason:
+            'The owned title wrapper retains the exact Circle Navigator and focus guard.',
+      );
       final binding = source
           .substring(resolverStart, resolverEnd)
           .replaceAll(RegExp(r'\s+'), ' ');
