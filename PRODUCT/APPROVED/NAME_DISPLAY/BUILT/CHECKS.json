@@ -50,5 +50,12 @@
   "inventory": "Planned screen inventory and MAP regenerated. No added navigation/screens. MAP changes for unrelated Claude documents left unstaged.",
   "scope": "No migrations, live apply, phone/native build, install, version change or roadmap tick.",
   "scratch_retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE99_SCRATCH_2026-11-19",
-  "cleanup": "Initial failed regression log and duplicate working renders moved to the single Mac retirement folder. Final successful logs remain under SOURCE/build; approved12PNGs remain in BUILT/CAPTURES. No source or compiled binaries copied."
+  "cleanup": "Initial failed regression log and duplicate working renders moved to the single Mac retirement folder. Final successful logs remain under SOURCE/build; approved12PNGs remain in BUILT/CAPTURES. No source or compiled binaries copied.",
+  "hosted_ci": {
+    "run": 44606181678,
+    "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/44606181678",
+    "source_commit": "3aa431c767bedf2065289bf180d09218ca49b009",
+    "conclusion": "success",
+    "scope": "All three Flutter test shards, all analyzers and selector passed."
+  }
 }

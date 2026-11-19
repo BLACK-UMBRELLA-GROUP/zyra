@@ -9,7 +9,7 @@
     "OA-ZYRA-393",
     "AD-AIOS-115"
   ],
-  "current_state": "Implemented; final gates in CHECKS.json and CI_CHECKS.json. Founder sample preview only. Live: no.",
+  "current_state": "BUILT in Founder sample preview: final local full and exact-source hosted full CI passed. Implementation committed and pushed; final BUILT record is this handover commit. Live: no.",
   "behavior": [
     "All request/Ended/Introduction cards keep the full name in one fixed-size line, ellipsise visually and expose the full semantic name. Name length no longer changes card layout or height. Existing accessibility stacking is retained.",
     "Shared big first-name helper measures with inherited text scaling, locale, direction and bold text; fits from full font size to 75%, then ellipsises. Profile surname caps at two lines. Age/city remains unchanged.",
@@ -94,7 +94,7 @@
   ],
   "next": [
     "ZYRA Claude/Fable review filed renders and handover.",
-    "Release SOURCE for line124 only after implementation, hosted CI and handover commits complete.",
+    "SOURCE released after final handover commit; line124 remains at its own Q175 design gate.",
     "Line117 remains last for device delivery."
   ],
   "supersession": "LOCK33 overrides older wrapped name presentation only. Existing privacy/state/access tests retained. No runtime file retired."

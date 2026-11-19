@@ -1,11 +1,11 @@
 {
-  "scope": "Actual owner count-only snapshot; updated at handover. Helper counters unavailable, no estimate.",
+  "scope": "Actual owner count-only handover snapshot. Helper counters unavailable; no estimate.",
   "owner": {
-    "input_tokens": 18335247,
-    "cached_input_tokens": 18143232,
+    "input_tokens": 26220345,
+    "cached_input_tokens": 26019200,
     "cache_write_input_tokens": 0,
-    "output_tokens": 41324,
-    "reasoning_output_tokens": 15807,
-    "total_tokens": 18376571
+    "output_tokens": 55262,
+    "reasoning_output_tokens": 24350,
+    "total_tokens": 26275607
   }
 }
