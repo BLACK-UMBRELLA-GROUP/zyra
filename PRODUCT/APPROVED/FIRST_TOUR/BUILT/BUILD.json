@@ -4,18 +4,199 @@
   "decision": "DR-ZYRA-361",
   "action": "OA-ZYRA-325",
   "source_base_commit": "36d8f4b03b18d329734fd9165862c2d6a9a2c009",
-  "source_commit": null,
+  "source_commit": "865072467f831f8670523e04be875c137d2eb89e",
   "flutter_version": "3.44.2",
   "flutter_revision": "c9a6c484230f8b5e408ec57be1ef71dee1e77020",
   "dart_version": "3.12.2",
   "build_mode": "offline-ci widget tests and actual Founder-preview renders",
-  "timestamp_utc": "2026-11-19T21:11:34.102622+00:00",
+  "timestamp_utc": "2026-11-19T21:33:00.226719+00:00",
   "live": false,
   "installed": false,
   "source_manifest": "SOURCE_MANIFEST.json",
   "input_manifest": "INPUT_MANIFEST.json",
   "render_manifest": "RENDER_MANIFEST.json",
   "ci": {
-    "status": "PENDING - after implementation push"
-  }
+    "id": 44617609771,
+    "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/44617609771",
+    "head_sha": "865072467f831f8670523e04be875c137d2eb89e",
+    "status": "completed",
+    "conclusion": "success",
+    "started_at": "2026-11-19T21:19:34Z",
+    "updated_at": "2026-11-19T21:30:07Z",
+    "jobs": [
+      {
+        "id": 135890567596,
+        "name": "Select Flutter tests",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-19T21:19:53Z",
+        "completed_at": "2026-11-19T21:20:14Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "conclusion": "success"
+          },
+          {
+            "name": "Select affected tests or full suite shards",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 135890792726,
+        "name": "Flutter checks (shard 2)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-19T21:20:16Z",
+        "completed_at": "2026-11-19T21:27:44Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Analyze",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run the assigned Flutter tests",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 135890792775,
+        "name": "Flutter checks (shard 1)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-19T21:20:16Z",
+        "completed_at": "2026-11-19T21:28:47Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Analyze",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run the assigned Flutter tests",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 135890792812,
+        "name": "Flutter checks (shard 0)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-19T21:20:16Z",
+        "completed_at": "2026-11-19T21:30:06Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Analyze",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run the assigned Flutter tests",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ]
+  },
+  "implementation_commits": [
+    "45465cbcb569a6e1824c59e259444501df884610",
+    "865072467f831f8670523e04be875c137d2eb89e"
+  ],
+  "status": "BUILT"
 }

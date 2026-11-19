@@ -1,12 +1,12 @@
 {
-  "scope": "count-only root session snapshot; helpers not included",
-  "phase": "before local final full completion / implementation commit",
+  "scope": "count-only root session; helper usage unavailable",
+  "phase": "final handover preparation",
   "usage": {
-    "input_tokens": 38125306,
-    "cached_input_tokens": 37829888,
+    "input_tokens": 52261889,
+    "cached_input_tokens": 51949568,
     "cache_write_input_tokens": 0,
-    "output_tokens": 69024,
-    "reasoning_output_tokens": 32716,
-    "total_tokens": 38194330
+    "output_tokens": 108515,
+    "reasoning_output_tokens": 59933,
+    "total_tokens": 52370404
   }
 }

@@ -2,36 +2,39 @@
   "analyzer": {
     "result": "PASS",
     "issues": 0,
+    "source_commit": "865072467f831f8670523e04be875c137d2eb89e",
     "command": "flutter analyze --no-pub",
-    "log": "SOURCE/build/line124/final_analyze.log"
+    "log": "SOURCE/build/line124/guard_analyze.log"
   },
   "full_regression": {
     "result": "PASS",
-    "passed": 7513,
+    "source_commit": "865072467f831f8670523e04be875c137d2eb89e",
+    "passed": 7514,
     "skipped": 200,
     "failed": 0,
-    "duration_ms": 469500,
+    "duration_ms": 484159,
     "command": "flutter test --no-pub --flavor offline-ci --reporter json",
-    "log": "SOURCE/build/line124/final_full_test.jsonl",
-    "skips": "163 existing + 37 opt-in line124 capture cases; all37 captures separately passed"
+    "log": "SOURCE/build/line124/guard_full_test.jsonl",
+    "skips": "163 existing + 37 opt-in line124 capture cases; all 37 separately passed"
   },
   "focused": {
     "result": "PASS",
-    "passed": 69,
-    "log": "SOURCE/build/line124/final_focused.log"
+    "passed": 119,
+    "log": "SOURCE/build/line124/guard_final_focused.log"
   },
   "protected_host": {
     "result": "PASS",
-    "passed": 49,
-    "log": "SOURCE/build/line124/developer_integration.log",
-    "additional_physical_action_blocking": "PASS, 1 test; developer_action_blocking.log"
+    "passed": 50,
+    "included_in": "119 final focused checks and final full regression",
+    "log": "SOURCE/build/line124/guard_final_focused.log"
   },
   "capture": {
     "result": "PASS",
     "passed": 37,
     "placement_checks": 32,
     "actual_tab_checks": 32,
-    "log": "SOURCE/build/line124/capture.log"
+    "log": "SOURCE/build/line124/capture.log",
+    "source_commit": "865072467f831f8670523e04be875c137d2eb89e"
   },
   "visual": "VISUAL_REVIEW.json",
   "independent_source_review": "INDEPENDENT_REVIEW.json",
@@ -42,6 +45,210 @@
     "next_owner": "line117"
   },
   "hosted_ci": {
-    "status": "PENDING - after implementation push"
+    "id": 44617609771,
+    "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/44617609771",
+    "head_sha": "865072467f831f8670523e04be875c137d2eb89e",
+    "status": "completed",
+    "conclusion": "success",
+    "started_at": "2026-11-19T21:19:34Z",
+    "updated_at": "2026-11-19T21:30:07Z",
+    "jobs": [
+      {
+        "id": 135890567596,
+        "name": "Select Flutter tests",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-19T21:19:53Z",
+        "completed_at": "2026-11-19T21:20:14Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "conclusion": "success"
+          },
+          {
+            "name": "Select affected tests or full suite shards",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 135890792726,
+        "name": "Flutter checks (shard 2)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-19T21:20:16Z",
+        "completed_at": "2026-11-19T21:27:44Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Analyze",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run the assigned Flutter tests",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 135890792775,
+        "name": "Flutter checks (shard 1)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-19T21:20:16Z",
+        "completed_at": "2026-11-19T21:28:47Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Analyze",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run the assigned Flutter tests",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 135890792812,
+        "name": "Flutter checks (shard 0)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-19T21:20:16Z",
+        "completed_at": "2026-11-19T21:30:06Z",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up Flutter 3.44.2",
+            "conclusion": "success"
+          },
+          {
+            "name": "Set up offline app configuration",
+            "conclusion": "success"
+          },
+          {
+            "name": "Resolve dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Analyze",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run the assigned Flutter tests",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ]
+  },
+  "post_guard_focused": {
+    "result": "PASS",
+    "passed": 119,
+    "log": "SOURCE/build/line124/guard_final_focused.log",
+    "reproduced_before_fix": "Completed-tour Next advanced same-index Replay; new regression failed before the shared revision binding and passes after."
+  },
+  "final_guard_full_regression": {
+    "result": "PASS",
+    "source_commit": "865072467f831f8670523e04be875c137d2eb89e",
+    "passed": 7514,
+    "skipped": 200,
+    "failed": 0,
+    "duration_ms": 484159,
+    "command": "flutter test --no-pub --flavor offline-ci --reporter json",
+    "log": "SOURCE/build/line124/guard_full_test.jsonl",
+    "skips": "163 existing + 37 opt-in line124 capture cases; all 37 separately passed"
+  },
+  "pre_guard_regression": {
+    "result": "PASS",
+    "passed": 7513,
+    "skipped": 200,
+    "failed": 0,
+    "duration_ms": 469500,
+    "command": "flutter test --no-pub --flavor offline-ci --reporter json",
+    "skips": "163 existing + 37 opt-in line124 capture cases; all37 captures separately passed",
+    "log_original": "SOURCE/build/line124/final_full_test.jsonl",
+    "log_retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_SCRATCH_2026-11-19/final_full_test.jsonl"
   }
 }

@@ -4,19 +4,25 @@
     "automatic first entry and setup continuation",
     "per-account receipt and owner/generation guards",
     "concurrent claims",
-    "replay origin pages and scroll",
+    "replay origin page and stored shared-scroll offset",
     "back/completion bounds and retained callbacks",
     "checkpoint suppression",
     "noninteractive target anchors and underlying pointer/semantics isolation"
   ],
-  "limits": "Read-only source review; actual behavior is additionally exercised by protected-host integration tests and real-shell capture tests.",
+  "limits": "Read-only source review plus protected-host behavior and 37 real-shell captures. Origin page return is tested; no separate claim is made about the Settings ListView inner-scroll offset or physical device behavior.",
   "findings": [
-    "The capture-only hard-shadow test stub was found and disabled in the opt-in capture harness. No runtime owner/navigation defect established."
+    "Capture-only shadow stub corrected without runtime style changes.",
+    "Retained callback replay ABA reproduced and fixed before final handover. No unresolved owner/navigation defect remains in the reviewed scope."
   ],
   "trace": [
     "DR-ZYRA-361",
     "OA-ZYRA-325",
     "Q175"
   ],
-  "final_settings_migrations": "PASS: separate NEW badge keys; exact twelve-row inventory; every old subpage return check retained; lazy extent refreshed without changing overscroll/rebound/still-page assertions. Fixture default off."
+  "final_settings_migrations": "PASS: separate NEW badge keys; exact twelve-row inventory; every old subpage return check retained; lazy extent refreshed without changing overscroll/rebound/still-page assertions. Fixture default off.",
+  "late_callback_review": {
+    "result": "PASS after correction",
+    "finding": "A callback from a completed tour could advance a later replay at the same index. Reproduced by a failing regression, then fixed by shared _bound UI revision/page/tab/role guards on Next and Back.",
+    "verification": "New test rejects the retired callback and proves the current callback still advances. Both-role sequence, left-edge Back and completion/Settings return remain tested; 119 final focused checks pass."
+  }
 }

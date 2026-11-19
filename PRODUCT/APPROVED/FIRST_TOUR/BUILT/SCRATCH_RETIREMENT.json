@@ -1,0 +1,102 @@
+{
+  "retired_logs": [
+    {
+      "from": "SOURCE/build/line124/full_test.jsonl",
+      "to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_SCRATCH_2026-11-19/full_test.jsonl",
+      "bytes": 4627222,
+      "sha256": "7d38a0c06be78124b5daffba65e50ddc319c27b77f31d1b7958bfa2b7d5356cd"
+    },
+    {
+      "from": "SOURCE/build/line124/full_test.stderr",
+      "to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_SCRATCH_2026-11-19/full_test.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "from": "SOURCE/build/line124/analyze.log",
+      "to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_SCRATCH_2026-11-19/analyze.log",
+      "bytes": 1110,
+      "sha256": "0ce5c97ac10aafef8b436e4a8d5ed6f6ebca7a4ab0bc5544b250390707a368cb"
+    },
+    {
+      "from": "SOURCE/build/line124/public_check.txt",
+      "to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_SCRATCH_2026-11-19/public_check.txt",
+      "bytes": 436720,
+      "sha256": "a0173fb5bf6606c5c5f64cee2f544edb006e2bc2ee59ce9659e04ee02c7dec0f"
+    },
+    {
+      "from": "SOURCE/build/line124/developer_tour_retry.log",
+      "to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_SCRATCH_2026-11-19/developer_tour_retry.log",
+      "bytes": 819,
+      "sha256": "aac5b592032955c7ab067f69fdd49f26df33284a7fbcf99bb165097f33858a33"
+    },
+    {
+      "from": "SOURCE/build/line124/capture_narrow.log",
+      "to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_SCRATCH_2026-11-19/capture_narrow.log",
+      "bytes": 264,
+      "sha256": "46adad8ef6de5aef58abcf7b8c298fbb0e778d09f6d686d555fe263fd9e66f31"
+    },
+    {
+      "from": "SOURCE/build/line124/overlay_test.log",
+      "to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_SCRATCH_2026-11-19/overlay_test.log",
+      "bytes": 922,
+      "sha256": "c8a4f1abb9b73f781e447ff3c8a2ece7eb63a98db5b40a15981bd7f20a2170f7"
+    },
+    {
+      "from": "SOURCE/build/line124/overlay_analyze.log",
+      "to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_SCRATCH_2026-11-19/overlay_analyze.log",
+      "bytes": 97,
+      "sha256": "70ddb8d8f767b19375dc9d5c4163795fd370f3f4d6b761a098fb66f89a5e473b"
+    },
+    {
+      "from": "SOURCE/build/line124/final_full_test.jsonl",
+      "to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_SCRATCH_2026-11-19/final_full_test.jsonl",
+      "bytes": 4614915,
+      "sha256": "eb4fe351da1d8ecd1737cfe9732856fd5d155fa2113fce8797169d74f6302056"
+    },
+    {
+      "from": "SOURCE/build/line124/final_full_test.stderr",
+      "to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_SCRATCH_2026-11-19/final_full_test.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "from": "SOURCE/build/line124/final_analyze.log",
+      "to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_SCRATCH_2026-11-19/final_analyze.log",
+      "bytes": 97,
+      "sha256": "8202252c1d20ca0a8770e782cbdb41c85ebdc19b3a30a8cf805a2c3ca5bbdadc"
+    },
+    {
+      "from": "SOURCE/build/line124/final_focused.log",
+      "to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_SCRATCH_2026-11-19/final_focused.log",
+      "bytes": 12295,
+      "sha256": "2dac27aba4e3e918617163963beaa157132b9cb3163793a12d691d5d12ed1657"
+    },
+    {
+      "from": "SOURCE/build/line124/developer_integration.log",
+      "to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_SCRATCH_2026-11-19/developer_integration.log",
+      "bytes": 6633,
+      "sha256": "4f75baa3bc6896cf54d5d7779729d04c6fe05eb02344f4be074ee3699dd26aaa"
+    },
+    {
+      "from": "SOURCE/build/line124/developer_action_blocking.log",
+      "to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_SCRATCH_2026-11-19/developer_action_blocking.log",
+      "bytes": 281,
+      "sha256": "b50bac625875116a598ea327615d75dbb13d80e1c4075bfe8df0cf1ca2c29647"
+    },
+    {
+      "from": "SOURCE/build/line124/store_test.log",
+      "to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_SCRATCH_2026-11-19/store_test.log",
+      "bytes": 810,
+      "sha256": "1291db33d1bd0024f6bb033553be59f39bd5226552638d2f06f28a477c978383"
+    },
+    {
+      "from": "SOURCE/build/line124/tour_replay_aba_before.log",
+      "to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_SCRATCH_2026-11-19/tour_replay_aba_before.log",
+      "bytes": 2244,
+      "sha256": "72b35b5a326236166949cca49f461c4b7a8854e2e9fba6a2556bf0e5eab8ddee"
+    }
+  ],
+  "empty_command_path_correction": "/Users/shakeelahmad/_to_delete/ZYRA_LINE124_PATH_CORRECTION_2026-11-19/SOURCE",
+  "note": "Only superseded/failed text logs and an empty accidental path were retired. No app binary or source copy was created in evidence."
+}

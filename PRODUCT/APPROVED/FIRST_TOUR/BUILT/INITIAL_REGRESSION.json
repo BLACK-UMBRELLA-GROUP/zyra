@@ -16,5 +16,5 @@
     "Guardian actual Settings rows and every subpage keep their own return destination",
     "Reduced motion leaves a still touch point and never auto-advances"
   ],
-  "resolution": "Settings badge identity fixed; Settings extent/inventory harnesses migrated to the additional row; overlay ratio assertion re-run against final compiled source. Final full regression pending."
+  "resolution": "Resolved in final guarded source 865072467f831f8670523e04be875c137d2eb89e: Settings badge identity fixed, extent/inventory harnesses migrated without weakening coverage, final overlay ratio checked against current source, replay callback regression added and fixed. Final local full suite: 7,514 passes / 200 skips / zero failures."
 }
