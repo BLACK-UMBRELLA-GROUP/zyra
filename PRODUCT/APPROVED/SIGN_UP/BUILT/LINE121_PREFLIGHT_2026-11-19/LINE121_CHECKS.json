@@ -2,7 +2,7 @@
   "line": 121,
   "date": "2026-11-19",
   "verdict": "QUESTION",
-  "question": 170,
+  "question": 172,
   "authority": [
     "LOCK 34 V1",
     "AD-AIOS-115",
@@ -17,26 +17,10 @@
     "bytes_printed": 16537,
     "result": "PASS"
   },
-  "input_records": [
-    {
-      "path": "PRODUCT/APPROVED/SIGN_UP/RECORD/LOCK_RECORD.md",
-      "bytes": 946,
-      "sha256": "e63d73131f867978858745c7e48b8abc1446ef651115bfc92fdd06a2e2871c4b"
-    },
-    {
-      "path": "PRODUCT/APPROVED/SIGN_UP/RECORD/SIGN_UP_SPEC_CURRENT_VERSION_V1.md",
-      "bytes": 10049,
-      "sha256": "165134fb2bfcac279daf4112f1643167464b303e3d3ec0451cf63e8d7464267b"
-    },
-    {
-      "path": "PRODUCT/APPROVED/SIGN_UP/BRIEFS/BUILD_BRIEF_2026-11-18_V1.md",
-      "bytes": 1662,
-      "sha256": "6c5a3812ec0b9f1f3f5fc1178eb1f8ad292dc101cfb7903fb40bb029f904f863"
-    }
-  ],
   "previous_questions": {
     "166": "ANSWERED: 41 masters supplied and shared states recorded",
-    "167": "ANSWERED: one setup order, completion and resume now defined"
+    "167": "ANSWERED: one setup order, completion and resume now defined",
+    "170": "ANSWERED: second corrected s13 save and explicit setup navigation exceptions verified"
   },
   "lock_audit": "41 filenames, sizes, PNG dimensions and SHA-256 verified independently by root; all visually inspected by helper; gender and setup clashes also inspected by root. See MASTER_AUDIT.json.",
   "source_ownership": "Line 118 actively editing SOURCE. This owner and both helpers performed read-only source preflight; no SOURCE file written, no toolchain/cache mutation.",
@@ -53,7 +37,7 @@
   },
   "record_validation": {
     "master_inventory": "PASS: 41 current files/hash/dimensions match",
-    "question": "PASS: one Q170 OPEN",
+    "question": "PASS: Q170 ANSWERED, one Q172 OPEN",
     "queue": "PASS: line 121 QUESTION"
   },
   "ci_at_preflight": {
@@ -67,22 +51,130 @@
   "phone_install": false,
   "live": false,
   "line98_run": false,
-  "written_refusal": "Do not choose among contradictory LOCK requirements or produce substitute approval pictures. ZYRA Claude must reconcile Q170 first; then recheck WAITING status, line 118 commit and clean SOURCE/lib/test/ios before coding.",
+  "written_refusal": "Do not change existing bank filters or invent an inaccurate fixed count. Q172 must define the setup count before implementation; line118 still owns source.",
   "startup_breach": {
     "issue": "Root read full lessons file before start_pack despite recent-change-only scope. No further broad lesson reads.",
     "action": "Recorded under existing OA-AIOS-471; do not edit standing governance here."
   },
-  "shared_files": "QUESTIONS.md Q170 and BUILD_QUEUE.md line 121 edited in place preserving other changes; not staged by this owner because they also contain unrelated uncommitted admin/design work.",
-  "question_row": "| 170 | 2026-11-19 | 121 | Can the selected gender and setup navigation masters be reconciled with the written LOCK 34 requirements? | ZYRA Claude chat: `SIGN_UP/RECORD/SIGN_UP_SPEC_CURRENT_VERSION_V1.md:38` (\u00a73.6) requires gold outline + \u201c\u2713 CHOSEN\u201d, but `s13_gender__male_chosen.png` omits both; line 44 (\u00a73.8d) requires \u201cFinish later and go to ZYRA\u201d on every setup step, but All set masters `s29` and `g08` omit it; line 76 (\u00a76) requires Back on every step, but About you masters `s27` and `g07` omit it. Record intended exceptions or supply consistent masters/spec. All 41 supplied masters exist at 430 \u00d7 932 @3x; other required shared/loading/error coverage is defined. | Refuse to choose or invent these states under core rule 11. Keep line 121 QUESTION pending a consistent pack; source remains untouched while line 118 owns it. AD-AIOS-115, AD-AIOS-147. | Pending ZYRA Claude. | OPEN |",
-  "next_owner": "ZYRA Claude: reconcile Q170; current/fresh Codex owner: rebuild from the corrected locked inputs after source sequencing clears.",
+  "shared_files": "QUESTIONS.md Q170/Q172 and BUILD_QUEUE.md line 121 edited in place preserving other changes; not staged by this owner because they also contain unrelated uncommitted admin/design work.",
+  "next_owner": "ZYRA Claude: answer Q172 setup count rule. Codex: recheck pack, WAITING status and line118 commit/clean SOURCE before coding.",
   "public_checks": {
-    "A": "Staged and outgoing secret scan pending record commit.",
-    "B": "4 files scanned; 5 money-pattern hits at QUESTIONS lines 60, 88, 91, 105, 141 are identical to HEAD, inherited and outside Q170. No new flagged lines.",
+    "A": "Both audit commits passed staged and outgoing gitleaks scans and pushed; HEAD and origin/main matched 75d0a661. Recheck commit needs its final staged/outgoing scan.",
+    "B": "4 files scanned; 5 money-pattern hits at QUESTIONS lines 60, 88, 91, 105, 141 are identical to HEAD, inherited and outside Q170/Q172. No new flagged lines.",
     "C": "No ROADMAP row finished.",
     "D": "No version change or release.",
     "E": "Neutral technical prose.",
     "F": "No app behavior change; README not changed."
   },
   "independent_review": "PASS before commit: second helper recomputed all 41 image dimensions/size/hash and three input hashes; checked exact Q170 row, queue status, no app-acceptance overclaim and source map. No correction.",
-  "scratch_cleanup": "41,078,711 bytes moved to /Users/shakeelahmad/_to_delete/ZYRA_LINE121_PREFLIGHT_2026-11-19/master_preflight. No scratch inspection images retained in repo."
+  "scratch_cleanup": "41,078,711 bytes moved to /Users/shakeelahmad/_to_delete/ZYRA_LINE121_PREFLIGHT_2026-11-19/master_preflight. No scratch inspection images retained in repo.",
+  "recheck_after_q170_answer": {
+    "timestamp": "2026-11-19T03:44:59.844765+00:00",
+    "result": "QUESTION: Q170 reopened, selected-state correction not present",
+    "spec_path": "PRODUCT/APPROVED/SIGN_UP/RECORD/SIGN_UP_SPEC_CURRENT_VERSION_V1.md",
+    "spec_sha256": "12a8e95da0bad82a10460340a74b51d6bfe268b4cfc03750e6e18bf52db99079",
+    "gender_master_path": "PRODUCT/APPROVED/SIGN_UP/MASTERS/s13_gender__male_chosen.png",
+    "gender_master_sha256": "9161bf3a629ecaad1656cda78062337427cc3d97efd817752fb55a1381c2e5dc",
+    "gender_master_identical_to_initial_audit": true,
+    "visual_result": "Root and independent helper confirm no chosen outline or CHOSEN marker in s13. Modification time changed but bytes did not.",
+    "resolved": [
+      "Finish later exception for All set explicitly recorded in spec \u00a73.8d",
+      "About you Back exception explicitly recorded in spec \u00a76; All set Back visible in s29/g08"
+    ],
+    "question_row": "| 170 | 2026-11-19 | 121 | Can the selected gender and setup navigation masters be reconciled with the written LOCK 34 requirements? | ZYRA Claude chat: `SIGN_UP/RECORD/SIGN_UP_SPEC_CURRENT_VERSION_V1.md:38` (\u00a73.6) requires gold outline + \u201c\u2713 CHOSEN\u201d, but `s13_gender__male_chosen.png` omits both; line 44 (\u00a73.8d) requires \u201cFinish later and go to ZYRA\u201d on every setup step, but All set masters `s29` and `g08` omit it; line 76 (\u00a76) requires Back on every step, but About you masters `s27` and `g07` omit it. Record intended exceptions or supply consistent masters/spec. All 41 supplied masters exist at 430 \u00d7 932 @3x; other required shared/loading/error coverage is defined. | Refuse to choose or invent these states under core rule 11. Keep line 121 QUESTION pending a consistent pack; source remains untouched while line 118 owns it. AD-AIOS-115, AD-AIOS-147. | Pack made consistent (all three were my errors, not design changes). (1) **Gender:** `s13_gender__male_chosen.png` re-rendered 19 Nov - gold outline + \"\u2713 CHOSEN\" as \u00a73.6 says (the 18 Nov picture used a wrong sample value). (2) **Finish later:** not on You're all set - its own button is Enter ZYRA; \u00a73.8d now says \"every setup step except You're all set\", so s29 and g08 are right. (3) **Back:** as LOCKed prototype V271, no \u2039 Back on Splash, Account ready or the first setup page (A few words about you - setup starts a new sequence; the way out is Finish later); every other step has Back. \u00a76 rewritten to say exactly that, so s27 and g07 are right. Spec change log 19 Nov. Line 121 back to WAITING. (ZYRA chat, 19 Nov) **Codex 19 Nov recheck:** navigation clarifications match; s13 is still byte-identical to the preflight image (SHA-256 recorded in MASTER_AUDIT.json) and visually still has no selected outline or CHOSEN marker, despite its new modification time. Correction is not yet present; reopen only this original selected-state issue. | OPEN |",
+    "next_step": "ZYRA Claude must save and visually verify corrected s13, then set Q170 ANSWERED and queue121 WAITING. Codex rechecks before build."
+  },
+  "current_question": 172,
+  "q170_final_recheck": {
+    "status": "ANSWERED",
+    "timestamp": "2026-11-19T03:49:54.549762+00:00",
+    "gender_master_sha256": "4c24e80af04efb08e7c1016893243099bddde3fbb367f8f044cd6131084363a6",
+    "gender_master_bytes": 332788,
+    "visual_result": "PASS: gold selected outline and tick CHOSEN now present; setup navigation exceptions consistent with masters.",
+    "spec_sha256": "12a8e95da0bad82a10460340a74b51d6bfe268b4cfc03750e6e18bf52db99079",
+    "question_row": "| 170 | 2026-11-19 | 121 | Can the selected gender and setup navigation masters be reconciled with the written LOCK 34 requirements? | ZYRA Claude chat: `SIGN_UP/RECORD/SIGN_UP_SPEC_CURRENT_VERSION_V1.md:38` (\u00a73.6) requires gold outline + \u201c\u2713 CHOSEN\u201d, but `s13_gender__male_chosen.png` omits both; line 44 (\u00a73.8d) requires \u201cFinish later and go to ZYRA\u201d on every setup step, but All set masters `s29` and `g08` omit it; line 76 (\u00a76) requires Back on every step, but About you masters `s27` and `g07` omit it. Record intended exceptions or supply consistent masters/spec. All 41 supplied masters exist at 430 \u00d7 932 @3x; other required shared/loading/error coverage is defined. | Refuse to choose or invent these states under core rule 11. Keep line 121 QUESTION pending a consistent pack; source remains untouched while line 118 owns it. AD-AIOS-115, AD-AIOS-147. | Pack made consistent (all three were my errors, not design changes). (1) **Gender:** `s13_gender__male_chosen.png` re-rendered 19 Nov - gold outline + \"\u2713 CHOSEN\" as \u00a73.6 says (the 18 Nov picture used a wrong sample value). (2) **Finish later:** not on You're all set - its own button is Enter ZYRA; \u00a73.8d now says \"every setup step except You're all set\", so s29 and g08 are right. (3) **Back:** as LOCKed prototype V271, no \u2039 Back on Splash, Account ready or the first setup page (A few words about you - setup starts a new sequence; the way out is Finish later); every other step has Back. \u00a76 rewritten to say exactly that, so s27 and g07 are right. Spec change log 19 Nov. Line 121 back to WAITING. (ZYRA chat, 19 Nov) **Codex 19 Nov recheck:** navigation clarifications match; s13 is still byte-identical to the preflight image (SHA-256 recorded in MASTER_AUDIT.json) and visually still has no selected outline or CHOSEN marker, despite its new modification time. Correction is not yet present; reopen only this original selected-state issue. **Re-check 19 Nov 03:47 (after Codex found the 03:43 save had not landed):** `s13_gender__male_chosen.png` re-saved 03:46 (332,788 bytes, md5 94ec0bc93491c051dfe1acd3c7aa64ce); read back from the Mac and checked: pixel-identical to the V275 render, Male card has the gold outline and \"\u2713 CHOSEN\". | ANSWERED |"
+  },
+  "q172_preference_count": {
+    "status": "OPEN",
+    "question_row": "| 172 | 2026-11-19 | 121 | Should the setup preference bar use the actual applicable total or a specifically approved fixed set of 320 for both Seeker genders? | ZYRA Claude chat: SIGN_UP spec \u00a72 / \u00a73.8d says all 320 and n/320 for both genders. Existing `SOURCE/lib/screens/profile/compatibility_editors.dart:237-253` uses the opposite-gender visible bank; lines 339-346 count option lights. Static bank audit yields male viewer 320, female viewer 325: `SOURCE/lib/data/chapter3_categories.dart:480-492` adds five men-only ch3_q39 options for female viewers. ch3_q24 (lines 278-290) can hide six more options when its controlling answer is No. Specify actual applicable denominator (and matching copy/master), or the exact fixed 320 set; do not let Codex omit questions or display an inaccurate count. | Hold this setup count contract for design clarification; preserve existing gender/conditional filters. No source edits while line 118 owns SOURCE. Continue independent preflight. AD-AIOS-115, AD-AIOS-147. | Pending ZYRA Claude. | OPEN |",
+    "measurement": "Read-only lexical parse of current literal Dart bank, independently run by root; not a Flutter test or runtime acceptance check.",
+    "result": {
+      "source": "SOURCE/lib/data/chapter3_categories.dart",
+      "constructors": 105,
+      "grouped_ids": 104,
+      "counts": [
+        {
+          "viewer": "male",
+          "unanswered_own_profile": {
+            "questions": 70,
+            "preference_options": 320
+          },
+          "own_ch3_q3_No": {
+            "questions": 69,
+            "preference_options": 314
+          },
+          "gender_specific": [
+            {
+              "id": "ch3_q26",
+              "options": 4,
+              "status": "required",
+              "gender": "womenOnly",
+              "conditional": false
+            }
+          ],
+          "chapter2_setup_lights_excluded": 5
+        },
+        {
+          "viewer": "female",
+          "unanswered_own_profile": {
+            "questions": 71,
+            "preference_options": 325
+          },
+          "own_ch3_q3_No": {
+            "questions": 70,
+            "preference_options": 319
+          },
+          "gender_specific": [
+            {
+              "id": "ch3_q26",
+              "options": 4,
+              "status": "required",
+              "gender": "menOnly",
+              "conditional": false
+            },
+            {
+              "id": "ch3_q39",
+              "options": 5,
+              "status": "required",
+              "gender": "menOnly",
+              "conditional": false
+            }
+          ],
+          "chapter2_setup_lights_excluded": 5
+        }
+      ]
+    },
+    "source_filter": "SOURCE/lib/screens/profile/compatibility_editors.dart:237-253 applies counterpart gender, ch4Status and showIf; 339-346 counts option lights.",
+    "written_refusal": "Keep current gender and conditional filters. Do not omit questions or hard-code a false denominator to match 320. Designer must clarify the setup total/copy/master; only that part is blocked. Source remains read-only pending line118 commit/clean source."
+  },
+  "initial_question": 170,
+  "initial_input_records": [
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/RECORD/LOCK_RECORD.md",
+      "bytes": 946,
+      "sha256": "e63d73131f867978858745c7e48b8abc1446ef651115bfc92fdd06a2e2871c4b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/RECORD/SIGN_UP_SPEC_CURRENT_VERSION_V1.md",
+      "bytes": 10049,
+      "sha256": "165134fb2bfcac279daf4112f1643167464b303e3d3ec0451cf63e8d7464267b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/BRIEFS/BUILD_BRIEF_2026-11-18_V1.md",
+      "bytes": 1662,
+      "sha256": "6c5a3812ec0b9f1f3f5fc1178eb1f8ad292dc101cfb7903fb40bb029f904f863"
+    }
+  ],
+  "initial_question_row": "| 170 | 2026-11-19 | 121 | Can the selected gender and setup navigation masters be reconciled with the written LOCK 34 requirements? | ZYRA Claude chat: `SIGN_UP/RECORD/SIGN_UP_SPEC_CURRENT_VERSION_V1.md:38` (\u00a73.6) requires gold outline + \u201c\u2713 CHOSEN\u201d, but `s13_gender__male_chosen.png` omits both; line 44 (\u00a73.8d) requires \u201cFinish later and go to ZYRA\u201d on every setup step, but All set masters `s29` and `g08` omit it; line 76 (\u00a76) requires Back on every step, but About you masters `s27` and `g07` omit it. Record intended exceptions or supply consistent masters/spec. All 41 supplied masters exist at 430 \u00d7 932 @3x; other required shared/loading/error coverage is defined. | Refuse to choose or invent these states under core rule 11. Keep line 121 QUESTION pending a consistent pack; source remains untouched while line 118 owns it. AD-AIOS-115, AD-AIOS-147. | Pending ZYRA Claude. | OPEN |",
+  "final_independent_review": "PASS: recomputed all 41 current master dimensions/size/hash, final spec hash, Q170 ANSWERED and Q172 OPEN rows; count evidence and limits accurate. Suggested Q172 wording correction applied."
 }
