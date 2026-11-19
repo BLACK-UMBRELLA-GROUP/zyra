@@ -37,34 +37,55 @@ async function coreDevice(args, failure, deviceIdentifier) {
   return result;
 }
 
-async function wiredPhone(profileDevices, expectedIdentifier) {
+function requireTransport(transport) {
+  requireProof(transport === 'wired' || transport === 'wireless',
+    'Phone transport must be explicitly wired or wireless.');
+}
+
+async function pairedPhone(profileDevices, transport, expectedIdentifier, allowIdleTunnel = false) {
+  requireTransport(transport);
   const provisioned = new Set(profileDevices);
   requireProof(provisioned.size > 0 && [...provisioned].every(id => typeof id === 'string' && id),
     'The verified provisioning profile supplied no usable phone list.');
   const {devices} = await coreDevice(['list', 'devices'], 'CoreDevice could not list paired devices.');
   requireProof(Array.isArray(devices), 'CoreDevice returned no device inventory.');
-  const wired = devices.filter(device => device?.hardwareProperties?.deviceType === 'iPhone' &&
-    provisioned.has(device.hardwareProperties.udid) && device.connectionProperties?.pairingState === 'paired' &&
-    device.connectionProperties.transportType === 'wired' && device.connectionProperties.tunnelState === 'connected');
-  requireProof(wired.length === 1 && typeof wired[0].identifier === 'string' && wired[0].identifier,
-    'Connect the single paired, provisioned iPhone by USB and keep it unlocked.');
-  requireProof(expectedIdentifier === undefined || wired[0].identifier === expectedIdentifier,
-    'The wired iPhone changed during delivery.');
-  return wired[0];
+  const phones = devices.filter(device => device?.hardwareProperties?.deviceType === 'iPhone' &&
+    provisioned.has(device.hardwareProperties.udid));
+  const phone = phones[0];
+  const connection = phone?.connectionProperties;
+  const connected = connection?.tunnelState === 'connected' ||
+    (allowIdleTunnel && transport === 'wireless' && connection?.tunnelState === 'disconnected');
+  requireProof(phones.length === 1 && typeof phone?.identifier === 'string' && phone.identifier &&
+    connection?.pairingState === 'paired' &&
+    connection.transportType === (transport === 'wireless' ? 'localNetwork' : 'wired') && connected,
+    transport === 'wireless'
+      ? 'Keep the single paired, provisioned iPhone connected wirelessly and unlocked.'
+      : 'Connect the single paired, provisioned iPhone by USB and keep it unlocked.');
+  requireProof(expectedIdentifier === undefined || phone.identifier === expectedIdentifier,
+    'The selected iPhone changed during delivery.');
+  return phone;
 }
 
 async function checkUnlocked(identifier) {
   const state = await coreDevice(['device', 'info', 'lockState', '--device', identifier],
-    'The wired iPhone did not report its current lock state.', identifier);
+    'The selected iPhone did not report its current lock state.', identifier);
   requireProof(state.passcodeRequired === false && state.unlockedSinceBoot === true,
-    'Unlock the wired iPhone and keep its screen awake.');
+    'Unlock the selected iPhone and keep its screen awake.');
 }
 
-export async function checkVerifiedPhone(profileDevices) {
+async function readyPhone(profileDevices, transport, expectedIdentifier) {
+  // An idle wireless tunnel can reconnect when the live lock-state query runs.
+  // Delivery still requires a connected tunnel for the same phone afterward.
+  const phone = await pairedPhone(profileDevices, transport, expectedIdentifier, transport === 'wireless');
+  await checkUnlocked(phone.identifier);
+  return pairedPhone(profileDevices, transport, phone.identifier);
+}
+
+export async function checkVerifiedPhone(profileDevices, {transport = 'wired'} = {}) {
   try {
-    const phone = await wiredPhone(profileDevices);
-    await checkUnlocked(phone.identifier);
-    return {ready: true, paired: true, wired: true, unlocked: true};
+    await readyPhone(profileDevices, transport);
+    return {ready: true, paired: true, wired: transport === 'wired', wireless: transport === 'wireless',
+      unlocked: true, transport};
   } catch (error) {
     return {ready: false, blocker: error instanceof PhoneBlocker ? error.message : 'Phone preflight could not be verified.'};
   }
@@ -92,10 +113,12 @@ async function captureFrame(identifier, work) {
   return {captureStatus: 'uncertain'};
 }
 
-export async function deliverVerifiedPhone({candidate, bundleIdentifier, profileDevices, work, recheckArtifact}) {
-  const receipt = {stage: 'artifact', installAttempted: false, installSucceeded: false,
+export async function deliverVerifiedPhone({candidate, bundleIdentifier, profileDevices, work, recheckArtifact,
+  transport = 'wired'}) {
+  const receipt = {stage: 'artifact', transport, installAttempted: false, installSucceeded: false,
     launchAttempted: false, launchSucceeded: false, postVerified: false, captureStatus: 'not-attempted'};
   try {
+    requireTransport(transport);
     requireProof(typeof recheckArtifact === 'function' && path.isAbsolute(candidate) && path.basename(candidate) === 'Runner.app',
       'The exact Runner artifact and its verification callback are required.');
     const scratch = fs.lstatSync(work);
@@ -109,9 +132,8 @@ export async function deliverVerifiedPhone({candidate, bundleIdentifier, profile
     requireProof(bundle === bundleIdentifier && bundle && version && build && executable === 'Runner',
       'Candidate bundle identity or version could not be verified.');
     receipt.stage = 'install-preflight';
-    const phone = await wiredPhone(profileDevices);
+    const phone = await readyPhone(profileDevices, transport);
     const identifier = phone.identifier;
-    await checkUnlocked(identifier);
     receipt.stage = 'install';
     receipt.installAttempted = true;
     const installed = await coreDevice(['device', 'install', 'app', '--device', identifier, candidate],
@@ -126,8 +148,7 @@ export async function deliverVerifiedPhone({candidate, bundleIdentifier, profile
 
     receipt.stage = 'launch-preflight';
     requireProof(await recheckArtifact() === true, 'The candidate no longer matches the verified artifact.');
-    await wiredPhone(profileDevices, identifier);
-    await checkUnlocked(identifier);
+    await readyPhone(profileDevices, transport, identifier);
     receipt.stage = 'launch';
     receipt.launchAttempted = true;
     const launched = await coreDevice(['device', 'process', 'launch', '--terminate-existing', '--activate', '--device', identifier, bundle],
@@ -153,7 +174,7 @@ export async function deliverVerifiedPhone({candidate, bundleIdentifier, profile
       installedApp?.version === version && installedApp?.bundleVersion === build, 'The installed app did not match the verified candidate.');
     requireProof(processState.runningProcesses?.some(process => process.processIdentifier === processIdentifier &&
       process.executable === expectedExecutable), 'The launched process was not present in the verified installed app container.');
-    const after = await wiredPhone(profileDevices, identifier);
+    const after = await readyPhone(profileDevices, transport, identifier);
     requireProof(after.deviceProperties?.ddiServicesAvailable === true, 'Developer disk image services were not verified after launch.');
     requireProof(await recheckArtifact() === true, 'The candidate no longer matches the verified artifact.');
     receipt.postVerified = true;

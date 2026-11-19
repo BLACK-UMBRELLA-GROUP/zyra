@@ -512,6 +512,12 @@ _Stop here unless you need to look up another ID._
 |---|---|---|---|---|---|
 | ASBUILT-ZYRA-QUEUE40 | `REPORTS/CURRENT/ZYRA_PHONE_ACCESS_AS_BUILT_CURRENT_VERSION_V1.md` | HANDOVER | LOCK12 V2 Phone access implementation, boundaries, evidence and remaining native proof | AD-AIOS-115, OA-ZYRA-286, OA-ZYRA-317, OA-ZYRA-323 | 7 |
 
+### PHONE DELIVERY
+
+| ID | File | Type | Purpose | Links | KB |
+|---|---|---|---|---|---|
+| ASBUILT-ZYRA-LINE117-WIRELESS | `PRODUCT/APPROVED/PHONE_INSTALL/BUILT/LINE117/WIRELESS_ROUTE_HANDOVER.md` | HANDOVER | Explicit wireless delivery on the protected signed Founder iPhone route | DOC-ZYRA-0514, DOC-ZYRA-0448, OA-ZYRA-317, DR-ZYRA-352 | 3 |
+
 ### PHONE_INSTALL
 
 | ID | File | Type | Purpose | Links | KB |

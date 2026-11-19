@@ -247,6 +247,15 @@ The protected phone route checks readiness with `native-phone-check` and
 requires the Founder’s separate GO and the verified receipt digest for
 `native-deliver`.
 
+USB is the default. For a Founder-authorized wireless delivery, append
+`--wireless` to `native-phone-check <CHECKED_PREBUILD.json>` and to
+`native-deliver <CHECKED_PREBUILD.json> <receipt-sha256>`. The option applies
+only to that invocation. The route requires the same sole provisioned iPhone,
+paired local-network transport, a connected tunnel, and a fresh unlock check
+before installation and launch. An idle wireless tunnel is checked again after
+the read-only lock-state query. Artifact, receipt and signing verification run
+for both transports.
+
 ## Repository layout
 
 - `SOURCE/`: Flutter app, native platform projects, tests and Supabase migrations.

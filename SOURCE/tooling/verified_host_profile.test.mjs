@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {machoPayload, sameNativePayload, validSourcePath, requiredNativeInputs, flutterAssembleArgs, isWildcardRerunMarker, classifyCompilerDependency, verifyWildcardRerunRecords, singleArm64FatAsset, sameSingleArm64FatAssetPayload, sameUnusedNativeAssetRequirements, validateAotFrameworkPayload, validateNativeBuildReceipt, measureNativeHost, requireNativeAssociatedDomain} from './verified_host_profile.mjs';
+import {machoPayload, sameNativePayload, validSourcePath, requiredNativeInputs, flutterAssembleArgs, isWildcardRerunMarker, classifyCompilerDependency, verifyWildcardRerunRecords, singleArm64FatAsset, sameSingleArm64FatAssetPayload, sameUnusedNativeAssetRequirements, validateAotFrameworkPayload, validateNativeBuildReceipt, measureNativeHost, requireNativeAssociatedDomain, parseNativePhoneOptions} from './verified_host_profile.mjs';
 
 const source = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const marker = path.join(source, 'DOES_NOT_EXIST_RERUN_FOR_WILDCARD77885537');
@@ -108,6 +108,24 @@ test('native Universal Links require the exact signed domain and its development
   }
   assert.throws(() => requireNativeAssociatedDomain(app, {'get-task-allow': true}), /entitlement drift/);
   assert.throws(() => requireNativeAssociatedDomain(app, {...profile, 'get-task-allow': false}), /entitlement drift/);
+});
+test('native phone delivery requires an explicit final wireless option and the exact receipt', () => {
+  const receipt = 'a'.repeat(64);
+  assert.deepEqual(parseNativePhoneOptions('native-phone-check', []), {receiptHash: undefined, transport: 'wired'});
+  assert.deepEqual(parseNativePhoneOptions('native-phone-check', ['--wireless']), {receiptHash: undefined, transport: 'wireless'});
+  assert.deepEqual(parseNativePhoneOptions('native-deliver', [receipt, '--wireless']), {receiptHash: receipt, transport: 'wireless'});
+  assert.deepEqual(parseNativePhoneOptions('native-deliver', [receipt]), {receiptHash: receipt, transport: 'wired'});
+  for (const [mode, args] of [
+    ['unknown', []],
+    ['native-inspect', ['--wireless']],
+    ['native-phone-check', ['--wireless', '--wireless']],
+    ['native-phone-check', ['--unknown']],
+    ['native-phone-check', [receipt]],
+    ['native-deliver', ['--wireless']],
+    ['native-deliver', ['--wireless', receipt]],
+    ['native-deliver', [receipt, '--wireless', '--wireless']],
+    ['native-deliver', ['wrong-receipt', '--wireless']],
+  ]) assert.throws(() => parseNativePhoneOptions(mode, args));
 });
 test('fresh host measurement refuses artifacts outside the protected build path', () => {
   for (const candidate of [path.join(source, 'Runner.app'), path.join(source, 'build-other/Runner.app'),

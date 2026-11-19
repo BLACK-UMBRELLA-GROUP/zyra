@@ -608,8 +608,8 @@ async function deliver(file, context, measured, originalEntitlements, expectedBu
 }
 
 async function recordPhoneDelivery(root, deliveryArgs, record) {
-  const {profileDevices} = deliveryArgs;
-  const phone = await checkVerifiedPhone(profileDevices);
+  const {profileDevices, transport = 'wired'} = deliveryArgs;
+  const phone = await checkVerifiedPhone(profileDevices, {transport});
   if (!phone.ready) {
     console.log(JSON.stringify(phone));
     process.exitCode = 1;
@@ -672,7 +672,7 @@ function verifyNativeBuild(file, pins) {
   validateNativeBuildReceipt(fs.readFileSync(plainFile(path.join(packet, 'BUILD.json'))), pins);
 }
 
-async function runNative(mode, file, receiptHash) {
+async function runNative(mode, file, receiptHash, transport = 'wired') {
   if (!nativePins.hostFiles || !/^[a-f0-9]{40,64}$/.test(nativePins.sourceCommit) ||
       ![nativePins.hostSha256, nativePins.profileSha256, nativePins.entitlementsSha256, nativePins.nativeInputsSha256, nativePins.sourceSealSha256,
         nativePins.buildReceiptSha256].every(value => /^[a-f0-9]{64}$/.test(value))) {
@@ -698,27 +698,43 @@ async function runNative(mode, file, receiptHash) {
     return;
   }
   if (mode === 'native-phone-check') {
-    const phone = await checkVerifiedPhone(profileDevices);
+    const phone = await checkVerifiedPhone(profileDevices, {transport});
     console.log(JSON.stringify(phone));
     if (!phone.ready) process.exitCode = 1;
     return;
   }
-  await recordPhoneDelivery(path.dirname(candidate), {candidate, profileDevices, recheckArtifact}, {
+  await recordPhoneDelivery(path.dirname(candidate), {candidate, profileDevices, recheckArtifact, transport}, {
     commitSha: nativePins.sourceCommit, artifactSha256: nativePins.hostSha256,
     buildReceiptSha256: nativePins.buildReceiptSha256, sourceSealSha256: nativePins.sourceSealSha256,
   });
 }
 
+export function parseNativePhoneOptions(mode, extra) {
+  if (!['native-inspect', 'native-phone-check', 'native-deliver'].includes(mode)) {
+    throw Error('Unknown native phone command.');
+  }
+  const args = [...extra];
+  const wireless = args.at(-1) === '--wireless';
+  if (wireless) args.pop();
+  if (wireless && mode !== 'native-phone-check' && mode !== 'native-deliver') {
+    throw Error('Wireless selection requires native-phone-check or native-deliver.');
+  }
+  const receiptHash = mode === 'native-deliver' ? args.shift() : undefined;
+  if (args.length || (mode === 'native-deliver' && !/^[a-f0-9]{64}$/.test(receiptHash ?? ''))) {
+    throw Error('Use the exact native plan and receipt digest, with at most one final --wireless flag.');
+  }
+  return {receiptHash, transport: wireless ? 'wireless' : 'wired'};
+}
+
 async function main() {
-  const [mode, input, expectedBuildReceiptHash, ...unknown] = process.argv.slice(2);
+  const [mode, input, ...extra] = process.argv.slice(2);
   if (['native-inspect', 'native-phone-check', 'native-deliver'].includes(mode)) {
-    if (!input || unknown.length || (mode === 'native-deliver'
-      ? !/^[a-f0-9]{64}$/.test(expectedBuildReceiptHash ?? '') : expectedBuildReceiptHash !== undefined)) {
-      throw Error('Use the exact native CHECKED_PREBUILD.json and supply the observed receipt SHA-256 for native-deliver');
-    }
-    await runNative(mode, path.resolve(input), expectedBuildReceiptHash);
+    if (!input) throw Error('Use the exact native CHECKED_PREBUILD.json.');
+    const {receiptHash, transport} = parseNativePhoneOptions(mode, extra);
+    await runNative(mode, path.resolve(input), receiptHash, transport);
     return;
   }
+  const [expectedBuildReceiptHash, ...unknown] = extra;
   if (!['inspect', 'build', 'phone-check', 'deliver'].includes(mode) || !input || unknown.length ||
       (mode === 'deliver' ? !/^[a-f0-9]{64}$/.test(expectedBuildReceiptHash ?? '') : expectedBuildReceiptHash !== undefined)) {
     throw Error('Use inspect/build/phone-check with the exact HOST_PROFILE_PLAN.json, or deliver with the observed build receipt SHA-256');
