@@ -6,6 +6,12 @@ The app is intended for adult members of that community and their guardians. It 
 
 Welcome offers Apple and Google sign-in, with Apple first on iPhone and Google first on Android. Recovery email entry and setup have been removed from the app.
 
+In the Founder preview, the first entry after sample sign-up opens the mandatory
+walkthrough for the chosen role. It explains the existing pages without
+activating their controls, remembers the account on this device, and can be
+replayed from Settings → SUPPORT → Replay the walkthrough. Reduce Motion keeps
+the touch cue still. This remains a local preview; no server flag is written.
+
 ## Status
 
 Pre-launch, built solo since June 2026. Version 1.0.0 (build 5) runs on the Founder's iPhone for internal testing. The redesigned interface is a Founder preview over the existing app. Server and checkout integration are still pending. The website is [zyraconnect.app](https://zyraconnect.app).

@@ -1,7 +1,7 @@
 import '../widgets/zyra_floating_surface.dart';
 // Disposable methodology comparison using the current app's presentation.
 // No production routes/services are called, no member records are loaded,
-// and only a device-local education marker is persisted (LOCK 3).
+// and only device-local education receipts are persisted (LOCK 3 / LOCK 36).
 import 'dart:async';
 import 'dart:convert';
 import 'zyra_developer_focus_presets.dart';
@@ -62,6 +62,9 @@ import 'zyra_developer_unverified_gate.dart';
 import 'zyra_signup_preview.dart';
 import 'zyra_signup_preview_controller.dart';
 import 'zyra_signup_preferences_preview.dart';
+import 'zyra_first_tour_overlay.dart';
+import 'zyra_first_tour_steps.dart';
+import 'zyra_first_tour_store.dart';
 import 'package:share_plus/share_plus.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_confirm_sheet.dart';
@@ -139,6 +142,7 @@ typedef _GuardianCompatibilityTarget = ({
 /// fixture and exposes no action for changing these values.
 class ZyraOneJourneyShellFixture {
   const ZyraOneJourneyShellFixture({
+    this.firstTourIndex,
     this.model,
     this.changes,
     this.wallet,
@@ -165,6 +169,8 @@ class ZyraOneJourneyShellFixture {
   });
 
   final ViewRequestDraftModel? model;
+  // Code-only capture input; never supplied by the running app.
+  final int? firstTourIndex;
   final ZyraProfileVideoLoader? profileVideoLoader;
   // The caller owns model mutation and notification; these never supply access.
   final Listenable? changes;
@@ -297,6 +303,129 @@ class _ZyraOneJourneyConceptShellState
   Object? _signupLease;
   String? _signupPhoto;
   bool _signupPhotoLoading = false;
+  bool _signupHasEntered = false;
+  late final ZyraFirstTourStore _firstTourStore;
+  final _firstTourViewport = GlobalKey();
+  int? _firstTourIndex;
+  bool _firstTourPending = false;
+  ({int tab, List<String> pages, String? quickAccess, double offset})?
+  _firstTourOrigin;
+
+  bool get _firstTourCurrent =>
+      _allowed &&
+      _fixtureAccount ==
+          (ZyraAccountState.userId, ZyraAccountState.generation) &&
+      (ModalRoute.of(context)?.isCurrent ?? false);
+
+  Future<void> _firstSignupTour() async {
+    final fresh = _accountFreshGuard();
+    setState(() => _firstTourPending = true);
+    try {
+      final first = await _firstTourStore.claimFirstEntry();
+      if (first && fresh()) _startFirstTour();
+    } finally {
+      if (mounted) setState(() => _firstTourPending = false);
+    }
+  }
+
+  void _startFirstTour({int index = 0}) {
+    if (!_firstTourCurrent || _firstTourIndex != null) return;
+    _firstTourOrigin = (
+      tab: _tab,
+      pages: List.of(_pages),
+      quickAccess: _myZyraQuickAccessPage,
+      offset: _scroll.hasClients ? _scroll.offset : 0,
+    );
+    _showFirstTour(index);
+  }
+
+  void _showFirstTour(int index) {
+    if (!_firstTourCurrent) return;
+    final steps = _guardianRole ? zyraGuardianTourSteps : zyraSeekerTourSteps;
+    if (index > steps.length + 1) {
+      final origin = _firstTourOrigin;
+      _move(() {
+        _firstTourIndex = null;
+        _firstTourOrigin = null;
+        if (origin != null) {
+          _tab = origin.tab;
+          _pages
+            ..clear()
+            ..addAll(origin.pages);
+          _myZyraQuickAccessPage = origin.quickAccess;
+        }
+      });
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_firstTourCurrent && origin != null && _scroll.hasClients) {
+          _scroll.jumpTo(
+            origin.offset.clamp(0, _scroll.position.maxScrollExtent),
+          );
+        }
+      });
+      return;
+    }
+    _move(() {
+      _firstTourIndex = index.clamp(0, steps.length + 1);
+      _pages.clear();
+      _myZyraQuickAccessPage = null;
+      _notice = null;
+      if (index > 0 && index <= steps.length) _tab = steps[index - 1].tab;
+      _expansion.collapseAll();
+    });
+  }
+
+  Rect? _firstTourRect(String target) {
+    final viewport = _firstTourViewport.currentContext;
+    final root = viewport?.findRenderObject();
+    if (viewport == null || root is! RenderBox || !root.hasSize) return null;
+    final keys = switch (target) {
+      'tour_profiles_card' => {'concept_browse_portrait_card'},
+      'tour_profiles_request' => {'draft_profile_${_browseHistory.currentId}'},
+      'tour_guardian_actions' => {
+        'guardian-family-messages-top',
+        'guardian-add-top',
+      },
+      'tour_seekers_actions' => {'guardian_seekers_chat', 'guardian_invite'},
+      _ => {target},
+    };
+    Rect? result;
+    void visit(Element element) {
+      if (element.widget case Offstage(offstage: true)) return;
+      final key = element.widget.key;
+      final value = key is ValueKey<String> ? key.value : null;
+      final access =
+          target == 'tour_guardian_access' &&
+          value != null &&
+          (value == 'guardian-card-journey-label' ||
+              value.startsWith('guardian-card-tile-') ||
+              value.startsWith('guardian-card-free-place-'));
+      if (value != null && (keys.contains(value) || access)) {
+        final box = element.findRenderObject();
+        if (box is RenderBox &&
+            box.attached &&
+            box.hasSize &&
+            !box.size.isEmpty) {
+          final offset = box.localToGlobal(Offset.zero, ancestor: root);
+          final rect = offset & box.size;
+          final bounds = Offset.zero & root.size;
+          if (bounds.contains(rect.center)) {
+            final visible = rect.intersect(bounds);
+            result = result?.expandToInclude(visible) ?? visible;
+          }
+        }
+      }
+      element.visitChildElements(visit);
+    }
+
+    (viewport as Element).visitChildElements(visit);
+    return result;
+  }
+
+  double _firstTourBarTop() =>
+      _firstTourRect('compact-nav-surface')?.top ??
+      (MediaQuery.sizeOf(context).height -
+          ZyraNavBarMetrics.contentBottomClearance(context) +
+          ZyraNavBarMetrics.contentGap);
   bool get _signupUnverified => _hasDeveloperPreview
       ? _developerSamples.unverified
       : (_signup?.hasAccount == true && !_signup!.verified);
@@ -338,6 +467,7 @@ class _ZyraOneJourneyConceptShellState
     if (!_allowed || _developerBridge?.canPresent != true) return;
     _signup?.dispose();
     _signup = ZyraSignupPreviewController(now: widget.previewClock)..start();
+    _signupHasEntered = false;
     _signupPreferences = null;
     _signupSurface = _signupPreferenceSurface = null;
     _signupLease = Object();
@@ -380,6 +510,9 @@ class _ZyraOneJourneyConceptShellState
           firstName: profile.firstName,
           surname: profile.surnameLine ?? '',
         );
+      // This path resumes an existing preview account, rather than creating
+      // the first signup entry that owns the automatic walkthrough.
+      _signupHasEntered = true;
       _signup!.setGender(profile.gender);
       final today = (widget.previewClock ?? DateTime.now)();
       _signup!
@@ -433,6 +566,8 @@ class _ZyraOneJourneyConceptShellState
 
   void _leaveSignup(ZyraSignupPreviewController controller, Object lease) {
     if (!_signupCurrent(controller, lease) || !controller.hasAccount) return;
+    final firstEntry = !_signupHasEntered;
+    _signupHasEntered = true;
     controller.pauseSetup();
     final gender = controller.gender ?? 'male';
     final prefs =
@@ -475,11 +610,15 @@ class _ZyraOneJourneyConceptShellState
       _developerSamples.setSetupUnfinished(!controller.setupComplete);
     }
     _move(() {
+      // A new detached signup has no Journeys. Continuation and replay retain
+      // the current pages and never clear an existing member's state.
+      if (firstEntry) _model.reset();
       _guardianRole = controller.guardian;
       _tab = 2;
       _pages.clear();
     });
     widget.onRoleChanged?.call(controller.guardian);
+    if (firstEntry) unawaited(_firstSignupTour());
   }
 
   Widget _signupView() {
@@ -1517,6 +1656,10 @@ class _ZyraOneJourneyConceptShellState
   void initState() {
     super.initState();
     _fixtureAccount = (ZyraAccountState.userId, ZyraAccountState.generation);
+    _firstTourStore = ZyraFirstTourStore(
+      ownerId: ZyraAccountState.userId,
+      canAct: () => _firstTourCurrent,
+    );
     _location = ZyraOneJourneyLocation(canAct: () => _allowed)
       ..addListener(_locationChanged);
     ZyraPreviewRouteObserver.navigationChanges.addListener(_routeChanged);
@@ -1623,6 +1766,9 @@ class _ZyraOneJourneyConceptShellState
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Restoring a list is not evidence that every request was viewed.
       _publishCheckpoint();
+      if (_fixtureOwner?.firstTourIndex case final index?) {
+        _startFirstTour(index: index);
+      }
     });
   }
 
@@ -2119,6 +2265,7 @@ class _ZyraOneJourneyConceptShellState
 
   void _publishCheckpoint() {
     if (!_allowed ||
+        _firstTourIndex != null ||
         (widget.onCheckpoint == null && widget.fixture?.onCheckpoint == null)) {
       return;
     }
@@ -2425,6 +2572,11 @@ class _ZyraOneJourneyConceptShellState
   }
 
   void _back() {
+    if (_firstTourPending) return;
+    if (_firstTourIndex case final index?) {
+      _showFirstTour(index - 1);
+      return;
+    }
     if (_page == 'signup' && _signup != null) {
       if (_signup!.canGoBack) {
         _signup!.back();
@@ -2832,6 +2984,7 @@ class _ZyraOneJourneyConceptShellState
 
   @override
   void dispose() {
+    _firstTourStore.close();
     _developerBridge?.detach(this);
     _inactivityLifecycle.dispose();
     _model.peerDepartures.removeListener(_peerDeparted);
@@ -3042,6 +3195,8 @@ class _ZyraOneJourneyConceptShellState
             value: SystemUiOverlayStyle.dark,
             child: PopScope(
               canPop:
+                  _firstTourIndex == null &&
+                  !_firstTourPending &&
                   _locationSheet == 0 &&
                   _pages.isEmpty &&
                   !_browseOptionsOpen &&
@@ -3060,6 +3215,7 @@ class _ZyraOneJourneyConceptShellState
                         : _accountSession.palette.gradient,
                   ),
                   child: Stack(
+                    key: _firstTourViewport,
                     fit: StackFit.expand,
                     children: [
                       Stack(
@@ -3132,42 +3288,45 @@ class _ZyraOneJourneyConceptShellState
                           if (_browseOptionsOpen)
                             _browseOptionsNavigation()
                           else if (_showRootTabBar)
-                            ZyraShellNavigation(
-                              key: ValueKey((
-                                'concept_root_navigation',
-                                _guardianRole,
-                              )),
-                              hapticLevel: _accountSession.hapticLevel,
-                              contentEdgeInset: 20,
-                              lockedTabBar: true,
-                              interactionEnabled: _allowed,
-                              items: [
-                                for (var i = 0; i < names.length; i++)
-                                  FloatingNavItem(
-                                    icon: icons[i],
-                                    label: names[i],
-                                    useJourneyGlyph: i == 1,
-                                    dot:
-                                        i == 2 &&
-                                        (_guardianRole
-                                            ? _hasGuardianMyZyraTabActivity
-                                            : _hasNewMyZyraTabActivity),
-                                  ),
-                              ],
-                              currentIndex: _tab,
-                              onTap: (index) {
-                                if (_allowed &&
-                                    navigationRevision == _uiRevision &&
-                                    navigationGuardian == _guardianRole &&
-                                    navigationRouteStamp == _routeStamp &&
-                                    (ModalRoute.of(context)?.isCurrent ??
-                                        false) &&
-                                    !_browseOptionsOpen &&
-                                    _showRootTabBar &&
-                                    (index != _tab || _page != null)) {
-                                  _tabTo(index);
-                                }
-                              },
+                            KeyedSubtree(
+                              key: const ValueKey('concept_tour_navigation'),
+                              child: ZyraShellNavigation(
+                                key: ValueKey((
+                                  'concept_root_navigation',
+                                  _guardianRole,
+                                )),
+                                hapticLevel: _accountSession.hapticLevel,
+                                contentEdgeInset: 20,
+                                lockedTabBar: true,
+                                interactionEnabled: _allowed,
+                                items: [
+                                  for (var i = 0; i < names.length; i++)
+                                    FloatingNavItem(
+                                      icon: icons[i],
+                                      label: names[i],
+                                      useJourneyGlyph: i == 1,
+                                      dot:
+                                          i == 2 &&
+                                          (_guardianRole
+                                              ? _hasGuardianMyZyraTabActivity
+                                              : _hasNewMyZyraTabActivity),
+                                    ),
+                                ],
+                                currentIndex: _tab,
+                                onTap: (index) {
+                                  if (_allowed &&
+                                      navigationRevision == _uiRevision &&
+                                      navigationGuardian == _guardianRole &&
+                                      navigationRouteStamp == _routeStamp &&
+                                      (ModalRoute.of(context)?.isCurrent ??
+                                          false) &&
+                                      !_browseOptionsOpen &&
+                                      _showRootTabBar &&
+                                      (index != _tab || _page != null)) {
+                                    _tabTo(index);
+                                  }
+                                },
+                              ),
                             ),
                         ],
                       ),
@@ -3199,6 +3358,33 @@ class _ZyraOneJourneyConceptShellState
                               autofocus: true,
                               child: _journeyBioGallery(bioGallery),
                             ),
+                          ),
+                        ),
+                      if (_firstTourPending)
+                        const Positioned.fill(
+                          child: AbsorbPointer(child: SizedBox.expand()),
+                        ),
+                      if (_firstTourIndex case final index?)
+                        Positioned.fill(
+                          child: ZyraFirstTourOverlay(
+                            index: index,
+                            guardian: _guardianRole,
+                            firstName: _accountSession
+                                .ownProfile(_guardianRole)
+                                .firstName,
+                            onNext: () {
+                              if (_firstTourIndex == index) {
+                                _showFirstTour(index + 1);
+                              }
+                            },
+                            onBack: () {
+                              if (_firstTourIndex == index) {
+                                _showFirstTour(index - 1);
+                              }
+                            },
+                            targetRect: _firstTourRect,
+                            navBarTop: _firstTourBarTop,
+                            canAct: () => _firstTourCurrent,
                           ),
                         ),
                     ],
@@ -9502,6 +9688,8 @@ class _ZyraOneJourneyConceptShellState
         if (_allowed) widget.onExit();
       case ZyraConceptAccountAction.helpSupport:
         _open('help_support');
+      case ZyraConceptAccountAction.replayWalkthrough:
+        _startFirstTour();
       case ZyraConceptAccountAction.editProfile:
         if (!_guardianRole) _open('edit_profile');
       case ZyraConceptAccountAction.managePhotos:
@@ -10008,6 +10196,7 @@ class _ZyraOneJourneyConceptShellState
           'Notifications & emails',
         ZyraConceptAccountAction.membership => 'Membership',
         ZyraConceptAccountAction.helpSupport => 'Help & support',
+        ZyraConceptAccountAction.replayWalkthrough => 'Replay the walkthrough',
         ZyraConceptAccountAction.feedback => 'Send feedback',
         ZyraConceptAccountAction.privacyData => 'Privacy & data',
         ZyraConceptAccountAction.background => 'Background',

@@ -1,0 +1,47 @@
+{
+  "analyzer": {
+    "result": "PASS",
+    "issues": 0,
+    "command": "flutter analyze --no-pub",
+    "log": "SOURCE/build/line124/final_analyze.log"
+  },
+  "full_regression": {
+    "result": "PASS",
+    "passed": 7513,
+    "skipped": 200,
+    "failed": 0,
+    "duration_ms": 469500,
+    "command": "flutter test --no-pub --flavor offline-ci --reporter json",
+    "log": "SOURCE/build/line124/final_full_test.jsonl",
+    "skips": "163 existing + 37 opt-in line124 capture cases; all37 captures separately passed"
+  },
+  "focused": {
+    "result": "PASS",
+    "passed": 69,
+    "log": "SOURCE/build/line124/final_focused.log"
+  },
+  "protected_host": {
+    "result": "PASS",
+    "passed": 49,
+    "log": "SOURCE/build/line124/developer_integration.log",
+    "additional_physical_action_blocking": "PASS, 1 test; developer_action_blocking.log"
+  },
+  "capture": {
+    "result": "PASS",
+    "passed": 37,
+    "placement_checks": 32,
+    "actual_tab_checks": 32,
+    "log": "SOURCE/build/line124/capture.log"
+  },
+  "visual": "VISUAL_REVIEW.json",
+  "independent_source_review": "INDEPENDENT_REVIEW.json",
+  "device": {
+    "phone_build": false,
+    "installed": false,
+    "simulator_launched": false,
+    "next_owner": "line117"
+  },
+  "hosted_ci": {
+    "status": "PENDING - after implementation push"
+  }
+}

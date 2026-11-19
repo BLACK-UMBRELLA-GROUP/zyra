@@ -1,0 +1,346 @@
+{
+  "size": "430 x 932 @3x",
+  "frames": [
+    {
+      "file": "SCREENSHOTS/t00_welcome.png",
+      "master": "../MASTERS/t00_welcome.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "697716de3cb6372fbd1883a137ade560ea334530510d9cadf3ee00588a76f632"
+    },
+    {
+      "file": "SCREENSHOTS/t01_profiles_this_is_profiles.png",
+      "master": "../MASTERS/t01_profiles_this_is_profiles.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "19ca53d067a9e96ef8baecfff9f26835892fa31f073b16d9b948bc0df40763e2"
+    },
+    {
+      "file": "SCREENSHOTS/t02_profiles_each_card_is_one_person.png",
+      "master": "../MASTERS/t02_profiles_each_card_is_one_person.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "18b747bc7579bceec5b545fa1427e9219e9db1083d599f2e3e2a9f5bb20ac245"
+    },
+    {
+      "file": "SCREENSHOTS/t03_profiles_see_their_photos.png",
+      "master": "../MASTERS/t03_profiles_see_their_photos.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "aab52cc806d5b8fdc90f9a17a3715de13f471d2dbb5dfa953733f49b42ae5f60"
+    },
+    {
+      "file": "SCREENSHOTS/t04_profiles_ready_to_begin.png",
+      "master": "../MASTERS/t04_profiles_ready_to_begin.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "6b5837be5179b615c15de4c9e9faf174ba3c2a4a857c1b60f5948ea787369665"
+    },
+    {
+      "file": "SCREENSHOTS/t05_journey_this_is_journey.png",
+      "master": "../MASTERS/t05_journey_this_is_journey.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "99c12075b5b2a97fbeaa72a3f8651e6f62d762b02b958b82c46c42c43cc0c407"
+    },
+    {
+      "file": "SCREENSHOTS/t06_journey_nothing_here_yet.png",
+      "master": "../MASTERS/t06_journey_nothing_here_yet.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "bd6022c875568b5651d43b768d5ecf7c77f46a9fc03821584c1dff3d0b8d1816"
+    },
+    {
+      "file": "SCREENSHOTS/t07_my_zyra_this_is_my_zyra.png",
+      "master": "../MASTERS/t07_my_zyra_this_is_my_zyra.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "3f66c4d4cc721b6be3c016d281ca605c1a9f83303a427b04d5d47280dfddc3f1"
+    },
+    {
+      "file": "SCREENSHOTS/t08_my_zyra_needs_you.png",
+      "master": "../MASTERS/t08_my_zyra_needs_you.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "af3fcb06b6d848cd5717a89a84da30cdff5ae393c0e111dcf513685931fcf54a"
+    },
+    {
+      "file": "SCREENSHOTS/t09_my_zyra_at_a_glance.png",
+      "master": "../MASTERS/t09_my_zyra_at_a_glance.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "e65342821f02971933d25e156cbdcdd55b3f55fc690caf9251b224a61cf39b44"
+    },
+    {
+      "file": "SCREENSHOTS/t10_my_zyra_quick_access.png",
+      "master": "../MASTERS/t10_my_zyra_quick_access.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "c3dc889609725704d67a73ffe21f6cc46d94e0b90726415f6c9e270c0090a858"
+    },
+    {
+      "file": "SCREENSHOTS/t11_guardian_this_is_guardian.png",
+      "master": "../MASTERS/t11_guardian_this_is_guardian.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "c524e18bd60f1e052a570ad1439cce2e9bbc225d5560ea693c172b4242ec2a1c"
+    },
+    {
+      "file": "SCREENSHOTS/t12_guardian_your_guardians.png",
+      "master": "../MASTERS/t12_guardian_your_guardians.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "a4d50bc1c228add49c1409f0f083a3988be79953e87b84ad3ca3304fe80dc198"
+    },
+    {
+      "file": "SCREENSHOTS/t13_guardian_what_they_can_see.png",
+      "master": "../MASTERS/t13_guardian_what_they_can_see.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "d81cd1694ac4be6c96519d24f4416764f2d724347e29e552a514d6bf5a4d6148"
+    },
+    {
+      "file": "SCREENSHOTS/t14_guardian_talk_and_add.png",
+      "master": "../MASTERS/t14_guardian_talk_and_add.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "2ce1cb45ea7af3ac5aa48642ebd845a72e31d9fdc5cb27ec8a0a4fcdab6a5020"
+    },
+    {
+      "file": "SCREENSHOTS/t15_profile_this_is_profile.png",
+      "master": "../MASTERS/t15_profile_this_is_profile.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "3404ede2af2e87cf700cd08ed54f36e703d0bfdd49b2e06cf795109dff69f036"
+    },
+    {
+      "file": "SCREENSHOTS/t16_profile_your_profile.png",
+      "master": "../MASTERS/t16_profile_your_profile.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "fe0280f3d6cd513d37d27cc8ac87f2e975db1e85558065324aeb5e5bf6290eb0"
+    },
+    {
+      "file": "SCREENSHOTS/t17_profile_your_membership.png",
+      "master": "../MASTERS/t17_profile_your_membership.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "d0102a4a715292c9e2c5426b5e4926a05314bfc990019165e0e71689b1b79655"
+    },
+    {
+      "file": "SCREENSHOTS/t18_profile_settings.png",
+      "master": "../MASTERS/t18_profile_settings.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "523ceae3e338cd801dedca6e06b13e1b9c8ef6e5cd9bde532957850357e477ec"
+    },
+    {
+      "file": "SCREENSHOTS/t19_end.png",
+      "master": "../MASTERS/t19_end.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "a1a1fb1032d60359c48901c7395d9b3df1ed65d8d7f1c307f04bf5c67c823b50"
+    },
+    {
+      "file": "SCREENSHOTS/t99_settings_replay_row.png",
+      "master": "../MASTERS/t99_settings_replay_row.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "cb373f5fb9012102f0298df84c6a327d006634bc52266106ca9ff2e0643ad250"
+    },
+    {
+      "file": "SCREENSHOTS/tg00_welcome.png",
+      "master": "../MASTERS/tg00_welcome.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "cbc8d44797d6a30819ff3907b0c3e01fe749199c8856f3d35f12854da85e633a"
+    },
+    {
+      "file": "SCREENSHOTS/tg01_network_this_is_network.png",
+      "master": "../MASTERS/tg01_network_this_is_network.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "0f9b93dd3d97b2097cfe3aca163e31af3530fadf77b688b9254159a52ab5a350"
+    },
+    {
+      "file": "SCREENSHOTS/tg02_network_choose_your_seeker.png",
+      "master": "../MASTERS/tg02_network_choose_your_seeker.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "57f830a96b2bea895eca5f7ccbf5c3b71bbe2b5927d52f3624eff120f673a618"
+    },
+    {
+      "file": "SCREENSHOTS/tg03_network_introduce_or_connect.png",
+      "master": "../MASTERS/tg03_network_introduce_or_connect.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "b32fe45554757695844bfab0509e7191c38df333d996b1cd594c089d4a7e2add"
+    },
+    {
+      "file": "SCREENSHOTS/tg04_journeys_this_is_journeys.png",
+      "master": "../MASTERS/tg04_journeys_this_is_journeys.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "d8abfb4089e1d453660ca1ba4f87ff1a29b2a7f203aeacbdfedce8952528bc36"
+    },
+    {
+      "file": "SCREENSHOTS/tg05_journeys_open_a_journey.png",
+      "master": "../MASTERS/tg05_journeys_open_a_journey.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "a7c6b5bbdbf41c15790a98accb72884376d75e5cd4dfa0668349761985b18f3d"
+    },
+    {
+      "file": "SCREENSHOTS/tg06_my_zyra_this_is_my_zyra.png",
+      "master": "../MASTERS/tg06_my_zyra_this_is_my_zyra.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "752693db44a08af4c6e584f6da2dea322c996c781bcd5877259b6fbf376cefe7"
+    },
+    {
+      "file": "SCREENSHOTS/tg07_my_zyra_needs_you.png",
+      "master": "../MASTERS/tg07_my_zyra_needs_you.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "8e08f431e7718ef2ab03a06ad68f4c78d6ee9aaf9100455edd166bf13fa3d5b7"
+    },
+    {
+      "file": "SCREENSHOTS/tg08_my_zyra_quick_access.png",
+      "master": "../MASTERS/tg08_my_zyra_quick_access.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "b0bcc1668830ca3d531d8f04a181b5d3248f4b5b506ff12eba621f8d3b68c960"
+    },
+    {
+      "file": "SCREENSHOTS/tg09_seekers_this_is_seekers.png",
+      "master": "../MASTERS/tg09_seekers_this_is_seekers.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "8e4f720877f4f4746af32907f6b9ef65b08cbf74110ed9d16eb4706ac3d73c41"
+    },
+    {
+      "file": "SCREENSHOTS/tg10_seekers_swipe_through.png",
+      "master": "../MASTERS/tg10_seekers_swipe_through.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "6296e5aa252787d4c7be151e59fd7efffc07f471f578feb1b17c2b3f29623f76"
+    },
+    {
+      "file": "SCREENSHOTS/tg11_seekers_talk_and_invite.png",
+      "master": "../MASTERS/tg11_seekers_talk_and_invite.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "5b75ce75f8e1daebe4bc3b585a961b9b0071073e130a4310ce4120face6ee08a"
+    },
+    {
+      "file": "SCREENSHOTS/tg12_profile_this_is_profile.png",
+      "master": "../MASTERS/tg12_profile_this_is_profile.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "a8fb292fec1b59d736ae10f4bd27fffb959e4d48ceb4564718265c8ac7b0b9a2"
+    },
+    {
+      "file": "SCREENSHOTS/tg13_profile_your_membership.png",
+      "master": "../MASTERS/tg13_profile_your_membership.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "95873bf8d08363333f5e06cfbb80952705fba2b3a1bb88ba82c2d4feb4e8a6ca"
+    },
+    {
+      "file": "SCREENSHOTS/tg14_profile_settings.png",
+      "master": "../MASTERS/tg14_profile_settings.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "5016ad75e0c3bd37045f6411c8e2a3894e6a2f70ef5e37b52891aa3d77a70381"
+    },
+    {
+      "file": "SCREENSHOTS/tg15_end.png",
+      "master": "../MASTERS/tg15_end.png",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "sha256": "380db32283140b7deb4590250b0799d3a169541ebc6ed3f367b127af094d39af"
+    }
+  ],
+  "comparisons": [
+    "COMPARISONS/t00_welcome_master_build.png",
+    "COMPARISONS/t02_profiles_each_card_is_one_person_master_build.png",
+    "COMPARISONS/t09_my_zyra_at_a_glance_master_build.png",
+    "COMPARISONS/t13_guardian_what_they_can_see_master_build.png",
+    "COMPARISONS/t99_settings_replay_row_master_build.png",
+    "COMPARISONS/tg10_seekers_swipe_through_master_build.png"
+  ]
+}

@@ -1,0 +1,44 @@
+FIRST-TIME WALKTHROUGH — current as-built handover
+Line 124 / LOCK 36 V1 / DR-ZYRA-361 / OA-ZYRA-325
+Status: local implementation gate PASS; hosted CI pending. No phone delivery or live-server claim.
+
+Authority and build inputs
+Founder approved the daytime order 98 → 99 → 124 → 117 and LOCK 36's exception to AD-AIOS-149. FIRST_TOUR/BRIEFS/BUILD_BRIEF_2026-11-19_V1.md and RECORD/FIRST_TOUR_SPEC_CURRENT_VERSION_V1.md govern. Q175 reconciles the placement rule; section 4 and the version history identify all 37 corrected masters as prototype V290. INPUT_MANIFEST.json records the exact inputs. Initial provenance paragraphs still cite the original V289 lock.
+
+Behavior
+The Founder preview opens one mandatory walkthrough after its first local signup entry, for either Seeker or Guardian. Existing setup continuation does not restart it. A receipt is kept on this device per bound account, separate from the account-switch-cleared preference cache. Settings SUPPORT begins with Replay the walkthrough and NEW. Replay starts at the welcome and completion returns to the originating page and scroll. No server flag is read or written for the tour.
+
+The single overlay uses the exact 18 Seeker or 14 Guardian step texts and existing pages. Each step changes tab without activating its highlighted control. A missing or unavailable item highlights the current tab instead. Next/tap advances; the left 20 percent and platform Back return one step, with welcome as the lower bound. There is no skip or timed advance. Last step Finish opens the end card; Start using ZYRA returns to the originating page.
+
+Layout and accessibility
+Q175 measures the actual note height. Place below only when its bottom clears the tab bar by 12 pt; otherwise above when its top is at least 48 pt; otherwise crop the lit item to its upper portion, at least 64 pt, and leave a 14 pt gap to the note. Intro steps stay above the tab. The note may cover unlit content. Warm shade, 2 pt gold edge, ivory note, pointer, page dots and touch cue use the locked values. Tap/swipe gesture loops never activate real controls. Reduce Motion shows a still touch point. BlockSemantics excludes page controls; ordered title/body and the Next/Finish button remain accessible.
+
+Live file map
+SOURCE/lib/dev/zyra_first_tour_overlay.dart: shared overlay, measured placement, shade/cut-outs, gestures and semantics.
+SOURCE/lib/dev/zyra_first_tour_steps.dart: exact ordered step data and stable anchor identifiers.
+SOURCE/lib/dev/zyra_first_tour_store.dart: owner-scoped SharedPreferences education receipt; serialized claims and terminal revocation/close.
+SOURCE/lib/dev/zyra_one_journey_concept_shell.dart: signup trigger, origin/navigation lifecycle, rectangle resolution, replay dispatch and modal integration. A fresh detached signup resets old fictional Journeys; resume and replay retain current state.
+SOURCE/lib/dev/zyra_one_journey_account_presentation.dart: first SUPPORT replay row.
+SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart, zyra_one_journey_guardian_tabs.dart and SOURCE/lib/widgets/zyra_focus_dashboard.dart: stable keys on existing item groups; no page redesign.
+SOURCE/test/line124_first_tour_store_test.dart and line124_first_tour_overlay_test.dart: receipt, geometry, blocking, motion and semantics checks.
+SOURCE/test/zyra_developer_panel_entry_test.dart: protected-host role, signup, replay, stale-callback and request-action blocking checks; existing signup cases complete the new mandatory walkthrough explicitly.
+SOURCE/test/visual/line124_first_tour_capture_test.dart: opt-in real-shell 37-frame captures, correct per-step tab metadata and 32 placement assertions.
+SOURCE/test/visual/lock26_v4_still_pages_test.dart and SOURCE/test/whole_app_settings_destinations_test.dart: existing Settings coverage updated for the additional row and lazy measured extent, retaining exact inventory, navigation and bounce assertions.
+README.md and PRODUCT/BLUEPRINT/ZYRA_PLANNED_SCREEN_INVENTORY_GENERATED.md: current behavior/inventory. SOURCE_MANIFEST.json is the complete changed-file list with hashes.
+
+State and boundaries
+The admitted shell owns the index, pending claim, origin page/scroll and callbacks. It captures account ID/generation and checks the current route. Highlight rectangles are presentation only and never access proof. The store never proves signup, membership or identity; durable keys use account ID, not a mutable display name. Detached hosts without an account use an instance-local marker. Tour navigation suppresses checkpoint publication until returning to the origin, so a transient tutorial step is not restored as the member's page.
+
+Developer controls and mock/live status
+There is no new runtime developer control. The existing admin Start sign-up remains a detached rehearsal. Optional fixture.firstTourIndex is code-only for tests/captures and is never passed by the app. Sample portraits, current page geometry and current status chips differ from the prototype fixture; the overlay targets the existing rendered pages as required, rather than replacing them with pictures. Static captures use Reduce Motion and do not claim device animation observation.
+
+Failure paths and limits
+Unknown/missing/offscreen items fall back to the tab. Revoked owner, stale callback or retired route cannot advance or write a receipt. A receipt read/write failure cannot be claimed as durable completion; the store returns failure rather than inventing saved state. Actual iPhone observation is deferred to the separately authorized line 117. The ordinary member/server rollout is unchanged and remains OA-ZYRA-317. Fable/ZYRA's normal design review follows this implementation handover; no Founder visual approval of these app captures is claimed.
+
+Migrations: none. No backend, signing, version, dependency, upload or phone-install change.
+
+Verification and trace
+Focused receipt, overlay and Settings suites pass 69 tests; protected-host integration passes 49 tests; final captures pass all 37 cases. Analyzer reports no issues. The final full suite passes 7,513 tests / 200 skips / zero failures in 7 min 49.5 sec. Hosted CI is pending. CHECKS.json and BUILD.json record the measured gates. SCREENSHOTS contains actual app renders at 430 x 932, DPR 3; comparisons will put final app captures beside the corresponding masters. INDEPENDENT_REVIEW.json records the independent source review. No compiled app, source copy or temporary SDK-backed preview is in this evidence folder.
+
+Next owner
+The coordinator releases line 117 only after this line's hosted CI success and pushed BUILT handover, keeping line 117 last. Fable owns normal register/report reconciliation. MAP.md was regenerated; its approved brief and LOCK-record inputs have no document headers. Codex refuses to invent governance IDs for them (OA-ZYRA-325); Fable owns that metadata. Other unrelated map/register changes are preserved for the normal sweep. The Founder alone approves any design change or phone delivery.

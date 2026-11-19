@@ -825,6 +825,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     required bool guardianOne,
     String? guardianId,
   }) => Stack(
+    key: const ValueKey('tour_guardian_name'),
     children: [
       Padding(
         padding: EdgeInsets.only(right: invited ? 0 : 44),

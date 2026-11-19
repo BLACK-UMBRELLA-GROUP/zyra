@@ -17,6 +17,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/config/zyra_internal_founder_policy.dart';
 import 'package:zyra/data/zyra_journey_stages.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
+import 'package:zyra/dev/zyra_first_tour_overlay.dart';
+import 'package:zyra/dev/zyra_first_tour_steps.dart';
+import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_request_activity_presentation.dart';
 import 'package:zyra/dev/zyra_signup_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
@@ -184,6 +187,8 @@ void main() {
     ZyraAccountState.resetForTesting();
     ZyraAccountState.clearImagesForTesting = () async {};
     ZyraInternalPreviewClient.finishSignOut();
+    SharedPreferences.setMockInitialValues({});
+    await ZyraLocalPrefs.init();
     currentIdentity = _owner;
     await installSession(_session());
     refreshCalls = 0;
@@ -300,6 +305,35 @@ void main() {
     await tester.ensureVisible(target);
     await tester.tap(target);
     await settle(tester);
+  }
+
+  // LOCK 34 cases still check their own setup behavior after the mandatory
+  // first-entry walkthrough has explicitly completed.
+  Future<void> finishFirstTour(WidgetTester tester) async {
+    expect(_key('first_tour_overlay'), findsOneWidget);
+    for (var move = 0; move < 21; move++) {
+      if (_key('first_tour_overlay').evaluate().isEmpty) break;
+      await tap(tester, _key('first_tour_next'));
+    }
+    expect(_key('first_tour_overlay'), findsNothing);
+  }
+
+  Future<ZyraSignupPreviewController> signupReady(
+    WidgetTester tester, {
+    required bool guardian,
+  }) async {
+    await tap(tester, _key('dev_page_title'));
+    await tap(tester, _key('dev_start_signup'));
+    await tap(tester, _key('signup_apple'));
+    final controller = tester
+        .widget<ZyraSignupPreview>(find.byType(ZyraSignupPreview))
+        .controller;
+    controller.setGuardian(guardian);
+    while (controller.step != ZyraSignupStep.verify) {
+      await tap(tester, _key('signup_skip'));
+    }
+    await tap(tester, _key('signup_verify_later'));
+    return controller;
   }
 
   Widget previewHome({
@@ -1196,6 +1230,210 @@ void main() {
     },
   );
 
+  for (final guardian in [false, true]) {
+    final role = guardian ? 'Guardian' : 'Seeker';
+    testWidgets(
+      'LOCK 36 $role first entry visits every page once and Replay returns to Settings',
+      (tester) async {
+        plan = 'seeker_premium';
+        await mount(tester);
+        final signup = await signupReady(tester, guardian: guardian);
+        final callsBeforeEntry = readsAndWrites.length;
+        await tap(tester, _key('signup_look_around'));
+        expect(_key('first_tour_overlay'), findsOneWidget);
+        expect(find.text('Hi ${signup.firstName}, welcome'), findsOneWidget);
+        expect(find.text('Skip'), findsNothing);
+        final steps = guardian ? zyraGuardianTourSteps : zyraSeekerTourSteps;
+        final welcomeNext = tester
+            .widget<ZyraFirstTourOverlay>(find.byType(ZyraFirstTourOverlay))
+            .onNext;
+        await tap(tester, _key('first_tour_next'));
+        welcomeNext();
+        await settle(tester);
+        expect(
+          tester
+              .widget<ZyraFirstTourOverlay>(find.byType(ZyraFirstTourOverlay))
+              .index,
+          1,
+        );
+
+        for (var index = 0; index < steps.length; index++) {
+          final step = steps[index];
+          final overlay = tester.widget<ZyraFirstTourOverlay>(
+            find.byType(ZyraFirstTourOverlay),
+          );
+          expect(overlay.guardian, guardian);
+          expect(overlay.index, index + 1);
+          expect(
+            find.descendant(
+              of: _key('first_tour_overlay'),
+              matching: find.text(step.title),
+            ),
+            findsOneWidget,
+          );
+          expect(
+            find.descendant(
+              of: _key('first_tour_overlay'),
+              matching: find.text(step.body),
+            ),
+            findsOneWidget,
+          );
+          expect(
+            tester
+                .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
+                .currentIndex,
+            step.tab,
+          );
+          if (!guardian && index == 5) {
+            expect(_key('journey_tab_empty_title'), findsOneWidget);
+            expect(overlay.targetRect('journey_tab_browse'), isNotNull);
+          }
+          if (guardian && index == 4) {
+            expect(overlay.targetRect('guardian_journey'), isNull);
+            expect(_key('first_tour_target'), findsOneWidget);
+          }
+          await tap(tester, _key('first_tour_next'));
+        }
+        expect(
+          find.text('That’s everything, ${signup.firstName}'),
+          findsOneWidget,
+        );
+        await tap(tester, _key('first_tour_next'));
+        expect(_key('first_tour_overlay'), findsNothing);
+        expect(_key('signup_continue_setup'), findsOneWidget);
+        expect(
+          tester
+              .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
+              .currentIndex,
+          2,
+        );
+        expect(
+          readsAndWrites
+              .skip(callsBeforeEntry)
+              .where((call) => call.method != 'GET'),
+          isEmpty,
+        );
+
+        await previewTab(tester, 4);
+        await tap(tester, _key('concept_settings'));
+        final settings = tester.widget<ZyraConceptSettingsPresentation>(
+          find.byType(ZyraConceptSettingsPresentation),
+        );
+        await tester.drag(
+          _key('concept-current-settings-scroll'),
+          const Offset(0, -480),
+        );
+        await settle(tester);
+        await tap(tester, _key('concept_settings_replayWalkthrough'));
+        expect(find.text('Hi ${signup.firstName}, welcome'), findsOneWidget);
+        settings.onAction(ZyraConceptAccountAction.membership);
+        await settle(tester);
+        expect(
+          tester
+              .widget<ZyraFirstTourOverlay>(find.byType(ZyraFirstTourOverlay))
+              .index,
+          0,
+        );
+        await tap(tester, _key('first_tour_next'));
+        final viewport = tester.getRect(_key('first_tour_overlay'));
+        await tester.tapAt(Offset(viewport.left + 20, viewport.center.dy));
+        await settle(tester);
+        expect(find.text('Hi ${signup.firstName}, welcome'), findsOneWidget);
+        await finishFirstTour(tester);
+        expect(find.byType(ZyraConceptSettingsPresentation), findsOneWidget);
+        tester
+            .widget<ZyraPullDownBackScope>(_key('concept_pull_down_back_scope'))
+            .onBack();
+        await settle(tester);
+        expect(_key('concept_profile_title'), findsOneWidget);
+        expect(
+          tester
+              .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
+              .currentIndex,
+          4,
+        );
+
+        // Rebuilding the protected host and repeating detached signup must not
+        // forget this bound account's already claimed first-entry receipt.
+        await dispose(tester);
+        await mount(tester);
+        await signupReady(tester, guardian: guardian);
+        await tap(tester, _key('signup_look_around'));
+        expect(_key('first_tour_overlay'), findsNothing);
+        expect(_key('signup_continue_setup'), findsOneWidget);
+        await dispose(tester);
+      },
+    );
+  }
+
+  testWidgets(
+    'LOCK 36 completed first signup clears old sample Journeys before its mandatory tour',
+    (tester) async {
+      plan = 'seeker_premium';
+      final model = ViewRequestDraftModel(capacity: 3)..seedJourneys(1);
+      expect(model.occupiedCount, 1);
+      await mount(tester, homeOverride: previewHome(model: model));
+      final signup = await signupReady(tester, guardian: false);
+      signup.setPreviewVerified(true);
+      await tap(tester, _key('signup_finish_setup'));
+      await tap(tester, _key('signup_preferences_next'));
+      await tap(tester, _key('signup_continue'));
+      await tap(tester, _key('signup_continue'));
+      expect(signup.step, ZyraSignupStep.allSet);
+      await tap(tester, _key('signup_enter'));
+      expect(signup.setupComplete, isTrue);
+      expect(model.occupiedCount, 0);
+      expect(_key('first_tour_overlay'), findsOneWidget);
+      for (var move = 0; move < 4; move++) {
+        await tap(tester, _key('first_tour_next'));
+      }
+      final overlay = tester.widget<ZyraFirstTourOverlay>(
+        find.byType(ZyraFirstTourOverlay),
+      );
+      expect(overlay.index, 4);
+      final request = overlay.targetRect('tour_profiles_request');
+      expect(request, isNotNull);
+      final states = model.snapshot().states;
+      await tester.tapAt(
+        tester.getTopLeft(_key('first_tour_overlay')) + request!.center,
+      );
+      await settle(tester);
+      expect(
+        tester
+            .widget<ZyraFirstTourOverlay>(find.byType(ZyraFirstTourOverlay))
+            .index,
+        5,
+      );
+      expect(model.snapshot().states, states);
+      await finishFirstTour(tester);
+      expect(_key('signup_continue_setup'), findsNothing);
+      await previewTab(tester, 1);
+      expect(_key('journey_tab_empty_title'), findsOneWidget);
+      await dispose(tester);
+    },
+  );
+
+  testWidgets('LOCK 36 retired owner cannot advance a captured tour callback', (
+    tester,
+  ) async {
+    plan = 'seeker_premium';
+    await mount(tester);
+    await signupReady(tester, guardian: false);
+    await tap(tester, _key('signup_look_around'));
+    final next = tester
+        .widget<ZyraFirstTourOverlay>(find.byType(ZyraFirstTourOverlay))
+        .onNext;
+    await tester.runAsync(() => ZyraAccountState.synchronize(_member));
+    await settle(tester);
+    final callsBefore = readsAndWrites.length;
+    next();
+    await settle(tester);
+    expect(_key('first_tour_note'), findsNothing);
+    expect(readsAndWrites.length, callsBefore);
+    expect(tester.takeException(), isNull);
+    await dispose(tester);
+  });
+
   testWidgets('LOCK 34 Start sign-up is local and paused accounts are gated', (
     tester,
   ) async {
@@ -1215,6 +1453,7 @@ void main() {
     await tap(tester, _key('signup_verify_later'));
     expect(c.verified, isFalse);
     await tap(tester, _key('signup_look_around'));
+    await finishFirstTour(tester);
     expect(_key('signup_continue_setup'), findsOneWidget);
     await capture(tester, 's30_paused__my_zyra_needs_you');
     await previewTab(tester, 0);
@@ -1321,6 +1560,7 @@ void main() {
       await tap(tester, _key('signup_finish_setup'));
       expect(find.textContaining('0/325 answered'), findsOneWidget);
       await tap(tester, _key('signup_preferences_later'));
+      await finishFirstTour(tester);
       await tap(tester, _key('signup_continue_setup'));
       expect(find.textContaining('0/325 answered'), findsOneWidget);
       await dispose(tester);
@@ -1483,6 +1723,7 @@ void main() {
       await tap(tester, _key('signup_continue'));
       await tap(tester, _key('signup_continue'));
       await tap(tester, _key('signup_enter'));
+      await finishFirstTour(tester);
       await tap(tester, _key('dev_page_title'));
       await tap(tester, _key('dev_setup_unfinished'));
       await tap(tester, _key('dev_done'));
@@ -1516,6 +1757,7 @@ void main() {
     }
     await tap(tester, _key('signup_verify_later'));
     await tap(tester, _key('signup_look_around'));
+    await finishFirstTour(tester);
     await tap(tester, _key('dev_page_title'));
     await tap(tester, _key('dev_view_as_2'));
     await tap(tester, _key('dev_done'));
@@ -1550,6 +1792,7 @@ void main() {
     c.setAboutYou('Guardian words stay with this role.');
     await settle(tester);
     await tap(tester, _key('signup_finish_later'));
+    await finishFirstTour(tester);
     await tap(tester, _key('signup_continue_setup'));
     expect(c.aboutYou, 'Guardian words stay with this role.');
     expect(c.step, ZyraSignupStep.aboutYou);

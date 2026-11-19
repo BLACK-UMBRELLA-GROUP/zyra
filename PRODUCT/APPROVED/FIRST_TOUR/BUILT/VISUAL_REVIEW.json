@@ -1,0 +1,38 @@
+{
+  "verdict": "PASS - locked overlay behavior and visual rules",
+  "masters": "V290 / Q175",
+  "master_count": 37,
+  "render_count": 37,
+  "step_placement_checks": 32,
+  "render_pixels": [
+    1290,
+    2796
+  ],
+  "role_steps": {
+    "seeker": 18,
+    "guardian": 14
+  },
+  "review": [
+    "All 37 master/render pairs inspected; final regenerated images inspected independently.",
+    "Notes avoid lit items and current tab icons; tall-item cropping follows Q175.",
+    "Exact ordered title/body copy, page dots and Next/Finish labels.",
+    "Gold and ivory values match the numeric specification.",
+    "Welcome/end wordmark corrected to Poppins 22 / weight 600.",
+    "Both profile-card gesture cues use 30% of the lit height as V290.",
+    "Reduce Motion captures keep a still touch cue; unit tests separately exercise loops without auto-advance.",
+    "Soft shadows rendered with the capture-only debug stub disabled only during capture.",
+    "Filename set, per-frame metadata and actual navigation tab assertions checked."
+  ],
+  "limits": [
+    "Current underlying page layout, sample portraits, status chips and action widths are the existing app, so no whole-screen pixel-parity claim is made.",
+    "No physical iPhone or native simulator observation is claimed; line 117 owns phone delivery."
+  ],
+  "comparison_files": [
+    "t00_welcome_master_build.png",
+    "t02_profiles_each_card_is_one_person_master_build.png",
+    "t09_my_zyra_at_a_glance_master_build.png",
+    "t13_guardian_what_they_can_see_master_build.png",
+    "t99_settings_replay_row_master_build.png",
+    "tg10_seekers_swipe_through_master_build.png"
+  ]
+}

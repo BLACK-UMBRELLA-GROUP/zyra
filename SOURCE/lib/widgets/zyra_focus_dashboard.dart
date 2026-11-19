@@ -563,6 +563,7 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
                   children: [
                     if (widget.chips.isNotEmpty) ...[
                       Wrap(
+                        key: const ValueKey('tour_status_pills'),
                         alignment: WrapAlignment.center,
                         spacing: 8,
                         runSpacing: 8,
@@ -570,7 +571,10 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
                       ),
                       const SizedBox(height: 14),
                     ],
-                    _tiles(context, bounds, bottom),
+                    KeyedSubtree(
+                      key: const ValueKey('tour_quick_access'),
+                      child: _tiles(context, bounds, bottom),
+                    ),
                   ],
                 ),
               ],

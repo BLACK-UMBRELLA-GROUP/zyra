@@ -101,7 +101,7 @@ void main() {
     final owner = find.byKey(_settingsScrollKey);
     final position = _position(tester, owner);
     final top = position.minScrollExtent;
-    final bottom = position.maxScrollExtent;
+    var bottom = position.maxScrollExtent;
     expect(bottom, greaterThan(top));
     expect(position.pixels, top);
 
@@ -118,6 +118,11 @@ void main() {
     await scrollDrag.up();
     await tester.pumpAndSettle();
 
+    position.jumpTo(bottom);
+    await tester.pump();
+    // ListView estimates the extent until the final SUPPORT rows are laid
+    // out. The added replay row can change that estimate; test the real end.
+    bottom = position.maxScrollExtent;
     position.jumpTo(bottom);
     await tester.pump();
     await _capture(harness, 'settings', 'bottom_rest');

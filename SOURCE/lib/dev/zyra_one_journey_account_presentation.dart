@@ -43,6 +43,7 @@ enum ZyraConceptAccountAction {
   notificationSettings,
   membership,
   helpSupport,
+  replayWalkthrough,
   feedback,
   privacyData,
   background,
@@ -688,6 +689,9 @@ class ZyraConceptSettingsPresentation extends StatelessWidget {
       label: label,
       value: value,
       isNew: isNew,
+      newTagKey: action == ZyraConceptAccountAction.replayWalkthrough
+          ? const ValueKey('walkthrough_new')
+          : const ValueKey('phone_access_new'),
       smooth: smooth,
       onTap: () => onAction(action),
     );
@@ -816,6 +820,11 @@ class ZyraConceptSettingsPresentation extends StatelessWidget {
                     title: 'SUPPORT',
                     smooth: smooth,
                     children: [
+                      row(
+                        'Replay the walkthrough',
+                        ZyraConceptAccountAction.replayWalkthrough,
+                        isNew: true,
+                      ),
                       row(
                         'Help & support',
                         ZyraConceptAccountAction.helpSupport,
@@ -1089,10 +1098,12 @@ class _SettingsRow extends StatelessWidget {
     required this.smooth,
     this.value,
     this.isNew = false,
+    this.newTagKey = const ValueKey('phone_access_new'),
     this.expanded = false,
   });
   final bool expanded;
   final bool isNew;
+  final Key newTagKey;
   final String label;
   final String? value;
   final VoidCallback onTap;
@@ -1149,7 +1160,7 @@ class _SettingsRow extends StatelessWidget {
                   ),
                   if (isNew)
                     Container(
-                      key: const ValueKey('phone_access_new'),
+                      key: newTagKey,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 6,
                         vertical: 1,

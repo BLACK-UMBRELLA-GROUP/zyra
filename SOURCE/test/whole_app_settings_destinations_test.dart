@@ -695,13 +695,14 @@ void main() {
         for (final action in [
           ...actions,
           ZyraConceptAccountAction.phoneAccess,
+          ZyraConceptAccountAction.replayWalkthrough,
           ZyraConceptAccountAction.helpSupport,
         ])
           'concept_settings_${action.name}',
       };
       final actualRows = await _actualSettingsRows(tester);
       expect(actualRows, expectedRows);
-      expect(actualRows.length, 11);
+      expect(actualRows.length, 12);
       await _tap(tester, _key('concept_settings_haptics'));
       expect(_key('zyra-haptic-strength-slider'), findsOneWidget);
       await _tap(tester, _key('concept_settings_haptics'));

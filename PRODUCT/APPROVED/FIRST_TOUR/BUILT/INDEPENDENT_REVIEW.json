@@ -1,0 +1,22 @@
+{
+  "verdict": "PASS - independent source review",
+  "scope": [
+    "automatic first entry and setup continuation",
+    "per-account receipt and owner/generation guards",
+    "concurrent claims",
+    "replay origin pages and scroll",
+    "back/completion bounds and retained callbacks",
+    "checkpoint suppression",
+    "noninteractive target anchors and underlying pointer/semantics isolation"
+  ],
+  "limits": "Read-only source review; actual behavior is additionally exercised by protected-host integration tests and real-shell capture tests.",
+  "findings": [
+    "The capture-only hard-shadow test stub was found and disabled in the opt-in capture harness. No runtime owner/navigation defect established."
+  ],
+  "trace": [
+    "DR-ZYRA-361",
+    "OA-ZYRA-325",
+    "Q175"
+  ],
+  "final_settings_migrations": "PASS: separate NEW badge keys; exact twelve-row inventory; every old subpage return check retained; lazy extent refreshed without changing overscroll/rebound/still-page assertions. Fixture default off."
+}

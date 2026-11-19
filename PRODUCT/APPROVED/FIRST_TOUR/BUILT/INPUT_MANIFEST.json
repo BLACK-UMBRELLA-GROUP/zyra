@@ -1,0 +1,207 @@
+{
+  "lock": 36,
+  "question": 175,
+  "corrected_prototype": "V290",
+  "files": [
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/BRIEFS/BUILD_BRIEF_2026-11-19_V1.md",
+      "sha256": "0be0e1606515e17b03f37cac0573e2e1c0c6440a8e6c87532794b1f6badbdce5",
+      "bytes": 2125
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t00_welcome.png",
+      "sha256": "b463a779baa09788e2764dcfb1768e75bfb619d6430aa31d9c07f76e8ed25be6",
+      "bytes": 780199
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t01_profiles_this_is_profiles.png",
+      "sha256": "84e00aa58624659ffb2bff1c56a39240d067e0ceca87878d66658c12687fc5f8",
+      "bytes": 724227
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t02_profiles_each_card_is_one_person.png",
+      "sha256": "6dffc0d8932a66b1dc67db2922992a75c936884632af653d9e9e35707e6a2365",
+      "bytes": 731917
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t03_profiles_see_their_photos.png",
+      "sha256": "15a4127de604da4c28151b12e777ba880fbbc6a08b475080b71f1400319341a3",
+      "bytes": 729160
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t04_profiles_ready_to_begin.png",
+      "sha256": "d5a586e37611af9447158a005648600285adea010471a1dcd425a4e1d3ed5971",
+      "bytes": 763539
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t05_journey_this_is_journey.png",
+      "sha256": "7eff3b5c5cd0a00944e6d472fc4437621480fa9634491c9cf2c304ec8d80788d",
+      "bytes": 738070
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t06_journey_nothing_here_yet.png",
+      "sha256": "5b7ac63309b200afcfb9ed886bca9f84450254c3a9a9ca84d3e356ae053b7710",
+      "bytes": 751745
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t07_my_zyra_this_is_my_zyra.png",
+      "sha256": "c11074178dbdd1602276b8e0989100a38c81261f8802b652bc22997576ecf7eb",
+      "bytes": 844400
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t08_my_zyra_needs_you.png",
+      "sha256": "d6d1872c6fbca71dad0698ea776775d20050f2ce38072a068cb67caedb3e87b1",
+      "bytes": 1049521
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t09_my_zyra_at_a_glance.png",
+      "sha256": "1265599fe014f61ac0fe206c52c2798f3889ea880548eb4105a859e48767cbe4",
+      "bytes": 908164
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t10_my_zyra_quick_access.png",
+      "sha256": "df6642a78a44e7ef2f3cfaa6030759f72daa0e4bad414b4203bec651c3b00fae",
+      "bytes": 868750
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t11_guardian_this_is_guardian.png",
+      "sha256": "f73a5cc204a2af37e3ddb85a694baf439779d2554d17275ad4fccbe5bcada4de",
+      "bytes": 791255
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t12_guardian_your_guardians.png",
+      "sha256": "c75668d42167226bbbb99e2a32ac4dbbe3e17276b78ba8206b2eb00df3869b9a",
+      "bytes": 803678
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t13_guardian_what_they_can_see.png",
+      "sha256": "10c3be5afb180e36e4db14f0b570b1a595b22c0cdcb2354397b39ef9025cfe1e",
+      "bytes": 830193
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t14_guardian_talk_and_add.png",
+      "sha256": "7199bdfea5bd40c9dae0fac8395916b3309f783d097207ec0af2ba0f9deb8130",
+      "bytes": 793044
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t15_profile_this_is_profile.png",
+      "sha256": "295794d4d380848c44b55ec0f1d8d936fe8571ef109c37f92bc72f24eaf69ab0",
+      "bytes": 825397
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t16_profile_your_profile.png",
+      "sha256": "59ec3e41d11d67f455faebbd43102021f6a66b88cff7d1f181147ca9d6e05bf8",
+      "bytes": 802512
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t17_profile_your_membership.png",
+      "sha256": "cff8ed80554b184161d720eee88082fbcd8c718f1e1b03acb51909efbfe730fe",
+      "bytes": 805536
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t18_profile_settings.png",
+      "sha256": "2f70f204cbf61f01c789b7780c9a469d4856a78608854f8e0287e023cc26b99b",
+      "bytes": 785753
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t19_end.png",
+      "sha256": "991d7bbc6890b6d65cf6f46ee1185ffa80f997a4d4a36be43b13b87c95a080d8",
+      "bytes": 809118
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t99_settings_replay_row.png",
+      "sha256": "44e8220e9e25e316b455ecd1b9f3c75d8e4f8b4a9d118235b0c1c1b69d5bd629",
+      "bytes": 935122
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg00_welcome.png",
+      "sha256": "dacb7f701f801a8baabcb10e9c1159314954e814888b4b3e5df2d9457afa4615",
+      "bytes": 843994
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg01_network_this_is_network.png",
+      "sha256": "96efe74c452ac35ac09233ca2199531f4ef5102ed1c79d5633a4b150b45cf3e4",
+      "bytes": 720963
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg02_network_choose_your_seeker.png",
+      "sha256": "d1dd121de09ba53d7cd89cdb63f3aead6064e8262bcf8e934b43d58e1a78e634",
+      "bytes": 820916
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg03_network_introduce_or_connect.png",
+      "sha256": "66824c9f37222851bc595cef82d2bd9c43de030b2fb1478088330a782fb8186e",
+      "bytes": 823023
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg04_journeys_this_is_journeys.png",
+      "sha256": "f8ef9e141885284847401647d188da4bef84b21dd2f0648c603f043654527ae2",
+      "bytes": 1576924
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg05_journeys_open_a_journey.png",
+      "sha256": "6e6a378bfa70df1577f83c02c1c221e82a3eb5b09532678623c6a671849fc19f",
+      "bytes": 1383071
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg06_my_zyra_this_is_my_zyra.png",
+      "sha256": "4ce85bad2700c58790de4d2f6684158984c81f8d4114d9574e624eae656c5de4",
+      "bytes": 848275
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg07_my_zyra_needs_you.png",
+      "sha256": "155d11f8eb3cd2f3178d8e6c3951ec2515624dc2540cb15774d11430aeba0251",
+      "bytes": 1089613
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg08_my_zyra_quick_access.png",
+      "sha256": "60207a0df7663205e2ae85e21e18e7ac94b77494a73b9413d1947ca1df3ee3c0",
+      "bytes": 899023
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg09_seekers_this_is_seekers.png",
+      "sha256": "db6af1bd49f6e4c72a407df7fa35bedf2ef92353f5b4f9df82b952e7c9171db1",
+      "bytes": 616948
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg10_seekers_swipe_through.png",
+      "sha256": "d3a606204abdfa4d7b983e16d3f3bcfdfdc2b0f4121c8856711ad6b19f79cb57",
+      "bytes": 695783
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg11_seekers_talk_and_invite.png",
+      "sha256": "90b11022748ed8c4abb73645489061f9e27c3747c97855cdfb53a5520b796fb9",
+      "bytes": 599341
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg12_profile_this_is_profile.png",
+      "sha256": "1dcafab834ec2cf85b56f0807ead89254f8542af90c515415a5b6b87d0254729",
+      "bytes": 734769
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg13_profile_your_membership.png",
+      "sha256": "0809e91d0fb550d641446d6459ccf007d9301575e79fa570d861aa6876f0f135",
+      "bytes": 719524
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg14_profile_settings.png",
+      "sha256": "bac8b627fec9842e2be4b969fab31e4383de13cbd0bda770532e362c42ec9376",
+      "bytes": 697296
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg15_end.png",
+      "sha256": "4a6cbbf3b632c64dc57bf10ca8ca21e165658441a7c947ce9d5a314b0c40984d",
+      "bytes": 723366
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/RECORD/FIRST_TOUR_SPEC_CURRENT_VERSION_V1.md",
+      "sha256": "bb334380d345ef211b67f0e0317e49eeba8e578a23760bfb4eca36ac16c5d9a1",
+      "bytes": 8214
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/RECORD/LOCK_RECORD.md",
+      "sha256": "3daef823844398eb0b67854043c58430ee099db95cfd14424015d9fa6a9b8891",
+      "bytes": 671
+    }
+  ]
+}

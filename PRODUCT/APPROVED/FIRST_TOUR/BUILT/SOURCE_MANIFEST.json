@@ -1,0 +1,85 @@
+{
+  "base_commit": "36d8f4b03b18d329734fd9165862c2d6a9a2c009",
+  "files": [
+    {
+      "path": "PRODUCT/BLUEPRINT/ZYRA_PLANNED_SCREEN_INVENTORY_GENERATED.md",
+      "sha256": "edef5665ef00fe421f599e1ca8d2a5eaebdca95bbad93469cf0244d86efc8d8a",
+      "bytes": 18506
+    },
+    {
+      "path": "README.md",
+      "sha256": "2c0d8ffd5b7107f636287864b72076cb45dff638f42aa76a86ea26ceca042459",
+      "bytes": 19091
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_first_tour_overlay.dart",
+      "sha256": "9c5becfc2c661b079467d3190420d3c19679d7481c56d47b209cd1950d82a333",
+      "bytes": 19915
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_first_tour_steps.dart",
+      "sha256": "a2262ec4af66a28e33ae091a62be0335f24af516c33631fbda5ac61a556f410a",
+      "bytes": 6627
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_first_tour_store.dart",
+      "sha256": "bfb48d1869d2f3db12e3c267d95e1c658490a96bb85d512a07b04939f1bb768b",
+      "bytes": 3120
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "sha256": "39edac97a00f26d3080b711b8ceac69f85dd8d55d6630273a94ed70c2b7c8180",
+      "bytes": 42148
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "sha256": "6ffb53c8b8303dc9790d26bc2d689581199c67acdab90a58de9f99762114c648",
+      "bytes": 411165
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_cards.dart",
+      "sha256": "6475ee0e84eea2157ba37662538259180a5cf3fc75dfb4bdd5d8965ad3cb1a45",
+      "bytes": 46611
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "sha256": "d05d881fb3f6dfcc7d641e64a5c55da778ba6e2e434544a234ef3ef46fe7d757",
+      "bytes": 75302
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_focus_dashboard.dart",
+      "sha256": "27077da13c8b39bf99ae0c067523e99113dc2bdef70a32d9eba81e7ec217069b",
+      "bytes": 19789
+    },
+    {
+      "path": "SOURCE/test/line124_first_tour_overlay_test.dart",
+      "sha256": "e4703f2700dde176e3bce9b8aab9a9f47961dbc4f065ed47680fe344281ea432",
+      "bytes": 10277
+    },
+    {
+      "path": "SOURCE/test/line124_first_tour_store_test.dart",
+      "sha256": "81e10b532bd79ced6261a2e23d6a10079bb30b5f3547ee39ec4d1198faaea7b1",
+      "bytes": 6894
+    },
+    {
+      "path": "SOURCE/test/visual/line124_first_tour_capture_test.dart",
+      "sha256": "ca46fa92ad08869a8393d309bce2ca8697b08ac79bfcf456d40488e5ceacb287",
+      "bytes": 8411
+    },
+    {
+      "path": "SOURCE/test/visual/lock26_v4_still_pages_test.dart",
+      "sha256": "2f6314c08aca3c252ec88b454cc407ac17110975f2916bb15ec106f1fd8fc46b",
+      "bytes": 4588
+    },
+    {
+      "path": "SOURCE/test/whole_app_settings_destinations_test.dart",
+      "sha256": "e00867974e56a7deae6d735107a98544df40e105efc8e05a7a08b968dbb49726",
+      "bytes": 34085
+    },
+    {
+      "path": "SOURCE/test/zyra_developer_panel_entry_test.dart",
+      "sha256": "7253593ef8fc838f58db45177687595c8fc99292b6dee90f92b7e77e7d377f00",
+      "bytes": 67830
+    }
+  ]
+}

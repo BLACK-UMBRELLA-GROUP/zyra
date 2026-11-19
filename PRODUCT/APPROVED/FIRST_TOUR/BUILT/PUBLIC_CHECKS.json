@@ -1,0 +1,24 @@
+{
+  "files": 109,
+  "exit_code": 1,
+  "total_hits": 6088,
+  "categories": {
+    "money": 6077,
+    "legal/company": 11
+  },
+  "text_hits": [
+    "ZYRA/README.md:68: money",
+    "ZYRA/SOURCE/lib/dev/zyra_one_journey_account_presentation.dart:997: money",
+    "ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart:2915: money",
+    "ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart:10110: money",
+    "ZYRA/SOURCE/lib/dev/zyra_one_journey_concept_shell.dart:10111: money",
+    "ZYRA/SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart:1877: money",
+    "ZYRA/MAP.md:29: money",
+    "ZYRA/MAP.md:33: legal/company",
+    "ZYRA/MAP.md:528: money",
+    "ZYRA/MAP.md:532: money",
+    "ZYRA/MAP.md:560: money"
+  ],
+  "png_text_or_exif_chunks": [],
+  "review": "Reviewed false positives: 6077 binary/compressed or syntax/terminology matches plus 11 legal/company-category matches. Eleven text lines are inherited CSS/Dart syntax and public MAP route/title references, not newly introduced private material. All PNGs have no text or EXIF chunks. See final_public_check.txt under ignored SOURCE/build/line124 for exact scan output."
+}

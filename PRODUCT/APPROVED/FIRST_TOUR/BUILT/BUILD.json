@@ -1,0 +1,21 @@
+{
+  "line": 124,
+  "lock": 36,
+  "decision": "DR-ZYRA-361",
+  "action": "OA-ZYRA-325",
+  "source_base_commit": "36d8f4b03b18d329734fd9165862c2d6a9a2c009",
+  "source_commit": null,
+  "flutter_version": "3.44.2",
+  "flutter_revision": "c9a6c484230f8b5e408ec57be1ef71dee1e77020",
+  "dart_version": "3.12.2",
+  "build_mode": "offline-ci widget tests and actual Founder-preview renders",
+  "timestamp_utc": "2026-11-19T21:11:34.102622+00:00",
+  "live": false,
+  "installed": false,
+  "source_manifest": "SOURCE_MANIFEST.json",
+  "input_manifest": "INPUT_MANIFEST.json",
+  "render_manifest": "RENDER_MANIFEST.json",
+  "ci": {
+    "status": "PENDING - after implementation push"
+  }
+}

@@ -1402,7 +1402,10 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
           _header(
             _networkTitle(),
             alignment: CrossAxisAlignment.start,
-            trailing: _switcher('for ${state.seekerName}', 'seeker'),
+            trailing: KeyedSubtree(
+              key: const ValueKey('tour_network_seeker'),
+              child: _switcher('for ${state.seekerName}', 'seeker'),
+            ),
           ),
           Expanded(
             child: SizedBox(
@@ -1455,6 +1458,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
           ),
           const SizedBox(height: ZyraPreviewSpacing.cardToPill),
           Row(
+            key: const ValueKey('tour_network_actions'),
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _networkArrow(false),

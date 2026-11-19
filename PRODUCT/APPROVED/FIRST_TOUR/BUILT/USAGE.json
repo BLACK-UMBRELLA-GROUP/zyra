@@ -1,0 +1,12 @@
+{
+  "scope": "count-only root session snapshot; helpers not included",
+  "phase": "before local final full completion / implementation commit",
+  "usage": {
+    "input_tokens": 38125306,
+    "cached_input_tokens": 37829888,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 69024,
+    "reasoning_output_tokens": 32716,
+    "total_tokens": 38194330
+  }
+}

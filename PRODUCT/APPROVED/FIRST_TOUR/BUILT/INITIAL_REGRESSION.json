@@ -1,0 +1,20 @@
+{
+  "visible_results": {
+    "success": 7508,
+    "skipped": 200,
+    "error": 5
+  },
+  "completion": {
+    "success": false,
+    "type": "done",
+    "time": 486736
+  },
+  "failed_tests": [
+    "long Settings scrolls and bounces at both ends (variant: TargetPlatform.iOS)",
+    "Seeker Settings NEW opens real Phone access and clears receipt",
+    "Seeker actual Settings rows and every subpage keep their own return destination",
+    "Guardian actual Settings rows and every subpage keep their own return destination",
+    "Reduced motion leaves a still touch point and never auto-advances"
+  ],
+  "resolution": "Settings badge identity fixed; Settings extent/inventory harnesses migrated to the additional row; overlay ratio assertion re-run against final compiled source. Final full regression pending."
+}
