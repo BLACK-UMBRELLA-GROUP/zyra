@@ -3372,16 +3372,16 @@ class _ZyraOneJourneyConceptShellState
                             firstName: _accountSession
                                 .ownProfile(_guardianRole)
                                 .firstName,
-                            onNext: () {
+                            onNext: _bound(() {
                               if (_firstTourIndex == index) {
                                 _showFirstTour(index + 1);
                               }
-                            },
-                            onBack: () {
+                            }),
+                            onBack: _bound(() {
                               if (_firstTourIndex == index) {
                                 _showFirstTour(index - 1);
                               }
-                            },
+                            }),
                             targetRect: _firstTourRect,
                             navBarTop: _firstTourBarTop,
                             canAct: () => _firstTourCurrent,

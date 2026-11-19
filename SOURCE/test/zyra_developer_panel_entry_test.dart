@@ -1413,6 +1413,50 @@ void main() {
     },
   );
 
+  testWidgets(
+    'LOCK 36 a completed tour callback cannot advance the same index in Replay',
+    (tester) async {
+      plan = 'seeker_premium';
+      await mount(tester);
+      final signup = await signupReady(tester, guardian: false);
+      await tap(tester, _key('signup_look_around'));
+      final retiredNext = tester
+          .widget<ZyraFirstTourOverlay>(find.byType(ZyraFirstTourOverlay))
+          .onNext;
+      await finishFirstTour(tester);
+      await previewTab(tester, 4);
+      await tap(tester, _key('concept_settings'));
+      await tester.drag(
+        _key('concept-current-settings-scroll'),
+        const Offset(0, -480),
+      );
+      await settle(tester);
+      await tap(tester, _key('concept_settings_replayWalkthrough'));
+      final currentNext = tester
+          .widget<ZyraFirstTourOverlay>(find.byType(ZyraFirstTourOverlay))
+          .onNext;
+      retiredNext();
+      await settle(tester);
+      expect(
+        tester
+            .widget<ZyraFirstTourOverlay>(find.byType(ZyraFirstTourOverlay))
+            .index,
+        0,
+      );
+      expect(find.text('Hi ${signup.firstName}, welcome'), findsOneWidget);
+      currentNext();
+      await settle(tester);
+      expect(
+        tester
+            .widget<ZyraFirstTourOverlay>(find.byType(ZyraFirstTourOverlay))
+            .index,
+        1,
+      );
+      expect(find.text('This is Profiles'), findsOneWidget);
+      await dispose(tester);
+    },
+  );
+
   testWidgets('LOCK 36 retired owner cannot advance a captured tour callback', (
     tester,
   ) async {
