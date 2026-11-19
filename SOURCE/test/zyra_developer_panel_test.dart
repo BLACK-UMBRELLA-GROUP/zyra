@@ -404,7 +404,8 @@ void main() {
           previewActions: _previewActions(changes),
           clearValues: real,
         );
-        expect(find.text('Start sign-up'), findsNothing);
+        expect(find.text('Start sign-up'), findsOneWidget);
+        expect(_buttonEnabled(tester, 'start_signup'), isFalse);
         await _tapControl(tester, 'unverified');
         expect(changes.last, 'unverified true');
         values.value = _previewValues(unverified: true);
@@ -647,43 +648,43 @@ void main() {
     },
   );
 
-  testWidgets(
-    'V2 gate-only setup and every preset work before setup continuation',
-    (tester) async {
-      final values = ValueNotifier(_previewValues(setupAvailable: false));
-      addTearDown(values.dispose);
-      final changes = <String>[];
-      await _mount(
-        tester,
-        places: 3,
-        values: values,
-        changes: changes,
-        previewActions: _previewActions(changes),
-      );
-      expect(
-        tester.widget<Switch>(_key('setup_unfinished')).onChanged,
-        isNotNull,
-      );
-      expect(tester.widget<Switch>(_key('unverified')).onChanged, isNotNull);
-      for (final preset in ZyraDeveloperPreset.values) {
-        expect(_buttonEnabled(tester, 'preset_${preset.index}'), isTrue);
-        await _tapControl(tester, 'preset_${preset.index}');
-        expect(changes.last, 'preset ${preset.name}');
-      }
-      await _tapControl(tester, 'setup_unfinished');
-      expect(changes.last, 'setup true');
-      values.value = _previewValues(
-        setupAvailable: false,
-        setupUnfinished: true,
-        preset: ZyraDeveloperPreset.everything,
-      );
-      await tester.pumpAndSettle();
-      expect(tester.widget<Switch>(_key('setup_unfinished')).value, isTrue);
-      expect(_buttonEnabled(tester, 'preset_3'), isTrue);
-      expect(find.text('Start sign-up'), findsNothing);
-      expect(find.text('Continue setting up'), findsNothing);
-    },
-  );
+  testWidgets('V2 setup switches and presets work without a signup callback', (
+    tester,
+  ) async {
+    final values = ValueNotifier(_previewValues(setupAvailable: false));
+    addTearDown(values.dispose);
+    final changes = <String>[];
+    await _mount(
+      tester,
+      places: 3,
+      values: values,
+      changes: changes,
+      previewActions: _previewActions(changes),
+    );
+    expect(
+      tester.widget<Switch>(_key('setup_unfinished')).onChanged,
+      isNotNull,
+    );
+    expect(tester.widget<Switch>(_key('unverified')).onChanged, isNotNull);
+    for (final preset in ZyraDeveloperPreset.values) {
+      expect(_buttonEnabled(tester, 'preset_${preset.index}'), isTrue);
+      await _tapControl(tester, 'preset_${preset.index}');
+      expect(changes.last, 'preset ${preset.name}');
+    }
+    await _tapControl(tester, 'setup_unfinished');
+    expect(changes.last, 'setup true');
+    values.value = _previewValues(
+      setupAvailable: false,
+      setupUnfinished: true,
+      preset: ZyraDeveloperPreset.everything,
+    );
+    await tester.pumpAndSettle();
+    expect(tester.widget<Switch>(_key('setup_unfinished')).value, isTrue);
+    expect(_buttonEnabled(tester, 'preset_3'), isTrue);
+    expect(find.text('Start sign-up'), findsOneWidget);
+    expect(_buttonEnabled(tester, 'start_signup'), isFalse);
+    expect(find.text('Continue setting up'), findsNothing);
+  });
 
   testWidgets(
     'V2 Guardian views hide the whole notice section and Seeker restores it',

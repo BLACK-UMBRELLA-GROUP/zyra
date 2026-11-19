@@ -17,10 +17,18 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/config/zyra_internal_founder_policy.dart';
 import 'package:zyra/data/zyra_journey_stages.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
+import 'package:zyra/dev/zyra_signup_preview.dart';
+import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
+import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
+import 'package:zyra/dev/zyra_signup_preview_controller.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/widgets/zyra_developer_title.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
-import 'package:zyra/main.dart' show supabase;
+import 'package:zyra/main.dart' show supabase, ZyraApp;
+import 'package:zyra/screens/profile/edit_profile_screen.dart';
+import 'package:zyra/screens/onboarding/identity_verification_screen.dart';
+import 'package:zyra/widgets/zyra_pull_down_back_scope.dart';
 import 'package:zyra/screens/home/home_shell.dart';
 import 'package:zyra/screens/wali/wali_home_shell.dart';
 import 'package:zyra/services/zyra_account_state.dart';
@@ -44,6 +52,7 @@ const _project = ZyraInternalFounderPolicy.approvedSupabaseUrl;
 const _member = 'ordinary-seeker-fixture';
 const _captureRoot = ValueKey('line96-capture');
 const _captures = String.fromEnvironment('ZYRA_LINE96_CAPTURE_DIR');
+const _signupCaptures = String.fromEnvironment('ZYRA_LINE121_SHELL_OUTPUT');
 
 Finder _key(String key) => find.byKey(ValueKey(key));
 
@@ -149,9 +158,17 @@ void main() {
       const MethodChannel('com.llfbandit.app_links/events'),
       (_) async => null,
     );
-    final font = FontLoader('PoppinsLine96')
-      ..addFont(rootBundle.load('assets/fonts/Poppins-Light.ttf'))
-      ..addFont(rootBundle.load('assets/fonts/Poppins-Regular.ttf'));
+    final font = FontLoader('PoppinsLine96');
+    for (final weight in [
+      'ExtraLight',
+      'Light',
+      'Regular',
+      'Medium',
+      'SemiBold',
+      'Bold',
+    ]) {
+      font.addFont(rootBundle.load('assets/fonts/Poppins-$weight.ttf'));
+    }
     final icons = FontLoader('MaterialIcons')
       ..addFont(rootBundle.load('fonts/MaterialIcons-Regular.otf'));
     await Future.wait([font.load(), icons.load()]);
@@ -212,25 +229,35 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     await tester.pumpWidget(
-      MaterialApp(
-        debugShowCheckedModeBanner: false,
-        navigatorKey: navigator,
-        builder: (_, child) => ZyraDeveloperPanelSession(
-          child: ZyraAppLockGate(
-            child: ZyraAccountSessionHost(
-              navigatorKey: navigator,
-              child: MediaQuery(
-                data: MediaQueryData.fromView(tester.view).copyWith(
-                  padding: const EdgeInsets.only(top: 59, bottom: 34),
-                  viewPadding: const EdgeInsets.only(top: 59, bottom: 34),
-                  disableAnimations: true,
+      Builder(
+        builder: (context) {
+          final source = _signupCaptures.isEmpty
+              ? null
+              : const ZyraApp().build(context) as ListenableBuilder;
+          final app = source?.builder(context, null) as MaterialApp?;
+          return MaterialApp(
+            theme: app?.theme?.copyWith(platform: TargetPlatform.iOS),
+            scrollBehavior: app?.scrollBehavior,
+            debugShowCheckedModeBanner: false,
+            navigatorKey: navigator,
+            builder: (_, child) => ZyraDeveloperPanelSession(
+              child: ZyraAppLockGate(
+                child: ZyraAccountSessionHost(
+                  navigatorKey: navigator,
+                  child: MediaQuery(
+                    data: MediaQueryData.fromView(tester.view).copyWith(
+                      padding: const EdgeInsets.only(top: 59, bottom: 34),
+                      viewPadding: const EdgeInsets.only(top: 59, bottom: 34),
+                      disableAnimations: true,
+                    ),
+                    child: RepaintBoundary(key: _captureRoot, child: child!),
+                  ),
                 ),
-                child: RepaintBoundary(key: _captureRoot, child: child!),
               ),
             ),
-          ),
-        ),
-        home: homeOverride ?? home,
+            home: homeOverride ?? home,
+          );
+        },
       ),
     );
     await settle(tester);
@@ -249,16 +276,18 @@ void main() {
   }
 
   Future<void> capture(WidgetTester tester, String name) async {
-    if (_captures.isEmpty) return;
+    if (_captures.isEmpty && _signupCaptures.isEmpty) return;
     await tester.runAsync(() async {
       final boundary = tester.renderObject<RenderRepaintBoundary>(
         find.byKey(_captureRoot),
       );
-      final image = await boundary.toImage();
+      final image = await boundary.toImage(
+        pixelRatio: _signupCaptures.isEmpty ? 1 : 3,
+      );
       try {
         final data = await image.toByteData(format: ui.ImageByteFormat.png);
         await File(
-          '$_captures/$name.png',
+          '${_signupCaptures.isEmpty ? _captures : _signupCaptures}/$name.png',
         ).writeAsBytes(data!.buffer.asUint8List());
       } finally {
         image.dispose();
@@ -272,18 +301,22 @@ void main() {
     await settle(tester);
   }
 
-  Widget previewHome({ViewRequestDraftModel? model, int tab = 2}) =>
-      ZyraDeveloperSeekerScope(
-        preview: true,
-        child: Builder(
-          builder: (context) => ZyraOneJourneyConceptShell(
-            canAct: () => ModalRoute.of(context)?.isCurrent == true,
-            onExit: () {},
-            initialTab: tab,
-            fixture: ZyraOneJourneyShellFixture(model: model),
-          ),
-        ),
-      );
+  Widget previewHome({
+    ViewRequestDraftModel? model,
+    int tab = 2,
+    ZyraPreviewNavigationCheckpoint? checkpoint,
+  }) => ZyraDeveloperSeekerScope(
+    preview: true,
+    child: Builder(
+      builder: (context) => ZyraOneJourneyConceptShell(
+        canAct: () => ModalRoute.of(context)?.isCurrent == true,
+        onExit: () {},
+        initialTab: tab,
+        initialCheckpoint: checkpoint,
+        fixture: ZyraOneJourneyShellFixture(model: model),
+      ),
+    ),
+  );
 
   Future<void> previewTab(WidgetTester tester, int index) async {
     tester
@@ -344,14 +377,14 @@ void main() {
   );
 
   testWidgets(
-    'all My ZYRA presets fill approved needs and status sets before setup continuation',
+    'all My ZYRA presets include LOCK 34 setup continuation where required',
     (tester) async {
       plan = 'seeker_premium';
       await mount(tester, homeOverride: previewHome());
       for (final example in [
         (index: 1, needs: 2, chips: 3),
-        (index: 3, needs: 14, chips: 5),
-        (index: 2, needs: 0, chips: 3),
+        (index: 3, needs: 15, chips: 5),
+        (index: 2, needs: 1, chips: 3),
         (index: 0, needs: 0, chips: 1),
       ]) {
         await tap(tester, _key('dev_page_title'));
@@ -364,9 +397,8 @@ void main() {
         expect(dashboard.chips.length, example.chips);
         expect(
           dashboard.items.any((item) => item.title == 'Finish setting up'),
-          isFalse,
+          example.index == 2 || example.index == 3,
         );
-        expect(find.text('Continue setting up'), findsNothing);
       }
       await dispose(tester);
     },
@@ -1109,6 +1141,384 @@ void main() {
       expect(await verification, isFalse);
       expect(refreshCalls, 0);
       expect(access.email, isNull);
+    },
+  );
+
+  testWidgets('LOCK 34 Start sign-up is local and paused accounts are gated', (
+    tester,
+  ) async {
+    plan = 'seeker_premium';
+    await mount(tester, homeOverride: previewHome());
+    await tap(tester, _key('dev_page_title'));
+    await tap(tester, _key('dev_start_signup'));
+    expect(_key('signup_welcome'), findsOneWidget);
+    final callsBefore = readsAndWrites.length;
+    await tap(tester, _key('signup_apple'));
+    final c = tester
+        .widget<ZyraSignupPreview>(find.byType(ZyraSignupPreview))
+        .controller;
+    while (c.step != ZyraSignupStep.verify) {
+      await tap(tester, _key('signup_skip'));
+    }
+    await tap(tester, _key('signup_verify_later'));
+    expect(c.verified, isFalse);
+    await tap(tester, _key('signup_look_around'));
+    expect(_key('signup_continue_setup'), findsOneWidget);
+    await capture(tester, 's30_paused__my_zyra_needs_you');
+    await previewTab(tester, 0);
+    expect(find.text('Every person on ZYRA is verified'), findsOneWidget);
+    await capture(tester, 's31_gate__unverified_profiles');
+    expect(readsAndWrites.length, callsBefore);
+    expect(ZyraDeveloperSamples.instance.setupUnfinished, isTrue);
+    await dispose(tester);
+  });
+
+  testWidgets('LOCK 34 progress long press freshly admits Developer', (
+    tester,
+  ) async {
+    await mount(tester, homeOverride: previewHome());
+    await tap(tester, _key('dev_page_title'));
+    await tap(tester, _key('dev_start_signup'));
+    await tap(tester, _key('signup_apple'));
+    final c = tester
+        .widget<ZyraSignupPreview>(find.byType(ZyraSignupPreview))
+        .controller;
+    final coveredContinue = tester
+        .widget<FilledButton>(_key('signup_continue'))
+        .onPressed!;
+    final before = refreshCalls;
+    await tester.longPress(_key('signup_progress'));
+    await settle(tester);
+    expect(_key('dev_panel'), findsOneWidget);
+    expect(refreshCalls, before + 1);
+    coveredContinue();
+    await settle(tester);
+    expect(c.step, ZyraSignupStep.role);
+    await tap(tester, _key('dev_done'));
+    expect(find.byType(ZyraSignupPreview), findsOneWidget);
+    await tap(tester, _key('signup_continue'));
+    expect(c.step, ZyraSignupStep.name);
+    await dispose(tester);
+  });
+
+  testWidgets(
+    'LOCK 34 setup resumes the saved step and completion clears the gate',
+    (tester) async {
+      plan = 'seeker_premium';
+      await mount(tester, homeOverride: previewHome());
+      await tap(tester, _key('dev_page_title'));
+      await tap(tester, _key('dev_setup_unfinished'));
+      await tap(tester, _key('dev_done'));
+      await tap(tester, _key('signup_continue_setup'));
+      expect(find.textContaining('0/320 answered'), findsOneWidget);
+      await tap(tester, _key('signup_preferences_next'));
+      final c = tester
+          .widget<ZyraSignupPreview>(find.byType(ZyraSignupPreview))
+          .controller;
+      expect(c.step, ZyraSignupStep.aboutYou);
+      c.setAboutYou('A local draft, kept when setup is paused.');
+      await settle(tester);
+      await tap(tester, _key('signup_finish_later'));
+      await previewTab(tester, 4);
+      await tap(tester, _key('concept_edit_profile'));
+      final edit = tester.widget<EditProfileScreen>(
+        find.byType(EditProfileScreen),
+      );
+      final saved = await edit.repository!.load('draft-self');
+      expect(
+        saved!.journeyBio.toOnboardingAnswers()['bio_about_me'],
+        'A local draft, kept when setup is paused.',
+      );
+      tester
+          .widget<ZyraPullDownBackScope>(_key('concept_pull_down_back_scope'))
+          .onBack();
+      await settle(tester);
+      await previewTab(tester, 2);
+      await tap(tester, _key('signup_continue_setup'));
+      expect(c.step, ZyraSignupStep.aboutYou);
+      expect(c.aboutYou, 'A local draft, kept when setup is paused.');
+      await tap(tester, _key('signup_continue'));
+      expect(c.step, ZyraSignupStep.addGuardian);
+      await tap(tester, _key('signup_continue'));
+      expect(c.step, ZyraSignupStep.allSet);
+      await tap(tester, _key('signup_enter'));
+      expect(find.byType(ZyraSignupPreview), findsNothing);
+      expect(c.setupComplete, isTrue);
+      expect(ZyraDeveloperSamples.instance.setupUnfinished, isFalse);
+      expect(_key('signup_continue_setup'), findsNothing);
+      await dispose(tester);
+    },
+  );
+
+  testWidgets(
+    'LOCK 34 female setup uses applicable 325 and preserves the choice on resume',
+    (tester) async {
+      plan = 'seeker_premium';
+      await mount(tester, homeOverride: previewHome());
+      await tap(tester, _key('dev_page_title'));
+      await tap(tester, _key('dev_start_signup'));
+      await tap(tester, _key('signup_apple'));
+      final c = tester
+          .widget<ZyraSignupPreview>(find.byType(ZyraSignupPreview))
+          .controller;
+      c.setGender('female');
+      while (c.step != ZyraSignupStep.verify) {
+        await tap(tester, _key('signup_skip'));
+      }
+      await tap(tester, _key('signup_verify_later'));
+      await tap(tester, _key('signup_finish_setup'));
+      expect(find.textContaining('0/325 answered'), findsOneWidget);
+      await tap(tester, _key('signup_preferences_later'));
+      await tap(tester, _key('signup_continue_setup'));
+      expect(find.textContaining('0/325 answered'), findsOneWidget);
+      await dispose(tester);
+    },
+  );
+
+  testWidgets('LOCK 34 unfinished setup blocks an ordinary Journey request', (
+    tester,
+  ) async {
+    plan = 'seeker_premium';
+    await mount(tester, homeOverride: previewHome());
+    await tap(tester, _key('dev_page_title'));
+    await tap(tester, _key('dev_setup_unfinished'));
+    await tap(tester, _key('dev_done'));
+    await previewTab(tester, 0);
+    final browse = tester.widget<ZyraOneJourneyBrowseDesigns>(
+      find.byType(ZyraOneJourneyBrowseDesigns),
+    );
+    final person = browse.profiles[browse.selectedIndex];
+    final before = ZyraDeveloperSamples.instance.sent;
+    browse.onRequest!(person);
+    await settle(tester);
+    expect(
+      find.text('Finish setting up your profile to start a Journey.'),
+      findsOneWidget,
+    );
+    expect(ZyraDeveloperSamples.instance.sent, before);
+    await dispose(tester);
+  });
+
+  testWidgets(
+    'LOCK 34 unfinished setup also blocks an eligible Journey restart',
+    (tester) async {
+      plan = 'seeker_premium';
+      var clock = DateTime(2026, 11, 17);
+      final model = ViewRequestDraftModel(capacity: 3, clock: () => clock)
+        ..seedJourneys(1);
+      expect(model.end('draft-sara'), isTrue);
+      clock = clock.add(const Duration(hours: 25));
+      expect(model.canRequestEndedJourney('draft-sara'), isTrue);
+      final checkpoint = ZyraPreviewNavigationCheckpoint(
+        guardian: false,
+        model: model.snapshot(),
+        tab: 2,
+        pages: const ['ended'],
+        personId: 'draft-sara',
+      );
+      final changes = ChangeNotifier();
+      addTearDown(changes.dispose);
+      ZyraOneJourneyShellFixtureState? state;
+      final fixture = ZyraOneJourneyShellFixture(
+        model: model,
+        changes: changes,
+        readState: () => state,
+      );
+      await mount(
+        tester,
+        homeOverride: ZyraDeveloperSeekerScope(
+          preview: true,
+          child: Builder(
+            builder: (context) => ZyraOneJourneyConceptShell(
+              canAct: () => ModalRoute.of(context)?.isCurrent == true,
+              onExit: () {},
+              initialTab: 2,
+              previewClock: () => clock,
+              fixture: fixture,
+            ),
+          ),
+        ),
+      );
+      await tap(tester, _key('dev_page_title'));
+      await tap(tester, _key('dev_setup_unfinished'));
+      await tap(tester, _key('dev_done'));
+      state = ZyraOneJourneyShellFixtureState(checkpoint: checkpoint, tab: 2);
+      changes.notifyListeners();
+      await settle(tester);
+      await tap(tester, _key('draft_restart_draft-sara'));
+      await tap(tester, _key('draft_restart_send_draft-sara'));
+      expect(
+        find.text('Finish setting up your profile to start a Journey.'),
+        findsOneWidget,
+      );
+      expect(model.restartExpiresAt('draft-sara'), isNull);
+      await dispose(tester);
+    },
+  );
+
+  testWidgets(
+    'LOCK 34 Unverified withdraws an open Guardian profile and denies direct Seeker entry',
+    (tester) async {
+      plan = 'seeker_premium';
+      await mount(tester, homeOverride: previewHome());
+      await tap(tester, _key('dev_page_title'));
+      await tap(tester, _key('dev_view_as_2'));
+      await tap(tester, _key('dev_done'));
+      await previewTab(tester, 3);
+      tester
+          .widget<ZyraGuardianTabsPresentation>(
+            find.byType(ZyraGuardianTabsPresentation),
+          )
+          .onAction('seeker_0');
+      await settle(tester);
+      expect(
+        tester
+            .widget<ZyraGuardianTabsPresentation>(
+              find.byType(ZyraGuardianTabsPresentation),
+            )
+            .page,
+        'seeker',
+      );
+      await tap(tester, _key('dev_page_title'));
+      await tap(tester, _key('dev_unverified'));
+      if (_key('dev_done').evaluate().isNotEmpty) {
+        await tap(tester, _key('dev_done'));
+      }
+      await settle(tester);
+      expect(find.text('Every person on ZYRA is verified'), findsOneWidget);
+      expect(find.byType(ZyraGuardianTabsPresentation), findsNothing);
+      await previewTab(tester, 3);
+      tester
+          .widget<ZyraGuardianTabsPresentation>(
+            find.byType(ZyraGuardianTabsPresentation),
+          )
+          .onAction('seeker_0');
+      await settle(tester);
+      expect(find.text('Every person on ZYRA is verified'), findsOneWidget);
+      expect(find.byType(ZyraGuardianTabsPresentation), findsNothing);
+      await dispose(tester);
+    },
+  );
+
+  testWidgets(
+    'LOCK 34 resumed setup preserves the selected identity and biography',
+    (tester) async {
+      plan = 'seeker_premium';
+      await mount(tester, homeOverride: previewHome());
+      await tap(tester, _key('dev_page_title'));
+      await tap(tester, _key('dev_start_signup'));
+      await tap(tester, _key('signup_apple'));
+      final c = tester
+          .widget<ZyraSignupPreview>(find.byType(ZyraSignupPreview))
+          .controller;
+      c.setGender('female');
+      c.setDay('1');
+      c.setMonth('1');
+      c.setYear('1997');
+      c.setLocation('Leeds');
+      c.setNationality('Canadian');
+      c.toggleEthnicity('British');
+      while (c.step != ZyraSignupStep.verify) {
+        await tap(tester, _key('signup_skip'));
+      }
+      await tap(tester, _key('signup_verify_now'));
+      await tap(tester, _key('signup_skip'));
+      await tap(tester, _key('signup_finish_setup'));
+      await tap(tester, _key('signup_preferences_next'));
+      c.setAboutYou('One local biography.');
+      await settle(tester);
+      await tap(tester, _key('signup_continue'));
+      await tap(tester, _key('signup_continue'));
+      await tap(tester, _key('signup_enter'));
+      await tap(tester, _key('dev_page_title'));
+      await tap(tester, _key('dev_setup_unfinished'));
+      await tap(tester, _key('dev_done'));
+      await tap(tester, _key('signup_continue_setup'));
+      final resumed = tester
+          .widget<ZyraSignupPreview>(find.byType(ZyraSignupPreview))
+          .controller;
+      expect(resumed.gender, 'female');
+      expect(resumed.age, 29);
+      expect(resumed.location, 'Leeds');
+      expect(resumed.nationality, 'Canadian');
+      expect(resumed.ethnicities, {'British'});
+      expect(resumed.aboutYou, 'One local biography.');
+      await dispose(tester);
+    },
+  );
+
+  testWidgets('LOCK 34 Guardian verification keeps the selected role', (
+    tester,
+  ) async {
+    plan = 'seeker_premium';
+    await mount(tester, homeOverride: previewHome());
+    await tap(tester, _key('dev_page_title'));
+    await tap(tester, _key('dev_start_signup'));
+    await tap(tester, _key('signup_apple'));
+    final seeker = tester
+        .widget<ZyraSignupPreview>(find.byType(ZyraSignupPreview))
+        .controller;
+    while (seeker.step != ZyraSignupStep.verify) {
+      await tap(tester, _key('signup_skip'));
+    }
+    await tap(tester, _key('signup_verify_later'));
+    await tap(tester, _key('signup_look_around'));
+    await tap(tester, _key('dev_page_title'));
+    await tap(tester, _key('dev_view_as_2'));
+    await tap(tester, _key('dev_done'));
+    await previewTab(tester, 0);
+    expect(find.text('Network'), findsWidgets);
+    await tap(tester, find.text('Verify now'));
+    expect(find.byType(InitialIdentityCheckScreen), findsOneWidget);
+    expect(find.byType(ZyraSignupPreview), findsNothing);
+    expect(seeker.guardian, isFalse);
+    expect(seeker.step, ZyraSignupStep.accountReady);
+    await dispose(tester);
+  });
+
+  testWidgets('LOCK 34 Guardian pause keeps its own About text on resume', (
+    tester,
+  ) async {
+    plan = 'seeker_premium';
+    await mount(tester, homeOverride: previewHome());
+    await tap(tester, _key('dev_page_title'));
+    await tap(tester, _key('dev_start_signup'));
+    await tap(tester, _key('signup_apple'));
+    final c = tester
+        .widget<ZyraSignupPreview>(find.byType(ZyraSignupPreview))
+        .controller;
+    c.setGuardian(true);
+    while (c.step != ZyraSignupStep.verify) {
+      await tap(tester, _key('signup_skip'));
+    }
+    await tap(tester, _key('signup_verify_later'));
+    await tap(tester, _key('signup_finish_setup'));
+    expect(c.step, ZyraSignupStep.aboutYou);
+    c.setAboutYou('Guardian words stay with this role.');
+    await settle(tester);
+    await tap(tester, _key('signup_finish_later'));
+    await tap(tester, _key('signup_continue_setup'));
+    expect(c.aboutYou, 'Guardian words stay with this role.');
+    expect(c.step, ZyraSignupStep.aboutYou);
+    await dispose(tester);
+  });
+
+  testWidgets(
+    'LOCK 34 preset unfinished state can be switched off explicitly',
+    (tester) async {
+      plan = 'seeker_premium';
+      await mount(tester, homeOverride: previewHome());
+      await tap(tester, _key('dev_page_title'));
+      await tap(tester, _key('dev_preset_2'));
+      await tap(tester, _key('dev_done'));
+      expect(ZyraDeveloperSamples.instance.setupUnfinished, isTrue);
+      expect(_key('signup_continue_setup'), findsOneWidget);
+      await tap(tester, _key('dev_page_title'));
+      await tap(tester, _key('dev_setup_unfinished'));
+      await tap(tester, _key('dev_done'));
+      expect(ZyraDeveloperSamples.instance.setupUnfinished, isFalse);
+      expect(_key('signup_continue_setup'), findsNothing);
+      await dispose(tester);
     },
   );
 }

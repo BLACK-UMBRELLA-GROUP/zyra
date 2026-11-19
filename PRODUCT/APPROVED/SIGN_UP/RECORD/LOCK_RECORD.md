@@ -1,0 +1,4 @@
+# SIGN UP — LOCK RECORD
+| Date | Founder's words | What it locks |
+|---|---|---|
+| 2026-11-18 19:22–21:44 | "we already designed a page with log in via google or apple … u cant create account via email its just google or apple and if user is on apple then apple is at top and vice versa for google"; "lets remove recovery email"; "box turning red if the input is incorrect"; "lets say male female"; "these gotta be 3 different pages and gotta be type boxes with ethnicity being multiple"; "i want profiles blocked to protect users. i want app to feel all verified"; "Yes, verify before paying (Recommended)"; "finish set up should feel like a continuation with a button … to enter app should they wish to pause … you cant start a journey without full set up"; "lets include new sign up" → "Yes, lock and queue both (Recommended)" | **LOCK 34 V1**: SIGN_UP spec V1 (prototype V271). Exception to AD-AIOS-149 approved by the Founder. |

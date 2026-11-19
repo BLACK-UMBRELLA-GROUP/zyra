@@ -176,6 +176,22 @@ class _DeveloperPanelState extends State<_DeveloperPanel> {
         ),
       ),
       const _SectionLabel('SIGN UP'),
+      TextButton(
+        key: const ValueKey('dev_start_signup'),
+        onPressed:
+            preview.canActivate &&
+                preview.signupAvailable &&
+                actions.onStartSignup != null
+            ? () => _previewAction(actions.onStartSignup!)
+            : null,
+        style: TextButton.styleFrom(
+          alignment: Alignment.centerLeft,
+          minimumSize: const Size.fromHeight(44),
+          foregroundColor: ZyraColors.espresso,
+          textStyle: ZyraText.body(size: 14),
+        ),
+        child: const Text('Start sign-up'),
+      ),
       _DeveloperSwitch(
         id: 'unverified',
         label: 'Unverified',

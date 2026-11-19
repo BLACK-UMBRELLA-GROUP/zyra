@@ -29,12 +29,14 @@ class ZyraDeveloperTitle extends StatefulWidget {
     this.tab,
     this.enabled = true,
     this.hideWhenUnavailable = false,
+    this.longPress = false,
   });
 
   final Widget child;
   final int? tab;
   final bool enabled;
   final bool hideWhenUnavailable;
+  final bool longPress;
 
   @override
   State<ZyraDeveloperTitle> createState() => _ZyraDeveloperTitleState();
@@ -52,7 +54,9 @@ class _ZyraDeveloperTitleState extends State<ZyraDeveloperTitle> {
   @override
   void didUpdateWidget(covariant ZyraDeveloperTitle oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.tab != oldWidget.tab || widget.enabled != oldWidget.enabled) {
+    if (widget.tab != oldWidget.tab ||
+        widget.enabled != oldWidget.enabled ||
+        widget.longPress != oldWidget.longPress) {
       _revision++;
     }
   }
@@ -98,23 +102,26 @@ class _ZyraDeveloperTitleState extends State<ZyraDeveloperTitle> {
               : heading!;
         }
         final proof = host.access.proofRevision;
+        void openPanel() {
+          if (host.access.proofRevision == proof) {
+            unawaited(
+              host.open(
+                context,
+                route,
+                foreground,
+                ownedNavigator: ownedNavigator,
+              ),
+            );
+          }
+        }
+
         return Semantics(
           button: true,
           child: GestureDetector(
             key: const ValueKey('dev_page_title'),
             behavior: HitTestBehavior.deferToChild,
-            onTap: () {
-              if (host.access.proofRevision == proof) {
-                unawaited(
-                  host.open(
-                    context,
-                    route,
-                    foreground,
-                    ownedNavigator: ownedNavigator,
-                  ),
-                );
-              }
-            },
+            onTap: widget.longPress ? null : openPanel,
+            onLongPress: widget.longPress ? openPanel : null,
             child: heading,
           ),
         );
@@ -199,6 +206,7 @@ class ZyraDeveloperPreviewBridge extends ChangeNotifier {
   VoidCallback? _samplesChanged;
   Future<void> Function(ZyraErrorKind)? _showError;
   Future<void> Function()? _continueSetup;
+  Future<void> Function()? _startSignup;
   int _journeyNavigationEpoch = 0;
   int _noticeNavigationEpoch = 0, _presetSelectionEpoch = 0;
   int _selectionDepth = 0;
@@ -215,6 +223,11 @@ class ZyraDeveloperPreviewBridge extends ChangeNotifier {
   int get presetSelectionEpoch => _presetSelectionEpoch;
   bool get hasSetupContinuation => canPresent && _continueSetup != null;
 
+  Future<void> startSignup() async {
+    final action = _startSignup;
+    if (canPresent && action != null) await action();
+  }
+
   Future<void> continueSetup() async {
     final action = _continueSetup;
     if (canPresent && action != null) await action();
@@ -225,6 +238,7 @@ class ZyraDeveloperPreviewBridge extends ChangeNotifier {
     required VoidCallback samplesChanged,
     required Future<void> Function(ZyraErrorKind) showError,
     Future<void> Function()? continueSetup,
+    Future<void> Function()? startSignup,
   }) {
     if (_disposed) return;
     final changed =
@@ -234,6 +248,7 @@ class ZyraDeveloperPreviewBridge extends ChangeNotifier {
     _samplesChanged = samplesChanged;
     _showError = showError;
     _continueSetup = continueSetup;
+    _startSignup = startSignup;
     if (changed) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!_disposed && identical(_attachedOwner, owner)) _publish();
@@ -249,6 +264,7 @@ class ZyraDeveloperPreviewBridge extends ChangeNotifier {
     _samplesChanged = null;
     _showError = null;
     _continueSetup = null;
+    _startSignup = null;
     if (hadContinuation) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _publish());
       WidgetsBinding.instance.scheduleFrame();
@@ -307,6 +323,7 @@ class ZyraDeveloperPreviewBridge extends ChangeNotifier {
     _samplesChanged = null;
     _showError = null;
     _continueSetup = null;
+    _startSignup = null;
     super.dispose();
   }
 }
@@ -706,6 +723,7 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
         journeyPlaces: places,
         canActivate: _viewAs() != null,
         setupAvailable: true,
+        signupAvailable: true,
         unverified: _samples.unverified,
         setupUnfinished: _samples.setupUnfinished,
         journeys: [
@@ -789,6 +807,11 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
         isVisible: visibleSheet,
         previewActions: ZyraDeveloperPreviewActions(
           onViewAs: allowed(_samples.setViewAs),
+          onStartSignup: () {
+            if (currentSheet() && _activatePreview() && owner != null) {
+              unawaited(_startSignupPreview(route, owner));
+            }
+          },
           onUnverified: preview(_samples.setUnverified),
           onSetupUnfinished: preview(_samples.setSetupUnfinished),
           onJourney: preview((String attemptId) {
@@ -860,6 +883,32 @@ class _ZyraDeveloperPanelHostState extends State<ZyraDeveloperPanelHost>
     } finally {
       _opening = false;
     }
+  }
+
+  Future<void> _startSignupPreview(
+    ModalBottomSheetRoute<void> sheet,
+    _ZyraDeveloperSeekerScopeState owner,
+  ) async {
+    if (!_canPresent(owner) || !identical(_sheet, sheet) || !sheet.isCurrent) {
+      return;
+    }
+    final lifetime = access.verifiedLifetime;
+    final presentation = _presentationRevision;
+    bool current() =>
+        mounted &&
+        _canPresent(owner) &&
+        access.verifiedLifetime == lifetime &&
+        presentation == _presentationRevision;
+    _closeSheet();
+    await sheet.completed;
+    await WidgetsBinding.instance.endOfFrame;
+    if (!current() || _seekerRoute?.isCurrent != true) return;
+    if (!await access.refreshForTitle() ||
+        !current() ||
+        _seekerRoute?.isCurrent != true) {
+      return;
+    }
+    await owner._bridge.startSignup();
   }
 
   Future<void> _showPreviewError(

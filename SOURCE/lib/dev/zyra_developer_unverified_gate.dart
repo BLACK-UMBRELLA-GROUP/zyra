@@ -82,8 +82,9 @@ class ZyraDeveloperUnverifiedGate extends StatelessWidget {
             onPressed: ZyraTapFeedback.onTap(context, onVerify),
             style: FilledButton.styleFrom(
               minimumSize: const Size.fromHeight(44),
-              backgroundColor: ZyraColors.goldText,
+              backgroundColor: ZyraColors.actionFill,
               foregroundColor: ZyraColors.espresso,
+              side: BorderSide.none,
               shape: const StadiumBorder(),
             ),
             child: const Text('Verify now'),

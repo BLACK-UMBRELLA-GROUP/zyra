@@ -1,6 +1,7 @@
 import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_floating_surface.dart';
 import '../../widgets/zyra_tap_feedback.dart';
+import 'package:flutter/foundation.dart' show mapEquals, setEquals;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import '../../dev/zyra_app_gold_preview.dart';
@@ -571,6 +572,10 @@ bool _editorCurrent(
           (owner.alive && owner.hasFocus && (!editing || owner.canEdit())));
 }
 
+bool _preferenceReadingLayout(BuildContext context) =>
+    MediaQuery.sizeOf(context).width < 360 ||
+    MediaQuery.textScalerOf(context).scale(12) > 15.6;
+
 List<OnboardingCategory> categoriesForKind(CompatibilityEditorKind kind) {
   final ids = kind.categoryIds;
   if (ids.isEmpty) return chapter3Categories;
@@ -593,6 +598,8 @@ class CompatibilityEditorScreen extends StatefulWidget {
     this.openQuickCheck = false,
   }) : canRetain = canRetain ?? canAct,
        _preview = false,
+       preferenceSetup = false,
+       onPreferenceChanged = null,
        onPreviewReturn = null;
 
   const CompatibilityEditorScreen.preview({
@@ -606,7 +613,14 @@ class CompatibilityEditorScreen extends StatefulWidget {
     this.onPreviewReturn,
     this.quickCheck,
     this.openQuickCheck = false,
-  }) : _preview = true,
+    this.preferenceSetup = false,
+    this.onPreferenceChanged,
+  }) : assert(
+         !preferenceSetup ||
+             (kind == CompatibilityEditorKind.trafficLights &&
+                 onPreferenceChanged != null),
+       ),
+       _preview = true,
        canRetain = canRetain ?? canAct,
        // Keep preview's guard non-nullable while ordinary callers may omit it.
        // ignore: prefer_initializing_formals
@@ -618,6 +632,12 @@ class CompatibilityEditorScreen extends StatefulWidget {
   final bool _preview;
   final ZyraPreferenceQuickCheck? quickCheck;
   final bool openQuickCheck;
+
+  /// Setup reuses the existing preference pages while its caller owns the
+  /// continuation bar and local persistence. Every active answer emits a
+  /// detached draft; ordinary profile editing retains its explicit save.
+  final bool preferenceSetup;
+  final ValueChanged<ZyraCompatibilityDraft>? onPreferenceChanged;
 
   /// Local standalone preview owners return through their own page stack.
   /// Existing hub-pushed editors keep Navigator.pop as their default.
@@ -657,6 +677,8 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
       widget.onPreviewReturn == _opening.onPreviewReturn &&
       identical(widget.quickCheck, _opening.quickCheck) &&
       widget.openQuickCheck == _opening.openQuickCheck &&
+      widget.preferenceSetup == _opening.preferenceSetup &&
+      widget.onPreferenceChanged == _opening.onPreferenceChanged &&
       widget.canAct == _opening.canAct &&
       widget.canRetain == _opening.canRetain &&
       identical(widget.canActChanges, _opening.canActChanges);
@@ -750,6 +772,24 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
     }
   }
 
+  void _preferenceChanged() {
+    // A category or question can be the active child route while this root
+    // remains covered. That child checks its own focus before publishing;
+    // this root checks the pinned caller lease rather than its route focus.
+    if (!mounted ||
+        _bindingRevoked ||
+        !_previewMode ||
+        !_opening.preferenceSetup ||
+        _owner?.alive != true ||
+        _owner?.hasFocus != true ||
+        _saving) {
+      return;
+    }
+    final snapshot = _draft.copy();
+    setState(() {});
+    _opening.onPreferenceChanged?.call(snapshot);
+  }
+
   Future<void> _save() async {
     if (_saving || !_current) return;
     final epoch = ++_saveEpoch;
@@ -809,28 +849,43 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
       );
     }
     final kind = _owner == null ? widget.kind : _opening.kind;
-    final content = Column(
-      children: [
-        if (_previewMode)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: ZyraDeveloperTitle(
-                child: Text(kind.label, style: ZyraText.heading(size: 28)),
-              ),
-            ),
-          ),
+    final scrollSetupHeading =
+        _opening.preferenceSetup && _preferenceReadingLayout(context);
+    final heading = <Widget>[
+      if (_previewMode)
         Padding(
-          padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+          padding: EdgeInsets.fromLTRB(
+            scrollSetupHeading ? 0 : 20,
+            16,
+            scrollSetupHeading ? 0 : 20,
+            0,
+          ),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Text(
-              kind.description,
-              style: ZyraText.subtext(size: 12.5, color: ZyraColors.ink(0.56)),
+            child: ZyraDeveloperTitle(
+              child: Text(kind.label, style: ZyraText.heading(size: 28)),
             ),
           ),
         ),
+      Padding(
+        padding: EdgeInsets.fromLTRB(
+          scrollSetupHeading ? 0 : 20,
+          12,
+          scrollSetupHeading ? 0 : 20,
+          12,
+        ),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            kind.description,
+            style: ZyraText.subtext(size: 12.5, color: ZyraColors.ink(0.56)),
+          ),
+        ),
+      ),
+    ];
+    final content = Column(
+      children: [
+        if (!scrollSetupHeading) ...heading,
         Expanded(
           child: IgnorePointer(
             ignoring: _saving,
@@ -853,6 +908,10 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
                 quickCheck: _opening.quickCheck,
                 openQuickCheck: _opening.openQuickCheck,
                 plannedSpacing: _previewMode,
+                heading: scrollSetupHeading ? heading : const [],
+                onPreferenceChanged: _opening.preferenceSetup
+                    ? _preferenceChanged
+                    : null,
                 onChanged: () {
                   if (mounted && _editorCurrent(context, _owner)) {
                     setState(() {});
@@ -872,29 +931,30 @@ class _CompatibilityEditorScreenState extends State<CompatibilityEditorScreen> {
             },
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 10, 20, 18),
-          child: SizedBox(
-            width: double.infinity,
-            child: ZyraFloatingSurface(
-              radius: 999,
-              child: FilledButton(
-                key: const ValueKey('compatibility-save'),
-                onPressed: ZyraTapFeedback.onTap(
-                  context,
-                  _saving ? null : _save,
+        if (!_opening.preferenceSetup)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 18),
+            child: SizedBox(
+              width: double.infinity,
+              child: ZyraFloatingSurface(
+                radius: 999,
+                child: FilledButton(
+                  key: const ValueKey('compatibility-save'),
+                  onPressed: ZyraTapFeedback.onTap(
+                    context,
+                    _saving ? null : _save,
+                  ),
+                  child: _saving
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 1.5),
+                        )
+                      : const Text('Save changes'),
                 ),
-                child: _saving
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 1.5),
-                      )
-                    : const Text('Save changes'),
               ),
             ),
           ),
-        ),
       ],
     );
     final page = Scaffold(
@@ -1100,6 +1160,8 @@ class _PreferenceGroups extends StatefulWidget {
     required this.quickCheck,
     required this.openQuickCheck,
     this.owner,
+    this.onPreferenceChanged,
+    this.heading = const [],
   });
 
   final ZyraCompatibilityDraft draft;
@@ -1108,6 +1170,8 @@ class _PreferenceGroups extends StatefulWidget {
   final ZyraPreferenceQuickCheck? quickCheck;
   final bool openQuickCheck;
   final _CompatibilityPreviewOwner? owner;
+  final VoidCallback? onPreferenceChanged;
+  final List<Widget> heading;
 
   @override
   State<_PreferenceGroups> createState() => _PreferenceGroupsState();
@@ -1134,6 +1198,7 @@ class _PreferenceGroupsState extends State<_PreferenceGroups> {
         question,
         widget.owner,
         quickCheck,
+        onPreferenceChanged: widget.onPreferenceChanged,
       );
       if (mounted && _editorCurrent(context, widget.owner)) widget.onChanged();
       return;
@@ -1153,6 +1218,7 @@ class _PreferenceGroupsState extends State<_PreferenceGroups> {
       physics: const ScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(20, 4, 20, 24),
       children: [
+        ...widget.heading,
         if (count > 0) ...[
           _QuickCheckCard(
             count: count,
@@ -1187,6 +1253,7 @@ class _PreferenceGroupsState extends State<_PreferenceGroups> {
                     draft: draft,
                     owner: widget.owner,
                     quickCheck: quickCheck,
+                    onPreferenceChanged: widget.onPreferenceChanged,
                   ),
                 ),
               );
@@ -1206,12 +1273,14 @@ class _PreferenceCategoryEditor extends StatefulWidget {
     required this.draft,
     this.owner,
     this.quickCheck,
+    this.onPreferenceChanged,
   });
 
   final OnboardingCategory category;
   final ZyraCompatibilityDraft draft;
   final _CompatibilityPreviewOwner? owner;
   final ZyraPreferenceQuickCheck? quickCheck;
+  final VoidCallback? onPreferenceChanged;
 
   @override
   State<_PreferenceCategoryEditor> createState() =>
@@ -1228,14 +1297,32 @@ class _PreferenceCategoryEditorState extends State<_PreferenceCategoryEditor> {
       ...setupQuestions,
       ...widget.draft.preferenceQuestions(widget.category),
     ];
+    final scrollTitle =
+        widget.onPreferenceChanged != null && _preferenceReadingLayout(context);
     return _EditorScaffold(
       title: widget.category.name,
       owner: widget.owner,
+      scrollTitle: scrollTitle,
       child: ListView.builder(
         physics: const ScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(20, 12, 20, 90),
-        itemCount: questions.length,
-        itemBuilder: (context, index) {
+        itemCount: questions.length + (scrollTitle ? 1 : 0),
+        itemBuilder: (context, itemIndex) {
+          if (scrollTitle && itemIndex == 0) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 4, bottom: 16),
+              child: Semantics(
+                header: true,
+                child: ZyraDeveloperTitle(
+                  child: Text(
+                    widget.category.name,
+                    style: ZyraText.heading(size: 28),
+                  ),
+                ),
+              ),
+            );
+          }
+          final index = itemIndex - (scrollTitle ? 1 : 0);
           final question = questions[index];
           final isSetup = index < setupQuestions.length;
           final values = isSetup
@@ -1258,6 +1345,7 @@ class _PreferenceCategoryEditorState extends State<_PreferenceCategoryEditor> {
                 question,
                 widget.owner,
                 widget.quickCheck,
+                onPreferenceChanged: widget.onPreferenceChanged,
               );
               if (mounted &&
                   context.mounted &&
@@ -1297,8 +1385,9 @@ Future<void> _openPreferenceQuestion(
   ZyraCompatibilityDraft draft,
   OnboardingQuestion question,
   _CompatibilityPreviewOwner? owner,
-  ZyraPreferenceQuickCheck? quickCheck,
-) async {
+  ZyraPreferenceQuickCheck? quickCheck, {
+  VoidCallback? onPreferenceChanged,
+}) async {
   if (!_editorCurrent(context, owner)) return;
   final result = await Navigator.of(context).push<_PreferenceEditResult>(
     MaterialPageRoute(
@@ -1307,6 +1396,7 @@ Future<void> _openPreferenceQuestion(
         draft: draft,
         owner: owner,
         quickCheck: quickCheck,
+        onPreferenceChanged: onPreferenceChanged,
       ),
     ),
   );
@@ -1332,12 +1422,14 @@ class _PreferenceQuestionEditor extends StatefulWidget {
     required this.draft,
     this.owner,
     this.quickCheck,
+    this.onPreferenceChanged,
   });
 
   final OnboardingQuestion question;
   final ZyraCompatibilityDraft draft;
   final _CompatibilityPreviewOwner? owner;
   final ZyraPreferenceQuickCheck? quickCheck;
+  final VoidCallback? onPreferenceChanged;
 
   @override
   State<_PreferenceQuestionEditor> createState() =>
@@ -1356,9 +1448,30 @@ class _PreferenceQuestionEditorState extends State<_PreferenceQuestionEditor> {
   );
   bool _confirming = false;
 
+  bool _scrollTitle(BuildContext context) =>
+      widget.onPreferenceChanged != null && _preferenceReadingLayout(context);
+
   bool get _complete =>
       (widget.quickCheck?.optionsFor(widget.question).isEmpty ?? true) &&
       widget.question.options.every(_values.containsKey);
+
+  void _publishPreferenceChange() {
+    if (widget.onPreferenceChanged == null ||
+        _setup ||
+        !mounted ||
+        !_editorCurrent(context, widget.owner)) {
+      return;
+    }
+    // The shared light control reports its light map before its hard-choice
+    // map. Publish one coherent snapshot even when a red light turns green.
+    _hard.removeWhere((option) => _values[option] != TrafficLight.red);
+    if (mapEquals(widget.draft.valuesFor(widget.question), _values) &&
+        setEquals(widget.draft.hardRequirementsFor(widget.question), _hard)) {
+      return;
+    }
+    widget.draft.savePreferenceQuestion(widget.question, _values, _hard);
+    widget.onPreferenceChanged!();
+  }
 
   Future<bool> _reconfirm(String option, TrafficLight light) async {
     final quickCheck = widget.quickCheck;
@@ -1411,6 +1524,7 @@ class _PreferenceQuestionEditorState extends State<_PreferenceQuestionEditor> {
       title: 'Partner preference',
       owner: widget.owner,
       allowBack: !_confirming,
+      scrollTitle: _scrollTitle(context),
       bottom: _BottomSave(
         enabled: _complete && !_confirming,
         onPressed: () {
@@ -1425,6 +1539,18 @@ class _PreferenceQuestionEditorState extends State<_PreferenceQuestionEditor> {
         physics: const ScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 110),
         children: [
+          if (_scrollTitle(context)) ...[
+            Semantics(
+              header: true,
+              child: ZyraDeveloperTitle(
+                child: Text(
+                  'Partner preference',
+                  style: ZyraText.heading(size: 28),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
           Text(widget.question.prompt, style: ZyraText.heading(size: 21)),
           const SizedBox(height: 20),
           TrafficLightQuestionScreen(
@@ -1448,11 +1574,13 @@ class _PreferenceQuestionEditorState extends State<_PreferenceQuestionEditor> {
             onChanged: (values) {
               if (mounted && _editorCurrent(context, widget.owner)) {
                 setState(() => _values = Map.from(values));
+                _publishPreferenceChange();
               }
             },
             onHardRequirementChanged: (values) {
               if (mounted && _editorCurrent(context, widget.owner)) {
                 setState(() => _hard = Set.from(values));
+                _publishPreferenceChange();
               }
             },
           ),
@@ -1915,6 +2043,7 @@ class _EditorScaffold extends StatelessWidget {
     this.bottom,
     this.owner,
     this.allowBack = true,
+    this.scrollTitle = false,
   });
 
   final String title;
@@ -1922,6 +2051,7 @@ class _EditorScaffold extends StatelessWidget {
   final Widget? bottom;
   final _CompatibilityPreviewOwner? owner;
   final bool allowBack;
+  final bool scrollTitle;
 
   @override
   Widget build(BuildContext context) => owner == null
@@ -1990,12 +2120,13 @@ class _EditorScaffold extends StatelessWidget {
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
-                      child: ZyraDeveloperTitle(
-                        child: Text(title, style: ZyraText.heading(size: 28)),
+                    if (!scrollTitle)
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+                        child: ZyraDeveloperTitle(
+                          child: Text(title, style: ZyraText.heading(size: 28)),
+                        ),
                       ),
-                    ),
                     Expanded(child: content),
                   ],
                 )

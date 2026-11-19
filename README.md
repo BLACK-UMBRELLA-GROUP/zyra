@@ -186,9 +186,14 @@ and email previews are available on the Seeker side only.
 
 **Unverified** opens the locked Profiles or Network gate and local identity
 verification preview. **Setup unfinished** blocks Request a Journey with
-“Finish setting up your profile to start a Journey.” The setup card,
-Continue setting up and Start sign-up depend on line 121. Until then,
-Everything leaves the setup card out. If the real membership is unavailable,
+“Finish setting up your profile to start a Journey.” **Start sign-up** opens
+the LOCK 34 local Apple/Google rehearsal for either role. Long-press its
+progress bar to reopen Developer. Pausing setup opens My ZYRA with
+**Continue setting up**, which resumes the saved step. The preference check
+uses every applicable option and updates its answered total as choices change.
+New member and Everything include the setup card. Identity and checkout
+actions remain local previews; they create no account, trial or charge.
+If the real membership is unavailable,
 the preview starts as Seeker One sample data and says
 “Viewing as Seeker One · real plan: none”. **Clear sample data** restores
 the real account view, or that same local Seeker One start when there is no

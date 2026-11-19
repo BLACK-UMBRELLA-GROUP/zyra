@@ -38,6 +38,7 @@ class ZyraDeveloperPreviewValues {
     required this.journeyPlaces,
     this.canActivate = true,
     this.setupAvailable = true,
+    this.signupAvailable = false,
     this.unverified = false,
     this.setupUnfinished = false,
     this.journeys = const [],
@@ -50,7 +51,7 @@ class ZyraDeveloperPreviewValues {
   final ZyraDeveloperViewAs? viewAs;
   final String realPlanName;
   final int journeyPlaces;
-  final bool canActivate, setupAvailable;
+  final bool canActivate, setupAvailable, signupAvailable;
   final bool unverified, setupUnfinished;
   final List<({String id, String name, String stage})> journeys;
   final String? selectedJourneyId;
@@ -64,6 +65,7 @@ class ZyraDeveloperPreviewValues {
 class ZyraDeveloperPreviewActions {
   const ZyraDeveloperPreviewActions({
     required this.onViewAs,
+    this.onStartSignup,
     required this.onUnverified,
     required this.onSetupUnfinished,
     required this.onJourney,
@@ -74,6 +76,7 @@ class ZyraDeveloperPreviewActions {
   });
 
   final ValueChanged<ZyraDeveloperViewAs> onViewAs;
+  final VoidCallback? onStartSignup;
   final ValueChanged<bool> onUnverified, onSetupUnfinished;
   final ValueChanged<String> onJourney, onStage;
   final ValueChanged<ZyraDeveloperPreset> onPreset;

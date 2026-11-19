@@ -3,11 +3,16 @@ import '../widgets/zyra_floating_surface.dart';
 // No production routes/services are called, no member records are loaded,
 // and only a device-local education marker is persisted (LOCK 3).
 import 'dart:async';
+import 'dart:convert';
 import 'zyra_developer_focus_presets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'
-    show SystemUiOverlayStyle, MissingPluginException, PlatformException;
+    show
+        SystemUiOverlayStyle,
+        MissingPluginException,
+        PlatformException,
+        rootBundle;
 
 import '../data/zyra_journey_stages.dart';
 import '../data/zyra_journey_guardian_selection.dart';
@@ -54,6 +59,10 @@ import '../widgets/zyra_full_screen_error.dart';
 import '../screens/connections/zyra_sample_activity.dart';
 import 'zyra_developer_inactivity_email.dart';
 import 'zyra_developer_unverified_gate.dart';
+import 'zyra_signup_preview.dart';
+import 'zyra_signup_preview_controller.dart';
+import 'zyra_signup_preferences_preview.dart';
+import 'package:share_plus/share_plus.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_confirm_sheet.dart';
 import '../widgets/zyra_shell_navigation.dart';
@@ -283,6 +292,28 @@ class _ZyraOneJourneyConceptShellState
   int _developerNoticeEpoch = 0, _developerPresetEpoch = 0;
   int _developerEmailCount = 2;
 
+  ZyraSignupPreviewController? _signup;
+  ZyraCompatibilityDraft? _signupPreferences;
+  Widget? _signupSurface, _signupPreferenceSurface;
+  Object? _signupLease;
+  String? _signupPhoto;
+  bool _signupPhotoLoading = false;
+  bool get _signupUnverified => _hasDeveloperPreview
+      ? _developerSamples.unverified
+      : (_signup?.hasAccount == true && !_signup!.verified);
+  bool get _signupIncomplete => _hasDeveloperPreview
+      ? _developerSamples.setupUnfinished
+      : (_signup?.hasAccount == true && !_signup!.setupComplete);
+
+  bool get _signupProtectedPage => const {
+    'profile',
+    'guardian_linked_profile',
+    'guardian_network_profile',
+    'guardian_seeker',
+    'network_request',
+    'scan',
+  }.contains(_page);
+
   bool get _hasDeveloperPreview =>
       _developerBridge?.canPresent == true &&
       _developerBridge?.viewAs != null &&
@@ -299,8 +330,241 @@ class _ZyraOneJourneyConceptShellState
       owner: this,
       samplesChanged: _syncDeveloperSamples,
       showError: _showDeveloperError,
+      continueSetup: _resumeSignup,
+      startSignup: _startSignup,
     );
   }
+
+  Future<void> _startSignup() async {
+    if (!_allowed || _developerBridge?.canPresent != true) return;
+    _signup?.dispose();
+    _signup = ZyraSignupPreviewController(now: widget.previewClock)..start();
+    _signupPreferences = null;
+    _signupSurface = _signupPreferenceSurface = null;
+    _signupLease = Object();
+    _open('signup');
+    unawaited(_loadSignupPhoto());
+  }
+
+  Future<void> _loadSignupPhoto() async {
+    if (_signupPhoto != null || _signupPhotoLoading) return;
+    _signupPhotoLoading = true;
+    try {
+      final data = await rootBundle.load(
+        'assets/dev/one_journey_photos/seeker_self.jpg',
+      );
+      final photo =
+          'data:image/jpeg;base64,${base64Encode(data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes))}';
+      if (mounted && (_allowed || _developerBridge?.canPresent == true)) {
+        setState(() {
+          _signupPhoto = photo;
+          _signupSurface = null;
+        });
+      }
+    } finally {
+      _signupPhotoLoading = false;
+    }
+  }
+
+  Future<void> _resumeSignup() async {
+    if (!_allowed || !_signupIncomplete) return;
+    if (_signup == null ||
+        !_signup!.hasAccount ||
+        _signup!.setupComplete ||
+        _signup!.guardian != _guardianRole) {
+      _signup?.dispose();
+      final profile = _accountSession.ownProfile(_guardianRole);
+      _signup = ZyraSignupPreviewController(now: widget.previewClock)
+        ..seedSetup(
+          guardian: _guardianRole,
+          verified: !_signupUnverified,
+          firstName: profile.firstName,
+          surname: profile.surnameLine ?? '',
+        );
+      _signup!.setGender(profile.gender);
+      final today = (widget.previewClock ?? DateTime.now)();
+      _signup!
+        ..setDay('1')
+        ..setMonth('1')
+        ..setYear('${today.year - profile.age}')
+        ..setLocation(profile.city)
+        ..setNationality(profile.publicNationality);
+      for (final value in (profile.publicEthnicity ?? '').split(',')) {
+        if (value.trim().isNotEmpty) _signup!.toggleEthnicity(value.trim());
+      }
+      for (final photo in profile.photos) {
+        _signup!.addPhoto(photo);
+      }
+    }
+    final controller = _signup!;
+    if (_hasDeveloperPreview) {
+      controller.setPreviewVerified(!_developerSamples.unverified);
+    }
+    final lease = _signupLease = Object();
+    final snapshot = await _accountSession.compatibility.load('draft-self');
+    if (!_allowed ||
+        !identical(controller, _signup) ||
+        !identical(lease, _signupLease)) {
+      return;
+    }
+    _signupPreferences = ZyraCompatibilityDraft.fromSnapshot(
+      gender: controller.gender ?? 'male',
+      snapshot: snapshot,
+    );
+    final about = controller.guardian
+        ? _accountSession.signupAbout(true)
+        : _signupPreferences!.answers['bio_about_me'];
+    if (about is String) controller.setAboutYou(about);
+    _signupSurface = _signupPreferenceSurface = null;
+    controller.resumeSetup();
+    _open('signup');
+    unawaited(_loadSignupPhoto());
+  }
+
+  bool _signupCurrent(
+    ZyraSignupPreviewController controller,
+    Object lease, {
+    bool retain = false,
+  }) =>
+      mounted &&
+      identical(controller, _signup) &&
+      identical(lease, _signupLease) &&
+      _page == 'signup' &&
+      (retain ? (_allowed || _developerBridge?.canPresent == true) : _allowed);
+
+  void _leaveSignup(ZyraSignupPreviewController controller, Object lease) {
+    if (!_signupCurrent(controller, lease) || !controller.hasAccount) return;
+    controller.pauseSetup();
+    final gender = controller.gender ?? 'male';
+    final prefs =
+        (_signupPreferences ??
+                ZyraCompatibilityDraft.fromSnapshot(
+                  gender: gender,
+                  snapshot: null,
+                ))
+            .copy();
+    prefs.answers['bio_about_me'] = controller.aboutYou;
+    _signupPreferences = prefs;
+    _accountSession.applySignup(
+      guardian: controller.guardian,
+      firstName: controller.firstName.trim().isEmpty
+          ? 'Adam'
+          : controller.firstName,
+      surname: controller.surname,
+      age: controller.age ?? 30,
+      gender: gender,
+      city: controller.location ?? 'London',
+      nationality: controller.nationality,
+      ethnicities: controller.ethnicities.toList(),
+      photos: controller.photos,
+      preferences: prefs,
+    );
+    if (_developerBridge?.canPresent == true) {
+      final basic = controller.guardian
+          ? _guardianMembership == 'Guardian Basic'
+          : _seekerMembership == 'Seeker Basic';
+      _developerSamples.setViewAs(
+        controller.guardian
+            ? (basic
+                  ? ZyraDeveloperViewAs.guardianBasic
+                  : ZyraDeveloperViewAs.guardianOne)
+            : (basic
+                  ? ZyraDeveloperViewAs.seekerBasic
+                  : ZyraDeveloperViewAs.seekerOne),
+      );
+      _developerSamples.setUnverified(!controller.verified);
+      _developerSamples.setSetupUnfinished(!controller.setupComplete);
+    }
+    _move(() {
+      _guardianRole = controller.guardian;
+      _tab = 2;
+      _pages.clear();
+    });
+    widget.onRoleChanged?.call(controller.guardian);
+  }
+
+  Widget _signupView() {
+    final controller = _signup;
+    final lease = _signupLease;
+    if (controller == null || lease == null) return const SizedBox.shrink();
+    if (_signupSurface != null) return _signupSurface!;
+    bool current() => _signupCurrent(controller, lease);
+    bool retained() => _signupCurrent(controller, lease, retain: true);
+    Widget preferences(BuildContext _) {
+      if (_signupPreferenceSurface != null) return _signupPreferenceSurface!;
+      final draft = _signupPreferences ??= ZyraCompatibilityDraft.fromSnapshot(
+        gender: controller.gender ?? 'male',
+        snapshot: null,
+      );
+      return _signupPreferenceSurface = ZyraSignupPreferencesPreview(
+        initialDraft: draft,
+        bridge: _developerBridge,
+        canAct: () =>
+            current() && controller.step == ZyraSignupStep.preferences,
+        canRetain: () =>
+            retained() && controller.step == ZyraSignupStep.preferences,
+        onChanged: (value) {
+          if (current() && controller.step == ZyraSignupStep.preferences) {
+            _signupPreferences = value.copy();
+          }
+        },
+        onNext: () {
+          if (current()) controller.advance();
+        },
+        onBack: () {
+          if (current()) controller.setStep(ZyraSignupStep.accountReady);
+        },
+        onLater: () {
+          if (current()) _leaveSignup(controller, lease);
+        },
+      );
+    }
+
+    return _signupSurface = ZyraSignupPreview(
+      controller: controller,
+      canAct: current,
+      preferencesBuilder: preferences,
+      samplePhotos: [
+        if (_photos != null) _photos!.seekerPhoto else ?_signupPhoto,
+      ],
+      ownCode: 'ZYRA-7Q4M-K2XD-9P3L-W8RT-F6NB',
+      onPause: () => _leaveSignup(controller, lease),
+      onEnter: () {
+        if (current() && controller.enterZyra()) {
+          _leaveSignup(controller, lease);
+        }
+      },
+      onShareCode: () {
+        if (!current()) return;
+        final box = context.findRenderObject();
+        final origin = box is RenderBox
+            ? box.localToGlobal(Offset.zero) & box.size
+            : null;
+        unawaited(
+          SharePlus.instance.share(
+            ShareParams(
+              text:
+                  'ZYRA Developer Preview code:\nZYRA-7Q4M-K2XD-9P3L-W8RT-F6NB\n\n'
+                  'This sample code cannot connect real accounts.',
+              subject: 'My ZYRA Code',
+              sharePositionOrigin: origin,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  ZyraFocusItem _signupFocus(VoidCallback onResume) => ZyraFocusItem(
+    id: 'signup-setup',
+    icon: Icons.tune,
+    title: 'Finish setting up',
+    detail:
+        "You can't start a Journey until your profile is complete. It only takes a few minutes.",
+    actionLabel: 'Continue setting up',
+    actionKey: 'signup_continue_setup',
+    onAction: onResume,
+  );
 
   Future<void> _showDeveloperError(ZyraErrorKind kind) async {
     final bridge = _developerBridge;
@@ -348,6 +612,12 @@ class _ZyraOneJourneyConceptShellState
     if (!samples.hasSamples) {
       final baseline = _developerBaseline;
       if (baseline == null) return;
+      _signup?.dispose();
+      _signup = null;
+      _signupLease = null;
+      _signupSurface = _signupPreferenceSurface = null;
+      _signupPreferences = null;
+      _accountSession.clearSignup();
       setState(() {
         _model.peerDepartures.removeListener(_peerDeparted);
         _model = ViewRequestDraftModel.fromSnapshot(
@@ -554,6 +824,26 @@ class _ZyraOneJourneyConceptShellState
       if (_developerPresetEpoch != bridge.presetSelectionEpoch) {
         _developerPresetEpoch = bridge.presetSelectionEpoch;
         final preset = samples.preset;
+        final presetLifetime = bridge.verifiedLifetime;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted &&
+              bridge.canPresent &&
+              bridge.verifiedLifetime == presetLifetime &&
+              samples.preset == preset) {
+            samples.setSetupUnfinished(
+              preset == ZyraDeveloperPreset.newMember ||
+                  preset == ZyraDeveloperPreset.everything,
+            );
+          }
+        });
+        if (_signup?.setupComplete == true &&
+            (preset == ZyraDeveloperPreset.newMember ||
+                preset == ZyraDeveloperPreset.everything)) {
+          _signup?.dispose();
+          _signup = null;
+          _signupLease = null;
+          _signupSurface = _signupPreferenceSurface = null;
+        }
         if (preset == ZyraDeveloperPreset.allCaughtUp ||
             preset == ZyraDeveloperPreset.typicalDay) {
           final lifetime = bridge.verifiedLifetime;
@@ -605,6 +895,10 @@ class _ZyraOneJourneyConceptShellState
         _welcomeBackAt = samples.notice == 6 ? _previewNow : null;
         _myZyraFocusIndex = 0;
       }
+      if (samples.unverified && _signupProtectedPage) {
+        _pages.clear();
+        _tab = 0;
+      }
       _uiRevision++;
       _expandedJourneyOptionsId = null;
       _capacityRequest = null;
@@ -613,6 +907,15 @@ class _ZyraOneJourneyConceptShellState
   }
 
   void _verifyDeveloperIdentity() {
+    if (_signup?.hasAccount == true &&
+        _signup!.guardian == _guardianRole &&
+        _allowed) {
+      _signup!.setStep(ZyraSignupStep.verify);
+      _signupSurface = _signupPreferenceSurface = null;
+      _signupLease = Object();
+      _open('signup');
+      return;
+    }
     final bridge = _developerBridge;
     final access = bridge?.access;
     final lifetime = bridge?.verifiedLifetime;
@@ -1989,6 +2292,18 @@ class _ZyraOneJourneyConceptShellState
   }
 
   void _open(String page, {String? person}) {
+    if (_signupUnverified &&
+        const {
+          'profile',
+          'guardian_linked_profile',
+          'guardian_network_profile',
+          'guardian_seeker',
+          'network_request',
+          'scan',
+        }.contains(page)) {
+      _tabTo(0);
+      return;
+    }
     if (person != null && _model.hasDeparted(person)) return;
     var target = page;
     if ({
@@ -2080,6 +2395,16 @@ class _ZyraOneJourneyConceptShellState
   }
 
   void _back() {
+    if (_page == 'signup' && _signup != null) {
+      if (_signup!.canGoBack) {
+        _signup!.back();
+      } else if (_signup!.hasAccount) {
+        _leaveSignup(_signup!, _signupLease!);
+      } else {
+        _move(_pages.clear);
+      }
+      return;
+    }
     if (_currentBioGallery != null) {
       setState(() => _bioGallery = null);
       return;
@@ -2502,6 +2827,7 @@ class _ZyraOneJourneyConceptShellState
     _message.dispose();
     _accountSession.removeListener(_accountChanged);
     _accountSession.dispose();
+    _signup?.dispose();
     if (widget.fixture?.compatibilityAccess == null &&
         widget.compatibilityAccess == null) {
       _compatibilityAccess.close();
@@ -2591,6 +2917,7 @@ class _ZyraOneJourneyConceptShellState
           'past_journeys',
           'switch_account_signup',
           'switch_account_setup',
+          'signup',
           'compatibility',
           'timeline',
           'compatibility_store',
@@ -2710,7 +3037,8 @@ class _ZyraOneJourneyConceptShellState
                                   _expandedJourneyOptionsId != null) &&
                               !_isRetainedAccountPage &&
                               _page != 'own_profile_preview' &&
-                              _page != 'guardian_main_notice')
+                              _page != 'guardian_main_notice' &&
+                              _page != 'signup')
                             ZyraPullDownBackScope(
                               key: const ValueKey(
                                 'concept_pull_down_back_scope',
@@ -2853,15 +3181,14 @@ class _ZyraOneJourneyConceptShellState
   }
 
   Widget _content() =>
-      _hasDeveloperPreview &&
-          _developerSamples.unverified &&
-          _page == null &&
-          _tab == 0
+      _signupUnverified &&
+          ((_page == null && _tab == 0) || _signupProtectedPage)
       ? ZyraDeveloperUnverifiedGate(
           guardian: _guardianRole,
           onVerify: _bound(_verifyDeveloperIdentity),
         )
       : switch (_page) {
+          'signup' => _signupView(),
           'developer_inactivity_email' => _developerEmail(),
           'profile' => _profileView(),
           'journey' => _journeyView(),
@@ -3070,6 +3397,16 @@ class _ZyraOneJourneyConceptShellState
 
   void _toggleInvitation(String id) {
     if (!_allowed || !_canToggleInvitation(id)) return;
+    if (_signupUnverified) {
+      _tabTo(0);
+      return;
+    }
+    if (_signupIncomplete && !_hasSentInvitation(id)) {
+      setState(
+        () => _notice = 'Finish setting up your profile to start a Journey.',
+      );
+      return;
+    }
     if (_hasDeveloperPreview) {
       if (_developerSamples.setupUnfinished && !_hasSentInvitation(id)) {
         setState(
@@ -5215,6 +5552,17 @@ class _ZyraOneJourneyConceptShellState
             canSend
                 ? _bound(() {
                     if (_seekerMembership != 'Seeker One') return;
+                    if (_signupUnverified) {
+                      _tabTo(0);
+                      return;
+                    }
+                    if (_signupIncomplete) {
+                      setState(
+                        () => _notice =
+                            'Finish setting up your profile to start a Journey.',
+                      );
+                      return;
+                    }
                     _act(() => _model.requestEndedJourney(person.id));
                   })
                 : null,
@@ -6375,7 +6723,7 @@ class _ZyraOneJourneyConceptShellState
         future: _accountSession.compatibility.load('draft-self'),
         builder: (context, snapshot) {
           final preferences = ZyraCompatibilityDraft.fromSnapshot(
-            gender: 'male',
+            gender: _accountSession.ownProfile(false).gender,
             snapshot: snapshot.data,
           );
           final set = preferences.preferenceAnswerCount,
@@ -6388,6 +6736,12 @@ class _ZyraOneJourneyConceptShellState
               _publishCheckpoint();
             })(),
             items: [
+              if (_signupIncomplete)
+                _signupFocus(
+                  action(() {
+                    unawaited(_resumeSignup());
+                  }),
+                ),
               if (!_guardianRole &&
                   _accountSession.compatibility.hasPreferencesToCheck &&
                   developerPreset == null)
@@ -6416,14 +6770,18 @@ class _ZyraOneJourneyConceptShellState
                 ),
             ],
             chips: [
-              if (developerPreset == ZyraDeveloperPreset.newMember ||
-                  developerPreset == ZyraDeveloperPreset.everything ||
-                  (developerPreset == null && !setup))
+              if (_signupIncomplete || (developerPreset == null && !setup))
                 ZyraFocusChip(
                   id: 'focus-setup',
                   label: 'Finish setup',
                   icon: Icons.person_outline,
-                  onTap: action(() => _walletSetup(ZyraWalletRole.seeker)),
+                  onTap: action(() {
+                    if (_signupIncomplete) {
+                      unawaited(_resumeSignup());
+                    } else {
+                      _walletSetup(ZyraWalletRole.seeker);
+                    }
+                  }),
                 ),
               if (developerPreset == ZyraDeveloperPreset.newMember ||
                   developerPreset == ZyraDeveloperPreset.everything ||
@@ -8289,7 +8647,15 @@ class _ZyraOneJourneyConceptShellState
     return ZyraGuardianTabsPresentation(
       state: _guardianTabs,
       page: page,
-      circleFocus: circleFocus,
+      circleFocus: [
+        if (_signupIncomplete)
+          _signupFocus(
+            _bound(() {
+              unawaited(_resumeSignup());
+            }),
+          ),
+        ...circleFocus,
+      ],
       linked: _conceptHassanLinked,
       linkedSeekerNames: _conceptHassanLinked
           ? const ['Adam', 'Yusuf']
@@ -8576,6 +8942,10 @@ class _ZyraOneJourneyConceptShellState
       return;
     }
     if (action == 'seeker_0' || action == 'seeker_1') {
+      if (_signupUnverified) {
+        _tabTo(0);
+        return;
+      }
       if (!_conceptHassanLinked) return;
       _move(() {
         state.seeker = action.endsWith('0') ? 0 : 1;
@@ -9517,7 +9887,10 @@ class _ZyraOneJourneyConceptShellState
       final snapshot = await compatibility.load('draft-self');
       final checks = await compatibility.visiblePreferenceChecks('draft-self');
       return (
-        ZyraCompatibilityDraft.fromSnapshot(gender: 'male', snapshot: snapshot),
+        ZyraCompatibilityDraft.fromSnapshot(
+          gender: _accountSession.ownProfile(false).gender,
+          snapshot: snapshot,
+        ),
         ZyraPreferenceQuickCheck(
           items: checks.legacyAmber,
           missing: checks.missing,

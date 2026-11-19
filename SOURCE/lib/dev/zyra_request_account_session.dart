@@ -2,7 +2,7 @@
 // Retained editors use this adapter, never the authenticated member repository.
 // This is not durable account data, admission, verification or payment proof.
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart' show Offset;
+import 'package:flutter/material.dart' show Offset, StringCharacters;
 
 import '../models/seeker_profile.dart';
 import '../models/onboarding_question.dart';
@@ -33,6 +33,7 @@ class ZyraRequestAccountSession extends ChangeNotifier {
        _goldEnabled = goldEnabled {
     compatibility = ZyraRequestCompatibilityRepository(
       canAct: () => current,
+      readGender: () => seekerGender,
       legacyAmberQuickCheck: legacyAmberQuickCheck,
     );
   }
@@ -42,6 +43,9 @@ class ZyraRequestAccountSession extends ChangeNotifier {
   bool _disposed = false;
   final _photos = <bool, List<String>>{};
   final _avatar = <bool, Offset>{};
+  final _signupProfiles = <bool, SeekerProfile>{};
+  final _signupAbout = <bool, String>{};
+  final _signupPhotoBaselines = <bool, List<String>?>{};
   late final ZyraRequestCompatibilityRepository compatibility;
   ZyraDevPalette _palette;
   ZyraHapticLevel _hapticLevel;
@@ -63,14 +67,23 @@ class ZyraRequestAccountSession extends ChangeNotifier {
   ZyraDevPalette get palette => _palette;
   ZyraHapticLevel get hapticLevel => _hapticLevel;
   bool get goldEnabled => _goldEnabled;
+  String get seekerGender => _signupProfiles[false]?.gender ?? 'male';
+  String? signupAbout(bool guardian) => current ? _signupAbout[guardian] : null;
   List<String> photos(bool guardian) =>
       List<String>.unmodifiable(_photos[guardian] ?? const []);
   Offset avatar(bool guardian) => _avatar[guardian] ?? Offset.zero;
 
   bool seedPhotos(bool guardian, List<String> value) {
-    if (!current || _photos.containsKey(guardian) || !_localPhotos(value)) {
+    if (!current || !_localPhotos(value)) {
       return false;
     }
+    // Photo preparation may finish after the local signup began. Retain that
+    // original sample for Clear without replacing the chosen signup photos.
+    if (_signupPhotoBaselines.containsKey(guardian) &&
+        _signupPhotoBaselines[guardian] == null) {
+      _signupPhotoBaselines[guardian] = List.of(value);
+    }
+    if (_photos.containsKey(guardian)) return false;
     _photos[guardian] = List.of(value);
     return true;
   }
@@ -116,23 +129,103 @@ class ZyraRequestAccountSession extends ChangeNotifier {
     return true;
   }
 
-  SeekerProfile ownProfile(
-    bool guardian, {
-    ZyraPlan? seekerPlan,
-  }) => SeekerProfile(
-    id: guardian ? 'draft-own-guardian' : 'draft-self',
-    firstName: guardian ? 'Hassan' : 'Adam',
-    surnameLine: guardian ? 'Rahman' : 'Khan',
-    age: guardian ? 54 : 30,
-    city: 'London',
-    gender: 'male',
-    photos: photos(guardian),
-    // Explicit invented public display facts for these detached personas.
-    // Never read private compatibility answers or real member identity here.
-    publicNationality: 'British',
-    publicEthnicity: 'Pakistani',
-    seekerPlan: seekerPlan,
-  );
+  /// Applies a detached sample only. This never creates an account, records
+  /// verification, changes a plan or writes any member data.
+  bool applySignup({
+    required bool guardian,
+    required String firstName,
+    required String surname,
+    required int age,
+    required String gender,
+    required String city,
+    required String? nationality,
+    required List<String> ethnicities,
+    required List<String> photos,
+    required ZyraCompatibilityDraft preferences,
+  }) {
+    if (!current ||
+        !const {'male', 'female'}.contains(gender) ||
+        firstName.trim().isEmpty ||
+        firstName.characters.length > 30 ||
+        surname.trim().isEmpty ||
+        surname.characters.length > 40 ||
+        age < 18 ||
+        !_localPhotos(photos) ||
+        (!guardian && preferences.gender != gender)) {
+      return false;
+    }
+    final selected = List<String>.of(photos);
+    final labels = List<String>.of(ethnicities);
+    final profile = SeekerProfile(
+      id: guardian ? 'draft-own-guardian' : 'draft-self',
+      firstName: firstName.trim(),
+      surnameLine: surname.trim(),
+      age: age,
+      city: city,
+      gender: gender,
+      photos: const [],
+      publicNationality: nationality,
+      publicEthnicity: labels.isEmpty ? null : labels.join(', '),
+    );
+    if (!current ||
+        (!guardian &&
+            !compatibility._adoptSignup(preferences, gender: gender))) {
+      return false;
+    }
+    _signupPhotoBaselines.putIfAbsent(
+      guardian,
+      () => _photos[guardian]?.toList(),
+    );
+    _signupProfiles[guardian] = profile;
+    final about = preferences.answers['bio_about_me'];
+    if (about is String) {
+      _signupAbout[guardian] = about;
+    } else {
+      _signupAbout.remove(guardian);
+    }
+    if (selected.isNotEmpty) _photos[guardian] = selected;
+    notifyListeners();
+    return true;
+  }
+
+  /// Restores the sample that preceded signup, including its local answers.
+  bool clearSignup() {
+    if (!current) return false;
+    if (_signupProfiles.isEmpty) return true;
+    _signupProfiles.clear();
+    _signupAbout.clear();
+    for (final entry in _signupPhotoBaselines.entries) {
+      if (entry.value case final baseline?) {
+        _photos[entry.key] = List.of(baseline);
+      } else {
+        _photos.remove(entry.key);
+      }
+    }
+    _signupPhotoBaselines.clear();
+    compatibility._clearSignup();
+    notifyListeners();
+    return true;
+  }
+
+  SeekerProfile ownProfile(bool guardian, {ZyraPlan? seekerPlan}) {
+    final signup = _signupProfiles[guardian];
+    final selectedPhotos = photos(guardian);
+    return SeekerProfile(
+      id: guardian ? 'draft-own-guardian' : 'draft-self',
+      firstName: signup?.firstName ?? (guardian ? 'Hassan' : 'Adam'),
+      surnameLine: signup?.surnameLine ?? (guardian ? 'Rahman' : 'Khan'),
+      age: signup?.age ?? (guardian ? 54 : 30),
+      city: signup?.city ?? 'London',
+      gender: signup?.gender ?? 'male',
+      photos: selectedPhotos,
+      photoOne: selectedPhotos.isEmpty ? null : selectedPhotos.first,
+      // Explicit invented public display facts for these detached personas.
+      // Never read private compatibility answers or real member identity here.
+      publicNationality: signup == null ? 'British' : signup.publicNationality,
+      publicEthnicity: signup == null ? 'Pakistani' : signup.publicEthnicity,
+      seekerPlan: seekerPlan,
+    );
+  }
 
   static bool _localPhotos(List<String> value) =>
       value.length <= 6 &&
@@ -144,6 +237,9 @@ class ZyraRequestAccountSession extends ChangeNotifier {
     _revoked = true;
     _photos.clear();
     _avatar.clear();
+    _signupProfiles.clear();
+    _signupAbout.clear();
+    _signupPhotoBaselines.clear();
     compatibility.close();
     super.dispose();
   }
@@ -157,11 +253,13 @@ class ZyraRequestCompatibilityRepository
         ZyraPreferenceQuickCheckRepository {
   ZyraRequestCompatibilityRepository({
     required bool Function() canAct,
+    String Function()? readGender,
     bool legacyAmberQuickCheck = false,
   })
     // Keep the caller's public guard parameter separate from private storage.
     // ignore: prefer_initializing_formals
-    : _canAct = canAct {
+    : _canAct = canAct,
+       _readGender = readGender ?? _defaultGender {
     if (legacyAmberQuickCheck) {
       _legacy.addAll(const {
         (questionId: 'ch3_q33', optionValue: 'Usually all five prayers'),
@@ -190,8 +288,16 @@ class ZyraRequestCompatibilityRepository
   }
 
   final bool Function() _canAct;
+  final String Function() _readGender;
+  static String _defaultGender() => 'male';
   bool _closed = false;
   ZyraCompatibilityDraft? _draft;
+  ({
+    ZyraCompatibilityDraft? draft,
+    Set<ZyraPreferenceOption> legacy,
+    Map<ZyraPreferenceOption, TrafficLight> setup,
+  })?
+  _signupBaseline;
   final Set<ZyraPreferenceOption> _legacy = {};
   final _setupLights = <ZyraPreferenceOption, TrafficLight>{};
   bool get hasPreferencesToCheck => _current && _legacy.isNotEmpty;
@@ -216,17 +322,55 @@ class ZyraRequestCompatibilityRepository
 
   @override
   Future<ZyraOnboardingAnswersSnapshot?> load(String userId) async {
-    if (!isCurrentOwner(userId, 0)) return null;
+    if (!isCurrentOwner(userId, 0) || _draft?.gender != _readGender()) {
+      return null;
+    }
     return _draft?.toSnapshot();
   }
 
   @override
   Future<bool> save(String userId, ZyraCompatibilityDraft draft) async {
-    if (!isCurrentOwner(userId, 0) || draft.gender != 'male') return false;
+    if (!isCurrentOwner(userId, 0) || draft.gender != _readGender()) {
+      return false;
+    }
     final detached = draft.copy();
-    if (!isCurrentOwner(userId, 0)) return false;
+    if (!isCurrentOwner(userId, 0) || detached.gender != _readGender()) {
+      return false;
+    }
     _draft = detached;
     return true;
+  }
+
+  bool _adoptSignup(ZyraCompatibilityDraft draft, {required String gender}) {
+    if (!_current ||
+        !const {'male', 'female'}.contains(gender) ||
+        draft.gender != gender) {
+      return false;
+    }
+    final detached = draft.copy();
+    if (!_current) return false;
+    _signupBaseline ??= (
+      draft: _draft?.copy(),
+      legacy: Set.of(_legacy),
+      setup: Map.of(_setupLights),
+    );
+    _draft = detached;
+    _legacy.clear();
+    _setupLights.clear();
+    return true;
+  }
+
+  void _clearSignup() {
+    final baseline = _signupBaseline;
+    if (baseline == null) return;
+    _draft = baseline.draft?.copy();
+    _legacy
+      ..clear()
+      ..addAll(baseline.legacy);
+    _setupLights
+      ..clear()
+      ..addAll(baseline.setup);
+    _signupBaseline = null;
   }
 
   @override
@@ -275,6 +419,7 @@ class ZyraRequestCompatibilityRepository
   void close() {
     _closed = true;
     _draft = null;
+    _signupBaseline = null;
     _legacy.clear();
     _setupLights.clear();
   }
