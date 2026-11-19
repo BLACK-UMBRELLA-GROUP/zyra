@@ -1,12 +1,12 @@
 {
-  "snapshot_utc": "2026-11-19T19:32:30.009398+00:00",
+  "snapshot_utc": "2026-11-19T19:44:46.204611+00:00",
   "owner_count_only": {
-    "input_tokens": 43245321,
-    "cached_input_tokens": 43008512,
+    "input_tokens": 50170951,
+    "cached_input_tokens": 49924864,
     "cache_write_input_tokens": 0,
-    "output_tokens": 71883,
-    "reasoning_output_tokens": 30492,
-    "total_tokens": 43317204
+    "output_tokens": 87922,
+    "reasoning_output_tokens": 40956,
+    "total_tokens": 50258873
   },
-  "helpers": "Three scoped helpers; individual counters are not exposed by the collaboration API. No estimates."
+  "helpers": "Three scoped helpers; counters unavailable from collaboration API. No estimates."
 }

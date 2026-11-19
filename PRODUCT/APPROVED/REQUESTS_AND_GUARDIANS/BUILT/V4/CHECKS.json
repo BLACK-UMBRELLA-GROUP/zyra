@@ -88,13 +88,25 @@
   },
   "live": false,
   "migrations": [],
-  "hosted_ci": "PENDING",
+  "hosted_ci": {
+    "id": 44599466961,
+    "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/44599466961",
+    "head_sha": "ad379a380801f140e7d5cca3f41cf220fa77252c",
+    "status": "completed",
+    "conclusion": "success",
+    "scope": "Full suite, three Flutter shards and all analyzers passed.",
+    "full_selector_proof": [
+      "2026-11-19T19:33:38.0606300Z Changes include a non-Dart input that tests may read."
+    ],
+    "details": "CI_CHECKS.json"
+  },
   "public": "PUBLIC_REVIEW.json",
   "not_done": "No phone build/install,live apply, server transport, payment or release. OA-ZYRA-317 owns planned-app server integration; line 117 owns final delivery.",
-  "cleanup": "No new one-off scripts or copied apps/source. Intermediate ignored logs/row ledgers will be retired; final logs kept under SOURCE/build per Q169. MAP regenerated; resulting diff only catalogs unrelated Claude FIRST_TOUR documents and is left unstaged.",
+  "cleanup": "Completed: known retry intermediate logs/row ledgers moved to ~/_to_delete/ZYRA_LINE98_RETRY_SCRATCH_2026-11-19 with PATHS.txt/hashes. Final logs stay under SOURCE/build; final PNGs moved to BUILT/V4 (no duplicate copies). No compiled apps, source copies or one-off scripts in evidence.",
   "post_full_lifetime_guard": {
     "reason": "Expansion ValueNotifier changes before old button is unmounted; guard primary/actions/Report against an already-collapsed or different card. Existing tap helper also checks mounted context, rejecting reopen ABA.",
     "regression": "RED reproduced immediate collapsed-card replay. After two central checks: 127/127 complete shared-card, Ended, Introduction, Developer-entry and visual tests pass in 17 seconds. Analyzer clean. Independent review PASS.",
     "hosted_gate": "Push selector runs FULL suite: shared state code and non-Dart locked inputs changed."
-  }
+  },
+  "committed_render_verification": "4/4 visual tests on ad379a38: all26 stored PNGs pixel- and byte-identical."
 }

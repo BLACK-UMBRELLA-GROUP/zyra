@@ -16,7 +16,7 @@
     "Q164",
     "Q169"
   ],
-  "status": "Local gates passed; hosted CI pending.",
+  "status": "BUILT in Founder preview; hosted full CI passed.",
   "live": false,
   "behavior": [
     "Ended Journeys reuse ZyraRequestActivityCard, with one open card and View Timeline / Request a new Journey / red Remove from my Journeys. Existing restart rules, confirm and toast remain.",
@@ -95,15 +95,26 @@
       "success_events": 8588,
       "scope": "All local tests immediately before final two dispatch-lifetime guards; final complete card/integration suites and hosted full suite cover those exact guards."
     },
-    "hosted_ci": "PENDING",
+    "hosted_ci": {
+      "id": 44599466961,
+      "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/44599466961",
+      "head_sha": "ad379a380801f140e7d5cca3f41cf220fa77252c",
+      "status": "completed",
+      "conclusion": "success",
+      "scope": "Full suite, three Flutter shards and all analyzers passed.",
+      "full_selector_proof": [
+        "2026-11-19T19:33:38.0606300Z Changes include a non-Dart input that tests may read."
+      ],
+      "details": "CI_CHECKS.json"
+    },
     "independent_review": "COMPLETE: no remaining actionable source, test-invariant or visual findings; final gold/ivory/current navigation read back at both sizes.",
     "device": "Not installed or observed on phone; delivery belongs to line117 after98 ->99 ->124.",
     "focused_after_full": "127/127 complete shared-card, Ended, Introduction, Developer-entry and visual tests pass (17 s); includes RED-to-PASS closed-card replay regression."
   },
   "visual_limits": "Existing app card/title/pill/nav/surface tokens remain in use. Shared request status and chevrons now use the existing goldText token required by LOCK 2 V4, including Received/Ended/Introductions parity. Muted Past and Not taken forward remain muted. Current Guardian navigation has five items after line122 rather than four in the older master. Native draft fixture orders people differently; sample Ended fixture matches Zainab/Safiya/Noor. No exact-pixel claim.",
   "next_steps": [
-    "Finish final full suite, secret/public checks, commit/push and verify hosted ZYRA CI.",
-    "ZYRA Claude/Fable compare built evidence during normal design/document review.",
-    "Queue continues 99 ->124 ->117 last; real server authority remains OA-ZYRA-317."
+    "Queue continues 99 -> 124 -> 117 LAST; phone delivery belongs to line117.",
+    "Normal ZYRA Claude/Fable design/document review of BUILT/V4 evidence.",
+    "OA-ZYRA-317 owns planned-app server transport and live authority."
   ]
 }

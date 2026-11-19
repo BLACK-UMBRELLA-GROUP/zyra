@@ -1,7 +1,7 @@
 {
   "line": 98,
   "source_base_commit": "c56ff44265180bd77478144dbd800791d69660e4",
-  "source_commit": "PENDING reviewed implementation commit",
+  "source_commit": "ad379a380801f140e7d5cca3f41cf220fa77252c",
   "flutter_version": "3.44.2",
   "build_mode": "offline-ci widget tests",
   "timestamp_utc": "2026-11-19T19:25:57.000258+00:00",
@@ -10,5 +10,16 @@
   "source_manifest": "SOURCE_MANIFEST.json",
   "input_manifest": "INPUT_MANIFEST.json",
   "render_manifest": "RENDER_MANIFEST.json",
-  "ci": "PENDING"
+  "ci": {
+    "id": 44599466961,
+    "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/44599466961",
+    "head_sha": "ad379a380801f140e7d5cca3f41cf220fa77252c",
+    "status": "completed",
+    "conclusion": "success",
+    "scope": "Full suite, three Flutter shards and all analyzers passed.",
+    "full_selector_proof": [
+      "2026-11-19T19:33:38.0606300Z Changes include a non-Dart input that tests may read."
+    ],
+    "details": "CI_CHECKS.json"
+  }
 }

@@ -1,0 +1,311 @@
+{
+  "conclusion": "success",
+  "headSha": "ad379a380801f140e7d5cca3f41cf220fa77252c",
+  "jobs": [
+    {
+      "completedAt": "2026-11-19T19:33:41Z",
+      "conclusion": "success",
+      "databaseId": 135826595295,
+      "name": "Select Flutter tests",
+      "startedAt": "2026-11-19T19:33:03Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-19T19:33:08Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-19T19:33:04Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:33:37Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "number": 2,
+          "startedAt": "2026-11-19T19:33:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:33:38Z",
+          "conclusion": "success",
+          "name": "Select affected tests or full suite shards",
+          "number": 3,
+          "startedAt": "2026-11-19T19:33:37Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:33:38Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "number": 6,
+          "startedAt": "2026-11-19T19:33:38Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:33:38Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 7,
+          "startedAt": "2026-11-19T19:33:38Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/44599466961/job/135826595295"
+    },
+    {
+      "completedAt": "2026-11-19T19:41:10Z",
+      "conclusion": "success",
+      "databaseId": 135827018858,
+      "name": "Flutter checks (shard 0)",
+      "startedAt": "2026-11-19T19:33:43Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-19T19:33:47Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-19T19:33:44Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:34:24Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "number": 2,
+          "startedAt": "2026-11-19T19:33:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:35:21Z",
+          "conclusion": "success",
+          "name": "Set up Flutter 3.44.2",
+          "number": 3,
+          "startedAt": "2026-11-19T19:34:24Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:35:21Z",
+          "conclusion": "success",
+          "name": "Set up offline app configuration",
+          "number": 4,
+          "startedAt": "2026-11-19T19:35:21Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:35:35Z",
+          "conclusion": "success",
+          "name": "Resolve dependencies",
+          "number": 5,
+          "startedAt": "2026-11-19T19:35:21Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:35:58Z",
+          "conclusion": "success",
+          "name": "Analyze",
+          "number": 6,
+          "startedAt": "2026-11-19T19:35:35Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:41:07Z",
+          "conclusion": "success",
+          "name": "Run the assigned Flutter tests",
+          "number": 7,
+          "startedAt": "2026-11-19T19:35:58Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:41:07Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "number": 14,
+          "startedAt": "2026-11-19T19:41:07Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:41:07Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 15,
+          "startedAt": "2026-11-19T19:41:07Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/44599466961/job/135827018858"
+    },
+    {
+      "completedAt": "2026-11-19T19:42:59Z",
+      "conclusion": "success",
+      "databaseId": 135827018934,
+      "name": "Flutter checks (shard 1)",
+      "startedAt": "2026-11-19T19:33:43Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-19T19:33:44Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-19T19:33:43Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:34:17Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "number": 2,
+          "startedAt": "2026-11-19T19:33:44Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:35:06Z",
+          "conclusion": "success",
+          "name": "Set up Flutter 3.44.2",
+          "number": 3,
+          "startedAt": "2026-11-19T19:34:17Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:35:06Z",
+          "conclusion": "success",
+          "name": "Set up offline app configuration",
+          "number": 4,
+          "startedAt": "2026-11-19T19:35:06Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:35:21Z",
+          "conclusion": "success",
+          "name": "Resolve dependencies",
+          "number": 5,
+          "startedAt": "2026-11-19T19:35:06Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:35:48Z",
+          "conclusion": "success",
+          "name": "Analyze",
+          "number": 6,
+          "startedAt": "2026-11-19T19:35:21Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:42:56Z",
+          "conclusion": "success",
+          "name": "Run the assigned Flutter tests",
+          "number": 7,
+          "startedAt": "2026-11-19T19:35:48Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:42:56Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "number": 14,
+          "startedAt": "2026-11-19T19:42:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:42:56Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 15,
+          "startedAt": "2026-11-19T19:42:56Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/44599466961/job/135827018934"
+    },
+    {
+      "completedAt": "2026-11-19T19:42:52Z",
+      "conclusion": "success",
+      "databaseId": 135827019474,
+      "name": "Flutter checks (shard 2)",
+      "startedAt": "2026-11-19T19:33:43Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-19T19:33:45Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-19T19:33:44Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:34:19Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "number": 2,
+          "startedAt": "2026-11-19T19:33:45Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:35:06Z",
+          "conclusion": "success",
+          "name": "Set up Flutter 3.44.2",
+          "number": 3,
+          "startedAt": "2026-11-19T19:34:19Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:35:06Z",
+          "conclusion": "success",
+          "name": "Set up offline app configuration",
+          "number": 4,
+          "startedAt": "2026-11-19T19:35:06Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:35:21Z",
+          "conclusion": "success",
+          "name": "Resolve dependencies",
+          "number": 5,
+          "startedAt": "2026-11-19T19:35:06Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:35:48Z",
+          "conclusion": "success",
+          "name": "Analyze",
+          "number": 6,
+          "startedAt": "2026-11-19T19:35:21Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:42:46Z",
+          "conclusion": "success",
+          "name": "Run the assigned Flutter tests",
+          "number": 7,
+          "startedAt": "2026-11-19T19:35:48Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:42:46Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "number": 14,
+          "startedAt": "2026-11-19T19:42:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-19T19:42:46Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 15,
+          "startedAt": "2026-11-19T19:42:46Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/44599466961/job/135827019474"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/44599466961",
+  "full_suite_selector_proof": [
+    "2026-11-19T19:33:38.0606300Z Changes include a non-Dart input that tests may read."
+  ]
+}

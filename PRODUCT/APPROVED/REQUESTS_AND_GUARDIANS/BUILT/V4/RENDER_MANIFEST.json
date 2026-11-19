@@ -290,5 +290,13 @@
     }
   ],
   "comparisons": "Six deterministic layouts of original master and built PNGs, unscaled; only canvas labels added.",
-  "review": "Independent source/test/visual review complete; no unresolved actionable findings."
+  "review": "Independent source/test/visual review complete; no unresolved actionable findings.",
+  "committed_source_verification": {
+    "commit": "ad379a380801f140e7d5cca3f41cf220fa77252c",
+    "tests": 4,
+    "result": "PASS",
+    "captures": 26,
+    "all_pixel_identical": true,
+    "all_byte_identical": true
+  }
 }

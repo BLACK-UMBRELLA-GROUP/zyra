@@ -1,5 +1,5 @@
 {
-  "status": "In progress before staging",
+  "status": "PASS with reviewed inherited/binary false positives.",
   "text_check": "36 text files checked, 13 reviewed inherited false positives; no new private material.",
   "reviewed_hits": [
     {
@@ -103,10 +103,15 @@
     },
     "review": "Compressed PNG byte matches. Final PNG metadata only sRGB or empty; no text/EXIF. Approved fictional sample UI visually reviewed. Six comparisons retain original image pixels."
   },
-  "A": "Pending staged and outgoing commit-range secret scans.",
+  "A": "Staged, outgoing and post-push gitleaks scans clean; final handover scan repeated before push.",
   "B": "Only implementation, locked UI inputs and evidence will be staged. Unrelated Claude documents remain unstaged.",
   "C": "No ROADMAP row completed; brief explicitly says do not tick.",
   "D": "No app version change, no release.",
   "E": "New text uses neutral community wording; no member wording invented.",
-  "F": "README describes card/archive/Introductions behavior."
+  "F": "README describes card/archive/Introductions behavior.",
+  "handover_check": {
+    "files": 9,
+    "hits": [],
+    "result": "PASS; all queue hits inherited."
+  }
 }
