@@ -79,7 +79,7 @@ re-run the tool.
 
 _Stop here unless you need to look up another ID._
 
-## Documents (415 live)
+## Documents (417 live)
 
 ### APP SPACING
 
@@ -344,6 +344,12 @@ _Stop here unless you need to look up another ID._
 |---|---|---|---|---|---|
 | ASBUILT-ZYRA-QUEUE37 | `REPORTS/CURRENT/ZYRA_FILTERS_AS_BUILT_CURRENT_VERSION_V1.md` | HANDOVER | Final implementation and evidence provenance for queue 37, LOCK10 V6 sample Filters | AD-AIOS-115, OA-ZYRA-316, OA-ZYRA-317, OA-ZYRA-321, OA-ZYRA-323 | 12 |
 
+### FIRST-TIME WALKTHROUGH
+
+| ID | File | Type | Purpose | KB |
+|---|---|---|---|---|
+| DOC-ZYRA-FTOUR-V1 | `PRODUCT/APPROVED/FIRST_TOUR/RECORD/FIRST_TOUR_SPEC_CURRENT_VERSION_V1.md` | SPEC | Spec for LOCK 36 - the one-time walkthrough shown after a member's first sign-up | 8 |
+
 ### GENERAL
 
 | ID | File | Type | Purpose | KB |
@@ -388,8 +394,8 @@ _Stop here unless you need to look up another ID._
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
 | DOC-ZYRA-0300 | `REPORTS/CURRENT/ZYRA_CHAT_HANDOVER_2026-10-27_V1.md` | REPORT | Handover from Fable to the new ZYRA chat (lead designer) - who you are, how Shakeel works, what ZYRA is… | AD-AIOS-115, DOC-BUG-0009, DOC-ZYRA-0278, DOC-ZYRA-0291, OA-ZYRA-320, OA-ZYRA-321 | 9 |
-| DOC-ZYRA-0302 | `PRODUCT/APPROVED/BUILD_QUEUE.md` | REGISTER | Build queue - every ZYRA instruction for Codex (LOCKed builds and Founder-named tasks) waits here; Codex… | AD-AIOS-115 | 70 |
-| DOC-ZYRA-0335 | `PRODUCT/APPROVED/QUESTIONS.md` | REGISTER | Codex's questions for the ZYRA chat - Codex never asks Shakeel in chat; he files the question here, marks… | AD-AIOS-116 | 219 |
+| DOC-ZYRA-0302 | `PRODUCT/APPROVED/BUILD_QUEUE.md` | REGISTER | Build queue - every ZYRA instruction for Codex (LOCKed builds and Founder-named tasks) waits here; Codex… | AD-AIOS-115 | 72 |
+| DOC-ZYRA-0335 | `PRODUCT/APPROVED/QUESTIONS.md` | REGISTER | Codex's questions for the ZYRA chat - Codex never asks Shakeel in chat; he files the question here, marks… | AD-AIOS-116 | 221 |
 | INDEX-DECISIONS_V1 | `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1_INDEX.md` | INDEX | Generated one-line index of DECISIONS_V1.md; find the ID here, then search the register for it |  | 47 |
 | INDEX-OUTSTANDING_ACTIONS_V2 | `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2_INDEX.md` | INDEX | Generated one-line index of OUTSTANDING_ACTIONS_V2.md; find the ID here, then search the register for it |  | 18 |
 
@@ -844,11 +850,13 @@ _Stop here unless you need to look up another ID._
 
 - Over the 30 KB limit (40) — split or trim when next edited: DOC-ZYRA-0005, DOC-ZYRA-0011, DOC-ZYRA-0012, DOC-ZYRA-0018, DOC-ZYRA-0034, DOC-ZYRA-0040, DOC-ZYRA-0044, DOC-ZYRA-0052, DOC-ZYRA-0454, OA-ZYRA-316-BASELINE-2026-10-29, DOC-ZYRA-0281, DOC-ZYRA-0279, DOC-ZYRA-0284, DOC-ZYRA-0329, INDEX-DECISIONS_V1, DOC-ZYRA-0263, DOC-ZYRA-0229, DOC-ZYRA-0174, DOC-ZYRA-0133, DOC-ZYRA-0255, DOC-ZYRA-0076, DOC-ZYRA-0226, DOC-ZYRA-0142, DOC-ZYRA-0143, DOC-ZYRA-0144, DOC-ZYRA-0176, DOC-ZYRA-0178, DOC-ZYRA-0189, DOC-ZYRA-0215, DOC-ZYRA-0230, DOC-ZYRA-0245, DOC-ZYRA-0084, DOC-ZYRA-0154, DOC-ZYRA-0196, DOC-ZYRA-0252, DOC-ZYRA-0209, DOC-ZYRA-0161, DOC-ZYRA-0137, DOC-ZYRA-0210, DOC-ZYRA-0267
 
-Documents without a header (12) — add one so they appear above:
+Documents without a header (14) — add one so they appear above:
 
 - `PRODUCT/APPROVED/APP_COLOURS/BRIEFS/FIX_BRIEF_2026-11-13_ONE_CARD_COLOUR.md` (2 KB)
 - `PRODUCT/APPROVED/APP_SWIPE/BRIEFS/FIX_BRIEF_2026-11-13_STILL_PAGES.md` (1 KB)
 - `PRODUCT/APPROVED/DEV_TOGGLES/BRIEFS/DEV_PANEL_BRIEF_2026-11-18_V2.md` (1 KB)
+- `PRODUCT/APPROVED/FIRST_TOUR/BRIEFS/BUILD_BRIEF_2026-11-19_V1.md` (2 KB)
+- `PRODUCT/APPROVED/FIRST_TOUR/RECORD/LOCK_RECORD.md` (1 KB)
 - `PRODUCT/APPROVED/GUARDIAN_CARD/BRIEFS/FIX_BRIEF_2026-11-18_MENU_SHEET_SIZE.md` (2 KB)
 - `PRODUCT/APPROVED/GUARDIAN_SEEKERS/BRIEFS/BUILD_BRIEF_2026-11-18_V1.md` (1 KB)
 - `PRODUCT/APPROVED/GUARDIAN_SEEKERS/RECORD/LOCK_RECORD.md` (1 KB)

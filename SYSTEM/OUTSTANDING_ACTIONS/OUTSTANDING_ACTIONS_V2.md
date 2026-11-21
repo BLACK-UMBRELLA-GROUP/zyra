@@ -5138,7 +5138,9 @@ Title:       LOCK 2 V4 pack gaps stopped line 98 twice (Q161 missing masters, Q1
 Category:    Design loop (charters rules 8-10, 15)
 Priority:    HIGH - line 98 FAILED 16 and 17 Nov; line 99 (LOCK 33 names) needs 98's card first
 Date:        2026-11-17
-Status:      OPEN - filed by Fable 17 Nov 04:15 from the ZYRA chat note 16 Nov (item a) and Codex's 17 Nov note. Q161 was
+Status:      CLOSED 20 Nov 2026 (Fable 04:15): line 98 BUILT 19 Nov on a daytime GO (ad379a3, ced27db, hosted CI
+             44599466961 green) and line 99 BUILT 19 Nov (3aa431c, 36d8f4b, CI 44606181678 green). Acceptance met.
+             Was: OPEN - filed by Fable 17 Nov 04:15 from the ZYRA chat note 16 Nov (item a) and Codex's 17 Nov note. Q161 was
              answered 16 Nov (nine masters added); line 98 then failed at preflight again: the Seeker Received/Past masters
              say Khadija introduced Hana, but the Guardian master shows Hana "Not taken forward" in Hassan's list (Q163).
 Owner:       ZYRA chat (answer Q163, keep LOCK packs whole)
@@ -5147,11 +5149,73 @@ Next:        ZYRA chat answers Q163 (matching masters for one Hassan-owned intro
              master shows another member's record, which fixture person owns it. No new design (AD-AIOS-149, fixes only).
 Acceptance:  Line 98 BUILT and line 99 moving; no further preflight failure on a missing or mismatched master.
 Source:      2026-11-16_ZYRA_CHAT_NOTE.md item (a); 2026-11-17_CODEX_REPORT.md task 1; QUESTIONS 161, 163
+             18 Nov (Fable 04:15): Q163 answered by the ZYRA chat 17 Nov (Hassan owns the declined Hana introduction;
+             two masters re-rendered from V231; spec V4 §2.6 fixture recorded; LOCK 2 V4 row lists its 9 masters and
+             owner). Line 98 reissued and FAILED again at 01:11 on 18 Nov: the three-button Ended Journeys master removes
+             the only route to the archived Journey Bio and Guardians that Q119 and Journey Rules §7 keep readable (Q164
+             OPEN). Still to do: master filenames and fixture owner in the other LOCK rows. Third pack gap on one line -
+             the ZYRA chat preflights the whole LOCK 2 V4 pack against the rules it touches before setting 98 WAITING.
+             19 Nov (Fable 04:15): Q164 answered by the Founder 18 Nov "Inside View Timeline (Recommended)" (DR-ZYRA-356);
+             masters re-rendered; line 98 WAITING. The 01:00 attempt on 19 Nov FAILED again - not a pack gap: a Flutter
+             SDK cache approval waited 01:14-01:30 (Q169, AD-AIOS-139). Fable answered Q169: line 98 now carries
+             `Needs: Founder present`, daytime GO only, test logs under SOURCE/build/. The failed 19 Nov candidate (eight
+             SOURCE paths) is still uncommitted in SOURCE and must be retired under L42 before the next attempt.
+             Line 99 still waits. Needs Shakeel at the Mac before 21 Nov.
+------------------------------------------------------------
+
+OA-ZYRA-394
+Title:       Account recovery for a member who loses Apple or Google access (recovery email removed)
+Category:    Security / accounts
+Priority:    MEDIUM - before public launch; not during 21 Nov - 14 Dec
+Date:        2026-11-19
+Status:      OPEN - filed by Fable 19 Nov 04:15 from the 18 Nov ZYRA chat note (DR-ZYRA-358). Founder: "we will talk
+             security further down line". 20 Nov (Fable 04:15): options paper drafted, kept private in the group repo
+             (DOC-BUG-0065, BUSINESS/ZYRA/SECURITY). Waits for the later conversation he asked for.
+Owner:       Fable (options paper - done) then Founder (choice)
+Next:        Fable drafts a short options paper (Apple/Google account recovery only; support-assisted recovery with
+             identity re-check; others) for a later conversation. No code, no design until he chooses.
+Acceptance:  A recorded Founder choice for account recovery before launch.
+Source:      2026-11-18_ZYRA_CHAT_NOTE.md; queue line 120.
+------------------------------------------------------------
+
+OA-ZYRA-395
+Title:       Adverts for Seeker Basic - checks before any design or build (DR-ZYRA-357)
+Category:    Product
+Priority:    LOW - after the app is connected to the server (AD-AIOS-149)
+Date:        2026-11-19
+Status:      OPEN - filed by Fable 19 Nov 04:15 from the 18 Nov ZYRA chat note. 20 Nov (Fable 04:15): the planning
+             detail moved to the private group register (OA-AIOS-472) after Codex held the 20 Nov ZYRA sweep under
+             public check B; this entry keeps only the pointer.
+Owner:       Fable (checks) and Founder (advert account)
+Next:        See OA-AIOS-472 (group register). Then the ZYRA chat designs; LOCK only after the server connection.
+Acceptance:  OA-AIOS-472 closed before any advert LOCK.
+Source:      2026-11-18_ZYRA_CHAT_NOTE.md.
+------------------------------------------------------------
+
+OA-ZYRA-396
+Title:       Build-check differences, 19 Nov morning check (lines 119 and 122; nav bar; sample data; baseline pictures)
+Category:    Build check (charters rule 8)
+Priority:    MEDIUM
+Date:        2026-11-20
+Status:      OPEN - filed by Fable 20 Nov 04:15 from the ZYRA chat note 19 Nov 05:40 (differences a-e).
+Owner:       ZYRA chat (fix brief, queue row); Codex (build, pictures)
+Detail:      (a) Line 122 gs08: the Guardian Journeys card shows the placeholder person instead of the Seeker's photo -
+             check whether the card loads the other person's photo or only the capture lacked it. (b) Nav bar: app bar
+             near-white with a filled chat icon; masters and prototype tan with an outline icon - one side is out of date;
+             settle with a fresh baseline capture, not by changing the prototype from memory. (c) Line 119: Guardian Basic
+             My ZYRA locked tile "Connect with Guardian" wraps to 3 lines, so its status line sits lower than its
+             neighbours (the brief asked for one line in the same place). (d) Sample data differs from the prototype:
+             Circle history (line 122 gs06/07) and Seeker Basic Unlocks "1 left" vs "0 left" (line 119) - sample data,
+             not design. (e) BASELINE/SCREENSHOTS still dated 29 Oct - a fresh capture line after line 117.
+Next:        ZYRA chat: (a) and (c) into one fix brief (fixes only, AD-AIOS-149); (b) and (e) one capture line after
+             line 117; (d) note only unless the Founder asks.
+Acceptance:  Each item MATCH in a later ZYRA chat build check.
+Source:      2026-11-19_ZYRA_CHAT_NOTE.md, 05:40 morning check
 ------------------------------------------------------------
 
 TOTAL REGISTERED (this file): 309 (OA-001 through OA-ZYRA-309,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-394 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-397 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_

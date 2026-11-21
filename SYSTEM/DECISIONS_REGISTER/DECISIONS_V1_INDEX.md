@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**352 decisions; 4 marked superseded/retired.**
+**360 decisions; 5 marked superseded/retired.**
 
 | ID | Date | Title | Status |
 |---|---|---|---|
@@ -368,3 +368,11 @@ Generated from `DECISIONS_V1.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_
 | DR-ZYRA-352 | 2026-11-14 | Line 84 un-deferred - one online fetch of the pinned Swift packages for the fresh iPhone … | APPROVED - Founder direct (clickable, B… |
 | DR-ZYRA-353 | 2026-11-14 | One final signed iPhone build after line 109; the line 84 host is kept, not installed | APPROVED - Founder direct (clickable, Q… |
 | DR-ZYRA-354 | 2026-11-14 | The ZYRA Claude chat answers every ZYRA Codex question from QUESTIONS 157 on | APPROVED - Founder direct (Fable chat, … |
+| DR-ZYRA-355 | 2026-11-18 | Exception to the ZYRA fixes-only rule: LOCK 34 Sign up V1 and LOCK 35 Guardian Seekers V1… | APPROVED - Founder direct (ZYRA chat, 1… |
+| DR-ZYRA-356 | 2026-11-18 | Ended Journeys: archived Bio and Guardians are reached inside View Timeline (Q164) | APPROVED - Founder direct (ZYRA chat, c… |
+| DR-ZYRA-357 | 2026-11-18 | Adverts come back for Seeker Basic only - one Google advert after every 5 profiles (pendi… | APPROVED in principle - Founder direct … |
+| DR-ZYRA-358 | 2026-11-18 | Recovery email removed from the app; account recovery to be discussed later | APPROVED - Founder direct (ZYRA chat) |
+| DR-ZYRA-359 | 2026-11-18 | First-time tour stays a prototype draft until the app is connected to the server | SUPERSEDED 19 Nov 2026 by DR-ZYRA-361 (… |
+| DR-ZYRA-360 | 2026-11-18 | LOCK 31 V2 - Developer panel back on every page title (admin account only) | APPROVED - Founder direct (ZYRA chat, 2… |
+| DR-ZYRA-361 | 2026-11-19 | Exception to the ZYRA fixes-only rule: LOCK 36 First-time walkthrough V1 locked and queued | APPROVED - Founder direct (ZYRA chat, 1… |
+| DR-ZYRA-362 | 2026-11-19 | Line 117 phone delivery may go over wifi (wireless) for this delivery | APPROVED - Founder direct (ZYRA Codex c… |

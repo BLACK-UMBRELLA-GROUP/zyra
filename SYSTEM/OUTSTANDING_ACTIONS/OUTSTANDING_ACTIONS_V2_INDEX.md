@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**112 actions: 107 open or unclear, 5 closed.**
+**115 actions: 109 open or unclear, 6 closed.**
 
 ## Open
 
@@ -124,10 +124,12 @@ Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS
 | OA-ZYRA-390 | Build-check differences, 14 Nov morning check (lines 103, 105, 108; built pictures) | OPEN - filed by Fable 15 Nov 04:15 from the ZYRA chat note 14 Nov 05:… | MEDIUM |
 | OA-ZYRA-391 | Founder to confirm two number calls the ZYRA chat made for QUESTIONS 145 (line 115) | OPEN - filed by Fable 15 Nov 04:15 from the ZYRA chat note 14 Nov ite… | LOW |
 | OA-ZYRA-392 | Build-check differences, 15 Nov morning check (lines 109, 115; built pictures; line 92 da… | OPEN - filed by Fable 16 Nov 04:15 from the ZYRA chat note 15 Nov 05:… | MEDIUM |
-| OA-ZYRA-393 | LOCK 2 V4 pack gaps stopped line 98 twice (Q161 missing masters, Q163 Guardian mismatch);… | OPEN - filed by Fable 17 Nov 04:15 from the ZYRA chat note 16 Nov (it… | HIGH - line 98 FAIL… |
+| OA-ZYRA-394 | Account recovery for a member who loses Apple or Google access (recovery email removed) | OPEN - filed by Fable 19 Nov 04:15 from the 18 Nov ZYRA chat note (DR… | MEDIUM - before pub… |
+| OA-ZYRA-395 | Adverts for Seeker Basic - checks before any design or build (DR-ZYRA-357) | OPEN - filed by Fable 19 Nov 04:15 from the 18 Nov ZYRA chat note. 20… | LOW - after the app… |
+| OA-ZYRA-396 | Build-check differences, 19 Nov morning check (lines 119 and 122; nav bar; sample data; b… | OPEN - filed by Fable 20 Nov 04:15 from the ZYRA chat note 19 Nov 05:… | MEDIUM |
 
 ⚠️ = status wording not recognised as open or closed (4). Fix the wording in the register.
 
-## Closed (5)
+## Closed (6)
 
-OA-ZYRA-348, OA-ZYRA-352, OA-ZYRA-354, OA-ZYRA-367, OA-ZYRA-373
+OA-ZYRA-348, OA-ZYRA-352, OA-ZYRA-354, OA-ZYRA-367, OA-ZYRA-373, OA-ZYRA-393

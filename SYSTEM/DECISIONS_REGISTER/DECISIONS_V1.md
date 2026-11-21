@@ -18613,9 +18613,121 @@ Related:     Charters rule 10, lesson F51, OA-AIOS-446 item 5.
 
 ------------------------------------------------------------
 
-TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-354,
+DR-ZYRA-355
+Title:       Exception to the ZYRA fixes-only rule: LOCK 34 Sign up V1 and LOCK 35 Guardian Seekers V1 locked and queued
+Date:        2026-11-18
+Status:      APPROVED - Founder direct (ZYRA chat, 18 Nov 21:44, clickable)
+Authority:   Founder, 18 Nov 2026: "lets include new sign up, bacily everythin thats possible" → "Yes, lock and queue both
+             (Recommended)". Sign-up words in SIGN_UP/RECORD/LOCK_RECORD.md (19:22-21:44), e.g. "u cant create account
+             via email its just google or apple and if user is on apple then apple is at top and vice versa for google".
+             Filed by Fable 19 Nov 04:15 from the 18 Nov ZYRA chat note.
+Decision:    A named exception to AD-AIOS-149 (no new ZYRA feature LOCKs until the app is connected to the server):
+             LOCK 34 SIGN_UP V1 (accounts only with Apple or Google, Apple first on iPhone and Google first on Android;
+             identity check before any payment or trial - "Yes, verify before paying"; unverified members can look
+             around but every profile and Network page is blocked - "Every person on ZYRA is verified") and LOCK 35
+             GUARDIAN_SEEKERS V1, queue lines 121 and 122, built in the Founder preview on sample data. Nothing else
+             is unfrozen; adverts and the first-time tour stay drafts.
+Related:     AD-AIOS-149, queue lines 121 and 122, prototype V271, DR-ZYRA-357, DR-ZYRA-358.
+
+------------------------------------------------------------
+
+DR-ZYRA-356
+Title:       Ended Journeys: archived Bio and Guardians are reached inside View Timeline (Q164)
+Date:        2026-11-18
+Status:      APPROVED - Founder direct (ZYRA chat, clickable)
+Authority:   Founder, 18 Nov 2026: "Inside View Timeline (Recommended)". Filed by Fable 19 Nov 04:15.
+Decision:    View Timeline on an ended Journey opens the whole ended Journey read-only, landing on Timeline, with Bio,
+             Compatibility and Guardians reachable as in an active Journey (Journey Rules §7, Q119). LOCK 2 V4 §2.6
+             and its masters updated by the ZYRA chat; line 98 back to WAITING.
+Related:     QUESTIONS 164, queue line 98, OA-ZYRA-393.
+
+------------------------------------------------------------
+
+DR-ZYRA-357
+Title:       Adverts come back for Seeker Basic only - one Google advert after every 5 profiles (pending design)
+Date:        2026-11-18
+Status:      APPROVED in principle - Founder direct (ZYRA chat, clickable); NOT LOCKed (AD-AIOS-149)
+Authority:   Founder, 18 Nov 2026: "bring back google advertisement - every 5 scrolls is an advert" → "Seeker Basic only
+             (Recommended)". Filed by Fable 19 Nov 04:15.
+Decision:    Seeker Basic shows one Google advert after every 5 profiles; Seeker One (paid) sees none. Designed and built
+             only after the app is connected to the server. Launch checks first (OA-ZYRA-395).
+Related:     AD-AIOS-149, OA-ZYRA-395.
+
+------------------------------------------------------------
+
+DR-ZYRA-358
+Title:       Recovery email removed from the app; account recovery to be discussed later
+Date:        2026-11-18
+Status:      APPROVED - Founder direct (ZYRA chat)
+Authority:   Founder, 18 Nov 2026: "lets remove recovery email"; on recovery without Apple or Google: "we will talk
+             security further down line". Filed by Fable 19 Nov 04:15.
+Decision:    Fix line 120 removes every recovery-email entry and control (BUILT 18 Nov, 8a1c3c26). Recovery for a member
+             who loses Apple or Google access is an open security question (OA-ZYRA-394).
+Related:     Queue line 120, LOCK 34, OA-ZYRA-316, OA-ZYRA-394.
+
+------------------------------------------------------------
+
+DR-ZYRA-359
+Title:       First-time tour stays a prototype draft until the app is connected to the server
+Date:        2026-11-18
+Status:      SUPERSEDED 19 Nov 2026 by DR-ZYRA-361 (was APPROVED - Founder direct, ZYRA chat, clickable)
+Authority:   Founder, 18 Nov 2026: "Keep as draft (Recommended)". Filed by Fable 19 Nov 04:15.
+Decision:    The first-time tour (prototype V274) is not LOCKed and gets no queue line until the app is connected to the
+             server (AD-AIOS-149). A "Replay tour" row in Settings is added when it locks.
+Related:     AD-AIOS-149.
+
+------------------------------------------------------------
+
+DR-ZYRA-360
+Title:       LOCK 31 V2 - Developer panel back on every page title (admin account only)
+Date:        2026-11-18
+Status:      APPROVED - Founder direct (ZYRA chat, 22:02)
+Authority:   Founder, 18 Nov 2026: "in app i need that toggle button back so i can choose a active journey to test - deep
+             check the toggle and get codex to add it again ... and i need that in app for me to test it". Filed by Fable
+             19 Nov 04:15.
+Decision:    LOCK 31 V2 (DEV_PANEL spec V2, V1 archived): the developer panel opens from every page title for the admin
+             account only - View as plan/role, sign-up states, Journey and stage pickers, presets, notices, error pages.
+             Restores part of the line 44 removal for the admin account only. A testing tool on an existing LOCK, not a
+             new member feature. Queue line 123 (QUESTION, Q171 and Q173).
+Related:     LOCK 31 (12 Nov), queue lines 44 and 123, AD-AIOS-149.
+
+------------------------------------------------------------
+
+DR-ZYRA-361
+Title:       Exception to the ZYRA fixes-only rule: LOCK 36 First-time walkthrough V1 locked and queued
+Date:        2026-11-19
+Status:      APPROVED - Founder direct (ZYRA chat, 19 Nov 18:40, clickable)
+Authority:   Founder, 19 Nov 2026: "ok for now lets lock in and we will improve further down line" → "Lock and queue
+             now". Design words in FIRST_TOUR/RECORD/LOCK_RECORD.md (17:45-18:40), e.g. "we cant skip the tour"; "a
+             quick walkthrough the background dims to highlight the thing"; "remove the time bar"; "lets start step by
+             step for each page". Filed by Fable 19 Nov from the 19 Nov ZYRA chat note (Founder: "record LOCK 36 and
+             the rule exception in the registers").
+Decision:    A second named exception to AD-AIOS-149 (no new ZYRA feature LOCKs until the app is connected to the
+             server): LOCK 36 FIRST_TOUR V1 - a page-by-page walkthrough shown once after first sign-up (Seeker 18
+             steps, Guardian 14): background dimmed with the item and its tab lit, a note with a touch-point animation,
+             no skip and no timer, "Replay the walkthrough" as the first SUPPORT row in Settings. Spec FIRST_TOUR_SPEC
+             V1, prototype V289, 37 masters, queue line 124, built in the Founder preview on sample data with no server
+             change. Nothing else is unfrozen; adverts (DR-ZYRA-357) stay a draft. Supersedes DR-ZYRA-359.
+Related:     AD-AIOS-149 (addendum 19 Nov), DR-ZYRA-355, DR-ZYRA-359, queue line 124.
+
+------------------------------------------------------------
+
+DR-ZYRA-362
+Title:       Line 117 phone delivery may go over wifi (wireless) for this delivery
+Date:        2026-11-19
+Status:      APPROVED - Founder direct (ZYRA Codex chat, 19 Nov, daytime GO session)
+Authority:   Founder, 19 Nov 2026: "Push wirelessly please." Recorded by Codex in queue line 117 and in
+             PHONE_INSTALL/BUILT/LINE117/WIRELESS_ROUTE_HANDOVER.md. Filed by Fable 20 Nov 04:15.
+Decision:    The line 117 signed iPhone build may be delivered over the wireless connection instead of the cable, on
+             the same protected route (same signing, profile and checks). The cable stays the default for every other
+             delivery. Installing still needs his GO at the Mac (Needs: Founder present).
+Related:     Queue line 117, DR-ZYRA-352, OA-ZYRA-317, commits 14bc6d8 and f08ce10.
+
+------------------------------------------------------------
+
+TOTAL REGISTERED (this file): DR-001 through DR-ZYRA-362,
   Historical Identifiers, permanent
-NEXT IDENTIFIER: DR-ZYRA-355 (Enterprise format, active
+NEXT IDENTIFIER: DR-ZYRA-363 (Enterprise format, active
   2026-07-12 — continues this sequence, does not reset;
   sequential identifiers are global and never reset per AIOS
   Package Specification Standard Part 5. See BLACK UMBRELLA
