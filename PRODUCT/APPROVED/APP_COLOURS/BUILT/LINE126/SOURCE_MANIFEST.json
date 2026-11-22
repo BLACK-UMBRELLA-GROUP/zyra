@@ -1,0 +1,30 @@
+{
+  "status": "Candidate retired; accepted source clean",
+  "base_commit": "c5cf660c8aea17facdef92329047b65de391ff28",
+  "library_file_count": 21,
+  "library_files": [
+    "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+    "SOURCE/lib/dev/zyra_draft_compatibility_presentation.dart",
+    "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart",
+    "SOURCE/lib/dev/zyra_first_tour_overlay.dart",
+    "SOURCE/lib/dev/zyra_founder_launch_screen.dart",
+    "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+    "SOURCE/lib/dev/zyra_one_journey_browse_designs.dart",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+    "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+    "SOURCE/lib/dev/zyra_one_journey_journey_presentation.dart",
+    "SOURCE/lib/dev/zyra_one_journey_location_sheet.dart",
+    "SOURCE/lib/dev/zyra_one_journey_monogram_presentation.dart",
+    "SOURCE/lib/dev/zyra_one_journey_tab.dart",
+    "SOURCE/lib/dev/zyra_signup_preview.dart",
+    "SOURCE/lib/screens/profile/compatibility_editors.dart",
+    "SOURCE/lib/theme/zyra_colors.dart",
+    "SOURCE/lib/theme/zyra_text.dart",
+    "SOURCE/lib/widgets/zyra_developer_panel.dart",
+    "SOURCE/lib/widgets/zyra_focus_dashboard.dart",
+    "SOURCE/lib/widgets/zyra_full_screen_error.dart",
+    "SOURCE/lib/widgets/zyra_invitation_label.dart"
+  ],
+  "candidate_library_aggregate_sha256": "abf2f298f77596819c4b95d2cee3802e4c0911ecefb50a9c03ce420b7f4f9057",
+  "archive": "~/_to_delete/ZYRA_LINE126_2026-11-22/candidate/"
+}

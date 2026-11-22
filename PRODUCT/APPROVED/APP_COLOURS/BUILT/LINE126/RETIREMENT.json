@@ -1,0 +1,15 @@
+{
+  "status": "Candidate retired under L42 while Q181/Q182 remain OPEN",
+  "timestamp_utc": "2026-11-22T20:22:28.530059+00:00",
+  "base_commit": "c5cf660c8aea17facdef92329047b65de391ff28",
+  "candidate_files": 51,
+  "candidate_aggregate_sha256": "30b4360d9ded7caf27f1b6bc449254287c3b3156cf9852d85354a4c120db122d",
+  "archive": "~/_to_delete/ZYRA_LINE126_2026-11-22/candidate/",
+  "method": "Move own candidate files first; re-materialize tracked accepted blobs using read-only git show. No git checkout, restore, reset, clean, branch or remote change.",
+  "new_files_left_absent": [
+    "SOURCE/test/support/zyra_rendered_text_contrast.dart",
+    "SOURCE/test/visual/line126_remaining_routes_test.dart",
+    "SOURCE/test/zyra_clearer_text_contrast_test.dart",
+    "SOURCE/test/zyra_clearer_text_theme_test.dart"
+  ]
+}

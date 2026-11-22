@@ -1,0 +1,53 @@
+CURRENT: QUESTION after candidate checks; Q181/Q182 OPEN.
+Candidate retired under L42; accepted source/test/iOS/README clean.
+See ../LINE126/HANDOFF.txt for current state and exact results.
+Everything below is dated preflight history, not a live build claim.
+
+CURRENT: Q177 ANSWERED; corrected pack passes independent preflight.
+Small green #326B4C gives 5.0689:1 at the gradient endpoint, 5.2913:1 on
+#F1EBDF and 5.6799:1 on the permitted floating composite #F8F3E9.
+Threshold: every text under 24 pt at any weight >=4.5:1; 24 pt+ >=3:1;
+under 16 pt weight >=400. The private V302 prototype was reviewed in place;
+its text-correction function and named values match the corrected spec.
+No private prototype content is copied into this public record.
+Line126 returned to WAITING. Implementation CI45041048588 for line125 passed;
+source writes remain held until its handover is pushed and source is clean.
+
+Initial preflight, retained as history (superseded by Q177 answer):
+Line 126 / OA-ZYRA-371 / Q177 - QUESTION, no implementation yet.
+Built from: none. Reviewed brief FIX_BRIEF_2026-11-22_CLEARER_TEXT.md,
+APP_COLOURS_SPEC_CURRENT_VERSION_V9.md and LOCK_RECORD.md. Hashes in PREFLIGHT.json.
+
+The prescribed small green #3D7D5A gives 3.9597:1 on #EEE6D8,
+4.1334:1 on #F1EBDF and 4.4370:1 on the permitted .85 floating fill
+over the gradient endpoint. These are numeric colour-pair measurements, not
+rendered-screen findings. V9 requires 4.5:1 against each actual background.
+The spec allows the large-text threshold from 18.66 pt for weight 600+;
+the brief instead requires 4.5:1 for all text under 24 pt. Prototype V296+
+is named without an accessible path or URL in these inputs.
+Q177 asks ZYRA Claude to supply a consistent Founder-approved rule and reference.
+Codex has not selected a colour, changed a design, or weakened a test.
+Current planned-app uses of the existing green found in the source review are
+shapes/icons/dots, with labels in separate normal ink. No green-text render
+failure has been observed; the green concern is the prescribed token rule.
+
+Integration findings for resumption:
+- SOURCE/lib/theme/zyra_text.dart::_appStyle is the shared reading-style seam.
+  Several shared styles use weight 300 below 16 pt; Material textTheme also needs coverage.
+- goldText #845F24 and secondaryText #6E6257 already exist in zyra_colors.dart.
+  Small green needs a separate text token; preserve icons, dots, shapes and fills.
+- 27 explicit thin overrides in lib/dev and lib/widgets may bypass a shared clamp.
+  Check walkthrough labels, faded sign-up labels and floating-navigation .45 text.
+- Existing LOCK14 tests check tokens/Text widgets, not full real backgrounds.
+  Reuse BaselineHarness and current role/sign-up/walkthrough fixture matrices;
+  resolve RichText/inheritance/opacity/scroll extents against background-only renders.
+
+Source-write prerequisites remain line 125 hosted CI success, its handover pushed,
+and clean SOURCE/lib,test,ios. At preflight source paths are clean, CI is pending.
+No source edits, test edits, native builds, phone work, migrations or server changes.
+No regression/capture pass is claimed. No roadmap row, version or README change.
+Related Claude inputs and unrelated Claude files are left for their owners.
+
+Next: ZYRA Claude answers Q177 and updates locked inputs; recheck them and line 125
+gates, then implement exactly, independently review, run visual/full checks,
+public checks and hosted CI, and complete the as-built handover before line 127.

@@ -1,0 +1,10 @@
+{
+  "status": "QUESTION; no candidate build delivered",
+  "commit_sha": "c5cf660c8aea17facdef92329047b65de391ff28",
+  "commit_scope": "Accepted base only; candidate code was never committed",
+  "flutter_version": "3.44.2 existing pinned SDK",
+  "build_mode": "Widget test renders only; no native build",
+  "timestamp_utc": "2026-11-22T20:24:30.470246+00:00",
+  "candidate_archive": "~/_to_delete/ZYRA_LINE126_2026-11-22/candidate/",
+  "native_phone_server_work": false
+}

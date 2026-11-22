@@ -1,0 +1,1296 @@
+{
+  "status": "Candidate QUESTION evidence, not a delivered build",
+  "tests_passed": 82,
+  "seconds": 13,
+  "pngs_rendered": 107,
+  "pngs_retained": 9,
+  "extra_captures_retired_to": "~/_to_delete/ZYRA_LINE126_2026-11-22/extra_captures/",
+  "no_text_or_exif_metadata": true,
+  "retained_aggregate_sha256": "8c5050a9d2033e5d0048e3bbfebbe9c6c1e7c2f960479fd27a0139d03bc78503",
+  "files": [
+    {
+      "path": "CAPTURES/a11y_code.png",
+      "retained": false,
+      "bytes": 501390,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/a11y_filters.png",
+      "retained": false,
+      "bytes": 471843,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/a11y_guardian_tab0.png",
+      "retained": true,
+      "bytes": 523136,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/a11y_guardian_tab1.png",
+      "retained": false,
+      "bytes": 394893,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/a11y_guardian_tab2.png",
+      "retained": false,
+      "bytes": 645445,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/a11y_guardian_tab3.png",
+      "retained": false,
+      "bytes": 457286,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/a11y_guardian_tab4.png",
+      "retained": false,
+      "bytes": 515427,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/a11y_haptics.png",
+      "retained": false,
+      "bytes": 442258,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/a11y_partner_preference.png",
+      "retained": false,
+      "bytes": 567919,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/a11y_partner_preference_last.png",
+      "retained": false,
+      "bytes": 540262,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/a11y_phone_access.png",
+      "retained": false,
+      "bytes": 537458,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/a11y_requests.png",
+      "retained": false,
+      "bytes": 455848,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/a11y_seeker_tab0.png",
+      "retained": false,
+      "bytes": 397033,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/a11y_seeker_tab1.png",
+      "retained": false,
+      "bytes": 438508,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/a11y_seeker_tab2.png",
+      "retained": false,
+      "bytes": 646697,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/a11y_seeker_tab3.png",
+      "retained": false,
+      "bytes": 556487,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/a11y_seeker_tab4.png",
+      "retained": false,
+      "bytes": 587607,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/c01_profiles.png",
+      "retained": false,
+      "bytes": 365305,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/c02_journey_tab.png",
+      "retained": false,
+      "bytes": 409060,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/c03_my_zyra.png",
+      "retained": true,
+      "bytes": 559020,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/c04_guardian_tab.png",
+      "retained": false,
+      "bytes": 481492,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/c05_profile_tab.png",
+      "retained": false,
+      "bytes": 540710,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/c06_filters_where.png",
+      "retained": false,
+      "bytes": 421891,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/c07_requests_opened.png",
+      "retained": false,
+      "bytes": 412895,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/c08_add_guardian_found.png",
+      "retained": true,
+      "bytes": 446673,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/c09_guardian_my_zyra.png",
+      "retained": true,
+      "bytes": 664642,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/c10_guardian_network.png",
+      "retained": false,
+      "bytes": 460633,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/c12_splash.png",
+      "retained": false,
+      "bytes": 582327,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/c13_iphone_launch.png",
+      "retained": false,
+      "bytes": 34449,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "CAPTURES/c14_traffic_light_dots.png",
+      "retained": true,
+      "bytes": 570727,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/g01_guardian__name.png",
+      "retained": false,
+      "bytes": 321538,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/g02_guardian__relationship_empty.png",
+      "retained": false,
+      "bytes": 366642,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/g03_guardian__relationship_chosen.png",
+      "retained": false,
+      "bytes": 353572,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/g04_guardian__add_seeker.png",
+      "retained": false,
+      "bytes": 352156,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/g05_guardian__verify.png",
+      "retained": false,
+      "bytes": 406754,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/g06_guardian__account_ready.png",
+      "retained": false,
+      "bytes": 372170,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/g07_guardian__setup_about_you.png",
+      "retained": false,
+      "bytes": 349013,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/g08_guardian__setup_all_set.png",
+      "retained": false,
+      "bytes": 307387,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s01_splash.png",
+      "retained": false,
+      "bytes": 229680,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s02_welcome__iphone_apple_first.png",
+      "retained": false,
+      "bytes": 285630,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s03_welcome__android_google_first.png",
+      "retained": false,
+      "bytes": 285744,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s04_role__seeker_card.png",
+      "retained": false,
+      "bytes": 390738,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s05_role__guardian_card.png",
+      "retained": false,
+      "bytes": 396296,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s06_name__filled_from_apple.png",
+      "retained": false,
+      "bytes": 321054,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s07_name__empty_error.png",
+      "retained": false,
+      "bytes": 340537,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s08_dob__empty.png",
+      "retained": false,
+      "bytes": 340144,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s09_dob__filled.png",
+      "retained": false,
+      "bytes": 332084,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s10_dob__year_error.png",
+      "retained": false,
+      "bytes": 360080,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s11_dob__under_18.png",
+      "retained": false,
+      "bytes": 360592,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s12_gender__none.png",
+      "retained": false,
+      "bytes": 372692,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s13_gender__male_chosen.png",
+      "retained": false,
+      "bytes": 358511,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s14_location__empty.png",
+      "retained": false,
+      "bytes": 364598,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s15_location__chosen.png",
+      "retained": false,
+      "bytes": 362654,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s16_nationality__chosen.png",
+      "retained": false,
+      "bytes": 340974,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s17_ethnicity__several.png",
+      "retained": false,
+      "bytes": 356711,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s18_ethnicity__empty.png",
+      "retained": false,
+      "bytes": 358603,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s19_photos__empty.png",
+      "retained": false,
+      "bytes": 365653,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s20_photos__two.png",
+      "retained": false,
+      "bytes": 353980,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s21_verify.png",
+      "retained": true,
+      "bytes": 406754,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s21_verify__after_do_this_later.png",
+      "retained": false,
+      "bytes": 435515,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s22_plan__seeker_one.png",
+      "retained": false,
+      "bytes": 437093,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s23_plan__seeker_basic.png",
+      "retained": false,
+      "bytes": 425203,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s24_account_ready__verified.png",
+      "retained": false,
+      "bytes": 405679,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s25_account_ready__not_verified.png",
+      "retained": true,
+      "bytes": 413154,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s26_setup__partner_preferences_bar.png",
+      "retained": false,
+      "bytes": 626063,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s27_setup__about_you.png",
+      "retained": false,
+      "bytes": 349013,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s28_setup__add_guardian.png",
+      "retained": false,
+      "bytes": 400453,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s29_setup__all_set.png",
+      "retained": false,
+      "bytes": 307387,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s91_error__offline.png",
+      "retained": false,
+      "bytes": 424083,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "SIGNUP_CAPTURES/s92_error__server.png",
+      "retained": false,
+      "bytes": 446418,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t00_welcome.png",
+      "retained": true,
+      "bytes": 368370,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t01_profiles_this_is_profiles.png",
+      "retained": false,
+      "bytes": 355713,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t02_profiles_each_card_is_one_person.png",
+      "retained": false,
+      "bytes": 403600,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t03_profiles_see_their_photos.png",
+      "retained": false,
+      "bytes": 402831,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t04_profiles_ready_to_begin.png",
+      "retained": false,
+      "bytes": 384379,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t05_journey_this_is_journey.png",
+      "retained": false,
+      "bytes": 330060,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t06_journey_nothing_here_yet.png",
+      "retained": false,
+      "bytes": 333773,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t07_my_zyra_this_is_my_zyra.png",
+      "retained": false,
+      "bytes": 355613,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t08_my_zyra_needs_you.png",
+      "retained": false,
+      "bytes": 508186,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t09_my_zyra_at_a_glance.png",
+      "retained": false,
+      "bytes": 498360,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t10_my_zyra_quick_access.png",
+      "retained": false,
+      "bytes": 523627,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t11_guardian_this_is_guardian.png",
+      "retained": false,
+      "bytes": 449845,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t12_guardian_your_guardians.png",
+      "retained": false,
+      "bytes": 469975,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t13_guardian_what_they_can_see.png",
+      "retained": false,
+      "bytes": 468756,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t14_guardian_talk_and_add.png",
+      "retained": false,
+      "bytes": 439413,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t15_profile_this_is_profile.png",
+      "retained": false,
+      "bytes": 464505,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t16_profile_your_profile.png",
+      "retained": false,
+      "bytes": 468244,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t17_profile_your_membership.png",
+      "retained": false,
+      "bytes": 478664,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t18_profile_settings.png",
+      "retained": false,
+      "bytes": 476109,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t19_end.png",
+      "retained": false,
+      "bytes": 475935,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/t99_settings_replay_row.png",
+      "retained": false,
+      "bytes": 440979,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/tg00_welcome.png",
+      "retained": true,
+      "bytes": 487750,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/tg01_network_this_is_network.png",
+      "retained": false,
+      "bytes": 390400,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/tg02_network_choose_your_seeker.png",
+      "retained": false,
+      "bytes": 454864,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/tg03_network_introduce_or_connect.png",
+      "retained": false,
+      "bytes": 466690,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/tg04_journeys_this_is_journeys.png",
+      "retained": false,
+      "bytes": 438646,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/tg05_journeys_open_a_journey.png",
+      "retained": false,
+      "bytes": 415518,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/tg06_my_zyra_this_is_my_zyra.png",
+      "retained": false,
+      "bytes": 454681,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/tg07_my_zyra_needs_you.png",
+      "retained": false,
+      "bytes": 555921,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/tg08_my_zyra_quick_access.png",
+      "retained": false,
+      "bytes": 555289,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/tg09_seekers_this_is_seekers.png",
+      "retained": false,
+      "bytes": 404562,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/tg10_seekers_swipe_through.png",
+      "retained": false,
+      "bytes": 468788,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/tg11_seekers_talk_and_invite.png",
+      "retained": false,
+      "bytes": 393765,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/tg12_profile_this_is_profile.png",
+      "retained": false,
+      "bytes": 418837,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/tg13_profile_your_membership.png",
+      "retained": false,
+      "bytes": 434402,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/tg14_profile_settings.png",
+      "retained": false,
+      "bytes": 426875,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    },
+    {
+      "path": "TOUR_CAPTURES/tg15_end.png",
+      "retained": false,
+      "bytes": 427477,
+      "png_chunks": [
+        "IDAT",
+        "IEND",
+        "IHDR",
+        "sBIT",
+        "sRGB"
+      ]
+    }
+  ]
+}

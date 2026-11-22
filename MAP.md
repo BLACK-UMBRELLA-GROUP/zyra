@@ -594,8 +594,8 @@ _Stop here unless you need to look up another ID._
 | DOC-ZYRA-0324 | `PRODUCT/APPROVED/REQUEST_ROW/BRIEFS/BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 7 - Profiles request row as one pill | AD-AIOS-115 | 1 |
 | DOC-ZYRA-0325 | `PRODUCT/APPROVED/GUARDIAN_TABS/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 8 - the Guardian app's five tabs (Network, Journeys, My ZYRA, Seekers, Profile) and… | AD-AIOS-115, DR-ZYRA-280, DR-ZYRA-292, DR-ZYRA-233, DOC-ZYRA-0278 | 4 |
 | DOC-ZYRA-0337 | `PRODUCT/APPROVED/APP_COLOURS/BRIEFS/BUILD_BRIEF_2026-10-30.md` | PLAN | Codex build brief for LOCK 14 - app colours Ivory (planned app, icon, launch, splash) | AD-AIOS-115 | 2 |
-| DOC-ZYRA-0338 | `PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V8.md` | SPEC | Spec for LOCK 14 - ZYRA app colours: Ivory, gold and warm neutrals, no purple; matching app icon and splash;… | DR-ZYRA-276, AD-AIOS-115 | 9 |
 | DOC-ZYRA-0339 | `PRODUCT/APPROVED/APP_COLOURS/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 14 - ZYRA app colours (Ivory, gold, warm neutrals; matching icon and splash; no member… | AD-AIOS-115 | 4 |
+| DOC-ZYRA-0338 | `PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V9.md` | SPEC | Spec for LOCK 14 - ZYRA app colours: Ivory, gold and warm neutrals, no purple; matching app icon and splash;… | DR-ZYRA-276, AD-AIOS-115 | 10 |
 | DOC-ZYRA-0342 | `PRODUCT/APPROVED/CODE_PAGE/BRIEFS/BUILD_BRIEF_2026-10-30_V2.md` | PLAN | Codex build brief for LOCK 9 - ZYRA Code page, second attempt after queue line 24 stopped | AD-AIOS-115, DR-ZYRA-231 | 1 |
 | DOC-ZYRA-0343 | `PRODUCT/APPROVED/CODE_PAGE/RECORD/CODE_PAGE_SPEC_CURRENT_VERSION_V4.md` | SPEC | Spec for LOCK 9 - ZYRA Code pages (V4 - V3 refresh plus the shared code link - exact zyraconnect.app… | DOC-ZYRA-0282, DR-ZYRA-231, AD-AIOS-115 | 13 |
 | DOC-ZYRA-0344 | `PRODUCT/APPROVED/CODE_PAGE/RECORD/LOCK_RECORD.md` | DECISION | LOCK record for LOCK 9 - the ZYRA Code page (find or link someone by code), used on Scan, Add a Guardian and… | AD-AIOS-115 | 2 |
@@ -854,6 +854,7 @@ _Stop here unless you need to look up another ID._
 Documents without a header (14) — add one so they appear above:
 
 - `PRODUCT/APPROVED/APP_COLOURS/BRIEFS/FIX_BRIEF_2026-11-13_ONE_CARD_COLOUR.md` (2 KB)
+- `PRODUCT/APPROVED/APP_COLOURS/BRIEFS/FIX_BRIEF_2026-11-22_CLEARER_TEXT.md` (1 KB)
 - `PRODUCT/APPROVED/APP_SWIPE/BRIEFS/FIX_BRIEF_2026-11-13_STILL_PAGES.md` (1 KB)
 - `PRODUCT/APPROVED/DEV_TOGGLES/BRIEFS/DEV_PANEL_BRIEF_2026-11-18_V2.md` (1 KB)
 - `PRODUCT/APPROVED/FIRST_TOUR/BRIEFS/BUILD_BRIEF_2026-11-19_V1.md` (2 KB)

@@ -1,0 +1,64 @@
+CURRENT STATE: implementation in progress; final audit, regression, CI and commit pending.
+Line 126 / OA-ZYRA-371. Founder GO in approved order125 ->126 ->127.
+Authority: FIX_BRIEF_2026-11-22_CLEARER_TEXT.md, APP_COLOURS V9, Q177/Q178.
+Q179 label-fit decision pending. This is a draft as-built record, not a passed handover.
+
+Built from the corrected locked APP_COLOURS V9 and its named private prototype V302,
+reviewed in place. The private prototype is not copied into this public repository.
+Line125 implementation d1f9223b passed hosted CI45041048588 all three shards;
+its handover c5cf660c was on origin/main and lib/test/ios were clean before writes.
+
+BEHAVIOUR AND ARCHITECTURE
+Shared ZyraColors defines separate text inks: gold #845F24, green #326B4C,
+secondary #6E6257, existing danger #AC453E and espresso #2B2420 on gold fills.
+Icon, outline, dot and shape roles retain their separate tokens. Q178 restores
+the existing #C08A3A text-bearing gold fill on two missed button callers.
+ZyraText applies a regular400 floor under 16 pt and the named small-text inks under 24 pt;
+Material textTheme and final explicit local-style helpers apply the same policy.
+Local bypasses are corrected only where later overrides or inherited ButtonStyle
+foreground would otherwise defeat those shared rules. Reading face and wording remain.
+
+No account state, entitlement, navigation authority, persistence or transport change.
+No new runtime toggle, backend call, migration, native build, phone install or upload.
+The preview continues to use its existing guarded local sample fixtures; these tests
+add no member-facing navigation or fixture controls. No app version change.
+
+VERIFICATION SO FAR
+- Existing pinned Flutter3.44.2 guard: five pins and inherited Git denial PASS.
+- Shared theme and LOCK14 tests:12passed.
+- Legacy route/Larger Text/Increase Contrast render checks:3passed,30captures.
+- Sign-up and walkthrough render/placement checks:79passed,77captures.
+- Automatic rendered contrast audit: in development; final results pending.
+  An antialiasing probe artifact was caught by a real-font positive control and
+  superseded, not treated as an app defect. Source colour alone is not accepted
+  as real-background evidence. Expanded positive/negative controls are required.
+- Analyzer, whole regression, independent final review and hosted CI: pending.
+
+OPEN ITEM / NEXT STEP
+Q179: regular-weight Introductions label has a trailing-letter wrap at 430x932;
+ZYRA Claude must specify the fit rule before that one adjustment. Remaining work
+continues. Finish reliable complete route/state audit, fix confirmed violations,
+freeze source, rerun named visual checks, analyzer/full regression and independent
+review, public checks and exact-commit hosted CI, then finalise this handover.
+No next queue line may treat this draft as BUILT.
+
+LIVE LIBRARY FILES (current snapshot; final per-file counts recorded at completion)
+SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart
+SOURCE/lib/dev/zyra_draft_compatibility_presentation.dart
+SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart
+SOURCE/lib/dev/zyra_first_tour_overlay.dart
+SOURCE/lib/dev/zyra_founder_launch_screen.dart
+SOURCE/lib/dev/zyra_one_journey_browse_designs.dart
+SOURCE/lib/dev/zyra_one_journey_concept_shell.dart
+SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart
+SOURCE/lib/dev/zyra_one_journey_journey_presentation.dart
+SOURCE/lib/dev/zyra_one_journey_location_sheet.dart
+SOURCE/lib/dev/zyra_one_journey_monogram_presentation.dart
+SOURCE/lib/dev/zyra_one_journey_tab.dart
+SOURCE/lib/dev/zyra_signup_preview.dart
+SOURCE/lib/theme/zyra_colors.dart
+SOURCE/lib/theme/zyra_text.dart
+SOURCE/lib/widgets/zyra_developer_panel.dart
+SOURCE/lib/widgets/zyra_focus_dashboard.dart
+SOURCE/lib/widgets/zyra_full_screen_error.dart
+SOURCE/lib/widgets/zyra_invitation_label.dart

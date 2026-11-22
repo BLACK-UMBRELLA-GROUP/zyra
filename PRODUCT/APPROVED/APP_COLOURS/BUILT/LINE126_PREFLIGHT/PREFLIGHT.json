@@ -1,0 +1,80 @@
+{
+  "status": "QUESTION after candidate checks; Q181/Q182 unresolved; candidate retired under L42",
+  "question": 177,
+  "action": "OA-ZYRA-371",
+  "timestamp_utc": "2026-11-22T16:02:10.441712+00:00",
+  "method": "sRGB relative luminance; ratio (Lmax+0.05)/(Lmin+0.05); rounded 8-bit alpha composite for floating surface",
+  "floating_fill": "rgba(250,245,236,0.85) over #EEE6D8 -> #F8F3E9",
+  "contrast": {
+    "#845F24": {
+      "#FBF7F0": 5.397171204780615,
+      "#EEE6D8": 4.65099203905232,
+      "#F1EBDF": 4.855001526616895,
+      "#F4EEE4": 4.994344555437868,
+      "#F8F3E9": 5.211568017007042
+    },
+    "#3D7D5A": {
+      "#FBF7F0": 4.595020635011318,
+      "#EEE6D8": 3.95974179469956,
+      "#F1EBDF": 4.1334305233926525,
+      "#F4EEE4": 4.252063797840238,
+      "#F8F3E9": 4.43700258344608
+    },
+    "#6E6257": {
+      "#FBF7F0": 5.54286615376911,
+      "#EEE6D8": 4.776544114790702,
+      "#F1EBDF": 4.986060774678727,
+      "#F4EEE4": 5.129165324990438,
+      "#F8F3E9": 5.352252665979333
+    },
+    "#AC453E": {
+      "#FBF7F0": 5.350945990199995,
+      "#EEE6D8": 4.611157633794337,
+      "#F1EBDF": 4.813419838943487,
+      "#F4EEE4": 4.951569434915441,
+      "#F8F3E9": 5.166932440193348
+    },
+    "#2B2420": {
+      "#FBF7F0": 14.291764479400035,
+      "#EEE6D8": 12.315874426740963,
+      "#F1EBDF": 12.85609363365688,
+      "#F4EEE4": 13.225075397287359,
+      "#F8F3E9": 13.800285342340944
+    }
+  },
+  "implementation_base": "d1f9223bb7979f20c12c94759b7e1db1a0b1a5ac",
+  "source_paths_unchanged": true,
+  "line125_gates": "Implementation CI45041048588 passed all shards; handover push pending",
+  "disk_free": "50GiB reported by df",
+  "start_pack_bytes": 16775,
+  "scope": "Read-only design/source preflight; no renders, regression or native work performed",
+  "network_failures": 0,
+  "named_input_sha256": {
+    "PRODUCT/APPROVED/APP_COLOURS/BRIEFS/FIX_BRIEF_2026-11-22_CLEARER_TEXT.md": "b0cc09561315e629a545050fd3c05063c831f2f568663ccb1019a9dcd65725a0",
+    "PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V9.md": "0247967d923186a99812a308afd21405974b76ca31991be9d84b7ff26c18da7a",
+    "PRODUCT/APPROVED/APP_COLOURS/RECORD/LOCK_RECORD.md": "fbdad1e68bffa677e43e094a46650271b5fddede1aed21b61b90c61d12069697"
+  },
+  "green_source_scope": "No small-text use of positiveGreen/journeyDotGreen/#4E9A72 found in the current planned app; reviewed uses are shapes/icons/dots. Numeric token/background concern only, no rendered-screen failure observed.",
+  "correction": {
+    "question": 177,
+    "status": "ANSWERED",
+    "timestamp_utc": "2026-11-22T16:10:21.793482+00:00",
+    "green": "#326B4C",
+    "contrast": {
+      "#EEE6D8": 5.068926474441027,
+      "#F1EBDF": 5.291268091857326,
+      "#F7F2EA": 5.636687176076667,
+      "#F8F3E9": 5.679875362706453
+    },
+    "thresholds": "<24pt at any weight >=4.5:1; >=24pt >=3:1; <16pt weight >=400",
+    "input_sha256": {
+      "PRODUCT/APPROVED/APP_COLOURS/BRIEFS/FIX_BRIEF_2026-11-22_CLEARER_TEXT.md": "e2cda8b19b6267de6826accbd340f0f20850a5ea636b9eb8ec8a77f3a105ded0",
+      "PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V9.md": "d65cbe042dd4801a656e7ffabfda1ccf0e06fba43a65922d222d595c88861898",
+      "PRODUCT/APPROVED/APP_COLOURS/RECORD/LOCK_RECORD.md": "fbdad1e68bffa677e43e094a46650271b5fddede1aed21b61b90c61d12069697"
+    },
+    "prototype_reference": "Private Founder prototype V302 reviewed in place; no copy stored in public repo",
+    "prototype_sha256": "48c16414bb67fbbcc23c4c9baff00d5cd26fa210761ce9efb91be8e6ac0cd620"
+  },
+  "current_handoff": "../LINE126/HANDOFF.txt",
+  "source_paths_clean_after_retirement": true
+}

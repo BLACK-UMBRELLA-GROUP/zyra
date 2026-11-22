@@ -1,0 +1,15 @@
+{
+  "verdict": "Accurate QUESTION handoff; not approval or BUILT",
+  "checks": {
+    "candidate_archive_entries": 51,
+    "library_files": 21,
+    "duplicate_paths": 0,
+    "archive_paths_sizes_and_receipt_match": true,
+    "source_test_ios_READMEs_clean": true,
+    "raw_audit_counts_independently_matched": true,
+    "post_audit8test_fix_scope_explicit": true,
+    "no_overall_pass_claim": true
+  },
+  "correction": "Q182 raw report reference corrected from finalprobe to final.json",
+  "review_method": "Read-only metadata/stat and measured report verification; candidate source not recopied"
+}

@@ -1,0 +1,84 @@
+{
+  "status": "QUESTION - neither code nor contrast gate complete",
+  "action": "OA-ZYRA-371",
+  "questions_open": [
+    181,
+    182
+  ],
+  "recorded_utc": "2026-11-22T20:19:07.843539+00:00",
+  "guard": {
+    "sdk": "Flutter3.44.2 existing pinned SDK",
+    "pins": 5,
+    "inherited_git_execution_denial": "PASS"
+  },
+  "analyzer": "Final whole candidate analyzer: No issues found (5.0sec)",
+  "contrast_audit": {
+    "test_bodies_passed": 367,
+    "final_contrast_gate": "FAILED",
+    "seconds": 270,
+    "frames": 2933,
+    "observed_route_ids": 65,
+    "signup_steps": 19,
+    "tour_frames": 36,
+    "plan_tab_combinations": 20,
+    "coverage_gaps": [],
+    "weight_failure_observations": 0,
+    "repeated_contrast_failure_observations": 4417,
+    "distinct_text_style_pairs": 335,
+    "controls_passed": 16,
+    "real_shadows": true,
+    "scope_note": "Completed matrix precedes final Use this answer colour-only correction; that correction passed8focusedtests. No subtraction or overall contrast pass inferred. Email auth cleanup preserved the audited presenter/render/data path;102focused cases passed afterward.",
+    "excluded_routes": {
+      "saved": "Retired route renders only the unavailable fallback; no current opener.",
+      "paused": "Retired route renders only the unavailable fallback; no current opener.",
+      "past_journeys": "Retired alias has no current opener; the current ended route remains required.",
+      "guardian_network_profile": "OA-ZYRA-371: dormant retained presenter; no opener anywhere in SOURCE/lib and absent from guardianPages restoration whitelist (zyra_one_journey_concept_shell.dart:2003\u20132017). Current Network and rejected-checkpoint boundaries are tested; no render pass is claimed."
+    },
+    "raw_report": "SOURCE/build/line126-contrast-final.json (ignored local run output; not published)"
+  },
+  "broad_regression": {
+    "files": 581,
+    "dedicated_audit_run_separately": true,
+    "passed": 7619,
+    "failed": 12,
+    "skipped": 202,
+    "seconds": 462.599,
+    "source_and_selected_tests_unchanged_during_run": true,
+    "followup": "Nine stale small-text colour assertions corrected;70focused tests passed. Remaining compact Guardian fit test and2golden mismatches held underQ181. No broad pass claimed."
+  },
+  "followup_focused": [
+    {
+      "scope": "Corrected colour expectations in5existingfiles",
+      "passed": 70
+    },
+    {
+      "scope": "Final remaining route/presenter fixture, after removing redundant new auth bootstrap",
+      "passed": 102
+    },
+    {
+      "scope": "Final Use this answer colour-only fix",
+      "passed": 8
+    },
+    {
+      "scope": "Shared theme + LOCK14",
+      "passed": 12
+    }
+  ],
+  "visual": {
+    "final_candidate_tests_passed": 82,
+    "seconds": 13,
+    "pngs_rendered": 107,
+    "representatives_retained": 9,
+    "manifest": "RENDER_MANIFEST.json"
+  },
+  "native_phone_server": "None; no migrations, build, install, upload or live service changes",
+  "hosted_ci": "No candidate code committed/pushed: failed local gates; no candidate hosted CI requested",
+  "public_candidate": {
+    "files_checked": 51,
+    "hits": 37,
+    "unchanged_source_hits": 35,
+    "technical_Dart_record_field_hits": 2,
+    "unreviewed": 0
+  },
+  "source_now": "Candidate retired underL42; accepted source/test/iOS/README exactly clean"
+}

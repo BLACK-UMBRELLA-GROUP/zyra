@@ -1,0 +1,24 @@
+{
+  "verdict": "QUESTION: corrected flat-colour preflight passed, subsequent rendered fit/contrast gates not passed",
+  "scope": "Preflight documentation, Q177, queue126 status only",
+  "checks": {
+    "contrast_pairs": 25,
+    "independently_recomputed": true,
+    "mismatches": 0,
+    "floating_composite": "#F8F3E9",
+    "no_render_or_regression_claim": true,
+    "no_source_test_ios_changes": true,
+    "no_invented_colour_or_design": true
+  },
+  "limitations": "Numeric token/background concerns are not observed rendered-screen failures. Some older table surfaces are superseded by V8; the active gradient and permitted floating fill suffice for the numeric concern. Current planned-app green uses found are shapes/icons/dots, not text.",
+  "corrected_pack": {
+    "verdict": "PASS",
+    "question177": "ANSWERED",
+    "green": "#326B4C",
+    "thresholds_match_brief": true,
+    "private_V302_reference_accepted": true
+  },
+  "candidate_controls": 16,
+  "candidate_controls_passed": true,
+  "final_handoff": "../LINE126/HANDOFF.txt"
+}

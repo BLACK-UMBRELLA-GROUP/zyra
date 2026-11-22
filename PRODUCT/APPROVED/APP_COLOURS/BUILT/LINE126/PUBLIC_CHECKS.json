@@ -1,0 +1,21 @@
+{
+  "status": "Documentation-only QUESTION handoff; no candidate code pushed",
+  "files_checked": 33,
+  "checker_exit": 1,
+  "reviewed_hits": {
+    "PNG compressed bytes; no text/EXIF chunks": 535,
+    "Exact unchanged HEAD text": 10
+  },
+  "unreviewed_hits": [],
+  "PNG_metadata": "All107rendered PNGs checked: no tEXt/zTXt/iTXt/eXIf chunks;9retained",
+  "A": {
+    "staged_scan": "PASS0leaks",
+    "outgoing_scan": "Pending after documentation commit",
+    "candidate_code_push": "None - failed local gates; candidate retired"
+  },
+  "B": "No private prototype/source copies/compiled binaries/business plans/amounts introduced",
+  "C": "No ROADMAP row finished",
+  "D": "No version or release change",
+  "E": "Neutral authored wording; candidate source old-line hits separately reviewed",
+  "F": "Candidate README retired/restored; no delivered behavior or run-instruction change"
+}

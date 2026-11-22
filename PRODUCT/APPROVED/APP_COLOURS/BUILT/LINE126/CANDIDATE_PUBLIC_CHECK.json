@@ -1,0 +1,270 @@
+{
+  "files_checked": 51,
+  "hits": [
+    {
+      "file": "README.md",
+      "line": 73,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "line": 631,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "line": 634,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "line": 636,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart",
+      "line": 633,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart",
+      "line": 639,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "line": 997,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 2915,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10111,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "line": 10112,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "line": 1878,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 544,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 588,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 591,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 620,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 665,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 666,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 667,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 693,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "line": 694,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 31,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 1650,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 1655,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 1660,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 1662,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "line": 1669,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/test/inline_invitation_presentation_test.dart",
+      "line": 295,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/test/support/zyra_rendered_text_contrast.dart",
+      "line": 375,
+      "kind": "money",
+      "unchanged_in_HEAD": false,
+      "review": "Dart positional record fields use dollar-number syntax; technical code, no commercial amount"
+    },
+    {
+      "file": "SOURCE/test/support/zyra_rendered_text_contrast.dart",
+      "line": 376,
+      "kind": "money",
+      "unchanged_in_HEAD": false,
+      "review": "Dart positional record fields use dollar-number syntax; technical code, no commercial amount"
+    },
+    {
+      "file": "SOURCE/test/visual/lock19_v3_family_acceptance_test.dart",
+      "line": 276,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "line": 186,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "line": 187,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "line": 188,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/test/visual/lock35_guardian_seekers_test.dart",
+      "line": 330,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/test/visual/lock35_guardian_seekers_test.dart",
+      "line": 334,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/test/visual/lock35_guardian_seekers_test.dart",
+      "line": 345,
+      "kind": "money",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    },
+    {
+      "file": "SOURCE/test/zyra_draft_compatibility_score_designs_test.dart",
+      "line": 17,
+      "kind": "wording",
+      "unchanged_in_HEAD": true,
+      "review": "Exact unchanged source/fixture line in HEAD"
+    }
+  ],
+  "verdict": "Reviewed; no private material or new prohibited wording added",
+  "summary": {
+    "unchanged_hits": 35,
+    "new_technical_false_positives": 2,
+    "unreviewed": 0
+  }
+}

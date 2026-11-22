@@ -1,0 +1,19 @@
+Conversation: new (started15:58 London,22 Nov 2026). Line126/OA-ZYRA-371.
+Start pack16,775 bytes. Initial whole-lessons/broad question reads exceeded L46;
+corrected to bounded reads, existing OA-AIOS-471 applies. Named input hashes and
+read-only preflight history retained here. Four helpers including one nested
+reviewer split design, callsite corrections, render audit and independent review.
+Actual root count-only snapshot in USAGE.json; helper usage unavailable.
+
+STATUS: QUESTION, not BUILT. Q177/Q178 resolved; Q181/Q182 remain OPEN.
+Candidate implementation/audit prepared and measured; exact results and file
+counts in ../LINE126/HANDOFF.txt and JSON records. No implementation commit or
+push: local contrast/fit gates fail.51 own candidate files retired under L42;
+accepted source/test/iOS/README clean at c5cf660c.9 representative candidate PNGs
+retained; no binaries/source copies in evidence. No phone/native/server work.
+
+Commit: documentation-only record pending; final identifier in today's owner note.
+Public checks:A pending;B reviewed;C none;D none;E neutral authored wording;
+F README candidate retired/restored, no delivered behavior change.
+Needed: ZYRA Claude answersQ181/Q182, corrected locked pack, then explicit gate
+recheck/resume. Preserved all unrelated Claude files and later queue rows.

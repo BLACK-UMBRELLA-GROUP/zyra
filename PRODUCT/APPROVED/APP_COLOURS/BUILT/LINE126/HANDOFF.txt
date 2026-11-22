@@ -1,0 +1,76 @@
+QUESTION - LINE126 NOT BUILT
+OA-ZYRA-371. Q181/Q182 remain OPEN; ZYRA Claude owns the corrected fit and
+contrast-scope rules. Founder order125 ->126 ->127 is preserved. No line127 start.
+
+CURRENT REPOSITORY STATE
+Line125 accepted source is c5cf660c (implementation d1f9223b and hosted
+CI45041048588 passed all3 shards). Its source/test/iOS were clean before126.
+The line126 candidate was NOT committed, pushed, installed or delivered.
+Under L42, all51 own candidate code/test/README files were moved to the single
+Mac delete folder; tracked accepted blobs were then materialised using read-only
+git show. No checkout, restore, reset, clean or history rewrite was used.
+SOURCE/lib,test,ios and README are clean. Unrelated Claude files remain untouched.
+Candidate: ~/_to_delete/ZYRA_LINE126_2026-11-22/candidate/; its PATHS.json and
+CANDIDATE_FILES.json list every file and changed-line count.21 library files.
+
+WHAT THE CANDIDATE CONTAINS
+Shared named small-text inks gold#845F24, green#326B4C, secondary#6E6257,
+existing danger#AC453E, and weight400 minimum under 16 pt. Material defaults and
+local overrides use the same rules. Q178 restores C08A3A/espresso on the tour
+button and Basic upsell; icon/outline/dot roles stay separate. A default raster
+audit uses real production presenters and backgrounds, original text metrics,
+actual opacity/shaders/shadows, grapheme/ligature boxes and editable content.
+It is not a source-colour-only check. Probe spans/settings restore in finally.
+Existing guarded-email tests remain untouched; new raster coverage directly
+mounts actual email presenters with local inputs. No duplicate auth bootstrap.
+No navigation authority, account state, entitlement, transport or runtime
+fixture door was added. No migrations, server apply, native or phone work.
+
+MEASURED CHECKS (KEPT SEPARATE)
+- Pinned Flutter3.44.2 guard:5 pins/inherited Git denial PASS.
+- Whole candidate analyzer:No issues,5.0 sec.
+- Final dedicated raster suite:367 test bodies PASS, final contrast gate FAIL;
+  4m30s.2933 paint frames,65observed route IDs,19 signup steps,36 tour frames,
+  20 plan/tab combinations.0 coverage gaps,0 weight failures.4417 repeated contrast
+  observations across 335 text/style pairs, NOT4417 unique defects.16 auditor
+  controls are included and pass. Raw data stays in ignored SOURCE/build.
+- Broad regression over 581files (audit separately):7619 pass/12 fail/202 skip,
+  462.599 sec; library/selected-test hash guard unchanged during that run.
+ 9 stale small-text colour assertions were corrected; focused5files70/70 pass.
+ Remaining compact Guardian card fit and2 golden mismatches stay withQ181;
+ no broad or golden pass is claimed.
+- Final route/presenter fixture after removing redundant new auth setup:
+ 102/102 pass; analyzer/publiccheck clean. Its painted email helper/group/data
+ match the completed raster run. Existing developer-entry guards passed in the
+ broad run and were never edited.
+- Final Use this answer direct colour correction:8focused tests PASS. This was
+ after the complete raster snapshot; no overall contrast pass inferred.
+- Final visual rerender:82tests PASS/13 sec,107PNGs produced.9 representatives
+ retained,98extras moved to the same Mac delete folder. PNGs have no text/EXIF
+ chunks. These are widget renders of a candidate, never phone screenshots.
+- Candidate public check:51 files,37hits reviewed (35unchanged source lines,
+ 2 Dart positional-record false positives); no private material added.
+
+BLOCKERS AND RESUMPTION
+Q181: quick-access labels cannot meet max2lines while preserving Larger Text,
+minimum font and fixed tiles. Guardian three-occupied-Journey card also gains
+15 pt scrolling at 375x667; proposed normal tracking needs design confirmation.
+Q182: prescribed inks fail on real tinted/shadowed backgrounds; parent-faded
+labels, visible dimmed backdrops, edge fades and decorative avatar initials need
+one consistent ink/audit rule. Exact observed examples in CONTRAST_SUMMARY.json.
+
+Resume in this same line only after the designer answers and updates the locked
+pack. Recheck queue status, current source cleanliness and accepted base; review
+any changed prototype/spec values. Recover the candidate from the single delete
+folder, preserving newer accepted/unrelated files. Apply only the approved fit
+and contrast corrections; rerun affected probes/screens and required regression.
+Update goldens only for approved text changes, then independent review/public
+checks, exact-commit hosted CI and final as-built handover. Candidate hosted CI
+was not requested because local gates failed. This handoff is not approval.
+
+AUTHORITY AND EVIDENCE
+Founder GO 22 Nov; APP_COLOURS V9/brief, Q177/Q178 corrections, Q179/Q180 fit
+answers and unresolvedQ181/Q182. Private prototypeV302 was inspected in place;
+no private prototype copy is published. CANDIDATE_HANDOVER.txt is historical
+in-progress notes only. CHECKS.json, RETIREMENT.json, CANDIDATE_FILES.json,
+CONTRAST_SUMMARY.json and RENDER_MANIFEST.json are the measured handoff records.

@@ -1,0 +1,366 @@
+{
+  "status": "Uncommitted candidate; not BUILT; pending Q181/Q182",
+  "base_commit": "c5cf660c8aea17facdef92329047b65de391ff28",
+  "files": [
+    {
+      "path": "README.md",
+      "added_lines": 5,
+      "removed_lines": 0,
+      "new_file": false,
+      "bytes": 20333
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_browse_utility_presentation.dart",
+      "added_lines": 8,
+      "removed_lines": 2,
+      "new_file": false,
+      "bytes": 24157
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_compatibility_presentation.dart",
+      "added_lines": 4,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 13017
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_draft_compatibility_store_presentation.dart",
+      "added_lines": 3,
+      "removed_lines": 2,
+      "new_file": false,
+      "bytes": 27753
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_first_tour_overlay.dart",
+      "added_lines": 5,
+      "removed_lines": 4,
+      "new_file": false,
+      "bytes": 19924
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_founder_launch_screen.dart",
+      "added_lines": 1,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 43372
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "added_lines": 2,
+      "removed_lines": 2,
+      "new_file": false,
+      "bytes": 42156
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_browse_designs.dart",
+      "added_lines": 1,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 8952
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "added_lines": 1,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 411250
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "added_lines": 4,
+      "removed_lines": 3,
+      "new_file": false,
+      "bytes": 75345
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_journey_presentation.dart",
+      "added_lines": 1,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 66264
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_location_sheet.dart",
+      "added_lines": 6,
+      "removed_lines": 4,
+      "new_file": false,
+      "bytes": 9772
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_monogram_presentation.dart",
+      "added_lines": 9,
+      "removed_lines": 6,
+      "new_file": false,
+      "bytes": 4209
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_tab.dart",
+      "added_lines": 1,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 24044
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "added_lines": 7,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 52448
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/compatibility_editors.dart",
+      "added_lines": 6,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 72450
+    },
+    {
+      "path": "SOURCE/lib/theme/zyra_colors.dart",
+      "added_lines": 43,
+      "removed_lines": 3,
+      "new_file": false,
+      "bytes": 20633
+    },
+    {
+      "path": "SOURCE/lib/theme/zyra_text.dart",
+      "added_lines": 50,
+      "removed_lines": 4,
+      "new_file": false,
+      "bytes": 17782
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_developer_panel.dart",
+      "added_lines": 7,
+      "removed_lines": 2,
+      "new_file": false,
+      "bytes": 28139
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_focus_dashboard.dart",
+      "added_lines": 20,
+      "removed_lines": 10,
+      "new_file": false,
+      "bytes": 20005
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_full_screen_error.dart",
+      "added_lines": 8,
+      "removed_lines": 0,
+      "new_file": false,
+      "bytes": 15933
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_invitation_label.dart",
+      "added_lines": 4,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 1874
+    },
+    {
+      "path": "SOURCE/test/dev_onboarding_gold_design_test.dart",
+      "added_lines": 6,
+      "removed_lines": 4,
+      "new_file": false,
+      "bytes": 18546
+    },
+    {
+      "path": "SOURCE/test/inline_invitation_presentation_test.dart",
+      "added_lines": 5,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 29012
+    },
+    {
+      "path": "SOURCE/test/onboarding_question_style_unification_test.dart",
+      "added_lines": 2,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 12677
+    },
+    {
+      "path": "SOURCE/test/support/zyra_rendered_text_contrast.dart",
+      "added_lines": 504,
+      "removed_lines": 0,
+      "new_file": true,
+      "bytes": 16813
+    },
+    {
+      "path": "SOURCE/test/visual/baseline_capture_support.dart",
+      "added_lines": 36,
+      "removed_lines": 2,
+      "new_file": false,
+      "bytes": 22110
+    },
+    {
+      "path": "SOURCE/test/visual/basic_plans_capture_test.dart",
+      "added_lines": 116,
+      "removed_lines": 133,
+      "new_file": false,
+      "bytes": 19655
+    },
+    {
+      "path": "SOURCE/test/visual/guardian_chat_v4_capture_test.dart",
+      "added_lines": 10,
+      "removed_lines": 5,
+      "new_file": false,
+      "bytes": 7076
+    },
+    {
+      "path": "SOURCE/test/visual/line118_menu_sheet_capture_test.dart",
+      "added_lines": 1,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 5412
+    },
+    {
+      "path": "SOURCE/test/visual/line119_membership_capture_test.dart",
+      "added_lines": 4,
+      "removed_lines": 4,
+      "new_file": false,
+      "bytes": 4182
+    },
+    {
+      "path": "SOURCE/test/visual/line120_recovery_removal_capture_test.dart",
+      "added_lines": 5,
+      "removed_lines": 5,
+      "new_file": false,
+      "bytes": 4902
+    },
+    {
+      "path": "SOURCE/test/visual/line121_signup_capture_test.dart",
+      "added_lines": 4,
+      "removed_lines": 4,
+      "new_file": false,
+      "bytes": 10687
+    },
+    {
+      "path": "SOURCE/test/visual/line124_first_tour_capture_test.dart",
+      "added_lines": 2,
+      "removed_lines": 2,
+      "new_file": false,
+      "bytes": 10607
+    },
+    {
+      "path": "SOURCE/test/visual/line126_remaining_routes_test.dart",
+      "added_lines": 644,
+      "removed_lines": 0,
+      "new_file": true,
+      "bytes": 23945
+    },
+    {
+      "path": "SOURCE/test/visual/line88_guardian_compatibility_test.dart",
+      "added_lines": 1,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 22287
+    },
+    {
+      "path": "SOURCE/test/visual/line98_ended_journeys_visual_test.dart",
+      "added_lines": 1,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 3987
+    },
+    {
+      "path": "SOURCE/test/visual/lock10_filters_capture_test.dart",
+      "added_lines": 2,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 19899
+    },
+    {
+      "path": "SOURCE/test/visual/lock12_phone_access_capture_test.dart",
+      "added_lines": 8,
+      "removed_lines": 4,
+      "new_file": false,
+      "bytes": 6491
+    },
+    {
+      "path": "SOURCE/test/visual/lock14_ivory_capture_test.dart",
+      "added_lines": 10,
+      "removed_lines": 3,
+      "new_file": false,
+      "bytes": 14522
+    },
+    {
+      "path": "SOURCE/test/visual/lock19_v3_family_acceptance_test.dart",
+      "added_lines": 5,
+      "removed_lines": 0,
+      "new_file": false,
+      "bytes": 16956
+    },
+    {
+      "path": "SOURCE/test/visual/lock20_circle_topics_capture_test.dart",
+      "added_lines": 4,
+      "removed_lines": 0,
+      "new_file": false,
+      "bytes": 14727
+    },
+    {
+      "path": "SOURCE/test/visual/lock22_safety_advice_v6_capture_test.dart",
+      "added_lines": 4,
+      "removed_lines": 0,
+      "new_file": false,
+      "bytes": 6211
+    },
+    {
+      "path": "SOURCE/test/visual/lock22_v4_settings_edit_profile_test.dart",
+      "added_lines": 4,
+      "removed_lines": 0,
+      "new_file": false,
+      "bytes": 11550
+    },
+    {
+      "path": "SOURCE/test/visual/lock35_guardian_seekers_test.dart",
+      "added_lines": 5,
+      "removed_lines": 0,
+      "new_file": false,
+      "bytes": 11377
+    },
+    {
+      "path": "SOURCE/test/visual/lock8_guardian_tabs_capture_test.dart",
+      "added_lines": 1,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 19694
+    },
+    {
+      "path": "SOURCE/test/visual/oa316_seeker_baseline_capture_test.dart",
+      "added_lines": 20,
+      "removed_lines": 12,
+      "new_file": false,
+      "bytes": 24687
+    },
+    {
+      "path": "SOURCE/test/zyra_clearer_text_contrast_test.dart",
+      "added_lines": 780,
+      "removed_lines": 0,
+      "new_file": true,
+      "bytes": 26043
+    },
+    {
+      "path": "SOURCE/test/zyra_clearer_text_theme_test.dart",
+      "added_lines": 128,
+      "removed_lines": 0,
+      "new_file": true,
+      "bytes": 4176
+    },
+    {
+      "path": "SOURCE/test/zyra_draft_compatibility_score_designs_test.dart",
+      "added_lines": 2,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 16107
+    },
+    {
+      "path": "SOURCE/test/zyra_wordmark_colour_test.dart",
+      "added_lines": 1,
+      "removed_lines": 1,
+      "new_file": false,
+      "bytes": 5304
+    }
+  ],
+  "file_count": 51,
+  "aggregate_sha256": "30b4360d9ded7caf27f1b6bc449254287c3b3156cf9852d85354a4c120db122d",
+  "archive_after_pause": "~/_to_delete/ZYRA_LINE126_2026-11-22/candidate/"
+}

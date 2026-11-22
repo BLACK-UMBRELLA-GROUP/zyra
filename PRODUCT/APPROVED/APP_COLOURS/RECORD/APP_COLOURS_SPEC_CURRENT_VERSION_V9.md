@@ -8,7 +8,10 @@ links: [DR-ZYRA-276, AD-AIOS-115]
 owner: ZYRA chat
 ---
 
-# APP COLOURS — SPEC — V8 (LOCKED 10 NOV 2026, APPEARANCE PAGE REMOVED 11 NOV, NO DARKER FILLS 11 NOV)
+# APP COLOURS — SPEC — V9 (LOCKED 10 NOV 2026, APPEARANCE PAGE REMOVED 11 NOV, NO DARKER FILLS 11 NOV, CLEARER TEXT 22 NOV)
+
+**V9 (22 Nov 2026, Founder in the design-100% pass, clickable "B · Clearer text (Recommended)", OA-ZYRA-371 / audit F-15):** see "Clearer text (V9)" below. V8 is in `../ARCHIVE/APP_COLOURS_SPEC_2026-11-22_V8.md`.
+**V9 correction (22 Nov, after Codex preflight, QUESTIONS 177; no design change):** small green text `#326B4C` (`#3D7D5A` measured 3.96 / 4.13 : 1 on `#EEE6D8` / `#F1EBDF`); 4.5 : 1 for all text under 24 pt at any weight (the bold 18.66 pt exception is removed); reference prototype V302. Applies the Founder's Decision 4 ("every small text 4.5 : 1").
 
 **V8 (11 Nov 21:48, Founder iPhone screenshot of Settings with grey-brown cards):** "Remove this darker colour everywhere it is in app" → prototype V185 → clickable **"LOCK it app-wide (Recommended)"**. **No surface may be darker than the background.** The row "Other white overlays" below is replaced: cards, tiles, list cards (Settings, Profile, every page), search boxes, inputs, code boxes, the selected segment / tab pill, icon circles, quiet buttons ("Keep …", "Cancel") and Basic monogram fills use the **ivory floating fill** (`#FBF7F0` or `rgba(250,245,236,.85)`) with the soft floating shadow where they must stand out; a selected segment = ivory fill + gold border + soft shadow. Darker tints (`rgba(62,46,30,a)`) are allowed **only** for: thin dividers, the dim layer behind sheets, grab handles, slider / progress tracks and inactive page dots. V7 is in `../ARCHIVE/APP_COLOURS_SPEC_2026-11-11_V7.md`.
 
@@ -81,6 +84,16 @@ c11 app_icon_1024 (colour reference) · c12 splash · c13 iphone_launch; **c14 t
 | Background picker | (V7: the whole Appearance & haptics page is removed, LOCK 21 V2.) The **Background** choice (Midnight Plum, Royal Blue, Rose Pink, Deep Emerald, Sapphire Night, Desert Rose, Warm Cocoa, Charcoal Gold, Midnight blue) is **removed**. Everyone sees Ivory. Saved palette preferences are ignored (no member data deleted) |
 | Rest of Appearance & haptics (V7) | Page removed (LOCK 21 V2). Gold accents off for everyone; haptics move to Settings → Haptics |
 | Developer palettes | Unused palette values and their code go (moved to `~/_to_delete/`), together with the developer toggle removal (queue line 35) |
+
+## Clearer text (V9) — app-wide rule
+| Rule | Detail |
+|---|---|
+| Contrast | **Every piece of text under 24 pt reaches 4.5 : 1 against what is actually behind it, whatever its weight**; text 24 pt and larger 3 : 1. Measured on the real background, including cards, pills and the darkest end of the page gradient (`#EEE6D8`). (Corrected 22 Nov, QUESTIONS 177: no bold 18.66 pt exception — matches the brief and the Founder's "every small text".) |
+| Replacements for small text | Journey gold `#A9792E` and bright gold `#C08A3A` used as small text → `#845F24` · green `#4E9A72` (and `#3D7D5A`) small text → **`#326B4C`** (5.07 : 1 on `#EEE6D8`, 5.29 : 1 on `#F1EBDF`; `#3D7D5A` failed at 3.96 / 4.13, QUESTIONS 177) · muted / quiet greys below 4.5 → `#6E6257` · faded labels (45 % strength) → full `#6E6257` · light text on a gold fill → `#2B2420` |
+| Weight | No text below regular (400) under 16 pt; thin (300) stays only for 16 pt and larger |
+| Unchanged | Large titles, icons, outlines, shapes, gold fills, dark/gold backgrounds keep their colours |
+| Proof | An automatic contrast check over every planned-app screen in the preview (Seeker and Guardian), failing on any small text under 4.5 : 1 |
+Reference: prototype V302 (`BLACK UMBRELLA GROUP/BUSINESS/ZYRA/PROTOTYPE/ZYRA_PROTOTYPE_CURRENT_VERSION_V302.html`, the Founder's private copy; same as the live prototype artifact V302), which applies this on every page. Check values: gold `#845F24` 4.65, secondary `#6E6257` 4.78, danger `#AC453E` 4.61, green `#326B4C` 5.07 — all on `#EEE6D8`.
 
 ## Accessibility
 
