@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-11-22T16:06:44.026Z",
+  "usage": {
+    "input_tokens": 14698469,
+    "cached_input_tokens": 14364544,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 49221,
+    "reasoning_output_tokens": 20723,
+    "total_tokens": 14747690
+  },
+  "scope": "Actual root count-only snapshot at handover; helper usage unavailable; cached input included"
+}

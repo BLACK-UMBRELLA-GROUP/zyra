@@ -1,0 +1,30 @@
+{
+  "A": {
+    "staged": "PASS0leaks",
+    "outgoing_implementation_commit": "PASS0leaks",
+    "post_push": "PASS0leaks over d1f9223b^..d1f9223b",
+    "implementation_commit": "d1f9223bb7979f20c12c94759b7e1db1a0b1a5ac",
+    "completion_candidate_correction": "Initial staged checksum list caused16generic-api-key false positives. Input contained only generated SHA-256 metadata, no credentials. Replaced it with one aggregate checksum before any completion commit; final scan required.",
+    "completion_staged": "PASS0leaks after replacing checksum-list false positives with aggregate guard"
+  },
+  "B": {
+    "verdict": "Reviewed public-safe",
+    "files_checked": 51,
+    "checker_hits": 844,
+    "binary_hits": 826,
+    "unchanged_text_hits": 18,
+    "classification": "PNG compressed/provenance bytes match scanner patterns;22 PNGs checked for chunks and contain no tEXt/zTXt/iTXt/eXIf. Text hits are unchanged app-visible membership/roadmap text or existing QUESTIONS rows60/88/91/105/141. New Q176 and authored handover contain no private plans or amounts. No key/email/wording hits.",
+    "private_material_added": false
+  },
+  "C": "No ROADMAP row finished; no issue close",
+  "D": "No app version change; no release",
+  "E": "Neutral authored wording; existing source strings unchanged outside brief",
+  "F": "README preview behavior updated",
+  "MAP_local_only": "Checker5 unchanged reference/route hits; generated unrelated Claude metadata left unstaged for owner sweep.",
+  "completion_path_check": {
+    "files": 37,
+    "hits": 785,
+    "classification": "All785 are PNGbinary pattern matches; no text/key/email/wording hits in final completion paths. Rendered images and chunk checks reviewed.",
+    "secret_gate": "Staged and outgoing secret scans must pass before this completion push."
+  }
+}

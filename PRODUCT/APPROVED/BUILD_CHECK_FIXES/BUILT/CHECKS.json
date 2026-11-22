@@ -1,0 +1,55 @@
+{
+  "sdk": "Flutter3.44.2 pinned existing local SDK",
+  "guard_command": "node tooling/no_git_driver.mjs check",
+  "guard_result": "PASS pins5; inherited Git execution denial proofPASS",
+  "analyzer": {
+    "command": "node tooling/no_git_driver.mjs flutter analyze --no-pub",
+    "result": "No issues found",
+    "seconds": 12.3
+  },
+  "focused": [
+    {
+      "scope": "Sign-up controller/presenter/session, switch, preference setup, developer panel",
+      "result": "102passed",
+      "log": "SOURCE/build/line125_signup_tests.log"
+    },
+    {
+      "scope": "Full-page errors plus five opt-in renders",
+      "result": "22passed",
+      "log": "SOURCE/build/line125_error_final.log"
+    },
+    {
+      "scope": "Introductions at430x932 and375x667, Received/Past visual assertions",
+      "result": "2passed",
+      "log": "SOURCE/build/line125_introductions_test.log"
+    },
+    {
+      "scope": "Final Q176 nav/empty Introductions/welcome/replay/intro capture checks",
+      "result": "18passed,37existing opt-in skips; welcome recapture1passed",
+      "reporter": "Guardian implementation helper"
+    }
+  ],
+  "full_local": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter json",
+    "result": "PASS",
+    "passed": 7524,
+    "failed": 0,
+    "skipped": 202,
+    "duration_seconds": 444.646,
+    "final_source_hashes_unchanged": true,
+    "source_hash_guard": "SOURCE_HASH_GUARD.json"
+  },
+  "superseded_attempt": {
+    "result": "7516passed,8failed,202skipped",
+    "reason": "Run overlapped Q176 source/test correction;7 artwork snapshot mismatches and1 empty selectedFill snapshot mismatch. Final source frozen and whole suite rerun; no assertion weakening.",
+    "retired_to": "~/_to_delete/ZYRA_LINE125_2026-11-22/full_suite_during_q176_correction.jsonl"
+  },
+  "native_and_phone": "Not built or installed; excluded by line125",
+  "public": "PUBLIC_CHECKS.json",
+  "hosted": {
+    "record": "CI_CHECKS.json",
+    "result": "PASS",
+    "run_id": 45041048588
+  },
+  "raw_logs": "Verified final logs and superseded attempts retired to single Mac delete folder; exact moves in SCRATCH_RETIREMENT.json"
+}

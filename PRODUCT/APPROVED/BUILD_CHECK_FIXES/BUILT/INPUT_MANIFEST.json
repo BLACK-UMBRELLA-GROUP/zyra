@@ -1,0 +1,177 @@
+{
+  "initial": [
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BRIEFS/FIX_BRIEF_2026-11-22_OA397.md",
+      "bytes": 2674,
+      "sha256": "4c754c2c971a49df54c8994778221ac09d7f9a69e8971b730cf68923f4e3b03b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/RECORD/SIGN_UP_SPEC_CURRENT_VERSION_V2.md",
+      "bytes": 13458,
+      "sha256": "6885dc4d947fbc113726085eda86956aec8e92b2f844d254ee46dc27a094b1d6"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/guardian_introductions_made__not_taken_forward.png",
+      "bytes": 618394,
+      "sha256": "a024ddcf194b8c3466d0d1f4212de58e3890320fc7727ac217826fa4046e71f9"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/MASTERS/s21_verify.png",
+      "bytes": 367845,
+      "sha256": "b40316ea1702ef5d8079b2c56ecc60bffc40ccd8380eaa698025ddba7d978ccc"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/MASTERS/s24_account_ready__verified.png",
+      "bytes": 410782,
+      "sha256": "91297b3a47bbc4fa0847ef9afae662895115c46acde7010b28f55b5d012f3332"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/MASTERS/s25_account_ready__not_verified.png",
+      "bytes": 415595,
+      "sha256": "c8f586ea0882c53ccfa17f51d725691d8e0e1542d9024a295a31df8a83a8a23c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/MASTERS/s27_setup__about_you.png",
+      "bytes": 324919,
+      "sha256": "4b62bd4f2680ed50ab8cc1198a849d4bd31d90f497e61fcc9e1a90608600d343"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/MASTERS/s30_paused__my_zyra_needs_you.png",
+      "bytes": 1202112,
+      "sha256": "a8e132d782ae2ef5a9c2e060197cf1ecc7093e7c271b9e600a790c4b49cf20c5"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_ERROR/MASTERS/e01_app_error__offline.png",
+      "bytes": 335525,
+      "sha256": "67013c30ebe1654bb269d84a13c6c419dc16de7511aacb49f966639a42a735d0"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_ERROR/MASTERS/e02_app_error__server.png",
+      "bytes": 356861,
+      "sha256": "14b02a4c329171455ebbb74b8545796573b85f01de61d2afc048694c2d9c9539"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg00_welcome.png",
+      "bytes": 843994,
+      "sha256": "dacb7f701f801a8baabcb10e9c1159314954e814888b4b3e5df2d9457afa4615"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/introductions__received.png",
+      "bytes": 1021305,
+      "sha256": "f0e75a9ff0717425e3fd2ec0c18db9770f013e66b12bb0b5f7c0e1a7ec141dfb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/introductions__past.png",
+      "bytes": 668650,
+      "sha256": "c61c663e7ed0e5007493a527700869a0ef3dd8bfd84c1954d1bb094eb0d18008"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j01_one__no_journey.png",
+      "bytes": 1104273,
+      "sha256": "ba4bfef8e1e60290de682648f2895039ecac0fbecaf837d4211ac89c3d1af0fa"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j06_basic__no_journey.png",
+      "bytes": 1098779,
+      "sha256": "40d8eb6b27f5bda9aea39aded9eff4c68bd0294c76f3de00f397b623c6c8cf0e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t05_journey_this_is_journey.png",
+      "bytes": 735258,
+      "sha256": "2a73aa53c6707a7d794b930b27a58d7cd3585759b3ffc3aa58dace3994980f6f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t06_journey_nothing_here_yet.png",
+      "bytes": 757574,
+      "sha256": "5aef74712cea885e4f86670f6b2e189194349b66bf070aea89b4cc3a3ad40bd5"
+    }
+  ],
+  "final": [
+    {
+      "path": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BRIEFS/FIX_BRIEF_2026-11-22_OA397.md",
+      "bytes": 2674,
+      "sha256": "4c754c2c971a49df54c8994778221ac09d7f9a69e8971b730cf68923f4e3b03b"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/RECORD/SIGN_UP_SPEC_CURRENT_VERSION_V2.md",
+      "bytes": 13458,
+      "sha256": "6885dc4d947fbc113726085eda86956aec8e92b2f844d254ee46dc27a094b1d6"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/guardian_introductions_made__not_taken_forward.png",
+      "bytes": 616908,
+      "sha256": "919c2b496823de36da98cb445767e221dcbb1d839feb75da097be7eeb03da56f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/MASTERS/s21_verify.png",
+      "bytes": 367845,
+      "sha256": "b40316ea1702ef5d8079b2c56ecc60bffc40ccd8380eaa698025ddba7d978ccc"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/MASTERS/s24_account_ready__verified.png",
+      "bytes": 410782,
+      "sha256": "91297b3a47bbc4fa0847ef9afae662895115c46acde7010b28f55b5d012f3332"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/MASTERS/s25_account_ready__not_verified.png",
+      "bytes": 415595,
+      "sha256": "c8f586ea0882c53ccfa17f51d725691d8e0e1542d9024a295a31df8a83a8a23c"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/MASTERS/s27_setup__about_you.png",
+      "bytes": 324919,
+      "sha256": "4b62bd4f2680ed50ab8cc1198a849d4bd31d90f497e61fcc9e1a90608600d343"
+    },
+    {
+      "path": "PRODUCT/APPROVED/SIGN_UP/MASTERS/s30_paused__my_zyra_needs_you.png",
+      "bytes": 1202112,
+      "sha256": "a8e132d782ae2ef5a9c2e060197cf1ecc7093e7c271b9e600a790c4b49cf20c5"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_ERROR/MASTERS/e01_app_error__offline.png",
+      "bytes": 335525,
+      "sha256": "67013c30ebe1654bb269d84a13c6c419dc16de7511aacb49f966639a42a735d0"
+    },
+    {
+      "path": "PRODUCT/APPROVED/APP_ERROR/MASTERS/e02_app_error__server.png",
+      "bytes": 356861,
+      "sha256": "14b02a4c329171455ebbb74b8545796573b85f01de61d2afc048694c2d9c9539"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/tg00_welcome.png",
+      "bytes": 843994,
+      "sha256": "dacb7f701f801a8baabcb10e9c1159314954e814888b4b3e5df2d9457afa4615"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/introductions__received.png",
+      "bytes": 1021305,
+      "sha256": "f0e75a9ff0717425e3fd2ec0c18db9770f013e66b12bb0b5f7c0e1a7ec141dfb"
+    },
+    {
+      "path": "PRODUCT/APPROVED/REQUESTS_AND_GUARDIANS/MASTERS/introductions__past.png",
+      "bytes": 668650,
+      "sha256": "c61c663e7ed0e5007493a527700869a0ef3dd8bfd84c1954d1bb094eb0d18008"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j01_one__no_journey.png",
+      "bytes": 1104273,
+      "sha256": "ba4bfef8e1e60290de682648f2895039ecac0fbecaf837d4211ac89c3d1af0fa"
+    },
+    {
+      "path": "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j06_basic__no_journey.png",
+      "bytes": 1098779,
+      "sha256": "40d8eb6b27f5bda9aea39aded9eff4c68bd0294c76f3de00f397b623c6c8cf0e"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t05_journey_this_is_journey.png",
+      "bytes": 735258,
+      "sha256": "2a73aa53c6707a7d794b930b27a58d7cd3585759b3ffc3aa58dace3994980f6f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/FIRST_TOUR/MASTERS/t06_journey_nothing_here_yet.png",
+      "bytes": 757574,
+      "sha256": "5aef74712cea885e4f86670f6b2e189194349b66bf070aea89b4cc3a3ad40bd5"
+    }
+  ],
+  "changed_during_run": "Only Guardian introduction master: Q176 ANSWERED by ZYRA Claude; re-read from disk after correction. Other named inputs stable."
+}

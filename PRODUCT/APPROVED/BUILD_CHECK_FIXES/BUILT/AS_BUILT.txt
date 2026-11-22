@@ -1,0 +1,29 @@
+ZYRA LINE 125 — AS BUILT — OA-ZYRA-397 — 22 NOV 2026
+Current state: BUILT in the Founder preview,22Nov2026. Local full suite7524passed/202skipped/0failed; analyzer clean; independent source/visual reviewPASS. Hosted gate45041048588 passed all three shards on the exact implementation revision. Implementation d1f9223bb7979f20c12c94759b7e1db1a0b1a5ac.
+Authority: Founder GO line125; FIX_BRIEF_2026-11-22_OA397.md; Founder decisions22Nov; Q176 ANSWERED by ZYRA Claude. Exact named input hashes: INPUT_MANIFEST.json. This is the Founder preview; BUILT never means member rollout.
+
+Built behavior
+1. Guardian My ZYRA routes keep Network, Journeys, My ZYRA, Seekers, Profile labels and Guardian destinations. All five root tabs, four quick pages for Basic/One, Notifications-to-requests, back and restoration have actual-shell coverage. Q176 corrected the stale Guardian master: icon positions intentionally match the Seeker bar. Original runtime already complied; no navigation artwork change survives. No runtime defect is claimed from the superseded master.
+2. Verify your identity initially has no deferral explanation. Do this later stays on the same page, reveals the locked explanation and changes the primary action to Continue. Continue creates the local rehearsal account-ready state, still unverified; no membership step or trial. Back/reset clears the transient deferral.
+3. Account ready uses a real OutlinedButton for Look around first. Outlined actions omit the filled floating-shadow wrapper that made transparent Material buttons look filled. Incomplete checklist circles use the existing visible neutral ink; statuses occupy the full right-hand column and align right. Filled primary styling is retained.
+4. About you starts at zero setup progress for both roles. Other setup steps retain their existing progress sequence.
+5. Offline/server Try again uses the tan color sampled from approved masters (rendered RGB241/234/222, existing ivory tokens blended25/75), gold text, including while Connecting. Sign-in actions retain their previous surface. Retry timers, one-flight guards and callbacks are unchanged.
+6. Welcome stays over the current page, My ZYRA after sign-up; replay from Profile remains over Profile, then the first Guardian step opens Network. Production already did this. Corrected the capture fixture from tab0 to tab2 and added real-shell replay/current-tab tests.
+7. Introductions Received/Past selected pills use the existing ivoryTop token and gold border, for sample and empty lists. Optional selectedFill passes through shared presenters; other request and Code pills keep their existing default. Received Put forward by text already used gold; retained and regression-tested. Past status text remains muted as its master shows.
+
+Record-only Founder decisions: paused My ZYRA pills Finish setup/places/preferences retained; Journey empty Browse profiles outlined pill and its walkthrough highlight retained. No source edits for these decisions. Capture-only/sample-data items j/k are outside125. No line126 text/contrast changes or line127 visibility/gate changes are included.
+
+Live files and architecture
+SOURCE/lib/dev/zyra_signup_preview_controller.dart owns local verificationDeferred, role, step, rehearsal-account and setup-progress state. SOURCE/lib/dev/zyra_signup_preview.dart presents it and keeps existing owner/step/action guards. No new persistence, service calls or real account writes.
+SOURCE/lib/widgets/zyra_full_screen_error.dart owns the full-screen retry presentation; existing lifecycle/timer/one-flight behavior remains.
+SOURCE/lib/widgets/zyra_request_tab_pill.dart exposes optional selectedFill; SOURCE/lib/dev/zyra_request_activity_presentation.dart forwards optional selectedTabFill. SOURCE/lib/screens/connections/zyra_sample_activity.dart opts Introductions into ivory. SOURCE/lib/dev/zyra_one_journey_concept_shell.dart opts empty Introductions into the same treatment.
+Tests and captures listed in SOURCE_MANIFEST.json; README explains observable preview behavior. Existing sign-up developer-panel integration tests now tap Continue after Do this later.
+
+Boundaries and entry points
+Founder preview Developer -> Start sign-up; Account ready -> setup or My ZYRA; My ZYRA quick access -> Introductions; Settings -> Replay. Existing authorization/account lifetime guards and local fixtures remain. No new runtime toggle, dependency, release flavor, version, signing change, backend, migration, native build, phone install or upload. Migrations: none. Live: no.
+
+Verification
+CHECKS.json records exact commands/counts; CI_CHECKS.json the final hosted revision/jobs; VISUAL_REVIEW.json the targeted master comparison at430x932. Screenshots are Flutter widget renders with bundled fonts and offline sample data, not phone observation. Requested details MATCH; inherited geometry/shadow/font/sample differences are visible and not a whole-screen pixel-parity claim. Q176 has an approved corrected master, not a new design by Codex.
+
+Handover and remaining work
+Founder/ZYRA Claude review of final evidence remains normal design verification; independent agent review is not Founder approval. No outstanding125 blocker. Line126 is separately QUESTION under its own Q177 preflight;127 waits for126. Their owner resolves that scope;125 contains no source edits from them. Server/live work remains OA-ZYRA-317. Broader build-check differences remain with OA-ZYRA-397 and the separately queued follow-up. Generated MAP was refreshed locally; unrelated Claude documents/registers and map metadata remain for their owner/sweep. The planned screen inventory generator ran and changed only ordering; no product screen inventory change was introduced. Unrelated files are preserved. Temporary task files are retired to the single Mac delete folder at close; compiled/native delivery artifacts are untouched.

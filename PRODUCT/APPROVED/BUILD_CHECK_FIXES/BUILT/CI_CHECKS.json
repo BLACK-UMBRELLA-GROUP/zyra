@@ -1,0 +1,32 @@
+{
+  "workflow": "ZYRA CI",
+  "run_id": 45041048588,
+  "event": "push",
+  "head_sha": "d1f9223bb7979f20c12c94759b7e1db1a0b1a5ac",
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/45041048588",
+  "jobs": [
+    {
+      "name": "Select Flutter tests",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Flutter checks (shard 0)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Flutter checks (shard 1)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Flutter checks (shard 2)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "scope": "Hosted assigned Flutter checks on exact implementation revision; all analyzers and assigned test shards passed. Full local suite recorded separately."
+}

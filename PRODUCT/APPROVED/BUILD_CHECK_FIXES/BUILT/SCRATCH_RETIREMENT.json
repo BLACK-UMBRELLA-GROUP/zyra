@@ -1,0 +1,206 @@
+{
+  "completed": [
+    {
+      "original": "SOURCE/build/line125",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125",
+      "files": 54,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_analyze.log",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_analyze.log",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_error_final.log",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_error_final.log",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_error_test.log",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_error_test.log",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_final_source_hashes.json",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_final_source_hashes.json",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_full_suite.jsonl",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_full_suite.jsonl",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_full_suite_stderr.log",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_full_suite_stderr.log",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_gitleaks_outgoing.json",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_gitleaks_outgoing.json",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_gitleaks_outgoing.log",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_gitleaks_outgoing.log",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_gitleaks_postpush.json",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_gitleaks_postpush.json",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_gitleaks_postpush.log",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_gitleaks_postpush.log",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_gitleaks_staged.json",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_gitleaks_staged.json",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_gitleaks_staged.log",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_gitleaks_staged.log",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_introductions_test.log",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_introductions_test.log",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_map_public.log",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_map_public.log",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_public_full.log",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_public_full.log",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_public_precheck.log",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_public_precheck.log",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_signup_capture.log",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_signup_capture.log",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "SOURCE/build/line125_signup_tests.log",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/build_line125_signup_tests.log",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "/Users/shakeelahmad/Documents/Codex/2026-11-22/zyra-line-125-build-check-fixes-2026-11-22/work/initial_status.txt",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/work_initial_status.txt",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "/Users/shakeelahmad/Documents/Codex/2026-11-22/zyra-line-125-build-check-fixes-2026-11-22/work/input_manifest.json",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/work_input_manifest.json",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "/Users/shakeelahmad/Documents/Codex/2026-11-22/zyra-line-125-build-check-fixes-2026-11-22/work/review_about.png",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/work_review_about.png",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "/Users/shakeelahmad/Documents/Codex/2026-11-22/zyra-line-125-build-check-fixes-2026-11-22/work/review_guardian_nav.png",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/work_review_guardian_nav.png",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "/Users/shakeelahmad/Documents/Codex/2026-11-22/zyra-line-125-build-check-fixes-2026-11-22/work/review_guardian_welcome.png",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/work_review_guardian_welcome.png",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "/Users/shakeelahmad/Documents/Codex/2026-11-22/zyra-line-125-build-check-fixes-2026-11-22/work/review_intro_past.png",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/work_review_intro_past.png",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "/Users/shakeelahmad/Documents/Codex/2026-11-22/zyra-line-125-build-check-fixes-2026-11-22/work/review_intro_received.png",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/work_review_intro_received.png",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "/Users/shakeelahmad/Documents/Codex/2026-11-22/zyra-line-125-build-check-fixes-2026-11-22/work/review_offline.png",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/work_review_offline.png",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "/Users/shakeelahmad/Documents/Codex/2026-11-22/zyra-line-125-build-check-fixes-2026-11-22/work/review_ready_unverified.png",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/work_review_ready_unverified.png",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "/Users/shakeelahmad/Documents/Codex/2026-11-22/zyra-line-125-build-check-fixes-2026-11-22/work/review_ready_verified.png",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/work_review_ready_verified.png",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "/Users/shakeelahmad/Documents/Codex/2026-11-22/zyra-line-125-build-check-fixes-2026-11-22/work/review_server.png",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/work_review_server.png",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "/Users/shakeelahmad/Documents/Codex/2026-11-22/zyra-line-125-build-check-fixes-2026-11-22/work/review_verify.png",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/work_review_verify.png",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "/Users/shakeelahmad/Documents/Codex/2026-11-22/zyra-line-125-build-check-fixes-2026-11-22/work/stage_line125.py",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/stage_line125.py",
+      "files": 1,
+      "hashes_verified": true
+    },
+    {
+      "original": "/Users/shakeelahmad/Documents/Codex/2026-11-22/zyra-line-125-build-check-fixes-2026-11-22/work/network_step.py",
+      "retired_to": "/Users/shakeelahmad/_to_delete/ZYRA_LINE125_2026-11-22/final_network_step.py",
+      "files": 1,
+      "hashes_verified": true
+    }
+  ],
+  "retained_until_final_git_operations": [],
+  "protected_native_build_and_sdk_cache": "untouched",
+  "compiled_artifacts_in_evidence": false,
+  "final_network_helper": "Already retired; invoked from its retirement path for final bounded push/check, with receipts outside repository."
+}

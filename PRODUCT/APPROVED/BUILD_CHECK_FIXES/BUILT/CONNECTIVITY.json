@@ -1,0 +1,59 @@
+{
+  "rule": "At most three bounded attempts per network step after connection failure, then pause that step and continue local work",
+  "state": "connected",
+  "operations": [
+    {
+      "step": "implementation-push",
+      "attempt": 1,
+      "exit_code": 0,
+      "connection_failure": false,
+      "timestamp": "2026-11-22T15:56:33.629908+00:00"
+    },
+    {
+      "step": "implementation-ci-read",
+      "attempt": 1,
+      "exit_code": 0,
+      "connection_failure": false,
+      "timestamp": "2026-11-22T15:57:18.802528+00:00"
+    },
+    {
+      "step": "implementation-ci-jobs",
+      "attempt": 1,
+      "exit_code": 0,
+      "connection_failure": false,
+      "timestamp": "2026-11-22T15:58:19.047881+00:00"
+    },
+    {
+      "step": "implementation-ci-poll",
+      "attempt": 1,
+      "exit_code": 0,
+      "connection_failure": false,
+      "timestamp": "2026-11-22T15:59:44.650034+00:00"
+    },
+    {
+      "step": "implementation-ci-poll",
+      "attempt": 1,
+      "exit_code": 0,
+      "connection_failure": false,
+      "timestamp": "2026-11-22T16:01:39.874282+00:00"
+    },
+    {
+      "step": "implementation-ci-poll",
+      "attempt": 1,
+      "exit_code": 0,
+      "connection_failure": false,
+      "timestamp": "2026-11-22T16:03:27.217839+00:00"
+    },
+    {
+      "step": "implementation-ci-poll",
+      "attempt": 1,
+      "exit_code": 0,
+      "connection_failure": false,
+      "timestamp": "2026-11-22T16:05:09.509054+00:00"
+    }
+  ],
+  "connection_context": "Intermittent mobile hotspot; network steps are bounded",
+  "failed_connection_attempts": 0,
+  "implementation_push_attempts": 1,
+  "implementation_hosted_gate": "success45041048588"
+}

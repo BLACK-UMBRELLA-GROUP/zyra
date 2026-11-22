@@ -1,0 +1,24 @@
+{
+  "verdict": "MATCH for requested details",
+  "logical_size": [
+    430,
+    932
+  ],
+  "captures": 11,
+  "comparison_pairs": 10,
+  "master_correction": "Q176 ANSWERED; Guardian intro master919c2b496823de36da98cb445767e221dcbb1d839feb75da097be7eeb03da56f",
+  "items": {
+    "1": "Guardian labels/destinations correct on all checked pages; shared icons per Q176",
+    "2": "Initial explanation absent; after later present and Continue",
+    "3": "Outlined secondary action, visible circles and right aligned statuses",
+    "4": "About you initial bar empty",
+    "5": "Retry tan RGB241234222, gold text for offline/server",
+    "6": "Welcome over current MyZYRA after sign-up; replay current page preserved",
+    "7": "Selected Received/Past ivory+gold; existing gold Put-forward retained"
+  },
+  "record_only": [
+    "Paused MyZYRA pills unchanged",
+    "Journey empty Browse pill and tour highlight unchanged"
+  ],
+  "limits": "Targeted comparison only; inherited layout/font/shadow/sample differences visible. Offline widget screenshots, not phone captures."
+}

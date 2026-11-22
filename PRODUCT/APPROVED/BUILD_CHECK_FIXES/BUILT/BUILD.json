@@ -1,0 +1,12 @@
+{
+  "source_base_commit": "8b31ac077a46fb71b8816961c5f3b8d1dd9b7586",
+  "implementation_commit": "d1f9223bb7979f20c12c94759b7e1db1a0b1a5ac",
+  "source_manifest": "SOURCE_MANIFEST.json",
+  "flutter_version": "3.44.2",
+  "build_mode": "offline_flutter_widget_tests",
+  "target": "Founder preview at430x932@3, plus existing responsive375x667 tests",
+  "timestamp": "2026-11-22T15:56:05.174798+00:00",
+  "native_build": false,
+  "phone_install": false,
+  "live": false
+}

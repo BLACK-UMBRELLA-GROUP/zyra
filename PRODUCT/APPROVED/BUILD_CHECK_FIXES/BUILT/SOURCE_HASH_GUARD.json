@@ -1,0 +1,8 @@
+{
+  "algorithm": "SHA-256",
+  "dart_file_count": 964,
+  "aggregate_sha256": "bdb60edf0b89f7a3de4a08acac8ac11f7b4011f54b572a9816a83b226c1b39c5",
+  "canonical_form": "Sorted [relative Dart path, lowercase SHA-256] pairs serialized as compact ASCII JSON; SOURCE/lib and SOURCE/test only.",
+  "comparison": "Every file unchanged between final full-suite start and completion; verified again at handover.",
+  "detailed_manifest_location": "Verified task retirement record points to the complete local manifest; no source content copied."
+}

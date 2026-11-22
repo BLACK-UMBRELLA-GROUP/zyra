@@ -1,0 +1,166 @@
+[
+  {
+    "item": "guardian",
+    "master": "REQUESTS_AND_GUARDIANS/MASTERS/guardian_introductions_made__not_taken_forward.png",
+    "built": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/CAPTURES/guardian_introductions_made__not_taken_forward.png",
+    "comparison": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/COMPARISONS/guardian_master_build.png",
+    "sha256": "10e0ea7f11b247ba3c0031287161072f313b0ff5bacc13b5935faa60d42a5b2a",
+    "logical_size": [
+      430,
+      932
+    ],
+    "pixel_size": [
+      1290,
+      2796
+    ]
+  },
+  {
+    "item": "verify",
+    "master": "SIGN_UP/MASTERS/s21_verify.png",
+    "built": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/CAPTURES/s21_verify.png",
+    "comparison": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/COMPARISONS/verify_master_build.png",
+    "sha256": "e9cd208a511046aa834bbb1ab0de104b18f4ff62b39e9bbf10c5a68febe3d80a",
+    "logical_size": [
+      430,
+      932
+    ],
+    "pixel_size": [
+      1290,
+      2796
+    ]
+  },
+  {
+    "item": "ready_verified",
+    "master": "SIGN_UP/MASTERS/s24_account_ready__verified.png",
+    "built": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/CAPTURES/s24_account_ready__verified.png",
+    "comparison": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/COMPARISONS/ready_verified_master_build.png",
+    "sha256": "f3e1ded573c3f08d62e77456ab4362edd5b573e064af095e91c9f0814fdbc75c",
+    "logical_size": [
+      430,
+      932
+    ],
+    "pixel_size": [
+      1290,
+      2796
+    ]
+  },
+  {
+    "item": "ready_unverified",
+    "master": "SIGN_UP/MASTERS/s25_account_ready__not_verified.png",
+    "built": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/CAPTURES/s25_account_ready__not_verified.png",
+    "comparison": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/COMPARISONS/ready_unverified_master_build.png",
+    "sha256": "b5a180687d003173558a18786408ef802d0accf4be7215a157ffb611cf4063c8",
+    "logical_size": [
+      430,
+      932
+    ],
+    "pixel_size": [
+      1290,
+      2796
+    ]
+  },
+  {
+    "item": "about",
+    "master": "SIGN_UP/MASTERS/s27_setup__about_you.png",
+    "built": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/CAPTURES/s27_setup__about_you.png",
+    "comparison": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/COMPARISONS/about_master_build.png",
+    "sha256": "e60eb41f6bf400f97244b8b1311e96c851268101a5c3f9a50c6421ed17b6fcde",
+    "logical_size": [
+      430,
+      932
+    ],
+    "pixel_size": [
+      1290,
+      2796
+    ]
+  },
+  {
+    "item": "offline",
+    "master": "APP_ERROR/MASTERS/e01_app_error__offline.png",
+    "built": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/CAPTURES/e01.png",
+    "comparison": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/COMPARISONS/offline_master_build.png",
+    "sha256": "59237f7a7f7d317ad9e74c439ba32d253a6f5af40ea378d46fb18c7b9514aa6f",
+    "logical_size": [
+      430,
+      932
+    ],
+    "pixel_size": [
+      1290,
+      2796
+    ]
+  },
+  {
+    "item": "server",
+    "master": "APP_ERROR/MASTERS/e02_app_error__server.png",
+    "built": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/CAPTURES/e02.png",
+    "comparison": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/COMPARISONS/server_master_build.png",
+    "sha256": "19a55100ce59d3f73809ae4880fc6e085c091ecdfaf3cbd8c2b1da999f1bc89d",
+    "logical_size": [
+      430,
+      932
+    ],
+    "pixel_size": [
+      1290,
+      2796
+    ]
+  },
+  {
+    "item": "guardian_welcome",
+    "master": "FIRST_TOUR/MASTERS/tg00_welcome.png",
+    "built": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/CAPTURES/tg00_welcome.png",
+    "comparison": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/COMPARISONS/guardian_welcome_master_build.png",
+    "sha256": "4dda8768ee7941d51e0e1704728221c951ee78748650705af4a81d9d46e3665e",
+    "logical_size": [
+      430,
+      932
+    ],
+    "pixel_size": [
+      1290,
+      2796
+    ]
+  },
+  {
+    "item": "received",
+    "master": "REQUESTS_AND_GUARDIANS/MASTERS/introductions__received.png",
+    "built": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/CAPTURES/introductions__received_430x932.png",
+    "comparison": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/COMPARISONS/received_master_build.png",
+    "sha256": "4c0f49a87972eefea80785b62a63ab3ce548c49ed2004a4f5c0535ab1b407e52",
+    "logical_size": [
+      430,
+      932
+    ],
+    "pixel_size": [
+      1290,
+      2796
+    ]
+  },
+  {
+    "item": "past",
+    "master": "REQUESTS_AND_GUARDIANS/MASTERS/introductions__past.png",
+    "built": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/CAPTURES/introductions__past_430x932.png",
+    "comparison": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/COMPARISONS/past_master_build.png",
+    "sha256": "ffdf97f7b0c00efb6613c881a161fa6c99563cea5cf52728eb6b1dda8d60cc8b",
+    "logical_size": [
+      430,
+      932
+    ],
+    "pixel_size": [
+      1290,
+      2796
+    ]
+  },
+  {
+    "item": "verify_after_later",
+    "built": "PRODUCT/APPROVED/BUILD_CHECK_FIXES/BUILT/CAPTURES/s21_verify__after_do_this_later.png",
+    "sha256": "dcd7781cdc54d7e2301d54f8c53076e95d50c609693cbc59fc42b9d83c32ea67",
+    "logical_size": [
+      430,
+      932
+    ],
+    "pixel_size": [
+      1290,
+      2796
+    ],
+    "reference": "Brief item2 and SIGN_UP section3.8; additional explicit state with no separate master"
+  }
+]
