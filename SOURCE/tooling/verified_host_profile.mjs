@@ -23,19 +23,19 @@ const team = '9Y7Z8F36SJ';
 const profileHash = '1af45878575c7449b427169878ace2caae4d39be5425fe54e1906fe6415b96d7';
 const engine = 'bin/cache/artifacts/engine/ios-profile/Flutter.xcframework/ios-arm64/Flutter.framework/Flutter';
 const enginePayloadHash = 'eb7bfa2968b9005682fcf7506f5ddcbcea9d35c5551d7f55542f10d95022832a';
-// Line 117: exact fresh native host after line 109. Line 84's host remains on disk.
+// Line 117: 22 Nov host includes the completed queue and Q158 rotation fix. Earlier hosts remain on disk.
 const nativePins = Object.freeze({
-  hostPath: 'build/ios/line117-native-2026-11-14/products/Runner.app',
-  hostSha256: 'ff8e32e800ef25b7c1ea5313b55c258135030fddb32d0efdd1bfa5280f565e46',
+  hostPath: 'build/ios/line117-native-2026-11-22/products/Runner.app',
+  hostSha256: '44f47f43b66a840b6c95d4eb89e98e43f325818c652d9fe23d05e178d9fcec5d',
   hostFiles: 179,
   // iOS Team Provisioning Profile: app.zyraconnect.zyra; expires 2027-11-14T14:31:53Z.
   // The profile allows Associated Domains; the app claims only applinks:zyraconnect.app.
   profileSha256: '416b86da0439ca07ed0802ddcd657d8362d32502e99552a76449abcc5898327f',
   entitlementsSha256: '922db307b9556a786d52952deba2eca017ee7f219203970238bcfa9e9518d943',
-  sourceCommit: 'd01b414df48499cd79dc4f405023c124a3f2ff65',
-  sourceSealSha256: '242eb8ed311a06456c63e80c26a78258e70be470eb7ab60d8a87942d8504a763',
+  sourceCommit: '9651731289d583ae660669fccba70aa0ed2252f7',
+  sourceSealSha256: '78a410e70f3c4de7c48f2d84b9c1329223d76e331ce79f4f1f8c9ef6d0197e3f',
   nativeInputsSha256: '9a188971691f6b963d110824b6d31f477af1839922f4cfcbc38e0e10a3a43e82',
-  buildReceiptSha256: '4d976907925010038c0d08873d28710b2bf5b088e8e608e1eeb5ae664c89eee2',
+  buildReceiptSha256: 'acfe159fa7f0a2b86051a258144c63e29b9eee415ead60963ac0f347a87b0358',
 });
 const nativeTarget = 'ios-arm64 / lib/main.dart / production';
 const sdkPins = {
