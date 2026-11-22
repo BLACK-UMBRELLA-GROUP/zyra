@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "signed build verified; waiting for wired readiness and separate install GO",
+  "status": "signed build and wired readiness verified; waiting for separate install GO",
   "build": {
     "schema": 1,
     "success": true,
@@ -73,21 +73,33 @@
   },
   "phone": {
     "transport": "wired",
-    "readiness": {
-      "ready": false,
-      "blocker": "Connect the single paired, provisioned iPhone by USB and keep it unlocked."
-    },
     "lastConnection": {
       "paired": true,
       "transportType": "wired",
-      "tunnelState": "disconnected"
+      "tunnelState": "connected"
     },
     "installAttempted": false,
-    "readinessAfterDispatcherWake": {
-      "ready": false,
-      "blocker": "Connect the single paired, provisioned iPhone by USB and keep it unlocked."
-    }
+    "earlierReadinessChecks": [
+      {
+        "ready": false,
+        "blocker": "Connect the single paired, provisioned iPhone by USB and keep it unlocked."
+      },
+      {
+        "ready": false,
+        "blocker": "Connect the single paired, provisioned iPhone by USB and keep it unlocked."
+      }
+    ],
+    "readiness": {
+      "ready": true,
+      "paired": true,
+      "wired": true,
+      "wireless": false,
+      "unlocked": true,
+      "transport": "wired"
+    },
+    "readinessSequence": "Sole paired provisioned USB phone; live lock-state query; immediate protected native-phone-check, all identifiers held in memory."
   },
   "authority": "Founder GO wired on 22 Nov; installation requires separate GO for source 96517312",
-  "live": false
+  "live": false,
+  "pinCommit": "844bf24b"
 }
