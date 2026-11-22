@@ -54,6 +54,7 @@ void _ready(ZyraSignupPreviewController c, {required bool verified}) {
     }
   } else {
     c.verifyLater();
+    c.advance();
   }
 }
 
@@ -179,6 +180,14 @@ void main() {
       },
     ),
     ('s21_verify', false, (c) => c.setStep(ZyraSignupStep.verify)),
+    (
+      's21_verify__after_do_this_later',
+      false,
+      (c) {
+        c.setStep(ZyraSignupStep.verify);
+        c.verifyLater();
+      },
+    ),
     ('s22_plan__seeker_one', false, _verified),
     (
       's23_plan__seeker_basic',

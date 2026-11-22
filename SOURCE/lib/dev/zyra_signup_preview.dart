@@ -381,56 +381,75 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
     bool dark = false,
     bool outlined = false,
     Widget? leading,
-  }) => ZyraFloatingSurface(
-    radius: 999,
-    gold: !dark && !outlined,
-    child: SizedBox(
+  }) {
+    final button = SizedBox(
       width: double.infinity,
       height: math.max(
         52,
         52 * MediaQuery.textScalerOf(context).scale(14) / 14,
       ),
-      child: FilledButton(
-        key: ValueKey(id),
-        onPressed: onPressed == null ? null : _action(onPressed),
-        style: FilledButton.styleFrom(
-          backgroundColor: outlined
-              ? Colors.transparent
-              : dark
-              ? ZyraColors.espresso
-              : ZyraColors.actionFill,
-          foregroundColor: dark ? ZyraColors.ivoryTop : ZyraColors.onAction,
-          disabledBackgroundColor: ZyraColors.actionFill.withValues(alpha: .42),
-          disabledForegroundColor: ZyraColors.secondaryText.withValues(
-            alpha: .45,
-          ),
-          elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          side: outlined
-              ? BorderSide(color: ZyraColors.surfaceBorder)
-              : BorderSide.none,
-          shape: StadiumBorder(
-            side: outlined
-                ? BorderSide(color: ZyraColors.surfaceBorder)
-                : BorderSide.none,
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (leading != null) ...[leading, const SizedBox(width: 7)],
-            Flexible(
+      child: outlined
+          ? OutlinedButton(
+              key: ValueKey(id),
+              onPressed: onPressed == null ? null : _action(onPressed),
+              style: OutlinedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                foregroundColor: ZyraColors.onAction,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                side: BorderSide(
+                  color: ZyraColors.warmOverlay.withValues(alpha: .25),
+                ),
+                shape: const StadiumBorder(),
+              ),
               child: Text(
                 label,
                 textAlign: TextAlign.center,
-                style: ZyraText.button(size: label.length > 40 ? 12.5 : 14),
+                style: ZyraText.button(size: 14),
+              ),
+            )
+          : FilledButton(
+              key: ValueKey(id),
+              onPressed: onPressed == null ? null : _action(onPressed),
+              style: FilledButton.styleFrom(
+                backgroundColor: dark
+                    ? ZyraColors.espresso
+                    : ZyraColors.actionFill,
+                foregroundColor: dark
+                    ? ZyraColors.ivoryTop
+                    : ZyraColors.onAction,
+                disabledBackgroundColor: ZyraColors.actionFill.withValues(
+                  alpha: .42,
+                ),
+                disabledForegroundColor: ZyraColors.secondaryText.withValues(
+                  alpha: .45,
+                ),
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                side: BorderSide.none,
+                shape: const StadiumBorder(),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (leading != null) ...[leading, const SizedBox(width: 7)],
+                  Flexible(
+                    child: Text(
+                      label,
+                      textAlign: TextAlign.center,
+                      style: ZyraText.button(
+                        size: label.length > 40 ? 12.5 : 14,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
-    ),
-  );
+    );
+    // A transparent secondary action must not reveal a floating shadow as fill.
+    return outlined
+        ? button
+        : ZyraFloatingSurface(radius: 999, gold: !dark, child: button);
+  }
 
   Widget _later() => Padding(
     padding: const EdgeInsets.only(top: 7),
@@ -759,7 +778,7 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
           label: allSet
               ? 'Enter ZYRA'
               : verify
-              ? 'Verify now'
+              ? (c.verificationDeferred ? 'Continue' : 'Verify now')
               : 'Continue',
           onPressed: !c.canContinue
               ? null
@@ -769,8 +788,6 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
                     widget.onEnter();
                   }
                 }
-              : verify
-              ? c.verifyNow
               : c.advance,
         ),
         if (c.isSetup && !allSet) _later(),
@@ -1336,19 +1353,22 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
       ),
       Column(
         children: [
-          TextButton(
-            key: const ValueKey('signup_verify_later'),
-            onPressed: _action(c.verifyLater),
-            child: Text(
-              'Do this later',
-              style: ZyraText.body(size: 14, color: ZyraColors.goldText),
+          if (!c.verificationDeferred)
+            TextButton(
+              key: const ValueKey('signup_verify_later'),
+              onPressed: _action(c.verifyLater),
+              child: Text(
+                'Do this later',
+                style: ZyraText.body(size: 14, color: ZyraColors.goldText),
+              ),
             ),
-          ),
-          Text(
-            'You can look around, but profiles stay hidden and membership can’t start until you’re verified. No one sees you either.',
-            style: ZyraText.subtext(size: 11),
-            textAlign: TextAlign.center,
-          ),
+          if (c.verificationDeferred)
+            Text(
+              key: const ValueKey('signup_verify_deferred_message'),
+              'You can look around, but profiles stay hidden and membership can’t start until you’re verified. No one sees you either.',
+              style: ZyraText.subtext(size: 11),
+              textAlign: TextAlign.center,
+            ),
         ],
       ),
     ],
@@ -1454,7 +1474,11 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: done ? ZyraColors.positiveGreen : null,
-            border: done ? null : Border.all(color: ZyraColors.surfaceBorder),
+            border: done
+                ? null
+                : Border.all(
+                    color: ZyraColors.warmOverlay.withValues(alpha: .3),
+                  ),
           ),
           child: done
               ? const Icon(Icons.check, color: ZyraColors.ivoryTop, size: 13)
@@ -1464,12 +1488,15 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
         Expanded(child: Text(title, style: ZyraText.body(size: 14))),
         const SizedBox(width: 8),
         Flexible(
-          child: Text(
-            detail,
-            textAlign: TextAlign.end,
-            style: ZyraText.subtext(
-              size: 12,
-              color: done ? ZyraColors.secondaryText : ZyraColors.goldText,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              detail,
+              textAlign: TextAlign.end,
+              style: ZyraText.subtext(
+                size: 12,
+                color: done ? ZyraColors.secondaryText : ZyraColors.goldText,
+              ),
             ),
           ),
         ),

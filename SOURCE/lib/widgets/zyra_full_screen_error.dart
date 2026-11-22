@@ -228,11 +228,23 @@ class _ZyraFullScreenErrorState extends State<ZyraFullScreenError>
                             ),
                             style: OutlinedButton.styleFrom(
                               foregroundColor: ZyraColors.goldText,
-                              backgroundColor: ZyraColors.lowerSurface,
+                              backgroundColor: signIn
+                                  ? ZyraColors.lowerSurface
+                                  : Color.lerp(
+                                      ZyraColors.ivoryBottom,
+                                      ZyraColors.ivoryTop,
+                                      .25,
+                                    ),
                               disabledForegroundColor: signIn
                                   ? ZyraColors.quietText
                                   : ZyraColors.goldText,
-                              disabledBackgroundColor: ZyraColors.lowerSurface,
+                              disabledBackgroundColor: signIn
+                                  ? ZyraColors.lowerSurface
+                                  : Color.lerp(
+                                      ZyraColors.ivoryBottom,
+                                      ZyraColors.ivoryTop,
+                                      .25,
+                                    ),
                               minimumSize: const Size(48, 48),
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 14,

@@ -37,6 +37,7 @@ class ZyraSignupPreviewController extends ChangeNotifier {
   bool _guardian = false;
   bool _hasAccount = false;
   bool _verified = false;
+  bool _verificationDeferred = false;
   bool _setupComplete = false;
   bool _nameEdited = false;
   String _provider = 'Apple';
@@ -54,6 +55,7 @@ class ZyraSignupPreviewController extends ChangeNotifier {
   bool get guardian => _guardian;
   bool get hasAccount => _hasAccount;
   bool get verified => _verified;
+  bool get verificationDeferred => _verificationDeferred;
   bool get setupComplete => _setupComplete;
   String get provider => _provider;
   String get firstName => _firstName;
@@ -82,6 +84,7 @@ class ZyraSignupPreviewController extends ChangeNotifier {
     _step = ZyraSignupStep.splash;
     _pausedStep = null;
     _guardian = _hasAccount = _verified = _setupComplete = _nameEdited = false;
+    _verificationDeferred = false;
     _provider = 'Apple';
     _firstName = _surname = _day = _month = _year = _seekerCode = _aboutYou =
         '';
@@ -373,6 +376,8 @@ class ZyraSignupPreviewController extends ChangeNotifier {
   ];
 
   double get progress {
+    // The About you card starts its own setup bar, as in master s27.
+    if (_step == ZyraSignupStep.aboutYou) return 0;
     final steps = isSetup ? _setupSteps : _initialSteps;
     final index = steps.indexOf(_step);
     return index < 0 ? 0 : (index + 1) / steps.length;
@@ -391,6 +396,7 @@ class ZyraSignupPreviewController extends ChangeNotifier {
     }
     // A fixture may position a screen; only advancing the setup sequence can
     // make its completion flag true.
+    if (value != _step) _verificationDeferred = false;
     _step = value;
     notifyListeners();
   }
@@ -406,6 +412,7 @@ class ZyraSignupPreviewController extends ChangeNotifier {
       return;
     }
     _verified = true;
+    _verificationDeferred = false;
     _step = _guardian ? ZyraSignupStep.accountReady : ZyraSignupStep.membership;
     if (_guardian) {
       _hasAccount = true;
@@ -417,8 +424,7 @@ class ZyraSignupPreviewController extends ChangeNotifier {
     if (_step != ZyraSignupStep.verify) {
       return;
     }
-    _step = ZyraSignupStep.accountReady;
-    _hasAccount = true;
+    _verificationDeferred = true;
     notifyListeners();
   }
 
@@ -444,7 +450,14 @@ class ZyraSignupPreviewController extends ChangeNotifier {
       return;
     }
     if (_step == ZyraSignupStep.verify) {
-      verifyNow();
+      if (_verificationDeferred) {
+        _step = ZyraSignupStep.accountReady;
+        _hasAccount = true;
+        _verificationDeferred = false;
+        notifyListeners();
+      } else {
+        verifyNow();
+      }
       return;
     }
     if (_step == ZyraSignupStep.accountReady) {
@@ -460,7 +473,11 @@ class ZyraSignupPreviewController extends ChangeNotifier {
 
   void skip() {
     if (_step == ZyraSignupStep.verify) {
-      verifyLater();
+      if (_verificationDeferred) {
+        advance();
+      } else {
+        verifyLater();
+      }
       return;
     }
     if (_step == ZyraSignupStep.splash) {
@@ -497,6 +514,7 @@ class ZyraSignupPreviewController extends ChangeNotifier {
       return;
     }
     final steps = isSetup ? _setupSteps : _initialSteps;
+    _verificationDeferred = false;
     final index = steps.indexOf(_step);
     if (index == 0 && !isSetup) {
       _step = ZyraSignupStep.welcome;

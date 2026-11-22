@@ -333,6 +333,7 @@ void main() {
       await tap(tester, _key('signup_skip'));
     }
     await tap(tester, _key('signup_verify_later'));
+    await tap(tester, _key('signup_verify_now'));
     return controller;
   }
 
@@ -1495,6 +1496,7 @@ void main() {
       await tap(tester, _key('signup_skip'));
     }
     await tap(tester, _key('signup_verify_later'));
+    await tap(tester, _key('signup_verify_now'));
     expect(c.verified, isFalse);
     await tap(tester, _key('signup_look_around'));
     await finishFirstTour(tester);
@@ -1601,6 +1603,7 @@ void main() {
         await tap(tester, _key('signup_skip'));
       }
       await tap(tester, _key('signup_verify_later'));
+      await tap(tester, _key('signup_verify_now'));
       await tap(tester, _key('signup_finish_setup'));
       expect(find.textContaining('0/325 answered'), findsOneWidget);
       await tap(tester, _key('signup_preferences_later'));
@@ -1800,6 +1803,7 @@ void main() {
       await tap(tester, _key('signup_skip'));
     }
     await tap(tester, _key('signup_verify_later'));
+    await tap(tester, _key('signup_verify_now'));
     await tap(tester, _key('signup_look_around'));
     await finishFirstTour(tester);
     await tap(tester, _key('dev_page_title'));
@@ -1831,6 +1835,7 @@ void main() {
       await tap(tester, _key('signup_skip'));
     }
     await tap(tester, _key('signup_verify_later'));
+    await tap(tester, _key('signup_verify_now'));
     await tap(tester, _key('signup_finish_setup'));
     expect(c.step, ZyraSignupStep.aboutYou);
     c.setAboutYou('Guardian words stay with this role.');

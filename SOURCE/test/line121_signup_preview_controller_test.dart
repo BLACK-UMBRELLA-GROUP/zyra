@@ -108,6 +108,9 @@ void main() {
       c.seedSetup(guardian: false, verified: false);
       c.setStep(ZyraSignupStep.verify);
       c.verifyLater();
+      expect(c.step, ZyraSignupStep.verify);
+      expect(c.verificationDeferred, isTrue);
+      c.advance();
       expect(c.step, ZyraSignupStep.accountReady);
       expect(c.verified, isFalse);
       c.setStep(ZyraSignupStep.membership);
@@ -128,6 +131,29 @@ void main() {
       expect(c.enterZyra(), isTrue);
     },
   );
+
+  test('Deferring verification waits for Continue and resets on return', () {
+    for (final guardian in [false, true]) {
+      final c = _controller();
+      c.setGuardian(guardian);
+      c.setStep(ZyraSignupStep.verify);
+      c.verifyLater();
+      expect(c.verificationDeferred, isTrue);
+      expect(c.hasAccount, isFalse);
+      expect(c.verified, isFalse);
+      c.back();
+      c.setStep(ZyraSignupStep.verify);
+      expect(c.verificationDeferred, isFalse);
+      c.verifyLater();
+      c.advance();
+      expect(c.step, ZyraSignupStep.accountReady);
+      expect(c.hasAccount, isTrue);
+      expect(c.verified, isFalse);
+      c.start();
+      expect(c.verificationDeferred, isFalse);
+      c.dispose();
+    }
+  });
 
   test('Finish later resumes each exact setup step for either role', () {
     for (final guardian in [false, true]) {

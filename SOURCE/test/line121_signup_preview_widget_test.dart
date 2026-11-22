@@ -278,6 +278,111 @@ void main() {
     expect(c.step, ZyraSignupStep.accountReady);
   });
 
+  testWidgets('Verify later reveals the explanation before Continue', (
+    tester,
+  ) async {
+    for (final guardian in [false, true]) {
+      final c = ZyraSignupPreviewController();
+      c.setGuardian(guardian);
+      c.setStep(ZyraSignupStep.verify);
+      await _mount(tester, c);
+      expect(_key('signup_verify_deferred_message'), findsNothing);
+      expect(find.text('Verify now'), findsOneWidget);
+      await tester.tap(_key('signup_verify_later'));
+      await tester.pumpAndSettle();
+      expect(c.step, ZyraSignupStep.verify);
+      expect(c.verified, isFalse);
+      expect(c.hasAccount, isFalse);
+      expect(_key('signup_verify_deferred_message'), findsOneWidget);
+      expect(_key('signup_verify_later'), findsNothing);
+      expect(find.text('Verify now'), findsNothing);
+      expect(find.text('Continue'), findsOneWidget);
+      expect(
+        tester.getTopLeft(_key('signup_verify_deferred_message')).dy,
+        greaterThan(
+          tester
+              .getBottomLeft(
+                find.text('We confirm your name and that you’re 18 or over'),
+              )
+              .dy,
+        ),
+      );
+      await tester.tap(_key('signup_verify_now'));
+      await tester.pumpAndSettle();
+      expect(c.step, ZyraSignupStep.accountReady);
+      expect(c.verified, isFalse);
+      await tester.pumpWidget(const SizedBox.shrink());
+      c.dispose();
+    }
+  });
+
+  testWidgets(
+    'Account ready has an outlined secondary action and aligned status',
+    (tester) async {
+      final c = ZyraSignupPreviewController();
+      addTearDown(c.dispose);
+      c.seedSetup(guardian: false, verified: true);
+      c.addPhoto(_samplePhoto);
+      await _mount(tester, c);
+      final lookAround = tester.widget<OutlinedButton>(
+        _key('signup_look_around'),
+      );
+      expect(
+        lookAround.style!.backgroundColor!.resolve({}),
+        Colors.transparent,
+      );
+      expect(lookAround.style!.side!.resolve({})!.color.a, greaterThan(.2));
+      final statusRight = tester.getBottomRight(find.text('Done').first).dx;
+      for (final status in [
+        find.text('Done').last,
+        find.text('Set any time in Profile'),
+        find.text('Optional · add any time'),
+      ]) {
+        expect(tester.getBottomRight(status).dx, closeTo(statusRight, .01));
+      }
+      final circles = tester
+          .widgetList<Container>(find.byType(Container))
+          .where(
+            (widget) =>
+                widget.constraints?.maxWidth == 22 &&
+                widget.decoration is BoxDecoration &&
+                (widget.decoration! as BoxDecoration).shape == BoxShape.circle,
+          );
+      final emptyCircles = circles.where(
+        (widget) =>
+            (widget.decoration! as BoxDecoration).color == null &&
+            (widget.decoration! as BoxDecoration).border != null,
+      );
+      expect(emptyCircles.length, 2);
+      for (final circle in emptyCircles) {
+        expect(
+          ((circle.decoration! as BoxDecoration).border! as Border).top.color.a,
+          greaterThan(.25),
+        );
+      }
+    },
+  );
+
+  testWidgets(
+    'About you begins with an empty setup progress bar for both roles',
+    (tester) async {
+      for (final guardian in [false, true]) {
+        final c = ZyraSignupPreviewController();
+        c.seedSetup(guardian: guardian, verified: true);
+        c.resumeSetup();
+        if (!guardian) c.advance();
+        await _mount(tester, c);
+        expect(c.step, ZyraSignupStep.aboutYou);
+        expect(
+          tester.widget<LinearProgressIndicator>(_key('signup_progress')).value,
+          0,
+        );
+        await tester.pumpWidget(const SizedBox.shrink());
+        c.dispose();
+      }
+    },
+  );
+
   testWidgets('Every supplied step renders without overflow at phone size', (
     tester,
   ) async {

@@ -4,16 +4,47 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
+import 'package:zyra/dev/zyra_request_activity_presentation.dart';
 import 'package:zyra/screens/profile/compatibility_editors.dart';
 import 'package:zyra/services/zyra_family_messaging_service.dart';
+import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/widgets/zyra_floating_surface.dart';
 import 'package:zyra/widgets/zyra_focus_dashboard.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
+import 'package:zyra/widgets/zyra_request_tab_pill.dart';
 
 import 'support/zyra_hidden_dev_controls_driver.dart';
 import 'visual/baseline_capture_support.dart';
 
 Finder _key(String id) => find.byKey(ValueKey(id));
+
+void _expectGuardianNavigation(WidgetTester tester, int currentIndex) {
+  final navigation = tester.widget<ZyraShellNavigation>(
+    find.byType(ZyraShellNavigation),
+  );
+  expect(navigation.currentIndex, currentIndex);
+  expect(navigation.items.map((item) => item.label), [
+    'Network',
+    'Journeys',
+    'My ZYRA',
+    'Seekers',
+    'Profile',
+  ]);
+  expect(navigation.items.map((item) => item.icon), [
+    Icons.search,
+    Icons.route_outlined,
+    Icons.dashboard_outlined,
+    Icons.gpp_good_outlined,
+    Icons.person_outline,
+  ]);
+  expect(navigation.items.map((item) => item.useJourneyGlyph), [
+    false,
+    true,
+    false,
+    false,
+    false,
+  ]);
+}
 
 Future<void> _physicalTab(WidgetTester tester, int index) async {
   await tester.tap(_key('floating-nav-item-$index'));
@@ -90,6 +121,7 @@ void main() {
               await h.tapText('Not now');
             } else {
               expect(tester.widget<ZyraShellNavigation>(nav).currentIndex, 2);
+              if (guardian) _expectGuardianNavigation(tester, 2);
               expect(tester.getSize(_key('compact-nav-surface')).height, 58);
               await _physicalTab(tester, 2);
             }
@@ -104,6 +136,42 @@ void main() {
       );
     }
   }
+
+  testWidgets('every Guardian tab keeps the approved Guardian nav artwork', (
+    tester,
+  ) async {
+    final h = _h(tester);
+    await h.mount(guardian: true, tab: 2);
+    _expectGuardianNavigation(tester, 2);
+    for (final index in [0, 1, 3, 4, 2]) {
+      await _physicalTab(tester, index);
+      _expectGuardianNavigation(tester, index);
+    }
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets(
+    'empty Introductions keeps white selection on Received and Past',
+    (tester) async {
+      final h = _h(tester);
+      await h.mount(tab: 2);
+      await h.tap('concept-my-introductions');
+      h.assertPage('introductions');
+      for (final label in ['Received', 'Past']) {
+        await h.tapText(label);
+        final presentation = tester.widget<ZyraRequestActivityPresentation>(
+          find.byType(ZyraRequestActivityPresentation),
+        );
+        expect(presentation.selectedTabFill, ZyraColors.frostSelectedFill);
+        final selected = tester
+            .widgetList<ZyraRequestTabPill>(find.byType(ZyraRequestTabPill))
+            .singleWhere((pill) => pill.selected);
+        expect(selected.label, label);
+        expect(selected.selectedFill, ZyraColors.frostSelectedFill);
+      }
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   for (final membership in ['Guardian One', 'Guardian Basic']) {
     testWidgets('$membership Notifications opens read-only Guardian requests', (
@@ -146,10 +214,12 @@ void main() {
       expect(find.text('Decline'), findsNothing);
       final nav = find.byType(ZyraShellNavigation);
       expect(tester.widget<ZyraShellNavigation>(nav).currentIndex, 2);
+      _expectGuardianNavigation(tester, 2);
 
       await h.mount(guardian: true, checkpoint: h.latest);
       expect(h.latest.pages, ['notifications', 'guardian_requests']);
       expect(tester.widget<ZyraShellNavigation>(nav).currentIndex, 2);
+      _expectGuardianNavigation(tester, 2);
       await returnZyraPreviewPage(tester);
       await h.flush();
       h.assertPage('notifications');

@@ -1010,6 +1010,7 @@ class _ZyraSampleIntroductionsListState
           ? const _SampleBack()
           : ZyraRequestActivityPresentation(
               title: 'Introductions',
+              selectedTabFill: ZyraColors.frostSelectedFill,
               wrapTitle: widget.wrapTitle,
               tabClearance: widget.tabClearance,
               labels: const ['Received', 'Past'],

@@ -13,6 +13,7 @@ import 'package:zyra/main.dart' show ZyraStartupGate;
 import 'package:zyra/models/zyra_error_state.dart';
 import 'package:zyra/screens/settings/help_support_screen.dart';
 import 'package:zyra/screens/welcome_screen.dart';
+import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_full_screen_error.dart';
 
@@ -50,6 +51,39 @@ Future<void> _mount(
 void main() {
   setUp(() => ZyraText.useTestFontStubs = true);
   tearDown(() => ZyraText.useTestFontStubs = false);
+
+  for (final kind in [
+    ZyraErrorKind.offline,
+    ZyraErrorKind.serviceUnavailable,
+  ]) {
+    testWidgets('$kind retains the locked tan retry surface while connecting', (
+      tester,
+    ) async {
+      final pending = Completer<void>();
+      await _mount(tester, kind, () => pending.future);
+      final button = tester.widget<OutlinedButton>(_primary);
+      const tan = Color(0xFFF1EADE);
+      expect(
+        button.style!.backgroundColor!.resolve({})!.toARGB32(),
+        tan.toARGB32(),
+      );
+      expect(button.style!.foregroundColor!.resolve({}), ZyraColors.goldText);
+      await tester.tap(_primary);
+      await tester.pump();
+      expect(find.text('Connecting…'), findsOneWidget);
+      final connecting = tester.widget<OutlinedButton>(_primary);
+      expect(connecting.onPressed, isNull);
+      expect(
+        connecting.style!.backgroundColor!.resolve({
+          WidgetState.disabled,
+        })!.toARGB32(),
+        tan.toARGB32(),
+      );
+      await tester.pumpWidget(const SizedBox.shrink());
+      pending.complete();
+      await tester.pump();
+    });
+  }
 
   test(
     'full-page classification distinguishes device, service and session',

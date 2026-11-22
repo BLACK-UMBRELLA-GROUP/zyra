@@ -81,7 +81,7 @@ const _seekerTabs = [
   4,
   4,
 ];
-const _guardianTabs = [0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4];
+const _guardianTabs = [2, 0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4];
 
 Finder _key(String value) => find.byKey(ValueKey(value));
 
@@ -104,6 +104,7 @@ Future<void> _mount(
   BaselineHarness harness, {
   required bool guardian,
   int? tourIndex,
+  int? initialTab,
   List<String> pages = const [],
 }) async {
   // This existing sample supplies an incoming request without a Seeker Journey.
@@ -118,11 +119,13 @@ Future<void> _mount(
             connection: ZyraGuardianConnection.pending,
           )
         : const ZyraGuardianTabsSnapshot.quiet(),
-    tab: pages.isNotEmpty
-        ? 4
-        : tourIndex == null
-        ? 0
-        : (guardian ? _guardianTabs : _seekerTabs)[tourIndex],
+    tab:
+        initialTab ??
+        (pages.isNotEmpty
+            ? 4
+            : tourIndex == null
+            ? (guardian ? 2 : 0)
+            : (guardian ? _guardianTabs : _seekerTabs)[tourIndex]),
     pages: pages,
     seekerMembership: 'Seeker One',
     guardianMembership: 'Guardian One',
@@ -227,16 +230,71 @@ Future<void> _capture(BaselineHarness harness, String name) async {
 
 void main() {
   setUpAll(() async {
-    if (_output.isEmpty) return;
     await baselineSetUp(
-      evidenceRoot: _output,
+      evidenceRoot: _output.isEmpty ? null : _output,
       useSystemSymbolFont: Platform.isMacOS,
     );
     _photos = await ZyraOneJourneySamplePhotos.load();
   });
-  tearDownAll(() async {
-    if (_output.isNotEmpty) await baselineTearDown();
-  });
+  tearDownAll(baselineTearDown);
+
+  testWidgets(
+    'LOCK36 Guardian welcome preserves the current tab before Network begins',
+    (tester) async {
+      final harness = _harness(tester);
+      for (final tab in [2, 1, 3, 4, 0]) {
+        await _mount(harness, guardian: true, tourIndex: 0, initialTab: tab);
+        expect(find.text('Hi Hassan, welcome'), findsOneWidget);
+        expect(
+          tester
+              .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
+              .currentIndex,
+          tab,
+        );
+        if (tab == 2) expect(find.text('My ZYRA'), findsOneWidget);
+        await tester.tap(_key('first_tour_next'));
+        await harness.flush();
+        expect(find.text('This is Network'), findsOneWidget);
+        expect(
+          tester
+              .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
+              .currentIndex,
+          0,
+        );
+      }
+      expect(tester.takeException(), isNull);
+    },
+    variant: TargetPlatformVariant.only(TargetPlatform.iOS),
+  );
+
+  testWidgets(
+    'LOCK36 Guardian replay opens over Profile then restores Settings',
+    (tester) async {
+      final harness = _harness(tester);
+      await _mount(harness, guardian: true, pages: const ['settings']);
+      final replay = find.text('Replay the walkthrough');
+      await Scrollable.ensureVisible(tester.element(replay), alignment: .5);
+      await harness.flush();
+      await tester.tap(replay);
+      await harness.flush();
+      expect(find.text('Hi Hassan, welcome'), findsOneWidget);
+      expect(
+        tester
+            .widget<ZyraShellNavigation>(find.byType(ZyraShellNavigation))
+            .currentIndex,
+        4,
+      );
+      for (var step = 0; step < _guardianFrames.length; step++) {
+        await tester.tap(_key('first_tour_next'));
+        await harness.flush();
+      }
+      expect(_key('first_tour_overlay'), findsNothing);
+      expect(find.text('Replay the walkthrough'), findsOneWidget);
+      expect(find.text('Settings'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+    variant: TargetPlatformVariant.only(TargetPlatform.iOS),
+  );
 
   for (final guardian in [false, true]) {
     final frames = guardian ? _guardianFrames : _seekerFrames;

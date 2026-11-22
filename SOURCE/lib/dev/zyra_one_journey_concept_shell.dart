@@ -4478,6 +4478,7 @@ class _ZyraOneJourneyConceptShellState
             wrapTitle: (title) => ZyraDeveloperTitle(child: title),
             title: 'Introductions',
             tabClearance: _quickAccessTabBar,
+            selectedTabFill: ZyraColors.frostSelectedFill,
             labels: const ['Received', 'Past'],
             pages: const [
               [

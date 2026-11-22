@@ -79,6 +79,7 @@ class ZyraRequestActivityPresentation extends StatefulWidget {
     this.title = 'Journey requests',
     this.tabClearance = false,
     this.wrapTitle,
+    this.selectedTabFill,
   }) : assert(labels.length == pages.length),
        assert(labels.length > 0),
        assert(selectedIndex >= 0 && selectedIndex < labels.length);
@@ -92,6 +93,7 @@ class ZyraRequestActivityPresentation extends StatefulWidget {
   final String title;
   final bool tabClearance;
   final Widget Function(Widget)? wrapTitle;
+  final Color? selectedTabFill;
 
   @override
   State<ZyraRequestActivityPresentation> createState() =>
@@ -156,6 +158,7 @@ class _ZyraRequestActivityPresentationState
     return ZyraRequestTabPill(
       label: widget.labels[index],
       selected: selected,
+      selectedFill: widget.selectedTabFill,
       tapKey: widget.segmentKeys.length > index
           ? widget.segmentKeys[index]
           : null,
@@ -637,8 +640,7 @@ class ZyraPastRequestActivityCard extends StatelessWidget {
   Widget _header({bool? open}) => LayoutBuilder(
     builder: (context, constraints) {
       final chevron = open == null ? null : _requestActivityChevron(open);
-      final stackIdentity =
-          MediaQuery.textScalerOf(context).scale(1) > 1.3;
+      final stackIdentity = MediaQuery.textScalerOf(context).scale(1) > 1.3;
       final portrait = _requestActivityPortrait(profile);
       if (stackIdentity) {
         return Column(
@@ -880,8 +882,8 @@ Widget _requestIdentity(
       style: ZyraText.heading(size: 21),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-      semanticsLabel:
-          '${profile.firstName} ${profile.surnameLine ?? ''}'.trim(),
+      semanticsLabel: '${profile.firstName} ${profile.surnameLine ?? ''}'
+          .trim(),
     ),
     if (profile.age > 0 || profile.city.isNotEmpty) ...[
       const SizedBox(height: 5),
@@ -930,8 +932,7 @@ class ZyraRequestActivityIdentity extends StatelessWidget {
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final stacked =
-              MediaQuery.textScalerOf(context).scale(1) > 1.3;
+          final stacked = MediaQuery.textScalerOf(context).scale(1) > 1.3;
           final portrait = _requestActivityPortrait(profile);
           final identity = _requestIdentity(
             profile,

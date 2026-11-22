@@ -13,12 +13,14 @@ class ZyraRequestTabPill extends StatelessWidget {
     required this.selected,
     required this.onTap,
     this.tapKey,
+    this.selectedFill,
   });
 
   final String label;
   final bool selected;
   final VoidCallback onTap;
   final Key? tapKey;
+  final Color? selectedFill;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class ZyraRequestTabPill extends StatelessWidget {
         radius: 999,
         child: Material(
           color: selected
-              ? ZyraColors.accentOnCanvas.withValues(alpha: .12)
+              ? selectedFill ?? ZyraColors.accentOnCanvas.withValues(alpha: .12)
               : ZyraColors.surfaceFill,
           borderRadius: radius,
           child: InkWell(

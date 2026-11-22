@@ -11,6 +11,7 @@ import 'package:zyra/state/zyra_developer_samples.dart';
 import 'package:zyra/theme/zyra_colors.dart';
 import 'package:zyra/widgets/floating_nav_bar.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
+import 'package:zyra/widgets/zyra_request_tab_pill.dart';
 
 import 'baseline_capture_support.dart';
 
@@ -128,9 +129,36 @@ void main() {
         );
       }
 
+      void expectSelectedTab(String label) {
+        final pill = find.ancestor(
+          of: find.text(label),
+          matching: find.byType(ZyraRequestTabPill),
+        );
+        final material = tester.widget<Material>(
+          find.descendant(of: pill, matching: find.byType(Material)),
+        );
+        expect(material.color, ZyraColors.ivoryTop);
+        final surface = tester.widget<Container>(
+          find.descendant(of: pill, matching: find.byType(Container)),
+        );
+        final border = (surface.decoration! as BoxDecoration).border! as Border;
+        expect(border.top.color, ZyraColors.surfaceEmphasisBorder);
+      }
+
       _samples.setIntroductions(3);
       await mount();
       expect(find.byType(ZyraRequestActivityCard), findsNWidgets(3));
+      expectSelectedTab('Received');
+      for (final subtitle in [
+        'Put forward by Hassan · Father',
+        'Put forward by Khadija · Mother',
+        'Put forward by Yusuf · Brother',
+      ]) {
+        expect(
+          tester.widget<Text>(find.text(subtitle)).style!.color,
+          ZyraColors.goldText,
+        );
+      }
       await capture('introductions__received');
       await h.tap('sample-introduction-draft-noor-header');
       expect(find.text('View profile'), findsOneWidget);
@@ -144,6 +172,7 @@ void main() {
       await h.flush();
       expect(find.text('You declined'), findsOneWidget);
       expect(find.text('Journey requested'), findsOneWidget);
+      expectSelectedTab('Past');
       await capture('introductions__past');
       _samples.setIntroductions(0);
       await tester.tap(find.text('Received'));

@@ -211,6 +211,11 @@ progress bar to reopen Developer. Pausing setup opens My ZYRA with
 uses every applicable option and updates its answered total as choices change.
 New member and Everything include the setup card. Identity and checkout
 actions remain local previews; they create no account, trial or charge.
+In the sign-up rehearsal, **Do this later** reveals the verification explanation
+on the same page; **Continue** then opens Account ready. Account ready uses an
+outlined **Look around first** action, and About you starts with an empty setup
+bar. Introductions use an ivory selected tab with a gold outline, and full-page
+connection errors keep a tan retry button while connecting.
 If the real membership is unavailable,
 the preview starts as Seeker One sample data and says
 “Viewing as Seeker One · real plan: none”. **Clear sample data** restores
