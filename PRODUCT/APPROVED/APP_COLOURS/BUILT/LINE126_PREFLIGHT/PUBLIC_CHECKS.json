@@ -1,5 +1,10 @@
 {
-  "A": "Staged documentation/evidence scan PASS0leaks; outgoing scan pending documentation commit",
+  "A": {
+    "staged_scan": "PASS0leaks",
+    "outgoing_432f8563": "PASS0leaks",
+    "post_push": "Pending network push",
+    "candidate_code_push": "None; all51candidate files retired"
+  },
   "B": {
     "verdict": "Reviewed public-safe",
     "existing_checker_hits": 5,

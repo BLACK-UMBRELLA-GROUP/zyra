@@ -12,8 +12,9 @@ push: local contrast/fit gates fail.51 own candidate files retired under L42;
 accepted source/test/iOS/README clean at c5cf660c.9 representative candidate PNGs
 retained; no binaries/source copies in evidence. No phone/native/server work.
 
-Commit: documentation-only record pending; final identifier in today's owner note.
-Public checks:A pending;B reviewed;C none;D none;E neutral authored wording;
+Commit: 432f8563 (documentation-only QUESTION record); note/public-check finalisation
+commit is recorded in today's owner note. No candidate code committed or pushed.
+Public checks:A staged/outgoing PASS0leaks;B reviewed;C none;D none;E neutral authored wording;
 F README candidate retired/restored, no delivered behavior change.
 Needed: ZYRA Claude answersQ181/Q182, corrected locked pack, then explicit gate
 recheck/resume. Preserved all unrelated Claude files and later queue rows.
