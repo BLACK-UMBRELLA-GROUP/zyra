@@ -4241,7 +4241,7 @@ Title:       Launch legal and safety pack - DPIA, safety response and Online Saf
 Category:    Legal / Safety / Privacy
 Priority:    HIGH before launch (launch gate)
 Date:        2026-10-26
-Status:      OPEN - opened when the Founder withdrew the 14 old drafts (OA-AIOS-404, "a"). The four legal/safety
+Status:      OPEN - 21 Nov (Fable): item (4) privacy notice sections drafted (DOC-ZYRA-0515, private, group repo). | OPEN - opened when the Founder withdrew the 14 old drafts (OA-AIOS-404, "a"). The four legal/safety
              drafts of 6-12 Oct are research input only: REPORTS/ARCHIVE/DRAFTS_DECIDED_2026-10-26/.
 Scope:       (1) DPIA for the whole member service, written from the approved blueprint (special-category
              answers, identity check, Guardians as data subjects, Main Guardian request visibility
@@ -5213,9 +5213,35 @@ Acceptance:  Each item MATCH in a later ZYRA chat build check.
 Source:      2026-11-19_ZYRA_CHAT_NOTE.md, 05:40 morning check
 ------------------------------------------------------------
 
+OA-ZYRA-397
+Title:       Build-check differences, 20 Nov morning check (lines 98, 121, 123, 124; Guardian nav bar first)
+Category:    Build check (charters rule 8)
+Priority:    MEDIUM (item i HIGH)
+Date:        2026-11-21
+Status:      OPEN - filed by Fable 21 Nov 04:15 from the ZYRA chat note 20 Nov 05:40 (differences a-k). Lines 98,
+             99, 121, 123 and 124 were MATCH on flow, words and order; these are the remaining differences.
+Owner:       ZYRA chat (product calls, fix brief, queue row); Codex (build, pictures)
+Detail:      (a) Line 121 Verify page: the "Do this later" message shows all the time in the build; the master shows
+             only the button - needs a product call (always visible, or after tapping Do this later). (b) Account
+             ready: "Look around first" should be outlined, empty-state circles visible, status words right-aligned.
+             (c) About you: setup progress bar half-filled in the build, empty in the master. (d) Paused My ZYRA:
+             pills differ from the master - confirm which pills spec 3.10 wants. (e) Error pages: Try again button
+             near-white vs tan. (f) Line 124: Guardian welcome step sits over Network, master over My ZYRA.
+             (g) Journey empty state: small outlined Browse profiles pill vs full-width gold button - master or
+             LOCK 22 V3 is out of date. (h) Line 98 Introductions: selected tab tan-filled vs white with gold
+             outline; "Put forward by" muted vs gold. (i) Line 98 Guardian "Introductions you've made" shows the
+             Seeker nav bar instead of the Guardian nav bar - most important. (j) Line 123 captures miss the Start
+             sign-up row and the Journey/Stage pickers (evidence gap, code has them). (k) Sample-data gaps (photos,
+             counts) - roll into OA-ZYRA-396 (d).
+Next:        ZYRA chat: (a), (d), (g) need a product call (Shakeel); (b), (c), (e), (f), (h), (i) into one fix brief
+             (fixes only, AD-AIOS-149), (i) first; (j) a capture-only line; (k) note only.
+Acceptance:  Each item MATCH in a later ZYRA chat build check.
+Source:      2026-11-20_ZYRA_CHAT_NOTE.md, 05:40 morning check
+------------------------------------------------------------
+
 TOTAL REGISTERED (this file): 309 (OA-001 through OA-ZYRA-309,
   Historical Identifiers, permanent — plus this note)
-NEXT IDENTIFIER: OA-ZYRA-397 (Enterprise format, active
+NEXT IDENTIFIER: OA-ZYRA-398 (Enterprise format, active
   2026-07-12 — see BLACK UMBRELLA GROUP/SYSTEM/OUTSTANDING_
   ACTIONS/OUTSTANDING_ACTIONS_V1.md, OA-127)
 GOVERNING STANDARD: ENTERPRISE_OBJECT_IDENTITY_STANDARD_

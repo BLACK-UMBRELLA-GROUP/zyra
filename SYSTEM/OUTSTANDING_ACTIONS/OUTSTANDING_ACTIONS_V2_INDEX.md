@@ -12,7 +12,7 @@ owner: Fable
 
 Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS/generate_register_index.py`. Do not edit by hand; re-run after changing the register. The register is the authority.
 
-**115 actions: 109 open or unclear, 6 closed.**
+**116 actions: 110 open or unclear, 6 closed.**
 
 ## Open
 
@@ -67,7 +67,7 @@ Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS
 | OA-ZYRA-317 | Connect the planned app to real data - server support it does not have yet | 12 Nov (Fable): new server needs from the 11 Nov LOCKs (DR-ZYRA-344/3… ⚠️ | HIGH - the planned … |
 | OA-ZYRA-319 | Database files - message send rule lost its block/ended checks; 24 Sep and 5 Oct migratio… | OPEN (repository only - not live, DOC-ZYRA-0294) - found by Fable rea… | HIGH - possible saf… |
 | OA-ZYRA-320 | Member terms and purchase-screen wording - written and legally reviewed before purchases … | OPEN - raised from DR-ZYRA-289. The website terms page today only say… | HIGH before purchas… |
-| OA-ZYRA-321 | Launch legal and safety pack - DPIA, safety response and Online Safety Act check, from th… | OPEN - opened when the Founder withdrew the 14 old drafts (OA-AIOS-40… | HIGH before launch … |
+| OA-ZYRA-321 | Launch legal and safety pack - DPIA, safety response and Online Safety Act check, from th… | OPEN - 21 Nov (Fable): item (4) privacy notice sections drafted (DOC-… | HIGH before launch … |
 | OA-ZYRA-323 | Codex's native iOS build route is held - phone and simulator builds and captures cannot r… | UPDATED 1 Nov (Fable): the Founder's one-time PROFILE install ran 1 N… ⚠️ | HIGH - iPad and iPh… |
 | OA-ZYRA-324 | Guardian Circle shows past Journey summaries with sharing off and from before the Guardia… | OPEN - found by Codex in the LOCK 3 preflight (queue line 7, 29 Oct; … | HIGH - breaks DR-ZY… |
 | OA-ZYRA-325 | Founder-preview defects found by the ZYRA chat on 29 Oct | OPEN - from the 29 Oct ZYRA chat note (items v, w, x, y, dd and the 1… | MEDIUM - the Founde… |
@@ -127,6 +127,7 @@ Generated from `OUTSTANDING_ACTIONS_V2.md` by `BLACK UMBRELLA GROUP/SYSTEM/TOOLS
 | OA-ZYRA-394 | Account recovery for a member who loses Apple or Google access (recovery email removed) | OPEN - filed by Fable 19 Nov 04:15 from the 18 Nov ZYRA chat note (DR… | MEDIUM - before pub… |
 | OA-ZYRA-395 | Adverts for Seeker Basic - checks before any design or build (DR-ZYRA-357) | OPEN - filed by Fable 19 Nov 04:15 from the 18 Nov ZYRA chat note. 20… | LOW - after the app… |
 | OA-ZYRA-396 | Build-check differences, 19 Nov morning check (lines 119 and 122; nav bar; sample data; b… | OPEN - filed by Fable 20 Nov 04:15 from the ZYRA chat note 19 Nov 05:… | MEDIUM |
+| OA-ZYRA-397 | Build-check differences, 20 Nov morning check (lines 98, 121, 123, 124; Guardian nav bar … | OPEN - filed by Fable 21 Nov 04:15 from the ZYRA chat note 20 Nov 05:… | MEDIUM (item i HIGH) |
 
 ⚠️ = status wording not recognised as open or closed (4). Fix the wording in the register.
 
