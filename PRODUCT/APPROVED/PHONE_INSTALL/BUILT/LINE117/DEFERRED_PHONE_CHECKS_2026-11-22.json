@@ -1,0 +1,18 @@
+{
+  "action": "OA-ZYRA-317 / line 117 deferred phone acceptance",
+  "status": "DEFERRED_BY_FOUNDER",
+  "date": "2026-11-22",
+  "authority": "Founder selected I\u2019ll test later.",
+  "owner": "Founder phone interaction, Codex verification",
+  "resume": "When Founder requests the deferred phone checks",
+  "installedVersion": "1.0.0 (5)",
+  "sourceCommit": "9651731289d583ae660669fccba70aa0ed2252f7",
+  "checks": {
+    "a": "Notes Universal Link and fragment delivery with a made-up five-group code; existing not-found result.",
+    "b": "DEMO/DRAFT sample fragment and broken fragment show the existing invalid-code message.",
+    "c": "Guardian sample found/simulated sent state; own-code not-found; Q158 rotation sheet/cancel/rotate/QR/toast and prior-code not-found. Q157 permits widget evidence for the inaccessible Seeker rehearsal.",
+    "d": "Existing non-Founder real-member session, well-formed link against the current server, safe failure and no crash."
+  },
+  "completionEvidenceRequired": "Record each phone result separately. Current a\u2013d statuses are deferred, not passed.",
+  "widgetEvidence": "Q157 current-source two-size Seeker rehearsal passed independently."
+}

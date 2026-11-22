@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "status": "signed build and wired readiness verified; waiting for separate install GO",
+  "status": "Installed and opened on exact Founder GO; phone checks deferred by Founder",
   "build": {
     "schema": 1,
     "success": true,
@@ -78,7 +78,7 @@
       "transportType": "wired",
       "tunnelState": "connected"
     },
-    "installAttempted": false,
+    "installAttempted": true,
     "earlierReadinessChecks": [
       {
         "ready": false,
@@ -97,9 +97,15 @@
       "unlocked": true,
       "transport": "wired"
     },
-    "readinessSequence": "Sole paired provisioned USB phone; live lock-state query; immediate protected native-phone-check, all identifiers held in memory."
+    "readinessSequence": "Sole paired provisioned USB phone; live lock-state query; immediate protected native-phone-check, all identifiers held in memory.",
+    "installSucceeded": true,
+    "launchSucceeded": true,
+    "postVerified": true,
+    "founderConfirmation": "ZYRA opens normally.",
+    "phoneChecks": "a\u2013d deferred by Founder; not passed",
+    "deferredAction": "OA-ZYRA-317"
   },
-  "authority": "Founder GO wired on 22 Nov; installation requires separate GO for source 96517312",
+  "authority": "Founder GO wired on 22 Nov, followed by the exact-build GO \u2014 install this build for 1.0.0 (5), source 96517312.",
   "live": false,
   "pinCommit": "844bf24b"
 }

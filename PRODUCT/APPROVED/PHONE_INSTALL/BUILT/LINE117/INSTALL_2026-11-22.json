@@ -1,0 +1,53 @@
+{
+  "receipt": {
+    "stage": "complete",
+    "transport": "wired",
+    "installAttempted": true,
+    "installSucceeded": true,
+    "launchAttempted": true,
+    "launchSucceeded": true,
+    "postVerified": true,
+    "captureStatus": "needs-visual-confirmation",
+    "commitSha": "9651731289d583ae660669fccba70aa0ed2252f7",
+    "artifactSha256": "44f47f43b66a840b6c95d4eb89e98e43f325818c652d9fe23d05e178d9fcec5d",
+    "buildReceiptSha256": "acfe159fa7f0a2b86051a258144c63e29b9eee415ead60963ac0f347a87b0358",
+    "sourceSealSha256": "78a410e70f3c4de7c48f2d84b9c1329223d76e331ce79f4f1f8c9ef6d0197e3f"
+  },
+  "installAttempts": 1,
+  "temporaryReadOnlyKeepaliveStopped": true,
+  "firstFrame": {
+    "status": "No usable ZYRA screen capture; unrelated captures retired to the single user delete folder.",
+    "unrelatedCaptureMovedToUserDeleteFolder": true
+  },
+  "phoneChecks": {
+    "a": {
+      "status": "deferred by Founder; not passed",
+      "evidence": "Founder chose I\u2019ll test later."
+    },
+    "b": {
+      "status": "deferred by Founder; not passed",
+      "evidence": "Founder chose I\u2019ll test later."
+    },
+    "c": {
+      "status": "deferred by Founder; not passed",
+      "evidence": "Founder chose I\u2019ll test later."
+    },
+    "d": {
+      "status": "deferred by Founder; not passed",
+      "evidence": "Founder chose I\u2019ll test later."
+    }
+  },
+  "founderVisualConfirmation": "ZYRA opens normally.",
+  "status": "BUILT: protected install and launch verified; phone checks deferred by Founder",
+  "founderDeferral": "I\u2019ll test later.",
+  "widgetEvidence": {
+    "Q157": "accepted fallback for inaccessible Seeker found/sent rehearsal",
+    "passed": 2,
+    "sizes": [
+      "430x932",
+      "375x667"
+    ],
+    "suite": "test/visual/lock9_code_page_capture_test.dart"
+  },
+  "trackedAction": "OA-ZYRA-317; DEFERRED_PHONE_CHECKS_2026-11-22.json"
+}

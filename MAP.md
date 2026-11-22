@@ -79,7 +79,7 @@ re-run the tool.
 
 _Stop here unless you need to look up another ID._
 
-## Documents (417 live)
+## Documents (418 live)
 
 ### APP SPACING
 
@@ -394,7 +394,7 @@ _Stop here unless you need to look up another ID._
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
 | DOC-ZYRA-0300 | `REPORTS/CURRENT/ZYRA_CHAT_HANDOVER_2026-10-27_V1.md` | REPORT | Handover from Fable to the new ZYRA chat (lead designer) - who you are, how Shakeel works, what ZYRA is… | AD-AIOS-115, DOC-BUG-0009, DOC-ZYRA-0278, DOC-ZYRA-0291, OA-ZYRA-320, OA-ZYRA-321 | 9 |
-| DOC-ZYRA-0302 | `PRODUCT/APPROVED/BUILD_QUEUE.md` | REGISTER | Build queue - every ZYRA instruction for Codex (LOCKed builds and Founder-named tasks) waits here; Codex… | AD-AIOS-115 | 72 |
+| DOC-ZYRA-0302 | `PRODUCT/APPROVED/BUILD_QUEUE.md` | REGISTER | Build queue - every ZYRA instruction for Codex (LOCKed builds and Founder-named tasks) waits here; Codex… | AD-AIOS-115 | 73 |
 | DOC-ZYRA-0335 | `PRODUCT/APPROVED/QUESTIONS.md` | REGISTER | Codex's questions for the ZYRA chat - Codex never asks Shakeel in chat; he files the question here, marks… | AD-AIOS-116 | 221 |
 | INDEX-DECISIONS_V1 | `SYSTEM/DECISIONS_REGISTER/DECISIONS_V1_INDEX.md` | INDEX | Generated one-line index of DECISIONS_V1.md; find the ID here, then search the register for it |  | 48 |
 | INDEX-OUTSTANDING_ACTIONS_V2 | `SYSTEM/OUTSTANDING_ACTIONS/OUTSTANDING_ACTIONS_V2_INDEX.md` | INDEX | Generated one-line index of OUTSTANDING_ACTIONS_V2.md; find the ID here, then search the register for it |  | 19 |
@@ -522,6 +522,7 @@ _Stop here unless you need to look up another ID._
 
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
+| ASBUILT-ZYRA-LINE117 | `PRODUCT/APPROVED/PHONE_INSTALL/BUILT/LINE117/AS_BUILT_CURRENT_VERSION_V1.md` | HANDOVER | Exact signed Founder PROFILE build installed on the paired iPhone, with deferred phone acceptance | DOC-ZYRA-0514, DOC-ZYRA-0448, OA-ZYRA-317, DR-ZYRA-352, ASBUILT-ZYRA-LINE117-WIRELESS | 4 |
 | ASBUILT-ZYRA-LINE117-WIRELESS | `PRODUCT/APPROVED/PHONE_INSTALL/BUILT/LINE117/WIRELESS_ROUTE_HANDOVER.md` | HANDOVER | Explicit wireless delivery on the protected signed Founder iPhone route | DOC-ZYRA-0514, DOC-ZYRA-0448, OA-ZYRA-317, DR-ZYRA-352 | 3 |
 
 ### PHONE_INSTALL
