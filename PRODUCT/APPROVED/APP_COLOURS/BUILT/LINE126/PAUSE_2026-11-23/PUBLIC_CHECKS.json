@@ -1,0 +1,13 @@
+{
+  "candidate_files": 74,
+  "candidate_hits": 92,
+  "categories": {
+    "Exact unchanged HEAD line": 37,
+    "Dart positional-record field": 22,
+    "PNG compressed bytes; CRC/no metadata checked": 29,
+    "Dart positional-record field inside string interpolation": 4
+  },
+  "document_files": 11,
+  "document_hits": 5,
+  "unresolved": []
+}

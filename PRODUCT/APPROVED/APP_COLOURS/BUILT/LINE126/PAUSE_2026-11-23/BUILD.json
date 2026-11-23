@@ -1,0 +1,11 @@
+{
+  "commit_sha": "c1a33ab713000a2f0609d32309312ab539969675",
+  "commit_scope": "acceptedbaseline only;74filecandidateuncommitted",
+  "candidate_commit": null,
+  "candidate_aggregate_sha256": "f9d64e2269554d5e8a8ee516ca87653592f3f09eb2a9014e6d58908b7381327b",
+  "flutter_version": "3.44.2",
+  "build_mode": "widget_tests; explicitFounderpausedcandidate",
+  "timestamp_utc": "2026-11-23T13:12:08.323825+00:00",
+  "native_build": false,
+  "phone_install": false
+}

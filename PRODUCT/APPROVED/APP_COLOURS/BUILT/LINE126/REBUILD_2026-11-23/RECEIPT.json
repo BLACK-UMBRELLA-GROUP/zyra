@@ -1,0 +1,15 @@
+{
+  "line": 126,
+  "status": "Candidate held; accepted implementation restored",
+  "source_base_commit": "c1a33ab713000a2f0609d32309312ab539969675",
+  "fresh_implementation": true,
+  "authority": "Q184/F58 and Founder queue handoff direction 2026-11-23",
+  "file_count": 66,
+  "library_count": 23,
+  "aggregate_algorithm": "sha256(sorted path UTF8 + NUL + raw sha256 digest + NUL)",
+  "aggregate_sha256": "ce64ebba1df8b1f9fa3486f14eb19747a7e12e626c36a856eb500481708f3351",
+  "library_sha256": "c325c9800ec0d94699b1ad8734db3aa4b6c89a216cf1e256d4128a9e0fe639f3",
+  "held_root": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE126/REBUILD_2026-11-23",
+  "timestamp_utc": "2026-11-23T12:21:46.529397+00:00",
+  "restoration": "Read-only git show HEAD:path after moving owned candidate; no checkout/restore/reset/rebase"
+}

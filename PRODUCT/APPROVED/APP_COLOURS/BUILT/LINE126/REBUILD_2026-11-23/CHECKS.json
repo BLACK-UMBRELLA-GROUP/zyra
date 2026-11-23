@@ -1,0 +1,175 @@
+{
+  "line": 126,
+  "oa": "OA-ZYRA-371",
+  "status": "WAITING; held candidate, not built",
+  "fresh_rebuild": true,
+  "accepted_base": "c1a33ab713000a2f0609d32309312ab539969675",
+  "candidate_sha256": "ce64ebba1df8b1f9fa3486f14eb19747a7e12e626c36a856eb500481708f3351",
+  "whole_analyzer": {
+    "pass": true,
+    "duration_seconds": 6.5,
+    "log": "qa/line126-final-held-analyze.log"
+  },
+  "auditor_controls": {
+    "passed": 46,
+    "failed": 0,
+    "scope": "Independent controls including omitted external backdrops; later diagnostic-only run-record additions analyzed, no whole-corpus pass"
+  },
+  "broad_regression": {
+    "passed": 7635,
+    "failed": 1,
+    "skipped": 202,
+    "duration_seconds": 473.047726083,
+    "selected_files": 582,
+    "source_and_selected_tests_unchanged": true,
+    "later_focused": {
+      "passed": 39,
+      "failed": 0,
+      "skipped": 0,
+      "scope": "Four affected fit/status/colour test files"
+    },
+    "final_broad_after_later_changes": "not run"
+  },
+  "focused_checks": {
+    "theme_cards_passed": 73,
+    "signup_compatibility_passed": 15,
+    "wallet_passed": 36,
+    "journey_passed": 4,
+    "monogram_existing_and_new_passed": 60,
+    "monogram_final_contract_passed": 4,
+    "real_remaining_route_presenters_passed": 102,
+    "capture_navigation_repairs_passed": 14,
+    "golden_and_manifest_checks_passed": 9,
+    "ci_scope_mock_tests_passed": 5
+  },
+  "filtered_alpha_proof": {
+    "scope": "Filtered six-context proof, all four viewport tuples; report-only, no whole-corpus pass",
+    "runs": [
+      {
+        "driver": "normal",
+        "frames": 943,
+        "failures": 36,
+        "coverage_gaps": 482,
+        "wall_seconds": 127.9
+      },
+      {
+        "driver": "large-430",
+        "frames": 551,
+        "failures": 170,
+        "coverage_gaps": 312,
+        "wall_seconds": 90.756
+      },
+      {
+        "driver": "large-375",
+        "frames": 661,
+        "failures": 236,
+        "coverage_gaps": 312,
+        "wall_seconds": 78.494
+      }
+    ],
+    "comparisons": [
+      {
+        "context": "Email gold pill",
+        "tuples": 4,
+        "old_min_ratio": 3.246998024170156,
+        "current_min_ratio": 5.207097039609519,
+        "all_samples_background_and_original_alpha_255": true,
+        "all_transmission_255": true
+      },
+      {
+        "context": "Email muted paragraphs",
+        "tuples": 4,
+        "old_min_ratio": 3.4608662562853056,
+        "current_min_ratio": 5.52968175398721,
+        "all_samples_background_and_original_alpha_255": true,
+        "all_transmission_255": true
+      },
+      {
+        "context": "Email neutral pill",
+        "tuples": 4,
+        "old_min_ratio": 3.428704264672698,
+        "current_min_ratio": 5.47829416341819,
+        "all_samples_background_and_original_alpha_255": true,
+        "all_transmission_255": true
+      },
+      {
+        "context": "Salam body",
+        "tuples": 4,
+        "old_min_ratio": 4.434934055429584,
+        "current_min_ratio": 7.086021854183951,
+        "all_samples_background_and_original_alpha_255": true,
+        "all_transmission_255": true
+      },
+      {
+        "context": "Scroll cue",
+        "tuples": 4,
+        "old_min_ratio": 3.923736541456897,
+        "current_min_ratio": 6.269243811818202,
+        "all_samples_background_and_original_alpha_255": true,
+        "all_transmission_255": true
+      },
+      {
+        "context": "Signup checkout note",
+        "tuples": 4,
+        "old_min_ratio": 4.4442882946045765,
+        "current_min_ratio": 7.10096781333347,
+        "all_samples_background_and_original_alpha_255": true,
+        "all_transmission_255": true
+      },
+      {
+        "context": "Signup disabled Continue",
+        "tuples": 4,
+        "old_min_ratio": 2.953823911403611,
+        "current_min_ratio": 4.719542732319086,
+        "all_samples_background_and_original_alpha_255": true,
+        "all_transmission_255": true
+      },
+      {
+        "context": "Wallet selected pill",
+        "tuples": 4,
+        "old_min_ratio": 3.977916933074841,
+        "current_min_ratio": 6.379246101118389,
+        "all_samples_background_and_original_alpha_255": true,
+        "all_transmission_255": true
+      }
+    ],
+    "danger": {
+      "viewport": "375x667@1.3",
+      "text": "7 days left \u00b7 last reminder",
+      "ratio": 3.2113555666287183,
+      "sample": {
+        "x": 238,
+        "y": 258,
+        "background": "#ffd0bfb5",
+        "nominal_ink": "#ffac453e",
+        "background_alpha": 255,
+        "original_alpha": 255,
+        "solid_alpha": 255,
+        "original_glyph_delta": 37,
+        "opaque_patch_transmission": 255
+      }
+    },
+    "normal_navigation_bodies": "5 pass/1 pre-state-restoration Settings failure",
+    "large_navigation_bodies": "12/12 pass after ScrollableState restoration",
+    "whole_app_contrast_pass": false
+  },
+  "final_corpus": "NOT RUN after last harness fixes and newly answered Q188-Q192; contrast and coverage gates remain unsatisfied",
+  "public_candidate_scan": {
+    "files": 66,
+    "hits": 80,
+    "reviewed_false_positive_categories": {
+      "unchanged_HEAD_lines": 35,
+      "compressed_PNG_bytes": 29,
+      "Dart_positional_record_fields": 16
+    },
+    "unresolved": 0
+  },
+  "hold_verification": {
+    "files": 66,
+    "accepted_paths_restored": true,
+    "implementation_status_clean": true,
+    "ignored": true
+  },
+  "hosted_candidate_ci": "not requested: local gates not passed",
+  "native_or_phone": "none"
+}

@@ -1,0 +1,40 @@
+{
+  "line": 126,
+  "oa": "OA-ZYRA-371",
+  "status": "PAUSED by Founder; not built",
+  "authority": "BUILD_QUEUE126 explicit Founder23Nov15:58KSA PAUSE; resume only later GO",
+  "held_root": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE126/PAUSE_2026-11-23_131103UTC",
+  "files": 74,
+  "libraries": 27,
+  "candidate_aggregate_sha256": "f9d64e2269554d5e8a8ee516ca87653592f3f09eb2a9014e6d58908b7381327b",
+  "accepted_source_commit": "c1a33ab713000a2f0609d32309312ab539969675",
+  "source_scopes_clean": true,
+  "processes_running": false,
+  "network_steps_this_resumption": 0,
+  "candidate_commit": null,
+  "candidate_push": false,
+  "hosted_ci": false,
+  "last_steps": {
+    "q188_q189": "applied;176focused checks passed before later corrections",
+    "q190": "adaptivefade +52focused checks;8visualcaptures complete;later disabled-photo-label strongfallback applied",
+    "q191": "wholewordfullrowfact reflow;53focused checks;430/1.0mastergeometry andRGBAidentical",
+    "q192": "51controls passed BEFORE finalmodalclip-awarecollection;lastsourceedit closedlintbrace;no subsequentanalysis/tests"
+  },
+  "unconfirmed_concern": "Retained Q190 fade may need repaint invalidation after live TextScaler/scroll; no probe created/started and no defect/fix established",
+  "next_steps": [
+    "Wait for FounderGO. Recheck accepted source and compare every held base hash; manually merge any intervening accepted changes before safe restoration.",
+    "First prove retained-card normal pixels after live text-scale and scroll changes BEFORE auditor-forced repaint; fix only if a real Q190 invalidation defect is established.",
+    "Add/run clipped-modal-barrier negative control and positive fractional-glyph-bearing fit control; analyze final Q192 brace edit and rerun51+controls.",
+    "Freeze all code, run all3unfiltered four-layout contrast/weight/fit/coverage drivers and complete ordinary regression; resolve genuine applicable coverage gaps from actual controller guards.",
+    "Compare scoped renders/locked inputs, completepublicscan, then candidatecommit/push/exactCI only after localgatespass and FounderGO permitscontinuation. No127/native/phone underthispause."
+  ],
+  "historical_records": "REBUILD_2026-11-23 receipt describes earlier66-filehold and safe resumption; its candidate directory is empty. Old51-file22Novcandidate is permanently gone perQ184; do not claim recovery.",
+  "checks_not_claimed": [
+    "finalwholeanalyzer",
+    "finalfullcontrast/coverage",
+    "finalbroadregression",
+    "exactcandidateCI",
+    "globalmasterpixelparity"
+  ],
+  "support_manifest": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE126/PAUSE_2026-11-23_131103UTC/SUPPORT_FILES.json"
+}
