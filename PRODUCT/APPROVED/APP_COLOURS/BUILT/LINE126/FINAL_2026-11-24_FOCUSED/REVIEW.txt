@@ -1,0 +1,27 @@
+LINE126 FINAL EIGHT-PNG REVIEW — PASS WITH DECLARED COMPARISON LIMITS
+OA-ZYRA-371. Manual visible-text/photo-fade review; no full-app or pixel-parity claim.
+Candidate95/35 libraries: 7375bcdec7899043017c3f1eaea34dd42a239fe1578961e38dc4d0a4e814e54b
+Accepted source base: 0a66014a0100e1e66caf5fc115b424d8d5d5dadb
+Capture: eight passed, zero skipped, DPR3/iOS. Four1290x2796 and four1125x2001 PNGs.
+Raw METADATA SHA256: edbe1feb62e6d31d244b1e416ae7471c479509d2fcc6042996b2b8391e3abb3e
+Raw PNGs/METADATA unchanged. METADATA_SANITIZED.json records exact measured hashes and current authority.
+
+RENDER | APPROVED MASTER | COMPARISON / OBSERVATION
+seeker_basic_430x932_1.0.png | j07_basic__journey_sara.png | 430 matching tuple: Stage, identity and footer readable; Continue and all upsell text/link visible. Seeker footer state differs from master.
+seeker_basic_375x667_1.3.png | j07_basic__journey_sara.png | 375 Larger Text context only: Stage, identity and footer readable; upsell heading wraps. Plans link is below the initial inner upsell viewport; this frame does not exercise that scroll.
+seeker_one_430x932_1.0.png | j02_one__journey_sara.png | 430 matching tuple: Stage, identity, footer and Continue readable; bundled artwork and selected navigation present. Seeker footer state differs from master.
+seeker_one_375x667_1.3.png | j02_one__journey_sara.png | 375 Larger Text context only: Larger stage, identity, footer and Continue remain readable within the visible card; selected navigation complete.
+guardian_basic_430x932_1.0.png | g09c_journeys__adam_guardian_basic.png | 430 matching tuple: Family Review and View only details readable; Open Journey, Ended Journeys and selected navigation complete.
+guardian_basic_375x667_1.3.png | g09c_journeys__adam_guardian_basic.png | 375 Larger Text context only: Journeys heading fully visible; selector uses its own header row. View only and Ended Journeys text wrap without visible clipping.
+guardian_one_430x932_1.0.png | g09_journeys__adam.png | 430 matching tuple: Family Review and View and Chat details readable; Open Journey, Ended Journeys and selected navigation complete.
+guardian_one_375x667_1.3.png | g09_journeys__adam.png | 375 Larger Text context only: Journeys heading fully visible; View and Chat details use three complete lines. Open Journey and Ended Journeys remain visible.
+
+COMPARISON LIMITS / WRITTEN REFUSAL TO EXPAND LINE126
+These are eight representative Journey/Journeys frames: four role/plan pairs at two diagonal tuples, not every page, all scroll positions or the full sixteen role/plan/tuple matrix.
+Both Seeker masters show Family Review / 41 hours left in their footer; the actual admitted fixture is Faith & Values / Your turn. Do not equate different states or replace the fixture to force a visual match.
+430 masters and Flutter retain visible border, shadow, chip, navigation-glyph/underline and spacing differences. No pixel-parity or global master acceptance claim is made. Under OA-ZYRA-371 these inherited presentation differences are recorded and left unchanged.
+375x667@1.3 has no matching-size master here. Its comparison is contextual. The Seeker Basic plans link is outside the initial inner upsell scroll viewport; the existing source still contains it in journey_tab_upsell_scroll. This capture does not prove that scroll interaction and does not establish a removed or inaccessible control.
+Queue line141 small-screen-fit changes remain excluded. Current masters may contain later locked work. No unbuilt master detail was implemented during this review.
+The green silhouette is the actual bundled sample artwork, not a decoded-person-photo claim. Visual legibility is a manual observation; numerical contrast and fit evidence are separate receipts.
+
+All eight actual PNGs and four master PNGs were viewed. All PNG dimensions and hashes match raw metadata. No new line126 visual blocker was identified. No app/source/test/font/Git change or new test run was made for this review.

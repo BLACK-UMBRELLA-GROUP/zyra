@@ -1,0 +1,324 @@
+{
+  "line": 126,
+  "action": "INDEPENDENT_FINAL_REPRESENTATIVE_VISUAL_REVIEW",
+  "result": "PASS_WITH_DECLARED_COMPARISON_LIMITS",
+  "reviewed_utc": "2026-11-24T05:34:33.907337+00:00",
+  "scope": "No new line126 visible-text or photo-fade blocker identified in these eight frames; limitations below remain explicit.",
+  "authority": {
+    "brief": "PRODUCT/APPROVED/APP_COLOURS/BRIEFS/FIX_BRIEF_2026-11-22_CLEARER_TEXT.md",
+    "spec": "PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V9.md",
+    "answered_rules": "Questions177-195; focused resume gate Q197",
+    "private_reference_identifiers_only": [
+      "V307",
+      "V324",
+      "V326"
+    ],
+    "private_html_published": false,
+    "line141_excluded": true
+  },
+  "raw_metadata": {
+    "path": "SOURCE/build/line126-final-visual-final/METADATA.json",
+    "sha256": "edbe1feb62e6d31d244b1e416ae7471c479509d2fcc6042996b2b8391e3abb3e",
+    "preserved_unchanged": true,
+    "derivation": "This sanitized record retains measured fields, converts paths to repository-relative form and supplements the raw driver authority with current Q197 scope; raw metadata was not rewritten."
+  },
+  "driver": {
+    "original_sha256": "8e4bfa45442a0c1dbcaed6d5bcc1f5155739ef46c975e9941ae6fb968a7e9fd4",
+    "derived_sha256": "47a216c0cdd73c1dae8007dd086ccdad30c969bb5cc1d19abdfd6514c03b71dc",
+    "repair_receipt": "SOURCE/build/line126-representative-driver-lint-repair.json",
+    "repair_receipt_sha256": "86e857f4ae5319c27889929bf61994fd38e9f7642d51f79e41bbfd3428ec6f7b",
+    "changes": "Import aliases renamed to snake_case; comment and test-only API lint annotation. Eight registrations, fixture calls and assertions preserved."
+  },
+  "candidate": {
+    "manifest": "SOURCE/build/line126-resume95-public-candidate-files.json",
+    "manifest_sha256": "e03a843cd8d4a5f01429517fe790d73c55015ff08d4a937f8ad043aadbbf009d",
+    "source_base_commit": "0a66014a0100e1e66caf5fc115b424d8d5d5dadb",
+    "files": 95,
+    "libraries": 35,
+    "aggregate_sha256": "7375bcdec7899043017c3f1eaea34dd42a239fe1578961e38dc4d0a4e814e54b"
+  },
+  "capture_run": {
+    "receipt": "SOURCE/build/line126-q197-captures-summary.json",
+    "receipt_sha256": "aeb788321179a6d3c2754f26eee65e6ada70ed8ed92a510c735e9f452f8ba3b5",
+    "started_utc": "2026-11-24T05:26:41.521837+00:00",
+    "finished_utc": "2026-11-24T05:26:54.646981+00:00",
+    "seconds": 11.917999291000001,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "source_test_files": 4056,
+    "source_test_aggregate_sha256": "46738952b8cd92e77bdc0ce88cde70e235ae1e8b2ee6be1e1ad3e5f691795937",
+    "mode": "Flutter widget-test capture; no native app build",
+    "platform_variant": "iOS",
+    "fonts": "Bundled Poppins/Syne and documented platform fallback"
+  },
+  "png_count": 8,
+  "snapshots": [
+    {
+      "render": "SOURCE/build/line126-final-visual-final/seeker_basic_430x932_1.0.png",
+      "sha256": "3c93098c8f468d5aa86dd7d2d4a8b625db991599ecdc52a137cc5b7b3db4a4bd",
+      "role": "seeker",
+      "plan": "Seeker Basic",
+      "logical_size": [
+        430.0,
+        932.0
+      ],
+      "text_scale": 1.0,
+      "device_pixel_ratio": 3,
+      "pixel_size": [
+        1290,
+        2796
+      ],
+      "current_tab": 1,
+      "current_pages": [],
+      "presenters": [
+        "ZyraOneJourneyTab",
+        "ZyraJourneyPhotoCard"
+      ],
+      "source_asset": "SOURCE/assets/dev/one_journey_photos/zyra2a.jpg",
+      "source_asset_sha256": "594174a8c4733967b643d29884549c51ab221185ca98bf093fcbcb81f06900d7",
+      "master": "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j07_basic__journey_sara.png",
+      "master_sha256": "81798c5f3247e2edae7b149ca5cf83488133cf8ef22c931273670d5906c027f7",
+      "master_pixel_size": [
+        1290,
+        2796
+      ],
+      "comparison_scope": "Matching 430x932@1.0 tuple; line126 typography/photo review only",
+      "observation": "Stage, identity and footer readable; Continue and all upsell text/link visible. Seeker footer state differs from master."
+    },
+    {
+      "render": "SOURCE/build/line126-final-visual-final/seeker_basic_375x667_1.3.png",
+      "sha256": "dfa5fde5a0226f3f68863a30c9e2dccb2608327887ec5ee23ac6d583b3db9dae",
+      "role": "seeker",
+      "plan": "Seeker Basic",
+      "logical_size": [
+        375.0,
+        667.0
+      ],
+      "text_scale": 1.3,
+      "device_pixel_ratio": 3,
+      "pixel_size": [
+        1125,
+        2001
+      ],
+      "current_tab": 1,
+      "current_pages": [],
+      "presenters": [
+        "ZyraOneJourneyTab",
+        "ZyraJourneyPhotoCard"
+      ],
+      "source_asset": "SOURCE/assets/dev/one_journey_photos/zyra2a.jpg",
+      "source_asset_sha256": "594174a8c4733967b643d29884549c51ab221185ca98bf093fcbcb81f06900d7",
+      "master": "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j07_basic__journey_sara.png",
+      "master_sha256": "81798c5f3247e2edae7b149ca5cf83488133cf8ef22c931273670d5906c027f7",
+      "master_pixel_size": [
+        1290,
+        2796
+      ],
+      "comparison_scope": "Different 375x667@1.3 tuple; 430x932@1.0 master is context only",
+      "observation": "Stage, identity and footer readable; upsell heading wraps. Plans link is below the initial inner upsell viewport; this frame does not exercise that scroll."
+    },
+    {
+      "render": "SOURCE/build/line126-final-visual-final/seeker_one_430x932_1.0.png",
+      "sha256": "ed2306e2ea7f3477c9a3078b95cdb187cc14a2f1cc13deb86b05e5a65527c0cd",
+      "role": "seeker",
+      "plan": "Seeker One",
+      "logical_size": [
+        430.0,
+        932.0
+      ],
+      "text_scale": 1.0,
+      "device_pixel_ratio": 3,
+      "pixel_size": [
+        1290,
+        2796
+      ],
+      "current_tab": 1,
+      "current_pages": [],
+      "presenters": [
+        "ZyraOneJourneyTab",
+        "ZyraJourneyPhotoCard"
+      ],
+      "source_asset": "SOURCE/assets/dev/one_journey_photos/zyra2a.jpg",
+      "source_asset_sha256": "594174a8c4733967b643d29884549c51ab221185ca98bf093fcbcb81f06900d7",
+      "master": "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j02_one__journey_sara.png",
+      "master_sha256": "bbe40bdedb2c12d9c6c296166fe0ac753c342c29bd09416c57f54a8d15d1a87d",
+      "master_pixel_size": [
+        1290,
+        2796
+      ],
+      "comparison_scope": "Matching 430x932@1.0 tuple; line126 typography/photo review only",
+      "observation": "Stage, identity, footer and Continue readable; bundled artwork and selected navigation present. Seeker footer state differs from master."
+    },
+    {
+      "render": "SOURCE/build/line126-final-visual-final/seeker_one_375x667_1.3.png",
+      "sha256": "6047098f31c0dc0cd05a0546c8cec06793a74e861bfa0f079879c70cf8a62573",
+      "role": "seeker",
+      "plan": "Seeker One",
+      "logical_size": [
+        375.0,
+        667.0
+      ],
+      "text_scale": 1.3,
+      "device_pixel_ratio": 3,
+      "pixel_size": [
+        1125,
+        2001
+      ],
+      "current_tab": 1,
+      "current_pages": [],
+      "presenters": [
+        "ZyraOneJourneyTab",
+        "ZyraJourneyPhotoCard"
+      ],
+      "source_asset": "SOURCE/assets/dev/one_journey_photos/zyra2a.jpg",
+      "source_asset_sha256": "594174a8c4733967b643d29884549c51ab221185ca98bf093fcbcb81f06900d7",
+      "master": "PRODUCT/APPROVED/JOURNEY_TAB/MASTERS/j02_one__journey_sara.png",
+      "master_sha256": "bbe40bdedb2c12d9c6c296166fe0ac753c342c29bd09416c57f54a8d15d1a87d",
+      "master_pixel_size": [
+        1290,
+        2796
+      ],
+      "comparison_scope": "Different 375x667@1.3 tuple; 430x932@1.0 master is context only",
+      "observation": "Larger stage, identity, footer and Continue remain readable within the visible card; selected navigation complete."
+    },
+    {
+      "render": "SOURCE/build/line126-final-visual-final/guardian_basic_430x932_1.0.png",
+      "sha256": "7088cadadd8145df0dba0afb08198f1f6610362554615e29f40b053e446c29c4",
+      "role": "guardian",
+      "plan": "Guardian Basic",
+      "logical_size": [
+        430.0,
+        932.0
+      ],
+      "text_scale": 1.0,
+      "device_pixel_ratio": 3,
+      "pixel_size": [
+        1290,
+        2796
+      ],
+      "current_tab": 1,
+      "current_pages": [],
+      "presenters": [
+        "ZyraGuardianJourneyPager",
+        "ZyraJourneyPhotoCard"
+      ],
+      "source_asset": "SOURCE/assets/dev/one_journey_photos/zyra2a.jpg",
+      "source_asset_sha256": "594174a8c4733967b643d29884549c51ab221185ca98bf093fcbcb81f06900d7",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09c_journeys__adam_guardian_basic.png",
+      "master_sha256": "913560834e0ae309096f80c923102879d9326c0f3e184030b0f7592004de7758",
+      "master_pixel_size": [
+        1290,
+        2796
+      ],
+      "comparison_scope": "Matching 430x932@1.0 tuple; line126 typography/photo review only",
+      "observation": "Family Review and View only details readable; Open Journey, Ended Journeys and selected navigation complete."
+    },
+    {
+      "render": "SOURCE/build/line126-final-visual-final/guardian_basic_375x667_1.3.png",
+      "sha256": "bd10c6b2c78b1584356056caf935e701f8d46c24077e4dd58c5859286f4b249a",
+      "role": "guardian",
+      "plan": "Guardian Basic",
+      "logical_size": [
+        375.0,
+        667.0
+      ],
+      "text_scale": 1.3,
+      "device_pixel_ratio": 3,
+      "pixel_size": [
+        1125,
+        2001
+      ],
+      "current_tab": 1,
+      "current_pages": [],
+      "presenters": [
+        "ZyraGuardianJourneyPager",
+        "ZyraJourneyPhotoCard"
+      ],
+      "source_asset": "SOURCE/assets/dev/one_journey_photos/zyra2a.jpg",
+      "source_asset_sha256": "594174a8c4733967b643d29884549c51ab221185ca98bf093fcbcb81f06900d7",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09c_journeys__adam_guardian_basic.png",
+      "master_sha256": "913560834e0ae309096f80c923102879d9326c0f3e184030b0f7592004de7758",
+      "master_pixel_size": [
+        1290,
+        2796
+      ],
+      "comparison_scope": "Different 375x667@1.3 tuple; 430x932@1.0 master is context only",
+      "observation": "Journeys heading fully visible; selector uses its own header row. View only and Ended Journeys text wrap without visible clipping."
+    },
+    {
+      "render": "SOURCE/build/line126-final-visual-final/guardian_one_430x932_1.0.png",
+      "sha256": "c87b6fa0f2d23564eb92ce09522e52154d9f2599c5c80fe38b822b1d3c1bc4a6",
+      "role": "guardian",
+      "plan": "Guardian One",
+      "logical_size": [
+        430.0,
+        932.0
+      ],
+      "text_scale": 1.0,
+      "device_pixel_ratio": 3,
+      "pixel_size": [
+        1290,
+        2796
+      ],
+      "current_tab": 1,
+      "current_pages": [],
+      "presenters": [
+        "ZyraGuardianJourneyPager",
+        "ZyraJourneyPhotoCard"
+      ],
+      "source_asset": "SOURCE/assets/dev/one_journey_photos/zyra2a.jpg",
+      "source_asset_sha256": "594174a8c4733967b643d29884549c51ab221185ca98bf093fcbcb81f06900d7",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09_journeys__adam.png",
+      "master_sha256": "fd14430a1c0b5646daff24b569378bc7d1865fcbc96a10b8eb3127798055b63b",
+      "master_pixel_size": [
+        1290,
+        2796
+      ],
+      "comparison_scope": "Matching 430x932@1.0 tuple; line126 typography/photo review only",
+      "observation": "Family Review and View and Chat details readable; Open Journey, Ended Journeys and selected navigation complete."
+    },
+    {
+      "render": "SOURCE/build/line126-final-visual-final/guardian_one_375x667_1.3.png",
+      "sha256": "9178547cf57e33375372064da42c5ce88a3019474b669d214eca38a78e3ed70d",
+      "role": "guardian",
+      "plan": "Guardian One",
+      "logical_size": [
+        375.0,
+        667.0
+      ],
+      "text_scale": 1.3,
+      "device_pixel_ratio": 3,
+      "pixel_size": [
+        1125,
+        2001
+      ],
+      "current_tab": 1,
+      "current_pages": [],
+      "presenters": [
+        "ZyraGuardianJourneyPager",
+        "ZyraJourneyPhotoCard"
+      ],
+      "source_asset": "SOURCE/assets/dev/one_journey_photos/zyra2a.jpg",
+      "source_asset_sha256": "594174a8c4733967b643d29884549c51ab221185ca98bf093fcbcb81f06900d7",
+      "master": "PRODUCT/APPROVED/GUARDIAN_TABS/MASTERS/g09_journeys__adam.png",
+      "master_sha256": "fd14430a1c0b5646daff24b569378bc7d1865fcbc96a10b8eb3127798055b63b",
+      "master_pixel_size": [
+        1290,
+        2796
+      ],
+      "comparison_scope": "Different 375x667@1.3 tuple; 430x932@1.0 master is context only",
+      "observation": "Journeys heading fully visible; View and Chat details use three complete lines. Open Journey and Ended Journeys remain visible."
+    }
+  ],
+  "comparison_limits": [
+    "These are eight representative Journey/Journeys frames: four role/plan pairs at two diagonal tuples, not every page, all scroll positions or the full sixteen role/plan/tuple matrix.",
+    "Both Seeker masters show Family Review / 41 hours left in their footer; the actual admitted fixture is Faith & Values / Your turn. Do not equate different states or replace the fixture to force a visual match.",
+    "430 masters and Flutter retain visible border, shadow, chip, navigation-glyph/underline and spacing differences. No pixel-parity or global master acceptance claim is made. Under OA-ZYRA-371 these inherited presentation differences are recorded and left unchanged.",
+    "375x667@1.3 has no matching-size master here. Its comparison is contextual. The Seeker Basic plans link is outside the initial inner upsell scroll viewport; the existing source still contains it in journey_tab_upsell_scroll. This capture does not prove that scroll interaction and does not establish a removed or inaccessible control.",
+    "Queue line141 small-screen-fit changes remain excluded. Current masters may contain later locked work. No unbuilt master detail was implemented during this review.",
+    "The green silhouette is the actual bundled sample artwork, not a decoded-person-photo claim. Visual legibility is a manual observation; numerical contrast and fit evidence are separate receipts."
+  ],
+  "app_source_or_fonts_changed_by_reviewer": false,
+  "raw_png_or_metadata_changed_by_reviewer": false
+}

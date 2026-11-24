@@ -1,0 +1,2244 @@
+{
+  "line126_only": true,
+  "line141_small_screen_fit_excluded": true,
+  "not_a_fresh_render": false,
+  "measurement_status": "FRESH_SUCCESSFUL_ORDINARY_EXPORTS",
+  "fresh_measurement_scope": [
+    "quick_access",
+    "profile_facts",
+    "filter_segments"
+  ],
+  "helper_runs_tests": false,
+  "source_aggregate_sha256": "7375bcdec7899043017c3f1eaea34dd42a239fe1578961e38dc4d0a4e814e54b",
+  "source_manifest": {
+    "path": "SOURCE/build/line126-resume95-public-candidate-files.json",
+    "sha256": "e03a843cd8d4a5f01429517fe790d73c55015ff08d4a937f8ad043aadbbf009d",
+    "bytes": 36408,
+    "mtime_ns": 1795497155349451326
+  },
+  "ordinary_regression": {
+    "path": "SOURCE/build/line126-final-regression-summary.json",
+    "sha256": "9a22569aad3ca603ba26fdc1dff9888a207eb1228a33b574a086cbf5b7b51deb",
+    "bytes": 30685,
+    "mtime_ns": 1795497712147350076
+  },
+  "ordinary_source_test_guard": {
+    "before_count": 4056,
+    "after_count": 4056,
+    "changed_paths": [],
+    "unchanged": true,
+    "aggregate_sha256_before": "46738952b8cd92e77bdc0ce88cde70e235ae1e8b2ee6be1e1ad3e5f691795937",
+    "aggregate_sha256_after": "46738952b8cd92e77bdc0ce88cde70e235ae1e8b2ee6be1e1ad3e5f691795937"
+  },
+  "fresh_exports": {
+    "labels": {
+      "path": "SOURCE/build/line126-final-label-fit.json",
+      "sha256": "e1242477cec03704e67a09356b1a2c77347372bc4b91bc3454522fdb141ecb62",
+      "bytes": 31055,
+      "mtime_ns": 1795497619734006270
+    },
+    "facts": {
+      "path": "SOURCE/build/line126-final-fact-fit.json",
+      "sha256": "0d81de3ef6f80ae7d907227f5b0ae884b8fa1f2c33c1cb5b4147977715f2eeaa",
+      "bytes": 3296,
+      "mtime_ns": 1795497621446086320
+    },
+    "filters": {
+      "path": "SOURCE/build/line126-filter-segments-fit.json",
+      "sha256": "9d422e8438a69a0af880322546f5c1d7146e42ea28e390a04b2db687584c2295",
+      "bytes": 8295,
+      "mtime_ns": 1795497359041115806
+    }
+  },
+  "provenance_configuration": {
+    "path": "SOURCE/build/line126_resume95_fit_provenance.json",
+    "sha256": "aecf5c1e71609bb81c8477c4b015423da29f7f92c5f0708accc34fbf4fcf6819",
+    "bytes": 1904,
+    "mtime_ns": 1795496962916990077
+  },
+  "quick_access": {
+    "rule": "11.5pt/w400/tracking0; scale only at1.0 to minimum10; LargerText never shrinks; syllable hyphenation only for a single overwide word; unlimited whole-word lines; entire tile row grows together; width/padding/icon unchanged.",
+    "evidence": "SOURCE/build/line126-final-label-fit.json",
+    "counts": {
+      "observations": 64,
+      "scaled_down": 8,
+      "hyphenated": 28,
+      "taller_row_tile_observations": 48
+    },
+    "changed_labels": [
+      {
+        "label": "Introductions",
+        "width": 430.0,
+        "scale": 1.3,
+        "display": "Introduc-\ntions",
+        "font_size": 11.5,
+        "available_text_width": 78.5,
+        "row_height": 163.0,
+        "roles": [
+          "seeker_one",
+          "seeker_basic"
+        ]
+      },
+      {
+        "label": "Notifications",
+        "width": 430.0,
+        "scale": 1.3,
+        "display": "Notifica-\ntions",
+        "font_size": 11.5,
+        "available_text_width": 78.5,
+        "row_height": 163.0,
+        "roles": [
+          "seeker_one",
+          "seeker_basic"
+        ]
+      },
+      {
+        "label": "Introductions",
+        "width": 375.0,
+        "scale": 1.0,
+        "display": "Introduc-\ntions",
+        "font_size": 10.0,
+        "available_text_width": 64.75,
+        "row_height": 143.0,
+        "roles": [
+          "seeker_one",
+          "seeker_basic"
+        ]
+      },
+      {
+        "label": "Notifications",
+        "width": 375.0,
+        "scale": 1.0,
+        "display": "Notifications",
+        "font_size": 10.40490671992302,
+        "available_text_width": 64.75,
+        "row_height": 143.0,
+        "roles": [
+          "seeker_one",
+          "seeker_basic"
+        ]
+      },
+      {
+        "label": "Journey\nrequests",
+        "width": 375.0,
+        "scale": 1.3,
+        "display": "Journey\nre-\nquests",
+        "font_size": 11.5,
+        "available_text_width": 64.75,
+        "row_height": 182.0,
+        "roles": [
+          "seeker_one",
+          "seeker_basic"
+        ]
+      },
+      {
+        "label": "Introductions",
+        "width": 375.0,
+        "scale": 1.3,
+        "display": "Intro-\nduc-\ntions",
+        "font_size": 11.5,
+        "available_text_width": 64.75,
+        "row_height": 182.0,
+        "roles": [
+          "seeker_one",
+          "seeker_basic"
+        ]
+      },
+      {
+        "label": "Ended\nJourneys",
+        "width": 375.0,
+        "scale": 1.3,
+        "display": "Ended\nJour-\nneys",
+        "font_size": 11.5,
+        "available_text_width": 64.75,
+        "row_height": 182.0,
+        "roles": [
+          "seeker_one",
+          "seeker_basic"
+        ]
+      },
+      {
+        "label": "Notifications",
+        "width": 375.0,
+        "scale": 1.3,
+        "display": "Notifi-\ncations",
+        "font_size": 11.5,
+        "available_text_width": 64.75,
+        "row_height": 182.0,
+        "roles": [
+          "seeker_one",
+          "seeker_basic"
+        ]
+      },
+      {
+        "label": "Connect with\nGuardian",
+        "width": 430.0,
+        "scale": 1.3,
+        "display": "Connect\nwith\nGuardian",
+        "font_size": 11.5,
+        "available_text_width": 78.5,
+        "row_height": 182.0,
+        "roles": [
+          "guardian_one",
+          "guardian_basic"
+        ]
+      },
+      {
+        "label": "Introductions",
+        "width": 430.0,
+        "scale": 1.3,
+        "display": "Introduc-\ntions",
+        "font_size": 11.5,
+        "available_text_width": 78.5,
+        "row_height": 182.0,
+        "roles": [
+          "guardian_one",
+          "guardian_basic"
+        ]
+      },
+      {
+        "label": "Notifications",
+        "width": 430.0,
+        "scale": 1.3,
+        "display": "Notifica-\ntions",
+        "font_size": 11.5,
+        "available_text_width": 78.5,
+        "row_height": 182.0,
+        "roles": [
+          "guardian_one",
+          "guardian_basic"
+        ]
+      },
+      {
+        "label": "Connect with\nGuardian",
+        "width": 375.0,
+        "scale": 1.0,
+        "display": "Connect\nwith\nGuardian",
+        "font_size": 11.5,
+        "available_text_width": 64.75,
+        "row_height": 157.0,
+        "roles": [
+          "guardian_one",
+          "guardian_basic"
+        ]
+      },
+      {
+        "label": "Introductions",
+        "width": 375.0,
+        "scale": 1.0,
+        "display": "Introduc-\ntions",
+        "font_size": 10.0,
+        "available_text_width": 64.75,
+        "row_height": 157.0,
+        "roles": [
+          "guardian_one",
+          "guardian_basic"
+        ]
+      },
+      {
+        "label": "Notifications",
+        "width": 375.0,
+        "scale": 1.0,
+        "display": "Notifications",
+        "font_size": 10.40490671992302,
+        "available_text_width": 64.75,
+        "row_height": 157.0,
+        "roles": [
+          "guardian_one",
+          "guardian_basic"
+        ]
+      },
+      {
+        "label": "Journey\nrequests",
+        "width": 375.0,
+        "scale": 1.3,
+        "display": "Journey\nre-\nquests",
+        "font_size": 11.5,
+        "available_text_width": 64.75,
+        "row_height": 201.0,
+        "roles": [
+          "guardian_one",
+          "guardian_basic"
+        ]
+      },
+      {
+        "label": "Connect with\nGuardian",
+        "width": 375.0,
+        "scale": 1.3,
+        "display": "Connect\nwith\nGuar-\ndian",
+        "font_size": 11.5,
+        "available_text_width": 64.75,
+        "row_height": 201.0,
+        "roles": [
+          "guardian_one",
+          "guardian_basic"
+        ]
+      },
+      {
+        "label": "Introductions",
+        "width": 375.0,
+        "scale": 1.3,
+        "display": "Intro-\nduc-\ntions",
+        "font_size": 11.5,
+        "available_text_width": 64.75,
+        "row_height": 201.0,
+        "roles": [
+          "guardian_one",
+          "guardian_basic"
+        ]
+      },
+      {
+        "label": "Notifications",
+        "width": 375.0,
+        "scale": 1.3,
+        "display": "Notifi-\ncations",
+        "font_size": 11.5,
+        "available_text_width": 64.75,
+        "row_height": 201.0,
+        "roles": [
+          "guardian_one",
+          "guardian_basic"
+        ]
+      }
+    ],
+    "taller_rows": [
+      {
+        "role": "seeker",
+        "width": 430.0,
+        "scale": 1.3,
+        "height": 163.0,
+        "plans": [
+          "seeker_one",
+          "seeker_basic"
+        ]
+      },
+      {
+        "role": "seeker",
+        "width": 375.0,
+        "scale": 1.0,
+        "height": 143.0,
+        "plans": [
+          "seeker_one",
+          "seeker_basic"
+        ]
+      },
+      {
+        "role": "seeker",
+        "width": 375.0,
+        "scale": 1.3,
+        "height": 182.0,
+        "plans": [
+          "seeker_one",
+          "seeker_basic"
+        ]
+      },
+      {
+        "role": "guardian",
+        "width": 430.0,
+        "scale": 1.3,
+        "height": 182.0,
+        "plans": [
+          "guardian_one",
+          "guardian_basic"
+        ]
+      },
+      {
+        "role": "guardian",
+        "width": 375.0,
+        "scale": 1.0,
+        "height": 157.0,
+        "plans": [
+          "guardian_one",
+          "guardian_basic"
+        ]
+      },
+      {
+        "role": "guardian",
+        "width": 375.0,
+        "scale": 1.3,
+        "height": 201.0,
+        "plans": [
+          "guardian_one",
+          "guardian_basic"
+        ]
+      }
+    ],
+    "actual_observations": [
+      {
+        "role": "seeker_one",
+        "viewport_width": 430.0,
+        "text_scale": 1.0,
+        "label": "Journey\nrequests",
+        "display": "Journey\nrequests",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 128.0,
+        "row_grew": false
+      },
+      {
+        "role": "seeker_one",
+        "viewport_width": 430.0,
+        "text_scale": 1.0,
+        "label": "Introductions",
+        "display": "Introductions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 1,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 128.0,
+        "row_grew": false
+      },
+      {
+        "role": "seeker_one",
+        "viewport_width": 430.0,
+        "text_scale": 1.0,
+        "label": "Ended\nJourneys",
+        "display": "Ended\nJourneys",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 128.0,
+        "row_grew": false
+      },
+      {
+        "role": "seeker_one",
+        "viewport_width": 430.0,
+        "text_scale": 1.0,
+        "label": "Notifications",
+        "display": "Notifications",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 1,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 128.0,
+        "row_grew": false
+      },
+      {
+        "role": "seeker_one",
+        "viewport_width": 430.0,
+        "text_scale": 1.3,
+        "label": "Journey\nrequests",
+        "display": "Journey\nrequests",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 163.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_one",
+        "viewport_width": 430.0,
+        "text_scale": 1.3,
+        "label": "Introductions",
+        "display": "Introduc-\ntions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 163.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_one",
+        "viewport_width": 430.0,
+        "text_scale": 1.3,
+        "label": "Ended\nJourneys",
+        "display": "Ended\nJourneys",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 163.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_one",
+        "viewport_width": 430.0,
+        "text_scale": 1.3,
+        "label": "Notifications",
+        "display": "Notifica-\ntions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 163.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_one",
+        "viewport_width": 375.0,
+        "text_scale": 1.0,
+        "label": "Journey\nrequests",
+        "display": "Journey\nrequests",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 143.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_one",
+        "viewport_width": 375.0,
+        "text_scale": 1.0,
+        "label": "Introductions",
+        "display": "Introduc-\ntions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 10.0,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": true,
+        "hyphenated": true,
+        "line_count": 2,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 143.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_one",
+        "viewport_width": 375.0,
+        "text_scale": 1.0,
+        "label": "Ended\nJourneys",
+        "display": "Ended\nJourneys",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 143.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_one",
+        "viewport_width": 375.0,
+        "text_scale": 1.0,
+        "label": "Notifications",
+        "display": "Notifications",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 10.40490671992302,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": true,
+        "hyphenated": false,
+        "line_count": 1,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 143.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_one",
+        "viewport_width": 375.0,
+        "text_scale": 1.3,
+        "label": "Journey\nrequests",
+        "display": "Journey\nre-\nquests",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 3,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 182.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_one",
+        "viewport_width": 375.0,
+        "text_scale": 1.3,
+        "label": "Introductions",
+        "display": "Intro-\nduc-\ntions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 3,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 182.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_one",
+        "viewport_width": 375.0,
+        "text_scale": 1.3,
+        "label": "Ended\nJourneys",
+        "display": "Ended\nJour-\nneys",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 3,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 182.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_one",
+        "viewport_width": 375.0,
+        "text_scale": 1.3,
+        "label": "Notifications",
+        "display": "Notifi-\ncations",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 2,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 182.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_basic",
+        "viewport_width": 430.0,
+        "text_scale": 1.0,
+        "label": "Journey\nrequests",
+        "display": "Journey\nrequests",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 128.0,
+        "row_grew": false
+      },
+      {
+        "role": "seeker_basic",
+        "viewport_width": 430.0,
+        "text_scale": 1.0,
+        "label": "Introductions",
+        "display": "Introductions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 1,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 128.0,
+        "row_grew": false
+      },
+      {
+        "role": "seeker_basic",
+        "viewport_width": 430.0,
+        "text_scale": 1.0,
+        "label": "Ended\nJourneys",
+        "display": "Ended\nJourneys",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 128.0,
+        "row_grew": false
+      },
+      {
+        "role": "seeker_basic",
+        "viewport_width": 430.0,
+        "text_scale": 1.0,
+        "label": "Notifications",
+        "display": "Notifications",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 1,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 128.0,
+        "row_grew": false
+      },
+      {
+        "role": "seeker_basic",
+        "viewport_width": 430.0,
+        "text_scale": 1.3,
+        "label": "Journey\nrequests",
+        "display": "Journey\nrequests",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 163.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_basic",
+        "viewport_width": 430.0,
+        "text_scale": 1.3,
+        "label": "Introductions",
+        "display": "Introduc-\ntions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 163.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_basic",
+        "viewport_width": 430.0,
+        "text_scale": 1.3,
+        "label": "Ended\nJourneys",
+        "display": "Ended\nJourneys",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 163.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_basic",
+        "viewport_width": 430.0,
+        "text_scale": 1.3,
+        "label": "Notifications",
+        "display": "Notifica-\ntions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 163.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_basic",
+        "viewport_width": 375.0,
+        "text_scale": 1.0,
+        "label": "Journey\nrequests",
+        "display": "Journey\nrequests",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 143.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_basic",
+        "viewport_width": 375.0,
+        "text_scale": 1.0,
+        "label": "Introductions",
+        "display": "Introduc-\ntions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 10.0,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": true,
+        "hyphenated": true,
+        "line_count": 2,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 143.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_basic",
+        "viewport_width": 375.0,
+        "text_scale": 1.0,
+        "label": "Ended\nJourneys",
+        "display": "Ended\nJourneys",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 143.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_basic",
+        "viewport_width": 375.0,
+        "text_scale": 1.0,
+        "label": "Notifications",
+        "display": "Notifications",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 10.40490671992302,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": true,
+        "hyphenated": false,
+        "line_count": 1,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 143.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_basic",
+        "viewport_width": 375.0,
+        "text_scale": 1.3,
+        "label": "Journey\nrequests",
+        "display": "Journey\nre-\nquests",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 3,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 182.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_basic",
+        "viewport_width": 375.0,
+        "text_scale": 1.3,
+        "label": "Introductions",
+        "display": "Intro-\nduc-\ntions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 3,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 182.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_basic",
+        "viewport_width": 375.0,
+        "text_scale": 1.3,
+        "label": "Ended\nJourneys",
+        "display": "Ended\nJour-\nneys",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 3,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 182.0,
+        "row_grew": true
+      },
+      {
+        "role": "seeker_basic",
+        "viewport_width": 375.0,
+        "text_scale": 1.3,
+        "label": "Notifications",
+        "display": "Notifi-\ncations",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 2,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 182.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_one",
+        "viewport_width": 430.0,
+        "text_scale": 1.0,
+        "label": "Journey\nrequests",
+        "display": "Journey\nrequests",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 128.0,
+        "row_grew": false
+      },
+      {
+        "role": "guardian_one",
+        "viewport_width": 430.0,
+        "text_scale": 1.0,
+        "label": "Connect with\nGuardian",
+        "display": "Connect with\nGuardian",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 128.0,
+        "row_grew": false
+      },
+      {
+        "role": "guardian_one",
+        "viewport_width": 430.0,
+        "text_scale": 1.0,
+        "label": "Introductions",
+        "display": "Introductions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 1,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 128.0,
+        "row_grew": false
+      },
+      {
+        "role": "guardian_one",
+        "viewport_width": 430.0,
+        "text_scale": 1.0,
+        "label": "Notifications",
+        "display": "Notifications",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 1,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 128.0,
+        "row_grew": false
+      },
+      {
+        "role": "guardian_one",
+        "viewport_width": 430.0,
+        "text_scale": 1.3,
+        "label": "Journey\nrequests",
+        "display": "Journey\nrequests",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 182.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_one",
+        "viewport_width": 430.0,
+        "text_scale": 1.3,
+        "label": "Connect with\nGuardian",
+        "display": "Connect\nwith\nGuardian",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 3,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 182.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_one",
+        "viewport_width": 430.0,
+        "text_scale": 1.3,
+        "label": "Introductions",
+        "display": "Introduc-\ntions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 182.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_one",
+        "viewport_width": 430.0,
+        "text_scale": 1.3,
+        "label": "Notifications",
+        "display": "Notifica-\ntions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 182.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_one",
+        "viewport_width": 375.0,
+        "text_scale": 1.0,
+        "label": "Journey\nrequests",
+        "display": "Journey\nrequests",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 157.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_one",
+        "viewport_width": 375.0,
+        "text_scale": 1.0,
+        "label": "Connect with\nGuardian",
+        "display": "Connect\nwith\nGuardian",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 3,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 157.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_one",
+        "viewport_width": 375.0,
+        "text_scale": 1.0,
+        "label": "Introductions",
+        "display": "Introduc-\ntions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 10.0,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": true,
+        "hyphenated": true,
+        "line_count": 2,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 157.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_one",
+        "viewport_width": 375.0,
+        "text_scale": 1.0,
+        "label": "Notifications",
+        "display": "Notifications",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 10.40490671992302,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": true,
+        "hyphenated": false,
+        "line_count": 1,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 157.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_one",
+        "viewport_width": 375.0,
+        "text_scale": 1.3,
+        "label": "Journey\nrequests",
+        "display": "Journey\nre-\nquests",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 3,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 201.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_one",
+        "viewport_width": 375.0,
+        "text_scale": 1.3,
+        "label": "Connect with\nGuardian",
+        "display": "Connect\nwith\nGuar-\ndian",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 4,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 201.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_one",
+        "viewport_width": 375.0,
+        "text_scale": 1.3,
+        "label": "Introductions",
+        "display": "Intro-\nduc-\ntions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 3,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 201.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_one",
+        "viewport_width": 375.0,
+        "text_scale": 1.3,
+        "label": "Notifications",
+        "display": "Notifi-\ncations",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 2,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 201.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_basic",
+        "viewport_width": 430.0,
+        "text_scale": 1.0,
+        "label": "Journey\nrequests",
+        "display": "Journey\nrequests",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 128.0,
+        "row_grew": false
+      },
+      {
+        "role": "guardian_basic",
+        "viewport_width": 430.0,
+        "text_scale": 1.0,
+        "label": "Connect with\nGuardian",
+        "display": "Connect with\nGuardian",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 128.0,
+        "row_grew": false
+      },
+      {
+        "role": "guardian_basic",
+        "viewport_width": 430.0,
+        "text_scale": 1.0,
+        "label": "Introductions",
+        "display": "Introductions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 1,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 128.0,
+        "row_grew": false
+      },
+      {
+        "role": "guardian_basic",
+        "viewport_width": 430.0,
+        "text_scale": 1.0,
+        "label": "Notifications",
+        "display": "Notifications",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 1,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 128.0,
+        "row_grew": false
+      },
+      {
+        "role": "guardian_basic",
+        "viewport_width": 430.0,
+        "text_scale": 1.3,
+        "label": "Journey\nrequests",
+        "display": "Journey\nrequests",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 182.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_basic",
+        "viewport_width": 430.0,
+        "text_scale": 1.3,
+        "label": "Connect with\nGuardian",
+        "display": "Connect\nwith\nGuardian",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 3,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 182.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_basic",
+        "viewport_width": 430.0,
+        "text_scale": 1.3,
+        "label": "Introductions",
+        "display": "Introduc-\ntions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 182.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_basic",
+        "viewport_width": 430.0,
+        "text_scale": 1.3,
+        "label": "Notifications",
+        "display": "Notifica-\ntions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 2,
+        "available_label_width": 78.5,
+        "tile_width": 88.5,
+        "tile_height": 182.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_basic",
+        "viewport_width": 375.0,
+        "text_scale": 1.0,
+        "label": "Journey\nrequests",
+        "display": "Journey\nrequests",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 2,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 157.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_basic",
+        "viewport_width": 375.0,
+        "text_scale": 1.0,
+        "label": "Connect with\nGuardian",
+        "display": "Connect\nwith\nGuardian",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": false,
+        "line_count": 3,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 157.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_basic",
+        "viewport_width": 375.0,
+        "text_scale": 1.0,
+        "label": "Introductions",
+        "display": "Introduc-\ntions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 10.0,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": true,
+        "hyphenated": true,
+        "line_count": 2,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 157.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_basic",
+        "viewport_width": 375.0,
+        "text_scale": 1.0,
+        "label": "Notifications",
+        "display": "Notifications",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 10.40490671992302,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": true,
+        "hyphenated": false,
+        "line_count": 1,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 157.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_basic",
+        "viewport_width": 375.0,
+        "text_scale": 1.3,
+        "label": "Journey\nrequests",
+        "display": "Journey\nre-\nquests",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 3,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 201.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_basic",
+        "viewport_width": 375.0,
+        "text_scale": 1.3,
+        "label": "Connect with\nGuardian",
+        "display": "Connect\nwith\nGuar-\ndian",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 4,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 201.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_basic",
+        "viewport_width": 375.0,
+        "text_scale": 1.3,
+        "label": "Introductions",
+        "display": "Intro-\nduc-\ntions",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 3,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 201.0,
+        "row_grew": true
+      },
+      {
+        "role": "guardian_basic",
+        "viewport_width": 375.0,
+        "text_scale": 1.3,
+        "label": "Notifications",
+        "display": "Notifi-\ncations",
+        "font_family": "ZYRABaselinePoppins",
+        "font_size": 11.5,
+        "weight": 400,
+        "letter_spacing": 0.0,
+        "scaled_down": false,
+        "hyphenated": true,
+        "line_count": 2,
+        "available_label_width": 64.75,
+        "tile_width": 74.75,
+        "tile_height": 201.0,
+        "row_grew": true
+      }
+    ]
+  },
+  "profile_facts": {
+    "rule": "No shrink or added hyphens; whole words/unlimited lines; overwide half-tile word promotes that fact to a full row and following facts move down in original order.",
+    "evidence": "SOURCE/build/line126-final-fact-fit.json",
+    "observations": 8,
+    "promotions": [
+      {
+        "basic": false,
+        "width": 430.0,
+        "scale": 1.3,
+        "labels": [
+          "LOCATION"
+        ]
+      },
+      {
+        "basic": false,
+        "width": 375.0,
+        "scale": 1.0,
+        "labels": [
+          "LOCATION"
+        ]
+      },
+      {
+        "basic": false,
+        "width": 375.0,
+        "scale": 1.3,
+        "labels": [
+          "LOCATION"
+        ]
+      },
+      {
+        "basic": true,
+        "width": 430.0,
+        "scale": 1.3,
+        "labels": [
+          "LOCATION"
+        ]
+      },
+      {
+        "basic": true,
+        "width": 375.0,
+        "scale": 1.0,
+        "labels": [
+          "LOCATION"
+        ]
+      },
+      {
+        "basic": true,
+        "width": 375.0,
+        "scale": 1.3,
+        "labels": [
+          "LOCATION"
+        ]
+      }
+    ],
+    "actual_observations": [
+      {
+        "basic": false,
+        "width": 430.0,
+        "scale": 1.0,
+        "full_rows": [],
+        "tiles": {
+          "AGE": {
+            "left": 42.0,
+            "top": 490.4,
+            "width": 167.0,
+            "height": 118.80000000000007
+          },
+          "LOCATION": {
+            "left": 221.0,
+            "top": 490.4,
+            "width": 167.0,
+            "height": 118.80000000000007
+          },
+          "NATIONALITY": {
+            "left": 42.0,
+            "top": 621.2,
+            "width": 167.0,
+            "height": 118.79999999999995
+          },
+          "ETHNICITY": {
+            "left": 221.0,
+            "top": 621.2,
+            "width": 167.0,
+            "height": 118.79999999999995
+          }
+        },
+        "430_normal_raster_sha256": "28d9f406abb7f4996919946c9cd7fae45a08c5587bea4b588730cd26fb0d4f6f"
+      },
+      {
+        "basic": false,
+        "width": 430.0,
+        "scale": 1.3,
+        "full_rows": [
+          "LOCATION"
+        ],
+        "tiles": {
+          "AGE": {
+            "left": 42.0,
+            "top": 394.0,
+            "width": 167.0,
+            "height": 116.39999999999998
+          },
+          "LOCATION": {
+            "left": 42.0,
+            "top": 522.4,
+            "width": 346.0,
+            "height": 116.39999999999998
+          },
+          "NATIONALITY": {
+            "left": 42.0,
+            "top": 650.8,
+            "width": 167.0,
+            "height": 116.39999999999998
+          },
+          "ETHNICITY": {
+            "left": 221.0,
+            "top": 650.8,
+            "width": 167.0,
+            "height": 116.39999999999998
+          }
+        },
+        "430_normal_raster_sha256": null
+      },
+      {
+        "basic": false,
+        "width": 375.0,
+        "scale": 1.0,
+        "full_rows": [
+          "LOCATION"
+        ],
+        "tiles": {
+          "AGE": {
+            "left": 42.0,
+            "top": 365.0,
+            "width": 139.5,
+            "height": 96.0
+          },
+          "LOCATION": {
+            "left": 42.0,
+            "top": 473.0,
+            "width": 291.0,
+            "height": 96.0
+          },
+          "NATIONALITY": {
+            "left": 42.0,
+            "top": 581.0,
+            "width": 139.5,
+            "height": 96.0
+          },
+          "ETHNICITY": {
+            "left": 193.5,
+            "top": 581.0,
+            "width": 139.5,
+            "height": 96.0
+          }
+        },
+        "430_normal_raster_sha256": null
+      },
+      {
+        "basic": false,
+        "width": 375.0,
+        "scale": 1.3,
+        "full_rows": [
+          "LOCATION"
+        ],
+        "tiles": {
+          "AGE": {
+            "left": 42.0,
+            "top": 366.0,
+            "width": 139.5,
+            "height": 112.0
+          },
+          "LOCATION": {
+            "left": 42.0,
+            "top": 490.0,
+            "width": 291.0,
+            "height": 112.0
+          },
+          "NATIONALITY": {
+            "left": 42.0,
+            "top": 614.0,
+            "width": 139.5,
+            "height": 112.0
+          },
+          "ETHNICITY": {
+            "left": 193.5,
+            "top": 614.0,
+            "width": 139.5,
+            "height": 112.0
+          }
+        },
+        "430_normal_raster_sha256": null
+      },
+      {
+        "basic": true,
+        "width": 430.0,
+        "scale": 1.0,
+        "full_rows": [],
+        "tiles": {
+          "AGE": {
+            "left": 42.0,
+            "top": 490.4,
+            "width": 167.0,
+            "height": 118.80000000000007
+          },
+          "LOCATION": {
+            "left": 221.0,
+            "top": 490.4,
+            "width": 167.0,
+            "height": 118.80000000000007
+          },
+          "NATIONALITY": {
+            "left": 42.0,
+            "top": 621.2,
+            "width": 167.0,
+            "height": 118.79999999999995
+          },
+          "ETHNICITY": {
+            "left": 221.0,
+            "top": 621.2,
+            "width": 167.0,
+            "height": 118.79999999999995
+          }
+        },
+        "430_normal_raster_sha256": "5ae3a86c0c2bac1ddff0f4c59792b12e3b66615fdef28851cd9e6152feba6a8f"
+      },
+      {
+        "basic": true,
+        "width": 430.0,
+        "scale": 1.3,
+        "full_rows": [
+          "LOCATION"
+        ],
+        "tiles": {
+          "AGE": {
+            "left": 42.0,
+            "top": 394.0,
+            "width": 167.0,
+            "height": 116.39999999999998
+          },
+          "LOCATION": {
+            "left": 42.0,
+            "top": 522.4,
+            "width": 346.0,
+            "height": 116.39999999999998
+          },
+          "NATIONALITY": {
+            "left": 42.0,
+            "top": 650.8,
+            "width": 167.0,
+            "height": 116.39999999999998
+          },
+          "ETHNICITY": {
+            "left": 221.0,
+            "top": 650.8,
+            "width": 167.0,
+            "height": 116.39999999999998
+          }
+        },
+        "430_normal_raster_sha256": null
+      },
+      {
+        "basic": true,
+        "width": 375.0,
+        "scale": 1.0,
+        "full_rows": [
+          "LOCATION"
+        ],
+        "tiles": {
+          "AGE": {
+            "left": 42.0,
+            "top": 365.0,
+            "width": 139.5,
+            "height": 96.0
+          },
+          "LOCATION": {
+            "left": 42.0,
+            "top": 473.0,
+            "width": 291.0,
+            "height": 96.0
+          },
+          "NATIONALITY": {
+            "left": 42.0,
+            "top": 581.0,
+            "width": 139.5,
+            "height": 96.0
+          },
+          "ETHNICITY": {
+            "left": 193.5,
+            "top": 581.0,
+            "width": 139.5,
+            "height": 96.0
+          }
+        },
+        "430_normal_raster_sha256": null
+      },
+      {
+        "basic": true,
+        "width": 375.0,
+        "scale": 1.3,
+        "full_rows": [
+          "LOCATION"
+        ],
+        "tiles": {
+          "AGE": {
+            "left": 42.0,
+            "top": 366.0,
+            "width": 139.5,
+            "height": 112.0
+          },
+          "LOCATION": {
+            "left": 42.0,
+            "top": 490.0,
+            "width": 291.0,
+            "height": 112.0
+          },
+          "NATIONALITY": {
+            "left": 42.0,
+            "top": 614.0,
+            "width": 139.5,
+            "height": 112.0
+          },
+          "ETHNICITY": {
+            "left": 193.5,
+            "top": 614.0,
+            "width": 139.5,
+            "height": 112.0
+          }
+        },
+        "430_normal_raster_sha256": null
+      }
+    ],
+    "430_1_raster_hashes": [
+      {
+        "basic": false,
+        "sha256": "28d9f406abb7f4996919946c9cd7fae45a08c5587bea4b588730cd26fb0d4f6f"
+      },
+      {
+        "basic": true,
+        "sha256": "5ae3a86c0c2bac1ddff0f4c59792b12e3b66615fdef28851cd9e6152feba6a8f"
+      }
+    ]
+  },
+  "filter_segments": {
+    "rule": "Keep original equal horizontal cells when words fit; otherwise reuse existing vertical option layout; no font shrink/hyphens; existing>1.3 behavior retained.",
+    "evidence": "SOURCE/build/line126-filter-segments-fit.json",
+    "observations": 9,
+    "vertical_cases": [
+      {
+        "size": [
+          375.0,
+          667.0
+        ],
+        "scale": 1.3,
+        "bold": false
+      },
+      {
+        "size": [
+          375.0,
+          667.0
+        ],
+        "scale": 1.3,
+        "bold": true
+      }
+    ],
+    "actual_observations": [
+      {
+        "size": [
+          430.0,
+          932.0
+        ],
+        "scale": 1.0,
+        "bold": false,
+        "vertical": false,
+        "words": [
+          {
+            "word": "Near",
+            "advance_width": 30.650009155273438,
+            "available_width": 98.0,
+            "font_weight": 400,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "me",
+            "advance_width": 21.125,
+            "available_width": 98.0,
+            "font_weight": 400,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "Country",
+            "advance_width": 51.65000915527344,
+            "available_width": 96.0,
+            "font_weight": 400,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "Worldwide",
+            "advance_width": 68.16249084472656,
+            "available_width": 98.0,
+            "font_weight": 400,
+            "letter_spacing": 0.25
+          }
+        ]
+      },
+      {
+        "size": [
+          430.0,
+          932.0
+        ],
+        "scale": 1.0,
+        "bold": true,
+        "vertical": false,
+        "words": [
+          {
+            "word": "Near",
+            "advance_width": 31.9375,
+            "available_width": 98.0,
+            "font_weight": 700,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "me",
+            "advance_width": 21.4375,
+            "available_width": 98.0,
+            "font_weight": 700,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "Country",
+            "advance_width": 54.41249084472656,
+            "available_width": 96.0,
+            "font_weight": 700,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "Worldwide",
+            "advance_width": 71.58749389648438,
+            "available_width": 98.0,
+            "font_weight": 700,
+            "letter_spacing": 0.25
+          }
+        ]
+      },
+      {
+        "size": [
+          430.0,
+          932.0
+        ],
+        "scale": 1.3,
+        "bold": false,
+        "vertical": false,
+        "words": [
+          {
+            "word": "Near",
+            "advance_width": 39.54499816894531,
+            "available_width": 98.0,
+            "font_weight": 400,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "me",
+            "advance_width": 27.3125,
+            "available_width": 98.0,
+            "font_weight": 400,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "Country",
+            "advance_width": 66.61997985839844,
+            "available_width": 96.0,
+            "font_weight": 400,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "Worldwide",
+            "advance_width": 87.93623352050781,
+            "available_width": 98.0,
+            "font_weight": 400,
+            "letter_spacing": 0.25
+          }
+        ]
+      },
+      {
+        "size": [
+          430.0,
+          932.0
+        ],
+        "scale": 1.3,
+        "bold": true,
+        "vertical": false,
+        "words": [
+          {
+            "word": "Near",
+            "advance_width": 41.21875,
+            "available_width": 98.0,
+            "font_weight": 700,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "me",
+            "advance_width": 27.71875,
+            "available_width": 98.0,
+            "font_weight": 700,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "Country",
+            "advance_width": 70.21127319335938,
+            "available_width": 96.0,
+            "font_weight": 700,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "Worldwide",
+            "advance_width": 92.38874816894531,
+            "available_width": 98.0,
+            "font_weight": 700,
+            "letter_spacing": 0.25
+          }
+        ]
+      },
+      {
+        "size": [
+          375.0,
+          667.0
+        ],
+        "scale": 1.0,
+        "bold": false,
+        "vertical": false,
+        "words": [
+          {
+            "word": "Near",
+            "advance_width": 30.650009155273438,
+            "available_width": 79.66666666666667,
+            "font_weight": 400,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "me",
+            "advance_width": 21.125003814697266,
+            "available_width": 79.66666666666667,
+            "font_weight": 400,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "Country",
+            "advance_width": 51.6500129699707,
+            "available_width": 77.66666666666667,
+            "font_weight": 400,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "Worldwide",
+            "advance_width": 68.16249465942383,
+            "available_width": 79.66666666666667,
+            "font_weight": 400,
+            "letter_spacing": 0.25
+          }
+        ]
+      },
+      {
+        "size": [
+          375.0,
+          667.0
+        ],
+        "scale": 1.0,
+        "bold": true,
+        "vertical": false,
+        "words": [
+          {
+            "word": "Near",
+            "advance_width": 31.9375,
+            "available_width": 79.66666666666667,
+            "font_weight": 700,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "me",
+            "advance_width": 21.437496185302734,
+            "available_width": 79.66666666666667,
+            "font_weight": 700,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "Country",
+            "advance_width": 54.41249465942383,
+            "available_width": 77.66666666666667,
+            "font_weight": 700,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "Worldwide",
+            "advance_width": 71.58749008178711,
+            "available_width": 79.66666666666667,
+            "font_weight": 700,
+            "letter_spacing": 0.25
+          }
+        ]
+      },
+      {
+        "size": [
+          375.0,
+          667.0
+        ],
+        "scale": 1.3,
+        "bold": false,
+        "vertical": true,
+        "words": [
+          {
+            "word": "Near",
+            "advance_width": 39.54499053955078,
+            "available_width": 271.0,
+            "font_weight": 400,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "me",
+            "advance_width": 27.3125,
+            "available_width": 271.0,
+            "font_weight": 400,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "Country",
+            "advance_width": 66.61998748779297,
+            "available_width": 269.0,
+            "font_weight": 400,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "Worldwide",
+            "advance_width": 87.93622589111328,
+            "available_width": 271.0,
+            "font_weight": 400,
+            "letter_spacing": 0.25
+          }
+        ]
+      },
+      {
+        "size": [
+          375.0,
+          667.0
+        ],
+        "scale": 1.3,
+        "bold": true,
+        "vertical": true,
+        "words": [
+          {
+            "word": "Near",
+            "advance_width": 41.21875,
+            "available_width": 271.0,
+            "font_weight": 700,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "me",
+            "advance_width": 27.71875,
+            "available_width": 271.0,
+            "font_weight": 700,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "Country",
+            "advance_width": 70.21127319335938,
+            "available_width": 269.0,
+            "font_weight": 700,
+            "letter_spacing": 0.25
+          },
+          {
+            "word": "Worldwide",
+            "advance_width": 92.38874053955078,
+            "available_width": 271.0,
+            "font_weight": 700,
+            "letter_spacing": 0.25
+          }
+        ]
+      },
+      {
+        "case": "inherited letter spacing",
+        "words": [
+          {
+            "word": "Near",
+            "advance_width": 61.650001525878906,
+            "available_width": 326.0,
+            "font_weight": 400,
+            "letter_spacing": 8.0
+          },
+          {
+            "word": "me",
+            "advance_width": 36.625,
+            "available_width": 326.0,
+            "font_weight": 400,
+            "letter_spacing": 8.0
+          },
+          {
+            "word": "Country",
+            "advance_width": 105.90001678466797,
+            "available_width": 324.0,
+            "font_weight": 400,
+            "letter_spacing": 8.0
+          },
+          {
+            "word": "Worldwide",
+            "advance_width": 137.91248321533203,
+            "available_width": 326.0,
+            "font_weight": 400,
+            "letter_spacing": 8.0
+          }
+        ]
+      }
+    ]
+  },
+  "comparison_table": {
+    "rule": "If any plan-word exceeds original27% usable cell, whole table uses full-width feature then50/50 Basic|One; header also50/50. No shrink/hyphens/font or row-padding changes.",
+    "evidence": "SOURCE/build/line126-q194-summary.json",
+    "witness": "SeekerBasic375x667@1.3 stacks; focusedGuardian320x932@2.0 stress case also stacks; all4canonicaltuples tested.",
+    "430_1_masters": "SeekerBasic andGuardianBasic46/27/27 geometry, actualsemantics, wording and real-shadowRGBA identical before/after.",
+    "provenance_status": "Retained earlier focused master comparison; no fresh table export is claimed",
+    "checkpoint_evidence_sha256": "4c82d3d0622916972c459d68223e78dc835ff4a17e57915366c6348fd090d818"
+  },
+  "shared_compact_text": "Stage11pt and quick-access chips retain their sizes with tracking0 and minimumw400 under16pt.",
+  "created_utc": "2026-11-24T05:22:55.007980+00:00"
+}

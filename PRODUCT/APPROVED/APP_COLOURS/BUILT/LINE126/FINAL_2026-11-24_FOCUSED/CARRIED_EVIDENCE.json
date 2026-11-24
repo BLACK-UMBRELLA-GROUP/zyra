@@ -1,0 +1,90 @@
+{
+  "authority": "Q197 ANSWERED,24November2026",
+  "not_one_successful_whole_run": true,
+  "no_full_local_audit_after_RUN11": true,
+  "historical_guard": "8a75b3d8354b47e2434638ce3cc5a9f00934a3390fda44158f0b08fb7f0017a5",
+  "settings": [
+    {
+      "archive": "RUN10_BUDGET_032713",
+      "driver": "normal-430",
+      "viewport": "430x932@1.0",
+      "frames": 4642,
+      "wall_seconds": 1080.645,
+      "failure_rows": 0,
+      "coverage_gaps": 0,
+      "status": "pass",
+      "report": "SOURCE/build/held/LINE126/QA_2026-11-23/RUN10_BUDGET_032713/line126-rebuild-contrast-normal-430.json",
+      "report_sha256": "67492c9280636f336db0be9071849a7a3b2619aeca5de05cb966d3a1ce15206d",
+      "successful_root_teardown": {
+        "testID": 1173,
+        "result": "success",
+        "skipped": false,
+        "hidden": true,
+        "type": "testDone",
+        "time": 1084564
+      }
+    },
+    {
+      "archive": "RUN10_BUDGET_032713",
+      "driver": "normal",
+      "viewport": "375x667@1.0",
+      "frames": 6772,
+      "wall_seconds": 1018.19,
+      "failure_rows": 0,
+      "coverage_gaps": 0,
+      "status": "pass",
+      "report": "SOURCE/build/held/LINE126/QA_2026-11-23/RUN10_BUDGET_032713/line126-rebuild-contrast-normal.json",
+      "report_sha256": "7e6bd4d23bc093d1404424f013fbfbe9b4b11505e46d5fd8ef22a10aff926b5c",
+      "successful_root_teardown": {
+        "testID": 1831,
+        "result": "success",
+        "skipped": false,
+        "hidden": true,
+        "type": "testDone",
+        "time": 2104668
+      }
+    },
+    {
+      "archive": "RUN10_BUDGET_032713",
+      "driver": "large-430",
+      "viewport": "430x932@1.3",
+      "frames": 5898,
+      "wall_seconds": 1422.42,
+      "failure_rows": 0,
+      "coverage_gaps": 0,
+      "status": "pass",
+      "report": "SOURCE/build/held/LINE126/QA_2026-11-23/RUN10_BUDGET_032713/line126-rebuild-contrast-large-430.json",
+      "report_sha256": "3dd2696b9702a57a4a14adf4111b4b9588d7fdfb5cec80915d9ee4e13b7fda10",
+      "successful_root_teardown": {
+        "testID": 1485,
+        "result": "success",
+        "skipped": false,
+        "hidden": true,
+        "type": "testDone",
+        "time": 1426490
+      }
+    },
+    {
+      "archive": "RUN11_STOPPED_L49_041615",
+      "driver": "large-375",
+      "viewport": "375x667@1.3",
+      "frames": 8476,
+      "wall_seconds": 1368.854,
+      "failure_rows": 0,
+      "coverage_gaps": 0,
+      "status": "pass",
+      "report": "SOURCE/build/held/LINE126/QA_2026-11-23/RUN11_STOPPED_L49_041615/line126-rebuild-contrast-large-375.json",
+      "report_sha256": "f9778a3d8e4149ae638220c5103b97b678b96871e2da113cecb571a921119f10",
+      "successful_root_teardown": {
+        "testID": 1067,
+        "result": "success",
+        "skipped": false,
+        "hidden": true,
+        "type": "testDone",
+        "time": 1372570
+      }
+    }
+  ],
+  "frames": 25788,
+  "final_delta": "Only opt-in wrappers and regression-fixture compatibility differ;35app libraries+auditor core+corpus+130controls stay byte-identical."
+}

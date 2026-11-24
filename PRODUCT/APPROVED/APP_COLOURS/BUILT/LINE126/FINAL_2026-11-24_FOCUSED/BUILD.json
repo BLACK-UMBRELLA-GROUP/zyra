@@ -1,0 +1,42 @@
+{
+  "commit_sha": "53d01367da3c2b60710c9aab8c639479d6918063",
+  "flutter_version": "3.44.2",
+  "build_mode": "Flutter widget tests and8representativePNGcaptures;no native app build",
+  "timestamp": "2026-11-24T05:39:33.090473+00:00",
+  "candidate_aggregate_sha256": "7375bcdec7899043017c3f1eaea34dd42a239fe1578961e38dc4d0a4e814e54b",
+  "native_build": false,
+  "phone_install": false,
+  "server_change": false,
+  "no_full_local_audit_after_RUN11": true,
+  "hosted_ci": {
+    "run_id": 45334647647,
+    "head_sha": "53d01367da3c2b60710c9aab8c639479d6918063",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/45334647647",
+    "updated_at": "2026-11-24T05:49:34Z",
+    "jobs": [
+      {
+        "id": 138243745217,
+        "name": "Select Flutter tests",
+        "conclusion": "success"
+      },
+      {
+        "id": 138243902116,
+        "name": "Flutter checks (shard1)",
+        "conclusion": "success"
+      },
+      {
+        "id": 138243902139,
+        "name": "Flutter checks (shard2)",
+        "conclusion": "success"
+      },
+      {
+        "id": 138243902167,
+        "name": "Flutter checks (shard0)",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "status": "BUILT_PREVIEW"
+}

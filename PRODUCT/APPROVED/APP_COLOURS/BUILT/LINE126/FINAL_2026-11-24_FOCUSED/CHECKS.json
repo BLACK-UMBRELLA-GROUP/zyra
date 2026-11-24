@@ -1,0 +1,112 @@
+{
+  "line": 126,
+  "implementation_commit": "53d01367da3c2b60710c9aab8c639479d6918063",
+  "candidate_aggregate_sha256": "7375bcdec7899043017c3f1eaea34dd42a239fe1578961e38dc4d0a4e814e54b",
+  "analyzer": {
+    "result": "PASS",
+    "seconds": 4.8
+  },
+  "ordinary": {
+    "files": 589,
+    "passed": 7888,
+    "failed": 0,
+    "reported_skips": 202,
+    "seconds": 510.804261541,
+    "reporter": "complete successful",
+    "skip_categories": {
+      "capture_opt_in": 200,
+      "real_photo_fixture": 1,
+      "idv_fuse": 1
+    },
+    "reporter_missing_skip_reasons": 201,
+    "skip_conditions_verified_unchanged": true
+  },
+  "controls": {
+    "passed": 130,
+    "seconds": 21.49252075
+  },
+  "focused_replay": {
+    "text_frames": 706,
+    "nontext_observations": 4,
+    "failure_rows": 0,
+    "seconds": 110.605398875,
+    "deliberate_filtered_gaps": 789,
+    "not_whole_app_coverage": true
+  },
+  "phone_access": {
+    "plans": 4,
+    "normal_430_frames": 96,
+    "failure_rows": 0,
+    "seconds": 21.885413459,
+    "deliberate_filtered_gaps": 319
+  },
+  "visual": {
+    "cases": 8,
+    "passed": 8,
+    "seconds": 11.917999291,
+    "review": "PASS_WITH_DECLARED_COMPARISON_LIMITS",
+    "report": "REVIEW.txt"
+  },
+  "fit": {
+    "labels": 64,
+    "scaled_down": 8,
+    "hyphenated": 28,
+    "taller_row_observations": 48,
+    "fact_cases": 8,
+    "filter_observations": 9
+  },
+  "source_test_guard": {
+    "files": 4056,
+    "unchanged": true,
+    "sha256": "46738952b8cd92e77bdc0ce88cde70e235ae1e8b2ee6be1e1ad3e5f691795937"
+  },
+  "python_selector_sharder_contracts": 12,
+  "working_secret_scan": {
+    "files": 97,
+    "findings": 0,
+    "stable": true
+  },
+  "public_scan": {
+    "files": 97,
+    "unresolved": 0
+  },
+  "independent_precommit_review": "PASS",
+  "hosted_ci": {
+    "run_id": 45334647647,
+    "head_sha": "53d01367da3c2b60710c9aab8c639479d6918063",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/45334647647",
+    "updated_at": "2026-11-24T05:49:34Z",
+    "jobs": [
+      {
+        "id": 138243745217,
+        "name": "Select Flutter tests",
+        "conclusion": "success"
+      },
+      {
+        "id": 138243902116,
+        "name": "Flutter checks (shard1)",
+        "conclusion": "success"
+      },
+      {
+        "id": 138243902139,
+        "name": "Flutter checks (shard2)",
+        "conclusion": "success"
+      },
+      {
+        "id": 138243902167,
+        "name": "Flutter checks (shard0)",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "evidence_public_check": {
+    "files": 16,
+    "reviewed_compressed_png_false_hits": 269,
+    "unresolved": 0,
+    "non_png_hits": 0,
+    "secret_findings": 0
+  },
+  "final_evidence_independent_review": "PASS"
+}

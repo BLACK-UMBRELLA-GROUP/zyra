@@ -1,5 +1,5 @@
-LINE126 — CLEARER TEXT — LOCAL VALIDATION COMPLETE / HOSTED CI PENDING
-OA-ZYRA-371.24November2026. Queue126 is not yet BUILT.
+LINE126 — CLEARER TEXT — BUILT IN THE FOUNDER PREVIEW
+OA-ZYRA-371. BUILT24November2026. Implementation53d01367da3c2b60710c9aab8c639479d6918063.
 Members do not receive this change yet. No native build, phone install or server change.
 
 AUTHORITY AND RESUME
@@ -16,8 +16,7 @@ FINAL IMPLEMENTATION SCOPE
 95code/support files,35application libraries;93text files +12294/−752 and2PNGs.
 Frozen candidate SHA256:7375bcdec7899043017c3f1eaea34dd42a239fe1578961e38dc4d0a4e814e54b.
 Aggregate algorithm:SHA256(sorted repo-relative path UTF8 + NUL + raw file digest + NUL).
-Detailed paths/counts/hashes:SOURCE/build/line126-resume95-public-candidate-files.json;
-the published FILES.json follows with the final evidence handoff.
+Detailed paths/counts/hashes:FINAL_2026-11-24_FOCUSED/FILES.json.
 All35libraries, auditor core, corpus and130controls remain byte-identical to the park.
 Reading inks/fallbacks,400minimum below16pt, approved label wrapping/equal taller rows,
 Q191 full-word fact promotion,Q194 comparison stacking,Q190 photo fades andQ195
@@ -44,7 +43,7 @@ unchanged. Reporter supplies1reason and omits201; no missing reasons are invente
 130controls passed21.493s. Matched focused replay:706text frames+4verified nontext,
 0failure rows,110.605s. Phone access:all4plans,96frames,0failure rows,21.885s.
 Filtered replay/phone gaps789/319 are deliberate and receive no whole-app coverage credit.
-Eight typed real-asset representative captures passed11.918s, DPR3:
+Eight typed bundled-sample-artwork captures passed11.918s, DPR3:
 Seeker/Guardian Basic/One at430x932/1.0 and375x667/1.3. All8 images reviewed.
 Visible type/fades pass within126scope; narrowframes are context, not master parity.
 SeekerBasic narrow upsell CTA is outside the initial inner-scroll viewport; its
@@ -70,9 +69,27 @@ future hosted reporting only after126BUILT. Local failures/history remain held;
 ordinary1 stopped on a stale Browse assertion, ordinary2 completed9stale fixture
 failures, and all9then passed in35focused tests before the final full ordinary pass.
 
-PUBLICATION AND REMAINING HANDOFF
-Exact97file public check:0unresolved. Working secret scan:97files,0findings,stable hashes.
-Independent routing/fixture/strict95scope and8image reviews passed. Staged owned
-inputs, mandatory origin/main..HEAD pre/post-push scans, source commit/push and
-exact-commit hosted3shard CI are pending. Final BUILD.json/metadata/review and queue
-BUILT follow only after the required hosted gate. Unrelated designer work is preserved.
+COMPLETED PUBLICATION AND HANDOFF
+Exact implementation commit53d01367da3c2b60710c9aab8c639479d6918063 is pushed.
+Existing hosted CI45334647647 completed successfully24Nov05:49:34UTC:
+Select Flutter tests and all3Flutter shards green on that exact SHA.
+https://github.com/BLACK-UMBRELLA-GROUP/zyra/actions/runs/45334647647
+All95source/support files retain the validated aggregate and match that commit.
+The final handoff commit changes evidence and the126queue note only.
+
+Evidence:FINAL_2026-11-24_FOCUSED/ contains8immutablePNGs, source FILES.json,
+fresh FIT.json, CARRIED_EVIDENCE.json, BUILD.json, CHECKS.json, metadata,
+REVIEW.txt andPNG_PROOF.json. No source tree or compiled app is copied there.
+Exact97file source/input public check:0unresolved; working secret scan:97files,0findings.
+Staged4document secret scan:0findings. Mandatory pre/post-source-push ranges:0findings.
+Evidence16files:0secret findings/0unresolved public findings;269money-pattern matches
+are reviewed compressed-PNG false positives, with CRC/EOF/no text orEXIF proofs.
+Five unchanged Questions money flags were reviewed against the accepted baseline.
+Public checks:Aok,Bok,Cnone,Dnone,Eok,Fok(README updated for opt-in/ordinary commands).
+Independent precommit scope, routing, fixtures, evidence and8image reviews passed.
+
+Queue126 is BUILT. The parent queue owner may dispatch the next eligible line;
+143 now has its required126 result. This owner starts no later line. No full local
+audit ran afterRUN11. No native app build, phone installation or server change.
+The current-day task note records final commits/checks/actual usage; unrelated
+approved designs, questions and queue rows remain preserved outside this handoff.
