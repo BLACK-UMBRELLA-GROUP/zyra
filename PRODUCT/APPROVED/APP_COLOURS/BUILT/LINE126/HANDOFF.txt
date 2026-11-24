@@ -1,101 +1,70 @@
-PAUSED — LINE126 NOT BUILT — FOUNDER23 NOV2026 15:58KSA
-OA-ZYRA-371. Resume only on the Founder's later GO. No line127/network/CI step.
+LINE 126 — CLEARER TEXT — PARKED / QUESTION 197
+OA-ZYRA-371. Handoff: 24 November 2026. Not BUILT; not active in the preview.
 
-SAFE POINT COMPLETED
-All74owned candidate files (27libraries) were moved to:
-/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE126/PAUSE_2026-11-23_131103UTC/candidate/
-Candidate aggregate SHA256:
-f9d64e2269554d5e8a8ee516ca87653592f3f09eb2a9014e6d58908b7381327b
-Algorithm: sorted repository-relative path UTF8 +NUL +raw fileSHA256 +NUL.
-Every held hash and each restored/absent accepted path verified. PATHS.json
-records bytes,modes,accepted hashes and changed-line counts; RECEIPT.json records
-the move. The directory is gitignored under Q184/F58, protected from housekeeping.
-No half-written file, pending approval, test/analyzer process or network step.
+L49 / S44 STOP AND REPOSITORY RELEASE
+The replacement Founder instructions require a line to stop after six hours or
+three failed full gates and place a new whole-app audit in its own hosted-CI line.
+RUN11 was stopped at 04:04:30 UTC. Q197 is OPEN For Fable; Q196's existing
+last-local-run exit route is preserved. No further full local audit was started.
+At 04:18 UTC all 88 candidate paths were moved, byte-identically, into:
+SOURCE/build/held/LINE126/L49_PARK_2026-11-24_041822UTC/CANDIDATE
+The packet contains PARK_MANIFEST.json, CANDIDATE_FILES.json and BUILD.json.
+Aggregate: 39bc66e5338fd08cf11fa87998d22f7378651221d7d340ade20a9516cdb8ca2f
+Algorithm: SHA256(sorted repo-relative path UTF8 + NUL + raw file digest + NUL).
+88 paths include 35 application libraries, 86 text files and two PNG goldens.
+All 70 tracked baseline files were recreated only at the emptied owned paths from
+9c6b522bd6dbfccc8bd4a973ae67d82f5a5fe138; the 18 new paths remain absent.
+Owned code was clean against that accepted baseline when released. Approved
+inputs and unrelated designer changes were preserved. No compiled app was stored.
+An independent review verified all held bytes and all 70 baseline blobs/modes.
+The parent queue owner may dispatch the next eligible line. This owner starts no
+later line and must not overwrite subsequent owners' changes.
 
-Accepted base c1a33ab713000a2f0609d32309312ab539969675 restored after the move
-using read-only Git show. SOURCE/lib,SOURCE/test,SOURCE/ios,README,2CI scripts and
-2baseline manifests are clean. No checkout/restore/reset/clean/rebase. Designer
-work outside those owned scopes was preserved. No candidate implementation
-commit/push, hostedCI, native build or phone action occurred.
-55support files (12,598,179bytes) are protected in held/qa,resume_tools,visuals;
-SUPPORT_FILES.json records hashes. Earlier90JSON/logs remain in sibling
-REBUILD_2026-11-23/qa. That earlier66filehold was safely resumed before this
-pause; its candidate directory is now empty. Yesterday's51filecandidate was
-permanently emptied perQ184: this74fileimplementation is a fresh rebuild, not
-verified recovery. Older manifests/renders here remain historical.
+LOCKED AUTHORITY AND HELD IMPLEMENTATION
+Clearer text brief: PRODUCT/APPROVED/APP_COLOURS/BRIEFS/FIX_BRIEF_2026-11-22_CLEARER_TEXT.md
+Spec: PRODUCT/APPROVED/APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V9.md
+Questions 177–195 answered; corrections 2/3/5 apply. Correction 4 and Small-screen
+fit remain separate line141. Private V307/V324/V326 prototypes were read in place;
+no HTML was published. The held candidate implements approved reading inks and
+fallbacks, minimum weight400 below16pt, Larger Text wrapping/equal taller rows,
+Q194 table reflow, Q190 photo fades and Q195 Reduced Motion gesture treatment.
+Normal430/1.0 geometry remains the locked target. Two Q181 type-only goldens and
+their baseline entries changed. These changes are held, not landed or displayed.
 
-EXACT STOP AND FIRST RESTART STEP
-Q188/Q189 applied: named danger dark7A2E29 only for measured urgent email text;
-decorative danger tint unchanged; Finishlater uses ivory on the espresso bar.
-Their finite signup/developer-entry/local-presenter run176PASS in26.798s.
-Q190 adaptive photo fade and Q191 fact-row fit are implemented and focused-tested.
-A later measured photo-composite disabled label was stepped to secondaryStrong
-under Q182; that last label correction is not included in the earlier52receipt.
-Q192 modal scope,route applicability and overwide-word checks are implemented.
-Last source edit closed a lint brace in the new clip-aware modal collection;
-no subsequent analyzer/test was run after the pause. The preceding analyzer
-compiled with that one braces info.51controls passed BEFORE this clip addition.
-The clipped-barrier and positive fractional-bearing controls are not yet written
-or run. All source/test files are frozen, complete and held.
+COMPLETED SCOPED EVIDENCE — NO OVERALL PASS
+130 retained controls passed. Actual normal430 phone entry passed all four
+role/plan pairs:96 frames, zero failures, complete reporter,23.04s.
+Final matched replay:706 text frames plus4 verified nontext observations,
+zero paint/scene/body errors, complete reporter,113.205s; guarded inputs unchanged.
+This was +0.368% against112.789s. The earlier Journey/disclosure proof passed
+all four tuples:1610 frames/268.16s; it preceded the final handoff refinement.
+Its819 unexecuted other route cells receive no credit. Whole analyzer was clean
+in6.1s. Flutter3.44.2, five SDK pins and inherited Git-exec denial were verified.
 
-The FIRST technical check after later GO is the UNCONFIRMED Q190 retained-paint
-dependency: sample normal retained-card pixels after a live TextScaler/scroll
-change BEFORE the auditor forces repaint. Parent fade reads descendant text
-geometry in paint; a repaint-boundary child may repaint independently. No probe
-was created/started, no defect established and no helper fix begun before pause.
-Then add the two Q192/word-fit controls, analyze the final brace edit and rerun
-51+controls before complete frozen-source gates. Do not infer fresh-mount success
-proves live invalidation; do not treat the unrun concern as a confirmed defect.
+FULL-AUDIT LIMITS AND NEXT TECHNICAL HANDOFF
+RUN10 completed unsuccessfully:1557passes/4deadline errors; normal430, normal375
+and large430 passed. Large375 reached1500.584s with8434frames and two unfinished
+tail cells (Seeker Basic scan and guardian_access_agreement). Measured frames
+had no paint/scene errors. RUN11 used two workers and the same app/test bytes:
+A normal430 passed4642frames/989.099s; D large375 passed8476frames/1368.854s.
+C large430 and B normal375 were policy-interrupted and remain incomplete.
+The wrapper's raw exit0 is not success: reporter incomplete, effective exit1,
+full_gate_pass false. All4056 source/test inputs stayed unchanged, aggregate
+8a75b3d8354b47e2434638ce3cc5a9f00934a3390fda44158f0b08fb7f0017a5.
+Final ordinary regression and final8 representative captures were not run.
+Earlier attempts and stopped-run evidence remain held under:
+SOURCE/build/held/LINE126/QA_2026-11-23
+RUN11 evidence is in RUN11_STOPPED_L49_041615; no test process remained at release.
+Q197 identifies a test-tool handoff, not a confirmed current app contrast fault.
+Fable must resolve the interrupted case using Q196 and hosted-audit line143;
+no new local whole-app run or invented queue dependency is authorised here.
 
-COMPLETED CHECKPOINTS — NO FINAL WHOLE-APP PASS
-- Pinned Flutter3.44.2 protected driver:5pins/inheritedGit denial pass.
-- Q19153focusedPASS/0fail/0skip,3.930s; bothOne/Basic at all4locked tuples;
-  half-width/full-row order and whole words checked. Both430/1.0 geometry and
-  real-shadow raster hashes exactly equal pre-Q191 capture. Styles remain11/18pt.
-- Q19052focusedPASS/12.298s:22white-photo/actual-placeholder checks and30existing
-  Guardian/Seeker Journey checks. Written>=70%dark through8pt above first line,
-  next30%card-height clear transition, lockedRGB/bottom alpha and LargerText growth
-  verified. Explicit written rule governs the Seeker prototype CSS ambiguity.
-- Q188/Q189 independent text-only review passed; Q190 numeric/caller review found
-  no confirmed defect, but its retained-paint dependency remains unverified above.
-- Eight representative iOS widget PNGs, actual bundled photo fixtures and real
-  navigation, complete:4role/plan combinations ×430x932/1.0 and375x667/1.3.
-  Protected held/visuals has PNGSHA256,master mappings,BUILD.json and review notes.
-  Root viewed normalSeeker and bothnarrowGuardian views: readable/no clipping seen.
-  Master fixture states and inheritedCSS/Flutter borders/shadows/nav differ;
-  no global master pixel parity claimed or out-of-scope redesign made (OA371
-  written refusal). These are widget renders, never phone screenshots.
-- Earlier final whole analyzer was clean6.5s BEFORE Q188-Q192 amendments.
-- Earlier broad regression7635pass/1staleassertfail/202skip,473.05s,582selected
-  files; libraries+selected bytes stable. Focused39pass after assertion fix.
-  Later changes mean there is no final broad pass.202skip=200opt-in captures,
-  1missingrealphoto fixture,1conditionalIDV. Nozero-skips claim.
-- Earlier independent46controls and smaller focused theme/cards,signup,wallet,
-  Journey,monogram,102remainingroutes,14navigation and9golden/manifest checks
-  passed separately;5mock-only CI-scope tests passed. Two Q181 type-only Guardian
-  goldens/manifests are part of the held candidate, not accepted assets.
-- Filtered four-tuple alpha proof confirms darker fallbacks on actual opaque
-  backgrounds. Reports remain coverage/contrast failures, never unique-defect
-  counts or whole-screen passes. See sibling REBUILD/CHECKS.json for old scope.
-
-Full revised three-driver raster corpus and final ordinary regression were NOT
-started before the explicit pause. There is no final contrast/coverage, whole
-analyzer, broad regression, globalmaster or exact-candidate hostedCI pass.
-
-RESUME ONLY AFTER FOUNDER GO
-1.Recheck current acceptedHEAD/queue and verify74held hashes. Compare each held
-  recorded base hash with the current accepted file; manually merge intervening
-  accepted work before safe restoration. Never overwrite another line's changes.
-2.Read current locked APP_COLOURS V9 correction3,brief,Q177-Q192 and fixedprivate
-  archived prototypeV307 plusQ190V324. Do not publish prototypeHTML. LatestQ192/
-  specExempt/item6a resolves the older briefChecks exemption list.
-3.Run the live-repaint proof above; finish clip/fractional-bearing controls.
-4.Freeze source; run all3unfiltered contrast drivers for430/375 at1.0/1.3 with
-  actualroles/plans/typedSignup. Keep applicable route requirements fail-closed;
- 14inapplicable cells were removed using actual shell guards, genuine gaps remain.
-5.Run complete ordinary regression and scoped visual/public review. Only after
-  local gates pass and resumed authority permits: implementation commit/push and
-  exact-commit hostedCI. Then final as-built/trace/handover. No127/native/phone.
-
-CURRENT RECORDS: PAUSE_2026-11-23/{PATHS,RECEIPT,RESUME,BUILD}.json.
-This is a safe paused checkpoint, not a built or approved delivery.
+PUBLICATION AND TRACE
+Before parking, exact90-file public review had0 unresolved findings and the
+working secret scan had0 findings/errors. Those are held-candidate checks, not
+an implementation release gate. Closing documentation receives separate staged
+public/secret checks and mandatory origin/main..HEAD pre/post-push scans.
+The closing commit contains this handoff, owned Questions and the126 queue note
+only. Its SHA/push result and actual usage are recorded in the24November task note.
+No candidate implementation commit, full-pass claim, native build, phone install,
+server change or implementation hosted-CI result exists. Queue126 is QUESTION.
