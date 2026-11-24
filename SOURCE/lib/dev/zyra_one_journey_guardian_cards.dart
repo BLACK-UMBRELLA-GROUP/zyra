@@ -832,15 +832,13 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Opacity(
-              opacity: invited ? .55 : 1,
-              child: ZyraGoldRingMonogram(
-                name: name,
-                guardianOne: guardianOne,
-                size: 60,
-                fontSize: 28,
-                textScaler: TextScaler.noScaling,
-              ),
+            ZyraGoldRingMonogram(
+              name: name,
+              guardianOne: guardianOne,
+              size: 60,
+              fontSize: 28,
+              textScaler: TextScaler.noScaling,
+              artworkOpacity: invited ? .55 : 1,
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -1085,7 +1083,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
                 style: ZyraText.body(
                   size: 11,
                   color: ZyraColors.ink(.55),
-                ).copyWith(height: 1.2),
+                ).copyWith(height: 1.2, letterSpacing: 0),
               ),
               const SizedBox(height: 3),
               LinearProgressIndicator(
@@ -1256,7 +1254,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
                       size: 11,
                       color: locked || !enabled
                           ? ZyraColors.ink(.55)
-                          : const Color(0xFF845F24),
+                          : ZyraColors.goldTextStrong,
                     ),
                   ),
                 ],

@@ -2158,6 +2158,7 @@ class _BottomSave extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CustomPaint(
+    key: const ValueKey('compatibility-editor-scroll-edge-fade'),
     // Continue the existing fade beneath the SafeArea. Painting clearance
     // does not change the footer box, hit area or scroll padding.
     painter: const _FooterFadePainter(),
@@ -2178,7 +2179,12 @@ class _BottomSave extends StatelessWidget {
               context,
               enabled ? onPressed : null,
             ),
-            child: const Text('Use this answer'),
+            child: Text(
+              'Use this answer',
+              style: TextStyle(
+                color: enabled ? ZyraColors.espresso : ZyraColors.secondaryText,
+              ),
+            ),
           ),
         ),
       ),

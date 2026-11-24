@@ -104,7 +104,7 @@ void _expectRootBarGeometry(WidgetTester tester, Size size) {
   }
 }
 
-void _expectBrowseGeometry(WidgetTester tester, Size size) {
+Future<void> _expectBrowseGeometry(WidgetTester tester, Size size) async {
   final header = tester.getRect(_key('concept_browse_header'));
   final title = tester.getRect(_key('concept_browse_title'));
   final menu = tester.getRect(_key('concept_browse_menu'));
@@ -134,6 +134,29 @@ void _expectBrowseGeometry(WidgetTester tester, Size size) {
   expect(_key('concept_previous_profile'), findsNothing);
   expect(_key('concept_next_profile'), findsNothing);
   final request = _key('draft_profile_${_person(tester).id}');
+  if (request.hitTestable().evaluate().isEmpty) {
+    final details = _key('concept_browse_details_scroll_${_person(tester).id}');
+    final inner = tester
+        .state<ScrollableState>(
+          find.descendant(of: details, matching: find.byType(Scrollable)),
+        )
+        .position;
+    final before = tester.getRect(request);
+    final viewport = tester.getRect(details);
+    // Q191 promotes an overwide fact to a full row. Its existing card scroll
+    // owns the extra content; the outer Browse frame must remain fixed.
+    expect(inner.maxScrollExtent, greaterThan(0));
+    expect(viewport.contains(before.center), isFalse);
+    debugPrint(
+      'Q191 Browse reveal: width=${size.width}, '
+      'profile=${_person(tester).id}, extent=${inner.maxScrollExtent}, '
+      'offset=${inner.pixels}, request=$before, viewport=$viewport',
+    );
+    await inner.ensureVisible(tester.renderObject(request), alignment: .5);
+    await tester.pumpAndSettle();
+    expect(tester.getRect(_key('concept_browse_header')), header);
+    expect(tester.getRect(_key('concept_browse_portrait_card')), photo);
+  }
   _edges(tester.getRect(request), size.width, 42);
   _target(tester, request);
 
@@ -359,7 +382,7 @@ void main() {
         (tester) async {
           await _mount(tester, size, quiet);
           expect(_person(tester).id, _sara);
-          _expectBrowseGeometry(tester, size);
+          await _expectBrowseGeometry(tester, size);
           final card = tester.getRect(_key('concept_browse_portrait_card'));
           final initial = tester.getRect(_glass());
           await _snapshot(
@@ -368,7 +391,7 @@ void main() {
           );
 
           await expandZyraPreviewTabBarIfIdle(tester);
-          _expectBrowseGeometry(tester, size);
+          await _expectBrowseGeometry(tester, size);
           expect(_person(tester).id, _sara);
           final held = await _holdBar(tester, _barIcon(tester, 'Profiles'));
           _expectRootBarGeometry(tester, size);
@@ -376,21 +399,21 @@ void main() {
           expect(_person(tester).id, _sara);
           await held.up();
           await tester.pumpAndSettle();
-          _expectBrowseGeometry(tester, size);
+          await _expectBrowseGeometry(tester, size);
           await tester.pump(const Duration(seconds: 3));
           await tester.pumpAndSettle();
-          _expectBrowseGeometry(tester, size);
+          await _expectBrowseGeometry(tester, size);
           expect(tester.getRect(_key('concept_browse_portrait_card')), card);
 
           await _press(tester, 'draft_profile_$_sara');
           expect(_browse(tester).invitationSent!(_person(tester)), isTrue);
           await expandZyraPreviewTabBarIfIdle(tester);
-          _expectBrowseGeometry(tester, size);
+          await _expectBrowseGeometry(tester, size);
           expect(tester.getRect(_key('concept_browse_portrait_card')), card);
           await _press(tester, 'concept_next_profile');
           expect(_person(tester).id, _aisha);
           await expandZyraPreviewTabBarIfIdle(tester);
-          _expectBrowseGeometry(tester, size);
+          await _expectBrowseGeometry(tester, size);
           await _press(tester, 'concept_previous_profile');
           expect(_person(tester).id, _sara);
           expect(_browse(tester).invitationSent!(_person(tester)), isTrue);

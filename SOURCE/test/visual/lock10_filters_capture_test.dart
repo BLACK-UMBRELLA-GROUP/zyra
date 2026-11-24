@@ -384,7 +384,7 @@ void main() {
       find.byType(CompatibilityEditorScreen),
     );
     await t.pumpWidget(const SizedBox.shrink());
-    await h.flush();
+    await h.flush(auditText: false);
     expect(editor.canAct!(), isFalse);
     expect(retained.canAct!(), isFalse);
     expect(await retained.onPersist(retained.initialDraft), isFalse);

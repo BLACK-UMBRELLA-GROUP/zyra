@@ -80,6 +80,10 @@ Future<void> _swipe(BaselineHarness h, double dx) async {
 }
 
 Future<void> _cap(BaselineHarness h, String file) async {
+  if (baselineTextAuditOnly) {
+    await h.auditText(file);
+    return;
+  }
   if (!_capture) return;
   final previous = debugDisableShadows;
   debugDisableShadows = false;

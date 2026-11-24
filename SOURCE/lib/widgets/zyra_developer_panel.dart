@@ -370,7 +370,7 @@ class _DeveloperPanelState extends State<_DeveloperPanel> {
                                             'Sample data on this account only. Members never see it.',
                                   style: ZyraText.subtext(
                                     size: 12,
-                                    color: ZyraColors.mutedText,
+                                    color: ZyraColors.secondaryText,
                                   ).copyWith(height: 1.45),
                                 ),
                                 if (preview != null)
@@ -485,7 +485,7 @@ class _DeveloperPanelState extends State<_DeveloperPanel> {
                                       ),
                                       shape: const StadiumBorder(),
                                       backgroundColor: ZyraColors.cardSurface,
-                                      foregroundColor: ZyraColors.mutedText,
+                                      foregroundColor: ZyraColors.secondaryText,
                                       textStyle: ZyraText.body(size: 15),
                                     ),
                                     child: const Text('Done'),
@@ -600,7 +600,7 @@ class _DeveloperSelector extends StatelessWidget {
             detail,
             style: ZyraText.subtext(
               size: 11.5,
-              color: ZyraColors.mutedText,
+              color: ZyraColors.secondaryText,
             ).copyWith(height: 1.3),
           ),
         ],
@@ -682,10 +682,8 @@ class _DeveloperSelector extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 9),
             foregroundColor: selected
                 ? ZyraColors.espresso
-                : ZyraColors.mutedText,
-            disabledForegroundColor: ZyraColors.mutedText.withValues(
-              alpha: .35,
-            ),
+                : ZyraColors.secondaryText,
+            disabledForegroundColor: ZyraColors.secondaryText,
             textStyle: textStyle,
             shape: const StadiumBorder(),
             visualDensity: VisualDensity.standard,

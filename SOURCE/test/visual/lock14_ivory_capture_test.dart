@@ -16,6 +16,7 @@ import 'baseline_capture_support.dart';
 const root = '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA';
 const evidence = '$root/REPORTS/EVIDENCE/LOCK14_IVORY_V5_2026-10-31';
 const capture = bool.fromEnvironment('ZYRA_LOCK14_CAPTURE');
+const _line126Output = String.fromEnvironment('ZYRA_LINE126_OUTPUT');
 Finder k(String id) => find.byKey(ValueKey(id));
 void advance(ViewRequestDraftModel m, String id) {
   expect(m.chooseStageContinue(id), isTrue);
@@ -49,8 +50,10 @@ BaselineHarness harness(
   return BaselineHarness(
     t,
     group: 'lock14_${scale}_$contrast',
-    outputRoot: '$root/PRODUCT/APPROVED/APP_COLOURS/BUILT',
-    evidenceRoot: evidence,
+    outputRoot: _line126Output.isEmpty
+        ? '$root/PRODUCT/APPROVED/APP_COLOURS/BUILT'
+        : _line126Output,
+    evidenceRoot: _line126Output.isEmpty ? evidence : _line126Output,
     flatOutput: true,
     textScale: scale,
     highContrast: contrast,
@@ -143,7 +146,11 @@ Future<void> preference(BaselineHarness h) async {
 }
 
 void main() {
-  setUpAll(() => baselineSetUp(evidenceRoot: evidence));
+  setUpAll(
+    () => baselineSetUp(
+      evidenceRoot: _line126Output.isEmpty ? evidence : _line126Output,
+    ),
+  );
   tearDownAll(baselineTearDown);
   setUp(() {
     ZyraDeveloperAccess.setMainAppFounderPreviewForTesting(true);

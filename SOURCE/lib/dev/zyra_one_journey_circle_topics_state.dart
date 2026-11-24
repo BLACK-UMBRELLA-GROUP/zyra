@@ -671,7 +671,7 @@ class _CircleTopicsMenu extends StatelessWidget {
             'IN THE CIRCLE',
             style: ZyraText.subtext(
               size: 11,
-            ).copyWith(color: ZyraColors.goldText, letterSpacing: 1),
+            ).copyWith(color: ZyraColors.goldTextStrong, letterSpacing: 1),
           ),
           const SizedBox(height: 6),
           for (final p in participants) ...[
@@ -710,8 +710,8 @@ class _CircleTopicsMenu extends StatelessWidget {
                                 : 'Additional Guardian',
                             style: ZyraText.subtext(size: 12).copyWith(
                               color: p.isMainGuardian
-                                  ? ZyraColors.goldText
-                                  : null,
+                                  ? ZyraColors.goldTextStrong
+                                  : ZyraColors.secondaryStrong,
                             ),
                           ),
                         ],
@@ -722,7 +722,10 @@ class _CircleTopicsMenu extends StatelessWidget {
                       readOnly.contains(p.userId)
                           ? 'Reads only${viewerIsSeeker ? ' ›' : ''}'
                           : 'Writes',
-                      style: ZyraText.subtext(size: 12),
+                      style: ZyraText.subtext(
+                        size: 12,
+                        color: ZyraColors.secondaryStrong,
+                      ),
                     ),
                   ],
                 ),

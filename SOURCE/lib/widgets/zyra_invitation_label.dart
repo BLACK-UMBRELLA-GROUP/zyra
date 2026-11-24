@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/zyra_colors.dart';
+import '../theme/zyra_text.dart';
 
 /// Feedback only. Sending, cancelling and permission checks belong to the
 /// caller; animation completion never changes state or navigation.
@@ -52,7 +53,9 @@ class ZyraInvitationLabel extends StatelessWidget {
           textAlign: TextAlign.center,
           maxLines: maxLines,
           overflow: overflow,
-          style: sent ? style.copyWith(color: sentColor) : style,
+          style: ZyraText.resolveReadingStyle(
+            sent ? style.copyWith(color: sentColor) : style,
+          ),
         ),
       ),
     );

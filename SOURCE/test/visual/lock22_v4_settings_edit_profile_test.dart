@@ -64,6 +64,10 @@ Future<void> _reveal(BaselineHarness h, String scrollId, Finder target) async {
 }
 
 Future<void> _cap(BaselineHarness h, String name) async {
+  if (baselineTextAuditOnly) {
+    await h.auditText(name);
+    return;
+  }
   if (!_capture) return;
   final previous = debugDisableShadows;
   debugDisableShadows = false;

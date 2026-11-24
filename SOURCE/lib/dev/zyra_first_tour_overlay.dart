@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 
 import '../theme/zyra_text.dart';
+import '../theme/zyra_colors.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'zyra_first_tour_steps.dart';
 
@@ -234,7 +235,9 @@ class _ZyraFirstTourOverlayState extends State<ZyraFirstTourOverlay>
                         child: SizedBox(key: ValueKey('first_tour_tab')),
                       ),
                     ),
-                    _touch(p, _step!),
+                    // Q195: the looping cue is absent under Reduce Motion;
+                    // the lit target, arrow and coach note stay in place.
+                    if (!_quiet) _touch(p, _step!),
                     Positioned(
                       left:
                           ((p.target.center.dx).clamp(36, size.width - 36)) - 9,
@@ -243,6 +246,7 @@ class _ZyraFirstTourOverlayState extends State<ZyraFirstTourOverlay>
                       height: 18,
                       child: IgnorePointer(
                         child: Transform.rotate(
+                          key: const ValueKey('first_tour_arrow'),
                           angle: math.pi / 4,
                           child: DecoratedBox(
                             decoration: BoxDecoration(
@@ -286,14 +290,14 @@ class _ZyraFirstTourOverlayState extends State<ZyraFirstTourOverlay>
         padding: const EdgeInsets.symmetric(horizontal: 18),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: _gold,
+          color: ZyraColors.goldTextFill,
           borderRadius: BorderRadius.circular(18),
         ),
         child: Text(
           label,
           style: ZyraText.button(
             size: 14,
-            color: _ivory,
+            color: ZyraColors.espresso,
           ).copyWith(fontWeight: FontWeight.w500),
         ),
       ),
@@ -351,7 +355,7 @@ class _ZyraFirstTourOverlayState extends State<ZyraFirstTourOverlay>
               style: ZyraText.body(
                 size: 15,
                 color: _muted,
-              ).copyWith(fontWeight: FontWeight.w300, height: 1.55),
+              ).copyWith(fontWeight: FontWeight.w400, height: 1.55),
             ),
           ),
           const SizedBox(height: 20),
@@ -425,7 +429,7 @@ class _ZyraFirstTourOverlayState extends State<ZyraFirstTourOverlay>
                 style: ZyraText.body(
                   size: 14.5,
                   color: _muted,
-                ).copyWith(fontWeight: FontWeight.w300, height: 1.5),
+                ).copyWith(fontWeight: FontWeight.w400, height: 1.5),
               ),
             ),
             const SizedBox(height: 12),

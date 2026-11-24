@@ -581,7 +581,7 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
                             'About ${item.about}',
                             style: ZyraText.subtext(
                               size: 11,
-                              color: ZyraColors.goldText,
+                              color: ZyraColors.goldTextStrong,
                             ),
                           ),
                         ),

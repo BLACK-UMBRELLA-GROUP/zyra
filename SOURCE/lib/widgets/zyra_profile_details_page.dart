@@ -151,11 +151,39 @@ class ZyraProfileDetailsPage extends StatelessWidget {
           final avatarSize = compact ? _smallerAvatarSize : _avatarSize;
           final tileWidth =
               (constraints.maxWidth - 2 * _horizontalInset - _tileGap) / 2;
-          final rowHeight = facts.fold(
+          final fullWidth = constraints.maxWidth - 2 * _horizontalInset;
+          final rows = <({List<(String, String)> facts, bool fullWidth})>[];
+          var pending = <(String, String)>[];
+          for (final fact in facts) {
+            if (_DetailTile.needsFullWidth(context, fact, tileWidth)) {
+              if (pending.isNotEmpty) {
+                rows.add((facts: pending, fullWidth: false));
+                pending = [];
+              }
+              rows.add((facts: [fact], fullWidth: true));
+            } else {
+              pending.add(fact);
+              if (pending.length == 2) {
+                rows.add((facts: pending, fullWidth: false));
+                pending = [];
+              }
+            }
+          }
+          if (pending.isNotEmpty) {
+            rows.add((facts: pending, fullWidth: false));
+          }
+          final rowHeight = rows.fold(
             (math.max(196.0, constraints.maxHeight * .4) - _tileGap) / 2,
-            (height, fact) => math.max(
+            (height, row) => row.facts.fold(
               height,
-              _DetailTile.heightFor(context, fact, tileWidth),
+              (height, fact) => math.max(
+                height,
+                _DetailTile.heightFor(
+                  context,
+                  fact,
+                  row.fullWidth ? fullWidth : tileWidth,
+                ),
+              ),
             ),
           );
           return SingleChildScrollView(
@@ -208,7 +236,7 @@ class ZyraProfileDetailsPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      for (int i = 0; i < facts.length; i += 2) ...[
+                      for (int i = 0; i < rows.length; i++) ...[
                         if (i != 0) const SizedBox(height: _tileGap),
                         ConstrainedBox(
                           constraints: BoxConstraints(minHeight: rowHeight),
@@ -216,13 +244,25 @@ class ZyraProfileDetailsPage extends StatelessWidget {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                Expanded(child: _DetailTile(facts[i])),
-                                const SizedBox(width: _tileGap),
                                 Expanded(
-                                  child: i + 1 < facts.length
-                                      ? _DetailTile(facts[i + 1])
-                                      : const SizedBox.shrink(),
+                                  child: _DetailTile(
+                                    rows[i].facts.first,
+                                    tileWidth: rows[i].fullWidth
+                                        ? fullWidth
+                                        : tileWidth,
+                                  ),
                                 ),
+                                if (!rows[i].fullWidth) ...[
+                                  const SizedBox(width: _tileGap),
+                                  Expanded(
+                                    child: rows[i].facts.length == 2
+                                        ? _DetailTile(
+                                            rows[i].facts[1],
+                                            tileWidth: tileWidth,
+                                          )
+                                        : const SizedBox.shrink(),
+                                  ),
+                                ],
                               ],
                             ),
                           ),
@@ -245,9 +285,10 @@ class ZyraProfileDetailsPage extends StatelessWidget {
 }
 
 class _DetailTile extends StatelessWidget {
-  const _DetailTile(this.fact);
+  const _DetailTile(this.fact, {required this.tileWidth});
 
   final (String, String) fact;
+  final double tileWidth;
   static const _padding = EdgeInsets.symmetric(horizontal: 16, vertical: 14);
   static const _gap = 6.0;
 
@@ -260,33 +301,129 @@ class _DetailTile extends StatelessWidget {
     color: ZyraColors.foregroundBody,
   ).copyWith(letterSpacing: 0, height: 1.2);
 
-  static double heightFor(
-    BuildContext context,
-    (String, String) fact,
-    double tileWidth,
-  ) {
-    final inherited = DefaultTextStyle.of(context);
-    final bold = MediaQuery.boldTextOf(context);
-    TextStyle resolve(TextStyle style) {
-      final effective = inherited.style.merge(style);
-      return bold
-          ? effective.merge(const TextStyle(fontWeight: FontWeight.bold))
-          : effective;
-    }
+  static double _textWidth(double tileWidth) =>
+      math.max(1.0, tileWidth - _padding.horizontal - 2);
 
-    final painter = TextPainter(
+  static TextStyle _resolvedStyle(BuildContext context, TextStyle style) {
+    final effective = DefaultTextStyle.of(context).style.merge(style);
+    return MediaQuery.boldTextOf(context)
+        ? effective.merge(const TextStyle(fontWeight: FontWeight.bold))
+        : effective;
+  }
+
+  static TextPainter _painter(BuildContext context) {
+    final inherited = DefaultTextStyle.of(context);
+    return TextPainter(
       textDirection: Directionality.of(context),
       textScaler: MediaQuery.textScalerOf(context),
       textHeightBehavior: inherited.textHeightBehavior,
       textWidthBasis: inherited.textWidthBasis,
     );
-    final width = math.max(1.0, tileWidth - _padding.horizontal - 2);
-    painter.text = TextSpan(text: fact.$1, style: resolve(_labelStyle));
-    painter.layout(maxWidth: width);
-    final labelHeight = painter.height;
-    painter.text = TextSpan(text: fact.$2, style: resolve(_valueStyle));
-    painter.layout(maxWidth: width);
-    final valueHeight = painter.height;
+  }
+
+  static bool needsFullWidth(
+    BuildContext context,
+    (String, String) fact,
+    double tileWidth,
+  ) {
+    final painter = _painter(context);
+    try {
+      for (final (text, style) in [
+        (fact.$1, _labelStyle),
+        (fact.$2, _valueStyle),
+      ]) {
+        for (final word in text.split(RegExp(r'\s+'))) {
+          painter.text = TextSpan(
+            text: word,
+            style: _resolvedStyle(context, style),
+          );
+          painter.layout();
+          if (painter.width > _textWidth(tileWidth)) return true;
+        }
+      }
+      return false;
+    } finally {
+      painter.dispose();
+    }
+  }
+
+  // Keep native wrapping when it already respects whole words. Explicit line
+  // breaks prevent the paragraph engine splitting a name at a stored hyphen.
+  static ({String text, bool explicitLines}) _wholeWords(
+    BuildContext context,
+    String text,
+    TextStyle style,
+    double tileWidth,
+  ) {
+    final width = _textWidth(tileWidth);
+    final effective = _resolvedStyle(context, style);
+    final painter = _painter(context);
+    try {
+      painter.text = TextSpan(text: text, style: effective);
+      painter.layout(maxWidth: width);
+      final split = RegExp(r'\S+').allMatches(text).any((word) {
+        final boxes = painter.getBoxesForSelection(
+          TextSelection(baseOffset: word.start, extentOffset: word.end),
+        );
+        return boxes.any((box) => (box.top - boxes.first.top).abs() > .01);
+      });
+      if (!split) return (text: text, explicitLines: false);
+      final lines = <String>[];
+      for (final paragraph in text.split('\n')) {
+        var line = '';
+        for (final word in paragraph.split(RegExp(r'\s+'))) {
+          if (word.isEmpty) continue;
+          final candidate = line.isEmpty ? word : '$line $word';
+          painter.text = TextSpan(text: candidate, style: effective);
+          painter.layout();
+          if (line.isNotEmpty && painter.width > width) {
+            lines.add(line);
+            line = word;
+          } else {
+            line = candidate;
+          }
+        }
+        lines.add(line);
+      }
+      return (text: lines.join('\n'), explicitLines: true);
+    } finally {
+      painter.dispose();
+    }
+  }
+
+  Text _text(BuildContext context, String value, TextStyle style) {
+    final wrapped = _wholeWords(context, value, style, tileWidth);
+    return Text(
+      wrapped.text,
+      semanticsLabel: wrapped.explicitLines ? value : null,
+      softWrap: wrapped.explicitLines ? false : null,
+      overflow: wrapped.explicitLines ? TextOverflow.visible : null,
+      style: style,
+    );
+  }
+
+  static double heightFor(
+    BuildContext context,
+    (String, String) fact,
+    double tileWidth,
+  ) {
+    final painter = _painter(context);
+    double height(String text, TextStyle style) {
+      final wrapped = _wholeWords(context, text, style, tileWidth);
+      painter.text = TextSpan(
+        text: wrapped.text,
+        style: _resolvedStyle(context, style),
+      );
+      painter.layout(
+        maxWidth: wrapped.explicitLines
+            ? double.infinity
+            : _textWidth(tileWidth),
+      );
+      return painter.height;
+    }
+
+    final labelHeight = height(fact.$1, _labelStyle);
+    final valueHeight = height(fact.$2, _valueStyle);
     painter.dispose();
     return _padding.vertical + 2 + labelHeight + _gap + valueHeight;
   }
@@ -305,9 +442,9 @@ class _DetailTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(fact.$1, style: _labelStyle),
+          _text(context, fact.$1, _labelStyle),
           const SizedBox(height: _gap),
-          Text(fact.$2, style: _valueStyle),
+          _text(context, fact.$2, _valueStyle),
         ],
       ),
     ),

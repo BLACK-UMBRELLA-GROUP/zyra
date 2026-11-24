@@ -239,7 +239,30 @@ Use the protected local driver with the installed pinned SDK for checks, without
 cd SOURCE
 node tooling/no_git_driver.mjs check
 node tooling/no_git_driver.mjs flutter analyze --no-pub
-node tooling/no_git_driver.mjs flutter test --no-pub --reporter json
+(
+  set -e
+  zyra_test_list=$(python3 ../.github/scripts/zyra_test_shard.py full '[]' 0 1)
+  zyra_tests=()
+  while IFS= read -r zyra_test_path; do
+    zyra_tests+=("$zyra_test_path")
+  done <<< "$zyra_test_list"
+  node tooling/no_git_driver.mjs flutter test --no-pub --reporter json "${zyra_tests[@]}"
+)
+```
+
+The preview uses shared reading inks and a regular minimum weight below 16 pt. Quick-access labels keep larger text, wrap whole words, and grow their row when needed.
+
+The four `SOURCE/test/zyra_clearer_text_contrast*_test.dart` drivers are opt-in whole-app audits for a separate hosted CI line. They check actual settled preview pages at both 430 × 932 and 375 × 667, at text scales 1.0 and 1.3, using bundled fonts and local sample data. Each driver measures one viewport and text-scale pair. Ordinary test selection and all three existing CI shards exclude these exact four drivers, including explicit selected lists. Independent raster controls and focused route tests remain ordinary tests.
+
+For the separate hosted audit line, explicitly select all four drivers from `SOURCE/`:
+
+```sh
+node tooling/no_git_driver.mjs flutter test --no-pub --concurrency=2 \
+  --dart-define=ZYRA_FULL_TEXT_AUDIT=true \
+  test/zyra_clearer_text_contrast_430_test.dart \
+  test/zyra_clearer_text_contrast_large_375_test.dart \
+  test/zyra_clearer_text_contrast_large_430_test.dart \
+  test/zyra_clearer_text_contrast_test.dart
 ```
 
 The protected iPhone delivery route uses `SOURCE/tooling/verified_host_profile.mjs` with the exact reviewed `HOST_PROFILE_PLAN.json`. Run `inspect` to check the pinned native host and `build` to produce the PROFILE candidate. Delivery requires the Founder’s GO, a paired and unlocked iPhone connected by USB, and the observed SHA-256 of the successful build receipt. The `phone-check` command checks device readiness, and `deliver` verifies the candidate, installation and launch.

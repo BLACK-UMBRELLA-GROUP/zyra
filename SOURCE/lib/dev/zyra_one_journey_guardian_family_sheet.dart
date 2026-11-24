@@ -178,7 +178,13 @@ class _ZyraGuardianFamilySheetState extends State<ZyraGuardianFamilySheet> {
                           ).copyWith(height: 1.25),
                         ),
                         const SizedBox(height: 3),
-                        Text(subtitle, style: ZyraText.subtext(size: 13)),
+                        Text(
+                          subtitle,
+                          style: ZyraText.subtext(
+                            size: 13,
+                            color: ZyraColors.secondaryStrong,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -218,7 +224,10 @@ class _ZyraGuardianFamilySheetState extends State<ZyraGuardianFamilySheet> {
                     _FamilyStep.price => 'Back',
                     _FamilyStep.invited => 'Cancel invite',
                   },
-                  style: ZyraText.body(size: 14, color: ZyraColors.mutedText),
+                  style: ZyraText.body(
+                    size: 14,
+                    color: ZyraColors.secondaryStrong,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),

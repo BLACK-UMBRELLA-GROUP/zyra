@@ -56,6 +56,10 @@ Future<void> _mount(
 }
 
 Future<void> _cap(BaselineHarness h, String name, String state) async {
+  if (baselineTextAuditOnly) {
+    await h.auditText('$name/$state');
+    return;
+  }
   if (_capture) {
     if (name == 'g15_my_zyra' || name == 'g20_connect_with_guardian') {
       await h.mount(guardian: true, checkpoint: h.latest);
@@ -473,9 +477,11 @@ void main() {
       await h.mountPresentation(
         child: Builder(
           builder: (context) => MediaQuery(
-            data: MediaQuery.of(
-              context,
-            ).copyWith(textScaler: const TextScaler.linear(2)),
+            data: MediaQuery.of(context).copyWith(
+              textScaler: baselineTextAuditOnly
+                  ? MediaQuery.textScalerOf(context)
+                  : const TextScaler.linear(2),
+            ),
             child: ZyraOneJourneyConceptShell(
               fixture: ZyraShellTestFixture().fixture,
               canAct: () => true,

@@ -58,6 +58,10 @@ Future<void> back(BaselineHarness h) async {
 }
 
 Future<void> cap(BaselineHarness h, String name) async {
+  if (baselineTextAuditOnly) {
+    await h.auditText(name);
+    return;
+  }
   if (!capture) return;
   final previous = debugDisableShadows;
   debugDisableShadows = false;

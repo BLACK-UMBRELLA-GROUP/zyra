@@ -100,6 +100,10 @@ Future<void> cap(
   double scale, {
   bool fixture = true,
 }) async {
+  if (baselineTextAuditOnly) {
+    await h.auditText(name);
+    return;
+  }
   if (!capture) return;
   await h.flush();
   await h.tester.runAsync(() async {
@@ -348,8 +352,31 @@ void main() {
           .onPressed!;
       now = sent.add(const Duration(days: 14));
       retained();
-      await h.flush();
+      // This exact negative transition intentionally keeps the revoked route
+      // owner while its presenter returns SizedBox.shrink. It is not a
+      // text-bearing frame or route-coverage proof.
+      await h.flush(auditText: !baselineTextAuditOnly);
+      expect(h.latest.pages.last, 'guardian_family_offer');
+      expect(view(t).page, 'family_offer');
       expect(find.byType(InitialIdentityCheckScreen), findsNothing);
+      await h.recordNonTextObservation(
+        'expired retained Family accept',
+        {
+          'presenter': 'ZyraGuardianTabsPresentation(page:family_offer)',
+          'family_offer': null,
+          'authority':
+              'zyra_one_journey_guardian_tabs.dart family_offer null branch; '
+              'zyra_one_journey_concept_shell.dart _pendingGuardianFamilyOffer',
+        },
+        verifyNonText: () {
+          // Reflow rebuilds the real owner with the fixture's advanced clock;
+          // its null-offer branch must paint no text in every assigned tuple.
+          expect(h.latest.pages.last, 'guardian_family_offer');
+          expect(view(t).page, 'family_offer');
+          expect(view(t).familyOffer, isNull);
+          expect(find.byType(InitialIdentityCheckScreen), findsNothing);
+        },
+      );
       await nav(h, 4);
       await nav(h, 2);
       expect(key('guardian_family_view'), findsNothing);

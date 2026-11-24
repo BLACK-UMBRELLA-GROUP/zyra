@@ -277,11 +277,30 @@ PageController _controller(WidgetTester tester, String id) =>
 void _expectDetailsText(String id, Iterable<String> values) {
   expect(_details(id), findsOneWidget);
   for (final value in values) {
+    final text = find.descendant(
+      of: _details(id),
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is Text &&
+            (widget.data ?? widget.textSpan?.toPlainText() ?? '').replaceAll(
+                  RegExp(r'\s+'),
+                  ' ',
+                ) ==
+                value,
+      ),
+    );
     expect(
-      find.descendant(of: _details(id), matching: find.text(value)),
+      text,
       findsOneWidget,
       reason: 'The supplied public value "$value" appears on details.',
     );
+    final widget = text.evaluate().single.widget as Text;
+    if (widget.data != value) {
+      expect(widget.semanticsLabel, value);
+      expect(widget.maxLines, isNull);
+      expect(widget.softWrap, isFalse);
+      expect(widget.overflow, TextOverflow.visible);
+    }
   }
 }
 

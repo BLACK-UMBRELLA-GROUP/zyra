@@ -88,7 +88,7 @@ void main() {
       h.assertPage('settings');
       expect(k('phone_access_new'), findsNothing);
       await t.pumpWidget(const SizedBox.shrink());
-      await h.flush();
+      await h.flush(auditText: false);
     },
   );
   testWidgets(
@@ -102,7 +102,7 @@ void main() {
       expect(find.text('What ZYRA can use on this phone.'), findsOneWidget);
       expect(calls, everyElement('status'));
       await t.pumpWidget(const SizedBox.shrink());
-      await h.flush();
+      await h.flush(auditText: false);
     },
   );
   testWidgets(
@@ -118,7 +118,7 @@ void main() {
       await h.flush();
       expect(calls, isEmpty);
       await t.pumpWidget(const SizedBox.shrink());
-      await h.flush();
+      await h.flush(auditText: false);
     },
   );
   testWidgets(
@@ -134,7 +134,7 @@ void main() {
       await h.flush();
       expect(t.takeException(), isNull);
       await t.pumpWidget(const SizedBox.shrink());
-      await h.flush();
+      await h.flush(auditText: false);
     },
   );
   test('locked purpose strings and protected Location/Add remain exact', () {

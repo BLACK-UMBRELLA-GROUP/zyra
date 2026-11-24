@@ -1083,7 +1083,7 @@ class _FounderResumeNotice extends StatelessWidget {
                               vertical: 12,
                             ),
                             foregroundColor: _accent,
-                            disabledForegroundColor: ZyraColors.ink(0.42),
+                            disabledForegroundColor: ZyraColors.secondaryText,
                             side: BorderSide(
                               color: _accent.withValues(alpha: 0.72),
                             ),
@@ -1094,7 +1094,7 @@ class _FounderResumeNotice extends StatelessWidget {
                             'Try again',
                             style: TextStyle(
                               color: onRetry == null
-                                  ? ZyraColors.ink(0.42)
+                                  ? ZyraColors.secondaryText
                                   : ZyraColors.goldText,
                             ),
                             textAlign: TextAlign.center,

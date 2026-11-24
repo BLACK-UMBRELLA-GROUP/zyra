@@ -224,6 +224,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
     VoidCallback? callback, {
     double size = 13,
     int? page,
+    Color? textColor,
   }) {
     final guard = _guard(page);
     return TextButton(
@@ -244,7 +245,9 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
       child: _text(
         label,
         size: size,
-        color: size < 24 ? ZyraColors.goldText : ZyraColors.journeyGold,
+        color:
+            textColor ??
+            (size < 24 ? ZyraColors.goldText : ZyraColors.journeyGold),
       ),
     );
   }
@@ -303,19 +306,57 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
           border: Border.all(color: ZyraColors.surfaceBorder),
           borderRadius: BorderRadius.circular(28),
         ),
-        child: large
-            ? Column(
-                children: [for (var i = 0; i < labels.length; i++) item(i)],
-              )
-            : IntrinsicHeight(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    for (var i = 0; i < labels.length; i++)
-                      Expanded(child: item(i)),
-                  ],
+        child: LayoutBuilder(
+          builder: (context, bounds) {
+            final scaler = MediaQuery.textScalerOf(context);
+            final bold = MediaQuery.boldTextOf(context);
+            var vertical = large;
+            for (var i = 0; i < labels.length && !vertical; i++) {
+              var style = DefaultTextStyle.of(context).style.merge(
+                ZyraText.body(
+                  size: 12.5,
+                  color: ZyraColors.ink(i == selected ? .95 : .65),
                 ),
-              ),
+              );
+              if (bold) {
+                style = style.merge(
+                  const TextStyle(fontWeight: FontWeight.bold),
+                );
+              }
+              // Each original equal cell retains 8pt padding on both sides;
+              // the selected cell's existing border consumes another 2pt.
+              final available =
+                  bounds.maxWidth / labels.length -
+                  16 -
+                  (i == selected ? 2 : 0);
+              for (final word in labels[i].split(RegExp(r'\s+'))) {
+                final painter = TextPainter(
+                  text: TextSpan(text: word, style: style),
+                  textDirection: Directionality.of(context),
+                  textScaler: scaler,
+                  locale: Localizations.maybeLocaleOf(context),
+                  maxLines: 1,
+                )..layout();
+                vertical = painter.width > available;
+                painter.dispose();
+                if (vertical) break;
+              }
+            }
+            return vertical
+                ? Column(
+                    children: [for (var i = 0; i < labels.length; i++) item(i)],
+                  )
+                : IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        for (var i = 0; i < labels.length; i++)
+                          Expanded(child: item(i)),
+                      ],
+                    ),
+                  );
+          },
+        ),
       ),
     );
   }
@@ -1002,6 +1043,7 @@ class _FiltersState extends State<ZyraOneJourneyFiltersPresentation> {
                   'Your preferences also shape who you see ›',
                   can ? widget.onPreferences : null,
                   size: 12,
+                  textColor: ZyraColors.goldTextStrong,
                 ),
               ),
               ZyraProfilesRequestRow(

@@ -228,7 +228,7 @@ class ZyraBrowseBackUpgradeSheet extends StatelessWidget {
             FilledButton(
               style: FilledButton.styleFrom(
                 minimumSize: const Size(0, 48),
-                backgroundColor: ZyraColors.journeyGold,
+                backgroundColor: ZyraColors.goldTextFill,
                 foregroundColor: ZyraColors.espresso,
                 textStyle: ZyraText.button(
                   size: 14,

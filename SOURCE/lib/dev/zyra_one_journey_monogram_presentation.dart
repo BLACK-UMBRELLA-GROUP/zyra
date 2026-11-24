@@ -16,7 +16,8 @@ class ZyraGoldRingMonogram extends StatelessWidget {
     this.weight = FontWeight.w200,
     this.textScaler,
     this.child,
-  });
+    this.artworkOpacity = 1,
+  }) : assert(artworkOpacity >= 0 && artworkOpacity <= 1);
   final String name;
   final double size, fontSize;
   final Color? ringColor;
@@ -29,6 +30,9 @@ class ZyraGoldRingMonogram extends StatelessWidget {
 
   /// Optional outline artwork within the same shared ring geometry.
   final Widget? child;
+
+  /// Fades decorative artwork while keeping the default reading initial opaque.
+  final double artworkOpacity;
   @override
   Widget build(BuildContext context) {
     final hasGuardianRing = guardianOne == true;
@@ -36,6 +40,21 @@ class ZyraGoldRingMonogram extends StatelessWidget {
     final initial = guardianOne == null
         ? name.characters.firstOrNull ?? ''
         : name.trim().characters.firstOrNull?.toUpperCase() ?? '?';
+    final foreground =
+        child ??
+        Text(
+          initial,
+          textScaler: textScaler,
+          style:
+              ZyraText.heading(
+                size: fontSize,
+                color: plainGuardian
+                    ? ZyraColors.secondaryText
+                    : ZyraColors.journeyGold,
+              ).copyWith(
+                fontWeight: ZyraText.minimumReadingWeight(fontSize, weight),
+              ),
+        );
     final monogram = Container(
       width: size,
       height: size,
@@ -50,29 +69,29 @@ class ZyraGoldRingMonogram extends StatelessWidget {
                     ringColor ?? const Color(0xFFA9792E).withValues(alpha: .7),
               ),
       ),
-      child:
-          child ??
-          Text(
-            initial,
-            textScaler: textScaler,
-            style: ZyraText.heading(
-              size: fontSize,
-              color: plainGuardian
-                  ? ZyraColors.secondaryText
-                  : ZyraColors.journeyGold,
-            ).copyWith(fontWeight: weight),
-          ),
+      child: artworkOpacity == 1 || child != null ? foreground : null,
     );
+    final artwork = plainGuardian
+        ? ZyraFloatingSurface(circle: true, child: monogram)
+        : monogram;
+    final content = artworkOpacity == 1
+        ? artwork
+        : Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Opacity(opacity: artworkOpacity, child: artwork),
+              if (child == null)
+                Positioned.fill(child: Center(child: foreground)),
+            ],
+          );
     return hasGuardianRing
         ? Semantics(
             label: '$name, Guardian One',
             image: true,
             excludeSemantics: true,
-            child: monogram,
+            child: content,
           )
-        : plainGuardian
-        ? ZyraFloatingSurface(circle: true, child: monogram)
-        : monogram;
+        : content;
   }
 }
 

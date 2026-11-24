@@ -508,8 +508,10 @@ void main() {
           );
           final person = browse.profiles[browse.selectedIndex];
           expect(browse.requestLabel!(person), 'Request a Journey');
+          final request = _key('draft_profile_${person.id}');
+          await _reveal(tester, request);
           calls.clear();
-          await tester.tap(_key('draft_profile_${person.id}'));
+          await tester.tap(request);
           for (var frame = 0; frame < 12; frame++) {
             await tester.pump(const Duration(milliseconds: 40));
           }

@@ -6,10 +6,14 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:zyra/data/zyra_membership_catalog.dart';
+import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
+import 'package:zyra/dev/zyra_request_capacity_choice.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import '../support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
+import 'package:zyra/screens/subscription/zyra_one_upgrade_page.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
 import '../support/zyra_hidden_dev_controls_driver.dart';
@@ -125,6 +129,7 @@ Future<void> _record(
   String reached,
 ) async {
   await h.capture('basic_plans', page, state, reached);
+  if (baselineTextAuditOnly) return;
   final file = '${page}__$state.png';
   final row = h.rows.singleWhere((row) => row['file'] == file);
   row['plan'] = h.guardian ? 'Guardian Basic' : 'Seeker Basic';
@@ -175,31 +180,34 @@ Future<void> _page(
 }
 
 Future<void> _membership(BaselineHarness h, {required bool guardian}) async {
-  await _mount(h, guardian: guardian, tab: guardian ? 3 : 4);
+  await _mount(h, guardian: guardian, tab: 4);
   await h.tap('concept_membership');
-  h.assertPage('membership');
+  h.assertPage('one_upgrade');
+  expect(
+    h.tester
+        .widget<ZyraOneUpgradePage>(find.byType(ZyraOneUpgradePage))
+        .guardian,
+    guardian,
+  );
   await _page(
     h,
-    'membership',
-    'current_basic',
-    'Actual Basic Profile > Membership; local confirmed Basic wallet only.',
+    'one_upgrade',
+    'basic_comparison',
+    'Actual Basic Profile > Membership opens the current One upgrade '
+        'comparison, including its Basic column; no entitlement changes.',
   );
-  final role = guardian ? 'guardian' : 'seeker';
-  await h.tap('membership-section-$role');
+  await h.tap('one-upgrade-continue');
+  h.assertPage('one_upgrade');
+  expect(find.text(ZyraMembershipCatalog.availability), findsOneWidget);
   await _page(
     h,
-    'membership',
-    'upgrade_one',
-    'Actual Membership $role section shows its existing One catalogue card; '
-        'no selection, payment, or entitlement action.',
+    'one_upgrade',
+    'unavailable',
+    'Actual One upgrade Continue opens the existing unavailable notice; '
+        'no purchase, trial, or paid access is activated.',
   );
-  await h.tap('membership-next');
-  await _page(
-    h,
-    'membership',
-    'basic_plan',
-    'Actual $role Membership pager > Basic catalogue card; no purchase.',
-  );
+  await h.tapText('OK');
+  h.assertPage('one_upgrade');
 }
 
 void main() {
@@ -221,6 +229,8 @@ void main() {
       ];
       for (var tab = 0; tab < pages.length; tab++) {
         await _mount(h, tab: tab);
+        expect(h.latest.tab, tab);
+        expect(h.latest.pages, isEmpty);
         await _page(
           h,
           pages[tab],
@@ -247,7 +257,7 @@ void main() {
             'the preview hides Browse while this place is active.',
       );
     },
-    skip: !_enabled,
+    skip: !_enabled && !baselineTextAuditOnly,
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
     timeout: const Timeout(Duration(minutes: 12)),
   );
@@ -300,7 +310,7 @@ void main() {
             'Basic link-limit paywall or send a real invitation.',
       );
     },
-    skip: !_enabled,
+    skip: !_enabled && !baselineTextAuditOnly,
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
     timeout: const Timeout(Duration(minutes: 12)),
   );
@@ -337,7 +347,8 @@ void main() {
       );
       final full = _seeker(active: true);
       expect(full.stateFor(_amira), DraftJourneyState.received);
-      expect(full.canAttemptAccept(_amira), isFalse);
+      expect(full.canAccept(_amira), isFalse);
+      expect(full.canAttemptAccept(_amira), isTrue);
       await _mount(h, tab: 2, pages: const ['requests'], model: full);
       await _page(
         h,
@@ -349,14 +360,26 @@ void main() {
       await h.tap('concept_request_${_amira}_header');
       expect(
         tester.widget<InkWell>(h.key('draft_accept_$_amira')).onTap,
-        isNull,
+        isNotNull,
       );
+      await h.tap('draft_accept_$_amira');
+      h.assertPage('request_capacity');
+      final chooser = tester.widget<ZyraRequestCapacityChoice>(
+        find.byType(ZyraRequestCapacityChoice),
+      );
+      expect(chooser.capacity, 1);
+      expect(chooser.items.map((item) => item.id), [_sara]);
+      expect(chooser.selectedId, isNull);
+      expect(chooser.onContinue, isNull);
+      final untouched = ViewRequestDraftModel.fromSnapshot(h.latest.model);
+      expect(untouched.stateFor(_sara), DraftJourneyState.active);
+      expect(untouched.stateFor(_amira), DraftJourneyState.received);
       await _page(
         h,
-        'requests',
-        'received_place_full_expanded',
-        'Actual received request expanded; Basic full-place Accept is disabled. '
-            'The capacity replacement chooser is only implemented for3 places.',
+        'request_capacity',
+        'basic_place_full',
+        'Actual received request Accept opens the current one-place capacity '
+            'chooser. No selection, replacement or acceptance has occurred.',
       );
       await _mount(h, tab: 2, pages: const ['ended']);
       expect(find.text('No ended Journeys'), findsOneWidget);
@@ -375,7 +398,8 @@ void main() {
         'populated',
         'Existing local model end(Sara); the completed attempt stays archived.',
       );
-      await h.tap('draft_restart_$_sara');
+      await h.tap('draft_journey_${_sara}_header');
+      await h.tap('draft_ended_restart_$_sara');
       h.assertPage('ended_restart');
       expect(
         find.textContaining(
@@ -385,7 +409,7 @@ void main() {
       );
       expect(
         tester
-            .widget<OutlinedButton>(h.key('draft_restart_send_$_sara'))
+            .widget<ButtonStyleButton>(h.key('draft_restart_send_$_sara'))
             .onPressed,
         isNull,
       );
@@ -397,77 +421,88 @@ void main() {
             'disabled for every preview plan. No restart or old attempt mutation.',
       );
     },
-    skip: !_enabled,
+    skip: !_enabled && !baselineTextAuditOnly,
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
     timeout: const Timeout(Duration(minutes: 12)),
   );
 
   testWidgets(
-    'capture Guardian Basic four actual roots, Membership and Network states',
+    'capture Guardian Basic five current roots, upgrade and locked Network',
     (tester) async {
       final h = _harness(tester, guardian: true);
-      const pages = ['dashboard', 'network', 'seekers', 'profile_tab'];
+      const pages = [
+        'network',
+        'journeys',
+        'my_zyra_tab',
+        'seekers',
+        'profile_tab',
+      ];
       for (var tab = 0; tab < pages.length; tab++) {
         await _mount(h, guardian: true, tab: tab);
+        expect(h.latest.tab, tab);
+        expect(h.latest.pages, isEmpty);
         final nav = tester.widget<ZyraShellNavigation>(
           find.byType(ZyraShellNavigation),
         );
+        expect(nav.currentIndex, tab);
         expect(nav.items.map((item) => item.label), [
-          'Dashboard',
           'Network',
+          'Journeys',
+          'My ZYRA',
           'Seekers',
           'Profile',
         ]);
+        if (tab < 4) {
+          expect(
+            tester
+                .widget<ZyraGuardianTabsPresentation>(
+                  find.byType(ZyraGuardianTabsPresentation),
+                )
+                .page,
+            ['network', 'journeys', 'my_zyra', 'seekers'][tab],
+          );
+        }
         await _page(
           h,
           pages[tab],
           'normal',
-          'Existing Guardian Basic checkpoint, Hassan Main and one active '
-              'linked Journey. Guardian My ZYRA is currently named Dashboard; '
-              'the actual root has four tabs.',
+          'Current Guardian Basic checkpoint, Hassan Main and one active '
+              'linked Journey; actual five-tab shell destination $tab.',
         );
       }
       await _membership(h, guardian: true);
-      await _mount(h, guardian: true, tab: 1);
-      await h.tap('concept_network_sent');
+      await _mount(h, guardian: true, tab: 0);
+      final network = tester.widget<ZyraGuardianTabsPresentation>(
+        find.byType(ZyraGuardianTabsPresentation),
+      );
+      expect(network.page, 'network');
+      expect(network.paid, isFalse);
+      expect(h.key('guardian_network_lock_circle'), findsOneWidget);
+      expect(h.key('concept_network_suggestion'), findsNothing);
       await _page(
         h,
         'network',
-        'sent_empty',
-        'Actual Network Sent pill; no sent records.',
+        'basic_locked',
+        'Guardian Basic renders its current Network membership lock. '
+            'Paid browsing, sent and received controls are not admitted.',
       );
-      await h.tap('concept_network_received');
+      await h.tap('guardian_network_membership');
+      h.assertPage('one_upgrade');
+      expect(
+        tester
+            .widget<ZyraOneUpgradePage>(find.byType(ZyraOneUpgradePage))
+            .guardian,
+        isTrue,
+      );
       await _page(
         h,
-        'network',
-        'received_empty',
-        'Actual Network Received pill; no received fixture.',
-      );
-      await _mount(h, guardian: true, tab: 1);
-      await h.tap('concept_network_suggestion');
-      h.assertPage('network_request');
-      await _page(
-        h,
-        'network_request',
-        'confirmation',
-        'Actual Main Guardian Basic Network > Speak to Guardian; bounded '
-            'local confirmation, no real invitation or conversation.',
-      );
-      final person = h.latest.personId!;
-      await h.tap('concept_confirm_network_request_$person');
-      expect(h.latest.networkSent, contains(person));
-      // Let the existing transient local notice finish before the final image.
-      await tester.pump(const Duration(seconds: 4));
-      await h.flush();
-      await _page(
-        h,
-        'network',
-        'sent_populated',
-        'Actual local Speak confirmation > Send request > Sent. Existing '
-            'fictional record only; no server or chat access.',
+        'one_upgrade',
+        'from_network_lock',
+        'Actual locked Network > View Guardian One; role-preserving '
+            'upgrade comparison, with Basic access unchanged.',
       );
     },
-    skip: !_enabled,
+    skip: !_enabled && !baselineTextAuditOnly,
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
     timeout: const Timeout(Duration(minutes: 12)),
   );
@@ -481,8 +516,11 @@ void main() {
         view: true,
         chat: false,
       ));
-      await _mount(h, guardian: true, tab: 2, model: basic);
-      await h.tapText('Open current Journey');
+      await _mount(h, guardian: true, tab: 3, model: basic);
+      await h.tap('guardian_seekers_journey_0');
+      expect(h.latest.tab, 1);
+      expect(h.latest.pages, isEmpty);
+      await h.tap('guardian_journey');
       h.assertPage('guardian');
       expect(h.key('concept_send_message'), findsNothing);
       expect(h.key('concept_message'), findsNothing);
@@ -490,11 +528,11 @@ void main() {
         h,
         'guardian',
         'view_only',
-        'Actual Basic Seekers workspace > Open current Journey; genuine '
+        'Actual Basic Seekers card > Journeys tab > Open Journey; genuine '
             'Main Guardian view grant and chat=false. Current summary has '
             'no chat composer.',
       );
-      for (final tab in [0, 2]) {
+      for (final tab in [2, 3]) {
         await _mount(
           h,
           guardian: true,
@@ -503,11 +541,12 @@ void main() {
         );
         await _page(
           h,
-          tab == 0 ? 'dashboard' : 'seekers',
+          tab == 2 ? 'my_zyra_tab' : 'seekers',
           'no_current_journey',
           'Existing Guardian Basic with linked Adam and no active Journey.',
         );
       }
+      if (baselineTextAuditOnly) return;
       await tester.runAsync(() async {
         final file = File('$_evidence/basic_plans_not_in_preview.json');
         await file.parent.create(recursive: true);
@@ -547,17 +586,6 @@ void main() {
                   'local link-accepted event exists. The one-linked invite is captured.',
             },
             {
-              'role': 'Seeker',
-              'plan': 'Seeker Basic',
-              'page': 'request_capacity',
-              'state': 'one_place_full_replacement',
-              'status': 'not in preview',
-              'reason':
-                  'The sample model permits the replacement chooser only for '
-                  'capacity3. Basic capacity1 keeps its received item with disabled '
-                  'Accept; that actual expanded state is captured.',
-            },
-            {
               'role': 'Guardian',
               'plan': 'Guardian Basic',
               'page': 'family_review',
@@ -573,7 +601,7 @@ void main() {
         );
       });
     },
-    skip: !_enabled,
+    skip: !_enabled && !baselineTextAuditOnly,
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
     timeout: const Timeout(Duration(minutes: 12)),
   );

@@ -64,13 +64,18 @@ class ZyraDeveloperInactivityEmail extends StatelessWidget {
         : number == 3
         ? ZyraColors.goldText
         : ZyraColors.mutedText;
+    final readingAccent = number == 4
+        ? ZyraColors.dangerTextStrong
+        : number == 3
+        ? ZyraColors.goldTextStrong
+        : ZyraColors.secondaryStrong;
     Widget paragraph(String text, {bool muted = false}) => Padding(
       padding: const EdgeInsets.only(bottom: 14),
       child: Text(
         text,
         style: ZyraText.body(
           size: muted ? 12.5 : 14.5,
-          color: muted ? ZyraColors.mutedText : ZyraColors.espresso,
+          color: muted ? ZyraColors.secondaryStrong : ZyraColors.espresso,
         ).copyWith(height: 1.55),
       ),
     );
@@ -125,7 +130,10 @@ class ZyraDeveloperInactivityEmail extends StatelessWidget {
                           ),
                           child: Text(
                             _chip,
-                            style: ZyraText.body(size: 12, color: accent),
+                            style: ZyraText.body(
+                              size: 12,
+                              color: readingAccent,
+                            ),
                           ),
                         ),
                       ),
@@ -158,8 +166,8 @@ class ZyraDeveloperInactivityEmail extends StatelessWidget {
                     FilledButton(
                       onPressed: ZyraTapFeedback.onTap(context, onOpen),
                       style: FilledButton.styleFrom(
-                        backgroundColor: ZyraColors.goldText,
-                        foregroundColor: ZyraColors.ivoryTop,
+                        backgroundColor: ZyraColors.goldTextFill,
+                        foregroundColor: ZyraColors.espresso,
                         minimumSize: const Size.fromHeight(48),
                         shape: const StadiumBorder(),
                       ),

@@ -73,9 +73,7 @@ class ZyraDraftCompatibilityPresentation extends StatelessWidget {
                 disabledBackgroundColor: ZyraColors.journeyGold.withValues(
                   alpha: .35,
                 ),
-                disabledForegroundColor: ZyraColors.espresso.withValues(
-                  alpha: .6,
-                ),
+                disabledForegroundColor: ZyraColors.secondaryText,
                 shape: const StadiumBorder(),
               ),
               child: Text(

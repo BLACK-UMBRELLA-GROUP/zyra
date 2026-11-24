@@ -11,6 +11,10 @@ const _evidence = '$_root/REPORTS/EVIDENCE/LOCK22_SAFETY_ADVICE_V6_2026-10-31';
 const _capture = bool.fromEnvironment('ZYRA_LOCK22_V6_CAPTURE');
 
 Future<void> _cap(BaselineHarness h, String name) async {
+  if (baselineTextAuditOnly) {
+    await h.auditText(name);
+    return;
+  }
   if (!_capture) return;
   final previous = debugDisableShadows;
   debugDisableShadows = false;

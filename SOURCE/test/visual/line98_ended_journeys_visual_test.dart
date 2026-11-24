@@ -49,7 +49,7 @@ void main() {
         reduceMotion: true,
       );
       Future<void> capture(String state) async {
-        if (_captures.isEmpty) return;
+        if (_captures.isEmpty && !baselineTextAuditOnly) return;
         await h.capture(
           'ended_journeys',
           'line98',

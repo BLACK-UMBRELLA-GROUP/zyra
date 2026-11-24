@@ -196,19 +196,116 @@ void main() {
   });
 
   testWidgets(
-    'Reduced motion leaves a still touch point and never auto-advances',
+    'Q195 Reduced Motion omits tap and swipe cues while guidance and Next remain',
     (tester) async {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
-      var next = 0;
-      await _mount(tester, onNext: () => next++);
-      final start = tester.getRect(_key('first_tour_touch'));
-      final lit = tester.getRect(_key('first_tour_target'));
-      // LOCK 36 places the card swipe beside the photo, 30% down the lit area.
-      expect(start.center.dy, closeTo(lit.top + lit.height * .3, .01));
-      await tester.pump(const Duration(seconds: 30));
-      expect(tester.getRect(_key('first_tour_touch')), start);
-      expect(next, 0);
+      for (final guardian in [false, true]) {
+        final steps = guardian ? zyraGuardianTourSteps : zyraSeekerTourSteps;
+        for (final index in [
+          steps.indexWhere((step) => !step.swipe) + 1,
+          steps.indexWhere((step) => step.swipe) + 1,
+        ]) {
+          var next = 0, underlying = 0;
+          await _mount(
+            tester,
+            guardian: guardian,
+            index: index,
+            onNext: () => next++,
+            onUnderlying: () => underlying++,
+          );
+          expect(_key('first_tour_touch'), findsNothing);
+          expect(_key('first_tour_target'), findsOneWidget);
+          expect(_key('first_tour_arrow'), findsOneWidget);
+          expect(_key('first_tour_note'), findsOneWidget);
+          expect(_key('first_tour_next'), findsOneWidget);
+          await tester.tap(_key('first_tour_next'));
+          await tester.pump();
+          expect(next, 1);
+          expect(underlying, 0);
+          await tester.pump(const Duration(seconds: 30));
+          expect(_key('first_tour_touch'), findsNothing);
+          expect(next, 1);
+        }
+      }
+    },
+  );
+
+  testWidgets('Q195 motion-on cue retains its locked appearance and loop', (
+    tester,
+  ) async {
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    var next = 0;
+    await _mount(tester, quiet: false, index: 4, onNext: () => next++);
+    await tester.pump(const Duration(milliseconds: 100));
+    final cue = _key('first_tour_touch');
+    expect(tester.getSize(cue), const Size(40, 40));
+    final decoration =
+        tester
+                .widget<DecoratedBox>(
+                  find.descendant(of: cue, matching: find.byType(DecoratedBox)),
+                )
+                .decoration
+            as BoxDecoration;
+    expect(decoration.shape, BoxShape.circle);
+    expect(decoration.color, const Color(0x99FFFFFF));
+    final border = decoration.border! as Border;
+    expect(border.top.color, const Color(0xFFA9792E));
+    expect(border.top.width, 2);
+    expect(decoration.boxShadow, const [
+      BoxShadow(color: Color(0x402B2420), offset: Offset(0, 4), blurRadius: 14),
+    ]);
+    final earlyScale = tester.widget<Transform>(cue).transform.entry(0, 0);
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(
+      tester.widget<Transform>(cue).transform.entry(0, 0),
+      isNot(earlyScale),
+    );
+    await tester.pump(const Duration(seconds: 4));
+    expect(cue, findsOneWidget);
+    expect(next, 0);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets(
+    'Q195 live Reduce Motion hides and restores only the looping cue',
+    (tester) async {
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await _mount(tester, quiet: false, index: 4);
+      await tester.pump(const Duration(milliseconds: 350));
+      final state = tester.state(find.byType(ZyraFirstTourOverlay));
+      final positions = {
+        for (final key in [
+          'first_tour_target',
+          'first_tour_arrow',
+          'first_tour_note',
+          'first_tour_next',
+        ])
+          key: tester.getRect(_key(key)),
+      };
+      expect(_key('first_tour_touch'), findsOneWidget);
+      await _mount(tester, quiet: true, index: 4);
+      expect(
+        identical(tester.state(find.byType(ZyraFirstTourOverlay)), state),
+        isTrue,
+      );
+      expect(_key('first_tour_touch'), findsNothing);
+      for (final entry in positions.entries) {
+        expect(tester.getRect(_key(entry.key)), entry.value);
+      }
+      await _mount(tester, quiet: false, index: 4);
+      await tester.pump(const Duration(milliseconds: 350));
+      expect(
+        identical(tester.state(find.byType(ZyraFirstTourOverlay)), state),
+        isTrue,
+      );
+      expect(_key('first_tour_touch'), findsOneWidget);
+      for (final entry in positions.entries) {
+        expect(tester.getRect(_key(entry.key)), entry.value);
+      }
+      await tester.pumpWidget(const SizedBox.shrink());
     },
   );
 

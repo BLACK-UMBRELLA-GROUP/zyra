@@ -194,9 +194,14 @@ class _ZyraFullScreenErrorState extends State<ZyraFullScreenError>
                           padding: const EdgeInsets.only(left: 3),
                           child: Text(
                             'WHAT YOU CAN TRY',
-                            style: ZyraText.chapterLabel(
-                              color: ZyraColors.goldText,
-                            ).copyWith(fontSize: 10, letterSpacing: 1.2),
+                            style:
+                                ZyraText.chapterLabel(
+                                  color: ZyraColors.goldText,
+                                ).copyWith(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w400,
+                                  letterSpacing: 1.2,
+                                ),
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -236,7 +241,7 @@ class _ZyraFullScreenErrorState extends State<ZyraFullScreenError>
                                       .25,
                                     ),
                               disabledForegroundColor: signIn
-                                  ? ZyraColors.quietText
+                                  ? ZyraColors.secondaryText
                                   : ZyraColors.goldText,
                               disabledBackgroundColor: signIn
                                   ? ZyraColors.lowerSurface
@@ -284,9 +289,14 @@ class _ZyraFullScreenErrorState extends State<ZyraFullScreenError>
                         Text(
                           'REFERENCE: ${widget.referenceCode}',
                           textAlign: TextAlign.center,
-                          style: ZyraText.chapterLabel(
-                            color: ZyraColors.foregroundMuted,
-                          ).copyWith(fontSize: 10, letterSpacing: 1.2),
+                          style:
+                              ZyraText.chapterLabel(
+                                color: ZyraColors.foregroundMuted,
+                              ).copyWith(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 1.2,
+                              ),
                         ),
                         const SizedBox(height: 3),
                       ],

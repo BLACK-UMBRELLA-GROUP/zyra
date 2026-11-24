@@ -96,7 +96,7 @@ void main() {
       );
 
       final wordmark = tester.widget<Text>(find.text('ZYRA'));
-      expect(wordmark.style?.color, ZyraColors.splashWordmark);
+      expect(wordmark.style?.color, ZyraColors.goldText);
       expect(wordmark.style?.fontFamily, 'Syne');
       expect(wordmark.style?.fontSize, 23);
       expect(wordmark.style?.fontWeight, FontWeight.w600);

@@ -129,7 +129,7 @@ class _ZyraSignupPreferencesPreviewState
         if (_current) _opening.onLater();
       }),
       style: TextButton.styleFrom(
-        foregroundColor: ZyraColors.goldText,
+        foregroundColor: ZyraColors.ivoryTop,
         textStyle: ZyraText.button(size: 11),
       ),
       child: const Text('Finish later'),

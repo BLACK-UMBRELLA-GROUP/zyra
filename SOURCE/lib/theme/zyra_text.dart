@@ -1,7 +1,7 @@
 // ZYRA typography — Poppins is the official app reading face by direct
 // Founder instruction (2026-10-01). Developer Tools retains session-only
 // comparisons; the ZYRA wordmark remains Syne.
-// Weights: 200 (headings), 300 (body/subtext), 400 (buttons).
+// LOCK14 V9: minimum 400 below 16 pt; larger headings retain their weight.
 //
 // Wordmark exception (2026-07-18, Founder request): the "ZYRA" mark
 // itself (Welcome screen, splash screen, app icon) uses its own typeface
@@ -89,6 +89,26 @@ class ZyraText {
     appFontSelection.value = currentDefaultFont;
   }
 
+  static FontWeight minimumReadingWeight(double size, FontWeight weight) =>
+      size < 16 && weight.value < FontWeight.w400.value
+      ? FontWeight.w400
+      : weight;
+
+  static Color? readingColor(Color? color, double size) =>
+      ZyraColors.readingTextColor(color, size);
+
+  /// Use after local style overrides as well as for the Material defaults.
+  static TextStyle resolveReadingStyle(TextStyle style) {
+    final size = style.fontSize ?? 14;
+    return style.copyWith(
+      fontWeight: minimumReadingWeight(
+        size,
+        style.fontWeight ?? FontWeight.w400,
+      ),
+      color: readingColor(style.color, size),
+    );
+  }
+
   static TextStyle _appStyle({
     required double size,
     required FontWeight weight,
@@ -96,6 +116,8 @@ class ZyraText {
     double? letterSpacing,
     ZyraAppFont? font,
   }) {
+    weight = minimumReadingWeight(size, weight);
+    color = readingColor(color, size);
     final selected = font ?? appFont;
     if (useTestFontStubs) {
       return TextStyle(
@@ -237,35 +259,55 @@ class ZyraText {
 
   /// Covers the small number of Material widgets that use theme defaults
   /// instead of an explicit ZyraText style.
-  static TextTheme textTheme(TextTheme base) => useTestFontStubs
-      ? base.apply(fontFamily: testReadingFontFamily ?? appFont.family)
-      : switch (appFont) {
-          ZyraAppFont.jost => GoogleFonts.jostTextTheme(base),
-          ZyraAppFont.manrope => GoogleFonts.manropeTextTheme(base),
-          ZyraAppFont.dmSans => GoogleFonts.dmSansTextTheme(base),
-          ZyraAppFont.plusJakartaSans => GoogleFonts.plusJakartaSansTextTheme(
-            base,
-          ),
-          ZyraAppFont.outfit => GoogleFonts.outfitTextTheme(base),
-          ZyraAppFont.urbanist => GoogleFonts.urbanistTextTheme(base),
-          ZyraAppFont.montserrat => GoogleFonts.montserratTextTheme(base),
-          ZyraAppFont.raleway => GoogleFonts.ralewayTextTheme(base),
-          ZyraAppFont.lora => GoogleFonts.loraTextTheme(base),
-          ZyraAppFont.cormorantGaramond =>
-            GoogleFonts.cormorantGaramondTextTheme(base),
-          ZyraAppFont.inter => GoogleFonts.interTextTheme(base),
-          ZyraAppFont.poppins => base.apply(
-            fontFamily: ZyraAppFont.poppins.family,
-          ),
-          ZyraAppFont.nunitoSans => GoogleFonts.nunitoSansTextTheme(base),
-          ZyraAppFont.sourceSans3 => GoogleFonts.sourceSans3TextTheme(base),
-          ZyraAppFont.workSans => GoogleFonts.workSansTextTheme(base),
-          ZyraAppFont.quicksand => GoogleFonts.quicksandTextTheme(base),
-          ZyraAppFont.libreBaskerville => GoogleFonts.libreBaskervilleTextTheme(
-            base,
-          ),
-          ZyraAppFont.merriweather => GoogleFonts.merriweatherTextTheme(base),
-        };
+  static TextTheme textTheme(TextTheme base) {
+    final selected = useTestFontStubs
+        ? base.apply(fontFamily: testReadingFontFamily ?? appFont.family)
+        : switch (appFont) {
+            ZyraAppFont.jost => GoogleFonts.jostTextTheme(base),
+            ZyraAppFont.manrope => GoogleFonts.manropeTextTheme(base),
+            ZyraAppFont.dmSans => GoogleFonts.dmSansTextTheme(base),
+            ZyraAppFont.plusJakartaSans => GoogleFonts.plusJakartaSansTextTheme(
+              base,
+            ),
+            ZyraAppFont.outfit => GoogleFonts.outfitTextTheme(base),
+            ZyraAppFont.urbanist => GoogleFonts.urbanistTextTheme(base),
+            ZyraAppFont.montserrat => GoogleFonts.montserratTextTheme(base),
+            ZyraAppFont.raleway => GoogleFonts.ralewayTextTheme(base),
+            ZyraAppFont.lora => GoogleFonts.loraTextTheme(base),
+            ZyraAppFont.cormorantGaramond =>
+              GoogleFonts.cormorantGaramondTextTheme(base),
+            ZyraAppFont.inter => GoogleFonts.interTextTheme(base),
+            ZyraAppFont.poppins => base.apply(
+              fontFamily: ZyraAppFont.poppins.family,
+            ),
+            ZyraAppFont.nunitoSans => GoogleFonts.nunitoSansTextTheme(base),
+            ZyraAppFont.sourceSans3 => GoogleFonts.sourceSans3TextTheme(base),
+            ZyraAppFont.workSans => GoogleFonts.workSansTextTheme(base),
+            ZyraAppFont.quicksand => GoogleFonts.quicksandTextTheme(base),
+            ZyraAppFont.libreBaskerville =>
+              GoogleFonts.libreBaskervilleTextTheme(base),
+            ZyraAppFont.merriweather => GoogleFonts.merriweatherTextTheme(base),
+          };
+    TextStyle? resolve(TextStyle? style) =>
+        style == null ? null : resolveReadingStyle(style);
+    return selected.copyWith(
+      displayLarge: resolve(selected.displayLarge),
+      displayMedium: resolve(selected.displayMedium),
+      displaySmall: resolve(selected.displaySmall),
+      headlineLarge: resolve(selected.headlineLarge),
+      headlineMedium: resolve(selected.headlineMedium),
+      headlineSmall: resolve(selected.headlineSmall),
+      titleLarge: resolve(selected.titleLarge),
+      titleMedium: resolve(selected.titleMedium),
+      titleSmall: resolve(selected.titleSmall),
+      bodyLarge: resolve(selected.bodyLarge),
+      bodyMedium: resolve(selected.bodyMedium),
+      bodySmall: resolve(selected.bodySmall),
+      labelLarge: resolve(selected.labelLarge),
+      labelMedium: resolve(selected.labelMedium),
+      labelSmall: resolve(selected.labelSmall),
+    );
+  }
 
   static TextStyle heading({double size = 20, Color? color}) => _appStyle(
     size: size,
@@ -322,14 +364,14 @@ class ZyraText {
           fontFamily: testWordmarkFontFamily ?? 'Syne',
           fontSize: size,
           fontWeight: FontWeight.w600,
-          color: color ?? ZyraColors.splashWordmark,
+          color: readingColor(color ?? ZyraColors.splashWordmark, size),
           letterSpacing: 4,
         )
       : TextStyle(
           fontFamily: 'Syne',
           fontSize: size,
           fontWeight: FontWeight.w600,
-          color: color ?? ZyraColors.splashWordmark,
+          color: readingColor(color ?? ZyraColors.splashWordmark, size),
           letterSpacing: 4,
         );
 

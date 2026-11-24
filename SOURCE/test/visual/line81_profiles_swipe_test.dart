@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_browse_filter.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
@@ -78,13 +79,41 @@ void main() {
         expect(age.height, closeTo(nationality.height, .01));
         expect(age.height, closeTo(location.height, .01));
         expect(age.height, closeTo(ethnicity.height, .01));
-        expect(location.left - age.right, closeTo(12, .01));
-        expect(nationality.top - age.bottom, closeTo(12, .01));
         final minimumGrid = math.max(196.0, card.height * .4);
-        expect(
-          ethnicity.bottom - age.top,
-          inInclusiveRange(minimumGrid - .01, minimumGrid + 11),
-        );
+        if (size.width == 375) {
+          // Q191: Birmingham cannot fit the original half-width tile. Keep
+          // the whole word in a full row, with later facts moving down.
+          final paragraph = tester.renderObject<RenderParagraph>(
+            find.descendant(
+              of: find.text('Birmingham'),
+              matching: find.byType(RichText),
+            ),
+          );
+          final word = paragraph.getBoxesForSelection(
+            const TextSelection(baseOffset: 0, extentOffset: 10),
+          );
+          expect(word, hasLength(1));
+          expect(word.single.toRect().width, greaterThan(age.width - 34));
+          expect(location.left, age.left);
+          expect(location.width, closeTo(2 * age.width + 12, .01));
+          expect(location.top - age.bottom, closeTo(12, .01));
+          expect(nationality.top - location.bottom, closeTo(12, .01));
+          expect(nationality.left, age.left);
+          expect(ethnicity.left - nationality.right, closeTo(12, .01));
+          expect(nationality.width, closeTo(age.width, .01));
+          expect(ethnicity.width, closeTo(age.width, .01));
+          expect(nationality.top, ethnicity.top);
+          expect(ethnicity.right, location.right);
+          expect(ethnicity.bottom - age.top, closeTo(3 * age.height + 24, .01));
+          expect(ethnicity.bottom - age.top, greaterThan(minimumGrid));
+        } else {
+          expect(location.left - age.right, closeTo(12, .01));
+          expect(nationality.top - age.bottom, closeTo(12, .01));
+          expect(
+            ethnicity.bottom - age.top,
+            inInclusiveRange(minimumGrid - .01, minimumGrid + 11),
+          );
+        }
         expect(value.style!.fontSize, 18);
         expect(value.style!.height, 1.2);
         expect(request.left, age.left);

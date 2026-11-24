@@ -32,10 +32,12 @@ class ZyraOneJourneyLocationSheet extends StatelessWidget {
   }) => Text(
     value,
     textAlign: align,
-    style: ZyraText.body(
-      size: size,
-      color: color ?? ZyraColors.ink(.68),
-    ).copyWith(fontWeight: weight, height: 1.4, letterSpacing: 0),
+    style: ZyraText.body(size: size, color: color ?? ZyraColors.ink(.68))
+        .copyWith(
+          fontWeight: ZyraText.minimumReadingWeight(size, weight),
+          height: 1.4,
+          letterSpacing: 0,
+        ),
   );
   VoidCallback? _tap(BuildContext context, VoidCallback action) =>
       ZyraTapFeedback.onTap(context, () {

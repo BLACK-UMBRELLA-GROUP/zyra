@@ -44,7 +44,7 @@ void main() {
     }
 
     Future<void> capture(BaselineHarness h, String name, String reached) async {
-      if (_output.isEmpty) return;
+      if (_output.isEmpty && !baselineTextAuditOnly) return;
       await h.capture(
         'menu_sizing',
         name,

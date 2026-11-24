@@ -842,7 +842,13 @@ class _ZyraSubscriptionWalletPreviewState
           ),
           shape: const StadiumBorder(),
         ),
-        child: Text(labels[index], softWrap: false, style: _walletButtonStyle),
+        child: Text(
+          labels[index],
+          softWrap: false,
+          style: _family == (index == 1)
+              ? _walletButtonStyle.copyWith(color: ZyraColors.goldTextStrong)
+              : _walletButtonStyle,
+        ),
       ),
     );
     if ((width - 8) / 2 < preferred) {

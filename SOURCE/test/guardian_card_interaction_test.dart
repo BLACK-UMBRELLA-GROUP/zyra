@@ -1592,7 +1592,7 @@ void main() {
       expect(state().pages, [1]);
     },
   );
-  testWidgets('LOCK19 uses small gold for role, access and enabled chips', (
+  testWidgets('LOCK19 uses reading gold and the enabled-chip fallback', (
     tester,
   ) async {
     await mount(tester);
@@ -1603,9 +1603,9 @@ void main() {
     expect(role.style!.letterSpacing, 1.2);
     expect(role.style!.color, ZyraColors.goldText);
     expect(heading.style!.color, ZyraColors.goldText);
-    expect(view.style!.color, const Color(0xFF845F24));
+    expect(view.style!.color, ZyraColors.goldTextStrong);
     final contrast =
-        (const Color(0xFFF3EDE3).computeLuminance() + .05) /
+        (const Color(0xFFEBE1CF).computeLuminance() + .05) /
         (view.style!.color!.computeLuminance() + .05);
     expect(contrast, greaterThan(4.5));
   });

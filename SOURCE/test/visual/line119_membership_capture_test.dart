@@ -51,7 +51,7 @@ void main() {
         expect(find.text('Membership'), findsOneWidget);
         expect(find.text('Your places'), findsOneWidget);
         expect(find.text('Profiles & Family places'), findsNothing);
-        if (_output.isNotEmpty) {
+        if (_output.isNotEmpty || baselineTextAuditOnly) {
           await h.capture(
             'profile',
             role,
@@ -85,7 +85,7 @@ void main() {
           expect(cancel.left, 20);
           expect(cancel.right, 410);
           expect(cancel.bottom, closeTo(932 - 34 - 16, .1));
-          if (_output.isNotEmpty) {
+          if (_output.isNotEmpty || baselineTextAuditOnly) {
             await h.capture(
               'membership',
               role,
@@ -98,7 +98,7 @@ void main() {
         if (guardian && basic) {
           await h.tap('floating-nav-item-0');
           expect(_key('guardian_network_lock_circle'), findsOneWidget);
-          if (_output.isNotEmpty) {
+          if (_output.isNotEmpty || baselineTextAuditOnly) {
             await h.capture(
               'network',
               role,
@@ -108,7 +108,7 @@ void main() {
             );
           }
           await h.tap('floating-nav-item-2');
-          if (_output.isNotEmpty) {
+          if (_output.isNotEmpty || baselineTextAuditOnly) {
             await h.capture(
               'my_zyra',
               role,

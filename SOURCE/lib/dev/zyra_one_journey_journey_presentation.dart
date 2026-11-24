@@ -68,13 +68,13 @@ class ZyraConceptJourneyThresholdBody extends StatelessWidget {
       final photo = you ? selfPhoto : otherPhoto;
       return Semantics(
         label: '$name, $label',
-        child: AnimatedOpacity(
-          duration: const Duration(milliseconds: 420),
-          opacity: complete ? 1 : 0.38,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AnimatedContainer(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AnimatedOpacity(
+              duration: const Duration(milliseconds: 420),
+              opacity: complete ? 1 : 0.38,
+              child: AnimatedContainer(
                 duration: const Duration(milliseconds: 420),
                 curve: Curves.easeOutCubic,
                 width: 68,
@@ -112,25 +112,25 @@ class ZyraConceptJourneyThresholdBody extends StatelessWidget {
                   applyAvatarCrop: you,
                 ),
               ),
-              const SizedBox(height: 7),
-              ConstrainedBox(
-                constraints: const BoxConstraints(minHeight: 26),
-                child: SizedBox(
-                  width: 92,
-                  child: Text(
-                    label,
-                    textAlign: TextAlign.center,
-                    style: ZyraText.subtext(
-                      size: 10.5,
-                      color: ZyraColors.foreground.withValues(
-                        alpha: complete ? 0.8 : 0.5,
-                      ),
-                    ),
+            ),
+            const SizedBox(height: 7),
+            ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 26),
+              child: SizedBox(
+                width: 92,
+                child: Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  style: ZyraText.subtext(
+                    size: 10.5,
+                    color: complete
+                        ? ZyraColors.foreground.withValues(alpha: 0.8)
+                        : ZyraColors.secondaryText,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }
@@ -180,7 +180,10 @@ class ZyraConceptJourneyThresholdBody extends StatelessWidget {
             child: Center(
               child: Text(
                 body,
-                style: ZyraText.subtext(size: salam ? 14.5 : 14),
+                style: ZyraText.subtext(
+                  size: salam ? 14.5 : 14,
+                  color: salam ? ZyraColors.secondaryStrong : null,
+                ),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -283,7 +286,7 @@ class ZyraConceptJourneyFirstQuestion extends StatelessWidget {
                 borderSide: BorderSide.none,
               ),
               hintText: 'In your own words…',
-              hintStyle: TextStyle(color: ZyraColors.ink(0.38)),
+              hintStyle: const TextStyle(color: ZyraColors.secondaryText),
               counterStyle: ZyraText.subtext(
                 size: 11,
                 color: ZyraColors.ink(0.38),
@@ -314,19 +317,19 @@ class _LocalRoundAction extends StatelessWidget {
     label: label,
     onTap: ZyraTapFeedback.onTap(context, onTap),
     excludeSemantics: true,
-    child: Opacity(
-      opacity: onTap == null ? 0.45 : 1,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(28),
-          onTap: ZyraTapFeedback.onTap(context, onTap),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(28),
+        onTap: ZyraTapFeedback.onTap(context, onTap),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Opacity(
+                opacity: onTap == null ? 0.45 : 1,
+                child: SizedBox(
                   width: 76,
                   height: 76,
                   child: Stack(
@@ -376,14 +379,17 @@ class _LocalRoundAction extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 7),
-                Text(
-                  label,
-                  style: ZyraText.button(size: 13.5),
-                  textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 7),
+              Text(
+                label,
+                style: ZyraText.button(
+                  size: 13.5,
+                  color: onTap == null ? ZyraColors.secondaryText : null,
                 ),
-              ],
-            ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       ),
@@ -578,8 +584,8 @@ class ZyraConceptJourneyRibbon extends StatelessWidget {
                   '${current.order} · ${reviewOpen ? ZyraJourneyStages.familyReviewOverride : current.label}',
                   style: ZyraText.subtext(
                     size: 11.5,
-                    color: ZyraColors.goldText,
-                  ),
+                    color: ZyraColors.espresso,
+                  ).copyWith(letterSpacing: 0),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -1403,7 +1409,7 @@ class _QuestionBriefing extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: ZyraText.subtext(
                     size: 10.5,
-                    color: ZyraColors.foreground.withValues(alpha: 0.58),
+                    color: ZyraColors.secondaryStrong,
                   ),
                 ),
               ),
@@ -1526,7 +1532,7 @@ class _CompletedStage extends StatelessWidget {
                     'Read this stage in your Timeline',
                     style: ZyraText.subtext(
                       size: 11.5,
-                      color: ZyraColors.ink(0.70),
+                      color: ZyraColors.secondaryStrong,
                     ),
                   ),
                 ),
@@ -1625,7 +1631,7 @@ class _DownCue extends StatelessWidget {
                   label,
                   style: ZyraText.subtext(
                     size: 12,
-                    color: ZyraColors.foreground.withValues(alpha: 0.6),
+                    color: ZyraColors.secondaryStrong,
                   ),
                 ),
               ],
@@ -1760,9 +1766,9 @@ class _DecisionAction extends StatelessWidget {
   final bool destructive;
   final bool selected;
   @override
-  Widget build(BuildContext context) => Opacity(
-    opacity: onTap == null ? 0.42 : 1,
-    child: Material(
+  Widget build(BuildContext context) {
+    final fade = onTap == null ? 0.42 : 1.0;
+    return Material(
       type: MaterialType.transparency,
       child: InkWell(
         onTap: ZyraTapFeedback.onTap(context, onTap),
@@ -1770,24 +1776,27 @@ class _DecisionAction extends StatelessWidget {
           height: 54,
           decoration: BoxDecoration(
             color: selected
-                ? ZyraColors.journeyGold.withValues(alpha: 0.09)
+                ? ZyraColors.journeyGold.withValues(alpha: 0.09 * fade)
                 : Colors.transparent,
             border: Border(
               bottom: BorderSide(
                 color: selected
-                    ? ZyraColors.journeyGold.withValues(alpha: 0.52)
-                    : ZyraColors.foreground.withValues(alpha: 0.24),
+                    ? ZyraColors.journeyGold.withValues(alpha: 0.52 * fade)
+                    : ZyraColors.foreground.withValues(alpha: 0.24 * fade),
               ),
             ),
           ),
           child: Row(
             children: [
-              Container(
-                width: 12,
-                height: 12,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: dotColor,
+              Opacity(
+                opacity: fade,
+                child: Container(
+                  width: 12,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: dotColor,
+                  ),
                 ),
               ),
               const SizedBox(width: 14),
@@ -1796,25 +1805,30 @@ class _DecisionAction extends StatelessWidget {
                   label,
                   style: ZyraText.body(
                     size: 13,
-                    color: destructive
+                    color: onTap == null
+                        ? ZyraColors.secondaryText
+                        : destructive
                         ? ZyraColors.dangerText
                         : ZyraColors.foreground,
                   ),
                 ),
               ),
-              Icon(
-                selected ? Icons.check_rounded : Icons.chevron_right_rounded,
-                size: 20,
-                color: selected
-                    ? ZyraColors.journeyGold
-                    : ZyraColors.foreground.withValues(alpha: 0.5),
+              Opacity(
+                opacity: fade,
+                child: Icon(
+                  selected ? Icons.check_rounded : Icons.chevron_right_rounded,
+                  size: 20,
+                  color: selected
+                      ? ZyraColors.journeyGold
+                      : ZyraColors.foreground.withValues(alpha: 0.5),
+                ),
               ),
             ],
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class _JourneyAtmosphere extends StatelessWidget {

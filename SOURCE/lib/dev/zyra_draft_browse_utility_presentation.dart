@@ -450,7 +450,7 @@ class _ZyraDraftReportPresentationState
                           ),
                           style: _quietActionStyle.copyWith(
                             foregroundColor: const WidgetStatePropertyAll(
-                              ZyraColors.dangerText,
+                              ZyraColors.dangerTextStrong,
                             ),
                           ),
                           child: const Text('Block profile'),
@@ -468,7 +468,7 @@ class _ZyraDraftReportPresentationState
 
   ButtonStyle get _quietActionStyle => TextButton.styleFrom(
     minimumSize: const Size(44, 44),
-    foregroundColor: ZyraColors.mutedText,
+    foregroundColor: ZyraColors.secondaryText,
     textStyle: ZyraText.body(size: 13),
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -538,7 +538,7 @@ class _UnavailableAction extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         disabledForegroundColor: report
             ? ZyraColors.foreground
-            : ZyraColors.goldText.withValues(alpha: .6),
+            : ZyraColors.secondaryText,
         backgroundColor: report
             ? ZyraColors.surfaceFill
             : ZyraColors.journeyGold.withValues(alpha: .06),

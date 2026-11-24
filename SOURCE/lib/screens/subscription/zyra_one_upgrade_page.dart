@@ -65,7 +65,7 @@ class ZyraOneUpgradePage extends StatelessWidget {
           Text(
             ZyraMembershipCatalog.availability,
             textAlign: TextAlign.center,
-            style: ZyraText.subtext(),
+            style: ZyraText.subtext(color: ZyraColors.secondaryStrong),
           ),
           const SizedBox(height: 20),
           FilledButton(
@@ -170,39 +170,61 @@ class _ComparisonCard extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(22),
         child: LayoutBuilder(
-          builder: (context, constraints) => SingleChildScrollView(
-            key: const ValueKey('one-upgrade-comparison'),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: IntrinsicHeight(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Column(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: _ComparisonRow('', 'BASIC', 'ONE', header: true),
-                      ),
-                      for (final (label, basic, one) in rows)
-                        Expanded(
-                          child: DecoratedBox(
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                top: BorderSide(color: ZyraColors.divider),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: _ComparisonRow(label, basic, one),
-                            ),
+          builder: (context, constraints) {
+            final rowWidth = constraints.maxWidth - 24;
+            final stacked = _ComparisonRow.needsStacked(
+              context,
+              rows,
+              rowWidth * .27 - 6,
+            );
+            final stackedPlanWidth = stacked ? rowWidth / 2 - 6 : null;
+            return SingleChildScrollView(
+              key: const ValueKey('one-upgrade-comparison'),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: _ComparisonRow(
+                            '',
+                            'BASIC',
+                            'ONE',
+                            header: true,
+                            stackedPlanWidth: stackedPlanWidth,
                           ),
                         ),
-                    ],
+                        for (final (label, basic, one) in rows)
+                          Expanded(
+                            child: DecoratedBox(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(color: ZyraColors.divider),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                ),
+                                child: _ComparisonRow(
+                                  label,
+                                  basic,
+                                  one,
+                                  stackedPlanWidth: stackedPlanWidth,
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     ),
@@ -210,10 +232,113 @@ class _ComparisonCard extends StatelessWidget {
 }
 
 class _ComparisonRow extends StatelessWidget {
-  const _ComparisonRow(this.label, this.basic, this.one, {this.header = false});
+  const _ComparisonRow(
+    this.label,
+    this.basic,
+    this.one, {
+    this.header = false,
+    this.stackedPlanWidth,
+  });
 
   final String label, basic, one;
   final bool header;
+  final double? stackedPlanWidth;
+
+  static TextStyle _basicStyle(bool header) =>
+      ZyraText.body(size: header ? 11 : 13, color: ZyraColors.secondaryText);
+
+  static TextStyle _oneStyle(bool header) => ZyraText.body(
+    size: header ? 11 : 13,
+    color: ZyraColors.goldText,
+  ).copyWith(fontWeight: FontWeight.w500);
+
+  static TextStyle _resolvedStyle(BuildContext context, TextStyle style) {
+    final effective = DefaultTextStyle.of(context).style.merge(style);
+    return MediaQuery.boldTextOf(context)
+        ? effective.copyWith(fontWeight: FontWeight.bold)
+        : effective;
+  }
+
+  static bool needsStacked(
+    BuildContext context,
+    List<(String, String, String)> rows,
+    double planWidth,
+  ) {
+    final painter = TextPainter(
+      textDirection: Directionality.of(context),
+      textScaler: MediaQuery.textScalerOf(context),
+    );
+    try {
+      for (final row in [('', 'BASIC', 'ONE'), ...rows]) {
+        final header = row.$1.isEmpty;
+        for (final (value, style) in [
+          (row.$2, _basicStyle(header)),
+          (row.$3, _oneStyle(header)),
+        ]) {
+          for (final word in value.split(RegExp(r'\s+'))) {
+            painter.text = TextSpan(
+              text: word,
+              style: _resolvedStyle(context, style),
+            );
+            painter.layout();
+            if (painter.width > planWidth) return true;
+          }
+        }
+      }
+      return false;
+    } finally {
+      painter.dispose();
+    }
+  }
+
+  String _wholeWords(BuildContext context, String value, TextStyle style) {
+    final width = stackedPlanWidth;
+    if (width == null) return value;
+    final painter = TextPainter(
+      textDirection: Directionality.of(context),
+      textScaler: MediaQuery.textScalerOf(context),
+    );
+    try {
+      final lines = <String>[];
+      var line = '';
+      for (final word in value.split(RegExp(r'\s+'))) {
+        final candidate = line.isEmpty ? word : '$line $word';
+        painter.text = TextSpan(
+          text: candidate,
+          style: _resolvedStyle(context, style),
+        );
+        painter.layout();
+        if (line.isNotEmpty && painter.width > width) {
+          lines.add(line);
+          line = word;
+        } else {
+          line = candidate;
+        }
+      }
+      lines.add(line);
+      return lines.join('\n');
+    } finally {
+      painter.dispose();
+    }
+  }
+
+  Widget _planCell(BuildContext context, String value, TextStyle style) {
+    final display = _wholeWords(context, value, style);
+    return Expanded(
+      flex: stackedPlanWidth == null ? 27 : 1,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 3),
+        child: Text(
+          display,
+          semanticsLabel: display == value ? null : value,
+          textAlign: TextAlign.center,
+          softWrap: stackedPlanWidth == null ? null : false,
+          overflow: stackedPlanWidth == null ? null : TextOverflow.visible,
+          style: style,
+        ),
+      ),
+    );
+  }
 
   String _readable(String value) => switch (value) {
     '✓' => 'Included',
@@ -228,38 +353,30 @@ class _ComparisonRow extends StatelessWidget {
     label: header
         ? null
         : '$label. Basic, ${_readable(basic)}. One, ${_readable(one)}.',
-    child: Row(
-      children: [
-        Expanded(flex: 46, child: Text(label, style: ZyraText.body(size: 13))),
-        Expanded(
-          flex: 27,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 3),
-            child: Text(
-              basic,
-              textAlign: TextAlign.center,
-              style: ZyraText.body(
-                size: header ? 11 : 13,
-                color: ZyraColors.secondaryText,
+    child: stackedPlanWidth != null && !header
+        ? Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(label, style: ZyraText.body(size: 13)),
+              Row(
+                children: [
+                  _planCell(context, basic, _basicStyle(header)),
+                  _planCell(context, one, _oneStyle(header)),
+                ],
               ),
-            ),
+            ],
+          )
+        : Row(
+            children: [
+              if (stackedPlanWidth == null)
+                Expanded(
+                  flex: 46,
+                  child: Text(label, style: ZyraText.body(size: 13)),
+                ),
+              _planCell(context, basic, _basicStyle(header)),
+              _planCell(context, one, _oneStyle(header)),
+            ],
           ),
-        ),
-        Expanded(
-          flex: 27,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 3),
-            child: Text(
-              one,
-              textAlign: TextAlign.center,
-              style: ZyraText.body(
-                size: header ? 11 : 13,
-                color: ZyraColors.goldText,
-              ).copyWith(fontWeight: FontWeight.w500),
-            ),
-          ),
-        ),
-      ],
-    ),
   );
 }

@@ -37,6 +37,12 @@ CI_SMOKE_TESTS = (
     "test/compiled_app_boundary_test.dart",
     "test/visual/zyra_visual_regression_test.dart",
 )
+RENDERED_TEXT_CORPUS_TESTS = {
+    "test/zyra_clearer_text_contrast_test.dart",
+    "test/zyra_clearer_text_contrast_430_test.dart",
+    "test/zyra_clearer_text_contrast_large_430_test.dart",
+    "test/zyra_clearer_text_contrast_large_375_test.dart",
+}
 OFFLINE_CONFIG = {
     "lib/config/oauth_config.dart",
     "lib/config/supabase_config.dart",
@@ -85,6 +91,9 @@ def changed_dart(paths):
             raise RunFullSuite("Dart code outside the app and test folders changed.")
         if source.startswith(("test/support/", "test/fixtures/")) or source.endswith("_capture_support.dart"):
             raise RunFullSuite("Shared test fixtures or a capture harness changed.")
+        if source in RENDERED_TEXT_CORPUS_TESTS:
+            # The shard writer excludes the opt-in whole-app raster drivers.
+            raise RunFullSuite("An opt-in rendered-text driver changed. Run ordinary regression.")
         changed.add(source)
     return changed
 
@@ -145,7 +154,11 @@ def test_selection(changed):
     paths = dart_paths()
     if not changed <= paths:
         raise RunFullSuite("A changed Dart file is outside the checked-out file set.")
-    tests = {path for path in paths if path.startswith("test/") and path.endswith("_test.dart")}
+    tests = {
+        path for path in paths
+        if path.startswith("test/") and path.endswith("_test.dart")
+        and path not in RENDERED_TEXT_CORPUS_TESTS
+    }
     dependents, source_readers = dependency_index(paths)
     selected = set()
     for source in changed:

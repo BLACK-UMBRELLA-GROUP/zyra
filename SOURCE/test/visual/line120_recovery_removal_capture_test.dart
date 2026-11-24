@@ -54,14 +54,14 @@ Future<void> _capture(BaselineHarness harness, String name) => harness.capture(
 
 void main() {
   setUpAll(() async {
-    if (_output.isEmpty) return;
+    if (_output.isEmpty && !baselineTextAuditOnly) return;
     await baselineSetUp(
       evidenceRoot: null,
       useSystemSymbolFont: Platform.isMacOS,
     );
   });
   tearDownAll(() async {
-    if (_output.isNotEmpty) await baselineTearDown();
+    if (_output.isNotEmpty || baselineTextAuditOnly) await baselineTearDown();
   });
 
   for (final platform in [TargetPlatform.iOS, TargetPlatform.android]) {
@@ -101,7 +101,7 @@ void main() {
         _noRecoveryText();
         await _capture(harness, name);
       },
-      skip: _output.isEmpty,
+      skip: _output.isEmpty && !baselineTextAuditOnly,
       variant: TargetPlatformVariant.only(platform),
     );
   }
@@ -122,7 +122,7 @@ void main() {
       _noRecoveryText();
       await _capture(harness, 'founder_sign_in_security');
     },
-    skip: _output.isEmpty,
+    skip: _output.isEmpty && !baselineTextAuditOnly,
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );
 
@@ -141,7 +141,7 @@ void main() {
       _noRecoveryText();
       await _capture(harness, 'privacy_and_data');
     },
-    skip: _output.isEmpty,
+    skip: _output.isEmpty && !baselineTextAuditOnly,
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );
 }

@@ -133,6 +133,20 @@ Future<void> _mount(
   final ready = Completer<void>();
   await harness.mountPresentation(
     checkpoint: checkpoint,
+    waitForPresentation: () async {
+      for (var attempt = 0; attempt < 150 && !ready.isCompleted; attempt++) {
+        await harness.tester.pump(const Duration(milliseconds: 20));
+        await harness.tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 5)),
+        );
+      }
+      expect(
+        ready.isCompleted,
+        isTrue,
+        reason: 'Bundled sample photos must prepare before the initial audit',
+      );
+      await harness.tester.pump();
+    },
     child: ZyraOneJourneyConceptShell(
       key: UniqueKey(),
       canAct: () => true,
@@ -150,17 +164,6 @@ Future<void> _mount(
         seekerPhotos: [_photos.seekerPhoto],
       ),
     ),
-  );
-  for (var attempt = 0; attempt < 150 && !ready.isCompleted; attempt++) {
-    await harness.tester.pump(const Duration(milliseconds: 20));
-    await harness.tester.runAsync(
-      () => Future<void>.delayed(const Duration(milliseconds: 5)),
-    );
-  }
-  expect(
-    ready.isCompleted,
-    isTrue,
-    reason: 'Bundled sample photos must prepare',
   );
   await harness.flush();
   if (pages.isEmpty) {
@@ -220,7 +223,7 @@ Future<void> _capture(BaselineHarness harness, String name) async {
       name,
       'lock36',
       'Real offline Founder shell with existing sample data and LOCK 36 overlay; '
-          'Reduce Motion keeps the touch point still.',
+          'Reduce Motion hides the touch cue and keeps the lit target unobscured.',
       fileName: '$name.png',
     );
   } finally {
@@ -312,7 +315,7 @@ void main() {
           await _capture(harness, name);
           expect(tester.takeException(), isNull);
         },
-        skip: _output.isEmpty,
+        skip: _output.isEmpty && !baselineTextAuditOnly,
         variant: TargetPlatformVariant.only(TargetPlatform.iOS),
       );
     }
@@ -336,7 +339,7 @@ void main() {
       await _capture(harness, 't99_settings_replay_row');
       expect(tester.takeException(), isNull);
     },
-    skip: _output.isEmpty,
+    skip: _output.isEmpty && !baselineTextAuditOnly,
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );
 }

@@ -191,7 +191,7 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
     final textScale = MediaQuery.textScalerOf(context).scale(14) / 14;
     final compactEnlarged =
         MediaQuery.sizeOf(context).height < 700 &&
-        textScale > 1.2 &&
+        (textScale > 1.2 || c.step == ZyraSignupStep.accountReady) &&
         c.step != ZyraSignupStep.splash &&
         c.step != ZyraSignupStep.welcome;
     return ColoredBox(
@@ -208,11 +208,20 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
                 ? LayoutBuilder(
                     builder: (context, box) => SingleChildScrollView(
                       key: const ValueKey('signup_accessible_scroll'),
-                      child: SizedBox(
-                        width: box.maxWidth,
-                        height: math.max(box.maxHeight, 600 * textScale),
-                        child: content,
-                      ),
+                      child: c.step == ZyraSignupStep.accountReady
+                          ? ConstrainedBox(
+                              constraints: BoxConstraints(
+                                minHeight: textScale > 1.2
+                                    ? math.max(box.maxHeight, 600 * textScale)
+                                    : box.maxHeight,
+                              ),
+                              child: content,
+                            )
+                          : SizedBox(
+                              width: box.maxWidth,
+                              height: math.max(box.maxHeight, 600 * textScale),
+                              child: content,
+                            ),
                     ),
                   )
                 : content,
@@ -255,7 +264,7 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
       dark: true,
       leading: apple
           ? const Icon(Icons.apple, color: ZyraColors.ivoryTop, size: 20)
-          : Text('G', style: ZyraText.button(color: ZyraColors.journeyGold)),
+          : Text('G', style: ZyraText.button(color: ZyraColors.ivoryTop)),
       onPressed: () => c.chooseProvider(apple ? 'Apple' : 'Google'),
     );
     return Column(
@@ -420,9 +429,7 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
                 disabledBackgroundColor: ZyraColors.actionFill.withValues(
                   alpha: .42,
                 ),
-                disabledForegroundColor: ZyraColors.secondaryText.withValues(
-                  alpha: .45,
-                ),
+                disabledForegroundColor: ZyraColors.secondaryStrong,
                 elevation: 0,
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 side: BorderSide.none,
@@ -678,7 +685,7 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
         child: Text(
           'Checkout is not available in this preview.',
           textAlign: TextAlign.center,
-          style: ZyraText.subtext(size: 11),
+          style: ZyraText.subtext(size: 11, color: ZyraColors.secondaryStrong),
         ),
       ),
       _button(
@@ -1377,77 +1384,100 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
   Widget _ready() => Column(
     key: const ValueKey('signup_account_ready'),
     crossAxisAlignment: CrossAxisAlignment.stretch,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      _header(),
-      const SizedBox(height: 26),
-      Center(
-        child: ZyraGoldRingMonogram(name: c.firstName, size: 84, fontSize: 36),
-      ),
-      const SizedBox(height: 18),
-      Text(
-        'Welcome, ${c.firstName}',
-        textAlign: TextAlign.center,
-        style: ZyraText.pageTitle(),
-      ),
-      const SizedBox(height: 8),
-      Text(
-        'Your account is ready. Here’s what’s left.',
-        textAlign: TextAlign.center,
-        style: ZyraText.subtext(size: 14),
-      ),
-      const SizedBox(height: 20),
-      ZyraFloatingSurface(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            color: ZyraColors.cardSurface,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: ZyraColors.surfaceBorder),
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _header(),
+          const SizedBox(height: 26),
+          Center(
+            child: ZyraGoldRingMonogram(
+              name: c.firstName,
+              size: 84,
+              fontSize: 36,
+            ),
           ),
-          child: Column(
-            children: [
-              _checklist(
-                'Identity check',
-                c.verified ? 'Done' : 'Needed to see profiles',
-                done: c.verified,
+          const SizedBox(height: 18),
+          Text(
+            'Welcome, ${c.firstName}',
+            textAlign: TextAlign.center,
+            style: ZyraText.pageTitle(),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Your account is ready. Here’s what’s left.',
+            textAlign: TextAlign.center,
+            style: ZyraText.subtext(size: 14),
+          ),
+          const SizedBox(height: 20),
+          ZyraFloatingSurface(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: ZyraColors.cardSurface,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: ZyraColors.surfaceBorder),
               ),
-              if (c.guardian)
-                _checklist(
-                  'Your Seeker linked',
-                  c.linkedSeekerName == null ? 'Add their code' : 'Done',
-                  done: c.linkedSeekerName != null,
-                )
-              else ...[
-                _checklist(
-                  'Photos',
-                  c.photos.isNotEmpty ? 'Done' : 'Add your photos',
-                  done: c.photos.isNotEmpty,
-                ),
-                _checklist('Partner preferences', 'Set any time in Profile'),
-                _checklist('Guardians', 'Optional · add any time', last: true),
-              ],
-            ],
+              child: Column(
+                children: [
+                  _checklist(
+                    'Identity check',
+                    c.verified ? 'Done' : 'Needed to see profiles',
+                    done: c.verified,
+                  ),
+                  if (c.guardian)
+                    _checklist(
+                      'Your Seeker linked',
+                      c.linkedSeekerName == null ? 'Add their code' : 'Done',
+                      done: c.linkedSeekerName != null,
+                    )
+                  else ...[
+                    _checklist(
+                      'Photos',
+                      c.photos.isNotEmpty ? 'Done' : 'Add your photos',
+                      done: c.photos.isNotEmpty,
+                    ),
+                    _checklist(
+                      'Partner preferences',
+                      'Set any time in Profile',
+                    ),
+                    _checklist(
+                      'Guardians',
+                      'Optional · add any time',
+                      last: true,
+                    ),
+                  ],
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       ),
-      const Spacer(),
-      _button(
-        id: 'signup_finish_setup',
-        label: 'Finish setting up',
-        onPressed: c.resumeSetup,
-      ),
-      const SizedBox(height: 10),
-      _button(
-        id: 'signup_look_around',
-        label: 'Look around first',
-        outlined: true,
-        onPressed: _pause,
-      ),
-      const SizedBox(height: 12),
-      Text(
-        'You need a finished profile to start a Journey.',
-        textAlign: TextAlign.center,
-        style: ZyraText.subtext(size: 11),
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _button(
+            id: 'signup_finish_setup',
+            label: 'Finish setting up',
+            onPressed: c.resumeSetup,
+          ),
+          const SizedBox(height: 10),
+          _button(
+            id: 'signup_look_around',
+            label: 'Look around first',
+            outlined: true,
+            onPressed: _pause,
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'You need a finished profile to start a Journey.',
+            textAlign: TextAlign.center,
+            style: ZyraText.subtext(size: 11),
+          ),
+        ],
       ),
     ],
   );

@@ -257,8 +257,8 @@ class _ZyraDraftCompatibilityStorePresentationState
               style: TextButton.styleFrom(
                 minimumSize: const Size(44, 44),
                 padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-                foregroundColor: ZyraColors.foregroundMuted,
-                disabledForegroundColor: ZyraColors.foregroundMuted,
+                foregroundColor: ZyraColors.secondaryText,
+                disabledForegroundColor: ZyraColors.secondaryText,
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               child: Text('Purchase terms', style: _muted(size: 12)),
@@ -884,7 +884,11 @@ TextStyle _body({required double size}) =>
       textBaseline: TextBaseline.alphabetic,
     );
 TextStyle _muted({required double size}) =>
-    _body(size: size).copyWith(color: ZyraColors.foregroundMuted);
+    ZyraText.subtext(size: size).copyWith(
+      height: 1.4,
+      leadingDistribution: TextLeadingDistribution.even,
+      textBaseline: TextBaseline.alphabetic,
+    );
 TextStyle _buttonBody({required double size}) =>
     ZyraText.button(size: size, color: ZyraColors.foreground).copyWith(
       height: 1.4,

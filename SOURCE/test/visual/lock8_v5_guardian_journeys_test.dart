@@ -14,6 +14,7 @@ import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/widgets/zyra_profiles_components.dart';
 import 'package:zyra/widgets/zyra_swipe_track.dart';
 import 'package:zyra/widgets/zyra_tap_feedback.dart';
+import 'package:zyra/widgets/zyra_photo_text_fade.dart';
 import 'baseline_capture_support.dart';
 
 const root = '/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA';
@@ -131,8 +132,17 @@ void main() {
           find.byType(ZyraJourneyPhotoCard),
         );
         expect(photo.photo, isA<AssetImage>());
-        expect(photo.fadeStart, .3);
-        expect(photo.fadeTop, Colors.transparent);
+        expect(photo.fadeTone, ZyraPhotoFadeTone.guardian);
+        final fade = t.renderObject<RenderZyraPhotoTextFade>(
+          find.byType(ZyraPhotoTextFade),
+        );
+        final geometry = fade.fadeGeometry;
+        expect(
+          geometry.darkTop,
+          lessThanOrEqualTo(
+            (geometry.firstTextTop! - 8).clamp(0.0, fade.size.height),
+          ),
+        );
         expect(dots(t).count, 1);
         clearance(t);
         expect(find.text('S'), findsNothing);
@@ -433,10 +443,27 @@ void main() {
         final photo = t.widget<ZyraJourneyPhotoCard>(
           find.byType(ZyraJourneyPhotoCard),
         );
-        expect(photo.fadeStart, 0);
-        // Bound every photo channel by white; the full-height fade guarantees
-        // readable stage, title and secondary text even at its lightest point.
-        final background = Color.alphaBlend(photo.fadeTop, Colors.white);
+        expect(photo.fadeTone, ZyraPhotoFadeTone.guardian);
+        final fade = t.renderObject<RenderZyraPhotoTextFade>(
+          find.byType(ZyraPhotoTextFade),
+        );
+        final geometry = fade.fadeGeometry;
+        expect(
+          geometry.darkTop,
+          lessThanOrEqualTo(
+            (geometry.firstTextTop! - 8).clamp(0.0, fade.size.height),
+          ),
+        );
+        expect(
+          geometry.darkTop - geometry.clearTop,
+          closeTo(fade.size.height * .30, 1e-8),
+        );
+        // Q190's measured text region is at least .76 dark. Pure-white photo
+        // raster proof for all four locked tuples lives in photo_text_fade_test.
+        final background = Color.alphaBlend(
+          ZyraPhotoFadeTone.guardian.ink.withValues(alpha: .76),
+          Colors.white,
+        );
         for (final finder in [
           key('guardian_journey_stage'),
           find.text('Adam & Sara'),

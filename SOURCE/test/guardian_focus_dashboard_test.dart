@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/widgets/zyra_focus_dashboard.dart';
@@ -140,15 +141,42 @@ void main() {
         find.descendant(of: badge, matching: find.byIcon(Icons.lock_outline)),
         findsOneWidget,
       );
-      final status = tester.widget<Text>(
-        find.descendant(
-          of: find.byKey(ValueKey(id)),
-          matching: find.text('Guardian One'),
-        ),
+      final statusFinder = find.descendant(
+        of: find.byKey(ValueKey(id)),
+        matching: find.text('Guardian One'),
       );
-      expect(status.maxLines, 1);
-      expect(status.softWrap, false);
+      final status = tester.widget<Text>(statusFinder);
       expect(status.style!.fontSize, 10.5);
+      final paragraph = tester.renderObject<RenderParagraph>(
+        find.descendant(of: statusFinder, matching: find.byType(RichText)),
+      );
+      expect(paragraph.didExceedMaxLines, isFalse);
+      expect(paragraph.overflow, isNot(TextOverflow.ellipsis));
+      expect(paragraph.overflow, isNot(TextOverflow.fade));
+      final boxes = paragraph.getBoxesForSelection(
+        TextSelection(baseOffset: 0, extentOffset: status.data!.length),
+      );
+      expect(boxes, isNotEmpty);
+      for (final box in boxes) {
+        expect(box.left, greaterThanOrEqualTo(-.01));
+        expect(box.right, lessThanOrEqualTo(paragraph.size.width + .01));
+        expect(box.top, greaterThanOrEqualTo(-.01));
+        expect(box.bottom, lessThanOrEqualTo(paragraph.size.height + .01));
+      }
+      final context = tester.element(statusFinder);
+      final style = DefaultTextStyle.of(context).style.merge(status.style);
+      for (final word in status.data!.split(' ')) {
+        final painter = TextPainter(
+          text: TextSpan(text: word, style: style),
+          textDirection: Directionality.of(context),
+          textScaler: MediaQuery.textScalerOf(context),
+        )..layout();
+        expect(
+          painter.width,
+          lessThanOrEqualTo(paragraph.constraints.maxWidth + .01),
+        );
+        painter.dispose();
+      }
     }
     dashboard.tiles[1].onTap();
     dashboard.tiles[2].onTap();

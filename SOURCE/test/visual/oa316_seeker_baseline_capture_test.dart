@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_presentation.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import '../support/received_request_fixture.dart';
-import 'package:zyra/dev/zyra_guardian_circle_topic_options.dart';
+import 'package:zyra/dev/zyra_circle_topics_presentation.dart';
 import 'package:zyra/dev/zyra_my_zyra_activity_preview.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
 import 'package:zyra/widgets/floating_nav_bar.dart';
@@ -98,32 +98,6 @@ Future<void> _browseOption(BaselineHarness h, ZyraBrowseAction action) async {
   expect(target, findsOneWidget);
   await h.tester.tapAt(h.tester.getCenter(target));
   await h.flush();
-}
-
-Future<void> _selectPopup(
-  BaselineHarness h,
-  Finder field,
-  String itemKey,
-) async {
-  await h.tapFinder(field);
-  final popup = find.byElementPredicate(
-    (e) => e.widget is Scrollable && (ModalRoute.of(e)?.isCurrent ?? false),
-  );
-  expect(popup, findsOneWidget);
-  final item = find.descendant(
-    of: popup,
-    matching: find.byKey(ValueKey(itemKey)),
-  );
-  await h.tester.scrollUntilVisible(
-    item,
-    80,
-    scrollable: popup,
-    maxScrolls: 40,
-  );
-  expect(item, findsOneWidget);
-  await h.tapFinder(
-    find.ancestor(of: item, matching: find.byType(InkWell)).first,
-  );
 }
 
 void main() {
@@ -275,7 +249,7 @@ void main() {
         'Existing Add Ended history sample fixture',
       );
     },
-    skip: !_enabled,
+    skip: !_enabled && !baselineTextAuditOnly,
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
     timeout: const Timeout(Duration(minutes: 20)),
   );
@@ -326,9 +300,13 @@ void main() {
           'bio': 'bio_locked',
           'compatibility': 'journey_compatibility_locked',
           'guardians': 'journey_guardians',
-          'end': 'journey_action',
+          'end': 'journey_options',
         }[choice]!;
         h.assertPage(page);
+        if (choice == 'end') {
+          expect(h.key('draft_journey_action_$_sara'), findsOneWidget);
+          expect(h.key('draft_confirm_end_$_sara'), findsOneWidget);
+        }
         await h.capture(
           'journey',
           page,
@@ -362,7 +340,7 @@ void main() {
       );
       await _safe(h, 'journey', 'journey_guardians', 'active', bio);
     },
-    skip: !_enabled,
+    skip: !_enabled && !baselineTextAuditOnly,
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
     timeout: const Timeout(Duration(minutes: 20)),
   );
@@ -407,7 +385,8 @@ void main() {
         'Real received request → Accept while three sample places occupied',
       );
       await h.mount(tab: 2, pages: ['ended'], model: (_active()..end(_sara)));
-      await h.tap('draft_restart_$_sara');
+      await h.tap('draft_journey_${_sara}_header');
+      await h.tap('draft_ended_restart_$_sara');
       h.assertPage('ended_restart');
       await h.capture(
         'ended_journeys',
@@ -416,12 +395,12 @@ void main() {
         'Ended card → actual Request restart',
       );
     },
-    skip: !_enabled,
+    skip: !_enabled && !baselineTextAuditOnly,
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
     timeout: const Timeout(Duration(minutes: 20)),
   );
   testWidgets(
-    'baseline seeker local controls and Guardian Circle',
+    'baseline current Guardian Circle topics for both roles',
     (tester) async {
       final h = BaselineHarness(tester, group: 'seeker');
       for (final role in [false, true]) {
@@ -432,46 +411,39 @@ void main() {
           model: _active(),
         );
         h.assertPage('guardian_circle');
+        expect(find.byType(ZyraCircleTopicsPresentation), findsOneWidget);
         await h.capture(
           'guardians',
           'guardian_circle',
           'normal',
           'Actual allowed Guardian Circle checkpoint with local sample transcript',
         );
-        for (final design in ZyraCircleBubbleDesign.values) {
-          await h.mount(
-            guardian: role,
-            tab: role ? 0 : 3,
-            pages: ['guardian_circle'],
-            model: _active(),
-          );
-          await h.controls();
-          final picker = find.byWidgetPredicate(
-            (w) => w is DropdownButtonFormField<ZyraCircleBubbleDesign>,
-          );
-          await _selectPopup(
-            h,
-            picker,
-            'concept_circle_bubble_design_${design.name}',
-          );
-          await h.capture(
-            'guardians',
-            'controls',
-            'circle_${design.name}',
-            'Actual hold-to-open controls, selected existing Circle interior',
-          );
-          await h.closeControls();
-          await h.tap('circle_discuss_floatingButton');
-          await h.capture(
-            'guardians',
-            'guardian_circle',
-            'bubble_${design.name}',
-            'Actual controls choice ${design.label}, then X',
-          );
-        }
+        await h.tap('circle_topics_topic_$_sara');
+        h.assertPage('guardian_circle');
+        final selected = tester.widget<ZyraCircleTopicsPresentation>(
+          find.byType(ZyraCircleTopicsPresentation),
+        );
+        expect(selected.viewerIsSeeker, !role);
+        expect(selected.selected?.name, 'Sara');
+        await h.capture(
+          'guardians',
+          'guardian_circle',
+          'current_sara_topic',
+          'Actual current Circle Sara topic; locked current presentation, '
+              'without the removed design dropdown.',
+        );
+        await h.tap('circle_topics_all');
+        expect(
+          tester
+              .widget<ZyraCircleTopicsPresentation>(
+                find.byType(ZyraCircleTopicsPresentation),
+              )
+              .selected,
+          isNull,
+        );
       }
     },
-    skip: !_enabled,
+    skip: !_enabled && !baselineTextAuditOnly,
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
     timeout: const Timeout(Duration(minutes: 30)),
   );
@@ -482,6 +454,11 @@ void main() {
       await h.mount(tab: 3, model: _active());
       await h.tap('guardian-add-top');
       h.assertPage('guardian_invite');
+      expect(
+        find.byKey(const ValueKey('zyra_code_local_preview_denied')),
+        findsNothing,
+      );
+      expect(find.byKey(const ValueKey('zyra-code-main-card')), findsOneWidget);
       await h.capture(
         'guardians',
         'guardian_invite',
@@ -503,7 +480,7 @@ void main() {
         'Both sample people ready → actual Begin Journey',
       );
     },
-    skip: !_enabled,
+    skip: !_enabled && !baselineTextAuditOnly,
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
     timeout: const Timeout(Duration(minutes: 30)),
   );
@@ -539,7 +516,7 @@ void main() {
         }
       }
     },
-    skip: !_enabled,
+    skip: !_enabled && !baselineTextAuditOnly,
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
     timeout: const Timeout(Duration(minutes: 30)),
   );
@@ -576,7 +553,7 @@ void main() {
         );
       }
     },
-    skip: !_enabled,
+    skip: !_enabled && !baselineTextAuditOnly,
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
     timeout: const Timeout(Duration(minutes: 10)),
   );
@@ -689,41 +666,45 @@ void main() {
         ZyraInternalPreviewClient.finishSignOut();
       }
     },
-    skip: !_enabled,
+    skip: !_enabled && !baselineTextAuditOnly,
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
     timeout: const Timeout(Duration(minutes: 10)),
   );
   testWidgets(
-    'baseline seeker actual Browse control variants',
+    'baseline seeker current Browse motion and actual controls',
     (tester) async {
       final h = BaselineHarness(tester, group: 'seeker');
-      for (final motion in ZyraBrowseNextMotion.values) {
-        await h.mount();
-        await h.controls();
-        final picker = find.byWidgetPredicate(
-          (w) => w is DropdownButtonFormField<ZyraBrowseNextMotion>,
-        );
-        await _selectPopup(
-          h,
-          picker,
-          'concept_browse_next_motion_${motion.name}',
-        );
-        await h.capture(
-          'browse_and_requests',
-          'controls',
-          'next_${motion.name}',
-          'Actual existing Next animation choice',
-        );
-        await h.closeControls();
-        await h.capture(
-          'browse_and_requests',
-          'profiles_tab',
-          'next_${motion.name}',
-          'Actual Next animation selection; resting page unchanged',
-        );
-      }
+      await h.mount();
+      await h.controls();
+      expect(
+        find.byWidgetPredicate(
+          (widget) => widget is DropdownButtonFormField<ZyraBrowseNextMotion>,
+        ),
+        findsNothing,
+      );
+      await h.capture(
+        'browse_and_requests',
+        'controls',
+        'current',
+        'Actual current protected controls; removed Next comparison picker '
+            'is absent.',
+      );
+      await h.closeControls();
+      expect(
+        tester
+            .widget<ZyraBrowseDesigns>(find.byType(ZyraBrowseDesigns))
+            .nextProfileMotion,
+        ZyraBrowseNextMotion.current,
+      );
+      await h.capture(
+        'browse_and_requests',
+        'profiles_tab',
+        'next_current',
+        'Actual current Browse presenter after closing protected controls. '
+            'Dormant comparison fields are not claimed as rendered choices.',
+      );
     },
-    skip: !_enabled,
+    skip: !_enabled && !baselineTextAuditOnly,
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
     timeout: const Timeout(Duration(minutes: 30)),
   );

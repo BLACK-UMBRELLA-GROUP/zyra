@@ -337,6 +337,10 @@ Future<void> fixture(BaselineHarness h, int scene) async {
 }
 
 Future<void> snap(BaselineHarness h, String name, {bool narrow = false}) async {
+  if (baselineTextAuditOnly) {
+    await h.auditText(name);
+    return;
+  }
   if (!capture) return;
   final old = debugDisableShadows;
   debugDisableShadows = false;

@@ -22,6 +22,7 @@ import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_invitation_label.dart';
 import '../widgets/zyra_press_feedback.dart';
 import '../widgets/zyra_profile_name_block.dart';
+import '../widgets/zyra_photo_text_fade.dart';
 import '../widgets/zyra_pull_down_back_scope.dart';
 import '../widgets/zyra_segmented_toggle.dart';
 import '../widgets/floating_nav_bar.dart' show ZyraNavBarMetrics;
@@ -188,32 +189,9 @@ class _ZyraOneJourneyBrowsePresentationState
             key: widget.onDismiss == null
                 ? null
                 : const ValueKey('concept_browse_photo_dismiss_surface'),
-            child: Stack(
-              fit: StackFit.expand,
+            child: ZyraPhotoTextFade(
               children: [
                 widget.imageBuilder(context, photo),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: IgnorePointer(
-                    child: Container(
-                      height: 340,
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.transparent,
-                            Color(0x4D000000),
-                            Color(0xB3000000),
-                          ],
-                          stops: [0, .32, 1],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
                 if (photos.length > 1)
                   Positioned(
                     left: 16,
@@ -726,7 +704,9 @@ class ZyraOneJourneyConnectionsActionButton extends StatelessWidget {
         : primary
         ? ZyraColors.foreground
         : ZyraColors.ink(.80);
-    final textTint = action.onTap != null && action.dangerLabel
+    final textTint = action.onTap == null
+        ? ZyraColors.secondaryStrong
+        : action.dangerLabel
         ? ZyraColors.dangerText
         : tint;
     final button = ZyraFloatingSurface(

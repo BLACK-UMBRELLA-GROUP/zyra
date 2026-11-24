@@ -125,7 +125,7 @@ Future<void> _capture(
   String state,
   String reached,
 ) async {
-  if (_captures.isEmpty) return;
+  if (_captures.isEmpty && !baselineTextAuditOnly) return;
   await harness.capture(
     'compatibility',
     'guardian_compatibility',

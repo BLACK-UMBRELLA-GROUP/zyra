@@ -780,7 +780,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         'Your date of birth and gender are saved with your account '
         'essentials and cannot be edited here. If either is wrong, '
         'contact Support.',
-        style: ZyraText.subtext(size: 12, color: ZyraColors.ink(0.38)),
+        style: ZyraText.subtext(size: 12, color: ZyraColors.secondaryStrong),
       ),
       if (_explicitPreview ? _previewSupport != null : !_localPreview) ...[
         const SizedBox(height: 12),

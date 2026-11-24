@@ -165,7 +165,10 @@ class ZyraDraftSafetyAdvicePresentation extends StatelessWidget {
                 'In danger right now? Call your local emergency number (999 in the UK).',
                 key: const ValueKey('draft_safety_advice_emergency'),
                 textAlign: TextAlign.center,
-                style: ZyraText.subtext(size: 12).copyWith(height: 1.4),
+                style: ZyraText.subtext(
+                  size: 12,
+                  color: ZyraColors.secondaryStrong,
+                ).copyWith(height: 1.4),
               ),
             ],
           ),

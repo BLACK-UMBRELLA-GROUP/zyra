@@ -86,7 +86,7 @@ Future<void> _capture(BaselineHarness h, String name) => h.capture(
 
 void main() {
   setUpAll(() async {
-    if (_output.isEmpty) {
+    if (_output.isEmpty && !baselineTextAuditOnly) {
       return;
     }
     await baselineSetUp(
@@ -96,7 +96,7 @@ void main() {
     _photos = await ZyraOneJourneySamplePhotos.load();
   });
   tearDownAll(() async {
-    if (_output.isNotEmpty) {
+    if (_output.isNotEmpty || baselineTextAuditOnly) {
       await baselineTearDown();
     }
   });
@@ -242,6 +242,8 @@ void main() {
       },
     ),
     ('g01_guardian__name', true, (c) => c.setStep(ZyraSignupStep.name)),
+    if (baselineTextAuditOnly)
+      ('g01b_guardian__dob', true, (c) => _dob(c, '1997')),
     (
       'g02_guardian__relationship_empty',
       true,
@@ -328,7 +330,7 @@ void main() {
           debugDisableShadows = previousShadows;
         }
       },
-      skip: _output.isEmpty,
+      skip: _output.isEmpty && !baselineTextAuditOnly,
       variant: TargetPlatformVariant.only(
         name.startsWith('s03') ? TargetPlatform.android : TargetPlatform.iOS,
       ),
@@ -363,7 +365,7 @@ void main() {
           debugDisableShadows = previousShadows;
         }
       },
-      skip: _output.isEmpty,
+      skip: _output.isEmpty && !baselineTextAuditOnly,
       variant: TargetPlatformVariant.only(TargetPlatform.iOS),
     );
   }

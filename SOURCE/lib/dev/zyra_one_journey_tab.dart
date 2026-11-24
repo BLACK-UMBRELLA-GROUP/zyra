@@ -15,6 +15,7 @@ import '../widgets/zyra_profiles_components.dart';
 import '../widgets/zyra_tab_title.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import '../widgets/zyra_swipe_track.dart';
+import '../widgets/zyra_photo_text_fade.dart';
 
 ScrollPhysics _fixedCardPhysics(BuildContext context) =>
     MediaQuery.textScalerOf(context).scale(14) > 14
@@ -51,15 +52,12 @@ class ZyraJourneyPhotoCard extends StatelessWidget {
     required this.scrollKey,
     required this.children,
     this.photo,
-    this.fadeStart = .3,
-    this.fadeTop = Colors.transparent,
+    this.fadeTone = ZyraPhotoFadeTone.seeker,
   });
   final Key surfaceKey, scrollKey;
   final ImageProvider? photo;
   final List<Widget> children;
-  // Defaults retain LOCK 13; expanded Guardian text may occupy the full photo.
-  final double fadeStart;
-  final Color fadeTop;
+  final ZyraPhotoFadeTone fadeTone;
 
   @override
   Widget build(BuildContext context) => ZyraFloatingSurface(
@@ -78,8 +76,8 @@ class ZyraJourneyPhotoCard extends StatelessWidget {
         border: Border.all(color: ZyraColors.surfaceBorder),
       ),
       child: LayoutBuilder(
-        builder: (context, constraints) => Stack(
-          fit: StackFit.expand,
+        builder: (context, constraints) => ZyraPhotoTextFade(
+          tone: fadeTone,
           children: [
             if (photo != null)
               Image(image: photo!, fit: BoxFit.cover)
@@ -87,21 +85,6 @@ class ZyraJourneyPhotoCard extends StatelessWidget {
               Center(
                 child: ZyraJourneyIcon(color: ZyraColors.ink(.35), size: 64),
               ),
-            Positioned(
-              top: constraints.maxHeight * fadeStart,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [fadeTop, const Color(0xE6000000)],
-                  ),
-                ),
-              ),
-            ),
             ZyraShadowScrollView(
               key: scrollKey,
               physics: _fixedCardPhysics(context),
@@ -207,7 +190,7 @@ class _ZyraOneJourneyTabState extends State<ZyraOneJourneyTab> {
                               ? ZyraColors.luxuryDarkPurple
                               : ZyraColors.goldText),
                     ).copyWith(
-                      fontWeight: filled ? FontWeight.w500 : FontWeight.w300,
+                      fontWeight: filled ? FontWeight.w500 : FontWeight.w400,
                     ),
               ),
             ),

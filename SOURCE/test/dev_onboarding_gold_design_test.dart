@@ -465,10 +465,16 @@ void main() {
         ),
       );
       await tester.pump();
-      void expectGoldWordmark() => expect(
-        tester.widget<Text>(find.text('ZYRA')).style!.color,
-        ZyraColors.splashWordmark,
-      );
+      void expectGoldWordmark() {
+        final style = tester.widget<Text>(find.text('ZYRA')).style!;
+        expect(
+          style.color,
+          (style.fontSize ?? 0) < 24
+              ? ZyraColors.goldText
+              : ZyraColors.splashWordmark,
+        );
+      }
+
       ZyraOnboardingGoldPainter painter() =>
           tester
                   .widget<CustomPaint>(

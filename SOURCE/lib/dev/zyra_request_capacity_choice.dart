@@ -153,7 +153,7 @@ class ZyraRequestCapacityChoice extends StatelessWidget {
                           size: 13,
                           color: canContinue
                               ? ZyraColors.goldText
-                              : ZyraColors.ink(.4),
+                              : ZyraColors.secondaryStrong,
                         ),
                       ),
                     ),

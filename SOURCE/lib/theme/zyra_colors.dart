@@ -142,9 +142,44 @@ class ZyraColors {
   static const Color mutedText = Color(0xFF857868);
   static const Color warmOverlay = Color(0xFF3E2E1E);
 
-  /// LOCK14 V5: gold reading text below 24 regular / 18.66 bold.
+  /// LOCK14 V9: reading inks below 24 pt, at every weight.
   static const Color goldText = Color(0xFF845F24);
   static const Color goldTextFill = Color(0xFFC08A3A);
+  static const Color goldTextStrong = Color(0xFF5C4319);
+  static const Color greenText = Color(0xFF326B4C);
+  static const Color secondaryStrong = strongSecondaryText;
+
+  /// Reading roles only: decorative fills, outlines and photo ink stay separate.
+  static Color? readingTextColor(Color? color, double size) {
+    if (color == null || size >= 24) return color;
+    final opaque = color.withValues(alpha: 1);
+    if (color.a < 1 &&
+        (opaque == journeyGold ||
+            opaque == goldTextFill ||
+            opaque == positiveGreen ||
+            opaque == const Color(0xFF3D7D5A))) {
+      return secondaryText;
+    }
+    if (opaque == journeyGold || opaque == goldTextFill) return goldText;
+    if (opaque == positiveGreen || opaque == const Color(0xFF3D7D5A)) {
+      return greenText;
+    }
+    if (opaque == destructive) return dangerText;
+    if (opaque == mutedText ||
+        opaque == quietText ||
+        (color.a < 1 &&
+            (opaque == espresso ||
+                opaque == warmOverlay ||
+                opaque == secondaryText ||
+                opaque == goldText) &&
+            (ivoryBottom.computeLuminance() + .05) /
+                    (Color.alphaBlend(color, ivoryBottom).computeLuminance() +
+                        .05) <
+                4.5)) {
+      return secondaryText;
+    }
+    return color;
+  }
 
   /// The My ZYRA tile and Profile group surface used for app cards.
   static const Color cardSurface = Color(0xD9FAF5EC);
@@ -294,6 +329,9 @@ class ZyraColors {
 
   /// LOCK 14 V6 small danger text.
   static const Color dangerText = Color(0xFFAC453E);
+
+  /// LOCK 14 V9 / Q188: reading fallback on darker tinted backgrounds.
+  static const Color dangerTextStrong = Color(0xFF7A2E29);
 
   /// Danger icons, outlines and large text.
   static const Color destructive = Color(0xFFB84A42);

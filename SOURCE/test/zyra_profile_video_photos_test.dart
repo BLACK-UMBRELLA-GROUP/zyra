@@ -274,7 +274,27 @@ void main() {
         await tester.tap(find.text('See Seeker One ›'));
         await _settle(tester);
         expect(find.text('Profile video'), findsOneWidget);
-        expect(find.text('1 silent video'), findsOneWidget);
+        final videoRow = find.byWidgetPredicate(
+          (widget) =>
+              widget is Semantics &&
+              widget.properties.label ==
+                  'Profile video. Basic, Unavailable. One, 1 silent video.',
+        );
+        expect(videoRow, findsOneWidget);
+        final videoValue = find.descendant(
+          of: videoRow,
+          matching: find.byWidgetPredicate(
+            (widget) =>
+                widget is Text &&
+                (widget.semanticsLabel ?? widget.data) == '1 silent video',
+          ),
+        );
+        expect(videoValue, findsOneWidget);
+        final value = tester.widget<Text>(videoValue);
+        // Q194 permits whole-word lines, while the offered value and its
+        // accessible wording remain exactly the original copy.
+        expect(value.data!.replaceAll(RegExp(r'\s+'), ' '), '1 silent video');
+        expect(value.semanticsLabel ?? value.data, '1 silent video');
         expect(store.reads, 0);
         expect(media.picks, 0);
       },

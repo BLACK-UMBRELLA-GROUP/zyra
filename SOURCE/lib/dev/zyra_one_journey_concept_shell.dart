@@ -6138,7 +6138,7 @@ class _ZyraOneJourneyConceptShellState
                     borderSide: BorderSide.none,
                   ),
                   hintText: 'Your answer…',
-                  hintStyle: TextStyle(color: ZyraColors.ink(0.38)),
+                  hintStyle: TextStyle(color: ZyraColors.secondaryText),
                 ),
               ),
               const SizedBox(height: 16),
@@ -11213,9 +11213,7 @@ class _ZyraOneJourneyConceptShellState
         minimumSize: const Size(48, 48),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         foregroundColor: ZyraColors.foreground,
-        disabledForegroundColor: ZyraColors.foregroundMuted.withValues(
-          alpha: .5,
-        ),
+        disabledForegroundColor: ZyraColors.secondaryText,
         backgroundColor: primary
             ? ZyraColors.surfaceEmphasisFill
             : ZyraColors.surfaceFill,

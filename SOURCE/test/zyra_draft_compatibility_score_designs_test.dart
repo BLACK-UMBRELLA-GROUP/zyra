@@ -209,7 +209,7 @@ void main() {
     ]);
     final unavailable = find.text('Not enough answers');
     final style = tester.widget<Text>(unavailable).style;
-    expect(style?.color, ZyraColors.mutedText);
+    expect(style?.color, ZyraColors.secondaryText);
     expect(style?.fontStyle, FontStyle.italic);
     expect(
       find.ancestor(

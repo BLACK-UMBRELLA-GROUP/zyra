@@ -125,14 +125,18 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
   }) => Text(
     value,
     textAlign: TextAlign.center,
-    style: ZyraText.body(
-      size: size,
-      color: gold
-          ? ZyraColors.goldText
-          : muted
-          ? ZyraColors.foregroundMuted
-          : ZyraColors.foreground,
-    ).copyWith(fontWeight: weight, height: height),
+    style:
+        ZyraText.body(
+          size: size,
+          color: gold
+              ? ZyraColors.goldText
+              : muted
+              ? ZyraColors.foregroundMuted
+              : ZyraColors.foreground,
+        ).copyWith(
+          fontWeight: ZyraText.minimumReadingWeight(size, weight),
+          height: height,
+        ),
   );
 
   Widget button(
@@ -381,19 +385,36 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
                   ],
                 ),
                 const SizedBox(height: 8),
-                text(tile.label, 11.5, height: 1.25),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final fit = _fitTileLabel(
+                      context,
+                      tile.label,
+                      constraints.maxWidth,
+                    );
+                    return Text(
+                      fit.display,
+                      key: ValueKey(
+                        'focus-tile-label-${tile.id ?? tile.label}',
+                      ),
+                      semanticsLabel: tile.label,
+                      textAlign: TextAlign.center,
+                      softWrap: false,
+                      overflow: TextOverflow.visible,
+                      style: fit.style,
+                    );
+                  },
+                ),
                 const SizedBox(height: 10),
                 Text(
                   tile.status,
-                  maxLines: tile.locked ? 1 : null,
-                  softWrap: !tile.locked,
                   textAlign: TextAlign.center,
                   style: ZyraText.body(
                     size: 10.5,
                     color: tile.isNew
-                        ? ZyraColors.goldText
-                        : ZyraColors.foregroundMuted,
-                  ).copyWith(fontWeight: FontWeight.w300, height: 1.45),
+                        ? ZyraColors.goldTextStrong
+                        : ZyraColors.secondaryStrong,
+                  ).copyWith(height: 1.45, letterSpacing: 0),
                 ),
               ],
             ),
@@ -402,6 +423,139 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
       ),
     ),
   );
+
+  // Q180/Q183: these are the syllables of the locked quick-access labels.
+  // Only a word wider than its line receives a visible hyphenated break.
+  static const _tileLabelSyllables = <String, List<String>>{
+    'Journey': ['Jour', 'ney'],
+    'Journeys': ['Jour', 'neys'],
+    'request': ['re', 'quest'],
+    'requests': ['re', 'quests'],
+    'Introduction': ['In', 'tro', 'duc', 'tion'],
+    'Introductions': ['In', 'tro', 'duc', 'tions'],
+    'Notification': ['No', 'ti', 'fi', 'ca', 'tion'],
+    'Notifications': ['No', 'ti', 'fi', 'ca', 'tions'],
+    'Connect': ['Con', 'nect'],
+    'Guardian': ['Guar', 'dian'],
+    'Guardians': ['Guar', 'dians'],
+    'Ended': ['End', 'ed'],
+  };
+
+  ({String display, TextStyle style, double height}) _fitTileLabel(
+    BuildContext context,
+    String value,
+    double available,
+  ) {
+    final width = available.clamp(1.0, double.infinity).toDouble();
+    final scaler = MediaQuery.textScalerOf(context);
+    final direction = Directionality.of(context);
+    final inherited = DefaultTextStyle.of(context).style;
+    var style = inherited
+        .merge(ZyraText.body(size: 11.5))
+        .copyWith(fontWeight: FontWeight.w400, letterSpacing: 0, height: 1.25);
+    double measure(String text, TextStyle atStyle) {
+      final painter = TextPainter(
+        text: TextSpan(text: text, style: atStyle),
+        textDirection: direction,
+        textScaler: scaler,
+      )..layout();
+      final result = painter.width;
+      painter.dispose();
+      return result;
+    }
+
+    final words = value.split(RegExp(r'\s+')).where((word) => word.isNotEmpty);
+    double longest(double size) {
+      var result = 0.0;
+      for (final word in words) {
+        final measured = measure(word, style.copyWith(fontSize: size));
+        if (measured > result) result = measured;
+      }
+      return result;
+    }
+
+    // Check the actual scaler rather than replacing it with a linear or
+    // no-scaling override. Larger Text retains its selected size unchanged.
+    final standardScale =
+        (scaler.scale(11.5) - 11.5).abs() < .0001 &&
+        (scaler.scale(10) - 10).abs() < .0001;
+    if (standardScale && longest(11.5) > width) {
+      var low = 10.0;
+      var high = 11.5;
+      if (longest(low) <= width) {
+        for (var step = 0; step < 24; step++) {
+          final middle = (low + high) / 2;
+          if (longest(middle) <= width) {
+            low = middle;
+          } else {
+            high = middle;
+          }
+        }
+      }
+      style = style.copyWith(fontSize: low);
+    }
+
+    final lines = <String>[];
+    for (final paragraph in value.split('\n')) {
+      var line = '';
+      void flush() {
+        if (line.isNotEmpty) lines.add(line);
+        line = '';
+      }
+
+      for (final word in paragraph.split(RegExp(r'\s+'))) {
+        if (word.isEmpty) continue;
+        if (measure(word, style) <= width) {
+          final joined = line.isEmpty ? word : '$line $word';
+          if (measure(joined, style) <= width) {
+            line = joined;
+          } else {
+            flush();
+            line = word;
+          }
+          continue;
+        }
+        final syllables = List<String>.of(_tileLabelSyllables[word] ?? [word]);
+        while (syllables.isNotEmpty) {
+          final prefix = line.isEmpty ? '' : '$line ';
+          var count = 0;
+          var fragment = '';
+          for (var end = 1; end <= syllables.length; end++) {
+            final candidate =
+                syllables.take(end).join() +
+                (end < syllables.length ? '-' : '');
+            if (measure('$prefix$candidate', style) > width) break;
+            count = end;
+            fragment = candidate;
+          }
+          if (count == 0 && line.isNotEmpty) {
+            flush();
+            continue;
+          }
+          // Do not invent a letter-level split for an uncatalogued word or
+          // an indivisible syllable. The rendered fit gate reports it.
+          if (count == 0) {
+            line = syllables.join();
+            syllables.clear();
+          } else {
+            line = '$prefix$fragment';
+            syllables.removeRange(0, count);
+            if (syllables.isNotEmpty) flush();
+          }
+        }
+      }
+      flush();
+    }
+    final display = lines.join('\n');
+    final painter = TextPainter(
+      text: TextSpan(text: display, style: style),
+      textDirection: direction,
+      textScaler: scaler,
+    )..layout();
+    final height = painter.height;
+    painter.dispose();
+    return (display: display, style: style, height: height);
+  }
 
   double tileHeight(
     BuildContext context,
@@ -419,7 +573,14 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
           text: value,
           style: DefaultTextStyle.of(context).style
               .merge(ZyraText.body(size: size))
-              .copyWith(height: lineHeight, fontWeight: FontWeight.w300),
+              .copyWith(
+                height: lineHeight,
+                letterSpacing: 0,
+                fontWeight: ZyraText.minimumReadingWeight(
+                  size,
+                  FontWeight.w300,
+                ),
+              ),
         ),
         textDirection: Directionality.of(context),
         textScaler: MediaQuery.textScalerOf(context),
@@ -430,10 +591,9 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
     final textWidth = width - 2 * horizontalPadding;
     var result = 0.0;
     for (final tile in widget.tiles) {
+      final label = _fitTileLabel(context, tile.label, textWidth);
       final value =
-          84 +
-          height(tile.label, 11.5, textWidth, 1.25) +
-          height(tile.status, 10.5, textWidth, 1.45);
+          84 + label.height + height(tile.status, 10.5, textWidth, 1.45);
       if (value > result) result = value;
     }
     return result.ceilToDouble() + 1;

@@ -19,6 +19,7 @@ import '../widgets/zyra_swipe_track.dart';
 import '../models/seeker_profile.dart';
 import 'zyra_request_activity_presentation.dart';
 import 'zyra_one_journey_tab.dart' show ZyraJourneyPhotoCard;
+import '../widgets/zyra_photo_text_fade.dart';
 import 'zyra_one_journey_guardian_seeker.dart';
 import 'zyra_one_journey_guardian_seekers.dart';
 import 'zyra_one_journey_guardian_action.dart';
@@ -200,7 +201,6 @@ class _GuardianJourneyPagerState extends State<ZyraGuardianJourneyPager> {
     final revision = ++_revision;
     final identity = widget.identity;
     final index = widget.index.clamp(0, widget.cards.length - 1);
-    final expandedText = MediaQuery.textScalerOf(context).scale(13) > 16;
     final feedback = context
         .dependOnInheritedWidgetOfExactType<ZyraTapFeedback>();
     var revoked = false;
@@ -266,10 +266,7 @@ class _GuardianJourneyPagerState extends State<ZyraGuardianJourneyPager> {
                   surfaceKey: ValueKey('guardian_journey_person_${card.id}'),
                   scrollKey: ValueKey('guardian_journey_overlay_${card.id}'),
                   photo: card.photo,
-                  fadeStart: expandedText ? 0 : .3,
-                  fadeTop: expandedText
-                      ? const Color(0xA6000000)
-                      : Colors.transparent,
+                  fadeTone: ZyraPhotoFadeTone.guardian,
                   children: [
                     Text(
                       card.stageLine.toUpperCase(),
@@ -277,7 +274,7 @@ class _GuardianJourneyPagerState extends State<ZyraGuardianJourneyPager> {
                       style: ZyraText.body(
                         size: 11,
                         color: Colors.white,
-                      ).copyWith(letterSpacing: 1.1, height: 1.4),
+                      ).copyWith(letterSpacing: 0, height: 1.4),
                     ),
                     const SizedBox(height: 12),
                     Text(

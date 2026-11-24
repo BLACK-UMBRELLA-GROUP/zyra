@@ -59,6 +59,37 @@ String _selectedId(WidgetTester tester) {
   return browse.profiles[browse.selectedIndex].id;
 }
 
+Future<void> _revealRequest(WidgetTester tester, String id) async {
+  expect(_selectedId(tester), id);
+  final request = _key('draft_profile_$id');
+  expect(request, findsOneWidget);
+  if (request.hitTestable().evaluate().isEmpty) {
+    final photo = _key('concept_browse_photo_swipe_$id');
+    final photoBounds = tester.getRect(photo);
+    final navBounds = tester.getRect(find.byType(FloatingNavBar));
+    final details = _key('concept_browse_details_scroll_$id');
+    final position = tester
+        .state<ScrollableState>(
+          find.descendant(of: details, matching: find.byType(Scrollable)),
+        )
+        .position;
+    final before = tester.getRect(request);
+    final viewport = tester.getRect(details);
+    // Q191's full-width fact rows use the existing inner card scroll.
+    expect(position.maxScrollExtent, greaterThan(0));
+    expect(viewport.contains(before.center), isFalse);
+    debugPrint(
+      'Q191 invitation reveal: extent=${position.maxScrollExtent}, '
+      'request=$before, viewport=$viewport',
+    );
+    await position.ensureVisible(tester.renderObject(request), alignment: .5);
+    await tester.pumpAndSettle();
+    expect(tester.getRect(photo), photoBounds);
+    expect(tester.getRect(find.byType(FloatingNavBar)), navBounds);
+  }
+  expect(request.hitTestable(), findsOneWidget);
+}
+
 Future<void> _mount(
   WidgetTester tester, {
   bool quiet = true,
@@ -342,6 +373,7 @@ void main() {
       await _mount(tester);
       expect(_selectedId(tester), _sara);
       _expectPhotoOutline(tester, _sara, sent: false);
+      await _revealRequest(tester, _sara);
       final photo = _key('concept_browse_photo_swipe_$_sara');
       final photoBounds = tester.getRect(photo);
       final requestBounds = tester.getRect(_key('draft_profile_$_sara'));
@@ -520,6 +552,7 @@ void main() {
     ) async {
       await _mount(tester, quiet: mode.quiet, accessible: mode.accessible);
       final request = _key('draft_profile_$_sara');
+      await _revealRequest(tester, _sara);
       expect(request.hitTestable(), findsOneWidget);
       await tester.tap(request);
       await tester.pump();
@@ -543,6 +576,7 @@ void main() {
     tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
     await _mount(tester, quiet: false);
     final request = _key('draft_profile_$_sara');
+    await _revealRequest(tester, _sara);
     await tester.tap(request);
     await tester.pump();
     expect(_frames, findsNothing);

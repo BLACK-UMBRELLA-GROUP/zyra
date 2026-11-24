@@ -20,7 +20,12 @@ const _message =
     'Assalaamu alaikum. Adam’s family would be glad to speak about Noor.';
 Finder _key(String key) => find.byKey(ValueKey(key));
 
-Future<void> _cap(WidgetTester t, String name) async {
+Future<void> _cap(BaselineHarness h, String name) async {
+  if (baselineTextAuditOnly) {
+    await h.auditText(name);
+    return;
+  }
+  final t = h.tester;
   if (!_capture) return;
   final oldShadows = debugDisableShadows;
   debugDisableShadows = false;
@@ -122,12 +127,12 @@ void main() {
         expect(monogram, const Size(44, 44));
         expect(find.byType(ZyraFamilyMessageComposer), findsOneWidget);
         if (c.name == 'narrow200') {
-          await _cap(t, 'narrow200_header');
+          await _cap(h, 'narrow200_header');
           await _reveal(t, find.text('A private chat'));
         }
         expect(find.text('A private chat'), findsOneWidget);
         await _cap(
-          t,
+          h,
           c.name == 'standard' ? 'g19_guardian_chat__new' : '${c.name}_empty',
         );
         await h.tap('guardian_chat_options');
@@ -137,7 +142,7 @@ void main() {
         expect(find.text('Done'), findsOneWidget);
         expect(find.byType(ListTile), findsNWidgets(2));
         await _cap(
-          t,
+          h,
           c.name == 'standard'
               ? 'g22_guardian_chat__options'
               : '${c.name}_options',
@@ -163,7 +168,7 @@ void main() {
           isEmpty,
         );
         await _cap(
-          t,
+          h,
           c.name == 'standard' ? 'g21_guardian_chat__sent' : '${c.name}_sent',
         );
         await t.enterText(find.byType(TextField), 'discard on leaving');

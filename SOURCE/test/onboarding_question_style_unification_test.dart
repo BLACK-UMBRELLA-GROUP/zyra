@@ -75,7 +75,7 @@ void main() {
       );
       final wordmark = tester.widget<Text>(find.text('ZYRA'));
       expect(wordmark.style?.fontFamily, 'Syne');
-      expect(wordmark.style?.color, ZyraColors.splashWordmark);
+      expect(wordmark.style?.color, ZyraColors.goldText);
       expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);
       await tester.tap(find.byKey(const ValueKey('onboarding_continue')));
       expect(advances, 1);
