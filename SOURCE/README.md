@@ -106,6 +106,16 @@ The [as-built handover](../REPORTS/CURRENT/ZYRA_DEVELOPER_PANEL_AS_BUILT_CURRENT
 records title coverage, evidence and final verification. This task has no
 migration, native build, phone installation or delivery.
 
+## Founder preview Help & safety
+
+LOCK 37 adds Contact support, Report sent, Advanced, Download my data,
+Delete my account and Privacy & data to the local Founder preview for Seeker
+and Guardian. Contact, report, export request and account closure use sample
+state only. The three legal rows show the approved preview messages; they do
+not open hosted documents yet. The closed-page Close action exits the preview.
+The focused checks are in `test/zyra_help_safety_preview_test.dart` and
+`test/browse_options_menu_test.dart`.
+
 ## Rendered text audit
 
 For each local queue line, run the whole-project analyzer, ordinary regression,

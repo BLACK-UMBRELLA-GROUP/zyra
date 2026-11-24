@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'zyra_developer_focus_presets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'
     show
@@ -91,6 +92,7 @@ import 'zyra_compatibility_demo.dart';
 import 'zyra_draft_compatibility_score_designs.dart';
 import 'zyra_draft_compatibility_store_presentation.dart';
 import 'zyra_draft_browse_utility_presentation.dart';
+import 'zyra_help_safety_preview.dart';
 import 'zyra_draft_safety_advice_presentation.dart';
 import 'zyra_draft_code_entry.dart';
 import 'zyra_request_help_content.dart';
@@ -1356,6 +1358,8 @@ class _ZyraOneJourneyConceptShellState
   ) => _hasAllBrowseFilters ? filter : filter.withHeritageFrom(saved);
   ZyraConceptAccountAction? _accountDestination;
   ZyraConceptSettingsDetail? _settingsDetail;
+  DateTime? _helpDataRequestedAt;
+  DateTime? _helpClosedAt;
   ZyraMembershipDraft _membershipDraft = ZyraMembershipDraft();
   ZyraMembershipReviewRequest? _membershipReview;
   // Used viewer/profile access is independent of both route and Journey ID.
@@ -3108,6 +3112,14 @@ class _ZyraOneJourneyConceptShellState
           'compatibility_store',
           'scan',
           'help_support',
+          'help_contact',
+          'help_contact_sent',
+          'help_report_sent',
+          'help_advanced',
+          'help_data',
+          'help_delete',
+          'help_closed',
+          'help_privacy',
           'safety',
           'safety_advice',
         ].contains(_page);
@@ -3477,6 +3489,14 @@ class _ZyraOneJourneyConceptShellState
           'filters' => _filters(),
           'scan' => _scanEntry(),
           'help_support' => _helpSupport(),
+          'help_contact' ||
+          'help_contact_sent' ||
+          'help_report_sent' ||
+          'help_advanced' ||
+          'help_data' ||
+          'help_delete' ||
+          'help_closed' ||
+          'help_privacy' => _helpSafetyView(),
           'safety' => _safety(),
           'safety_advice' => _safetyAdvice(),
           'timeline' => _timeline(_personId ?? ''),
@@ -9689,6 +9709,12 @@ class _ZyraOneJourneyConceptShellState
         if (_allowed) widget.onExit();
       case ZyraConceptAccountAction.helpSupport:
         _open('help_support');
+      case ZyraConceptAccountAction.contactSupport:
+        _open('help_contact');
+      case ZyraConceptAccountAction.advanced:
+        _open('help_advanced');
+      case ZyraConceptAccountAction.privacyData:
+        _open('help_privacy');
       case ZyraConceptAccountAction.replayWalkthrough:
         _startFirstTour();
       case ZyraConceptAccountAction.editProfile:
@@ -10197,6 +10223,7 @@ class _ZyraOneJourneyConceptShellState
           'Notifications & emails',
         ZyraConceptAccountAction.membership => 'Membership',
         ZyraConceptAccountAction.helpSupport => 'Help & support',
+        ZyraConceptAccountAction.contactSupport => 'Contact support',
         ZyraConceptAccountAction.replayWalkthrough => 'Replay the walkthrough',
         ZyraConceptAccountAction.feedback => 'Send feedback',
         ZyraConceptAccountAction.privacyData => 'Privacy & data',
@@ -11110,11 +11137,130 @@ class _ZyraOneJourneyConceptShellState
           ),
           profile: person == null ? null : _displayProfile(person),
           canSelect: canSelect,
+          onSubmit: person == null
+              ? null
+              : _bound(() {
+                  if (canSelect() && _personId == person.id) {
+                    _open('help_report_sent');
+                  }
+                }),
           onHide: localAction(true),
           onBlock: localAction(false),
         ),
       ),
     );
+  }
+
+  Widget _helpSafetyView() {
+    final page = _page;
+    final screen = switch (page) {
+      'help_contact' => ZyraHelpSafetyScreen.contact,
+      'help_contact_sent' => ZyraHelpSafetyScreen.contactSent,
+      'help_report_sent' => ZyraHelpSafetyScreen.reportSent,
+      'help_advanced' => ZyraHelpSafetyScreen.advanced,
+      'help_data' => ZyraHelpSafetyScreen.data,
+      'help_delete' => ZyraHelpSafetyScreen.delete,
+      'help_closed' => ZyraHelpSafetyScreen.closed,
+      _ => ZyraHelpSafetyScreen.privacy,
+    };
+    final person = _person;
+    final firstName = _accountData.name.trim().split(' ').first;
+    final current = _accountFreshGuard();
+    return ZyraHelpSafetyPreview(
+      key: ValueKey(('help_safety', page, _guardianRole)),
+      screen: screen,
+      guardian: _guardianRole,
+      firstName: firstName,
+      reportedName: person?.firstName,
+      dataRequestedAt: _helpDataRequestedAt,
+      closedAt: _helpClosedAt,
+      onContactSent: () {
+        if (current()) _open('help_contact_sent');
+      },
+      onReportDone: () {
+        if (!current()) return;
+        _move(() {
+          if (_pages.lastOrNull == 'help_report_sent') _pages.removeLast();
+          if (_pages.lastOrNull == 'safety' ||
+              _pages.lastOrNull == 'guardian_chat_report') {
+            _pages.removeLast();
+          }
+        });
+      },
+      onBlockReported: () {
+        if (!current() || person == null || _personId != person.id) return;
+        if (_warnBeforePersonSafety(
+          person,
+          hide: false,
+          canAct: () => current() && _personId == person.id,
+        )) {
+          return;
+        }
+        _move(() {
+          if (!_model.block(person.id)) return;
+          _pages.clear();
+          _tab = 0;
+          _personId = null;
+          _browseIndex = 0;
+        });
+      },
+      onOpenData: () {
+        if (current()) _open('help_data');
+      },
+      onOpenDelete: () {
+        if (current()) _open('help_delete');
+      },
+      onRequestData: () {
+        if (current() && _helpDataRequestedAt == null) {
+          _act(() => _helpDataRequestedAt = DateTime.now());
+        }
+      },
+      onDelete: () {
+        if (!current()) return;
+        _move(() {
+          _helpClosedAt = DateTime.now();
+          _pages.add('help_closed');
+        });
+      },
+      onClose: () {
+        if (current()) widget.onExit();
+      },
+      onDone: () {
+        if (!current()) return;
+        _move(() {
+          if (_pages.lastOrNull == 'help_contact_sent') _pages.removeLast();
+          if (_pages.lastOrNull == 'help_contact') _pages.removeLast();
+        });
+      },
+      onLegal: (name) {
+        if (!current()) return;
+        final message = switch (name) {
+          'privacy' => 'The privacy policy opens here.',
+          'terms' => 'The terms of use open here.',
+          _ => 'Opens the photo privacy page.',
+        };
+        _act(() => _notice = message);
+      },
+      onSubscriptions: () {
+        if (current()) unawaited(_openAppleSubscriptions(current));
+      },
+    );
+  }
+
+  Future<void> _openAppleSubscriptions(bool Function() current) async {
+    if (!current()) return;
+    bool opened;
+    try {
+      opened = await launchUrl(
+        Uri.parse('https://apps.apple.com/account/subscriptions'),
+        mode: LaunchMode.externalApplication,
+      );
+    } catch (_) {
+      opened = false;
+    }
+    if (current() && !opened) {
+      _act(() => _notice = 'App Store subscriptions could not be opened.');
+    }
   }
 
   Widget _unavailable() => _card([

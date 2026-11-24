@@ -47,13 +47,11 @@ const _captureKey = ValueKey('whole-app-settings-capture');
 const _overviews = [
   ZyraConceptAccountAction.signInSecurity,
   ZyraConceptAccountAction.appLock,
-  ZyraConceptAccountAction.advanced,
   ZyraConceptAccountAction.visibility,
   ZyraConceptAccountAction.hiddenProfiles,
   ZyraConceptAccountAction.guardianPrivacy,
   ZyraConceptAccountAction.notificationSettings,
   ZyraConceptAccountAction.feedback,
-  ZyraConceptAccountAction.privacyData,
 ];
 
 const _nativeBoundaryChannels = [
@@ -697,12 +695,15 @@ void main() {
           ZyraConceptAccountAction.phoneAccess,
           ZyraConceptAccountAction.replayWalkthrough,
           ZyraConceptAccountAction.helpSupport,
+          ZyraConceptAccountAction.contactSupport,
+          ZyraConceptAccountAction.advanced,
+          ZyraConceptAccountAction.privacyData,
         ])
           'concept_settings_${action.name}',
       };
       final actualRows = await _actualSettingsRows(tester);
       expect(actualRows, expectedRows);
-      expect(actualRows.length, 12);
+      expect(actualRows.length, 13);
       await _tap(tester, _key('concept_settings_haptics'));
       expect(_key('zyra-haptic-strength-slider'), findsOneWidget);
       await _tap(tester, _key('concept_settings_haptics'));
@@ -837,22 +838,25 @@ void main() {
       final owner = _ShellOwner();
       await owner.mount(tester);
       await owner.settings(tester);
-      await owner.overview(tester, ZyraConceptAccountAction.privacyData);
+      await owner.overview(
+        tester,
+        ZyraConceptAccountAction.notificationSettings,
+      );
       final saved = tester.widget<ZyraConceptSettingsOverview>(
         find.byType(ZyraConceptSettingsOverview),
       );
       await _tap(
         tester,
         _detailRow(
-          ZyraConceptAccountAction.privacyData,
-          ZyraConceptSettingsDetail.terms,
+          ZyraConceptAccountAction.notificationSettings,
+          ZyraConceptSettingsDetail.notifications,
         ),
       );
       final checkpoint = owner.checkpoints.last;
-      saved.onOpenDetail(ZyraConceptSettingsDetail.privacyPolicy);
+      saved.onOpenDetail(ZyraConceptSettingsDetail.notifications);
       saved.onHelp();
       await tester.pump();
-      expect(_detail(ZyraConceptSettingsDetail.terms), findsOneWidget);
+      expect(_detail(ZyraConceptSettingsDetail.notifications), findsOneWidget);
       expect(owner.checkpoints.last, same(checkpoint));
       final savedDetail = tester.widget<ZyraConceptSettingsDetailPresentation>(
         find.byType(ZyraConceptSettingsDetailPresentation),
@@ -860,7 +864,10 @@ void main() {
       await _back(tester);
       savedDetail.onHelp();
       await tester.pump();
-      expect(_overview(ZyraConceptAccountAction.privacyData), findsOneWidget);
+      expect(
+        _overview(ZyraConceptAccountAction.notificationSettings),
+        findsOneWidget,
+      );
       await _back(tester);
       await _back(tester);
       expect(find.byType(ZyraConceptProfilePresentation), findsOneWidget);
@@ -869,7 +876,7 @@ void main() {
         isTrue,
       );
       final switched = owner.checkpoints.last;
-      saved.onOpenDetail(ZyraConceptSettingsDetail.privacyPolicy);
+      saved.onOpenDetail(ZyraConceptSettingsDetail.notifications);
       saved.onHelp();
       savedDetail.onHelp();
       await tester.pump();

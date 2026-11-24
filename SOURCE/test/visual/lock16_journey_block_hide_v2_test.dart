@@ -242,7 +242,7 @@ void main() {
       expect(_k('draft_report_submit'), findsOneWidget);
       expect(
         t.widget<OutlinedButton>(_k('draft_report_submit')).onPressed,
-        isNull,
+        isNotNull,
       );
     },
   );

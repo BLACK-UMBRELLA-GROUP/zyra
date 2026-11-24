@@ -105,7 +105,10 @@ void _selected(WidgetTester t, ZyraDraftReportReason reason) {
   );
   expect(icons, findsOneWidget);
   expect(find.byIcon(Icons.radio_button_checked), findsOneWidget);
-  expect(t.widget<OutlinedButton>(_k('draft_report_submit')).onPressed, isNull);
+  expect(
+    t.widget<OutlinedButton>(_k('draft_report_submit')).onPressed,
+    isNotNull,
+  );
 }
 
 void main() {

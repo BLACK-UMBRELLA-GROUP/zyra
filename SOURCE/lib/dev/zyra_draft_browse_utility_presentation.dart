@@ -121,8 +121,8 @@ enum ZyraDraftReportReason {
 }
 
 /// Local reason selection only. The caller supplies the exact public target
-/// and guards any optional fictional Hide/Block actions. Submit is always
-/// disabled; no real report or simulated moderation record can be created.
+/// and guards any optional fictional Hide/Block/Report actions. No real report
+/// or simulated moderation record can be created by this presentation.
 class ZyraDraftReportPresentation extends StatefulWidget {
   const ZyraDraftReportPresentation({
     super.key,
@@ -131,6 +131,7 @@ class ZyraDraftReportPresentation extends StatefulWidget {
     this.canSelect,
     this.onHide,
     this.onBlock,
+    this.onSubmit,
   });
 
   final SeekerProfile? profile;
@@ -138,6 +139,7 @@ class ZyraDraftReportPresentation extends StatefulWidget {
   final bool Function()? canSelect;
   final VoidCallback? onHide;
   final VoidCallback? onBlock;
+  final VoidCallback? onSubmit;
 
   @override
   State<ZyraDraftReportPresentation> createState() =>
@@ -412,12 +414,26 @@ class _ZyraDraftReportPresentationState
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const _UnavailableAction(
-                  id: 'draft_report_submit',
-                  report: true,
-                  label: 'Submit report',
-                  icon: Icons.flag_outlined,
-                ),
+                if (widget.onSubmit == null)
+                  const _UnavailableAction(
+                    id: 'draft_report_submit',
+                    report: true,
+                    label: 'Submit report',
+                    icon: Icons.flag_outlined,
+                  )
+                else
+                  OutlinedButton.icon(
+                    key: const ValueKey('draft_report_submit'),
+                    onPressed: ZyraTapFeedback.onTap(
+                      context,
+                      _current(epoch)
+                          ? _localAction(widget.onSubmit, epoch)
+                          : null,
+                      canAct: () => _current(epoch),
+                    ),
+                    icon: const Icon(Icons.flag_outlined),
+                    label: const Text('Submit report'),
+                  ),
                 if (widget.onHide != null || widget.onBlock != null) ...[
                   const SizedBox(height: 8),
                   Wrap(

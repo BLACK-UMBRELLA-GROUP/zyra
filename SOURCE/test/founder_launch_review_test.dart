@@ -13,6 +13,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/dev/zyra_founder_launch_review.dart';
+import 'package:zyra/dev/zyra_help_safety_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_settings_details.dart';
@@ -256,7 +257,7 @@ class _Owner {
   Future<void> privacy(WidgetTester tester) async {
     await _tap(tester, _key('concept_settings'));
     await _tap(tester, _key('concept_settings_privacyData'));
-    expect(_key('concept_settings_overview_privacyData'), findsOneWidget);
+    expect(_key('help_safety_privacy'), findsOneWidget);
   }
 }
 
@@ -822,42 +823,23 @@ void main() {
       for (final method in ['button', 'edge']) (guardian, method),
   ]) {
     testWidgets(
-      '${guardian ? 'Guardian' : 'Seeker'} $method actual shell white canvas status return and theme restoration',
+      '${guardian ? 'Guardian' : 'Seeker'} $method LOCK37 privacy return and theme restoration',
       (tester) async {
         _size(tester);
         final owner = _Owner();
         await owner.mount(tester, guardian: guardian);
         await owner.privacy(tester);
-        _shellCanvas(tester, white: true);
+        _shellCanvas(tester, white: false);
+        expect(_key('zyra_back_swipe_edge'), findsOneWidget);
         await _capture(
           tester,
           'shell-${guardian ? 'guardian' : 'seeker'}-$method-privacy',
         );
-        for (final detail in [
-          ZyraConceptSettingsDetail.privacyPolicy,
-          ZyraConceptSettingsDetail.terms,
-        ]) {
-          await _tap(
-            tester,
-            _key('concept_settings_open_privacyData_${detail.name}'),
-          );
-          _shellCanvas(tester, white: true);
-          final help = _key('concept_settings_help_detail_${detail.name}');
-          await _tap(tester, help);
-          expect(find.byType(HelpSupportScreen), findsOneWidget);
-          expect(_key('help-support-preview-title'), findsOneWidget);
-          expect(_key('support-safety-case-status'), findsNothing);
-          expect(_key('help-support-email-action'), findsNothing);
-          _shellCanvas(tester, white: false);
-          await _back(tester, edge: method == 'edge');
-          expect(
-            _key('concept_settings_detail_${detail.name}'),
-            findsOneWidget,
-          );
-          _shellCanvas(tester, white: true);
-          await _back(tester, edge: method == 'edge');
-          expect(_key('concept_settings_overview_privacyData'), findsOneWidget);
-        }
+        await _tap(tester, _key('help_row_Download my data'));
+        expect(_key('help_safety_data'), findsOneWidget);
+        _shellCanvas(tester, white: false);
+        await _back(tester, edge: method == 'edge');
+        expect(_key('help_safety_privacy'), findsOneWidget);
         await _back(tester, edge: method == 'edge');
         expect(find.byType(ZyraConceptSettingsPresentation), findsOneWidget);
         expect(find.text('Founder input needed before launch'), findsNothing);
@@ -869,24 +851,24 @@ void main() {
   }
 
   testWidgets(
-    'old white-page Help callback cannot act after owner loss or fresh mount',
+    'old Privacy legal callback cannot act after owner loss or fresh mount',
     (tester) async {
       _size(tester);
       final oldOwner = _Owner();
       await oldOwner.mount(tester);
       await oldOwner.privacy(tester);
-      final help = _key('concept_settings_help_overview_privacyData');
-      await _reveal(tester, help);
-      final saved = tester.widget<OutlinedButton>(help).onPressed!;
+      final saved = tester
+          .widget<ZyraHelpSafetyPreview>(find.byType(ZyraHelpSafetyPreview))
+          .onLegal;
       oldOwner.allowed = false;
-      saved();
+      saved('privacy');
       await tester.pumpAndSettle();
-      expect(find.byType(HelpSupportScreen), findsNothing);
+      expect(find.text('The privacy policy opens here.'), findsNothing);
       final freshOwner = _Owner();
       await freshOwner.mount(tester, guardian: true);
-      saved();
+      saved('privacy');
       await tester.pumpAndSettle();
-      expect(find.byType(HelpSupportScreen), findsNothing);
+      expect(find.text('The privacy policy opens here.'), findsNothing);
       expect(find.byType(ZyraConceptProfilePresentation), findsOneWidget);
       expect(find.text('Founder input needed before launch'), findsNothing);
       await tester.pumpWidget(const SizedBox.shrink());

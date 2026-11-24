@@ -143,7 +143,7 @@ class _GuardHarness {
     expect(latest.pages.last, 'safety');
     expect(
       tester.widget<OutlinedButton>(_key('draft_report_submit')).onPressed,
-      isNull,
+      isNotNull,
     );
   }
 
@@ -248,7 +248,7 @@ void main() {
         expect(h.latest.pages.last, 'safety');
         expect(
           tester.widget<OutlinedButton>(_key('draft_report_submit')).onPressed,
-          isNull,
+          isNotNull,
         );
       });
     }

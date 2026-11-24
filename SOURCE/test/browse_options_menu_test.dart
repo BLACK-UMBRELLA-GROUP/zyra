@@ -76,6 +76,7 @@ Future<void> _mount(
   bool accessible = false,
   ValueNotifier<bool>? motion,
   bool Function()? canAct,
+  VoidCallback? onExit,
   Widget? body,
 }) async {
   tester.view.physicalSize = size;
@@ -110,7 +111,7 @@ Future<void> _mount(
             ZyraOneJourneyConceptShell(
               fixture: ZyraShellTestFixture().fixture,
               canAct: canAct ?? () => true,
-              onExit: () {},
+              onExit: onExit ?? () {},
               initialGuardianRole: guardian,
             ),
       ),
@@ -862,7 +863,7 @@ void main() {
     },
   );
 
-  testWidgets('Report identifies the peer without submitting or opening Help', (
+  testWidgets('Report identifies the peer and opens the sent state', (
     tester,
   ) async {
     await _mount(tester);
@@ -877,13 +878,36 @@ void main() {
     await _press(tester, 'draft_report_reason_fakeProfile');
     expect(
       tester.widget<OutlinedButton>(_key('draft_report_submit')).onPressed,
-      isNull,
+      isNotNull,
     );
-    expect(find.text('Report sent'), findsNothing);
     expect(find.textContaining('Demonstration only'), findsNothing);
     await _snapshot(tester, 'report_profile');
+    await _press(tester, 'draft_report_submit');
+    expect(
+      find.textContaining('Your report about Sara has been sent'),
+      findsOneWidget,
+    );
     expect(_key('concept_message'), findsNothing);
     expect(network.attempts, 0);
+  });
+
+  testWidgets('LOCK37 closed account exits the Founder preview', (
+    tester,
+  ) async {
+    var exits = 0;
+    await _mount(tester, onExit: () => exits++);
+    await _tapBar(tester, 'Profile');
+    await _press(tester, 'concept_settings');
+    await _press(tester, 'concept_settings_advanced');
+    expect(_key('help_safety_advanced'), findsOneWidget);
+    await _press(tester, 'help_row_Delete my account');
+    expect(_key('help_safety_delete'), findsOneWidget);
+    await _press(tester, 'help_delete_open_confirm');
+    await _press(tester, 'help_delete_confirm');
+    expect(_key('help_safety_closed'), findsOneWidget);
+    expect(exits, 0);
+    await _press(tester, 'help_action_Close');
+    expect(exits, 1);
   });
 
   testWidgets('Help and support remain accessible from Profile settings', (
