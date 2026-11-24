@@ -17,6 +17,7 @@ import 'package:zyra/dev/zyra_email_templates.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_settings_details.dart';
+import 'package:zyra/dev/zyra_privacy_security_preview.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/screens/settings/account_advanced_screen.dart';
@@ -70,6 +71,10 @@ Finder _key(String value) => find.byKey(ValueKey(value));
 Finder _overview(ZyraConceptAccountAction action) =>
     action == ZyraConceptAccountAction.notificationSettings
     ? find.byType(ZyraEmailSettingsPreview)
+    : action == ZyraConceptAccountAction.signInSecurity ||
+          action == ZyraConceptAccountAction.appLock ||
+          action == ZyraConceptAccountAction.hiddenProfiles
+    ? find.byType(ZyraPrivacySecurityPreview)
     : _key('concept_settings_overview_${action.name}');
 Finder _detail(ZyraConceptSettingsDetail detail) =>
     _key('concept_settings_detail_${detail.name}');
@@ -81,7 +86,8 @@ Finder _detailRow(
 List<ZyraConceptAccountAction> _roleOverviews(bool guardian) => [
   for (final action in _overviews)
     if (guardian
-        ? action != ZyraConceptAccountAction.hiddenProfiles
+        ? action != ZyraConceptAccountAction.visibility &&
+              action != ZyraConceptAccountAction.guardianPrivacy
         : action != ZyraConceptAccountAction.guardianPrivacy)
       action,
 ];
@@ -91,7 +97,7 @@ List<ZyraConceptSettingsDetail> _children(
   bool guardian,
 ) => switch (action) {
   ZyraConceptAccountAction.signInSecurity => const [],
-  ZyraConceptAccountAction.appLock => [ZyraConceptSettingsDetail.appLock],
+  ZyraConceptAccountAction.appLock => const [],
   ZyraConceptAccountAction.advanced => [
     ZyraConceptSettingsDetail.resetProfile,
     ZyraConceptSettingsDetail.deleteAccount,
@@ -394,6 +400,25 @@ class _ShellOwner {
     expect(_overview(action), findsOneWidget);
     if (action == ZyraConceptAccountAction.notificationSettings) {
       expect(find.text('Journey emails'), findsOneWidget);
+      _noLiveActionWidgets();
+      return;
+    }
+    if (action == ZyraConceptAccountAction.signInSecurity ||
+        action == ZyraConceptAccountAction.appLock ||
+        action == ZyraConceptAccountAction.hiddenProfiles) {
+      expect(
+        tester
+            .widget<ZyraPrivacySecurityPreview>(
+              find.byType(ZyraPrivacySecurityPreview),
+            )
+            .page,
+        switch (action) {
+          ZyraConceptAccountAction.signInSecurity =>
+            ZyraPrivacySecurityPage.signIn,
+          ZyraConceptAccountAction.appLock => ZyraPrivacySecurityPage.appLock,
+          _ => ZyraPrivacySecurityPage.hiddenBlocked,
+        },
+      );
       _noLiveActionWidgets();
       return;
     }
@@ -713,7 +738,7 @@ void main() {
       };
       final actualRows = await _actualSettingsRows(tester);
       expect(actualRows, expectedRows);
-      expect(actualRows.length, 13);
+      expect(actualRows.length, guardian ? 12 : 13);
       await _tap(tester, _key('concept_settings_haptics'));
       expect(_key('zyra-haptic-strength-slider'), findsOneWidget);
       await _tap(tester, _key('concept_settings_haptics'));
@@ -721,14 +746,17 @@ void main() {
       if (!guardian) await _capture(tester, '01-settings');
       for (final action in actions) {
         await owner.overview(tester, action);
-        if (action == ZyraConceptAccountAction.notificationSettings) {
+        if (action == ZyraConceptAccountAction.notificationSettings ||
+            action == ZyraConceptAccountAction.signInSecurity ||
+            action == ZyraConceptAccountAction.appLock ||
+            action == ZyraConceptAccountAction.hiddenProfiles) {
+          if (!guardian && action == ZyraConceptAccountAction.signInSecurity) {
+            await _capture(tester, '02-security');
+          }
           await _back(tester);
           expect(find.byType(ZyraConceptSettingsPresentation), findsOneWidget);
           expect(owner.checkpoints.last.pages.last, 'settings');
           continue;
-        }
-        if (!guardian && action == ZyraConceptAccountAction.signInSecurity) {
-          await _capture(tester, '02-security');
         }
         if (!guardian && action == ZyraConceptAccountAction.privacyData) {
           await _capture(tester, '03-privacy');
@@ -786,7 +814,7 @@ void main() {
       final owner = _ShellOwner();
       await owner.mount(tester, guardedRouteOwner: true);
       await owner.settings(tester);
-      await owner.overview(tester, ZyraConceptAccountAction.appLock);
+      await owner.overview(tester, ZyraConceptAccountAction.feedback);
       final overview = tester.widget<ZyraConceptSettingsOverview>(
         find.byType(ZyraConceptSettingsOverview),
       );
@@ -812,7 +840,7 @@ void main() {
 
       await cover();
       final checkpoint = owner.checkpoints.last;
-      overview.onOpenDetail(ZyraConceptSettingsDetail.appLock);
+      overview.onOpenDetail(ZyraConceptSettingsDetail.feedback);
       overview.onHelp();
       back();
       await tester.pump();
@@ -828,8 +856,8 @@ void main() {
       await _tap(
         tester,
         _detailRow(
-          ZyraConceptAccountAction.appLock,
-          ZyraConceptSettingsDetail.appLock,
+          ZyraConceptAccountAction.feedback,
+          ZyraConceptSettingsDetail.feedback,
         ),
       );
       final detail = tester.widget<ZyraConceptSettingsDetailPresentation>(
@@ -842,8 +870,8 @@ void main() {
       expect(owner.checkpoints.last, same(detailCheckpoint));
       navigator.pop();
       await tester.pumpAndSettle();
-      expect(_detail(ZyraConceptSettingsDetail.appLock), findsOneWidget);
-      await _tap(tester, _key('concept_settings_help_detail_appLock'));
+      expect(_detail(ZyraConceptSettingsDetail.feedback), findsOneWidget);
+      await _tap(tester, _key('concept_settings_help_detail_feedback'));
       expect(find.byType(HelpSupportScreen), findsOneWidget);
     },
   );

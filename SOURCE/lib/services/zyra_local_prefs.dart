@@ -15,6 +15,9 @@ class ZyraLocalPrefs {
   static const _kFirstName = 'zyra.cached_first_name';
   static const _kRole = 'zyra.cached_role';
   static const _kAppLock = 'zyra.app_lock_enabled';
+  static const _kAppLockDelay = 'zyra.app_lock_delay_v1';
+  static const _kSwitcherCover = 'zyra.switcher_cover_v1';
+  static const _kMessageTextHidden = 'zyra.message_text_hidden_v1';
   static const _kPromotionPolicy = 'zyra.promotion_policy_v1';
   static const _kAppSurfaceStyle = 'zyra.app_surface_style';
   static const _kAppPalette = 'zyra.app_palette';
@@ -32,6 +35,9 @@ class ZyraLocalPrefs {
     _kFirstName,
     _kRole,
     _kAppLock,
+    _kAppLockDelay,
+    _kSwitcherCover,
+    _kMessageTextHidden,
     _kPromotionPolicy,
     _kAppSurfaceStyle,
     _kAppPalette,
@@ -209,6 +215,38 @@ class ZyraLocalPrefs {
 
   static bool get appLockEnabled => _values[_kAppLock] == true;
   static Future<void> setAppLockEnabled(bool value) => _set(_kAppLock, value);
+
+  /// A missing value on an already enabled lock means the legacy immediate
+  /// policy. New enablement explicitly writes one minute before it is active.
+  static String get appLockDelay {
+    final saved = _string(_kAppLockDelay);
+    if (saved == 'straight_away' ||
+        saved == 'one_minute' ||
+        saved == 'fifteen_minutes' ||
+        saved == 'one_hour') {
+      return saved!;
+    }
+    return appLockEnabled ? 'straight_away' : 'one_minute';
+  }
+
+  static bool get hasAppLockDelay => _string(_kAppLockDelay) != null;
+  static Future<void> setAppLockDelay(String value) {
+    if (value != 'straight_away' &&
+        value != 'one_minute' &&
+        value != 'fifteen_minutes' &&
+        value != 'one_hour') {
+      return Future<void>.value();
+    }
+    return _set(_kAppLockDelay, value);
+  }
+
+  static bool get switcherCoverEnabled => _values[_kSwitcherCover] != false;
+  static Future<void> setSwitcherCoverEnabled(bool value) =>
+      _set(_kSwitcherCover, value);
+
+  static bool get messageTextHidden => _values[_kMessageTextHidden] != false;
+  static Future<void> setMessageTextHidden(bool value) =>
+      _set(_kMessageTextHidden, value);
 
   static String? get promotionPolicy => _string(_kPromotionPolicy);
   static Future<void> setPromotionPolicy(String value) =>

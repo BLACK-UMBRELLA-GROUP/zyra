@@ -525,7 +525,7 @@ void main() {
       'Camera',
       'Scanning ZYRA Codes, taking photos and the identity check.',
       'Face ID',
-      'Opening ZYRA when App lock is on.',
+      'Unlocking ZYRA and confirming it’s you before important account changes.',
       "Your phone decides these. Tap one to change it in your phone's Settings. ZYRA asks for each one only when you first need it.",
     ]) {
       expect(find.text(text), findsOneWidget);

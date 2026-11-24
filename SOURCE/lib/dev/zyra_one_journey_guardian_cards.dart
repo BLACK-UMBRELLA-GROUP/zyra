@@ -82,6 +82,7 @@ class ZyraOneJourneyGuardianCards extends StatefulWidget {
     required this.onHistory,
     required this.onPermission,
     required this.makeMain,
+    this.makeMainCheckStopped,
     required this.clearMain,
     required this.remove,
     required this.onAdd,
@@ -114,6 +115,9 @@ class ZyraOneJourneyGuardianCards extends StatefulWidget {
   final void Function(String id, bool enabled) onHistory;
   final ZyraGuardianCardPermission onPermission;
   final GuardianMakeMainAction makeMain;
+
+  /// True only when the phone authentication stopped the latest Make Main.
+  final bool Function()? makeMainCheckStopped;
   final GuardianClearMainAction clearMain;
   final GuardianRemoveAction remove;
   final VoidCallback onAdd, onCircle;
@@ -479,6 +483,8 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
       final error = switch (selected) {
         ZyraGuardianManagementAction.makeMain =>
           await widget.makeMain(person.id)
+              ? null
+              : widget.makeMainCheckStopped?.call() == true
               ? null
               : "That didn't go through. Please try again.",
         ZyraGuardianManagementAction.clearMain =>

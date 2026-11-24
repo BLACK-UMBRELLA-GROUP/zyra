@@ -131,6 +131,22 @@ member values and approved action links. The focused checks and optional
 with `--dart-define=ZYRA_LINE133_CAPTURE=true` and writes to
 `build/line133_preview/em90.png`.
 
+## Founder preview privacy and security
+
+LOCK 40 adds Settings → Hidden and blocked, App lock, and Sign-in & security
+for Seeker and Guardian sample accounts. The hidden and blocked list shows only
+the member's own choices; Show again and Unblock do not restore old requests or
+Journeys. App lock and the two phone privacy switches use account-bound local
+device preferences. Existing enabled App lock users retain Straight away;
+newly enabled users start at 1 minute. Four sensitive sample actions ask the
+phone's native Face ID or passcode check before changing preview state, and a
+cancelled check changes nothing. Sign-in devices and the away rules are sample
+display only; there is no live device-session or inactivity service here.
+The focused checks are in `test/zyra_privacy_security_preview_test.dart`,
+`test/zyra_privacy_sensitive_actions_shell_test.dart`, and
+`test/visual/line134_privacy_security_capture_test.dart`. The 430 × 932
+captures stay under `build/line134/screens`.
+
 ## Rendered text audit
 
 For each local queue line, run the whole-project analyzer, ordinary regression,

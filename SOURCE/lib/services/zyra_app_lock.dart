@@ -49,6 +49,8 @@
 // tools/zyra_check.py validates imports and member names, not type
 // resolution. widgets re-exports foundation, so ChangeNotifier and
 // debugPrint still come along.
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
@@ -61,9 +63,16 @@ class ZyraAppLock extends ChangeNotifier {
   /// Fresh state for lifecycle and delayed native-authentication regression
   /// tests. Authentication still uses the same local_auth platform boundary.
   @visibleForTesting
-  ZyraAppLock.forTesting({bool enabled = true, bool locked = false}) {
+  ZyraAppLock.forTesting({
+    bool enabled = true,
+    bool locked = false,
+    bool coverEnabled = true,
+    String delay = 'straight_away',
+  }) {
     _enabled = enabled;
     _locked = locked;
+    _coverEnabled = coverEnabled;
+    _delay = delay;
   }
 
   static final ZyraAppLock instance = ZyraAppLock._();
@@ -73,6 +82,10 @@ class ZyraAppLock extends ChangeNotifier {
   bool _enabled = false;
   bool _locked = false;
   bool _obscured = false;
+  bool _coverEnabled = true;
+  String _delay = 'straight_away';
+  DateTime? _leftAt;
+  Timer? _leaveTimer;
   bool _authenticating = false;
   bool? _deviceSupported;
   int _generation = 0;
@@ -84,7 +97,11 @@ class ZyraAppLock extends ChangeNotifier {
   /// first thing painted, so it cannot wait on anything.
   void hydrate() {
     _generation++;
+    _leaveTimer?.cancel();
+    _leftAt = null;
     _enabled = ZyraLocalPrefs.appLockEnabled;
+    _delay = ZyraLocalPrefs.appLockDelay;
+    _coverEnabled = ZyraLocalPrefs.switcherCoverEnabled;
     // Locked from the very first frame when enabled. Starting unlocked and
     // locking a moment later would show the app first, which is the whole
     // thing being prevented.
@@ -92,6 +109,8 @@ class ZyraAppLock extends ChangeNotifier {
   }
 
   bool get enabled => _enabled;
+  String get delay => _delay;
+  bool get switcherCoverEnabled => _coverEnabled;
 
   /// True when the user must authenticate before seeing anything.
   bool get isLocked => _enabled && _locked;
@@ -99,7 +118,35 @@ class ZyraAppLock extends ChangeNotifier {
   /// True while the app is merely inactive — the app switcher, the
   /// notification shade, a system prompt. Content is hidden but no
   /// re-authentication is required. See [handleLifecycle].
-  bool get isObscured => _obscured && _enabled && !_locked;
+  bool get isObscured => _obscured && _coverEnabled && !_locked;
+
+  Future<void> setDelay(String value) async {
+    if (value != 'straight_away' &&
+        value != 'one_minute' &&
+        value != 'fifteen_minutes' &&
+        value != 'one_hour') {
+      return;
+    }
+    _delay = value;
+    await ZyraLocalPrefs.setAppLockDelay(value);
+    if (!_disposed) notifyListeners();
+  }
+
+  Future<void> setSwitcherCoverEnabled(bool value) async {
+    _coverEnabled = value;
+    await ZyraLocalPrefs.setSwitcherCoverEnabled(value);
+    if (!_disposed) notifyListeners();
+  }
+
+  /// A sensitive action is committed only by its owner after this returns
+  /// true. An OS cancellation, unavailable device, sign-out or stale prompt
+  /// all return false, without creating a separate ZYRA credential.
+  Future<bool> confirmSensitiveAction() async {
+    if (_disposed) return false;
+    final generation = _generation;
+    final ok = await _authenticate('Confirm it’s you');
+    return ok && _isCurrent(generation);
+  }
 
   /// Whether the device can authenticate at all — biometrics OR a passcode.
   /// Null until first checked. A device with neither cannot use this
@@ -146,8 +193,15 @@ class ZyraAppLock extends ChangeNotifier {
     );
     if (!ok || !_isCurrent(generation)) return false;
 
+    if (value && !_enabled && !ZyraLocalPrefs.hasAppLockDelay) {
+      _delay = 'one_minute';
+      await ZyraLocalPrefs.setAppLockDelay(_delay);
+      if (!_isCurrent(generation)) return false;
+    }
     _enabled = value;
     _locked = false; // just proved themselves either way
+    _leftAt = null;
+    _leaveTimer?.cancel();
     await ZyraLocalPrefs.setAppLockEnabled(value);
     if (!_isCurrent(generation)) return false;
     notifyListeners();
@@ -182,6 +236,12 @@ class ZyraAppLock extends ChangeNotifier {
     _enabled = false;
     _locked = false;
     _obscured = false;
+    // AccountState binds the incoming owner before calling this. Never keep
+    // the departing owner's device presentation choices in the singleton.
+    _coverEnabled = ZyraLocalPrefs.switcherCoverEnabled;
+    _delay = ZyraLocalPrefs.appLockDelay;
+    _leftAt = null;
+    _leaveTimer?.cancel();
     notifyListeners();
   }
 
@@ -232,6 +292,7 @@ class ZyraAppLock extends ChangeNotifier {
   void dispose() {
     _generation++;
     _disposed = true;
+    _leaveTimer?.cancel();
     super.dispose();
   }
 
@@ -247,7 +308,7 @@ class ZyraAppLock extends ChangeNotifier {
   ///
   /// `paused` / `hidden` mean the app genuinely went away. That locks.
   void handleLifecycle(AppLifecycleState state) {
-    if (!_enabled) return;
+    if (!_enabled && !_coverEnabled) return;
 
     switch (state) {
       case AppLifecycleState.inactive:
@@ -260,14 +321,48 @@ class ZyraAppLock extends ChangeNotifier {
         // Not while our own OS prompt is on screen — on some platforms it
         // pauses us, and locking here would fight the unlock in progress.
         if (_authenticating) return;
-        if (!_locked) {
-          _locked = true;
-          _obscured = false;
-          notifyListeners();
+        if (_enabled && !_locked) {
+          if (_coverEnabled) _obscured = true;
+          _leftAt ??= DateTime.now();
+          final wait = switch (_delay) {
+            'one_minute' => const Duration(minutes: 1),
+            'fifteen_minutes' => const Duration(minutes: 15),
+            'one_hour' => const Duration(hours: 1),
+            _ => Duration.zero,
+          };
+          if (wait == Duration.zero) {
+            _locked = true;
+            _obscured = false;
+          } else {
+            _leaveTimer?.cancel();
+            _leaveTimer = Timer(wait, () {
+              if (_disposed || !_enabled || _leftAt == null) return;
+              _locked = true;
+              _obscured = false;
+              notifyListeners();
+            });
+          }
+        } else if (_coverEnabled && !_locked) {
+          _obscured = true;
         }
+        if (!_disposed) notifyListeners();
       case AppLifecycleState.resumed:
+        final wasLocked = _locked;
+        if (_enabled && !_locked && _leftAt != null) {
+          final wait = switch (_delay) {
+            'one_minute' => const Duration(minutes: 1),
+            'fifteen_minutes' => const Duration(minutes: 15),
+            'one_hour' => const Duration(hours: 1),
+            _ => Duration.zero,
+          };
+          if (DateTime.now().difference(_leftAt!) >= wait) _locked = true;
+        }
+        _leftAt = null;
+        _leaveTimer?.cancel();
         if (_obscured) {
           _obscured = false;
+          notifyListeners();
+        } else if (_locked != wasLocked) {
           notifyListeners();
         }
       case AppLifecycleState.detached:

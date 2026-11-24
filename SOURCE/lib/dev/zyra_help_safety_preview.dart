@@ -262,11 +262,28 @@ class _ZyraHelpSafetyPreviewState extends State<ZyraHelpSafetyPreview> {
     _card([
       _row('Delete my account', onTap: widget.onOpenDelete, danger: true),
     ]),
-    const SizedBox(height: 8),
-    _copyRoute(
-      'Want a break instead? Pause My Profile in Settings ',
-      ' Privacy. Your Journeys and Guardians stay as they are.',
-    ),
+    if (!widget.guardian) ...[
+      const SizedBox(height: 8),
+      _copyRoute(
+        'Want a break instead? Pause My Profile in Settings ',
+        ' Privacy. Your Journeys and Guardians stay as they are.',
+      ),
+    ],
+    const SizedBox(height: 36),
+    _section("IF YOU'RE AWAY"),
+    _card([
+      if (!widget.guardian)
+        _fact(
+          Icons.visibility_off_outlined,
+          'After 6 months without opening ZYRA',
+          'Your profile is hidden from Profiles. Nothing is deleted; open ZYRA to show it again.',
+        ),
+      _fact(
+        Icons.history,
+        'After 2 years',
+        'Your account is closed. We email you before, and you then have 30 days to change your mind. Never while a paid plan is running.',
+      ),
+    ]),
   ];
 
   List<Widget> _data() => [

@@ -263,7 +263,8 @@ class ZyraPhoneAccessPresentation extends StatelessWidget {
           permission: ZyraPhonePermission.faceID,
           icon: Icons.face_outlined,
           name: 'Face ID',
-          why: 'Opening ZYRA when App lock is on.',
+          why:
+              'Unlocking ZYRA and confirming it’s you before important account changes.',
         ),
       ];
   @override

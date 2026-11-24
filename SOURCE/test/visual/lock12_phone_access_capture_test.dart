@@ -57,7 +57,7 @@ void main() {
     (t) async {
       final h = await mount(t);
       expect(k('phone_access_new'), findsOneWidget);
-      expect(find.text('Hidden Profiles'), findsOneWidget);
+      expect(find.text('Hidden and blocked'), findsOneWidget);
       expect(calls, isEmpty);
       if (capture) {
         await h.capture(
@@ -92,11 +92,12 @@ void main() {
     },
   );
   testWidgets(
-    'Guardian keeps Privacy ordering and opens same permission page',
+    'Guardian keeps the locked Privacy row and opens same permission page',
     (t) async {
       final h = await mount(t, guardian: true);
-      expect(find.text('Guardian privacy'), findsOneWidget);
-      expect(find.text('Hidden Profiles'), findsNothing);
+      expect(find.text('Guardian privacy'), findsNothing);
+      expect(find.text('Hidden and blocked'), findsOneWidget);
+      expect(find.text('Pause My Profile'), findsNothing);
       await h.tap('concept_settings_phoneAccess');
       h.assertPage('phone_access');
       expect(find.text('What ZYRA can use on this phone.'), findsOneWidget);
@@ -142,7 +143,7 @@ void main() {
     for (final text in [
       'Scanning ZYRA Codes, taking photos and the identity check.',
       'Choosing your profile photos. ZYRA only sees the ones you pick.',
-      'Opening ZYRA when App lock is on.',
+      'Unlocking ZYRA and confirming it’s you before important account changes.',
       'Your approximate area is used to measure distance in Filters. It is never shown to anyone.',
       'ZYRA can save photos back to your library when you download them.',
     ]) {

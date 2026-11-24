@@ -11,6 +11,7 @@ import 'support/zyra_hidden_dev_controls_driver.dart';
 import 'package:zyra/dev/zyra_journey_peer_guardians_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
+import 'package:zyra/dev/zyra_privacy_security_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_request_activity_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_settings_details.dart';
@@ -520,7 +521,7 @@ void main() {
             settingsDetail: 'recovery',
           ),
         );
-        expect(find.byType(ZyraConceptSettingsOverview), findsOneWidget);
+        expect(find.byType(ZyraPrivacySecurityPreview), findsOneWidget);
         expect(
           find.byType(ZyraConceptSettingsDetailPresentation),
           findsNothing,
@@ -529,7 +530,7 @@ void main() {
         expect(owner.latest.accountDestination, 'signInSecurity');
         expect(owner.latest.settingsDetail, isNull);
         expect(
-          find.textContaining('Apple or Google handles provider sign-in.'),
+          find.textContaining('Your Apple ID protects your account'),
           findsOneWidget,
         );
         expect(
@@ -538,7 +539,7 @@ void main() {
         );
         final captured = owner.latest;
         await owner.mount(tester, checkpoint: captured, guardian: guardian);
-        expect(find.byType(ZyraConceptSettingsOverview), findsOneWidget);
+        expect(find.byType(ZyraPrivacySecurityPreview), findsOneWidget);
         expect(
           find.byType(ZyraConceptSettingsDetailPresentation),
           findsNothing,
@@ -552,9 +553,8 @@ void main() {
       ('appLock', 'appLock'),
       ('advanced', 'deleteAccount'),
       ('advanced', 'resetProfile'),
-      ('visibility', 'discovery'),
+      if (!guardian) ('visibility', 'discovery'),
       if (!guardian) ('hiddenProfiles', 'hiddenProfiles'),
-      if (guardian) ('guardianPrivacy', 'discovery'),
       ('notificationSettings', 'notifications'),
       ('feedback', 'feedback'),
       ('privacyData', 'privacyPolicy'),
@@ -767,7 +767,7 @@ void main() {
               ['settings', 'account_action'],
               'hiddenProfiles',
               null,
-              ['settings'],
+              ['settings', 'account_action'],
             ),
             (
               false,

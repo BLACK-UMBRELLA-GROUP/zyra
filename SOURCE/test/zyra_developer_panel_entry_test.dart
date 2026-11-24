@@ -952,6 +952,10 @@ void main() {
       () => ZyraAppLock.instance.setEnabled(true),
     );
     expect(enabled, isTrue);
+    // This regression exercises the legacy immediate-lock path explicitly.
+    await tester.runAsync(
+      () => ZyraAppLock.instance.setDelay('straight_away'),
+    );
     suspend(tester);
     tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.hidden);
     tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);

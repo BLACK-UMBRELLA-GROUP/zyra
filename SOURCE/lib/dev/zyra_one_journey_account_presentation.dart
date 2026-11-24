@@ -771,20 +771,15 @@ class ZyraConceptSettingsPresentation extends StatelessWidget {
                     title: 'PRIVACY',
                     smooth: smooth,
                     children: [
-                      row(
-                        'Pause My Profile',
-                        ZyraConceptAccountAction.visibility,
-                      ),
-                      if (data.guardian)
-                        row(
-                          'Guardian privacy',
-                          ZyraConceptAccountAction.guardianPrivacy,
-                        ),
                       if (!data.guardian)
                         row(
-                          'Hidden Profiles',
-                          ZyraConceptAccountAction.hiddenProfiles,
+                          'Pause My Profile',
+                          ZyraConceptAccountAction.visibility,
                         ),
+                      row(
+                        'Hidden and blocked',
+                        ZyraConceptAccountAction.hiddenProfiles,
+                      ),
                       row(
                         'Phone access',
                         ZyraConceptAccountAction.phoneAccess,
@@ -1118,7 +1113,7 @@ class _SettingsRow extends StatelessWidget {
     'App lock' => Icons.lock_outline_rounded,
     'Advanced' => Icons.tune_rounded,
     'Guardian privacy' || 'Pause My Profile' => Icons.visibility_outlined,
-    'Hidden Profiles' => Icons.person_off_outlined,
+    'Hidden and blocked' => Icons.person_off_outlined,
     'Phone access' => Icons.phonelink_lock_outlined,
     'Notifications & emails' => Icons.notifications_outlined,
     'Haptics' => Icons.vibration,

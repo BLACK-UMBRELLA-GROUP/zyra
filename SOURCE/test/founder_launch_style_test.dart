@@ -2793,6 +2793,14 @@ void main() {
   testWidgets(
     'protected Founder Guardian management changes only its confirmed target',
     (tester) async {
+      final messenger =
+          TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+      const auth = MethodChannel('plugins.flutter.io/local_auth');
+      messenger.setMockMethodCallHandler(auth, (call) async {
+        if (call.method == 'authenticate') return true;
+        return null;
+      });
+      addTearDown(() => messenger.setMockMethodCallHandler(auth, null));
       final destination = await tester.runAsync(ZyraSessionRouter.resolveHome);
       await mount(tester, destination!, disableAnimations: false);
       tester.widget<FloatingNavBar>(find.byType(FloatingNavBar)).onTap(3);

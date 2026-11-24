@@ -26,6 +26,8 @@ import '../services/zyra_wali_link_service.dart' show WaliLinkedPerson;
 import '../services/zyra_wali_journey_service.dart' show WaliJourneyView;
 import '../services/zyra_family_messaging_service.dart';
 import '../services/zyra_account_state.dart';
+import '../services/zyra_app_lock.dart';
+import '../services/zyra_local_prefs.dart';
 import '../services/zyra_profile_video_service.dart';
 import '../services/zyra_guardian_info_service.dart' show GuardianInfo;
 import '../screens/wali/family_messaging_screens.dart';
@@ -93,6 +95,7 @@ import 'zyra_draft_compatibility_score_designs.dart';
 import 'zyra_draft_compatibility_store_presentation.dart';
 import 'zyra_draft_browse_utility_presentation.dart';
 import 'zyra_help_safety_preview.dart';
+import 'zyra_privacy_security_preview.dart';
 import 'zyra_email_settings_preview.dart';
 import 'zyra_draft_safety_advice_presentation.dart';
 import 'zyra_draft_code_entry.dart';
@@ -169,6 +172,7 @@ class ZyraOneJourneyShellFixture {
     this.profileVideoMedia = const ZyraProfileVideoMedia(),
     this.legacyAmberQuickCheck = false,
     this.seekerPhotos,
+    this.confirmSensitiveAction,
   });
 
   final ViewRequestDraftModel? model;
@@ -199,6 +203,9 @@ class ZyraOneJourneyShellFixture {
   final ZyraProfileVideoMedia profileVideoMedia;
   final bool legacyAmberQuickCheck;
   final List<String>? seekerPhotos;
+
+  /// Test-only native-auth boundary; the running preview uses the OS prompt.
+  final Future<bool> Function()? confirmSensitiveAction;
 }
 
 /// One caller-owned fixture update. No account or disclosure grant is carried.
@@ -1229,6 +1236,7 @@ class _ZyraOneJourneyConceptShellState
   bool _browseOptionsOpen = false;
   String? _browseOptionsPersonId;
   int _guardianPage = 0;
+  bool _makeMainCheckStopped = false;
   bool _guardianInvitationCancelled = false;
   late DateTime _guardianInvitationClockStart = widget.previewClock == null
       ? _previewNow
@@ -1247,6 +1255,12 @@ class _ZyraOneJourneyConceptShellState
   int? _guardianJourneyAttemptRevision;
   _GuardianCompatibilityTarget? _guardianCompatibilityTarget;
   ({String id, int revision, int navigatorStamp})? _hiddenProfileRestore;
+  bool _otherSampleDevicesPresent = true;
+  final _privacyDates = <String, String>{
+    'draft-zainab': '12 Nov',
+    'draft-hana': '18 Nov',
+    'draft-safiya': '2 Nov',
+  };
   bool _journeyOptionsOpen = false;
   String? _expandedJourneyOptionsId;
   String? _sampleEndedArchiveAttemptId;
@@ -1800,7 +1814,8 @@ class _ZyraOneJourneyConceptShellState
       action != null &&
       _settingsOverviewActions.contains(action) &&
       (_guardianRole
-          ? action != ZyraConceptAccountAction.hiddenProfiles
+          ? action != ZyraConceptAccountAction.visibility &&
+                action != ZyraConceptAccountAction.guardianPrivacy
           : action != ZyraConceptAccountAction.guardianPrivacy);
 
   bool _canRestoreSettingsDetail(
@@ -2689,7 +2704,7 @@ class _ZyraOneJourneyConceptShellState
     if (await _confirmConceptAction(
       title: 'Hide $name?',
       body:
-          '$name won’t appear in your Profiles again. You can show her again from Settings → Hidden Profiles.',
+          '$name won’t appear in your Profiles again. You can show her again from Settings → Hidden and blocked.',
       primaryLabel: 'Hide profile',
       secondaryLabel: 'Keep profile',
       personName: name,
@@ -2701,6 +2716,7 @@ class _ZyraOneJourneyConceptShellState
     )) {
       _move(() {
         if (!_model.hide(person.id)) return;
+        _markPrivacyDate(person.id);
         _pages.clear();
         _personId = null;
       });
@@ -4109,7 +4125,10 @@ class _ZyraOneJourneyConceptShellState
       () {
         if (!current()) return;
         _move(() {
-          if (_model.unhide(person.id)) _pages.removeLast();
+          if (_model.unhide(person.id)) {
+            _privacyDates.remove(person.id);
+            _pages.removeLast();
+          }
         });
       },
       primary: true,
@@ -4145,7 +4164,10 @@ class _ZyraOneJourneyConceptShellState
               ),
         )) {
           _move(() {
-            if (_model.block(person.id)) _pages.removeLast();
+            if (_model.block(person.id)) {
+              _markPrivacyDate(person.id);
+              _pages.removeLast();
+            }
           });
         }
       },
@@ -8225,8 +8247,17 @@ class _ZyraOneJourneyConceptShellState
         );
       },
       makeMain: (id) async {
+        _makeMainCheckStopped = false;
         final guardian = target(id);
         if (guardian == null || guardian.isMain) return false;
+        final current = _accountFreshGuard();
+        if (!await _confirmSensitiveAction()) {
+          _makeMainCheckStopped = true;
+          return false;
+        }
+        if (!current() || target(id) == null) {
+          return false;
+        }
         _act(() {
           _conceptMainGuardianId = id;
           _model.setOwnMainGuardianPresent(true);
@@ -8236,6 +8267,7 @@ class _ZyraOneJourneyConceptShellState
         });
         return true;
       },
+      makeMainCheckStopped: () => _makeMainCheckStopped,
       clearMain: (id) async {
         if (target(id)?.isMain != true) return false;
         _act(() => _model.setOwnMainGuardianPresent(false));
@@ -9626,6 +9658,7 @@ class _ZyraOneJourneyConceptShellState
         : null,
     guardianCount: '${_conceptGuardianPeople.length}',
     signedInWith: 'Apple',
+    appLock: ZyraAppLock.instance.enabled,
     backgroundLabel: _accountSession.palette.label.replaceAll(' · Current', ''),
     hapticLabel: _accountSession.hapticLevel.label,
     gold: false,
@@ -9635,6 +9668,130 @@ class _ZyraOneJourneyConceptShellState
     smoothSettings: false,
     membershipPaymentHistory: _membershipPaymentHistory,
   );
+
+  Future<bool> _confirmSensitiveAction() {
+    // Fixture ownership exists only in test/capture routes. Old interaction
+    // fixtures remain deterministic; LOCK 40 tests supply true/false fakes.
+    if (widget.fixture case final fixture?) {
+      return fixture.confirmSensitiveAction?.call() ?? Future.value(true);
+    }
+    return ZyraAppLock.instance.confirmSensitiveAction();
+  }
+
+  String _privacyDate(String id) => _privacyDates[id] ?? _todayPrivacyDate();
+
+  String _todayPrivacyDate() {
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    final now = DateTime.now();
+    return '${now.day} ${months[now.month - 1]}';
+  }
+
+  void _markPrivacyDate(String id) => _privacyDates[id] = _todayPrivacyDate();
+
+  Widget _privacySecurityView(ZyraConceptAccountAction action) {
+    final fresh = _accountFreshGuard();
+    final page = switch (action) {
+      ZyraConceptAccountAction.hiddenProfiles =>
+        ZyraPrivacySecurityPage.hiddenBlocked,
+      ZyraConceptAccountAction.appLock => ZyraPrivacySecurityPage.appLock,
+      _ => ZyraPrivacySecurityPage.signIn,
+    };
+    final people = _guardianRole
+        ? [
+            for (final person in draftGuardians)
+              (id: person.id, firstName: person.firstName),
+          ]
+        : [
+            for (final person in draftProfiles)
+              (id: person.id, firstName: person.firstName),
+          ];
+    List<ZyraPrivacyPerson> visible(bool blocked) => [
+      for (final person in people)
+        if (blocked
+            ? _model.blockedPeers.contains(person.id)
+            : _model.hiddenPeers.contains(person.id) &&
+                  !_model.blockedPeers.contains(person.id))
+          ZyraPrivacyPerson(
+            id: person.id,
+            firstName: person.firstName,
+            date: _privacyDate(person.id),
+          ),
+    ];
+    return ZyraPrivacySecurityPreview(
+      page: page,
+      blocked: visible(true),
+      hidden: visible(false),
+      onUnblock: (id) {
+        if (!fresh() || !people.any((person) => person.id == id)) return;
+        final name = people.firstWhere((person) => person.id == id).firstName;
+        if (!_model.blockedPeers.contains(id)) return;
+        _act(() {
+          if (_model.unblock(id)) {
+            _privacyDates.remove(id);
+            _notice = 'Unblocked $name. They were not told.';
+          }
+        });
+      },
+      onShowAgain: (id) {
+        if (!fresh() || !people.any((person) => person.id == id)) return;
+        final name = people.firstWhere((person) => person.id == id).firstName;
+        if (!_model.isHidden(id)) return;
+        _act(() {
+          if (_model.unhide(id)) {
+            _privacyDates.remove(id);
+            _notice = '$name can appear in your Profiles again.';
+          }
+        });
+      },
+      lockEnabled: ZyraAppLock.instance.enabled,
+      lockDelay: ZyraAppLock.instance.delay,
+      switcherCover: ZyraLocalPrefs.switcherCoverEnabled,
+      hideMessageText: ZyraLocalPrefs.messageTextHidden,
+      onLockChanged: (enabled) async {
+        if (!fresh()) return false;
+        final changed = await ZyraAppLock.instance.setEnabled(enabled);
+        if (changed && fresh()) _act(() {});
+        return changed;
+      },
+      onDelayChanged: (delay) {
+        if (!fresh()) return;
+        unawaited(ZyraAppLock.instance.setDelay(delay));
+        _act(() {});
+      },
+      onSwitcherCoverChanged: (enabled) {
+        if (!fresh()) return;
+        unawaited(ZyraAppLock.instance.setSwitcherCoverEnabled(enabled));
+        _act(() {});
+      },
+      onMessageTextChanged: (enabled) {
+        if (!fresh()) return;
+        unawaited(ZyraLocalPrefs.setMessageTextHidden(enabled));
+        _act(() {});
+      },
+      otherDevicesPresent: _otherSampleDevicesPresent,
+      onSignOutOtherDevices: () async {
+        if (!fresh() || !_otherSampleDevicesPresent) return;
+        if (!await _confirmSensitiveAction() || !fresh()) return;
+        _act(() {
+          _otherSampleDevicesPresent = false;
+          _notice = 'All other devices are signed out.';
+        });
+      },
+    );
+  }
 
   Future<bool> _confirmConceptAction({
     required String title,
@@ -10273,7 +10430,7 @@ class _ZyraOneJourneyConceptShellState
         ZyraConceptAccountAction.advanced => 'Advanced',
         ZyraConceptAccountAction.guardianPrivacy => 'Guardian privacy',
         ZyraConceptAccountAction.visibility => 'Pause My Profile',
-        ZyraConceptAccountAction.hiddenProfiles => 'Hidden profiles',
+        ZyraConceptAccountAction.hiddenProfiles => 'Hidden and blocked',
         ZyraConceptAccountAction.notificationSettings =>
           'Notifications & emails',
         ZyraConceptAccountAction.membership => 'Membership',
@@ -10290,6 +10447,11 @@ class _ZyraOneJourneyConceptShellState
 
   Widget _accountActionView() {
     final action = _accountDestination;
+    if (action == ZyraConceptAccountAction.signInSecurity ||
+        action == ZyraConceptAccountAction.appLock ||
+        action == ZyraConceptAccountAction.hiddenProfiles) {
+      return _privacySecurityView(action!);
+    }
     if (action == ZyraConceptAccountAction.notificationSettings) {
       final fresh = _accountFreshGuard();
       return ZyraEmailSettingsPreview(
@@ -11129,7 +11291,7 @@ class _ZyraOneJourneyConceptShellState
       if (!await _confirmConceptAction(
         title: '${hide ? 'Hide' : 'Block'} $name and end your Journey?',
         body: hide
-            ? 'Hiding ends this Journey permanently first. Your Timeline stays. $name won’t appear again. You can undo this in Settings → Hidden Profiles.'
+            ? 'Hiding ends this Journey permanently first. Your Timeline stays. $name won’t appear again. You can undo this in Settings → Hidden and blocked.'
             : 'Blocking ends this Journey permanently first. Your Timeline stays. $name can’t see or contact you and won’t be told you blocked them.',
         primaryLabel: hide ? 'End Journey and hide' : 'End Journey and block',
         secondaryLabel: 'Keep this Journey',
@@ -11154,6 +11316,7 @@ class _ZyraOneJourneyConceptShellState
         )) {
           return;
         }
+        _markPrivacyDate(person.id);
         _pages.clear();
         _personId = null;
         _tab = 1;
@@ -11186,6 +11349,7 @@ class _ZyraOneJourneyConceptShellState
                   ? _model.hide(person.id)
                   : _model.block(person.id);
               if (!changed) return;
+              _markPrivacyDate(person.id);
               _pages.clear();
               _tab = 0;
               _personId = null;
@@ -11266,6 +11430,7 @@ class _ZyraOneJourneyConceptShellState
         }
         _move(() {
           if (!_model.block(person.id)) return;
+          _markPrivacyDate(person.id);
           _pages.clear();
           _tab = 0;
           _personId = null;
@@ -11278,13 +11443,18 @@ class _ZyraOneJourneyConceptShellState
       onOpenDelete: () {
         if (current()) _open('help_delete');
       },
-      onRequestData: () {
-        if (current() && _helpDataRequestedAt == null) {
-          _act(() => _helpDataRequestedAt = DateTime.now());
+      onRequestData: () async {
+        if (!current() || _helpDataRequestedAt != null) return;
+        if (!await _confirmSensitiveAction() ||
+            !current() ||
+            _helpDataRequestedAt != null) {
+          return;
         }
+        _act(() => _helpDataRequestedAt = DateTime.now());
       },
-      onDelete: () {
+      onDelete: () async {
         if (!current()) return;
+        if (!await _confirmSensitiveAction() || !current()) return;
         _move(() {
           _helpClosedAt = DateTime.now();
           _pages.add('help_closed');

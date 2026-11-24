@@ -172,6 +172,71 @@ void main() {
   });
 
   test(
+    'legacy enabled lock keeps immediate while new enable starts at one minute',
+    () async {
+      await ZyraLocalPrefs.setAppLockEnabled(true);
+      final legacy = createLock();
+      legacy.hydrate();
+      expect(legacy.delay, 'straight_away');
+      legacy.handleLifecycle(AppLifecycleState.paused);
+      expect(legacy.isLocked, isTrue);
+
+      await ZyraLocalPrefs.setAppLockEnabled(false);
+      final newcomer = createLock(enabled: false);
+      expect(await newcomer.setEnabled(true), isTrue);
+      expect(newcomer.delay, 'one_minute');
+      expect(ZyraLocalPrefs.appLockDelay, 'one_minute');
+      newcomer.handleLifecycle(AppLifecycleState.paused);
+      expect(newcomer.isLocked, isFalse);
+    },
+  );
+
+  testWidgets('phone cover hides a delayed lock and its timer locks later', (
+    tester,
+  ) async {
+    final lock = ZyraAppLock.forTesting(
+      coverEnabled: true,
+      delay: 'one_minute',
+    );
+    locks.add(lock);
+    lock.handleLifecycle(AppLifecycleState.paused);
+    expect(lock.isObscured, isTrue);
+    expect(lock.isLocked, isFalse);
+    await tester.pump(const Duration(minutes: 1));
+    expect(lock.isLocked, isTrue);
+    expect(lock.isObscured, isFalse);
+  });
+
+  test(
+    'turning the phone cover off reveals the inactive switcher view',
+    () async {
+      final lock = ZyraAppLock.forTesting(coverEnabled: true);
+      locks.add(lock);
+      lock.handleLifecycle(AppLifecycleState.inactive);
+      expect(lock.isObscured, isTrue);
+      await lock.setSwitcherCoverEnabled(false);
+      expect(lock.isObscured, isFalse);
+    },
+  );
+
+  test(
+    'account change cannot inherit the previous owner switcher choice',
+    () async {
+      final lock = ZyraAppLock.forTesting(enabled: false);
+      locks.add(lock);
+      await ZyraLocalPrefs.setSwitcherCoverEnabled(false);
+      lock.hydrate();
+      expect(lock.switcherCoverEnabled, isFalse);
+      await ZyraLocalPrefs.bindAccount('member-b');
+      lock.clearForSignOut();
+      expect(ZyraLocalPrefs.switcherCoverEnabled, isTrue);
+      expect(lock.switcherCoverEnabled, isTrue);
+      lock.handleLifecycle(AppLifecycleState.inactive);
+      expect(lock.isObscured, isTrue);
+    },
+  );
+
+  test(
     'current enable and disable keep device-passcode and persistence',
     () async {
       final lock = createLock(enabled: false);

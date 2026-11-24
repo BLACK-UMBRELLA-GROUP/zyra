@@ -302,11 +302,8 @@ void main() {
             ZyraConceptAccountAction.signInSecurity,
             ZyraConceptAccountAction.appLock,
             ZyraConceptAccountAction.advanced,
-            ZyraConceptAccountAction.visibility,
-            if (guardian)
-              ZyraConceptAccountAction.guardianPrivacy
-            else
-              ZyraConceptAccountAction.hiddenProfiles,
+            if (!guardian) ZyraConceptAccountAction.visibility,
+            ZyraConceptAccountAction.hiddenProfiles,
             ZyraConceptAccountAction.phoneAccess,
             ZyraConceptAccountAction.notificationSettings,
             ZyraConceptAccountAction.helpSupport,

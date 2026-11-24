@@ -48,7 +48,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Scanning ZYRA Codes, taking photos and the identity check.</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Opening ZYRA when App lock is on.</string>
+	<string>Unlocking ZYRA and confirming it’s you before important account changes.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your approximate area is used to measure distance in Filters. It is never shown to anyone.</string>
 	<key>NSLocationDefaultAccuracyReduced</key>

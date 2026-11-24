@@ -958,6 +958,7 @@ class BaselineHarness {
     bool restoreLocation = true,
     DateTime Function()? previewClock,
     List<String>? seekerPhotos,
+    Future<bool> Function()? confirmSensitiveAction,
     List<NavigatorObserver> navigatorObservers = const [],
   }) async {
     this.guardian = guardian;
@@ -972,6 +973,7 @@ class BaselineHarness {
     shellFixture = ZyraShellTestFixture(
       circleArrivalsFor: circleArrivalsFor,
       seekerPhotos: seekerPhotos,
+      confirmSensitiveAction: confirmSensitiveAction,
     );
     final capacity = initialSeekerBasic ? 1 : 3;
     final defaultModel = receivedRequest

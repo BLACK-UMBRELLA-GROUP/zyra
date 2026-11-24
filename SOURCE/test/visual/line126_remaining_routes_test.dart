@@ -17,6 +17,7 @@ import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_info_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_one_journey_settings_details.dart';
+import 'package:zyra/dev/zyra_privacy_security_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_switch_signup_preview.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_preview.dart';
@@ -43,7 +44,6 @@ const _commonOverviews = [
   ZyraConceptAccountAction.privacyData,
 ];
 const _commonDetails = [
-  (ZyraConceptAccountAction.appLock, ZyraConceptSettingsDetail.appLock),
   (ZyraConceptAccountAction.advanced, ZyraConceptSettingsDetail.resetProfile),
   (ZyraConceptAccountAction.advanced, ZyraConceptSettingsDetail.deleteAccount),
   (
@@ -237,8 +237,8 @@ void _registerAccountCases(
       : ZyraConceptAccountAction.visibility;
   for (final action in [
     ..._commonOverviews,
-    privacy,
-    if (!guardian) ZyraConceptAccountAction.hiddenProfiles,
+    if (!guardian) privacy,
+    ZyraConceptAccountAction.hiddenProfiles,
   ]) {
     _case('$prefix overview ${action.name}', (tester) async {
       final h = await _mount(
@@ -256,6 +256,18 @@ void _registerAccountCases(
         );
         expect(view.settings.journeyEmails, isTrue);
         expect(view.settings.journeyRequests, isTrue);
+      } else if (action == ZyraConceptAccountAction.signInSecurity ||
+          action == ZyraConceptAccountAction.appLock ||
+          action == ZyraConceptAccountAction.hiddenProfiles) {
+        final view = tester.widget<ZyraPrivacySecurityPreview>(
+          find.byType(ZyraPrivacySecurityPreview),
+        );
+        expect(view.page, switch (action) {
+          ZyraConceptAccountAction.signInSecurity =>
+            ZyraPrivacySecurityPage.signIn,
+          ZyraConceptAccountAction.appLock => ZyraPrivacySecurityPage.appLock,
+          _ => ZyraPrivacySecurityPage.hiddenBlocked,
+        });
       } else {
         final view = tester.widget<ZyraConceptSettingsOverview>(
           find.byType(ZyraConceptSettingsOverview),
@@ -271,12 +283,7 @@ void _registerAccountCases(
   }
   for (final (action, detail) in [
     ..._commonDetails,
-    (privacy, ZyraConceptSettingsDetail.discovery),
-    if (!guardian)
-      (
-        ZyraConceptAccountAction.hiddenProfiles,
-        ZyraConceptSettingsDetail.hiddenProfiles,
-      ),
+    if (!guardian) (privacy, ZyraConceptSettingsDetail.discovery),
   ]) {
     _case('$prefix detail ${detail.name}', (tester) async {
       final h = await _mount(
