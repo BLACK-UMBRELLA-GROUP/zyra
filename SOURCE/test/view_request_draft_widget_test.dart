@@ -17,6 +17,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
 import 'package:zyra/dev/zyra_concept_preview_boundary.dart';
 import 'package:zyra/dev/zyra_draft_timeline_presentation.dart';
+import 'package:zyra/dev/zyra_membership_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
@@ -25,6 +26,7 @@ import 'package:zyra/dev/zyra_request_activity_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_journey_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_options.dart';
 import 'package:zyra/dev/zyra_one_journey_tab.dart';
+import 'package:zyra/dev/zyra_subscription_wallet_draft.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/dev/zyra_one_journey_options_page.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
@@ -4275,6 +4277,15 @@ void main() {
         await _nav(tester, 4);
         await _press(tester, 'concept_membership');
         expect(find.text('Membership'), findsWidgets);
+        expect(find.byType(ZyraMembershipPreview), findsOneWidget);
+        await _nav(tester, 4);
+        final fixture = zyraShellFixtureFor(tester);
+        expect(fixture.setOtherCoverage(ZyraWalletCoverage.none), isTrue);
+        expect(fixture.setOtherReadiness(ZyraWalletReadiness.ready), isTrue);
+        await tester.pumpAndSettle();
+        await _press(tester, 'concept_subscriptions');
+        await _press(tester, 'wallet_profiles_dot_target_1');
+        await _press(tester, 'wallet_primary_guardian');
         expect(_key('membership-section-seeker'), findsOneWidget);
         await _press(tester, 'membership-section-seeker');
         expect(find.text('Up to 3 active Journeys'), findsOneWidget);
@@ -4289,6 +4300,11 @@ void main() {
           tester,
           'simplified_membership_features_standard',
         );
+        expect(
+          fixture.setOtherCoverage(ZyraWalletCoverage.individualOne),
+          isTrue,
+        );
+        await tester.pumpAndSettle();
         await _press(tester, 'draft_rules');
         await _press(tester, 'draft_role_guardian');
         for (final index in [0, 1, 2, 3]) {

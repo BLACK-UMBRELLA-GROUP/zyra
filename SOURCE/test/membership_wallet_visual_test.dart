@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/data/zyra_membership_catalog.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_store_presentation.dart';
+import 'package:zyra/dev/zyra_membership_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
@@ -445,7 +446,7 @@ void main() {
       }
 
       await _tap(tester, 'concept_membership');
-      expect(find.byType(ZyraConceptMembershipPresentation), findsOneWidget);
+      expect(find.byType(ZyraMembershipPreview), findsOneWidget);
       await returnZyraPreviewPage(tester);
       expect(profile, findsOneWidget);
 

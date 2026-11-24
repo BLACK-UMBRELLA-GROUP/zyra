@@ -147,6 +147,27 @@ The focused checks are in `test/zyra_privacy_security_preview_test.dart`,
 `test/visual/line134_privacy_security_capture_test.dart`. The 430 × 932
 captures stay under `build/line134/screens`.
 
+## Founder preview Membership
+
+LOCK 42 replaces Profile → Membership for Seeker One and Guardian One. The
+page uses the shared Settings row, page title and floating surfaces. Billing
+amounts come from the membership catalogue; the local account's read-only
+sample record supplies its date and trial field. No record means no date or
+trial wording. There is no new developer control or live purchase reader.
+
+Compatibility Unlocks and Compare plans open their existing pages. Family
+places, coverage information and Restore purchases use the approved shared
+preview toasts. Cancel membership uses the existing App Store subscriptions
+action. A Family-covered member sees an informational payer card without a
+Cancel action. Basic members retain the existing plans page.
+
+Focused behavior tests are `test/zyra_membership_preview_test.dart`; actual
+Profile routes, external-action mocks and rendered-text checks are in
+`test/visual/line136_membership_capture_test.dart`. Enable its five master
+captures and narrow-screen replay with `--dart-define=ZYRA_LINE136_CAPTURE=true`.
+The output stays under `build/line136/`. The as-built record is
+`../PRODUCT/APPROVED/MEMBERSHIP_PAGE/BUILT/LINE136/HANDOVER_2026-11-24.md`.
+
 ## Rendered text audit
 
 For each local queue line, run the whole-project analyzer, ordinary regression,

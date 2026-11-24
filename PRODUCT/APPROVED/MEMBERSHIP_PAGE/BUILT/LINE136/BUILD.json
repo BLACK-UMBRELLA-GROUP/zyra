@@ -1,0 +1,90 @@
+{
+  "line": 136,
+  "authority": [
+    "LOCK 42",
+    "DR-ZYRA-374",
+    "QUESTIONS 211"
+  ],
+  "built_on": "2026-11-24",
+  "timestamp_utc": "2026-11-24T22:39:37.516626+00:00",
+  "source_base": "a8381e127b4b1ff594af8adb488d0121cd78c280",
+  "source_commit": null,
+  "source_commit_note": "Stamped immediately after the implementation commit, before push.",
+  "flutter_version": "3.44.2",
+  "build_mode": "Flutter widget-test Founder preview renderer",
+  "sample_only": true,
+  "native_build": false,
+  "phone_install": false,
+  "server_apply": false,
+  "source_input_sha256": {
+    "SOURCE/lib/dev/zyra_membership_preview.dart": "8049de240dba7250e11c0bce10041169c63bd5ae8db84a35a03f5c8f9b200423",
+    "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart": "5e4a77824b2612224da2bc3dd8574f993cefac1012fddfbbc32482536350886e",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart": "bdc2c5009f1939fe8b51e2512bcc99749f1919bae3b97a890b868fc3520d3cba",
+    "SOURCE/test/membership_wallet_visual_test.dart": "23d0c45bddb31462e4e5fc989dcc519fee487eefe0af2be217e17913571c4229",
+    "SOURCE/test/one_journey_basic_joining_history_test.dart": "7a6ed7a0070958c5aa0981a1adbfd3fca56ef6c3dad6fbcdd55fc1e90823654e",
+    "SOURCE/test/one_journey_pull_down_routes_test.dart": "7e3ed83cf8a32ea022b32871df84ba22d394facbfb0e79d19a630441f0fd217a",
+    "SOURCE/test/profile_tab_monogram_contract_test.dart": "bdb39a4dc32f45cfa44d2866042d15ca87d10fae59c340793a80d69656189410",
+    "SOURCE/test/support/zyra_hidden_dev_controls_driver.dart": "d0d284e53895c2ad288d9572a8f601fc9584dbf44f3de94b83ee10601b52df26",
+    "SOURCE/test/view_request_draft_widget_test.dart": "f2a5817de9719e50e08988f07d64f54c0a3692137fc3e6233b44a62eff34cf2c",
+    "SOURCE/test/visual/baseline_capture_support.dart": "c8f6f0ca67eacf331a4a99e4c06fe31cf0d7100feaefab7c3c690dfee4ebbc47",
+    "SOURCE/test/visual/line119_membership_capture_test.dart": "50e44a86a6c539905757970c74c2ff788d86aefe5be8ed2d82122803a7494a68",
+    "SOURCE/test/visual/line126_remaining_routes_test.dart": "be9b3393b0b01644c25736a9dc72d7ef81d6fc02966a4ea072b2f0bacf56fa21",
+    "SOURCE/test/visual/line136_membership_capture_test.dart": "c41bae6236702d022c05e1785441b026086417ece57d82161dd1ff4c27c9059f",
+    "SOURCE/test/whole_app_settings_destinations_test.dart": "99d26acfaf83c7a450cddf0a284e1a1162818d07c8d3bf4676c59b544a86bd0c",
+    "SOURCE/test/zyra_membership_preview_test.dart": "45b95103f0483918f5f7e20207a9640718905e281d5ac402666c9f914ce527ed"
+  },
+  "analyzer": {
+    "command": "node tooling/no_git_driver.mjs flutter analyze --no-pub",
+    "result": "PASS no issues"
+  },
+  "ordinary_regression": {
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter json",
+    "counts": {
+      "success": 7911,
+      "skipped": 213
+    },
+    "elapsed_ms": 494235,
+    "result": "PASS"
+  },
+  "focused": {
+    "behavior_tests": 16,
+    "settings_and_capture": 50,
+    "migrated_navigation_and_state": 157,
+    "rendered_text_views": 11,
+    "rendered_text_failures": 0,
+    "master_route_captures": 5,
+    "audit_controls": "PASS in ordinary regression and focused replay",
+    "commands": [
+      "node tooling/no_git_driver.mjs flutter test --no-pub --dart-define=ZYRA_LINE136_CAPTURE=true test/visual/line136_membership_capture_test.dart test/whole_app_settings_destinations_test.dart",
+      "node tooling/no_git_driver.mjs flutter test --no-pub test/membership_wallet_visual_test.dart test/one_journey_pull_down_routes_test.dart test/profile_tab_monogram_contract_test.dart test/view_request_draft_widget_test.dart"
+    ]
+  },
+  "full_gate_history": {
+    "failed_full_runs": 1,
+    "first_run": {
+      "passed": 7903,
+      "failed": 8,
+      "skipped": 213,
+      "cause": "Six retired Membership destination assertions and two old private Settings row selectors; migrated without removing their guard/navigation assertions."
+    }
+  },
+  "comparison": "MATCH layout/content/actions/states with mandatory shared typography/surface and retained line119 safe-area differences; not pixel identity. See COMPARISON.json.",
+  "independent_review": "PASS before commit: source contract, guards, and exact final five PNG hashes.",
+  "held_line135": {
+    "path": "SOURCE/build/held/LINE135",
+    "files": 39,
+    "manifest_sha256": "6ab349219e9eff8d141bcf3648339a6a705e95563331c5cf56dff2b74c3508f6",
+    "baseline": "a8381e127b4b1ff594af8adb488d0121cd78c280",
+    "all_candidate_hashes_verified": true,
+    "ignored": true
+  },
+  "public_checks": {
+    "A": "Exact outgoing commit range is scanned with trusted defaults and full redaction before push.",
+    "B": "Reviewed governed product/catalogue wording and PNG encoded-byte false positives; no private material or key hits.",
+    "C": "No roadmap row completed",
+    "D": "No version change",
+    "E": "Neutral community wording",
+    "F": "Root and SOURCE READMEs updated"
+  },
+  "map": "Regenerated; own spec and handover mapped. Other catalogue warnings are outside line136 and were not changed."
+}

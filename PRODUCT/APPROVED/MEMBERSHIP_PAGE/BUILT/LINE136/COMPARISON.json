@@ -1,0 +1,139 @@
+{
+  "viewport": [
+    430,
+    932
+  ],
+  "master_text_scale": 1.0,
+  "independent_review": "PASS before commit; exact five capture hashes verified",
+  "comparison": "layout/content/actions/states MATCH; not pixel identity",
+  "canonical_differences": [
+    "shared pageTitle 26 pt",
+    "LOCK14 V9 minimum reading weight400 and shared floating shadow",
+    "line119 iOS bottom safe inset34 plus16 margin"
+  ],
+  "screens": [
+    {
+      "capture": "screens/larger_false_bottom.png",
+      "capture_sha256": "4226709c30d2fc4e74e796ee91d3a30a78292eb11afe8f2fcf0313e602aca5fa",
+      "master": null,
+      "master_sha256": null,
+      "result": "PASS reasoned no-record or narrow Larger Text view"
+    },
+    {
+      "capture": "screens/larger_false_top.png",
+      "capture_sha256": "5c985654cc7a5c4b5b3c699cadd7c147069c3be4b57d0de508db4c1267900c13",
+      "master": null,
+      "master_sha256": null,
+      "result": "PASS reasoned no-record or narrow Larger Text view"
+    },
+    {
+      "capture": "screens/larger_true_bottom.png",
+      "capture_sha256": "6577a8f32090adf04fcf0be7db3ec404f5084ad946eba61e068699c8e8234c85",
+      "master": null,
+      "master_sha256": null,
+      "result": "PASS reasoned no-record or narrow Larger Text view"
+    },
+    {
+      "capture": "screens/larger_true_top.png",
+      "capture_sha256": "6290545c6c3cf5d2be56cb29dfb602a9bee6b2eacf6523ec897f1416b7d4e528",
+      "master": null,
+      "master_sha256": null,
+      "result": "PASS reasoned no-record or narrow Larger Text view"
+    },
+    {
+      "capture": "screens/mb01_seeker_one.png",
+      "capture_sha256": "0f7eccd164004619df212378b67ff7f6dbd3c465b20013e47b409c769218a263",
+      "master": "../../MASTERS/mb01_seeker_one.png",
+      "master_sha256": "62e76e3769b761adca7f35fd6adb8d0de364b471359c2e7ef5bd23ae3a2eb181",
+      "result": "MATCH layout/content/states; canonical shared tokens and line119 safe inset retained"
+    },
+    {
+      "capture": "screens/mb02_seeker_one__free_trial.png",
+      "capture_sha256": "12ff62fe2141ab8f422f91beec46c13ee25c1a43d6dbf7b5cdd0254cbd1e25cd",
+      "master": "../../MASTERS/mb02_seeker_one__free_trial.png",
+      "master_sha256": "7a8ab724178af330cf46c6ef572151d3dc705b93d58ddd706beff4f2b48cfe6b",
+      "result": "MATCH layout/content/states; canonical shared tokens and line119 safe inset retained"
+    },
+    {
+      "capture": "screens/mb03_guardian_one.png",
+      "capture_sha256": "fa9736bc329198601ca9b61b6f92451c1244f77f08cd61e6cbf9d282322ab381",
+      "master": "../../MASTERS/mb03_guardian_one.png",
+      "master_sha256": "5560e393e26aa1ee74e3f647ea338a36da6af7110099b26397c5741af4762759",
+      "result": "MATCH layout/content/states; canonical shared tokens and line119 safe inset retained"
+    },
+    {
+      "capture": "screens/mb04_guardian_one__free_trial.png",
+      "capture_sha256": "fb3acbe777f38df3147eba461da829e3d7a86974b0dd45f4318ca520361b4678",
+      "master": "../../MASTERS/mb04_guardian_one__free_trial.png",
+      "master_sha256": "290450b78aa97b59ca5901e683ba9fa7a26740936a4e9eb4097094f8753fa994",
+      "result": "MATCH layout/content/states; canonical shared tokens and line119 safe inset retained"
+    },
+    {
+      "capture": "screens/mb05_guardian_one__family_paid.png",
+      "capture_sha256": "bff894fbb191cf9ddc78baf8b3b9080b40ae7758f520f193c5b249d69776dc67",
+      "master": "../../MASTERS/mb05_guardian_one__family_paid.png",
+      "master_sha256": "491fb015ab62b6861e13ea851e19b15fe9b26f6ed96e15f481a9b7cde1d0f8dc",
+      "result": "MATCH layout/content/states; canonical shared tokens and line119 safe inset retained"
+    },
+    {
+      "capture": "screens/no_record_false.png",
+      "capture_sha256": "e4f265c1f4e0dfcd460c3b85ab3d29dddd129603e0e0616e4debe957d7286c14",
+      "master": null,
+      "master_sha256": null,
+      "result": "PASS reasoned no-record or narrow Larger Text view"
+    },
+    {
+      "capture": "screens/no_record_true.png",
+      "capture_sha256": "0eb7595e9bca7a6c45e04d0f5e7751f3e39fcb4a3d6ab7ca5ed88bceca75d74e",
+      "master": null,
+      "master_sha256": null,
+      "result": "PASS reasoned no-record or narrow Larger Text view"
+    }
+  ],
+  "rendered_text": [
+    {
+      "state": "larger_false_bottom",
+      "failures": 0
+    },
+    {
+      "state": "larger_false_top",
+      "failures": 0
+    },
+    {
+      "state": "larger_true_bottom",
+      "failures": 0
+    },
+    {
+      "state": "larger_true_top",
+      "failures": 0
+    },
+    {
+      "state": "mb01_seeker_one",
+      "failures": 0
+    },
+    {
+      "state": "mb02_seeker_one__free_trial",
+      "failures": 0
+    },
+    {
+      "state": "mb03_guardian_one",
+      "failures": 0
+    },
+    {
+      "state": "mb04_guardian_one__free_trial",
+      "failures": 0
+    },
+    {
+      "state": "mb05_guardian_one__family_paid",
+      "failures": 0
+    },
+    {
+      "state": "no_record_false",
+      "failures": 0
+    },
+    {
+      "state": "no_record_true",
+      "failures": 0
+    }
+  ]
+}

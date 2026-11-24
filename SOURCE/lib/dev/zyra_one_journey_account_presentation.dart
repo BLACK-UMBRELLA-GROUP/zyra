@@ -685,7 +685,7 @@ class ZyraConceptSettingsPresentation extends StatelessWidget {
       ZyraConceptAccountAction action, {
       String? value,
       bool isNew = false,
-    }) => _SettingsRow(
+    }) => ZyraSettingsRow(
       key: ValueKey('concept_settings_${action.name}'),
       label: label,
       value: value,
@@ -801,7 +801,7 @@ class ZyraConceptSettingsPresentation extends StatelessWidget {
                         readLevel: readHapticLevel,
                         canAct: canChangeHaptics ?? () => false,
                         onChanged: onHapticChanged ?? (_) => false,
-                        row: (expanded, onTap) => _SettingsRow(
+                        row: (expanded, onTap) => ZyraSettingsRow(
                           key: const ValueKey('concept_settings_haptics'),
                           label: 'Haptics',
                           value: hapticLevel.label,
@@ -1090,8 +1090,8 @@ class _SettingsSection extends StatelessWidget {
   );
 }
 
-class _SettingsRow extends StatelessWidget {
-  const _SettingsRow({
+class ZyraSettingsRow extends StatelessWidget {
+  const ZyraSettingsRow({
     super.key,
     required this.label,
     required this.onTap,
@@ -1100,7 +1100,14 @@ class _SettingsRow extends StatelessWidget {
     this.isNew = false,
     this.newTagKey = const ValueKey('phone_access_new'),
     this.expanded = false,
+    this.wrapValue = false,
+    this.valueSize = 13,
+    this.verticalPadding,
+    this.horizontalPadding,
   });
+  final bool wrapValue;
+  final double valueSize;
+  final double? verticalPadding, horizontalPadding;
   final bool expanded;
   final bool isNew;
   final Key newTagKey;
@@ -1130,8 +1137,8 @@ class _SettingsRow extends StatelessWidget {
       onTap: ZyraTapFeedback.onTap(context, onTap),
       child: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: smooth ? 18 : 16,
-          vertical: smooth ? 17 : 15,
+          horizontal: horizontalPadding ?? (smooth ? 18 : 16),
+          vertical: verticalPadding ?? (smooth ? 17 : 15),
         ),
         child: Row(
           children: [
@@ -1182,17 +1189,30 @@ class _SettingsRow extends StatelessWidget {
               ),
             ),
             if (value != null && value!.isNotEmpty) ...[
-              Flexible(
-                child: Text(
+              if (wrapValue)
+                Text(
                   value!,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.right,
                   style: ZyraText.subtext(
-                    size: 13,
-                    color: ZyraColors.ink(0.38),
+                    size: valueSize,
+                    color: ZyraColors.secondaryText,
+                  ),
+                )
+              else
+                Flexible(
+                  child: Text(
+                    value!,
+                    maxLines: wrapValue ? null : 1,
+                    overflow: wrapValue
+                        ? TextOverflow.visible
+                        : TextOverflow.ellipsis,
+                    textAlign: wrapValue ? TextAlign.right : null,
+                    style: ZyraText.subtext(
+                      size: valueSize,
+                      color: ZyraColors.ink(0.38),
+                    ),
                   ),
                 ),
-              ),
               const SizedBox(width: 8),
             ],
             Icon(

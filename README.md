@@ -12,6 +12,13 @@ activating their controls, remembers the account on this device, and can be
 replayed from Settings → SUPPORT → Replay the walkthrough. Reduce Motion keeps
 the touch cue still. This remains a local preview; no server flag is written.
 
+Paid Seeker One and Guardian One sample accounts open the Membership page
+from Profile. It shows plan benefits and billing from a local sample record,
+with the existing plan comparison and Compatibility Unlocks pages. A Family
+place shows its payer and cannot be cancelled by its recipient. Cancel
+membership opens App Store subscriptions. This preview does not read receipts,
+activate a trial or change a subscription.
+
 ## Status
 
 Pre-launch, built solo since June 2026. Version 1.0.0 (build 5) runs on the Founder's iPhone for internal testing. The redesigned interface is a Founder preview over the existing app. Server and checkout integration are still pending. The website is [zyraconnect.app](https://zyraconnect.app).

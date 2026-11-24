@@ -10,6 +10,7 @@ import 'package:zyra/dev/zyra_draft_timeline_presentation.dart';
 import 'package:zyra/dev/zyra_guardian_circle_topic_options.dart';
 import 'package:zyra/dev/zyra_my_zyra_activity_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
+import 'package:zyra/dev/zyra_membership_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_draft.dart';
@@ -34,6 +35,7 @@ class ZyraShellTestFixture extends ChangeNotifier {
     ZyraCirclePreviewArrivals? circleArrivalsFor,
     List<String>? seekerPhotos,
     Future<bool> Function()? confirmSensitiveAction,
+    Map<ZyraWalletRole, ZyraMembershipPreviewRecord?>? membershipRecords,
     ZyraMembershipPaymentHistory membershipPaymentHistory =
         ZyraMembershipPaymentHistory.paidBefore,
   }) : _model =
@@ -57,6 +59,7 @@ class ZyraShellTestFixture extends ChangeNotifier {
       circleArrivalsFor: circleArrivalsFor,
       seekerPhotos: seekerPhotos,
       confirmSensitiveAction: confirmSensitiveAction,
+      membershipRecords: membershipRecords,
       guardianTabs: guardianTabs,
       readState: _consumeState,
       onAttached: (isCurrent) => _isCurrent = isCurrent,

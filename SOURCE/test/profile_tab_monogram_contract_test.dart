@@ -8,11 +8,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
 import 'package:zyra/dev/zyra_draft_safety_advice_presentation.dart';
+import 'package:zyra/dev/zyra_membership_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_preview.dart';
-import 'package:zyra/models/zyra_membership_draft.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
@@ -428,13 +428,10 @@ void main() {
         await start();
         await _tap(tester, 'concept_membership');
         if (role.one) {
-          final membership = tester.widget<ZyraConceptMembershipPresentation>(
-            find.byType(ZyraConceptMembershipPresentation),
+          final membership = tester.widget<ZyraMembershipPreview>(
+            find.byType(ZyraMembershipPreview),
           );
-          expect(
-            membership.initialDraft?.section,
-            ZyraMembershipSection.current,
-          );
+          expect(membership.guardian, role.guardian);
         } else {
           final upgrade = tester.widget<ZyraOneUpgradePage>(
             find.byType(ZyraOneUpgradePage),

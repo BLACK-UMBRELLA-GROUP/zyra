@@ -9,9 +9,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/data/zyra_membership_catalog.dart';
+import 'package:zyra/dev/zyra_membership_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
+import 'package:zyra/dev/zyra_subscription_wallet_draft.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/services/zyra_account_state.dart';
 import 'package:zyra/services/zyra_developer_access.dart';
@@ -270,6 +272,7 @@ Future<void> _expectBasicQuote(
 
 class _Owner {
   bool allowed = true;
+  final fixture = ZyraShellTestFixture();
   final checkpoints = <ZyraPreviewNavigationCheckpoint>[];
   final roles = <bool>[];
   ZyraPreviewNavigationCheckpoint get latest => checkpoints.last;
@@ -280,7 +283,7 @@ class _Owner {
     await tester.pumpWidget(
       _app(
         ZyraOneJourneyConceptShell(
-          fixture: ZyraShellTestFixture().fixture,
+          fixture: fixture.fixture,
           key: UniqueKey(),
           canAct: () => allowed,
           onExit: () => fail('Joining-fee review stays inside its owner.'),
@@ -312,6 +315,17 @@ class _Owner {
     expect(tester.takeException(), isNull);
     expect(checkpoints, isNotEmpty);
   }
+}
+
+Future<void> _openChoices(WidgetTester tester, _Owner owner) async {
+  expect(owner.fixture.setOtherCoverage(ZyraWalletCoverage.none), isTrue);
+  expect(owner.fixture.setOtherReadiness(ZyraWalletReadiness.ready), isTrue);
+  await tester.pumpAndSettle();
+  await _tap(tester, _key('concept_subscriptions'));
+  final role = owner.fixture.role.other;
+  await _tap(tester, _key('wallet_profiles_dot_target_${role.index}'));
+  await _tap(tester, _key('wallet_primary_${role.name}'));
+  expect(owner.latest.pages, ['subscriptions', 'membership']);
 }
 
 ZyraConceptAccountData _shownData(WidgetTester tester) => tester
@@ -530,7 +544,7 @@ void main() {
         final owner = _Owner();
         await owner.mount(tester, guardian: guardian);
         final before = _modelFacts(owner.latest);
-        await _tap(tester, _key('concept_membership'));
+        await _openChoices(tester, owner);
         expect(
           _shownData(tester).membershipPaymentHistory,
           ZyraMembershipPaymentHistory.paidBefore,
@@ -613,7 +627,7 @@ void main() {
     (tester) async {
       final owner = _Owner();
       await owner.mount(tester);
-      await _tap(tester, _key('concept_membership'));
+      await _openChoices(tester, owner);
       await openZyraDevControls(tester);
       final paid = _key('concept_membership_history_paidBefore');
       expect(paid, findsNothing);
@@ -655,7 +669,7 @@ void main() {
     (tester) async {
       final owner = _Owner();
       await owner.mount(tester);
-      await _tap(tester, _key('concept_membership'));
+      await _openChoices(tester, owner);
       final before = _modelFacts(owner.latest);
       final first = tester.widget<ZyraConceptMembershipPresentation>(
         find.byType(ZyraConceptMembershipPresentation),
@@ -673,7 +687,7 @@ void main() {
       first.onDraftChanged(staleDraft);
       first.onReview(staleReview);
       await tester.pumpAndSettle();
-      expect(owner.latest.pages, ['membership']);
+      expect(owner.latest.pages, ['subscriptions', 'membership']);
       await _tap(tester, _key('concept_membership_history_neverPaid'));
       await closeZyraDevControls(tester);
       first.onDraftChanged(staleDraft);
@@ -687,7 +701,7 @@ void main() {
         current.data.membershipPaymentHistory,
         ZyraMembershipPaymentHistory.neverPaid,
       );
-      expect(owner.latest.pages, ['membership']);
+      expect(owner.latest.pages, ['subscriptions', 'membership']);
       final count = owner.checkpoints.length;
       owner.allowed = false;
       current.onDraftChanged(staleDraft);
@@ -700,29 +714,47 @@ void main() {
   );
 
   testWidgets(
-    'protected Current cancellation callbacks never revive after a section round trip',
+    'protected paid cancellation callbacks never revive after plan comparison',
     (tester) async {
       final owner = _Owner();
       await owner.mount(tester);
       final before = _modelFacts(owner.latest);
+      const channel = MethodChannel('plugins.flutter.io/url_launcher');
+      final launches = <String>[];
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
+            if (call.method == 'launch') {
+              launches.add((call.arguments as Map)['url'] as String);
+            }
+            return true;
+          });
+      addTearDown(() {
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(channel, null);
+      });
       await _tap(tester, _key('concept_membership'));
       final cancel = _key('concept_cancel_membership');
       expect(cancel.hitTestable(), findsOneWidget);
       final oldCancel = tester
-          .widget<InkWell>(
-            find.descendant(of: cancel, matching: find.byType(InkWell)),
-          )
-          .onTap!;
-      await _tap(tester, _key('membership-section-seeker'));
+          .widget<ZyraMembershipPreview>(find.byType(ZyraMembershipPreview))
+          .onCancel;
+      await _tap(tester, _key('membership_more_compare'));
       oldCancel();
+      await tester.runAsync(() => Future<void>.delayed(Duration.zero));
+      await tester.pumpAndSettle();
+      expect(owner.latest.pages, ['membership', 'one_upgrade']);
+      expect(launches, isEmpty);
+      await returnZyraPreviewPage(tester);
+      oldCancel();
+      await tester.runAsync(() => Future<void>.delayed(Duration.zero));
       await tester.pumpAndSettle();
       expect(owner.latest.pages, ['membership']);
-      await _tap(tester, _key('membership-section-current'));
-      oldCancel();
-      await tester.pumpAndSettle();
-      expect(owner.latest.pages, ['membership']);
+      expect(launches, isEmpty);
       await _tap(tester, cancel);
-      expect(owner.latest.pages.last, 'account_action');
+      await tester.runAsync(() => Future<void>.delayed(Duration.zero));
+      await tester.pumpAndSettle();
+      expect(launches, ['https://apps.apple.com/account/subscriptions']);
+      expect(owner.latest.pages, ['membership']);
       expect(_modelFacts(owner.latest), before);
       expect(owner.roles, isEmpty);
     },
@@ -734,21 +766,22 @@ void main() {
       final owner = _Owner();
       await owner.mount(tester);
       final before = _modelFacts(owner.latest);
-      await _tap(tester, _key('concept_membership'));
+      await _openChoices(tester, owner);
+      await _tap(tester, _key('membership-section-seeker'));
       expect(_key('membership-section-unlocks'), findsNothing);
       final terms = _key('membership-terms');
       final oldTerms = tester.widget<IconButton>(terms).onPressed!;
-      await _tap(tester, _key('membership-section-seeker'));
+      await _tap(tester, _key('membership-section-guardian'));
       oldTerms();
       await tester.pumpAndSettle();
       expect(find.text('Membership terms'), findsNothing);
-      await _tap(tester, _key('membership-section-current'));
+      await _tap(tester, _key('membership-section-seeker'));
       oldTerms();
       await tester.pumpAndSettle();
       expect(find.text('Membership terms'), findsNothing);
       await _tap(tester, terms);
       expect(find.text('Membership terms'), findsOneWidget);
-      expect(owner.latest.pages, ['membership']);
+      expect(owner.latest.pages, ['subscriptions', 'membership']);
       expect(_modelFacts(owner.latest), before);
       expect(owner.roles, isEmpty);
     },
@@ -759,8 +792,9 @@ void main() {
     (tester) async {
       final owner = _Owner();
       await owner.mount(tester);
-      await _tap(tester, _key('concept_membership'));
+      await _openChoices(tester, owner);
       await _history(tester, ZyraMembershipPaymentHistory.neverPaid);
+      await returnZyraPreviewPage(tester);
       await returnZyraPreviewPage(tester);
       await openZyraDevControls(tester);
       await _tap(tester, _key('draft_membership_seeker_basic'));
@@ -768,10 +802,15 @@ void main() {
       await _tap(tester, _key('concept_membership'));
       expect(find.text('Journey places'), findsOneWidget);
       await returnZyraPreviewPage(tester);
+      expect(
+        owner.fixture.setOtherCoverage(ZyraWalletCoverage.individualOne),
+        isTrue,
+      );
+      await tester.pumpAndSettle();
       await _tap(tester, _key('switch-account-button'));
       await _tap(tester, _key('wallet_primary_guardian'));
       await _nav(tester, 'Profile');
-      await _tap(tester, _key('concept_membership'));
+      await _openChoices(tester, owner);
       expect(_shownData(tester).guardian, isTrue);
       expect(_shownData(tester).isOne, isTrue);
       expect(

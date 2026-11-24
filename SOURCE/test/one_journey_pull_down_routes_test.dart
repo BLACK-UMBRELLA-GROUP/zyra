@@ -12,6 +12,7 @@ import 'package:zyra/dev/zyra_one_journey_options.dart';
 import 'package:zyra/dev/zyra_one_journey_options_page.dart';
 import 'package:zyra/dev/zyra_one_journey_tab.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
+import 'package:zyra/dev/zyra_subscription_wallet_draft.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/screens/profile/my_profile_preview_screen.dart';
@@ -375,12 +376,18 @@ void main() {
     _rootProfile(tester);
   });
 
-  _case('Review then Membership Back restores both real local parents', (
+  _case('Review then Membership Back restores wallet and Profile parents', (
     tester,
   ) async {
     await _mount(tester);
     await _tapNav(tester, 'Profile');
-    await _tap(tester, 'concept_membership');
+    final fixture = zyraShellFixtureFor(tester);
+    expect(fixture.setOtherCoverage(ZyraWalletCoverage.none), isTrue);
+    expect(fixture.setOtherReadiness(ZyraWalletReadiness.ready), isTrue);
+    await tester.pumpAndSettle();
+    await _tap(tester, 'concept_subscriptions');
+    await _tap(tester, 'wallet_profiles_dot_target_1');
+    await _tap(tester, 'wallet_primary_guardian');
     expect(find.byType(ZyraConceptMembershipPresentation), findsOneWidget);
     _oneMemberBack();
     await _tap(tester, 'membership-section-seeker');
@@ -392,6 +399,9 @@ void main() {
     await _returnHeader(tester);
     expect(find.byType(ZyraConceptMembershipPresentation), findsOneWidget);
     expect(_key('concept_account_action_scroll'), findsNothing);
+    await _returnHeader(tester);
+    expect(_key('wallet_title'), findsOneWidget);
+    _oneMemberBack();
     await _returnHeader(tester);
     _rootProfile(tester);
   });

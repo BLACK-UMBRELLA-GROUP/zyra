@@ -79,7 +79,7 @@ re-run the tool.
 
 _Stop here unless you need to look up another ID._
 
-## Documents (418 live)
+## Documents (420 live)
 
 ### APP SPACING
 
@@ -482,6 +482,18 @@ _Stop here unless you need to look up another ID._
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
 | ASBUILT-ZYRA-QUEUE26 | `REPORTS/CURRENT/ZYRA_LOCATION_AS_BUILT_CURRENT_VERSION_V1.md` | HANDOVER | Implementation, privacy boundary and evidence for queue 26, LOCK11 Location app part | AD-AIOS-115, OA-ZYRA-321, OA-ZYRA-323, OA-ZYRA-317 | 9 |
+
+### MEMBERSHIP PAGE
+
+| ID | File | Type | Purpose | Links | KB |
+|---|---|---|---|---|---|
+| DOC-ZYRA-LINE136-HANDOVER-2026-11-24 | `PRODUCT/APPROVED/MEMBERSHIP_PAGE/BUILT/LINE136/HANDOVER_2026-11-24.md` | HANDOVER | As-built local Founder preview for LOCK 42 | DR-ZYRA-374 | 4 |
+
+### MEMBERSHIP PAGE (paid members)
+
+| ID | File | Type | Purpose | KB |
+|---|---|---|---|---|
+| DOC-ZYRA-MEMBERSHIPPAGE-V1 | `PRODUCT/APPROVED/MEMBERSHIP_PAGE/RECORD/MEMBERSHIP_PAGE_SPEC_CURRENT_VERSION_V1.md` | SPEC | Spec for LOCK 42 - Profile → Membership for Seeker One and Guardian One; replaces the old dark… | 4 |
 
 ### MESSAGING AND NOTIFICATIONS
 

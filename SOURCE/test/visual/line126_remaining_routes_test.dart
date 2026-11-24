@@ -21,6 +21,7 @@ import 'package:zyra/dev/zyra_privacy_security_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_switch_signup_preview.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_subscription_wallet_preview.dart';
+import 'package:zyra/dev/zyra_subscription_wallet_draft.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import 'package:zyra/screens/profile/compatibility_editors.dart';
 import 'package:zyra/screens/profile/edit_photos_screen.dart';
@@ -454,8 +455,19 @@ void _registerAccountCases(
       );
       await h.tap('concept_membership');
       h.assertPage('membership');
+      expect(_key('membership_paid_page'), findsOneWidget);
+      await _readAll(h, 'membership_paid');
+      _record(h, 'membership_paid');
+      await tester.binding.handlePopRoute();
+      await h.flush();
+      h.shellFixture.setOtherCoverage(ZyraWalletCoverage.none);
+      h.shellFixture.setOtherReadiness(ZyraWalletReadiness.ready);
+      await h.flush();
+      await h.tap('concept_subscriptions');
+      await h.tap('wallet_profiles_dot_target_${guardian ? 0 : 1}');
+      await h.tap('wallet_primary_${guardian ? 'seeker' : 'guardian'}');
       expect(find.byType(ZyraMembershipChoices), findsOneWidget);
-      for (final section in ['current', 'seeker', 'guardian', 'family']) {
+      for (final section in ['seeker', 'guardian', 'family']) {
         await h.tap('membership-section-$section');
         await _readAll(h, 'membership_$section');
         _record(h, 'membership_$section');

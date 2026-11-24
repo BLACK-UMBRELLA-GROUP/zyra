@@ -121,6 +121,7 @@ import 'zyra_one_journey_guardian_family_sheet.dart';
 import 'zyra_guardian_family_preview.dart';
 import 'zyra_journey_peer_guardians_presentation.dart';
 import 'zyra_one_journey_account_presentation.dart';
+import 'zyra_membership_preview.dart';
 import 'zyra_one_journey_guardian_info_presentation.dart';
 import 'zyra_one_journey_switch_signup_preview.dart';
 import 'zyra_subscription_wallet_draft.dart';
@@ -153,6 +154,7 @@ class ZyraOneJourneyShellFixture {
     this.changes,
     this.wallet,
     this.membershipPaymentHistory = ZyraMembershipPaymentHistory.paidBefore,
+    this.membershipRecords,
     this.activityExample,
     this.timeline,
     this.browseNextMotion = ZyraBrowseNextMotion.current,
@@ -183,6 +185,7 @@ class ZyraOneJourneyShellFixture {
   final Listenable? changes;
   final ZyraSubscriptionWalletDraft? wallet;
   final ZyraMembershipPaymentHistory membershipPaymentHistory;
+  final Map<ZyraWalletRole, ZyraMembershipPreviewRecord?>? membershipRecords;
   final ZyraMyZyraActivityExample? activityExample;
   final ZyraDraftTimelinePreview Function(String subjectId)? timeline;
   final ZyraBrowseNextMotion browseNextMotion;
@@ -10116,9 +10119,51 @@ class _ZyraOneJourneyConceptShellState
         },
   };
 
+  final _membershipRecords = {
+    for (final role in ZyraWalletRole.values)
+      role: ZyraMembershipPreviewRecord.sample(),
+  };
+
   Widget _membershipView() {
     final fresh = _accountFreshGuard();
     bool allowed() => fresh();
+    if (_membershipDraft.section == ZyraMembershipSection.current &&
+        !_membership.contains('Basic')) {
+      final data = _accountData;
+      final payer = data.familyPlacePayer;
+      final offer = _guardianFamily.inviteFor('draft-guardian-hassan');
+      void toast(String message) {
+        if (allowed()) _act(() => _notice = message);
+      }
+
+      return ZyraMembershipPreview(
+        guardian: _guardianRole,
+        record:
+            (widget.fixture?.membershipRecords ??
+            _membershipRecords)[_walletRole],
+        unlocks: _compatibilityAccess.balance,
+        familyPayer: payer,
+        onUnlocks: () {
+          if (allowed()) _open('compatibility_store');
+        },
+        onFamily: () => toast('Opens ZYRA Family.'),
+        onCovered: () => toast(
+          payer == null
+              ? 'A Seeker can cover you with a place in their ZYRA Family. You pay nothing.'
+              : '$payer covers you with a place in ${offer?.seekerGender.toLowerCase() == 'female' ? 'her' : 'his'} ZYRA Family. You pay nothing.',
+        ),
+        onCompare: () {
+          if (allowed()) _open('one_upgrade');
+        },
+        onRestore: () =>
+            toast('ZYRA checks your Apple ID for earlier purchases.'),
+        onCancel: () {
+          if (allowed() && payer == null) {
+            unawaited(_openAppleSubscriptions(allowed));
+          }
+        },
+      );
+    }
     return ZyraConceptMembershipPresentation(
       data: _accountData,
       initialDraft: _membershipDraft,

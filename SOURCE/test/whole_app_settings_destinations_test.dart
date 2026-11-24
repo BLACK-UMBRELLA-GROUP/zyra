@@ -218,7 +218,7 @@ Future<Set<String>> _actualSettingsRows(WidgetTester tester) async {
     for (final element
         in find
             .byWidgetPredicate(
-              (widget) => widget.runtimeType.toString() == '_SettingsRow',
+              (widget) => widget.runtimeType.toString() == 'ZyraSettingsRow',
             )
             .evaluate()) {
       final key = element.widget.key! as ValueKey<String>;

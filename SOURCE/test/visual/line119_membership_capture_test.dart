@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/widgets/zyra_membership_choices.dart';
+import 'package:zyra/dev/zyra_membership_preview.dart';
 
 import 'baseline_capture_support.dart';
 
@@ -63,24 +63,8 @@ void main() {
         if (!basic) {
           await h.tap('concept_membership');
           expect(_key('membership-section-unlocks'), findsNothing);
-          final pills = [
-            'current',
-            'seeker',
-            'guardian',
-            'family',
-          ].map((name) => t.getRect(_key('membership-section-$name'))).toList();
-          expect(pills.every((rect) => rect.top == pills.first.top), isTrue);
-          expect(pills.first.left, greaterThanOrEqualTo(20));
-          expect(pills.last.right, lessThanOrEqualTo(410));
-          expect(
-            t
-                .widget<ZyraMembershipChoices>(
-                  find.byType(ZyraMembershipChoices),
-                )
-                .initialDraft!
-                .section,
-            ZyraMembershipSection.current,
-          );
+          expect(find.byType(ZyraMembershipPreview), findsOneWidget);
+          expect(_key('membership-section-current'), findsNothing);
           final cancel = t.getRect(_key('concept_cancel_membership'));
           expect(cancel.left, 20);
           expect(cancel.right, 410);
