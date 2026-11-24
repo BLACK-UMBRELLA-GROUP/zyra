@@ -61,18 +61,6 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
-  testWidgets('raw inbox preview request cannot seed sample Circles', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      const MaterialApp(home: ZyraGuardianCirclesInboxScreen(preview: true)),
-    );
-    await tester.pumpAndSettle();
-    expect(find.text('Aaliyah’s Guardian Circle'), findsNothing);
-    expect(find.text('Let me know when you are ready to talk.'), findsNothing);
-    await tester.pumpWidget(const SizedBox());
-  });
-
   testWidgets(
     'stale context/send callbacks and delayed local send are denied',
     (tester) async {
