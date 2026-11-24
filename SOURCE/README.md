@@ -106,6 +106,21 @@ The [as-built handover](../REPORTS/CURRENT/ZYRA_DEVELOPER_PANEL_AS_BUILT_CURRENT
 records title coverage, evidence and final verification. This task has no
 migration, native build, phone installation or delivery.
 
+## Rendered text audit
+
+For each local queue line, run the whole-project analyzer, ordinary regression,
+and focused rendered-text replay for the screens or fixtures it changes through
+`node tooling/no_git_driver.mjs flutter ...`. The focused replay uses the
+relevant line 126 capture tests and `test/zyra_rendered_text_audit_controls_test.dart`.
+The four full-screen corpus drivers are opt-in and are not a local landing gate.
+
+The `Full text audit` job in `.github/workflows/zyra-ci.yml` runs the full
+normal and Larger Text corpus at 375 and 430 widths on each main push and the
+nightly schedule. Its four settings report separately in job logs and summaries;
+audit failures do not fail the workflow or block a queue line. It enables each corpus with
+`--dart-define=ZYRA_FULL_TEXT_AUDIT=true` and keeps the audit's existing
+coverage and 4.5:1 / 3:1 thresholds.
+
 ## Backend
 
 Supabase project `sxoaxonzjqkgajmlagyk`. Config in

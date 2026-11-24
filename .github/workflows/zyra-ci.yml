@@ -119,3 +119,63 @@ jobs:
           tests=()
           while IFS= read -r path; do tests+=("$path"); done <<< "$test_list"
           flutter test --no-pub --flavor offline-ci --reporter expanded "${tests[@]}"
+
+  full-text-audit:
+    name: Full text audit (${{ matrix.setting }})
+    if: github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    # Audit failures stay visible in this job's logs but cannot turn the
+    # required Flutter checks or the workflow red for a later queue line.
+    continue-on-error: true
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - setting: normal-375
+            test: test/zyra_clearer_text_contrast_test.dart
+          - setting: normal-430
+            test: test/zyra_clearer_text_contrast_430_test.dart
+          - setting: large-375
+            test: test/zyra_clearer_text_contrast_large_375_test.dart
+          - setting: large-430
+            test: test/zyra_clearer_text_contrast_large_430_test.dart
+    defaults:
+      run:
+        working-directory: SOURCE
+    env:
+      FLUTTER_SUPPRESS_ANALYTICS: 'true'
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - name: Set up Flutter 3.44.2
+        shell: bash
+        run: |
+          archive="$RUNNER_TEMP/flutter_linux_3.44.2-stable.tar.xz"
+          curl --fail --silent --show-error --location --retry 3 \
+            --output "$archive" \
+            https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.44.2-stable.tar.xz
+          printf '%s  %s\n' 'b0de1d19754688ec6769c9a067db3b0594479d3d767f971bfecfc132904c8d5e' "$archive" | sha256sum --check
+          tar -xf "$archive" -C "$RUNNER_TEMP"
+          sudo mkdir -p /opt/homebrew/share
+          sudo ln -s "$RUNNER_TEMP/flutter" /opt/homebrew/share/flutter
+          echo "$RUNNER_TEMP/flutter/bin" >> "$GITHUB_PATH"
+      - name: Set up offline app configuration
+        run: |
+          cp lib/config/oauth_config.dart.example lib/config/oauth_config.dart
+          cp lib/config/supabase_config.dart.example lib/config/supabase_config.dart
+      - name: Resolve dependencies
+        run: flutter pub get --enforce-lockfile
+      - name: Run all screens at this setting
+        id: audit
+        run: flutter test --no-pub --flavor offline-ci --reporter expanded --dart-define=ZYRA_FULL_TEXT_AUDIT=true "${{ matrix.test }}"
+      - name: Record audit result
+        if: always()
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        env:
+          AUDIT_OUTCOME: ${{ steps.audit.outcome }}
+          AUDIT_SETTING: ${{ matrix.setting }}
+        run: |
+          printf 'Full text audit %s: **%s**. See this job log for the page and ratio details.\n' "$AUDIT_SETTING" "$AUDIT_OUTCOME" >> "$GITHUB_STEP_SUMMARY"
