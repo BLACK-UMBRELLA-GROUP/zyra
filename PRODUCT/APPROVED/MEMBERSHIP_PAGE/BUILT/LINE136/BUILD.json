@@ -8,8 +8,8 @@
   "built_on": "2026-11-24",
   "timestamp_utc": "2026-11-24T22:39:37.516626+00:00",
   "source_base": "a8381e127b4b1ff594af8adb488d0121cd78c280",
-  "source_commit": null,
-  "source_commit_note": "Stamped immediately after the implementation commit, before push.",
+  "source_commit": "fa95259975be5ebac209f02d7c973d905ea3d48a",
+  "source_commit_note": "Implementation commit; this evidence stamp follows without changing tested source.",
   "flutter_version": "3.44.2",
   "build_mode": "Flutter widget-test Founder preview renderer",
   "sample_only": true,
@@ -86,5 +86,6 @@
     "E": "Neutral community wording",
     "F": "Root and SOURCE READMEs updated"
   },
-  "map": "Regenerated; own spec and handover mapped. Other catalogue warnings are outside line136 and were not changed."
+  "map": "Regenerated; own spec and handover mapped. Other catalogue warnings are outside line136 and were not changed.",
+  "commit_stamped_utc": "2026-11-24T22:41:02.698122+00:00"
 }
