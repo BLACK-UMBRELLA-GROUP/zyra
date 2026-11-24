@@ -118,6 +118,19 @@ not open hosted documents yet. The closed-page Close action exits the preview.
 The focused checks are in `test/zyra_help_safety_preview_test.dart` and
 `test/browse_options_menu_test.dart`.
 
+## Founder preview email settings and templates
+
+LOCK 39 changes Settings → Notifications & emails to the sample-only em90
+page. Its five switches belong to the current preview account session;
+only Journey emails can turn off the corresponding email decision. The 16
+approved email samples share one HTML, plain-text and Flutter preview source
+in `lib/dev/zyra_email_templates.dart`. This code does not send email or set
+device notification permissions. The future email service must provide real
+member values and approved action links. The focused checks and optional
+430 × 932 capture are in `test/zyra_email_preview_test.dart`; the capture runs
+with `--dart-define=ZYRA_LINE133_CAPTURE=true` and writes to
+`build/line133_preview/em90.png`.
+
 ## Rendered text audit
 
 For each local queue line, run the whole-project analyzer, ordinary regression,

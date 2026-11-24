@@ -12,6 +12,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/dev/zyra_app_gold_preview.dart';
+import 'package:zyra/dev/zyra_email_settings_preview.dart';
+import 'package:zyra/dev/zyra_email_templates.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_settings_details.dart';
@@ -66,7 +68,9 @@ const _nativeBoundaryChannels = [
 
 Finder _key(String value) => find.byKey(ValueKey(value));
 Finder _overview(ZyraConceptAccountAction action) =>
-    _key('concept_settings_overview_${action.name}');
+    action == ZyraConceptAccountAction.notificationSettings
+    ? find.byType(ZyraEmailSettingsPreview)
+    : _key('concept_settings_overview_${action.name}');
 Finder _detail(ZyraConceptSettingsDetail detail) =>
     _key('concept_settings_detail_${detail.name}');
 Finder _detailRow(
@@ -97,9 +101,7 @@ List<ZyraConceptSettingsDetail> _children(
     ZyraConceptSettingsDetail.discovery,
   ],
   ZyraConceptAccountAction.hiddenProfiles => const [],
-  ZyraConceptAccountAction.notificationSettings => [
-    ZyraConceptSettingsDetail.notifications,
-  ],
+  ZyraConceptAccountAction.notificationSettings => const [],
   ZyraConceptAccountAction.feedback => [ZyraConceptSettingsDetail.feedback],
   ZyraConceptAccountAction.privacyData => [
     ZyraConceptSettingsDetail.privacyPolicy,
@@ -390,6 +392,11 @@ class _ShellOwner {
   ) async {
     await _tap(tester, _key('concept_settings_${action.name}'));
     expect(_overview(action), findsOneWidget);
+    if (action == ZyraConceptAccountAction.notificationSettings) {
+      expect(find.text('Journey emails'), findsOneWidget);
+      _noLiveActionWidgets();
+      return;
+    }
     expect(
       tester
           .widget<ZyraConceptSettingsOverview>(
@@ -562,7 +569,10 @@ void main() {
           ),
         );
         await tester.pumpAndSettle();
-        expect(_overview(action), findsOneWidget);
+        expect(
+          _key('concept_settings_overview_${action.name}'),
+          findsOneWidget,
+        );
         if (action == ZyraConceptAccountAction.signInSecurity) {
           expect(
             find.textContaining(RegExp('recovery', caseSensitive: false)),
@@ -711,6 +721,12 @@ void main() {
       if (!guardian) await _capture(tester, '01-settings');
       for (final action in actions) {
         await owner.overview(tester, action);
+        if (action == ZyraConceptAccountAction.notificationSettings) {
+          await _back(tester);
+          expect(find.byType(ZyraConceptSettingsPresentation), findsOneWidget);
+          expect(owner.checkpoints.last.pages.last, 'settings');
+          continue;
+        }
         if (!guardian && action == ZyraConceptAccountAction.signInSecurity) {
           await _capture(tester, '02-security');
         }
@@ -833,7 +849,7 @@ void main() {
   );
 
   testWidgets(
-    'saved Settings callbacks deny after page, role and owner changes',
+    'saved email switch callbacks deny after page, role and owner changes',
     (tester) async {
       final owner = _ShellOwner();
       await owner.mount(tester);
@@ -842,65 +858,45 @@ void main() {
         tester,
         ZyraConceptAccountAction.notificationSettings,
       );
-      final saved = tester.widget<ZyraConceptSettingsOverview>(
-        find.byType(ZyraConceptSettingsOverview),
+      final saved = tester.widget<ZyraEmailSettingsPreview>(
+        find.byType(ZyraEmailSettingsPreview),
       );
-      await _tap(
-        tester,
-        _detailRow(
-          ZyraConceptAccountAction.notificationSettings,
-          ZyraConceptSettingsDetail.notifications,
-        ),
-      );
-      final checkpoint = owner.checkpoints.last;
-      saved.onOpenDetail(ZyraConceptSettingsDetail.notifications);
-      saved.onHelp();
-      await tester.pump();
-      expect(_detail(ZyraConceptSettingsDetail.notifications), findsOneWidget);
-      expect(owner.checkpoints.last, same(checkpoint));
-      final savedDetail = tester.widget<ZyraConceptSettingsDetailPresentation>(
-        find.byType(ZyraConceptSettingsDetailPresentation),
-      );
+      expect(saved.settings.journeyEmails, isTrue);
       await _back(tester);
-      savedDetail.onHelp();
-      await tester.pump();
-      expect(
-        _overview(ZyraConceptAccountAction.notificationSettings),
-        findsOneWidget,
-      );
-      await _back(tester);
+      expect(find.byType(ZyraConceptSettingsPresentation), findsOneWidget);
       await _back(tester);
       expect(find.byType(ZyraConceptProfilePresentation), findsOneWidget);
+
       expect(
         await pressZyraDevControlKey(tester, 'draft_role_guardian'),
         isTrue,
       );
       final switched = owner.checkpoints.last;
-      saved.onOpenDetail(ZyraConceptSettingsDetail.notifications);
-      saved.onHelp();
-      savedDetail.onHelp();
+      saved.onChanged(ZyraEmailSetting.journeyEmails, false);
       await tester.pump();
       expect(owner.checkpoints.last, same(switched));
       expect(owner.checkpoints.last.guardian, isTrue);
-      expect(find.byType(ZyraConceptSettingsOverview), findsNothing);
+      expect(find.byType(ZyraEmailSettingsPreview), findsNothing);
+
       await _nav(tester, 'Profile');
       expect(await pressZyraDevControlKey(tester, 'draft_role_seeker'), isTrue);
       await _nav(tester, 'Profile');
       await owner.settings(tester);
-      await owner.overview(tester, ZyraConceptAccountAction.appLock);
-      final current = tester.widget<ZyraConceptSettingsOverview>(
-        find.byType(ZyraConceptSettingsOverview),
+      await owner.overview(
+        tester,
+        ZyraConceptAccountAction.notificationSettings,
       );
+      final current = tester.widget<ZyraEmailSettingsPreview>(
+        find.byType(ZyraEmailSettingsPreview),
+      );
+      expect(current.settings.journeyEmails, isTrue);
       owner.allowed = false;
       final denied = owner.checkpoints.last;
-      current.onOpenDetail(ZyraConceptSettingsDetail.appLock);
-      current.onHelp();
-      saved.onHelp();
-      savedDetail.onHelp();
+      current.onChanged(ZyraEmailSetting.journeyEmails, false);
+      saved.onChanged(ZyraEmailSetting.journeyEmails, false);
       await tester.pump();
       expect(owner.checkpoints.last, same(denied));
       expect(find.byType(HelpSupportScreen), findsNothing);
-      expect(find.byType(ZyraConceptSettingsDetailPresentation), findsNothing);
     },
   );
 

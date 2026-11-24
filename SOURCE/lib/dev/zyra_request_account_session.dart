@@ -15,6 +15,7 @@ import '../services/zyra_onboarding_answers_service.dart'
         ZyraVisiblePreferenceChecks;
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_interaction_style.dart';
+import 'zyra_email_templates.dart';
 
 class ZyraRequestAccountSession extends ChangeNotifier {
   ZyraRequestAccountSession({
@@ -50,6 +51,7 @@ class ZyraRequestAccountSession extends ChangeNotifier {
   ZyraDevPalette _palette;
   ZyraHapticLevel _hapticLevel;
   bool _goldEnabled;
+  ZyraPreviewEmailSettings _emailSettings = const ZyraPreviewEmailSettings();
 
   /// Denial is terminal for this review lifetime; it cannot become live or
   /// revive when an account changes A → B → A.
@@ -67,6 +69,18 @@ class ZyraRequestAccountSession extends ChangeNotifier {
   ZyraDevPalette get palette => _palette;
   ZyraHapticLevel get hapticLevel => _hapticLevel;
   bool get goldEnabled => _goldEnabled;
+  ZyraPreviewEmailSettings get emailSettings =>
+      current ? _emailSettings : const ZyraPreviewEmailSettings();
+
+  bool setEmailSetting(ZyraEmailSetting setting, bool enabled) {
+    if (!current) return false;
+    final next = _emailSettings.withValue(setting, enabled);
+    if (next.value(setting) == _emailSettings.value(setting)) return true;
+    _emailSettings = next;
+    notifyListeners();
+    return true;
+  }
+
   String get seekerGender => _signupProfiles[false]?.gender ?? 'male';
   String? signupAbout(bool guardian) => current ? _signupAbout[guardian] : null;
   List<String> photos(bool guardian) =>

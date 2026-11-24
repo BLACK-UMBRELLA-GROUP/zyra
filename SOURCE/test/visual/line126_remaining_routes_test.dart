@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_developer_inactivity_email.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_store_presentation.dart';
+import 'package:zyra/dev/zyra_email_settings_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
@@ -249,11 +250,19 @@ void _registerAccountCases(
         pages: const ['settings', 'account_action'],
         action: action,
       );
-      final view = tester.widget<ZyraConceptSettingsOverview>(
-        find.byType(ZyraConceptSettingsOverview),
-      );
-      expect(view.action, action);
-      expect(view.data.guardian, guardian);
+      if (action == ZyraConceptAccountAction.notificationSettings) {
+        final view = tester.widget<ZyraEmailSettingsPreview>(
+          find.byType(ZyraEmailSettingsPreview),
+        );
+        expect(view.settings.journeyEmails, isTrue);
+        expect(view.settings.journeyRequests, isTrue);
+      } else {
+        final view = tester.widget<ZyraConceptSettingsOverview>(
+          find.byType(ZyraConceptSettingsOverview),
+        );
+        expect(view.action, action);
+        expect(view.data.guardian, guardian);
+      }
       expect(h.latest.accountDestination, action.name);
       await _readAll(h, action.name);
       h.assertPage('account_action');

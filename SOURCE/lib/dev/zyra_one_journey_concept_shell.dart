@@ -93,6 +93,7 @@ import 'zyra_draft_compatibility_score_designs.dart';
 import 'zyra_draft_compatibility_store_presentation.dart';
 import 'zyra_draft_browse_utility_presentation.dart';
 import 'zyra_help_safety_preview.dart';
+import 'zyra_email_settings_preview.dart';
 import 'zyra_draft_safety_advice_presentation.dart';
 import 'zyra_draft_code_entry.dart';
 import 'zyra_request_help_content.dart';
@@ -10289,6 +10290,15 @@ class _ZyraOneJourneyConceptShellState
 
   Widget _accountActionView() {
     final action = _accountDestination;
+    if (action == ZyraConceptAccountAction.notificationSettings) {
+      final fresh = _accountFreshGuard();
+      return ZyraEmailSettingsPreview(
+        settings: _accountSession.emailSettings,
+        onChanged: (setting, enabled) {
+          if (fresh()) _accountSession.setEmailSetting(setting, enabled);
+        },
+      );
+    }
     if (_settingsOverviewActions.contains(action)) {
       final fresh = _accountFreshGuard();
       final pending = _hiddenProfileRestore;
