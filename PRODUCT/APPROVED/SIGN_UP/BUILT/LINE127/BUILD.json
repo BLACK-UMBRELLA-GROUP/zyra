@@ -1,0 +1,29 @@
+{
+  "line": 127,
+  "commit_sha": "ff8b484c997658a1bcd628ef8bb5b3334e0ebb54",
+  "flutter_version": "3.44.2",
+  "dart_version": "3.12.2",
+  "build_mode": "Founder preview on sample data; Flutter widget tests; no native build",
+  "timestamp_utc": "2026-11-24T09:49:54+00:00",
+  "live": false,
+  "native_build": false,
+  "phone_install": false,
+  "ordinary_regression": {
+    "passed": 7892,
+    "skipped": 206,
+    "failed": 0,
+    "duration": "7m47s"
+  },
+  "focused_rendered_text": {
+    "screens": [
+      "s31",
+      "s32",
+      "s33",
+      "s34",
+      "s35"
+    ],
+    "runs": 51,
+    "painted_pixels": 34747,
+    "failures": 0
+  }
+}

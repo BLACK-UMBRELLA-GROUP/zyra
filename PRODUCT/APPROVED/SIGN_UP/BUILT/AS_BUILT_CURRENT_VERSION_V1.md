@@ -72,6 +72,9 @@ ordinary regression finished with 7,892 passes, 206 opt-in skips and zero
 failures in 7m47s on the combined checkout; the disjoint line132 source/test
 edit is excluded from this line's commit. The full four-setting
 text audit is a hosted reporting job under line 143, not this local gate.
+Implementation commit `ff8b484c997658a1bcd628ef8bb5b3334e0ebb54`
+contains the app, tests, README and screenshot evidence; `BUILD.json` carries
+that source SHA and the pinned Flutter 3.44.2/Dart 3.12.2 toolchain receipt.
 Authority: SIGN_UP spec V2 and 22 November build brief, LOCK record and masters
 s31–s35, Q198/Q201 answers, then this as-built record. The historical line 121
 implementation below remains the source of the original sign-up/setup flow.
