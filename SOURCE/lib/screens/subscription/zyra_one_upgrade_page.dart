@@ -7,6 +7,8 @@ import '../../theme/zyra_text.dart';
 import '../../widgets/zyra_floating_surface.dart';
 import '../../widgets/zyra_glass_dialog.dart';
 import '../../widgets/zyra_tap_feedback.dart';
+import '../../widgets/zyra_purchase_fine_print.dart';
+import '../../dev/zyra_guardian_before_pay_preview.dart';
 
 /// LOCK 25. Include only the exact plan differences supported in this build.
 class ZyraOneUpgradePage extends StatelessWidget {
@@ -17,11 +19,21 @@ class ZyraOneUpgradePage extends StatelessWidget {
     required this.onBack,
     this.includesPreviewComparisons = false,
     this.includesProfileVideo = false,
+    this.founderPreview = false,
+    this.seekerFirstName = 'Adam',
+    this.onPurchaseNotice,
+    this.childCanAct,
   });
 
   final bool guardian;
   final bool includesPreviewComparisons;
   final bool includesProfileVideo;
+  final bool founderPreview;
+  final String seekerFirstName;
+  final ValueChanged<String>? onPurchaseNotice;
+
+  /// Owner check for the pushed Before you pay route, where this page is covered.
+  final bool Function()? childCanAct;
   final bool Function() canContinue;
   final VoidCallback onBack;
 
@@ -41,7 +53,7 @@ class ZyraOneUpgradePage extends StatelessWidget {
   List<(String, String, String)> get _guardianRows => [
     ('See the Journeys your Seeker allows', '✓', '✓'),
     ('Family Review (Main Guardian)', '✓', '✓'),
-    ('Chat in a Journey', '—', '✓'),
+    ('Chat in a Journey, when your Seeker allows it', '—', '✓'),
     if (includesPreviewComparisons)
       ('Compatibility score', 'Overall score', 'Every topic'),
     ('Join chaperoned video calls', '—', 'Coming later'),
@@ -53,6 +65,22 @@ class ZyraOneUpgradePage extends StatelessWidget {
 
   void _continue(BuildContext context) {
     if (!canContinue()) return;
+    if (founderPreview) {
+      if (guardian) {
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) => ZyraGuardianBeforePayPreview(
+              seekerFirstName: seekerFirstName,
+              canAct: childCanAct ?? canContinue,
+              onNotice: onPurchaseNotice,
+            ),
+          ),
+        );
+      } else {
+        _previewNotice(context, ZyraPurchaseFinePrint.appleNotice);
+      }
+      return;
+    }
     // The current catalogue has no purchasable store product. Keep its
     // unavailable path and omit both price and introductory offer claims.
     showZyraGlassDialog<void>(
@@ -81,75 +109,119 @@ class ZyraOneUpgradePage extends StatelessWidget {
     );
   }
 
+  void _previewNotice(BuildContext context, String message) {
+    if (onPurchaseNotice case final callback?) {
+      callback(message);
+    } else {
+      ScaffoldMessenger.maybeOf(
+        context,
+      )?.showSnackBar(SnackBar(content: Text(message)));
+    }
+  }
+
   @override
   Widget build(BuildContext context) => SafeArea(
-    child: Padding(
-      padding: const EdgeInsets.fromLTRB(20, 4, 20, 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
+    child: LayoutBuilder(
+      builder: (context, bounds) {
+        final scale = MediaQuery.textScalerOf(context).scale(14) / 14;
+        final content = _content(context);
+        if (!founderPreview || scale <= 1.2 || bounds.maxHeight >= 800) {
+          return content;
+        }
+        return SingleChildScrollView(
+          child: SizedBox(
+            height: bounds.maxHeight + 250 * scale,
+            child: content,
+          ),
+        );
+      },
+    ),
+  );
+
+  Widget _content(BuildContext context) => Padding(
+    padding: const EdgeInsets.fromLTRB(20, 4, 20, 8),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: [
+            if (!founderPreview) ...[
               IconButton(
                 tooltip: 'Back',
                 onPressed: ZyraTapFeedback.onTap(context, onBack),
                 icon: const Icon(Icons.arrow_back),
               ),
               const SizedBox(width: 4),
-              Expanded(
-                child: Semantics(
-                  header: true,
-                  child: ZyraDeveloperTitle(
-                    child: Text(_title, style: ZyraText.heading(size: 26)),
-                  ),
-                ),
-              ),
             ],
-          ),
-          const SizedBox(height: 12),
-          Expanded(
-            child: _ComparisonCard(
-              rows: guardian ? _guardianRows : _seekerRows,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            guardian
-                ? 'A Seeker can also cover you with a ZYRA Family place. Cancel any time in Apple settings.'
-                : 'You keep everything you have now. Cancel any time in Apple settings.',
-            style: ZyraText.subtext(size: 12, color: ZyraColors.secondaryText),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 12),
-          ZyraFloatingSurface(
-            gold: true,
-            radius: 28,
-            child: FilledButton(
-              key: const ValueKey('one-upgrade-continue'),
-              onPressed: ZyraTapFeedback.onTap(
-                context,
-                () => _continue(context),
-                canAct: canContinue,
-              ),
-              style: FilledButton.styleFrom(
-                backgroundColor: ZyraColors.primaryAction,
-                foregroundColor: ZyraColors.espresso,
-                minimumSize: const Size.fromHeight(48),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
+            Expanded(
+              child: Semantics(
+                header: true,
+                child: ZyraDeveloperTitle(
+                  child: Text(_title, style: ZyraText.heading(size: 26)),
                 ),
-                shape: const StadiumBorder(),
               ),
-              child: const Text('Continue'),
             ),
+          ],
+        ),
+        if (founderPreview) ...[
+          Text(
+            '${ZyraMembershipCatalog.pounds(guardian ? ZyraMembershipCatalog.guardianOneMonthlyPence : ZyraMembershipCatalog.seekerOneMonthlyPence)} a month · 14 days free to start',
+            style: ZyraText.body(size: 13, color: ZyraColors.secondaryText),
           ),
-          TextButton(
-            onPressed: ZyraTapFeedback.onTap(context, onBack),
-            child: const Text('Not now'),
+          const SizedBox(height: 8),
+        ],
+        const SizedBox(height: 12),
+        Expanded(
+          child: _ComparisonCard(rows: guardian ? _guardianRows : _seekerRows),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          guardian
+              ? founderPreview
+                    ? 'A Seeker can also cover you with a ZYRA Family place.'
+                    : 'A Seeker can also cover you with a ZYRA Family place. Cancel any time in Apple settings.'
+              : founderPreview
+              ? 'You keep everything you have now.'
+              : 'You keep everything you have now. Cancel any time in Apple settings.',
+          style: ZyraText.subtext(size: 12, color: ZyraColors.secondaryText),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 12),
+        ZyraFloatingSurface(
+          gold: true,
+          radius: 28,
+          child: FilledButton(
+            key: const ValueKey('one-upgrade-continue'),
+            onPressed: ZyraTapFeedback.onTap(
+              context,
+              () => _continue(context),
+              canAct: canContinue,
+            ),
+            style: FilledButton.styleFrom(
+              backgroundColor: ZyraColors.primaryAction,
+              foregroundColor: ZyraColors.espresso,
+              minimumSize: const Size.fromHeight(48),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              shape: const StadiumBorder(),
+            ),
+            child: Text(founderPreview ? 'Start 14 days free' : 'Continue'),
+          ),
+        ),
+        if (founderPreview) ...[
+          const SizedBox(height: 8),
+          ZyraPurchaseFinePrint(
+            offer: guardian
+                ? ZyraPurchaseOffer.guardianOne
+                : ZyraPurchaseOffer.seekerOne,
+            onNotice: (message) => _previewNotice(context, message),
+            canAct: canContinue,
           ),
         ],
-      ),
+        TextButton(
+          onPressed: ZyraTapFeedback.onTap(context, onBack),
+          child: const Text('Not now'),
+        ),
+      ],
     ),
   );
 }

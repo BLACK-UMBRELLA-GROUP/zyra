@@ -46,7 +46,6 @@ import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/floating_nav_bar.dart';
 import 'package:zyra/widgets/zyra_profile_details_page.dart';
-import 'package:zyra/data/zyra_membership_catalog.dart';
 import 'package:zyra/widgets/zyra_browse_designs.dart';
 import 'package:zyra/widgets/zyra_guardian_dashboard_profile_card.dart';
 import 'package:zyra/widgets/zyra_journey_icon.dart';
@@ -1768,7 +1767,7 @@ void main() {
     },
   );
 
-  testWidgets('Basic upgrade notice dismisses over the admitted preview', (
+  testWidgets('Basic upgrade Apple preview notice leaves plan visible', (
     tester,
   ) async {
     await _mount(tester);
@@ -1778,10 +1777,12 @@ void main() {
     await _press(tester, 'concept_membership');
     expect(find.text('Journey places'), findsOneWidget);
     await _press(tester, 'one-upgrade-continue');
-    expect(find.text(ZyraMembershipCatalog.availability), findsOneWidget);
-    await tester.tap(find.text('OK'));
+    expect(find.text("Apple's subscription sheet opens here."), findsOneWidget);
+    ScaffoldMessenger.of(
+      tester.element(find.text('Journey places')),
+    ).removeCurrentSnackBar();
     await tester.pumpAndSettle();
-    expect(find.text(ZyraMembershipCatalog.availability), findsNothing);
+    expect(find.text("Apple's subscription sheet opens here."), findsNothing);
     expect(find.text('Journey places'), findsOneWidget);
     await tester.tap(find.text('Not now'));
     await tester.pumpAndSettle();

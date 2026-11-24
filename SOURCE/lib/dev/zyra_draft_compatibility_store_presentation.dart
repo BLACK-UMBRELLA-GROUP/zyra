@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../data/zyra_membership_catalog.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
+import '../widgets/zyra_purchase_fine_print.dart';
 import '../widgets/zyra_swipe_track.dart';
 import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_tap_feedback.dart';
@@ -17,6 +18,8 @@ class ZyraDraftCompatibilityStorePresentation extends StatefulWidget {
     this.isSeekerOne = false,
     this.canAct,
     this.onTerms,
+    this.founderPreview = false,
+    this.onPurchaseNotice,
     this.storePlatform = TargetPlatform.iOS,
   }) : assert(balance == null || balance >= 0);
 
@@ -24,6 +27,8 @@ class ZyraDraftCompatibilityStorePresentation extends StatefulWidget {
   final bool isSeekerOne;
   final bool Function()? canAct;
   final VoidCallback? onTerms;
+  final bool founderPreview;
+  final ValueChanged<String>? onPurchaseNotice;
   final TargetPlatform storePlatform;
 
   @override
@@ -100,7 +105,12 @@ class _ZyraDraftCompatibilityStorePresentationState
         direction,
         width,
       ).height;
-      final footerHeight = _footerHeight(width, scaler, direction);
+      final footerHeight = _footerHeight(
+        width,
+        scaler,
+        direction,
+        founderPreview: widget.founderPreview,
+      );
       final fits =
           constraints.hasBoundedHeight &&
           constraints.maxHeight >=
@@ -223,10 +233,17 @@ class _ZyraDraftCompatibilityStorePresentationState
             key: const ValueKey('draft_compatibility_store_continue'),
             // The approved draft has no checkout authority. Keep this disabled;
             // choosing a pack never debits the balance or grants an Unlock.
-            onPressed: null,
+            onPressed: widget.founderPreview
+                ? () {
+                    if (!_current(revision)) return;
+                    _previewNotice("Purchasing isn't available yet.");
+                  }
+                : null,
             style: FilledButton.styleFrom(
               minimumSize: const Size(44, 48),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              foregroundColor: ZyraColors.onPrimaryAction,
+              backgroundColor: ZyraColors.goldTextFill,
               disabledForegroundColor: ZyraColors.onPrimaryAction,
               disabledBackgroundColor: ZyraColors.goldTextFill,
               side: BorderSide.none,
@@ -243,36 +260,56 @@ class _ZyraDraftCompatibilityStorePresentationState
           ),
         ),
         const SizedBox(height: 6),
-        Wrap(
-          alignment: WrapAlignment.center,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            TextButton(
-              key: const ValueKey('draft_compatibility_store_terms'),
-              onPressed: ZyraTapFeedback.onTap(
-                context,
-                terms,
-                canAct: () => _current(revision),
+        if (widget.founderPreview)
+          ZyraPurchaseFinePrint(
+            offer: ZyraPurchaseOffer.compatibilityUnlocks,
+            onNotice: _previewNotice,
+            canAct: () => _current(revision),
+          )
+        else
+          Wrap(
+            alignment: WrapAlignment.center,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              TextButton(
+                key: const ValueKey('draft_compatibility_store_terms'),
+                onPressed: ZyraTapFeedback.onTap(
+                  context,
+                  terms,
+                  canAct: () => _current(revision),
+                ),
+                style: TextButton.styleFrom(
+                  minimumSize: const Size(44, 44),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 0,
+                    vertical: 8,
+                  ),
+                  foregroundColor: ZyraColors.secondaryText,
+                  disabledForegroundColor: ZyraColors.secondaryText,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                child: Text('Purchase terms', style: _muted(size: 12)),
               ),
-              style: TextButton.styleFrom(
-                minimumSize: const Size(44, 44),
-                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-                foregroundColor: ZyraColors.secondaryText,
-                disabledForegroundColor: ZyraColors.secondaryText,
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              Text(
+                ' · Purchasing isn’t available yet',
+                key: const ValueKey('draft_compatibility_store_unavailable'),
+                textAlign: TextAlign.center,
+                style: _muted(size: 12),
               ),
-              child: Text('Purchase terms', style: _muted(size: 12)),
-            ),
-            Text(
-              ' · Purchasing isn’t available yet',
-              key: const ValueKey('draft_compatibility_store_unavailable'),
-              textAlign: TextAlign.center,
-              style: _muted(size: 12),
-            ),
-          ],
-        ),
+            ],
+          ),
       ],
     );
+  }
+
+  void _previewNotice(String message) {
+    if (widget.onPurchaseNotice case final callback?) {
+      callback(message);
+    } else {
+      ScaffoldMessenger.maybeOf(
+        context,
+      )?.showSnackBar(SnackBar(content: Text(message)));
+    }
   }
 }
 
@@ -843,7 +880,12 @@ double _previewHeight(
           : textHeight.clamp(navigationHeight, double.infinity));
 }
 
-double _footerHeight(double width, TextScaler scaler, TextDirection direction) {
+double _footerHeight(
+  double width,
+  TextScaler scaler,
+  TextDirection direction, {
+  bool founderPreview = false,
+}) {
   final button =
       (_textSize(
                 'Continue',
@@ -855,6 +897,16 @@ double _footerHeight(double width, TextScaler scaler, TextDirection direction) {
               20)
           .clamp(48, double.infinity)
           .toDouble();
+  if (founderPreview) {
+    final copy = _textSize(
+      ZyraPurchaseFinePrint.copyFor(ZyraPurchaseOffer.compatibilityUnlocks),
+      ZyraText.body(size: 11.5, color: const Color(0xFF6E6257)),
+      scaler,
+      direction,
+      width,
+    );
+    return button + 6 + copy.height + 4 + 44;
+  }
   final terms = _textSize(
     'Purchase terms',
     _muted(size: 12),

@@ -4,7 +4,6 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/data/zyra_membership_catalog.dart';
 import 'package:zyra/dev/zyra_one_journey_monogram_presentation.dart';
 import 'package:zyra/screens/subscription/upgrade_screen.dart';
 import 'package:zyra/screens/subscription/zyra_one_upgrade_page.dart';
@@ -66,7 +65,7 @@ void main() {
   const guardianVisible = [
     'See the Journeys your Seeker allows',
     'Family Review (Main Guardian)',
-    'Chat in a Journey',
+    'Chat in a Journey, when your Seeker allows it',
     'Compatibility score',
     'Join chaperoned video calls',
   ];
@@ -129,26 +128,51 @@ void main() {
           expect(find.text('Age and location'), findsOneWidget);
           expect(find.text('All filters'), findsOneWidget);
         }
-        expect(find.textContaining('days free'), findsNothing);
-        expect(find.textContaining('£'), findsNothing);
+        expect(find.text('Start 14 days free'), findsOneWidget);
+        expect(find.textContaining('14 days free, then £'), findsOneWidget);
         expect(find.text('Coming later'), findsOneWidget);
         await _capture(h, guardian ? 'guardian-one' : 'seeker-one');
 
         await h.tap('one-upgrade-continue');
-        expect(find.text(ZyraMembershipCatalog.availability), findsOneWidget);
-        await _capture(
-          h,
-          guardian ? 'guardian-unavailable' : 'seeker-unavailable',
-        );
-        await h.tapText('OK');
+        if (guardian) {
+          expect(find.text('Before you pay'), findsOneWidget);
+          expect(find.text('I understand Adam decides.'), findsOneWidget);
+          final continueToApple = _key('guardian-before-pay-continue');
+          expect(
+            tester.widget<FilledButton>(continueToApple).onPressed,
+            isNull,
+          );
+          await h.tap('guardian-before-pay-understand');
+          expect(
+            tester.widget<FilledButton>(continueToApple).onPressed,
+            isNotNull,
+          );
+          await h.tap('guardian-before-pay-continue');
+          expect(
+            find.text("Apple's subscription sheet opens here."),
+            findsOneWidget,
+          );
+          ScaffoldMessenger.of(
+            tester.element(find.text('Before you pay')),
+          ).removeCurrentSnackBar();
+          await tester.pumpAndSettle();
+          Navigator.of(tester.element(find.text('Before you pay'))).pop();
+          await tester.pumpAndSettle();
+        } else {
+          expect(
+            find.text("Apple's subscription sheet opens here."),
+            findsOneWidget,
+          );
+          ScaffoldMessenger.of(
+            tester.element(find.byType(ZyraOneUpgradePage)),
+          ).removeCurrentSnackBar();
+          await tester.pumpAndSettle();
+        }
         expect(find.byType(ZyraOneUpgradePage), findsOneWidget);
+        await tester.ensureVisible(find.text('Not now'));
         await h.tapText('Not now');
         expect(find.byType(ZyraOneUpgradePage), findsNothing);
         expect(h.latest.tab, 4);
-        await h.tap('concept_membership');
-        await tester.tap(find.byTooltip('Back'));
-        await h.flush();
-        expect(find.byType(ZyraOneUpgradePage), findsNothing);
       },
     );
 

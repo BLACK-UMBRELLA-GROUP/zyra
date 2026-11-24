@@ -258,7 +258,7 @@ void main() {
     expect(find.text('No match. Try another spelling.'), findsOneWidget);
   });
 
-  testWidgets('Membership CTA is held and only preview Skip advances', (
+  testWidgets('Membership preview shows Apple notice and only Skip advances', (
     tester,
   ) async {
     final c = ZyraSignupPreviewController();
@@ -267,12 +267,28 @@ void main() {
     c.setStep(ZyraSignupStep.membership);
     await _mount(tester, c);
     expect(find.text('ONE'), findsWidgets);
+    final button = _key('signup_membership_checkout');
+    final onePrint = _key('purchase-fine-print-seekerOne');
+    expect(onePrint, findsOneWidget);
+    expect(
+      tester.getTopLeft(onePrint).dy,
+      lessThan(tester.getTopLeft(button).dy),
+    );
+    c.setMembershipBasic(true);
+    await tester.pumpAndSettle();
+    final basicPrint = _key('purchase-fine-print-seekerBasic');
+    expect(onePrint, findsNothing);
+    expect(basicPrint, findsOneWidget);
+    expect(
+      tester.getTopLeft(basicPrint).dy,
+      lessThan(tester.getTopLeft(button).dy),
+    );
+    c.setMembershipBasic(false);
+    await tester.pumpAndSettle();
     await tester.tap(_key('signup_membership_checkout'));
     await tester.pumpAndSettle();
-    expect(find.textContaining('Payments, trial activation'), findsOneWidget);
+    expect(find.text("Apple's subscription sheet opens here."), findsOneWidget);
     expect(c.step, ZyraSignupStep.membership);
-    await tester.tap(find.text('Back to cards'));
-    await tester.pumpAndSettle();
     await tester.tap(_key('signup_skip'));
     await tester.pumpAndSettle();
     expect(c.step, ZyraSignupStep.accountReady);

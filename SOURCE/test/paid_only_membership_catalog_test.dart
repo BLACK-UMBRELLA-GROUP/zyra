@@ -144,6 +144,16 @@ void main() {
       ZyraMembershipCatalog.trialTerms,
       contains('paid monthly subscription'),
     );
+    expect(ZyraMembershipCatalog.trialTerms, contains('Guardian One'));
+    expect(ZyraMembershipCatalog.trialTerms, contains('14-day free trial'));
+    expect(
+      ZyraMembershipCatalog.trialTerms,
+      contains('when the App Store product carries that offer'),
+    );
+    expect(
+      ZyraMembershipCatalog.trialTerms,
+      contains('ZYRA Family has no trial'),
+    );
     expect(ZyraMembershipCatalog.checkoutAvailable, isFalse);
   });
 

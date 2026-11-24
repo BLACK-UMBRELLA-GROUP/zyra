@@ -3467,12 +3467,15 @@ class _ZyraOneJourneyConceptShellState
     'membership' => _membershipView(),
     'one_upgrade' => ZyraOneUpgradePage(
       guardian: _guardianRole,
+      founderPreview: true,
+      seekerFirstName: _conceptGuardianJourney?.linkedSeekerName ?? 'Adam',
       includesPreviewComparisons: true,
       includesProfileVideo:
           identical(widget.fixture, _fixtureOwner) &&
           (_fixtureOwner?.profileVideoLoader != null ||
               _fixtureOwner?.profileVideoStore != null),
       canContinue: _accountFreshGuard(),
+      childCanAct: _accountFreshGuard(allowOwnedChildRoute: true),
       onBack: _bound(_back),
     ),
     'membership_review' => _membershipReviewView(),
@@ -8412,11 +8415,18 @@ class _ZyraOneJourneyConceptShellState
       return _unavailable();
     }
     final fresh = _accountFreshGuard();
+    final childFresh = _accountFreshGuard(allowOwnedChildRoute: true);
     return ZyraOneUpgradePage(
       guardian: true,
+      founderPreview: true,
+      seekerFirstName: _conceptGuardianJourney?.linkedSeekerName ?? 'Adam',
       includesPreviewComparisons: true,
       canContinue: () =>
           fresh() &&
+          _guardianMembership == 'Guardian Basic' &&
+          _canReadGuardianCompatibility(target),
+      childCanAct: () =>
+          childFresh() &&
           _guardianMembership == 'Guardian Basic' &&
           _canReadGuardianCompatibility(target),
       onBack: _bound(_back),
@@ -9685,18 +9695,25 @@ class _ZyraOneJourneyConceptShellState
     }
   }
 
-  bool Function() _accountFreshGuard({int Function()? expectedNavigatorStamp}) {
+  bool Function() _accountFreshGuard({
+    int Function()? expectedNavigatorStamp,
+    bool allowOwnedChildRoute = false,
+  }) {
     final account = (ZyraAccountState.userId, ZyraAccountState.generation);
     final revision = _uiRevision;
     final guardian = _guardianRole;
     final page = _page;
     final tab = _tab;
     final navigatorStamp = _routeStamp;
+    final hostRoute = ModalRoute.of(context);
     return () =>
         _allowed &&
         account == (ZyraAccountState.userId, ZyraAccountState.generation) &&
-        (expectedNavigatorStamp?.call() ?? navigatorStamp) == _routeStamp &&
-        ModalRoute.of(context)?.isCurrent == true &&
+        (allowOwnedChildRoute
+            ? hostRoute?.isActive == true
+            : (expectedNavigatorStamp?.call() ?? navigatorStamp) ==
+                      _routeStamp &&
+                  hostRoute?.isCurrent == true) &&
         revision == _uiRevision &&
         guardian == _guardianRole &&
         page == _page &&
@@ -10799,6 +10816,10 @@ class _ZyraOneJourneyConceptShellState
           isSeekerOne: _seekerMembership == 'Seeker One',
           canAct: current,
           balance: _guardianRole ? null : _compatibilityAccess.balance,
+          founderPreview: true,
+          onPurchaseNotice: (message) {
+            if (current()) _act(() => _notice = message);
+          },
           onTerms: _bound(() {
             if (!current()) return;
             _move(() {

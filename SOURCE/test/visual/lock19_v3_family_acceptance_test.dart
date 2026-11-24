@@ -247,7 +247,7 @@ void main() {
     );
   }
   testWidgets(
-    'actual Seeker invite survives role switch; accept keeps every View and other Guardian fact',
+    'existing free-place invite survives role switch and preserves access facts',
     (t) async {
       final h = BaselineHarness(
         t,
@@ -260,9 +260,18 @@ void main() {
         ..seedJourneys(2)
         ..setSampleGuardianMembership(hassan, DraftGuardianMembership.basic);
       await h.mount(
-        tab: 3,
-        model: model,
-        guardianMembership: 'Guardian Basic',
+        checkpoint: ZyraPreviewNavigationCheckpoint(
+          guardian: false,
+          tab: 3,
+          pages: const [],
+          model: model.snapshot(),
+          guardianMembership: 'Guardian Basic',
+          guardianFamily: ZyraGuardianFamilyPreviewSnapshot(
+            invites: const [],
+            freePlaces: 1,
+            sequence: 0,
+          ),
+        ),
         previewClock: () => sent,
       );
       final before = h.latest.model;
@@ -272,7 +281,6 @@ void main() {
       final journey = cards.journeysFor(hassan).first;
       await h.tap('guardian-card-chat-$hassan-${journey.id}');
       await h.tap('guardian-family-introduction-primary');
-      await h.tap('guardian-family-price-primary');
       await h.tap('guardian-family-invited-primary');
       expect(h.latest.guardianFamily!.invites.single.guardianName, 'Hassan');
       expect(h.latest.guardianFamily!.invites.single.seekerName, 'Adam');

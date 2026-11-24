@@ -266,7 +266,7 @@ void main() {
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );
   testWidgets(
-    'LOCK19 k09-k16 three Family states, formula, invite and accepted projection',
+    'LOCK19 k09-k16 Family price preview, free-place invite and accepted projection',
     (t) async {
       final h = _h(t);
       await _fixture(h, additional: true, guardianBasic: true);
@@ -276,6 +276,18 @@ void main() {
       expect(find.text('£49.98 a month'), findsOneWidget);
       await _cap(h, 'k10_sheet__price_no_family');
       await h.tap('guardian-family-price-primary');
+      expect(
+        find.text("Apple's subscription sheet opens here."),
+        findsOneWidget,
+      );
+      await _fixture(
+        h,
+        additional: true,
+        guardianBasic: true,
+        family: ZyraGuardianFamilyState.freePlace,
+      );
+      await h.tap('guardian-card-chat-$_ibrahim-draft-sara');
+      await h.tap('guardian-family-introduction-primary');
       await _cap(h, 'k14_sheet__invite_sent');
       await h.tap('guardian-family-invited-primary');
       expect(find.text('Invited'), findsNWidgets(2));

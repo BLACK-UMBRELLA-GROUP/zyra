@@ -523,7 +523,10 @@ void main() {
       await _press(tester, 'draft_compatibility_buy_more');
       expect(find.byType(ZyraDraftCompatibilityPresentation), findsNothing);
       expect(find.text('Compatibility Unlocks'), findsOneWidget);
-      expect(find.text(' · Purchasing isn’t available yet'), findsOneWidget);
+      expect(
+        find.text('Charged once to your Apple ID. Not a subscription.'),
+        findsOneWidget,
+      );
       expect(_key('draft_compatibility_test_credits'), findsNothing);
       coveredUnlock();
       await tester.pumpAndSettle();
@@ -647,7 +650,7 @@ void main() {
       tester
           .widget<FilledButton>(_key('draft_compatibility_store_continue'))
           .onPressed,
-      isNull,
+      isNotNull,
     );
     await returnZyraPreviewPage(tester);
     expect(find.byType(ZyraConceptProfilePresentation), findsOneWidget);
@@ -678,7 +681,7 @@ void main() {
         tester
             .widget<FilledButton>(_key('draft_compatibility_store_continue'))
             .onPressed,
-        isNull,
+        isNotNull,
       );
       expect(
         tester
@@ -810,12 +813,11 @@ void main() {
           _key('draft_compatibility_store_continue').hitTestable(),
           findsOneWidget,
         );
+        expect(_key('purchase-terms-of-use').hitTestable(), findsOneWidget);
         expect(
-          _key('draft_compatibility_store_terms').hitTestable(),
-          findsOneWidget,
-        );
-        expect(
-          tester.getRect(_key('draft_compatibility_store_unavailable')).bottom,
+          tester
+              .getRect(_key('purchase-fine-print-compatibilityUnlocks'))
+              .bottom,
           lessThanOrEqualTo(size.height - 34 - 16 + .01),
         );
         await _snapshot(tester, 'store_${size.width.toInt()}_full');

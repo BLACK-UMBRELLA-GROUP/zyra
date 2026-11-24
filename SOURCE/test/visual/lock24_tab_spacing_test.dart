@@ -1269,7 +1269,10 @@ void main() {
                       keyId == 'guardian_introductions')) {
                 expect(find.byKey(_nav), findsNothing);
                 expect(find.text('Guardian One'), findsOneWidget);
-                expect(find.text('Chat in a Journey'), findsOneWidget);
+                expect(
+                  find.text('Chat in a Journey, when your Seeker allows it'),
+                  findsOneWidget,
+                );
                 final gateException = t.takeException();
                 if (_captureRoot.isNotEmpty) {
                   report[name] = {

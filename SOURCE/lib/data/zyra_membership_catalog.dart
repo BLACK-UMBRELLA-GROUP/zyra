@@ -222,10 +222,11 @@ class ZyraMembershipCatalog {
       'apply.';
 
   static const trialTerms =
-      'Seeker One includes one 14-day trial per verified person for life, '
-      'then continues as a paid monthly subscription unless cancelled. The '
-      'trial starts only after identity verification and App Store payment '
-      'authorisation succeed. Guardian One and ZYRA Family do not include a '
-      'trial. The store will show eligibility, renewal price and cancellation '
-      'terms before subscription.';
+      'One 14-day free trial per verified person may be available on Seeker '
+      'One or Guardian One when the App Store product carries that offer. '
+      'After the trial, the chosen plan continues as a paid monthly '
+      'subscription unless cancelled. A trial starts only after identity '
+      'verification and App Store payment authorisation succeed. ZYRA '
+      'Family has no trial. The store confirms eligibility, renewal price '
+      'and cancellation terms before subscription.';
 }

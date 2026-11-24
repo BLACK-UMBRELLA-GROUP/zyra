@@ -99,12 +99,9 @@ void main() {
         expect(find.text('Unlock left'), findsOneWidget);
         await _cap(h, 'x02_unlocks__seeker_one$suffix');
         if (scale == 2) {
-          await t.ensureVisible(h.key('draft_compatibility_store_terms'));
+          await t.ensureVisible(h.key('purchase-terms-of-use'));
           await h.flush();
-          expect(
-            h.key('draft_compatibility_store_terms').hitTestable(),
-            findsOneWidget,
-          );
+          expect(h.key('purchase-terms-of-use').hitTestable(), findsOneWidget);
           await _cap(h, 'x02_unlocks__seeker_one__text200__footer');
         }
         await h.mount(
@@ -120,12 +117,9 @@ void main() {
         expect(find.text('Unlocks remaining'), findsNothing);
         await _cap(h, 'x03_unlocks__seeker_basic$suffix');
         if (scale == 2) {
-          await t.ensureVisible(h.key('draft_compatibility_store_terms'));
+          await t.ensureVisible(h.key('purchase-terms-of-use'));
           await h.flush();
-          expect(
-            h.key('draft_compatibility_store_terms').hitTestable(),
-            findsOneWidget,
-          );
+          expect(h.key('purchase-terms-of-use').hitTestable(), findsOneWidget);
           await _cap(h, 'x03_unlocks__seeker_basic__text200__footer');
         }
         await h.mount(tab: 4);

@@ -13,6 +13,7 @@ import '../theme/zyra_text.dart';
 import '../widgets/zyra_developer_title.dart';
 import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_glass_dialog.dart';
+import '../widgets/zyra_purchase_fine_print.dart';
 import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_profiles_components.dart';
 import '../widgets/zyra_swipe_track.dart';
@@ -221,7 +222,13 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
                             )
                           : SizedBox(
                               width: box.maxWidth,
-                              height: math.max(box.maxHeight, 600 * textScale),
+                              height: math.max(
+                                box.maxHeight,
+                                (c.step == ZyraSignupStep.membership
+                                        ? 880
+                                        : 600) *
+                                    textScale,
+                              ),
                               child: content,
                             ),
                     ),
@@ -641,6 +648,13 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
     );
   }
 
+  void _purchaseNotice(String message) {
+    if (!widget.canAct()) return;
+    ScaffoldMessenger.maybeOf(
+      context,
+    )?.showSnackBar(SnackBar(content: Text(message)));
+  }
+
   Widget _membership() => Column(
     key: const ValueKey('signup_membership'),
     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -666,8 +680,8 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
             title: index == 0 ? 'Seeker Basic' : 'Seeker One',
             eyebrow: index == 0 ? 'START SIMPLE' : 'EVERYTHING ZYRA OFFERS',
             price: index == 0
-                ? '£4.99 once'
-                : '14 days free, then £29.99 a month',
+                ? '${ZyraMembershipCatalog.pounds(ZyraMembershipCatalog.basicJoiningPence)} once'
+                : '14 days free, then ${ZyraMembershipCatalog.pounds(ZyraMembershipCatalog.seekerOneMonthlyPence)} a month',
             lines: index == 0
                 ? const [
                     '1 Journey place',
@@ -682,20 +696,25 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
           ),
         ),
       ),
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Text(
-          'Checkout is not available in this preview.',
-          textAlign: TextAlign.center,
-          style: ZyraText.subtext(size: 11, color: ZyraColors.secondaryStrong),
-        ),
+      const SizedBox(height: 8),
+      ZyraPurchaseFinePrint(
+        offer: c.membershipBasic
+            ? ZyraPurchaseOffer.seekerBasic
+            : ZyraPurchaseOffer.seekerOne,
+        onNotice: _purchaseNotice,
+        canAct: widget.canAct,
       ),
+      const SizedBox(height: 8),
       _button(
         id: 'signup_membership_checkout',
         label: c.membershipBasic
-            ? 'Pay £4.99 for Seeker Basic'
-            : 'Start 14 days free, then £29.99 a month',
-        onPressed: c.verified ? _holdMembership : null,
+            ? 'Pay ${ZyraMembershipCatalog.pounds(ZyraMembershipCatalog.basicJoiningPence)} for Seeker Basic'
+            : 'Start 14 days free, then ${ZyraMembershipCatalog.pounds(ZyraMembershipCatalog.seekerOneMonthlyPence)} a month',
+        onPressed: c.verified
+            ? c.membershipBasic
+                  ? _holdMembership
+                  : () => _purchaseNotice(ZyraPurchaseFinePrint.appleNotice)
+            : null,
       ),
     ],
   );

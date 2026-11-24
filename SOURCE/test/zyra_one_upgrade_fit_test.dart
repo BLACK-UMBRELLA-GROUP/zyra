@@ -21,7 +21,7 @@ const _seeker = [
 const _guardian = [
   ('See the Journeys your Seeker allows', '✓', '✓'),
   ('Family Review (Main Guardian)', '✓', '✓'),
-  ('Chat in a Journey', '—', '✓'),
+  ('Chat in a Journey, when your Seeker allows it', '—', '✓'),
   ('Compatibility score', 'Overall score', 'Every topic'),
   ('Join chaperoned video calls', '—', 'Coming later'),
 ];

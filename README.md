@@ -70,6 +70,12 @@ Compatibility Unlocks stays in its own Profile row. Guardian Basic Network
 explains Guardian One across the page, using linked Seeker names only when
 there is one. Both roles share the same navigation icons. Locked Guardian
 My ZYRA tiles show a small lock badge and a one-line Guardian One status.
+The Founder preview's purchase screens show the LOCK 38 price, renewal and
+cancellation wording beside each action. Sign-up places it above the pinned
+button; other buy screens place it below. Guardian One opens a Before you pay
+page where the linked Seeker's decision must be acknowledged. Terms, Privacy,
+Restore and Apple purchase actions show sample notices only. No purchase,
+restore or entitlement is made by these preview controls.
 In the ordinary Seeker Guardian tab and Founder preview, the round plus on the
 full-height Add card opens Add a Guardian. The ordinary tab shows the card when
 there are no linked Guardians and after the last Guardian when there is room.

@@ -4,6 +4,7 @@ import '../data/zyra_membership_catalog.dart';
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
 import '../widgets/zyra_floating_surface.dart';
+import '../widgets/zyra_purchase_fine_print.dart';
 import '../widgets/zyra_tap_feedback.dart';
 import 'zyra_one_journey_monogram_presentation.dart';
 
@@ -25,6 +26,7 @@ class ZyraGuardianFamilySheet extends StatefulWidget {
     required this.onInvite,
     required this.onCancelInvite,
     required this.onClose,
+    this.onPurchaseNotice,
   });
 
   final String guardianName;
@@ -36,6 +38,7 @@ class ZyraGuardianFamilySheet extends StatefulWidget {
   final VoidCallback onInvite;
   final VoidCallback onCancelInvite;
   final VoidCallback onClose;
+  final ValueChanged<String>? onPurchaseNotice;
 
   @override
   State<ZyraGuardianFamilySheet> createState() =>
@@ -198,6 +201,15 @@ class _ZyraGuardianFamilySheetState extends State<ZyraGuardianFamilySheet> {
               },
               const SizedBox(height: 16),
               _primary(context, revision),
+              if (_step == _FamilyStep.price) ...[
+                const SizedBox(height: 8),
+                ZyraPurchaseFinePrint(
+                  offer: ZyraPurchaseOffer.zyraFamily,
+                  familyMonthlyPence: _nextQuote.formulaMonthlyPence,
+                  onNotice: _previewNotice,
+                  canAct: () => _current(revision, widget.canAct),
+                ),
+              ],
               const SizedBox(height: 5),
               TextButton(
                 key: ValueKey('guardian-family-${_step.name}-secondary'),
@@ -328,12 +340,7 @@ class _ZyraGuardianFamilySheetState extends State<ZyraGuardianFamilySheet> {
     final current = noFamily
         ? null
         : ZyraMembershipCatalog.familyQuote(widget.seekers, widget.guardians);
-    final next = noFamily
-        ? ZyraMembershipCatalog.familyQuote(1, 1)
-        : ZyraMembershipCatalog.familyQuote(
-            widget.seekers,
-            widget.guardians + 1,
-          );
+    final next = _nextQuote;
     return _group([
       _priceLine(
         noFamily
@@ -435,7 +442,7 @@ class _ZyraGuardianFamilySheetState extends State<ZyraGuardianFamilySheet> {
             }
             return;
           case _FamilyStep.price:
-            _sendInvite();
+            _previewNotice(ZyraPurchaseFinePrint.appleNotice);
             return;
           case _FamilyStep.invited:
             _close();
@@ -465,4 +472,19 @@ class _ZyraGuardianFamilySheetState extends State<ZyraGuardianFamilySheet> {
       ),
     ),
   );
+
+  ZyraFamilyQuote get _nextQuote =>
+      widget.familyState == ZyraGuardianFamilyState.noFamily
+      ? ZyraMembershipCatalog.familyQuote(1, 1)
+      : ZyraMembershipCatalog.familyQuote(widget.seekers, widget.guardians + 1);
+
+  void _previewNotice(String message) {
+    if (widget.onPurchaseNotice case final callback?) {
+      callback(message);
+    } else {
+      ScaffoldMessenger.maybeOf(
+        context,
+      )?.showSnackBar(SnackBar(content: Text(message)));
+    }
+  }
 }

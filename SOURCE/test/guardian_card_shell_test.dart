@@ -1,6 +1,7 @@
 // Actual admitted Founder shell ownership, permission and confirm regression.
 import 'package:flutter/foundation.dart' show ValueKey;
 import 'package:flutter/widgets.dart' show EdgeInsets, Size;
+import 'package:flutter/material.dart' show ScaffoldMessenger;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
@@ -314,47 +315,48 @@ void main() {
       expect(h.latest.guardianHistory[_additional], isNot(true));
     },
   );
-  testWidgets(
-    'actual local Family invite never grants Chat and can be cancelled',
-    (t) async {
-      final model =
-          ViewRequestDraftModel(
-              capacity: 3,
-              clock: () => DateTime.utc(2026, 10, 29, 12),
-            )
-            ..seedJourneys(2)
-            ..setSampleGuardianMembership(
-              _additional,
-              DraftGuardianMembership.basic,
-            );
-      final h = harness(t);
-      await h.mount(tab: 3, model: model);
-      await swipeGuardianCard(t);
-      await h.flush();
-      final old = _page(t);
-      await h.tap('guardian-card-chat-$_additional-$_sara');
-      expect(find.text('Yusuf can view, but not chat'), findsOneWidget);
-      old.onPermission(_additional, _sara, chat: true);
-      old.onHistory(_additional, true);
-      await h.tap('guardian-family-introduction-primary');
-      await h.tap('guardian-family-price-primary');
-      await h.tap('guardian-family-invited-primary');
-      expect(find.text('Invited'), findsNWidgets(2));
-      expect(
-        h.latest.model.guardianMemberships[_additional],
-        DraftGuardianMembership.basic,
-      );
-      expect(
-        h.latest.model.guardianAccess['$_additional|$_sara']?.chat,
-        isFalse,
-      );
-      expect(h.latest.guardianHistory[_additional], isNot(true));
-      await h.tap('guardian-card-chat-$_additional-$_sara');
-      await h.tap('guardian-family-invited-secondary');
-      expect(find.text('Invited'), findsNothing);
-      expect(find.text('Chat'), findsNWidgets(2));
-    },
-  );
+  testWidgets('Family price preview leaves Chat and the invite unchanged', (
+    t,
+  ) async {
+    final model =
+        ViewRequestDraftModel(
+            capacity: 3,
+            clock: () => DateTime.utc(2026, 10, 29, 12),
+          )
+          ..seedJourneys(2)
+          ..setSampleGuardianMembership(
+            _additional,
+            DraftGuardianMembership.basic,
+          );
+    final h = harness(t);
+    await h.mount(tab: 3, model: model);
+    await swipeGuardianCard(t);
+    await h.flush();
+    final old = _page(t);
+    await h.tap('guardian-card-chat-$_additional-$_sara');
+    expect(find.text('Yusuf can view, but not chat'), findsOneWidget);
+    old.onPermission(_additional, _sara, chat: true);
+    old.onHistory(_additional, true);
+    await h.tap('guardian-family-introduction-primary');
+    await h.tap('guardian-family-price-primary');
+    expect(find.text("Apple's subscription sheet opens here."), findsOneWidget);
+    expect(find.text('Invited'), findsNothing);
+    expect(
+      h.latest.model.guardianMemberships[_additional],
+      DraftGuardianMembership.basic,
+    );
+    expect(h.latest.model.guardianAccess['$_additional|$_sara']?.chat, isFalse);
+    expect(h.latest.guardianHistory[_additional], isNot(true));
+    ScaffoldMessenger.of(
+      t.element(find.text('Cover Yusuf with ZYRA Family')),
+    ).removeCurrentSnackBar();
+    await h.flush();
+    await h.tap('guardian-family-price-secondary');
+    await h.tap('guardian-family-introduction-secondary');
+    expect(find.text('Invited'), findsNothing);
+    await h.tap('guardian-card-chat-$_additional-$_sara');
+    expect(find.text('Yusuf can view, but not chat'), findsOneWidget);
+  });
   testWidgets(
     'actual Main/Remove confirm flows preserve other Guardian and Journey facts',
     (t) async {

@@ -117,7 +117,10 @@ void main() {
             if (route.value == 'one_upgrade') {
               expect(nav, findsNothing);
               expect(find.text('Guardian One'), findsOneWidget);
-              expect(find.text('Chat in a Journey'), findsOneWidget);
+              expect(
+                find.text('Chat in a Journey, when your Seeker allows it'),
+                findsOneWidget,
+              );
               await h.tapText('Not now');
             } else {
               expect(tester.widget<ZyraShellNavigation>(nav).currentIndex, 2);

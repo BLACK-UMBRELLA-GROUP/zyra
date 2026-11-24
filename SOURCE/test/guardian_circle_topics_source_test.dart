@@ -267,7 +267,10 @@ void main() {
       await h.tap('circle_topics_membership');
       h.assertPage('one_upgrade');
       expect(find.text('Guardian One'), findsOneWidget);
-      expect(find.text('Chat in a Journey'), findsOneWidget);
+      expect(
+        find.text('Chat in a Journey, when your Seeker allows it'),
+        findsOneWidget,
+      );
       expect(_composer, findsNothing);
     },
   );

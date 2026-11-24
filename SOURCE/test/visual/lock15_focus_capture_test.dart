@@ -368,7 +368,10 @@ void main() {
       await h.tap('guardian_connect');
       h.assertPage('one_upgrade');
       expect(find.text('Guardian One'), findsOneWidget);
-      expect(find.text('Chat in a Journey'), findsOneWidget);
+      expect(
+        find.text('Chat in a Journey, when your Seeker allows it'),
+        findsOneWidget,
+      );
     },
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
   );

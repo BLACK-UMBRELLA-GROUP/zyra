@@ -1088,7 +1088,10 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(UpgradeScreen), findsOneWidget);
       expect(find.text('Guardian One'), findsOneWidget);
-      expect(find.text('Chat in a Journey'), findsOneWidget);
+      expect(
+        find.text('Chat in a Journey, when your Seeker allows it'),
+        findsOneWidget,
+      );
     },
   );
 

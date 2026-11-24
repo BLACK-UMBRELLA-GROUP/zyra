@@ -12,7 +12,6 @@ import 'package:zyra/theme/zyra_text.dart';
 Finder _key(String value) => find.byKey(ValueKey(value));
 Finder get _introPrimary => _key('guardian-family-introduction-primary');
 Finder get _pricePrimary => _key('guardian-family-price-primary');
-Finder get _invitedPrimary => _key('guardian-family-invited-primary');
 Finder get _invitedCancel => _key('guardian-family-invited-secondary');
 
 class _NoNetwork extends HttpOverrides {
@@ -35,6 +34,7 @@ void main() {
   var cancellations = 0;
   var closes = 0;
   final callbackOrder = <String>[];
+  final purchaseNotices = <String>[];
 
   setUp(() {
     allowed = true;
@@ -43,6 +43,7 @@ void main() {
     closes = 0;
     calls.clear();
     callbackOrder.clear();
+    purchaseNotices.clear();
     previousNetwork = HttpOverrides.current;
     network = _NoNetwork();
     HttpOverrides.global = network;
@@ -107,6 +108,7 @@ void main() {
                   closes++;
                   callbackOrder.add('close');
                 },
+                onPurchaseNotice: purchaseNotices.add,
               ),
             ),
           ),
@@ -215,23 +217,26 @@ void main() {
     expect(find.text('Then you choose Chat'), findsOneWidget);
   });
 
-  testWidgets('Continue sends once and Done only closes', (tester) async {
+  testWidgets('Continue previews Apple without sending an invite', (
+    tester,
+  ) async {
     await mount(tester);
     await tester.tap(_introPrimary);
     await tester.pump();
     final continueCallback = retainedPrimary(tester, _pricePrimary);
     continueCallback();
-    continueCallback();
     await tester.pump();
-    expect(invites, 1);
-    expect(find.text('Invite sent to Ibrahim'), findsOneWidget);
-    final done = retainedPrimary(tester, _invitedPrimary);
-    done();
-    done();
+    expect(purchaseNotices, ["Apple's subscription sheet opens here."]);
+    expect(invites, 0);
+    expect(find.text('Cover Ibrahim with ZYRA Family'), findsOneWidget);
+    await tester.tap(_key('guardian-family-price-secondary'));
+    await tester.pump();
+    expect(find.text('See the price'), findsOneWidget);
+    await tester.tap(_key('guardian-family-introduction-secondary'));
     await tester.pump();
     expect(closes, 1);
     expect(cancellations, 0);
-    expect(callbackOrder, ['invite', 'close']);
+    expect(callbackOrder, ['close']);
   });
 
   testWidgets('Existing invite opens sent state and Cancel withdraws once', (
@@ -315,19 +320,19 @@ void main() {
     final send = retainedPrimary(tester, _pricePrimary);
     send();
     await tester.pump();
+    expect(purchaseNotices, ["Apple's subscription sheet opens here."]);
+    back();
+    await tester.pump();
     final count = hapticCount();
     introduction();
     back();
     send();
     await tester.pump();
-    expect(invites, 1);
+    expect(invites, 0);
     expect(closes, 0);
     expect(hapticCount(), count);
-    expect(find.text('Invite sent to Ibrahim'), findsOneWidget);
-    expect(
-      tester.getSemantics(_invitedPrimary).getSemanticsData().label,
-      contains('Done'),
-    );
+    expect(find.text('See the price'), findsOneWidget);
+    expect(purchaseNotices, ["Apple's subscription sheet opens here."]);
     semantics.dispose();
   });
 
@@ -372,12 +377,16 @@ void main() {
     await tester.tap(_pricePrimary);
     await tester.pump();
     expect(tester.takeException(), isNull);
-    await tester.ensureVisible(_invitedCancel);
-    await tester.tap(_invitedCancel);
+    await tester.ensureVisible(_key('guardian-family-price-secondary'));
+    await tester.tap(_key('guardian-family-price-secondary'));
+    await tester.pump();
+    await tester.ensureVisible(_key('guardian-family-introduction-secondary'));
+    await tester.tap(_key('guardian-family-introduction-secondary'));
     await tester.pump();
     expect(tester.takeException(), isNull);
-    expect(invites, 1);
-    expect(cancellations, 1);
+    expect(purchaseNotices, ["Apple's subscription sheet opens here."]);
+    expect(invites, 0);
+    expect(cancellations, 0);
     expect(closes, 1);
   });
 }
