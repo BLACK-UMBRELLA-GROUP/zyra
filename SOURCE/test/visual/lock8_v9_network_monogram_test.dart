@@ -164,7 +164,6 @@ void main() {
         );
         for (final text in [
           'Main Guardian',
-          'Father · ✓ Verified',
           'Nationality',
           'British',
           'Ethnicity',
@@ -172,10 +171,14 @@ void main() {
         ]) {
           expect(find.text(text), findsOneWidget);
         }
+        expect(find.textContaining('Father · '), findsOneWidget);
+        expect(key('guardian_network_verified_check'), findsOneWidget);
+        expect(find.textContaining(' Verified'), findsOneWidget);
         expect(
-          find.text('for ${family == 0 ? 'Adam' : 'Yusuf'} ▾'),
+          find.text('for ${family == 0 ? 'Adam' : 'Yusuf'}'),
           findsOneWidget,
         );
+        expect(key('guardian_seeker_chevron'), findsOneWidget);
         expect(
           ZyraGuardianTabsState.network.every((p) => p.guardianOne),
           isTrue,

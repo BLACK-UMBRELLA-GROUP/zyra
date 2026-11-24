@@ -74,6 +74,7 @@ class DraftProfile {
     this.residenceCountryCode,
     this.nationalityCode,
     this.ethnicityCode,
+    this.verified = true,
     this.sampleLatitude,
     this.sampleLongitude,
   });
@@ -86,9 +87,14 @@ class DraftProfile {
   final String? residenceCountryCode;
   final String? nationalityCode;
   final String? ethnicityCode;
+  final bool verified;
   final double? sampleLatitude;
   final double? sampleLongitude;
 }
+
+Iterable<DraftProfile> verifiedPublicCandidates(
+  Iterable<DraftProfile> profiles,
+) => profiles.where((profile) => profile.verified);
 
 const List<DraftProfile> draftProfiles = [
   DraftProfile(
@@ -1357,7 +1363,7 @@ class ViewRequestDraftModel {
   /// A fresh request to the same peer remains held until distinct attempt
   /// history is modelled; terminal records are never overwritten.
   List<DraftProfile> get discoverableProfiles => List.unmodifiable(
-    draftProfiles.where((profile) {
+    verifiedPublicCandidates(draftProfiles).where((profile) {
       return !hasDeparted(profile.id) &&
           !isHidden(profile.id) &&
           !isBlocked(profile.id) &&

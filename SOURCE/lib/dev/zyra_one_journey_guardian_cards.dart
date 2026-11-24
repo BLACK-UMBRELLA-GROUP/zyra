@@ -97,11 +97,13 @@ class ZyraOneJourneyGuardianCards extends StatefulWidget {
     this.previewInvitationNow,
     this.previewInvitationCancelled = false,
     this.onCancelPreviewInvitation,
+    this.verifyFirst = false,
   });
   final List<ZyraGuardianCardPerson> people;
   final List<ZyraGuardianCardJourney> Function(String id) journeysFor;
   final int capacity, initialPage, unread;
   final bool basic;
+  final bool verifyFirst;
   final bool Function() canAct;
   final bool Function()? canActInOwnedMenu;
   final void Function(ModalRoute<dynamic> route, {required bool open})?
@@ -696,6 +698,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
                     children: [
                       if (isAdd)
                         ZyraGuardianAddCard(
+                          verifyFirst: widget.verifyFirst,
                           basicCapacity: basicCapacity,
                           onAdd: _action(widget.onAdd, expectedTarget: target),
                           onUpgrade: widget.basic && upgrade != null

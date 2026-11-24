@@ -80,8 +80,10 @@ My ZYRA presets, Seeker inactivity previews and shared error pages.
 Guardian views have no NOTICES section. Samples use the existing local
 presentations and actions, with no server writes or product events.
 
-**Unverified** uses the locked Profiles/Network gate and a typed local
-identity-verification preview. It cannot finalize live verification.
+**Unverified** uses the ordinary Profiles or Guardian Network preview with
+hidden town and surname, blurred member photos, and verification actions in
+place of requests. Guardian linking waits for verification. These remain
+local sample states; the preview cannot finalize live verification.
 **Setup unfinished** supplies the Request a Journey gate only until line
 121 supplies the setup card and continuation. Start sign-up also waits for
 line 121; Everything omits the unavailable setup card. If real membership

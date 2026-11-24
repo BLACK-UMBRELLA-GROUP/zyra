@@ -50,6 +50,7 @@ import 'package:zyra/widgets/zyra_focus_dashboard.dart';
 import 'package:zyra/dev/zyra_developer_inactivity_email.dart';
 import 'package:zyra/widgets/zyra_account_session_host.dart';
 import 'package:zyra/widgets/zyra_app_lock_gate.dart';
+import 'support/zyra_rendered_text_contrast.dart';
 
 const _owner = ZyraInternalFounderPolicy.approvedFounderUserId;
 const _project = ZyraInternalFounderPolicy.approvedSupabaseUrl;
@@ -57,6 +58,7 @@ const _member = 'ordinary-seeker-fixture';
 const _captureRoot = ValueKey('line96-capture');
 const _captures = String.fromEnvironment('ZYRA_LINE96_CAPTURE_DIR');
 const _signupCaptures = String.fromEnvironment('ZYRA_LINE121_SHELL_OUTPUT');
+const _line127TextAudit = bool.fromEnvironment('ZYRA_LINE127_TEXT_AUDIT');
 
 Finder _key(String key) => find.byKey(ValueKey(key));
 
@@ -299,6 +301,24 @@ void main() {
         image.dispose();
       }
     });
+    if (_line127TextAudit && RegExp(r'^s3[1-5]_').hasMatch(name)) {
+      final boundary = tester.renderObject<RenderRepaintBoundary>(
+        find.byKey(_captureRoot),
+      );
+      final result = await auditZyraRenderedText(tester, boundary);
+      expect(result.runs, greaterThan(0), reason: name);
+      expect(
+        result.failures,
+        isEmpty,
+        reason: '$name: ${jsonEncode(result.toJson())}',
+      );
+      final output = _signupCaptures.isEmpty ? _captures : _signupCaptures;
+      await tester.runAsync(
+        () => File(
+          '$output/$name.audit.json',
+        ).writeAsString(jsonEncode(result.toJson())),
+      );
+    }
   }
 
   Future<void> tap(WidgetTester tester, Finder target) async {
@@ -1503,8 +1523,31 @@ void main() {
     expect(_key('signup_continue_setup'), findsOneWidget);
     await capture(tester, 's30_paused__my_zyra_needs_you');
     await previewTab(tester, 0);
-    expect(find.text('Every person on ZYRA is verified'), findsOneWidget);
-    await capture(tester, 's31_gate__unverified_profiles');
+    expect(find.text('Verify to request a Journey'), findsOneWidget);
+    expect(find.text('Verify your identity to see photos'), findsOneWidget);
+    expect(find.text('Ahmed'), findsNothing);
+    expect(find.text('Birmingham'), findsNothing);
+    expect(find.text('Verify to see'), findsOneWidget);
+    expect(_key('unverified_profile_photo_pill'), findsOneWidget);
+    await capture(tester, 's31_unverified__profiles');
+    await tap(tester, _key('concept_browse_photo_tap_draft-sara'));
+    expect(_key('unverified_profile_photo_pill'), findsOneWidget);
+    await capture(tester, 's35_unverified__profiles_photo_page');
+    await previewTab(tester, 3);
+    expect(
+      find.text(
+        'Verify your identity first. Guardians only link to verified members.',
+      ),
+      findsOneWidget,
+    );
+    await capture(tester, 's32_unverified__guardian_tab');
+    await previewTab(tester, 2);
+    await tap(tester, _key('signup_continue_setup'));
+    c.setStep(ZyraSignupStep.addGuardian);
+    await settle(tester);
+    expect(find.text('VERIFIED MEMBERS ONLY'), findsOneWidget);
+    expect(find.text('YOUR ZYRA CODE'), findsNothing);
+    await capture(tester, 's33_unverified__setup_add_guardian');
     expect(readsAndWrites.length, callsBefore);
     expect(ZyraDeveloperSamples.instance.setupUnfinished, isTrue);
     await dispose(tester);
@@ -1697,7 +1740,7 @@ void main() {
   );
 
   testWidgets(
-    'LOCK 34 Unverified withdraws an open Guardian profile and denies direct Seeker entry',
+    'SIGN_UP V2 Unverified withdraws a Guardian profile but can browse Network',
     (tester) async {
       plan = 'seeker_premium';
       await mount(tester, homeOverride: previewHome());
@@ -1725,8 +1768,9 @@ void main() {
         await tap(tester, _key('dev_done'));
       }
       await settle(tester);
-      expect(find.text('Every person on ZYRA is verified'), findsOneWidget);
-      expect(find.byType(ZyraGuardianTabsPresentation), findsNothing);
+      expect(find.text('Verify to see the town'), findsOneWidget);
+      expect(find.byType(ZyraGuardianTabsPresentation), findsOneWidget);
+      await capture(tester, 's34_unverified__guardian_network');
       await previewTab(tester, 3);
       tester
           .widget<ZyraGuardianTabsPresentation>(
@@ -1734,8 +1778,8 @@ void main() {
           )
           .onAction('seeker_0');
       await settle(tester);
-      expect(find.text('Every person on ZYRA is verified'), findsOneWidget);
-      expect(find.byType(ZyraGuardianTabsPresentation), findsNothing);
+      expect(find.text('Verify to see the town'), findsOneWidget);
+      expect(find.byType(ZyraGuardianTabsPresentation), findsOneWidget);
       await dispose(tester);
     },
   );
@@ -1811,7 +1855,7 @@ void main() {
     await tap(tester, _key('dev_done'));
     await previewTab(tester, 0);
     expect(find.text('Network'), findsWidgets);
-    await tap(tester, find.text('Verify now'));
+    await tap(tester, find.text('Verify to introduce'));
     expect(find.byType(InitialIdentityCheckScreen), findsOneWidget);
     expect(find.byType(ZyraSignupPreview), findsNothing);
     expect(seeker.guardian, isFalse);

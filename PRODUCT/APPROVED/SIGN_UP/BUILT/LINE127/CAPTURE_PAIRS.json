@@ -1,0 +1,31 @@
+{
+  "line": 127,
+  "source": "Founder sample preview",
+  "pairs": {
+    "s31_unverified__profiles.png": {
+      "master_sha256": "1658fcd4b1f7121e2a44d45fd359909d5d70ddd8864c8b2a21bd13bbfa3b808a",
+      "built_sha256": "2daf84d22908b33fd503fcbfe0f427b4ea57dbefbf6200facde1f7ac955f07f1",
+      "size": "1290x2796 (430x932 @3x)"
+    },
+    "s32_unverified__guardian_tab.png": {
+      "master_sha256": "766a977a771bf46c7f720ce401c94d58362395d620f9ca87ed15cb95b7609570",
+      "built_sha256": "19b0400a1862a6fd70d94444a389b161363489ed96defeb49bafa4e2c0c98404",
+      "size": "1290x2796 (430x932 @3x)"
+    },
+    "s33_unverified__setup_add_guardian.png": {
+      "master_sha256": "e3d172baaa9eb6e9bdbed0cc7872000a3fc6b4036e9f503e52f0a40da35da554",
+      "built_sha256": "b17648edf8f22c6006c034cb2a9466a6912624492ff57d712a101e93840aa715",
+      "size": "1290x2796 (430x932 @3x)"
+    },
+    "s34_unverified__guardian_network.png": {
+      "master_sha256": "77fe3cb2df9c15b5d4506ff5a7b994fc1a436413ab20629411c7f6afda73a930",
+      "built_sha256": "3320cc64eb1d62c57a086a1eab4719b4d90271b1b8d2c451e52e135b7ef73b64",
+      "size": "1290x2796 (430x932 @3x)"
+    },
+    "s35_unverified__profiles_photo_page.png": {
+      "master_sha256": "1dfd12f686cd94ab84b0af83e91431ee2d580bac7951a6501aaa423c11e4afc2",
+      "built_sha256": "2daf84d22908b33fd503fcbfe0f427b4ea57dbefbf6200facde1f7ac955f07f1",
+      "size": "1290x2796 (430x932 @3x)"
+    }
+  }
+}

@@ -231,7 +231,8 @@ class ZyraSignupPreviewController extends ChangeNotifier {
     notifyListeners();
   }
 
-  String? get linkedSeekerName {
+  // A valid code is held locally until the Guardian's identity check passes.
+  String? get pendingSeekerName {
     final entry = ZyraLocalCodeAliases.entry(
       ZyraLocalCodeContext.addSeeker,
       _seekerCode,
@@ -251,6 +252,8 @@ class ZyraSignupPreviewController extends ChangeNotifier {
       asGuardian: true,
     )?.firstName;
   }
+
+  String? get linkedSeekerName => _verified ? pendingSeekerName : null;
 
   String? get dayError {
     if (_day.isEmpty) {
@@ -343,7 +346,7 @@ class ZyraSignupPreviewController extends ChangeNotifier {
     ZyraSignupStep.ethnicity => _ethnicities.isNotEmpty,
     ZyraSignupStep.photos => _photos.isNotEmpty,
     ZyraSignupStep.relationship => _relationship != null,
-    ZyraSignupStep.addSeeker => linkedSeekerName != null,
+    ZyraSignupStep.addSeeker => pendingSeekerName != null,
     ZyraSignupStep.membership => _verified,
     ZyraSignupStep.splash || ZyraSignupStep.welcome => false,
     _ => true,

@@ -3,12 +3,80 @@ id: AS-BUILT-ZYRA-LOCK34
 type: HANDOVER
 status: CURRENT
 feature: SIGN UP
-purpose: As-built LOCK 34 local sign-up and setup, queue line 121
-links: [DOC-ZYRA-SIGNUP-V1, DR-ZYRA-355, OA-ZYRA-317, OA-ZYRA-325, AD-AIOS-115, AD-AIOS-147]
+purpose: Current as-built LOCK 34 sign-up, including queue lines 121 and 127
+links: [DOC-ZYRA-SIGNUP-V2, DR-ZYRA-355, OA-ZYRA-317, OA-ZYRA-325, OA-ZYRA-381, AD-AIOS-115, AD-AIOS-147]
 owner: Codex
 ---
 
 # Sign up — as built
+
+## Current state — line 127, SIGN_UP V2
+
+The Founder preview now lets an unverified sample member look around instead of
+showing the old full-page gate. A Seeker sees verified candidates' first names,
+ages, nationality and ethnicity. Their surnames and towns are absent; Location
+reads “Verify to see”. A Gaussian blur with sigma 14 is clipped to each peer
+photo frame, including the details-card avatar and static photo/video pages.
+The ivory photo note is on every card page. The details card alone offers
+“Verify to request a Journey”; per answered Q201, photo pages keep the normal
+five-icon navigation and omit that request action. The member's own photos are
+never passed through this blur. The sample browse model excludes unverified
+candidates from everyone else's visible list.
+
+The unverified Seeker's Guardian tab withdraws linked people and shows only
+the Add a Guardian card. Its card and + action open the local identity check.
+The Add a Guardian setup step replaces the code/share state with the approved
+verify card and Verify now action. A Guardian can browse Network using initials,
+age, nationality and ethnicity; the town is hidden and Introduce/Connect open
+the identity check. Guardian Network has no photos to blur. An unverified
+Guardian's Seeker name is pending locally and is exposed as linked only after
+the sample verification state becomes true.
+
+`ZyraOneJourneyConceptShell` owns the preview verification flag, role, page
+and action guards. `ZyraBrowseDesigns` renders the shared photo pager and
+verify pill; `zyra_one_journey_browse_designs.dart` forwards the flag. The
+Guardian card, setup preview and Network presentation receive that flag from
+the shell. `DraftProfile.verified` and the Guardian Network candidate filter
+are sample-data boundaries, not server enforcement. All gated actions reuse
+the existing local identity-check entry; stale or unauthorized callbacks fail
+the shell's current-action guard. The Developer fixture is admitted only by
+the existing Founder preview access control; this line adds no public toggle.
+
+Live files added or changed for line 127: `SOURCE/lib/dev/zyra_one_journey_browse_designs.dart`,
+`zyra_one_journey_concept_shell.dart`, `zyra_one_journey_guardian_cards.dart`,
+`zyra_one_journey_guardian_tabs.dart`, `zyra_signup_preview.dart`,
+`zyra_signup_preview_controller.dart`, `zyra_view_request_draft_model.dart`,
+`SOURCE/lib/widgets/zyra_browse_designs.dart`, `zyra_guardian_add_card.dart`,
+and the focused tests `SOURCE/test/line127_unverified_preview_test.dart`,
+`line121_signup_preview_controller_test.dart`, `zyra_developer_panel_entry_test.dart`,
+`visual/lock8_v9_network_monogram_test.dart`, and
+`visual/lock8_guardian_tabs_capture_test.dart`. The retired
+`SOURCE/lib/dev/zyra_developer_unverified_gate.dart` was moved to
+`~/_to_delete/LINE127_OLD_GATE_2026-11-24_0650UTC/`; no test references it.
+The Network's chevron and verified check are drawn primitives because the
+bundled test font rendered the old text symbols as missing-glyph boxes.
+
+The preview uses invented, in-memory data only. It does not fetch a protected
+photo or grant verification, membership or a Guardian link. No schema,
+migration, package, native host, server, payment or version changes were made.
+The live data and authorization contract remains OA-ZYRA-381 with Fable;
+real integration remains OA-ZYRA-317. Device and live-service observations
+are PENDING. The ZYRA Claude chat owns design comparison, Fable owns document
+verification, and the Founder alone approves.
+
+Line 127 evidence is in `SIGN_UP/BUILT/LINE127/`: five 430 × 932 captures,
+five focused rendered-text audit JSON files (51 runs, 34,747 painted pixels,
+zero failures), task note, and a text `BUILD.json`. The protected analyzer,
+focused tests and ordinary regression are recorded there. The protected
+ordinary regression finished with 7,892 passes, 206 opt-in skips and zero
+failures in 7m47s on the combined checkout; the disjoint line132 source/test
+edit is excluded from this line's commit. The full four-setting
+text audit is a hosted reporting job under line 143, not this local gate.
+Authority: SIGN_UP spec V2 and 22 November build brief, LOCK record and masters
+s31–s35, Q198/Q201 answers, then this as-built record. The historical line 121
+implementation below remains the source of the original sign-up/setup flow.
+
+## Historical state — line 121, SIGN_UP V1
 
 Line 121 implements the LOCK 34 V1 Apple/Google sign-up rehearsal and setup
 in the admitted Founder preview. Its authority is DR-ZYRA-355, the 18 November
@@ -40,7 +108,7 @@ choices. Guardian identity/About and Seeker preferences are separate. Clear
 sample data restores the captured local baseline. Sign-out or owner loss
 retires the rehearsal; this is in-memory sample state, not cross-launch storage.
 
-Unverified hides Profiles/Network and protected profile shortcuts. Verify now
+At line 121, unverified hid Profiles/Network and protected profile shortcuts. Verify now
 uses the matching role's rehearsal; a saved controller for the other role is
 never reused. Incomplete setup blocks both ordinary and Ended Journey restart
 requests with the locked message. New member and Everything materialize the
@@ -54,7 +122,7 @@ The progress bar's long press uses the existing typed Developer admission.
 | lib/dev/zyra_signup_preview_controller.dart | Role-specific steps, validation, pause/resume and completion |
 | lib/dev/zyra_signup_preview.dart | Locked cards, fields, searches, photos and local actions |
 | lib/dev/zyra_signup_preferences_preview.dart | Nested existing editor and persistent n/N continuation bar |
-| lib/dev/zyra_developer_unverified_gate.dart | Existing locked gate; primary button uses the shared action fill |
+| lib/dev/zyra_developer_unverified_gate.dart | Retired by line 127; historical line 121 gate only |
 | lib/dev/zyra_one_journey_concept_shell.dart | Entry, controller lifetime, local profile projection, dashboard and request gates |
 | lib/dev/zyra_request_account_session.dart | Guarded role-local profile/preferences/About application and baseline restoration |
 | lib/screens/profile/compatibility_editors.dart | Opt-in partial-answer autosave; ordinary editor defaults unchanged |

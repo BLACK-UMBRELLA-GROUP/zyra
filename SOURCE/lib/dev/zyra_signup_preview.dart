@@ -34,12 +34,14 @@ class ZyraSignupPreview extends StatefulWidget {
     required this.samplePhotos,
     required this.ownCode,
     required this.onShareCode,
+    this.onVerifyIdentity,
   });
 
   final ZyraSignupPreviewController controller;
   final bool Function() canAct;
   final WidgetBuilder preferencesBuilder;
   final VoidCallback onPause, onEnter, onShareCode;
+  final VoidCallback? onVerifyIdentity;
   final List<String> samplePhotos;
   final String ownCode;
 
@@ -1290,11 +1292,11 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
         value: c.seekerCode,
         hint: 'ZYRA–XXXX–XXXX–XXXX–XXXX–XXXX',
         onChanged: c.setSeekerCode,
-        error: c.seekerCode.isNotEmpty && c.linkedSeekerName == null
+        error: c.seekerCode.isNotEmpty && c.pendingSeekerName == null
             ? 'Invalid code. Please try again.'
             : null,
       ),
-      if (c.seekerCode.isNotEmpty && c.linkedSeekerName == null) ...[
+      if (c.seekerCode.isNotEmpty && c.pendingSeekerName == null) ...[
         const SizedBox(height: 8),
         Text(
           'Invalid code. Please try again.',
@@ -1580,7 +1582,9 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
     children: [
       _title(
         'Add a Guardian',
-        'A parent or family member who walks the Journey with you. Share your ZYRA Code with them; you still choose who links.',
+        c.verified
+            ? 'A parent or family member who walks the Journey with you. Share your ZYRA Code with them; you still choose who links.'
+            : 'Guardians only link to verified members. Verify your identity first; it takes about 2 minutes.',
       ),
       const SizedBox(height: 20),
       Container(
@@ -1589,38 +1593,81 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: ZyraColors.surfaceBorder),
         ),
-        child: Column(
-          children: [
-            Text(
-              'YOUR ZYRA CODE',
-              style: ZyraText.chapterLabel(color: ZyraColors.goldText),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              _displayCode,
-              textAlign: TextAlign.center,
-              style: ZyraText.body(size: 16).copyWith(letterSpacing: 1.8),
-            ),
-            const SizedBox(height: 12),
-            OutlinedButton(
-              key: const ValueKey('signup_share_code'),
-              onPressed: _action(widget.onShareCode),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: ZyraColors.goldText,
-                side: BorderSide(color: ZyraColors.journeyGold),
-                shape: const StadiumBorder(),
+        child: c.verified
+            ? Column(
+                children: [
+                  Text(
+                    'YOUR ZYRA CODE',
+                    style: ZyraText.chapterLabel(color: ZyraColors.goldText),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    _displayCode,
+                    textAlign: TextAlign.center,
+                    style: ZyraText.body(size: 16).copyWith(letterSpacing: 1.8),
+                  ),
+                  const SizedBox(height: 12),
+                  OutlinedButton(
+                    key: const ValueKey('signup_share_code'),
+                    onPressed: _action(widget.onShareCode),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: ZyraColors.goldText,
+                      side: BorderSide(color: ZyraColors.journeyGold),
+                      shape: const StadiumBorder(),
+                    ),
+                    child: Text(
+                      'Share my code',
+                      style: ZyraText.body(
+                        size: 14,
+                        color: ZyraColors.goldText,
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : Column(
+                children: [
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: ZyraColors.journeyGold),
+                    ),
+                    child: Icon(
+                      Icons.shield_outlined,
+                      color: ZyraColors.journeyGold,
+                      size: 30,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  Text(
+                    'VERIFIED MEMBERS ONLY',
+                    style: ZyraText.chapterLabel(color: ZyraColors.goldText),
+                  ),
+                  const SizedBox(height: 12),
+                  OutlinedButton(
+                    key: const ValueKey('signup_guardian_verify_now'),
+                    onPressed: _action(
+                      widget.onVerifyIdentity ??
+                          () => c.setStep(ZyraSignupStep.verify),
+                    ),
+                    child: Text(
+                      'Verify now',
+                      style: ZyraText.body(
+                        size: 14,
+                        color: ZyraColors.goldText,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              child: Text(
-                'Share my code',
-                style: ZyraText.body(size: 14, color: ZyraColors.goldText),
-              ),
-            ),
-          ],
-        ),
       ),
       const SizedBox(height: 18),
       Text(
-        'You can also do this later from the Guardian tab.',
+        c.verified
+            ? 'You can also do this later from the Guardian tab.'
+            : 'Once you’re verified, add a Guardian from the Guardian tab.',
         textAlign: TextAlign.center,
         style: ZyraText.subtext(size: 12),
       ),

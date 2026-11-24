@@ -202,8 +202,12 @@ Sara, Maryam or Noor's Journey and its stage, and set sample requests,
 Introductions, My ZYRA presets and shared error pages. Inactivity notices
 and email previews are available on the Seeker side only.
 
-**Unverified** opens the locked Profiles or Network gate and local identity
-verification preview. **Setup unfinished** blocks Request a Journey with
+**Unverified** members can look around the Founder preview. Profiles show first
+name, age and public details, hide the town and surname, and blur member photos;
+the request action opens the local identity check. Guardian Network shows initials,
+hides the town and sends Introduce or Connect to that same check. Unverified
+members are absent from other members' sample lists and cannot link a Guardian.
+**Setup unfinished** blocks Request a Journey with
 “Finish setting up your profile to start a Journey.” **Start sign-up** opens
 the LOCK 34 local Apple/Google rehearsal for either role. Long-press its
 progress bar to reopen Developer. Pausing setup opens My ZYRA with

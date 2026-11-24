@@ -64,6 +64,43 @@ class ZyraGuardianTabsSnapshot {
   final DateTime? freePlaceInviteExpiresAt;
 }
 
+class _GuardianGlyphPainter extends CustomPainter {
+  const _GuardianGlyphPainter({required this.check});
+
+  final bool check;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final path = Path();
+    if (check) {
+      path
+        ..moveTo(size.width * .1, size.height * .52)
+        ..lineTo(size.width * .38, size.height * .8)
+        ..lineTo(size.width * .9, size.height * .18);
+      canvas.drawPath(
+        path,
+        Paint()
+          ..color = ZyraColors.foreground
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2
+          ..strokeCap = StrokeCap.round
+          ..strokeJoin = StrokeJoin.round,
+      );
+    } else {
+      path
+        ..moveTo(size.width * .1, size.height * .3)
+        ..lineTo(size.width * .9, size.height * .3)
+        ..lineTo(size.width * .5, size.height * .75)
+        ..close();
+      canvas.drawPath(path, Paint()..color = ZyraColors.foreground);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _GuardianGlyphPainter oldDelegate) =>
+      oldDelegate.check != check;
+}
+
 class ZyraGuardianTabsState {
   ZyraGuardianTabsState([
     ZyraGuardianTabsSnapshot saved = const ZyraGuardianTabsSnapshot.quiet(),
@@ -89,18 +126,41 @@ class ZyraGuardianTabsState {
   }
   // Basic-only families are excluded before any Network card can be selected.
   static const candidates = [
-    (id: 'aisha', name: 'Aisha', age: 29, city: 'London', guardianOne: true),
+    (
+      id: 'aisha',
+      name: 'Aisha',
+      age: 29,
+      city: 'London',
+      guardianOne: true,
+      verified: true,
+    ),
     (
       id: 'basic-only',
       name: 'Basic-only sample',
       age: 27,
       city: 'York',
       guardianOne: false,
+      verified: true,
     ),
-    (id: 'noor', name: 'Noor', age: 25, city: 'Nottingham', guardianOne: true),
+    (
+      id: 'noor',
+      name: 'Noor',
+      age: 25,
+      city: 'Nottingham',
+      guardianOne: true,
+      verified: true,
+    ),
+    (
+      id: 'unverified-sample',
+      name: 'Hidden sample',
+      age: 28,
+      city: 'Leeds',
+      guardianOne: true,
+      verified: false,
+    ),
   ];
   static final network = candidates
-      .where((p) => p.guardianOne)
+      .where((p) => p.guardianOne && p.verified)
       .toList(growable: false);
   static bool validId(String id) => network.any((p) => p.id == id);
   late ZyraGuardianReview review;
@@ -361,6 +421,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     this.introductionDeclined,
     this.introducingGuardianId = 'draft-guardian-hassan',
     this.madeIntroductions = const [],
+    this.unverified = false,
   });
   final ZyraGuardianTabsState state;
   final String page, seekerGender, adamMembership;
@@ -370,6 +431,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   final String? adamPhoto;
   final Offset adamAvatarAlignment;
   final bool linked, paid, adamMain;
+  final bool unverified;
   final List<String> linkedSeekerNames;
   final List<ZyraFocusItem>? focusItems;
   final List<ZyraFocusItem> circleFocus;
@@ -621,7 +683,15 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
                 Icon(icon, size: 14, color: ZyraColors.foreground),
                 const SizedBox(width: 4),
               ],
-              _text(chevron ? '$label ▾' : label, size: 12),
+              _text(label, size: 12),
+              if (chevron) ...[
+                const SizedBox(width: 4),
+                CustomPaint(
+                  key: const ValueKey('guardian_seeker_chevron'),
+                  size: const Size(12, 12),
+                  painter: _GuardianGlyphPainter(check: false),
+                ),
+              ],
             ],
           ),
         ),
@@ -1370,7 +1440,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   }
 
   Widget _network(BuildContext context) {
-    if (!paid) return _lockedNetwork(context);
+    if (!paid && !unverified) return _lockedNetwork(context);
     final bottom = ZyraNavBarMetrics.contentBottomClearance(context);
     if (!linked) {
       return _viewport(
@@ -1438,9 +1508,41 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
                                 '${person.name[0]}., ${person.age}',
                                 size: 34,
                               ),
-                              _text(person.city, size: 20),
+                              _text(
+                                unverified
+                                    ? 'Verify to see the town'
+                                    : person.city,
+                                size: 20,
+                              ),
                               const SizedBox(height: 18),
-                              _info('Main Guardian', 'Father · ✓ Verified'),
+                              _info(
+                                'Main Guardian',
+                                'Father · Verified',
+                                valueWidget: Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      const TextSpan(text: 'Father · '),
+                                      WidgetSpan(
+                                        alignment: PlaceholderAlignment.middle,
+                                        child: CustomPaint(
+                                          key: const ValueKey(
+                                            'guardian_network_verified_check',
+                                          ),
+                                          size: const Size(14, 14),
+                                          painter: _GuardianGlyphPainter(
+                                            check: true,
+                                          ),
+                                        ),
+                                      ),
+                                      const TextSpan(text: ' Verified'),
+                                    ],
+                                  ),
+                                  style: ZyraText.body(
+                                    size: 14,
+                                    color: ZyraColors.foreground,
+                                  ).copyWith(height: 1.45),
+                                ),
+                              ),
                               _info('Nationality', 'British'),
                               _info('Ethnicity', 'Mixed'),
                             ],
@@ -1462,7 +1564,9 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(
                 child: _button(
-                  state.introducedForCurrent()
+                  unverified
+                      ? 'Verify to introduce'
+                      : state.introducedForCurrent()
                       ? 'Introduced'
                       : 'Introduce to\n${state.seekerName}',
                   'introduce_confirm',
@@ -1473,7 +1577,11 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(
                 child: _button(
-                  requestSent ? 'Request sent' : 'Connect with\nGuardian',
+                  unverified
+                      ? 'Verify to connect'
+                      : requestSent
+                      ? 'Request sent'
+                      : 'Connect with\nGuardian',
                   'connect_confirm',
                   gold: true,
                   network: true,
@@ -1491,7 +1599,12 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     );
   }
 
-  Widget _info(String name, String value, {bool rule = true}) => Container(
+  Widget _info(
+    String name,
+    String value, {
+    bool rule = true,
+    Widget? valueWidget,
+  }) => Container(
     padding: EdgeInsets.symmetric(vertical: rule ? 15 : 10),
     decoration: rule
         ? BoxDecoration(
@@ -1513,7 +1626,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
             Expanded(
               child: Align(
                 alignment: Alignment.centerRight,
-                child: _text(value, size: 14),
+                child: valueWidget ?? _text(value, size: 14),
               ),
             ),
           ],

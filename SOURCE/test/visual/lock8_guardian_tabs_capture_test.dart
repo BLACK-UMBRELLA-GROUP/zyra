@@ -158,9 +158,13 @@ void main() {
       await h.tap('guardian_requests_tab_1');
       await _cap(h, 'g03_journey_requests', 'sent_all');
       await h.tap('guardian_request_seeker');
-      expect(find.text('for Adam ▾'), findsOneWidget);
+      expect(find.text('for Adam'), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('guardian_seeker_chevron')),
+        findsOneWidget,
+      );
       await h.tap('guardian_request_seeker');
-      expect(find.text('for Yusuf ▾'), findsOneWidget);
+      expect(find.text('for Yusuf'), findsOneWidget);
       expect(find.text('Sara Ahmed'), findsNothing);
       expect(find.text('Main Guardian only'), findsOneWidget);
       await _mount(h, tab: 0);
@@ -180,7 +184,7 @@ void main() {
       expect(find.text('Request sent'), findsOneWidget);
       expect(_view(t).state.sent.length, 1);
       await h.tap('guardian_seeker');
-      expect(find.text('for Yusuf ▾'), findsOneWidget);
+      expect(find.text('for Yusuf'), findsOneWidget);
       expect(find.text('Introduce to\nYusuf'), findsOneWidget);
       final checkpoint = h.latest;
       await h.mount(guardian: true, checkpoint: checkpoint);

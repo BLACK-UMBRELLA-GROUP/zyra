@@ -62,6 +62,7 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
     this.initialGalleryIndices = const <String, int>{},
     this.onGalleryIndexChanged,
     this.profileVideo,
+    this.verifyPhotosPill = false,
   });
 
   final List<SeekerProfile> profiles;
@@ -98,6 +99,7 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
   final Map<String, int> initialGalleryIndices;
   final void Function(String, int)? onGalleryIndexChanged;
   final ZyraProfileVideoPlayback? profileVideo;
+  final bool verifyPhotosPill;
 
   @override
   State<ZyraOneJourneyBrowseDesigns> createState() =>
@@ -150,6 +152,7 @@ class _ZyraOneJourneyBrowseDesignsState
     initialGalleryIndices: widget.initialGalleryIndices,
     onGalleryIndexChanged: widget.onGalleryIndexChanged,
     profileVideo: widget.profileVideo,
+    verifyPhotosPill: widget.verifyPhotosPill,
   );
 }
 

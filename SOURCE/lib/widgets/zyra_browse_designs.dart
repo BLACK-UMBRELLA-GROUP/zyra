@@ -99,6 +99,7 @@ class ZyraBrowseDesigns extends StatefulWidget {
     this.ownPreviewActions,
     this.ownAvatarBuilder,
     this.profileVideo,
+    this.verifyPhotosPill = false,
   });
 
   /// The owner sees the live card with local photo taps and an informational
@@ -131,6 +132,7 @@ class ZyraBrowseDesigns extends StatefulWidget {
 
   /// Approved media for the currently selected profile only.
   final ZyraProfileVideoPlayback? profileVideo;
+  final bool verifyPhotosPill;
 
   /// Own-profile presentation only. Shows inert feed controls, without menu;
   /// this flag never supplies profile data or changes disclosure authority.
@@ -344,6 +346,19 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
                   ),
                 ),
               ),
+            if (widget.verifyPhotosPill)
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: ZyraColors.journeyGold),
+                      borderRadius: BorderRadius.circular(
+                        ZyraCardMetrics.cardRadius,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
@@ -394,7 +409,7 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
       profile.seekerPlan,
       showUnverifiedRing: preview == null,
     );
-    return _BrowsePhotoPager(
+    final pager = _BrowsePhotoPager(
       key: ValueKey('concept_browse_pager_${profile.id}_detailsFirst'),
       profileId: profile.id,
       hapticLevel: widget.hapticLevel,
@@ -426,11 +441,20 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
                         )),
             )
           : video != null && index == profile.photos.length + 1
-          ? ZyraProfileVideoPage(
-              video: video,
-              active: active && (preview?.canAct() ?? swipe?.canAct() ?? true),
-              placeholder: _studyPhoto(profile, 0, height, rounded: false),
-            )
+          ? widget.verifyPhotosPill
+                ? _studyPhoto(profile, 0, height, rounded: false)
+                : ZyraProfileVideoPage(
+                    video: video,
+                    active:
+                        active &&
+                        (preview?.canAct() ?? swipe?.canAct() ?? true),
+                    placeholder: _studyPhoto(
+                      profile,
+                      0,
+                      height,
+                      rounded: false,
+                    ),
+                  )
           : Stack(
               fit: StackFit.expand,
               children: [
@@ -448,6 +472,46 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
                     _isCurrent(profile) &&
                     !_profileTrack.isMoving &&
                     swipe.canAct()),
+    );
+    if (!widget.verifyPhotosPill) return pager;
+    return Stack(
+      children: [
+        pager,
+        Positioned(
+          top: 16,
+          left: 0,
+          right: 0,
+          child: IgnorePointer(
+            child: Center(
+              child: Container(
+                key: const ValueKey('unverified_profile_photo_pill'),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 14,
+                ),
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(251, 247, 240, .92),
+                  borderRadius: BorderRadius.circular(999),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color.fromRGBO(43, 36, 32, .15),
+                      offset: Offset(0, 4),
+                      blurRadius: 14,
+                    ),
+                  ],
+                ),
+                child: Text(
+                  'Verify your identity to see photos',
+                  style: ZyraText.body(
+                    size: 12.5,
+                    color: const Color(0xFF845F24),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

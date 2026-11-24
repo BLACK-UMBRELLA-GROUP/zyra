@@ -18,12 +18,14 @@ class ZyraGuardianAddCard extends StatelessWidget {
     this.onAdd,
     this.onUpgrade,
     this.allowContentScroll = false,
+    this.verifyFirst = false,
   });
 
   final ZyraGuardianCapacity? basicCapacity;
   final VoidCallback? onAdd;
   final VoidCallback? onUpgrade;
   final bool allowContentScroll;
+  final bool verifyFirst;
 
   @override
   Widget build(BuildContext context) => ZyraFloatingSurface(
@@ -71,7 +73,9 @@ class ZyraGuardianAddCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            capacity == null
+            verifyFirst
+                ? 'Verify your identity first. Guardians only link to verified members.'
+                : capacity == null
                 ? 'Share your ZYRA Code, or scan theirs. You choose who joins.'
                 : basicUsed == true
                 ? ZyraGuardianCapacity.basicLimitMessage

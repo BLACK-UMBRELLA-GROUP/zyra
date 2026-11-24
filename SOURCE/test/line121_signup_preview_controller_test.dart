@@ -88,9 +88,11 @@ void main() {
       expect(c.linkedSeekerName, isNull);
       expect(c.canContinue, isFalse);
       c.setSeekerCode(ZyraLocalCodeAliases.master);
-      expect(c.linkedSeekerName, 'Adam');
+      expect(c.pendingSeekerName, 'Adam');
+      expect(c.linkedSeekerName, isNull);
       c.advance();
       c.verifyNow();
+      expect(c.linkedSeekerName, 'Adam');
       expect(c.step, ZyraSignupStep.accountReady);
       c.resumeSetup();
       expect(c.step, ZyraSignupStep.aboutYou);

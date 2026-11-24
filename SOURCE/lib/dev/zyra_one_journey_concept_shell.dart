@@ -4,6 +4,7 @@ import '../widgets/zyra_floating_surface.dart';
 // and only device-local education receipts are persisted (LOCK 3 / LOCK 36).
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ui' as ui;
 import 'zyra_developer_focus_presets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -59,7 +60,6 @@ import '../models/zyra_error_state.dart';
 import '../widgets/zyra_full_screen_error.dart';
 import '../screens/connections/zyra_sample_activity.dart';
 import 'zyra_developer_inactivity_email.dart';
-import 'zyra_developer_unverified_gate.dart';
 import 'zyra_signup_preview.dart';
 import 'zyra_signup_preview_controller.dart';
 import 'zyra_signup_preferences_preview.dart';
@@ -669,6 +669,7 @@ class _ZyraOneJourneyConceptShellState
       ],
       ownCode: 'ZYRA-7Q4M-K2XD-9P3L-W8RT-F6NB',
       onPause: () => _leaveSignup(controller, lease),
+      onVerifyIdentity: () => _verifyDeveloperIdentity(fromSetup: true),
       onEnter: () {
         if (current() && controller.enterZyra()) {
           _leaveSignup(controller, lease);
@@ -1046,8 +1047,9 @@ class _ZyraOneJourneyConceptShellState
     });
   }
 
-  void _verifyDeveloperIdentity() {
-    if (_signup?.hasAccount == true &&
+  void _verifyDeveloperIdentity({bool fromSetup = false}) {
+    if (!fromSetup &&
+        _signup?.hasAccount == true &&
         _signup!.guardian == _guardianRole &&
         _allowed) {
       _signup!.setStep(ZyraSignupStep.verify);
@@ -1072,6 +1074,9 @@ class _ZyraOneJourneyConceptShellState
         developerPanelAccess: access,
         onContinue: (context) async {
           if (current() && route.isCurrent) {
+            if (fromSetup && _signup?.step == ZyraSignupStep.addGuardian) {
+              _signup!.setPreviewVerified(true);
+            }
             _developerSamples.setUnverified(false);
             route.navigator?.pop();
           }
@@ -3410,115 +3415,106 @@ class _ZyraOneJourneyConceptShellState
     );
   }
 
-  Widget _content() =>
-      _signupUnverified &&
-          ((_page == null && _tab == 0) || _signupProtectedPage)
-      ? ZyraDeveloperUnverifiedGate(
-          guardian: _guardianRole,
-          onVerify: _bound(_verifyDeveloperIdentity),
-        )
-      : switch (_page) {
-          'signup' => _signupView(),
-          'developer_inactivity_email' => _developerEmail(),
-          'profile' => _profileView(),
-          'journey' => _journeyView(),
-          'request_capacity' => _requestCapacityView(),
-          'journey_compatibility' => _journeyCompatibility(),
-          'guardian_compatibility' => _guardianCompatibilityReader(),
-          'guardian_compatibility_upgrade' => _guardianCompatibilityUpgrade(),
-          'journey_compatibility_locked' => _journeyDisclosureLocked(
-            bio: false,
-          ),
-          'journey_guardians' => _journeyGuardians(),
-          'ended_archive' => _endedJourneyArchive(),
-          'ended_bio' => _endedJourneyDetail(bio: true),
-          'ended_guardians' => _endedJourneyDetail(bio: false),
-          'ended_restart' => _endedRestart(),
-          'ended_compatibility' => _endedCompatibility(),
-          'guardian_access_agreement' => _guardianAccessAgreement(),
-          'guardian_invite' => _guardianInvite(),
-          'guardian_main_notice' => _mainGuardianNotice(),
-          'guardian_info' => _guardianInfo(),
-          'network_request' => _guardianTabsView('connect_confirm'),
-          'guardian_introduce' => _guardianTabsView('introduce_confirm'),
-          'guardian_family_offer' => _guardianTabsView('family_offer'),
-          'guardian_free_place_invite' => _guardianFreePlaceInvite(),
-          'guardian_family_identity' => _guardianFamilyIdentity(),
-          'guardian_requests' => _guardianTabsView('requests'),
-          'guardian_connect' => _guardianTabsView('connect'),
-          'guardian_introductions' => _guardianTabsView('introductions'),
-          'guardian_seeker' => _guardianTabsView('seeker'),
-          'guardian_private_chat' => _guardianPrivateChat(),
-          'guardian_chat_report' => _guardianChatReport(),
-          'held_action' => _heldPreviewAction(),
-          'own_profile_preview' => _ownProfilePreview(),
-          'switch_account_signup' => _switchSignupView(setupOverview: false),
-          'switch_account_setup' => _switchSignupView(setupOverview: true),
-          'past_journeys' => _activityPage('Ended Journeys', _history()),
-          'requests' => _requestActivity(),
-          'introductions' => _introductionsActivity(),
-          'saved' || 'paused' => _unavailable(),
-          'ended' => _historyActivity(),
-          'guardian' => _guardianDetail(),
-          'guardian_linked_profile' => _guardianLinkedProfile(),
-          'guardian_network_profile' => _guardianNetworkProfile(),
-          'settings' => _settings(),
-          'phone_access' => _phoneAccess(),
-          'edit_profile' ||
-          'manage_photos' ||
-          'preference_quick_check' ||
-          'filter_preferences' => _retainedAccountLeaf(),
-          'membership' => _membershipView(),
-          'one_upgrade' => ZyraOneUpgradePage(
-            guardian: _guardianRole,
-            includesPreviewComparisons: true,
-            includesProfileVideo:
-                identical(widget.fixture, _fixtureOwner) &&
-                (_fixtureOwner?.profileVideoLoader != null ||
-                    _fixtureOwner?.profileVideoStore != null),
-            canContinue: _accountFreshGuard(),
-            onBack: _bound(_back),
-          ),
-          'membership_review' => _membershipReviewView(),
-          'subscriptions' => _subscriptionsView(),
-          'bio' => _bio(),
-          'bio_locked' => _journeyDisclosureLocked(bio: true),
-          'compatibility' => _compatibilityInfo(),
-          'compatibility_store' => _compatibilityStore(),
-          'notifications' => _notificationsView(),
-          'filters' => _filters(),
-          'scan' => _scanEntry(),
-          'help_support' => _helpSupport(),
-          'help_contact' ||
-          'help_contact_sent' ||
-          'help_report_sent' ||
-          'help_advanced' ||
-          'help_data' ||
-          'help_delete' ||
-          'help_closed' ||
-          'help_privacy' => _helpSafetyView(),
-          'safety' => _safety(),
-          'safety_advice' => _safetyAdvice(),
-          'timeline' => _timeline(_personId ?? ''),
-          'account_action' => _accountActionView(),
-          'settings_detail' => _settingsDetailView(),
-          _ =>
-            _guardianRole
-                ? switch (_tab) {
-                    0 => _guardianTabsView('network'),
-                    1 => _guardianTabsView('journeys'),
-                    2 => _guardianTabsView('my_zyra'),
-                    3 => _guardianTabsView('seekers'),
-                    _ => _ownProfile(),
-                  }
-                : switch (_tab) {
-                    0 => _discover(),
-                    1 => _connections(),
-                    2 => _dashboard(),
-                    3 => _guardians(),
-                    _ => _ownProfile(),
-                  },
-        };
+  Widget _content() => switch (_page) {
+    'signup' => _signupView(),
+    'developer_inactivity_email' => _developerEmail(),
+    'profile' => _profileView(),
+    'journey' => _journeyView(),
+    'request_capacity' => _requestCapacityView(),
+    'journey_compatibility' => _journeyCompatibility(),
+    'guardian_compatibility' => _guardianCompatibilityReader(),
+    'guardian_compatibility_upgrade' => _guardianCompatibilityUpgrade(),
+    'journey_compatibility_locked' => _journeyDisclosureLocked(bio: false),
+    'journey_guardians' => _journeyGuardians(),
+    'ended_archive' => _endedJourneyArchive(),
+    'ended_bio' => _endedJourneyDetail(bio: true),
+    'ended_guardians' => _endedJourneyDetail(bio: false),
+    'ended_restart' => _endedRestart(),
+    'ended_compatibility' => _endedCompatibility(),
+    'guardian_access_agreement' => _guardianAccessAgreement(),
+    'guardian_invite' => _guardianInvite(),
+    'guardian_main_notice' => _mainGuardianNotice(),
+    'guardian_info' => _guardianInfo(),
+    'network_request' => _guardianTabsView('connect_confirm'),
+    'guardian_introduce' => _guardianTabsView('introduce_confirm'),
+    'guardian_family_offer' => _guardianTabsView('family_offer'),
+    'guardian_free_place_invite' => _guardianFreePlaceInvite(),
+    'guardian_family_identity' => _guardianFamilyIdentity(),
+    'guardian_requests' => _guardianTabsView('requests'),
+    'guardian_connect' => _guardianTabsView('connect'),
+    'guardian_introductions' => _guardianTabsView('introductions'),
+    'guardian_seeker' => _guardianTabsView('seeker'),
+    'guardian_private_chat' => _guardianPrivateChat(),
+    'guardian_chat_report' => _guardianChatReport(),
+    'held_action' => _heldPreviewAction(),
+    'own_profile_preview' => _ownProfilePreview(),
+    'switch_account_signup' => _switchSignupView(setupOverview: false),
+    'switch_account_setup' => _switchSignupView(setupOverview: true),
+    'past_journeys' => _activityPage('Ended Journeys', _history()),
+    'requests' => _requestActivity(),
+    'introductions' => _introductionsActivity(),
+    'saved' || 'paused' => _unavailable(),
+    'ended' => _historyActivity(),
+    'guardian' => _guardianDetail(),
+    'guardian_linked_profile' => _guardianLinkedProfile(),
+    'guardian_network_profile' => _guardianNetworkProfile(),
+    'settings' => _settings(),
+    'phone_access' => _phoneAccess(),
+    'edit_profile' ||
+    'manage_photos' ||
+    'preference_quick_check' ||
+    'filter_preferences' => _retainedAccountLeaf(),
+    'membership' => _membershipView(),
+    'one_upgrade' => ZyraOneUpgradePage(
+      guardian: _guardianRole,
+      includesPreviewComparisons: true,
+      includesProfileVideo:
+          identical(widget.fixture, _fixtureOwner) &&
+          (_fixtureOwner?.profileVideoLoader != null ||
+              _fixtureOwner?.profileVideoStore != null),
+      canContinue: _accountFreshGuard(),
+      onBack: _bound(_back),
+    ),
+    'membership_review' => _membershipReviewView(),
+    'subscriptions' => _subscriptionsView(),
+    'bio' => _bio(),
+    'bio_locked' => _journeyDisclosureLocked(bio: true),
+    'compatibility' => _compatibilityInfo(),
+    'compatibility_store' => _compatibilityStore(),
+    'notifications' => _notificationsView(),
+    'filters' => _filters(),
+    'scan' => _scanEntry(),
+    'help_support' => _helpSupport(),
+    'help_contact' ||
+    'help_contact_sent' ||
+    'help_report_sent' ||
+    'help_advanced' ||
+    'help_data' ||
+    'help_delete' ||
+    'help_closed' ||
+    'help_privacy' => _helpSafetyView(),
+    'safety' => _safety(),
+    'safety_advice' => _safetyAdvice(),
+    'timeline' => _timeline(_personId ?? ''),
+    'account_action' => _accountActionView(),
+    'settings_detail' => _settingsDetailView(),
+    _ =>
+      _guardianRole
+          ? switch (_tab) {
+              0 => _guardianTabsView('network'),
+              1 => _guardianTabsView('journeys'),
+              2 => _guardianTabsView('my_zyra'),
+              3 => _guardianTabsView('seekers'),
+              _ => _ownProfile(),
+            }
+          : switch (_tab) {
+              0 => _discover(),
+              1 => _connections(),
+              2 => _dashboard(),
+              3 => _guardians(),
+              _ => _ownProfile(),
+            },
+  };
 
   VoidCallback _bound(VoidCallback action) {
     final revision = _uiRevision;
@@ -3579,14 +3575,38 @@ class _ZyraOneJourneyConceptShellState
   SeekerProfile _displayProfile(DraftProfile p) => SeekerProfile(
     id: p.id,
     firstName: p.firstName,
-    surnameLine: p.surname,
+    surnameLine: _signupUnverified ? null : p.surname,
     age: p.age,
-    city: p.city,
+    city: _signupUnverified ? 'Verify to see' : p.city,
     publicNationality: zyraBrowseNationalityLabel(p.nationalityCode),
     publicEthnicity: zyraBrowseEthnicityLabel(p.ethnicityCode),
     gender: 'female',
     photos: _photos?.forIndex(draftProfiles.indexOf(p)) ?? const [],
   );
+
+  Widget _memberBrowsePhoto(
+    BuildContext context,
+    String source, {
+    required double width,
+    required double height,
+    required Alignment alignment,
+  }) {
+    final photo = _browsePhotoRenderer.build(
+      context,
+      source,
+      width: width,
+      height: height,
+      alignment: alignment,
+    );
+    if (!_signupUnverified) return photo;
+    return ClipRect(
+      key: const ValueKey('unverified_member_photo_frame'),
+      child: ImageFiltered(
+        imageFilter: ui.ImageFilter.blur(sigmaX: 14, sigmaY: 14),
+        child: photo,
+      ),
+    );
+  }
 
   bool _hasSentInvitation(String id) => _hasDeveloperPreview
       ? _developerSamples.hasPreviewSent(id)
@@ -3595,13 +3615,16 @@ class _ZyraOneJourneyConceptShellState
   bool _canToggleInvitation(String id) =>
       !_guardianRole &&
       !_model.isBlocked(id) &&
-      (_hasDeveloperPreview
-          ? _hasSentInvitation(id) ||
-                (_developerSamples.setupUnfinished && _model.canRequest(id)) ||
-                _developerSamples.canSendPreviewRequest(id)
-          : _hasSentInvitation(id) || _model.canRequest(id));
+      (_signupUnverified ||
+          (_hasDeveloperPreview
+              ? _hasSentInvitation(id) ||
+                    (_developerSamples.setupUnfinished &&
+                        _model.canRequest(id)) ||
+                    _developerSamples.canSendPreviewRequest(id)
+              : _hasSentInvitation(id) || _model.canRequest(id)));
 
   String _invitationLabel(String id) {
+    if (_signupUnverified) return 'Verify to request a Journey';
     if (_hasDeveloperPreview) {
       if (_hasSentInvitation(id)) return 'Request sent';
       final cooldown = _developerSamples.previewRequestCooldown(id);
@@ -3637,7 +3660,7 @@ class _ZyraOneJourneyConceptShellState
   void _toggleInvitation(String id) {
     if (!_allowed || !_canToggleInvitation(id)) return;
     if (_signupUnverified) {
-      _tabTo(0);
+      _verifyDeveloperIdentity();
       return;
     }
     if (_signupIncomplete && !_hasSentInvitation(id)) {
@@ -3960,6 +3983,7 @@ class _ZyraOneJourneyConceptShellState
       builder: (context, video) => ZyraOneJourneyBrowseDesigns(
         key: ValueKey(('prepared-browse', _photos != null)),
         profileVideo: video,
+        verifyPhotosPill: _signupUnverified,
         profileSwipe: (
           previousIndex: previous,
           nextIndex: next,
@@ -3970,7 +3994,7 @@ class _ZyraOneJourneyConceptShellState
         profiles: people.map(_displayProfile).toList(growable: false),
         selectedIndex: index,
         design: _browseDesign,
-        photoBuilder: _browsePhotoRenderer.build,
+        photoBuilder: _memberBrowsePhoto,
         initialGalleryIndices: _browseGalleryIndices,
         onPhotoIndexChanged: _rememberPhoto,
         onGalleryIndexChanged: _rememberGallery,
@@ -7958,13 +7982,14 @@ class _ZyraOneJourneyConceptShellState
     final revision = _uiRevision;
     final navigatorStamp = _routeStamp;
     final journeys = _guardianJourneys;
-    final people = [..._conceptGuardianPeople]
-      ..sort((a, b) {
-        if (a.isMain != b.isMain) return a.isMain ? -1 : 1;
-        return (a.linkedAt ?? DateTime(2100)).compareTo(
-          b.linkedAt ?? DateTime(2100),
-        );
-      });
+    final people =
+        _signupUnverified ? <WaliLinkedPerson>[] : [..._conceptGuardianPeople]
+          ..sort((a, b) {
+            if (a.isMain != b.isMain) return a.isMain ? -1 : 1;
+            return (a.linkedAt ?? DateTime(2100)).compareTo(
+              b.linkedAt ?? DateTime(2100),
+            );
+          });
     String permissionStamp() => [
       _conceptMainGuardianId,
       _model.ownMainGuardianPresent,
@@ -8045,6 +8070,7 @@ class _ZyraOneJourneyConceptShellState
     }
 
     return ZyraOneJourneyGuardianCards(
+      verifyFirst: _signupUnverified,
       key: ValueKey(('guardian-cards', account, identityHashCode(session))),
       people: [
         for (final p in people)
@@ -8083,7 +8109,7 @@ class _ZyraOneJourneyConceptShellState
           ),
       ],
       capacity: _seekerMembership.contains('Basic') ? 1 : _model.capacity,
-      basic: _seekerMembership.contains('Basic'),
+      basic: !_signupUnverified && _seekerMembership.contains('Basic'),
       initialPage: _guardianPage,
       previewInvitationNow: _guardianInvitationNow,
       previewInvitationCancelled: _guardianInvitationCancelled,
@@ -8153,7 +8179,12 @@ class _ZyraOneJourneyConceptShellState
         if (current() && ModalRoute.of(context)?.isCurrent == true) _act(() {});
       },
       onAdd: () {
-        if (currentAction()) _open('guardian_invite');
+        if (!currentAction()) return;
+        if (_signupUnverified) {
+          _verifyDeveloperIdentity();
+        } else {
+          _open('guardian_invite');
+        }
       },
       onUpgrade: () {
         if (currentAction()) {
@@ -8806,6 +8837,7 @@ class _ZyraOneJourneyConceptShellState
     return ZyraGuardianTabsPresentation(
       state: _guardianTabs,
       page: page,
+      unverified: _signupUnverified,
       introductionDeclined: _developerSamples.hasDeclinedIntroduction,
       madeIntroductions: _developerSamples.guardianIntroductions(
         'draft-guardian-hassan',
@@ -8916,6 +8948,11 @@ class _ZyraOneJourneyConceptShellState
     final quickAccess = actionName.startsWith('quick_');
     if (quickAccess && (_tab != 2 || _page != null)) return;
     final action = quickAccess ? actionName.substring(6) : actionName;
+    if (_signupUnverified &&
+        (action == 'introduce_confirm' || action == 'connect_confirm')) {
+      _verifyDeveloperIdentity();
+      return;
+    }
     if (action == 'free_place_view') {
       if (_tab == 2 && _page == null && _pendingGuardianFreePlace != null) {
         _open('guardian_free_place_invite');
