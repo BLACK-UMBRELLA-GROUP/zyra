@@ -143,6 +143,7 @@ Future<void> _press(WidgetTester tester, Finder target) async {
       'concept-current-profile-scroll',
       'concept-current-settings-scroll',
       'concept-current-membership-scroll',
+      'edit_profile_content_scroll',
       'draft_scroll',
     ].map(_key).firstWhere((finder) => finder.evaluate().isNotEmpty);
     await tester.scrollUntilVisible(
@@ -705,10 +706,10 @@ void main() {
       final staleEditorBack = captureZyraAccessibleBack(tester);
       expect(find.byKey(_backKey), findsNothing);
       await _capture(tester, '03-seeker-edit-profile-back');
-      await _tap(tester, 'compatibility-editor-aboutYou');
+      await _tap(tester, 'compatibility-editor-trafficLights');
       expect(find.byKey(_backKey), findsNothing);
       await _back(tester);
-      expect(_key('compatibility-editor-aboutYou'), findsOneWidget);
+      expect(_key('compatibility-editor-trafficLights'), findsOneWidget);
       await _back(tester);
       expect(find.byKey(_scopeKey), findsNothing);
       expect(_key('concept_edit_profile'), findsOneWidget);

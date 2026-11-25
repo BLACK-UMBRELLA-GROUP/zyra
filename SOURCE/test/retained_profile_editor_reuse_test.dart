@@ -6,7 +6,6 @@ import 'package:zyra/data/chapter3_categories.dart';
 import 'package:zyra/dev/zyra_app_gold_preview.dart';
 import 'package:zyra/models/journey_bio.dart';
 import 'package:zyra/models/onboarding_question.dart';
-import 'package:zyra/screens/onboarding/generic_select_question_screen.dart';
 import 'package:zyra/screens/onboarding/traffic_light_question_screen.dart';
 import 'package:zyra/screens/profile/compatibility_editors.dart';
 import 'package:zyra/screens/profile/edit_profile_screen.dart';
@@ -101,12 +100,27 @@ Future<void> _mountHub(
   await tester.pumpAndSettle();
 }
 
-Future<void> _openHubEditor(
-  WidgetTester tester, [
-  CompatibilityEditorKind kind = CompatibilityEditorKind.aboutYou,
-]) async {
-  final door = find.byKey(ValueKey('compatibility-editor-${kind.name}'));
-  await tester.ensureVisible(door);
+Future<void> _revealHub(WidgetTester tester, Finder target) async {
+  final scroll = find
+      .descendant(
+        of: find.byKey(const ValueKey('edit_profile_content_scroll')),
+        matching: find.byType(Scrollable),
+      )
+      .first;
+  if (target.evaluate().isEmpty) {
+    tester.state<ScrollableState>(scroll).position.jumpTo(0);
+    await tester.pumpAndSettle();
+  }
+  await tester.scrollUntilVisible(target, 180, scrollable: scroll);
+  await tester.pumpAndSettle();
+  await tester.ensureVisible(target);
+  await tester.pumpAndSettle();
+  expect(target.hitTestable(), findsOneWidget);
+}
+
+Future<void> _openHubEditor(WidgetTester tester) async {
+  final door = find.byKey(const ValueKey('compatibility-editor-trafficLights'));
+  await _revealHub(tester, door);
   await tester.tap(door);
   await tester.pumpAndSettle();
 }
@@ -143,21 +157,43 @@ Future<void> _mountEditor(
   await tester.pumpAndSettle();
 }
 
-OnboardingCategory get _deen =>
-    chapter3Categories.firstWhere((category) => category.id == 'deen_practice');
-OnboardingQuestion get _firstQuestion =>
-    _deen.questions.firstWhere((question) => question.visibleFor('female'));
+ZyraCompatibilityDraft get _emptyDraft =>
+    ZyraCompatibilityDraft.fromSnapshot(gender: 'female');
+OnboardingCategory get _preferenceCategory => chapter3Categories.firstWhere(
+  (category) => _emptyDraft
+      .preferenceQuestions(category)
+      .any((question) => question.showIf == null),
+);
+OnboardingQuestion get _firstPreference => _emptyDraft
+    .preferenceQuestions(_preferenceCategory)
+    .firstWhere((question) => question.showIf == null);
 
-Future<GenericSelectQuestionScreen> _openQuestion(WidgetTester tester) async {
-  await tester.tap(find.byKey(ValueKey('edit-category-${_deen.id}')));
-  await tester.pumpAndSettle();
-  await tester.tap(
-    find.byKey(ValueKey('edit-answer-${_firstQuestion.responseKey}')),
+Future<TrafficLightQuestionScreen> _openQuestion(WidgetTester tester) async {
+  final category = find.byKey(
+    ValueKey('edit-preferences-${_preferenceCategory.id}'),
   );
+  await tester.ensureVisible(category);
   await tester.pumpAndSettle();
-  return tester.widget<GenericSelectQuestionScreen>(
-    find.byType(GenericSelectQuestionScreen),
+  expect(category.hitTestable(), findsOneWidget);
+  await tester.tap(category);
+  await tester.pumpAndSettle();
+  final question = find.byKey(
+    ValueKey('edit-lights-${_firstPreference.responseKey}'),
   );
+  await tester.ensureVisible(question);
+  await tester.pumpAndSettle();
+  expect(question.hitTestable(), findsOneWidget);
+  await tester.tap(question);
+  await tester.pumpAndSettle();
+  return tester.widget<TrafficLightQuestionScreen>(
+    find.byType(TrafficLightQuestionScreen),
+  );
+}
+
+void _chooseFirstPreference(TrafficLightQuestionScreen renderer) {
+  renderer.onChanged({
+    for (final option in _firstPreference.options) option: TrafficLight.green,
+  });
 }
 
 void main() {
@@ -284,22 +320,10 @@ void main() {
         final owner = _Owner();
         await _mountHub(tester, repository, owner);
         expect(repository.loads, 1);
-        for (final kind in CompatibilityEditorKind.values) {
-          expect(
-            find.byKey(ValueKey('compatibility-editor-${kind.name}')),
-            findsOneWidget,
-          );
-        }
         final title = tester.widget<Text>(
           find.byKey(const ValueKey('edit_profile_preview_title')),
         );
-        expect(title.style!.fontSize, 28);
-        expect(
-          tester.getTopLeft(
-            find.byKey(const ValueKey('edit_profile_preview_title')),
-          ),
-          const Offset(20, 16),
-        );
+        expect(title.data, 'Edit profile');
         expect(find.byType(AppBar), findsNothing);
         expect(find.byType(BackButton), findsNothing);
         expect(
@@ -323,8 +347,8 @@ void main() {
               .where((box) => box.decoration is ZyraAppGoldDecoration),
           isEmpty,
         );
-        await tester.ensureVisible(find.text('Age 29'));
-        expect(find.text('Sister'), findsOneWidget);
+        await _revealHub(tester, find.text('Age 29'));
+        expect(find.text('Female'), findsOneWidget);
         await _openHubEditor(tester);
         final editor = tester.widget<CompatibilityEditorScreen>(
           find.byType(CompatibilityEditorScreen),
@@ -339,7 +363,7 @@ void main() {
   }
 
   testWidgets(
-    'actual retained answer renderer saves and restores through the same hub',
+    'retained preference renderer saves and restores through the same hub',
     (tester) async {
       _viewport(tester);
       final repository = _LocalEditorRepository();
@@ -348,17 +372,19 @@ void main() {
       expect(find.byType(ZyraPullDownBackScope), findsOneWidget);
       expect(find.byType(AppBar), findsNothing);
       final renderer = await _openQuestion(tester);
-      expect(renderer.guidedChoices, isFalse);
-      await tester.tap(find.text(_firstQuestion.options.first));
+      _chooseFirstPreference(renderer);
       await tester.pump();
       await tester.tap(find.byKey(const ValueKey('question-save')));
       await tester.pumpAndSettle();
       expect(
-        find.byKey(ValueKey('edit-answer-${_firstQuestion.responseKey}')),
+        find.byKey(ValueKey('edit-lights-${_firstPreference.responseKey}')),
         findsOneWidget,
       );
       await _returnWithEdgeSwipe(tester);
-      expect(find.byKey(ValueKey('edit-category-${_deen.id}')), findsOneWidget);
+      expect(
+        find.byKey(ValueKey('edit-preferences-${_preferenceCategory.id}')),
+        findsOneWidget,
+      );
       expect(
         find.byKey(const ValueKey('edit_profile_preview_title')),
         findsNothing,
@@ -366,18 +392,18 @@ void main() {
       await tester.tap(find.byKey(const ValueKey('compatibility-save')));
       await tester.pumpAndSettle();
       expect(repository.savedOwners, ['local-editor-owner']);
-      expect(
-        repository.stored!.ch3Answers[_firstQuestion.id],
-        _firstQuestion.options.first,
-      );
+      expect(repository.stored!.ch4Preferences[_firstPreference.id], {
+        for (final option in _firstPreference.options)
+          option: TrafficLight.green,
+      });
       await _openHubEditor(tester);
       final reopened = tester.widget<CompatibilityEditorScreen>(
         find.byType(CompatibilityEditorScreen),
       );
-      expect(
-        reopened.initialDraft.answers[_firstQuestion.responseKey],
-        _firstQuestion.options.first,
-      );
+      expect(reopened.initialDraft.preferences[_firstPreference.responseKey], {
+        for (final option in _firstPreference.options)
+          option: TrafficLight.green,
+      });
       expect(tester.takeException(), isNull);
     },
   );
@@ -401,10 +427,7 @@ void main() {
       await tester.tap(find.byKey(const ValueKey('compatibility-save')));
       await tester.pumpAndSettle();
       expect(repository.savedOwners, ['local-editor-owner']);
-      expect(
-        find.byKey(const ValueKey('edit_profile_preview_title')),
-        findsOneWidget,
-      );
+      expect(find.byType(EditProfileScreen), findsOneWidget);
     },
   );
 
@@ -420,15 +443,19 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.byKey(const ValueKey('compatibility-editor-aboutYou')),
+      find.byKey(const ValueKey('compatibility-editor-trafficLights')),
       findsNothing,
     );
     repository.onLoad = null;
     await tester.tap(find.byKey(const ValueKey('edit_profile_restore_retry')));
     await tester.pumpAndSettle();
     expect(repository.loads, 2);
+    await _revealHub(
+      tester,
+      find.byKey(const ValueKey('compatibility-editor-trafficLights')),
+    );
     expect(
-      find.byKey(const ValueKey('compatibility-editor-aboutYou')),
+      find.byKey(const ValueKey('compatibility-editor-trafficLights')),
       findsOneWidget,
     );
     expect(repository.savedOwners, isEmpty);
@@ -468,7 +495,7 @@ void main() {
       navigator.currentState!.pop();
       await tester.pumpAndSettle();
       expect(
-        find.byKey(const ValueKey('compatibility-editor-aboutYou')),
+        find.byKey(const ValueKey('compatibility-editor-trafficLights')),
         findsNothing,
       );
       expect(
@@ -655,10 +682,7 @@ void main() {
     );
     pending.complete(true);
     await tester.pumpAndSettle();
-    expect(
-      find.byKey(const ValueKey('edit_profile_preview_title')),
-      findsOneWidget,
-    );
+    expect(find.byType(EditProfileScreen), findsOneWidget);
   });
 
   testWidgets('failed asynchronous save remains open and safely retries', (
@@ -697,10 +721,7 @@ void main() {
       'local-editor-owner',
       'local-editor-owner',
     ]);
-    expect(
-      find.byKey(const ValueKey('edit_profile_preview_title')),
-      findsOneWidget,
-    );
+    expect(find.byType(EditProfileScreen), findsOneWidget);
   });
 
   testWidgets(
@@ -785,47 +806,48 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('revoked nested answer callbacks cannot update or save a draft', (
-    tester,
-  ) async {
-    _viewport(tester);
-    final repository = _LocalEditorRepository();
-    final owner = _Owner();
-    await _mountHub(tester, repository, owner);
-    await _openHubEditor(tester);
-    final renderer = await _openQuestion(tester);
-    renderer.onChanged(_firstQuestion.options.first);
-    await tester.pump();
-    final save = tester.widget<FilledButton>(
-      find.byKey(const ValueKey('question-save')),
-    );
-    expect(save.onPressed, isNotNull);
-    owner.allowed = false;
-    renderer.onChanged(_firstQuestion.options.first);
-    save.onPressed?.call();
-    owner.allowed = true;
-    renderer.onChanged(_firstQuestion.options.first);
-    save.onPressed?.call();
-    await tester.pump();
-    expect(find.byType(GenericSelectQuestionScreen), findsNothing);
-    expect(find.byKey(const ValueKey('question-save')), findsNothing);
-    expect(
-      find.byKey(const ValueKey('compatibility_editor_preview_denied')),
-      findsWidgets,
-    );
-    expect(repository.savedOwners, isEmpty);
-    expect(repository.candidates, isEmpty);
-    expect(repository.stored, isNull);
-    expect(tester.takeException(), isNull);
-  });
+  testWidgets(
+    'revoked nested preference callbacks cannot update or save a draft',
+    (tester) async {
+      _viewport(tester);
+      final repository = _LocalEditorRepository();
+      final owner = _Owner();
+      await _mountHub(tester, repository, owner);
+      await _openHubEditor(tester);
+      final renderer = await _openQuestion(tester);
+      _chooseFirstPreference(renderer);
+      await tester.pump();
+      final save = tester.widget<FilledButton>(
+        find.byKey(const ValueKey('question-save')),
+      );
+      expect(save.onPressed, isNotNull);
+      owner.allowed = false;
+      _chooseFirstPreference(renderer);
+      save.onPressed?.call();
+      owner.allowed = true;
+      _chooseFirstPreference(renderer);
+      save.onPressed?.call();
+      await tester.pump();
+      expect(find.byType(TrafficLightQuestionScreen), findsNothing);
+      expect(find.byKey(const ValueKey('question-save')), findsNothing);
+      expect(
+        find.byKey(const ValueKey('compatibility_editor_preview_denied')),
+        findsWidgets,
+      );
+      expect(repository.savedOwners, isEmpty);
+      expect(repository.candidates, isEmpty);
+      expect(repository.stored, isNull);
+      expect(tester.takeException(), isNull);
+    },
+  );
 
-  testWidgets('disposed nested answer callback is inert', (tester) async {
+  testWidgets('disposed nested preference callback is inert', (tester) async {
     _viewport(tester);
     await _mountHub(tester, _LocalEditorRepository(), _Owner());
     await _openHubEditor(tester);
     final renderer = await _openQuestion(tester);
     await tester.pumpWidget(const SizedBox());
-    renderer.onChanged(_firstQuestion.options.first);
+    _chooseFirstPreference(renderer);
     await tester.pump();
     expect(tester.takeException(), isNull);
   });
@@ -1049,11 +1071,21 @@ void main() {
             matching: find.byType(Scrollable),
           )
           .first;
-      for (final kind in CompatibilityEditorKind.values) {
-        final door = find.byKey(ValueKey('compatibility-editor-${kind.name}'));
-        // ListView builds these rows lazily; scroll to discover each actual
-        // control rather than requiring offscreen rows to remain mounted.
+      for (final label in const [
+        'Photos and video',
+        'A few words about you',
+        'Where you live',
+        'Nationality',
+        'Ethnicity',
+        'Work and education',
+        'Family and marriage',
+        'Practical life',
+        'Partner preferences',
+      ]) {
+        final door = find.text(label);
         await tester.scrollUntilVisible(door, 200, scrollable: scrollable);
+        await tester.pumpAndSettle();
+        await tester.ensureVisible(door);
         await tester.pumpAndSettle();
         expect(door.hitTestable(), findsOneWidget);
         expect(tester.takeException(), isNull);

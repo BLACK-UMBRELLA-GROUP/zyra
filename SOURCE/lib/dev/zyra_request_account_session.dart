@@ -46,6 +46,8 @@ class ZyraRequestAccountSession extends ChangeNotifier {
   final _avatar = <bool, Offset>{};
   final _signupProfiles = <bool, SeekerProfile>{};
   final _signupAbout = <bool, String>{};
+  final _profileEdits =
+      <bool, ({String city, String? nationality, String? ethnicity})>{};
   final _signupPhotoBaselines = <bool, List<String>?>{};
   late final ZyraRequestCompatibilityRepository compatibility;
   ZyraDevPalette _palette;
@@ -83,6 +85,25 @@ class ZyraRequestAccountSession extends ChangeNotifier {
 
   String get seekerGender => _signupProfiles[false]?.gender ?? 'male';
   String? signupAbout(bool guardian) => current ? _signupAbout[guardian] : null;
+  bool editProfileDetails({
+    required bool guardian,
+    required String about,
+    required String city,
+    required String? nationality,
+    required String? ethnicity,
+  }) {
+    if (!current) return false;
+    if (!guardian && !compatibility.setAbout(about)) return false;
+    _signupAbout[guardian] = about.characters.take(300).toString();
+    _profileEdits[guardian] = (
+      city: city,
+      nationality: nationality,
+      ethnicity: ethnicity,
+    );
+    notifyListeners();
+    return true;
+  }
+
   List<String> photos(bool guardian) =>
       List<String>.unmodifiable(_photos[guardian] ?? const []);
   Offset avatar(bool guardian) => _avatar[guardian] ?? Offset.zero;
@@ -190,6 +211,7 @@ class ZyraRequestAccountSession extends ChangeNotifier {
       guardian,
       () => _photos[guardian]?.toList(),
     );
+    _profileEdits.remove(guardian);
     _signupProfiles[guardian] = profile;
     final about = preferences.answers['bio_about_me'];
     if (about is String) {
@@ -205,9 +227,14 @@ class ZyraRequestAccountSession extends ChangeNotifier {
   /// Restores the sample that preceded signup, including its local answers.
   bool clearSignup() {
     if (!current) return false;
-    if (_signupProfiles.isEmpty) return true;
+    if (_signupProfiles.isEmpty &&
+        _profileEdits.isEmpty &&
+        _signupAbout.isEmpty) {
+      return true;
+    }
     _signupProfiles.clear();
     _signupAbout.clear();
+    _profileEdits.clear();
     for (final entry in _signupPhotoBaselines.entries) {
       if (entry.value case final baseline?) {
         _photos[entry.key] = List.of(baseline);
@@ -223,20 +250,29 @@ class ZyraRequestAccountSession extends ChangeNotifier {
 
   SeekerProfile ownProfile(bool guardian, {ZyraPlan? seekerPlan}) {
     final signup = _signupProfiles[guardian];
+    final edits = _profileEdits[guardian];
     final selectedPhotos = photos(guardian);
     return SeekerProfile(
       id: guardian ? 'draft-own-guardian' : 'draft-self',
       firstName: signup?.firstName ?? (guardian ? 'Hassan' : 'Adam'),
       surnameLine: signup?.surnameLine ?? (guardian ? 'Rahman' : 'Khan'),
       age: signup?.age ?? (guardian ? 54 : 30),
-      city: signup?.city ?? 'London',
+      city: edits?.city ?? signup?.city ?? 'London',
       gender: signup?.gender ?? 'male',
       photos: selectedPhotos,
       photoOne: selectedPhotos.isEmpty ? null : selectedPhotos.first,
       // Explicit invented public display facts for these detached personas.
       // Never read private compatibility answers or real member identity here.
-      publicNationality: signup == null ? 'British' : signup.publicNationality,
-      publicEthnicity: signup == null ? 'Pakistani' : signup.publicEthnicity,
+      publicNationality: edits != null
+          ? edits.nationality
+          : signup == null
+          ? 'British'
+          : signup.publicNationality,
+      publicEthnicity: edits != null
+          ? edits.ethnicity
+          : signup == null
+          ? 'Pakistani'
+          : signup.publicEthnicity,
       seekerPlan: seekerPlan,
     );
   }
@@ -253,6 +289,7 @@ class ZyraRequestAccountSession extends ChangeNotifier {
     _avatar.clear();
     _signupProfiles.clear();
     _signupAbout.clear();
+    _profileEdits.clear();
     _signupPhotoBaselines.clear();
     compatibility.close();
     super.dispose();
@@ -352,6 +389,21 @@ class ZyraRequestCompatibilityRepository
       return false;
     }
     _draft = detached;
+    return true;
+  }
+
+  bool setAbout(String value) {
+    if (!_current) return false;
+    _signupBaseline ??= (
+      draft: _draft?.copy(),
+      legacy: Set.of(_legacy),
+      setup: Map.of(_setupLights),
+    );
+    final next =
+        _draft?.copy() ??
+        ZyraCompatibilityDraft.fromSnapshot(gender: _readGender());
+    next.answers['bio_about_me'] = value.characters.take(300).toString();
+    _draft = next;
     return true;
   }
 

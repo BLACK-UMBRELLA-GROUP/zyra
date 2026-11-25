@@ -55,6 +55,7 @@ Future<void> _reveal(BaselineHarness h, String scrollId, Finder target) async {
     scrollable: scroll,
     maxScrolls: 30,
   );
+  await h.flush();
   await h.tester
       .state<ScrollableState>(scroll)
       .position
@@ -172,49 +173,49 @@ void main() {
       expect(find.text('Edit profile'), findsOneWidget);
       expect(find.text('COMPATIBILITY'), findsNothing);
       expect(find.text('FIXED'), findsNothing);
-      expect(find.textContaining('Your answers stay private.'), findsOneWidget);
+      expect(find.text('Photos and video'), findsOneWidget);
+      await _reveal(
+        h,
+        'edit_profile_content_scroll',
+        k('compatibility-editor-trafficLights'),
+      );
       expect(find.text('Partner preferences'), findsOneWidget);
       final counterpartTotal = ZyraCompatibilityDraft.fromSnapshot(
         gender: 'male',
       ).preferenceOptionCount;
-      for (final count in [
-        '0 of 20 answered',
-        '0 of 46 answered',
-        '0 of 38 answered',
-        '0 of $counterpartTotal set',
-        '0 introduction-blocking answers',
+      expect(find.text('0 of $counterpartTotal'), findsOneWidget);
+      for (final retired in const [
+        'Green / Yellow / Red',
+        'Hard requirements',
+        'Lifestyle',
+        'Brother',
+        'Sister',
       ]) {
-        expect(find.text(count), findsOneWidget);
+        expect(find.textContaining(retired), findsNothing);
       }
-      if (scale == 1) {
-        final card = t.getRect(k('edit_profile_answers_card'));
-        expect(card.top, closeTo(180, 6));
-        expect(card.height, closeTo(344, 6));
-      }
-      await _cap(h, 's03_edit_profile$suffix');
-      for (final kind in CompatibilityEditorKind.values) {
-        final row = k('compatibility-editor-${kind.name}');
-        await _reveal(h, 'edit_profile_content_scroll', row);
-        await t.tap(row);
-        await h.flush();
-        expect(
-          t
-              .widget<CompatibilityEditorScreen>(
-                find.byType(CompatibilityEditorScreen),
-              )
-              .kind,
-          kind,
-        );
-        Navigator.of(t.element(find.byType(CompatibilityEditorScreen))).pop();
-        await h.flush();
-      }
+      // UNITY_PASS s03 is superseded by LOCK45 ep01/ep02. The dedicated
+      // line139 captures own those masters; this retained test checks routing.
+      final row = k('compatibility-editor-trafficLights');
+      await _reveal(h, 'edit_profile_content_scroll', row);
+      await t.tap(row);
+      await h.flush();
+      expect(
+        t
+            .widget<CompatibilityEditorScreen>(
+              find.byType(CompatibilityEditorScreen),
+            )
+            .kind,
+        CompatibilityEditorKind.trafficLights,
+      );
+      Navigator.of(t.element(find.byType(CompatibilityEditorScreen))).pop();
+      await h.flush();
       await _reveal(
         h,
         'edit_profile_content_scroll',
         k('edit_profile_fixed_card'),
       );
       expect(find.text('Age 30'), findsOneWidget);
-      expect(find.text('Brother'), findsOneWidget);
+      expect(find.text('Male'), findsOneWidget);
       expect(
         find.descendant(
           of: k('edit_profile_fixed_card'),
@@ -227,10 +228,10 @@ void main() {
           of: k('edit_profile_fixed_card'),
           matching: find.byIcon(Icons.lock_outline),
         ),
-        findsNWidgets(2),
+        findsNWidgets(3),
       );
       expect(
-        find.textContaining('essentials and cannot be edited here.'),
+        find.textContaining("These come from your identity check"),
         findsOneWidget,
       );
       await _reveal(
@@ -238,14 +239,25 @@ void main() {
         'edit_profile_content_scroll',
         k('edit_profile_open_support'),
       );
-      if (scale == 2) await _cap(h, 's03_edit_profile__text200__bottom');
-      expect(
-        t.getSize(k('edit_profile_open_support')).height,
-        greaterThanOrEqualTo(48),
+      final paragraph = t.renderObject<RenderParagraph>(
+        k('edit_profile_open_support'),
       );
-      await t.tap(k('edit_profile_open_support'));
+      final supportOffset = paragraph.text.toPlainText().indexOf(
+        'contact support',
+      );
+      expect(supportOffset, greaterThanOrEqualTo(0));
+      final supportBoxes = paragraph.getBoxesForSelection(
+        TextSelection(
+          baseOffset: supportOffset,
+          extentOffset: supportOffset + 'contact support'.length,
+        ),
+      );
+      expect(supportBoxes, isNotEmpty);
+      await t.tapAt(
+        paragraph.localToGlobal(supportBoxes.first.toRect().center),
+      );
       await h.flush();
-      h.assertPage('help_support');
+      h.assertPage('help_contact');
       await _memberBack(h);
       h.assertPage('edit_profile');
       await _memberBack(h);

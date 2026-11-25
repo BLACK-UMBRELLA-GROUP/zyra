@@ -22,9 +22,7 @@ void main() {
   });
 
   for (final size in [const Size(320, 568), const Size(430, 932)]) {
-    testWidgets('all compatibility editors are available and fit $size', (
-      tester,
-    ) async {
+    testWidgets('LOCK45 profile sections fit $size', (tester) async {
       tester.view.physicalSize = size;
       tester.view.devicePixelRatio = 1;
       tester.platformDispatcher.textScaleFactorTestValue = 2;
@@ -33,25 +31,44 @@ void main() {
       addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
       await tester.pumpWidget(const MaterialApp(home: EditProfileScreen()));
       await tester.pump();
-      expect(find.textContaining('Your answers stay private'), findsOneWidget);
-      for (final name in const [
-        'aboutYou',
-        'lifestyle',
-        'marriagePreferences',
-        'trafficLights',
-        'hardRequirements',
+      for (final label in const [
+        'Photos and video',
+        'A few words about you',
+        'Where you live',
+        'Nationality',
+        'Ethnicity',
+        'Work and education',
+        'Family and marriage',
+        'Practical life',
+        'Partner preferences',
+        'Name',
+        'Date of birth',
+        'Gender',
       ]) {
-        final editor = find.byKey(ValueKey('compatibility-editor-$name'));
+        final row = find.text(label);
         await tester.scrollUntilVisible(
-          editor,
+          row,
           180,
           scrollable: find.byType(Scrollable).first,
         );
-        expect(editor, findsOneWidget);
+        await tester.pumpAndSettle();
+        await tester.ensureVisible(row);
+        await tester.pumpAndSettle();
+        expect(row.hitTestable(), findsOneWidget);
+      }
+      expect(find.text('Male'), findsOneWidget);
+      for (final retired in const [
+        'Green / Yellow / Red',
+        'Hard requirements',
+        'Lifestyle',
+        'Brother',
+        'Sister',
+      ]) {
+        expect(find.textContaining(retired), findsNothing);
       }
       expect(find.text('Not available yet'), findsNothing);
       expect(tester.takeException(), isNull);
-      await tester.drag(find.byType(ListView), const Offset(0, -1500));
+      await tester.drag(find.byType(Scrollable).first, const Offset(0, -1500));
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
     });

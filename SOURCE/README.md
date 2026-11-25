@@ -168,6 +168,24 @@ captures and narrow-screen replay with `--dart-define=ZYRA_LINE136_CAPTURE=true`
 The output stays under `build/line136/`. The as-built record is
 `../PRODUCT/APPROVED/MEMBERSHIP_PAGE/BUILT/LINE136/HANDOVER_2026-11-24.md`.
 
+## Founder preview Edit profile
+
+LOCK 45 replaces the old Edit profile sections with Photos and video,
+About you, Journey Bio and Partner preferences. About you uses the existing
+sign-up presenters with Done; Journey Bio edits one existing section at a
+time. Counts come from the current local draft. Name, age and gender are
+locked, and the inline contact support link opens the existing sample form.
+No edit reads or writes a member account. The same photo-rules widget appears
+under sign-up Photos and Edit profile's Photos row.
+
+The focused route and rendered-text checks are in
+`test/visual/line139_edit_profile_capture_test.dart`. Enable the four master
+captures and the 375/430, normal/Larger Text replays with
+`--dart-define=ZYRA_LINE139_CAPTURE=true` through the protected test driver.
+They write to `build/line139/`, turn real shadows on, repaint after auditing
+and hash the actual saved PNGs. The underlined-link audit control is
+`test/line139_underlined_text_audit_test.dart`.
+
 ## Rendered text audit
 
 For each local queue line, run the whole-project analyzer, ordinary regression,

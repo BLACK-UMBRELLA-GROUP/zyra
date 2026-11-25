@@ -1104,6 +1104,9 @@ class ZyraSettingsRow extends StatelessWidget {
     this.valueSize = 13,
     this.verticalPadding,
     this.horizontalPadding,
+    this.subtitle,
+    this.locked = false,
+    this.minHeight,
   });
   final bool wrapValue;
   final double valueSize;
@@ -1113,7 +1116,10 @@ class ZyraSettingsRow extends StatelessWidget {
   final Key newTagKey;
   final String label;
   final String? value;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
+  final String? subtitle;
+  final bool locked;
+  final double? minHeight;
   final bool smooth;
   IconData get icon => switch (label) {
     'Sign-in & security' => Icons.verified_user_outlined,
@@ -1130,101 +1136,171 @@ class ZyraSettingsRow extends StatelessWidget {
     'Privacy & data' => Icons.shield_outlined,
     _ => Icons.chevron_right_rounded,
   };
-  @override
-  Widget build(BuildContext context) => Material(
+  Widget _editRow(BuildContext context) => Material(
     color: Colors.transparent,
-    child: InkWell(
-      onTap: ZyraTapFeedback.onTap(context, onTap),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: horizontalPadding ?? (smooth ? 18 : 16),
-          vertical: verticalPadding ?? (smooth ? 17 : 15),
-        ),
-        child: Row(
+    child: locked
+        ? _editRowBody(context)
+        : InkWell(
+            onTap: ZyraTapFeedback.onTap(context, onTap),
+            child: _editRowBody(context),
+          ),
+  );
+
+  Widget _editRowBody(BuildContext context) => Container(
+    constraints: BoxConstraints(minHeight: minHeight!),
+    padding: EdgeInsets.symmetric(
+      horizontal: horizontalPadding ?? 16,
+      vertical: verticalPadding ?? 8,
+    ),
+    child: LayoutBuilder(
+      builder: (context, box) {
+        final style = ZyraText.subtext(
+          size: valueSize,
+          color: ZyraColors.secondaryText,
+        );
+        return Row(
           children: [
-            if (smooth) ...[
-              Container(
-                width: 38,
-                height: 38,
-                decoration: BoxDecoration(
-                  color: ZyraColors.ivoryTop,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(icon, size: 18, color: ZyraColors.unlockText),
-              ),
-              const SizedBox(width: 13),
-            ],
             Expanded(
-              child: Wrap(
-                spacing: 10,
-                crossAxisAlignment: WrapCrossAlignment.center,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    label,
-                    style: ZyraText.body(
-                      size: 15,
-                      color: ZyraColors.foreground,
+                  Text(label, style: ZyraText.body(size: 15)),
+                  if (subtitle != null) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle!,
+                      style: ZyraText.body(
+                        size: 12,
+                        color: ZyraColors.secondaryText,
+                      ).copyWith(height: 1.35),
                     ),
-                  ),
-                  if (isNew)
-                    Container(
-                      key: newTagKey,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 6,
-                        vertical: 1,
-                      ),
-                      decoration: BoxDecoration(
-                        color: ZyraColors.goldTextFill,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        'NEW',
-                        style: ZyraText.body(
-                          size: 10,
-                          color: ZyraColors.espresso,
-                        ),
-                      ),
-                    ),
+                  ],
                 ],
               ),
             ),
             if (value != null && value!.isNotEmpty) ...[
-              if (wrapValue)
-                Text(
-                  value!,
-                  textAlign: TextAlign.right,
-                  style: ZyraText.subtext(
-                    size: valueSize,
-                    color: ZyraColors.secondaryText,
-                  ),
-                )
-              else
-                Flexible(
-                  child: Text(
-                    value!,
-                    maxLines: wrapValue ? null : 1,
-                    overflow: wrapValue
-                        ? TextOverflow.visible
-                        : TextOverflow.ellipsis,
-                    textAlign: wrapValue ? TextAlign.right : null,
-                    style: ZyraText.subtext(
-                      size: valueSize,
-                      color: ZyraColors.ink(0.38),
-                    ),
-                  ),
-                ),
               const SizedBox(width: 8),
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: (box.maxWidth - 26) / 2),
+                child: IntrinsicWidth(
+                  child: Text(value!, textAlign: TextAlign.right, style: style),
+                ),
+              ),
             ],
-            Icon(
-              expanded ? Icons.expand_more : Icons.chevron_right,
-              size: 18,
-              color: ZyraColors.foreground.withValues(alpha: 0.3),
+            const SizedBox(width: 4),
+            ExcludeSemantics(
+              child: Icon(
+                locked ? Icons.lock_outline : Icons.chevron_right,
+                size: locked ? 14 : 18,
+                color: locked
+                    ? ZyraColors.secondaryText
+                    : ZyraColors.foreground.withValues(alpha: .3),
+              ),
             ),
           ],
-        ),
-      ),
+        );
+      },
     ),
   );
+
+  @override
+  Widget build(BuildContext context) => minHeight != null
+      ? _editRow(context)
+      : Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: ZyraTapFeedback.onTap(context, onTap),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: horizontalPadding ?? (smooth ? 18 : 16),
+                vertical: verticalPadding ?? (smooth ? 17 : 15),
+              ),
+              child: Row(
+                children: [
+                  if (smooth) ...[
+                    Container(
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        color: ZyraColors.ivoryTop,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(icon, size: 18, color: ZyraColors.unlockText),
+                    ),
+                    const SizedBox(width: 13),
+                  ],
+                  Expanded(
+                    child: Wrap(
+                      spacing: 10,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text(
+                          label,
+                          style: ZyraText.body(
+                            size: 15,
+                            color: ZyraColors.foreground,
+                          ),
+                        ),
+                        if (isNew)
+                          Container(
+                            key: newTagKey,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 1,
+                            ),
+                            decoration: BoxDecoration(
+                              color: ZyraColors.goldTextFill,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              'NEW',
+                              style: ZyraText.body(
+                                size: 10,
+                                color: ZyraColors.espresso,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  if (value != null && value!.isNotEmpty) ...[
+                    if (wrapValue)
+                      Text(
+                        value!,
+                        textAlign: TextAlign.right,
+                        style: ZyraText.subtext(
+                          size: valueSize,
+                          color: ZyraColors.secondaryText,
+                        ),
+                      )
+                    else
+                      Flexible(
+                        child: Text(
+                          value!,
+                          maxLines: wrapValue ? null : 1,
+                          overflow: wrapValue
+                              ? TextOverflow.visible
+                              : TextOverflow.ellipsis,
+                          textAlign: wrapValue ? TextAlign.right : null,
+                          style: ZyraText.subtext(
+                            size: valueSize,
+                            color: ZyraColors.ink(0.38),
+                          ),
+                        ),
+                      ),
+                    const SizedBox(width: 8),
+                  ],
+                  Icon(
+                    expanded ? Icons.expand_more : Icons.chevron_right,
+                    size: 18,
+                    color: ZyraColors.foreground.withValues(alpha: 0.3),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
 }
 
 class _SettingsReveal extends StatelessWidget {

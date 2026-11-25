@@ -37,6 +37,9 @@ import '../screens/wali/zyra_code_screen.dart' show ZyraCodeLocalPreview;
 import '../screens/settings/help_support_screen.dart';
 import '../screens/onboarding/identity_verification_screen.dart';
 import '../screens/profile/edit_profile_screen.dart';
+import '../screens/onboarding/bio_onboarding_flow.dart';
+import '../models/journey_bio.dart';
+import '../widgets/zyra_edit_profile_presentation.dart';
 import '../screens/profile/compatibility_editors.dart';
 import 'zyra_one_journey_filters_presentation.dart';
 import 'zyra_one_journey_location.dart';
@@ -10309,6 +10312,7 @@ class _ZyraOneJourneyConceptShellState
         tab == _tab &&
         _accountSession.current;
     bool current() => _allowed && retainedOwner();
+    bool hubCurrent() => current() && navigator.currentState?.canPop() == false;
     final compatibility = _accountSession.compatibility;
     Future<(ZyraCompatibilityDraft, ZyraPreferenceQuickCheck)>
     loadPreferences() async {
@@ -10345,7 +10349,100 @@ class _ZyraOneJourneyConceptShellState
     }
 
     void support() {
-      if (current()) _open('help_support');
+      if (current()) _open('help_contact');
+    }
+
+    Future<void> editDetails(ZyraSignupStep step, VoidCallback refresh) async {
+      if (!hubCurrent() || navigator.currentState == null) return;
+      final own = _accountSession.ownProfile(guardian);
+      final editor = ZyraSignupPreviewController()
+        ..setAboutYou(_accountSession.signupAbout(guardian) ?? '')
+        ..setLocation(own.city)
+        ..setNationality(own.publicNationality);
+      for (final value in (own.publicEthnicity ?? '').split(', ')) {
+        if (value.isNotEmpty) editor.toggleEthnicity(value);
+      }
+      editor.setStep(step);
+      await navigator.currentState!.push<void>(
+        MaterialPageRoute(
+          builder: (editorContext) {
+            bool active() =>
+                current() && (ModalRoute.of(editorContext)?.isCurrent ?? false);
+            void done() {
+              if (!active()) return;
+              if (_accountSession.editProfileDetails(
+                guardian: guardian,
+                about: editor.aboutYou,
+                city: editor.location ?? '',
+                nationality: editor.nationality,
+                ethnicity: editor.ethnicities.isEmpty
+                    ? null
+                    : editor.ethnicities.join(', '),
+              )) {
+                Navigator.of(editorContext).pop();
+              }
+            }
+
+            return ZyraPullDownBackScope(
+              routeIdentity: editor,
+              onBack: () {
+                if (active()) Navigator.of(editorContext).pop();
+              },
+              child: ZyraSignupPreview(
+                controller: editor,
+                canAct: active,
+                preferencesBuilder: (_) => const SizedBox.shrink(),
+                onPause: () {},
+                onEnter: () {},
+                onShareCode: () {},
+                samplePhotos: const [],
+                ownCode: '',
+                onEditDone: done,
+              ),
+            );
+          },
+        ),
+      );
+      editor.dispose();
+      if (current()) refresh();
+    }
+
+    Future<void> editBio(
+      int index,
+      ZyraCompatibilityDraft draft,
+      VoidCallback refresh,
+    ) async {
+      if (!hubCurrent() || navigator.currentState == null) return;
+      await navigator.currentState!.push<void>(
+        MaterialPageRoute(
+          builder: (editorContext) {
+            bool active() =>
+                current() && (ModalRoute.of(editorContext)?.isCurrent ?? false);
+            return BioOnboardingFlow.previewEdit(
+              gender: _accountSession.seekerGender,
+              initialBio: JourneyBio.fromOnboardingAnswers(draft.answers),
+              section: const [
+                'Work & education',
+                'Family & marriage',
+                'Practical life',
+              ][index],
+              canAct: active,
+              canRetain: retainedOwner,
+              onSave: (bio) async {
+                if (!active()) return false;
+                final updated = draft.copy();
+                updated.answers.addAll(bio.toOnboardingAnswers());
+                return await compatibility.save('draft-self', updated) &&
+                    active();
+              },
+              onDone: () {
+                if (active()) Navigator.of(editorContext).pop();
+              },
+            );
+          },
+        ),
+      );
+      if (current()) refresh();
     }
 
     // Publication rebuilds the leaf. Keep its admitted callbacks stable for
@@ -10412,9 +10509,62 @@ class _ZyraOneJourneyConceptShellState
                   repository: _accountSession.compatibility,
                   canAct: current,
                   canRetain: retainedOwner,
-                  gender: 'male',
-                  age: 30,
+                  gender: _accountSession.ownProfile(guardian).gender,
+                  age: _accountSession.ownProfile(guardian).age,
                   onSupport: support,
+                  profileBuilder: (draft, preferences, refresh) {
+                    final own = _accountSession.ownProfile(guardian);
+                    final bio = JourneyBio.fromOnboardingAnswers(draft.answers);
+                    final progress = [
+                      for (final section in const [
+                        'Work & education',
+                        'Family & marriage',
+                        'Practical life',
+                      ])
+                        () {
+                          final fields = journeyBioFieldDefinitions
+                              .where((f) => f.section == section)
+                              .toList();
+                          final answered = fields
+                              .where(
+                                (f) => (bio.fieldValues[f.id] ?? '')
+                                    .trim()
+                                    .isNotEmpty,
+                              )
+                              .length;
+                          return '$answered of ${fields.length}';
+                        }(),
+                    ];
+                    return ZyraEditProfilePresentation(
+                      name: '${own.firstName} ${own.surnameLine ?? ''}'.trim(),
+                      age: own.age,
+                      gender: own.gender == 'female' ? 'Female' : 'Male',
+                      photoCount: _accountSession.photos(guardian).length,
+                      about: _accountSession.signupAbout(guardian) ?? '',
+                      location: own.city.split(',').first,
+                      nationality: own.publicNationality ?? '—',
+                      ethnicity: own.publicEthnicity ?? '—',
+                      bioProgress: progress,
+                      preferencesProgress:
+                          '${draft.preferenceAnswerCount} of ${draft.preferenceOptionCount}',
+                      onPhotos: () {
+                        if (hubCurrent()) _open('manage_photos');
+                      },
+                      onAbout: () =>
+                          editDetails(ZyraSignupStep.aboutYou, refresh),
+                      onLocation: () =>
+                          editDetails(ZyraSignupStep.location, refresh),
+                      onNationality: () =>
+                          editDetails(ZyraSignupStep.nationality, refresh),
+                      onEthnicity: () =>
+                          editDetails(ZyraSignupStep.ethnicity, refresh),
+                      onBio: (index) => editBio(index, draft, refresh),
+                      onPreferences: preferences,
+                      onSupport: () {
+                        if (hubCurrent()) support();
+                      },
+                    );
+                  },
                 ),
                 'manage_photos' => EditPhotosScreen.preview(
                   canAct: current,

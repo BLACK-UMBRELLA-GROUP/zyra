@@ -19,6 +19,12 @@ place shows its payer and cannot be cancelled by its recipient. Cancel
 membership opens App Store subscriptions. This preview does not read receipts,
 activate a trial or change a subscription.
 
+Profile → Edit in the Founder preview opens Photos, About you, Journey Bio
+and Partner preferences. About you reuses the sign-up pages and saves on
+Done. The identity-check name, age and gender stay locked; contact support
+opens the sample Contact support page. Edit profile and sign-up Photos share
+the same three-point photo-rules card. These edits use local sample data.
+
 ## Status
 
 Pre-launch, built solo since June 2026. Version 1.0.0 (build 5) runs on the Founder's iPhone for internal testing. The redesigned interface is a Founder preview over the existing app. Server and checkout integration are still pending. The website is [zyraconnect.app](https://zyraconnect.app).

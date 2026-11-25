@@ -841,7 +841,21 @@ void main() {
       final draft = ZyraCompatibilityDraft.fromSnapshot(gender: 'male');
       expect(await repository.save(repository.currentUserId!, draft), isTrue);
       expect(await repository.load(repository.currentUserId!), isNotNull);
-      await tester.tap(find.text('About you'));
+      final preferences = find.byKey(
+        const ValueKey('compatibility-editor-trafficLights'),
+      );
+      final scroll = find
+          .descendant(
+            of: find.byKey(const ValueKey('edit_profile_content_scroll')),
+            matching: find.byType(Scrollable),
+          )
+          .first;
+      await tester.scrollUntilVisible(preferences, 180, scrollable: scroll);
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(preferences);
+      await tester.pumpAndSettle();
+      expect(preferences.hitTestable(), findsOneWidget);
+      await tester.tap(preferences);
       await tester.pumpAndSettle();
       final editor = tester.widget<CompatibilityEditorScreen>(
         find.byType(CompatibilityEditorScreen),

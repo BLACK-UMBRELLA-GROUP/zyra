@@ -328,6 +328,21 @@ void main() {
       await h.tap('concept_edit_profile');
       h.assertPage('edit_profile');
       final preferenceRow = _key('compatibility-editor-trafficLights');
+      Future<void> revealPreferences() async {
+        final scroll = find
+            .descendant(
+              of: _key('edit_profile_content_scroll'),
+              matching: find.byType(Scrollable),
+            )
+            .first;
+        await tester.scrollUntilVisible(preferenceRow, 180, scrollable: scroll);
+        await h.flush();
+        await tester.ensureVisible(preferenceRow);
+        await h.flush();
+        expect(preferenceRow.hitTestable(), findsOneWidget);
+      }
+
+      await revealPreferences();
       expect(
         find.descendant(
           of: preferenceRow,
@@ -338,7 +353,7 @@ void main() {
       expect(
         find.descendant(
           of: preferenceRow,
-          matching: find.text('0 of $counterpartTotal set'),
+          matching: find.text('0 of $counterpartTotal'),
         ),
         findsOneWidget,
       );
@@ -351,15 +366,10 @@ void main() {
       await returnZyraPreviewPage(tester);
       await h.flush();
       h.assertPage('edit_profile');
+      await revealPreferences();
       expect(preferenceRow, findsOneWidget);
 
-      await h.tap('compatibility-editor-hardRequirements');
-      expect(
-        find.textContaining(
-          'First mark an answer Not for me in Partner preferences.',
-        ),
-        findsOneWidget,
-      );
+      expect(_key('compatibility-editor-hardRequirements'), findsNothing);
     },
   );
 

@@ -23,12 +23,52 @@ import 'seeker_setup_navigation.dart';
 class BioOnboardingFlow extends StatefulWidget {
   final String? gender;
   final bool devPreview;
+  final JourneyBio? _initialBio;
+  final String? _section;
+  final bool Function()? _canAct;
+  final bool Function()? _canRetain;
+  final Future<bool> Function(JourneyBio)? _onSave;
+  final VoidCallback? _onDone;
 
   const BioOnboardingFlow({
     super.key,
     required this.gender,
     this.devPreview = false,
-  });
+  }) : _initialBio = null,
+       _section = null,
+       _canAct = null,
+       _canRetain = null,
+       _onSave = null,
+       _onDone = null;
+
+  /// Edits one existing Journey Bio section in the caller's local draft.
+  /// This route never restores or writes the signed-in member's answers.
+  // Public caller-owned names keep the private stored callbacks private.
+  // ignore: prefer_initializing_formals
+  const BioOnboardingFlow.previewEdit({
+    super.key,
+    required this.gender,
+    required JourneyBio initialBio,
+    required String section,
+    required bool Function() canAct,
+    bool Function()? canRetain,
+    required Future<bool> Function(JourneyBio) onSave,
+    required VoidCallback onDone,
+  }) : assert(
+         section == 'Work & education' ||
+             section == 'Family & marriage' ||
+             section == 'Practical life',
+       ),
+       devPreview = false,
+       // ignore: prefer_initializing_formals
+       _initialBio = initialBio,
+       _section = section,
+       _canAct = canAct,
+       _canRetain = canRetain ?? canAct,
+       // ignore: prefer_initializing_formals
+       _onSave = onSave,
+       // ignore: prefer_initializing_formals
+       _onDone = onDone;
 
   @override
   State<BioOnboardingFlow> createState() => _BioOnboardingFlowState();
@@ -59,18 +99,29 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
   // Requested preview is sticky even after authorization changes. It may
   // become unavailable, but must never begin saving as a live member flow.
   bool get _devPreview => widget.devPreview;
+  bool get _previewEdit => widget._initialBio != null;
   bool get _canProceed =>
       mounted &&
       !_leaving &&
-      (!_devPreview || ZyraDeveloperAccess.canUseDeveloperTools) &&
-      (_devPreview ||
-          (_owner != null &&
-              ZyraAuth.currentUser?.id == _owner &&
-              ZyraAccountState.isCurrent(_owner!, _ownerGeneration)));
+      (_previewEdit
+          ? widget._canAct?.call() == true
+          : (!_devPreview || ZyraDeveloperAccess.canUseDeveloperTools) &&
+                (_devPreview ||
+                    (_owner != null &&
+                        ZyraAuth.currentUser?.id == _owner &&
+                        ZyraAccountState.isCurrent(
+                          _owner!,
+                          _ownerGeneration,
+                        ))));
 
   @override
   void initState() {
     super.initState();
+    if (_previewEdit) {
+      _applySavedBio(widget._initialBio!);
+      _step = _sections.indexOf(widget._section!) + 1;
+      return;
+    }
     _ownerGeneration = ZyraAccountState.generation;
     if (!_devPreview) {
       try {
@@ -140,9 +191,11 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
     fieldValues: Map<String, String>.unmodifiable(_values),
     visibleFieldIds: Set<String>.unmodifiable(_visibleFieldIds),
     showAboutMe: _showAboutMe,
+    reviewed: _previewEdit ? widget._initialBio!.reviewed : false,
   );
 
   void _setValue(JourneyBioFieldDefinition field, String value) {
+    if (_previewEdit && !_canProceed) return;
     setState(() {
       final trimmed = value.trim();
       if (trimmed.isEmpty) {
@@ -159,7 +212,35 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
 
   void _back() {
     if (!_canProceed || _saving || _restoring || _restoreError != null) return;
+    if (_previewEdit) {
+      widget._onDone?.call();
+      return;
+    }
     if (_step > 0) setState(() => _step--);
+  }
+
+  Future<void> _savePreviewEdit() async {
+    setState(() {
+      _saving = true;
+      _saveError = null;
+    });
+    bool saved;
+    try {
+      saved = await widget._onSave!(_draft);
+    } catch (_) {
+      saved = false;
+    }
+    if (!mounted || !_canProceed) return;
+    setState(() => _saving = false);
+    if (ModalRoute.of(context)?.isCurrent != true) return;
+    if (saved) {
+      _leaving = true;
+      widget._onDone?.call();
+    } else {
+      setState(
+        () => _saveError = 'Your Bio could not be saved. Please try again.',
+      );
+    }
   }
 
   Future<void> _finishLater() async {
@@ -202,6 +283,10 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
         _saving ||
         _restoring ||
         _restoreError != null) {
+      return;
+    }
+    if (_previewEdit) {
+      await _savePreviewEdit();
       return;
     }
     setState(() {
@@ -297,19 +382,27 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
   }
 
   @override
-  Widget build(BuildContext context) => ListenableBuilder(
-    listenable: ZyraDeveloperAccess.authorizationChanges,
-    builder: (context, _) {
-      if (_devPreview && !ZyraDeveloperAccess.canUseDeveloperTools) {
-        return Scaffold(
-          key: const ValueKey('bio_preview_denied'),
-          backgroundColor: ZyraColors.modalSheetSurface,
-          body: const SizedBox.expand(),
-        );
+  Widget build(BuildContext context) {
+    if (_previewEdit) {
+      if (widget._canRetain?.call() != true) {
+        return const SizedBox.shrink(key: ValueKey('bio_preview_denied'));
       }
       return _buildFlow(context);
-    },
-  );
+    }
+    return ListenableBuilder(
+      listenable: ZyraDeveloperAccess.authorizationChanges,
+      builder: (context, _) {
+        if (_devPreview && !ZyraDeveloperAccess.canUseDeveloperTools) {
+          return Scaffold(
+            key: const ValueKey('bio_preview_denied'),
+            backgroundColor: ZyraColors.modalSheetSurface,
+            body: const SizedBox.expand(),
+          );
+        }
+        return _buildFlow(context);
+      },
+    );
+  }
 
   Widget _buildFlow(BuildContext context) {
     if (_restoring) {
@@ -417,13 +510,16 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
                   : null,
               shared: _visibleFieldIds.contains(field.id),
               onChanged: (value) => _setValue(field, value),
-              onSharedChanged: (shared) => setState(() {
-                if (shared) {
-                  _visibleFieldIds.add(field.id);
-                } else {
-                  _visibleFieldIds.remove(field.id);
-                }
-              }),
+              onSharedChanged: (shared) {
+                if (_previewEdit && !_canProceed) return;
+                setState(() {
+                  if (shared) {
+                    _visibleFieldIds.add(field.id);
+                  } else {
+                    _visibleFieldIds.remove(field.id);
+                  }
+                });
+              },
             ),
             if (field != fields.last) SizedBox(height: 12),
           ],
@@ -459,9 +555,9 @@ class _BioOnboardingFlowState extends State<BioOnboardingFlow> {
       onContinue: _next,
       devPreview: _devPreview,
       onSwipeBack: _step > 0 ? _back : null,
-      onFinishLater: _finishLater,
+      onFinishLater: _previewEdit ? null : _finishLater,
       content: IgnorePointer(
-        ignoring: _saving,
+        ignoring: _saving || (_previewEdit && !_canProceed),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -579,20 +675,23 @@ class _JourneyShareSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SwitchListTile.adaptive(
-      contentPadding: EdgeInsets.zero,
-      dense: true,
-      title: Text(
-        label,
-        style: ZyraText.subtext(
-          size: 11.5,
-          color: enabled ? ZyraColors.ink(0.70) : ZyraColors.ink(0.30),
+    return Material(
+      type: MaterialType.transparency,
+      child: SwitchListTile.adaptive(
+        contentPadding: EdgeInsets.zero,
+        dense: true,
+        title: Text(
+          label,
+          style: ZyraText.subtext(
+            size: 11.5,
+            color: enabled ? ZyraColors.ink(0.70) : ZyraColors.ink(0.30),
+          ),
         ),
+        value: enabled && value,
+        activeTrackColor: ZyraColors.unlockDot.withValues(alpha: 0.5),
+        activeThumbColor: ZyraColors.unlockText,
+        onChanged: enabled ? onChanged : null,
       ),
-      value: enabled && value,
-      activeTrackColor: ZyraColors.unlockDot.withValues(alpha: 0.5),
-      activeThumbColor: ZyraColors.unlockText,
-      onChanged: enabled ? onChanged : null,
     );
   }
 }

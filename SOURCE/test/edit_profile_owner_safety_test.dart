@@ -44,10 +44,24 @@ Future<void> mount(WidgetTester tester, EditorRepository repository) async {
   await tester.pumpAndSettle();
 }
 
-Future<CompatibilityEditorScreen> openEditor(WidgetTester tester) async {
-  final row = find.byKey(const ValueKey('compatibility-editor-aboutYou'));
+Future<void> revealPreferences(WidgetTester tester) async {
+  final row = find.byKey(const ValueKey('compatibility-editor-trafficLights'));
+  await tester.scrollUntilVisible(
+    row,
+    180,
+    scrollable: find.byType(Scrollable).first,
+  );
+  await tester.pumpAndSettle();
   await tester.ensureVisible(row);
-  await tester.tap(row);
+  await tester.pumpAndSettle();
+  expect(row.hitTestable(), findsOneWidget);
+}
+
+Future<CompatibilityEditorScreen> openEditor(WidgetTester tester) async {
+  await revealPreferences(tester);
+  await tester.tap(
+    find.byKey(const ValueKey('compatibility-editor-trafficLights')),
+  );
   await tester.pumpAndSettle();
   return tester.widget<CompatibilityEditorScreen>(
     find.byType(CompatibilityEditorScreen),
@@ -80,15 +94,16 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.byKey(const ValueKey('compatibility-editor-aboutYou')),
+      find.byKey(const ValueKey('compatibility-editor-trafficLights')),
       findsNothing,
     );
     expect(repository.savedOwners, isEmpty);
     repository.onLoad = null;
     await tester.tap(find.byKey(const ValueKey('edit_profile_restore_retry')));
     await tester.pumpAndSettle();
+    await revealPreferences(tester);
     expect(
-      find.byKey(const ValueKey('compatibility-editor-aboutYou')),
+      find.byKey(const ValueKey('compatibility-editor-trafficLights')),
       findsOneWidget,
     );
     expect(repository.loads, 2);
@@ -123,7 +138,7 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.byKey(const ValueKey('compatibility-editor-aboutYou')),
+      find.byKey(const ValueKey('compatibility-editor-trafficLights')),
       findsNothing,
     );
   });

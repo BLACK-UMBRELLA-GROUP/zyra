@@ -193,7 +193,10 @@ Future<void> _tap(WidgetTester tester, String key) async {
       maxScrolls: 40,
     );
   }
+  await _settle(tester);
   await tester.ensureVisible(target);
+  await _settle(tester);
+  expect(target.hitTestable(), findsOneWidget);
   await tester.tap(target);
   await _settle(tester);
 }
@@ -204,6 +207,20 @@ Future<GenericSelectQuestionScreen> _answerPage(WidgetTester tester) async {
   return tester.widget<GenericSelectQuestionScreen>(
     find.byType(GenericSelectQuestionScreen),
   );
+}
+
+Future<TrafficLightQuestionScreen> _lightsPage(WidgetTester tester) async {
+  final (category, question) = _preference(_seed());
+  await _tap(tester, 'edit-preferences-${category.id}');
+  await _tap(tester, 'edit-lights-${question.responseKey}');
+  return tester.widget<TrafficLightQuestionScreen>(
+    find.byType(TrafficLightQuestionScreen),
+  );
+}
+
+void _setLights(TrafficLightQuestionScreen editor, TrafficLight light) {
+  final question = _preference(_seed()).$2;
+  editor.onChanged({for (final option in question.options) option: light});
 }
 
 void main() {
@@ -220,15 +237,12 @@ void main() {
     home: home,
   );
 
-  Future<void> mountHub(
-    WidgetTester tester,
-    CompatibilityEditorKind kind,
-  ) async {
+  Future<void> mountHub(WidgetTester tester) async {
     await tester.pumpWidget(
       app(EditProfileScreen(key: _hub, repository: repository)),
     );
     await _settle(tester);
-    await _tap(tester, 'compatibility-editor-${kind.name}');
+    await _tap(tester, 'compatibility-editor-trafficLights');
     expect(repository.loads, 1);
   }
 
@@ -311,81 +325,46 @@ void main() {
   tearDownAll(() => Supabase.instance.dispose());
 
   for (final returnToA in [false, true]) {
-    for (final surface in ['answer', 'preference', 'hard requirement']) {
-      ownerTest(
-        '$surface copy withdraws on account ${returnToA ? 'ABA' : 'replacement'}',
-        (tester) async {
-          final kind = switch (surface) {
-            'answer' => CompatibilityEditorKind.aboutYou,
-            'preference' => CompatibilityEditorKind.trafficLights,
-            _ => CompatibilityEditorKind.hardRequirements,
-          };
-          await mountHub(tester, kind);
-          final mainSave = _save(tester);
-          VoidCallback edit;
-          VoidCallback? use;
-          if (surface == 'answer') {
-            final question = await _answerPage(tester);
-            edit = () => question.onChanged(_answer.options.last);
-            use = _save(tester, 'question-save');
-          } else if (surface == 'preference') {
-            final (category, question) = _preference(repository.initial);
-            await _tap(tester, 'edit-preferences-${category.id}');
-            await _tap(tester, 'edit-lights-${question.responseKey}');
-            final editor = tester.widget<TrafficLightQuestionScreen>(
-              find.byType(TrafficLightQuestionScreen),
-            );
-            edit = () {
-              editor.onChanged({
-                for (final option in question.options)
-                  option: TrafficLight.green,
-              });
-              editor.onHardRequirementChanged(<String>{});
-            };
-            use = _save(tester, 'question-save');
-          } else {
-            final question = _preference(repository.initial).$2;
-            edit = tester
-                .widget<InkWell>(
-                  _key(
-                    'hard-option-${question.responseKey}-${question.options.first}',
-                  ),
-                )
-                .onTap!;
-          }
-          final back = _back(tester);
-          final pops = observer.pops;
-          await _operation(tester, () => _session(_b));
-          if (returnToA) await _operation(tester, () => _session(_a));
-          await _settle(tester);
-          edit();
-          use?.call();
-          mainSave();
-          back();
-          await _settle(tester);
-          withdrawn(tester);
-          expect(observer.pops, pops);
-          expect(
-            repository.initial.answers[_answer.responseKey],
-            _answer.options.first,
-          );
-        },
-      );
-    }
+    ownerTest(
+      'preference copy withdraws on account ${returnToA ? 'ABA' : 'replacement'}',
+      (tester) async {
+        await mountHub(tester);
+        final mainSave = _save(tester);
+        final editor = await _lightsPage(tester);
+        final use = _save(tester, 'question-save');
+        final back = _back(tester);
+        final pops = observer.pops;
+        await _operation(tester, () => _session(_b));
+        if (returnToA) await _operation(tester, () => _session(_a));
+        await _settle(tester);
+        _setLights(editor, TrafficLight.green);
+        editor.onHardRequirementChanged(<String>{});
+        use();
+        mainSave();
+        back();
+        await _settle(tester);
+        withdrawn(tester);
+        expect(observer.pops, pops);
+        final question = _preference(repository.initial).$2;
+        expect(repository.initial.preferences[question.responseKey], {
+          for (final option in question.options) option: TrafficLight.red,
+        });
+      },
+    );
   }
 
   ownerTest(
-    'SDK-only ABA withdraws an open answer without account-generation change',
+    'SDK-only ABA withdraws an open preference without account-generation change',
     (tester) async {
-      await mountHub(tester, CompatibilityEditorKind.aboutYou);
-      final question = await _answerPage(tester);
+      await mountHub(tester);
+      final question = await _lightsPage(tester);
       final use = _save(tester, 'question-save');
       final generation = ZyraAccountState.generation;
       await _operation(tester, () => _session(_b, synchronize: false));
       await _operation(tester, () => _session(_a, synchronize: false));
       await _settle(tester);
       expect(ZyraAccountState.generation, generation);
-      question.onChanged(_answer.options.last);
+      _setLights(question, TrafficLight.green);
       use();
       await _settle(tester);
       withdrawn(tester);
@@ -393,7 +372,7 @@ void main() {
   );
 
   ownerTest(
-    'preview nested answer retains its lease across a root Developer sheet',
+    'preview nested preference retains its lease across a root Developer sheet',
     (tester) async {
       final innerNavigation = GlobalKey<NavigatorState>();
       final innerObserver = _Navigation();
@@ -440,27 +419,27 @@ void main() {
         ),
       );
       await _settle(tester);
-      await _tap(tester, 'compatibility-editor-aboutYou');
+      await _tap(tester, 'compatibility-editor-trafficLights');
       final save = _save(tester);
-      final question = await _answerPage(tester);
+      final question = await _lightsPage(tester);
       final use = _save(tester, 'question-save');
       final back = tester
           .widget<ZyraPullDownBackScope>(
             find
                 .ancestor(
-                  of: find.byType(GenericSelectQuestionScreen),
+                  of: find.byType(TrafficLightQuestionScreen),
                   matching: find.byType(ZyraPullDownBackScope),
                 )
                 .first,
           )
           .onBack;
       final questionState = tester.state(
-        find.byType(GenericSelectQuestionScreen),
+        find.byType(TrafficLightQuestionScreen),
       );
       final questionRoute = ModalRoute.of(
-        tester.element(find.byType(GenericSelectQuestionScreen)),
+        tester.element(find.byType(TrafficLightQuestionScreen)),
       )!;
-      question.onChanged(_answer.options.last);
+      _setLights(question, TrafficLight.green);
       await _settle(tester);
       final innerPops = innerObserver.pops;
       unawaited(
@@ -484,7 +463,7 @@ void main() {
       await _settle(tester);
       expect(rootRoute.isCurrent, isFalse);
       expect(questionRoute.isCurrent, isTrue);
-      question.onChanged(_answer.options.first);
+      _setLights(question, TrafficLight.red);
       use();
       back();
       save();
@@ -495,7 +474,7 @@ void main() {
       await _tap(tester, 'dev_done');
       expect(rootRoute.isCurrent, isTrue);
       expect(
-        tester.state(find.byType(GenericSelectQuestionScreen)),
+        tester.state(find.byType(TrafficLightQuestionScreen)),
         same(questionState),
       );
       expect(_key('compatibility_editor_preview_denied'), findsNothing);
@@ -509,17 +488,22 @@ void main() {
       await _settle(tester);
       expect(repository.saves, hasLength(1));
       expect(
-        repository.saves.single.$2.answers[_answer.responseKey],
-        _answer.options.last,
+        repository.saves.single.$2.preferences[_preference(
+          _seed(),
+        ).$2.responseKey],
+        {
+          for (final option in _preference(_seed()).$2.options)
+            option: TrafficLight.green,
+        },
       );
 
       // A real lease loss remains terminal even if the same caller returns.
-      await _tap(tester, 'compatibility-editor-aboutYou');
+      await _tap(tester, 'compatibility-editor-trafficLights');
       final staleSave = _save(tester);
-      final retiredQuestion = await _answerPage(tester);
+      final retiredQuestion = await _lightsPage(tester);
       final retiredUse = _save(tester, 'question-save');
       retained = false;
-      retiredQuestion.onChanged(_answer.options.first);
+      _setLights(retiredQuestion, TrafficLight.red);
       await _settle(tester);
       retained = true;
       retiredUse();
@@ -532,10 +516,10 @@ void main() {
   );
 
   ownerTest(
-    'covered answer callbacks cannot edit or pop and work after return',
+    'covered preference callbacks cannot edit or pop and work after return',
     (tester) async {
-      await mountHub(tester, CompatibilityEditorKind.aboutYou);
-      final question = await _answerPage(tester);
+      await mountHub(tester);
+      final question = await _lightsPage(tester);
       final use = _save(tester, 'question-save');
       final back = _back(tester);
       final pops = observer.pops;
@@ -548,7 +532,7 @@ void main() {
         ),
       );
       await _settle(tester);
-      question.onChanged(_answer.options.last);
+      _setLights(question, TrafficLight.green);
       use();
       back();
       await _settle(tester);
@@ -556,10 +540,10 @@ void main() {
       expect(observer.pops, pops);
       navigation.currentState!.pop();
       await _settle(tester);
-      question.onChanged(_answer.options.last);
+      _setLights(question, TrafficLight.green);
       use();
       await _settle(tester);
-      expect(find.byType(GenericSelectQuestionScreen), findsNothing);
+      expect(find.byType(TrafficLightQuestionScreen), findsNothing);
       expect(repository.saves, isEmpty);
       expect(tester.takeException(), isNull);
     },
@@ -568,8 +552,8 @@ void main() {
   ownerTest(
     'disposing the Profile hub withdraws an independently retained child',
     (tester) async {
-      await mountHub(tester, CompatibilityEditorKind.aboutYou);
-      final question = await _answerPage(tester);
+      await mountHub(tester);
+      final question = await _lightsPage(tester);
       final use = _save(tester, 'question-save');
       final back = _back(tester);
       final pops = observer.pops;
@@ -578,7 +562,7 @@ void main() {
       );
       await _settle(tester);
       expect(find.byType(EditProfileScreen, skipOffstage: false), findsNothing);
-      question.onChanged(_answer.options.last);
+      _setLights(question, TrafficLight.green);
       use();
       back();
       await _settle(tester);
@@ -709,10 +693,16 @@ void main() {
   ownerTest(
     'healthy token refresh preserves edit/save and detached original draft',
     (tester) async {
-      await mountHub(tester, CompatibilityEditorKind.aboutYou);
-      final initialPreferences = repository.initial.toSnapshot().ch4Preferences;
-      final initialHard = repository.initial.toSnapshot().ch4HardRequirements;
-      final question = await _answerPage(tester);
+      await mountHub(tester);
+      final opening = tester
+          .widget<CompatibilityEditorScreen>(
+            find.byType(CompatibilityEditorScreen),
+          )
+          .initialDraft
+          .toSnapshot();
+      final initialAnswers = opening.ch3Answers;
+      final initialHard = opening.ch4HardRequirements;
+      final question = await _lightsPage(tester);
       // ignore: invalid_use_of_internal_member
       supabase.auth.notifyAllSubscribers(
         AuthChangeEvent.tokenRefreshed,
@@ -720,7 +710,7 @@ void main() {
         broadcast: false,
       );
       await _flush(tester);
-      question.onChanged(_answer.options.last);
+      _setLights(question, TrafficLight.green);
       _save(tester, 'question-save')();
       await _settle(tester);
       _back(tester)();
@@ -730,8 +720,11 @@ void main() {
       expect(repository.saves, hasLength(1));
       final (owner, saved) = repository.saves.single;
       expect(owner, _a);
-      expect(saved.answers[_answer.responseKey], _answer.options.last);
-      expect(saved.toSnapshot().ch4Preferences, initialPreferences);
+      expect(saved.preferences[_preference(_seed()).$2.responseKey], {
+        for (final option in _preference(_seed()).$2.options)
+          option: TrafficLight.green,
+      });
+      expect(saved.toSnapshot().ch3Answers, initialAnswers);
       expect(saved.toSnapshot().ch4HardRequirements, initialHard);
       expect(
         repository.initial.answers[_answer.responseKey],
@@ -749,7 +742,7 @@ void main() {
         final ack = Completer<bool>();
         pending.add(ack);
         repository.acknowledge = () => ack.future;
-        await mountHub(tester, CompatibilityEditorKind.aboutYou);
+        await mountHub(tester);
         final save = _save(tester);
         save();
         await _flush(tester);
@@ -785,7 +778,7 @@ void main() {
     final ack = Completer<bool>();
     pending.add(ack);
     repository.acknowledge = () => ack.future;
-    await mountHub(tester, CompatibilityEditorKind.aboutYou);
+    await mountHub(tester);
     final save = _save(tester);
     save();
     await _flush(tester);

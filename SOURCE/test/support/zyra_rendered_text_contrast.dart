@@ -145,6 +145,19 @@ InlineSpan _probe(InlineSpan root, int mode, {int? targetStart}) {
     final replacement = selected
         ? style.copyWith(
             foreground: foreground,
+            // Decorations must follow the selected probe too. Retaining an
+            // underlined link's original ink in its hidden glyph pass makes
+            // that underline its own background and occluding foreground.
+            decorationColor: mode < 0
+                ? Colors.transparent
+                : mode >= 2
+                ? solidInk
+                : Color.from(
+                    alpha: ink.a,
+                    red: mode.toDouble(),
+                    green: mode.toDouble(),
+                    blue: mode.toDouble(),
+                  ),
             background: mode >= 2
                 ? (Paint()
                     ..color = solidInk

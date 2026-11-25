@@ -15,6 +15,7 @@ import '../widgets/zyra_floating_surface.dart';
 import '../widgets/zyra_glass_dialog.dart';
 import '../widgets/zyra_purchase_fine_print.dart';
 import '../widgets/zyra_profile_image.dart';
+import '../widgets/zyra_photo_rules_card.dart';
 import '../widgets/zyra_profiles_components.dart';
 import '../widgets/zyra_swipe_track.dart';
 import '../widgets/zyra_tap_feedback.dart';
@@ -36,6 +37,7 @@ class ZyraSignupPreview extends StatefulWidget {
     required this.ownCode,
     required this.onShareCode,
     this.onVerifyIdentity,
+    this.onEditDone,
   });
 
   final ZyraSignupPreviewController controller;
@@ -43,6 +45,9 @@ class ZyraSignupPreview extends StatefulWidget {
   final WidgetBuilder preferencesBuilder;
   final VoidCallback onPause, onEnter, onShareCode;
   final VoidCallback? onVerifyIdentity;
+
+  /// Reuses the locked About you step pages for caller-owned local edits.
+  final VoidCallback? onEditDone;
   final List<String> samplePhotos;
   final String ownCode;
 
@@ -793,7 +798,7 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
       key: ValueKey('signup_${c.step.name}'),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _header(),
+        if (widget.onEditDone == null) _header(),
         const SizedBox(height: 20),
         Expanded(child: _card(_stepContent(), center: !verify)),
         const SizedBox(height: 12),
@@ -803,22 +808,25 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
               : verify
               ? 'signup_verify_now'
               : 'signup_continue',
-          label: allSet
+          label: widget.onEditDone != null
+              ? 'Done'
+              : allSet
               ? 'Enter ZYRA'
               : verify
               ? (c.verificationDeferred ? 'Continue' : 'Verify now')
               : 'Continue',
           onPressed: !c.canContinue
               ? null
-              : allSet
-              ? () {
-                  if (c.enterZyra()) {
-                    widget.onEnter();
-                  }
-                }
-              : c.advance,
+              : widget.onEditDone ??
+                    (allSet
+                        ? () {
+                            if (c.enterZyra()) {
+                              widget.onEnter();
+                            }
+                          }
+                        : c.advance),
         ),
-        if (c.isSetup && !allSet) _later(),
+        if (c.isSetup && !allSet && widget.onEditDone == null) _later(),
       ],
     );
   }
@@ -1241,6 +1249,8 @@ class _ZyraSignupPreviewState extends State<ZyraSignupPreview> {
           );
         },
       ),
+      const SizedBox(height: 14),
+      const ZyraPhotoRulesCard(),
     ],
   );
 

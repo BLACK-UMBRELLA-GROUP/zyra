@@ -1,37 +1,6 @@
+import '../../widgets/zyra_edit_profile_presentation.dart';
 import '../../widgets/zyra_developer_title.dart';
-import '../../widgets/zyra_floating_surface.dart';
-// Edit Profile — everything that changes what is ON your profile.
-//
-// NEW 2026-08-07. Founder: "in settings if the compatibility section is the
-// same as edit profile then you gotta maybe move that section into edit
-// profile part."
-//
-// It was. Settings had a COMPATIBILITY section — About you, Lifestyle,
-// Marriage preferences, Partner preferences, Hard requirements — and Profile
-// had an "Edit Profile" button pointing at nothing. Two routes to the same
-// intention, one of which did not exist yet.
-//
-// This resolves it against the Founder's own principle, the one that moved
-// Connections out of Settings in the first place: "Settings should
-// configure the account, not become a duplicate navigation hub." Your sect,
-// your lifestyle, what you are looking for in a marriage — none of those
-// are account configuration. They are the profile.
-//
-// SO THE DIVISION IS NOW:
-//   Profile → Edit Profile   what you look like to other people
-//   Settings                 the account, privacy, notifications, support
-//   Connections              relationships
-//   Guardian page            Guardians
-//
-// which supersedes the line in settings_screen.dart's header giving
-// compatibility to Settings.
-//
-// NOT INCLUDED YET, deliberately: name, About Me and location are all
-// genuinely writable today (they hold column grants on profiles), so a
-// Basics section belongs here and would work. It is not written because it
-// was not asked for, and inventing a text editor inside a structural move
-// is how a move becomes a rewrite. It is the obvious next piece.
-
+// LOCK 45 Edit profile hub; retained Partner preferences owns its existing drafts.
 import '../../widgets/zyra_tap_feedback.dart';
 import 'dart:async';
 
@@ -42,7 +11,6 @@ import 'package:supabase_flutter/supabase_flutter.dart'
 import '../../dev/zyra_app_gold_preview.dart';
 
 import '../../main.dart';
-import '../../models/zyra_gender.dart';
 import '../../models/onboarding_question.dart';
 import '../../services/zyra_account_state.dart';
 import '../../services/zyra_auth.dart';
@@ -188,6 +156,12 @@ class EditProfileScreen extends StatefulWidget {
   /// Preview-only destination owned by the admitted caller. Ordinary Help
   /// navigation is not injectable and can never be a preview fallback.
   final VoidCallback? onSupport;
+  final Widget Function(
+    ZyraCompatibilityDraft draft,
+    VoidCallback preferences,
+    VoidCallback refresh,
+  )?
+  profileBuilder;
   final bool embedded;
   final bool openPreferenceQuickCheck;
   const EditProfileScreen({
@@ -200,6 +174,7 @@ class EditProfileScreen extends StatefulWidget {
        _previewGender = null,
        _previewAge = null,
        onSupport = null,
+       profileBuilder = null,
        embedded = false;
 
   /// The existing editor with caller-owned local storage and account facts.
@@ -212,6 +187,7 @@ class EditProfileScreen extends StatefulWidget {
     required String? gender,
     required int? age,
     this.onSupport,
+    this.profileBuilder,
     this.embedded = true,
     this.openPreferenceQuickCheck = false,
   }) : _preview = true,
@@ -628,24 +604,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (_explicitPreview) {
       final page = Material(
         color: Colors.transparent,
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-                child: ZyraDeveloperTitle(
-                  child: Text(
-                    'Edit profile',
-                    key: const ValueKey('edit_profile_preview_title'),
-                    style: ZyraText.heading(size: 28),
-                  ),
-                ),
-              ),
-              Expanded(child: content),
-            ],
-          ),
-        ),
+        // LOCK45's full-page scroll owns the measured bottom reading margin.
+        child: SafeArea(bottom: false, child: content),
       );
       if (_embeddedPreview) return page;
       return ZyraPullDownBackScope(
@@ -699,275 +659,70 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  Widget _content() => ListView(
-    physics: const ScrollPhysics(),
-    key: const ValueKey('edit_profile_content_scroll'),
-    padding: EdgeInsets.fromLTRB(20, 12, 20, _explicitPreview ? 24 : 90),
-    children: [
-      Text(
-        'Your answers stay private. ZYRA uses them to calculate '
-        'compatibility and honour your requirements.',
-        style: ZyraText.subtext(size: 12.5, color: ZyraColors.ink(0.54)),
-      ),
-      SizedBox(height: 16),
-
-      _EditProfileCard(
-        key: const ValueKey('edit_profile_answers_card'),
-        children: [
-          if (_loadError != null) ...[
-            Text(
-              _loadError!,
-              key: const ValueKey('edit_profile_load_error'),
-              style: ZyraText.body(size: 14),
+  Widget _content() {
+    final draft = _draft;
+    final VoidCallback? preferences = draft != null && _canUse
+        ? () => _open(CompatibilityEditorKind.trafficLights)
+        : null;
+    if (draft != null && widget.profileBuilder != null) {
+      return widget.profileBuilder!(
+        draft,
+        () {
+          if (_canUse) _open(CompatibilityEditorKind.trafficLights);
+        },
+        () {
+          if (_canUse) _load();
+        },
+      );
+    }
+    return ZyraEditProfilePresentation(
+      showTitle: _explicitPreview,
+      name: _explicitPreview
+          ? '—'
+          : [
+              AppState.instance.name,
+              AppState.instance.surnameLine,
+            ].whereType<String>().join(' '),
+      age: _age,
+      gender: _gender == 'female'
+          ? 'Female'
+          : _gender == 'male'
+          ? 'Male'
+          : '—',
+      photoCount: _explicitPreview ? 0 : AppState.instance.photos.length,
+      about: '',
+      location: _explicitPreview ? '—' : AppState.instance.location ?? '—',
+      nationality: '—',
+      ethnicity: '—',
+      bioProgress: const ['0 of 4', '0 of 4', '0 of 4'],
+      preferencesProgress:
+          '${draft?.preferenceAnswerCount ?? 0} of ${draft?.preferenceOptionCount ?? 0}',
+      onPreferences: preferences,
+      onSupport: _supportCanAct ? _openSupport : null,
+      leading: _loading
+          ? const ZyraLoading()
+          : _loadError == null
+          ? null
+          : Column(
+              children: [
+                Text(
+                  _loadError!,
+                  key: const ValueKey('edit_profile_load_error'),
+                  style: ZyraText.body(size: 14),
+                ),
+                if (_currentOwner)
+                  TextButton(
+                    key: const ValueKey('edit_profile_restore_retry'),
+                    onPressed: ZyraTapFeedback.onTap(context, () {
+                      if (_canUse &&
+                          (ModalRoute.of(context)?.isCurrent ?? false)) {
+                        _load();
+                      }
+                    }),
+                    child: Text('Try again', style: ZyraText.button(size: 14)),
+                  ),
+              ],
             ),
-            if (_currentOwner)
-              TextButton(
-                key: const ValueKey('edit_profile_restore_retry'),
-                onPressed: ZyraTapFeedback.onTap(context, () {
-                  if (_canUse && (ModalRoute.of(context)?.isCurrent ?? false)) {
-                    _load();
-                  }
-                }),
-                child: Text('Try again', style: ZyraText.button(size: 14)),
-              ),
-          ] else if (_loading)
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 36),
-              child: Center(child: ZyraLoading()),
-            )
-          else if (_draft != null && _canUse)
-            for (final kind in CompatibilityEditorKind.values) ...[
-              _CompatibilityRow(
-                key: ValueKey('compatibility-editor-${kind.name}'),
-                kind: kind,
-                status: _statusFor(kind, _draft!),
-                onTap: () => _open(kind),
-              ),
-              if (kind != CompatibilityEditorKind.values.last)
-                Divider(
-                  height: 1,
-                  indent: 54,
-                  endIndent: 16,
-                  color: ZyraColors.surfaceBorder,
-                ),
-            ],
-        ],
-      ),
-
-      SizedBox(height: 16),
-      // Said HERE because this is where someone looks for it. A
-      // person who wants to correct their birth year opens Edit
-      // Profile, not Settings, and finding nothing is worse than
-      // finding a plain explanation.
-      _EditProfileCard(
-        key: const ValueKey('edit_profile_fixed_card'),
-        children: [
-          _FixedRow(
-            label: 'Date of birth',
-            value: _age == null ? '—' : 'Age $_age',
-          ),
-          Divider(
-            height: 1,
-            indent: 16,
-            endIndent: 16,
-            color: ZyraColors.surfaceBorder,
-          ),
-          _FixedRow(label: 'Gender', value: ZyraGender.profileLabel(_gender)),
-        ],
-      ),
-      SizedBox(height: 10),
-      Text(
-        'Your date of birth and gender are saved with your account '
-        'essentials and cannot be edited here. If either is wrong, '
-        'contact Support.',
-        style: ZyraText.subtext(size: 12, color: ZyraColors.secondaryStrong),
-      ),
-      if (_explicitPreview ? _previewSupport != null : !_localPreview) ...[
-        const SizedBox(height: 12),
-        _EditProfileCard(
-          children: [
-            TextButton(
-              key: const ValueKey('edit_profile_open_support'),
-              onPressed: ZyraTapFeedback.onTap(
-                context,
-                _supportCanAct ? _openSupport : null,
-              ),
-              style: TextButton.styleFrom(
-                minimumSize: const Size(double.infinity, 52),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 16,
-                ),
-                foregroundColor: ZyraColors.foreground,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(22),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.help_outline_rounded,
-                    size: 20,
-                    color: ZyraColors.journeyGold,
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Text(
-                      'Open Help & support',
-                      style: ZyraText.body(size: 15),
-                    ),
-                  ),
-                  Icon(
-                    Icons.chevron_right_rounded,
-                    size: 19,
-                    color: ZyraColors.ink(.45),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
-    ],
-  );
-}
-
-class _EditProfileCard extends StatelessWidget {
-  const _EditProfileCard({super.key, required this.children});
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) => ZyraFloatingSurface(
-    child: Material(
-      color: ZyraColors.cardSurface,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(22),
-        side: BorderSide(color: ZyraColors.surfaceBorder),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: children,
-      ),
-    ),
-  );
-}
-
-class _CompatibilityRow extends StatelessWidget {
-  const _CompatibilityRow({
-    super.key,
-    required this.kind,
-    required this.status,
-    required this.onTap,
-  });
-
-  final CompatibilityEditorKind kind;
-  final String status;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) => Semantics(
-    button: true,
-    label: '${kind.label}. $status.',
-    excludeSemantics: true,
-    child: Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: ZyraTapFeedback.onTap(context, onTap),
-        borderRadius: BorderRadius.circular(22),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12.5),
-          child: Row(
-            children: [
-              Icon(
-                switch (kind) {
-                  CompatibilityEditorKind.aboutYou =>
-                    Icons.person_outline_rounded,
-                  CompatibilityEditorKind.lifestyle => Icons.auto_graph_rounded,
-                  CompatibilityEditorKind.marriagePreferences =>
-                    Icons.tune_rounded,
-                  CompatibilityEditorKind.trafficLights =>
-                    Icons.balance_rounded,
-                  CompatibilityEditorKind.hardRequirements =>
-                    Icons.security_rounded,
-                },
-                size: 20,
-                color: ZyraColors.journeyGold,
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      kind.label,
-                      style: ZyraText.body(
-                        size: 15,
-                        color: ZyraColors.foreground,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(status, style: ZyraText.subtext(size: 12.5)),
-                  ],
-                ),
-              ),
-              Icon(
-                Icons.chevron_right_rounded,
-                size: 19,
-                color: ZyraColors.ink(0.45),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-String _statusFor(CompatibilityEditorKind kind, ZyraCompatibilityDraft draft) =>
-    switch (kind) {
-      CompatibilityEditorKind.aboutYou ||
-      CompatibilityEditorKind.lifestyle ||
-      CompatibilityEditorKind.marriagePreferences => () {
-        final categories = categoriesForKind(kind);
-        return '${draft.answeredIn(categories)} of '
-            '${draft.questionsIn(categories)} answered';
-      }(),
-      CompatibilityEditorKind.trafficLights =>
-        '${draft.preferenceAnswerCount} of '
-            '${draft.preferenceOptionCount} set',
-      CompatibilityEditorKind.hardRequirements =>
-        draft.hardRequirementCount == 1
-            ? '1 introduction-blocking answer'
-            : '${draft.hardRequirementCount} introduction-blocking answers',
-    };
-
-class _FixedRow extends StatelessWidget {
-  final String label;
-  final String value;
-  const _FixedRow({required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
-    child: Row(
-      children: [
-        Expanded(
-          child: Text(
-            label,
-            style: ZyraText.body(size: 15, color: ZyraColors.ink(0.54)),
-          ),
-        ),
-        Expanded(
-          child: Text(
-            value,
-            textAlign: TextAlign.end,
-            style: ZyraText.subtext(size: 13.5, color: ZyraColors.foreground),
-          ),
-        ),
-        SizedBox(width: 8),
-        Icon(Icons.lock_outline, size: 15, color: ZyraColors.ink(0.24)),
-      ],
-    ),
-  );
+    );
+  }
 }

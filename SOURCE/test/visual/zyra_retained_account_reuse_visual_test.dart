@@ -60,6 +60,7 @@ Future<void> _tap(WidgetTester tester, String key) async {
     final owner = [
       'concept-current-profile-scroll',
       'concept-current-settings-scroll',
+      'edit_profile_content_scroll',
     ].map(_key).firstWhere((f) => f.evaluate().isNotEmpty);
     await tester.scrollUntilVisible(
       finder,
@@ -195,7 +196,7 @@ void main() {
     (const Size(320, 568), 2.0, 'compact200'),
   ]) {
     for (final (destination, pageName, pageType) in [
-      ('concept_edit_profile', 'profile_answers', EditProfileScreen),
+      ('concept_edit_profile', 'edit_profile', EditProfileScreen),
       ('concept_manage_photos', 'photos', EditPhotosScreen),
       ('concept_settings', 'settings', ZyraConceptSettingsPresentation),
     ]) {

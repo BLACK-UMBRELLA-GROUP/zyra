@@ -2,13 +2,17 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:zyra/dev/zyra_one_journey_account_presentation.dart'
+    show ZyraSettingsRow;
 import 'package:zyra/screens/profile/compatibility_editors.dart';
 import 'package:zyra/screens/profile/edit_profile_screen.dart';
 import 'package:zyra/screens/settings/help_support_screen.dart';
@@ -124,13 +128,83 @@ Future<void> _reveal(WidgetTester tester, Finder target) async {
     scrollable: scroll,
     maxScrolls: 30,
   );
+  await tester.pumpAndSettle();
   await Scrollable.ensureVisible(tester.element(target), alignment: .5);
   await tester.pumpAndSettle();
+  if (tester.widget(target).key == _supportKey) {
+    // The footer is the last sliver. Finish the scroll after lazy layout has
+    // measured its full enlarged paragraph, rather than its cached midpoint.
+    final position = tester.state<ScrollableState>(scroll).position;
+    position.jumpTo(position.maxScrollExtent);
+    await tester.pumpAndSettle();
+  }
   expect(target.hitTestable(), findsOneWidget);
 }
 
-VoidCallback _action(WidgetTester tester) =>
-    tester.widget<TextButton>(find.byKey(_supportKey)).onPressed!;
+TapGestureRecognizer _recognizer(WidgetTester tester) {
+  final text = tester.widget<Text>(find.byKey(_supportKey));
+  final spans = <TextSpan>[];
+  void visit(InlineSpan span) {
+    if (span is TextSpan) {
+      if (span.text == 'contact support') spans.add(span);
+      for (final child in span.children ?? const <InlineSpan>[]) {
+        visit(child);
+      }
+    }
+  }
+
+  visit(text.textSpan!);
+  expect(spans, hasLength(1));
+  return spans.single.recognizer! as TapGestureRecognizer;
+}
+
+VoidCallback _action(WidgetTester tester) => _recognizer(tester).onTap!;
+
+List<Rect> _supportGlyphs(WidgetTester tester) {
+  final paragraph = tester.renderObject<RenderParagraph>(
+    find.byKey(_supportKey),
+  );
+  final offset = paragraph.text.toPlainText().indexOf('contact support');
+  expect(offset, greaterThanOrEqualTo(0));
+  final boxes = paragraph.getBoxesForSelection(
+    TextSelection(
+      baseOffset: offset,
+      extentOffset: offset + 'contact support'.length,
+    ),
+  );
+  expect(boxes, isNotEmpty);
+  return [
+    for (final box in boxes)
+      box.toRect().shift(paragraph.localToGlobal(Offset.zero)),
+  ];
+}
+
+Future<void> _tapSupport(WidgetTester tester) async {
+  await _reveal(tester, find.byKey(_supportKey));
+  final glyphs = _supportGlyphs(tester);
+  final viewport = Offset.zero & tester.view.physicalSize;
+  expect(viewport.contains(glyphs.first.center), isTrue);
+  await tester.tapAt(glyphs.first.center);
+  await tester.pumpAndSettle();
+}
+
+Future<void> _fixedIdentity(WidgetTester tester) async {
+  for (final id in const ['name', 'birth', 'gender']) {
+    final row = find.byKey(ValueKey('edit_profile_identity_$id'));
+    await _reveal(tester, row);
+    final settingsRow = tester.widget<ZyraSettingsRow>(row);
+    expect(settingsRow.locked, isTrue);
+    expect(settingsRow.onTap, isNull);
+    expect(
+      find.descendant(of: row, matching: find.byType(TextField)),
+      findsNothing,
+    );
+    expect(
+      find.descendant(of: row, matching: find.byType(TextFormField)),
+      findsNothing,
+    );
+  }
+}
 
 void _noOrdinarySupport() {
   expect(find.byType(HelpSupportScreen), findsNothing);
@@ -231,14 +305,18 @@ void main() {
   ) async {
     final repository = _Repository();
     await _mount(tester, repository);
+    await _fixedIdentity(tester);
     await _reveal(tester, find.byKey(_supportKey));
+    expect(find.text('Name'), findsOneWidget);
     expect(find.text('Date of birth'), findsOneWidget);
     expect(find.text('Gender'), findsOneWidget);
     expect(find.byType(TextField), findsNothing);
     expect(find.byType(TextFormField), findsNothing);
-    expect(find.textContaining('cannot be edited here'), findsOneWidget);
-    await tester.tap(find.byKey(_supportKey));
-    await tester.pumpAndSettle();
+    expect(
+      find.textContaining('These come from your identity check'),
+      findsOneWidget,
+    );
+    await _tapSupport(tester);
     expect(find.byType(HelpSupportScreen), findsOneWidget);
     expect(
       find.byKey(const ValueKey('support-safety-case-status')),
@@ -309,8 +387,7 @@ void main() {
         navigator.currentState!.pop();
         await tester.pumpAndSettle();
         await _reveal(tester, find.byKey(_supportKey));
-        await tester.tap(find.byKey(_supportKey));
-        await tester.pumpAndSettle();
+        await _tapSupport(tester);
         if (preview) {
           expect(calls, 1);
           _noOrdinarySupport();
@@ -332,8 +409,7 @@ void main() {
     void support() => calls++;
     await _mount(tester, repository, owner: owner, onSupport: support);
     await _reveal(tester, find.byKey(_supportKey));
-    await tester.tap(find.byKey(_supportKey));
-    await tester.pumpAndSettle();
+    await _tapSupport(tester);
     expect(calls, 1);
     _noOrdinarySupport();
     expect(repository.saves, 0);
@@ -345,8 +421,10 @@ void main() {
   ) async {
     final repository = _Repository();
     await _mount(tester, repository, owner: _Owner());
-    await _reveal(tester, find.textContaining('cannot be edited here'));
-    expect(find.byKey(_supportKey), findsNothing);
+    await _reveal(tester, find.byKey(_supportKey));
+    expect(find.byKey(_supportKey), findsOneWidget);
+    expect(_recognizer(tester).onTap, isNull);
+    await _tapSupport(tester);
     expect(find.text('Open Help & support'), findsNothing);
     _noOrdinarySupport();
     expect(repository.saves, 0);
@@ -481,8 +559,10 @@ void main() {
       ZyraInternalPreviewClient.beginPreview();
       final repository = _Repository();
       await _mount(tester, repository);
-      await _reveal(tester, find.textContaining('cannot be edited here'));
-      expect(find.byKey(_supportKey), findsNothing);
+      await _reveal(tester, find.byKey(_supportKey));
+      expect(find.byKey(_supportKey), findsOneWidget);
+      expect(_recognizer(tester).onTap, isNull);
+      await _tapSupport(tester);
       _noOrdinarySupport();
       expect(repository.loads, 0);
       expect(repository.saves, 0);
@@ -494,49 +574,39 @@ void main() {
     testWidgets(
       '${preview ? 'preview' : 'ordinary'} compact200 Support is reachable and identity remains fixed',
       (tester) async {
-        final semantics = tester.ensureSemantics();
-        try {
-          final repository = _Repository();
-          final owner = _Owner();
-          var calls = 0;
-          void support() => calls++;
-          await _mount(
-            tester,
-            repository,
-            owner: preview ? owner : null,
-            onSupport: support,
-            compact: true,
-          );
-          await _reveal(tester, find.byKey(_supportKey));
-          final bounds = tester.getRect(find.byKey(_supportKey));
-          expect(bounds.width, greaterThanOrEqualTo(44));
-          expect(bounds.height, greaterThanOrEqualTo(48));
-          expect(bounds.left, greaterThanOrEqualTo(0));
-          expect(bounds.right, lessThanOrEqualTo(320));
-          expect(bounds.top, greaterThanOrEqualTo(0));
-          expect(bounds.bottom, lessThanOrEqualTo(568));
-          expect(
-            tester
-                .getSemantics(find.byKey(_supportKey))
-                .flagsCollection
-                .isButton,
-            isTrue,
-          );
-          expect(find.byType(TextField), findsNothing);
-          expect(find.byType(TextFormField), findsNothing);
-          await tester.tap(find.byKey(_supportKey));
-          await tester.pumpAndSettle();
-          if (preview) {
-            expect(calls, 1);
-            _noOrdinarySupport();
-          } else {
-            expect(find.byType(HelpSupportScreen), findsOneWidget);
-          }
-          expect(repository.saves, 0);
-          expect(tester.takeException(), isNull);
-        } finally {
-          semantics.dispose();
+        final repository = _Repository();
+        final owner = _Owner();
+        var calls = 0;
+        void support() => calls++;
+        await _mount(
+          tester,
+          repository,
+          owner: preview ? owner : null,
+          onSupport: support,
+          compact: true,
+        );
+        await _fixedIdentity(tester);
+        await _reveal(tester, find.byKey(_supportKey));
+        for (final glyphs in _supportGlyphs(tester)) {
+          expect(glyphs.width, greaterThan(0));
+          expect(glyphs.height, greaterThan(0));
+          expect(glyphs.left, greaterThanOrEqualTo(0));
+          expect(glyphs.right, lessThanOrEqualTo(320));
+          expect(glyphs.top, greaterThanOrEqualTo(0));
+          expect(glyphs.bottom, lessThanOrEqualTo(568));
         }
+        expect(_recognizer(tester).onTap, isNotNull);
+        expect(find.byType(TextField), findsNothing);
+        expect(find.byType(TextFormField), findsNothing);
+        await _tapSupport(tester);
+        if (preview) {
+          expect(calls, 1);
+          _noOrdinarySupport();
+        } else {
+          expect(find.byType(HelpSupportScreen), findsOneWidget);
+        }
+        expect(repository.saves, 0);
+        expect(tester.takeException(), isNull);
       },
     );
   }
