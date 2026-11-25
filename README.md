@@ -25,6 +25,11 @@ Done. The identity-check name, age and gender stay locked; contact support
 opens the sample Contact support page. Edit profile and sign-up Photos share
 the same three-point photo-rules card. These edits use local sample data.
 
+Help & support in the Founder preview has search, six topic filters and one
+answer open at a time. Settings and Safety & advice open the same page;
+Contact us opens the local Contact support form. Both Help screens share the
+bundled FAQ list. The preview does not send a support message.
+
 ## Status
 
 Pre-launch, built solo since June 2026. Version 1.0.0 (build 5) runs on the Founder's iPhone for internal testing. The redesigned interface is a Founder preview over the existing app. Server and checkout integration are still pending. The website is [zyraconnect.app](https://zyraconnect.app).

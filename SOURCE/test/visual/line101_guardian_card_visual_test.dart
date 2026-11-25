@@ -13,25 +13,27 @@ import 'baseline_capture_support.dart';
 const _captures = String.fromEnvironment('ZYRA_LINE101_CAPTURE_DIR');
 const _question = 'What are Past Journey summaries?';
 const _answer =
-    "When you switch this on for a Guardian, they can see your Journeys "
-    "that have ended — the other person's first name and the dates, nothing else. "
-    "It is off for every Guardian until you turn it on, and you choose for "
-    "each Guardian separately. Turn it on or off any time on that Guardian's "
-    "card in the Guardian tab.";
+    'When you switch this on for a Guardian, they can see your Journeys that have ended: the other person’s first name and the dates, nothing else. It is off until you turn it on, for each Guardian separately. Turn it on or off any time on that Guardian’s card in the Guardian tab.';
 
 void main() {
   setUpAll(() => baselineSetUp(evidenceRoot: null));
   tearDownAll(baselineTearDown);
 
-  test('Guardians follows Matching and Journeys in shared Help', () {
+  test('Guardians follows Profiles and Journeys in shared Help', () {
     final titles = zyraHelpCategories
         .map((category) => category.title)
         .toList();
     final guardians =
-        zyraHelpCategories[titles.indexOf('Matching and Journeys') + 1];
+        zyraHelpCategories[titles.indexOf('Profiles and Journeys') + 1];
     expect(guardians.title, 'Guardians');
-    expect(guardians.entries.single.question, _question);
-    expect(guardians.entries.single.answer, _answer);
+    expect(
+      guardians.entries.singleWhere((e) => e.question == _question).question,
+      _question,
+    );
+    expect(
+      guardians.entries.singleWhere((e) => e.question == _question).answer,
+      _answer,
+    );
   });
 
   for (final (size, safePadding) in [

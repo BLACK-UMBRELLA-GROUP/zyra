@@ -195,6 +195,26 @@ They write to `build/line139/`, turn real shadows on, repaint after auditing
 and hash the actual saved PNGs. The underlined-link audit control is
 `test/line139_underlined_text_audit_test.dart`.
 
+## Founder preview Help & support
+
+LOCK 43 replaces the Founder Help page for Seeker and Guardian. Settings and
+Safety & advice open the same searchable, topic-filtered FAQ page. One answer
+opens at a time; Contact us opens the existing local Contact support form.
+The identity Privacy guidance link uses the same FAQ page and a guarded local
+Contact support route, including its sample confirmation and return to Help.
+The title stays visible while the content scrolls, and the contact card follows
+the answers or sits at the bottom when there are no results.
+
+`lib/data/help_content.dart` supplies both Founder and retained Help. Its six
+topics contain the locked answers first, followed by current retained questions.
+The former request-only list remains unused pending a separate cleanup line.
+These are bundled answers and local preview actions; no support message is sent.
+
+Focused behavior and rendered-text checks are in
+`test/visual/line137_help_support_capture_test.dart`. Run them through the
+protected driver with `--dart-define=ZYRA_LINE137_CAPTURE=true` to save the five
+states at 375/430 widths and normal/Larger Text under `build/line137/`.
+
 ## Rendered text audit
 
 For each local queue line, run the whole-project analyzer, ordinary regression,

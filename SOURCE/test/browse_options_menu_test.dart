@@ -918,7 +918,7 @@ void main() {
     await _press(tester, 'concept_settings');
     await _press(tester, 'concept_settings_helpSupport');
     expect(find.byType(HelpSupportScreen), findsOneWidget);
-    expect(find.text('Help & Support'), findsOneWidget);
+    expect(find.text('Help & support'), findsOneWidget);
     expect(find.text('PREVIEW ONLY'), findsNothing);
     expect(_key('concept_browse_menu'), findsNothing);
     final search = find.descendant(
@@ -933,8 +933,7 @@ void main() {
     await _press(tester, 'help-support-faq:Getting started:How do I sign in?');
     expect(
       find.text(
-        'With Apple or Google. There is no password to create or forget, and we '
-        'never see one.',
+        'With Sign in with Apple or Google, the same one you used to join. ZYRA has no password of its own.',
       ),
       findsOneWidget,
     );

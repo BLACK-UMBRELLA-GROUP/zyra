@@ -1,5 +1,6 @@
 import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_state_widgets.dart';
+import '../../widgets/zyra_help_support_page.dart';
 // Help & Support — rebuilt 2026-08-01 (Founder: "the help and support
 // page we gotta start building it... start building Q/A etc to let users
 // navigate for any issues").
@@ -45,6 +46,7 @@ class HelpSupportScreen extends StatefulWidget {
   final bool Function()? _previewCanAct;
   final List<ZyraHelpCategory>? _previewCategories;
   final bool embedded;
+  final VoidCallback? onContact;
 
   const HelpSupportScreen({
     super.key,
@@ -54,6 +56,7 @@ class HelpSupportScreen extends StatefulWidget {
   }) : _preview = false,
        _previewCanAct = null,
        _previewCategories = null,
+       onContact = null,
        embedded = false;
 
   /// Reuses the original Help search and FAQ presentation with caller-owned,
@@ -65,6 +68,7 @@ class HelpSupportScreen extends StatefulWidget {
     required List<ZyraHelpCategory> categories,
     this.initialQuery = '',
     this.embedded = true,
+    this.onContact,
   }) : errorReference = null,
        _preview = true,
        _previewCanAct = canAct,
@@ -84,6 +88,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
   late final bool _embeddedPreview;
   late final bool Function()? _previewOwnerCanAct;
   late final List<ZyraHelpCategory> _categories;
+  late final VoidCallback? _onContact;
   bool _previewRevoked = false;
   String _query = '';
 
@@ -95,6 +100,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
     _previewMode = widget._preview;
     _embeddedPreview = widget.embedded;
     _previewOwnerCanAct = widget._previewCanAct;
+    _onContact = widget.onContact;
     _categories = _previewMode
         ? List<ZyraHelpCategory>.unmodifiable([
             for (final category in widget._previewCategories!)
@@ -197,6 +203,16 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
   ];
 
   Widget _previewPage(List<ZyraHelpCategory> results) {
+    if (_onContact != null) {
+      return ZyraHelpSupportPage(
+        categories: _categories,
+        canAct: () => _previewAvailable,
+        onContact: _onContact,
+        search: _search,
+        query: _query,
+        onQuery: _changeQuery,
+      );
+    }
     final content = Material(
       color: Colors.transparent,
       child: SafeArea(

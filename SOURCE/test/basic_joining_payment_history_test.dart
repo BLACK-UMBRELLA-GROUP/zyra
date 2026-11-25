@@ -136,32 +136,16 @@ void main() {
     expect(ZyraMembershipCatalog.availability, contains('No payment'));
   });
 
-  test(
-    'Help shares the waiver without claiming automatic Basic activation',
-    () {
-      final answer = zyraHelpCategories
-          .expand((category) => category.entries)
-          .singleWhere((entry) => entry.question == 'What does ZYRA cost?')
-          .answer;
-      expect(answer, contains(ZyraMembershipCatalog.basicTerms));
-      expect(answer, contains('does not require another joining fee'));
-      expect(
-        answer,
-        contains('Unlock purchases and unpaid trials do not waive'),
-      );
-      expect(answer, contains('Payment history and Basic access still need'));
-      expect(
-        answer,
-        contains('subscription expiry alone is not payment proof'),
-      );
-      expect(
-        answer,
-        isNot(contains('fee must have been separately confirmed')),
-      );
-      expect(answer, contains(ZyraMembershipCatalog.familyTerms));
-      expect(answer, contains(ZyraMembershipCatalog.guardianAccessTerms));
-    },
-  );
+  test('LOCK43 cost guidance uses the approved short answer', () {
+    final answer = zyraHelpCategories
+        .expand((c) => c.entries)
+        .singleWhere((e) => e.question == 'What does ZYRA cost?')
+        .answer;
+    expect(
+      answer,
+      'Seeker Basic is a one-off £4.99. Seeker One is £29.99 a month after a 14-day free trial. Guardian One is £19.99 a month after a 14-day free trial. Prices are in Membership.',
+    );
+  });
 
   test(
     'One feature guidance also offers Basic without another joining fee',

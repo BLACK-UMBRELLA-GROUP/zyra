@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_draft_code_entry.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
-import 'package:zyra/dev/zyra_request_help_content.dart';
+import 'package:zyra/data/help_content.dart';
 import 'package:zyra/screens/settings/help_support_screen.dart';
 import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_text.dart';
@@ -109,14 +109,14 @@ void main() {
   test(
     'request Help never includes retired matching or restart instructions',
     () {
-      final all = zyraRequestHelpCategories
+      final all = zyraHelpCategories
           .expand((category) => category.entries)
           .map((entry) => '${entry.question} ${entry.answer}')
           .join('\n');
       expect(all, isNot(contains('Potential Journey')));
       expect(all, isNot(contains('Consider')));
       expect(all, isNot(contains('Paused Journey')));
-      expect(all, contains('not as invitations to restart'));
+      expect(all, contains('The Journey moves to Ended Journeys'));
       expect(all, contains('Received and Sent'));
       expect(all, contains('How do I sign in?'));
     },
@@ -188,7 +188,10 @@ void main() {
           await tester.pumpAndSettle();
           await tester.tap(find.text('How do I sign in?'));
           await tester.pumpAndSettle();
-          expect(find.textContaining('With Apple or Google.'), findsOneWidget);
+          expect(
+            find.textContaining('With Sign in with Apple or Google,'),
+            findsOneWidget,
+          );
           expect(_key('support-safety-case-status'), findsNothing);
           await _back(tester);
           expect(find.byType(HelpSupportScreen), findsNothing);

@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zyra/dev/zyra_one_journey_settings_details.dart';
 import 'package:zyra/screens/onboarding/identity_verification_screen.dart';
 import 'package:zyra/screens/settings/help_support_screen.dart';
+import 'package:zyra/dev/zyra_help_safety_preview.dart';
 import 'package:zyra/screens/settings/legal_document_screen.dart';
 import 'package:zyra/screens/settings/privacy_and_data_screen.dart';
 import 'package:zyra/screens/settings/safety_case_status_screen.dart';
@@ -67,7 +68,14 @@ Future<void> _tap(WidgetTester tester, Finder target) async {
     await tester.scrollUntilVisible(
       target,
       160,
-      scrollable: find.byType(Scrollable).last,
+      scrollable: _key('help-support-preview-scroll').evaluate().isNotEmpty
+          ? find
+                .descendant(
+                  of: _key('help-support-preview-scroll'),
+                  matching: find.byType(Scrollable),
+                )
+                .first
+          : find.byType(Scrollable).last,
       maxScrolls: 60,
     );
   }
@@ -235,29 +243,77 @@ void main() {
         if (!compact) await _capture(tester, 'identity-preview-policy');
         await _tap(tester, _key('concept_settings_help_detail_privacyPolicy'));
         expect(_key('help-support-preview-title'), findsOneWidget);
-        expect(_status(tester)?.statusBarIconBrightness, Brightness.light);
-        expect(_status(tester)?.statusBarBrightness, Brightness.dark);
+        expect(find.text('Help & support'), findsOneWidget);
+        expect(_key('identity_preview_privacy_back'), findsNothing);
+        expect(_status(tester)?.statusBarIconBrightness, Brightness.dark);
+        expect(_status(tester)?.statusBarBrightness, Brightness.light);
         _noOrdinary();
         AppState.instance.setNotificationPreference();
         await tester.pumpAndSettle();
         expect(_key('help-support-preview-title'), findsOneWidget);
         if (!compact) await _capture(tester, 'identity-preview-help');
+        final search = find.descendant(
+          of: _key('help-support-preview-search'),
+          matching: find.byType(TextField),
+        );
+        await tester.enterText(search, 'password of its own');
+        await tester.testTextInput.receiveAction(TextInputAction.done);
+        await tester.pumpAndSettle();
         await _tap(
           tester,
-          _key(
-            'help-support-faq:Privacy guidance:Is this the formal Privacy Policy?',
-          ),
+          _key('help-support-faq:Getting started:How do I sign in?'),
         );
-        _noOrdinary();
-        // FAQ answers expand inline; there is no dialog route to pop.
         expect(
           find.text(
-            'No. This is an explanation of current availability, '
-            'not a published policy or a record of acceptance.',
+            'With Sign in with Apple or Google, the same one you used to join. ZYRA has no password of its own.',
           ),
           findsOneWidget,
         );
-        await _tap(tester, _key('identity_preview_privacy_back'));
+        _noOrdinary();
+        final oldContact = tester
+            .widget<HelpSupportScreen>(find.byType(HelpSupportScreen))
+            .onContact!;
+        await _tap(tester, _key('help-contact-us'));
+        oldContact();
+        await tester.pumpAndSettle();
+        expect(
+          find.byKey(
+            const ValueKey('help_safety_contact'),
+            skipOffstage: false,
+          ),
+          findsOneWidget,
+        );
+        final oldSend = tester
+            .widget<ZyraHelpSafetyPreview>(find.byType(ZyraHelpSafetyPreview))
+            .onContactSent;
+        expect(_key('identity_preview_privacy_back'), findsNothing);
+        _noOrdinary();
+        await _tap(tester, _key('help_topic_Something else'));
+        await _tap(tester, _key('help_contact_message'));
+        await tester.enterText(
+          _key('help_contact_message'),
+          'A local support preview question.',
+        );
+        await tester.testTextInput.receiveAction(TextInputAction.done);
+        await tester.pumpAndSettle();
+        await _tap(tester, _key('help_action_Send message'));
+        oldSend();
+        await tester.pumpAndSettle();
+        expect(
+          find.byKey(
+            const ValueKey('help_safety_contactSent'),
+            skipOffstage: false,
+          ),
+          findsOneWidget,
+        );
+        _noOrdinary();
+        await _tap(tester, _key('help_action_Done'));
+        oldSend();
+        await tester.pumpAndSettle();
+        expect(_key('help_safety_contactSent'), findsNothing);
+        expect(_key('help-support-preview-title'), findsOneWidget);
+        await tester.binding.handlePopRoute();
+        await tester.pumpAndSettle();
         expect(
           find.byType(ZyraConceptSettingsDetailPresentation),
           findsOneWidget,
@@ -398,12 +454,12 @@ void main() {
       );
       await _tap(tester, _key('identity_privacy_summary'));
       await _tap(tester, _key('concept_settings_help_detail_privacyPolicy'));
-      final back = tester
-          .widget<IconButton>(_key('identity_preview_privacy_back'))
-          .onPressed!;
+      final contact = tester
+          .widget<HelpSupportScreen>(find.byType(HelpSupportScreen))
+          .onContact!;
       ZyraDeveloperAccess.setAuthorizedForTesting(false);
       ZyraDeveloperAccess.setAuthorizedForTesting(true);
-      back();
+      contact();
       await tester.pumpAndSettle();
       expect(_key('identity_preview_privacy_unavailable'), findsOneWidget);
       expect(find.byType(HelpSupportScreen), findsNothing);

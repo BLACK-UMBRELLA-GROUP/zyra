@@ -164,7 +164,14 @@ void main() {
         .answer;
     expect(answer, contains(ZyraMembershipCatalog.basicTerms));
     expect(answer, contains(ZyraMembershipCatalog.guardianBasicTerms));
-    expect(answer, contains('25 profile swipes per four-hour window'));
+    expect(answer, contains('Seeker Basic has 1 Journey place'));
+    expect(answer, contains('up to 10 linked Guardians'));
+    expect(
+      answer,
+      contains(
+        'One Guardian can be on Guardian Basic; the rest need Guardian One.',
+      ),
+    );
     expect(answer, contains('live adverts are not available'));
     expect(answer, contains('Payments, trial activation'));
     expect(answer, isNot(contains('£9.99 one-time')));
@@ -212,10 +219,7 @@ void main() {
         contains('Purchasing unlocks is not available'),
       );
       final entries = zyraHelpCategories.expand((category) => category.entries);
-      for (final question in [
-        'What does ZYRA cost?',
-        'What do Seeker One and Guardian One include?',
-      ]) {
+      for (final question in ['What do Seeker One and Guardian One include?']) {
         final answer = entries
             .singleWhere((entry) => entry.question == question)
             .answer;

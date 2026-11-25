@@ -103,7 +103,7 @@ import 'zyra_privacy_security_preview.dart';
 import 'zyra_email_settings_preview.dart';
 import 'zyra_draft_safety_advice_presentation.dart';
 import 'zyra_draft_code_entry.dart';
-import 'zyra_request_help_content.dart';
+import '../data/help_content.dart';
 import 'zyra_request_account_session.dart';
 import 'zyra_request_capacity_choice.dart';
 import 'zyra_guardian_circle_preview.dart';
@@ -3585,10 +3585,16 @@ class _ZyraOneJourneyConceptShellState
     );
   }
 
-  Widget _helpSupport() => HelpSupportScreen.preview(
-    canAct: _accountFreshGuard(),
-    categories: zyraRequestHelpCategories,
-  );
+  Widget _helpSupport() {
+    final fresh = _accountFreshGuard();
+    return HelpSupportScreen.preview(
+      canAct: fresh,
+      categories: zyraHelpCategories,
+      onContact: () {
+        if (fresh()) _open('help_contact');
+      },
+    );
+  }
 
   SeekerProfile _displayProfile(DraftProfile p) => SeekerProfile(
     id: p.id,

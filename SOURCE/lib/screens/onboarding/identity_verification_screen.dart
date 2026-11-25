@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 
 import '../../data/help_content.dart';
 import '../../dev/zyra_founder_launch_review.dart';
+import '../../dev/zyra_help_safety_preview.dart';
 import '../../dev/zyra_one_journey_settings_details.dart';
 import '../../models/zyra_identity_verification.dart';
 import '../../services/zyra_account_state.dart';
@@ -1198,15 +1199,20 @@ class _IdentityVerificationPrivacyScreenState
 }
 
 // Detached protected document/FAQ routes. They never mount ordinary privacy,
-// account contact, safety-case or telemetry surfaces to make rehearsal look live.
+// live account contact, safety-case or telemetry surfaces. LOCK43 Help uses the
+// canonical FAQ and LOCK37 local contact rehearsal, behind the same admission.
 class _IdentityPrivacyPreviewDestination extends StatefulWidget {
   const _IdentityPrivacyPreviewDestination({
     required this.canAct,
     this.help = false,
+    this.contactScreen,
+    this.onContactDone,
     this.developerPanelAccess,
   });
   final bool Function() canAct;
   final bool help;
+  final ZyraHelpSafetyScreen? contactScreen;
+  final VoidCallback? onContactDone;
   final ZyraDeveloperPanelAccess? developerPanelAccess;
 
   @override
@@ -1227,6 +1233,8 @@ class _IdentityPrivacyPreviewDestinationState
   );
   late final bool Function() _openingGuard = widget.canAct;
   late final bool _help = widget.help;
+  late final _contactScreen = widget.contactScreen;
+  late final _contactDone = widget.onContactDone;
   bool _revoked = false;
 
   bool get _available {
@@ -1234,6 +1242,8 @@ class _IdentityPrivacyPreviewDestinationState
     try {
       if (!identical(widget.canAct, _openingGuard) ||
           widget.help != _help ||
+          widget.contactScreen != _contactScreen ||
+          widget.onContactDone != _contactDone ||
           !_openingGuard() ||
           !_previewAuthority.admits(true, widget.developerPanelAccess)) {
         _revoked = true;
@@ -1269,7 +1279,7 @@ class _IdentityPrivacyPreviewDestinationState
   }
 
   void _openHelp() {
-    if (!_canNavigate || _help) return;
+    if (!_canNavigate || _help || _contactScreen != null) return;
     bool ownerCurrent() => _available;
     Navigator.of(context).push(
       MaterialPageRoute<void>(
@@ -1281,6 +1291,62 @@ class _IdentityPrivacyPreviewDestinationState
       ),
     );
   }
+
+  void _openContact() {
+    if (!_canNavigate || !_help) return;
+    final helpRoute = ModalRoute.of(context)!;
+    final navigator = Navigator.of(context);
+    bool ownerCurrent() => _available && helpRoute.isActive;
+    void done() {
+      if (ownerCurrent()) navigator.popUntil((route) => route == helpRoute);
+    }
+
+    navigator.push(
+      MaterialPageRoute<void>(
+        builder: (_) => _IdentityPrivacyPreviewDestination(
+          canAct: ownerCurrent,
+          contactScreen: ZyraHelpSafetyScreen.contact,
+          onContactDone: done,
+          developerPanelAccess: _previewAuthority.panelAccess,
+        ),
+      ),
+    );
+  }
+
+  void _contactSent() {
+    if (!_canNavigate || _contactScreen != ZyraHelpSafetyScreen.contact) return;
+    bool ownerCurrent() => _available;
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => _IdentityPrivacyPreviewDestination(
+          canAct: ownerCurrent,
+          contactScreen: ZyraHelpSafetyScreen.contactSent,
+          onContactDone: _contactDone,
+          developerPanelAccess: _previewAuthority.panelAccess,
+        ),
+      ),
+    );
+  }
+
+  Widget _contact() => ZyraHelpSafetyPreview(
+    screen: _contactScreen!,
+    guardian: false,
+    // Neither Contact screen renders the name; no account data is read here.
+    firstName: '',
+    onContactSent: _contactSent,
+    onDone: () {
+      if (_canNavigate) _contactDone?.call();
+    },
+    onReportDone: () {},
+    onBlockReported: () {},
+    onOpenData: () {},
+    onOpenDelete: () {},
+    onRequestData: () {},
+    onDelete: () {},
+    onClose: () {},
+    onLegal: (_) {},
+    onSubscriptions: () {},
+  );
 
   @override
   Widget build(BuildContext context) => ListenableBuilder(
@@ -1296,43 +1362,42 @@ class _IdentityPrivacyPreviewDestinationState
         _help ? null : 'detail_privacyPolicy',
         internalReview: true,
       );
-      final white = pending.isNotEmpty;
+      final white = pending.isNotEmpty || _help || _contactScreen != null;
       return AnnotatedRegion<SystemUiOverlayStyle>(
         value: white ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
         child: Scaffold(
           backgroundColor: white ? Colors.white : ZyraColors.luxuryDarkPurple,
-          appBar: AppBar(
-            backgroundColor: white ? Colors.white : ZyraColors.luxuryDarkPurple,
-            systemOverlayStyle: white
-                ? SystemUiOverlayStyle.dark
-                : SystemUiOverlayStyle.light,
-            leading: IconButton(
-              key: const ValueKey('identity_preview_privacy_back'),
-              tooltip: 'Back',
-              onPressed: _back,
-              icon: Icon(
-                Icons.chevron_left,
-                color: white
-                    ? ZyraFounderLaunchPageStyle.darkGoldInk
-                    : ZyraColors.journeyGold,
-              ),
-            ),
-          ),
-          body: _help
-              ? HelpSupportScreen.preview(
-                  canAct: () => _available,
-                  categories: const [
-                    ZyraHelpCategory('Privacy guidance', [
-                      ZyraHelpEntry(
-                        'Is this the formal Privacy Policy?',
-                        'No. This is an explanation of current availability, not a published policy or a record of acceptance.',
-                      ),
-                      ZyraHelpEntry(
-                        'Does opening this page share my verification data?',
-                        'This preview does not start verification, request consent or send a support message.',
-                      ),
-                    ]),
-                  ],
+          appBar: _help || _contactScreen != null
+              ? null
+              : AppBar(
+                  backgroundColor: white
+                      ? Colors.white
+                      : ZyraColors.luxuryDarkPurple,
+                  systemOverlayStyle: white
+                      ? SystemUiOverlayStyle.dark
+                      : SystemUiOverlayStyle.light,
+                  leading: IconButton(
+                    key: const ValueKey('identity_preview_privacy_back'),
+                    tooltip: 'Back',
+                    onPressed: _back,
+                    icon: Icon(
+                      Icons.chevron_left,
+                      color: white
+                          ? ZyraFounderLaunchPageStyle.darkGoldInk
+                          : ZyraColors.journeyGold,
+                    ),
+                  ),
+                ),
+          body: _contactScreen != null
+              ? _contact()
+              : _help
+              ? DecoratedBox(
+                  decoration: BoxDecoration(gradient: ZyraColors.brandGradient),
+                  child: HelpSupportScreen.preview(
+                    canAct: () => _available,
+                    categories: zyraHelpCategories,
+                    onContact: _openContact,
+                  ),
                 )
               : ZyraFounderLaunchPageStyle(
                   pending: pending,

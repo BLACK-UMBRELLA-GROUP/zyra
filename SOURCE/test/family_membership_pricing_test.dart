@@ -40,18 +40,16 @@ void main() {
     expect(() => ZyraMembershipCatalog.familyQuote(1, 11), throwsRangeError);
   });
 
-  test('Help shares the unchanged Family terms and restored Basic fee', () {
+  test('LOCK43 Help gives the approved plan prices', () {
     final answer = zyraHelpCategories
         .expand((category) => category.entries)
         .singleWhere((entry) => entry.question == 'What does ZYRA cost?')
         .answer;
-    expect(answer, contains(ZyraMembershipCatalog.familyTerms));
-    expect(answer, contains(ZyraMembershipCatalog.familyAvailability));
+    expect(answer, contains('Prices are in Membership.'));
     expect(answer, contains('£29.99'));
     expect(answer, contains('£19.99'));
     expect(answer, isNot(contains('£99.99')));
-    expect(answer, contains('£4.99 one-time joining'));
-    expect(answer, contains('no monthly subscription'));
+    expect(answer, contains('Seeker Basic is a one-off £4.99'));
     expect(answer, isNot(contains('no free membership')));
   });
 }
