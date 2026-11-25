@@ -1,0 +1,35 @@
+{
+  "line": 135,
+  "status": "BUILT Preview",
+  "live": false,
+  "source_commit": "a995bfccf3bb78aa98791d3ebad6eccc3de92859",
+  "base_commit": "3be6a7ebc3177ce7b4201d1beebbe0afe62e0ca9",
+  "flutter_version": "3.44.2",
+  "build_mode": "focused widget tests; no native build",
+  "timestamp_utc": "2026-11-25T08:08:54.951125+00:00",
+  "analyzer": {
+    "exit": 0,
+    "issues": 0,
+    "seconds": 13.34,
+    "command": "node tooling/no_git_driver.mjs flutter analyze --no-pub"
+  },
+  "focused_checks": {
+    "passed": 17,
+    "failed": 0,
+    "attempts": 1,
+    "seconds": 12.38,
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --dart-define=ZYRA_LINE126_FACT_FIT_REPORT=build/line135_fact_fit_2026-11-25/fact_fit.json test/zyra_clearer_text_profile_fact_fit_test.dart"
+  },
+  "evidence": {
+    "fact_report": "fact_fit_2026-11-25.json",
+    "sha256": "abecc46207b274ca41e329c87110339b992d09b0216e15642203b6ec456e3e2b",
+    "rows": 20,
+    "fresh_png_capture": false
+  },
+  "historical_gate": "7895 / 206 / 0 before emergency wrap; not a test of this merged Source",
+  "independent_review": "GO; preserved 136/139; no open finding",
+  "source_files": {
+    "lib/widgets/zyra_profile_details_page.dart": "031c8f7cf8d80d2be442624d1d4e3a95430460eb6176269e29d01f3799ac3980",
+    "test/zyra_clearer_text_profile_fact_fit_test.dart": "aeeefb556dfe756fb511acc01431f8a3808f7142283465a48505cf26530482fb"
+  }
+}
