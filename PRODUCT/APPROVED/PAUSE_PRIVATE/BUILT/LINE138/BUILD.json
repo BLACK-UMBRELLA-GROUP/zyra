@@ -51,6 +51,10 @@
     "initial_ordinary_regression": {
       "result": "FAIL; 7937 passed; 231 skipped; 7 stale test expectations; 8m51s",
       "action": "Seven obsolete Pause/settings expectations migrated; final full regression passed"
+    },
+    "gitleaks": {
+      "command": "gitleaks detect --source . --log-opts=\"origin/main..HEAD\"",
+      "result": "PASS; zero leaks before push"
     }
   },
   "held_steps": [
@@ -68,5 +72,6 @@
   "held_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE138",
   "parked_at": "2026-11-25T09:22:09.696594+00:00",
   "source_released": true,
-  "index_empty_at_source_release": true
+  "index_empty_at_source_release": true,
+  "documentation_commit": "58a6913fdf6cc8c373cff942829c1673a74a98f6"
 }
