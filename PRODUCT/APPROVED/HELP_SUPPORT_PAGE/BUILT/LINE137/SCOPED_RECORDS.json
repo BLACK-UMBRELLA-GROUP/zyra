@@ -1,0 +1,27 @@
+{
+  "source_commit": "75eda6d081710d720b3af76bdee8a603ee147543",
+  "method": "git add on in-memory owned-row projections, immediately restore original working bytes; no git apply/reset/checkout/index rewrite",
+  "records": [
+    {
+      "path": "PRODUCT/APPROVED/BUILD_QUEUE.md",
+      "owned": "| 137 |",
+      "foreign_working_bytes_sha256": "4c55c8c325b3191ad28f742adf355d9cb3ad2c3a3a1ec4e8c7f9a15797d77302",
+      "preserved": true
+    },
+    {
+      "path": "PRODUCT/APPROVED/QUESTIONS.md",
+      "owned": "| 224 |",
+      "foreign_working_bytes_sha256": "5b5fddafc29b2fe1d4490e5493d7f196e835d5696377f44ea24d6c94fa6ada1e",
+      "preserved": true
+    },
+    {
+      "path": "MAP.md",
+      "owned_ids": [
+        "DOC-ZYRA-HELPPAGE-BUILT137",
+        "DOC-ZYRA-HELPPAGE-V1"
+      ],
+      "working_bytes_sha256": "14d06d609203097f1ed1bdb078cd7ba6c1139882be1a16f153e3a1000ad03a8c",
+      "preserved": true
+    }
+  ]
+}

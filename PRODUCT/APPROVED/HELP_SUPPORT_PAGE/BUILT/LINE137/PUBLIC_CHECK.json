@@ -1,0 +1,40 @@
+{
+  "source_scan": {
+    "files": 16,
+    "money_hits": 54,
+    "email_hits": 3,
+    "key_hits": 0,
+    "review": "Approved FAQ/member-catalogue copy and regression expectations; existing official support address. No private business records."
+  },
+  "authority_and_evidence_scan": {
+    "files": 68,
+    "text_money_hits": 1,
+    "png_money_hits": 1619,
+    "png_legal_company_hits": 2,
+    "key_hits": 0,
+    "review": "One locked product-answer amount row; compressed PNG matches are binary pattern false positives. Captures show only approved sample UI; no legal/company record is pictured."
+  },
+  "shared_files": "Only row137, Q224 and own MAP entries will be staged. Existing foreign records are preserved; refusal to alter unrelated approved wording.",
+  "secret_scan": {
+    "source_range": "b787bf26915af66c74e5025e6eab0ced1a9f8cfb..75eda6d081710d720b3af76bdee8a603ee147543",
+    "findings": 0,
+    "final_records": "Full committed range is rescanned before/after publication; exact receipt in25Nov Group daily report"
+  },
+  "A_F": {
+    "A": "Source range PASS, zero leaks; final publication range gate recorded in daily receipt",
+    "B": "no private owned material",
+    "C": "no roadmap row finished",
+    "D": "no version change",
+    "E": "neutral technical documentation; approved app copy",
+    "F": "root and SOURCE README updated"
+  },
+  "final_text_scan": {
+    "files": 43,
+    "categories": {
+      "money": 14,
+      "legal/company": 1
+    },
+    "owned_LINE137_hits": [],
+    "review": "Shared MAP/queue/question words pre-exist or are approved UI descriptions; own report terms and metadata contain no private material. Foreign rows not changed or staged."
+  }
+}

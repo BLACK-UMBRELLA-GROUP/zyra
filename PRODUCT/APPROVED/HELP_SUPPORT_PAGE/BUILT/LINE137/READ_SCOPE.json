@@ -1,0 +1,23 @@
+{
+  "conversation": "new",
+  "thread": "01a21208-a73b-7b53-8449-9a0acf9aee33",
+  "started_utc": "2026-11-25T09:28:06.842Z",
+  "source_lease_budget_hours": 6,
+  "source_baseline": "b787bf26915af66c74e5025e6eab0ced1a9f8cfb",
+  "start_pack_printed_bytes": 22093,
+  "start_pack": "absolute script and absolute named brief; successful",
+  "startup_disclosure": "User-required whole lessons and project AGENTS before pack; pack-only startup not claimed. MAP below Route paths and whole registers were not read. Some broad discovery/status output truncated; rerun targeted reads for needed content.",
+  "named_complete_bytes": {
+    "AGENTS.md": 16748,
+    "PRODUCT/APPROVED/HELP_SUPPORT_PAGE/BRIEFS/BUILD_BRIEF_2026-11-23_V1.md": 8043,
+    "PRODUCT/APPROVED/HELP_SUPPORT_PAGE/RECORD/HELP_SUPPORT_PAGE_SPEC_CURRENT_VERSION_V1.md": 6152,
+    "PRODUCT/APPROVED/HELP_SUPPORT_PAGE/RECORD/LOCK_RECORD.md": 530
+  },
+  "additional_reads": "named masters/prototype section, protected README/driver, applicable rules/handover, scoped source/tests and exact question/decision/report rows; targeted repeats not fully metered",
+  "total_bytes": "not claimed",
+  "guard_deviations": "No plain Flutter/native SDK/phone command. Initial protected analyzer used named analyze command and resolved existing packages; pubspec.lock unchanged. Later analyzer used --no-pub.",
+  "full_gate_failures": 1,
+  "full_gate_failure_reason": "Parent edited Basic answer/assertion during first regression, yielding mixed compiled source. Final run frozen to SOURCE_MANIFEST; no source/test changes during it.",
+  "final_entry_audit": "Identity Privacy Policy notice Help link also covered by every-entry rule; connected to canonical FAQ and existing bounded local Contact rehearsal, no legal-document or consent change.",
+  "full_gate_history": "One failed mixed-source run; one successful frozen14file run before identity entry migration; final regression frozen16files."
+}

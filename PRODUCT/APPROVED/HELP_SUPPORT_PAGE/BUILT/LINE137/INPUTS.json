@@ -1,0 +1,45 @@
+{
+  "authority": "DR-ZYRA-375, LOCK43, Q224, 25Nov Past Journey sentence",
+  "paths": [
+    {
+      "path": "PRODUCT/APPROVED/HELP_SUPPORT_PAGE/BRIEFS/BUILD_BRIEF_2026-11-23_V1.md",
+      "bytes": 8043,
+      "sha256": "94251b8b6a506eaf0528a0420dee757c863f2df16010ecc8ff9c257e853ea1b5"
+    },
+    {
+      "path": "PRODUCT/APPROVED/HELP_SUPPORT_PAGE/MASTERS/hp01_help__all.png",
+      "bytes": 899968,
+      "sha256": "0627ec4b2a93833df8d8ff7f155fe00d69c5aa9bc56a1b81e38450d0d178c5b7"
+    },
+    {
+      "path": "PRODUCT/APPROVED/HELP_SUPPORT_PAGE/MASTERS/hp02_help__answer_open.png",
+      "bytes": 935794,
+      "sha256": "326b41752321571ca37238fd59828135ed857b2333542edba9f874746fec7034"
+    },
+    {
+      "path": "PRODUCT/APPROVED/HELP_SUPPORT_PAGE/MASTERS/hp03_help__search.png",
+      "bytes": 964591,
+      "sha256": "721f54529568abba47c10662f367f7bb5d2544dc0251f9ecd405e1385f48bbfd"
+    },
+    {
+      "path": "PRODUCT/APPROVED/HELP_SUPPORT_PAGE/MASTERS/hp04_help__no_results.png",
+      "bytes": 1026434,
+      "sha256": "1dd05564078542694299974cc897db8bdc0c1cd3b367a5e3dad879b26b9905b7"
+    },
+    {
+      "path": "PRODUCT/APPROVED/HELP_SUPPORT_PAGE/MASTERS/hp05_help__bottom_contact.png",
+      "bytes": 925635,
+      "sha256": "6e43c713588cad73cb071c152918dfa19640c7758dcbdc39c1a58a2898ba27b8"
+    },
+    {
+      "path": "PRODUCT/APPROVED/HELP_SUPPORT_PAGE/RECORD/HELP_SUPPORT_PAGE_SPEC_CURRENT_VERSION_V1.md",
+      "bytes": 6152,
+      "sha256": "539c370ed79dac27d9e53d06beb75f1313cc5cbc8af8743ca5419ee1643f847a"
+    },
+    {
+      "path": "PRODUCT/APPROVED/HELP_SUPPORT_PAGE/RECORD/LOCK_RECORD.md",
+      "bytes": 530,
+      "sha256": "553ceb78986578bbe01a657c5bac18c85a0311ae6e451b5b27cac3431afa6848"
+    }
+  ]
+}

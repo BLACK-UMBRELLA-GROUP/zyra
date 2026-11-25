@@ -1,0 +1,74 @@
+{
+  "failed_full_gate_runs": 1,
+  "ordinary_history": [
+    {
+      "file": "SOURCE/build/line137_regression.log",
+      "pass": 7932,
+      "skip": 221,
+      "fail": 1,
+      "duration_log_seconds": 543,
+      "reason": "Parent edited Basic answer/assertion during active run, creating mixed compiled source."
+    },
+    {
+      "file": "SOURCE/build/line137_regression_final.log (prior successful run)",
+      "pass": 7933,
+      "skip": 221,
+      "fail": 0,
+      "duration_log_seconds": 530,
+      "scope": "frozen14files before final identity Help entry migration"
+    }
+  ],
+  "ordinary_final": {
+    "pass": 7933,
+    "skip": 221,
+    "fail": 0,
+    "duration_log_seconds": 789,
+    "exit_code": 0,
+    "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded",
+    "scope": "final frozen16file manifest, including identity Help/Contact entry",
+    "log": "SOURCE/build/line137_regression_final.log",
+    "log_sha256": "1735c40de8d2e33361c39540f5c0ce5c956b8959f69a907e47dc4b882dc6e25e",
+    "completed_before_safe_stop_finalization": true
+  },
+  "focused_captures": {
+    "tests_pass": 7,
+    "audit_reports": 22,
+    "audit_failures": 0,
+    "sizes": [
+      375,
+      430
+    ],
+    "scales": [
+      1,
+      2
+    ],
+    "duration_log_seconds": 26
+  },
+  "focused_canonical_and_retained": {
+    "pass": 40,
+    "fail": 0
+  },
+  "focused_identity_and_panel": {
+    "pass": 18,
+    "fail": 0,
+    "includes": "320px200%, sample Contact submit/return, stale open/send and revocation, no ordinary/native/network/telemetry"
+  },
+  "line126_public_help_routes": {
+    "pass": 4,
+    "fail": 0,
+    "plans": [
+      "Seeker One",
+      "Seeker Basic",
+      "Guardian One",
+      "Guardian Basic"
+    ]
+  },
+  "analyzer": {
+    "result": "clean",
+    "issues": 0,
+    "duration_seconds": 7.3,
+    "command": "node tooling/no_git_driver.mjs flutter analyze --no-pub"
+  },
+  "independent_review": "content, source/lifecycle, five master comparisons, handover/scope: GO",
+  "four_full_corpus_drivers": "not run; opt-in hosted reporting only per S44"
+}

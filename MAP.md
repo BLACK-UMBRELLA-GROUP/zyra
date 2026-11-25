@@ -487,6 +487,8 @@ _Stop here unless you need to look up another ID._
 
 | ID | File | Type | Purpose | Links | KB |
 |---|---|---|---|---|---|
+| DOC-ZYRA-HELPPAGE-BUILT137 | `PRODUCT/APPROVED/HELP_SUPPORT_PAGE/BUILT/LINE137/HANDOVER_2026-11-25.md` | HANDOVER | As-built LOCK 43 shared FAQ and Founder Help page, queue line 137 | DR-ZYRA-375, DOC-ZYRA-HELPPAGE-V1 | 10 |
+| DOC-ZYRA-HELPPAGE-V1 | `PRODUCT/APPROVED/HELP_SUPPORT_PAGE/RECORD/HELP_SUPPORT_PAGE_SPEC_CURRENT_VERSION_V1.md` | SPEC | Spec for LOCK 43 - Settings → Help & support (search, topics, answers in place, Contact us); replaces the… |  | 6 |
 | DOC-ZYRA-LINE136-HANDOVER-2026-11-24 | `PRODUCT/APPROVED/MEMBERSHIP_PAGE/BUILT/LINE136/HANDOVER_2026-11-24.md` | HANDOVER | As-built local Founder preview for LOCK 42 | DR-ZYRA-374 | 4 |
 
 ### MEMBERSHIP PAGE (paid members)

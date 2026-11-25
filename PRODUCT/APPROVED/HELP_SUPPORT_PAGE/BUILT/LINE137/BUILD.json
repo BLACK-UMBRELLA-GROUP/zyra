@@ -1,0 +1,25 @@
+{
+  "status": "BUILT Preview; Live:no",
+  "commit_sha": "75eda6d081710d720b3af76bdee8a603ee147543",
+  "commit_scope": "validated implementation and eight unchanged LOCK inputs",
+  "source_dirty": false,
+  "candidate_manifest": "SOURCE_MANIFEST.json",
+  "flutter_version": "3.44.2 stable, protected pinned driver",
+  "build_mode": "Flutter widget-test local Founder preview; no native build",
+  "timestamp_utc": "2026-11-25T14:05:14.890777+00:00",
+  "live": false,
+  "source_ownership": "line137 sole writer through scoped record/publication completion; final release in daily receipt",
+  "index": "empty after implementation commit",
+  "implementation_commit": "75eda6d081710d720b3af76bdee8a603ee147543",
+  "pushes": "Exact scoped publication receipt in25Nov Group daily report",
+  "stop_authority": "Historical safe stop revoked by Founder GO through pinned coordinator at resume",
+  "local_regression": {
+    "pass": 7933,
+    "skip": 221,
+    "fail": 0,
+    "duration_log_seconds": 789
+  },
+  "source_and_inputs_verified": true,
+  "candidate_not_committed": false,
+  "publication": "scoped records accompany this source commit; exact final commit and hosted ordinary CI receipt in25Nov Group daily report"
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "role": "Seeker",
+    "area": "help",
+    "page": "375_1_hp01_all",
+    "state": "normal",
+    "reached": "375_1_hp01_all",
+    "file": "375_1_hp01_all.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "help_support"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "help",
+    "page": "375_1_hp02_answer",
+    "state": "normal",
+    "reached": "375_1_hp02_answer",
+    "file": "375_1_hp02_answer.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "help_support"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "help",
+    "page": "375_1_hp03_search",
+    "state": "normal",
+    "reached": "375_1_hp03_search",
+    "file": "375_1_hp03_search.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "help_support"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "help",
+    "page": "375_1_hp04_no_results",
+    "state": "normal",
+    "reached": "375_1_hp04_no_results",
+    "file": "375_1_hp04_no_results.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "help_support"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "help",
+    "page": "375_1_hp05_contact",
+    "state": "normal",
+    "reached": "375_1_hp05_contact",
+    "file": "375_1_hp05_contact.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "help_support"
+    ],
+    "tab": 4
+  }
+]

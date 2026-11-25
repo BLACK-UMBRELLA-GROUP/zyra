@@ -1,0 +1,37 @@
+{
+  "verdict": "GO for implementation conformance; Founder/business MATCH not claimed",
+  "dimensions": [
+    430,
+    932
+  ],
+  "scale": 1.0,
+  "pairs": "hp01-hp05, master left, built right",
+  "independent_review": "gate_review, read-only",
+  "shared_system_differences": [
+    "Mandatory shared ZyraText.pageTitle 26pt versus prototype local28pt; L45",
+    "Current V9 reading weight/inks and floating surfaces",
+    "Native bottom34pt safe inset versus prototypeabout32pt; footerbottom898 versusabout900"
+  ],
+  "allowed_content_difference": "kept questions after locked questions within each topic, including extra search matches",
+  "hp04_footer_rect": [
+    20,
+    809,
+    410,
+    898
+  ],
+  "hp05_footer_rect": [
+    20,
+    809,
+    410,
+    898
+  ],
+  "states": [
+    "all",
+    "Journey-end answer open",
+    "guardian search",
+    "xyz no results",
+    "bottom contact"
+  ],
+  "larger_text": "375/430 at2.0; full no-results/footer bottom replay; zero clipping/contrast failures",
+  "master_changes": "none"
+}

@@ -1,0 +1,88 @@
+{
+  "baseline": "b787bf26915af66c74e5025e6eab0ced1a9f8cfb",
+  "frozen_at": "2026-11-25T10:01:43.267489+00:00",
+  "paths": [
+    {
+      "path": "README.md",
+      "bytes": 23207,
+      "sha256": "6411ab70beb07af2fb6990411d153580c4a70f7d5f9bcf3d44146a950c97be72"
+    },
+    {
+      "path": "SOURCE/README.md",
+      "bytes": 12820,
+      "sha256": "f98716c072be12eca038914d7532d161135230848153b264d87c17b5f1da6430"
+    },
+    {
+      "path": "SOURCE/lib/data/help_content.dart",
+      "bytes": 11870,
+      "sha256": "1a1db77186880286a4f09a9022aeb5eb97bd6b9facd7d0acf7a984021385cfdc"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "bytes": 434725,
+      "sha256": "1aa39480b001f2f2fbddd5284115ce64ed671d501061e50c0dcc509b5d56488f"
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/identity_verification_screen.dart",
+      "bytes": 46885,
+      "sha256": "d05568b8ae7e3b796644a7396ed794186dbfa799d27f9096980ae13d0e60693e"
+    },
+    {
+      "path": "SOURCE/lib/screens/settings/help_support_screen.dart",
+      "bytes": 21504,
+      "sha256": "bb6baedf209093e09ec7eb0974720315e873dad4e593b01db85d1f6c53959506"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_help_support_page.dart",
+      "bytes": 14243,
+      "sha256": "1fddef12b47c24d5acf0524fdc43c91b194de8aa3062521576294d0c91175a40"
+    },
+    {
+      "path": "SOURCE/test/basic_joining_payment_history_test.dart",
+      "bytes": 5659,
+      "sha256": "7960d3da92c668f0589a32c50a273a3bc9e42bdb81ab5753ae58e0cdf1189b43"
+    },
+    {
+      "path": "SOURCE/test/browse_options_menu_test.dart",
+      "bytes": 48689,
+      "sha256": "12a9fb77d7cf2d399730e1ccf62b094fc693d16b53ff1464d2e2cf1317117535"
+    },
+    {
+      "path": "SOURCE/test/family_membership_pricing_test.dart",
+      "bytes": 2424,
+      "sha256": "f80dab7437a1f3f7571297254e46c9b48b2277d43e9b5af7b185aac806a371cf"
+    },
+    {
+      "path": "SOURCE/test/help_truth_test.dart",
+      "bytes": 2427,
+      "sha256": "52191b23574f1ee342cfef55737a949d017df86008d2e5e7c7340232f62e2a27"
+    },
+    {
+      "path": "SOURCE/test/identity_privacy_preview_boundary_test.dart",
+      "bytes": 17579,
+      "sha256": "111c71239b97265e757e928e46a0010cfb3c08e9ff0b76ec8613033f80b3f72e"
+    },
+    {
+      "path": "SOURCE/test/paid_only_membership_catalog_test.dart",
+      "bytes": 13239,
+      "sha256": "410f4d906b3c269c42be4e5f59f1ae49459d78707895998e5f13abbc28507aa9"
+    },
+    {
+      "path": "SOURCE/test/visual/line101_guardian_card_visual_test.dart",
+      "bytes": 8777,
+      "sha256": "42d662365dceb749cbeae0c5548258bd2b296b6be474a71e4ac47b8b94bb1846"
+    },
+    {
+      "path": "SOURCE/test/visual/line137_help_support_capture_test.dart",
+      "bytes": 9137,
+      "sha256": "e1742c3a2a5285afe20c173acc3479d1aa2f168ac6b1a5471e8d73fdbb897c66"
+    },
+    {
+      "path": "SOURCE/test/zyra_retained_route_reuse_test.dart",
+      "bytes": 7903,
+      "sha256": "7f6084721579bf7174eea9ff7cad21404c8467341e7bec23dbb31f5e1c4aa387"
+    }
+  ],
+  "implementation_commit": "75eda6d081710d720b3af76bdee8a603ee147543",
+  "post_pause_revalidated": true
+}

@@ -1,0 +1,184 @@
+{
+  "authority": [
+    "LOCK43",
+    "Q224",
+    "25 Nov Past Journey correction"
+  ],
+  "entries": [
+    {
+      "question": "How does ZYRA work?",
+      "action": "spec exact replacement/addition",
+      "topic": "Getting started"
+    },
+    {
+      "question": "How do I sign in?",
+      "action": "spec exact replacement/addition",
+      "topic": "Getting started"
+    },
+    {
+      "question": "Who needs a Guardian?",
+      "action": "spec exact replacement/addition",
+      "topic": "Getting started"
+    },
+    {
+      "question": "How many Journeys can I hold?",
+      "action": "spec exact replacement/addition",
+      "topic": "Profiles and Journeys"
+    },
+    {
+      "question": "What happens when a Journey ends?",
+      "action": "spec exact replacement/addition",
+      "topic": "Profiles and Journeys"
+    },
+    {
+      "question": "Who can see my photos?",
+      "action": "spec exact replacement/addition",
+      "topic": "Profiles and Journeys"
+    },
+    {
+      "question": "What can my Guardian see?",
+      "action": "spec exact replacement/addition",
+      "topic": "Guardians"
+    },
+    {
+      "question": "What are Past Journey summaries?",
+      "action": "spec exact replacement/addition",
+      "topic": "Guardians"
+    },
+    {
+      "question": "What does ZYRA cost?",
+      "action": "spec exact replacement/addition",
+      "topic": "Membership"
+    },
+    {
+      "question": "How do I cancel?",
+      "action": "spec exact replacement/addition",
+      "topic": "Membership"
+    },
+    {
+      "question": "How do I report someone?",
+      "action": "spec exact replacement/addition",
+      "topic": "Safety"
+    },
+    {
+      "question": "What is the difference between blocking and reporting?",
+      "action": "spec exact replacement/addition",
+      "topic": "Safety"
+    },
+    {
+      "question": "How do I take a break?",
+      "action": "spec exact replacement/addition",
+      "topic": "Your account"
+    },
+    {
+      "question": "How do I delete my account?",
+      "action": "spec exact replacement/addition",
+      "topic": "Your account"
+    },
+    {
+      "question": "Is ZYRA a dating app?",
+      "action": "kept unchanged; remapped topic",
+      "topic": "Getting started"
+    },
+    {
+      "question": "Will people I know see my profile?",
+      "action": "kept unchanged; remapped topic",
+      "topic": "Getting started"
+    },
+    {
+      "question": "When does my profile go live?",
+      "action": "kept unchanged; remapped topic",
+      "topic": "Profiles and Journeys"
+    },
+    {
+      "question": "Can I change my date of birth?",
+      "action": "kept unchanged; remapped topic",
+      "topic": "Profiles and Journeys"
+    },
+    {
+      "question": "How does compatibility work?",
+      "action": "rewrite",
+      "topic": "Profiles and Journeys"
+    },
+    {
+      "question": "What is Compatibility Unlock?",
+      "action": "kept current reveal and catalogue purchase terms; removed stale full-reveal/spending warning; retained earlier overall-only separation",
+      "topic": "Profiles and Journeys"
+    },
+    {
+      "question": "Why am I seeing fewer people than expected?",
+      "action": "rewrite",
+      "topic": "Profiles and Journeys"
+    },
+    {
+      "question": "How do I invite someone to a Journey?",
+      "action": "moved from request list; current label/plan corrected where needed",
+      "topic": "Profiles and Journeys"
+    },
+    {
+      "question": "How do I move to another profile?",
+      "action": "moved from request list; current label/plan corrected where needed",
+      "topic": "Profiles and Journeys"
+    },
+    {
+      "question": "Where can I find my invitations?",
+      "action": "moved from request list; current label/plan corrected where needed",
+      "topic": "Profiles and Journeys"
+    },
+    {
+      "question": "How do I find someone by ZYRA Code?",
+      "action": "moved from request list; current label/plan corrected where needed",
+      "topic": "Profiles and Journeys"
+    },
+    {
+      "question": "Can my match's Guardian read our conversation too?",
+      "action": "rewrite",
+      "topic": "Guardians"
+    },
+    {
+      "question": "What does Basic include?",
+      "action": "rewrite retired feature list; retain catalogue terms; current up-to10 Guardian limit and single Guardian Basic place",
+      "topic": "Membership"
+    },
+    {
+      "question": "What do ${ZyraMembershipCatalog.seekerOneTitle} and ${ZyraMembershipCatalog.guardianOneTitle} include?",
+      "action": "rewrite retired feature list; catalogue and payment-history boundaries retained",
+      "topic": "Membership"
+    },
+    {
+      "question": "Can someone find out I blocked them?",
+      "action": "kept unchanged; remapped topic",
+      "topic": "Safety"
+    },
+    {
+      "question": "Something feels wrong and I am not sure it counts",
+      "action": "kept unchanged; remapped topic",
+      "topic": "Safety"
+    }
+  ],
+  "removed": [
+    "What is the difference between Consider, Save and Pass?",
+    "Will someone know if I passed on them?"
+  ],
+  "replaced_alias": {
+    "How do I take a break or hide my profile?": "How do I take a break?"
+  },
+  "request_list": "four real-app questions moved; fifth Journey-end duplicate replaced by spec; former file left unused with no lib/test readers",
+  "topics": {
+    "About ZYRA": "Getting started",
+    "Your profile": "Profiles and Journeys",
+    "Matching and Journeys": "Profiles and Journeys",
+    "Safety and reporting": "Safety",
+    "Account and plan": "Membership or Your account"
+  },
+  "identity_privacy_help": {
+    "source": "lib/screens/onboarding/identity_verification_screen.dart",
+    "entry": "Open Help & support from the protected Privacy Policy availability notice",
+    "canonical_source": "zyraHelpCategories",
+    "preview_only_questions_removed_from_help": [
+      "Is this the formal Privacy Policy?",
+      "Does opening this page share my verification data?"
+    ],
+    "retained": "Privacy Policy availability notice and consent/authority guards unchanged; local LOCK37 contact rehearsal uses no provider."
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "status": "HISTORICAL safe-stop checkpoint; superseded by Founder GO and resumed line137 completion",
+  "recorded_utc": "2026-11-25T10:13:52.658363+00:00",
+  "baseline_head": "b787bf26915af66c74e5025e6eab0ced1a9f8cfb",
+  "candidate": "intact in SOURCE worktree; root README also modified; sixteen paths in SOURCE_MANIFEST.json",
+  "source_ownership": "Retained by line137 chat01a21208-a73b-7b53-8449-9a0acf9aee33. Not released; do not dispatch another SOURCE writer until explicitly resumed or parked.",
+  "index": "empty, reverified",
+  "implementation_commits": "none",
+  "pushes": "none",
+  "held_path": "none; candidate deliberately stays in place per direct safe-stop instruction",
+  "queue": "137 remains WAITING; no BUILT or QUESTION claim",
+  "current_regression_log": "SOURCE/build/line137_regression_final.log",
+  "restart": "Read this checkpoint, current task note, frozen source/input manifests and final log; verify hashes/status and take SOURCE ownership explicitly. If this current regression passes and source matches, do not repeat tests without new changes. Finish documentation, scoped commits/local secret checks; network publication waits for restored internet and explicit resume.",
+  "remaining": [
+    "Finalize publication-ready documentation; current local regression already passed and is preserved",
+    "Finalize BUILD.json with actual implementation commit; no native build",
+    "Regenerate MAP for final handover only; stage own row137/Q224/MAP entries and owned records preserving foreign bytes",
+    "Commit sixteen source/README paths plus eight LOCK inputs after source/input hash checks",
+    "Scoped evidence commit, exact-range secret checks, authorized push and hosted ordinary CI receipt only after resume",
+    "Append final task note/receipt to Group daily report and verify SOURCE/index release"
+  ],
+  "do_not_run": "No new test, network step, push or new queue line while safe stop is in force.",
+  "finalized_utc": "2026-11-25T10:16:25.990947+00:00",
+  "regression": {
+    "pass": 7933,
+    "skip": 221,
+    "fail": 0,
+    "duration_log_seconds": 789,
+    "exit_code": 0,
+    "log_sha256": "1735c40de8d2e33361c39540f5c0ce5c956b8959f69a907e47dc4b882dc6e25e"
+  },
+  "source_paths": 16,
+  "frozen_source_hashes": "all exact at checkpoint",
+  "locked_input_hashes": "all eight exact",
+  "current_process": "completed; no test left running",
+  "original_source_lease_start_utc": "2026-11-25T09:28:06.842Z",
+  "original_six_hour_deadline_utc": "2026-11-25T15:28:06.842Z",
+  "local_checkpoint_text_scan": {
+    "files": 40,
+    "categories": {
+      "money": 5,
+      "legal/company": 1
+    },
+    "key_hits": 0,
+    "review": "Existing MAP purpose/path words and reviewed technical wording only; unrelated MAP records left intact. Source/input/screenshot scans precede stop and remain valid by hashes. No new test or network step."
+  },
+  "historical": true,
+  "superseded_by": [
+    "RESUME_2026-11-25.json",
+    "BUILD.json",
+    "TASK_NOTE_2026-11-25.md"
+  ]
+}

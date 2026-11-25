@@ -1,0 +1,20 @@
+{
+  "thread": "01a21208-a73b-7b53-8449-9a0acf9aee33",
+  "started": "2026-11-25T09:28:06.842Z",
+  "actual_runtime": {
+    "model": "gpt-6.1-sol",
+    "effort": "ultra"
+  },
+  "checkpoint_usage": {
+    "timestamp": "2026-11-25T14:04:07.027Z",
+    "counts": {
+      "input_tokens": 27871140,
+      "cached_input_tokens": 27600256,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 108211,
+      "reasoning_output_tokens": 59453,
+      "total_tokens": 27979351
+    }
+  },
+  "scope": "owner count-only checkpoint, not final turn total; helper usage unavailable and not estimated"
+}

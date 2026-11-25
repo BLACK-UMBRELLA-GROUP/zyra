@@ -1,0 +1,18 @@
+{
+  "resumed_utc": "2026-11-25T14:03:38.846637+00:00",
+  "authority": "Founder GO via pinned coordinator after hotspot pause; same shared checkout sole writer",
+  "baseline": "b787bf26915af66c74e5025e6eab0ced1a9f8cfb",
+  "source_paths_verified": 16,
+  "input_paths_verified": 8,
+  "index_on_resume": "empty",
+  "regression_log_sha256": "1735c40de8d2e33361c39540f5c0ce5c956b8959f69a907e47dc4b882dc6e25e",
+  "reused_checks": "7933pass221skip0fail, analyzer clean, focused and22raster reports; exact source/input/log hashes unchanged, no test rerun",
+  "failed_full_gate_runs": 1,
+  "original_six_hour_deadline_utc": "2026-11-25T15:28:06.842Z",
+  "hotspot_failed_connection_limit": 3,
+  "connection_failures_so_far": 0,
+  "scope": "line137 only; no other line dispatched",
+  "implementation_commit": "75eda6d081710d720b3af76bdee8a603ee147543",
+  "checks_reused_verified_at": "2026-11-25T14:05:14.890777+00:00",
+  "source_after_commit": "clean; manifest bytes unchanged"
+}
