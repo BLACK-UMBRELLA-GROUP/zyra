@@ -10,9 +10,10 @@
   "failed_full_gate_runs": 1,
   "original_six_hour_deadline_utc": "2026-11-25T15:28:06.842Z",
   "hotspot_failed_connection_limit": 3,
-  "connection_failures_so_far": 0,
+  "connection_failures_so_far": 3,
   "scope": "line137 only; no other line dispatched",
   "implementation_commit": "75eda6d081710d720b3af76bdee8a603ee147543",
   "checks_reused_verified_at": "2026-11-25T14:05:14.890777+00:00",
-  "source_after_commit": "clean; manifest bytes unchanged"
+  "source_after_commit": "clean; manifest bytes unchanged",
+  "publication_status": "Stopped at Founder limit; local commits preserved; no further network step"
 }

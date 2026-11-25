@@ -1,0 +1,22 @@
+{
+  "status": "BUILT locally; publication FAILED/unconfirmed at Founder three-failed-connection limit",
+  "timestamp_utc": "2026-11-25T14:20:25.456141+00:00",
+  "implementation_commit": "75eda6d081710d720b3af76bdee8a603ee147543",
+  "record_commit": "4cf141a07679064af12166a437c6abf3baa28db2",
+  "receipt_commit": "resolved in final daily/chat receipt",
+  "source_tree_sha": "e8c7c79b27c48b582a451fff4e5bc71a23e3f659",
+  "failed_push_attempts": 3,
+  "error": "RPC failed; HTTP408 curl22; unexpected disconnect reading sideband; remote end hung up unexpectedly",
+  "push_success_verified": false,
+  "last_verified_remote_main": "b787bf26915af66c74e5025e6eab0ced1a9f8cfb (successful read between first and second failed pushes)",
+  "remote_after_last_attempt": "not queried: no fourth connection permitted",
+  "hosted_CI": "not measured for this head because publication is unconfirmed",
+  "next_owner": "Pinned coordinator; explicit resumed network authority/stable connection needed before another attempt",
+  "source_ownership": "To be released after this local receipt commit and measured final index/source check in daily/chat receipt",
+  "index": "empty before receipt; owner will reverify empty after commit and record outcome in daily/chat receipt",
+  "held_path": null,
+  "no_other_line_dispatched": true,
+  "checks_reused": "Source16/input8/capture22/regression log hashes unchanged after hotspot pause;7933pass221skip0fail; analyzer clean; no reruns",
+  "secret_scan": "zero findings on b787bf26..4cf141a0 before first attempt; same committed range reused across retries. Owner will scan the final local receipt range after commit and record outcome in daily/chat receipt.",
+  "network_stop": "No further remote query, CI call, push or alternate transport after failed attempt3"
+}

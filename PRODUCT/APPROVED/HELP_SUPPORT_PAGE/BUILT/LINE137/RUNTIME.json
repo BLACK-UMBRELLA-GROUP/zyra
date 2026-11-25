@@ -6,14 +6,14 @@
     "effort": "ultra"
   },
   "checkpoint_usage": {
-    "timestamp": "2026-11-25T14:04:07.027Z",
+    "timestamp": "2026-11-25T14:21:15.485Z",
     "counts": {
-      "input_tokens": 27871140,
-      "cached_input_tokens": 27600256,
+      "input_tokens": 36689849,
+      "cached_input_tokens": 36404608,
       "cache_write_input_tokens": 0,
-      "output_tokens": 108211,
-      "reasoning_output_tokens": 59453,
-      "total_tokens": 27979351
+      "output_tokens": 136468,
+      "reasoning_output_tokens": 80332,
+      "total_tokens": 36826317
     }
   },
   "scope": "owner count-only checkpoint, not final turn total; helper usage unavailable and not estimated"

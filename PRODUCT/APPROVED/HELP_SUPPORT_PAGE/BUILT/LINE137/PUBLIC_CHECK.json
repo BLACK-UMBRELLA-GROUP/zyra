@@ -18,10 +18,11 @@
   "secret_scan": {
     "source_range": "b787bf26915af66c74e5025e6eab0ced1a9f8cfb..75eda6d081710d720b3af76bdee8a603ee147543",
     "findings": 0,
-    "final_records": "Full committed range is rescanned before/after publication; exact receipt in25Nov Group daily report"
+    "final_records": "Owner will scan final local receipt range after commit and before release; no successful publication/hosted check claimed",
+    "retry_scope": "Exact same committed HEAD4cf141a0 for three attempts; no new committed changes between retries"
   },
   "A_F": {
-    "A": "Source range PASS, zero leaks; final publication range gate recorded in daily receipt",
+    "A": "Source range PASS; owner will check final local receipt range before release and record outcome in daily receipt. Three failed pushes, no post-push claim.",
     "B": "no private owned material",
     "C": "no roadmap row finished",
     "D": "no version change",
@@ -36,5 +37,6 @@
     },
     "owned_LINE137_hits": [],
     "review": "Shared MAP/queue/question words pre-exist or are approved UI descriptions; own report terms and metadata contain no private material. Foreign rows not changed or staged."
-  }
+  },
+  "publication": "Three pushes failedHTTP408; no verified successful push, no after-push scan/hosted CI claimed. Final local receipt range scan is recorded in daily report."
 }
