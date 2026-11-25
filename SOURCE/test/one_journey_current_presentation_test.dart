@@ -259,11 +259,7 @@ void main() {
             final details = _key('concept_browse_details_${profile.id}');
             expect(details, findsOneWidget);
             expect(
-              find.descendant(of: details, matching: find.text('Sara')),
-              findsOneWidget,
-            );
-            expect(
-              find.descendant(of: details, matching: find.text('Ahmed')),
+              find.descendant(of: details, matching: find.text('Sara Ahmed')),
               findsOneWidget,
             );
             final avatar = tester.widget<ZyraProfileImage>(
@@ -271,7 +267,7 @@ void main() {
             );
             expect(avatar.photo, profile.photos.first);
             expect(avatar.photo, startsWith('data:image/'));
-            expect((avatar.width, avatar.height), (117, 117));
+            expect((avatar.width, avatar.height), (141.0, 141.0));
             expect(avatar.alignment, const Alignment(0, -.7));
             expect(find.byType(ZyraProfileNameBlock), findsNothing);
             expect(find.text('Pass'), findsNothing);

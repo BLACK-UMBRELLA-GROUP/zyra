@@ -157,7 +157,7 @@ Future<void> _expectBrowseGeometry(WidgetTester tester, Size size) async {
     expect(tester.getRect(_key('concept_browse_header')), header);
     expect(tester.getRect(_key('concept_browse_portrait_card')), photo);
   }
-  _edges(tester.getRect(request), size.width, 42);
+  _edges(tester.getRect(request), size.width, 36);
   _target(tester, request);
 
   final scroll = tester.widget<SingleChildScrollView>(

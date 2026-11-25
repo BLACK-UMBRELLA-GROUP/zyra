@@ -7,9 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
 import 'package:zyra/dev/zyra_draft_timeline_presentation.dart';
+import 'package:zyra/dev/zyra_full_profile_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
-import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_journey_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_options.dart';
 import 'package:zyra/dev/zyra_one_journey_options_page.dart';
@@ -438,8 +438,8 @@ void main() {
           expect(find.byType(BottomSheet), findsNothing);
           expect(
             tester
-                .widget<ZyraOneJourneyBrowsePresentation>(
-                  find.byType(ZyraOneJourneyBrowsePresentation),
+                .widget<ZyraFullProfilePreview>(
+                  find.byType(ZyraFullProfilePreview),
                 )
                 .profile
                 .id,

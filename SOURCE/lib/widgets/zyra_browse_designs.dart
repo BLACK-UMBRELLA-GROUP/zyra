@@ -100,6 +100,7 @@ class ZyraBrowseDesigns extends StatefulWidget {
     this.ownAvatarBuilder,
     this.profileVideo,
     this.verifyPhotosPill = false,
+    this.onCompatibility,
   });
 
   /// The owner sees the live card with local photo taps and an informational
@@ -133,6 +134,7 @@ class ZyraBrowseDesigns extends StatefulWidget {
   /// Approved media for the currently selected profile only.
   final ZyraProfileVideoPlayback? profileVideo;
   final bool verifyPhotosPill;
+  final ValueChanged<SeekerProfile>? onCompatibility;
 
   /// Own-profile presentation only. Shows inert feed controls, without menu;
   /// this flag never supplies profile data or changes disclosure authority.
@@ -439,6 +441,9 @@ class _ZyraBrowseDesignsState extends State<ZyraBrowseDesigns> {
                           height: avatarPhotoSize,
                           alignment: ZyraProfileDetailsPage.photoAlignment,
                         )),
+              onCompatibility: widget.onCompatibility == null
+                  ? null
+                  : () => widget.onCompatibility!(profile),
             )
           : video != null && index == profile.photos.length + 1
           ? widget.verifyPhotosPill

@@ -10,9 +10,8 @@ import '../theme/zyra_text.dart';
 import '../theme/zyra_motion.dart';
 import 'zyra_floating_surface.dart';
 import 'zyra_profile_image.dart';
-import 'zyra_profile_name_block.dart';
 
-/// LOCK 4 V4, design 2. Only the caller's public profile fields and admitted
+/// LOCK 4 V5. Only the caller's public profile fields and admitted
 /// first photo reach this face. No private answers or photo lookup here.
 class ZyraProfileDetailsPage extends StatelessWidget {
   const ZyraProfileDetailsPage({
@@ -22,23 +21,27 @@ class ZyraProfileDetailsPage extends StatelessWidget {
     this.fixedCard = false,
     this.requestAction,
     this.showUnverifiedRing = true,
+    this.onCompatibility,
+    this.introductionByline,
   });
 
   final SeekerProfile profile;
   final Widget? firstPhoto;
   final bool fixedCard;
   final Widget? requestAction;
+  final VoidCallback? onCompatibility;
+  final String? introductionByline;
 
   /// Other-member cards retain the decorative ring while their authorized
   /// projection lacks a plan (Q84). Own Preview has a verified-plan source.
   final bool showUnverifiedRing;
 
-  static const double _avatarSize = 124;
-  static const double _smallerAvatarSize = 96;
+  static const double _avatarSize = 150;
+  static const double _smallerAvatarSize = 72;
   static const double _ringWidth = 1.5;
-  static const double _photoGap = 2;
-  static const double _tileGap = 12;
-  static const double _horizontalInset = 22;
+  static const double _photoGap = 3;
+  static const double _tileGap = 10;
+  static const double _horizontalInset = 16;
   static const photoAlignment = Alignment(0, -.7);
 
   static double photoSizeFor(
@@ -77,13 +80,12 @@ class ZyraProfileDetailsPage extends StatelessWidget {
     final plan = profile.seekerPlan;
     final showRing = _hasRing(plan, showUnverifiedRing);
     final basic = plan == ZyraPlan.basic;
-    final fallback = ColoredBox(
-      color: basic ? ZyraColors.ivoryTop : ZyraColors.avatarSand,
-      child: Center(
-        child: Text(
-          profile.firstName.trim().characters.firstOrNull?.toUpperCase() ?? '?',
-          textScaler: TextScaler.noScaling,
-          style: ZyraText.heading(size: size * .38, color: ZyraColors.espresso),
+    final fallback = const DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFFF6E5C9), Color(0xFFEFD9C0)],
         ),
       ),
     );
@@ -130,25 +132,28 @@ class ZyraProfileDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final surname = profile.surnameLine?.trim();
-    final nationality = profile.publicNationality?.trim();
-    final ethnicity = profile.publicEthnicity?.trim();
-    final city = profile.city.trim();
-    final facts = [
+    final facts = <(String, String)>[
       if (profile.age > 0) ('AGE', '${profile.age}'),
-      if (city.isNotEmpty && city != '—') ('LOCATION', city),
-      if (nationality?.isNotEmpty ?? false) ('NATIONALITY', nationality!),
-      if (ethnicity?.isNotEmpty ?? false) ('ETHNICITY', ethnicity!),
+      if (profile.city.trim().isNotEmpty && profile.city != '—')
+        ('LOCATION', profile.city.trim()),
+      if (profile.publicNationality?.trim().isNotEmpty == true)
+        ('NATIONALITY', profile.publicNationality!.trim()),
+      if (profile.publicEthnicity?.trim().isNotEmpty == true)
+        ('ETHNICITY', profile.publicEthnicity!.trim()),
     ];
     return DecoratedBox(
       key: ValueKey('concept_browse_details_${profile.id}'),
       decoration: const BoxDecoration(color: ZyraColors.cardSurface),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final compact =
-              MediaQuery.textScalerOf(context).scale(16) > 16 &&
-              constraints.maxHeight < 560;
-          final avatarSize = compact ? _smallerAvatarSize : _avatarSize;
+          final scale = MediaQuery.textScalerOf(context).scale(1);
+          final avatarSize = math.max(
+            _smallerAvatarSize,
+            math.min(
+              _avatarSize,
+              constraints.maxHeight * (scale > 1.2 ? .18 : .23),
+            ),
+          );
           final tileWidth =
               (constraints.maxWidth - 2 * _horizontalInset - _tileGap) / 2;
           final fullWidth = constraints.maxWidth - 2 * _horizontalInset;
@@ -172,20 +177,6 @@ class ZyraProfileDetailsPage extends StatelessWidget {
           if (pending.isNotEmpty) {
             rows.add((facts: pending, fullWidth: false));
           }
-          final rowHeight = rows.fold(
-            (math.max(196.0, constraints.maxHeight * .4) - _tileGap) / 2,
-            (height, row) => row.facts.fold(
-              height,
-              (height, fact) => math.max(
-                height,
-                _DetailTile.heightFor(
-                  context,
-                  fact,
-                  row.fullWidth ? fullWidth : tileWidth,
-                ),
-              ),
-            ),
-          );
           return SingleChildScrollView(
             key: ValueKey('concept_browse_details_scroll_${profile.id}'),
             physics: fixedCard ? ZyraMotion.fixedCardScrollPhysics : null,
@@ -195,9 +186,9 @@ class ZyraProfileDetailsPage extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(
                     _horizontalInset,
-                    28,
+                    20,
                     _horizontalInset,
-                    22,
+                    16,
                   ),
                   child: Column(
                     children: [
@@ -207,69 +198,115 @@ class ZyraProfileDetailsPage extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               _avatar(avatarSize),
-                              const SizedBox(height: 16),
-                              ZyraFittedProfileFirstName(
-                                profile.firstName,
-                                maxWidth:
-                                    constraints.maxWidth - 2 * _horizontalInset,
-                                semanticsLabel:
-                                    '${profile.firstName} ${surname ?? ''}'
-                                        .trim(),
-                                textAlign: TextAlign.center,
-                                style: ZyraText.heading(
-                                  size: 34,
-                                ).copyWith(height: 1.05),
+                              const SizedBox(height: 12),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      '${profile.firstName} ${profile.surnameLine ?? ''}'
+                                          .trim(),
+                                      textAlign: TextAlign.center,
+                                      softWrap: true,
+                                      style: ZyraText.heading(
+                                        size: 28,
+                                      ).copyWith(height: 1.1),
+                                    ),
+                                  ),
+                                  if (profile.seekerPlan == ZyraPlan.one) ...[
+                                    const SizedBox(width: 10),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 9,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: ZyraColors.journeyGold,
+                                        ),
+                                        borderRadius: BorderRadius.circular(18),
+                                      ),
+                                      child: Text(
+                                        'ONE',
+                                        style: ZyraText.body(
+                                          size: 11,
+                                          color: ZyraColors.journeyGold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ],
                               ),
-                              if (surname?.isNotEmpty ?? false)
+                              if (introductionByline case final byline?) ...[
+                                const SizedBox(height: 8),
                                 Text(
-                                  surname!,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  semanticsLabel: '',
+                                  'Put forward by $byline',
                                   textAlign: TextAlign.center,
-                                  style: ZyraText.heading(
-                                    size: 22,
-                                    color: ZyraColors.secondaryText,
-                                  ).copyWith(height: 1.05),
+                                  softWrap: true,
+                                  style: ZyraText.body(
+                                    size: 14,
+                                    color: ZyraColors.journeyGold,
+                                  ),
                                 ),
+                              ],
                             ],
                           ),
                         ),
                       ),
-                      for (int i = 0; i < rows.length; i++) ...[
-                        if (i != 0) const SizedBox(height: _tileGap),
-                        ConstrainedBox(
-                          constraints: BoxConstraints(minHeight: rowHeight),
-                          child: IntrinsicHeight(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Expanded(
-                                  child: _DetailTile(
-                                    rows[i].facts.first,
-                                    tileWidth: rows[i].fullWidth
-                                        ? fullWidth
-                                        : tileWidth,
-                                  ),
-                                ),
-                                if (!rows[i].fullWidth) ...[
-                                  const SizedBox(width: _tileGap),
-                                  Expanded(
-                                    child: rows[i].facts.length == 2
-                                        ? _DetailTile(
-                                            rows[i].facts[1],
-                                            tileWidth: tileWidth,
-                                          )
-                                        : const SizedBox.shrink(),
-                                  ),
-                                ],
-                              ],
+                      for (var row = 0; row < rows.length; row++) ...[
+                        if (row > 0) const SizedBox(height: _tileGap),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: _DetailTile(
+                                rows[row].facts.first,
+                                tileWidth: rows[row].fullWidth
+                                    ? fullWidth
+                                    : tileWidth,
+                              ),
                             ),
-                          ),
+                            if (!rows[row].fullWidth) ...[
+                              const SizedBox(width: _tileGap),
+                              Expanded(
+                                child: rows[row].facts.length == 2
+                                    ? _DetailTile(
+                                        rows[row].facts[1],
+                                        tileWidth: tileWidth,
+                                      )
+                                    : const SizedBox.shrink(),
+                              ),
+                            ],
+                          ],
                         ),
                       ],
-                      if (requestAction case final action?) ...[
+                      if (profile.mainGuardianRelationship
+                          case final relation?) ...[
                         const SizedBox(height: _tileGap),
+                        _InfoRow(
+                          key: const ValueKey(
+                            'profile-detail-main-guardian-row',
+                          ),
+                          availableTextWidth: constraints.maxWidth - 92,
+                          icon: Icons.groups_outlined,
+                          title: 'Main Guardian · $relation',
+                          subtitle:
+                              'Walks every Journey with ${profile.firstName}',
+                          trailing: 'Verified',
+                        ),
+                      ],
+                      const SizedBox(height: _tileGap),
+                      _InfoRow(
+                        key: const ValueKey('profile-detail-compatibility-row'),
+                        availableTextWidth: constraints.maxWidth - 92,
+                        icon: Icons.auto_graph_outlined,
+                        title: 'Compatibility score',
+                        subtitle: 'See how your answers match',
+                        onTap: onCompatibility,
+                      ),
+                      if (requestAction case final action?) ...[
+                        const SizedBox(height: 12),
                         SizedBox(width: double.infinity, child: action),
                       ],
                     ],
@@ -289,7 +326,7 @@ class _DetailTile extends StatelessWidget {
 
   final (String, String) fact;
   final double tileWidth;
-  static const _padding = EdgeInsets.symmetric(horizontal: 16, vertical: 14);
+  static const _padding = EdgeInsets.symmetric(horizontal: 14, vertical: 12);
   static const _gap = 6.0;
 
   static TextStyle get _labelStyle => ZyraText.body(
@@ -297,7 +334,7 @@ class _DetailTile extends StatelessWidget {
     color: ZyraColors.secondaryText,
   ).copyWith(letterSpacing: 1.1);
   static TextStyle get _valueStyle => ZyraText.button(
-    size: 18,
+    size: 15,
     color: ZyraColors.foregroundBody,
   ).copyWith(letterSpacing: 0, height: 1.2);
 
@@ -402,32 +439,6 @@ class _DetailTile extends StatelessWidget {
     );
   }
 
-  static double heightFor(
-    BuildContext context,
-    (String, String) fact,
-    double tileWidth,
-  ) {
-    final painter = _painter(context);
-    double height(String text, TextStyle style) {
-      final wrapped = _wholeWords(context, text, style, tileWidth);
-      painter.text = TextSpan(
-        text: wrapped.text,
-        style: _resolvedStyle(context, style),
-      );
-      painter.layout(
-        maxWidth: wrapped.explicitLines
-            ? double.infinity
-            : _textWidth(tileWidth),
-      );
-      return painter.height;
-    }
-
-    final labelHeight = height(fact.$1, _labelStyle);
-    final valueHeight = height(fact.$2, _valueStyle);
-    painter.dispose();
-    return _padding.vertical + 2 + labelHeight + _gap + valueHeight;
-  }
-
   @override
   Widget build(BuildContext context) => MergeSemantics(
     child: Container(
@@ -435,8 +446,14 @@ class _DetailTile extends StatelessWidget {
       padding: _padding,
       decoration: BoxDecoration(
         color: ZyraColors.cardSurface,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: ZyraColors.surfaceBorder),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x142B2420),
+            blurRadius: 14,
+            offset: Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -446,6 +463,113 @@ class _DetailTile extends StatelessWidget {
           const SizedBox(height: _gap),
           _text(context, fact.$2, _valueStyle),
         ],
+      ),
+    ),
+  );
+}
+
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({
+    super.key,
+    required this.availableTextWidth,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    this.trailing,
+    this.onTap,
+  });
+
+  final IconData icon;
+  final double availableTextWidth;
+  final String title;
+  final String subtitle;
+  final String? trailing;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) => Material(
+    color: ZyraColors.ivoryTop,
+    borderRadius: BorderRadius.circular(16),
+    child: InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        child: Row(
+          children: [
+            Icon(icon, color: ZyraColors.journeyGold, size: 22),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Builder(
+                builder: (context) {
+                  final scale = MediaQuery.textScalerOf(context).scale(1);
+                  final stackVerified =
+                      trailing != null && availableTextWidth < 250 * scale;
+                  final titleText = Text(
+                    title,
+                    softWrap: true,
+                    style: ZyraText.body(size: 15, color: ZyraColors.espresso),
+                  );
+                  final verifiedText = trailing == null
+                      ? null
+                      : Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.check,
+                              size: 16,
+                              color: Color(0xFF2D704C),
+                            ),
+                            const SizedBox(width: 4),
+                            Flexible(
+                              child: Text(
+                                trailing!,
+                                softWrap: true,
+                                style: ZyraText.body(
+                                  size: 12,
+                                  color: const Color(0xFF2D704C),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (stackVerified) ...[
+                        titleText,
+                        const SizedBox(height: 3),
+                        verifiedText!,
+                      ] else
+                        Row(
+                          children: [
+                            Expanded(child: titleText),
+                            const SizedBox(width: 4),
+                            if (verifiedText != null)
+                              verifiedText
+                            else
+                              const Icon(
+                                Icons.chevron_right,
+                                color: ZyraColors.secondaryText,
+                              ),
+                          ],
+                        ),
+                      const SizedBox(height: 3),
+                      Text(
+                        subtitle,
+                        softWrap: true,
+                        style: ZyraText.body(
+                          size: 12,
+                          color: ZyraColors.secondaryText,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     ),
   );

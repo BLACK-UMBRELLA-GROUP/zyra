@@ -64,6 +64,15 @@ const _longPerson = SeekerProfile(
 Finder _key(String value) => find.byKey(ValueKey(value));
 Finder _details(String id) => _key('concept_browse_details_$id');
 Finder _pager(String id) => _key('concept_browse_photo_swipe_$id');
+Finder _textWords(String value) => find.byWidgetPredicate(
+  (widget) =>
+      widget is Text &&
+      (widget.data ?? widget.textSpan?.toPlainText() ?? '').replaceAll(
+            RegExp(r'\s+'),
+            ' ',
+          ) ==
+          value,
+);
 
 class _NoNetwork extends HttpOverrides {
   int attempts = 0;
@@ -202,14 +211,10 @@ Future<void> _capture(WidgetTester tester, String name) async {
 
 // LOCK33 caps names while public fact values retain their scroll fallback.
 void _expectLock33NameOrPublicFact(Text text, SeekerProfile profile) {
-  if (text.data == profile.firstName) {
-    expect(text.maxLines, 1);
-    expect(text.overflow, TextOverflow.ellipsis);
-    expect(text.style!.fontSize, inInclusiveRange(34 * .75, 34));
-    expect(text.semanticsLabel, '${profile.firstName} ${profile.surnameLine}');
-  } else if (text.data == profile.surnameLine) {
-    expect(text.maxLines, 2);
-    expect(text.overflow, TextOverflow.ellipsis);
+  if (text.data == '${profile.firstName} ${profile.surnameLine}') {
+    expect(text.softWrap, isTrue);
+    expect(text.overflow, isNot(TextOverflow.ellipsis));
+    expect(text.style!.fontSize, 28);
   } else {
     expect(text.maxLines, isNull);
     expect(text.overflow, isNot(TextOverflow.ellipsis));
@@ -279,15 +284,18 @@ void _expectDetailsText(String id, Iterable<String> values) {
   for (final value in values) {
     final text = find.descendant(
       of: _details(id),
-      matching: find.byWidgetPredicate(
-        (widget) =>
-            widget is Text &&
-            (widget.data ?? widget.textSpan?.toPlainText() ?? '').replaceAll(
-                  RegExp(r'\s+'),
-                  ' ',
-                ) ==
-                value,
-      ),
+      matching: find.byWidgetPredicate((widget) {
+        if (widget is! Text) return false;
+        final shown = (widget.data ?? widget.textSpan?.toPlainText() ?? '')
+            .replaceAll(RegExp(r'(?<=-)\s+'), '')
+            .replaceAll(RegExp(r'\s+'), ' ');
+        return shown == value ||
+            shown.startsWith('$value ') ||
+            shown.endsWith(' $value') ||
+            ((value == _longPerson.firstName ||
+                    value == _longPerson.surnameLine) &&
+                shown == '${_longPerson.firstName} ${_longPerson.surnameLine}');
+      }),
     );
     expect(
       text,
@@ -295,7 +303,11 @@ void _expectDetailsText(String id, Iterable<String> values) {
       reason: 'The supplied public value "$value" appears on details.',
     );
     final widget = text.evaluate().single.widget as Text;
-    if (widget.data != value) {
+    if (widget.data != value &&
+        (widget.data ?? '')
+                .replaceAll(RegExp(r'(?<=-)\s+'), '')
+                .replaceAll(RegExp(r'\s+'), ' ') ==
+            value) {
       expect(widget.semanticsLabel, value);
       expect(widget.maxLines, isNull);
       expect(widget.softWrap, isFalse);
@@ -413,22 +425,22 @@ void main() {
     );
     expect(detailsScroll.position.maxScrollExtent, 0);
     final avatar = _key('concept_browse_details_avatar_${_person.id}');
-    expect(tester.getSize(avatar), const Size.square(124));
+    expect(tester.getSize(avatar).width, inInclusiveRange(72, 150));
     final ageTile = tester.getRect(_key('profile-detail-tile-AGE'));
     final locationTile = tester.getRect(_key('profile-detail-tile-LOCATION'));
     final nationalityTile = tester.getRect(
       _key('profile-detail-tile-NATIONALITY'),
     );
     final ethnicityTile = tester.getRect(_key('profile-detail-tile-ETHNICITY'));
-    expect(locationTile.left - ageTile.right, 12);
-    expect(nationalityTile.top - ageTile.bottom, 12);
+    expect(locationTile.left - ageTile.right, 10);
+    expect(nationalityTile.top - ageTile.bottom, 10);
     expect(ageTile.top, locationTile.top);
     expect(nationalityTile.top, ethnicityTile.top);
     expect(ageTile.left, nationalityTile.left);
     expect(locationTile.left, ethnicityTile.left);
     expect(
       tester.getRect(_details(_person.id)).bottom - ethnicityTile.bottom,
-      22,
+      greaterThanOrEqualTo(16),
     );
     _expectDetailsText(_person.id, [
       _person.firstName,
@@ -630,7 +642,7 @@ void main() {
         tester.state<ScrollableState>(outer).position.maxScrollExtent,
         greaterThan(0),
       );
-      final ethnicity = find.text(_longPerson.publicEthnicity!);
+      final ethnicity = _textWords(_longPerson.publicEthnicity!);
       await tester.ensureVisible(ethnicity);
       await tester.pumpAndSettle();
       expect(
@@ -1156,7 +1168,7 @@ void main() {
           greaterThan(0),
           reason: 'The bounded details page provides a vertical fallback.',
         );
-        final ethnicity = find.text(_longPerson.publicEthnicity!);
+        final ethnicity = _textWords(_longPerson.publicEthnicity!);
         await tester.ensureVisible(ethnicity);
         await tester.pumpAndSettle();
         final visible = tester

@@ -9,13 +9,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_circle_topics_presentation.dart';
 import 'package:zyra/dev/zyra_draft_browse_utility_presentation.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_presentation.dart';
+import 'package:zyra/dev/zyra_full_profile_preview.dart';
 import 'package:zyra/dev/zyra_draft_code_entry.dart';
 import 'package:zyra/dev/zyra_draft_journey_bio_presentation.dart';
 import 'package:zyra/dev/zyra_draft_safety_advice_presentation.dart';
 import 'package:zyra/dev/zyra_draft_timeline_presentation.dart';
 import 'package:zyra/dev/zyra_journey_peer_guardians_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_account_presentation.dart';
-import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_action.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
@@ -531,7 +531,7 @@ void _registerSeekerBasic() {
       );
       h.assertPage(page);
       final type = switch (page) {
-        'profile' => ZyraOneJourneyBrowsePresentation,
+        'profile' => ZyraFullProfilePreview,
         'compatibility' => ZyraDraftCompatibilityPresentation,
         'introductions' => ZyraRequestActivityPresentation,
         _ => EditProfileScreen,

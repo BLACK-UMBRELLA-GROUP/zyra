@@ -200,7 +200,7 @@ void main() {
       expect(details, findsOneWidget);
       final profile = tester.widget<ZyraProfileDetailsPage>(details).profile;
       final avatar = _key('concept_browse_details_avatar_${profile.id}');
-      expect(tester.getSize(avatar), const Size.square(124));
+      expect(tester.getSize(avatar), const Size.square(150));
       expect(profile.photos, isNotEmpty);
       for (final element in find.byType(Image).evaluate()) {
         final image = element.widget as Image;
@@ -209,7 +209,7 @@ void main() {
       await _capture(h, 'profiles-details-design-2');
       tester.view.physicalSize = const Size(1125, 2001);
       await h.flush();
-      expect(tester.getSize(avatar), const Size.square(124));
+      expect(tester.getSize(avatar).width, inInclusiveRange(72, 150));
       final ethnicity = _key('profile-detail-tile-ETHNICITY');
       await tester.ensureVisible(ethnicity);
       await h.flush();

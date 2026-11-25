@@ -450,7 +450,7 @@ void main() {
         await _returnPage(tester);
         await _tap(tester, 'concept_preview_profile');
         expect(find.byType(MyProfilePreviewScreen), findsOneWidget);
-        expect(find.text('Adam'), findsOneWidget);
+        expect(find.text('Adam Khan'), findsOneWidget);
         await _returnPage(tester);
         expect(find.byType(ZyraShellNavigation), findsOneWidget);
         await tester.pumpWidget(const SizedBox.shrink());
@@ -587,7 +587,7 @@ void main() {
           await tester.pumpAndSettle();
           expect(preview, findsOneWidget);
           expect(identical(tester.state(preview), state), isTrue);
-          expect(find.text('Adam'), findsOneWidget);
+          expect(find.text('Adam Khan'), findsOneWidget);
           expect(
             tester.getSemantics(
               _key('concept_browse_details_avatar_draft-self'),

@@ -328,8 +328,7 @@ void main() {
       final details = _key('concept_browse_details_${_person.id}');
       expect(details, findsOneWidget);
       for (final text in [
-        'Sara',
-        'Ahmed',
+        'Sara Ahmed',
         'AGE',
         '27',
         'LOCATION',
@@ -419,7 +418,7 @@ void main() {
           }
           final card = _key('concept_browse_details_${_person.id}');
           expect(
-            find.descendant(of: card, matching: find.text(_person.firstName)),
+            find.descendant(of: card, matching: find.text('Sara Ahmed')),
             findsOneWidget,
           );
           await _press(tester, 'concept_filters');

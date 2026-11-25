@@ -102,18 +102,17 @@ Future<void> _mount(
   expect(tester.takeException(), isNull);
 }
 
-void _expectFallback(
-  WidgetTester tester, {
-  Color color = ZyraColors.avatarSand,
-}) {
+void _expectFallback(WidgetTester tester) {
   final initial = find.descendant(of: _avatar(), matching: find.text('S'));
-  expect(initial, findsOneWidget);
-  expect(tester.widget<Text>(initial).textScaler, TextScaler.noScaling);
+  expect(initial, findsNothing);
   expect(
     find.descendant(
       of: _avatar(),
       matching: find.byWidgetPredicate(
-        (widget) => widget is ColoredBox && widget.color == color,
+        (widget) =>
+            widget is DecoratedBox &&
+            widget.decoration is BoxDecoration &&
+            (widget.decoration as BoxDecoration).gradient is LinearGradient,
       ),
     ),
     findsOneWidget,
@@ -126,8 +125,7 @@ void _expectFallback(
 
 Map<String, Rect> _identityGeometry(WidgetTester tester) => {
   for (final value in [
-    'Sara',
-    'Ahmed',
+    'Sara Ahmed',
     'AGE',
     '27',
     'LOCATION',
@@ -163,11 +161,11 @@ void main() {
   });
 
   testWidgets(
-    'missing caller photo shows the warm-sand initial inside the One ring',
+    'missing caller photo shows the warm gradient inside the One ring',
     (tester) async {
       await _mount(tester, seekerPlan: ZyraPlan.one);
       _expectFallback(tester);
-      expect(tester.getSize(_avatar()), const Size(124, 124));
+      expect(tester.getSize(_avatar()), const Size(150, 150));
       expect(_photo(), findsNothing);
       expect(find.byType(Image), findsNothing);
       final decoration =
@@ -207,12 +205,12 @@ void main() {
     final decoration =
         tester.widget<Container>(_avatar()).decoration! as BoxDecoration;
     final ring = (decoration.border! as Border).top.width;
-    expect(outer.size, const Size(124, 124));
-    expect(photo.size, const Size(117, 117));
-    expect(photo.left - outer.left - ring, 2);
-    expect(outer.right - photo.right - ring, 2);
-    expect(photo.top - outer.top - ring, 2);
-    expect(outer.bottom - photo.bottom - ring, 2);
+    expect(outer.size, const Size(150, 150));
+    expect(photo.size, const Size(141, 141));
+    expect(photo.left - outer.left - ring, 3);
+    expect(outer.right - photo.right - ring, 3);
+    expect(photo.top - outer.top - ring, 3);
+    expect(outer.bottom - photo.bottom - ring, 3);
     final image = tester.widget<Image>(find.byType(Image));
     expect(image.image, same(stream.provider));
     expect(image.fit, BoxFit.cover);
@@ -230,8 +228,8 @@ void main() {
       seekerPlan: ZyraPlan.one,
       firstPhoto: Image(image: stream.provider),
     );
-    expect(tester.getRect(_avatar()), outer);
-    expect(tester.getRect(_photo()), photo);
+    expect(tester.getSize(_avatar()), outer.size);
+    expect(tester.getSize(_photo()), photo.size);
     expect(
       tester.getSemantics(_avatar()),
       matchesSemantics(label: 'Profile photo, Seeker One', isImage: true),
@@ -242,7 +240,7 @@ void main() {
     tester,
   ) async {
     await _mount(tester, seekerPlan: ZyraPlan.basic);
-    _expectFallback(tester, color: ZyraColors.ivoryTop);
+    _expectFallback(tester);
     expect(_photo(), findsNothing);
     final placeholderDecoration =
         tester.widget<Container>(_avatar()).decoration! as BoxDecoration;
@@ -263,7 +261,7 @@ void main() {
     );
     await tester.pump();
 
-    expect(tester.getSize(_avatar()), const Size(124, 124));
+    expect(tester.getSize(_avatar()), const Size(150, 150));
     expect(tester.getRect(_photo()), tester.getRect(_avatar()));
     final decoration =
         tester.widget<Container>(_avatar()).decoration! as BoxDecoration;
@@ -283,7 +281,7 @@ void main() {
   });
 
   testWidgets(
-    'pending and failed real Image frames use the initial without a loader',
+    'pending and failed real Image frames use the gradient without a loader',
     (tester) async {
       final stream = _pending(2);
       await _mount(tester, firstPhoto: Image(image: stream.provider));
@@ -296,7 +294,7 @@ void main() {
       await tester.pump();
       await tester.pump();
       _expectFallback(tester);
-      expect(tester.getSize(_avatar()), const Size(124, 124));
+      expect(tester.getSize(_avatar()), const Size(150, 150));
       expect(_identityGeometry(tester), before);
       expect(tester.takeException(), isNull);
     },

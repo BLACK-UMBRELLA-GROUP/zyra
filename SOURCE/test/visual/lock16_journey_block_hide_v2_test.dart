@@ -60,8 +60,8 @@ Future<void> _cap(BaselineHarness h, String name) async {
 
 Future<void> _open(BaselineHarness h, {required bool hide}) async {
   if (find.byType(ZyraDraftReportPresentation).evaluate().isEmpty) {
-    if (_k('draft_safety').evaluate().isNotEmpty) {
-      await h.tap('draft_safety');
+    if (_k('full_profile_options').evaluate().isNotEmpty) {
+      await _openProfileReport(h);
     } else {
       final button = h.tester.widget<ZyraBrowseOptionsButton>(
         find.byType(ZyraBrowseOptionsButton).first,
@@ -72,6 +72,12 @@ Future<void> _open(BaselineHarness h, {required bool hide}) async {
     }
   }
   await h.tap(hide ? 'draft_safety_hide' : 'draft_safety_block');
+}
+
+Future<void> _openProfileReport(BaselineHarness h) async {
+  await h.tap('full_profile_options');
+  await h.tap('full_profile_option_report');
+  await h.flush();
 }
 
 Future<void> _nav(BaselineHarness h, String label) async {
@@ -120,7 +126,7 @@ void main() {
               initialSeekerBasic: basic,
               seekerMembership: basic ? 'Seeker Basic' : 'Seeker One',
             );
-            await h.tap('draft_safety');
+            await _openProfileReport(h);
             await h.tap('draft_report_reason_fakeProfile');
             final before = h.latest.model;
             await _open(h, hide: hide);
@@ -228,7 +234,7 @@ void main() {
     (t) async {
       final h = _h(t);
       await h.mount(tab: 1, pages: ['profile'], model: _fixture());
-      await h.tap('draft_safety');
+      await _openProfileReport(h);
       await h.tap('draft_report_reason_fakeProfile');
       final before = h.latest.model;
       await _open(h, hide: false);
@@ -272,7 +278,7 @@ void main() {
         if (route == 'journey_options') {
           await h.tap('draft_options_report_$_sara');
         } else if (route == 'profile') {
-          await h.tap('draft_safety');
+          await _openProfileReport(h);
         } else {
           final button = t.widget<ZyraBrowseOptionsButton>(
             find.byType(ZyraBrowseOptionsButton).first,

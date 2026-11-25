@@ -855,7 +855,7 @@ void main() {
             .getSemanticsData();
         expect(returnSemantics.hasAction(ui.SemanticsAction.dismiss), isTrue);
         await Scrollable.ensureVisible(
-          tester.element(find.text('Amina Mariam')),
+          tester.element(find.text('Amina Mariam Rahman Hussain')),
           alignment: .5,
         );
         await tester.pumpAndSettle();

@@ -812,14 +812,64 @@ void main() {
       expect(find.text('Put forward by Khadija · Mother'), findsOneWidget);
       await _tap(tester, find.text('Noor Patel'));
       await _tap(tester, find.text('View profile'));
-      expect(find.text('Noor'), findsOneWidget);
+      expect(find.text('Noor Patel'), findsOneWidget);
       _samples.clear();
       await tester.pumpAndSettle();
-      expect(find.text('Noor'), findsNothing);
+      expect(find.text('Noor Patel'), findsNothing);
       expect(tester.takeException(), isNull);
     }, network);
     expect(network.attempts, 0);
   });
+
+  testWidgets(
+    'sample full profile opens compatibility and hides across lists',
+    (tester) async {
+      await tester.runAsync(() async => _bind(capacity: 3));
+      _samples.setIntroductions(1);
+      _samples.setReceived(1);
+      final noor = _samples.introductionRows!.single;
+      final amira = _samples.receivedRows!.single;
+      expect(amira.suggestedByOwnGuardian, isTrue);
+      expect(_samples.profileFor(noor).publicNationality, isNotNull);
+      expect(_samples.profileFor(noor).publicEthnicity, isNotNull);
+      await _mount(
+        tester,
+        Scaffold(
+          body: ZyraSampleIntroductionsList(wrapTitle: (title) => title),
+        ),
+      );
+      await _tap(tester, find.text('Noor Patel'));
+      await _tap(tester, find.text('View profile'));
+      await _tap(tester, find.text('Compatibility score'));
+      expect(find.text('Unlock compatibility'), findsOneWidget);
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+      await _tap(tester, find.byKey(const ValueKey('full_profile_options')));
+      await _tap(tester, find.text('Report Noor'));
+      expect(find.text('Submit report'), findsOneWidget);
+      await _tap(tester, find.text('Submit report'));
+      expect(
+        find.text('Your report about Noor has been sent.'),
+        findsOneWidget,
+      );
+      await _tap(tester, find.text('Done'));
+      await _tap(tester, find.byKey(const ValueKey('full_profile_options')));
+      await _tap(tester, find.text('Hide Noor'));
+      expect(_samples.isSampleProfileExcluded(noor.id), isTrue);
+      expect(_samples.sampleHiddenPeers, contains(noor.id));
+      expect(_samples.introductionRows, isEmpty);
+      expect(find.text('Noor Patel'), findsNothing);
+      expect(_samples.unhideSampleProfile(noor.id), isTrue);
+      expect(_samples.introductionRows, [noor]);
+      expect(_samples.blockSampleProfile(noor), isTrue);
+      expect(_samples.sampleBlockedPeers, contains(noor.id));
+      expect(_samples.unblockSampleProfile(noor.id), isTrue);
+      expect(_samples.isSampleProfileExcluded(noor.id), isFalse);
+      _samples.clear();
+      expect(_samples.isSampleProfileExcluded(noor.id), isFalse);
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets('ordinary My ZYRA projects sample counts and Needs you', (
     tester,

@@ -10,9 +10,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_presentation.dart';
+import 'package:zyra/dev/zyra_full_profile_preview.dart';
 import 'package:zyra/dev/zyra_draft_journey_bio_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
-import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_journey_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_options.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
@@ -676,8 +676,8 @@ void main() {
           option == 'profile' ? 'profile' : 'safety',
         ]);
         if (option == 'profile') {
-          final profile = tester.widget<ZyraOneJourneyBrowsePresentation>(
-            find.byType(ZyraOneJourneyBrowsePresentation),
+          final profile = tester.widget<ZyraFullProfilePreview>(
+            find.byType(ZyraFullProfilePreview),
           );
           expect(profile.profile.id, _sara);
         } else {

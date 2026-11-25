@@ -85,7 +85,7 @@ class ZyraGuardianActionPage extends StatelessWidget {
             (
               Icons.person_outline,
               '$seekerName sees $personName in $his Introductions',
-              'Marked “Suggested by Hassan”.',
+              'Marked “Put forward by Hassan”.',
             ),
             (
               Icons.send,

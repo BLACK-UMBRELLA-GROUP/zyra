@@ -56,6 +56,10 @@ class SeekerProfile {
   /// no plan to disclose. This display value does not grant access.
   final ZyraPlan? seekerPlan;
 
+  /// Public Guardian relationship in the detached Founder sample. Null when
+  /// the caller has no authorised relationship to display.
+  final String? mainGuardianRelationship;
+
   /// 2026-07-27 (Founder: "zyra one account users can upload a video...
   /// maybe for on account show how the video will look and on the left
   /// side dots area... for a video its a play button"). Mock/UI-demo
@@ -88,6 +92,7 @@ class SeekerProfile {
     this.publicNationality,
     this.publicEthnicity,
     this.seekerPlan,
+    this.mainGuardianRelationship,
     this.videoPhotoIndex,
     this.alreadyLikedYou = false,
   });
@@ -113,6 +118,7 @@ class SeekerProfile {
     publicNationality: publicNationality,
     publicEthnicity: publicEthnicity,
     seekerPlan: seekerPlan,
+    mainGuardianRelationship: mainGuardianRelationship,
     videoPhotoIndex: videoPhotoIndex,
     alreadyLikedYou: alreadyLikedYou,
     photoOne: photo,

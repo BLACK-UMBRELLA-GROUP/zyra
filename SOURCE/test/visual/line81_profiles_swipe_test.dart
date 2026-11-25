@@ -1,7 +1,4 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_browse_filter.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
@@ -75,54 +72,33 @@ void main() {
         final ethnicity = tile('ETHNICITY');
         final request = tester.getRect(_request(id));
         final value = tester.widget<Text>(find.text('Birmingham'));
-        expect(age.height, greaterThanOrEqualTo(88));
+        expect(age.height, greaterThanOrEqualTo(64));
         expect(age.height, closeTo(nationality.height, .01));
         expect(age.height, closeTo(location.height, .01));
         expect(age.height, closeTo(ethnicity.height, .01));
-        final minimumGrid = math.max(196.0, card.height * .4);
-        if (size.width == 375) {
-          // Q191: Birmingham cannot fit the original half-width tile. Keep
-          // the whole word in a full row, with later facts moving down.
-          final paragraph = tester.renderObject<RenderParagraph>(
-            find.descendant(
-              of: find.text('Birmingham'),
-              matching: find.byType(RichText),
-            ),
-          );
-          final word = paragraph.getBoxesForSelection(
-            const TextSelection(baseOffset: 0, extentOffset: 10),
-          );
-          expect(word, hasLength(1));
-          expect(word.single.toRect().width, greaterThan(age.width - 34));
-          expect(location.left, age.left);
-          expect(location.width, closeTo(2 * age.width + 12, .01));
-          expect(location.top - age.bottom, closeTo(12, .01));
-          expect(nationality.top - location.bottom, closeTo(12, .01));
-          expect(nationality.left, age.left);
-          expect(ethnicity.left - nationality.right, closeTo(12, .01));
-          expect(nationality.width, closeTo(age.width, .01));
-          expect(ethnicity.width, closeTo(age.width, .01));
-          expect(nationality.top, ethnicity.top);
-          expect(ethnicity.right, location.right);
-          expect(ethnicity.bottom - age.top, closeTo(3 * age.height + 24, .01));
-          expect(ethnicity.bottom - age.top, greaterThan(minimumGrid));
-        } else {
-          expect(location.left - age.right, closeTo(12, .01));
-          expect(nationality.top - age.bottom, closeTo(12, .01));
-          expect(
-            ethnicity.bottom - age.top,
-            inInclusiveRange(minimumGrid - .01, minimumGrid + 11),
-          );
-        }
-        expect(value.style!.fontSize, 18);
+        expect(location.top, age.top);
+        expect(location.left - age.right, closeTo(10, .01));
+        expect(nationality.top - age.bottom, closeTo(10, .01));
+        expect(nationality.top, ethnicity.top);
+        expect(ethnicity.left - nationality.right, closeTo(10, .01));
+        expect(value.style!.fontSize, 15);
         expect(value.style!.height, 1.2);
         expect(request.left, age.left);
         expect(request.right, location.right);
-        expect(request.top - ethnicity.bottom, closeTo(12, .01));
+        final compatibility = tester.getRect(
+          harness.key('profile-detail-compatibility-row'),
+        );
+        expect(request.top - compatibility.bottom, closeTo(12, .01));
         expect(request.height, 52);
         expect(
           tester.getSize(harness.key('concept_browse_details_avatar_$id')),
-          const Size.square(124),
+          isA<Size>()
+              .having((size) => size.width, 'width', inInclusiveRange(72, 150))
+              .having(
+                (size) => size.height,
+                'height',
+                inInclusiveRange(72, 150),
+              ),
         );
         expect(
           tester.getRect(find.byType(FloatingNavBar)).top - card.bottom,

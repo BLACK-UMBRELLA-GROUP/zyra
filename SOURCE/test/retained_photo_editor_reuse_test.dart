@@ -1011,7 +1011,7 @@ void main() {
       );
       photos.clear();
       expect(find.byType(ZyraBrowseDesigns), findsOneWidget);
-      expect(find.text('Amina'), findsOneWidget);
+      expect(find.text('Amina Rahman'), findsOneWidget);
       expect(find.text('Unchanged member'), findsNothing);
       expect(find.byKey(const ValueKey('seeker-profile-close')), findsNothing);
       expect(

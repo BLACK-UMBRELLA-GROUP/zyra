@@ -147,6 +147,15 @@ The focused checks are in `test/zyra_privacy_security_preview_test.dart`,
 `test/visual/line134_privacy_security_capture_test.dart`. The 430 × 932
 captures stay under `build/line134/screens`.
 
+## Founder preview full profiles
+
+Profiles and full profiles share the LOCK 4 V5 card, including Main Guardian
+and Compatibility rows. Full profiles use the entry's title and current
+Journey or request action. Tap the card to step through its photo pages.
+At Larger Text, a fact tile takes the full row when a whole word cannot fit
+its half-width tile; words, including hyphenated places, stay intact.
+These routes use local Founder sample state.
+
 ## Founder preview Membership
 
 LOCK 42 replaces Profile → Membership for Seeker One and Guardian One. The

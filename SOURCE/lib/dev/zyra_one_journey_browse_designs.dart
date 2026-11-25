@@ -63,6 +63,7 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
     this.onGalleryIndexChanged,
     this.profileVideo,
     this.verifyPhotosPill = false,
+    this.onCompatibility,
   });
 
   final List<SeekerProfile> profiles;
@@ -100,6 +101,7 @@ class ZyraOneJourneyBrowseDesigns extends StatefulWidget {
   final void Function(String, int)? onGalleryIndexChanged;
   final ZyraProfileVideoPlayback? profileVideo;
   final bool verifyPhotosPill;
+  final ValueChanged<SeekerProfile>? onCompatibility;
 
   @override
   State<ZyraOneJourneyBrowseDesigns> createState() =>
@@ -134,6 +136,7 @@ class _ZyraOneJourneyBrowseDesignsState
     onFilters: widget.onFilters,
     onBrowseMenu: widget.onBrowseMenu,
     onProfile: widget.onProfile,
+    onCompatibility: widget.onCompatibility,
     onRequest: widget.onRequest,
     requestLabel: widget.requestLabel,
     requestSemanticLabel: widget.requestSemanticLabel,

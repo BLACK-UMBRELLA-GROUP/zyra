@@ -469,8 +469,7 @@ void main() {
       scale: 1.4,
     );
     _expectTitle(tester);
-    expect(find.text('Aisha Mariam'), findsOneWidget);
-    expect(find.text('Abdul Rahman Ahmed'), findsOneWidget);
+    expect(find.text('Aisha Mariam Abdul Rahman Ahmed'), findsOneWidget);
     await _press(tester, 'draft_profile_portrait-sara');
     expect(requests, ['portrait-sara']);
     await _press(tester, 'concept_next_profile');

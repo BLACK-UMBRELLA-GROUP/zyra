@@ -13,9 +13,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
 import 'package:zyra/dev/zyra_draft_browse_utility_presentation.dart';
 import 'package:zyra/dev/zyra_draft_compatibility_presentation.dart';
+import 'package:zyra/dev/zyra_full_profile_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
-import 'package:zyra/dev/zyra_one_journey_discovery_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_tab.dart';
 import 'package:zyra/dev/zyra_one_journey_options_page.dart';
 import 'package:zyra/dev/zyra_one_journey_options.dart';
@@ -545,8 +545,8 @@ void main() {
           case 'profile':
             expect(
               tester
-                  .widget<ZyraOneJourneyBrowsePresentation>(
-                    find.byType(ZyraOneJourneyBrowsePresentation),
+                  .widget<ZyraFullProfilePreview>(
+                    find.byType(ZyraFullProfilePreview),
                   )
                   .profile
                   .id,

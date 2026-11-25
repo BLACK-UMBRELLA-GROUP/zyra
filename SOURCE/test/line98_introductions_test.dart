@@ -193,10 +193,10 @@ void main() {
         find.byKey(const ValueKey('sample-introduction-draft-noor-header')),
       );
       await _tap(tester, find.text('View profile'));
-      expect(find.text('Noor'), findsOneWidget);
+      expect(find.text('Noor Patel'), findsOneWidget);
       _samples.clear();
       await tester.pumpAndSettle();
-      expect(find.text('Noor'), findsNothing);
+      expect(find.text('Noor Patel'), findsNothing);
       expect(tester.takeException(), isNull);
     },
   );

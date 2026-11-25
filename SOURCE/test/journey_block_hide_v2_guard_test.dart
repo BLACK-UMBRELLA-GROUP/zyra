@@ -70,6 +70,7 @@ class _GuardHarness {
   _GuardHarness(this.tester);
   final WidgetTester tester;
   final navigator = GlobalKey<NavigatorState>();
+  final fixture = ZyraShellTestFixture();
   bool ownerAdmitted = true;
   late BuildContext routeContext;
   late ZyraPreviewNavigationCheckpoint latest;
@@ -115,7 +116,7 @@ class _GuardHarness {
           builder: (context) {
             routeContext = context;
             return ZyraOneJourneyConceptShell(
-              fixture: ZyraShellTestFixture().fixture,
+              fixture: fixture.fixture,
               canAct: () => ownerAdmitted && routeCurrent,
               canActInOwnedDialog: () => ownerAdmitted,
               onExit: () => fail('Safety action must remain in the preview.'),
@@ -139,10 +140,26 @@ class _GuardHarness {
     expect(ready.isCompleted, isTrue);
     await flush();
     expect(routeCurrent, isTrue);
-    await tap('draft_safety');
+    await tap('full_profile_options');
+    await tap('full_profile_option_report');
     expect(latest.pages.last, 'safety');
+    await flush();
     expect(
-      tester.widget<OutlinedButton>(_key('draft_report_submit')).onPressed,
+      routeCurrent,
+      isTrue,
+      reason: 'Report page must own the route after Options closes.',
+    );
+    expect(
+      fixture.current,
+      isTrue,
+      reason: 'Report fixture commands must remain admitted.',
+    );
+    expect(
+      tester
+          .widget<ZyraDraftReportPresentation>(
+            find.byType(ZyraDraftReportPresentation),
+          )
+          .onSubmit,
       isNotNull,
     );
   }

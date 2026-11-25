@@ -94,26 +94,35 @@ void main() {
                     child: ZyraProfileNameBlock(profile: profile),
                   ),
           );
-          final text = tester.widget<Text>(find.text(first));
-          final base = details ? 34.0 : 30.0;
-          expect(text.maxLines, 1);
-          expect(text.overflow, TextOverflow.ellipsis);
-          expect(text.style!.fontSize, inInclusiveRange(base * .75, base));
-          expect(text.semanticsLabel, '$first $surname');
-          final sur = tester.widget<Text>(find.text(surname));
-          expect(sur.maxLines, 2);
-          expect(sur.overflow, TextOverflow.ellipsis);
-          final paragraph = tester.renderObject<RenderParagraph>(
-            find.descendant(
-              of: find.text(surname),
-              matching: find.byType(RichText),
-            ),
-          );
-          expect(
-            paragraph.size.height,
-            lessThanOrEqualTo((sur.style!.fontSize! * 1.5) * 2 + 1),
-          );
-          expect(find.bySemanticsLabel('$first $surname'), findsOneWidget);
+          if (details) {
+            // LOCK 4 V5 makes the full identity one wrapping line of text.
+            // LOCK 33's separate ellipsis rule remains on photo pages.
+            final identity = tester.widget<Text>(find.text('$first $surname'));
+            expect(identity.softWrap, isTrue);
+            expect(identity.maxLines, isNull);
+            expect(identity.overflow, isNull);
+            expect(identity.style!.fontSize, 28);
+          } else {
+            final text = tester.widget<Text>(find.text(first));
+            expect(text.maxLines, 1);
+            expect(text.overflow, TextOverflow.ellipsis);
+            expect(text.style!.fontSize, inInclusiveRange(22.5, 30));
+            expect(text.semanticsLabel, '$first $surname');
+            final sur = tester.widget<Text>(find.text(surname));
+            expect(sur.maxLines, 2);
+            expect(sur.overflow, TextOverflow.ellipsis);
+            final paragraph = tester.renderObject<RenderParagraph>(
+              find.descendant(
+                of: find.text(surname),
+                matching: find.byType(RichText),
+              ),
+            );
+            expect(
+              paragraph.size.height,
+              lessThanOrEqualTo((sur.style!.fontSize! * 1.5) * 2 + 1),
+            );
+            expect(find.bySemanticsLabel('$first $surname'), findsOneWidget);
+          }
           if (_capture && first == 'Fatima-Zahra') {
             final boundary = tester.renderObject<RenderRepaintBoundary>(
               find.byKey(_boundary),

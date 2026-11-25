@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../data/zyra_journey_stages.dart';
 import '../../dev/zyra_draft_timeline_presentation.dart';
+import '../../dev/zyra_full_profile_preview.dart';
+import '../../dev/zyra_draft_browse_utility_presentation.dart';
+import '../../dev/zyra_draft_compatibility_presentation.dart';
+import '../../dev/zyra_draft_compatibility_preview.dart';
+import '../../dev/zyra_help_safety_preview.dart';
 import '../../dev/zyra_draft_timeline_preview.dart';
 import '../../dev/zyra_one_journey_discovery_presentation.dart';
 import '../../dev/zyra_request_activity_presentation.dart';
@@ -15,10 +20,161 @@ import '../../widgets/zyra_confirm_sheet.dart';
 import '../../widgets/zyra_developer_title.dart';
 import '../../widgets/zyra_floating_surface.dart';
 import '../../widgets/zyra_profile_image.dart';
-import '../profile/seeker_profile_screen.dart';
 import 'connections_section_controller.dart';
 
 final _samples = ZyraDeveloperSamples.instance;
+
+void _sampleCompatibility(
+  BuildContext context,
+  DraftProfile person,
+  bool Function() current,
+) {
+  if (!current()) return;
+  Navigator.of(context).push<void>(
+    MaterialPageRoute<void>(
+      builder: (_) => Scaffold(
+        body: _SamplePageCanvas(
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+              child: ZyraDraftCompatibilityPresentation(
+                personName: person.firstName,
+                balance: 0,
+                overallScore: ZyraDraftCompatibilityPreview(
+                  person.id,
+                  balance: 0,
+                ).overallScore,
+                revealed: false,
+                canAct: current,
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Future<void> _sampleProfileOption(
+  BuildContext profileContext,
+  BuildContext originContext,
+  DraftProfile person,
+  ZyraFullProfileOption option,
+  bool Function() current,
+) async {
+  if (!current() || !_samples.isSampleProfileVisible(person.id)) return;
+  final lease = _samples.generation;
+  if (option == ZyraFullProfileOption.report) {
+    Navigator.of(profileContext).push<void>(
+      MaterialPageRoute<void>(
+        builder: (reportContext) => Scaffold(
+          body: _SamplePageCanvas(
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+                child: ZyraDraftReportPresentation(
+                  profile: _samples.profileFor(person),
+                  ownerIdentity: (_samples.generation, person.id),
+                  canSelect: current,
+                  onSubmit: () {
+                    if (!current()) return;
+                    Navigator.of(reportContext).push<void>(
+                      MaterialPageRoute<void>(
+                        builder: (doneContext) => Scaffold(
+                          body: _SamplePageCanvas(
+                            child: ZyraHelpSafetyPreview(
+                              screen: ZyraHelpSafetyScreen.reportSent,
+                              guardian: false,
+                              firstName: '',
+                              reportedName: person.firstName,
+                              onReportDone: () {
+                                if (!current()) return;
+                                Navigator.of(doneContext).pop();
+                                Navigator.of(reportContext).pop();
+                              },
+                              onBlockReported: () {
+                                if (!current()) return;
+                                Navigator.of(doneContext).pop();
+                                Navigator.of(reportContext).pop();
+                                _sampleProfileOption(
+                                  profileContext,
+                                  originContext,
+                                  person,
+                                  ZyraFullProfileOption.block,
+                                  current,
+                                );
+                              },
+                              onContactSent: () {},
+                              onOpenData: () {},
+                              onOpenDelete: () {},
+                              onRequestData: () {},
+                              onDelete: () {},
+                              onClose: () {},
+                              onDone: () {},
+                              onLegal: (_) {},
+                              onSubscriptions: () {},
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    return;
+  }
+  final hide = option == ZyraFullProfileOption.hide;
+  final journey = (_samples.activeRows ?? const <ZyraSampleJourney>[])
+      .where((row) => row.person.id == person.id)
+      .firstOrNull;
+  if (journey != null) {
+    final confirmed = await showZyraConfirm(
+      context: profileContext,
+      title:
+          '${hide ? 'Hide' : 'Block'} ${person.firstName} and end your Journey?',
+      body: hide
+          ? 'Hiding ends this Journey permanently first. Your Timeline stays. ${person.firstName} won’t appear again. You can undo this in Settings → Hidden and blocked.'
+          : 'Blocking ends this Journey permanently first. Your Timeline stays. ${person.firstName} can’t see or contact you and won’t be told you blocked them.',
+      primaryLabel: hide ? 'End Journey and hide' : 'End Journey and block',
+      secondaryLabel: 'Keep this Journey',
+      canConfirm: () =>
+          current() && (_samples.activeRows?.contains(journey) ?? false),
+      visibilityListenable: _samples,
+      isVisible: current,
+    );
+    if (!profileContext.mounted ||
+        confirmed != true ||
+        !current() ||
+        !_samples.endActive(journey)) {
+      return;
+    }
+  }
+  if (!profileContext.mounted || !_samples.isCurrentLease(lease)) {
+    return;
+  }
+  final changed = hide
+      ? _samples.hideSampleProfile(person)
+      : _samples.blockSampleProfile(person);
+  if (!changed) return;
+  Navigator.of(profileContext).pop();
+  if (originContext.mounted) {
+    _notice(
+      originContext,
+      journey == null
+          ? hide
+                ? 'Hidden. You can show them again in Settings → Hidden and blocked.'
+                : 'Blocked. They can no longer see you or contact you.'
+          : hide
+          ? 'Your Journey with ${person.firstName} has ended. ${person.firstName} won’t appear again.'
+          : 'Your Journey with ${person.firstName} has ended and ${person.firstName} is blocked.',
+    );
+  }
+}
 
 bool _foreground(BuildContext context) =>
     context.mounted && (ModalRoute.of(context)?.isCurrent ?? true);
@@ -28,20 +184,49 @@ void _showProfile(
   DraftProfile person,
   bool Function() current, {
   String? suggestedBy,
+  ZyraFullProfileSituation situation = ZyraFullProfileSituation.general,
+  VoidCallback? onAction,
+  VoidCallback? onSecondary,
 }) {
   if (!_foreground(context) || !current()) return;
+  final originContext = context;
   Navigator.of(context).push<void>(
     MaterialPageRoute<void>(
-      fullscreenDialog: true,
+      fullscreenDialog: false,
       builder: (_) => ListenableBuilder(
         listenable: _samples,
         builder: (context, _) => !current()
             ? const Scaffold(body: _SampleBack())
-            : SeekerProfileScreen(
+            : ZyraFullProfilePreview(
                 profile: _samples.profileFor(person),
-                suggestedBy: suggestedBy,
-                swipeDownToDismiss: true,
+                situation: situation,
+                introductionByline: suggestedBy,
                 canAct: current,
+                photoBuilder:
+                    (
+                      context,
+                      source, {
+                      required width,
+                      required height,
+                      required alignment,
+                    }) => ZyraProfileImage(
+                      source.startsWith('data:image/') ? source : '',
+                      width: width,
+                      height: height,
+                      fit: BoxFit.cover,
+                      alignment: alignment,
+                    ),
+                onAction: onAction,
+                onSecondary: onSecondary,
+                onCompatibility: () =>
+                    _sampleCompatibility(context, person, current),
+                onOption: (option) => _sampleProfileOption(
+                  context,
+                  originContext,
+                  person,
+                  option,
+                  current,
+                ),
               ),
       ),
     ),
@@ -177,7 +362,9 @@ class _ZyraDeveloperJourneyRequestsScreenState
       headerKey: ValueKey('$id-header'),
       profile: _samples.profileFor(request.person),
       subtitle: request.incoming
-          ? 'Journey request'
+          ? request.suggestedByOwnGuardian
+                ? 'Suggested by ${request.person.firstName}’s Guardian'
+                : 'Journey request'
           : expiry == null
           ? 'Waiting for a response'
           : 'Request sent. It expires on ${MaterialLocalizations.of(context).formatMediumDate(expiry.toLocal())}.',
@@ -195,7 +382,46 @@ class _ZyraDeveloperJourneyRequestsScreenState
       primary: ZyraOneJourneyConnectionsAction(
         label: 'View profile',
         icon: Icons.visibility_outlined,
-        onTap: () => _showProfile(context, request.person, present),
+        onTap: () => _showProfile(
+          context,
+          request.person,
+          present,
+          situation: request.incoming
+              ? ZyraFullProfileSituation.received
+              : ZyraFullProfileSituation.sent,
+          onAction: request.incoming && _samples.canAccept(request)
+              ? () {
+                  if (!present()) return;
+                  Navigator.of(context).pop();
+                  _accept(request);
+                }
+              : null,
+          onSecondary: request.incoming
+              ? () async {
+                  if (!present()) return;
+                  final confirmed = await showZyraConfirm(
+                    context: context,
+                    title: 'Decline this request?',
+                    body: 'This Journey request moves to Past.',
+                    primaryLabel: 'Decline',
+                    secondaryLabel: 'Keep request',
+                    canConfirm: present,
+                    visibilityListenable: _samples,
+                    isVisible: visible,
+                  );
+                  if (!mounted ||
+                      !context.mounted ||
+                      confirmed != true ||
+                      !present()) {
+                    return;
+                  }
+                  if (_samples.declineOrCancel(request)) {
+                    Navigator.of(context).pop();
+                    _expansion.close(id);
+                  }
+                }
+              : null,
+        ),
       ),
       actions: [
         if (request.incoming)
@@ -953,7 +1179,17 @@ class ZyraSampleActiveJourneyCard extends StatelessWidget {
       actions: Row(
         children: [
           TextButton(
-            onPressed: () => _showProfile(context, row.person, present),
+            onPressed: () => _showProfile(
+              context,
+              row.person,
+              present,
+              situation: ZyraFullProfileSituation.journey,
+              onAction: () {
+                if (!present()) return;
+                Navigator.of(context).pop();
+                _openSampleJourney(context, row);
+              },
+            ),
             child: const Text('View profile'),
           ),
           TextButton(
@@ -1073,6 +1309,25 @@ class _ZyraSampleIntroductionsListState
           present,
           suggestedBy:
               '${introduction.guardianName} · ${introduction.relation}',
+          situation: ZyraFullProfileSituation.introduction,
+          onAction: () {
+            if (!present() || !_samples.requestIntroduction(person)) return;
+            Navigator.of(context).pop();
+            _expansion.collapseAll();
+            _notice(
+              context,
+              'Request sent to ${person.firstName}. It’s in Journey requests → Sent.',
+            );
+          },
+          onSecondary: () {
+            if (!present() || !_samples.declineIntroduction(person)) return;
+            Navigator.of(context).pop();
+            _expansion.collapseAll();
+            _notice(
+              context,
+              'Declined. ${introduction.guardianName} sees “Not taken forward”.',
+            );
+          },
         ),
       ),
       actions: [

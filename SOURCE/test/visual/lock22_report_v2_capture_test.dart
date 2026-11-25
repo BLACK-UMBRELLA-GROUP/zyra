@@ -73,6 +73,12 @@ Future<void> _cap(BaselineHarness h, String name, {bool narrow = false}) async {
 }
 
 Future<void> _openReport(BaselineHarness h) async {
+  if (_k('full_profile_options').evaluate().isNotEmpty) {
+    await h.tap('full_profile_options');
+    await h.tap('full_profile_option_report');
+    await h.flush();
+    return;
+  }
   if (_k('draft_safety').evaluate().isNotEmpty) {
     await h.tap('draft_safety');
     return;

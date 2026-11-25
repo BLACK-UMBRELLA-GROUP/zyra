@@ -36,7 +36,7 @@ void main() {
   });
 
   testWidgets(
-    'Founder Settings stays dark and full-screen profile photos use light icons',
+    'Founder Settings and inset full-profile photos keep dark icons on ivory',
     (tester) async {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
@@ -46,7 +46,9 @@ void main() {
       await h.mount(tab: 4, pages: ['settings']);
       _expectDark(tester);
       await h.mount(tab: 0, pages: ['profile']);
-      _expectLight(tester);
+      _expectDark(tester);
+      await h.tap('full_profile_card');
+      _expectDark(tester);
     },
   );
 

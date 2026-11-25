@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'support/zyra_hidden_dev_controls_driver.dart';
 import 'package:zyra/dev/zyra_journey_peer_guardians_presentation.dart';
+import 'package:zyra/dev/zyra_full_profile_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_browse_designs.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_privacy_security_preview.dart';
@@ -28,7 +29,6 @@ import 'package:zyra/state/app_state.dart';
 import 'package:zyra/theme/zyra_interaction_style.dart';
 import 'package:zyra/theme/zyra_text.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
-import 'package:zyra/widgets/zyra_profile_image.dart';
 
 class _NoNetwork extends HttpOverrides {
   int attempts = 0;
@@ -1188,7 +1188,7 @@ void main() {
     expect(owner.latest.photoIndices, isEmpty);
   });
 
-  testWidgets('profile leaf resumes its photo on the first prepared frame', (
+  testWidgets('LOCK41 profile leaf resumes on the shared details page', (
     tester,
   ) async {
     final owner = _Owner();
@@ -1202,20 +1202,14 @@ void main() {
       ),
       settle: false,
     );
-    final photo = tester.widget<ZyraOneJourneyBrowsePresentation>(
-      find.byType(ZyraOneJourneyBrowsePresentation),
+    final profile = tester.widget<ZyraFullProfilePreview>(
+      find.byType(ZyraFullProfilePreview),
     );
-    expect(photo.profile.id, 'draft-sara');
-    expect(photo.profile.photos.length, greaterThan(1));
-    final painted = find.descendant(
-      of: find.byType(ZyraOneJourneyBrowsePresentation),
-      matching: find.byType(ZyraProfileImage),
-    );
-    expect(painted, findsOneWidget);
-    expect(
-      tester.widget<ZyraProfileImage>(painted).photo,
-      photo.profile.photos[1],
-    );
+    expect(profile.profile.id, 'draft-sara');
+    expect(profile.profile.photos.length, greaterThan(1));
+    expect(profile.initialPage, 0);
+    expect(owner.latest.photoIndices['draft-sara'], 1);
+    expect(find.byKey(const ValueKey('full_profile_details')), findsOneWidget);
   });
 
   testWidgets('fresh generic page restores the exact scrolled position', (

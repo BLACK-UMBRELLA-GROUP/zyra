@@ -458,8 +458,8 @@ Map<String, double> _verifySpacing(
         ),
       );
       gap(
-        'tiles to request',
-        _key('profile-detail-tile-ETHNICITY'),
+        'compatibility row to request',
+        _key('profile-detail-compatibility-row'),
         request,
         12,
       );

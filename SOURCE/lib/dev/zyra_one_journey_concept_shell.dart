@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ui' as ui;
 import 'zyra_developer_focus_presets.dart';
+import 'zyra_full_profile_preview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
@@ -2680,15 +2681,6 @@ class _ZyraOneJourneyConceptShellState
     });
   }
 
-  Widget _browseOptionsButton(DraftProfile person) {
-    final open = _bound(() => _openBrowseOptions(person.id));
-    return ZyraBrowseOptionsButton(
-      alignToContentEdge: true,
-      profile: _displayProfile(person),
-      onOpen: (_) => open(),
-    );
-  }
-
   Future<void> _confirmBrowseHide(DraftProfile person) async {
     final revision = _uiRevision;
     final safetyRevision = _model.personSafetyRevision;
@@ -3606,6 +3598,8 @@ class _ZyraOneJourneyConceptShellState
     city: _signupUnverified ? 'Verify to see' : p.city,
     publicNationality: zyraBrowseNationalityLabel(p.nationalityCode),
     publicEthnicity: zyraBrowseEthnicityLabel(p.ethnicityCode),
+    seekerPlan: ZyraPlan.one,
+    mainGuardianRelationship: 'Father',
     gender: 'female',
     photos: _photos?.forIndex(draftProfiles.indexOf(p)) ?? const [],
   );
@@ -3715,44 +3709,6 @@ class _ZyraOneJourneyConceptShellState
       }
     });
   }
-
-  Widget _photoSurface(DraftProfile p) => Stack(
-    fit: StackFit.expand,
-    children: [
-      ZyraOneJourneyBrowsePresentation(
-        key: ValueKey(('prepared-profile', p.id, _photos != null)),
-        profile: _displayProfile(p),
-        initialPhotoIndex: _browsePhotoIndices[p.id] ?? 0,
-        onPhotoIndexChanged: (index) => _rememberPhoto(p.id, index),
-        onMenu: _bound(() => _open('safety', person: p.id)),
-        menuKey: const ValueKey('draft_safety'),
-        menuButton: !_guardianRole && _tab == 0 && _page == 'profile'
-            ? _browseOptionsButton(p)
-            : null,
-        previousKey: const ValueKey('draft_browse_previous'),
-        nextKey: const ValueKey('draft_browse_next'),
-        requestKey: const ValueKey('draft_request'),
-        requestLabel: _invitationLabel(p.id),
-        requestSemanticLabel: _hasSentInvitation(p.id)
-            ? 'Request sent. Tap to cancel request'
-            : null,
-        invitationSent: _hasSentInvitation(p.id),
-        onRequest: _canToggleInvitation(p.id)
-            ? _bound(() => _toggleInvitation(p.id))
-            : null,
-      ),
-      if (_photoLoadFailed)
-        Positioned(
-          top: 100,
-          left: 20,
-          right: 60,
-          child: _body(
-            'Photos could not load. No member photo was accessed.',
-            small: true,
-          ),
-        ),
-    ],
-  );
 
   int? _browseSelectionIndex(
     List<DraftProfile> people, {
@@ -3873,7 +3829,12 @@ class _ZyraOneJourneyConceptShellState
   }
 
   Widget _discover() {
-    final people = _activeBrowseFilter.apply(_model.discoverableProfiles);
+    final people = _activeBrowseFilter
+        .apply(_model.discoverableProfiles)
+        .where(
+          (person) => !_developerSamples.isSampleProfileExcluded(person.id),
+        )
+        .toList(growable: false);
     final seekerBasic = _seekerMembership == 'Seeker Basic';
     final clearance = ZyraNavBarMetrics.contentBottomClearance(context);
     if (!_model.canBrowse) {
@@ -4074,6 +4035,11 @@ class _ZyraOneJourneyConceptShellState
         invitationSent: (profile) => _hasSentInvitation(profile.id),
         // Photo browsing stays inside the approved bounded card.
         onProfile: null,
+        onCompatibility: (profile) {
+          if (current() && profile.id == displayed.id) {
+            _open('compatibility', person: profile.id);
+          }
+        },
         onRequest: (profile) {
           if (!current() || profile.id != displayed.id) {
             ZyraInteractionStyle.cancelSelectionTap();
@@ -4088,7 +4054,10 @@ class _ZyraOneJourneyConceptShellState
   Widget _profileView() {
     final p = _person;
     if (p == null) return _unavailable();
-    if (_model.isBlocked(p.id)) return _userNotFoundView();
+    if (_model.isBlocked(p.id) ||
+        _developerSamples.isSampleProfileExcluded(p.id)) {
+      return _userNotFoundView();
+    }
     final fromHiddenProfiles =
         _tab == 4 &&
         _pages.length >= 2 &&
@@ -4104,9 +4073,87 @@ class _ZyraOneJourneyConceptShellState
       }
       return _hiddenProfileInspection(p);
     }
-    // Nested return is owned by the shared viewport scope, not this photo's
-    // horizontal pager or a second competing vertical dismissal recognizer.
-    return _photoSurface(p);
+    final fresh = _accountFreshGuard();
+    bool current() =>
+        fresh() &&
+        _page == 'profile' &&
+        _personId == p.id &&
+        !_model.isBlocked(p.id) &&
+        !_developerSamples.isSampleProfileExcluded(p.id);
+    final state = _model.stateFor(p.id);
+    final situation = _signupUnverified
+        ? ZyraFullProfileSituation.unverified
+        : state == DraftJourneyState.preparing ||
+              state == DraftJourneyState.active
+        ? ZyraFullProfileSituation.journey
+        : state == DraftJourneyState.received
+        ? ZyraFullProfileSituation.received
+        : state == DraftJourneyState.sent || _hasSentInvitation(p.id)
+        ? ZyraFullProfileSituation.sent
+        : ZyraFullProfileSituation.general;
+    return ZyraFullProfilePreview(
+      key: ValueKey(('full-profile', p.id, _uiRevision)),
+      profile: _displayProfile(p),
+      situation: situation,
+      photoBuilder: _memberBrowsePhoto,
+      canAct: current,
+      initialPage: _browseGalleryIndices[p.id] ?? 0,
+      onPageChanged: (index) {
+        if (current()) _rememberGallery(p.id, index);
+      },
+      onCompatibility: () {
+        if (current()) _open('compatibility', person: p.id);
+      },
+      onAction: () {
+        if (!current()) return;
+        switch (situation) {
+          case ZyraFullProfileSituation.journey:
+            _journey(p.id);
+          case ZyraFullProfileSituation.received:
+            _back();
+            _accept(p, true);
+          case ZyraFullProfileSituation.unverified:
+            _verifyDeveloperIdentity();
+          case ZyraFullProfileSituation.general:
+            _toggleInvitation(p.id);
+          case ZyraFullProfileSituation.sent ||
+              ZyraFullProfileSituation.introduction:
+            break;
+        }
+      },
+      onSecondary: situation == ZyraFullProfileSituation.received
+          ? () {
+              if (!current()) return;
+              _back();
+              _act(() => _result(_model.declineReceived(p.id)));
+            }
+          : null,
+      onOption: (option) {
+        if (!current()) return;
+        if (option == ZyraFullProfileOption.report) {
+          _open('safety', person: p.id);
+          return;
+        }
+        final hide = option == ZyraFullProfileOption.hide;
+        if (_warnBeforePersonSafety(p, hide: hide, canAct: current)) return;
+        _move(() {
+          final changed = hide ? _model.hide(p.id) : _model.block(p.id);
+          if (!changed) return;
+          if (_developerSamples.hasSamples) {
+            if (hide) {
+              _developerSamples.hideSampleProfile(p);
+            } else {
+              _developerSamples.blockSampleProfile(p);
+            }
+          }
+          _markPrivacyDate(p.id);
+          if (_pages.isNotEmpty) _pages.removeLast();
+          _notice = hide
+              ? 'Hidden. You can show them again in Settings → Hidden and blocked.'
+              : 'Blocked. They can no longer see you or contact you.';
+        });
+      },
+    );
   }
 
   bool _isCurrentHiddenInspection(String id, {bool ownedModal = false}) =>
@@ -9727,9 +9774,14 @@ class _ZyraOneJourneyConceptShellState
     List<ZyraPrivacyPerson> visible(bool blocked) => [
       for (final person in people)
         if (blocked
-            ? _model.blockedPeers.contains(person.id)
-            : _model.hiddenPeers.contains(person.id) &&
-                  !_model.blockedPeers.contains(person.id))
+            ? _model.blockedPeers.contains(person.id) ||
+                  _developerSamples.sampleBlockedPeers.contains(person.id)
+            : (_model.hiddenPeers.contains(person.id) ||
+                      _developerSamples.sampleHiddenPeers.contains(
+                        person.id,
+                      )) &&
+                  !_model.blockedPeers.contains(person.id) &&
+                  !_developerSamples.sampleBlockedPeers.contains(person.id))
           ZyraPrivacyPerson(
             id: person.id,
             firstName: person.firstName,
@@ -9743,9 +9795,14 @@ class _ZyraOneJourneyConceptShellState
       onUnblock: (id) {
         if (!fresh() || !people.any((person) => person.id == id)) return;
         final name = people.firstWhere((person) => person.id == id).firstName;
-        if (!_model.blockedPeers.contains(id)) return;
+        if (!_model.blockedPeers.contains(id) &&
+            !_developerSamples.sampleBlockedPeers.contains(id)) {
+          return;
+        }
         _act(() {
-          if (_model.unblock(id)) {
+          final ordinary = _model.unblock(id);
+          final sample = _developerSamples.unblockSampleProfile(id);
+          if (ordinary || sample) {
             _privacyDates.remove(id);
             _notice = 'Unblocked $name. They were not told.';
           }
@@ -9754,9 +9811,14 @@ class _ZyraOneJourneyConceptShellState
       onShowAgain: (id) {
         if (!fresh() || !people.any((person) => person.id == id)) return;
         final name = people.firstWhere((person) => person.id == id).firstName;
-        if (!_model.isHidden(id)) return;
+        if (!_model.isHidden(id) &&
+            !_developerSamples.sampleHiddenPeers.contains(id)) {
+          return;
+        }
         _act(() {
-          if (_model.unhide(id)) {
+          final ordinary = _model.unhide(id);
+          final sample = _developerSamples.unhideSampleProfile(id);
+          if (ordinary || sample) {
             _privacyDates.remove(id);
             _notice = '$name can appear in your Profiles again.';
           }
@@ -11510,6 +11572,20 @@ class _ZyraOneJourneyConceptShellState
           mainGuardianId: hide ? _conceptMainGuardianId : null,
         )) {
           return;
+        }
+        if (_developerSamples.hasSamples) {
+          final sampleJourney =
+              (_developerSamples.activeRows ?? const <ZyraSampleJourney>[])
+                  .where((row) => row.person.id == person.id)
+                  .firstOrNull;
+          if (sampleJourney != null) {
+            _developerSamples.endActive(sampleJourney);
+          }
+          if (hide) {
+            _developerSamples.hideSampleProfile(person);
+          } else {
+            _developerSamples.blockSampleProfile(person);
+          }
         }
         _markPrivacyDate(person.id);
         _pages.clear();

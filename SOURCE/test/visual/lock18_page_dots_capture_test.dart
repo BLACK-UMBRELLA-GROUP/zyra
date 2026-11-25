@@ -421,7 +421,21 @@ void main() {
             );
             await h.mount(tab: 0, pages: const ['profile']);
             expect(_dots, findsNothing);
-            expect(_k('concept_browse_photo_dot_0'), findsOneWidget);
+            final fullProfileDots = _k('full_profile_dots');
+            expect(fullProfileDots, findsOneWidget);
+            expect(
+              t
+                  .widgetList<AnimatedContainer>(
+                    find.descendant(
+                      of: fullProfileDots,
+                      matching: find.byType(AnimatedContainer),
+                    ),
+                  )
+                  .first
+                  .constraints
+                  ?.maxWidth,
+              30,
+            );
             await _cap(h, 'x11_full_screen_profile_unchanged');
           }
         },

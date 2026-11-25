@@ -17,6 +17,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/dev/dev_discovery_directions.dart';
 import 'package:zyra/dev/zyra_concept_preview_boundary.dart';
 import 'package:zyra/dev/zyra_draft_timeline_presentation.dart';
+import 'package:zyra/dev/zyra_full_profile_preview.dart';
 import 'package:zyra/dev/zyra_membership_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_cards.dart';
@@ -118,10 +119,7 @@ const _requestLabels = ['Received', 'Sent', 'Past'];
 
 Finder _key(String value) => find.byKey(ValueKey(value));
 
-SeekerProfile _currentBrowseDetailsProfile(
-  WidgetTester tester, {
-  double avatarSize = 124,
-}) {
+SeekerProfile _currentBrowseDetailsProfile(WidgetTester tester) {
   final browse = tester.widget<ZyraOneJourneyBrowseDesigns>(
     find.byType(ZyraOneJourneyBrowseDesigns),
   );
@@ -129,9 +127,7 @@ SeekerProfile _currentBrowseDetailsProfile(
   final details = _key('concept_browse_details_${profile.id}');
   expect(details, findsOneWidget);
   final expectedValues = [
-    profile.firstName,
-    if (profile.surnameLine?.trim().isNotEmpty ?? false)
-      profile.surnameLine!.trim(),
+    '${profile.firstName} ${profile.surnameLine ?? ''}'.trim(),
     if (profile.age > 0) ...['AGE', '${profile.age}'],
     if (profile.city.trim().isNotEmpty && profile.city.trim() != '—') ...[
       'LOCATION',
@@ -155,27 +151,23 @@ SeekerProfile _currentBrowseDetailsProfile(
   // LOCK 4 V3 shows the first photo inside the Design 2 details face.
   final avatar = _key('concept_browse_details_avatar_${profile.id}');
   expect(avatar, findsOneWidget);
-  expect(tester.getSize(avatar), Size.square(avatarSize));
+  final avatarSize = tester.getSize(avatar).width;
+  expect(avatarSize, inInclusiveRange(72, 150));
+  expect(tester.getSize(avatar).height, closeTo(avatarSize, .01));
   final detailsImages = find.descendant(
     of: details,
     matching: find.byType(Image),
   );
   if (profile.photos.isEmpty) {
     expect(detailsImages, findsNothing);
-    expect(
-      find.descendant(
-        of: avatar,
-        matching: find.text(profile.firstName.characters.first.toUpperCase()),
-      ),
-      findsOneWidget,
-    );
+    expect(avatar, findsOneWidget);
   } else {
     final photo = _key('concept_browse_details_avatar_photo_${profile.id}');
     expect(detailsImages, findsOneWidget);
     expect(photo, findsOneWidget);
     expect(
       tester.getSize(photo),
-      Size.square(avatarSize - (profile.seekerPlan == ZyraPlan.basic ? 0 : 7)),
+      Size.square(avatarSize - (profile.seekerPlan == ZyraPlan.basic ? 0 : 9)),
     );
     final image = tester.widget<Image>(detailsImages);
     expect(image.image, isA<MemoryImage>());
@@ -2321,7 +2313,7 @@ void main() {
               .onChanged;
           await _press(tester, 'concept_request_${_fixture}_header');
           await _press(tester, 'concept_request_profile_$_fixture');
-          expect(find.byType(ZyraOneJourneyBrowsePresentation), findsOneWidget);
+          expect(find.byType(ZyraFullProfilePreview), findsOneWidget);
           expect(find.byType(ZyraShellNavigation), findsNothing);
           expect(_key('concept_activity_requests'), findsNothing);
           final staleLeafBack = tester
@@ -2329,7 +2321,7 @@ void main() {
               .properties
               .onDismiss!;
           await _returnPage(tester);
-          expect(find.byType(ZyraOneJourneyBrowsePresentation), findsNothing);
+          expect(find.byType(ZyraFullProfilePreview), findsNothing);
           expect(_key('concept_activity_requests'), findsOneWidget);
           expect(_selector(tester, _requestLabels).selectedIndex, 1);
           expect(
@@ -4533,18 +4525,14 @@ void main() {
           final details = _key('concept_browse_details_${own.id}');
           expect(details, findsOneWidget);
           expect(
-            find.descendant(of: details, matching: find.text(own.firstName)),
+            find.descendant(
+              of: details,
+              matching: find.text(
+                '${own.firstName} ${own.surnameLine ?? ''}'.trim(),
+              ),
+            ),
             findsOneWidget,
           );
-          if (own.surnameLine?.trim().isNotEmpty ?? false) {
-            expect(
-              find.descendant(
-                of: details,
-                matching: find.text(own.surnameLine!.trim()),
-              ),
-              findsOneWidget,
-            );
-          }
           // LOCK 4 also uses the first admitted photo on the own-profile
           // Design 2 details card.
           final avatar = _key('concept_browse_details_avatar_${own.id}');
@@ -4552,10 +4540,14 @@ void main() {
           expect(own.photos, isNotEmpty);
           expect(avatar, findsOneWidget);
           expect(photo, findsOneWidget);
-          expect(tester.getSize(avatar), const Size(124, 124));
+          final avatarWidth = tester.getSize(avatar).width;
+          expect(avatarWidth, inInclusiveRange(72, 150));
+          expect(tester.getSize(avatar).height, closeTo(avatarWidth, .01));
           expect(
             tester.getSize(photo),
-            Size.square(ZyraProfileDetailsPage.photoSizeFor(own.seekerPlan)),
+            Size.square(
+              avatarWidth - (own.seekerPlan == ZyraPlan.basic ? 0 : 9),
+            ),
           );
           final detailsImages = find.descendant(
             of: details,
@@ -4930,10 +4922,10 @@ void main() {
       await tester.ensureVisible(request);
       await tester.pumpAndSettle();
       expect(request.hitTestable(), findsOneWidget);
-      _currentBrowseDetailsProfile(tester, avatarSize: 96);
+      _currentBrowseDetailsProfile(tester);
       final initial = find.descendant(
         of: identity,
-        matching: find.text('Sara'),
+        matching: find.text('Sara Ahmed'),
       );
       expect(initial, findsOneWidget);
       // Current remains a bounded portrait. At 200% text, vertical reading

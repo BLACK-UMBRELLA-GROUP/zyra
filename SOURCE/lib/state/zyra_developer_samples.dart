@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 
 import '../data/zyra_journey_stages.dart';
 import '../dev/zyra_one_journey_sample_photos.dart';
+import '../dev/zyra_browse_filter.dart';
 import '../dev/zyra_view_request_draft_model.dart';
 import '../models/seeker_profile.dart';
 import '../models/zyra_developer_preview.dart';
@@ -62,12 +63,14 @@ class ZyraSampleRequest {
     this.date, {
     required this.incoming,
     this.expiresAt,
+    this.suggestedByOwnGuardian = false,
   });
 
   final DraftProfile person;
   final DateTime date;
   final bool incoming;
   final DateTime? expiresAt;
+  final bool suggestedByOwnGuardian;
 
   bool _expiredAt(DateTime now) =>
       expiresAt != null && !now.isBefore(expiresAt!);
@@ -156,6 +159,8 @@ class ZyraDeveloperSamples extends ChangeNotifier {
   final _peerReady = <String>{};
   final _journeyStarts = <String, int>{};
   final _removedEnded = <String>{};
+  final _hiddenProfiles = <String>{};
+  final _blockedProfiles = <String>{};
 
   bool get isAuthorized =>
       _owner ==
@@ -177,27 +182,44 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     final available = realPlaces == null
         ? 0
         : (capacity - realPlaces).clamp(0, capacity);
-    return List.unmodifiable(_active!.take(available));
+    return List.unmodifiable(
+      _active!
+          .where((row) => isSampleProfileVisible(row.person.id))
+          .take(available),
+    );
   }
 
   List<ZyraSampleJourney>? get endedRows => isAuthorized && _ended != null
       ? List.unmodifiable(
-          _ended!.where((row) => !_removedEnded.contains(row.id)),
+          _ended!.where(
+            (row) =>
+                !_removedEnded.contains(row.id) &&
+                isSampleProfileVisible(row.person.id),
+          ),
         )
       : null;
-  List<ZyraSampleRequest>? get receivedRows =>
-      isAuthorized && _received != null ? List.unmodifiable(_received!) : null;
+  List<ZyraSampleRequest>? get receivedRows => isAuthorized && _received != null
+      ? List.unmodifiable(
+          _received!.where((row) => isSampleProfileVisible(row.person.id)),
+        )
+      : null;
   List<ZyraSampleRequest>? get sentRows {
     if (!isAuthorized || _sent == null) return null;
     final now = _clock();
     return List.unmodifiable(
-      _sent!.where((request) => !request._expiredAt(now)),
+      _sent!.where(
+        (request) =>
+            !request._expiredAt(now) &&
+            isSampleProfileVisible(request.person.id),
+      ),
     );
   }
 
   List<DraftProfile>? get introductionRows =>
       isAuthorized && _introductions != null
-      ? List.unmodifiable(_introductions!)
+      ? List.unmodifiable(
+          _introductions!.where((person) => isSampleProfileVisible(person.id)),
+        )
       : null;
   List<ZyraSampleIntroduction> get receivedIntroductions => [
     for (final person in introductionRows ?? const <DraftProfile>[])
@@ -341,6 +363,8 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     _cancelTimeRuleTimer();
     _journeyStarts.clear();
     _removedEnded.clear();
+    _hiddenProfiles.clear();
+    _blockedProfiles.clear();
     ++_generation;
     _active = null;
     _ended = null;
@@ -618,6 +642,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
           _person(names[i]),
           now.subtract(Duration(days: i)),
           incoming: incoming,
+          suggestedByOwnGuardian: incoming && names[i] == 'amira',
         ),
     ];
   }
@@ -794,6 +819,7 @@ class ZyraDeveloperSamples extends ChangeNotifier {
 
   bool isRequestCurrent(ZyraSampleRequest request) =>
       isAuthorized &&
+      isSampleProfileVisible(request.person.id) &&
       !request._expiredAt(_clock()) &&
       ((request.incoming ? _received : _sent)?.contains(request) ?? false);
 
@@ -1024,6 +1050,47 @@ class ZyraDeveloperSamples extends ChangeNotifier {
   bool hasIntroduction(DraftProfile person) =>
       introductionRows?.contains(person) ?? false;
 
+  bool isSampleProfileVisible(String id) =>
+      isAuthorized &&
+      !_hiddenProfiles.contains(id) &&
+      !_blockedProfiles.contains(id);
+
+  bool isSampleProfileExcluded(String id) =>
+      isAuthorized &&
+      (_hiddenProfiles.contains(id) || _blockedProfiles.contains(id));
+
+  Set<String> get sampleHiddenPeers =>
+      isAuthorized ? Set.unmodifiable(_hiddenProfiles) : const <String>{};
+
+  Set<String> get sampleBlockedPeers =>
+      isAuthorized ? Set.unmodifiable(_blockedProfiles) : const <String>{};
+
+  bool hideSampleProfile(DraftProfile person) {
+    if (!isSampleProfileVisible(person.id)) return false;
+    _hiddenProfiles.add(person.id);
+    _changed();
+    return true;
+  }
+
+  bool blockSampleProfile(DraftProfile person) {
+    if (!isSampleProfileVisible(person.id)) return false;
+    _blockedProfiles.add(person.id);
+    _changed();
+    return true;
+  }
+
+  bool unhideSampleProfile(String id) {
+    if (!isAuthorized || !_hiddenProfiles.remove(id)) return false;
+    _changed();
+    return true;
+  }
+
+  bool unblockSampleProfile(String id) {
+    if (!isAuthorized || !_blockedProfiles.remove(id)) return false;
+    _changed();
+    return true;
+  }
+
   void _cancelTimeRuleTimer() {
     _timeRuleTimer?.cancel();
     _timeRuleTimer = null;
@@ -1099,6 +1166,12 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     age: person.age,
     city: person.city,
     gender: 'female',
+    seekerPlan: ZyraPlan.one,
+    publicNationality: zyraBrowseNationalityLabel(person.nationalityCode),
+    publicEthnicity: zyraBrowseEthnicityLabel(person.ethnicityCode),
+    // The candidate's own sample Guardian, separate from Adam's Guardian who
+    // put this candidate forward in the Introductions byline.
+    mainGuardianRelationship: 'Father',
     photos: _photos?.forIndex(draftProfiles.indexOf(person)) ?? const [],
   );
 }

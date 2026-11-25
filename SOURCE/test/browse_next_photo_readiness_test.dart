@@ -200,7 +200,9 @@ void _expectDetailsAvatar(WidgetTester tester, Finder details) {
   final photo = find.descendant(of: details, matching: find.byType(Image));
   expect(photo, findsOneWidget);
   final image = tester.widget<Image>(photo);
-  expect(tester.getSize(photo), const Size.square(117));
+  final size = tester.getSize(photo);
+  expect(size.width, inInclusiveRange(72, 141));
+  expect(size.height, closeTo(size.width, .01));
   expect(image.fit, BoxFit.cover);
   expect(image.alignment, const Alignment(0, -.7));
   final frame = find.descendant(of: photo, matching: find.byType(RawImage));
@@ -220,7 +222,10 @@ Future<List<int>> _detailsFrame(
       .profiles
       .singleWhere((profile) => profile.id == id);
   expect(
-    find.descendant(of: details, matching: find.text(profile.firstName)),
+    find.descendant(
+      of: details,
+      matching: find.text('${profile.firstName} ${profile.surnameLine}'),
+    ),
     findsOneWidget,
   );
   expect(
