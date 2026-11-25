@@ -1,0 +1,18 @@
+{
+  "line": 139,
+  "lock": 45,
+  "implementation_commit": "f1323beeea36a964cbb095ef8deca821df7d1bd9",
+  "base_commit": "33ad670a774482d34aec8992211b3f350c773c8a",
+  "flutter_version": "3.44.2",
+  "mode": "widget-test Founder preview, bundled fonts and local sample data",
+  "timestamp_utc": "2026-11-25T00:35:56.916931+00:00",
+  "preview": true,
+  "live": false,
+  "native_app_build": false,
+  "phone_install": false,
+  "full_gate": "7915 passed, 213 skipped, 0 failed; 486802ms",
+  "analyzer": "clean",
+  "captures": 16,
+  "rendered_text_failures": 0,
+  "read_scope": "deviations disclosed in READ_SCOPE.json"
+}

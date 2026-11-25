@@ -1,0 +1,159 @@
+{
+  "focused_capture_final": {
+    "counts": {
+      "passed": 36,
+      "skipped": 0,
+      "failed": 0
+    },
+    "completion": {
+      "success": true,
+      "type": "done",
+      "time": 36250
+    },
+    "log_sha256": "5849d212c3c60dd41041e230edd7569db339ba9707d1ce8b2de2c16512f65f39"
+  },
+  "captures_reviewed": {
+    "counts": {
+      "passed": 12,
+      "skipped": 0,
+      "failed": 0
+    },
+    "completion": {
+      "success": true,
+      "type": "done",
+      "time": 37967
+    },
+    "log_sha256": "6b2e42d8f1e58b16ca6c1b77ba741e610bfdd0a278c768598138589ab1bb61e0"
+  },
+  "session_final": {
+    "counts": {
+      "passed": 4,
+      "skipped": 0,
+      "failed": 0
+    },
+    "completion": {
+      "success": true,
+      "type": "done",
+      "time": 6500
+    },
+    "log_sha256": "937246145f535afe9849097adb815e52d758ae3fcfafd99f0b20a5a166198220"
+  },
+  "resume_final": {
+    "counts": {
+      "passed": 54,
+      "skipped": 0,
+      "failed": 0
+    },
+    "completion": {
+      "success": true,
+      "type": "done",
+      "time": 24479
+    },
+    "log_sha256": "6397bc7561f463fd809df26b0ef590ff1d2086d1e302a769befd2f691a43ca26"
+  },
+  "support_pinned_final": {
+    "counts": {
+      "passed": 15,
+      "skipped": 0,
+      "failed": 0
+    },
+    "completion": {
+      "success": true,
+      "type": "done",
+      "time": 9467
+    },
+    "log_sha256": "554548a7365f31a66770b90e61db34b0108294950aa286574d714b9d53117fff"
+  },
+  "controls_final": {
+    "counts": {
+      "passed": 130,
+      "skipped": 0,
+      "failed": 0
+    },
+    "completion": {
+      "success": true,
+      "type": "done",
+      "time": 54225
+    },
+    "log_sha256": "a9c30995d69955099c5377a2c58c058e6cbf3926026c7fe4d3cb2c59f1e9d39b"
+  },
+  "underline_control_final": {
+    "counts": {
+      "passed": 2,
+      "skipped": 0,
+      "failed": 0
+    },
+    "completion": {
+      "success": true,
+      "type": "done",
+      "time": 8917
+    },
+    "log_sha256": "428aa1a26f3a4c33e56c78864dec86aba86457e08ced3d46d1b39f7b69e04765"
+  },
+  "ordinary_1": {
+    "counts": {
+      "passed": 7891,
+      "skipped": 213,
+      "failed": 18
+    },
+    "completion": {
+      "success": false,
+      "type": "done",
+      "time": 543677
+    },
+    "log_sha256": "451f539c8029176915a60686b24f5eac1f640aae74733a5b155f58cac04abf8f"
+  },
+  "ordinary_2": {
+    "counts": {
+      "passed": 7915,
+      "skipped": 213,
+      "failed": 0
+    },
+    "completion": {
+      "success": true,
+      "type": "done",
+      "time": 535675
+    },
+    "log_sha256": "5466ec4c792928451565d8c3733e095a5a39665a421d8470c994ad0ab785a4fd"
+  },
+  "ordinary_final": {
+    "counts": {
+      "passed": 7914,
+      "skipped": 213,
+      "failed": 1
+    },
+    "completion": {
+      "success": false,
+      "type": "done",
+      "time": 513292
+    },
+    "log_sha256": "987cdb3dd39cc2564a238b882df9e5999dc6ef7370f95865dda41bdb0d792a0a"
+  },
+  "ordinary_landing": {
+    "counts": {
+      "passed": 7915,
+      "skipped": 213,
+      "failed": 0
+    },
+    "completion": {
+      "success": true,
+      "type": "done",
+      "time": 486802
+    },
+    "log_sha256": "b7d5a6ddf6e9aefac45bd6f3464eacb3bf04a7e72bd92200c9ece28de7e3861c"
+  },
+  "final_gate": "ordinary_landing",
+  "analyzer": {
+    "result": "Analyzing SOURCE...                                             \nNo issues found! (ran in 12.3s)"
+  },
+  "protected_driver": {
+    "sdk": "3.44.2",
+    "pins": 5,
+    "execDenial": "PASS",
+    "nestedExecDenial": "PASS",
+    "policySha256": "61f952bd96d853e4abd3304ff7d404c4a048e5af362d06053bb0c8c63ffe2f5d"
+  },
+  "failed_full_gates": 2,
+  "full_text_corpus": "not run locally; existing hosted reporting route unchanged",
+  "completion_date_london": "2026-11-25"
+}

@@ -1,0 +1,53 @@
+{
+  "line": 139,
+  "images": [
+    {
+      "name": "ep01_edit_profile__top",
+      "master": "PRODUCT/APPROVED/EDIT_PROFILE/MASTERS/ep01_edit_profile__top.png",
+      "master_sha256": "424a2474b00d224e7e1c8d3e19bb41d690777db50a585fa97428669c2a3e24f3",
+      "built_sha256": "5d63977d22db02f70e837cfe3e1ce79e23f72db9b1508797c0e86a269947dc2d",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "name": "ep02_edit_profile__bottom",
+      "master": "PRODUCT/APPROVED/EDIT_PROFILE/MASTERS/ep02_edit_profile__bottom.png",
+      "master_sha256": "ca810309e20522b4be1ab5ccf1a26ac687e2bc251c7c67c1eda05cba218993be",
+      "built_sha256": "83ca0a98aa958dbf5dd37af1fc73b49c30b6f36da532b68d72819084321598b9",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "name": "s19_photos__empty",
+      "master": "PRODUCT/APPROVED/SIGN_UP/MASTERS/s19_photos__empty.png",
+      "master_sha256": "26c0e1bf2e49a675424d317e0d1812f153e23b044cf100c488c724c3c9f27019",
+      "built_sha256": "997dff4d1bb9cd7d8d69bd86376705357574b5a571a1a74fdf77caf7f9853f09",
+      "size": [
+        1290,
+        2796
+      ]
+    },
+    {
+      "name": "s20_photos__two",
+      "master": "PRODUCT/APPROVED/SIGN_UP/MASTERS/s20_photos__two.png",
+      "master_sha256": "8241ccace2c5d992bd991c7187cfc43a63f1c68674517e177b1c4819f20064f1",
+      "built_sha256": "bfea3b3098d3c85d607683642949c5f3a471682035f1a47e9b1bec90efd5d298",
+      "size": [
+        1290,
+        2796
+      ]
+    }
+  ],
+  "status": "Independent visual review PASS for line139 locked content/layout and shared photo-rules card. No new unresolved material layout conflict; no pixel identity claim.",
+  "caveats": [
+    "actual dynamic progress versus illustrative master samples",
+    "APP_COLOURS V9 whole words, minimum weight and measured darker-ink fallback",
+    "existing shared shadow-blur discrepancy left to its recorded action",
+    "no second nested shadow per V9",
+    "unchanged sign-up header/progress/Skip and main-photo outline retained; not redrawn in139"
+  ]
+}

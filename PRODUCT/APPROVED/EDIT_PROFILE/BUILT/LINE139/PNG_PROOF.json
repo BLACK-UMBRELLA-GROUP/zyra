@@ -1,0 +1,167 @@
+{
+  "line": 139,
+  "count": 16,
+  "receipt_hashes_verified": true,
+  "captures": [
+    {
+      "png": "PRODUCT/APPROVED/EDIT_PROFILE/BUILT/LINE139/SCREENS/ep01_edit_profile__top.png",
+      "sha256": "5d63977d22db02f70e837cfe3e1ce79e23f72db9b1508797c0e86a269947dc2d",
+      "runs": 26,
+      "size": [
+        430.0,
+        932.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "png": "PRODUCT/APPROVED/EDIT_PROFILE/BUILT/LINE139/SCREENS/ep01_edit_profile__top__375x667_1.0.png",
+      "sha256": "df707795cbc72d8265bf44c5ac347661e48dc581ff7969c51de5b867cb864678",
+      "runs": 18,
+      "size": [
+        375.0,
+        667.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "png": "PRODUCT/APPROVED/EDIT_PROFILE/BUILT/LINE139/SCREENS/ep01_edit_profile__top__375x667_1.3.png",
+      "sha256": "a06563e4b2b4c92c51841ae920b43162e05aeb8bf8e0ab2f9470582e607c178f",
+      "runs": 17,
+      "size": [
+        375.0,
+        667.0
+      ],
+      "scale": 1.3
+    },
+    {
+      "png": "PRODUCT/APPROVED/EDIT_PROFILE/BUILT/LINE139/SCREENS/ep01_edit_profile__top__430x932_1.3.png",
+      "sha256": "c3e6cf5b6cc48b0f42fd62c64548c8dbf46301f4a48f0f48f1b82e2ad4c14f37",
+      "runs": 25,
+      "size": [
+        430.0,
+        932.0
+      ],
+      "scale": 1.3
+    },
+    {
+      "png": "PRODUCT/APPROVED/EDIT_PROFILE/BUILT/LINE139/SCREENS/ep02_edit_profile__bottom.png",
+      "sha256": "83ca0a98aa958dbf5dd37af1fc73b49c30b6f36da532b68d72819084321598b9",
+      "runs": 29,
+      "size": [
+        430.0,
+        932.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "png": "PRODUCT/APPROVED/EDIT_PROFILE/BUILT/LINE139/SCREENS/ep02_edit_profile__bottom__375x667_1.0.png",
+      "sha256": "2a21e255be318e3be4c6f624ee495ba491f7a2524e09a960da85fadb1eb6fa89",
+      "runs": 22,
+      "size": [
+        375.0,
+        667.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "png": "PRODUCT/APPROVED/EDIT_PROFILE/BUILT/LINE139/SCREENS/ep02_edit_profile__bottom__375x667_1.3.png",
+      "sha256": "d778f3e2b2f9e85f43ced68a6e7c5fb4272cc06830460b05b8c51cd7dd85f87d",
+      "runs": 18,
+      "size": [
+        375.0,
+        667.0
+      ],
+      "scale": 1.3
+    },
+    {
+      "png": "PRODUCT/APPROVED/EDIT_PROFILE/BUILT/LINE139/SCREENS/ep02_edit_profile__bottom__430x932_1.3.png",
+      "sha256": "7ac23b12ef16f0d4a76b8709b7674d98b27e3e62d3425a846981b9df96699b8d",
+      "runs": 26,
+      "size": [
+        430.0,
+        932.0
+      ],
+      "scale": 1.3
+    },
+    {
+      "png": "PRODUCT/APPROVED/EDIT_PROFILE/BUILT/LINE139/SCREENS/s19_photos__empty.png",
+      "sha256": "997dff4d1bb9cd7d8d69bd86376705357574b5a571a1a74fdf77caf7f9853f09",
+      "runs": 7,
+      "size": [
+        430.0,
+        932.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "png": "PRODUCT/APPROVED/EDIT_PROFILE/BUILT/LINE139/SCREENS/s19_photos__empty__375x667_1.0.png",
+      "sha256": "0375f4a8407b8e316fd7df98a6f92d00d4e2ea176992ce960f074fb159536a3b",
+      "runs": 6,
+      "size": [
+        375.0,
+        667.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "png": "PRODUCT/APPROVED/EDIT_PROFILE/BUILT/LINE139/SCREENS/s19_photos__empty__375x667_1.3.png",
+      "sha256": "1ef8f6373595e34b1f0eae2d965706e0ecddbc7bafeaeebaebfb95c2afdfe69a",
+      "runs": 4,
+      "size": [
+        375.0,
+        667.0
+      ],
+      "scale": 1.3
+    },
+    {
+      "png": "PRODUCT/APPROVED/EDIT_PROFILE/BUILT/LINE139/SCREENS/s19_photos__empty__430x932_1.3.png",
+      "sha256": "c34bbccf7c84c4623092d1e91d49c5d6a2c899b0c1ac8293c79022c9cd4ea88d",
+      "runs": 7,
+      "size": [
+        430.0,
+        932.0
+      ],
+      "scale": 1.3
+    },
+    {
+      "png": "PRODUCT/APPROVED/EDIT_PROFILE/BUILT/LINE139/SCREENS/s20_photos__two.png",
+      "sha256": "bfea3b3098d3c85d607683642949c5f3a471682035f1a47e9b1bec90efd5d298",
+      "runs": 7,
+      "size": [
+        430.0,
+        932.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "png": "PRODUCT/APPROVED/EDIT_PROFILE/BUILT/LINE139/SCREENS/s20_photos__two__375x667_1.0.png",
+      "sha256": "993a79d81f1e4810740c1111faeb150c2da5ae51e77ae9e07cabde48c15fad56",
+      "runs": 6,
+      "size": [
+        375.0,
+        667.0
+      ],
+      "scale": 1.0
+    },
+    {
+      "png": "PRODUCT/APPROVED/EDIT_PROFILE/BUILT/LINE139/SCREENS/s20_photos__two__375x667_1.3.png",
+      "sha256": "f5fc4e48835821226833e31889bd03d5007859d2e4d30d032f095ef476bbf82c",
+      "runs": 4,
+      "size": [
+        375.0,
+        667.0
+      ],
+      "scale": 1.3
+    },
+    {
+      "png": "PRODUCT/APPROVED/EDIT_PROFILE/BUILT/LINE139/SCREENS/s20_photos__two__430x932_1.3.png",
+      "sha256": "7157c0ebd36617bafa418637c6081c7ccc6478f5fb87212667fb933d6d6c1bc9",
+      "runs": 7,
+      "size": [
+        430.0,
+        932.0
+      ],
+      "scale": 1.3
+    }
+  ]
+}

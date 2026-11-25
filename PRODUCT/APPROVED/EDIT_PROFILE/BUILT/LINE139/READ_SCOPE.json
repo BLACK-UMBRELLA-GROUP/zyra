@@ -1,0 +1,37 @@
+{
+  "start_pack_bytes": 18975,
+  "successful_packs": 1,
+  "failed_attempt": {
+    "invocation": "documented relative script path",
+    "output": "start_pack: refused; verify safe paths and required boundaries",
+    "resolution": "absolute path to same script; unchanged brief"
+  },
+  "named_authority": [
+    "EDIT_PROFILE/BRIEFS/BUILD_BRIEF_2026-11-23_V1.md",
+    "EDIT_PROFILE/RECORD/EDIT_PROFILE_SPEC_CURRENT_VERSION_V1.md",
+    "EDIT_PROFILE/RECORD/LOCK_RECORD.md",
+    "EDIT_PROFILE/MASTERS/ep01_edit_profile__top.png",
+    "EDIT_PROFILE/MASTERS/ep02_edit_profile__bottom.png",
+    "SIGN_UP/RECORD/SIGN_UP_SPEC_CURRENT_VERSION_V2.md",
+    "SIGN_UP/RECORD/LOCK_RECORD.md",
+    "SIGN_UP/MASTERS/s19_photos__empty.png",
+    "SIGN_UP/MASTERS/s20_photos__two.png",
+    "APP_COLOURS/RECORD/APP_COLOURS_SPEC_CURRENT_VERSION_V9.md",
+    "SOURCE/README.md",
+    "V356 archived prototype exact Edit profile/photo-rule CSS and markup"
+  ],
+  "additional_reads": [
+    "AGENTS.md and root README before start pack",
+    "start_pack.py to diagnose refusal",
+    "BUILD_QUEUE header/current139 row; historical rows27-109 were unnecessarily printed by first extraction",
+    "Relevant implementation/test/driver source and scoped question/index/tool checks",
+    "Own session and helper count-only runtime metadata; existing daily report last task for note style"
+  ],
+  "not_read": [
+    "separate whole lessons",
+    "separate whole MAP",
+    "whole decisions/actions registers",
+    "held candidates",
+    "protected keys folder"
+  ]
+}

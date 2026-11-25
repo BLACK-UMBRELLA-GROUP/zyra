@@ -1,0 +1,73 @@
+{
+  "snapshot": "handover checkpoint; receiver verifies native final totals after owner finishes",
+  "sessions": {
+    "owner": {
+      "id": "01a20fc7-3f6f-7810-8d23-4343fc84aa3a",
+      "turn_context": {
+        "model": "gpt-6.1-sol",
+        "effort": "ultra",
+        "timestamp": "2026-11-24T22:57:28.668Z"
+      },
+      "usage_counts": {
+        "input_tokens": 47766349,
+        "cached_input_tokens": 47090048,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 121709,
+        "reasoning_output_tokens": 70387,
+        "total_tokens": 47888058
+      },
+      "usage_timestamp": "2026-11-25T00:20:11.652Z"
+    },
+    "routes_and_bio": {
+      "id": "01a20fc8-9076-7e62-9274-f366b855e65e",
+      "turn_context": {
+        "model": "gpt-6.1-sol",
+        "effort": "ultra",
+        "timestamp": "2026-11-24T22:58:52.158Z"
+      },
+      "usage_counts": {
+        "input_tokens": 9993073,
+        "cached_input_tokens": 9677440,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 21734,
+        "reasoning_output_tokens": 6328,
+        "total_tokens": 10014807
+      },
+      "usage_timestamp": "2026-11-24T23:22:35.995Z"
+    },
+    "test_migration": {
+      "id": "01a20fca-c338-7730-a626-795f028d5de5",
+      "turn_context": {
+        "model": "gpt-6.1-sol",
+        "effort": "ultra",
+        "timestamp": "2026-11-24T23:01:16.224Z"
+      },
+      "usage_counts": {
+        "input_tokens": 12724976,
+        "cached_input_tokens": 12393600,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 23414,
+        "reasoning_output_tokens": 8513,
+        "total_tokens": 12748390
+      },
+      "usage_timestamp": "2026-11-24T23:20:57.506Z"
+    },
+    "independent_review": {
+      "id": "01a20fcf-30d2-7d40-9c57-81ae79c0bc37",
+      "turn_context": {
+        "model": "gpt-6.1-sol",
+        "effort": "ultra",
+        "timestamp": "2026-11-24T23:06:06.425Z"
+      },
+      "usage_counts": {
+        "input_tokens": 17211882,
+        "cached_input_tokens": 16836864,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 23297,
+        "reasoning_output_tokens": 15039,
+        "total_tokens": 17235179
+      },
+      "usage_timestamp": "2026-11-25T00:15:32.513Z"
+    }
+  }
+}

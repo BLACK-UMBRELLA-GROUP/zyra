@@ -1,0 +1,151 @@
+{
+  "line": 139,
+  "base": "33ad670a774482d34aec8992211b3f350c773c8a",
+  "paths": [
+    {
+      "path": "README.md",
+      "before_bytes": 22541,
+      "after_bytes": 22918,
+      "sha256": "cf7d1320124873971516cccc0861ab24fb1bab03590402386a7820a2758f92bc"
+    },
+    {
+      "path": "SOURCE/README.md",
+      "before_bytes": 10224,
+      "after_bytes": 11214,
+      "sha256": "41b201e2808fb18ff56042c251654691ce0b12950e72b90d7d9153ee7c9769bd"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "before_bytes": 42953,
+      "after_bytes": 45915,
+      "sha256": "224bdb6ef2da1d66c23baa47d65d11503d3e552648663ba8f9ac43da61d4eb86"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "before_bytes": 425343,
+      "after_bytes": 431727,
+      "sha256": "fe7034783f545a7b8cdcbe9d1ee68c3efc87979437c70dc31a2455ae5e4476d4"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_account_session.dart",
+      "before_bytes": 14145,
+      "after_bytes": 15549,
+      "sha256": "7fa80b6ba6aadb7206147e0c58182effae608e3c80e458e5661706cc5251f2f7"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+      "before_bytes": 56383,
+      "after_bytes": 56858,
+      "sha256": "88ea2e6c64d9e5931048137168656f487d5ba8114b45372d1958598d42715251"
+    },
+    {
+      "path": "SOURCE/lib/screens/onboarding/bio_onboarding_flow.dart",
+      "before_bytes": 22840,
+      "after_bytes": 25959,
+      "sha256": "10703269ee5e5c74402150ec99a78ae6778620934bec3084eb43bef9f2a36f6c"
+    },
+    {
+      "path": "SOURCE/lib/screens/profile/edit_profile_screen.dart",
+      "before_bytes": 32868,
+      "after_bytes": 24264,
+      "sha256": "5106a961e613e32b06d04002300378d3462163835c44ccddd295fe09cb335f8c"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_edit_profile_presentation.dart",
+      "before_bytes": 0,
+      "after_bytes": 9105,
+      "sha256": "d01a5c36d38761d27258ed6a4f1ea55c36c28cef7e654422a116351b67c61def"
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_photo_rules_card.dart",
+      "before_bytes": 0,
+      "after_bytes": 1678,
+      "sha256": "3a1257c12cead3df4191903ad99ed5db853eb14e98287a9c41c2ca5ff69e92e1"
+    },
+    {
+      "path": "SOURCE/test/compatibility_editor_opening_owner_test.dart",
+      "before_bytes": 27568,
+      "after_bytes": 26963,
+      "sha256": "d4e2d3bc630e343ea33e25002f58551dcd338723550c010ccca4449d29aebaab"
+    },
+    {
+      "path": "SOURCE/test/edit_profile_owner_safety_test.dart",
+      "before_bytes": 5998,
+      "after_bytes": 6437,
+      "sha256": "6377636adac6e2bc56ed7be2b9879750539440a1b25672fc0e699eacb33fb002"
+    },
+    {
+      "path": "SOURCE/test/edit_profile_support_destination_test.dart",
+      "before_bytes": 17410,
+      "after_bytes": 19642,
+      "sha256": "7734e3daf5abaa7ca3fca32937a792bbe73430ff01bc725cd9ba84eec430cc39"
+    },
+    {
+      "path": "SOURCE/test/edit_profile_truth_test.dart",
+      "before_bytes": 2075,
+      "after_bytes": 2525,
+      "sha256": "b60e20ce222576f953df5a1440465c5adcb221901b8fb5d45ce1d7b9d3dc6155"
+    },
+    {
+      "path": "SOURCE/test/line139_profile_edit_session_test.dart",
+      "before_bytes": 0,
+      "after_bytes": 7817,
+      "sha256": "e1c6d97119712c835c6eab20a4dd267fca3d2ce1b168893199635e69717cf3fb"
+    },
+    {
+      "path": "SOURCE/test/line139_underlined_text_audit_test.dart",
+      "before_bytes": 0,
+      "after_bytes": 2245,
+      "sha256": "37358fb2686ae1d1f96fa01cf2fed409919730cfbbc9cc0ac2dc115a8d91cb73"
+    },
+    {
+      "path": "SOURCE/test/lock15_quick_access_and_swipe_test.dart",
+      "before_bytes": 17941,
+      "after_bytes": 18352,
+      "sha256": "fb6a63c2656a33fd52bdc912da19687b960bc226903d8cd227e9faca9de394bd"
+    },
+    {
+      "path": "SOURCE/test/one_journey_back_button_preview_test.dart",
+      "before_bytes": 39480,
+      "after_bytes": 39527,
+      "sha256": "69ad3f0354e0032b982753e112c6a9b3fdeeb870c070f5b2b2643e651661ece9"
+    },
+    {
+      "path": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "before_bytes": 46537,
+      "after_bytes": 47089,
+      "sha256": "dd7436be71211a2fcd575baa05f8de9ad4b436ba58f7b861ed0633749960aa76"
+    },
+    {
+      "path": "SOURCE/test/retained_profile_editor_reuse_test.dart",
+      "before_bytes": 36930,
+      "after_bytes": 37935,
+      "sha256": "6b035b9c7872d58d25e22268fd73934e1ad68d1523df2d595e8e7e1843873c8b"
+    },
+    {
+      "path": "SOURCE/test/support/zyra_rendered_text_contrast.dart",
+      "before_bytes": 61752,
+      "after_bytes": 62324,
+      "sha256": "a6694908bb945be048390ef443fe9f492ae9a770a363d36bc46476e998394e66"
+    },
+    {
+      "path": "SOURCE/test/visual/line139_edit_profile_capture_test.dart",
+      "before_bytes": 0,
+      "after_bytes": 15533,
+      "sha256": "1509a535338ec91a608b253097597cce5349b4e4eba4dd8996bf702f3d0ff25c"
+    },
+    {
+      "path": "SOURCE/test/visual/lock22_v4_settings_edit_profile_test.dart",
+      "before_bytes": 11450,
+      "after_bytes": 11837,
+      "sha256": "831b14db31aa0c157e6e404987596f830ecc020a904d296cc5569097c2a1acf0"
+    },
+    {
+      "path": "SOURCE/test/visual/zyra_retained_account_reuse_visual_test.dart",
+      "before_bytes": 12549,
+      "after_bytes": 12583,
+      "sha256": "895f53397112f02f3d6b9319ea0cdb244ed70088fef6bef452fe9d586462be32"
+    }
+  ],
+  "note": "Only owned source, tests and READMEs. Foreign approved inputs, held candidates and other docs excluded."
+}

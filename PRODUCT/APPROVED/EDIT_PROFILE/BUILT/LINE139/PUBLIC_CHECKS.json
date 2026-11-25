@@ -1,0 +1,287 @@
+{
+  "A": {
+    "precommit_source_staged_scan": "PASS, redacted trusted-default",
+    "implementation_outgoing_range": "33ad670a774482d34aec8992211b3f350c773c8a..f1323beeea36a964cbb095ef8deca821df7d1bd9 PASS",
+    "evidence_staged_text_scan": "PASS, redacted trusted-default; generated PNGs visually reviewed and hash verified",
+    "final_outgoing_before_after_push": "exact final range and results recorded in London-dated Group task note after commit/push"
+  },
+  "B": {
+    "files_checked": 24,
+    "findings_reviewed": 37,
+    "private_material": "none",
+    "reviewed_findings": [
+      {
+        "path": "README.md",
+        "line": 81,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "UI spacing/margin, not business finance"
+      },
+      {
+        "path": "README.md",
+        "line": 86,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Existing approved app catalogue/reference choice, not a private business document"
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+        "line": 997,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "UI spacing/margin, not business finance"
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "line": 2947,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "line": 10491,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+        "line": 10492,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+        "line": 559,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Existing approved app catalogue/reference choice, not a private business document"
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+        "line": 603,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Existing approved app catalogue/reference choice, not a private business document"
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+        "line": 606,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Existing approved app catalogue/reference choice, not a private business document"
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+        "line": 635,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Existing approved app catalogue/reference choice, not a private business document"
+      },
+      {
+        "path": "SOURCE/lib/dev/zyra_signup_preview.dart",
+        "line": 687,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Existing approved app catalogue/reference choice, not a private business document"
+      },
+      {
+        "path": "SOURCE/lib/screens/onboarding/bio_onboarding_flow.dart",
+        "line": 786,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "UI spacing/margin, not business finance"
+      },
+      {
+        "path": "SOURCE/lib/screens/profile/edit_profile_screen.dart",
+        "line": 317,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/lib/screens/profile/edit_profile_screen.dart",
+        "line": 325,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/lib/screens/profile/edit_profile_screen.dart",
+        "line": 607,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "UI spacing/margin, not business finance"
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_edit_profile_presentation.dart",
+        "line": 153,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Existing approved app catalogue/reference choice, not a private business document"
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_edit_profile_presentation.dart",
+        "line": 170,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Existing approved app catalogue/reference choice, not a private business document"
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_edit_profile_presentation.dart",
+        "line": 208,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Existing approved app catalogue/reference choice, not a private business document"
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_edit_profile_presentation.dart",
+        "line": 209,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Existing approved app catalogue/reference choice, not a private business document"
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_edit_profile_presentation.dart",
+        "line": 210,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Existing approved app catalogue/reference choice, not a private business document"
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_edit_profile_presentation.dart",
+        "line": 211,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Existing approved app catalogue/reference choice, not a private business document"
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_photo_rules_card.dart",
+        "line": 34,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_photo_rules_card.dart",
+        "line": 36,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/lib/widgets/zyra_photo_rules_card.dart",
+        "line": 43,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/test/compatibility_editor_opening_owner_test.dart",
+        "line": 84,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/test/compatibility_editor_opening_owner_test.dart",
+        "line": 222,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/test/compatibility_editor_opening_owner_test.dart",
+        "line": 348,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/test/compatibility_editor_opening_owner_test.dart",
+        "line": 491,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/test/compatibility_editor_opening_owner_test.dart",
+        "line": 493,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/test/compatibility_editor_opening_owner_test.dart",
+        "line": 495,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/test/compatibility_editor_opening_owner_test.dart",
+        "line": 723,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/test/compatibility_editor_opening_owner_test.dart",
+        "line": 724,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/test/visual/line139_edit_profile_capture_test.dart",
+        "line": 217,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/test/visual/line139_edit_profile_capture_test.dart",
+        "line": 223,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/test/visual/line139_edit_profile_capture_test.dart",
+        "line": 225,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/test/visual/line139_edit_profile_capture_test.dart",
+        "line": 230,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Dart record selector, not currency"
+      },
+      {
+        "path": "SOURCE/test/visual/line139_edit_profile_capture_test.dart",
+        "line": 256,
+        "scanner_kind": "money",
+        "review": "false positive",
+        "reason": "Existing approved app catalogue/reference choice, not a private business document"
+      }
+    ],
+    "final_files_checked": 66,
+    "final_hit_count": 1357,
+    "final_hit_categories": {
+      "text / money": 40,
+      "PNG binary / money": 1311,
+      "PNG binary / legal/company": 6
+    },
+    "png_review": "All files have PNG signatures and saved-image/audit hashes; generated UI and fictional placeholders verified. Binary string matches are not private documents or credentials.",
+    "final_scan_log_sha256": "2d10f64658918817874430aa2c3cd3b7de63c800a45a8dd6114ca6b45452b7e9"
+  },
+  "C": "none; no roadmap row completed",
+  "D": "none; version unchanged",
+  "E": "new documentation neutral; locked member wording unchanged",
+  "F": "root and SOURCE README updated"
+}
