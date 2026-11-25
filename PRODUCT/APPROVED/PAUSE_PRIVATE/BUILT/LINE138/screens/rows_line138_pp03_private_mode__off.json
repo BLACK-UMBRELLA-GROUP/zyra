@@ -1,0 +1,17 @@
+[
+  {
+    "role": "Seeker",
+    "area": "pause_private",
+    "page": "pp03_private_mode__off",
+    "state": "normal",
+    "reached": "pp03_private_mode__off",
+    "file": "pp03_private_mode__off.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "settings",
+      "account_action"
+    ],
+    "tab": 4
+  }
+]

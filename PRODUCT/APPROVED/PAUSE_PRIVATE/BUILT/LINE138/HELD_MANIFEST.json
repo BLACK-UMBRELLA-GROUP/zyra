@@ -1,0 +1,103 @@
+{
+  "queue_line": 138,
+  "status": "QUESTION Q225",
+  "base_commit": "9d100e634a524aa52e1ccbb1595a2f89d3acf071",
+  "parked_at": "2026-11-25T09:22:09.696594+00:00",
+  "source_clean": true,
+  "index_empty": true,
+  "file_count": 13,
+  "files": [
+    {
+      "path": "SOURCE/README.md",
+      "tracked": true,
+      "bytes": 12938,
+      "candidate_sha256": "97e82570098b0c7be01f4778f84828fee6f1ca9bdcbd4f706eaed1e1b7c5f073",
+      "base_sha256": "0617c58d7646d812b67eb7ce71781741a607c52936481122484823a757b7bb04"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_account_presentation.dart",
+      "tracked": true,
+      "bytes": 46362,
+      "candidate_sha256": "e52ea189499754da93864e9f782863b385ea58cffbe0b5b4979e8aef7b318f97",
+      "base_sha256": "224bdb6ef2da1d66c23baa47d65d11503d3e552648663ba8f9ac43da61d4eb86"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "tracked": true,
+      "bytes": 437005,
+      "candidate_sha256": "192f0ce6fd9e532dc378d041b8670ddf1cf72e76e7d57ec765911ec48cdab587",
+      "base_sha256": "6a7ec1a3a8997bf26084d2c4c931bd6c2a3f376e3de2073967269e8ebbb19104"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+      "tracked": true,
+      "bytes": 93216,
+      "candidate_sha256": "a5b9b8220de7e9ec6b3f392db6e1a5df1775a6dd8896d08054e359c3921f5591",
+      "base_sha256": "56179df98ec6559f1c43a45d4039340f24e288c2c15acab1df0d306c6d6d3c70"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_pause_private_preview.dart",
+      "tracked": false,
+      "bytes": 16661,
+      "candidate_sha256": "41923f710ceac2bd09e249d3ffdaa5ba6bbe7bcd7a17c6c8e5552b000588ee18",
+      "base_sha256": null
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_pause_private_preview_state.dart",
+      "tracked": false,
+      "bytes": 4543,
+      "candidate_sha256": "f0811da7be9d2c106fdfce7b5798c93acafb2b3451f024f047480f66a2dc7c05",
+      "base_sha256": null
+    },
+    {
+      "path": "SOURCE/test/zyra_pause_private_model_test.dart",
+      "tracked": false,
+      "bytes": 2489,
+      "candidate_sha256": "12c990fb5d60dbc98dcfe679a829b695829ca41491a6a7d60663c578a230f35d",
+      "base_sha256": null
+    },
+    {
+      "path": "SOURCE/test/zyra_pause_private_preview_state_test.dart",
+      "tracked": false,
+      "bytes": 8984,
+      "candidate_sha256": "03bca487c669d9b92095f7bdb44dfb9d6b2c6c762b1ac93b01921fbcec734031",
+      "base_sha256": null
+    },
+    {
+      "path": "SOURCE/test/visual/line138_pause_private_capture_test.dart",
+      "tracked": false,
+      "bytes": 9786,
+      "candidate_sha256": "4582b2171cb4903bea11a30e466a632a4af37c9fcee6be74c06ea682c6700e52",
+      "base_sha256": null
+    },
+    {
+      "path": "SOURCE/test/one_journey_resume_checkpoint_test.dart",
+      "tracked": true,
+      "bytes": 48580,
+      "candidate_sha256": "0487781fc9923aa45662f04c71e606890f78631bae77a570ccbe5657c1dcc55e",
+      "base_sha256": "bd3432cc6262648f0909d6891da61b57261e51f868ab0333a81a0ff7fbf631f2"
+    },
+    {
+      "path": "SOURCE/test/visual/line126_remaining_routes_test.dart",
+      "tracked": true,
+      "bytes": 24792,
+      "candidate_sha256": "028cf05376b33b16115efef4830ddec85dd4db1d02b4105aff5f5de767d0553b",
+      "base_sha256": "be9b3393b0b01644c25736a9dc72d7ef81d6fc02966a4ea072b2f0bacf56fa21"
+    },
+    {
+      "path": "SOURCE/test/visual/lock14_ivory_capture_test.dart",
+      "tracked": true,
+      "bytes": 15094,
+      "candidate_sha256": "ee164ff49bc9136d67bfe09c5248211b6cca7791ad75f711d6bc64aa013f4216",
+      "base_sha256": "cf23a6007325c10342d1e1c53538abe3da54bf4d5eef2f94547fc6a4273d03cf"
+    },
+    {
+      "path": "SOURCE/test/whole_app_settings_destinations_test.dart",
+      "tracked": true,
+      "bytes": 36198,
+      "candidate_sha256": "932eb5e2b1c9a65c7e967520eb0d94a6e99f9bf2672aee8eb8621e46acf2fd94",
+      "base_sha256": "99d26acfaf83c7a450cddf0a284e1a1162818d07c8d3bf4676c59b544a86bd0c"
+    }
+  ],
+  "resume": "Reapply patch/candidate changes on top of newer accepted SOURCE after Q225 is answered; never overwrite newer code; rerun line checks."
+}

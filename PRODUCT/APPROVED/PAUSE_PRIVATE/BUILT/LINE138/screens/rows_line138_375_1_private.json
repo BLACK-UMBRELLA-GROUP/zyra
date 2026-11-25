@@ -1,0 +1,32 @@
+[
+  {
+    "role": "Seeker",
+    "area": "pause_private",
+    "page": "375_1_private_top",
+    "state": "normal",
+    "reached": "375_1_private_top",
+    "file": "375_1_private_top.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "settings",
+      "account_action"
+    ],
+    "tab": 4
+  },
+  {
+    "role": "Seeker",
+    "area": "pause_private",
+    "page": "375_1_private_bottom",
+    "state": "normal",
+    "reached": "375_1_private_bottom",
+    "file": "375_1_private_bottom.png",
+    "width": 1125,
+    "height": 2001,
+    "route": [
+      "settings",
+      "account_action"
+    ],
+    "tab": 4
+  }
+]

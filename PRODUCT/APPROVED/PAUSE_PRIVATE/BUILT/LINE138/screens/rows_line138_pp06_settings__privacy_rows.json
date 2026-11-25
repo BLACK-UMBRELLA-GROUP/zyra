@@ -1,0 +1,16 @@
+[
+  {
+    "role": "Seeker",
+    "area": "pause_private",
+    "page": "pp06_settings__privacy_rows",
+    "state": "normal",
+    "reached": "pp06_settings__privacy_rows",
+    "file": "pp06_settings__privacy_rows.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "settings"
+    ],
+    "tab": 4
+  }
+]

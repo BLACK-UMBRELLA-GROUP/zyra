@@ -1,0 +1,17 @@
+[
+  {
+    "role": "Seeker",
+    "area": "pause_private",
+    "page": "pp05_private_mode__seeker_basic_locked",
+    "state": "normal",
+    "reached": "pp05_private_mode__seeker_basic_locked",
+    "file": "pp05_private_mode__seeker_basic_locked.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "settings",
+      "account_action"
+    ],
+    "tab": 4
+  }
+]

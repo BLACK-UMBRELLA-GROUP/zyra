@@ -1,0 +1,17 @@
+[
+  {
+    "role": "Seeker",
+    "area": "pause_private",
+    "page": "pp02_pause__paused",
+    "state": "normal",
+    "reached": "pp02_pause__paused",
+    "file": "pp02_pause__paused.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "settings",
+      "account_action"
+    ],
+    "tab": 4
+  }
+]

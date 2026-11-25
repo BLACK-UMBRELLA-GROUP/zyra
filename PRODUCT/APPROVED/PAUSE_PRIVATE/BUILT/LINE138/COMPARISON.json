@@ -1,0 +1,79 @@
+{
+  "layout": "master left, candidate right",
+  "scope": "pp06 Privacy rows only; other Settings rows unchanged",
+  "observations": "All six states retain locked composition, wording, icons and controls. Shared 26pt pageTitle, V9 reading weight and shared surface shadows remain rather than browser 28pt/300 typography or browser rasterization. Private footer uses V9 next darker ink after measured 4.342-4.473 contrast. No final MATCH or product approval while Q225 is open.",
+  "pairs": [
+    {
+      "master": "PRODUCT/APPROVED/PAUSE_PRIVATE/MASTERS/pp01_pause__visible.png",
+      "candidate": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/screens/pp01_pause__visible.png",
+      "beside_master": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/comparisons/pp01_pause__visible.png",
+      "master_sha256": "eccd2189d9462b69ae8ea6863fd2b512b7785b43b8d00c0af4031c2d0f1b1740",
+      "candidate_sha256": "073786d7e099535642079bcd9fa4a86ac835bc05397d381c1a37bc36e3982c24",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "candidate structural comparison; no final MATCH signoff"
+    },
+    {
+      "master": "PRODUCT/APPROVED/PAUSE_PRIVATE/MASTERS/pp02_pause__paused.png",
+      "candidate": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/screens/pp02_pause__paused.png",
+      "beside_master": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/comparisons/pp02_pause__paused.png",
+      "master_sha256": "46bec28df421fd41b4ff49a36abc89ebdeb57c920ce727b2ca9414b93614111a",
+      "candidate_sha256": "302ecc27128279c297a6de71700b31a2ae2dae4fd667cb813749bd4547a61c59",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "candidate structural comparison; no final MATCH signoff"
+    },
+    {
+      "master": "PRODUCT/APPROVED/PAUSE_PRIVATE/MASTERS/pp03_private_mode__off.png",
+      "candidate": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/screens/pp03_private_mode__off.png",
+      "beside_master": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/comparisons/pp03_private_mode__off.png",
+      "master_sha256": "0f07ea6d7ac492c4ecb3b6ceb569017f88b95d187fb227e763239de15817bd01",
+      "candidate_sha256": "cec1f87582ebcddc6081a2632a66489e28d786545fa240dfca9fd640eae6214e",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "candidate structural comparison; no final MATCH signoff"
+    },
+    {
+      "master": "PRODUCT/APPROVED/PAUSE_PRIVATE/MASTERS/pp04_private_mode__on.png",
+      "candidate": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/screens/pp04_private_mode__on.png",
+      "beside_master": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/comparisons/pp04_private_mode__on.png",
+      "master_sha256": "6c5cab55adb11b5dcb25a17a4e9bc1a9c911c47b54b9634c78e0f85384da5d90",
+      "candidate_sha256": "2103a37646823f50912925b562b64e07ef4fd7493ff0d63e6fed18248e1f4d06",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "candidate structural comparison; no final MATCH signoff"
+    },
+    {
+      "master": "PRODUCT/APPROVED/PAUSE_PRIVATE/MASTERS/pp05_private_mode__seeker_basic_locked.png",
+      "candidate": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/screens/pp05_private_mode__seeker_basic_locked.png",
+      "beside_master": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/comparisons/pp05_private_mode__seeker_basic_locked.png",
+      "master_sha256": "446ae43ac659784b2bc29c22301e61ca1d465de4bf990b1b00ebc4f01438f794",
+      "candidate_sha256": "18663b0eb071f9244e47f052989255e7a09ef745c92aba48d949e71f82bf4ccb",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "candidate structural comparison; no final MATCH signoff"
+    },
+    {
+      "master": "PRODUCT/APPROVED/PAUSE_PRIVATE/MASTERS/pp06_settings__privacy_rows.png",
+      "candidate": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/screens/pp06_settings__privacy_rows.png",
+      "beside_master": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/comparisons/pp06_settings__privacy_rows.png",
+      "master_sha256": "69eb74fbb31e3df450fbd1008bd1d525de99446c6f408d99af6f5a7176b205e3",
+      "candidate_sha256": "f83f8bda0295b6642c68e44dda2a90dba74c438ce3dbcd6f8655f2b414300f80",
+      "pixels": [
+        1290,
+        2796
+      ],
+      "verdict": "candidate structural comparison; no final MATCH signoff"
+    }
+  ]
+}

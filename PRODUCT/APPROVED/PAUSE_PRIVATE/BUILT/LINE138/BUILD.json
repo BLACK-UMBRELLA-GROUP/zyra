@@ -1,0 +1,72 @@
+{
+  "queue_line": 138,
+  "lock": 44,
+  "decision": "DR-ZYRA-376",
+  "status": "QUESTION Q225; candidate only",
+  "source_base_commit": "9d100e634a524aa52e1ccbb1595a2f89d3acf071",
+  "implementation_commit": null,
+  "flutter_version": "3.44.2",
+  "build_mode": "Flutter widget-test local sample preview",
+  "timestamp": "2026-11-25T09:23:01.905283+00:00",
+  "checks": {
+    "analyzer": {
+      "command": "node tooling/no_git_driver.mjs flutter analyze --no-pub",
+      "result": "PASS; No issues found; 10.0s"
+    },
+    "focused": {
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub test/zyra_pause_private_model_test.dart test/zyra_pause_private_preview_state_test.dart test/visual/line138_pause_private_capture_test.dart test/zyra_rendered_text_audit_controls_test.dart --dart-define=ZYRA_LINE138_CAPTURE=true --reporter expanded",
+      "result": "PASS; 160 tests; 55s"
+    },
+    "rendered_text": {
+      "reports": 22,
+      "failures": 0,
+      "widths": [
+        375,
+        430
+      ],
+      "scales": [
+        1,
+        2
+      ],
+      "real_shadows": true
+    },
+    "ordinary_regression": {
+      "command": "node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded",
+      "result": "PASS; 7945 passed; 231 skipped; 8m29s"
+    },
+    "ci_baseline": {
+      "commit": "9d100e634a524aa52e1ccbb1595a2f89d3acf071",
+      "run": 45575522189,
+      "workflow": "success",
+      "flutter_shards": "three passed",
+      "full_text_reporting_jobs": "four failed; nonblocking per brief and README"
+    },
+    "migration_focus": {
+      "checkpoint": 55,
+      "line126_pages": 4,
+      "larger_text_settings_scroll": 1,
+      "actual_settings_destinations": 1,
+      "result": "all passed"
+    },
+    "initial_ordinary_regression": {
+      "result": "FAIL; 7937 passed; 231 skipped; 7 stale test expectations; 8m51s",
+      "action": "Seven obsolete Pause/settings expectations migrated; final full regression passed"
+    }
+  },
+  "held_steps": [
+    "Paused Seeker Profiles and request presentation",
+    "Exact month pause deadline calculation"
+  ],
+  "boundaries": {
+    "server": false,
+    "native_build": false,
+    "phone_install": false,
+    "member_data": false,
+    "inbound_enforcement": "helper-only; seedReceived remains scenario fixture"
+  },
+  "failed_full_gate_runs": 1,
+  "held_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE138",
+  "parked_at": "2026-11-25T09:22:09.696594+00:00",
+  "source_released": true,
+  "index_empty_at_source_release": true
+}
