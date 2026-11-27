@@ -37,11 +37,20 @@ import '../visual/line120_recovery_removal_capture_test.dart' as recovery;
 import '../visual/line126_remaining_routes_test.dart' as remaining;
 import '../visual/line126_coverage_entry_routes_test.dart' as entries;
 import '../visual/line144_help_safety_audit_test.dart' as help_safety;
+import '../visual/line142_offers_preview_test.dart' as offers;
 
 const _reportOnly = bool.fromEnvironment('ZYRA_LINE126_REPORT_ONLY');
 const _alphaCheck = bool.fromEnvironment('ZYRA_LINE126_ALPHA_CHECK');
 const _collectItems = bool.fromEnvironment('ZYRA_TEXT_AUDIT_ITEM_REPORT');
 const _focusedReplay = String.fromEnvironment('ZYRA_FOCUSED_TEXT_REPLAY');
+const _shardIndex = int.fromEnvironment('ZYRA_TEXT_AUDIT_SHARD_INDEX');
+const _shardCount = int.fromEnvironment(
+  'ZYRA_TEXT_AUDIT_SHARD_COUNT',
+  defaultValue: 1,
+);
+const _headSha = String.fromEnvironment('ZYRA_TEXT_AUDIT_HEAD_SHA');
+const _runId = String.fromEnvironment('ZYRA_TEXT_AUDIT_RUN_ID');
+const _runAttempt = String.fromEnvironment('ZYRA_TEXT_AUDIT_RUN_ATTEMPT');
 
 typedef _FocusRequirement = ({String group, String location, String plan});
 
@@ -90,24 +99,121 @@ class ZyraContrastDriver {
   String get id => isSharded ? '$setting-${shardIndex + 1}' : setting;
 }
 
-const zyraContrastNormal430 = ZyraContrastDriver('normal-430', [
-  BaselineAuditViewport(Size(430, 932), 1),
-]);
-const zyraContrastNormal = ZyraContrastDriver('normal', [
-  BaselineAuditViewport(Size(375, 667), 1),
-]);
-const zyraContrastLarge430 = ZyraContrastDriver('large-430', [
-  BaselineAuditViewport(Size(430, 932), 1.3),
-]);
+const zyraContrastNormal430 = ZyraContrastDriver(
+  'normal-430',
+  [BaselineAuditViewport(Size(430, 932), 1)],
+  shardIndex: _shardIndex,
+  shardCount: _shardCount,
+);
+const zyraContrastNormal = ZyraContrastDriver(
+  'normal',
+  [BaselineAuditViewport(Size(375, 667), 1)],
+  shardIndex: _shardIndex,
+  shardCount: _shardCount,
+);
+const zyraContrastLarge430 = ZyraContrastDriver(
+  'large-430',
+  [BaselineAuditViewport(Size(430, 932), 1.3)],
+  shardIndex: _shardIndex,
+  shardCount: _shardCount,
+);
 const zyraContrastLarge375 = ZyraContrastDriver(
   'large-375',
   [BaselineAuditViewport(Size(375, 667), 1.3)],
-  shardIndex: int.fromEnvironment('ZYRA_TEXT_AUDIT_SHARD_INDEX'),
-  shardCount: int.fromEnvironment(
-    'ZYRA_TEXT_AUDIT_SHARD_COUNT',
-    defaultValue: 1,
-  ),
+  shardIndex: _shardIndex,
+  shardCount: _shardCount,
 );
+
+final _registeredSuites = <(String, void Function())>[
+  ('Seeker', seeker.main),
+  ('Basic plans', basic.main),
+  ('Guardian One', guardian.main),
+  ('Signup', signup.main),
+  ('Walkthrough', tour.main),
+  ('Membership', membership.main),
+  ('Menus', menus.main),
+  ('Ended', ended.main),
+  ('Compatibility', compatibility.main),
+  ('Chat', chat.main),
+  ('Settings', settings.main),
+  ('Safety', safety.main),
+  ('Filters', filters.main),
+  ('Circle', circle.main),
+  ('Family', family.main),
+  ('Seekers', seekers.main),
+  ('Phone', phone.main),
+  ('Focus', focus.main),
+  ('Recovery', recovery.main),
+  ('Remaining routes', remaining.main),
+  ('Coverage entries', entries.main),
+  ('Help and safety', help_safety.main),
+  ('Eid gifts', offers.main),
+];
+
+// Q239: preserve the established large-375 buckets. Eid belongs in bucket 3.
+const _large375Buckets = [
+  [
+    'Seeker',
+    'Walkthrough',
+    'Compatibility',
+    'Filters',
+    'Phone',
+    'Coverage entries',
+  ],
+  ['Basic plans', 'Membership', 'Chat', 'Circle', 'Focus', 'Help and safety'],
+  ['Guardian One', 'Menus', 'Settings', 'Family', 'Recovery', 'Eid gifts'],
+  ['Signup', 'Ended', 'Safety', 'Seekers', 'Remaining routes'],
+];
+const _fiveShardBuckets = [
+  ['Seeker', 'Walkthrough', 'Compatibility', 'Filters', 'Phone'],
+  [
+    'Basic plans',
+    'Membership',
+    'Chat',
+    'Safety',
+    'Circle',
+    'Focus',
+    'Help and safety',
+  ],
+  [
+    'Guardian One',
+    'Signup',
+    'Menus',
+    'Ended',
+    'Settings',
+    'Family',
+    'Seekers',
+    'Recovery',
+    'Eid gifts',
+  ],
+  ['Remaining routes'],
+  ['Coverage entries'],
+];
+
+List<String> _selectedSuites(ZyraContrastDriver driver) {
+  final registered = _registeredSuites.map((suite) => suite.$1).toList();
+  if (!driver.isSharded) return registered;
+  final buckets = driver.setting == 'large-375'
+      ? _large375Buckets
+      : _fiveShardBuckets;
+  if (driver.shardCount != buckets.length ||
+      driver.shardIndex < 0 ||
+      driver.shardIndex >= buckets.length) {
+    throw StateError('Unexpected Q239 fixed corpus partition.');
+  }
+  final partition = buckets.expand((bucket) => bucket).toList();
+  if (partition.length != registered.length ||
+      partition.toSet().length != registered.length ||
+      !partition.toSet().containsAll(registered)) {
+    throw StateError(
+      'Q239 fixed corpus partition must select every suite once.',
+    );
+  }
+  return registered
+      .where((suite) => buckets[driver.shardIndex].contains(suite))
+      .toList();
+}
+
 ZyraContrastDriver _driver = zyraContrastNormal;
 List<BaselineAuditViewport> get _viewports => _driver.viewports;
 String get _reportStem => _focusRequirements.isEmpty
@@ -117,6 +223,7 @@ String get _reportPath => '$_reportStem.json';
 String get _progressPath => '$_reportStem-progress.json';
 String get _itemsPath => '$_reportStem-items.jsonl';
 final _clock = Stopwatch();
+bool _reportComplete = false;
 final _frames = <Map<String, Object?>>[];
 final _excludedLegacyWelcomeFrames = <Map<String, Object?>>[];
 final _failures = <Map<String, Object?>>[];
@@ -305,6 +412,7 @@ List<String> _coverageGaps() {
     'line126_remaining_',
     'line126_entry_',
     'line144_help_',
+    'line142_',
   ]) {
     if (!_groups.any((group) => group.startsWith(prefix))) {
       gaps.add('suite:$prefix');
@@ -431,6 +539,17 @@ Map<String, Object?> _report() => {
   'setting': _driver.setting,
   'shard_index': _driver.shardIndex,
   'shard_count': _driver.shardCount,
+  'selected_suites': _selectedSuites(_driver),
+  'registered_suites': _registeredSuites.map((suite) => suite.$1).toList(),
+  'viewport': {
+    'width': _viewports.single.size.width,
+    'height': _viewports.single.size.height,
+    'text_scale': _viewports.single.scale,
+  },
+  'head_sha': _headSha,
+  'run_id': _runId,
+  'run_attempt': _runAttempt,
+  'report_complete': _reportComplete,
   'report_only': _reportOnly,
   'status':
       _frames.isNotEmpty &&
@@ -874,6 +993,7 @@ void runZyraTextContrastCorpus(ZyraContrastDriver driver) {
     throw StateError('Focused raster replay requires strict assertions.');
   }
   _driver = driver;
+  final selectedSuites = _selectedSuites(driver);
   baselineTextAuditOnly = true;
   baselineTextAudit = _measure;
   baselineNonTextObservation = (h, state, evidence, verifyNonText) async {
@@ -939,6 +1059,26 @@ void runZyraTextContrastCorpus(ZyraContrastDriver driver) {
         '430x932@1.3',
         '375x667@1.3',
       });
+      final suiteNames = _registeredSuites.map((suite) => suite.$1).toList();
+      expect(suiteNames, hasLength(23));
+      expect(suiteNames.toSet(), hasLength(23));
+      expect(suiteNames, contains('Eid gifts'));
+      for (final source in drivers) {
+        final count = source.setting == 'large-375' ? 4 : 5;
+        final partition = <String>[
+          for (var index = 0; index < count; index++)
+            ..._selectedSuites(
+              ZyraContrastDriver(
+                source.setting,
+                source.viewports,
+                shardIndex: index,
+                shardCount: count,
+              ),
+            ),
+        ];
+        expect(partition, hasLength(23), reason: source.setting);
+        expect(partition.toSet(), suiteNames.toSet(), reason: source.setting);
+      }
       // Full-suite modulo-three sharding sees A,D,C,B consecutively. The two
       // normal-text drivers (A+B) therefore share one shard; each large driver
       // occupies a different shard, without changing workflow/sharder budgets.
@@ -982,10 +1122,22 @@ void runZyraTextContrastCorpus(ZyraContrastDriver driver) {
     },
   );
   tearDownAll(() {
+    _reportComplete = true;
     _write(_reportPath);
     baselineTextAudit = null;
     baselineNonTextObservation = null;
     baselineTextAuditOnly = false;
+    if (_reportOnly) {
+      // Q239 retains the named hosted mode: raw auditor findings and actual
+      // per-item statuses remain recorded; fixture-body failures stay strict.
+      expect(_frames, isNotEmpty, reason: 'The audit must measure real frames');
+      expect(_runs, greaterThan(0), reason: 'The audit must measure text runs');
+      expect(
+        _pixels,
+        greaterThan(0),
+        reason: 'The audit must measure real pixels',
+      );
+    }
     if (!_reportOnly) {
       expect(_frames, isNotEmpty, reason: 'The audit must measure real frames');
       if (_requiresCompleteCoverage) {
@@ -1004,32 +1156,8 @@ void runZyraTextContrastCorpus(ZyraContrastDriver driver) {
       );
     }
   });
-  final suites = <(String, void Function())>[
-    ('Seeker', seeker.main),
-    ('Basic plans', basic.main),
-    ('Guardian One', guardian.main),
-    ('Signup', signup.main),
-    ('Walkthrough', tour.main),
-    ('Membership', membership.main),
-    ('Menus', menus.main),
-    ('Ended', ended.main),
-    ('Compatibility', compatibility.main),
-    ('Chat', chat.main),
-    ('Settings', settings.main),
-    ('Safety', safety.main),
-    ('Filters', filters.main),
-    ('Circle', circle.main),
-    ('Family', family.main),
-    ('Seekers', seekers.main),
-    ('Phone', phone.main),
-    ('Focus', focus.main),
-    ('Recovery', recovery.main),
-    ('Remaining routes', remaining.main),
-    ('Coverage entries', entries.main),
-    ('Help and safety', help_safety.main),
-  ];
-  for (final (index, (name, register)) in suites.indexed) {
-    if (index % _driver.shardCount == _driver.shardIndex) {
+  for (final (name, register) in _registeredSuites) {
+    if (selectedSuites.contains(name)) {
       group(name, register);
     }
   }

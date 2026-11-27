@@ -293,10 +293,23 @@ The four full-screen corpus drivers are opt-in and are not a local landing gate.
 
 The `Full text audit` job in `.github/workflows/zyra-ci.yml` runs the full
 normal and Larger Text corpus at 375 and 430 widths on each main push and the
-nightly schedule. Its four settings report separately in job logs and summaries;
-audit failures do not fail the workflow or block a queue line. It enables each corpus with
-`--dart-define=ZYRA_FULL_TEXT_AUDIT=true` and keeps the audit's existing
-coverage and 4.5:1 / 3:1 thresholds.
+nightly schedule. Q239 assigns the 23 registered suites to 19 fixed jobs:
+five normal-375, five normal-430, four large-375 and five large-430. Each has
+a 20-minute process deadline inside a 25-minute job budget. The normal-375
+driver retains its existing `normal` report setting and measures 375 × 667 at 1.0.
+
+Each job attaches its complete audit, per-item raster observations and coverage
+manifest, including exact suites, viewport, shard and head/run/attempt identity.
+The dedicated union proof requires all 19 matching reports and zero unresolved
+coverage gaps in each setting. A fixture failure cannot pass this proof merely
+because it wrote JSON. Generic hosted reporting remains nonblocking for other
+lines; Q239 requires the actual strict union proof to pass before line 144 is BUILT.
+
+Hosted calls opt into `ZYRA_FULL_TEXT_AUDIT`, `ZYRA_TEXT_AUDIT_ITEM_REPORT` and
+the existing `ZYRA_LINE126_REPORT_ONLY` mode. Style findings retain their actual
+failed status, ratios and raw evidence. Failed fixture processes still fail. Local default
+and focused replay remain strict, with the existing coverage and 4.5:1 / 3:1
+thresholds. No product colour pass is implied by a completed hosted report.
 
 ## Backend
 

@@ -38,12 +38,13 @@ void main() {
   }
 
   Future<void> audit(BaselineHarness h, String id) async {
-    if (!_capture) return;
+    if (!_capture && !baselineTextAuditOnly) return;
     final shadows = debugDisableShadows;
     try {
       debugDisableShadows = false;
       await h.tester.pump(const Duration(milliseconds: 2600));
       await h.capture('offers', id, 'normal', id, fileName: '$id.png');
+      if (baselineTextAuditOnly) return;
       final boundary = h.tester.renderObject<RenderRepaintBoundary>(
         _key('zyra-founder-baseline-boundary'),
       );
@@ -215,6 +216,7 @@ void main() {
       );
       if (id == 'o05') await audit(h, 'o12');
       await h.tap('preview_open_eid_gift');
+      h.assertPage('eid_gift_preview');
       expect(find.text(label), findsOneWidget);
       expect(
         find.text('Eid Mubarak, ${guardian ? 'Hassan' : 'Adam'}'),

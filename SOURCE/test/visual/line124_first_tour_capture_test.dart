@@ -327,6 +327,21 @@ void main() {
       final harness = _harness(tester);
       await _mount(harness, guardian: false, pages: const ['settings']);
       expect(_key('first_tour_overlay'), findsNothing);
+      // A1 discovery: seek the lazy row through its real Settings owner;
+      // do not tap Replay or open the tour while finding it.
+      final settingsScroll = find.descendant(
+        of: _key('concept-current-settings-scroll'),
+        matching: find.byType(Scrollable),
+      );
+      expect(settingsScroll, findsOneWidget);
+      await tester.scrollUntilVisible(
+        _key('concept_settings_replayWalkthrough'),
+        160,
+        scrollable: settingsScroll,
+        maxScrolls: 80,
+      );
+      await harness.flush();
+      expect(_key('first_tour_overlay'), findsNothing);
       final replay = find.text('Replay the walkthrough');
       expect(replay, findsOneWidget);
       await Scrollable.ensureVisible(tester.element(replay), alignment: .5);

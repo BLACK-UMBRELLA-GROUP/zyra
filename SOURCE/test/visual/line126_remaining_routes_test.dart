@@ -18,6 +18,7 @@ import 'package:zyra/dev/zyra_pause_private_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_info_presentation.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_one_journey_settings_details.dart';
+import 'package:zyra/dev/zyra_one_journey_switch_signup_preview.dart';
 import 'package:zyra/dev/zyra_privacy_security_preview.dart';
 import 'package:zyra/dev/zyra_signup_preview.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
@@ -204,6 +205,7 @@ Future<BaselineHarness> _mount(
   ZyraConceptSettingsDetail? detail,
   ViewRequestDraftModel? model,
   String? quickPage,
+  ZyraWalletReadiness seekerReadiness = ZyraWalletReadiness.ready,
 }) async {
   final role = guardian ? 'guardian' : 'seeker';
   final plan = basic ? 'basic' : 'one';
@@ -223,6 +225,7 @@ Future<BaselineHarness> _mount(
       accountDestination: action?.name,
       settingsDetail: detail?.name,
       myZyraQuickAccessPage: quickPage,
+      seekerReadiness: seekerReadiness,
       seekerMembership: !guardian && basic ? 'Seeker Basic' : 'Seeker One',
       guardianMembership: guardian && basic ? 'Guardian Basic' : 'Guardian One',
     ),
@@ -472,6 +475,76 @@ void _registerAccountCases(
       await _readAll(h, state);
       h.assertPage('notifications');
       _record(h, 'notifications_$state');
+    });
+  }
+  // Q239 / LOCK46: retain the existing Seeker One Focus witness, and
+  // reach the three missing plan obligations through their real public entry.
+  // Missing-role Add remains the separate signup fixture below.
+  if (guardian || basic) {
+    _case('$prefix unfinished covered Seeker setup', (tester) async {
+      final h = await _mount(
+        tester,
+        frame,
+        guardian: guardian,
+        basic: basic,
+        state: 'switch_account_setup',
+        tab: guardian ? 4 : 2,
+        seekerReadiness: ZyraWalletReadiness.unfinished,
+      );
+      expect(find.byType(ZyraOneJourneyConceptShell), findsOneWidget);
+      expect(h.latest.seekerReadiness, ZyraWalletReadiness.unfinished);
+      if (guardian) {
+        await h.tap('switch-account-button');
+        h.assertPage('switch_account_signup');
+        final wallet = tester.widget<ZyraSubscriptionSwitchPreview>(
+          find.byType(ZyraSubscriptionSwitchPreview),
+        );
+        expect(wallet.currentRole, ZyraWalletRole.guardian);
+        expect(wallet.draft.seeker.readiness, ZyraWalletReadiness.unfinished);
+        expect(wallet.draft.seeker.isCovered, isTrue);
+        expect(wallet.draft.seeker.coverage, ZyraWalletCoverage.assignedFamily);
+        expect(
+          wallet.draft.nextStep(ZyraWalletRole.seeker),
+          ZyraWalletNextStep.finishSetup,
+        );
+        final owner = _key('wallet_switch_scroll');
+        expect(owner, findsOneWidget);
+        final scroll = find.descendant(
+          of: owner,
+          matching: find.byType(Scrollable),
+        );
+        expect(scroll, findsOneWidget);
+        await tester.scrollUntilVisible(
+          _key('wallet_primary_seeker'),
+          160,
+          scrollable: scroll,
+          maxScrolls: 80,
+        );
+        await h.flush();
+        await h.tap('wallet_primary_seeker');
+      } else {
+        expect(h.latest.tab, 2);
+        expect(h.latest.seekerMembership, 'Seeker Basic');
+        expect(h.latest.model.capacity, 1);
+        expect(_key('focus-setup'), findsOneWidget);
+        await h.tap('focus-setup');
+      }
+      h.assertPage('switch_account_setup');
+      final setup = tester.widget<ZyraSwitchSignupPreview>(
+        find.byType(ZyraSwitchSignupPreview),
+      );
+      expect(setup.setupOverview, isTrue);
+      expect(setup.guardian, isTrue, reason: 'The setup target is Seeker');
+      expect(setup.currentMembership, '$role $plan');
+      expect(h.latest.guardian, guardian);
+      expect(
+        guardian ? h.latest.guardianMembership : h.latest.seekerMembership,
+        '$role $plan',
+      );
+      expect(h.latest.seekerReadiness, ZyraWalletReadiness.unfinished);
+      await _readCurrentPage(h, 'switch_account_setup', 'concept_switch_setup');
+      h.assertPage('switch_account_setup');
+      _record(h, 'switch_account_setup');
     });
   }
   _case('$prefix subscriptions and switch setup', (tester) async {
