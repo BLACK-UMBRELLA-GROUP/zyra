@@ -80,6 +80,7 @@ import 'zyra_first_tour_steps.dart';
 import 'zyra_first_tour_store.dart';
 import 'package:share_plus/share_plus.dart';
 import '../widgets/zyra_tap_feedback.dart';
+import '../widgets/zyra_profile_image.dart';
 import '../widgets/zyra_confirm_sheet.dart';
 import '../widgets/zyra_shell_navigation.dart';
 import '../widgets/zyra_segmented_toggle.dart';
@@ -114,6 +115,8 @@ import '../data/help_content.dart';
 import 'zyra_request_account_session.dart';
 import 'zyra_request_capacity_choice.dart';
 import 'zyra_guardian_circle_preview.dart';
+import 'zyra_family_introduction_preview.dart';
+import 'zyra_dev_scenario.dart';
 import 'zyra_circle_topics_presentation.dart';
 import 'zyra_guardian_circle_topic_options.dart';
 import 'zyra_circle_discussion_archive.dart';
@@ -483,6 +486,11 @@ class _ZyraOneJourneyConceptShellState
       _developerBridge?.canPresent == true &&
       _developerBridge?.viewAs != null &&
       _developerSamples.hasSamples;
+
+  bool get _canPreviewFamilyIntroductions =>
+      _developerBridge?.canPresent == true && _developerSamples.isAuthorized;
+  String get _networkFamilySeeker =>
+      _guardianTabs.main ? 'draft-self' : 'draft-yusuf';
 
   @override
   void didChangeDependencies() {
@@ -4904,11 +4912,33 @@ class _ZyraOneJourneyConceptShellState
         revision == _uiRevision &&
         !_guardianRole &&
         _page == 'introductions';
-    return _hasDeveloperPreview && _developerSamples.introductionRows != null
+    return (_hasDeveloperPreview &&
+                _developerSamples.introductionRows != null) ||
+            (_canPreviewFamilyIntroductions &&
+                _developerSamples.familyIntroductions.any(
+                  (row) =>
+                      _developerSamples.familyIntroductionPerson(row) != null,
+                ))
         ? ZyraSampleIntroductionsList(
             tabClearance: _quickAccessTabBar,
             wrapTitle: (title) => ZyraDeveloperTitle(child: title),
             admitRequest: _admitWaitingRequest,
+            familyPeerFull: _model.peerOccupied,
+            onAskMyGuardians: (personId, familyId) {
+              if (!current() ||
+                  !_canPreviewFamilyIntroductions ||
+                  ZyraDevScenario.instance.useLiveGuardianData ||
+                  _model.hasDeparted(personId) ||
+                  _currentCircleData()?.canSend != true) {
+                return;
+              }
+              if (_developerSamples.shareIntroduction(
+                personId,
+                familyId: familyId,
+              )) {
+                _open('guardian_circle');
+              }
+            },
           )
         : ZyraRequestActivityPresentation(
             key: const ValueKey('concept_activity_introductions'),
@@ -5199,6 +5229,30 @@ class _ZyraOneJourneyConceptShellState
             Icons.visibility_outlined,
             requestAction(p, () => _open('profile', person: p.id)),
           ),
+          pairedActions:
+              _hasDeveloperPreview &&
+                  tab == 0 &&
+                  !_model.isAcceptedWaiting(p.id)
+              ? (
+                  _connectionAction(
+                    'draft_decline_${p.id}',
+                    'Decline',
+                    null,
+                    requestAction(
+                      p,
+                      () => _act(() => _result(_model.declineReceived(p.id))),
+                    ),
+                  ),
+                  _connectionAction(
+                    'draft_accept_${p.id}',
+                    'Accept request',
+                    null,
+                    _model.canAttemptAccept(p.id)
+                        ? requestAction(p, () => _accept(p, true))
+                        : null,
+                  ),
+                )
+              : null,
           actions: _model.isAcceptedWaiting(p.id)
               ? tab == 0
                     ? [
@@ -5235,6 +5289,8 @@ class _ZyraOneJourneyConceptShellState
                           ),
                         ),
                       ]
+              : tab == 0 && _hasDeveloperPreview
+              ? const []
               : tab == 0
               ? [
                   _connectionAction(
@@ -7938,6 +7994,16 @@ class _ZyraOneJourneyConceptShellState
                 ),
             ],
           ),
+        if (!circleYusuf && _canPreviewFamilyIntroductions)
+          for (final share in _developerSamples.introductionShares)
+            ZyraFamilyMessage(
+              id: share.id,
+              senderId: circleSeekerId,
+              senderFirstName: circleSeekerName,
+              senderRoleLabel: 'Seeker',
+              body: 'What do you all think?',
+              createdAt: share.postedAt,
+            ),
         ...arrived,
         for (final chatId in [mainChatId, ...journeyTopics.keys])
           for (final message
@@ -8205,8 +8271,185 @@ class _ZyraOneJourneyConceptShellState
       );
     }
 
+    final introductionShares = {
+      if (!circleYusuf && _canPreviewFamilyIntroductions)
+        for (final share in _developerSamples.introductionShares)
+          share.id: share,
+    };
+    final introductionLease = _developerSamples.generation;
+
+    Widget? introductionAttachment(BuildContext context, String messageId) {
+      final share = introductionShares[messageId];
+      if (share == null) return null;
+      final person = share.person;
+      bool available() =>
+          foreground() &&
+          _canPreviewFamilyIntroductions &&
+          _developerSamples.isCurrentLease(introductionLease) &&
+          _developerSamples.isSampleProfileVisible(person.id) &&
+          !_model.hasDeparted(person.id);
+      final family = share.familyId == null
+          ? null
+          : _developerSamples.familyIntroduction(share.familyId!);
+      final side = family == null
+          ? null
+          : _developerSamples.ownFamilyIntroductionSide(family);
+      bool canAnswer() =>
+          !guardian &&
+          available() &&
+          (family == null
+              ? _developerSamples.hasIntroduction(person)
+              : side != null &&
+                    family.phase ==
+                        ZyraFamilyIntroductionPhase.bothFamiliesOpen &&
+                    !family.hasAnswered(side));
+
+      void view() {
+        if (!available()) return;
+        final byline = share.guardianName == null
+            ? null
+            : '${share.guardianName} · ${share.guardianRelation}';
+        void respond(BuildContext profileContext, bool yes) {
+          if (!profileContext.mounted ||
+              ModalRoute.isCurrentOf(profileContext) != true ||
+              !canAnswer()) {
+            return;
+          }
+          if (family == null &&
+              yes &&
+              (!_developerSamples.canRequestIntroduction(person) ||
+                  !_admitWaitingRequest(profileContext))) {
+            return;
+          }
+          final saved = family != null
+              ? _developerSamples.saveFamilyIntroductionAnswer(
+                  family,
+                  side: side!,
+                  yes: yes,
+                )
+              : yes
+              ? _developerSamples.requestIntroduction(person)
+              : _developerSamples.declineIntroduction(person);
+          if (!saved) return;
+          Navigator.of(profileContext).pop();
+          if (family != null) {
+            showZyraSampleFamilyAnswerOutcome(
+              context,
+              family,
+              person,
+              introductionLease,
+              current: available,
+              peerFull: _model.peerOccupied(person.id),
+            );
+            return;
+          }
+          ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+            SnackBar(
+              content: Text(
+                yes
+                    ? 'Request sent to ${person.firstName}. It’s in Journey requests → Sent.'
+                    : 'Declined. ${share.guardianName} sees “Not taken forward”.',
+              ),
+            ),
+          );
+        }
+
+        showZyraSampleProfile(
+          context,
+          person,
+          available,
+          suggestedBy: byline,
+          familyIntroduction: family != null,
+          situation: ZyraFullProfileSituation.introduction,
+          onActionFromProfile:
+              canAnswer() &&
+                  (family != null ||
+                      _developerSamples.canRequestIntroduction(person))
+              ? (profileContext) => respond(profileContext, true)
+              : null,
+          onSecondaryFromProfile: canAnswer()
+              ? (profileContext) => respond(profileContext, false)
+              : null,
+        );
+      }
+
+      final profile = _developerSamples.profileFor(person);
+      final details = Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipOval(
+            child: ZyraProfileImage(profile.photoUrl, width: 34, height: 34),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${person.firstName} ${person.surname}',
+                  style: ZyraText.body(size: 13),
+                ),
+                Text(
+                  share.guardianName == null
+                      ? 'Family introduction'
+                      : 'Introduction · put forward by ${share.guardianName}',
+                  style: ZyraText.subtext(size: 11),
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+      final profileAction = OutlinedButton(
+        onPressed: ZyraTapFeedback.onTap(context, view, canAct: available),
+        style: OutlinedButton.styleFrom(
+          foregroundColor: ZyraColors.goldText,
+          side: BorderSide(color: ZyraColors.journeyGold),
+          minimumSize: const Size(48, 40),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+        ),
+        child: const Text('View'),
+      );
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ZyraCircleTopicTag(
+            topic: ZyraCircleDiscussionTopic(
+              id: share.id,
+              firstName: person.firstName,
+              kind: ZyraCircleTopicKind.current,
+              sharedSummaryLabel: 'About ${person.firstName}',
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: ZyraColors.journeyGold.withValues(alpha: .38),
+              ),
+            ),
+            child: MediaQuery.textScalerOf(context).scale(1) > 1.4
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [details, profileAction],
+                  )
+                : Row(
+                    children: [
+                      Expanded(child: details),
+                      const SizedBox(width: 6),
+                      profileAction,
+                    ],
+                  ),
+          ),
+        ],
+      );
+    }
+
     final topicsPreview = ZyraCircleTopicsPreview(
       arrivals: _circleArrivals,
+      introductionAttachment: introductionAttachment,
       mutedChats: _circleMuteKeys,
       nextSentId: () => 'draft-circle-sent-${++_circleSentSequence}',
       onSent: (chatId, message) {
@@ -9225,6 +9468,9 @@ class _ZyraOneJourneyConceptShellState
       state: _guardianTabs,
       page: page,
       unverified: _signupUnverified,
+      familyIntroductions: _canPreviewFamilyIntroductions
+          ? _developerSamples.familyIntroductions.toList()
+          : null,
       introductionDeclined: _developerSamples.hasDeclinedIntroduction,
       madeIntroductions: _developerSamples.guardianIntroductions(
         'draft-guardian-hassan',
@@ -9374,6 +9620,10 @@ class _ZyraOneJourneyConceptShellState
     }
     final state = _guardianTabs;
     final paid = _guardianMembership == 'Guardian One';
+    if (action.startsWith('family_introduction:')) {
+      if (paid) _guardianFamilyIntroductionAction(action);
+      return;
+    }
     if (action.startsWith('seekers_')) {
       if (_page != null || _tab != 3 || !_conceptHassanLinked) return;
       final index = int.tryParse(action.split('_').last);
@@ -9490,7 +9740,9 @@ class _ZyraOneJourneyConceptShellState
           _acknowledgeGuardianReceivedRequests();
         }
         if (action.startsWith('connect_tab_')) {
-          state.connectReceived = action.endsWith('1');
+          state.connectReceived =
+              action.endsWith('1') &&
+              (!_canPreviewFamilyIntroductions || _conceptLinkedSeeker.isMain);
           if (state.connectReceived) state.consumedFocus.add('connect-pending');
         }
         if (action == 'next' || action == 'previous') {
@@ -9525,6 +9777,7 @@ class _ZyraOneJourneyConceptShellState
       return;
     }
     if (action == 'accept' || action == 'dismiss') {
+      if (_canPreviewFamilyIntroductions) return;
       if (!_conceptHassanLinked || !_conceptLinkedSeeker.isMain) return;
       if (!paid || state.connection != ZyraGuardianConnection.pending) return;
       _act(() {
@@ -9559,6 +9812,12 @@ class _ZyraOneJourneyConceptShellState
     }
     if (action == 'received' || action == 'connect') {
       if (!paid) return;
+      if (action == 'received' && _canPreviewFamilyIntroductions) {
+        if (!_conceptHassanLinked || !_conceptLinkedSeeker.isMain) return;
+        if (state.connection == ZyraGuardianConnection.pending) {
+          _developerSamples.seedReceivedFamilyIntroductions();
+        }
+      }
       _move(() {
         state.connectReceived = action == 'received';
         if (state.connectReceived) state.consumedFocus.add('connect-pending');
@@ -9584,11 +9843,18 @@ class _ZyraOneJourneyConceptShellState
               ))) {
         return;
       }
-      if (action == 'connect_confirm' &&
-          state.sent.contains(
-            ZyraGuardianTabsState.network[state.networkIndex].id,
-          )) {
-        return;
+      if (action == 'connect_confirm') {
+        final person = ZyraGuardianTabsState.network[state.networkIndex];
+        final peer = 'draft-${person.id}';
+        if (_model.hasDeparted(peer) ||
+            (_canPreviewFamilyIntroductions
+                ? _developerSamples.hasSentFamilyIntroduction(
+                    _networkFamilySeeker,
+                    peer,
+                  )
+                : state.sent.contains(person.id))) {
+          return;
+        }
       }
       if (action == 'introduce_confirm') {
         final peer = ZyraGuardianTabsState.network[state.networkIndex].id;
@@ -9600,6 +9866,27 @@ class _ZyraOneJourneyConceptShellState
     }
     if (action == 'introduce_send' || action == 'connect_send') {
       if (!paid || !_conceptHassanLinked) return;
+      if (action == 'connect_send' && _canPreviewFamilyIntroductions) {
+        if (_page != 'network_request' || _tab != 0) return;
+        final peer =
+            'draft-${ZyraGuardianTabsState.network[state.networkIndex].id}';
+        if (_model.hasDeparted(peer)) return;
+        final main = state.main && _conceptLinkedSeeker.isMain;
+        if (!_developerSamples.sendFamilyIntroduction(
+          seekerId: _networkFamilySeeker,
+          peerId: peer,
+          main: main,
+        )) {
+          return;
+        }
+        _move(() {
+          _pages.removeLast();
+          _notice = main
+              ? 'Request sent.'
+              : 'Sent to ${state.seekerName}’s Main Guardian to approve.';
+        });
+        return;
+      }
       _act(() {
         if (action == 'introduce_send') {
           final peer = ZyraGuardianTabsState.network[state.networkIndex].id;
@@ -9614,6 +9901,7 @@ class _ZyraOneJourneyConceptShellState
       return;
     }
     if (action == 'chat') {
+      if (_canPreviewFamilyIntroductions) return;
       if (paid && state.connection == ZyraGuardianConnection.accepted) {
         _open('guardian_private_chat');
       }
@@ -9664,6 +9952,73 @@ class _ZyraOneJourneyConceptShellState
     if (accountAction != null) _accountDispatch(accountAction);
   }
 
+  void _guardianFamilyIntroductionAction(String action) {
+    if (!_canPreviewFamilyIntroductions ||
+        !_conceptHassanLinked ||
+        _signupUnverified ||
+        _page != 'guardian_connect') {
+      return;
+    }
+    final parts = action.split(':');
+    if (parts.length != 4) return;
+    final row = _developerSamples.familyIntroduction(parts[2]);
+    if (row == null || row.phase.name != parts[3]) return;
+    final received = row.id.startsWith('received-');
+    if (received
+        ? (!_guardianTabs.connectReceived || !_conceptLinkedSeeker.isMain)
+        : (_guardianTabs.connectReceived || !row.id.startsWith('sent-'))) {
+      return;
+    }
+    final verb = parts[1];
+    String? notice;
+    if (verb == 'approve' || verb == 'reject') {
+      if (received && row.id != 'received-approval') return;
+      if (!received && verb == 'reject') return;
+      final yes = verb == 'approve';
+      if (!_developerSamples.approveFamilyIntroduction(row, yes: yes)) return;
+      if (received) {
+        notice = yes
+            ? 'Approved. Sent to Maryam’s Main Guardian.'
+            : 'Not approved. Bilal is told.';
+      }
+    } else if (verb == 'both_yes') {
+      if (row.phase != ZyraFamilyIntroductionPhase.bothFamiliesOpen) return;
+      for (final side in ZyraFamilyIntroductionSide.values) {
+        if (!row.hasAnswered(side)) {
+          _developerSamples.saveFamilyIntroductionAnswer(
+            row,
+            side: side,
+            yes: true,
+          );
+        }
+      }
+      final person = _developerSamples.familyIntroductionPerson(row);
+      if (person != null) {
+        if (_model.peerOccupied(person.id)) {
+          _developerSamples.holdFamilyIntroductionPlace(row);
+        } else {
+          _developerSamples.reserveFamilyIntroduction(row);
+        }
+      } else if (_developerSamples.ownFamilyIntroductionSide(row) == null) {
+        _developerSamples.reserveOtherFamilyIntroduction(row);
+      }
+    } else {
+      if (received && row.id != 'received-noor') return;
+      final reply = ZyraFamilyIntroductionReply.values
+          .where((reply) => reply.name == verb)
+          .firstOrNull;
+      if (reply == null ||
+          (!received && reply != ZyraFamilyIntroductionReply.open)) {
+        return;
+      }
+      if (!_developerSamples.answerFamilyIntroduction(row, reply)) return;
+      if (received) notice = 'Reply sent: “${reply.label}”.';
+    }
+    _act(() {
+      if (notice != null) _notice = notice;
+    });
+  }
+
   bool Function() _guardianPrivateGuard(
     String page, {
     int Function()? expectedNavigatorStamp,
@@ -9684,6 +10039,7 @@ class _ZyraOneJourneyConceptShellState
           account == (ZyraAccountState.userId, ZyraAccountState.generation) &&
           identical(connection, _guardianTabs) &&
           _guardianRole &&
+          !_canPreviewFamilyIntroductions &&
           _conceptHassanLinked &&
           _conceptLinkedSeeker.isMain &&
           _guardianMembership == 'Guardian One' &&

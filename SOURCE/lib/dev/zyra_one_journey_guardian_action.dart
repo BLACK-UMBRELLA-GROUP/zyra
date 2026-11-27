@@ -18,9 +18,11 @@ class ZyraGuardianActionPage extends StatelessWidget {
     required this.onAction,
     this.canAct,
     this.familyInvite,
+    this.familyIntroduction = false,
+    this.ownMainGuardian = true,
   });
 
-  final bool introduction;
+  final bool introduction, familyIntroduction, ownMainGuardian;
   final String personName, seekerName, seekerGender;
   final ValueChanged<String> onAction;
   final bool Function()? canAct;
@@ -96,6 +98,31 @@ class ZyraGuardianActionPage extends StatelessWidget {
               Icons.lock_outline,
               '$personName and her family are not told',
               'Nothing is sent to them.',
+            ),
+          ]
+        : familyIntroduction
+        ? [
+            if (ownMainGuardian)
+              (
+                Icons.send,
+                'Sent to her Main Guardian',
+                'To the Main Guardian supporting $personName.',
+              )
+            else
+              (
+                Icons.send,
+                '$seekerName’s Main Guardian approves first',
+                'You are not $seekerName’s Main Guardian, so they approve before it goes to $personName’s family.',
+              ),
+            (
+              Icons.people_outline,
+              'They answer with a set reply',
+              '“We’re open to this”, “Let us think about it” or “Not at this time”. No messages and no numbers are shared.',
+            ),
+            (
+              Icons.lock_outline,
+              'If both families are open',
+              '$seekerName and $personName are each asked privately. A Journey begins only if both say yes.',
             ),
           ]
         : [

@@ -4,22 +4,50 @@ import 'package:flutter/scheduler.dart';
 import '../dev/zyra_dev_scenario.dart';
 import '../services/zyra_account_state.dart';
 import '../services/zyra_developer_access.dart';
+import 'zyra_developer_title.dart';
 
 /// Denial-only lifetime for caller-owned Guardian display state. A preview
 /// request cannot grant authority, and a revoked route cannot become live or
 /// rehydrate fixtures after an account switch or restored developer access.
 class ZyraGuardianPreviewLifetime extends ChangeNotifier {
-  ZyraGuardianPreviewLifetime({required this.preview})
-    : _owner = ZyraAccountState.userId,
-      _generation = ZyraAccountState.generation,
-      _previewAdmitted = ZyraDevScenario.instance.guardianOverride {
+  ZyraGuardianPreviewLifetime({required bool preview})
+    : this._(null, preview: preview);
+
+  factory ZyraGuardianPreviewLifetime.forOwnedCircle({
+    required bool preview,
+    required ZyraDeveloperOwnedNavigatorScope? scope,
+    required NavigatorState? navigator,
+  }) {
+    if (!preview || scope?.admitsNavigator(navigator) != true) {
+      return ZyraGuardianPreviewLifetime(preview: preview);
+    }
+    return ZyraGuardianPreviewLifetime._(
+      navigator,
+      preview: true,
+      ownedCircle: scope,
+    );
+  }
+
+  ZyraGuardianPreviewLifetime._(
+    this._navigator, {
+    required this.preview,
+    ZyraDeveloperOwnedNavigatorScope? ownedCircle,
+  }) : _owner = ZyraAccountState.userId,
+       _generation = ZyraAccountState.generation,
+       _ownedCircle = ownedCircle,
+       _previewAdmitted = ownedCircle == null
+           ? ZyraDevScenario.instance.guardianOverride
+           : !ZyraDevScenario.instance.useLiveGuardianData {
     ZyraDevScenario.instance.addListener(_changed);
     ZyraDeveloperAccess.authorizationChanges.addListener(_changed);
+    _ownedCircle?.bridge?.addListener(_changed);
   }
 
   final bool preview;
   final String? _owner;
   final int _generation;
+  final ZyraDeveloperOwnedNavigatorScope? _ownedCircle;
+  final NavigatorState? _navigator;
   final bool _previewAdmitted;
   bool _revoked = false;
 
@@ -28,8 +56,12 @@ class ZyraGuardianPreviewLifetime extends ChangeNotifier {
       !ZyraAccountState.isSigningOut &&
       _owner == ZyraAccountState.userId &&
       _generation == ZyraAccountState.generation &&
-      (!preview ||
-          (_previewAdmitted && ZyraDevScenario.instance.guardianOverride));
+      (!preview || (_previewAdmitted && _previewStillAllowed));
+
+  bool get _previewStillAllowed => _ownedCircle == null
+      ? ZyraDevScenario.instance.guardianOverride
+      : !ZyraDevScenario.instance.useLiveGuardianData &&
+            _ownedCircle.admitsNavigator(_navigator);
 
   bool get canPreview => preview && isCurrent;
 
@@ -50,6 +82,7 @@ class ZyraGuardianPreviewLifetime extends ChangeNotifier {
     revoke();
     ZyraDevScenario.instance.removeListener(_changed);
     ZyraDeveloperAccess.authorizationChanges.removeListener(_changed);
+    _ownedCircle?.bridge?.removeListener(_changed);
     super.dispose();
   }
 }

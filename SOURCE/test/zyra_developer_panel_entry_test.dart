@@ -16,6 +16,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:zyra/config/zyra_internal_founder_policy.dart';
 import 'package:zyra/data/zyra_journey_stages.dart';
+import 'package:zyra/dev/zyra_dev_scenario.dart';
+import 'package:zyra/dev/zyra_family_introduction_preview.dart';
 import 'package:zyra/dev/zyra_one_journey_concept_shell.dart';
 import 'package:zyra/dev/zyra_pause_private_preview.dart';
 import 'package:zyra/dev/zyra_first_tour_overlay.dart';
@@ -533,6 +535,148 @@ void main() {
       await tap(tester, _key('dev_done'));
       expect(AppState.instance.verifiedSeekerPlan, isNull);
       expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);
+      await dispose(tester);
+    },
+  );
+
+  testWidgets(
+    'LOCK 49 shares a sample introduction into Main and opens its full profile',
+    (tester) async {
+      plan = 'seeker_premium';
+      await mount(tester, homeOverride: previewHome());
+      await tap(tester, _key('dev_page_title'));
+      await tap(tester, _key('dev_view_as_0'));
+      await tap(tester, _key('dev_active_0'));
+      await tap(tester, _key('dev_introductions_1'));
+      await tap(tester, _key('dev_done'));
+      await tap(tester, _key('concept-my-introductions'));
+      await tap(tester, _key('family-introduction-sample-aisha-header'));
+      expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);
+      final samples = ZyraDeveloperSamples.instance;
+      expect(samples.hasSparePlace, isTrue);
+      final family = samples.familyIntroduction('sample-aisha')!;
+      expect(
+        samples.saveFamilyIntroductionAnswer(
+          family,
+          side: ZyraFamilyIntroductionSide.receiver,
+          yes: true,
+        ),
+        isTrue,
+      );
+      await tester.pumpAndSettle();
+      expect(family.phase, ZyraFamilyIntroductionPhase.bothFamiliesOpen);
+      final requestsBefore = readsAndWrites.length;
+      await tap(tester, find.text('Ask my Guardians'));
+      expect(samples.introductionShares, hasLength(1));
+      expect(find.text('Guardian Circle'), findsOneWidget);
+      expect(find.text('Main'), findsOneWidget);
+      expect(find.text('About Aisha'), findsOneWidget);
+      expect(find.text('Family introduction'), findsOneWidget);
+      expect(find.text('What do you all think?'), findsOneWidget);
+      await tap(tester, find.text('View'));
+      expect(find.text('Both families agree to introduce you'), findsOneWidget);
+      expect(find.text('Not for me'), findsOneWidget);
+      expect(find.text('I’d like to begin'), findsOneWidget);
+      await tap(tester, find.text('I’d like to begin'));
+      expect(family.phase, ZyraFamilyIntroductionPhase.preparing);
+      expect(samples.activeRows!.single.person.id, 'draft-aisha');
+      expect(find.text('Journey with Aisha'), findsOneWidget);
+      expect(ZyraDeveloperAccess.canUseDeveloperTools, isFalse);
+      Navigator.of(tester.element(find.text('Journey with Aisha'))).pop();
+      await tester.pumpAndSettle();
+      expect(find.text('About Aisha'), findsOneWidget);
+      final scenario = ZyraDevScenario.instance;
+      addTearDown(() => scenario.setUseLiveGuardianData(false));
+      scenario.setUseLiveGuardianData(true);
+      await tester.pumpAndSettle();
+      expect(find.text('About Aisha'), findsNothing);
+      scenario.setUseLiveGuardianData(false);
+      await tester.pumpAndSettle();
+      expect(find.text('About Aisha'), findsNothing);
+      expect(readsAndWrites, hasLength(requestsBefore));
+      await dispose(tester);
+    },
+  );
+
+  testWidgets(
+    'LOCK 49 Guardian Network sends a sample and Received replies stay fixed',
+    (tester) async {
+      plan = 'seeker_premium';
+      await mount(tester, homeOverride: previewHome());
+      await tap(tester, _key('dev_page_title'));
+      await tap(tester, _key('dev_introductions_1'));
+      await tap(tester, _key('dev_view_as_2'));
+      await tap(tester, _key('dev_active_0'));
+      await tap(tester, _key('dev_done'));
+      await previewTab(tester, 0);
+      final requestsBefore = readsAndWrites.length;
+      await tap(tester, _key('guardian_connect_confirm'));
+      expect(find.text('They answer with a set reply'), findsOneWidget);
+      expect(find.textContaining('A private chat opens'), findsNothing);
+      await tap(tester, find.text('Send request'));
+      expect(find.text('Request sent'), findsOneWidget);
+      await previewTab(tester, 2);
+      await tap(tester, _key('guardian_connect'));
+      expect(find.text('Waiting for a response'), findsOneWidget);
+      await tap(tester, _key('guardian_connect_tab_1'));
+      expect(find.text('We’re open to this'), findsOneWidget);
+      await tap(tester, find.text('Approve'));
+      expect(
+        find.text('You approved · sent to Maryam’s Main Guardian'),
+        findsOneWidget,
+      );
+      await tap(tester, find.text('Let us think about it'));
+      expect(find.text('You replied: “Let us think about it”'), findsOneWidget);
+      expect(find.text('Not at this time'), findsOneWidget);
+      expect(find.text('We’re open to this'), findsOneWidget);
+      await tap(tester, find.text('We’re open to this'));
+      expect(
+        find.text(
+          'Both families are open · Adam and Noor are each asked privately',
+        ),
+        findsOneWidget,
+      );
+      await tap(tester, find.text('Demo: Adam and Noor both say yes'));
+      expect(
+        find.text('Adam and Noor both said yes · Journey preparing'),
+        findsOneWidget,
+      );
+      expect(find.text('Open chat'), findsNothing);
+      expect(readsAndWrites, hasLength(requestsBefore));
+      await dispose(tester);
+    },
+  );
+
+  testWidgets(
+    'LOCK 49 an Additional Guardian sends for Main approval before a reply',
+    (tester) async {
+      plan = 'seeker_premium';
+      await mount(tester, homeOverride: previewHome());
+      await tap(tester, _key('dev_page_title'));
+      await tap(tester, _key('dev_view_as_2'));
+      await tap(tester, _key('dev_done'));
+      await previewTab(tester, 0);
+      await tap(tester, _key('guardian_seeker'));
+      final requestsBefore = readsAndWrites.length;
+      await tap(tester, _key('guardian_connect_confirm'));
+      expect(find.text('Yusuf’s Main Guardian approves first'), findsOneWidget);
+      await tap(tester, find.text('Send request'));
+      final row = ZyraDeveloperSamples.instance.familyIntroductions.single;
+      expect(row.senderSeekerId, 'draft-yusuf');
+      expect(row.phase, ZyraFamilyIntroductionPhase.needsApproval);
+      await previewTab(tester, 2);
+      await tap(tester, _key('guardian_connect'));
+      expect(
+        find.text('Waiting for Yusuf’s Main Guardian to approve'),
+        findsOneWidget,
+      );
+      expect(find.text('Demo: they reply “We’re open to this”'), findsNothing);
+      await tap(tester, find.text('Demo: Yusuf’s Main Guardian approves'));
+      expect(row.phase, ZyraFamilyIntroductionPhase.awaitingReply);
+      await tap(tester, find.text('Demo: they reply “We’re open to this”'));
+      expect(row.phase, ZyraFamilyIntroductionPhase.bothFamiliesOpen);
+      expect(find.text('Open chat'), findsNothing);
+      expect(readsAndWrites, hasLength(requestsBefore));
       await dispose(tester);
     },
   );

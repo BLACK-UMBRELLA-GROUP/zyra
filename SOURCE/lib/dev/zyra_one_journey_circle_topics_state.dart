@@ -289,6 +289,10 @@ extension _CircleTopicsState on _ZyraGuardianCircleScreenState {
         messages.add(
           ZyraCircleTopicMessage(
             message: message,
+            introduction: topics.introductionAttachment?.call(
+              context,
+              message.id,
+            ),
             about:
                 _discussionMessageTags[message.id]?.firstName ??
                 message.context?.firstName,

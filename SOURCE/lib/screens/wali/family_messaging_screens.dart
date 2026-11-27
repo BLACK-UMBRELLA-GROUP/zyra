@@ -346,8 +346,16 @@ class _ZyraGuardianCircleScreenState extends State<ZyraGuardianCircleScreen> {
     _previewVisibility = widget.previewVisibility;
     _discussionProfileResolver = widget.previewDiscussionProfileFor;
     _discussionArchiveResolver = widget.previewDiscussionArchiveFor;
-    _authority = ZyraGuardianPreviewLifetime(preview: widget.preview)
-      ..addListener(_withdraw);
+    _authority = ZyraGuardianPreviewLifetime.forOwnedCircle(
+      preview: widget.preview,
+      scope: _previewData == null
+          ? null
+          : context
+                .getInheritedWidgetOfExactType<
+                  ZyraDeveloperOwnedNavigatorScope
+                >(),
+      navigator: Navigator.maybeOf(context),
+    )..addListener(_withdraw);
     _bubbleDesign?.addListener(_presentationChanged);
     _previewVisibility?.addListener(_topicVisibilityChanged);
     _load();

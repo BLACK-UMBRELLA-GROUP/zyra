@@ -131,7 +131,8 @@ void main() {
         );
         expect(find.text('Received'), findsOneWidget);
         expect(find.text('Past'), findsOneWidget);
-        expect(find.byType(ZyraRequestActivityCard), findsNWidgets(3));
+        // LOCK 49 adds the family card above the three one-way cards.
+        expect(find.byType(ZyraRequestActivityCard), findsNWidgets(4));
         await _tap(
           tester,
           find.byKey(const ValueKey('sample-introduction-draft-noor-header')),

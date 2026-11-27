@@ -162,10 +162,13 @@ class ZyraDeveloperOwnedNavigatorScope extends InheritedWidget {
   final bool Function() canPresent;
 
   bool admits(ZyraDeveloperPreviewBridge? owner, ModalRoute<dynamic> route) =>
+      identical(owner, bridge) && admitsNavigator(route.navigator);
+
+  bool admitsNavigator(NavigatorState? navigator) =>
       bridge != null &&
-      identical(owner, bridge) &&
       bridge!.canPresent &&
-      route.navigator == navigatorKey.currentState &&
+      navigator != null &&
+      identical(navigator, navigatorKey.currentState) &&
       canPresent();
 
   @override

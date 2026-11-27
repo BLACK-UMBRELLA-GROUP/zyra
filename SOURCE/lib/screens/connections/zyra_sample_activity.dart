@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../data/zyra_journey_stages.dart';
 import '../../dev/zyra_draft_timeline_presentation.dart';
 import '../../dev/zyra_full_profile_preview.dart';
+import '../../dev/zyra_family_introduction_preview.dart';
 import '../../dev/zyra_draft_browse_utility_presentation.dart';
 import '../../dev/zyra_draft_compatibility_presentation.dart';
 import '../../dev/zyra_draft_compatibility_preview.dart';
@@ -179,14 +180,16 @@ Future<void> _sampleProfileOption(
 bool _foreground(BuildContext context) =>
     context.mounted && (ModalRoute.of(context)?.isCurrent ?? true);
 
-void _showProfile(
+void showZyraSampleProfile(
   BuildContext context,
   DraftProfile person,
   bool Function() current, {
   String? suggestedBy,
+  bool familyIntroduction = false,
   ZyraFullProfileSituation situation = ZyraFullProfileSituation.general,
   VoidCallback? onAction,
   ValueChanged<BuildContext>? onActionFromProfile,
+  ValueChanged<BuildContext>? onSecondaryFromProfile,
   VoidCallback? onSecondary,
 }) {
   if (!_foreground(context) || !current()) return;
@@ -196,41 +199,62 @@ void _showProfile(
       fullscreenDialog: false,
       builder: (_) => ListenableBuilder(
         listenable: _samples,
-        builder: (context, _) => !current()
-            ? const Scaffold(body: _SampleBack())
-            : ZyraFullProfilePreview(
-                profile: _samples.profileFor(person),
-                situation: situation,
-                introductionByline: suggestedBy,
-                canAct: current,
-                photoBuilder:
-                    (
-                      context,
-                      source, {
-                      required width,
-                      required height,
-                      required alignment,
-                    }) => ZyraProfileImage(
-                      source.startsWith('data:image/') ? source : '',
-                      width: width,
-                      height: height,
-                      fit: BoxFit.cover,
-                      alignment: alignment,
-                    ),
-                onAction: onActionFromProfile == null
-                    ? onAction
-                    : () => onActionFromProfile(context),
-                onSecondary: onSecondary,
-                onCompatibility: () =>
-                    _sampleCompatibility(context, person, current),
-                onOption: (option) => _sampleProfileOption(
+        builder: (context, _) {
+          if (!current()) return const Scaffold(body: _SampleBack());
+          final profile = ZyraFullProfilePreview(
+            profile: _samples.profileFor(person),
+            situation: situation,
+            introductionByline: suggestedBy,
+            familyIntroduction: familyIntroduction,
+            canAct: current,
+            photoBuilder:
+                (
                   context,
-                  originContext,
-                  person,
-                  option,
-                  current,
+                  source, {
+                  required width,
+                  required height,
+                  required alignment,
+                }) => ZyraProfileImage(
+                  source.startsWith('data:image/') ? source : '',
+                  width: width,
+                  height: height,
+                  fit: BoxFit.cover,
+                  alignment: alignment,
                 ),
-              ),
+            onAction: onActionFromProfile == null && onAction == null
+                ? null
+                : () {
+                    if (!_foreground(context) || !current()) return;
+                    if (onActionFromProfile != null) {
+                      onActionFromProfile(context);
+                    } else {
+                      onAction!();
+                    }
+                  },
+            onSecondary: onSecondary == null && onSecondaryFromProfile == null
+                ? null
+                : () {
+                    if (!_foreground(context) || !current()) return;
+                    if (onSecondaryFromProfile != null) {
+                      onSecondaryFromProfile(context);
+                    } else {
+                      onSecondary!();
+                    }
+                  },
+            onCompatibility: () =>
+                _sampleCompatibility(context, person, current),
+            onOption: (option) => _sampleProfileOption(
+              context,
+              originContext,
+              person,
+              option,
+              current,
+            ),
+          );
+          return familyIntroduction
+              ? Material(type: MaterialType.transparency, child: profile)
+              : profile;
+        },
       ),
     ),
   );
@@ -398,7 +422,7 @@ class _ZyraDeveloperJourneyRequestsScreenState
       primary: ZyraOneJourneyConnectionsAction(
         label: 'View profile',
         icon: Icons.visibility_outlined,
-        onTap: () => _showProfile(
+        onTap: () => showZyraSampleProfile(
           context,
           request.person,
           present,
@@ -439,44 +463,35 @@ class _ZyraDeveloperJourneyRequestsScreenState
               : null,
         ),
       ),
-      actions: [
-        if (request.incoming)
-          ZyraOneJourneyConnectionsAction(
-            label: 'Accept request',
-            icon: Icons.check,
-            onTap: _samples.canAccept(request)
-                ? () {
-                    if (current()) _accept(request);
-                  }
-                : null,
-          ),
-        ZyraOneJourneyConnectionsAction(
-          label: request.incoming ? 'Decline' : 'Cancel request',
-          icon: Icons.close,
-          onTap: () async {
-            if (!current()) return;
-            final accepted = await showZyraConfirm(
-              context: context,
-              title: request.incoming
-                  ? 'Decline this request?'
-                  : 'Cancel this request?',
-              body: request.incoming
-                  ? 'This Journey request moves to Past.'
-                  : 'Your Journey request moves to Past.',
-              primaryLabel: request.incoming ? 'Decline' : 'Cancel request',
-              secondaryLabel: 'Keep request',
-              canConfirm: present,
-              visibilityListenable: _samples,
-              isVisible: visible,
-            );
-            if (accepted == true &&
-                current() &&
-                _samples.declineOrCancel(request)) {
-              _expansion.close(id);
-            }
-          },
-        ),
-      ],
+      pairedActions: request.incoming
+          ? (
+              ZyraOneJourneyConnectionsAction(
+                label: 'Decline',
+                icon: null,
+                onTap: () =>
+                    _showRequestRemoval(request, id, current, present, visible),
+              ),
+              ZyraOneJourneyConnectionsAction(
+                label: 'Accept request',
+                icon: null,
+                onTap: _samples.canAccept(request)
+                    ? () {
+                        if (current()) _accept(request);
+                      }
+                    : null,
+              ),
+            )
+          : null,
+      actions: request.incoming
+          ? const []
+          : [
+              ZyraOneJourneyConnectionsAction(
+                label: 'Cancel request',
+                icon: Icons.close,
+                onTap: () =>
+                    _showRequestRemoval(request, id, current, present, visible),
+              ),
+            ],
     );
   }
 
@@ -594,6 +609,33 @@ class _ZyraDeveloperJourneyRequestsScreenState
   void _showPreparation(ZyraSampleJourney row) {
     _expansion.collapseAll();
     _openSampleJourney(context, row);
+  }
+
+  Future<void> _showRequestRemoval(
+    ZyraSampleRequest request,
+    String id,
+    bool Function() current,
+    bool Function() present,
+    bool Function() visible,
+  ) async {
+    if (!current()) return;
+    final confirmed = await showZyraConfirm(
+      context: context,
+      title: request.incoming
+          ? 'Decline this request?'
+          : 'Cancel this request?',
+      body: request.incoming
+          ? 'This Journey request moves to Past.'
+          : 'Your Journey request moves to Past.',
+      primaryLabel: request.incoming ? 'Decline' : 'Cancel request',
+      secondaryLabel: 'Keep request',
+      canConfirm: present,
+      visibilityListenable: _samples,
+      isVisible: visible,
+    );
+    if (confirmed == true && current() && _samples.declineOrCancel(request)) {
+      _expansion.close(id);
+    }
   }
 
   List<Widget> _past() {
@@ -1201,7 +1243,7 @@ class ZyraSampleActiveJourneyCard extends StatelessWidget {
       actions: Row(
         children: [
           TextButton(
-            onPressed: () => _showProfile(
+            onPressed: () => showZyraSampleProfile(
               context,
               row.person,
               present,
@@ -1233,16 +1275,186 @@ class ZyraSampleActiveJourneyCard extends StatelessWidget {
   }
 }
 
+Future<void> showZyraSampleFamilyAnswerOutcome(
+  BuildContext context,
+  ZyraFamilyIntroductionPreview row,
+  DraftProfile person,
+  int lease, {
+  required bool Function() current,
+  required bool peerFull,
+  VoidCallback? onResolved,
+}) async {
+  if (!context.mounted ||
+      !_foreground(context) ||
+      !current() ||
+      !_samples.isCurrentLease(lease) ||
+      !identical(_samples.familyIntroduction(row.id), row) ||
+      _samples.familyIntroductionPerson(row) != person) {
+    return;
+  }
+  switch (row.phase) {
+    case ZyraFamilyIntroductionPhase.bothFamiliesOpen:
+      _notice(context, 'Your answer is saved.');
+    case ZyraFamilyIntroductionPhase.notTakenForward:
+      onResolved?.call();
+      _notice(
+        context,
+        'Not taken forward. Neither of you is told who answered no.',
+      );
+    case ZyraFamilyIntroductionPhase.choosingPlace:
+      await _prepareSampleFamily(
+        context,
+        row,
+        person,
+        lease,
+        current: current,
+        peerFull: peerFull,
+        onResolved: onResolved,
+      );
+    default:
+      return;
+  }
+}
+
+void _showSampleFamilyPreparation(
+  BuildContext context,
+  ZyraSampleJourney journey,
+) {
+  _notice(
+    context,
+    'You both said yes. Your Journey with ${journey.person.firstName} is preparing.',
+  );
+  _openSampleJourney(context, journey);
+}
+
+Future<void> _prepareSampleFamily(
+  BuildContext context,
+  ZyraFamilyIntroductionPreview row,
+  DraftProfile person,
+  int lease, {
+  required bool Function() current,
+  required bool peerFull,
+  VoidCallback? onResolved,
+}) async {
+  bool canChoose() =>
+      _samples.isCurrentLease(lease) &&
+      identical(_samples.familyIntroduction(row.id), row) &&
+      _samples.familyIntroductionPerson(row) == person &&
+      row.phase == ZyraFamilyIntroductionPhase.choosingPlace;
+  if (!current() || !canChoose() || _samples.hasHeldFamilyPlace(row)) return;
+  if (peerFull && _samples.holdFamilyIntroductionPlace(row)) return;
+  var preparing = peerFull ? null : _samples.reserveFamilyIntroduction(row);
+  if (preparing == null) {
+    final choices = _samples.familyIntroductionPlaceChoices(row);
+    if (choices.isEmpty) return;
+    ZyraSampleJourney? selected;
+    preparing = await Navigator.of(context).push<ZyraSampleJourney>(
+      MaterialPageRoute(
+        builder: (context) => Scaffold(
+          body: _SamplePageCanvas(
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: StatefulBuilder(
+                  builder: (context, changeSelection) => ZyraRequestCapacityChoice(
+                    firstName: person.firstName,
+                    capacity: _samples.capacity,
+                    holdEnding: peerFull,
+                    selectedId: selected?.id,
+                    items: [
+                      for (final journey in choices)
+                        ZyraRequestCapacityItem(
+                          id: journey.id,
+                          name: _name(journey.person),
+                          subtitle:
+                              '${journey.person.age} · ${journey.person.city}',
+                          portrait: ZyraProfileImage(
+                            _samples.profileFor(journey.person).photoUrl,
+                            width: 52,
+                            height: 52,
+                          ),
+                        ),
+                    ],
+                    onSelected: (id) {
+                      if (!_foreground(context) || !canChoose()) return;
+                      changeSelection(() {
+                        selected = choices.firstWhere((r) => r.id == id);
+                      });
+                    },
+                    onContinue: selected == null
+                        ? null
+                        : () async {
+                            final ending = selected!;
+                            if (!_foreground(context) || !canChoose()) return;
+                            if (peerFull) {
+                              if (_samples.holdFamilyIntroductionPlace(
+                                row,
+                                replace: ending,
+                              )) {
+                                Navigator.of(context).pop();
+                              }
+                              return;
+                            }
+                            final confirmed = await showZyraConfirm(
+                              context: context,
+                              title: 'End this Journey and continue?',
+                              body:
+                                  'Your Journey with ${ending.person.firstName} ends and a place opens for ${person.firstName}.',
+                              primaryLabel: 'End and continue',
+                              secondaryLabel: 'Keep Journey',
+                              canConfirm: canChoose,
+                              visibilityListenable: _samples,
+                              isVisible: () => _samples.isCurrentLease(lease),
+                            );
+                            if (!context.mounted ||
+                                confirmed != true ||
+                                !_foreground(context) ||
+                                !canChoose()) {
+                              return;
+                            }
+                            final result = _samples.reserveFamilyIntroduction(
+                              row,
+                              replace: ending,
+                            );
+                            if (result != null) {
+                              Navigator.of(context).pop(result);
+                            }
+                          },
+                    onCancel: () {
+                      if (_foreground(context)) Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  if (context.mounted &&
+      preparing != null &&
+      current() &&
+      _samples.isCurrentLease(lease)) {
+    onResolved?.call();
+    _showSampleFamilyPreparation(context, preparing);
+  }
+}
+
 class ZyraSampleIntroductionsList extends StatefulWidget {
   const ZyraSampleIntroductionsList({
     super.key,
     required this.wrapTitle,
     this.tabClearance = false,
     this.admitRequest,
+    this.onAskMyGuardians,
+    this.familyPeerFull,
   });
   final Widget Function(Widget) wrapTitle;
   final bool tabClearance;
   final bool Function(BuildContext)? admitRequest;
+  final void Function(String personId, String? familyId)? onAskMyGuardians;
+  final bool Function(String personId)? familyPeerFull;
 
   @override
   State<ZyraSampleIntroductionsList> createState() =>
@@ -1288,7 +1500,13 @@ class _ZyraSampleIntroductionsListState
 
   List<Widget> _received() {
     final rows = _samples.receivedIntroductions;
-    if (rows.isEmpty) {
+    final familyRows = _samples.familyIntroductions.where(
+      (row) =>
+          _samples.familyIntroductionPerson(row) != null &&
+          (row.phase == ZyraFamilyIntroductionPhase.bothFamiliesOpen ||
+              row.phase == ZyraFamilyIntroductionPhase.choosingPlace),
+    );
+    if (rows.isEmpty && familyRows.isEmpty) {
       return const [
         ZyraRequestActivityEmpty(
           icon: Icons.groups_outlined,
@@ -1297,7 +1515,174 @@ class _ZyraSampleIntroductionsListState
         ),
       ];
     }
-    return [for (final introduction in rows) _receivedCard(introduction)];
+    return [
+      for (final row in familyRows)
+        _familyCard(row, _samples.familyIntroductionPerson(row)!),
+      for (final introduction in rows) _receivedCard(introduction),
+    ];
+  }
+
+  Widget _familyCard(ZyraFamilyIntroductionPreview row, DraftProfile person) {
+    final id = 'family-introduction-${row.id}';
+    final side = _samples.ownFamilyIntroductionSide(row)!;
+    final otherSide = side == ZyraFamilyIntroductionSide.sender
+        ? ZyraFamilyIntroductionSide.receiver
+        : ZyraFamilyIntroductionSide.sender;
+    final phase = row.phase;
+    final waiting = row.hasAnswered(side);
+    final choosing = phase == ZyraFamilyIntroductionPhase.choosingPlace;
+    final held = _samples.hasHeldFamilyPlace(row);
+    final ending = _samples.heldFamilyEnding(row)?.person.firstName;
+    final other = person.firstName;
+    final lease = _samples.generation;
+    bool present() =>
+        _samples.isCurrentLease(lease) &&
+        identical(_samples.familyIntroduction(row.id), row) &&
+        _samples.familyIntroductionPerson(row) == person &&
+        row.phase == phase &&
+        _samples.hasHeldFamilyPlace(row) == held &&
+        row.hasAnswered(side) == waiting;
+    bool current() => _current() && _tab == 0 && present();
+    void showAnswerOutcome() => showZyraSampleFamilyAnswerOutcome(
+      context,
+      row,
+      person,
+      lease,
+      current: () => _current() && _tab == 0,
+      peerFull: widget.familyPeerFull?.call(person.id) ?? false,
+      onResolved: _expansion.collapseAll,
+    );
+    void ownAnswer(bool yes, {bool fromProfile = false}) {
+      if (!present() || (!fromProfile && !current())) return;
+      if (!_samples.saveFamilyIntroductionAnswer(row, side: side, yes: yes)) {
+        return;
+      }
+      if (fromProfile) Navigator.of(context).pop();
+      showAnswerOutcome();
+    }
+
+    return ZyraRequestActivityCard(
+      key: ValueKey(id),
+      headerKey: ValueKey('$id-header'),
+      profile: _samples.profileFor(person),
+      subtitle: held
+          ? 'You both said yes · waiting for $other'
+          : choosing
+          ? 'You both said yes'
+          : waiting
+          ? 'Your answer is saved · waiting for ${person.firstName}'
+          : 'Both families agree to introduce you',
+      familyIntroduction: true,
+      detail: held
+          ? 'Waiting for $other to confirm. ${ending == null ? 'Nothing changes for you until then.' : 'Your Journey with $ending ends only when they confirm.'}'
+          : !waiting || choosing
+          ? null
+          : '${person.firstName} won’t see your answer, and you won’t see theirs, until you have both answered.',
+      cardId: id,
+      controller: _expansion,
+      canInteract: current,
+      quietAction: row.canChangeAnswer(side)
+          ? ZyraOneJourneyConnectionsAction(
+              label: 'Change my answer',
+              icon: null,
+              onTap: () {
+                if (current()) _samples.changeFamilyIntroductionAnswer(row);
+              },
+            )
+          : null,
+      onToggle: () {
+        if (!current()) return;
+        if (_expansion.value == id) {
+          _expansion.close(id);
+        } else {
+          _expansion.open(id);
+        }
+      },
+      showPrimary: !waiting,
+      primary: ZyraOneJourneyConnectionsAction(
+        label: 'View profile',
+        icon: Icons.visibility_outlined,
+        onTap: () => showZyraSampleProfile(
+          context,
+          person,
+          present,
+          situation: ZyraFullProfileSituation.introduction,
+          familyIntroduction: true,
+          onAction: () => ownAnswer(true, fromProfile: true),
+          onSecondary: () => ownAnswer(false, fromProfile: true),
+        ),
+      ),
+      pairedActions: waiting
+          ? null
+          : (
+              ZyraOneJourneyConnectionsAction(
+                label: 'Not for me',
+                icon: null,
+                onTap: () => ownAnswer(false),
+              ),
+              ZyraOneJourneyConnectionsAction(
+                label: 'I’d like to begin',
+                icon: null,
+                onTap: () => ownAnswer(true),
+              ),
+            ),
+      actions: [
+        if (!waiting && widget.onAskMyGuardians != null)
+          ZyraOneJourneyConnectionsAction(
+            label: 'Ask my Guardians',
+            icon: Icons.chat_bubble_outline,
+            onTap: () {
+              if (current()) widget.onAskMyGuardians!(person.id, row.id);
+            },
+          ),
+        if (waiting && !choosing)
+          for (final yes in [true, false])
+            ZyraOneJourneyConnectionsAction(
+              label: 'Demo: ${person.firstName} says ${yes ? 'yes' : 'no'}',
+              icon: null,
+              onTap: () {
+                if (!current() ||
+                    !_samples.saveFamilyIntroductionAnswer(
+                      row,
+                      side: otherSide,
+                      yes: yes,
+                    )) {
+                  return;
+                }
+                showAnswerOutcome();
+              },
+            ),
+        if (held)
+          for (final confirm in [true, false])
+            ZyraOneJourneyConnectionsAction(
+              label: confirm
+                  ? 'Demo: $other confirms'
+                  : 'Demo: $other doesn’t go ahead',
+              icon: null,
+              onTap: () {
+                if (!current()) return;
+                if (confirm) {
+                  final journey = _samples.confirmFamilyIntroductionPeer(row);
+                  if (journey != null) {
+                    _expansion.collapseAll();
+                    _showSampleFamilyPreparation(context, journey);
+                  }
+                } else if (_samples.letFamilyIntroductionGo(row)) {
+                  _expansion.collapseAll();
+                  _notice(context, 'Not taken forward.');
+                }
+              },
+            )
+        else if (choosing)
+          ZyraOneJourneyConnectionsAction(
+            label: 'Choose a place',
+            icon: null,
+            onTap: () {
+              if (current()) showAnswerOutcome();
+            },
+          ),
+      ],
+    );
   }
 
   Widget _receivedCard(ZyraSampleIntroduction introduction) {
@@ -1327,7 +1712,7 @@ class _ZyraSampleIntroductionsListState
       primary: ZyraOneJourneyConnectionsAction(
         label: 'View profile',
         icon: Icons.visibility_outlined,
-        onTap: () => _showProfile(
+        onTap: () => showZyraSampleProfile(
           context,
           person,
           present,
@@ -1360,9 +1745,31 @@ class _ZyraSampleIntroductionsListState
         ),
       ),
       actions: [
+        if (widget.onAskMyGuardians != null)
+          ZyraOneJourneyConnectionsAction(
+            label: 'Ask my Guardians',
+            icon: Icons.chat_bubble_outline,
+            onTap: () {
+              if (current()) widget.onAskMyGuardians!(person.id, null);
+            },
+          ),
+      ],
+      pairedActions: (
+        ZyraOneJourneyConnectionsAction(
+          label: 'Decline',
+          icon: null,
+          onTap: () {
+            if (!current() || !_samples.declineIntroduction(person)) return;
+            _expansion.collapseAll();
+            _notice(
+              context,
+              'Declined. ${introduction.guardianName} sees “Not taken forward”.',
+            );
+          },
+        ),
         ZyraOneJourneyConnectionsAction(
           label: 'Request a Journey',
-          icon: Icons.check,
+          icon: null,
           onTap: _samples.canRequestIntroduction(person)
               ? () {
                   if (!current() ||
@@ -1379,25 +1786,19 @@ class _ZyraSampleIntroductionsListState
                 }
               : null,
         ),
-        ZyraOneJourneyConnectionsAction(
-          label: 'Decline',
-          icon: Icons.close,
-          onTap: () {
-            if (!current() || !_samples.declineIntroduction(person)) return;
-            _expansion.collapseAll();
-            _notice(
-              context,
-              'Declined. ${introduction.guardianName} sees “Not taken forward”.',
-            );
-          },
-        ),
-      ],
+      ),
     );
   }
 
   List<Widget> _past() {
     final rows = _samples.pastIntroductions;
-    if (rows.isEmpty) {
+    final family = _samples.familyIntroductions.where(
+      (row) =>
+          _samples.familyIntroductionPerson(row) != null &&
+          (row.phase == ZyraFamilyIntroductionPhase.preparing ||
+              row.phase == ZyraFamilyIntroductionPhase.notTakenForward),
+    );
+    if (rows.isEmpty && family.isEmpty) {
       return const [
         ZyraRequestActivityEmpty(
           icon: Icons.history_outlined,
@@ -1407,6 +1808,16 @@ class _ZyraSampleIntroductionsListState
       ];
     }
     return [
+      for (final row in family)
+        ZyraPastRequestActivityCard(
+          key: ValueKey('past-family-introduction-${row.id}'),
+          cardId: 'past-family-introduction-${row.id}',
+          profile: _samples.profileFor(_samples.familyIntroductionPerson(row)!),
+          subtitle: 'Introduced ${_date(row.date)} · family introduction',
+          status: row.phase == ZyraFamilyIntroductionPhase.preparing
+              ? 'You both said yes · Journey begun'
+              : 'Not taken forward',
+        ),
       for (final row in rows)
         ZyraPastRequestActivityCard(
           key: ValueKey('sample-past-introduction-${row.sequence}'),

@@ -319,6 +319,27 @@ node tooling/no_git_driver.mjs flutter test --no-pub --dart-define=ZYRA_LINE146_
 The fixture seeds the count inside its own shell. It is never passed by the
 running app. The test outputs go to `build/line146/`.
 
+## Founder preview family introductions
+
+LOCK 49 replaces the private Guardian connection chat in the authorized sample
+preview with Main Guardian approval and set replies. “Let us think about it”
+stays open without a deadline; the sender sees that reply and the receiving Main
+Guardian can later choose either remaining reply. Both Seekers answer privately.
+“Change my answer” reopens only the member's saved answer while the other Seeker
+has not answered. Both yes uses the existing Journey-place preparation; any no
+produces the same neutral Past result for both.
+
+Ask my Guardians shares each introduction once into the current owner's Circle
+Main through its verified preview navigator. All rows, replies, demo transitions
+and Circle attachments use fictional local sample state. No message, contact
+detail, server write or new identity switch is introduced.
+
+Focused checks are `test/line147_family_introduction_test.dart`,
+`test/line147_q227_test.dart`, and the LOCK 49 routes in
+`test/zyra_developer_panel_entry_test.dart`. Enable `ZYRA_LINE147_CAPTURE=true`
+through the protected driver to write the focused PNGs and raster reports under
+`build/line147/`.
+
 ## Rendered text audit
 
 For each local queue line, run the whole-project analyzer, ordinary regression,

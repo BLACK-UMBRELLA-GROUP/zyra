@@ -32,6 +32,7 @@ class ZyraFullProfilePreview extends StatefulWidget {
     required this.canAct,
     this.canPresentBackdrop,
     this.introductionByline,
+    this.familyIntroduction = false,
     this.onAction,
     this.onSecondary,
     this.onCompatibility,
@@ -46,6 +47,7 @@ class ZyraFullProfilePreview extends StatefulWidget {
   final bool Function() canAct;
   final bool Function()? canPresentBackdrop;
   final String? introductionByline;
+  final bool familyIntroduction;
   final VoidCallback? onAction;
   final VoidCallback? onSecondary;
   final VoidCallback? onCompatibility;
@@ -78,6 +80,8 @@ class _ZyraFullProfilePreviewState extends State<ZyraFullProfilePreview> {
     ZyraFullProfileSituation.journey => 'Continue Journey',
     ZyraFullProfileSituation.received => 'Accept',
     ZyraFullProfileSituation.sent => 'Request sent',
+    ZyraFullProfileSituation.introduction when widget.familyIntroduction =>
+      'I’d like to begin',
     ZyraFullProfileSituation.introduction ||
     ZyraFullProfileSituation.general => 'Request a Journey',
     ZyraFullProfileSituation.unverified => 'Verify to request',
@@ -233,6 +237,7 @@ class _ZyraFullProfilePreviewState extends State<ZyraFullProfilePreview> {
             key: const ValueKey('full_profile_details'),
             profile: profile,
             fixedCard: true,
+            familyIntroduction: widget.familyIntroduction,
             introductionByline:
                 widget.situation == ZyraFullProfileSituation.introduction
                 ? widget.introductionByline
@@ -290,7 +295,7 @@ class _ZyraFullProfilePreviewState extends State<ZyraFullProfilePreview> {
               },
         style: OutlinedButton.styleFrom(
           backgroundColor: primary
-              ? label == 'Request a Journey'
+              ? label == 'Request a Journey' || widget.familyIntroduction
                     ? ZyraColors.goldTextFill
                     : ZyraColors.journeyGold
               : ZyraColors.ivoryTop,
@@ -365,7 +370,7 @@ class _ZyraFullProfilePreviewState extends State<ZyraFullProfilePreview> {
                   children: [
                     if (_paired) ...[
                       _button(
-                        'Decline',
+                        widget.familyIntroduction ? 'Not for me' : 'Decline',
                         widget.onSecondary,
                         height: buttonHeight,
                       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'zyra_guardian_circle_topic_options.dart';
 import 'zyra_circle_topics_presentation.dart';
 import '../services/zyra_family_messaging_service.dart';
@@ -262,6 +263,7 @@ class ZyraCircleTopicsPreview {
     this.arrivals,
     this.onMuteChanged,
     this.mainUnreadOnEntry,
+    this.introductionAttachment,
     Set<ZyraCirclePreviewMuteKey>? mutedChats,
     Map<String, ZyraCircleDiscussionTopic> messageTopics = const {},
   }) : mutedChats = mutedChats ?? {},
@@ -281,6 +283,8 @@ class ZyraCircleTopicsPreview {
   final String Function()? nextSentId;
   final ValueListenable<ZyraGuardianCirclePreviewData?>? arrivals;
   final VoidCallback? onMuteChanged;
+  final Widget? Function(BuildContext context, String id)?
+  introductionAttachment;
   final ZyraCircleMainUnreadHint? mainUnreadOnEntry;
   final Set<ZyraCirclePreviewMuteKey> mutedChats;
 

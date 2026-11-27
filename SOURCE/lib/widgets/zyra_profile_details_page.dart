@@ -23,6 +23,7 @@ class ZyraProfileDetailsPage extends StatelessWidget {
     this.showUnverifiedRing = true,
     this.onCompatibility,
     this.introductionByline,
+    this.familyIntroduction = false,
   });
 
   final SeekerProfile profile;
@@ -31,6 +32,7 @@ class ZyraProfileDetailsPage extends StatelessWidget {
   final Widget? requestAction;
   final VoidCallback? onCompatibility;
   final String? introductionByline;
+  final bool familyIntroduction;
 
   /// Other-member cards retain the decorative ring while their authorized
   /// projection lacks a plan (Q84). Own Preview has a verified-plan source.
@@ -238,7 +240,30 @@ class ZyraProfileDetailsPage extends StatelessWidget {
                                   ],
                                 ],
                               ),
-                              if (introductionByline case final byline?) ...[
+                              if (familyIntroduction) ...[
+                                const SizedBox(height: 8),
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.people_outline,
+                                      size: 16,
+                                      color: ZyraColors.goldText,
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Flexible(
+                                      child: Text(
+                                        'Both families agree to introduce you',
+                                        style: ZyraText.body(
+                                          size: 12,
+                                          color: ZyraColors.goldText,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ] else if (introductionByline
+                                  case final byline?) ...[
                                 const SizedBox(height: 8),
                                 Text(
                                   'Put forward by $byline',

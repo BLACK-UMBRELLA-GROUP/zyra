@@ -339,6 +339,10 @@ class ZyraRequestActivityCard extends StatelessWidget {
     this.onReport,
     this.canInteract,
     this.actions = const [],
+    this.pairedActions,
+    this.quietAction,
+    this.familyIntroduction = false,
+    this.showPrimary = true,
     this.detail,
   });
 
@@ -353,6 +357,10 @@ class ZyraRequestActivityCard extends StatelessWidget {
   final bool Function()? canInteract;
   final Key? headerKey;
   final List<ZyraOneJourneyConnectionsAction> actions;
+  final ZyraOneJourneyConnectionsAction? quietAction;
+  final (ZyraOneJourneyConnectionsAction, ZyraOneJourneyConnectionsAction)?
+  pairedActions;
+  final bool familyIntroduction, showPrimary;
 
   Widget _portrait() => _requestActivityPortrait(profile);
 
@@ -435,9 +443,13 @@ class ZyraRequestActivityCard extends StatelessWidget {
   Widget _button(
     ZyraOneJourneyConnectionsAction action, {
     bool primary = false,
+    bool quiet = false,
+    bool affirmative = false,
   }) {
     final enabled = action.onTap != null;
-    final ink = enabled && action.dangerLabel
+    final ink = enabled && affirmative
+        ? ZyraColors.goldText
+        : enabled && action.dangerLabel
         ? ZyraColors.dangerText
         : enabled
         ? ZyraColors.foreground
@@ -470,11 +482,15 @@ class ZyraRequestActivityCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               decoration: BoxDecoration(
                 borderRadius: radius,
-                border: Border.all(
-                  color: primary && enabled
-                      ? ZyraColors.accentOnCanvas.withValues(alpha: .70)
-                      : ZyraColors.surfaceBorder,
-                ),
+                border: quiet
+                    ? null
+                    : Border.all(
+                        color: affirmative && enabled
+                            ? ZyraColors.journeyGold
+                            : primary && enabled
+                            ? ZyraColors.accentOnCanvas.withValues(alpha: .70)
+                            : ZyraColors.surfaceBorder,
+                      ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -499,6 +515,44 @@ class ZyraRequestActivityCard extends StatelessWidget {
     );
   }
 
+  Widget _pairedRow(
+    ZyraOneJourneyConnectionsAction decline,
+    ZyraOneJourneyConnectionsAction accept,
+  ) => LayoutBuilder(
+    builder: (context, constraints) {
+      final style = ZyraText.button(size: 13, color: ZyraColors.foreground);
+      final scaler = MediaQuery.textScalerOf(context);
+      final direction = Directionality.of(context);
+      bool fits(String label) {
+        final painter = TextPainter(
+          text: TextSpan(text: label, style: style),
+          textScaler: scaler,
+          textDirection: direction,
+          maxLines: 1,
+        )..layout();
+        final fits = painter.width + 28 <= (constraints.maxWidth - 8) / 2;
+        painter.dispose();
+        return fits;
+      }
+
+      final first = _button(decline, quiet: true);
+      final second = _button(accept, affirmative: true);
+      if (!fits(decline.label) || !fits(accept.label)) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [first, const SizedBox(height: 8), second],
+        );
+      }
+      return Row(
+        children: [
+          Expanded(child: first),
+          const SizedBox(width: 8),
+          Expanded(child: second),
+        ],
+      );
+    },
+  );
+
   Widget _expandedActions() => Builder(
     builder: (context) => Padding(
       padding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
@@ -506,14 +560,22 @@ class ZyraRequestActivityCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 8),
-          _button(primary, primary: true),
+          if (showPrimary) _button(primary, primary: true),
           if (detail != null) ...[
             const SizedBox(height: 10),
             Text(detail!, style: ZyraText.subtext(size: 12, color: _helperInk)),
           ],
+          if (quietAction case final action?) ...[
+            const SizedBox(height: 10),
+            _button(action, quiet: true, affirmative: true),
+          ],
           for (final action in actions) ...[
             const SizedBox(height: 10),
             _button(action),
+          ],
+          if (pairedActions case (final decline, final accept)) ...[
+            const SizedBox(height: 10),
+            _pairedRow(decline, accept),
           ],
           if (onReport != null) ...[
             const SizedBox(height: 8),
@@ -557,7 +619,9 @@ class ZyraRequestActivityCard extends StatelessWidget {
                 : ZyraColors.surfaceFill,
             borderRadius: BorderRadius.circular(26),
             border: Border.all(
-              color: open
+              color: familyIntroduction
+                  ? ZyraColors.journeyGold
+                  : open
                   ? ZyraColors.surfaceEmphasisBorder
                   : ZyraColors.surfaceBorder,
             ),

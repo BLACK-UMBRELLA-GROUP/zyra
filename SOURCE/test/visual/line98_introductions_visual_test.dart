@@ -147,7 +147,8 @@ void main() {
 
       _samples.setIntroductions(3);
       await mount();
-      expect(find.byType(ZyraRequestActivityCard), findsNWidgets(3));
+      // LOCK 49 adds the family card above the three one-way cards.
+      expect(find.byType(ZyraRequestActivityCard), findsNWidgets(4));
       expectSelectedTab('Received');
       for (final subtitle in [
         'Put forward by Hassan · Father',

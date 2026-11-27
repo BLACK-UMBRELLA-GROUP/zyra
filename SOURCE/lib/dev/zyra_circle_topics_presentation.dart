@@ -40,10 +40,15 @@ class ZyraCircleTopicTile {
 
 @immutable
 class ZyraCircleTopicMessage {
-  const ZyraCircleTopicMessage({required this.message, this.about});
+  const ZyraCircleTopicMessage({
+    required this.message,
+    this.about,
+    this.introduction,
+  });
 
   final ZyraFamilyMessage message;
   final String? about;
+  final Widget? introduction;
 }
 
 /// LOCK20 display only. The owner supplies admission, filtering and every
@@ -585,6 +590,10 @@ class ZyraCircleTopicsPresentation extends StatelessWidget {
                             ),
                           ),
                         ),
+                        const SizedBox(height: 5),
+                      ],
+                      if (item.introduction case final introduction?) ...[
+                        introduction,
                         const SizedBox(height: 5),
                       ],
                       Text(message.body, style: ZyraText.body(size: 13)),

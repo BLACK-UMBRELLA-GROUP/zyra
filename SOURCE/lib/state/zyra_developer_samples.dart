@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import '../data/zyra_journey_stages.dart';
 import '../dev/zyra_one_journey_sample_photos.dart';
 import '../dev/zyra_browse_filter.dart';
+import '../dev/zyra_family_introduction_preview.dart';
 import '../dev/zyra_view_request_draft_model.dart';
 import '../models/seeker_profile.dart';
 import '../models/zyra_developer_preview.dart';
@@ -27,6 +28,22 @@ class ZyraSampleIntroduction {
   final DraftProfile person;
   final String guardianId, guardianName, relation;
   final DateTime introducedAt;
+}
+
+class ZyraSampleIntroductionShare {
+  const ZyraSampleIntroductionShare._({
+    required this.id,
+    required this.person,
+    required this.postedAt,
+    this.guardianName,
+    this.guardianRelation,
+    this.familyId,
+  });
+
+  final String id;
+  final DraftProfile person;
+  final DateTime postedAt;
+  final String? guardianName, guardianRelation, familyId;
 }
 
 class ZyraSamplePastIntroduction {
@@ -147,6 +164,12 @@ class ZyraDeveloperSamples extends ChangeNotifier {
   List<ZyraSampleRequest>? _received, _sent;
   List<DraftProfile>? _introductions;
   final _introductionHistory = <ZyraSamplePastIntroduction>[];
+  final _familyIntroductions = <String, ZyraFamilyIntroductionPreview>{};
+  final _introductionShares = <String, ZyraSampleIntroductionShare>{};
+  final _heldFamilyPlaces = <String, ZyraSampleJourney?>{};
+  static const _sampleSeeker = 'draft-self';
+  static const _otherSampleSeeker = 'draft-yusuf';
+  static const _sampleFamilyPeers = {'draft-aisha', 'draft-noor'};
   List<ZyraSamplePastRequest>? _history;
   ZyraDeveloperPast? _past;
   ZyraDeveloperViewAs? _viewAs;
@@ -395,6 +418,9 @@ class ZyraDeveloperSamples extends ChangeNotifier {
     _sent = null;
     _introductions = null;
     _introductionHistory.clear();
+    _familyIntroductions.clear();
+    _introductionShares.clear();
+    _heldFamilyPlaces.clear();
     _history = null;
     _past = null;
     _guardianChoices.clear();
@@ -714,7 +740,296 @@ class ZyraDeveloperSamples extends ChangeNotifier {
   void setIntroductions(int value) {
     if (!_permits(value) || introductions == value) return;
     _introductions = _introNames.take(value).map(_person).toList();
+    if (value == 0) {
+      _familyIntroductions.remove('sample-aisha');
+      _heldFamilyPlaces.remove('sample-aisha');
+      _introductionShares.remove('family-circle-introduction-sample-aisha');
+    } else {
+      _seedReceivedFamilyIntroductions();
+      if (!hasSentFamilyIntroduction(_sampleSeeker, 'draft-aisha')) {
+        _familyIntroductions.putIfAbsent('sample-aisha', () {
+          return ZyraFamilyIntroductionPreview(
+            id: 'sample-aisha',
+            senderSeekerId: _sampleSeeker,
+            receiverSeekerId: 'draft-aisha',
+            senderIsMain: true,
+            date: _clock(),
+          )..answerFamily(ZyraFamilyIntroductionReply.open);
+        });
+      }
+    }
     _changed();
+  }
+
+  String _familyRequestKey(String seekerId, String peerId) =>
+      'sent-$seekerId-$peerId';
+
+  bool hasSentFamilyIntroduction(String seekerId, String peerId) =>
+      isAuthorized &&
+      _familyIntroductions.containsKey(_familyRequestKey(seekerId, peerId));
+
+  Iterable<ZyraFamilyIntroductionPreview> get familyIntroductions =>
+      isAuthorized ? List.unmodifiable(_familyIntroductions.values) : const [];
+
+  bool _containsFamilyIntroduction(ZyraFamilyIntroductionPreview row) =>
+      isAuthorized && identical(_familyIntroductions[row.id], row);
+
+  ZyraFamilyIntroductionPreview? familyIntroduction(String id) =>
+      isAuthorized ? _familyIntroductions[id] : null;
+
+  bool sendFamilyIntroduction({
+    required String seekerId,
+    required String peerId,
+    required bool main,
+  }) {
+    if (!isAuthorized ||
+        !_sampleFamilyPeers.contains(peerId) ||
+        !isSampleProfileVisible(peerId) ||
+        (seekerId != _sampleSeeker && seekerId != _otherSampleSeeker) ||
+        hasSentFamilyIntroduction(seekerId, peerId)) {
+      return false;
+    }
+    final id = _familyRequestKey(seekerId, peerId);
+    final seed = _familyIntroductions['sample-aisha'];
+    if (seekerId == _sampleSeeker &&
+        peerId == 'draft-aisha' &&
+        seed?.phase == ZyraFamilyIntroductionPhase.bothFamiliesOpen &&
+        !(seed?.hasAnswered(ZyraFamilyIntroductionSide.sender) ?? false)) {
+      _familyIntroductions.remove('sample-aisha');
+      _introductionShares.remove('family-circle-introduction-sample-aisha');
+    }
+    _familyIntroductions[id] = ZyraFamilyIntroductionPreview(
+      id: id,
+      senderSeekerId: seekerId,
+      receiverSeekerId: peerId,
+      senderIsMain: main,
+      date: _clock(),
+    );
+    _changed();
+    return true;
+  }
+
+  void seedReceivedFamilyIntroductions() {
+    if (_seedReceivedFamilyIntroductions()) _changed();
+  }
+
+  bool _seedReceivedFamilyIntroductions() {
+    if (!isAuthorized || _familyIntroductions.containsKey('received-noor')) {
+      return false;
+    }
+    _familyIntroductions['received-noor'] = ZyraFamilyIntroductionPreview(
+      id: 'received-noor',
+      senderSeekerId: 'draft-noor',
+      receiverSeekerId: _sampleSeeker,
+      senderIsMain: true,
+      date: _clock(),
+    );
+    _familyIntroductions['received-approval'] = ZyraFamilyIntroductionPreview(
+      id: 'received-approval',
+      senderSeekerId: _sampleSeeker,
+      receiverSeekerId: 'draft-maryam',
+      senderIsMain: false,
+      date: _clock(),
+    );
+    return true;
+  }
+
+  bool approveFamilyIntroduction(
+    ZyraFamilyIntroductionPreview row, {
+    required bool yes,
+  }) {
+    if (!_containsFamilyIntroduction(row) || !row.approve(yes: yes)) {
+      return false;
+    }
+    _changed();
+    return true;
+  }
+
+  bool answerFamilyIntroduction(
+    ZyraFamilyIntroductionPreview row,
+    ZyraFamilyIntroductionReply reply,
+  ) {
+    if (!_containsFamilyIntroduction(row) || !row.answerFamily(reply)) {
+      return false;
+    }
+    _changed();
+    return true;
+  }
+
+  ZyraFamilyIntroductionSide? ownFamilyIntroductionSide(
+    ZyraFamilyIntroductionPreview row,
+  ) {
+    if (!_containsFamilyIntroduction(row)) return null;
+    if (row.senderSeekerId == _sampleSeeker) {
+      return ZyraFamilyIntroductionSide.sender;
+    }
+    if (row.receiverSeekerId == _sampleSeeker) {
+      return ZyraFamilyIntroductionSide.receiver;
+    }
+    return null;
+  }
+
+  DraftProfile? familyIntroductionPerson(ZyraFamilyIntroductionPreview row) {
+    final side = ownFamilyIntroductionSide(row);
+    if (side == null) return null;
+    final id = side == ZyraFamilyIntroductionSide.sender
+        ? row.receiverSeekerId
+        : row.senderSeekerId;
+    return isSampleProfileVisible(id) ? _people[id] : null;
+  }
+
+  bool saveFamilyIntroductionAnswer(
+    ZyraFamilyIntroductionPreview row, {
+    required ZyraFamilyIntroductionSide side,
+    required bool yes,
+  }) {
+    if (!_containsFamilyIntroduction(row) ||
+        !(isSampleProfileVisible(row.senderSeekerId) &&
+            isSampleProfileVisible(row.receiverSeekerId)) ||
+        !row.answerSeeker(side, yes: yes)) {
+      return false;
+    }
+    _changed();
+    return true;
+  }
+
+  bool changeFamilyIntroductionAnswer(ZyraFamilyIntroductionPreview row) {
+    final side = ownFamilyIntroductionSide(row);
+    if (side == null ||
+        familyIntroductionPerson(row) == null ||
+        !row.changeAnswer(side)) {
+      return false;
+    }
+    _changed();
+    return true;
+  }
+
+  List<ZyraSampleJourney> familyIntroductionPlaceChoices(
+    ZyraFamilyIntroductionPreview row,
+  ) =>
+      familyIntroductionPerson(row) != null &&
+          row.phase == ZyraFamilyIntroductionPhase.choosingPlace &&
+          _capacityKnown &&
+          capacity > 0 &&
+          placesUsed == capacity
+      ? activeRows ?? const []
+      : const [];
+
+  bool _canReserveFamilyIntroduction(
+    ZyraFamilyIntroductionPreview row,
+    ZyraSampleJourney? replace,
+  ) {
+    final person = familyIntroductionPerson(row);
+    return person != null &&
+        row.phase == ZyraFamilyIntroductionPhase.choosingPlace &&
+        !(activeRows?.any((journey) => journey.person.id == person.id) ??
+            false) &&
+        (replace == null
+            ? hasSparePlace
+            : familyIntroductionPlaceChoices(row).contains(replace));
+  }
+
+  bool hasHeldFamilyPlace(ZyraFamilyIntroductionPreview row) =>
+      _containsFamilyIntroduction(row) && _heldFamilyPlaces.containsKey(row.id);
+
+  ZyraSampleJourney? heldFamilyEnding(ZyraFamilyIntroductionPreview row) =>
+      hasHeldFamilyPlace(row) ? _heldFamilyPlaces[row.id] : null;
+
+  bool holdFamilyIntroductionPlace(
+    ZyraFamilyIntroductionPreview row, {
+    ZyraSampleJourney? replace,
+  }) {
+    if (!_canReserveFamilyIntroduction(row, replace) ||
+        hasHeldFamilyPlace(row)) {
+      return false;
+    }
+    _heldFamilyPlaces[row.id] = replace;
+    _changed();
+    return true;
+  }
+
+  ZyraSampleJourney? confirmFamilyIntroductionPeer(
+    ZyraFamilyIntroductionPreview row,
+  ) {
+    if (!hasHeldFamilyPlace(row)) return null;
+    final ending = _heldFamilyPlaces.remove(row.id);
+    final result = reserveFamilyIntroduction(row, replace: ending);
+    if (result == null) _changed();
+    return result;
+  }
+
+  ZyraSampleJourney? reserveFamilyIntroduction(
+    ZyraFamilyIntroductionPreview row, {
+    ZyraSampleJourney? replace,
+  }) {
+    if (!_canReserveFamilyIntroduction(row, replace) ||
+        hasHeldFamilyPlace(row) ||
+        !row.reservePlaces(senderReady: true, receiverReady: true)) {
+      return null;
+    }
+    final preparing = _journey(familyIntroductionPerson(row)!);
+    final active = _active ??= [];
+    if (replace == null) {
+      active.add(preparing);
+    } else {
+      active[active.indexOf(replace)] = preparing;
+      _retireActive(replace);
+    }
+    _changed();
+    return preparing;
+  }
+
+  void reserveOtherFamilyIntroduction(ZyraFamilyIntroductionPreview row) {
+    if (!_containsFamilyIntroduction(row) ||
+        row.senderSeekerId != _otherSampleSeeker ||
+        !_sampleFamilyPeers.contains(row.receiverSeekerId) ||
+        !row.reservePlaces(senderReady: true, receiverReady: true)) {
+      return;
+    }
+    _changed();
+  }
+
+  bool letFamilyIntroductionGo(ZyraFamilyIntroductionPreview row) {
+    if (!_containsFamilyIntroduction(row) || !row.letItGo()) return false;
+    _heldFamilyPlaces.remove(row.id);
+    _changed();
+    return true;
+  }
+
+  Iterable<ZyraSampleIntroductionShare> get introductionShares => isAuthorized
+      ? _introductionShares.values.where(
+          (share) => isSampleProfileVisible(share.person.id),
+        )
+      : const [];
+
+  bool shareIntroduction(String personId, {String? familyId}) {
+    if (!isSampleProfileVisible(personId)) return false;
+    final person = _people[personId];
+    if (person == null) return false;
+    final family = familyId == null ? null : familyIntroduction(familyId);
+    final side = family == null ? null : ownFamilyIntroductionSide(family);
+    if (familyId != null
+        ? (family == null ||
+              side == null ||
+              familyIntroductionPerson(family) != person ||
+              family.phase != ZyraFamilyIntroductionPhase.bothFamiliesOpen ||
+              family.hasAnswered(side))
+        : !hasIntroduction(person)) {
+      return false;
+    }
+    final id = 'family-circle-introduction-${familyId ?? personId}';
+    if (_introductionShares.containsKey(id)) return true;
+    final ordinary = family == null ? _introductionFor(person) : null;
+    _introductionShares[id] = ZyraSampleIntroductionShare._(
+      id: id,
+      person: person,
+      postedAt: _clock(),
+      guardianName: ordinary?.guardianName,
+      guardianRelation: ordinary?.relation,
+      familyId: familyId,
+    );
+    _changed();
+    return true;
   }
 
   ZyraSampleIntroduction _introductionFor(DraftProfile person) {

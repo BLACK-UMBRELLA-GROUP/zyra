@@ -25,6 +25,7 @@ import 'zyra_one_journey_guardian_seekers.dart';
 import 'zyra_one_journey_guardian_action.dart';
 import 'zyra_one_journey_monogram_presentation.dart';
 import 'zyra_guardian_family_preview.dart';
+import 'zyra_family_introduction_preview.dart';
 import 'zyra_view_request_draft_model.dart' show DraftProfile, draftProfiles;
 import '../screens/wali/family_messaging_screens.dart'
     show ZyraFamilyMessageComposer;
@@ -422,6 +423,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     this.introductionDeclined,
     this.introducingGuardianId = 'draft-guardian-hassan',
     this.madeIntroductions = const [],
+    this.familyIntroductions,
     this.unverified = false,
   });
   final ZyraGuardianTabsState state;
@@ -450,6 +452,23 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   introductionDeclined;
   final String introducingGuardianId;
   final List<DraftProfile> madeIntroductions;
+  final List<ZyraFamilyIntroductionPreview>? familyIntroductions;
+
+  Iterable<ZyraFamilyIntroductionPreview> get _sentFamilyIntroductions =>
+      familyIntroductions?.where((row) => row.id.startsWith('sent-')) ??
+      const [];
+
+  bool get _hasUnseenFamilyIntroduction =>
+      !state.consumedFocus.contains('connect-pending') &&
+      (state.hasUnseenConnection ||
+          (familyIntroductions?.any(
+                (row) =>
+                    row.id == 'received-noor' &&
+                    row.phase == ZyraFamilyIntroductionPhase.awaitingReply,
+              ) ??
+              false));
+
+  String get _networkSeekerId => state.main ? 'draft-self' : 'draft-yusuf';
   Widget _text(
     String text, {
     double size = 14,
@@ -534,6 +553,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     bool gold = false,
     bool network = false,
     bool requestSent = false,
+    bool quiet = false,
   }) => Builder(
     builder: (context) {
       final text = Text(
@@ -546,31 +566,31 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
               : ZyraColors.foreground,
         ).copyWith(height: network ? 1.35 : 1.45),
       );
-      return ConstrainedBox(
-        constraints: BoxConstraints(minHeight: network ? 52 : 46),
-        child: ZyraFloatingSurface(
-          radius: 28,
-          child: TextButton(
-            key: ValueKey('guardian_$action'),
-            onPressed: ZyraTapFeedback.onTap(context, () => onAction(action)),
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.symmetric(
-                horizontal: network ? 10 : 14,
-                vertical: network ? 8 : 11,
-              ),
-              backgroundColor: ZyraColors.surfaceFill,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(28),
-                side: BorderSide(
-                  color: gold
-                      ? ZyraColors.journeyGold.withValues(alpha: .75)
-                      : ZyraColors.surfaceBorder,
-                ),
-              ),
-            ),
-            child: network ? _networkLabel(text) : text,
+      final button = TextButton(
+        key: ValueKey('guardian_$action'),
+        onPressed: ZyraTapFeedback.onTap(context, () => onAction(action)),
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.symmetric(
+            horizontal: network ? 10 : 14,
+            vertical: network ? 8 : 11,
+          ),
+          backgroundColor: quiet ? Colors.transparent : ZyraColors.surfaceFill,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(28),
+            side: quiet
+                ? BorderSide.none
+                : BorderSide(
+                    color: gold
+                        ? ZyraColors.journeyGold.withValues(alpha: .75)
+                        : ZyraColors.surfaceBorder,
+                  ),
           ),
         ),
+        child: network ? _networkLabel(text) : text,
+      );
+      return ConstrainedBox(
+        constraints: BoxConstraints(minHeight: network ? 52 : 46),
+        child: quiet ? button : ZyraFloatingSurface(radius: 28, child: button),
       );
     },
   );
@@ -883,10 +903,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
               ? () => onAction('pause')
               : null,
         ),
-      if (linked &&
-          paid &&
-          adamMain &&
-          state.connection == ZyraGuardianConnection.pending)
+      if (linked && paid && adamMain && _hasUnseenFamilyIntroduction)
         ZyraFocusItem(
           id: 'connect-pending',
           icon: Icons.forum_outlined,
@@ -901,7 +918,8 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
 
   Widget _home() {
     final hasRequest = linked && adamMain && newJourneyRequestCount > 0;
-    final hasConnect = linked && paid && adamMain && state.hasUnseenConnection;
+    final hasConnect =
+        linked && paid && adamMain && _hasUnseenFamilyIntroduction;
     final items = [...circleFocus, ...(focusItems ?? _homeFocusItems)]
         .where((item) => !state.consumedFocus.contains(item.id))
         .toList(growable: false);
@@ -944,7 +962,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
           status: paid
               ? hasConnect
                     ? '1 new'
-                    : '${state.sent.length} sent'
+                    : '${familyIntroductions == null ? state.sent.length : _sentFamilyIntroductions.length} sent'
               : 'Guardian One',
           icon: Icons.forum_outlined,
           isNew: hasConnect,
@@ -1112,6 +1130,258 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
       scroll: !empty,
     );
   }
+
+  String _familySeekerName(String id) => switch (id) {
+    'draft-self' => 'Adam',
+    'draft-yusuf' => 'Yusuf',
+    _ => draftProfiles.firstWhere((p) => p.id == id).firstName,
+  };
+
+  String _familyStatus(
+    ZyraFamilyIntroductionPreview row, {
+    bool received = false,
+  }) {
+    final seeker = _familySeekerName(
+      received ? row.receiverSeekerId : row.senderSeekerId,
+    );
+    final other = _familySeekerName(
+      received ? row.senderSeekerId : row.receiverSeekerId,
+    );
+    return switch (row.phase) {
+      ZyraFamilyIntroductionPhase.needsApproval =>
+        'Waiting for $seeker’s Main Guardian to approve',
+      ZyraFamilyIntroductionPhase.awaitingReply => 'Waiting for a response',
+      ZyraFamilyIntroductionPhase.thinking =>
+        'They replied: “Let us think about it”',
+      ZyraFamilyIntroductionPhase.bothFamiliesOpen ||
+      ZyraFamilyIntroductionPhase.choosingPlace =>
+        'Both families are open · $seeker and $other are each asked privately',
+      ZyraFamilyIntroductionPhase.preparing =>
+        '$seeker and $other both said yes · Journey preparing',
+      ZyraFamilyIntroductionPhase.notApproved => 'Not approved',
+      ZyraFamilyIntroductionPhase.notTakenUp => 'Not taken up',
+      ZyraFamilyIntroductionPhase.notTakenForward => 'Not taken forward',
+    };
+  }
+
+  Widget _familyConnect() {
+    final canReceive = linked && paid && adamMain;
+    final received = canReceive && state.connectReceived;
+    final rows = received
+        ? familyIntroductions!.where((row) => row.id.startsWith('received-'))
+        : _sentFamilyIntroductions;
+    return _viewport(
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _header(ZyraDeveloperTitle(child: _title('Connect with Guardian'))),
+          if (canReceive)
+            _segments(
+              const ['Sent', 'Received'],
+              received ? 1 : 0,
+              'connect_tab_',
+            ),
+          if (rows.isEmpty)
+            _quiet(
+              received ? 'No requests received yet.' : 'No requests sent yet.',
+              received
+                  ? "When another family's Guardian asks to speak about Adam, it appears here."
+                  : 'Find a family in Network and choose Connect with Guardian.',
+              Icons.forum_outlined,
+              network: !received,
+            )
+          else ...[
+            for (final (index, row) in rows.indexed) ...[
+              if (index > 0)
+                const SizedBox(height: ZyraPreviewSpacing.cardToCard),
+              if (row.id == 'received-approval')
+                _familyApproval(row)
+              else
+                _familyConnectionCard(row, received: received),
+            ],
+            if (received) ...[
+              const SizedBox(height: 12),
+              _text(
+                'Only Main Guardians receive these. Choose a reply — the other family sees only your answer, no messages and no numbers. If both families are open, both Seekers are asked privately and a Journey begins only if both say yes.',
+                size: 12,
+                muted: true,
+              ),
+            ],
+          ],
+        ],
+      ),
+      scroll: rows.isNotEmpty,
+    );
+  }
+
+  String _familyAction(String verb, ZyraFamilyIntroductionPreview row) =>
+      'family_introduction:$verb:${row.id}:${row.phase.name}';
+
+  Widget _familyApproval(ZyraFamilyIntroductionPreview row) {
+    final person = draftProfiles.firstWhere(
+      (p) => p.id == row.receiverSeekerId,
+    );
+    final status = switch (row.phase) {
+      ZyraFamilyIntroductionPhase.needsApproval =>
+        'Needs your approval · you are Adam’s Main Guardian',
+      ZyraFamilyIntroductionPhase.notApproved => 'Not approved · Bilal is told',
+      _ => 'You approved · sent to ${person.firstName}’s Main Guardian',
+    };
+    return _familyConnectionBox(
+      title: 'Bilal (Adam’s brother)',
+      subtitle:
+          'Wants to introduce your family to ${person.firstName}’s · ${person.age} · ${person.city}',
+      status: status,
+      photo: 'maryam',
+      actions: [
+        if (row.phase == ZyraFamilyIntroductionPhase.needsApproval)
+          _familyAnswerPair(
+            row,
+            decline: ('Not now', 'reject'),
+            accept: ('Approve', 'approve'),
+          ),
+      ],
+    );
+  }
+
+  Widget _familyConnectionCard(
+    ZyraFamilyIntroductionPreview row, {
+    required bool received,
+  }) {
+    final personId = received ? row.senderSeekerId : row.receiverSeekerId;
+    final person = draftProfiles.firstWhere((p) => p.id == personId);
+    final seeker = _familySeekerName(
+      received ? row.receiverSeekerId : row.senderSeekerId,
+    );
+    final other = person.firstName;
+    final awaitingReply =
+        row.phase == ZyraFamilyIntroductionPhase.awaitingReply;
+    final demo = switch (row.phase) {
+      ZyraFamilyIntroductionPhase.needsApproval when !received => (
+        'Demo: $seeker’s Main Guardian approves',
+        'approve',
+      ),
+      ZyraFamilyIntroductionPhase.awaitingReply ||
+      ZyraFamilyIntroductionPhase.thinking when !received => (
+        'Demo: they reply “We’re open to this”',
+        'open',
+      ),
+      ZyraFamilyIntroductionPhase.bothFamiliesOpen => (
+        'Demo: $seeker and $other both say yes',
+        'both_yes',
+      ),
+      _ => null,
+    };
+    final status = received && awaitingReply
+        ? 'Asks to introduce your families · about $seeker'
+        : received &&
+              (row.phase == ZyraFamilyIntroductionPhase.thinking ||
+                  row.phase == ZyraFamilyIntroductionPhase.notTakenUp)
+        ? row.phase == ZyraFamilyIntroductionPhase.thinking
+              ? 'You replied: “${row.reply!.label}”'
+              : 'You replied: ${row.reply!.label}'
+        : _familyStatus(row, received: received);
+    return _familyConnectionBox(
+      title: '$other’s Main Guardian',
+      subtitle:
+          'For $other, ${person.age} · ${person.city}${received ? '' : ' · about $seeker'}',
+      status: status,
+      photo: person.id.replaceFirst('draft-', ''),
+      actions: [
+        if (received && awaitingReply)
+          for (final reply in ZyraFamilyIntroductionReply.values)
+            _button(
+              reply.label,
+              _familyAction(reply.name, row),
+              gold: reply == ZyraFamilyIntroductionReply.open,
+            )
+        else if (received && row.phase == ZyraFamilyIntroductionPhase.thinking)
+          _familyAnswerPair(
+            row,
+            decline: ('Not at this time', 'no'),
+            accept: ('We’re open to this', 'open'),
+          )
+        else if (demo != null)
+          _button(demo.$1, _familyAction(demo.$2, row)),
+      ],
+    );
+  }
+
+  Widget _familyAnswerPair(
+    ZyraFamilyIntroductionPreview row, {
+    required (String, String) decline,
+    required (String, String) accept,
+  }) => LayoutBuilder(
+    builder: (context, constraints) {
+      bool fits(String label) {
+        final painter = TextPainter(
+          text: TextSpan(text: label, style: ZyraText.body(size: 13)),
+          textScaler: MediaQuery.textScalerOf(context),
+          textDirection: Directionality.of(context),
+          maxLines: 1,
+        )..layout();
+        final result = painter.width + 28 <= (constraints.maxWidth - 8) / 2;
+        painter.dispose();
+        return result;
+      }
+
+      final first = _button(
+        decline.$1,
+        _familyAction(decline.$2, row),
+        quiet: true,
+      );
+      final second = _button(
+        accept.$1,
+        _familyAction(accept.$2, row),
+        gold: true,
+      );
+      if (!fits(decline.$1) || !fits(accept.$1)) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [first, const SizedBox(height: 8), second],
+        );
+      }
+      return Row(
+        children: [
+          Expanded(child: first),
+          const SizedBox(width: 8),
+          Expanded(child: second),
+        ],
+      );
+    },
+  );
+
+  Widget _familyConnectionBox({
+    required String title,
+    required String subtitle,
+    required String status,
+    required String photo,
+    required List<Widget> actions,
+  }) => _box(
+    Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _photo(photo),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _text(title, size: 18),
+                  _text(subtitle, size: 12, muted: true),
+                  _text(status, size: 12, gold: true),
+                ],
+              ),
+            ),
+          ],
+        ),
+        for (final action in actions) ...[const SizedBox(height: 8), action],
+      ],
+    ),
+  );
 
   Widget _connectionCard(String id, {bool accepted = false}) {
     final person = ZyraGuardianTabsState.network.firstWhere((p) => p.id == id);
@@ -1462,7 +1732,13 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
     }
     final largerText = MediaQuery.textScalerOf(context).scale(14) > 14;
     final person = ZyraGuardianTabsState.network[state.networkIndex];
-    final requestSent = state.sent.contains(person.id);
+    final requestSent = familyIntroductions != null
+        ? _sentFamilyIntroductions.any(
+            (row) =>
+                row.senderSeekerId == _networkSeekerId &&
+                row.receiverSeekerId == 'draft-${person.id}',
+          )
+        : state.sent.contains(person.id);
     return _viewport(
       Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1643,6 +1919,8 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
       seekerName: state.seekerName,
       seekerGender: seekerGender,
       onAction: onAction,
+      familyIntroduction: familyIntroductions != null && !introduction,
+      ownMainGuardian: state.main && adamMain,
     );
   }
 
@@ -1750,7 +2028,7 @@ class ZyraGuardianTabsPresentation extends StatelessWidget {
   Widget build(BuildContext context) => switch (page) {
     'my_zyra' => _home(),
     'requests' => _requests(),
-    'connect' => _connect(),
+    'connect' => familyIntroductions == null ? _connect() : _familyConnect(),
     'introductions' => _introductions(),
     'network' => _network(context),
     'introduce_confirm' => _confirm(true),
