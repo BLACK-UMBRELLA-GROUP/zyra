@@ -1,0 +1,50 @@
+{
+  "released_utc": "2026-11-27T11:34:20.934267+00:00",
+  "SOURCE_and_github_status": "",
+  "protected": {
+    "PRODUCT/APPROVED/BUILD_QUEUE.md": {
+      "index_sha256": "6deb49c9bb2ed18a25a1838be203ea68dc63f2ec8ce418d23667c4ab2ce9d179",
+      "worktree_sha256": "2caa13b11a486fada0e4c34682ead21b115fe122d007dce0128bb8a19f7626cd",
+      "index_exact": true,
+      "worktree_same_as_first_snapshot": false
+    },
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/BUILD.json": {
+      "index_sha256": "7944d49df809231227ca7593a57b47942029deb60c65ef7d921adb681b870a59",
+      "worktree_sha256": "7944d49df809231227ca7593a57b47942029deb60c65ef7d921adb681b870a59",
+      "index_exact": true,
+      "worktree_same_as_first_snapshot": true
+    },
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/HANDOVER_2026-11-25.md": {
+      "index_sha256": "37de785cdb994e3310eea0398d45cd67d52332849985fbc0d2e1298fba9c4c39",
+      "worktree_sha256": "37de785cdb994e3310eea0398d45cd67d52332849985fbc0d2e1298fba9c4c39",
+      "index_exact": true,
+      "worktree_same_as_first_snapshot": true
+    },
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_HELD_MANIFEST.json": {
+      "index_sha256": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc",
+      "worktree_sha256": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc",
+      "index_exact": true,
+      "worktree_same_as_first_snapshot": true
+    },
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_REVIEW.json": {
+      "index_sha256": "709be4452efa232faecffd501f1aba83e9014ffd544550fa4ef8b172f261bbdd",
+      "worktree_sha256": "709be4452efa232faecffd501f1aba83e9014ffd544550fa4ef8b172f261bbdd",
+      "index_exact": true,
+      "worktree_same_as_first_snapshot": true
+    },
+    "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/TASK_NOTE_2026-11-25.md": {
+      "index_sha256": "aa3f188ee260f60f6679840f2d8e54340860aeef5eb59679876821698c2ba52f",
+      "worktree_sha256": "aa3f188ee260f60f6679840f2d8e54340860aeef5eb59679876821698c2ba52f",
+      "index_exact": true,
+      "worktree_same_as_first_snapshot": true
+    },
+    "PRODUCT/APPROVED/QUESTIONS.md": {
+      "index_sha256": "ae91e39960c51f32646c2a0dd0d3548f11c2445d20180e186b2f892607ed1d16",
+      "worktree_sha256": "ad477568ea8562883a9532c4bd81308dd5724ddcb46bcbcc94c5804cf596f594",
+      "index_exact": true,
+      "worktree_same_as_first_snapshot": false
+    }
+  },
+  "preexisting_png_count": 987,
+  "preexisting_png_drift": []
+}

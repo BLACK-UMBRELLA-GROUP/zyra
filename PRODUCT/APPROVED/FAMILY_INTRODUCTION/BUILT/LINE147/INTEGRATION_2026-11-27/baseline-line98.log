@@ -1,0 +1,11 @@
+00:00 +0: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/line98_introductions_test.dart
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line98_introductions_visual_test.dart: (setUpAll)
+00:00 +1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line98_introductions_visual_test.dart: (setUpAll)
+00:00 +1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/line98_introductions_test.dart: introduction actions keep source Guardian and newest-first Past without expiry
+00:00 +2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line98_introductions_visual_test.dart: LOCK 2 V4 Introductions and Guardian states at 430x932
+00:00 +3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line98_introductions_visual_test.dart: LOCK 2 V4 Introductions and Guardian states at 430x932
+00:00 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/line98_introductions_test.dart: empty Past uses the locked words and received profile remains read-only
+00:01 +5: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line98_introductions_visual_test.dart: LOCK 2 V4 Introductions and Guardian states at 375x667
+00:01 +6: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line98_introductions_visual_test.dart: LOCK 2 V4 Introductions and Guardian states at 375x667
+00:01 +7: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line98_introductions_visual_test.dart: (tearDownAll)
+00:01 +7: All tests passed!

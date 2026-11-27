@@ -1,0 +1,131 @@
+{
+  "line": 147,
+  "lock": 49,
+  "design_question": 227,
+  "record_head": "78a2d42b4fe2aa5a4e4a4704e23ed6ce9fa26510",
+  "accepted_source": "b4dcadd2f6a6655aa66985e4e12141ad567433b2",
+  "sealed_partial_sha256": "6951884ba3b6e5c1d2b1447261fbbc93ddbe8623191f3e87eed7b5ea3f7ea61f",
+  "created_utc": "2026-11-27T11:25:04.567260+00:00",
+  "patch_sha256": "e6cbd62fc004e557f4786ff37e382d1d2ff1e9cf16638a5b756b821e049ac0de",
+  "files": [
+    {
+      "path": "SOURCE/README.md",
+      "baseline_sha256": "030c7e8ba448512e084a5245c67044bc9c0ffcf61e4f6da8afe7eb643f2c2522",
+      "candidate_sha256": "d03be105faec13e18fa7e7974533048e83356bf3ec416c4f7fffadc558d84c04",
+      "size": 15333
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_circle_topics_presentation.dart",
+      "baseline_sha256": "f390a89e8fbae9a2594902ad0a27105e6ea39cf278e1ef3c6b7c2525e0dbaa66",
+      "candidate_sha256": "4fa0153b67171ffd697be0c79188d1cc29a4a14079a4a7274038ebcb5c61d169",
+      "size": 30593
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_family_introduction_preview.dart",
+      "baseline_sha256": null,
+      "candidate_sha256": "12fd903698f99343db2e3f07a15f1fdb705845ed7b8fe2d346d178387ee70532",
+      "size": 4198,
+      "parked_original": "SOURCE/build/held/LINE147/2026-11-27_Q227_GATES/new-files/SOURCE/lib/dev/zyra_family_introduction_preview.dart"
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_full_profile_preview.dart",
+      "baseline_sha256": "67eb52a191fbb3c15728975429b51bbfe28d9b673c11e49e12e62d3282b7e0b5",
+      "candidate_sha256": "9584ea4de20d79064df7c358a22e88826fb39ce18f21b360891ce310271e653a",
+      "size": 13170
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_guardian_circle_preview.dart",
+      "baseline_sha256": "ea9de1245ba45c3eec23e8d1378a62528e67530431cec41ed2e652138647e548",
+      "candidate_sha256": "a3b6f271f6666067fed7c34f8e940dd926b5c0d07bb58b51ba235078e63df0bd",
+      "size": 10548
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_circle_topics_state.dart",
+      "baseline_sha256": "d990a98abfd8a66f47d821545a89604ba3e486552dce7d6ee643c8fab1c3ba49",
+      "candidate_sha256": "a91a0be33a342cb8c83c5d3357d0172774139ce3224861c419ac81a5d90e6982",
+      "size": 29899
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+      "baseline_sha256": "6c477e458aaa4f3f422aca3002a5c3fb61fb20c122c650fbe5809cefb0ae84ea",
+      "candidate_sha256": "6abb605cf18eab8d4481e0cf5215bcaceb9405016cc0b2ce58af70b6870382ea",
+      "size": 450494
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_action.dart",
+      "baseline_sha256": "65a11601c75895474a1f40d91bc17c7473a6b6b379bc842d0fb8070b5f16bed0",
+      "candidate_sha256": "33d5a7686bf59b2f595f1da5e65c0847381048a93cd850808384cba26dc0e54f",
+      "size": 15796
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_one_journey_guardian_tabs.dart",
+      "baseline_sha256": "5ad5f45fac347968b4cfd769b4a3a17466b5b2e3fc3765ba643dda3b46fa5598",
+      "candidate_sha256": "258e9e88a33e3e148fdad2b505139d33548ea33f4a272c3b4c918d9e913d4e7d",
+      "size": 88782
+    },
+    {
+      "path": "SOURCE/lib/dev/zyra_request_activity_presentation.dart",
+      "baseline_sha256": "7f52edfe21027b6eb189d9bfe5b669232f7d72823e8f0e32905c59b1240fa7ea",
+      "candidate_sha256": "973300edcb2cdb08b196fc028145212173512879c3e119daa2282252b7935716",
+      "size": 38219
+    },
+    {
+      "path": "SOURCE/lib/screens/connections/zyra_sample_activity.dart",
+      "baseline_sha256": "f13706c4f38a55aad0dad78a8799e4cb6d93eea57aa64b521b338fa04da18759",
+      "candidate_sha256": "ed09a67d6e3b16b93606d66a900eb3ca8e0690dd8a12a24621df12b445b9c85f",
+      "size": 64000
+    },
+    {
+      "path": "SOURCE/lib/screens/wali/family_messaging_screens.dart",
+      "baseline_sha256": "7a7821713b6c1ff43c969ac0cf69de71d7df6ecf584896a8d7155e9d1a9c9cb9",
+      "candidate_sha256": "220bf1dbe19ca0c52faf926887e8cf1c9a69d5443a35a69553210d43c9de262c",
+      "size": 100848
+    },
+    {
+      "path": "SOURCE/lib/state/zyra_developer_samples.dart",
+      "baseline_sha256": "42d922ed5c0c3d0342bfc73384524cb887a376bb422aa50ed5f85c102e3a5711",
+      "candidate_sha256": "737ea3aee291fdea7fc6d0d23e2cf9cfc98aaf96df7738c392a8731d05ffc223",
+      "size": 46880
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_developer_title.dart",
+      "baseline_sha256": "33a4039ce9e4033a8d2e92c4c3aee1eacddf36fbef46f1987ec003c0ecb4d694",
+      "candidate_sha256": "346ac26364c37224f3f6154c306dd6439737593781376420b9525076c98eb443",
+      "size": 32431
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_guardian_preview_lifetime.dart",
+      "baseline_sha256": "38abd6475e6deee71d9b8c194eb7399d2ad10970b1e77d7c31b18325800822d7",
+      "candidate_sha256": "6778b3fa489c2585a0df53ea97a5d909ea6bc4aef402630f8b70f5c18ad3fd34",
+      "size": 5180
+    },
+    {
+      "path": "SOURCE/lib/widgets/zyra_profile_details_page.dart",
+      "baseline_sha256": "031c8f7cf8d80d2be442624d1d4e3a95430460eb6176269e29d01f3799ac3980",
+      "candidate_sha256": "b8fdfb3104f992a4390ee662c0c6c15558c628378a5043e9b6c7ed238495b8cd",
+      "size": 22672
+    },
+    {
+      "path": "SOURCE/test/line147_family_introduction_test.dart",
+      "baseline_sha256": null,
+      "candidate_sha256": "254825bbb716a8916decc7ba51e914182de5aabea68e3266abd7c17b4392cc7f",
+      "size": 20234,
+      "parked_original": "SOURCE/build/held/LINE147/2026-11-27_Q227_GATES/new-files/SOURCE/test/line147_family_introduction_test.dart"
+    },
+    {
+      "path": "SOURCE/test/line147_q227_test.dart",
+      "baseline_sha256": null,
+      "candidate_sha256": "f4cc83bf87aadb36e037dba4c890eee4a0ae15994f56a239361f508f8207cd28",
+      "size": 11663,
+      "parked_original": "SOURCE/build/held/LINE147/2026-11-27_Q227_GATES/new-files/SOURCE/test/line147_q227_test.dart"
+    },
+    {
+      "path": "SOURCE/test/zyra_developer_panel_entry_test.dart",
+      "baseline_sha256": "96506e180c602600b919c8da9c7b51e1d9e4b6fc3c652d47297746b59830bfa5",
+      "candidate_sha256": "5628a6ba690fbd4d220ddc1ae3f07845dbabbc07521a6a5a705aa1b3d1492311",
+      "size": 79894
+    }
+  ],
+  "status": "HELD: mandatory gate blocked; no implementation commit or push",
+  "released_utc": "2026-11-27T11:34:20.934267+00:00"
+}

@@ -1,0 +1,10 @@
+{
+  "final-analyze": {
+    "exit": 0,
+    "seconds": 9.53
+  },
+  "ordinary": {
+    "exit": 1,
+    "seconds": 626.58
+  }
+}

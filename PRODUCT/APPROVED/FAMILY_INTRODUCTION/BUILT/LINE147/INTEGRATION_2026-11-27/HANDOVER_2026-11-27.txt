@@ -1,0 +1,77 @@
+ZYRA LINE 147 — LOCK 49 / Q227 — HANDOVER — 27 NOV 2026
+
+STATUS: QUESTION / Q236. Candidate held; accepted SOURCE restored. No implementation commit or push.
+
+Authority and scope
+Continuing Founder GO; FAMILY_INTRODUCTION/BRIEFS/BUILD_BRIEF_2026-11-24_V1.md; RECORD/FAMILY_INTRODUCTION_SPEC_CURRENT_VERSION_V1.md including corrections 24 and 27 Nov; RECORD/LOCK_RECORD.md and Q227 ANSWERED. Read masters fi01–fi12, ci01/ci02 and named older states. Reference-only master inspection is distinct from capture matching. No design decision reopened.
+
+Candidate behavior
+Connect with Guardian uses Main approval and fixed replies in the verified Founder sample preview. An Additional send waits for its own Main before the other family's reply. Only Main receives; a non-Main has Sent only. The approval pair is Not now then Approve. A Think reply remains open indefinitely; sender sees They replied: “Let us think about it”, receiver sees You replied: “Let us think about it” and can later choose Not at this time or We’re open to this.
+
+Both Seekers answer privately. Change my answer clears only the current Seeker's saved answer while the peer is unanswered, retains the expanded card and restores the normal paired actions. Direct duplicate saves still refuse until that explicit change action. A peer answer resolves immediately: both yes uses existing free-place checks and Journey preparation; any no produces neutral Not taken forward. No individual answer is exposed. The sealed actual second-answer resolution from list, profile and Circle profile remains intact.
+
+Ask my Guardians adds one introduction attachment to the current sample owner's Circle Main. It uses the exact verified Circle-owned navigator, bound scope, session lifetime and owner guard. Global developer authorization is not switched on. Live-data opt-out revokes the scope. No live transport is added.
+
+Architecture and data flow
+ZyraFamilyIntroductionPreview owns only fictional row phases and private booleans. ZyraDeveloperSamples owns the authorized account-lifetime sample rows, sharing idempotency and Journey places; unbind/account replacement clears or rejects them. The façade checks exact current row identity and visible peers before mutation. Page callbacks additionally check route/account/revision, expansion and captured phase/answer state. Guardian action tokens contain the captured phase and Main Received routing stays guarded. The new Change action derives the current Seeker's side rather than accepting an arbitrary side.
+
+The signed-in fictional Guardian remains Hassan. No represented sign-in/authority exists for Yusuf's Main or the external Main. Existing approved Demo actions advance those sample rows; no additional identity switch was introduced. Existing one-way Introduce to Adam, legacy retained wording, Basic locks and empty states remain governed by the brief. The private Guardian chat is excluded from the authorized Founder sample flow; its retained legacy callers keep their existing guard.
+
+Live files (candidate only; see MANIFEST.json for exact hashes)
+SOURCE/README.md — sample behavior, limitations and focused commands.
+lib/dev/zyra_family_introduction_preview.dart — phases, fixed replies, private answers, Change permission and late Think reply.
+lib/state/zyra_developer_samples.dart — account-bound sample ownership, place outcomes and idempotent shares.
+lib/dev/zyra_one_journey_concept_shell.dart — verified navigation, Guardian actions and Circle/profile integration.
+lib/dev/zyra_one_journey_guardian_tabs.dart — fixed reply cards, pending status and paired approval/later answers.
+lib/dev/zyra_one_journey_guardian_action.dart — role-specific confirm wording.
+lib/screens/connections/zyra_sample_activity.dart — family cards, Change action, private outcomes and existing place flow.
+lib/dev/zyra_request_activity_presentation.dart — canonical paired footer and quiet gold action.
+lib/dev/zyra_full_profile_preview.dart; lib/widgets/zyra_profile_details_page.dart — approved Introduction line/action band.
+lib/dev/zyra_circle_topics_presentation.dart; lib/dev/zyra_guardian_circle_preview.dart; lib/dev/zyra_one_journey_circle_topics_state.dart — local introduction attachment and Main topic.
+lib/screens/wali/family_messaging_screens.dart; lib/widgets/zyra_developer_title.dart; lib/widgets/zyra_guardian_preview_lifetime.dart — exact verified navigator/owner admission.
+test/line147_family_introduction_test.dart; test/line147_q227_test.dart; test/zyra_developer_panel_entry_test.dart — model, actual verified routes, Q227 UI and optional raster captures.
+All relative lib/test paths above belong to SOURCE. No migration, backend change, live send, phone, native build, server connection, new global toggle or package upgrade.
+
+Verification
+Final protected analyzer: clean, 9.53 seconds.
+Focused behavior/authority/raster controls: 202 passed, 29 seconds.
+Q227 UI and optional raster cases: 6 passed, 5 seconds.
+Affected line126 routes: 6 passed.
+Raster: 14 PNG/audit pairs, 154 text runs, zero failures; hashes retained.
+Ordinary regression: 7,974 passed, 244 skipped, 4 failed; 626.58 seconds.
+Accepted comparison before integration: 6 passed, 4 optional skips, 1 failed (Q228 Help).
+Accepted line98 comparison after SOURCE restoration: 7 passed, zero failed.
+Required accepted CI run 45958031712: Flutter shard 0 success; shards 1 and 2 failed. Full text audits are separately nonblocking and not a waiver for those required jobs.
+
+Baseline failure: line137_help_support_capture_test.dart:147 cannot discover concept_settings_helpSupport through BaselineHarness.tapFinder:1082. This was reproduced before integration. Welcome recovery passed locally; the separately recorded hosted listener problem was not reproduced here.
+New candidate-triggered failures: line98_introductions_test.dart:134 and both size cases at visual/line98_introductions_visual_test.dart:150 expect three cards, while the added family card makes four. Both unchanged files pass all seven tests on accepted SOURCE. These three are not called baseline. Their count assertions remain untouched; full regression did not pass.
+
+Exact commands (SOURCE working directory):
+node tooling/no_git_driver.mjs flutter analyze
+node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --dart-define=ZYRA_LINE147_CAPTURE=true test/line147_family_introduction_test.dart test/zyra_developer_panel_entry_test.dart test/zyra_rendered_text_audit_controls_test.dart
+node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded --dart-define=ZYRA_LINE147_CAPTURE=true test/line147_q227_test.dart
+node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/visual/line126_coverage_entry_routes_test.dart test/visual/line126_remaining_routes_test.dart --name 'introductions|Circle|Guardian.*(linked profile|dormant Network profile)'
+node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded
+Accepted-only comparison commands:
+node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/visual/line137_help_support_capture_test.dart test/welcome_auth_failure_recovery_test.dart
+node tooling/no_git_driver.mjs flutter test --no-pub --reporter expanded test/line98_introductions_test.dart test/visual/line98_introductions_visual_test.dart
+
+Protected Flutter 3.44.2 only. Analysis/tests run through node tooling/no_git_driver.mjs, never plain Flutter. No assertion or coverage suppression. No four-setting whole-app corpus driver was run; the README makes it opt-in, not this feature line's local gate.
+
+Visual limits
+Fourteen component PNGs and audit JSONs are evidence of content/order/wrapping. Independent review inspected fi03/fi09/fi11/fi12, including 375 Larger. No Q227 wording/order defect found. These frames omit real navigation and use test typography/background/shadows; fi09 has black photo stubs; fi11 fixture differs from master; compact frames are scrolled. Full master MATCH is not established. fi02, fi04, fi07, fi08, fi10, ci01, ci02 and received-expanded lack fresh matched whole-page captures. A resumed owner must finish that proof before BUILT.
+
+Public checks
+The exact candidate patch secret scan found no leaks. fable_public_check.py scanned 19 source paths: 29 money-pattern hits; 23 identical existing HEAD lines and six Dart tuple field accesses ($1/$2), with no private document or amount added. Detailed location review retained. No version/roadmap row changed. README updated only inside the held candidate. Record scan reviewed all 407 hits: 399 binary PNG byte patterns, seven existing test names and one tuple notation. Own Q236/status text had zero pattern hits. Record secret scan found no leaks. No implementation push.
+
+Recovery and next owner
+SOURCE and .github restored and clean at 2026-11-27T11:34:20.934267+00:00. All seven foreign staged entries match their original blob hashes and modes. Five LINE138 working files and 987 preexisting BUILT PNG hashes are unchanged. The shared queue/QUESTIONS working files changed externally before this owner wrote its own status; those current edits were preserved. Queue147 is QUESTION, Q236 OPEN, worktree only; neither file is staged by this task. No other line was started because this owner has line147-only authority.
+
+Held patch SHA256 e6cbd62fc004e557f4786ff37e382d1d2ff1e9cf16638a5b756b821e049ac0de. Reverse dry-run passed on the exact candidate and forward dry-run passed after restoration. Newly introduced originals were moved into held/new-files; no file was deleted and no candidate was sent to a trash folder.
+
+Q236 next steps: Fable supplies the bounded accepted CI/Help fixture restart route and the three keyed-count migrations, preserving one-way and family card assertions, expansion, local-only transport, actions, Past outcomes and geometry. A fresh line owner then reapplies the complete held patch, finishes all missing whole-page visual proof and reruns required gates. Q227 remains ANSWERED. Written refusal to ship the failed gate or label the three new fixture failures baseline. Q228–235 remain separate and unchanged by this owner. The sealed starting partial remains unchanged, SHA256 6951884ba3b6e5c1d2b1447261fbbc93ddbe8623191f3e87eed7b5ea3f7ea61f. The new 19-path candidate is a patch/manifest under SOURCE/build/held/LINE147/2026-11-27_Q227_GATES. No app binary or source tree was put in evidence. Do not reapply the older partial over this complete patch. Preserve its Circle authority fixes, actual second-answer outcome, paused-request admission and approved demos. Do not repair Q228–235 or suppress the regression outside an authorized bounded restart route.
+
+Task/accounting
+Conversation: new queue-owner chat. Startup pack 27,768 bytes; initial project AGENTS, short lessons page, build brief and startup script were read before pack execution; brief/spec/LOCK/manifest/handover and scoped implementation/test inputs followed. Independent helper tasks were read-only LOCK/source/visual review and disjoint Q227 model/tests. Actual token count is unavailable to this owner; no estimate. One ordinary full-gate run. No other queue line, admin sweep, live operation or phone action.
+
+Commit: record-only evidence commit pending creation; no implementation commit. The task note will record the exact local evidence commit. Nothing is pushed.

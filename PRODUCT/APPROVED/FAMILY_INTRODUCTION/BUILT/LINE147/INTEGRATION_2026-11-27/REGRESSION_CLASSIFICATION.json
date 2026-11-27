@@ -1,0 +1,34 @@
+{
+  "observed_failures": [
+    {
+      "file": "test/visual/line137_help_support_capture_test.dart",
+      "line": 147,
+      "classification": "accepted baseline Q228, reproduced before integration",
+      "failure": "Settings Help row finder discovers zero widgets through BaselineHarness.tapFinder:1082",
+      "repair_owner": "Fable bounded accepted-base fixture/CI route"
+    },
+    {
+      "file": "test/visual/line98_introductions_visual_test.dart",
+      "line": 150,
+      "cases": [
+        "430x932",
+        "375x667"
+      ],
+      "classification": "candidate-triggered; not baseline",
+      "failure": "3 request cards expected, 4 found including the new family card",
+      "proposed_repair": "Scope the legacy count to its three one-way cards; explicitly assert the added family card and retain all navigation, typography, expansion, hit/geometry and outcome assertions."
+    },
+    {
+      "file": "test/line98_introductions_test.dart",
+      "line": 134,
+      "classification": "candidate-triggered; not baseline",
+      "failure": "3 request cards expected, 4 found including the new family card",
+      "proposed_repair": "Assert the three keyed one-way cards plus the family card; retain the local-only transport assertion, single-expansion behavior, one-way actions and both Past outcomes."
+    }
+  ],
+  "scope_note": "No assertion was suppressed or updated. Both unchanged line98 files pass all seven tests after accepted SOURCE restoration, confirming the three candidate-triggered failures.",
+  "accepted_line98_comparison": {
+    "passed": 7,
+    "failed": 0
+  }
+}

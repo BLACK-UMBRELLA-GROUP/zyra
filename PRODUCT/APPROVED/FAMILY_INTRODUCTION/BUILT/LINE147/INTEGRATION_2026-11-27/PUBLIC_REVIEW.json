@@ -1,0 +1,21 @@
+{
+  "source_paths": 19,
+  "source_pattern_hits": 29,
+  "source_review": {
+    "identical_existing_HEAD_lines": 23,
+    "Dart_tuple_field_access": 6
+  },
+  "record_files_scanned": 50,
+  "record_pattern_hits": 407,
+  "record_review": {
+    "binary_PNG_byte_patterns": 399,
+    "retained_test_case_names_in_log": 7,
+    "Dart_tuple_notation_in_handover": 1
+  },
+  "status_files_scanned": 2,
+  "status_hits": 9,
+  "own_status_row_hits": 0,
+  "status_review": "Existing or foreign rows preserved. Newly written Q236 and queue147 status text have no pattern hits.",
+  "secret_scans": "Candidate patch and record directory: no leaks found.",
+  "result": "Reviewed all hits; no new private material, secret or prohibited community wording."
+}

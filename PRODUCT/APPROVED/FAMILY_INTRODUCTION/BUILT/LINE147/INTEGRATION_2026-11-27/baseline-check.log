@@ -1,0 +1,47 @@
+00:00 +0: loading /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/welcome_auth_failure_recovery_test.dart: (setUpAll)
+00:00 +0: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/welcome_auth_failure_recovery_test.dart: Google thrown sign-in releases the Welcome controls
+00:00 +1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/welcome_auth_failure_recovery_test.dart: Google thrown sign-in releases the Welcome controls
+00:00 +2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 actual entry points, search, accordion, contact and stale action false
+00:00 +3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 actual entry points, search, accordion, contact and stale action false
+00:00 +4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 actual entry points, search, accordion, contact and stale action false
+00:00 +5: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 actual entry points, search, accordion, contact and stale action false
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _KeyWidgetFinder:<Found 0 widgets with key [<'concept_settings_helpSupport'>]: []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      BaselineHarness.tapFinder (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/baseline_capture_support.dart:1082:5)
+<asynchronous suspension>
+#5      BaselineHarness.tap (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/baseline_capture_support.dart:1052:5)
+<asynchronous suspension>
+#6      main.<anonymous closure> (file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart:147:9)
+<asynchronous suspension>
+#7      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#8      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/baseline_capture_support.dart line 1082
+The test description was:
+  LOCK43 actual entry points, search, accordion, contact and stale action false
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:01 +5 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 actual entry points, search, accordion, contact and stale action false [E]
+  Test failed. See exception logs above.
+  The test description was: LOCK43 actual entry points, search, accordion, contact and stale action false
+  
+00:01 +5 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 actual entry points, search, accordion, contact and stale action true
+00:01 +6 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 focused replay 430.0 1.0
+00:01 +6 ~1 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 focused replay 430.0 2.0
+00:01 +6 ~2 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 focused replay 375.0 1.0
+00:01 +6 ~3 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 focused replay 375.0 2.0
+00:01 +6 ~4 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: (tearDownAll)
+00:01 +6 ~4 -1: Some tests failed.
+
+Failing tests:
+  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 actual entry points, search, accordion, contact and stale action false

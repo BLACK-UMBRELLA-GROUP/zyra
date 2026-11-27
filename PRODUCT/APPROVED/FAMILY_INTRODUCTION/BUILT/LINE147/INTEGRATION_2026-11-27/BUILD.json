@@ -1,0 +1,38 @@
+{
+  "line": 147,
+  "lock": 49,
+  "design_question": 227,
+  "status": "QUESTION; HELD; NOT BUILT",
+  "record_head": "78a2d42b4fe2aa5a4e4a4704e23ed6ce9fa26510",
+  "accepted_source": "b4dcadd2f6a6655aa66985e4e12141ad567433b2",
+  "candidate_patch_sha256": "e6cbd62fc004e557f4786ff37e382d1d2ff1e9cf16638a5b756b821e049ac0de",
+  "flutter_version": "3.44.2",
+  "build_mode": "protected Flutter widget tests; sample only; no native build",
+  "timestamp_utc": "2026-11-27T11:25:59.091694+00:00",
+  "ordinary_regression": {
+    "passed": 7974,
+    "skipped": 244,
+    "failed": 4,
+    "elapsed_seconds": 626.58,
+    "reproduced_baseline_failures": 1,
+    "candidate_triggered_failures": 3
+  },
+  "focused_tests": 202,
+  "q227_ui_tests": 6,
+  "affected_line126_routes": 6,
+  "raster_captures": 14,
+  "raster_runs": 154,
+  "raster_failures": 0,
+  "full_master_match": "NOT ESTABLISHED; component harness evidence only",
+  "live": false,
+  "phone": false,
+  "final_analyzer_seconds": 9.53,
+  "source_released_utc": "2026-11-27T11:34:20.934267+00:00",
+  "implementation_commit": null,
+  "implementation_push": false,
+  "gate_question": 236,
+  "accepted_line98_comparison": {
+    "passed": 7,
+    "failed": 0
+  }
+}
