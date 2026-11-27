@@ -230,8 +230,6 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
               Flexible(
                 child: Text(
                   label,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                   style: ZyraText.body(
                     size: textSize,
                     color: switcher
@@ -323,8 +321,6 @@ class ZyraConceptProfilePresentation extends StatelessWidget {
             Text(
               data.name,
               key: const ValueKey('concept_profile_name'),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
               style: ZyraText.body(
                 size: 24,
                 color: ZyraColors.foreground,

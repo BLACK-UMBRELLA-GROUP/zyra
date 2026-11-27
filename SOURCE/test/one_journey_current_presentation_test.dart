@@ -1137,34 +1137,29 @@ void main() {
 
   for (final guardian in [false, true]) {
     for (final sample in const [
-      (name: 'Adam Khan', size: Size(440, 932), scale: 1.0, clipped: false),
-      (
-        name: 'Muhammad Ibrahim',
-        size: Size(430, 932),
-        scale: 1.0,
-        clipped: true,
-      ),
+      (name: 'Adam Khan', size: Size(440, 932), scale: 1.0, wraps: false),
+      (name: 'Muhammad Ibrahim', size: Size(430, 932), scale: 1.0, wraps: true),
       (
         name: 'Abdulrahman Muhammad Khan',
         size: Size(393, 852),
         scale: 1.0,
-        clipped: true,
+        wraps: true,
       ),
       (
         name: 'Abdulrahman Muhammad Khan',
         size: Size(320, 568),
         scale: 2.0,
-        clipped: true,
+        wraps: true,
       ),
       (
         name: 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ',
         size: Size(320, 568),
         scale: 2.0,
-        clipped: true,
+        wraps: true,
       ),
     ]) {
       testWidgets(
-        '${guardian ? 'Guardian' : 'Seeker'} Profile name stays on one line above Switch at ${sample.size.width}/${sample.scale}/${sample.name}',
+        '${guardian ? 'Guardian' : 'Seeker'} Profile name stays complete above Switch at ${sample.size.width}/${sample.scale}/${sample.name}',
         (tester) async {
           final semantics = tester.ensureSemantics();
           try {
@@ -1188,12 +1183,19 @@ void main() {
             final text = tester.widget<Text>(name);
             expect(text.data, sample.name);
             expect(text.style?.fontSize, 24);
-            expect(text.maxLines, 1);
-            expect(text.overflow, TextOverflow.ellipsis);
+            expect(text.maxLines, isNull);
+            expect(text.overflow, isNot(TextOverflow.ellipsis));
             final paragraph = tester.renderObject<RenderParagraph>(
               find.descendant(of: name, matching: find.byType(RichText)),
             );
-            expect(paragraph.didExceedMaxLines, sample.clipped);
+            expect(paragraph.didExceedMaxLines, isFalse);
+            final boxes = paragraph.getBoxesForSelection(
+              TextSelection(baseOffset: 0, extentOffset: sample.name.length),
+            );
+            expect(
+              boxes.map((box) => box.top).toSet().length > 1,
+              sample.wraps,
+            );
             final nameRect = tester.getRect(name);
             final switchRect = tester.getRect(switchButton);
             expect(nameRect.overlaps(switchRect), isFalse);

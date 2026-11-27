@@ -273,6 +273,16 @@ covering 375/430 widths at normal and Larger Text with real shadows. Screens
 and audit records stay under `build/line140/`. The as-built record is
 `../PRODUCT/APPROVED/PROFILE_SMALL_PAGES/BUILT/LINE140/HANDOVER_2026-11-27.md`.
 
+## Founder preview small-screen fit
+
+LOCK 4 V5 / Q240 reserves a fixed 12 pt gap below the Profiles/full-profile name block, including the introduction byline when present, before the fact tiles. The shared card keeps its existing photo sizing, scroll policy, ink, ONE pill and tile styling.
+
+Journey request and Profile names wrap, and Profile actions flow to another
+row when they need space. Guardian Journey access shows the stage number and
+name on separate lines and stacks View above Chat below 400 points. The four
+quick-access tiles keep equal widths. Video badges, the Guardian Open Journey
+button, the Scan caption and unbroken reference codes follow LOCK 14 V9.
+
 ## Founder preview build-check corrections
 
 Line 145 carries the approved outlined icons, Main Guardian border, ivory

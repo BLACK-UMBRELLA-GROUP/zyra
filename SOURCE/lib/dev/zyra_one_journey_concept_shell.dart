@@ -8465,8 +8465,7 @@ class _ZyraOneJourneyConceptShellState
             attempt: _model.attemptRevisionFor(p.id),
             name: p.firstName,
             stageNumber: _model.stageFor(p.id)?.order ?? 1,
-            stage:
-                'Stage ${_model.stageFor(p.id)?.order ?? 1} of 8 · ${_model.stageFor(p.id)?.label ?? 'Salam Exchange'}',
+            stageName: _model.stageFor(p.id)?.label ?? 'Salam Exchange',
             photo: _photos?.forIndex(draftProfiles.indexOf(p)).firstOrNull,
             view: _conceptAccessFor(id, p.id).view,
             chat: _conceptAccessFor(id, p.id).chat,

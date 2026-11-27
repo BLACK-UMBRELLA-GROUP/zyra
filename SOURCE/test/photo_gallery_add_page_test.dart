@@ -409,7 +409,12 @@ void main() {
       expect(tester.widget<InkWell>(_add).onTap, isNotNull);
       if (result.outcome == ZyraPhotoBatchOutcome.error) {
         expect(find.text(result.failureMessage), findsOneWidget);
-        expect(find.text('Reference: ZY-PH-06'), findsOneWidget);
+        expect(
+          find.byWidgetPredicate(
+            (w) => w is Text && w.semanticsLabel == 'Reference: ZY-PH-06',
+          ),
+          findsOneWidget,
+        );
       }
       expect(tester.takeException(), isNull);
     });

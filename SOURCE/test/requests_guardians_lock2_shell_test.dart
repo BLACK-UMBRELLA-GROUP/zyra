@@ -636,8 +636,8 @@ void main() {
       final name = find.descendant(of: card, matching: find.text('Aisha Khan'));
       expect(name, findsOneWidget);
       final text = tester.widget<Text>(name);
-      expect(text.maxLines, 1);
-      expect(text.overflow, TextOverflow.ellipsis);
+      expect(text.maxLines, isNull);
+      expect(text.overflow, isNot(TextOverflow.ellipsis));
       expect(text.semanticsLabel, 'Aisha Khan');
       expect(
         MediaQuery.textScalerOf(

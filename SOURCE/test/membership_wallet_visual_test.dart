@@ -405,6 +405,19 @@ void main() {
 
       Future<Icon> arrow(String key) async {
         final row = _key(key);
+        // Wrapping Profile headers can leave this lazy sliver unbuilt.
+        if (row.evaluate().isEmpty) {
+          await tester.scrollUntilVisible(
+            row,
+            150,
+            scrollable: find
+                .descendant(
+                  of: _key('concept-current-profile-scroll'),
+                  matching: find.byType(Scrollable),
+                )
+                .first,
+          );
+        }
         expect(row, findsOneWidget);
         await Scrollable.ensureVisible(tester.element(row), alignment: .5);
         await tester.pumpAndSettle();
@@ -445,11 +458,13 @@ void main() {
         );
       }
 
+      await arrow('concept_membership');
       await _tap(tester, 'concept_membership');
       expect(find.byType(ZyraMembershipPreview), findsOneWidget);
       await returnZyraPreviewPage(tester);
       expect(profile, findsOneWidget);
 
+      await arrow('concept_compatibility_buy_more');
       await _tap(tester, 'concept_compatibility_buy_more');
       expect(
         find.byType(ZyraDraftCompatibilityStorePresentation),

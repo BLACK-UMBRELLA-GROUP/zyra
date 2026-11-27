@@ -123,11 +123,13 @@ class ZyraProfileVideoBadge extends StatelessWidget {
 
   final String label;
 
+  static const background = Color(0xC7140E0A);
+
   @override
   Widget build(BuildContext context) => IgnorePointer(
     child: DecoratedBox(
       decoration: const ShapeDecoration(
-        color: Color(0x73140E0A),
+        color: background,
         shape: StadiumBorder(),
       ),
       child: Padding(

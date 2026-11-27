@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../theme/zyra_colors.dart';
 import '../../theme/zyra_text.dart';
+import '../../widgets/zyra_profile_video_player.dart';
 import '../../widgets/zyra_pull_down_back_scope.dart';
 import '../../widgets/zyra_tap_feedback.dart';
 
@@ -189,7 +190,7 @@ class _ZyraProfileVideoTrimScreenState
                   end: 16,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: const Color(0x73140E0A),
+                      color: ZyraProfileVideoBadge.background,
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Padding(

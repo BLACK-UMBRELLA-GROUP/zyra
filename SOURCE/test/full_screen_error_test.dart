@@ -177,7 +177,12 @@ void main() {
         findsOneWidget,
       );
       expect(find.text('Contact support'), findsOneWidget);
-      expect(find.text('REFERENCE: ZY-TEST'), findsOneWidget);
+      expect(
+        find.byWidgetPredicate(
+          (w) => w is Text && w.semanticsLabel == 'REFERENCE: ZY-TEST',
+        ),
+        findsOneWidget,
+      );
       if (entry.key.needsSignIn) {
         await tester.pump(const Duration(seconds: 30));
         expect(calls, 0);
@@ -276,7 +281,12 @@ void main() {
     await tester.tap(_support);
     await tester.pumpAndSettle();
     expect(find.byType(HelpSupportScreen), findsOneWidget);
-    expect(find.text('REFERENCE: ZY-TEST'), findsOneWidget);
+    expect(
+      find.byWidgetPredicate(
+        (w) => w is Text && w.semanticsLabel == 'REFERENCE: ZY-TEST',
+      ),
+      findsOneWidget,
+    );
     expect(find.text('Your safety reports'), findsNothing);
     await tester.pump(const Duration(seconds: 30));
     expect(calls, 0);
@@ -358,7 +368,9 @@ void main() {
       for (final target in [
         _primary,
         _support,
-        find.text('REFERENCE: ZY-TEST'),
+        find.byWidgetPredicate(
+          (w) => w is Text && w.semanticsLabel == 'REFERENCE: ZY-TEST',
+        ),
       ]) {
         await tester.ensureVisible(target);
         await tester.pump();

@@ -1,4 +1,5 @@
 import '../../widgets/zyra_developer_title.dart';
+import '../../widgets/zyra_reference_label.dart';
 import '../../widgets/zyra_state_widgets.dart';
 import '../../widgets/zyra_help_support_page.dart';
 // Help & Support — rebuilt 2026-08-01 (Founder: "the help and support
@@ -298,8 +299,9 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
           padding: EdgeInsets.fromLTRB(20, topInset + 8, 20, 40),
           children: [
             if (reference != null) ...[
-              Text(
-                'REFERENCE: $reference',
+              ZyraReferenceLabel(
+                prefix: 'REFERENCE:',
+                code: reference,
                 textAlign: TextAlign.center,
                 style: ZyraText.chapterLabel(color: ZyraColors.foregroundMuted),
               ),

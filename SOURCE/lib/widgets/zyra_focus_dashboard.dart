@@ -1,5 +1,6 @@
 // LOCK15 V2 Focus presentation. Callers own sources, navigation and authority.
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart' show OverflowBoxFit;
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_preview_spacing.dart';
 import '../theme/zyra_text.dart';
@@ -387,12 +388,13 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
                 const SizedBox(height: 8),
                 LayoutBuilder(
                   builder: (context, constraints) {
-                    final fit = _fitTileLabel(
+                    final available = _tileLabelWidth(
                       context,
                       tile.label,
                       constraints.maxWidth,
                     );
-                    return Text(
+                    final fit = _fitTileLabel(context, tile.label, available);
+                    final label = Text(
                       fit.display,
                       key: ValueKey(
                         'focus-tile-label-${tile.id ?? tile.label}',
@@ -403,6 +405,13 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
                       overflow: TextOverflow.visible,
                       style: fit.style,
                     );
+                    return available == constraints.maxWidth
+                        ? label
+                        : OverflowBox(
+                            maxWidth: available,
+                            fit: OverflowBoxFit.deferToChild,
+                            child: label,
+                          );
                   },
                 ),
                 const SizedBox(height: 10),
@@ -423,6 +432,20 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
       ),
     ),
   );
+
+  double _tileLabelWidth(BuildContext context, String label, double width) {
+    // At 375 pt with Larger Text, the locked 'ductions' fragment needs
+    // 0.06 pt more than the nominal padded box. Give only the label a
+    // quarter point inside the existing inset without moving the tile.
+    final compactText =
+        width < 66 && MediaQuery.textScalerOf(context).scale(11.5) > 11.5;
+    return compactText && label == 'Introductions' ? width + .25 : width;
+  }
+
+  static const _smallScreenLabelBreaks = <String, List<String>>{
+    'Introductions': ['Intro', 'ductions'],
+    'Notifications': ['Notifi', 'cations'],
+  };
 
   // Q180/Q183: these are the syllables of the locked quick-access labels.
   // Only a word wider than its line receives a visible hyphenated break.
@@ -515,7 +538,14 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
           }
           continue;
         }
-        final syllables = List<String>.of(_tileLabelSyllables[word] ?? [word]);
+        final preferred = _smallScreenLabelBreaks[word];
+        final syllables = List<String>.of(
+          preferred != null &&
+                  measure('${preferred.first}-', style) <= width &&
+                  measure(preferred.last, style) <= width
+              ? preferred
+              : _tileLabelSyllables[word] ?? [word],
+        );
         while (syllables.isNotEmpty) {
           final prefix = line.isEmpty ? '' : '$line ';
           var count = 0;
@@ -591,7 +621,11 @@ class _ZyraFocusDashboardState extends State<ZyraFocusDashboard> {
     final textWidth = width - 2 * horizontalPadding;
     var result = 0.0;
     for (final tile in widget.tiles) {
-      final label = _fitTileLabel(context, tile.label, textWidth);
+      final label = _fitTileLabel(
+        context,
+        tile.label,
+        _tileLabelWidth(context, tile.label, textWidth),
+      );
       final value =
           84 + label.height + height(tile.status, 10.5, textWidth, 1.45);
       if (value > result) result = value;

@@ -338,16 +338,23 @@ void main() {
     final error = tester.widget<ZyraFullScreenError>(
       find.byType(ZyraFullScreenError),
     );
+    final expectedReference = 'REFERENCE: ${error.referenceCode}';
+    final reference = find.byWidgetPredicate(
+      (widget) =>
+          widget is Text &&
+          widget.semanticsLabel == expectedReference &&
+          widget.data?.replaceAll('\u2060', '') == expectedReference,
+    );
     await tester.tap(find.text('Contact support'));
     await tester.pumpAndSettle();
     expect(find.byType(HelpSupportScreen), findsOneWidget);
-    expect(find.text('REFERENCE: ${error.referenceCode}'), findsOneWidget);
+    expect(reference, findsOneWidget);
     await tester.pump(const Duration(seconds: 30));
     expect(refreshes, initialRefreshes);
     tester.state<NavigatorState>(find.byType(Navigator)).pop();
     await tester.pumpAndSettle();
     expect(find.byType(ZyraFullScreenError), findsOneWidget);
-    expect(find.text('REFERENCE: ${error.referenceCode}'), findsOneWidget);
+    expect(reference, findsOneWidget);
     expect(find.text('Trying again in 15 s'), findsOneWidget);
     expect(refreshes, initialRefreshes);
     await _dispose(tester);

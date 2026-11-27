@@ -1305,6 +1305,9 @@ class _CodeCameraFrameState extends State<_CodeCameraFrame> {
                                 widget.refused
                                     ? 'Camera is off — enter the code below'
                                     : 'Tap to scan their code',
+                                color: widget.refused
+                                    ? null
+                                    : ZyraColors.strongSecondaryText,
                               ),
                             ],
                           ),
@@ -1396,13 +1399,14 @@ class _CodeCorners extends CustomPainter {
 }
 
 class _CodeHelper extends StatelessWidget {
-  const _CodeHelper(this.label);
+  const _CodeHelper(this.label, {this.color});
   final String label;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) => Text(
     label,
     textAlign: TextAlign.center,
-    style: ZyraText.subtext(size: 12.5),
+    style: ZyraText.subtext(size: 12.5, color: color),
   );
 }

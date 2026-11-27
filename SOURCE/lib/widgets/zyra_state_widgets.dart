@@ -4,6 +4,7 @@
 // so the warm tone and visual treatment stay consistent app-wide.
 // LOCK22 V3 now supplies the shared empty layout, including legacy invitations.
 
+import 'zyra_reference_label.dart';
 import 'zyra_tap_feedback.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -76,8 +77,9 @@ class ZyraErrorBanner extends StatelessWidget {
                         children: [
                           Text(message, style: ZyraText.body(size: 13)),
                           const SizedBox(height: 4),
-                          Text(
-                            'Reference: $referenceCode',
+                          ZyraReferenceLabel(
+                            prefix: 'Reference:',
+                            code: referenceCode!,
                             style: ZyraText.subtext(size: 11),
                           ),
                         ],

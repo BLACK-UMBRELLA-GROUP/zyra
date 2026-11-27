@@ -41,7 +41,7 @@ class ZyraGuardianCardJourney {
     required this.id,
     required this.attempt,
     required this.name,
-    required this.stage,
+    required this.stageName,
     required this.stageNumber,
     required this.view,
     required this.chat,
@@ -49,7 +49,7 @@ class ZyraGuardianCardJourney {
     this.chatCanChange,
     this.photo,
   });
-  final String id, name, stage;
+  final String id, name, stageName;
   final int? attempt;
   final int stageNumber;
   final String? photo;
@@ -951,7 +951,8 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     final guardian = person.person;
     final rows = widget.journeysFor(guardian.id).take(widget.capacity).toList();
     final textScaler = MediaQuery.textScalerOf(context);
-    final stackChips = width < 245 || textScaler.scale(12) > 16;
+    final stackChips = MediaQuery.sizeOf(context).width < 400;
+    final stackIdentity = width < 245 || textScaler.scale(12) > 16;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -989,6 +990,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
                     person,
                     rows[i],
                     stackChips: stackChips,
+                    stackIdentity: stackIdentity,
                     compact: compact,
                   )
                 : _freePlace(guardian.firstName, i),
@@ -1066,6 +1068,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     ZyraGuardianCardPerson person,
     ZyraGuardianCardJourney journey, {
     required bool stackChips,
+    required bool stackIdentity,
     required bool compact,
   }) {
     final firstName = journey.name;
@@ -1093,7 +1096,7 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
             children: [
               Text(firstName, style: ZyraText.body(size: 15)),
               Text(
-                journey.stage,
+                'Stage ${journey.stageNumber} of 8\n${journey.stageName}',
                 style: ZyraText.body(
                   size: 11,
                   color: ZyraColors.ink(.55),
@@ -1114,31 +1117,29 @@ class _GuardianCardsState extends State<ZyraOneJourneyGuardianCards> {
     );
     final view = _permission(person, journey, chat: false);
     final chat = _permission(person, journey, chat: true);
+    final controls = stackChips
+        ? Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [view, const SizedBox(height: 4), chat],
+          )
+        : Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [view, const SizedBox(width: 4), chat],
+          );
     return _accessRow(
       key: ValueKey('guardian-card-tile-${journey.id}'),
-      child: stackChips
+      child: stackIdentity
           ? Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                identity,
-                const SizedBox(height: 4),
-                Wrap(
-                  alignment: WrapAlignment.end,
-                  spacing: 4,
-                  runSpacing: 4,
-                  children: [view, chat],
-                ),
-              ],
+              children: [identity, const SizedBox(height: 4), controls],
             )
           : Row(
               children: [
                 Expanded(child: identity),
                 SizedBox(width: compact ? 2 : 4),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [view, const SizedBox(width: 4), chat],
-                ),
+                controls,
               ],
             ),
     );

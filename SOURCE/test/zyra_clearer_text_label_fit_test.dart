@@ -144,6 +144,14 @@ void main() {
               expect(widget.maxLines, isNull);
               expect(widget.overflow, TextOverflow.visible);
               final displayLines = widget.data!.split('\n');
+              if (width == 375 && scale == 1.3) {
+                if (labels[index] == 'Introductions') {
+                  expect(widget.data, 'Intro-\nductions');
+                }
+                if (labels[index] == 'Notifications') {
+                  expect(widget.data, 'Notifi-\ncations');
+                }
+              }
               for (final line in displayLines) {
                 final painter = TextPainter(
                   text: TextSpan(text: line, style: style),

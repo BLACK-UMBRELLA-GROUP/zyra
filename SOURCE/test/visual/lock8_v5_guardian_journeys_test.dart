@@ -1,5 +1,6 @@
 // LOCK 8 V5: actual admitted preview and explicitly labelled master fixtures.
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_one_journey_tab.dart';
@@ -90,7 +91,24 @@ ZyraProfilesDots dots(WidgetTester t) =>
     t.widget<ZyraProfilesDots>(find.byType(ZyraProfilesDots));
 Future<void> cap(BaselineHarness h, String name, String reached) async {
   if (capture) {
-    await h.capture('journeys', name, 'fixture', reached, fileName: name);
+    final previous = debugDisableShadows;
+    debugDisableShadows = false;
+    try {
+      final boundary = h.tester.renderObject<RenderRepaintBoundary>(
+        key('zyra-founder-baseline-boundary'),
+      );
+      void repaint(RenderObject object) {
+        object.markNeedsPaint();
+        object.visitChildren(repaint);
+      }
+
+      repaint(boundary);
+      await h.tester.pump();
+      expect(h.tester.takeException(), isNull);
+      await h.capture('journeys', name, 'fixture', reached, fileName: name);
+    } finally {
+      debugDisableShadows = previous;
+    }
   }
 }
 

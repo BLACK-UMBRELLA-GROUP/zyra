@@ -299,8 +299,8 @@ void _expectNaturalText(WidgetTester tester) {
         (key.value.startsWith('request_activity_name_') ||
             key.value.startsWith('past_request_activity_name_'));
     if (isPersonName) {
-      expect(text.maxLines, 1);
-      expect(text.overflow, TextOverflow.ellipsis);
+      expect(text.maxLines, isNull);
+      expect(text.overflow, isNot(TextOverflow.ellipsis));
       expect(text.semanticsLabel, text.data);
       expect(text.style!.fontSize, 21);
       continue;
@@ -829,7 +829,7 @@ void main() {
   });
 
   testWidgets(
-    'a wide surname ellipsises without moving the portrait or shrinking type',
+    'a wide surname wraps without moving the portrait or shrinking type',
     (tester) async {
       const wideName = SeekerProfile(
         id: 'local-wide-name',
@@ -859,8 +859,8 @@ void main() {
         21,
       );
       final name = tester.widget<Text>(find.text('Sara Rahmanullah'));
-      expect(name.maxLines, 1);
-      expect(name.overflow, TextOverflow.ellipsis);
+      expect(name.maxLines, isNull);
+      expect(name.overflow, isNot(TextOverflow.ellipsis));
       expect(name.semanticsLabel, 'Sara Rahmanullah');
       _expectNaturalText(tester);
     },
@@ -869,7 +869,7 @@ void main() {
   for (final size in [const Size(375, 667), const Size(430, 932)]) {
     for (final variant in ['active', 'past', 'grouped', 'identity']) {
       testWidgets(
-        'LOCK 33 $variant names keep equal card heights at ${size.width}',
+        'LOCK 14 $variant names let card heights grow at ${size.width}',
         (tester) async {
           tester.view.physicalSize = size;
           tester.view.devicePixelRatio = 1;
@@ -952,8 +952,8 @@ void main() {
             final fullName = '$first $surname';
             final nameFinder = find.text(fullName);
             final name = tester.widget<Text>(nameFinder);
-            expect(name.maxLines, 1);
-            expect(name.overflow, TextOverflow.ellipsis);
+            expect(name.maxLines, isNull);
+            expect(name.overflow, isNot(TextOverflow.ellipsis));
             expect(name.style!.fontSize, 21);
             expect(name.semanticsLabel, fullName);
             expect(
@@ -984,18 +984,21 @@ void main() {
             ('Zainab', 'Malik-Abdulkareem Bin Yusuf'),
           ]) {
             final height = await mountName(first, surname);
-            expect(height, shortHeight);
-            expect(
-              tester
-                  .renderObject<RenderParagraph>(
-                    find.descendant(
-                      of: find.text('$first $surname'),
-                      matching: find.byType(RichText),
-                    ),
-                  )
-                  .didExceedMaxLines,
-              isTrue,
+            expect(height, greaterThan(shortHeight));
+            final paragraph = tester.renderObject<RenderParagraph>(
+              find.descendant(
+                of: find.text('$first $surname'),
+                matching: find.byType(RichText),
+              ),
             );
+            expect(paragraph.didExceedMaxLines, isFalse);
+            final boxes = paragraph.getBoxesForSelection(
+              TextSelection(
+                baseOffset: 0,
+                extentOffset: '$first $surname'.length,
+              ),
+            );
+            expect(boxes.map((box) => box.top).toSet().length, greaterThan(1));
             if (_lock33Capture && first == 'Fatima-Zahra') {
               final boundary = tester.renderObject<RenderRepaintBoundary>(
                 _key(_boundaryKey),

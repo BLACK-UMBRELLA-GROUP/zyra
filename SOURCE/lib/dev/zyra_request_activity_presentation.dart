@@ -622,8 +622,6 @@ class ZyraPastRequestActivityCard extends StatelessWidget {
         _name,
         key: ValueKey('past_request_activity_name_$cardId'),
         style: ZyraText.heading(size: 21),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
         semanticsLabel: _name,
       ),
       const SizedBox(height: 5),
@@ -880,8 +878,6 @@ Widget _requestIdentity(
       '${profile.firstName} ${profile.surnameLine ?? ''}'.trim(),
       key: nameKey,
       style: ZyraText.heading(size: 21),
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
       semanticsLabel: '${profile.firstName} ${profile.surnameLine ?? ''}'
           .trim(),
     ),

@@ -22,7 +22,7 @@ const _hassanId = 'queue48-hassan';
 const _ibrahimId = 'queue48-ibrahim';
 const _journeyId = 'queue48-sara';
 const _geometryFont = 'Line77GuardianGeometryPoppins';
-const _wrappedStage = 'Stage 1 of 8 · Salam Exchange';
+const _wrappedStage = 'Salam Exchange';
 Finder _key(String id) => find.byKey(ValueKey(id));
 Finder _card(String id) => _key('guardian-card-$id');
 Finder get _menu => _key('guardian-card-menu');
@@ -91,7 +91,7 @@ class _Harness extends StatefulWidget {
     this.initialPage = 0,
     this.journeys = 1,
     this.capacity,
-    this.stage = 'Stage 4 of 8 · Faith & Values',
+    this.stage = 'Faith & Values',
     this.stageNumber,
     this.familyState = ZyraGuardianFamilyState.noFamily,
   });
@@ -200,7 +200,7 @@ class _HarnessState extends State<_Harness> {
               name: 'Sara',
               stageNumber:
                   widget.stageNumber ?? (widget.stage == _wrappedStage ? 1 : 4),
-              stage: widget.stage,
+              stageName: widget.stage,
               view: access.view,
               chat: access.chat,
               canChange: !person.person.isMain,
@@ -302,7 +302,7 @@ void main() {
     int initialPage = 0,
     int journeys = 1,
     int? capacity,
-    String stage = 'Stage 4 of 8 · Faith & Values',
+    String stage = 'Faith & Values',
     int? stageNumber,
     Size size = const Size(430, 932),
     double topInset = 0,
@@ -895,10 +895,18 @@ void main() {
           final card = tester.getRect(_card(_hassanId));
           final tile = _tile(_journeyId);
           final first = tester.getRect(tile);
+          final view = tester.getRect(_view(_hassanId));
+          final chat = tester.getRect(_chat(_hassanId));
+          if (size.width < 400) {
+            expect(view.bottom, lessThan(chat.top));
+          } else {
+            expect(view.center.dy, closeTo(chat.center.dy, .1));
+            expect(view.right, lessThan(chat.left));
+          }
           final label = tester.getRect(find.text('JOURNEY ACCESS'));
           final stage = find.descendant(
             of: tile,
-            matching: find.text(_wrappedStage),
+            matching: find.text('Stage 1 of 8\n$_wrappedStage'),
           );
           expect(tester.widget<Text>(stage).style!.fontSize, 11);
           final photo = find.descendant(
@@ -961,13 +969,13 @@ void main() {
     ZyraText.testReadingFontFamily = _geometryFont;
     addTearDown(() => ZyraText.testReadingFontFamily = null);
     for (final stage in ZyraJourneyStages.all) {
-      final label = 'Stage ${stage.order} of 8 · ${stage.label}';
+      final label = 'Stage ${stage.order} of 8\n${stage.label}';
       await mount(
         tester,
         size: const Size(375, 667),
         topInset: 20,
         journeys: 3,
-        stage: label,
+        stage: stage.label,
         stageNumber: stage.order,
       );
       final card = _card(_hassanId);

@@ -254,6 +254,7 @@ class ZyraProfileDetailsPage extends StatelessWidget {
                           ),
                         ),
                       ),
+                      const SizedBox(height: 12),
                       for (var row = 0; row < rows.length; row++) ...[
                         if (row > 0) const SizedBox(height: _tileGap),
                         Row(

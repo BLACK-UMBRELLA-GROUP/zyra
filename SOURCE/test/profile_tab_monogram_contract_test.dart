@@ -488,9 +488,9 @@ void main() {
 
   for (final guardian in [false, true]) {
     testWidgets(
-      'Profile truncates long ${guardian ? 'Guardian' : 'Seeker'} names',
+      'Profile wraps long ${guardian ? 'Guardian' : 'Seeker'} names',
       (tester) async {
-        const name = 'A Name Long Enough to Require an Ellipsis on Profile';
+        const name = 'A Longer Name That Wraps on Profile';
         await _mount(
           tester,
           ZyraConceptProfilePresentation(
@@ -507,12 +507,14 @@ void main() {
         final label = _key('concept_profile_name');
         final text = tester.widget<Text>(label);
         expect(text.data, name);
-        expect(text.maxLines, 1);
-        expect(text.overflow, TextOverflow.ellipsis);
-        expect(
-          tester.renderObject<RenderParagraph>(label).didExceedMaxLines,
-          true,
+        expect(text.maxLines, isNull);
+        expect(text.overflow, isNot(TextOverflow.ellipsis));
+        final paragraph = tester.renderObject<RenderParagraph>(label);
+        expect(paragraph.didExceedMaxLines, isFalse);
+        final boxes = paragraph.getBoxesForSelection(
+          TextSelection(baseOffset: 0, extentOffset: name.length),
         );
+        expect(boxes.map((box) => box.top).toSet().length, greaterThan(1));
         expect(
           find.descendant(
             of: _key('concept_membership'),

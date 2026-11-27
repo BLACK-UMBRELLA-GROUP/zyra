@@ -137,10 +137,10 @@ Future<void> _fixture(
                         attempt: i + 1,
                         name: ['Sara', 'Aisha', 'Maryam'][i],
                         stageNumber: [4, 1, 2][i],
-                        stage: [
-                          'Stage 4 of 8 · Faith & Values',
-                          'Stage 1 of 8 · Salam Exchange',
-                          'Stage 2 of 8 · Compatibility Reveal',
+                        stageName: [
+                          'Faith & Values',
+                          'Salam Exchange',
+                          'Compatibility Reveal',
                         ][i],
                         photo: photos!.forIndex(i + 1).first,
                         view: true,

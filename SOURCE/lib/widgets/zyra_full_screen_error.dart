@@ -10,6 +10,7 @@ import '../theme/zyra_text.dart';
 import 'zyra_floating_surface.dart';
 import 'zyra_developer_title.dart';
 import 'zyra_info_row.dart';
+import 'zyra_reference_label.dart';
 import 'zyra_tap_feedback.dart';
 
 /// App-stopping failures use this page. Inline errors and empty states keep
@@ -286,8 +287,9 @@ class _ZyraFullScreenErrorState extends State<ZyraFullScreenError>
                           ),
                         ),
                         const SizedBox(height: 5),
-                        Text(
-                          'REFERENCE: ${widget.referenceCode}',
+                        ZyraReferenceLabel(
+                          prefix: 'REFERENCE:',
+                          code: widget.referenceCode,
                           textAlign: TextAlign.center,
                           style:
                               ZyraText.chapterLabel(

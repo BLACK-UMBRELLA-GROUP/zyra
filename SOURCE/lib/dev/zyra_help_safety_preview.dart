@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../theme/zyra_colors.dart';
 import '../theme/zyra_text.dart';
+import '../widgets/zyra_reference_label.dart';
 import '../widgets/zyra_tap_feedback.dart';
 
 import 'zyra_offers_preview.dart';
@@ -220,7 +221,7 @@ class _ZyraHelpSafetyPreviewState extends State<ZyraHelpSafetyPreview> {
     const SizedBox(height: 14),
     _center('We’ll reply by email within 2 working days.', 15, secondary: true),
     const SizedBox(height: 20),
-    Center(child: _chip('Reference ZS-48213')),
+    Center(child: _referenceChip('ZS-48213')),
   ];
 
   List<Widget> _reportSent() {
@@ -564,13 +565,17 @@ class _ZyraHelpSafetyPreviewState extends State<ZyraHelpSafetyPreview> {
         : ZyraText.heading(size: size, color: ZyraColors.espresso),
   );
 
-  Widget _chip(String text) => Container(
+  Widget _referenceChip(String code) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
     decoration: BoxDecoration(
       border: Border.all(color: ZyraColors.surfaceBorder),
       borderRadius: BorderRadius.circular(20),
     ),
-    child: Text(text, style: ZyraText.body(size: 14)),
+    child: ZyraReferenceLabel(
+      prefix: 'Reference',
+      code: code,
+      style: ZyraText.body(size: 14),
+    ),
   );
 
   Widget _symbol(IconData? icon, Color color, {String? initial}) => Center(
