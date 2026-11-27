@@ -6,14 +6,15 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:zyra/data/zyra_membership_catalog.dart';
 import 'package:zyra/dev/zyra_one_journey_guardian_tabs.dart';
 import 'package:zyra/dev/zyra_preview_navigation_checkpoint.dart';
 import 'package:zyra/dev/zyra_request_capacity_choice.dart';
 import 'package:zyra/dev/zyra_view_request_draft_model.dart';
 import '../support/received_request_fixture.dart';
 import 'package:zyra/services/zyra_internal_preview_client.dart';
+import 'package:zyra/dev/zyra_guardian_before_pay_preview.dart';
 import 'package:zyra/screens/subscription/zyra_one_upgrade_page.dart';
+import 'package:zyra/widgets/zyra_purchase_fine_print.dart';
 import 'package:zyra/widgets/zyra_shell_navigation.dart';
 
 import '../support/zyra_hidden_dev_controls_driver.dart';
@@ -196,18 +197,41 @@ Future<void> _membership(BaselineHarness h, {required bool guardian}) async {
     'Actual Basic Profile > Membership opens the current One upgrade '
         'comparison, including its Basic column; no entitlement changes.',
   );
+  final before = h.latest;
   await h.tap('one-upgrade-continue');
   h.assertPage('one_upgrade');
-  expect(find.text(ZyraMembershipCatalog.availability), findsOneWidget);
-  await _page(
-    h,
-    'one_upgrade',
-    'unavailable',
-    'Actual One upgrade Continue opens the existing unavailable notice; '
-        'no purchase, trial, or paid access is activated.',
-  );
-  await h.tapText('OK');
+  if (guardian) {
+    expect(find.byType(ZyraGuardianBeforePayPreview), findsOneWidget);
+    final continueToApple = h.key('guardian-before-pay-continue');
+    expect(h.tester.widget<FilledButton>(continueToApple).onPressed, isNull);
+    await _page(
+      h,
+      'one_upgrade',
+      'before_pay',
+      'The actual Guardian Before you pay screen with confirmation required.',
+    );
+    await h.tap('guardian-before-pay-understand');
+    await h.tap('guardian-before-pay-continue');
+  }
+  final notice = find.text(ZyraPurchaseFinePrint.appleNotice);
+  expect(notice, findsOneWidget);
+  expect(h.latest.seekerMembership, before.seekerMembership);
+  expect(h.latest.guardianMembership, before.guardianMembership);
+  expect(h.latest.guardian, before.guardian);
+  expect(h.latest.model.capacity, before.model.capacity);
+  ScaffoldMessenger.of(h.tester.element(notice)).removeCurrentSnackBar();
+  await h.flush();
+  if (guardian) {
+    await h.tester.binding.handlePopRoute();
+    await h.flush();
+    expect(find.byType(ZyraGuardianBeforePayPreview), findsNothing);
+  }
   h.assertPage('one_upgrade');
+  expect(find.byType(ZyraOneUpgradePage), findsOneWidget);
+  await returnZyraPreviewPage(h.tester);
+  await h.flush();
+  expect(h.latest.pages, isEmpty);
+  expect(h.latest.tab, 4);
 }
 
 void main() {
@@ -262,6 +286,7 @@ void main() {
     timeout: const Timeout(Duration(minutes: 12)),
   );
 
+  // LOCK 42 opens the One comparison; LOCK 38 uses the Apple preview notice.
   testWidgets(
     'capture Seeker Basic Membership, zero Unlocks and one-linked Guardian invite',
     (tester) async {
@@ -426,6 +451,7 @@ void main() {
     timeout: const Timeout(Duration(minutes: 12)),
   );
 
+  // LOCK 42 opens the One comparison; LOCK 38 requires Before you pay.
   testWidgets(
     'capture Guardian Basic five current roots, upgrade and locked Network',
     (tester) async {

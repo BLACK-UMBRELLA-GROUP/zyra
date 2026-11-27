@@ -1059,6 +1059,7 @@ class BaselineHarness {
     if (target.evaluate().isEmpty) {
       final containers = [
         key('dev_controls_scroll'),
+        key('concept-current-settings-scroll'),
         key('my-zyra-quiet-scroll-0'),
         key('draft_scroll'),
         key('concept-current-profile-scroll'),

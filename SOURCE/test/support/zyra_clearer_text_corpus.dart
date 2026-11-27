@@ -39,6 +39,38 @@ import '../visual/line126_coverage_entry_routes_test.dart' as entries;
 
 const _reportOnly = bool.fromEnvironment('ZYRA_LINE126_REPORT_ONLY');
 const _alphaCheck = bool.fromEnvironment('ZYRA_LINE126_ALPHA_CHECK');
+const _focusedReplay = String.fromEnvironment('ZYRA_FOCUSED_TEXT_REPLAY');
+
+typedef _FocusRequirement = ({String group, String location, String plan});
+
+List<_FocusRequirement> _parseFocusRequirements(String value) {
+  if (value.isEmpty) return const [];
+  final format = RegExp(
+    r'^([A-Za-z0-9_.-]+)/(tab[0-4]|[a-z_]+)/'
+    r'(Seeker_One|Seeker_Basic|Guardian_One|Guardian_Basic)$',
+  );
+  final requirements = <_FocusRequirement>{};
+  for (final item in value.split(',')) {
+    final fields = format.firstMatch(item);
+    if (fields == null) {
+      throw FormatException(
+        'Expected group/route-or-tab/plan in ZYRA_FOCUSED_TEXT_REPLAY',
+        item,
+      );
+    }
+    final requirement = (
+      group: fields.group(1)!,
+      location: fields.group(2)!,
+      plan: fields.group(3)!.replaceAll('_', ' '),
+    );
+    if (!requirements.add(requirement)) {
+      throw FormatException('Repeated focused raster requirement', item);
+    }
+  }
+  return requirements.toList(growable: false);
+}
+
+final _focusRequirements = _parseFocusRequirements(_focusedReplay);
 
 class ZyraContrastDriver {
   const ZyraContrastDriver(this.id, this.viewports);
@@ -60,9 +92,11 @@ const zyraContrastLarge375 = ZyraContrastDriver('large-375', [
 ]);
 ZyraContrastDriver _driver = zyraContrastNormal;
 List<BaselineAuditViewport> get _viewports => _driver.viewports;
-String get _reportPath => 'build/line126-rebuild-contrast-${_driver.id}.json';
-String get _progressPath =>
-    'build/line126-rebuild-contrast-${_driver.id}-progress.json';
+String get _reportStem => _focusRequirements.isEmpty
+    ? 'build/line126-rebuild-contrast-${_driver.id}'
+    : 'build/line126-focused-contrast-${_driver.id}';
+String get _reportPath => '$_reportStem.json';
+String get _progressPath => '$_reportStem-progress.json';
 final _clock = Stopwatch();
 final _frames = <Map<String, Object?>>[];
 final _excludedLegacyWelcomeFrames = <Map<String, Object?>>[];
@@ -333,11 +367,59 @@ List<String> _coverageGaps() {
   return gaps..sort();
 }
 
+List<
+  ({String group, String location, String plan, String viewport, int frames})
+>
+_focusedProof() => [
+  for (final requirement in _focusRequirements)
+    for (final viewport in _viewports)
+      (
+        group: requirement.group,
+        location: requirement.location,
+        plan: requirement.plan,
+        viewport: viewport.id,
+        frames: _frames.where((frame) {
+          final location = frame['rendered_route'] ?? 'tab${frame['tab']}';
+          return frame['proof_kind'] == 'shell_navigation' &&
+              frame['group'] == requirement.group &&
+              frame['viewport'] == viewport.id &&
+              frame['plan'] == requirement.plan &&
+              location == requirement.location &&
+              (frame['runs'] as int) > 0 &&
+              (frame['pixels'] as int) > 0;
+        }).length,
+      ),
+];
+
+List<String> _requiredCoverageGaps() => _focusRequirements.isEmpty
+    ? _coverageGaps()
+    : [
+        for (final proof in _focusedProof())
+          if (proof.frames == 0)
+            '${proof.group}/${proof.location}/${proof.plan}/${proof.viewport}',
+      ];
+
 Map<String, Object?> _report() => {
   'rule': 'LOCK14 V9 current locked clearer-text rules',
   'driver': _driver.id,
   'report_only': _reportOnly,
-  'status': _failures.isEmpty && _coverageGaps().isEmpty ? 'pass' : 'fail',
+  'status': _failures.isEmpty && _requiredCoverageGaps().isEmpty
+      ? 'pass'
+      : 'fail',
+  if (_focusRequirements.isNotEmpty) ...{
+    'proof_scope': 'explicit focused shell routes only',
+    'whole_app_coverage_credit': false,
+    'focused_viewport_proof': [
+      for (final proof in _focusedProof())
+        {
+          'group': proof.group,
+          'route_or_tab': proof.location,
+          'plan': proof.plan,
+          'viewport': proof.viewport,
+          'text_frames': proof.frames,
+        },
+    ],
+  },
   'wall_seconds': _clock.elapsedMilliseconds / 1000,
   'real_shadows': true,
   'font': 'bundled Poppins/Syne',
@@ -358,7 +440,8 @@ Map<String, Object?> _report() => {
   'groups': _groups.toList()..sort(),
   'plans': _plans.toList()..sort(),
   'observed_routes': _routes.toList()..sort(),
-  'route_plan_viewport_coverage': _routeMatrix(),
+  if (_focusRequirements.isEmpty)
+    'route_plan_viewport_coverage': _routeMatrix(),
   'typed_signup_flow_coverage': _signupCoverage.toList()..sort(),
   'typed_signup_membership_selections': _signupSelections.toList()..sort(),
   'signup_flow_exclusions': {
@@ -408,7 +491,7 @@ Map<String, Object?> _report() => {
           '_guardianPrivateGuard requires Guardian One and an accepted Main-Guardian connection',
     },
   ],
-  'coverage_gaps': _coverageGaps(),
+  'coverage_gaps': _requiredCoverageGaps(),
   'excluded_presenters': [
     {
       'presenter': 'WelcomeScreen(devPreview:false)',
@@ -725,6 +808,9 @@ Future<void> _measure(BaselineHarness h, String state) async {
 }
 
 void runZyraTextContrastCorpus(ZyraContrastDriver driver) {
+  if (_focusRequirements.isNotEmpty && _reportOnly) {
+    throw StateError('Focused raster replay requires strict assertions.');
+  }
   _driver = driver;
   baselineTextAuditOnly = true;
   baselineTextAudit = _measure;
@@ -833,10 +919,11 @@ void runZyraTextContrastCorpus(ZyraContrastDriver driver) {
     baselineTextAuditOnly = false;
     if (!_reportOnly) {
       expect(
-        _coverageGaps(),
+        _requiredCoverageGaps(),
         isEmpty,
-        reason:
-            'Every current route and fixture group must contribute real raster proof; see $_reportPath',
+        reason: _focusRequirements.isEmpty
+            ? 'Every current route and fixture group must contribute real raster proof; see $_reportPath'
+            : 'Every selected group, route, plan and viewport must contribute real raster proof; see $_reportPath',
       );
       expect(
         _failures,

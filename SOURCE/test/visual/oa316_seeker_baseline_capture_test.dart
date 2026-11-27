@@ -11,6 +11,7 @@ import 'package:zyra/widgets/floating_nav_bar.dart';
 import 'package:zyra/widgets/zyra_browse_designs.dart';
 import 'package:zyra/widgets/zyra_browse_next_photo_motion.dart';
 import 'package:zyra/widgets/zyra_browse_options_button.dart';
+import '../support/zyra_hidden_dev_controls_driver.dart';
 import 'baseline_capture_support.dart';
 
 const _enabled = bool.fromEnvironment('ZYRA_BASELINE_CAPTURE');
@@ -557,6 +558,7 @@ void main() {
     variant: TargetPlatformVariant.only(TargetPlatform.iOS),
     timeout: const Timeout(Duration(minutes: 10)),
   );
+  // LOCK 41 V2 opens the full-profile menu and LOCK 37 owns the local Report receipt.
   testWidgets(
     'baseline seeker missing Profiles options and utility states',
     (tester) async {
@@ -622,23 +624,19 @@ void main() {
 
         await h.mount(tab: 0, pages: ['profile'], personId: _sara);
         h.assertPage('profile');
-        await h.tap('concept_browse_menu');
-        final navigation = iconOnlyOptions();
+        expect(h.key('full_profile_options').hitTestable(), findsOneWidget);
+        await h.tap('full_profile_options');
         h.assertPage('profile');
+        expect(find.text('Hide Sara'), findsOneWidget);
+        expect(find.text('Report Sara'), findsOneWidget);
+        expect(find.text('Block Sara'), findsOneWidget);
         await h.capture(
           'browse_and_requests',
           'profile',
           'options_open',
-          'Existing full-profile checkpoint → actual profile •••; current icon-only options bar verified',
+          'Actual full-profile menu shows only Hide, Report and Block for Sara.',
         );
-        final reportAction = find.descendant(
-          of: navigation,
-          matching: find.byIcon(ZyraBrowseAction.report.icon),
-        );
-        expect(reportAction, findsOneWidget);
-        // The icons ignore individual hit tests; the enclosing bar owns taps.
-        await tester.tapAt(tester.getCenter(reportAction));
-        await h.flush();
+        await h.tapText('Report Sara');
         h.assertPage('safety');
         final reason = h.key('draft_report_reason_fakeProfile');
         await h.tapFinder(reason);
@@ -649,17 +647,28 @@ void main() {
           selected.any((item) => item.properties.selected == true),
           isTrue,
         );
-        expect(
-          tester.widget<OutlinedButton>(h.key('draft_report_submit')).onPressed,
-          isNull,
-        );
-        expect(find.text('Report sent'), findsNothing);
+        final submit = h.key('draft_report_submit');
+        expect(tester.widget<OutlinedButton>(submit).onPressed, isNotNull);
+        final receipt = find.text('Your report about Sara has been sent.');
+        expect(receipt, findsNothing);
         await h.capture(
           'browse_and_requests',
           'report',
           'reason_selected',
-          'Full profile → actual ••• Report action → Impersonation or fake profile; selected reason verified and submission remains disabled (actual route safety)',
+          'Full profile → Report Sara → Impersonation or fake profile. '
+              'The preview shows a receipt only after submission.',
         );
+        final before = h.latest.model.states;
+        await h.tapFinder(submit);
+        h.assertPage('help_report_sent');
+        expect(receipt, findsOneWidget);
+        expect(h.latest.model.states, before);
+        await returnZyraPreviewPage(tester);
+        await h.flush();
+        h.assertPage('safety');
+        await returnZyraPreviewPage(tester);
+        await h.flush();
+        h.assertPage('profile');
       } finally {
         await tester.pumpWidget(const SizedBox.shrink());
         await tester.pump();

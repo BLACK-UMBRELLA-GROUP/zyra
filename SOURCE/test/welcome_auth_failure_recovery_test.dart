@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -38,7 +39,34 @@ class _UnavailableDraftStore implements ZyraSignupDraftStore {
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  final messenger =
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+  const appLinksMethods = MethodChannel('com.llfbandit.app_links/messages');
+  const appLinksEvents = MethodChannel('com.llfbandit.app_links/events');
   setUpAll(() async {
+    // Keep Supabase's deep link observer active with an idle native plugin.
+    messenger.setMockMethodCallHandler(appLinksMethods, (call) async {
+      switch (call.method) {
+        case 'getInitialLink':
+        case 'getLatestLink':
+          return null;
+        default:
+          throw MissingPluginException(
+            'Unexpected app_links method ${call.method}',
+          );
+      }
+    });
+    messenger.setMockMethodCallHandler(appLinksEvents, (call) async {
+      switch (call.method) {
+        case 'listen':
+        case 'cancel':
+          return null;
+        default:
+          throw MissingPluginException(
+            'Unexpected app_links event method ${call.method}',
+          );
+      }
+    });
     SharedPreferences.setMockInitialValues({});
     await Supabase.initialize(
       url: 'https://example.supabase.co',
@@ -56,7 +84,13 @@ void main() {
     );
     await ZyraLocalPrefs.init();
   });
-  tearDownAll(() => Supabase.instance.dispose());
+  tearDownAll(() async {
+    await Supabase.instance.dispose();
+    // Supabase starts cancelling the observer without awaiting it.
+    await Future<void>.delayed(Duration.zero);
+    messenger.setMockMethodCallHandler(appLinksMethods, null);
+    messenger.setMockMethodCallHandler(appLinksEvents, null);
+  });
   setUp(() async {
     ZyraAccountState.resetForTesting();
     ZyraAccountState.clearImagesForTesting = () async {};
