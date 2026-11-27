@@ -74,4 +74,4 @@ Q236 next steps: Fable supplies the bounded accepted CI/Help fixture restart rou
 Task/accounting
 Conversation: new queue-owner chat. Startup pack 27,768 bytes; initial project AGENTS, short lessons page, build brief and startup script were read before pack execution; brief/spec/LOCK/manifest/handover and scoped implementation/test inputs followed. Independent helper tasks were read-only LOCK/source/visual review and disjoint Q227 model/tests. Actual token count is unavailable to this owner; no estimate. One ordinary full-gate run. No other queue line, admin sweep, live operation or phone action.
 
-Commit: record-only evidence commit pending creation; no implementation commit. The task note will record the exact local evidence commit. Nothing is pushed.
+Commit: 9e6ade473a0f7b2f21d3238273ab5a6a8ed26e35 — local record-only evidence. This document’s containing commit closes the task note. No implementation commit or push.
