@@ -1,0 +1,43 @@
+{
+  "name": "focused",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "--dart-define=ZYRA_LINE146_CAPTURE=true",
+    "test/line146_limits_test.dart",
+    "test/visual/line146_limits_capture_test.dart",
+    "test/seeker_basic_policy_test.dart",
+    "test/seeker_membership_limits_test.dart",
+    "test/zyra_developer_samples_test.dart",
+    "test/view_request_draft_model_test.dart",
+    "test/view_request_draft_snapshot_test.dart",
+    "test/view_request_draft_past_requests_test.dart",
+    "test/zyra_one_upgrade_page_test.dart",
+    "test/zyra_pause_private_model_test.dart",
+    "test/zyra_pause_private_preview_state_test.dart",
+    "test/visual/line138_pause_private_capture_test.dart"
+  ],
+  "started_at": "2026-11-27T19:23:43.636363+00:00",
+  "seconds": 48.37,
+  "exit_code": 0,
+  "log": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE146/2026-11-27_Q241_RESTART/gates/focused.log",
+  "sha256": "7df02f908e92f0bfe36fd0780b0fab2cab0a360d210cabf7c7593a3896cae789",
+  "bytes": 31379,
+  "last_lines": [
+    "00:11 +171 ~22: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: LOCK48 actual preview states 430.0 at 1.0",
+    "00:11 +171 ~23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: LOCK48 actual preview states 430.0 at 1.0",
+    "00:13 +172 ~23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: LOCK48 actual preview states 375.0 at 1.0",
+    "00:18 +173 ~23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: LOCK48 actual preview states 430.0 at 1.3",
+    "00:26 +174 ~23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: LOCK48 actual preview states 375.0 at 1.3",
+    "00:36 +175 ~23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: LOCK44 Pause blocks a send before checking LOCK48 capacity",
+    "00:37 +176 ~23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: LOCK48 restart uses the same One waiting guard",
+    "00:37 +177 ~23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: LOCK46 restart respects Pause and rejects a retired callback",
+    "00:37 +178 ~23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: (tearDownAll)",
+    "00:37 +178 ~23: All tests passed!"
+  ]
+}

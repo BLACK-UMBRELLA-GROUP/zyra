@@ -1,0 +1,6 @@
+{
+  "initial_generic_key_hits": 37,
+  "actual_secret_findings": 0,
+  "verification": "Every matched value is exactly a64hex SHA256 file-integrity digest in BEFORE metadata; no credential data. Original map retained in held raw. User-facing BEFORE now uses separate path/sha256 fields to avoid path-name-as-key heuristic collisions.",
+  "original_scan": "Held gates/evidence-secret-report.json retained redacted; final scan must pass without excluding these facts."
+}

@@ -1,0 +1,19 @@
+{
+  "file": "V342 fixed prototype named by LOCK48 brief",
+  "sha256": "8624fa73bef36c5bfc9e910f4abea339f46bf1715b4df25a12636fcf0e1ef735",
+  "read_ranges": [
+    [
+      503,
+      513
+    ],
+    [
+      981,
+      981
+    ],
+    [
+      1566,
+      1575
+    ]
+  ],
+  "scope": "LOCK48 count bar,comparison row,full-request sheet functions only; no prototype writes."
+}

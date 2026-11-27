@@ -1,0 +1,31 @@
+{
+  "name": "disclosure",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "test/line146_q241_disclosure_test.dart"
+  ],
+  "started_at": "2026-11-27T19:24:57.441084+00:00",
+  "seconds": 12.55,
+  "exit_code": 1,
+  "log": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE146/2026-11-27_Q241_RESTART/gates/disclosure.log",
+  "sha256": "acde3ee556a63b189c71c2d34593bc20a3d35eea2ce1c42aeafc876c95ad57a7",
+  "bytes": 7194,
+  "last_lines": [
+    "00:03 +6 -3: Q241 compatibilityUnlocks shared purchase default is preserved",
+    "00:03 +7 -3: Q241 zyraFamily shared purchase default is preserved",
+    "00:03 +8 -3: Q241 distinct Guardian compatibility route keeps default ink",
+    "00:04 +9 -3: (tearDownAll)",
+    "00:04 +9 -3: Some tests failed.",
+    "",
+    "Failing tests:",
+    "  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/line146_q241_disclosure_test.dart: Q241 actual Guardian Basic comparison changes only disclosure ink",
+    "  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/line146_q241_disclosure_test.dart: Q241 actual Guardian One ownership keeps disclosure default",
+    "  /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/line146_q241_disclosure_test.dart: Q241 actual Seeker One ownership keeps disclosure default"
+  ]
+}

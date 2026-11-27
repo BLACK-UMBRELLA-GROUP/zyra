@@ -1,0 +1,24 @@
+{
+  "thread": "01a21e74-876d-7880-a9e7-e12a34a84f76",
+  "metadata": {
+    "id": "01a21e74-876d-7880-a9e7-e12a34a84f76",
+    "timestamp": "2026-11-27T19:21:23.065Z",
+    "model_provider": "openai",
+    "source": "vscode",
+    "model": "gpt-6.1-sol",
+    "effort": "ultra"
+  },
+  "count_events": 36,
+  "actual_count_snapshot": {
+    "timestamp": "2026-11-27T19:26:02.981Z",
+    "total_token_usage": {
+      "input_tokens": 3354764,
+      "cached_input_tokens": 3231104,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 11229,
+      "reasoning_output_tokens": 2769,
+      "total_tokens": 3365993
+    }
+  },
+  "scope": "count metadata only; no conversation saved"
+}

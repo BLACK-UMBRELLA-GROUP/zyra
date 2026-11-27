@@ -1,0 +1,33 @@
+{
+  "review": "Independent read-only public-evidence hit review",
+  "reviewed_at": "2026-11-27T19:35:37.498951+00:00",
+  "scanner_report_sha256": "0f8b7f6b4f3610abbdffe1669f02e15cecd2c2332203d5857642d250c191fd46",
+  "files_checked_by_root": 163,
+  "hit_count": 2184,
+  "kind_counts": {
+    "email": 444,
+    "money": 1738,
+    "legal/company": 2
+  },
+  "category_counts": {
+    "asset_filename_email_false_positive": 443,
+    "compressed_png_false_positive": 1501,
+    "locked_public_app_text": 240
+  },
+  "unreviewed_hits": 0,
+  "true_private_or_secret_findings": 0,
+  "verdict": "PASS after all 2184 exact-context dispositions; no blocker",
+  "context_checks": {
+    "asset_snapshots_current_hash_exact": 443,
+    "pngs_crc_and_raster_valid_no_text_metadata": 35,
+    "raw_item_money_matching_frame_lines": 240,
+    "distinct_existing_public_app_strings": 11,
+    "money_match_locations": [
+      ".items[].text"
+    ],
+    "raw_originals_edited": false,
+    "repo_mutations": false
+  },
+  "full_per_hit_review_sha256": "b8de66d398764167749333dad53b7751ca63c3e7b7e90afea7c32c8429395bff",
+  "full_per_hit_review": "Retained in held gates/public-evidence-review-initial.json; original BEFORE map retained there. User-facing BEFORE reformatted with same facts to separate path/sha256 fields."
+}

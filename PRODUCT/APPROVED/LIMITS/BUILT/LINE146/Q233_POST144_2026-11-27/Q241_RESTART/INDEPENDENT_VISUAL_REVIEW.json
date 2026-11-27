@@ -1,0 +1,10 @@
+{
+  "reviewer": "raw_replay_review",
+  "method": "Plain PNG inspection of all7 430x932 normal masters and actual captures; scoped375x667@1.3 captures; Q241 actual upgrade screenshots",
+  "verdict": "MATCH for Q219 LOCK48 parts only",
+  "capture_identity": "All64 generated files including32PNGs,28scoped audits,4route manifests byte-identical to prior sealedQ233 evidence",
+  "scope": "Count bar,25-seen card,no bar onOne,full sheets,Sent count line. Surrounding card/backdrop excluded perQ219; no whole-master identity claimed.",
+  "small_screen": "All inspected owned text visible, no ellipsis/clipping; CTA wrapping clean. Strict pixel reports separately determine contrast.",
+  "q241_screenshots": "Complete disclosure,3gold links,Start14daysfree,Notnow visible for Seeker and Guardian.",
+  "written_refusal_OA_ZYRA_371": "Existing Sent-card name truncation outside LOCK48 count-line scope is retained; no whole-page fit claim or unauthorised other-line repair."
+}

@@ -1,0 +1,13 @@
+{
+  "method": "All4 reports complete/strict/pass; zero raw failures/gaps; all8 selected coverage requirements per setting contain real text. Ordered group/state/viewport/plan/pages/scroll-frame/rendered-route tuples compare exactly with original replay. For each original failed frame, match its global ordinal and full original frame metadata to the original paragraph, then verify the new item in that exact frame. Retain all53 original rows and all53 new pixel measurements.",
+  "reason_for_ordinal": "Capture labels repeat across independently mounted fixtures. Label-only matching is not a unique key; it was rejected before completion and replaced by global frame ordinal plus original metadata. No auditor, fixture, route, coverage membership, assertion or threshold was changed.",
+  "frame_count": 3984,
+  "run_count": 43850,
+  "coverage_proofs": 32,
+  "measured_footer_findings": 0,
+  "same_background_corrected_rows": 53,
+  "seeker": 25,
+  "guardian": 28,
+  "measured_ratio": 7.176686604982365,
+  "script_sha256": "a81be991223e3d3affaa03333be133a7296f29f5c73fa52d5e6ca71753039432"
+}

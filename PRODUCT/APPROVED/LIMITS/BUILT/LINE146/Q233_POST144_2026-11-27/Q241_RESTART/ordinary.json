@@ -1,0 +1,30 @@
+{
+  "name": "ordinary",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded"
+  ],
+  "started_at": "2026-11-27T19:27:29.382437+00:00",
+  "seconds": 671.42,
+  "exit_code": 0,
+  "log": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE146/2026-11-27_Q241_RESTART/gates/ordinary.log",
+  "sha256": "14d3da8f028b319e915b68e3d75aa46ce0f1ac3f67322aeab7dc1e49fb2f8981",
+  "bytes": 1602797,
+  "last_lines": [
+    "11:03 +8009 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/browse_action_lifetime_test.dart: current owner can still hide a synthetic Browse profile",
+    "11:03 +8010 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/browse_action_lifetime_test.dart: current owner can still hide a synthetic Browse profile",
+    "11:03 +8011 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/dev_toggle_subtext_cleanup_test.dart: ordinary members see no developer rail or picker options",
+    "11:03 +8012 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/browse_action_lifetime_test.dart: real personal Hide ACK true never ends a Journey",
+    "11:03 +8013 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/dev_toggle_subtext_cleanup_test.dart: page options retain disabled reasons and actionable errors",
+    "11:03 +8014 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/browse_action_lifetime_test.dart: real personal Hide ACK false never ends a Journey",
+    "11:03 +8015 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/browse_action_lifetime_test.dart: real personal Hide ACK false never ends a Journey",
+    "11:04 +8016 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/dev_toggle_subtext_cleanup_test.dart: short recovery labels still open and leave the actual error",
+    "11:04 +8017 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/dev_toggle_subtext_cleanup_test.dart: (tearDownAll)",
+    "11:04 +8017 ~252: All tests passed!"
+  ]
+}

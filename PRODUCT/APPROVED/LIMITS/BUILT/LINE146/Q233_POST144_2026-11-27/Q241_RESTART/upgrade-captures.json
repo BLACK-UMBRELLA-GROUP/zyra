@@ -1,0 +1,32 @@
+{
+  "name": "upgrade-captures",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "--dart-define=ZYRA_LOCK25_REVIEW_DIR=build/held/LINE146/2026-11-27_Q241_RESTART/upgrade-captures",
+    "test/zyra_one_upgrade_page_test.dart"
+  ],
+  "started_at": "2026-11-27T19:26:21.788430+00:00",
+  "seconds": 22.38,
+  "exit_code": 0,
+  "log": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE146/2026-11-27_Q241_RESTART/gates/upgrade-captures.log",
+  "sha256": "a3ea4636a1b1e6773c375592b50cc51cbf78a297015133bbdaab20c189661c06",
+  "bytes": 795,
+  "last_lines": [
+    "00:01 +1: Seeker One Profile keeps membership management",
+    "00:01 +2: Guardian Basic Profile opens the exact honest comparison and returns",
+    "00:02 +3: Guardian One Profile keeps membership management",
+    "00:02 +4: actual Profiles card uses Design 2 and still advances to photo one",
+    "00:03 +5: both locked Guardian tiles open Guardian One",
+    "00:03 +6: ordinary upgrades use the same page for both roles",
+    "00:03 +7: larger text scrolls the comparison and keeps actions on screen",
+    "00:03 +8: Guardian monogram only draws and announces the verified One ring",
+    "00:03 +9: (tearDownAll)",
+    "00:03 +9: All tests passed!"
+  ]
+}

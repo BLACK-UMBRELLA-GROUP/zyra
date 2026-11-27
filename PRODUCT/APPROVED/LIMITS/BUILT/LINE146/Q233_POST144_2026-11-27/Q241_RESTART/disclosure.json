@@ -1,0 +1,31 @@
+{
+  "name": "disclosure",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "test/line146_q241_disclosure_test.dart"
+  ],
+  "started_at": "2026-11-27T19:25:55.408884+00:00",
+  "seconds": 8.55,
+  "exit_code": 0,
+  "log": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE146/2026-11-27_Q241_RESTART/gates/disclosure.log",
+  "sha256": "aa24db8b4604bc9b39e1e3521fe58e60d4e6bded47d0c2e91f2528bcb2778fb2",
+  "bytes": 999,
+  "last_lines": [
+    "00:02 +4: Q241 actual Guardian One ownership keeps disclosure default",
+    "00:02 +5: Q241 shared Guardian upgrade requires explicit opt in",
+    "00:02 +6: Q241 seekerOne shared purchase default is preserved",
+    "00:02 +7: Q241 guardianOne shared purchase default is preserved",
+    "00:02 +8: Q241 seekerBasic shared purchase default is preserved",
+    "00:02 +9: Q241 compatibilityUnlocks shared purchase default is preserved",
+    "00:02 +10: Q241 zyraFamily shared purchase default is preserved",
+    "00:02 +11: Q241 distinct Guardian compatibility route keeps default ink",
+    "00:03 +12: (tearDownAll)",
+    "00:03 +12: All tests passed!"
+  ]
+}

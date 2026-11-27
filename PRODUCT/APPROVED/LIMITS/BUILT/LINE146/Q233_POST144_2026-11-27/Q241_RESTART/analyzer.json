@@ -1,0 +1,20 @@
+{
+  "name": "analyzer",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "analyze",
+    "--no-pub"
+  ],
+  "started_at": "2026-11-27T19:27:05.727980+00:00",
+  "seconds": 11.91,
+  "exit_code": 0,
+  "log": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE146/2026-11-27_Q241_RESTART/gates/analyzer.log",
+  "sha256": "9daeb6a58396674fb972739ed249f11027a8b48557a7e042bd58fe526ac5a6ea",
+  "bytes": 97,
+  "last_lines": [
+    "Analyzing SOURCE...                                             ",
+    "No issues found! (ran in 10.5s)"
+  ]
+}

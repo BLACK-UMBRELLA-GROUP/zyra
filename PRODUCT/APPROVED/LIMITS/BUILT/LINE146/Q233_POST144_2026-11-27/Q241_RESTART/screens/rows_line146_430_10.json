@@ -1,0 +1,104 @@
+[
+  {
+    "role": "Seeker",
+    "area": "limits",
+    "page": "line146",
+    "state": "pr01_430_10",
+    "reached": "pr01_430_10",
+    "file": "pr01_430_10.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "limits",
+    "page": "line146",
+    "state": "pr02_bar_430_10",
+    "reached": "pr02_bar_430_10",
+    "file": "pr02_bar_430_10.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "limits",
+    "page": "line146",
+    "state": "pr02_430_10",
+    "reached": "pr02_430_10",
+    "file": "pr02_430_10.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "limits",
+    "page": "line146",
+    "state": "pr03",
+    "reached": "No bar at a test-seeded count of 25",
+    "file": "pr03_430_10.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "limits",
+    "page": "line146",
+    "state": "rl01_430_10",
+    "reached": "rl01_430_10",
+    "file": "rl01_430_10.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "profile"
+    ],
+    "tab": 2
+  },
+  {
+    "role": "Seeker",
+    "area": "limits",
+    "page": "line146",
+    "state": "rl02_430_10",
+    "reached": "rl02_430_10",
+    "file": "rl02_430_10.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [],
+    "tab": 0
+  },
+  {
+    "role": "Seeker",
+    "area": "limits",
+    "page": "line146",
+    "state": "rl03_430_10",
+    "reached": "rl03_430_10",
+    "file": "rl03_430_10.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "requests"
+    ],
+    "tab": 2
+  },
+  {
+    "role": "Seeker",
+    "area": "limits",
+    "page": "line146",
+    "state": "rl04_430_10",
+    "reached": "rl04_430_10",
+    "file": "rl04_430_10.png",
+    "width": 1290,
+    "height": 2796,
+    "route": [
+      "requests"
+    ],
+    "tab": 2
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "reviewer": "raw_replay_review",
+  "verdict": "PASS; no concern",
+  "checks": [
+    "Read4original+4new raw reports and held itemJSONL; report/summary hashes and evidence/held bytes exact",
+    "All3984 ordered frame tuples preserve group,state,viewport,plan,tab,pages,rendered_route,proof_kind,scroll_frame",
+    "29report-level coverage/classification fields unchanged, including focus proofs,route basis,exclusions,exemptions,selected suites",
+    "Original53 equals all prior failures with setting added; corrected53 matches unique item in exact global frame ordinal and metadata",
+    "25Seeker+28Guardian all measured#ff4f443a over#ffeadfcd at7.176686604982365,required4.5,pass",
+    "Each old failed frame1 becomesnew0; all4reports strict,complete,pass with0findings,0gaps and32coverageproofs"
+  ],
+  "reviewer_mutations": false
+}

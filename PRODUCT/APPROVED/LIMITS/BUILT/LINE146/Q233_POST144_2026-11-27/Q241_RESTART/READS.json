@@ -1,0 +1,33 @@
+{
+  "conversation": "new; started19:21 UTC",
+  "start_pack_bytes": 18085,
+  "named_reads": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 16748,
+      "sha256": "2e37ec20b8872569d5154fb1c333d9b49d3c2c99381cbefd869680a53268ec12"
+    },
+    {
+      "path": "PRODUCT/APPROVED/LIMITS/BRIEFS/BUILD_BRIEF_2026-11-24_V1.md",
+      "bytes": 4035,
+      "sha256": "2a94d1aca9e0c38be751b342caa9869e3b044b630ea0a60a2b94e0d0c46e05b6"
+    },
+    {
+      "path": "PRODUCT/APPROVED/LIMITS/RECORD/LIMITS_SPEC_CURRENT_VERSION_V1.md",
+      "bytes": 4067,
+      "sha256": "5956938c888d9f09f5f52919fa20b43cee5b55530df7c93ed694249b33575724"
+    },
+    {
+      "path": "PRODUCT/APPROVED/LIMITS/RECORD/LOCK_RECORD.md",
+      "bytes": 668,
+      "sha256": "7dfa9610f74ac02d2d3f1f945813e8fa1efab3e963414befdf8ec4ab0fb44d84"
+    },
+    {
+      "path": "SYSTEM/DOCUMENTS/MASTER_GOVERNANCE/ZYRA_RULES_CURRENT_VERSION_V1.md",
+      "bytes": 3785,
+      "sha256": "f474ec63003bbcd203511d6ac9a75eeb43f0d13dfdef2a9af6ae1e84b9eea7a8"
+    }
+  ],
+  "additional_reads": "Exact Q219/220/233/239/240/241/242 and queue141/146/147 rows; LOCK14 V9 ladder slices; prior held candidate and gate evidence, current implementation; handover standardV4; mandatory short global lessons per supplied instruction. Independent agents inspected raw reports and masters. No keys, broad register or whole MAP read.",
+  "startup_disclosure": "First start_pack used relative script path and refused its lexical parent boundary; absolute invocation passed. Two running-summary schema errors corrected to labels pair. Additional commands mistakenly referenced unavailable file/cwd/PIL; corrected without installs or scope change."
+}

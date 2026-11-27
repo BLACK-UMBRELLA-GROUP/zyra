@@ -1,0 +1,62 @@
+[
+  {
+    "setting": "normal",
+    "status": "pass",
+    "report_complete": true,
+    "frames": 1063,
+    "runs": 12100,
+    "failures": 0,
+    "coverage_gaps": 0,
+    "proof_count": 8,
+    "original_observations_matched": 41,
+    "all_original_route_frame_tuples_unchanged": true,
+    "raw_sha256": "5629dab2482f2b36bf7ef84c6f9a78f48a41eac543be50458bad5d5518b68ccd",
+    "items_sha256": "92cec10e2450bbef8f4657b33d615fba4c912fc4ed0eb140b17d2dfaa3b99f80",
+    "raw_items_bytes": 1855060
+  },
+  {
+    "setting": "normal-430",
+    "status": "pass",
+    "report_complete": true,
+    "frames": 744,
+    "runs": 8122,
+    "failures": 0,
+    "coverage_gaps": 0,
+    "proof_count": 8,
+    "original_observations_matched": 12,
+    "all_original_route_frame_tuples_unchanged": true,
+    "raw_sha256": "f0153e67b4b1c8051174d734092075ff9e1256df18c7073bbc576b6160e40e2c",
+    "items_sha256": "5b52fa78cbfd7cf083dee6f50a10b35bd371a8aa8c2705f401bf083566df755e",
+    "raw_items_bytes": 1251745
+  },
+  {
+    "setting": "large-375",
+    "status": "pass",
+    "report_complete": true,
+    "frames": 1326,
+    "runs": 14029,
+    "failures": 0,
+    "coverage_gaps": 0,
+    "proof_count": 8,
+    "original_observations_matched": 0,
+    "all_original_route_frame_tuples_unchanged": true,
+    "raw_sha256": "944ed49f8a307dc848a3073126452e21d28e55cfc88d213ff9106925b6b45168",
+    "items_sha256": "cedd1d1280bd528d76663cf32c62a425caf07a87bbc68014fd0904f8ba8ee60c",
+    "raw_items_bytes": 2164083
+  },
+  {
+    "setting": "large-430",
+    "status": "pass",
+    "report_complete": true,
+    "frames": 851,
+    "runs": 9599,
+    "failures": 0,
+    "coverage_gaps": 0,
+    "proof_count": 8,
+    "original_observations_matched": 0,
+    "all_original_route_frame_tuples_unchanged": true,
+    "raw_sha256": "c1d36ad388a5e08a3ad62e1bd6e08d56710182666df258783c589fe416c567ca",
+    "items_sha256": "deeb09aecdf24a934063105575871a4f499e137f9b5af02bb8f6dc0dd35e4e48",
+    "raw_items_bytes": 1483353
+  }
+]

@@ -1,0 +1,248 @@
+{
+  "protected_driver": {
+    "sdk": "3.44.2",
+    "pins": 5,
+    "execDenial": "PASS",
+    "nestedExecDenial": "PASS"
+  },
+  "gates": {
+    "analyzer": {
+      "name": "analyzer",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "analyze",
+        "--no-pub"
+      ],
+      "started_at": "2026-11-27T19:27:05.727980+00:00",
+      "seconds": 11.91,
+      "exit_code": 0,
+      "log": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE146/2026-11-27_Q241_RESTART/gates/analyzer.log",
+      "sha256": "9daeb6a58396674fb972739ed249f11027a8b48557a7e042bd58fe526ac5a6ea",
+      "bytes": 97,
+      "last_lines": [
+        "Analyzing SOURCE...                                             ",
+        "No issues found! (ran in 10.5s)"
+      ]
+    },
+    "focused": {
+      "name": "focused",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--reporter",
+        "expanded",
+        "--dart-define=ZYRA_LINE146_CAPTURE=true",
+        "test/line146_limits_test.dart",
+        "test/visual/line146_limits_capture_test.dart",
+        "test/seeker_basic_policy_test.dart",
+        "test/seeker_membership_limits_test.dart",
+        "test/zyra_developer_samples_test.dart",
+        "test/view_request_draft_model_test.dart",
+        "test/view_request_draft_snapshot_test.dart",
+        "test/view_request_draft_past_requests_test.dart",
+        "test/zyra_one_upgrade_page_test.dart",
+        "test/zyra_pause_private_model_test.dart",
+        "test/zyra_pause_private_preview_state_test.dart",
+        "test/visual/line138_pause_private_capture_test.dart"
+      ],
+      "started_at": "2026-11-27T19:23:43.636363+00:00",
+      "seconds": 48.37,
+      "exit_code": 0,
+      "log": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE146/2026-11-27_Q241_RESTART/gates/focused.log",
+      "sha256": "7df02f908e92f0bfe36fd0780b0fab2cab0a360d210cabf7c7593a3896cae789",
+      "bytes": 31379,
+      "last_lines": [
+        "00:11 +171 ~22: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: LOCK48 actual preview states 430.0 at 1.0",
+        "00:11 +171 ~23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: LOCK48 actual preview states 430.0 at 1.0",
+        "00:13 +172 ~23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: LOCK48 actual preview states 375.0 at 1.0",
+        "00:18 +173 ~23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: LOCK48 actual preview states 430.0 at 1.3",
+        "00:26 +174 ~23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: LOCK48 actual preview states 375.0 at 1.3",
+        "00:36 +175 ~23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: LOCK44 Pause blocks a send before checking LOCK48 capacity",
+        "00:37 +176 ~23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: LOCK48 restart uses the same One waiting guard",
+        "00:37 +177 ~23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: LOCK46 restart respects Pause and rejects a retired callback",
+        "00:37 +178 ~23: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line146_limits_capture_test.dart: (tearDownAll)",
+        "00:37 +178 ~23: All tests passed!"
+      ]
+    },
+    "q233-smoke": {
+      "name": "q233-smoke",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--reporter",
+        "expanded",
+        "--name",
+        "Q194|Requests has three swipe pages and Introductions has Received/Past separately compact200|fresh whole-app real-font candidates are not approval_compact200_final|LOCK24|LOCK46|Ramadan entry follows|o01 Seeker Delete|Guardian Journey never",
+        "test/zyra_one_upgrade_fit_test.dart",
+        "test/view_request_draft_widget_test.dart",
+        "test/visual/lock24_tab_spacing_test.dart",
+        "test/visual/line140_profile_small_pages_capture_test.dart",
+        "test/visual/line142_offers_preview_test.dart",
+        "test/zyra_guardian_journey_photo_gate_test.dart"
+      ],
+      "started_at": "2026-11-27T19:24:13.525943+00:00",
+      "seconds": 43.51,
+      "exit_code": 0,
+      "log": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE146/2026-11-27_Q241_RESTART/gates/q233-smoke.log",
+      "sha256": "1080f2b03aa56a85756eed12a8c5fe7a5f7567e786dbb746d74bf98673b6a46c",
+      "bytes": 8058,
+      "last_lines": [
+        "00:22 +32 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: LOCK24 Guardian-One-430-default (variant: TargetPlatform.iOS)",
+        "00:24 +33 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: LOCK24 Guardian-One-430-large (variant: TargetPlatform.iOS)",
+        "00:25 +34 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: LOCK24 Guardian-One-375-default (variant: TargetPlatform.iOS)",
+        "00:26 +35 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: LOCK24 Guardian-One-375-large (variant: TargetPlatform.iOS)",
+        "00:28 +36 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: LOCK24 Guardian-Basic-430-default (variant: TargetPlatform.iOS)",
+        "00:29 +37 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: LOCK24 Guardian-Basic-430-large (variant: TargetPlatform.iOS)",
+        "00:31 +38 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: LOCK24 Guardian-Basic-375-default (variant: TargetPlatform.iOS)",
+        "00:32 +39 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: LOCK24 Guardian-Basic-375-large (variant: TargetPlatform.iOS)",
+        "00:34 +40 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: (tearDownAll)",
+        "00:34 +40 ~4: All tests passed!"
+      ]
+    },
+    "disclosure": {
+      "name": "disclosure",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--reporter",
+        "expanded",
+        "test/line146_q241_disclosure_test.dart"
+      ],
+      "started_at": "2026-11-27T19:25:55.408884+00:00",
+      "seconds": 8.55,
+      "exit_code": 0,
+      "log": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE146/2026-11-27_Q241_RESTART/gates/disclosure.log",
+      "sha256": "aa24db8b4604bc9b39e1e3521fe58e60d4e6bded47d0c2e91f2528bcb2778fb2",
+      "bytes": 999,
+      "last_lines": [
+        "00:02 +4: Q241 actual Guardian One ownership keeps disclosure default",
+        "00:02 +5: Q241 shared Guardian upgrade requires explicit opt in",
+        "00:02 +6: Q241 seekerOne shared purchase default is preserved",
+        "00:02 +7: Q241 guardianOne shared purchase default is preserved",
+        "00:02 +8: Q241 seekerBasic shared purchase default is preserved",
+        "00:02 +9: Q241 compatibilityUnlocks shared purchase default is preserved",
+        "00:02 +10: Q241 zyraFamily shared purchase default is preserved",
+        "00:02 +11: Q241 distinct Guardian compatibility route keeps default ink",
+        "00:03 +12: (tearDownAll)",
+        "00:03 +12: All tests passed!"
+      ]
+    },
+    "upgrade-captures": {
+      "name": "upgrade-captures",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--reporter",
+        "expanded",
+        "--dart-define=ZYRA_LOCK25_REVIEW_DIR=build/held/LINE146/2026-11-27_Q241_RESTART/upgrade-captures",
+        "test/zyra_one_upgrade_page_test.dart"
+      ],
+      "started_at": "2026-11-27T19:26:21.788430+00:00",
+      "seconds": 22.38,
+      "exit_code": 0,
+      "log": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE146/2026-11-27_Q241_RESTART/gates/upgrade-captures.log",
+      "sha256": "a3ea4636a1b1e6773c375592b50cc51cbf78a297015133bbdaab20c189661c06",
+      "bytes": 795,
+      "last_lines": [
+        "00:01 +1: Seeker One Profile keeps membership management",
+        "00:01 +2: Guardian Basic Profile opens the exact honest comparison and returns",
+        "00:02 +3: Guardian One Profile keeps membership management",
+        "00:02 +4: actual Profiles card uses Design 2 and still advances to photo one",
+        "00:03 +5: both locked Guardian tiles open Guardian One",
+        "00:03 +6: ordinary upgrades use the same page for both roles",
+        "00:03 +7: larger text scrolls the comparison and keeps actions on screen",
+        "00:03 +8: Guardian monogram only draws and announces the verified One ring",
+        "00:03 +9: (tearDownAll)",
+        "00:03 +9: All tests passed!"
+      ]
+    },
+    "replay": {
+      "name": "replay",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--reporter",
+        "expanded",
+        "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+        "--dart-define=ZYRA_FOCUSED_TEXT_REPLAY=seeker/tab0/Seeker_One,basic_seeker/tab0/Seeker_Basic,seeker/profile/Seeker_One,seeker/requests/Seeker_One,basic_seeker/requests/Seeker_Basic,seeker/introductions/Seeker_One,seeker/ended_restart/Seeker_One,basic_seeker/one_upgrade/Seeker_Basic",
+        "--dart-define=ZYRA_TEXT_AUDIT_ITEM_REPORT=true",
+        "--name",
+        "^(Seeker|Basic plans|Seekers|Membership) ",
+        "test/zyra_clearer_text_contrast_test.dart",
+        "test/zyra_clearer_text_contrast_430_test.dart",
+        "test/zyra_clearer_text_contrast_large_375_test.dart",
+        "test/zyra_clearer_text_contrast_large_430_test.dart"
+      ],
+      "started_at": "2026-11-27T19:24:33.304796+00:00",
+      "seconds": 441.65,
+      "exit_code": 0,
+      "log": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE146/2026-11-27_Q241_RESTART/gates/replay.log",
+      "sha256": "1f4415a25fcd7cdf5ebc1a26fe81fda0b919fa7e6bbe42c253ec0eb91e349aa7",
+      "bytes": 92876,
+      "last_lines": [
+        "06:56 +115: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seekers LOCK35 card fits or scrolls above navigation Size(430.0, 932.0) scale 1.0",
+        "LINE126 raster 1291 frames, 0 failures; lock35 375x667@1.3",
+        "06:58 +116: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seekers LOCK35 card fits or scrolls above navigation Size(430.0, 932.0) scale 2.0",
+        "07:00 +117: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seekers LOCK35 Reduce Motion uses the shared instant selection",
+        "07:00 +118: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seekers LOCK35 unchanged shared error gs91_error__offline",
+        "LINE126 raster 1318 frames, 0 failures; lock35 375x667@1.3",
+        "07:02 +119: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seekers LOCK35 unchanged shared error gs92_error__server",
+        "07:03 +120: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: Seekers (tearDownAll)",
+        "07:03 +120: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/zyra_clearer_text_contrast_large_375_test.dart: (tearDownAll)",
+        "07:03 +120: All tests passed!"
+      ]
+    },
+    "ordinary": {
+      "name": "ordinary",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--reporter",
+        "expanded"
+      ],
+      "started_at": "2026-11-27T19:27:29.382437+00:00",
+      "seconds": 671.42,
+      "exit_code": 0,
+      "log": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE146/2026-11-27_Q241_RESTART/gates/ordinary.log",
+      "sha256": "14d3da8f028b319e915b68e3d75aa46ce0f1ac3f67322aeab7dc1e49fb2f8981",
+      "bytes": 1602797,
+      "last_lines": [
+        "11:03 +8009 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/browse_action_lifetime_test.dart: current owner can still hide a synthetic Browse profile",
+        "11:03 +8010 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/browse_action_lifetime_test.dart: current owner can still hide a synthetic Browse profile",
+        "11:03 +8011 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/dev_toggle_subtext_cleanup_test.dart: ordinary members see no developer rail or picker options",
+        "11:03 +8012 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/browse_action_lifetime_test.dart: real personal Hide ACK true never ends a Journey",
+        "11:03 +8013 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/dev_toggle_subtext_cleanup_test.dart: page options retain disabled reasons and actionable errors",
+        "11:03 +8014 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/browse_action_lifetime_test.dart: real personal Hide ACK false never ends a Journey",
+        "11:03 +8015 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/browse_action_lifetime_test.dart: real personal Hide ACK false never ends a Journey",
+        "11:04 +8016 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/dev_toggle_subtext_cleanup_test.dart: short recovery labels still open and leave the actual error",
+        "11:04 +8017 ~252: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/dev_toggle_subtext_cleanup_test.dart: (tearDownAll)",
+        "11:04 +8017 ~252: All tests passed!"
+      ]
+    }
+  },
+  "failed_full_gate_cycles": 0,
+  "narrow_regression_initial_failure": "9pass/3fail in new fixture: checkpoint route not opened; push transition not settled. One test-only correction; final12pass. Original failed log/json retained. No production or protected audit fixture change.",
+  "hotspot_retries": 1,
+  "scope": "Line146 only; existing replay requirements, route membership,assertions,thresholds untouched. Optional existing item reporting added for successful raw measurement retention.",
+  "hosted": "Required selector and all3Flutter shards pass for exact implementation aa676e84; run46058179534. Optional Q239 audit jobs are not awaited. No duplicate CI wait for records-only commits."
+}

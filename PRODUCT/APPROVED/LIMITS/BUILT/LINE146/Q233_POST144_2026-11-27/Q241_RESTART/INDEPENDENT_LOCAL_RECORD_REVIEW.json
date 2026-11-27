@@ -1,0 +1,129 @@
+{
+  "review": "Independent final public and document review",
+  "line": 146,
+  "question": 241,
+  "reviewed_at": "2026-11-27T19:42:37.087413+00:00",
+  "verdict": "PASS for final pending-hosted records; no unsupported completion claim",
+  "genuine_concerns": [],
+  "public_scan": {
+    "files_checked_by_root": 106,
+    "report_sha256": "6e9c2d572ef2757516beb06d86654908c3243520bea21b7e91ad59be1f313dbc",
+    "hits_reviewed": 1944,
+    "category_counts": {
+      "asset_filename_email_false_positive": 443,
+      "compressed_png_false_positive": 1501
+    },
+    "unreviewed_hits": 0,
+    "true_private_or_secret_findings": 0,
+    "asset_context": "All443 exact final scanner locations are existing iOS app-icon scale paths; every asset matches the original SOURCE snapshot hash.",
+    "binary_context": "All1501 PNG hits belong to the same35 independently validated binary PNGs; hashes match the prior full CRC/raster/no-text-metadata review.",
+    "retained_original_map": "BEFORE-original-map.json remains intact in held gates; all fields compare exactly after reversing the four path/sha256 list transformations.",
+    "final_secret_scan_empty": true,
+    "final_file_sha256": {
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/BEFORE.json": "80c8b198e249eb91815c9b2b830b7ac65b4bee02cd1c86f76ac5dafb286ee617",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/rl04_430_10.png": "c558bb86de7e4100d4e883e459abadd0d7faa8ae7a1fc61ef7f30ccd935a5929",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/rl04_430_13.png": "dde8e9bcec15ccefee6220d737f974701b42d1a79a67129b382ff11d15cb413b",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/rl01_430_13.png": "37d27d944b0617bfe2b03592f0d2bf69fa3a17cb2c952a8b463322cc7be9f408",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/rl03_375_10.png": "4f2b57021bf599604d855f4040e1730fd883be66b3c1502e33812ff03b3c868f",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/pr02_430_13.png": "8428cb221d1cf2cf9fc10d0e99a9a2b9faf1cd06ab5e73ca9dbbe0369d37638f",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/rl01_430_10.png": "48517416714d29d7811d572946f6c1f5634e8790ad0f8baec0f438011614fe89",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/rl03_375_13.png": "8c33153553dd9e140d0061ec38019df271b076cc1f94668fc3b0cd233febba92",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/pr02_430_10.png": "45c50194ceb9b6d45ed98e33a6a9287240d5ae9f6ed0d30e97520bebd59c74a0",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/rl04_375_13.png": "7e4127fdc6684cf95ea951e0859e804393cb62e4bf12b8ca19151063e9dd594d",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/rl04_375_10.png": "4ac6205ea3b2b559d60e1d235c8b27167f90720c0c6fd198cd899f53436edfd8",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/pr02_375_10.png": "bbb379e99f024b450c852fb145e335606b44168e6a7d91ef49044271877dd00c",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/rl03_430_13.png": "1cc9f432cc70a7da91ff4a9e22253070b2114f229396c4a77cbb55592bfa64e8",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/rl01_375_10.png": "223598e9731de8207589ebe01df7809523a7327feb0537a3d38ab8b41af2ef05",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/pr02_375_13.png": "8f797617a1d99f27ada16493e5cb892f2a760b23653150e148420a828c6c3930",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/rl03_430_10.png": "319172a0151c678c89c1db73790c064cb96e52f6478d9e3b50f928cf093c84a1",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/rl01_375_13.png": "8394678cf904c9c37fe0161b86a799b64729fa0012cdd8b5b5de578f7f53f6ab",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/pr02_bar_375_13.png": "8f797617a1d99f27ada16493e5cb892f2a760b23653150e148420a828c6c3930",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/rl02_375_10.png": "879b8e1e85aa83e7ba7ff0dfad7ad73a4bf8d712b3199d5f5c560dc01a7fd655",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/pr03_430_13.png": "3fd3d2c3e72079b941f4a6e811df6448477270606a448d7376f582566cd3d10c",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/pr01_375_10.png": "f11f77d413fc9b9935ce91c3c6f28485399f08af8fb904dc584991d4b5e39bf0",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/pr02_bar_375_10.png": "bbb379e99f024b450c852fb145e335606b44168e6a7d91ef49044271877dd00c",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/rl02_375_13.png": "99f51688a0e13a4f2c089e01909610c49e4a783b34658c8eedb6adfe871189b8",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/pr03_430_10.png": "8ebf83bdb9e48f284f5381c079793df82c69d417353d941abd57f47abba4e71c",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/pr01_375_13.png": "87e1bcc8352d9ae8b359b9c617749d8c4d76fd6121d65142dfb47ce87ca1c415",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/pr01_430_13.png": "eb041f20d34e311fa7b216e4e1cab9ccb68dbaea183f094b332468a5aff22f83",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/pr03_375_10.png": "c27ed449c44bbcadabfa1add917692cb7fa01792911c4f96c33a286553b20f37",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/rl02_430_13.png": "30d6a0629b0fdb2cb01f81c3ade678e8d0fd8828fca5077443c7e1a2e674a2bb",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/pr02_bar_430_10.png": "45c50194ceb9b6d45ed98e33a6a9287240d5ae9f6ed0d30e97520bebd59c74a0",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/pr01_430_10.png": "583045bcc3614ee677e9c1e7aa051e2bf65dfd27c63eab899be826a5d3f4e8f3",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/pr03_375_13.png": "0eec429bdc1c8235fa93cb6af2eeb6335723892598472dab8e83a2d8599dc71b",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/rl02_430_10.png": "e1f42eb5aae715c2ac2fff8dad72fbfca7d88b0f1f6a7240ddd42a61e7b7e4a8",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/screens/pr02_bar_430_13.png": "8428cb221d1cf2cf9fc10d0e99a9a2b9faf1cd06ab5e73ca9dbbe0369d37638f",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/upgrade-captures/seeker-one.png": "fbd06e4855b0d1d4ebae8ebec039222aa32aef8273b65a230a0e60ac814b159a",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/upgrade-captures/profiles-details-design-2.png": "6cf366f2fdd1e124a12a00cc84918d28f924aaf6bb5e484ddd7beb860b6d3952",
+      "ZYRA/PRODUCT/APPROVED/LIMITS/BUILT/LINE146/Q233_POST144_2026-11-27/Q241_RESTART/upgrade-captures/guardian-one.png": "b0abc99def2ada7bff1d1e2d7607962f774efcc6c767702332b52421fc557694"
+    }
+  },
+  "document_checks": {
+    "implementation": "aa676e84b735caaf66e0880d8854118a23c035cc",
+    "all23_source_manifest_entries_match_current_and_exact_implementation_commit": true,
+    "queue_status": "WAITING",
+    "build_state": "LOCAL_PASS_HOSTED_PENDING",
+    "hosted_required_pass": false,
+    "hosted_required_limit": "Every required selector/Flutter shard for the exact implementation must pass before BUILT. Existing Q239 audit jobs and union remain optional for this line.",
+    "ordinary": "8017 passed /252 skipped /0 failed",
+    "strict_replay": "120 passed /0 failed;3984frames /43850runs;32focused proofs /0gaps",
+    "original_observations": "53 retained;25Seeker+28Guardian actual measurements independently confirmed at exact global ordinals",
+    "scope": "Handover explicitly limits coverage and master comparisons; no whole-app or whole-master claim. Default-off route flag, nullable paragraph override, unchanged size/copy/links/defaults are supported by source and12passing regressions.",
+    "first_regression_failure": "Three fixture setup failures remain disclosed and retained; one test-only repair is distinguished from full-gate cycles.",
+    "release": "No SOURCE/index release or line146 BUILT claim was made in the reviewed pending-hosted records. Q242 dependency and coordinator ownership retained."
+  },
+  "gate_log_checks": {
+    "analyzer": {
+      "exit_code": 0,
+      "log_sha256_verified": true,
+      "log_bytes": 97,
+      "seconds": 11.91
+    },
+    "focused": {
+      "exit_code": 0,
+      "log_sha256_verified": true,
+      "log_bytes": 31379,
+      "seconds": 48.37
+    },
+    "q233-smoke": {
+      "exit_code": 0,
+      "log_sha256_verified": true,
+      "log_bytes": 8058,
+      "seconds": 43.51
+    },
+    "disclosure": {
+      "exit_code": 0,
+      "log_sha256_verified": true,
+      "log_bytes": 999,
+      "seconds": 8.55
+    },
+    "upgrade-captures": {
+      "exit_code": 0,
+      "log_sha256_verified": true,
+      "log_bytes": 795,
+      "seconds": 22.38
+    },
+    "replay": {
+      "exit_code": 0,
+      "log_sha256_verified": true,
+      "log_bytes": 92876,
+      "seconds": 441.65
+    },
+    "ordinary": {
+      "exit_code": 0,
+      "log_sha256_verified": true,
+      "log_bytes": 1602797,
+      "seconds": 671.42
+    }
+  },
+  "reviewed_document_sha256": {
+    "HANDOVER.txt": "ec3fa413a46d8b185caafae2a536ee68858819ae9047a0bf59b9a899ae038e17",
+    "BUILD.json": "d82400a566c8c0353737225a275b8545355a5fe1b3e0fc51e247cf7be4fa7b30",
+    "GATES.json": "82cc903197c446b46a67db445fc2f0304ca3cd48e0e5de86b503205488a3148f",
+    "REPLAY_PROOF_METHOD.json": "12cd7c43765b2a53b68893729a18ed69430c0f7288d97ae4d8101a9b8fa9d42a",
+    "SOURCE_MANIFEST.json": "49b3a5249a9575128016e55920f969972ba714703d22f6518c49a53996dc2a30",
+    "BEFORE.json": "80c8b198e249eb91815c9b2b830b7ac65b4bee02cd1c86f76ac5dafb286ee617",
+    "INDEPENDENT_REPLAY_REVIEW.json": "1cc1592889706a2ef65348c37f2fafbab56b4170832fcd0b5ac27e5ae9de5bfb"
+  },
+  "mutations": "Only this projectless work review file was written; no repo,raw evidence,runtime,git write."
+}

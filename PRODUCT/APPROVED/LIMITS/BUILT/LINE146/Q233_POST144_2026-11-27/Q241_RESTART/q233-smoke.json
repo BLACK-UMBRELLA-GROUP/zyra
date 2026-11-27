@@ -1,0 +1,38 @@
+{
+  "name": "q233-smoke",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "--name",
+    "Q194|Requests has three swipe pages and Introductions has Received/Past separately compact200|fresh whole-app real-font candidates are not approval_compact200_final|LOCK24|LOCK46|Ramadan entry follows|o01 Seeker Delete|Guardian Journey never",
+    "test/zyra_one_upgrade_fit_test.dart",
+    "test/view_request_draft_widget_test.dart",
+    "test/visual/lock24_tab_spacing_test.dart",
+    "test/visual/line140_profile_small_pages_capture_test.dart",
+    "test/visual/line142_offers_preview_test.dart",
+    "test/zyra_guardian_journey_photo_gate_test.dart"
+  ],
+  "started_at": "2026-11-27T19:24:13.525943+00:00",
+  "seconds": 43.51,
+  "exit_code": 0,
+  "log": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE146/2026-11-27_Q241_RESTART/gates/q233-smoke.log",
+  "sha256": "1080f2b03aa56a85756eed12a8c5fe7a5f7567e786dbb746d74bf98673b6a46c",
+  "bytes": 8058,
+  "last_lines": [
+    "00:22 +32 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: LOCK24 Guardian-One-430-default (variant: TargetPlatform.iOS)",
+    "00:24 +33 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: LOCK24 Guardian-One-430-large (variant: TargetPlatform.iOS)",
+    "00:25 +34 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: LOCK24 Guardian-One-375-default (variant: TargetPlatform.iOS)",
+    "00:26 +35 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: LOCK24 Guardian-One-375-large (variant: TargetPlatform.iOS)",
+    "00:28 +36 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: LOCK24 Guardian-Basic-430-default (variant: TargetPlatform.iOS)",
+    "00:29 +37 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: LOCK24 Guardian-Basic-430-large (variant: TargetPlatform.iOS)",
+    "00:31 +38 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: LOCK24 Guardian-Basic-375-default (variant: TargetPlatform.iOS)",
+    "00:32 +39 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: LOCK24 Guardian-Basic-375-large (variant: TargetPlatform.iOS)",
+    "00:34 +40 ~4: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/lock24_tab_spacing_test.dart: (tearDownAll)",
+    "00:34 +40 ~4: All tests passed!"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "line": 146,
+  "lock": 48,
+  "question": 241,
+  "state": "BUILT_PREVIEW",
+  "commit": "aa676e84b735caaf66e0880d8854118a23c035cc",
+  "flutter": "3.44.2",
+  "mode": "Founder preview widget/rendered tests only",
+  "timestamp": "2026-11-27T19:56:38.134982+00:00",
+  "live": false,
+  "ordinary_pass": 8017,
+  "ordinary_skip": 252,
+  "ordinary_fail": 0,
+  "strict_replay_pass": 120,
+  "strict_replay_fail": 0,
+  "coverage_proofs": 32,
+  "coverage_gaps": 0,
+  "corrected_original_observations": 53,
+  "hosted_required_pass": true
+}

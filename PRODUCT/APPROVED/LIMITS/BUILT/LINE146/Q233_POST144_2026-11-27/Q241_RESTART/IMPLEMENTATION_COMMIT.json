@@ -1,0 +1,32 @@
+{
+  "head": "aa676e84b735caaf66e0880d8854118a23c035cc",
+  "committed_at": "2026-11-27T19:38:49.674522+00:00",
+  "paths": [
+    "SOURCE/README.md",
+    "SOURCE/lib/data/zyra_seeker_basic_policy.dart",
+    "SOURCE/lib/data/zyra_seeker_plan_limits.dart",
+    "SOURCE/lib/dev/zyra_full_profile_preview.dart",
+    "SOURCE/lib/dev/zyra_limits_preview.dart",
+    "SOURCE/lib/dev/zyra_one_journey_browse_designs.dart",
+    "SOURCE/lib/dev/zyra_one_journey_concept_shell.dart",
+    "SOURCE/lib/dev/zyra_preview_navigation_checkpoint.dart",
+    "SOURCE/lib/dev/zyra_view_request_draft_model.dart",
+    "SOURCE/lib/screens/connections/zyra_sample_activity.dart",
+    "SOURCE/lib/screens/subscription/zyra_one_upgrade_page.dart",
+    "SOURCE/lib/state/zyra_developer_samples.dart",
+    "SOURCE/lib/widgets/zyra_browse_designs.dart",
+    "SOURCE/test/line146_limits_test.dart",
+    "SOURCE/test/support/zyra_hidden_dev_controls_driver.dart",
+    "SOURCE/test/view_request_draft_widget_test.dart",
+    "SOURCE/test/visual/baseline_capture_support.dart",
+    "SOURCE/test/visual/line146_limits_capture_test.dart",
+    "SOURCE/test/visual/lock24_tab_spacing_test.dart",
+    "SOURCE/test/zyra_one_upgrade_fit_test.dart",
+    "SOURCE/test/zyra_one_upgrade_page_test.dart",
+    "SOURCE/lib/widgets/zyra_purchase_fine_print.dart",
+    "SOURCE/test/line146_q241_disclosure_test.dart"
+  ],
+  "foreign_index_entries_preserved": 7,
+  "SOURCE_github_clean": true,
+  "hosted": "PENDING; line146 not yet BUILT"
+}

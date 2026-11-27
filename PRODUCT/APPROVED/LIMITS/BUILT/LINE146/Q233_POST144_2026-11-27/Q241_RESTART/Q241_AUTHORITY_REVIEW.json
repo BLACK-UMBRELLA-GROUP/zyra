@@ -1,0 +1,37 @@
+{
+  "authority": "Q241 ANSWERED; LOCK14 V9 real-background ladder; Founder GO; OA-ZYRA-371,DR-ZYRA-381",
+  "original_seeker_rows": 25,
+  "original_guardian_rows": 28,
+  "same_widget_path": [
+    "Text",
+    "Column",
+    "ZyraPurchaseFinePrint",
+    "Column",
+    "Padding",
+    "LayoutBuilder",
+    "MediaQuery",
+    "Padding",
+    "SafeArea",
+    "ZyraOneUpgradePage",
+    "Stack",
+    "PageStorage"
+  ],
+  "background": "#ffeadfcd",
+  "original_ink": "#ff6e6257",
+  "original_ratio": 4.491678474119953,
+  "new_ink": "#ff4f443a",
+  "theoretical_ratio": 7.176686604982365,
+  "guardian_original_by_setting": {
+    "normal375": {
+      "settled": 15,
+      "basic_comparison": 3,
+      "from_network_lock": 3
+    },
+    "normal430": {
+      "settled": 5,
+      "basic_comparison": 1,
+      "from_network_lock": 1
+    }
+  },
+  "originals": "All four original raw reports retained unchanged in parent/replay; no suppression/reclassification/threshold/route/coverage change. New replay adds only existing optional item reporting to retain successful pixel measurements."
+}
