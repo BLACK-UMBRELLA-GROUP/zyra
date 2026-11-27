@@ -1,0 +1,27 @@
+{
+  "line": 145,
+  "status": "QUESTION",
+  "question": 232,
+  "commit_sha": "560243fd5907f1abb3b2e3389b5ad89567de7e73",
+  "flutter_version": "3.44.2",
+  "build_mode": "protected widget tests and local Founder preview captures; no native build",
+  "timestamp_utc": "2026-11-27T09:04:58.006556+00:00",
+  "live": false,
+  "source_lease": "released",
+  "index_lease": "released",
+  "source_push": false,
+  "held_path": "/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE145/2026-11-27_INTEGRATED_Q232",
+  "integrated_patch_sha256": "67f3e6311258012c9db528d0fa0d11a87cabb9bd05f9f1e5440d52e6f69c7b64",
+  "start_pack_bytes": 20469,
+  "conversation": "new; chat start clock unavailable",
+  "actual_token_counts": "unavailable",
+  "public_checks": {
+    "A": "candidate and existing commit-range redacted secret scans clean",
+    "B": "39candidate paths40false positives reviewed;12record/mixed paths11false positives reviewed;0true findings",
+    "C": "none",
+    "D": "none",
+    "E": "neutral wording",
+    "F": "no delivered app behavior or run-route change; accepted README untouched"
+  },
+  "source_snapshot_utc": "2026-11-27T08:51:00.159480+00:00"
+}

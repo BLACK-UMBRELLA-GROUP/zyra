@@ -1,0 +1,75 @@
+{
+  "base_commit": "b787bf26915af66c74e5025e6eab0ced1a9f8cfb",
+  "patch_sha256": "c3d0e1086c5bec721b4f0d411c7254dfdfcc8637b0f4771b5953dee271928ba5",
+  "flutter": "3.44.2",
+  "captures": [
+    {
+      "path": "SOURCE/build/line145/j01/j01_one__no_journey.png",
+      "sha256": "95d2bc095aa3f50e3875a78e6cd17d4f9e3bfa3c6bddb2540f2083a4edf25543",
+      "width": 1290,
+      "height": 2796
+    },
+    {
+      "path": "SOURCE/build/line145/g09/g09_journeys__adam.png",
+      "sha256": "a109634c035d46d10a2894feeafd58d00db46423ffd320ed8a3c2747e3aa41c5",
+      "width": 1290,
+      "height": 2796
+    },
+    {
+      "path": "SOURCE/build/line145/g09/g09b_journeys__adam_paused.png",
+      "sha256": "51e041956808ef0d25395df68384f39e7f4a6bb476dad90ed24967d1d2e48377",
+      "width": 1290,
+      "height": 2796
+    },
+    {
+      "path": "SOURCE/build/line145/g09/g09c_journeys__adam_guardian_basic.png",
+      "sha256": "ff233991d8874508e30936c91846172594fec6a9244865832387ccebc0258da1",
+      "width": 1290,
+      "height": 2796
+    },
+    {
+      "path": "SOURCE/build/line145/golden-candidates/g11_seeker__adam_main.png",
+      "sha256": "f90af2ed63b67ae891fb2dd8eea4b7ed8fea2e64ace6d638381d546904ae87f3",
+      "width": 430,
+      "height": 932
+    },
+    {
+      "path": "SOURCE/build/line145/golden-candidates/g12_seeker__yusuf_additional.png",
+      "sha256": "3e7428f7f5e9e10fb7cc5e8d10239fb82e9a152a348ce743b888bdd125e7c5b8",
+      "width": 430,
+      "height": 932
+    }
+  ],
+  "j01_shadow_center_rgb": {
+    "2700": [
+      210,
+      201,
+      187
+    ],
+    "2720": [
+      221,
+      213,
+      198
+    ],
+    "2730": [
+      225,
+      216,
+      202
+    ],
+    "2750": [
+      230,
+      222,
+      208
+    ],
+    "2770": [
+      233,
+      226,
+      212
+    ],
+    "2790": [
+      236,
+      228,
+      214
+    ]
+  }
+}

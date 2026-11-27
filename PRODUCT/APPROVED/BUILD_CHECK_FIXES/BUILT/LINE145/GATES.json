@@ -1,0 +1,176 @@
+{
+  "analyzer": {
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "analyze"
+    ],
+    "exit": 0,
+    "analyzer_seconds": 8.1,
+    "result": "No issues found"
+  },
+  "focused": {
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "test/visual/lock24_tab_spacing_test.dart",
+      "test/visual/lock19_v3_family_acceptance_test.dart",
+      "test/visual/line145_capture_output_test.dart",
+      "test/zyra_guardian_journey_photo_gate_test.dart",
+      "test/global_app_surface_test.dart"
+    ],
+    "exit": 0,
+    "passed": 33
+  },
+  "behavior_controls": {
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded",
+      "test/visual/lock13_journey_tab_test.dart",
+      "test/visual/lock8_v6_guardian_seeker_test.dart",
+      "test/zyra_rendered_text_audit_controls_test.dart"
+    ],
+    "exit": 0,
+    "passed": 157,
+    "scope": "Behavior and audit controls, not standalone changed-screen raster proof"
+  },
+  "golden_and_replay": [
+    {
+      "name": "golden-check",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--reporter",
+        "expanded",
+        "test/visual/zyra_visual_regression_test.dart",
+        "--name",
+        "g11_seeker__adam_main|g12_seeker__yusuf_additional|active approved manifests"
+      ],
+      "exit": 0,
+      "seconds": 4.79
+    },
+    {
+      "name": "focused-raster",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--reporter",
+        "expanded",
+        "test/zyra_clearer_text_contrast_430_test.dart",
+        "--dart-define=ZYRA_FULL_TEXT_AUDIT=true",
+        "--name",
+        "^(Guardian One|Family|Circle|Ended) |^Remaining routes.*(Journey|journey|Profile|profile|Hide|hide)|^Seeker.*(Journey|journey)"
+      ],
+      "exit": 1,
+      "seconds": 298.72
+    }
+  ],
+  "raster_summary": {
+    "passed": 88,
+    "failed": 1,
+    "frames": 934,
+    "runs": 12344,
+    "raster_findings": 0,
+    "coverage_gaps": 278,
+    "reason": "Unmodified whole-app coverage assertion at test/support/zyra_clearer_text_corpus.dart:835 after filtered replay; Q229"
+  },
+  "captures": [
+    {
+      "name": "j01",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--reporter",
+        "expanded",
+        "test/visual/line129_current_capture_test.dart",
+        "--dart-define=ZYRA_LINE129_CAPTURE_DIR=build/line145/j01",
+        "--plain-name",
+        "line 129 captures current Journey tab navigation"
+      ],
+      "exit": 0,
+      "seconds": 10.68
+    },
+    {
+      "name": "g09",
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--reporter",
+        "expanded",
+        "test/visual/lock8_v5_guardian_journeys_test.dart",
+        "--dart-define=ZYRA_LINE102_GUARDIAN_JOURNEYS_DIR=build/line145/g09",
+        "--name",
+        "V5 active Sara fixture uses (open|paused) review|V5 Basic remains View only"
+      ],
+      "exit": 0,
+      "seconds": 11.3
+    },
+    {
+      "command": [
+        "node",
+        "tooling/no_git_driver.mjs",
+        "flutter",
+        "test",
+        "--no-pub",
+        "--reporter",
+        "expanded",
+        "test/visual/zyra_visual_regression_test.dart",
+        "--update-goldens",
+        "--dart-define=ZYRA_CAPTURE_CANDIDATES=true",
+        "--dart-define=ZYRA_VISUAL_CANDIDATE_DIRECTORY=/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/line145/golden-candidates",
+        "--name",
+        "Round 2 LOCK master (g11_seeker__adam_main|g12_seeker__yusuf_additional) \\(variant"
+      ],
+      "exit": 0,
+      "seconds": 10.58
+    }
+  ],
+  "ordinary": {
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded"
+    ],
+    "exit": 1,
+    "seconds": 529.02,
+    "status": "completed",
+    "passed": 7953,
+    "skipped": 248,
+    "failed": 1,
+    "failure": "line137_help_support_capture_test: LOCK43 actual entry points ... false; missing lazy concept_settings_helpSupport (Q228)"
+  },
+  "limits": {
+    "ordinary_runs_started": 1,
+    "retries": 0,
+    "max_full_runs": 3,
+    "max_hours": 6,
+    "no_source_push": true
+  }
+}

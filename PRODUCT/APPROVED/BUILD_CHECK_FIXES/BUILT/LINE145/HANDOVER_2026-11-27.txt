@@ -1,0 +1,40 @@
+LINE 145 — HELD CANDIDATE, Q232 — 27 NOVEMBER 2026
+
+Outcome
+QUESTION, not BUILT. Nothing from this line was delivered or pushed. SOURCE, .github and the paired baseline manifest are clean at accepted HEAD bytes; SOURCE and index leases released 2026-11-27T09:04:58.006556+00:00. The seven unrelated staged modes/blob hashes/stages are exact, the five LINE138 working files are exact, and all 931 tracked BUILT PNG hashes (including the 23 ambiguous earlier pictures) are unchanged.
+
+Candidate and authority
+Founder GO; FIX_BRIEF_2026-11-24_LINE129_FOLLOWUP.md, Q208/Q209/Q212/Q214; OA-ZYRA-341/342/343/344/346/387/390/392/396. Named design inputs: APP_COLOURS V9 Shadow in Flutter / No cut-off shadows, APP_SPACING V2 rules A/C, SIGN_UP V2 photo rules, PROFILE_TAB V5 section7, live j01/g09/g09b/g09c/p11 masters. Q214 requires comparison to queue75 goldens with40px corners masked, rather than the older g11/g12 prototype masters.
+
+The isolated patch c3d0e1086c5bec721b4f0d411c7254dfdfcc8637b0f4771b5953dee271928ba5 and all39 candidate hashes were verified, along with35 prior held candidate files and the original held patch. Plain patch and exact PNG file writes integrated the39 paths.38 integrated hashes equalled the isolate; the concept shell retained accepted Help and Pause changes added after the isolate base. No .orig files or Git history operations were used. The sealed integrated patch SHA256 is 67f3e6311258012c9db528d0fa0d11a87cabb9bd05f9f1e5440d52e6f69c7b64.
+
+Held location
+/Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/build/held/LINE145/2026-11-27_INTEGRATED_Q232
+CANDIDATE.patch contains all39 paths, including four additions and two binary goldens. MANIFEST.json records candidate and restored hashes. Four additions were moved into additions/;35 tracked paths were forward-written from current accepted Git object bytes. Evidence contains only logs, JSON and the six captured PNGs; no compiled app or build products. The earlier isolated candidate and old parks remain untouched.
+
+Behavior and boundaries
+The candidate restores the approved line129 work and five bounded fixes: shared capture enables real shadows, repaints and restores the flag in finally; Guardian Journeys retains16pt clearance; avatar placeholder uses the shared surface token; Guardian Journey photo uses prepared and allowed state; family captures require explicit opt-in and an ignored build/line145 destination. LOCK24 padding removal was already present on accepted HEAD, so that fix has no net layout-code diff. The photo reader uses the same prepared photo deck and rejects denied/blocked states. This is local Founder preview and widget-test behavior, with no account transport, migration, server, payment or native installation. Every exact owned path is in MANIFEST.json.
+
+Analyzer
+node tooling/no_git_driver.mjs flutter analyze: clean,8.1s analyzer time. SDK pins plus normal/inherited exec-denial proofs passed. The mandatory analyzer command resolved existing dependencies; no dependency source or lockfile changed.
+
+Focused checks
+33passed: LOCK24, family acceptance, output-path guard, photo gate and global surface. Guardian One/Basic clearance passed at375/430 and default/Larger Text. Separate direct Journey/Guardian fixtures and rendered-text audit controls:157passed. These157 are behavior/control proof, not independent changed-screen raster proof. Exact protected-driver commands and logs are in GATES.json and held evidence.
+
+Captures and goldens
+All six freshly integrated capture hashes exactly match CAPTURE_MANIFEST.json. j01 has a soft shadow tail throughy2790; g09/b/c show the16pt Ended Journeys gap.9golden/paired-manifest cases passed. Q214 independently verified5252significant pixels changed in each g11/g12, all within the approved84pt avatar circle; maximum RGB delta elsewhere3, with no displaced card/text edges. Both manifest rows alone were refreshed. Existing prototype insets, typography, icon rasterization and j01 wrapping differ; no complete master pixel match is claimed. Open Journey text ink is line141's separate scope.
+
+Focused raster replay
+88passed;1tearDownAll failure at test/support/zyra_clearer_text_corpus.dart835.934frames,12344text runs, zero raster findings,278whole-app coverage gaps. Report-only was false and all thresholds/assertions stayed enabled. This is the existing Q229 filtered-scope versus whole-app coverage conflict. Full report and exact filtered normal430 command are retained in evidence/integrated/FOCUSED_RASTER_REPORT.json and GATES.json. No new whole-app test was introduced.
+
+One ordinary regression
+7953passed,248skipped,1failed; exit1;529.02s wall time. Failure: line137_help_support_capture_test, Seeker entry before Help, key concept_settings_helpSupport missing because SUPPORT is lazy/offscreen. It matches accepted Q228. No Welcome or AuthGate failure occurred locally in this run. No retry, exclusion, fixture repair or suppression was performed. This was the one ordinary full run, below the L49 limit.
+
+Independent/public/secret review
+Independent source review found no actionable issue. Independent visual review confirmed the bounded comparison. Candidate public scan reported40false positives:13unchanged accepted-source lines (12Dart record accessors and1UI margin field) and27compressed PNG-byte hits; no new private material. Candidate patch and origin/main..HEAD redacted gitleaks scans found no leaks. Accepted CI run45958031712 was read through the GitHub connector: Flutter shard0success, shards1/2failure. Four opt-in audit jobs also failed; they are separate from the local landing gate. No remote action was triggered.
+
+Restart
+Q232 asks Fable for one bounded accepted-base fixture and focused-replay route while preserving assertions. Q228-Q231 remain separate open baseline/other-line records; this line does not repair or waive them. Verify the held patch/hash and newer overlaps before any authorized restart. Re-run the named gates after that route is supplied. Written refusal to ship failed gates or claim full raster coverage. No other line was started. Queue and Q232 working edits remain unstaged so the seven foreign staged entries are preserved. New record artifacts are plain text/JSON; no routed CURRENT document, MAP or standing rule was changed.
+
+Startup and task note
+Conversation:new; chat start clock unavailable. SOURCE snapshot recorded 2026-11-27T08:51:00.159480+00:00. Successful start_pack20469bytes using the live absolute brief and absolute script path. Two earlier calls containing parent path components were refused, then corrected. Named reads include the brief/specs/masters, relevant question rows, held resume/manifest and isolated manifests. Actual token counts unavailable. Task note is TASK_NOTE_2026-11-27.txt; commit reference will be recorded after the record commit. This line has no source commit or source push.

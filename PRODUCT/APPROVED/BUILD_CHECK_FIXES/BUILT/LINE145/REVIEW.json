@@ -1,0 +1,29 @@
+{
+  "independent_source_review": "PASS, no actionable findings in39 paths; prepared-photo/allowed state gate, exact Q208 values, finally-restored shadows, paired manifests, accepted newer source preserved",
+  "public_candidate": {
+    "raw_exit": 1,
+    "hits": 40,
+    "classification": {
+      "unchanged_accepted_text": 13,
+      "compressed_png_bytes": 27
+    },
+    "true_findings": 0,
+    "details": "12 Dart record accessors ($1/$2/$3),1 UI margin field; all13 source lines identical to accepted HEAD.27 compressed-byte matches in2 valid PNGs."
+  },
+  "visual_review": "PASS for bounded scope; six hashes exact, j01 soft shadow tail,16pt gap g09/b/c, Q2145252 significant pixels each confined avatar circle; outside maxRGB delta3",
+  "limitations": "Prototype existing insets/font/icon rasterization and j01 wrapping differ; no complete prototype pixel match claimed. Direct157behavior/audit-control run in isolate is not changed-screen raster proof.",
+  "public_records": {
+    "files_checked": 12,
+    "raw_exit": 1,
+    "hits": 11,
+    "new_owned_record_hits": 2,
+    "new_owned_record_classification": "Explanation of positional record syntax and UI margin field; no private content",
+    "preexisting_mixed_queue_question_hits": 9,
+    "preexisting_classification": "All pre-existing bytes verified unchanged by inverse comparison of only own145/Q232 additions",
+    "true_findings": 0
+  },
+  "owned_record_secret_scan": {
+    "exit": 0,
+    "result": "no leaks found"
+  }
+}

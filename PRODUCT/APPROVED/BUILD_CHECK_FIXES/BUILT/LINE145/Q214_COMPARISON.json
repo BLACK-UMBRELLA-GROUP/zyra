@@ -1,0 +1,50 @@
+{
+  "g11_seeker__adam_main": {
+    "before_sha256": "340be2c560c878eee83c39ebaf5cf79e7821766f07a1e72d76195676ed9ef07d",
+    "after_sha256": "f90af2ed63b67ae891fb2dd8eea4b7ed8fea2e64ace6d638381d546904ae87f3",
+    "before_bytes": 95888,
+    "after_bytes": 94447,
+    "logical_viewport": [
+      430,
+      932
+    ],
+    "device_pixel_ratio": 1,
+    "corner_mask_px": 40,
+    "pixels_with_rgb_channel_delta_above_10": 5252,
+    "changed_components_size_xyxy": [
+      [
+        5252,
+        174,
+        135,
+        255,
+        216
+      ]
+    ],
+    "outside_avatar_radius_42_max_rgb_channel_delta": 3,
+    "card_and_text_geometry": "no displaced card or glyph edge visible outside the avatar"
+  },
+  "g12_seeker__yusuf_additional": {
+    "before_sha256": "c289900ea800d0c954f3e65db1fb6085668184f8f89857c514d3785e63909c8c",
+    "after_sha256": "3e7428f7f5e9e10fb7cc5e8d10239fb82e9a152a348ce743b888bdd125e7c5b8",
+    "before_bytes": 94913,
+    "after_bytes": 93596,
+    "logical_viewport": [
+      430,
+      932
+    ],
+    "device_pixel_ratio": 1,
+    "corner_mask_px": 40,
+    "pixels_with_rgb_channel_delta_above_10": 5252,
+    "changed_components_size_xyxy": [
+      [
+        5252,
+        174,
+        135,
+        255,
+        216
+      ]
+    ],
+    "outside_avatar_radius_42_max_rgb_channel_delta": 3,
+    "card_and_text_geometry": "no displaced card or glyph edge visible outside the avatar"
+  }
+}
