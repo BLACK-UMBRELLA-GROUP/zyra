@@ -1,0 +1,38 @@
+{
+  "sealed_patch_sha256": "5897f3a1705926bff00ef9cb6f11aa3f69d373cf9e5de3e9bb3b37f4739a4ea3",
+  "verdict": "No actionable defect in sealed isolated candidate",
+  "scope": "Five files and governing brief; no Git, tests or writes by reviewer",
+  "preserved_findings": {
+    "historical_frames": 195,
+    "historical_items": 2802,
+    "historical_failed_items": 59,
+    "scope": "prior isolated replay, not current accepted-source integration"
+  },
+  "shard_partition": [
+    6,
+    6,
+    5,
+    5
+  ],
+  "coverage_obligations": "four unique complete nonempty coverage reports; intersection must contain no shared gap",
+  "integration_followup": {
+    "verdict": "fixture discovery fault; not evidence Contact support missing",
+    "proof": [
+      "account_presentation.dart730-733 lazy ListView",
+      "Seeker-only Pause/Private rows778-789 before SUPPORT826-842",
+      "baseline_capture_support.dart1057-1082 omits settings scroll owner",
+      "new fixture61 directly taps; privacy83-94 scrolls correct owner"
+    ],
+    "future_route": "Scroll concept-current-settings-scroll before discovery. Retain key existence/hit/presenter/role/navigation/sent/raster assertions. Keep Q228/Q229 repairs bounded."
+  },
+  "final_handover_review": {
+    "verdict": "passed",
+    "hashes": "exact patch/new file; four live files match base",
+    "raw_report": "175frames2544items45faileditems;statusfail",
+    "counts_and_attribution": "match",
+    "timestamps": "ordinary end before release",
+    "seeker_contact_coverage": "explicitly incomplete",
+    "hosted_publication": "not claimed",
+    "map_refusal": "added after review"
+  }
+}

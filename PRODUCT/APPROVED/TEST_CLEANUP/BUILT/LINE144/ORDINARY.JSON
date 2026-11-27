@@ -1,0 +1,31 @@
+{
+  "gate": "ordinary",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded"
+  ],
+  "started_at": "2026-11-27T08:37:16.142842+00:00",
+  "duration_seconds": 513.97,
+  "exit_code": 1,
+  "passed": 7962,
+  "skipped": 244,
+  "failed": 3,
+  "failures": [
+    "04:37 +4882 ~83 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line144_help_safety_audit_test.dart: LOCK 37 seeker_one Contact support and sent (variant: TargetPlatform.iOS) [E]",
+    "04:38 +4893 ~120 -2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line144_help_safety_audit_test.dart: LOCK 37 seeker_basic Contact support and sent (variant: TargetPlatform.iOS) [E]",
+    "04:40 +4903 ~160 -3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 actual entry points, search, accordion, contact and stale action false [E]"
+  ],
+  "attribution": {
+    "new_fixture_failures": 2,
+    "new_fixture_path": "test/visual/line144_help_safety_audit_test.dart",
+    "accepted_help_failures": 1,
+    "accepted_help_path": "test/visual/line137_help_support_capture_test.dart",
+    "welcome_authgate_failures_observed_in_this_run": 0,
+    "broader_fixture_repairs_applied": false
+  }
+}

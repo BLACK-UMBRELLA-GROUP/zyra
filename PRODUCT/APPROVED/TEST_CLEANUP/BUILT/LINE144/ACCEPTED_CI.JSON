@@ -1,0 +1,18 @@
+{
+  "checked_with": "GitHub fetch_workflow_run_jobs connector",
+  "run_id": 45958031712,
+  "accepted_source": "b4dcadd2f6a6655aa66985e4e12141ad567433b2",
+  "ordinary_shards": {
+    "0": "success",
+    "1": "failure",
+    "2": "failure"
+  },
+  "scope": "success",
+  "audits": {
+    "normal-375": "failure",
+    "normal-430": "failure",
+    "large-375": "failure",
+    "large-430": "failure"
+  },
+  "candidate_hosted_proof": "not published; not run; no timing/artifact success claimed"
+}

@@ -1,0 +1,12 @@
+{
+  "gate": "analyze",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "analyze"
+  ],
+  "started_at": "2026-11-27T08:34:54.196050+00:00",
+  "duration_seconds": 14.85,
+  "exit_code": 0
+}

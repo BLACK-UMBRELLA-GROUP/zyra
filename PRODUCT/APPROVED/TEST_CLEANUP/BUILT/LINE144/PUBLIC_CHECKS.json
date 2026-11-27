@@ -1,0 +1,23 @@
+{
+  "candidate_files_checked": 5,
+  "candidate_public_hits": 1,
+  "candidate_hit_review": "Dart numeric tuple field, no private material",
+  "candidate_scoped_secret_scan_bytes": 28315,
+  "candidate_scoped_secret_findings": 0,
+  "owned_record_files_checked": 15,
+  "owned_record_public_hits": 0,
+  "record_secret_scan_bytes_before_this_receipt": 42722,
+  "record_secret_findings": 0,
+  "mixed_files_checked": [
+    "PRODUCT/APPROVED/BUILD_QUEUE.md",
+    "PRODUCT/APPROVED/QUESTIONS.md",
+    "MAP.md"
+  ],
+  "mixed_hits": 15,
+  "mixed_review": "existing text/reference matches; no new Q231 hit; do not overwrite old staged documents",
+  "roadmap": "none",
+  "release": "none",
+  "wording": "neutral",
+  "README": "no implementation published",
+  "publication": "paused; zero push attempts; candidate hosted proof pending"
+}

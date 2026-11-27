@@ -1,0 +1,115 @@
+{
+  "line": 144,
+  "status": "QUESTION Q231; exact sealed candidate parked; not BUILT",
+  "accepted_head": "0bd83f47216c2b1d85ff4a4bd8d90aac22643650",
+  "accepted_source": "b4dcadd2f6a6655aa66985e4e12141ad567433b2",
+  "lease_start": "2026-11-27T08:34:42.132391+00:00",
+  "deadline": "2026-11-27T14:34:42.132391+00:00",
+  "source_release": "2026-11-27T08:46:32.443925+00:00",
+  "held_path": "SOURCE/build/held/LINE144/2026-11-27_AUDIT_Q231",
+  "patch_sha256": "5897f3a1705926bff00ef9cb6f11aa3f69d373cf9e5de3e9bb3b37f4739a4ea3",
+  "files": [
+    {
+      "path": ".github/workflows/zyra-ci.yml",
+      "base_sha256": "64c440795304b06c9adef9cf2263de9963aeb0fe524525bc810c0ca6538b290b",
+      "candidate_sha256": "9171caba0d3e044e311266e2dac44eda245907e07c8188c01dc561a18f2d354a",
+      "bytes": 12228
+    },
+    {
+      "path": "SOURCE/test/support/zyra_clearer_text_corpus.dart",
+      "base_sha256": "d6f3284b41844142371931b64d614ab518b4b9464c4beaebf4f1de4f70976045",
+      "candidate_sha256": "bcf013e8aa45ccfdf885971dce7ea5ad89851f4d94b1fa0e45efb2ab7d454263",
+      "bytes": 34367
+    },
+    {
+      "path": "SOURCE/test/support/zyra_rendered_text_contrast.dart",
+      "base_sha256": "a6694908bb945be048390ef443fe9f492ae9a770a363d36bc46476e998394e66",
+      "candidate_sha256": "ca7025b3a6ae8777596d8f6abe39492e9f5537865ac7b3d3b2a563805db5ad6a",
+      "bytes": 62954
+    },
+    {
+      "path": "SOURCE/test/visual/oa316_seeker_baseline_capture_test.dart",
+      "base_sha256": "dc0166152e7571a22ec2f744cd0f31d6d75945e07950f8b13e543d5d622bd399",
+      "candidate_sha256": "ebb22c4b736f5bb046f7fbf0a4693ff5e68021e35107573750bed08cb2385cf0",
+      "bytes": 24379
+    },
+    {
+      "path": "SOURCE/test/visual/line144_help_safety_audit_test.dart",
+      "base_sha256": null,
+      "candidate_sha256": "1e595e80d151cdeafb137e958248d6a64e3afe028b4540f4f1e07e40dec8d696",
+      "bytes": 5566
+    }
+  ],
+  "foreign_staged": [
+    {
+      "path": "PRODUCT/APPROVED/BUILD_QUEUE.md",
+      "index_entry": "100644 f1915859e9eb592f2db782df5889d66f3d06bb02 0",
+      "worktree_sha256": "0f3a2823a74163b4558f9231c8678e8237b6abe9426140c3f79ac0a963c01ca0"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/BUILD.json",
+      "index_entry": "100644 0935e25eeea8b6ffe3ce64b614fcbf9468606b71 0",
+      "worktree_sha256": "7944d49df809231227ca7593a57b47942029deb60c65ef7d921adb681b870a59"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/HANDOVER_2026-11-25.md",
+      "index_entry": "100644 341b615843c7227166868b6f025c30baed513281 0",
+      "worktree_sha256": "37de785cdb994e3310eea0398d45cd67d52332849985fbc0d2e1298fba9c4c39"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_HELD_MANIFEST.json",
+      "index_entry": "100644 0531f5ad6daa081e49990b9c03427b7b4a7f3291 0",
+      "worktree_sha256": "0f3de3551e1857e9542ff57271abb82e62f218417bca66b16ae7a92fa8c701dc"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/RESTART_REVIEW.json",
+      "index_entry": "100644 b890726e53fbb2c4fdc8bf5ebd27811996fcd5f3 0",
+      "worktree_sha256": "709be4452efa232faecffd501f1aba83e9014ffd544550fa4ef8b172f261bbdd"
+    },
+    {
+      "path": "PRODUCT/APPROVED/PAUSE_PRIVATE/BUILT/LINE138/TASK_NOTE_2026-11-25.md",
+      "index_entry": "100644 4e002f5d53b681c5bbccc6617181b7264555d3ea 0",
+      "worktree_sha256": "aa3f188ee260f60f6679840f2d8e54340860aeef5eb59679876821698c2ba52f"
+    },
+    {
+      "path": "PRODUCT/APPROVED/QUESTIONS.md",
+      "index_entry": "100644 7b9d76e6b1b22dd40b24dd8824a52fb95a300c8a 0",
+      "worktree_sha256": "809e5bfb0dc54330d115808508ad0962c251353ba756abbff1b1e54df8f6aa72"
+    }
+  ],
+  "preservation": "all7staged index entries exact;5LINE138worktree hashes exact; queue/questions have only own appended working-tree edits retained",
+  "failed_full_gate_attempts": 1,
+  "ordinary": {
+    "gate": "ordinary",
+    "command": [
+      "node",
+      "tooling/no_git_driver.mjs",
+      "flutter",
+      "test",
+      "--no-pub",
+      "--reporter",
+      "expanded"
+    ],
+    "started_at": "2026-11-27T08:37:16.142842+00:00",
+    "duration_seconds": 513.97,
+    "exit_code": 1,
+    "passed": 7962,
+    "skipped": 244,
+    "failed": 3,
+    "failures": [
+      "04:37 +4882 ~83 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line144_help_safety_audit_test.dart: LOCK 37 seeker_one Contact support and sent (variant: TargetPlatform.iOS) [E]",
+      "04:38 +4893 ~120 -2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line144_help_safety_audit_test.dart: LOCK 37 seeker_basic Contact support and sent (variant: TargetPlatform.iOS) [E]",
+      "04:40 +4903 ~160 -3: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line137_help_support_capture_test.dart: LOCK43 actual entry points, search, accordion, contact and stale action false [E]"
+    ],
+    "attribution": {
+      "new_fixture_failures": 2,
+      "new_fixture_path": "test/visual/line144_help_safety_audit_test.dart",
+      "accepted_help_failures": 1,
+      "accepted_help_path": "test/visual/line137_help_support_capture_test.dart",
+      "welcome_authgate_failures_observed_in_this_run": 0,
+      "broader_fixture_repairs_applied": false
+    }
+  },
+  "candidate_hosted_proof": "not run; publication paused; no network push attempts",
+  "no_other_line_started": true
+}

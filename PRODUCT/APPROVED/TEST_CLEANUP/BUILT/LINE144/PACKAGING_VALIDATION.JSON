@@ -1,0 +1,33 @@
+{
+  "script_source": "exact integrated workflow prepare step",
+  "cases": [
+    {
+      "case": "failed_complete",
+      "status": "pass",
+      "frames": 175,
+      "items": 2544,
+      "failed_items": 45,
+      "complete": true,
+      "audit_outcome": "failure"
+    },
+    {
+      "case": "partial_record",
+      "status": "pass",
+      "frames": 175,
+      "items": 2544,
+      "failed_items": 45,
+      "complete": false,
+      "audit_outcome": "failure"
+    },
+    {
+      "case": "no_checkout",
+      "status": "pass",
+      "frames": 0,
+      "items": 0,
+      "failed_items": 0,
+      "complete": false,
+      "audit_outcome": "failure"
+    }
+  ],
+  "hosted_upload": "not measured"
+}

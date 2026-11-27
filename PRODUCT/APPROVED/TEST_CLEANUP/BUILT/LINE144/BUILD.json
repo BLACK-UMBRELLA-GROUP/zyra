@@ -1,0 +1,16 @@
+{
+  "line": 144,
+  "status": "QUESTION Q231; tooling candidate parked, not BUILT",
+  "commit_sha": "0bd83f47216c2b1d85ff4a4bd8d90aac22643650",
+  "commit_scope": "accepted intake record HEAD; implementation unchanged",
+  "accepted_source_sha": "b4dcadd2f6a6655aa66985e4e12141ad567433b2",
+  "flutter_version": "3.44.2",
+  "build_mode": "protected analyzer/widget tests and targeted normal430 raster diagnostic; no app build",
+  "timestamp": "2026-11-27T08:46:44.319881+00:00",
+  "patch_sha256": "5897f3a1705926bff00ef9cb6f11aa3f69d373cf9e5de3e9bb3b37f4739a4ea3",
+  "held_path": "SOURCE/build/held/LINE144/2026-11-27_AUDIT_Q231",
+  "source_release": "2026-11-27T08:46:32.443925+00:00",
+  "live": false,
+  "hosted_candidate_proof": "PENDING; candidate not published",
+  "implementation_commit": null
+}

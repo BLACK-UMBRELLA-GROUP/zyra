@@ -1,0 +1,25 @@
+{
+  "gate": "focused",
+  "command": [
+    "node",
+    "tooling/no_git_driver.mjs",
+    "flutter",
+    "test",
+    "--no-pub",
+    "--reporter",
+    "expanded",
+    "test/visual/line144_help_safety_audit_test.dart",
+    "test/visual/lock22_report_v2_capture_test.dart",
+    "test/zyra_rendered_text_audit_controls_test.dart"
+  ],
+  "started_at": "2026-11-27T08:35:28.399859+00:00",
+  "duration_seconds": 27.72,
+  "exit_code": 1,
+  "passed": 157,
+  "skipped": 0,
+  "failed": 2,
+  "failures": [
+    "00:01 +0 -1: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line144_help_safety_audit_test.dart: LOCK 37 seeker_one Contact support and sent (variant: TargetPlatform.iOS) [E]",
+    "00:02 +19 -2: /Users/shakeelahmad/Developer/DEVELOPMENT/ZYRA/SOURCE/test/visual/line144_help_safety_audit_test.dart: LOCK 37 seeker_basic Contact support and sent (variant: TargetPlatform.iOS) [E]"
+  ]
+}
